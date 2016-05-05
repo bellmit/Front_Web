@@ -1,0 +1,220 @@
+///grid 表单及其相关组件
+.grid-form{
+	.layout-float-base;
+}
+.grid-formitem{
+	.layout-float-base;
+	.border-radius-base(3px);
+	padding:20px 10px;
+	background:@color-brown1;
+}
+.form-hrtop{
+		border-top:1px solid @color-red4;
+}
+.form-hrleft{
+		border-left:1px solid @color-red4;
+}
+.form-hrright{
+		border-right:1px solid @color-red4;
+}
+.form-hrbottom{
+		border-bottom:1px solid @color-red4;
+}
+.form-inline-fleft{
+	display:inline-block;
+	float:left;
+}
+.form-inline-fright{
+	display:inline-block;
+	float:right;
+}
+.form-block-fleft{
+	display:block;
+	float:left;
+}
+.form-block-fright{
+	display:block;
+	float:right;
+}
+////表单必填项label
+.form-require-icon{
+	&:before{
+		content:'\2217';
+		display:inline-block;
+		vertical-align:top;
+		padding:0 3px 0 0;
+		color:@color-red1;
+		font-size:@font-size-base;
+	}
+}
+////表单保存按钮
+.form-btnsave-icon{
+	white-space:nowrap;
+	&:before{
+		content:'\e71e';
+		font-family:'ux_one';
+		display:inline-block;
+		vertical-align:top;
+		padding:0 5px 0 3px;
+		font-size:@font-size-base;
+		color:@color-white;
+	}
+}
+////表单下一步按钮
+.form-btnnext-icon{
+	white-space:nowrap;
+	&:before{
+		content:'\e701';
+		font-family:'ux_one';
+		display:inline-block;
+		vertical-align:top;
+		padding:0 5px 0 3px;
+		font-size:@font-size-base;
+		color:@color-white;
+	}
+}
+////表单取消按钮(返回)
+.form-btncance-icon{
+	white-space:nowrap;
+	&:before{
+		content:'\e727';
+		font-family:'ux_one';
+		display:inline-block;
+		vertical-align:top;
+		padding:0 5px 0 3px;
+		font-size:@font-size-small;
+		color:@color-white;
+	}
+}
+////表单激活按钮
+.form-btnactive-icon{
+	white-space:nowrap;
+	&:before{
+		content:'\e6c9';
+		font-family:'ux_one';
+		display:inline-block;
+		vertical-align:top;
+		padding:0 5px 0 3px;
+		font-size:@font-size-small;
+		color:@color-white;
+	}
+}
+
+////表单编辑按钮
+.form-btnedit-icon{
+	white-space:nowrap;
+	&:before{
+		content:'\e659';
+		font-family:'ux_two';
+		display:inline-block;
+		vertical-align:top;
+		padding:0 5px 0 3px;
+		font-size:@font-size-small;
+		color:@color-white;
+	}
+}
+
+///设定表单间距
+.form-gapmtop1{
+	margin-top:5px;
+}
+.form-gapmtop2{
+	margin-top:10px;
+}
+.form-gapmtop3{
+	margin-top:15px;
+}
+.form-gapmtop4{
+	margin-top:20px;
+}
+.form-gapmright1{
+	margin-right:5px;
+}
+.form-gapmright2{
+	margin-right:10px;
+}
+.form-gapmright3{
+	margin-right:15px;
+}
+.form-gapmright4{
+	margin-right:20px;
+}
+.form-gapmbottom1{
+	margin-bottom:5px;
+}
+.form-gapmbottom2{
+	margin-bottom:10px;
+}
+.form-gapmbottom3{
+	margin-bottom:15px;
+}
+.form-gapmbottom4{
+	margin-bottom:20px;
+}
+.form-gapmleft1{
+	margin-left:5px;
+}
+.form-gapmleft2{
+	margin-left:10px;
+}
+.form-gapmleft3{
+	margin-left:15px;
+}
+.form-gapmleft4{
+	margin-left:20px;
+}
+
+
+///设定分组表单间距
+.form-control-minigap{
+	margin-bottom:5px !important;
+}
+.form-control-largegap{
+	margin-bottom:30px !important;
+}
+////设置分组表单普通文本
+.form-control-text,
+.form-control-gaptext{
+	float:left;
+  padding-top:5px;
+  text-align:left;
+	display:block;
+  margin-bottom:5px;
+}
+.form-control-gaptext{
+	margin-left:8px;
+	font-size:@font-size-small;
+}
+
+///消除间隙
+.form-nogap-t{
+	margin-top:0;
+}
+.form-nogap-r{
+	margin-right:0;
+}
+.form-nogap-b{
+	margin-bottom:0;
+}
+.form-nogap-l{
+	margin-left:0;
+}
+.form-nogap-tb{
+	margin-top:0;
+	margin-bottom:0;
+}
+.form-nogap-lr{
+	margin-left:0;
+	margin-right:0;
+}
+.form-nogap-all{
+	margin:0;
+}
+
+////横线
+.form-dividerb{
+		border-bottom:1px dashed @color-gray7 !important;
+}
+.form-dividert{
+		border-top:1px dashed @color-gray7 !important;
+}

@@ -1,0 +1,30 @@
+@charset "utf-8";
+/* CSS Document */
+/*全局样式*/
+body{margin:0;padding:0;}
+body *{margin:0;padding:0;list-style:none;border:none;font-size:12px;font-family:"宋体", "新宋体", "仿宋_GB2312", "楷体_GB2312", "宋体-PUA", "黑体", serif, sans-serif;color:#000;text-decoration:none;}
+body *:focus{outline:none;}
+.container{width:1000px;height:auto;margin:50px auto;background:lightblue;}
+/*头部*/
+.header{width:1000px;height:50px;}
+.header h1{font-size:18px;text-align:center;line-height:3em;color:#960;}
+/*主体*/
+.content{width:1000px;height:auto;}
+.testone,.testtwo,.testthree,.testfour{width:960px;height:auto;}
+.testone h3,.testtwo h3,.testthree h3,.testfour h3{width:960px;height:20px;text-indent:5em;font-size:14px;}
+.tcone,.tctwo,.tcthree,.tcfour{width:960px;height:auto;}
+
+
+
+
+
+
+
+
+
+
+
+
+/*底部*/
+.footer{width:1000px;height:80px;}
+.footer p{width:1000px;height:auto;text-align:center;}

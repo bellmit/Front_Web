@@ -1,0 +1,13 @@
+@charset "utf-8";
+/* CSS Document */
+/*通用(全局)样式*/
+body{margin:0;padding:0;}
+body *{margin:0;padding:0;font-size:12px;text-decoration:none;color:#000;font-family:"微软雅黑","宋体", serif, sans-serif;list-style:none;}
+body *:focus{outline:none;}
+/*slider*/
+.container{width:1000px;height:500px;margin:0 auto;background:#fff;}
+.content{width:1000px;float:left;margin-top:100px;}
+.slider_wrap{width:800px;height:auto;margin:0 auto;}
+.slider_data{width:800px;height:30px;margin:0 auto;position:relative;left:0;top:0;}
+.slider_data span{width:36px;height:20px;display:block;background:#f9f9f9;border:1px solid #ccc;-moz-border-radius:3px;-ms-border-radius:3px;-o-border-radius:3px;-webkit-border-radius:3px;border-radius:3px;position:absolute;left:-18px;top:0;text-align:center;line-height:20px;-moz-box-shadow:0 1px 2px #ccc,0 0 3px #fff inset;-ms-box-shadow:0 1px 2px #ccc,0 0 3px #fff inset;-o-box-shadow:0 1px 2px #ccc,0 0 3px #fff inset;-webkit-box-shadow:0 1px 2px #ccc,0 0 3px #fff inset;box-shadow:0 1px 2px #ccc,0 0 3px #fff inset;}
+.slider_load{width:0;height:10px;background:#eee;position:absolute;left:0;top:0;-moz-border-radius:3px;-ms-border-radius:3px;-o-border-radius:3px;-webkit-border-radius:3px;border-radius:3px;}

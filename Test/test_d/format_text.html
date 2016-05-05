@@ -1,0 +1,86 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<script src="../js/jquery-1.11.1.min.js"></script>
+<title>格式化文本实现方式--测试</title>
+</head>
+<style>
+/*global*/
+body{margin:0;padding:0;background:#fff;}
+body *{margin:0;padding:0;font-size:100%;text-decoration:none;color:#000;font-family:"宋体","微软雅黑", serif, sans-serif,"Microsoft Yahei", Vrinda;list-style:none;resize:none;border:0 none;}
+body *:focus{outline:none;}
+body img,img{-ms-interpolation-mode:bicubic;}
+/*clears*/
+.clear_fixs{clear:both;width:0;height:0;line-height:none;visibility:hidden;zoom:1;}
+.clear_fixs:after,.clear_fixs::after{content:"";}
+/*layout*/
+.container{width:1000px;height:auto;position:relative;left:0;top:0;margin:0 auto;}
+.format_wrap{width:800px;height:auto;margin:100px auto 50px auto;}
+.format_item{width:800px;height:60px;float:left;margin:10px 0;}
+.format_theme{width:200px;height:50px;float:left;text-align:right;font-family:"微软雅黑";vertical-align:middle;line-height:50px;font-size:24px;color:#333;margin:5px 0 0 0;}
+.format_text{float:left;width:500px;height:50px;border:1px solid #999;color:#666;font-size:20px;margin:5px 0 0 10px;vertical-align:middle;font-family:"微软雅黑";letter-spacing:2px;-moz-border-radius:5px;-ms-border-radius:5px;-o-border-radius:5px;-webkit-border-radius:5px;border-radius:5px;box-shadow:1px 1px 5px #999;}
+</style>
+<body>
+    <div class="container">
+        <div class="format_wrap">
+        	<div class="format_item">
+            	<label for="bankcard" class="format_theme">银行卡格式化：</label><input type="text" name="BankCard" id="bankcard" class="format_text"/>
+            </div>
+            <div class="format_item">
+            	<label for="mobilephone" class="format_theme">手机号格式化：</label><input type="text" name="MobilePhone" id="mobilephone" class="format_text"/>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+;(function($){
+	$(function(){
+		var f_bc=$("#bankcard"),f_mb=$("#mobilephone");
+		/*银行卡*/
+		f_bc.keyup(function(e){
+			var kc=e.which;
+			if(kc==8||kc==46||kc==32){
+				return;
+			}
+			var cobj=e.target,ctxt=cobj.value,carr=[],cres="";
+			ctxt=ctxt.replace(/\s*\D*/g,"");
+			carr=ctxt.split("");
+			var clen=carr.length,i=0;
+			for(i;i<clen;i++){
+				var ii=i+1;
+				if(ii%4==0&&ii!=1){
+					carr.splice(i,1,carr[i]+" ");
+				}
+			}
+			cres=carr.join("");
+			cobj.value=cres;
+		});
+		/*手机*/
+		f_mb.keyup(function(e){
+			var kc=e.which;
+			if(kc==8||kc==46||kc==32){
+				return;
+			}
+			var cobj=e.target,ctxt=cobj.value,carr=[],cres="";
+			ctxt=ctxt.replace(/\s*\D*/g,"");
+			carr=ctxt.split("");
+			var clen=carr.length,i=0;
+			for(i;i<clen;i++){
+				var ii=i+2;
+				if(i!=0){
+					if(i==2){
+						carr.splice(i,1,carr[i]+" ");
+					}else if(ii%4==0){
+						carr.splice(i,1,carr[i]+" ");
+					}
+				}
+			}
+			cres=carr.join("");
+			cobj.value=cres;
+		});
+	});
+})(jQuery);
+
+</script>
+</html>

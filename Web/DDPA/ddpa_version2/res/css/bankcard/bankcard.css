@@ -1,0 +1,370 @@
+@charset "utf-8";
+/* CSS Document */
+.bottomwrap{
+	margin-top:0px;}
+.csmanage{
+	min-height: 500px;
+}
+.csmanage h1{
+	color: #434343;
+    font-family: 宋体;
+    font-size: 14px;
+    font-style: normal;
+	padding-bottom:20px;
+}
+.cards{
+	overflow:hidden;
+	padding:15px 24px;
+}
+.card{
+	position:relative;
+	width:214px;
+	*width:202px;
+	width:202px\9;
+	height:132px;
+	margin-right:60px;
+	_margin-right:30px;
+	margin-bottom:60px;
+	display:inline-block;
+	float:left;
+	text-align:center;
+	border:1px solid #e3e3e3;
+	border-radius:5px;
+	-webkit-border-radius:5px;}
+.card:hover{
+	cursor:pointer;
+}
+.cards .card:nth-child(3n){
+	margin-right:0px;
+}
+.cards .card.checked{
+	border:1px solid #009FE9;
+	box-shadow:0px 0px 10px #999;
+}
+.cards:first-child{
+	margin-right:60px;	
+}
+.card:not(#new):hover{
+	box-shadow:1px 1px 6px #aaa;
+	}
+.card .banklogo{
+	margin-top:12px;
+	text-align:center;}
+.card .cnumber{
+	position: absolute;
+	top: 50px;
+	left:0px;
+	color: #434343;
+	font-size: 12px;
+	height: 30px;
+	width: 100%;
+	display: block;
+	line-height: 30px;
+	background: #E7E7E7;}
+.card .add_del{
+	position:absolute;
+	bottom: 8px;
+	left: 68px;
+	margin:0px auto;
+	overflow:hidden;}
+.card .add_del li{
+	float:left;
+	text-align:center;
+	margin-right:4px;}
+.card .add_del li a{
+	display:block;
+	width:40px;
+	height:20px;
+	color:#009FE9;
+	line-height: 20px;
+	font-size: 12px;}
+.card a{
+	color:#00F;
+	font-size:15px;}
+.cards #new{
+	*width:214px;
+	width:214px\9;
+	cursor:pointer;
+	border:0px none;
+	margin-right:0px;}
+.cards #new a{
+	display:block;
+	width:100%;
+	height:100%;
+	background:url(../../image/bankcard/addcard.fw.png) no-repeat 0px center;
+	overflow:hidden;
+	}
+.cards #new a:hover{
+	background-position:-213px center;
+	}
+.closebtn{
+	width:13px;
+	height:13px;
+	position:absolute;
+	top:11px;
+	right:16px;
+	border:0px none;
+	background:url(../../image/icons_lyz.fw.png) no-repeat;
+	background-position:-117px -578px;
+	text-indent:-9999px;
+	cursor:pointer;}
+.cardformbox{
+	display:none;}
+.cardformbox h3{
+	height:36px;
+	line-height:36px;
+	padding:0px 16px;
+	color:#fff;
+	font-size:14px;
+	background:#938E83;
+	border-radius:6px 6px 0px 0px;}
+.cardformbox h3 .subtxt{
+	color:#BDB7AA;
+	font-size:12px;
+	font-weight:normal;
+	margin-left: 10px;}
+
+/*表单样式*/
+.formbox{
+	position:relative;
+	overflow:hidden;
+	font-size:13px;
+	padding-top: 25px;}
+#cardform{
+	margin-left:40px;
+	padding-bottom: 40px;}
+.formline{ position:relative;}
+.formline.mt4{
+	margin-top:25px;}
+.formline.mt30{
+	margin-top:30px;}
+.formline.mb10{
+	margin-bottom:10px;}
+.formline .name{ margin-left:10px; color:#636363; font-size:14px;}
+.formline input:not(.checkbox),.formline select, .formline textarea{
+	font-size:14px;
+	padding:0px 5px; 
+	height:24px;
+	border-radius: 4px;
+	border: 1px solid #c6c6c6;
+	box-shadow:0px 0px 1px #c6c6c6;}
+.formline input{
+	*padding:3px 5px;
+	padding:3px 5px\0;
+}
+.formline input,.formline textarea,.formline select{
+	*border:1px solid #c6c6c6;
+	*border-radius: 4px;
+	*box-shadow:0px 0px 1px #c6c6c6;
+	border:1px solid #c6c6c6\9;
+	border-radius: 4px\9;
+	box-shadow:0px 0px 1px #c6c6c6\9;
+}
+.formline input:not(.checkbox){
+	height: 22px;
+	line-height: 22px;
+	}
+.formline input:not(.checkbox):focus{
+	border:1px solid #00A0E9;
+	box-shadow:0px 0px 1px #00A0E9;
+	}
+.formline input.Validform_error{
+	border:1px solid #d73c23;
+	box-shadow:0px 0px 1px #d73c23;
+}
+.formline .fontred{
+	font-weight:bold;
+	font-family:"微软雅黑";
+	font-size: 12px;}
+.checkbox{
+	position: relative;
+	top: 2px;}
+.formline label{
+	display: inline-block;
+	color: #636363;
+	font-size: 14px;
+	width: 6em;
+	text-align: right;
+	margin-right: 2px;
+	}
+.formbox .formtip{
+	color:#a0a0a0;
+	font-size:12px;}
+.formbox .formtip.error{
+	color:#F00;}
+.formline button{
+	width:85px;
+	height:27px;
+	margin-right:15px;
+	font-size:12px;
+	font-family:"微软雅黑";
+	color:#fff;
+	border:0px none;
+	border-radius:4px;
+	background:url(../../image/icons_lyz.fw.png) no-repeat;
+	cursor:pointer;}
+#submitcard{
+	background-position:-100px -534px;
+	margin-bottom:15px;}
+#submitcard:hover{
+	box-shadow:0px 0px 3px #EF4428;
+	}
+.formline button.cancle{
+	background-position:-6px -534px;
+	color:#555;}
+.formline button.cancle:hover{
+	box-shadow:0px 0px 3px #D3D2D2;
+	}
+
+.card.nomargin_r{
+	margin-right:0px;}
+.fontred, .formline .fontred{
+	color:#E54127;}
+
+#confirmDel{
+	position:relative;}
+#confirmDel h3{
+	background:#938E83;
+	padding:5px 10px;
+	color: #fff;
+	font-size: 14px;
+	border-radius: 6px 6px 0px 0px;
+	}
+#confirmDel p{
+	padding:8px;
+	font-size:12px;
+	color:#434343;}
+#confirmDel ul{
+	margin-bottom:8px;
+	margin-right:8px;
+	float:right;}
+#confirmDel li{
+	float:left;
+	margin:0px 8px;
+	}
+#confirmDel li a{
+	color:#434343;
+	font-size:12px;
+	font-family:"微软雅黑"}
+#confirmDel li a.confirmdel{
+	color:#f90;}
+
+#nocardtip{
+	display:none;
+	width:1000px;}
+#nocardtip img{
+	margin-left: 290px;
+}
+.result .ok{
+	display:block;
+	width:20px;
+	height:20px;
+	margin-right:5px;
+	float:left;
+	background:url(../../image/loan/loan_datalayer.png) no-repeat;
+	background-position:0px -60px;}
+.result .error{
+	display:block;
+	width:20px;
+	height:20px;
+	margin-right:5px;
+	float:left;
+	background:url(../../image/loan/loan_datalayer.png) no-repeat;
+	background-position:-20px -60px;}
+.result{
+	position:relative;
+	padding:12px 20px;
+}
+.result .txt{
+	font-size:12px;
+}
+.result.ok .txt{
+	color: #71b83d;
+}
+.result.error .txt{
+	color: #f00;
+}
+.result .closeResult{ position:absolute; top:14px; right:22px; text-indent:-9999px; background:url(../../image/icons_lyz.fw.png) no-repeat -98px -578px; width:13px; height:13px; display:block; }
+#notaddtip{
+	display: block;
+	clear: both;
+	font-size: 12px;
+	color: #f90;
+}
+
+
+.notaddtip{
+	font-size:12px;}
+.notaddtip .content{
+	color:#646464;}
+.notaddtip .closebtn{
+	position: absolute;
+	top: 21px;
+	right: 15px;
+	width: 15px;
+	height: 15px;
+	background:url(../../image/icons_lyz.fw.png) no-repeat;
+	background-position:-97px -577px;
+	background-color: transparent;
+	text-indent:-9999px;
+	cursor:pointer;}
+.mainbox .notaddtip{
+	position:relative;
+	width:772px;
+	*width:736px;
+	width:736px\9;
+	height:55px;
+	margin-left:19px;
+	margin-bottom:10px;
+	line-height:55px;
+	background:#fff;
+	border:1px solid #ebebeb;
+	border-radius:5px;}
+.mainbox .notaddtip label{
+	height:15px;
+	line-height:15px;
+	color:#9F9F9F;
+	margin:20px 0px 20px 15px;
+	background:url(../../image/icons_lyz.fw.png) no-repeat;
+	padding-left:20px;
+	background-position:0px -1px;
+	display:block;
+	float:left;}
+
+.warn{
+	padding:12px 20px; border-radius:4px;
+}
+.warn p{
+	color:#434343; font-size:12px;
+	background:url(../../image/common/warn.fw.png) no-repeat left center;
+	padding-left:18px;	
+	margin-right: 43px;
+}
+.warn .closeWarn{ position:absolute; right:22px; top:12px; background:url(../../image/icons_lyz.fw.png) no-repeat -98px -578px; width:13px; text-indent:-9999px; height:13px; display:block;}
+.warn p a{
+	color:#f2462a; font-size:12px; text-decoration: underline;
+}
+/*-----city select panel-----*/
+.cityshow{position:relative;left:0;top:0;background:none;z-index:200; display:inline-block;}
+.cityselect_wrap{width:500px;height:auto;position:relative;left:0;top:0;z-index:200;}
+.citymenu{
+	position: absolute;
+	width: 100%;
+	height: auto;
+	left: 7em;
+	top: 2px;
+	background: #fff;
+	display:none;}
+.citymenu p{width:100%;height:24px;line-height:24px;text-align:left;text-indent:20px;float:left;font-size:14px;background:#f6f6f6;color:#666;}
+#provincebox, #citybox{ overflow:hidden; border:1px solid #ccc;}
+#citybox{
+	overflow:scroll;}
+.cityprovince,.citycity{width:100%;height:auto;float:left;background:#fff;}
+.cityprovince li,.citycity li{height:18px;line-height:18px;float:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer;text-align:center;font-size:12px;padding:0 8px;}
+.cityprovince li{width:40px;margin:2px 5px;*+margin:2px 3px;color:#000;}
+.citycity li{width:auto;font-family:"宋体";margin:3px 6px;*+margin:3px;color:#333;}
+.cityprovince li:hover,.citycity li:hover{color:#f90;text-decoration:underline;}
+.cityprovince li.citysel,.citycity li.citysel{background:#f90;color:#fff;text-decoration:underline;}
+.Validform_checktip.float{ padding-left: 10px; color: #fff; padding-right: 10px; line-height: 20px; height:20px;background: #999 url(../../image/register/register_remarkbg.png) no-repeat 0 0}
+
+

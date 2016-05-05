@@ -1,0 +1,38 @@
+ul,li{
+list-style-type:none;
+}
+ul{
+margin:0;
+padding:0;
+}
+.main{
+background-color:#5F9EA0;
+width:200px;
+float:left;
+margin-right:2px;
+}
+li{
+background-color:lightblue;
+}
+a{
+padding:6px;
+font-size:16px;
+color:black;
+text-decoration:none;
+padding-left:20px;
+display:block;
+display:inline-block;
+width:174px;
+}
+a:hover{
+color:#7FFF00;
+}
+.main li a{
+color:#A52A2A;
+}
+.main li a:hover{
+color:#008080;
+}
+.main ul{
+display:none;
+}

@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<meta name="description" content="电子商务系统--我的账户--提现">
+<meta name="keywords" content="电子商务系统--我的账户--提现">
+<title>电子商务系统--我的账户--提现</title>
+<link rel="stylesheet" type="text/css" href="../../resource/css/bootstrap_2.3.2/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="../../resource/css/bootstrap_2.3.2/css/responsive.min.css">
+<link rel="stylesheet" type="text/css" href="../../resource/js/lib/artDialog/css/ui-dialog.css">
+<link rel="stylesheet" type="text/css" href="../../resource/css/base.css">
+<link rel="stylesheet" type="text/css" href="../../resource/css/grid.css">
+</head>
+<body>
+    <!--顶部导航菜单-->
+    <div class="navbar headerbox g-cleargap">
+    	<div class="headerwrap">
+      	<div class="header-logo"></div>
+        <div class="header-info">
+        
+            <!--搜索区域-->
+            <form action="" method="post">
+              <div class="header-search">
+                  <input name="search" placeholder="产品名称/编号/关键词" data-theme="产品名称、编号、关键词" id="searchtxt" type="text">
+                  <button id="searchbtn" type="button">搜索</button>
+              </div>
+            </form>
+            
+            <!--用户数据信息-->
+            <ul>
+              <li>您好!<span>小易叔叔</span></li>
+              <li>代理用户：<span>88abcd</span></li>
+              <li>电子账户：<span>2435.45</span></li>
+              <li>业绩账户：<span>872456.53</span></li>
+              <li>其他账户：<span>46725.69</span></li>
+            </ul>
+            <a class="header-login" id="header_loginbtn" href="#">登录</a>
+            <a class="header-out" id="header_registerbtn" href="#">注册</a>
+        </div>
+    	</div>
+      
+      <!--头部导航-->
+      <div class="header-menu">
+      		<div class="menu-outer">
+          		<div class="menu-inner">
+              		<div><div id="mainbtn"></div></div>
+              		<ul id="mainmenu">
+                    <li>
+                      <a href="../index.html" data-part="index" >首页</a>
+                    </li>
+                    <li>
+                      <a href="account_manage.html" data-part="account" >我的账户</a>
+                    </li>
+                    <li>
+                      <a href="../order/order_manage.html" data-part="order" >我的订单</a>
+                    </li>
+                    <li>
+                      <a href="../results/results_manage.html" data-part="results" >业绩申报</a>
+                    </li>
+                    <li>
+                      <a href="../apply/apply_manage.html" data-part="apply" >注册申请</a>
+                    </li>
+                    <li>
+                      <a href="../shopping/shopping_manage.html" data-part="shopping" >我的购物车</a>
+                    </li>
+                    <li>
+                      <a href="../service/service_manage.html" data-part="service" >服务查询</a>
+                    </li>
+                  </ul>
+              </div>
+          </div>
+      </div>
+    </div>
+    
+    
+    <!--登录、注册-->
+    <div class="header-entrywrap g-d-hidei" id="header_loginwrap">
+    		<div class="header-entrybox">
+        		<div class="header-entryitem">
+            	<ul class="header-entrytab" id="header_logintab">
+                <li class="entrytab-active" data-type="store">专卖店登录</li>
+                <li data-type="member">会员登录</li>
+                <li data-type="close"></li>
+              </ul>
+              <ul class="header-entryform" id="header_loginform">
+                <li data-type="store">
+                  <form action="" method="post" id="login_storeform">
+                    <label class="header-entryun"><input type="text" name="storeUserName" id="login_storeusername" placeholder="请输入专卖店登录用户名"></label>
+                    <p></p>
+                    <label class="header-entrypw"><input type="password" maxlength="16" name="storePassWord" id="login_storepassword" placeholder="请输入专卖店登录密码"></label>
+                    <p></p>
+                    <div><input type="text" name="storeValidCode" placeholder="验证码" id="login_storevalidcode"><img src="../../resource/images/validcode_img.jpg"></div>
+                    <p></p>
+                    <button type="submit" class="btn btn-ok">登录</button>
+                  </form>
+                </li>
+                <li data-type="member" class="g-d-hide">
+                  <form action="" method="post" id="login_memberform">
+                    <label class="header-entryun"><input type="text" name="memberUserName" id="login_memberusername" placeholder="请输入会员登录用户名"></label>
+                    <p></p>
+                    <label class="header-entrypw"><input type="password" maxlength="16" name="memberPassWord" id="login_memberpassword" placeholder="请输入会员登录密码"></label>
+                    <p></p>
+                    <div><input type="text" name="memberValidCode" placeholder="验证码" id="login_membervalidcode"><img src="../../resource/images/validcode_img.jpg"></div>
+                    <p></p>
+                    <button type="submit" class="btn btn-ok">登录</button>
+                  </form>
+                </li>
+              </ul>
+            </div>
+        </div>
+    </div>
+    <div class="header-entrywrap g-d-hidei" id="header_registerwrap">
+    		<div class="header-entrybox">
+        		<div class="header-entryitem">
+            	<ul class="header-entrytab" id="header_registertab">
+                <li class="entrytab-active" data-type="store">专卖店注册</li>
+                <li data-type="member">会员注册</li>
+                <li data-type="close"></li>
+              </ul>
+              <ul class="header-entryform" id="header_registerform">
+                <li data-type="store">
+                  <form action="" method="post" id="register_storeform">
+                    <label class="header-entryun"><input type="text" name="storeUserName" id="register_storeusername" placeholder="请输入专卖店注册用户名"></label>
+                    <p></p>
+                    <label class="header-entrypw"><input type="password" maxlength="16" name="storePassWord" id="register_storepassword" placeholder="请输入专卖店注册密码"></label>
+                    <p></p>
+                    <div><input type="text" name="storeValidCode" placeholder="验证码" id="register_storevalidcode"><img src="../../resource/images/validcode_img.jpg"></div>
+                    <p></p>
+                    <button type="submit" class="btn btn-ok">注册</button>
+                  </form>
+                </li>
+                <li data-type="member" class="g-d-hide">
+                  <form action="" method="post" id="register_memberform">
+                    <label class="header-entryun"><input type="text" name="memberUserName" id="register_memberusername" placeholder="请输入会员注册用户名"></label>
+                    <p></p>
+                    <label class="header-entrypw"><input type="password" maxlength="16" name="memberPassWord" id="register_memberpassword" placeholder="请输入会员注册密码"></label>
+                    <p></p>
+                    <div><input type="text" placeholder="验证码" name="memberValidCode" id="register_membervalidcode"><img src="../../resource/images/validcode_img.jpg"></div>
+                    <p></p>
+                    <button type="submit" class="btn btn-ok">注册</button>
+                  </form>
+                </li>
+              </ul>
+            </div>
+        </div>
+    </div>
+    
+    
+    <!--主体部分-->
+    <div class="mainwrap row-fluid">
+        <ul class="span24">
+            <li>
+            
+                <!--主题选择-->
+                <ul class="themeitem-wrap themeitem-two g-b-red4" id="theme_title">
+                    <li class="theme-emoney" data-part="account_withdraw"><a href="account_recharge.html"><span>电子货币</span></a></li>
+                    <li class="theme-info" data-part=""><a href="account_manage.html"><span>个人信息</span></a></li>
+                </ul>
+                
+                <!--子菜单-->
+                <ul class="submenu-wrap" id="submenu">
+                  <li>
+                    <a href="account_recharge.html" data-part="account_recharge" >充值</a>
+                  </li>
+                  <li>
+                    <a href="account_withdraw.html" data-part="account_withdraw" >提现</a>
+                  </li>
+                  <li>
+                    <a href="account_transfer.html" data-part="account_transfer" >转账</a>
+                  </li>
+                  <li>
+                    <a href="account_query.html" data-part="account_query" >查询明细</a>
+                  </li>
+                </ul>
+
+            </li>
+            <li class="main-forms">
+                
+                <!--grid表单-->
+                <div class="grid-form">
+                    <form action="#" id="fiAcApplForm" class="form-horizontal" method="post">
+                        <input type="hidden" value="" name="localCurrency">
+                        <input type="hidden" value="" name="rate">
+                        <input type="hidden" id="localMoney" value="" name="localMoney">
+                        <input id="id" type="hidden" value="" name="id">
+                        <input type="hidden" value="" name="strAction">
+                        <input type="hidden" name="_form_uniq_id" value="">
+                        
+                        <div class="control-group form-control-minigap">
+                          <label class="control-label">帐户类型：</label>
+                          <div class="controls"><span class="form-control-text">F$</span></div>
+                        </div>
+                        
+                        <div class="control-group">
+                          <label class="control-label">申领额度：</label>
+                          <div class="controls"><span class="form-control-text">10000.00</span></div>
+                        </div>
+                        
+                        <div class="control-group form-control-largegap">
+                          <label for="amount" class="control-label form-require-icon">申领金额：</label>
+                          <div class="controls">
+                            <input  id="amount" type="text" class="span6" name="amount" placeholder="请输入申领金额" maxlength="14" >
+                            <div class="moneyup-wrap"><div id="amountup"></div></div>
+                          </div>
+                        </div>
+                        
+                        <div class="control-group">
+                          <label for="payPassword" class="control-label form-require-icon">支付密码：</label>
+                          <div class="controls">
+                            <input  id="payPassword" type="password" class="span6" name="payPassword" placeholder="请输入支付密码" >
+                          </div>
+                        </div>
+                        
+                        <div class="control-group">
+                          <label class="control-label">手续费：</label>
+                          <div class="controls">
+                            <span class="form-control-text" id="fees">23.24</span>
+                            <span class="form-control-text g-c-cyan1">(公司审核时核定)</span>
+                          </div>
+                        </div>
+                        
+                        <div class="control-group">
+                          <label class="control-label">实发金额：</label>
+                          <div class="controls">
+                            <span class="form-control-text" id="sendAmt">2356.34</span>
+                          </div>
+                        </div>
+                        
+                        <div class="control-group">
+                          <label for="memo" class="control-label">摘要：</label>
+                          <div class="controls">
+                            <textarea id="memo" class="span18" rows="8" placeholder="请输入内容"  name="memo"></textarea>
+                          </div>
+                        </div>
+                        
+                        <div class="control-group">
+                          <div class="controls">
+                            <button type="submit" class="span5 btn btn-ok form-btnsave-icon">保存</button>
+                            <a href="account_query.html" class="span5 btn btn-cance form-btncance-icon">取消</a>
+                          </div>
+                        </div>
+                        
+                    </form>
+                </div>
+                
+            </li>
+        </ul>
+    </div>
+    
+    <!--底部导航-->
+    <div class="footerwrap">
+    		<div>
+          <p>版权所有：荣格集团</p>
+          <p>2014-2016</p>
+          <p>深ICP证8716号</p>
+        </div>
+    </div>
+    
+    <!--侧边导航栏-->
+    <ul class="quickmenu" id="quickmenu" data-part="account">
+    	<li data-part="account">
+        <a href="account_manage.html" >我的账户</a>
+      </li>
+    	<li data-part="cart" >
+        <a href="../shopping/shopping_manage.html">购物车</a>
+      </li>
+      <li data-part="shopping" >
+        <a href="../shopping/shopping_health.html">去购物</a>
+      </li>
+      <li data-part="service" >
+        <a href="../service/service_manage.html">查询</a>
+      </li>
+    </ul>
+    
+		<script src="../../resource/js/lib/require/require-2.1.11.min.js" data-main="../../resource/js/account/account_withdraw.js"></script>
+</body>
+</html>

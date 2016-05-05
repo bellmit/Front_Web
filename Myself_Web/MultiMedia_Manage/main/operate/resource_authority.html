@@ -1,0 +1,92 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<meta name="description" content="德亿多媒体资源库,德亿多媒体,德亿多媒体资源库管理系统,管理系统--权限-权限"/>
+<meta name="keywords" content="德亿多媒体资源库,德亿多媒体,德亿多媒体资源库管理系统,管理系统--权限-权限"/>
+<link rel="stylesheet" type="text/css" href="../../css/main/menu_operate.css">
+<script src="../../js/lib/jquery-1.8.3.min.js"></script>
+<script src="../../js/lib/jquery.blockUI.min.js"></script>
+<script src="../../js/utils/util.js"></script>
+<script>
+$(function(){
+	var resauthority_close=$("#resauthority_close"),resauthority_sure=$("#resauthority_sure"),resauthuser=$("#resauthuser"),resauth_ul=$("#resauth_ul"),resauthority_ul=$("#resauthority_ul");
+	var resauth_radio="<input type=\"radio\" name=\"resauth\" id=\"resauthno\" value=\"拒绝访问\"/><label for=\"resauthno\">拒绝访问</label><input type=\"radio\" name=\"resauth\" id=\"resauthread\" value=\"只读访问\"/><label for=\"resauthread\">只读访问</label><input type=\"radio\" name=\"resauth\" id=\"resauthrw\" value=\"读写访问\"/><label for=\"resauthrw\">读写访问</label>",resauth_result=[];
+	/*初始化*/
+	var resautharr=resauthuser.val().split(","),resauthstr="",resauthlen=resautharr.length;
+	for(var i=0;i<resauthlen;i++){
+		resauthstr+="<li class=\"\">"+resautharr[i]+"</li>";
+		var tempvalue=resautharr[i]+":0";
+		resauth_result.push(tempvalue);
+	}
+	resauth_ul.html(resauthstr);
+	/*绑定用户列表选中事件*/
+	resauth_ul.find("li").live("click",function(){
+		var resauth_count=0;
+		var resauth_obj=$(this);
+		resauth_obj.toggleClass("rolelistsel");
+		resauth_ul.find("li").each(function(index,element){
+            var temp_resclass=$(element).attr("class");
+			var tempstr=resauth_result[index].split(":")[0];
+			if(temp_resclass=="rolelistsel"){
+				++resauth_count;
+			}else{
+				resauth_result.splice(index,1,tempstr+":0");
+			}
+        });
+		if(resauth_count!=0){
+			resauthority_ul.html(resauth_radio);
+		}else{
+			resauthority_ul.html("");
+		}
+	});
+	/*绑定选中事件*/
+	resauthority_ul.find("input").live("change",function(){
+		var resauth_obj=$(this),resauth_value=resauth_obj.val();
+		resauth_ul.find("li").each(function(index,element){
+            var temp_resclass=$(element).attr("class");
+			var tempstr=resauth_result[index].split(":")[0];
+			if(temp_resclass=="rolelistsel"){
+				resauth_result.splice(index,1,tempstr+":"+resauth_value);
+			}else{
+				resauth_result.splice(index,1,tempstr+":0");
+			}
+        });
+	});
+	/*确定*/
+	resauthority_sure.live("click",function(){
+		alert("用户权限为:"+resauth_result);
+	});
+	/*关闭*/
+	resauthority_close.click(function(){window.close();});
+})
+</script>
+<title>权限-权限</title>
+</head>
+<body>
+<div class="resauthority_wrap">
+	<h1 class="resauthority_title">资源属性</h3>
+	<table class="resauthority_content">
+    	<colgroup>
+        	<col class="ra_cg1"/>
+            <col class="ra_cg2"/>
+        </colgroup>
+        <tr>
+        	<td><p class="resauthority_themel">已添加用户</p></td>
+            <td><p class="resauthority_themer">用户权限</p></td>
+        </tr>
+    	<tr class="resauthority_ul">
+        	<td>
+            	<textarea name="resauthuser" id="resauthuser">细韩,细芹,女流氓,女汉子</textarea>
+            	<ul id="resauth_ul"></ul>
+            </td>
+            <td id="resauthority_ul"></td>
+        </tr>
+        <tr>
+            <td><input type="button" name="resauthority_close" value="关闭" id="resauthority_close" class="resauthority_close"><input type="submit" name="resauthority_sure" value="确定" id="resauthority_sure" class="resauthority_sure"></td>
+            <td>&nbsp;</td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

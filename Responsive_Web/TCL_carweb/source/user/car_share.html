@@ -1,0 +1,51 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+<meta charset="UTF-8">
+<title>个人首页</title>
+<#include "/includes/carcenter_res.html"/>
+<script type="text/javascript">
+jQuery(function($){
+	$("div[id^='map_']").each(function(){
+		var id = $(this).attr('id');
+		//mapInit($(this).attr('data'),id);
+	});
+	$('a').addClass("fancybox");
+});
+</script>
+</head>
+<body>
+<div id="map" style="width: 500px;height: 300px;display: none"></div>
+<h1 class="p_h1 bg_none">车友分享</h1>
+<div id="feedcontainer"> <#if model ??>
+  <#list model as item>
+  <div class="feed_con">
+    <div class="avatar"> <a href=""><img src="../../../../ResponsiveWebDesign_Web/TCL_carweb/source/user/${request.contextPath}/resources/images/ico_small.jpg" alt=""/></a> </div>
+    <div class="feed_details">
+      <h3><a href="" title="修改资料">${item.username}</a>分享位置<span class="f_address">${item.posname}</span><span class="f_moon">${item.posmark}</span></h3>
+      <div class="f_content">
+        <ul>
+          <li>
+            <div class="mapprev" id="map_${item.seqid}" data="${item.latitude},${item.longitude}"></div>
+          </li>
+          <#if item.posimgpath1 ??>
+          <li> <a href="../../../../ResponsiveWebDesign_Web/TCL_carweb/source/user/${path}/${item.posimgpath1}" class="fancybox"><img src="../../../../ResponsiveWebDesign_Web/TCL_carweb/source/user/${path}/${item.posimgpath1}" alt="" class="imgcss"/></a> </li>
+          </#if>
+          <#if item.posimgpath2 ??>
+          <li><a href="../../../../ResponsiveWebDesign_Web/TCL_carweb/source/user/${path}/${item.posimgpath1}" class="fancybox"><img src="../../../../ResponsiveWebDesign_Web/TCL_carweb/source/user/${path}/${item.posimgpath2}" alt="" class="imgcss"/></a></li>
+          </#if>
+          <#if item.posimgpath3 ??>
+          <li> <a href="../../../../ResponsiveWebDesign_Web/TCL_carweb/source/user/${path}/${item.posimgpath1}" class="fancybox"><img src="../../../../ResponsiveWebDesign_Web/TCL_carweb/source/user/${path}/${item.posimgpath3}" alt="" class="imgcss"/></a> </li>
+          </#if>
+        </ul>
+      </div>
+      <div class="toolbar clearfix"> <span class="t_time">${item.recordtime}</span> <a class="t_download" href=""><img src="../../../../ResponsiveWebDesign_Web/TCL_carweb/source/user/${request.contextPath}/resources/images/btn-down.jpg" alt=""/></a> </div>
+    </div>
+  </div>
+  </#list>
+  </#if> </div>
+<input type="hidden" name="currentPage" value="${currentPage}" id="currentPage">
+<div class="page"><a href="#" id="pagemore" onclick="onLoadShare({'currentPage':${currentPage+1}})">加载更多内容</a> </div>
+</body>
+<#include "/includes/carplugin_res.html"/>
+</html>

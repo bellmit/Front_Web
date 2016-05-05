@@ -1,0 +1,18 @@
+@charset "utf-8";
+/*global*/
+body{margin:0;padding:0;font-size:100%;font-family:"微软雅黑","Microsoft Yahei","宋体",serif, sans-serif,Vrinda;}
+body *{margin:0;padding:0;text-decoration:none;color:#000;list-style:none;resize:none;border:0 none;font-size:100%;font-family:"微软雅黑","Microsoft Yahei","宋体",serif, sans-serif,Vrinda;outline:none;}
+body *:focus{outline:none;}
+body img{-ms-interpolation-mode:bicubic;}
+.clearfix{clear:both;line-height:none;height:0;visibility:hidden;}
+.clearfix:after,.clearfix::after{content:"";}
+/*layout*/
+.container{width:1000px;margin:0 auto;height:500px;}
+.mainbox{float:left;width:500px;height:auto;}
+.sidebox{float:right;width:400px;height:auto;}
+.mainbox h1{width:500px;height:50px;line-height:50px;text-indent:50px;font-size:20px;float:left;}
+.mainbox p{width:500px;height:auto;font-size:12px;text-indent:2em;line-height:16px;font-family:"宋体";float:left;margin:5px 0;color:#333;}
+.sidebox fieldset{width:400px;height:50px;float:left;background:#eee;}
+.sidebox fieldset span{width:200px;height:40px;display:block;background:#09F;color:#fff;font-size:20px;text-align:center;line-height:40px;float:left;margin:5px 0 0 100px;}
+.sidebox div{float:left;height:auto;width:400px;margin:20px 0;}
+.sidebox div p{width:400px;height:auto;font-size:12px;text-indent:2em;line-height:16px;font-family:"宋体";float:left;margin:5px 0;color:#333;}

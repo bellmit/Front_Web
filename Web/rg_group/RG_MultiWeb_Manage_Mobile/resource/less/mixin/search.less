@@ -1,0 +1,61 @@
+///搜索框
+.search-wrap{
+	.layout-float-base;
+	padding:5px 10px;
+	background:@color-gray8;
+	div{
+		.layout-relative-base(0,0,5);
+		width:100%;
+		&:before{
+			.layout-absolutel-base(5px,10px,20);
+			content:'\e648';
+			font-family:'ux_eight';
+			color:@color-gray4;
+			font-size:@font-size-base + 6;
+		}
+		input[type='search']{
+			padding:10px 0 10px 26px;
+			.border-radius-base(3px);
+			float:left;
+			width:100%;
+		}
+		span{
+			.layout-absoluter-base(0,0,0);
+			width:0;
+			height:0;
+			.border-radius-base(50%);
+			display:none;
+			cursor:pointer;
+			background:@color-white;
+			text-align:center;
+			line-height:28px;
+			overflow:hidden;
+			&:before{
+				content:'';
+				font-family:'ux_seven';
+				color:@color-red2;
+				font-size:@font-size-base + 10;
+			}
+		}
+		span.search-clear{
+			right:5px;
+			top:5px;
+			z-index:50;
+			width:30px;
+			display:block;
+			height:30px;
+			&:before{
+				content:'\e626';
+			}
+		}
+	}
+	div.search-have{
+		&:before{
+			left:0;
+			content:'';
+		}
+		input[type='search']{
+			padding:10px 0 10px 5px;
+		}
+	}
+}

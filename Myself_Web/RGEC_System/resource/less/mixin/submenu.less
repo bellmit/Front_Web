@@ -1,0 +1,59 @@
+///组件--子菜单
+
+
+///子菜单
+.submenu-wrap{
+	.layout-float-base;
+	margin:10px 0 10px 0;
+	height:50px;
+	padding:0;
+	text-align:center;
+	font-size:0;
+	white-space:nowrap;
+	&:after,
+	&::after{
+		content:'';
+		clear:both;
+	}
+	li{
+		.box-sizing-base;
+		border-top:3px solid @color-red4;
+		border-bottom:1px solid @color-red4;
+		height:50px;
+		display:inline-block;
+		border-left:1px solid @color-gray7;
+		&:last-child{
+			border-right:1px solid @color-gray7;
+		}
+		a{
+			.box-sizing-base;
+			height:100%;
+			float:left;
+			font-size:@font-size-base;
+			display:inline-block;
+			padding:0 20px;
+			line-height:46px;
+			text-decoration:none;
+			color:@color-gray1;
+			.no-outline-base;
+			&:hover{
+				color:@color-red4;
+			}
+		}
+		&.submenu-active a{
+			border-bottom:2px solid @color-red4;
+			color:@color-red4;
+			&:before{
+				content:'\e666';
+				font-family:'ux_two';
+				width:0;
+				height:0;
+				display:block;
+				margin:0 auto;
+				line-height:2px;
+				color:@color-red4;
+				padding:0 12px 0 0;
+			}
+		}
+	}
+}

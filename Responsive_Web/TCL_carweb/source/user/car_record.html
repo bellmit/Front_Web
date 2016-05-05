@@ -1,0 +1,44 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+<meta charset="UTF-8">
+</head>
+<body>
+ <div class="repair">
+	<form id="choseForm">
+	  <select name="choseMonth" id="choseMonth" onchange="change(this.value)" style="width:120px;border:1px solid #ccc;">
+	  </select>
+	  </form>
+</div>
+<div class="repairList">
+<form id="carServer">
+  <table class="p_tableList">
+    <tr>
+	  <th>序号</th>
+	  <th>保养类型</th>
+	  <th>保养时间</th>
+	</tr>
+		<#if listRecord?? && listRecord?size gt 0>
+		<#list listRecord as record>
+		<tr>
+		  <td>${record_index+1+num}</td>
+		  <td>${record.maintenanceContent!''}</td>
+		  <td>${record.maintenancedate!''}</td>
+		</tr>
+		</#list>
+		<#else>
+		<tr><td align="center" colspan="3">   暂无保养记录 </td></tr>
+		</#if>
+  </table>
+   <!-- 分页hidden -->
+    <input type="hidden" name="choseMonth" id="selDate" value="${selDate!''}"/>
+	<input type="hidden" name="currentPage" id="currentPage" value="${pageBean.currentPage}"/>
+	<input type="hidden" name="totalResults" id="totalResults" value="${pageBean.totalResults}"/>
+	<input type="hidden" name="pageSize" id="pageSize" value="${pageBean.pageSize}"/>
+    <!-- end -->
+</form>
+ <div id="Pagination"></div>
+ <br style="clear:both;" />
+</div>
+</body>
+</html>

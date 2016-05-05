@@ -1,0 +1,51 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<meta name="description" content="微网站管理后台--登录">
+<meta name="keywords" content="微网站管理后台--登录">
+<title>微网站管理后台--登录</title>
+<link rel="stylesheet" type="text/css" href="../../resource/css/base.css">
+<link rel="stylesheet" type="text/css" href="../../resource/css/common.css">
+<link rel="stylesheet" type="text/css" href="../../resource/css/login.css">
+<link rel="stylesheet" type="text/css" href="../../resource/js/plugins/artdialog/css/ui-dialog.css">
+<script data-main="../../resource/js/account/login.js" src="../../resource/js/lib/require.min.js"></script>
+</head>
+<body class="g-fill" lang="zh">
+    <div class="login-logo"></div>
+    <div class="login-form form-wrap">
+    <form action="#" method="post" id="loginaction">
+    	<ul class="form-box">
+      	<li class="login-text1 form-text">
+        		<label>用户名：</label>
+            <input type="text" name="UserName" >
+        </li>
+        <li class="login-tip form-tip">
+        </li>
+        <li class="login-text1 form-text">
+        		<label>登录密码：</label>
+            <input type="password" name="UserPWD" >
+        </li>
+        <li class="login-tip form-tip">
+        </li>
+        <li class="login-text2 form-text">
+        		<label>验证码：</label>
+            <input maxlength="6" type="text" name="ValidCode" >
+            <div class="form-validcode">
+            	<img src="../../resource/images/web_validimg.jpg" alt="" >
+            </div>
+        </li>
+        <li class="login-tip form-tip">
+        </li>
+        <li class="login-checkbox form-checkbox">
+            <input type="checkbox" name="AutoLogin" id="login_autologin" ><label for="login_autologin">三天内自动登录：</label>
+        </li>
+        <li class="login-btn form-btn">
+            <input type="submit" value="登&nbsp;录" >
+        </li>
+      </ul>
+    </form>
+    </div>
+</body>
+</html>

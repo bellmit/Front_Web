@@ -1,0 +1,80 @@
+﻿<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+<meta charset="UTF-8">
+<title>修改密码</title>
+<#include "/includes/carcenter_res.html"/>
+</head>
+<body>
+<div class="bg_wrap">
+  <div class="wrapper">
+  	<#include "/includes/header.html"/>
+    <div class="boardframe">
+      <div class="fri-content">
+        <div class="wrap-con">
+          <#include "/includes/car_userinfos.html"/>
+          <div class="p_share">
+            <h1 class="p_h1 bg_1">个人资料</h1>
+            <div id="feedcontainer">
+              <div class="info-con">
+                <div class="p-tabs">
+                  <ul>
+                    <li><a href="user_info.html">个人信息</a></li>
+                    <li><a href="user_ico.html">头像设置</a></li>
+                    <li class="active"><a href="user_pwd.html">修改密码</a></li>
+                    <li><a href="car_info.html">车辆信息</a></li>
+                    <li><a href="user_mobile.html">绑定手机</a></li>
+                  </ul>
+                </div>
+                <div class="info-tabs-con">
+                  <div class="tab-list">
+                    <form action="" id="savePwd">
+                      <table border="0" class="form_table">
+                        <tbody>
+                          <tr>
+                            <th width="18%"><span class="tips_requiredef">*</span>原始密码</th>
+                            <td width="82%">
+                            <#if friendInfo??>
+                            <input type="hidden" name="seqid" id="seqid" value="${friendInfo.seqid!''}"/>
+                            <input type="hidden" name="nickname" id="nickname" value="${friendInfo.nickname!''}"/>
+                            </#if>
+                            <input class="small-text" type="password" id="formerly_pw" name="formerly_pw" value="" autocomplete="off">
+                            </td>
+                          </tr>
+                          <tr>
+                            <th><span class="tips_requiredef">*</span>新密码</th>
+                            <td><input class="small-text" type="password" id="password" name="password" value=""></td>
+                          </tr>
+                          <tr>
+                            <th><span class="tips_requiredef">*</span>重复密码</th>
+                            <td><input class="small-text" type="password" id="new_pw_repeat" name="new_pw_repeat"value=""></td>
+                          </tr>
+                          <tr>
+                            <td></td>
+                            <td class="gray">由5-16个字符组成，使用常用密码以免遗忘。 </td>
+                          </tr>
+                          <tr>
+                            <td></td>
+                            <td><input type="submit" class="regular-btn" value="提交" id="saveUserPwd">
+                              <input type="reset" value="取消" class="regular-btn" name="Submit"></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <#include "/includes/car_sidenav.html"/>
+    </div>
+  </div>
+</div>
+<#include "/includes/footer.html"/>
+<script src="../../../../ResponsiveWebDesign_Web/TCL_carweb/source/user/${request.contextPath}/resources/js/lib/jquery.form.js"></script>
+<script src="../../../../ResponsiveWebDesign_Web/TCL_carweb/source/user/${request.contextPath}/resources/js/lib/jquery.validate.js"></script>
+<script src="../../../../ResponsiveWebDesign_Web/TCL_carweb/source/user/${request.contextPath}/resources/js/carfri/user_pwd.js"></script>
+</body>
+</html>

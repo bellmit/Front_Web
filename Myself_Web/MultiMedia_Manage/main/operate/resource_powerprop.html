@@ -1,0 +1,61 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<meta name="description" content="德亿多媒体资源库,德亿多媒体,德亿多媒体资源库管理系统,管理系统--组属性"/>
+<meta name="keywords" content="德亿多媒体资源库,德亿多媒体,德亿多媒体资源库管理系统,管理系统--组属性"/>
+<link rel="stylesheet" type="text/css" href="../../css/main/menu_operate.css">
+<script src="../../js/lib/jquery-1.8.3.min.js"></script>
+<script src="../../js/lib/jquery.blockUI.min.js"></script>
+<script src="../../js/utils/util.js"></script>
+<script>
+$(function(){
+	var ugroupprop_close=$("#ugroupprop_close"),ugroupprop_sure=$("#ugroupprop_sure"),userrole=$("#userrole"),userrole_op=$("#userrole_op");;
+	/*初始化*/
+	var rolearr=userrole.val().split(","),rolestr="",rolelen=rolearr.length;
+	for(var i=0;i<rolelen;i++){
+		rolestr+="<li class=\"\">"+rolearr[i]+"</li>";
+	}
+	userrole_op.html(rolestr);
+	/*确定*/
+	ugroupprop_sure.live("click",function(){
+		popup_alert("修改成功","undefined","yes","have");
+	});
+	/*关闭*/
+	ugroupprop_close.click(function(){window.close();});
+	
+})
+</script>
+<title>组属性</title>
+</head>
+<body>
+<div class="ugroupprop_wrap">
+	<h1 class="ugroupprop_title">权限信息</h3>
+	<table class="ugroupprop_content">
+    	<colgroup>
+        	<col class="up_cg1"/>
+            <col class="up_cg2"/>
+        </colgroup>
+    	<tr class="ugroupprop_text">
+        	<td><label for="username">名&nbsp;称：</label></td>
+            <td><input type="text" name="username" id="username"/></td>
+        </tr>
+        <tr class="ugroupprop_text">
+        	<td><label for="usernote">描&nbsp;述：</label></td>
+            <td><input type="text" name="usernote" id="usernote"/></td>
+        </tr>
+        <tr class="ugroupprop_ul">
+        	<td><label>授权的用户和组：</label></td>
+            <td>
+            	<textarea name="userrole" id="userrole">细韩,细芹</textarea>
+            	<ul id="userrole_op"></ul>
+            </td>
+        </tr>
+        <tr>
+        	<td>&nbsp;</td>
+            <td><input type="submit" name="ugroupprop_sure" value="确定" id="ugroupprop_sure" class="ugroupprop_sure"><input type="button" name="ugroupprop_close" value="关闭" id="ugroupprop_close" class="ugroupprop_close"></td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

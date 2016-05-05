@@ -1,0 +1,90 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>TCL车联网--注册</title>
+<meta name="description" content="TCL车联网,车联网注册" />
+<meta name="keywords" content="TCL车联网,车联网注册" />
+<#include "/includes/register_res.html"/>
+<script src="../../../../ResponsiveWebDesign_Web/TCL_carweb/source/login/${request.contextPath}/resources/js/register.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+        	  <a href="../../../../ResponsiveWebDesign_Web/TCL_carweb/source/login/${managerpath}/${paperFile}/home.html"><div class="logo">logo</div></a>
+            <ul class="user_interface">
+                <li><a title="" href="../../../../ResponsiveWebDesign_Web/TCL_carweb/source/login/${request.contextPath}/friend/login">登录</a></li>
+                <li class="register_none"><a title="" href="../../../../ResponsiveWebDesign_Web/TCL_carweb/source/login/${managerpath}/${paperFile}/home.html">网站首页</a></li>
+            </ul>
+        </div>
+        <div class="content">
+        	<div class="register_theme">
+            	<h1>注册账户</h1>
+                <p>温馨提示：如果您已购买了TCL康钛车机产品，无需重新注册，直接使用激活时发送短信中的用户名和密码登录</p>
+            </div>
+            <form action="../../../../ResponsiveWebDesign_Web/TCL_carweb/source/login/${request.contextPath}/friend/doRegister" method="post" id="register_chelian">
+            <table class="register_wrap">
+            	<colgroup>
+                	<col class="reg_cg1"/>
+                    <col class="reg_cg2"/>
+                    <col class="reg_cg3"/>
+                </colgroup>
+                <tr class="register_default">
+                    <td><label for="nickname"><p>用&nbsp;户&nbsp;名：</p><span>*</span></label></td>
+                    <td>
+                    <input type="hidden" id="contextPath" value="${request.contextPath}"> 
+                    <input type="text" name="nickname" id="nickname" value="<#if friendInfo??>${friendInfo.nickname!''}</#if>" maxlength="50"/>
+                    </td>
+                    <td><p>长度为2~16位字符,可以为"中文/数字/字母/下划线"组成,不能为纯数字</p></td>
+                </tr>
+                <tr class="register_default">
+                	<td>&nbsp;</td>
+                    <td colspan="2"><span id="nickname_tips"></span></td>
+                </tr>
+                <tr class="register_default">
+                    <td><label for="password"><p>设置密码：</p><span>*</span></label></td>
+                    <td><input type="password" name="password" id="password" value="<#if friendInfo??>${friendInfo.password!''}</#if>" maxlength="50"/></td>
+                    <td><p>长度为5~16位字符，推荐由"数字/字母/特殊字符"等组成</p></td>
+                </tr>
+                <tr class="register_default">
+                	<td>&nbsp;</td>
+                    <td colspan="2"><span id="password_tips"></span></td>
+                </tr>
+                <tr class="register_default">
+                    <td><label for="repassword"><p>确认密码：</p><span>*</span></label></td>
+                    <td colspan="2"><input type="password" name="repassword" id="repassword" value="<#if friendInfo??>${friendInfo.password!''}</#if>" maxlength="50"/></td>
+                </tr>
+                <tr class="register_default">
+                	<td>&nbsp;</td>
+                    <td colspan="2"><span id="repassword_tips"></span></td>
+                </tr>
+                <tr class="register_default">
+                    <td><label for="email"><p>邮&nbsp;&nbsp;&nbsp;&nbsp;箱：</p><span>*</span></label></td>
+                    <td colspan="2"><input type="text" name="email" id="email" maxlength="50"/></td>
+                </tr>
+                <tr class="register_default">
+                	<td>&nbsp;</td>
+                    <td colspan="2"><span id="email_tips"></span></td>
+                </tr>
+                <tr class="register_default">
+                    <td><label for="validcode"><p>验&nbsp;证&nbsp;码：</p><span>*</span></label></td>
+                    <td><input type="text" name="validcode" id="validcode" maxlength="4"/></td>
+                    <td><img alt="验证码" src="../../../../ResponsiveWebDesign_Web/TCL_carweb/source/login/${request.contextPath}/code" id="validateImg"/></td>
+                </tr>
+                <tr class="register_default">
+                	<td>&nbsp;</td>
+                    <td colspan="2"><span id="validcode_tips"></span></td>
+                </tr>
+                <tr class="register_button">
+                	<td>&nbsp;</td>
+                    <td colspan="2"><input type="submit" id="register" value="立即注册"/></td>
+                </tr>
+            </table>
+            </form>
+        </div>
+        <div class="footer">
+        	<p>Copyright&nbsp;&copy;&nbsp;2013&mdash;2018&nbsp;TCL&nbsp;Cartel&nbsp;Co.,&nbsp;Ltd.&nbsp;ALL&nbsp;Rights&nbsp;Reserved</p>
+        </div>
+    </div>
+</body>
+</html>

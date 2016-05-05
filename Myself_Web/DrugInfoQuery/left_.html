@@ -1,0 +1,295 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD>
+<META http-equiv=Content-Type content="text/html; charset=gb2312">
+<LINK href="css/admin.css" type="text/css" rel="stylesheet">
+<SCRIPT language=javascript>
+	function expand(el)
+	{
+		childObj = document.getElementById("child" + el);
+
+		if (childObj.style.display == 'none')
+		{
+			childObj.style.display = 'block';
+		}
+		else
+		{
+			childObj.style.display = 'none';
+		}
+		return;
+	}
+</SCRIPT>
+</HEAD>
+<BODY>
+<form action="left.html"  method="post" target="main" >
+<TABLE height="100%" cellSpacing=0 cellPadding=0 width=170 
+background=images/menu_bg.jpg border=0>
+  <TR>
+    <TD vAlign=top align=middle>
+     <TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+        
+        <TR>
+          <TD height=5></TD></TR></TABLE>
+     <TABLE cellSpacing=0 cellPadding=0 width="150" border=0>
+        
+        <TR height=22 >
+          <TD style="PADDING-LEFT: 15px" background=images/menu_bt.jpg > 药品信息查询条件：</TD>        </TR>
+              <TR height=4>
+      <TD></TD></TR></TABLE>
+      <TABLE cellSpacing=0 cellPadding=0 width=150 border=0>
+     
+        <TR height=22>
+        <TD style="PADDING-LEFT: 35px" background=images/menu_bt.jpg onclick=expand(1)><A 
+            class=menuParent  
+            href="javascript:void(0);">其它名称查询</A></TD></TR>
+        <TR height=4>
+      <TD></TD></TR></TABLE>
+      <TABLE id=child1 style="DISPLAY: none" cellSpacing=0 cellPadding=0 
+      width=150 border=0>
+       <TR height=30>
+          <TD align=middle width=40><IMG height=9 
+            src="images/menu_icon.gif" width=9></TD>
+          <TD><A class=menuChild >
+          <select id="drugName"   style="width:90"> 
+          <option selected="" value="0" >英文名称</option>                                
+          <option value="1">化学名称</option> 
+          </select>
+          </A></TD></TR>
+        <TR height=30>
+          <TD align=middle width=40><IMG height=9 
+            src="images/menu_icon.gif" width=9></TD>
+          <TD><A class=menuChild 
+            target=main>
+           <input name="text" type="textField"  style="width:90" value="请输入名称">
+            </A></TD></TR>
+        <TR height=30>
+          <TD align=middle width=30><IMG height=9 
+            src="images/menu_icon.gif" width=9></TD>
+          <TD><A class=menuChild 
+            target=main>
+            <input name="" type="submit" value="" style="background:url(images/fk_11.jpg); height: 28px; width: 89px">
+            </A></TD></TR>
+            
+        
+        <TR height=4>
+          <TD colSpan=2></TD></TR></TABLE>
+      <TABLE cellSpacing=0 cellPadding=0 width=150 border=0>
+        <TR height=22>
+          <TD style="PADDING-LEFT: 48px" background=images/menu_bt.jpg onclick=expand(2) ><A 
+            class=menuParent 
+            href="javascript:void(0);">物料查询</A></TD></TR>
+        <TR height=4>
+          <TD></TD></TR></TABLE>
+      <TABLE id=child2 style="DISPLAY: none" cellSpacing=0 cellPadding=0 
+      width=150 border=0>
+       <TR height=30>
+          <TD align=middle width=40><IMG height=9 
+            src="images/menu_icon.gif" width=9></TD>
+          <TD><A class=menuChild 
+            target=main>
+           <input name="text" type="textField"  style="width:90"  value="请输入名称">
+            </A></TD></TR>
+        <TR height=30>
+          <TD align=middle width=30><IMG height=9 
+            src="images/menu_icon.gif" width=9></TD>
+          <TD><A class=menuChild 
+            target=main>
+            <input name="" type="submit" value="" style="background:url(images/fk_11.jpg); height: 28px; width: 89px">
+            </A></TD></TR>
+        <TR height=4>
+          <TD colSpan=2></TD></TR></TABLE>
+      <TABLE cellSpacing=0 cellPadding=0 width=150 border=0>
+        <TR height=22>
+          <TD style="PADDING-LEFT: 48px" background=images/menu_bt.jpg onclick=expand(3) ><A 
+            class=menuParent 
+            href="javascript:void(0);">编码查询</A></TD></TR>
+        <TR height=4>
+          <TD></TD></TR></TABLE>
+      <TABLE id=child3 style="DISPLAY: none" cellSpacing=0 cellPadding=0 
+      width=150 border=0>
+        <TR height=30>
+          <TD align=middle width=40><IMG height=9 
+            src="images/menu_icon.gif" width=9></TD>
+          <TD><A class=menuChild >
+          <select id="drugName"   style="width:90"> 
+          <option selected="" value="0" >标准编码</option>                                
+          <option value="1">内部编码</option> 
+          <option value="2">拼音编码</option>
+          <option value="3">五笔编码</option>  
+          </select>
+          </A></TD></TR>
+        <TR height=30>
+          <TD align=middle width=40><IMG height=9 
+            src="images/menu_icon.gif" width=9></TD>
+          <TD><A class=menuChild 
+            target=main>
+           <input name="text" type="textField"  style="width:90" value="请输入名称">
+            </A></TD></TR>
+        <TR height=30>
+          <TD align=middle width=30><IMG height=9 
+            src="images/menu_icon.gif" width=9></TD>
+          <TD><A class=menuChild 
+            target=main>
+            <input name="" type="submit" value="" style="background:url(images/fk_11.jpg); height: 28px; width: 89px">
+            </A></TD></TR>
+        <TR height=4>
+          <TD colSpan=2></TD></TR></TABLE>
+      <TABLE cellSpacing=0 cellPadding=0 width=150 border=0>
+        <TR height=22>
+          <TD style="PADDING-LEFT: 48px" background=images/menu_bt.jpg onclick=expand(4) ><A 
+            class=menuParent 
+            href="javascript:void(0);">类别查询</A></TD></TR>
+        <TR height=4>
+          <TD></TD></TR></TABLE>
+      <TABLE id=child4 style="DISPLAY: none" cellSpacing=0 cellPadding=0 
+      width=150 border=0>
+       <TR height=30>
+          <TD align=middle width=40><IMG height=9 
+            src="images/menu_icon.gif" width=9></TD>
+          <TD><A class=menuChild 
+            target=main>
+           <input name="text" type="textField"  style="width:90"  value="请输入名称">
+            </A></TD></TR>
+        <TR height=30>
+          <TD align=middle width=30><IMG height=9 
+            src="images/menu_icon.gif" width=9></TD>
+          <TD><A class=menuChild 
+            target=main>
+            <input name="" type="submit" value="" style="background:url(images/fk_11.jpg); height: 28px; width: 89px">
+            </A></TD></TR>
+       
+        <TR height=4>
+          <TD colSpan=2></TD></TR></TABLE>
+     
+      <TABLE cellSpacing=0 cellPadding=0 width=150 border=0>
+        
+        <TR height=22>
+          <TD style="PADDING-LEFT: 48px" background=images/menu_bt.jpg  onclick=expand(5) ><A 
+            class=menuParent
+            href="javascript:void(0);">剂型查询</A></TD></TR>
+        <TR height=4>
+          <TD></TD></TR></TABLE>
+      <TABLE id=child5 style="DISPLAY: none" cellSpacing=0 cellPadding=0 
+      width=150 border=0>
+        
+        <TR height=30>
+          <TD align=middle width=40><IMG height=9 
+            src="images/menu_icon.gif" width=9></TD>
+          <TD><A class=menuChild 
+            target=main>
+           <input name="text" type="textField"  style="width:90"  value="请输入名称">
+            </A></TD></TR>
+        <TR height=30>
+          <TD align=middle width=30><IMG height=9 
+            src="images/menu_icon.gif" width=9></TD>
+          <TD><A class=menuChild 
+            target=main>
+            <input name="" type="submit" value="" style="background:url(images/fk_11.jpg); height: 28px; width: 89px">
+            </A></TD></TR>
+        <TR height=4>
+          <TD ></TD></TR></TABLE>
+      
+          <TABLE cellSpacing=0 cellPadding=0 width=150 border=0>
+        
+        <TR height=22>
+          <TD style="PADDING-LEFT: 35px" background=images/menu_bt.jpg onclick=expand(6) ><A 
+            class=menuParent onclick=expand(6) 
+            href="javascript:void(0);">生产厂家查询</A></TD></TR>
+        <TR height=4>
+          <TD></TD></TR></TABLE>
+      <TABLE id=child6 style="DISPLAY: none" cellSpacing=0 cellPadding=0 
+      width=150 border=0>
+       <TR height=30>
+          <TD align=middle width=40><IMG height=9 
+            src="images/menu_icon.gif" width=9></TD>
+          <TD><A class=menuChild 
+            target=main>
+           <input name="text" type="textField"  style="width:90"  value="请输入名称">
+            </A></TD></TR>
+        <TR height=30>
+          <TD align=middle width=30><IMG height=9 
+            src="images/menu_icon.gif" width=9></TD>
+          <TD><A class=menuChild 
+            target=main>
+            <input name="" type="submit" value="" style="background:url(images/fk_11.jpg); height: 28px; width: 89px">
+            </A></TD></TR>
+             <TR height=4>
+          <TD colSpan=2></TD></TR></TABLE>
+          
+          
+      <TABLE cellSpacing=0 cellPadding=0 width=150 border=0>
+        
+        <TR height=22>
+          <TD style="PADDING-LEFT: 35px" background=images/menu_bt.jpg onclick=expand(7)><A 
+            class=menuParent  
+            href="javascript:void(0);">使用方法查询</A></TD></TR>
+        <TR height=4>
+          <TD></TD></TR></TABLE>
+      <TABLE id=child7 style="DISPLAY: none" cellSpacing=0 cellPadding=0 
+      width=150 border=0>
+        
+       <TR height=30>
+          <TD align=middle width=40><IMG height=9 
+            src="images/menu_icon.gif" width=9></TD>
+          <TD><A class=menuChild 
+            target=main>
+           <input name="text" type="textField"  style="width:90"  value="请输入名称">
+            </A></TD></TR>
+        <TR height=30>
+          <TD align=middle width=30><IMG height=9 
+            src="images/menu_icon.gif" width=9></TD>
+          <TD><A class=menuChild 
+            target=main>
+            <input name="" type="submit" value="" style="background:url(images/fk_11.jpg); height: 28px; width: 89px">
+            </A></TD></TR>
+       
+        <TR height=4>
+          <TD ></TD></TR></TABLE>
+          
+                
+      <TABLE cellSpacing=0 cellPadding=0 width=150 border=0>
+        
+        <TR height=22>
+          <TD style="PADDING-LEFT: 35px" background=images/menu_bt.jpg onclick=expand(8)><A 
+            class=menuParent  
+            href="javascript:void(0);"> 使用周期查询</A></TD></TR>
+        <TR height=4>
+          <TD></TD></TR></TABLE>
+      <TABLE id=child8 style="DISPLAY: none" cellSpacing=0 cellPadding=0 
+      width=150 border=0>
+      
+      <TR height=30>
+          <TD align=middle width=40><IMG height=9 
+            src="images/menu_icon.gif" width=9></TD>
+          <TD><A class=menuChild >
+          <select id="drugName"   style="width:90"> 
+          <option selected="" value="0" >正常周期</option>                                
+          <option value="1">最长周期</option> 
+          <option value="2">最短周期</option>
+          </select>
+          </A></TD></TR>
+        
+       <TR height=30>
+          <TD align=middle width=40><IMG height=9 
+            src="images/menu_icon.gif" width=9></TD>
+            
+          <TD><A class=menuChild 
+            target=main>
+           <input name="text" type="textField"  style="width:90"  value="请输入周期">
+            </A></TD></TR>
+        <TR height=30>
+          <TD align=middle width=30><IMG height=9 
+            src="images/menu_icon.gif" width=9></TD>
+          <TD><A class=menuChild 
+            target=main>
+            <input name="" type="submit" value="" style="background:url(images/fk_11.jpg); height: 28px; width: 89px">
+            </A></TD></TR>
+       
+        <TR height=4>
+          <TD ></TD></TR></TABLE>
+          
+          
+          </TD>
+    <TD width=1 bgColor="#DLE6F7"></TD></TR></TABLE>
+	
+	</form>
+	</BODY></HTML>

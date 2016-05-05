@@ -1,0 +1,27 @@
+@charset "utf-8";
+/* CSS Document */
+
+body, p, h1, h2, h3, h4, h5, h6, ul, ol, li, dl, dt, dd, table, th, td, form, fieldset, legend, input, textarea, button, select { margin:0; padding:0;}
+body, input, textarea, select, button, table { font-size:16px; line-height:1.25em;}
+body { min-width:320px; font-size:1em; font-family:'\9ED1\4F53', Verdana, Arial, Helvetica, sans-serif; color:#2e2e2e; -webkit-text-size-adjust:none;}
+img, fieldset { border:0;}
+ul, ol { list-style:none;}
+em, address { font-style:normal;}
+a { color:#2e2e2e; text-decoration:none;}
+table { border-collapse:collapse;}
+
+#clear { clear:both; width:100%; background-color:#fff;}
+#clear:after { display:block; clear:both; height:1px; margin-top:-1px; content:'';}
+
+.ft18 { font-size:18px;}
+.ft21 { font-size:21px;}
+.ft28 { font-size:28px;}
+.ft34 { font-size:34px;}
+
+.fl{ float:left;}
+.fr{ float:right;}
+
+.mg_r20 { margin-right:20px;}
+.mg_l20 { margin-left:20px;}
+.mg_t20 { margin-top:20px;}
+.mg_b20 { margin-bottom:20px;}

@@ -1,0 +1,17 @@
+<dl class="p_userinfo clearfix">
+
+
+  	<#if friendInfo??>
+        <dt>
+            <div class="userpho"><img src="../../../../ResponsiveWebDesign_Web/TCL_carweb/source/includes/${request.contextPath}/carfri/getPhotoByFriendId?friendId=${friendInfo.friendid!''}&width=120&height=120" alt=""/></div>
+            <a href="../../../../ResponsiveWebDesign_Web/TCL_carweb/source/includes/${request.contextPath}/carfri/user_ico" class="modify-pho" style="display:none;"><b></b><span>修改头像</span></a>
+        </dt>
+        <dd>
+          <div class="p_name">${friendInfo.nickname!''}&nbsp;&nbsp;</div>
+          <div class="p_userno">用户号：${friendInfo.friendid!''}</div>
+          <div class="p_address">所在地：<#if pronviceCity??>${pronviceCity!''}</#if></div>
+        </dd>
+    </#if>
+    
+      
+</dl>

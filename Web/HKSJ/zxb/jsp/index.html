@@ -1,0 +1,771 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<meta name="description" content="惠信--装小宝、装信贷--首页">
+<meta name="keywords" content="惠信--装小宝、装信贷--首页">
+<title>惠信--装小宝、装信贷--首页</title>
+<link rel="stylesheet" type="text/css" href="../css/global.css">
+<link rel="stylesheet" type="text/css" href="../css/index.css">
+</head>
+<body>
+    <!--顶部区域-->
+    <div class="header-wrap">
+    
+        <!--顶部不同模块入口-->
+        <div class="header-portal">
+            <div>
+            		<!--所在地-->
+                <div class="portal-position">
+                    <span></span>
+                    深圳
+                </div>
+                
+                <!--登录、注册-->
+                <div class="portal-login">
+                    <div>
+                        <a href="account/login.html">登陆</a>
+                        <a href="account/register.html">注册</a>
+                        <a href="decorate/decorate.html">我要装修</a>
+                    </div>
+                    <p>欢迎来到装小宝!<span></span></p>
+                </div>
+            </div>
+        </div>
+        
+        <!--顶部logo及搜索-->
+        <div class="header-info">
+            <div>
+            		<!--logo-->
+            		<a href="/zxb/jsp" class="info-logo">logo</a>
+
+                <!--搜索区域-->
+                <div class="info-search">
+                <form action="" method="post">
+                  <div><p id="searchshow"></p><span></span>
+                  		<input type="hidden" name="searchType" id="searchtype" value="">
+                      <ul id="searchselect">
+                        <li data-key="1">装修公司</li>
+                        <li data-key="2">效果图</li>
+                        <li data-key="3">小区</li>
+                        <li data-key="4">文章</li>
+                        <li data-key="5">问答</li>
+                        <li data-key="6">家居建材</li>
+                      </ul>
+                  </div>
+                  <input name="search" placeholder="挑选您心仪的装修公司"  id="searchKeyword" type="text">
+                  <button id="searchbtn" type="button">搜索</button>
+                </form>
+                </div>
+                
+                <!--服务热线-->
+                <div class="info-feature">
+                    <div>
+                    		<span></span>
+                        400-065-8888
+                    </div>
+                    <p>24小时服务热线</p>
+                </div>
+            </div>
+        </div>
+        
+        <!--头部导航-->
+        <div class="header-menu">
+            <div>
+                <ul class="menu-wrap" id="main_menuitem" >
+                  <li>
+                    <a href="index.html" data-part="" >首页</a>
+                  </li>
+                  <li>
+                    <a href="gallery/gallery.html" data-part="" >装修图库<span></span></a>
+                    <ul>
+                    		<li><a href="gallery/gallery_list.html" data-part="" >家居美图</a></li>
+                        <li><a href="gallery/gallery_set.html" data-part="" >家居图册</a></li>
+                    </ul>
+                  </li>
+                  <li>
+                    <a href="case/case.html" data-part="" >装修案例</a>
+                  </li>
+                  <li>
+                    <a href="decorate/decorate.html" data-part="" >我要装修</a>
+                  </li>
+                  <li>
+                    <a href="company/company_decorate.html" data-part="" >装修公司<span></span></a>
+                    <ul>
+                    		<li><a href="company/company_designer.html" data-part="" >设计师</a></li> 
+                    </ul>
+                  </li>
+                  <li>
+                    <a href="guide/guide.html" data-part="" >装修攻略<span></span></a>
+                    <ul>
+                    		<li><a href="guide/guide_diary.html" data-part="" >装修攻略日记</a></li>
+                        <li><a href="guide/guide_process.html" data-part="" >学装修</a></li>
+                    </ul>
+                  </li>
+              </ul>
+              <span id="mainmenu_apply" class="menu-apply"><span></span>免费申请设计</span>
+            </div>
+        </div>
+    </div>
+    
+    
+    <!--轮播组件-->
+		<div class="slide-wrap">
+    
+    		<!--轮播图片展示-->
+    		<div class="slide-toggle" id="slideimg_show">
+            <ul id="slide_img">
+                <li><a title="" href="#"><img alt="" src="../images/slideimg/slideimg1.jpg" ></a></li>
+                <li><a title="" href="#"><img alt="" src="../images/slideimg/slideimg2.jpg" ></a></li>
+                <li><a title="" href="#"><img alt="" src="../images/slideimg/slideimg3.jpg" ></a></li>
+                <li><a title="" href="#"><img alt="" src="../images/slideimg/slideimg4.jpg" ></a></li>
+                <li><a title="" href="#"><img alt="" src="../images/slideimg/slideimg5.jpg" ></a></li>
+            </ul>
+            <div>
+              <ul class="slideimg-btn" id="slideimg_btn">
+                  <li class="slidebtn-active"></li>
+                  <li></li>
+                  <li></li>
+                  <li></li>
+                  <li></li>
+              </ul>
+            </div>
+            <div class="slide-tips" id="slide_tips"><p></p></div>
+        </div>
+        
+        <!--轮播操作-->
+    		<div class="slide-action">
+        		<div class="slide-action-bg"></div>
+        		<div class="slide-action-wrap">
+            		
+                <!--tab-->
+            		<div class="slide-action-tab">
+                		<ul id="slide_tab">
+                    	<li data-value="1" class="slide-active">免费设计</li>
+                      <li data-value="2">免费报价</li>
+                      <li data-value="3">免费监理</li>
+                      <li data-value="4">免费验房</li>
+                    </ul>
+                    <p>10秒登记，免费获取3份专业设计方案</p>
+                </div>
+                
+                <form action="#" method="post">
+                	<div class="slide-action-item">
+                  	<input type="hidden" id="applytype" name="applyType" value="">
+                    <ul>
+                      <li><input type="text" name="applyName" placeholder="请输入您的姓名" ></li>
+                      <li><input type="text" name="applyMobile" placeholder="请输入您的手机号码" ></li>
+                      <li><input type="hidden" name="applyProvince" >
+                    			<p>请选择省份</p><span></span>
+                      		<ul id="applyprovince"></ul>
+                      </li>
+                      <li><input type="hidden" name="applyCity" >
+                          <p>请选择城市</p><span></span>
+                          <ul id="applycity"></ul>
+                      </li>
+                    </ul>
+                    <input type="button" name="applySubmit" id="applySubmit" value="立即申请" >
+                  </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    
+    <!--快捷入口-->
+		<ul class="mini-portal">
+    		<li>
+          <a href="#">
+              <img src="../images/miniportal1.png" alt="免费专业监理">
+              <p>免费专业监理</p>
+              <span>严查施工保质量</span>
+          </a>
+        </li>
+        <li>
+          <a href="#">
+              <img src="../images/miniportal2.png" alt="在线智能报价">
+              <p>在线智能报价</p>
+              <span>装修预算早知道</span>
+          </a>
+        </li>
+        <li>
+          <a href="#">
+              <img src="../images/miniportal3.png" alt="装修保险">
+              <p>装修保险</p>
+              <span>亿元保额免费送</span>
+          </a>
+        </li>
+        <li>
+          <a href="#">
+              <img src="../images/miniportal4.png" alt="装修工具">
+              <p>装修工具</p>
+              <span>装修计算器大全</span>
+          </a>
+          <div class="mini-portalbtn">
+          		<div class="portal-tlicon">
+              		<a href="#"><span></span><em>涂料计算器</em></a>
+              </div>
+            	<div class="portal-dbicon">
+              		<a href="#"><span></span><em>地板计算器</em></a>
+              </div>
+              <div class="portal-bzicon">
+              		<a href="#"><span></span><em>壁纸计算器</em></a>
+              </div>
+              <div class="portal-qzicon">
+              		<a href="#"><span></span><em>墙砖计算器</em></a>
+              </div>
+              <div class="portal-clicon">
+              		<a href="#"><span></span><em>窗帘计算器</em></a>
+              </div>
+              <div class="portal-dzicon">
+              		<a href="#"><span></span><em>地砖计算器</em></a>
+              </div>
+          </div>
+        </li>
+    </ul>
+    
+    
+    <!--热门案例头部-->
+    <div class="grid-title">
+    		<h1>热门案例</h1>
+        <a href="#">客厅</a>
+        <a href="#">卧室</a>
+        <a href="#">厨房</a>
+        <a href="#">餐厅</a>
+        <a href="#">别墅</a>
+        <a href="#">一居室</a>
+        <a href="#">二居室</a>
+        <a href="#">三居室</a>
+        <a href="#">吧台</a>
+        <a href="#">吊顶</a>
+        <a href="#">隔断</a>
+        <a href="#">阳台</a>
+        <a href="#">更多&gt;</a>
+    </div>
+    
+    
+    <!--热门案例数据展现区-->
+    <div class="grid-list grid-list4">
+    		<ul>
+        		<li>
+              <a href="#">
+              		<img src="../images/hot_case.jpg" alt="">
+                  <span>万科松湖中心璞舍复式</span>
+              </a>
+             	<div>
+              		<div>
+                  		<div><img src="../images/designer.jpg" alt=""></div>
+                  </div>
+                  <p>兆石设计--张三</p>
+                  <span>复式&nbsp;|&nbsp;现代&nbsp;|&nbsp;280m<sup>2</sup>&nbsp;|&nbsp;预算<em>25万元</em></span>
+              </div>
+            </li>
+            <li>
+              <a href="#">
+              		<img src="../images/hot_case.jpg" alt="">
+                  <span>万科松湖中心璞舍复式</span>
+              </a>
+             	<div>
+              		<div>
+                  		<div><img src="../images/designer.jpg" alt=""></div>
+                  </div>
+                  <p>兆石设计--张三</p>
+                  <span>复式&nbsp;|&nbsp;现代&nbsp;|&nbsp;280m<sup>2</sup>&nbsp;|&nbsp;预算<em>25万元</em></span>
+              </div>
+            </li>
+            <li>
+              <a href="#">
+              		<img src="../images/hot_case.jpg" alt="">
+                  <span>万科松湖中心璞舍复式</span>
+              </a>
+             	<div>
+              		<div>
+                  		<div><img src="../images/designer.jpg" alt=""></div>
+                  </div>
+                  <p>兆石设计--张三</p>
+                  <span>复式&nbsp;|&nbsp;现代&nbsp;|&nbsp;280m<sup>2</sup>&nbsp;|&nbsp;预算<em>25万元</em></span>
+              </div>
+            </li>
+            <li>
+              <a href="#">
+              		<img src="../images/hot_case.jpg" alt="">
+                  <span>万科松湖中心璞舍复式</span>
+              </a>
+             	<div>
+              		<div>
+                  		<div><img src="../images/designer.jpg" alt=""></div>
+                  </div>
+                  <p>兆石设计--张三</p>
+                  <span>复式&nbsp;|&nbsp;现代&nbsp;|&nbsp;280m<sup>2</sup>&nbsp;|&nbsp;预算<em>25万元</em></span>
+              </div>
+            </li>
+            <li>
+              <a href="#">
+              		<img src="../images/hot_case.jpg" alt="">
+                  <span>万科松湖中心璞舍复式</span>
+              </a>
+             	<div>
+              		<div>
+                  		<div><img src="../images/designer.jpg" alt=""></div>
+                  </div>
+                  <p>兆石设计--张三</p>
+                  <span>复式&nbsp;|&nbsp;现代&nbsp;|&nbsp;280m<sup>2</sup>&nbsp;|&nbsp;预算<em>25万元</em></span>
+              </div>
+            </li>
+            <li>
+              <a href="#">
+              		<img src="../images/hot_case.jpg" alt="">
+                  <span>万科松湖中心璞舍复式</span>
+              </a>
+             	<div>
+              		<div>
+                  		<div><img src="../images/designer.jpg" alt=""></div>
+                  </div>
+                  <p>兆石设计--张三</p>
+                  <span>复式&nbsp;|&nbsp;现代&nbsp;|&nbsp;280m<sup>2</sup>&nbsp;|&nbsp;预算<em>25万元</em></span>
+              </div>
+            </li>
+            <li>
+              <a href="#">
+              		<img src="../images/hot_case.jpg" alt="">
+                  <span>万科松湖中心璞舍复式</span>
+              </a>
+             	<div>
+              		<div>
+                  		<div><img src="../images/designer.jpg" alt=""></div>
+                  </div>
+                  <p>兆石设计--张三</p>
+                  <span>复式&nbsp;|&nbsp;现代&nbsp;|&nbsp;280m<sup>2</sup>&nbsp;|&nbsp;预算<em>25万元</em></span>
+              </div>
+            </li>
+            <li>
+              <a href="#">
+              		<img src="../images/hot_case.jpg" alt="">
+                  <span>万科松湖中心璞舍复式</span>
+              </a>
+             	<div>
+              		<div>
+                  		<div><img src="../images/designer.jpg" alt=""></div>
+                  </div>
+                  <p>兆石设计--张三</p>
+                  <span>复式&nbsp;|&nbsp;现代&nbsp;|&nbsp;280m<sup>2</sup>&nbsp;|&nbsp;预算<em>25万元</em></span>
+              </div>
+            </li>
+        </ul>
+    </div>
+    
+    
+    <!--装修公司/设计师-->
+    <div class="grid-tabtitle" id="grid_tabtitle">
+    		<h1 data-type="decoration" class="tabtitle-active">装修公司</h1>
+        <span>|</span>
+        <h1 data-type="designer">设计师</h1>
+        <a href="#">龙华新区</a>
+        <a href="#">罗湖区</a>
+        <a href="#">福田区</a>
+        <a href="#">南山区</a>
+        <a href="#">龙岗区</a>
+        <a href="#">宝安区</a>
+        <a href="#">盐田区</a>
+        <a href="#">光明新区</a>
+        <a href="#">更多&gt;</a>
+    </div>
+    
+    
+    <!--装修公司/设计师数据展现区-->
+    <div class="grid-column grid-column4">
+    
+    		<!--装修公司-->
+    		<ul id="decoration">
+        		<li>
+            	<div>
+                <a href="#">
+                    <img src="../images/company1.jpg" alt="">
+                </a>
+              </div>
+            </li>
+            <li>
+            	<div>
+                <a href="#">
+                    <img src="../images/company2.jpg" alt="">
+                </a>
+              </div>
+            </li>
+            <li>
+            	<div>
+                <a href="#">
+                    <img src="../images/company1.jpg" alt="">
+                </a>
+              </div>
+            </li>
+            <li>
+            	<div>
+                <a href="#">
+                    <img src="../images/company1.jpg" alt="">
+                </a>
+              </div>
+            </li>
+            <li>
+            	<div>
+                <a href="#">
+                    <img src="../images/company1.jpg" alt="">
+                </a>
+              </div>
+            </li>
+            <li>
+            	<div>
+                <a href="#">
+                    <img src="../images/company2.jpg" alt="">
+                </a>
+              </div>
+            </li>
+            <li>
+            	<div>
+                <a href="#">
+                    <img src="../images/company2.jpg" alt="">
+                </a>
+              </div>
+            </li>
+            <li>
+            	<div>
+                <a href="#">
+                    <img src="../images/company2.jpg" alt="">
+                </a>
+              </div>
+            </li>
+            <li>
+            	<div>
+                <a href="#">
+                    <img src="../images/company1.jpg" alt="">
+                </a>
+              </div>
+            </li>
+            <li>
+            	<div>
+                <a href="#">
+                    <img src="../images/company1.jpg" alt="">
+                </a>
+              </div>
+            </li>
+            <li>
+            	<div>
+                <a href="#">
+                    <img src="../images/company2.jpg" alt="">
+                </a>
+              </div>
+            </li>
+            <li>
+            	<div>
+                <a href="#">
+                    <img src="../images/company2.jpg" alt="">
+                </a>
+              </div>
+            </li>
+        </ul>
+        
+        <!--设计师-->
+        <table  class="g-d-hide" id="designer">
+        		<tr>
+            		<td>
+                	<div class="column-radius">
+                    <a href="#"></a>
+                    <img src="../images/hot_case.jpg" alt="">
+                    <span>张三</span>
+                    <p>设计案例：<span>520</span></p>
+                    <div>居众装饰设计师</div>
+                  </div>
+                </td>
+                <td>
+                	<div class="column-radius">
+                    <a href="#"></a>
+                    <img src="../images/hot_case.jpg" alt="">
+                    <span>李四</span>
+                    <p>设计案例：<span>345</span></p>
+                    <div>居众装饰设计师</div>
+                  </div>
+                </td>
+                <td>
+                	<div class="column-radius">
+                    <a href="#"></a>
+                    <img src="../images/hot_case.jpg" alt="">
+                    <span>王五</span>
+                    <p>设计案例：<span>624</span></p>
+                    <div>居众装饰设计师</div>
+                  </div>
+                </td>
+                <td>
+                	<div class="column-radius">
+                    <a href="#"></a>
+                    <img src="../images/hot_case.jpg" alt="">
+                    <span>赵六</span>
+                    <p>设计案例：<span>63</span></p>
+                    <div>居众装饰设计师</div>
+                  </div>
+                </td>
+            </tr>
+            <tr>
+            		<td>
+                	<div class="column-radius">
+                    <a href="#"></a>
+                    <img src="../images/hot_case.jpg" alt="">
+                    <span>张三</span>
+                    <p>设计案例：<span>520</span></p>
+                    <div>居众装饰设计师</div>
+                  </div>
+                </td>
+                <td>
+                	<div class="column-radius">
+                    <a href="#"></a>
+                    <img src="../images/hot_case.jpg" alt="">
+                    <span>李四</span>
+                    <p>设计案例：<span>345</span></p>
+                    <div>居众装饰设计师</div>
+                  </div>
+                </td>
+                <td>
+                	<div class="column-radius">
+                    <a href="#"></a>
+                    <img src="../images/hot_case.jpg" alt="">
+                    <span>王五</span>
+                    <p>设计案例：<span>624</span></p>
+                    <div>居众装饰设计师</div>
+                  </div>
+                </td>
+                <td>
+                	<div class="column-radius">
+                    <a href="#"></a>
+                    <img src="../images/hot_case.jpg" alt="">
+                    <span>赵六</span>
+                    <p>设计案例：<span>63</span></p>
+                    <div>居众装饰设计师</div>
+                  </div>
+                </td>
+            </tr>
+        </table>
+        
+        
+        <!--找公司或者设计师-->
+        <div>
+        		<form action="#" method="post" id="miniportal_form">
+              <ul class="side-miniportal">
+              	<li class="miniportal-title"><h3>帮我找公司</h3><p>9秒搞定装修、设计、报价如此轻松</p></li>
+                <li class="miniportal-text"><input type="text" id="customname" name="customName" placeholder="您的称呼"></li>
+                <li class="miniportal-tip"></li>
+                <li class="miniportal-text"><input type="text" id="custommobile" name="customMobile" placeholder="您的电话"></li>
+                <li class="miniportal-tip"></li>
+                <li class="miniportal-select mini-select1"><input type="hidden" name="customProvince" id="customprovince_text" >
+                    <p>请选择省份</p><span></span>
+                    <ul id="customprovince"></ul>
+                </li>
+                <li class="miniportal-select mini-select2"><input type="hidden" name="customCity" id="customcity_text" >
+                    <p>请选择城市</p><span></span>
+                    <ul id="customcity"></ul>
+                </li>
+                <li class="miniportal-tip"></li>
+                <li class="miniportal-submit">
+                  <button type="submit">免费帮您推荐3家公司</button>
+                </li>
+              </ul>
+            </form> 		
+        </div>
+    </div>
+    
+    
+    <!--装修攻略标题-->
+    <div class="grid-title">
+    		<h1>装修攻略</h1>
+    </div>
+    
+    
+    <!--装修攻略数据展现-->
+    <div class="grid-set">
+    
+    		<!--主栏目-->
+    		<ul class="grid-mainset">
+        		<li>
+                <img src="../images/guide_img.jpg" alt="">
+                <div>
+                    <h3><span>攻略</span>告别装修小白、施工阶段进行时</h3>
+                    <a href="#">告别装修小白、施工阶段进行时告别装修小白、施工阶段进行时告别装修小白、施工阶段进行时告别装修小白、施工阶段进行时告别装修小白、施工阶段进行时告别装修小白、施工阶段进行时</a>
+                    <div><p><span></span>2423</p><p><span></span>7245</p><p>2015-08-01</p></div>
+                </div>
+            </li>
+            <li>
+                <img src="../images/guide_img.jpg" alt="">
+                <div>
+                    <h3><span>工地</span>告别装修小白、施工阶段进行时</h3>
+                    <a href="#">告别装修小白、施工阶段进行时告别装修小白、施工阶段进行时告别装修小白、施工阶段进行时告别装修小白、施工阶段进行时告别装修小白、施工阶段进行时告别装修小白、施工阶段进行时</a>
+                    <div><p><span></span>2423</p><p><span></span>7245</p><p>2015-08-01</p></div>
+                </div>
+            </li>
+            <li>
+                <img src="../images/guide_img.jpg" alt="">
+                <div>
+                    <h3><span>日志</span>告别装修小白、施工阶段进行时</h3>
+                    <a href="#">告别装修小白、施工阶段进行时告别装修小白、施工阶段进行时告别装修小白、施工阶段进行时告别装修小白、施工阶段进行时告别装修小白、施工阶段进行时告别装修小白、施工阶段进行时</a>
+                    <div><p><span></span>2423</p><p><span></span>7245</p><p>2015-08-01</p></div>
+                </div>
+            </li>
+        </ul>
+        
+        <!--侧栏目-->
+        <ul class="grid-sideset">
+        		<li>
+                <div>
+                  <div>01</div>
+                  <h1>装修前</h1>
+                  <p>专修好复杂该从哪儿入手</p>
+                </div>
+                <table>
+                    <tr>
+                        <td><a href="#"><span class="icon-zb"></span>准备阶段</a></td>
+                        <td><a href="#"><span class="icon-sj"></span>设计阶段</a></td>
+                    </tr>
+                </table>
+            </li>
+            <li>
+                <div>
+                  <div>02</div>
+                  <h1>装修中</h1>
+                  <p>过程烦事多，知识帮助我</p>
+                </div>
+                <table>
+                    <tr>
+                        <td><a href="#"><span class="icon-sd"></span>水电阶段</a></td>
+                        <td><a href="#"><span class="icon-ng"></span>泥工阶段</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="#"><span class="icon-mg"></span>木工阶段</a></td>
+                        <td><a href="#"><span class="icon-yq"></span>油漆阶段</a></td>
+                    </tr>
+                </table>
+            </li>
+            <li>
+                <div>
+                  <div>03</div>
+                  <h1>装修后</h1>
+                  <p>摆好沙发挂窗帘，美好生活第一步</p>
+                </div>
+                <table>
+                    <tr>
+                        <td><a href="#"><span class="icon-az"></span>安装入住</a></td>
+                        <td><a href="#"><span class="icon-rz"></span>软装阶段</a></td>
+                    </tr>
+                </table>
+            </li>
+        </ul>
+    </div>
+    
+    
+    <!--列表信息-->
+   	<ul class="grid-rowlist">
+    		<li>
+        		<div>
+            		<h3>最新招标</h3><a href="#">更多&gt;</a>
+            </div>
+        		<p><a href="#">最新招标最新招标</a><span>2015-08-01</span></p>
+            <p><a href="#">最新招标最新招标最新招标</a><span>2015-08-01</span></p>
+            <p><a href="#">最新招标</a><span>2015-08-01</span></p>
+            <p><a href="#">最新招标最新招标最新招标最新招标</a><span>2015-08-01</span></p>
+        </li>
+    		<li>
+        		<div>
+            		<h3>装修日志精选</h3><a href="#">更多&gt;</a>
+            </div>
+        		<p><a href="#">装修日志精选</a><span>2015-08-01</span></p>
+            <p><a href="#">装修日志精选</a><span>2015-08-01</span></p>
+            <p><a href="#">装修日志精选装修日志精选装修日志精选</a><span>2015-08-01</span></p>
+            <p><a href="#">装修日志精选装修日志精选</a><span>2015-08-01</span></p>
+        </li>
+        <li>
+        		<div>
+            		<h3>室内装修常见问题</h3><a href="#">更多&gt;</a>
+            </div>
+        		<p><a href="#">室内装修常见问题室内装修常见问题</a><span>2015-08-01</span></p>
+            <p><a href="#">室内装修常见问题</a><span>2015-08-01</span></p>
+            <p><a href="#">室内装修常见问题</a><span>2015-08-01</span></p>
+            <p><a href="#">室内装修常见问题</a><span>2015-08-01</span></p>
+        </li>
+    
+    </ul>
+    
+    
+    <!--底部导航-->
+    <div class="footer-wrap">
+    		<div class="footer-linkwrap">
+          <h3>友情链接<a href="#">友链合作&gt;</a></h3>
+          <div>
+          	<a href="#">深圳装修</a>
+            <a href="#">深圳装修</a>
+            <a href="#">深圳装修</a>
+            <a href="#">深圳装修</a>
+            <a href="#">深圳装修</a>
+            <a href="#">深圳装修</a>
+          </div>
+        </div>
+        <div class="footer-infowrap">
+        		<div class="footer-content1">
+              <div class="footer-infobox1">
+              		<div>
+                  		<h5>业主指南</h5>
+                  		<a href="#">看装修案例</a>
+                      <a href="#">找装修公司</a>
+                      <a href="#">查装修攻略</a>
+                      <a href="#">我要装修</a>
+                  </div>
+                  <div>
+                  		<h5>关于我们</h5>
+                  		<a href="#">关于装小宝</a>
+                      <a href="#">联系我们</a>
+                      <a href="#">人才招聘</a>
+                      <a href="#">集团官网</a>
+                  </div>
+                  <div>
+                  		<h5>发现更多</h5>
+                  		<a href="#">装小宝承诺</a>
+                      <a href="#">装小宝联盟</a>
+                      <a href="#">装小宝装修合同</a>
+                      <a href="#">法律声明</a>
+                  </div>
+              </div>
+              <div class="footer-infobox2">
+              		<div>
+                  	<h5>客服电话</h5>
+                    <p>400-065-8888</p>
+                    <span>24小时为您服务</span>
+                  </div>
+              </div>
+              <div class="footer-infobox3">
+              		<dl>
+                  	<dt>关注我们</dt>
+                    <dd>
+                      <a class="xlwb" href="#"><span></span>新浪微博</a>
+                      <a class="txwb" href="#"><span></span>腾讯微博</a>
+                      <a class="qqkj" href="#"><span></span>QQ空间</a>
+                    </dd>
+                  </dl>
+                  <div>
+                  	<a href="#">
+                    	<img alt="" src="../images/icon_weixin.png">
+                    </a>
+                    <span>装小宝官方微信</span>
+                  </div>
+              </div>
+            </div>
+            <div class="footer-content2">
+                <p>© 2015 huixin. All Rights Reserved　深圳惠卡金融服务有限公司版权所有  粤ICP备15076433Copyright</p>
+                <div>
+                  <a href="#" class="info-credible1"></a>
+                  <a href="#" class="info-credible2"></a>
+                  <a href="#" class="info-credible3"></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+	<script src="../js/lib/require/require-2.1.11.min.js" data-main="../js/index/index.js"></script>
+</body>
+</html>

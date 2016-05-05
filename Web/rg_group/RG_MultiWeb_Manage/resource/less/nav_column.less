@@ -1,0 +1,223 @@
+@import 'variable/base_variable.less';
+///*手机预览*/
+.mobile-view-wrap{
+	.layout-float-base(350px,border-box,left);
+	.layout-relative-base(0,0,5);
+	height:700px;
+	background:url(../images/web_mobileview.png) no-repeat center top;
+}
+.mobile-view-bg{
+	.layout-absolutel-base(43px,70px,10);
+	width:264px;
+	height:476px;
+	overflow:hidden;
+}
+.mobile-view{
+	.layout-absolutel-base(43px,70px,20);
+	width:264px;
+	height:476px;
+	overflow-x:hidden;
+	li{
+		.layout-float-base(50%,border-box,left);
+		overflow:hidden;
+		margin:10px 0 0 0;
+		div{
+			.layout-relative-base(0,0,30);
+			.box-sizing-base;
+			width:90px;
+			height:90px;
+			cursor:pointer;
+			background:@color-gray2;
+			background:rgba(0,0,0,.7);
+			overflow:hidden;
+			margin:10px auto 0 auto;
+			.border-radius-base(5px);
+			.text-unselect;
+			img{
+				width:40px;
+				height:40px;
+				display:block;
+				overflow:hidden; 
+				float:left;
+				margin:e('10px 0 0 25px;_margin:10px 0 0 12px;');
+			}
+			p{
+				height:20px;
+				width:70px;
+				margin:0 auto;
+				font-size:@font-size-base;
+				color:@color-white;
+				text-align:center;
+				line-height:20px;
+				.text-of;
+			}
+			span{
+				.layout-absoluterb-base(0,-20px,5);
+				width:100%;
+				height:20px;
+				display:block;
+				text-align:center;
+				background:@color-white;
+				line-height:20px;
+				font-size:@font-size-small;		
+				color:@color-base;
+				.text-of;
+			}
+		}
+	}
+}
+.mobile-view-title{
+	width:100%;
+	float:left;
+	font-size:@font-size-default;
+	font-family:'微软雅黑','雅黑','Microsoft YaHei','YaHei','\5FAE\8F6F\96C5\9ED1';
+	color:@color-red;
+	text-align:center;
+	margin:630px 0 0 0;
+	.text-of;
+}
+
+
+///*导航栏目数据交互*/
+.nav-column-wrap{
+	width:480px;
+	height:700px;
+	float:right;
+}
+.nav-column-theme{
+	width:100%;
+	float:left;
+	height:64px;
+	margin:0;
+	font-family:'微软雅黑','雅黑','Microsoft YaHei','YaHei','\5FAE\8F6F\96C5\9ED1';
+	line-height:80px;
+	font-size:@font-size-base + 4;
+	color:@color-gray2;
+	text-align:left;
+	text-indent:35px;
+	span{
+			font-size:@font-size-base;
+			color:@color-red2;
+			padding:0 0 3px 10px;
+			span{
+				padding:0 5px;
+				color:@color-blue1;
+			}
+	}
+}
+
+.nav-column-view{
+	float:left;
+	width:100%;
+	.layout-relative-base(0,0,2);
+}
+
+.nav-column-menu{
+	.layout-absolutel-base(0,0,50);
+	width:140px;
+	height:300px;
+	ul{
+		width:e('140px;*+width:136px;');
+		float:left;
+		background:@color-white;
+		li{
+			.layout-float-base;
+			height:40px;
+			line-height:40px;
+			text-align:center;
+			color:@color-gray2;
+			font-size:@font-size-base;
+			font-family:'微软雅黑','雅黑','Microsoft YaHei','YaHei','\5FAE\8F6F\96C5\9ED1';
+			cursor:pointer;
+			border-left:1px solid @color-gray7;
+			border-bottom:1px solid @color-gray7;
+			border-right:1px solid @color-gray7;
+			.text-unselect;
+			&:first-child{
+				border-top:1px solid @color-gray7;
+			}
+			&.nc-itemsel{
+				background:@color-gray10;
+				border-right:1px solid @color-gray10;
+			}
+			&:hover{
+				background:@color-gray10;
+				.transition-base(all .8s ease .02s);
+			}
+		}
+	}
+	button{
+		width:136px;
+		margin:15px 0 0 1px;
+		float:left;
+		height:36px;
+		line-height:36px;
+		font-size:@font-size-base;
+		color:@color-white;
+		background:@color-blue1;
+		text-align:center;
+		cursor:pointer;
+		.text-unselect;
+		&:disabled{
+			background:@color-gray8;
+			border:1px solid @color-gray6;
+			.box-shadow-base(none);
+			color:@color-gray4;
+			cursor:not-allowed;
+		}
+	}
+}
+.nav-column-data{
+	.layout-absoluter-base(0,0,5);
+	.box-sizing-base;
+	width:341px;
+	height:550px;
+	background:@color-gray10;
+	border:1px solid @color-gray7;
+}
+
+.nav-column-form{
+	width:320px;
+	margin:20px auto 0 auto;
+	>li{
+		margin:10px 0 0 0;
+	}
+}
+
+///*表单组件*/
+@import 'mixins/form.less';
+
+///*导航栏目表单*/
+@import 'mixins/nav_columnform.less';
+
+///*自定义radio组件*/
+@import 'mixins/radio_plugin.less';
+
+///*自定义checkbox组件*/
+@import 'mixins/checkbox_plugin.less';
+
+///*自定义图片选择组件*/
+@import 'mixins/select_img.less';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

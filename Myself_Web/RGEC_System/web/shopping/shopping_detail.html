@@ -1,0 +1,510 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<meta name="description" content="电子商务系统--我的购物车--商品详情">
+<meta name="keywords" content="电子商务系统--我的购物车--商品详情">
+<title>电子商务系统--我的购物车--商品详情</title>
+<link rel="stylesheet" type="text/css" href="../../resource/css/bootstrap_2.3.2/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="../../resource/css/bootstrap_2.3.2/css/responsive.min.css">
+<link rel="stylesheet" type="text/css" href="../../resource/js/lib/artDialog/css/ui-dialog.css">
+<link rel="stylesheet" type="text/css" href="../../resource/css/base.css">
+<link rel="stylesheet" type="text/css" href="../../resource/css/shopping.css">
+</head>
+<body>
+    <!--顶部导航菜单-->
+    <div class="navbar headerbox g-cleargap">
+    	<div class="headerwrap">
+      	<div class="header-logo"></div>
+        <div class="header-info">
+        
+            <!--搜索区域-->
+            <form action="" method="post">
+              <div class="header-search">
+                  <input name="search" placeholder="产品名称/编号/关键词" data-theme="产品名称、编号、关键词" id="searchtxt" type="text">
+                  <button id="searchbtn" type="button">搜索</button>
+              </div>
+            </form>
+            
+            <!--用户数据信息-->
+            <ul>
+              <li>您好!<span>小易叔叔</span></li>
+              <li>代理用户：<span>88abcd</span></li>
+              <li>电子账户：<span>2435.45</span></li>
+              <li>业绩账户：<span>872456.53</span></li>
+              <li>其他账户：<span>46725.69</span></li>
+            </ul>
+            <a class="header-login" id="header_loginbtn" href="#">登录</a>
+            <a class="header-out" id="header_registerbtn" href="#">注册</a>
+        </div>
+    	</div>
+      
+      <!--头部导航-->
+      <div class="header-menu">
+      		<div class="menu-outer">
+          		<div class="menu-inner">
+              		<div><div id="mainbtn"></div></div>
+              		<ul id="mainmenu">
+                    <li>
+                      <a href="../index.html" data-part="index" >首页</a>
+                    </li>
+                    <li>
+                      <a href="../account/account_manage.html" data-part="account" >我的账户</a>
+                    </li>
+                    <li>
+                      <a href="../order/order_manage.html" data-part="order" >我的订单</a>
+                    </li>
+                    <li>
+                      <a href="../results/results_manage.html" data-part="results" >业绩申报</a>
+                    </li>
+                    <li>
+                      <a href="../apply/apply_manage.html" data-part="apply" >注册申请</a>
+                    </li>
+                    <li>
+                      <a href="shopping_manage.html" data-part="shopping" >我的购物车</a>
+                    </li>
+                    <li>
+                      <a href="../service/service_manage.html" data-part="service" >服务查询</a>
+                    </li>
+                  </ul>
+              </div>
+          </div>
+      </div>
+    </div>
+    
+      
+    <!--登录、注册-->
+    <div class="header-entrywrap g-d-hidei" id="header_loginwrap">
+    		<div class="header-entrybox">
+        		<div class="header-entryitem">
+              <ul class="header-entrytab" id="header_logintab">
+                <li class="entrytab-active" data-type="store">专卖店登录</li>
+                <li data-type="member">会员登录</li>
+                <li data-type="close"></li>
+              </ul>
+              <ul class="header-entryform" id="header_loginform">
+                <li data-type="store">
+                  <form action="" method="post" id="login_storeform">
+                    <label class="header-entryun"><input type="text" name="storeUserName" id="login_storeusername" placeholder="请输入专卖店登录用户名"></label>
+                    <p></p>
+                    <label class="header-entrypw"><input type="password" maxlength="16" name="storePassWord" id="login_storepassword" placeholder="请输入专卖店登录密码"></label>
+                    <p></p>
+                    <div><input type="text" name="storeValidCode" placeholder="验证码" id="login_storevalidcode"><img src="../../resource/images/validcode_img.jpg"></div>
+                    <p></p>
+                    <button type="submit" class="btn btn-ok">登录</button>
+                  </form>
+                </li>
+                <li data-type="member" class="g-d-hide">
+                  <form action="" method="post" id="login_memberform">
+                    <label class="header-entryun"><input type="text" name="memberUserName" id="login_memberusername" placeholder="请输入会员登录用户名"></label>
+                    <p></p>
+                    <label class="header-entrypw"><input type="password" maxlength="16" name="memberPassWord" id="login_memberpassword" placeholder="请输入会员登录密码"></label>
+                    <p></p>
+                    <div><input type="text" name="memberValidCode" placeholder="验证码" id="login_membervalidcode"><img src="../../resource/images/validcode_img.jpg"></div>
+                    <p></p>
+                    <button type="submit" class="btn btn-ok">登录</button>
+                  </form>
+                </li>
+              </ul>
+            </div>
+        </div>
+    </div>
+    <div class="header-entrywrap g-d-hidei" id="header_registerwrap">
+    		<div class="header-entrybox">
+        		<div class="header-entryitem">
+            	<ul class="header-entrytab" id="header_registertab">
+                <li class="entrytab-active" data-type="store">专卖店注册</li>
+                <li data-type="member">会员注册</li>
+                <li data-type="close"></li>
+              </ul>
+              <ul class="header-entryform" id="header_registerform">
+                <li data-type="store">
+                  <form action="" method="post" id="register_storeform">
+                    <label class="header-entryun"><input type="text" name="storeUserName" id="register_storeusername" placeholder="请输入专卖店注册用户名"></label>
+                    <p></p>
+                    <label class="header-entrypw"><input type="password" maxlength="16" name="storePassWord" id="register_storepassword" placeholder="请输入专卖店注册密码"></label>
+                    <p></p>
+                    <div><input type="text" name="storeValidCode" placeholder="验证码" id="register_storevalidcode"><img src="../../resource/images/validcode_img.jpg"></div>
+                    <p></p>
+                    <button type="submit" class="btn btn-ok">注册</button>
+                  </form>
+                </li>
+                <li data-type="member" class="g-d-hide">
+                  <form action="" method="post" id="register_memberform">
+                    <label class="header-entryun"><input type="text" name="memberUserName" id="register_memberusername" placeholder="请输入会员注册用户名"></label>
+                    <p></p>
+                    <label class="header-entrypw"><input type="password" maxlength="16" name="memberPassWord" id="register_memberpassword" placeholder="请输入会员注册密码"></label>
+                    <p></p>
+                    <div><input type="text" placeholder="验证码" name="memberValidCode" id="register_membervalidcode"><img src="../../resource/images/validcode_img.jpg"></div>
+                    <p></p>
+                    <button type="submit" class="btn btn-ok">注册</button>
+                  </form>
+                </li>
+              </ul>
+            </div>
+        </div>
+    </div>
+    
+    
+    <!--主体部分-->
+    <div class="mainwrap row-fluid">
+        <ul class="span24">
+            <li>
+            
+                <!--主题选择-->
+                <ul class="themeitem-wrap themeitem-two g-b-red4" id="theme_title">
+                    <li class="theme-cart" data-part=""><a href="shopping_manage.html"><span>购物车</span></a></li>
+                    <li class="theme-shopping" data-part="shopping_detail"><a href="shopping_health.html"><span>去购物</span></a></li>
+                </ul>
+                
+            </li>
+            
+            <li>
+            		<!--商品查看及选购-->
+            		<div class="shopping-choosewrap" id="choose_wrap">
+                		<div class="choose-imgwrap">
+                    		<div class="choose-imgshow">
+                        	<div id="choose_imgshow">
+                          	<img src="../../resource/images/shopping_choose/shopping_choose01.jpg" alt="">
+                          </div>
+                        </div>
+                        <ul class="choose-imglist" id="choose_imglist">
+                        		<li><div><img src="../../resource/images/shopping_choose/shopping_choose01.jpg" alt=""></div></li>
+                            <li><div><img src="../../resource/images/shopping_choose/shopping_choose02.jpg" alt=""></div></li>
+                            <li><div><img src="../../resource/images/shopping_choose/shopping_choose03.jpg" alt=""></div></li>
+                            <li><div><img src="../../resource/images/shopping_choose/shopping_choose04.jpg" alt=""></div></li>
+                        </ul>
+                    </div>
+                		<div class="choose-cartwrap">
+                    		<div class="choose-scalewrap" id="choose_scalewrap"></div>
+                        <div class="choose-info">
+                        		<h3>平板电脑</h3>
+                            <p>编号：EY985D35-2625</p>
+                            <div class="choose-infoprice" id="choose_infoprice">520.00</div>
+                            <div class="choose-infospec" id="choose_infospec">
+                            	<span>规格：</span>
+                              <div data-price="520.00" data-number="1">台</div>
+                              <div data-price="520.00" data-number="10">箱</div>
+                              <div data-price="520.00" data-number="5">件</div>
+                            </div>
+                            <div class="choose-infonumberwrap">
+                            		<span>数量：</span>
+                            		<div class="choose-infonumber">
+                                    <div class="choose-infominus"  id="choose_infominus"></div>
+                                    <div><input id="choose_infonumber" type="text" value="1" maxlength="4" name="shoppingNumber"></div>
+                                    <div class="choose-infoadd" id="choose_infoadd"></div>
+                                </div>
+                            </div>
+                            <p>销量：5200</p>
+                            <p>库存：7245</p>
+                            <p>运费：￥8.00(<em>深圳</em>至<em>北京</em>)付款后预计2天到达(<em>2015-05-20</em>)</p>
+                            <div class="choose-infomoney" id="choose_infomoney"></div>
+                            <p>
+                            	<span class="btn btn-ok"  id="choose_addcart">加入购物车</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+            </li>
+            
+            <li>
+            
+            		<!--商品图片文字介绍-->
+                <div class="shopping-detailwrap">
+                		<h1>平板电脑</h1>
+                    <p>平板电脑也叫便携式电脑<strong>（英文：Tablet Personal Computer，简称Tablet PC、Flat Pc、Tablet、Slates）</strong>，是一种小型、方便携带的个人电脑，以触摸屏作为基本的输入设备。</p>
+                    <div class="shopping-dimg">
+                      <img src="../../resource/images/shopping_show/shopping_show01.jpg" alt="">
+                    </div>
+                    <div class="shopping-dimg">
+                      <img src="../../resource/images/shopping_show/shopping_show02.jpg" alt="">
+                    </div>
+                    <h3>平板电脑</h3>
+                    <p>它拥有的触摸屏（也称为数位板技术）允许用户通过触控笔或数字笔来进行作业而不是传统的键盘或鼠标。用户可以通过内建的手写识别、屏幕上的软键盘、语音识别或者一个真正的键盘（如果该机型配备的话）实现输入。</p>
+                    <p>平板电脑由比尔·盖茨提出，应支持来自X86(Intel、AMD)和ARM的芯片架构，平板电脑分为ARM架构（代表产品为ipad和安卓平板电脑）与X86架构（代表产品为Surface Pro）后者X86架构平板电脑一般采用intel处理器及Windows操作系统，具有完整的电脑及平板功能，支持exe程序。</p>
+                    <p>平板电脑的发展伴随着通信技术大发展日新月异，作为一项新兴技术，CDMA、CDMA2000正迅速风靡全球并已占据18%的无线市场。 截止2012年，全球CDMA2000用户已超过2.56亿，遍布70个国家的 156家运营商已经商用3G CDMA业务。</p>
+                    <p>从微软提出的平板电脑概念产品上看，平板电脑就是一款无须翻盖、没有键盘、小到放入女士手袋，但是却功能完整的PC。</p>
+                    <div class="shopping-dimg">
+                      <img src="../../resource/images/shopping_show/shopping_show03.jpg" alt="">
+                    </div>
+                    <div class="shopping-dimg">
+                      <img src="../../resource/images/shopping_show/shopping_show04.jpg" alt="">
+                    </div>
+                    <h3>爆发增长</h3>
+                    <p>2010年，苹果iPad在全世界掀起了平板电脑热潮。2010年平板电脑关键词搜索量增长率达到了1328%，平板电脑对传统PC产业，甚至是整个3C产业带来了革命性的影响。同时，随着平板电脑热度的升温，不同行业的厂商，如消费电子、PC、通讯、软件等厂商都纷纷加入到平板电脑产业中来，咨询机构也乐观预测整个平板电脑产业。一时间，从上游到终端，从操作系统到软件应用，一条平板电脑产业生态链俨然形成，平板电脑各产业生态链环节快速发展2010年，中国PC销量达到4858.3万台，相比2009年增长16.1%，其中平板电脑销量为174万台，占比约为3.58%。随着平板电脑的快速发展，平板电脑在PC产业的地位将愈发重要，其在PC产业的占比也必将提升。从国际市场来看，2015年，预计全球平板电脑市场规模将达到490亿美元。从产业发展阶段来看，在2010年至2012年三年时间里，平板电脑将度过从诞生到成熟前的阶段，整个产业呈现快速上升的发展趋势。在这一时期，产业发展方向、市场规模、行业格局以及消费者需求都不明确，市场机会众多，产业链的每一个环节都将会有新品牌出现。其中，硬件终端设备、服务内容提供和周边配套设备三个环节将更为集中、明显。</p>
+                    <div class="shopping-dimg">
+                      <img src="../../resource/images/shopping_show/shopping_show05.jpg" alt="">
+                    </div>
+                    <div class="shopping-dimg">
+                      <img src="../../resource/images/shopping_show/shopping_show06.jpg" alt="">
+                    </div>
+                    <h3>发展历程</h3>
+                    <p>60年代末，来自施乐帕洛阿尔托研究中心的艾伦·凯（AlanKay）就提出了“Dynabook”的概念，他想象这是一台可以带着跑的电脑，主要功能是帮助小孩学习。为了发展Dynabook艾伦甚至发明了Smalltalk编程语言，并发展出图形使用者接口，也就是苹果麦金塔电脑的原型。然而，由于种种客观原因的限制，该中心没有支持这个构想。</p>
+                    <div class="shopping-dimgtxt dimgtxt-right">
+                        <p><img src="../../resource/images/shopping04.jpg" alt="">1989年9月，GRiD Systems公司制造成功第一台商业化平板电脑，并命名为GRiD Pad，它的操作系统基于MS-DOS。</p>
+                    </div>
+                    <p>可以说，从六十年代末到九十年代末期，平板电脑仍然处于初步探索阶段，由于核心芯片等硬件技术的限制，平板PC仅在小范围内得以推广和使用。真正意义上的商业化要从千禧年微软的.NET战略发布会算起。</p>
+                    <p>2000年6月，微软在“.NET战略”发布会上首次展示了还处于开发阶段的TabletPC。2000年11月，在全球3大电脑展之一的美国拉斯维加斯电脑展（Comdex Fall 2000）上，比尔先生进行了Tablet PC专题演讲，将TabletPC定义为“基于Windows操作系统的全能PC”。2002年12月8日，微软在纽约正式发布了TabletPC及其专用操作系统Windows XP Tablet PC Edition，这标志着Tablet PC正式进入商业销售阶段。</p>
+                    <div class="shopping-dimg">
+                      <img src="../../resource/images/shopping_show/shopping_show07.jpg" alt="">
+                    </div>
+                    <div class="shopping-dimg">
+                      <img src="../../resource/images/shopping_show/shopping_show08.jpg" alt="">
+                    </div>
+                    <h3>发展历程</h3>
+                    <p>从另一方面来说，2010年1月27日，在美国芳草地艺术中心举行的苹果公司发布会上，传闻已久的第一代iPad也揭开了神秘的面纱。当然，Pad的与Tablet的概念很不一样。</p>
+                    <p>2011年9月，随着微软的Windows8系统发布，平板电脑阵营再次扩充。</p>
+                    <p>2012年6月19日，微软在美国洛杉矶发布Surface平板电脑，该产品分为两个版本：SurfaceRT使用Windows RT操作系统，CPU为四核NVIDIA Tegra 3；Surface中文版/专业版则预装Windows 8，CPU使用第三代智能英特尔酷睿i5处理器。由于Surface可以外接键盘，因此微软称这款平板电脑接上键盘后可以轻松变身为“全桌面PC”。从两款Surface的参数中不难看出，CPU等核心指数已经得到了极大的改善，尤其是处理器的改善，可以利用最新技术为平板电脑的性能提供强劲支持，增强显卡特性、安全性和管理特性，让平板PC速度更快，功耗更低。其中，第三代英特尔酷睿处理器采用22纳米制程技术以及世界首款3D架构的全新晶体管技术，使得开关速度提高37%，功耗降低约50%，并且大幅度提高显卡功能，为各种商业演示助力。</p>
+                    <p>在2013年信息技术峰会（IDF）上，英特尔全球副总裁、中国区总经理杨叙表示，搭载英特尔处理器的产品越来越多，除了常见的一体机、笔记本、超极本，还有平板、手机以及各种嵌入系统，这些产品的功能在发生着日新月异的变化，越来越多更先进的技术被应用到实际产品中，触控、体感交互、面部识别、虚拟现实、语音命令、无线充电乃至超长续航，这一切都要靠计算驱动。英特尔公司PC客户端事业部总经理施浩德表示，英特尔即将发布的第四代智能英特尔酷睿处理器系列，该处理器系列现已向OEM客户出货，并将在二季度末发布。基于第四代英特尔酷睿处理器系列的超极本，将赋予消费者激动人心的全新计算体验和全天的电池续航，实现英特尔历史上对电池续航时间的最重大提升。通过可变形和可插拔的超极本系统，它还将带给消费者新一轮“二合一”的潮流，在令人惊奇的全新设备形态中，消费者可同时获得全功能PC体验和最好的平板电脑体验。</p>
+                    <p>从国际因素看，全球平板显示产业的发展重心正在向中国转移。为了继续抢占中国市场，海外企业陆续改变原先不肯向中国输出技术的策略，通过在中国投资建厂，设立生产基地等方式与本土企业展开竞争。在这种情况下，要警惕国外企业进行落后产能转移甩包袱的情况出现。</p>
+                    <div class="shopping-dimg">
+                      <img src="../../resource/images/shopping_show/shopping_show09.jpg" alt="">
+                    </div>
+                    <div class="shopping-dimg">
+                      <img src="../../resource/images/shopping_show/shopping_show10.jpg" alt="">
+                    </div>
+                    <h3>发展历程</h3>
+                    <div class="shopping-dimgtxt dimgtxt-left">
+                    	<p><img src="../../resource/images/shopping02.jpg" alt="">预计2013年，国外企业将进一步在平板显示领域开放，放宽对中国输出产线和技术的限制，通过与国内面板、材料和装备企业开展合作，加大市场拓展力度。同时，先进国家和地区的产能向中国转移势必会给国内企业带来一定冲击，因此，如何采取正确的战略合作和竞争方式就显得尤为重要。</p>
+                    </div>
+                    <div class="shopping-dimgtxt dimgtxt-right">
+                    		<p><img src="../../resource/images/shopping03.jpg" alt="">从国内因素看，中国平板显示产业已进入高速发展阶段，但是关键材料和设备在很大程度上依赖国外进口，与国外差距明显。预计2013年，中国将持续加大对关键材料和设备的政策扶持力度，平板显示产品配套能力有望获得提升，对国外进口的依赖将有所减少。预计2013年，在新型显示技术，尤其是AMOLED、新型背板技术（LTPS、Ox鄄ide）、超高解晰度显示技术等领域的竞争中，国内平板显示企业仍处于劣势。随着《2010~2012年平板显示产业发展规划》政策的到期，是否出台新的产业激励政策将直接影响企业技术创新和产品创新的动力。</p>
+                    </div>
+                    <div class="shopping-dimg">
+                      <img src="../../resource/images/shopping_show/shopping_show11.png" alt="">
+                    </div>
+                    <div class="shopping-dimg">
+                      <img src="../../resource/images/shopping_show/shopping_show12.jpg" alt="">
+                    </div>
+                    <h3>相关参数和特点</h3>
+                    <div class="shopping-dtable">
+                    		<table class="table table-bordered table-hover">
+                        		<colgroup>
+                            		<col class="g-cg13">
+                                <col class="g-cg13">
+                                <col class="g-cg13">
+                            </colgroup>
+                        		<tr>
+                            		<td>便携移动</td>
+                                <td>笔输入识别、语音识别、手势识别</td>
+                                <td>普通Windows XP 的功能,增加了手写输入，扩展了XP 的功能</td>
+                            </tr>
+                            <tr>
+                            		<td>支持键盘和鼠标</td>
+                                <td>数字化笔记</td>
+                                <td>使用不受运营商束缚</td>
+                            </tr>
+                            <tr>
+                            		<td>丰富的硬件</td>
+                                <td>方便开发</td>
+                                <td>应用丰富</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="shopping-dimg">
+                      <img src="../../resource/images/shopping_show/shopping_show13.jpg" alt="">
+                    </div>
+                    <div class="shopping-dimg">
+                      <img src="../../resource/images/shopping_show/shopping_show14.jpg" alt="">
+                    </div>
+                    <h3>类型</h3>
+                    <div class="shopping-dtable">
+                    		<table class="table table-hover">
+                        		<colgroup>
+                            		<col class="g-cg6">
+                                <col class="g-cg34">
+                            </colgroup>
+                        		<tr>
+                            		<th>双触控型</th>
+                                <td>双触控平板电脑的定义双触控平板电脑即为，同时支持“电容屏手指触控及电磁笔触控”的平板电脑。简单来说，IPAD只支持电容的手指触控，但是不支持电磁笔触控，无法实现原笔迹输入，所以商务性能相对是不足的。电磁笔触控主要是解决原笔迹书写。</td>
+                            </tr>
+                            <tr>
+                            		<th>滑盖型</th>
+                                <td>滑盖平板电脑的好处是带全键盘，同时又能节省体积，方便随身携带。合起来就跟直板平板电脑一样，将滑盖推出后能够翻转。它的显著优势就是方便操作，除了可以手写触摸输入，还可以像笔记本一样键盘输入，输入速度快，尤其适合炒股、网银时输入帐号和密码。</td>
+                            </tr>
+                            <tr>
+                            		<th>纯平板型</th>
+                                <td>是将电脑主机与数位液晶屏集成在一起，将手写输入作为其主要输入方式，它 WIN8PAD WIN8PAD(12张) 们更强调在移动中使用，当然也可随时通过USB端口、红外接口或其他端口外接键盘/鼠标（有些厂商的平板电脑产品将外接键盘/鼠标）。</td>
+                            </tr>
+                            <tr>
+                            		<th>学生型</th>
+                                <td>平板电脑作为可移动的多用途平台，为移动教学也提供了多种可能性。比如MINI学习吧平板电脑就是专为莘莘学子精心打造的一款智能学习机。触摸式学习娱乐型教学平台，可让孩子在轻松、愉悦的氛围中高效提高学习成绩。此类平板电脑一般集合了多种课程和系统学习功能两大学习版块。一般囊括了<strong>“幼儿、小学、初中、高中”</strong>多学科优质教学资源。系统学习功能则提供了全面、快捷的学习应用软件益智游戏下载功能，实现了良好的可扩充性。</td>
+                            </tr>
+                            <tr>
+                            		<th>工业型</th>
+                                <td>简单点说，就是工业上常说的一体机，整机性能完善 ，具备市场常见的商用电脑的性能。 平板电脑区别在于内部的硬件，多数针对工业方面的产品选择都是工业主板，它与商用主板的区别在于非量产，产品型号比较稳定。由此也可以看到，工业主板的价格也较商用主板价格高，另外就是RISC架构。工业方面需求比较简单单一，性能要求也不高,但是性能非常稳定。优点是散热量小，无风扇散热。</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="shopping-dimg">
+                      <img src="../../resource/images/shopping_show/shopping_show15.jpg" alt="">
+                    </div>
+                    <div class="shopping-dimg">
+                      <img src="../../resource/images/shopping_show/shopping_show16.jpg" alt="">
+                    </div>
+                    <h1>选购指南</h1>
+                    <div class="shopping-dtable">
+                    		<table class="table table-bordered table-hover">
+                        		<colgroup>
+                            		<col class="g-cg6">
+                                <col class="g-cg34">
+                            </colgroup>
+                        		<tr>
+                            		<th>文字部分</th>
+                                <td>防黑心商家</td>
+                            </tr>
+                            <tr>
+                            		<th>接口部分</th>
+                                <td>耳机和USB接口，如果是翻新机则轻微的变色情况还是很容易观测到的</td>
+                            </tr>
+                            <tr>
+                            		<th>外壳螺丝</th>
+                                <td>螺丝的表面上都会采用一些防锈的处理</td>
+                            </tr>
+                            <tr>
+                            		<th>外壳边缘</th>
+                                <td>通过划痕判断来源于生产还是翻新</td>
+                            </tr>
+                            <tr>
+                            		<th>内凹式屏幕</th>
+                                <td>如果是内凹屏幕，就要仔细观察产品屏幕的右上角和产品屏幕的左下角等位置。</td>
+                            </tr>
+                            <tr>
+                            		<th>摄像头</th>
+                                <td>污渍与划痕，金属光泽</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="shopping-dimg">
+                      <img src="../../resource/images/shopping_show/shopping_show17.jpg" alt="">
+                    </div>
+                    <div class="shopping-dimg">
+                      <img src="../../resource/images/shopping_show/shopping_show18.jpg" alt="">
+                    </div>
+                </div>
+                  
+            </li>
+            
+            <li>
+            		
+                <!--主题标题-->
+                <div class="theme-titlewrap"><div>买了此商品的会员通常还买了</div></div>
+                
+                
+                <!--商品展示区-->
+                <ul class="shopping-showwrap" id="shopping_show">                  
+                  <li>
+                  	<div class="shopping-listitem shopping-itemred">
+                      <a href="shopping_detail.html">
+                      	<div>
+                          	<img src="../../resource/images/shopping03.jpg" alt="">
+                        </div> 
+                      </a>
+                      <a href="shopping_detail.html">
+                        <p>Backbone 为复杂Javascript应用程序提供模型(models)、集合(collections)、视图(views)的结构。</p>
+                        <span>编号：AGR24357-367Q45FH</span>
+                      </a>
+                      <div>
+                        <i>3660.00</i>
+                        <span></span>
+                        <em></em>
+                      </div>
+                    </div>
+                  </li>
+                  
+                  <li>
+                  	<div class="shopping-listitem shopping-itemred">
+                      <a href="shopping_detail.html">
+                      	<div>
+                          	<img src="../../resource/images/shopping04.jpg" alt="">
+                        </div> 
+                      </a>
+                      <a href="shopping_detail.html">
+                        <p>其中模型用于绑定键值数据和自定义事件；集合附有可枚举函数的丰富API； 视图可以声明事件处理函数，并通过RESTful JSON接口连接到应用程序</p>
+                        <span>编号：3625HSF545Y-627FG</span>
+                      </a>
+                      <div>
+                        <i>6650.00</i>
+                        <span></span>
+                        <em></em>
+                      </div>
+                    </div>
+                  </li>
+  
+                  <li>
+                  	<div class="shopping-listitem shopping-itemred">
+                      <a href="shopping_detail.html">
+                      	<div>
+                          	<img src="../../resource/images/shopping01.jpg" alt="">
+                        </div> 
+                      </a>
+                      <a href="shopping_detail.html">
+                        <p>当我们开发含有大量Javascript的web应用程序时，首先你需要做的事情之一便是停止向DOM对象附加数据。</p>
+                        <span>编号：724SDGE625FGH5</span>
+                      </a>
+                      <div>
+                        <i>9835.00</i>
+                        <span></span>
+                        <em></em>
+                      </div>
+                    </div>
+                  </li>
+                  
+                  <li>
+                  	<div class="shopping-listitem shopping-itemred">
+                      <a href="shopping_detail.html">
+                      	<div>
+                          	<img src="../../resource/images/shopping03.jpg" alt="">
+                        </div> 
+                      </a>
+                      <a href="shopping_detail.html">
+                        <p>通过复杂多变的jQuery选择符和回调函数创建Javascript应用程序，包括在HTML UI，Javascript逻辑和数据之间保持同步，都不复杂。</p>
+                        <span>编号：KET563GHFH562</span>
+                      </a>
+                      <div>
+                        <i>5151.00</i>
+                        <span></span>
+                        <em></em>
+                      </div>
+                    </div>
+                  </li>
+                  
+                  
+                  
+              	</ul>
+                
+            </li>
+        </ul>
+    </div>
+    
+    <!--底部导航-->
+    <div class="footerwrap">
+    		<div>
+          <p>版权所有：荣格集团</p>
+          <p>2014-2016</p>
+          <p>深ICP证8716号</p>
+        </div>
+    </div>
+    
+    <!--侧边导航栏-->
+    <ul class="quickmenu" id="quickmenu" data-part="shopping">
+    	<li data-part="account">
+        <a href="../account/account_manage.html" >我的账户</a>
+      </li>
+    	<li data-part="cart" >
+        <a href="../shopping/shopping_manage.html">购物车</a>
+      </li>
+      <li data-part="shopping" >
+        <a href="shopping_health.html">去购物</a>
+      </li>
+      <li data-part="service" >
+        <a href="../service/service_manage.html">查询</a>
+      </li>
+    </ul>
+    
+		<script src="../../resource/js/lib/require/require-2.1.11.min.js" data-main="../../resource/js/shopping/shopping_detail.js"></script>
+</body>
+</html>

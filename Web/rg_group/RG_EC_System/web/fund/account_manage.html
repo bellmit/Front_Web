@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<meta name="description" content="电子商务系统--账户管理">
+<meta name="keywords" content="电子商务系统--账户管理">
+<title>电子商务系统--账户管理</title>
+<link rel="stylesheet" type="text/css" href="../../resource/css/bootstrap_2.3.2/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="../../resource/css/bootstrap_2.3.2/css/responsive.min.css">
+<link rel="stylesheet" type="text/css" href="../../resource/css/base.css">
+<link rel="stylesheet" type="text/css" href="../../resource/css/grid.css">
+<link rel="stylesheet" type="text/css" href="../../resource/js/lib/artDialog/css/ui-dialog.css">
+<link rel="stylesheet" type="text/css" href="../../resource/js/plugins/easyui_page/easyui.css">
+</head>
+<body>
+    <!--顶部导航菜单-->
+    <div class="navbar g-cleargap">
+    	<div class="headerwrap">
+      	<div>
+          <ul>
+            <li><p>(20150400239) 您好，欢迎使用本系统！</p><span>[<a href="#">退出</a>]</span></li>
+            <li><p>代理用户：</p><em>小易叔叔(<i>88abcd</i>)</em><span>[<a href="#">返回</a>]</span></li>
+          </ul>
+        </div>
+    	</div>
+      <div class="navbar-inner">
+        <div class="container">
+          <button data-target=".nav-collapse" data-toggle="collapse" class="btn btn-navbar" type="button">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <div class="nav-collapse collapse">
+            <ul class="nav" id="mainmenu">
+              <li>
+                <a href="../index.html" data-part="index" >首页</a>
+              </li>
+              <li>
+                <a href="../info/info_manage.html" data-part="info" >信息中心</a>
+              </li>
+              <li>
+                <a href="account_manage.html" data-part="fund" >账户中心</a>
+              </li>
+              <li>
+                <a href="../shop/shop_manage.html" data-part="shop" >申请管理</a>
+              </li>
+              <li>
+                <a href="../goods/dealer_manage.html" data-part="goods" >报单管理</a>
+              </li>
+              <li>
+                <a href="../record/member_manage.html" data-part="record" >资料维护</a>
+              </li>
+              <li class="divider-vertical" ></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--底部导航-->
+    <div class="mainwrap">
+    	<div class="container-fluid">
+      	<div class="row-fluid">
+        		<div class="span5 pull-left">
+              <ul class="sidebox">
+                <li class="sidetheme">
+                	<h3>个人资料</h3>
+                    <p><em>你好！</em><i>电子商务小管家</i></p>
+                  <p>电子账户(F$):<span>88652.23</span></p>
+                  <p>业绩账户(FV):<span>26245.45</span></p>
+                  <p>其他账户(FV):<span>6454.84</span></p>
+                  <p><em>上次登录时间：</em><i>2015-04-30 19:30:45</i></p>
+                </li>
+                <li class="sidemenu">
+                	<h3>账户管理</h3>
+                   <div id="submenu" >
+                  <a href="account_manage.html">账户管理</a>
+                  <a href="recharge_manage.html">充值管理</a>
+                  <a href="withdraw_manage.html">提现管理</a>
+                  <a href="transfer_manage.html">转账管理</a>
+                  </div>
+                </li>
+              </ul>
+            </div>
+        		<div class="span19 pull-right">
+            		<ul class="mainbox">
+                    <li class="main-grid">
+                    		<!--grid主题-->
+                    		<div class="grid-theme">账户查询</div>
+                        <!--grid查询输入域-->
+                    		<div class="grid-query">
+                        		<form action="#" class="form-inline" method="post">
+                            	<div class="grid-queryitem">
+                                <label>
+                                  用户编号：<input data-theme="用户编号" id="userCode" type="text" name="userCode" class="input-medium">
+                                </label>
+                                <label>
+                                  账户类型：
+                                  <select data-type="select" data-theme="账户类型" class="input-small" id="acType" name="acType">
+                                    <option selected value="F$">电子账户</option>
+                                    <option value="FV">业绩账户</option>
+                                  </select>
+                                </label>
+                              </div>
+                              <div class="grid-queryitem g-t-nowrap">
+                                <label>
+                                  创建时间：<input data-theme="开始日期" id="startCreateDate" type="text" class="input-small grid-datetext" name="startCreateDate" placeholder="请选择日期" readonly>
+                                </label>
+                                <label>--
+                                  <input id="endCreateDate" type="text" class="input-small grid-datetext"  name="endCreateDate" data-theme="结束日期" placeholder="请选择日期" readonly>
+                                </label>
+                              </div>
+                              <div class="grid-queryitem">
+                                <button id="grid_querybtn" type="button" class="btn "><span class="grid-icon grid-search-icon g-c-cyan1"></span>查询</button>
+                              </div>
+                            </form>
+                        </div>
+                        <!--grid 数据表格展现-->
+                        <div class="grid-datalist">
+                        		<table class="table table-hover table-bordered">
+                                <colgroup>
+                                    <col class="g-cg1" />
+                                    <col class="g-cg2" />
+                                    <col class="g-cg2" />
+                                    <col class="g-cg2" />
+                                    <col class="g-cg1" />
+                                    <col class="g-cg1" />
+                                    <col class="g-cg2" />
+                                    <col class="g-cg2" />
+                                    <col class="g-cg2" />
+                                    <col class="g-cg2" />
+                                    <col class="g-cg3" />
+                                </colgroup>
+                                <thead>
+                                  <tr id="account_sort">
+                                      <th>操作</th>
+                                      <th data-sort="type" class="issort">账户类型</th>
+                                      <th data-sort="code" class="issort">用户编号</th>
+                                      <th data-sort="trade" class="issort">交易类别</th>
+                                      <th data-sort="income" class="issort">存入</th>
+                                      <th data-sort="pay" class="issort">取出</th>
+                                      <th data-sort="usable" class="issort">可用余额</th>
+                                      <th data-sort="loan" class="issort">借款余额</th>
+                                      <th data-sort="order" class="issort">订单编号</th>
+                                      <th data-sort="datetime" class="issort">创建时间</th>
+                                      <th data-sort="remark" class="issort">备注</th>
+                                  </tr>
+                                </thead>
+                                <tbody id="account_griddata">
+                                		<tr>
+                                        <td><a href="#">查看</a></td>
+                                        <td>电子账户</td>
+                                        <td><p>425573567</p></td>
+                                        <td>现金支付</td>
+                                        <td><p>45657</p></td>
+                                        <td><p>5427</p></td>
+                                        <td><p>27675</p></td>
+                                        <td><p>546</p></td>
+                                        <td><p>dghj3567547567567</p></td>
+                                        <td>2014-03-25 09:15:24</td>
+                                        <td>哈哈,找漂亮老婆</td>
+                                    </tr>
+                                    <tr>
+                                        <td><a href="#">查看</a></td>
+                                        <td>业绩账户</td>
+                                        <td><p>345525756373563567</p></td>
+                                        <td>现金支付</td>
+                                        <td><p>2324</p></td>
+                                        <td><p>1345</p></td>
+                                        <td><p>96478</p></td>
+                                        <td><p>357</p></td>
+                                        <td><p>1346583576</p></td>
+                                        <td>2015-05-05 12:34:56</td>
+                                        <td>用于投资</td>
+                                    </tr>
+                                    <tr>
+                                        <td><a href="#">查看</a></td>
+                                        <td>电子账户</td>
+                                        <td><p>uiqt8823461346</p></td>
+                                        <td>现金支付</td>
+                                        <td><p>24566</p></td>
+                                        <td><p>435</p></td>
+                                        <td><p>54725</p></td>
+                                        <td><p>8467</p></td>
+                                        <td><p>547gf542456</p></td>
+                                        <td>2013-08-08 16:35:24</td>
+                                        <td>去九寨沟耍</td>
+                                    </tr>
+                                    <tr>
+                                        <td><a href="#">查看</a></td>
+                                        <td>业绩账户</td>
+                                        <td><p>34-09682795</p></td>
+                                        <td>现金支付</td>
+                                        <td><p>56726</p></td>
+                                        <td><p>6767</p></td>
+                                        <td><p>3676786</p></td>
+                                        <td><p>45675</p></td>
+                                        <td><p>lklk575467456237</p></td>
+                                        <td>2015-02-06 07:09:12</td>
+                                        <td>走路去纽约</td>
+                                    </tr>
+                                    <tr>
+                                        <td><a href="#">查看</a></td>
+                                        <td>电子账户</td>
+                                        <td><p>euy567245756</p></td>
+                                        <td>现金支付</td>
+                                        <td><p>5273567</p></td>
+                                        <td><p>356</p></td>
+                                        <td><p>56277</p></td>
+                                        <td><p>3783</p></td>
+                                        <td><p>5367257658267</p></td>
+                                        <td>2014-11-23 14:23:34</td>
+                                        <td>生活开支</td>
+                                    </tr>
+                                    <tr>
+                                        <td><a href="#">查看</a></td>
+                                        <td>业绩账户</td>
+                                        <td><p>546746245635368</p></td>
+                                        <td>现金支付</td>
+                                        <td><p>356768</p></td>
+                                        <td><p>63568</p></td>
+                                        <td><p>35687</p></td>
+                                        <td><p>4767</p></td>
+                                        <td><p>38678</p></td>
+                                        <td>2014-11-23 15:45:23</td>
+                                        <td>准备买车车</td>
+                                    </tr>
+                                    <tr>
+                                        <td><a href="#">查看</a></td>
+                                        <td>业绩账户</td>
+                                        <td><p>4765884678</p></td>
+                                        <td>现金支付</td>
+                                        <td><p>35682</p></td>
+                                        <td><p>673858</p></td>
+                                        <td><p>678</p></td>
+                                        <td><p>3567567</p></td>
+                                        <td><p>9378234678</p></td>
+                                        <td>2015-01-02 15:25:24</td>
+                                        <td>给家里用的</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!--grid 分页-->
+                        <div class="grid-datapage">
+                        		<div class="easyui-pagination" id="account_page" data-options=" total:100,links:5,layout:['first','prev','links','next','last']"></div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+      </div>
+    </div>
+    <!--底部导航-->
+    <div class="footerwrap">
+    
+    </div>
+    <script src="../../resource/js/lib/require/require-2.1.11.min.js" data-main="../../resource/js/fund/account_manage.js"></script>
+</body>
+</html>

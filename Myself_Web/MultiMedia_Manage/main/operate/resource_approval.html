@@ -1,0 +1,54 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<meta name="description" content="德亿多媒体资源库,德亿多媒体,德亿多媒体资源库管理系统,管理系统--资源审核"/>
+<meta name="keywords" content="德亿多媒体资源库,德亿多媒体,德亿多媒体资源库管理系统,管理系统--资源审核"/>
+<link rel="stylesheet" type="text/css" href="../../css/main/menu_operate.css">
+<script src="../../js/lib/jquery-1.8.3.min.js"></script>
+<script src="../../js/lib/jquery.blockUI.min.js"></script>
+<script src="../../js/utils/util.js"></script>
+<script>
+$(function(){
+	/*确定*/
+	$("#resapproval_sure").click(function(){
+		/*to do*/
+		
+	});
+	/*关闭*/
+	$("#resapproval_close").click(function(){window.close();});
+})
+</script>
+<title>资源审核</title>
+</head>
+<body>
+<div class="resapproval_wrap">
+	<h1 class="resapproval_title">资源审核</h3>
+	<table class="resapproval_content">
+    	<colgroup>
+        	<col class="up_cg1"/>
+            <col class="up_cg2"/>
+        </colgroup>
+    	<tr class="resapproval_tips">
+        	<td colspan="2"><p>您可以设置用户是否可以访问该文件夹下所有资源。要使用户能够访问，请单击“对用户开放资源”</p></td>
+        </tr>
+        <tr class="resapproval_radio">
+        	<td><input type="radio" name="setapproval" id="approvalno"/></td>
+            <td><label for="approvalno">：不开放</label></td>
+        </tr>
+        <tr class="resapproval_radio">
+        	<td><input type="radio" name="setapproval" id="approvalyes"/></td>
+            <td><label for="approvalyes">：对用户开放资源</label></td>
+        </tr>
+        <tr class="resapproval_checkbox">
+        	<td><input type="checkbox" name="approvalsub" id="approvalsub"/></td>
+            <td><label for="approvalsub">：审核子目录</label></td>
+        </tr>
+        <tr>
+        	<td>&nbsp;</td>
+            <td><input type="button" name="resapproval_sure" value="确定" id="resapproval_sure" class="resapproval_sure"><input type="button" name="resapproval_close" value="关闭" id="resapproval_close" class="resapproval_close"></td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

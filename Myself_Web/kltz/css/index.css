@@ -1,0 +1,500 @@
+/* CSS Document */
+* {
+	margin:0px;
+	padding:0px;
+	border:0px;
+}
+#all {
+	width:991px;
+	height:1070px;
+	margin:5px auto;
+}
+body {
+	font-size:12px;
+	font-family:Arial, Helvetica, sans-serif;
+	background:#8d0010;
+}
+#all div {
+	float:left;
+}
+.top {
+	background:url(../images/kunluntouzi-3_03.jpg) no-repeat;
+	width:313px;
+	height:123px;
+	font-size:12px;
+}
+.top-text {
+	margin:15px 0 0 0px;
+	display:inline;
+}
+.top a {
+	color:#000;
+	font-size:12px;
+	padding:0 10px;
+	text-decoration:none;
+}
+.top a:hover {
+	color:#F00;
+}
+/*----------nav---------*/
+#nav{
+	width:991px;
+	height:44px;
+	overflow:hidden;
+}
+.nav ul {
+	width:991px;
+	height:44px;
+}
+
+.nav li{
+	float:left;
+}
+.nav_nav{
+	float:left;
+	list-style-type:none;
+	width:103px;
+	height:44px;
+	display:inline-block;
+	background:url(../images/kunluntouzi-3_05.jpg) repeat-x;
+}
+.nav-left {
+	background:url(../images/kunluntouzi-3_04.jpg) repeat-x;
+	width:18px;
+	height:44px;
+	display:table;
+}
+.nav-li {
+	width:21px;
+	height:44px;
+	background:url(../images/kunluntouzi-3_05.jpg) repeat-x;
+	display:table;
+}
+.nav-right {
+	background:url(../images/kunluntouzi-3_07.jpg) repeat-x;
+	width:25px;
+	height:44px;
+	display:table;
+}
+.nav li a {
+	width:auto;
+	height:44px;
+	text-align:center;
+	line-height:44px;
+	font-family:"宋体-PUA" !important;
+	color: #FFF !important;
+	font-weight:bold !important;
+	font-size:14px !important;
+	text-decoration:none;
+}
+.nav li a:hover {
+	color:#fcbd31 !important;
+	text-decoration:none;
+}
+
+
+/*---------主要内容背景-----------*/
+.content-back {
+	width:991px;
+	height:845px;
+	background:#dcbb72;
+	padding:8px 0px;
+	margin:0;
+}
+/*------------left--------------*/
+.left {
+	width:240px;
+	margin-left:12px;
+	display:inline;
+}
+.service {
+	width:240px;
+	height:198px;
+	overflow:hidden;
+}
+.service-3 {
+	width:240px;
+	height:83px;
+	padding-top:10px;
+	background:url(../images/kunluntouzi-3_23.jpg) no-repeat;
+}
+.service-3 a {
+	margin:0px 8px;
+	display:inline;
+	color:#686666;
+	margin-left:20px;
+	display:inline;
+	text-decoration:none;
+	font-size:12px;
+	line-height:30px;
+}
+.service-3 a:hover {
+	color:#000;
+}
+.left-2 {
+	background:url(../images/kunluntouzi-3_27.jpg) no-repeat;
+	margin-top:6px;
+	display:inline;
+	width:240px;
+	height:226px;
+}
+.left-2-text1 {
+	position:relative;
+	top:60px;
+	left:20px;
+	padding-bottom:48px;
+	color:#8d0010;
+	font-size:14px;
+}
+.left-2-text1 span {
+	color:#8d0010;
+	font-size:12px;
+}
+#anniu2 {
+	background:url(../images/kunluntouzi-3-an.jpg) no-repeat;
+	color:#000;
+	font-size:12px;
+	width:82px;
+	height:22px;
+	line-height:22px;
+}
+#anniu2:hover {
+	color:#C93;
+}
+.left-2-anniu a {
+	float:left;
+	background:url(../images/kunluntouzi-3-anniu.jpg) no-repeat;
+	color:#9e8e6b;
+	text-align:center;
+	font-size:12px;
+	width:62px;
+	height:22px;
+	line-height:22px;
+	margin-right:8px;
+	display:block;
+	position:relative;
+	top:28px;
+	left:25px;
+}
+.left-2 a:hover {
+	color:#C93;
+	text-decoration:none;
+}
+.left-3 {
+	margin-top:6px;
+	display:inline;
+}
+.left-4 {
+	margin-top:6px;
+	display:inline;
+}
+.left-5 {
+	margin-top:6px;
+	display:inline;
+}
+.left-6 {
+	margin-top:6px;
+	display:inline;
+}
+/*------------center--------------*/
+.center {
+	width:477px;
+	margin-left:12px;
+	display:inline;
+	overflow:hidden;
+}
+/*--------------center-1--------------*/
+.flash {
+	clear:both;
+}
+/*--------------center-2-------------*/
+.center-2 {
+	background:#FFF;
+	margin-top:8px;
+	display:inline;
+	width:477px;
+	height:213px;
+	border:#CCC solid 1px;
+}
+.title-text {
+	margin-top:2px;
+	display:inline;
+	height:26px;
+	line-height:26px;
+	font-size:14px;
+}
+.more {
+	padding:7px 0px 0px 335px;
+}
+.center_2_body img {
+	padding:15px 15px 8px 13px;
+	float:left;
+}
+.center_2_body {
+	padding:15px 10px 0 10px;
+}
+.center_2_body p {
+	text-indent:2em;
+	line-height:20px;
+}
+.center_2_body a {
+	color:#000;
+	text-decoration:none;
+}
+.center_2_body a:hover {
+	color:#F00;
+}
+/*------------------center-3--------------*/
+.center-3 {
+	clear:both;
+	margin-top:8px;
+	border:#CCC solid 1px;
+}
+.container_title {
+	width:180px;
+	height:25px;
+	text-align:left;
+}
+/*------------------center-4----------------*/
+ul, li, dl, dd {
+	padding:0;
+	margin:0;
+	list-style-type:none;
+}
+a:link {
+	color: #000;
+	text-decoration: none;
+}
+a:visited {
+	text-decoration: none;
+	color: #000;
+}
+a:hover {
+	text-decoration: underline;
+	color: #FFA500;
+}
+a:active {
+	text-decoration: none;
+	color: #F00;
+}
+#sfcNew {
+	overflow:hidden;
+	width:477px;
+	height:212px;
+	background:#FFF;
+	border:1px solid #CCC;
+	padding:10px;
+	margin-top:8px;
+	height:212px;
+}
+#sfcNew table {
+	background:none;
+}
+/*#sfcNewTitle{
+	height:26px; 
+	background:url(/app/images/index/indexbg.gif) no-repeat 0 -191px;
+}*/
+
+.Content1 {
+	height:250px;
+	text-align:center;
+	position:relative;
+	overflow:hidden;
+	font-size:12px;
+	clear:both;
+	border:px solid #C9C9C9;/*ŵĿ*/
+}
+.cttLi {
+}
+.sctt {
+	padding:0px 10px;
+	clear:both;
+	text-align:left;
+}
+.sctt table {
+}
+.sctt ul {
+	margin-top:5px;
+}
+.sctt li {
+	width:95%;
+	float:left;
+	background:url(../images/indexbg.gif) no-repeat 0 -268px;
+	height:20px;
+	line-height:20px;
+	border-bottom:1px dashed #CCC;
+	padding-left:10px;
+	padding-right:10px;
+}
+.stb_ {
+	background:url(../images/kunluntouzi-3_55.jpg) no-repeat left center;
+	color:#444;
+	width:456px;
+	height:25px;
+	font-size:13px;
+	font-weight:bold;
+	border-bottom:2px solid #b80316;
+}
+.stb_ ul {
+	height:25px;
+	padding:0;
+	margin:0px;
+	text-align:center;
+}
+.stb_ li {
+	float:left;
+	height:25px;
+	line-height:25px;
+	width:auto;
+	cursor:pointer;
+	margin:0 5px;
+}
+.stb_ font {
+	height:25px;
+	line-height:25px;
+	width:auto;
+	color:#000;
+	float:left;
+	padding-left:22px;
+	padding-right:35px;
+	font-size:14px;
+	font-weight:normal;
+}
+.normaltab {
+}
+.hovertab {
+	background:url(../images/jiantou.jpg) no-repeat center 19px;
+}
+.dis {
+	display:block;
+}
+.undis {
+	display:none;
+}
+.newMore {
+	list-style-type:none;
+	border:0;
+	background:#FFF;
+	text-align:right;
+	padding-top:10px;
+}
+/*------------center-5----------------*/
+
+/*--------------right-----------------*/
+.right {
+	width:225px;
+	margin-left:12px;
+	display:inline;
+}
+/*------------right-1----------------*/
+.right-1 {
+	width:225px;
+	height:271px;
+	background:url(../images/kunluntouzi-3_16.jpg) no-repeat;
+}
+.right-1-title {
+	margin:5px;
+	display:inline;
+}
+.right-1-title a {
+	height:30px;
+	line-height:30px;
+	font-size:14px !important;
+	color:#ce5b44 !important;
+	text-decoration:none;
+}
+.right-1-title a:hover {
+	text-decoration:underline;
+}
+.right-1-body {
+	margin-left:10px;
+	display:inline;
+}
+.right-1-body-1 {
+	width:208px;
+	color:#511d08;
+}
+.right-1-body-2 {
+	width:208px;
+	color:#875e3e;
+}
+/*---------------right-2--------------------*/
+.right-2 {
+	margin-top:8px;
+	display:inline;
+}
+/*----------------right-3-------------------*/
+.right-3 {
+	margin-top:8px;
+	display:inline;
+}
+/*----------------right-4----------------*/
+.right-4 {
+	width:225px;
+	height:139px;
+	margin-top:8px;
+	display:inline;
+}
+.jiameng {
+	background:url(../images/kunluntouzi-3_68.jpg);
+	width:225px;
+	height:48px;
+}
+.jiameng a {
+	color:#666;
+	font-size:12px;
+	text-decoration:none;
+	margin-left:18px;
+	display:inline;
+}
+.jiameng a:hover {
+	color:#000;
+	text-decoration:underline;
+}
+/*--------------------link---------------*/
+.link {
+	width:965px;
+	height:70px;
+	background:#FFF;
+	border:#CCC 1px solid;
+	margin:6px 0 0 12px;
+	display:inline;
+}
+.link-title {
+	font-size:13px !important;
+	color:#8d0010 !important;
+	padding:10px 0 0 10px;
+}
+.link-body {
+	width:950px;
+	padding:0 10px;
+}
+.link-body a {
+	margin-right:15px;
+	display:inline;
+	line-height:20px;
+	font-size:12px;
+	text-decoration:none;
+	color:#999;
+}
+.link-body a:hover {
+	color:#000;
+	text-decoration:underline;
+}
+/*---------------------地址----------------------*/
+.where {
+	color:#FFF;
+	font-size:12px;
+	text-align:center;
+	width:991px;
+	margin:10px auto;
+	display:inline;
+}
+.where a {
+	color:#FFF !important;
+	text-decoration:none;
+}
+.where a:hover {
+	color:#000 !important;
+	text-decoration:underline;
+}

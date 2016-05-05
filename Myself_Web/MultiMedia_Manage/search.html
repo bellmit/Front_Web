@@ -1,0 +1,166 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="description" content="德亿多媒体资源库,德亿多媒体,德亿多媒体资源库管理系统,管理系统--搜索中心"/>
+<meta name="keywords" content="德亿多媒体资源库,德亿多媒体,德亿多媒体资源库管理系统,管理系统--搜索中心"/>
+<link rel="stylesheet" type="text/css" href="css/funcpages.css">
+<script src="js/lib/jquery-1.8.3.min.js"></script>
+<script src="js/lib/jquery.blockUI.Mask.min.js"></script>
+<script src="js/utils/util.js"></script>
+<script src="js/search.js"></script>
+<title>搜索中心--高级搜索</title>
+</head>
+<body>
+<div class="search_header"><h1>德亿多媒体资源库管理系统</h1></div>
+<div class="search_container">
+    <table class="search_wrap">
+    	<tr>
+        	<td class="search_sidebox" id="search_sidebox">
+            	<h3 class="search_title">搜索条件</h3>
+                <div class="search_text">
+                    <label for="search_filename">文件或文件夹名称：</label>
+                    <input type="text" name="search_filename" id="search_filename"/>
+                </div>
+                <div class="search_text">
+                    <label for="search_fileinfo">文件或文件夹描述信息：</label>
+                    <input type="text" name="search_fileinfo" id="search_fileinfo"/>
+                </div>
+                <div class="search_select">
+                    <label for="search_area">搜索范围：</label>
+                    <input type="text" name="search_area" id="search_area"/>
+                    <div class="search_selectbox">
+                    	<span class="" id="sa_switch"></span>
+                        <div class="search_selectwrap">
+                            <ul id="search_select">
+                                <li>34345345</li>
+                                <li>wrtysfgsfg</li>
+                                <li>kuyyfgn452</li>
+                                <li>gy6735254gfjfj</li>
+                                <li>阿卡登记卡上的积分卡</li>
+                                <li>hjty61457hgjrstry4ghmjtygsh6</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <p class="search_action" id="search_action">立即搜索</p>
+                <div class="search_condition">
+                    <h3 id="search_condition">搜索选项<p>&gt;&gt;</p></h3>
+                    <div id="search_option">
+                    	<span>
+                            <label for="search_type">类型：</label>
+                            <input type="checkbox" name="search_type"  id="search_type"/>
+                        </span>
+                        <span>
+                            <label for="search_size">大小：</label>
+                            <input type="checkbox" name="search_size"  id="search_size"/>
+                        </span>
+                        <span>
+                            <label for="search_date">日期：</label>
+                            <input type="checkbox" name="search_date"  id="search_date"/>
+                        </span>
+                        <span>
+                            <label for="search_subfile">子文件：</label>
+                            <input type="checkbox" name="search_subfile"  id="search_subfile"/>
+                        </span>
+                    </div>
+                </div>
+            </td>
+            <td class="search_control" id="sidenav_control"></td>
+            <td class="search_mainbox">
+            		<h3 class="search_result"><span></span>搜索结果</h3>
+                    <div class="search_operate" id="search_operate"></div>
+                    <table id="search_result">
+                        <colgroup>
+                            <col class="sr_cg1"/>
+                            <col class="sr_cg2"/>
+                            <col class="sr_cg3"/>
+                            <col class="sr_cg4"/>
+                            <col class="sr_cg5"/>
+                            <col class="sr_cg6"/>
+                        </colgroup>
+                        <tr>
+                            <th>名称</th>
+                            <th>大小</th>
+                            <th>类型</th>
+                            <th>时间</th>
+                            <th>创建者</th>
+                            <th>有无子文件</th>
+                        </tr>
+                        <tr>
+                            <td><a href="#" id="01" title="">sfdhhadfgdfgdfg</a></td>
+                            <td><p>阿克江卡死的积分开始觉</p></td>
+                            <td><p>42565462546</p></td>
+                            <td><p>42565462546</p></td>
+                            <td><p>42565462546</p></td>
+                            <td><p>无</p></td>
+                        </tr>
+                        <tr>
+                            <td><a href="#" id="02" title="">sfdhhadfgdfgdfg</a></td>
+                            <td><p>阿克江卡死的积分开始觉</p></td>
+                            <td><p>42565462546</p></td>
+                            <td><p>42565462546</p></td>
+                            <td><p>42565462546</p></td>
+                            <td><p>有</p></td>
+                        </tr>
+                        <tr>
+                            <td><a href="#" id="03" title="">sfdhhadfgdfgdfg</a></td>
+                            <td><p>阿克江卡死的积分开始觉</p></td>
+                            <td><p>42565462546</p></td>
+                            <td><p>42565462546</p></td>
+                            <td><p>42565462546</p></td>
+                            <td><p>无</p></td>
+                        </tr>
+                        <tr>
+                            <td><a href="#" id="04" title="">sfdhhadfgdfgdfg</a></td>
+                            <td><p>阿克江卡死的积分开始觉</p></td>
+                            <td><p>42565462546</p></td>
+                            <td><p>42565462546</p></td>
+                            <td><p>42565462546</p></td>
+                            <td><p>有</p></td>
+                        </tr>
+                        <tr>
+                            <td><a href="#" id="05" title="">sfdhhadfgdfgdfg</a></td>
+                            <td><p>阿克江卡死的积分开始觉</p></td>
+                            <td><p>42565462546</p></td>
+                            <td><p>42565462546</p></td>
+                            <td><p>42565462546</p></td>
+                            <td><p>有</p></td>
+                        </tr>
+                        <tr>
+                            <td><a href="#" id="06" title="">sfdhhadfgdfgdfg</a></td>
+                            <td><p>阿克江卡死的积分开始觉</p></td>
+                            <td><p>42565462546</p></td>
+                            <td><p>42565462546</p></td>
+                            <td><p>42565462546</p></td>
+                            <td><p>无</p></td>
+                        </tr>
+                        <tr>
+                            <td><a href="#" id="07" title="">sfdhhadfgdfgdfg</a></td>
+                            <td><p>阿克江卡死的积分开始觉</p></td>
+                            <td><p>42565462546</p></td>
+                            <td><p>42565462546</p></td>
+                            <td><p>42565462546</p></td>
+                            <td><p>有</p></td>
+                        </tr>
+                        <tr>
+                            <td><a href="#" id="08" title="">sfdhhadfgdfgdfg</a></td>
+                            <td><p>阿克江卡死的积分开始觉</p></td>
+                            <td><p>42565462546</p></td>
+                            <td><p>42565462546</p></td>
+                            <td><p>42565462546</p></td>
+                            <td><p>有</p></td>
+                        </tr>
+                    </table>
+                    <div class="search_pages">分页区域</div>
+            </td>
+        </tr>
+    </table>
+</div>
+<div class="search_footer">
+	<div class="footer">
+    	<p>Copyright&nbsp;2013-2016&copy;,&nbsp;YIDE&nbsp;NET,All&nbsp;Rights&nbsp;Reserved</p>
+    </div>
+</div>
+</body>
+</html>

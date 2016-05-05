@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="keywords" content="自制日历" />
+<meta name="description" content="自制日历" />
+<link rel="stylesheet" type="text/css" href="css/Calendar.css">
+<script src="js/jquery-1.8.3.min.js"></script>
+<script src="js/Calendar.js"></script>
+<title>日历</title>
+</head>
+<body>
+	<div class="header">
+    	<h1>Calendar</h1>
+    </div>
+    <div class="container">
+    	<h3 class="theme_title">日历控件</h3>
+        <div class="calendar_wrap">
+        	<div class="calendar_title">
+                <span class="year_pre_btn" id="year_pre_btn">&lt;&lt;</span>
+                <span class="month_pre_btn" id="month_pre_btn">&lt;&lt;</span>
+                <div class="calendar_dz" id="year_dz"></div>
+                <h3 id="calendar_title"></h3>
+                <div class="calendar_tgdz" id="year_tgdz"></div>
+                <span class="month_next_btn" id="month_next_btn">&gt;&gt;</span>
+                <span class="year_next_btn" id="year_next_btn">&gt;&gt;</span>
+                <div class="qs_control" id="qs_control"></div>
+                <fieldset class="qs_wrap" id="qs_wrap"><label for="qs_check">公元前:</label><input type="checkbox" class="qs_check" id="qs_check"/><input class="qs_text" type="text" name="qs_text" id="qs_text" /><button type="button" id="qs_btn">确&nbsp;定</button></fieldset>
+            </div>
+            <ul class="calendar_week">
+            	<li class="week_sleep">日</li>
+                <li>一</li>
+                <li>二</li>
+                <li>三</li>
+                <li>四</li>
+                <li>五</li>
+                <li class="week_sleep">六</li>
+            </ul>
+            <table class="calendar_show" id="calendar_show"></table>
+        </div>
+    </div>
+    <div class="footer">
+    	<div class="footer_show">
+        	<p>欢迎进入我的学习园地</p>
+        </div>
+    </div>
+</body>
+</html>

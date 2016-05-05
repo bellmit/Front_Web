@@ -1,0 +1,22 @@
+@charset "utf-8";
+/* CSS Document */
+.A{
+background:#FF6600;
+zoom:1;
+}
+.a{
+float:left;
+width:20%;
+height:80px;
+background:#FF66FF;
+}
+.b{
+float:right;
+width:20%;
+height:80px;
+background:#66CCFF;
+}
+.B{
+background:#339999;
+}
+

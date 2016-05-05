@@ -1,0 +1,82 @@
+/*!
+ * Backbone.Notifier v0.2.2 - Base Styles
+ * Copyright 2012, Eyal Weiss
+ */
+
+@import "elements.less";
+@import "notifier-variables.less";
+
+(~".@{notifier}-screen") {
+	background-color: #000;
+	z-index: 90000022;
+}
+
+(~".@{notifier}") {
+	z-index: 90000025;
+	position: fixed;
+	top: -32px;
+	left: 0;
+	right: 0;
+	width: auto;
+	height: 0;
+	overflow: visible;
+
+	> div {
+		  cursor: default;
+		  display: inline-block;
+		  zoom: 1;
+		  *display: inline;
+		  position: relative;
+		  em {
+			  font-weight: bold;
+			  font-style: italic;
+		  }
+	  }
+
+	button.default {
+		font-weight: bold;
+	}
+
+	(~"button.link") {
+		border-width: 0 0 1px 0!important;
+		background-color: transparent!important;
+		.box-shadow(~"none")!important;
+		.rounded(0)!important;
+		padding-right: 0!important;
+		padding-left: 0!important;
+		padding-bottom: 0!important;
+	}
+}
+
+(~".@{notifier}-with-loader .@{notifier}-message") {
+	display: inline;
+}
+
+(~".@{notifier}-loader") {
+	display: inline-block;
+	zoom: 1;
+	*display: inline;
+}
+
+(~".@{notifier}-close") {
+	position: absolute;
+	border: 0 none;
+	top: 13px;
+	right: 13px;
+	width: 18px;
+	height: 18px;
+	cursor: pointer;
+	.rounded(9px);
+	padding: 0;
+/*background: white;*/
+	text-align: center;
+	font-size: 11px;
+	color: rgba(102, 102, 102, 0.39);
+	background: transparent;
+
+	&:hover {
+		background: rgba(109, 109, 109, 0.2)!important;
+		color: white;
+		text-shadow: -1px -1px 0 rgba(68, 68, 68, 0.2);
+	}
+}

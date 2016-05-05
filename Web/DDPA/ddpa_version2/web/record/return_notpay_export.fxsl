@@ -1,0 +1,52 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+</head>
+<body>
+	<table width="70%" border="1" cellspacing="0" cellpadding="0"　style="border-collapse:collapse">  
+		<tr><td colspan="8" align="center">待还记录</td></tr>
+		<tr>
+			<td align="center">借款标题</td>
+            <td align="center">应还本金</td>
+            <td align="center">应还利息</td>
+            <td align="center">居间服务费</td>
+            <td align="center">违约金</td>
+            <td align="center">应还合计</td>
+            <td align="center">还款日期</td>
+            <td align="center">备注</td>
+		</tr>
+		<#if recordList??>
+		<#list recordList as record>
+		<#if record.lateFee??><#assign lateFee = record.lateFee/><#else><#assign lateFee = 0.00/></#if>
+		<#if record.prePenalty??><#assign prePenalty = record.prePenalty/><#else><#assign prePenalty = 0.00/></#if>
+		<tr>
+			<td><#if record.loanTitle??>${record.loanTitle}</#if></td>
+			<td><#if record.principal??>${record.principal?string("###,##0.00")}</#if></td>
+			<td><#if record.interest??>${record.interest?string("###,##0.00")}</#if></td>
+			<td><#if record.intermediaryFee??>${record.intermediaryFee?string("###,##0.00")}</#if></td>
+			<td>${(lateFee+prePenalty)?string("###,##0.00")}</td>
+			<td><#if record.repayAmount??>${record.repayAmount?string("###,##0.00")}</#if></td>
+			<td><#if record.repayDate??>${record.repayDate?string("yyyy-MM-dd")}</#if></td>
+			<td>${record.remark!''}</td>
+		</tr>
+		</#list> 
+		</#if>
+		<#if sumRecord??>
+		<#if sumRecord.lateFee??><#assign sumLateFee = sumRecord.lateFee/><#else><#assign sumLateFee = 0.00/></#if>
+		<#if sumRecord.prePenalty??><#assign sumPrePenalty = sumRecord.prePenalty/><#else><#assign sumPrePenalty = 0.00/></#if>
+		<tr>
+			<td>合计</td>
+			<td><#if sumRecord.principal??>${sumRecord.principal?string("###,##0.00")}</#if></td>
+			<td><#if sumRecord.interest??>${sumRecord.interest?string("###,##0.00")}</#if></td>
+			<td><#if sumRecord.intermediaryFee??>${sumRecord.intermediaryFee?string("###,##0.00")}</#if></td>
+			<td>${(sumLateFee+sumPrePenalty)?string("###,##0.00")}</td>
+			<td><#if sumRecord.repayAmount??>${sumRecord.repayAmount?string("###,##0.00")}</#if></td>
+			<td></td>
+			<td></td>
+		</tr>
+		</#if>
+	</table> 
+</body>
+</html>
+

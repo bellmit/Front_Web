@@ -1,0 +1,155 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<meta name="description" content="微网站管理后台--文章操作">
+<meta name="keywords" content="微网站管理后台--文章操作">
+<title>微网站管理后台--添加文章</title>
+<link rel="stylesheet" type="text/css" href="../../resource/css/base.css">
+<link rel="stylesheet" type="text/css" href="../../resource/css/common.css">
+<link rel="stylesheet" type="text/css" href="../../resource/css/article.css">
+<link rel="stylesheet" type="text/css" href="../../resource/js/plugins/artdialog/css/ui-dialog.css">
+</head>
+<body class="g-fill" lang="zh">
+    <div class="mainmenu-wrap">
+    		<div class="mm-box">
+        		<div class="mm-logo"></div>
+            <ul class="mm-active">
+            		<li class="mm-a1">用户名：<span>德胖胖</span></li>
+                <li class="mm-a2">前台首页
+                  <span id="submenuitem"></span>
+                  <ul>
+                    <li><a href="../create/create_manage.html" title="">我的微网站</a></li>
+                    <li><a href="../account/login.html" title="">登录</a></li>
+                    <li><a href="../result/fail.html" title="">失败</a></li>
+                    <li><a href="../result/success.html" title="">成功</a></li>
+                  </ul>
+                </li>
+                <li class="mm-a3">安全退出</li>
+            </ul>
+            <ul class="mm-menuitem">
+            	<li><a href="../index.html" title="">后台首页</a><div></div></li>
+              <li><a href="../nav_column/nav_column.html" title="">导航栏目管理</a><div></div></li>
+							<li><a href="../article/article_list.html" title="">文章管理</a><div></div></li>
+              <li><a href="../community/community_list.html" title="">微社区管理</a><div></div></li>
+              <li><a href="../template/template.html" title="">模板管理</a><div></div></li>
+							<li><a href="#" title="">配置管理</a><div></div></li>
+              <li><a href="#" title="">微信接口</a><div></div></li>
+              <li><a href="../help/help.html" title="">帮助文档</a><div></div></li>
+            </ul>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+    <div class="container">
+        <div class="main-wrap">
+        	<div class="main-box">
+            <div class="ao-wrap">
+            		<form action="#" method="post" id="article_form">
+                      <ul class="ao-form form-box">
+                        <li class="ao-text1 form-text">
+                            <label><span>*</span>文章标题：</label>
+                            <input type="text" name="ArticleName" >
+                        </li>
+                        <li class="ao-text1 form-select">
+                            <label>所属栏目：</label>
+                            <select name="ArticleColumn">
+                            		<option selected value="1">图文列表</option>
+                                <option value="2">图片列表</option>
+                                <option value="3">文字列表</option>
+                            </select>
+                        </li>
+                        <li class="ao-text2 form-text">
+                            <label><span>*</span>排序号：</label>
+                            <input type="text" name="ArticleID" >
+                        </li>
+                        <li class="ao-text2 form-text">
+                            <label>缩略图：</label>
+                            <input type="text" name="ArticleThumbnail" id="articlethumbnail" readonly >
+                            <div class="ao-file-plugin">
+                              <div class="file-plugin-wrap">
+                                  <div class="file-plugin-btn" id="file_btn">浏览上传</div>
+                                  <input name="ArticleThumbnail" multiple class="file-plugin-text" type="file" id="file_text" >
+                              </div>
+                            </div>
+                        </li>
+                        <li class="ao-text2 form-text">
+                            <label><span>*</span>作者：</label>
+                            <input type="text" name="Author" >
+                        </li>
+                        <li class="ao-text2 form-text">
+                            <label>来源：</label>
+                            <input type="text" name="Source" >
+                        </li>
+                        <li class="ao-checkbox form-text">
+                            <label>是否置顶：</label>
+                            <div class="ao-checkbox-item">
+                            	<input id="ao_checkbox1" type="checkbox" name="SetTop">
+                              <label for="ao_checkbox1">是</label>
+                            </div>
+                        </li>
+                        <li class="ao-text2 form-text">
+                            <label>关键字：</label>
+                            <input type="text" name="Keyword" >
+                        </li>
+                        <li class="ao-text1 form-text">
+                            <label>状态：</label>
+                            <div class="ao-radio-item">
+                              <input checked id="ao_radio1" type="radio" name="ArticleState">
+                              <label for="ao_radio1">激活</label>
+                              <input id="ao_radio2" type="radio" name="ArticleState">
+                              <label for="ao_radio2">禁止</label>
+                            </div>
+                        </li>
+                        <li class="ao-text1 form-select">
+                            <label>类型：</label>
+                            <select name="ArticleType">
+                            		<option selected value="1">图文列表</option>
+                                <option value="2">图片列表</option>
+                                <option value="3">文字列表</option>
+                            </select>
+                        </li>
+                        <li class="ao-textarea form-textarea">
+                            <label>简介：</label>
+                            <textarea name="ArticleInfo" ></textarea>
+                        </li>
+                        <li class="ao-textarea form-textarea">
+                            <label><span>*</span>详细内容：</label>
+                            <textarea name="ArticleContent" ></textarea>
+                        </li>
+                        <li class="ao-btn form-btn">
+                            <input type="submit" value="提交保存" >
+                        </li>
+                      </ul>
+                    </form>
+            </div>
+            <div class="clearfix"></div>
+          </div>
+        </div>
+        <ul class="side-wrap">
+          <li>
+            <a href="#" title="">后台首页</a>
+          </li>
+          <li>
+            <a href="#" title="">导航栏目管理</a>
+          </li>
+          <li>
+            <a href="#" title="">文章管理</a>
+          </li>
+          <li>
+            <a href="#" title="">微社区管理</a>
+          </li>
+          <li>
+            <a href="#" title="">模板管理</a>
+          </li>
+          <li>
+            <a href="#" title="">配置管理</a>
+          </li>
+          <li>
+            <a href="#" title="">微信接口</a>
+          </li>
+        </ul>
+    </div>
+</body>
+<script data-main="../../resource/js/article/article_operate" src="../../resource/js/lib/require.min.js"></script>
+</html>

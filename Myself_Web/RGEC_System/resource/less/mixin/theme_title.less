@@ -1,0 +1,53 @@
+///组件--主题标题
+////主题列表
+.theme-titlewrap{
+	.layout-float-base;
+	padding:5px 10px;
+	margin:5px 0;
+	background:@color-white;
+	>div{
+		.layout-base;
+		.border-radius-base(3px);
+		font-size:@font-size-base;
+		color:@color-white;
+		height:40px;
+		line-height:40px;
+		padding:0 10px 0 20px;
+		font-family:@fontfamliy-base;
+		background:@color-red4;
+		.text-of;
+		&:before{
+			content:'\e621';
+			font-family:'ux_two';
+			display:inline-block;
+			padding:0 5px 0 2px;
+			vertical-align:middle;
+			color:@color-white;
+			font-size:@font-size-base;
+		}
+	}
+}
+///主题表单
+.theme-titleedit{
+	>div{
+		&:before{
+			content:'\e6db';
+			font-family:'ux_four';
+			padding:0 5px 0 2px;
+			font-size:@font-size-base;
+			vertical-align:top;
+		}
+	}
+}
+///主题激活
+.theme-titleactive{
+	>div{
+		&:before{
+			content:'\e65c';
+			font-family:'ux_six';
+			padding:0 5px 0 2px;
+			font-size:@font-size-default;
+			vertical-align:top;
+		}
+	}
+}

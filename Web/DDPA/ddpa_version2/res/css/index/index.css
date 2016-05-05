@@ -1,0 +1,49 @@
+.container_wrap{width:100%;min-width:1000px;background:#fff;}
+.container{width:1000px;height:auto;margin:0 auto;}
+.authlogo{float:left;}
+.authlogos{ overflow: hidden;}
+.loginformtip {
+	width: 252px;
+	margin: 0px auto;
+	position: absolute;
+	left: 34px;
+	color: #ec4125;
+}
+.login_wrapbg.error{
+	border: 1px solid #ec4125;
+}
+#indexloan{
+	position: absolute;
+	top: 0px;
+	right: 0px;
+}
+#indexlogin{
+	position: absolute;
+	right: 0px;
+	z-index: 100;
+	top: 55px;
+	margin:0px;
+	padding:0px;
+	border:none 0px;
+}
+.login_wrap .top{
+	width: 252px;
+	height:36px;
+	margin: 0px auto;
+	margin-top: 30px;
+	background:url(../../image/common/loginbg.fw.png) no-repeat 0px 0px;}
+.top .login_goregister {
+	position: relative;
+	width: 100%;
+	top: 0px;
+	float: left;
+	font-size: 12px;
+	text-align: right;
+	color: #a0a0a0;
+	height: 36px;
+	line-height: 36px;
+}
+.top .login_goregister a{
+	color:#F14629;
+}
+

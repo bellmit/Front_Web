@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<meta name="description" content="电子商务系统--发送消息">
+<meta name="keywords" content="电子商务系统--发送消息">
+<title>电子商务系统--发送消息</title>
+<link rel="stylesheet" type="text/css" href="../../resource/css/bootstrap_2.3.2/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="../../resource/css/bootstrap_2.3.2/css/responsive.min.css">
+<link rel="stylesheet" type="text/css" href="../../resource/css/base.css">
+<link rel="stylesheet" type="text/css" href="../../resource/css/grid.css">
+<link rel="stylesheet" type="text/css" href="../../resource/js/lib/artDialog/css/ui-dialog.css">
+</head>
+<body>
+    <!--顶部导航菜单-->
+    <div class="navbar g-cleargap">
+    	<div class="headerwrap">
+      	<div>
+          <ul>
+            <li><p>(20150400239) 您好，欢迎使用本系统！</p><span>[<a href="#">退出</a>]</span></li>
+            <li><p>代理用户：</p><em>小易叔叔(<i>88abcd</i>)</em><span>[<a href="#">返回</a>]</span></li>
+          </ul>
+        </div>
+    	</div>
+      <div class="navbar-inner">
+        <div class="container">
+          <button data-target=".nav-collapse" data-toggle="collapse" class="btn btn-navbar" type="button">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <div class="nav-collapse collapse">
+            <ul class="nav" id="mainmenu">
+              <li>
+                <a href="../index.html" data-part="index" >首页</a>
+              </li>
+              <li>
+                <a href="info_manage.html" data-part="info" >信息中心</a>
+              </li>
+              <li>
+                <a href="../fund/account_manage.html" data-part="fund" >账户中心</a>
+              </li>
+              <li>
+                <a href="../shop/shop_manage.html" data-part="shop" >申请管理</a>
+              </li>
+              <li>
+                <a href="../goods/dealer_manage.html" data-part="goods" >报单管理</a>
+              </li>
+              <li>
+                <a href="../record/member_manage.html" data-part="record" >资料维护</a>
+              </li>
+              <li class="divider-vertical" ></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--底部导航-->
+    <div class="mainwrap">
+    	<div class="container-fluid">
+      	<div class="row-fluid">
+        		<div class="span24 pull-left">
+              <ul class="sidebox">
+                <li class="sidemenu sidemenu-mini">
+                	<h3>信息中心</h3>
+                  <div id="submenu" >
+                  <a href="info_manage.html">信息管理</a>
+                  <a href="file_manage.html">文件管理</a>
+                  <a href="news_manage.html" data-href="true">消息管理</a>
+                  </div>
+                </li>
+              </ul>
+            </div>
+        		<div class="span24 pull-right">
+            		<ul class="mainbox">
+                    <li class="main-grid">
+                    		<!--grid主题-->
+                    		<div class="grid-theme grid-themeedit">发送消息</div>
+                        <!--grid表单-->
+                    		<div class="grid-form">
+                        		<form action="#" id="icInformationForm" class="form-horizontal" method="post">
+                            		<input id="uniNo" type="hidden" value="" name="uniNo">
+                                <input type="hidden" value="" name="strAction">
+                                <input type="hidden" name="_form_uniq_id" value="">
+                            		<div class="control-group">
+                                  <label for="inforType" class="control-label">信息类别：</label>
+                                  <div class="controls">
+                                    <select id="inforType" name="inforType">
+                                      <option selected value="0">开店</option>
+                                      <option value="1">转店</option>
+                                      <option value="2">退店</option>
+                                      <option value="3">变更地址</option>
+                                    </select>
+                                  </div>
+                                </div>
+                            		<div class="control-group">
+                                  <label for="title" class="control-label form-require-icon">标题：</label>
+                                  <div class="controls">
+                                    <input  id="title" type="text" class="span14" name="title" placeholder="请输入标题">
+                                  </div>
+                                </div>
+                                <div class="control-group">
+                                  <label for="content" class="control-label form-require-icon">内容：</label>
+                                  <div class="controls">
+                                    <textarea id="content" class="span18" rows="8" placeholder="请输入内容"  name="content"></textarea>
+                                  </div>
+                                </div>
+                                <div class="control-group">
+                                  <div class="controls">
+                                    <button type="submit" class="span5 btn form-btnsave-icon">保存</button>
+                                    <a href="news_manage.html" class="span5 btn form-btncance-icon">取消</a>
+                                  </div>
+                                </div>
+                            </form>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+      </div>
+    </div>
+    <!--底部导航-->
+    <div class="footerwrap">
+    
+    </div>
+    <script src="../../resource/js/lib/require/require-2.1.11.min.js" data-main="../../resource/js/info/send_manage.js"></script>
+</body>
+</html>

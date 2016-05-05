@@ -1,0 +1,77 @@
+///*--组件公共部分--*/
+///*--文字列表及文字详情部分的时间和评论数量--*/
+.list-default-wrap h3,
+.list-dt,
+.list-widget-record,
+.article-dt{
+	.box-sizing-base(border-box);	
+	height:30px;
+	line-height:30px;
+	.text-of;
+	overflow:hidden;
+}
+.list-dt,
+.article-dt,
+.list-widget-record{
+	font-size:@font-size-small;
+	display:inline-block;
+}
+.list-dt,
+.article-dt{
+	float:left;
+	color:@color-gray4;
+}
+.list-dt{
+	max-width:200px;
+	min-width:140px;
+	padding:0 0 0 70px;
+}
+.article-dt{
+	max-width:140px;
+	min-width:70px;
+}
+.list-widget-record{
+	.text-of;
+	float:right;
+	text-align:right;
+	min-width:50px;
+	max-width:90px;
+	color:@color-gray3;
+	span{
+		color:@color-gray3;
+		&:first-child:before,
+		&:last-child:before,
+		{
+			font-family:'ux';
+			overflow:hidden;
+			vertical-align:top;
+			padding:0 2px 0 0;
+			font-size:@font-size-base;
+			color:@color-gray4;
+		}
+		&:first-child:before{
+			content:'\0117';
+		}
+		&:last-child:before{
+			content:'\0036';
+		}
+	}
+	i,em{
+		font-style:normal;
+	}
+	em{
+		color:@color-gray2;
+	}
+}
+
+///文章详情评论列表模块、文章详情访问记录模块
+.cl-title,.visit-record-wrap h3{
+	.layout-float-base;
+	padding:5px 0;
+	background:@color-gray9;
+	color:@color-gray3;
+	font-size:@font-size-base;
+	text-indent:2em;
+	font-weight:normal;
+	.border-radius-base(5px);
+}

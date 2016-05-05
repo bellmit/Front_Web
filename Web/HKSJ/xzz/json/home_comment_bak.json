@@ -1,0 +1,309 @@
+{
+  "article": [{
+				"id":1,
+				"comment_sum":"2",
+				"comment_list":[{
+						"praises_sum":"84",
+						"status":1,
+						"head_url":"../../images/1.jpg",
+						"nickname":"霸王级寒流",
+						"create_time":"2016-01-20 15:52:00",
+						"content":"我从来不敢给你任何诺言，是因为我知道我们太年轻，你追求的是一种浪漫感觉，还是那不必负责任的热情，心中的话到现在才对你表明，不知道你是否会因此而清醒，让身在远方的我，不必为你担心，一颗爱你的心，时时刻刻为你转不停，我的爱也曾经，深深温暖你的心灵，你和他之间，是否已经有了真感情，别隐瞒，对我说，别怕我伤心",
+						"reply":[{
+							"praises_sum":"6",
+							"from":"希望你能爱我",
+							"to":"霸王级寒流",
+							"status":1,
+							"create_time":"2016-01-20 15:52:00",
+							"content":"亲亲我的宝贝"
+						},{
+							"praises_sum":"2",
+							"from":"我要飞到世界的尽头",
+							"to":"霸王级寒流",
+							"status":0,
+							"create_time":"2016-01-20 15:52:00",
+							"content":"去寻找那一失踪的太阳"
+						}]
+				},{
+						"praises_sum":"72",
+						"status":0,
+						"head_url":"../../images/2.jpg",
+						"nickname":"看，时间忙忙碌碌",
+						"create_time":"2016-01-20 15:52:00",
+						"content":"何苦走着不归路，熙熙攘攘为名利，何不开开心心交朋友，时时刻刻忙算计，谁知算来算去算自己......",
+						"reply":[{
+							"praises_sum":"6",
+							"from":"有我有你有明天",
+							"to":"看，时间忙忙碌",
+							"create_time":"2016-01-20 15:52:00",
+							"content":"真心真意过一生"
+						},{
+							"praises_sum":"2",
+							"from":"爱情也许会老",
+							"to":"看，时间忙忙碌",
+							"create_time":"2016-01-20 15:52:00",
+							"content":"不如轻轻松松过一生"
+						}]
+				}]
+      },{
+				"id":2,
+				"comment_sum":"1",
+				"comment_list":[{
+				  "praises_sum":"4",
+				  "status":0,
+				  "head_url":"../../images/3.jpg",
+				  "nickname":"你我皆凡人",
+				  "create_time":"2016-01-20 15:52:00",
+				  "content":"身在人世间，多少男子汉，一怒为红颜",
+				  "reply":[{
+					"praises_sum":"7",
+					"from":"我的爱如潮水",
+					"to":"你我皆凡人",
+					"status":0,
+					"create_time":"2016-01-20 15:52:00",
+					"content":"好像就像带走每条河流"
+				  },{
+					"praises_sum":"34",
+					"from":"从那遥远海边",
+					"to":"你我皆凡人",
+					"status":1,
+					"create_time":"2016-01-20 15:52:00",
+					"content":"池塘边的榕树上，知了在声声的叫个不停，一年又一年，一天又一天，迷迷糊糊的童年"
+				  }]
+				}]
+      },{
+				"id":3,
+				"comment_sum":"1",
+				"comment_list":[{
+				  "praises_sum":"6",
+				  "status":0,
+				  "head_url":"../../images/4.jpg",
+				  "nickname":"站在城市的最中央",
+				  "create_time":"2016-01-20 15:52:00",
+				  "content":"我觉得爱情让人变得残忍",
+				  "reply":[{
+					"praises_sum":"7",
+					"from":"哪怕与你相见",
+					"to":"站在城市的最中央",
+					"status":0,
+					"create_time":"2016-01-20 15:52:00",
+					"content":"我也有我感觉，难道要遮掩"
+				  },{
+					"praises_sum":"34",
+					"from":"爱与痛的边缘",
+					"to":"站在城市的最中央",
+					"status":1,
+					"create_time":"2016-01-20 15:52:00",
+					"content":"若已经不想跟我相恋"
+				  }]
+				}]
+      },{
+				"id":4,
+				"comment_sum":"1",
+				"comment_list":[{
+				  "praises_sum":"6",
+				  "status":0,
+				  "head_url":"../../images/1.jpg",
+				  "nickname":"就像黑夜和白天",
+				  "create_time":"2016-01-20 15:52:00",
+				  "content":"也在笑我太傻，也在为我牵挂，看不清你的脚印。",
+				  "reply":[{
+					"praises_sum":"7",
+					"from":"天空啊下着沙",
+					"to":"就像黑夜和白天",
+					"status":0,
+					"create_time":"2016-01-20 15:52:00",
+					"content":"你走了，就走了"
+				  },{
+					"praises_sum":"34",
+					"from":"也在为我牵挂",
+					"to":"就像黑夜和白天",
+					"status":1,
+					"create_time":"2016-01-20 15:52:00",
+					"content":"风走了，沙走了，不要想起"
+				  }]
+				}]
+      },{
+				"id":5,
+				"comment_sum":"1",
+				"comment_list":[{
+				  "praises_sum":"82",
+				  "status":1,
+				  "head_url":"../../images/2.jpg",
+				  "nickname":"看她的温柔善良",
+				  "create_time":"2016-01-20 15:52:00",
+				  "content":"她的挽留萦绕耳畔，你忍不住哭出声响",
+				  "reply":[{
+					"praises_sum":"7",
+					"from":"别问我是谁",
+					"to":"看她的温柔善良",
+					"status":0,
+					"create_time":"2016-01-20 15:52:00",
+					"content":"你走了，就走了"
+				  },{
+					"praises_sum":"34",
+					"from":"在不知不觉的一瞬间",
+					"to":"看她的温柔善良",
+					"status":0,
+					"create_time":"2016-01-20 15:52:00",
+					"content":"风走了，沙走了，不要想起"
+				  }]
+				}]
+      },{
+				"id":6,
+				"comment_sum":"1",
+				"comment_list":[{
+				  "praises_sum":"82",
+				  "status":0,
+				  "head_url":"../../images/3.jpg",
+				  "nickname":"山川载不动太多悲哀",
+				  "create_time":"2016-01-20 15:52:00",
+				  "content":"她的挽留萦绕耳畔，你忍不住哭出声响",
+				  "reply":[{
+					"praises_sum":"7",
+					"from":"海水永不干",
+					"to":"山川载不动太多悲哀",
+					"status":1,
+					"create_time":"2016-01-20 15:52:00",
+					"content":"黄沙偏要将痴和怨掩埋"
+				  },{
+					"praises_sum":"34",
+					"from":"岁月禁不起太长的等待",
+					"to":"山川载不动太多悲哀",
+					"status":1,
+					"create_time":"2016-01-20 15:52:00",
+					"content":"爱到不能爱，聚到终须散"
+				  }]
+				}]
+      },{
+				"id":7,
+				"comment_sum":"1",
+				"comment_list":[{
+				  "praises_sum":"82",
+				  "status":0,
+				  "head_url":"../../images/3.jpg",
+				  "nickname":"路上行人匆匆过",
+				  "create_time":"2016-01-20 15:52:00",
+				  "content":"这些道理我懂，叫我如何放得下",
+				  "reply":[{
+					"praises_sum":"7",
+					"from":"也只不过是个陌生人",
+					"to":"路上行人匆匆过",
+					"status":0,
+					"create_time":"2016-01-20 15:52:00",
+					"content":"如今我对你来说"
+				  },{
+					"praises_sum":"34",
+					"from":"你也不会在会我心痛",
+					"to":"路上行人匆匆过",
+					"status":0,
+					"create_time":"2016-01-20 15:52:00",
+					"content":"看见我走在雨里，管他地久天长"
+				  }]
+				}]
+      },{
+				"id":8,
+				"comment_sum":"1",
+				"comment_list":[{
+				  "praises_sum":"27",
+				  "status":0,
+				  "head_url":"../../images/1.jpg",
+				  "nickname":"爱我的人和我爱的人",
+				  "create_time":"2016-01-20 15:52:00",
+				  "content":"离不开我爱的人，放不下我爱的人",
+				  "reply":[{
+					"praises_sum":"45",
+					"from":"记忆它总是慢慢累积在心中",
+					"to":"爱我的人和我爱的人",
+					"status":0,
+					"create_time":"2016-01-20 15:52:00",
+					"content":"在满天黄沙里，一生和你相遇"
+				  },{
+					"praises_sum":"85",
+					"from":"陌生的城市呀",
+					"to":"爱我的人和我爱的人",
+					"status":1,
+					"create_time":"2016-01-20 15:52:00",
+					"content":"飘洋过海的来看你"
+				  }]
+				}]
+      },{
+				"id":9,
+				"comment_sum":"1",
+				"comment_list":[{
+				  "praises_sum":"72",
+				  "status":1,
+				  "head_url":"../../images/2.jpg",
+				  "nickname":"熟悉的角落里",
+				  "create_time":"2016-01-20 15:52:00",
+				  "content":"红尘多可笑,此情最无聊",
+				  "reply":[{
+					"praises_sum":"13",
+					"from":"将会面对什么样的结局",
+					"to":"熟悉的角落里",
+					"status":1,
+					"create_time":"2016-01-20 15:52:00",
+					"content":""
+				  },{
+					"praises_sum":"28",
+					"from":"送君千里",
+					"to":"熟悉的角落里",
+					"status":1,
+					"create_time":"2016-01-20 15:52:00",
+					"content":"对酒当歌，我只愿开心到老"
+				  }]
+				}]
+      },{
+				"id":10,
+				"comment_sum":"1",
+				"comment_list":[{
+				  "praises_sum":"83",
+				  "status":0,
+				  "head_url":"../../images/2.jpg",
+				  "nickname":"梦中全完了",
+				  "create_time":"2016-01-20 15:52:00",
+				  "content":"不求有人能明了",
+				  "reply":[{
+					"praises_sum":"13",
+					"from":"独自醉倒",
+					"to":"梦中全完了",
+					"status":0,
+					"create_time":"2016-01-20 15:52:00",
+					"content":"任我飘摇"
+				  },{
+					"praises_sum":"28",
+					"from":"将快乐寻找",
+					"to":"梦中全完了",
+					"status":0,
+					"create_time":"2016-01-20 15:52:00",
+					"content":"不求有人能明了"
+				  }]
+				}]
+      },{
+				"id":11,
+				"comment_sum":"1",
+				"comment_list":[{
+				  "praises_sum":"84",
+				  "status":0,
+				  "head_url":"../../images/4.jpg",
+				  "nickname":"我的未来不是梦",
+				  "create_time":"2016-01-20 15:52:00",
+				  "content":"流着汗水默默辛苦的工作",
+				  "reply":[{
+					"praises_sum":"13",
+					"from":"也不放弃自己想要的生活",
+					"to":"我的未来不是梦",
+					"status":0,
+					"create_time":"2016-01-20 15:52:00",
+					"content":"对自己的承诺，对爱的执着"
+				  },{
+					"praises_sum":"28",
+					"from":"追求一种意想不到的温柔",
+					"to":"我的未来不是梦",
+					"status":1,
+					"create_time":"2016-01-20 15:52:00",
+					"content":"因为我不在乎"
+				  }]
+				}]
+      }]
+}

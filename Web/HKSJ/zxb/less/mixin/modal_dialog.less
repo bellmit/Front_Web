@@ -1,0 +1,286 @@
+///公共弹出组件
+///作者：易品
+
+
+
+
+.modal-dialog-wrap{
+	.layout-relative-base(0,0,500);
+	.layout-float-base(530px);
+	background:@color-white;
+	.box-sizing-base;
+	margin:0 auto;
+	min-height:300px;
+}
+
+.modal-dialog-closebtn{
+	.layout-absoluter-base;
+	width:40px;
+	height:40px;
+	text-align:center;
+	color:@color-gray2;
+	.user-select-base;
+	cursor:pointer;
+	text-align:center;
+	span{
+		width:16px;
+		height:16px;
+		display:block;
+		overflow:hidden;
+		margin:12px 0 0 12px;
+		background:url(../images/icons.png) -750px 0 no-repeat;
+	}
+	&:hover{
+		color:@color-orange1;
+		span{
+			background:url(../images/icons.png) -766px 0 no-repeat;
+		}
+	}
+}
+
+
+.modal-dialog-content{
+	.layout-float-base(320px);
+	min-height:200px;
+	margin:50px 0 60px 105px;
+	>h3{
+		height:50px;
+		line-height:30px;
+		text-align:center;
+		width:100%;
+		font-size:@font-size-base + 12;
+		color:@color-gray1;
+		.user-select-base;
+	}
+	>h4{
+		line-height:30px;
+		text-align:center;
+		width:100%;
+		font-size:@font-size-base + 4;
+		color:@color-gray3;
+		margin:5px 0 20px 0;
+		.user-select-base;
+	}
+	>p{
+		font-size:@font-size-base;
+		line-height:22px;
+		color:@color-gray2;
+		.text-ww;
+		margin:5px 0 20px 0;
+		letter-spacing:2px;
+		text-align:center;
+		a{
+			padding:0 5px;
+			color:@color-orange1;
+		}
+	}
+	.item{
+		.layout-float-base;
+	}
+	
+	.textitem{
+		input{
+			background:@color-white;
+			height:20px;
+			width:300px;
+			padding:6px 0 6px 10px;
+			border:1px solid @color-gray5;
+			line-height:20px;
+			font-size:@font-size-base - 2;
+			color:@color-gray2;
+			&:focus{
+				border:1px solid @color-orange2;
+			}
+		}
+	}
+	
+	.tipitem,
+	.labeltipitem{
+		height:18px;
+		line-height:16px;
+		.text-of;
+		text-overflow:ellipsis;
+		color:@color-red1;
+		font-size:@font-size-base - 2;
+	}
+	
+	.labeltipitem{
+		text-indent:78px;
+	}
+	
+	.btnitem,
+	.labelbtnitem{
+		button,
+		input{
+			margin:5px 0 0 0;
+			height:40px;
+			display:inline-block;
+			line-height:40px;
+			background:@color-orange1;
+			text-align:center;
+			font-size:@font-size-base;
+			color:@color-white;
+			&:hover{
+				background:@color-orange2;
+			}
+		}
+	}
+	
+	.btnitem{
+		button,
+		input{
+			width:310px;
+		}
+	}
+	
+	.labelbtnitem{
+		button,
+		input{
+			float:left;
+			margin:10px 0 0 75px;
+			width:230px;
+		}
+	}
+	
+	.labeltextitem,
+	.label-mnselect,
+	.labelselectitem{
+		label{
+			float:left;
+			width:70px;
+			font-size:@font-size-base - 2;
+			display:inline-block;
+			line-height:32px;
+			vertical-align:middle;
+			text-align:right;
+			.text-of;
+			text-overflow:ellipsis;
+			color:@color-gray2;
+			margin:0 5px 0 0;
+		}
+	}
+	
+	.labeltextitem{
+		input{
+				float:left;
+				background:@color-white;
+				height:20px;
+				width:220px;
+				padding:6px 0 6px 10px;
+				border:1px solid @color-gray5;
+				line-height:20px;
+				font-size:@font-size-base - 2;
+				color:@color-gray2;
+				&:focus{
+					border:1px solid @color-orange2;
+				}
+		}
+	}
+	
+	.labelselectitem{
+		select{
+			float:left;
+			background:@color-white;
+			height:32px;
+			width:232px;
+			border:1px solid @color-gray5;
+			line-height:20px;
+			font-size:@font-size-base - 2;
+			color:@color-gray2;
+		}
+		
+	}
+	
+	.mn-selectitem{
+		.layout-relative-base;
+		float:left;
+		height:32px;
+		width:112px;
+		>p{
+			border:1px solid @color-gray4;
+			.box-sizing-base;
+			width:100%;
+			padding:0 20px 0 0;
+			*width:90%;
+			*padding:0 10px 0 0;
+			float:left;
+			height:30px;
+			text-align:left;
+			text-indent:5px;
+			line-height:30px;
+			white-space:nowrap;
+			overflow:hidden;
+			text-overflow:ellipsis;
+			color:@color-gray2;
+			font-size:@font-size-base;
+		}
+		>span{
+			.layout-absoluter-base(8px,14px,20);
+			width:7px;
+			height:4px;
+			display:inline-block;
+			vertical-align:middle;
+			overflow:hidden;
+			background:url(../images/icons.png) -194px 0 no-repeat;
+		}
+		ul{
+			display:none;
+			.layout-float-base;
+			border-bottom:1px solid @color-gray4;
+			max-height:200px;
+			overflow-y:auto;
+			overflow-x:hidden;
+			li{
+				.layout-float-base;
+				background:@color-white;
+				height:32px;
+				*width:98%;
+				text-align:center;
+				line-height:32px;
+				overflow:hidden;
+				white-space:nowrap;
+				text-overflow:ellipsis;
+				font-size:@font-size-small;
+				border-left:1px solid @color-gray4;
+				border-right:1px solid @color-gray4;
+				color:@color-gray2;
+				cursor:pointer;
+				&.city_active{
+					background:@color-gray5;
+				}
+				&:hover{
+					background:@color-gray5;
+				}
+			}
+		}
+		&:hover{
+			>span{
+				background:url(../images/icons.png) -194px -4px no-repeat;
+			}
+			ul{
+				display:block;
+			}
+		}
+	}
+	
+	.label-mnselect1{
+		margin:0 0 0 5px;
+	}
+	
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

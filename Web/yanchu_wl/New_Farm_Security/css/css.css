@@ -1,0 +1,14 @@
+@charset "gb2312";
+.kk{ float:left; width:442px; height:256px; background:url(../images/11.jpg)}
+.btn{ float:left; width:262px; margin-top:210px; margin-left:180px; _margin-left:90px;}
+.btn a{ float:left; width:75px; height:25px; background:url(../images/valid-buttom.png); font-size:16px; color:#FFF; text-decoration:none; text-align:center; padding-top:7px; font-weight:bold;}
+
+.kk1{ float:left; width:442px; height:256px; background:url(../images/wyss.jpg)}
+.kk2{ float:left; width:442px; height:256px; background:url(../images/czsb.jpg)}
+.kk3{ float:left; width:442px; height:256px; background:url(../images/cw.jpg)}
+.kk4{ float:left; width:442px; height:256px; background:url(../images/swjm.jpg)}
+.kk5{ float:left; width:442px; height:256px; background:url(../images/czcg.jpg)}
+.kk6{ float:left; width:442px; height:256px; background:url(../images/yjjm.jpg)}
+.kk7{ float:left; width:442px; height:256px; background:url(../images/bc.jpg)}
+.btn7{ float:left; width:262px; margin-top:200px; margin-left:120px; _margin-left:55px;}
+.btn7 a{ float:left; width:75px; height:25px; background:url(../images/valid-buttom.png); font-size:16px; color:#FFF; text-decoration:none; text-align:center; padding-top:7px; font-weight:bold; margin-left:20px;}

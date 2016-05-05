@@ -1,0 +1,154 @@
+.loan{
+	position:absolute;
+	top:0px;
+	right:0px;
+	padding:0px 18px;
+	padding-top:8px\9;
+	*padding-top:8px;
+	_padding-top:8px;
+	border:1px solid #d7d7d7;
+	border-radius:6px;
+	box-shadow: 0px 0px 1px #ddd;}
+.loan ul{
+	padding: 0px;
+	list-style:none;
+}
+.loan li{
+	color:#656565;
+	margin-bottom:18px;
+	font-size: 12px;
+	list-style:none;}
+.loan li.last{
+	margin-bottom:10px;}
+.loan li span{
+	color:#656565;}
+.loan li.moneyinput{
+	margin-bottom:30px;}
+.loan h2{
+	font-size:18px;
+	font-family:"微软雅黑";
+	color:#333;
+	margin: 16px 0;
+	margin:0px 0px\9;
+	*margin:0px 0px;
+	_margin:0px 0px;}
+.loan label{
+	color:#656565;
+	margin-right: 8px;
+	font-size: 12px;
+	}
+.loan .money{
+	width:150px;
+	height:30px;
+	padding:5px;
+	margin-right:5px;
+	border:1px solid #cecece;
+	border-radius:4px;}
+.loan .money.Validform_error{
+	border: 1px solid #d73c23;
+	box-shadow: 0px 0px 1px #d73c23;
+}
+.Validform_right{
+	background:none;
+}
+.loan #loantime{
+	width:162px;
+	height:9px;
+	margin-top:5px;
+	margin-right:5px;
+	background:#ddd;
+	display:block;
+	float:left;
+	position:relative;}
+.loan #loantime .value{
+	width:30%;
+	background:#F7D5CF;
+	height:9px;
+	display:block;
+	float:left;}
+.loan #slider .cursor, #slider .ui-slider-handle{
+	display:block;
+	width:30px;
+	height:34px;
+	height:38px\9;
+	*height:34px;
+	_height:38px;
+	font-family:"微软雅黑";
+	font-size:12px;
+	font-weight:bold;
+	color:#656565;
+	background:url(../../image/index/cursor.fw.png) no-repeat center center;
+	position:absolute;
+	top:-29px;
+	left:-15px;
+	text-align:center;
+	padding-top:4px;
+	border-radius: 0px;
+	border: 0px;
+	z-index: 2;}
+#slider .ui-slider-handle{
+	width:20px;
+	background:none;
+	cursor:pointer;}
+.loan li.loantime{
+	height:20px;
+	line-height: 20px;}
+.loan li.loantime label{
+	float:left;
+	margin-right: 17px;}
+.loan button{
+	display: block;
+	width:116px;
+	height:36px;
+	background:url(../../image/index/indexbtns.png) no-repeat -125px -44px;
+	text-indent:-9999em;
+	cursor:pointer;
+	margin-left: 74px;
+	margin-top:15px;
+	border:none 0px;}
+.loan #slider{
+	position:relative;
+	width: 162px;
+	float: left;
+	height: 9px;
+	border-radius: 0px;
+	margin-right: 5px;
+	margin-top: 5px;
+	border: 1px solid #ddd;}
+#slider .ui-slider-range{
+	border-radius:0px;
+	background:#F7D5CF;
+	height: 9px;}
+.loan li.radios{
+	overflow:hidden;}
+.loan li.radios label{
+	float:left;}
+.radio{
+	background: transparent url(../../image/index/loan_radio.fw.png) no-repeat 0px 0px;
+	padding-left:20px;
+	line-height:16px;
+	cursor:pointer;
+	display: block;
+	float: left;
+	height: 20px;
+	line-height: 20px;
+	margin-right: 11px;
+	font-size: 14px;
+	}
+.radio.checked{
+	background-position:0px -19px;}
+.Validform_checktip {
+	position: relative;
+	top: 5px;
+	line-height: 20px;
+	height: 20px;
+	color: #999;
+	font-size: 12px;
+	display: inline-block;
+	overflow: hidden;
+}
+.Validform_wrong {
+	color: #d73c23;
+	white-space: nowrap;
+	background: none;
+}

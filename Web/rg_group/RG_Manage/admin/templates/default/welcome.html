@@ -1,0 +1,187 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta content="IE=edge;chrome=1" http-equiv="X-UA-Compatible">
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+<title>荣格集团</title>
+<link id="cssfile2" rel="stylesheet" type="text/css" href="css/skin_1.css"/>
+<script type="text/javascript" src="../../../resource/js/jquery.js"></script>
+<script type="text/javascript" src="../../../resource/js/admincp.js"></script>
+<script type="text/javascript" src="../../../resource/js/jquery.cookie.js"></script>
+<script type="text/javascript" src="../../../resource/js/common.js"></script>
+<script type="text/javascript">
+cookie_skin = $.cookie("MyCssSkin");
+if (cookie_skin) {
+	$('#cssfile2').attr("href","css/"+ cookie_skin +".css");
+}
+</script>
+</head>
+<body>
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<script type="text/javascript" src="../../../resource/js/perfect-scrollbar.min.js"></script>
+<script type="text/javascript" src="../../../resource/js/jquery.mousewheel.js"></script>
+<div class="page">
+  <div class="fixed-bar">
+    <div class="item-title">
+      <h3>系统信息</h3>
+    </div>
+  </div>
+  <div class="fixed-empty"></div>
+  <div class="info-panel">
+    <dl class="member">
+      <dt>
+        <div class="ico"> <i></i> <sub title="会员总数"> <span> <em id="statistics_member">22</em> </span> </sub> </div>
+        <h3>会员</h3>
+        <h5>新增会员/预存款提现</h5>
+      </dt>
+      <dd>
+        <ul>
+          <li class="w50pre normal"> <a href="../../../web/templates/default/index.php?act=member&amp;op=member"> 本周新增 <sub> <em id="statistics_week_add_member">1</em> </sub> </a> </li>
+          <li class="w50pre none"> <a href="../../../web/templates/default/index.php?act=predeposit&amp;op=pd_cash_list"> 预存款提现 <sub> <em id="statistics_cashlist">0</em> </sub> </a> </li>
+        </ul>
+      </dd>
+    </dl>
+    <dl class="shop">
+      <dt>
+        <div class="ico"> <i></i> <sub title="新增店铺数"> <span> <em id="statistics_store">4</em> </span> </sub> </div>
+        <h3>店铺</h3>
+        <h5>新开店铺审核</h5>
+      </dt>
+      <dd>
+        <ul>
+          <li class="w33pre none"> <a href="../../../web/templates/default/index.php?act=store&amp;op=store_joinin"> 开店审核 <sub> <em id="statistics_store_joinin">0</em> </sub> </a> </li>
+          <li class="w33pre none"> <a href="../../../web/templates/default/index.php?act=store&amp;op=store&amp;store_type=expired"> 已到期 <sub> <em id="statistics_store_expired">0</em> </sub> </a> </li>
+          <li class="w34pre none"> <a href="../../../web/templates/default/index.php?act=store&amp;op=store&amp;store_type=expire"> 即将到期 <sub> <em id="statistics_store_expire">0</em> </sub> </a> </li>
+        </ul>
+      </dd>
+    </dl>
+    <dl class="goods">
+      <dt>
+        <div class="ico"> <i></i> <sub title="商品总数"> <span> <em id="statistics_goods">12</em> </span> </sub> </div>
+        <h3>商品</h3>
+        <h5>新增商品/品牌申请审核</h5>
+      </dt>
+      <dd>
+        <ul>
+          <li class="w25pre none"> <a href="../../../web/templates/default/index.php?act=goods&amp;op=goods"> 本周新增 <sub title=""> <em id="statistics_week_add_product">0</em> </sub> </a> </li>
+          <li class="w25pre none"> <a href="http://dianshangkaifa.szrgsh.com/admin/index.php?act=goods&op=goods&type=waitverify&search_verify=10"> 商品审核 <sub> <em id="statistics_product_verify">0</em> </sub> </a> </li>
+          <li class="w25pre none"> <a href="../../../web/templates/default/index.php?act=inform&amp;op=inform_list"> 举报 <sub> <em id="statistics_inform_list">0</em> </sub> </a> </li>
+          <li class="w25pre none"> <a href="../../../web/templates/default/index.php?act=brand&amp;op=brand_apply"> 品牌申请 <sub> <em id="statistics_brand_apply">0</em> </sub> </a> </li>
+        </ul>
+      </dd>
+    </dl>
+    <dl class="trade">
+      <dt>
+        <div class="ico"> <i></i> <sub title="订单总数"> <span> <em id="statistics_order">213</em> </span> </sub> </div>
+        <h3>交易</h3>
+        <h5>交易订单及投诉/举报</h5>
+      </dt>
+      <dd>
+        <ul>
+          <li class="w25pre none"> <a href="../../../web/templates/default/index.php?act=refund&amp;op=refund_manage"> 退款 <sub> <em id="statistics_refund">0</em> </sub> </a> </li>
+          <li class="w25pre none"> <a href="../../../web/templates/default/index.php?act=return&amp;op=return_manage"> 退货 <sub> <em id="statistics_return">0</em> </sub> </a> </li>
+          <li class="w25pre none"> <a href="../../../web/templates/default/index.php?act=complain&amp;op=complain_new_list"> 投诉 <sub> <em id="statistics_complain_new_list">0</em> </sub> </a> </li>
+          <li class="w25pre none"> <a href="../../../web/templates/default/index.php?act=complain&amp;op=complain_handle_list"> 待仲裁 <sub> <em id="statistics_complain_handle_list">0</em> </sub> </a> </li>
+        </ul>
+      </dd>
+    </dl>
+    <dl class="operation">
+      <dt>
+        <div class="ico"> <i></i> </div>
+        <h3>运营</h3>
+        <h5>系统运营类设置及审核</h5>
+      </dt>
+      <dd>
+        <ul>
+          <li class="w25pre none"> <a href="../../../web/templates/default/index.php?act=groupbuy&amp;op=groupbuy_verify_list"> 团购 <sub> <em id="statistics_groupbuy_verify_list">0</em> </sub> </a> </li>
+          <li class="w25pre none"> <a href="../../../web/templates/default/index.php?act=pointorder&amp;op=pointorder_list"> 积分订单 <sub> <em id="statistics_points_order">0</em> </sub> </a> </li>
+          <li class="w25pre none"> <a href="../../../web/templates/default/index.php?act=bill&amp;op=show_statis&amp;os_month=&amp;query_store=&amp;bill_state=2"> 账单审核 <sub> <em id="statistics_check_billno">0</em> </sub> </a> </li>
+          <li class="w25pre none"> <a href="../../../web/templates/default/index.php?act=bill&amp;op=show_statis&amp;os_month=&amp;query_store=&amp;bill_state=3"> 账单支付 <sub> <em id="statistics_pay_billno">0</em> </sub> </a> </li>
+        </ul>
+      </dd>
+    </dl>
+    <dl class="cms">
+      <dt>
+        <div class="ico"> <i></i> </div>
+        <h3>CMS</h3>
+        <h5>资讯文章/图片画报/会员评论</h5>
+      </dt>
+      <dd>
+        <ul>
+          <li class="w33pre none"> <a href="http://dianshangkaifa.szrgsh.com/admin/index.php?act=cms_article&op=cms_article_list_verify"> 文章审核 <sub> <em id="statistics_cms_article_verify">0</em> </sub> </a> </li>
+          <li class="w33pre none"> <a href="http://dianshangkaifa.szrgsh.com/admin/index.php?act=cms_picture&op=cms_picture_list_verify"> 画报审核 <sub> <em id="statistics_cms_picture_verify">0</em> </sub> </a> </li>
+          <li class="w34pre none"> <a href="http://dianshangkaifa.szrgsh.com/admin/index.php?act=cms_comment&op=comment_manage"> 评论 <sub></sub> </a> </li>
+        </ul>
+      </dd>
+    </dl>
+    <dl class="circle">
+      <dt>
+        <div class="ico"> <i></i> </div>
+        <h3>圈子</h3>
+        <h5>申请开通/圈内话题及举报</h5>
+      </dt>
+      <dd>
+        <ul>
+          <li class="w33pre none"> <a href="http://dianshangkaifa.szrgsh.com/admin/index.php?act=circle_manage&op=circle_verify"> 圈子申请 <sub> <em id="statistics_circle_verify">0</em> </sub> </a> </li>
+          <li class="w33pre none"> <a href="http://dianshangkaifa.szrgsh.com/admin/index.php?act=circle_theme&op=theme_list">话题</a> </li>
+          <li class="w34pre none"> <a href="http://dianshangkaifa.szrgsh.com/admin/index.php?act=circle_inform&op=inform_list">举报</a> </li>
+        </ul>
+      </dd>
+    </dl>
+    <dl class="microshop">
+      <dt>
+        <div class="ico"> <i></i> </div>
+        <h3>微商城</h3>
+        <h5>随心看/个人秀/店铺街</h5>
+      </dt>
+      <dd>
+        <ul>
+          <li class="w33pre none"> <a href="http://dianshangkaifa.szrgsh.com/admin/index.php?act=microshop&op=goods_manage">随心看</a> </li>
+          <li class="w33pre none"> <a href="http://dianshangkaifa.szrgsh.com/admin/index.php?act=circle_theme&op=theme_list">个人秀</a> </li>
+          <li class="w34pre none"> <a href="http://dianshangkaifa.szrgsh.com/admin/index.php?act=circle_inform&op=inform_list">店铺街</a> </li>
+        </ul>
+      </dd>
+    </dl>
+    <dl class="micro-website">
+      <dt>
+        <div class="ico"> <i></i> </div>
+        <h3>微网站</h3>
+        <h5>文章管理/微社区管理</h5>
+      </dt>
+      <dd>
+        <ul>
+          <li class="w50pre none"> <a href="http://dianshangkaifa.szrgsh.com/admin/index.php?act=microshop&op=goods_manage">查看</a> </li>
+          <li class="w50pre none"> <a href="http://dianshangkaifa.szrgsh.com/admin/index.php?act=circle_inform&op=inform_list">配置</a> </li>
+        </ul>
+      </dd>
+    </dl>
+    <dl class="system">
+      <dt>
+        <div class="ico"> <i></i> <a id="UPDATE" href="http://www.shopnc.net/special/B2B2C/" target="_blank" title="ShopNC B2B2C 商城发布" style="visibility: visible;"> <sub> <span>new</span> </sub> </a> </div>
+        <h3></h3>
+        <div id="system-info" class="ps-container">
+          <ul>
+            <li> ShopNC <span>201401162490</span> </li>
+            <li> <span>2014-09-25</span> </li>
+            <li> <span>Linux</span> </li>
+            <li> WEB <span>nginx/1.6.0</span> </li>
+            <li> PHP <span>5.3.28</span> </li>
+            <li> MYSQL <span>5.5.37-log</span> </li>
+          </ul>
+          <div class="ps-scrollbar-x" style="left: 0px; width: 0px;"></div>
+          <div class="ps-scrollbar-y" style="top: 0px; height: 0px;"></div>
+        </div>
+      </dt>
+      <dd>
+        <ul>
+          <li class="w50pre none"> <a target="_blank" href="http://www.shopnc.net"> 官方网站 <sub></sub> </a> </li>
+          <li class="w50pre none"> <a target="_blank" href="http://bbs.shopnc.net"> 官方论坛 <sub></sub> </a> </li>
+        </ul>
+      </dd>
+    </dl>
+    <div class=" clear"></div>
+  </div>
+</div>
+</body>
+</html>

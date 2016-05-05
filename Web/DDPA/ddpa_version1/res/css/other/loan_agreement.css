@@ -1,0 +1,84 @@
+@charset "utf-8";
+/* CSS Document */
+body{
+	background: #f2f2f2;}
+body *{
+	font-size:14px;
+	font-family:"微软雅黑";}
+.container{width:940px;height:auto;margin:0 auto;background:#fff;}
+.mainwrap{width:780px;height:auto;margin:0 auto;color:#555;padding:40px 0;}
+/*detail*/
+.la_title1{float:left;width:780px;color:#454545;font-size:35px;text-align:center;}
+.la_title2{float:left;width:780px;color:#454545;font-size:24px;text-align:left;margin-bottom:10px;}
+.la_item1{float:left;width:780px;height:30px;line-height:30px;}
+.la_subitem11{float:right;}
+.la_subitem12{float:left;}
+/*table*/
+.la_item2table{float:left;border-top:1px solid #cecece;border-left:1px solid #cecece;table-layout:fixed;border-collapse:collapse;empty-cells:show;width:776px;height:auto;margin-top:5px;}
+.la_i2tcg1{width:30% !important;}
+.la_i2tcg2{width:30% !important;}
+.la_i2tcg3{width:15% !important;}
+.la_i2tcg4{width:25% !important;}
+.la_item2table th{height:30px;text-align:center;line-height:30px;border-bottom:1px solid #cecece;border-right:1px solid #cecece;}
+.la_item2table td{padding:5px;text-align:left;border-bottom:1px solid #cecece;border-right:1px solid #cecece;word-break:break-all;word-wrap:break-word;}
+.la_item3ul{float:left;width:780px;height:auto;margin-top:20px;}
+.la_item3ul li{width:780px;height:auto;float:left;margin-top:5px;}
+.la_itemdef,.la_itemfleft{width:780px;float:left;margin-top:30px;}
+.la_itemdef h3,.la_itemfleft h3{width:780px;float:left;margin:5px 0;font-size:22px;text-align:left;}
+.la_itemdef h4,.la_itemfleft h4{width:780px;float:left;margin:5px 0;font-size:16px;text-align:left;}
+.la_itemdef p{width:770px;margin:10px auto 0 auto;color:#656565;line-height:20px;}
+.la_itemfleft span{display:block;width:30px;height:18px;float:left;color:#656565;line-height:20px;margin-top:10px;text-align:center;overflow:hidden;}
+.la_itemfleft p{width:750px;float:left;color:#656565;line-height:20px;margin-top:10px;}
+p.la_itemdefimg{height:130px;background:#fff url(../../image/common/loan_agreement1.png) no-repeat 0 0;}
+.la_itemdef table{float:left;border-top:1px solid #cecece;border-left:1px solid #cecece;table-layout:fixed;border-collapse:collapse;empty-cells:show;width:776px;height:auto;margin-top:5px;}
+.la_itemdef table td{padding:5px;text-align:left;border-bottom:1px solid #cecece;border-right:1px solid #cecece;word-break:break-all;word-wrap:break-word;}
+.la_idd1cg1{width:25% !important;}
+.la_idd1cg2{width:75% !important;}
+.la_idd2cg1{width:40% !important;}
+.la_idd2cg2{width:30% !important;}
+.la_idd2cg3{width:30% !important;}
+.la_itemdef table span{font-weight:bold;}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

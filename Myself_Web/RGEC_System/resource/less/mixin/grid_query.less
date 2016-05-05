@@ -1,0 +1,162 @@
+///grid 查询输入域
+.grid-query{
+	.layout-float-base;	
+	form{
+		margin:0;
+		padding:0;
+	}
+}
+
+.grid-queryitem{
+	display:inline-block;
+	padding:3px 5px;
+	float:left;
+}
+
+.grid-queryseparatea{
+	&:after{
+		.box-sizing-base;
+		display:inline-block;
+		float:right;
+		content:'\00a6';
+		color:@color-gray3;
+		height:100%;
+		margin:0 10px;
+		vertical-align:middle;
+		font-size:@font-size-base;
+		padding:3px 0 0 0;
+	}
+}
+.grid-queryseparateb{
+	&:before{
+		.box-sizing-base;
+		display:inline-block;
+		float:left;
+		content:'\00a6';
+		color:@color-gray3;
+		height:100%;
+		margin:0 10px;
+		vertical-align:middle;
+		font-size:@font-size-base;
+		padding:3px 0 0 0;
+	}
+}
+
+.grid-icon{
+	display:inline-block;
+	padding:0 10px 0 0;
+}
+.grid-search-icon{
+		width:10px;
+		height:10px;
+		&:before{
+			content:'\e645';
+			font-family:'ux_eight';
+		}
+}
+////只读文本
+.grid-datetext,.form-readonlytext{
+	background:@color-white !important;
+	cursor:default !important;
+}
+
+////自定义按钮
+.news-sendbtn,
+.rechargebtn,
+.deletebtn,
+.transferbtn,
+.shoppingbtn,
+.workroombtn,
+.shoppingcartbtn,
+.searchbtn,
+.okbtn,
+.addbtn,
+.activebtn{
+		.box-sizing-base;
+		padding:3px 10px;
+		margin:0 0 0 10px;
+		&:before{
+			display:inline-block;
+			vertical-align:middle;
+			padding:0 5px 0 0;
+		}
+}
+.news-sendbtn{
+	&:before{
+		content:'\e649';
+		font-family:'ux_five';
+		font-size:@font-size-base;
+	}
+}
+.rechargebtn{
+	&:before{
+		content:'\e6f6';
+		font-family:'ux_two';
+		font-size:@font-size-small;
+	}
+}
+.deletebtn{
+	&:before{
+		content:'\e60c';
+		font-family:'ux_eight';
+		font-size:@font-size-small;
+	}
+}
+.transferbtn{
+	&:before{
+		content:'\e6ee';
+		font-family:'ux_one';
+		font-size:@font-size-small - 2;
+	}
+}
+.shoppingbtn{
+	&:before{
+		content:'\e6c5';
+		font-family:'ux_one';
+		font-size:@font-size-default;
+	}
+}
+.workroombtn{
+	&:before{
+		content:'\e6b9';
+		font-family:'ux_one';
+		font-size:@font-size-default;
+	}
+}
+.shoppingcartbtn{
+	&:before{
+		content:'\e639';
+		font-family:'ux_two';
+		font-size:@font-size-small;
+	}
+}
+.searchbtn{
+	&:before{
+		content:'\e645';
+		font-family:'ux_eight';
+		font-size:@font-size-base;
+	}
+}
+.okbtn{
+	&:before{
+		content:'\e62c';
+		font-family:'ux_two';
+		font-size:@font-size-base;
+	}
+}
+.addbtn{
+	&:before{
+		content:'\e634';
+		font-family:'ux_seven';
+		font-size:@font-size-base;
+		padding:0 5px 2px 0;
+	}
+}
+.activebtn{
+	&:before{
+		content:'\e634';
+		font-family:'ux_seven';
+		font-size:@font-size-base;
+		padding:0 5px 2px 0;
+	}
+}

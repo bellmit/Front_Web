@@ -1,0 +1,51 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<meta name="description" content="德亿多媒体资源库,德亿多媒体,德亿多媒体资源库管理系统,管理系统--信息-在线公告"/>
+<meta name="keywords" content="德亿多媒体资源库,德亿多媒体,德亿多媒体资源库管理系统,管理系统--信息--在线公告"/>
+<link rel="stylesheet" type="text/css" href="../../css/main/menu_operate.css">
+<script src="../../js/lib/jquery-1.8.3.min.js"></script>
+<script src="../../js/lib/jquery.blockUI.min.js"></script>
+<script src="../../js/utils/util.js"></script>
+<script>
+$(function(){
+	var newsprop_close=$("#newsprop_close"),newsprop_sure=$("#newsprop_sure");
+	/*初始化*/
+	
+	/*确定*/
+	newsprop_sure.click(function(){
+		/*to do*/
+	});
+	/*关闭*/
+	newsprop_close.click(function(){window.close();});
+})
+</script>
+<title>信息--在线公告</title>
+</head>
+<body>
+<div class="newsprop_wrap">
+	<h1 class="newsprop_title">信息--在线公告</h3>
+	<table class="newsprop_content">
+    	<colgroup>
+        	<col class="up_cg1"/>
+            <col class="up_cg2"/>
+        </colgroup>
+    	<tr class="newsprop_text">
+        	<td><label for="newstitle">标题：</label></td>
+            <td><input type="text" name="newstitle" id="newstitle"/></td>
+        </tr>       
+        <tr class="newsprop_textarea">
+        	<td><label>内容：</label></td>
+            <td>
+            	<textarea name="newscontent" id="newscontent">最新新闻最新新闻最新新闻最新新闻最新新闻最新新闻最新新闻最新新闻最新新闻最新新闻最新新闻最新新闻最新新闻最新新闻最新新闻最新新闻最新新闻最新新闻最新新闻最新新闻最新新闻最新新闻最新新闻最新新闻最新新闻最新新闻最新新闻最新新闻最新新闻最新新闻最新新闻最新新闻</textarea>
+            </td>
+        </tr>
+        <tr>
+        	<td>&nbsp;</td>
+            <td><input type="submit" name="newsprop_sure" value="确定" id="newsprop_sure" class="newsprop_sure"><input type="button" name="newsprop_close" value="关闭" id="newsprop_close" class="newsprop_close"></td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

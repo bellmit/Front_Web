@@ -1,0 +1,45 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" type="text/css" href="css/CitySelect.css">
+<script src="js/jquery-1.8.3.min.js"></script>
+<script src="js/CityData.js"></script>
+<script src="js/CitySelect.js"></script>
+<title>联动多功能城市选择菜单</title>
+</head>
+<body>
+	<div class="header">
+        <div class="header_wrap">
+            <h1>JS_CitySelect</h1>
+            <p>javascript,html,css</p>
+        </div>
+    </div>
+    <div class="container">
+     	<div class="content_wrap">
+        	<div class="mainbox">
+            	<h1>联动多功能城市选择菜单</h1>
+                <div class="cityshow">
+                    <label>户籍：</label><input id="cityinputpro" readonly class="cityinput" placeholder="请选择" type="text" value=""/><input  readonly="readonly" id="cityinputcity" class="cityinput" type="text" value="" placeholder="请选择"/>
+                </div>
+            	<div class="cityselect_wrap">
+                    <div id="citymenu" class="citymenu">
+                    	<p class="protheme">所在省：</p>
+                    	<ul id="cityprovince" class="cityprovince"></ul>
+                        <p class="citytheme">所在市：</p>
+                        <ul id="citycity" class="citycity"></ul>
+                    </div>
+                </div>
+            </div>
+            <div class="sidebox">
+            	<h3>城市选择器demo</h3>
+                <p>城市选择器支持选择高亮、支持字母查询、支持初始化选择、支持数据清空</p>
+            </div>
+            <div class="clearfix"></div>
+        </div>   
+    </div>
+    <div class="footer">
+        <div class="footer_wrap"></div>
+    </div>
+</body>
+</html>

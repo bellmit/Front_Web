@@ -1,0 +1,33 @@
+@charset "utf-8";
+/* CSS Document */
+.holdertxt{ font-size:12px; color:#9F9F9F;}
+.gray12{ font-size:12px; color:#535353;}
+.radio{
+	background: transparent url(../../image/loan/loan_radio.png) no-repeat 0px 0px;
+	padding-left:20px;
+	line-height:16px;
+	cursor:pointer;
+	}
+.radio.checked{
+	background-position:0px -19px;}
+.checkbox{
+	position:relative;
+	top:3px;
+	display: inline-block;
+	width: 13px;
+	height: 13px;
+	margin-right: 5px;
+	background:url(../../image/msg/checkbox.fw.png) no-repeat -3px -2px;
+	cursor:pointer;}
+.checkbox.checked{
+	background-position:-3px -2px;}
+.checkbox.unchecked{
+	background-position:-3px -17px;}
+.checkbox.disabled{
+	background-position:-3px -32px;}
+.checkbox.noedit{
+	background-position:-3px -46px;}
+.checkbox input{
+	display:none;}
+
+

@@ -1,0 +1,58 @@
+////金额大写
+.moneyup-wrap{
+	.layout-float-base;
+	.layout-relative-base;
+	height:0;
+	div{
+		.layout-absolutel-base;
+		width:100%;
+		height:26px;
+		line-height:26px;
+		font-size:@font-size-base;
+		color:@color-gray3;
+		font-weight:bold;
+		font-family:@fontfamliy-base;
+		white-space:nowrap;
+	}
+}
+
+
+///提示信息
+.posttips-wrap,
+.posbtips-wrap{
+	.layout-float-base;
+	.layout-relative-base;
+	height:0;
+	div{
+		width:100%;
+		height:20px;
+		line-height:20px;
+		font-size:@font-size-small;
+		color:@color-gray3;
+		white-space:nowrap;
+	}
+}
+.posttips-wrap{
+	div{
+		.layout-absolutel-base(0,-20px,50);
+	}
+}
+.posbtips-wrap{
+	div{
+		.layout-absolutel-base;
+	}
+}
+///验证码区域
+.form-control-validcode{
+		.box-sizing-base;
+		display:inline-block;
+		max-height:34px;
+		max-width:80px;
+		overflow:hidden;
+		cursor:pointer;
+		padding:2px;
+		border:1px solid @color-gray3;
+		.border-radius-base(3px);
+}
+
+

@@ -1,0 +1,75 @@
+@charset "utf-8";
+/* CSS Document */
+.new_list *{
+margin:0;
+padding:0;
+list-style:none;
+}
+.new_list{
+position:absolute;
+top:100px;
+left:30%;
+width:600px;
+}
+.new_list h1{
+color:#FF3300;
+cursor:pointer;
+text-align:center;
+}
+.new_list li{
+float:left;
+width:600px;
+height:19px;
+overflow:hidden;
+}
+.new_list li a{
+text-decoration:none;
+float:left;
+width:auto;
+margin-right:100px;
+}
+.new_list li a:hover{
+text-decoration:none;
+color:#000000;
+}
+.new_list li span{
+float:left;
+color:#999999;
+margin-left:-100px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,119 @@
+///*表单容器*/
+.form-box{
+	li{
+		.layout-float-base;
+	}
+}
+///*文本框*/
+.form-text,
+.form-select,
+.form-textarea{
+	label{
+		display:block;
+		font-size:@font-size-base;
+		color:@color-gray2;
+		.text-of;
+	}
+	input[type='text'],
+	input[type='password'],
+	input[type='file'],
+	input[type='search'],
+	select,
+	textarea{
+		.box-sizing-base;
+		background:@color-white;
+		border:1px solid @color-gray5;
+		font-size:@font-size-small;
+		color:@color-gray3;
+	}
+	input[type='text']:focus,
+	input[type='password']:focus,
+	input[type='file']:focus,
+	input[type='search']:focus,
+	select:focus,
+	textarea:focus{
+		border:1px solid @color-blue1;
+		.transition-base(all .5s ease .02s);
+	}
+	
+	input[type='text'].Validform_error,
+	input[type='password'].Validform_error,
+	input[type='file'].Validform_error,
+	input[type='search'].Validform_error,
+	select.Validform_error,
+	textarea.Validform_error,
+	input[type='text'].Validform_error:focus,
+	input[type='password'].Validform_error:focus,
+	input[type='file'].Validform_error:focus,
+	input[type='search'].Validform_error:focus,
+	select.Validform_error:focus,
+	textarea.Validform_error:focus{
+		border:1px solid @color-red !important;
+		color:@color-red2 !important;
+	}
+	
+	input[type='text']:disabled,
+	input[type='password']:disabled,
+	input[type='file']:disabled,
+	input[type='search']:disabled,
+	textarea:disabled,
+	.form-text-disabled{
+		background:@color-gray11;
+		border:1px solid @color-gray7;
+		color:@color-gray4;
+		cursor:not-allowed;
+	}
+}
+///*多选框*/
+.form-checkbox{
+	input[type='checkbox']{
+		width:14px;
+		height:14px;
+	}
+	label{
+		font-size:@font-size-small;
+		cursor:pointer;
+		.text-of;
+	}
+}
+
+///*按钮*/
+.form-btn{
+	input[type='submit'],
+	input[type='button'],
+	input[type='reset'],
+	button{
+		.border-radius-base(3px);
+		font-size:@font-size-base;
+		color:@color-white;
+		display:block;
+		cursor:pointer;
+		.text-unselect;
+	}
+	input[type='submit']:disabled,
+	input[type='button']:disabled,
+	input[type='reset']:disabled,
+	button:disabled,
+	.form-btn-disalbed{
+		color:@color-gray4;
+		background:@color-gray8;
+		cursor:not-allowed;
+	}
+}
+
+///*提示信息*/
+.form-tip{
+	font-size:@font-size-small;
+	color:@color-red2;
+	.text-of;
+}
+
+
+
+
+
+
+
+
+
+

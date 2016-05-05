@@ -1,0 +1,61 @@
+///组件--自定义蒙版组件
+///作者：易品
+
+
+
+
+//固定定位蒙版
+.mask-fixedwrap{
+	.layout-fixedr-base;
+	width:100%;
+	height:100%;
+	background:@color-base;
+	background:rgba(0,0,0,.6);
+	display:table;
+}
+.mask-container{
+	.layout-relative-base;
+	width:100%;
+	height:100%;
+	background:transparent;
+	display:table-cell;
+	vertical-align:middle;
+	>div{
+		.layout-relative-base;
+		.box-sizing-base;
+		padding:20px;
+		width:850px;
+		min-height:600px;
+		overflow-y:auto;
+		margin:0 auto;
+		*margin:100px auto 0 auto;
+		*width:850px;
+		*height:800px;
+		vertical-align:middle;
+		background:@color-white;
+	}
+	.mask-closebtn{
+		.layout-absoluter-base;
+		width:40px;
+		height:40px;
+		text-align:center;
+		color:@color-gray2;
+		.user-select-base;
+		cursor:pointer;
+		text-align:center;
+		span{
+			width:16px;
+			height:16px;
+			display:block;
+			overflow:hidden;
+			margin:12px 0 0 12px;
+			background:url(../images/icons.png) -750px 0 no-repeat;
+		}
+		&:hover{
+			color:@color-orange1;
+			span{
+				background:url(../images/icons.png) -766px 0 no-repeat;
+			}
+		}
+	}
+}

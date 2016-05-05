@@ -1,0 +1,73 @@
+///*--字体图标--*/
+@ux-font-one-url:'../fonts/uxone/';
+@ux-font-two-url:'../fonts/uxtwo/';
+@ux-font-three-url:'../fonts/uxthree/';
+@ux-font-four-url:'../fonts/uxfour/';
+@ux-font-five-url:'../fonts/uxfive/';
+@ux-font-six-url:'../fonts/uxsix/';
+@ux-font-seven-url:'../fonts/uxseven/';
+@ux-font-eight-url:'../fonts/uxeight/';
+@ux-font-name:iconfont;
+@typ-font-url:'../fonts/typ/';
+@typ-font-name:typicons;
+///*--字体--*/
+@fontfamliy-base:'微软雅黑','雅黑','Microsoft YaHei','YaHei','\5FAE\8F6F\96C5\9ED1','宋体','\5B8B\4F53',sans-serif;
+@font-size-base:14px;
+@font-size-small:@font-size-base - 2;
+@font-size-default:@font-size-base + 2;
+@font-size-large:@font-size-base + 4;
+@font-size-bigger:@font-size-base + 10;
+///*--颜色--*/
+@color-type:color;
+@color-base:rgba(0,0,0,1.00);
+@color-white:rgba(255,255,255,1.00);
+@color-red:rgba(217,22,22,1.00);
+@color-red1:rgba(241,25,79,1.00);
+@color-red2:rgba(199,22,30,1.00);
+@color-orange:rgba(242,109,0,1.00);
+@color-lightblue:rgba(107,156,217,1.00);
+@color-blue:rgba(0,200,255,1.00);
+@color-blue1:rgba(22,135,216,1.00);
+@color-blue2:rgba(17,121,177,1.00);
+@color-green:rgba(18,179,18,1.00);
+@color-green1:rgba(54,155,56,1.00);
+@color-yellow:rgba(255,255,0,1.00);
+@color-gray1:rgba(46,46,46,1.00);
+@color-gray2:rgba(64,64,64,1.00);
+@color-gray3:rgba(102,102,102,1.00);
+@color-gray4:rgba(153,153,153,1.00);
+@color-gray5:rgba(170,170,170,1.00);
+@color-gray6:rgba(187,187,187,1.00);
+@color-gray7:rgba(204,204,204,1.00);
+@color-gray8:rgba(221,221,221,1.00);
+@color-gray9:rgba(238,238,238,1.00);
+@color-gray10:rgba(247,247,247,1.00);
+@color-gray11:rgba(250,250,250,1.00);
+///*--基础类--*/
+.box-sizing-base(@boxsizing:border-box){-ms-box-sizing:@boxsizing;-o-box-sizing:@boxsizing;-moz-box-sizing:@boxsizing;-webkit-box-sizing:@boxsizing;box-sizing:@boxsizing;}
+.border-radius-base(@radius){-moz-border-radius:@radius;-ms-border-radius:@radius;-o-border-radius:@radius;-webkit-border-radius:@radius;border-radius:@radius;}
+.box-shadow-base(@str){
+-moz-box-shadow:@str;-ms-box-shadow:@str;-o-box-shadow:@str;-webkit-box-shadow:@str;box-shadow:@str;}
+.transition-base(@str){-moz-transition:@str;-ms-transition:@str;-o-transition:@str;-webkit-transition:@str;transition:@str;}
+.transform-origin-base(@origin){-moz-transform-origin:@origin;-ms-transform-origin:@origin;-o-transform-origin:@origin;-webkit-transform-origin:@origin;transform-origin:@origin;}
+.transform-base(@str){-moz-transform:@str;-ms-transform:@str;-o-transform:@str;-webkit-transform:@str;transform:@str;}
+.color-t-base(@color){@{color-type}:@color;}
+.color-bg-base(@color){background-@{color-type}:@color;}
+///*--动画类--*/
+@import 'animate_variable.less';
+///*--布局--*/
+.layout-base(@w:100%,@box:border-box){width:@w;.box-sizing-base(@box);}
+.layout-fixedl-base(@left:0,@top:0,@z-index:100){position:fixed;left:@left;top:@top;z-index:@z-index;}
+.layout-fixedr-base(@right:0,@top:0,@z-index:100){position:fixed;right:@right;top:@top;z-index:@z-index;}
+.layout-fixedlb-base(@left:0,@bottom:0,@z-index:100){position:fixed;left:@left;bottom:@bottom;z-index:@z-index;}
+.layout-fixedrb-base(@right:0,@bottom:0,@z-index:100){position:fixed;right:@right;bottom:@bottom;z-index:@z-index;}
+.layout-relative-base(@left:0,@top:0,@z-index:1){position:relative;left:@left;top:@top;z-index:@z-index;}
+.layout-absolutel-base(@left:0,@top:0,@z-index:5){position:absolute;left:@left;top:@top;z-index:@z-index;}
+.layout-absoluter-base(@right:0,@top:0,@z-index:5){position:absolute;right:@right;top:@top;z-index:@z-index;}
+.layout-absolutelb-base(@left:0,@bottom:0,@z-index:5){position:absolute;left:@left;bottom:@bottom;z-index:@z-index;}
+.layout-absoluterb-base(@right:0,@bottom:0,@z-index:5){position:absolute;right:@right;bottom:@bottom;z-index:@z-index;}
+.layout-float-base(@w:100%,@box:border-box,@dir:left){.layout-base(@w,@box);float:@dir;}
+///*--文本--*/
+.text-of{overflow:hidden;white-space:nowrap;}
+.text-ww{word-break:break-all;word-wrap:break-word;}
+.text-unselect{-moz-user-select:none;-o-user-select:none;-webkit-user-select:none;-ms-user-select:none;-khtml-user-select:none;user-select:none;}

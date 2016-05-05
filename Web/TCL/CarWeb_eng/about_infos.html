@@ -1,0 +1,107 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>TCL cartel web--about us--information</title>
+<meta name="description" content="TCL cartel web,TCL cartel,about us brand,about us information,about us Company vision" />
+<meta name="keywords" content="TCL cartel web,TCL cartel,about us brand,about us information,about us Company vision" />
+<link rel="shortcut icon" href="images/logo_icon.ico">
+<link rel="stylesheet" type="text/css" href="css/common_eng.css">
+<link rel="stylesheet" type="text/css" href="css/sub_pages_eng.css">
+<script src="js/lib/jquery-1.8.3.min.js"></script>
+<script src="js/common_eng.js"></script>
+<!--[if IE 6]><script type="text/javascript" src="js/iepngfix_tilebg.js"></script><![endif]-->
+<script>
+$(function(){
+	/*contact_infos img*/
+	var about_infos=$("#about_infos img");
+	about_infos.each(function(){
+        if($(this).width()>=600){
+			this.width=600;
+		}
+    });
+	/*subpage left menu*/
+	var menu_nav=$("#menu_nav"),bro_url=window.location.href,localurl=[],cur_index;
+	var current_url=bro_url.substring(bro_url.lastIndexOf('/')+1);
+	/*sidebox nav init*/
+	menu_nav.find("li a").each(function() {
+        localurl.push($(this).attr("href"));
+    });
+	cur_index=$.inArray(current_url,localurl);
+	menu_nav.find("li").eq(cur_index!=-1?cur_index:0).addClass("nav_sel");	
+});
+</script>
+</head>
+<body>
+<div class="container">
+  <div class="header_wrap">
+    <div class="header clearfix"><a href="home.html"><span id="logo">TCL</span></a>
+      <div class="select_language language"><span>Language</span><p>&nbsp;</p>
+        <ul style="width:140px;display:none;" id="languageul">
+          <li><a href="http://www.baidu.com" target="_self" title="">Chinese</a></li>
+          <li><a href="http://www.sina.com" target="_self" title="">English</a></li>
+        </ul>
+      </div>
+      <div class="select_sim member"><span>TCL members of the site</span><p>&nbsp;</p>
+        <ul style="width:200px;display:none;" id="nvul">
+            <li onclick="window.open('http://www.tcl.com')">TCL Web Sites</li>
+            <li onclick="window.open('http://www.tclusa.com')">TCL USA Website</li>
+            <li onclick="window.open('http://multimedia.tcl.com/')">TCL Multimedia Technology Holdings Limited</li>
+            <li onclick="window.open('http://tclcom.tcl.com')">TCL Communication Technology Holdings Limited</li>
+            <li onclick="window.open('http://www.tctmobile.com')">T&A Mobile Phones Limited</li>
+            <li onclick="window.open('http://www.tclcomm.cn')">TCL Communication Equipment Co.,Ltd.</li>
+            <li onclick="window.open('http://lighting.tcl.com')">HuiZhou TCL Lighting Electronic Appliances Co.,Ltd</li>
+            <li onclick="window.open('http://hao.tcl.com')">TCL Air Conditioner (Zhongshan) Co.,Ltd.</li>
+            <li onclick="window.open('http://www.tcl-delonghi.com/en/index.asp')">TCL DeLonghi Home Appliances (Zhongshan) Co., Ltd</li>
+            <li onclick="window.open('http://xjd.tcl.com/en/index.aspx')">Foshan TCL Household Appliances (Nanhai)Co.,Ltd.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="navigation clearfix">
+      <ul class="menu">
+        <li class="bdnone"><a href="home.html" class="sp">Home</a></li>
+        <li><a href="DVD_Navigation.html" class="sp">Products</a>
+          <ul class="navlist" style="display:none;">
+            <li><a href="DVD_Navigation.html">DVD Navigation</a></li>
+            <li><a href="Android_Smart_Navigation.html">Android Smart Navigation</a></li>
+          </ul>
+          <span class="bdline"></span></li>
+        <li><a href="about_infos.html" class="sp">About Us</a>
+          <ul class="navlist" style="display: none;">
+            <li><a href="about_infos.html">Company profile</a></li>
+            <li><a href="about_brand.html">Brand theory</a></li>
+            <li><a href="about_future.html">Company vision</a></li>
+          </ul>
+          <span class="bdline"></span></li>
+        <li><a href="contact_us.html" class="sp">Contact Us</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="content">
+    <div class="abouts_img"><img src="images/abouts.jpg" alt="about us"></div>
+    <div class="mainbox">
+      <div class="about_infos" id="about_infos">
+        <h1>TCL Cartel Profile</h1>
+        <p>TCL Cartel Co. Ltd is a first class subsidiary of TCL Group, specialized in developing &amp; manufacturing &amp; selling smart vehicle navigator and operating platform development, including fundamental vehicle service, community platform service, E-business service, online trading and etc. We provide a brand-new integration services to our auto consumers based on smart terminal, 3G high-speed wireless data and internet business content resources.</p>
+        <p>TCL Cartel has an industrial-leading independent R&amp;D team, strongest manufacturing capabilities and high-class after-sale service. Through its continuous efforts and innovation, it will be a China’s biggest provider of TSP terminal device and service.</p>
+        <p>Action as lightning, intelligent life accompanying!</p>
+        <p>TCL Cartel devotes itself to “Creating Value for Customers & Creating Opportunities for Staff & Creating Benefits for the Society ”, insisting on guiding its long term development by intelligent future, carrying forward the “dedication, integrity, teamwork and innovation” spirit, deducing the “intelligent, practical and fashion” boutique concept, continuing to make business transformation and management innovation to enhance the core competitiveness of enterprises through the competitive strategy of  “developing the best products, providing the best service and creating the best brand”. </p>
+        <p>Great ideals need a strong technology to realize, and only by this, TCL Cartel can bring our customers extraordinary products. TCL Cartel perfectly changes a traditional vehicle-mounted DVD/GPS to intelligent vehicle-mounted navigator by its original ideas, unique technology, humanized design and exquisite workmanship. Meanwhile, it creates an industry precedent and builds a real domestic Car Networking Era. </p>
+      </div>
+    </div>
+    <ul class="sidebox" id="menu_nav">
+      <li><a href="about_infos.html">TCL Cartel Profile</a></li>
+      <li><a href="about_brand.html">Brand Concept</a></li>
+      <li><a href="about_future.html">Company vision</a></li>
+    </ul>
+    <div class="clears"></div>
+  </div>
+</div>
+<div class="footer">
+  <div class="remarks">
+    <p class="remark_icon">TCL</p>
+    <p class="remark_copyright">TCL&nbsp;Cartel&nbsp;Co.&nbsp;Ltd.&nbsp;(website&nbsp;ICP)&copy;2013-2018&nbsp;TCL&nbsp;CARTEL&nbsp;All&nbsp;Rights&nbsp;Reserved.</p>
+  </div>
+</div>
+</body>
+</html>

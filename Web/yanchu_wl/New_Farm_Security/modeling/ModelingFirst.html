@@ -1,0 +1,48 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="../css/subpage.css" />
+<script type="text/javascript" src="../js/global.js"></script>
+<title>建模第一步</title>
+</head>
+<body>
+	<form method="post" action="#">
+    	<div class="containerfirst">
+        	<div class="header">
+            	<h1>钟祥市新农保智能认证系统</h1>
+            	<p>ZHONGXIANGSHI&nbsp;&nbsp;XINNONGBAO&nbsp;&nbsp;ZHINENG&nbsp;&nbsp;RENZHENG&nbsp;&nbsp;XITONG</p>    
+            </div>
+        	<div class="modelingfirst">
+     			<div class="modeltop">
+                	<a href="../Index.html">【首页】</a>
+                	<a href="../Index.html">【返回】</a>
+                </div>
+            	<table width="352">
+   	  <tr>
+        				<td width="79" height="30"><label for="userid">身份证：</label></td>
+          <td colspan="4"><input name="userid" type="text" id="userid" onblur="validsuserid(userid)"/><span id="useridy" ></span><span id="useridn" ></span></td>
+                	</tr>
+                    <tr>
+                		<td height="30"><label for="password">密&nbsp;&nbsp;码：</label></td>
+                      <td colspan="4"><input type="password" name="password" id="password" onblur="validspassword(this);"/><span id="passwordy" ></span><span id="passwordn" ></span></td>
+                	</tr>
+                    <tr>
+                		<td height="30"><label for="valids">验证码：</label></td>
+                      <td width="119"><input name="valids"  type="text" id="valids"/></td>
+                      <td width="13" class="xing">*</td>
+                      <td width="121"><span class="validcontent">5200</span></td>
+                  </tr>
+                	<tr><td height="100"></td>
+               	  		<td colspan="4"><input  type="button" value="请点此处建模" name="submits" id="submits" onclick="window.location.href='ModelingSecond.html'"/></td>
+                    </tr>
+                </table>        
+       	  </div>
+            <div class="footerfirst">
+            	<p>技术：国防科技大学</p>
+                <p>版权：火眼金睛科技公司</p>
+                <p>:400-008-6488</p></div>
+        	</div>
+</form>
+</body>
+</html>

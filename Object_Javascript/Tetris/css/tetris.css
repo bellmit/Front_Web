@@ -1,0 +1,58 @@
+/* CSS Document */
+/*header,footer*/
+.t_header_wrap,.t_footer_wrap{width:100%;min-width:1000px;height:auto;background:#000;padding:10px 0 20px 0;}
+.t_htitle{width:100%;min-width:1000px;height:auto;margin:5px auto;color:#fff;font-size:30px;line-height:30px;font-family:"微软雅黑";text-align:center;}
+/*container*/
+.t_container{width:100%;min-width:1000px;margin:0 auto;background:#fff url(../images/game_bg5.jpg) repeat 0 0;}
+/*details*/
+.t_ctop{width:1000px;height:0;margin:0 auto;position:relative;left:0;top:0;z-index:50;}
+.t_cremark,.t_cset{width:1000px;height:auto;position:absolute;left:0;top:0;z-index:200;background:#000;color:#fff;display:none;padding-bottom:30px;border-radius:0 0 5px 5px;-moz-border-radius:0 0 5px 5px;-ms-border-radius:0 0 5px 5px;-o-border-radius:0 0 5px 5px;-webkit-border-radius:0 0 5px 5px;opacity:0.85;filter:alpha(opacity=85);}
+.t_cremark p{width:960px;margin:0 auto;padding:3px 0;font-size:12px;text-indent:2em;}
+.t_crclose{width:80px;height:25px;position:absolute;right:20px;bottom:5px;color:#fff;cursor:pointer;text-align:center;line-height:25px;font-size:14px;text-decoration:underline;font-family:"微软雅黑";}
+/*game area*/
+.t_cmain{width:1000px;margin:0 auto;position:relative;top:0;left:0;z-index:1;}
+.t_cmainwrap{width:800px;float:right;border-left:1px solid #000;border-right:1px solid #000;background:#fff;}
+.t_cgamemain{width:600px;float:left;}
+.t_cgameside{width:180px;float:left;}
+/*info panel*/
+.t_cgameside ul{width:160px;min-height:500px;margin:30px auto 20px auto;box-shadow:0 1px 3px #aaa;-moz-box-shadow:0 1px 3px #aaa;-ms-box-shadow:0 1px 3px #aaa;-o-box-shadow:0 1px 3px #aaa;-webkit-box-shadow:0 1px 3px #aaa;border:1px solid #000;border-radius:3px;-moz-border-radius:3px;-ms-border-radius:3px;-o-border-radius:3px;-webkit-border-radius:3px;}
+.t_cgameside li{width:150px;padding:5px 0;margin:5px auto;}
+.t_cgameside li h4{width:120px;height:30px;line-height:30px;text-align:center;font-family:"微软雅黑";font-size:14px;border-bottom:1px solid #999;margin:5px auto;color:#333;}
+div.t_cgswrap{width:150px;font-size:12px;height:auto;margin:10px auto;}
+/*game panel*/
+.t_cgame_secnewrap{width:500px;min-height:500px;margin:20px auto;box-shadow:0 1px 3px #aaa;-moz-box-shadow:0 1px 3px #aaa;-ms-box-shadow:0 1px 3px #aaa;-o-box-shadow:0 1px 3px #aaa;-webkit-box-shadow:0 1px 3px #aaa;border:1px solid #000;border-radius:3px;-moz-border-radius:3px;-ms-border-radius:3px;-o-border-radius:3px;-webkit-border-radius:3px;position:relative;left:0;top:0;z-index:10;}
+.t_cgame_tbar{width:500px;height:50px;background:#000;position:absolute;left:0;top:0;border-radius:3px 3px 0 0;-moz-border-radius:3px 3px 0 0;-ms-border-radius:3px 3px 0 0;-o-border-radius:3px 3px 0 0;-webkit-border-radius:3px 3px 0 0;box-shadow:0 1px 0 #fff inset;-moz-box-shadow:0 1px 0 #fff inset;-ms-box-shadow:0 1px 0 #fff inset;-o-box-shadow:0 1px 0 #fff inset;-webkit-box-shadow:0 1px 0 #fff inset;font-family:"微软雅黑";font-size:16px;line-height:50px;text-align:center;color:#fff;}
+.t_cgame_bbar{width:500px;height:40px;background:#000;position:absolute;left:0;bottom:0;border-radius:0 0 3px 3px;-moz-border-radius:0 0 3px 3px;-ms-border-radius:0 0 3px 3px;-o-border-radius:0 0 3px 3px;-webkit-border-radius:0 0 3px 3px;box-shadow:0 -1px 0 #fff inset;-moz-box-shadow:0 -1px 0 #fff inset;-ms-box-shadow:0 -1px 0 #fff inset;-o-box-shadow:0 -1px 0 #fff inset;-webkit-box-shadow:0 -1px 0 #fff inset;font-size:12px;color:#fff;}
+.t_cgame_bbar span{padding:5px 5px 2px 5px;display:inline-block;}
+/*secne*/
+.t_cgame_secne{width:400px;height:600px;background:#fff url(../images/tetris_bigbg.png) repeat 0 0;border-left:1px solid #ccc;border-top:1px solid #ccc;margin:80px auto 60px auto;position:relative;left:0;top:0;z-index:20;}
+.t_boxwrap{z-index:80;border-left:1px solid #999;border-top:1px solid #999;width:auto;height:auto;position:absolute;}
+.t_boxwrap:hover{opacity:0.8;filter:alpha(opacity=80);}
+.t_boxwrap td{border-right:1px solid #999;border-bottom:1px solid #999;width:39px;height:39px;background:none;}
+.t_boxwrap div{width:39px;height:39px;}
+.t_cgame_model{max-width:400px;max-height:600px;z-index:50;position:absolute;left:49px;top:80px;background:transparent;}
+.t_cgame_model td{border:1px solid #999;width:39px;height:39px;}
+/*box*/
+.t_box1{background:#aaa;}
+.t_box2{background:#bbb;}
+.t_box3{background:#ccc;}
+.t_box4{background:#c1c1c1;}
+.t_box5{background:#b1b1b1;}
+.t_box6{background:#a9a9a9;}
+/*boxbg*/
+.t_boxbg1{background:#aaa;}
+.t_boxbg2{background:#bbb;}
+.t_boxbg3{background:#ccc;}
+.t_boxbg4{background:#c1c1c1;}
+.t_boxbg5{background:#b1b1b1;}
+.t_boxbg6{background:#a9a9a9;}
+/*side*/
+div.t_cnextshape{min-height:80px;padding:30px 0 5px 0;}
+div.t_cnextshape table{margin:0 auto;border-left:1px solid #ccc;border-top:1px solid #ccc;}
+div.t_cnextshape td{border-right:1px solid #999;border-bottom:1px solid #999;width:15px;height:15px;}
+div.t_cnextshape div.t_nextbox{background:#bbb;width:15px;height:15px;}
+/*menu*/
+.t_csidewrap{width:190px;float:left;margin-bottom:50px;}
+.t_csidewrap nav{width:190px;float:right;background:#000;border-radius:0 0 5px 5px;-moz-border-radius:0 0 5px 5px;-ms-border-radius:0 0 5px 5px;-o-border-radius:0 0 5px 5px;-webkit-border-radius:0 0 5px 5px;}
+.t_csidewrap ul{margin:0 auto 1px auto;width:188px;background:#fff;border-radius:5px;-moz-border-radius:5px;-ms-border-radius:5px;-o-border-radius:5px;-webkit-border-radius:5px;padding:10px 0;}
+.t_csidewrap li{color:#333;width:150px;height:30px;line-height:30px;text-align:left;text-indent:20px;font-family:"微软雅黑";font-size:14px;cursor:pointer;margin:3px auto;text-decoration:underline;}

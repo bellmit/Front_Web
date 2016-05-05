@@ -1,0 +1,42 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<meta name="description" content="德亿多媒体资源库,德亿多媒体,德亿多媒体资源库管理系统,管理系统--文件URL"/>
+<meta name="keywords" content="德亿多媒体资源库,德亿多媒体,德亿多媒体资源库管理系统,管理系统--文件URL"/>
+<link rel="stylesheet" type="text/css" href="../../css/main/menu_operate.css">
+<script src="../../js/lib/jquery-1.8.3.min.js"></script>
+<script src="../../js/lib/jquery.blockUI.min.js"></script>
+<script src="../../js/utils/util.js"></script>
+<script>
+$(function(){
+	/*关闭*/
+	$("#resurl_close").click(function(){window.close();});
+})
+</script>
+<title>文件URL</title>
+</head>
+<body>
+<div class="resrate_wrap">
+	<h1 class="resrate_title">文件URL</h3>
+	<table class="resrate_content">
+    	<colgroup>
+        	<col class="up_cg1"/>
+            <col class="up_cg2"/>
+        </colgroup>
+    	<tr class="resrate_text">
+        	<td><label for="resname">资源名：</label></td>
+            <td><input type="text" disabled name="resname" id="resname"/></td>
+        </tr>
+        <tr class="resrate_text">
+        	<td><label for="resurl">资源URL：</label></td>
+            <td><input type="text" disabled name="resurl" id="resurl"/></td>
+        </tr>
+        <tr>
+        	<td>&nbsp;</td>
+            <td><input type="button" name="resurl_close" value="关闭" id="resurl_close" class="resrate_close"></td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

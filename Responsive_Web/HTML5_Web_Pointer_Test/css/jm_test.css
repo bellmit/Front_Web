@@ -1,0 +1,20 @@
+/* CSS Document */
+section.lv_ls{margin-bottom:20px;}
+section.lv_ls ul li{background:#f6f6f6 !important;font-weight:bold;font-size:14px;text-indent:20px;}
+/*section.lv_ls ul li span{margin-right:30px;}
+section.lv_ls ul li p{line-height:22px;color:#999;}*/
+
+
+
+.t_layout_wrap{border-top:1px solid #ccc;padding:10px 5px;}
+.t_layout_grid{padding:10px 0;background:#f3f3f3;margin:5px;border-radius:3px;-moz-border-radius:3px;-ms-border-radius:3px;-o-border-radius:3px;-webkit-border-radius:3px;border:1px solid #ccc;}
+.t_layout_grid a{font-weight:bold;font-size:14px;text-decoration:none;color:#333 !important;}
+
+
+
+
+
+
+
+
+

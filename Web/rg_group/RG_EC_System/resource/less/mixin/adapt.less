@@ -1,0 +1,76 @@
+///*--适配不同分辨率--*/
+///max 768px
+@media (max-width: 768px){
+	///头部图像
+	.headerwrap{
+		height:40px;
+		background-image:none;
+	}
+	///布局适配
+	body{
+		padding:0 5px;
+	}
+	.mainwrap{
+		padding:5px 0;
+	}
+	.sidebox,
+	.mainbox{
+		//padding:0 0 10px 0;
+	}
+	///侧边栏适配
+	.sidetheme,
+	.sidemenu,
+	.sideother{
+		h3{
+			margin:0;
+		}
+	}
+	.sidetheme,
+	.sideother{
+		display:none;
+	}
+	.sidemenu{
+		padding:0;
+		div{
+		    a{
+    			width:auto !important;
+    			margin:3px 5px;
+    			padding:0 10px 0 5px;
+    			height:20px;
+			    line-height:20px;
+    		}
+		}
+	}
+	.sidemenu-mini{
+		h3{
+			display:none;
+		}
+	}
+}
+
+///max 640px
+@media (max-width: 640px){
+	///头部适配
+	.headerwrap > div ul li p{
+				display:none;
+	}
+
+}
+
+///max 480px
+@media (max-width: 480px){
+	///首页列表
+	.main-list > p a span{
+		 display:none !important;
+	}
+	//分页适配
+	td.pagination-links{display:none !important;}
+}
+
+///max 320px
+@media (max-width: 320px){
+	///头部适配
+	.headerwrap > div ul li em{
+				display:none;
+	}
+}

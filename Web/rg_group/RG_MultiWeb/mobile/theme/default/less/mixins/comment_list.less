@@ -1,0 +1,144 @@
+///*--文章详情评论列表模块--*/
+.commentlist-wrap{
+	.layout-float-base;
+	padding:0 10px;
+	margin:10px 0;
+}
+.cl-mainwrap{
+		width:100%;
+		float:left;
+		margin:10px 0 0 0;
+}
+.cl-mainitem{
+	width:100%;
+	float:left;
+	margin:10px 0;
+	background:@color-white;
+	border-bottom:1px solid @color-gray9;
+	div:first-of-type{
+		.layout-relative-base(0,0,10);
+		width:100%;
+		float:left;
+		div{
+			.layout-absolutel-base(10px,0,30);
+			width:40px;
+			height:40px;
+			img{
+				float:left;
+				width:100%;
+				height:100%;
+				overflow:hidden;
+				display:block;
+				.border-radius-base(50%);
+			}
+		}
+		h4,p{
+			.layout-float-base;
+			padding:0 0 0 60px;
+			.text-of;
+			height:20px;
+			line-height:20px;
+		}
+		h4{
+			font-size:@font-size-base;
+			font-weight:normal;
+			color:@color-gray2;
+		}
+		p{
+			font-size:@font-size-small;
+			color:@color-gray4;
+		}
+	}
+	ul:nth-of-type(1){
+		width:100%;
+		float:left;
+		padding:10px 0;
+		li{
+			float:right;
+			margin:0 5px 0 0;
+			font-size:@font-size-base;
+			cursor:pointer;
+			color:@color-gray3;
+			.text-unselect;
+			&:first-child{
+				.layout-relative-base(0,0,5);
+				&:before{
+						font-family:'typ';
+						content:'\e0b8';
+						font-size:@font-size-default;
+						padding:0 2px;
+				}
+				&:after{
+						.layout-absolutel-base(5px,3px,20);
+						width:6px;
+						height:10px;
+						overflow:hidden;
+						content:'\2261';
+						font-size:@font-size-small - 3;
+				}
+				span{
+					padding:0 2px;
+				}
+			}
+			&:last-child{
+				&:before,&.cl-tagtoggle:before{
+					font-family:'ux';
+					font-size:@font-size-base;
+					padding:0 2px 0 2px;
+				}
+				&:before{
+					content:'\01cb';
+				}
+				&.cl-tagtoggle:before{
+					content:'\01c8';
+				}
+			}
+		}
+	}
+	ul:nth-of-type(2){
+		.layout-float-base;
+		padding:0 10px 15px 10px;
+		border-bottom:3px solid @color-gray8;
+		background:@color-gray10 + 5;
+		border-top:1px solid @color-gray8;
+		display:none;
+		li{
+			.layout-relative-base(0,0,5);
+			float:left;
+			width:100%;
+			margin:15px 0 5px 0;
+			div{
+				.layout-absolutel-base(0,0,10);
+				width:20px;
+				height:20px;
+				img{
+					float:left;
+					width:100%;
+					height:100%;
+					display:block;
+					overflow:hidden;
+					.border-radius-base(50%);
+				}
+			}
+			p{
+				.layout-float-base;
+				padding:0 0 0 30px;
+				font-size:@font-size-base;
+				color:@color-gray3;
+				line-height:20px;
+				span{
+					padding:0 3px 0 0;
+					color:@color-orange;
+				}
+			}
+		}
+	}
+}
+.cl-maintheme{
+	.layout-float-base;
+	margin:5px 0 0 0;
+	font-size:@font-size-default;
+	line-height:22px;
+	font-weight:normal;
+	padding:0 10px;
+}

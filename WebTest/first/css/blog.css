@@ -1,0 +1,226 @@
+body,html{
+margin:0;
+padding:0;
+text-align:center;
+background-image:url(../images/bgimage.png);
+}
+.container{
+position:relative;
+margin:0 auto;
+padding:0;
+width:1003px;
+height:150px;
+}
+.banner{
+margin:0;
+padding:0;
+text-align:center;
+}
+.menu{
+width:1003px;
+font-size:20px;
+font-family:Arial, Helvetica, sans-serif;
+font-weight:bold;
+}
+.menu ul{
+list-style-type:none;
+margin:0;
+padding:0;
+
+}
+.menu ul li{
+margin:0;
+padding:0;
+float:left;
+width:143px;
+background:#4AC8E8;
+}
+.menu ul li:hover{
+background-color:#0099CC;
+
+}
+.menu ul li a{
+text-decoration:none;
+color:#006666;
+display:block;
+border-left:1px solid  #CCCCCC;
+}
+.menu ul li a:hover{
+color:#FF9900;
+}
+.leftmenu{
+width:204px;
+clear:left;
+float:left;
+height:584px;
+margin:5px 0 5px 0;
+padding:20px 0 0 0;
+overflow:hidden;
+background-image:url(../images/left_menu.png);
+}
+.leftmenu span{
+float:left;
+margin:6px 0 6px 16px;
+font-size:14px;
+padding:0;
+text-align:left;
+cursor:hand;
+}
+.leftmenu img{
+border-right:1px solid #666666;
+border-bottom:1px solid #666666;
+cursor:hand;
+}
+.leftmenu img:before{
+content:"xxx";
+}
+
+.leftmenu img:hover{
+border-left:1px solid white;
+border-top:1px solid white;
+border-right:none;
+border-bottom:none;
+}
+.leftmenu p{
+cursor:hand;
+}
+.content{
+float:right;
+margin:10px 20px 5px 0;
+width:750px;
+overflow:hidden;
+}
+.content img[title=top]{
+position:relative;
+width:750px;
+}
+
+.content img[title=bottom]{
+position:relative;
+bottom:14px;
+width:750px;
+}
+.content_inner{
+width:750px;
+background:#e5f384;
+height:560px;
+}
+.con_images{
+width:94%;
+height:240px;
+background-color:#CCCCCC;
+margin-left:16px;
+border:2px solid lightblue;
+overflow:auto;
+}
+.con_images h3{
+color:#FF0000;
+
+}
+.con_images img{
+float:left;
+margin:20px 20px 0 20px;
+display:block;
+
+}
+.con_images img:hover{
+cursor:hand;
+}
+
+.con_riji{
+float:left;
+margin-top:40px;
+margin-left:20px;
+width:283px;
+height:200px;
+background-color:#83cbfe;
+font-family:"方正粗宋简体", "方正大黑简体", "方正静蕾简体", "方正硬笔楷书简体", "方正稚艺简体", "方正综艺简体", "汉鼎繁特行", "黑体", "汉仪丫丫体简", "華康采風體", "宋体";
+}
+#rj_top{
+position:relative;
+top:-20px;
+background-image:url(../images/con_tabletop.png);
+}
+#rj_bottom {
+background-image:url(../images/con_tablebottom.png);
+position:relative;
+bottom:-34px;
+}
+.con_music{
+float:right;
+margin-top:10px;
+margin-right:20px;
+overflow:auto;
+width:200px;
+height:300px;
+background-color:#CC9966;
+
+}
+.con_music h5{
+margin:0;
+padding:0;
+font-size:16px;
+cursor:hand;
+}
+.con_music h5:hover{
+color:#0099CC;
+}
+.con_music ul{
+margin:0;
+padding:0;
+list-style-type:none;
+}
+.con_music ul li{
+text-align:left;
+margin:5px 0 0 10px;
+padding:0 0 0 0;
+width:180px;
+height:20px;
+
+}
+.con_music ul li img{
+float:left;
+margin-right:6px;
+}
+.con_music ul li a{
+text-decoration:none;
+display:block;
+width:180px;
+color:#006666;
+border-bottom:1px dotted lightblue;
+}
+.con_music ul li a[name=first]{
+color:#FF0000;
+}
+.con_music ul li a[name=second]{
+color:#FF9900;
+}
+.con_music ul li a[name=third]{
+color:#FFCC00;
+}
+.con_music ul li a:hover,a[name=first]:hover,a[name=second]:hover,a[name=third]:hover{
+color:#00CCFF;
+background-color:#669999;
+}
+.con_talk{
+background-color:#99FF99;
+float:right;
+margin:10px 12px 0 0 ;
+padding:20px 0 0 10px;
+width:200px;
+height:280px;
+overflow:hidden;
+font-size:14px;
+text-align:left;
+}
+.con_talk a{
+width:100%;
+text-decoration:none;
+color:#000000;
+margin:0;
+padding:0;
+}
+.footer{
+clear:both;
+background-color:#0066FF;
+}

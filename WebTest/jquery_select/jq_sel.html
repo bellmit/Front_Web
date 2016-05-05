@@ -1,0 +1,112 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<html>
+　 <head>
+　 　  <script type="text/javascript" src="js/jquery-1.6.2.min.js"></script>
+　 　　<script>
+　 　　　　$(document).ready(
+　 　　　　　　function () {
+　 　　　　　　　　$("#select").click (
+　 　　　　　　　　　　function () {
+　 　　　　　　　　　　　　var original =this;
+　 　　　　　　　　　　　　$(original).blur();
+　 　　　　　　　　　　　　$(original).css("visibility", "hidden");
+　 　　　　　　　　　　　　var value = $(this).attr("value");
+　 　　　　　　　　　　　　var topOffset = 0;
+　 　　　　　　　　　　　　var alternate = document.createElement("div");
+　 　　　　　　　　　　　　$(document.body).append(alternate);
+　 　　　　　　　　　　　　{
+　 　　　　　　　　　　　　　　var alternate_select = document.createElement("div");
+　 　　　　　　　　　　　　　　$(alternate).append(alternate_select);
+　 　　　　　　　　　　　　　　$(alternate_select).css("position", "absolute");
+　 　　　　　　　　　　　　　　$(alternate_select).css("width", original.offsetWidth + "px");
+　 　　　　　　　　　　　　　　$(alternate_select).css("height", original.offsetHeight + "px");
+　 　　　　　　　　　　　　　　$(alternate_select).css("top", "0px");
+　 　　　　　　　　　　　　　　$(alternate_select).css("left", "0px");
+　 　　　　　　　　　　　　　　$(alternate_select).css("cursor", "pointer");
+　 　　　　　　　　　　　　　　$(alternate_select).text(
+　 　　　　　　　　　　　　　　　　$($(original).children("option").filter(
+　 　　　　　　　　　　　　　　　　　　　　function (index) {
+　 　　　　　　　　　　　　　　　　　　　　　　return $(original).attr("value") === value;
+　 　　　　　　　　　　　　　　　　　　　　}
+　 　　　　　　　　　　　　　　　　　　)[0]
+　 　　　　　　　　　　　　　　　　).text()
+　 　　　　　　　　　　　　　　);
+　 　　　　　　　　　　　　　　$(alternate_select).click(
+　 　　　　　　　　　　　　　　　　function () {
+　 　　　　　　　　　　　　　　　　　　$(original).css("visibility", "inherit");
+　 　　　　　　　　　　　　　　　　　　document.body.removeChild(alternate);
+　 　　　　　　　　　　　　　　　　}
+　 　　　　　　　　　　　　　　);
+　 　　　　　　　　　　　　　　$(alternate_select).hover(
+　 　　　　　　　　　　　　　　　　function (event) {
+　 　　　　　　　　　　　　　　　　　　$(this).css("background-color", "blue");
+　 　　　　　　　　　　　　　　　　　　$(this).css("color", "white");
+　 　　　　　　　　　　　　　　　　},
+　 　　　　　　　　　　　　　　　　function (event) {
+　 　　　　　　　　　　　　　　　　　　$(this).css("background-color", "inherit");
+　 　　　　　　　　　　　　　　　　　　$(this).css("color", "inherit");
+　 　　　　　　　　　　　　　　　　}
+　 　　　　　　　　　　　　　　);
+　 　　　　　　　　　　　　}
+　 　　　　　　　　　　　　topOffset += alternate_select.offsetHeight;
+　 　　　　　　　　　　　　{
+　 　　　　　　　　　　　　　　$(original).children("option").each(
+　 　　　　　　　　　　　　　　　　function (index, element) {
+　 　　　　　　　　　　　　　　　　　　var alternate_option = document.createElement("div");
+　 　　　　　　　　　　　　　　　　　　$(alternate).append(alternate_option);
+　 　　　　　　　　　　　　　　　　　　$(alternate_option).css("position", "absolute");
+　 　　　　　　　　　　　　　　　　　　$(alternate_option).css("width", element.offsetWidth + "px");
+　 　　　　　　　　　　　　　　　　　　$(alternate_option).css("height", element.offsetHeight + "px");
+　 　　　　　　　　　　　　　　　　　　$(alternate_option).css("top", topOffset + "px");
+　 　　　　　　　　　　　　　　　　　　$(alternate_option).css("left", "0px");
+　 　　　　　　　　　　　　　　　　　　$(alternate_option).css("cursor", "pointer");
+　 　　　　　　　　　　　　　　　　　　$(alternate_option).text($(element).text());
+　 　　　　　　　　　　　　　　　　　　var option_value = $(element).attr("value");
+　 　　　　　　　　　　　　　　　　　　if (value === option_value) {
+　 　　　　　　　　　　　　　　　　　　　　$(alternate_option).css("font-weight", "bold");
+　 　　　　　　　　　　　　　　　　　　}
+　 　　　　　　　　　　　　　　　　　　$(alternate_option).click(
+　 　　　　　　　　　　　　　　　　　　　　function () {
+　 　　　　　　　　　　　　　　　　　　　　　　$(original).attr("value", option_value);
+　 　　　　　　　　　　　　　　　　　　　　　　$(original).css("visibility", "inherit");
+　 　　　　　　　　　　　　　　　　　　　　　　document.body.removeChild(alternate);
+　 　　　　　　　　　　　　　　　　　　　　}
+　 　　　　　　　　　　　　　　　　　　);
+　 　　　　　　　　　　　　　　　　　　$(alternate_option).hover(
+　 　　　　　　　　　　　　　　　　　　　　function () {
+　 　　　　　　　　　　　　　　　　　　　　　　$(this).css("background-color", "blue");
+　 　　　　　　　　　　　　　　　　　　　　　　$(this).css("color", "white");
+　 　　　　　　　　　　　　　　　　　　　　},
+　 　　　　　　　　　　　　　　　　　　　　function () {
+　 　　　　　　　　　　　　　　　　　　　　　　$(this).css("background-color", "inherit");
+　 　　　　　　　　　　　　　　　　　　　　　　$(this).css("color", "inherit");
+　 　　　　　　　　　　　　　　　　　　　　}
+　 　　　　　　　　　　　　　　　　　　);
+　 　　　　　　　　　　　　　　　　　　topOffset += alternate_option.offsetHeight;
+　 　　　　　　　　　　　　　　　　}
+　 　　　　　　　　　　　　　　);
+　 　　　　　　　　　　　　}
+　 　　　　　　　　　　　　$(alternate).css("position", "absolute");
+　 　　　　　　　　　　　　$(alternate).css("top", original.offsetTop + "px");
+　 　　　　　　　　　　　　$(alternate).css("left", original.offsetLeft + "px");
+　 　　　　　　　　　　　　$(alternate).css("width", alternate_select.offsetWidth + "px");
+　 　　　　　　　　　　　　$(alternate).css("height", topOffset + "px");
+　 　　　　　　　　　　　　$(alternate).css("background-image", "url(http://s.goumin.com/imgs/logo.gif)");
+　 　　　　　　　　　　}
+　 　　　　　　　　);
+　 　　　　　　}
+　 　　　　);
+　 　　</script>
+　 </head>
+　 <body>
+　 　　<select id="select">
+　 　　　　<option value="1">option 1</option>
+　 　　　　<option value="2">option 2</option>
+　 　　　　<option value="3">option 3</option>
+　 　　　　<option value="4">option 4</option>
+　 　　</select>
+　 </body>
+</html>

@@ -1,0 +1,62 @@
+/* CSS Document */
+/*global*/
+body{margin:0;padding:0;background:#fff;}
+body *{margin:0;padding:0;font-size:100%;text-decoration:none;color:#000;font-family:"宋体", serif, sans-serif, "宋体-PUA", "楷体_GB2312", "仿宋_GB2312", Vrinda;list-style:none;resize:none;border:0 none;}
+body *:focus{outline:none;}
+/*layout*/
+.container{width:auto;height:auto;margin:0 auto;}
+.header{width:745px;height:auto;margin:0 auto;padding-top:50px;}
+.content{width:745px;height:auto;margin:0 auto;padding-bottom:80px;}
+/*header*/
+/*h1-h6*/
+.header h1{width:auto;height:auto;padding:5px 0;text-align:center;font-size:26px;font-weight:normal;}
+.header h2{width:auto;height:auto;padding:5px 0;text-align:center;font-size:24px;font-weight:bold;}
+/*content*/
+/*table*/
+.pro_remark,.opi_remark{width:745px;height:auto;margin:0 auto;border-left:1px dashed #333;border-top:1px dashed #333;border-bottom:1px dashed #333;}
+.pro_remark_sub{width:745px;height:auto;margin:0 auto;border-left:1px solid #666;}
+.opi_remark_sub{width:745px;height:auto;margin:0 auto;border-left:1px solid #666;border-right:1px solid #666;}
+.pro_info,.opi_info{width:745px;height:auto;margin:0 auto;border-left:2px solid #000;border-top:2px solid #000;border-right:1px solid #000;border-bottom:1px solid #000;}
+.opi_foot{width:745px;height:auto;margin:0 auto;border-left:1px solid #999;border-right:1px solid #999;border-bottom:1px solid #999;}
+.pro_remark tr td,.opi_remark tr td{border-right:1px dashed #333;}
+.pro_remark_sub tr td{border-right:1px solid #666;padding:3px 0;}
+.opi_remark_sub tr td,.opi_foot tr td{padding:3px 0;}
+.pro_info tr td,.opi_info tr td{border-bottom:1px solid #000;border-right:1px solid #000;padding:5px 0;}
+/*table-layout*/
+.pror_col1,.opir_col1{width:34%;}
+.pror_col2,.opir_col1{width:32%;}
+.pror_col3,.opir_col1{width:34%;}
+.prorsub_col1{width:40%;}
+.prorsub_col2{width:60%;}
+.opirsub_col1{width:15%;}
+.opirsub_col2{width:85%;}
+.proi_col1,.opii_col1{width:15%;}
+.proi_col2,.opii_col2{width:35%;}
+.proi_col3,.opii_col3{width:15%;}
+.proi_col4,.opii_col4{width:35%;}
+/*form-detail*/
+/*div*/
+/*span*/
+.drugname,.entproduct{float:left;width:100%;}
+.foot_date,.remark_date{float:right;width:150px;}
+/*label*/
+.pro_remark label,.pro_remark_sub label,.opi_remark label,.opi_foot label{float:left;padding:3px;font-size:14px;}
+.opi_remark_sub label{float:right;padding:5px 3px;font-size:14px;cursor:pointer;}
+.defname{padding:3px 0;text-align:center;width:100%;font-size:14px;display:block;cursor:pointer;}
+.drugname label,.entproduct label{padding:3px 0;float:left;width:70px;display:block;font-size:14px;text-align:right;cursor:pointer;}
+/*text*/
+.acceptno,.replayno,.opi_remark input,.opi_foot input{float:left;height:22px;line-height:1.5em;font-size:14px;color:#333;}
+.opi_remark_sub input,.opi_info input,.pro_info input{float:left;height:22px;line-height:1.5em;font-size:14px;color:#333;width:98%;}
+.acceptno{width:200px;}
+.replayno{width:350px;}
+.drugname input,.entproduct input{width:550px !important;*+width:420px !important;}
+.foot_year{width:40px;}
+.dateissue_year,.datecheck_year,.datemanage_year{width:50px;}
+.dateissue_month,.datecheck_month,.datemanage_month,.dateissue_day,.datecheck_day,.datemanage_day{width:16px;}
+.foot_month,.foot_day{width:14px;}
+/*trline,tdline,tdunline*/
+.infounline{border-bottom:none !important;}
+.opi_line{border-top:1px solid #999;}
+/*textarea*/
+.companyissue,.departcheck,.manager{width:94%;min-height:100px;_height:100px;overflow:auto;float:right;font-size:14px;}
+.pro_info textarea,.opi_info textarea{width:98%;min-height:150px;_height:150px;overflow:auto;float:left;font-size:14px;color:#333;line-height:1.5em;}

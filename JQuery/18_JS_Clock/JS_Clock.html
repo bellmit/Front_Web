@@ -1,0 +1,43 @@
+<!doctype html>
+<html><head>
+<meta charset="utf-8">
+<link rel="stylesheet" type="text/css" href="css/jsclock.css">
+<script src="js/jquery-2.0.2.min.js"></script>
+<!--[if lte IE 8]><script type="text/javascript" src="js/jquery-1.8.3.min.js"></script><![endif]-->
+<script src="js/jsclock.js"></script>
+<title>js模拟时钟</title>
+</head>
+<body>
+<div class="header">
+	<div class="header_wrap">
+        <h1>JS_Clock</h1>
+        <p>javascript,html,css</p>
+    </div>
+</div>
+<div class="container">
+	<div class="clock_wrap" id="clock_wrap">
+    	<div id="clock_times" class="clock_times"></div>
+    	<div id="clock_hour" class="clock_hour"></div>
+        <div id="clock_minute" class="clock_minute"></div>
+        <div id="clock_second" class="clock_second"></div>
+    </div>
+</div>
+<div class="footer">
+	<div class="footer_wrap">
+    	<ul class="footer_about">
+        	<li><p>jquery-2.0.2,jquery-1.8.3</p></li>
+            <li><p>css3,html5</p></li>
+            <li><p>javascript</p></li>
+            <li><p>Y(top):Math.sin(minute_angle)</p></li>
+            <li><p>X(left):-Math.cos(minute_angle)</p></li>
+        </ul>
+        <div class="footer_remark">
+        	<p>1:时钟与弧度的关系并不是用算法算出,而是直接在对象中分别定义去24小时和60分钟的时钟刻度与弧度键值对</p>
+        	<p>2:表盘的时钟值和刻度值是以图片代替程序算法生成值</p>
+            <p>3:在现代浏览器中效果更好,其中ie系列浏览器需要ie8(不包含ie8)以上版本浏览器效果才更好的体现出来;由于使用了JQuery最新版本作为脚本框架,所以ie8(包含ie8)以下浏览虽然做了部分兼容性措施,以保证程序能正常运行,但是还是建议使用ie8以上浏览器(不包含ie8)</p>
+            <p>4:其核心思路主要通过三角函数计算实时指针坐标,通过绝对定位展示,然后启动定时函数每秒更新定位坐标</p>
+        </div>
+    </div>
+</div>
+</body>
+</html>

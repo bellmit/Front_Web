@@ -1,0 +1,45 @@
+/* CSS Document */
+/*global*/
+body{margin:0;padding:0;background:#fff url(../images/htmlbg1.png) repeat center center;}
+body *{margin:0;padding:0;font-size:100%;/*font-size:12px*/text-decoration:none;color:#000;font-family:"宋体", serif, sans-serif, "宋体-PUA", "楷体_GB2312", "仿宋_GB2312", Vrinda;list-style:none;resize:none;border:none;}
+body *:focus{outline:none;}
+/*dom layout*/
+.header{width:100%;height:50px;background:#000 url(../images/headbg1.jpg) repeat center center;-webkit-box-shadow:0 2px 3px #666;-moz-box-shadow:0 2px 3px #666;-ms-box-shadow:0 2px 3px #666;-o-box-shadow:0 2px 3px #666;box-shadow:0 2px 3px #666;}
+.container{width:1000px;height:1000px;margin:0 auto;-webkit-box-shadow:0 0 5px #888;-moz-box-shadow:0 0 5px #888;-o-box-shadow:0 0 5px #888;-ms-box-shadow:0 0 5px #888;box-shadow:0 0 5px #888;background:#fff;}
+.footer{width:100%;min-height:200px;background:#000 url(../images/footbg1.jpg) repeat center center;border-top:10px solid #ccc;}
+/*header-detail*/
+.header h1{margin:0 auto;height:40px;width:1000px;font-size:20px;color:#fff;padding:5px 0;line-height:35px;text-indent:50px;}
+/*main-detail*/
+.content{width:980px;float:left;margin:20px 0 30px 10px;height:800px;border:0 none;}
+/*svg detail*/
+.svg_polygon{fill:#eeeeee;stroke:#666666;stroke-width:1;}
+.svg_rect{fill:#ccc;stroke:#000;stroke-width:2;opacity:0.4;}
+.svgtext{font-size:400px;font-family:'SimSun';stroke-miterlimit:10;stroke-width:3;stroke:#000000;fill:#6FB5E3;cursor:pointer;}
+/*footer format*/
+.remarks{width:1000px;height:auto;margin:20px auto;}
+.remarks p{width:980px;margin:0 auto;font-size:14px;text-align:center;padding:3px 0;}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

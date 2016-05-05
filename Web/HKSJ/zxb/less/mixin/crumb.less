@@ -1,0 +1,117 @@
+///组件-面包屑导航组件
+///作者：易品
+
+
+
+///*--case标题--*/
+.crumb-wrap{
+	width:100%;
+	background:@color-white;
+	height:45px;
+	border-bottom:1px solid @color-gray5;
+	>div{
+		width:1190px;
+		height:100%;
+		margin:0 auto;
+		text-align:left;
+		div{
+			.layout-relative-base;
+			display:inline-block;
+			height:100%;
+			padding:0 5px 0 0;
+			>a{
+				display:inline-block;
+				height:100%;
+				font-size:@font-size-base - 2;
+				color:@color-gray3;
+				line-height:45px;
+				span{
+					padding:0 0 0 5px;
+				}
+				em{
+					margin:0 0 0 5px;
+					width:7px;
+					display:inline-block;
+					height:4px;
+					overflow:hidden;
+					background:url(../images/icons.png) -194px 0 no-repeat;
+					vertical-align:middle;
+				}
+				&:hover{
+					color:@color-orange1;
+					span{
+						color:@color-gray3;
+					}
+				}
+			}
+			.crumb-current{
+				color:@color-gray1;
+			}
+			ul{
+				.layout-absolutel-base(-20px,45px);
+				display:none;
+				padding:0 10px 0 0;
+				min-width:60px;
+				max-width:120px;
+				background:@color-white;
+				border-left:1px solid @color-gray5;
+				border-right:1px solid @color-gray5;
+				border-bottom:1px solid @color-gray5;
+				li{
+					.layout-float-base;
+					height:16px;
+					margin:5px 0;
+					a{
+						width:100%;
+						height:100%;
+						display:block;
+						.no-outline-base;
+						font-size:@font-size-base - 2;
+						color:@color-gray2;
+						line-height:16px;
+						.text-of;
+						text-overflow:ellipsis;
+						text-indent:10px;
+						&:hover{
+							color:@color-orange1;
+							text-decoration:underline;
+						}
+					}
+				}
+			}
+			&:hover{
+				ul{
+					display:block;
+				}
+			}
+		}
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

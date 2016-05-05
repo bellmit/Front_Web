@@ -1,0 +1,48 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<HEAD>
+<META http-equiv=Content-Type content="text/html; charset=gb2312" />
+<LINK href="css/admin.css" type="text/css" rel="stylesheet" />
+
+<script type="text/javascript">
+function showtime(){
+var now=new Date();
+var year=now.getFullYear();
+var month=now.getMonth()+1;
+var day=now.getDate();
+var hours=now.getHours();
+var minutes=now.getMinutes();
+var seconds=now.getSeconds();
+time='当前时间：'+year+'年'+month+'月'+day +'日'+'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+hours+'时'+minutes+'分'+seconds+'秒';
+var div1=document.getElementById('div1');
+div1.innerHTML=time;
+}
+function letstart(){
+taskId=setInterval(showtime,500);
+}
+
+window.onload=function(){
+	letstart();
+}
+</script>
+
+
+</HEAD>
+<BODY>
+<TABLE cellSpacing=0 cellPadding=0 width="100%"   repeat-x  repeat-y  border="0" bgcolor="#99CCFF">
+ 
+    <TD width="100%" height="120"><IMG height=120 src="images/banner.jpg" 
+    width="100%" /></TD>
+    
+    
+    
+</TR></TABLE>
+<TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TR  bgcolor="#DLE6F7" height=20>
+    <TD>
+    当前位置：药品信息查询
+    </TD>
+    <TD  align="right" style="FONT-WEIGHT: bold; color:#2A0000 PADDING-TOP: 70px">
+      <div id="div1"></div> 
+    </TD>
+    </TR></TABLE></BODY></html>

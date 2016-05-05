@@ -1,0 +1,59 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<meta name="description" content="德亿多媒体资源库,德亿多媒体,德亿多媒体资源库管理系统,管理系统--新建组"/>
+<meta name="keywords" content="德亿多媒体资源库,德亿多媒体,德亿多媒体资源库管理系统,管理系统--新建组"/>
+<link rel="stylesheet" type="text/css" href="../../css/main/menu_operate.css">
+<script src="../../js/lib/jquery-1.8.3.min.js"></script>
+<script src="../../js/lib/jquery.blockUI.min.js"></script>
+<script src="../../js/utils/util.js"></script>
+<script>
+$(function(){
+	var ugcreate_close=$("#ugcreate_close"),ugcreate_new=$("#ugcreate_new"),groupname=$("#groupname");
+	/*确定*/
+	ugcreate_new.click(function(){
+		var gn_value=groupname.val();
+		if(gn_value==""){
+			popup_alert("组名不能为空","undefined","no","have");
+			return false;
+		}else{
+			popup_alert("创建成功","undefined","yes","have");
+			setTimeout(function(){
+				$.unblockUI();
+				window.close();
+			},2000);
+		}
+	});
+	/*关闭*/
+	ugcreate_close.click(function(){
+		window.close();
+	});
+})
+</script>
+<title>新建组</title>
+</head>
+<body>
+<div class="ugcreate_wrap">
+	<h1 class="ugcreate_title">新建组</h3>
+	<table class="ugcreate_content">
+    	<colgroup>
+        	<col class="up_cg1"/>
+            <col class="up_cg2"/>
+        </colgroup>
+    	<tr class="ugcreate_text">
+        	<td><label for="groupname"><span>*</span>组&nbsp;名：</label></td>
+            <td><input type="text" name="groupname" id="groupname"/></td>
+        </tr>
+        <tr class="ugcreate_text">
+        	<td><label for="groupnote">描&nbsp;述：</label></td>
+            <td><input type="text" name="groupnote" id="groupnote"/></td>
+        </tr>
+        <tr>
+        	<td>&nbsp;</td>
+            <td><input type="submit" name="ugcreate_new" value="创建" id="ugcreate_new" class="ugcreate_new"><input type="button" name="ugcreate_close" value="关闭" id="ugcreate_close" class="ugcreate_close"></td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

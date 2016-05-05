@@ -1,0 +1,328 @@
+///组件--购物模块产品列表
+
+//商品显示列表
+.shopping-showwrap{
+	.layout-float-base;
+	background:@color-white;
+	margin:0;
+	padding:0;
+	font-size:0;
+	text-align:center;
+	///为空情况
+	&:empty{
+			text-align:center;
+			min-height:300px;
+			line-height:300px;
+			&:before{
+					content:'\e617';
+					font-family:'ux_six';
+					display:inline-block;
+					font-size:@font-size-small;
+					color:@color-red4;
+			}
+			&:after{
+					content:'暂无数据';
+					display:inline-block;
+					font-size:@font-size-small;
+					color:@color-red4;
+			}
+	}
+	li{
+		.layout-base(250px);
+		padding:0 10px 10px 10px;
+		display:inline-block;
+		text-align:left;
+		margin:0;
+	}
+	.shopping-listitem{
+		.layout-relative-base;
+		.layout-float-base;
+		/*border:1px solid @color-gray9;*/
+		border-left:1px solid @color-gray9;
+		border-right:1px solid @color-gray9;
+		border-top:1px solid @color-gray9;
+		border-bottom:5px solid @color-gray9;
+		.border-radius-base(3px 3px 0 0);
+		padding:10px;
+		&:before{
+			.layout-absolutel-base(10px,0,50);
+			width:0;
+			font-size:@font-size-base + 4;
+			color:@color-white;
+			line-height:30px;
+			text-indent:-8px;
+			height:30px;
+			border-bottom:20px solid transparent;
+		}
+		///标题
+		>a{
+			.layout-float-base;
+			.no-outline-base;
+		}
+		>a:first-child{
+			height:211px;
+			padding:0 0 10px 0;
+			display:table;
+			border-bottom:1px dashed @color-gray9;
+			>div{
+					overflow:hidden;
+					display:table-cell;
+					text-align:center;
+					vertical-align:middle;
+					img{
+						max-width:200px;
+						max-height:200px;
+					}
+			}
+		}
+		>a:first-child+a{
+			display:block;
+			padding:10px 0 0 0;
+			height:70px;
+			&:visited p:before{
+					content:'已访';
+					padding:2px 5px;
+					margin:2px 5px 0 2px;
+					.border-radius-base(3px);
+					color:@color-white;
+					font-size:@font-size-small;
+			}
+			p,span{
+				width:100%;
+				margin:0;
+				padding:0;
+				display:inline-block;
+			}
+			p{
+				height:40px;
+				line-height:20px;
+				font-size:@font-size-base;
+				color:@color-gray1;
+				.text-ww;
+				overflow:hidden;
+			}
+			span{
+				height:20px;
+				line-height:20px;
+				font-size:@font-size-small;
+				color:@color-gray3;
+				.text-of;
+			}
+		}
+		///价格及其他
+		>div{
+			.layout-relative-base;
+			float:left;
+			width:100%;
+			height:50px;
+			i{
+				width:150px;
+				height:50px;
+				font-size:@font-size-base + 2;
+				color:@color-red1;
+				line-height:60px;
+				text-align:left;
+				font-style:normal;
+				font-family:@fontfamliy-base;
+				display:inline-block;
+				white-space:nowrap;
+				&:before{
+					content:'￥:';
+				}
+			}
+			span,
+			em{
+				position:absolute;
+				z-index:50;
+				top:0;
+				display:inline-block;
+				width:30px;
+				height:50px;
+				cursor:pointer;
+				&:before{
+					width:30px;
+					height:30px;
+					line-height:30px;
+					float:left;
+					font-size:@font-size-base + 10;
+					color:@color-gray4;
+					text-align:center;
+					font-family:'ux_six';
+					display:inline-block;
+				}
+				&:after{
+					font-family:'宋体','\5B8B\4F53';
+					width:30px;
+					height:14px;
+					line-height:14px;
+					float:left;
+					font-size:@font-size-small - 2;
+					color:@color-gray3;
+					display:inline-block;
+					text-align:center;
+					white-space:nowrap;
+				}
+			}
+			span{
+				right:40px;
+				&:before{
+					content:'\e645';
+				}
+				&:after{
+					content:'购物车';
+					text-indent:1px;
+				}
+			}
+			em{
+				right:0;
+				font-style:normal;
+				&:before{
+					content:'\e606';
+				}
+				&:after{
+					content:'收藏';
+				}
+			}
+		}
+	}
+	
+	///不同类型
+	.shopping-itemgreen{
+		&:hover{
+			border-color:@color-green2;
+			border-left-style:dashed;
+			border-top-style:dashed;
+			border-right-style:dashed;
+			.transition-base(border .3s ease-in .05s);
+		}
+		&:before{
+			border-left:20px solid @color-green2;
+			border-right:20px solid @color-green2;
+			/*content:'新';*/
+		}
+		>a:first-child+a{
+				&:visited p:before{
+						background:@color-green2;
+				}
+				&:hover p{
+						color:@color-green2;
+				}
+		}
+		>div span,>div em{
+			&:hover:before,
+			&:hover:after{
+					color:@color-green2;
+			}
+		}
+	}
+	.shopping-itemred{
+		&:hover{
+			border-color:@color-red4;
+			border-left-style:dashed;
+			border-top-style:dashed;
+			border-right-style:dashed;
+			.transition-base(border .3s ease-in .05s);
+		}
+		&:before{
+			border-left:20px solid @color-red4;
+			border-right:20px solid @color-red4;
+			/*content:'热';*/
+		}
+		>a:first-child+a{
+				&:visited p:before{
+						background:@color-red4;
+				}
+				&:hover p{
+						color:@color-red4;
+				}
+		}
+		>div span,>div em{
+			&:hover:before,
+			&:hover:after{
+					color:@color-red4;
+			}
+		}
+	}
+	.shopping-itemorange{
+		&:hover{
+			border-color:@color-orange1;
+			border-left-style:dashed;
+			border-top-style:dashed;
+			border-right-style:dashed;
+			.transition-base(border .3s ease-in .05s);
+		}
+		&:before{
+			border-left:20px solid @color-orange1;
+			border-right:20px solid @color-orange1;
+		/*	content:'荐';*/
+		}
+		>a:first-child+a{
+				&:visited p:before{
+						background:@color-orange1;
+				}
+				&:hover p{
+						color:@color-orange1;
+				}
+		}
+		>div span,>div em{
+			&:hover:before,
+			&:hover:after{
+					color:@color-orange1;
+			}
+		}
+	}
+	
+	
+}
+
+//加载更多
+.shopping-showwrap+div{
+		.layout-float-base;
+		height:40px;
+		margin:10px 0;
+		text-align:center;
+		>a{
+				.layout-relative-base;
+				width:70px;
+				display:inline-block;
+				height:26px;
+				line-height:26px;
+				color:@color-white;
+				.border-radius-base(3px);
+				font-size:@font-size-base;
+				text-decoration:none;
+				.no-outline-base;
+				&:before{
+					content:'\e635';
+					font-family:'ux_two';
+					padding:0 5px 0 0;
+				}
+				&:after{
+					.layout-absolutel-base(25px,25px);
+					width:0;
+					height:0;
+					border-left:10px solid transparent;
+					border-right:10px solid transparent;
+					border-bottom:10px solid transparent;
+					content:'';
+				}
+		}
+}
+.shopping-moregreen a{
+		background:@color-green2;
+		&:after{
+			border-top:10px solid @color-green2;
+		}
+}
+.shopping-morered a{
+		background:@color-red4;
+		&:after{
+			border-top:10px solid @color-red4;
+		}
+}
+.shopping-moreorange a{
+		background:@color-orange1;
+		&:after{
+			border-top:10px solid @color-orange1;
+		}
+}

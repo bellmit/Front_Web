@@ -1,0 +1,52 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>登录遮罩效果实现</title>
+</head>
+<meta name="keywords" content="遮罩层实现方法" />
+<meta name="description" content="遮罩层实现方法" />
+<link type="text/css" rel="stylesheet" href="css/login_masking.css"/>
+<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="js/login_masking.js"></script>
+<body>
+	<div class="masking_bg" id="masking_bg"></div>
+    <div class="masking_form" id="masking_form">
+    	<a href="#" title="" class="close_btn" id="close_btn"></a>
+    	<table cellpadding="0" cellspacing="0" class="masking_login" id="masking_login">
+        	<colgroup class="logincgone"></colgroup>
+            <colgroup class="logincgtwo"></colgroup>
+        	<tr>
+            	<th colspan="2">登录</th>
+            </tr>
+        	<tr>
+            	<td><label for="username"><span>*</span>用户名</label></td>
+                <td><img src="images/unicon.png" class="loginunimg"/><input type="text" class="username" id="username" name="username"/><img src="images/login_textr.png" class="logintextr" /></td>
+            </tr>
+        	<tr>
+            	<td><label for="password"><span>*</span>密&nbsp;&nbsp;码</label></td>
+                <td><img src="images/pwicon.png" class="loginpwimg" /><input type="password" class="password" id="password" name="password" /><img src="images/login_textr.png" class="logintextr" /></td>
+            </tr>
+            <tr>
+            	<td colspan="2"><button class="login_submit" id="login_submit">登&nbsp;录</button></td>
+            </tr>
+        </table>
+    </div>
+    <div class="container">
+    	<div class="header">
+        	<a href="#" class="open_btn" title="" id="open_btn">登&nbsp;&nbsp;&nbsp;录</a>
+        </div>
+    	<div class="content">
+        	<h3>登录遮罩层实现</h3>
+            <p>登录遮罩层效果实例</p>
+        	<p>道路充满荆棘，不成功则成仁。</p>
+            <p>模拟实现遮罩层效果，不用jquery遮罩插件实现。</p>
+        </div>
+    </div>
+    <div class="footer">
+    	<div class="footer_show">
+        	<p>欢迎进入我的学习园地</p>
+        </div>
+    </div>
+</body>
+</html>

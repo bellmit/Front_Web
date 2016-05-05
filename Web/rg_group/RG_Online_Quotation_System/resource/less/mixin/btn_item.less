@@ -1,0 +1,66 @@
+///菜单按钮组
+.btn1-item-wrap,
+.btn2-item-wrap,
+.btn3-item-wrap,
+.btn4-item-wrap,
+.btn5-item-wrap,
+.btn6-item-wrap{
+	padding:5px auto;
+	margin:5px 0 20px 0;
+	.layout-float-base;
+	&:after{
+		content:'';
+		clear:both;
+	}
+	li{
+		float:left;
+		.box-sizing-base;
+		height:40px;
+		margin:5px 0;
+		a,
+		span{
+			.layout-base;
+			height:100%;
+			.border-radius-base(3px);
+			display:block;
+			cursor:pointer;
+			line-height:40px;
+			text-align:center;
+			font-size:@font-size-base;
+			color:@color-white;
+			.text-of;
+			.text-unselect;
+		}
+	}
+}
+
+.btn1-item-wrap{
+	li{
+		width:100%;
+	}
+}
+.btn2-item-wrap{
+	li{
+		width:50%;
+	}
+}
+.btn3-item-wrap{
+	li{
+		width:33.33333%;
+	}
+}
+.btn4-item-wrap{
+	li{
+		width:25%;
+	}
+}
+.btn5-item-wrap{
+	li{
+		width:20%;
+	}
+}
+.btn6-item-wrap{
+	li{
+		width:16.66666%;
+	}
+}

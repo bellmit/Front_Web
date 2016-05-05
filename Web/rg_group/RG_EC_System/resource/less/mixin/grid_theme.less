@@ -1,0 +1,43 @@
+///grid 主题或者标题
+////主题列表
+.grid-theme{
+	.layout-float-base;
+	font-size:@font-size-base;
+	color:@color-gray3;
+	height:30px;
+	line-height:30px;
+	padding:0 10px 0 20px;
+	font-family:@fontfamliy-base;
+	background:@color-cyan2;
+	margin:0 0 5px 0;
+	.text-of;
+	&:before{
+		content:'\e621';
+		font-family:'ux_two';
+		display:inline-block;
+		padding:0 5px 0 2px;
+		vertical-align:middle;
+		color:@color-cyan1;
+		font-size:@font-size-small;
+	}
+}
+///主题表单
+.grid-themeedit{
+	&:before{
+		content:'\e6db';
+		font-family:'ux_four';
+		padding:0 5px 0 2px;
+		font-size:@font-size-base;
+		vertical-align:top;
+	}
+}
+///主题激活
+.grid-themeactive{
+	&:before{
+		content:'\e65c';
+		font-family:'ux_six';
+		padding:0 5px 0 2px;
+		font-size:@font-size-default;
+		vertical-align:top;
+	}
+}

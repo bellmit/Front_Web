@@ -1,0 +1,56 @@
+@charset "utf-8";
+/* CSS Document */
+/*全局*/
+body{margin:0;padding:0;}
+body *{margin:0;padding:0;font-size:12px;list-style:none;}
+.container{width:1400px;height:auto;margin:0 auto;overflow:hidden;}
+
+/*头部*/
+.header{width:1400px;height:272px;background:#FFF url(../image/banner-bg.jpg) no-repeat;overflow:hidden;position:relative;}
+.banner_title{text-indent:-9999px;background:url(../image/banner-title.jpg) no-repeat;height:60px;width:502px;position:absolute;left:447px;top:16px;}
+/*导航*/
+.menu{width:1400px;height:42px;background:url(../image/menu-bg.jpg) repeat-x;position:relative;top:230px;}
+.navmenu{width:900px;height:42px;float:left;}
+.navmenu li{float:left;width:180px;height:42px;}
+.navmenu li a{font-size:18px;color:#fff;text-align:center;height:42px;display:block;width:160px;line-height:2.5em;text-decoration:none;font-weight:bold;}
+.navmenu li a:hover{text-decoration:underline;}
+/*导航登录*/
+.navlogin{width:480px;float:right;height:42px;overflow:hidden;}
+.logins{height:23px;width:480px;margin:10px 0;}
+.logins li{float:left;margin:0 5px;}
+.logins li label{color:#fff;font-size:14px;font-weight:bold;}
+.logins li label:hover{cursor:pointer;}
+.admin,.password{margin-top:2px;}
+.admin:foucs,.password:focus{outline:none;}
+.login_btn{background:url(../image/login_btn.jpg) no-repeat;width:41px;height:23px;border:none;cursor:pointer;}
+
+/*内容区*/
+/*公告栏*/
+content{width:1400px;position:relative;height:auto;}
+.Common_area{width:1400px;height:42px;background:url(../image/menu-bg.jpg) repeat-x;margin-top:10px;}
+.Authority_area{
+width:1400px;
+height:auto;
+background:red;
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

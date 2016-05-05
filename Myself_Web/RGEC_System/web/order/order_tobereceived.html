@@ -1,0 +1,415 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<meta name="description" content="电子商务系统--我的订单--待收货订单">
+<meta name="keywords" content="电子商务系统--我的订单--待收货订单">
+<title>电子商务系统--我的订单--待收货订单</title>
+<link rel="stylesheet" type="text/css" href="../../resource/css/bootstrap_2.3.2/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="../../resource/css/bootstrap_2.3.2/css/responsive.min.css">
+<link rel="stylesheet" type="text/css" href="../../resource/js/lib/artDialog/css/ui-dialog.css">
+<link rel="stylesheet" type="text/css" href="../../resource/js/plugins/easyui_page/easyui.css">
+<link rel="stylesheet" type="text/css" href="../../resource/css/base.css">
+<link rel="stylesheet" type="text/css" href="../../resource/css/grid.css">
+</head>
+<body>
+    <!--顶部导航菜单-->
+    <div class="navbar headerbox g-cleargap">
+    	<div class="headerwrap">
+      	<div class="header-logo"></div>
+        <div class="header-info">
+        
+            <!--搜索区域-->
+            <form action="" method="post">
+              <div class="header-search">
+                  <input name="search" placeholder="产品名称/编号/关键词" data-theme="产品名称、编号、关键词" id="searchtxt" type="text">
+                  <button id="searchbtn" type="button">搜索</button>
+              </div>
+            </form>
+            
+            <!--用户数据信息-->
+            <ul>
+              <li>您好!<span>小易叔叔</span></li>
+              <li>代理用户：<span>88abcd</span></li>
+              <li>电子账户：<span>2435.45</span></li>
+              <li>业绩账户：<span>872456.53</span></li>
+              <li>其他账户：<span>46725.69</span></li>
+            </ul>
+            <a class="header-login" id="header_loginbtn" href="#">登录</a>
+            <a class="header-out" id="header_registerbtn" href="#">注册</a>
+        </div>
+    	</div>
+      
+      <!--头部导航-->
+      <div class="header-menu">
+      		<div class="menu-outer">
+          		<div class="menu-inner">
+              		<div><div id="mainbtn"></div></div>
+              		<ul id="mainmenu">
+                    <li>
+                      <a href="../index.html" data-part="index" >首页</a>
+                    </li>
+                    <li>
+                      <a href="../account/account_manage.html" data-part="account" >我的账户</a>
+                    </li>
+                    <li>
+                      <a href="order_manage.html" data-part="order" >我的订单</a>
+                    </li>
+                    <li>
+                      <a href="../results/results_manage.html" data-part="results" >业绩申报</a>
+                    </li>
+                    <li>
+                      <a href="../apply/apply_manage.html" data-part="apply" >注册申请</a>
+                    </li>
+                    <li>
+                      <a href="../shopping/shopping_manage.html" data-part="shopping" >我的购物车</a>
+                    </li>
+                    <li>
+                      <a href="../service/service_manage.html" data-part="service" >服务查询</a>
+                    </li>
+                  </ul>
+              </div>
+          </div>
+      </div>
+    </div>
+    
+    
+    <!--登录、注册-->
+    <div class="header-entrywrap g-d-hidei" id="header_loginwrap">
+    		<div class="header-entrybox">
+        		<div class="header-entryitem">
+            	<ul class="header-entrytab" id="header_logintab">
+                <li class="entrytab-active" data-type="store">专卖店登录</li>
+                <li data-type="member">会员登录</li>
+                <li data-type="close"></li>
+              </ul>
+              <ul class="header-entryform" id="header_loginform">
+                <li data-type="store">
+                  <form action="" method="post" id="login_storeform">
+                    <label class="header-entryun"><input type="text" name="storeUserName" id="login_storeusername" placeholder="请输入专卖店登录用户名"></label>
+                    <p></p>
+                    <label class="header-entrypw"><input type="password" maxlength="16" name="storePassWord" id="login_storepassword" placeholder="请输入专卖店登录密码"></label>
+                    <p></p>
+                    <div><input type="text" name="storeValidCode" placeholder="验证码" id="login_storevalidcode"><img src="../../resource/images/validcode_img.jpg"></div>
+                    <p></p>
+                    <button type="submit" class="btn btn-ok">登录</button>
+                  </form>
+                </li>
+                <li data-type="member" class="g-d-hide">
+                  <form action="" method="post" id="login_memberform">
+                    <label class="header-entryun"><input type="text" name="memberUserName" id="login_memberusername" placeholder="请输入会员登录用户名"></label>
+                    <p></p>
+                    <label class="header-entrypw"><input type="password" maxlength="16" name="memberPassWord" id="login_memberpassword" placeholder="请输入会员登录密码"></label>
+                    <p></p>
+                    <div><input type="text" name="memberValidCode" placeholder="验证码" id="login_membervalidcode"><img src="../../resource/images/validcode_img.jpg"></div>
+                    <p></p>
+                    <button type="submit" class="btn btn-ok">登录</button>
+                  </form>
+                </li>
+              </ul>
+            </div>
+        </div>
+    </div>
+    <div class="header-entrywrap g-d-hidei" id="header_registerwrap">
+    		<div class="header-entrybox">
+        		<div class="header-entryitem">
+            	<ul class="header-entrytab" id="header_registertab">
+                <li class="entrytab-active" data-type="store">专卖店注册</li>
+                <li data-type="member">会员注册</li>
+                <li data-type="close"></li>
+              </ul>
+              <ul class="header-entryform" id="header_registerform">
+                <li data-type="store">
+                  <form action="" method="post" id="register_storeform">
+                    <label class="header-entryun"><input type="text" name="storeUserName" id="register_storeusername" placeholder="请输入专卖店注册用户名"></label>
+                    <p></p>
+                    <label class="header-entrypw"><input type="password" maxlength="16" name="storePassWord" id="register_storepassword" placeholder="请输入专卖店注册密码"></label>
+                    <p></p>
+                    <div><input type="text" name="storeValidCode" placeholder="验证码" id="register_storevalidcode"><img src="../../resource/images/validcode_img.jpg"></div>
+                    <p></p>
+                    <button type="submit" class="btn btn-ok">注册</button>
+                  </form>
+                </li>
+                <li data-type="member" class="g-d-hide">
+                  <form action="" method="post" id="register_memberform">
+                    <label class="header-entryun"><input type="text" name="memberUserName" id="register_memberusername" placeholder="请输入会员注册用户名"></label>
+                    <p></p>
+                    <label class="header-entrypw"><input type="password" maxlength="16" name="memberPassWord" id="register_memberpassword" placeholder="请输入会员注册密码"></label>
+                    <p></p>
+                    <div><input type="text" placeholder="验证码" name="memberValidCode" id="register_membervalidcode"><img src="../../resource/images/validcode_img.jpg"></div>
+                    <p></p>
+                    <button type="submit" class="btn btn-ok">注册</button>
+                  </form>
+                </li>
+              </ul>
+            </div>
+        </div>
+    </div>
+    
+    
+    <!--主体部分-->
+    <div class="mainwrap row-fluid">
+        <ul class="span24">
+            <li>
+            
+                <!--主题选择-->
+                <ul class="themeitem-wrap themeitem-two g-b-red4" id="theme_title">
+                    <li class="theme-order" data-part=""><a href=""><span>订单查询</span></a></li>
+                </ul>
+                
+                <!--子菜单-->
+                <ul class="submenu-wrap" id="submenu">
+                  <li>
+                    <a href="order_manage.html" data-part="order_manage" >订单信息</a>
+                  </li>
+                  <li>
+                    <a href="order_tobepaid.html" data-part="order_tobepaid" >待付款订单</a>
+                  </li>
+                  <li>
+                    <a href="order_tobeshipped.html" data-part="order_tobeshipped" >待发货订单</a>
+                  </li>
+                  <li>
+                    <a href="order_tobereceived.html" data-part="order_tobereceived" >待收货订单</a>
+                  </li>
+                  <li>
+                    <a href="order_finish.html" data-part="order_finish" >完成订单</a>
+                  </li>
+                  <li>
+                    <a href="order_return.html" data-part="order_return" >退换货订单</a>
+                  </li>
+                  <li>
+                    <a href="order_cancel.html" data-part="order_cancel" >取消订单</a>
+                  </li>
+                  <li>
+                    <a href="order_add.html" data-part="order_add" >订单添加</a>
+                  </li>
+                </ul>
+
+            </li>
+            
+            <!--数据展现区-->
+            <li class="main-grid">
+            
+            		<!--grid查询输入域-->
+                <div class="grid-query">
+                    <form action="#" class="form-inline form-inline-fleft" method="post">
+                    
+                      <div class="grid-queryitem">
+                        <label>
+                          出库单号：<input data-theme="出库单号" id="receiptno" type="text" class="input-medium" name="receiptNO" placeholder="请输入出库单号">
+                        </label>
+                      </div>
+                      
+                      <div class="grid-queryitem">
+                        <label>
+                          <select data-type="select" data-theme="日期" class="input-small" id="datetype" name="dateType">
+                            <option selected value="1">创建日期</option>
+                            <option value="2">发货日期</option>
+                            <option value="3">收货日期</option>
+                          </select>
+                        </label>
+                        <label>
+                          <input data-theme="开始日期" id="datestart" type="text" class="input-small grid-datetext" name="selDateRange1" placeholder="请选择日期" readonly>
+                        </label>
+                        <label>--
+                          <input id="dateend" type="text" class="input-small grid-datetext"  name="selDateRange2" data-theme="结束日期" placeholder="请选择日期" readonly>
+                        </label>
+                      </div>
+                      
+                      <div class="grid-queryitem">
+                        <label>
+                          专卖店编号：<input data-theme="出库单号" id="agentno" type="text" class="input-medium" name="agentNO" placeholder="请输入专卖店编号">
+                        </label>
+                      </div>
+                      
+                      <div class="grid-queryitem g-t-nowrap">
+                        <label>
+                        发货状态：
+                          <select data-type="select" data-theme="发货状态" class="input-mini" id="sendstatus" name="sendStatus">
+                            <option selected value="1">是</option>
+          									<option value="0">否</option>
+                          </select>
+                        </label>
+                      </div>
+                      
+                      <div class="grid-queryitem g-t-nowrap">
+                        <label>
+                        收货状态：
+                          <select data-type="select" data-theme="收货状态" class="input-mini" id="recstatus" name="recStatus">
+                            <option selected value="1">是</option>
+          									<option value="0">否</option>
+                          </select>
+                        </label>
+                      </div>
+                      
+                      <div class="grid-queryitem ">
+                        <button id="grid_querybtn" type="button" class="btn btn-ok"><span class="grid-icon grid-search-icon g-c-white"></span>查询</button>
+                      </div>
+                    </form>
+                    
+                </div>
+                
+                <!--grid 数据表格展现-->
+                <div class="grid-datalist">
+                    <table class="table-red table-hover-red table-striped-red table-bordered-red">
+                        <colgroup>
+                            <col class="g-cg3" />
+                            <col class="g-cg3" />
+                            <col class="g-cg4" />
+                            <col class="g-cg3" />
+                            <col class="g-cg4" />
+                            <col class="g-cg4" />
+                            <col class="g-cg3" />
+                            <col class="g-cg3" />
+                            <col class="g-cg3" />
+                            <col class="g-cg3" />
+                            <col class="g-cg3" />
+                            <col class="g-cg2" />
+                            <col class="g-cg2" />
+                        </colgroup>
+                        <thead>
+                            <tr id="orderinfo_sort">
+                            		<th><input type="checkbox" data-state="1" id="chkId_selector" name="chkId_selector">全选</th>
+                                <th data-sort="companyNo" class="issort">公司编号</th>
+                                <th data-sort="libraryNo" class="issort">出库单号</th>
+                                <th data-sort="sendName" class="issort">发货人</th>
+                                <th data-sort="recName" class="issort">收货人名字</th>
+                                <th data-sort="orderStatus" class="issort">订单状态</th>
+                                <th data-sort="sendStatus" class="issort">发货状态</th>
+                                <th data-sort="recStatus" class="issort">收货状态</th>
+                                <th data-sort="dealer" class="issort">经销商</th>
+                                <th data-sort="store" class="issort">专卖店</th>
+                                <th data-sort="total" class="issort">总金额</th>
+                                <th data-sort="FV" class="issort">FV</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="orderinfo_griddata">
+                            <tr>
+                                <td><input value="1" data-state="1" type="checkbox" name="chkId"></td>
+                                <td><p>46783567</p></td>
+                                <td><p>563.00</p></td>
+                                <td>张三</td>
+                                <td>李四</td>
+                                <td>审核</td>
+                                <td><em>已发货</em></td>
+                                <td><em>已收货</em></td>
+                                <td>深圳龙华</td>
+                                <td>深圳青湖</td>
+                                <td><p>55463.00</p></td>
+                                <td><p>6254.00</p></td>
+                                <td><span data-action="actiontype" data-value="1">操作</span></td>
+                            </tr>
+                            <tr>
+                                <td><input value="2" data-state="1" type="checkbox" name="chkId"></td>
+                                <td><p>46783567</p></td>
+                                <td><p>563.00</p></td>
+                                <td>张三</td>
+                                <td>李四</td>
+                                <td>审核</td>
+                                <td><em>已发货</em></td>
+                                <td><em>已收货</em></td>
+                                <td>深圳龙华</td>
+                                <td>深圳青湖</td>
+                                <td><p>55463.00</p></td>
+                                <td><p>6254.00</p></td>
+                                <td><span data-action="actiontype" data-value="2">操作</span></td>
+                            </tr>
+                            <tr>
+                                <td><input value="3" data-state="1" type="checkbox" name="chkId"></td>
+                                <td><p>46783567</p></td>
+                                <td><p>563.00</p></td>
+                                <td>张三</td>
+                                <td>李四</td>
+                                <td>审核</td>
+                                <td><em>已发货</em></td>
+                                <td><em>已收货</em></td>
+                                <td>深圳龙华</td>
+                                <td>深圳青湖</td>
+                                <td><p>55463.00</p></td>
+                                <td><p>6254.00</p></td>
+                                <td><span data-action="actiontype" data-value="3">操作</span></td>
+                            </tr>
+                            <tr>
+                                <td><input value="4" data-state="1" type="checkbox" name="chkId"></td>
+                                <td><p>46783567</p></td>
+                                <td><p>563.00</p></td>
+                                <td>张三</td>
+                                <td>李四</td>
+                                <td>审核</td>
+                                <td><em>已发货</em></td>
+                                <td><em>已收货</em></td>
+                                <td>深圳龙华</td>
+                                <td>深圳青湖</td>
+                                <td><p>55463.00</p></td>
+                                <td><p>6254.00</p></td>
+                                <td><span data-action="actiontype" data-value="4">操作</span></td>
+                            </tr>
+                            <tr>
+                                <td><input value="5" data-state="1" type="checkbox" name="chkId"></td>
+                                <td><p>46783567</p></td>
+                                <td><p>563.00</p></td>
+                                <td>张三</td>
+                                <td>李四</td>
+                                <td>审核</td>
+                                <td><em>已发货</em></td>
+                                <td><em>已收货</em></td>
+                                <td>深圳龙华</td>
+                                <td>深圳青湖</td>
+                                <td><p>55463.00</p></td>
+                                <td><p>6254.00</p></td>
+                                <td><span data-action="actiontype" data-value="5">操作</span></td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                            		<td colspan="13">
+                                		<div class="amountmoney-wrap">
+                                    		<div class="amountmoney-text" id="orderinfo_money"></div>
+                                        <div class="btn okbtn btn-ok" id="orderinfo_sure">确定收货</div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                
+                <!--grid 分页-->
+                <div class="grid-datapage">
+                    <div class="easyui-pagination" id="orderinfo_page" data-options=" total:100,links:5,layout:['first','prev','links','next','last']"></div>
+                </div>
+            
+            </li>
+        </ul>
+    </div>
+    
+    <!--底部导航-->
+    <div class="footerwrap">
+    		<div>
+          <p>版权所有：荣格集团</p>
+          <p>2014-2016</p>
+          <p>深ICP证8716号</p>
+        </div>
+    </div>
+    
+    <!--侧边导航栏-->
+    <ul class="quickmenu" id="quickmenu" data-part="">
+    	<li data-part="account">
+        <a href="../account/account_manage.html" >我的账户</a>
+      </li>
+    	<li data-part="cart" >
+        <a href="../shopping/shopping_manage.html">购物车</a>
+      </li>
+      <li data-part="shopping" >
+        <a href="../shopping/shopping_health.html">去购物</a>
+      </li>
+      <li data-part="service" >
+        <a href="../service/service_manage.html">查询</a>
+      </li>
+    </ul>
+    
+		<script src="../../resource/js/lib/require/require-2.1.11.min.js" data-main="../../resource/js/order/order_tobereceived.js"></script>
+</body>
+</html>

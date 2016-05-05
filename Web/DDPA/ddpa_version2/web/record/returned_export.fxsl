@@ -1,0 +1,46 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+</head>
+<body>
+	<table width="70%" border="1" cellspacing="0" cellpadding="0"　style="border-collapse:collapse">  
+		<tr><td colspan="7" align="center">已收回款</td></tr>
+		<tr>
+		   <td class='th'>借款标题</td>
+           <td class='th'>借款人</td>
+           <td class='th'>本金</td>
+           <td class='th'>收益</td>
+           <td class='th'>合计</td>
+           <td class='th'>回款日期</td>
+           <td class='th'>备注</td>
+		</tr>
+		<#if returnedVoList??>
+		<#list returnedVoList as returned>
+		<tr>
+			<td><#if returned.productName??>${returned.productName!''}</#if></td>
+			<td><#if returned.userName??>${returned.userName!''}</#if></td>
+			<td><#if returned.principalAmount??>${returned.principalAmount?string("###,##0.00")}</#if></td>
+			<td><#if returned.incomeAmount??>${returned.incomeAmount?string("###,##0.00")}</#if></td>
+			
+			<td><#if returned.totalAmount??>${returned.totalAmount?string("###,##0.00")}</#if></td>
+			<td><#if returned.repayDate?exists>${returned.repayDate!''}</#if></td>
+			<td><#if returned.remark?exists>${returned.remark!''}</#if></td>
+			
+		</tr>
+		</#list> 
+		</#if>
+		<#if returned?exists>
+		<tr>
+			<td>合计</td>
+			<td></td>
+			<td><#if returned.principalAmount?exists>${returned.principalAmount!''}</#if></td>
+			<td><#if returned.incomeAmount?exists>${returned.incomeAmount!''}</#if></td>
+			<td><#if returned.totalAmount?exists>${returned.totalAmount!''}</#if></td>
+			<td></td>
+			<td></td>
+		</tr>
+		</#if>
+	</table> 
+</body>
+</html>

@@ -1,0 +1,139 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="initial-scale=1.0,user-scalable=no" />
+<title>调用百度地图</title>
+<link type="text/css" rel="stylesheet" href="css/global.css"/>
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=1.2"></script>
+<script type="text/javascript" src="js/jquery.js"></script>
+<!--<script type="text/javascript" src="js/maps.js"></script>-->
+<!--<script type="text/javascript">
+function initialize(){
+var mp=new BMap.Map('map');
+mp.centerAndZoom(new BMap.Point(112.9,28.25),11);
+}
+function loadScript(){
+var script=document.getElement("script");
+script.src="http://api.map.baidu.com?v=1.2&callback=initialize";
+document.body.appendChlid(script);
+}
+window.onload=loadScript;
+</script>-->
+</head>
+<body>
+	<div class="container">
+     <div class="maps" id="maps">
+     
+     
+     
+     </div>
+    </div>
+
+<script type="text/javascript">
+	var map = new BMap.Map("maps");
+    var point = new BMap.Point(112.9396,28.2257);
+    map.centerAndZoom(point,16); 
+    map.enableScrollWheelZoom();
+	map.enableKeyboard();
+	map.enableInertialDragging();
+	map.enableContinuousZoom();
+	map.addControl(new BMap.NavigationControl());//添加操作控件
+	map.addControl(new BMap.OverviewMapControl());
+	map.addControl(new BMap.MapTypeControl());
+	var scalecs={offset:new BMap.Size(10,50)};
+	map.addControl(new BMap.ScaleControl(scalecs));
+
+
+    // 复杂的自定义覆盖物
+    function ComplexCustomOverlay(point, text, mouseoverText){
+      this._point = point;
+      this._text = text;
+      this._overText = mouseoverText;
+    }
+    ComplexCustomOverlay.prototype = new BMap.Overlay();
+    ComplexCustomOverlay.prototype.initialize = function(map){
+      this._map = map;
+      var div = this._div = document.createElement("div");
+      div.style.position = "absolute";
+      div.style.zIndex = BMap.Overlay.getZIndex(this._point.lat);
+      div.style.backgroundColor = "#EE5D5B";
+      div.style.border = "1px solid #BC3B3A";
+      div.style.color = "white";
+      div.style.height = "36px";
+      div.style.padding = "2px";
+      div.style.lineHeight = "18px";
+      div.style.whiteSpace = "nowrap";
+      div.style.MozUserSelect = "none";
+      div.style.fontSize = "12px"
+      var span = this._span = document.createElement("span");
+      div.appendChild(span);
+      span.appendChild(document.createTextNode(this._text));      
+      var that = this;
+
+      var arrow = this._arrow = document.createElement("div");
+      arrow.style.background = "url(http://map.baidu.com/fwmap/upload/r/map/fwmap/static/house/images/label.png) no-repeat";
+      arrow.style.position = "absolute";
+      arrow.style.width = "11px";
+      arrow.style.height = "10px";
+      arrow.style.top = "40px";
+      arrow.style.left = "10px";
+      arrow.style.overflow = "hidden";
+      div.appendChild(arrow);
+     
+      div.onmouseover = function(){
+        this.style.backgroundColor = "#6BADCA";
+        this.style.borderColor = "#4989ac";
+        this.getElementsByTagName("span")[0].innerHTML = that._overText;
+        arrow.style.backgroundPosition = "0px -20px";
+      }
+
+      div.onmouseout = function(){
+        this.style.backgroundColor = "#EE5D5B";
+        this.style.borderColor = "#BC3B3A";
+        this.getElementsByTagName("span")[0].innerHTML = that._text;
+        arrow.style.backgroundPosition = "0px 0px";
+      }
+
+      map.getPanes().labelPane.appendChild(div);
+      
+      return div;
+    }
+    ComplexCustomOverlay.prototype.draw = function(){
+      var map = this._map;
+      var pixel = map.pointToOverlayPixel(this._point);
+      this._div.style.left = pixel.x - parseInt(this._arrow.style.left) + "px";
+      this._div.style.top  = pixel.y - 30 + "px";
+    }
+    var txt = "长沙祥达汽车租赁有限公司<br/>长沙市岳麓区金星路383号1栋407", mouseoverTxt = txt;
+        
+    var myCompOverlay = new ComplexCustomOverlay(new BMap.Point(112.9396,28.2257), "长沙祥达汽车租赁有限公司<br/>长沙市岳麓区金星路383号1栋407",mouseoverTxt);
+
+    map.addOverlay(myCompOverlay);
+	var local=new BMap.LocalSearch(map,{renderOptions:{map:map}});
+	local.searchInBounds("永祺西京",map.getBounds());
+
+/*var map=new BMap.Map("maps");
+var point=new BMap.Point(112.94,28.22);
+map.centerAndZoom(point,16);//初始化
+map.enableScrollWheelZoom();
+map.enableKeyboard();
+map.enableInertialDragging();
+map.enableContinuousZoom();
+map.addControl(new BMap.NavigationControl());//添加操作控件
+map.addControl(new BMap.OverviewMapControl());
+map.addControl(new BMap.MapTypeControl());
+var scalecs={offset:new BMap.Size(10,50)};
+map.addControl(new BMap.ScaleControl(scalecs));
+//map.addContextMenu(menu:ContextMenu); 
+var local=new BMap.LocalSearch(map,{renderOptions:{map:map}});
+local.searchInBounds("永祺西京",map.getBounds());
+var xdzc=new BMap.Geocoder();
+xdzc.getPoint("长沙市岳麓区金星路",function(point){
+if(point){
+map.addOverlay(new BMap.Marker(point));}
+},"长沙市");*/
+</script>
+</body>
+</html>

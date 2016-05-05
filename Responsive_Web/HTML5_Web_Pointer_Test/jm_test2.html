@@ -1,0 +1,56 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="description" content="jquery mobile test">
+<meta name="keywords" content="jquery mobile test">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+<title>jquery mobile test2</title>
+<link rel="stylesheet" type="text/css" href="jquery_mobile/jquery.mobile-1.4.4.min.css">
+<script src="js/jquery-1.11.1.min.js"></script>
+<script src="jquery_mobile/jquery.mobile-1.4.4.min.js"></script>
+</head>
+<body>
+	<section data-role="page" id="mb1">
+    	<header data-role="header" data-title="视图1标题">test2</header>
+        <div data-role="controlgroup" data-type="horizontal">
+        	<a href="jm_test1.html" data-role="button">test1</a>
+            <a href="jm_test2.html" data-role="button">test2</a>
+            <a href="jm_test3.html" data-role="button">test3</a>
+            <a href="jm_test4.html" data-role="button">test4</a>
+        </div>
+        <div data-role="collapsible-set" data-transition="fade">
+        	<div data-role="collapsible">
+            　 <h3>I'm a header1</h3>
+            　 <p>I'm the collapsible content1</p>
+            </div>
+            <div data-role="collapsible">
+            　 <h3>I'm a header2</h3>
+            　 <p>I'm the collapsible content2</p>
+            </div>
+            <div data-role="collapsible">
+            　 <h3>I'm a header3</h3>
+            　 <p>I'm the collapsible content3</p>
+            </div>
+        </div>
+        <div data-role="controlgroup" data-type="horizontal" data-mini="true">
+            <a href="#" class="ui-shadow ui-btn ui-corner-all ui-btn-icon-left ui-icon-plus ui-btn-b">Add</a>
+            <a href="#" class="ui-shadow ui-btn ui-corner-all ui-btn-icon-left ui-icon-delete ui-btn-b">Delete</a>
+            <a href="#" class="ui-shadow ui-btn ui-corner-all ui-btn-icon-left ui-icon-grid ui-btn-b">More</a>
+        </div>
+        <div data-role="content">
+        	<a href="#popupMenu" data-rel="popup" data-transition="slideup" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-icon-gear ui-btn-icon-left ui-btn-b">popup message</a>
+            <div data-role="popup" id="popupMenu" data-theme="b">
+                <ul data-role="listview" data-inset="true" style="min-width:210px;">
+                    <li data-role="list-divider">Choose an action</li>
+                    <li><a href="#">View details</a></li>
+                    <li><a href="#">Edit</a></li>
+                    <li><a href="#">Disable</a></li>
+                    <li><a href="#">Delete</a></li>
+                </ul>
+            </div>
+        </div>
+        <footer data-role="footer">test2</footer>
+    </section>
+</body>
+</html>

@@ -1,0 +1,201 @@
+/* CSS Document */
+*{
+	margin:0px;
+	padding:0px;
+	border:0px;
+}
+#all {
+	width:991px;
+	height:2110px;
+	margin:5px auto;
+}
+body {
+	background:#8d0010;
+}
+#all div {
+	float:left;
+}
+.top {
+	background:url(../../images/kunluntouzi-3_03.jpg) no-repeat;
+	width:313px;
+	height:123px;
+	font-size:12px;
+}
+.top-text {
+	margin:15px 0 0 0px;
+}
+.top a {
+	color:#000;
+	font-size:12px;
+	text-decoration:none;
+}
+.top a:hover {
+	color:#F00;
+}
+/*----------nav---------*/
+.nav ul {
+	width:991px;
+}
+.nav-left {
+	background:url(../../images/kunluntouzi-3_04.jpg) repeat-x;
+	width:18px;
+	height:44px;
+}
+.nav-right {
+	background:url(../../images/kunluntouzi-3_07.jpg) repeat-x;
+	width:25px;
+	height:44px;
+}
+.nav-li {
+	width:3px;
+	height:44px;
+	background:url(../../images/kunluntouzi-3_05.jpg) repeat-x;
+}
+.nav li {
+	float:left;
+	list-style-type:none;
+	width:105px;
+	height:44px;
+	background:url(../../images/kunluntouzi-3_05.jpg) repeat-x;
+}
+.nav li a {
+	height:44px;
+	line-height:44px;
+	margin:0px 40px 0 0;
+	font-family:"宋体-PUA";
+	font-weight:bold;
+	color:#FFF;
+	font-size:14px;
+	text-decoration:none;
+}
+.nav li a:hover {
+	color:#fcbd31;
+}
+/*---------主要内容背景-----------*/
+.content-back {
+	width:991px;
+	height:1900px;
+	background:#dcbb72;
+}
+.tu {
+	margin:8px 0 0 9px;
+}
+/*------------left-----------*/
+.left {
+	width:240px;
+	margin:8px 0 0 9px;
+}
+.left-nav li {
+	list-style-type:none;
+	width:240px;
+	height:30px;
+	background:url(../../images/kunluntouzi-fenye_12.jpg);
+}
+.left-nav li a {
+	color:#000;
+	height:38px;
+	line-height:38px;
+	font-size:12px;
+	text-decoration:none;
+	margin-left:70px;
+}
+.left-nav li a:hover {
+	color:#dcbb72;
+}
+.left-2 {
+	margin-top:6px;
+}
+.left-3 {
+	margin-top:6px;
+}
+.left-4 {
+	margin-top:6px;
+}
+/*------------right-------------*/
+.right {
+	width:724px;
+	height:1500px;
+	background:#FFF;
+	margin:8px 0 0 9px;
+}
+.right-title {
+	margin:20px 0 0 25px;
+	font-size:12px;
+	color:#000;
+}
+.right-title a {
+	color:#000;
+	text-decoration:none;
+}
+.right-title a:hover {
+	text-decoration:underline;
+}
+/*--------------bottom--------------*/
+.bottom {
+	width:991px;
+	height:40px;
+	text-align:center;
+	margin-top:20px;
+	font-size:12px;
+	color:#737272;
+}
+.bottom a {
+	color:#737272;
+	text-decoration:none;
+}
+.bottom a:hover {
+	color:#000;
+	text-decoration:underline;
+}
+/*------------------------地址-----------------------*/
+.where {
+	color:#FFF;
+	font-size:12px;
+	text-align:center;
+	width:991px;
+	margin:10px auto;
+}
+.where a {
+	color:#FFF;
+	text-decoration:none;
+}
+.where a:hover {
+	color:#000;
+	text-decoration:underline;
+}
+/*----------------企业理念--------------*/
+.content-text-qiyelinian {
+	font-size:12px;
+	width:680px;
+	line-height:25px;
+	margin:25px 10px 0 25px;
+}
+/*----------加盟支持-----------*/
+.content-text-jiamengzhichi {
+	font-size:12px;
+	width:680px;
+	margin:25px 10px 0 25px;
+}
+.content-text-jiamengzhichi li {
+	list-style-type:none;
+	margin:8px 0 0 30px;
+	line-height:20px;
+}
+.zhichi-title-1 {
+	width:680px;
+	text-align:center;
+	font-size:24px;
+	font-weight:bold;
+}
+.zhichi-title-2 {
+	width:680px;
+	margin:15px 0 10px 0;
+	font-size:18px;
+}
+.zhichi-title-3 {
+	font-size:14px;
+	font-weight:bold;
+	width:680px;
+	margin:10px 0 10px 30px;
+}
+

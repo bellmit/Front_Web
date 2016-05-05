@@ -1,0 +1,255 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script src="../js/lib/jquery-1.8.3.min.js"></script>
+<link rel="stylesheet" type="text/css" href="../css/main/welcome.css"/>
+<title>welcome</title>
+</head> 
+<script type="text/javascript">
+$(function(){  
+	$("#test li:last").css("border","none");
+}) 
+var d=new Date();
+var monthname=new Array("1","2","3","4","5","6","7","8","9","10","11","12");
+var TODAY = d.getFullYear()+"年"+monthname[d.getMonth()] + "月" + d.getDate() + "日" ;
+
+
+function Clock() {
+	var date = new Date();
+	this.year = date.getFullYear();
+	this.month = date.getMonth() + 1;
+	this.date = date.getDate();
+	this.day = new Array("星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六")[date.getDay()];
+	this.hour = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
+	this.minute = date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
+	this.second = date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds();
+
+	this.toString = function() {
+		return  this.year + "年" + this.month + "月" + this.date + "日 " + "   "+ this.day; 
+	};
+	
+	this.toSimpleDate = function() {
+		return this.year + "-" + this.month + "-" + this.date;
+	};
+	
+	this.toDetailDate = function() {
+		return this.year + "-" + this.month + "-" + this.date + " " + this.hour + ":" + this.minute + ":" + this.second;
+	};
+	
+	this.display = function(ele) {
+		var clock = new Clock();
+		ele.innerHTML = clock.toString();
+		window.setTimeout(function() {clock.display(ele);}, 1000);
+	};
+}
+</script>
+<body>
+<div id="body">
+	<table style="min-width:1000px;width:100%;*+width:1400px;" height="100%" border="0" cellpadding="0" cellspacing="10">
+    	<tr>
+        	<td width="305" height="100%" vAlign=top>
+            	<table cellSpacing=0 cellPadding=0 width="100%" height="100%"  border=0 >
+                	<tr>
+                    	<td><img src="../images/mainframe/left_top_k.gif" /></td>
+                    </tr>
+                    <tr>
+                    	<td style="border-left:1px solid #cae2ec; border-right:1px solid #cae2ec;" height="100%" vAlign=top>
+                        	<div class="left">
+                                <div class="left_top">
+                                    <h1>
+                                    	<p><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span></p>
+                                    </h1>
+                                    <div class="left_top_cont">
+                               	  		<ul>
+                                            <li><img src="../images/mainframe/icon_left02.gif" />资源库共<span>123</span>个资源</li>
+                                            <li><img src="../images/mainframe/icon_left03.gif" />下载中心共<span>123</span>个资源</li>
+                                        </ul>
+                                  </div>
+                                </div>
+                                <div class="left_bottom">
+                                    <ul id="test">
+                                    	<li class="left_bottom_l">
+                                        	<dl>
+                                            	<dt><a href="##"><img src="../images/mainframe/icon_word.gif" /></a></dt>
+                                                <dd>文档类</dd>
+                                            </dl>
+                                        </li>
+                                        <li>
+                                            <dl>
+                                            	<dt><a href="##"><img src="../images/mainframe/icon_voice.gif" /></a></dt>
+                                                <dd>声音类</dd>
+                                            </dl>
+                                        </li>
+                                        <li class="left_bottom_l">
+                                        	<dl>
+                                            	<dt><a href="##"><img src="../images/mainframe/icon_map.gif" /></a></dt>
+                                                <dd>图片类</dd>
+                                            </dl>
+                                        </li>
+                                        <li>
+                                            <dl>
+                                            	<dt><a href="##"><img src="../images/mainframe/icon_video.gif" /></a></dt>
+                                                <dd>视频类</dd>
+                                            </dl>
+                                        </li>
+                                        <li class="left_bottom_l" style="border-bottom:none;">
+                                            <dl>
+                                            	<dt><a href="##"><img src="../images/mainframe/icon_program.gif" /></a></dt>
+                                                <dd>程序类</dd>
+                                            </dl>
+                                        </li>
+                                        <li style="border-bottom:none;">
+                                            <dl>
+                                            	<dt><a href="##"><img src="../images/mainframe/icon_other.gif" /></a></dt>
+                                                <dd>其它类</dd>
+                                            </dl>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                    	<td><img src="../images/mainframe/left_bottom_k.gif" /></td>
+                    </tr>
+                </table>
+            </td>
+            <td width="auto" height="100%" vAlign=top>
+            	<div class="center">
+                	<table  class="news_line">
+                    	<tr>
+                        	<td>
+                            	<h1><span>热门资源</span><a href="##">查看更多>></a></h1>
+                                <div class="news_l_cont">
+                                    <ul>
+                                        <li><em>2013-09-08</em><a href="##">新东方多媒体资源库试用开通通知 </a></li>
+                                        <li><em>2013-09-08</em><a href="##">图书馆开通试用爱迪森网上报告厅</a></li>
+                                        <li><em>2013-09-08</em><a href="##">美思外文数字图书馆试用通知</a></li>
+                                        <li><em>2013-09-08</em><a href="##">Nature Chemical Biology及Nature周刊 </a></li>
+                                        <li><em>2013-09-08</em><a href="##">万方视频知识服务系统试用通知</a></li>
+                                        <li><em>2013-09-08</em><a href="##">台湾科学期刊数据库（TEPS）、台湾科 </a></li>
+                                        <li><em>2013-09-08</em><a href="##">库客数字音乐图书馆试用通知</a></li>
+                                        <li><em>2013-09-08</em><a href="##">高校创业教育资源总库试用通知</a></li>
+                                    </ul>
+                                </div>
+                            </td>
+                            <td>
+                            <h1><span>最新资源</span><a href="##">查看更多>></a></h1>
+                                <div class="news_l_cont">
+                                    <ul>
+                                        <li><em>2013-09-08</em><a href="##">新东方多媒体资源库试用开通通知 </a></li>
+                                        <li><em>2013-09-08</em><a href="##">图书馆开通试用爱迪森网上报告厅</a></li>
+                                        <li><em>2013-09-08</em><a href="##">美思外文数字图书馆试用通知</a></li>
+                                        <li><em>2013-09-08</em><a href="##">Nature Chemical Biology及Nature周刊 </a></li>
+                                        <li><em>2013-09-08</em><a href="##">万方视频知识服务系统试用通知</a></li>
+                                        <li><em>2013-09-08</em><a href="##">台湾科学期刊数据库（TEPS）、台湾科 </a></li>
+                                        <li><em>2013-09-08</em><a href="##">库客数字音乐图书馆试用通知</a></li>
+                                        <li><em>2013-09-08</em><a href="##">高校创业教育资源总库试用通知</a></li>
+                                    </ul>
+                                </div>
+                            </td>
+                            <td>
+                            	<h1><span>在线新闻</span><a href="##">查看更多>></a></h1>
+                                <div class="news_l_cont">
+                                    <ul>
+                                        <li><em>2013-09-08</em><a href="##">新东方多媒体资源库试用开通通知 </a></li>
+                                        <li><em>2013-09-08</em><a href="##">图书馆开通试用爱迪森网上报告厅</a></li>
+                                        <li><em>2013-09-08</em><a href="##">美思外文数字图书馆试用通知</a></li>
+                                        <li><em>2013-09-08</em><a href="##">Nature Chemical Biology及Nature周刊 </a></li>
+                                        <li><em>2013-09-08</em><a href="##">万方视频知识服务系统试用通知</a></li>
+                                        <li><em>2013-09-08</em><a href="##">台湾科学期刊数据库（TEPS）、台湾科 </a></li>
+                                        <li><em>2013-09-08</em><a href="##">库客数字音乐图书馆试用通知</a></li>
+                                        <li><em>2013-09-08</em><a href="##">高校创业教育资源总库试用通知</a></li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                	<div class="download">
+                        <h1><span>下载排行</span><a href="##">查看更多>></a></h1>
+                        <div class="download_cont">
+                             <ul>
+                                <li><em><img src="../images/mainframe/icon_up.gif" /></em><a href="##">美思外文数字图书馆试用通知</a></li>
+                                <li><em><img src="../images/mainframe/icon_up.gif" /></em><a href="##">Nature Chemical Biology及Nature周刊 </a></li>
+                                <li><em><img src="../images/mainframe/icon_down.gif" /></em><a href="##">万方视频知识服务系统试用通知</a></li>
+                                <li><em><img src="../images/mainframe/icon_down.gif" /></em><a href="##">台湾科学期刊数据库（TEPS）、台湾科 </a></li>
+                                <li><em><img src="../images/mainframe/icon_up.gif" /></em><a href="##">库客数字音乐图书馆试用通知</a></li>
+                                <li><em><img src="../images/mainframe/icon_up.gif" /></em><a href="##">库客数字音乐图书馆试用通知</a></li>
+                                <li><em><img src="../images/mainframe/icon_up.gif" /></em><a href="##">库客数字音乐图书馆试用通知</a></li>
+                                <li><em><img src="../images/mainframe/icon_up.gif" /></em><a href="##">高校创业教育资源总库试用通知</a></li>
+                            </ul>
+                            <ul style="float:right;">
+								<li><em><img src="../images/mainframe/icon_down.gif" /></em><a href="##">万方视频知识服务系统试用通知</a></li>
+                                <li><em><img src="../images/mainframe/icon_down.gif" /></em><a href="##">台湾科学期刊数据库（TEPS）、台湾科 </a></li>
+                                <li><em><img src="../images/mainframe/icon_up.gif" /></em><a href="##">库客数字音乐图书馆试用通知</a></li>
+                                <li><em><img src="../images/mainframe/icon_up.gif" /></em><a href="##">高校创业教育资源总库试用通知</a></li>
+                                <li><em><img src="../images/mainframe/icon_up.gif" /></em><a href="##">美思外文数字图书馆试用通知</a></li>
+                                <li><em><img src="../images/mainframe/icon_up.gif" /></em><a href="##">Nature Chemical Biology及Nature周刊 </a></li>
+                                <li><em><img src="../images/mainframe/icon_up.gif" /></em><a href="##">库客数字音乐图书馆试用通知</a></li>
+                                <li><em><img src="../images/mainframe/icon_up.gif" /></em><a href="##">高校创业教育资源总库试用通知</a></li>
+                            </ul>
+                        </div>
+                    </div> 
+                </div>
+            </td>
+            <td width="268" height="100%" vAlign=top>
+            	<div class="right">
+                	<div class="right_top">
+                    	<dl style="border-bottom:1px solid #ccc;">
+                        	<dt><img src="../images/mainframe/icon_times.gif" /></dt>
+                            <dd>今天是：</dd>
+                            <dd><span id="clock"></span></dd>
+                        </dl>
+                        <dl class="weather">
+                      	<dd class="change">
+                        <!--		<b>武 汉</b><a href="##">[切换]</a></dd>
+                          	<dt><img src="../images/mainframe/icon_weather.gif" /></dt>
+                            <dd><span>今</span><span>阵雨</span>26℃</dd>
+                            <dd><span>空气质量：</span> <i>良好</i>-->
+                            <IFRAME id="tianqi8_wetherinfo" name="tianqi8_wetherinfo" src="http://www.uuuu.cc/weather/code/freeweather2.htm?id=&fcolor=&imgurl=tb/tbb/tb1&bimg=&bcolor=&fsize=" frameBorder=0 width=180 height=100 ALIGN=CENTER MARGINWIDTH=0 MARGINHEIGHT=0 HSPACE=0 VSPACE=0 SCROLLING=NO allowtransparency=true></IFRAME>
+                            </dd>
+                        </dl>
+                    </div>
+                    <div class="right_center">
+                    	<h1><span>写个提醒</span> </h1>
+                        <div class="right_c_cont">
+                            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                              	<tr>
+                                	<td height="30" colspan="2"><p>记下重要的事情和日子，到时将邮件提醒您</p></td>
+                              	</tr>
+                                <tr>
+                                	<td height="30"><input name="" type="text" style="width:170px;" /></td>
+                                	<td width="66"><input type="image" src="../images/mainframe/btn_back.gif" /></td>
+                              	</tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="right_bottom">
+                    	<h1><span>在线公告</span></h1>
+                        <div class="right_b_cont">
+                        	<ul>
+								<li><a href="##">万方视频知识服务系统试用通知</a></li>
+                                <li><a href="##">台湾科学期刊数据库（TEPS）、台湾科 </a></li>
+                                <li><a href="##">库客数字音乐图书馆试用通知</a></li>
+                                <li><a href="##">高校创业教育资源总库试用通知</a></li>
+                                <li><a href="##">台湾科学期刊数据库（TEPS）、台湾科 </a></li>
+                                <li><a href="##">库客数字音乐图书馆试用通知</a></li>
+                                <li><a href="##">高校创业教育资源总库试用通知</a></li>
+                                <li><a href="##">台湾科学期刊数据库（TEPS）、台湾科 </a></li>
+                                <li><a href="##">美思外文数字图书馆试用通知</a></li>
+                                <li><a href="##">台湾科学期刊数据库（TEPS）、台湾科 </a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>
+<script type="text/javascript">
+    var clock = new Clock();
+    clock.display(document.getElementById("clock"));
+</script>

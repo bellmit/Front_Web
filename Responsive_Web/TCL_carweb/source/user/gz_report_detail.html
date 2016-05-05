@@ -1,0 +1,82 @@
+﻿<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+<meta charset="UTF-8">
+<title>故障报告详情</title> <#include "/includes/carcenter_res.html"/>
+</head>
+<body>
+	<div class="bg_wrap">
+		<div class="wrapper">
+			<#include "/includes/header.html"/>
+			<div class="boardframe">
+				<div class="fri-content">
+					<div class="wrap-con">
+						<#include "/includes/car_userinfos.html"/>
+						<div class="p_share">
+							<h1 class="p_h1 bg_2">车机服务</h1>
+							<div id="feedcontainer">
+								<div class="info-con">
+									<div class="p-tabs">
+										<ul>
+											<li><a href="car_server.html">保养记录</a></li>
+											<li class="active"><a href="gz_report.html">故障报告</a></li>
+											<li><a href="drive_report.html">行车报告</a></li>
+										</ul>
+									</div>
+									<div class="info-tabs-con">
+										<div class="tab-list">
+											<div class="repair">
+												<a href="../../../../ResponsiveWebDesign_Web/TCL_carweb/source/user/${request.contextPath}/carfri/gz_report?selMonth=${selDate!''}&selYear=${choseYear!''}">返回列表</a>
+											</div>
+											<#if carFault??>
+											<table class="gz-detail">
+												<tr>
+													<td class="tabt" width="15%">车型</td>
+													<td>${carFault.name!''}</td>
+												</tr>
+												<tr>
+													<td class="tabt">所在省市</td>
+													<td>${carFault.pronviceCity!''}</td>
+												</tr>
+												<tr>
+													<td class="tabt">故障码</td>
+													<td>${carFault.fcode!''}</td>
+												</tr>
+												<tr>
+													<td class="tabt">故障信息</td>
+													<td>${carFault.finfo!''}</td>
+												</tr>
+												<!-- <tr>
+													<td class="tabt">故障等级</td>
+													<td>${carFault.fleve!''}</td>
+												</tr> -->
+												<tr>
+													<td class="tabt">最新报告时间</td>
+													<td>${carFault.inserttime!''}</td>
+												</tr>
+												<!-- <tr>
+													<td class="tabt">维修处理意见</td>
+													<td>${carFault.fadvi!''}</td>
+												</tr> -->
+												<tr>
+													<td class="tabt">故障次数</td>
+													<td>${carFault.totalCount!''}</td>
+												</tr>
+											</table>
+											<#else>
+											<div style="text-align: center">暂无记录</div>
+											</#if>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<#include "/includes/car_sidenav.html"/>
+			</div>
+		</div>
+	</div>
+	<#include "/includes/footer.html"/>
+</body>
+</html>

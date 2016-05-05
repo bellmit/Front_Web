@@ -1,0 +1,581 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!-- EXT CSS -->
+<link rel="stylesheet" type="text/css" href="/QqsPlatform/html/js/ext/resources/css/ext-all.css" />
+<link rel="stylesheet" type="text/css" href="/QqsPlatform/html/js/ext/resources/css/dataview.css" />
+<link rel="stylesheet" type="text/css" href="/QqsPlatform/html/js/ext/resources/docs.css" />
+<link rel="stylesheet" type="text/css" href="/QqsPlatform/html/js/ext/resources/style.css" />
+<link rel="stylesheet" type="text/css" href="/QqsPlatform/html/js/ext/resources/css/UploadDialog.css"/>
+<link rel="stylesheet" type="text/css" href="/QqsPlatform/html/js/ext/resources/css/icons.css"/>
+<link rel="stylesheet" type="text/css" href="/QqsPlatform/html/js/ext/ux/fileuploadfield/css/fileuploadfield.css"/>
+<link rel="stylesheet" type="text/css" href="/QqsPlatform/html/page/Website/SiteManagement/channel.css"/>
+<link rel="stylesheet" type="text/css" href="/QqsPlatform/html/page/communicate/PhoneBook.css"/>
+<link rel="stylesheet" type="text/css" href="/QqsPlatform/html/js/ext/ux/css/DateTimePicker.css"/>
+<link rel="stylesheet" type="text/css" href="/QqsPlatform/html/js/ext/ux/css/Ext.ux.UploadDialog.css"/>
+<link rel="stylesheet" type="text/css" href="/QqsPlatform/html/js/ext/ux/css/Portal.css" />
+<link rel="stylesheet" type="text/css" href="/QqsPlatform/html/js/ext/caltask/calendar.css" />
+<link rel="stylesheet" type="text/css" href="/QqsPlatform/html/js/ext/ux/css/TabScrollerMenu.css" /> 
+ 
+<!-- flash报表 -->
+<link rel="stylesheet" href="/QqsPlatform/html/js/FusionChart/JSClass/Contents/Style.css" type="text/css" />
+<script language="JavaScript" src="/QqsPlatform/html/js/FusionChart/JSClass/FusionCharts.js"></script>
+ 
+<!--LODOP打印-->
+<script type="text/javascript" src="/QqsPlatform/html/js/lodop/LodopFuncs.js"></script>
+ 
+<!-- EXT 核心js -->
+<script type="text/javascript" src="/QqsPlatform/html/js/ext/adapter/ext/ext-base.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/js/ext/ext-all.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/js/ext/ext-lang-zh_CN.js"></script>
+ 
+<!-- 浮动提示窗体 -->
+<script type="text/javascript" src="/QqsPlatform/html/js/ext/src/shared/floatingWin.js"></script>
+ 
+ 
+<!-- 编辑器 扩展--> 
+<script type="text/javascript" src="/QqsPlatform/html/js/ext/ux/extendtHtmleditor.js"></script>
+ 
+<!-- EXT 扩展插件 -->	
+<script type="text/javascript" src="/QqsPlatform/html/js/ext/ux/TabCloseMenu.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/js/ext/ux/SearchField.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/js/ext/ux/fileuploadfield/FileUploadField.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/js/ext/ux/DataViewTransition.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/js/ext/ux/DateTimeField.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/js/ext/ux/Portal.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/js/ext/ux/PortalColumn.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/js/ext/ux/Portlet.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/js/ext/ux/RowExpander.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/js/ext/ux/RowEditor.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/js/ext/ux/CheckColumn.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/js/ExtUI/treeCombobox.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/js/ext/ux/TabScrollerMenu.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/js/ext/ux/PageSize.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/js/ext/ux/WMTextfield.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/js/ext/ux/GroupSummary.js"></script>
+ 
+ 
+<!-- 首页 -->
+<script type="text/javascript" src="/QqsPlatform/html/page/common/AppUtil.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/js/ExtUI/MainPanelObject.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/js/ExtUI/TapPanelGridObject.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/js/ExtUI/MeunPanel.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/js/ExtUI/TreePanelObject.js"></script>
+ 
+<!-- 文档管理 -->
+<script type="text/javascript" src="/QqsPlatform/html/page/document/DocumentView.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/page/document/DocumentForm.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/page/document/PublicDocumentView.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/page/document/DocumentSharedForm.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/page/document/DocFolderForm.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/page/document/DocumentSharedDetail.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/page/document/FileAttachDetail.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/page/document/PersonalDocFolderSelector.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/page/document/DocPrivilegeView.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/page/document/DocFolderSharedForm.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/page/document/PublicDocumentView.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/page/document/PublicDocumentDetail.js"></script>
+ 
+<script type="text/javascript" src="/QqsPlatform/html/page/communicate/MessageForm.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/page/communicate/MessageWin.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/page/communicate/MessageReplyWin.js"></script>
+<!-- 系统管理 start -->
+ 
+<!-- 应用管理 -->
+ 
+ 
+<!-- 功能管理 -->
+<script type="text/javascript" src="/QqsPlatform/html/page/system/mod/modTree.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/page/system/mod/methodGridForm.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/page/system/mod/ModuleForm.js"></script>
+ 
+<!-- 机构管理 -->
+<script type="text/javascript" src="/QqsPlatform/html/page/system/org/orgTree.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/page/system/org/orgGrid.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/page/system/org/orgForm.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/page/system/org/userSelector.js"></script>
+ 
+<!-- 部门管理 -->
+<script type="text/javascript" src="/QqsPlatform/html/page/system/dept/deptGrid.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/page/system/dept/deptForm.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/page/system/dept/deptPositionSelector.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/page/system/dept/deptOrgManage.js"></script>
+ 
+<!-- 用户管理 -->
+<script type="text/javascript" src="/QqsPlatform/html/page/system/user/userFormPanel.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/page/system/user/userPositionFormPanel.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/page/system/user/userOrgManage.js"></script>
+ 
+<!-- 岗位管理 -->
+ 
+<!-- 系统管理 end -->
+ 
+<!-- 主题更换组建 -->
+<script type="text/javascript" src="/QqsPlatform/html/js/ExtUI/ThemeChangeUI.js"></script>
+ 
+<!-- 文件上传窗口 -->	        
+<script type="text/javascript" src="/QqsPlatform/html/js/ExtUI/UploadDialog.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/js/SWFUpload.js"></script>
+<!-- 应用管理 -->
+<script type="text/javascript" src="/QqsPlatform/html/page/system/app/role_index.js"></script>
+<!-- 动态加载JS工具类 -->
+<script type="text/javascript" src="/QqsPlatform/html/page/common/ScriptLoader.js"></script>
+ 
+<!-- 流程管理 -->
+<script type="text/javascript" src="/QqsPlatform/html/page/flowDesign/FlowDesignerWindow.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/page/flow/ProDefinitionView.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/page/flow/ProDefinitionForm.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/page/flow/ProDefinitionDetail.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/page/flow/ProTypeForm.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/page/flow/FormDesignWindow.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/page/flow/ProcessRunStart.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/page/flow/ProDefinitionSetting.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/page/flow/ProDefinitionDetail.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/page/flow/ProcessRunDetail.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/page/flow/ProcessNextForm.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/page/flow/FormEditorWindow.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/page/flow/ChangeTaskView.js"></script>
+ 
+<!-- 选择器Selector -->
+<script type="text/javascript" src="/QqsPlatform/html/page/selector/PositionSelector.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/page/selector/allUserSelector.js"></script>
+ 
+<!-- 人事业务 -->
+<script type="text/javascript" src="/QqsPlatform/html/page/hrm/business/commonFile.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/page/hrm/business/userSelector.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/page/hrm/business/hrBsnMainView.js"></script>
+ 
+<!-- 人事档案 -->
+<script type="text/javascript" src="/QqsPlatform/html/page/hrm/archives/hrmBasicInfo.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/page/hrm/archives/zoneComboTreeSelector.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/page/hrm/archives/importPsnFormPanel.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/page/hrm/archives/hrCheckArchives.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/page/hrm/archives/employeeBasicInfo.js"></script>
+ 
+<!-- 内容管理 -->
+<script type="text/javascript" src="/QqsPlatform/html/page/website/siteManagement/channelForm.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/page/website/siteManagement/selectGridPannel.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/page/website/article/articleFormPanel.js"></script>
+ 
+<!-- 任务计划 -->
+<script type="text/javascript" src="/QqsPlatform/html/page/task/calendarPlanForm.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/page/task/calendarPlanFinishForm.js"></script>
+ 
+<!-- 任务计划测试 -->
+<link rel="stylesheet" type="text/css" href="/QqsPlatform/html/page/example/calendar/resources/css/calendar.css" />
+<link rel="stylesheet" type="text/css" href="/QqsPlatform/html/page/example/calendar/resources/css/examples.css" />
+    <script type="text/javascript" src="/QqsPlatform/html/page/example/calendar/src/Ext.calendar.js"></script>
+    <script type="text/javascript" src="/QqsPlatform/html/page/example/calendar/src/templates/DayHeaderTemplate.js"></script>
+    <script type="text/javascript" src="/QqsPlatform/html/page/example/calendar/src/templates/DayBodyTemplate.js"></script>
+    <script type="text/javascript" src="/QqsPlatform/html/page/example/calendar/src/templates/DayViewTemplate.js"></script>
+    <script type="text/javascript" src="/QqsPlatform/html/page/example/calendar/src/templates/BoxLayoutTemplate.js"></script>
+    <script type="text/javascript" src="/QqsPlatform/html/page/example/calendar/src/templates/MonthViewTemplate.js"></script>
+    <script type="text/javascript" src="/QqsPlatform/html/page/example/calendar/src/dd/CalendarScrollManager.js"></script>
+    <script type="text/javascript" src="/QqsPlatform/html/page/example/calendar/src/dd/StatusProxy.js"></script>
+    <script type="text/javascript" src="/QqsPlatform/html/page/example/calendar/src/dd/CalendarDD.js"></script>
+    <script type="text/javascript" src="/QqsPlatform/html/page/example/calendar/src/dd/DayViewDD.js"></script>
+    <script type="text/javascript" src="/QqsPlatform/html/page/example/calendar/src/EventRecord.js"></script>
+	<script type="text/javascript" src="/QqsPlatform/html/page/example/calendar/src/views/MonthDayDetailView.js"></script>
+    <script type="text/javascript" src="/QqsPlatform/html/page/example/calendar/src/widgets/CalendarPicker.js"></script>
+    <script type="text/javascript" src="/QqsPlatform/html/page/example/calendar/src/WeekEventRenderer.js"></script>
+    <script type="text/javascript" src="/QqsPlatform/html/page/example/calendar/src/views/CalendarView.js"></script>
+    <script type="text/javascript" src="/QqsPlatform/html/page/example/calendar/src/views/MonthView.js"></script>
+    <script type="text/javascript" src="/QqsPlatform/html/page/example/calendar/src/views/DayHeaderView.js"></script>
+    <script type="text/javascript" src="/QqsPlatform/html/page/example/calendar/src/views/DayBodyView.js"></script>
+    <script type="text/javascript" src="/QqsPlatform/html/page/example/calendar/src/views/DayView.js"></script>
+    <script type="text/javascript" src="/QqsPlatform/html/page/example/calendar/src/views/WeekView.js"></script>
+    <script type="text/javascript" src="/QqsPlatform/html/page/example/calendar/src/widgets/ReminderField.js"></script>
+    <script type="text/javascript" src="/QqsPlatform/html/page/example/calendar/src/CalendarPanel.js"></script>
+ 
+    
+    
+    
+<!-- 调查问卷 -->
+<script type="text/javascript" src="/QqsPlatform/html/page/consult/questionIndex.js"></script>
+ 
+<!-- 首页显示 -->
+<script type="text/javascript" src="/QqsPlatform/html/page/eis/quickLauch/waitTaskGrid.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/page/eis/quickLauch/workTaskGrid.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/page/eis/quickLauch/calendarPanel.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/page/eis/quickLauch/myTaskView.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/page/eis/quickLauch/taskAcceptInfo.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/page/eis/quickLauch/taskAcceptWindow.js"></script>
+	
+<!-- 邮箱管理 -->
+<script type="text/javascript" src="/QqsPlatform/html/page/communication/mailBoxPanel.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/page/communication/mailSetFormPanel.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/page/communication/mailWriteFormPanel.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/page/communication/mailViewFormPanel.js"></script>
+ 
+ 
+<script type="text/javascript" src="/QqsPlatform/html/page/website/ask/replyForm.js"></script>
+ 
+<!-- 工作任务 -->
+<script type="text/javascript" src="/QqsPlatform/html/page/eis/job/addJobFormPanel.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/page/eis/job/employeeSelector.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/page/eis/job/assessFormPanel.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/page/eis/job/deptStdJobSelector.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/page/eis/job/addDeptStdJobFormP.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/page/eis/job/childJobFormPanel.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/page/eis/medStatistics/medicineStaByUserIndex.js"></script>
+<!-- 药收比统计-->
+<script type="text/javascript" src="/QqsPlatform/html/page/eis/medStatistics/medStaCommonFile.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/page/eis/medStatistics/medicineStaByDeptIndex.js"></script>
+ 
+ 
+<!-- 模板类别管理 -->
+<script type="text/javascript" src="/QqsPlatform/html/page/cms/template/templateClassTree.js"></script>
+<!--文章类别 -->
+<script type="text/javascript" src="/QqsPlatform/html/page/cms/article/articleClassTree.js"></script>
+<!--新内容管理 -->
+<script type="text/javascript" src="/QqsPlatform/html/page/cms/site/siteForm.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/page/cms/site/siteInfoView.js"></script>
+ 
+<script type="text/javascript" src="/QqsPlatform/html/page/cms/channel/channelGrid.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/page/cms/channel/channelTree.js"></script>
+ 
+ 
+<script type="text/javascript" src="/QqsPlatform/html/page/cms/channel/channelArticleView.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/page/cms/channel/articleSelector.js"></script>
+<!---->
+<script type="text/javascript" src="/QqsPlatform/html/page/cms/channel/channelForm.js"></script>
+ 
+ 
+<!--固定资产-->
+<script type="text/javascript" src="/QqsPlatform/html/page/oa/books/selector/assetClassSelector.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/page/oa/asset/baseData/assetClassAttrForm.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/page/oa/asset/baseData/assetClassIndex.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/page/oa/asset/baseData/assetClassForm.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/page/oa/asset/assetTree.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/page/oa/asset/assetGrid.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/page/oa/asset/assetForm.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/page/oa/asset/showDetail.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/page/oa/asset/assetDetailsView.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/page/oa/asset/business/assetBsnAuditingGrid.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/page/oa/asset/business/assetBsnAuditingTree.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/page/oa/asset/assetCardDetailsView.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/page/oa/asset/business/assetRepairCommonFile.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/page/oa/asset/assetCardNoEditForm.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/page/oa/asset/business/assetRepairCommonFile.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/page/oa/asset/assetCardPrintPreview.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/page/oa/asset/business/assetPurApplyForm.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/page/oa/asset/business/assetPurchaseInForm.js"></script>
+<!-- 资产养护 -->
+<script type="text/javascript" src="/QqsPlatform/html/page/oa/asset/care/assetCareForm.js"></script>
+<!-- 资产用途 -->
+<script type="text/javascript" src="/QqsPlatform/html/page/oa/asset/baseData/assetUsageForm.js"></script>
+<!-- 资产状态 -->
+<script type="text/javascript" src="/QqsPlatform/html/page/oa/asset/baseData/assetStatusForm.js"></script>
+ 
+<script type="text/javascript" src="/QqsPlatform/html/page/oa/asset/statistics/depreClassSchedulesIndex.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/page/oa/asset/statistics/deptDepreSchedulesIndex.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/page/oa/asset/business/assetDepreCommonFile.js"></script>
+ 
+ 
+<!-- 档案管理 -->
+<script type="text/javascript" src="/QqsPlatform/html/page/oa/archives/twoPartForm.js"></script>
+ 
+<!-- 考勤管理 -->
+<script type="text/javascript" src="/QqsPlatform/html/page/hrm/attendance/errandsRegisterView.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/page/hrm/attendance/errandsRegisterOutView.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/page/hrm/attendance/dutyRegisterPersonView.js"></script>
+ 
+<!-- 图书管理 -->
+<script type="text/javascript" src="/QqsPlatform/html/page/oa/books/selector/bookInfoSelector.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/page/oa/books/selector/bookClassSelector.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/page/oa/books/selector/bookDuplicateSelector.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/page/oa/books/baseData/bookInfoDepIndex.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/page/oa/books/business/bookBusinessGrid.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/page/oa/books/baseData/bookRoomTypeForm.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/page/oa/books/bookRec/bookRecNoticeIndex.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/page/oa/books/bookRec/bookRecQuitIndex.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/page/oa/books/bookRec/bookRecSelectIndex.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/page/oa/books/baseData/bookClassForm.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/page/oa/books/readerCard/readerCardChangeDetailsIndex.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/page/oa/books/readerCard/readerCardStatsIndex.js"></script>
+<script type="text/javascript" src="/QqsPlatform/html/page/oa/books/baseData/bookInfoIndex.js"></script>
+<!-- 读者资料维护 -->
+<script type="text/javascript" src="/QqsPlatform/html/page/oa/books/reader/readerInfoForm.js"></script>	
+<script type="text/javascript"> 
+var userid = '0';
+var username = '超级管理员';
+var RequiredFlag = '<font color="red">*</font>';
+var blueThemeBGC = '#DFE8F6';	//蓝色主题背景色
+var modelconfig = '';
+var _ctx = {
+	base : '/QqsPlatform',
+	defaultImage : 'html/template/cc.jpg',
+	pictures : '/extFrame/html/page/images/Picture.png',
+	noImage : '/extFrame/html/page/images/no_img.JPG',
+	userid : userid,
+	username : username,
+	welcome : '',
+	copyright : '版权所有 ©',
+	company : '全球锁安防集团',
+	appId:'3',
+	orgId : '1',
+	deptId : '215',
+	appArray : Ext.decode('[{"APPSHORTNAME":"个人办公","APPID":1},{"APPSHORTNAME":"人力资源","APPID":3},{"APPSHORTNAME":"内容管理","APPID":181},{"APPSHORTNAME":"系统管理","APPID":26},{"APPSHORTNAME":"后勤管理","APPID":221}]')
+};
+var appid = '1';
+ 
+</script>
+
+<title>人力资源</title>
+<script type="text/javascript"> var appMeun = {"appMeun":[{"id":79,"text":"人员档案","appId":3,"treeOrder":0,"leaf":0,"href":null},{"id":86,"text":"人事业务","appId":3,"treeOrder":null,"leaf":0,"href":null},{"id":1752,"text":"合同管理","appId":3,"treeOrder":null,"leaf":0,"href":null},{"id":1760,"text":"组织机构","appId":3,"treeOrder":null,"leaf":0,"href":null},{"id":1757,"text":"简历管理","appId":3,"treeOrder":null,"leaf":0,"href":null},{"id":1762,"text":"招聘管理","appId":3,"treeOrder":0,"leaf":0,"href":null},{"id":1769,"text":"福利管理","appId":3,"treeOrder":null,"leaf":0,"href":null},{"id":1774,"text":"薪酬管理","appId":3,"treeOrder":null,"leaf":0,"href":null},{"id":1766,"text":"职位管理","appId":3,"treeOrder":null,"leaf":0,"href":null},{"id":1786,"text":"培训管理","appId":3,"treeOrder":null,"leaf":0,"href":null},{"id":1790,"text":"绩效考核","appId":3,"treeOrder":null,"leaf":0,"href":null},{"id":1791,"text":"考勤管理","appId":3,"treeOrder":null,"leaf":0,"href":null}]}; </script>
+		
+		<script type="text/javascript" src="/QqsPlatform/html/page/index.js"></script>
+		
+		<!--LODOP打印-->
+		</head><object id="LODOP" classid="clsid:2105C259-1E0C-4534-8141-A753534CB4CA" width=0 height=0>  
+		       <embed id="LODOP_EM" type="application/x-print-lodop" width=0 height=0 pluginspage="/QqsPlatform/html/js/lodop/install_lodop.exe"></embed> 
+		</object> 
+ 
+<style type="text/css"> 
+.empty .x-panel-body {
+	padding-top: 20px;
+	text-align: center;
+	font-style: italic;
+	color: gray;
+}
+ 
+a {
+	color: #454545;
+	text-decoration: none;
+	font-size: 12px;
+}
+ 
+a:hover {
+	color: #454545;
+	text-decoration: underline;
+}
+.sty_userName{
+	color : #454545;
+	font-size  : 12px;
+	text-align : left;
+	font-weight : bold;
+}
+</style>
+<meta name="description" content="全球锁安防集团,全球锁,全球锁全局福,安防,全球锁人力资源,全球锁信息门户平台,全球琐信息门户,信息门户平台" />
+<meta name="keywords" content="全球锁安防集团,全球锁,全球锁全局福,安防,全球锁人力资源,全球锁信息门户平台,全球琐信息门户,信息门户平台" />
+<link rel="stylesheet" type="text/css" href="css/hr.css"/>
+</head>
+<body scroll="no">
+		<div id="loading-mask" style="">
+		</div>
+		<div id="loading">
+			<div class="loading-indicator">
+				<img src="/QqsPlatform/html/js/ext/resources/extanim32.gif" width="32"
+					height="32" style="margin-right: 8px;" align="absmiddle" />
+				Loading...
+			</div>
+		</div>
+		<div height="66" id="header" lazyinit="true" _isrendered="true">
+			<table height="66" cellspacing="0" cellpadding="0"
+				 width="100%"
+				style="font-size: 12px; color: #fff">
+				<tbody>
+					<tr>
+						<td id="header_left" width="307px" class="title">&nbsp;
+							<a style="width:297px; height:50px; display:block" target="_blank" href="/QqsPlatform/html/cms_template/pubeihospital/home_web.jsp?siteId=211"></a>
+						</td>
+						<td id="header_right" valign="top" align="right" width="*">
+							<table width="100%" height="66" cellspacing="0" cellpadding="0">
+								<tbody>
+									<tr height="30">
+										<td align="right" colspan="2">
+											<table>
+												<tr>
+													<td width="16">
+														<img id="messageTipImage"
+															src="/QqsPlatform/html/js/ext/resources/newpm.gif" />
+													</td>
+													<td width="90" valign="middle">
+														<div id="messageTip"></div>
+													</td>
+													<td nowrap="nowrap" valign="middle" class="sty_userName" >
+														 
+														欢迎  超级管理员
+													</td>
+													<td width="12px;">
+														&nbsp;&nbsp;
+													</td>
+													<!--<td width="16">
+														<img src="/QqsPlatform/html/js/ext/resources/home.gif">
+													</td>
+													<td width="90" valign="middle">
+														<div id="messageTip"></div>
+													</td>-->
+													<td width="16">
+														<img src="/QqsPlatform/html/js/ext/resources/changePwd.gif" />
+													</td>
+													<td valign="middle">
+														<a href="" id="pswWin"> &nbsp;修改密码</a>
+													</td>
+													<td width="12px;">
+														&nbsp;&nbsp;
+													</td>
+													<!--<td width="16">
+														<img src="/QqsPlatform/html/js/ext/resources/help.gif">
+													</td>
+													<td valign="middle">
+														<a target="_blank" href="#" style="cursor: pointer;">帮助</a>
+													</td>
+													<td width="12px;">
+														&nbsp;&nbsp;
+													</td>-->
+													<td width="16">
+														<img src="/QqsPlatform/html/js/ext/resources/quit.gif" />
+													</td>
+													<td valign="middle">
+														<a href="/QqsPlatform/logout.action" style="cursor: pointer;">注销</a>
+													</td>
+													<td width="12px;">
+														&nbsp;&nbsp;
+													</td>
+												</tr>
+											</table>
+										</td>
+										
+									</tr>
+									<tr height="30">
+										<td>
+											
+												<ul class="tab" id="header-topnav">
+													
+														
+														<li id="app_list_li_1" class="tab_li"><a id="app_list_li_a_1" onClick="App.ChangeMenu(1,1)" class="tab_li_a"><span id="app_list_li_span_1" class="tab_li_a_span">个人办公</span></a></li>
+						
+												     
+														
+														<li id="app_list_li_2" class="tab_li tab_li_select"><a id="app_list_li_a_2" onClick="App.ChangeMenu(3,2)" class="tab_li_a tab_li_a_select"><span id="app_list_li_span_2" class="tab_li_a_span tab_li_a_span_select">人力资源</span></a></li>
+						
+												     
+														
+														<li id="app_list_li_3" class="tab_li"><a id="app_list_li_a_3" onClick="App.ChangeMenu(181,3)" class="tab_li_a"><span id="app_list_li_span_3" class="tab_li_a_span">内容管理</span></a></li>
+						
+												     
+														
+														<li id="app_list_li_4" class="tab_li"><a id="app_list_li_a_4" onClick="App.ChangeMenu(26,4)" class="tab_li_a"><span id="app_list_li_span_4" class="tab_li_a_span">系统管理</span></a></li>
+						
+												     
+														
+														<li id="app_list_li_5" class="tab_li"><a id="app_list_li_a_5" onClick="App.ChangeMenu(221,5)" class="tab_li_a"><span id="app_list_li_span_5" class="tab_li_a_span">后勤管理</span></a></li>
+						
+												     
+												</ul>
+											
+											
+										</td>
+										<td style="text-align:right;padding-right:15px; background:none">
+											<iframe src="http://m.weather.com.cn/m/pn7/weather.htm " width="195" height="20" marginwidth="0" marginheight="0" hspace="0" vspace="0" frameborder="0" allowtransparency="true"  scrolling="no"></iframe>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+<div id="role_index_grid"></div>
+        <div class="hr_content" id="">
+        <form>
+          <table border="0" cellspacing="0" cellpadding="0" class="hr_contenttb">
+            <tr>
+              <td width="50%">&nbsp;</td>
+              <td width="20%"><input type="text" class="search_text" name="search_text" id="search_text" /></td>
+              <td width="10%"><input type="button" class="search_btn" name="search_btn" id="search_btn" value="搜&nbsp;索"/></td>
+              <td width="25%">
+<ul class="wea_infos">
+                      <li><a href="#" title="">长沙</a></li>
+                    <li><a href="#" title="">小雨</a></li>
+                    <li><a href="#" title="">4&deg;C~7&deg;C</a></li>
+                    <li><a href="#" title="">七天预报</a></li>
+                  </ul>
+              </td>
+              <td width="5%">&nbsp;</td>
+            </tr>
+            <tr>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+            </tr>
+            <tr>
+              <td>&nbsp;</td>
+              <td>
+              <div class="gg_infos">
+                	<h4>最新公告<span><a href="#">更多&raquo;</a></span>
+                	<ul>
+                            	<li><a href="#" title=""><img alt="" src="image/hr_icon.jpg"/>最新公告最新公最新公告最新公告告</a></li>
+                                <li><a href="#" title=""><img alt="" src="image/hr_icon.jpg"/>最新公告最新公最新公告最新公告告</a></li>
+                                <li><a href="#" title=""><img alt="" src="image/hr_icon.jpg"/>最新公告最新公最新公告最新公告告</a></li>
+                                <li><a href="#" title=""><img alt="" src="image/hr_icon.jpg"/>最新公告最新公最新公告最新公告告</a></li>
+                                <li><a href="#" title=""><img alt="" src="image/hr_icon.jpg"/>最新公告最新公最新公告最新公告告</a></li>
+                                <li><a href="#" title=""><img alt="" src="image/hr_icon.jpg"/>最新公告最新公最新公告最新公告告</a></li>
+                	</ul>
+                </div>
+              
+              
+              </td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+            </tr>
+            <tr>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+            </tr>
+            <tr>
+              <td>&nbsp;</td>
+              <td>
+              <div class="gg_infos">
+                	<h4>最新公告<span><a href="#">更多&raquo;</a></span>
+                	<ul>
+                            	<li><a href="#" title=""><img alt="" src="image/hr_icon.jpg"/>最新公告最新公最新公告最新公告告</a></li>
+                                <li><a href="#" title=""><img alt="" src="image/hr_icon.jpg"/>最新公告最新公最新公告最新公告告</a></li>
+                                <li><a href="#" title=""><img alt="" src="image/hr_icon.jpg"/>最新公告最新公最新公告最新公告告</a></li>
+                                <li><a href="#" title=""><img alt="" src="image/hr_icon.jpg"/>最新公告最新公最新公告最新公告告</a></li>
+                                <li><a href="#" title=""><img alt="" src="image/hr_icon.jpg"/>最新公告最新公最新公告最新公告告</a></li>
+                                <li><a href="#" title=""><img alt="" src="image/hr_icon.jpg"/>最新公告最新公最新公告最新公告告</a></li>
+                	</ul>
+                </div>
+              
+              </td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+            </tr>
+          </table>
+        </form>
+        </div>
+	
+</body>
+<script> 
+ 
+window.onbeforeunload = function() {
+            
+      return "如果您离开本页，您将丢失您在本系统中未保存的信息。";
+       
+};
+ 
+</script>
+</html>
+
+<!--<div class="gg_infos">
+                	<h4>最新公告</h3><span><a href="#">更多&raquo;</a></span>
+                	<ul>
+                            	<li><a href="#" title=""><img alt="" src="image/hr_icon.jpg"/>最新公告最新公最新公告最新公告告</a></li>
+                                <li><a href="#" title=""><img alt="" src="image/hr_icon.jpg"/>最新公告最新公最新公告最新公告告</a></li>
+                                <li><a href="#" title=""><img alt="" src="image/hr_icon.jpg"/>最新公告最新公最新公告最新公告告</a></li>
+                                <li><a href="#" title=""><img alt="" src="image/hr_icon.jpg"/>最新公告最新公最新公告最新公告告</a></li>
+                                <li><a href="#" title=""><img alt="" src="image/hr_icon.jpg"/>最新公告最新公最新公告最新公告告</a></li>
+                                <li><a href="#" title=""><img alt="" src="image/hr_icon.jpg"/>最新公告最新公最新公告最新公告告</a></li>
+                	</ul>
+                </div>-->

@@ -1,0 +1,43 @@
+@charset "utf-8";
+/* CSS Document */
+.calendar_content{
+position:relative;
+top:100px;
+left:45%;
+}
+.calendar_content table{
+border:1px solid #FF3300;
+background:#00CCFF;
+border-collapse:collapse;
+}
+.calendar_content table caption{
+background:#99FF66;
+border:1px solid #FF3300;
+border-bottom:none;
+}
+.calendar_content table thead{
+background:#339999;
+}
+.calendar_content table tbody td{
+border:1px solid #000000;
+padding:8px;
+cursor:pointer;
+text-align:center;
+}
+.calendar_content table tbody td[id="first"]{
+border-left:none;
+background:#FF9933;
+}
+.calendar_content table tbody td[id="last"]{
+border-right:none;
+background:#FF9933;
+}
+.calendar_content table tbody td:hover{
+background:#0099CC;
+color:#FF0000;
+}
+.calendar_content table tfoot{
+background:#FFFF66;
+text-align:center;
+}
+

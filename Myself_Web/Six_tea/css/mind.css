@@ -1,0 +1,36 @@
+@charset "utf-8";
+/* CSS Document */
+body{margin:0;padding:0;}
+body *{margin:0;padding:0;list-style:none;font-size:12px;font-family:"宋体", serif, sans-serif, "宋体-PUA", "仿宋-GB2312", Vrinda;}
+body *:focus{outline:none;}
+.container{width:1003px;height:auto;margin:20px auto;}
+.header,.content{width:745px;}
+.header{height:250px;}
+.nav-title{width:600px;margin:0 auto;height:60px;}
+.nav-title p,.nav-title h4{text-align:center;font-size:24px;line-height:1.2em;}
+.nav-remark{margin:0 auto;width:745px;height:190px;}
+.nav-sidea,.nav-sideb,.nav-sidec{float:left;height:158px;}
+.nav-sidea{border:2px dashed #000;width:243px;}
+.nav-sideb,.nav-sidec{border-top:2px dashed #000;border-right:2px dashed #000;border-bottom:2px dashed #000;width:247px;}
+.nav-sidea p,.nav-sideb p,.nav-sidec p{padding:5px 0 5px 20px;font-size:14px;}
+.nav-sidea div,.nav-sideb div,.nav-sidec div{width:238px;height:100px;margin:0 auto;text-indent:2em;overflow:hidden;word-wrap:break-word;line-height:1.3em;letter-spacing:0.1em;}
+#nav-dta,#nav-dtb,#nav-dtc{height:30px;line-height:2em;border-top:1px solid #666;font-size:16px;text-align:right;margin-top:5px;}
+#nav-dta{width:243px;}
+#nav-dtb,#nav-dtc{width:247px;}
+.nav-sided{float:left;width:745px;height:28px;line-height:2.5em;}
+.nav-sidedside{float:left;width:15%;height:28px;text-align:center;}
+.nav-sidedmain{float:right;width:85%;height:28px;text-align:left;text-indent:2em;}
+
+.mindtable{width:745px;height:100%;border:2px solid #333;margin:0 auto;line-height:1.5em;border-collapse:collapse;}
+.mindtable tbody tr td{border-right:1px solid #333;border-bottom:1px solid #333;word-wrap:break-word;word-break:break-all;_padding:5px 0;}
+.mindtableo{width:15%;text-align:center;padding:5px 0;}
+.mindtablet{width:85%;text-align:left;padding:5px 2px;text-indent:2em;}
+.mindtable tbody tr td:first-child{text-align:center;width:15%;padding:5px 0;}
+.mindtable tbody tr td:first-child+td{text-align:left;width:85%;text-indent:2em;padding:5px 2px;}
+#nav-firtr,#nav-sectr,#nav-thrtr,#nav-foutr,#nav-tfivtr{text-indent:0;}
+#nav-firtr,#nav-sectr{border-bottom:none;}
+
+
+
+
+

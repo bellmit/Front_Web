@@ -1,0 +1,98 @@
+///模块--首页
+
+
+///*--首页--广告横幅--*/
+.banner-wrap{
+	.layout-base;
+	height:auto;
+	min-height:200px;
+	max-height:400px;
+	>div{
+		margin:0 auto;
+		text-align:center;
+		img{
+			min-height:200px;
+			max-height:400px;
+		}
+	}
+}
+
+
+///*--首页--最新资讯展示--*/
+.news-show{
+	.layout-float-base;
+	padding:30px 0;
+	height:360px;
+	min-width:320px;
+	>div:first-child{
+		.layout-float-base(40%);
+		overflow:hidden;
+		height:100%;
+		padding:0 10px;
+		text-align:center;
+		img{
+			max-width:380px;
+			max-height:300px;
+		}
+	}
+	>div:first-child+div{
+		.layout-float-base(60%);
+		height:100%;
+		>ul{
+			.layout-float-base;
+			height:260px;
+			padding:5px 10px;
+			margin:0;
+			li{
+				.layout-float-base;
+				border-bottom:1px solid @color-red4;
+				padding:5px 0;
+				height:50px;
+				overflow:hidden;
+				a{
+						font-size:@font-size-small;
+						.text-ww;
+						float:left;
+						color:@color-gray2;
+						line-height:20px;
+						.no-outline-base;
+						text-decoration:none;
+						span{
+							padding:0 5px 0 0;
+							color:@color-orange1;
+						}
+						&:visited{
+							color:@color-gray3;
+						}
+						&:hover{
+							color:@color-cyan1;
+						}
+						&:active{
+							color:@color-red4;
+						}
+				}
+			}
+		}
+		>a{
+			width:60px;
+			height:20px;
+			display:block;
+			float:left;
+			margin:5px 0 0 10px;
+			background:@color-red1;
+			.border-radius-base(3px);
+			text-decoration:none;
+			color:@color-white;
+			text-align:center;
+			font-size:@font-size-small;
+			line-height:20px;
+			.no-outline-base;
+			&:before{
+				content:'\e635';
+				font-family:'ux_two';
+				padding:0 3px 0 0;
+			}
+		}
+	}
+}
+

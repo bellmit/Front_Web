@@ -1,0 +1,180 @@
+@charset "utf-8";
+/*账户管理-提醒设置*/
+.mainwrap .mainbox{width:873px;}
+.mstable{
+    width: 833px;
+	border-collapse: collapse;
+	margin: 15px auto 30px auto;
+}
+.mstable .caption{
+    width: 100%;
+	padding-left: 8px;
+	text-align: left;
+	color: #434343;
+	font-family: 宋体;
+	font-size: 14px;
+	font-weight: bold;
+	height: 30px;
+	line-height: 30px;
+	text-decoration: none;
+}
+.mstable .thead{
+    height: 37px;
+	line-height:37px;
+	border-radius:6px 6px 0px 0px;
+    background: #938E83;
+	overflow: hidden;
+}
+.mstable .thead .th1{
+	width:290px;
+	padding-left:100px;}
+.mstable .thead .th2{
+	width:135px;
+	text-align:center;}
+.mstable .thead .th3{
+	width:135px;
+	text-align:center;}
+.mstable .thead .th4{
+	width:160px;
+	text-align:center;}
+.mstable .thead .th, .mobilemsptip{
+    color: #333333;
+    font-family: 宋体;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: normal;
+    text-decoration: none;
+    height: 37px;
+	line-height: 37px;
+	color: #fff;
+	float: left;
+}
+.mstable .thead .th1{
+	border-radius:6px 0px 0px 0px;}
+.mstable .thead .th.last{
+	border-radius:0px 6px 0px 0px;}
+.mstable .thead .th.last a, .mstable .thead .th.last span{
+	color:#004F91;
+	font-size: 12px;}
+.mstable .thead .th.last a:hover{
+	text-decoration:underline;}
+.mstable .tbody .tr{
+    height: 32px;
+    line-height: 32px;
+}
+.mstable .tbody .tr:hover{
+    background: #F6F5F5;
+}
+.mstable .tbody .td{
+	position:relative;
+    text-align: center;
+	height: 31px;
+	line-height: 31px;
+	float:left;
+	border-bottom: 1px solid #CECECE;
+}
+.mstable .tbody .td .ajaxtip{
+	position:absolute;
+	font-size:12px;
+	margin-left: 10px;
+	top:0px;
+	}
+.mstable .tbody .td3, .mstable .tbody .td2{
+	width:135px;
+	text-align:center;
+	}
+.mstable .tbody .td4{
+	width:171px;
+	text-align:center;
+	border-right:1px solid #cecece;
+	}
+.mstable .tbody .th1{
+	border-left:1px solid #cecece;
+	}
+.mstable .tbody .th{
+    width: 375px;
+    text-align: left;
+    padding-left: 15px;
+    font-weight: normal;
+    font-size:13px;
+    color:#434343;
+	line-height: 31px;
+	border-bottom: 1px solid #CECECE;
+	float:left;
+}
+.mstable .tbody .tr:last-child .th1{
+	border-radius:0px 0px 0px 6px;}
+.mstable .tbody  .tr:last-child .td4{
+	border-radius:0px 0px 6px 0px;}
+.mstable .tbody .tr:last-child .th1{
+	border-radius:0px 0px 0px 6px;}
+.mstable .tbody .tr:last-child .td.last{
+	border-radius:0px 0px 6px 0px;}
+.smstip{
+	margin-left:20px;}
+.smstip .checkbox{
+	float:left;
+	margin:5px 3px 0px 0px;}
+.smstip .txt{
+	font-size:12px;
+	color:#4f4f4f;}
+
+
+.floattip .tip{
+	display: none;
+	min-width: 10em;
+	max-width: 20em;
+	font-size: 12px;
+	line-height: 16px;
+	position: absolute;
+	top: 1.1em;
+	left: -8px;
+	padding-top:5px;
+	text-align: center;
+	color: #fff;
+	background:url(../../image/common/tiparrow.fw.png) no-repeat 10px 0px;}
+.floattip .tip span{
+	display:block;
+	background: rgba(0,0,0,0.6);
+	padding: 2px;
+	color:#fff;
+	box-shadow: 0px 3px 3px #ccc;
+}
+.floattip a{
+	color:#0163B3;}
+
+.checkbox{
+	position:relative;
+	display: block;
+	width: 13px;
+	height: 13px;
+	margin: 8px auto;
+	background:url(../../image/msg/checkbox.fw.png) no-repeat -3px -2px;
+	cursor:pointer;}
+.checkbox.checked{
+	background-position:-3px -2px;}
+.checkbox.unchecked{
+	background-position:-3px -17px;}
+.checkbox.disabled{
+	background-position:-3px -32px;}
+.checkbox.noedit{
+	background-position:-3px -46px;}
+.checkbox input{
+	display:none;}
+
+/*账户管理-站内消息*/
+
+
+/*可重用样式*/
+.imgBtn{
+    border: 0px none;
+}
+.btn130{
+    width: 130px;
+    height: 45px;
+}
+
+button:hover{
+    background: #ccc;
+    cursor: pointer;
+}

@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+</head>
+
+<body>
+<script type="text/javascript">
+var msg = null;
+var map = null;
+var point = null;
+function gotoThere() 
+{
+if(navigator.geolocation) {
+navigator.geolocation.getCurrentPosition(function(position) {
+var pos = {};
+pos.coords = {};
+pos.coords.longitude = position.coords.longitude;
+pos.coords.latitude = position.coords.latitude;
+var newposition = HttpRequest.baiduMap(0,4,pos.coords.longitude,pos.coords.latitude);
+//domiutil.alert("newpos",newposition);
+if( newposition != "" && newposition.indexOf("{\"error\":") >= 0 ) {
+newposition = domiutil.json(newposition);
+if(newposition instanceof Array) newposition = newposition[0];
+if( newposition.error == 0) {
+pos.coords.longitude = newposition.x;
+pos.coords.latitude = newposition.y;
+}
+}
+var driving = new BMap.DrivingRoute(map, {renderOptions: {map: map, autoViewport: true}});			driving.search(new BMap.Point(pos.coords.longitude,pos.coords.latitude),new BMap.Point(msg.position.coords.longitude,msg.position.coords.latitude));},function(){});}}function onDeviceReady() {	domi.getSessionObject("positionarg",function(value,err,tag) {
+if( err != null ) {
+domiutil.alert("提示","错误："+err.errorMessage);
+return;
+}
+//var value = "{\"position\":{\"coords\":{\"latitude\":30.123,\"longitude\":120.345}},\"from\":\"18903294885\"}";
+msg = domiutil.json(value);/*var newposition = HttpRequest.baiduMap(0,4,msg.position.coords.longitude,msg.position.coords.latitude);
+if(newposition instanceof Array) newposition = newposition[0];
+if( newposition != "" && newposition.indexOf("{\"error\":") >= 0 ) {	  		newposition = domiutil.json(newposition);
+if( newposition.error == 0) {	  			msg.position.coords.longitude = newposition.x;
+msg.position.coords.latitude = newposition.y;  		}
+}*/map = new BMap.Map("map_canvas");          // 创建地图实例
+point = new BMap.Point(msg.position.coords.longitude,msg.position.coords.latitude);  // 创建点坐标  
+		map.centerAndZoom(point, 16);                 // 初始化地图，设置中心点坐标和地图级别  
+		var marker = new BMap.Marker(point);// 创建标注
+map.addOverlay(marker);
+var myGeo = new BMap.Geocoder();// 根据坐标得到地址描述
+myGeo.getLocation(point, function(result){ 
+var opts = {	width : 80,     // 信息窗口宽度
+height: 30,     // 信息窗口高度		  title : ((msg["fromUser"] == null)?msg.from:(msg.fromUser.familyName + msg.fromUser.givenName))  // 信息窗口标题			}
+if (result){
+var infoWindow = new BMap.InfoWindow(result.address, opts);// 创建信息窗口对象
+map.openInfoWindow(infoWindow, point); 
+Obj("address").text(result.address);
+}else {
+var infoWindow = new BMap.InfoWindow("所在位置", opts);  // 创建信息窗口对象
+map.openInfoWindow(infoWindow, point);
+}});
+},null);}function exit() {
+domi.switchViewFromBufferIndex(0,domi.ViewTransitionFromLeft,null,null);
+}
+</script>
+</body>
+</html>

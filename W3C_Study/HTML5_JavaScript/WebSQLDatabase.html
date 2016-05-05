@@ -1,0 +1,116 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" type="text/css" href="css/websqldatabase.css">
+<script src="js/jquery-1.8.3.min.js"></script>
+<script src="js/websqldatabase.js"></script>
+<title>WebSQLDatabase</title>
+</head>
+<body>
+	<header class="header">
+    	<h1>WebSQLDatabase</h1>
+    </header>
+	<div class="container">
+    	<section class="content">
+        	<form method="post" action="#">
+            	<table cellpadding="0" cellspacing="0">
+                	<tr>
+                    	<td><button type="button" id="wsql_importbtn">import data</button></td>
+                        <td><button type="button" id="wsql_emptybtn">empty data</button></td>
+                        <td><button type="button" id="wsql_createbtn">create DB</button></td>
+                        <td><button type="button" id="wsql_dropbtn">drop DB</button></td>
+                    </tr>
+                    <tr>
+                        <td><button type="button" id="wsql_insertbtn">insert DB</button></td>
+                        <td><button type="button" id="wsql_deletebtn">delete DB</button></td>
+                        <td><button type="button" id="wsql_updatebtn">update DB</button></td>
+                        <td><button type="button" id="wsql_selectbtn">select DB</button></td>
+                    </tr>
+                </table>
+            </form>
+        </section>
+        <section class="content_r">
+        	<h3>数据源(使用表格数据)</h3>
+        	<table cellpadding="0" cellspacing="0" id="wsql_resource">
+            	<colgroup>
+                	<col class="wsql_g1" />
+                    <col class="wsql_g2" />
+                    <col class="wsql_g3" />
+                    <col class="wsql_g4" />
+                    <col class="wsql_g5" />
+                    <col class="wsql_g6" />
+                    <col class="wsql_g7" />
+                    <col class="wsql_g8" />
+                </colgroup>
+                <tr>
+                    <td><p>1</p></td>
+                    <td><p>xml</p></td>
+                    <td><p>java</p></td>
+                    <td><p>ECMAscript</p></td>
+                    <td><p>illustrator</p></td>
+                    <td><p>powerdesigner</p></td>
+                    <td><p>table+html</p></td>
+                    <td><p>database</p></td>
+                </tr>
+                <tr>
+                    <td><p>2</p></td>
+                    <td><p>html</p></td>
+                    <td><p>css1.0</p></td>
+                    <td><p>javascript</p></td>
+                    <td><p>eclipse</p></td>
+                    <td><p>actionscript1.0</p></td>
+                    <td><p>E4X</p></td>
+                    <td><p>mysql</p></td>
+                </tr>
+                <tr>
+                    <td><p>3</p></td>
+                    <td><p>dhtml</p></td>
+                    <td><p>css2.0</p></td>
+                    <td><p>jquery</p></td>
+                    <td><p>MyEclipse</p></td>
+                    <td><p>actionscript2.0</p></td>
+                    <td><p>Photoshop</p></td>
+                    <td><p>oracle</p></td>
+                </tr>
+                <tr>
+                    <td><p>4</p></td>
+                    <td><p>xhtml</p></td>
+                    <td><p>css3.0</p></td>
+                    <td><p>jscript</p></td>
+                    <td><p>JBuilder</p></td>
+                    <td><p>actionscript3.0</p></td>
+                    <td><p>Dreamweaver</p></td>
+                    <td><p>sqlserver</p></td>
+                </tr>
+                <tr>
+                    <td><p>5</p></td>
+                    <td><p>html5</p></td>
+                    <td><p>divcss</p></td>
+                    <td><p>vbscript</p></td>
+                    <td><p>FLex</p></td>
+                    <td><p>FlashBulider</p></td>
+                    <td><p>Flash</p></td>
+                    <td><p>access</p></td>
+                </tr>
+                <tr>
+                    <td><p>6</p></td>
+                    <td><p>c++</p></td>
+                    <td><p>.net</p></td>
+                    <td><p>c</p></td>
+                    <td><p>FireWorks</p></td>
+                    <td><p>3Dmax</p></td>
+                    <td><p>CAD</p></td>
+                    <td><p>office</p></td>
+                </tr>
+            </table>
+        </section>
+        <section class="content_t" id="wsql_target_parent">
+        	<h3>数据操作区(创建、删除、增加、修改、查询)</h3>
+        </section>
+    </div>
+    <footer class="footer">
+    
+    </footer>
+</body>
+</html>

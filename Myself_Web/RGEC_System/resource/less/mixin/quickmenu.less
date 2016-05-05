@@ -1,0 +1,62 @@
+///组件--侧边栏菜单
+
+///侧边栏
+.quickmenu{
+	.layout-fixedr-base(10px,200px);
+	.layout-base(80px);
+	margin:0;
+	padding:0;
+	li{
+			.layout-float-base;
+			height:80px;
+			margin:8px 0;
+			.border-radius-base(50%);
+			overflow:hidden;
+			&.quickmenu-active{
+				a,
+				a:hover{
+					background:@color-red4;
+				}
+			}
+			a{
+				.layout-relative-base;
+				display:block;
+				.no-outline-base;
+				width:100%;
+				height:100%;
+				background:@color-gray3;
+				color:@color-white;
+				font-size:@font-size-small;
+				text-align:center;
+				line-height:120px;
+				font-family:@fontfamliy-base;
+				&:hover{
+					text-decoration:none;
+					background:@color-gray2;
+				}
+				&:before{
+					.layout-absolutel-base(18px,-30px);
+					width:0;
+					height:0;
+					font-size:@font-size-base * 3;
+					color:@color-white;
+				}
+			}
+			&:first-child a:before{
+					content:'\e71a';
+					font-family:'ux_one';
+			}
+			&:first-child+li a:before{
+					content:'\e608';
+					font-family:'ux_two';
+			}
+			&:first-child+li+li a:before{
+					content:'\e67a';
+					font-family:'ux_one';
+			}
+			&:first-child+li+li+li a:before{
+					content:'\e719';
+					font-family:'ux_one';
+			}
+	}
+}

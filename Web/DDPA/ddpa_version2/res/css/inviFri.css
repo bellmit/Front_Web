@@ -1,0 +1,16 @@
+.inviFri-top{ padding:8px 18px; color:#4f4f4f;}
+.inviFri-top .color9f, .inviFri-link .color9f{font-size: 12px;}
+.inviFri-link{ padding:8px 18px; margin: 20px 0px;}
+.inviFri-link input{ width:440px; margin:0px 15px;}
+.inviFri-table{ padding:8px 18px; background: #FFF; background: none;}
+.inviFri-table p{ font-size:14px; color:#434343; font-weight:bold; }
+.borbot{border-bottom:1px dashed #ddd;}
+.inviFri-table table{ margin:0px;}
+.inviFri-table thead{ background:#938E83; line-height: 37px;}
+.inviFri-table thead tr.mouseenter{ background-color:#938E83;}
+.inviFri-table thead th{ color:#fff; font-size:12px;}
+.inviFri-table .rim{ overflow: hidden; border:1px solid #CECECE; margin-top: 5px;}
+.inviFri-table tbody tr{border-bottom:1px solid #cecece; line-height:32px;}
+.inviFri-table tbody tr:last-child, .inviFri-table tbody tr.noborbot{ border-bottom:none 0px;}
+.inviFri-table tbody td{ font-size:12px; color:#434343;}
+#link{color: #434343;}

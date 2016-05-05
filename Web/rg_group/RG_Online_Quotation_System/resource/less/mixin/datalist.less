@@ -1,0 +1,127 @@
+.datalist-wrap{
+	.layout-float-base;
+	margin:10px 0;
+	&:after{
+		content:'';
+		clear:both;
+	}
+	>ul{
+			.layout-float-base;
+			&:nth-last-of-type(1){
+				border-bottom:1px solid @color-gray9;
+			}
+			li{
+				.layout-float-base;
+				background:@color-white;
+				>h3,
+				>h4{
+					.layout-float-base(50%);
+					text-align:center;
+					height:40px;
+					line-height:40px;
+					white-space:nowrap;
+					overflow:hidden;
+					cursor:pointer;
+				}
+				>h3{
+					background:@color-gray12;
+					color:@color-gray1;
+					font-size:@font-size-base + 4;
+					&:nth-of-type(1){
+						border-left:1px solid @color-gray9;
+						border-top:1px solid @color-gray9;
+						border-right:1px solid @color-gray9;
+					}
+					&:nth-of-type(2){
+						border-top:1px solid @color-gray9;
+						border-right:1px solid @color-gray9;
+					}
+				}
+				>h4{
+					font-size:@font-size-base;
+					color:@color-gray3;
+					&:nth-of-type(1){
+						border-left:1px solid @color-gray9;
+						border-top:1px solid @color-gray9;
+						border-right:1px solid @color-gray9;
+						&:before{
+								display:inline-block;
+								content:'\e600';
+								font-family:'ux_eight';
+								color:@color-red2;
+								font-size:@font-size-base + 2;
+								padding:0 5px 0 0;
+								vertical-align:middle;
+								font-weight:bold;
+						}
+					}
+					&:nth-of-type(2){
+						border-top:1px solid @color-gray9;
+						border-right:1px solid @color-gray9;
+					}
+				}
+				>div{
+					.layout-float-base;
+					display:none;
+					background:lighten(@color-cyan2,1%);
+					padding:10px 20px;
+					border-left:1px solid @color-gray9;
+					border-top:1px solid @color-gray9;
+					border-right:1px solid @color-gray9;
+					>p{
+						font-size:@font-size-base;
+						color:@color-gray5;
+						line-height:24px;
+						.text-ww;
+						span,i,em{
+							padding:0 3px;
+						}
+						em,i{
+							font-style:normal;
+						}
+						span{
+							color:@color-blue1;
+						}
+						i{
+							color:@color-gray3;
+						}
+						em{
+							color:@color-red1;
+						}
+					}
+					>a,>span{
+						.layout-base(48%);
+						text-align:center;
+						margin:10px 0;
+						display:block;
+						padding:10px 0;
+						white-space:nowrap;
+						overflow:hidden;
+						color:@color-white;
+						cursor:pointer;
+						.border-radius-base(3px);
+					}
+					>a{
+						&:nth-of-type(1){
+								float:left;
+						}
+						&:nth-of-type(2){
+								float:right;
+						}
+						&+span{
+							float:right;
+						}
+					}
+				}
+				&.listsel{
+					background:@color-gray14;
+					>h4:nth-of-type(1):before{
+							content:'\e62f';
+					}
+					>div{
+						display:block;
+					}
+				}
+			}
+	}
+}

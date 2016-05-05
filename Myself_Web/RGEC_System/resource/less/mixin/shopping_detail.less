@@ -1,0 +1,122 @@
+///组件--商品图文混排介绍
+
+///*--商品图文混排介绍--*/
+.shopping-detailwrap{
+	.layout-base;
+	height:auto;
+	padding:0;
+	margin:10px 0 5px 0;
+	max-width:1003px;
+	min-width:320px;
+	>div{
+		.box-sizing-base;
+		margin:0 auto;
+	}
+	.shopping-dimg{
+		padding:2px 0;
+		text-align:center;
+		overflow:hidden;
+		img{
+			width:100%;
+			height:100%;
+			display:inline-block;
+		}
+		&:after{
+			content:'';
+			clear:both;
+		}
+	}
+	.shopping-dtable{
+		padding:10px;
+		table{
+			th{
+				vertical-align:middle;
+				text-align:center;
+				color:@color-gray2;
+				.text-ww;
+			}
+			td{
+				color:@color-gray3;
+				.text-ww;
+			}
+		}
+	}
+	.shopping-dimgtxt{
+		padding:10px 0;
+		img{
+			.box-sizing-base;
+			max-width:280px;
+			padding:3px;
+			border:1px solid @color-gray10;
+			display:block;
+			margin:0 10px;
+		}
+		&:after{
+			width:100%;
+			height:0;
+			display:block;
+			content:'';
+			clear:both;
+		}
+	}
+	.dimgtxt-left img{
+		float:left;
+	}
+	.dimgtxt-right img{
+		float:right;
+	}
+	strong{
+		.box-sizing-base;
+		text-align:left;
+		.text-ww;
+	}
+	p{
+		.layout-base;
+		margin:0;
+		padding:5px 10px;
+		line-height:20px;
+		color:@color-gray3;
+		font-size-base:@font-size-base;
+		.text-ww;
+		text-indent:2em;
+		text-align:left;
+	}
+	h1,h2,h3,h4,h5,h6{
+		.layout-base;
+		margin:0;
+		.text-ww;
+		padding:10px 10px 5px 10px;
+	}
+	h1,h2{
+		text-align:center;
+		color:@color-gray1;
+	}
+	h3,h4,h5,h6{
+		text-align:left;
+		color:@color-gray2;
+	}
+	h1{
+		font-size:@font-size-base + 12;
+		line-height:40px;
+	}
+	h2{
+		font-size:@font-size-base + 8;
+		line-height:30px;
+	}
+	h3{
+		font-size:@font-size-base + 4;
+		line-height:24px;
+	}
+	h4{
+		font-size:@font-size-base + 2;
+		line-height:20px;
+	}
+	h5{
+		font-size:@font-size-base;
+		line-height:20px;
+	}
+	h6{
+		font-size:@font-size-base - 2;
+		line-height:18px;
+	}
+}

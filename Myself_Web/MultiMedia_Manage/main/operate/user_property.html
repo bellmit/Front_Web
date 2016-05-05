@@ -1,0 +1,68 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<meta name="description" content="德亿多媒体资源库,德亿多媒体,德亿多媒体资源库管理系统,管理系统--用户属性"/>
+<meta name="keywords" content="德亿多媒体资源库,德亿多媒体,德亿多媒体资源库管理系统,管理系统--用户属性"/>
+<link rel="stylesheet" type="text/css" href="../../css/main/menu_operate.css">
+<script src="../../js/lib/jquery-1.8.3.min.js"></script>
+<script src="../../js/lib/jquery.blockUI.min.js"></script>
+<script src="../../js/utils/util.js"></script>
+<script>
+$(function(){
+	var userprop_close=$("#userprop_close"),userprop_sure=$("#userprop_sure"),usergroup=$("#usergroup"),usergroup_op=$("#usergroup_op");
+	/*初始化*/
+	var grouparr=usergroup.val().split(","),groupstr="",grouplen=grouparr.length;
+	for(var i=0;i<grouplen;i++){
+		groupstr+="<li>"+grouparr[i]+"</li>"
+	}
+	usergroup_op.html(groupstr);
+	/*确定*/
+	userprop_sure.click(function(){
+		popup_alert("修改成功","undefined","yes","have");
+	});
+	/*关闭*/
+	userprop_close.click(function(){window.close();});
+})
+</script>
+<title>用户属性</title>
+</head>
+<body>
+<div class="userprop_wrap">
+	<h1 class="userprop_title">用户属性</h3>
+	<table class="userprop_content">
+    	<colgroup>
+        	<col class="up_cg1"/>
+            <col class="up_cg2"/>
+        </colgroup>
+    	<tr class="userprop_text">
+        	<td><label for="username">用户名：</label></td>
+            <td><input type="text" name="username" id="username"/></td>
+        </tr>
+        <tr class="userprop_text">
+        	<td><label for="usernote">描&nbsp;述：</label></td>
+            <td><input type="text" name="usernote" id="usernote"/></td>
+        </tr>
+        <tr>
+        	<td class="userprop_label"><label>用户类型：</label></td>
+            <td class="userprop_radio"><input type="radio" name="usertype" id="resuser"/><label for="resuser">资源库用户</label><input type="radio" name="usertype" id="unresuser"/><label for="unresuser">非资源用户</label></td>
+        </tr>
+        <tr class="userprop_tips">
+        	<td><label>提&nbsp;示：</label></td>
+            <td><p>如果将用户从资源库用户修改为非资源库用户，则系统并不删除和用户相关的其他信息。如果想移除该用户在本系统的所有信息，请在所有用户中右键单击用户，选择<span>【移除】</span>。</p></td>
+        </tr>
+        <tr class="userprop_ul">
+        	<td><label>隶属组：</label></td>
+            <td>
+            	<textarea name="usergroup" id="usergroup">admin,guest</textarea>
+            	<ul id="usergroup_op"></ul>
+            </td>
+        </tr>
+        <tr>
+        	<td>&nbsp;</td>
+            <td><input type="submit" name="userprop_sure" value="确定" id="userprop_sure" class="userprop_sure"><input type="button" name="userprop_close" value="关闭" id="userprop_close" class="userprop_close"></td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

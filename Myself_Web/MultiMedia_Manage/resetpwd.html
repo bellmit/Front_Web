@@ -1,0 +1,60 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="description" content="德亿多媒体资源库,德亿多媒体,德亿多媒体资源库管理系统,管理系统--重置密码"/>
+<meta name="keywords" content="德亿多媒体资源库,德亿多媒体,德亿多媒体资源库管理系统,管理系统--重置密码"/>
+<link rel="stylesheet" type="text/css" href="css/funcpages.css">
+<script src="js/lib/jquery-1.8.3.min.js"></script>
+<script src="js/lib/jquery.form.min.js"></script>
+<script src="js/lib/jquery.validate.min.js"></script>
+<script src="js/lib/jquery.blockUI.min.js"></script>
+<script src="js/utils/util.js"></script>
+<script src="js/resetpwd.js"></script>
+<title>重置密码</title>
+</head>
+<body class="resetpwd_body">
+<div class="container">
+	<div class="resetpwd_wrap">
+    	<form action="" method="post" id="resetpwd">
+        <table>
+            <colgroup>
+                <col class="rpwd_cg1"/>
+                <col class="rpwd_cg2"/>
+                <col class="rpwd_cg3"/>
+            </colgroup>
+            <tr>
+                <td><label for="username">用&nbsp;户&nbsp;名：</label></td>
+                <td><input type="text" name="usernames" id="username" class="username"/></td>
+                <td><span id="username_tips"></span></td>
+            </tr>
+            <tr>
+                <td><label for="opwd">原&nbsp;密&nbsp;码：</label></td>
+                <td><input type="password" name="opwds" id="opwd" class="opwd"/></td>
+                <td><span id="opwd_tips"></span></td>
+            </tr>
+            <tr>
+                <td><label for="npwd">新&nbsp;密&nbsp;码：</label></td>
+                <td><input type="password" name="npwds" id="npwd" class="npwd"/></td>
+                <td><span id="npwd_tips"></span></td>
+            </tr>
+            <tr>
+                <td><label for="validpwd">确认密码：</label></td>
+                <td><input type="password" name="validpwds" id="validpwd" class="validpwd"/></td>
+                <td><span id="validpwd_tips"></span></td>
+            </tr>
+            <tr>
+                <td colspan="2"><a href="login.html" title="" class="resetpwd_login">登录</a></td>
+                <td><input type="submit" class="resetpwdsure" id="resetpwdsure" value="确&nbsp;&nbsp;定"/></td>
+            </tr>
+        </table>
+        </form>
+    </div>
+</div>
+<div class="resetpwd_footer">
+	<div class="footer">
+    	<p>Copyright&nbsp;2013-2016&copy;,&nbsp;YIDE&nbsp;NET,All&nbsp;Rights&nbsp;Reserved</p>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,46 @@
+/* CSS Document */
+/*header*/
+.header_wrap{width:100%;min-width:1000px;height:60px;border-bottom:1px solid #ccc;background:#fff;}
+.header{margin:0 auto;width:1000px;height:58px;}
+.head_logo{width:130px;height:38px;float:left;background:#fff url(../../image/common/register_logo.png) no-repeat left center;margin-top:10px;border-right:1px solid #ccc;}
+.head_submenu{width:125px;height:16px;margin:21px 0 0 10px;*+margin:21px 0 0 5px;float:left;background:#fff;}
+.head_submenu li{height:16px;float:left;cursor:pointer;width:25px;}
+.head_submenu li a{display:block;width:25px;height:16px;text-align:center;line-height:16px;font-size:12px;margin:0 auto;}
+.head_submenu1 a,.head_submenu1 a:link{background:#fff url(../../image/common/register_submenu1.png) no-repeat center 0;}
+.head_submenu2 a,.head_submenu2 a:link{background:#fff url(../../image/common/register_submenu2.png) no-repeat center 0;}
+.head_submenu3 a,.head_submenu3 a:link{background:#fff url(../../image/common/register_submenu3.png) no-repeat center 0;}
+.head_submenu4 a,.head_submenu4 a:link{background:#fff url(../../image/common/register_submenu4.png) no-repeat center 0;}
+.head_submenu5 a,.head_submenu5 a:link{background:#fff url(../../image/common/register_submenu5.png) no-repeat center 0;}
+.head_submenu li a:link,.head_submenu li a:hover{-moz-transition:all 0.3s ease-in 0.05s;-ms-transition:all 0.3s ease-in 0.05s;-o-transition:all 0.3s ease-in 0.05s;-webkit-transition:all 0.3s ease-in 0.05s;transition:all 0.3s ease-in 0.05s;}
+.head_submenu1 a:hover{background:#fff url(../../image/common/register_submenu1.png) no-repeat center -16px;}
+.head_submenu2 a:hover{background:#fff url(../../image/common/register_submenu2.png) no-repeat center -16px;}
+.head_submenu3 a:hover{background:#fff url(../../image/common/register_submenu3.png) no-repeat center -16px;}
+.head_submenu4 a:hover{background:#fff url(../../image/common/register_submenu4.png) no-repeat center -16px;}
+.head_submenu5 a:hover{background:#fff url(../../image/common/register_submenu5.png) no-repeat center -16px;}
+.head_mainmenu{float:right;width:380px;height:22px;border-right:1px solid #ccc;margin:19px 10px 0 0;*+margin:19px 5px 0 0;}
+.head_mainmenu li{float:left;height:20px;margin-left:20px;*+margin-left:10px;border-bottom:2px solid #fff;}
+.head_mainmenu li a{font-size:16px;line-height:20px;font-family:"微软雅黑","Microsoft Yahei";color:#333;}
+.head_mainmenu li:hover{border-bottom:2px solid #F60;-moz-transition:border 0.3s ease-in 0.05s;-ms-transition:border 0.3s ease-in 0.05s;-o-transition:border 0.3s ease-in 0.05s;-webkit-transition:border 0.3s ease-in 0.05s;transition:border 0.3s ease-in 0.05s;}
+.head_login{float:right;width:200px;height:40px;margin-top:9px;background:#fff url(../../image/common/register_loginbg.png) no-repeat left center;}
+.head_login li{float:left;height:40px;}
+.head_login li.head_login1{margin-left:30px;*+margin-left:15px;}
+.head_login li.head_login2{margin-left:20px;*+margin-left:10px;}
+.head_login li a{font-size:14px;font-family:"微软雅黑","Microsoft Yahei";border-bottom:1px dashed #fff;line-height:40px;color:#333;}
+.head_login li a:hover{border-bottom:1px dashed #666;}
+.head_ltheme{font-family:"微软雅黑","Microsoft Yahei";text-align:left;text-indent:10px;font-size:20px;color:#333;height:56px;line-height:56px;float:left;}
+/*footer*/
+.footer_wrap{width:100%;min-width:1000px;height:auto;border-top:1px solid #ccc;background:#fafafa;}
+.footer{width:600px;margin:0 auto;padding:10px 0;}
+.foot_join{width:450px;height:50px;margin:0 auto;}
+.foot_join li{float:left;margin-left:10px;border-right:1px solid #666;padding-right:10px;height:16px;*+margin-left:5px;}
+.foot_join li.joinlast{border-right:0 none;}
+.foot_join li a{font-size:12px;text-decoration:underline;color:#888;line-height:14px;float:left;}
+.foot_join li a:hover{color:#f2462a;}
+.foot_theme{margin:0 auto;width:520px;height:30px;}
+.foot_theme p{float:left;font-size:12px;padding-right:20px;color:#555;}
+.foot_phone{width:500px;font-size:12px;color:#f2462a;margin:0 auto;text-align:center;height:20px;line-height:20px;}
+.foot_copyright{width:500px;font-size:12px;color:#555;margin:0 auto;text-align:center;height:20px;line-height:20px;}
+.foot_webrecord{width:400px;height:20px;margin:0 auto;line-height:20px;}
+.foot_webrecord li{float:left;font-size:12px;color:#555;padding-left:10px;height:20px;line-height:20px;}
+.foot_webrecord li a{color:#555;text-decoration:underline;}
+.foot_webrecord li a:hover{color:#333;}

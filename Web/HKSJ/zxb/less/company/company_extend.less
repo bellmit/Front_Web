@@ -1,0 +1,1546 @@
+/* CSS Document */
+////装修公司设计师主页
+.content-wrap{
+	width:100%;
+	.content-banner{
+		width:1190px;
+		height:305px;
+		margin:10px auto 0 auto;
+		position:relative;
+		left:0;
+		top:0;
+		z-index:1;
+		.banner-bg{
+			.layout-absolutel-base(0,0,-5);
+			width:1190px;
+			height:305px;
+			overflow:hidden;
+			display:block;
+		}
+		.banner-icon{
+			.layout-absolutel-base(35px,95px,5);
+			width:160px;
+			height:160px;
+			overflow:hidden;
+			.border-radius-base(50%);
+			border:3px solid @color-white;
+			img{
+				float:left;
+				width:100%;
+				height:100%;
+				display:block;
+			}
+		}
+		>.banner-opacity{
+			width:1190px;
+			height:150px;
+			display:block;
+			background:#E3E0DD;	
+			.layout-absolutel-base(0px,155px,2);
+			.opacity-base(80);
+		}
+		.banner-text{
+			width:1190px;
+			height:150px;
+			padding:0 0 0 235px;
+			.layout-absolutel-base(0px,155px,3);
+			>h4{
+				width:200px;
+				height:54px;
+				line-height:60px;
+				font-size:24px;
+				color:@color-gray1;	
+				font-weight:400;
+				>b{
+					width:70px;
+					height:20px;
+					margin:0 0 0 10px;
+					font-size:12px;
+					color:#fff;
+					font-weight:normal;
+					background:@color-orange3;		
+				}	
+			}		
+			>p{
+					width:100%;
+					height:26px;
+					line-height:26px;
+					font-size:12px;
+					color:@color-gray2;	
+					>span{
+						margin:0 20px 0 0;			
+					}	
+				}
+		}
+			>.banner-btn{
+				width:160px;
+				height:80px;
+				.layout-absoluterb-base(50px,25px,5);
+				span{
+					width:160px;
+					height:45px;
+					line-height:45px;
+					text-align:center;
+					display:inline-block;
+					font-size:20px;
+					font-family: "Microsoft Yahei";
+					color:@color-orange1;	
+					b{
+						font-size:12px;
+						font-family: "Microsoft Yahei";
+						color:@color-gray2;		
+					}
+				}	
+				>a{
+					width:160px;
+					height:35px;
+					line-height:35px;
+					display:inline-block;
+					text-align:center;
+					font-size:14px;
+					font-family: "Microsoft Yahei";
+					color:#fff;	
+					border-radius:4px;
+					background:@color-orange1;	
+				}	
+			}
+	}
+
+	//设计师内容导航
+	.content-nav{
+		width:1188px;
+		height:39px;
+		margin:0 auto;
+		border:1px solid @color-gray4;
+		border-top:none;		
+		>li{
+			a{
+				float:left;
+				width:159px;
+				height:40px;
+				text-align:center;
+				line-height:40px;
+				font-size:16px;
+				color:@color-gray2;	
+				border-right:1px solid @color-gray4;
+			}
+		}
+	}
+	
+	
+	//设计内容详情
+	.content-info{
+		width:1190px;
+		overflow:hidden;
+		margin:40px auto 0 auto;	
+	}
+	
+}
+
+//装修公司主页首页
+.company-content{
+	width:100%;
+	overflow:hidden;
+}
+
+.content-homebox{
+	width:1190px;
+	margin:0 auto;
+	&:after{
+		content:'';
+		clear:both;
+		width:100%;
+		display:block;
+	}
+	.content-main{
+		width:890px;
+		float:left;
+		.content-completed{
+			float:left;
+			width:890px;
+		}
+	}
+	
+	.content-side{
+		width:280px;
+		float:right;
+		border:1px solid @color-gray5;
+		margin:20px 0 0 0;
+		dl{
+				width:240px;
+				margin:20px auto 10px auto;
+				border-bottom:1px solid @color-gray5;
+				dt,
+				dd{
+					.layout-base;
+					margin:10px 0;
+				}
+				dt{
+					border-bottom:2px solid @color-gray5;
+					h3{
+							border-bottom:2px solid @color-orange1;
+							display:inline-block;
+							font-size:@font-size-base;
+							color:@color-gray2;
+					}
+				}
+				dd{
+					div{
+						width:60px;
+						height:60px;
+						float:left;
+						overflow:hidden;
+						margin:0 10px 0 0;
+						img{
+							display:block;
+							width:100%;
+							height:100%;
+						}
+					}
+					span,
+					em{
+						display:inline-block;
+						width:160px;
+						height:30px;
+						.text-of;
+						text-overflow:ellipsis;
+					}
+					span{
+						line-height:40px;
+						color:@color-gray1;
+						font-size:@font-size-base;
+					}
+					em{
+						line-height:20px;
+						color:@color-gray3;
+						font-size:@font-size-base - 2;
+					}
+					
+				}
+		}
+		>a{
+			display:inline-block;
+			.layout-float-base;
+			text-indent:20px;
+			height:30px;
+			line-height:20px;
+			text-align:left;
+			color:@color-gray3;
+			font-size:@font-size-base - 2;
+		}
+	}
+}
+
+//顶部logo样式
+.company-logo{
+		width:1190px;
+		height:102px;
+		padding:24px 0 44px 0;
+		position:relative;
+		margin:0 auto;
+		>i{
+				width:117px;
+				height:117px;
+				border:1px solid @color-gray5;
+				display:inline-block;
+				float:left;		
+		}	
+		.logo-text{
+				width:340px;
+				height:105px;
+				padding:10px 0 0 20px;
+				float:left;
+				>b{
+					width:100%;
+					height:30px;
+					line-height:30px;
+					font-size:20px;
+					color:@color-gray1;
+				}
+				>p{
+					width:100%;
+					line-height:30px;
+					font-size:12px;
+					color:@color-gray3;
+					display:inline-block;	
+					i{
+						display:inline-block;
+						width:16px;
+						height:16px;
+						margin:0 5px 0 0;
+						vertical-align:middle;
+						background:url(./../images/icons.png) -190px -95px;
+					}	
+				}	
+				
+				>span{
+					width:100%;
+					height:30px;
+					display:block;
+					line-height:30px;
+					font-size:14px;
+					color:@color-gray2;
+				}
+		}
+		.logo-text+div{
+					width:150px;
+					height:54px;
+					line-height:54px;
+					font-size:12px;
+					color:@color-gray3;
+					position:absolute;
+					bottom:0;
+					right:0;
+					div{
+						display:inline-block;
+						vertical-align:middle;
+					}
+					a{
+						display:inline-block;
+					}
+			}
+}
+
+
+//导航样式
+.company-nav{
+	width:100%;
+	height:40px;
+	background:#F0F0F0;
+	>ul{
+		width:1190px;
+		hiehgt:40px;
+		margin:0 auto;
+		overflow:hidden;
+	}
+	li{
+		float:left;		
+		a{
+			width:100px;
+			height:40px;
+			line-height:40px;
+			text-align:center;
+			display:inline-block;		
+			&:hover{
+				background:#1CB2A2;
+				color:#fff;
+			}
+		}
+	}
+	.company-navactive{
+			background:#1CB2A2;
+			a{
+				color:#fff;
+			}
+	}
+	.company-nav-btn{
+		float:right;	
+		>a,
+		>span{
+			display:inline-block;
+			width:160px;
+			heihgt:40px;
+			color:#fff;
+			font-size:14px;
+			line-height:40px;
+			text-align:center;
+			background:@color-orange2;
+			cursor:pointer;
+			&:hover{
+				background:@color-orange1;		
+			}
+		}	
+		
+	}
+	
+}
+
+
+//申请预约样式
+@mini_slidewidth:700px;
+@mini_slideheight:300px;
+.home-top{
+width:1190px;
+height:	330px;
+margin:0 auto;
+padding:20px 0 0 0;	
+.top-img{
+	width:@mini_slidewidth;
+	height:@mini_slideheight;
+	float:left;
+	margin:0 40px 0 0;
+}
+.top-intro{
+	width:450px;
+	height:330px;
+	float:left;			
+}
+.top-dongtai{
+	width:400px;
+	height:124px;	
+	float:left;
+	padding:20px 20px 20px 30px;
+	border-bottom:1px solid @color-gray5;
+	.top-liangfang{
+		width:159px;
+		height:124px;
+		border-right:1px solid @color-gray5;
+		float:left;
+		li{
+			width:100%;
+			height:45px;
+			a{
+				width:80px;
+				heihgt:45px;
+				line-height:45px;
+				padding:0 0 0 10px;
+				font-size:12px;
+				color:@color-gray3;	
+				&:hover{
+					color:@color-orange1;		
+				}
+			}
+			.zhifu-1{
+				width:21px;
+				height:21px;
+				display:inline-block;
+				vertical-align:middle;
+				background:url(./../images/icons.png) -318px -150px;
+			}
+			.zhifu-2{
+				width:21px;
+				height:21px;
+				display:inline-block;
+				vertical-align:middle;
+				background:url(./../images/icons.png) -290px -149px;
+			}
+			.zhifu-3{
+				width:21px;
+				height:21px;
+				display:inline-block;
+				vertical-align:middle;
+				background:url(./../images/icons.png) -262px -150px;
+			}
+		}	
+	}
+	.top-pingfen{
+		width:189px;
+		height:124px;
+		padding:0 0 0 50px;
+		float:left;	
+		li{
+			width:189px;
+			height:30px;
+			line-height:30px;
+			font-size:12px;
+			color:@color-gray3;
+			flaot:left;
+			h5{
+				font-size:14px;
+				height:32px;
+				line-height:32px;
+				color:@color-gray2;
+			}
+			i{
+				width:16px;
+				height:18px;
+				margin:0 1px;
+				display:inline-block;
+				vertical-align:middle;
+				background:url(./../images/icons.png) -267px -10px;
+			}		
+		}
+	}
+}
+.top-jianjie{
+	width:100%;
+	height:59px;
+	padding:20px 0;
+	overflow:hidden;
+	border-bottom:1px solid @color-gray5;
+	>h3{
+		font-size:16px;
+		color:@color-gray2;
+		height:30px;
+		line-height:30px;	
+	}
+	p{
+		height:29px;
+		font-size:12px;
+		color:@color-gray3;	
+		a{
+			color:@color-gray3;		
+		}
+		a:hover{
+			color:@color-orange1;
+		}
+	}
+}
+.top-yuyue{
+	width:100%;
+	height:65px;
+	padding:25px 0 0 0;
+	>a{
+		width:145px;
+		height:40px;
+		flaot:left;
+		display:inline-block;
+		font-size:14px;
+		line-height:40px;
+		text-align:center;
+		color:#fff;
+		background:@color-orange2;	
+	}
+	>a:hover{
+		background:@color-orange1;		
+	}
+	p{
+		width:280px;
+		height:40px;
+		padding:0 0 0 20px;
+		float:right;
+		color:@color-gray3;
+		font-size:12px;
+		line-height:40px;	
+		span{
+			color:@color-orange2;		
+		}	
+	}
+}
+}
+
+	
+//设计师样式
+.home-shejishi{
+	width:1190px;
+	height:auto;
+	margin:35px auto 20px auto;
+	.shejishi-1{
+	width:1170px;
+	height:141px;
+	border-bottom:1px dashed @color-gray5;
+	padding:20px 0 20px 20px;
+	.shejishi-left{
+		float:left;
+		width:500px;
+		hiehgt:140px;
+		>a{
+			width:100px;
+			heihgt:100px;
+			float:left;
+			display:inline-block;
+			.border-radius-base(50%);
+			overflow:hidden;	
+			img{
+				width:100%;
+				height:100%;
+				display:block;
+			}
+		}
+		>ul{
+			width:360px;
+			height:140;
+			padding:0 0 0 20px;
+			float:left;
+			>li{
+				height:26px;
+				font-size:14px;
+				color:@color-gray3;
+				h4{
+					font-size:20px;
+					display:inline-block;
+					height:20px;
+					line-height:20px;		
+					margin:0 5px 0 0;		
+				}	
+				>p{
+					height:20px;
+					line-height:20px;	
+				}
+				>a{
+					display:inline-block;
+					width:110px;
+					height:30px;
+					margin:5px 0 0 0;
+					line-height:30px;
+					text-align:center;
+					font-size:14px;
+					color:#fff;
+					background:@color-orange2;
+				}
+				a:hover{
+					background:@color-orange1;	
+				}
+			}
+		}
+	}
+	.shejishi-right{
+		float:left;
+		width:670px;
+		height:140px;
+		li{
+			float:left;	
+		}
+		.img-margin{
+			margin:0 18px;		
+		}
+	}
+}
+}
+
+
+//设计方案样式
+.home-fangan{
+	width:1190px;
+	heihgt:	390px;
+	overflow:hidden;
+	margin:0 auto;
+	>ul{
+		width:1190px;
+		height:370px;
+		padding:20px 0 0 0;		
+		li{
+			width:281px;
+			height:356px;
+			margin:0 22px 0 0;
+			float:left;
+			i{
+				width:281px;
+				height:246px;
+				display:block;
+				margin-right:20px;
+				img{
+					width:281px;
+					height:246px;
+					display:block;	
+				}
+			}
+		}
+		li:last-child{
+			margin:0;
+		}
+	}
+	
+	.fangan-xinxi{
+		width:279px;
+		height:54px;
+		padding:35px 0 0 0;
+		border:1px solid @color-gray4;
+		border-top:none;
+		position:relative;
+		p{
+			width:100%;
+			height:24px;
+			line-height:24px;
+			text-align:center;
+			font-size:14px;
+			color:@color-gray2;		
+		}
+		a{
+			width:100%;
+			height:20px;
+			display:inline-block;
+			line-height:20px;
+			text-align:center;
+			font-size:12px;
+			color:@color-gray3;		
+		}
+		a:hover{
+			color:@color-orange1;		
+		}
+		div{
+			width:60px;
+			height:60px;
+			position:absolute;
+			border:2px solid @color-white;
+			top:-30px;
+			left:110px;
+			overflow:hidden;
+			.border-radius-base(50%);
+			img{
+				width:100%;
+				height:100%;
+				display:block;
+			}
+		}
+	}
+}
+
+
+//竣工实景图样式
+.home-jungong,
+.home-jungong1{
+	margin:30px auto 0 auto;
+	&:after{
+		content:'';
+		display:block;
+		width:100%;
+		clear:both;
+	}	
+	.data-wrap{
+		width:100%;
+		float:left;
+		margin:0 0 20px 0;
+		>ul{
+		width:1190px;
+		height:250px;
+		padding:20px 0 0 0;
+		li{
+			float:left;
+			width:284px;
+			height:251px;
+			margin:0 18px 0 0;
+			position:relative;
+			>a{
+				display:block;
+				width:284px;
+				height:201px;		
+			}
+			>b{
+				width:272px;
+				height:35px;
+				padding:0 0 0 10px;
+				line-height:30px;
+				font-size:14px;
+				.opacity-base(50);
+				color:#fff;
+				display:inline-block;
+				position:absolute;
+				left:1px;
+				top:165px;
+				background:#000;	
+			}
+			p{
+				width:284px;
+				height:50px;
+				line-height:50px;
+				text-align:center;
+				font-size:12px;
+				color:@color-gray3;
+				background:@color-gray7;
+			}
+			span{
+				width:90px;
+				height:30px;
+				display:inline-block;
+				line-height:30px;
+				i{
+					width:22px;
+					height:22px;
+					vertical-align:middle;
+					margin:4px 10px 4px 0;
+					display:inline-block;	
+					overflow:hidden;
+					.border-radius-base(50%);
+					img{
+						width:100%;
+						height:100%;
+						display:block;
+					}
+				}
+				a{
+					color:@color-gray1;	
+				}
+				a:hover{
+					color:@color-orange1;		
+				}
+				b{
+					color:@color-orange1;
+					font-weight:normal;		
+				}
+			}
+		
+		}
+		li:last-child{
+			margin:0;
+		}
+	}
+	}
+}
+
+.home-jungong{
+	width:1190px;
+	hieght:308px;
+}
+
+.home-jungong1{
+	width:100%;
+	hieght:308px;
+}
+
+
+//装修问题样式
+.home-wenti{
+	width:1190px;
+	height:240px;
+	margin:20px auto 0 auto;
+	ul{
+		width:575px;
+		height:210px;
+		padding:20px 0 0 20px;
+		float:left;	
+		li{
+			width:575px;
+			height:40px;
+			border-bottom:1px dashed @color-gray4;	
+			a{
+				width:575px;
+				height:40px;
+				line-height:38px;
+				display:inline-block;
+				font-size:14px;
+				color:@color-gray3;	
+				span{
+					float:right;		
+				}
+			}	
+			a:hover{
+				color:@color-orange1;		
+			}	
+		}
+	}	
+}
+
+
+//六大免费服务样式
+.info-liuda {
+	width: 1190px;
+	height: 196px;
+	overflow:hidden;
+	margin:80px auto 64px auto;
+}	
+
+
+//title标题样式
+.shejishi-title,
+.shejishi-title1{
+	height:45px;	
+	line-height:45px;
+	border-bottom:1px solid @color-gray5;
+	h3{
+		height:45px;
+		float:left;
+		
+		font-size:24px;	
+		color:@color-gray1;
+		span{
+			height:35px;
+			line-height:35px;
+			font-size:16px;
+			color:@color-gray3;
+			padding:0 0 0 5px;		
+		}
+	}	
+	a{
+		display:inline-block;
+		height:45px;
+		float:right;
+		line-height:60px;
+		font-size:12px;
+		color:@color-gray3;		
+	}
+	a:hover{
+		color:@color-gray1;		
+	}
+}
+
+.shejishi-title{
+	width:1190px;
+	margin:0 auto;
+}
+
+.shejishi-title1{
+	width:100%;
+	float:left;
+}
+
+
+//--------页面部分---------
+
+//设计师页面
+.company-stylist{
+	width:100%;
+	overflow:hidden;
+	padding:0 0 150px 0;
+}
+
+//优惠活动列表页
+.privilege-content{
+		width:100%;
+		height:602px;
+		>ul{
+			width:960px;
+			margin:0 auto;
+			padding:20px 230px 20px 0;
+			a{
+				width:960px;
+				height:50px;
+				display:inline-block;
+				line-height:50px;
+				font-size:14px;
+				color:@color-gray2;	
+				border-bottom:1px dashed  @color-gray4;	
+				&:hover{
+					color:@color-orange1;
+				}
+			}		
+			span{
+				display:inline-block;
+				height:50px;
+				line-height:50px;
+				font-size:12px;
+				color:@color-gray3;
+				float:right;		
+			}
+		}
+		
+	}
+
+//设计方案页面
+.company-scheme{
+	width:100%;
+	overflow:hidden;
+	.company-design{
+			width:1190px;
+			height:320px;
+			margin:0 auto;
+			padding:20px 0 0 0;
+			li{
+				width:284px;
+				height:320px;
+				margin:0 18px 0 0;
+				float:left;		
+				
+				a{
+					width:284px;
+					height:200px;
+					display:block;		
+				}
+			}
+			li:last-child{
+				margin:0;
+			}
+			.scheme-info{
+				width:261px;;
+				height:99px;
+				padding:10px 10px 0 10px;		
+				border:1px solid @color-gray5;
+				border-top:none;
+				
+				>h4{
+				height:30px;
+				line-height:30px;
+				font-size:15px;
+				color:@color-gray1;
+				font-weight:300;
+				}
+				.scheme-p1{
+					width:261px;
+					height:30px;
+					font-size:@font-size-small;
+					color:@color-gray2;
+					display:inline-block;
+					span{
+						height:30px;
+						padding:0 12px 0 0;
+						line-height:30px;
+					}
+					.span-margin{
+						padding:0 12px;		
+					}
+					b{
+						font-weight:normal;
+						color:@color-orange1;
+					}
+				}
+				.scheme-p2{
+					width:261px;
+					height:39px;
+					float:left;
+					border-top:1px dashed @color-gray5;
+					.scheme-name-1{
+						height:261px;
+						line-height:39px;
+						display:inline-block;
+						font-size:12px;
+						color:@color-gray1;
+						a{
+							display:inline;	
+							height:39px;
+							line-height:39px;
+							font-size:12px;
+							color:@color-gray2;
+							&:hover{
+								color:@color-orange1;		
+							}
+						}
+					}		
+					.scheme-name-2{
+						padding:0 5px;
+						height:39px;
+						line-height:39px;
+						font-size:12px;
+						color:@color-gray3;
+						float:right;
+						.a-1{
+							width:16px;
+							height:14px;
+							margin:0 5px 0 0;
+							display:inline-block;
+							vertical-align:middle;
+							background:url(./../images/icons.png) -206px -66px;	
+							&:hover{
+								background:url(./../images/icons.png) -206px -81px;	
+							}	
+						}	
+						.a-2{
+							width:16px;
+							height:14px;
+							margin:0 5px 0 0;
+							display:inline-block;
+							vertical-align:middle;
+							background:url(./../images/icons.png) -190px -66px;		
+							&:hover{
+								background:url(./../images/icons.png) -190px -81px;	
+							}
+						}	
+					}
+				}
+			}
+			//设计师头像
+			.scheme-icon-1{
+				width:22px;
+				height:22px;
+				margin:0 10px 0 0; 
+				display:inline-block;
+				vertical-align:middle;
+				background:url(./../images/icons.png) -464px -78px;
+			}
+			.scheme-icon-2{
+				width:22px;
+				height:22px;
+				margin:0 10px 0 0; 
+				display:inline-block;
+				vertical-align:middle;
+				background:url(./../images/icons.png) -486px -78px;
+			}
+			.scheme-icon-3{
+				width:22px;
+				height:22px;
+				margin:0 10px 0 0; 
+				display:inline-block;
+				vertical-align:middle;
+				background:url(./../images/icons.png) -508px -78px;
+			}
+			.scheme-icon-4{
+				width:22px;
+				height:22px;
+				margin:0 10px 0 0; 
+				display:inline-block;
+				vertical-align:middle;
+				background:url(./../images/icons.png) -530px -78px;
+			}
+		}
+}
+
+//装修公司分页--装修工地页面
+.site-content{
+	width:100%;
+	padding:0 0 80px 0;
+	
+	.company-site{
+		width:1190px;
+		overflow:hidden;
+		margin:0 auto;
+		padding:20px 0;	
+		.site-menu{
+			width:250px;
+			float:left;
+			overflow:hidden;
+			>li{
+				cursor:pointer;
+				a,
+				span{
+					font-size:14px;
+					font-family: "Microsoft Yahei";
+					height:34px;
+					display:inline-block;
+					line-height:34px;
+					color:@color-gray2;				
+					&:hover{
+						color:@color-orange1;		
+					}
+				}		
+			}	
+			.site-menuactive{
+				a,
+				span{
+					color:@color-orange1;
+				}
+			}
+		}	
+		.site-wrap{
+			width:940px;
+			overflow:hidden;
+			float:left;		
+		}
+		.site-box{
+			width:840px;
+			overflow:hidden;
+			border-bottom:1px solid @color-gray5;
+			padding:10px 100px 30px 0;
+			.site-icon{
+				width:100px;
+				heihgt:100px;
+				float:left;
+				text-align:center;
+				i{
+					width:63px;
+					height:63px;
+					overflow:hidden;
+					.border-radius-base(50%);
+					display:inline-block;		
+				}
+				span{
+					font-size:12px;
+					font-family: "Microsoft Yahei";
+					color:@color-gray3;
+					height:26px;
+					line-height:26px;		
+				}
+			}
+			.site-comment{
+				width:670px;
+				padding:0 0 0 50px;
+				float:left;
+				.comment-title{
+					>.info-p1{
+						width:100%;
+						heihgt:20px;
+						padding:5px 0;
+						font-size:20px;
+						font-family: "Microsoft Yahei";
+						color:@color-gray1;	
+						>i{
+							width:32px;
+							height:14px;
+							padding:4px 0 4px 10px;
+							text-align:center;
+							font-size:12px;
+							font-family: "Microsoft Yahei";
+							color:#fff;
+							vertical-align:middle;
+							display:inline-block;
+							background:url(./../images/icons.png)	-231px -39px;
+						}
+						b{
+						height:20px;
+						line-height:20px;
+						font-size:12px;
+						font-family: "Microsoft Yahei";
+						color:@color-gray3;
+						font-weight:normal;
+						padding:0 10px;		
+					}
+						span{
+							float:right;
+							b{
+								padding:0 14px;
+								font-size:12px;
+								font-family: "Microsoft Yahei";
+								color:@color-gray3;
+								display:inline-block;
+								border:1px solid @color-gray6;	
+							}
+							.p1-a{
+								width:18px;
+								height:19px;
+								margin:0 5px 0 0;
+								vertical-align:middle;
+								display:inline-block;
+								background:url(./../images/icons.png) -273px -42px;	
+							}
+							.p1-b{
+								width:17px;
+								height:19px;
+								margin:0 5px 0 0;
+								vertical-align:middle;
+								display:inline-block;
+								background:url(./../images/icons.png)	-291px -43px;	
+							}
+							.p1-c{
+								width:18px;
+								height:19px;
+								margin:0 5px 0 0;
+								vertical-align:middle;
+								display:inline-block;
+								background:url(./../images/icons.png)	-308px -43px;	
+							}
+						}
+					}		
+					>.info-p2{
+						width:100%;
+						height:38px;
+						font-size:12px;
+						font-family: "Microsoft Yahei";
+						color:@color-gray3;	
+						>b{
+							height:34px;
+							padding:0 20px 0 0;
+							line-height:38px;
+							font-weight:normal;		
+						}
+					}	
+				}
+				>.comment-content{
+					width:100%;
+					line-height:24px;
+					font-size:14px;
+					font-family: "Microsoft Yahei";
+					color:@color-gray1;
+				}
+				>.comment-img{
+					width:100%;
+					padding:30px 0 0 0;
+					overflow:hidden;
+					>li{
+						float:left;
+						margin:0 10px 0 0;		
+					}		
+				}
+				>span{
+					width:100%;
+					height:24px;
+					line-height:24px;
+					font-size:12px;
+					font-family: "Microsoft Yahei";
+					color:@color-gray3;			
+				}
+			}
+		}
+ }
+}
+
+//------------公司简介页面部分------------------
+
+
+//装修公司主页--公司简介
+.company-profile{
+	width:1190px;
+	margin:0 auto;
+	padding:40px 0 60px 0;
+	overflow:hidden;
+	//左侧菜单样式
+	.profile-left{
+		width:230px;
+		float:left;		
+		>ul{
+			width:80px;
+			height:210px;
+			a{
+				display:inline-block;
+				height:28px;
+				font-size:12px;
+				color:@color-gray2;		
+				&:hover{
+					color:@color-orange1;	
+					font-weight:bold;	
+				}
+			}		
+			.profile-active{
+				a{
+					color:@color-orange1;	
+					font-weight:bold;
+				}	
+			}
+		}
+	}	
+	
+	
+	//右侧内容详情样式
+	.profile-right{
+		width:960px;
+		float:left;
+		.profile-heder{
+			width:100%;
+			height:200px;
+			>span{
+				display:inline-block;	
+				width:200px;
+				height:200px;
+				float:left;
+				h3{
+					height:40px;
+					font-size:18px;	
+					color:@color-gray2;	
+				}	
+				img{
+					width:160px;
+					height:160px;
+					display:block;		
+				}
+			}	
+			.profile-text{
+				width:760px;
+				height:166px;
+				padding:34px 0 0 0;
+				float:left;
+				>p{
+					width:730px;
+					line-height:26px;
+					font-size:14px;
+					color:@color-gray1;
+					text-indent:28px;		
+				}		
+			}
+		}
+		.table-1{
+			width:960px;
+			padding:65px  0 0;
+		}
+		.table-2{
+			width:960px;
+			padding:65px 0 0 0;
+		}
+		h3{
+				height:36px;
+				font-size:18px;
+				color:@color-gray1;		
+			}	
+		table{
+				width:959px;
+				border-right:1px solid @color-gray5;	
+				tr{
+					width:960px;
+					border-bottom:1px solid @color-gray6;	
+					td:first-child{
+						width:180px;
+						padding:18px 0 18px 20px;
+						font-size:14px;
+						color:@color-gray2;
+						vertical-align:middle;
+						background:@color-gray6;
+					}		
+					td:last-child{
+						width:704px;
+						font-size:14px;
+						color:#444;
+						padding:18px 20px 18px 35px;
+						p{
+							
+							line-height:26px;
+							
+						}		
+						b{
+							display:block;
+							height:20px;		
+						}
+					}
+				}
+				tr:first-child{
+					td:last-child{
+						border-top:1px solid @color-gray5;
+					}
+						
+				}
+				tr:last-child{
+					td:last-child{
+						border-bottom:1px solid @color-gray5;
+					}	
+				}
+			}
+			
+		//公司简介--文章咨询页面
+		>.company-advisory{
+			width:960px;
+			margin:-12px 0 0 0;
+			a{
+				width:960px;
+				height:50px;
+				display:inline-block;
+				line-height:50px;
+				font-size:14px;
+				color:@color-gray2;	
+				border-bottom:1px dashed  @color-gray4;	
+				&:hover{
+					color:@color-orange1;
+				}
+			}		
+			span{
+				display:inline-block;
+				height:50px;
+				font-size:12px;
+				color:@color-gray3;
+				line-height:50px;
+				float:right;		
+			}
+	}
+	
+	
+		//公司简介——联系我们
+		.contact-list{
+			width:960px;
+			li{
+				width:960px;
+				height:165px;
+				border-bottom:1px dashed  @color-gray5;
+				>img{
+					width:160px;
+					height:160px;
+					float:left;
+					display:block;		
+				}			
+			}
+			.contact_list_li{
+				width:960px;
+				height:160px;
+				padding:50px 0 0 0;		
+			}
+			.detail{
+				width:760px;
+				height:160px;
+				float:left;
+				padding:0 0 0 40px;		
+				>p{
+					height:40px;
+					font-size:24px;
+					font-weight:300;
+					font-family:@fontfamliy-base;
+					letter-spacing:2px;
+					color:@color-gray1;		
+				}
+				dl{
+					padding:0 0 5px 0;	
+					dd{
+						height:22px;
+						line-height:22px;
+						font-size:12px;
+						letter-spacing:1px;
+						color:@color-gray2;		
+					}	
+				}
+				
+				>a{
+					display:inline-block;
+					width:120px;
+					height:32px;
+					line-height:32px;
+					text-align:center;
+					font-size:12px;
+					color:#fff;
+					background:@color-orange1;		
+				}
+			}
+		}
+		
+		
+		//公司简介--五星服务
+		.service-text{
+			width:960px;
+			height:580px;
+				h5{
+						height:35px;
+						font-size:20px;
+						color:@color-gray1;		
+					}
+					div{
+						width:960px;
+						font-size:14px;
+						color:@color-gray1;
+						>b{
+							color:@color-orange1;
+							height:50px;
+							line-height:50px;
+							display:inline-block;		
+						}
+						p{
+							line-height:26px;	
+							padding:0 0 6px 0;	
+						}		
+						span{
+							line-height:24px;				
+						}
+					}
+			}		
+			
+		
+		//企业证书
+		.intro-row{
+			width:960px;
+			overflow:hidden;
+			padding:0 0 20px 0;
+			>.intro-title{
+				height:40px;
+				font-size:20px;
+				color:@color-gray1;		
+			}
+			.clearfix{
+				li{
+					width:200px;
+					height:210px;
+					float:left;	
+					span{
+						display:inline-block;		
+						height:35px;
+						line-height:35px;
+						font-size:14px;
+						color:@color-gray2;
+					}	
+				}		
+			}
+			.not-upload{
+				display:block;
+				width:175px;		
+				height:35px;
+				line-height:35px;
+				font-size:14px;
+				color:@color-gray2;
+			}
+		}		
+	}
+}
+		
+		
+//文章详情
+.layout-itemmain{
+	.company-detail{
+			.layout-float-base;
+			margin:5px 0 20px 0;
+			>img{
+				max-width:890px;
+				margin:5px 0;
+			}
+			>h1,
+			>h3,
+			>p{
+				width:100%;
+				.text-ww;
+				padding:3px 0;
+			}
+			>h1{
+				font-size:@font-size-base + 8;
+				color:@color-gray1;
+				margin:10px 0;
+			}
+			>h3{
+				font-size:@font-size-base + 2;
+				color:@color-gray1;
+				margin:5px 0;
+			}
+			>p{
+				font-size:@font-size-base - 2;
+				color:@color-gray2;
+				line-height:24px;
+				img{
+					display:block;
+					max-width:890px;
+					margin:5px 0;
+				}
+			}
+	}
+	
+}
+
+
+
+

@@ -1,0 +1,40 @@
+/* CSS Document */
+/*global*/
+body{margin:0;padding:0;background:#fff;}
+body *{margin:0;padding:0;font-size:100%;text-decoration:none;color:#000;font-family:"宋体", serif, sans-serif, "宋体-PUA", "楷体_GB2312", "仿宋_GB2312", Vrinda;list-style:none;resize:none;border:0 none;}
+body *:focus{outline:none;}
+/*layout*/
+.container{width:auto;height:auto;margin:0 auto;}
+.header{width:745px;height:auto;margin:0 auto;}
+.content{width:745px;height:auto;margin:0 auto;padding-bottom:80px;}
+/*header*/
+/*h1-h6*/
+.header h1{width:auto;height:auto;padding:5px 0;text-align:center;font-size:26px;font-weight:normal;}
+.header h2{width:auto;height:auto;padding:5px 0;text-align:center;font-size:24px;font-weight:bold;}
+/*content*/
+/*table*/
+.dnrd_info{width:745px;height:auto;margin:0 auto;border-left:2px solid #000;border-top:2px solid #000;border-right:1px solid #000;border-bottom:1px solid #000;}
+/*tr td*/
+.dnrd_info tr td{border-bottom:1px solid #000;border-right:1px solid #000;padding:5px 0;}
+/*table-layout*/
+.remark_col1{width:34%;}
+.remark_col2{width:32%;}
+.remark_col3{width:34%;}
+.info_col1{width:17%;}
+.info_col2{width:34%;}
+.info_col3{width:15%;}
+.info_col4{width:17%;}
+.info_col5{width:17%;}
+/*form-detail*/
+/*div*/
+/*label*/
+.dnrd_info label{padding:3px 0;text-align:center;width:100%;font-size:14px;display:block;cursor:pointer;}
+/*text*/
+.dnrd_info input{float:left;height:22px;line-height:1.5em;font-size:14px;color:#333;width:96%;}
+/*trline,tdline,tdunline*/
+/*p*/
+.infotitle{width:auto;font-size:16px;font-weight:bold;float:left;padding:3px 0;text-indent:20px;}
+.maintitle{width:auto;font-size:15px;font-weight:bold;float:left;padding:3px 0;text-indent:20px;}
+.subtitle{width:auto;font-size:15px;font-weight:bold;text-align:center;padding:3px 0;}
+/*textarea*/
+.companyissue,.departcheck,.manager{width:94%;min-height:100px;_height:100px;overflow:auto;float:right;font-size:14px;background:#FFF;}

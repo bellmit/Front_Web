@@ -1,0 +1,160 @@
+///模块--视频管理
+///作者：易品
+
+
+///*--视频管理--*/
+.vi_sp{
+	margin:20px 15px;
+	.sp_lf{
+		width:300px;
+		height:200px;
+		border:1px solid @color-gray7;
+		float:left;
+		margin-right:15px;
+		dl dd{
+			float:left;
+			padding-right:20px;
+			width:110px;
+		}
+		ul li{
+			padding:15px 10px;
+		}
+	}
+	.vi_list{
+		margin-bottom:60px;
+		.name span{
+			float:left;
+			margin-right:18px;
+			display:inline-block;
+			width:100px;
+			height:40px;
+			line-height:40px;
+			text-align:center;
+			border:1px solid @color-gray7;
+		}
+	}
+	input[type="button"]{
+		width:100px;
+		height:30px;
+		border:0;
+		background:@color-green4;
+		color:@color-white;
+	}
+	input[type="text"]{
+		outline:none;
+		width:400px;
+		height:28px;
+		border:0;
+		border:1px solid @color-gray7;
+	}
+	input[type="button"],
+	input[type="text"]{
+		float:left;
+		margin-right:20px;
+		vertical-align:middle;
+	}
+}
+
+.sp_tp{
+	.tg,
+	.btg{
+		width:100px;
+		height:40px;
+		line-height:40px;
+		display:inline-block;
+		text-align:center;
+		margin-left:10px;
+	}
+	.tg{
+		background:url("../images/kh_btn.png") no-repeat 0 0;
+		width:100px;
+		height:40px;	
+	}
+	.btg{
+		background:url("../images/kh_btn.png") no-repeat 0 -47px;
+		width:100px;
+		height:40px;
+	}
+}
+
+.vi_cut ul li{
+	border:1px solid @color-gray7;
+	width:200px;
+	height:100px;
+	margin-right:10px;
+	float:left;
+}
+
+.w_progressBar{
+	background:@color-gray9;
+	.border-radius-base(4px);
+	height:12px;
+	margin-top:18px;
+	overflow:hidden;
+	position:relative;
+}
+
+.w_progressBar_bar{
+	background:@color-orange3;
+	height:100%;
+	position:absolute;
+	display:inline-block;
+}
+
+.vi_list{
+	.lt_lf{
+		width:701px;
+		overflow:hidden;
+		margin-right:20px;
+	}
+	.vi_intro,
+	.lt_lf,
+	.vi_btn{
+		float:left;
+		margin-right:20px;
+	}
+	.vi_intro{
+		textarea{
+			width:500px;
+			height:68px;
+			padding:0;
+			margin:0;
+		}
+	}
+	.vi_btn{
+		.verify,
+		.cancel{
+			width:100px;
+			height:30px;
+			line-height:30px;
+			text-align:center;
+			display:block;
+			color:@color-white;
+			margin:0;
+		}
+		.verify{
+			background:@color-green4;
+			margin-bottom:10px;
+		}
+		.cancel{
+			background:@color-orange2;
+		}
+	}
+} 
+
+.vi_sc{
+	margin-bottom:25px;
+	label{
+		float:left;
+		margin-right:20px;
+		vertical-align:middle;
+		width:100px;
+		display:inline-block;
+		height:30px;
+		line-height:30px;
+	}
+}
+
+.se{
+	background:#efeded;
+}

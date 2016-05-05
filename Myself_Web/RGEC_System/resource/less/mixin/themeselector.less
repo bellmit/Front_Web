@@ -1,0 +1,182 @@
+///组件--主题选择
+
+
+///主题选择
+.themeitem-wrap{
+	.layout-float-base;
+	padding:10px 10px 80px 10px;
+	margin:0;
+	background:transparent url(../images/g_pattern.png) repeat 0 0;
+	text-align:center;
+	&:after,
+	&::after{
+		content:'';
+		clear:both;
+	}
+	li{
+			height:120px;
+			width:120px;
+			display:inline-block;
+			a{
+				.layout-relative-base(0,0,100);
+				&:before,
+				&:after{
+					.layout-absolutel-base;
+					color:@color-white;
+					font-size:@font-size-base * 4;
+				}
+				.no-outline-base;
+				.border-radius-base(50%);
+				width:100%;
+				height:100%;
+				display:block;
+			}
+			span{
+				.layout-absolutelb-base(-20px,-50px);
+				font-size:@font-size-base + 12;
+				color:@color-white;
+				height:50px;
+				width:160px;
+				display:block;
+				line-height:50px;
+				text-align:center;
+				font-family:@fontfamliy-base;
+				.text-unselect;
+				.text-of;
+			}
+	}
+}
+
+
+///一个子选项
+.themeitem-one li{
+	margin:40px 40px 0 40px;
+}
+///二个子选项
+.themeitem-two li{
+	a:hover span{
+			text-decoration:underline;
+	}
+	&:first-child{
+		margin:40px 40px 0 0;
+	}
+	&:first-child+li{
+		margin:40px 0 0 40px;
+	}
+}
+///多个子选项
+.themeitem-mutil li{
+	margin:40px 40px 0 40px;
+	a:hover span{
+			text-decoration:underline;
+	}
+	&:first-child{
+		margin:40px 40px 0 0;
+	}
+	&:last-child{
+		margin:40px 0 0 40px;
+	}
+}
+
+///具体主题
+
+///最新资讯
+.theme-news a{
+	background:@color-yellow2;
+	&:before{
+		content:'\e686';
+		font-family:'ux_one';
+		line-height:130px;
+		margin:0 0 0 32px;
+	}
+}
+///产品展示
+.theme-product a{
+	background:@color-red4;
+	&:before{
+		content:'\e685';
+		font-family:'ux_one';
+		line-height:120px;
+		margin:0 0 0 25px;
+	}
+	&:after{
+		content:'\e674';
+		font-family:'ux_one';
+		line-height:140px;
+		margin:0 0 0 45px;
+	}
+}
+///订单查询
+.theme-order a{
+	background:@color-red1;
+	&:before{
+		content:'\e6b0';
+		font-family:'ux_one';
+		line-height:120px;
+		margin:0 0 0 35px;
+	}
+}
+///购物车
+.theme-cart a{
+	background:@color-green2;
+	&:before{
+		content:'\e608';
+		font-family:'ux_two';
+		line-height:120px;
+		margin:0 0 0 32px;
+	}
+}
+///去购物
+.theme-shopping a{
+	background:@color-blue3;
+	&:before{
+		content:'\e67a';
+		font-family:'ux_one';
+		line-height:120px;
+		margin:0 0 0 32px;
+	}
+}
+///电子货币
+.theme-emoney a{
+	background:@color-orange1;
+	&:before{
+		content:'\e61f';
+		font-family:'ux_one';
+		line-height:120px;
+		margin:0 0 0 32px;
+	}
+}
+///个人信息
+.theme-info a{
+	background:@color-gray1;
+	&:before{
+		content:'\e71a';
+		font-family:'ux_one';
+		line-height:120px;
+		margin:0 0 0 32px;
+	}
+}
+///会员注册
+.theme-register a{
+	background:@color-red2;
+	&:before{
+		content:'\e69d';
+		font-family:'ux_one';
+		line-height:120px;
+		margin:0 0 0 32px;
+	}
+}
+///开店申请
+.theme-shop a{
+	background:@color-cyan1;
+	&:before{
+		content:'\e722';
+		font-family:'ux_one';
+		line-height:120px;
+		margin:0 0 0 32px;
+	}
+}
+.theme-mask a{
+	opacity:0.5;
+	filter:alpha(opacity=50);
+}

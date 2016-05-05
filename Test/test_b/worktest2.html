@@ -1,0 +1,20 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>面试测试</title>
+</head>
+<body>
+</body>
+<script>
+var a=10;
+(function(){
+	a=100;
+	alert(a);
+	alert(this.a);
+	var a;
+	alert(a);
+	
+})();
+</script>
+</html>

@@ -1,0 +1,102 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<meta name="description" content="德亿多媒体资源库,德亿多媒体,德亿多媒体资源库管理系统,管理系统--添加权限"/>
+<meta name="keywords" content="德亿多媒体资源库,德亿多媒体,德亿多媒体资源库管理系统,管理系统--添加权限"/>
+<link rel="stylesheet" type="text/css" href="../../css/main/menu_operate.css">
+<script src="../../js/lib/jquery-1.8.3.min.js"></script>
+<script src="../../js/lib/jquery.blockUI.min.js"></script>
+<script src="../../js/utils/util.js"></script>
+<script>
+$(function(){
+	var addrole_close=$("#addrole_close"),addrole_sure=$("#addrole_sure"),addrole_add=$("#addrole_add"),addrole_delete=$("#addrole_delete"),rolelist=$("#rolelist"),rolelist_op=$("#rolelist_op"),roleselect_op=$("#roleselect_op");
+	/*初始化*/
+	var rolearr=rolelist.val().split(","),rolestr="",rolelen=rolearr.length;
+	for(var i=0;i<rolelen;i++){
+		rolestr+="<li class=\"\">"+rolearr[i]+"</li>"
+	}
+	rolelist_op.html(rolestr);
+	/*绑定用户列表选中事件*/
+	rolelist_op.find("li").live("click",function(){$(this).toggleClass("rolelistsel");});
+	/*绑定已选择用户列表选中事件*/
+	roleselect_op.find("li").live("click",function(){$(this).toggleClass("rolelistsel");});
+	/*绑定添加事件*/
+	addrole_add.click(function(){
+		var selectstr="";
+		rolelist_op.find("li").each(function(){
+            var listobj=$(this),listclass=listobj.attr("class"),listtext=listobj.text();
+			if(listclass=="rolelistsel"){
+				selectstr+="<li class=\"\">"+listtext+"</li>";
+			}
+        });
+		if(selectstr!=""){roleselect_op.html(selectstr);}
+	});
+	/*绑定删除事件*/
+	addrole_delete.click(function(){
+		var deletesel=[],deletearr=[],deletestr="";
+		roleselect_op.find("li").each(function(){
+            var listselobj=$(this),listselclass=listselobj.attr("class"),listseltext=listselobj.text();
+			deletearr.push(listseltext);
+			if(listselclass=="rolelistsel"){deletesel.push(listseltext);}
+        });
+		var delsellen=deletesel.length,dellen=deletearr.length;
+		if(delsellen!=0){
+			for(var i=0;i<dellen;i++){
+				for(var j=0;j<delsellen;j++){
+					if(deletesel[j]==deletearr[i]){deletearr.splice(i,1,"");}
+				}
+				if(deletearr[i]!=""){
+					deletestr+="<li class=\"\">"+deletearr[i]+"</li>";
+				}
+			}
+			roleselect_op.html(deletestr);
+		}
+	});
+	/*确定*/
+	addrole_sure.click(function(){
+		popup_alert("添加成功","undefined","yes","have");
+		setTimeout(function(){
+				$.unblockUI();
+				window.close();
+		},2000);
+	});
+	/*关闭*/
+	addrole_close.click(function(){window.close();});
+})
+</script>
+<title>添加权限</title>
+</head>
+<body>
+<div class="addrole_wrap">
+	<h1 class="addrole_title">管理权限列表</h3>
+	<table class="addrole_content">
+    	<colgroup>
+        	<col class="up_cg1"/>
+            <col class="up_cg2"/>
+        </colgroup>
+        <tr class="addrole_ul">
+        	<td><label>用户列表：</label></td>
+            <td>
+            	<textarea name="rolelist" id="rolelist">细韩,细芹,女流氓,女汉子</textarea>
+            	<ul id="rolelist_op"></ul>
+            </td>
+        </tr>
+        <tr class="addrole_btn">
+        	<td>&nbsp;</td>
+            <td><span id="addrole_add" class="addrole_add">添&nbsp;加</span><span id="addrole_delete" class="addrole_delete">删&nbsp;除</span></td>
+        </tr>
+        <tr class="addrole_ul">
+        	<td><label>已选择用户：</label></td>
+            <td>
+            	<ul id="roleselect_op"></ul>
+            </td>
+        </tr>
+        <tr>
+        	<td>&nbsp;</td>
+            <td><input type="submit" name="addrole_sure" value="确定" id="addrole_sure" class="addrole_sure"><input type="button" name="addrole_close" value="关闭" id="addrole_close" class="addrole_close"></td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

@@ -1,0 +1,27 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>我的账户--充值</title>
+<meta name="description" content="贷贷平安-我的账户-充值">
+</head>
+<body onLoad="javascript:document.E_FORM.submit()">                                    
+    <form action="${tiantianfu_url}" method="POST" name="E_FORM" id="E_FROM">          
+		<input type="hidden" name="version" value="${version}">             
+		<input type="hidden" name="charset" value="${charset}">         
+		<input type="hidden" name="merId" value="${merId}">             
+		<input type="hidden" name="requestTime" value="${requestTime}">    
+		<input type="hidden" name="orderId" value="${orderId}">               
+		<input type="hidden" name="tradePrice" value="${tradePrice}">   
+		<input type="hidden" name="payType" value="${payType}">               
+		<input type="hidden" name="returnUrl" value="${returnUrl}">           
+		<input type="hidden" name="notifyUrl" value="${notifyUrl}">           
+		<input type="hidden" name="productName" value="${productName}">    
+		<input type="hidden" name="buyerContact" value="${buyerContact}">     
+		<input type="hidden" name="buyerIp" value="${buyerIp}">         
+		<input type="hidden" name="ext1" value="${ext1}">                     
+		<input type="hidden" name="signType" value="${signType}">             
+		<input type="hidden" name="sign" value="${sign}">                     
+	</form>                                                                            
+</body>                                                                                
+</html>                                                                                

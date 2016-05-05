@@ -1,0 +1,62 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" type="text/css" href="css/City_Selector.css">
+<script src="js/jquery-1.8.3.min.js"></script>
+<title>Web JavaScript--City Selector</title>
+</head>
+<body>
+	<div class="header">
+    	<h1>City Selector</h1>
+    </div>
+    <table cellpadding="0" cellspacing="0" class="container">
+        <tr>
+            <td colspan="2"><h1 class="theme">City Selector</h1></td>
+        </tr>
+        <tr>
+            <td colspan="2">
+            <div class="remark">
+            	<div class="re_locality">
+                	<p class="cs-remark1">亲!</p>
+                    <p class="cs-remark2">过年了!</p>
+                    <p class="cs-remark3">恐惧回家的孩子们不如结伴旅游吧！</p>
+                    <p class="cs-remark4">心动不如行动哦</p>
+                </div>
+                <div class="re_destination">
+                    <p class="cs-destination1">哇咔咔！温情南亚岛国游--马尔大夫</p>
+                    <p class="cs-destination2">浪漫之都--法国巴黎</p>
+                </div>
+            </div>
+            </td>
+        </tr>
+        <tr>
+            <td style="vertical-align:top;">
+            	
+            </td>
+            <td style="vertical-align:top;">
+                <div id="city_show" class="city_show">
+                	<ul class="city_zhou" id="city_zhou"></ul>
+                    <ul class="city_country" id="city_country"></ul>
+                    <form action="#" method="post">
+                    <input type="hidden" value="" id="target_flag"/>
+                    <ul class="city_city" id="city_city"></ul>
+                    </form>
+                    <p class="city_close" id="city_close">关&nbsp;闭</p>
+                </div>
+                <div id="city_tips" class="city_tips">
+					<p></p>
+                </div>
+            </td>
+        </tr>
+    </table>
+    <div class="footer">
+    	<div class="format_null"></div>
+    	<div class="remarks">
+        	<p>city selector</p>
+            <p>zepto,zepto plugins,css3</p>
+        </div>
+    </div>
+    <script src="js/City_Selector.js"></script>
+</body>
+</html>

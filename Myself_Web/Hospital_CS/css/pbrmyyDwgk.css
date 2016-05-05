@@ -1,0 +1,51 @@
+@charset "utf-8";
+/* CSS Document */
+/*通用(全局)样式*/
+body{margin:0;padding:0;background:#fff url(../images/wrapper.jpg) repeat;}
+body *{margin:0;padding:0;font-size:12px;text-decoration:none;color:#000;font-family:"宋体", serif, sans-serif, "宋体-PUA", "楷体_GB2312", "仿宋_GB2312", Vrinda;list-style:none;}
+body *:focus{outline:none;}
+/*布局样式*/
+.container{width:1003px;height:auto;margin:0 auto;}
+.content{float:left;width:1000px;height:auto;padding-top:8px;background:#fff url(../images/main_top.jpg) no-repeat center top;}
+.sidebox{width:200px;height:auto;float:left;padding-bottom:50px;background:#fff url(../images/sub_top_dwgk.jpg) repeat-y center top;}
+.mainbox{width:800px;height:auto;float:right;padding-bottom:50px;background:#fff url(../images/current_position.jpg) no-repeat 20px 10px;}
+/**/
+.btn{width:170px;height:auto;margin:20px auto;}
+.btnsel,.btndef{width:170px;height:37px;margin:10px auto;overflow:hidden;line-height:2.8em;font-size:14px;letter-spacing:3px;text-indent:35px;cursor:pointer;_display:inline-block;}
+.btndef:hover{color:#F00;background:#fff url(../images/pbbtn_bg.png) no-repeat 0 -37px;}
+.btnsel{background:#fff url(../images/pbbtn_bg.png) no-repeat 0 -37px;color:#066;}
+.btndef{background:#fff url(../images/pbbtn_bg.png) no-repeat 0 0;}
+/**/
+.maintop{width:800px;height:auto;margin:0 auto;}
+.maintop img{width:715px;height:69px;background:#fff;margin:60px auto 0 auto;padding:5px;border:1px solid #ccc;display:block;}
+.maintitle{width:750px;height:50px;font-size:16px;text-align:center;line-height:3em;border-bottom:1px dashed #999;margin:0 auto;letter-spacing:10px;}
+.show{width:754px;height:auto;margin:20px auto;border:1px solid #ccc;background:#F2FFB9;}
+.showsel,.showdef{width:700px;height:auto;margin:20px auto;}
+.showsel{display:block;}
+.showdef{display:none;}
+.showsel h3,.showdef h3{width:700px;height:30px;text-indent:3em;font-size:14px;line-height:2em;margin:10px auto;}
+.showsel p,.showdef p{width:700px;text-indent:2em;padding:5px 0;line-height:2em;color:#333;}
+.tableone,.tabletwo{width:500px;margin:10px 0;}
+.tablethree{width:700px;margin:10px 0;}
+.tableone tr td,.tabletwo tr td{padding:10px 0;}
+.tablethree tr td{line-height:2em;}
+.tableone tr td:first-child,.tabletwo tr td:first-child{width:11%;}
+.tablethree tr th{text-align:center;padding:5px 0;}
+.tablethree tr td:first-child{width:10%;text-align:center;padding:10px 5px;border-right:1px dashed #888;border-left:1px dashed #888;}
+.tablethree tr td:first-child+td{width:20%;text-align:left;padding:10px 5px;border-right:1px dashed #888;}
+.tablethree tr td:first-child+td+td{width:60%;text-align:left;padding:10px 5px;border-right:1px dashed #888;}
+.tablethree tr td:first-child+td+td+td{width:10%;text-align:center;border-right:1px dashed #888;}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

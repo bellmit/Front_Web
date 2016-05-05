@@ -1,0 +1,40 @@
+@charset "utf-8";
+/* CSS Document */
+body *{margin:0;padding:0;font-size:12px;}
+.container{margin:20px auto;width:1000px;height:500px;background:#A3DEF8;}
+.maps{height:400px;width:600px;margin:10px auto;border:1px solid #999;}
+
+
+
+.testtable{width:1000px;height:400px;margin:50px auto;background:lightblue;}
+.testtable table{width:100%;}
+.testtable table thead{background:red;text-align:center;}
+.testtable table tbody tr td{background:white;border:1px solid black;}
+.colone{border-right:none;text-align:center;}
+
+
+
+
+/*引导页*/
+.zc{position:relative;top:20px;margin:0 auto;width:1003px;height:400px;}
+#zcshow{left:0;height:160px;width:1000px;overflow:hidden;}
+#zcinner{float:left;height:160px;overflow:hidden;width:800%;}
+#zclista,#zclistb{float:left;list-style:none;width:1980px;height:160px;}
+#zclista li,#zclistb li{float:left;height:160px;width:1980px;}
+#zclista li table,#zclistb li table{border:none;}
+#zclista table a,#zclistb table a{width:200px;display:block;background:#EA0000;margin:10px;}
+#zclista table a img,#zclistb table  a img{width:200px;height:140px;border:none;overflow:hidden;}
+
+
+
+#jdjjshow{left:0;height:160px;width:1000px;overflow:hidden;}
+#jdjjinner{float:left;height:160px;overflow:hidden;width:800%;}
+#jdjjlista,#jdjjlistb{float:left;list-style:none;width:1980px;height:160px;}
+#jdjjlista li,#jdjjlistb li{float:left;height:160px;width:1980px;}
+#jdjjlista li table,#jdjjlistb li table{border:none;}
+#jdjjlista table a,#jdjjlistb table a{width:200px;display:block;background:#EA0000;margin:10px;}
+#jdjjlista table a img,#jdjjlistb table  a img{width:200px;height:140px;border:none;overflow:hidden;}
+
+
+
+

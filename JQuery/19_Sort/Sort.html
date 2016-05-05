@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" type="text/css" href="css/Sort.css">
+<script src="js/jquery-1.8.3.min.js"></script>
+<script src="js/Sort.js"></script>
+<title>排序算法</title>
+</head>
+<body>
+	<div class="header">
+        <div class="header_wrap">
+            <h1>JS_Sort</h1>
+            <p>javascript,html,css</p>
+        </div>
+    </div>
+    <div class="container">
+     	<div class="content_wrap">
+        	<div class="sort_type"><h3>排序方式：</h3><p class="sortsel" id="st_default">默认排序</p><p id="st_bubble">冒泡排序</p><p id="st_shell">希尔排序</p><p id="st_insert">插入排序</p><p id="st_word">字母排序</p><p id="st_pinyin">汉字拼音排序</p></div>
+        	<div class="sort_param"><h3>排序性能指标</h3><span>所用时间:</span><p id="sp_time"></p><span>查找次数:</span><p id="sp_number"></p><span>查找范围:</span><p id="sp_scope"></p></div>
+        	<div class="sort_datas">
+            	<h3>数据源：</h3>
+                <div>
+                	<ul id="sd_default"></ul>
+                    <ul id="sd_bubble"></ul>
+                    <ul id="sd_shell"></ul>
+                    <ul id="sd_insert"></ul>
+                    <ul id="sd_word"></ul>
+                    <ul id="sd_pinyin" style="border-right:0 none;"></ul>
+                </div>
+                <h3>排序后：</h3>
+                <div>
+                	<ul id="sdres_default"></ul>
+                    <ul id="sdres_bubble"></ul>
+                    <ul id="sdres_shell"></ul>
+                    <ul id="sdres_insert"></ul>
+                    <ul id="sdres_word"></ul>
+                    <ul id="sdres_pinyin" style="border-right:0 none;"></ul>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>   
+    </div>
+    <div class="footer">
+        <div class="footer_wrap"></div>
+    </div>
+</body>
+</html>

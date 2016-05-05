@@ -1,0 +1,14 @@
+body{ margin:0 auto; padding:0; background:#f1f1f1 url(images/bg_01.png) repeat-x; font-size:14px;}
+.ct{height:216px; background:url(images/v1_01.png) no-repeat center top;}
+.hj{padding-top:7px; color:#666;}
+.hj a,.hj a:visited{ color:#666; text-decoration:none;}
+.hj a:hover{ color:#eb8814; text-decoration: underline;}
+.es{ text-indent:20px; color:#605f5f;}
+.huanying{ font-size:18px; font-weight: bold; color:#005668; font-family:"ºÚÌå"; border-bottom:#3b808d 1px solid; padding-top:40px; line-height:30px; text-indent:20px;}
+.eve{ line-height:45px; color:#3d3d3d; font-size:14px; margin-top:20px;}
+.bot1{ width:71px; height:32px; background:url(images/ioj_15.png) no-repeat; border:0;}
+.bot2{ width:71px; height:32px; background:url(images/ioj_17.png) no-repeat; border:0;}
+.ge{ margin-top:35px; line-height:10px; color:#3d3d3d; margin-left:40px!important;}
+p a{ color:#2ca5c5; text-decoration: none;}
+p a:hover{ color:#FF0000;}
+.ev a,.ev a:visited{ color:#000000; width:148px; height:35px; display:block; line-height:35px; border:#cbecf5 1px solid; background:#eaf7fb; text-align:center;}

@@ -1,0 +1,62 @@
+///*--(好友)印象模块--*/
+.impression-wrap{
+	.layout-relative-base(0,0,5);
+	.layout-base();
+	margin:10px 0 20px 0;
+	min-height:200px;
+	li{
+		.box-sizing-base(border-box);
+		 position:absolute;
+		 z-index:10;
+		 cursor:pointer;
+		 background:rgba(255,255,255,.05);
+		 padding:5px 8px;
+		 .border-radius-base(5px);
+		 border:1px solid rgba(255,255,255,.4);
+		 .box-shadow-base(0,0,1px,rgba(255,255,255,.6));
+		 display:inline-block;
+		 padding:5px 10px;
+		 margin:5px 10px;
+		 max-width:50%;
+		 &:hover{
+			 background:rgba(255,255,255,.85);
+			  border:1px solid rgba(255,255,255,1.00);
+		   .box-shadow-base(1px,1px,3px,rgba(255,255,255,.8));
+			 z-index:100;
+			 p{
+				  color:@color-base;
+			 }
+		 }
+	}
+	li.impressionsel{
+		 background:rgba(255,255,255,.85);
+		 p{
+			 	color:@color-red;
+		 }
+		 &:hover{
+			  border:1px solid @color-red;
+				p{
+				  color:@color-red;
+			  }
+		 }
+	}
+	img{
+		 .layout-absolutel-base(-19px,-19px,10);
+		 .box-sizing-base(border-box);
+		 width:38px;
+		 height:38px;
+		 display:block;
+		 overflow:hidden;
+		 .border-radius-base(50%);
+		 border:2px solid @color-white;
+		 .box-shadow-base(2px,4px,1px,@color-gray2);
+	 }
+	 p{
+		 padding:5px;
+		 line-height:20px;
+		 display:inline-block;
+		 font-size:@font-size-default;
+		 color:@color-white;
+		 .text-ww;
+	 }
+}

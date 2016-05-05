@@ -1,0 +1,141 @@
+/* CSS Document */
+/*global*/
+body{margin:0;padding:0;background:#fff url(../../images/body_bg.png) repeat center center;}
+body *{margin:0;padding:0;font-size:100%;text-decoration:none;color:#000;font-family:"宋体", serif, sans-serif, "宋体-PUA", "楷体_GB2312", "仿宋_GB2312", Vrinda;list-style:none;resize:none;border:none;}
+body *:focus{outline:none;}
+/*header*/
+.header{width:100%;height:100px;background:#eee;border-bottom:1px solid #999;}
+.banner{width:1000px;height:100px;margin:0 auto;background:transparent url(../../images/logo_bg.png) no-repeat 100px 10px;}
+.banner h1,.banner h2{width:1000px;height:auto;color:#021373;}
+.banner h1{font-size:40px;text-indent:200px;padding:10px 0 5px 0;font-family:"黑体",serif;}
+.banner h2{font-size:20px;text-indent:400px;font-family:"楷体_GB2312",serif;}
+/*container*/
+.container{width:1002px;height:auto;margin:0 auto;}
+.content{width:960px;height:auto;margin:0 auto;}
+.mainbox{width:750px;height:auto;margin:50px auto;background:#fff;}
+.container:after{clear:both;visibility:hidden;height:0;line-height:0;content:"";}
+/*detail*/
+/*doc-title*/
+.pptitle{width:700px;margin:5px auto;height:auto;position:relative;left:0;top:0;}
+.pptitle h3{width:100%;height:auto;padding:5px 0;font-size:24px;text-align:center;font-weight:bold;}
+.print_btn{font-size:14px;width:121px;height:29px;overflow:hidden;background:url(../../images/namingbill/preprint_btn.png) no-repeat center center;cursor:pointer;color:#069;position:relative;left:550px;top:0;}
+.print_btn:hover{color:#930;text-decoration:underline;}
+/*table*/
+.ppheadtable{width:700px;margin:0 auto;height:auto;border-left:1px solid #999;border-top:1px solid #999;border-right:1px solid #999;}
+.aitable,.certtable,.dn_spitable,.dn_comtable,.dn_unitable,.organtable,.pritable,.contable,.attachtable{width:700px;margin:0 auto;height:auto;border-left:2px solid #333;border-top:2px solid #333;border-right:2px solid #333;}
+.succtable{width:700px;margin:0 auto;height:auto;border:2px solid #333;}
+.ppheadtable tr td,.aitable tr td,.certtable tr td,.dn_spitable tr td,.organtable tr td,.pritable tr td,.contable tr td,.attachtable tr td,.succtable tr td,.dn_comtable tr td,.dn_unitable tr td{padding:3px 0;}
+/*table-layout*/
+.ppheadone{width:25%;}
+.ppheadtwo{width:40%;}
+.ppheadthree{width:35%;}
+.aione{width:14%;}
+.aitwo{width:12%;}
+.aithree{width:74%;}
+.certone{width:20%;}
+.certtwo{width:80%;}
+.dnspione{width:14%;}
+.dnspitwo{width:16%;}
+.dnspithree{width:30%;}
+.dnspifour{width:10%;}
+.dnspifive{width:30%;}
+.dnunione,.dncomone{width:25%;}
+.dnunitwo,.dncomtwo{width:75%;}
+.organone{width:12%;}
+.organtwo{width:15%;}
+.organthree{width:26%;}
+.organfour{width:15%;}
+.organfive{width:32%;}
+.prione,.conone{width:14%;}
+.pritwo,.contwo{width:37%;}
+.prithree.conthree{width:12%;}
+.prifour.confour{width:37%;}
+/*h1-h6*/
+.ppheadname,.ppheadtitle{width:100%;height:auto;padding:3px 0;text-align:center;}
+.ppheadname{font-size:26px;}
+.ppheadtitle{font-size:18px;}
+.currentstep{width:100%;height:auto;text-align:center;padding:10px 0;font-size:24px;}
+/*div*/
+.chemimgshow,.scanshow,.certfileshow,.prescriptshow{width:450px;min-height:80px;border:1px solid #999;}
+.attachshow{width:600px;min-height:80px;margin:10px auto;border:1px solid #999;word-wrap:break-word;word-break:break-all;overflow:hidden;wrap:physical;}
+.succdeclare{width:640px;min-height:50px;font-size:14px;word-wrap:break-word;word-break:break-all;overflow:hidden;wrap:physical;}
+.succcomseal{width:640px;min-height:100px;background:#fff url(../../images/namingbill/comsealbg.png) no-repeat center center;word-wrap:break-word;word-break:break-all;overflow:hidden;wrap:physical;}
+.succcontent{width:640px;height:auto;margin:5px auto;border:1px solid #ddd;}
+.succcontent p{text-indent:2em;font-size:14px;padding:3px 0;height:auto;width:600px;line-height:1.5em;color:#333;margin:3px auto;}
+/*span*/
+.aicheckbox{float:right;}
+.applytype,.physictype,.certfiletype{float:left;margin:0 20px;}
+.signname{width:350px;height:auto;padding:5px 0;float:left;margin-left:20px;}
+.signdt{width:300px;height:auto;padding:5px 0;float:right;}
+.agreebox{width:auto;height:auto;padding:5px 20px;float:right;margin-top:10px;}
+.agreecheck{float:left;margin:5px 2px;}
+/*p*/
+.aititle,.certtitle,.dntitle,.dntitle_spi,.dntitle_com,.organtitle{float:right;font-size:16px;font-weight:bold;padding:3px 0;}
+.succtitle{float:left;font-size:16px;font-weight:bold;padding:3px 0 3px 50px;}
+.dntitle_spi,.dntitle_com{color:#00F;}
+.certfile{float:right;font-size:16px;padding:3px 0;}
+/*remark,tips,p,label*/
+.supplytips{float:left;color:red;font-size:14px;padding:0 5px;}
+.causetips{float:left;font-size:14px;cursor:pointer;padding:0 5px;margin-top:20px;}
+.corinfotips{float:left;font-size:14px;color:#666;padding:0 5px;}
+/*label*/
+.ppheadtable label,.aicheckbox label,.applytype label,.physictype label,.certfiletype label,.defname{font-size:14px;float:left;cursor:pointer;padding:3px 0;}
+.ailabelbox,.dnspirlabel,.dncomrlabel,.dnunirlabel,.organtable label,.pritable label,.contable label{font-size:14px;float:right;cursor:pointer;padding:3px 0;}
+.attachtable label{font-size:14px;float:left;cursor:pointer;padding:3px 0 3px 50px;line-height:1.5em;}
+.signname label,.signdt label,.agreebox label,.defname,.prescriptlabel{float:left;font-size:14px;cursor:pointer;padding:5px;}
+.ppheadtable label:hover,.aitable label:hover,.certfiletype label:hover,.dnspirlabel:hover,.dncomrlabel:hover,.dnunirlabel:hover,.defname:hover,.organtable label:hover,.pritable label:hover,.contable label:hover,.attachtable label:hover,.signname label:hover,.signdt label:hover,.agreebox label:hover,.defname:hover,.prescriptlabel:hover{color:#930;}
+/*text*/
+.barcode,.acceptno,.sendartno,.oappno,.operno,.approveno,.drugcode,.chemicalch,.chemicaleng,.formula,.mw,.inneng,.cas,.chi-defname1,.chi-defname2,.chi-defname3,.eng-defname1,.eng-defname2,.eng-defname3,.chi-name,.eng-name,.regaddr,.mfraddr,.regzipcode,.mfrzipcode,.companycode,.lawperson,.certno,.certtype,.priusername,.pricerttype,.pricertno,.priofficephone,.prifaxno,.primobileno,.priemail,.conusername,.concerttype,.concertno,.conofficephone,.confaxno,.conmobileno,.conemail,.signperson,.signyear,.signmonth,.signday,.act-chiname,.act-engname,.chemicaleng_com,.chemicaleng_uni{float:left;border-bottom:1px solid #333;background:#fff;height:20px;line-height:1.5em;font-size:14px;color:#555;}
+.barcode,.acceptn,.formula,.mw,.inneng,.cas{width:150px;}
+.regzipcode,.mfrzipcode,.companycode,.lawperson,.certno,.certtype{width:170px;}
+.sendartno,.oappno,.operno,.approveno,.priusername,.conusername,.act-chiname,.act-engname,.chemicaleng_com,.chemicaleng_uni{width:450px;}
+.drugcode,.chi-name,.eng-name,.regaddr,.mfraddr{width:350px;}
+.chemicalch,.chemicaleng{width:300px;}
+.chi-defname1,.chi-defname2,.chi-defname3,.eng-defname1,.eng-defname2,.eng-defname3{width:120px;margin:0 10px 0 2px;}
+.pricerttype,.pricertno,.priofficephone,.prifaxno,.primobileno,.priemail,.concerttype,.concertno,.conofficephone,.confaxno,.conmobileno,.conemail{width:200px;}
+.signperson{width:180px;}
+.signyear{width:80px;}
+.signmonth,.signday{width:40px;}
+/*select*/
+/*textarea*/
+.subcause{flaot:left;border:1px solid #999;width:400px;min-height:80px;margin-top:20px;}
+/*checkbox*/
+.aicheckbox input{float:left;margin:4px;}
+/*radio*/
+.applytype input,.physictype input,.certfiletype input{float:left;margin:4px;}
+/*button*/
+.chemimgbtn{float:left;font-size:14px;padding:3px 0;background:#fff;color:#06F;text-decoration:underline;cursor:pointer;}
+.attachbtn{float:left;font-size:14px;padding:3px 0 3px 50px;background:#fff;color:#06F;text-decoration:underline;cursor:pointer;}
+.scanbtn{float:right;font-size:14px;padding:3px 0;background:#fff;color:#06F;text-decoration:underline;cursor:pointer;}
+.chemimgbtn:hover,.scanbtn:hover{color:#069;}
+/*footer*/
+.footer{width:100%;height:auto;background:#eee;border-top:1px solid #999;float:left;}
+.infos{width:1000px;height:auto;margin:0 auto;padding:10px 0;}
+.infos p{width:1000px;height:auto;font-size:14px;padding:2px 0;text-align:center;}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

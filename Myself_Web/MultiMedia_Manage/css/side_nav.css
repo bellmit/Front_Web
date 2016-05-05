@@ -1,0 +1,13 @@
+/*global*/
+body{margin:0;padding:0;font-size:100%;font-family:"微软雅黑","Microsoft Yahei","宋体",serif, sans-serif,Vrinda;}
+body *{margin:0;padding:0;text-decoration:none;color:#000;list-style:none;resize:none;border:0 none;font-size:100%;font-family:"微软雅黑","Microsoft Yahei","宋体",serif, sans-serif,Vrinda;outline:none;}
+body *:focus{outline:none;}
+body img{-ms-interpolation-mode:bicubic;}
+.clearfix{clear:both;line-height:none;height:0;visibility:hidden;}
+.clearfix:after,.clearfix::after{content:"";}
+/*details*/
+.sidemenu_wrap{float:left;width:100%;height:auto;margin:10px 0;}
+.sidemenu_wrap ul li{line-height:18px;}
+.sidemenu_wrap ul li span{line-height:20px;}
+span.tree-icon,span.tree-hit{behavior:url(../css/main/iepngfix.htc);}
+.sidemenu_wrap ul li span a{line-height:20px;}

@@ -1,0 +1,254 @@
+///组件--购物模块商品查看选购
+
+//商品查看选购--外部容器
+.shopping-choosewrap{
+	background:@color-white;
+	padding:5px 10px;
+	margin:0;
+}
+
+//左边--图片容器
+.choose-imgwrap{
+	.layout-float-base(40%);
+}
+///图片
+.choose-imgshow{
+	.layout-base;
+	height:400px;
+	display:table;
+	padding:5px;
+	>div{
+		width:100%;
+		height:100%;
+		border:2px solid @color-gray7;
+		padding:10px;
+		display:table-cell;
+		vertical-align:middle;
+		overflow:hidden;
+		text-align:center;
+		img{
+			display:inline-block;
+			margin:0 auto;
+			width:100%;
+		}
+	}
+}
+.choose-imglist{
+	.layout-base;
+	height:100px;
+	margin:0;
+	li{
+		.layout-float-base(25%);
+		height:100%;
+		cursor:pointer;
+		display:table;
+		padding:5px;
+		div{
+			.layout-base;
+			border:1px solid @color-gray7;
+			height:100%;
+			display:table-cell;
+			padding:5px;
+			vertical-align:middle;
+			overflow:hidden;
+			text-align:center;
+			&:hover{
+				border:1px solid @color-red4;
+			}
+			img{
+				display:inline-block;
+				margin:0 auto;
+				width:100%;
+			}
+		}
+		&.imgitem-active>div{
+			border:1px solid @color-red4;
+		}
+	}
+}
+
+//右边--操作容器
+.choose-cartwrap{
+	.layout-relative-base;
+	.layout-float-base(60%);
+	height:480px;
+}
+//缩放容器
+.choose-scalewrap{
+	.layout-absoluter-base(0,5px,50);
+	.layout-base;
+	background:@color-white;
+	height:100%;
+	border:1px solid @color-gray9;
+	background-repeat:no-repeat;
+	background-size:200% 200%;
+	display:none;
+}
+
+//商品信息
+.choose-info{
+	.layout-base;
+	padding:0 0 0 30px;
+	>h3,
+	>div,
+	>p{
+		.layout-base;
+		margin:0;
+		.text-ww;
+		padding:5px 0;
+	}
+	>h3{
+		font-size:@font-size-base + 4;
+		color:@color-gray1;
+		line-height:28px;
+		font-weight:normal;
+	}
+	>p{
+		font-size:@font-size-base;
+		color:@color-gray3;
+		em{
+			font-style:normal;
+			padding:0 5px;
+			color:@color-red4;
+		}
+	}
+	.choose-infoprice{
+		font-size:@font-size-base;
+		color:@color-red4;
+		&:before{
+			content:'单价：￥';
+		}
+		&:empty:before{
+			content:'单价：￥0.00';
+		}
+	}
+	.choose-infospec{
+		padding:0 0 5px 0;
+		font-size:@font-size-base;
+		color:@color-gray3;
+		line-height:27px;
+		&:after{
+			content:'';
+			clear:both;
+			display:block;
+		}
+		>span{
+			float:left;
+		}
+		>div{
+			.layout-relative-base;
+			.layout-float-base(auto);
+			padding-right:20px;
+			height:20px;
+			font-size:@font-size-small;
+			display:inline-block;
+			border:1px solid @color-gray7;
+			margin:5px 8px 0 0;
+			line-height:18px;
+			cursor:pointer;
+			text-align:left;
+			text-indent:2px;
+			.text-unselect;
+			&:hover{
+				border:1px solid @color-red4;
+			}
+			&:after{
+				.layout-absoluterb-base(-5px,-3px,20);
+				font-family:'ux_two';
+				width:16px;
+				height:16px;
+				color:@color-gray3;
+			}
+			&.infospec-active{
+				border:1px solid @color-red4;
+				&:after{
+					color:@color-red4;
+					content:'\e616';
+				}
+			}
+		}
+	}
+	.choose-infonumberwrap{
+		font-size:@font-size-base;
+		color:@color-gray3;
+		line-height:30px;
+		>span{
+			float:left;
+		}
+		&:after{
+			content:'';
+			clear:both;
+			display:block;
+		}
+	}
+	.choose-infonumber{
+		width:100px;
+		height:30px;
+		background:@color-white;
+		float:left;
+		>div{
+			.box-sizing-base;
+			height:100%;
+			float:left;
+		}
+		.choose-infominus,
+		.choose-infoadd{
+			width:25px;
+			color:@color-white;
+			background:@color-red4;
+			font-size:@font-size-base + 4;
+			line-height:28px;
+			cursor:pointer;
+			text-align:center;
+			&:hover{
+				background:darken(@color-red4,10%);
+			}
+		}
+		.choose-infominus{
+			&:before{
+				content:'-';
+			}
+		}
+		.choose-infoadd{
+			&:before{
+				content:'+';
+			}
+		}
+		.choose-infominus+div{
+			width:48px;
+			margin:0 1px 0 1px;
+			input{
+				width:100%;
+				height:100%;
+				border:1px solid @color-gray7;
+				color:@color-gray3;
+				float:left;
+				.box-sizing-base;
+				.border-radius-base(0);
+				text-align:center;
+				padding:0;
+				.box-shadow-base(none);
+				font-size:@font-size-base;
+				&:focus{
+					border-color:@color-red4;
+				}
+			}
+		}
+	}
+	.choose-infomoney{
+		padding:10px 0;
+		font-size:@font-size-base + 4;
+		color:@color-red4;
+		&:before{
+			content:'金额：￥';
+		}
+		&:empty:before{
+			content:'金额：￥0.00';
+		}
+	}
+	
+	
+
+}
+
+

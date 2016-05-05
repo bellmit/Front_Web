@@ -1,0 +1,50 @@
+@charset "utf-8";
+/* CSS Document */
+#tab{
+position:relative;
+top:20px;
+left:10%;
+width:600px;
+}
+#tab div{
+position:absolute;
+top:20px;
+left:0;
+width:600px;
+border:1px solid #00CCFF;
+display:none;
+}
+#tab .block{
+display:block;
+
+}
+#tab h3{
+float:left;
+text-indent:10px;
+font-size:20px;
+padding-right:10px;
+background:#999933;
+text-align:center;
+cursor:pointer;
+border:1px solid #00CCFF;
+}
+#tab .up{
+background:#FF9933;
+}
+#tab ul{
+list-style:none;
+padding:0;
+margin:20px 0 0;
+}
+#tab li{
+float:left;
+text-indent:10px;
+line-height:24px;
+}
+#tab li a{
+text-decoration:none;
+line-height:30px;
+}
+#tab li a:hover{
+color:#FF3300;
+}

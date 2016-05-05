@@ -1,0 +1,114 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="description" content="jquery mobile test">
+<meta name="keywords" content="jquery mobile test">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+<title>jquery mobile test3</title>
+<link rel="stylesheet" type="text/css" href="jquery_mobile/jquery.mobile-1.4.4.min.css">
+<style>
+input:required:invalid,input:focus:invalid{}
+</style>
+<script src="js/jquery-1.11.1.min.js"></script>
+<script src="jquery_mobile/jquery.mobile-1.4.4.min.js"></script>
+<script src="js/jm_test3.js"></script>
+</head>
+<body>
+	<section data-role="page" id="mb1">
+    	<header data-role="header" data-title="视图1标题">test3</header>
+        <div data-role="controlgroup" data-type="horizontal">
+        	<a href="jm_test1.html" data-role="button">test1</a>
+            <a href="jm_test2.html" data-role="button">test2</a>
+            <a href="jm_test3.html" data-role="button">test3</a>
+            <a href="jm_test4.html" data-role="button">test4</a>
+        </div>
+        <div data-role="content">
+        	<form action="#" method="post" id="test3form" data-ajax="true">
+            	<div data-role="fieldcontain">
+                    <label for="username">用户名:</label>
+                    <input type="text" name="UserName" id="username" autofocus placeholder="请输入昵称/邮箱/手机号" value="" required />
+                </div>
+                <div data-role="fieldcontain">
+                    <label for="pwd">密&nbsp;码:</label>
+                    <input type="password" name="PassWord" id="pwd" pattern="[0-9a-zA-Z_]{6,}" placeholder="长度不少于6个字符(数字、字母、下划线)" autocomplete="off" value="" required />
+                </div>
+                <div data-role="fieldcontain">
+                    <label for="ages">年龄:</label>
+                    <select name="Ages" id="ages"></select>
+                </div>
+				<script>
+                    var slen=parseInt(Math.random()*10),sarr=[],tempi=0;
+                    slen=slen==0?1:slen;
+                    for(var i=0;i<slen;i++){
+                        tempi=parseInt(i+slen+10);
+                        if(i==0){
+                            sarr.push('<option selected="selected" value="'+tempi+'">'+tempi+'</option>');
+                        }else{
+                            sarr.push('<option value="'+tempi+'">'+tempi+'</option>');
+                        }
+                    }
+                    document.getElementById('ages').innerHTML=sarr.join('');
+                </script>
+                <div data-role="fieldcontain">
+                	<label for="joinwork">参加工作时间</label>
+                    <input name="Joinwork" id="joinwork" type="date" />
+                </div>
+                <div data-role="fieldcontain">
+                    <label for="income">收入:</label>
+                    <input type="range" name="Income" id="income" value="3500" min="3500" max="50000"  />
+                </div>
+                <div data-role="fieldcontain">
+                    <label for="phone">电话:</label>
+                    <input type="text" name="Phone" id="phone" value="" list="phonelist" required />
+                    <datalist id="phonelist">
+                    	<option value="13012345678" label="张三"></option>
+                        <option value="13134685625" label="李四"></option>
+                        <option value="13363034423" label="王五"></option>
+                        <option value="13699458808" label="赵六"></option>
+                        <option value="15845512980" label="马七"></option>
+                    </datalist>
+                    <option></option>
+                </div>
+                <div data-role="fieldcontain">
+                    <fieldset data-role="controlgroup">
+                    	<legend>球类兴趣:</legend>
+                    	<input type="checkbox" name="Basketball" id="basketball" />
+                    	<label for="basketball">篮球</label>
+                        <input type="checkbox" name="Football" id="football" />
+                    	<label for="football">足球</label>
+                        <input type="checkbox" name="Pingpang" id="pingpang" />
+                    	<label for="pingpang">乒乓球</label>
+                    </fieldset>
+                </div>
+                <div data-role="fieldcontain">
+                	<fieldset>
+                    	<legend>婚姻状况:</legend>
+                    	<label for="unmarry">未婚</label>
+                        <input type="radio" id="unmarry" name="Marry" value="未婚"/>
+                        <label for="marry">已婚</label>
+                        <input type="radio" id="marry" name="Marry" value="已婚"/>
+                        <label for="die">丧偶</label>
+                        <input type="radio" id="die" name="Marry" value="丧偶"/>
+                        <label for="mulitmarry">重婚</label>
+                        <input type="radio" id="mulitmarry" name="Marry" value="重婚"/>
+                        <label for="samemarry">同性恋</label>
+                        <input type="radio" id="samemarry" name="Marry" value="同性恋"/>
+                    </fieldset>
+                </div>
+                <div data-role="fieldcontain">
+                    <label for="edit">编辑:</label>
+                    <select name="Edit" id="edit" data-role="slider">
+                        <option value="edit">编辑</option>
+                        <option value="unedit">取消编辑</option>
+                    </select>
+                </div>
+                <div data-role="fieldcontain">
+                    <input type="submit" value="提&nbsp;交" id="test3formsubmit">
+                </div>
+            </form>
+        </div>
+        <footer data-role="footer">test3</footer>
+    </section>
+</body>
+</html>

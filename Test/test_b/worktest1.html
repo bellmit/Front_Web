@@ -1,0 +1,31 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>面试测试</title>
+<style>
+body{margin:0;padding:0;}
+body *{margin:0;padding:0;list-style:none;}
+.container{width:1000px;height:400px;margin:0 auto;background:#e9e9e9;}
+.container div{width:500px;height:200px;margin:0 auto;background:#e3e3e3;}
+</style>
+</head>
+<body>
+<div class="container" id="container"></div>
+</body>
+<script>
+(function(){
+	var con_wrap=document.getElementById("container");
+	function divTest(){
+		this.divText="这是测试区域"
+		this.divWrap=document.createElement("div").innerHTML=this.divText;
+		addEventListener("click",function divAlert(){},false);
+	}
+	divTest.prototype.divAppend=function(){con_wrap.innerHTML=this.divWrap;}
+	divTest.prototype.divAlert=function(){alert(this.divText);}
+	var cw=new divTest();
+	cw.divAppend();
+	cw.divAlert();
+})();
+</script>
+</html>

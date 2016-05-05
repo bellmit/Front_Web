@@ -1,0 +1,78 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="css/index.css"/>
+<script type="text/javascript" src="js/lib/jquery-1.8.3.min.js"></script>
+<script type="text/javascript">
+/*url*/
+var brourl=window.location.href;
+var end_pos=brourl.lastIndexOf("/")+1,curname=brourl.substring(0,end_pos);
+/*main menu*/
+var menu_arrs=["left/menu_index.html","left/menu_manage.html","left/menu_resource.html","left/menu_download.html","left/menu_help.html"];
+$(function(){
+	var menu=$("#menu");
+	menu.find("a").click(function(){
+		var mainmenu_index=$(this).parent().index();
+		window.parent.IMAIN.window.I2.window.location.href=curname+menu_arrs[mainmenu_index];
+	});
+});
+</script>
+<!--[if IE 6]><script src="js/iepngfix_tilebg.js"></script><![endif]-->
+<title>top</title>
+<style type="text/css">
+<!--
+body{margin:0;padding:0;overflow:hidden;background:#0181ef;}
+-->
+</style>
+</head>
+<body>
+<div id="top">
+  <div class="top_header">
+    <div class="head">
+      <div class="logo"><a href="##"><img src="images/top_logo.jpg" alt="logo" /></a></div>
+      <div class="top_right">
+        <div class="top_link">
+          <table cellpadding="0" cellspacing="0" border="0">
+            <tr>
+              <td><img src="images/icon_password.png" /></td>
+              <td><a href="javascript:(function(){window.open('resetpwd.html','修改密码');})();">修改密码</a></td>
+              <td><img src="images/icon_email.png" /></td>
+              <td><a href="javascript:(function(){window.open('receive_email.html','收发邮件');})();">邮件</a></td>
+              <td><img src="images/icon_messages.png" /></td>
+              <td><a href="message.html" target="I1">留言</a></td>
+              <td><img src="images/icon_back.png" /></td>
+              <td><a href="login.html">退出系统</a></td>
+            </tr>
+          </table>
+        </div>
+        <div class="top_search">
+          <div class="ser_cont">
+            <table width="228" height="31">
+              <tr>
+                <td width="194"><input name="" type="text"  class="ch_text"/></td>
+                <td width="22" align="center"><input name="" type="image" src="images/icon_search.png"/></td>
+              </tr>
+            </table>
+          </div>
+          <p><a href="javascript:(function(){window.open('search.html','高级搜索');})();">高级搜索</a></p>
+        </div>
+      </div>
+      <div id="nev">
+        <div class="nev_left">
+          <ul class="menu" id="menu">
+            <li><a href="main/welcome.html" target="I1">系统首页</a></li>
+            <li><a href="main/management.html" target="I1">管理中心</a></li>
+            <li><a href="main/resource.html" target="I1">资源中心</a></li>
+            <li><a href="main/download.html" target="I1">下载中心</a></li>
+            <li><a href="http://221.176.116.98:8882/Help/Help.htm" target="I1">在线帮助</a></li>
+          </ul>
+        </div>
+        <div class="nev_right">
+          <div class="nev_text">管理员：<a href="##">abc</a> 您好,感谢登陆使用！</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

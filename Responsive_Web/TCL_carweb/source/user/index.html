@@ -1,0 +1,46 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Insert title here</title>
+<script src="../../../../ResponsiveWebDesign_Web/TCL_carweb/source/user/${request.contextPath}/resources/js/lib/jquery-1.8.3.min.js"></script>
+</head>
+<body>
+大小是:${list?size!0}
+<br/>
+<form id="search" action="../../../../ResponsiveWebDesign_Web/TCL_carweb/source/user/${request.contextPath}/user/index" method="post"> 
+<div>
+   <input type="text" name="userName" value="<#if search??>${search.userName!''}</#if>"/>
+   <input type="submit" value="search">
+</div>
+</form>
+<table>
+<thead>
+ <tr>
+   <th>序号</th>
+   <th>用户名</th>
+   <th>密码</th>
+   <th>操作</th>
+ </tr>
+</thead>
+<tbody id="userList">
+<#list list as user>
+<tr>
+  <td>
+  <input type="hidden" id="contextPath" value="${request.contextPath}"/>
+  <input type="checkbox" name="ids" id="test" value="${user.seqid}"/>${user.seqid!''}&nbsp;&nbsp;&nbsp;</td>
+  <td> ${user.userName!''}&nbsp;&nbsp;&nbsp;</td>
+  <td> ${user.password!''}</td>
+  <td><a href="../../../../ResponsiveWebDesign_Web/TCL_carweb/source/user/${request.contextPath}/user/view?seqid=${user.seqid}">查看</a></td>
+   </tr>
+</#list>
+<tr>
+ <td><input type="button" id="checkAll" value="全选"/></td>
+ <td><input type="button" id="del" value="批量删除"/></td>
+  <td><a href="../../../../ResponsiveWebDesign_Web/TCL_carweb/source/user/${request.contextPath}/user/add">增加</a></td>
+</tr>
+</tbody>
+</table>
+<script src="../../../../ResponsiveWebDesign_Web/TCL_carweb/source/user/${request.contextPath}/resources/js/user/user.js"></script>
+</body>
+</html>

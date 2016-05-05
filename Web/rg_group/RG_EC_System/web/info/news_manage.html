@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<meta name="description" content="电子商务系统--消息管理">
+<meta name="keywords" content="电子商务系统--消息管理">
+<title>电子商务系统--消息管理</title>
+<link rel="stylesheet" type="text/css" href="../../resource/css/bootstrap_2.3.2/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="../../resource/css/bootstrap_2.3.2/css/responsive.min.css">
+<link rel="stylesheet" type="text/css" href="../../resource/css/base.css">
+<link rel="stylesheet" type="text/css" href="../../resource/css/grid.css">
+<link rel="stylesheet" type="text/css" href="../../resource/js/lib/artDialog/css/ui-dialog.css">
+<link rel="stylesheet" type="text/css" href="../../resource/js/plugins/easyui_page/easyui.css">
+</head>
+<body>
+    <!--顶部导航菜单-->
+    <div class="navbar g-cleargap">
+    	<div class="headerwrap">
+      	<div>
+          <ul>
+            <li><p>(20150400239) 您好，欢迎使用本系统！</p><span>[<a href="#">退出</a>]</span></li>
+            <li><p>代理用户：</p><em>小易叔叔(<i>88abcd</i>)</em><span>[<a href="#">返回</a>]</span></li>
+          </ul>
+        </div>
+    	</div>
+      <div class="navbar-inner">
+        <div class="container">
+          <button data-target=".nav-collapse" data-toggle="collapse" class="btn btn-navbar" type="button">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <div class="nav-collapse collapse">
+            <ul class="nav" id="mainmenu">
+              <li>
+                <a href="../index.html" data-part="index" >首页</a>
+              </li>
+              <li>
+                <a href="info_manage.html" data-part="info" >信息中心</a>
+              </li>
+              <li>
+                <a href="../fund/account_manage.html" data-part="fund" >账户中心</a>
+              </li>
+              <li>
+                <a href="../shop/shop_manage.html" data-part="shop" >申请管理</a>
+              </li>
+              <li>
+                <a href="../goods/dealer_manage.html" data-part="goods" >报单管理</a>
+              </li>
+              <li>
+                <a href="../record/member_manage.html" data-part="record" >资料维护</a>
+              </li>
+              <li class="divider-vertical" ></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--底部导航-->
+    <div class="mainwrap">
+    	<div class="container-fluid">
+      	<div class="row-fluid">
+        		<div class="span5 pull-left">
+              <ul class="sidebox">
+                <li class="sidetheme">
+                	<h3>个人资料</h3>
+                    <p><em>你好！</em><i>电子商务小管家</i></p>
+                  <p>电子账户(F$):<span>88652.23</span></p>
+                  <p>业绩账户(FV):<span>26245.45</span></p>
+                  <p>其他账户(FV):<span>6454.84</span></p>
+                  <p><em>上次登录时间：</em><i>2015-04-30 19:30:45</i></p>
+                </li>
+                <li class="sidemenu">
+                	<h3>信息中心</h3>
+                   <div id="submenu" >
+                  <a href="info_manage.html">信息管理</a>
+                  <a href="file_manage.html">文件管理</a>
+                  <a href="news_manage.html">消息管理</a>
+                  </div>
+                </li>
+              </ul>
+            </div>
+        		<div class="span19 pull-right">
+            		<ul class="mainbox">
+                    <li class="main-grid">
+                    		<!--grid主题-->
+                    		<div class="grid-theme">消息管理</div>
+                        <!--grid查询输入域-->
+                    		<div class="grid-query">
+                        		<form action="#" class="form-inline" method="post">
+                            	<div class="grid-queryitem">
+                                <label>
+                                  标题：<input data-theme="标题" id="title" type="text" class="input-medium" placeholder="请输入查询关键字" name="title">
+                                </label>
+                                <button id="grid_querybtn" type="button" class="btn "><span class="grid-icon grid-search-icon g-c-cyan1"></span>查询</button>
+                              </div>
+                              <div class="grid-queryitem grid-queryseparateb">
+                                <a class="btn news-sendbtn" href="send_manage.html">发送消息</a>
+                              </div>
+                            </form>
+                        </div>
+                        <!--grid 数据表格展现-->
+                        <div class="grid-datalist">
+                        		<table class="table table-hover table-bordered">
+                                <colgroup>
+                                    <col class="g-cg4" />
+                                    <col class="g-cg16" />
+                                </colgroup>
+                                <thead>
+                                  <tr>
+                                      <th>详细信息</th>
+                                      <th>标题</th>
+                                  </tr>
+                                </thead>
+                            		<tbody id="news_griddata">
+                                		<tr>
+                                        <td>
+                                          <a href="#">查看</a>
+                                        </td>
+                                        <td>
+                                          抢得走的东西，原本就不属于你
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                          <a href="#">查看</a>
+                                        </td>
+                                        <td>
+                                          每个人都有一个死角，自己走不出来，别人也闯不进去
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                          <a href="#">查看</a>
+                                        </td>
+                                        <td>
+                                          真心爱你的人永远不会放你走，不管遇到多大的困境
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                          <a href="#">查看</a>
+                                        </td>
+                                        <td>
+                                          孤单，是你心里面没有人。寂寞，是你心里有人却不在身边
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                          <a href="#">查看</a>
+                                        </td>
+                                        <td>
+                                          微笑不用花一分钱，却永远价值连城
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                          <a href="#">查看</a>
+                                        </td>
+                                        <td>
+                                          贪心是最猛烈的火，憎恨是最坏的执着，迷惑和错误的见解是最难逃脱的网，爱是最难渡过的河
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                          <a href="#">查看</a>
+                                        </td>
+                                        <td>
+                                          在说话之前，先听；在回应之前，先想；在消费之前，先挣；在退出之前，先试
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!--grid 分页-->
+                        <div class="grid-datapage">
+                        		<div class="easyui-pagination" id="news_page" data-options=" total:100,links:5,layout:['first','prev','links','next','last']"></div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+      </div>
+    </div>
+    <!--底部导航-->
+    <div class="footerwrap">
+    
+    </div>
+    <script src="../../resource/js/lib/require/require-2.1.11.min.js" data-main="../../resource/js/info/news_manage.js"></script>
+</body>
+</html>

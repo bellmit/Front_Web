@@ -1,0 +1,216 @@
+///组件--头部
+
+///*--顶部菜单--*/
+.headerbox{
+	width:100%;
+	height:212px;
+	background:@color-red4 url(../images/g_pattern.png) repeat 0 0;
+}
+
+
+///banner部分
+.headerwrap{
+	height:145px;
+	.box-sizing-base;
+	padding:67px 0 0 220px;
+	max-width:1003px;
+	min-width:320px;
+	margin:0 auto;
+	background:transparent url(../images/banner_logo.png) no-repeat 2px 55px;
+}
+.header-logo{
+	width:220px;
+	height:100%;
+	float:left;
+	background:transparent url(../images/dzswglxt.png) no-repeat right 0;
+}
+.header-info{
+	height:100%;
+	width:480px;
+	.box-sizing-base;
+	float:right;
+	.layout-relative-base;
+	padding:0 150px 0 0;
+	>ul{
+		.layout-absoluter-base(150px,45px);
+		.layout-base(700px);
+		.text-of;
+		height:20px;
+		padding:0;
+		margin:0;
+		text-align:right;
+		li{
+			display:inline-block;
+			line-height:14px;
+			padding:0 10px 0 10px;
+			font-size:@font-size-small;
+			border-left:1px solid @color-white;
+			color:@color-white;
+			&:first-child{
+				border-left:none;
+			}
+			span{
+				.text-unselect;
+				font-weight:bold;
+				padding:0 0 0 3px;
+			}
+		}
+	}
+	>a{
+		position:absolute;
+		z-index:50;
+		top:-15px;
+		width:60px;
+		height:60px;
+		display:block;
+		.border-radius-base(50%);
+		background:@color-red4;
+		text-align:center;
+		line-height:60px;
+		color:@color-white;
+		font-size:@font-size-base + 2;
+		text-decoration:none;
+		.no-outline-base;
+		&:hover{
+			background:darken(@color-red4,10%);
+			.transition-base(background .1s ease-in .05s);
+		}
+	}
+	.header-login{
+		right:70px;
+	}
+	.header-out{
+		right:0;
+	}
+}
+.header-search{
+	.layout-float-base(300px,border-box,right);
+	height:30px;
+	border:2px solid #97050F;
+	margin-right:10px;
+	input,
+	button{
+			float:left;
+			.border-radius-base(0);
+			.box-sizing-base;
+			height:100%;
+			border:none;
+			border:0;
+			margin:0;
+			display:block;
+	}
+	input{
+			width:80%;
+			padding:5px;
+	}
+	button{
+			width:20%;
+			background:@color-red1;
+			border-left:2px solid #97050F;
+			padding:0;
+			font-size:@font-size-base;
+			color:@color-white;
+	}
+}
+
+
+///导航条
+.header-menu{
+	.layout-base;
+	background:@color-white;
+	height:67px;
+	padding:10px 0 7px 0;
+}
+.menu-outer{
+	.layout-base;
+	height:100%;
+	border-top:3px solid @color-red4;
+	border-bottom:1px solid @color-red4;
+}
+.menu-inner{
+	height:100%;
+	max-width:1003px;
+	min-width:320px;
+	margin:0 auto;
+	>div{
+		.layout-relative-base;
+		background:@color-red4;
+		height:100%;
+		width:100%;
+		display:none;
+		div{
+			.layout-absoluter-base(20px,5px,50);
+			.box-sizing-base;
+			width:60px;
+			height:36px;
+			.border-radius-base(3px);
+			text-align:center;
+			line-height:32px;
+			background:darken(@color-red4,5%);
+			border:1px solid darken(@color-red4,15%);
+			color:darken(@color-red4,20%);
+			.text-shadow-base(1px 1px 1px @color-white);
+			.text-unselect;
+			cursor:pointer;
+			font-size:@font-size-base + 6;
+			.box-shadow-base(1px 1px 1px @color-gray9);
+			&:hover{
+				background:darken(@color-red4,8%);
+			}
+			&:before{
+				content:'\e621';
+				font-family:'ux_two';
+			}
+		}
+	}
+	>ul{
+		height:100%;
+		padding:0;
+		margin:0;
+		li{
+			.layout-float-base(14.25%);
+			height:100%;
+			text-align:center;
+			border-left:1px solid @color-gray7;
+			background:@color-white;
+			a{
+				display:block;
+				width:100%;
+				height:100%;
+				line-height:46px;
+				color:@color-gray1;
+				font-size:@font-size-base + 2;
+				&:hover{
+					text-decoration:none;
+				}
+			}
+			&:last-child{
+				border-right:1px solid @color-gray7;
+			}
+			&:hover{
+				a{
+					color:@color-red4;
+				}
+			}
+			&.menu-active{
+				border-bottom:2px solid @color-red4;
+				& a:before{
+						content:'\e666';
+						font-family:'ux_two';
+						width:0;
+						height:0;
+						display:block;
+						margin:0 auto;
+						line-height:2px;
+						color:@color-red4;
+						padding:0 12px 0 0;
+				}
+				a{
+					color:@color-red4;
+				}
+			}
+		}
+	}
+}
+
+

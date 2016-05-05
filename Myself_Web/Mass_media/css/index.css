@@ -1,0 +1,79 @@
+/* CSS Document */
+/*global*/
+body{margin:0;padding:0;background:#ad0232 url(../images/body_bg.png) repeat-x 0 0;}
+body *{margin:0;padding:0;font-size:100%;text-decoration:none;color:#000;font-family:"宋体", serif, sans-serif, "宋体-PUA", "楷体_GB2312", "仿宋_GB2312", Vrinda;list-style:none;resize:none;border:0 none;}
+body *:focus{outline:none;}
+/*layout*/
+.header{width:100%;min-width:1002px;height:140px;margin:0 auto;}
+.container{width:1002px;min-height:900px;_height:auto;margin:0 auto;}
+/*detail*/
+/*header*/
+.banner{width:1002px;height:100px;margin:0 auto;overflow:hidden;position:relative;left:0;top:0;}
+.logo,.theme{float:left;margin-left:20px;height:100px;display:block;overflow:hidden;}
+.logo{width:280px;}
+.theme{font-family:"微软雅黑", "黑体", "宋体";line-height:100px;width:500px;font-size:24px;color:#666;-webkit-text-shadow:0 1px 0 #fff,0 2px 3px #666;-moz-text-shadow:0 1px 0 #fff,0 2px 3px #666;-ms-text-shadow:0 1px 0 #fff,0 2px 3px #666;-o-text-shadow:0 1px 0 #fff,0 2px 3px #666;text-shadow:0 1px 0 #fff,0 2px 3px #666;font-weight:normal;}
+.nav-wrap{width:1002px;height:40px;margin:0 auto;position:relative;left:0;top:0;z-index:100}
+.nav-items{width:1002px;height:40px;position:absolute;left:0;top:0;}
+.nav-main{float:left;width:120px;height:40px;}
+.nav-main a{width:120px;height:40px;display:block;text-align:center;line-height:40px;font-family:"微软雅黑", "黑体", "宋体";font-size:16px;color:#fff;background:url(../images/menu_splitline.png) no-repeat right center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.nav-main a:hover{font-size:18px;font-weight:bold;}
+.nav-sub{width:120px;height:auto;float:left;left:0;top:0;display:none;clear:both;}
+.nav-sub li{width:120px;height:38px;background:#ad0232;border-bottom:2px solid #fff;}
+.nav-sub li a{width:120px;height:100%;display:block;text-align:center;line-height:38px;font-family:"微软雅黑", "黑体", "宋体";font-size:16px;color:#fff;background-image:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.nav-sub li a:hover{text-decoration:underline;font-size:16px;color:#FF0;}
+/*container*/
+.current-wrap{float:left;width:1002px;height:20px;margin:5px 0;overflow:hidden;}
+.short-wrap{float:left;width:1002px;height:320px;}
+.side-wrap{float:left;width:270px;height:500px;margin:10px 0;}
+.main-wrap{float:right;width:730px;height:auto;margin:10px 0;background:url(../images/main_bottom.png) no-repeat right bottom;}
+.contact-wrap{float:left;width:1002px;height:64px;margin:10px 0;background:url(../images/contact_bg.png) no-repeat center top;}
+/*current_pos*/
+.current-wrap a{width:auto;height:20px;line-height:20px;font-size:14px;color:#fff;margin:0 8px;}
+.current-wrap a:hover{color:#FF0;text-decoration:underline;}
+/*top*/
+.short-wrapouter{width:988px;height:320px;margin:0 auto;position:relative;top:0;left:0;z-index:10;}
+.short-img{width:766px;height:305px;overflow:hidden;position:absolute;left:0;top:0;background:#fff;}
+.short-img li{width:766px;height:305px;float:left;overflow:hidden;}
+.short-img li img{width:766px;height:305px;overflow:hidden;}
+.short-nav{width:222px;height:310px;position:absolute;right:0;top:0;background:#fff url(../images/short_list.png) no-repeat center center;}
+.short-list{width:180px;height:205px;position:relative;top:60px;left:0;}
+.short-list li{float:left;width:180px;height:41px;}
+.short-list li a{float:right;width:180px;height:41px;display:block;line-height:42px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-indent:10px;font-size:14px;color:#333;}
+.short-list li a:hover{width:176px;border-left:4px solid #ad0232;text-indent:6px;color:#ad0232;}
+.short-more{width:50px;height:25px;display:block;overflow:hidden;position:absolute;right:5px;bottom:10px;font-size:14px;color:#fff;line-height:25px;text-indent:-1000px;}
+/*middle*/
+/*side*/
+.side-box{width:270px;height:486px;background:url(../images/side_bg.png) no-repeat center center;position:relative;top:0;left:0;}
+.setclass,.yasi-test{width:270px;position:absolute;left:0;}
+.talk-online,.news{position:absolute;left:14px;height:40px;width:242px;}
+.setclass{height:140px;top:0;}
+.yasi-test{height:140px;top:152px;}
+.talk-online{top:335px;}
+.news{top:429px;}
+.setclass h3,.yasi-test h3{width:270px;height:25px;font-size:16px;font-family:"微软雅黑", "黑体", "宋体";line-height:25px;margin:0 auto;display:block;text-indent:20px;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.setclass ul,.yasi-test ul{width:270px;height:115px;}
+.setclass ul li{width:112px;height:40px;float:left;margin:9px 0 0 13px;_margin:9px 0 0 8px;}
+.yasi-test ul li{width:242px;height:40px;margin:10px 0 0 14px;float:left;}
+.setclass ul li a,.yasi-test ul li a{width:100%;height:100%;}
+.setclass ul li a,.yasi-test ul li a,.talk-online,.news{display:block;line-height:40px;text-align:center;font-family:"微软雅黑", "黑体", "宋体";font-weight:bold;font-size:18px;letter-spacing:3px;color:#555;-moz-text-shadow:0 1px 0 #fff,0 2px 0 #999;-webkit-text-shadow:0 1px 0 #fff,0 2px 0 #999;-ms-text-shadow:0 1px 0 #fff,0 2px 0 #999;-o-text-shadow:0 1px 0 #fff,0 2px 0 #999;text-shadow:0 1px 0 #fff,0 2px 0 #999;}
+.setclass ul li a:hover,.yasi-test ul li a:hover,.talk-online:hover,.news:hover{color:#069;}
+/*main*/
+.main-title{width:720px;height:24px;float:right;background:url(../images/main_top.png) no-repeat right bottom;line-height:24px;font-size:16px;text-indent:20px;font-family:"微软雅黑", "黑体", "宋体";color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.main-box{table-layout:fixed;border-collapse:collapse;empty-cells:show;width:720px;height:auto;float:right;background:#fff;margin-bottom:8px;word-break:break-all;word-wrap:break-word;overflow:hidden;}
+.main-box tr td{padding:3px 0;border-bottom:1px dashed #ccc;}
+.main-box img{max-width:500px;max-height:800px;}
+.main-box p{word-break:break-all;word-wrap:break-word;}
+.main-box *{font-size:12px;color:#333;}
+.school-info,.school-list{width:680px;height:auto;margin:10px auto;}
+.school-info img{float:left;width:200px;height:150px;padding:2px;border:1px solid #ccc;margin:10px;}
+.school-info p{float:right;width:400px;height:auto;line-height:18px;margin:10px 10px 0 0;text-indent:24px;}
+.school-info p a{color:#ad0232;text-decoration:underline;}
+.school-info p a:hover{color:#069;}
+.school-list p{float:left;width:auto;height:auto;line-height:18px;text-indent:24px;}
+/*contact*/
+.contact-wrap p{width:960px;height:50px;margin:0 auto;line-height:60px;font-size:18px;font-weight:bold;color:#333;padding-top:10px;text-indent:100px;}
+/*footer*/
+.footer{float:left;width:1002px;min-height:100px;margin:10px 0;background:url(../images/footer_bg.png) no-repeat center top;}
+.footer p{width:960px;height:auto;padding:3px 0;margin:5px auto 0 auto;line-height:15px;color:#fff;font-size:14px;text-align:center;}
+.footer p a{width:auto;height:auto;line-height:15px;color:#fff;font-size:14px;text-align:center;margin:0 5px;cursor:pointer;}
+.footer p a:hover{text-decoration:underline;}

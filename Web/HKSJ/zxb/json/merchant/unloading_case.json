@@ -1,0 +1,135 @@
+{
+	"action":true,
+	"total":100,
+	"caseList":[{
+		"id":"1",
+		"title":"行走在流行时尚前沿",
+		"houseType":"三居",
+		"house":"清湖地铁口",
+		"style":"简约，现代，地中海",
+		"area":"150",
+		"budget":"35",
+		"remark":"线 条 有 的柔美雅致，有的遒劲而富于节奏感，整个立体形式 都与有条不紊 的、有 节奏的曲线融为一体。大量使用铁制构件，将玻璃、 瓷砖等新工艺， 以及铁艺制品、陶艺制品等综合运用于室内。注意室内外沟通，竭力给室内装饰艺术引入新意",
+		"desAddress":"深圳龙华新区 清湖地铁站 8888号",
+		"decName":"行走在流行时尚前沿设计公司",
+		"dateTime":"2015-09-16",
+		"caseImage":[{
+			"name":"卧室",
+			"remark":["当零居室与美式 田园风格巧 遇，奢华不见了，浪漫 将之取代","中式风格是比较自由的 ，装饰品可以是绿色植物、布艺、装饰画，以及不同样式的灯 具 等"],
+			"url":["../../images/xuanguan.png","../../images/xuanguan.png","../../images/xuanguan.png"]
+		},{
+			"name":"儿童房",
+			"remark":["现代中式风格是用简约的笔触构筑了空间的筋骨","其中细节赋予中式元素，看似简单平静 的现代简 约装饰中却蕴藏着典型的中式风格"],
+			"url":["../../images/xuanguan.png"]
+		},{
+			"name":"玄关",
+			"remark":["中式装饰风格的别墅住宅中，可以大面积使用 留 白的手法","再点缀气 宇不 凡的雕花花片"],
+			"url":["../../images/xuanguan.png","../../images/xuanguan.png","../../images/xuanguan.png","../../images/xuanguan.png","../../images/xuanguan.png"]
+		}]  
+	},{
+		"id":"2",
+		"title":"沉醉在午后花影藤风",
+		"houseType":"二居",
+		"house":"深圳北地铁口",
+		"style":"中式，混搭",
+		"area":"80",
+		"budget":"25",
+		"remark":"重在对 自然的表现，但 不同的田园有不同的自然，进而也衍生出多种家 具风 格，中式的、欧式 的 ，甚至 还有南亚的田园风情，各有各的 特色， 各有各的美丽。 当零居室与美式 田园风格巧 遇，奢华不见了，浪漫 将之取代",
+		"desAddress":"深圳龙华新区 清湖地铁站 8888号",
+		"decName":"沉醉在午后花影藤风装修公司",
+		"dateTime":"2015-6-13",
+		"caseImage":[{
+			"name":"厨房",
+			"remark":["或中式花格，或摆放精湛的中式手艺品","中式宫灯，中式瓷灯，古典风格 家具"],
+			"url":["../../images/xuanguan.png","../../images/xuanguan.png","../../images/xuanguan.png","../../images/xuanguan.png","../../images/xuanguan.png"]
+		},{
+			"name":"衣帽间",
+			"remark":["丝绸绣花靠垫都是典型的中式风格元素","以华丽的装饰、浓烈的色彩、精美的造型达到雍容华贵的装饰效果"],
+			"url":["../../images/xuanguan.png","../../images/xuanguan.png","../../images/xuanguan.png"]
+		},{
+			"name":"书房",
+			"remark":["自然的柔和色彩","在组合设计上注意空间搭配"],
+			"url":["../../images/xuanguan.png","../../images/xuanguan.png","../../images/xuanguan.png","../../images/xuanguan.png"]
+		}]  
+	},{
+		"id":"3",
+		"title":"勾起怀旧思绪",
+		"houseType":"别墅",
+		"house":"南山高新园",
+		"style":"东南亚",
+		"area":"50",
+		"budget":"97",
+		"remark":"中式风格是比较自由的 ，装饰品可以是绿色植物、布艺、装饰画，以及不同样式的灯 具 等。 这些装饰品可以有多种风格，但空间中的主体装 饰 物还 是中 国 画 、 宫 灯和紫砂陶 等传统饰物。这些 装饰物数量不多，在空间中却能起到 画 龙点 睛的作用",
+		"desAddress":"深圳龙华新区 清湖地铁站 8888号",
+		"decName":"勾起怀旧思绪",
+		"dateTime":"2015-05-22",
+		"caseImage":[{
+			"name":"卧室",
+			"remark":["充分利用每一寸空间","集装饰 与 应 用于 一 体","在组合搭配上避免琐碎"],
+			"url":["../../images/xuanguan.png"]
+		},{
+			"name":"阳台",
+			"remark":["显得大方、自然","散发出的古老尊 贵的 田 园 气息和文化品位","拱 门与半拱门"],
+			"url":["../../images/xuanguan.png","../../images/xuanguan.png","../../images/xuanguan.png","../../images/xuanguan.png"]
+		},{
+			"name":"卫生间",
+			"remark":["马蹄状的门窗、白墙","色彩明度低","线条简单且修边圆润的木 质 家 具"],
+			"url":["../../images/xuanguan.png","../../images/xuanguan.png"]
+		}]  
+	},{
+		"id":"4",
+		"title":"行走在流行时尚前沿",
+		"houseType":"公寓",
+		"house":"平安大厦88层88号",
+		"style":"简约，美式",
+		"area":"350",
+		"budget":"2",
+		"remark":"现代中式风格是用简约的笔触构筑了空间的筋骨，其中细节赋予中式元素，看似简单平静 的现代简 约装饰中却蕴藏着典型的中式风格。中式装饰风格的别墅住宅中，可以大面积使用 留 白的手法，再点缀气 宇不 凡的雕花花片，或中式花格，或摆放精湛的中式手艺品，中式宫灯，中式瓷灯，古典风格 家具，丝绸绣花靠垫都是典型的中式风格元素",
+		"desAddress":"深圳龙华新区 清湖地铁站 8888号",
+		"decName":"行走在流行时尚前沿设计公司",
+		"dateTime":"2015-09-16",
+		"caseImage":[{
+			"name":"卧室",
+			"remark":["圆形拱门 及回廊通常采用数个连接或以垂直交接的方式","在走动观 赏中","出 现 延 伸般的感觉"],
+			"url":["../../images/xuanguan.png","../../images/xuanguan.png","../../images/xuanguan.png","../../images/xuanguan.png","../../images/xuanguan.png"]
+		}]  
+	},{
+		"id":"5",
+		"title":"沉醉在午后花影藤风",
+		"houseType":"一居",
+		"house":"西丽医院东",
+		"style":"北欧,简欧",
+		"area":"250",
+		"budget":"5",
+		"remark":"这 种风格强调以华丽的装饰、浓烈的色彩、精美的造型达到雍容华贵的装饰效果",
+		"desAddress":"深圳龙华新区 清湖地铁站 8888号",
+		"decName":"沉醉在午后花影藤风装修公司",
+		"dateTime":"2015-6-13",
+		"caseImage":[{
+			"name":"厨房",
+			"remark":["重在对自然的表现","均可运用半穿凿或 者全穿 凿的方式来塑造室内的景中窗"],
+			"url":["../../images/xuanguan.png","../../images/xuanguan.png","../../images/xuanguan.png"]
+		},{
+			"name":"餐厅",
+			"remark":["流露出古典家具才有的隽永质感","碧海晴天之下被海风吹蚀的自然印迹"],
+			"url":["../../images/xuanguan.png","../../images/xuanguan.png","../../images/xuanguan.png","../../images/xuanguan.png","../../images/xuanguan.png"]
+		}]  
+	},{
+		"id":"6",
+		"title":"勾起怀旧思绪",
+		"houseType":"复式",
+		"house":"tcl工业园",
+		"style":"宜家",
+		"area":"280",
+		"budget":"15",
+		"remark":"具有 着独特的美 学特点。一般选择自然的柔和色彩，在组合设计上注意空间搭配，充分利用每一寸空间，集装饰 与 应 用于 一 体 ，在组合搭配上避免琐碎，显得大方、自然，散发出的古老尊 贵的 田 园 气息和文化品位",
+		"desAddress":"深圳龙华新区 清湖地铁站 8888号",
+		"decName":"勾起怀旧思绪",
+		"dateTime":"2015-05-22",
+ 		"caseImage":[{
+			"name":"客厅",
+			"remark":["无须造作，本色呈现","采用开放式自由空间"],
+			"url":["../../images/xuanguan.png","../../images/xuanguan.png"]
+		}]
+	}]
+}

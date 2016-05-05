@@ -1,0 +1,306 @@
+/* CSS crunched with Crunch - http://crunchapp.net/ */
+.text-of {
+  overflow: hidden;
+  white-space: nowrap;
+}
+.text-ww {
+  word-break: break-all;
+  word-wrap: break-word;
+}
+.text-unselect {
+  -moz-user-select: none;
+  -o-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  -khtml-user-select: none;
+  user-select: none;
+}
+.login-logo {
+  background: url(../images/web_logo.png) no-repeat center center;
+  width: 100%;
+  height: 200px;
+  margin: 0 auto;
+}
+/*login wrap*/
+.login-form {
+  width: 480px;
+  height: 360px;
+  margin: 0 auto 80px auto;
+}
+.login-form ul {
+  width: 400px;
+  height: 300px;
+  margin: 40px auto auto auto;
+}
+.form-wrap {
+  -moz-border-radius: 6px;
+  -ms-border-radius: 6px;
+  -o-border-radius: 6px;
+  -webkit-border-radius: 6px;
+  border-radius: 6px;
+  background: #fafafa;
+  border: 1px solid #666666;
+  -moz-box-shadow: 0 0 2px #bbbbbb , 0 0 2px #ffffff inset;
+  -ms-box-shadow: 0 0 2px #bbbbbb , 0 0 2px #ffffff inset;
+  -o-box-shadow: 0 0 2px #bbbbbb , 0 0 2px #ffffff inset;
+  -webkit-box-shadow: 0 0 2px #bbbbbb , 0 0 2px #ffffff inset;
+  box-shadow: 0 0 2px #bbbbbb , 0 0 2px #ffffff inset;
+}
+.form-box li {
+  float: left;
+  width: 100%;
+}
+.form-text label,
+.form-select label,
+.form-textarea label {
+  display: block;
+  font-size: 14px;
+  color: #333333;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.form-text input[type='text'],
+.form-select input[type='text'],
+.form-textarea input[type='text'],
+.form-text input[type='password'],
+.form-select input[type='password'],
+.form-textarea input[type='password'],
+.form-text input[type='file'],
+.form-select input[type='file'],
+.form-textarea input[type='file'],
+.form-text select,
+.form-select select,
+.form-textarea select,
+.form-text textarea,
+.form-select textarea,
+.form-textarea textarea {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+  background: #ffffff;
+  border: 1px solid #666666;
+  -moz-box-shadow: 0 0 2px #bbbbbb;
+  -ms-box-shadow: 0 0 2px #bbbbbb;
+  -o-box-shadow: 0 0 2px #bbbbbb;
+  -webkit-box-shadow: 0 0 2px #bbbbbb;
+  box-shadow: 0 0 2px #bbbbbb;
+  font-size: 12px;
+  color: #666666;
+}
+.form-text input[type='text']:focus,
+.form-select input[type='text']:focus,
+.form-textarea input[type='text']:focus,
+.form-text input[type='password']:focus,
+.form-select input[type='password']:focus,
+.form-textarea input[type='password']:focus,
+.form-text input[type='file']:focus,
+.form-select input[type='file']:focus,
+.form-textarea input[type='file']:focus,
+.form-text select:focus,
+.form-select select:focus,
+.form-textarea select:focus,
+.form-text textarea:focus,
+.form-select textarea:focus,
+.form-textarea textarea:focus {
+  border: 1px solid #1687d8;
+  -moz-box-shadow: 0 0 2px #1687d8;
+  -ms-box-shadow: 0 0 2px #1687d8;
+  -o-box-shadow: 0 0 2px #1687d8;
+  -webkit-box-shadow: 0 0 2px #1687d8;
+  box-shadow: 0 0 2px #1687d8;
+  -moz-transition: all 0.5s ease 0.02s;
+  -ms-transition: all 0.5s ease 0.02s;
+  -o-transition: all 0.5s ease 0.02s;
+  -webkit-transition: all 0.5s ease 0.02s;
+  transition: all 0.5s ease 0.02s;
+}
+.form-text input[type='text'].Validform_error,
+.form-select input[type='text'].Validform_error,
+.form-textarea input[type='text'].Validform_error,
+.form-text input[type='password'].Validform_error,
+.form-select input[type='password'].Validform_error,
+.form-textarea input[type='password'].Validform_error,
+.form-text input[type='file'].Validform_error,
+.form-select input[type='file'].Validform_error,
+.form-textarea input[type='file'].Validform_error,
+.form-text select.Validform_error,
+.form-select select.Validform_error,
+.form-textarea select.Validform_error,
+.form-text textarea.Validform_error,
+.form-select textarea.Validform_error,
+.form-textarea textarea.Validform_error,
+.form-text input[type='text'].Validform_error:focus,
+.form-select input[type='text'].Validform_error:focus,
+.form-textarea input[type='text'].Validform_error:focus,
+.form-text input[type='password'].Validform_error:focus,
+.form-select input[type='password'].Validform_error:focus,
+.form-textarea input[type='password'].Validform_error:focus,
+.form-text input[type='file'].Validform_error:focus,
+.form-select input[type='file'].Validform_error:focus,
+.form-textarea input[type='file'].Validform_error:focus,
+.form-text select.Validform_error:focus,
+.form-select select.Validform_error:focus,
+.form-textarea select.Validform_error:focus,
+.form-text textarea.Validform_error:focus,
+.form-select textarea.Validform_error:focus,
+.form-textarea textarea.Validform_error:focus {
+  border: 1px solid #d91616 !important;
+  -moz-box-shadow: none !important;
+  -ms-box-shadow: none !important;
+  -o-box-shadow: none !important;
+  -webkit-box-shadow: none !important;
+  box-shadow: none !important;
+  color: #d91616 !important;
+  -moz-transition: none !important;
+  -ms-transition: none !important;
+  -o-transition: none !important;
+  -webkit-transition: none !important;
+  transition: none !important;
+}
+.form-text input[type='text']:disabled,
+.form-select input[type='text']:disabled,
+.form-textarea input[type='text']:disabled,
+.form-text input[type='password']:disabled,
+.form-select input[type='password']:disabled,
+.form-textarea input[type='password']:disabled,
+.form-text input[type='file']:disabled,
+.form-select input[type='file']:disabled,
+.form-textarea input[type='file']:disabled,
+.form-text textarea:disabled,
+.form-select textarea:disabled,
+.form-textarea textarea:disabled,
+.form-text .form-text-disabled,
+.form-select .form-text-disabled,
+.form-textarea .form-text-disabled {
+  background: #fafafa;
+  border: 1px solid #bbbbbb;
+  -moz-box-shadow: none;
+  -ms-box-shadow: none;
+  -o-box-shadow: none;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  color: #999999;
+  cursor: not-allowed;
+}
+.form-checkbox input[type='checkbox'] {
+  width: 14px;
+  height: 14px;
+}
+.form-checkbox label {
+  font-size: 12px;
+  cursor: pointer;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.form-btn input[type='submit'],
+.form-btn input[type='button'],
+.form-btn input[type='reset'],
+.form-btn button {
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+  font-size: 12px;
+  color: #ffffff;
+  display: block;
+  cursor: pointer;
+  -moz-user-select: none;
+  -o-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  -khtml-user-select: none;
+  user-select: none;
+}
+.form-btn input[type='submit']:disabled,
+.form-btn input[type='button']:disabled,
+.form-btn input[type='reset']:disabled,
+.form-btn button:disabled,
+.form-btn .form-btn-disalbed {
+  color: #999999;
+  background: #dddddd;
+  cursor: not-allowed;
+}
+.form-tip {
+  font-size: 12px;
+  color: #d81715;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.form-validcode {
+  width: 90px;
+  height: 36px;
+  float: left;
+  margin: 0 0 0 5px;
+  overflow: hidden;
+  cursor: pointer;
+}
+.form-validcode img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+/*login text*/
+.login-text1 label,
+.login-text2 label {
+  padding: 10px 0 10px 0;
+  width: 80px;
+  float: left;
+  margin: 0 5px 0 0;
+  text-align: right;
+}
+.login-text1 input[type='text'],
+.login-text2 input[type='text'],
+.login-text1 input[type='password'],
+.login-text2 input[type='password'] {
+  padding: 10px 0 10px 5px;
+  float: left;
+}
+.login-text1 input[type='text'],
+.login-text1 input[type='password'] {
+  width: 290px;
+}
+.login-text2 input[type='text'],
+.login-text2 input[type='password'] {
+  width: 195px;
+}
+/*login checkbox*/
+.login-checkbox input[type='checkbox'] {
+  float: left;
+  margin: 4px 0 0 85px;
+}
+.login-checkbox label {
+  float: left;
+  padding: 2px 0 10px 0;
+  max-width: 250px;
+  margin: 0 0 0 3px;
+  -moz-user-select: none;
+  -o-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  -khtml-user-select: none;
+  user-select: none;
+}
+/*login btn*/
+.login-btn input[type='submit'],
+.login-btn input[type='button'],
+.login-btn input[type='reset'],
+.login-btn button {
+  width: 290px;
+  height: 36px;
+  line-height: 36px;
+  float: left;
+  margin: 0 0 0 85px;
+  background: #1687d8;
+}
+/*login tip*/
+.login-tip {
+  text-indent: 88px;
+  height: 30px;
+  line-height: 30px;
+}

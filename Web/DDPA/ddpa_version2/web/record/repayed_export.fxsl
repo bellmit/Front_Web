@@ -1,0 +1,49 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+</head>
+<body>
+	<table width="70%" border="1" cellspacing="0" cellpadding="0"　style="border-collapse:collapse">  
+		<tr><td colspan="8" align="center">已结清的投标</td></tr>
+		<tr>
+		   <td class='th'>借款标题</td>
+           <td class='th'>借款人</td>
+           <td class='th'>投资金额</td>
+           <td class='th'>年利率</td>
+           <td class='th'>回收金额</td>
+           <td class='th'>本标收益</td>
+           <td class='th'>结清日期</td>
+           <td class='th'>备注</td>
+		</tr>
+		<#if repayedList??>
+		<#list repayedList as repayed>
+		<tr>
+			<td><#if repayed.productName??>${repayed.productName!''}</#if></td>
+			<td><#if repayed.userName??>${repayed.userName!''}</#if></td>
+			<td><#if repayed.investAmount??>${repayed.investAmount?string("###,##0.00")}</#if></td>
+			<td><#if repayed.annualRate??>${repayed.annualRate?string("##0")}</#if>%</td>
+			
+			<td><#if repayed.recoverAmount??>${repayed.recoverAmount?string("###,##0.00")}</#if></td>
+			<td><#if repayed.earningsAmount??>${repayed.earningsAmount?string("###,##0.00")}</#if></td>
+			<td><#if repayed.closedTime?exists>${repayed.closedTime!''}</#if></td>
+			<td><#if repayed.remark?exists>${repayed.remark!''}</#if></td>
+			
+		</tr>
+		</#list> 
+		</#if>
+		<#if totalClosed?exists>
+		<tr>
+			<td></td>
+			<td>合计</td>
+			<td><#if totalClosed.investAmount?exists>${(totalClosed.investAmount)?string("###,##0.00")}</#if></td>
+			<td><#if totalClosed.recoverAmount?exists>${(totalClosed.recoverAmount)?string("###,##0.00")}</#if></td>
+			<td><#if totalClosed.earningsAmount?exists>${(totalClosed.earningsAmount)?string("###,##0.00")}</#if></td>
+			<td></td>
+			<td></td>
+			<td></td>
+		</tr>
+		</#if>
+	</table> 
+</body>
+</html>

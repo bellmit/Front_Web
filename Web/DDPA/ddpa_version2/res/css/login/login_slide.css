@@ -1,0 +1,34 @@
+/*slide*/
+.login_slide{width:600px;height:400px;position:relative;left:0;top:0;margin-top:40px;z-index:0;}
+.slide_wrap{width:600px;height:300px;position:relative;left:0;top:0;margin:0 auto;z-index:0;overflow:hidden;}
+#slide_wrap{width:100%;}
+/*img*/
+.slide_img{width:auto;height:300px;position:absolute;left:0;top:0;z-index:1}
+.slide_img li{width:600px;height:300px;float:left;}
+.slide_img li img{width:600px;height:300px;display:block;}
+/*tag*/
+.slide_tag{width:auto;height:19px;position:absolute;left:40%;top:310px;overflow:hidden;z-index:200;}
+.slide_tag li{width:19px;height:19px;float:left;margin:3px 4px 0 4px;_margin:3px 2px 0 2px;opacity:0.9;filter:alpha(opacity=90);overflow:hidden;background:#fff url(../../image/login/login_slidebtn.png) no-repeat 0 0;cursor:pointer;}
+.slide_tag li.slidetag_sel{width:19px;height:19px;background:#fff url(../../image/login/login_slidebtn.png) no-repeat 0 -19px;}
+.slide_tag li img{width:19px;height:19px;display:block;overflow:hidden;cursor:pointer;}
+/*tips*/
+.slide_tips{width:600px;height:40px;position:absolute;left:0;top:260px;z-index:100;opacity:0.6;filter:alpha(opacity=60);}
+.slide_tips p{float:left;width:600px;height:40px;line-height:40px;text-indent:50px;font-size:20px;color:#fff;font-weight:bold;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;background:#000;font-family:"微软雅黑", "楷体_GB2312", "宋体";letter-spacing:3px;display:block;}
+.slide_tips p:hover{-moz-text-shadow:0 0 3px #fff;-ms-text-shadow:0 0 3px #fff;-o-text-shadow:0 0 3px #fff;-webkit-text-shadow:0 0 3px #fff;text-shadow:0 0 3px #fff;-moz-transition:all ease-in 0.3s 0.05s;-ms-transition:all ease-in 0.3s 0.05s;-o-transition:all ease-in 0.3s 0.05s;-webkit-transition:all ease-in 0.3s 0.05s;transition:all ease-in 0.3s 0.05s;}
+.login_wrap .login_username, .login_wrap .login_password{
+	text-indent:0px;
+}
+.login_wrap .login_username.valid,.login_wrap .login_password.valid{
+	float:none;
+	background: #fff url(../../image/login/login_inputicon.png) no-repeat 5px 4px;
+	width: 215px;
+	padding: 5px 5px 5px 30px;
+	font-size: 12px;
+}
+.login_wrap .login_password.valid{
+	background-position:5px -46px;
+}
+input.login_username.valid.Validform_error, input.login_password.valid.Validform_error{
+	border: 1px solid #d73c23;
+box-shadow: 0px 0px 1px #d73c23;
+}

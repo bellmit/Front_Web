@@ -1,0 +1,6 @@
+@charset "utf-8";
+/*global*/
+body{margin:0;padding:0;font:100% "微软雅黑","Microsoft Yahei","宋体",serif, sans-serif,Vrinda;}
+body *{margin:0;padding:0;text-decoration:none;color:#000;list-style:none;resize:none;border:0 none;font:100% "微软雅黑","Microsoft Yahei","宋体",serif, sans-serif,Vrinda;outline:none;}
+body *:focus{outline:none;}
+body img{-ms-interpolation-mode:bicubic;}

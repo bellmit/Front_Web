@@ -1,0 +1,42 @@
+@charset "utf-8";
+/* CSS Document */
+.iframe_tab{
+position:relative;
+top:20px;
+left:20%;
+width:800px;
+}
+.iframe_tab ul{
+list-style:none;
+margin:0;
+padding:0;
+}
+.iframe_tab ul li{
+float:left;
+text-indent:10px;
+border-left:1px solid #000000;
+border-top:1px solid #000000;
+background:#CCCCCC;
+}
+.iframe_tab ul li[id="last"]{
+border-right:1px solid #000000;
+}
+.iframe_tab ul li a{
+display:block;
+width:auto;
+height:100%;
+text-align:center;
+text-decoration:none;
+color:#FF0000;
+font-size:20px;
+padding-right:8px;
+}
+.iframe_tab ul li a:hover{
+background:#99CCFF;
+color:#666600;
+}
+.iframe_tab iframe{
+height:300px;
+width:800px;
+}
+

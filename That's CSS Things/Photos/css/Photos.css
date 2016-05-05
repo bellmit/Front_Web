@@ -1,0 +1,62 @@
+@charset "utf-8";
+/* CSS Document */
+*{
+margin:0;
+padding:0;
+}
+.css_photo{
+position:relative;
+top:50px;
+left:20%;
+width:700px;
+height:450px;
+background:url(../images/photo_bg.png);
+overflow:hidden;
+}
+.css_photo h3{
+position:absolute;
+bottom:10px;
+right:10px;
+text-align:center;
+margin-top:10px;
+font-size:20px;
+color:#FF0000;
+}
+.css_photo ul{
+float:right;
+list-style:none;
+width:252px;
+height:460px;
+margin:10px 10px 0 0;
+}
+.css_photo li{
+float:left;
+width:60px;
+height:60px;
+overflow:hidden;
+display:inline;
+margin:10px;
+border:2px solid #FF99FF;
+}
+.css_photo a{
+display:block;
+height:60px;
+width:60px;
+overflow:hidden;
+}
+.css_photo img{
+border:none;
+margin:-100px 0 0 -100px;
+display:block;
+}
+.css_photo a:hover{
+/*解决ie6鼠标移入无反应问题*/
+border:none;
+}
+.css_photo a:hover img{
+position:absolute;
+top:26%;
+left:25%;
+border:6px solid #CCCCCC;
+}
+

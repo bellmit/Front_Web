@@ -1,0 +1,67 @@
+///shopping 购物车数据展现
+.shopping-datalist{
+	.layout-float-base;
+	table{
+		border-collapse:collapse !important;
+		th{
+			text-align:center;
+			background:@color-gray11;
+			.linear-gradientv-base(@color-white,@color-gray9);
+			color:@color-gray3;
+			.text-unselect;
+			font-size:@font-size-small;
+			font-family:@fontfamliy-base;
+			input[type='checkbox']{
+				margin:0 3px 0 0;
+			}
+		}
+		td{
+			.text-ww;
+			font-size:@font-size-small;
+			text-align:center;
+			padding:5px 0;
+			color:@color-gray3;
+			vertical-align:middle;
+			input{
+				margin:0;
+			}
+			p{
+				padding:0 5px;
+				text-align:center;
+				line-height:20px;
+				font-size:@font-size-base;
+				color:@color-red4;
+				margin:0;
+				&:before{
+						content:'￥：';
+				}
+				&:empty:before{
+						content:'￥：0.00';
+				}
+			}
+			span{
+				cursor:pointer;
+				text-decoration:underline;
+				color:@color-cyan1;
+				padding:0 5px;
+			}
+			
+		}
+		
+		
+		
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,136 @@
+@import 'variable/base_variable.less';
+/*--图标字体--*/
+@font-face{
+    font-family:'ux';
+    src:url('@{ux-font-url}@{ux-font-name}.eot');
+    src:url('@{ux-font-url}@{ux-font-name}.eot?#iefix') format('embedded-opentype'),
+        url('@{ux-font-url}@{ux-font-name}.woff') format('woff'),
+        url('@{ux-font-url}@{ux-font-name}.ttf') format('truetype'),
+        url('@{ux-font-url}@{ux-font-name}.svg#svgFontName') format('svg');
+}
+@font-face{
+		font-family:'typ';
+		src:url('@{typ-font-url}@{typ-font-name}.eot');
+		src:url('@{typ-font-url}@{typ-font-name}.eot?#iefix') format('embedded-opentype'),
+				url('@{typ-font-url}@{typ-font-name}.woff') format('woff'),
+				url('@{typ-font-url}@{typ-font-name}.ttf') format('truetype'),
+				url('@{typ-font-url}@{typ-font-name}.svg#svgFontName') format('svg');
+}
+@font-face{
+    font-family:'uxmobile';
+    src:url('@{uxmobile-font-url}@{uxmobile-font-name}.eot');
+    src:url('@{uxmobile-font-url}@{uxmobile-font-name}.eot?#iefix') format('embedded-opentype'),
+        url('@{uxmobile-font-url}@{uxmobile-font-name}.woff') format('woff'),
+        url('@{uxmobile-font-url}@{uxmobile-font-name}.ttf') format('truetype'),
+        url('@{uxmobile-font-url}@{uxmobile-font-name}.svg#svgFontName') format('svg');
+}
+/*--重置样式--*/
+html{font-family:@fontfamliy-base;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;}
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,details,figcaption,figure,footer,header,hgroup,main,nav,section,summary,audio,canvas,progress,video{margin:0;padding:0;border:none;border:0;border:0 none;vertical-align:baseline;font-size:100%;}
+ul,ol{list-style:none;}
+article,aside,details,figcaption,figure,footer,header,hgroup,main,nav,section,summary{display:block;}
+audio,canvas,progress,video{display:inline-block;vertical-align:baseline;}
+audio:not([controls]){display:none;height:0;}
+svg:not(:root){overflow:hidden;}
+[hidden],template{display:none;}
+a{background:transparent;text-decoration:none;color:@color-base;}
+a:active,a:hover{outline:0;}
+:focus{outline:0;}
+abbr[title]{border-bottom:1px dotted;}
+b,strong{font-weight:bold;}
+dfn{font-style:italic;}
+h1{margin:.67em 0;font-size:2em;}
+h1,h2,h3,h4,h5,h6{font-weight:normal;}
+mark{background:#ff0;color:@color-base;}
+small{font-size:80%;}
+sub,sup{position:relative;vertical-align:baseline;font-size:75%;line-height:0;}
+sup{top:-.5em;}
+sub{bottom:-.25em;}
+img{border:0;-ms-interpolation-mode:bicubic;}
+svg:not(:root){overflow:hidden;}
+figure{margin:1em 40px;}
+hr{.box-sizing-base(content-box);height:0;}
+pre{overflow:auto;}
+code,kbd,pre,samp{font-size:1em;font-family:monospace;}
+button,input,optgroup,select,textarea{margin:0;color:inherit;font:inherit;}
+button{overflow:visible;border:none;}
+button,select{text-transform:none;}
+button,html input[type="button"],input[type="reset"],input[type="submit"]{cursor:pointer;-webkit-appearance:button;}
+button[disabled],html input[disabled]{cursor:default;}
+button::-moz-focus-inner,input::-moz-focus-inner{padding:0;border:0;outline:0;}
+input{line-height:normal;}
+input,textarea{outline:0;border:none;}
+input:required,input:valid,input:invalid,textarea:required,textarea:valid,textarea:invalid{outline:0 none;outline:0;box-shadow:none;} 
+input[type="checkbox"],input[type="radio"]{.box-sizing-base(border-box);padding:0;}
+input[type="number"]::-webkit-inner-spin-button,input[type="number"]::-webkit-outer-spin-button{height:auto;}
+input[type="search"]{-webkit-appearance:textfield;}
+input[type="search"]::-webkit-search-cancel-button,input[type="search"]::-webkit-search-decoration{-webkit-appearance:none;}
+fieldset{margin:0 2px;padding:.35em .625em .75em;border:1px solid @color-gray8;}
+textarea{overflow:auto;resize:none;}
+optgroup{font-weight:bold;}
+table{border-collapse:collapse;border-spacing:0;}
+.clearfix{
+	clear:both;
+	line-height:none;
+	zoom:e('1;*+zoom:normal');
+	&:after {
+		clear:both;display:block;visibility:hidden;height:0;content:"";
+	}
+	&::after{
+		content:"";
+	}
+}
+/*--全局--*/
+///*颜色*/
+.g-fill{.color-bg-base(@color-white);position:relative;left:0;top:0;z-index:1;}
+.g-c-white{.color-t-base(@color-white) !important;}
+.g-c-red{.color-t-base(@color-red) !important;}
+.g-c-red1{.color-t-base(@color-red1) !important;}
+.g-c-red2{.color-t-base(@color-red2) !important;}
+.g-c-orange{.color-t-base(@color-orange) !important;}
+.g-c-lightblue{.color-t-base(@color-lightblue) !important;}
+.g-c-blue{.color-t-base(@color-blue) !important;}
+.g-c-blue1{.color-t-base(@color-blue1) !important;}
+.g-c-blue2{.color-t-base(@color-blue2) !important;}
+.g-c-green{.color-t-base(@color-green) !important;}
+.g-c-yellow{.color-t-base(@color-yellow) !important;}
+.g-c-gray(@n,@i:1) when (@i =< @n) {
+	.g-c-gray@{i}{
+		.color-t-base('@{color-gray@{i}}');
+	}
+  .g-c-gray(@n,(@i+1)) !important;
+}
+.g-c-gray(11);
+.g-b-white{.color-bg-base(@color-white) !important;}
+.g-b-red{.color-bg-base(@color-red) !important;}
+.g-b-red1{.color-bg-base(@color-red1) !important;}
+.g-b-red2{.color-bg-base(@color-red2) !important;}
+.g-b-orange{.color-bg-base(@color-orange) !important;}
+.g-b-lightblue{.color-bg-base(@color-lightblue) !important;}
+.g-b-blue{.color-bg-base(@color-blue) !important;}
+.g-b-blue1{.color-bg-base(@color-blue1) !important;}
+.g-b-blue2{.color-bg-base(@color-blue2) !important;}
+.g-b-green{.color-bg-base(@color-green) !important;}
+.g-b-yellow{.color-bg-base(@color-yellow) !important;}
+.g-b-gray(@n,@i:1) when (@i =< @n) {
+	.g-b-gray@{i}{
+		.color-bg-base('@{color-gray@{i}}');
+	}
+	.g-b-gray(@n,(@i+1)) !important;
+}
+.g-b-gray(11);
+///*文本*/
+.g-t-offix{.text-of;text-overflow:ellipsis;}
+.g-t-ofhide{.text-of;}
+.g-t-ofww{.text-ww;}
+.g-nstxt{.text-unselect;}
+.g-t-ndwrap{width:100%;height:100%;display:table;margin:0 auto;min-height:300px;}
+.g-t-nd{width:100%;height:100%;display:table-cell;vertical-align:middle;text-align:center;font-size:@font-size-small;color:@color-gray7;}
+///*圆角*/
+.g-br1{.border-radius-base(1px);}
+.g-br2{.border-radius-base(2px);}
+.g-br3{.border-radius-base(3px);}
+.g-br4{.border-radius-base(4px);}
+.g-br5{.border-radius-base(5px);}
+.g-br6{.border-radius-base(6px);}
+

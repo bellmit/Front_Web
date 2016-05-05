@@ -1,0 +1,238 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>TCL车联网--联系我们--联系方式</title>
+<meta name="description" content="TCL车联网,TCL关于我们,联系方式,经销网络" />
+<meta name="keywords" content="TCL车联网,TCL关于我们,联系方式,经销网络" />
+<link rel="shortcut icon" href="http://172.168.1.39:8081/tsp_web_carfri/chelian/images/logo_icon.ico">
+<link rel="stylesheet" type="text/css" href="http://172.168.1.39:8081/tsp_web_carfri/chelian/css/common.css">
+<link rel="stylesheet" type="text/css" href="http://172.168.1.39:8081/tsp_web_carfri/chelian/css/sub_pages.css"><script src="http://172.168.1.39:8081/tsp_web_carfri/chelian/js/lib/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="http://172.168.1.39:8081/tsp_web_carfri/chelian/js/common.js"></script>
+<!--[if IE 6]><script type="text/javascript" src="http://172.168.1.39:8081/tsp_web_carfri/chelian/js/iepngfix_tilebg.js"></script><![endif]-->
+<script src="http://172.168.1.39:8081/tsp_web_carfri/chelian/js/header.js"></script><script>
+$(function(){
+	/*subpage left menu*/
+	var menu_nav=$("#menu_nav"),bro_url=window.location.href,localurl=[],cur_index;
+	var current_url=bro_url.substring(bro_url.lastIndexOf('/')+1);
+	/*sidebox nav init*/
+	menu_nav.find("li a").each(function() {
+        localurl.push($(this).attr("href"));
+    });
+	cur_index=$.inArray(current_url,localurl);
+	menu_nav.find("li").eq(cur_index!=-1?cur_index:0).addClass("nav_sel");
+});
+</script>
+</head>
+<body>
+<div class="container">
+<div class="header_wrap">  
+
+	<div class="header clearfix">
+      <a href="http://172.168.1.39:8081/tsp_web_carfri/chelian/home.html"><span id="logo">TCL</span></a>
+      <div class="sign-in">
+       
+      </div>
+      <div class="select_sim member">
+        <span>请选择TCL成员网站</span><a href="#">&nbsp;</a>
+        <ul style="width: 200px; display: none;" id="nvul">
+          <li onclick="window.open('http://www.baidu.com')">TCL20130719测试</li>          
+          <li onclick="window.open('http://www.sinna.com')">TCL康钛官网网站</li>          
+          <li onclick="window.open('http://www.baidu.com')">TCL康钛</li>          
+          <li onclick="window.open('http://www.taobao.com')">TCL车联网</li>          
+          <li onclick="window.open('http://www.taobao.com')">TCL测试20130715</li>          
+        </ul>
+      </div>
+    </div>       
+    
+    <div class="navigation clearfix">
+      <ul class="menu">
+        <li class="bdnone"><a href="http://172.168.1.39:8081/tsp_web_carfri/chelian/home.html" class="sp">首页</a></li>
+        <li><a href="http://172.168.1.39:8081/tsp_web_carfri/carfri/user_index" class="sp">车友中心</a>
+          <ul class="navlist" style="display: none;">
+            <li><a href="http://172.168.1.39:8081/tsp_web_carfri/carfri/user_index">个人首页</a></li>
+            <li><a href="http://172.168.1.39:8081/tsp_web_carfri/carfri/user_info">个人资料</a></li>
+            <li><a href="http://172.168.1.39:8081/tsp_web_carfri/carfri/car_server">车机服务</a></li>
+          </ul>
+          <span class="bdline"></span> </li>
+        <li>
+          <a href="http://172.168.1.39:8081/tsp_web_carfri/chelian/product/160.html" class="sp">TCL智能车机</a>
+          <ul class="navlist" style="display: none;">
+			  <li class="nav_product_wrap">
+				  <h1 class="nav_product_title" id="nav_product_title">TCL智能车机</h1>
+				  <ul class="nav_product_show" id="nav_product_show">
+					           <li class="product_type">
+								<h3>奥迪系列</h3>
+								<ul>
+									<li><a  title="222" href="http://172.168.1.39:8081/tsp_web_carfri/chelian/product/160.html"><div class="product_listicon"></div>222</a></li>
+									<li><a  title="156486" href="http://172.168.1.39:8081/tsp_web_carfri/chelian/product/169.html"><div class="product_listicon"></div>156486</a></li>
+									<li><a  title="5469148" href="http://172.168.1.39:8081/tsp_web_carfri/chelian/product/170.html"><div class="product_listicon"></div>5469148</a></li>
+									<li><a  title="86156" href="http://172.168.1.39:8081/tsp_web_carfri/chelian/product/171.html"><div class="product_listicon"></div>86156</a></li>
+								</ul>
+								<div class="product_listmore"><div class="product_listbtn"></div></div>
+							</li>
+					           <li class="product_type">
+								<h3>奔驰系列</h3>
+								<ul>
+									<li><a  title="2222" href="http://172.168.1.39:8081/tsp_web_carfri/chelian/product/161.html"><div class="product_listicon"></div>2222</a></li>
+								</ul>
+								<div class="product_listmore"><div class="product_listbtn"></div></div>
+							</li>
+					           <li class="product_type">
+								<h3>马自达系列</h3>
+								<ul>
+									<li><a  title="ss" href="http://172.168.1.39:8081/tsp_web_carfri/chelian/product/165.html"><div class="product_listicon"></div>ss</a></li>
+								</ul>
+								<div class="product_listmore"><div class="product_listbtn"></div></div>
+							</li>
+					           <li class="product_type">
+								<h3>大众系列</h3>
+								<ul>
+									<li><a  title="3333" href="http://172.168.1.39:8081/tsp_web_carfri/chelian/product/163.html"><div class="product_listicon"></div>3333</a></li>
+								</ul>
+								<div class="product_listmore"><div class="product_listbtn"></div></div>
+							</li>
+					           <li class="product_type">
+								<h3>别克系列</h3>
+								<ul>
+									<li><a  title="22xs" href="http://172.168.1.39:8081/tsp_web_carfri/chelian/product/168.html"><div class="product_listicon"></div>22xs</a></li>
+								</ul>
+								<div class="product_listmore"><div class="product_listbtn"></div></div>
+							</li>
+					           <li class="product_type">
+								<h3>劳斯莱斯</h3>
+								<ul>
+									<li><a  title="fff" href="http://172.168.1.39:8081/tsp_web_carfri/chelian/product/166.html"><div class="product_listicon"></div>fff</a></li>
+								</ul>
+								<div class="product_listmore"><div class="product_listbtn"></div></div>
+							</li>
+					           <li class="product_type">
+								<h3>兰博基尼</h3>
+								<ul>
+									<li><a  title="111" href="http://172.168.1.39:8081/tsp_web_carfri/chelian/product/162.html"><div class="product_listicon"></div>111</a></li>
+								</ul>
+								<div class="product_listmore"><div class="product_listbtn"></div></div>
+							</li>
+					           <li class="product_type">
+								<h3>本田</h3>
+								<ul>
+									<li><a  title="222x" href="http://172.168.1.39:8081/tsp_web_carfri/chelian/product/164.html"><div class="product_listicon"></div>222x</a></li>
+								</ul>
+								<div class="product_listmore"><div class="product_listbtn"></div></div>
+							</li>
+					           <li class="product_type">
+								<h3>标致</h3>
+								<ul>
+									<li><a  title="2223x" href="http://172.168.1.39:8081/tsp_web_carfri/chelian/product/167.html"><div class="product_listicon"></div>2223x</a></li>
+								</ul>
+								<div class="product_listmore"><div class="product_listbtn"></div></div>
+							</li>
+					   <li class="product_endwrap" id="product_endwrap" ></li>
+				   </ul>
+			   </li>
+          </ul>
+          <span class="bdline"></span> </li>
+        <li><a href="http://172.168.1.39:8081/tsp_web_carfri/chelian/news/news_company_1.html" class="sp">新闻中心</a>
+          <ul class="navlist" style="display: none;">
+                 <li><a href="http://172.168.1.39:8081/tsp_web_carfri/chelian/news/news_company_1.html">公司新闻</a></li>
+                 <li><a href="http://172.168.1.39:8081/tsp_web_carfri/chelian/news/news_industry_1.html">行业动态</a></li>
+                 <li><a href="http://172.168.1.39:8081/tsp_web_carfri/chelian/news/news_active_1.html">活动新闻</a></li>
+          </ul>
+          <span class="bdline"></span> </li>
+        <li><a href="http://172.168.1.39:8081/tsp_web_carfri/chelian/serve/service_plan.html" class="sp">服务支持</a>
+          <ul class="navlist" style="display: none;">
+            <li><a href="http://172.168.1.39:8081/tsp_web_carfri/chelian/serve/service_plan.html">服务策略</a></li>
+            <li><a href="http://172.168.1.39:8081/tsp_web_carfri/chelian/problem/hotproblem_1.html">常见问题</a></li>
+            <li><a href="http://172.168.1.39:8081/tsp_web_carfri/chelian/resdown/resdown_1.html">资料下载</a></li>
+            <li><a href="http://172.168.1.39:8081/tsp_web_carfri/serve/service_contacts">联系客服</a></li>
+          </ul>
+          <span class="bdline"></span> </li>
+        <li><a href="http://172.168.1.39:8081/tsp_web_carfri/chelian/about/about_infos.html" class="sp">关于我们</a>
+          <ul class="navlist" style="display: none;">
+            <li><a href="http://172.168.1.39:8081/tsp_web_carfri/chelian/about/about_infos.html">公司简介</a></li>
+            <li><a href="http://172.168.1.39:8081/tsp_web_carfri/chelian/about/about_brand.html">品牌理念</a></li>
+            <li><a href="http://172.168.1.39:8081/tsp_web_carfri/chelian/about/about_future.html">公司愿景</a></li>
+          </ul>
+          <span class="bdline"></span> </li>
+        <li><a href="http://172.168.1.39:8081/tsp_web_carfri/chelian/contact/contact_us.html" class="sp">联系我们</a>
+          <ul class="navlist" style="display: none;">
+            <li><a href="http://172.168.1.39:8081/tsp_web_carfri/chelian/contact/contact_us.html">联系方式</a></li>
+            <li><a href="http://172.168.1.39:8081/tsp_web_carfri/chelian/contact/contact_sellweb.html">经销网络</a></li>
+          </ul>
+          <span class="bdline"></span> </li>
+      </ul>
+    </div>
+    <input type="hidden" id="deskpath" value="http://172.168.1.39:8081/tsp_web_carfri"></input>
+  </div>  <div class="content">
+    <div class="contacts_img"><img src="http://172.168.1.39:8081/tsp_web_carfri/chelian/images/contacts.jpg" alt="联系我们"></div>
+    <div class="mainbox">
+      <div class="contact_us">
+        <table>
+          <colgroup>
+          <col class="contact_cg1"/>
+          <col class="contact_cg2"/>
+          </colgroup>
+          <tr>
+            <td>企业名称:</td>
+            <td>TCL康钛</td>
+          </tr>
+          <tr>
+            <td>公司地址:</td>
+            <td>深圳市南山区TCL工业园国际E城C11栋F号</td>
+          </tr>
+          <tr>
+            <td>网站地址:</td>
+            <td>http://www.tclmobile.com.cn</td>
+          </tr>
+          <tr>
+            <td>E-mail:</td>
+            <td>mobile.cs@tcl.com</td>
+          </tr>
+          <tr>
+            <td>公司电话:</td>
+            <td>0752-2611888</td>
+          </tr>
+          <tr>
+            <td>传&nbsp;&nbsp;&nbsp;&nbsp;真:</td>
+            <td>0752-2611800</td>
+          </tr>
+          <tr>
+            <td>服务热线:</td>
+            <td>4008840088</td>
+          </tr>
+          <tr>
+            <td>邮&nbsp;&nbsp;&nbsp;&nbsp;编:</td>
+            <td>516003</td>
+          </tr>
+        </table>
+        <div class="contact_maps" id="contact_maps"></div>
+      </div>
+    </div>
+    <ul class="sidebox" id="menu_nav">
+      <li><a href="contact_us.html" title="">联系方式</a></li>
+      <li><a href="contact_sellweb.html" title="">经销网络</a></li>
+    </ul>
+    <div class="clears"></div>
+  </div>
+</div>
+<div class="footer">
+  <div class="tips">
+    <ul>
+      <li><a title="" href="#">关于车联网</a></li>
+      <li><a title="" href="#">法律声明</a></li>
+      <li><a title="" href="#">防伪查询</a></li>
+      <li><a title="" href="#">特许经营</a></li>
+      <li><a title="" href="#">团购VIP客户通道</a></li>
+      <li><a title="" href="#">联系我们</a></li>
+      <li><a title="" href="#">投资者咨询</a></li>
+      <li class="tips_none"><a title="" href="#">关于车联网</a></li>
+    </ul>
+  </div>
+  <div class="remarks">
+    <p>集团股份有限公司版权所有&nbsp;&nbsp;粤ICP备05040863号</p>
+    <p>&copy;2010-2011&nbsp;TCL&nbsp;CORPORATION&nbsp;All&nbsp;Rights&nbsp;Reserved.</p>
+  </div>
+</div></body>
+<script src="http://api.map.baidu.com/api?v=1.4"></script>
+<script src="http://172.168.1.39:8081/tsp_web_carfri/chelian/js/contactus_map.js"></script>
+</html>

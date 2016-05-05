@@ -1,0 +1,27 @@
+///组件--底部
+
+///*--底部--*/
+.footerwrap{
+	.layout-float-base;
+	background:@color-red4 url(../images/g_pattern.png) repeat 0 0;
+	>div{
+		max-width:1003px;
+		min-width:320px;
+		margin:10px auto;
+		text-align:center;
+		font-size:@font-size-small;
+		color:@color-white;
+		.text-ww;
+		p{
+			padding:2px 0;
+			margin:0;
+			line-height:14px;
+		}
+	}
+	&:after{
+		content:'';
+		clear:both;
+		margin:0;
+		padding:0;
+	}
+}

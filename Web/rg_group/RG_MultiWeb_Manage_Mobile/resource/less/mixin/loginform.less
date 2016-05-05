@@ -1,0 +1,50 @@
+/*login text*/
+.login-text1,
+.login-text2{
+	input[type='text'],
+	input[type='password']{
+		padding:10px 0 10px 5px;
+		float:left;
+		width:100%;
+	}
+}
+.login-text2{
+	.layout-relative-base;
+	padding:0 70px 0 0;
+	input[type='text'],
+	input[type='password']{
+		width:100%;
+	}
+	///*验证码*/
+	.form-validcode{
+		.layout-absoluter-base(0,1px,5);
+		width:60px;
+		height:34px;
+		overflow:hidden;
+		cursor:pointer;
+		img{
+			display:block;
+			width:100%;
+			height:100%;
+		}
+	}
+}
+
+/*login btn*/
+.login-btn{
+	input[type='submit'],
+	input[type='button'],
+	input[type='reset'],
+	button{
+		width:100%;
+		height:40px;
+		line-height:40px;
+		float:left;
+		background:@color-red2;
+	}
+}
+/*login tip*/
+.login-tip{
+	height:24px;
+	line-height:24px;
+}

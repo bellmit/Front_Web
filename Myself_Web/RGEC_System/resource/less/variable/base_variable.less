@@ -1,0 +1,106 @@
+///*--字体图标--*/
+@ux-font-one-url:'../fonts/uxone/';
+@ux-font-two-url:'../fonts/uxtwo/';
+@ux-font-three-url:'../fonts/uxthree/';
+@ux-font-four-url:'../fonts/uxfour/';
+@ux-font-five-url:'../fonts/uxfive/';
+@ux-font-six-url:'../fonts/uxsix/';
+@ux-font-seven-url:'../fonts/uxseven/';
+@ux-font-eight-url:'../fonts/uxeight/';
+@ux-font-name:iconfont;
+@typ-font-url:'../fonts/typ/';
+@typ-font-name:typicons;
+///*--字体--*/
+@fontfamliy-base:'微软雅黑','雅黑','Microsoft YaHei','YaHei','\5FAE\8F6F\96C5\9ED1','宋体','\5B8B\4F53',sans-serif;
+@font-size-base:14px;
+@font-size-small:@font-size-base - 2;
+@font-size-default:@font-size-base + 2;
+@font-size-large:@font-size-base + 4;
+@font-size-bigger:@font-size-base + 10;
+///*--颜色--*/
+@color-type:color;
+@color-base:rgba(0,0,0,1.00);
+@color-white:rgba(255,255,255,1.00);
+@color-red1:rgba(217,22,22,1.00);
+@color-red2:rgba(241,25,79,1.00);
+@color-red3:rgba(199,22,30,1.00);
+@color-red4:rgba(215,19,69,1.00);
+@color-green1:rgba(18,179,18,1.00);
+@color-green2:rgba(54,155,56,1.00);
+@color-green3:rgba(146,200,156,1.00);
+@color-blue1:rgba(0,200,255,1.00);
+@color-blue2:rgba(22,135,216,1.00);
+@color-blue3:rgba(17,121,177,1.00);
+@color-cyan1:rgba(20,144,203,1.00);
+@color-cyan2:rgba(209,238,249,1.00);
+@color-yellow1:rgba(255,255,0,1.00);
+@color-yellow2:rgba(233,199,36,1.00);
+@color-orange1:rgba(242,109,0,1.00);
+@color-orange2:rgba(241,117,52,1.00);
+@color-orange3:rgba(250,218,200,1.00);
+@color-orange4:rgba(255,248,241,1.00);
+@color-orange5:rgba(248,159,53,1.00);
+@color-gray1:rgba(46,46,46,1.00);
+@color-gray2:rgba(64,64,64,1.00);
+@color-gray3:rgba(102,102,102,1.00);
+@color-gray4:rgba(153,153,153,1.00);
+@color-gray5:rgba(170,170,170,1.00);
+@color-gray6:rgba(187,187,187,1.00);
+@color-gray7:rgba(204,204,204,1.00);
+@color-gray8:rgba(221,221,221,1.00);
+@color-gray9:rgba(238,238,238,1.00);
+@color-gray10:rgba(243,243,243,1.00);
+@color-gray11:rgba(250,250,250,1.00);
+@color-brown1:rgba(244,238,229,1.00);
+///*--基础类--*/
+.box-sizing-base(@boxsizing:border-box){-ms-box-sizing:@boxsizing;-o-box-sizing:@boxsizing;-moz-box-sizing:@boxsizing;-webkit-box-sizing:@boxsizing;box-sizing:@boxsizing;}
+.border-radius-base(@radius:none){-moz-border-radius:@radius;-ms-border-radius:@radius;-o-border-radius:@radius;-webkit-border-radius:@radius;border-radius:@radius;}
+.box-shadow-base(@str){
+-moz-box-shadow:@str;-ms-box-shadow:@str;-o-box-shadow:@str;-webkit-box-shadow:@str;box-shadow:@str;}
+.text-shadow-base(@str){
+-moz-text-shadow:@str;-ms-text-shadow:@str;-o-text-shadow:@str;-webkit-text-shadow:@str;text-shadow:@str;}
+.transition-base(@str){-moz-transition:@str;-ms-transition:@str;-o-transition:@str;-webkit-transition:@str;transition:@str;}
+.transform-origin-base(@origin){-moz-transform-origin:@origin;-ms-transform-origin:@origin;-o-transform-origin:@origin;-webkit-transform-origin:@origin;transform-origin:@origin;}
+.transform-base(@str){-moz-transform:@str;-ms-transform:@str;-o-transform:@str;-webkit-transform:@str;transform:@str;}
+.animation-base(@str){-moz-animation:@str;-ms-animation:@str;-webkit-animation:@str;-o-animation:@str;animation:@str;}
+.linear-gradienth-base(@startColor: #555, @endColor: #333){
+	background-color: @endColor;
+    background-image: -moz-linear-gradient(left, @startColor, @endColor);
+    background-image: -webkit-gradient(linear, 0 0, 100% 0, from(@startColor), to(@endColor));
+    background-image: -webkit-linear-gradient(left, @startColor, @endColor);
+    background-image: -o-linear-gradient(left, @startColor, @endColor);
+    background-image: linear-gradient(to right, @startColor, @endColor); 
+    background-repeat: repeat-x;
+    filter: e(%("progid:DXImageTransform.Microsoft.gradient(startColorstr='%d', endColorstr='%d', GradientType=1)",argb(@startColor),argb(@endColor)));
+}
+.linear-gradientv-base(@startColor: #555, @endColor: #333){
+	  background-color: mix(@startColor, @endColor, 60%);
+    background-image: -moz-linear-gradient(top, @startColor, @endColor);
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(@startColor), to(@endColor));
+    background-image: -webkit-linear-gradient(top, @startColor, @endColor);
+    background-image: -o-linear-gradient(top, @startColor, @endColor);
+    background-image: linear-gradient(to bottom, @startColor, @endColor);
+    background-repeat: repeat-x;
+    filter: e(%("progid:DXImageTransform.Microsoft.gradient(startColorstr='%d', endColorstr='%d', GradientType=0)",argb(@startColor),argb(@endColor)));
+}
+.color-t-base(@color){@{color-type}:@color;}
+.color-bg-base(@color){background-@{color-type}:@color;}
+.no-outline-base(@outline:none){-moz-outline:@outline;-ms-outline:@outline;-o-outline:@outline;-webkit-outline:@outline;outline:@outline;}
+.opacity-base(@str:100){opacity: @str / 100;filter:~"alpha(opacity=@{str})";}
+.filter-base(@str:100){-webkit-filter:grayscale(~'@{str}%');-moz-filter:grayscale(~'@{str}%');-o-filter:grayscale(~'@{str}%');-ms-filter:grayscale(~'@{str}%');filter:grayscale(~'@{str}%');filter:gray;}
+///*--布局--*/
+.layout-base(@w:100%,@box:border-box){width:@w;.box-sizing-base(@box);}
+.layout-fixedl-base(@left:0,@top:0,@z-index:100){position:fixed;left:@left;top:@top;z-index:@z-index;}
+.layout-fixedr-base(@right:0,@top:0,@z-index:100){position:fixed;right:@right;top:@top;z-index:@z-index;}
+.layout-fixedlb-base(@left:0,@bottom:0,@z-index:100){position:fixed;left:@left;bottom:@bottom;z-index:@z-index;}
+.layout-fixedrb-base(@right:0,@bottom:0,@z-index:100){position:fixed;right:@right;bottom:@bottom;z-index:@z-index;}
+.layout-relative-base(@left:0,@top:0,@z-index:1){position:relative;left:@left;top:@top;z-index:@z-index;}
+.layout-absolutel-base(@left:0,@top:0,@z-index:5){position:absolute;left:@left;top:@top;z-index:@z-index;}
+.layout-absoluter-base(@right:0,@top:0,@z-index:5){position:absolute;right:@right;top:@top;z-index:@z-index;}
+.layout-absolutelb-base(@left:0,@bottom:0,@z-index:5){position:absolute;left:@left;bottom:@bottom;z-index:@z-index;}
+.layout-absoluterb-base(@right:0,@bottom:0,@z-index:5){position:absolute;right:@right;bottom:@bottom;z-index:@z-index;}
+.layout-float-base(@w:100%,@box:border-box,@dir:left){.layout-base(@w,@box);float:@dir;}
+///*--文本--*/
+.text-of(@o:hidden,@w:nowrap){overflow:@o;white-space:@w;}
+.text-ww(@w1:break-all,@w2:break-word){word-break:@w1;word-wrap:@w2;}
+.text-unselect(@str:none){-moz-user-select:@str;-o-user-select:@str;-webkit-user-select:@str;-ms-user-select:@str;-khtml-user-select:@str;user-select:@str;}

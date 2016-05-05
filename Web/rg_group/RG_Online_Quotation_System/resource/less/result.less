@@ -1,0 +1,197 @@
+@import 'variable/base_variable.less';
+body{
+	background:@color-cyan1;
+}
+///业绩管理--查询日历
+.result-query{
+		.layout-float-base;
+		margin:10px 0;
+		&:after{
+			content:'';
+			clear:both;
+		}
+		li{
+			float:left;
+			.box-sizing-base;
+			&:nth-child(1),
+			&:nth-child(2){
+				width:50%;
+				.layout-relative-base;
+				&:before,
+				&:after{
+					position:absolute;
+					top:0;
+					z-index:10;
+					width:0;
+					height:0;
+					line-height:50px;
+				}
+				&:after{
+						content:'\e650';
+						font-family:'ux_one';
+						font-size:@font-size-base + 10;
+						color:@color-gray4;
+				}
+			}
+			&:nth-child(1){
+				padding-right:10px;
+				&:after{
+					right:40px;
+				}
+			}
+			&:nth-child(2){
+				padding-left:10px;
+				&:after{
+					right:30px;
+				}
+				&:before{
+					left:-7px;
+					content:'至';
+					color:@color-gray5;
+					font-size:@font-size-base;
+				}
+			}
+			&:nth-child(3){
+				width:100%;
+				margin:10px 0 0 0;
+			}
+		}
+		input[type='text']{
+			.layout-float-base;
+			background:@color-white;
+			border:1px solid @color-gray7;
+			padding:15px 0 15px 10px;
+			font-size:@font-size-small;
+			color:@color-gray3;
+		}
+		input[type='text']:focus{
+			border:1px solid @color-blue1;
+			.transition-base(all .5s ease .02s);
+		}
+		button{
+			.border-radius-base(3px);
+			font-size:@font-size-base;
+			color:@color-white;
+			display:block;
+			cursor:pointer;
+			.text-unselect;
+			background:@color-green1;
+			width:100%;
+			padding:10px 0;
+			margin:0 auto;
+		}	
+}
+
+
+///业绩管理--日期控件显示
+@import 'mixin/date_plugin.less';
+
+
+///业绩管理--数据列表
+@import 'mixin/datalist.less';
+
+
+///业绩管理--按钮区域
+@import 'mixin/btn_item.less';
+
+
+
+
+////业绩申报--专卖店信息
+.result-storeinfo{
+	.layout-float-base;
+	margin:20px 0 10px 0;
+	
+	&:after{
+		content:'';
+		clear:both;
+	}
+	>h1{
+		.layout-float-base;
+		height:30px;
+		line-height:30px;
+		margin:5px 0;
+		overflow:hidden;
+		color:@color-gray2;
+		font-size:@font-size-base + 6;
+		cursor:pointer;
+		.text-unselect;
+		&:before{
+				display:inline-block;
+				content:'\e614';
+				font-family:'ux_two';
+				color:@color-blue1;
+				font-size:@font-size-base + 10;
+				padding:0 5px 0 0;
+				vertical-align:top;
+		}
+		&.storeinfosel:before{
+			content:'\e613';
+		}
+	}
+	>section{
+		.layout-float-base;
+		padding:10px 15px 10px 5px;
+		border:1px solid @color-gray9;
+		background:@color-white;
+		.border-radius-base(3px);
+		display:none;
+		h3{
+			padding:5px 0;
+			text-align:center;
+			color:@color-gray3;
+			font-size:@font-size-base + 2;
+			.text-ww;
+		}
+		p{
+			font-size:@font-size-base;
+			text-indent:20px;
+			color:@color-gray3;
+			line-height:24px;
+			padding:5px 0;
+			.text-ww;
+			span,i,em{
+				font-size:@font-size-small;
+				display:inline-block;
+				padding:2px 0 2px 20px;
+				line-height:18px;
+			}
+			i,em{
+				font-style:normal;
+			}
+			span{
+				color:@color-gray5;
+			}
+			i{
+				color:@color-blue1;
+			}
+			em{
+				color:@color-red2;
+			}
+		}
+	}
+}
+
+
+////业绩申报--表单填写
+@import 'mixin/form.less';
+.result-form{
+	.layout-float-base;
+	margin:10px 0 20px 0;
+	&:after{
+		content:'';
+		clear:both;
+	}
+	ul{
+		width:100%;
+		>li{
+			.layout-float-base;
+		}
+	}
+}
+@import 'mixin/resultform.less';
+
+
+
+///业绩查看--查询搜索
+@import 'mixin/search.less';

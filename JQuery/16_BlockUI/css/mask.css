@@ -1,0 +1,24 @@
+@charset "utf-8";
+/* CSS Document */
+/*global css*/
+body{margin:0;padding:0;background:url(../images/pub_infos_bg.png) repeat-x center top;}
+body *{margin:0;padding:0;list-style:none;border:none;_border:none 0;font-size:12px;font-family:"宋体", "新宋体", "仿宋_GB2312", "楷体_GB2312", "宋体-PUA", "黑体", serif, sans-serif;color:#000;text-decoration:none;}
+body *:focus{outline:none;}
+/*layout css*/
+.container{width:1003px;height:auto;margin:0 auto;}
+.header{width:1000px;height:50px;margin:0 auto;position:relative;left:0;top:0;z-index:1;}
+.content{width:1000px;height:auto;margin:0 auto;padding:20px 0 150px 0;}
+.footer{min-width:1003px;height:113px;background:url(../images/footer_bg.png) repeat-x center top;}
+.footer_show{width:1000px;height:auto;margin:0 auto;padding:20px 0 10px 0;}
+/*detail css*/
+/*header css*/
+.open_btn{width:122px;height:22px;display:block;overflow:hidden;background:url(../images/loginbtn_bg.png) no-repeat 0 0;position:absolute;left:200px;top:10px;text-indent:50px;line-height:1.9em;color:#066;z-index:2;}
+.open_btn:hover{width:122px;height:22px;display:block;overflow:hidden;background:url(../images/loginbtn_bg.png) no-repeat 0 -22px;color:#000;}
+/*content css*/
+.content h3{width:900px;height:auto;padding:5px 0;margin:5px auto;text-align:center;font-size:24px;color:#930;letter-spacing:6px;}
+.content p{width:900px;height:auto;padding:3px 0;margin:3px auto;text-indent:2em;color:#666;}
+/*footer css*/
+.footer_show p{width:900px;height:auto;overflow:hidden;padding:3px 0;text-align:center;margin:2px auto;color:#FFF;font-size:14px;}
+/*masking css*/
+.masking_bg{background:url(../images/wrapper.jpg) repeat left top;opacity:0.8;filter:alpha(opacity:80);position:fixed;_position:absolute;left:0;top:0;z-index:50;display:none;}
+

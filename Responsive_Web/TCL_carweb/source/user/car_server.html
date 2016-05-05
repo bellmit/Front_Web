@@ -1,0 +1,59 @@
+﻿<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+<meta charset="UTF-8">
+<title>保养记录</title>
+<#include "/includes/carcenter_res.html"/>
+</head>
+<body>
+<div class="bg_wrap">
+  <div class="wrapper">
+  	<#include "/includes/header.html"/>
+    <div class="boardframe">
+      <div class="fri-content">
+        <div class="wrap-con">
+          <#include "/includes/car_userinfos.html"/>
+          <div class="p_share">
+            <h1 class="p_h1 bg_2">车机服务</h1>
+            <div id="feedcontainer">
+              <div class="info-con">
+                <div class="p-tabs">
+                  <ul>
+                    <li class="active"><a href="../../../../ResponsiveWebDesign_Web/TCL_carweb/source/user/${request.contextPath}/carfri/car_server">保养记录</a></li>
+                    <li><a href="../../../../ResponsiveWebDesign_Web/TCL_carweb/source/user/${request.contextPath}/carfri/gz_report">故障报告</a></li>
+                    <li><a href="../../../../ResponsiveWebDesign_Web/TCL_carweb/source/user/${request.contextPath}/carfri/drive_report">行车报告</a></li>
+                  </ul>
+                </div>
+                <div class="info-tabs-con">
+                  <!-- 保养记录 -->
+                  <div class="tab-list" id="tab-list-info">     
+					</div>
+					<!-- add by 2013-07-18
+					<#if carShopAndRecordVo?? && carShopAndRecordVo.status==0>
+                    <div class="p_tips">
+					   <span>您已经超过三个月未进行车辆保养，请及时进行保养 </span>
+					</div>
+					<#elseif carShopAndRecordVo?? && carShopAndRecordVo.status==2>
+					 <div class="p_tips">
+					   <span>您的爱车状态不错,暂不需要保养</span>
+					</div>
+					</#if> -->
+					<!-- 官方推荐维修机构 -->
+				    <div class="redAgaency" id="redAgaency-info">
+					   </div>
+					
+				  </div>
+				</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      <#include "/includes/car_sidenav.html"/>
+      </div>
+    </div>
+  </div>
+</div>
+<#include "/includes/footer.html"/>
+<script src="../../../../ResponsiveWebDesign_Web/TCL_carweb/source/user/${request.contextPath}/resources/js/carfri/car_server.js"></script>
+</body>
+</html>

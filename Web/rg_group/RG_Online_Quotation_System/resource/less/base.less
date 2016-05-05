@@ -1,0 +1,348 @@
+@import 'variable/base_variable.less';
+/*--图标字体--*/
+@import 'mixin/iconfont.less';
+/*--重置样式--*/
+html{font-family:@fontfamliy-base;-moz-text-size-adjust:100%;-o-text-size-adjust:100%;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;text-size-adjust:100%;}
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,details,figcaption,figure,footer,header,hgroup,main,nav,section,summary,audio,canvas,progress,video{margin:0;padding:0;border:none;border:0;border:0 none;vertical-align:baseline;font-size:100%;}
+ul,ol{list-style:none;}
+article,aside,details,figcaption,figure,footer,header,hgroup,main,nav,section,summary{display:block;}
+audio,canvas,progress,video{display:inline-block;vertical-align:baseline;}
+audio:not([controls]){display:none;height:0;}
+svg:not(:root){overflow:hidden;}
+[hidden],template{display:none;}
+a{background:transparent;text-decoration:none;color:@color-base;}
+a:active,a:hover{outline:0;}
+:focus{outline:0;}
+abbr[title]{border-bottom:1px dotted @color-base;}
+b,strong{font-weight:bold;}
+dfn{font-style:italic;}
+h1{margin:.67em 0;font-size:2em;}
+h1,h2,h3,h4,h5,h6{font-weight:normal;}
+mark{background:#ff0;color:@color-base;}
+small{font-size:80%;}
+sub,sup{position:relative;vertical-align:baseline;font-size:75%;line-height:0;}
+sup{top:-.5em;}
+sub{bottom:-.25em;}
+img{border:0;-ms-interpolation-mode:bicubic;}
+svg:not(:root){overflow:hidden;}
+figure{margin:1em 40px;}
+hr{.box-sizing-base(content-box);height:0;}
+pre{overflow:auto;}
+code,kbd,pre,samp{font-size:1em;font-family:monospace;}
+button,input,optgroup,select,textarea{margin:0;color:inherit;font:inherit;}
+button{overflow:visible;border:none;}
+button,select{text-transform:none;}
+button,html input[type="button"],input[type="reset"],input[type="submit"]{cursor:pointer;-webkit-appearance:button;}
+button[disabled],html input[disabled]{cursor:default;}
+button::-moz-focus-inner,input::-moz-focus-inner{padding:0;border:0;outline:0;}
+input{line-height:normal;}
+input,textarea{outline:0;border:none;}
+input:required,input:valid,input:invalid,textarea:required,textarea:valid,textarea:invalid{outline:0 none;outline:0;box-shadow:none;} 
+input[type="checkbox"],input[type="radio"]{.box-sizing-base(border-box);padding:0;}
+input[type="number"]::-webkit-inner-spin-button,input[type="number"]::-webkit-outer-spin-button{height:auto;}
+input[type="search"]{-webkit-appearance:textfield;}
+input[type="search"]::-webkit-search-cancel-button,input[type="search"]::-webkit-search-decoration{-webkit-appearance:none;}
+fieldset{margin:0 2px;padding:.35em .625em .75em;border:1px solid @color-gray8;}
+textarea{overflow:auto;resize:none;}
+optgroup{font-weight:bold;}
+table{border-collapse:collapse;border-spacing:0;}
+
+
+///清除浮动
+.clearfix{
+	clear:both;
+	line-height:none;
+	&:after,
+	&::after{
+		visibility:hidden;
+		height:0;
+		content:'';
+	}
+}
+
+
+///*--全局公共样式--*/
+///*公共部分*/
+.g-fill{
+	.color-bg-base(@color-white);
+	.layout-relative-base;
+	.box-sizing-base;
+}
+.g-d-show{display:block;}
+.g-d-hide{display:none;}
+.g-t-nowrap{white-space:nowrap;}
+
+
+//提示信息
+//成功
+.g-btips-succ{
+	&:before{
+		content:'\e60c';
+		font-family:'ux_six';
+		display:inline-block;
+		padding:0 3px 0 0;
+		font-size:@font-size-base;
+		color:@color-green5;
+	}
+}
+.g-atips-succ{
+	&:after{
+		content:'\e60c';
+		font-family:'ux_six';
+		display:inline-block;
+		padding:0 0 0 3px;
+		font-size:@font-size-base;
+		color:@color-green5;
+	}
+}
+//错误
+.g-btips-error{
+	&:before{
+		content:'\e60e';
+		font-family:'ux_six';
+		display:inline-block;
+		padding:0 3px 0 0;
+		font-size:@font-size-base;
+		color:@color-red1;
+	}
+}
+.g-atips-error{
+	&:after{
+		content:'\e60e';
+		font-family:'ux_six';
+		display:inline-block;
+		padding:0 0 0 3px;
+		font-size:@font-size-base;
+		color:@color-red1;
+	}
+}
+//警告
+.g-btips-warn{
+	&:before{
+		content:'\e617';
+		font-family:'ux_six';
+		display:inline-block;
+		padding:0 3px 0 0;
+		font-size:@font-size-base;
+		color:@color-orange1;
+	}
+}
+.g-atips-warn{
+	&:after{
+		content:'\e617';
+		font-family:'ux_six';
+		display:inline-block;
+		padding:0 0 0 3px;
+		font-size:@font-size-base;
+		color:@color-orange1;
+	}
+}
+//公告
+.g-btips-notice{
+	&:before{
+		content:'\e604';
+		font-family:'ux_six';
+		display:inline-block;
+		padding:0 3px 0 0;
+		font-size:@font-size-base;
+		color:@color-green5;
+	}
+}
+.g-atips-notice{
+	&:after{
+		content:'\e604';
+		font-family:'ux_six';
+		display:inline-block;
+		padding:0 0 0 3px;
+		font-size:@font-size-base;
+		color:@color-green5;
+	}
+}
+
+
+///*颜色*/
+/*字体颜色*/
+.g-c-white{.color-t-base(@color-white) !important;}
+///red
+.g-c-redfor(@n,@i:1) when (@i =< @n) {
+	.g-c-red@{i}{
+		.color-t-base(~'@{color-red@{i}} !important');
+	}
+	.g-c-redfor(@n,(@i+1));
+}
+.g-c-redfor(5);
+
+///green
+.g-c-greenfor(@n,@i:1) when (@i =< @n) {
+	.g-c-green@{i}{
+		.color-t-base(~'@{color-green@{i}} !important');
+	}
+	.g-c-greenfor(@n,(@i+1));
+}
+.g-c-greenfor(5);
+
+///blue
+.g-c-bluefor(@n,@i:1) when (@i =< @n) {
+	.g-c-blue@{i}{
+		.color-t-base(~'@{color-blue@{i}} !important');
+	}
+	.g-c-bluefor(@n,(@i+1));
+}
+.g-c-bluefor(6);
+
+///cyan
+.g-c-cyanfor(@n,@i:1) when (@i =< @n) {
+	.g-c-cyan@{i}{
+		.color-t-base(~'@{color-cyan@{i}} !important');
+	}
+	.g-c-cyanfor(@n,(@i+1));
+}
+.g-c-cyanfor(4);
+
+///yellow
+.g-c-yellowfor(@n,@i:1) when (@i =< @n) {
+	.g-c-yellow@{i}{
+		.color-t-base(~'@{color-yellow@{i}} !important');
+	}
+	.g-c-yellowfor(@n,(@i+1));
+}
+.g-c-yellowfor(1);
+
+///orange
+.g-c-orangefor(@n,@i:1) when (@i =< @n) {
+	.g-c-orange@{i}{
+		.color-t-base(~'@{color-orange@{i}} !important');
+	}
+	.g-c-orangefor(@n,(@i+1));
+}
+.g-c-orangefor(1);
+
+///gray
+.g-c-grayfor(@n,@i:1) when (@i =< @n) {
+	.g-c-gray@{i}{
+		.color-t-base(~'@{color-gray@{i}} !important');
+	}
+	.g-c-grayfor(@n,(@i+1));
+}
+.g-c-grayfor(14);
+
+
+/*背景颜色*/
+.g-b-white{.color-bg-base(@color-white) !important;}
+
+///red
+.g-b-redfor(@n,@i:1) when (@i =< @n) {
+	.g-b-red@{i}{
+		.color-bg-base(~'@{color-red@{i}} !important');
+	}
+	.g-b-redfor(@n,(@i+1));
+}
+.g-b-redfor(5);
+
+///green
+.g-b-greenfor(@n,@i:1) when (@i =< @n) {
+	.g-b-green@{i}{
+		.color-bg-base(~'@{color-green@{i}} !important');
+	}
+	.g-b-greenfor(@n,(@i+1));
+}
+.g-b-greenfor(5);
+
+///blue
+.g-b-bluefor(@n,@i:1) when (@i =< @n) {
+	.g-b-blue@{i}{
+		.color-bg-base(~'@{color-blue@{i}} !important');
+	}
+	.g-b-bluefor(@n,(@i+1));
+}
+.g-b-bluefor(6);
+
+///cyan
+.g-b-cyanfor(@n,@i:1) when (@i =< @n) {
+	.g-b-cyan@{i}{
+		.color-bg-base(~'@{color-cyan@{i}} !important');
+	}
+	.g-b-cyanfor(@n,(@i+1));
+}
+.g-b-cyanfor(4);
+
+///yellow
+.g-b-yellowfor(@n,@i:1) when (@i =< @n) {
+	.g-b-yellow@{i}{
+		.color-bg-base(~'@{color-yellow@{i}} !important');
+	}
+	.g-b-yellowfor(@n,(@i+1));
+}
+.g-b-yellowfor(1);
+
+///orange
+.g-b-orangefor(@n,@i:1) when (@i =< @n) {
+	.g-b-orange@{i}{
+		.color-bg-base(~'@{color-orange@{i}} !important');
+	}
+	.g-b-orangefor(@n,(@i+1));
+}
+.g-b-orangefor(1);
+
+///gray
+.g-b-grayfor(@n,@i:1) when (@i =< @n) {
+	.g-b-gray@{i}{
+		.color-bg-base(~'@{color-gray@{i}} !important');
+	}
+	.g-b-grayfor(@n,(@i+1));
+}
+.g-b-grayfor(14);
+
+///*----文本----*/
+.g-t-offix{.text-of;text-overflow:ellipsis;}
+.g-t-ofhide{.text-of;}
+.g-t-ofww{.text-ww;}
+.g-t-unselect{.text-unselect;}
+///*文本垂直居中*/
+.g-t-vcwrap{width:100%;height:100%;display:table;margin:0 auto;min-height:300px;}
+.g-t-vc{width:100%;height:100%;display:table-cell;vertical-align:middle;text-align:center;font-size:@font-size-small;color:@color-gray7;}
+
+
+///*----圆角----*/
+.g-b-brfor(@n,@i:1) when (@i =< @n) {
+	.g-b-br@{i}{
+		.border-radius-base(~'@{i}px');
+	}
+	.g-b-brfor(@n,(@i+1));
+}
+.g-b-brfor(10);
+
+
+///*----百分比宽度----*/
+.g-wperfor(@n,@i:1) when (@i =< @n) {
+	.g-wper@{i}{
+		width:@i * 2.5% !important;
+	}
+	.g-wperfor(@n,(@i+1));
+}
+.g-wperfor(40);
+
+
+///*----具体宽度----*/
+.g-wpxfor(@n,@i:1) when (@i =< @n) {
+	.g-wpx@{i}{
+		width:@i * 20px !important;
+	}
+	.g-wpxfor(@n,(@i+1));
+}
+.g-wpxfor(40);
+
+
+///布局部分
+.base-wrap{
+	padding-left:10px;
+	padding-right:10px;
+}
+
+
+/*--顶部菜单--*/
+@import 'mixin/header.less';
+
+
+/*弹出框信息*/
+@import 'mixin/alert.less';

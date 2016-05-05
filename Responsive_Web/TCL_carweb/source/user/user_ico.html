@@ -1,0 +1,63 @@
+﻿<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+<meta charset="UTF-8">
+<title>修改头像</title>
+<#include "/includes/carcenter_res.html"/>
+</head>
+<body>
+<div class="bg_wrap">
+  <div class="wrapper">
+  	<#include "/includes/header.html"/>
+    <div class="boardframe">
+      <div class="fri-content">
+        <div class="wrap-con">
+          <#include "/includes/car_userinfos.html"/>
+          <div class="p_share">
+            <h1 class="p_h1 bg_1">个人资料</h1>
+            <div id="feedcontainer">
+              <div class="info-con">
+                <div class="p-tabs">
+                  <ul>
+                    <li><a href="user_info.html">个人信息</a></li>
+                    <li class="active"><a href="user_ico.html">头像设置</a></li>
+                    <li><a href="user_pwd.html">修改密码</a></li>
+                    <li><a href="car_info.html">车辆信息</a></li>
+                    <li><a href="user_mobile.html">绑定手机</a></li>
+                  </ul>
+                </div>
+                <div class="info-tabs-con">
+                  <div class="tab-list">
+                    <div class="rs_head">请选择个人正面大照片作为头像，尺寸1:1最佳(如:256px*256px)</div>
+                    <form id="photoForm" action="../../../../ResponsiveWebDesign_Web/TCL_carweb/source/user/${request.contextPath}/carfri/saveIco" method="post" enctype="multipart/form-data">
+                        <#if friendInfo??>
+                        <input type="hidden" name="friendid" id="friendid" value="${friendInfo.friendid!''}"> 
+						<input type="hidden" name="seqid" id="seqid" value="${friendInfo.seqid!''}">
+						<input type="hidden" name="nickname" id="nickname" value="${friendInfo.nickname!''}"/>
+						</#if>
+						<div class="upload-tips">
+						 <input type="file" name="file" id="file"/>
+						 <p>支持${imageTypes!'JPG|JPEG|PNG'}格式，大小限制2M以内</p>
+						 <p><font style="color:red"><#if msg??>${msg!''}</#if></font></p>
+						 <div class="old-photo">
+						  <img src="../../../../ResponsiveWebDesign_Web/TCL_carweb/source/user/${request.contextPath}/carfri/getPhotoByFriendId?friendId=${friendInfo.friendid!''}&width=256&height=256" id="photoImg" alt=""/>
+						</div>
+						<input type="submit" name="profilesubmit" value="提交" class="regular-btn">
+	                    <input type="reset" name="Submit" class="regular-btn" value="取消">
+						</div>
+					</form>
+					
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <#include "/includes/car_sidenav.html"/>
+    </div>
+  </div>
+</div>
+<#include "/includes/footer.html"/>
+</body>
+</html>

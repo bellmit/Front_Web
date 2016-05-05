@@ -1,0 +1,398 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<meta name="description" content="电子商务系统--申请注册--开店申请">
+<meta name="keywords" content="电子商务系统--申请注册--开店申请">
+<title>电子商务系统--申请注册--开店申请</title>
+<link rel="stylesheet" type="text/css" href="../../resource/css/bootstrap_2.3.2/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="../../resource/css/bootstrap_2.3.2/css/responsive.min.css">
+<link rel="stylesheet" type="text/css" href="../../resource/js/lib/artDialog/css/ui-dialog.css">
+<link rel="stylesheet" type="text/css" href="../../resource/css/base.css">
+<link rel="stylesheet" type="text/css" href="../../resource/css/grid.css">
+</head>
+<body>
+    <!--顶部导航菜单-->
+    <div class="navbar headerbox g-cleargap">
+    	<div class="headerwrap">
+      	<div class="header-logo"></div>
+        <div class="header-info">
+        
+            <!--搜索区域-->
+            <form action="" method="post">
+              <div class="header-search">
+                  <input name="search" placeholder="产品名称/编号/关键词" data-theme="产品名称、编号、关键词" id="searchtxt" type="text">
+                  <button id="searchbtn" type="button">搜索</button>
+              </div>
+            </form>
+            
+            <!--用户数据信息-->
+            <ul>
+              <li>您好!<span>小易叔叔</span></li>
+              <li>代理用户：<span>88abcd</span></li>
+              <li>电子账户：<span>2435.45</span></li>
+              <li>业绩账户：<span>872456.53</span></li>
+              <li>其他账户：<span>46725.69</span></li>
+            </ul>
+            <a class="header-login" id="header_loginbtn" href="#">登录</a>
+            <a class="header-out" id="header_registerbtn" href="#">注册</a>
+        </div>
+    	</div>
+      
+      <!--头部导航-->
+      <div class="header-menu">
+      		<div class="menu-outer">
+          		<div class="menu-inner">
+              		<div><div id="mainbtn"></div></div>
+              		<ul id="mainmenu">
+                    <li>
+                      <a href="../index.html" data-part="index" >首页</a>
+                    </li>
+                    <li>
+                      <a href="../account/account_manage.html" data-part="account" >我的账户</a>
+                    </li>
+                    <li>
+                      <a href="../order/order_manage.html" data-part="order" >我的订单</a>
+                    </li>
+                    <li>
+                      <a href="../results/results_manage.html" data-part="results" >业绩申报</a>
+                    </li>
+                    <li>
+                      <a href="apply_manage.html" data-part="apply" >注册申请</a>
+                    </li>
+                    <li>
+                      <a href="../shopping/shopping_manage.html" data-part="shopping" >我的购物车</a>
+                    </li>
+                    <li>
+                      <a href="../service/service_manage.html" data-part="service" >服务查询</a>
+                    </li>
+                  </ul>
+              </div>
+          </div>
+      </div>
+    </div>
+    
+    
+    <!--登录、注册-->
+    <div class="header-entrywrap g-d-hidei" id="header_loginwrap">
+    		<div class="header-entrybox">
+        		<div class="header-entryitem">
+            	<ul class="header-entrytab" id="header_logintab">
+                <li class="entrytab-active" data-type="store">专卖店登录</li>
+                <li data-type="member">会员登录</li>
+                <li data-type="close"></li>
+              </ul>
+              <ul class="header-entryform" id="header_loginform">
+                <li data-type="store">
+                  <form action="" method="post" id="login_storeform">
+                    <label class="header-entryun"><input type="text" name="storeUserName" id="login_storeusername" placeholder="请输入专卖店登录用户名"></label>
+                    <p></p>
+                    <label class="header-entrypw"><input type="password" maxlength="16" name="storePassWord" id="login_storepassword" placeholder="请输入专卖店登录密码"></label>
+                    <p></p>
+                    <div><input type="text" name="storeValidCode" placeholder="验证码" id="login_storevalidcode"><img src="../../resource/images/validcode_img.jpg"></div>
+                    <p></p>
+                    <button type="submit" class="btn btn-ok">登录</button>
+                  </form>
+                </li>
+                <li data-type="member" class="g-d-hide">
+                  <form action="" method="post" id="login_memberform">
+                    <label class="header-entryun"><input type="text" name="memberUserName" id="login_memberusername" placeholder="请输入会员登录用户名"></label>
+                    <p></p>
+                    <label class="header-entrypw"><input type="password" maxlength="16" name="memberPassWord" id="login_memberpassword" placeholder="请输入会员登录密码"></label>
+                    <p></p>
+                    <div><input type="text" name="memberValidCode" placeholder="验证码" id="login_membervalidcode"><img src="../../resource/images/validcode_img.jpg"></div>
+                    <p></p>
+                    <button type="submit" class="btn btn-ok">登录</button>
+                  </form>
+                </li>
+              </ul>
+            </div>
+        </div>
+    </div>
+    <div class="header-entrywrap g-d-hidei" id="header_registerwrap">
+    		<div class="header-entrybox">
+        		<div class="header-entryitem">
+            	<ul class="header-entrytab" id="header_registertab">
+                <li class="entrytab-active" data-type="store">专卖店注册</li>
+                <li data-type="member">会员注册</li>
+                <li data-type="close"></li>
+              </ul>
+              <ul class="header-entryform" id="header_registerform">
+                <li data-type="store">
+                  <form action="" method="post" id="register_storeform">
+                    <label class="header-entryun"><input type="text" name="storeUserName" id="register_storeusername" placeholder="请输入专卖店注册用户名"></label>
+                    <p></p>
+                    <label class="header-entrypw"><input type="password" maxlength="16" name="storePassWord" id="register_storepassword" placeholder="请输入专卖店注册密码"></label>
+                    <p></p>
+                    <div><input type="text" name="storeValidCode" placeholder="验证码" id="register_storevalidcode"><img src="../../resource/images/validcode_img.jpg"></div>
+                    <p></p>
+                    <button type="submit" class="btn btn-ok">注册</button>
+                  </form>
+                </li>
+                <li data-type="member" class="g-d-hide">
+                  <form action="" method="post" id="register_memberform">
+                    <label class="header-entryun"><input type="text" name="memberUserName" id="register_memberusername" placeholder="请输入会员注册用户名"></label>
+                    <p></p>
+                    <label class="header-entrypw"><input type="password" maxlength="16" name="memberPassWord" id="register_memberpassword" placeholder="请输入会员注册密码"></label>
+                    <p></p>
+                    <div><input type="text" placeholder="验证码" name="memberValidCode" id="register_membervalidcode"><img src="../../resource/images/validcode_img.jpg"></div>
+                    <p></p>
+                    <button type="submit" class="btn btn-ok">注册</button>
+                  </form>
+                </li>
+              </ul>
+            </div>
+        </div>
+    </div>
+    
+    
+    <!--主体部分-->
+    <div class="mainwrap row-fluid">
+        <ul class="span24">
+            <li>
+            
+                <!--主题选择-->
+                <ul class="themeitem-wrap themeitem-two g-b-red4" id="theme_title">
+                    <li class="theme-register" data-part=""><a href="apply_manage.html"><span>会员注册</span></a></li>
+                    <li class="theme-shop" data-part="apply_shop"><a href="apply_shop.html"><span>开店申请</span></a></li>
+                </ul>
+                
+                <!--子菜单-->
+                <ul class="submenu-wrap" id="submenu">
+                  <li class="submenu-active">
+                    <a href="#" data-type="base" >基本信息</a>
+                  </li>
+                  <li>
+                    <a href="#" data-type="receive" >收货信息</a>
+                  </li>
+                  <li>
+                    <a href="#" data-type="bank" >银行账户信息</a>
+                  </li>
+                  <li>
+                    <a href="#" data-type="login" >登录信息</a>
+                  </li>
+                </ul>
+
+            </li>
+            <li class="main-forms">
+            		<!--grid表单-->
+            		<ul id="register_wrap">
+                		<li class="grid-form" data-type="base">
+                    		<form action="#" id="register_base" class="form-horizontal" method="post">
+                          
+                          <div class="control-group">
+                            <label for="applyno" class="control-label form-require-icon">申请人卡号：</label>
+                            <div class="controls">
+                              <input  id="applyno" maxlength="7" type="text" class="span6" name="applyNo" placeholder="请输入申请人卡号" >
+                            </div>
+                          </div>
+                          
+                          <div class="control-group">
+                            <label for="applyname" class="control-label form-require-icon">申请人姓名：</label>
+                            <div class="controls">
+                              <input  id="applyname" type="text" class="span6" name="applyName" placeholder="请输入申请人姓名" >
+                            </div>
+                          </div>
+                          
+                          <div class="control-group">
+                            <label for="applytype" class="control-label">申请人类型：</label>
+                            <div class="controls">
+                            	<select id="applytype" name="applyType" class="span4">
+                                <option selected value="1">类型1</option>
+                                <option value="2">类型2</option>
+                                <option value="3">类型3</option>
+                              </select>
+                            </div>
+                          </div>
+                          
+                          <div class="control-group">
+                            <label for="usercode" class="control-label form-require-icon">用户编码：</label>
+                            <div class="controls">
+                              <input  id="usercode" type="text" class="span6" name="userCode" placeholder="请输入用户编码" >
+                            </div>
+                          </div>
+                          
+                          <div class="control-group">
+                            <label for="idcard" class="control-label form-require-icon">身份证：</label>
+                            <div class="controls">
+                              <input  id="idcard" type="text" class="span6" name="idCard" maxlength="18" placeholder="请输入身份证" >
+                            </div>
+                          </div>
+                          
+                          <div class="control-group">
+                            <div class="controls">
+                              <button type="submit" class="span5 btn btn-ok form-btnsave-icon">保存</button>
+                              <a href="apply_shop.html" class="span5 btn btn-cance form-btncance-icon">取消</a>
+                            </div>
+                          </div>
+                      </form>
+                    </li>
+                    
+                    <li class="grid-form g-d-hide" data-type="receive">
+                    		<form action="#" id="register_receive" class="form-horizontal" method="post">
+                        	<div class="control-group">
+                            <label class="control-label  form-require-icon">地址：</label>
+                            <div class="controls">
+                              <select id="country" name="country" class="span4">
+                                <option value="">---请选择---</option>
+                                <option value="1">测试国家1</option>
+                                <option value="2">测试国家2</option>
+                                <option value="3">测试国家3</option>
+                              </select>
+                              <select id="province" name="province" class="span4">
+                                <option value="">--请选择省份--</option>
+                                <option value="1">测试省份1</option>
+                                <option value="2">测试省份2</option>
+                                <option value="3">测试省份3</option>
+                              </select>
+                              <select id="city" name="city" class="span4">
+                                <option value="">--请选择市--</option>
+                                <option value="1">测试城市1</option>
+                                <option value="2">测试城市2</option>
+                                <option value="3">测试城市3</option>
+                              </select>
+                              <select id="district" name="district" class="span4">
+                                <option value="">--请选择区/县--</option>
+                                <option value="1">测试市县1</option>
+                                <option value="2">测试市县2</option>
+                                <option value="3">测试市县3</option>
+                              </select>
+                            </div>
+                          </div>
+                          
+                          <div class="control-group">
+                            <label for="address" class="control-label form-require-icon">详细地址：</label>
+                            <div class="controls">
+                              <input  id="address" type="text" class="span10" name="Address" placeholder="请输入详细地址" >
+                            </div>
+                          </div>
+                          
+                          <div class="control-group">
+                            <label for="postno" class="control-label">邮政编码：</label>
+                            <div class="controls">
+                              <input  id="postno" type="text" class="span6" name="postNo" placeholder="请输入邮政编码" >
+                            </div>
+                          </div>
+                          
+                          <div class="control-group">
+                            <label for="telephone" class="control-label">固定电话：</label>
+                            <div class="controls">
+                              <input  id="telephone" type="text" maxlength="11" class="span6" name="telephone" placeholder="请输入固定电话" >
+                            </div>
+                          </div>
+                          
+                          <div class="control-group">
+                            <label for="mobile" class="control-label form-require-icon">手机号码：</label>
+                            <div class="controls">
+                              <input  id="mobile" type="text" class="span6" maxlength="13" name="mobile" placeholder="请输入手机号码" >
+                            </div>
+                          </div>
+                         
+                          <div class="control-group">
+                            <div class="controls">
+                              <button type="submit" class="span5 btn btn-ok form-btnsave-icon">保存</button>
+                              <a href="apply_shop.html" class="span5 btn btn-cance form-btncance-icon">取消</a>
+                            </div>
+                          </div>
+                      </form>
+                    </li>
+                    
+                    <li class="grid-form g-d-hide" data-type="bank">
+                    		<form action="#" id="register_bank" class="form-horizontal" method="post">
+                          
+                          <div class="control-group">
+                            <label for="bank" class="control-label  form-require-icon">开户行：</label>
+                            <div class="controls">
+                              <select id="bank" name="bank" class="span6">
+                                <option selected value="1">银行1</option>
+                                <option value="2">银行2</option>
+                                <option value="3">银行3</option>
+                                <option value="4">银行4</option>
+                              </select>
+                            </div>
+                          </div>
+                          
+                          <div class="control-group">
+                            <label for="accountname" class="control-label form-require-icon">开户名：</label>
+                            <div class="controls">
+                              <input  id="accountname" type="text" class="span6" name="accountName" placeholder="请输入开户名" >
+                            </div>
+                          </div>
+                          
+                          <div class="control-group">
+                            <label for="accountno" class="control-label form-require-icon">开户账号：</label>
+                            <div class="controls">
+                              <input  id="accountno" type="text" class="span6" name="accountNo" maxlength="23" placeholder="请输入开户账号" >
+                            </div>
+                          </div>
+                          
+                          <div class="control-group">
+                            <div class="controls">
+                              <button type="submit" class="span5 btn btn-ok form-btnsave-icon">保存</button>
+                              <a href="apply_shop.html" class="span5 btn btn-cance form-btncance-icon">取消</a>
+                            </div>
+                          </div>
+                      </form>
+                    </li>
+                    
+                    <li class="grid-form g-d-hide" data-type="login">
+                    		<form action="#" id="register_login" class="form-horizontal" method="post">
+          
+                          <div class="control-group">
+                            <label for="loginpassword" class="control-label form-require-icon">登录密码：</label>
+                            <div class="controls">
+                              <input  id="loginpassword" autocomplete="off" type="password" class="span6" name="loginPassword" placeholder="请输入登录密码" >
+                            </div>
+                          </div>
+                          
+                          <div class="control-group">
+                            <label for="reloginpassword" class="control-label form-require-icon">重复登录密码：</label>
+                            <div class="controls">
+                              <input  id="reloginpassword" autocomplete="off" type="password" class="span6" name="reLoginPassword" placeholder="请输入重复登录密码" >
+                            </div>
+                          </div>
+                          
+                          <div class="control-group">
+                            <div class="controls">
+                              <button type="submit" class="span5 btn btn-ok form-btnsave-icon">保存</button>
+                              <a href="apply_shop.html" class="span5 btn btn-cance form-btncance-icon">取消</a>
+                            </div>
+                          </div>
+                      </form>
+                    </li>
+                    
+                </ul>
+            </li>
+        </ul>
+    </div>
+    
+    <!--底部导航-->
+    <div class="footerwrap">
+    		<div>
+          <p>版权所有：荣格集团</p>
+          <p>2014-2016</p>
+          <p>深ICP证8716号</p>
+        </div>
+    </div>
+    
+    <!--侧边导航栏-->
+    <ul class="quickmenu" id="quickmenu" data-part="">
+    	<li data-part="account">
+        <a href="../account/account_manage.html" >我的账户</a>
+      </li>
+    	<li data-part="cart" >
+        <a href="../shopping/shopping_manage.html">购物车</a>
+      </li>
+      <li data-part="shopping" >
+        <a href="../shopping/shopping_health.html">去购物</a>
+      </li>
+      <li data-part="service" >
+        <a href="../service/service_manage.html">查询</a>
+      </li>
+    </ul>
+    
+		<script src="../../resource/js/lib/require/require-2.1.11.min.js" data-main="../../resource/js/apply/apply_shop.js"></script>
+</body>
+</html>

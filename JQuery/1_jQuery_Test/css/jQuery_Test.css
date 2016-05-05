@@ -1,0 +1,47 @@
+/* CSS Document */
+/*global*/
+body{margin:0;padding:0;background:#fff url(../images/wrapper.jpg) repeat center center;}
+body *{margin:0;padding:0;font-size:100%;text-decoration:none;color:#000;font-family:"宋体", serif, sans-serif, "宋体-PUA", "楷体_GB2312", "仿宋_GB2312", Vrinda;list-style:none;resize:none;border:0 none;}
+body *:focus{outline:none;}
+/*page layout*/
+.header{width:100%;height:39px;background:url(../images/top_bg1.png) repeat-x center center;margin:0 auto;}
+.container{width:1000px;height:auto;border-left:1px solid #999;border-right:1px solid #999;border-bottom:1px solid #999;margin:0 auto;background:#fff;}
+.content{width:960px;height:auto;margin:0 auto;padding:50px 0;}
+/*top*/
+.header h1{width:1002px;height:38px;text-indent:8em;margin:0 auto;font-size:16px;border-bottom:1px solid #999;line-height:1.8em;color:#fff;-webkit-text-shadow:0 0 3px #fff;-moz-text-shadow:0 0 3px #fff;-ms-text-shadow:0 0 3px #fff;-o-text-shadow:0 0 3px #fff;text-shadow:0 0 3px #fff;}
+/*sidebox*/
+/*mainbox*/
+/*table*/
+.jq_test{width:900px;height:auto;border:1px dashed #ccc;margin:20px auto;}
+.jq_test tr td{padding:5px 0;}
+/*table layout*/
+.jq_test1,.jq_test4{width:10%;}
+.jq_test2{width:70%;}
+.jq_test3{width:20%;}
+/*label*/
+.jq_test label{float:left;font-size:14px;padding:3px 5px;cursor:pointer;color:#930;min-width:100px;display:block;text-align:center;overflow:hidden;}
+.jq_test label:hover{color:#069;}
+/*text*/
+.jq_test input{float:left;width:480px;height:24px;font-size:14px;line-height:1.5em;border:1px solid #999;-moz-border-radius:3px;-khtml-border-radius:3px;-webkit-border-radius:3px;border-radius:3px;-moz-box-shadow:0 0 2px #999;-webkit-box-shadow:0 0 2px #999;box-shadow:0 0 2px #999;color:#666;}
+.jq_test input:focus{border:1px solid #009ECC;-moz-border-radius:3px;-khtml-border-radius:3px;-webkit-border-radius:3px;border-radius:3px;-moz-box-shadow:0 0 3px #01BCEB;-webkit-box-shadow:0 0 3px #01BCEB;box-shadow:0 0 3px #01BCEB;background:#F4FFDD;color:#000;}
+/*spans,p*/
+.jq_test span{float:left;width:100%;height:auto;}
+.jq_test span a{float:left;color:#f00;font-size:14px;padding:3px 5px;line-height:1.5em;}
+.jq_test span p{float:left;font-size:14px;width:auto;height:auto;text-indent:10px;line-height:1.5em;padding:3px 0;color:#960;display:block;}
+/*h2*/
+.jq_test h2{text-indent:150px;font-size:16px;padding:6px 0;color:#036;}
+/*button*/
+.jq_test button{float:left;width:auto;height:auto;padding:3px 10px;color:#000;font-size:14px;cursor:pointer;background:#eee;box-shadow:0 1px 3px #fff inset,0 2px 3px #ddd;border-radius:5px;border:1px solid #bbb;line-height:1.2em;}
+.jq_test button:hover{color:#069;text-decoration:underline;}
+/*ul*/
+.testul{width:auto;height:auto;float:left;}
+.testul li{width:auto;height:auto;background:#ECF9FF;padding:3px 5px;border:1px dashed #ccc;float:left;text-align:center;margin:0 5px;cursor:pointer;}
+.testul li:hover{color:#069;text-decoration:underline;}
+
+
+
+
+
+
+
+

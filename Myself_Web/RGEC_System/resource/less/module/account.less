@@ -1,0 +1,68 @@
+///模块--我的账户
+
+
+///*--我的账户--账户信息--*/
+.account-info{
+	.layout-float-base;
+	padding:10px 0;
+	min-width:320px;
+	margin:0 0 50px 0;
+	>li{
+		.box-sizing-base;
+		float:left;
+		p{
+			padding:3px 0;
+			line-height:20px;
+			.text-ww;
+			margin:0;
+			font-size:@font-size-base;
+			color:@color-gray3;
+		}
+	}
+	>li:first-child{
+		width:40%;
+		border-right:1px solid @color-red4;
+		padding:0 20px 0 0;
+		>div{
+			float:right;
+			width:180px;
+			div{
+				width:100px;
+				height:100px;
+				margin:0 auto 20px auto;
+				overflow:hidden;
+				.border-radius-base(50%);
+				background:@color-green3;
+				&:empty:after{
+						display:block;
+						width:100px;
+						height:100px;
+						text-align:center;
+						overflow:hidden;
+						content:'\e71a';
+						font-family:'ux_one';
+						color:@color-white;
+						font-size:@font-size-base * 5;
+						line-height:100px;
+				}
+				img{
+					display:block;
+					max-width:120px;
+					max-height:120px;
+					min-height:100px;
+					min-width:100px;
+				}
+			}
+			p{
+				text-align:center;
+			}
+		}
+	}
+	>li:first-child+li{
+		width:60%;
+		padding:20px 0 20px 30px;
+		p{
+			text-align:left;
+		}
+	}
+}

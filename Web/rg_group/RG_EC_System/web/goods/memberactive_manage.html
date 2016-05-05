@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<meta name="description" content="电子商务系统--经销商报单--会员激活">
+<meta name="keywords" content="电子商务系统--经销商报单--会员激活">
+<title>电子商务系统--经销商报单--会员激活</title>
+<link rel="stylesheet" type="text/css" href="../../resource/css/bootstrap_2.3.2/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="../../resource/css/bootstrap_2.3.2/css/responsive.min.css">
+<link rel="stylesheet" type="text/css" href="../../resource/css/base.css">
+<link rel="stylesheet" type="text/css" href="../../resource/css/grid.css">
+<link rel="stylesheet" type="text/css" href="../../resource/js/lib/artDialog/css/ui-dialog.css">
+</head>
+<body>
+    <!--顶部导航菜单-->
+    <div class="navbar g-cleargap">
+    	<div class="headerwrap">
+      	<div>
+          <ul>
+            <li><p>(20150400239) 您好，欢迎使用本系统！</p><span>[<a href="#">退出</a>]</span></li>
+            <li><p>代理用户：</p><em>小易叔叔(<i>88abcd</i>)</em><span>[<a href="#">返回</a>]</span></li>
+          </ul>
+        </div>
+    	</div>
+      <div class="navbar-inner">
+        <div class="container">
+          <button data-target=".nav-collapse" data-toggle="collapse" class="btn btn-navbar" type="button">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <div class="nav-collapse collapse">
+            <ul class="nav" id="mainmenu">
+              <li>
+                <a href="../index.html" data-part="index" >首页</a>
+              </li>
+              <li>
+                <a href="../info/info_manage.html" data-part="info" >信息中心</a>
+              </li>
+              <li>
+                <a href="../fund/account_manage.html" data-part="fund" >账户中心</a>
+              </li>
+              <li>
+                <a href="../shop/shop_manage.html" data-part="shop" >申请管理</a>
+              </li>
+              <li>
+                <a href="dealer_manage.html" data-part="goods" >报单管理</a>
+              </li>
+              <li>
+                <a href="../record/member_manage.html" data-part="record" >资料维护</a>
+              </li>
+              <li class="divider-vertical" ></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--底部导航-->
+    <div class="mainwrap">
+    	<div class="container-fluid">
+      	<div class="row-fluid">
+        		<div class="span24 pull-left">
+              <ul class="sidebox">
+                <li class="sidemenu sidemenu-mini">
+                	<h3>报单管理</h3>
+                  <div id="submenu">
+                      <a href="dealer_manage.html">经销商报单</a>
+                      <a href="receive_manage.html">收货确认</a>
+                      <a href="back_manage.html">退换待发货管理</a>
+                      <a href="being_manage.html">退换已发货管理</a>
+                      <a href="memberactive_manage.html">会员激活</a>
+                  </div>
+                </li>
+              </ul>
+            </div>
+        		<div class="span24 pull-right">
+            		<ul class="mainbox">
+                    <li class="main-grid">
+                    		<!--grid主题-->
+                    		<div class="grid-theme grid-themeactive">会员激活</div>
+                        <!--grid 数据表格展现-->
+                        <div class="grid-datalist">
+                        	<form class="form-horizontal"  action="#" method="post" id="poOrderForm">
+                          	<input id="id" type="hidden" value="" name="id">
+                            <input type="hidden" value="" name="recommendNo">
+                            <input type="hidden" name="_form_uniq_id" value="">
+                            <input type="hidden" value="" name="strAction">
+                        		<table class="table table-hover table-show1" id="member_griddata">
+                                <colgroup>
+                                    <col class="g-cg3" />
+                                    <col class="g-cg7" />
+                                    <col class="g-cg3" />
+                                    <col class="g-cg7" />
+                                </colgroup>
+                                <tr>
+                                		<th colspan="2">基本信息</th>
+                                    <th colspan="2">联系信息</th>
+                                </tr>
+                                <tr>
+                                    <td><p>推荐人卡号:</p></td>
+                                    <td>62000004394573457</td>
+                                    <td><p>所在地区:</p></td>
+                                    <td>广东、深圳、福田</td>
+                                </tr>
+                                <tr>
+                                    <td><p>经销商编号:</p></td>
+                                    <td>4572563567</td>
+                                    <td><p>详细地址:</p></td>
+                                    <td>购物公园平安大厦188层88号</td>
+                                </tr>
+                                <tr>
+                                    <td><p>卡号:</p></td>
+                                    <td>未绑定</td>
+                                    <td><p>邮政编码:</p></td>
+                                    <td>435345</td>
+                                </tr>
+                                <tr>
+                                    <td><p>经销商姓名:</p></td>
+                                    <td>大土豪</td>
+                                    <td><p>家庭电话:</p></td>
+                                    <td>15593449345</td>
+                                </tr>
+                                <tr>
+                                    <td><p>会员昵称:</p></td>
+                                    <td>还是大土豪</td>
+                                    <td><p>办公电话:</p></td>
+                                    <td>0755-32448348</td>
+                                </tr>
+                                <tr>
+                                    <td><p>会员性别:</p></td>
+                                    <td>男</td>
+                                    <td><p>移动电话:</p></td>
+                                    <td>15803235435</td>
+                                </tr>
+                                <tr>
+                                    <td><p>生日:</p></td>
+                                    <td>1988-08-08</td>
+                                    <td><p>传真:</p></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td><p>证件类型:</p></td>
+                                    <td>身份证</td>
+                                    <td><p>电子邮箱:</p></td>
+                                    <td>dth@sina.com</td>
+                                </tr>
+                                <tr>
+                                    <td><p>证件号:</p></td>
+                                    <td>450534198808082881</td>
+                                    <td><p>网址:</p></td>
+                                    <td>www.dth.com</td>
+                                </tr>
+                                <tr>
+                                    <td><p>健康状态:</p></td>
+                                    <td>健康</td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td><p>知晓方式:</p></td>
+                                    <td>微信、电话、QQ</td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                		<th colspan="2">付款方式</th>
+                                    <th colspan="2">银行账户信息</th>
+                                </tr>
+                                <tr>
+                                    <td><p>激活金额:</p></td>
+                                    <td class="g-c-red2">88888</td>
+                                    <td><p>开户银行:</p></td>
+                                    <td>建设银行</td>
+                                </tr>
+                                <tr>
+                                    <td><p>付款方式:</p></td>
+                                    <td>F$</td>
+                                    <td><p>户名:</p></td>
+                                    <td>没错，就是大土豪</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td><p>帐号:</p></td>
+                                    <td>436726746828456985</td>
+                                </tr>
+                            </table>
+                            <div>
+
+                                <button type="button" id="member_active" class="span12 btn form-btnactive-icon">激活</button>
+                                <a href="../index.html" class="span12 btn form-btncance-icon">取消</a>
+                            </div>
+                          </form>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+      </div>
+    </div>
+    <!--底部导航-->
+    <div class="footerwrap">
+    
+    </div>
+    <script src="../../resource/js/lib/require/require-2.1.11.min.js" data-main="../../resource/js/goods/memberactive_manage.js"></script>
+</body>
+</html>

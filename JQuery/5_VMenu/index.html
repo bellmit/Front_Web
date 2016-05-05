@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+<script type="text/javascript" language="javascript" src="js/jquery-1.7.2.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+	$("#firstpane p").click(function()
+    {
+		$(this).next("div").slideToggle(300).siblings("div").slideUp("falst");
+	});
+});
+</script>
+<style type="text/css">
+body {
+	margin: 10px auto;
+	font: 75%/120% Verdana,Arial, Helvetica, sans-serif;
+}
+.menu_list {	
+	width: 150px;
+}
+.menu_head {
+	padding: 5px 10px;
+	cursor: pointer;
+	position: relative;
+	margin:1px;
+    font-weight:bold;
+    background: #eef4d3 url(left.png) center right no-repeat;
+}
+.menu_body {
+	display:none;
+}
+.menu_body a{
+  display:block;
+  color:#006699;
+  background-color:#EFEFEF;
+  padding-left:10px;
+  font-weight:bold;
+  text-decoration:none;
+}
+.menu_body a:hover{
+  color: #000000;
+  text-decoration:underline;
+  }
+</style>
+</head>
+
+<body>
+  <div id="firstpane" class="menu_list">
+		<p class="menu_head">Header-1</p>
+		<div class="menu_body">
+		<a href="#">Link-1</a>
+         <a href="#">Link-2</a>
+         <a href="#">Link-3</a>
+         <a href="#">Link-4</a>	
+         <a href="#">Link-5</a>	
+         <a href="#">Link-6</a>		
+		</div>
+		<p class="menu_head">Header-2</p>
+		<div class="menu_body">
+		 <a href="#">Link-1</a>
+         <a href="#">Link-2</a>
+         <a href="#">Link-3</a>
+         <a href="#">Link-4</a>	
+         <a href="#">Link-5</a>	
+         <a href="#">Link-6</a>
+         <a href="#">Link-7</a>			
+		</div>
+		<p class="menu_head">Header-3</p>
+		<div class="menu_body">
+         <a href="#">Link-1</a>
+         <a href="#">Link-2</a>
+         <a href="#">Link-3</a>	
+         <a href="#">Link-4</a>	
+         <a href="#">Link-5</a>			
+        </div>
+  </div>
+</body>
+</html>

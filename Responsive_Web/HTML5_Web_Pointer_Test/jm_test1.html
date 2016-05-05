@@ -1,0 +1,98 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="description" content="jquery mobile test">
+<meta name="keywords" content="jquery mobile test">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+<title>jquery mobile test1</title>
+<link rel="stylesheet" type="text/css" href="jquery_mobile/jquery.mobile-1.4.4.min.css">
+<link rel="stylesheet" type="text/css" href="css/jm_test.css">
+<script src="js/jquery-1.11.1.min.js"></script>
+<script src="jquery_mobile/jquery.mobile-1.4.4.min.js"></script>
+<script src="js/jm_test1.js"></script>
+</head>
+<body>
+	<section data-role="page" id="mb1">
+    	<header data-role="header" data-title="视图1标题">
+            <a href="#" class="ui-btn-left ui-btn ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-delete">Cancel</a>
+    		<h1>测试--头部区1</h1>
+            <button class="ui-btn-right ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-check">Save</button>
+        </header>
+        <div data-role="controlgroup" data-type="horizontal">
+        	<a href="jm_test1.html" data-role="button">test1</a>
+            <a href="jm_test2.html" data-role="button">test2</a>
+            <a href="jm_test3.html" data-role="button">test3</a>
+            <a href="jm_test4.html" data-role="button">test4</a>
+        </div>
+        <section data-role="content">
+            <a href="#mb1" data-transition="top">page1</a>
+            <a href="#mb2" data-transition="flip">page2</a>
+            <a href="#mb3" data-transition="fade">page3</a>
+        </section>
+        <section data-role="content" class="lv_ls">
+        	<ul data-role="listview" data-filter="true" data-inset="true">
+            	<li><a href="#">dreamweaver<span class="ui-li-count">9693</span></a></li>
+                <li><a href="#">photoshop<span class="ui-li-count">7364</span></a></li>
+                <li><a href="#">eclipse<span class="ui-li-count">5859</span></a></li>
+                <li><a href="#">flash<p class="ui-li-aside">最近很少用</p></a></li>
+                <li><a href="#">mysql<img src="jquery_mobile/images/icons-png/gear-black.png" alt="database" class="ui-li-icon"/></a></li>
+                <li><a href="#">notepad++</a></li>
+                <li><a href="#">powerdesign</a></li>
+                <li><a href="#">firework</a></li>
+                <li><a href="#">sqlserver</a></li>
+            </ul>
+        </section>
+        <section data-role="content">
+            <ul data-role="listview" id="popuptouch">
+            	<li>tap</li>
+                <li>taphold</li>
+                <li>swipe</li>
+                <li>swipeleft</li>
+                <li>swiperight</li>
+            </ul>
+        </section>
+        <footer data-role="footer">测试--底部区1</footer>
+    </section>
+    <section data-role="page" id="mb2">
+    	<header data-role="header" data-title="视图2标题">测试--头部区2</header>
+        <section data-role="content">
+        	 <a href="#mb1" data-transition="slidedown">page1</a>
+             <a href="#mb2" data-transition="slide">page2</a>
+             <a href="#mb3" data-transition="slideup">page3</a>
+        </section>
+        <section data-role="content">
+             <a href="#mb1" data-transition="fade" data-rel="dialog">dialog</a>
+        </section>
+        <section data-role="content">
+             <a href="#mb1" data-transition="top" data-rel="back">back</a>
+        </section>
+        <footer data-role="footer">测试--底部区2</footer>
+    </section>
+    <section data-role="page" id="mb3">
+    	<header data-role="header" data-title="视图2标题">header3</header>
+        <nav data-role="navbar">
+        	<ul>
+            	<li><a href="#mb1" data-transition="slidedown">page1</a></li>
+                <li><a href="#mb2" data-transition="fade">page2</a></li>
+                <li><a href="#mb3" data-transition="flip" class="ui-btn-active">page3</a></li>
+            </ul>
+        </navs>
+        <div data-role="content" data-inline="true">
+        	<a href="#" data-role="button" data-icon="home">home</a>
+            <a href="#" data-role="button" data-icon="back">back</a>
+        </div>
+        <div data-role="content">
+            <form>
+                <input type="button" data-icon="check" value="check" data-iconpos="left">
+                <input type="button" data-icon="delete" data-iconpos="right" value="delete">
+            </form>
+        </div>
+        <div data-role="controlgroup">
+        	<a href="#" data-role="button">sure</a>
+            <a href="#" data-role="button">cance</a>
+        </div>
+        <footer data-role="footer">footer3</footer>
+    </section>
+</body>
+</html>

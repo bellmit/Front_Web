@@ -1,0 +1,274 @@
+/* CSS Document */
+
+
+
+//装修日记--内容页
+
+
+//用户区域
+.diary-user-wrap{
+	width:100%;
+	background-color:@color-gray6;
+	.diary-user-info{
+	width:1190px;
+	margin:0 auto;
+	overflow:hidden;
+	padding:20px 0;
+	
+	.diary-user-icon{
+		width:100px;
+		float:left;
+		>span{
+			display:block;
+			width:60px;
+			height:60px;
+			overflow:hidden;
+			border-radius:50%;	
+			img{
+				width:60px;
+				height:60px;		
+			}	
+		}	
+		>em{
+			font-size:12px;
+			color:@color-gray3;
+			line-height:30px;
+			text-align:center;
+		}	
+	}
+	.diary-user-text{
+		width:660px;
+		float:left;
+		>p{
+			font-size:12px;
+			color:@color-gray3;
+			line-height:30px;		
+		}
+	}
+	.user-text-1{
+		>h4{
+			display:inline-block;
+			font-size:24px;
+			color:color-gray1;
+			line-height:36px;		
+		}	
+		>b{
+			font-size:14px;
+			color:@color-gray3;
+			line-height:20px;
+			font-weight:normal;		
+		}
+	}
+	.user-text-2{
+			font-size:12px;
+			.user-text-ico1{
+				display:inline-block;
+				width:14px;
+				height:14px;
+				vertical-align:middle;
+				background:url(./../images/icons.png) no-repeat -708px -88px;		
+			}	
+			.user-text-ico2{
+				display:inline-block;
+				width:14px;
+				height:14px;
+				vertical-align:middle;
+				background:url(./../images/icons.png) no-repeat -728px -88px;		
+			}	
+			.user-text-ico3{
+				display:inline-block;
+				width:14px;
+				height:14px;
+				vertical-align:middle;
+				background:url(./../images/icons.png) no-repeat -748px -88px;		
+			}	
+			span{
+				color:@color-gray3;	
+				line-height:22px;
+			}
+			b{
+				font-weight:normal;	
+				color:@color-gray2;	
+				line-height:22px;
+			}
+	}
+	.diary-user-comment{
+		width:430px;
+		float:left;
+		overflow:hidden;
+		margin:60px 0 0 0;
+		>div{
+			float:left;
+			height:40px;
+			padding:0 30px;
+			text-align:center;
+			border-right:1px solid @color-gray2;
+			>h3{
+				font-size:22px;
+				line-height:20px;
+				color:@color-orange1;		
+			}
+			>span{
+				font-size:14px;
+				color:@color-gray3;
+				line-height:20px;	
+			}
+		}
+	}
+	
+}
+}
+
+
+
+
+//日记详情页标题
+.guide-diary-title{
+	.layout-float-base;
+	height:50px;
+	border-bottom:1px solid @color-gray4;
+	>h3{
+		display:inline-block;
+		font-size:18px;
+		color:@color-orange2;
+		line-height:49px;	
+		padding:0 10px 0 20px;	
+		border-bottom:2px solid @color-orange1;
+		span{
+			font-size:14px;
+			color:@color-gray3;		
+			line-height:20px;
+			margin:0 0 0 4px;
+		}
+	}
+}
+
+
+.guide-orderby{
+	.layout-float-base;
+	height:50px;
+	line-height:50px;
+	font:@font-size-base;
+	border-bottom:1px solid @color-gray4;
+	>div{
+		float:right;
+		height:100%;
+		width:300px;
+		text-align:right;
+		span{
+			height:100%;
+			display:inline-block;
+			line-height:50px;
+			padding:0 10px;
+			color:@color-gray2;
+			cursor:pointer;
+			font-size:@font-size-base - 2;
+			em{
+				width:7px;
+				height:9px;
+				display:inline-block;
+				vertical-align:middle;
+				margin:0 0 0 5px;
+				background:url(../images/icons.png) no-repeat -787px -88px;
+				overflow:hidden;
+			}
+		}
+		.diary-titleactive{
+			color:@color-orange1;
+			em{
+					background:url(../images/icons.png) no-repeat -769px -88px;	
+			}
+		} 
+	}
+}
+
+
+//评论或日志区
+.guide-diarycomment{
+		.layout-relative-base;
+		.layout-float-base(860px);
+		margin:0 0 50px 15px;
+		padding:0 0 50px 0;
+		min-height:100px;
+}
+
+
+.guide-dcwrap{
+	border-left:1px solid @color-gray4;
+	border-bottom:1px solid @color-gray4;
+	&:before{
+		.layout-absolutel-base(-30px,30px);
+		.border-radius-base(50%);
+		overflow:hidden;
+		background:@color-orange1;
+		content:'';
+		display:block;
+		width:60px;
+		height:60px;
+	}
+	&:after{
+		.layout-absolutel-base(-15px,45px);
+		color:@color-white;
+		font-size:@font-size-base - 2;
+		text-align:center;
+		overflow:hidden;
+		.text-ww;
+		display:block;
+		width:30px;
+		height:40px;
+		line-height:15px;
+	}
+}
+
+.guide-dcearly{
+	&:after{
+		content:"前期设计";
+	}
+}
+.guide-dcalter{
+	&:after{
+		content:"主体拆改";
+	}
+}
+.guide-dcwater{
+	&:after{
+		content:"水电阶段";
+	}
+}
+.guide-dcwood{
+	&:after{
+		content:"泥木阶段";
+	}
+}
+
+//侧边栏阶段装修导航
+.guide-diarylink{
+	.layout-float-base;
+	margin:20px 0 20px 0;
+	h3{
+		text-indent:50px;
+		height:50px;
+		line-height:50px;
+		color:@color-gray1;
+		font-size:@font-size-base + 2;
+		border-bottom:1px dashed @color-gray5;
+		.text-of;
+	}
+	a{
+		.layout-float-base;
+		margin:20px 0 0 0;
+		display:block;
+		height:20px;
+		line-height:20px;
+		font-size:@font-size-base;
+		color:@color-gray2;
+		.text-of;
+		text-indent:50px;
+		.no-outline-base;
+		&:hover{
+			color:@color-orange1;
+		}
+	}
+}
+
+

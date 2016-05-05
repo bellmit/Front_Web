@@ -1,0 +1,110 @@
+﻿<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+<meta charset="UTF-8">
+<title>车辆信息</title>
+<#include "/includes/carcenter_res.html"/>
+<link rel="stylesheet" type="text/css" href="../../../../ResponsiveWebDesign_Web/TCL_carweb/source/user/${request.contextPath}/resources/easy-ui/themes/default/easyui.css">
+</head>
+<body>
+<div class="bg_wrap">
+  <div class="wrapper">
+  	<#include "/includes/header.html"/>
+    <div class="boardframe">
+      <div class="fri-content">
+        <div class="wrap-con">
+          <#include "/includes/car_userinfos.html"/>
+          <div class="p_share">
+            <h1 class="p_h1 bg_1">个人资料</h1>
+            <div id="feedcontainer">
+              <div class="info-con">
+                <div class="p-tabs">
+                  <ul>
+                    <li><a href="user_info.html">个人信息</a></li>
+                    <li><a href="user_ico.html">头像设置</a></li>
+                    <li><a href="user_pwd.html">修改密码</a></li>
+                    <li class="active"><a href="car_info.html">车辆信息</a></li>
+                    <li><a href="user_mobile.html">绑定手机</a></li>
+                  </ul>
+                </div>
+                <div class="info-tabs-con">
+                  <div class="tab-list">
+                    <form action="" id="carForm">
+                    <#if carDevice??>
+                    <input type="hidden" name="seqid" value="${carDevice.seqid!''}"/>
+                    <input type="hidden" name="devid" id="devid" value="${carDevice.devid!''}"/>
+                    <input type="hidden" name="updateuser" id="updateuser" value="<#if friendInfo??>${friendInfo.nickname!''}</#if>"/>
+                      <table border="0" class="form_table">
+                        <tbody>
+                          <tr>
+                            <th width="18%"><span class="tips_requiredef">*</span>车牌号</th>
+                            <td width="82%"><input class="small-text" type="text" name="licensenum" id="licensenum" value="${carDevice.licensenum!''}"></td>
+                          </tr>
+                          <tr>
+                            <th>机架号</th>
+                            <td><input class="small-text" type="text" name="carframenum" id="carframenum" value="${carDevice.carframenum!''}"></td>
+                          </tr>
+                          <tr style="line-height:20px;">
+                            <th>车型</th>
+                            <td>
+                             <input type="hidden" name="tempCartType" id="tempCartType" value="${carDevice.cartype!''}"/>
+                             <input name="firstcarType" id="firstcarType" class="easyui-combobox first-brand" style="width:120px" isAllowText='false'/>
+                             <input name="secondcarType" id="secondcarType" class="easyui-combobox second-brand" style="width: 120px" isAllowText='false'/>
+                             <input name="cartype" id="cartype" class="easyui-combobox three-brand" style="width: 200px" isAllowText='false'/>
+                            <span style="font-size: 12px;color: red;" id="msg"></span>
+                            </td>
+                          </tr>
+                          <tr>
+                            <th>购买日期</th>
+                            <td><input class="small-text" id="regtime" type="text" name="regtime" value="${carDevice.regtime!''}"></td>
+                          </tr>
+                          <tr>
+                            <td></td>
+                            <td><input type="submit" class="regular-btn" value="提交" id="carSave">
+                              <input type="button" value="取消" class="regular-btn" id="resetBtn" name="Submit"></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      </#if>
+                    </form>
+                    <#if friendInfo?? && friendInfo.carUser?? && friendInfo.carUser.registerdate??>
+                         <input type="hidden" id="registerdate" value="${friendInfo.carUser.registerdate}"/>
+                    </#if>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <#include "/includes/car_sidenav.html"/>
+    </div>
+  </div>
+</div>
+<#include "/includes/footer.html"/>
+<script src="../../../../ResponsiveWebDesign_Web/TCL_carweb/source/user/${request.contextPath}/resources/js/My97DatePicker/WdatePicker.js"></script>
+<script src="../../../../ResponsiveWebDesign_Web/TCL_carweb/source/user/${request.contextPath}/resources/js/lib/jquery.form.js"></script>
+<script src="../../../../ResponsiveWebDesign_Web/TCL_carweb/source/user/${request.contextPath}/resources/js/lib/jquery.validate.js"></script>
+<script src="../../../../ResponsiveWebDesign_Web/TCL_carweb/source/user/${request.contextPath}/resources/js/carfri/car_info.js"></script>
+<script src="../../../../ResponsiveWebDesign_Web/TCL_carweb/source/user/${request.contextPath}/resources/easy-ui/jquery.easyui.min.js"></script>
+<script src="../../../../ResponsiveWebDesign_Web/TCL_carweb/source/user/${request.contextPath}/resources/js/easy-utils.js"></script>
+<script type="text/javascript">
+jQuery(function($){
+	$("#regtime").click(function(){
+		var registerdate = $("#registerdate").val();
+		var formatDate='%y-%M-%d';
+		if(registerdate!=''){
+			formatDate=registerdate;
+		}
+		WdatePicker({
+			maxDate:formatDate
+		});
+	});
+	
+	$.EasyUiBrand({
+		brandInitVal:$('#tempCartType').val()
+	})
+});
+</script>
+</body>
+</html>

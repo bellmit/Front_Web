@@ -1,0 +1,241 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>jQuery工具应用</title>
+<link href="css/jQuery_Test.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="js/jquery-1.8.2.min.js"></script>
+<script type="text/javascript" src="js/jQuery_Test_util.js"></script>
+<script type="text/javascript" src="js/jQuery_Test.js"></script>
+</head>
+<body>
+	<header class="header">
+    	<h1>jQuery工具应用</h1>
+    </header>
+	<div class="container">
+    	<div class="content">
+            <form method="post" action="#">
+                <table cellpadding="0" cellspacing="0" class="jq_test" id="jq_test">
+                    <colgroup>
+                        <col class="jq_test1"/>
+                        <col class="jq_test2"/>
+                        <col class="jq_test3"/>
+                        <col class="jq_test4"/>
+                    </colgroup>
+                    <tr>
+                    	<td colspan="4"><h2>jQuery.param test(将表单元素数组或者对象序列化)</h2></td>
+                    </tr>
+                    <tr>
+                    	<td>&nbsp;</td>
+                    	<td>
+                        	<fieldset>
+                            	<label for="test1text">jQuery.param</label>
+                                <input type="text" id="test1text" name="jQuery_param" />
+                            </fieldset>
+                        </td>
+                        <td><button type="button" id="test1btn">param.test</button></td>
+                        <td>&nbsp;</td>
+                    </tr>
+                    <tr>
+                    	<td>&nbsp;</td>
+                    	<td colspan="2"><span><p id="test1show"></p></span></td>
+                        <td>&nbsp;</td>
+                    </tr>
+                    <tr>
+                    	<td colspan="4"><h2>jQuery.trim test(去掉字符串起始和结尾的空格)</h2></td>
+                    </tr>
+                    <tr>
+                    	<td>&nbsp;</td>
+                    	<td>
+                        	<fieldset>
+                            	<label for="test2text">jQuery.trim</label>
+                                <input type="text" id="test2text" name="jQuery_trim" value=" i love you,javascript  .but i like jquery more "/>
+                            </fieldset>
+                        </td>
+                        <td><button type="button" id="test2btn">trim.test</button></td>
+                        <td>&nbsp;</td>
+                    </tr>
+                    <tr>
+                    	<td>&nbsp;</td>
+                    	<td colspan="2"><span><a>去掉前后空格:</a><p id="test2show"></p></span><span><a>去掉所有空格:</a><p id="test2show1"></p></span></td>
+                        <td>&nbsp;</td>
+                    </tr>
+                    <tr>
+                    	<td colspan="4"><h2>jQuery.type test(检测obj的数据类型)</h2></td>
+                    </tr>
+                    <tr>
+                    	<td>&nbsp;</td>
+                    	<td>
+                        	<fieldset>
+                            	<label for="test3text">jQuery.type</label>
+                                <input type="text" id="test3text" name="jQuery_type" value="'true',520,'type test',function(){},[],new Date(),/test/,null,undifined"/>
+                            </fieldset>
+                        </td>
+                        <td><button type="button" id="test3btn">type.test</button></td>
+                        <td>&nbsp;</td>
+                    </tr>
+                    <tr>
+                    	<td>&nbsp;</td>
+                    	<td colspan="2"><span><a>测试对象类型:</a><p id="test3show"></p></span></td>
+                        <td>&nbsp;</td>
+                    </tr>
+                    <tr>
+                    	<td colspan="4"><h2>jQuery.isNumeric test(确定它的参数是否是一个数字)</h2></td>
+                    </tr>
+                    <tr>
+                    	<td>&nbsp;</td>
+                    	<td>
+                        	<fieldset>
+                            	<label for="test4text">jQuery.isNumeric</label>
+                                <input type="text" id="test4text" name="jQuery_isNumeric" value="520,-886,null,mylove,0xff"/>
+                            </fieldset>
+                        </td>
+                        <td><button type="button" id="test4btn">isNumeric.test</button></td>
+                        <td>&nbsp;</td>
+                    </tr>
+                    <tr>
+                    	<td>&nbsp;</td>
+                    	<td colspan="2"><span><a>测试对象是否为数字:</a><p id="test4show"></p></span></td>
+                        <td>&nbsp;</td>
+                    </tr>
+                    <tr>
+                    	<td colspan="4"><h2>jQuery.contains test(一个DOM节点是否包含另一个DOM节点)</h2></td>
+                    </tr>
+                    <tr>
+                    	<td>&nbsp;</td>
+                        <td><label>jQuery.contains</label><button type="button" id="test5btn">contains.test</button></td>
+                        <td colspan="2">&nbsp;</td>
+                    </tr>
+                    <tr>
+                    	<td>&nbsp;</td>
+                    	<td colspan="2"><span><a>表格包含当前对象:</a><p id="test5show"></p></span><span><a>当前对象包含表格:</a><p id="test5show1"></p></span></td>
+                        <td>&nbsp;</td>
+                    </tr>
+                    <tr>
+                    	<td colspan="4"><h2>jQuery.merge(unique) test(合并两个数组、删除数组中重复元素)</h2></td>
+                    </tr>
+                    <tr>
+                    	<td>&nbsp;</td>
+                    	<td>
+                        	<fieldset>
+                            	<label for="test6text">jQuery.merge</label>
+                                <input type="text" id="test6text" name="jQuery_merge" value="1,2,3,123,520,abc,defaults,hehe"/>
+                            </fieldset>
+                        </td>
+                        <td rowspan="2"><button type="button" id="test6btn">merge.test</button></td>
+                        <td>&nbsp;</td>
+                    </tr>
+                    <tr>
+                    	<td>&nbsp;</td>
+                    	<td>
+                        	<fieldset>
+                            	<label for="test6text1">jQuery.unique</label>
+                                <input type="text" id="test6text1" name="jQuery_merge1" value="888,888,888,888,good,good,yes,yes,100,100"/>
+                            </fieldset>
+                        </td>
+                        <td>&nbsp;</td>
+                    </tr>
+                    <tr>
+                    	<td>&nbsp;</td>
+                    	<td colspan="2"><span><a>数组字符串合并:</a><p id="test6show"></p></span><span><a>去重数组字符串合并:</a><p id="test6show1"></p></span></td>
+                        <td>&nbsp;</td>
+                    </tr>
+                    <tr>
+                    	<td colspan="4"><h2>jQuery.inArray test(确定第一个参数在数组中的位置)</h2></td>
+                    </tr>
+                    <tr>
+                    	<td>&nbsp;</td>
+                    	<td>
+                        	<fieldset>
+                            	<label for="test7text">jQuery.inArray</label>
+                                <input type="text" id="test7text" name="jQuery_inArray" value="520,hehe,小样,丹妹子,饶博士,老邓,涛爷小朋友,猴子,丹丹,123,456,javascript"/>
+                            </fieldset>
+                        </td>
+                        <td><button type="button" id="test7btn">inArray.test</button></td>
+                        <td>&nbsp;</td>
+                    </tr>
+                    <tr>
+                    	<td>&nbsp;</td>
+                    	<td colspan="2"><span><a>查找数组的内容是否存在:</a><p id="test7show"></p></span></td>
+                        <td>&nbsp;</td>
+                    </tr>
+                    <tr>
+                    	<td colspan="4"><h2>jQuery.map test(将一个数组中的元素转换到另一个数组中)</h2></td>
+                    </tr>
+                    <tr>
+                    	<td>&nbsp;</td>
+                    	<td>
+                        	<fieldset>
+                            	<label for="test8text">jQuery.map(c)</label>
+                                <input type="text" id="test8text" name="jQuery_map" value="饶博士,老邓,涛爷小朋友"/>
+                            </fieldset>
+                        </td>
+                        <td rowspan="2"><button type="button" id="test8btn">map.test</button></td>
+                        <td>&nbsp;</td>
+                    </tr>
+                    <tr>
+                    	<td>&nbsp;</td>
+                    	<td>
+                        	<fieldset>
+                            	<label for="test8text1">jQuery.map(t)</label>
+                                <input type="text" id="test8text1" name="jQuery_map1" value=""/>
+                            </fieldset>
+                        </td>
+                        <td>&nbsp;</td>
+                    </tr>
+                    <tr>
+                    	<td colspan="4"><h2>jQuery.grep test(使用过滤函数过滤数组元素)</h2></td>
+                    </tr>
+                    <tr>
+                    	<td>&nbsp;</td>
+                    	<td>
+                        	<fieldset>
+                            	<label for="test9text">jQuery.grep(条件)</label>
+                                <input type="text" id="test9text" name="jQuery_grep" value="-1,520,0,-100,999,130,-90"/>
+                            </fieldset>
+                        </td>
+                        <td rowspan="2"><button type="button" id="test9btn">grep.test</button></td>
+                        <td>&nbsp;</td>
+                    </tr>
+                    <tr>
+                    	<td>&nbsp;</td>
+                    	<td>
+                        	<fieldset>
+                            	<label for="test9text1">jQuery.grep(结果)</label>
+                                <input type="text" id="test9text1" name="jQuery_grep1" value=""/>
+                            </fieldset>
+                        </td>
+                        <td>&nbsp;</td>
+                    </tr>
+                    <tr>
+                    	<td colspan="4"><h2>jQuery.each test(通用遍例方法)</h2></td>
+                    </tr>
+                    <tr>
+                    	<td>&nbsp;</td>
+                    	<td>
+                        	<fieldset>
+                            	<label for="test10text">jQuery.each(通用)</label>
+                                <input type="text" id="test10text" name="jQuery_each" value="name:javascript,age:lots of years,user:pages program"/>
+                            </fieldset>
+                        </td>
+                        <td><button type="button" id="test10btn">$.each().test</button></td>
+                        <td>&nbsp;</td>
+                    </tr>
+                    <tr>
+                    	<td>&nbsp;</td>
+                    	<td>
+                            <label for="test10text1">$("").each()(DOM)</label>
+                            <ul class="testul" id="test10ul"><li>li1</li><li>li2</li><li>li3</li><li>li4</li><li>li5</li><li>li6</li><li>li7</li><li>li8</li><li>li9</li><li>li10</li></ul>
+                        </td>
+                        <td><button type="button" id="test10btn1">$("").each().test</button></td>
+                        <td>&nbsp;</td>
+                    </tr>
+                    <tr>
+                    	<td colspan="4">&nbsp;</td>
+                    </tr>
+                </table>
+             </form>
+        </div>
+    </div>
+</body>
+</html>

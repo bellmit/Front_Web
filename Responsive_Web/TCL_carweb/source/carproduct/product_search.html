@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en-US">
+<head>
+<meta charset="utf-8">
+<title>TCL康钛车联网--产品检索</title>
+<meta name="description" content="TCL康钛车联网,TCL智能车机,产品检索,产品概述,产品规格,选配功能,产品中心" />
+<meta name="keywords" content="TCL康钛车联网,TCL智能车机,产品检索,产品概述,产品规格,选配功能,产品中心" />
+<#include "/includes/product_res.html"/>
+</head>
+<body>
+<div class="container">
+<div class="header_wrap">
+	  	<#include "/includes/header.html"/>
+</div>
+    <div class="content">
+        <div class="products_searchimg"><img src="../../../../ResponsiveWebDesign_Web/TCL_carweb/source/carproduct/${managerpath}/${paperFile}/images/products.jpg" alt="产品检索" /></div>
+        <div class="products_brandwrap">
+        	<h1>品牌介绍</h1>
+            <ul id="products_brand">
+             <#if webbrands?? && webbrands?size gt 0>
+                <#list webbrands as brand>
+                 <li id="${brand.brandid}">${brand.brandname!''}</li>
+                </#list>
+             </#if>
+            </ul>
+        </div>
+        <div class="products_brandinfo" id="products_brandinfo">
+        </div>
+        <div class="products_searchwrap">
+            <h1 class="products_searchtitle">车机查询<span id="products_searchtitle">x</span></h1>
+            <div class="products_conditionwrap"><div class="products_condition" id="products_condition"></div></div>
+        	<table class="products_searchdetail" id="products_searchdetail">
+            	<colgroup>
+                	<col class="prossd_cg1"/>
+                    <col class="prossd_cg2"/>
+                </colgroup>
+            	<tr>
+                	<td style="border-bottom:1px dashed #eee;border-right:1px solid #eee;"><h3>车型系列</h3></td>
+                    <td style="border-bottom:1px dashed #eee;">
+                    	<ul class="products_brandlist" id="products_brandlist">
+                    	<#if carproducts??>
+                    	   <#list carproducts as product>
+                    	        <li id="${product.itemno}">${product.itemname!''}</li>
+                    	   </#list>
+                    	</#if>
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                	<td style="border-bottom:1px dashed #eee;border-right:1px solid #eee;"><h3>车&nbsp;&nbsp;型</h3></td>
+                    <td style="border-bottom:1px dashed #eee;">
+                    	<ul class="products_typelist" id="products_typelist"></ul>
+                        <span id="producttype_null" class="producttype_null"></span>
+                    </td>
+                </tr>
+                <tr>
+                	<td style="border-right:1px solid #eee;"><h3>关键词</h3></td>
+                    <td>
+                        <fieldset class="product_keywords"><input type="text" name="products_names" value="" id="products_names"/><button type="button" id="products_searchbtn">查&nbsp;询</button><span id="product_clears">清空查询条件</span></fieldset>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="products_resultwrap">
+        	<h1>车机产品</h1>
+            <div class="products_resultshow" id="products_resultshow"></div>
+        </div>
+        <input type="hidden" name="currentPage" id="currentPage" value=""/>
+		<input type="hidden" name="totalResults" id="totalResults" value=""/>
+		<input type="hidden" name="pageSize" id="pageSize" value=""/>
+        <div class="pagination" id="pagination"></div>  
+        <div class="clears"></div>
+     </div>  
+</div>
+<#if productSearch??>
+<input type="hidden" name="index" value="<#if productSearch.index??>${productSearch.index}</#if>" id="init_index"/>
+<input type="hidden" name="brand_index" value="<#if productSearch.brand_index??>${productSearch.brand_index}</#if>" id="init_brand_index"/>
+</#if>
+<#include "/includes/footer.html"/>
+</body>
+</html>

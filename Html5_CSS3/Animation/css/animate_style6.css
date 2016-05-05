@@ -1,0 +1,120 @@
+/* CSS Document */
+/*global*/
+body{margin:0;padding:0;background:url(../images/top_bg1.png) repeat-x 0 0,url(../images/wrapper.jpg) repeat 0 39px;color:#333;font-family: 'Oswald', Arial, sans-serif;}
+body *{margin:0;padding:0;font-size:100%;text-decoration:none;list-style:none;resize:none;border:0 none;}
+body *:focus{outline:none;}
+/*page layout*/
+.container{width:1000px;height:auto;margin:80px auto;}
+.content{width:960px;height:500px;margin:0 auto;border:1px solid #999;background:#fff;padding:50px 0;}
+/* General Demo Style */
+a{color: #fff;text-decoration: none;}
+.clr{clear: both;}
+/*more*/
+.more{position:relative;clear:both;font-family:'Arial Narrow', Arial, sans-serif;text-transform: uppercase;font-size: 12px;padding: 5px 0px 10px;width: 372px;margin: 0 auto;}
+.more ul{display:block;text-align:center;height: 30px;}
+.more ul li{display: block;padding: 4px 2px;float:left;}
+.more ul li.selected a,.more ul li.selected a:hover{background:#aaa;color:#fff;text-shadow:none;}
+.more ul li a{color:#555;float:left;background:#fff;width:auto;padding: 2px 5px;-moz-box-shadow:1px 1px 2px #aaa;-webkit-box-shadow:1px 1px 2px #aaa;box-shadow:1px 1px 2px #aaa;}
+.more ul li a:hover{background:#000;color:#fff;}
+.button-wrapper{width:350px;margin:0 auto;padding:20px 0;}
+.button-wrapper-large{width:500px;margin: 0 auto;padding: 20px 0;height: 80px;}
+/**/
+
+.a-btn{
+    width:120px;
+    height:120px;
+    -webkit-border-radius:50%;
+    -moz-border-radius:50%;
+    border-radius:50%;
+    display:block;
+    margin:20px;
+    float:left;
+    background:#f0ad4e;
+    position:relative;
+    -webkit-box-shadow:0px 0px 5px 0px rgba(246, 212, 163, 0.5) inset, 0px -1px 5px 4px rgba(170, 77, 27, 0.2) inset, 0px 0px 0px 7px #fff,  0px 0px 1px 8px rgba(188, 188, 188, 0.4), 0px 0px 0px 9px #fff;
+    -moz-box-shadow:0px 0px 5px 0px rgba(246, 212, 163, 0.5) inset, 0px -1px 5px 4px rgba(170, 77, 27, 0.2) inset, 0px 0px 0px 7px #fff,  0px 0px 1px 8px rgba(188, 188, 188, 0.4), 0px 0px 0px 9px #fff;
+    box-shadow:0px 0px 5px 0px rgba(246, 212, 163, 0.5) inset, 0px -1px 5px 4px rgba(170, 77, 27, 0.2) inset, 0px 0px 0px 7px #fff,  0px 0px 1px 8px rgba(188, 188, 188, 0.4), 0px 0px 0px 9px #fff;
+    -webkit-transition:all 0.3s linear;
+    -moz-transition:all 0.3s linear;
+    -o-transition:all 0.3s linear;
+    transition:all 0.3s linear;
+}
+.a-btn span{
+    display:table-cell;
+    width:80px;
+    height:80px;
+    padding:20px;
+    text-align:center;
+    vertical-align:middle;
+    font-size:26px;
+    color:#fff;
+    text-shadow:0px 1px 1px #A03F16;
+    font-family:"Arvo", "Myriad Pro", "Trebuchet MS", sans-serif;
+    -webkit-transition:all 0.3s linear;
+    -moz-transition:all 0.3s linear;
+    -o-transition:all 0.3s linear;
+    transition:all 0.3s linear;
+}
+.a-btn span:nth-child(1), 
+.a-btn span:nth-child(3){
+    position:absolute;
+    top:0px;
+    left:0px;
+    font-size:40px;
+    line-height:36px;
+    opacity:0;
+}
+.a-btn span:nth-child(1){
+    background:transparent url(../images/star.png) no-repeat center center;
+    opacity:0.2;
+}
+.a-btn:hover{
+    background:rgba(170, 77, 27, 0.6);
+    -webkit-box-shadow:0px 0px 5px 0px rgba(246, 212, 163, 0.5) inset, 0px -1px 5px 4px rgba(170, 77, 27, 0.2) inset, 0px 0px 0px 7px #fff,  1px 4px 5px 8px rgba(188, 188, 188, 0.6), 0px 0px 0px 9px #fff;
+    -moz-box-shadow:0px 0px 5px 0px rgba(246, 212, 163, 0.5) inset, 0px -1px 5px 4px rgba(170, 77, 27, 0.2) inset, 0px 0px 0px 7px #fff,  1px 4px 5px 8px rgba(188, 188, 188, 0.6), 0px 0px 0px 9px #fff;
+    box-shadow:0px 0px 5px 0px rgba(246, 212, 163, 0.5) inset, 0px -1px 5px 4px rgba(170, 77, 27, 0.2) inset, 0px 0px 0px 7px #fff,  1px 4px 5px 8px rgba(188, 188, 188, 0.6), 0px 0px 0px 9px #fff;
+}
+.a-btn:hover span:nth-child(3){
+    opacity:1;
+}
+.a-btn:hover span:nth-child(2){
+    opacity: 0; 
+    -webkit-transform: scale(0);
+    -moz-transform: scale(0);
+    transform: scale(0);
+}
+.a-btn:hover span:nth-child(1){
+    -webkit-animation:rotate 1s linear;
+    -moz-animation:rotate 1s linear;
+    animation:rotate 1s linear;
+}
+.a-btn:active{
+    -webkit-box-shadow:0px 0px 5px 0px rgba(246, 212, 163, 0.5) inset, 0px -1px 5px 4px rgba(170, 77, 27, 0.2) inset, 0px 0px 0px 7px #fff,  0px -1px 0px 8px rgba(188, 188, 188, 0.3), 0px 0px 0px 10px #fff;
+    -moz-box-shadow:0px 0px 5px 0px rgba(246, 212, 163, 0.5) inset, 0px -1px 5px 4px rgba(170, 77, 27, 0.2) inset, 0px 0px 0px 7px #fff,  0px -1px 0px 8px rgba(188, 188, 188, 0.3), 0px 0px 0px 10px #fff;
+    box-shadow:0px 0px 5px 0px rgba(246, 212, 163, 0.5) inset, 0px -1px 5px 4px rgba(170, 77, 27, 0.2) inset, 0px 0px 0px 7px #fff,  0px -1px 0px 8px rgba(188, 188, 188, 0.3), 0px 0px 0px 10px #fff;
+}
+.a-btn:active span:nth-child(2){
+    color:rgba(170, 77, 27, 0.8);
+    text-shadow:0px 1px 1px rgba(255, 255, 255, 0.6);
+}
+@keyframes rotate{
+    0% { transform: scale(1) rotate(0);}
+    50% { transform: scale(0.5) rotate(180deg);}
+    100% { transform: scale(1) rotate(360deg);}
+}
+@-webkit-keyframes rotate{
+    0% { -webkit-transform: scale(1) rotate(0);}
+    50% { -webkit-transform: scale(0.5) rotate(180deg);}
+    100% { -webkit-transform: scale(1) rotate(360deg);}
+}
+@-moz-keyframes rotate{
+    0% { -moz-transform: scale(1) rotate(0);}
+    50% { -moz-transform: scale(0.5) rotate(180deg);}
+    100% { -moz-transform: scale(1) rotate(360deg);}
+}
+@font-face {
+  font-family: 'Oswald';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Oswald '), local('Oswald'), url(http://themes.googleusercontent.com/static/fonts/oswald/v5/-g5pDUSRgvxvOl5u-a_WHw.woff) format('woff');
+}

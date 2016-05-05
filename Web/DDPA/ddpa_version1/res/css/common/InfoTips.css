@@ -1,0 +1,33 @@
+/* CSS Document */
+/*layout*/
+.itips_box{height:55px;width:554px;background:#fafafa;-moz-border-radius:5px;-ms-border-radius:5px;-o-border-radius:5px;-webkit-border-radius:5px;border-radius:5px;overflow:hidden;}
+.ialert_box{height:auto;width:554px;background:#fafafa;-moz-border-radius:5px;-ms-border-radius:5px;-o-border-radius:5px;-webkit-border-radius:5px;border-radius:5px;overflow:hidden;}
+.itips_wrap{width:554px;height:55px;border:0 none;table-layout:fixed;border-collapse:collapse;white-space:nowrap;font-family:"宋体";}
+.itipalert_wrap{width:554px;height:auto;border:0 none;table-layout:fixed;border-collapse:collapse;white-space:nowrap;font-family:"宋体";}
+.itips_wrap td{font-size:12px;height:55px;font-family:"宋体";}
+.ialert_wrap td{font-size:12px;font-family:"宋体";}
+.itips_iconsucc,.itips_iconerr,.itips_iconexplain{width:50px;}
+.ialert_iconsucc,.ialert_iconerr,.ialert_iconexplain{width:80px;height:36px;}
+.itips_infoshow{width:450px;}
+.ialert_infoshow{width:450px;height:36px;}
+.itips_close{width:54px;}
+/*details*/
+.itips_iconsucc div,.itips_iconerr div,.itips_iconexplain div,.ialert_iconsucc div,.ialert_iconerr div,.ialert_iconexplain div{width:20px;height:20px;overflow:hidden;float:right;margin-right:5px;*+margin-right:3px;}
+.itips_iconsucc div,.ialert_iconsucc div{background:#fafafa url(../../image/common/InfoTipsbg.png) no-repeat 0 0;}
+.itips_iconerr div,.ialert_iconerr div{background:#fafafa url(../../image/common/InfoTipsbg.png) no-repeat -20px 0;}
+.itips_iconexplain div,.ialert_iconexplain div{background:#fafafa url(../../image/common/InfoTipsbg.png) no-repeat -40px 0;}
+.itipok,.itipno,.itiptime,.itipdef,.ialertok,.ialertno,.ialertdef{float:left;height:20px;line-height:20px;text-align:center;font-size:12px;}
+.itipok,.ialertok{color:#7a9d30;padding:0 2px;}
+.itipno,.ialertno{color:#d8432b;padding:0 2px;}
+.itiptime{color:#d8432b;padding:0 2px 0 5px;}
+.itipdef,.ialertdef{color:#a0a0a0;}
+.itips_close div{width:30px;height:30px;background:#fafafa url(../../image/common/InfoTipsbg.png) no-repeat 0 -70px;margin:0 auto;cursor:pointer;}
+.ialert_handle{width:120px;height:24px;float:right;}
+.ialert_sure,.ialert_cance{float:left;padding:0 5px;margin-left:5px;*+margin-left:3px;cursor:pointer;line-height:24px;text-align:center;}
+.ialert_sure{color:#f90;}
+.ialert_cance{color:#434343;}
+
+
+
+
+

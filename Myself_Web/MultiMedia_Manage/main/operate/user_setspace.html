@@ -1,0 +1,58 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<meta name="description" content="德亿多媒体资源库,德亿多媒体,德亿多媒体资源库管理系统,管理系统--上传空间"/>
+<meta name="keywords" content="德亿多媒体资源库,德亿多媒体,德亿多媒体资源库管理系统,管理系统--上传空间"/>
+<link rel="stylesheet" type="text/css" href="../../css/main/menu_operate.css">
+<script src="../../js/lib/jquery-1.8.3.min.js"></script>
+<script src="../../js/lib/jquery.blockUI.min.js"></script>
+<script src="../../js/utils/util.js"></script>
+<script>
+$(function(){
+	var userspace_sure=$("#userspace_sure"),userspace_close=$("#userspace_close"),spacedefault=$("#spacedefault"),userspace=$("#userspace");
+	/*初始化*/
+	typeof spacedefault.attr("checked")=="string"?userspace.attr("disabled","disabled").addClass("nospace").val(""):userspace.removeAttr("disabled").removeClass("nospace");
+	/*默认空间*/
+	spacedefault.change(function(){
+		var ischecked=$(this).attr("checked");
+		typeof ischecked=="string"?userspace.attr("disabled","disabled").addClass("nospace").val(""):userspace.removeAttr("disabled").removeClass("nospace");
+	});
+	/*确认*/
+	userspace_sure.click(function(){
+		popup_alert("设置成功","undefined","yes","have");
+	});
+	/*关闭*/
+	userspace_close.click(function(){window.close();});
+})
+</script>
+<title>用户上传空间设置</title>
+</head>
+<body>
+<div class="userspace_wrap">
+	<h1 class="userspace_title">上传空间设置</h3>
+	<table class="userspace_content">
+    	<colgroup>
+        	<col class="up_cg1"/>
+            <col class="up_cg2"/>
+        </colgroup>
+    	<tr class="userspace_text">
+        	<td><label for="username">用&nbsp;户&nbsp;名：</label></td>
+            <td><input type="text" name="username" id="username"/></td>
+        </tr>
+        <tr class="userspace_text">
+        	<td><label for="userspace">上传空间：</label></td>
+            <td><input type="text" name="userspace" id="userspace"/><span>MB</span></td>
+        </tr>
+        <tr class="userspace_checkbox">
+        	<td><input type="checkbox" name="spacedefault" id="spacedefault"/></td>
+            <td><label for="spacedefault">使用系统默认上传空间</label></td>
+        </tr>
+        <tr>
+        	<td>&nbsp;</td>
+            <td><input type="submit" name="userspace_sure" value="确定" id="userspace_sure" class="userspace_sure"><input type="button" name="userspace_close" value="关闭" id="userspace_close" class="userspace_close"></td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

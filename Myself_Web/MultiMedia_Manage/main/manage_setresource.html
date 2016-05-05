@@ -1,0 +1,97 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<meta name="description" content="德亿多媒体资源库,德亿多媒体,德亿多媒体资源库管理系统,管理系统--管理中心-系统设置-资源选项"/>
+<meta name="keywords" content="德亿多媒体资源库,德亿多媒体,德亿多媒体资源库管理系统,管理系统--管理中心-系统设置-资源选项"/>
+<link rel="stylesheet" type="text/css" href="../css/main/subpages.css" />
+<title>管理中心-系统设置-资源选项</title>
+</head>
+<body>
+<div class="set_container">
+	<div class="set_result"></div>
+    <div class="set_operate"></div>
+    <form action="#" method="post">
+    <table class="set_resource">
+    	<colgroup>
+        	<col class="sr_cg1"/>
+            <col class="sr_cg2"/>
+        </colgroup>
+        <tr class="setres_text">
+        	<td><label for="resroot_name">资源树根目录名称:</label></td>
+            <td><input type="text" name="resroot_name" id="resroot_name"/></td>
+        </tr>
+        <tr class="setres_text">
+        	<td><label for="default_space">用户上传空间默认设置:</label></td>
+            <td><input type="text" name="default_space" id="default_space"/></td>
+        </tr>
+        <tr class="setres_select">
+        	<td><label for="ressort">资源目录默认设置:</label></td>
+            <td>
+            	<select name="ressort" id="ressort">
+                	<option value="1">按目录名称排序</option>
+                    <option value="2">按创建时间排序</option>
+                    <option value="3">用户手动排序</option>
+                </select>
+            </td>
+        </tr>
+        <tr class="setres_select">
+        	<td><label for="resapproval">资源审核默认设置:</label></td>
+            <td>
+            	<select name="resapproval" id="resapproval">
+                	<option value="1">已审核</option>
+                    <option value="0">未审核</option>
+                </select>
+            </td>
+        </tr>
+        <tr class="setres_select">
+        	<td><label for="showfilenum">页面显示文件目录数:</label></td>
+            <td>
+            	<select name="showfilenum" id="showfilenum">
+                	<option value="10">10</option>
+                    <option value="30">30</option>
+                    <option value="50">50</option>
+                    <option value="80">80</option>
+                </select>
+            </td>
+        </tr>
+        <tr class="setres_select">
+        	<td><label for="resbilling">资源计费默认设置:</label></td>
+            <td>
+            	<select name="resbilling" id="resbilling">
+                	<option value="1">开始计费</option>
+                    <option value="0">停止计费</option>
+                </select>
+            </td>
+        </tr>
+        <tr class="setres_select">
+        	<td><label for="respreview">资源预览默认设置:</label></td>
+            <td>
+            	<select name="respreview" id="respreview">
+                	<option value="1">打开</option>
+                    <option value="0">关闭</option>
+                </select>
+            </td>
+        </tr>
+        <tr class="setres_select">
+        	<td><label for="resurl">资源URL默认设置:</label></td>
+            <td>
+            	<select name="resurl" id="resurl">
+                	<option value="1">允许显示</option>
+                    <option value="0">禁止显示</option>
+                </select>
+            </td>
+        </tr>
+        <tr class="setres_checkbox">
+        	<td><label for="resrecycle">回收站设置:</label></td>
+            <td><input type="checkbox" name="resrecycle" id="resrecycle"/><p>删除文件不放入回收站，而是彻底删除。</p></td>
+        </tr>
+        <tr class="setres_btn">
+        	<td><input type="submit" name="ressure" value="确&nbsp;&nbsp;定" class="setres_sure"/></td>
+            <td><input type="button" name="rescance" value="取&nbsp;&nbsp;消" class="setres_cance"/></td>
+        </tr>
+    </table>
+    </form>
+</div>
+</body>
+</html>

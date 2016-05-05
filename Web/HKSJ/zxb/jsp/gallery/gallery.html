@@ -1,0 +1,573 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<meta name="description" content="惠信--装小宝、装信贷--装修图库">
+<meta name="keywords" content="惠信--装小宝、装信贷--装修图库">
+<title>惠信--装小宝、装信贷--装修图库</title>
+<link rel="stylesheet" type="text/css" href="../../css/global.css">
+<link rel="stylesheet" type="text/css" href="../../css/gallery.css">
+</head>
+<body>
+    <!--顶部区域-->
+    <div class="header-wrap">
+    
+        <!--顶部不同模块入口-->
+        <div class="header-portal">
+            <div>
+                <!--所在地-->
+                <div class="portal-position">
+                    <span></span>
+                    深圳
+                </div>
+                
+                <!--登录、注册-->
+                <div class="portal-login">
+                    <div>
+                        <a href="../account/login.html">登陆</a>
+                        <a href="../account/register.html">注册</a>
+                        <a href="../decorate/decorate.html">我要装修</a>
+                    </div>
+                    <p>欢迎来到装小宝!<span></span></p>
+                </div>
+            </div>
+        </div>
+        
+        <!--顶部logo及搜索-->
+        <div class="header-info">
+            <div>
+            		<!--logo-->
+            		<a href="/zxb/jsp" class="info-logo">logo</a>
+
+                
+                <!--搜索区域-->
+                <div class="info-search">
+                <form action="" method="post">
+                  <div><p id="searchshow"></p><span></span>
+                  		<input type="hidden" name="searchType" id="searchtype" value="">
+                      <ul id="searchselect">
+                        <li data-key="1">装修公司</li>
+                        <li data-key="2">效果图</li>
+                        <li data-key="3">小区</li>
+                        <li data-key="4">文章</li>
+                        <li data-key="5">问答</li>
+                        <li data-key="6">家居建材</li>
+                      </ul>
+                  </div>
+                  <input name="search" placeholder="挑选您心仪的装修公司"  id="searchKeyword" type="text">
+                  <button id="searchbtn" type="button">搜索</button>
+                </form>
+                </div>
+                
+                <!--服务热线-->
+                <div class="info-feature">
+                    <div>
+                    		<span></span>
+                        400-065-8888
+                    </div>
+                    <p>24小时服务热线</p>
+                </div>
+            </div>
+        </div>
+        
+        <!--头部导航-->
+        <div class="header-menu">
+            <div>
+                <ul class="menu-wrap" id="main_menuitem" >
+                  <li>
+                    <a href="../index.html" data-part="" >首页</a>
+                  </li>
+                  <li>
+                    <a href="gallery.html" data-part="" >装修图库<span></span></a>
+                    <ul>
+                    		<li><a href="gallery_list.html" data-part="" >家居美图</a></li>
+                        <li><a href="gallery_set.html" data-part="" >家居图册</a></li>
+                    </ul>
+                  </li>
+                  <li>
+                    <a href="../case/case.html" data-part="" >装修案例</a>
+                  </li>
+                  <li>
+                    <a href="../decorate/decorate.html" data-part="" >我要装修</a>
+                  </li>
+                  <li>
+                    <a href="../company/company_decorate.html" data-part="" >装修公司<span></span></a>
+                    <ul>
+                    		<li><a href="../company/company_designer.html" data-part="" >设计师</a></li>    
+                    </ul>
+                  </li>
+                  <li>
+                    <a href="../guide/guide.html" data-part="" >装修攻略<span></span></a>
+                    <ul>
+                    		<li><a href="../guide/guide_diary.html" data-part="" >装修攻略日记</a></li>
+                        <li><a href="../guide/guide_process.html" data-part="" >学装修</a></li>
+                    </ul>
+                  </li>
+              </ul>
+              <span id="mainmenu_apply" class="menu-apply"><span></span>免费申请设计</span>
+            </div>
+        </div>
+    </div>
+    
+    
+    <!--轮播组件-->
+		<div class="slide-wrap">
+    
+    		<!--轮播图片展示-->
+    		<div class="slide-toggle" id="slideimg_show">
+            <ul id="slide_img">
+                <li><a title="" href="#"><img alt="" src="../../images/slideimg/slideimg1.jpg" ></a></li>
+                <li><a title="" href="#"><img alt="" src="../../images/slideimg/slideimg2.jpg" ></a></li>
+                <li><a title="" href="#"><img alt="" src="../../images/slideimg/slideimg3.jpg" ></a></li>
+                <li><a title="" href="#"><img alt="" src="../../images/slideimg/slideimg4.jpg" ></a></li>
+                <li><a title="" href="#"><img alt="" src="../../images/slideimg/slideimg5.jpg" ></a></li>
+            </ul>
+            <div>
+              <ul class="slideimg-btn" id="slideimg_btn">
+                  <li class="slidebtn-active"></li>
+                  <li></li>
+                  <li></li>
+                  <li></li>
+                  <li></li>
+              </ul>
+            </div>
+            <div class="slide-tips" id="slide_tips"><p></p></div>
+        </div>
+        
+        <!--轮播导航菜单-->
+    		<div class="slide-menuwrap">
+						<ul>
+                  <li>
+                  		<h3>空间</h3>
+                      <div>
+                      	<a href="gallery_list.html#space_01">客厅</a>
+                        <a href="gallery_list.html#space_03">餐厅</a>
+                        <a href="gallery_list.html#space_04">厨房</a>
+                        <a href="gallery_list.html#space_09">儿童房</a>
+                        <a href="gallery_list.html#space_02">卧室</a>
+                        <a href="gallery_list.html#space_06">阳台</a>
+                        <a href="gallery_list.html#space_07">书房</a>
+                        <a href="gallery_list.html#space_05">卫生间</a>
+                      </div>
+                  </li>
+                  <li>
+                  		<h3>风格</h3>
+                      <div>
+                      	<a href="gallery_list.html#style_02">现代</a>
+                        <a href="gallery_list.html#style_01">简约</a>
+                        <a href="gallery_list.html#style_11">日式</a>
+                        <a href="gallery_list.html#style_09">地中海</a>
+                        <a href="gallery_list.html#style_04">欧式</a>
+                        <a href="gallery_list.html#style_03">中式</a>
+                        <a href="gallery_list.html#style_06">田园</a>
+                        <a href="gallery_list.html#style_07">新古典</a>
+                      </div>
+                  </li>
+                  <li>
+                  		<h3>局部</h3>
+                      <div>
+                      	<a href="gallery_list.html#part_18">餐台</a>
+                        <a href="gallery_list.html#part_19">地台</a>
+                        <a href="gallery_list.html#part_03">窗帘</a>
+                        <a href="gallery_list.html#part_16">相片墙</a>
+                        <a href="gallery_list.html#part_05">飘窗</a>
+                        <a href="gallery_list.html#part_17">楼梯</a>
+                        <a href="gallery_list.html#part_11">吧台</a>
+                        <a href="gallery_list.html#part_20">衣帽间</a>
+                      </div>
+                  </li>
+                  <li>
+                  		<h3>色系</h3>
+                      <div>
+                      	<a href="gallery_list.html#color_10">春色</a>
+                        <a href="gallery_list.html#color_05">白色</a>
+                        <a href="gallery_list.html#color_13">原木色</a>
+                        <a href="gallery_list.html#color_04">绿色</a>
+                        <a href="gallery_list.html#color_07">紫色</a>
+                        <a href="gallery_list.html#color_06">蓝色</a>
+                        <a href="gallery_list.html#color_09">黑色</a>
+                        <a href="gallery_list.html#color_01">红色</a>
+                      </div>
+                  </li>
+              </ul>
+        </div>
+    </div>
+    
+    
+    <!--最佳视觉-->
+    <div class="gallery-grid gallery-grid1">
+    
+    
+    		<!--最佳视觉头部-->
+        <div class="gallery-title">
+            <h1>最佳视觉</h1>
+            <a href="#"><span>more+</span></a>
+        </div>
+    
+    
+    		<!--最佳视觉数据展现区-->
+    		<ul>
+        		<li>
+            	<div class="gallery-griditem1">
+                <div>
+                    <img src="../../images/hot_case.jpg" alt="">
+                </div>
+                <a href="#">
+                	<div class="gallery-caption">
+                    <div class="gallery-theme">最佳视觉最佳视觉最佳视觉</div>
+                    <div class="gallery-action">
+                      <p><span></span>520</p>
+                      <p><span></span>345</p>
+                    </div>
+                  </div>
+                </a>
+              </div>
+              
+              <div class="gallery-griditem2">
+                <div>
+                    <img src="../../images/hot_case.jpg" alt="">
+                </div>
+                <a href="#">
+                	<div class="gallery-caption">
+                    <div class="gallery-theme">最佳视觉最佳视觉</div>
+                    <div class="gallery-action">
+                      <p><span></span>520</p>
+                      <p><span></span>345</p>
+                    </div>
+                  </div>
+                </a>
+              </div>
+            </li>
+            
+            <li>
+            	<div class="gallery-griditem3">
+                <div>
+                    <img src="../../images/hot_case.jpg" alt="">
+                </div>
+                <a href="#">
+                	<div class="gallery-caption">
+                    <div class="gallery-theme">最佳视觉最佳视觉最佳视觉最佳视觉最佳视觉最佳视觉最佳视觉</div>
+                    <div class="gallery-action">
+                      <p><span></span>520</p>
+                      <p><span></span>345</p>
+                    </div>
+                  </div>
+                </a>
+              </div>
+            </li>
+            
+            <li>
+            	<div class="gallery-griditem1">
+                <div>
+                    <img src="../../images/hot_case.jpg" alt="">
+                </div>
+                <a href="#">
+                	<div class="gallery-caption">
+                    <div class="gallery-theme">最佳视觉最佳视觉最佳视觉</div>
+                    <div class="gallery-action">
+                      <p><span></span>520</p>
+                      <p><span></span>345</p>
+                    </div>
+                  </div>
+                </a>
+              </div>
+              
+              <div class="gallery-griditem2">
+                <div>
+                    <img src="../../images/hot_case.jpg" alt="">
+                </div>
+                <a href="#">
+                	<div class="gallery-caption">
+                    <div class="gallery-theme">最佳视觉最佳视觉最佳视觉最佳视觉最佳视觉</div>
+                    <div class="gallery-action">
+                      <p><span></span>520</p>
+                      <p><span></span>345</p>
+                    </div>
+                  </div>
+                </a>
+              </div>
+            </li>
+        </ul>
+    </div>
+    
+    
+    <!--更多人喜欢-->
+    <div class="gallery-grid gallery-grid2">
+    
+    
+    		<!--更多人喜欢头部-->
+        <div class="gallery-title">
+            <h1>更多人喜欢</h1>
+            <a href="#"><span>more+</span></a>
+        </div>
+    
+    
+    		<!--更多人喜欢数据展现区-->
+    		<ul>
+        		<li>
+            	<div class="gallery-griditem1">
+                <a href="#">
+                	<img src="../../images/hot_case.jpg" alt="">
+                </a>
+                <p>更多人喜欢更多人喜欢</p>
+              </div>
+              
+              <div class="gallery-griditem2">
+                <a href="#">
+                	<img src="../../images/hot_case.jpg" alt="">
+                </a>
+                <p>更多人喜欢更多人喜欢更多人喜欢更多人喜欢</p>
+              </div>
+            </li>
+            
+            <li>
+            	<div class="gallery-griditem1">
+                <a href="#">
+                	<img src="../../images/hot_case.jpg" alt="">
+                </a>
+                <p>更多人喜欢</p>
+              </div>
+              
+              <div class="gallery-griditem2">
+                <a href="#">
+                	<img src="../../images/hot_case.jpg" alt="">
+                </a>
+                <p>更多人喜欢更多人喜欢更多人喜欢更多人喜欢更多人喜欢更多人喜欢</p>
+              </div>
+            </li>
+            
+            <li>
+            	<div class="gallery-griditem1">
+                <a href="#">
+                	<img src="../../images/hot_case.jpg" alt="">
+                </a>
+                <p>更多人喜欢更多人喜欢</p>
+              </div>
+              
+              <div class="gallery-griditem2">
+                <a href="#">
+                	<img src="../../images/hot_case.jpg" alt="">
+                </a>
+                <p>更多人喜欢更多人喜欢更多人喜欢更多人喜欢更多人喜欢更多人喜欢更多人喜欢更多人喜欢</p>
+              </div>
+            </li>
+            
+            <li>
+            	<div class="gallery-griditem1">
+                <a href="#">
+                	<img src="../../images/hot_case.jpg" alt="">
+                </a>
+                <p>更多人喜欢</p>
+              </div>
+              
+              <div class="gallery-griditem2">
+                <a href="#">
+                	<img src="../../images/hot_case.jpg" alt="">
+                </a>
+                <p>更多人喜欢更多人喜欢更多人喜欢</p>
+              </div>
+            </li>
+            
+        </ul>
+        
+        
+        
+        <!--更多人喜欢数据展现区-->
+        <div class="gallery-gridbanner">
+        		<a href="#"><img alt="" src="../../images/guide_img.jpg"></a>
+            <a href="#"><img alt="" src="../../images/guide_img.jpg"></a>
+        </div>
+        
+    </div>
+    
+    
+    <!--局部之美-->
+    <div class="gallery-grid gallery-grid3">
+    
+    
+    		<!--局部之美头部-->
+        <div class="gallery-title">
+            <h1>局部之美</h1>
+            <a href="#"><span>more+</span></a>
+        </div>
+    
+    
+    		<!--局部之美数据展现区-->
+    		<ul>
+        		<li>
+            	<h3 class="gallery-griditem1">
+              	<a href="gallery_list.html">
+                	<div>橱柜</div>
+              		<p>Cupboard</p>
+                  <span></span>
+                </a>
+              </h3>
+              <div class="gallery-griditem2">
+              	<a href="gallery_setdetail.html">
+                	<img src="../../images/hot_case.jpg" alt="" >
+                  <span>局部之美局部之美局部之美</span>
+                </a>
+                <a href="gallery_setdetail.html">
+                	<img src="../../images/hot_case.jpg" alt="" >
+                  <span>局部之美局部之美局部之美局部之美</span>
+                </a>
+                <a href="gallery_setdetail.html">
+                	<img src="../../images/hot_case.jpg" alt="" >
+                  <span>局部之美</span>
+                </a>
+                <a href="gallery_setdetail.html">
+                	<img src="../../images/hot_case.jpg" alt="" >
+                  <span>局部之美局部之美局部之美</span>
+                </a>
+              </div>
+            </li>
+            <li>
+            	<h3 class="gallery-griditem1">
+                <a href="gallery_list.html">
+                    <div>照片墙</div>
+                    <p>Photo wall</p>
+                    <span></span>
+                </a>
+              </h3>
+              <div class="gallery-griditem2">
+              	<a href="gallery_setdetail.html">
+                	<img src="../../images/hot_case.jpg" alt="" >
+                  <span>局部之美</span>
+                </a>
+                <a href="gallery_setdetail.html">
+                	<img src="../../images/hot_case.jpg" alt="" >
+                  <span>局部之美局部之美</span>
+                </a>
+                <a href="gallery_setdetail.html">
+                	<img src="../../images/hot_case.jpg" alt="" >
+                  <span>局部之美局部之美局部之美</span>
+                </a>
+                <a href="gallery_setdetail.html">
+                	<img src="../../images/hot_case.jpg" alt="" >
+                  <span>局部之美局部之美局部之美局部之美</span>
+                </a>
+              </div>
+            </li>
+        </ul>
+        
+        
+        
+        <!--局部之美数据展现区-->
+        <div class="gallery-menuitem">
+        		<a href="gallery_list.html">
+            	<img src="../../images/gallery_linkicon/gallery_lt.jpg" alt="">
+              <span>楼梯</span>
+            </a>
+            <a href="gallery_list.html">
+            	<img src="../../images/gallery_linkicon/gallery_bgj.jpg" alt="">
+              <span>博古架</span>
+            </a>
+            <a href="gallery_list.html">
+            	<img src="../../images/gallery_linkicon/gallery_gd.jpg" alt="">
+              <span>隔断</span>
+            </a>
+            <a href="gallery_list.html">
+            	<img src="../../images/gallery_linkicon/gallery_xg.jpg" alt="">
+              <span>鞋柜</span>
+            </a>
+            <a href="gallery_list.html">
+            	<img src="../../images/gallery_linkicon/gallery_yxm.jpg" alt="">
+              <span>隐形门</span>
+            </a>
+            <a href="gallery_list.html">
+            	<img src="../../images/gallery_linkicon/gallery_dd.jpg" alt="">
+              <span>吊顶</span>
+            </a>
+            <a href="gallery_list.html">
+            	<img src="../../images/gallery_linkicon/gallery_bjq.jpg" alt="">
+              <span>背景墙</span>
+            </a>
+            <a href="gallery_list.html">
+            	<img src="../../images/gallery_linkicon/gallery_yg.jpg" alt="">
+              <span>衣柜</span>
+            </a>
+        </div>
+    </div>
+    
+    
+
+    
+    <!--底部导航-->
+    <div class="footer-wrap">
+    		<div class="footer-linkwrap">
+          <h3>友情链接<a href="#">友链合作&gt;</a></h3>
+          <div>
+          	<a href="#">深圳装修</a>
+            <a href="#">深圳装修</a>
+            <a href="#">深圳装修</a>
+            <a href="#">深圳装修</a>
+            <a href="#">深圳装修</a>
+            <a href="#">深圳装修</a>
+          </div>
+        </div>
+        <div class="footer-infowrap">
+        		<div class="footer-content1">
+              <div class="footer-infobox1">
+              		<div>
+                  		<h5>业主指南</h5>
+                  		<a href="#">看装修案例</a>
+                      <a href="#">找装修公司</a>
+                      <a href="#">查装修攻略</a>
+                      <a href="#">我要装修</a>
+                  </div>
+                  <div>
+                  		<h5>关于我们</h5>
+                  		<a href="#">关于装小宝</a>
+                      <a href="#">联系我们</a>
+                      <a href="#">人才招聘</a>
+                      <a href="#">集团官网</a>
+                  </div>
+                  <div>
+                  		<h5>发现更多</h5>
+                  		<a href="#">装小宝承诺</a>
+                      <a href="#">装小宝联盟</a>
+                      <a href="#">装小宝装修合同</a>
+                      <a href="#">法律声明</a>
+                  </div>
+              </div>
+              <div class="footer-infobox2">
+              		<div>
+                  	<h5>客服电话</h5>
+                    <p>400-065-8888</p>
+                    <span>24小时为您服务</span>
+                  </div>
+              </div>
+              <div class="footer-infobox3">
+              		<dl>
+                  	<dt>关注我们</dt>
+                    <dd>
+                      <a class="xlwb" href="#"><span></span>新浪微博</a>
+                      <a class="txwb" href="#"><span></span>腾讯微博</a>
+                      <a class="qqkj" href="#"><span></span>QQ空间</a>
+                    </dd>
+                  </dl>
+                  <div>
+                  	<a href="#">
+                    	<img alt="" src="../../images/icon_weixin.png">
+                    </a>
+                    <span>装小宝官方微信</span>
+                  </div>
+              </div>
+            </div>
+            <div class="footer-content2">
+                <p>© 2015 huixin. All Rights Reserved　深圳惠卡金融服务有限公司版权所有  粤ICP备15076433Copyright</p>
+                <div>
+                  <a href="#" class="info-credible1"></a>
+                  <a href="#" class="info-credible2"></a>
+                  <a href="#" class="info-credible3"></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+	<script src="../../js/lib/require/require-2.1.11.min.js" data-main="../../js/gallery/gallery.js"></script>
+</body>
+</html>

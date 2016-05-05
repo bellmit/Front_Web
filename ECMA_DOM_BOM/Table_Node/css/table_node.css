@@ -1,0 +1,39 @@
+/* CSS Document */
+/*global*/
+body{margin:0;padding:0;background:#fff url(../images/table_node_bg.png) repeat center center;}
+body *{margin:0;padding:0;font-size:100%;text-decoration:none;color:#000;font-family:"宋体", serif, sans-serif, "宋体-PUA", "楷体_GB2312", "仿宋_GB2312", Vrinda;list-style:none;resize:none;border:none;}
+body *:focus{outline:none;}
+/*top*/
+.part_top{background:#000;width:100%;height:30px;margin:0 auto;box-sizing:content-box;border-bottom:5px solid #ccc;}
+.part_top h1{width:1000px;height:30px;margin:0 auto;text-indent:100px;color:#fff;line-height:1.8em;}
+/*main*/
+.container{width:1000px;height:1000px;margin:0 auto;box-sizing:content-box;-webkit-box-shadow:0 0 5px #666;-moz-box-shadow:0 0 5px #666;-o-box-shadow:0 0 5px #666;-ms-box-shadow:0 0 5px #666;box-shadow:0 0 5px #666;}
+.content{width:960px;height:960px;margin:0 auto;}
+/*parts*/
+.mainbox{width:900px;height:auto;float:left;}
+/*main detail*/
+.init_params{float:left;width:880px;height:auto;padding:10px 0;margin:20px 0;background:#fefefe;}
+.execute_show{float:left;width:880px;height:auto;margin:20px 0;}
+.init_params h2{width:880px;padding:5px 0;text-indent:20px;color:#f00;}
+.node_info{width:880px;height:auto;margin:10px auto;position:relative;left:0;top:0;}
+.node_info figure{width:880px;float:left;height:auto;padding:10px 0;}
+.node_info figure figcaption{display:block;float:left;padding:3px;cursor:pointer;color:#333;font-size:14px;}
+.node_info figure input{width:800px;height:20px;-webkit-border-radius:3px;-moz-border-radius:3px;-ms-border-radius:3px;-o-border-radius:3px;border-radius:3px;border:1px solid #666;-webkit-box-shadow:0 0 5px #ccc inset;-moz-box-shadow:0 0 5px #ccc inset;-ms-box-shadow:0 0 5px #ccc inset;-o-box-shadow:0 0 5px #ccc inset;box-shadow:0 0 5px #ccc inset;}
+.node_info figure input:focus{border:1px solid #000;-webkit-box-shadow:0 0 3px #999;-moz-box-shadow:0 0 3px #999;-ms-box-shadow:0 0 3px #999;-o-box-shadow:0 0 3px #999;box-shadow:0 0 3px #999;}
+.node_info button{float:left;margin-left:100px;display:block;box-sizing:content-box;width:80px;height:30px;padding:3px 10px;margin:0 auto;background:#0CF;border:1px solid #666;cursor:pointer;}
+/*side detail*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

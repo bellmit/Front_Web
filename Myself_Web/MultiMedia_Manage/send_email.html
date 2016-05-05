@@ -1,0 +1,163 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="description" content="德亿多媒体资源库,德亿多媒体,德亿多媒体资源库管理系统,管理系统--在线留言"/>
+<meta name="keywords" content="德亿多媒体资源库,德亿多媒体,德亿多媒体资源库管理系统,管理系统--在线留言"/>
+<link rel="stylesheet" type="text/css" href="css/funcpages.css">
+<script src="js/lib/jquery-1.8.3.min.js"></script>
+<script src="js/lib/jquery.form.min.js"></script>
+<script src="js/lib/jquery.validate.min.js"></script>
+<script src="js/lib/jquery.blockUI.min.js"></script>
+<script src="js/utils/util.js"></script>
+<script src="js/email.js"></script>
+<title>邮件中心--发件箱</title>
+</head>
+<body>
+<div class="email_header"><h1>德亿多媒体资源库管理系统</h1></div>
+<div class="email_container">
+    <table class="email_wrap">
+    	<tr>
+        	<td class="email_sidebox" id="email_sidebox">
+                <ul id="email_sidenav">
+                    <li class="ereceiveicon"><a href="receive_email.html" title=""><span></span>收件箱</a></li>
+                    <li class="esendicon esendiconsel"><a href="send_email.html" title=""><span></span>发件箱</a></li>
+                </ul>
+            </td>
+            <td class="email_control" id="sidenav_control"></td>
+            <td class="email_mainbox">
+            	<div class="email_result"><span></span></div>
+            	<div class="email_operate"><span id="email_write">写邮件</span><span id="email_look">查看邮件</span></div>
+                <div class="email_enter" id="email_enter">
+                    <form action="#" method="post" id="email_info">
+                    <table>
+                        <colgroup>
+                            <col class="ee_cg1"/>
+                            <col class="ee_cg2"/>
+                        </colgroup>
+                        <tr>
+                            <td><label for="send_person">发件人：</label></td>
+                            <td><input type="text" name="send_person" class="send_person" id="send_person"/></td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td><span id="send_person_tips"></span></td>
+                        </tr>
+                        <tr>
+                            <td><label for="receive_person">收件人：</label></td>
+                            <td><input type="text" name="receive_person" class="receive_person" id="receive_person"/></td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td><span id="receive_person_tips"></span></td>
+                        </tr>
+                        <tr>
+                            <td><label for="email_title">主题：</label></td>
+                            <td><input type="text" name="email_title" class="email_title" id="email_title"/></td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td><span id="email_title_tips"></span></td>
+                        </tr>
+                        <tr>
+                            <td><label for="email_content">内容：</label></td>
+                            <td><textarea name="email_content" class="email_content" id="email_content"></textarea></td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td><span id="email_content_tips"></span></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><input type="button" id="email_cance" value="取&nbsp;消" class="email_cance"/><input type="submit" id="email_save" value="保&nbsp;存" class="email_save"/><input type="submit" id="email_send" value="确&nbsp;定" class="email_send"/></td>
+                        </tr>
+                    </table>
+                    </form>
+                </div>
+                <div class="email_list" id="email_list">
+                    <table>
+                        <colgroup>
+                            <col class="el_cg1"/>
+                            <col class="el_cg2"/>
+                            <col class="el_cg3"/>
+                            <col class="el_cg4"/>
+                            <col class="el_cg5"/>
+                            <col class="el_cg6"/>
+                        </colgroup>
+                        <tr>
+                            <th>主题</th>
+                            <th>收件人</th>
+                            <th>发件人</th>
+                            <th>时间</th>
+                            <th>大小</th>
+                            <th>内容</th>
+                        </tr>
+                        <tr>
+                            <td><a href="#" id="01" title="">4564</a></td>
+                            <td><p>阿克江卡死的积分开始觉</p></td>
+                            <td><p>42565462546</p></td>
+                            <td><p>42565462546</p></td>
+                            <td><p>42565462546</p></td>
+                            <td><p class="email_details">dafkgjkdjksdjfksdjfksdjfksjksdjfksjdfksjdfdafkgjkdjksdjfksdjfksdjfksjksdjfksjdfksjdfdafkgjkdjksdjfksdjfksdjfksjksdjfksjdfksjdf</p></td>
+                        </tr>
+                        <tr>
+                            <td><a href="#" id="02" title="">4564</a></td>
+                            <td><p>阿克江卡死的积分开始觉</p></td>
+                            <td><p>42565462546</p></td>
+                            <td><p>42565462546</p></td>
+                            <td><p>42565462546</p></td>
+                            <td><p class="email_details">dafkgjkdjksdjfksdjfksdjfksjksdjfksjdfksjdfdafkgjkdjksdjfksdjfksdjfksjksdjfksjdfksjdfdafkgjkdjksdjfksdjfksdjfksjksdjfksjdfksjdf</p></td>
+                        </tr>
+                        <tr>
+                            <td><a href="#" id="03" title="">4564</a></td>
+                            <td><p>阿克江卡死的积分开始觉</p></td>
+                            <td><p>42565462546</p></td>
+                            <td><p>42565462546</p></td>
+                            <td><p>42565462546</p></td>
+                            <td><p class="email_details">dafkgjkdjksdjfksdjfksdjfksjksdjfksjdfksjdfdafkgjkdjksdjfksdjfksdjfksjksdjfksjdfksjdfdafkgjkdjksdjfksdjfksdjfksjksdjfksjdfksjdf</p></td>
+                        </tr>
+                        <tr>
+                            <td><a href="#" id="04" title="">4564</a></td>
+                            <td><p>阿克江卡死的积分开始觉</p></td>
+                            <td><p>42565462546</p></td>
+                            <td><p>42565462546</p></td>
+                            <td><p>42565462546</p></td>
+                            <td><p class="email_details">dafkgjkdjksdjfksdjfksdjfksjksdjfksjdfksjdfdafkgjkdjksdjfksdjfksdjfksjksdjfksjdfksjdfdafkgjkdjksdjfksdjfksdjfksjksdjfksjdfksjdf</p></td>
+                        </tr>
+                        <tr>
+                            <td><a href="#" id="05" title="">4564</a></td>
+                            <td><p>阿克江卡死的积分开始觉</p></td>
+                            <td><p>42565462546</p></td>
+                            <td><p>42565462546</p></td>
+                            <td><p>42565462546</p></td>
+                            <td><p class="email_details">dafkgjkdjksdjfksdjfksdjfksjksdjfksjdfksjdfdafkgjkdjksdjfksdjfksdjfksjksdjfksjdfksjdfdafkgjkdjksdjfksdjfksdjfksjksdjfksjdfksjdf</p></td>
+                        </tr>
+                        <tr>
+                            <td><a href="#" id="06" title="">4564</a></td>
+                            <td><p>阿克江卡死的积分开始觉</p></td>
+                            <td><p>42565462546</p></td>
+                            <td><p>42565462546</p></td>
+                            <td><p>42565462546</p></td>
+                            <td><p class="email_details">dafkgjkdjksdjfksdjfksdjfksjksdjfksjdfksjdfdafkgjkdjksdjfksdjfksdjfksjksdjfksjdfksjdfdafkgjkdjksdjfksdjfksdjfksjksdjfksjdfksjdf</p></td>
+                        </tr>
+                        <tr>
+                            <td><a href="#" id="07" title="">4564</a></td>
+                            <td><p>阿克江卡死的积分开始觉</p></td>
+                            <td><p>42565462546</p></td>
+                            <td><p>42565462546</p></td>
+                            <td><p>42565462546</p></td>
+                            <td><p class="email_details">dafkgjkdjksdjfksdjfksdjfksjksdjfksjdfksjdfdafkgjkdjksdjfksdjfksdjfksjksdjfksjdfksjdfdafkgjkdjksdjfksdjfksdjfksjksdjfksjdfksjdf</p></td>
+                        </tr>
+                    </table>
+                    <div class="email_pages">分页区域</div>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+<div class="email_footer">
+	<div class="footer">
+    	<p>Copyright&nbsp;2013-2016&copy;,&nbsp;YIDE&nbsp;NET,All&nbsp;Rights&nbsp;Reserved</p>
+    </div>
+</div>
+</body>
+</html>

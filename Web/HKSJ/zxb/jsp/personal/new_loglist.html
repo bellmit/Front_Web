@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="description" content="惠信--装小宝--个人中心--我的装修日记-写日记">
+<meta name="keywords" content="惠信--装小宝--个人中心--我的装修日记-写日记">
+<title>惠信--装小宝--个人中心--我的装修日记-写日记</title>
+<link rel="stylesheet" type="text/css" href="../../css/manage.css">
+<link rel="stylesheet" type="text/css" href="../../css/personal.css">
+<link rel="stylesheet" type="text/css" href="../../js/plugins/kindeditor/themes/default/default.css">
+</head>
+<body>
+
+		<!--顶部区域-->
+    <div class="main-header">
+        <div class="main-portal">
+            <div>
+                <div class="portal-position">
+                    <span></span>
+                        深圳
+                </div>
+                <div class="portal-info">
+                	<p>服务热线：400-065-8888</p>
+                  <div class="header-zx"><a href="#">我要装修</a></div>
+                   <div class="header-menu-news">
+                   		<a href="#"><span></span>消息 <i>(0)</i></a>
+                      <ul>
+                      	<li><a href="#">我的装修</a></li>
+                      	<li><a href="loglist.html">装修日记</a></li>
+                      	<li><a href="#">系统消息</a></li>
+                      </ul>
+                   </div>
+                   <div class="header-pull-down-menu">
+                      <a href="#">zhuangxiaobao88<span></span></a>
+                      <ul>
+                        <li><a href="home.html">个人中心</a></li>
+                        <li><a href="psdata.html">账号设置</a></li>
+                        <li><a href="#">退出</a></li>
+                      </ul>
+               		 </div>
+                </div>
+            </div>
+        </div>
+        <div class="header-info">
+        	<div>
+            	<div>
+            		<a href="/zxb/jsp" class="info-logo">logo</a>
+                </div>
+                <div class="info-border"></div>
+                <div class="info-font">
+                    个人中心首页
+                </div>
+            </div>
+        </div>
+        <div class="header-bottom"></div>
+        <div class="main-header-position">
+        	<div class="main-header-position-font">
+            	  <div id="postion11">个人首页&gt;</div>
+                <div id="postion22">我的装修日记管理&gt;</div>
+                <div id="postion22">我的装修日记&gt;</div>
+                <div id="postion33" class="current-postion">写日记&gt;</div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- 中心部分-->
+    <div class="content-wrap">
+    	<div class="main-content-listbox">
+              <div class="list-ct-top">写日记</div>
+              <form id="diary_form" action="#" method="post">
+              <div class="list-ct-box">
+              		<div class="list-ct-left">
+                  		<textarea name="diaryContents" placeholder="说点什么吧，来记录您装修过程中的点点滴滴" id="diary_content"></textarea>
+                  </div>
+                  <div class="list-ct-right">
+                     <div class="ct-right-1">  
+                         <p><b>选择装修阶段 </b>制定整体预算。选择装修风格、主材、家具、家电配饰等。寻找合适的施工方，签订合同后开工！
+                         </p>     
+                         <input type="text" id="stage" class="g-d-hidei"> 
+                          <div class="ct-right-tag1" id="stage_tag">
+                            <span>准备</span>
+                            <span>拆改</span>
+                            <span>水电</span>
+                            <span>泥木</span>
+                            <span>油漆</span>
+                            <span>竣工</span>
+                            <span>软装</span>
+                            <span>入住</span>
+                          </div>
+                     </div>
+                     <div class="ct-right-2">
+                        <p><b>选择日记标签</b>用一个标签来描述你的日记内容吧</p> 
+                        <input type="text" id="themelabel" class="g-d-hidei">
+                        <div class="ct-right-tag2" id="themelabel_tag1">
+                          <span>前期准备</span>
+                          <span>交房验房</span>
+                          <span>前期设计</span>
+                          <span>签装修保</span>
+                          <span>开工大吉</span>
+                          <span>开工大吉</span>
+                          <span>开工大吉</span>
+                        </div>
+                    </div>
+                     <div class="themelabel-more">更多<span></span>
+                         <div class="themelabel-wrap" id="themelabel_tag2">
+                            <span>行走在流行时尚前沿</span>
+                            <span>沉醉在午后花影藤风</span>
+                            <span>勾起怀旧思绪</span>
+                            <span>尊贵典雅气息处处流露</span>
+                            <span>高端</span>
+                            <span>大气</span>
+                            <span>上档次</span>
+                            <span>极简</span>
+                         </div>
+                     </div>
+                  </div>
+                 
+              </div>
+          		<div class="list-ct-choicedata">
+              	<p><b>选择日期</b>如果是写回忆贴，可修改日记发生当天的日期</p>
+                <input placeholder="请选择日期" type="text" readonly id="createtime" name="date">
+              </div>
+              <div class="list-ct-choicedata">
+              		<p><b>上传装修照片</b>选择装修过程中的照片，每张低于5M，支持JPG/JPEG/PNG格式，最多9张</p>
+                  <div class="list-file-img">
+                    <input type="hidden">
+                  	<div id="upload_btn"><span></span>选择图片</div>
+                    <p class="list-imgshow" id="upload_show"><img src="../../images/hot_case.jpg"></p>
+                  </div>
+                  <button type="submit">发布日记</button>
+              </div>
+              </form>
+    	</div>
+    </div>
+     
+     
+     
+     <!--底部导航-->
+    <div class="footer-wrap">
+        <div class="footer-infowrap">
+        	<div class="footer-content1">
+              <div class="footer-infobox1">
+              		<div>
+                  		<h5>业主指南</h5>
+                  		<a href="#">看装修案例</a>
+                      <a href="#">找装修公司</a>
+                      <a href="#">查装修攻略</a>
+                      <a href="#">我要装修</a>
+                  </div>
+                  <div>
+                  		<h5>关于我们</h5>
+                  		<a href="#">关于装小宝</a>
+                      <a href="#">联系我们</a>
+                      <a href="#">人才招聘</a>
+                      <a href="#">集团官网</a>
+                  </div>
+                  <div>
+                  		<h5>发现更多</h5>
+                  		<a href="#">装小宝承诺</a>
+                      <a href="#">装小宝联盟</a>
+                      <a href="#">装小宝装修合同</a>
+                      <a href="#">法律声明</a>
+                  </div>
+              </div>
+              <div class="footer-infobox2">
+              		<div>
+                  	<h5>客服电话</h5>
+                    <p>400-065-8888</p>
+                    <span>24小时为您服务</span>
+                  </div>
+              </div>
+              <div class="footer-infobox3">
+              		<dl>
+                  	<dt>关注我们</dt>
+                    <dd>
+                      <a class="xlwb" href="#"><span></span>新浪微博</a>
+                      <a class="txwb" href="#"><span></span>腾讯微博</a>
+                      <a class="qqkj" href="#"><span></span>QQ空间</a>
+                    </dd>
+                  </dl>
+                  <div>
+                  	<a href="#">
+                    	<img alt="" src="../../images/icon_weixin.png">
+                    </a>
+                    <span>装小宝官方微信</span>
+                  </div>
+              </div>
+            </div>
+            <div class="footer-content2">
+                <p>© 2015 huixin. All Rights Reserved　深圳惠卡金融服务有限公司版权所有  粤ICP备15076433Copyright</p>
+                <div>
+                  <a href="#" class="info-credible1"></a>
+                  <a href="#" class="info-credible2"></a>
+                  <a href="#" class="info-credible3"></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+    
+    
+    <script src="../../js/lib/require/require-2.1.11.min.js" data-main="../../js/personal/new_loglist.js"></script> 
+</body>
+</html>

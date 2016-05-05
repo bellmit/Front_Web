@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<meta name="description" content="电子商务系统--经销商报单--购货单">
+<meta name="keywords" content="电子商务系统--经销商报单--购货单">
+<title>电子商务系统--经销商报单--购货单</title>
+<link rel="stylesheet" type="text/css" href="../../resource/css/bootstrap_2.3.2/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="../../resource/css/bootstrap_2.3.2/css/responsive.min.css">
+<link rel="stylesheet" type="text/css" href="../../resource/css/base.css">
+<link rel="stylesheet" type="text/css" href="../../resource/css/grid.css">
+<link rel="stylesheet" type="text/css" href="../../resource/css/grid_goods.css">
+<link rel="stylesheet" type="text/css" href="../../resource/js/lib/artDialog/css/ui-dialog.css">
+</head>
+<body>
+    <!--顶部导航菜单-->
+    <div class="navbar g-cleargap">
+    	<div class="headerwrap">
+      	<div>
+          <ul>
+            <li><p>(20150400239) 您好，欢迎使用本系统！</p><span>[<a href="#">退出</a>]</span></li>
+            <li><p>代理用户：</p><em>小易叔叔(<i>88abcd</i>)</em><span>[<a href="#">返回</a>]</span></li>
+          </ul>
+        </div>
+    	</div>
+      <div class="navbar-inner">
+        <div class="container">
+          <button data-target=".nav-collapse" data-toggle="collapse" class="btn btn-navbar" type="button">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <div class="nav-collapse collapse">
+            <ul class="nav" id="mainmenu">
+              <li>
+                <a href="../index.html" data-part="index" >首页</a>
+              </li>
+              <li>
+                <a href="../info/info_manage.html" data-part="info" >信息中心</a>
+              </li>
+              <li>
+                <a href="../fund/account_manage.html" data-part="fund" >账户中心</a>
+              </li>
+              <li>
+                <a href="../shop/shop_manage.html" data-part="shop" >申请管理</a>
+              </li>
+              <li>
+                <a href="dealer_manage.html" data-part="goods" >报单管理</a>
+              </li>
+              <li>
+                <a href="../record/member_manage.html" data-part="record" >资料维护</a>
+              </li>
+              <li class="divider-vertical" ></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--底部导航-->
+    <div class="mainwrap">
+    	<div class="container-fluid">
+      	<div class="row-fluid">
+        		<div class="span24 pull-left">
+              <ul class="sidebox">
+                <li class="sidemenu sidemenu-mini">
+                	<h3>报单管理</h3>
+                   <div id="submenu" >
+                  <a href="dealer_manage.html">经销商报单</a>
+                  <a href="receive_manage.html">收货确认</a>
+                  <a href="back_manage.html">退换待发货管理</a>
+                  <a href="being_manage.html">退换已发货管理</a>
+                  <a href="memberactive_manage.html">会员激活</a>
+                  </div>
+                </li>
+              </ul>
+            </div>
+        		<div class="span24 pull-right">
+            		<ul class="mainbox">
+                    <li class="main-grid">
+                    		<!--grid主题-->
+                    		<div class="grid-theme grid-themeedit">购货单</div>
+                        <!--grid 商品选择-->
+                        <div class="grid-shopping">
+                        		<div class="grid-toggle" id="grid_toggleshop">商品浏览</div>
+                            <div class="shopping-wrap g-d-hide">
+                            		<!--标题-->
+                            		<div class="shopping-theme">商品列表</div>
+                                <!--搜索区域-->
+                                <div class="input-append shopping-search">
+                                  <input class="span8" name="search" data-theme="搜索关键词" id="search" type="text">
+                                  <button class="btn" id="searchbtn" type="button">搜索</button>
+                                </div>
+                                <!--快捷导航查询--主导航-->
+                                <ul class="shopping-keyword" id="kindGrademain">
+                                		<li data-value="15">辅销品</li>
+                                    <li data-value="12">日化品</li>
+                                    <li data-value="13">科技产品</li>
+                                    <li data-value="14">快速消费品</li>
+                                    <li data-value="11">保健品</li>
+                                </ul>
+                                <!--快捷导航查询--子导航-->
+                                <ul class="shopping-keyword" id="kindGradesub"></ul>
+                                <!--商品展示区-->
+                                <ul class="shopping-show" id="shopping_show">
+                                		<li data-value="商品名称1,534,24555">
+                                    	<img src="../../resource/images/shopping_default.jpg">
+                                    	<span>商品名称1</span>
+                                    </li>
+                                    <li data-value="商品名称2,67,25656">
+                                    	<img src="../../resource/images/shopping_default.jpg">
+                                    	<span>商品名称2</span>
+                                    </li>
+                                    <li data-value="商品名称3,srty,wrtty">
+                                    	<img src="../../resource/images/shopping_default.jpg">
+                                    	<span>商品名称3</span>
+                                    </li>
+                                    <li data-value="商品名称4,sfghfgh,ertyrt">
+                                    	<img src="../../resource/images/shopping_default.jpg">
+                                    	<span>商品名称4</span>
+                                    </li>
+                                    <li data-value="商品名称5,shsh,fghfh">
+                                    	<img src="../../resource/images/shopping_default.jpg">
+                                    	<span>商品名称5</span>
+                                    </li>
+                                    <li data-value="商品名称6,534,24555">
+                                    	<img src="../../resource/images/shopping_default.jpg">
+                                    	<span>商品名称6</span>
+                                    </li>
+                                    <li data-value="商品名称7,534,24555">
+                                    	<img src="../../resource/images/shopping_default.jpg">
+                                    	<span>商品名称7</span>
+                                    </li>
+                                    <li data-value="商品名称8,534,24555">
+                                    	<img src="../../resource/images/shopping_default.jpg">
+                                    	<span>商品名称8</span>
+                                    </li>
+                                    <li data-value="商品名称9,534,24555">
+                                    	<img src="../../resource/images/shopping_default.jpg">
+                                    	<span>商品名称9</span>
+                                    </li>
+                                		<li data-value="商品名称10,534,24555">
+                                    	<img src="../../resource/images/shopping_default.jpg">
+                                    	<span>商品名称10</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!--grid 数据表格展现-->
+                        <div class="grid-datalist">
+                        		<div class="grid-toggle grid-togglehide" id="grid_togglelist">已选择商品</div>
+                                <div>
+                                	<table class="table table-hover table-bordered g-fleft" id="addpoorder_griddata">
+                                      <colgroup>
+                                          <col class="g-cg2" />
+                                          <col class="g-cg4" />
+                                          <col class="g-cg3" />
+                                          <col class="g-cg3" />
+                                          <col class="g-cg2" />
+                                          <col class="g-cg2" />
+                                          <col class="g-cg2" />
+                                          <col class="g-cg2" />
+                                      </colgroup>
+                                      <tbody>
+                                      	<tr id="addpoorder_wrap">
+                                            <th>操作</th>
+                                            <th>分公司/仓库编号</th>
+                                            <th>商品代码</th>
+                                            <th>商品名称</th>
+                                            <th>FV</th>
+                                            <th>F$</th>
+                                            <th>可用库存量</th>
+                                            <th>购买数量</th>
+                                        </tr>
+                                        <tr>
+                                            <td><span data-value="1" data-action="delete">删除</span></td>
+                                            <td><em>深圳龙华店</em>/<em>SDF3465472</em></td>
+                                            <td><p>356fgshr</p></td>
+                                            <td>深圳公司</td>
+                                            <td><p>ET23456</p></td>
+                                            <td><p>562556</p></td>
+                                            <td>5</td>
+                                            <td><input type="text" name="buys" value="1" class="g-wpx1 shopping-buys-number"></td>
+                                        </tr>
+                                      </tbody>
+                                  </table>
+                                </div>
+                        </div>
+                        <!--grid表单-->
+                    		<div class="grid-form">
+                            	<div class="grid-toggle" id="grid_togglefrom">提交商品信息</div>
+                              <div class="g-d-hide">
+                                	<form action="#" id="poOrder" class="form-horizontal" method="post">
+                                        <input type="hidden" name="_form_uniq_id" value="">
+                                        <input type="hidden" name="strAction" value="">
+                                        <div class="control-group">
+                                          <label for="inputAddr_recName" class="control-label form-require-icon">收货人姓名：</label>
+                                          <div class="controls">
+                                            <input  id="inputAddr_recName" type="text" class="span6" name="recName" placeholder="请输入收货人姓名" >
+                                          </div>
+                                        </div>
+                                        <div class="control-group">
+                                          <label for="inputAddr_recPhone" class="control-label">会员联系电话：</label>
+                                          <div class="controls">
+                                            <input  id="inputAddr_recPhone" type="text" class="span6" name="recPhone" maxlength="13" placeholder="请输入会员联系电话" >
+                                          </div>
+                                        </div>
+                                        <div class="control-group">
+                                          <label class="control-label">收货地址：</label>
+                                          <div class="controls">
+                                            <label class="radio"><input  id="address1" type="radio" name="address_radio" >专卖店收货：中国大陆 山东省 青岛市 青岛市 山东省青岛市花园小区一栋</label>
+                                            <label class="radio"><input  id="address2" type="radio" name="address_radio" >自选</label>
+                                          </div>
+                                        </div>
+                                        <div class="control-group g-d-hide" id="addresswrap">
+                                          <label class="control-label  form-require-icon">填写详细地址</label>
+                                          <div class="controls">
+                                            <select id="country" name="country" class="g-wpx3">
+                                              <option value="">---请选择---</option>
+                                              <option value="1">测试国家1</option>
+                                              <option value="2">测试国家2</option>
+                                              <option value="3">测试国家3</option>
+                                            </select>
+                                            <select id="province" name="province" class="g-wpx3">
+                                              <option value="">--请选择省份--</option>
+                                                <option value="1">测试省份1</option>
+                                                <option value="2">测试省份2</option>
+                                                <option value="3">测试省份3</option>
+                                            </select>
+                                            <select id="city" name="city" class="g-wpx3">
+                                              <option value="">--请选择市--</option>
+                                                <option value="1">测试城市1</option>
+                                                <option value="2">测试城市2</option>
+                                                <option value="3">测试城市3</option>
+                                            </select>
+                                            <select id="district" name="district" class="g-wpx3">
+                                              <option value="">--请选择区/县--</option>
+                                                <option value="1">测试市县1</option>
+                                                <option value="2">测试市县2</option>
+                                                <option value="3">测试市县3</option>
+                                            </select>
+                                            <input  id="recAddr" type="text" class="g-wpx6" name="recAddr" placeholder="请输入详细地址" >
+                                          </div>
+                                        </div>
+                                        <div class="control-group">
+                                          <label for="remark" class="control-label">备注：</label>
+                                          <div class="controls">
+                                            <textarea id="remark" class="span18" rows="8" placeholder="请输入内容"  name="remark"></textarea>
+                                          </div>
+                                        </div>
+                                        <div class="control-group form-control-minigap">
+                                          <label class="control-label">总计：</label>
+                                          <div class="controls">
+                                          		<span class="form-control-text g-c-cyan1">F$:</span>
+                                              <span class="form-control-text g-c-gray5" id="count_FD"></span>
+                                              <span class="form-control-gaptext g-c-cyan1">FV:</span>
+                                              <span class="form-control-text g-c-gray5" id="count_FV"></span>
+                                          </div>
+                                        </div>
+                                        <div class="control-group">
+                                          <div class="controls">
+                                            <button type="submit" class="span5 btn form-btnsave-icon">保存</button>
+                                            <a href="dealer_manage.html" class="span5 btn form-btncance-icon">取消</a>
+                                          </div>
+                                        </div>
+                                    </form>
+                              </div> 	                      		
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+      </div>
+    </div>
+    <!--底部导航-->
+    <div class="footerwrap">
+    
+    </div>
+    <script src="../../resource/js/lib/require/require-2.1.11.min.js" data-main="../../resource/js/goods/AddPoOrder.js"></script>
+</body>
+</html>

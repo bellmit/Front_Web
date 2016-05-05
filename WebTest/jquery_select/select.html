@@ -1,0 +1,29 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+<script src="js/jquery-1.6.2.min.js"type="text/javascript"></script>
+<script src="js/select.js" type="text/javascript"></script>
+<script type="text/javascript">
+	$(function (){$.BeautifySelect(document.getElementById("c"));});
+</script>
+</head>
+    <body>
+    	<div class="searchBar">
+            <div class="select">
+                <select id="c" style="display:none" name="c">
+                    <option value="1">生活信息</option>
+                    <option value="2">店铺商家</option>
+                    <option value="3">新闻资讯</option>
+                    <option value="4">团购活动</option>
+                    <option value="5">招聘信息</option>
+                </select>
+            </div>
+            <div class="text">
+                <input class="s_t" onblur="if(this.value==''){this.value='shuidd.com';this.style.color='#aaa'}" onfocus="if(this.value=='shuidd.com'){this.value='';this.style.color='#000000'}" value="shuidd.com" name="keyword" />
+            </div>
+        	<a href="#" class="btn"><img src="images/btn.gif" alt="" /></a>
+        </div>
+    </body>
+</html>

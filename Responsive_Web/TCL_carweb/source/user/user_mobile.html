@@ -1,0 +1,80 @@
+﻿<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+<meta charset="UTF-8">
+<title>绑定手机</title>
+<#include "/includes/carcenter_res.html"/>
+</head>
+<body>
+<div class="bg_wrap">
+  <div class="wrapper">
+  	<#include "/includes/header.html"/>
+    <div class="boardframe">
+      <div class="fri-content">
+        <div class="wrap-con">
+          <#include "/includes/car_userinfos.html"/>
+          <div class="p_share">
+            <h1 class="p_h1 bg_1">个人资料</h1>
+            <div id="feedcontainer">
+              <div class="info-con">
+                <div class="p-tabs">
+                  <ul>
+                    <li><a href="user_info.html">个人信息</a></li>
+                    <li><a href="user_ico.html">头像设置</a></li>
+                    <li><a href="user_pwd.html">修改密码</a></li>
+                    <li><a href="car_info.html">车辆信息</a></li>
+                    <li class="active"><a href="user_mobile.html">绑定手机</a></li>
+                  </ul>
+                </div>
+                <div class="info-tabs-con">
+                  <div class="tab-list">
+                    <form action="" id="mobileForm">
+                      <table border="0" class="form_table">
+                        <#if friendInfo??>
+                           <input type="hidden" name="friendid" id="friendid" value="${friendInfo.friendid!''}"/>
+                           <input type="hidden" name="seqid" id="seqid" value="${friendInfo.seqid!''}"/>
+                           <input type="hidden" name="nickname" id="nickname" value="${friendInfo.nickname!''}"/>
+                        </#if>
+                        <tbody>
+                         <tr>
+                            <th width="18%">已绑定手机号</th>
+                            <td width="82%">
+                            <#if friendInfo?? && friendInfo.bindingmobile?? && friendInfo.bindingmobile?length ==11>
+                               ${(friendInfo.bindingmobile)?substring(0,3)!''}****${(friendInfo.bindingmobile)?substring(7,11)!''}
+                            </#if>
+                            </td>
+                          </tr>
+                          <tr>
+                            <th width="18%"><span class="tips_requiredef">*</span>手机号码</th>
+                            <td width="82%"><input style="float:left;" class="small-text" type="text" name="bindingmobile" id="bindingmobile" value="">
+                              <input style="float:left;" type="button" id="getCode" disabled="disabled" value="免费获取验证码"/><span id="bindingmobile_tips" class="tips_wrap_default"></span></td>
+                          </tr>
+                          <tr>
+                            <th><span class="tips_requiredef">*</span>短信验证码</th>
+                            <td><input style="float:left;" class="small-text owe" type="text" id="code" name="code" value=""><span class="tips_wrap_default" id="code_tips"></span></td>
+                          </tr>
+                          <tr>
+                            <td></td>
+                            <td><input type="submit" name="Submit" class="regular-btn" id="user_mobilebtn" value="提交">
+                              <input type="reset" value="取消" class="regular-btn" name="Submit"></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <#include "/includes/car_sidenav.html"/>
+    </div>
+  </div>
+</div>
+<#include "/includes/footer.html"/>
+<script src="../../../../ResponsiveWebDesign_Web/TCL_carweb/source/user/${request.contextPath}/resources/js/lib/jquery.form.js"></script>
+<script src="../../../../ResponsiveWebDesign_Web/TCL_carweb/source/user/${request.contextPath}/resources/js/lib/jquery.validate.js"></script>
+<script src="../../../../ResponsiveWebDesign_Web/TCL_carweb/source/user/${request.contextPath}/resources/js/carfri/user_mobile.js"></script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<script type="text/javascript" src="jquery-1.8.3.min.js"></script>
+<script type="text/javascript">
+$(function(){
+	var ifobj=$("#ky_content");
+	alert(ifobj);
+});
+</script>
+<title>关于跨域问题</title>
+<style>
+/*global*/
+html,body{margin:0;padding:0;text-decoration:underline;font-size:100px;font-family:"宋体";}
+body *{margin:0;padding:0;resize:none;border:0 none;font-size:100px;font-family:"宋体";text-decoration:underline;}
+body *:focus{outline:0 none;}
+ul,li{list-style:none;}
+/*details*/
+.container{width:1000px;height:500px;margin:0 auto;background:#f6f6f6;}
+.ky_title{width:1000px;height:50px;margin:0 auto;line-height:50px;font-size:30px;text-align:center;}
+.ky_wrap{width:800px;height:400px;margin:0 auto;position:relative;left:0;top:0;z-index:10;}
+.ky_mask{position:absolute;left:0;top:0;width:779px;height:150px;left:0;top:0;background:#fff;}
+.ky_wrap iframe{width:800px;height:400px;background:#fff;border:0 none;}
+</style>
+</head>
+<body>
+    <div class="container">
+    	<h1 class="ky_title">关于跨域问题</h1>
+        <div class="ky_wrap">
+        	<div class="ky_mask"></div>
+        	<iframe name="ky_content" id="ky_content" src="http://www.baidu.com"></iframe>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,11 @@
+{
+	"action":true,
+	"stylistList":{
+		"id":"1",
+		"designImg":"../../images/iconfont-mianfeijianli.png",
+		"designName":"张三",
+		"designVocation":"设计总监",
+		"designExperience":"35年",
+		"designStyle":"01,03,06,11,13"
+	}
+}

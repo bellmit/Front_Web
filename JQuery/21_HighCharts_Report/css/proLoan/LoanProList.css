@@ -1,0 +1,120 @@
+@charset "utf-8";
+/* CSS Document */
+.prolist{
+	overflow:hidden;
+	position:relative;
+	margin-top:10px;
+	margin-bottom: 50px;}
+.prolist .pro{
+	position:relative;
+	float:left;
+	width:318px;
+	height:346px;
+	border:1px solid #CECECE;
+	border-radius:8px;
+	margin-right:20px;
+	overflow:hidden;}
+.prolist .pro .header{
+	background:url(../../image/proLoan/prohbg.fw.png) no-repeat left top;
+	}
+.prolist .forstaff .header{
+	background-position:0px 0px;
+	}
+.prolist .forcom .header{
+	background-position:0px -134px;
+	}
+.prolist .forassets .header{
+	background-position:0px -268px;
+	}
+.prolist .forstaff:hover .header{
+	background-position:0px -67px;
+	}
+.prolist .forstaff:hover{
+	border-color:#4FABBF;}
+.prolist .forcom:hover .header{
+	background-position:0px -201px;
+	}
+.prolist .forcom:hover{
+	border-color:#FE7959;}
+.prolist .forassets:hover .header{
+	background-position:0px -335px;
+	}
+.prolist .forassets:hover{
+	border-color:#71BE56;}
+.prolist .forassets{
+	margin-right:0px;}
+.pro .header{
+	height:67px;
+	background:#73CCDF;	
+	color:#fff;
+	padding-left:16px;
+	}
+.pro .header h2{
+	position: relative;
+	top: 12px;
+	color:#fff;
+	font-size:22px;
+	font-family:"微软雅黑";
+	text-indent:-9999px;}
+.pro .header h2 a{
+	display: block;}
+.pro .header p{
+	font-size:12px;
+	color:#CCEDF3;
+	margin-top:17px;}
+.forcom .header p{
+	color:#F8CAAF;}
+.forassets .header p{
+	color:#DEFFCE;}
+.pro .des{
+	margin-top:16px;
+	padding-left:16px;}
+.pro .ul p{
+	font-size:12px; 
+	color:#999999;
+	margin-bottom: 6px;}
+.ul ul{
+	margin-bottom:12px;}
+.des ul li{
+	font-size:14px;
+	color:#434343;
+	background:url(../../image/proLoan/listStyle.fw.png) no-repeat 0px 2px;
+	padding-left:15px;
+	margin-left:12px;
+	line-height:150%;}
+.forstaff .ul li{
+	background-position: 0px 2px;}
+.forcom .ul li{
+	background-position: 0px -20px;}
+.forassets .ul li{
+	background-position: 0px -45px;}
+.pro .prolink{
+	color:#00A0E8;
+	font-size:12px;}
+.pro .prolink:hover{
+	text-decoration:underline;}
+.mb24{
+	margin-bottom:24px;}
+.gotoloan{
+	position:absolute;
+	top:289px;
+	left:16px;
+	width:116px;
+	height:36px;
+	background:url(../../image/proLoan/gotoLoan.fw.png) no-repeat -4px -4px;
+	text-indent:-9999px;
+	cursor:pointer;
+	}
+.warn{
+	padding:12px 20px; border-radius:4px;
+}
+.warn p{
+	color:#434343; font-size:12px;
+	background:url(../../image/common/warn.fw.png) no-repeat left center;
+	padding-left:18px;	
+	margin-right: 43px;
+}
+.warn .closeWarn{ position:absolute; right:22px; top:12px; background:url(../../image/icons_lyz.fw.png) no-repeat -98px -578px; width:13px; text-indent:-9999px; height:13px; display:block;}
+.warn p a{
+	color:#f2462a; font-size:12px; text-decoration: underline;
+}

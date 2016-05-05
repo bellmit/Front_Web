@@ -1,0 +1,46 @@
+/* CSS Document */
+/*global*/
+body{margin:0;padding:0;background:#fff url(../images/wrapper.jpg) repeat center center;}
+body *{margin:0;padding:0;font-size:100%;text-decoration:none;color:#000;font-family:"宋体", serif, sans-serif, "宋体-PUA", "楷体_GB2312", "仿宋_GB2312", Vrinda;list-style:none;resize:none;border:0 none;}
+body *:focus{outline:none;}
+/*page layout*/
+.header{width:100%;height:39px;background:url(../images/top_bg1.png) repeat-x center center;margin:0 auto;}
+.container{width:1000px;height:auto;border-left:1px solid #999;border-right:1px solid #999;border-bottom:1px solid #999;margin:0 auto;background:#fff;}
+.content{width:960px;height:400px;margin:0 auto;padding:50px 0;}
+.sidebox{width:440px;height:300px;float:left;background:url(../images/css3tips.jpg) no-repeat center center;}
+.mainbox{width:500px;height:auto;float:left;}
+/*top*/
+.header h1{width:1002px;height:38px;text-indent:8em;margin:0 auto;font-size:16px;border-bottom:1px solid #999;line-height:1.8em;color:#900;}
+/*sidebox*/
+/*mainbox*/
+/*table*/
+.css3test1{width:480px;height:auto;border:1px solid #960;margin:0 auto;}
+.css3test1 tr td{padding:5px 0;}
+/*table layout*/
+.test1col1{width:15%;}
+.test1col2{width:15%;}
+.test1col3{width:40%;}
+.test1col4{width:30%;}
+/*label*/
+.css3test1 label{float:right;font-size:14px;padding:3px;cursor:pointer;color:#930;}
+.css3test1 label:hover{color:#069;}
+/*text*/
+.css3test1 input{float:left;width:180px;height:20px;font-size:14px;line-height:1.5em;border:1px solid #999;-moz-border-radius:3px;-khtml-border-radius:3px;-webkit-border-radius:3px;border-radius:3px;-moz-box-shadow:0 0 2px #999;-webkit-box-shadow:0 0 2px #999;box-shadow:0 0 2px #999;}
+.css3test1 input:focus{border:1px solid #009ECC;-moz-border-radius:3px;-khtml-border-radius:3px;-webkit-border-radius:3px;border-radius:3px;-moz-box-shadow:0 0 3px #01BCEB;-webkit-box-shadow:0 0 3px #01BCEB;box-shadow:0 0 3px #01BCEB;background:#F4FFDD;color:#333;}
+/*spans*/
+.css3test1 span{float:left;color:red;font-size:12px;display:block;width:130px;height:auto;}
+
+/*h2*/
+.css3test1 h2{text-align:center;font-size:14px;padding:6px 0;color:#069;}
+/*button*/
+.css3test1 button{float:left;width:auto;height:auto;padding:3px 10px;color:#666;font-size:14px;cursor:pointer;background:#eee;box-shadow:0 1px 3px #fff inset,0 2px 3px #ddd;border-radius:5px;border:1px solid #bbb;}
+.css3test1 button:hover{color:#000;}
+
+
+
+
+
+
+
+
+

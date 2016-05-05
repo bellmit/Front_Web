@@ -1,0 +1,36 @@
+<div class="fri-sidebar">
+  <div class="sidebar-nav" id="sidebar-nav">
+    <div class="p_index p_blue"><a href="../../../../ResponsiveWebDesign_Web/TCL_carweb/source/includes/${request.contextPath}/carfri/user_index">个人首页</a></div>
+    <div class="p_data p_blue"><a href="../../../../ResponsiveWebDesign_Web/TCL_carweb/source/includes/${request.contextPath}/carfri/user_info">个人资料</a><i></i></div>
+    <ul>
+      <li class="p_info"><a href="../../../../ResponsiveWebDesign_Web/TCL_carweb/source/includes/${request.contextPath}/carfri/user_info">个人信息</a></li>
+      <li class="p_photo"><a href="../../../../ResponsiveWebDesign_Web/TCL_carweb/source/includes/${request.contextPath}/carfri/user_ico">修改头像</a></li>
+      <li class="p_pwd"><a href="../../../../ResponsiveWebDesign_Web/TCL_carweb/source/includes/${request.contextPath}/carfri/user_pwd">修改密码</a></li>
+      <li class="p_car"><a href="../../../../ResponsiveWebDesign_Web/TCL_carweb/source/includes/${request.contextPath}/carfri/car_info">车辆信息</a></li>
+      <li class="p_mobile"><a href="../../../../ResponsiveWebDesign_Web/TCL_carweb/source/includes/${request.contextPath}/carfri/user_mobile">绑定手机</a></li>
+    </ul>
+    <div class="p_server p_blue"><a href="../../../../ResponsiveWebDesign_Web/TCL_carweb/source/includes/${request.contextPath}/carfri/car_server">车机服务</a><i></i></div>
+    <ul>
+      <li class="p_maintain"><a href="../../../../ResponsiveWebDesign_Web/TCL_carweb/source/includes/${request.contextPath}/carfri/car_server">保养记录</a></li>
+      <li class="p_report"><a href="../../../../ResponsiveWebDesign_Web/TCL_carweb/source/includes/${request.contextPath}/carfri/gz_report">故障报告</a></li>
+      <li class="p_drive"><a href="../../../../ResponsiveWebDesign_Web/TCL_carweb/source/includes/${request.contextPath}/carfri/drive_report">行车报告</a></li>
+    </ul>
+  </div>
+  <script>
+		$(function(){
+			var sidebar_nav=$("#sidebar-nav"),side_brourl=window.location.href;
+			var side_urlstr=side_brourl.substring(side_brourl.lastIndexOf("/")+1);
+			side_urlstr=side_urlstr.indexOf("?")!=0?side_urlstr.split("?")[0]:side_urlstr;
+			if(side_urlstr=="user_index"){
+				sidebar_nav.find("div:eq(0) a").css({"color":"#f00","text-decoration":"underline","font-weight":"bold"});
+			}else{
+				sidebar_nav.find("li").each(function() {
+					var side_obj=$(this);
+					var side_cururl=side_obj.find("a").attr("href");
+					var side_curstr=side_cururl.substring(side_cururl.lastIndexOf("/")+1);
+					if(side_urlstr==side_curstr)side_obj.find("a").css({"color":"#f00","text-decoration":"underline","font-weight":"bold"});
+				});
+			}
+		});
+  </script>
+</div>

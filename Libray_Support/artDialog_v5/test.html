@@ -1,0 +1,33 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Content-Language" content="zh-cn" />
+<meta name="description" content="artDialog" />
+<meta name="keywords" content="artDialog, dialog" />
+<title>artDialog</title>
+<link id="artDialog-skin" href="skins/default.css" rel="stylesheet" />
+<script src="source/artDialog.js" type="text/javascript"></script>
+<script type="text/javascript" src="source/artDialog.plugins.js"></script>
+</head>
+<body>
+  <div onclick="aaa();">圣诞节富士康附近思考的房间</div>
+<script type="text/javascript">
+	function aaa(){
+			art.dialog({
+				title:"你妹，弹出框",
+				drug:true,
+				lock:true,
+				width:400,
+				fixed: true,
+    			content: '您好这是显示内容',
+				okValue: '确定',
+				ok: function (){},
+				cancelValue: '取消',
+				cancel: function (){}
+			});
+			
+		}
+</script> 
+</body>
+</html>

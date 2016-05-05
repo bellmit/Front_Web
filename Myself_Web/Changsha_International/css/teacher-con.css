@@ -1,0 +1,33 @@
+.test3{display: none;}
+#teacher-con ul{list-style-type:none;}	
+#teacher-con ul li{display:inline;margin:0;padding:0;}
+#teacher-con .contentContainer {padding:0;float:left;width:0;height:265px;overflow:hidden;}
+#teacher-con .handle{float:left;width:25px;height:265px;background:url(../images/blade.png) no-repeat;}
+#teacher-con .handleOver{background: url(../images/blade_sel.png) no-repeat;}
+#teacher-con .handleSelected{background: url(../images/blade_sel.png) no-repeat;}
+#teacher-con .handle3{float:left;width:25px;height:265px;text-align:center;background:url(../images/teacher-no.jpg) no-repeat; color:#333}
+#teacher-con .handle3 img{margin-top:2px;filter:alpha(opacity=80);-moz-opacity:.80;opacity:.80;}
+#teacher-con .handleOver3{background:#41b4ff; color:#fff}
+#teacher-con .handleOver3 img{;filter:alpha(opacity=70);-moz-opacity:.70;opacity:.70;}
+#teacher-con .handleSelected3{background:url(../images/teacher-ac.jpg) no-repeat; color:#fff}
+#teacher-con .handle3 h3{font-size:14px; line-height:20px; padding:10px 0 0 0}
+#teacher-con .teacher-talk{padding:0 0 20px 20px;}
+#teacher-con .teacher-talk ul{height:260px !important; overflow:scroll !important;}
+#teacher-con .teacher-talk ul li{display:block !important;  padding:10px 0!important; border-bottom:1px dashed #999!important;}
+#teacher-con .teac-img{width:110px; text-align:center;font-size:14px;}
+#teacher-con .teac-photo{width:90px; height:80px; padding:5px; background:#fff; box-shadow:1px 1px 3px #ccc; margin:0 0 5px 0}
+#teacher-con .teac-img h5{margin:5px 0}
+#teacher-con .teac-img p{margin:5px 0}
+#teacher-con .teac-con{width:385px; padding:0 0 0 20px}
+#teacher-con .teac-con h6{width:365px; height:26px; line-height:22px; padding:0 0 0 20px; background:url(../images/teac-h6-bg.jpg) repeat-x; color:#fff; font-size:14px}
+#teacher-con .teac-q,.teac-a{padding:10px 0 0 0; margin:0 20px; font-size:12px}
+#teacher-con .teac-q-icon{right:0; bottom:0}
+#teacher-con .teac-q-icon,#teacher-con .teac-a-icon{width:20px; height:20px; background:#666; color:#fff; line-height:20px; text-align:center}
+#teacher-con .teac-q-con{width:241px; margin:0 10px 0 0}
+#teacher-con .teac-a-con{width:241px; margin:0 0 0 10px}
+#teacher-con .teac-q-top{width:241px; height:12px; background:url(../images/ui-sprite.png) no-repeat -800px -150px;}
+#teacher-con .teac-q-bot{width:241px; height:12px; background:url(../images/ui-sprite.png) no-repeat -800px -200px;}
+#teacher-con .teac-q-word{width:221px; background:url(../images/teac-q-bg.png) repeat-y; padding:0 10px}
+#teacher-con .teac-a-top{width:241px; height:12px; background:url(../images/ui-sprite.png) no-repeat -800px -250px;}
+#teacher-con .teac-a-bot{width:241px; height:12px; background:url(../images/ui-sprite.png) no-repeat -800px -310px;}
+#teacher-con .teac-a-word{width:216px; background:url(../images/teac-a-bg.png) repeat-y; padding:0 10px 0 15px}

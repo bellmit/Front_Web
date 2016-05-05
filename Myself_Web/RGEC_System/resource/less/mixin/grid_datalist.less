@@ -1,0 +1,183 @@
+///grid 数据展现
+.grid-datalist{
+	.layout-float-base;
+	table{
+		border-collapse:collapse !important;
+		th{
+			text-align:center;
+			background:@color-gray11;
+			.linear-gradientv-base(@color-white,@color-gray9);
+			color:@color-gray3;
+			cursor:default !important;
+			.text-unselect;
+			font-size:@font-size-small;
+			font-family:@fontfamliy-base;
+			input[type='checkbox']{
+				margin:0 3px 0 0;
+			}
+		}
+		th.issort{
+			cursor:pointer !important;
+			&:after{
+				display:inline-block;
+				vertical-align:middle;
+				padding:0 0 0 3px;
+				font-size:@font-size-base;
+				color:@color-gray9;
+				//content:'\e635';
+				font-family:'ux_eight';
+			}
+		}
+		th.sortasc{
+			&:after{
+				padding:0 0 0 3px;
+				content:'\e64f';
+				color:@color-red4;
+			}
+		}
+		th.sortdesc{
+			&:after{
+				padding:0 0 0 3px;
+				content:'\e64c';
+				color:@color-red4;
+			}
+		}
+		td{
+			.text-ww;
+			font-size:@font-size-small;
+			text-align:center;
+			padding:5px 0;
+			color:@color-gray3;
+			vertical-align:middle;
+			input{
+				margin:0;
+			}
+		}
+		p{
+			padding:0 5px;
+			text-align:left;
+			line-height:20px;
+			margin:0;
+		}
+		span{
+			cursor:pointer;
+			text-decoration:underline;
+			color:@color-cyan1;
+			padding:0 5px;
+		}
+		em{
+			font-style:normal;
+			color:@color-gray5;
+		}
+		a{
+			padding:0 5px;
+		}
+	}
+}
+
+
+.grid-datalist .table-show1{
+	border-bottom:1px solid @color-gray9;
+	th{
+		border-top:1px solid @color-gray10;
+		border-bottom:1px solid @color-gray8;
+	}
+	td{
+		text-align:left;
+		border:none;
+		padding:5px 2px;
+	}
+	p{
+		text-align:right;
+	}
+	
+}
+
+
+.grid-datalist .table-show2{
+	border-bottom:1px solid @color-gray9;
+	th,td{
+		border:none;
+	}
+	th{
+		border-bottom:1px solid @color-gray9;
+		background-image:none;
+		background-color:@color-gray11;
+		text-align:left;
+		text-indent:-40px;
+	}
+	td{
+		padding:0 2px;
+		height:34px;
+		img{
+			overflow:hidden;
+			max-height:34px;
+			max-width:100px;
+			display:inline-block;
+		}
+		&:first-child{
+				text-align:right;
+				color:@color-gray2;
+				&+td{
+					text-align:left;
+					color:@color-gray4;
+					span{
+						color:@color-gray4;
+						text-decoration:none;
+						padding:0;
+					}
+				}
+		}
+	}
+}
+
+//视图模式
+.grid-datalist .grid-view{
+		.layout-float-base;
+		overflow-x:auto;
+		padding:10px;
+		border:1px solid @color-gray9;
+		margin:5px 0;
+		.border-radius-base(5px);
+		text-align:center;
+		min-height:200px;
+		max-height:500px;
+		&:empty{
+			line-height:200px;
+			&:after{
+				content:'暂无数据';
+				display:inline-block;
+				vertical-align:middle;
+				color:@color-gray3;
+				font-size:@font-size-small;
+			}
+			&:before{
+				content:'\e634';
+				font-family:'ux_five';
+				display:inline-block;
+				vertical-align:top;
+				color:@color-red4;
+				padding:0 3px 0 0;
+				font-size:@font-size-base;
+			}
+		}
+		i,em{
+			font-style:normal;
+		}
+		em{
+			color:@color-gray3;
+			padding:0 2px 0 0;
+		}
+		i{
+			color:@color-cyan1;
+			padding:0 2px 0 0;
+		}
+}
+
+
+
+
+
+
+
+

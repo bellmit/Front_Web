@@ -1,0 +1,31 @@
+@charset "utf-8";
+/* CSS Document */
+body{margin:0;padding:0;}
+body *{margin:0;padding:0;list-style:none;font-size:14px;font-family:"宋体", serif, sans-serif, "宋体-PUA", "仿宋_GB2312", Vrinda;resize:none;}
+body *:focus{outline:none;}
+.container{width:1003px;height:auto;margin:20px auto;}
+.header,.content{width:750px;margin:0 auto;}
+.header{height:222px;}
+.nav-title{width:600px;margin:0 auto;height:60px;}
+.nav-title p,.nav-title h4{text-align:center;font-size:24px;line-height:1.2em;}
+
+.nav-remark{margin:0 auto;width:745px;height:162px;}
+.nav-sidea,.nav-sideb,.nav-sidec{float:left;height:160px;}
+.nav-sidea{border-left:1px dashed #000;border-top:1px dashed #000;border-right:1px dashed #000;width:245px;}
+.nav-sideb,.nav-sidec{border-top:1px dashed #000;border-right:1px dashed #000;width:248px;}
+.nav-sidea p,.nav-sideb p,.nav-sidec p{padding:5px 0 5px 20px;font-size:14px;}
+.nav-sidea div,.nav-sideb div,.nav-sidec div{width:238px;height:130px;margin:0 auto;text-indent:2em;overflow:hidden;word-wrap:break-word;line-height:1.3em;letter-spacing:0.1em;}
+.content table{width:745px;height:auto;border-left:2px solid #333;border-top:2px solid #333;border-right:1px solid #333;border-bottom:1px solid #333;margin:0 auto;line-height:1.5em;}
+.content table tr td{border-right:1px solid #333;border-bottom:1px solid #333;padding:5px 0;}
+.standardtd{border-bottom:none !important;}
+.nav-tablefir{width:15%;text-align:center;}
+.nav-tablesec{width:30%;}
+.nav-tablethr{width:15%;text-align:center;}
+.nav-tablefou{width:30%;}
+.nav-zertr,.nav-firtr,.nav-sectr,.nav-thrtr,.nav-foutr,.nav-fivtr,.nav-sixtr,.nav-sevtr,.nav-eigtr,.nav-nintr,.nav-tentr,.nav-evetr,.nav-twotr{text-align:center;}
+.nav-firtr .drugnamel,.nav-foutr .producecorl{float:left;cursor:pointer;margin:3px 0 0 5px;*+margin:0 0 0 5px;}
+.drugname,.producecor{float:right;width:84%;height:16px;font-size:16px;border:none;margin:5px 5px 5px 0;*+margin:2px 5px 0 0;*+border: 0 none;*+overflow:hidden;}
+.appellatenum,.confirmnum,.dosetype,.standard,.registerclass,.executenum,.approvenum,.effecttime{float:left;width:96%;height:16px;font-size:16px;border:none;margin:5px 0 5px 2px;_margin:0 0 0 2px;*+border: 0 none;*+overflow:hidden;}
+.standardnum,.executetime,.filez,.mainsend{float:left;width:98%;height:16px;font-size:16px;border:none;margin:5px 0 5px 2px;*+border:0 none}
+.approveresult,.choicesend,.remark{float:left;width:99.5%;font-size:16px;border:none;margin-left:2px;*+border:0 none;word-wrap:break-word;word-break:break-all;overflow-y:hidden;wrap:physical;min-height:150px;_height:auto;}
+

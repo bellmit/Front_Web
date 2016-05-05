@@ -1,0 +1,273 @@
+﻿<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+<meta charset="UTF-8">
+<title>个人首页</title>
+<#include "/includes/carcenter_res.html"/>
+<script src="../../../../ResponsiveWebDesign_Web/TCL_carweb/source/user/${MapKey}"></script>
+	<script type="text/javascript">
+		jQuery(function($){
+			onLoadShare({},1);
+			initShareBtn();
+			/*goto top*/
+			var gototop_btn=$("#gototop_btn");
+			/*init !ie6 position*/
+			if(!($.browser.msie&&$.browser.version.indexOf("6.0")!=-1)){
+				var view_width=$("body").width();
+				if(view_width>=1000)gototop_btn.css({"right":view_width/2-540});
+			}
+			/*init !ie6 resize*/
+			$(window).resize(function(){
+				if(!($.browser.msie&&$.browser.version.indexOf("6.0")!=-1)){
+					var resize_width=$("body").width();
+					if(resize_width>=1000){
+						if(resize_width>=1000&&resize_width<=1100){
+							gototop_btn.css({"right":resize_width/2-500});
+						}else{
+							gototop_btn.css({"right":resize_width/2-540});
+						}
+					}
+				}	
+			});
+			/*scroll*/
+			$(window).scroll(function(){$(this).scrollTop()>=500?gototop_btn.show():gototop_btn.hide();});
+			/*click*/
+			gototop_btn.click(function(){$("html,body").animate({scrollTop:0},300);});
+			/*ie6 hover*/
+			gototop_btn.hover(function(){if($.browser.msie&&$.browser.version.indexOf("6.0")!=-1)$(this).addClass("gototop_wrapie");},function(){if($.browser.msie&&$.browser.version.indexOf("6.0")!=-1)$(this).removeClass("gototop_wrapie");});
+			
+		});
+		
+		
+		function initShareBtn(){
+			var isCarUser = $('#isCarUser').val();
+			if(!isCarUser){
+				$('.t_download').hide();
+			}
+		}
+		function onLoadShareParams(){
+			onLoadShare({},($('#currentPage').val()*1+1));
+			initShareBtn();
+		}
+		function onLoadShare(params,currentPage){
+			var url = "${request.contextPath}/carfri/car_share?pk=" + new Date().getTime()+"&currentPage=" + currentPage;
+			var isCarUser = $('#isCarUser').val();
+			$.post(url,params,function(data){
+				 var obj = eval('(' + data + ')');
+				 var model = obj.model;
+				 var currentPage = obj.currentPage;
+				 $('#currentPage').val(currentPage);
+				 if(model.length==0){
+					//popup_alert("已经没有最新的车友分享记录","undefined","no","none");
+					$('#pagemore').html('已经没有最新的车友分享记录');
+					return false;
+				 }
+				 for(var i=0;i<model.length;i++){
+					 var liHtml = '';
+					 var html = $('#share_context').html();
+					 var posmark = model[i].posmark;
+					 if(!posmark){
+						 posmark='000000';
+					 }
+					 var posmarkArray = [];
+					 var posmarkname = ['顺畅','拥堵','好吃','好喝','好玩','高兴'];
+					 for(var index=0;index<6;index++){
+						 if(posmark.substring(index,index+1)=='1'){
+							posmarkArray.push(posmarkname[index]);
+						 }
+					 }
+					 html = html.replace("#[0]",model[i].username);
+					 html = html.replace("#[1]",model[i].posname);
+					 html = html.replace("#[2]",posmarkArray.join(","));
+					 html = html.replace("#[3]",model[i].seqid);
+					 html = html.replace("#[13]",model[i].seqid);
+					 html = html.replace("#[14]",model[i].recordtime);
+					 html = html.replace("#[8]",isCarUser);
+					 html = html.replace("#[10]",model[i].seqid);
+					 html = html.replace("#[11]",model[i].posname);
+					 html = html.replace("#[12]",model[i].friendid);
+					// html = html.replace(/(\#\[6\])/g,'${music_path}' + model[i].poswavpath);
+					 var wavpath = '${music_path}' + model[i].poswavpath;
+					 var pxy = model[i].latitude_offset+","+model[i].longitude_offset+","+model[i].detialAddress;
+					 html = html.replace("#[7]",pxy);
+					 html = html.replace("#[4]",pxy);
+					 if(model[i].posimgpath1 != null && model[i].posimgpath1 !='' && model[i].posimgpath1 !='null'){
+						 liHtml += '<li><a href="${path}'+model[i].posimgpath1+'" class="fancybox"><img src="${path}'+ model[i].posimgpath1+'" alt="" class="imgcss"/></a>';
+					 }
+					 if(model[i].posimgpath2 != null && model[i].posimgpath2 !='' && model[i].posimgpath2 !='null'){
+						 liHtml += '<li><a href="${path}'+model[i].posimgpath2+'" class="fancybox"><img src="${path}'+ model[i].posimgpath2+'" alt="" class="imgcss"/></a>';
+					 }
+					 if(model[i].posimgpath3 != null && model[i].posimgpath3 !='' && model[i].posimgpath3 !='null'){
+						 liHtml += '<li><a href="${path}'+model[i].posimgpath3+'" class="fancybox"><img src="${path}'+ model[i].posimgpath3+'" alt="" class="imgcss"/></a>';
+					 }
+					 if(model[i].poswavpath != null && model[i].poswavpath !='' && model[i].poswavpath !='null'){
+						  liHtml += '<li><div class="page"><a href="javascript:void(0)" class="music_control" onclick="musicControls(this,\''+wavpath+'\');"><span class="music_play"></span><img src="${request.contextPath}/resources/images/ico_music.jpg" alt=""/></a></div></li>';
+					 }
+					 html = html.replace("#[5]",liHtml);
+				 	 $('#p_share').append(html);
+				 	 //加载小地图
+			 		// var id = "map_" + model[i].seqid;
+			 		 var data = pxy;
+			 		 mapInit(data,'map_'+model[i].seqid);
+				 }
+				 setTimeout(function(){
+					 $("a.fancybox").fancybox({
+							'titlePosition':'inside'
+					 });
+				 },1000);
+			});
+		}
+		
+		//车友分享的下载
+		function downloadShare(data,isCarUser,seqid,posname){
+			if(!isCarUser){
+				/*
+				popup_alert:(模拟alert弹出提示信息面板公用方法),需搭配css和blockui.js
+				argument:提示信息,跳转地址("跳转地址"或者"undefined"),面板类型("yes"或"no"),面板按钮("have"或"none")
+				*/
+				popup_alert("你不是车机用户,暂时不能下载.","undefined","no","none");
+				return false;
+			}
+			/*
+			popup_alert:(模拟alert弹出提示信息面板公用方法),需搭配css和blockui.js
+			argument:提示信息,跳转地址("跳转地址"或者"undefined"),面板类型("yes"或"no"),面板按钮("have"或"none")
+			
+			popup_alert("正在下载中,请稍等...","undefined","yes","none"); */
+			var params="({"; 
+			params+="\"data\":"; 
+			params+="\""+ data+"\""; 
+			params+=",";
+			params+="\"seqid\":"; 
+			params+="\""+seqid+"\"";
+			params+=","; 
+			params+="\"posname\":"; 
+			params+="\""+posname+"\""; 
+			params+="})";
+			var url = "${request.contextPath}/friend/doDownShare?pk=" + new Date().getTime();
+			$.ajax({
+				type : 'post',
+				url : url,
+				data : eval(params),
+				dataType : 'json',
+				success : function(data) {
+					var object = eval("(" + data.rs + ")");
+					if (object.success) {
+						/*
+						popup_alert:(模拟alert弹出提示信息面板公用方法),需搭配css和blockui.js
+						argument:提示信息,跳转地址("跳转地址"或者"undefined"),面板类型("yes"或"no"),面板按钮("have"或"none")
+						*/
+						popup_alert(object.msg,"undefined","yes","have");
+					} else {
+						/*
+						popup_alert:(模拟alert弹出提示信息面板公用方法),需搭配css和blockui.js
+						argument:提示信息,跳转地址("跳转地址"或者"undefined"),面板类型("yes"或"no"),面板按钮("have"或"none")
+						*/
+						popup_alert(object.msg,"undefined","no","none");
+					}
+				}
+			});
+		}
+		//播放
+		function musicPlay(url){
+			var navigator_str = navigator.userAgent;
+			if(navigator_str.indexOf("MSIE")>0){
+				mp.Filename=url;//IE
+			}else{//其它的浏览器默认调用HTML5
+				document.getElementById("chrome_id").setAttribute('src',url);
+				document.getElementById("chrome_id").play();
+			}
+		};
+		
+		//音频的暂停
+		function musicPause(){
+			var navigator_str = navigator.userAgent;
+			if(navigator_str.indexOf("MSIE")>0){
+				mp.pause();mp.CurrentPosition=0;//IE
+			}else{
+				document.getElementById("chrome_id").pause();
+			}
+		}
+		
+		function musicControls(dom,url){
+			  if($(dom).find('span').hasClass('music_play')){
+				  $('.music_control').find('span').attr('class','music_play');
+				    $(dom).find('span').attr('class',"music_stop");
+				     musicPlay(url);
+				  }else{
+				   $(dom).find('span').attr('class',"music_play");
+				   musicPause();
+				  }
+		  }
+	</script>
+</head>
+<body>
+<div style="display:none;visibility:hidden;height:0;line-height:0;width:0;" id="static_path">${request.contextPath}</div>
+<div id="testmap"></div>
+<div class="bg_wrap">
+  <div class="wrapper">
+    <#include "/includes/header.html"/>
+    <div class="boardframe">
+      <div class="fri-content">
+        <div class="wrap-con">
+          <#include "/includes/car_userinfos.html"/>
+          <input type="hidden" name="currentPage" id="currentPage">
+          <input type="hidden" value="<#if friendInfo.carUser??>${1}</#if>" id="isCarUser">
+          <input type="hidden" name="path" id="path" value="${request.contextPath}">
+          <div class="p_share" id="p_share">
+          <h1 class="p_h1 bg_none">车友分享</h1>
+          </div>
+            <div class="page"><a href="javascript:void(0)" id="pagemore" onclick="onLoadShareParams()">加载更多内容</a> </div>
+         </div>
+      </div>
+      <#include "/includes/car_sidenav.html"/>
+    </div>
+  </div>
+</div>
+<#include "/includes/footer.html"/>
+<div class='mapView'>
+  <div class="mapView01" id="mapView01"></div>
+</div>
+<div id="screen"></div>
+<div id="share_context" style="display: none;width:0;height:0;">
+            <div id="feedcontainer">
+		              <div class="feed_con">
+		                <div class="avatar"><img src="../../../../ResponsiveWebDesign_Web/TCL_carweb/source/user/${request.contextPath}/carfri/getPhotoByFriendId?width=59&height=59&friendId=#[12]" alt=""/></div>
+		                <div class="feed_details">
+		                  <h3>#[0]分享位置<span class="f_address">#[1]</span><span class="f_moon">&nbsp;#[2]</span></h3>
+		                  	<div class="f_content">
+		                    <ul>
+		                      <li>
+		                        <div class="mapprev" id="map_#[3]" data="#[4]" >
+		                          <div class="oop"></div>
+		                          <div id="showmap_#[13]" ></div>
+		                        </div>
+		                      </li>
+		                      #[5]
+		                       
+		                    </ul>
+		                  </div>
+		                  <div class="toolbar clearfix"> <span class="t_time">#[14]</span> <a class="t_download" href="javascript:void(0)" onclick="downloadShare('#[7]','#[8]','#[10]','#[11]');">
+		                  	<img src="../../../../ResponsiveWebDesign_Web/TCL_carweb/source/user/${request.contextPath}/resources/images/btn-down.jpg" alt=""/></a> </div>
+		                </div>
+		              </div>
+     </div>
+</div>
+<div class="gototop_wrap">
+     <div id="gototop_btn">回到顶部</div>
+</div>
+</body>
+<div style="display: none">
+<object classid="clsid:22D6F312-B0F6-11D0-94AB-0080C74C7E95" id="mp" width="300" height="240" type="application/x-mplayer2">
+<param name="AutoStart" value="-1">
+<param name="PlayCount" value="1">
+<param name="Rate" value="1">
+<param name="ShowAudioControls" value="-1">
+<param name="ShowStatusBar" value="-1">
+<param name="VideoBorder3D" value="0">
+<param name="Volume" value="0">
+<param name="CurrentPosition" value="0">
+</object>
+</div>
+<audio src="" controls id="chrome_id" style="display: none;"></audio>
+<#include "/includes/carplugin_res.html"/>
+</html>

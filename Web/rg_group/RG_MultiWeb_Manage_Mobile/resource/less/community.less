@@ -1,0 +1,358 @@
+@import 'variable/base_variable.less';
+//导入表单公用组件
+@import 'mixin/form.less';
+///搜索框
+@import 'mixin/search.less';
+///微社区话题主题
+.community-theme-wrap{
+	.layout-float-base;
+	padding:10px 10px 0 10px;
+	&:after{
+		content:'';
+		clear:both;
+	}
+	div{
+		.layout-relative-base;
+		.layout-float-base;
+		border:1px solid @color-gray3;
+		.border-radius-base(5px);
+		padding:10px;
+		.box-shadow-base(0 0 2px @color-gray5);
+		img{
+			.layout-absolutel-base(10px,10px,5);
+			.border-radius-base(5px);
+			.box-sizing-base;
+			width:60px;
+			height:60px;
+			display:block;
+			overflow:hidden;
+			background:@color-gray11;
+			padding:5px;
+		}
+		h3{
+			.layout-float-base;
+			font-size:@font-size-base;
+			line-height:18px;
+			padding:0 0 0 70px;
+			color:@color-gray2;
+			min-height:60px;
+			max-height:90px;
+			overflow:hidden;
+		}
+		p{
+			margin:10px 0 0 0;
+			text-indent:2em;
+			.layout-float-base;
+			font-size:@font-size-small;
+			color:@color-gray3;
+		}
+	}
+}
+
+///微社区列表(公共部分)
+.community-list-wrap,
+.community-comment-wrap,
+.community-reply-wrap{
+	.layout-base;
+	padding:10px;	
+	ul{
+		width:100%;
+		float:left;
+		margin:0 0 20px 0;
+		li{
+			.layout-float-base;
+			.layout-relative-base(0,0,1);
+			margin:8px 0 0 0;
+			border:1px solid @color-gray7;
+			background:@color-gray10;
+			.border-radius-base(5px);
+			cursor:pointer;
+			.text-unselect;
+			>div:nth-of-type(1){
+				.layout-relative-base(0,0,5);
+			  .layout-float-base;
+				padding:10px;
+				border-bottom:1px solid @color-gray7;
+				img{
+					.layout-absolutel-base(10px,10px,10);
+					.box-sizing-base;
+					width:60px;
+					height:60px;
+					display:block;
+					overflow:hidden;
+					background:@color-white;
+					padding:5px;
+					.border-radius-base(5px);
+				}
+				h3,div{
+					.layout-base;
+					padding:0 0 0 70px;
+					.text-ww;
+				}
+				h3{
+					font-size:@font-size-base;
+					color:@color-gray2;
+					line-height:20px;
+					min-height:40px;
+				}
+				div{
+					font-size:@font-size-small;
+					color:@color-gray3;
+					line-height:20px;
+					span{
+						&:first-child{
+							float:left;
+							&:before{
+								content:'点赞次数：';
+							};
+						}
+						&:last-child{
+							float:right;
+							&:before{
+								content:'时间：';
+							};
+						}
+					}
+				}
+			}
+			>div:nth-of-type(2){
+				.layout-float-base;
+				height:40px;
+				padding:5px;
+				margin:5px 0 0 0;
+				div{
+					.border-radius-base(5px);
+					border:1px solid @color-gray4;
+					.layout-base;
+					height:100%;
+					padding:5px 0;
+					background:@color-white;
+					span{
+						.layout-relative-base(0,0,5);
+						height:100%;
+						cursor:pointer;
+						display:block;
+						text-align:center;
+						color:@color-gray3;
+						line-height:16px;
+					}
+				}
+			}
+		}		
+	}
+}
+
+///微社区管理列表(私有部分--话题管理列表)
+.community-list-wrap li>div:nth-of-type(2) div span{
+		.layout-float-base(33.33333%,border-box,left);
+		&:nth-child(n):after{
+				padding:0 0 0 3px;
+				font-family:@fontfamliy-base;
+				font-size:@font-size-small;
+		}
+		&:nth-child(1){
+			&:before{
+				content:'\e64a';
+				font-family:'ux_eight';
+				font-size:@font-size-base;
+			}
+			&:after{
+				content:'分享';
+			}
+		}
+		&:nth-child(2){
+			color:@color-red2;
+			font-family:'ux_two';
+			&:after{
+				content:'禁止';
+			}
+		}
+		&:nth-child(3){
+			font-family:'ux_four';
+			&:after{
+				content:'评论';
+			}
+			em{
+				.layout-absolutel-base(50%,-8px,20);
+				.box-sizing-base;
+				.border-radius-base(6px);
+				background:@color-gray4;
+				margin:0 0 0 22px;
+				line-height:12px;
+				color:@color-white;
+				padding:2px 5px;
+				display:inline-block;
+				font-size:@font-size-small;
+				font-style:normal;
+			}
+		}
+		&:nth-child(n+2):before{
+			.layout-absolutel-base(0,0,10);
+			content:'\00A0';
+			border-left:1px solid @color-gray4;
+			line-height:18px;
+		}
+}
+
+///微社区管理列表(私有部分--查看评论列表)
+.community-comment-wrap li>div:nth-of-type(2) div span{
+		.layout-float-base(50%,border-box,left);
+		&:nth-child(n):after{
+				padding:0 0 0 3px;
+				font-family:@fontfamliy-base;
+				font-size:@font-size-small;
+		}
+		&:nth-child(1){
+			color:@color-red2;
+			font-family:'ux_two';
+			&:after{
+				content:'禁止';
+			}
+		}
+		&:nth-child(2){
+			font-family:'ux_six';
+			&:after{
+				content:'回复';
+			}
+			em{
+				.layout-absolutel-base(50%,-8px,20);
+				.box-sizing-base;
+				.border-radius-base(6px);
+				background:@color-gray4;
+				margin:0 0 0 22px;
+				line-height:12px;
+				color:@color-white;
+				padding:2px 5px;
+				display:inline-block;
+				font-size:@font-size-small;
+				font-style:normal;
+			}
+		}
+		&:nth-child(n+2):before{
+			.layout-absolutel-base(0,0,10);
+			content:'\00A0';
+			border-left:1px solid @color-gray4;
+			line-height:18px;
+		}
+}
+
+///微社区管理列表(私有部分--查看回复列表)
+.community-reply-wrap li>div:nth-of-type(2) div span{
+		.layout-float-base;
+		&:nth-child(n):after{
+				padding:0 0 0 3px;
+				font-family:@fontfamliy-base;
+				font-size:@font-size-small;
+		}
+		&:nth-child(1){
+			color:@color-red2;
+			font-family:'ux_two';
+			&:after{
+				content:'禁止';
+			}
+		}
+}
+
+
+
+///微社区管理列表(不同状态下的公有部分)
+.community-list-wrap li.disabled-state,
+.community-comment-wrap li.disabled-state,
+.community-reply-wrap li.disabled-state{
+		cursor:default;
+		border:1px solid @color-gray9;
+		background:@color-gray11;
+		>div:nth-of-type(1){
+			border-bottom:1px solid @color-gray9;
+			img{
+				opacity:0.5;
+			}
+			h3{
+				color:@color-gray5;
+			}
+			div{
+				color:@color-gray6;
+			}
+		}
+}
+///话题管理列表
+.community-list-wrap li.disabled-state{
+		>div:nth-of-type(2){
+			div{
+				border:1px solid @color-gray7;
+				span{
+					color:@color-gray5;
+					&:nth-child(1),
+					&:nth-child(3){
+						cursor:default;
+					}
+					&:nth-child(2){
+						color:@color-green1;
+						&:after{
+							content:'激活';
+						}
+					}
+					&:nth-child(3){
+						em{
+							background:@color-gray7;
+						}
+					}
+					&:nth-child(n+2):before{
+						border-left:1px solid @color-gray9;
+					}
+				}
+			}
+		}	
+}
+///查看评论列表
+.community-comment-wrap li.disabled-state{
+		>div:nth-of-type(2){
+			div{
+				border:1px solid @color-gray7;
+				span{
+					color:@color-gray5;
+					&:nth-child(2){
+						cursor:default;
+					}
+					&:nth-child(1){
+						color:@color-green1;
+						&:after{
+							content:'激活';
+						}
+					}
+					&:nth-child(2){
+						em{
+							background:@color-gray7;
+						}
+					}
+					&:nth-child(n+2):before{
+						border-left:1px solid @color-gray9;
+					}
+				}
+			}
+		}	
+}
+///查看回复列表
+.community-reply-wrap li.disabled-state{
+		>div:nth-of-type(2){
+			div{
+				border:1px solid @color-gray7;
+				span{
+					color:@color-gray5;
+					&:nth-child(1){
+						color:@color-green1;
+						&:after{
+							content:'激活';
+						}
+					}
+				}
+			}
+		}	
+}
+
+
+///加载更多
+@import 'mixin/btn_item.less';
+.btn1-item-wrap{
+	margin:0 0 60px 0;
+}

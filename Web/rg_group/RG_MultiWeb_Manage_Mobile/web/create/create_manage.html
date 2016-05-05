@@ -1,0 +1,60 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<meta name="description" content="微网站管理后台--创建微网站">
+<meta name="keywords" content="微网站管理后台--创建微网站">
+<title>微网站管理后台--创建微网站</title>
+<link rel="stylesheet" type="text/css" href="../../resource/css/base.css">
+<link rel="stylesheet" type="text/css" href="../../resource/css/login.css">
+<link rel="stylesheet" media="screen,screen and (min-width:641px) and (max-width:720px),screen and (min-width:541px) and (max-width:640px),screen and (min-width:481px) and (max-width:540px),screen and (min-width:321px) and (max-width:480px),screen and (min-width:281px) and (max-width:320px),screen and (max-width:280px)" type="text/css" href="../../resource/css/adapt.css">
+<script src="../../resource/js/lib/zepto.min.js"></script>
+<script src="../../resource/js/widget/common.js"></script>
+<script src="../../resource/js/widget/valid/valid_rule.js"></script>
+<script src="../../resource/js/widget/valid/valid_fn.js"></script>
+<script src="../../resource/js/widget/valid/validtor.js"></script>
+<script src="../../resource/js/create/create.js"></script>
+</head>
+<body class="g-fill g-fbar-menu" lang="zh">
+		<!--顶部导航菜单-->
+		<header class="header-menuwrap">
+      <ul>
+        <li><a href="#" title="">&#xf0115;</a></li>
+        <li class="h-menu-txt">创建微网站</li>
+      </ul>
+    </header>
+    <!--创建微网站输入域-->
+    <section class="login-form">
+      <form action="#" method="post" id="createaction">
+      		<input type="hidden" name="form_submit" value="ok" />
+        	<input type="hidden" value="<?php echo $_GET['ref_url'] ?>" name="ref_url">
+        <ul class="form-box">
+          <li class="login-text1 form-text">
+              <input type="text" id="site_name" placeholder="微网站名称" name="site_name" >
+          </li>
+          <li class="login-tip form-tip"></li>
+          <li class="login-text1 form-text">
+              <input type="password" id="site_mobile" placeholder="手机号码" name="site_mobile" >
+          </li>
+          <li class="login-tip form-tip">
+          </li>
+          <li class="login-text1 form-text">
+              <input type="password" id="site_email" placeholder="邮箱地址" name="site_email" >
+          </li>
+          <li class="login-tip form-tip">
+          </li>
+          <li class="login-text1 form-text">
+              <input type="password" id="site_addr" placeholder="联系地址" name="site_addr" >
+          </li>
+          <li class="login-tip form-tip">
+          </li>
+          <li class="login-btn form-btn">
+              <input type="button" id="createsubmit" value="创建微网站" >
+          </li>
+        </ul>
+      </form>
+    </section>
+</body>
+</html>

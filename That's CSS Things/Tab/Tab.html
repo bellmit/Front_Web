@@ -1,0 +1,56 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link type="text/css" href="css/Tab.css" rel="stylesheet" />
+<script type="text/javascript">
+var h=document.getElementById("tab").getElementsByTagName("h3");
+var d=document.getElementById("tab").getElementsByTagName("div");
+function Tabchanges(tc){
+	for(var i=0;i<h.length;i++){
+		if(tc-1==i){
+			h[i].className+=" up";
+			d[i].className+=" block";
+			}
+		else{
+			h[i].className=" ";
+			d[i].className=" ";			
+			}
+		}	
+	}
+</script>
+<title>Tab测试</title>
+</head>
+<body>
+	<div id="tab">
+    	<h3 class="up" onclick="Tabchanges(1);">我爱CSS</h3>
+        <div class="block">
+        	<ul>
+            	<li><a href="#">我爱CSS</a></li>
+                <li><a href="#">52CSS</a></li>
+            </ul>
+        </div>
+        <h3 onclick="Tabchanges(2)">百度搜索</h3>
+        <div>
+        	<ul>
+            	<li><a href="#">百度</a></li>
+                <li><a href="#">baidu</a></li>
+            </ul>
+        </div>
+        <h3 onclick="Tabchanges(3);">新浪门户</h3>
+        <div>
+        	<ul>
+            	<li><a href="#">新浪</a></li>
+                <li><a href="#">sina</a></li>
+            </ul>
+        </div>
+        <h3 onclick="Tabchanges(4);">腾讯QQ</h3>
+        <div>
+        	<ul>
+            	<li><a href="#">腾讯</a></li>
+                <li><a href="#">QQ</a></li>
+            </ul>
+        </div>    
+    </div>
+</body>
+</html>

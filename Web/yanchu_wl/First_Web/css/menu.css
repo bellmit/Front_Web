@@ -1,0 +1,101 @@
+@charset "utf-8";
+/* CSS Document */
+/*
+#menu{
+position:relative;
+left:68px;
+top:116px;
+background:url(../images/menu-all-y.png) no-repeat;
+}
+ul{
+list-style:none;
+height:51px;
+width:730px;
+}
+ul li{
+text-align:center;
+float:left;
+width:110px;
+}
+ul li a{
+font-size:22px;
+display:block;
+height:auto;
+color:#000;
+text-decoration:none;
+padding:13px 0 13px 0;
+background:url(../images/menu-java-y.png);
+}
+a:hover{
+color:#FF0000;
+background:url(../images/menu-java-b.png);
+}
+a#first:hover{
+background:url(../images/menu-home-b.png);
+}*/
+#menu{
+position:relative;
+left:68px;
+top:116px;
+width:732px;
+height:50px;
+}
+#menu a{
+float:left;
+text-align:center;
+height:100%;
+text-indent:-9999px;
+cursor:pointer;
+}
+#menu a#first{
+width:120px;
+}
+#menu a#second{
+width:170px;
+}
+#menu a#third{
+width:108px;
+}
+#menu a#thefour{
+width:82px;
+}
+#menu a#thefive{
+width:96px;
+}
+#menu a#last{
+width:156px;
+}
+#menu a:hover{
+position:relative;
+top:1px;
+}
+#menu a#first:hover{
+background:url(../images/menu.png) no-repeat 1px 0;
+z-index:100;
+}
+#menu a#second:hover{
+background:url(../images/menu.png) no-repeat -119px 0;
+}
+#menu a#third:hover{
+background:url(../images/menu.png) no-repeat -289px 0;
+}
+#menu a#thefour:hover{
+background:url(../images/menu.png) no-repeat -397px 0;
+}
+#menu a#thefive:hover{
+background:url(../images/menu.png) no-repeat -479px 0;
+}
+#menu a#last:hover{
+background:url(../images/menu.png) no-repeat -575px 0;
+}
+
+
+
+
+
+
+
+
+
+
+

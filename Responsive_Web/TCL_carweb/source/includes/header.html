@@ -1,0 +1,99 @@
+<div class="header clearfix">
+  <a href="../../../../ResponsiveWebDesign_Web/TCL_carweb/source/includes/${managerpath}/${paperFile}/home.html"><span id="logo">TCL</span></a>
+  <div class="sign-in">
+  <#if friendInfo??>
+  	<div class="sign_userwrap"><div class="sign_username" id="sign_username"><div>您好,<font>${friendInfo.nickname!''}</font></div><a href="../../../../ResponsiveWebDesign_Web/TCL_carweb/source/includes/${request.contextPath}/friend/logout" class="sign_out">[退出]</a></div></div>
+    <script>
+    $(function(){
+		var sign_username=$("#sign_username"),sign_wrapobj=sign_username.find("div"),sign_content=sign_wrapobj.text().length;
+		sign_wrapobj.width()>=145?sign_wrapobj.css({"width":"145px","white-space":"nowrap","overflow":"hidden","text-overflow":"ellipsis"}):sign_wrapobj.css({"width":"auto"});
+		sign_content>=5?sign_username.addClass("sign_username_sel"):sign_username.removeClass("sign_username_sel");
+	});
+    </script>
+  <#else>
+    <div class="atag"><a href="../../../../ResponsiveWebDesign_Web/TCL_carweb/source/includes/${request.contextPath}/friend/register">注册</a></div>
+    <div class="area">/</div>
+    <div class="atag"><a href="../../../../ResponsiveWebDesign_Web/TCL_carweb/source/includes/${request.contextPath}/friend/login">登录</a></div>
+  </#if>
+  </div>
+  <div class="select_sim member">
+    <span>请选择TCL成员网站</span><a href="#">&nbsp;</a>
+    <ul style="width: 200px; display: none;" id="nvul">
+    <#if tcl_partners?? && tcl_partners?size gt 0>
+      <#list tcl_partners as par>
+          <li onclick="window.open('${par.itemvalue}')">${par.itemname}</li>          
+      </#list> 
+    </#if>
+    </ul>
+  </div>
+</div>
+<div class="navigation clearfix">
+  <ul class="menu">
+        <li class="bdnone"><a href="../../../../ResponsiveWebDesign_Web/TCL_carweb/source/includes/${managerpath}/${paperFile}/home.html" class="sp">首页</a></li>
+        <li><a href="../../../../ResponsiveWebDesign_Web/TCL_carweb/source/includes/${request.contextPath}/carfri/user_index" class="sp">车友中心</a>
+          <ul class="navlist" style="display: none;">
+            <li><a href="../../../../ResponsiveWebDesign_Web/TCL_carweb/source/includes/${request.contextPath}/carfri/user_index">个人首页</a></li>
+            <li><a href="../../../../ResponsiveWebDesign_Web/TCL_carweb/source/includes/${request.contextPath}/carfri/user_info">个人资料</a></li>
+            <li><a href="../../../../ResponsiveWebDesign_Web/TCL_carweb/source/includes/${request.contextPath}/carfri/car_server">车机服务</a></li>
+          </ul>
+          <span class="bdline"></span> </li>
+        <li>
+          <a href="../../../../ResponsiveWebDesign_Web/TCL_carweb/source/includes/${request.contextPath}/product" class="sp">产品中心</a>
+          <div class="navlist nav_product_wrap" style="display:none;">
+				  <h1 class="nav_product_title">产品中心</h1>
+                  <ul class="nav_product_tag">
+                  	<li><h3>品牌:</h3></li>
+                  	<#if webbrands?? && webbrands?size gt 0>
+                  	   <#list webbrands as brand>
+                  	        <li id="${brand.brandid}"><a href="../../../../ResponsiveWebDesign_Web/TCL_carweb/source/includes/${request.contextPath}/product?brand_index=${brand_index}" title="">${brand.brandname!''}</a></li>
+                  	   </#list>
+                  	</#if>
+                  </ul>
+                  <ul class="nav_product_show" id="nav_product_show" >
+                    <#if carproducts??>
+				    <#list carproducts as product >
+                    <li id="${product.itemno}"><a href="../../../../ResponsiveWebDesign_Web/TCL_carweb/source/includes/${request.contextPath}/product?index=${product_index}" title="">${product.itemname!''}</a></li>
+                   </#list>
+				   </#if>
+                  </ul>                       
+          </div>
+          <span class="bdline"></span> </li>
+        <li><a href="../../../../ResponsiveWebDesign_Web/TCL_carweb/source/includes/${managerpath}/${paperFile}/news/news_company_1.html" class="sp">新闻中心</a>
+          <ul class="navlist" style="display: none;">
+            <#list tcl_news_web?sort_by("itemvalue") as news>
+              <#assign  name=''> 
+               <#if news.itemvalue=='1'>
+                  <#assign  name='news_company'> 
+                  <#elseif news.itemvalue=='2'>
+                  <#assign  name='news_industry'> 
+                  <#elseif news.itemvalue=='3'>
+                  <#assign  name='news_active'> 
+               </#if>
+                 <li><a href="../../../../ResponsiveWebDesign_Web/TCL_carweb/source/includes/${managerpath}/${paperFile}/news/${name}_1.html">${news.itemname!''}</a></li>
+           </#list>
+          </ul>
+          <span class="bdline"></span> </li>
+        <li><a href="../../../../ResponsiveWebDesign_Web/TCL_carweb/source/includes/${managerpath}/${paperFile}/serve/service_plan.html" class="sp">服务支持</a>
+          <ul class="navlist" style="display: none;">
+            <li><a href="../../../../ResponsiveWebDesign_Web/TCL_carweb/source/includes/${managerpath}/${paperFile}/serve/service_plan.html">服务策略</a></li>
+            <li><a href="../../../../ResponsiveWebDesign_Web/TCL_carweb/source/includes/${managerpath}/${paperFile}/problem/hotproblem_1.html">常见问题</a></li>
+            <li><a href="../../../../ResponsiveWebDesign_Web/TCL_carweb/source/includes/${managerpath}/${paperFile}/resdown/resdown_1.html">资料下载</a></li>
+            <li><a href="../../../../ResponsiveWebDesign_Web/TCL_carweb/source/includes/${request.contextPath}/serve/service_contacts">联系客服</a></li>
+          </ul>
+          <span class="bdline"></span> </li>
+        <li><a href="../../../../ResponsiveWebDesign_Web/TCL_carweb/source/includes/${managerpath}/${paperFile}/about/about_infos.html" class="sp">关于我们</a>
+          <ul class="navlist" style="display: none;">
+            <li><a href="../../../../ResponsiveWebDesign_Web/TCL_carweb/source/includes/${managerpath}/${paperFile}/about/about_infos.html">公司简介</a></li>
+            <li><a href="../../../../ResponsiveWebDesign_Web/TCL_carweb/source/includes/${managerpath}/${paperFile}/about/about_brand.html">品牌理念</a></li>
+            <li><a href="../../../../ResponsiveWebDesign_Web/TCL_carweb/source/includes/${managerpath}/${paperFile}/about/about_future.html">公司愿景</a></li>
+          </ul>
+          <span class="bdline"></span> </li>
+        <li><a href="../../../../ResponsiveWebDesign_Web/TCL_carweb/source/includes/${managerpath}/${paperFile}/contact/contact_us.html" class="sp">联系我们</a>
+          <ul class="navlist" style="display: none;">
+            <li><a href="../../../../ResponsiveWebDesign_Web/TCL_carweb/source/includes/${managerpath}/${paperFile}/contact/contact_us.html">联系方式</a></li>
+            <li><a href="../../../../ResponsiveWebDesign_Web/TCL_carweb/source/includes/${managerpath}/${paperFile}/contact/contact_sellweb.html">经销网络</a></li>
+          </ul>
+          <span class="bdline"></span> </li>
+      </ul>
+  <input type="hidden" id="contextPath" value="${request.contextPath}"/>
+</div>

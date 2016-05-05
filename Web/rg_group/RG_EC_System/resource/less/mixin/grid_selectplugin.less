@@ -1,0 +1,38 @@
+///grid 查询区域下拉菜单插件
+.grid-select-plugin{
+	.layout-relative-base;
+	height:0;
+	width:0;
+	&:after{
+		content:'';
+		clear:both;
+	}
+	>ul{
+		position:absolute;
+		z-index:50;
+		background:@color-white;
+		display:none;
+		border:1px solid @color-gray7;
+		li{
+			.layout-float-base;
+			height:24px;
+			font-size:@font-size-small;
+			color:@color-gray3;
+			line-height:24px;
+			.text-of;
+			padding:0 5px;
+			cursor:pointer;
+			&:hover{
+				background:@color-gray11;
+				color:@color-cyan1;
+			}
+		}
+		.selfplug-item-sel{
+			background:@color-gray9;
+			&:hover{
+				background:@color-gray9;
+				color:@color-gray3;
+			}
+		}
+	}
+}

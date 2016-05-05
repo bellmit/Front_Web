@@ -1,0 +1,62 @@
+///*自定义文件插件*/
+.selectimg-plugin-wrap{
+	.layout-float-base(100%,border-box,right);
+	height:0;
+	.layout-relative-base(0,0,200);
+}
+.selectimg-plugin-btn{
+	.layout-absoluter-base(5px,-32px,10);
+	width:80px;
+	height:26px;
+	.box-sizing-base;
+	line-height:26px;
+	.border-radius-base(3px);
+	text-align:center;
+	cursor:pointer;
+	background:@color-gray9;
+	font-size:@font-size-small;
+	border:1px solid @color-gray6;
+	color:@color-gray3;
+	.text-unselect;
+}
+.selectimg-plugin-img{
+		display:none;
+		.layout-absolutel-base(0,1px,20);
+		.box-sizing-base;
+		width:100%;
+		background:@color-gray11;
+		.border-radius-base(3px);
+		border:1px solid @color-gray3;
+		.box-shadow-base(0 0 2px 3px @color-white inset);
+		padding:10px 10px 20px 10px;
+		>div{
+			float:left;
+			width:60px;
+			height:60px;
+			margin:10px 5px 5px 0;
+			.layout-relative-base(0,0,20);
+			.text-unselect;
+			&:after{
+				content:attr(data-name);
+				color:@color-gray2;
+				font-size:@font-size-small;
+				padding-left:7px;
+			}
+			img{
+				background:@color-white;
+				.box-sizing-base;
+				width:50px;
+				height:50px;
+				padding:10px;
+				display:block;
+				overflow:hidden;
+				margin:0 auto;
+				.border-radius-base(3px);
+				border:1px dotted @color-gray3;
+				cursor:pointer;
+				&:hover{
+					border:1px solid @color-red2;
+				}
+			}
+		}
+}

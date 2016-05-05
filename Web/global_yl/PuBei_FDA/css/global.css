@@ -1,0 +1,76 @@
+@charset "utf-8";
+/* CSS Document */
+
+/*全局CSS*/
+body{padding:0;margin:0;}
+body *{padding:0;margin:0;list-style:none;font-size:12px;}
+.container{width:1003px;height:auto;margin:0 auto;position:relative;}
+
+/*头部，banner menu*/
+.header{width:1003px;height:244px;position:absolute;top:0;left:0;}
+.banner{width:1003px;height:201px;background:#FFF url(../image/banner.jpg) no-repeat;overflow:hidden;}
+.banner h4{text-indent:-9999px;}
+.menu{width:1003px;height:43px;background:#FFF url(../image/menu-bg.jpg) repeat-x;}
+.menu ul{width:1003px;height:43px;}
+.menu ul li{float:left;width:143px;height:43px;}
+.menu ul li a{width:143px;height:43px;display:block;font-size:16px;font-family:"宋体", "黑体", serif, sans-serif, "宋体-PUA", Vrinda;color:#fff;text-decoration:none;text-align:center;line-height:2.8em;}
+.menu ul li a:hover{background:url(../image/menu-hover.png) no-repeat center 55%;color:#FFFF00;_background:url(../image/menu-hover-iesix.jpg) no-repeat center 55%;color:#FFFF00;}
+.menu ul li a img{border:none;float:left;}
+
+/*主体*/
+/*侧边栏区*/
+.content{width:1003px;height:auto;position:relative;left:0;top:244px;}
+.sidebox{width:300px;position:absolute;left:0;height:auto;top:10px;}
+.nav_corporation,.nav_drug_kickback,.nav_drug_accident_select,.nav_drug_away_result{width:290px;height:auto;clear:both;margin:0 auto;}
+#corporation_title,#drug_kickback_title,#drug_accident_select_title,#drug_away_result_title{width:290px;height:35px;background:#fff url(../image/sidebox_title.jpg) no-repeat center center;}
+#corporation_title h3,#drug_kickback_title h3,#drug_accident_select_title h3,#drug_away_result_title h3{float:left;margin-left:30px;_margin-left:15px;line-height:3.5em;font-size:14px;}
+#corporation_title a,#drug_kickback_title a,#drug_accident_select_title a,#drug_away_result_title a{display:block;width:47px;height:16px;text-decoration:none;color:#000;float:right;margin:10px 10px 0 0;background:#fff url(../image/more.jpg) no-repeat center center;text-align:center;line-height:1.5em;font-weight:bold;}
+#corporation_title a:hover,#drug_kickback_title a:hover,#drug_accident_select_title a:hover,#drug_away_result_title a:hover{color:red;}
+.nav_corporation ul,.nav_drug_kickback ul,.nav_drug_accident_select ul,.nav_drug_away_result ul{width:290px;height:auto;}
+.nav_corporation ul li,.nav_drug_kickback ul li,.nav_drug_accident_select ul li,.nav_drug_away_result ul li{width:290px;height:20px;margin:2px auto;border-bottom:1px dashed #ccc;float:left;}
+.nav_corporation ul li a{width:290px;height:20px;display:block;text-decoration:none;line-height:2em;float:left;color:#000;}
+.nav_drug_kickback ul li a,.nav_drug_accident_select ul li a,.nav_drug_away_result ul li a{width:230px;height:20px;display:block;text-decoration:none;line-height:2em;float:left;color:#000;}
+.nav_corporation ul li a:hover,.nav_drug_kickback ul li a:hover,.nav_drug_accident_select ul li a:hover,.nav_drug_away_result ul li a:hover{color:#399;}
+.nav_corporation ul li a img,.nav_drug_kickback ul li a img,.nav_drug_accident_select ul li a img,.nav_drug_away_result ul li a img{border:none;margin:0 5px;}
+.nav_corporation ul li span,.nav_drug_kickback ul li span,.nav_drug_accident_select ul li span,.nav_drug_away_result ul li span{width:50px;height:20px;height:20px;display:block;float:right;font-size:10px;color:#999;line-height:2em;}
+#corporation_icon,#drug_kickback_icon,#drug_accident_select_icon{width:290px;height:11px;background:#fff url(../image/sidebox-solid.png) repeat-x center center;float:left;margin:10px 0 20px 0;}
+
+/*主内容区*/
+.mainbox{width:696px;height:auto;position:absolute;left:304px;top:10px;}
+.nav_news,.nav_infos,.nav_baddurg{width:696px;height:260px;background:yellow;clear:both;margin:10px auto;}
+#news_title,#infos_title,#baddurg_title{width:696px;height:24px;background:#fff url(../image/mainbox-title.jpg) no-repeat center center;float:left;}
+#news_title h3,#infos_title h3,#baddurg_title h3{float:left;line-height:2em;margin-left:20px;font-size:14px;}
+#news_title a,#infos_title a,#baddurg_title a{float:right;width:47px;height:16px;background:#fff url(../image/more.jpg) no-repeat center center;margin-right:20px;text-align:center;text-decoration:none;color:#000;font-weight:bold;line-height:1.5em;display:block;}
+#news_title a:hover,#infos_title a:hover,#baddurg_title a:hover{color:red;}
+.news_content{width:696px;}
+
+
+
+/*.news_img{width:300px;height:220px;background:red;float:left;margin:6px;overflow:hidden;}
+.news_list{width:380px;float:right;height:230px;background:blue;margin:2px;}*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

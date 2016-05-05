@@ -1,0 +1,87 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>我的前端UI交互</title>
+<meta name="keywords" content="前端交互设计,交互设计,UI设计,前端UI设计,用户体验设计,友好界面,友好体验,交互体验" />
+<meta name="description" content="前端交互设计,交互设计,UI设计,前端UI设计,用户体验设计,友好界面,友好体验,交互体验" />
+<link type="text/css" rel="stylesheet" href="css/mywebui.css" />
+<link type="text/css" rel="stylesheet" href="css/jquery-ui-1.8.16.custom.css" />
+<!--<link type="text/css" rel="stylesheet" href="css/jquery.ui.1.8.16.ie.css" />-->
+<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="js/jquery-ui-1.8.16.custom.min.js"></script>
+<script type="text/javascript" src="js/mywebui.js"></script>
+</head>
+<body>
+	<div class="header">
+    	<p class="toptitle">前端UI交互设计</p>
+        <p class="topbottom">顶部样式</p>
+    </div>
+    <div class="container">
+    	<div class="content">
+        	<div class="mode">
+            	<h3>UI交互设计1--Accordion</h3>
+                <p><strong>Accordion</strong>主要是类似于树形结构的导航,在层级关系简单的情况下，建议使用Accordion组件.其他诸如大数据量，层级关系复杂多变的情况，一般使用树形结构组件。</p>
+                <ul id="accordion" class="accordion">
+                	<li class="accordionsel">
+                    	<h4 class="accordionbtns"><a href="#" title="">one</a></h4>
+                        <div class="accordionshow">
+                        	<p>accordion UI one</p>
+                            <p>Welcome! This is a live preview of new the jQuery UI Bootstrap theme - a project I started to bring the beauty of Twitter's Bootstrap to jQuery UI widgets. </p>
+                        </div>
+                    </li>
+                    <li class="accordiondef">
+                    	<h4 class="accordionbtnh"><a href="#" title="">two</a></h4>
+                        <div class="accordionhide">
+                        	<p>accordion UI two</p>
+                            <p>With this theme, not only do you get the ability to use Bootstrap-themed widgets, but you can now also use (most) of Twitter Bootstrap side-by-wide with it without components breaking visually. </p>
+                        </div>  
+                    </li>
+                    <li class="accordiondef">
+                    	<h4 class="accordionbtnh"><a href="#" title="">three</a></h4>
+                        <div class="accordionhide">
+                        	<p>accordion UI three</p>
+                            <p>It's still a work-in-progress, but I hope you find it useful. Issues and pull requests are always welcome</p>
+                        </div>
+                    </li>
+                    <li class="accordiondef">
+                    	<h4 class="accordionbtnh"><a href="#" title="">four</a></h4>
+                        <div class="accordionhide">
+                        	<p>accordion UI four</p>
+                        </div> 
+                    </li>
+                    <li class="accordiondef">
+                    	<h4 class="accordionbtnh"><a href="#" title="">five</a></h4>
+                        <div class="accordionhide">
+                        	<p>accordion UI five</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="mode">
+            	<h3>UI交互设计2--Tab</h3>
+                <p><strong>Tab</strong>主要为选项卡、在其项目中已经实现其组件.所以在不再实现,只是说明其实现原理,(注:包括Tab、Accordion等,其实现原理几乎相同.)</p>
+                <p>结构原理:采用分离的两个&lt;ul&gt;标签,一个控制按钮,一个控制显示.</p>
+                <p>行为原理:主要是获取点击按钮的索引值,并根据索引值显示隐藏显示区对应索引值部分的标签</p>
+                <p>表现原理:当前的显示区的显示样式<span>display:block</span>,非当前显示区域样式<span>display:none</span>.</p>
+            </div>
+            <div class="mode">
+            	<h3>UI交互设计3--Slider</h3>
+            	<p><strong>Slider</strong>主要为可调节大小方式的拉动组件,一般用在调节声音大小等应用中.</p>
+                <div class="slider">
+                	<div id="slider"></div>
+                </div>
+            </div>
+            <div class="mode">
+            	<h3>UI交互设计4--Progressbar</h3>
+            	<p><strong>Progressbar</strong>主要为动态加载应用中,如声音,下载量等等可视化加载中.</p>
+                <div class="progressbar">
+                	<div id="progressbar"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+    </div>
+</body>
+</html>

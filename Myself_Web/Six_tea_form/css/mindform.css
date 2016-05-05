@@ -1,0 +1,40 @@
+@charset "utf-8";
+/* CSS Document */
+body{margin:0;padding:0;}
+body *{margin:0;padding:0;list-style:none;font-size:14px;font-family:"宋体", serif, sans-serif, "宋体-PUA", "仿宋_GB2312", Vrinda;resize:none;}
+body *:focus{outline:none;}
+.container{width:1003px;height:auto;margin:20px auto;}
+.header,.content{width:745px;margin:0 auto;}
+.header{height:200px;}
+.nav-title{width:600px;margin:0 auto;height:60px;}
+.nav-title p,.nav-title h4{text-align:center;font-size:24px;line-height:1.2em;}
+.nav-remark{margin:0 auto;width:745px;height:140px;}
+.nav-sidea,.nav-sideb,.nav-sidec{float:left;height:108px;}
+.nav-sidea{border:2px dashed #000;width:243px;}
+.nav-sideb,.nav-sidec{border-top:2px dashed #000;border-right:2px dashed #000;border-bottom:2px dashed #000;width:247px;}
+.nav-sidea p,.nav-sideb p,.nav-sidec p{padding:5px 0 5px 20px;font-size:14px;}
+.nav-sidea div,.nav-sideb div,.nav-sidec div{width:238px;height:50px;margin:0 auto;text-indent:2em;overflow:hidden;word-wrap:break-word;line-height:1.3em;letter-spacing:0.1em;}
+#nav-dta,#nav-dtb,#nav-dtc{height:30px;line-height:2em;border-top:1px solid #666;font-size:16px;text-align:right;margin-top:5px;}
+#nav-dta{width:243px;}
+#nav-dtb,#nav-dtc{width:247px;}
+.nav-sided{float:left;width:745px;height:28px;line-height:2.5em;}
+.nav-sidedside,.nav-sidedmain{float:left;height:28px;text-align:left;}
+.nav-sidedside{width:300px;}
+.nav-sidedmain{width:445px;}
+.content table{width:745px;height:100%;border-left:2px solid #333;border-top:2px solid #333;border-right:1px solid #333;border-bottom:1px solid #333;margin:0 auto;line-height:1.5em;}
+.content table tr td{border-right:1px solid #333;border-bottom:1px solid #333;word-wrap:break-word;padding:5px 0;}
+.content table tr td:first-child{width:15%;text-align:center;}
+.content table tr td:first-child+td{width:30%;text-align:left;}
+.content table tr td:first-child+td+td{width:10%;text-align:center;}
+.content table tr td:first-child+td+td+td{width:15%;text-align:left;}
+.content table tr td:first-child+td+td+td+td{width:10%;text-align:center;}
+.content table tr td:first-child+td+td+td+td+td{width:20%;text-align:left;}
+.nav-tableone{width:15%;text-align:center;}
+.nav-tabletwo{width:30%;text-align:left;}
+.nav-tablethr{width:10%;text-align:center;}
+.nav-tablefou{width:15%;text-align:left;}
+.nav-tablefiv{width:10%;text-align:center;}
+.nav-tablesix{width:20%;text-align:left;}
+.drugname,.drugtype,.dosetype{float:left;width:98%;height:16px;font-size:16px;border:none;margin-left:1px;*+border:0 none;}
+.applyunit,.samething{float:left;width:99%;height:16px;font-size:16px;border:none;margin-left:2px;*+border:0 none;}
+.resolvent,.mind,.result{float:left;width:99.5%;font-size:16px;border:none;margin-left:2px;*+border:0 none;word-wrap:break-word;word-break:break-all;overflow:hidden;wrap:physical;min-height:150px;_height:auto;}

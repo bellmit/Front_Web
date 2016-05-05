@@ -1,0 +1,66 @@
+@import 'variable/base_variable.less';
+////*个人中心列表*/
+.template-list-wrap{
+	.layout-float-base;
+	padding:10px 5px;
+	&:after{
+		content:'';
+		clear:both;
+	}
+	ul{
+		.layout-float-base;
+		margin:0 0 50px 0;
+		&:after{
+			content:'';
+			clear:both;
+		}
+		li{
+			.layout-relative-base(0,0,1);
+			.layout-float-base(50%,border-box,left);
+			padding:5px;
+			.text-unselect;
+			cursor:pointer;
+			text-align:center;
+			img:first-of-type{
+					width:100%;
+					height:100%;
+					display:block;
+					margin:0 auto;
+					min-width:99px;
+					min-height:165px;
+					//max-width:297px;
+					//max-height:495px;
+					overflow:hidden;
+			}
+			p{
+				width:100%;
+				.text-ww;
+				font-size:@font-size-base;
+				padding:5px 0;
+				text-align:center;
+				color:@color-gray2;
+			}
+		}
+		li.template-item-select{
+				&:after{
+					.layout-absolutel-base(0,0,20);
+					.box-sizing-base;
+					width:100%;
+					height:100%;
+					padding:60% 0 0 0;
+					background:rgba(0,0,0,.5);
+					content:'\e657';
+					font-family:'ux_six';
+					font-size:@font-size-base + 60;
+					color:@color-white;
+				}
+		}
+	}
+}
+
+
+///底部按钮条
+@import 'mixin/btn_item.less';
+.btn2-item-wrap{
+	margin-bottom:20px;
+}

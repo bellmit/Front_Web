@@ -1,0 +1,78 @@
+///组件--公共布局组件
+///作者：易品
+
+
+
+///*--布局容器--*/
+.layout-itemwrap{
+		width:1190px;
+		margin:20px auto 0 auto;
+		background:transparent;
+		&:after{
+			content:'';
+			clear:both;
+			width:100%;
+			display:block;
+		}
+}
+
+
+///*--两列布局--*/
+.layout-itemmain{
+	.layout-float-base(890px,border-sizing,left);
+	&:empty{
+		min-height:500px;
+		text-align:center;
+		line-height:500px;
+		background:@color-white;
+		&:before{
+			content:'\e708';
+			font-family:'ux_one';
+			color:@color-green1;
+			font-size:@font-size-base + 20;
+			display:inline-block;
+		}
+		&:after{
+			content:'暂无数据';
+			color:@color-gray3;
+			font-size:@font-size-base;
+			display:inline-block;
+			margin:0 0 0 10px;
+		}
+	}
+}
+
+
+.layout-itemside{
+	.layout-float-base(280px,border-sizing,right);
+	&:empty{
+		min-height:300px;
+		line-height:300px;
+		background:@color-white;
+	}
+	
+	.form-sidewrap{
+		.layout-float-base;
+		padding:0 15px 20px 15px;
+		*width:248px;
+		border-top:2px solid @color-orange1;
+		border-left:1px solid @color-gray5;
+		border-right:1px solid @color-gray5;
+		border-bottom:1px solid @color-gray5;
+		background:@color-white;
+		>div{
+			.layout-relative-base;
+			.layout-float-base;
+			background:@color-white;
+		}
+	}
+	
+	.base-sidewrap{
+		.layout-float-base;
+		padding:15px 15px 20px 15px;
+		*width:248px;
+		border:1px solid @color-gray5;
+		margin:20px 0 0 0;
+		background:@color-white;
+	}
+}

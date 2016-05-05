@@ -1,0 +1,28 @@
+/*-----city select panel-----*/
+.addresswrap .cityshow{position:relative;left:0;top:0;background:none;z-index:200; display:inline-block;}
+.addresswrap .cityselect_wrap{width:500px;height:auto;position:relative;left:0;top:0;z-index:200;}
+.addresswrap .citymenu{
+	position: absolute;
+	width: 80%;
+	height: auto;
+	left: 0px;
+	top: 8px;
+	background: #fff;
+	display:none;}
+.addresswrap .citymenu p{width:100%;height:24px;line-height:24px;text-align:left;text-indent:20px;float:left;font-size:14px;background:#f6f6f6;color:#666;}
+#provincebox, #citybox{ overflow:hidden; border:1px solid #ccc; }
+#provincebox{
+	border-top: none; border-left: none;
+}
+#citybox{
+	border-left: none;
+	border-bottom: none;
+}
+.addresswrap .cityprovince,.citycity{width:100%;height:auto;float:left;background:#fff;}
+.addresswrap .cityprovince li,.citycity li{height:18px;line-height:18px;float:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer;text-align:center;font-size:12px;padding:0 8px;}
+.addresswrap .cityprovince li{width:40px;margin:2px 5px;*+margin:2px 3px;color:#000;}
+.addresswrap .citycity li{width:auto;font-family:"宋体";margin:3px 6px;*+margin:3px;color:#333;}
+.addresswrap .cityprovince li:hover,.citycity li:hover{color:#f90;text-decoration:underline;}
+.addresswrap .cityprovince li.citysel,.citycity li.citysel{background:#f90;color:#fff;text-decoration:underline;}
+.addresswrap .provincebox{ width:auto; height:auto;}
+.addresswrap .citybox{ width:auto; height:auto;}

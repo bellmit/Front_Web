@@ -1,0 +1,43 @@
+///grid 选项切换
+.grid-toggle{
+	.layout-relative-base;
+	.layout-float-base;
+	padding:0 10px;
+	height:34px;
+	line-height:34px;
+	font-family:@fontfamliy-base;
+	background:@color-gray10;
+	.border-radius-base(3px);
+	.text-of;
+	margin:5px 0;
+	text-align:left;
+	font-size:@font-size-small;
+	color:@color-gray3;
+	cursor:pointer;
+	&:after{
+		.layout-absoluter-base(10px,4px,50);
+		.box-sizing-base;
+		display:inline-block;
+		color:@color-gray3;
+		font-size:@font-size-base;
+		text-align:center;
+		width:26px;
+		height:26px;
+		line-height:26px;
+		background:@color-white;
+		.box-shadow-base(1px 1px 2px @color-gray8);
+		.border-radius-base(3px);
+	}
+}
+.grid-toggle{
+	&:after{
+		content:'\e6f4';
+		font-family:'ux_four';
+	}
+}
+.grid-togglehide{
+	&:after{
+		content:'\e6f3';
+		font-family:'ux_four';
+	}
+}

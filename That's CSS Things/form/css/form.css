@@ -1,0 +1,123 @@
+@charset "utf-8";
+/* CSS Document */
+.feedback{
+width:398px;
+padding:1px;
+border:1px solid #666666;
+background: #66CCFF;
+position:relative;
+top:60px;
+left:30%;
+}
+.feedback *{
+margin:0;
+padding:0;
+font:normal 12px/1.5em;
+}
+.feedback h3{
+height:24px;
+line-height:24px;
+font-weight:bold;
+font-size:13px;
+text-indent:12px;
+color:#333333;
+background:#CC9900;
+}
+.feedback .content{
+padding:0 10px;
+}
+.feedback fieldset{
+padding-left:12px;
+margin-top:10px;
+}
+.feedback .frm_cont{
+margin-top:8px;
+}
+.feedback label{
+float:left;
+width:80px;
+height:22px;
+line-height:24px;
+text-align:right;
+cursor:hand;
+}
+.feedback .base_info input{
+width:148px;
+height:17px;
+padding:3px 2px 0;
+}
+.feedback .up_file input{
+width:auto;
+height:auto;
+}
+.feedback .tips{
+padding:10px 0 0 80px;
+}
+.feedback .btns{
+padding:5px 0;
+text-align:center;
+}
+.feedback .btns button{
+margin:0 20px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

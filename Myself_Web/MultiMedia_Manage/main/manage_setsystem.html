@@ -1,0 +1,54 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<meta name="description" content="德亿多媒体资源库,德亿多媒体,德亿多媒体资源库管理系统,管理系统--管理中心-系统设置-系统选项"/>
+<meta name="keywords" content="德亿多媒体资源库,德亿多媒体,德亿多媒体资源库管理系统,管理系统--管理中心-系统设置-系统选项"/>
+<link rel="stylesheet" type="text/css" href="../css/main/subpages.css" />
+<title>管理中心-系统设置-系统选项</title>
+</head>
+<body>
+<div class="set_container">
+	<div class="set_result"></div>
+    <div class="set_operate"></div>
+    <form action="#" method="post">
+    <table class="set_resource">
+    	<colgroup>
+        	<col class="sr_cg1"/>
+            <col class="sr_cg2"/>
+        </colgroup>
+        <tr class="setres_text">
+        	<td><label for="system_name">系统名称:</label></td>
+            <td><input type="text" name="system_name" id="system_name"/></td>
+        </tr>
+        <tr class="setres_text">
+        	<td><label for="contact_us">联系我们URL:</label></td>
+            <td><input type="text" name="contact_us" id="contact_us"/></td>
+        </tr>
+        <tr class="setres_select">
+        	<td><label for="anonymous_user">匿名登录默认设置:</label></td>
+            <td>
+            	<select name="anonymous_user" id="anonymous_user">
+                	<option value="1">允许匿名登录</option>
+                    <option value="0">禁止匿名登录</option>
+                </select>
+            </td>
+        </tr>
+        <tr class="setres_select">
+        	<td><label for="multiuser">同一用户登录:</label></td>
+            <td>
+            	<select name="multiuser" id="multiuser">
+                	<option value="1">允许同时在线</option>
+                    <option value="0">禁止同时在线</option>
+                </select>
+            </td>
+        </tr>
+        <tr class="setres_btn">
+        	<td><input type="submit" name="ressure" value="确&nbsp;&nbsp;定" class="setres_sure"/></td>
+            <td><input type="button" name="rescance" value="取&nbsp;&nbsp;消" class="setres_cance"/></td>
+        </tr>
+    </table>
+    </form>
+</div>
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0,maximum-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<meta content="yes" name="apple-mobile-web-app-capable">
+<meta content="telephone=no" name="format-detection">
+<meta name="description" content="小自传--文章编辑">
+<meta name="keywords" content="小自传--文章编辑">
+<title>小自传--文章编辑</title>
+<link rel="stylesheet" type="text/css" href="../../css/editor.css">
+<script src="../../js/lib/require/require-2.1.11.min.js" data-main="../../js/editor/editor_android.js"></script>
+</head>
+<body>
+
+    <!--编辑器工具区-->
+    <section class="editor-tools-wrap">
+        <div>
+            <ul id="editor_tool">
+              <li class="tool-link" data-active="append" data-tool="link"></li>
+              <li class="tool-image" data-active="append" data-tool="image"></li>
+              <li class="tool-label" data-active="label" data-tool="label"></li>
+              <li class="tool-visible tool-visible-all" data-active="visible" data-tool="visible">全部可见</li>
+          	</ul>
+        </div>
+        <ul id="editor_visible">
+            <li data-visible="9">自己可见</li>
+            <li data-visible="1">关注可见</li>
+            <li class="visible-active" data-visible="0">全部可见</li>
+        </ul>
+    </section>
+    
+    
+    <!--编辑器区-->
+	  <section class="editor-show-wrap">
+    	<div class="editor-title editor-title-android" id="article_title" contenteditable="true" data-placeholder="请输入标题"></div>
+       	<div data-placeholder="请输入正文" id="article_content" class="editor-content editor-content-android" contenteditable="true"></div>
+    </section>
+    
+    
+    <!--标签区-->
+    <section class="editor-label-wrap editor-label-android">
+        <ul id="editor_label"></ul>
+        <div><div>加载更多</div></div>
+    </section>
+    
+    
+</body>
+</html>

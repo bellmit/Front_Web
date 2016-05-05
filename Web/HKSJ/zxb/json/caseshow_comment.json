@@ -1,0 +1,63 @@
+{
+	"caseList":[{
+		"id":"1",
+		"url":"../../images/zfx.png",
+		"resId":"汪大涵和汪小涵",
+		"evaTime":"1个小时",
+		"evaContents":"装修效果图装修效果图"
+	},{
+		"id":"2",
+		"url":"../../images/designer.jpg",
+		"resId":"贼帅的设计师",
+		"evaTime":"2个小时",
+		"evaContents":"看一看，瞧一瞧，装修攻略就出来了"
+	},{
+		"id":"3",
+		"url":"../../images/gallery_linkicon/gallery_bgj.jpg",
+		"resId":"贼高贼廋的设计师",
+		"evaTime":"3个小时",
+		"evaContents":"看看叔叔弄的装修设计效果图，改表扬的要表扬，该点赞的要点赞呀，要不叔叔会生气哦"
+	},{
+		"id":"4",
+		"url":"../../images/gallery_linkicon/gallery_bjq.jpg",
+		"resId":"享受碧海 蓝天的清爽",
+		"evaTime":"4个小时",
+		"evaContents":"一般选择自然的柔和色彩，在组合设计上注意空间搭配，充分利用每一寸空间，集装饰 与 应 用于 一 体 "
+	},{
+		"id":"5",
+		"url":"../../images/gallery_linkicon/gallery_dd.jpg",
+		"resId":"无须造作，本色呈现",
+		"evaTime":"4.5个小时",
+		"evaContents":"在组合搭配上避免琐碎，显得大方、自然，散发出的古老尊 贵的 田 园 气息和文化品位"
+	},{
+		"id":"6",
+		"url":"../../images/gallery_linkicon/gallery_gd.jpg",
+		"resId":"开放式自由空间",
+		"evaTime":"5个小时",
+		"evaContents":"在美式家居设计中带有一点 随意，摒弃了过 多的繁琐与奢华"
+	},{
+		"id":"7",
+		"url":"../../images/gallery_linkicon/gallery_lt.jpg",
+		"resId":"恬淡质朴的浪漫",
+		"evaTime":"6个小时",
+		"evaContents":"兼 具古 典主义 的 优美 造型与新古典主义的功能 配 备 ，既简洁明快，又温暖舒适"
+	},{
+		"id":"8",
+		"url":"../../images/gallery_linkicon/gallery_xg.jpg",
+		"resId":"乡村的朴实风味",
+		"evaTime":"8个小时",
+		"evaContents":"美式乡村风格非常重视生活 的 自然舒适 性"
+	},{
+		"id":"9",
+		"url":"../../images/gallery_linkicon/gallery_yg.jpg",
+		"resId":"简洁、明晰，优雅、得体",
+		"evaTime":"12个小时",
+		"evaContents":"工薪层所爱"
+	},{
+		"id":"10",
+		"url":"../../images/gallery_linkicon/gallery_yxm.jpg",
+		"resId":"只要是属于您，您自己喜欢就是风格，那是您自己的风格",
+		"evaTime":"23个小时",
+		"evaContents":"在这里兴邦装饰 设计师要提醒您一点，混搭要适度。否则在视觉上会让人觉 得十分混乱"
+	}]
+}

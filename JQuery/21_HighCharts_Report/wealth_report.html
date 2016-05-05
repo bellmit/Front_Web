@@ -1,0 +1,297 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>我的理财--理财报表</title>
+<meta name="description" content="贷贷平安,贷贷平安网贷平台,平安网贷,我的理财,我的理财-理财报表,理财报表,贷贷平安-理财报表,贷贷平安-我的理财-理财报表">
+<meta name="keywords" content="贷贷平安,贷贷平安网贷平台,平安网贷,我的理财,我的理财-理财报表,理财报表,贷贷平安-理财报表,贷贷平安-我的理财-理财报表">
+<link rel="stylesheet" type="text/css" href="css/common/global.css">
+<link rel="stylesheet" type="text/css" href="css/common/common.css">
+<link rel="stylesheet" type="text/css" href="css/manage/manage_layout.css">
+<link rel="stylesheet" type="text/css" href="css/manage/wealth_report.css">
+<script src="js/common/jquery-1.8.3.min.js"></script>
+<script src="js/manage/manage_menu.js"></script>
+<script src="plugins/Highcharts-3.0.7/highcharts.js"></script>
+<script src="js/common/Manage_Util.js"></script>
+<script>
+    var wr_atype=parseInt(Math.random()*(100*Math.random()));
+    var wr_btype=parseInt(Math.random()*(100*Math.random()));
+    var wr_ctype=parseInt(Math.random()*(100*Math.random()));
+    var wr_dtype=parseInt(Math.random()*(100*Math.random()));
+    var wr_etype=parseInt(Math.random()*(100*Math.random()));
+    var wr_ftype=parseInt(Math.random()*(100*Math.random()));
+    var wr_sumtype=parseInt(wr_atype+wr_btype+wr_ctype+wr_dtype+wr_etype+wr_ftype);
+</script>
+</head>
+<body>
+	<div class="header_wrapcom" id="header_links">
+        <div class="header_sidewrap">
+            <div class="header_side">
+                <ul class="hs_part1">
+                    <li class="hs_phone"><a href="#" title="">手机客户端</a></li>
+                    <li class="hs_online"><a href="#" title="">在线客服</a></li>
+                </ul>
+                <ul class="hs_part2">
+                    <li class="hs_login"><a href="#">登录</a></li>
+                    <li class="hs_register"><a href="#" title="">免费注册</a></li>
+                    <li class="hs_help"><a href="#" title="">帮助</a></li>
+                    <li class="hs_forum"><a href="#" title="">论坛</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="header_main">
+            <a href="#" title="" class="logolinks"></a>
+            <ul class="hm_mainmenu">
+                <li><a href="#" title="">我要借款</a></li>
+                <li><a href="#" title="">我要理财</a></li>
+                <li><a href="#" title="">安全保障</a></li>
+                <li><a href="#" title="">关于我们</a></li>
+            </ul>
+        </div>
+        <div class="header_blines">
+                <div></div>
+        </div>
+    </div>
+    <div class="manage_poswrap"><span>账户管理</span><span>我的理财</span><span class="manage_curpos">理财报表</span></div>
+	<div class="container">
+    	<div class="topwrap"></div>
+		<div class="mainlayout">
+			<div class="mainwrap">
+				<div class="mainbox" id="mainbox">
+					<div class="wr_chartbox" style="margin-top:14px;">
+						<div class="wr_operatewrap">
+							<div class="wr_oinfo">
+								<div class="wr_otheme">累已收收益：<span style="font-size:18px;color:#fff;font-family:'Arial';font-weight:bold;">￥3434.44</span></div>
+								<div class="wr_oexplain">
+									<div class="wr_oinfowrap">
+										<span id="wr_caiicon" class="wr_infoicon">信息说明</span>
+										<div class="wr_infoshow">利息管理费为：￥414.43</div>
+									</div>
+								</div>
+							</div>
+							<ul class="wr_obtn" id="wr_caibtn">
+								<li class="obtnsel">最近六月</li>
+								<li class="">最近一年</li>
+							</ul>
+						</div>
+						<div class="wr_oresult" id="wr_cairesult"></div>
+						<div class="wr_datawrap" id="wr_caidatachart"></div>
+					</div>
+					<div class="wr_chartbox">
+						 <div class="wr_operatewrap">
+							<div class="wr_oinfo">
+								<div class="wr_otheme1">待收总收益：<span style="font-size:18px;color:#fff;font-family:'Arial';font-weight:bold;">￥78.77</span></div>
+								<div class="wr_otheme2">待收总本金：<span style="font-size:18px;color:#fff;font-family:'Arial';font-weight:bold;">￥573.66</span></div>
+							</div>
+							<ul class="wr_obtn" id="wr_allibtn">
+								<li class="obtnsel">未来六月</li>
+								<li class="">未来一年</li>
+							</ul>
+						 </div>
+						 <div class="wr_oresult" id="wr_alliresult"></div>
+						 <div class="wr_datawrap" id="wr_allidatachart"></div>
+					</div>
+					<div class="wr_chartbox">
+						<div class="wr_operatewrap">
+							<div class="wr_oinfo">
+								<div class="wr_otheme">累计投资：<span style="font-size:18px;color:#fff;font-family:'Arial';font-weight:bold;">￥254.22</span></div>
+							</div>
+							<ul class="wr_obtn" id="wr_ccbtn">
+								<li class="obtnsel">最近六月</li>
+								<li class="">最近一年</li>
+							</ul>
+						</div>
+						<div class="wr_oresult" id="wr_ccresult"></div>
+						<div class="wr_datawrap" id="wr_ccdatachart"></div>
+					</div>
+					<div class="wr_chartbox">
+						<div class="wr_operatewrap">
+							<div class="wr_oinfo">
+								<div class="wr_otheme">累计费用支出：<span style="font-size:18px;color:#fff;font-family:'Arial';font-weight:bold;">￥476.33</span></div>
+							</div>
+							<ul class="wr_obtn" id="wr_ccebtn">
+								<li class="obtnsel">最近六月</li>
+								<li class="">最近一年</li>
+							</ul>
+						</div>
+						<div class="wr_oresult" id="wr_cceresult"></div>
+						<div class="wr_datawrap" id="wr_ccedatachart"></div>
+					</div>
+					<div class="wr_chartbox">
+						 <div class="wr_operatewrap">
+							<div class="wr_oinfo">
+								<div class="wr_otheme" style="color:#fff;">现有投资等级分布<span style="color:#cdc9bf;">(不包含筹标阶段数据)</span></div>
+							</div>
+						 </div>
+						 <div class="wr_datawrap">
+							<div class="wr_pietable1">
+								<table>
+									<colgroup>
+										<col class="wr_dcg1"/>
+										<col class="wr_dcg2"/>
+									</colgroup>
+									<tr>
+										<td>
+										<script>document.write(tradeRMBFormat("",wr_atype));</script>
+										</td>
+										<td>
+										<script>
+										var atype=(wr_atype/wr_sumtype)*100;
+										document.write(Number(atype).toFixed(2));
+                                        </script>%
+										</td>
+									</tr>
+									<tr>
+										<td>
+										<script>document.write(tradeRMBFormat("",wr_btype));</script>
+                                        </td>
+										<td>
+										<script>
+										var btype=(wr_btype/wr_sumtype)*100;
+										document.write(Number(btype).toFixed(2));
+										</script>%
+										</td>
+									</tr>
+									<tr>
+										<td>
+										<script>document.write(tradeRMBFormat("",wr_ctype));</script>
+                                        </td>
+										<td>
+										<script>
+										  var ctype=(wr_ctype/wr_sumtype)*100;
+										  document.write(Number(ctype).toFixed(2));
+										</script>%
+										</td>
+									</tr>
+									<tr>
+										<td>
+										<script>document.write(tradeRMBFormat("",wr_dtype));</script>
+										</td>
+										<td>
+										<script>
+										var dtype=(wr_dtype/wr_sumtype)*100;
+										document.write(Number(dtype).toFixed(2));
+										</script>%
+										</td>
+									</tr>
+									<tr>
+										<td>
+										<script>
+										document.write(tradeRMBFormat("",wr_etype));
+										</script>
+										</td>
+										<td>
+										<script>
+										var etype=(wr_etype/wr_sumtype)*100;
+										document.write(Number(etype).toFixed(2));
+										</script>%
+										</td>
+									</tr>
+									<tr>
+										<td>
+										<script>
+										document.write(tradeRMBFormat("",wr_ftype));
+										</script>
+										</td>
+										<td>
+										<script>
+										var ftype=(wr_ftype/wr_sumtype)*100;
+										document.write(Number(ftype).toFixed(2));
+										</script>%
+										</td>
+									</tr>
+									<tr>
+										<td>
+										<script>
+										document.write(tradeRMBFormat("",wr_sumtype));
+										</script>
+										</td>
+										<td>
+										<script>
+										var tbfb=Number(wr_sumtype/wr_sumtype).toFixed(2)*100;
+										document.write(tbfb);
+										</script>%
+										</td>
+									</tr>
+								</table>
+							</div>
+							<div class="wr_datapie">
+									<div class="wr_pieshow"  id="wr_eigddatapie"></div>
+							</div>
+						 </div>
+					</div>
+					<div class="clear_fixs"></div>
+				</div>
+			</div>
+			<div class="sidewrap">
+                <ul class="sidebox" id="sidebox">
+                    <li class="mainmenu">
+                        <p class="menutheme0" id="menutheme0">我的账户</p>
+                        <ul class="submenu" style="display:block">
+                            <li class=""><a href="#" title="">账户总览</a></li>
+                            <li class=""><a href="#"  title="">交易记录</a></li>
+                            <li class=""><a href="#" title="">个人信息</a></li>
+                            <li class=""><a href="#" title="">银行卡信息</a></li>
+                            <li class=""><a href="#" title="">认证中心</a></li>
+                            <li class=""><a href="#" title="">安全中心</a></li>
+                            <li class=""><a href="#" title="">站内消息</a></li>
+                            <li class=""><a href="#" title="">提醒设置</a></li>
+                        </ul>
+                    </li>
+                    <li class="mainmenu">
+                        <p class="menutheme1" id="menutheme1">我的理财</p>
+                        <ul class="submenu">
+                            <li class=""><a href="wealth_report.html" title="">理财报表</a></li>
+                            <li class=""><a href="#" title="">理财记录</a></li>
+                            <li class=""><a href="#" title="">回款记录</a></li>
+                        </ul>
+                    </li>
+                    <li class="mainmenu">
+                        <p class="menutheme2" id="menutheme2">我的借款</p>
+                        <ul class="submenu">
+                            <li class=""><a href="loan_report.html" title="">借款报表</a></li>
+                            <li class=""><a href="#" title="">借款记录</a></li>
+                            <li class=""><a href="#" title="">还款记录</a></li>
+                        </ul>
+                    </li>
+                    <li class="mainmenu_format"></li>
+                </ul>
+                <div class="clear_fixs"></div>
+            </div>
+		</div>
+		<div class="bottomwrap"></div>
+    </div>
+    <div class="clear_fixs"></div>
+    <div class="footer_wrap">
+        <div class="footer">
+            <ul class="foot_join">
+                <li><a href="#" title="">关于我们</a></li>
+                <li><a href="#" title="">媒体关注</a></li>
+                <li><a href="#" title="">联系我们</a></li>
+                <li><a href="#" title="">加入我们</a></li>
+                <li><a href="#" title="">合作伙伴</a></li>
+                <li><a class="fj_last" href="#" title="">意见反馈</a></li>
+            </ul>
+            <div class="foot_theme">
+                <span>安全：银行风控专家把关</span>
+                <span>专业：线下5年小额贷款经验</span>
+                <span>真实：所有借款均真实有效</span>
+            </div>
+            <p class="foot_phone">服务热线：400-990-6088<span>&nbsp;（周一至周日&nbsp;9:00--21:00）</span></p>
+            <p class="foot_copyright">Copyright&copy;2013-2014&nbsp;版权所有：深圳市贷贷平安网络信息有限公司</p>
+            <ul class="foot_webrecord">
+                <li>粤ICP备09157619号</li>
+                <li><a href="#" title="">国际联网备案</a></li>
+                <li><a href="#" title="">深圳网警备案</a></li>
+                <li><a href="#" title="">中国互联网协会</a></li>
+            </ul>
+        </div>
+        <div class="footerlogos">
+            <a href="https://ss.knet.cn/verifyseal.dll?sn=e1402265101004686869o1000000&ct=df&a=1&pa=931969" class="knet" title="贷贷平安已通过中网权威数据库对比，获得“可信网站”身份验证，您可放心使用。">可信网站认证</a>
+            <a href="https://www.symantec.com/zh/cn/ssl-certificates" class="smt" title="贷贷平安已引入VeriSign SSL加密技术，您的隐私及个人资料安全已受最高级别的保护。">SSL安全加密网站</a>
+            <a href="https://cert.ebs.gov.cn/256f8063-21e4-4390-9ff9-4d9da48d01b7" class="szgov" title="贷贷平安已经在深圳电子商务服务监管网申领工商网监电子标识，您可了解网站相关监管信息。">深圳电子商务服务监管网站</a>
+        </div>
+    </div>
+</body>
+<script src="js/manage/wealth_report.js"></script>
+</html>

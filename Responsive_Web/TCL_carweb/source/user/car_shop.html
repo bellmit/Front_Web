@@ -1,0 +1,43 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+<meta charset="UTF-8">
+</head>
+<body>
+ <h2>官方推荐-保养机构</h2>
+ <form id="shopServer">
+  <div class="agaDetail clearfix">
+<#if listShop?? && listShop?size gt 0>
+<#list listShop as shop>
+<#if shop_index%2==0>
+<div class="agaRow">
+</#if>
+    <dl>
+   <dt>${shop.shopname!''}</dt>
+   <dd>地址:${shop.detailedaddress!''}</dd>
+   <dd>电话:${shop.contactway!''}</dd>
+ </dl>
+ <#if shop_index%2==1>
+ </div>
+ </#if>
+ <#if ((listShop?size?number)>1) && (shop_index%2==0)>
+	<#if (listShop?size?number == shop_index + 1 )>
+		</div>
+	</#if>
+</#if>
+ </#list>
+ <#else>
+ <div style="text-align: center;">暂无记录</div>  
+ </#if>
+ </div>
+  <!-- 分页hidden -->
+	<input type="hidden" name="currentPage" id="currentShopPage" value="${pageBean.currentPage}"/>
+	<input type="hidden" name="totalResults" id="totalShopResults" value="${pageBean.totalResults}"/>
+	<input type="hidden" name="pageSize" id="pageShopSize" value="${pageBean.pageSize}"/>
+    <!-- end -->
+ </form>
+  <br style="clear:both;" />
+ <div id="PaginationShop"></div>
+ <br style="clear:both;" />
+ </body>
+</html>

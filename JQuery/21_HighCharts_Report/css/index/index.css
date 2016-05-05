@@ -1,0 +1,15 @@
+.container_wrap{width:100%;min-width:1000px;background:#fff;}
+.container{width:1000px;height:auto;margin:0 auto;}
+.authlogo{float:left;}
+.authlogos{ overflow: hidden;}
+.loginformtip {
+	width: 252px;
+	margin: 0px auto;
+	position: absolute;
+	top: 40px;
+	left: 24px;
+	color: #ec4125;
+}
+.login_wrapbg.error{
+	border: 1px solid #ec4125;
+}

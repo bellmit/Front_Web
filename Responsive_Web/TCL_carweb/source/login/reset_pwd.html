@@ -1,0 +1,65 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>TCL车联网--找回密码,邮箱信息填写</title>
+<meta name="description" content="TCL车联网,车联网找回密码" />
+<meta name="keywords" content="TCL车联网,车联网找回密码" />
+<#include "/includes/register_res.html"/>
+<script src="../../../../ResponsiveWebDesign_Web/TCL_carweb/source/login/${request.contextPath}/resources/js/reset_pwd.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+        	<div class="logo">logo</div>
+            <ul class="user_interface">
+                <li><a title="" href="../../../../ResponsiveWebDesign_Web/TCL_carweb/source/login/${request.contextPath}/friend/login">登录</a></li>
+                <li class="reset_none"><a title="" href="../../../../ResponsiveWebDesign_Web/TCL_carweb/source/login/${managerpath}/${paperFile}/home.html">网站首页</a></li>
+            </ul>
+        </div>
+        <div class="content">
+            <#if !model??>
+            <div class="resetpwd_theme">
+            	<h1>找回密码--重置密码</h1>
+                <p>温馨提示：请记住您填写的密码</p>
+            </div>
+            <form action="../../../../ResponsiveWebDesign_Web/TCL_carweb/source/login/${request.contextPath}/friend/doResetpwd" method="post" id="resetpwd_chelian">
+            <input type="hidden" id="contextPath" value="${request.contextPath}"/>
+            <input type="hidden" name="friendid" id="friendid" value="${friendid}">
+            <input type="hidden" name="validatacode" id="validatacode" value="${validatacode}">
+            <table class="resetpwd_wrap">
+            	<colgroup>
+                	<col class="reset_cg1"/>
+                    <col class="reset_cg2"/>
+                </colgroup>
+                <tr class="reset_default">
+                    <td><label for="password"><p>新&nbsp;密&nbsp;码：</p><span>*</span></label></td>
+                    <td><input type="password" name="password" id="password"/><p>长度为6~16位字符，可以为"数字/字母/中划线/下划线"组成</p></td>
+                </tr>
+                <tr class="reset_default">
+                	<td>&nbsp;</td>
+                    <td><span id="password_tips"></span></td>
+                </tr>
+                <tr class="reset_default">
+                    <td><label for="renew_pwd"><p>确认密码：</p><span>*</span></label></td>
+                    <td><input type="password" name="renew_pwd" id="renew_pwd"/></td>
+                </tr>
+                <tr class="reset_default">
+                	<td>&nbsp;</td>
+                    <td><span id="renew_pwd_tips"></span></td>
+                </tr>
+                <tr class="reset_button">
+                	<td>&nbsp;</td>
+                    <td><input type="submit" id="resetpwd" value="确&nbsp;&nbsp;认"/></td>
+                </tr>
+            </table>
+            </form>
+            </#if>
+            <#if model??><div class="reset_badlinks"><a title="${model}" href="../../../../ResponsiveWebDesign_Web/TCL_carweb/source/login/${request.contextPath}/friend/toFindPwd">${model}</a></div></#if>
+        </div>
+        <div class="footer">
+        	<p>Copyright&nbsp;&copy;&nbsp;2013&mdash;2018&nbsp;TCL&nbsp;Cartel&nbsp;Co.,&nbsp;Ltd.&nbsp;ALL&nbsp;Rights&nbsp;Reserved</p>
+        </div>
+    </div>
+</body>
+</html>

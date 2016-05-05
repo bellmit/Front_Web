@@ -1,0 +1,327 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>我的账户--账户总览</title>
+<meta name="description" content="贷贷平安,贷贷平安网贷平台,平安网贷,我的账户,我的账户-账户总览,账户总览,贷贷平安-我的账户,贷贷平安-我的账户-账户总览">
+<meta name="keywords" content="贷贷平安,贷贷平安网贷平台,平安网贷,我的账户,我的账户-账户总览,账户总览,贷贷平安-我的账户,贷贷平安-我的账户-账户总览">
+<link rel="stylesheet" type="text/css" href="../../res/css/common/global.css">
+<link rel="stylesheet" type="text/css" href="../../res/css/common/common.css">
+<link rel="stylesheet" type="text/css" href="../../res/css/manage/manage_layout.css">
+<link rel="stylesheet" type="text/css" href="../../res/css/manage/manage_home.css">
+<script src="../../res/js/common/jquery-1.8.3.min.js"></script>
+<script src="../../res/js/manage/manage_menu.js"></script>
+<script src="../../res/plugins/Highcharts-3.0.7/highcharts.js"></script>
+<script src="../../res/js/manage/manage_home.js"></script>
+<script src="../../res/plugins/Highcharts-3.0.7/modules/exporting.js"></script>
+</head>
+<body>
+	<div class="header_wrap">
+    	<div class="header">
+       		<div class="head_logo"></div>
+            <ul class="head_submenu">
+            	<li class="head_submenu1"><a href="#" title=""></a></li>
+                <li class="head_submenu2"><a href="#" title=""></a></li>
+                <li class="head_submenu3"><a href="#" title=""></a></li>
+                <li class="head_submenu4"><a href="#" title=""></a></li>
+                <li class="head_submenu5"><a href="#" title=""></a></li>
+            </ul>
+            <ul class="head_login">
+            	<li class="head_login1"><a href="#" title="">用户登录</a></li>
+            	<li class="head_login2"><a href="#" title="">快速注册</a></li>
+            </ul>
+            <ul class="head_mainmenu">
+            	<li><a href="#" title="">我要借贷</a></li>
+                <li><a href="#" title="">我要理财</a></li>
+                <li><a href="#" title="">新手引导</a></li>
+                <li><a href="#" title="">本金保障</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="manage_poswrap"><span>账户管理</span><span>我的账户</span><span class="manage_curpos">账户总览</span></div>
+	<div class="container">
+    	<div class="topwrap"></div>
+        <div class="mainwrap">
+            <div class="mainbox" id="mainbox">
+                <div class="home_info">
+                	<table class="imginfowrap">
+                    	<tr>
+                        	<td><img style="width:90px;height:90px;padding:5px;border:1px solid #ddd;display:block;overflow:hidden;margin:0 auto;background:#fff;" alt="" src="../../res/image/register/register.png" /></td>
+                        </tr>
+                    </table>
+                    <div class="validinfowrap">
+                        <div class="infoname"><span class="namevalue"><span>上午好,</span><strong id="home_username">詹姆斯大战杜兰特</strong></span><div class="infounvip"><div><span id="infounvip"></span><p>VIP未认证,<a href="#" title="">立即认证</a></p></div></div></div>
+                        <ul class="infoicon">
+                            <li><div class="unicon1"><span id="unicon1"></span><p>实名未认证,<a href="#" title="">立即认证</a></p></div></li>
+                            <li><div class="unicon2"><span id="unicon2"></span><p>手机未认证,<a href="#" title="">立即认证</a></p></div></li>
+                            <li><div class="unicon3"><span id="unicon3"></span><p>邮箱未认证,<a href="#" title="">立即认证</a></p></div></li>
+                            <li><div class="unicon4"><span id="unicon4"></span><p>交易密码未认证,<a href="#" title="">立即认证</a></p></div></li>
+                        </ul>
+                        <ul class="infoprogress">
+                        	<li><p class="ipgtheme">安全等级:</p><span class="ipgvalue">低</span><div class="ipgimgl"><div>[<a href="#" title="">提升</a>]</div></div></li>
+                            <li><p class="ipgtheme">安全等级:</p><span class="ipgvalue">一般</span><div class="ipgimgd"><div>[<a href="#" title="">提升</a>]</div></div></li>
+                            <li><p class="ipgtheme">安全等级:</p><span class="ipgvalue">高</span><div class="ipgimgh"></div></li>
+                        </ul>
+                        <div class="infocredit"><div>信用等级:</div><a href="#" title="">A3(152分)</a></div>
+                    </div>
+                    <ul class="operateinfowrap">
+                        <li class="amount1"><div class="amounttheme">可用金额：<span>￥</span></div><span class="amountpart1">99999</span><span class="amountpart2">.99</span></li>
+                        <li class="amount2"><div class="subamount2">账户余额：<p>￥9999.99</p><span id="account_amount"></span><div>提示信息展示提示信息展示</div></div></li>
+                        <li class="amount3"><div class="subamount3">冻结金额：<p>￥9999.99</p><span id="freeze_amount"></span><div>提示信息展示提示信息展示</div></div></li>
+                        <li class="amount4"><a href="#" class="amount_trade" title="">我要理财</a><a href="#" class="amount_reload" title="">充值</a><a href="#" class="amount_cash" title="">提现</a></li>
+                    </ul>
+                    <div class="clear_fixs"></div>
+                </div>
+                <ul class="home_capital">
+                    <li>
+                        <div class="capitaltheme">账户净资产<span id="account_capital"></span><div>提示提示提示提示提示提示提示提示提示提示提示提示提示提示提示提示提示提示提示提示提示</div></div>
+                        <div class="capitalvalue"><p>￥</p><span class="capitalpart1">100,000</span><span class="capitalpart2">.00</span></div>
+                    </li>
+                    <li>
+                        <div class="capitaltheme">理财资产<span id="manage_capital"></span><div>提示提示提示提示提示提示提示提示提示提示提示提示提示提示提示提示提示提示提示提示提示</div></div>
+                        <div class="capitalvalue"><p>￥</p><span class="capitalpart1">100,000</span><span class="capitalpart2">.00</span></div>
+                    </li>
+                    <li>
+                        <div class="capitaltheme">借款负债<span id="loan_negative"></span><div>提示提示提示提示提示提示提示提示提示提示提示提示提示提示提示提示提示提示提示提示提示</div></div>
+                        <div class="capitalvaluespe"><p>￥</p><span class="capitalpart1">100,000</span><span class="capitalpart2">.00</span></div>
+                    </li>
+                    <li>
+                        <div class="capitaltheme">累计收益<span id="heap_income"></span><div>提示提示提示提示提示提示提示提示提示提示提示提示提示提示提示提示提示提示提示提示提示</div></div>
+                        <div class="capitalvalue"><p>￥</p><span class="capitalpart1">100,000</span><span class="capitalpart2">.00</span></div>
+                        <div class="capformatgrey">待收收益：￥100,000.00</div>
+                    </li>
+                    <li class="capformatn">
+                        <div class="capitaltheme">平均收益率<span id="average_rate"></span><div>提示提示提示提示提示提示提示提示提示提示提示提示提示提示提示提示提示提示提示提示提示</div></div>
+                        <div class="capitalvalue"><p>￥</p><span class="capitalpart1">100,000</span><span class="capitalpart2">.00</span></div>
+                    </li>
+                </ul>
+                <div class="home_chart" id="home_chart"></div>
+                <div class="home_list">
+                    <div class="listtheme"><h5>我的理财：</h5><p>累计总收益￥1,000.00</p></div>
+                    <div class="listshow">
+                        <table class="ls1">
+                            <colgroup>
+                                <col class="ls1_cg1"/>
+                                <col class="ls1_cg2"/>
+                                <col class="ls1_cg3"/>
+                                <col class="ls1_cg4"/>
+                                <col class="ls1_cg5"/>
+                                <col class="ls1_cg6"/>
+                                <col class="ls1_cg7"/>
+                            </colgroup>
+                            <thead>
+                                <tr>
+                                    <th>我的理财</th>
+                                    <th>待收本金</th>
+                                    <th>待收利息</th>
+                                    <th>已赚收益</th>
+                                    <th>平均收益率</th>
+                                    <th>持有数量</th>
+                                    <th>详情</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>￥56756.68</td>
+                                <td>￥456456.67</td>
+                                <td>￥256456.46</td>
+                                <td>￥546546.54</td>
+                                <td>55.88%</td>
+                                <td>34</td>
+                                <td><a href="#" title="">查看详情</a></td>
+                            </tr>
+                            <tr>
+                                <td>￥56756.68</td>
+                                <td>￥456456.67</td>
+                                <td>￥256456.46</td>
+                                <td>￥546546.54</td>
+                                <td>55.88%</td>
+                                <td>34</td>
+                                <td><a href="#" title="">查看详情</a></td>
+                            </tr>
+                            <tr>
+                                <td>￥56756.68</td>
+                                <td>￥456456.67</td>
+                                <td>￥256456.46</td>
+                                <td>￥546546.54</td>
+                                <td>55.88%</td>
+                                <td>34</td>
+                                <td><a href="#" title="">查看详情</a></td>
+                            </tr>
+                            <tr>
+                                <td>￥56756.68</td>
+                                <td>￥456456.67</td>
+                                <td>￥256456.46</td>
+                                <td>￥546546.54</td>
+                                <td>55.88%</td>
+                                <td>34</td>
+                                <td><a href="#" title="">查看详情</a></td>
+                            </tr>
+                            <tr>
+                                <td>￥56756.68</td>
+                                <td>￥456456.67</td>
+                                <td>￥256456.46</td>
+                                <td>￥546546.54</td>
+                                <td>55.88%</td>
+                                <td>34</td>
+                                <td><a href="#" title="">查看详情</a></td>
+                            </tr>
+                            </tbody>
+                            <tfoot>
+                            	<tr>
+                                    <td>合计</td>
+                                    <td>￥456456.67</td>
+                                    <td>￥256456.46</td>
+                                    <td>￥546546.54</td>
+                                    <td>55.88%</td>
+                                    <td>34</td>
+                                    <td>567</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                    <div class="listtheme"><h5>我的借款：</h5><p>累计总收益￥1,000.00</p></div>
+                    <div class="listshow">
+                        <table class="ls2">
+                            <colgroup>
+                                <col class="ls2_cg1"/>
+                                <col class="ls2_cg2"/>
+                                <col class="ls2_cg3"/>
+                                <col class="ls2_cg4"/>
+                                <col class="ls2_cg5"/>
+                                <col class="ls2_cg6"/>
+                                <col class="ls2_cg7"/>
+                                <col class="ls2_cg8"/>
+                            </colgroup>
+                            <thead>
+                                <tr>
+                                    <th>借款标题</th>
+                                    <th>借款金额</th>
+                                    <th>待还本金</th>
+                                    <th>待还利息</th>
+                                    <th>待还居间服务费</th>
+                                    <th>逾期费用</th>
+                                    <th>下次还款</th>
+                                    <th>状态</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            	<tr>
+                                    <td><p>37567356735673567356756735673567567</p></td>
+                                    <td>￥456456.67</td>
+                                    <td>￥256456.46</td>
+                                    <td>￥546546.54</td>
+                                    <td>55.88%</td>
+                                    <td>34</td>
+                                    <td>2013-12-21</td>
+                                    <td>申请中</td>
+                                </tr>
+                                <tr>
+                                    <td><p>fghsfhrtwyjeghjfgjfgjfgjjhghjhgjdhgjgh</p></td>
+                                    <td>￥456456.67</td>
+                                    <td>￥256456.46</td>
+                                    <td>￥546546.54</td>
+                                    <td>55.88%</td>
+                                    <td>34</td>
+                                    <td>2013-12-21</td>
+                                    <td>申请中</td>
+                                </tr>
+                                <tr>
+                                    <td><p>还款标题还款标题还款标题还款标题还款标题还款标题</p></td>
+                                    <td>￥456456.67</td>
+                                    <td>￥256456.46</td>
+                                    <td>￥546546.54</td>
+                                    <td>55.88%</td>
+                                    <td>34</td>
+                                    <td>2013-12-21</td>
+                                    <td>申请中</td>
+                                </tr>
+                                <tr>
+                                    <td><p>还款标题还款标题还款标题还sdfsdsdgadgdfgdfgerhgfzfgdfhfdaha</p></td>
+                                    <td>￥456456.67</td>
+                                    <td>￥256456.46</td>
+                                    <td>￥546546.54</td>
+                                    <td>55.88%</td>
+                                    <td>34</td>
+                                    <td>2013-12-21</td>
+                                    <td>申请中</td>
+                                </tr>
+                                <tfoot>
+                                	<tr>
+                                        <td>合计</td>
+                                        <td>￥456456.67</td>
+                                        <td>￥256456.46</td>
+                                        <td>￥546546.54</td>
+                                        <td>55.88%</td>
+                                        <td>34</td>
+                                        <td>2013-12-21</td>
+                                        <td>申请中</td>
+                                    </tr>
+                                </tfoot>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="clear_fixs"></div>
+            </div>
+            <div class="bottomwrap"></div>
+        </div>
+        <div class="sidewrap">
+        	<ul class="sidebox" id="sidebox">
+            <li class="mainmenu">
+                <p class="menutheme0 menuthemesel" id="menutheme0">我的账户</p>
+                <ul class="submenu" style="display:block">
+                    <li class=""><a href="manage_home.html" title="">账户总览</a></li>
+                    <li class=""><a href="manage_tradenotes.html" title="">交易记录</a></li>
+                    <li class=""><a href="manage_personinfo.html" title="">个人信息</a></li>
+                    <li class=""><a href="bankcard.html" title="">银行卡信息</a></li>
+                    <li class=""><a href="authinfo.html" title="">认证中心</a></li>
+                    <li class=""><a href="security.html" title="">安全中心</a></li>
+                    <li class=""><a href="#" title="">站内消息</a></li>
+                    <li class=""><a href="#" title="">提醒设置</a></li>
+                </ul>
+            </li>
+            <li class="mainmenu">
+                <p class="menutheme1" id="menutheme1">我的理财</p>
+                <ul class="submenu">
+                    <li class=""><a href="wealth_report.html" title="">理财报表</a></li>
+                    <li class=""><a href="#" title="">理财记录</a></li>
+                    <li class=""><a href="#" title="">回款记录</a></li>
+                </ul>
+            </li>
+            <li class="mainmenu">
+                <p class="menutheme2" id="menutheme2">我的借款</p>
+                <ul class="submenu">
+                    <li class=""><a href="#" title="">借款报表</a></li>
+                    <li class=""><a href="#" title="">借款记录</a></li>
+                    <li class=""><a href="#" title="">还款记录</a></li>
+                </ul>
+            </li>
+            <li class="mainmenu_format"></li>
+        </ul>
+        </div>
+    </div>
+    <div class="clear_fixs"></div>
+    <div class="footer_wrap">
+    	<div class="footer">
+        	<ul class="foot_join">
+            	<li><a href="#" title="">关于我们</a></li>
+                <li><a href="#" title="">媒体关注</a></li>
+                <li><a href="#" title="">联系我们</a></li>
+                <li><a href="#" title="">加入我们</a></li>
+                <li><a href="#" title="">合作伙伴</a></li>
+                <li class="joinlast"><a href="#" title="">意见反馈</a></li>
+            </ul>
+        	<div class="foot_theme"><p>安全：银行风控专家把关</p><p>专业：线下5年小额贷款经验</p><p>真实：所有借款均真实有效</p></div>
+            <p class="foot_phone">服务热线：400-990-6088&nbsp;（周一至周日&nbsp;9:00--21:00）</p>
+            <p class="foot_copyright">Copyright&copy;2013-2014&nbsp;版权所有：深圳市贷贷平安网络信息有限公司</p>
+            <ul class="foot_webrecord">
+            	<li>粤ICP备09157619号</li>
+                <li><a href="#" title="">国际联网备案</a></li>
+                <li><a href="#" title="">深圳网警备案</a></li>
+                <li><a href="#" title="">中国互联网协会</a></li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

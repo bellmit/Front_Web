@@ -1,0 +1,54 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<meta name="description" content="德亿多媒体资源库,德亿多媒体,德亿多媒体资源库管理系统,管理系统--修改密码"/>
+<meta name="keywords" content="德亿多媒体资源库,德亿多媒体,德亿多媒体资源库管理系统,管理系统--修改密码"/>
+<link rel="stylesheet" type="text/css" href="../../css/main/menu_operate.css">
+<script src="../../js/lib/jquery-1.8.3.min.js"></script>
+<script src="../../js/lib/jquery.blockUI.min.js"></script>
+<script src="../../js/utils/util.js"></script>
+<script>
+$(function(){
+	var userpwd_close=$("#userpwd_close"),userpwd_sure=$("#userpwd_sure");
+	/*确定*/
+	userpwd_sure.click(function(){
+		popup_alert("修改成功","undefined","yes","have");
+	});
+	/*关闭*/
+	userpwd_close.click(function(){
+		var isclose=window.confirm("您是否要关闭窗口!");
+		if(isclose)window.close();
+	});
+})
+</script>
+<title>用户修改密码</title>
+</head>
+<body>
+<div class="userpwd_wrap">
+	<h1 class="userpwd_title">修改密码</h3>
+	<table class="userpwd_content">
+    	<colgroup>
+        	<col class="up_cg1"/>
+            <col class="up_cg2"/>
+        </colgroup>
+    	<tr class="userpwd_text">
+        	<td><label for="username">用&nbsp;户&nbsp;名：</label></td>
+            <td><input type="text" name="username" id="username"/></td>
+        </tr>
+        <tr class="userpwd_text">
+        	<td><label for="pwd">新&nbsp;密&nbsp;码：</label></td>
+            <td><input type="password" name="pwd" id="pwd"/></td>
+        </tr>
+        <tr class="userpwd_text">
+        	<td><label for="repwd">密码确认：</label></td>
+            <td><input type="password" name="repwd" id="repwd"/></td>
+        </tr>
+        <tr>
+        	<td>&nbsp;</td>
+            <td><input type="submit" name="userpwd_sure" value="确定" id="userpwd_sure" class="userpwd_sure"><input type="button" name="userpwd_close" value="关闭" id="userpwd_close" class="userpwd_close"></td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

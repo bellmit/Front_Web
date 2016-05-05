@@ -1,0 +1,102 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>TCL cartel web--home</title>
+<meta name="description" content="TCL cartel web,TCL cartel,TCL cartel home" />
+<meta name="keywords" content="TCL cartel web,TCL cartel,TCL cartel home" />
+<link rel="shortcut icon" href="images/logo_icon.ico">
+<link rel="stylesheet" type="text/css" href="css/common_eng.css">
+<link rel="stylesheet" type="text/css" href="css/home_eng.css">
+<script src="js/lib/jquery-1.8.3.min.js"></script>
+<script src="js/common_eng.js"></script>
+<!--[if IE 6]><script type="text/javascript" src="js/iepngfix_tilebg.js"></script><![endif]-->
+<script src="js/home_slide_eng.js"></script>
+<script>
+$(function(){
+	$("#home_theme").each(function(){
+        if($(this).width()>=950){
+			this.width=950;
+		}
+    });	
+});
+</script>
+</head>
+
+<body>
+<div class="container">
+  <div class="header_wrap">
+    <div class="header clearfix"><a href="home.html"><span id="logo">TCL</span></a>
+      <div class="select_language language"><span>Language</span><p>&nbsp;</p>
+        <ul style="width:140px;display:none;" id="languageul">
+          <li><a href="http://www.baidu.com" target="_self" title="">Chinese</a></li>
+          <li><a href="http://www.sina.com" target="_self" title="">English</a></li>
+        </ul>
+      </div>
+      <div class="select_sim member"><span>TCL members of the site</span><p>&nbsp;</p>
+        <ul style="width:200px;display:none;" id="nvul">
+            <li onclick="window.open('http://www.tcl.com')">TCL Web Sites</li>
+            <li onclick="window.open('http://www.tclusa.com')">TCL USA Website</li>
+            <li onclick="window.open('http://multimedia.tcl.com/')">TCL Multimedia Technology Holdings Limited</li>
+            <li onclick="window.open('http://tclcom.tcl.com')">TCL Communication Technology Holdings Limited</li>
+            <li onclick="window.open('http://www.tctmobile.com')">T&A Mobile Phones Limited</li>
+            <li onclick="window.open('http://www.tclcomm.cn')">TCL Communication Equipment Co.,Ltd.</li>
+            <li onclick="window.open('http://lighting.tcl.com')">HuiZhou TCL Lighting Electronic Appliances Co.,Ltd</li>
+            <li onclick="window.open('http://hao.tcl.com')">TCL Air Conditioner (Zhongshan) Co.,Ltd.</li>
+            <li onclick="window.open('http://www.tcl-delonghi.com/en/index.asp')">TCL DeLonghi Home Appliances (Zhongshan) Co., Ltd</li>
+            <li onclick="window.open('http://xjd.tcl.com/en/index.aspx')">Foshan TCL Household Appliances (Nanhai)Co.,Ltd.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="navigation clearfix">
+      <ul class="menu">
+        <li class="bdnone"><a href="home.html" class="sp">Home</a></li>
+        <li><a href="DVD_Navigation.html" class="sp">Products</a>
+          <ul class="navlist" style="display:none;">
+            <li><a href="DVD_Navigation.html">DVD Navigation</a></li>
+            <li><a href="Android_Smart_Navigation.html">Android Smart Navigation</a></li>
+          </ul>
+          <span class="bdline"></span></li>
+        <li><a href="about_infos.html" class="sp">About Us</a>
+          <ul class="navlist" style="display: none;">
+            <li><a href="about_infos.html">Company profile</a></li>
+            <li><a href="about_brand.html">Brand theory</a></li>
+            <li><a href="about_future.html">Company vision</a></li>
+          </ul>
+          <span class="bdline"></span></li>
+        <li><a href="contact_us.html" class="sp">Contact Us</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="content">
+    <div class="slide_wrap" id="slide_wrap">
+      <ul class="slide_img" id="slide_img">
+        <li class="slideimg_sel"><a title="" href="http://www.baidu.com" target="_blank"> <img alt="TCL Cartel smart navigator information service system" src="images/home_slide/home_slide1.jpg"/></a></li>
+        <li class="home_slideimg_sel"><a title="" href="http://www.baidu.com" target="_blank"> <img alt="Believe the power of brand!" src="images/home_slide/home_slide2.jpg"/></a></li>
+        <li class="slideimg_sel"><a title="" href="http://www.baidu.com" target="_blank"> <img alt="The 'alloy' series of TCL Cartel navigator" src="images/home_slide/home_slide3.jpg"/></a></li>
+        <li class="slideimg_sel"><a title="" href="http://www.baidu.com" target="_blank"> <img alt="The “gold” series of TCL Cartel navigator" src="images/home_slide/home_slide4.jpg"/></a></li>
+        <li class="slideimg_sel"><a title="" href="http://www.baidu.com" target="_blank"> <img alt="TCL Cartel “platinum” series——Amazing intelligent experience" src="images/home_slide/home_slide5.jpg"/></a></li>
+      </ul>
+      <ul class="slide_tag" id="slide_tag">
+        <li class="slidetag_sel"><a title="" href="#">1</a></li>
+        <li><a title="" href="#">2</a></li>
+        <li><a title="" href="#">3</a></li>
+        <li><a title="" href="#">4</a></li>
+        <li><a title="" href="#">5</a></li>
+      </ul>
+      <div class="slide_tips" id="slide_tips">
+        <p></p>
+      </div>
+    </div>
+    <div class="home_theme" id="home_theme"> <img alt="" src="images/home_theme_eng.jpg" /> </div>
+    <div class="clears"></div>
+  </div>
+</div>
+<div class="footer">
+  <div class="remarks">
+    <p class="remark_icon">TCL</p>
+    <p class="remark_copyright">TCL&nbsp;Cartel&nbsp;Co.&nbsp;Ltd.&nbsp;(website&nbsp;ICP)&copy;2013-2018&nbsp;TCL&nbsp;CARTEL&nbsp;All&nbsp;Rights&nbsp;Reserved.</p>
+  </div>
+</div>
+</body>
+</html>

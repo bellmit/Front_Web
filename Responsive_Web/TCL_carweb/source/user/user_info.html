@@ -1,0 +1,138 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+<meta charset="UTF-8">
+<title>个人资料</title>
+<#include "/includes/carcenter_res.html"/>
+<link rel="stylesheet" type="text/css" href="../../../../ResponsiveWebDesign_Web/TCL_carweb/source/user/${request.contextPath}/resources/easy-ui/themes/default/easyui.css">
+</head>
+<body>
+<div class="bg_wrap">
+  <div class="wrapper">
+  	<#include "/includes/header.html"/>
+    <div class="boardframe">
+      <div class="fri-content">
+        <div class="wrap-con">
+          <#include "/includes/car_userinfos.html"/>
+          <div class="p_share">
+            <h1 class="p_h1 bg_1">个人资料</h1>
+            <div id="feedcontainer">
+              <div class="info-con">
+                <div class="p-tabs">
+                  <ul>
+                    <li class="active"><a href="user_info.html">个人信息</a></li>
+                    <li><a href="user_ico.html">头像设置</a></li>
+                    <li><a href="user_pwd.html">修改密码</a></li>
+                    <li><a href="car_info.html">车辆信息</a></li>
+                    <li><a href="user_mobile.html">绑定手机</a></li>
+                  </ul>
+                </div>
+                <div class="info-tabs-con">
+                  <div class="tab-list">
+                    <div class="rs_head">填写完整准确的个人资料</div>
+                    <form action="" name="form1" method="post" id="saveForm">
+                    <input type="hidden" id="contextPath" value="${request.contextPath}"/>
+                    <input type="hidden" id="hidden_city" value="${friendInfo.city!''}"/>
+					 <#if friendInfo??>
+						 <input type="hidden" name="seqid" id="seqid" value="${friendInfo.seqid!''}"/>
+						 <input type="hidden" name="friendid" id="friendid" value="${friendInfo.friendid!''}"/>
+					    <table class="form_table">
+                        <tbody>
+                          <tr>
+                            <th width="18%">用户号</th>
+                            <td width="82%">${friendInfo.friendid!''}</td>
+                          </tr>
+                          <tr>
+                            <th><span class="tips_requiredef">*</span>昵称</th>
+                            <td><input type="text" style="float:left;" class="small-text" name="nickname" id="nickname" value="${friendInfo.nickname!''}"><div class="user_infovalid" id="nickname_tips"></div></td>
+                          </tr>
+                          <tr>
+                            <th><span class="tips_requiredef">*</span>邮箱</th>
+                            <td><input style="float:left;" type="text" class="small-text" name="email" id="email" value="${friendInfo.email!''}"><div class="user_infovalid" id="email_tips"></div></td>
+                          </tr>
+                          <tr>
+                            <th><span class="tips_requiredef">*</span>性别</th>
+                            <td>
+                            <#if mapSex??>
+                               <#list mapSex?keys as key>
+                                   <#assign sex = mapSex[key]>
+                                   <#if friendInfo.sex??>
+                                       <#if friendInfo.sex==sex.itemvalue>
+                                           <input style="float:left;margin:3px 3px 0 5px;" type="radio" name="sex" class="radio" value="${sex.itemvalue!''}" checked="checked" /><label style="float:left;line-height:20px;">${sex.itemname!''}</label>
+                                         <#else>
+                                           <input style="float:left;margin:3px 3px 0 5px;" type="radio" name="sex" class="radio" value="${sex.itemvalue!''}"/><label style="float:left;line-height:20px;">${sex.itemname!''}</label>
+                                       </#if>
+                                       <#else>
+                                           <input style="float:left;margin:3px 3px 0 5px;" type="radio" name="sex" class="radio" value="${sex.itemvalue!''}"/><label style="float:left;line-height:20px;">${sex.itemname!''}</label>
+                                   </#if>
+                               </#list>
+                            </#if>
+                            <div class="user_infovalid" id="sex_tips"></div>
+                              </td>
+                          </tr>
+                          <tr style="line-height:20px;">
+                            <th>所在地</th>
+                            <td>
+                              <input name="province"  id="s1" class="easyui-combobox pronvice-class" style="width: 120px;" isAllowText="false"/>
+                              <input name="tempcity" id="s2" style="width: 120px" class="easyui-combobox city-class" isAllowText="false"/>
+                              <input name="town" id="town" style="width: 120px" class="easyui-combobox city-class" isAllowText="false"/>
+                              <span style="font-size: 12px;color: red;" id="msg"></span>
+                              </td>
+                          </tr>
+                          <tr>
+                            <th>出生日期</th>
+                            <td><input type="text" class="small-text" name="birthday" id="birth_date" value="${friendInfo.birthday!''}" readonly /></td>
+                          </tr>
+                          <tr>
+                            <td>&nbsp;</td>
+                            <td><input type="submit" name="profilesubmit" value="提交" class="regular-btn" id="save">
+                              <input type="button" value="取消" class="regular-btn" id="resetBtn" name="Submit"></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      </#if>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <#include "/includes/car_sidenav.html"/>
+    </div>
+  </div>
+</div>
+<#include "/includes/footer.html"/>
+
+<script src="../../../../ResponsiveWebDesign_Web/TCL_carweb/source/user/${request.contextPath}/resources/js/My97DatePicker/WdatePicker.js"></script>
+<script src="../../../../ResponsiveWebDesign_Web/TCL_carweb/source/user/${request.contextPath}/resources/js/lib/jquery.form.js"></script>
+<script src="../../../../ResponsiveWebDesign_Web/TCL_carweb/source/user/${request.contextPath}/resources/js/lib/jquery.validate.js"></script>
+<script src="../../../../ResponsiveWebDesign_Web/TCL_carweb/source/user/${request.contextPath}/resources/js/carfri/user_info.js"></script>
+<script src="../../../../ResponsiveWebDesign_Web/TCL_carweb/source/user/${request.contextPath}/resources/easy-ui/jquery.easyui.min.js"></script>
+<script src="../../../../ResponsiveWebDesign_Web/TCL_carweb/source/user/${request.contextPath}/resources/js/easy-utils.js"></script>
+<script type="text/javascript">
+jQuery(function($){
+	var city = $('#hidden_city').val();
+	$.EasyUiCity({
+			townInitVal : city,
+			pid : 's1',
+			cid : 's2',
+			tid :'town'
+		});
+	    var maxYear,minYear;
+	    var year = new Date().getFullYear()-18;//当前日期的前18年
+	    var yearDay = new Date().getDate();
+	    var yearMonth = new Date().getMonth()+1;
+	    maxYear = year+"-"+yearMonth+"-"+yearDay;
+	    minYear = (year-52)+"-"+yearMonth+"-"+yearDay;
+		$("#birth_date").click(function() {
+			WdatePicker({
+				maxDate : maxYear,
+				minDate : minYear
+			});
+		});
+	});
+</script>
+</body>
+</html>

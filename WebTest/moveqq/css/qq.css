@@ -1,0 +1,12 @@
+@charset "utf-8";
+/* CSS Document */
+/*浮动QQ*/
+.qqpane{position:absolute;top:200px;right:1px;height:95px;width:155px;}
+.hiddenqqpane{position:relative;left:125px;top:0px;width:30px;height:95px;background:url(../img/hiddenqq-background.png) no-repeat;}
+.hiddenqqicon{width:15px;height:13px;background:url(../img/hiddenqqicon.png) no-repeat;position:relative;top:76px;left:8px;display:block;cursor:pointer;}
+.hiddenqqicon:hover{background:url(../img/hiddenqqiconhover.png) no-repeat;}
+.showqqpane{position:absolute;top:4px;left:0px;width:155px;height:86px;background:url(../img/listqq-background.png) no-repeat;display:none;}
+.showqqicon{background:url(../img/listqqicon.png) no-repeat;width:18px;height:11px;position:relative;left:5px;top:5px;cursor:pointer;}
+.showqqicon:hover{background:url(../img/listqqiconhover.png) no-repeat;}
+.disonline{width:69px;height:24px;background:url(../img/listqqdisonline.png) no-repeat;display:block;position:absolute;left:8px;top:38px;}
+.online{width:69px;height:24px;background:url(../img/listqqonline.png) no-repeat;display:block;position:absolute;left:80px;top:38px;}

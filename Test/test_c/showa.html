@@ -1,0 +1,103 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<link rel="stylesheet" type="text/css" href="../css/global.css" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+</head>
+
+<body>
+
+
+				<!--<div class="lead">
+                	<div id="leadshow">
+                    	<div id="leadinner">
+                        	<ul id="leadlista">
+                            	<li>
+                              	<table cellspacing="0">
+                                	<tr>
+                                        <td><img src="img/frameson/湘投国际.jpg"/></td>                          
+                                    </tr>
+                                	<tr>
+                                    	<td><a>湘投国际</a></td>  
+                                 	</tr>
+                              	</table>
+                            	</li>
+                        	</ul>
+                        	<ul id="leadlistb">
+                        	</ul>
+                    	</div>
+                	</div>
+                </div>-->
+
+
+
+
+				<div class="jdxclist">
+                
+                	<div id="jdjjshow">
+                    	<div id="jdjjinner">
+                        	<ul id="jdjjlista">
+                            	<li>
+                              	<table cellspacing="0">
+                                	<tr>
+                                        {dede:arclist titlelen='12' row='12' typeid='6'}<td><a href="[field:arcurl/]" target="_blank"><img src="[field:litpic/]"  alt="[field:title/]" /><p>[field:title/]</p></a></td>{/dede:arclist}
+                                    </tr>
+                              	</table>
+                            	</li>
+                        	</ul>
+                        	<ul id="jdjjistb">
+                        	</ul>
+                    	</div>
+                	</div>
+                    
+                </div>
+   
+                
+<!--<div class="jdxclist">
+        <ul id="jdjj_mar">
+            <marquee id="scrollArea" height="140" width="960" loop="-1" scrollamount="6" onmouseover=this.stop() onmouseout=this.start() direction="left" behavior="scroll">
+                 {dede:arclist titlelen='12' row='12' typeid='6'}	
+        				<li><a href="[field:arcurl/]" target="_blank"><img src="[field:litpic/]"  alt="[field:title/]" /><p>[field:title/]</p></a></li>
+                 {/dede:arclist}
+            </marquee>
+        </ul>
+</div>--> 
+                <script>
+				var speed=0;//数字越大速度越慢
+				var Sys ={};
+				var ua = navigator.userAgent.toLowerCase();
+				var s;
+				(s = ua.match(/msie ([\d.]+)/)) ? Sys.ie = s[1] :
+				(s = ua.match(/firefox\/([\d.]+)/)) ? Sys.firefox = s[1] :
+				(s = ua.match(/chrome\/([\d.]+)/)) ? Sys.chrome = s[1] :
+				(s = ua.match(/opera.([\d.]+)/)) ? Sys.opera = s[1] :
+				(s = ua.match(/version\/([\d.]+).*safari/)) ? Sys.safari = s[1] : 0;
+				if(Sys.ie)
+				speed=1;
+				if(Sys.firefox)
+				speed=5;
+				if(Sys.chrome)
+				speed=2;
+				if(Sys.opera)
+				speed=2;
+				if(Sys.safari)
+				speed=2;
+				var tab=document.getElementById("jdjjshow");
+				var tab1=document.getElementById("jdjjlista");
+				var tab2=document.getElementById("jdjjlistb");
+		
+				tab2.innerHTML=tab1.innerHTML;
+				function Marquee(){
+				if(tab2.offsetWidth-tab.scrollLeft<=0)
+				tab.scrollLeft-=tab1.offsetWidth
+				else{
+				tab.scrollLeft++;
+				}
+				}
+				var MyMar=setInterval(Marquee,speed);
+				tab.onmouseover=function() {clearInterval(MyMar)};
+				tab.onmouseout=function() {MyMar=setInterval(Marquee,speed)};
+				</script>
+</body>
+</html>

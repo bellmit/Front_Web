@@ -1,0 +1,18 @@
+/* CSS Document */
+/*global style*/
+body{margin:0;padding:0;background:url(../images/global_one_bg.jpg) repeat center center;}
+body *{margin:0;padding:0;font-size:100%;text-decoration:none;color:#000;font-family:"宋体", serif, sans-serif, "宋体-PUA", "楷体_GB2312", "仿宋_GB2312", Vrinda;list-style:none;border:0 none;resize:none;}
+body *:focus{outline:none;}
+/*page layout*/
+.container{margin:50px auto;width:1000px;height:500px;}
+.content{width:800px;height:auto;margin:0 auto;padding:20px 0;}
+/*detail style*/
+.menuitem{width:300px;height:auto;margin:0 auto;}
+/*main*/
+.menuitem li{width:100%;height:auto;float:left;text-indent:20px;margin:2px 0;font-size:12px;}
+.menuitem li p{float:left;height:30px;width:100%;font-weight:bold;font-size:20px;background:#069;text-indent:50px;color:#FFF;line-height:1.5em;cursor:pointer;}
+.menuitem li p:hover{text-decoration:underline;}
+/*sub*/
+.sub_menu{width:100%;height:auto;float:left;display:none;}
+.sub_menu li{float:left;width:100%;height:auto;padding:5px 0;margin:2px 0 0 0;cursor:pointer;text-decoration:underline;background:#FFF;}
+.sub_menu li:hover{-webkit-text-shadow:0 1px 2px #999;-moz-text-shadow:0 1px 2px #999;-o-text-shadow:0 1px 2px #999;-ms-text-shadow:0 1px 2px #999;text-shadow:0 1px 2px #999;}

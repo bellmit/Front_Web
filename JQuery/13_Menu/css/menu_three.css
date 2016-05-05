@@ -1,0 +1,16 @@
+/* CSS Document */
+/*global style*/
+body{margin:0;padding:0;background:url(../images/global_three_bg.png) repeat center center;}
+body *{margin:0;padding:0;font-size:100%;text-decoration:none;color:#000;font-family:"宋体", serif, sans-serif, "宋体-PUA", "楷体_GB2312", "仿宋_GB2312", Vrinda;list-style:none;border:0 none;resize:none;}
+body *:focus{outline:none;}
+/*page layout*/
+.container{margin:50px auto;width:1000px;height:500px;}
+.content{width:1000px;height:auto;margin:0 auto;padding:50px 0;}
+/*detail style*/
+.menuitem{width:800px;height:auto;margin:0 auto;position:relative;}
+/*main*/
+.menuitem li{float:left;width:150px;height:auto;}
+.menuitem li.back{position:absolute;left:0px;top:30px;border-bottom:1px solid #f00;margin:0;}
+.menuitem li p{height:30px;width:100%;font-weight:bold;font-size:16px;text-align:center;color:#000;line-height:1.8em;cursor:pointer;display:block;}
+.menuitem li p:hover{-webkit-text-shadow:0 1px 2px #999;-moz-text-shadow:0 1px 2px #999;-o-text-shadow:0 1px 2px #999;-ms-text-shadow:0 1px 2px #ccc;text-shadow:0 1px 2px #999;}
+

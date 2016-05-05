@@ -1,0 +1,258 @@
+///模块--购物车
+
+
+//购物车--商品名称
+.shopping-thumbnail{
+	.layout-base;
+	width:152px;
+	height:92px;
+	padding:5px;
+	border:1px solid @color-gray9;
+	.border-radius-base(3px);
+	background:@color-white;
+	margin:0 auto;
+	>a,
+	>em{
+		.box-sizing-base;
+		display:block;
+		float:left;
+		.no-outline-base;
+	}
+	>a:first-child{
+		width:50px;
+		height:50px;
+		overflow:hidden;
+		img{
+			display:block;
+			width:100%;
+			height:100%;
+		}		
+	}
+	>a:first-child+em{
+		width:90px;
+		height:50px;
+		text-align:left;
+		font-size:@font-size-small;
+		font-style:normal;
+		line-height:20px;
+		padding:0 0 0 10px;
+		overflow:hidden;
+		color:@color-gray4;
+		&:before{
+			content:'编号：';
+		}
+	}
+	>a:first-child+em+a{
+		width:100%;
+		text-align:left;
+		height:25px;
+		border-top:1px dashed @color-gray9;
+		line-height:25px;
+		margin:5px 0 0 0;
+		font-size:@font-size-small;
+		color:@color-gray3;
+		overflow:hidden;
+	}
+}
+
+	
+////购物车结算
+.amountmoney-wrap{
+	.layout-float-base;
+	height:60px;
+	font-size:0;
+	text-align:right;
+	padding:10px 20px 10px 0;
+	margin:0;
+	>li{
+		.box-sizing-base;
+		display:inline-block;
+		vertical-align:middle;
+		text-align:center;
+		height:100%;
+		line-height:40px;
+		font-size:@font-size-small;
+	}
+	.amountmoney-input{
+		width:10% !important;
+		label{
+			margin:0;
+			line-height:40px;
+			font-size:@font-size-small;
+		}
+	}
+	.amountmoney-clear,
+	.amountmoney-restore{
+		color:@color-gray3;
+		cursor:pointer;
+		
+		&:hover{
+			text-decoration:underline;
+		}
+	}
+	.amountmoney-clear{
+		width:15% !important;
+	}
+	.amountmoney-restore{
+		width:15% !important;
+	}
+	.amountmoney-number{
+		width:15% !important;
+		color:@color-red4;
+		&:before{
+			content:'已选\00a0';
+			color:@color-gray3;
+		}
+		&:after{
+			content:'\00a0件';
+			color:@color-gray3;
+		}
+		&:empty{
+			&:before{
+				content:'已选0';
+			}
+			&:after{
+				content:'件';
+			}
+		}
+	}
+	.amountmoney-money{
+		width:40% !important;
+		padding:0 10px 0 0;
+		overflow:hidden;
+		color:@color-gray3;
+		text-align:right;
+		.text-of;
+		>div{
+			display:inline-block;
+			color:@color-red4;
+			font-size:@font-size-base + 2;
+			&:before{
+				content:'￥：';
+			}
+			&:empty:before{
+				content:'￥：0.00';
+			}
+		}
+		&:before{
+			content:'合计\00a0';
+		}
+	}
+	.amountmoney-buy{
+		width:18% !important;
+		line-height:32px;
+		.text-unselect;
+		font-size:@font-size-base;
+	}
+}
+
+
+///商品数量
+.shopping-number{
+	width:100px;
+	height:30px;
+	margin:0 auto;
+	background:@color-white;
+	>div{
+		.box-sizing-base;
+		height:100%;
+		float:left;
+	}
+	.shopping_nminus,
+	.shopping_nadd{
+		width:25px;
+		border:1px solid @color-gray9;
+		color:@color-gray3;
+		background:@color-white;
+		font-size:@font-size-base;
+		line-height:26px;
+		cursor:pointer;
+		&:hover{
+			color:@color-red4;
+			border:1px solid @color-red4;
+
+		}
+	}
+	.shopping_nminus{
+		&:before{
+			content:'-';
+		}
+	}
+	.shopping_nadd{
+		&:before{
+			content:'+';
+		}
+	}
+	.shopping_nminus+div{
+		width:48px;
+		margin:0 1px 0 1px;
+		input{
+			width:100%;
+			height:100%;
+			border:1px solid @color-gray9;
+			color:@color-gray3;
+			float:left;
+			.box-sizing-base;
+			.border-radius-base(0);
+			text-align:center;
+			padding:0;
+			.box-shadow-base(none);
+			font-size:@font-size-base;
+			&:focus{
+				border-color:@color-red4;
+			}
+		}
+	}
+}
+
+
+//禁用状态
+.shopping-disabled{
+	///
+	td{
+		background:@color-gray11 !important;
+		.text-unselect;
+		p{
+			color:@color-gray3 !important;
+		}
+	}
+	///
+	.shopping-thumbnail{
+		background:@color-gray11;
+		.opacity-base(80);
+		.filter-base(100);
+		>a:first-child{
+			cursor:default;		
+		}
+		>a:first-child+em+a{
+			color:@color-gray5;
+			&:hover{
+				text-decoration:none;
+				cursor:default;
+			}
+		}
+	}
+	
+	 ///
+	.shopping-number{
+			.shopping_nminus,
+			.shopping_nadd{
+				background:@color-gray5;
+				cursor:default;
+				&:hover{
+					background:@color-gray5;
+				}
+			}
+			.shopping_nminus+div{
+				input{
+					border:1px solid @color-gray5;
+					&:focus{
+						border-color:@color-gray5;
+					}
+				}
+			}
+	}
+	
+	
+}
+

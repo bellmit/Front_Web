@@ -1,0 +1,51 @@
+///*--文章详情模块--*/
+.article-theme,
+.article-img,
+.article-details{
+	width:100%;
+	float:left;
+	margin:5px 0 10px 0;
+}
+.article-theme{
+		h1{
+			.reset-base1;
+			width:100%;
+			.text-ww;
+			line-height:26px;
+			overflow:hidden;
+			font-size:@font-size-base + 4;
+			font-weight:normal;
+		}
+}
+.article-img{
+	img{
+		max-width:100%;
+		overflow:hidden;
+		min-width:200px;
+		margin:0 auto;
+		display:block;
+	}
+}
+.article-details{
+	.text-ww;
+	h1,h2,h3,h4,h5,h6,table,section,ul,ol,article,div,p,details{
+		width:100%;
+		height:auto;
+		.text-ww;
+	}
+	h1,h2,h3,h4,h5,h6{
+		font-weight:normal;
+	}
+	img{
+		max-width:100%;
+		display:block;
+		margin:0 auto;
+		overflow:hidden;
+	}
+	p{
+		color:@color-gray1;
+		font-size:@font-size-base;
+		line-height:24px;
+		text-indent:2em;
+	}
+}
