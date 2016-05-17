@@ -1,0 +1,12 @@
+<?php
+
+    if(isset($_POST['submit'])){
+        session_start();
+        $_SESSION['nba']=$_POST['nba'];
+        header('Location:nba_result.php');
+    }
+
+
+
+
+?>

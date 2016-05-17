@@ -1,0 +1,15 @@
+<?php
+    mkdir('nimei/nimeia/nimeib',0777,true);
+
+?>
+
+
+
+
+
+
+
+
+
+
+

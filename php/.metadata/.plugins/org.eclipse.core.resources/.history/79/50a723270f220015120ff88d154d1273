@@ -1,0 +1,12 @@
+<?php
+ $a=null;
+ $b;
+ $c='ni mei';
+ unset($c);
+ var_dump($a,$b,$c);
+?>
+<br />
+<?php
+ echo '$_COOKIE:';
+ var_dump($_COOKIE,$_ENV,$_FILES,$_GET,$_POST,$_REQUEST,$_SERVER,$_SESSION,$GLOBALS);
+?>

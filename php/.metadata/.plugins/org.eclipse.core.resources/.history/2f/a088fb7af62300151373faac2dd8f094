@@ -1,0 +1,20 @@
+<?php
+    try {
+        mkdir('mkdir_file',0777,true);
+    } catch (Exception $e) {
+        
+    }
+    
+
+?>
+
+
+
+
+
+
+
+
+
+
+

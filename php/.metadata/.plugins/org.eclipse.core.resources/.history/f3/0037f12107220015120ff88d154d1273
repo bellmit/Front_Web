@@ -1,0 +1,9 @@
+<?php
+ $a=null;
+ $b;
+ $c='ni mei';
+ unset($c);
+ var_dump($a,$b,$c);
+
+
+?>

@@ -1,0 +1,21 @@
+<?php
+    try {
+        if(!is_dir('mkdir_file')){
+            mkdir('mkdir_file',0777,true);
+            fopen('武林秘籍.txt',w);
+        } 
+    } catch (Exception $e) {
+        echo '该文件夹已经存在';
+    }
+?>
+
+
+
+
+
+
+
+
+
+
+

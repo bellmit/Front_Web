@@ -1,0 +1,63 @@
+<?php
+ $a=null;
+ $b;
+ $c='ni mei';
+ unset($c);
+ var_dump($a,$b,$c);
+?>
+<br />
+<?php
+ echo '$_COOKIE: ';
+ var_dump($_COOKIE);
+?>
+<br />
+<?php
+ echo '$_ENV: ';
+ var_dump($_ENV);
+?>
+<br />
+<?php
+ echo '$_FILES: ';
+ var_dump($_FILES);
+?>
+<br />
+<?php
+ echo '$_GET: ';
+ var_dump($_GET);
+?>
+<br />
+<?php
+ echo '$_POST: ';
+ var_dump($_POST);
+?>
+<br />
+<?php
+ echo '$_REQUEST: ';
+ var_dump($_REQUEST);
+?>
+<br />
+<?php
+ echo '$_SERVER: ';
+ var_dump($_SERVER);
+?>
+<br />
+<?php
+ echo '$_SESSION: ';
+ var_dump($_SESSION);
+?>
+<br />
+<?php
+ echo '$GLOBALS: ';
+ var_dump($GLOBALS);
+?>
+
+
+
+
+
+
+
+
+
+
+

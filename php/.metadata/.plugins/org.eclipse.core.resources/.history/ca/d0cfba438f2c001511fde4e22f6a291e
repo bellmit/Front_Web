@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<title></title>
+</head>
+<?php
+        if(isset($_POST['submit'])){
+            require_once 'PHPMailer/class.phpmailer.php';
+           
+            //表单对象
+            $to=$_POST['to'];
+            $from=$_POST['from'];
+            $theme=$_POST['theme'];
+            $msg=$_POST['msg'];
+            
+            //设置邮件基本信息
+            $smtp='smtp.qq.com';
+            $port='25';
+            $username='461168849@qq.com';
+            $password='yp15802549165';
+            
+            //
+            $mail=new PHPMailer();
+            $mail->IsSMTP();
+            $mail->SMTPAuth=true;
+            $mail->SMTPSecure='ssl';
+            $mail->Host=$smtp;
+            $mail->Port=$port;
+            $mail->CharSet='gb2312';
+            
+            $mail->Username=$username;
+            $mail->Password=$password;
+            $mail->From=$from;
+            $mail->FromName=$from;
+            $mail->Subject=$theme;
+            $mail->Body=$msg;
+            
+            $mail->IsHTML(true);
+            $mail->AddAddress($to);
+            
+            //发送
+            if(!$mail->Send()){
+                echo '<p style="text-align:center;line-height:200px;height:200px;margin:10px auto;color:#c00;">你妹，发送失败</p>';  
+            }else{
+                echo '<p style="text-align:center;line-height:200px;height:200px;margin:10px auto;color:#0cc;">你妹，发送成功</p>';
+            }
+            die();
+            
+            
+            
+            
+        }
+        
+?>
+
+
+
+
+
+
+
+
+

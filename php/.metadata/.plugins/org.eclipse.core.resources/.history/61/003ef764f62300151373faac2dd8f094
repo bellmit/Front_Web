@@ -1,0 +1,15 @@
+<?php
+    mkdir('mkdir_file',0777,true);
+
+?>
+
+
+
+
+
+
+
+
+
+
+
