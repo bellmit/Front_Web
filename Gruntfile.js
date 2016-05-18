@@ -120,7 +120,7 @@
 
 
 	grunt.registerTask('default',"javascript压缩",function(){
-		grunt.task.run(['uglify']);
+		grunt.task.run(['uglify','watch']);
 	});
 
 
