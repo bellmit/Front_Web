@@ -4,7 +4,7 @@
 *
 * */
 
-define({
+define(['jquery'],function(){
 	  /*适配弹出框*/
 		$.extend($,{
 				modal:function(d,t,flag){
