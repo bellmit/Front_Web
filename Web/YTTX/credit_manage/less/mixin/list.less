@@ -1,0 +1,458 @@
+///组件--操作列表栏
+///作者：易品
+
+
+.side-list-wrap{
+	.layout-absolutel-base(176px);
+	.layout-base(350px);
+	height:100%;
+	border-right:1px solid @color-gray16;
+}
+
+
+
+///*主题*/
+.side-list-theme{
+	.layout-base;
+	height:64px;
+	border-bottom:2px solid @color-gray16;
+	text-align:center;
+	font-size:0;
+	a{
+		.layout-relative-base;
+		.box-sizing-base;
+		display:inline-block;
+		height:61px;
+		padding:0 10px;
+		cursor:pointer;
+		line-height:64px;
+		font-size:@font-size-base + 4;
+		color:@color-gray9;
+		&:after{
+			.layout-absolutelb-base(0,-2px);
+			content:'';
+			width:100%;
+			height:100%;
+			display:block;
+			border-bottom:2px solid @color-gray6;
+			.opacity-base(0);
+		}
+		&:hover{
+			&:after{
+				.opacity-base(100);
+				.transition-base(opacity .5s ease-in .02s);
+			}
+		}
+	}
+	.list-themeactive{
+		color:@color-gray6;
+		font-weight:bold;
+		&:after{
+			.opacity-base(100);
+		}
+	}
+}
+
+
+
+
+
+///*标签*/
+.side-list-tag{
+	.layout-relative-base(0,0,100);
+	.layout-base;
+	height:120px;
+	padding:10px 40px 10px 20px;
+	border-bottom:1px solid @color-gray16;
+}
+///标签县市区
+.tag-panel-show{
+	width:100%;
+	height:100%;
+	overflow-y:auto;
+	.user-select-base;
+	li{
+		.layout-float-base(auto);
+		height:34px;
+		display:inline-block;
+		line-height:32px;
+		padding:0 20px;
+		margin:15px 0 0 15px;
+		border:1px solid @color-gray12;
+		cursor:pointer;
+		background:@color-white;
+		.border-radius-base(17px);
+		color:@color-gray3;
+		font-size:@font-size-base;
+		overflow:hidden;
+	}
+	.tag-panel-showactive{
+		border:1px solid @color-yellow1;
+		background:@color-yellow1;
+		color:@color-white;
+	}
+}
+///标签添加按钮
+.tag-panel-add{
+	.layout-absoluterb-base(-10px,-40px,100);
+	width:50px;
+	height:80px;
+	&:before{
+		.transition-base(transform .3s ease-in .02s);
+		cursor:pointer;
+		.border-radius-base(50%);
+		.layout-float-base(34px);
+		height:34px;
+		content:'\e634';
+		display:inline-block;
+		overflow:hidden;
+		font-family:'ux_seven';
+		font-size:@font-size-base + 4;
+		color:@color-gray6;
+		line-height:30px;
+		vertical-align:middle;
+		text-align:center;
+		border:1px solid @color-gray9;
+		background:@color-white;
+	}
+	&:hover{
+		&:before{
+			border:1px solid @color-yellow1;
+			background:@color-yellow1;
+			color:@color-white;
+			.transform-origin-base(50% 50%);
+			.transform-base(rotate(45deg));
+		}
+		.tag-panel-wrap{
+			display:block;
+		}
+	}
+}
+.tag-panel-close{
+	&:before{
+		content:'\e706';
+		font-family:'ux_four';
+		border:1px solid @color-yellow1;
+		background:@color-yellow1;
+	}
+}
+
+///*标签操作面板*/
+.tag-panel-wrap{
+	.layout-relative-base;
+	width:100%;
+	height:100%;	
+	background:none;
+	display:none;
+}
+
+///操作标签容器
+.tag-panel-outer{
+	.layout-absolutel-base(45px,-15px);
+	.layout-base(600px);
+	height:400px;
+	.border-radius-base(5px);
+	padding:20px;
+	border:1px solid @color-gray12;
+	.box-shadow-base(3px 3px 10px 0 @color-gray12);
+	background:@color-white;
+	&:before{
+		.layout-absolutel-base(-10px,20px);
+		content:'\e6f1';
+		font-family:'ux_four';
+		font-size:@font-size-base + 8;
+		display:block;
+		color:@color-gray12;
+		background:@color-white;
+		overflow:hidden;
+		width:10px;
+		height:20px;
+		text-indent:-5px;
+		text-align:right;
+		line-height:20px;
+		letter-spacing:0;
+	}
+	>h3{
+		.layout-float-base;
+		display:block;
+		height:30px;
+		line-height:20px;
+		color:@color-gray3;
+		font-size:@font-size-base + 2;
+		border-bottom:1px solid @color-gray12;
+		.user-select-base;
+	}
+}
+
+///标签选择区
+.tag-panel{
+	.layout-relative-base;
+	.layout-float-base;
+	height:150px;
+	overflow-y:auto;
+	li{
+		.layout-relative-base;
+		.layout-float-base(auto);
+		height:34px;
+		display:inline-block;
+		line-height:32px;
+		padding:0 20px;
+		margin:15px 0 0 15px;
+		border:1px solid @color-gray12;
+		cursor:pointer;
+		background:@color-white;
+		.border-radius-base(17px);
+		color:@color-gray3;
+		font-size:@font-size-base;
+		overflow:hidden;
+		&:before{
+			.layout-absolutel-base(0,-35px);
+			.layout-base;
+			.opacity-base(0);
+			text-align:center;
+			display:block;
+			height:100%;
+			color:@color-white;
+			font-size:@font-size-base + 4;
+			.border-radius-base(17px);
+			overflow:hidden;
+		}
+		&:hover{
+			&:before{
+				top:0;
+				.opacity-base(90);
+				font-size:@font-size-base + 14;
+				.transition-base(opacity .2s linear e(',') filter .2s linear e(',') top .2s linear e(',') font-size .2s linear .3s);
+			}
+		}
+	}
+}
+.tag-panel-select{
+	&:empty:after{
+		content:'\e613  还没有标签哦';
+		font-family:'ux_eight';
+		text-align:center;
+		line-height:150px;
+		display:block;
+		width:100%;
+		color:@color-orange1;
+	}
+	li{
+		&:before{
+			content:'\e62f';
+			font-family:'ux_eight';
+			background:@color-red1;
+		}
+		&:hover{
+			border:1px solid @color-red1;
+		}
+	}
+}
+.tag-panel-default{
+	li{
+		&:before{
+			background:@color-green1;
+			font-family:'ux_eight';
+			content:'\e600';
+		}
+		&:hover{
+			border:1px solid @color-green1;
+		}
+	}
+}
+
+///最新和热门标签查询
+.tag-panel-menu{
+	 height:36px;
+	 margin:30px 0 0 0;
+	 .layout-base;
+	 text-align:center;
+	 font-size:0;
+	 .user-select-base;
+	 li{
+		 height:100%;
+		 display:inline-block;
+		 line-height:36px;
+		 font-size:@font-size-base;
+		 padding:0 30px;
+		 border-top:1px solid @color-yellow1;
+		 border-left:1px solid @color-yellow1;
+		 border-bottom:1px solid @color-yellow1;
+		 color:@color-gray3;
+		 cursor:pointer;
+		 &:first-child{
+			 .border-radius-base(18px 0 0 18px);
+		 }
+		 &:last-child{
+			 .border-radius-base(0 18px 18px 0);
+			 border-right:1px solid @color-yellow1;
+		 }
+	 }
+	 .tag-menu-active{
+		 	background:@color-yellow1;
+			color:@color-white;
+		}
+}
+
+
+
+///*列表数据*/
+.side-list-show,
+.side-list-mind{
+	.layout-base;
+	overflow-y:auto;
+	min-height:300px;
+	.calc-base(height,'100% - 184px');
+	background:@color-white;
+}
+
+
+///*列表数据(长文)*/
+.side-list-show{
+	>li{
+		.layout-relative-base;
+		.layout-float-base;
+		height:120px;
+		padding:10px 112px 10px 16px;
+		cursor:pointer;
+		border-bottom:1px solid @color-gray16;
+		&:hover{
+			background:@color-gray16;
+		}
+		p,
+		div,
+		h3{
+			width:100%;
+			overflow:hidden;
+		}
+		p,
+		div{
+			white-space:nowrap;
+			height:20px;
+			text-overflow:ellipsis;
+			font-size:@font-size-base - 2;
+			line-height:20px;
+		}
+		p{
+			color:@color-blue1;
+			span{
+				padding:0 3px;
+				color:@color-gray9;
+			}
+		}
+		h3{
+			height:54px;
+			margin:3px 0;
+			font-size:@font-size-base + 2;
+			color:@color-gray3;
+			line-height:27px;
+			.text-ww;
+		}
+		div{
+			color:@color-gray9;
+			span{
+				padding:0 4px;
+				&:before{
+					padding-right:2px;
+				}
+			}
+			span:nth-child(1):before{
+				content:'阅读';
+			}
+			span:nth-child(2):before{
+				content:'评论';
+			}
+			span:nth-child(3):before{
+				content:'点赞';
+			}
+		}
+		img{
+			.layout-absoluter-base(16px,20px);
+			width:80px;
+			height:80px;
+			overflow:hidden;
+		}
+	}
+}
+
+
+///*列表数据(随记)*/
+.side-list-mind{
+	>li{
+		.layout-float-base;
+		min-height:100px;
+		max-height:270px;
+		padding:10px 16px;
+		cursor:pointer;
+		border-bottom:1px solid @color-gray16;
+		&:hover{
+			background:@color-gray16;
+		}
+		p,
+		.mind-action,
+		h3{
+			width:100%;
+			overflow:hidden;
+		}
+		p,
+		.mind-action{
+			white-space:nowrap;
+			height:20px;
+			text-overflow:ellipsis;
+			font-size:@font-size-base - 2;
+			line-height:20px;
+		}
+		p{
+			color:@color-blue1;
+			span{
+				padding:0 3px;
+				color:@color-gray9;
+			}
+		}
+		h3{
+			min-height:27px;
+			max-height:81px;
+			margin:3px 0;
+			font-size:@font-size-base + 2;
+			color:@color-gray3;
+			line-height:27px;
+			.text-ww;
+		}
+		.mind-img{
+			.layout-base;
+			height:120px;
+			padding:10px 0;
+			overflow:hidden;
+			img{
+				.layout-float-base(33.33333%);
+				padding:0 2px;
+				height:100%;
+				overflow:hidden;
+			}
+		}
+		.mind-action{
+			color:@color-gray9;
+			span{
+				padding:0 4px;
+				&:before{
+					padding-right:2px;
+				}
+			}
+			span:nth-child(1):before{
+				content:'阅读';
+			}
+			span:nth-child(2):before{
+				content:'评论';
+			}
+			span:nth-child(3):before{
+				content:'点赞';
+			}
+		}
+	}
+	
+}
+
+
+
+
+

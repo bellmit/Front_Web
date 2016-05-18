@@ -1,0 +1,170 @@
+///组件--侧边栏菜单导航
+///作者：易品
+
+
+
+
+///*--侧边栏菜单导航--*/
+.side-menu-wrap{
+	.layout-absolutel-base;
+	width:176px;
+	height:100%;
+	height:100vh;
+	background:@color-gray3;
+	.user-select-base;
+	>div{
+		.layout-float-base;
+		.layout-relative-base;
+		height:100%;
+	}
+}
+
+
+///*--logo--*/
+.menu-logo{
+	height:64px;
+	display:block;
+	width:100%;
+	background:transparent url(../images/pc_logo.png) no-repeat center center / auto 40px;
+	overflow:hidden;
+	.no-outline-base;
+	text-indent:-9999px;
+}
+
+
+///*--导航--*/
+.side-menu{
+	.layout-base;
+	a{
+		.layout-float-base;
+		display:block;
+		height:60px;
+		.no-outline-base;
+		line-height:60px;
+		font-size:@font-size-base + 4;
+		text-align:left;
+		padding:0 0 0 16px;
+		color:@color-gray9;
+		&:before{
+			padding:0 5px 0 0;
+			font-size:@font-size-base + 6;
+			font-weight:bold;
+		}
+		&:hover{
+			color:@color-gray3;
+			background:lighten(@color-yellow1,5%);
+		}
+	}
+	.menuactive{
+		color:@color-gray3;
+		background:darken(@color-yellow1,5%);
+	}
+	
+}
+
+.side-menu-main{
+	float:left;
+	min-height:250px;
+}
+
+.side-menu-sub{
+	.layout-absolutelb-base;
+	min-height:430px;
+}
+
+///*菜单图标*/
+.menu-homeicon:before{
+		content:'\e6d1';
+		font-family:'ux_four';
+}
+.menu-circleicon:before{
+		content:'\e61e';
+		font-family:'ux_eight';
+}
+.menu-articleicon:before{
+		content:'\e702';
+		font-family:'ux_four';
+}
+.menu-downloadicon:before{
+		content:'\e638';
+		font-family:'ux_eight';
+}
+.menu-abouticon:before{
+		content:'@';
+}
+.menu-myhomeicon:before{
+		content:'\e630';
+		font-family:'ux_five';
+}
+.menu-houseicon:before{
+		content:'\e6f0';
+		font-family:'ux_four';
+}
+.menu-commenticon:before{
+		content:'\e62e';
+		font-family:'ux_eight';
+}
+.menu-zzbicon:before{
+		content:'\e65d';
+		font-family:'ux_seven';
+}
+.menu-settingicon:before{
+		content:'\e649';
+		font-family:'ux_eight';
+}
+.menu-loginicon:before{
+		content:'\e64f';
+		font-family:'ux_two';
+		font-weight:normal !important;
+}
+.menu-logouticon:before{
+		content:'\e63c';
+		font-family:'ux_two';
+		font-weight:normal !important;
+}
+
+
+
+///max height 750px
+@media (max-height:750px){
+	///*--侧边栏菜单导航--*/
+	///*--logo--*/
+	.menu-logo{
+		height:44px;
+		background:transparent url(../images/pc_logo.png) no-repeat center center / auto 30px;
+	}
+	
+	///*--导航--*/
+	.side-menu{
+		a{
+			height:40px;
+			line-height:40px;
+			font-size:@font-size-base + 2;
+			&:before{
+				font-size:@font-size-base + 4;
+			}
+		}
+	}
+	
+	.side-menu-main{
+		min-height:170px;
+	}
+	
+	.side-menu-sub{
+		min-height:290px;
+	}
+}
+
+
+///max height 550px
+@media (max-height:550px){
+	///*--侧边栏菜单导航--*/
+	.side-menu-wrap{
+		min-height:500px;
+	}
+	.menu-logo{
+		height:0;
+		display:none;
+	}
+}
+
