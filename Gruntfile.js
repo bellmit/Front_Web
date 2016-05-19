@@ -89,11 +89,12 @@
 
 		//定义监控文件变化
 		watch:{
-			build:{
-				files:['src/**/*.js'],
+			scripts:{
+				files:'src/*.js',
 				tasks:['uglify'],
 				options:{
-					spawn:false
+					spawn:false,
+					debounceDelay: 250
 				}
 			}
 		}
@@ -119,9 +120,11 @@
 	//grunt.registerTask('default',['watch']);//资源改变触发器监听
 
 
-	grunt.registerTask('default',"javascript压缩",function(){
+	/*grunt.registerTask('default',"javascript压缩",function(){
 		grunt.task.run(['uglify','watch']);
-	});
+	});*/
+	
+	grunt.registerTask('default',['uglify','watch']);
 
 
 

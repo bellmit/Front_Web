@@ -21,10 +21,7 @@ require.config({
 /*程序入口*/
 require(['jquery','jquery_mobile','dialog','slide'],function($,$jm,undefined,Slide) {
 	$(function(){
-
-		
-
-
+       console.log('watch haha');
 	});
 });
 
