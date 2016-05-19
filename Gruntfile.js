@@ -1,9 +1,55 @@
 
 ;module.exports = function(grunt){
+
+	//配置端口
+	var flushPort=35729;
+	//导入刷新模块
+	var flushModule = require('connect-livereload')({
+		port:flushPort
+	});
+	//使用中间件
+	var flushMv = function(connect, options) {
+		return [
+			// 把脚本，注入到静态文件中
+			flushModule,
+			// 静态文件服务器的路径
+			connect.static(options.base[0]),
+			// 启用目录浏览(相当于IIS中的目录浏览)
+			connect.directory(options.base[0])
+		];
+	};
+
+	//获取package.json的信息
+	var pkg=grunt.file.readJSON('package.json'),
+		web_url=pkg.base_path+'/'+pkg.web_path+'/'+pkg.project+'/'+pkg.name+'/';
+
 	//任务配置,所以插件的配置信息
 	grunt.initConfig({
-		//获取package.json的信息
-		pkg:grunt.file.readJSON('package.json'),
+		//服务器
+		connect:{
+			options: {
+				// 服务器端口号
+				port: 90,
+				// 服务器地址(可以使用主机名localhost，也能使用IP)
+				hostname: '127.0.0.1',
+				// 物理路径(默认为. 即根目录) 注：使用'.'或'..'为路径的时，可能会返回403 Forbidden. 此时将该值改为相对路径 如：/grunt/reloard。
+				base: '.'
+			},
+			livereload: {
+				options: {
+					// 通过LiveReload脚本，让页面重新加载。
+					middleware:flushMv
+				},
+				files:(function(){
+					if(pkg.module_name===''){
+						return web_url+'/'+pkg.js_src+'/'+pkg.module_name+'.js';
+					}else{
+						return web_url+'/'+pkg.js_src+'/'+pkg.module_name+'/'+pkg.module_name+'.js';
+					}
+				}())
+			}
+
+		},
 		
 		
 		//css语法检查
@@ -133,25 +179,49 @@
 			},
 			my_target:{},
 			build:{
-				src:'<%=pkg.base_path%>/<%=pkg.web_path%>/<%=pkg.project%>/<%=pkg.name%>/<%=pkg.js_src%>/<%=pkg.module_name%>/<%=pkg.module_name%>.js',
-				dest:'<%=pkg.base_path%>/<%=pkg.web_path%>/<%=pkg.project%>/<%=pkg.name%>/<%=pkg.js_dest%>/<%=pkg.module_name%>/<%=pkg.module_name%>.js'
+				src:(function(){
+					if(pkg.module_name===''){
+						return web_url+'/'+pkg.js_src+'/'+pkg.module_name+'.js';
+					}else{
+						return web_url+'/'+pkg.js_src+'/'+pkg.module_name+'/'+pkg.module_name+'.js';
+					}
+				}()),
+				dest:(function(){
+					if(pkg.module_name===''){
+						return web_url+'/'+pkg.js_src+'/'+pkg.module_name+'.js';
+					}else{
+						return web_url+'/'+pkg.js_dest+'/'+pkg.module_name+'/'+pkg.module_name+'.js';
+					}
+				}())
 			}
 		},
 
 		//定义监控文件变化
 		watch:{
-			scripts:{
+			/*client: {
+				// 我们不需要配置额外的任务，watch任务已经内建LiveReload浏览器刷新的代码片段。
+				options: {
+					livereload:flushPort
+				},
+				// '**' 表示包含所有的子目录
+				// '*' 表示包含所有的文件
 				files:'<%=pkg.base_path%>/<%=pkg.web_path%>/<%=pkg.project%>/<%=pkg.name%>/<%=pkg.js_src%>/<%=pkg.module_name%>/<%=pkg.module_name%>.js',
+			}*/
+			scripts:{
+				files:(function(){
+					console.log(web_url);
+					if(pkg.module_name===''){
+						return web_url+'/'+pkg.js_src+'/'+pkg.module_name+'.js';
+					}else{
+						return web_url+'/'+pkg.js_src+'/'+pkg.module_name+'/'+pkg.module_name+'.js';
+					}
+				}()),
 				tasks:['uglify'],
 				options:{
 					spawn:false,
 					debounceDelay: 250,
 					//配置自动刷新程序
-					livereload:{
-						port: 90,
-						key: grunt.file.read('path/to/ssl.key'),
-						cert: grunt.file.read('path/to/ssl.crt')
-					}
+					livereload:true
 				}
 			}
 		}
@@ -197,3 +267,5 @@
 
 
 };
+
+
