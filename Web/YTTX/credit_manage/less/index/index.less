@@ -3,6 +3,8 @@
 
 html{
 	font-size:@font-size-base - 4;
+	height:50%;
+	width:100%;
 }
 
 body{
@@ -15,25 +17,29 @@ body{
 	height:100%;
 	.box-sizing-base;
 	.display-base(flex);
+	.flex-flow-base(column wrap);
+	.align-items-base(flex-start);
 }
 .layout-item{
 	width:100%;
+	.align-content-base(flex-start);
+	.align-self-base(flex-start);
 }
 
 .layout-header{
 	background:@color-gray10;
 	height:40px;
-	.flex-base(0 0 1);
+	.flex-base(0 0 100%);
 }
 .layout-main{
 	background:@color-gray12;
-	
-	.flex-base(1 1 1);
+	height:100%;
+	.flex-base(0 0 100%);
 }
 .layout-footer{
 	background:@color-gray14;
 	height:60px;
-	.flex-base(0 0 1);
+	.flex-base(0 0 100%);
 }
 
 
