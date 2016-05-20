@@ -65,23 +65,17 @@
 
 
 ///*红色*/
-///*btn:私约按钮*/
 @color-red1:rgba(244,104,104,1.00);
-///*text:价格红色*/
 @color-red2:rgba(226,32,40,1.00);
-///*btn:价格红色*/
 @color-red3:rgba(251,157,143,1.00);
 
 ///*绿色*/
-///*btn:关注按钮*/
 @color-green1:rgba(16,178,88,1.00);
 
 ///*蓝色*/
-///*btn:举报按钮*/
 @color-blue1:rgba(84,132,222,1.00);
 
 ///*黄色*/
-///*header:头部背景*/
 @color-yellow1:rgba(250,191,21,1.00);
 
 ///*橘色*/
@@ -165,15 +159,14 @@
 .filter-grayscale-base(@str:100){filter:grayscale(~'@{str}%');filter:gray;}
 
 
-
-
-
-
 ///*屏幕模式下的文字缩放(none或者100%为关闭)*/
 .text-size-adjust-base(@str:100%){text-size-adjust:@str;}
 
 ///*动态及时尺寸*/
 .calc-base(@obj,@str){@{obj}:calc(~'@{str}');}
+
+///*伪对象*/
+.placeholder-base(@obj,@str){@{obj}::input-placeholder,@{obj}::placeholder{@str();}}
 
 
 
@@ -226,3 +219,90 @@
 
 ///*禁止选中*/
 .user-select-base(@str:none){user-select:@str;}
+
+
+
+
+
+///*--伸缩盒--*/
+
+///*显示方式*/
+.display-base(@str:flex){display:~'@{str}';}
+
+///*--伸缩盒（旧）--*/
+///*排列规则*/
+.box-orient-base(@str:horizontal){box-orient:@str;}
+
+///*对齐方式(水平方向)*/
+.box-pack-base(@str:start){box-pack:@str;}
+
+///*对齐方式（垂直方向）*/
+.box-align-base(@str:stretch){box-align:@str;}
+
+///*分配父元素剩余空间的比例*/
+.box-flex-base(@str:0){box-flex:@str;}
+
+///*设置子对象所属组*/
+.box-flex-group-base(@str:1){box-flex-group:@str;}
+
+///*设置子对象的显示顺序*/
+.box-ordinal-group-base(@str:1){box-ordinal-group:@str;}
+
+///*设置子对象的排列顺序是否反转*/
+.box-direction-base(@str:normal){box-direction:@str;}
+
+///*设置子对象是否可以换行显示*/
+.box-lines-base(@str:normal){box-lines:@str;}
+
+
+
+
+///*--伸缩盒（新）--*/
+///*设置子对象如何分配空间--复合属性（扩展比率 收缩比率 默认基准值）*/
+.flex-base(@str:none){flex:@str;}
+
+///*设置子对象排列方式--复合属性（排列方向 溢出父元素是否换行）*/
+.flex-flow-base(@str:row nowrap){flex-flow:@str;}
+
+///*设置堆叠缩进的对齐方式（水平方向）--总体上*/
+.align-content-base(@str:stretch){align-content:@str;}
+
+///*(弹性容器--容器)设置元素在侧轴（纵轴）方向上的对齐方式（垂直方向）*/
+.align-items-base(@str:stretch){align-items:@str;}
+
+///*（弹性项目--容器中的相关项目或子容器等）设置元素在侧轴（纵轴）方向上的对齐方式（垂直方向）*/
+.align-self-base(@str:auto){align-self:@str;}
+
+///*设置元素在主轴（横轴）方向上的对齐方式（水平方向）--细节上*/
+.justify-content-base(@str:flex-start){justify-content:@str;}
+
+///*设置元素出现的顺序*/
+.order-base(@str:0){order:@str;}
+
+
+
+///*--多列--*/
+
+///*设置多列列数和列宽--复合属性（列宽 列数）*/
+.columns-base(@str:auto auto){columns:@str;}
+
+///*设置多列间隙*/
+.column-gap-base(@str:normal){column-gap:@str;}
+
+///*设置多列边框--复合属性（宽度 样式 颜色）*/
+.column-rule-base(@str:medium none transparent){column-rule:@str;}
+
+///*设置是否横跨所有列*/
+.column-span-base(@str:none){column-span:@str;}
+
+///*设置所有列的高度是否统一*/
+.column-fill-base(@str:auto){column-fill:@str;}
+
+///*设置对象之前是否断行*/
+.column-break-before-base(@str:auto){column-break-before:@str;}
+
+///*设置对象之后是否断行*/
+.column-break-after-base(@str:auto){column-break-after:@str;}
+
+///*设置对象内部是否断行*/
+.column-break-inside-base(@str:auto){column-break-inside:@str;}

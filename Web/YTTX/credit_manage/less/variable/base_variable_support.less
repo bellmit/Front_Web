@@ -65,23 +65,17 @@
 
 
 ///*红色*/
-///*btn:私约按钮*/
 @color-red1:rgba(244,104,104,1.00);
-///*text:价格红色*/
 @color-red2:rgba(226,32,40,1.00);
-///*btn:价格红色*/
 @color-red3:rgba(251,157,143,1.00);
 
 ///*绿色*/
-///*btn:关注按钮*/
 @color-green1:rgba(16,178,88,1.00);
 
 ///*蓝色*/
-///*btn:举报按钮*/
 @color-blue1:rgba(84,132,222,1.00);
 
 ///*黄色*/
-///*header:头部背景*/
 @color-yellow1:rgba(250,191,21,1.00);
 
 ///*橘色*/
@@ -183,7 +177,8 @@
 ///*动态及时尺寸*/
 .calc-base(@obj,@str){@{obj}:-webkit-calc(~'@{str}');@{obj}:-moz-calc(~'@{str}');@{obj}:calc(~'@{str}');}
 
-
+///*伪对象*/
+.placeholder-base(@obj,@str){@{obj}:-ms-input-placeholder,@{obj}::-webkit-input-placeholder,@{obj}:-moz-placeholder,@{obj}::-moz-placeholder{@str();}}
 
 
 ///*--布局--*/
@@ -236,151 +231,89 @@
 .user-select-base(@str:none){-moz-user-select:@str;-o-user-select:@str;-webkit-user-select:@str;-ms-user-select:@str;-khtml-user-select:@str;user-select:@str;}
 
 
-///*伸缩盒（旧）*/
+
+
+
+///*--伸缩盒--*/
 
 ///*显示方式*/
-.box-display-base(@str:box){display:-webkit-{@str};display:-moz-{@str};display:-ms-{@str};display:{@str};}
+.display-base(@str:flex){display:-webkit-~'@{str}';display:-moz-~'@{str}';display:-ms-~'@{str}';display:-o-~'@{str}';display:~'@{str}';}
 
+///*--伸缩盒（旧）--*/
 ///*排列规则*/
-.box-orient-base(@str:horizontal){-moz-box-orient:@str;-ms-box-origent:@str;-webkit-box-orient:@str;box-orient:@str;}
+.box-orient-base(@str:horizontal){-moz-box-orient:@str;-ms-box-origent:@str;-webkit-box-orient:@str;-o-box-orient:@str;box-orient:@str;}
 
 ///*对齐方式(水平方向)*/
-.box-pack-base(@str:start){-ms-box-pack:@str;-webkit-box-pack:@str;-moz-box-pack:@str;box-pack:@str;}
+.box-pack-base(@str:start){-ms-box-pack:@str;-webkit-box-pack:@str;-moz-box-pack:@str;-o-box-pack:@str;box-pack:@str;}
 
 ///*对齐方式（垂直方向）*/
-.box-align-base(@str:stretch){-ms-box-align:@str;-webkit-box-align:@str;-moz-box-align:@str;box-align:@str;}
+.box-align-base(@str:stretch){-ms-box-align:@str;-webkit-box-align:@str;-moz-box-align:@str;-o-box-align:@str;box-align:@str;}
 
 ///*分配父元素剩余空间的比例*/
-.box-flex-base(@str:0){-ms-box-flex:@str;-webkit-box-flex:@str;-moz-box-flex:@str;box-flex:@str;}
+.box-flex-base(@str:0){-ms-box-flex:@str;-webkit-box-flex:@str;-moz-box-flex:@str;-o-box-flex:@str;box-flex:@str;}
 
 ///*设置子对象所属组*/
-.box-flex-group-base(@str:1){-ms-box-flex-group:@str;-webkit-box-flex-group:@str;-moz-box-flex-group:@str;box-flex-group:@str;}
+.box-flex-group-base(@str:1){-ms-box-flex-group:@str;-webkit-box-flex-group:@str;-moz-box-flex-group:@str;-o-box-flex-group:@str;box-flex-group:@str;}
 
 ///*设置子对象的显示顺序*/
-.box-ordinal-group-base(@str:1){-ms-box-ordinal-group:@str;-webkit-box-ordinal-group:@str;-moz-box-ordinal-group:@str;box-ordinal-group:@str;}、
+.box-ordinal-group-base(@str:1){-ms-box-ordinal-group:@str;-webkit-box-ordinal-group:@str;-moz-box-ordinal-group:@str;-o-box-ordinal-group:@str;box-ordinal-group:@str;}
 
 ///*设置子对象的排列顺序是否反转*/
-.box-direction-base(@str:normal){-ms-box-direction:@str;-webkit-box-direction:@str;-moz-box-direction:@str;box-direction:@str;}
+.box-direction-base(@str:normal){-ms-box-direction:@str;-webkit-box-direction:@str;-moz-box-direction:@str;-o-box-direction:@str;box-direction:@str;}
 
 ///*设置子对象是否可以换行显示*/
-.box-lines-base(@str:normal){-ms-box-lines:@str;-webkit-box-lines:@str;-moz-box-lines:@str;box-lines:@str;}
+.box-lines-base(@str:normal){-ms-box-lines:@str;-webkit-box-lines:@str;-moz-box-lines:@str;-o-box-lines:@str;box-lines:@str;}
 
 
-///*伸缩盒（新）*/
 
 
+///*--伸缩盒（新）--*/
 ///*设置子对象如何分配空间--复合属性（扩展比率 收缩比率 默认基准值）*/
-.flex-base(@str:none){-ms-flex:@str;-webkit-flex:@str;-moz-flex:@str;flex:@str;}
+.flex-base(@str:none){-ms-flex:@str;-webkit-flex:@str;-moz-flex:@str;-o-flex:@str;flex:@str;}
 
+///*设置子对象排列方式--复合属性（排列方向 溢出父元素是否换行）*/
+.flex-flow-base(@str:row nowrap){-ms-flex-flow:@str;-webkit-flex-flow:@str;-moz-flex-flow:@str;-o-flex-flow:@str;flex-flow:@str;}
 
+///*设置堆叠缩进的对齐方式（水平方向）--总体上*/
+.align-content-base(@str:stretch){-ms-align-content:@str;-webkit-align-content:@str;-moz-align-content:@str;-o-align-content:@str;align-content:@str;}
 
+///*(弹性容器--容器)设置元素在侧轴（纵轴）方向上的对齐方式（垂直方向）*/
+.align-items-base(@str:stretch){-ms-align-items:@str;-webkit-align-items:@str;-moz-align-items:@str;-o-align-items:@str;align-items:@str;}
 
+///*（弹性项目--容器中的相关项目或子容器等）设置元素在侧轴（纵轴）方向上的对齐方式（垂直方向）*/
+.align-self-base(@str:auto){-ms-align-self:@str;-webkit-align-self:@str;-moz-align-self:@str;-o-align-self:@str;align-self:@str;}
 
+///*设置元素在主轴（横轴）方向上的对齐方式（水平方向）--细节上*/
+.justify-content-base(@str:flex-start){-ms-justify-content:@str;-webkit-justify-content:@str;-moz-justify-content:@str;-o-justify-content:@str;justify-content:@str;}
 
+///*设置元素出现的顺序*/
+.order-base(@str:0){-ms-order:@str;-webkit-order:@str;-moz-order:@str;-o-order:@str;order:@str;}
 
 
 
+///*--多列--*/
 
+///*设置多列列数和列宽--复合属性（列宽 列数）*/
+.columns-base(@str:auto auto){-ms-columns:@str;-webkit-columns:@str;-moz-columns:@str;-o-columns:@str;columns:@str;}
 
+///*设置多列间隙*/
+.column-gap-base(@str:normal){-ms-column-gap:@str;-webkit-column-gap:@str;-moz-column-gap:@str;-o-column-gap:@str;column-gap:@str;}
 
+///*设置多列边框--复合属性（宽度 样式 颜色）*/
+.column-rule-base(@str:medium none transparent){-ms-column-rule:@str;-webkit-column-rule:@str;-moz-column-rule:@str;-o-column-rule:@str;column-rule:@str;}
 
+///*设置是否横跨所有列*/
+.column-span-base(@str:none){-ms-column-span:@str;-webkit-column-span:@str;-moz-column-span:@str;-o-column-span:@str;column-span:@str;}
 
+///*设置所有列的高度是否统一*/
+.column-fill-base(@str:auto){-ms-column-fill:@str;-webkit-column-fill:@str;-moz-column-fill:@str;-o-column-fill:@str;column-fill:@str;}
 
+///*设置对象之前是否断行*/
+.column-break-before-base(@str:auto){-ms-column-break-before:@str;-webkit-column-break-before:@str;-moz-column-break-before:@str;-o-column-break-before:@str;column-break-before:@str;}
 
+///*设置对象之后是否断行*/
+.column-break-after-base(@str:auto){-ms-column-break-after:@str;-webkit-column-break-after:@str;-moz-column-break-after:@str;-o-column-break-after:@str;column-break-after:@str;}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+///*设置对象内部是否断行*/
+.column-break-inside-base(@str:auto){-ms-column-break-inside:@str;-webkit-column-break-inside:@str;-moz-column-break-inside:@str;-o-column-break-inside:@str;column-break-inside:@str;}
 

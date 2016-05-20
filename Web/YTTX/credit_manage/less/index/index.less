@@ -1,134 +1,58 @@
 ///首页
 ///作者：易品
 
-//页面全局
+html{
+	font-size:@font-size-base - 4;
+}
+
 body{
+	background:@color-white;
+	font-size:1.6rem;
+}
+
+.layout-wrap{
 	width:100%;
-	min-width:1200px;
-	.box-sizing-base;
-	background:@color-gray15;
-	margin:120px 0 0 0;
-}
-
-.theme{
-	height:50px;
-	width:100%;
-	text-align:center;
-	line-height:60px;
-	font-size:@font-size-base + 20;
-	.user-select-base;
-}
-
-
-//头部导航区域
-.header-wrap{
-	.layout-fixedl-base;
-	.layout-base;
-	height:120px;
-	background:rgba(27,27,27,1) url(../images/header_bg.jpg) no-repeat center top;
-}
-.heaer-wrapactive{
-	position:fixed !important;
-}
-.header-content{
-	.layout-base(1200px);
-	padding:40px 0 10px 0;
-	margin:0 auto;
 	height:100%;
-	.header-logo{
-		float:left;
-		width:256px;
-		height:70px;
-		background:url(../images/pc_logo.png) no-repeat 0 0;
-	}
-	.header-btn{
-		.layout-fixedr-base;
-		width:0;
-		height:0;
-		display:none;
-		cursor:pointer;
-		&:after{
-			.layout-absoluter-base;
-			content:'\e61f';
-			font-family:'ux_two';
-			text-align:center;
-			font-size:@font-size-base + 8;
-			color:@color-white;
-		}
-	}
-	.header-btnactive{
-		&:after{
-			content:'\e634';
-		}
-	}
-	.header-menu{
-		width:800px;
-		float:right;
-		text-align:right;
-		height:70px;
-		font-size:0;
-		white-space:nowrap;
-		li{
-			height:100%;
-			.box-sizing-base;
-			display:inline-block;
-			margin:0 10px;
-			border-bottom:3px solid transparent;
-			a{
-				display:inline-block;
-				height:70px;
-				line-height:100px;
-				text-align:center;
-				padding:0 10px;
-				font-size:@font-size-base + 2;
-				color:@color-white;
-				.no-outline-base;
-			}
-		}
-		.menu-active{
-			border-bottom:3px solid @color-yellow1;
-			a{
-				color:@color-yellow1;
-			}
-		}
-	}
+	.box-sizing-base;
+	.display-base(flex);
+}
+.layout-item{
+	width:100%;
 }
 
-.screen-item{
-	.layout-base;
-	margin:0 auto;
-	>div{
-		.layout-base(1200px);	
-		margin:0 auto;
-		padding:0 20px;
-		height:100%;
-	}
+.layout-header{
+	background:@color-gray10;
+	height:40px;
+	.flex-base(0 0 1);
+}
+.layout-main{
+	background:@color-gray12;
+	
+	.flex-base(1 1 1);
+}
+.layout-footer{
+	background:@color-gray14;
+	height:60px;
+	.flex-base(0 0 1);
 }
 
 
 
-//底部信息
-.screen-footer{
-	.layout-base;
-	margin:0 auto;
-	padding:0;
-	background:@color-gray2;
-	min-height:40px;
-	>div{
-		p{
-			font-size:@font-size-base - 2;
-			line-height:40px;
-			display:inline-block;
-			color:@color-gray6;
-			.text-ww;
-			&:first-child{
-				width:64%;
-				text-align:left;
-			}
-			&:first-child+p{
-				width:34%;	
-				text-align:right;
-			}
-		}
-	}
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
