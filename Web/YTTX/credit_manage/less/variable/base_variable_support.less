@@ -267,10 +267,6 @@
 
 
 
-///*--伸缩盒（新）--*/
-///*设置子对象如何分配空间--复合属性（扩展比率 收缩比率 默认基准值）*/
-.flex-base(@str:none){-ms-flex:@str;-webkit-flex:@str;-moz-flex:@str;-o-flex:@str;flex:@str;}
-
 ///*伸缩盒（新）*/
 ///*设置子对象如何分配空间--复合属性（扩展比率 收缩比率 默认基准值）*/
 .flex-base(@str:none){-ms-flex:@str;-webkit-flex:@str;-moz-flex:@str;flex:@str;}
@@ -278,28 +274,14 @@
 ///*设置子对象排列方式--复合属性（排列方向 溢出父元素是否换行）*/
 .flex-flow-base(@str:row nowrap){-ms-flex-flow:@str;-webkit-flex-flow:@str;-moz-flex-flow:@str;flex-flow:@str;}
 
-///*设置堆叠缩进的对齐方式（水平方向）--总体上*/
-.align-content-base(@str:stretch){-ms-align-content:@str;-webkit-align-content:@str;-moz-align-content:@str;align-content:@str;}
-
-///*(弹性容器--容器)设置元素在侧轴（纵轴）方向上的对齐方式（垂直方向）*/
-.align-items-base(@str:stretch){-ms-align-items:@str;-webkit-align-items:@str;-moz-align-items:@str;align-items:@str;}
-
-///*（弹性项目--容器中的相关项目或子容器等）设置元素在侧轴（纵轴）方向上的对齐方式（垂直方向）*/
-.align-self-base(@str:auto){-ms-align-self:@str;-webkit-align-self:@str;-moz-align-self:@str;align-self:@str;}
-
-///*设置元素在主轴（横轴）方向上的对齐方式（水平方向）--细节上*/
-.justify-content-base(@str:flex-start){-ms-justify-content:@str;-webkit-justify-content:@str;-moz-justify-content:@str;justify-content:@str;}
-
-///*设置子对象排列方式--复合属性（排列方向 溢出父元素是否换行）*/
-.flex-flow-base(@str:row nowrap){-ms-flex-flow:@str;-webkit-flex-flow:@str;-moz-flex-flow:@str;-o-flex-flow:@str;flex-flow:@str;}
 
 ///*设置堆叠缩进的对齐方式（水平方向）--总体上*/
 .align-content-base(@str:stretch){-ms-align-content:@str;-webkit-align-content:@str;-moz-align-content:@str;-o-align-content:@str;align-content:@str;}
 
-///*(弹性容器--容器)设置元素在侧轴（纵轴）方向上的对齐方式（垂直方向）*/
+///*(弹性容器--容器，主要是对整个伸缩项目的设置)设置元素在侧轴（纵轴）方向上的对齐方式（垂直方向）*/
 .align-items-base(@str:stretch){-ms-align-items:@str;-webkit-align-items:@str;-moz-align-items:@str;-o-align-items:@str;align-items:@str;}
 
-///*（弹性项目--容器中的相关项目或子容器等）设置元素在侧轴（纵轴）方向上的对齐方式（垂直方向）*/
+///*（弹性项目--容器中的相关项目或子容器等,主要是对单个伸缩项目的设置）设置元素在侧轴（纵轴）方向上的对齐方式（垂直方向）*/
 .align-self-base(@str:auto){-ms-align-self:@str;-webkit-align-self:@str;-moz-align-self:@str;-o-align-self:@str;align-self:@str;}
 
 ///*设置元素在主轴（横轴）方向上的对齐方式（水平方向）--细节上*/
