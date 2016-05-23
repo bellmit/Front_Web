@@ -3,7 +3,7 @@
 
 html{
 	font-size:@font-size-base - 4;
-	height:50%;
+	height:100%;
 	width:100%;
 }
 
@@ -18,28 +18,32 @@ body{
 	.box-sizing-base;
 	.display-base(flex);
 	.flex-flow-base(column wrap);
-	.align-items-base(flex-start);
 }
 .layout-item{
 	width:100%;
-	.align-content-base(flex-start);
-	.align-self-base(flex-start);
+	.flex-base;
 }
 
 .layout-header{
 	background:@color-gray10;
 	height:40px;
-	.flex-base(0 0 100%);
+	.flex-base(0 0 1);
+	.order-base(1);
 }
 .layout-main{
 	background:@color-gray12;
-	height:100%;
-	.flex-base(0 0 100%);
+	.text-ww;
+	.flex-base(1 1 0);
+	.align-self-base(stretch);
+	min-height:100%;
+	.order-base(2);
 }
 .layout-footer{
 	background:@color-gray14;
 	height:60px;
-	.flex-base(0 0 100%);
+	.flex-base(0 0 1);
+	.align-self-base(stretch);
+	.order-base(3);
 }
 
 
