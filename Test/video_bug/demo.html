@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="css/jquery.fullPage.css"/>
+  <link rel="stylesheet" href="css/index.css"/>
+  <title>首页</title>
+  <style>
+    .video{
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
+    .video-play{
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      z-index: 100;
+      padding-top: 100px;
+      background: rgba(0,0,0,0.3);
+    }
+    #play{
+      width: 64px;
+      height: 64px;
+      display: block;
+      background: url("images/play.png") no-repeat;
+      position: absolute;
+      top: 200px;
+      right: 300px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+<header class="index-header">
+  <div class="top">
+    <div class="logo">
+      <a href="index.html"><img src="images/logo.png" alt=""/></a>
+    </div>
+    <!--<div class="index-login">-->
+    <!--<a href="login.html">登录</a>-->
+    <!--<span></span>-->
+    <!--<a href="register.html">注册</a>-->
+    <!--</div>-->
+    <div class="nav-center" id="nav-center" style="border: 1px solid rgba(255,255,255,0.5)">
+      <a href="usercenter.html"><img src="images/user-img.jpg" alt=""/>个人中心<span></span></a>
+      <ul id="nav-user" style="border: none">
+        <li><a href="xiaoxi.html" target="_blank">我的消息</a></li>
+        <li><a href="#" >安全退出</a></li>
+      </ul>
+    </div>
+    <ul class="nav">
+      <li><a href="index.html"class="on">首页</a></li>
+      <li><a href="dc-zhongchou.html">多彩众筹</a></li>
+      <li><a href="dc-shenghuo.html">多彩生活</a></li>
+      <li><a href="dc-zhilu.html">多彩之路</a></li>
+    </ul>
+  </div>
+</header>
+  <div id="fullpage">
+    <div class="section" id="section1">
+      <!--<div class="banner-01"></div>-->
+      <!--<div class="index1">-->
+        <!--<img src="images/index-1.png" alt=""/>-->
+        <!--<a href="dc-zhongchou.html" class="join-zc">申请众筹</a>-->
+     <!-- -->
+      <!--</div>-->
+      <div >
+        <video  controls="controls" width="1280" height="720">
+          <source src="images/video.mp4" type="video/mp4"/>
+        </video>
+
+      </div>
+      <!--<div class="video-play">-->
+       <!--<span id="play"></span>-->
+      <!--</div>-->
+      <!--<script>-->
+        <!--var btn=document.getElementById("play");-->
+        <!--var video=document.getElementById("video");-->
+        <!--var height=window.innerHeight;-->
+        <!--console.log(height)-->
+        <!--var width=window.innerWidth;-->
+        <!--console.log(width)-->
+        <!--video.style.width=width+"px";-->
+        <!--video.style.height=height+"px";-->
+        <!--btn.addEventListener("click",function(){-->
+          <!--video.play();-->
+<!--//          btn.style.display="none";-->
+          <!--console.log(video.ended)-->
+          <!--if(video.ended){-->
+            <!--video.play();-->
+          <!--}else{-->
+
+          <!--}-->
+        <!--})-->
+
+      <!--</script>-->
+      <!--<div class="downwarp">-->
+        <!--<a href="#dream"><img class="down-ico" src="images/down-ico.png" alt=""/></a>-->
+      <!--</div>-->
+    </div>
+    <div class="section" id="section2">
+      <div class="banner-02"></div>
+      <div class="index2">
+        <img src="images/index-2.png" alt=""/>
+        <a href="dc-zhongchou.html" class="join-zc">申请众筹</a>
+      </div>
+      <div class="downwarp">
+        <a href="#gongyi"><img class="down-ico" src="images/down-ico.png" alt=""/></a>
+      </div>
+    </div>
+    <div class="section" id="section3">
+      <div class="banner-03"></div>
+      <div class="index3">
+        <img src="images/index-3.png" alt=""/>
+        <a href="dc-zhongchou.html" class="join-zc">申请众筹</a>
+      </div>
+      <div class="downwarp">
+        <a href="#zeren"><img class="down-ico" src="images/down-ico.png" alt=""/></a>
+      </div>
+    </div>
+    <div class="section" id="section4">
+      <div class="banner-04"></div>
+      <div class="index4">
+        <img src="images/index-4.png" alt=""/>
+        <a href="dc-zhongchou.html" class="join-zc">申请众筹</a>
+      </div>
+      <div class="downwarp">
+        <a href="#dibu"><img class="down-ico" src="images/down-ico.png" alt=""/></a>
+      </div>
+    </div>
+    <div class="section" id="section5">
+      <div class="footer">
+        <div class="footer-detail">
+          <div class="footer-container">
+            <div class="footer-left">
+              <ul>
+                <li class="about">
+                  <span></span>
+                  <div>
+                    <p>关于我们</p>
+                    <ul>
+                      <li><a href="about.html#ab-content1">关于多彩云</a></li>
+                      <li><a href="about.html#ab-content2">公司模式</a></li>
+                      <li><a href="about.html#ab-content3">企业文化</a></li>
+                      <li><a href="about.html#ab-content4">相关证件</a></li>
+                    </ul>
+                  </div>
+                </li>
+                <li class="help">
+                  <span></span>
+                  <div>
+                    <p>帮助中心</p>
+                    <ul>
+                      <li><a href="help-cjwt.html">常见问题</a></li>
+                      <li><a href="help-zcxy.html">注册协议</a></li>
+                      <li><a href="help-fxts.html">风险提示</a></li>
+                      <li><a href="help-zfsm.html">资费说明</a></li>
+                    </ul>
+                  </div>
+                </li>
+                <li class="safeguard">
+                  <span></span>
+                  <div>
+                    <p>安全保障</p>
+                    <ul>
+                      <li><a href="safe-fkmx.html">风控模型</a></li>
+                      <li><a href="safe-yszc.html">隐私权政策</a></li>
+                      <li><a href="safe-htyx.html">合同协议</a></li>
+                    </ul>
+                  </div>
+                </li>
+                <li class="index-join">
+                  <span></span>
+                  <div>
+                    <p>加入我们</p>
+                    <ul>
+                      <li><a href="joinus.html">人才招聘</a></li>
+                      <li><a href="joinus.html">企业邮箱</a></li>
+                      <li><a href="joinus.html">企业地址</a></li>
+                    </ul>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="footer-center">
+              <div class="footer-attention">
+                <div><span></span>关注我们</div>
+                <ul>
+                  <li class="weibo">
+                    <span></span>
+                    <p>微博</p>
+                  </li>
+                  <li class="weixin">
+                    <span></span>
+                    <p>微信</p>
+                  </li>
+                  <li class="qq">
+                    <span></span>
+                    <p>QQ</p>
+                  </li>
+                </ul>
+              </div>
+              <div class="footer-share">
+                <div><span></span>分享</div>
+                <ul>
+                  <li><a href="#" class="share-weibo"></a></li>
+                  <li><a href="#" class="share-kongjian"></a></li>
+                  <li><a href="#" class="share-weixin"></a></li>
+                  <li><a href="#" class="share-qq"></a></li>
+                </ul>
+              </div>
+            </div>
+            <div class="footer-right">
+              <div class="teamwork">
+                <div class="hz-title">
+                  <span></span>
+                  合作机构
+                  <b class="wenzi1"></b>
+                </div>
+                <div  class="footer-xian"></div>
+                <ul class="hezuo">
+                  <li class="partner1"><a href="#"></a></li>
+                  <li class="partner2"><a href="#"></a></li>
+                  <li class="partner3"><a href="#"></a></li>
+                </ul>
+                <ul class="hezuo">
+                  <li class="partner4"><a href="#"></a></li>
+                  <li class="partner5"><a href="#"></a></li>
+                  <li class="partner6"><a href="#"></a></li>
+                </ul>
+              </div>
+              <div class="hotline">
+                <p class="hotline-title"><span></span>客服热线</p>
+                <!--<p class="hotline-phone">010-5619-6687</p>-->
+                <p><img src="images/phone.png" alt=""/></p>
+                <p>全国统一服务热线</p>
+                <p>客服时间：工作日9:00-18:00</p>
+              </div>
+            </div>
+          </div>
+          <div class="beian">
+            <p>京ICP备16023618号 @多彩云众筹网络科技有限公司</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="js/jquery-1.11.3.js"></script>
+  <script src="js/jquery.fullPage.js"></script>
+<script src="js/index.js"></script>
+  <script>
+    $(function(){
+      $('#fullpage').fullpage({
+        //css3:true,
+        navigation:true,
+        resize:false,
+        anchors:["huanbao","dream","gongyi","zeren","dibu"],
+        //navigationTooltips:["环保","梦想","公益","责任","关于我们"],
+        afterLoad: function(anchorLink, index){
+          if(index == 1){
+            $('#section1 .index1').children().fadeIn(2000);
+          }
+          if(index == 2){
+            $('#section2 .index2').children().fadeIn(2000);
+          }
+          if(index == 3){
+            $('#section3 .index3').children().fadeIn(2000);
+          }
+          if(index == 4){
+            $('#section4 .index4').children().fadeIn(2000);
+          }
+        },
+        onLeave: function(index, direction){
+          if(index == '1'){
+            $('#section1 .index1').children().fadeOut(2000);
+          }
+          if(index == '2'){
+            $('#section2 .index2').children().fadeOut(2000);
+          }
+          if(index == '3'){
+            $('#section3 .index3').children().fadeOut(2000);
+          }
+          if(index == '4'){
+            $('#section4 .index4').children().fadeOut(2000);
+          }
+        }
+      });
+    });
+  </script>
+</body>
+</html>
