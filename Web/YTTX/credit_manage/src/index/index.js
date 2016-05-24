@@ -2,15 +2,11 @@
 require.config({
 	baseUrl:'../js/',
 	paths:{
-		'jquery':'lib/jquery/jquery-2.1.4.min',
+		'jquery':'lib/jquery/jquery.min',
 		'jquery_mobile':'lib/jquery/jquery-mobile.min',
-		'dialog':'lib/artDialog/dialog',
-		'slide':'widgets/slide'
+		'dialog':'lib/artDialog/dialog-plus'
 	},
 	shim:{
-		'dialog':{
-				deps:['jquery']
-		},
 		'jquery_mobile':{
 			deps:['jquery']
 		}
@@ -19,9 +15,13 @@ require.config({
 
 
 /*程序入口*/
-require(['jquery','jquery_mobile','dialog','slide'],function($,$jm,undefined,Slide) {
+require(['jquery','jquery_mobile','dialog'],function($,$jm,Dialog) {
 	$(function(){
-       console.log('watch aaaaaaaaaaaaa');
+      	var $test=$('#test');
+		$test.on('click',function(){
+			console.log('aaa');
+			dialog();
+		});
 	});
 });
 

@@ -102,30 +102,6 @@
 		
 		//less编译生成css
 		less:{
-			/*development:{
-				options:{
-					paths:['assset/css']
-				},
-				files:{
-					'path/to/result.css':'path/to/source.less'	
-				}
-			},*/
-			/*production:{
-				options:{
-					paths:['assets/css'],
-					plugins:[
-						new (require('less-plugin-autoprefix'))({browsers:['last 2 versions']}),
-						new (require('less-plugin-clean-css'))(cleanCssOptions)
-					],
-					modifyVars:{
-						imgPath:'"http://mycdn.com/path/to/images"',
-						bgColor:'red'
-					}
-				},
-				files:{
-					'path/to/result.css':'path/to/source.less'
-				}	
-			}*/
 			 build: {
 				 src:(function(pkg,web_url){
 						return web_url+pkg.less_src+'/'+pkg.module_name+'.less';
@@ -143,25 +119,36 @@
 		},
 
 
-		//定义css合并（一次性任务）
-		/*cssmin:{
+		//使用less时为定义css压缩。（没有使用less时为合并（一次性任务））
+		cssmin:{
 			options:{
-				keepSpecialComments:0,/!* 移除 CSS文件中的所有注释 *!/
+				keepSpecialComments:0,/* 移除 CSS文件中的所有注释 */
 				shorthandCompacting:false,
 				roundingPrecision:-1
 			},
 			target:{
 				files:[{
 					expand:true,//开启动态扩展
-					cwd:'<%=pkg.base_path%>/<%=pkg.web_path%>/<%=pkg.project%>/<%=pkg.name%>/<%=pkg.less_dest%>/',//当前工作路径css/
+					cwd:web_url+pkg.less_dest,//当前工作路径css/
 					src:['*.css'],
-					dest:'<%=pkg.base_path%>/<%=pkg.web_path%>/<%=pkg.project%>/<%=pkg.name%>/<%=pkg.less_dest%>/',//css/
+					dest:web_url+pkg.less_dest,//css/
 					ext:'.css'//后缀名
 				}]
 
 			}
-		},*/
-
+		},
+		
+		//合并模块化依赖
+		requirejs:{
+			compile: {
+				options: {
+				  baseUrl: "path/to/base",
+				  mainConfigFile: "path/to/config.js",
+				  include: [ "src/main.js" ],
+				  out: "path/to/optimized.js"
+				}
+			  }
+		},
 
 		
 
@@ -269,9 +256,11 @@
 	//导入任务所需的依赖支持服务
 	grunt.loadNpmTasks('grunt-contrib-jshint');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
+	grunt.loadNpmTasks('grunt-contrib-requirejs');
 	grunt.loadNpmTasks('grunt-contrib-connect');
 	grunt.loadNpmTasks('grunt-contrib-imagemin');
 	grunt.loadNpmTasks('grunt-contrib-less');
+	grunt.loadNpmTasks('grunt-contrib-cssmin');
 	grunt.loadNpmTasks('grunt-spritesmith');
 	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.loadNpmTasks('grunt-contrib-concat');
@@ -307,6 +296,15 @@
 	/*grunt.registerTask('default',"javascript压缩",function(){
 		grunt.task.run(['uglify','watch']);
 	});*/
+	
+	grunt.registerTask('default',"less编译生成css并压缩",function(){
+		grunt.task.run(['less','cssmin']);
+	});
+	
+	/*grunt.registerTask('default',"javascript压缩",function(){
+		grunt.task.run(['uglify','watch']);
+	});*/
+	
 	
 	
 	//集成批处理

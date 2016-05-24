@@ -12,38 +12,22 @@ body{
 	font-size:1.6rem;
 }
 
-.layout-wrap{
+.test-wrap{
 	width:100%;
 	height:100%;
 	.box-sizing-base;
-	.display-base(flex);
-	.flex-flow-base(column wrap);
-}
-.layout-item{
-	width:100%;
-	.flex-base;
-}
-
-.layout-header{
-	background:@color-gray10;
-	height:40px;
-	.flex-base(0 0 1);
-	.order-base(1);
-}
-.layout-main{
-	background:@color-gray12;
-	.text-ww;
-	.flex-base(1 1 0);
-	.align-self-base(stretch);
-	min-height:100%;
-	.order-base(2);
-}
-.layout-footer{
-	background:@color-gray14;
-	height:60px;
-	.flex-base(0 0 1);
-	.align-self-base(stretch);
-	.order-base(3);
+	padding:200px 0 100px 0;
+	div{
+		width:200px;
+		margin:0 auto;
+		height:50px;
+		background:@color-gray10;
+		.border-radius-base(3px);
+		cursor:pointer;
+		&:hover{
+			background:@color-gray8;
+		}
+	}
 }
 
 

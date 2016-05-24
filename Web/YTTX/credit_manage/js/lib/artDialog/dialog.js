@@ -1,2 +1,1273 @@
 /*! artDialog v6.0.5 | https://github.com/aui/artDialog */
-!function(){function a(b){var d=c[b],e="exports";return"object"==typeof d?d:(d[e]||(d[e]={},d[e]=d.call(d[e],a,d[e],d)||d[e]),d[e])}function b(a,b){c[a]=b}var c={};b("jquery",function(){return jQuery}),b("popup",function(a){function b(){this.destroyed=!1,this.__popup=c("<div />").css({display:"none",position:"absolute",outline:0}).attr("tabindex","-1").html(this.innerHTML).appendTo("body"),this.__backdrop=this.__mask=c("<div />").css({opacity:.7,background:"#000"}),this.node=this.__popup[0],this.backdrop=this.__backdrop[0],d++}var c=a("jquery"),d=0,e=!("minWidth"in c("html")[0].style),f=!e;return c.extend(b.prototype,{node:null,backdrop:null,fixed:!1,destroyed:!0,open:!1,returnValue:"",autofocus:!0,align:"bottom left",innerHTML:"",className:"ui-popup",show:function(a){if(this.destroyed)return this;var d=this.__popup,g=this.__backdrop;if(this.__activeElement=this.__getActive(),this.open=!0,this.follow=a||this.follow,!this.__ready){if(d.addClass(this.className).attr("role",this.modal?"alertdialog":"dialog").css("position",this.fixed?"fixed":"absolute"),e||c(window).on("resize",c.proxy(this.reset,this)),this.modal){var h={position:"fixed",left:0,top:0,width:"100%",height:"100%",overflow:"hidden",userSelect:"none",zIndex:this.zIndex||b.zIndex};d.addClass(this.className+"-modal"),f||c.extend(h,{position:"absolute",width:c(window).width()+"px",height:c(document).height()+"px"}),g.css(h).attr({tabindex:"0"}).on("focus",c.proxy(this.focus,this)),this.__mask=g.clone(!0).attr("style","").insertAfter(d),g.addClass(this.className+"-backdrop").insertBefore(d),this.__ready=!0}d.html()||d.html(this.innerHTML)}return d.addClass(this.className+"-show").show(),g.show(),this.reset().focus(),this.__dispatchEvent("show"),this},showModal:function(){return this.modal=!0,this.show.apply(this,arguments)},close:function(a){return!this.destroyed&&this.open&&(void 0!==a&&(this.returnValue=a),this.__popup.hide().removeClass(this.className+"-show"),this.__backdrop.hide(),this.open=!1,this.blur(),this.__dispatchEvent("close")),this},remove:function(){if(this.destroyed)return this;this.__dispatchEvent("beforeremove"),b.current===this&&(b.current=null),this.__popup.remove(),this.__backdrop.remove(),this.__mask.remove(),e||c(window).off("resize",this.reset),this.__dispatchEvent("remove");for(var a in this)delete this[a];return this},reset:function(){var a=this.follow;return a?this.__follow(a):this.__center(),this.__dispatchEvent("reset"),this},focus:function(){var a=this.node,d=this.__popup,e=b.current,f=this.zIndex=b.zIndex++;if(e&&e!==this&&e.blur(!1),!c.contains(a,this.__getActive())){var g=d.find("[autofocus]")[0];!this._autofocus&&g?this._autofocus=!0:g=a,this.__focus(g)}return d.css("zIndex",f),b.current=this,d.addClass(this.className+"-focus"),this.__dispatchEvent("focus"),this},blur:function(){var a=this.__activeElement,b=arguments[0];return b!==!1&&this.__focus(a),this._autofocus=!1,this.__popup.removeClass(this.className+"-focus"),this.__dispatchEvent("blur"),this},addEventListener:function(a,b){return this.__getEventListener(a).push(b),this},removeEventListener:function(a,b){for(var c=this.__getEventListener(a),d=0;d<c.length;d++)b===c[d]&&c.splice(d--,1);return this},__getEventListener:function(a){var b=this.__listener;return b||(b=this.__listener={}),b[a]||(b[a]=[]),b[a]},__dispatchEvent:function(a){var b=this.__getEventListener(a);this["on"+a]&&this["on"+a]();for(var c=0;c<b.length;c++)b[c].call(this)},__focus:function(a){try{this.autofocus&&!/^iframe$/i.test(a.nodeName)&&a.focus()}catch(b){}},__getActive:function(){try{var a=document.activeElement,b=a.contentDocument,c=b&&b.activeElement||a;return c}catch(d){}},__center:function(){var a=this.__popup,b=c(window),d=c(document),e=this.fixed,f=e?0:d.scrollLeft(),g=e?0:d.scrollTop(),h=b.width(),i=b.height(),j=a.width(),k=a.height(),l=(h-j)/2+f,m=382*(i-k)/1e3+g,n=a[0].style;n.left=Math.max(parseInt(l),f)+"px",n.top=Math.max(parseInt(m),g)+"px"},__follow:function(a){var b=a.parentNode&&c(a),d=this.__popup;if(this.__followSkin&&d.removeClass(this.__followSkin),b){var e=b.offset();if(e.left*e.top<0)return this.__center()}var f=this,g=this.fixed,h=c(window),i=c(document),j=h.width(),k=h.height(),l=i.scrollLeft(),m=i.scrollTop(),n=d.width(),o=d.height(),p=b?b.outerWidth():0,q=b?b.outerHeight():0,r=this.__offset(a),s=r.left,t=r.top,u=g?s-l:s,v=g?t-m:t,w=g?0:l,x=g?0:m,y=w+j-n,z=x+k-o,A={},B=this.align.split(" "),C=this.className+"-",D={top:"bottom",bottom:"top",left:"right",right:"left"},E={top:"top",bottom:"top",left:"left",right:"left"},F=[{top:v-o,bottom:v+q,left:u-n,right:u+p},{top:v,bottom:v-o+q,left:u,right:u-n+p}],G={left:u+p/2-n/2,top:v+q/2-o/2},H={left:[w,y],top:[x,z]};c.each(B,function(a,b){F[a][b]>H[E[b]][1]&&(b=B[a]=D[b]),F[a][b]<H[E[b]][0]&&(B[a]=D[b])}),B[1]||(E[B[1]]="left"===E[B[0]]?"top":"left",F[1][B[1]]=G[E[B[1]]]),C+=B.join("-")+" "+this.className+"-follow",f.__followSkin=C,b&&d.addClass(C),A[E[B[0]]]=parseInt(F[0][B[0]]),A[E[B[1]]]=parseInt(F[1][B[1]]),d.css(A)},__offset:function(a){var b=a.parentNode,d=b?c(a).offset():{left:a.pageX,top:a.pageY};a=b?a:a.target;var e=a.ownerDocument,f=e.defaultView||e.parentWindow;if(f==window)return d;var g=f.frameElement,h=c(e),i=h.scrollLeft(),j=h.scrollTop(),k=c(g).offset(),l=k.left,m=k.top;return{left:d.left+l-i,top:d.top+m-j}}}),b.zIndex=1024,b.current=null,b}),b("dialog-config",{backdropBackground:"#000",backdropOpacity:.7,content:'<span class="ui-dialog-loading">Loading..</span>',title:"",statusbar:"",button:null,ok:null,cancel:null,okValue:"ok",cancelValue:"cancel",cancelDisplay:!0,width:"",height:"",padding:"",skin:"",quickClose:!1,cssUri:"../css/ui-dialog.css",innerHTML:'<div i="dialog" class="ui-dialog"><div class="ui-dialog-arrow-a"></div><div class="ui-dialog-arrow-b"></div><table class="ui-dialog-grid"><tr><td i="header" class="ui-dialog-header"><button i="close" class="ui-dialog-close">&#215;</button><div i="title" class="ui-dialog-title"></div></td></tr><tr><td i="body" class="ui-dialog-body"><div i="content" class="ui-dialog-content"></div></td></tr><tr><td i="footer" class="ui-dialog-footer"><div i="statusbar" class="ui-dialog-statusbar"></div><div i="button" class="ui-dialog-button"></div></td></tr></table></div>'}),b("dialog",function(a){var b=a("jquery"),c=a("popup"),d=a("dialog-config"),e=d.cssUri;if(e){var f=a[a.toUrl?"toUrl":"resolve"];f&&(e=f(e),e='<link rel="stylesheet" href="'+e+'" />',b("base")[0]?b("base").before(e):b("head").append(e))}var g=0,h=new Date-0,i=!("minWidth"in b("html")[0].style),j="createTouch"in document&&!("onmousemove"in document)||/(iPhone|iPad|iPod)/i.test(navigator.userAgent),k=!i&&!j,l=function(a,c,d){var e=a=a||{};("string"==typeof a||1===a.nodeType)&&(a={content:a,fixed:!j}),a=b.extend(!0,{},l.defaults,a),a.original=e;var f=a.id=a.id||h+g,i=l.get(f);return i?i.focus():(k||(a.fixed=!1),a.quickClose&&(a.modal=!0,a.backdropOpacity=0),b.isArray(a.button)||(a.button=[]),void 0!==d&&(a.cancel=d),a.cancel&&a.button.push({id:"cancel",value:a.cancelValue,callback:a.cancel,display:a.cancelDisplay}),void 0!==c&&(a.ok=c),a.ok&&a.button.push({id:"ok",value:a.okValue,callback:a.ok,autofocus:!0}),l.list[f]=new l.create(a))},m=function(){};m.prototype=c.prototype;var n=l.prototype=new m;return l.create=function(a){var d=this;b.extend(this,new c);var e=(a.original,b(this.node).html(a.innerHTML)),f=b(this.backdrop);return this.options=a,this._popup=e,b.each(a,function(a,b){"function"==typeof d[a]?d[a](b):d[a]=b}),a.zIndex&&(c.zIndex=a.zIndex),e.attr({"aria-labelledby":this._$("title").attr("id","title:"+this.id).attr("id"),"aria-describedby":this._$("content").attr("id","content:"+this.id).attr("id")}),this._$("close").css("display",this.cancel===!1?"none":"").attr("title",this.cancelValue).on("click",function(a){d._trigger("cancel"),a.preventDefault()}),this._$("dialog").addClass(this.skin),this._$("body").css("padding",this.padding),a.quickClose&&f.on("onmousedown"in document?"mousedown":"click",function(){return d._trigger("cancel"),!1}),this.addEventListener("show",function(){f.css({opacity:0,background:a.backdropBackground}).animate({opacity:a.backdropOpacity},150)}),this._esc=function(a){var b=a.target,e=b.nodeName,f=/^input|textarea$/i,g=c.current===d,h=a.keyCode;!g||f.test(e)&&"button"!==b.type||27===h&&d._trigger("cancel")},b(document).on("keydown",this._esc),this.addEventListener("remove",function(){b(document).off("keydown",this._esc),delete l.list[this.id]}),g++,l.oncreate(this),this},l.create.prototype=n,b.extend(n,{content:function(a){var c=this._$("content");return"object"==typeof a?(a=b(a),c.empty("").append(a.show()),this.addEventListener("beforeremove",function(){b("body").append(a.hide())})):c.html(a),this.reset()},title:function(a){return this._$("title").text(a),this._$("header")[a?"show":"hide"](),this},width:function(a){return this._$("content").css("width",a),this.reset()},height:function(a){return this._$("content").css("height",a),this.reset()},button:function(a){a=a||[];var c=this,d="",e=0;return this.callbacks={},"string"==typeof a?(d=a,e++):b.each(a,function(a,f){var g=f.id=f.id||f.value,h="";c.callbacks[g]=f.callback,f.display===!1?h=' style="display:none"':e++,d+='<button type="button" i-id="'+g+'"'+h+(f.disabled?" disabled":"")+(f.autofocus?' autofocus class="ui-dialog-autofocus"':"")+">"+f.value+"</button>",c._$("button").on("click","[i-id="+g+"]",function(a){var d=b(this);d.attr("disabled")||c._trigger(g),a.preventDefault()})}),this._$("button").html(d),this._$("footer")[e?"show":"hide"](),this},statusbar:function(a){return this._$("statusbar").html(a)[a?"show":"hide"](),this},_$:function(a){return this._popup.find("[i="+a+"]")},_trigger:function(a){var b=this.callbacks[a];return"function"!=typeof b||b.call(this)!==!1?this.close().remove():this}}),l.oncreate=b.noop,l.getCurrent=function(){return c.current},l.get=function(a){return void 0===a?l.list:l.list[a]},l.list={},l.defaults=d,l}),b("drag",function(a){var b=a("jquery"),c=b(window),d=b(document),e="createTouch"in document,f=document.documentElement,g=!("minWidth"in f.style),h=!g&&"onlosecapture"in f,i="setCapture"in f,j={start:e?"touchstart":"mousedown",over:e?"touchmove":"mousemove",end:e?"touchend":"mouseup"},k=e?function(a){return a.touches||(a=a.originalEvent.touches.item(0)),a}:function(a){return a},l=function(){this.start=b.proxy(this.start,this),this.over=b.proxy(this.over,this),this.end=b.proxy(this.end,this),this.onstart=this.onover=this.onend=b.noop};return l.types=j,l.prototype={start:function(a){return a=this.startFix(a),d.on(j.over,this.over).on(j.end,this.end),this.onstart(a),!1},over:function(a){return a=this.overFix(a),this.onover(a),!1},end:function(a){return a=this.endFix(a),d.off(j.over,this.over).off(j.end,this.end),this.onend(a),!1},startFix:function(a){return a=k(a),this.target=b(a.target),this.selectstart=function(){return!1},d.on("selectstart",this.selectstart).on("dblclick",this.end),h?this.target.on("losecapture",this.end):c.on("blur",this.end),i&&this.target[0].setCapture(),a},overFix:function(a){return a=k(a)},endFix:function(a){return a=k(a),d.off("selectstart",this.selectstart).off("dblclick",this.end),h?this.target.off("losecapture",this.end):c.off("blur",this.end),i&&this.target[0].releaseCapture(),a}},l.create=function(a,e){var f,g,h,i,j=b(a),k=new l,m=l.types.start,n=function(){},o=a.className.replace(/^\s|\s.*/g,"")+"-drag-start",p={onstart:n,onover:n,onend:n,off:function(){j.off(m,k.start)}};return k.onstart=function(b){var e="fixed"===j.css("position"),k=d.scrollLeft(),l=d.scrollTop(),m=j.width(),n=j.height();f=0,g=0,h=e?c.width()-m+f:d.width()-m,i=e?c.height()-n+g:d.height()-n;var q=j.offset(),r=this.startLeft=e?q.left-k:q.left,s=this.startTop=e?q.top-l:q.top;this.clientX=b.clientX,this.clientY=b.clientY,j.addClass(o),p.onstart.call(a,b,r,s)},k.onover=function(b){var c=b.clientX-this.clientX+this.startLeft,d=b.clientY-this.clientY+this.startTop,e=j[0].style;c=Math.max(f,Math.min(h,c)),d=Math.max(g,Math.min(i,d)),e.left=c+"px",e.top=d+"px",p.onover.call(a,b,c,d)},k.onend=function(b){var c=j.position(),d=c.left,e=c.top;j.removeClass(o),p.onend.call(a,b,d,e)},k.off=function(){j.off(m,k.start)},e?k.start(e):j.on(m,k.start),p},l}),b("dialog-plus",function(a){var b=a("jquery"),c=a("dialog"),d=a("drag");return c.oncreate=function(a){var c,e=a.options,f=e.original,g=e.url,h=e.oniframeload;if(g&&(this.padding=e.padding=0,c=b("<iframe />"),c.attr({src:g,name:a.id,width:"100%",height:"100%",allowtransparency:"yes",frameborder:"no",scrolling:"no"}).on("load",function(){var b;try{b=c[0].contentWindow.frameElement}catch(d){}b&&(e.width||a.width(c.contents().width()),e.height||a.height(c.contents().height())),h&&h.call(a)}),a.addEventListener("beforeremove",function(){c.attr("src","about:blank").remove()},!1),a.content(c[0]),a.iframeNode=c[0]),!(f instanceof Object))for(var i=function(){a.close().remove()},j=0;j<frames.length;j++)try{if(f instanceof frames[j].Object){b(frames[j]).one("unload",i);break}}catch(k){}b(a.node).on(d.types.start,"[i=title]",function(b){a.follow||(a.focus(),d.create(a.node,b))})},c.get=function(a){if(a&&a.frameElement){var b,d=a.frameElement,e=c.list;for(var f in e)if(b=e[f],b.node.getElementsByTagName("iframe")[0]===d)return b}else if(a)return c.list[a]},c}),window.dialog=a("dialog-plus")}();
+!(function () {
+
+var __modules__ = {};
+
+function require (id) {
+    var mod = __modules__[id];
+    var exports = 'exports';
+
+    if (typeof mod === 'object') {
+        return mod;
+    }
+
+    if (!mod[exports]) {
+        mod[exports] = {};
+        mod[exports] = mod.call(mod[exports], require, mod[exports], mod) || mod[exports];
+    }
+
+    return mod[exports];
+}
+
+function define (path, fn) {
+    __modules__[path] = fn;
+}
+
+
+
+define("jquery", function () {
+	return jQuery;
+});
+
+
+/*!
+ * PopupJS
+ * Date: 2014-11-09
+ * https://github.com/aui/popupjs
+ * (c) 2009-2014 TangBin, http://www.planeArt.cn
+ *
+ * This is licensed under the GNU LGPL, version 2.1 or later.
+ * For details, see: http://www.gnu.org/licenses/lgpl-2.1.html
+ */
+
+define("popup", function (require) {
+
+var $ = require("jquery");
+
+var _count = 0;
+var _isIE6 = !('minWidth' in $('html')[0].style);
+var _isFixed = !_isIE6;
+
+
+function Popup () {
+
+    this.destroyed = false;
+
+
+    this.__popup = $('<div />')
+    /*使用 <dialog /> 元素可能导致 z-index 永远置顶的问题(chrome)*/
+    .css({
+        display: 'none',
+        position: 'absolute',
+        /*
+        left: 0,
+        top: 0,
+        bottom: 'auto',
+        right: 'auto',
+        margin: 0,
+        padding: 0,
+        border: '0 none',
+        background: 'transparent'
+        */
+        outline: 0
+    })
+    .attr('tabindex', '-1')
+    .html(this.innerHTML)
+    .appendTo('body');
+
+
+    this.__backdrop = this.__mask = $('<div />')
+    .css({
+        opacity: .7,
+        background: '#000'
+    });
+
+
+    // 使用 HTMLElement 作为外部接口使用，而不是 jquery 对象
+    // 统一的接口利于未来 Popup 移植到其他 DOM 库中
+    this.node = this.__popup[0];
+    this.backdrop = this.__backdrop[0];
+
+    _count ++;
+}
+
+
+$.extend(Popup.prototype, {
+    
+    /**
+     * 初始化完毕事件，在 show()、showModal() 执行
+     * @name Popup.prototype.onshow
+     * @event
+     */
+
+    /**
+     * 关闭事件，在 close() 执行
+     * @name Popup.prototype.onclose
+     * @event
+     */
+
+    /**
+     * 销毁前事件，在 remove() 前执行
+     * @name Popup.prototype.onbeforeremove
+     * @event
+     */
+
+    /**
+     * 销毁事件，在 remove() 执行
+     * @name Popup.prototype.onremove
+     * @event
+     */
+
+    /**
+     * 重置事件，在 reset() 执行
+     * @name Popup.prototype.onreset
+     * @event
+     */
+
+    /**
+     * 焦点事件，在 foucs() 执行
+     * @name Popup.prototype.onfocus
+     * @event
+     */
+
+    /**
+     * 失焦事件，在 blur() 执行
+     * @name Popup.prototype.onblur
+     * @event
+     */
+
+    /** 浮层 DOM 素节点[*] */
+    node: null,
+
+    /** 遮罩 DOM 节点[*] */
+    backdrop: null,
+
+    /** 是否开启固定定位[*] */
+    fixed: false,
+
+    /** 判断对话框是否删除[*] */
+    destroyed: true,
+
+    /** 判断对话框是否显示 */
+    open: false,
+
+    /** close 返回值 */
+    returnValue: '',
+
+    /** 是否自动聚焦 */
+    autofocus: true,
+
+    /** 对齐方式[*] */
+    align: 'bottom left',
+
+    /** 内部的 HTML 字符串 */
+    innerHTML: '',
+
+    /** CSS 类名 */
+    className: 'ui-popup',
+
+    /**
+     * 显示浮层
+     * @param   {HTMLElement, Event}  指定位置（可选）
+     */
+    show: function (anchor) {
+
+        if (this.destroyed) {
+            return this;
+        }
+
+        var that = this;
+        var popup = this.__popup;
+        var backdrop = this.__backdrop;
+
+        this.__activeElement = this.__getActive();
+
+        this.open = true;
+        this.follow = anchor || this.follow;
+
+
+        // 初始化 show 方法
+        if (!this.__ready) {
+
+            popup
+            .addClass(this.className)
+            .attr('role', this.modal ? 'alertdialog' : 'dialog')
+            .css('position', this.fixed ? 'fixed' : 'absolute');
+
+            if (!_isIE6) {
+                $(window).on('resize', $.proxy(this.reset, this));
+            }
+
+            // 模态浮层的遮罩
+            if (this.modal) {
+                var backdropCss = {
+                    position: 'fixed',
+                    left: 0,
+                    top: 0,
+                    width: '100%',
+                    height: '100%',
+                    overflow: 'hidden',
+                    userSelect: 'none',
+                    zIndex: this.zIndex || Popup.zIndex
+                };
+
+
+                popup.addClass(this.className + '-modal');
+
+
+                if (!_isFixed) {
+                    $.extend(backdropCss, {
+                        position: 'absolute',
+                        width: $(window).width() + 'px',
+                        height: $(document).height() + 'px'
+                    });
+                }
+
+
+                backdrop
+                .css(backdropCss)
+                .attr({tabindex: '0'})
+                .on('focus', $.proxy(this.focus, this));
+
+                // 锁定 tab 的焦点操作
+                this.__mask = backdrop
+                .clone(true)
+                .attr('style', '')
+                .insertAfter(popup);
+
+                backdrop
+                .addClass(this.className + '-backdrop')
+                .insertBefore(popup);
+
+                this.__ready = true;
+            }
+
+
+            if (!popup.html()) {
+                popup.html(this.innerHTML);
+            }
+        }
+
+
+        popup
+        .addClass(this.className + '-show')
+        .show();
+
+        backdrop.show();
+
+
+        this.reset().focus();
+        this.__dispatchEvent('show');
+
+        return this;
+    },
+
+
+    /** 显示模态浮层。参数参见 show() */
+    showModal: function () {
+        this.modal = true;
+        return this.show.apply(this, arguments);
+    },
+    
+    
+    /** 关闭浮层 */
+    close: function (result) {
+        
+        if (!this.destroyed && this.open) {
+            
+            if (result !== undefined) {
+                this.returnValue = result;
+            }
+            
+            this.__popup.hide().removeClass(this.className + '-show');
+            this.__backdrop.hide();
+            this.open = false;
+            this.blur();// 恢复焦点，照顾键盘操作的用户
+            this.__dispatchEvent('close');
+        }
+    
+        return this;
+    },
+
+
+    /** 销毁浮层 */
+    remove: function () {
+
+        if (this.destroyed) {
+            return this;
+        }
+
+        this.__dispatchEvent('beforeremove');
+        
+        if (Popup.current === this) {
+            Popup.current = null;
+        }
+
+
+        // 从 DOM 中移除节点
+        this.__popup.remove();
+        this.__backdrop.remove();
+        this.__mask.remove();
+
+
+        if (!_isIE6) {
+            $(window).off('resize', this.reset);
+        }
+
+
+        this.__dispatchEvent('remove');
+
+        for (var i in this) {
+            delete this[i];
+        }
+
+        return this;
+    },
+
+
+    /** 重置位置 */
+    reset: function () {
+
+        var elem = this.follow;
+
+        if (elem) {
+            this.__follow(elem);
+        } else {
+            this.__center();
+        }
+
+        this.__dispatchEvent('reset');
+
+        return this;
+    },
+
+
+    /** 让浮层获取焦点 */
+    focus: function () {
+
+        var node = this.node;
+        var popup = this.__popup;
+        var current = Popup.current;
+        var index = this.zIndex = Popup.zIndex ++;
+
+        if (current && current !== this) {
+            current.blur(false);
+        }
+
+        // 检查焦点是否在浮层里面
+        if (!$.contains(node, this.__getActive())) {
+            var autofocus = popup.find('[autofocus]')[0];
+
+            if (!this._autofocus && autofocus) {
+                this._autofocus = true;
+            } else {
+                autofocus = node;
+            }
+
+            this.__focus(autofocus);
+        }
+
+        // 设置叠加高度
+        popup.css('zIndex', index);
+        //this.__backdrop.css('zIndex', index);
+
+        Popup.current = this;
+        popup.addClass(this.className + '-focus');
+
+        this.__dispatchEvent('focus');
+
+        return this;
+    },
+
+
+    /** 让浮层失去焦点。将焦点退还给之前的元素，照顾视力障碍用户 */
+    blur: function () {
+
+        var activeElement = this.__activeElement;
+        var isBlur = arguments[0];
+
+
+        if (isBlur !== false) {
+            this.__focus(activeElement);
+        }
+
+        this._autofocus = false;
+        this.__popup.removeClass(this.className + '-focus');
+        this.__dispatchEvent('blur');
+
+        return this;
+    },
+
+
+    /**
+     * 添加事件
+     * @param   {String}    事件类型
+     * @param   {Function}  监听函数
+     */
+    addEventListener: function (type, callback) {
+        this.__getEventListener(type).push(callback);
+        return this;
+    },
+
+
+    /**
+     * 删除事件
+     * @param   {String}    事件类型
+     * @param   {Function}  监听函数
+     */
+    removeEventListener: function (type, callback) {
+        var listeners = this.__getEventListener(type);
+        for (var i = 0; i < listeners.length; i ++) {
+            if (callback === listeners[i]) {
+                listeners.splice(i--, 1);
+            }
+        }
+        return this;
+    },
+
+
+    // 获取事件缓存
+    __getEventListener: function (type) {
+        var listener = this.__listener;
+        if (!listener) {
+            listener = this.__listener = {};
+        }
+        if (!listener[type]) {
+            listener[type] = [];
+        }
+        return listener[type];
+    },
+
+
+    // 派发事件
+    __dispatchEvent: function (type) {
+        var listeners = this.__getEventListener(type);
+
+        if (this['on' + type]) {
+            this['on' + type]();
+        }
+
+        for (var i = 0; i < listeners.length; i ++) {
+            listeners[i].call(this);
+        }
+    },
+
+
+    // 对元素安全聚焦
+    __focus: function (elem) {
+        // 防止 iframe 跨域无权限报错
+        // 防止 IE 不可见元素报错
+        try {
+            // ie11 bug: iframe 页面点击会跳到顶部
+            if (this.autofocus && !/^iframe$/i.test(elem.nodeName)) {
+                elem.focus();
+            }
+        } catch (e) {}
+    },
+
+
+    // 获取当前焦点的元素
+    __getActive: function () {
+        try {// try: ie8~9, iframe #26
+            var activeElement = document.activeElement;
+            var contentDocument = activeElement.contentDocument;
+            var elem = contentDocument && contentDocument.activeElement || activeElement;
+            return elem;
+        } catch (e) {}
+    },
+
+
+    // 居中浮层
+    __center: function () {
+    
+        var popup = this.__popup;
+        var $window = $(window);
+        var $document = $(document);
+        var fixed = this.fixed;
+        var dl = fixed ? 0 : $document.scrollLeft();
+        var dt = fixed ? 0 : $document.scrollTop();
+        var ww = $window.width();
+        var wh = $window.height();
+        var ow = popup.width();
+        var oh = popup.height();
+        var left = (ww - ow) / 2 + dl;
+        var top = (wh - oh) * 382 / 1000 + dt;// 黄金比例
+        var style = popup[0].style;
+
+        
+        style.left = Math.max(parseInt(left), dl) + 'px';
+        style.top = Math.max(parseInt(top), dt) + 'px';
+    },
+    
+    
+    // 指定位置 @param    {HTMLElement, Event}  anchor
+    __follow: function (anchor) {
+        
+        var $elem = anchor.parentNode && $(anchor);
+        var popup = this.__popup;
+        
+
+        if (this.__followSkin) {
+            popup.removeClass(this.__followSkin);
+        }
+
+
+        // 隐藏元素不可用
+        if ($elem) {
+            var o = $elem.offset();
+            if (o.left * o.top < 0) {
+                return this.__center();
+            }
+        }
+        
+        var that = this;
+        var fixed = this.fixed;
+
+        var $window = $(window);
+        var $document = $(document);
+        var winWidth = $window.width();
+        var winHeight = $window.height();
+        var docLeft =  $document.scrollLeft();
+        var docTop = $document.scrollTop();
+
+
+        var popupWidth = popup.width();
+        var popupHeight = popup.height();
+        var width = $elem ? $elem.outerWidth() : 0;
+        var height = $elem ? $elem.outerHeight() : 0;
+        var offset = this.__offset(anchor);
+        var x = offset.left;
+        var y = offset.top;
+        var left =  fixed ? x - docLeft : x;
+        var top = fixed ? y - docTop : y;
+
+
+        var minLeft = fixed ? 0 : docLeft;
+        var minTop = fixed ? 0 : docTop;
+        var maxLeft = minLeft + winWidth - popupWidth;
+        var maxTop = minTop + winHeight - popupHeight;
+
+
+        var css = {};
+        var align = this.align.split(' ');
+        var className = this.className + '-';
+        var reverse = {top: 'bottom', bottom: 'top', left: 'right', right: 'left'};
+        var name = {top: 'top', bottom: 'top', left: 'left', right: 'left'};
+
+
+        var temp = [{
+            top: top - popupHeight,
+            bottom: top + height,
+            left: left - popupWidth,
+            right: left + width
+        }, {
+            top: top,
+            bottom: top - popupHeight + height,
+            left: left,
+            right: left - popupWidth + width
+        }];
+
+
+        var center = {
+            left: left + width / 2 - popupWidth / 2,
+            top: top + height / 2 - popupHeight / 2
+        };
+
+        
+        var range = {
+            left: [minLeft, maxLeft],
+            top: [minTop, maxTop]
+        };
+
+
+        // 超出可视区域重新适应位置
+        $.each(align, function (i, val) {
+
+            // 超出右或下边界：使用左或者上边对齐
+            if (temp[i][val] > range[name[val]][1]) {
+                val = align[i] = reverse[val];
+            }
+
+            // 超出左或右边界：使用右或者下边对齐
+            if (temp[i][val] < range[name[val]][0]) {
+                align[i] = reverse[val];
+            }
+
+        });
+
+
+        // 一个参数的情况
+        if (!align[1]) {
+            name[align[1]] = name[align[0]] === 'left' ? 'top' : 'left';
+            temp[1][align[1]] = center[name[align[1]]];
+        }
+
+
+        //添加follow的css, 为了给css使用
+        className += align.join('-') + ' '+ this.className+ '-follow';
+        
+        that.__followSkin = className;
+
+
+        if ($elem) {
+            popup.addClass(className);
+        }
+
+        
+        css[name[align[0]]] = parseInt(temp[0][align[0]]);
+        css[name[align[1]]] = parseInt(temp[1][align[1]]);
+        popup.css(css);
+
+    },
+
+
+    // 获取元素相对于页面的位置（包括iframe内的元素）
+    // 暂时不支持两层以上的 iframe 套嵌
+    __offset: function (anchor) {
+
+        var isNode = anchor.parentNode;
+        var offset = isNode ? $(anchor).offset() : {
+            left: anchor.pageX,
+            top: anchor.pageY
+        };
+
+
+        anchor = isNode ? anchor : anchor.target;
+        var ownerDocument = anchor.ownerDocument;
+        var defaultView = ownerDocument.defaultView || ownerDocument.parentWindow;
+        
+        if (defaultView == window) {// IE <= 8 只能使用两个等于号
+            return offset;
+        }
+
+        // {Element: Ifarme}
+        var frameElement = defaultView.frameElement;
+        var $ownerDocument = $(ownerDocument);
+        var docLeft =  $ownerDocument.scrollLeft();
+        var docTop = $ownerDocument.scrollTop();
+        var frameOffset = $(frameElement).offset();
+        var frameLeft = frameOffset.left;
+        var frameTop = frameOffset.top;
+        
+        return {
+            left: offset.left + frameLeft - docLeft,
+            top: offset.top + frameTop - docTop
+        };
+    }
+    
+});
+
+
+/** 当前叠加高度 */
+Popup.zIndex = 1024;
+
+
+/** 顶层浮层的实例 */
+Popup.current = null;
+
+
+return Popup;
+
+});
+
+// artDialog - 默认配置
+define("dialog-config", {
+
+    /* -----已注释的配置继承自 popup.js，仍可以再这里重新定义它----- */
+
+    // 对齐方式
+    //align: 'bottom left',
+    
+    // 是否固定定位
+    //fixed: false,
+    
+    // 对话框叠加高度值(重要：此值不能超过浏览器最大限制)
+    //zIndex: 1024,
+
+    // 设置遮罩背景颜色
+    backdropBackground: '#000',
+
+    // 设置遮罩透明度
+    backdropOpacity: 0.7,
+
+    // 消息内容
+    content: '<span class="ui-dialog-loading">Loading..</span>',
+    
+    // 标题
+    title: '',
+
+    // 对话框状态栏区域 HTML 代码
+    statusbar: '',
+    
+    // 自定义按钮
+    button: null,
+    
+    // 确定按钮回调函数
+    ok: null,
+    
+    // 取消按钮回调函数
+    cancel: null,
+
+    // 确定按钮文本
+    okValue: 'ok',
+    
+    // 取消按钮文本
+    cancelValue: 'cancel',
+
+    cancelDisplay: true,
+    
+    // 内容宽度
+    width: '',
+    
+    // 内容高度
+    height: '',
+    
+    // 内容与边界填充距离
+    padding: '',
+    
+    // 对话框自定义 className
+    skin: '',
+
+    // 是否支持快捷关闭（点击遮罩层自动关闭）
+    quickClose: false,
+
+    // css 文件路径，留空则不会使用 js 自动加载样式
+    // 注意：css 只允许加载一个
+    cssUri: '../css/ui-dialog.css',
+
+    // 模板（使用 table 解决 IE7 宽度自适应的 BUG）
+    // js 使用 i="***" 属性识别结构，其余的均可自定义
+    innerHTML:
+        '<div i="dialog" class="ui-dialog">'
+        +       '<div class="ui-dialog-arrow-a"></div>'
+        +       '<div class="ui-dialog-arrow-b"></div>'
+        +       '<table class="ui-dialog-grid">'
+        +           '<tr>'
+        +               '<td i="header" class="ui-dialog-header">'
+        +                   '<button i="close" class="ui-dialog-close">&#215;</button>'
+        +                   '<div i="title" class="ui-dialog-title"></div>'
+        +               '</td>'
+        +           '</tr>'
+        +           '<tr>'
+        +               '<td i="body" class="ui-dialog-body">'
+        +                   '<div i="content" class="ui-dialog-content"></div>'
+        +               '</td>'
+        +           '</tr>'
+        +           '<tr>'
+        +               '<td i="footer" class="ui-dialog-footer">'
+        +                   '<div i="statusbar" class="ui-dialog-statusbar"></div>'
+        +                   '<div i="button" class="ui-dialog-button"></div>'
+        +               '</td>'
+        +           '</tr>'
+        +       '</table>'
+        +'</div>'
+    
+});
+
+/*!
+ * artDialog
+ * Date: 2014-11-09
+ * https://github.com/aui/artDialog
+ * (c) 2009-2014 TangBin, http://www.planeArt.cn
+ *
+ * This is licensed under the GNU LGPL, version 2.1 or later.
+ * For details, see: http://www.gnu.org/licenses/lgpl-2.1.html
+ */
+define("dialog", function (require) {
+
+var $ = require("jquery");
+var Popup = require("popup");
+var defaults = require("dialog-config");
+var css = defaults.cssUri;
+
+
+// css loader: RequireJS & SeaJS
+if (css) {
+    var fn = require[require.toUrl ? 'toUrl' : 'resolve'];
+    if (fn) {
+        css = fn(css);
+        css = '<link rel="stylesheet" href="' + css + '" />';
+        if ($('base')[0]) {
+            $('base').before(css);
+        } else {
+            $('head').append(css);
+        } 
+    }
+}
+
+
+var _count = 0;
+var _expando = new Date() - 0; // Date.now()
+var _isIE6 = !('minWidth' in $('html')[0].style);
+var _isMobile = 'createTouch' in document && !('onmousemove' in document)
+    || /(iPhone|iPad|iPod)/i.test(navigator.userAgent);
+var _isFixed = !_isIE6 && !_isMobile;
+
+
+var artDialog = function (options, ok, cancel) {
+
+    var originalOptions = options = options || {};
+    
+
+    if (typeof options === 'string' || options.nodeType === 1) {
+    
+        options = {content: options, fixed: !_isMobile};
+    }
+    
+
+    options = $.extend(true, {}, artDialog.defaults, options);
+    options.original = originalOptions;
+
+    var id = options.id = options.id || _expando + _count;
+    var api = artDialog.get(id);
+    
+    
+    // 如果存在同名的对话框对象，则直接返回
+    if (api) {
+        return api.focus();
+    }
+    
+    
+    // 目前主流移动设备对fixed支持不好，禁用此特性
+    if (!_isFixed) {
+        options.fixed = false;
+    }
+
+
+    // 快捷关闭支持：点击对话框外快速关闭对话框
+    if (options.quickClose) {
+        options.modal = true;
+        options.backdropOpacity = 0;
+    }
+    
+
+    // 按钮组
+    if (!$.isArray(options.button)) {
+        options.button = [];
+    }
+
+
+    // 取消按钮
+    if (cancel !== undefined) {
+        options.cancel = cancel;
+    }
+    
+    if (options.cancel) {
+        options.button.push({
+            id: 'cancel',
+            value: options.cancelValue,
+            callback: options.cancel,
+            display: options.cancelDisplay
+        });
+    }
+    
+    
+    // 确定按钮
+    if (ok !== undefined) {
+        options.ok = ok;
+    }
+    
+    if (options.ok) {
+        options.button.push({
+            id: 'ok',
+            value: options.okValue,
+            callback: options.ok,
+            autofocus: true
+        });
+    }
+    
+
+    return artDialog.list[id] = new artDialog.create(options);
+};
+
+var popup = function () {};
+popup.prototype = Popup.prototype;
+var prototype = artDialog.prototype = new popup();
+
+artDialog.create = function (options) {
+    var that = this;
+
+    $.extend(this, new Popup());
+
+    var originalOptions = options.original;
+    var $popup = $(this.node).html(options.innerHTML);
+    var $backdrop = $(this.backdrop);
+
+    this.options = options;
+    this._popup = $popup;
+
+    
+    $.each(options, function (name, value) {
+        if (typeof that[name] === 'function') {
+            that[name](value);
+        } else {
+            that[name] = value;
+        }
+    });
+
+
+    // 更新 zIndex 全局配置
+    if (options.zIndex) {
+        Popup.zIndex = options.zIndex;
+    }
+
+
+    // 设置 ARIA 信息
+    $popup.attr({
+        'aria-labelledby': this._$('title')
+            .attr('id', 'title:' + this.id).attr('id'),
+        'aria-describedby': this._$('content')
+            .attr('id', 'content:' + this.id).attr('id')
+    });
+
+
+    // 关闭按钮
+    this._$('close')
+    .css('display', this.cancel === false ? 'none' : '')
+    .attr('title', this.cancelValue)
+    .on('click', function (event) {
+        that._trigger('cancel');
+        event.preventDefault();
+    });
+    
+
+    // 添加视觉参数
+    this._$('dialog').addClass(this.skin);
+    this._$('body').css('padding', this.padding);
+
+
+    // 点击任意空白处关闭对话框
+    if (options.quickClose) {
+        $backdrop
+        .on(
+            'onmousedown' in document ? 'mousedown' : 'click',
+            function () {
+            that._trigger('cancel');
+            return false;// 阻止抢夺焦点
+        });
+    }
+
+
+    // 遮罩设置
+    this.addEventListener('show', function () {
+        $backdrop.css({
+            opacity: 0,
+            background: options.backdropBackground
+        }).animate(
+            {opacity: options.backdropOpacity}
+        , 150);
+    });
+
+
+    // ESC 快捷键关闭对话框
+    this._esc = function (event) {
+        var target = event.target;
+        var nodeName = target.nodeName;
+        var rinput = /^input|textarea$/i;
+        var isTop = Popup.current === that;
+        var keyCode = event.keyCode;
+
+        // 避免输入状态中 ESC 误操作关闭
+        if (!isTop || rinput.test(nodeName) && target.type !== 'button') {
+            return;
+        }
+        
+        if (keyCode === 27) {
+            that._trigger('cancel');
+        }
+    };
+
+    $(document).on('keydown', this._esc);
+    this.addEventListener('remove', function () {
+        $(document).off('keydown', this._esc);
+        delete artDialog.list[this.id];
+    });
+
+
+    _count ++;
+    
+    artDialog.oncreate(this);
+
+    return this;
+};
+
+
+artDialog.create.prototype = prototype;
+
+
+
+$.extend(prototype, {
+
+    /**
+     * 显示对话框
+     * @name artDialog.prototype.show
+     * @param   {HTMLElement Object, Event Object}  指定位置（可选）
+     */
+    
+    /**
+     * 显示对话框（模态）
+     * @name artDialog.prototype.showModal
+     * @param   {HTMLElement Object, Event Object}  指定位置（可选）
+     */
+
+    /**
+     * 关闭对话框
+     * @name artDialog.prototype.close
+     * @param   {String, Number}    返回值，可被 onclose 事件收取（可选）
+     */
+
+    /**
+     * 销毁对话框
+     * @name artDialog.prototype.remove
+     */
+
+    /**
+     * 重置对话框位置
+     * @name artDialog.prototype.reset
+     */
+
+    /**
+     * 让对话框聚焦（同时置顶）
+     * @name artDialog.prototype.focus
+     */
+
+    /**
+     * 让对话框失焦（同时置顶）
+     * @name artDialog.prototype.blur
+     */
+
+    /**
+     * 添加事件
+     * @param   {String}    事件类型
+     * @param   {Function}  监听函数
+     * @name artDialog.prototype.addEventListener
+     */
+
+    /**
+     * 删除事件
+     * @param   {String}    事件类型
+     * @param   {Function}  监听函数
+     * @name artDialog.prototype.removeEventListener
+     */
+
+    /**
+     * 对话框显示事件，在 show()、showModal() 执行
+     * @name artDialog.prototype.onshow
+     * @event
+     */
+
+    /**
+     * 关闭事件，在 close() 执行
+     * @name artDialog.prototype.onclose
+     * @event
+     */
+
+    /**
+     * 销毁前事件，在 remove() 前执行
+     * @name artDialog.prototype.onbeforeremove
+     * @event
+     */
+
+    /**
+     * 销毁事件，在 remove() 执行
+     * @name artDialog.prototype.onremove
+     * @event
+     */
+
+    /**
+     * 重置事件，在 reset() 执行
+     * @name artDialog.prototype.onreset
+     * @event
+     */
+
+    /**
+     * 焦点事件，在 foucs() 执行
+     * @name artDialog.prototype.onfocus
+     * @event
+     */
+
+    /**
+     * 失焦事件，在 blur() 执行
+     * @name artDialog.prototype.onblur
+     * @event
+     */
+
+    
+    /**
+     * 设置内容
+     * @param    {String, HTMLElement}   内容
+     */
+    content: function (html) {
+    
+        var $content = this._$('content');
+
+        // HTMLElement
+        if (typeof html === 'object') {
+            html = $(html);
+            $content.empty('').append(html.show());
+            this.addEventListener('beforeremove', function () {
+                $('body').append(html.hide());
+            });
+        // String
+        } else {
+            $content.html(html);
+        }
+                
+        return this.reset();
+    },
+    
+    
+    /**
+     * 设置标题
+     * @param    {String}   标题内容
+     */
+    title: function (text) {
+        this._$('title').text(text);
+        this._$('header')[text ? 'show' : 'hide']();
+        return this;
+    },
+
+
+    /** 设置宽度 */
+    width: function (value) {
+        this._$('content').css('width', value);
+        return this.reset();
+    },
+
+
+    /** 设置高度 */
+    height: function (value) {
+        this._$('content').css('height', value);
+        return this.reset();
+    },
+
+
+    /**
+     * 设置按钮组
+     * @param   {Array, String}
+     * Options: value, callback, autofocus, disabled 
+     */
+    button: function (args) {
+        args = args || [];
+        var that = this;
+        var html = '';
+        var number = 0;
+        this.callbacks = {};
+        
+           
+        if (typeof args === 'string') {
+            html = args;
+            number ++;
+        } else {
+            $.each(args, function (i, val) {
+
+                var id = val.id = val.id || val.value;
+                var style = '';
+                that.callbacks[id] = val.callback;
+
+
+                if (val.display === false) {
+                    style = ' style="display:none"';
+                } else {
+                    number ++;
+                }
+
+                html +=
+                  '<button'
+                + ' type="button"'
+                + ' i-id="' + id + '"'
+                + style
+                + (val.disabled ? ' disabled' : '')
+                + (val.autofocus ? ' autofocus class="ui-dialog-autofocus"' : '')
+                + '>'
+                +   val.value
+                + '</button>';
+
+                that._$('button')
+                .on('click', '[i-id=' + id +']', function (event) {                
+                    var $this = $(this);
+                    if (!$this.attr('disabled')) {// IE BUG
+                        that._trigger(id);
+                    }
+                
+                    event.preventDefault();
+                });
+
+            });
+        }
+
+        this._$('button').html(html);
+        this._$('footer')[number ? 'show' : 'hide']();
+
+        return this;
+    },
+
+
+    statusbar: function (html) {
+        this._$('statusbar')
+        .html(html)[html ? 'show' : 'hide']();
+
+        return this;
+    },
+
+
+    _$: function (i) {
+        return this._popup.find('[i=' + i + ']');
+    },
+    
+    
+    // 触发按钮回调函数
+    _trigger: function (id) {
+        var fn = this.callbacks[id];
+            
+        return typeof fn !== 'function' || fn.call(this) !== false ?
+            this.close().remove() : this;
+    }
+    
+});
+
+
+
+artDialog.oncreate = $.noop;
+
+
+
+/** 获取最顶层的对话框API */
+artDialog.getCurrent = function () {
+    return Popup.current;
+};
+
+
+
+/**
+ * 根据 ID 获取某对话框 API
+ * @param    {String}    对话框 ID
+ * @return   {Object}    对话框 API (实例)
+ */
+artDialog.get = function (id) {
+    return id === undefined
+    ? artDialog.list
+    : artDialog.list[id];
+};
+
+artDialog.list = {};
+
+
+
+/**
+ * 默认配置
+ */
+artDialog.defaults = defaults;
+
+
+
+return artDialog;
+
+});
+
+
+
+
+window.dialog = require("dialog");
+
+})();
