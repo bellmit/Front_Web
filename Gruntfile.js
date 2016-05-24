@@ -40,9 +40,9 @@
 					// 通过LiveReload脚本，让页面重新加载。
 					middleware:flushMv
 				},
-				files:(function(){
+				files:(function(pkg,web_url){
 					return doFilter({package:pkg,web_url:web_url},'js_src','.js');
-				}())
+				})(pkg,web_url)
 			}
 
 		},*/
@@ -118,12 +118,12 @@
 				}	
 			}*/
 			 build: {
-				 src:(function(){
+				 src:(function(pkg,web_url){
 						return web_url+pkg.less_src+'/'+pkg.module_name+'.less';
-				}()),
-				 dest:(function(){
+				})(pkg,web_url),
+				 dest:(function(pkg,web_url){
 					return web_url+pkg.less_dest+'/'+pkg.module_name+'.css';
-				}())
+				})(pkg,web_url)
 			 },
 			 dev: {
 				 options: {
@@ -190,12 +190,12 @@
 				banner:'/*\n name:<%=pkg.name%>\/<%=pkg.module_name%>;\n author:<%=pkg.author%>;\n date:<%=grunt.template.today("yyyy-mm-dd")%>;\nversion:<%=pkg.version%>;\n*/\n'
 			},
 			build:{
-				src:(function(){
+				src:(function(pkg,web_url){
 					return doFilter({package:pkg,web_url:web_url},'js_src','.js');
-				}()),
-				dest:(function(){
+				})(pkg,web_url),
+				dest:(function(pkg,web_url){
 					return doFilter({package:pkg,web_url:web_url},'js_dest','.js');
-				}())
+				})(pkg,web_url)
 			}
 		},
 
@@ -211,9 +211,9 @@
 				files:'<%=pkg.base_path%>/<%=pkg.web_path%>/<%=pkg.project%>/<%=pkg.name%>/<%=pkg.js_src%>/<%=pkg.module_name%>/<%=pkg.module_name%>.js',
 			}*/
 			scripts:{
-				files:(function(){
+				files:(function(pkg,web_url){
 					return doFilter({package:pkg,web_url:web_url},'js_src','.js');
-				}()),
+				})(pkg,web_url),
 				tasks:['uglify'],
 				options:{
 					spawn:false,
@@ -268,7 +268,7 @@
 	
 
 	//一次性任务，压缩js库文件，合并js库文件
-	//grunt.registerTask('default',['uglify']);
+	grunt.registerTask('default',['uglify']);
 	//
 
 
