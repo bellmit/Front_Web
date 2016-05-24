@@ -1,7 +1,7 @@
 
 ;module.exports = function(grunt){
 
-	//配置端口
+	/*//配置端口
 	var flushPort=35729;
 	//导入刷新模块
 	var flushModule = require('connect-livereload')({
@@ -17,7 +17,7 @@
 			// 启用目录浏览(相当于IIS中的目录浏览)
 			connect.directory(options.base[0])
 		];
-	};
+	};*/
 
 	//获取package.json的信息
 	var pkg=grunt.file.readJSON('package.json'),
@@ -26,7 +26,7 @@
 	//任务配置,所以插件的配置信息
 	grunt.initConfig({
 		//服务器
-		connect:{
+		/*connect:{
 			options: {
 				// 服务器端口号
 				port: 90,
@@ -41,15 +41,11 @@
 					middleware:flushMv
 				},
 				files:(function(){
-					if(pkg.module_name===''){
-						return web_url+'/'+pkg.js_src+'/'+pkg.module_name+'.js';
-					}else{
-						return web_url+'/'+pkg.js_src+'/'+pkg.module_name+'/'+pkg.module_name+'.js';
-					}
+					return doFilter({package:pkg,web_url:web_url},'js_src','.js');
 				}())
 			}
 
-		},
+		},*/
 		
 		
 		//css语法检查
@@ -96,18 +92,46 @@
 		},*/
 		
 		//less编译生成css
-		/*less:{
-			development:{
+		less:{
+			/*development:{
 				options:{
-					paths:[]
+					paths:['assset/css']
+				},
+				files:{
+					'path/to/result.css':'path/to/source.less'	
 				}
-			},
-			production:{
-				
-				
-				
+			},*/
+			/*production:{
+				options:{
+					paths:['assets/css'],
+					plugins:[
+						new (require('less-plugin-autoprefix'))({browsers:['last 2 versions']}),
+						new (require('less-plugin-clean-css'))(cleanCssOptions)
+					],
+					modifyVars:{
+						imgPath:'"http://mycdn.com/path/to/images"',
+						bgColor:'red'
+					}
+				},
+				files:{
+					'path/to/result.css':'path/to/source.less'
+				}	
+			}*/
+			 build: {
+				 src:(function(){
+						return web_url+pkg.less_src+'/'+pkg.module_name+'.less';
+				}()),
+				 dest:(function(){
+					return web_url+pkg.less_dest+'/'+pkg.module_name+'.css';
+				}())
+			 },
+			 dev: {
+				 options: {
+					 compress: true,
+					 yuicompress:false
+			 	 }
 			}
-		},*/
+		},
 
 
 		//定义css合并（一次性任务）
@@ -146,23 +170,11 @@
 				dist:{
 					//源目录 to do,合并文件时需要看情况而定
 					src:(function(){
-						var minjs='<%=pkg.base_path%>/<%=pkg.web_path%>/<%=pkg.project%>/<%=pkg.name%>/<%=pkg.js_src%>/';
-						if(pkg.module_name===''){
-							minjs+='<%=pkg.module_name%>.js';
-						}else {
-							minjs+='<%=pkg.module_name%>/<%=pkg.module_name%>.js';
-						}
-						return minjs;
+						return doFilter({package:pkg,web_url:web_url},'js_src','.js');
 					}()),
 					//生成目录
 					dest:(function(){
-						var minjs='<%=pkg.base_path%>/<%=pkg.web_path%>/<%=pkg.project%>/<%=pkg.name%>/<%=pkg.js_dest%>/';
-						if(pkg.module_name===''){
-							minjs+='<%=pkg.module_name%>.js';
-						}else {
-							minjs+='<%=pkg.module_name%>/<%=pkg.module_name%>.js';
-						}
-						return minjs;
+						return doFilter({package:pkg,web_url:web_url},'js_dest','.js');
 					}())
 				}
 			},
@@ -177,21 +189,12 @@
 				stripBanners:true,
 				banner:'/*\n name:<%=pkg.name%>\/<%=pkg.module_name%>;\n author:<%=pkg.author%>;\n date:<%=grunt.template.today("yyyy-mm-dd")%>;\nversion:<%=pkg.version%>;\n*/\n'
 			},
-			my_target:{},
 			build:{
 				src:(function(){
-					if(pkg.module_name===''){
-						return web_url+'/'+pkg.js_src+'/'+pkg.module_name+'.js';
-					}else{
-						return web_url+'/'+pkg.js_src+'/'+pkg.module_name+'/'+pkg.module_name+'.js';
-					}
+					return doFilter({package:pkg,web_url:web_url},'js_src','.js');
 				}()),
 				dest:(function(){
-					if(pkg.module_name===''){
-						return web_url+'/'+pkg.js_src+'/'+pkg.module_name+'.js';
-					}else{
-						return web_url+'/'+pkg.js_dest+'/'+pkg.module_name+'/'+pkg.module_name+'.js';
-					}
+					return doFilter({package:pkg,web_url:web_url},'js_dest','.js');
 				}())
 			}
 		},
@@ -209,12 +212,7 @@
 			}*/
 			scripts:{
 				files:(function(){
-					console.log(web_url);
-					if(pkg.module_name===''){
-						return web_url+'/'+pkg.js_src+'/'+pkg.module_name+'.js';
-					}else{
-						return web_url+'/'+pkg.js_src+'/'+pkg.module_name+'/'+pkg.module_name+'.js';
-					}
+					return doFilter({package:pkg,web_url:web_url},'js_src','.js');
 				}()),
 				tasks:['uglify'],
 				options:{
@@ -227,6 +225,34 @@
 		}
 
 	});
+	
+	
+	//抽离公共处理函数
+	function doFilter(sou,str,suffix){
+		var spkg,surl,sname,sstr;
+		if(!sou){
+			spkg=grunt.file.readJSON('package.json');
+			surl=spkg.base_path+'/'+spkg.web_path+'/'+spkg.project+'/'+spkg.name+'/';
+		}else{
+			spkg=sou.package;
+			surl=sou.web_url;
+		}
+		sname=spkg.module_name,
+		sstr=spkg[str];
+		//result
+		if(sname===''){
+			return surl+'/'+sstr+'/'+sname+suffix;
+		}else{
+			//filter
+			if(sname.indexOf('/')!==0){
+				var tempmodule=sname.split('/');
+				return surl+'/'+sstr+'/'+sname+'/'+tempmodule[tempmodule.length-1]+suffix;
+			}else{
+				return surl+'/'+sstr+'/'+spkg.module_name+'/'+spkg.module_name+suffix;
+			}
+		}
+		
+	}
 
 
 	//导入任务所需的依赖支持服务
@@ -234,11 +260,30 @@
 	grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-contrib-connect');
 	grunt.loadNpmTasks('grunt-contrib-imagemin');
+	grunt.loadNpmTasks('grunt-contrib-less');
 	grunt.loadNpmTasks('grunt-spritesmith');
 	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.loadNpmTasks('grunt-contrib-concat');
 	
 	
+
+	//一次性任务，压缩js库文件，合并js库文件
+	//grunt.registerTask('default',['uglify']);
+	//
+
+
+
+	//注册单个任务
+	//grunt.registerTask('default',['jshint']);//javascript语法检查
+	//grunt.registerTask('default',['imagemin']);//图片资源优化
+	//grunt.registerTask('default',['uglify']);//Javascript压缩
+	//grunt.registerTask('default',['sprite']);//图片资源拼合
+	//grunt.registerTask('default',['watch']);//资源改变触发器监听
+	//grunt.registerTask('default',['less']);//编译less生成css
+	
+	
+	
+	//集成单个模块任务
 	/*
 	
 	grunt.registerTask('default', ['csslint', 'jshint', 'imagemin', 'cssmin', 'concat', 'uglify']);
@@ -247,23 +292,19 @@
     grunt.registerTask('dest', ['imagemin', 'concat:css', 'cssmin', 'uglify:minjs']);
 	
 	*/
-
-
-
-	//告诉grunt当我们在终端中输入grunt时需要做些什么（依赖顺序）
-	//grunt.registerTask('default',['jshint']);//javascript语法检查
-	//grunt.registerTask('default',['imagemin']);//图片资源优化
-	//grunt.registerTask('default',['uglify']);//Javascript压缩
-	//grunt.registerTask('default',['sprite']);//图片资源拼合
-	//grunt.registerTask('default',['watch']);//资源改变触发器监听
-
-
+	
 	/*grunt.registerTask('default',"javascript压缩",function(){
 		grunt.task.run(['uglify','watch']);
 	});*/
 	
-	grunt.registerTask('default',['watch']);
-
+	
+	//集成批处理
+	/*(function(){
+		var tasklist=['index'],tasklen=tasklist.length,i=0;
+		for(i;i<tasklen;i++){
+			
+		}
+	}());*/
 
 
 };
