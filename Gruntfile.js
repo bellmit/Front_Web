@@ -21,7 +21,16 @@
 
 	//获取package.json的信息
 	var pkg=grunt.file.readJSON('package.json'),
-		web_url=pkg.base_path+'/'+pkg.web_path+'/'+pkg.project+'/'+pkg.name+'/';
+		web_url=pkg.base_path+'/'+pkg.web_path+'/'+pkg.project+'/'+pkg.name+'/',
+		bannerstr='/**name:'+pkg.name+' / '+(function(pkg){
+			var name=pkg.module_name;
+			if(name.indexOf('/')!==-1){
+				var tempname=name.split('/');
+				return tempname[tempname.length-1];
+			}else{
+				return name;
+			}
+		})(pkg)+';\n author:'+pkg.author+';\n date:'+grunt.template.today("yyyy-mm-dd")+';\n version:'+pkg.version+'**/';
 
 	//任务配置,所以插件的配置信息
 	grunt.initConfig({
@@ -165,7 +174,7 @@
 				options:{
 					stripBanners:true,
 					separator:';',//分割符
-					banner:'/!*\n name:<%=pkg.name%>\/<%=pkg.module_name%>;\n author:<%=pkg.author%>;\n date:<%=grunt.template.today("yyyy-mm-dd")%>;\nversion:<%=pkg.version%>;\n*!/\n'
+					banner:bannerstr
 				},
 				dist:{
 					//源目录 to do,合并文件时需要看情况而定
@@ -187,7 +196,7 @@
 			options:{
 				//生成版权，名称，描述等信息
 				stripBanners:true,
-				banner:'/*\n name:<%=pkg.name%>\/<%=pkg.module_name%>;\n author:<%=pkg.author%>;\n date:<%=grunt.template.today("yyyy-mm-dd")%>;\nversion:<%=pkg.version%>;\n*/\n'
+				banner:bannerstr
 			},
 			build:{
 				src:(function(pkg,web_url){
@@ -241,14 +250,16 @@
 		sstr=spkg[str];
 		//result
 		if(sname===''){
-			return surl+'/'+sstr+'/'+sname+suffix;
+			return surl+sstr+'/'+sname+suffix;
 		}else{
 			//filter
 			if(sname.indexOf('/')!==0){
-				var tempmodule=sname.split('/');
-				return surl+'/'+sstr+'/'+sname+'/'+tempmodule[tempmodule.length-1]+suffix;
+				var tempmodule=sname.split('/'),
+				filename=tempmodule[tempmodule.length-1];
+				tempmodule.pop();
+				return surl+sstr+'/'+tempmodule.join('/')+'/'+filename+suffix;
 			}else{
-				return surl+'/'+sstr+'/'+spkg.module_name+'/'+spkg.module_name+suffix;
+				return surl+sstr+'/'+spkg.module_name+'/'+spkg.module_name+suffix;
 			}
 		}
 		
@@ -268,7 +279,7 @@
 	
 
 	//一次性任务，压缩js库文件，合并js库文件
-	grunt.registerTask('default',['uglify']);
+	//grunt.registerTask('default',['uglify']);
 	//
 
 

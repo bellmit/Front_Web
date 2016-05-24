@@ -10,7 +10,7 @@
   "image_src":"img",
   "image_dest":"images",
   "project": "YTTX",
-  "module_name":"lib/requirejs",
+  "module_name":"lib/requirejs/require",
   "author": "yipin",
   "version": "1.0.0",
   "description": "",
