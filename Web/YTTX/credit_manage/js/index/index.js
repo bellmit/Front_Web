@@ -3,8 +3,7 @@ require.config({
 	baseUrl:'../js/',
 	paths:{
 		'jquery':'lib/jquery/jquery.min',
-		'jquery_mobile':'lib/jquery/jquery-mobile.min',
-		'artdialog':'lib/artDialog/dialog-plus-min'
+		'jquery_mobile':'lib/jquery/jquery-mobile.min'
 	},
 	shim:{
 		'jquery_mobile':{
@@ -15,16 +14,9 @@ require.config({
 
 
 /*程序入口*/
-require(['jquery','jquery_mobile','artdialog'],function($,$jm,ArtDialog=(function(){return window.dialog;}())) {
+require(['jquery','jquery_mobile'],function($,$jm) {
 	$(function(){
-      	var $test=$('#test');
-		$test.on('click',function(){
-			console.log('aaa');
-			//console.log(ArtDialog);
-			//console.log(dia);
-			ArtDialog().show();
-			//dialog();
-		});
+      	
 	});
 });
 
