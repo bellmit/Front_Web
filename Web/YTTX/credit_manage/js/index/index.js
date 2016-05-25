@@ -18,12 +18,6 @@ require.config({
 require(['jquery','jquery_mobile','artdialog'],function($,$jm,ArtDialog=(function(){return window.dialog;}())) {
 	$(function(){
       	var $test=$('#test');
-		//var dia=require('../js/lib/artDialog/dialog-plus');
-		
-		//var dia=require('../js/lib/artDialog/dialog-plus-min');
-		
-		
-		
 		$test.on('click',function(){
 			console.log('aaa');
 			//console.log(ArtDialog);
