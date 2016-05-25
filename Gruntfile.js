@@ -58,57 +58,61 @@
 		
 		
 		//css语法检查
-		/*csslint:{
+		csslint:{
 			//检查生成的css文件目录文件
 			options:{
 				csslintrc:'.csslintrc'
 			},
-			src:['<%=pkg.base_path%>/<%=pkg.web_path%>/<%=pkg.project%>/<%=pkg.name%>/<%=pkg.less_dest%>/!**!/!*.css']
-		},*/
+			src:(function(pkg,web_url){
+					return doFilter({package:pkg,web_url:web_url},'less_dest','.css');
+				})(pkg,web_url)
+		},
 		
 		//定义js语法检查（看配置信息）
-		/*jshint:{
+		jshint:{
 			options:{
 				jshintrc:'.jshintrc'
 			},
 			//检查源目录文件和生成目录文件
-			all:['<%=pkg.base_path%>/<%=pkg.web_path%>/<%=pkg.project%>/<%=pkg.name%>/<%=pkg.js_src%>/!**!/!*.js','<%=pkg.base_path%>/<%=pkg.web_path%>/<%=pkg.project%>/<%=pkg.name%>/<%=pkg.js_dest%>/!**!/!*.js']
-		},*/
+			all:(function(pkg,web_url){
+					return doFilter({package:pkg,web_url:web_url},['js_src','js_dest'],'.css');
+				})(pkg,web_url)
+		},
 
 
 		//定义css图片压缩输出（一次性任务）
-		/*imagemin:{
+		imagemin:{
 			dynamic:{
 				options:{
 					optimizationLevel:3
 				},
 				files:[{
 					expand:true,//开启动态扩展
-					cwd:'<%=pkg.base_path%>/<%=pkg.web_path%>/<%=pkg.project%>/<%=pkg.name%>/<%=pkg.image_src%>/',//当前工作路径
-					src:['**!/!*.{png,jpg,gif,jpeg}'],//要处理的图片格式
-					dest:'<%=pkg.base_path%>/<%=pkg.web_path%>/<%=pkg.project%>/<%=pkg.name%>/<%=pkg.image_dest%>/'//输出目录
+					cwd:web_url+pkg.image_src,//当前工作路径
+					src:['**/*.{png,jpg,gif,jpeg}'],//要处理的图片格式
+					dest:web_url+pkg.image_dest//输出目录
 				}]
 			}
-		},*/
+		},
 
 		//定义css图片拼合（一次性任务）
-		/*sprite:{
+		sprite:{
 			all:{
-				src:'<%=pkg.base_path%>/<%=pkg.web_path%>/<%=pkg.project%>/<%=pkg.name%>/<%=pkg.image_src%>/!*.png',
-				dest:'<%=pkg.base_path%>/<%=pkg.web_path%>/<%=pkg.project%>/<%=pkg.name%>/<%=pkg.image_dest%>/icon.png',
-				destCss:'<%=pkg.base_path%>/<%=pkg.web_path%>/<%=pkg.project%>/<%=pkg.name%>/<%=pkg.less_dest%>/icon.png.css'
+				src:web_url+pkg.image_src+'/*.png',
+				dest:web_url+pkg.image_dest+'/icon.png',
+				destCss:web_url+pkg.less_dest+'/icon.png.css'
 			}
-		},*/
+		},
 		
 		//less编译生成css
 		less:{
 			 build: {
 				 src:(function(pkg,web_url){
-						return web_url+pkg.less_src+'/'+pkg.module_name+'.less';
-				})(pkg,web_url),
+						return doFilter({package:pkg,web_url:web_url},'less_src','.less');
+					 })(pkg,web_url),
 				 dest:(function(pkg,web_url){
-					return web_url+pkg.less_dest+'/'+pkg.module_name+'.css';
-				})(pkg,web_url)
+						return doFilter({package:pkg,web_url:web_url},'less_dest','.css');
+					 })(pkg,web_url)
 			 },
 			 dev: {
 				 options: {
@@ -153,10 +157,7 @@
 		
 
 		//定义合并js任务（情况比较少）,暂时不做css合并
-		/*concat:{
-			css:{
-				//to do 根据实际需求填充相关配置
-			},
+		concat:{
 			js:{
 				options:{
 					stripBanners:true,
@@ -165,16 +166,16 @@
 				},
 				dist:{
 					//源目录 to do,合并文件时需要看情况而定
-					src:(function(){
+					src:(function(pkg,web_url){
 						return doFilter({package:pkg,web_url:web_url},'js_src','.js');
-					}()),
+					})(pkg,web_url),
 					//生成目录
-					dest:(function(){
+					dest:(function(pkg,web_url){
 						return doFilter({package:pkg,web_url:web_url},'js_dest','.js');
-					}())
+					})(pkg,web_url)
 				}
 			},
-		},*/
+		},
 
 
 
@@ -204,12 +205,26 @@
 				},
 				// '**' 表示包含所有的子目录
 				// '*' 表示包含所有的文件
-				files:'<%=pkg.base_path%>/<%=pkg.web_path%>/<%=pkg.project%>/<%=pkg.name%>/<%=pkg.js_src%>/<%=pkg.module_name%>/<%=pkg.module_name%>.js',
-			}*/
-			scripts:{
 				files:(function(pkg,web_url){
 					return doFilter({package:pkg,web_url:web_url},'js_src','.js');
-				})(pkg,web_url),
+				})(pkg,web_url)',
+			}*/
+			less:{
+				files:(function(pkg,web_url){
+						  return doFilter({package:pkg,web_url:web_url},'less_src','.less');
+					  })(pkg,web_url),
+				tasks:['less','cssmin'],
+				options:{
+					spawn:false,
+					debounceDelay: 250,
+					//配置自动刷新程序
+					livereload:true
+				}
+			},
+			scripts:{
+				files:(function(pkg,web_url){
+						  return doFilter({package:pkg,web_url:web_url},'js_src','.js');
+					  })(pkg,web_url),
 				tasks:['uglify'],
 				options:{
 					spawn:false,
@@ -225,7 +240,8 @@
 	
 	//抽离公共处理函数
 	function doFilter(sou,str,suffix){
-		var spkg,surl,sname,sstr;
+		var spkg,surl,sname,sstr,res;
+		//设置源
 		if(!sou){
 			spkg=grunt.file.readJSON('package.json');
 			surl=spkg.base_path+'/'+spkg.web_path+'/'+spkg.project+'/'+spkg.name+'/';
@@ -233,20 +249,66 @@
 			spkg=sou.package;
 			surl=sou.web_url;
 		}
-		sname=spkg.module_name,
-		sstr=spkg[str];
-		//result
+		//设置名称
+		sname=spkg.module_name;
+		//设置路径
+		if(typeof str==='string'){
+			sstr=spkg[str];
+		}else{
+			sstr=[];
+			for(var i=0;i<str.length;i++){
+				sstr.push(spkg[str[i]]);
+			}
+		}
+		//过滤
 		if(sname===''){
-			return surl+sstr+'/'+sname+suffix;
+			if(typeof sstr==='string'){
+				res=surl+sstr+'/'+sname+suffix;
+			}else{
+				res=[];
+				(function(){
+					var j=0,
+						len=sstr.length;
+					for(j;j<len;j++){
+						res.push(surl+sstr[j]+'/'+sname+suffix);
+					}
+				}());
+			}
+			return res;
 		}else{
 			//filter
 			if(sname.indexOf('/')!==0){
 				var tempmodule=sname.split('/'),
 				filename=tempmodule[tempmodule.length-1];
 				tempmodule.pop();
-				return surl+sstr+'/'+tempmodule.join('/')+'/'+filename+suffix;
+				
+				if(typeof sstr==='string'){
+					res=surl+sstr+'/'+tempmodule.join('/')+'/'+filename+suffix;
+				}else{
+					res=[];
+					(function(){
+						var j=0,
+							len=sstr.length;
+						for(j;j<len;j++){
+							res.push(surl+sstr[j]+'/'+tempmodule.join('/')+'/'+filename+suffix);
+						}
+					}());
+				}
+				return res;
 			}else{
-				return surl+sstr+'/'+spkg.module_name+'/'+spkg.module_name+suffix;
+				if(typeof sstr==='string'){
+					res=surl+sstr+'/'+spkg.module_name+'/'+spkg.module_name+suffix;
+				}else{
+					res=[];
+					(function(){
+						var j=0,
+							len=sstr.length;
+						for(j;j<len;j++){
+							res.push(surl+sstr[j]+'/'+spkg.module_name+'/'+spkg.module_name+suffix);
+						}
+					}());
+				}
+				return res;
 			}
 		}
 		
@@ -297,8 +359,8 @@
 		grunt.task.run(['uglify','watch']);
 	});*/
 	
-	grunt.registerTask('default',"less编译生成css并压缩",function(){
-		grunt.task.run(['less','cssmin']);
+	grunt.registerTask('default',"less编译生成css并压缩,同时实时监控",function(){
+		grunt.task.run(['watch:less']);
 	});
 	
 	/*grunt.registerTask('default',"javascript压缩",function(){
