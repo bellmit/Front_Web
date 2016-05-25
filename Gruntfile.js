@@ -213,7 +213,7 @@
 				files:(function(pkg,web_url){
 						  return doFilter({package:pkg,web_url:web_url},'less_src','.less');
 					  })(pkg,web_url),
-				tasks:['less','cssmin'],
+				tasks:['less:build','cssmin'],
 				options:{
 					spawn:false,
 					debounceDelay: 250,
