@@ -143,17 +143,6 @@
 		},
 		
 		//合并模块化依赖
-		requirejs:{
-			compile: {
-				options: {
-				  baseUrl: "path/to/base",
-				  mainConfigFile: "path/to/config.js",
-				  include: [ "src/main.js" ],
-				  out: "path/to/optimized.js"
-				}
-			  }
-		},
-
 		
 
 		//定义合并js任务（情况比较少）,暂时不做css合并
@@ -314,11 +303,11 @@
 
 
 	//导入任务所需的依赖支持服务
-	grunt.loadNpmTasks('grunt-contrib-jshint');
+	//grunt.loadNpmTasks('grunt-contrib-jshint');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
-	grunt.loadNpmTasks('grunt-contrib-requirejs');
-	grunt.loadNpmTasks('grunt-contrib-connect');
-	grunt.loadNpmTasks('grunt-contrib-imagemin');
+	//grunt.loadNpmTasks('grunt-contrib-requirejs');
+	//grunt.loadNpmTasks('grunt-contrib-connect');
+	//grunt.loadNpmTasks('grunt-contrib-imagemin');
 	grunt.loadNpmTasks('grunt-contrib-less');
 	grunt.loadNpmTasks('grunt-contrib-cssmin');
 	grunt.loadNpmTasks('grunt-spritesmith');
@@ -329,33 +318,14 @@
 
 	//一次性任务，压缩js库文件，合并js库文件
 	//grunt.registerTask('default',['uglify']);
-	//
-
-
 
 	//注册单个任务
-	//grunt.registerTask('default',['jshint']);//javascript语法检查
-	//grunt.registerTask('default',['imagemin']);//图片资源优化
-	//grunt.registerTask('default',['uglify']);//Javascript压缩
-	//grunt.registerTask('default',['sprite']);//图片资源拼合
-	//grunt.registerTask('default',['watch']);//资源改变触发器监听
-	//grunt.registerTask('default',['less']);//编译less生成css
+
 	
 	
 	
 	//集成单个模块任务
-	/*
-	
-	grunt.registerTask('default', ['csslint', 'jshint', 'imagemin', 'cssmin', 'concat', 'uglify']);
-    grunt.registerTask('css', ['concat:css', 'cssmin']);
-    grunt.registerTask('dev', ['csslint', 'jshint']);
-    grunt.registerTask('dest', ['imagemin', 'concat:css', 'cssmin', 'uglify:minjs']);
-	
-	*/
-	
-	/*grunt.registerTask('default',"javascript压缩",function(){
-		grunt.task.run(['uglify','watch']);
-	});*/
+
 	
 	grunt.registerTask('default',"less编译生成css并压缩,同时实时监控",function(){
 		grunt.task.run(['less','cssmin','watch:less']);
@@ -366,14 +336,6 @@
 	});*/
 	
 	
-	
-	//集成批处理
-	/*(function(){
-		var tasklist=['index'],tasklen=tasklist.length,i=0;
-		for(i;i<tasklen;i++){
-			
-		}
-	}());*/
 
 
 };
