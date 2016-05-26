@@ -210,10 +210,8 @@
 				})(pkg,web_url)',
 			}*/
 			less:{
-				files:(function(pkg,web_url){
-						  return doFilter({package:pkg,web_url:web_url},'less_src','.less');
-					  })(pkg,web_url),
-				tasks:['less:build','cssmin'],
+				files:[web_url+pkg.less_src+'/**/*.less'],
+				tasks:['less','cssmin'],
 				options:{
 					spawn:false,
 					debounceDelay: 250,
@@ -360,7 +358,7 @@
 	});*/
 	
 	grunt.registerTask('default',"less编译生成css并压缩,同时实时监控",function(){
-		grunt.task.run(['watch:less']);
+		grunt.task.run(['less','cssmin','watch:less']);
 	});
 	
 	/*grunt.registerTask('default',"javascript压缩",function(){
