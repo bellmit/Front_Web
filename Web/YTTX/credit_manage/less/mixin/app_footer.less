@@ -13,7 +13,7 @@
 	height:100%;
 	li{
 		float:left;
-		display:inline-block;
+		display:block;
 		height:100%;
 		width:20%;
 		.box-sizing-base;
@@ -34,12 +34,13 @@
 				text-align:center;
 			}
 			&:before{
+				.layout-absolutel-base(auto,3px);
 				height:30px;
-				vertical-align:middle;
 			}
 			&:after{
-				height:20px;
-				line-height:15px;
+				.layout-absolutelb-base(auto,2px);
+				height:14px;
+				line-height:14px;
 			}
 		}
 	}		
