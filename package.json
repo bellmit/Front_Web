@@ -1,5 +1,5 @@
 {
-  "web_path": "Web",
+  "web_path": "Myself_Web",
   "base_path": "htdocs",
   "name": "credit_manage",
   "web_container":"mobile",
@@ -11,7 +11,7 @@
   "image_dest":"images",
   "project": "YTTX",
   "platform":"mobile",
-  "module_name":"share_article",
+  "module_name":"credit",
   "author": "yipin",
   "version": "1.0.0",
   "description": "",
