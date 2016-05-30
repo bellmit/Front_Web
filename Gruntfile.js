@@ -21,7 +21,7 @@
 
 	//获取package.json的信息
 	var pkg=grunt.file.readJSON('package.json'),
-		web_url=pkg.base_path+'/'+pkg.web_path+'/'+pkg.project+'/'+pkg.name+'/',
+		web_url=pkg.base_path+'/'+pkg.web_path+'/'+pkg.project+'/'+pkg.name+'/'+pkg.platform+'/',
 		bannerstr='/**name:'+pkg.name+' / '+(function(pkg){
 			var name=pkg.module_name;
 			if(name.indexOf('/')!==-1){
