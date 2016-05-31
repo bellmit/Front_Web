@@ -21,7 +21,7 @@
 
 	//获取package.json的信息
 	var pkg=grunt.file.readJSON('package.json'),
-		web_url=pkg.base_path+'/'+pkg.web_path+'/'+pkg.project+'/'+pkg.name+'/'+pkg.platform+'/',
+		web_url=pkg.base_path+'/'+pkg.web_path+'/'+pkg.project+'/'+pkg.name+'/',/*看是否有平台pkg.platform*/
 		bannerstr='/**name:'+pkg.name+' / '+(function(pkg){
 			var name=pkg.module_name;
 			if(name.indexOf('/')!==-1){
@@ -231,7 +231,11 @@
 		//设置源
 		if(!sou){
 			spkg=grunt.file.readJSON('package.json');
-			surl=spkg.base_path+'/'+spkg.web_path+'/'+spkg.project+'/'+spkg.name+'/';
+			if(spkg.platform){
+				surl=spkg.base_path+'/'+spkg.web_path+'/'+spkg.project+'/'+spkg.name+'/'+spkg.platform+'/';
+			}else{
+				surl=spkg.base_path+'/'+spkg.web_path+'/'+spkg.project+'/'+spkg.name+'/';
+			}
 		}else{
 			spkg=sou.package;
 			surl=sou.web_url;
@@ -333,7 +337,7 @@
 	});
 	
 	/*grunt.registerTask('default',"javascript压缩",function(){
-		grunt.task.run(['uglify','watch']);
+		grunt.task.run(['uglify']);
 	});*/
 	
 	
