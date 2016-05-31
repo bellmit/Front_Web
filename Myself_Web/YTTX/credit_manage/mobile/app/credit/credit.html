@@ -10,6 +10,23 @@
 <meta name="keywords" content="信用卡管理--信用卡列表">
 <title>信用卡管理--信用卡列表</title>
 <link rel="stylesheet" type="text/css" href="../../css/credit.css">
+<script src="../../../js/lib/sea/sea.js"></script>
+<script>
+    /*配置路径*/
+    seajs.config({
+        base: "../../../js/",
+        alias: {
+            "jquery":"lib/jquery/jquery.js",
+			"jmb":"lib/jquery/jquery-mobile.js",
+			"angular":"lib/angular/angular.min.js",
+			"dialog-config":"lib/artDialog/dialog-config.js",
+			"dialog":"lib/artDialog/dialog.js",
+			"popup":"lib/artDialog/popup.js",
+			"drag":"lib/artDialog/drag.js",
+			"artdialog":"lib/artDialog/dialog-plus.js"
+        }
+    }).use("../../js/credit/credit.js");
+</script>
 </head>
 <body class="app-layout">
 	<header class="app-header">
@@ -186,10 +203,6 @@
                 </ul>
             </div>
         </a></li>
-   
-   
-   
-   
    </ul>
    <nav class="app-menu">
    		<ul class="menu-wrap">
@@ -200,8 +213,5 @@
             <li><a class="menu-wo" href="#"></a></li>
         </ul>
    </nav>
-    
-
-
 </body>
 </html>
