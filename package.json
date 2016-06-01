@@ -11,7 +11,7 @@
   "image_dest":"images",
   "project": "YTTX",
   "platform":"mobile",
-  "module_name":"credit",
+  "module_name":"credit/credit",
   "author": "yipin",
   "version": "1.0.0",
   "description": "",

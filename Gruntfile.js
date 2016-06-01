@@ -21,7 +21,7 @@
 
 	//获取package.json的信息
 	var pkg=grunt.file.readJSON('package.json'),
-		web_url=pkg.base_path+'/'+pkg.web_path+'/'+pkg.project+'/'+pkg.name+'/'+pkg.platform+'/',/*看是否有平台pkg.platform*/
+		web_url=pkg.base_path+'/'+pkg.web_path+'/'+pkg.project+'/'+pkg.name+'/'+pkg.platform+'/',
 		bannerstr='/**name:'+pkg.name+' / '+(function(pkg){
 			var name=pkg.module_name;
 			if(name.indexOf('/')!==-1){
@@ -30,7 +30,7 @@
 			}else{
 				return name;
 			}
-		})(pkg)+';\n author:'+pkg.author+';\n date:'+grunt.template.today("yyyy-mm-dd")+';\n version:'+pkg.version+'**/';
+		})(pkg)+';\n author:'+pkg.author+';\n date:'+grunt.template.today("yyyy-mm-dd")+';\n version:'+pkg.version+'**/\n';
 
 	//任务配置,所以插件的配置信息
 	grunt.initConfig({
@@ -231,7 +231,7 @@
 		//设置源
 		if(!sou){
 			spkg=grunt.file.readJSON('package.json');
-			if(spkg.platform){
+			if(spkg.platform&&platform!==''){
 				surl=spkg.base_path+'/'+spkg.web_path+'/'+spkg.project+'/'+spkg.name+'/'+spkg.platform+'/';
 			}else{
 				surl=spkg.base_path+'/'+spkg.web_path+'/'+spkg.project+'/'+spkg.name+'/';
@@ -332,13 +332,13 @@
 	//集成单个模块任务
 
 	
-	grunt.registerTask('default',"less编译生成css并压缩,同时实时监控",function(){
+	/*grunt.registerTask('default',"less编译生成css并压缩,同时实时监控",function(){
 		grunt.task.run(['less','cssmin','watch:less']);
-	});
-	
-	/*grunt.registerTask('default',"javascript压缩",function(){
-		grunt.task.run(['uglify']);
 	});*/
+	
+	grunt.registerTask('default',"javascript压缩",function(){
+		grunt.task.run(['uglify','watch']);
+	});
 	
 	
 
