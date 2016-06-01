@@ -11,13 +11,22 @@
 <title>信用卡管理--信用卡列表</title>
 <link rel="stylesheet" type="text/css" href="../../css/credit.css">
 </head>
-<body class="app-layout">
-<header class="app-header" ng-app="headApp">
-    <a href="#" class="prev-btn"></a>
-    <p class="theme">信用卡列表</p>
-    <a href="#" class="next-btn"></a>
+<body class="app-layout" ng-app="">
+
+
+<header id="app_history" class="app-header" ng-app="historyApp" ng-controller="historyCtrl">
+    {{history}}
 </header>
-   <script src="../../../js/lib/angular/angular.min.js"></script>
-   <script src="../../js/credit/credit.js"></script>
+
+
+<nav id="app_menu" class="app-menu" ng-app="menuApp" ng-controller="menuCtrl">
+    <ul class="menu-wrap">
+        <li ng-repeat="item in menuitem"><a class={{item.class}} href={{item.href}}></a></li>
+    </ul>
+</nav>
+
+
+<script src="../../../js/lib/angular/angular.min.js"></script>
+<script src="../../js/credit/credit.js"></script>
 </body>
 </html>
