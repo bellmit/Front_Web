@@ -5,9 +5,8 @@
 (function () {
 
 
-    //历史服务模块
+    //历史服务模块(默认启动第一个模块，其他需要手动启动)
     var historyapp=angular.module('historyApp',[]);
-
     historyapp.controller("historyCtrl",['$scope',function($scope){
 
     }]);
@@ -16,7 +15,6 @@
 
     //菜单服务模块
     var menuapp=angular.module("menuApp",[]);
-
     menuapp.controller("menuCtrl",['$scope',function($scope){
         var menuitem=[{
             "href":"../community/community.html",
@@ -38,8 +36,7 @@
     }]);
 
 
-    //手动启动任务
-    //angular.bootstrap(angular.element("#app_history"),["historyApp"]);
+    //手动启动任务（非第一个任务需手动启动）
     angular.bootstrap(document.getElementById("app_menu"),["menuApp"]);
 
 
