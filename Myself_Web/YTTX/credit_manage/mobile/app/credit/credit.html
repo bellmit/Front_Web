@@ -14,14 +14,12 @@
 <body class="app-layout">
 
 
-<header id="app_history" class="app-header" ng-app="historyApp" ng-controller="historyCtrl">
-    {{history}}
-</header>
+<header id="app_history" class="app-header" ng-app="historyApp" ng-controller="historyCtrl as historyctrl" ng-bind="historyctrl.historyInfo"></header>
 
 
-<nav id="app_menu" class="app-menu" ng-app="menuApp" ng-controller="menuCtrl">
+<nav id="app_menu" class="app-menu" ng-app="menuApp" ng-controller="menuCtrl as menuctrl">
     <ul class="menu-wrap">
-        <li ng-repeat="item in menuitem"><a class={{item.class}} href={{item.href}}></a></li>
+        <li ng-repeat="item in menuctrl.menuitem"><a class={{item.class}} href={{item.href}}></a></li>
     </ul>
 </nav>
 
