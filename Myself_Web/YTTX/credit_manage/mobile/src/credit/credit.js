@@ -8,10 +8,12 @@
     //历史服务模块(默认启动第一个模块，其他需要手动启动)
     angular.module('historyApp',[]).controller("historyCtrl",historyCtrl);
 
+    //注入参数
+    historyCtrl.$inject=['$location','$window'];
     //业务实现
-    function historyCtrl(){
+    function historyCtrl($location,$window){
         var vm=this,
-            winurl=location.href,
+            winurl=$location.absUrl(),
             last_prefix=winurl.lastIndexOf('/'),
             current_url=winurl.slice(last_prefix + 1),
             prev_step='',
@@ -20,7 +22,7 @@
             pervstr='',
             nextstr='',
             themestr='<p class="theme">'+(function(){
-                    var theme='',title=document.title;
+                    var theme='',title=$window.document.title;
                     if(title&&title!==''){
                         theme=title;
                         if(theme.indexOf('-')){
@@ -38,7 +40,7 @@
         //判断当前路径位置
         if(current_url.indexOf('detail')!==-1){
             //进入二级页面
-            prev_step=sessionStorage.getItem('current_step');
+            prev_step=$window.sessionStorage.getItem('current_step');
             current_step=current_url;
 
             pervstr='<a href="'+winurl.slice(0,last_prefix)+'/'+prev_step+'.html" class="prev-btn"></a>';
@@ -51,8 +53,8 @@
         }
 
         //将路径存储在web存储中
-        sessionStorage.setItem('prev_step',prev_step);
-        sessionStorage.setItem('current_step',current_step);
+        $window.sessionStorage.setItem('prev_step',prev_step);
+        $window.sessionStorage.setItem('current_step',current_step);
 
 
         //同步模型
