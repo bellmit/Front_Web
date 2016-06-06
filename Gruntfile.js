@@ -21,8 +21,14 @@
 
 	//获取package.json的信息
 	var pkg=grunt.file.readJSON('package.json'),
-		web_url=pkg.base_path+'/'+pkg.web_path+'/'+pkg.project+'/'+pkg.name+'/'+pkg.platform+'/',
-		bannerstr='/**name:'+pkg.name+' / '+(function(pkg){
+		web_url=(function(pkg){
+				if(pkg.platform&&pkg.platform!==''){
+					return pkg.base_path+'/'+pkg.web_path+'/'+pkg.project+'/'+pkg.name+'/'+pkg.platform+'/';
+				}else{
+					return pkg.base_path+'/'+pkg.web_path+'/'+pkg.project+'/'+pkg.name+'/';
+				}
+			})(pkg),
+		bannerstr='/**\nname:'+pkg.name+' / '+(function(pkg){
 			var name=pkg.module_name;
 			if(name.indexOf('/')!==-1){
 				var tempname=name.split('/');
@@ -177,7 +183,7 @@
 			},
 			build:{
 				src:(function(pkg,web_url){
-					return doFilter({package:pkg,web_url:web_url},'js_src','.js');
+					return doFilter({package:pkg,web_url:web_url},'js_dest','.js');
 				})(pkg,web_url),
 				dest:(function(pkg,web_url){
 					return doFilter({package:pkg,web_url:web_url},'js_dest','.js');
@@ -332,13 +338,13 @@
 	//集成单个模块任务
 
 	
-	/*grunt.registerTask('default',"less编译生成css并压缩,同时实时监控",function(){
+	grunt.registerTask('default',"less编译生成css并压缩,同时实时监控",function(){
 		grunt.task.run(['less','cssmin','watch:less']);
-	});*/
-	
-	grunt.registerTask('default',"javascript压缩",function(){
-		grunt.task.run(['uglify','watch']);
 	});
+	
+	/*grunt.registerTask('default',"javascript压缩",function(){
+		grunt.task.run(['uglify','watch']);
+	});*/
 	
 	
 

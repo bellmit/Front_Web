@@ -4,8 +4,8 @@
 	.layout-fixedlb-base;
 	.layout-base;
 	height:50px;
-	background:@color-white;
-	border-top:1px solid @color-gray12;
+	background:@color-gray16;
+	border-top:1px solid @color-gray9;
 	.box-shadow-base(0 0 1px 1px @color-gray14);
 }
 .menu-wrap{
@@ -15,7 +15,7 @@
 		float:left;
 		display:block;
 		height:100%;
-		width:20%;
+		width:16.5%;
 		.box-sizing-base;
 		overflow:hidden;
 		a{
@@ -41,6 +41,7 @@
 				.layout-absolutelb-base(auto,2px);
 				height:14px;
 				line-height:14px;
+				color:@color-gray9;
 			}
 		}
 	}		
@@ -49,9 +50,9 @@
 //社区
 .menu-sq{
 	&:before{
-		font-family:'ux_five';
-		content:'\e64b';
-		font-size:2rem;
+		font-family:'ux_four';
+		content:'\e6d1';
+		font-size:2.2rem;
 	}
 	&:after{
 		content:'社区';
@@ -62,7 +63,7 @@
 .menu-xyk{
 	&:before{
 		font-family:'ux_seven';
-		content:'\e603';
+		content:'\e658';
 		font-size:2rem;
 	}
 	&:after{
@@ -70,11 +71,24 @@
 		font-size:1.2rem;
 	}
 }
+//pos
+.menu-pos{
+	&:before{
+		
+		font-family:'ux_five';
+		content:'\e636';
+		font-size:1.8rem;
+	}
+	&:after{
+		content:'POS';
+		font-size:1.2rem;
+	}
+}
 //服务
 .menu-fw{
 	&:before{
-		font-family:'ux_eight';
-		content:'\e646';
+		font-family:'ux_four';
+		content:'\e6b0';
 		font-size:2rem;
 	}
 	&:after{
