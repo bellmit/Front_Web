@@ -58,7 +58,7 @@ define(['jquery'],function($){
 					
 					if(settings.img_alt){
 							self.slideEffect(settings);
-					}else{
+					}else if(settings.$slide_tipwrap!=null){
 						settings.$slide_tipwrap.css({
 							"opacity":"0.4",
 							"top":settings.itemheight
@@ -76,7 +76,9 @@ define(['jquery'],function($){
 
 						if(type=='mouseenter'){
 							//移入
-							settings.$slide_tipwrap.stop(settings.auto_animates,true,false);
+							 if(settings.$slide_tipwrap!=null){
+								 settings.$slide_tipwrap.stop(settings.auto_animates,true,false);
+							 }
 							clearInterval(settings.slide_id);
 							settings.slide_id=null;
 
@@ -93,7 +95,10 @@ define(['jquery'],function($){
 				}else{
 					//pc端
 					settings.$wrap.hover(function(){
-						settings.$slide_tipwrap.stop(settings.auto_animates,true,false);
+					 if(settings.$slide_tipwrap!=null){
+						 settings.$slide_tipwrap.stop(settings.auto_animates,true,false);
+					 }
+						
 						clearInterval(settings.slide_id);
 						settings.slide_id=null;
 					},function(){
@@ -136,9 +141,11 @@ define(['jquery'],function($){
 				 settings.$slide_img.css({
 						"width":settings.size*settings.winwidth
 				 });
-				 settings.tipheight=settings.$slide_tipwrap.height();
+				 if(settings.$slide_tipwrap!=null){
+					 settings.tipheight=settings.$slide_tipwrap.height();
+					 settings.$slide_tip=settings.$slide_tipwrap.find("p");
+				 }
 				 settings.itemheight=settings.$items.eq(0).height();
-				 settings.$slide_tip=settings.$slide_tipwrap.find("p");
 				 if(settings.$items.eq(0).find("img").attr("alt")){
 					 settings.img_alt=true;
 					 settings.$items.find("img").each(function(index){
@@ -148,11 +155,13 @@ define(['jquery'],function($){
 				 }else{
 					 settings.img_alt=false;
 					 settings.tip_text.length=0;
-					 settings.$slide_tip.text('');
-					 settings.$slide_tipwrap.css({
-							"opacity":"0.4",
-							"top":settings.itemheight
-					 })
+					 if(settings.$slide_tipwrap!=null){
+						 settings.$slide_tip.text('');
+						 settings.$slide_tipwrap.css({
+								"opacity":"0.4",
+								"top":settings.itemheight
+						 });
+					 } 
 				 }
 				 
 				 settings.slide_id=setInterval(function(){
@@ -174,7 +183,7 @@ define(['jquery'],function($){
 				
 				if(settings.img_alt){
 					self.slideEffect(settings);
-				}else{
+				}else if(settings.$slide_tipwrap!=null){
 					settings.$slide_tipwrap.css({
 						"opacity":"0.4",
 						"top":settings.itemheight
@@ -183,71 +192,75 @@ define(['jquery'],function($){
 		};
 		
 		//效果函数
-		this.slideEffect=function(settings){	
-			var is_show=parseInt(settings.$slide_tipwrap.css("top"))+settings.tipheight;
-
-			if(settings.btn_action){
-				if(is_show===settings.itemheight){
-					
-					settings.$slide_tipwrap.animate({
-						"opacity":"0.4",
-						"top":settings.itemheight
-					},settings.eff_time);
-					
-					setTimeout(function(){
-						settings.$slide_tip.text(settings.tip_text[settings.curindex]);
-					},settings.eff_time);
-					
-					settings.$slide_tipwrap.animate({
-						"opacity":"0.6",
-						"top":settings.itemheight-settings.tipheight
-					},settings.eff_time);
-				}else{
-					settings.$slide_tip.text(settings.tip_text[settings.curindex]);
-					
-					settings.$slide_tipwrap.animate({
-						"opacity":"0.6",
-						"top":settings.itemheight-settings.tipheight
-					},settings.eff_time);
-				}
-			}else{
-				if(is_show===settings.itemheight){
-					
-					settings.$slide_tipwrap.animate({
-						"opacity":"0.6",
-						"top":settings.itemheight
-					},settings.eff_time);
-					
-					setTimeout(function(){
-						settings.$slide_tip.text(settings.tip_text[settings.curindex]);
-					},settings.eff_time);
-						
-					settings.auto_animates=settings.$slide_tipwrap.animate({
-						"opacity":"0.6",
-						"top":settings.itemheight-settings.tipheight
-					},settings.eff_time)
-					.delay(settings.times-(3*settings.eff_time))
-					.animate({
-						"opacity":"0.4",
-						"top":settings.itemheight
-					},settings.eff_time);
-					
-				}else{
-					settings.auto_animates=settings.$slide_tipwrap.animate({
-						"opacity":"0.6",
-						"top":settings.itemheight-settings.tipheight
-					},settings.eff_time);
-					settings.$slide_tip.text(settings.tip_text[settings.curindex]);
-					
-					settings.$slide_tipwrap.delay(settings.times-(2*settings.eff_time))
-					.animate({
-						"opacity":"0.4",
-						"top":settings.itemheight
-					},settings.eff_time);
-					
-				}		
+		this.slideEffect=function(settings){
+			var is_show;
+			if(settings.$slide_tipwrap!=null){
+				is_show=parseInt(settings.$slide_tipwrap.css("top"))+settings.tipheight;
 			}
 			
+			if(is_show!==undefined){
+				if(settings.btn_action){
+					if(is_show===settings.itemheight){
+						
+						settings.$slide_tipwrap.animate({
+							"opacity":"0.4",
+							"top":settings.itemheight
+						},settings.eff_time);
+						
+						setTimeout(function(){
+							settings.$slide_tip.text(settings.tip_text[settings.curindex]);
+						},settings.eff_time);
+						
+						settings.$slide_tipwrap.animate({
+							"opacity":"0.6",
+							"top":settings.itemheight-settings.tipheight
+						},settings.eff_time);
+					}else{
+						settings.$slide_tip.text(settings.tip_text[settings.curindex]);
+						
+						settings.$slide_tipwrap.animate({
+							"opacity":"0.6",
+							"top":settings.itemheight-settings.tipheight
+						},settings.eff_time);
+					}
+				}else{
+					if(is_show===settings.itemheight){
+						
+						settings.$slide_tipwrap.animate({
+							"opacity":"0.6",
+							"top":settings.itemheight
+						},settings.eff_time);
+						
+						setTimeout(function(){
+							settings.$slide_tip.text(settings.tip_text[settings.curindex]);
+						},settings.eff_time);
+							
+						settings.auto_animates=settings.$slide_tipwrap.animate({
+							"opacity":"0.6",
+							"top":settings.itemheight-settings.tipheight
+						},settings.eff_time)
+						.delay(settings.times-(3*settings.eff_time))
+						.animate({
+							"opacity":"0.4",
+							"top":settings.itemheight
+						},settings.eff_time);
+						
+					}else{
+						settings.auto_animates=settings.$slide_tipwrap.animate({
+							"opacity":"0.6",
+							"top":settings.itemheight-settings.tipheight
+						},settings.eff_time);
+						settings.$slide_tip.text(settings.tip_text[settings.curindex]);
+						
+						settings.$slide_tipwrap.delay(settings.times-(2*settings.eff_time))
+						.animate({
+							"opacity":"0.4",
+							"top":settings.itemheight
+						},settings.eff_time);
+						
+					}		
+				}
+			}
 		}
 		
 		return this;
