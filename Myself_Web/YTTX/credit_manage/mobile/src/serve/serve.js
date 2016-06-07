@@ -2,9 +2,10 @@
 require.config({
 	baseUrl:'../../js/',
 	paths:{
-		'jquery':'lib/jquery/jquery-2.1.4.min',
-		'jquery_mobile':'lib/jquery/jquery-mobile.min',
-		'slide':'widgets/slide'
+		'jquery':'lib/jquery/jquery',
+		'jquery_mobile':'lib/jquery/jquery-mobile',
+		'slide':'widgets/slide',
+		'imglist':'widgets/imglist'
 	},
 	shim:{
 		'dialog':{
@@ -18,13 +19,14 @@ require.config({
 
 
 /*程序入口*/
-require(['jquery','jquery_mobile','slide'],function($,$jm,Slide) {
+require(['jquery','jquery_mobile','slide','imglist'],function($,$jm,Slide,ImgList) {
 	$(function(){
 		
 		//dom对象引用
 		var $slideimg_show=$('#slideimg_show'),
 			$slide_img=$('#slide_img'),
-			$slideimg_btn=$('#slideimg_btn');
+			$slideimg_btn=$('#slideimg_btn'),
+			$serve_grid=$("#serve_grid");
 			
 
 		//轮播动画
@@ -39,6 +41,11 @@ require(['jquery','jquery_mobile','slide'],function($,$jm,Slide) {
 			eff_time:500,
 			btn_active:'slidebtn-active'
 		});
+		
+		
+		
+		//多宫格
+		ImgList.imgList($serve_grid,'li',3);
 
 
 	});
