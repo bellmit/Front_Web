@@ -1,54 +1,6 @@
-/*
-name:menu
-author:yipin
-params:menu wrap id
-菜单导航高亮
-*/
-
-define(['jquery'],function($){
-		var menu={};
-
-		//导航高亮
-		var winurl=location.href,
-			winsearch=location.search,
-			winhash=location.hash,
-			currenturl=winurl.lastIndexOf('/');
-
-		menu['winurl']=winurl;
-		if(currenturl!=-1){
-			currenturl=winurl.slice(currenturl + 1);
-			if(winsearch!==''){
-				winsearch=currenturl.indexOf('?');
-				currenturl=currenturl.slice(0,winsearch);
-			}
-			if(winhash!==''){
-				winhash=currenturl.indexOf('#');
-				currenturl=currenturl.slice(0,winhash);
-			}
-
-			menu['cururl']=currenturl;
-		}
-
-	    menu['menuLight']=function(wrap,classname){
-			var $child=wrap.children(),
-				len=$child.length,
-				i=0;
-
-			for(i;i<len;i++){
-				var $this=$child.eq(i),
-					href=$this.attr('href');
-				if(currenturl.indexOf(href)!==-1){
-					$this.addClass(classname);
-					return false;
-				}
-			}
-		};
-		return menu;
-});
-
-
-
-
-
-
-
+/**
+name:credit_manage / menu;
+ author:yipin;
+ date:2016-06-07;
+ version:1.0.0**/
+define(["jquery"],function(a){var b={},c=location.href,d=location.search,e=location.hash,f=c.lastIndexOf("/");return b.winurl=c,-1!=f&&(f=c.slice(f+1),""!==d&&(d=f.indexOf("?"),f=f.slice(0,d)),""!==e&&(e=f.indexOf("#"),f=f.slice(0,e)),b.cururl=f),b.menuLight=function(a,b){var c=a.children(),d=c.length,e=0;for(e;d>e;e++){var g=c.eq(e),h=g.attr("href");if(-1!==f.indexOf(h))return g.addClass(b),!1}},b});

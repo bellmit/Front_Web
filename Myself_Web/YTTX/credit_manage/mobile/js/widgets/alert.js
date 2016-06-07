@@ -1,6 +1,6 @@
 /**
 name:credit_manage / alert;
  author:yipin;
- date:2016-06-06;
+ date:2016-06-07;
  version:1.0.0**/
 define(["jquery"],function(a){a.extend(a,{modal:function(b,c,d){var e=a('<div class="alert-mask"></div>'),f=a('<div class="alert-modal"></div>'),g="",h=b.title?b.title:"温馨提示",i=b.content?b.content:"",j=b.ok?b.ok:"确定",k=b.no?b.no:"取消";if(f.append("<div>"+h+"</div><div>"+i+"</div>"),1==c?(g=a('<div class="modal-sure">'+j+"</div>"),a(a("<div></div>").append(g)).appendTo(f)):2==c&&(g=a('<div class="modal-ok">'+j+'</div><div class="modal-cancel">'+k+"</div>"),a(a("<div></div>").append(g)).appendTo(f)),f.appendTo(e),a(document.body).append(e),w.resize=function(){f.css({top:parseInt((e.height()-f.height())/2),left:parseInt((e.width()-f.width())/2)})},w.resize(),a(w).on("resize",w.resize),1==c||2==c)g.on(a.EventName.click,function(){a(this).hasClass("modal-sure")&&b.okfn&&b.okfn(),a(this).hasClass("modal-ok")&&b.okfn&&b.okfn(),a(this).hasClass("modal-cancel")&&b.nofn&&b.nofn(),e.remove()});else if(0==c)return e;return d&&e?e:void 0}})});
