@@ -3,9 +3,11 @@
 	dir:'mobile/build/serve',/*输出目录*/
 	baseUrl:'mobile/src/serve',/*查找文件的锚点*/
 	modules:[{ name:'serve'}],/*模块名称*/
-	fileExclusionRegExp: /^(r|build)\.js|.*\.(less|css|png|jpg|jpeg|gif|html|eot|svg|ttf|woff|json)$/,/*不要复制的文件*/
+	fileExclusionRegExp: /^(r|build)\.js|(lib|widgets)|.*\.(less|css|png|jpg|jpeg|gif|html|eot|svg|ttf|woff|json)$/,/*不要复制的文件*/
 	optimizeCss:'none',/*是否优化css文件*/
-	removeCombined:false,/*是否删除已合并文件*/
+	removeCombined:true,/*是否删除已合并文件*/
+	optimize:"uglify",/*压缩方式*/
+	useStrict: false,/*是否开启严格模式*/
 	paths:{
 		'jquery':'../../../js/lib/jquery/jquery',
 		'jquery_mobile':'../../../js/lib/jquery/jquery-mobile',
@@ -13,9 +15,6 @@
 		'imglist':'../../js/widgets/imglist'
 	},
 	shim:{
-		'dialog':{
-				deps:['jquery']
-		},
 		'jquery_mobile':{
 			deps:['jquery']
 		}

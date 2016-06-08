@@ -1,7 +1,7 @@
 /***
 name:imglist
 author:yipin
-随记图片九宫格或者多宫格
+多宫格布局
 ***/
 
 define(['jquery'],function($){

@@ -8,9 +8,6 @@ require.config({
 		'imglist':'js/widgets/imglist'
 	},
 	shim:{
-		'dialog':{
-				deps:['jquery']
-		},
 		'jquery_mobile':{
 			deps:['jquery']
 		}
