@@ -74,6 +74,24 @@
 				})(pkg,web_url)
 		},
 		
+		//配置requirejs
+		requirejs: {
+		  compile: {
+			options: {
+			  baseUrl:web_url+"/"+pkg.js_src,
+			  mainConfigFile:(function(pkg,web_url){
+					return doFilter({package:pkg,web_url:web_url},'js_src','.js');
+				})(pkg,web_url),
+			  include:(function(pkg,web_url){
+					return doFilter({package:pkg,web_url:web_url},'js_src','.js');
+				})(pkg,web_url),
+			  out:(function(pkg,web_url){
+					return doFilter({package:pkg,web_url:web_url},'js_dest','.js');
+				})(pkg,web_url)
+			}
+		  }
+		},
+		
 		//定义js语法检查（看配置信息）
 		jshint:{
 			options:{
@@ -153,23 +171,27 @@
 
 		//定义合并js任务（情况比较少）,暂时不做css合并
 		concat:{
-			js:{
-				options:{
-					stripBanners:true,
-					separator:';',//分割符
-					banner:bannerstr
-				},
-				dist:{
-					//源目录 to do,合并文件时需要看情况而定
-					src:(function(pkg,web_url){
-						return doFilter({package:pkg,web_url:web_url},'js_src','.js');
-					})(pkg,web_url),
-					//生成目录
-					dest:(function(pkg,web_url){
-						return doFilter({package:pkg,web_url:web_url},'js_dest','.js');
-					})(pkg,web_url)
-				}
+			options:{
+				stripBanners:true,
+				separator:';',//分割符
+				banner:bannerstr
 			},
+			dist:{
+				//源目录 to do,合并文件时需要看情况而定
+				src:(function(web_url){
+					var names=['zepto','event','touch','callbacks','ajax','form','selector','fx','fx_methods','assets','data','deferred','detect','gesture','ios3','stack','ie'],result=[];
+					for(var i=0,len=names.length;i<len;i++){
+						result.push(web_url+'js/zepto/'+names[i]+'.js');
+						
+					}
+					return result;
+				})(web_url),
+				//生成目录
+				dest:(function(web_url){
+					var result=web_url+'js/lib/zepto/zepto.js';
+					return result;
+				})(web_url)
+			}
 		},
 
 
@@ -315,7 +337,7 @@
 	//导入任务所需的依赖支持服务
 	//grunt.loadNpmTasks('grunt-contrib-jshint');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
-	//grunt.loadNpmTasks('grunt-contrib-requirejs');
+	grunt.loadNpmTasks('grunt-contrib-requirejs');
 	grunt.loadNpmTasks('grunt-contrib-connect');
 	//grunt.loadNpmTasks('grunt-contrib-imagemin');
 	grunt.loadNpmTasks('grunt-contrib-livereload');
@@ -336,14 +358,25 @@
 	
 	
 	//集成单个模块任务
+	
+	
+	/*grunt.registerTask('default',"合并js",function(){
+		grunt.task.run(['concat',]);
+	});*/
+	
 
 	
 	grunt.registerTask('default',"less编译生成css并压缩,同时实时监控",function(){
 		grunt.task.run(['less','cssmin','watch:less']);
 	});
 	
-	/*grunt.registerTask('default',"javascript压缩",function(){
+	
+	/*grunt.registerTask('default',"监控js压缩",function(){
 		grunt.task.run(['uglify','watch']);
+	});*/
+	
+	/*grunt.registerTask('default',"js压缩",function(){
+		grunt.task.run(['uglify']);
 	});*/
 	
 	

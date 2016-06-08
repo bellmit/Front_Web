@@ -1,6 +1,55 @@
-/**
-name:credit_manage / serve;
- author:yipin;
- date:2016-06-07;
- version:1.0.0**/
-require.config({baseUrl:"../../js/",paths:{jquery:"lib/jquery/jquery",jquery_mobile:"lib/jquery/jquery-mobile",slide:"widgets/slide",imglist:"widgets/imglist"},shim:{dialog:{deps:["jquery"]},jquery_mobile:{deps:["jquery"]}}}),require(["jquery","jquery_mobile","slide","imglist"],function(a,b,c,d){a(function(){var b=a("#slideimg_show"),e=a("#slide_img"),f=a("#slideimg_btn"),g=a("#serve_grid");c.slideToggle({$wrap:b,$slide_img:e,$btnwrap:f,minwidth:640,isresize:!1,size:3,times:5e3,eff_time:500,btn_active:"slidebtn-active"}),d.imgList(g,"li",3)})});
+/*配置依赖*/
+require.config({
+	baseUrl:'../../',
+	paths:{
+		'jquery':'../js/lib/jquery/jquery',
+		'jquery_mobile':'../js/lib/jquery/jquery-mobile',
+		'slide':'js/widgets/slide',
+		'imglist':'js/widgets/imglist'
+	},
+	shim:{
+		'dialog':{
+				deps:['jquery']
+		},
+		'jquery_mobile':{
+			deps:['jquery']
+		}
+	}
+});
+
+
+/*程序入口*/
+require(['jquery','jquery_mobile','slide','imglist'],function($,$jm,Slide,ImgList) {
+	$(function(){
+		
+		//dom对象引用
+		var $slideimg_show=$('#slideimg_show'),
+			$slide_img=$('#slide_img'),
+			$slideimg_btn=$('#slideimg_btn'),
+			$serve_grid=$("#serve_grid");
+			
+
+		//轮播动画
+		Slide.slideToggle({
+			$wrap:$slideimg_show,
+			$slide_img:$slide_img,
+			$btnwrap:$slideimg_btn,
+			minwidth:640,
+			isresize:true,
+			size:3,
+			times:5000,
+			eff_time:500,
+			btn_active:'slidebtn-active'
+		});
+		
+		
+		
+		//多宫格
+		ImgList.imgList($serve_grid,'li',3);
+
+
+	});
+});
+
+
+

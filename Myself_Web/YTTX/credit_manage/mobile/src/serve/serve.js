@@ -1,11 +1,11 @@
 /*配置依赖*/
 require.config({
-	baseUrl:'../../js/',
+	baseUrl:'../../',
 	paths:{
-		'jquery':'lib/jquery/jquery',
-		'jquery_mobile':'lib/jquery/jquery-mobile',
-		'slide':'widgets/slide',
-		'imglist':'widgets/imglist'
+		'jquery':'../js/lib/jquery/jquery',
+		'jquery_mobile':'../js/lib/jquery/jquery-mobile',
+		'slide':'js/widgets/slide',
+		'imglist':'js/widgets/imglist'
 	},
 	shim:{
 		'dialog':{
@@ -35,7 +35,7 @@ require(['jquery','jquery_mobile','slide','imglist'],function($,$jm,Slide,ImgLis
 			$slide_img:$slide_img,
 			$btnwrap:$slideimg_btn,
 			minwidth:640,
-			isresize:false,
+			isresize:true,
 			size:3,
 			times:5000,
 			eff_time:500,
