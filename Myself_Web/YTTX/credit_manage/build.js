@@ -3,7 +3,7 @@
 	dir:'mobile/build/serve',/*输出目录*/
 	baseUrl:'mobile/src/serve',/*查找文件的锚点*/
 	modules:[{ name:'serve'}],/*模块名称*/
-	fileExclusionRegExp: /^(r|build)\.js|.*\.(less|png|jpg|jpeg|gif|css|html|eot|svg|ttf|woff|json)$/,/*不要复制的文件*/
+	fileExclusionRegExp: /^(r|build)\.js|.*\.(less|css|png|jpg|jpeg|gif|html|eot|svg|ttf|woff|json)$/,/*不要复制的文件*/
 	optimizeCss:'none',/*是否优化css文件*/
 	removeCombined:false,/*是否删除已合并文件*/
 	paths:{
