@@ -361,7 +361,7 @@
 	
 	
 	/*grunt.registerTask('default',"合并js",function(){
-		grunt.task.run(['concat',]);
+		grunt.task.run(['concat']);
 	});*/
 	
 
