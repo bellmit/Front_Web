@@ -1,0 +1,133 @@
+///信用卡列表
+///作者：易品
+
+.credit-list-wrap{
+	>li{
+		height:120px;
+		padding:10px;
+		a{
+			.layout-relative-base;
+			.box-sizing-base;
+			display:inline-block;
+			padding-left:80px;
+			width:100%;
+			height:100%;
+		}
+		&:hover{
+			.transition-base(all .2s ease-in .02s);
+			background:@color-gray16;
+			border-bottom:1px solid @color-red1;
+		}
+	}
+	//卡图像
+	.card-icon{
+		.layout-absolutel-base;
+		height:100%;
+		width:80px;
+		text-align:center;
+		img{
+			width:40px;
+			height:40px;
+			display:inline-block;
+			overflow:hidden;
+		}
+		p,span,em{
+			width:100%;
+			display:inline-block;
+			white-space:nowrap;
+			overflow:hidden;
+			text-overflow:ellipsis;
+			height:18px;
+			line-height:18px;
+			font-size:1.4rem;
+		}
+	}
+	//卡信息
+	.card-info{
+		.layout-base;
+		height:100%;
+		border-left:1px solid @color-gray14;
+		padding:0 5px;
+		font-size:1.4rem;
+		color:@color-gray3;
+		div,ul{
+			.layout-base;
+			height:50%;
+		}
+		div{
+			h3,p{
+				height:100%;
+				display:inline-block;	
+			}
+			h3{
+				font-size:4rem;
+				color:@color-red1;
+				&:after{
+					padding:0 5px;
+					content:'天内还款';
+					font-size:1.4rem;
+					color:@color-gray3;
+				}
+			}
+		}
+		li{
+			float:left;
+			width:33.33333%;
+			span,em{
+				.box-sizing-base;
+				padding:5px 0 0 10px;
+				width:100%;
+				overflow:hidden;
+				height:50%;
+				white-space:nowrap;
+				display:inline-block;
+				text-align:left;
+			}
+			span{
+				font-weight:bold;
+			}
+		}
+	}
+	.hk,.whk,.yq,.bfhk{
+		&:after{
+			.layout-absoluter-base;
+			.transform-origin-base(left top);
+			.transform-base(rotate(30deg));
+			display:inline-block;
+			padding:2px 5px;
+			.border-radius-base(3px);
+			border:1px solid @color-red1;
+			color:@color-red1;
+			font-size:1.4rem;
+			text-align:center;
+			line-height:20px;
+			white-space:nowrap;
+		}
+	}
+	//已还款
+	.hk{
+		&:after{
+			content:'已还款';
+		}
+	}
+	//未还款
+	.whk{
+		&:after{
+			content:'未还款';
+		}
+	}
+	//逾期
+	.yq{
+		&:after{
+			content:'逾期'attr(data-yq-day);
+		}
+	}
+	//部分还款
+	.bfhk{
+		&:after{
+			content:'部分还款';
+		}
+	}
+	
+}
+

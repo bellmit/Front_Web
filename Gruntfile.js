@@ -296,11 +296,10 @@
 			return res;
 		}else{
 			//filter
-			if(sname.indexOf('/')!==0){
+			if(sname.indexOf('/')!==-1){
 				var tempmodule=sname.split('/'),
 				filename=tempmodule[tempmodule.length-1];
 				tempmodule.pop();
-				
 				if(typeof sstr==='string'){
 					if(suffix==='.css'){
 						res=surl+sstr+'/'+filename+suffix;
@@ -326,20 +325,26 @@
 				return res;
 			}else{
 				if(typeof sstr==='string'){
-					res=surl+sstr+'/'+spkg.module_name+'/'+spkg.module_name+suffix;
+					if(suffix==='.css'){
+						res=surl+sstr+'/'+spkg.module_name+suffix;
+					}else{
+						res=surl+sstr+'/'+spkg.module_name+'/'+spkg.module_name+suffix;
+					}
 				}else{
 					res=[];
 					(function(){
 						var j=0,
 							len=sstr.length;
 							if(suffix==='.css'){
-								
+								for(j;j<len;j++){
+									res.push(surl+sstr[j]+'/'+spkg.module_name+suffix);
+								}
 							}else{
-								
+								for(j;j<len;j++){
+									res.push(surl+sstr[j]+'/'+spkg.module_name+'/'+spkg.module_name+suffix);
+								}
+
 							}
-						for(j;j<len;j++){
-							res.push(surl+sstr[j]+'/'+spkg.module_name+'/'+spkg.module_name+suffix);
-						}
 					}());
 				}
 				return res;
