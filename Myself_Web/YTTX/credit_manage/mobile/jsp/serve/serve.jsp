@@ -11,15 +11,8 @@
 <title>信用卡管理--服务列表</title>
 <link rel="stylesheet" type="text/css" href="../../css/serve.css">
 </head>
-<body class="app-layout">
+<body>
 	
-    <!--头部导航-->
-
-	<header class="app-header">
-   		<a href="#" class="prev-btn"></a>
-        <p class="theme">服务列表</p>
-        <a href="#" class="next-btn"></a>
-   </header>
    
    <!--广告轮播-->
    <section class="serve-slide-wrap part-slide">
@@ -143,19 +136,6 @@
         </li>
 	</ul>
    
-   
-   
-   <!---->
-   <nav class="app-menu">
-   		<ul class="menu-wrap">
-        	<li><a class="menu-sq" href="../index.html"></a></li>
-            <li><a class="menu-xyk" href="../credit/credit.html"></a></li>
-            <li><a class="menu-pos" href="#"></a></li>
-            <li><a class="menu-fw" href="../serve/serve.html"></a></li>
-            <li><a class="menu-sc" href="#"></a></li>
-            <li><a class="menu-wo" href="#"></a></li>
-        </ul>
-   </nav>
 <script src="../../../js/lib/require/require.js" data-main="../../js/serve/serve.js"></script>
 </body>
 </html>
