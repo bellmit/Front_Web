@@ -302,15 +302,25 @@
 				tempmodule.pop();
 				
 				if(typeof sstr==='string'){
-					res=surl+sstr+'/'+tempmodule.join('/')+'/'+filename+suffix;
+					if(suffix==='.css'){
+						res=surl+sstr+'/'+filename+suffix;
+					}else{
+						res=surl+sstr+'/'+tempmodule.join('/')+'/'+filename+suffix;
+					}
 				}else{
 					res=[];
 					(function(){
 						var j=0,
 							len=sstr.length;
-						for(j;j<len;j++){
-							res.push(surl+sstr[j]+'/'+tempmodule.join('/')+'/'+filename+suffix);
-						}
+							if(suffix==='.css'){
+								for(j;j<len;j++){
+									res.push(surl+sstr[j]+'/'+filename+suffix);
+								}
+							}else{
+								for(j;j<len;j++){
+									res.push(surl+sstr[j]+'/'+tempmodule.join('/')+'/'+filename+suffix);
+								}
+							}
 					}());
 				}
 				return res;
@@ -322,6 +332,11 @@
 					(function(){
 						var j=0,
 							len=sstr.length;
+							if(suffix==='.css'){
+								
+							}else{
+								
+							}
 						for(j;j<len;j++){
 							res.push(surl+sstr[j]+'/'+spkg.module_name+'/'+spkg.module_name+suffix);
 						}
@@ -337,10 +352,10 @@
 	//导入任务所需的依赖支持服务
 	//grunt.loadNpmTasks('grunt-contrib-jshint');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
-	grunt.loadNpmTasks('grunt-contrib-requirejs');
+	//grunt.loadNpmTasks('grunt-contrib-requirejs');
 	grunt.loadNpmTasks('grunt-contrib-connect');
 	//grunt.loadNpmTasks('grunt-contrib-imagemin');
-	grunt.loadNpmTasks('grunt-contrib-livereload');
+	//grunt.loadNpmTasks('grunt-contrib-livereload');
 	grunt.loadNpmTasks('grunt-contrib-less');
 	grunt.loadNpmTasks('grunt-contrib-cssmin');
 	grunt.loadNpmTasks('grunt-spritesmith');
@@ -361,7 +376,7 @@
 	
 	
 	/*grunt.registerTask('default',"合并js",function(){
-		grunt.task.run(['concat']);
+		grunt.task.run(['concat',]);
 	});*/
 	
 
