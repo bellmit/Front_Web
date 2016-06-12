@@ -1,6 +1,267 @@
-/**
-name:credit_manage / slide;
- author:yipin;
- date:2016-06-08;
- version:1.0.0**/
-define(["jquery"],function(a){var b=window;return this.slideToggle=function(c){var d=a.extend(!0,{},{minwidth:1024,size:5,curindex:0,isresize:!0,slide_id:null,slide_hover_id:null,$wrap:null,$slide_img:null,$items:null,$btnwrap:null,$btn:null,$slide_tipwrap:null,$slide_tip:null,tipheight:0,itemheight:0,winwidth:a(b).width(),img_alt:!1,tip_text:[],btn_action:!1,isMobile:function(){return!!/(iPhone|iPod|Android|ios|iOS|iPad|Backerry|WebOS|Symbian|Windows Phone|Phone)/i.test(navigator.userAgent)}(),btn_active:"slidebtn-active",eff_time:500,times:6e3,auto_animates:null},c),e=this;e.slideInit(d),d.$btnwrap.delegate("li",a.EventName.click,function(b){b.preventDefault();var c=a(this);d.curindex=c.index(),d.btn_action=!0,d.$slide_img.animate({left:-d.curindex*d.winwidth},d.eff_time),c.addClass(d.btn_active).siblings().removeClass(d.btn_active),d.img_alt?e.slideEffect(d):null!=d.$slide_tipwrap&&d.$slide_tipwrap.css({opacity:"0.4",top:d.itemheight})}),d.isMobile?d.$wrap.on("mouseenter mouseleave",function(a){var b=a.type;"mouseenter"==b?(null!=d.$slide_tipwrap&&d.$slide_tipwrap.stop(d.auto_animates,!0,!1),clearInterval(d.slide_id),d.slide_id=null):"mouseleave"==b&&(clearInterval(d.slide_id),d.slide_id=null,d.slide_id=setInterval(function(){d.btn_action=!1,e.slidePlay(d)},d.times))}):d.$wrap.hover(function(){null!=d.$slide_tipwrap&&d.$slide_tipwrap.stop(d.auto_animates,!0,!1),clearInterval(d.slide_id),d.slide_id=null},function(){clearInterval(d.slide_id),d.slide_id=null,d.slide_id=setInterval(function(){d.btn_action=!1,e.slidePlay(d)},d.times)}),d.isresize&&a(b).resize(function(){d.winwidth=a(this).width(),d.winwidth=d.winwidth<d.minwidth?d.minwidth:d.winwidth,d.$items.width(d.winwidth),d.$slide_img.css({width:d.size*d.winwidth,left:-d.curindex*d.winwidth})})},this.slideInit=function(b){var c=this;b.$items=b.$slide_img.find("li"),b.winwidth=b.winwidth<b.minwidth?b.minwidth:b.winwidth,b.$items.width(b.winwidth),b.size=b.$items.size(),b.$btn=b.$btnwrap.find("li"),b.$slide_img.css({width:b.size*b.winwidth}),null!=b.$slide_tipwrap&&(b.tipheight=b.$slide_tipwrap.height(),b.$slide_tip=b.$slide_tipwrap.find("p")),b.itemheight=b.$items.eq(0).height(),b.$items.eq(0).find("img").attr("alt")?(b.img_alt=!0,b.$items.find("img").each(function(c){b.tip_text.push(a(this).attr("alt"))}),b.$slide_tip.text(b.tip_text[0])):(b.img_alt=!1,b.tip_text.length=0,null!=b.$slide_tipwrap&&(b.$slide_tip.text(""),b.$slide_tipwrap.css({opacity:"0.4",top:b.itemheight}))),b.slide_id=setInterval(function(){c.slidePlay(b)},b.times)},this.slidePlay=function(a){var b=this;a.curindex++,a.curindex=a.curindex>=a.size?0:a.curindex,a.$slide_img.animate({left:-a.curindex*a.winwidth},a.eff_time),a.$btn.eq(a.curindex).addClass(a.btn_active).siblings().removeClass(a.btn_active),a.img_alt?b.slideEffect(a):null!=a.$slide_tipwrap&&a.$slide_tipwrap.css({opacity:"0.4",top:a.itemheight})},this.slideEffect=function(a){var b;null!=a.$slide_tipwrap&&(b=parseInt(a.$slide_tipwrap.css("top"))+a.tipheight),void 0!==b&&(a.btn_action?b===a.itemheight?(a.$slide_tipwrap.animate({opacity:"0.4",top:a.itemheight},a.eff_time),setTimeout(function(){a.$slide_tip.text(a.tip_text[a.curindex])},a.eff_time),a.$slide_tipwrap.animate({opacity:"0.6",top:a.itemheight-a.tipheight},a.eff_time)):(a.$slide_tip.text(a.tip_text[a.curindex]),a.$slide_tipwrap.animate({opacity:"0.6",top:a.itemheight-a.tipheight},a.eff_time)):b===a.itemheight?(a.$slide_tipwrap.animate({opacity:"0.6",top:a.itemheight},a.eff_time),setTimeout(function(){a.$slide_tip.text(a.tip_text[a.curindex])},a.eff_time),a.auto_animates=a.$slide_tipwrap.animate({opacity:"0.6",top:a.itemheight-a.tipheight},a.eff_time).delay(a.times-3*a.eff_time).animate({opacity:"0.4",top:a.itemheight},a.eff_time)):(a.auto_animates=a.$slide_tipwrap.animate({opacity:"0.6",top:a.itemheight-a.tipheight},a.eff_time),a.$slide_tip.text(a.tip_text[a.curindex]),a.$slide_tipwrap.delay(a.times-2*a.eff_time).animate({opacity:"0.4",top:a.itemheight},a.eff_time)))},this});
+define(['jquery'],function($){
+		var win=window;
+		
+		////构造函数[入口函数]
+		this.slideToggle=function(options){
+			
+				var settings = $.extend(true,{},{
+							 minwidth:1024,
+							 size:5,
+							 curindex:0,
+							 isresize:true,
+							 slide_id:null,
+							 slide_hover_id:null,
+							 $wrap:null,
+							 $slide_img:null,
+							 $items:null,
+							 $btnwrap:null,
+							 $btn:null,
+							 $slide_tipwrap:null,
+							 $slide_tip:null,
+							 tipheight:0,
+							 itemheight:0,
+							 winwidth:$(win).width(),
+							 img_alt:false,
+							 tip_text:[],
+							 btn_action:false,
+						     isMobile:(function(){
+								 if(/(iPhone|iPod|Android|ios|iOS|iPad|Backerry|WebOS|Symbian|Windows Phone|Phone)/i.test(navigator.userAgent)){
+									 return true;
+								 }else{
+									 return false;
+								 }
+							 }()),
+							 btn_active:'slidebtn-active',
+							 eff_time:500,
+							 times:6000,
+							 auto_animates:null
+				 },options),
+				 self=this;
+				 
+				//初始化
+				self.slideInit(settings);
+
+				/*tab 点击切换*/
+				settings.$btnwrap.delegate('li', $.EventName.click,function(e){
+					e.preventDefault();
+					var $this=$(this);
+					settings.curindex=$this.index();
+					settings.btn_action=true;
+					
+					settings.$slide_img.animate({
+						"left":-settings.curindex*settings.winwidth
+					},settings.eff_time);
+					
+					$this.addClass(settings.btn_active)
+					.siblings()
+					.removeClass(settings.btn_active);
+					
+					if(settings.img_alt){
+							self.slideEffect(settings);
+					}else if(settings.$slide_tipwrap!=null){
+						settings.$slide_tipwrap.css({
+							"opacity":"0.4",
+							"top":settings.itemheight
+						});
+					}
+				
+				});
+				
+				/*mouse hover,out event*/
+				//图片绑定鼠标事件
+				if(settings.isMobile){
+					//手机端
+					settings.$wrap.on('mouseenter mouseleave',function(e){
+						var type= e.type;
+
+						if(type=='mouseenter'){
+							//移入
+							 if(settings.$slide_tipwrap!=null){
+								 settings.$slide_tipwrap.stop(settings.auto_animates,true,false);
+							 }
+							clearInterval(settings.slide_id);
+							settings.slide_id=null;
+
+						}else if(type=='mouseleave'){
+							//移出
+							clearInterval(settings.slide_id);
+							settings.slide_id=null;
+							settings.slide_id=setInterval(function(){
+								settings.btn_action=false;
+								self.slidePlay(settings);
+							},settings.times);
+						}
+					});
+				}else{
+					//pc端
+					settings.$wrap.hover(function(){
+					 if(settings.$slide_tipwrap!=null){
+						 settings.$slide_tipwrap.stop(settings.auto_animates,true,false);
+					 }
+						
+						clearInterval(settings.slide_id);
+						settings.slide_id=null;
+					},function(){
+						clearInterval(settings.slide_id);
+						settings.slide_id=null;
+						settings.slide_id=setInterval(function(){
+							settings.btn_action=false;
+							self.slidePlay(settings);
+						},settings.times);
+					});
+				}
+
+				
+				
+				//window resize
+				if(settings.isresize){
+					$(win).resize(function(){
+						settings.winwidth=$(this).width();
+						settings.winwidth=settings.winwidth<settings.minwidth?settings.minwidth:settings.winwidth;
+						settings.$items.width(settings.winwidth);
+						settings.$slide_img.css({
+							"width":settings.size*settings.winwidth,
+							"left":-settings.curindex*settings.winwidth
+						});
+					});
+				}
+
+		
+		
+		}
+				 
+		//初始化
+		this.slideInit=function(settings){
+				 var self=this;
+				 settings.$items=settings.$slide_img.find("li");
+				 settings.winwidth=settings.winwidth<settings.minwidth?settings.minwidth:settings.winwidth;
+				 settings.$items.width(settings.winwidth);
+				 settings.size=settings.$items.size();
+				 settings.$btn=settings.$btnwrap.find('li');
+				 settings.$slide_img.css({
+						"width":settings.size*settings.winwidth
+				 });
+				 if(settings.$slide_tipwrap!=null){
+					 settings.tipheight=settings.$slide_tipwrap.height();
+					 settings.$slide_tip=settings.$slide_tipwrap.find("p");
+				 }
+				 settings.itemheight=settings.$items.eq(0).height();
+				 if(settings.$items.eq(0).find("img").attr("alt")){
+					 settings.img_alt=true;
+					 settings.$items.find("img").each(function(index){
+						 settings.tip_text.push($(this).attr("alt"));
+					 });
+					 settings.$slide_tip.text(settings.tip_text[0]);
+				 }else{
+					 settings.img_alt=false;
+					 settings.tip_text.length=0;
+					 if(settings.$slide_tipwrap!=null){
+						 settings.$slide_tip.text('');
+						 settings.$slide_tipwrap.css({
+								"opacity":"0.4",
+								"top":settings.itemheight
+						 });
+					 } 
+				 }
+				 
+				 settings.slide_id=setInterval(function(){
+					 self.slidePlay(settings);
+				 },settings.times);
+
+		};
+		
+		//播放
+		this.slidePlay=function(settings){
+				var self=this;
+				settings.curindex++;
+				settings.curindex=settings.curindex>=settings.size?0:settings.curindex;
+				settings.$slide_img.animate({
+					"left":-settings.curindex*settings.winwidth
+				},settings.eff_time);
+				
+				settings.$btn.eq(settings.curindex).addClass(settings.btn_active).siblings().removeClass(settings.btn_active);
+				
+				if(settings.img_alt){
+					self.slideEffect(settings);
+				}else if(settings.$slide_tipwrap!=null){
+					settings.$slide_tipwrap.css({
+						"opacity":"0.4",
+						"top":settings.itemheight
+					});
+				}
+		};
+		
+		//效果函数
+		this.slideEffect=function(settings){
+			var is_show;
+			if(settings.$slide_tipwrap!=null){
+				is_show=parseInt(settings.$slide_tipwrap.css("top"))+settings.tipheight;
+			}
+			
+			if(is_show!==undefined){
+				if(settings.btn_action){
+					if(is_show===settings.itemheight){
+						
+						settings.$slide_tipwrap.animate({
+							"opacity":"0.4",
+							"top":settings.itemheight
+						},settings.eff_time);
+						
+						setTimeout(function(){
+							settings.$slide_tip.text(settings.tip_text[settings.curindex]);
+						},settings.eff_time);
+						
+						settings.$slide_tipwrap.animate({
+							"opacity":"0.6",
+							"top":settings.itemheight-settings.tipheight
+						},settings.eff_time);
+					}else{
+						settings.$slide_tip.text(settings.tip_text[settings.curindex]);
+						
+						settings.$slide_tipwrap.animate({
+							"opacity":"0.6",
+							"top":settings.itemheight-settings.tipheight
+						},settings.eff_time);
+					}
+				}else{
+					if(is_show===settings.itemheight){
+						
+						settings.$slide_tipwrap.animate({
+							"opacity":"0.6",
+							"top":settings.itemheight
+						},settings.eff_time);
+						
+						setTimeout(function(){
+							settings.$slide_tip.text(settings.tip_text[settings.curindex]);
+						},settings.eff_time);
+							
+						settings.auto_animates=settings.$slide_tipwrap.animate({
+							"opacity":"0.6",
+							"top":settings.itemheight-settings.tipheight
+						},settings.eff_time)
+						.delay(settings.times-(3*settings.eff_time))
+						.animate({
+							"opacity":"0.4",
+							"top":settings.itemheight
+						},settings.eff_time);
+						
+					}else{
+						settings.auto_animates=settings.$slide_tipwrap.animate({
+							"opacity":"0.6",
+							"top":settings.itemheight-settings.tipheight
+						},settings.eff_time);
+						settings.$slide_tip.text(settings.tip_text[settings.curindex]);
+						
+						settings.$slide_tipwrap.delay(settings.times-(2*settings.eff_time))
+						.animate({
+							"opacity":"0.4",
+							"top":settings.itemheight
+						},settings.eff_time);
+						
+					}		
+				}
+			}
+		}
+		
+		return this;
+});

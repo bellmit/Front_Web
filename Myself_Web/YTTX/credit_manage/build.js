@@ -1,6 +1,6 @@
 ({ 
 	appDir:'',/*根目录，此目录下的文件都会被复制到dir目录下*/
-	dir:'mobile/build/serve',/*输出目录*/
+	dir:'mobile/js/serve',/*输出目录*/
 	baseUrl:'mobile/src/serve',/*查找文件的锚点*/
 	modules:[{ name:'serve'}],/*模块名称*/
 	fileExclusionRegExp: /^(r|build)\.js|(lib|widgets)|.*\.(less|css|png|jpg|jpeg|gif|html|eot|svg|ttf|woff|json)$/,/*不要复制的文件*/
@@ -12,7 +12,7 @@
 		'jquery':'../../../js/lib/jquery/jquery',
 		'jquery_mobile':'../../../js/lib/jquery/jquery-mobile',
 		'slide':'../../js/widgets/slide',
-		'imglist':'../../js/widgets/imglist'
+		'grid':'../../js/widgets/grid'
 	},
 	shim:{
 		'jquery_mobile':{

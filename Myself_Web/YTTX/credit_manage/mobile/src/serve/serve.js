@@ -5,7 +5,7 @@ require.config({
 		'jquery':'../js/lib/jquery/jquery',
 		'jquery_mobile':'../js/lib/jquery/jquery-mobile',
 		'slide':'js/widgets/slide',
-		'imglist':'js/widgets/imglist'
+		'grid':'js/widgets/grid'
 	},
 	shim:{
 		'jquery_mobile':{
@@ -16,7 +16,7 @@ require.config({
 
 
 /*程序入口*/
-require(['jquery','jquery_mobile','slide','imglist'],function($,$jm,Slide,ImgList) {
+require(['jquery','jquery_mobile','slide','grid'],function($,$jm,Slide,Grid) {
 	$(function(){
 		
 		//dom对象引用
@@ -42,7 +42,7 @@ require(['jquery','jquery_mobile','slide','imglist'],function($,$jm,Slide,ImgLis
 		
 		
 		//多宫格
-		ImgList.imgList($serve_grid,'li',3);
+		Grid.imgList($serve_grid,'li',3);
 
 
 	});
