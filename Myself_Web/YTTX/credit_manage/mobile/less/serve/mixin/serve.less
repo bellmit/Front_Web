@@ -5,9 +5,9 @@ body{
 	background:@color-gray16;
 }
 
-/*.app-layout{
+.app-layout{
 	.app-layout;
-}*/
+}
 
 
 ///服务列表广告部分
@@ -39,7 +39,7 @@ body{
 		&:hover{
 			background:@color-gray16;
 			span{
-				color:@color-red1;
+				color:@color-blue1;
 			}
 		}
 	}
@@ -59,27 +59,41 @@ body{
 	vertical-align:middle;
 	.user-select-base(none);
 	div{
-		max-width:80px;
-		min-width:40px;
+		max-width:88px;
+		min-width:30px;
+		max-height:88px;
+		min-height:30px;
 		height:auto;
 		margin:0 auto;
 		overflow:hidden;
 	}
 	img{
-		width:40px;
-		height:40px;
+		width:50px;
+		height:50px;
 		overflow:hidden;
-		max-width:50px;
-		max-height:50px;
+		max-width:120px;
+		max-height:120px;
 		min-width:30px;
 		min-height:30px;
 		margin:0 auto;
 		display:block;
 	}
-	@media(min-width: 641px){
+	@media(min-width:1004px){
 		img{
-			width:50px;
-			height:50px;
+			width:88px;
+			height:88px;
+		}
+	}
+	@media(min-width:641px){
+		img{
+			width:60px;
+			height:60px;
+		}
+	}
+	@media(max-width:480px){
+		img{
+			width:40px;
+			height:40px;
 		}
 	}
 	@media(max-width:320px){
