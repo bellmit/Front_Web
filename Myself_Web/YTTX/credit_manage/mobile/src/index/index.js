@@ -1,27 +1,16 @@
 /*配置依赖*/
 require.config({
-	baseUrl:'../js/',
+	baseUrl:'../../',
 	paths:{
-		'jquery':'lib/jquery/jquery.min',
-		'jquery_mobile':'lib/jquery/jquery-mobile.min',
-		'dialog':'lib/artDialog/dialog-plus'
-	},
-	shim:{
-		'jquery_mobile':{
-			deps:['jquery']
-		}
+		'zepto':'../js/lib/zepto/zepto',
 	}
 });
 
 
 /*程序入口*/
-require(['jquery','jquery_mobile','dialog'],function($,$jm,Dialog) {
+require(['zepto'],function($) {
 	$(function(){
-      	var $test=$('#test');
-		$test.on('click',function(){
-			console.log('aaa');
-			dialog();
-		});
+      	console.log('aaaaa');
 	});
 });
 
