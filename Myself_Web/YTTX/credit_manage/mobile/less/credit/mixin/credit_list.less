@@ -12,19 +12,23 @@
 			.layout-base;
 			display:inline-block;
 			height:100%;
-			&:after{
+			&:after,
+			&:before{
 				.layout-absoluter-base(0,-8px);
 				display:inline-block;
 				color:@color-white;
-				font-size:1.4rem;
-				text-align:center;
-				line-height:20px;
-				white-space:nowrap;
 				overflow:hidden;
-				//width:64px !important;
-				//height:64px !important;
-				content:'';
-				//background-size:200%;
+				width:64px;
+				height:64px;
+				text-align:center;
+				white-space:nowrap;
+				font-size:1.6rem;
+				text-indent:5px;
+			}
+			&:before{
+				background-size:100%;
+				background-position:0 0;
+				background-repeat:no-repeat;
 			}
 		}
 		&:hover{
@@ -102,35 +106,43 @@
 			}
 		}
 	}
-	.icon-state-green:after{
-		.icon-state-green;
-	}
-	.icon-state-red:after{
-		.icon-state-red;
-	}
-	
 	//已还款
-	.hk{
-		&:after{
+	.yhk{
+		&:before{	background-image:url(../images/credit_state/state-green.png);
+			line-height:64px;
 			content:'已还款';
 		}
 	}
 	//未还款
 	.whk{
-		&:after{
+		&:before{
+			background-image:url(../images/credit_state/state-red.png);
+			line-height:64px;
 			content:'未还款';
 		}
 	}
 	//逾期
 	.yq{
+		&:before{
+			background-image:url(../images/credit_state/state-yellow.png);
+			line-height:45px;
+			content:'已逾期';
+		}
 		&:after{
-			content:'逾期'attr(data-yq-day);
+			content:attr(data-yq-day);
+			line-height:90px;
 		}
 	}
 	//部分还款
 	.bfhk{
+		&:before{
+			background-image:url(../images/credit_state/state-yellow.png);
+			line-height:45px;
+			content:'部分';
+		}
 		&:after{
-			content:'部分还款';
+			line-height:90px;
+			content:'还款';
 		}
 	}
 	
