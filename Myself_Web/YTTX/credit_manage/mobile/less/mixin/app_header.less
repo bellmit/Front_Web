@@ -5,7 +5,7 @@
 	height:56px;
 	width:100%;
 	background:@color-red1;
-	.prev-btn,.next-btn{
+	.prev-btn,.next-btn,.message-btn{
 		position:absolute;
 		top:0;
 		z-index:100;
@@ -15,9 +15,11 @@
 		cursor:pointer;
 		width:40px;
 		height:100%;
-		font-size:2.4rem;
 		color:@color-white;
+	}
+	.prev-btn,.next-btn{
 		font-family:'ux_eight';
+		font-size:2.4rem;
 	}
 	.prev-btn{
 		left:0;
@@ -29,6 +31,14 @@
 		right:0;
 		&:before{
 			content:'\e63f';
+		}
+	}
+	.message-btn{
+		right:0;
+		font-size:2.0rem;
+		&:before{
+			font-family:'ux_five';
+			content:'\e625';
 		}
 	}
 	.theme{
