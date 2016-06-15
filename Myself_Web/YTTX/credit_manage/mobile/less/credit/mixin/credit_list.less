@@ -2,19 +2,23 @@
 ///作者：易品
 
 .credit-list-wrap{
+	.layout-base;
+	height:100%;
 	padding:0 20px;
 	>li{
+		.layout-float-base;
+		.layout-relative-base;
 		margin:20px 0 0 0;
 		height:200px;
 		background:@color-white;
-		a{
+		>a{
 			.layout-relative-base;
 			.layout-base;
 			display:inline-block;
 			height:100%;
 			&:after,
 			&:before{
-				.layout-absoluter-base(0,-8px);
+				.layout-absoluter-base(8px,-8px);
 				display:inline-block;
 				color:@color-white;
 				overflow:hidden;
@@ -31,86 +35,166 @@
 				background-repeat:no-repeat;
 			}
 		}
-		&:hover{
-			.transition-base(all .2s ease-in .02s);
-			background:@color-gray16;
-			border-bottom:1px solid @color-red1;
+		&:after{
+			@creditlink:26px;
+			.layout-absoluter-base(-5px,100px - @creditlink/2);
+			content:'\e63f';
+			font-family:'ux_eight';
+			font-size:1.8rem;
+			display:block;
+			width:@creditlink;
+			height:@creditlink;
+			.border-radius-base(50%);
+			background:@color-white;
+			color:@color-gray9;
+			text-align:center;
+			line-height:@creditlink;
+			border:1px solid @color-gray9;
 		}
 	}
-	//卡图像
+	
+	//上部银行信息
+	.card-info{
+		.layout-relative-base;
+		.layout-base;
+		height:50%;
+		padding:0 85px 0 85px;
+	}
 	.card-icon{
-		.layout-absolutel-base;
+		.layout-absolutel-base(-10px,-10px);
+		.layout-base(90px);
+		height:90px;
+		padding:5px;
+		.border-radius-base(0 50% 50% 50%);
+		background:@color-gray16;
+		div{
+			width:100%;
+			height:100%;
+			overflow:hidden;
+			.border-radius-base(50%);
+			img{
+				width:100%;
+				height:100%;
+			}
+		}
+	}
+	.card-user,.card-theme{
+		float:left;
+		.box-sizing-base;
 		height:100%;
-		width:80px;
-		text-align:center;
-		img{
-			width:40px;
-			height:40px;
+		padding:15px 0;
+	}
+	.card-user{
+		text-align:left;
+		width:40%;
+		p,span,em{
 			display:inline-block;
 			overflow:hidden;
 		}
-		p,span,em{
-			width:100%;
-			display:inline-block;
+		p{
 			white-space:nowrap;
-			overflow:hidden;
+			height:30px;
+			line-height:25px;
+			width:100%;
+			font-size:2rem;
+			color:@color-gray3;
 			text-overflow:ellipsis;
-			height:18px;
-			line-height:18px;
+		}
+		span,em{
+			white-space:wrap;
+			float:left;
+			height:17px;
+			line-height:17px;
+			padding:0 5px 0 0;
+			color:@color-gray9;
 			font-size:1.4rem;
 		}
 	}
-	//卡信息
-	.card-info{
-		.layout-base;
-		height:100%;
-		border-left:1px solid @color-gray14;
-		padding:0 5px;
-		font-size:1.4rem;
-		color:@color-gray3;
-		div,ul{
-			.layout-base;
-			height:50%;
+	.card-theme{
+		@tian:50px;
+		@tian_margin:3px;
+		@item:@tian + @tian_margin + 2px;
+		
+		width:60%;
+		h3,div,p{
+			float:left;
+		}
+		h3,em,p,span{
+			display:inline-block;
+			.text-ww;
+			vertical-align:middle;
+		}
+		h3{
+			height:100%;
+			.layout-base(@tian);
+			margin:0 @tian_margin 0 0;
+			text-align:center;
+			line-height:70px;
+			overflow:hidden;
+			font-size:3rem;
+			font-stretch:ultra-condensed;
+		}
+		em,p{
+			font-size:1.4rem;
+			text-align:left;
+			color:@color-gray9;
+		}
+		p,div{
+			.calc-base(width,'100% - @{item}');
 		}
 		div{
-			h3,p{
-				height:100%;
-				display:inline-block;	
-			}
-			h3{
-				font-size:4rem;
-				color:@color-red1;
-				&:after{
-					padding:0 5px;
-					content:'天内还款';
-					font-size:1.4rem;
-					color:@color-gray3;
-				}
-			}
+			padding:10px 0 5px 0;
+			white-space:nowrap;
 		}
+		span{
+			text-align:center;
+			font-size:1.8rem;
+			font-weight:bold;
+			color:@color-red1;
+			padding:0 0 0 3px;
+		}
+	}
+	//下部账单信息
+	.card-data{
+		.layout-base;
+		height:50%;
+		padding:10px 0;
+		border-top:1px solid @color-gray12;
+		.box-shadow-base(0 1px 0 @color-white);
 		li{
-			float:left;
-			width:33.33333%;
-			span,em{
-				.box-sizing-base;
-				padding:5px 0 0 10px;
-				width:100%;
-				overflow:hidden;
-				height:50%;
-				white-space:nowrap;
-				display:inline-block;
-				text-align:left;
+			height:100%;
+			.layout-float-base(33.33333%);
+			border-right:1px solid @color-gray14;
+			&:last-child{
+				border-right:none;
 			}
 			span{
-				font-weight:bold;
+				.layout-base;
+				width:100%;
+				padding:10px 0;
+				overflow:hidden;
+				height:50%;
+				font-size:1.8rem;
+				white-space:nowrap;
+				display:inline-block;
+				text-align:center;
+				color:@color-gray9;
 			}
 		}
 	}
+	
+	
 	//已还款
 	.yhk{
 		&:before{	background-image:url(../images/credit_state/state-green.png);
 			line-height:64px;
 			content:'已还款';
+		}
+		.card-theme{
+			display:none;
+			h3{
+				color:@color-gray6;
+			}
 		}
 	}
 	//未还款
@@ -119,6 +203,11 @@
 			background-image:url(../images/credit_state/state-red.png);
 			line-height:64px;
 			content:'未还款';
+		}
+		.card-theme{
+			h3{
+				color:@color-red1;
+			}
 		}
 	}
 	//逾期
@@ -132,6 +221,11 @@
 			content:attr(data-yq-day);
 			line-height:90px;
 		}
+		.card-theme{
+			h3{
+				color:@color-yellow1;
+			}
+		}
 	}
 	//部分还款
 	.bfhk{
@@ -144,9 +238,91 @@
 			line-height:90px;
 			content:'还款';
 		}
+		.card-theme{
+			h3{
+				color:@color-yellow1;
+			}
+		}
 	}
 	
 }
+
+
+
+.credit-add-wrap{
+	@iconitem:80px;
+	.layout-base;
+	.layout-fixedlb-base(0,50px);
+	cursor:pointer;
+	padding:20px 0;
+	background:@color-white;
+	height:80px;
+	>div{
+		.layout-relative-base;
+		.box-sizing-base;
+		float:left;
+		display:inline-block;
+		height:100%;
+	}
+	.credit-add-icon{
+		width:80px;
+		&:before{
+			width:100%;
+			height:100%;
+			display:block;
+			content:'\e658';
+			font-family:'ux_seven';
+			text-align:center;
+			line-height:40px;
+			font-size:5rem;
+			color:@color-gray12;
+		}
+		&:after{
+			.layout-absoluterb-base(10px,-5px);
+			width:20px;
+			height:20px;
+			border:1px solid @color-gray12;
+			content:'\e600';
+			.border-radius-base(50%);
+			font-family:'ux_eight';
+			text-align:center;
+			line-height:20px;
+			color:@color-gray12;
+			font-size:1.6rem;
+			overflow:hidden;
+			background:@color-white;
+		}
+	}
+	.credit-add-txt{
+		.calc-base(width,'100% - @{iconitem}');
+		padding:0 40px 0 0;
+		h1{
+			font-size:2rem;
+			color:@color-gray3;
+			height:25px;
+			line-height:20px;
+		}
+		p{
+			height:15px;
+			color:@color-gray9;
+			line-height:15px;
+			font-size:1.4rem;
+		}
+		&:after{
+			.layout-absoluter-base(5px);
+			content:'\e63f';
+			font-family:'ux_eight';
+			font-size:3rem;
+			color:@color-gray9;
+		}
+	}
+	&:hover{
+		.credit-add-icon:after{
+			color:@color-red1;
+		}
+	}
+}
+
 
 
 //adapt
@@ -156,6 +332,20 @@
 		>li{
 			margin:16px 0 0 0;
 		}
+		.card-theme{
+			@tian:40px;
+			@tian_margin:3px;
+			@item:@tian + @tian_margin + 2px;
+
+			h3{
+				width:@tian;
+				margin:0 @tian_margin 0 0;
+				font-size:2rem;
+			}
+			p,div{
+				.calc-base(width,'100% - @{item}');
+			}
+		}
 	}
 }
 @media (max-width:320px){
@@ -163,6 +353,20 @@
 		padding:0 10px;
 		>li{
 			margin:10px 0 0 0;
+		}
+		.card-theme{
+			@tian:30px;
+			@tian_margin:3px;
+			@item:@tian + @tian_margin + 2px;
+
+			h3{
+				width:@tian;
+				margin:0 @tian_margin 0 0;
+				font-size:1.6rem;
+			}
+			p,div{
+				.calc-base(width,'100% - @{item}');
+			}
 		}
 	}
 }
