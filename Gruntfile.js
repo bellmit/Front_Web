@@ -119,12 +119,12 @@
 			}
 		},
 
-		//定义css图片拼合（一次性任务）
+		//定义css图片拼合
 		sprite:{
 			all:{
 				src:web_url+pkg.image_src+'/*.png',
-				dest:web_url+pkg.image_dest+'/icon.png',
-				destCss:web_url+pkg.less_dest+'/icon.png.css'
+				dest:web_url+pkg.image_dest+'/credit_state.png',
+				destCss:web_url+'img_sprite/credit_state.css'
 			}
 		},
 		
@@ -166,7 +166,7 @@
 			}
 		},
 		
-		//合并模块化依赖
+		//合并模块化依赖，目前使用r.js合并压缩require模块
 		
 
 		//定义合并js任务（情况比较少）,暂时不做css合并
@@ -369,19 +369,17 @@
 	
 	
 
-	//一次性任务，压缩js库文件，合并js库文件
-	//grunt.registerTask('default',['uglify']);
-
-	//注册单个任务
-
-	
-	
-	
 	//集成单个模块任务
 	
 	
 	/*grunt.registerTask('default',"合并js",function(){
 		grunt.task.run(['concat',]);
+	});*/
+	
+	
+	
+	/*grunt.registerTask('default',"拼合图片",function(){
+		grunt.task.run(['sprite',]);
 	});*/
 	
 

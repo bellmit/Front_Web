@@ -5,7 +5,7 @@
 	height:56px;
 	width:100%;
 	background:@color-red1;
-	.prev-btn,.next-btn,.message-btn{
+	.prev-btn,.next-btn,.message-btn,.add-btn{
 		position:absolute;
 		top:0;
 		z-index:100;
@@ -39,6 +39,13 @@
 		&:before{
 			font-family:'ux_five';
 			content:'\e625';
+		}
+	}
+	.add-btn{
+		right:0;
+		font-size:3.0rem;
+		&:before{
+			content:'+';
 		}
 	}
 	.message-btn-active{

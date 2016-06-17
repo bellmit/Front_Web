@@ -196,6 +196,7 @@ body{
 	background:@color-white;
 	min-height:200px;
 }
+//提额
 .credit-detailamount-wrap{
 	padding:0 20px;
 	h3{
@@ -220,6 +221,7 @@ body{
 		}
 	}
 	.credit-amount-chart{
+		min-height:400px;
 		margin:20px 0 10px 0;
 		&:after{
 			clear:both;
@@ -227,9 +229,9 @@ body{
 			width:100%;
 			height:0;
 		}
-		
 	}
 }
+//账单
 .credit-detailbill-wrap{
 	a{
 		.layout-relative-base;
@@ -243,15 +245,21 @@ body{
 			content:'\e63f';
 			font-family:'ux_eight';
 			font-size:2rem;
-			width:20px;
-			height:20px;
+			width:22px;
+			height:22px;
 			display:block;
 			overflow:hidden;
 			text-align:center;
-			line-height:20px;
-			color:@color-gray9;
+			line-height:22px;
+			color:@color-gray12;
 			.border-radius-base(50%);
-			border:1px solid @color-gray9;
+			border:1px solid @color-gray12;
+		}
+		&:hover{
+			&:after{
+				color:@color-red1;
+				border:1px solid @color-red1;
+			}
 		}
 		>div{
 			float:left;
@@ -261,14 +269,18 @@ body{
 				display:inline-block;
 				width:100%;
 				height:20px;
-				line-height:20px;
+				
 				overflow:hidden;
 			}
 			p,span{
 				color:@color-gray6;		
 			}
+			em,span{
+				line-height:22px;
+			}
 			p{
 				font-size:1.8rem;
+				line-height:18px;
 			}
 			span{
 				font-size:1.4rem;
@@ -280,10 +292,74 @@ body{
 			&:first-child{
 				width:60%;
 				text-align:left;
+				p{
+					line-height:18px;
+				}
+				em,span{
+					line-height:22px;
+				}
 			}
 			&:last-child{
 				text-align:right;
 				width:40%;
+				
+			}
+		}
+	}
+}
+//攻略
+.credit-detailguide-wrap{
+	@item:80px;
+	a{
+		.layout-base;
+		height:80px;
+		display:inline-block;
+		padding:10px 20px;
+		div{
+			.box-sizing-base;
+			height:100%;
+			&:first-child{
+				.calc-base(width,'100% - @{item}');
+				padding:0 10px 0 0;
+				float:left;
+			}
+			&:last-child{
+				width:@item;
+				overflow:hidden;
+				float:right;
+				img{
+					width:100%;
+					height:100%;
+				}
+			}
+			p{
+				width:100%;
+				height:40px;
+				line-height:20px;
+				font-size:1.8rem;
+				overflow:hidden;
+				color:@color-gray6;	
+			}
+			span{
+				font-size:1.4rem;
+				height:20px;
+				padding:0 5px 0 0;
+				color:@color-gray9;
+			}
+		}
+		&:nth-child(2n){
+			border-bottom:1px solid @color-gray14;
+		}
+		&:first-child{
+			>div:first-child{
+				&:after{
+					font-size:1.4rem;
+					content:'置顶';
+					color:@color-red1;
+					border:1px solid @color-red1;
+					padding:2px 3px;
+					.border-radius-base(3px);
+				}
 			}
 		}
 	}
