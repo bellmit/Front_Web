@@ -1,3 +1,10 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"  import="java.util.*" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" 		uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="fn" 		uri="http://java.sun.com/jsp/jstl/functions"%>
+<%
+String path = request.getContextPath();
+String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+%>
 <!doctype html>
 <html lang="zh">
 <head>
@@ -9,7 +16,7 @@
 <meta name="description" content="信用卡管理--服务列表">
 <meta name="keywords" content="信用卡管理--服务列表">
 <title>信用卡管理--服务列表</title>
-<link rel="stylesheet" type="text/css" href="../../css/serve.css">
+<link rel="stylesheet" type="text/css" href="<%=path%>/mobile/css/serve.css">
 </head>
 <body>
 	
@@ -20,9 +27,9 @@
             <div class="slide-toggle" id="slideimg_show">
                 <!--轮播图片展示-->
                 <ul id="slide_img" class="slideimg">
-                    <li><a title="" href="#"><img alt="" src="../../images/1.jpg" ></a></li>
-                    <li><a title="" href="#"><img alt="" src="../../images/2.jpg" ></a></li>
-                    <li><a title="" href="#"><img alt="" src="../../images/3.jpg" ></a></li>
+                    <li><a title="" href="#"><img alt="" src="<%=path%>/mobile/images/1.jpg" ></a></li>
+                    <li><a title="" href="#"><img alt="" src="<%=path%>/mobile/images/2.jpg" ></a></li>
+                    <li><a title="" href="#"><img alt="" src="<%=path%>/mobile/images/3.jpg" ></a></li>
                 </ul>
                 
                 <!--轮播按钮-->
@@ -43,7 +50,7 @@
                 <div class="serve-item">
                     <a href="#" title="">
                         <div>
-                          <img src="../../images/shuaka.png" alt="">
+                          <img src="<%=path%>/mobile/images/shuaka.png" alt="">
                         </div>
                         <span>我要刷卡</span>
                     </a>
@@ -55,7 +62,7 @@
                 <div class="serve-item">
                     <a href="#" title="">
                         <div>
-                          <img src="../../images/fuwu.png" alt="">
+                          <img src="<%=path%>/mobile/images/fuwu.png" alt="">
                         </div>
                         <span>银行服务</span>
                     </a>
@@ -67,7 +74,7 @@
                 <div class="serve-item">
                     <a href="#" title="">
                         <div>
-                          <img src="../../images/daikuan.png" alt="">
+                          <img src="<%=path%>/mobile/images/daikuan.png" alt="">
                         </div>
                         <span>我要贷款</span>
                     </a>
@@ -79,7 +86,7 @@
                 <div class="serve-item">
                     <a href="#" title="">
                         <div>
-                          <img src="../../images/zixun.png" alt="">
+                          <img src="<%=path%>/mobile/images/zixun.png" alt="">
                         </div>
                         <span>理财资讯</span>
                     </a>
@@ -91,7 +98,7 @@
                 <div class="serve-item">
                     <a href="#" title="">
                         <div>
-                          <img src="../../images/gonglue.png" alt="">
+                          <img src="<%=path%>/mobile/images/gonglue.png" alt="">
                         </div>
                         <span>提额攻略</span>
                     </a>
@@ -103,7 +110,7 @@
                 <div class="serve-item">
                     <a href="#" title="">
                         <div>
-                          <img src="../../images/liwu.png" alt="">
+                          <img src="<%=path%>/mobile/images/liwu.png" alt="">
                         </div>
                         <span>礼物</span>
                     </a>
@@ -115,7 +122,7 @@
                 <div class="serve-item">
                     <a href="#" title="">
                         <div>
-                          <img src="../../images/shuaka.png" alt="">
+                          <img src="<%=path%>/mobile/images/shuaka.png" alt="">
                         </div>
                         <span>其他服务</span>
                     </a>
@@ -127,7 +134,7 @@
                 <div class="serve-item">
                     <a href="#" title="">
                         <div>
-                          <img src="../../images/fuwu.png" alt="">
+                          <img src="<%=path%>/mobile/images/fuwu.png" alt="">
                         </div>
                         <span>其他服务</span>
                     </a>
@@ -136,6 +143,6 @@
         </li>
 	</ul>
    
-<script src="../../../js/lib/require/require.js" data-main="../../js/serve/serve.js"></script>
+<script src="<%=path%>/js/lib/require/require.js" data-main="<%=path%>/mobile/js/serve/serve.js"></script>
 </body>
 </html>
