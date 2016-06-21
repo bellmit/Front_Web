@@ -23,7 +23,9 @@
 				'grid':'../../src/widgets/grid'
 			},
 			"index":{
-				'zepto':'../../../js/lib/zepto/zepto'
+				'jquery':'../../../js/lib/jquery/jquery',
+				'jquery_mobile':'../../../js/lib/jquery/jquery-mobile',
+				'slide':'../../src/widgets/slide'
 			},
 			"credit":{
 				'zepto':'../../../js/lib/zepto/zepto'
@@ -33,6 +35,11 @@
 		//模块依赖
 		shimlist={
 			"serve":{
+				'jquery_mobile':{
+					deps:['jquery']
+				}
+			},
+			"index":{
 				'jquery_mobile':{
 					deps:['jquery']
 				}
@@ -69,7 +76,7 @@
 	}
 	
 	
-})('credit'))
+})('index'))
 
 
 

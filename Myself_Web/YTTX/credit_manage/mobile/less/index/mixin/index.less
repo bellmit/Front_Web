@@ -1,6 +1,101 @@
-//首页
+///首页
+///作者：易品
 
+//全局设置
+html{
+	font-size:@font-size-base - 4;
+	.layout-base;
+}
+body{
+	background:@color-white;
+	font-size:1.6rem;
+}
 
+//布局
 .app-layout{
 	.app-layout;
+}
+
+
+//启动页
+.index-start-wrap{
+	.layout-fixedl-base(0,0,500);
+	width:100%;
+	width:100vw;
+	height:100%;
+	height:100vh;
+	display:none;
+	background:@color-white url(../images/start.png) center center no-repeat;
+	background-size:300px auto;
+}
+
+
+.index-slide-wrap{
+	.layout-fixedl-base(0,0,500);
+	width:100%;
+	width:100vw;
+	height:100%;
+	height:100vh;
+	background:@color-white;
+	.slide-wrap{
+		width:100%;
+		height:100%;
+	}
+	.slideimg{
+		li{
+			display:table;
+			div{
+				//width:100%;
+				//height:100%;
+				display:table-cell;
+				vertical-align:middle;
+				text-align:center;
+			}
+			a{
+				display:inline-block;
+				width:auto;
+				height:auto;
+				img{
+					display:inline-block;
+				}
+			}
+		}
+	}
+	.slideimg-btn{
+		text-align:center;
+		padding:0;
+	}
+}
+
+
+//主显示区
+.list-wrap{
+	.layout-base;
+	.c-detailguide;
+}
+
+
+@media (orientation:landscape){
+	//轮播适配
+	.index-slide-wrap{
+		.slideimg{
+				img{
+					width:auto !important;
+					height:30% !important;
+				}
+		}
+	}
+
+}
+
+@media (orientation:portrait){
+	//轮播适配
+	.index-slide-wrap{
+		.slideimg{
+				img{
+					width:90% !important;
+					height:auto !important;
+				}
+		}
+	}
 }

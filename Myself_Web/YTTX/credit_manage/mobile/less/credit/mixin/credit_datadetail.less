@@ -32,25 +32,9 @@ body{
 }
 
 
-.dlistwrap(){
-	.layout-base;
-	background:@color-white;
-	min-height:300px;
-	li{
-		.layout-base;
-		height:80px;
-		display:block;
-		padding:20px;
-		border-bottom:1px solid @color-gray14;
-		&:hover{
-			background:lighten(@color-gray16,2%);
-		}
-	}
-}
-
 //账单,提额
 .credit-billdetail-wrap,.credit-amountdetail-wrap{
-	.dlistwrap;
+	.c-ddetail-list;
 }
 
 .credit-billdetail-wrap{
