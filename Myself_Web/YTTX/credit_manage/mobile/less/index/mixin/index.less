@@ -29,14 +29,27 @@ body{
 	background-size:300px auto;
 }
 
-
+//引导页
 .index-slide-wrap{
 	.layout-fixedl-base(0,0,500);
 	width:100%;
 	width:100vw;
 	height:100%;
 	height:100vh;
+	display:none;
 	background:@color-white;
+	.slide-skip-btn{
+		.layout-absoluter-base(30px,20px,10);
+		.user-select-base;
+		padding:5px 10px;
+		.border-radius-base(3px);
+		background:@color-base;
+		color:@color-white;
+		font-size:1.2rem;
+		&:after{
+			content:"秒，跳过";
+		}
+	}
 	.slide-wrap{
 		width:100%;
 		height:100%;
