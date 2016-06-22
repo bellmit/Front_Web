@@ -18,6 +18,7 @@ define(['jquery'],function($){
 							 $btn:null,
 							 $slide_tipwrap:null,
 							 $slide_tip:null,
+							 isBackground:false,
 							 tipheight:0,
 							 itemheight:0,
 							 winwidth:$(win).width(),
@@ -47,23 +48,26 @@ define(['jquery'],function($){
 					var $this=$(this);
 					settings.curindex=$this.index();
 					settings.btn_action=true;
-					
 					settings.$slide_img.animate({
-						"left":-settings.curindex*settings.winwidth
+						"left":-settings.curindex * settings.winwidth
 					},settings.eff_time);
 					
 					$this.addClass(settings.btn_active)
 					.siblings()
 					.removeClass(settings.btn_active);
 					
-					if(settings.img_alt){
-							self.slideEffect(settings);
-					}else if(settings.$slide_tipwrap!=null){
-						settings.$slide_tipwrap.css({
-							"opacity":"0.4",
-							"top":settings.itemheight
-						});
+					//启动提示效果
+					if(!settings.isBackground){
+						if(settings.img_alt){
+								self.slideEffect(settings);
+						}else if(settings.$slide_tipwrap!==null){
+							settings.$slide_tipwrap.css({
+								"opacity":"0.4",
+								"top":settings.itemheight
+							});
+						}
 					}
+					
 				
 				});
 				
@@ -76,7 +80,7 @@ define(['jquery'],function($){
 
 						if(type=='mouseenter'){
 							//移入
-							 if(settings.$slide_tipwrap!=null){
+							 if(settings.$slide_tipwrap!==null){
 								 settings.$slide_tipwrap.stop(settings.auto_animates,true,false);
 							 }
 							clearInterval(settings.slide_id);
@@ -95,7 +99,7 @@ define(['jquery'],function($){
 				}else{
 					//pc端
 					settings.$wrap.hover(function(){
-					 if(settings.$slide_tipwrap!=null){
+					 if(settings.$slide_tipwrap!==null){
 						 settings.$slide_tipwrap.stop(settings.auto_animates,true,false);
 					 }
 						
@@ -118,7 +122,7 @@ define(['jquery'],function($){
 					$(win).resize(function(){
 						settings.winwidth=$(this).width();
 						settings.winwidth=settings.winwidth<settings.minwidth?settings.minwidth:settings.winwidth;
-						settings.$items.width(settings.winwidth);
+						settings.$items.css({"width":settings.winwidth});
 						settings.$slide_img.css({
 							"width":settings.size*settings.winwidth,
 							"left":-settings.curindex*settings.winwidth
@@ -135,34 +139,42 @@ define(['jquery'],function($){
 				 var self=this;
 				 settings.$items=settings.$slide_img.find("li");
 				 settings.winwidth=settings.winwidth<settings.minwidth?settings.minwidth:settings.winwidth;
-				 settings.$items.width(settings.winwidth);
+				 settings.$items.css({"width":settings.winwidth});
 				 settings.size=settings.$items.size();
 				 settings.$btn=settings.$btnwrap.find('li');
 				 settings.$slide_img.css({
 						"width":settings.size*settings.winwidth
 				 });
-				 if(settings.$slide_tipwrap!=null){
+				 if(settings.$slide_tipwrap!==null){
 					 settings.tipheight=settings.$slide_tipwrap.height();
 					 settings.$slide_tip=settings.$slide_tipwrap.find("p");
 				 }
 				 settings.itemheight=settings.$items.eq(0).height();
-				 if(settings.$items.eq(0).find("img").attr("alt")){
-					 settings.img_alt=true;
-					 settings.$items.find("img").each(function(index){
-						 settings.tip_text.push($(this).attr("alt"));
-					 });
-					 settings.$slide_tip.text(settings.tip_text[0]);
-				 }else{
-					 settings.img_alt=false;
-					 settings.tip_text.length=0;
-					 if(settings.$slide_tipwrap!=null){
-						 settings.$slide_tip.text('');
-						 settings.$slide_tipwrap.css({
-								"opacity":"0.4",
-								"top":settings.itemheight
+				 if(!settings.isBackground){
+					 if(settings.$items.eq(0).find("img").attr("alt")){
+						 settings.img_alt=true;
+						 settings.$items.find("img").each(function(){
+							 settings.tip_text.push($(this).attr("alt"));
 						 });
-					 } 
+						 settings.$slide_tip.text(settings.tip_text[0]);
+					 }else{
+						 settings.img_alt=false;
+						 settings.tip_text.length=0;
+						 if(settings.$slide_tipwrap!==null){
+							 settings.$slide_tip.text('');
+							 settings.$slide_tipwrap.css({
+									"opacity":"0.4",
+									"top":settings.itemheight
+							 });
+						 } 
+					 }
+				 }else{
+					 settings.$items.each(function(){
+						 	var $this=$(this),src=$this.attr('data-src');
+							$this.css({"background-image":'url('+src+')'});
+					 });
 				 }
+				 
 				 
 				 settings.slide_id=setInterval(function(){
 					 self.slidePlay(settings);
@@ -181,20 +193,24 @@ define(['jquery'],function($){
 				
 				settings.$btn.eq(settings.curindex).addClass(settings.btn_active).siblings().removeClass(settings.btn_active);
 				
-				if(settings.img_alt){
-					self.slideEffect(settings);
-				}else if(settings.$slide_tipwrap!=null){
-					settings.$slide_tipwrap.css({
-						"opacity":"0.4",
-						"top":settings.itemheight
-					});
+				//启动提示效果
+				if(!settings.isBackground){
+					if(settings.img_alt){
+						self.slideEffect(settings);
+					}else if(settings.$slide_tipwrap!==null){
+						settings.$slide_tipwrap.css({
+							"opacity":"0.4",
+							"top":settings.itemheight
+						});
+					}
 				}
+				
 		};
 		
 		//效果函数
 		this.slideEffect=function(settings){
 			var is_show;
-			if(settings.$slide_tipwrap!=null){
+			if(settings.$slide_tipwrap!==null){
 				is_show=parseInt(settings.$slide_tipwrap.css("top"))+settings.tipheight;
 			}
 			

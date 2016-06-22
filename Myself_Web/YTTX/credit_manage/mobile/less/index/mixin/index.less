@@ -43,23 +43,9 @@ body{
 	}
 	.slideimg{
 		li{
-			display:table;
-			div{
-				width:100%;
-				height:100%;
-				display:table-cell;
-				vertical-align:middle;
-				text-align:center;
-			}
-			a{
-				display:block;
-				margin:0 auto;
-				width:100%;
-				height:100%;
-				img{
-					display:inline-block;
-				}
-			}
+			background-position:center center;
+			background-color:@color-white;
+			background-repeat:no-repeat;
 		}
 	}
 	.slideimg-btn{
@@ -80,10 +66,9 @@ body{
 	//轮播适配
 	.index-slide-wrap{
 		.slideimg{
-				img{
-					width:auto !important;
-					height:30% !important;
-				}
+			li{
+				background-size:auto 90% !important;
+			}
 		}
 	}
 
@@ -93,10 +78,9 @@ body{
 	//轮播适配
 	.index-slide-wrap{
 		.slideimg{
-				img{
-					width:90% !important;
-					height:auto !important;
-				}
+			li{
+				background-size:90% auto !important;
+			}
 		}
 	}
 }

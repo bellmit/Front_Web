@@ -31,6 +31,7 @@ require(['jquery','jquery_mobile','slide'],function($,$jm,Slide) {
 			$wrap:$slideimg_show,
 			$slide_img:$slide_img,
 			$btnwrap:$slideimg_btn,
+			isBackground:true,
 			minwidth:320,
 			isresize:true,
 			size:3,
