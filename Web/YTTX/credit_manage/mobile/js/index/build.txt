@@ -1,7 +1,0 @@
-
-index.js
-----------------
-jquery.js
-jquery_mobile.js
-slide.js
-index.js

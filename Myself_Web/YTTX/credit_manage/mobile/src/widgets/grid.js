@@ -4,16 +4,7 @@ author:yipin
 多宫格布局
 ***/
 
-define(['jquery'],function($){
-	var isMobile=(function(){
-			 if(/(iPhone|iPod|Android|ios|iOS|iPad|Backerry|WebOS|Symbian|Windows Phone|Phone)/i.test(navigator.userAgent)){
-				 return true;
-			 }else{
-				 return false;
-			 }
-		 }());
-		 
-		 
+define(['zepto'],function($){
 	return {
 		
 		imgList:function(wrap,selector,n){
@@ -28,7 +19,7 @@ define(['jquery'],function($){
 					
 					
 					//绑定转屏事件或者窗口事件适配pc和移动端
-					$(window).on(isMobile?'orientationchange':'resize',function(e){
+					$(window).on('resize',function(e){
 						doLayout(wrap,$items,len,n);
 					});
 			}
