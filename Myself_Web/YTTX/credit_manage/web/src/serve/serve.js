@@ -17,6 +17,7 @@ require.config({
 
 /*程序入口*/
 require(['jquery','jquery_mobile','slide','grid'],function($,$jm,Slide,Grid) {
+	'use strict';
 	$(function(){
 		
 		//dom对象引用
@@ -33,6 +34,7 @@ require(['jquery','jquery_mobile','slide','grid'],function($,$jm,Slide,Grid) {
 			$btnwrap:$slideimg_btn,
 			minwidth:640,
 			isresize:true,
+			isTouch:true,
 			size:3,
 			times:5000,
 			eff_time:500,

@@ -5,25 +5,25 @@ author:yipin
 ***/
 
 define(['zepto'],function($){
+	'use strict';
+	var win=window;
 	return {
 		
 		imgList:function(wrap,selector,n){
 					var $items=wrap.find(selector),
-					len=$items.size(),
-					winwidth=$(wrap).width(),
-					itemheight=parseInt(winwidth/n,10);
+					len=$items.size();
 					
 					
 					//初始化
-					doLayout(wrap,$items,len,n);
+					doLayout(win,$items,len,n);
 					
 					
 					//绑定转屏事件或者窗口事件适配pc和移动端
-					$(window).on('resize',function(e){
-						doLayout(wrap,$items,len,n);
+					$(win).on('resize',function(){
+						doLayout(win,$items,len,n);
 					});
 			}
-	}
+	};
 	
 	
 	//服务函数

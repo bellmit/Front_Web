@@ -11,6 +11,7 @@ require.config({
 
 /*程序入口*/
 require(['zepto','slide','grid'],function($,Slide,Grid) {
+	'use strict';
 	$(function(){
 		
 		//dom对象引用

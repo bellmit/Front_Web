@@ -26,7 +26,8 @@ define(['jquery'],function($){
 							 img_alt:false,
 							 tip_text:[],
 							 btn_action:false,
-						     isMobile:(function(){
+							 isTouch:false,
+						   isMobile:(function(){
 								 if(/(iPhone|iPod|Android|ios|iOS|iPad|Backerry|WebOS|Symbian|Windows Phone|Phone)/i.test(navigator.userAgent)){
 									 return true;
 								 }else{
@@ -47,32 +48,30 @@ define(['jquery'],function($){
 				if(settings.size>1){
 					/*tab 点击切换*/
 					settings.$btnwrap.delegate('li', $.EventName.click,function(e){
-					e.preventDefault();
-					var $this=$(this);
-					settings.curindex=$this.index();
-					settings.btn_action=true;
-					settings.$slide_img.animate({
-						"left":-settings.curindex * settings.winwidth
-					},settings.eff_time);
-					
-					$this.addClass(settings.btn_active)
-					.siblings()
-					.removeClass(settings.btn_active);
-					
-					//启动提示效果
-					if(!settings.isBackground){
-						if(settings.img_alt){
-								self.slideEffect(settings);
-						}else if(settings.$slide_tipwrap!==null){
-							settings.$slide_tipwrap.css({
-								"opacity":"0.4",
-								"top":settings.itemheight
-							});
+						e.preventDefault();
+						var $this=$(this);
+						settings.curindex=$this.index();
+						settings.btn_action=true;
+						settings.$slide_img.animate({
+							"left":-settings.curindex * settings.winwidth
+						},settings.eff_time);
+						
+						$this.addClass(settings.btn_active)
+						.siblings()
+						.removeClass(settings.btn_active);
+						
+						//启动提示效果
+						if(!settings.isBackground){
+							if(settings.img_alt){
+									self.slideEffect(settings);
+							}else if(settings.$slide_tipwrap!==null){
+								settings.$slide_tipwrap.css({
+									"opacity":"0.4",
+									"top":settings.itemheight
+								});
+							}
 						}
-					}
-					
-				
-				});
+					});
 				
 					/*mouse hover,out event*/
 					//图片绑定鼠标事件
@@ -101,6 +100,38 @@ define(['jquery'],function($){
 							
 							fEnter(settings);
 						},function(){
+							fLeave(settings,self);
+						});
+					}
+					
+					
+					//绑定触摸事件
+					if(settings.isMobile&&settings.isTouch){
+						settings.$wrap.delegate('ul','swipeleft swiperight',function(e){
+							e.preventDefault();
+							fEnter(settings);
+							var cindex=settings.curindex;
+							if(e.type==='swipeleft'){
+								if(cindex===settings.size - 1){
+									cindex=0;
+								}else{
+									cindex++;
+								}
+							}else if(e.type==='swiperight'){
+								if(cindex===0){
+									cindex=settings.size - 1;
+								}else{
+									cindex--;
+								}
+							}
+							settings.curindex=cindex;
+							settings.$slide_img.animate({
+								"left":-settings.curindex * settings.winwidth
+							},settings.eff_time);
+							
+							settings.$btn.eq(settings.curindex).addClass(settings.btn_active)
+							.siblings()
+							.removeClass(settings.btn_active);
 							fLeave(settings,self);
 						});
 					}
