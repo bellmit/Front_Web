@@ -1,7 +1,7 @@
 {
-  "web_path": "Myself_Web",
+  "web_path": "Web",
   "base_path": "htdocs",
-  "name": "credit_manage",
+  "name": "credit_admin",
   "web_container":"mobile",
   "js_src":"src",
   "js_dest":"js",
@@ -10,7 +10,7 @@
   "image_src":"img",
   "image_dest":"images",
   "project": "YTTX",
-  "platform":"mobile",
+  "platform":"web",
   "module_name":"credit/credit_billdetail",
   "author": "yipin",
   "version": "1.0.0",
