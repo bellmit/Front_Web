@@ -11,7 +11,7 @@
   "image_dest":"images",
   "project": "YTTX",
   "platform":"web",
-  "module_name":"credit/credit_billdetail",
+  "module_name":"bootstrap",
   "author": "yipin",
   "version": "1.0.0",
   "description": "",

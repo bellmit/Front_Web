@@ -384,9 +384,14 @@
 	
 
 	
-	grunt.registerTask('default',"less编译生成css并压缩,同时实时监控",function(){
-		grunt.task.run(['less','cssmin','watch:less']);
+	grunt.registerTask('default',"less编译生成css并压缩",function(){
+		grunt.task.run(['less','cssmin']);
 	});
+
+	
+	/*grunt.registerTask('default',"less编译生成css并压缩,同时实时监控",function(){
+		grunt.task.run(['less','cssmin','watch:less']);
+	});*/
 	
 	
 	/*grunt.registerTask('default',"监控js压缩",function(){
