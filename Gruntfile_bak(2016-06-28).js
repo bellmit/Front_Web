@@ -20,7 +20,7 @@
 	};*/
 
 	//获取package.json的信息
-	var pkg=grunt.file.readJSON('package_admin.json'),
+	var pkg=grunt.file.readJSON('package.json'),
 		web_url=(function(pkg){
 				if(pkg.platform&&pkg.platform!==''){
 					return pkg.base_path+'/'+pkg.web_path+'/'+pkg.project+'/'+pkg.name+'/'+pkg.platform+'/';
@@ -40,6 +40,29 @@
 
 	//任务配置,所以插件的配置信息
 	grunt.initConfig({
+		//服务器
+		/*connect:{
+			options: {
+				// 服务器端口号
+				port: 90,
+				// 服务器地址(可以使用主机名localhost，也能使用IP)
+				hostname: '127.0.0.1',
+				// 物理路径(默认为. 即根目录) 注：使用'.'或'..'为路径的时，可能会返回403 Forbidden. 此时将该值改为相对路径 如：/grunt/reloard。
+				base: '.'
+			},
+			livereload: {
+				options: {
+					// 通过LiveReload脚本，让页面重新加载。
+					middleware:flushMv
+				},
+				files:(function(pkg,web_url){
+					return doFilter({package:pkg,web_url:web_url},'js_src','.js');
+				})(pkg,web_url)
+			}
+
+		},*/
+		
+		
 		//css语法检查
 		csslint:{
 			//检查生成的css文件目录文件
@@ -51,6 +74,23 @@
 				})(pkg,web_url)
 		},
 		
+		//配置requirejs
+		requirejs: {
+		  compile: {
+			options: {
+			  baseUrl:web_url+"/"+pkg.js_src,
+			  mainConfigFile:(function(pkg,web_url){
+					return doFilter({package:pkg,web_url:web_url},'js_src','.js');
+				})(pkg,web_url),
+			  include:(function(pkg,web_url){
+					return doFilter({package:pkg,web_url:web_url},'js_src','.js');
+				})(pkg,web_url),
+			  out:(function(pkg,web_url){
+					return doFilter({package:pkg,web_url:web_url},'js_dest','.js');
+				})(pkg,web_url)
+			}
+		  }
+		},
 		
 		//定义js语法检查（看配置信息）
 		jshint:{
@@ -59,7 +99,7 @@
 			},
 			//检查源目录文件和生成目录文件
 			all:(function(pkg,web_url){
-					return doFilter({package:pkg,web_url:web_url},['js_src','js_dest'],'.js');
+					return doFilter({package:pkg,web_url:web_url},['js_src','js_dest'],'.css');
 				})(pkg,web_url)
 		},
 
@@ -175,6 +215,17 @@
 
 		//定义监控文件变化
 		watch:{
+			/*client: {
+				// 我们不需要配置额外的任务，watch任务已经内建LiveReload浏览器刷新的代码片段。
+				options: {
+					livereload:flushPort
+				},
+				// '**' 表示包含所有的子目录
+				// '*' 表示包含所有的文件
+				files:(function(pkg,web_url){
+					return doFilter({package:pkg,web_url:web_url},'js_src','.js');
+				})(pkg,web_url)',
+			}*/
 			less:{
 				files:[web_url+pkg.less_src+'/**/*.less'],
 				tasks:['less','cssmin'],
@@ -205,11 +256,10 @@
 	//抽离公共处理函数
 	function doFilter(sou,str,suffix){
 		var spkg,surl,sname,sstr,res;
-		
 		//设置源
 		if(!sou){
-			spkg=grunt.file.readJSON('package_admin.json');
-			if(spkg.platform&&spkg.platform!==''){
+			spkg=grunt.file.readJSON('package.json');
+			if(spkg.platform&&platform!==''){
 				surl=spkg.base_path+'/'+spkg.web_path+'/'+spkg.project+'/'+spkg.name+'/'+spkg.platform+'/';
 			}else{
 				surl=spkg.base_path+'/'+spkg.web_path+'/'+spkg.project+'/'+spkg.name+'/';
@@ -218,10 +268,8 @@
 			spkg=sou.package;
 			surl=sou.web_url;
 		}
-		
 		//设置名称
 		sname=spkg.module_name;
-		
 		//设置路径
 		if(typeof str==='string'){
 			sstr=spkg[str];
@@ -231,9 +279,7 @@
 				sstr.push(spkg[str[i]]);
 			}
 		}
-		
 		//过滤
-		//不存在模块名
 		if(sname===''){
 			if(typeof sstr==='string'){
 				res=surl+sstr+'/'+sname+suffix;
@@ -249,18 +295,15 @@
 			}
 			return res;
 		}else{
-			//存在模块名
+			//filter
 			if(sname.indexOf('/')!==-1){
-				//有多层路径存在
 				var tempmodule=sname.split('/'),
 				filename=tempmodule[tempmodule.length-1];
 				tempmodule.pop();
 				if(typeof sstr==='string'){
 					if(suffix==='.css'){
 						res=surl+sstr+'/'+filename+suffix;
-					}else if(suffix==='.js'){
-						res=surl+sstr+'/'+tempmodule.join('/')+'/'+filename+suffix;
-					}else if(suffix==='.less'){
+					}else{
 						res=surl+sstr+'/'+tempmodule.join('/')+'/'+filename+suffix;
 					}
 				}else{
@@ -272,11 +315,7 @@
 								for(j;j<len;j++){
 									res.push(surl+sstr[j]+'/'+filename+suffix);
 								}
-							}else if(suffix==='.js'){
-								for(j;j<len;j++){
-									res.push(surl+sstr[j]+'/'+tempmodule.join('/')+'/'+filename+suffix);
-								}
-							}else if(suffix==='.less'){
+							}else{
 								for(j;j<len;j++){
 									res.push(surl+sstr[j]+'/'+tempmodule.join('/')+'/'+filename+suffix);
 								}
@@ -285,23 +324,13 @@
 				}
 				return res;
 			}else{
-				
-				//只有单层路径
 				if(typeof sstr==='string'){
-					//源文件路径为单个
 					if(suffix==='.css'){
-						//当为css时的情况
 						res=surl+sstr+'/'+spkg.module_name+suffix;
-					}else if(suffix==='.js'){
-						//当为js时的情况
+					}else{
 						res=surl+sstr+'/'+spkg.module_name+'/'+spkg.module_name+suffix;
-					}else if(suffix==='.less'){
-						//当为less时的情况
-						res=surl+sstr+'/'+spkg.module_name+suffix;
 					}
 				}else{
-					
-					//源文件路径为多个
 					res=[];
 					(function(){
 						var j=0,
@@ -310,14 +339,11 @@
 								for(j;j<len;j++){
 									res.push(surl+sstr[j]+'/'+spkg.module_name+suffix);
 								}
-							}else if(suffix==='.js'){
+							}else{
 								for(j;j<len;j++){
 									res.push(surl+sstr[j]+'/'+spkg.module_name+'/'+spkg.module_name+suffix);
 								}
-							}else if(suffix==='.less'){
-								for(j;j<len;j++){
-									res.push(surl+sstr[j]+'/'+spkg.module_name+suffix);
-								}
+
 							}
 					}());
 				}
