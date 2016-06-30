@@ -7,7 +7,7 @@ footer {
 		margin-left: -@main-content-padding;
 		margin-right: -@main-content-padding;
 		margin-top: @base-padding;
-		background-color: @background-color;
+		background-color: @color-white;
 		.clearfix();
 	
 		.page-container + & {
@@ -27,13 +27,13 @@ footer {
 		
 		.go-up {
 			float: right;
-			
+			.border-radius-base(3px);
+			overflow:hidden;
 			a {
 				display: inline-block;
 				background-color: fade(@main-color, 5%);
-				padding: 2px 5px;
+				padding: 2px 10px;
 				&:extend(.transall);
-				
 				&:hover {
 					background-color: fade(@main-color, 10%);
 				}

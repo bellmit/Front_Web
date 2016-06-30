@@ -1,1 +1,16 @@
-//you create css
+@import '../layout/variable/base_variable_support.less';
+
+.credit-chart-wrap{
+	.layout-base;
+	border:1px solid @color-gray14;
+	.border-radius-base(3px);
+	height:350px;
+	padding:20px;
+}
+@media screen and (max-width:768px){
+				.credit-chart-wrap{
+					height:250px;
+					padding:5px;
+				}
+			
+}
