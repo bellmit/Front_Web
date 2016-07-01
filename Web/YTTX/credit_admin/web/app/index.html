@@ -10,6 +10,7 @@
   <meta name="author" content="yp" />
 	<title>银通天下后台管理系统</title>
 	<link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" type="text/css" href="../js/daterangepicker/daterangepicker-bs3.css">
 	<link rel="stylesheet" href="../css/index.css">
   <script src="../js/jquery-1.11.1.min.js"></script>
 	<!--[if lt IE 9]>
@@ -385,7 +386,12 @@
 			<div class="row">
 				<div class="col-md-12">
         		<div class="panel">
-              <div class="panel-heading">新增入网用户统计</div>
+              <div class="panel-heading">新增入网用户统计
+                <div class="chart-search-wrap">
+                  <input id="search_time" placeholder="请选择日期" readonly class="form-control daterange" data-format="YYYY-MM-DD" type="text" data-max-date="" data-min-date="" data-separator=",">
+                  <button class="btn btn-success">查询</button>
+                </div>
+							</div>
               <div class="panel-body">
                 <div id="chart_wrap" class="credit-chart-wrap"></div>
               </div>
@@ -431,6 +437,7 @@
 	<script src="../js/credit_widgets.js"></script>
 	<script src="../js/credit_common.js"></script>
   <script src="../js/highcharts/highcharts.js"></script>
+  <script src="../js/daterangepicker/daterangepicker.js"></script>
   <script src="../js/index/index.js"></script>
 </body>
 </html>

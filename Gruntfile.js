@@ -1,5 +1,7 @@
 
 ;module.exports = function(grunt){
+	
+	var filename='package_admin.json';
 
 	/*//配置端口
 	var flushPort=35729;
@@ -20,7 +22,7 @@
 	};*/
 
 	//获取package.json的信息
-	var pkg=grunt.file.readJSON('package_admin.json'),
+	var pkg=grunt.file.readJSON(filename),
 		web_url=(function(pkg){
 				if(pkg.platform&&pkg.platform!==''){
 					return pkg.base_path+'/'+pkg.web_path+'/'+pkg.project+'/'+pkg.name+'/'+pkg.platform+'/';
@@ -208,7 +210,7 @@
 		
 		//设置源
 		if(!sou){
-			spkg=grunt.file.readJSON('package_admin.json');
+			spkg=grunt.file.readJSON(filename);
 			if(spkg.platform&&spkg.platform!==''){
 				surl=spkg.base_path+'/'+spkg.web_path+'/'+spkg.project+'/'+spkg.name+'/'+spkg.platform+'/';
 			}else{
@@ -358,15 +360,15 @@
 	
 
 	
-	/*grunt.registerTask('default',"less编译生成css并压缩",function(){
+	grunt.registerTask('default',"less编译生成css并压缩",function(){
 		grunt.task.run(['less','cssmin']);
-	});*/
+	});
 
 	
-	grunt.registerTask('default',"less编译生成css并压缩,同时实时监控",function(){
+	/*grunt.registerTask('default',"less编译生成css并压缩,同时实时监控",function(){
 		grunt.task.run(['less','cssmin','watch:less']);
 	});
-	
+	*/
 	
 	/*grunt.registerTask('default',"监控js压缩",function(){
 		grunt.task.run(['uglify','watch']);

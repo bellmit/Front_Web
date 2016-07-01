@@ -13,23 +13,38 @@
 		var home_chartobj={
             chart: {
                 type: 'column',
-								spacingBottom:50
+								spacingBottom:20,
+								style:{
+									margin:"0 auto"	
+								}
 						},
 						title: {
 								text:""
 						},
 						legend:{
-							enabled:false
+							/*enabled:true,
+							margin:35,
+							padding:10,
+							backgroundColor:"#fff",
+							borderColor:"#cecece",
+							itemDistance:12,
+							borderRadius:'3',
+							symbolWidth:24,
+							symbolHeight:14,
+							itemStyle:{
+								color:"#4f4f4f"
+							},
+							y:-5*/
 						},
-						colors:global_color[2],
+						colors:global_color,
 						xAxis: {
 								categories:global_xitem,
-								lineColor:"#cecece",
+								lineColor:"#aaa",
 								tickLength:0,
 								labels:{
 									y:25,
 									style:{
-										color:"#a0a0a0"
+										color:"#999"
 									}
 								}
 						},
@@ -72,5 +87,9 @@
 		
 		
 	});
+	
+	
+	
+	//function 
 	
 })(jQuery);
