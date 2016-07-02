@@ -2,6 +2,76 @@
 	"use strict";
 	$(function(){
 		
+		
+		
+		//页面元素引用
+		var $search_time=$("#search_time");
+		
+		
+		
+		//日历支持
+		(function(){
+			//初始化
+		//	var ranges = {
+//						'Today':[moment(),moment()],
+//						'Yesterday':[moment().subtract('days', 1), moment().subtract('days', 1)],
+//						'Last 7 Days': [moment().subtract('days', 6), moment()],
+//						'Last 30 Days': [moment().subtract('days', 29), moment()],
+//						'This Month': [moment().startOf('month'), moment().endOf('month')],
+//						'Last Month': [moment().subtract('month', 1).startOf('month'), moment().subtract('month', 1).endOf('month')]
+//				},
+//				opts = {
+//						format: attrDefault($search_time, 'format', 'MM/DD/YYYY'),
+//						timePicker: attrDefault($search_time, 'timePicker', false),
+//						timePickerIncrement: attrDefault($search_time, 'timePickerIncrement', false),
+//						separator: attrDefault($search_time, 'separator', ' - '),
+//					},
+//					min_date = attrDefault($search_time, 'minDate', ''),
+//					max_date = attrDefault($search_time, 'maxDate', ''),
+//					start_date = attrDefault($search_time, 'startDate', ''),
+//					end_date = attrDefault($search_time, 'endDate', '');
+//				
+//				if($search_time.hasClass('add-ranges')){
+//					opts['ranges'] = ranges;
+//				}	
+//				if(min_date.length){
+//					opts['minDate'] = min_date;
+//				}
+//				if(max_date.length){
+//					opts['maxDate'] = max_date;
+//				}
+//				if(start_date.length){
+//					opts['startDate'] = start_date;
+//				}
+//				if(end_date.length){
+//					opts['endDate'] = end_date;
+//				};
+				
+				//调用
+				$search_time.daterangepicker(/*opts,*/ function(start, end){
+						var $this=$(this),
+								drp = $this.data('daterangepicker');
+
+						if($this.hasClass('daterange-inline')){
+							$this.find('span').html(start.format(drp.format) + drp.separator + end.format(drp.format));
+						}
+				});
+				//设置
+				//if(typeof opts['ranges'] == 'object'){
+//						$search_time.data('daterangepicker').container.removeClass('show-calendar');
+//				}
+
+		}());
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		/*报表数据定义区*/
 		var isnodata=false,
 		global_color=['#2f7ed8','#0d233a','#8bbc21','#910000','#1aadce','#492970','#f28f43','#77a1e5','#c42525','#a6c96a'],

@@ -229,6 +229,7 @@
 		buildfile=file.build_name;
 		
 		
+		
 		//设置路径
 		if(typeof str==='string'){
 			buildfile=file[str]+'/'+buildfile;
@@ -238,6 +239,7 @@
 				buildfile.push(file[str[i]]+'/'+buildfile);
 			}
 		}
+		
 
 		
 		//过滤
@@ -245,6 +247,10 @@
 			//有多层路径存在
 			var tempmodule=sourcefile.split('/'),
 			filename=tempmodule[tempmodule.length-1];
+			if(suffix==='.less'){
+				tempmodule.pop();
+				buildfile=buildfile+tempmodule.join('/')+'/';
+			}
 		}else{
 			//只有单层路径
 			filename=sourcefile;
@@ -295,23 +301,23 @@
 	
 
 	
-	/*grunt.registerTask('default',"less编译生成css并压缩",function(){
+	grunt.registerTask('default',"less编译生成css并压缩",function(){
 		grunt.task.run(['less','cssmin']);
-	});*/
+	});
 
 	
 	/*grunt.registerTask('default',"less编译生成css并压缩,同时实时监控",function(){
 		grunt.task.run(['less','cssmin','watch:less']);
-	});
-	*/
+	});*/
+	
 	
 	/*grunt.registerTask('default',"监控js压缩",function(){
 		grunt.task.run(['uglify','watch']);
 	});*/
 	
-	grunt.registerTask('default',"js压缩",function(){
+	/*grunt.registerTask('default',"js压缩",function(){
 		grunt.task.run(['uglify']);
-	});
+	});*/
 	
 	
 

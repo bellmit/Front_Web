@@ -59,7 +59,7 @@
                       '<input class="input-mini g-d-hidei" type="text" name="daterangepicker_end" value="" />' +
                     '</div>' +
                     '<button class="applyBtn" disabled="disabled"></button>&nbsp;' +
-                    '<button class="cancelBtn" disabled="disabled"></button>' +
+                    '<button class="cancelBtn"></button>' +
                   '</div>' +
                 '</div>' +
               '</div>';
