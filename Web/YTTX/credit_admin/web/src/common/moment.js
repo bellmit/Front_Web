@@ -628,12 +628,12 @@
 
     // LOCALES
 
-    var defaultLocaleMonths = 'January_February_March_April_May_June_July_August_September_October_November_December'.split('_');
+    var defaultLocaleMonths = '三月_二月_三月_四月_五月_六月_七月_八月_九月_十月_十一月_十二月'.split('_');
     function localeMonths (m) {
         return this._months[m.month()];
     }
 
-    var defaultLocaleMonthsShort = 'Jan_Feb_Mar_Apr_May_Jun_Jul_Aug_Sep_Oct_Nov_Dec'.split('_');
+    var defaultLocaleMonthsShort = '一_二_三_四_五_六_七_八_九_十_十一_十二'.split('_');
     function localeMonthsShort (m) {
         return this._monthsShort[m.month()];
     }
@@ -2268,17 +2268,17 @@
 
     // LOCALES
 
-    var defaultLocaleWeekdays = 'Sunday_Monday_Tuesday_Wednesday_Thursday_Friday_Saturday'.split('_');
+    var defaultLocaleWeekdays = '星期日_星期一_星期二_星期三_星期四_星期五_星期六'.split('_');
     function localeWeekdays (m) {
         return this._weekdays[m.day()];
     }
 
-    var defaultLocaleWeekdaysShort = 'Sun_Mon_Tue_Wed_Thu_Fri_Sat'.split('_');
+    var defaultLocaleWeekdaysShort = '周日_周一_周二_周三_周四_周五_周六'.split('_');
     function localeWeekdaysShort (m) {
         return this._weekdaysShort[m.day()];
     }
 
-    var defaultLocaleWeekdaysMin = 'Su_Mo_Tu_We_Th_Fr_Sa'.split('_');
+    var defaultLocaleWeekdaysMin = '日_一_二_三_四_五_六'.split('_');
     function localeWeekdaysMin (m) {
         return this._weekdaysMin[m.day()];
     }
@@ -3183,123 +3183,10 @@
     utils_hooks__hooks.relativeTimeThreshold = duration_humanize__getSetRelativeTimeThreshold;
 
     var _moment__default = utils_hooks__hooks;
-		
-
-    var zh_cn = _moment__default.defineLocale('zh-cn', {
-        months : '涓€鏈坃浜屾湀_涓夋湀_鍥涙湀_浜旀湀_鍏湀_涓冩湀_鍏湀_涔濇湀_鍗佹湀_鍗佷竴鏈坃鍗佷簩鏈�'.split('_'),
-        monthsShort : '1鏈坃2鏈坃3鏈坃4鏈坃5鏈坃6鏈坃7鏈坃8鏈坃9鏈坃10鏈坃11鏈坃12鏈�'.split('_'),
-        weekdays : '鏄熸湡鏃鏄熸湡涓€_鏄熸湡浜宊鏄熸湡涓塤鏄熸湡鍥沖鏄熸湡浜擾鏄熸湡鍏�'.split('_'),
-        weekdaysShort : '鍛ㄦ棩_鍛ㄤ竴_鍛ㄤ簩_鍛ㄤ笁_鍛ㄥ洓_鍛ㄤ簲_鍛ㄥ叚'.split('_'),
-        weekdaysMin : '鏃涓€_浜宊涓塤鍥沖浜擾鍏�'.split('_'),
-        longDateFormat : {
-            LT : 'Ah鐐筸m鍒�',
-            LTS : 'Ah鐐筸鍒唖绉�',
-            L : 'YYYY-MM-DD',
-            LL : 'YYYY骞碝MMD鏃�',
-            LLL : 'YYYY骞碝MMD鏃h鐐筸m鍒�',
-            LLLL : 'YYYY骞碝MMD鏃dddAh鐐筸m鍒�',
-            l : 'YYYY-MM-DD',
-            ll : 'YYYY骞碝MMD鏃�',
-            lll : 'YYYY骞碝MMD鏃h鐐筸m鍒�',
-            llll : 'YYYY骞碝MMD鏃dddAh鐐筸m鍒�'
-        },
-        meridiemParse: /鍑屾櫒|鏃╀笂|涓婂崍|涓崍|涓嬪崍|鏅氫笂/,
-        meridiemHour: function (hour, meridiem) {
-            if (hour === 12) {
-                hour = 0;
-            }
-            if (meridiem === '鍑屾櫒' || meridiem === '鏃╀笂' ||
-                    meridiem === '涓婂崍') {
-                return hour;
-            } else if (meridiem === '涓嬪崍' || meridiem === '鏅氫笂') {
-                return hour + 12;
-            } else {
-                // '涓崍'
-                return hour >= 11 ? hour : hour + 12;
-            }
-        },
-        meridiem : function (hour, minute, isLower) {
-            var hm = hour * 100 + minute;
-            if (hm < 600) {
-                return '鍑屾櫒';
-            } else if (hm < 900) {
-                return '鏃╀笂';
-            } else if (hm < 1130) {
-                return '涓婂崍';
-            } else if (hm < 1230) {
-                return '涓崍';
-            } else if (hm < 1800) {
-                return '涓嬪崍';
-            } else {
-                return '鏅氫笂';
-            }
-        },
-        calendar : {
-            sameDay : function () {
-                return this.minutes() === 0 ? '[浠婂ぉ]Ah[鐐规暣]' : '[浠婂ぉ]LT';
-            },
-            nextDay : function () {
-                return this.minutes() === 0 ? '[鏄庡ぉ]Ah[鐐规暣]' : '[鏄庡ぉ]LT';
-            },
-            lastDay : function () {
-                return this.minutes() === 0 ? '[鏄ㄥぉ]Ah[鐐规暣]' : '[鏄ㄥぉ]LT';
-            },
-            nextWeek : function () {
-                var startOfWeek, prefix;
-                startOfWeek = _moment__default().startOf('week');
-                prefix = this.unix() - startOfWeek.unix() >= 7 * 24 * 3600 ? '[涓媇' : '[鏈琞';
-                return this.minutes() === 0 ? prefix + 'dddAh鐐规暣' : prefix + 'dddAh鐐筸m';
-            },
-            lastWeek : function () {
-                var startOfWeek, prefix;
-                startOfWeek = _moment__default().startOf('week');
-                prefix = this.unix() < startOfWeek.unix()  ? '[涓奭' : '[鏈琞';
-                return this.minutes() === 0 ? prefix + 'dddAh鐐规暣' : prefix + 'dddAh鐐筸m';
-            },
-            sameElse : 'LL'
-        },
-        ordinalParse: /\d{1,2}(鏃鏈坾鍛�)/,
-        ordinal : function (number, period) {
-            switch (period) {
-            case 'd':
-            case 'D':
-            case 'DDD':
-                return number + '鏃�';
-            case 'M':
-                return number + '鏈�';
-            case 'w':
-            case 'W':
-                return number + '鍛�';
-            default:
-                return number;
-            }
-        },
-        relativeTime : {
-            future : '%s鍐�',
-            past : '%s鍓�',
-            s : '鍑犵',
-            m : '1 鍒嗛挓',
-            mm : '%d 鍒嗛挓',
-            h : '1 灏忔椂',
-            hh : '%d 灏忔椂',
-            d : '1 澶�',
-            dd : '%d 澶�',
-            M : '1 涓湀',
-            MM : '%d 涓湀',
-            y : '1 骞�',
-            yy : '%d 骞�'
-        },
-        week : {
-            // GB/T 7408-1994銆婃暟鎹厓鍜屼氦鎹㈡牸寮徛蜂俊鎭氦鎹⒙锋棩鏈熷拰鏃堕棿琛ㄧず娉曘€嬩笌ISO 8601:1988绛夋晥
-            dow : 1, // Monday is the first day of the week.
-            doy : 4  // The week that contains Jan 4th is the first week of the year.
-        }
-    });
-
-    
+	
 
     var moment_with_locales = _moment__default;
-    moment_with_locales.locale('zh-cn');
+    moment_with_locales.locale('en');
 
     return moment_with_locales;
 

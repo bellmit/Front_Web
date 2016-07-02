@@ -31,7 +31,7 @@
 				}
 			})(pkg),
 		bannerstr='/**\nname:'+pkg.name+' / '+(function(pkg){
-			var name=pkg.module_name;
+			var name=pkg.source_name;
 			if(name.indexOf('/')!==-1){
 				var tempname=name.split('/');
 				return tempname[tempname.length-1];
@@ -167,7 +167,7 @@
 			},
 			build:{
 				src:(function(pkg,web_url){
-					return doFilter({package:pkg,web_url:web_url},'js_dest','.js');
+					return doFilter({package:pkg,web_url:web_url},'js_src','.js');
 				})(pkg,web_url),
 				dest:(function(pkg,web_url){
 					return doFilter({package:pkg,web_url:web_url},'js_dest','.js');
@@ -206,127 +206,62 @@
 	
 	//抽离公共处理函数
 	function doFilter(sou,str,suffix){
-		var spkg,surl,sname,sstr,res;
+		//sou为配置文件
+		//str为资源源文件或者生成文件
+		//生成文件的类型即后缀
+		var file,baseurl,sourcefile,buildfile,result,filename;
 		
 		//设置源
 		if(!sou){
-			spkg=grunt.file.readJSON(filename);
-			if(spkg.platform&&spkg.platform!==''){
-				surl=spkg.base_path+'/'+spkg.web_path+'/'+spkg.project+'/'+spkg.name+'/'+spkg.platform+'/';
+			file=grunt.file.readJSON(filename);
+			if(file.platform&&file.platform!==''){
+				baseurl=file.base_path+'/'+file.web_path+'/'+file.project+'/'+file.name+'/'+file.platform+'/';
 			}else{
-				surl=spkg.base_path+'/'+spkg.web_path+'/'+spkg.project+'/'+spkg.name+'/';
+				baseurl=file.base_path+'/'+file.web_path+'/'+file.project+'/'+file.name+'/';
 			}
 		}else{
-			spkg=sou.package;
-			surl=sou.web_url;
+			file=sou.package;
+			baseurl=sou.web_url;
 		}
 		
-		//设置名称
-		sname=spkg.module_name;
+		//设置源文件路径
+		sourcefile=file.source_name;
+		buildfile=file.build_name;
+		
 		
 		//设置路径
 		if(typeof str==='string'){
-			sstr=spkg[str];
+			buildfile=file[str]+'/'+buildfile;
 		}else{
-			sstr=[];
+			buildfile=[];
 			for(var i=0;i<str.length;i++){
-				sstr.push(spkg[str[i]]);
+				buildfile.push(file[str[i]]+'/'+buildfile);
 			}
 		}
+
 		
 		//过滤
-		//不存在模块名
-		if(sname===''){
-			if(typeof sstr==='string'){
-				res=surl+sstr+'/'+sname+suffix;
-			}else{
-				res=[];
-				(function(){
-					var j=0,
-						len=sstr.length;
-					for(j;j<len;j++){
-						res.push(surl+sstr[j]+'/'+sname+suffix);
-					}
-				}());
-			}
-			return res;
+		if(sourcefile.indexOf('/')!==-1){
+			//有多层路径存在
+			var tempmodule=sourcefile.split('/'),
+			filename=tempmodule[tempmodule.length-1];
 		}else{
-			//存在模块名
-			if(sname.indexOf('/')!==-1){
-				//有多层路径存在
-				var tempmodule=sname.split('/'),
-				filename=tempmodule[tempmodule.length-1];
-				tempmodule.pop();
-				if(typeof sstr==='string'){
-					if(suffix==='.css'){
-						res=surl+sstr+'/'+filename+suffix;
-					}else if(suffix==='.js'){
-						res=surl+sstr+'/'+tempmodule.join('/')+'/'+filename+suffix;
-					}else if(suffix==='.less'){
-						res=surl+sstr+'/'+tempmodule.join('/')+'/'+filename+suffix;
-					}
-				}else{
-					res=[];
-					(function(){
-						var j=0,
-							len=sstr.length;
-							if(suffix==='.css'){
-								for(j;j<len;j++){
-									res.push(surl+sstr[j]+'/'+filename+suffix);
-								}
-							}else if(suffix==='.js'){
-								for(j;j<len;j++){
-									res.push(surl+sstr[j]+'/'+tempmodule.join('/')+'/'+filename+suffix);
-								}
-							}else if(suffix==='.less'){
-								for(j;j<len;j++){
-									res.push(surl+sstr[j]+'/'+tempmodule.join('/')+'/'+filename+suffix);
-								}
-							}
-					}());
-				}
-				return res;
-			}else{
-				
-				//只有单层路径
-				if(typeof sstr==='string'){
-					//源文件路径为单个
-					if(suffix==='.css'){
-						//当为css时的情况
-						res=surl+sstr+'/'+spkg.module_name+suffix;
-					}else if(suffix==='.js'){
-						//当为js时的情况
-						res=surl+sstr+'/'+spkg.module_name+'/'+spkg.module_name+suffix;
-					}else if(suffix==='.less'){
-						//当为less时的情况
-						res=surl+sstr+'/'+spkg.module_name+suffix;
-					}
-				}else{
-					
-					//源文件路径为多个
-					res=[];
-					(function(){
-						var j=0,
-							len=sstr.length;
-							if(suffix==='.css'){
-								for(j;j<len;j++){
-									res.push(surl+sstr[j]+'/'+spkg.module_name+suffix);
-								}
-							}else if(suffix==='.js'){
-								for(j;j<len;j++){
-									res.push(surl+sstr[j]+'/'+spkg.module_name+'/'+spkg.module_name+suffix);
-								}
-							}else if(suffix==='.less'){
-								for(j;j<len;j++){
-									res.push(surl+sstr[j]+'/'+spkg.module_name+suffix);
-								}
-							}
-					}());
-				}
-				return res;
-			}
+			//只有单层路径
+			filename=sourcefile;
 		}
-		
+		if(typeof buildfile==='string'){
+			result=baseurl+buildfile+filename+suffix;
+		}else{
+			result=[];
+			(function(){
+				var j=0,
+					len=buildfile.length;
+					for(j;j<len;j++){
+						result.push(baseurl+buildfile[j]+filename+suffix);
+					}
+			}());
+		}
+		return result;
 	}
 
 
@@ -360,9 +295,9 @@
 	
 
 	
-	grunt.registerTask('default',"less编译生成css并压缩",function(){
+	/*grunt.registerTask('default',"less编译生成css并压缩",function(){
 		grunt.task.run(['less','cssmin']);
-	});
+	});*/
 
 	
 	/*grunt.registerTask('default',"less编译生成css并压缩,同时实时监控",function(){
@@ -374,9 +309,9 @@
 		grunt.task.run(['uglify','watch']);
 	});*/
 	
-	/*grunt.registerTask('default',"js压缩",function(){
+	grunt.registerTask('default',"js压缩",function(){
 		grunt.task.run(['uglify']);
-	});*/
+	});
 	
 	
 
