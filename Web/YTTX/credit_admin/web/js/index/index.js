@@ -54,9 +54,12 @@
 					title:{
 						text:""
 					},
-					gridLineColor:"#ffffff",
+					gridLineColor:"#fafafa",
 					labels:{
-						enabled:false
+						enabled:true,
+						style:{
+							color:"#ccc"
+						}
 					}
 				},
 				credits: {
@@ -70,10 +73,17 @@
 									isnodata=true;
 								}
 								return datas;
-						})(chart_data)
+						})(chart_data),
+						color:(function(c){
+							var len=c.length;
+							return c[parseInt(Math.random() * len,10)];
+						})(chart_color)
 				}],
 				tooltip:{
-					shadow:false
+					shadow:false,
+					formatter: function(){
+							return "<span style=\"color:#666;\">"+this.x+":</span><span style=\"color:"+this.color+"\">"+this.y+"</span>";
+					}
 				},
 				plotOptions: {
 					series: {
@@ -83,7 +93,7 @@
 								if(isnodata){
 									return "";
 								}else{
-									return "<span style=\"color:"+chart_color[parseInt(Math.random() * 10,10)]+"\">"+this.y+"个</span>";
+									return "<span style=\"color:#666\">"+this.y+" 户</span>";
 								}
 							}
 						}
@@ -123,7 +133,7 @@
 				var time_val=$chart_search_time.val().split(',');
 						//求值
 						chart_posz=datePosZ(time_val[0],time_val[1]);
-						chart_data=function(){
+						chart_data=(function(){
 							var len=chart_posz.length,
 							i=0,
 							res=[];
@@ -131,8 +141,14 @@
 								res.push(parseInt(Math.random() * 100,10));
 							}
 							return res;
-						};
+						}());
 						//柱状图重绘
+						chartobj.series[0].color=(function(c){
+							var len=c.length;
+							return c[parseInt(Math.random() * len,10)];
+						})(chart_color);
+						chartobj.xAxis.categories=chart_posz;
+						chartobj.series[0].data=chart_data;
 						$chart_wrap.highcharts(chartobj);
 		});
 		
@@ -151,7 +167,7 @@
 					ey=edate[0],
 					em=edate[1],
 					y=ey-sy,
-					i=1,
+					i=sm,
 					j=y-1,
 					posz=[];
 					
