@@ -2,74 +2,98 @@
 	"use strict";
 	$(function(){
 		
-		
-		/*报表数据定义区*/
-		var isnodata=false,
-		chart_color=['#2f7ed8','#0d233a','#8bbc21','#910000','#1aadce','#492970','#f28f43','#77a1e5','#c42525','#a6c96a'],
-		chart_item=[],
 		/*时间定义*/
-		now=moment(),
+		var now=moment(),
 		now_format=now.format('YYYY-MM-DD'),
 		ago_format=now.subtract(12,'month').format('YYYY-MM-DD'),
+		/*报表数据定义区*/
+		isnodata=false,
+		chart_color=['#2f7ed8','#0d233a','#8bbc21','#910000','#1aadce','#492970','#f28f43','#77a1e5','#c42525','#a6c96a'],
+		chart_posz=datePosZ(ago_format,now_format),
+		chart_data=(function(datas){
+			var len=datas.length,
+			i=0,
+			res=[];
+			for(i;i<len;i++){
+				res.push(parseInt(Math.random() * 100,10));
+			}
+			return res;
+		})(chart_posz),
 		/*页面元素引用*/
 		$chart_search_time=$("#chart_search_time"),
 		$chart_search_btn=$("#chart_search_btn"),
 		$chart_wrap=$('#chart_wrap'),
 		/*柱状图对象*/
 		chartobj={
-            chart: {
-                type: 'column',
-								spacingBottom:20,
-								style:{
-									margin:"0 auto"	
-								}
-						},
-						title: {
-								text:""
-						},
-						legend:{
-							enabled:false
-						},
-						colors:chart_color,
-						xAxis: {
-								categories:chart_item,
-								lineColor:"#aaa",
-								tickLength:0,
-								labels:{
-									y:25,
-									style:{
-										color:"#999"
-									}
-								}
-						},
-						yAxis:{
-							title:{
-								text:""
-							},
-							gridLineColor:"#ffffff",
-							labels:{
-								enabled:false
+				chart: {
+						type: 'column',
+						spacingBottom:20,
+						style:{
+							margin:"0 auto"	
+						}
+				},
+				title: {
+						text:""
+				},
+				legend:{
+					enabled:false
+				},
+				colors:chart_color,
+				xAxis: {
+						categories:chart_posz,
+						lineColor:"#aaa",
+						tickLength:0,
+						labels:{
+							y:25,
+							style:{
+								color:"#999"
 							}
-						},
-						credits: {
-								enabled:false
-						},
-						series: [{
-								name:"",
-								data:[454,748,982,1563,674,823,1252,1836]
-						}],
-						tooltip:{
-							shadow:false
-						},
-						plotOptions: {
-							series: {
-								dataLabels: {
-									enabled: true
+						}
+				},
+				yAxis:{
+					title:{
+						text:""
+					},
+					gridLineColor:"#ffffff",
+					labels:{
+						enabled:false
+					}
+				},
+				credits: {
+						enabled:false
+				},
+				series: [{
+						name:"",
+						data:(function(datas){
+								var len=datas.length;
+								if(len===0){
+									isnodata=true;
+								}
+								return datas;
+						})(chart_data)
+				}],
+				tooltip:{
+					shadow:false
+				},
+				plotOptions: {
+					series: {
+						dataLabels: {
+							enabled: true,
+							formatter:function(){
+								if(isnodata){
+									return "";
+								}else{
+									return "<span style=\"color:"+chart_color[parseInt(Math.random() * 10,10)]+"\">"+this.y+"个</span>";
 								}
 							}
 						}
+					}
+				}
 		};
 		
+		/*初始化*/
+
+	
 		
 		/*日历支持*/
 		$chart_search_time.val(ago_format+','+now_format).daterangepicker({
@@ -83,20 +107,34 @@
 		});
 		
 		
-		/*查询操作*/
-		$chart_search_btn.on('click',function(){
-				var time_val=$chart_search_time.val().split(','),
-						dateobj=datePosZ(time_val[0],time_val[1]);
-		});
-		
 		
 		/*柱状图报表*/
-		/*$('#chart_wrap').highcharts(chartobj,function(chart){
+		$chart_wrap.highcharts(chartobj,function(chart){
 			if(!isnodata){
 				return false;
 			}
 			chart.renderer.text('<span style=\"color:#a0a0a0;font-size:12px;display:inline-block;width:100%;height:100%;text-align:center;min-height:200px;line-height:200px;\">暂无数据</span>').add();
-		});*/
+		});
+		
+		
+		
+		/*查询操作*/
+		$chart_search_btn.on('click',function(){
+				var time_val=$chart_search_time.val().split(',');
+						//求值
+						chart_posz=datePosZ(time_val[0],time_val[1]);
+						chart_data=function(){
+							var len=chart_posz.length,
+							i=0,
+							res=[];
+							for(i;i<len;i++){
+								res.push(parseInt(Math.random() * 100,10));
+							}
+							return res;
+						};
+						//柱状图重绘
+						$chart_wrap.highcharts(chartobj);
+		});
 		
 
 		
