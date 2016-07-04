@@ -16,11 +16,11 @@
 							"menuitem":[{
 									"name":"发货",
 									"link":"agent_send",
-									"module":"agent"
+									"module":"agent",
 							},{
 									"name":"查看",
 									"link":"serve_detail",
-									"module":"agent"
+									"module":"agent",
 							}]
 						},{
 							"name":"代理商管理",
@@ -29,7 +29,7 @@
 							"menuitem":[{
 									"name":"查看",
 									"link":"agent_detail",
-									"module":"agent"
+									"module":"agent",
 							}]
 						},{
 							"name":"代理销售管理",
@@ -38,7 +38,7 @@
 							"menuitem":[{
 									"name":"查看",
 									"link":"sales_detail",
-									"module":"agent"
+									"module":"agent",
 							}]
 						}]
       },{

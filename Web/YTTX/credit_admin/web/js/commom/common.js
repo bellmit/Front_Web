@@ -6,11 +6,12 @@ var public_vars = public_vars || {};
 	"use strict";
 	//初始化加载
 	$(function(){	
+
+	
 		public_vars.$body                 = $("body");
 		public_vars.$pageContainer        = public_vars.$body.find(".page-container");
 		public_vars.$sidebarMenu          = public_vars.$pageContainer.find('.sidebar-menu');
-		public_vars.$mainMenu             = public_vars.$sidebarMenu.find('.main-menu');
-		
+		public_vars.$mainMenu             = $('#main_menu');
 		public_vars.$horizontalNavbar     = public_vars.$body.find('.navbar.horizontal-menu');
 		public_vars.$horizontalMenu       = public_vars.$horizontalNavbar.find('.navbar-nav');
 		
@@ -43,8 +44,8 @@ var public_vars = public_vars || {};
 			public_vars.$pageLoadingOverlay.addClass('loaded');
 		};
 		
-		
 		//加载左侧导航
+		loadSideMenu(public_vars.$mainMenu);
 		
 		
 		//菜单收缩与展开
@@ -133,9 +134,103 @@ var public_vars = public_vars || {};
 	//菜单服务类
 	var sm_duration = 0.2,sm_transition_delay = 150;
 	
+	//加载左侧菜单
+	function loadSideMenu(wrap){
+		$.ajax({
+			url:SIDE_MENU_URL||"../../json/menu.json",
+			async:true,
+			type:"post",
+			dataType:"json"
+		}).done(function(data){
+				var menu=data.menu,
+						len=menu.length,
+						menustr='',
+						i=0,
+						j=0,
+						k=0,
+						key='menuitem',
+						suffix='.html',
+						link='',
+						item=null,
+						sublen='',
+						templen='',
+						subitem=null,
+						path=(function(){
+								var winurl=location.pathname,
+										modulepos=winurl.lastIndexOf('/'),
+										modulesuffix=winurl.indexOf('.'),
+										res=winurl.slice(modulepos + 1,modulesuffix);
+								return res;	
+						}());
+						
+						
+				for(i;i<len;i++){
+						item=menu[i];
+						link=item.link;
+						if(i===0){
+							//首页数据
+							//如果是当前路径和当前模块一致
+							if(path==='index'&&link===path){
+									menustr='<li><a href=\"'+item.link+suffix+'\"><i class=\"'+item.class+'\"></i><span>'+item.name+'</span></a></li>';
+							}else{
+									//如果是当前路径和当前模块不一致
+									menustr='<li><a href=\"../'+item.link+suffix+'\"><i class=\"'+item.class+'\"></i><span>'+item.name+'</span></a></li>';
+							}
+						}else{
+							//其他模块
+							//如果是当前路径和当前模块一致
+							if(link===path){
+								menustr+='<li class="has-sub"><a href=\"'+link+suffix+'\"><i class=\"'+item.class+'\"></i><span>'+item.name+'</span></a>';
+							}else{
+								menustr+='<li class="has-sub"><a href=\"../'+item.module+'/'+link+suffix+'\"><i class=\"'+item.class+'\"></i><span>'+item.name+'</span></a>';
+							}
+							//子菜单循环
+							if(typeof (subitem=item[key])!=='undefined'){
+								menustr+="<ul>";
+								sublen=subitem.length;
+								j=0;
+								for(j;j<sublen;j++){
+									
+									item=subitem[j];
+									if(link===path){
+										menustr+='<li><a href=\"'+item.link+suffix+'\"><span>'+item.name+'</span></a></li>';
+									}else{
+										menustr+='<li><a href=\"../'+item.module+'/'+item.link+suffix+'\"><span>'+item.name+'</span></a></li>';
+									}
+									
+									/*if(typeof (subitem=item[key])!=='undefined'){
+										menustr+="<ul>";
+										templen=subitem.length;
+										k=0;
+										for(k;k<templen;k++){
+											item=subitem[k];
+											if(link===path){
+												menustr+='<li><a href=\"'+item.link+suffix+'\"><span>'+item.name+'</span></a></li>';
+											}else{
+												menustr+='<li><a href=\"../'+item.module+'/'+item.link+suffix+'\"><span>'+item.name+'</span></a></li>';
+											}
+										}
+										menustr+="</ul>";
+									}*/
+								}
+								menustr+="</li></ul>";
+							}
+						}
+				}
+				
+				//放入dom中
+				$(menustr).appendTo(wrap);
+				
+		}).fail(function(){
+			console.log('error');
+		});
+		
+	};
+	
+	
+	
 	function setup_sidebar_menu(){
-		if(public_vars.$sidebarMenu.length)
-		{
+		if(public_vars.$sidebarMenu.length){
 			var $items_with_subs = public_vars.$sidebarMenu.find('li:has(> ul)'),
 				toggle_others = public_vars.$sidebarMenu.hasClass('toggle-others');
 			
@@ -149,12 +244,10 @@ var public_vars = public_vars || {};
 				
 				$li.addClass('has-sub');
 				
-				$a.on('click', function(ev)
-				{
+				$a.on('click', function(ev){
 					ev.preventDefault();
 					
-					if(toggle_others)
-					{
+					if(toggle_others){
 						sidebar_menu_close_items_siblings($li);
 					}
 					
