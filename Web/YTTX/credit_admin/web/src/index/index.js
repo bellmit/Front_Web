@@ -2,12 +2,11 @@
 	"use strict";
 	$(function(){
 		
-		/*时间定义*/
+		/*时间定义并初始化*/
 		var now=moment(),
 		now_format=now.format('YYYY-MM-DD'),
 		ago_format=now.subtract(12,'month').format('YYYY-MM-DD'),
-		/*报表数据定义区*/
-		isnodata=false,
+		/*报表数据定义并初始化区*/
 		chart_color=['#2f7ed8','#0d233a','#8bbc21','#910000','#1aadce','#492970','#f28f43','#77a1e5','#c42525','#a6c96a'],
 		chart_posz=datePosZ(ago_format,now_format),
 		chart_data=(function(datas){
@@ -54,9 +53,12 @@
 					title:{
 						text:""
 					},
-					gridLineColor:"#ffffff",
+					gridLineColor:"#fafafa",
 					labels:{
-						enabled:false
+						enabled:true,
+						style:{
+							color:"#ccc"
+						}
 					}
 				},
 				credits: {
@@ -64,37 +66,32 @@
 				},
 				series: [{
 						name:"",
-						data:(function(datas){
-								var len=datas.length;
-								if(len===0){
-									isnodata=true;
-								}
-								return datas;
-						})(chart_data)
+						data:chart_data,
+						color:(function(c){
+							var len=c.length;
+							return c[parseInt(Math.random() * len,10)];
+						})(chart_color)
 				}],
 				tooltip:{
-					shadow:false
+					shadow:false,
+					formatter: function(){
+							return "<span style=\"color:#666;\">"+this.x+":</span><span style=\"color:"+this.color+"\">"+this.y+"</span>";
+					}
 				},
 				plotOptions: {
 					series: {
 						dataLabels: {
 							enabled: true,
 							formatter:function(){
-								if(isnodata){
-									return "";
-								}else{
-									return "<span style=\"color:"+chart_color[parseInt(Math.random() * 10,10)]+"\">"+this.y+"个</span>";
-								}
+									return "<span style=\"color:#666\">"+this.y+" 户</span>";
 							}
 						}
 					}
 				}
 		};
-		
-		/*初始化*/
 
-	
-		
+
+
 		/*日历支持*/
 		$chart_search_time.val(ago_format+','+now_format).daterangepicker({
 				format: 'YYYY-MM-DD',
@@ -109,12 +106,7 @@
 		
 		
 		/*柱状图报表*/
-		$chart_wrap.highcharts(chartobj,function(chart){
-			if(!isnodata){
-				return false;
-			}
-			chart.renderer.text('<span style=\"color:#a0a0a0;font-size:12px;display:inline-block;width:100%;height:100%;text-align:center;min-height:200px;line-height:200px;\">暂无数据</span>').add();
-		});
+		chartColumn(chartobj,chart_data,$chart_wrap);
 		
 		
 		
@@ -123,7 +115,7 @@
 				var time_val=$chart_search_time.val().split(',');
 						//求值
 						chart_posz=datePosZ(time_val[0],time_val[1]);
-						chart_data=function(){
+						chart_data=(function(){
 							var len=chart_posz.length,
 							i=0,
 							res=[];
@@ -131,9 +123,15 @@
 								res.push(parseInt(Math.random() * 100,10));
 							}
 							return res;
-						};
+						}());
 						//柱状图重绘
-						$chart_wrap.highcharts(chartobj);
+						chartobj.series[0].color=(function(c){
+							var len=c.length;
+							return c[parseInt(Math.random() * len,10)];
+						})(chart_color);
+						chartobj.xAxis.categories=chart_posz;
+						chartobj.series[0].data=chart_data;
+						chartColumn(chartobj,chart_data,$chart_wrap);
 		});
 		
 
@@ -151,7 +149,7 @@
 					ey=edate[0],
 					em=edate[1],
 					y=ey-sy,
-					i=1,
+					i=sm,
 					j=y-1,
 					posz=[];
 					
@@ -189,6 +187,13 @@
 						}
 					}
 					return posz;
+	}
+	
+	//报表调用
+	function chartColumn(chartobj,data,wrap){
+		if(data.length!==0){
+				wrap.highcharts(chartobj);
+		}
 	}
 	
 	

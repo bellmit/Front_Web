@@ -2,12 +2,11 @@
 	"use strict";
 	$(function(){
 		
-		/*时间定义*/
+		/*时间定义并初始化*/
 		var now=moment(),
 		now_format=now.format('YYYY-MM-DD'),
 		ago_format=now.subtract(12,'month').format('YYYY-MM-DD'),
-		/*报表数据定义区*/
-		isnodata=false,
+		/*报表数据定义并初始化区*/
 		chart_color=['#2f7ed8','#0d233a','#8bbc21','#910000','#1aadce','#492970','#f28f43','#77a1e5','#c42525','#a6c96a'],
 		chart_posz=datePosZ(ago_format,now_format),
 		chart_data=(function(datas){
@@ -67,13 +66,7 @@
 				},
 				series: [{
 						name:"",
-						data:(function(datas){
-								var len=datas.length;
-								if(len===0){
-									isnodata=true;
-								}
-								return datas;
-						})(chart_data),
+						data:chart_data,
 						color:(function(c){
 							var len=c.length;
 							return c[parseInt(Math.random() * len,10)];
@@ -90,21 +83,15 @@
 						dataLabels: {
 							enabled: true,
 							formatter:function(){
-								if(isnodata){
-									return "";
-								}else{
 									return "<span style=\"color:#666\">"+this.y+" 户</span>";
-								}
 							}
 						}
 					}
 				}
 		};
-		
-		/*初始化*/
 
-	
-		
+
+
 		/*日历支持*/
 		$chart_search_time.val(ago_format+','+now_format).daterangepicker({
 				format: 'YYYY-MM-DD',
@@ -119,12 +106,7 @@
 		
 		
 		/*柱状图报表*/
-		$chart_wrap.highcharts(chartobj,function(chart){
-			if(!isnodata){
-				return false;
-			}
-			chart.renderer.text('<span style=\"color:#a0a0a0;font-size:12px;display:inline-block;width:100%;height:100%;text-align:center;min-height:200px;line-height:200px;\">暂无数据</span>').add();
-		});
+		chartColumn(chartobj,chart_data,$chart_wrap);
 		
 		
 		
@@ -149,7 +131,7 @@
 						})(chart_color);
 						chartobj.xAxis.categories=chart_posz;
 						chartobj.series[0].data=chart_data;
-						$chart_wrap.highcharts(chartobj);
+						chartColumn(chartobj,chart_data,$chart_wrap);
 		});
 		
 
@@ -205,6 +187,13 @@
 						}
 					}
 					return posz;
+	}
+	
+	//报表调用
+	function chartColumn(chartobj,data,wrap){
+		if(data.length!==0){
+				wrap.highcharts(chartobj);
+		}
 	}
 	
 	

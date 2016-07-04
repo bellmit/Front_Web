@@ -4,8 +4,8 @@ var public_vars = public_vars || {};
 ;(function($, window, undefined){
 	
 	"use strict";
-	
-	$(document).ready(function(){	
+	//初始化加载
+	$(function(){	
 		public_vars.$body                 = $("body");
 		public_vars.$pageContainer        = public_vars.$body.find(".page-container");
 		public_vars.$sidebarMenu          = public_vars.$pageContainer.find('.sidebar-menu');
@@ -42,6 +42,9 @@ var public_vars = public_vars || {};
 		window.onerror = function() {
 			public_vars.$pageLoadingOverlay.addClass('loaded');
 		};
+		
+		
+		//加载左侧导航
 		
 		
 		//菜单收缩与展开
@@ -120,7 +123,8 @@ var public_vars = public_vars || {};
 
 
 	});
-
+	
+	
 	
 	
 	
