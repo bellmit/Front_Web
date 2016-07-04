@@ -49,7 +49,7 @@ var public_vars = public_vars || {};
 		
 		
 		//菜单收缩与展开
-		setup_sidebar_menu();
+		setup_sidebar_menu(public_vars.$mainMenu);
 
 
 
@@ -229,23 +229,21 @@ var public_vars = public_vars || {};
 	
 	
 	
-	function setup_sidebar_menu(){
-		if(public_vars.$sidebarMenu.length){
-			var $items_with_subs = public_vars.$sidebarMenu.find('li:has(> ul)'),
+	function setup_sidebar_menu(wrap){
+			var $items_with_subs = wrap.find('li:has(> ul)'),
 				toggle_others = public_vars.$sidebarMenu.hasClass('toggle-others');
 			
 			$items_with_subs.filter('.active').addClass('expanded');
 			
-			$items_with_subs.each(function(i, el)
-			{
+			$items_with_subs.each(function(i, el){
 				var $li = jQuery(el),
 					$a = $li.children('a'),
 					$sub = $li.children('ul');
 				
 				$li.addClass('has-sub');
 				
-				$a.on('click', function(ev){
-					ev.preventDefault();
+				$a.on('click', function(e){
+					e.preventDefault();
 					
 					if(toggle_others){
 						sidebar_menu_close_items_siblings($li);
@@ -257,7 +255,6 @@ var public_vars = public_vars || {};
 						sidebar_menu_item_expand($li, $sub);
 				});
 			});
-		}
 	}
 	
 	function sidebar_menu_item_expand($li, $sub){
