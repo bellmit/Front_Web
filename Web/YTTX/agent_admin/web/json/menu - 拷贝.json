@@ -1,0 +1,259 @@
+{
+  "menu":[{
+        "name":"首页",
+				"class":"menu-ux-home",
+				"link":"index",
+				"module":""
+      },{
+        "name":"代理管理",
+				"class":"menu-ux-agent",
+				"link":"agent_manage",
+				"module":"agent",
+				"menuitem":[{
+							"name":"服务站管理",
+							"link":"serve_manage",
+							"module":"agent",
+							"menuitem":[{
+									"name":"发货",
+									"link":"agent_send",
+									"module":"agent",
+							},{
+									"name":"查看",
+									"link":"serve_detail",
+									"module":"agent",
+							}]
+						},{
+							"name":"代理商管理",
+							"link":"agent_manage",
+							"module":"agent",
+							"menuitem":[{
+									"name":"查看",
+									"link":"agent_detail",
+									"module":"agent",
+							}]
+						},{
+							"name":"代理销售管理",
+							"link":"sales_manage",
+							"module":"agent",
+							"menuitem":[{
+									"name":"查看",
+									"link":"sales_detail",
+									"module":"agent",
+							}]
+						}]
+      },{
+        "name":"内容管理",
+				"class":"menu-ux-article",
+				"link":"content_manage",
+				"module":"content",
+				"menuitem":[{
+							"name":"频道管理",
+							"link":"channel_manage",
+							"module":"content"
+						},{
+							"name":"文章管理",
+							"link":"article_manage",
+							"module":"content"
+						},{
+							"name":"评论管理",
+							"link":"comment_manage",
+							"module":"content"
+						},{
+							"name":"内容抓取",
+							"link":"grab_manage",
+							"module":"content"
+						},{
+							"name":"发布文章",
+							"link":"release_manage",
+							"module":"content"
+						},{
+							"name":"消息管理",
+							"link":"news_manage",
+							"module":"content"
+						},{
+							"name":"用户反馈",
+							"link":"feedback_manage",
+							"module":"content"
+						}]
+      },{
+        "name":"商城管理",
+				"class":"menu-ux-shop",
+				"link":"shop_manage",
+				"module":"shop",
+				"menuitem":[{
+							"name":"商城管理扩展1",
+							"link":"",
+							"module":""
+						},{
+							"name":"商城管理扩展2",
+							"link":"",
+							"module":""
+						},{
+							"name":"商城管理扩展3",
+							"link":"",
+							"module":""
+						}]
+      },{
+        "name":"服务栏管理",
+				"class":"menu-ux-serve",
+				"link":"serve_manage",
+				"module":"serve",
+				"menuitem":[{
+							"name":"服务栏管理扩展1",
+							"link":"",
+							"module":""
+						},{
+							"name":"服务栏管理扩展2",
+							"link":"",
+							"module":""
+						},{
+							"name":"服务栏管理扩展3",
+							"link":"",
+							"module":""
+						}]
+      },{
+        "name":"信用卡管理",
+				"class":"menu-ux-credit",
+				"link":"credit_manage",
+				"module":"credit",
+				"menuitem":[{
+							"name":"攻略审核",
+							"link":"guide_check",
+							"module":"credit"
+						},{
+							"name":"攻略管理",
+							"link":"guide_manage",
+							"module":"credit"
+						},{
+							"name":"消费计划",
+							"link":"consumption_plan",
+							"module":"credit"
+						},{
+							"name":"消费计划审核",
+							"link":"consumption_check",
+							"module":"credit"
+						}]
+      },{
+        "name":"财务管理",
+				"class":"menu-ux-finance",
+				"link":"finance_manage",
+				"module":"finance",
+				"menuitem":[{
+							"name":"财务管理扩展1",
+							"link":"",
+							"module":""
+						},{
+							"name":"财务管理扩展2",
+							"link":"",
+							"module":""
+						},{
+							"name":"财务管理扩展3",
+							"link":"",
+							"module":""
+						}]
+      },{
+        "name":"收付款管理",
+				"class":"menu-ux-payment",
+				"link":"payment_manage",
+				"module":"payment",
+				"menuitem":[{
+							"name":"刷卡收款管理",
+							"link":"card_manage",
+							"module":"payment"
+						},{
+							"name":"提现管理",
+							"link":"withdrawals_manage",
+							"module":"payment"
+						}]
+      },{
+        "name":"用户管理",
+				"class":"menu-ux-user",
+				"link":"user_manage",
+				"module":"user",
+				"menuitem":[{
+							"name":"账号管理",
+							"link":"account_manage",
+							"module":"user"
+						},{
+							"name":"马甲用户",
+							"link":"vest_manage",
+							"module":"user"
+						},{
+							"name":"轨迹列表",
+							"link":"orbit_manage",
+							"module":"user"
+						},{
+							"name":"银行卡",
+							"link":"card_manage",
+							"module":"user"
+						}]
+      },{
+        "name":"广告管理",
+				"class":"menu-ux-ad",
+				"link":"ad_manage",
+				"module":"ad",
+				"menuitem":[{
+							"name":"文章广告",
+							"link":"article_ad",
+							"module":"ad"
+						},{
+							"name":"文章图片广告",
+							"link":"articleimg_ad",
+							"module":"ad"
+						},{
+							"name":"首页图片广告",
+							"link":"index_ad",
+							"module":"ad"
+						},{
+							"name":"服务栏图片广告",
+							"link":"serve_ad",
+							"module":"ad"
+						}]
+      },{
+        "name":"系统管理",
+				"class":"menu-ux-admin",
+				"link":"admin_manage",
+				"module":"admin",
+				"menuitem":[{
+							"name":"银行管理",
+							"link":"bank_manage",
+							"module":"admin"
+						},{
+							"name":"角色管理",
+							"link":"role_manage",
+							"module":"admin"
+						},{
+							"name":"权限",
+							"link":"power_manage",
+							"module":"admin"
+						},{
+							"name":"系统设置",
+							"link":"system_setting",
+							"module":"admin"
+						}]
+      }]
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
