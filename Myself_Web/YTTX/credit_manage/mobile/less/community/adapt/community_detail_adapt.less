@@ -5,6 +5,14 @@
 	body{
 		padding:24px;
 	}
+	.article-concern-wrap{
+		>div{
+			padding:15px 24px;
+		}
+		.concern-name{
+			font-size:2.2rem;
+		}
+	}
 	.article-show-wrap{
 		>h1{
 			font-size:2.4rem;
@@ -32,14 +40,21 @@
 					line-height:2.8rem;
 			}
 		}
-	}
-	
+	}	
 }
 
 ///max 640px
 @media (max-width: 640px){
 	body{
 		padding:24px;
+	}
+	.article-concern-wrap{
+		>div{
+			padding:15px 24px;
+		}
+		.concern-name{
+			font-size:2rem;
+		}
 	}
 	//文章详情
 	.article-show-wrap{
@@ -75,16 +90,37 @@
 	body{
 		padding:18px;
 	}
+	.article-concern-wrap{
+		>div{
+			padding:15px 18px;
+		}
+	}
 }
 
 @media (max-width:320px){
 	body{
 		padding:12px;
 	}
+	.article-concern-wrap{
+		>div{
+			padding:15px 12px;
+		}
+		.concern-name{
+			font-size:1.6rem;
+		}
+	}
 }
 
 @media (max-width:280px){
 	body{
 		padding:10px;
+	}
+	.article-concern-wrap{
+		>div{
+			padding:15px 10px;
+		}
+		.concern-name{
+			font-size:1.4rem;
+		}
 	}
 }

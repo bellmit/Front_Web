@@ -20,6 +20,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 </head>
 <body>
 
+
+		<!--关注-->
+		<section class="article-concern-wrap">
+    		<div>
+          <div class="concern-img"><img src="${view.img}" alt=""></div>
+          <div class="concern-name">${view.name}</div>
+        </div>
+    </section>
+
     <!--文章详情-->
     <section class="article-show-wrap">
     		
