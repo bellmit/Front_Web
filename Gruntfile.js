@@ -1,7 +1,7 @@
 
 ;module.exports = function(grunt){
 	
-	var filename='package_admin.json';
+	var configfile='package_agent.json';
 
 	/*//配置端口
 	var flushPort=35729;
@@ -22,7 +22,7 @@
 	};*/
 
 	//获取package.json的信息
-	var pkg=grunt.file.readJSON(filename),
+	var pkg=grunt.file.readJSON(configfile),
 		web_url=(function(pkg){
 				if(pkg.platform&&pkg.platform!==''){
 					return pkg.base_path+'/'+pkg.web_path+'/'+pkg.project+'/'+pkg.name+'/'+pkg.platform+'/';
@@ -141,16 +141,20 @@
 			dist:{
 				//源目录 to do,合并文件时需要看情况而定
 				src:(function(web_url){
-					var names=['zepto','event','touch','callbacks','ajax','form','selector','fx','fx_methods','assets','data','deferred','detect','gesture','ios3','stack','ie'],result=[];
+		//压缩zepto			/*names=['zepto','event','touch','callbacks','ajax','form','selector','fx','fx_methods','assets','data','deferred','detect','gesture','ios3','stack','ie'];*/
+					//压缩后台js
+					/*names=['bootstrap','tweenmax','resizeable','joinable','api','toggles','toastr']*/
+					/*names=['html5shiv','respond']*/
+					var names=['bootstrap','tweenmax','resizeable','joinable','api','toggles','toastr'],result=[];
 					for(var i=0,len=names.length;i<len;i++){
-						result.push(web_url+'js/zepto/'+names[i]+'.js');
+						result.push(web_url+'src/common/'+names[i]+'.js');
 						
 					}
 					return result;
 				})(web_url),
 				//生成目录
 				dest:(function(web_url){
-					var result=web_url+'js/lib/zepto/zepto.js';
+					var result=web_url+'js/common/base.js';
 					return result;
 				})(web_url)
 			}
@@ -213,7 +217,7 @@
 		
 		//设置源
 		if(!sou){
-			file=grunt.file.readJSON(filename);
+			file=grunt.file.readJSON(configfile);
 			if(file.platform&&file.platform!==''){
 				baseurl=file.base_path+'/'+file.web_path+'/'+file.project+'/'+file.name+'/'+file.platform+'/';
 			}else{
