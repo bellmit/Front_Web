@@ -17,7 +17,7 @@
 					return false;
 				}
 			}),
-			$promise= $.Deferred.promise(),
+			promise= $.Deferred(),
 			dataConfig={
 				list:datalist,
 				table:table,
@@ -26,13 +26,11 @@
 
 
 		//初始化请求
-		$promise
-		.ajax({
+		promise($.ajax({
 			url: "../../json/admin/admin_role.json",
 			method: 'POST',
 			dataType: 'json'
-		})
-		.then(function (resp,dataConfig) {
+		})).then(function (resp,dataConfig) {
 			datalistSuccess(resp,dataConfig);
 		})
 		.then(function(resp){
