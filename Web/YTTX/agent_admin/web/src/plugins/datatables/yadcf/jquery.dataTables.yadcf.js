@@ -1127,6 +1127,7 @@ var yadcf = (function ($) {
 		return tmpObj;
 	}
 
+	/*过滤点*/
 	function appendFilters(oTable, args, table_selector) {
 
 		var i = 0,

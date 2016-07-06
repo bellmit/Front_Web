@@ -64,8 +64,8 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="admin_manage.html">
-                                    <span class="title">管理员设置</span>
+                                <a href="admin_member.html">
+                                    <span class="title">成员设置</span>
                                 </a>
                             </li>
                             <li>
@@ -282,36 +282,37 @@
                                     <span class="collapse-icon">&ndash;</span>
                                     <span class="expand-icon">+</span>
                                 </a>
+                                <a href="#" data-toggle="reload">
+                                    <i class="fa-rotate-right"></i>
+                                </a>
                             </div>
                         </div>
 
                         <!--表格主体-->
                         <div class="panel-body">
-
-
-                            <table class="table table-bordered table-striped table-hover">
+                            <table id="admin_role_wrap" class="table table-bordered table-striped table-hover">
                                 <!--分组样式-->
                                 <colgroup>
-                                    <col class="g-w-number4">
+                                    <col class="g-w-number2">
                                     <col class="g-w-number10">
                                     <col class="g-w-number20">
-                                    <col class="g-w-number16">
+                                    <col class="g-w-number18">
                                 </colgroup>
 
                                 <!--表头-->
                                 <thead>
-                                    <tr>
-                                        <th>序号</th>
-                                        <th>角色</th>
-                                        <th>角色描述</th>
-                                        <th>操作</th>
-                                    </tr>
+                                <tr>
+                                    <th class="no-sorting"></th>
+                                    <th>角色</th>
+                                    <th class="no-sorting">角色描述</th>
+                                    <th class="no-sorting">操作</th>
+                                </tr>
                                 </thead>
 
                                 <!--表尾-->
                                 <tfoot>
                                 <tr>
-                                    <th>序号</th>
+                                    <th>&nbsp;</th>
                                     <th>角色</th>
                                     <th>角色描述</th>
                                     <th>操作</th>
@@ -321,69 +322,110 @@
                                 <!--表主体-->
                                 <tbody class="middle-align">
 
-                                    <tr>
-                                        <td>1</td>
-                                        <td>超级管理员</td>
-                                        <td>管理全部系统，有全部权限</td>
-                                        <td>
-                                            <span data-type="1" data-action="update" class="btn btn-success btn-icon btn-xs g-br2">
-                                                <i class="fa-pencil"></i>
-                                                <span>修改</span>
-                                            </span>
-                                        </td>
-                                    </tr>
+                                <tr>
+                                    <td><input type="checkbox" name="role" class="cbr"></td>
+                                    <td>超级管理员</td>
+                                    <td>管理全部系统，有全部权限</td>
+                                    <td>
+                                        <span data-id="1" data-type="1" data-action="update" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">
+                                            <i class="fa-pencil"></i>
+                                            <span>修改</span>
+                                        </span>
+                                    </td>
+                                </tr>
 
-                                    <tr>
-                                        <td>2</td>
-                                        <td>管理员</td>
-                                        <td>管理部分模块</td>
-                                        <td>
-                                            <span  data-type="2" data-action="update" class="btn btn-success btn-icon btn-xs g-br2">
-                                                <i class="fa fa-pencil"></i>
-                                                <span>修改</span>
-                                            </span>
-                                            <span data-type="2" data-action="detail" class="btn btn-white btn-icon btn-xs g-br2">
-                                                <i class="fa-group"></i>
-                                                <span>成员</span>
-                                            </span>
-                                            <span  data-type="2" data-action="power" class="btn btn-white btn-icon btn-xs g-br2">
-                                                <i class="fa-gear"></i>
-                                                <span>权限</span>
-                                            </span>
-                                            <span  data-type="2" data-action="delete" class="btn btn-danger btn-icon btn-xs g-br2">
-                                                <i class="fa-trash"></i>
-                                                <span>删除</span>
-                                            </span>
-                                        </td>
-                                    </tr>
+                                <tr>
+                                    <td><input type="checkbox" name="role" class="cbr"></td>
+                                    <td>管理员</td>
+                                    <td>管理部分模块</td>
+                                    <td>
+                                        <span data-id="2"  data-type="2" data-action="update" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">
+                                            <i class="fa fa-pencil"></i>
+                                            <span>修改</span>
+                                        </span>
+                                        <a href="member.html" data-id="2" data-type="2" data-module="admin_role" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">
+                                            <i class="fa-group"></i>
+                                            <span>成员</span>
+                                        </a>
+                                        <a href="power.html" data-id="2" data-type="2" data-module="admin_role"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">
+                                            <i class="fa-gear"></i>
+                                            <span>权限</span>
+                                        </a>
+                                        <span data-id="2"  data-type="2" data-action="delete" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">
+                                            <i class="fa-trash"></i>
+                                            <span>删除</span>
+                                        </span>
+                                    </td>
+                                </tr>
 
-                                    <tr>
-                                        <td>3</td>
-                                        <td>代理商</td>
-                                        <td>普通权限</td>
-                                        <td>
-                                            <span  data-type="3" data-action="add" class="btn btn-white btn-icon btn-xs g-br2">
-                                                <i class="fa-plus"></i>
-                                                <span>添加角色</span>
-                                            </span>
-                                        </td>
-                                    </tr>
+                                <tr>
+                                    <td><input type="checkbox" name="role" class="cbr"></td>
+                                    <td>代理商</td>
+                                    <td>普通权限</td>
+                                    <td>
+                                        <span data-id="2"  data-type="2" data-action="update" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">
+                                            <i class="fa fa-pencil"></i>
+                                            <span>修改</span>
+                                        </span>
+                                        <a href="member.html" data-id="2" data-type="2" data-module="admin_role" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">
+                                            <i class="fa-group"></i>
+                                            <span>成员</span>
+                                        </a>
+                                        <a href="power.html" data-id="2" data-type="2" data-module="admin_role"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">
+                                            <i class="fa-gear"></i>
+                                            <span>权限</span>
+                                        </a>
+                                        <span data-id="2"  data-type="2" data-action="delete" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">
+                                            <i class="fa-trash"></i>
+                                            <span>删除</span>
+                                        </span>
+                                    </td>
+                                </tr>
 
-                                    <tr>
-                                        <td>4</td>
-                                        <td>代理商</td>
-                                        <td>普通权限</td>
-                                        <td>
-                                            <span  data-type="3" data-action="add" class="btn btn-white btn-icon btn-xs g-br2">
-                                                <i class="fa-plus"></i>
-                                                <span>添加角色</span>
-                                            </span>
-                                        </td>
-                                    </tr>
+                                <tr>
+                                    <td><input type="checkbox" name="role" class="cbr"></td>
+                                    <td>深圳代理</td>
+                                    <td>普通权限</td>
+                                    <td>
+                                        <span data-id="4"  data-type="3" data-action="update" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">
+                                            <i class="fa fa-pencil"></i>
+                                            <span>修改</span>
+                                        </span>
+                                        <a href="member.html#data-type=3" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">
+                                            <i class="fa-group"></i>
+                                            <span>成员</span>
+                                        </a>
+                                        <a href="power.html#data-type=3" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">
+                                            <i class="fa-gear"></i>
+                                            <span>权限</span>
+                                        </a>
+                                        <span  data-id="4" data-type="3" data-action="delete" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">
+                                            <i class="fa-trash"></i>
+                                            <span>删除</span>
+                                        </span>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td><input type="checkbox" name="role" class="cbr"></td>
+                                    <td>云南代理</td>
+                                    <td>普通权限</td>
+                                    <td>
+
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td><input type="checkbox" name="role" class="cbr"></td>
+                                    <td>南宁代理</td>
+                                    <td>普通权限</td>
+                                    <td>
+
+                                    </td>
+                                </tr>
 
                                 </tbody>
                             </table>
-
                         </div>
 
 
@@ -422,15 +464,19 @@
 	<div class="page-loading-overlay">
 		<div class="loader-2"></div>
 	</div>
+
+
+
+
+
     <script src="../../js/common/base.js"></script>
     <script src="../../js/common/common.js"></script>
+    <script src="../../js/plugins/artdialog/dialog.js"></script>
     <script src="../../js/plugins/datatables/js/jquery.dataTables.js"></script>
 
 
-    <!-- Imported scripts on this page -->
+    <!--修饰分页，搜索等操作 -->
     <script src="../../js/plugins/datatables/dataTables.bootstrap.js"></script>
-    <script src="../../js/plugins/datatables/yadcf/jquery.dataTables.yadcf.js"></script>
-    <script src="../../js/plugins/datatables/tabletools/dataTables.tableTools.js"></script>
 
   <script src="../../js/admin/admin_role.js"></script>
 </body>
