@@ -11,7 +11,7 @@
   "image_dest":"images",
   "project": "YTTX",
   "platform":"web",
-	"build_name":"",
+  "build_name":"",
   "source_name":"admin/admin",
   "author": "yipin",
   "version": "1.0.0",

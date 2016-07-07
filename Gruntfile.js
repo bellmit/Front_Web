@@ -143,12 +143,11 @@
 				src:(function(web_url){
 		//压缩zepto			/*names=['zepto','event','touch','callbacks','ajax','form','selector','fx','fx_methods','assets','data','deferred','detect','gesture','ios3','stack','ie'];*/
 					//压缩后台js
-					/*names=['bootstrap','tweenmax','resizeable','joinable','api','toggles','toastr']*/
+					/*names=['bootstrap','tweenmax','resizeable','joinable','api','toggles','toastr','dialog']*/
 					/*names=['html5shiv','respond']*/
-					var names=['bootstrap','tweenmax','resizeable','joinable','api','toggles','toastr'],result=[];
+					var names=['bootstrap','tweenmax','resizeable','joinable','api','toggles','toastr','dialog'],result=[];
 					for(var i=0,len=names.length;i<len;i++){
 						result.push(web_url+'src/common/'+names[i]+'.js');
-						
 					}
 					return result;
 				})(web_url),
@@ -294,7 +293,7 @@
 	
 	
 	/*grunt.registerTask('default',"合并js",function(){
-		grunt.task.run(['concat',]);
+		grunt.task.run(['concat']);
 	});*/
 	
 	

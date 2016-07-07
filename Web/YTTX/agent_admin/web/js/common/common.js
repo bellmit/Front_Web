@@ -386,6 +386,109 @@ var public_vars = public_vars || {};
 	}
 
 
+/*工具函数类*/
+var public_tool=public_tool||{};
+	//判断是否支持本地存储
+	public_tool.supportStorage=(function(){
+		return sessionStorage?true:false;
+	}());
+	//设置本地存储
+	public_tool.setParams=function(key,value){
+		if(this.supportStorage){
+			sessionStorage.setItem(key,JSON.stringify(value));
+		}
+	};
+	//获取本地存储
+	public_tool.getParams=function(key){
+		if(this.supportStorage){
+			return JSON.parse(sessionStorage.getItem(key))||null;
+		}
+		return null;
+	};
+	//删除本地存储
+	public_tool.removeParams=function(key){
+		if(this.supportStorage){
+			sessionStorage.removeItem(key);
+		}
+	};
+	//清除本地存储
+	public_tool.clear=function(){
+		if(this.supportStorage){
+			sessionStorage.clear();
+		}
+	};
+	//遍历本地存储
+	public_tool.getEachParams=function(){
+		if(this.supportStorage){
+			var len=sessionStorage.length,
+				i= 0,
+				res=[],
+				key,
+				value;
+			if(len!==0){
+				for(i;i<len;i++){
+					key=sessionStorage.key(i);
+					value=JSON.parse(sessionStorage.getItem(key));
+					res.push(value);
+				}
+				return res;
+			}else{
+				return null;
+			}
+		}
+		return null;
+	};
+	//是否支持弹窗
+	public_tool.supportDia=(function(){
+		return (typeof dialog==='function'&&dialog)?true:false;
+	}());
+	//弹窗确认
+	public_tool.dialog=function(fn,flag){
+		if(!this.supportDia){
+			return null;
+		}
+		//缓存区
+		var fn_cache={};
+		fn_cache.isFn=false;
+		if(fn &&typeof fn==='function'){
+			fn_cache.isFn=true;
+		}
+		fn_cache.fn=fn_cache.FN=fn||function(){};
+		var dia=dialog({
+				title:'温馨提示',
+				cancelValue:'取消',
+				okValue:'确定',
+				width:300,
+				ok:function(){
+					var self=this;
+					if(fn_cache.fn&&typeof fn_cache.fn==='function'){
+						fn_cache.fn.call(self);
+						delete fn_cache.fn;
+					}else{
+						self.close();
+						fn_cache.fn=fn_cache.FN;
+					}
+					return false;
+				},
+				cancel:function(){
+					var self=this;
+						self.close();
+					return false;
+				}
+			});
+		var setFn=function(newfn){
+			fn_cache.fn=fn_cache.FN=newfn;
+			fn_cache.isFn=true;
+		}
+		return {
+			dialog:dia,
+			setFn:setFn,
+			isFn:fn_cache.isFn
+		};
+	}
+
+
+
 
 
 

@@ -24,37 +24,53 @@
 			//回调提示对象
 			dialogObj=public_tool.dialog();
 
-
-
 		//初始化请求
-		table=$admin_role_wrap.dataTable({
-			deferRender:true,
-			ajax:"../../json/admin/admin_role.json",
-			columns: [
-				{
-					"data":"btn",
-					"render":function(data, type, full, meta ){
-						return '<input type="checkbox" data-id="'+full.btn.id+'" name="role" class="cbr">';
-					}
-				},
-				{"data":"name"},
-				{"data":"remark"},
-				{
-					"data":"btn",
-					"render":function(data, type, full, meta ){
-						var id=full.btn.id,
-							types=parseInt(full.btn.type,10),
-							btns='';
+		$.ajax({
+			url: "../../json/admin/admin_role.json",
+			method: 'POST',
+			dataType: 'json',
+			data:(function(){
+				var param=public_tool.getParams(module_id);
+				if(param){
+					return {"id":param.id,"type":param.type};
+				}
+				return '';
+			}())
+		})
+		.done(function (resp) {
+			if(resp.flag){
+				datalist=resp.datalist.slice(0);
+				if(datalist!==null){
+					/*
+					 * 初始化表格数据
+					 * */
+					table=$admin_role_wrap.dataTable({
+						deferRender:true,
+						data:datalist,
+						columns: [
+							{"defaultContent":(function(){
+								var i=0;
 
-						if(types===1){
-							//超级管理员角色
-							btns='<span data-id="'+id+'" data-type="'+types+'" data-action="update" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+								return i;
+							}())/*'<input type="checkbox" name="role" class="cbr">'*/},
+							{ "data": 'name' },
+							{ "data": 'remark' },
+							{
+							  "data":'btn',
+							  "render":function(data, type, full, meta ){
+									var id=full.btn.id,
+										types=parseInt(full.btn.type,10),
+										btns='';
+
+									if(types===1){
+										//超级管理员角色
+										btns='<span data-id="'+id+'" data-type="'+types+'" data-action="update" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 											<i class="fa-pencil"></i>\
 											<span>修改</span>\
 											</span>';
-						}else if(types===2||types===3){
-							//普通管理员角色
-							btns='<span data-id="'+id+'" data-type="'+types+'" data-action="update" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+									}else if(types===2||types===3){
+										//普通管理员角色
+										btns='<span data-id="'+id+'" data-type="'+types+'" data-action="update" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 											<i class="fa fa-pencil"></i>\
 											<span>修改</span>\
 											</span>\
@@ -70,18 +86,29 @@
 											<i class="fa-trash"></i>\
 											<span>删除</span>\
 											</span>';
-						}else{
-							//其他角色
-						}
-						return btns;
-					}
+									}else{
+										//其他角色
+									}
+									return btns;
+								}
+							}
+						],
+						aLengthMenu: [
+							[10,20,50],
+							[10,20,50]
+						]
+					});
 				}
-			],
-			aLengthMenu: [
-				[10,20,50],
-				[10,20,50]
-			]
+			}
+		})
+		.fail(function(resp){
+			if(!resp.flag&&resp.message){
+				console.log(resp.message);
+			}else{
+				console.log('获取数据失败');
+			}
 		});
+
 
 
 		/*事件绑定*/
@@ -144,7 +171,7 @@
 						dialogObj.setFn(function(){
 							var self=this;
 							$.ajax({
-									url: "../../json/admin/admin_role_delete.json",
+									url: "../../json/admin/admin_role.json",
 									method: 'POST',
 									dataType: 'json',
 									data:{
@@ -157,7 +184,7 @@
 										//清除dom内容
 										$this.closest('tr').remove();
 										//重绘
-										table.draw();
+										//table.draw();
 										setTimeout(function(){
 											self.content('<span class="g-c-succ g-btips-succ">删除数据成功</span>');
 										},100);
