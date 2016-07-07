@@ -12,10 +12,27 @@
   }
 }
 
-.row-main-wrap{
-  .layout-relative-base;
+.row-edit-wrap{
+  .layout-relative-base(0,0,500);
+  height:100%;
+  display:none;
   .main-edit-show{
-    .layout-fixedr-base;
+    //@topgap:177px;
+    .layout-absolutel-base(0,0,1000);
+    .layout-base(100%);
+    height:100%;
+    &:after,
+    &::after{
+      clear:both;
+      width:100%;
+      content:'';
+      display:block;
+      height:0;
+    }
+    .panel{
+      height:100%;
+    }
   }
 }
+
 

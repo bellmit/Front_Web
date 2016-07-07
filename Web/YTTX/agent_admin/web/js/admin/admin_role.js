@@ -10,6 +10,8 @@
 			module_id='admin_role',
 			datalist=null,
 			table=null,
+			$table_wrap=$('#table_wrap'),
+			$edit_wrap=$('#edit_wrap'),
 			//一般提示对象
 			dia=dialog({
 				title:'温馨提示',
@@ -29,7 +31,11 @@
 		//初始化请求
 		table=$admin_role_wrap.dataTable({
 			deferRender:true,
-			ajax:"../../json/admin/admin_role.json",
+			ajax:{
+				url:"../../json/admin/admin_role.json",
+				dataType:'JSON',
+				method:'post'
+			},
 			columns: [
 				{
 					"data":"btn",
@@ -155,9 +161,9 @@
 								.done(function (resp) {
 									if(resp.flag){
 										//清除dom内容
-										$this.closest('tr').remove();
+										//$this.closest('tr').remove();
 										//重绘
-										table.draw();
+										//table.draw();
 										setTimeout(function(){
 											self.content('<span class="g-c-succ g-btips-succ">删除数据成功</span>');
 										},100);
@@ -181,8 +187,10 @@
 					//确认删除
 					dialogObj.dialog.content('<span class="g-c-warn g-btips-warn">是否删除此数据？</span>').showModal();
 
-				}else if(type==='update'){
+				}else if(action==='update'){
 					/*修改操作*/
+					$table_wrap.addClass('col-md-8');
+					$edit_wrap.addClass('g-d-showi');
 				}
 			}
 

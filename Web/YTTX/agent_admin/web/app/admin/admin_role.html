@@ -433,84 +433,80 @@
                 </div>
 
 
-                <div class="col-md-4 row-edit-wrap g-d-hidei" id="edit_wrap">
-                    <div class="col-md-4 main-edit-show">
-                        <div class="panel">
+                <div class="col-md-4 row-edit-wrap" id="edit_wrap">
+                        <div class="main-edit-show">
+                            <div class="panel">
 
-                            <!--表格标题-->
-                            <div class="panel-heading">
-                                <h3 class="panel-title">角色管理</h3>
+                                <!--表格标题-->
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">角色管理</h3>
 
-                                <div class="panel-options">
-                                    <a href="#" data-toggle="panel">
-                                        <span class="collapse-icon">&ndash;</span>
-                                        <span class="expand-icon">+</span>
-                                    </a>
-                                    <a href="#" data-toggle="reload">
-                                        <i class="fa-rotate-right"></i>
-                                    </a>
+                                    <div class="panel-options">
+                                        <a href="#">
+                                            &times;
+                                        </a>
+                                    </div>
                                 </div>
+
+                                <!--表格主体-->
+                                <div class="panel-body">
+                                    <form role="form" id="form1" method="post" class="validate">
+                                        <input type="hidden" value="" name="id">
+                                        <div class="form-group">
+                                            <label class="control-label">Required Field + Custom Message</label>
+
+                                            <input type="text" class="form-control" name="name" data-validate="required" data-message-required="This is custom message for required field." placeholder="Required Field" />
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="control-label">Email Field</label>
+
+                                            <input type="text" class="form-control" name="email" data-validate="email" placeholder="Email Field" />
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="control-label">Input Min Field</label>
+
+                                            <input type="text" class="form-control" name="min_field" data-validate="number,minlength[4]" placeholder="Numeric + Minimun Length Field" />
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="control-label">Input Max Field</label>
+
+                                            <input type="text" class="form-control" name="max_field" data-validate="maxlength[2]" placeholder="Maximum Length Field" />
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="control-label">Numeric Field</label>
+
+                                            <input type="text" class="form-control" name="number" data-validate="number" placeholder="Numeric Field" />
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="control-label">URL Field</label>
+
+                                            <input type="text" class="form-control" name="url" data-validate="required,url" placeholder="URL" />
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="control-label">Credit Card Field</label>
+
+                                            <input type="text" class="form-control" name="creditcard" data-validate="required,creditcard" placeholder="Credit Card" />
+                                        </div>
+
+                                        <div class="form-group">
+                                            <button type="submit" class="btn btn-success">修改</button>
+                                            <button type="reset" class="btn btn-white">重置</button>
+                                        </div>
+
+                                    </form>
+
+                                </div>
+
+
                             </div>
-
-                            <!--表格主体-->
-                            <div class="panel-body">
-                                <form role="form" id="form1" method="post" class="validate">
-                                    <input type="hidden" value="" name="id">
-                                    <div class="form-group">
-                                        <label class="control-label">Required Field + Custom Message</label>
-
-                                        <input type="text" class="form-control" name="name" data-validate="required" data-message-required="This is custom message for required field." placeholder="Required Field" />
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label class="control-label">Email Field</label>
-
-                                        <input type="text" class="form-control" name="email" data-validate="email" placeholder="Email Field" />
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label class="control-label">Input Min Field</label>
-
-                                        <input type="text" class="form-control" name="min_field" data-validate="number,minlength[4]" placeholder="Numeric + Minimun Length Field" />
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label class="control-label">Input Max Field</label>
-
-                                        <input type="text" class="form-control" name="max_field" data-validate="maxlength[2]" placeholder="Maximum Length Field" />
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label class="control-label">Numeric Field</label>
-
-                                        <input type="text" class="form-control" name="number" data-validate="number" placeholder="Numeric Field" />
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label class="control-label">URL Field</label>
-
-                                        <input type="text" class="form-control" name="url" data-validate="required,url" placeholder="URL" />
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label class="control-label">Credit Card Field</label>
-
-                                        <input type="text" class="form-control" name="creditcard" data-validate="required,creditcard" placeholder="Credit Card" />
-                                    </div>
-
-                                    <div class="form-group">
-                                        <button type="submit" class="btn btn-success">修改</button>
-                                        <button type="reset" class="btn btn-white">重置</button>
-                                    </div>
-
-                                </form>
-
-                            </div>
-
 
                         </div>
-
-                    </div>
                 </div>
 
             </div>

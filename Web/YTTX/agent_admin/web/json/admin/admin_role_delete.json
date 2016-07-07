@@ -1,5 +1,5 @@
 {
-  "flag":true/*,
+  "flag":true,
   "datalist":[{
     "btn":{
       "id":"1",
@@ -78,5 +78,5 @@
     },
     "name":"代购",
     "remark":"最基本的权限"
-  }]*/
+  }]
 }
