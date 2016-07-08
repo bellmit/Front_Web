@@ -2,37 +2,60 @@
 @import '../layout/variable/base_variable_support.less';
 
 
-.panel{
-  .table{
-    thead th,
-    tr th,
-    tfoot th{
-      .user-select-base(none);
-    }
+//表格样式
+.admin_role_table{
+  width:100% !important;
+	tr{
+		width:100%;
+	}
+  thead th,
+  tr th,
+  tfoot th{
+    .user-select-base(none);
   }
 }
 
+
+
+//编辑区域
 .row-edit-wrap{
-  .layout-relative-base(0,0,500);
+  .layout-relative-base;
   height:100%;
+  min-height:400px;
+  overflow: hidden;
   display:none;
   .main-edit-show{
-    //@topgap:177px;
     .layout-absolutel-base(0,0,1000);
     .layout-base(100%);
     height:100%;
-    &:after,
-    &::after{
-      clear:both;
-      width:100%;
-      content:'';
-      display:block;
-      height:0;
-    }
-    .panel{
-      height:100%;
-    }
   }
 }
 
 
+//适配
+@media screen and (max-width: @screen-lg){
+	.admin_role_table{
+		colgroup col:nth-of-type(3){display:none !important;}
+		thead tr th,
+		tbody tr td,
+		tfoot tr td{
+				&:nth-of-type(3){
+					display:none !important;
+				}
+		}
+	}
+	
+	
+}
+@media screen and (max-width: @screen-md){
+	
+	
+}
+@media screen and (max-width: @screen-sm){
+	
+	
+}
+@media screen and (max-width: @screen-xs){
+	
+	
+}

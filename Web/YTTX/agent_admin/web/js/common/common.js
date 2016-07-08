@@ -1,4 +1,108 @@
 
+/*工具函数类*/
+var public_tool=public_tool||{};
+//缓存对象
+public_tool.cache={};
+//判断是否支持本地存储
+public_tool.supportStorage=(function(){
+	return sessionStorage?true:false;
+}());
+//设置本地存储
+public_tool.setParams=function(key,value){
+	if(this.supportStorage){
+		sessionStorage.setItem(key,JSON.stringify(value));
+	}
+};
+//获取本地存储
+public_tool.getParams=function(key){
+	if(this.supportStorage){
+		return JSON.parse(sessionStorage.getItem(key))||null;
+	}
+	return null;
+};
+//删除本地存储
+public_tool.removeParams=function(key){
+	if(this.supportStorage){
+		sessionStorage.removeItem(key);
+	}
+};
+//清除本地存储
+public_tool.clear=function(){
+	if(this.supportStorage){
+		sessionStorage.clear();
+	}
+};
+//遍历本地存储
+public_tool.getEachParams=function(){
+	if(this.supportStorage){
+		var len=sessionStorage.length,
+			i= 0,
+			res=[],
+			key,
+			value;
+		if(len!==0){
+			for(i;i<len;i++){
+				key=sessionStorage.key(i);
+				value=JSON.parse(sessionStorage.getItem(key));
+				res.push(value);
+			}
+			return res;
+		}else{
+			return null;
+		}
+	}
+	return null;
+};
+//是否支持弹窗
+public_tool.supportDia=(function(){
+	return (typeof dialog==='function'&&dialog)?true:false;
+}());
+//弹窗确认
+public_tool.dialog=function(fn,flag){
+	if(!this.supportDia){
+		return null;
+	}
+	//缓存区
+	var fn_cache={};
+	fn_cache.isFn=false;
+	if(fn &&typeof fn==='function'){
+		fn_cache.isFn=true;
+	}
+	fn_cache.fn=fn_cache.FN=fn||function(){};
+	var dia=dialog({
+		title:'温馨提示',
+		cancelValue:'取消',
+		okValue:'确定',
+		width:300,
+		ok:function(){
+			var self=this;
+			if(fn_cache.fn&&typeof fn_cache.fn==='function'){
+				fn_cache.fn.call(self);
+				delete fn_cache.fn;
+			}else{
+				self.close();
+				fn_cache.fn=fn_cache.FN;
+			}
+			return false;
+		},
+		cancel:function(){
+			var self=this;
+			self.close();
+			return false;
+		}
+	});
+	var setFn=function(newfn){
+		fn_cache.fn=fn_cache.FN=newfn;
+		fn_cache.isFn=true;
+	}
+	return {
+		dialog:dia,
+		setFn:setFn,
+		isFn:fn_cache.isFn
+	};
+};
+
+
 var public_vars = public_vars || {};
 
 ;(function($, window, undefined){
@@ -113,7 +217,88 @@ var public_vars = public_vars || {};
 				minHeight: public_vars.$userInfoMenu.outerHeight() - 1
 			});
 		}
-		
+
+
+		//表单验证
+		if($.isFunction($.fn.validate)) {
+			$("form.validate").each(function(i, el) {
+				var $this = $(el),
+					opts = {
+						rules: {},
+						messages: {},
+						errorElement: 'span',
+						errorClass: 'validate-has-error',
+						highlight: function (element) {
+							$(element).closest('.form-group').addClass('validate-has-error');
+						},
+						unhighlight: function (element) {
+							$(element).closest('.form-group').removeClass('validate-has-error');
+						},
+						errorPlacement: function (error, element)
+						{
+							if(element.closest('.has-switch').length) {
+								error.insertAfter(element.closest('.has-switch'));
+							}
+							else if(element.parent('.checkbox, .radio').length || element.parent('.input-group').length) {
+								error.insertAfter(element.parent());
+							} else {
+								error.insertAfter(element);
+							}
+						}
+					},
+					$fields = $this.find('[data-validate]');
+
+
+				$fields.each(function(j, el2) {
+					var $field = $(el2),
+						name = $field.attr('name'),
+						validate = attrDefault($field, 'validate', '').toString(),
+						_validate = validate.split(',');
+
+					for(var k in _validate){
+						var rule = _validate[k],
+							params,
+							message;
+
+						if(typeof opts['rules'][name] == 'undefined'){
+							opts['rules'][name] = {};
+							opts['messages'][name] = {};
+						}
+
+						if($.inArray(rule, ['required', 'url', 'email', 'number', 'date', 'creditcard']) != -1){
+							opts['rules'][name][rule] = true;
+
+							message = $field.data('message-' + rule);
+
+							if(message){
+								opts['messages'][name][rule] = message;
+							}
+						} else if(params = rule.match(/(\w+)\[(.*?)\]/i)) {
+							if($.inArray(params[1], ['min', 'max', 'minlength', 'maxlength', 'equalTo']) != -1) {
+								opts['rules'][name][params[1]] = params[2];
+
+
+								message = $field.data('message-' + params[1]);
+
+								if(message) {
+									opts['messages'][name][params[1]] = message;
+								}
+							}
+						}
+					}
+				});
+
+
+
+				if(public_tool.cache){
+					public_tool.cache['form_opt']=opts;
+				}else{
+					$this.validate(opts);
+				}
+
+			});
+		}
+
 		
 		//登陆获取焦点隐藏默认文字
 		$(".login-form .form-group:has(label)").each(function(i, el)
@@ -386,106 +571,6 @@ var public_vars = public_vars || {};
 	}
 
 
-/*工具函数类*/
-var public_tool=public_tool||{};
-	//判断是否支持本地存储
-	public_tool.supportStorage=(function(){
-		return sessionStorage?true:false;
-	}());
-	//设置本地存储
-	public_tool.setParams=function(key,value){
-		if(this.supportStorage){
-			sessionStorage.setItem(key,JSON.stringify(value));
-		}
-	};
-	//获取本地存储
-	public_tool.getParams=function(key){
-		if(this.supportStorage){
-			return JSON.parse(sessionStorage.getItem(key))||null;
-		}
-		return null;
-	};
-	//删除本地存储
-	public_tool.removeParams=function(key){
-		if(this.supportStorage){
-			sessionStorage.removeItem(key);
-		}
-	};
-	//清除本地存储
-	public_tool.clear=function(){
-		if(this.supportStorage){
-			sessionStorage.clear();
-		}
-	};
-	//遍历本地存储
-	public_tool.getEachParams=function(){
-		if(this.supportStorage){
-			var len=sessionStorage.length,
-				i= 0,
-				res=[],
-				key,
-				value;
-			if(len!==0){
-				for(i;i<len;i++){
-					key=sessionStorage.key(i);
-					value=JSON.parse(sessionStorage.getItem(key));
-					res.push(value);
-				}
-				return res;
-			}else{
-				return null;
-			}
-		}
-		return null;
-	};
-	//是否支持弹窗
-	public_tool.supportDia=(function(){
-		return (typeof dialog==='function'&&dialog)?true:false;
-	}());
-	//弹窗确认
-	public_tool.dialog=function(fn,flag){
-		if(!this.supportDia){
-			return null;
-		}
-		//缓存区
-		var fn_cache={};
-		fn_cache.isFn=false;
-		if(fn &&typeof fn==='function'){
-			fn_cache.isFn=true;
-		}
-		fn_cache.fn=fn_cache.FN=fn||function(){};
-		var dia=dialog({
-				title:'温馨提示',
-				cancelValue:'取消',
-				okValue:'确定',
-				width:300,
-				ok:function(){
-					var self=this;
-					if(fn_cache.fn&&typeof fn_cache.fn==='function'){
-						fn_cache.fn.call(self);
-						delete fn_cache.fn;
-					}else{
-						self.close();
-						fn_cache.fn=fn_cache.FN;
-					}
-					return false;
-				},
-				cancel:function(){
-					var self=this;
-						self.close();
-					return false;
-				}
-			});
-		var setFn=function(newfn){
-			fn_cache.fn=fn_cache.FN=newfn;
-			fn_cache.isFn=true;
-		}
-		return {
-			dialog:dia,
-			setFn:setFn,
-			isFn:fn_cache.isFn
-		};
-	}
 
 
 

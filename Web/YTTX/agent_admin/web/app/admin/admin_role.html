@@ -290,7 +290,15 @@
 
                         <!--表格主体-->
                         <div class="panel-body">
-                            <table id="admin_role_wrap" class="table table-bordered table-striped table-hover">
+                            <div>
+                                <span id="role_add_btn" class="btn btn-info btn-icon btn-xs g-br2">
+                                    <i class="fa-plus"></i>
+                                    <span>添加角色</span>
+                                </span>
+                            </div>
+
+
+                            <table id="admin_role_wrap" class="table table-bordered table-striped table-hover admin_role_table">
                                 <!--分组样式-->
                                 <colgroup>
                                     <col class="g-w-number2">
@@ -437,66 +445,37 @@
                         <div class="main-edit-show">
                             <div class="panel">
 
-                                <!--表格标题-->
+                                <!--编辑表单标题-->
                                 <div class="panel-heading">
-                                    <h3 class="panel-title">角色管理</h3>
-
-                                    <div class="panel-options">
+                                    <h3 class="panel-title"></h3>
+                                    <div class="panel-options" id="edit_close_btn">
                                         <a href="#">
                                             &times;
                                         </a>
                                     </div>
                                 </div>
 
-                                <!--表格主体-->
+                                <!--修改或添加主体-->
                                 <div class="panel-body">
-                                    <form role="form" id="form1" method="post" class="validate">
-                                        <input type="hidden" value="" name="id">
+                                    <form role="form" id="role_edit_form" method="post" class="validate">
+                                        <input type="hidden" value="" id="role_id" name="id">
                                         <div class="form-group">
-                                            <label class="control-label">Required Field + Custom Message</label>
+                                            <label class="control-label">角&nbsp;&nbsp;色：</label>
 
-                                            <input type="text" class="form-control" name="name" data-validate="required" data-message-required="This is custom message for required field." placeholder="Required Field" />
+                                            <input type="text" class="form-control" id="role_name" name="name" data-validate="required" data-message-required="角色不能为空" placeholder="请输入角色名称" />
                                         </div>
 
                                         <div class="form-group">
-                                            <label class="control-label">Email Field</label>
+                                            <label class="control-label">角色描述：</label>
 
-                                            <input type="text" class="form-control" name="email" data-validate="email" placeholder="Email Field" />
+                                            <textarea type="text" class="form-control" name="remark" id="role_remark"  placeholder="角色的作用，权限"></textarea>
                                         </div>
 
-                                        <div class="form-group">
-                                            <label class="control-label">Input Min Field</label>
 
-                                            <input type="text" class="form-control" name="min_field" data-validate="number,minlength[4]" placeholder="Numeric + Minimun Length Field" />
-                                        </div>
 
                                         <div class="form-group">
-                                            <label class="control-label">Input Max Field</label>
-
-                                            <input type="text" class="form-control" name="max_field" data-validate="maxlength[2]" placeholder="Maximum Length Field" />
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label class="control-label">Numeric Field</label>
-
-                                            <input type="text" class="form-control" name="number" data-validate="number" placeholder="Numeric Field" />
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label class="control-label">URL Field</label>
-
-                                            <input type="text" class="form-control" name="url" data-validate="required,url" placeholder="URL" />
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label class="control-label">Credit Card Field</label>
-
-                                            <input type="text" class="form-control" name="creditcard" data-validate="required,creditcard" placeholder="Credit Card" />
-                                        </div>
-
-                                        <div class="form-group">
-                                            <button type="submit" class="btn btn-success">修改</button>
-                                            <button type="reset" class="btn btn-white">重置</button>
+                                            <button type="submit" class="btn btn-success"></button>
+                                            <button id="edit_cance_btn" type="reset" class="btn btn-white">取消</button>
                                         </div>
 
                                     </form>
@@ -553,7 +532,9 @@
 
     <!--修饰分页，搜索等操作 -->
     <script src="../../js/plugins/datatables/dataTables.bootstrap.js"></script>
+    <!--表单验证插件-->
+    <script src="../../js/plugins/jquery-validate/jquery.validate.js"></script>
 
-  <script src="../../js/admin/admin_role.js"></script>
+    <script src="../../js/admin/admin_role.js"></script>
 </body>
 </html>
