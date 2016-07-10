@@ -110,7 +110,7 @@
 				[10,20,50],
 				[10,20,50]
 			],/*控制是否每页可改变显示条数*/
-			lengthChange:false
+			lengthChange:false/*是否可改变长度*/
 		});
 
 
@@ -123,7 +123,6 @@
 			e.preventDefault();
 
 			var target= e.target,
-				nodename=target.nodeName.toLocaleLowerCase(),
 				$this,
 				id,
 				type,
@@ -217,11 +216,22 @@
 
 				}else if(action==='update'){
 					/*修改操作*/
-					$table_wrap.addClass('col-md-8');
+					$table_wrap.addClass('col-md-9');
 					$edit_wrap.addClass('g-d-showi');
-
-
-
+					//重置信息
+					$edit_close_btn.prev().html('修改角色');
+					$edit_cance_btn.prev().html('修改角色');
+					//赋值
+					var tritem=$tr.children()
+						len=tritem.length,
+						i= len- 1;
+					for(i;i>=1;i--){
+							if(i===len - 1){
+								
+							}else{
+								
+							}
+					}
 					//table
 
 				}
@@ -235,7 +245,7 @@
 		/*//取消修改*/
 		$edit_cance_btn.on('click',function(e){
 			//切换显示隐藏表格和编辑区
-			$table_wrap.removeClass('col-md-10');
+			$table_wrap.removeClass('col-md-9');
 			$edit_wrap.removeClass('g-d-showi');
 		});
 
@@ -246,7 +256,7 @@
 			$edit_close_btn.prev().html('添加角色');
 			$edit_cance_btn.prev().html('添加角色');
 			//显示表单
-			$table_wrap.addClass('col-md-10');
+			$table_wrap.addClass('col-md-9');
 			$edit_wrap.addClass('g-d-showi');
 			//第一行获取焦点
 			$role_name.focus();
