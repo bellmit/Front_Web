@@ -5,10 +5,10 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	
 	<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0,maximum-scale=1">
-	<meta name="description" content="银通天下代理商管理系统--系统设置--角色" />
-	<meta name="keywords" content="银通天下代理商管理系统--系统设置--角色">
+	<meta name="description" content="银通天下代理商管理系统--系统设置--成员设置" />
+	<meta name="keywords" content="银通天下代理商管理系统--系统设置--成员设置">
   <meta name="author" content="yp" />
-	<title>银通天下代理商管理系统--系统设置--角色</title>
+	<title>银通天下代理商管理系统--系统设置--成员设置</title>
 	<link rel="stylesheet" href="../../css/base.css">
     <link rel="stylesheet" href="../../js/plugins/datatables/dataTables.bootstrap.css">
 	<link rel="stylesheet" href="../../css/admin.css">
@@ -57,7 +57,7 @@
                             <i class="menu-ux-admin"></i>
                             <span class="title">系统设置</span>
                         </a>
-                        <ul>
+                        <ul style="display: block;">
                             <li>
                                 <a href="admin_role.html">
                                     <span class="title">角色</span>
@@ -256,13 +256,13 @@
             <!--主题描述-->
             <div class="page-title">
                 <div class="title-env">
-                    <h1 class="title">角色</h1>
-                    <p class="description">角色是一类功能的集合</p>
+                    <h1 class="title">成员设置</h1>
+                    <p class="description">分配某一类功能的集合下组成成员</p>
                 </div>
                 <div class="breadcrumb-env">
                     <ol class="breadcrumb bc-1">
                         <li><a href="admin_manage.html"><i class="fa-home"></i>系统设置</a></li>
-                        <li class="active"><strong>角色</strong></li>
+                        <li class="active"><strong>成员设置</strong></li>
                     </ol>
                 </div>
             </div>
@@ -275,7 +275,7 @@
 
                         <!--表格标题-->
                         <div class="panel-heading">
-                            <h3 class="panel-title">角色管理</h3>
+                            <h3 class="panel-title">成员设置</h3>
 
                             <div class="panel-options">
                                 <a href="#" data-toggle="panel">
@@ -291,9 +291,9 @@
                         <!--表格主体-->
                         <div class="panel-body">
                             <div>
-                                <span id="role_add_btn" class="btn btn-info btn-icon btn-xs g-br2">
+                                <span id="member_add_btn" class="btn btn-info btn-icon btn-xs g-br2">
                                     <i class="fa-plus"></i>
-                                    <span>添加角色</span>
+                                    <span>添加成员</span>
                                 </span>
                             </div>
                             
@@ -313,21 +313,31 @@
                             -->
 
 
-                            <table id="admin_role_wrap" class="table table-bordered table-striped table-hover admin_role_table">
+                            <table id="admin_member_wrap" class="table table-bordered table-striped table-hover admin_role_table">
                                 <!--分组样式-->
                                 <colgroup>
                                     <col class="g-w-number2">
-                                    <col class="g-w-number10">
-                                    <col class="g-w-number20">
-                                    <col class="g-w-number18">
+                                    <col class="g-w-number5">
+                                    <col class="g-w-number5">
+                                    <col class="g-w-number5">
+                                    <col class="g-w-number9">
+                                    <col class="g-w-number9">
+                                    <col class="g-w-number5">
+                                    <col class="g-w-number5">
+                                    <col class="g-w-number5">
                                 </colgroup>
 
                                 <!--表头-->
                                 <thead>
                                 <tr>
                                     <th>&nbsp;</th>
-                                    <th>角色</th>
-                                    <th>角色描述</th>
+                                    <th>用户名</th>
+                                    <th>管理员姓名</th>
+                                    <th>管理员电话</th>
+                                    <th>注册时间</th>
+                                    <th>最后登录时间</th>
+                                    <th>权限</th>
+                                    <th>备注</th>
                                     <th>操作</th>
                                 </tr>
                                 </thead>
@@ -336,8 +346,13 @@
                                 <tfoot>
                                 <tr>
                                     <th>&nbsp;</th>
-                                    <th>角色</th>
-                                    <th>角色描述</th>
+                                    <th>用户名</th>
+                                    <th>管理员姓名</th>
+                                    <th>管理员电话</th>
+                                    <th>注册时间</th>
+                                    <th>最后登录时间</th>
+                                    <th>权限</th>
+                                    <th>备注</th>
                                     <th>操作</th>
                                 </tr>
                                 </tfoot>
@@ -368,8 +383,8 @@
 
                                 <!--修改或添加主体-->
                                 <div class="panel-body">
-                                    <form role="form" id="role_edit_form" method="post" class="validate">
-                                        <input type="hidden" value="" id="role_id" name="id">
+                                    <form role="form" id="member_edit_form" method="post" class="validate">
+                                        <input type="hidden" value="" id="member_id" name="id">
                                         <div class="form-group">
                                             <label class="control-label">角&nbsp;&nbsp;色：</label>
 
@@ -446,6 +461,6 @@
     <!--表单验证插件-->
     <script src="../../js/plugins/jquery-validate/jquery.validate.js"></script>
 
-    <script src="../../js/admin/admin_role.js"></script>
+    <script src="../../js/admin/admin_member.js"></script>
 </body>
 </html>
