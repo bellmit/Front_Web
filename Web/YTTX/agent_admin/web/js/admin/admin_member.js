@@ -60,14 +60,12 @@
 				}())
 			},/*默认配置排序规则*/
 			columnDefs:[
-				/*{
-					target:[0,-1],
-					ordering:false
-				}*/
+
 			],/*解析每列数据*/
 			columns: [
 				{
 					"data":"btn",
+					"orderable":false,
 					"render":function(data, type, full, meta ){
 						return '<input type="checkbox" data-id="'+full.btn.id+'" name="member" class="cbr">';
 					}
@@ -77,11 +75,16 @@
 				{"data":"adminPhone"},
 				{"data":"createDateTime"},
 				{"data":"loginDateTime"},
-				{"data":"createDateTime"},
-				{"data":"power"},
-				{"data":"remark"},
+				{
+					"data":"power",
+					"orderable": false},
+				{
+					"data":"remark",
+					"orderable": false
+				},
 				{
 					"data":"btn",
+					"orderable": false,
 					"render":function(data, type, full, meta ){
 						var id=full.btn.id,
 							types=parseInt(full.btn.type,10),
@@ -113,7 +116,7 @@
 
 
 		/*事件绑定*/
-		/*绑定查看，修改，删除操作*/
+		/*绑定查看，修改操作*/
 		$admin_member_wrap.delegate('span','click',function(e){
 			e.stopPropagation();
 			e.preventDefault();
@@ -166,52 +169,13 @@
 				},100);
 
 			}else{
-				if(action==='delete'){
-					/*删除操作*/
-					//没有回调则设置回调对象
-					dialogObj.setFn(function(){
-							var self=this;
-							$.ajax({
-									url: "../../json/admin/admin_role_delete.json",
-									method: 'POST',
-									dataType: 'json',
-									data:{
-										"id":id,
-										"type":type
-									}
-								})
-								.done(function (resp) {
-									if(resp.flag){
-										//datatable重绘
-										$admin_member_wrap.DataTable().row($tr).remove().draw();
-										setTimeout(function(){
-											self.content('<span class="g-c-succ g-btips-succ">删除数据成功</span>');
-										},100);
-									}
-								})
-								.fail(function(resp){
-									if(!resp.flag&&resp.message){
-										setTimeout(function(){
-											self.content('<span class="g-c-error g-btips-error">'+resp.message+'</span>');
-										},100);
-									}else{
-										setTimeout(function(){
-											self.content('<span class="g-c-error g-btips-error">删除数据失败</span>');
-										},100);
-
-									}
-								});
-						},'admin_delete');
-					//确认删除
-					dialogObj.dialog.content('<span class="g-c-warn g-btips-warn">是否删除此数据？</span>').showModal();
-
-				}else if(action==='update'){
+				if(action==='update'){
 					/*修改操作*/
 					$table_wrap.addClass('col-md-9');
 					$edit_wrap.addClass('g-d-showi');
 					//重置信息
-					$edit_close_btn.prev().html('修改角色');
-					$edit_cance_btn.prev().html('修改角色');
+					$edit_close_btn.prev().html('修改成员');
+					$edit_cance_btn.prev().html('修改成员');
 					//赋值
 					var datas=$admin_member_wrap.DataTable().row($tr).data();
 							for(var i in datas){
@@ -246,8 +210,8 @@
 		$member_add_btn.on('click',function(){
 			//重置表单
 			edit_form.reset();
-			$edit_close_btn.prev().html('添加角色');
-			$edit_cance_btn.prev().html('添加角色');
+			$edit_close_btn.prev().html('添加成员');
+			$edit_cance_btn.prev().html('添加成员');
 			//显示表单
 			$table_wrap.addClass('col-md-9');
 			$edit_wrap.addClass('g-d-showi');

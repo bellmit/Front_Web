@@ -299,46 +299,59 @@
                             
                             
                             <!--
-                            <tr>
-                                    <td><input type="checkbox" name="role" class="cbr"></td>
-                                    <td>超级管理员</td>
-                                    <td>管理全部系统，有全部权限</td>
-                                    <td>
-                                        <span data-id="1" data-type="1" data-action="update" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">
-                                            <i class="fa-pencil"></i>
-                                            <span>修改</span>
-                                        </span>
-                                    </td>
-                                </tr>
+                            <tr role="row" class="even">
+                                <td class="sorting_1"><input type="checkbox" class="cbr" name="member" data-id="4"></td>
+                                <td>黄昏的地平线</td>
+                                <td>kg0449</td>
+                                <td>15984507254</td>
+                                <td>2012-10-25</td>
+                                <td>2016-06-08 10:44:35</td>
+                                <td>查看</td>
+                                <td>让日落暮色渗满泪眼</td>
+                                <td>
+                                    <span class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8" data-type="3" data-id="4" data-action="select" data-module="admin_power" data-href="admin_power.html">
+                                        <i class="fa-group"></i>
+                                        <span>查看</span>
+                                    </span>
+                                    <span class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8" data-action="update" data-type="3" data-id="4">
+                                        <i class="fa fa-pencil"></i>
+                                        <span>修改</span>
+                                    </span>
+                                    <span class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8" data-type="3" data-id="4" data-action="select" data-module="admin_power" data-href="admin_power.html">
+                                        <i class="fa-gear"></i>
+                                        <span>权限</span>
+                                    </span>
+                                </td>
+                            </tr>
                             -->
 
 
-                            <table id="admin_member_wrap" class="table table-bordered table-striped table-hover admin_role_table">
+                            <table id="admin_member_wrap" class="table table-bordered table-striped table-hover admin_table">
                                 <!--分组样式-->
                                 <colgroup>
                                     <col class="g-w-number2">
+                                    <col class="g-w-number4">
+                                    <col class="g-w-number4">
                                     <col class="g-w-number5">
+                                    <col class="g-w-number7">
+                                    <col class="g-w-number7">
                                     <col class="g-w-number5">
-                                    <col class="g-w-number5">
-                                    <col class="g-w-number9">
-                                    <col class="g-w-number9">
-                                    <col class="g-w-number5">
-                                    <col class="g-w-number5">
-                                    <col class="g-w-number5">
+                                    <col class="g-w-number6">
+                                    <col class="g-w-number10">
                                 </colgroup>
 
                                 <!--表头-->
                                 <thead>
                                 <tr>
-                                    <th>&nbsp;</th>
+                                    <th class="no-sorting">&nbsp;</th>
                                     <th>用户名</th>
                                     <th>管理员姓名</th>
                                     <th>管理员电话</th>
                                     <th>注册时间</th>
                                     <th>最后登录时间</th>
-                                    <th>权限</th>
-                                    <th>备注</th>
-                                    <th>操作</th>
+                                    <th class="no-sorting">权限</th>
+                                    <th class="no-sorting">备注</th>
+                                    <th class="no-sorting">操作</th>
                                 </tr>
                                 </thead>
 
