@@ -3,7 +3,10 @@
 (function(){
 	'use strict';
 	/*工具函数类*/
-	var public_tool=public_tool||{};
+	var public_tool=window.public_tool||{};
+
+
+	/*本地存储*/
 	//缓存对象
 	public_tool.cache={};
 	//判断是否支持本地存储
@@ -56,6 +59,9 @@
 		}
 		return null;
 	};
+
+
+	/*弹窗*/
 	//是否支持弹窗
 	public_tool.supportDia=(function(){
 		return (typeof dialog==='function'&&dialog)?true:false;
@@ -135,6 +141,157 @@
 		}
 		return res;
 	};
+
+
+
+	/*工具类*/
+	//判断闰年
+	public_tool.isLeapYear=function(y, m) {
+		var m_arr = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+		var isly = (y % 4 == 0 && y % 100 != 0 )? true : y % 400 == 0 ? true : false;
+		isly ? m_arr.splice(1, 1, 29) : m_arr.splice(1, 1, 28);
+		return m?{isly: isly,months: m_arr,m: m_arr[parseInt(m, 10) - 1]}:{isly: isly,months: m_arr}
+	}
+	//将人民币转换成大写
+	public_tool.toUpMoney=function(str,wraps){
+		var cn_zero = "零",
+			cn_one = "壹",
+			cn_two = "贰",
+			cn_three = "叁",
+			cn_four = "肆",
+			cn_five = "伍",
+			cn_six = "陆",
+			cn_seven = "柒",
+			cn_height = "捌",
+			cn_nine = "玖",
+			cn_ten = "拾",
+			cn_hundred = "佰",
+			cn_thousand = "仟",
+			cn_ten_thousand = "万",
+			cn_hundred_million = "亿",
+			cn_symbol="",
+			cn_dollar = "元",
+			cn_ten_cent = "角",
+			cn_cent = "分",
+			cn_integer = "整",
+			integral,
+			decimal,
+			outputCharacters,
+			parts,
+			digits,
+			radices,
+			bigRadices,
+			decimals,
+			zeroCount,
+			i,
+			p,
+			d,
+			quotient,
+			modulus,
+			tvs=str.toString(),
+			formatstr = tvs.replace(/^0+/,""),
+			parts =formatstr.split(".");
+
+		if (parts.length > 1) {
+			integral = parts[0];
+			decimal = parts[1];
+			decimal = decimal.slice(0, 2);
+		}else {
+			integral = parts[0];
+			decimal = "";
+		}
+		digits =[cn_zero, cn_one, cn_two, cn_three, cn_four, cn_five, cn_six, cn_seven, cn_height, cn_nine];
+		radices =["", cn_ten, cn_hundred, cn_thousand];
+		bigRadices =["", cn_ten_thousand, cn_hundred_million];
+		decimals =[cn_ten_cent,cn_cent];
+		outputCharacters = "";
+		if (Number(integral) > 0) {
+			zeroCount = 0;
+			for (i = 0; i < integral.length; i++) {
+				p = integral.length - i - 1;
+				d = integral.substr(i, 1);
+				quotient = p / 4;
+				modulus = p % 4;
+				if (d == "0") {
+					zeroCount++;
+				}else {
+					if (zeroCount > 0){
+						outputCharacters += digits[0];
+					}
+					zeroCount = 0;
+					outputCharacters += digits[Number(d)] + radices[modulus];
+				}
+				if (modulus == 0 && zeroCount < 4){
+					outputCharacters += bigRadices[quotient];
+				}
+			}
+			outputCharacters += cn_dollar;
+		}
+		if (decimal != "") {
+			for (i = 0; i < decimal.length; i++) {
+				d = decimal.substr(i, 1);
+				if (d != "0") {
+					outputCharacters += digits[Number(d)] + decimals[i];
+				}
+			}
+		}
+		if (outputCharacters == "") {
+			outputCharacters = cn_zero + cn_dollar;
+		}
+		if (decimal == "") {
+			outputCharacters += cn_integer;
+		}
+		outputCharacters = cn_symbol + outputCharacters;
+
+		if(wraps){
+			return wraps.innerHTML=outputCharacters;
+		}else{
+			return outputCharacters;
+		}
+	}
+	//银行卡格式化
+	public_tool.cardFormat=function(str){
+		var cardno=str.toString().replace(/\s*/g,'');
+		if(cardno==''){
+			return '';
+		}
+		cardno=cardno.split('');
+		var len=cardno.length,
+			i=0,
+			j=1;
+		for(i;i<len;i++){
+			if(j%4==0&&j!=len){
+				cardno.splice(i,1,cardno[i]+" ");
+			}
+			j++;
+		}
+		return cardno.join('');
+	}
+	//手机格式化
+	public_tool.phoneFormat=function(str){
+		var phoneno=str.toString().replace(/\s*/g,'');
+		if(phoneno==''){
+			return '';
+		}
+		phoneno=phoneno.split('');
+
+		var len=phoneno.length,
+			i=0;
+		for(i;i<len;i++){
+			var j=i+2;
+			if(i!=0){
+				if(i==2){
+					phoneno.splice(i,1,phoneno[i]+" ");
+				}else if(j%4==0&&j!=len+1){
+					phoneno.splice(i,1,phoneno[i]+" ");
+				}
+			}
+		}
+		return phoneno.join('');
+	}
+
+
+
 
 	window.public_tool=public_tool;
 }());
@@ -286,12 +443,12 @@ var public_vars = public_vars || {};
 					},
 					$fields = $this.find('[data-validate]');
 
-
 				$fields.each(function(j, el2) {
 					var $field = $(el2),
 						name = $field.attr('name'),
 						validate = attrDefault($field, 'validate', '').toString(),
 						_validate = validate.split(',');
+
 
 					for(var k in _validate){
 						var rule = _validate[k],
@@ -303,7 +460,9 @@ var public_vars = public_vars || {};
 							opts['messages'][name] = {};
 						}
 
-						if($.inArray(rule, ['required', 'url', 'email', 'number', 'date', 'creditcard']) != -1){
+
+
+						if($.inArray(rule, ['required', 'url', 'email', 'number', 'date','zh_phone','poe','money','num']) != -1){
 							opts['rules'][name][rule] = true;
 
 							message = $field.data('message-' + rule);

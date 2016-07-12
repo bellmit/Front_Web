@@ -5,10 +5,10 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	
 	<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0,maximum-scale=1">
-	<meta name="description" content="银通天下代理商管理系统--系统设置--成员设置" />
-	<meta name="keywords" content="银通天下代理商管理系统--系统设置--成员设置">
+	<meta name="description" content="银通天下代理商管理系统--系统设置--角色" />
+	<meta name="keywords" content="银通天下代理商管理系统--系统设置--角色">
   <meta name="author" content="yp" />
-	<title>银通天下代理商管理系统--系统设置--成员设置</title>
+	<title>银通天下代理商管理系统--系统设置--角色</title>
 	<link rel="stylesheet" href="../../css/base.css">
     <link rel="stylesheet" href="../../js/plugins/datatables/dataTables.bootstrap.css">
 	<link rel="stylesheet" href="../../css/admin.css">
@@ -57,7 +57,7 @@
                             <i class="menu-ux-admin"></i>
                             <span class="title">系统设置</span>
                         </a>
-                        <ul style="display: block;">
+                        <ul>
                             <li>
                                 <a href="admin_role.html">
                                     <span class="title">角色</span>
@@ -256,13 +256,13 @@
             <!--主题描述-->
             <div class="page-title">
                 <div class="title-env">
-                    <h1 class="title">成员设置</h1>
-                    <p class="description">分配某一类功能的集合下组成成员</p>
+                    <h1 class="title">权限管理</h1>
+                    <p class="description">根据系统设置的安全规则或者安全策略</p>
                 </div>
                 <div class="breadcrumb-env">
                     <ol class="breadcrumb bc-1">
                         <li><a href="admin_manage.html"><i class="fa-home"></i>系统设置</a></li>
-                        <li class="active"><strong>成员设置</strong></li>
+                        <li class="active"><strong>权限管理</strong></li>
                     </ol>
                 </div>
             </div>
@@ -275,7 +275,7 @@
 
                         <!--表格标题-->
                         <div class="panel-heading">
-                            <h3 class="panel-title">成员设置</h3>
+                            <h3 class="panel-title">权限管理</h3>
 
                             <div class="panel-options">
                                 <a href="#" data-toggle="panel">
@@ -291,67 +291,46 @@
                         <!--表格主体-->
                         <div class="panel-body">
                             <div>
-                                <span id="member_add_btn" class="btn btn-info btn-icon btn-xs g-br2">
+                                <span id="role_add_btn" class="btn btn-info btn-icon btn-xs g-br2">
                                     <i class="fa-plus"></i>
-                                    <span>添加成员</span>
+                                    <span>添加权限组</span>
                                 </span>
                             </div>
                             
                             
                             <!--
-                            <tr role="row" class="even">
-                                <td class="sorting_1"><input type="checkbox" class="cbr" name="member" data-id="4"></td>
-                                <td>黄昏的地平线</td>
-                                <td>kg0449</td>
-                                <td>15984507254</td>
-                                <td>2012-10-25</td>
-                                <td>2016-06-08 10:44:35</td>
-                                <td>查看</td>
-                                <td>让日落暮色渗满泪眼</td>
-                                <td>
-                                    <span class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8" data-type="3" data-id="4" data-action="select" data-module="admin_power" data-href="admin_power.html">
-                                        <i class="fa-group"></i>
-                                        <span>查看</span>
-                                    </span>
-                                    <span class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8" data-action="update" data-type="3" data-id="4">
-                                        <i class="fa fa-pencil"></i>
-                                        <span>修改</span>
-                                    </span>
-                                    <span class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8" data-type="3" data-id="4" data-action="select" data-module="admin_power" data-href="admin_power.html">
-                                        <i class="fa-gear"></i>
-                                        <span>权限</span>
-                                    </span>
-                                </td>
-                            </tr>
+                            <tr>
+                                    <td><input type="checkbox" name="role" class="cbr"></td>
+                                    <td>超级管理员</td>
+                                    <td>管理全部系统，有全部权限</td>
+                                    <td>
+                                        <span data-id="1" data-type="1" data-action="update" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">
+                                            <i class="fa-pencil"></i>
+                                            <span>修改</span>
+                                        </span>
+                                    </td>
+                                </tr>
                             -->
 
 
-                            <table id="admin_member_wrap" class="table table-bordered table-striped table-hover admin_table">
+                            <table id="admin_power_wrap" class="table table-bordered table-striped table-hover admin_table">
                                 <!--分组样式-->
-                                <colgroup id="colgroup_wrap">
+                                <colgroup>
                                     <col class="g-w-number2">
-                                    <col class="g-w-number4">
-                                    <col class="g-w-number4">
-                                    <col class="g-w-number5">
-                                    <col class="g-w-number7">
-                                    <col class="g-w-number7">
-                                    <col class="g-w-number5">
-                                    <col class="g-w-number6">
                                     <col class="g-w-number10">
+                                    <col class="g-w-number10">
+                                    <col class="g-w-number10">
+                                    <col class="g-w-number18">
                                 </colgroup>
 
                                 <!--表头-->
                                 <thead>
                                 <tr>
-                                    <th class="no-sorting">&nbsp;</th>
-                                    <th>用户名</th>
-                                    <th>管理员姓名</th>
-                                    <th>管理员电话</th>
-                                    <th>注册时间</th>
-                                    <th>最后登录时间</th>
-                                    <th class="no-sorting">权限</th>
-                                    <th class="no-sorting">备注</th>
-                                    <th class="no-sorting">操作</th>
+                                    <th>&nbsp;</th>
+                                    <th>角色</th>
+                                    <th>角色描述</th>
+                                    <th>用户列表</th>
+                                    <th>操作</th>
                                 </tr>
                                 </thead>
 
@@ -359,13 +338,9 @@
                                 <tfoot>
                                 <tr>
                                     <th>&nbsp;</th>
-                                    <th>用户名</th>
-                                    <th>管理员姓名</th>
-                                    <th>管理员电话</th>
-                                    <th>注册时间</th>
-                                    <th>最后登录时间</th>
-                                    <th>权限</th>
-                                    <th>备注</th>
+                                    <th>角色</th>
+                                    <th>角色描述</th>
+                                    <th>用户列表</th>
                                     <th>操作</th>
                                 </tr>
                                 </tfoot>
@@ -396,32 +371,38 @@
 
                                 <!--修改或添加主体-->
                                 <div class="panel-body">
-                                    <form role="form" id="member_edit_form" method="post" class="validate">
-                                        <input type="hidden" value="" id="member_id" name="id">
+                                    <form role="form" id="power_edit_form" method="post" class="validate">
+                                        <input type="hidden" value="" id="power_id" name="id">
                                         <div class="form-group">
-                                            <label class="control-label">用户名：</label>
+                                            <label class="control-label">角色名称：</label>
 
-                                            <input type="text" class="form-control" id="member_username" name="userName" data-validate="required" data-message-required="成员用户名不能为空" placeholder="请输入成员用户名" />
+                                            <input type="text" class="form-control" id="power_name" name="name" data-validate="required" data-message-required="角色名称不能为空" placeholder="请输入角色名称" />
                                         </div>
 
                                         <div class="form-group">
-                                            <label class="control-label">管理员姓名：</label>
+                                            <label class="control-label">角色描述：</label>
 
-                                            <input type="text" class="form-control" name="adminName" id="member_adminname"  placeholder="管理员姓名" data-validate="required" data-message-required="管理员姓名不能为空" />
-                                        </div>
-
-
-                                        <div class="form-group">
-                                            <label class="control-label">管理员电话：</label>
-
-                                            <input type="text" class="form-control" name="adminPhone" id="member_adminphone"  placeholder="管理员电话" data-validate="required,zh_phone" data-message-required="管理员电话不能为空" data-message-zh_phone="管理员电话不合法" maxlength="13" />
+                                            <textarea type="text" class="form-control" name="remark" id="power_remark" data-validate="required" data-message-required="角色描述不能为空"   placeholder="角色权限描述"></textarea>
                                         </div>
 
                                         <div class="form-group">
-                                            <label class="control-label">备&nbsp;&nbsp;注：</label>
+                                            <label class="control-label">用户列表：</label>
 
-                                            <textarea type="text" class="form-control" name="remark" id="member_remark"  placeholder="备注"></textarea>
+                                            <div id="power_userlist" class="power-userlist-wrap">
+                                                <span class="btn btn-white g-br3">张三<i></i></span>
+                                                <span>李四<i></i></span>
+                                                <span>张三<i></i></span>
+                                                <span>李四<i></i></span>
+                                                <span>张三<i></i></span>
+                                                <span>李四<i></i></span>
+                                                <span>张三<i></i></span>
+                                                <span>李四<i></i></span>
+                                                <span>张三<i></i></span>
+                                                <span>李四<i></i></span>
+                                            </div>
                                         </div>
+
+
 
 
 
@@ -467,33 +448,6 @@
 
         </div>
     </div>
-
-
-    <div class="modal fade custom-width" id="member_detail_wrap">
-        <div class="modal-dialog g-w-number40">
-            <div class="modal-content">
-
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 id="member_detail_title" class="modal-title"></h4>
-                </div>
-                <div class="modal-body">
-                        <table class="table table-bordered table-striped table-hover admin_table">
-                            <colgroup>
-                                <col class="g-w-number10"/>
-                                <col class="g-w-number40"/>
-                                <tbody id="member_detail_show"></tbody>
-                            </colgroup>
-                        </table>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-info" data-dismiss="modal">关闭</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
 	
 	<!--加载遮罩层-->
 	<div class="page-loading-overlay">
@@ -514,6 +468,6 @@
     <!--表单验证插件-->
     <script src="../../js/plugins/jquery-validate/jquery.validate.js"></script>
 
-    <script src="../../js/admin/admin_member.js"></script>
+    <script src="../../js/admin/admin_power.js"></script>
 </body>
 </html>

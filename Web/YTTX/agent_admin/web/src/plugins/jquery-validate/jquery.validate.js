@@ -309,6 +309,10 @@ $.extend( $.validator, {
 		required: "This field is required.",
 		remote: "Please fix this field.",
 		email: "Please enter a valid email address.",
+		zh_phone:'Please enter a valid phone.',
+		poe:'Please enter a valid phone or email.',
+		num:'Please enter a valid number.',
+		money:'Please enter a valid money.',
 		url: "Please enter a valid URL.",
 		date: "Please enter a valid date.",
 		dateISO: "Please enter a valid date ( ISO ).",
@@ -916,6 +920,10 @@ $.extend( $.validator, {
 
 	classRuleSettings: {
 		required: { required: true },
+		zh_phone:{zh_phone:true},
+		poe:{poe:true},
+		num:{num:true},
+		money:{money:true},
 		email: { email: true },
 		url: { url: true },
 		date: { date: true },
@@ -1296,7 +1304,36 @@ $.extend( $.validator, {
 				}
 			}, param ) );
 			return "pending";
+		},
+
+		//扩展自定义校验规则
+
+		//中国电话号码
+		zh_phone:function( value, element, param ){
+			var val=value.replace(/\s*/g,'');
+			return this.optional( element )|| /^(13[0-9]|15[012356789]|18[0-9]|14[57]|170)[0-9]{8}$/.test(val);
+		},
+
+		//电话和邮箱
+		poe:function( value, element, param ){
+			if(!this.zh_phone(value , element, param)&&!this.zh_phone(value , element, param)){
+				return false;
+			}else{
+				return true;
+			}
+		},
+
+		//数字
+		num:function( value, element, param ){
+			return this.optional( element )|| /^[0-9]{0,}$/g.test(value);
+		},
+
+		//货币
+		money:function( value, element, param ){
+			var val=value.replace(/\s*/g,'');
+			return this.optional( element )|| /^(([1-9]{1}\d{0,})|0)((\.{0}(\d){0})|(\.{1}(\d){2}))$/.test(val);
 		}
+
 
 	}
 
