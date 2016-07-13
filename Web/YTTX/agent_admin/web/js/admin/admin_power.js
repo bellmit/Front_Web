@@ -26,20 +26,27 @@
 			$colgroup_wrap=$('#colgroup_wrap')/*表格分组控制容器*/,
 			init_group='<col class="g-w-number2"><col class="g-w-number10"><col class="g-w-number10"><col class="g-w-number10"><col class="g-w-number18">'/*表格分组控制全显示情况*/,
 			visible_group='<col class="g-w-number4"><col class="g-w-number16"><col class="g-w-number30">'/*表格分组控制部分隐藏情况*/,
-			$admin_power_setting=$('#admin_power_setting')/*设置权限区域*/;
+			$admin_power_setting=$('#admin_power_setting')/*权限设置按钮区*/,
+			$operate_list_sub=$('#operate_list_sub')/*权限设置操作区*/,
+			$operate_list_add=$('#operate_list_add')/*权限设置操作区*/,
+			$operate_list_btn=$('#operate_list_btn')/*权限设置操作确定按钮*/,
+			module_map={
+					"系统管理":"admin",
+					"用户管理":"user",
+					"服务站管理":"serve",
+					"代理管理":"agent"
+			}/*服务模块映射*/,
+			$member_detail_wrap=$('#member_detail_wrap')/*查看详情容器*/,
+			$member_detail_title=$('#member_detail_title')/*查看详情标题*/,
+			$member_detail_show=$('#member_detail_show')/*查看详情内容*/;
 
 		/*表单对象*/
 		var $edit_cance_btn=$('#edit_cance_btn')/*编辑取消按钮*/,
 			edit_form=document.getElementById('power_edit_form'),
 			$power_edit_form=$('#power_edit_form')/*编辑表单*/,
-			$power_id=$('#power_id'),/*角色id*/
-			$power_name=$('#power_name'),/*角色名称*/
-			$power_remark=$('#power_remark')/*角色描述*/,
-			$power_userlist=$('#power_userlist')/*用户列表*/,
-			$admin_power_setting=$('#admin_power_setting')/*权限设置按钮区*/,
-			$operate_list_sub=$('#operate_list_sub')/*权限设置操作区*/,
-			$operate_list_add=$('#operate_list_add')/*权限设置操作区*/,
-			$operate_list_btn=$('#operate_list_btn')/*权限设置操作确定按钮*/;
+			$power_id=$('#power_id')/*角色id*/,
+			$power_name=$('#power_name')/*角色名称*/,
+			$power_remark=$('#power_remark')/*角色描述*/;
 
 
 		//初始化请求
@@ -264,6 +271,9 @@
 						'data-id':id,
 						'data-type':type
 					}).removeClass('g-d-hidei');
+					/*清空上次已查信息*/
+					$operate_list_add.html('').attr({'data-theme':''});
+					$operate_list_sub.html('').attr({'data-theme':''});
 				}
 			}
 
@@ -272,38 +282,11 @@
 		});
 
 
-		/*
-		*
-		* case 'user':
-		 (function(data){
-		 var user=data,
-		 res='',
-		 i= 0,
-		 len=data?user.length: 0,
-		 userid=[];
-		 if(len!==0){
-		 for(i;i<len;i++){
-		 res+='<span data-parentid="'+id+'" data-id="'+user[i]['id']+'">'+user[i]['name']+'<i></i></span>';
-		 userid.push(user[i]['id']);
-		 }
-		 $power_userlist.html(res);
-		 $power_user.val(userid);
-		 }
-		 })(datas[i]);
-		 break;
-		*
-		*
-		* */
-
-		/*绑定加载修改操作*/
-
-
-
 		/*绑定操作列表添加和删除操作*/
 		$.each([$operate_list_add,$operate_list_sub],function(){
 				var selector=this.selector;
 				//绑定事件
-				this.delegate('','click',function(e){
+				this.delegate('i','click',function(e){
 					var $this=$(this);
 
 					//区分事件类型
@@ -318,12 +301,180 @@
 		});
 
 
-		/*绑定确定修改*/
-		$operate_list_btn.on('click', function () {
-				console.log('ok');
+		/*绑定修改操作*/
+		$admin_power_setting.delegate('span','click',function(e){
+			e.stopPropagation();
+			e.preventDefault();
+			
+			var target= e.target,
+				$this,
+				id=$admin_power_setting.attr('data-id'),
+				type=$admin_power_setting.attr('data-type'),
+				action,
+				theme,
+				module;
 
-				//数据区重绘
-				table.draw();
+			//适配对象
+			if(target.className.indexOf('btn')!==-1){
+				$this=$(target);
+			}else{
+				$this=$(target).parent();
+			}
+			action=$this.attr('data-action');
+			theme=$this.attr('data-theme');
+
+			
+			/*初始化界面*/
+			$operate_list_add.attr({'data-theme':theme});
+			$operate_list_sub.attr({'data-theme':theme});
+			module=module_map[theme];
+			$admin_power_setting.attr({'data-theme':theme});
+
+			/*路由*/
+			if(action==='update'){
+				/*修改操作（添加，删除，修改）*/
+				$.ajax({
+									url: "../../json/admin/admin_power_user.json",
+									method: 'POST',
+									dataType: 'json',
+									data:{
+										"id":id,
+										"type":type,
+										"module":module
+									}
+								})
+				.done(function (resp) {
+					if(resp.flag){
+						var datas=resp.data,
+								len=datas?datas.length:0,
+								subres='',
+								addres='',
+								selected=parseInt(Math.random() * len),
+								i=0;
+								
+								//存在数据
+								if(len!==0){
+									for(i;i<len;i++){
+										if(i<selected){
+											subres+='<span data-id="'+datas[i]['id']+'">'+datas[i]['name']+'<i></i></span>';
+										}else{
+											addres+='<span data-id="'+datas[i]['id']+'">'+datas[i]['name']+'<i></i></span>';
+										}
+									};
+									$operate_list_add.html(addres);
+									$operate_list_sub.html(subres);
+								}
+								
+					}
+				})
+				.fail(function(resp){
+					if(!resp.flag&&resp.message){
+						console.log(resp.message);
+					}else{
+						console.log('获取服务信息失败');
+					}
+				});
+			}else if(action==='select'){
+				/*查看操作*/
+				/*查看详情*/
+				$member_detail_wrap.modal('show',{backdrop:'static'});
+				$.ajax({
+						url:"../../json/admin/admin_memberdetail.json",
+						dataType:'JSON',
+						method:'post',
+						data:{
+							"id":id,
+							"type":type
+						}
+				})
+				.done(function(resp){
+						if(resp.flag){
+							var datas=resp.data,
+								str='';
+							for(var i in datas){
+									if(i==='userName'||i==='username'){
+										$member_detail_title.html(i+'成员详情信息');
+									}else{
+										str+='<tr><th>'+i+'</th><td>'+datas[i]+'</td></tr>';
+									}
+							};
+							$member_detail_show.html(str);
+						}else{
+							$member_detail_title.html('');
+							$member_detail_show.html('');
+						}
+				})
+				.fail(function(resp){
+						if(!resp.flag){
+								$member_detail_title.html('');
+								$member_detail_show.html('');
+						}
+				});
+			}
+			
+			
+		});
+
+		/*绑定确定修改*/
+		$operate_list_btn.on('click',function () {
+				
+				var id=$admin_power_setting.attr('data-id'),
+				type=$admin_power_setting.attr('data-type'),
+				module=module_map[$admin_power_setting.attr('data-theme')],
+				res=[];
+		
+				/*过滤*/
+				if((id===''&&module==='')||(id!==''&&module==='')||typeof module==='undefined'){
+					dia.content('<span class="g-c-bs-warning g-btips-warn">没有选择权限数据</span>').show();
+					return false;
+				}
+				
+				
+				
+				/*发送请求*/
+				var i=0,
+				res=[],
+				item=$operate_list_sub.find('span'),
+				len=item.size();
+				
+				if(len!==0){
+					for(i;i<len;i++){
+						res.push(item.eq(i).attr('data-id'));
+					}
+				}else{
+					res='null';
+				}
+				
+				$.ajax({
+									url: "../../json/admin/admin_power_user.json",
+									method: 'POST',
+									dataType: 'json',
+									data:{
+										"id":id,
+										"type":type,
+										"module":module,
+										"subid":res
+									}
+								})
+				.done(function (resp) {
+					if(resp.flag){
+						//成功后重置数据，同时防止重复提交
+						$admin_power_setting.attr({'data-id':''});
+						$admin_power_setting.attr({'data-type':''});
+						$admin_power_setting.attr({'data-theme':''}).addClass('g-d-hidei');
+						$operate_list_sub.html('');
+						$operate_list_add.html('');
+						//数据区重绘
+						table.draw();
+					}
+				})
+				.fail(function(resp){
+					if(!resp.flag&&resp.message){
+						console.log(resp.message);
+					}else{
+						console.log('获取服务信息失败');
+					}
+				});
 		});
 
 
