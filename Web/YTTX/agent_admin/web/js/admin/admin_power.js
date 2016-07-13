@@ -4,12 +4,12 @@
 	$(function(){
 
 		/*dom引用和相关变量定义*/
-		var $admin_role_wrap=$('#admin_role_wrap')/*表格*/,
-			module_id='admin_role'/*模块id，主要用于本地存储传值*/,
+		var $admin_power_wrap=$('#admin_power_wrap')/*表格*/,
+			module_id='admin_power'/*模块id，主要用于本地存储传值*/,
 			table=null/*datatable 解析后的对象*/,
 			$table_wrap=$('#table_wrap')/*表格容器*/,
 			$edit_wrap=$('#edit_wrap')/*编辑容器*/,
-			$role_add_btn=$('#role_add_btn'),/*添加角色*/
+			$power_add_btn=$('#power_add_btn'),/*添加角色*/
 			$edit_close_btn=$('#edit_close_btn')/*编辑关闭按钮*/,
 			dia=dialog({
 				title:'温馨提示',
@@ -21,19 +21,29 @@
 				},
 				cancel:false
 			})/*一般提示对象*/,
-			dialogObj=public_tool.dialog()/*回调提示对象*/;
+			dialogObj=public_tool.dialog()/*回调提示对象*/,
+			visible_arr=[2,3]/*定义需要隐藏的列索引*/,
+			$colgroup_wrap=$('#colgroup_wrap')/*表格分组控制容器*/,
+			init_group='<col class="g-w-number2"><col class="g-w-number10"><col class="g-w-number10"><col class="g-w-number10"><col class="g-w-number18">'/*表格分组控制全显示情况*/,
+			visible_group='<col class="g-w-number4"><col class="g-w-number16"><col class="g-w-number30">'/*表格分组控制部分隐藏情况*/,
+			$admin_power_setting=$('#admin_power_setting')/*设置权限区域*/;
 
 		/*表单对象*/
 		var $edit_cance_btn=$('#edit_cance_btn')/*编辑取消按钮*/,
-			edit_form=document.getElementById('role_edit_form'),
-		$role_edit_form=$('#role_edit_form')/*编辑表单*/,
-		$role_id=$('#role_id'),/*角色id*/
-		$role_name=$('#role_name'),/*角色名称*/
-		$role_remark=$('#role_remark')/*角色描述*/;
+			edit_form=document.getElementById('power_edit_form'),
+			$power_edit_form=$('#power_edit_form')/*编辑表单*/,
+			$power_id=$('#power_id'),/*角色id*/
+			$power_name=$('#power_name'),/*角色名称*/
+			$power_remark=$('#power_remark')/*角色描述*/,
+			$power_userlist=$('#power_userlist')/*用户列表*/,
+			$admin_power_setting=$('#admin_power_setting')/*权限设置按钮区*/,
+			$operate_list_sub=$('#operate_list_sub')/*权限设置操作区*/,
+			$operate_list_add=$('#operate_list_add')/*权限设置操作区*/,
+			$operate_list_btn=$('#operate_list_btn')/*权限设置操作确定按钮*/;
 
 
 		//初始化请求
-		table=$admin_role_wrap.DataTable({
+		table=$admin_power_wrap.DataTable({
 			deferRender:true,/*是否延迟加载数据*/
 			//serverSide:true,/*是否服务端处理*/
 			searching:false,/*是否搜索*/
@@ -47,7 +57,7 @@
 			processing:true,/*大消耗操作时是否显示处理状态*/
 			/*异步请求地址及相关配置*/
 			ajax:{
-				url:"../../json/admin/admin_role.json",
+				url:"../../json/admin/admin_power.json",
 				dataType:'JSON',
 				method:'post',
 				data:(function(){
@@ -70,6 +80,18 @@
 				},
 				{"data":"name"},
 				{"data":"remark"},
+				{"data":"user",
+					"render":function(data, type, full, meta ){
+						var user=full.user,
+								res='',
+								i= 0,
+								len=user.length;
+						for(i;i<len;i++){
+								res+='<span class="ul-btn" data-id="'+user[i]['id']+'">'+user[i]['name']+'</span>';
+						}
+						return res;
+					}
+				},
 				{
 					"data":"btn",
 					"render":function(data, type, full, meta ){
@@ -93,7 +115,7 @@
 											<i class="fa-group"></i>\
 											<span>成员</span>\
 											</span>\
-											<span data-href="admin_power.html" data-module="admin_power" data-action="select" data-id="'+id+'" data-type="'+types+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+											<span data-action="select" data-id="'+id+'" data-type="'+types+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 											<i class="fa-gear"></i>\
 											<span>权限</span>\
 											</span>\
@@ -109,18 +131,17 @@
 				}
 			],/*控制分页数*/
 			aLengthMenu: [
-				[10,20,50],
-				[10,20,50]
+				[5,10,20],
+				[5,10,20]
 			],/*控制是否每页可改变显示条数*/
 			lengthChange:false/*是否可改变长度*/
 		});
 
 
 
-
 		/*事件绑定*/
 		/*绑定查看，修改，删除操作*/
-		$admin_role_wrap.delegate('span','click',function(e){
+		$admin_power_wrap.delegate('span','click',function(e){
 			e.stopPropagation();
 			e.preventDefault();
 
@@ -213,26 +234,36 @@
 
 				}else if(action==='update'){
 					/*修改操作*/
+					/*调整布局*/
 					$table_wrap.addClass('col-md-9');
 					$edit_wrap.addClass('g-d-showi');
+					table.columns(visible_arr).visible(false);
+					$colgroup_wrap.html(visible_group);
 					//重置信息
-					$edit_close_btn.prev().html('修改角色');
-					$edit_cance_btn.prev().html('修改角色');
+					$edit_close_btn.prev().html('修改权限');
+					$edit_cance_btn.prev().html('修改权限');
 					//赋值
 					var datas=table.row($tr).data();
 							for(var i in datas){
 								switch (i){
 									case 'name':
-										$role_name.val(datas[i]);
+										$power_name.val(datas[i]);
 										break;
 									case 'remark':
-										$role_remark.val(datas[i]);
+										$power_remark.val(datas[i]);
 										break;
-									case 'btn':;
-										$role_id.val(datas[i][id]);
+									case 'btn':
+										$power_id.val(datas[i][id]);
 										break;
 								}
 							}
+				}else if(action==='select'){
+					/*查看权限操作*/
+					/*传递父参数，并显示设置权限按钮*/
+					$admin_power_setting.attr({
+						'data-id':id,
+						'data-type':type
+					}).removeClass('g-d-hidei');
 				}
 			}
 
@@ -241,24 +272,85 @@
 		});
 
 
+		/*
+		*
+		* case 'user':
+		 (function(data){
+		 var user=data,
+		 res='',
+		 i= 0,
+		 len=data?user.length: 0,
+		 userid=[];
+		 if(len!==0){
+		 for(i;i<len;i++){
+		 res+='<span data-parentid="'+id+'" data-id="'+user[i]['id']+'">'+user[i]['name']+'<i></i></span>';
+		 userid.push(user[i]['id']);
+		 }
+		 $power_userlist.html(res);
+		 $power_user.val(userid);
+		 }
+		 })(datas[i]);
+		 break;
+		*
+		*
+		* */
+
+		/*绑定加载修改操作*/
+
+
+
+		/*绑定操作列表添加和删除操作*/
+		$.each([$operate_list_add,$operate_list_sub],function(){
+				var selector=this.selector;
+				//绑定事件
+				this.delegate('','click',function(e){
+					var $this=$(this);
+
+					//区分事件类型
+					if(selector.indexOf('add')!==-1){
+						//添加操作
+						$this.parent().appendTo($operate_list_sub);
+					}else if(selector.indexOf('sub')!==-1){
+						//删除操作
+						$this.parent().appendTo($operate_list_add);
+					}
+				});
+		});
+
+
+		/*绑定确定修改*/
+		$operate_list_btn.on('click', function () {
+				console.log('ok');
+
+				//数据区重绘
+				table.draw();
+		});
+
+
+
 		/*//取消修改*/
 		$edit_cance_btn.on('click',function(e){
 			//切换显示隐藏表格和编辑区
+			/*调整布局*/
 			$table_wrap.removeClass('col-md-9');
 			$edit_wrap.removeClass('g-d-showi');
+			table.columns(visible_arr).visible(true);
+			$colgroup_wrap.html(init_group);
 		});
 
 		/*添加角色*/
-		$role_add_btn.on('click',function(){
+		$power_add_btn.on('click',function(){
 			//重置表单
 			edit_form.reset();
-			$edit_close_btn.prev().html('添加角色');
-			$edit_cance_btn.prev().html('添加角色');
-			//显示表单
+			$edit_close_btn.prev().html('添加权限');
+			$edit_cance_btn.prev().html('添加权限');
+			//*调整布局*/
 			$table_wrap.addClass('col-md-9');
 			$edit_wrap.addClass('g-d-showi');
+			table.columns(visible_arr).visible(false);
+			$colgroup_wrap.html(visible_group);
 			//第一行获取焦点
-			$role_name.focus();
+			$power_name.focus();
 		});
 
 		/*//关闭编辑区*/
@@ -272,31 +364,31 @@
 		if($.isFunction($.fn.validate)) {
 			/*配置信息*/
 			var form_opt={};
-			if(public_tool.cache.form_opt){
-				$.extend(true,form_opt,public_tool.cache.form_opt,{
+			if(public_tool.cache.form_opt_0){
+				$.extend(true,form_opt,public_tool.cache.form_opt_0,{
 					submitHandler: function(form){
 						//判断是否存在id号
-						var id=$role_id.val(),
+						var id=$power_id.val(),
 							config={
 								url:"",
 								method: 'POST',
 								dataType: 'json',
 								data: {
-									"roleName":$role_name.val(),
-									"roleRemark":$role_remark.val()
+									"powerName":$power_name.val(),
+									"powerRemark":$power_remark.val()
 								}
 							};
 
 						if(id!==''&&typeof id==='number'){
-							//此处配置添加角色地址（开发阶段）
-							config.url="../../json/admin/admin_role_update.json";
-							if(config.data['role_Id']){
-								delete config.data['role_Id'];
-							}
-						}else{
 							//此处配置修改稿角色地址（开发阶段）
 							config.url="../../json/admin/admin_role_update.json";
-							config.data['role_Id']=$role_id.val();
+							config.data['role_Id']=id;
+						}else{
+							//此处配置添加角色地址（开发阶段）
+							config.url="../../json/admin/admin_role_update.json";
+							if(config.data['power_Id']){
+								delete config.data['power_Id'];
+							}
 						}
 
 						$.ajax(config)
@@ -326,7 +418,7 @@
 				});
 			}
 			/*提交验证*/
-			$role_edit_form.validate(form_opt);
+			$power_edit_form.validate(form_opt);
 		}
 
 

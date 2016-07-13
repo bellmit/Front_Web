@@ -488,7 +488,7 @@ var public_vars = public_vars || {};
 
 
 				if(public_tool.cache){
-					public_tool.cache['form_opt']=opts;
+					public_tool.cache['form_opt_'+i]=opts;
 				}else{
 					$this.validate(opts);
 				}

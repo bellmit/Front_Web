@@ -272,8 +272,8 @@
 		if($.isFunction($.fn.validate)) {
 			/*配置信息*/
 			var form_opt={};
-			if(public_tool.cache.form_opt){
-				$.extend(true,form_opt,public_tool.cache.form_opt,{
+			if(public_tool.cache.form_opt_0){
+				$.extend(true,form_opt,public_tool.cache.form_opt_0,{
 					submitHandler: function(form){
 						//判断是否存在id号
 						var id=$role_id.val(),
@@ -288,15 +288,15 @@
 							};
 
 						if(id!==''&&typeof id==='number'){
+							//此处配置修改稿角色地址（开发阶段）
+							config.url="../../json/admin/admin_role_update.json";
+							config.data['role_Id']=id;
+						}else{
 							//此处配置添加角色地址（开发阶段）
 							config.url="../../json/admin/admin_role_update.json";
 							if(config.data['role_Id']){
 								delete config.data['role_Id'];
 							}
-						}else{
-							//此处配置修改稿角色地址（开发阶段）
-							config.url="../../json/admin/admin_role_update.json";
-							config.data['role_Id']=$role_id.val();
 						}
 
 						$.ajax(config)

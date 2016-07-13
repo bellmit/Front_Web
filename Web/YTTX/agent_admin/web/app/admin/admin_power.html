@@ -270,6 +270,7 @@
 
             <!--主内容-->
             <div class="row row-main-wrap">
+                <!--数据显示区-->
                 <div class="col-md-12" id="table_wrap">
                     <div class="panel">
 
@@ -291,31 +292,15 @@
                         <!--表格主体-->
                         <div class="panel-body">
                             <div>
-                                <span id="role_add_btn" class="btn btn-info btn-icon btn-xs g-br2">
+                                <span id="power_add_btn" class="btn btn-info btn-icon btn-xs g-br2">
                                     <i class="fa-plus"></i>
                                     <span>添加权限组</span>
                                 </span>
                             </div>
-                            
-                            
-                            <!--
-                            <tr>
-                                    <td><input type="checkbox" name="role" class="cbr"></td>
-                                    <td>超级管理员</td>
-                                    <td>管理全部系统，有全部权限</td>
-                                    <td>
-                                        <span data-id="1" data-type="1" data-action="update" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">
-                                            <i class="fa-pencil"></i>
-                                            <span>修改</span>
-                                        </span>
-                                    </td>
-                                </tr>
-                            -->
-
 
                             <table id="admin_power_wrap" class="table table-bordered table-striped table-hover admin_table">
                                 <!--分组样式-->
-                                <colgroup>
+                                <colgroup id="colgroup_wrap">
                                     <col class="g-w-number2">
                                     <col class="g-w-number10">
                                     <col class="g-w-number10">
@@ -354,7 +339,7 @@
                     </div>
                 </div>
 
-
+                <!--修改区-->
                 <div class="col-md-3 row-edit-wrap" id="edit_wrap">
                         <div class="main-edit-show">
                             <div class="panel">
@@ -386,16 +371,6 @@
                                         </div>
 
                                         <div class="form-group">
-                                            <label class="control-label">用户列表：</label>
-
-                                            <div id="power_userlist" class="power-userlist-wrap"></div>
-                                        </div>
-
-
-
-
-
-                                        <div class="form-group">
                                             <button type="submit" class="btn btn-success"></button>
                                             <button id="edit_cance_btn" type="reset" class="btn btn-white">取消</button>
                                         </div>
@@ -410,9 +385,102 @@
                         </div>
                 </div>
 
+                <!--数据操作区-->
+                <div class="col-md-12">
+                    <div class="panel">
+
+                        <!--表格标题-->
+                        <div class="panel-heading">
+                            <h3 class="panel-title">权限设置</h3>
+
+                            <div class="panel-options">
+                                <a href="#" data-toggle="panel">
+                                    <span class="collapse-icon">&ndash;</span>
+                                    <span class="expand-icon">+</span>
+                                </a>
+                            </div>
+                        </div>
+
+                        <!--表格主体-->
+                        <div class="panel-body">
+
+                            <table class="table table-bordered table-striped admin_table">
+                                <!--分组样式-->
+                                <colgroup>
+                                    <col class="g-w-number13">
+                                    <col class="g-w-number12">
+                                    <col class="g-w-number13">
+                                    <col class="g-w-number12">
+                                </colgroup>
+
+                                <!--表头-->
+                                <thead>
+                                <tr>
+                                    <th>系统管理</th>
+                                    <th>用户管理</th>
+                                    <th>服务站管理</th>
+                                    <th>代理管理</th>
+                                </tr>
+                                </thead>
+
+                                <!--表主体-->
+                                <tbody class="middle-align">
+                                <tr data-type="" data-id="" class="g-d-hidei" id="admin_power_setting">
+                                    <td>&nbsp;</td>
+                                    <td>
+                                        <span class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8" data-theme="系统管理" data-action="update">
+                                            <i class="fa fa-edit"></i>
+                                            <span>修改</span>
+                                        </span>
+                                        <span class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8" data-theme="系统管理" data-action="select">
+                                            <i class="fa fa-file-o"></i>
+                                            <span>查看</span>
+                                        </span>
+                                    </td>
+                                    <td data-module="serve">
+                                        <span class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8" data-theme="服务站管理" data-action="update">
+                                            <i class="fa fa-edit"></i>
+                                            <span>修改</span>
+                                        </span>
+                                        <span class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8" data-theme="服务站管理" data-action="select">
+                                            <i class="fa fa-file-o"></i>
+                                            <span>查看</span>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8" data-theme=代理管理" data-action="update">
+                                            <i class="fa fa-edit"></i>
+                                            <span>修改</span>
+                                        </span>
+                                        <span class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8" data-theme="代理管理" data-action="select">
+                                            <i class="fa fa-file-o"></i>
+                                            <span>查看</span>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4">
+                                        <div class="panel">
+                                            <!--修改或添加主体-->
+                                            <div class="panel-body operate-list">
+                                                <div data-theme="" class="operate-list-add" id="operate_list_add"></div>
+                                                <div data-theme="" class="operate-list-sub" id="operate_list_sub"></div>
+                                                <div class="operate-list-btn">
+                                                    <span id="operate_list_btn" class="btn btn-info">确定</span>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+
+                    </div>
+                </div>
             </div>
-
-
 
 
             <!--底部信息-->
