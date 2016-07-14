@@ -407,10 +407,10 @@
                             <table class="table table-bordered table-striped admin_table">
                                 <!--分组样式-->
                                 <colgroup>
-                                    <col class="g-w-number13">
+                                    <col class="g-w-number10">
                                     <col class="g-w-number12">
                                     <col class="g-w-number13">
-                                    <col class="g-w-number12">
+                                    <col class="g-w-number15">
                                 </colgroup>
 
                                 <!--表头-->
@@ -425,51 +425,51 @@
 
                                 <!--表主体-->
                                 <tbody class="middle-align">
-                                <tr data-type="" data-theme="" data-id="" class="g-d-hidei" id="admin_power_setting">
-                                    <td>&nbsp;</td>
-                                    <td>
-                                        <span class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8" data-theme="用户管理" data-action="update">
-                                            <i class="fa fa-edit"></i>
-                                            <span>修改</span>
-                                        </span>
-                                        <span class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8" data-theme="用户管理" data-action="select">
-                                            <i class="fa fa-file-o"></i>
-                                            <span>查看</span>
-                                        </span>
-                                    </td>
-                                    <td>
-                                        <span class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8" data-theme="服务站管理" data-action="update">
-                                            <i class="fa fa-edit"></i>
-                                            <span>修改</span>
-                                        </span>
-                                        <span class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8" data-theme="服务站管理" data-action="select">
-                                            <i class="fa fa-file-o"></i>
-                                            <span>查看</span>
-                                        </span>
-                                    </td>
-                                    <td>
-                                        <span class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8" data-theme="代理管理" data-action="update">
-                                            <i class="fa fa-edit"></i>
-                                            <span>修改</span>
-                                        </span>
-                                        <span class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8" data-theme="代理管理" data-action="select">
-                                            <i class="fa fa-file-o"></i>
-                                            <span>查看</span>
-                                        </span>
-                                    </td>
-                                </tr>
-                                <tr>
+                                <!--操作按钮区域-->
+                                <tr data-type="" data-theme="" data-id="" class="g-d-hidei" id="admin_power_setting"></tr>
+                                <!--添加与删除区-->
+                                <tr class="g-d-hidei" id="operate_aodlist">
                                     <td colspan="4">
                                         <div class="panel">
                                             <!--修改或添加主体-->
                                             <div class="panel-body operate-list">
-                                                <div data-theme="" class="operate-list-add" id="operate_list_add"></div>
-                                                <div data-theme="" class="operate-list-sub" id="operate_list_sub"></div>
+                                                <div data-theme="" class="operate-list-add" id="operate_aodlist_add"></div>
+                                                <div data-theme="" class="operate-list-sub" id="operate_aodlist_sub"></div>
                                                 <div class="operate-list-btn">
-                                                    <span id="operate_list_btn" class="btn btn-info">确定</span>
+                                                    <span id="operate_aodlist_btn" class="btn btn-info ">确定</span>
                                                 </div>
 
                                             </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <!--添加区-->
+                                <tr class="g-d-hidei" id="operate_addlist">
+                                    <td colspan="4">
+                                        <div class="panel">
+                                            <!--修改或添加主体-->
+                                            <div class="panel-body operate-list">
+                                                <div data-theme="" class="operate-list-add" id="operate_addlist_add"></div>
+                                                <div class="operate-list-defr" id="operate_addlist_sub"></div>
+                                                <div class="operate-list-btn">
+                                                    <span id="operate_addlist_btn" class="btn btn-info ">确定</span>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <!--查询区域-->
+                                <tr class="" id="operate_showlist">
+                                    <td colspan="4">
+                                        <div data-theme="查看记录查询" class="operate-list-wrap g-d-hidei" id="operate_selcet_wrap">
+                                            <table class="table table-bordered table-striped table-hover admin_table"></table>
+                                        </div>
+                                        <div data-theme="发货记录查询"  class="operate-list-wrap g-d-hidei" id="operate_send_wrap">
+                                            <table class="table table-bordered table-striped table-hover admin_table"></table>
+                                        </div>
+                                        <div data-theme="销售记录查询"  class="operate-list-wrap g-d-hidei" id="operate_record_wrap">
+                                            <table class="table table-bordered table-striped table-hover admin_table"></table>
                                         </div>
                                     </td>
                                 </tr>
@@ -508,37 +508,7 @@
     
     
     
-    
-    <div class="modal fade custom-width" id="member_detail_wrap">
-        <div class="modal-dialog g-w-number40">
-            <div class="modal-content">
 
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 id="member_detail_title" class="modal-title"></h4>
-                </div>
-                <div class="modal-body">
-                        <table class="table table-bordered table-striped table-hover admin_table">
-                            <colgroup>
-                                <col class="g-w-number10"/>
-                                <col class="g-w-number40"/>
-                                <tbody id="member_detail_show"></tbody>
-                            </colgroup>
-                        </table>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-info" data-dismiss="modal">关闭</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    
-    
-    
-    
-    
-    
 	
 	<!--加载遮罩层-->
 	<div class="page-loading-overlay">

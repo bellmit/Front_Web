@@ -25,20 +25,58 @@
 			visible_arr=[2,3]/*定义需要隐藏的列索引*/,
 			$colgroup_wrap=$('#colgroup_wrap')/*表格分组控制容器*/,
 			init_group='<col class="g-w-number2"><col class="g-w-number10"><col class="g-w-number10"><col class="g-w-number10"><col class="g-w-number18">'/*表格分组控制全显示情况*/,
-			visible_group='<col class="g-w-number4"><col class="g-w-number16"><col class="g-w-number30">'/*表格分组控制部分隐藏情况*/,
+			visible_group='<col class="g-w-number4"><col class="g-w-number16"><col class="g-w-number30">'/*表格分组控制部分隐藏情况*/;
+
+
+		var operate_config={
+				deferRender:true,/*是否延迟加载数据*/
+				//serverSide:true,/*是否服务端处理*/
+				searching:true,/*是否搜索*/
+				ordering:true,/*是否排序*/
+				//order:[[1,'asc']],/*默认排序*/
+				paging:true,/*是否开启本地分页*/
+				pagingType:'simple_numbers',/*分页按钮排列*/
+				autoWidth:true,/*是否自适应宽度*/
+				info:true,/*显示分页信息*/
+				stateSave:false,/*是否保存重新加载的状态*/
+				processing:true,/*大消耗操作时是否显示处理状态*/
+				/*异步请求地址及相关配置*/
+				data:'',/*默认配置排序规则*/
+				aLengthMenu: [
+					[5,10,20],
+					[5,10,20]
+				],/*控制是否每页可改变显示条数*/
+				lengthChange:true/*是否可改变长度*/
+			}/*查询数据配置对象*/,
+			$operate_selcet_wrap=$('#operate_selcet_wrap')/*查询数据展现容器*/,
+			$operate_send_wrap=$('#operate_send_wrap')/*查询数据展现容器*/,
+			$operate_record_wrap=$('#operate_record_wrap')/*查询数据展现容器*/,
+			$operate_selcet_table=$operate_selcet_wrap.find('table')/*查询数据展现容器*/,
+			$operate_send_table=$operate_send_wrap.find('table')/*查询数据展现容器*/,
+			$operate_record_table=$operate_record_wrap.find('table')/*查询数据展现容器*/,
+			sendtable=null/*查询的数据对象*/,
+			selecttable=null/*查询的数据对象*/,
+			recordtable=null/*查询的数据对象*/,
 			$admin_power_setting=$('#admin_power_setting')/*权限设置按钮区*/,
-			$operate_list_sub=$('#operate_list_sub')/*权限设置操作区*/,
-			$operate_list_add=$('#operate_list_add')/*权限设置操作区*/,
-			$operate_list_btn=$('#operate_list_btn')/*权限设置操作确定按钮*/,
+			$operate_aodlist=$('#operate_aodlist')/*添加与删除显示区*/,
+			$operate_showlist=$('#operate_showlist')/*查询显示区*/,
+			$operate_addlist=$('#operate_addlist')/*添加显示区*/,
+			$operate_aodlist_sub=$('#operate_aodlist_sub')/*权限设置操作区*/,
+			$operate_aodlist_add=$('#operate_aodlist_add')/*权限设置操作区*/,
+			$operate_addlist_sub=$('#operate_addlist_sub')/*权限设置操作区*/,
+			$operate_addlist_add=$('#operate_addlist_add')/*权限设置操作区*/,
+			$operate_aodlist_btn=$('#operate_aodlist_btn')/*权限设置操作确定按钮*/,
+			$operate_addlist_btn=$('#operate_addlist_btn')/*权限设置操作确定按钮*/,
 			module_map={
 					"系统管理":"admin",
 					"用户管理":"user",
 					"服务站管理":"serve",
-					"代理管理":"agent"
-			}/*服务模块映射*/,
-			$member_detail_wrap=$('#member_detail_wrap')/*查看详情容器*/,
-			$member_detail_title=$('#member_detail_title')/*查看详情标题*/,
-			$member_detail_show=$('#member_detail_show')/*查看详情内容*/;
+					"代理管理":"agent",
+					"admin":"系统管理",
+					"user":"用户管理",
+					"serve":"服务站管理",
+					"agent":"代理管理"
+			}/*服务模块映射*/;
 
 		/*表单对象*/
 		var $edit_cance_btn=$('#edit_cance_btn')/*编辑取消按钮*/,
@@ -265,216 +303,127 @@
 								}
 							}
 				}else if(action==='select'){
-					/*查看权限操作*/
-					/*传递父参数，并显示设置权限按钮*/
-					$admin_power_setting.attr({
-						'data-id':id,
-						'data-type':type
-					}).removeClass('g-d-hidei');
+					/*隐藏操作区域*/
+					$operate_aodlist.addClass('g-d-hidei');
+					$operate_addlist.addClass('g-d-hidei');
+					$operate_showlist.addClass('g-d-hidei');
 					/*清空上次已查信息*/
-					$operate_list_add.html('').attr({'data-theme':''});
-					$operate_list_sub.html('').attr({'data-theme':''});
-				}
-			}
+				  $operate_aodlist_add.html('').attr({'data-theme':''});
+				  $operate_aodlist_sub.html('').attr({'data-theme':''});
+				  $operate_addlist_add.html('').attr({'data-theme':''});
+					$operate_addlist_sub.html('').attr({'data-theme':''});
+					/*查询权限列表*/
+					$.ajax({
+							url: "../../json/admin/admin_power_setting.json",
+							method: 'POST',
+							dataType: 'json',
+							data:{
+								"id":id,
+								"type":type
+							}
+						})
+						.done(function (resp) {
+							if(resp.flag){
+								var datas=resp.data,
+									len=datas?datas.length:0,
+									i= 0,
+									item=null;
 
-
-
-		});
-
-
-		/*绑定操作列表添加和删除操作*/
-		$.each([$operate_list_add,$operate_list_sub],function(){
-				var selector=this.selector;
-				//绑定事件
-				this.delegate('i','click',function(e){
-					var $this=$(this);
-
-					//区分事件类型
-					if(selector.indexOf('add')!==-1){
-						//添加操作
-						$this.parent().appendTo($operate_list_sub);
-					}else if(selector.indexOf('sub')!==-1){
-						//删除操作
-						$this.parent().appendTo($operate_list_add);
-					}
-				});
-		});
-
-
-		/*绑定修改操作*/
-		$admin_power_setting.delegate('span','click',function(e){
-			e.stopPropagation();
-			e.preventDefault();
-			
-			var target= e.target,
-				$this,
-				id=$admin_power_setting.attr('data-id'),
-				type=$admin_power_setting.attr('data-type'),
-				action,
-				theme,
-				module;
-
-			//适配对象
-			if(target.className.indexOf('btn')!==-1){
-				$this=$(target);
-			}else{
-				$this=$(target).parent();
-			}
-			action=$this.attr('data-action');
-			theme=$this.attr('data-theme');
-
-			
-			/*初始化界面*/
-			$operate_list_add.attr({'data-theme':theme});
-			$operate_list_sub.attr({'data-theme':theme});
-			module=module_map[theme];
-			$admin_power_setting.attr({'data-theme':theme});
-
-			/*路由*/
-			if(action==='update'){
-				/*修改操作（添加，删除，修改）*/
-				$.ajax({
-									url: "../../json/admin/admin_power_user.json",
-									method: 'POST',
-									dataType: 'json',
-									data:{
-										"id":id,
-										"type":type,
-										"module":module
-									}
-								})
-				.done(function (resp) {
-					if(resp.flag){
-						var datas=resp.data,
-								len=datas?datas.length:0,
-								subres='',
-								addres='',
-								selected=parseInt(Math.random() * len),
-								i=0;
-								
 								//存在数据
 								if(len!==0){
 									for(i;i<len;i++){
-										if(i<selected){
-											subres+='<span data-id="'+datas[i]['id']+'">'+datas[i]['name']+'<i></i></span>';
-										}else{
-											addres+='<span data-id="'+datas[i]['id']+'">'+datas[i]['name']+'<i></i></span>';
+										if(datas[i]['type']===type){
+											item=datas[i];
+											break;
 										}
 									};
-									$operate_list_add.html(addres);
-									$operate_list_sub.html(subres);
-								}
-								
-					}
-				})
-				.fail(function(resp){
-					if(!resp.flag&&resp.message){
-						console.log(resp.message);
-					}else{
-						console.log('获取服务信息失败');
-					}
-				});
-			}else if(action==='select'){
-				/*查看操作*/
-				/*查看详情*/
-				$member_detail_wrap.modal('show',{backdrop:'static'});
-				$.ajax({
-						url:"../../json/admin/admin_memberdetail.json",
-						dataType:'JSON',
-						method:'post',
-						data:{
-							"id":id,
-							"type":type
-						}
-				})
-				.done(function(resp){
-						if(resp.flag){
-							var datas=resp.data,
-								str='';
-							for(var i in datas){
-									if(i==='userName'||i==='username'){
-										$member_detail_title.html(i+'成员详情信息');
+									if(item){
+										/*传递父参数，并显示设置权限按钮*/
+										/*开启权限控制按钮区域*/
+										$admin_power_setting.attr({
+											'data-id':id,
+											'data-type':type
+										}).removeClass('g-d-hidei');
+										/*解析数据*/
+										var subitem,sublen,res='';
+										for(var j in item){
+											if(typeof module_map[j]!=='undefined'){
+												subitem=item[j];
+												sublen=subitem.length;
+												if(sublen===0){
+													res+='<td>&nbsp;</td>';
+												}else{
+													res+='<td>';
+													var k= 0;
+													for(k;k<sublen;k++){
+														switch(subitem[k]){
+															case 'add':
+																res+='<span class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8" data-theme="'+module_map[j]+'" data-action="'+subitem[k]+'">' +
+																	'<i class="fa fa-plus"></i>' +
+																	'<span>添加</span>' +
+																	'</span>';
+																break;
+															case 'update':
+																res+='<span class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8" data-theme="'+module_map[j]+'" data-action="'+subitem[k]+'">' +
+																	'<i class="fa fa-edit"></i>' +
+																	'<span>修改</span>' +
+																	'</span>';
+																break;
+															case 'select':
+																res+='<span class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8" data-theme="'+module_map[j]+'" data-action="'+subitem[k]+'">' +
+																	'<i class="fa fa-file-o"></i>' +
+																	'<span>查看</span>' +
+																	'</span>';
+																break;
+															case 'send':
+																res+='<span class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8" data-theme="'+module_map[j]+'" data-action="'+subitem[k]+'">' +
+																	'<i class="fa fa-mail-forward"></i>' +
+																	'<span>发货</span>' +
+																	'</span>';
+																break;
+															case 'record':
+																res+='<span class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8" data-theme="'+module_map[j]+'" data-action="'+subitem[k]+'">' +
+																	'<i class="fa fa-bar-chart"></i>' +
+																	'<span>销售记录</span>' +
+																	'</span>';
+																break;
+														}
+													};
+													res+='</td>';
+												}
+											}else{
+												continue;
+											}
+										}
+										$(res).appendTo($admin_power_setting.html(''));
 									}else{
-										str+='<tr><th>'+i+'</th><td>'+datas[i]+'</td></tr>';
+										/*关闭权限控制按钮区域*/
+										$admin_power_setting.attr({
+											'data-id':'',
+											'data-type':''
+										}).addClass('g-d-hidei').html('<td colspan="4">&nbsp;</td>');
 									}
-							};
-							$member_detail_show.html(str);
-						}else{
-							$member_detail_title.html('');
-							$member_detail_show.html('');
-						}
-				})
-				.fail(function(resp){
-						if(!resp.flag){
-								$member_detail_title.html('');
-								$member_detail_show.html('');
-						}
-				});
+								}else{
+									/*关闭权限控制按钮区域*/
+									$admin_power_setting.attr({
+										'data-id':'',
+										'data-type':''
+									}).addClass('g-d-hidei').html('<td colspan="4">&nbsp;</td>');
+								}
+							}
+						})
+						.fail(function(resp){
+							if(!resp.flag&&resp.message){
+								console.log(resp.message);
+							}else{
+								console.log('获取服务信息失败');
+							}
+						});
+				}
 			}
-			
-			
-		});
 
-		/*绑定确定修改*/
-		$operate_list_btn.on('click',function () {
-				
-				var id=$admin_power_setting.attr('data-id'),
-				type=$admin_power_setting.attr('data-type'),
-				module=module_map[$admin_power_setting.attr('data-theme')],
-				res=[];
-		
-				/*过滤*/
-				if((id===''&&module==='')||(id!==''&&module==='')||typeof module==='undefined'){
-					dia.content('<span class="g-c-bs-warning g-btips-warn">没有选择权限数据</span>').show();
-					return false;
-				}
-				
-				
-				
-				/*发送请求*/
-				var i=0,
-				res=[],
-				item=$operate_list_sub.find('span'),
-				len=item.size();
-				
-				if(len!==0){
-					for(i;i<len;i++){
-						res.push(item.eq(i).attr('data-id'));
-					}
-				}else{
-					res='null';
-				}
-				
-				$.ajax({
-									url: "../../json/admin/admin_power_user.json",
-									method: 'POST',
-									dataType: 'json',
-									data:{
-										"id":id,
-										"type":type,
-										"module":module,
-										"subid":res
-									}
-								})
-				.done(function (resp) {
-					if(resp.flag){
-						//成功后重置数据，同时防止重复提交
-						$admin_power_setting.attr({'data-id':''});
-						$admin_power_setting.attr({'data-type':''});
-						$admin_power_setting.attr({'data-theme':''}).addClass('g-d-hidei');
-						$operate_list_sub.html('');
-						$operate_list_add.html('');
-						//数据区重绘
-						table.draw();
-					}
-				})
-				.fail(function(resp){
-					if(!resp.flag&&resp.message){
-						console.log(resp.message);
-					}else{
-						console.log('获取服务信息失败');
-					}
-				});
+
+
 		});
 
 
@@ -573,6 +522,319 @@
 		}
 
 
+
+		/*绑定操作列表添加和删除操作*/
+		$.each([$operate_aodlist_add,$operate_aodlist_sub,$operate_addlist_add],function(){
+				var selector=this.selector;
+				//绑定事件
+				this.delegate('i','click',function(e){
+					var $this=$(this);
+
+					//区分事件类型
+					if(selector.indexOf('aodlist_add')!==-1){
+						//添加操作
+						$this.parent().appendTo($operate_aodlist_sub);
+					}else if(selector.indexOf('aodlist_sub')!==-1){
+						//删除操作
+						$this.parent().appendTo($operate_aodlist_add);
+					}else if(selector.indexOf('addlist_add')!==-1){
+						//添加操作
+						$this.parent().appendTo($operate_addlist_sub);
+					}
+				});
+		});
+
+
+		/*绑定修改操作*/
+		$admin_power_setting.delegate('span','click',function(e){
+			e.stopPropagation();
+			e.preventDefault();
+			
+			var target= e.target,
+				$this,
+				id=$admin_power_setting.attr('data-id'),
+				type=$admin_power_setting.attr('data-type'),
+				action,
+				theme,
+				module;
+
+			//适配对象
+			if(target.className.indexOf('btn')!==-1){
+				$this=$(target);
+			}else{
+				$this=$(target).parent();
+			}
+			action=$this.attr('data-action');
+			theme=$this.attr('data-theme');
+			module=module_map[theme];
+			
+			/*初始化界面*/
+			$admin_power_setting.attr({'data-theme':theme});
+
+			/*路由*/
+			if(action==='update'||action==='add'){
+				if(action==='update'){
+					/*初始化界面*/
+					$operate_aodlist.removeClass('g-d-hidei');
+					$operate_addlist.addClass('g-d-hidei');
+					$operate_showlist.addClass('g-d-hidei');
+					$operate_aodlist_add.attr({'data-theme':theme});
+					$operate_aodlist_sub.attr({'data-theme':theme});
+				}else if(action==='add'){
+					/*初始化界面*/
+					$operate_aodlist.addClass('g-d-hidei');
+					$operate_addlist.removeClass('g-d-hidei');
+					$operate_showlist.addClass('g-d-hidei');
+					$operate_addlist_add.attr({'data-theme':theme});
+				}
+
+				$.ajax({
+					url: "../../json/admin/admin_power_user.json",
+					method: 'POST',
+					dataType: 'json',
+					data:{
+						"id":id,
+						"type":type,
+						"module":module
+					}
+				})
+				.done(function (resp) {
+					if(resp.flag){
+						var datas=resp.data,
+							len=datas?datas.length:0,
+							subres='',
+							addres='',
+							selected=parseInt(Math.random() * len,10),
+							i=0;
+
+						//存在数据
+						if(len!==0){
+							for(i;i<len;i++){
+								if(i<selected){
+									subres+='<span data-id="'+datas[i]['id']+'">'+datas[i]['name']+'<i></i></span>';
+								}else{
+									addres+='<span data-id="'+datas[i]['id']+'">'+datas[i]['name']+'<i></i></span>';
+								}
+							};
+							if(action==='update'){
+								/*修改操作（添加，删除）*/
+								$operate_aodlist_add.html(addres);
+								$operate_aodlist_sub.html(subres);
+							}else if(action==='add'){
+								/*修改操作（添加）*/
+								$operate_addlist_add.html(addres);
+								$operate_addlist_sub.html(subres);
+							}
+						}
+					}
+				})
+				.fail(function(resp){
+					if(!resp.flag&&resp.message){
+						console.log(resp.message);
+					}else{
+						console.log('获取服务信息失败');
+					}
+				});
+			}else if(action==='select'||action==='send'||action==='record'){
+				/*查看,发货，消费记录操作*/
+				/*初始化界面*/
+				$operate_aodlist.addClass('g-d-hidei');
+				$operate_addlist.addClass('g-d-hidei');
+				$operate_showlist.removeClass('g-d-hidei');
+				/*查看详情*/
+				$.ajax({
+						url:"../../json/admin/admin_power_user.json",
+						dataType:'JSON',
+						method:'post',
+						data:{
+							"id":id,
+							"type":type
+						}
+				})
+				.done(function(resp){
+					/*重置配置信息*/
+					var	datalist=resp.data;
+
+					/*设置配置对象和dom结构*/
+					if(action==='send'){
+						if(sendtable===null){
+							(function(cf,dl){
+								var config= $.extend(true,{},cf),
+									tablestr='';
+								/*设置数据源*/
+								if(dl!==null){
+									config.data=dl.slice(0);
+								}else{
+									config.data.data='';
+								}
+								tablestr='<colgroup><col class="g-w-number12"><col class="g-w-number14"><col class="g-w-number12"><col class="g-w-number12"></colgroup><thead><tr><th class="sorting">发货价格</th><th class="sorting">客户电话</th><th class="sorting">发货数量</th><th class="sorting">发货时间</th></tr></thead><tbody class="middle-align"></tbody>';
+								config['columns']=[
+									{
+										"data":"price"
+									},
+									{
+										"data":"phone"
+									},
+									{
+										"data":"number"
+									},
+									{
+										"data":"endDateTime"
+									}
+								];
+								$(tablestr).appendTo($operate_send_table.html(''));
+								sendtable=$operate_send_table.DataTable(config);
+							})(operate_config,datalist);
+						}
+						$operate_send_wrap.removeClass('g-d-hidei');
+						$operate_record_wrap.addClass('g-d-hidei');
+						$operate_selcet_wrap.addClass('g-d-hidei');
+					}else if(action==='record'){
+						if(recordtable===null){
+							(function(cf,dl){
+								var config= $.extend(true,{},cf),
+									tablestr='';
+								/*设置数据源*/
+								if(dl!==null){
+									config.data=dl.slice(0);
+								}else{
+									config.data.data='';
+								}
+								tablestr='<colgroup><col class="g-w-number10"><col class="g-w-number10"><col class="g-w-number8"><col class="g-w-number8"><col class="g-w-number14"></colgroup><thead><tr><th class="sorting">发货价格</th><th class="sorting">客户电话</th><th class="sorting">发货数量</th><th class="sorting">发货时间</th><th class="no-sorting">描述</th></tr></thead><tbody class="middle-align"></tbody>';
+								config['columns']=[
+									{
+										"data":"price"
+									},
+									{
+										"data":"phone"
+									},
+									{
+										"data":"number"
+									},
+									{
+										"data":"endDateTime"
+									},
+									{
+										"data":"remark"
+									}
+								];
+								$(tablestr).appendTo($operate_record_table.html(''));
+								recordtable=$operate_record_table.DataTable(config);
+							})(operate_config,datalist);
+
+						}
+						$operate_send_wrap.addClass('g-d-hidei');
+						$operate_record_wrap.removeClass('g-d-hidei');
+						$operate_selcet_wrap.addClass('g-d-hidei');
+					}else if(action==='select'){
+						if(selecttable===null){
+							(function(cf,dl){
+								var config= $.extend(true,{},cf),
+									tablestr='';
+								/*设置数据源*/
+								if(dl!==null){
+									config.data=dl.slice(0);
+								}else{
+									config.data.data='';
+								}
+								tablestr='<colgroup><col class="g-w-number20"><col class="g-w-number16"><col class="g-w-number14"></colgroup><thead><tr><th class="sorting">名称</th><th class="sorting">电话</th><th class="sorting">数量</th></tr></thead><tbody class="middle-align"></tbody>';
+								config['columns']=[
+									{
+										"data":"name"
+									},
+									{
+										"data":"phone"
+									},
+									{
+										"data":"number"
+									}
+								];
+								$(tablestr).appendTo($operate_selcet_table.html(''));
+								selecttable=$operate_selcet_table.DataTable(config);
+							})(operate_config,datalist);
+
+						}
+						$operate_send_wrap.addClass('g-d-hidei');
+						$operate_record_wrap.addClass('g-d-hidei');
+						$operate_selcet_wrap.removeClass('g-d-hidei');
+					}else{
+						$operate_selcet_wrap.addClass('g-d-hidei');
+						$operate_send_wrap.addClass('g-d-hidei');
+						$operate_record_wrap.addClass('g-d-hidei');
+					}
+
+				})
+				.fail(function(resp){
+					$operate_selcet_wrap.addClass('g-d-hidei');
+					$operate_send_wrap.addClass('g-d-hidei');
+					$operate_record_wrap.addClass('g-d-hidei');
+				});
+			}
+			
+			
+		});
+
+		/*绑定确定修改*/
+		$operate_aodlist_btn.on('click',function () {
+				
+				var id=$admin_power_setting.attr('data-id'),
+				type=$admin_power_setting.attr('data-type'),
+				module=module_map[$admin_power_setting.attr('data-theme')],
+				res=[];
+		
+				/*过滤*/
+				if((id===''&&module==='')||(id!==''&&module==='')||typeof module==='undefined'){
+					dia.content('<span class="g-c-bs-warning g-btips-warn">没有选择权限数据</span>').show();
+					return false;
+				}
+				
+				
+				
+				/*发送请求*/
+				var i=0,
+				res=[],
+				item=$operate_aodlist_sub.find('span'),
+				len=item.size();
+				
+				if(len!==0){
+					for(i;i<len;i++){
+						res.push(item.eq(i).attr('data-id'));
+					}
+				}else{
+					res='null';
+				}
+				
+				$.ajax({
+									url: "../../json/admin/admin_power_user.json",
+									method: 'POST',
+									dataType: 'json',
+									data:{
+										"id":id,
+										"type":type,
+										"module":module,
+										"subid":res
+									}
+								})
+				.done(function (resp) {
+					if(resp.flag){
+						//成功后重置数据，同时防止重复提交
+						$admin_power_setting.attr({'data-id':''});
+						$admin_power_setting.attr({'data-type':''});
+						$admin_power_setting.attr({'data-theme':''}).addClass('g-d-hidei');
+						$operate_aodlist_sub.html('');
+						$operate_aodlist_add.html('');
+						//数据区重绘
+						table.draw();
+					}
+				})
+				.fail(function(resp){
+					if(!resp.flag&&resp.message){
+						console.log(resp.message);
+					}else{
+						console.log('获取服务信息失败');
+					}
+				});
+		});
 
 
 

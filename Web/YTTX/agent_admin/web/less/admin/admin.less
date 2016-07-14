@@ -51,7 +51,9 @@
 	vertical-align:top;
 }
 .operate-list-add,
-.operate-list-sub{
+.operate-list-sub,
+.operate-list-defl,
+.operate-list-defr{
 	text-align: left;
 	.layout-relative-base;
 	.layout-base(49%);
@@ -60,19 +62,10 @@
 	overflow-y:auto;
 	padding:30px 10px 10px 10px;
 	border:1px solid darken(@color-gray14,4%);
-	&:before{
-		.layout-absolutel-base;
-		background:@color-base;
-		color:@color-white;
-		font-size: @font-size-base - 2;
-		display: inline-block;
-		padding:3px 20px;
-	}
 	&:empty{
 		text-align:center;
 		&:after{
 			line-height:150px;
-
 			content:"暂无数据";
 			display:inline-block;
 		}
@@ -92,14 +85,6 @@
 		color:@color-gray6;
 		font-size:@font-size-base - 2;
 		display:inline-block;
-		&:hover{
-			i{
-				background:@color-gray6;
-				color:@color-white;
-				border-color:@color-gray3;
-				display:inline-block;
-			}
-		}
 	}
 	i{
 		.layout-absoluter-base(-10px,-8px);
@@ -117,6 +102,27 @@
 		background:@color-white;
 		color:@color-gray9;
 		font-size:@font-size-base - 2;
+	}
+}
+.operate-list-add,
+.operate-list-sub{
+	&:before{
+		.layout-absolutel-base;
+		background:@color-base;
+		color:@color-white;
+		font-size: @font-size-base - 2;
+		display: inline-block;
+		padding:3px 20px;
+	}
+	span{
+		&:hover{
+			i{
+				background:@color-gray6;
+				color:@color-white;
+				border-color:@color-gray3;
+				display:inline-block;
+			}
+		}
 	}
 }
 .operate-list-sub{
@@ -137,39 +143,55 @@
 		content:'+';
 	}
 }
+.operate-list-defr{
+	float:right;
+}
+.operate-list-defl{
+	float:left;
+}
 .operate-list-btn{
 	.layout-base;
 	float:left;
 	text-align: right;
 	margin:20px 0 0 0;
 }
+.operate-list-wrap{
+	.layout-relative-base;
+	.layout-base;
+	padding:60px 10px 10px 10px;
+	&:before{
+		.layout-absolutel-base(0,10px);
+		background:@color-gray16;
+		height:40px;
+		overflow: hidden;
+		line-height:40px;
+		color:@color-gray6;
+		font-size: @font-size-base;
+		display:inline-block;
+		width:100%;
+		.border-radius-base(3px);
+		text-align:center;
+		content:attr(data-theme);
+	}
+}
 
 
 
 //适配
 @media screen and (max-width: @screen-lg){
-	/*.admin_role_table{
-		colgroup col:nth-of-type(3){display:none !important;}
-		thead tr th,
-		tbody tr td,
-		tfoot tr td{
-				&:nth-of-type(3){
-					display:none !important;
-				}
-		}
-	}*/
-	
-	
+
+
+
 }
 @media screen and (max-width: @screen-md){
-	
-	
+
+
 }
 @media screen and (max-width: @screen-sm){
-	
-	
+
+
 }
 @media screen and (max-width: @screen-xs){
-	
-	
+
+
 }
