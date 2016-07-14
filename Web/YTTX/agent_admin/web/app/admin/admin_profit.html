@@ -270,29 +270,33 @@
 
             <!--主内容-->
             <div class="row row-main-wrap">
-                <div class="col-md-12" id="edit_wrap">
+                <div class="col-md-12">
                     <div class="panel">
 
                         <!--修改或添加主体-->
                         <div class="panel-body">
                             <form role="form" id="profit_edit_form" method="post" class="validate">
                                 <div class="form-group">
-                                    <label class="control-label">角&nbsp;&nbsp;色：</label>
+                                    <label class="control-label">A级：</label>
 
-                                    <input type="text" class="form-control" id="role_name" name="name" data-validate="required" data-message-required="角色不能为空" placeholder="请输入角色名称" />
+                                    <input type="text" class="form-control" id="profit_a" name="profit_A" data-validate="required,number,maxlength[2]" data-message-required="A级分销不能为空" data-message-number="A级分销必须是数值" data-message-maxlength="A级分销需小于3位数值" maxlength="5" placeholder="请输入小于100的数字" />
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="control-label">AA级：</label>
+
+                                    <input type="text" class="form-control" id="profit_aa" name="profit_AA" data-validate="required,number,maxlength[2]" data-message-required="AA级分销不能为空" data-message-number="AA级分销必须是数值" data-message-maxlength="AA级分销需小于3位数值" maxlength="5" placeholder="请输入小于100的数字" />
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="control-label">AAA级：</label>
+
+                                    <input type="text" class="form-control" id="profit_aaa" name="profit_AAA" data-validate="required,number,maxlength[2]" data-message-required="AAA级分销不能为空" data-message-number="AAA级分销必须是数值" data-message-maxlength="AAA级分销需小于3位数值" maxlength="5" placeholder="请输入小于100的数字" />
                                 </div>
 
+                               
                                 <div class="form-group">
-                                    <label class="control-label">角色描述：</label>
-
-                                    <textarea type="text" class="form-control" name="remark" id="role_remark"  placeholder="角色的作用，权限"></textarea>
-                                </div>
-
-
-
-                                <div class="form-group">
-                                    <button type="submit" class="btn btn-success"></button>
-                                    <button id="edit_cance_btn" type="reset" class="btn btn-white">取消</button>
+                                    <button type="submit" class="btn btn-success">设置</button>
                                 </div>
 
                             </form>
