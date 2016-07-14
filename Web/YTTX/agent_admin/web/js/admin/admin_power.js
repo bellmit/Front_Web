@@ -1,4 +1,4 @@
-/*admin_role:角色管理*/
+/*admin_power:权限管理*/
 (function($){
 	'use strict';
 	$(function(){
@@ -775,66 +775,76 @@
 		});
 
 		/*绑定确定修改*/
-		$operate_aodlist_btn.on('click',function () {
-				
-				var id=$admin_power_setting.attr('data-id'),
-				type=$admin_power_setting.attr('data-type'),
-				module=module_map[$admin_power_setting.attr('data-theme')],
-				res=[];
-		
-				/*过滤*/
-				if((id===''&&module==='')||(id!==''&&module==='')||typeof module==='undefined'){
-					dia.content('<span class="g-c-bs-warning g-btips-warn">没有选择权限数据</span>').show();
-					return false;
-				}
-				
-				
-				
-				/*发送请求*/
-				var i=0,
-				res=[],
-				item=$operate_aodlist_sub.find('span'),
-				len=item.size();
-				
-				if(len!==0){
-					for(i;i<len;i++){
-						res.push(item.eq(i).attr('data-id'));
+		$.each([$operate_aodlist_btn,$operate_addlist_btn],function(){
+				var selector=this.selector;
+				this.on('click',function () {
+					var id=$admin_power_setting.attr('data-id'),
+					type=$admin_power_setting.attr('data-type'),
+					module=module_map[$admin_power_setting.attr('data-theme')],
+					res=[];
+			
+					/*过滤*/
+					if((id===''&&module==='')||(id!==''&&module==='')||typeof module==='undefined'){
+						dia.content('<span class="g-c-bs-warning g-btips-warn">没有选择权限数据</span>').show();
+						return false;
 					}
-				}else{
-					res='null';
-				}
-				
-				$.ajax({
-									url: "../../json/admin/admin_power_user.json",
-									method: 'POST',
-									dataType: 'json',
-									data:{
-										"id":id,
-										"type":type,
-										"module":module,
-										"subid":res
-									}
-								})
-				.done(function (resp) {
-					if(resp.flag){
-						//成功后重置数据，同时防止重复提交
-						$admin_power_setting.attr({'data-id':''});
-						$admin_power_setting.attr({'data-type':''});
-						$admin_power_setting.attr({'data-theme':''}).addClass('g-d-hidei');
-						$operate_aodlist_sub.html('');
-						$operate_aodlist_add.html('');
-						//数据区重绘
-						table.draw();
-					}
-				})
-				.fail(function(resp){
-					if(!resp.flag&&resp.message){
-						console.log(resp.message);
+					
+					
+					
+					/*发送请求*/
+					var i=0,
+					res=[],
+					aodflag=selector.indexOf('aodlist')!==-1,
+					item=aodflag?$operate_aodlist_sub.find('span'):$operate_addlist_sub.find('span'),
+					len=item.size();
+					
+					if(len!==0){
+						for(i;i<len;i++){
+							res.push(item.eq(i).attr('data-id'));
+						}
 					}else{
-						console.log('获取服务信息失败');
+						res='null';
 					}
-				});
+					console.log(res);
+					
+					$.ajax({
+										url: "../../json/admin/admin_power_user.json",
+										method: 'POST',
+										dataType: 'json',
+										data:{
+											"id":id,
+											"type":type,
+											"module":module,
+											"subid":res
+										}
+									})
+					.done(function (resp) {
+						if(resp.flag){
+							//成功后重置数据，同时防止重复提交
+							$admin_power_setting.attr({'data-id':''});
+							$admin_power_setting.attr({'data-type':''});
+							$admin_power_setting.attr({'data-theme':''}).addClass('g-d-hidei');
+							if(aodflag){
+								$operate_aodlist_sub.html('');
+								$operate_aodlist_add.html('');
+							}else{
+								$operate_addlist_sub.html('');
+								$operate_addlist_add.html('');
+							}
+							//数据区重绘
+							table.draw();
+						}
+					})
+					.fail(function(resp){
+						if(!resp.flag&&resp.message){
+							console.log(resp.message);
+						}else{
+							console.log('获取服务信息失败');
+						}
+					});
+			});
 		});
+		
 
 
 

@@ -5,10 +5,10 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	
 	<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0,maximum-scale=1">
-	<meta name="description" content="银通天下代理商管理系统--系统设置--权限设置" />
-	<meta name="keywords" content="银通天下代理商管理系统--系统设置--权限设置">
+	<meta name="description" content="银通天下代理商管理系统--系统设置--分润设置" />
+	<meta name="keywords" content="银通天下代理商管理系统--系统设置--分润设置">
   <meta name="author" content="yp" />
-	<title>银通天下代理商管理系统--系统设置--权限设置</title>
+	<title>银通天下代理商管理系统--系统设置--分润设置</title>
 	<link rel="stylesheet" href="../../css/base.css">
     <link rel="stylesheet" href="../../js/plugins/datatables/dataTables.bootstrap.css">
 	<link rel="stylesheet" href="../../css/admin.css">
@@ -256,13 +256,13 @@
             <!--主题描述-->
             <div class="page-title">
                 <div class="title-env">
-                    <h1 class="title">权限管理</h1>
-                    <p class="description">根据系统设置的安全规则或者安全策略</p>
+                    <h1 class="title">分润设置</h1>
+                    <p class="description">设置不同代理对象利润分配</p>
                 </div>
                 <div class="breadcrumb-env">
                     <ol class="breadcrumb bc-1">
                         <li><a href="admin_manage.html"><i class="fa-home"></i>系统设置</a></li>
-                        <li class="active"><strong>权限管理</strong></li>
+                        <li class="active"><strong>分润设置</strong></li>
                     </ol>
                 </div>
             </div>
@@ -270,217 +270,40 @@
 
             <!--主内容-->
             <div class="row row-main-wrap">
-                <!--数据显示区-->
-                <div class="col-md-12" id="table_wrap">
+                <div class="col-md-12" id="edit_wrap">
                     <div class="panel">
 
-                        <!--表格标题-->
-                        <div class="panel-heading">
-                            <h3 class="panel-title">权限管理</h3>
-
-                            <div class="panel-options">
-                                <a href="#" data-toggle="panel">
-                                    <span class="collapse-icon">&ndash;</span>
-                                    <span class="expand-icon">+</span>
-                                </a>
-                                <a href="#" data-toggle="reload">
-                                    <i class="fa-rotate-right"></i>
-                                </a>
-                            </div>
-                        </div>
-
-                        <!--表格主体-->
+                        <!--修改或添加主体-->
                         <div class="panel-body">
-                            <div>
-                                <span id="power_add_btn" class="btn btn-info btn-icon btn-xs g-br2">
-                                    <i class="fa-plus"></i>
-                                    <span>添加权限组</span>
-                                </span>
-                            </div>
+                            <form role="form" id="profit_edit_form" method="post" class="validate">
+                                <div class="form-group">
+                                    <label class="control-label">角&nbsp;&nbsp;色：</label>
 
-                            <table id="admin_power_wrap" class="table table-bordered table-striped table-hover admin_table">
-                                <!--分组样式-->
-                                <colgroup id="colgroup_wrap">
-                                    <col class="g-w-number2">
-                                    <col class="g-w-number10">
-                                    <col class="g-w-number10">
-                                    <col class="g-w-number10">
-                                    <col class="g-w-number18">
-                                </colgroup>
-
-                                <!--表头-->
-                                <thead>
-                                <tr>
-                                    <th>&nbsp;</th>
-                                    <th>角色</th>
-                                    <th>角色描述</th>
-                                    <th>用户列表</th>
-                                    <th>操作</th>
-                                </tr>
-                                </thead>
-
-                                <!--表尾-->
-                                <tfoot>
-                                <tr>
-                                    <th>&nbsp;</th>
-                                    <th>角色</th>
-                                    <th>角色描述</th>
-                                    <th>用户列表</th>
-                                    <th>操作</th>
-                                </tr>
-                                </tfoot>
-
-                                <!--表主体-->
-                                <tbody class="middle-align"></tbody>
-                            </table>
-                        </div>
-
-
-                    </div>
-                </div>
-
-                <!--修改区-->
-                <div class="col-md-3 row-edit-wrap" id="edit_wrap">
-                        <div class="main-edit-show">
-                            <div class="panel">
-
-                                <!--编辑表单标题-->
-                                <div class="panel-heading">
-                                    <h3 class="panel-title"></h3>
-                                    <div class="panel-options" id="edit_close_btn">
-                                        <a href="#">
-                                            &times;
-                                        </a>
-                                    </div>
+                                    <input type="text" class="form-control" id="role_name" name="name" data-validate="required" data-message-required="角色不能为空" placeholder="请输入角色名称" />
                                 </div>
 
-                                <!--修改或添加主体-->
-                                <div class="panel-body">
-                                    <form role="form" id="power_edit_form" method="post" class="validate">
-                                        <input type="hidden" value="" id="power_id" name="id">
-                                        <div class="form-group">
-                                            <label class="control-label">角色名称：</label>
+                                <div class="form-group">
+                                    <label class="control-label">角色描述：</label>
 
-                                            <input type="text" class="form-control" id="power_name" name="name" data-validate="required" data-message-required="角色名称不能为空" placeholder="请输入角色名称" />
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label class="control-label">角色描述：</label>
-
-                                            <textarea type="text" class="form-control" name="remark" id="power_remark" data-validate="required" data-message-required="角色描述不能为空"   placeholder="角色权限描述"></textarea>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <button type="submit" class="btn btn-success"></button>
-                                            <button id="edit_cance_btn" type="reset" class="btn btn-white">取消</button>
-                                        </div>
-
-                                    </form>
-
+                                    <textarea type="text" class="form-control" name="remark" id="role_remark"  placeholder="角色的作用，权限"></textarea>
                                 </div>
 
 
-                            </div>
+
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-success"></button>
+                                    <button id="edit_cance_btn" type="reset" class="btn btn-white">取消</button>
+                                </div>
+
+                            </form>
 
                         </div>
-                </div>
-
-                <!--数据操作区-->
-                <div class="col-md-12">
-                    <div class="panel">
-
-                        <!--表格标题-->
-                        <div class="panel-heading">
-                            <h3 class="panel-title">权限设置</h3>
-
-                            <div class="panel-options">
-                                <a href="#" data-toggle="panel">
-                                    <span class="collapse-icon">&ndash;</span>
-                                    <span class="expand-icon">+</span>
-                                </a>
-                            </div>
-                        </div>
-
-                        <!--表格主体-->
-                        <div class="panel-body">
-
-                            <table class="table table-bordered table-striped admin_table">
-                                <!--分组样式-->
-                                <colgroup>
-                                    <col class="g-w-number10">
-                                    <col class="g-w-number12">
-                                    <col class="g-w-number13">
-                                    <col class="g-w-number15">
-                                </colgroup>
-
-                                <!--表头-->
-                                <thead>
-                                <tr>
-                                    <th>系统管理</th>
-                                    <th>用户管理</th>
-                                    <th>服务站管理</th>
-                                    <th>代理管理</th>
-                                </tr>
-                                </thead>
-
-                                <!--表主体-->
-                                <tbody class="middle-align">
-                                <!--操作按钮区域-->
-                                <tr data-type="" data-theme="" data-id="" class="g-d-hidei" id="admin_power_setting"></tr>
-                                <!--添加与删除区-->
-                                <tr class="g-d-hidei" id="operate_aodlist">
-                                    <td colspan="4">
-                                        <div class="panel">
-                                            <!--修改或添加主体-->
-                                            <div class="panel-body operate-list">
-                                                <div data-theme="" class="operate-list-add" id="operate_aodlist_add"></div>
-                                                <div data-theme="" class="operate-list-sub" id="operate_aodlist_sub"></div>
-                                                <div class="operate-list-btn">
-                                                    <span id="operate_aodlist_btn" class="btn btn-infos">确定</span>
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <!--添加区-->
-                                <tr class="g-d-hidei" id="operate_addlist">
-                                    <td colspan="4">
-                                        <div class="panel">
-                                            <!--修改或添加主体-->
-                                            <div class="panel-body operate-list">
-                                                <div data-theme="" class="operate-list-add" id="operate_addlist_add"></div>
-                                                <div class="operate-list-defr" id="operate_addlist_sub"></div>
-                                                <div class="operate-list-btn">
-                                                    <span id="operate_addlist_btn" class="btn btn-info ">确定</span>
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <!--查询区域-->
-                                <tr class="" id="operate_showlist">
-                                    <td colspan="4">
-                                        <div data-theme="查看记录查询" class="operate-list-wrap g-d-hidei" id="operate_selcet_wrap">
-                                            <table class="table table-bordered table-striped table-hover admin_table"></table>
-                                        </div>
-                                        <div data-theme="发货记录查询"  class="operate-list-wrap g-d-hidei" id="operate_send_wrap">
-                                            <table class="table table-bordered table-striped table-hover admin_table"></table>
-                                        </div>
-                                        <div data-theme="销售记录查询"  class="operate-list-wrap g-d-hidei" id="operate_record_wrap">
-                                            <table class="table table-bordered table-striped table-hover admin_table"></table>
-                                        </div>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-
 
                     </div>
                 </div>
             </div>
+
+
 
 
             <!--底部信息-->
@@ -505,10 +328,6 @@
 
         </div>
     </div>
-    
-    
-    
-
 	
 	<!--加载遮罩层-->
 	<div class="page-loading-overlay">
@@ -521,14 +340,9 @@
 
     <script src="../../js/common/base.js"></script>
     <script src="../../js/common/common.js"></script>
-    <script src="../../js/plugins/datatables/js/jquery.dataTables.js"></script>
-
-
-    <!--修饰分页，搜索等操作 -->
-    <script src="../../js/plugins/datatables/dataTables.bootstrap.js"></script>
     <!--表单验证插件-->
     <script src="../../js/plugins/jquery-validate/jquery.validate.js"></script>
 
-    <script src="../../js/admin/admin_power.js"></script>
+    <script src="../../js/admin/admin_profit.js"></script>
 </body>
 </html>
