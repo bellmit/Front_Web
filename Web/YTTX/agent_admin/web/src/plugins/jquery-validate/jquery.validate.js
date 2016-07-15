@@ -322,6 +322,8 @@ $.extend( $.validator, {
 		equalTo: "Please enter the same value again.",
 		maxlength: $.validator.format( "Please enter no more than {0} characters." ),
 		minlength: $.validator.format( "Please enter at least {0} characters." ),
+		dotmaxlength:$.validator.format( "Please enter no more than {0} characters." ),
+		dotminlength: $.validator.format( "Please enter at least {0} characters." ),
 		rangelength: $.validator.format( "Please enter a value between {0} and {1} characters long." ),
 		range: $.validator.format( "Please enter a value between {0} and {1}." ),
 		max: $.validator.format( "Please enter a value less than or equal to {0}." ),
@@ -997,6 +999,10 @@ $.extend( $.validator, {
 			delete rules.maxlength;
 		}
 
+		if ( rules.dotmaxlength && /-1|2147483647|524288/.test( rules.dotmaxlength ) ) {
+			delete rules.dotmaxlength;
+		}
+
 		return rules;
 	},
 
@@ -1054,7 +1060,7 @@ $.extend( $.validator, {
 		});
 
 		// clean number parameters
-		$.each([ "minlength", "maxlength" ], function() {
+		$.each([ "minlength", "maxlength" ,"dotmaxlength" , "dotminlength"  ], function() {
 			if ( rules[ this ] ) {
 				rules[ this ] = Number( rules[ this ] );
 			}
@@ -1082,6 +1088,13 @@ $.extend( $.validator, {
 				rules.rangelength = [ rules.minlength, rules.maxlength ];
 				delete rules.minlength;
 				delete rules.maxlength;
+			}
+
+			//extend
+			if ( rules.dotminlength && rules.dotmaxlength ) {
+				rules.rangelength = [ rules.dotminlength, rules.dotmaxlength ];
+				delete rules.dotminlength;
+				delete rules.dotmaxlength;
 			}
 		}
 
@@ -1316,11 +1329,16 @@ $.extend( $.validator, {
 
 		//电话和邮箱
 		poe:function( value, element, param ){
-			if(!this.zh_phone(value , element, param)&&!this.zh_phone(value , element, param)){
+			var val=value.replace(/\s*/g,''),
+					phonerule=/^(13[0-9]|15[012356789]|18[0-9]|14[57]|170)[0-9]{8}$/,
+					emailrule=/^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+			if(!(this.optional( element )|| phonerule.test(val))&&!(this.optional( element ) || emailrule.test( value ))){
 				return false;
 			}else{
 				return true;
 			}
+
+
 		},
 
 		//数字
@@ -1332,7 +1350,39 @@ $.extend( $.validator, {
 		money:function( value, element, param ){
 			var val=value.replace(/\s*/g,'');
 			return this.optional( element )|| /^(([1-9]{1}\d{0,})|0)((\.{0}(\d){0})|(\.{1}(\d){2}))$/.test(val);
+		},
+
+
+		//限制最大长度
+		dotmaxlength:function(value, element, param){
+			var val=value.replace(/\s*/g,'');
+
+			if(val.indexOf('.')!==-1){
+				val=val.split('.');
+				if(val.length>=3){
+					val.length=2;
+				}
+				val=val[0];
+			}
+			var length = $.isArray( val ) ? val.length : this.getLength( val, element );
+			return this.optional( element ) || length <= param;
+		},
+
+		//限制最小长度
+		dotminlength:function(value, element, param){
+			var val=value.replace(/\s*/g,'');
+			if(val.indexOf('.')!==-1){
+				val=val.split('.');
+				if(val.length>=3){
+					val.length=2;
+				}
+				val=val[0];
+			}
+			var length = $.isArray( val ) ? val.length : this.getLength( val, element );
+			return this.optional( element ) || length >= param;
 		}
+
+
 
 
 	}

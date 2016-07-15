@@ -4,12 +4,10 @@
 	$(function(){
 
 		/*dom引用和相关变量定义*/
-		var $admin_member_wrap=$('#admin_member_wrap')/*表格*/,
-			module_id='admin_member'/*模块id，主要用于本地存储传值*/,
-			table=null/*datatable 解析后的对象*/,
-			$table_wrap=$('#table_wrap')/*表格容器*/,
+		var $serve_manage_wrap=$('#serve_manage_wrap')/*表格*/,
+			module_id='serve_manage'/*模块id，主要用于本地存储传值*/,
 			$edit_wrap=$('#edit_wrap')/*编辑容器*/,
-			$member_add_btn=$('#member_add_btn'),/*添加角色*/
+			$manage_add_btn=$('#manage_add_btn'),/*添加角色*/
 			$edit_close_btn=$('#edit_close_btn')/*编辑关闭按钮*/,
 			dia=dialog({
 				title:'温馨提示',
@@ -22,19 +20,15 @@
 				cancel:false
 			})/*一般提示对象*/,
 			dialogObj=public_tool.dialog()/*回调提示对象*/,
-			visible_arr=[4,5,6,7]/*定义需要隐藏的列索引*/,
-			$colgroup_wrap=$('#colgroup_wrap')/*表格分组控制容器*/,
-			init_group='<col class="g-w-number2"><col class="g-w-number4"><col class="g-w-number4"><col class="g-w-number5"><col class="g-w-number7"><col class="g-w-number7"><col class="g-w-number5"><col class="g-w-number6"><col class="g-w-number10">'/*表格分组控制全显示情况*/,
-			visible_group='<col class="g-w-number4"><col class="g-w-number10"><col class="g-w-number10"><col class="g-w-number12"><col class="g-w-number14">'/*表格分组控制部分隐藏情况*/,
 			$member_detail_wrap=$('#member_detail_wrap')/*查看详情容器*/,
 			$member_detail_title=$('#member_detail_title')/*查看详情标题*/,
 			$member_detail_show=$('#member_detail_show')/*查看详情内容*/;
 
 		/*表单对象*/
 		var $edit_cance_btn=$('#edit_cance_btn')/*编辑取消按钮*/,
-			edit_form=document.getElementById('member_edit_form'),
-		$member_edit_form=$('#member_edit_form')/*编辑表单*/,
-		$member_id=$('#member_id'),/*成员id*/
+			edit_form=document.getElementById('manage_edit_form'),
+		$manage_edit_form=$('#manage_edit_form')/*编辑表单*/,
+		$manage_id=$('#manage_id'),/*成员id*/
 		$member_username=$('#member_username'),/*成员用户名*/
 		$member_adminname=$('#member_adminname')/*成员管理员姓名*/,
 		$member_adminphone=$('#member_adminphone')/*成员管理员电话*/,
@@ -42,7 +36,7 @@
 
 
 		//初始化请求
-		table=$admin_member_wrap.DataTable({
+		table=$serve_manage_wrap.DataTable({
 			deferRender:true,/*是否延迟加载数据*/
 			//serverSide:true,/*是否服务端处理*/
 			searching:true,/*是否搜索*/
@@ -128,7 +122,7 @@
 
 		/*事件绑定*/
 		/*绑定查看，修改操作*/
-		$admin_member_wrap.delegate('span','click',function(e){
+		$serve_manage_wrap.delegate('span','click',function(e){
 			e.stopPropagation();
 			e.preventDefault();
 
@@ -183,7 +177,6 @@
 				/*修改操作*/
 				if(action==='update'){
 					/*调整布局*/
-					$table_wrap.addClass('col-md-9');
 					$edit_wrap.addClass('g-d-showi');
 					table.columns(visible_arr).visible(false);
 					$colgroup_wrap.html(visible_group);
@@ -207,7 +200,7 @@
 										$member_remark.val(datas[i]);
 										break;
 									case 'btn':;
-										$member_id.val(datas[i][id]);
+										$manage_id.val(datas[i][id]);
 										break;
 								}
 							}
@@ -258,20 +251,18 @@
 		$edit_cance_btn.on('click',function(e){
 			//切换显示隐藏表格和编辑区
 			/*调整布局*/
-			$table_wrap.removeClass('col-md-9');
 			$edit_wrap.removeClass('g-d-showi');
 			table.columns(visible_arr).visible(true);
 			$colgroup_wrap.html(init_group);
 		});
 
 		/*添加角色*/
-		$member_add_btn.on('click',function(){
+		$manage_add_btn.on('click',function(){
 			//重置表单
 			edit_form.reset();
 			$edit_close_btn.prev().html('添加成员');
 			$edit_cance_btn.prev().html('添加成员');
 			/*调整布局*/
-			$table_wrap.addClass('col-md-9');
 			$edit_wrap.addClass('g-d-showi');
 			table.columns(visible_arr).visible(false);
 			$colgroup_wrap.html(visible_group);
@@ -294,7 +285,7 @@
 				$.extend(true,form_opt,public_tool.cache.form_opt_0,{
 					submitHandler: function(form){
 						//判断是否存在id号
-						var id=$member_id.val(),
+						var id=$manage_id.val(),
 							config={
 								url:"",
 								method: 'POST',
@@ -347,7 +338,7 @@
 				});
 			}
 			/*提交验证*/
-			$member_edit_form.validate(form_opt);
+			$manage_edit_form.validate(form_opt);
 		}
 
 

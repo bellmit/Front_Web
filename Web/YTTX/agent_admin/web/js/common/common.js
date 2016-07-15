@@ -471,7 +471,7 @@ var public_vars = public_vars || {};
 								opts['messages'][name][rule] = message;
 							}
 						} else if(params = rule.match(/(\w+)\[(.*?)\]/i)) {
-							if($.inArray(params[1], ['min', 'max', 'minlength', 'maxlength', 'equalTo']) != -1) {
+							if($.inArray(params[1], ['min', 'max', 'minlength', 'maxlength', 'dotminlength', 'dotmaxlength', 'equalTo']) != -1) {
 								opts['rules'][name][params[1]] = params[2];
 
 

@@ -1,4 +1,4 @@
-/*admin_role:角色管理*/
+/*admin_profit:分润管理*/
 (function($){
 	'use strict';
 	$(function(){
@@ -23,20 +23,7 @@
 		$profit_a=$('#profit_a')/*A级*/,
 		$profit_aa=$('#profit_aa')/*AA级*/,
 		$profit_aaa=$('#profit_aaa')/*AAA级*/;
-		
-		/*jQuery.validator.addMethod("AAA",function(value,element){
-				var ele_a=parseInt($profit_a.val() * 10000,10) / 10000,
-						ele_aa=parseInt($profit_aa.val() * 10000,10) / 10000,
-						ele_aaa=parseInt($profit_aaa.val() * 10000,10) / 10000;
-						
-						
-						if((ele_a===0||ele_a>=100)||(ele_aa===0||ele_aa>=100)||(ele_aaa===0||ele_aaa>=100)){
-							return false;
-						}else if((ele_a+ele_aaele_aaa)>100){
-							return false;
-						}
-						return true;
-		},"分销数值不合法");*/
+
 
 
 
@@ -47,14 +34,34 @@
 			if(public_tool.cache.form_opt_0){
 				$.extend(true,form_opt,public_tool.cache.form_opt_0,{
 					submitHandler: function(form){
+						var ele_a=$profit_a.val(),
+							ele_aa=$profit_aa.val(),
+							ele_aaa=$profit_aaa.val(),
+							temp_a=parseInt(ele_a * 10000,10) / 10000,
+							temp_aa=parseInt(ele_aa * 10000,10) / 10000,
+							temp_aaa=parseInt(ele_aaa * 10000,10) / 10000;
+
+						/*设置分润规则*/
+						if((temp_a===0||temp_a>=100)||(temp_aa===0||temp_aa>=100)||(temp_aaa===0||temp_aaa>=100)){
+							dia.content('<span class="g-c-bs-warning g-btips-warn">分润设置数据不能大于100或为0</span>').show();
+							return false;
+						}else if((temp_a+temp_aa+temp_aaa)>100){
+							dia.content('<span class="g-c-bs-warning g-btips-warn">分润设置总和不能大于100</span>').show();
+							return false;
+						}else if((temp_a+temp_aa+temp_aaa)<100){
+							dia.content('<span class="g-c-bs-warning g-btips-warn">分润设置总和应为100</span>').show();
+							return false;
+						}
+
+						/*规则通过后校验*/
 						var config={
 								url:"../../json/admin/admin_role_update.json",
 								method: 'POST',
 								dataType: 'json',
 								data: {
-									"profit_A":$profit_a.val(),
-									"profit_AA":$profit_aa.val(),
-									"profit_AAA":$profit_aaa.val()
+									"profit_A":ele_a + '%',
+									"profit_AA":ele_aa + '%',
+									"profit_AAA":ele_aaa + '%'
 								}
 							};
 
@@ -77,6 +84,7 @@
 
 						});
 
+						return false;
 					}
 				});
 			}
@@ -88,7 +96,17 @@
 		/*绑定限制*/
 		$.each([$profit_a,$profit_aa,$profit_aaa],function(){
 				this.on('keyup',function(){
-					this.value=this.value.replace(/[^0-9*\-*^\.?]/g,'');
+					var val=this.value.replace(/[^0-9*\-*^\.]/g,'');
+					if(val.indexOf('.')!==-1){
+							val=val.split('.');
+							if(val.length>=3){
+								val.length=2;
+								val=val[0]+'.'+val[1];
+							}else{
+								val=val.join('.');
+							}
+					}
+					this.value=val;
 				});
 		});
 
