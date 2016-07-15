@@ -6,6 +6,7 @@
 		/*dom引用和相关变量定义*/
 		var $serve_manage_wrap=$('#serve_manage_wrap')/*表格*/,
 			module_id='serve_manage'/*模块id，主要用于本地存储传值*/,
+			table=null,
 			$edit_wrap=$('#edit_wrap')/*编辑容器*/,
 			$manage_add_btn=$('#manage_add_btn'),/*添加角色*/
 			$edit_close_btn=$('#edit_close_btn')/*编辑关闭按钮*/,
@@ -50,7 +51,7 @@
 			processing:true,/*大消耗操作时是否显示处理状态*/
 			/*异步请求地址及相关配置*/
 			ajax:{
-				url:"../../json/admin/admin_member.json",
+				url:"../../json/admin/admin_power_user.json",
 				dataType:'JSON',
 				method:'post',
 				data:(function(){
@@ -59,51 +60,45 @@
 					//获取参数后清除参数
 					public_tool.removeParams(module_id);
 					if(param){
-						return {"id":param.id,"type":param.type};
+						return {"id":param.id};
 					}
 					return '';
-				}())
+				}()),
+				dataSrc:"data"
 			},/*默认配置排序规则*/
-			columnDefs:[
-
-			],/*解析每列数据*/
 			columns: [
 				{
-					"data":"btn",
+					"data":"id",
 					"orderable":false,
 					"render":function(data, type, full, meta ){
-						return '<input type="checkbox" data-id="'+full.btn.id+'" name="member" class="cbr">';
+						return '<input type="checkbox" data-id="'+full.id+'" name="member" class="cbr">';
 					}
 				},
-				{"data":"userName"},
-				{"data":"adminName"},
-				{"data":"adminPhone"},
-				{"data":"createDateTime"},
-				{"data":"loginDateTime"},
+				{"data":"companyName"},
+				{"data":"name"},
+				{"data":"phone"},
+				{"data":"companyAddress"},
+				{"data":"serve"},
+				{"data":"grade"},
 				{
-					"data":"power",
-					"orderable": false},
-				{
-					"data":"remark",
-					"orderable": false
-				},
-				{
-					"data":"btn",
-					"orderable": false,
+					"data":"id",
 					"render":function(data, type, full, meta ){
-						var id=full.btn.id,
-							types=parseInt(full.btn.type,10),
-							btns='<span data-action="select" data-id="'+id+'" data-type="'+types+'" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+						var id=full.id,
+							btns='<span data-action="select" data-id="'+id+'" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 											<i class="fa-group"></i>\
 											<span>查看</span>\
 											</span>\
-											<span data-id="'+id+'" data-type="'+types+'" data-action="update" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+											<span data-id="'+id+'" data-action="update" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 											<i class="fa fa-pencil"></i>\
 											<span>修改</span>\
 											</span>\
-											<span data-href="admin_power.html" data-module="admin_power" data-action="select" data-id="'+id+'" data-type="'+types+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+											<span data-href="serve_send.html" data-module="serve_send" data-action="select" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 											<i class="fa-gear"></i>\
-											<span>权限</span>\
+											<span>发货</span>\
+											</span>\
+											<span data-href="serve_repair.html" data-module="serve_repair" data-action="select" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+											<i class="fa-gear"></i>\
+											<span>返修</span>\
 											</span>';
 
 						return btns;

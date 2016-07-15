@@ -12,8 +12,10 @@
       "phone": "13624836653",
       "address": "骑士",
       "type": "1",
-      "grade":"A级",
-      "serve":"上海"
+      "grade": "A级",
+      "serve": "上海",
+      "companyName": "谷歌公司",
+      "companyAddress": "美国加利福尼亚州圣克拉拉县山景市"
     },
     {
       "id": 2,
@@ -26,8 +28,10 @@
       "phone": "13405938348",
       "address": "南部海滩城市迈阿密热火",
       "type": "2",
-      "grade":"AA级",
-      "serve":"北京"
+      "grade": "AA级",
+      "serve": "北京",
+      "companyName": "腾讯",
+      "companyAddress": "深圳南山区"
     },
     {
       "id": 3,
@@ -40,8 +44,10 @@
       "phone": "13307259953",
       "address": "大城市尼克斯",
       "type": "2",
-      "grade":"A级",
-      "serve":"上海，北京"
+      "grade": "A级",
+      "serve": "上海，北京",
+      "companyName": "百度",
+      "companyAddress": "北京"
     },
     {
       "id": 4,
@@ -54,8 +60,10 @@
       "phone": "13284578045",
       "address": "雷霆",
       "type": "3",
-      "grade":"AAA级",
-      "serve":"武汉"
+      "grade": "AAA级",
+      "serve": "武汉",
+      "companyName": "阿里巴巴",
+      "companyAddress": "杭州"
     },
     {
       "id": 5,
@@ -68,8 +76,10 @@
       "phone": "13502455934",
       "address": "加拿大多伦多猛龙",
       "type": "3",
-      "grade":"A级",
-      "serve":"长沙"
+      "grade": "A级",
+      "serve": "长沙",
+      "companyName": "tcl集团",
+      "companyAddress": "广东惠州"
     },
     {
       "id": 6,
@@ -82,8 +92,10 @@
       "phone": "13802456272",
       "address": "西部洛杉矶湖人",
       "type": "1",
-      "grade":"AA级",
-      "serve":"昆明"
+      "grade": "AA级",
+      "serve": "昆明",
+      "companyName": "平安银行",
+      "companyAddress": "广东深圳"
     },
     {
       "id": 7,
@@ -96,8 +108,10 @@
       "phone": "13727579467",
       "address": "德州三强达纳斯小牛",
       "type": "1",
-      "grade":"A级",
-      "serve":"广州，南昌"
+      "grade": "A级",
+      "serve": "广州，南昌",
+      "companyName": "乐视TV",
+      "companyAddress": "湖南长沙"
     },
     {
       "id": 8,
@@ -110,8 +124,10 @@
       "phone": "13189259003",
       "address": "德州三强圣安东尼奥马刺",
       "type": "1",
-      "grade":"AA级",
-      "serve":"上海，南京"
+      "grade": "AA级",
+      "serve": "上海，南京",
+      "companyName": "华为技术有限公司",
+      "companyAddress": "广东深圳"
     },
     {
       "id": 9,
@@ -124,8 +140,10 @@
       "phone": "13283608346",
       "address": "森林狼狼王",
       "type": "1",
-      "grade":"AA级",
-      "serve":"合肥，石家庄，贵阳"
+      "grade": "AA级",
+      "serve": "合肥，石家庄，贵阳",
+      "companyName": "联想集团",
+      "companyAddress": "北京"
     },
     {
       "id": 10,
@@ -138,8 +156,10 @@
       "phone": "13436893595",
       "address": "超音速",
       "type": "1",
-      "grade":"AAA级",
-      "serve":"乌鲁木齐，呼和浩特"
+      "grade": "AAA级",
+      "serve": "乌鲁木齐，呼和浩特",
+      "companyName": "中国平安保险(集团)股份有限公司",
+      "companyAddress": "中国"
     },
     {
       "id": 11,
@@ -152,8 +172,10 @@
       "phone": "15802578835",
       "address": "雷霆",
       "type": "2",
-      "grade":"A级",
-      "serve":"银川，拉萨"
+      "grade": "A级",
+      "serve": "银川，拉萨",
+      "companyName": "国美电器有限公司",
+      "companyAddress": "中国"
     },
     {
       "id": 12,
@@ -166,8 +188,10 @@
       "phone": "15582592062",
       "address": "奥朗多魔术",
       "type": "2",
-      "grade":"AA级",
-      "serve":"成都，重庆"
+      "grade": "AA级",
+      "serve": "成都，重庆",
+      "companyName": "海尔集团公司",
+      "companyAddress": "中国"
     },
     {
       "id": 13,
@@ -180,8 +204,10 @@
       "phone": "15502578962",
       "address": "休斯顿火箭",
       "type": "1",
-      "grade":"AAA级",
-      "serve":"沈阳，长春，哈尔滨"
+      "grade": "AAA级",
+      "serve": "沈阳，长春，哈尔滨",
+      "companyName": "美的集团有限公司",
+      "companyAddress": "中国"
     },
     {
       "id": 14,
@@ -194,8 +220,10 @@
       "phone": "15234938363",
       "address": "76",
       "type": "1",
-      "grade":"A级",
-      "serve":"福州，南宁"
+      "grade": "A级",
+      "serve": "福州，南宁",
+      "companyName": "中联重科股份有限公司",
+      "companyAddress": "长沙"
     },
     {
       "id": 15,
@@ -208,8 +236,10 @@
       "phone": "13358864937",
       "address": "魔术",
       "type": "4",
-      "grade":"AA级",
-      "serve":"长沙，武汉，南昌"
+      "grade": "AA级",
+      "serve": "长沙，武汉，南昌",
+      "companyName": "三一集团有限公司",
+      "companyAddress": "长沙"
     },
     {
       "id": 16,
@@ -222,8 +252,10 @@
       "phone": "15760459726",
       "address": "尼克斯大猩猩",
       "type": "6",
-      "grade":"AAA级",
-      "serve":"西宁"
+      "grade": "AAA级",
+      "serve": "西宁",
+      "companyName": "威胜集团",
+      "companyAddress": "长沙"
     },
     {
       "id": 17,
@@ -236,8 +268,10 @@
       "phone": "13208945683",
       "address": "洛杉矶",
       "type": "4",
-      "grade":"AAA级",
-      "serve":"上海，广州，深圳"
+      "grade": "AAA级",
+      "serve": "上海，广州，深圳",
+      "companyName": "中兴通讯股份有限公司",
+      "companyAddress": "深圳"
     },
     {
       "id": 18,
@@ -250,8 +284,10 @@
       "phone": "13225869920",
       "address": "德克萨斯",
       "type": "2",
-      "grade":"AA级",
-      "serve":"杭州，南京"
+      "grade": "AA级",
+      "serve": "杭州，南京",
+      "companyName": "富士康",
+      "companyAddress": "深圳"
     },
     {
       "id": 19,
@@ -264,8 +300,10 @@
       "phone": "13592578046",
       "address": "犹他爵士",
       "type": "5",
-      "grade":"AAA级",
-      "serve":"拉萨，哈尔滨"
+      "grade": "AAA级",
+      "serve": "拉萨，哈尔滨",
+      "companyName": "京东",
+      "companyAddress": "北京"
     },
     {
       "id": 20,
@@ -278,8 +316,10 @@
       "phone": "15903678844",
       "address": "洛杉矶",
       "type": "3",
-      "grade":"A级",
-      "serve":"沈阳，北京"
+      "grade": "A级",
+      "serve": "沈阳，北京",
+      "companyName": "360",
+      "companyAddress": "北京"
     },
     {
       "id": 21,
@@ -292,8 +332,10 @@
       "phone": "13407847839",
       "address": "公牛",
       "type": "1",
-      "grade":"AA级",
-      "serve":"厦门，香港"
+      "grade": "AA级",
+      "serve": "厦门，香港",
+      "companyName": "携程",
+      "companyAddress": "上海"
     },
     {
       "id": 22,
@@ -306,8 +348,10 @@
       "phone": "15589356994",
       "address": "还是公牛",
       "type": "4",
-      "grade":"A级",
-      "serve":"珠海，广州"
+      "grade": "A级",
+      "serve": "珠海，广州",
+      "companyName": "网易",
+      "companyAddress": "广州"
     },
     {
       "id": 23,
@@ -320,8 +364,10 @@
       "phone": "13274579046",
       "address": "洛杉矶",
       "type": "5",
-      "grade":"AAA级",
-      "serve":"银川，呼和浩特"
+      "grade": "AAA级",
+      "serve": "银川，呼和浩特",
+      "companyName": "唯品会",
+      "companyAddress": "广州"
     },
     {
       "id": 24,
@@ -334,8 +380,10 @@
       "phone": "13384570025",
       "address": "又是洛杉矶",
       "type": "6",
-      "grade":"AA级",
-      "serve":"武汉，昆明"
+      "grade": "AA级",
+      "serve": "武汉，昆明",
+      "companyName": "UC",
+      "companyAddress": "广州"
     },
     {
       "id": 25,
@@ -348,8 +396,10 @@
       "phone": "13894568034",
       "address": "波士顿凯尔特人大鸟",
       "type": "5",
-      "grade":"AAA级",
-      "serve":"成都，福州，南京"
+      "grade": "AAA级",
+      "serve": "成都，福州，南京",
+      "companyName": "IBM",
+      "companyAddress": "美国"
     },
     {
       "id": 26,
@@ -362,8 +412,10 @@
       "phone": "15595690155",
       "address": "奥兰多休斯顿",
       "type": "4",
-      "grade":"AA级",
-      "serve":"深圳，长沙"
+      "grade": "AA级",
+      "serve": "深圳，长沙",
+      "companyName": "微软",
+      "companyAddress": "美国"
     },
     {
       "id": 27,
@@ -376,8 +428,10 @@
       "phone": "13495467930",
       "address": "猛龙",
       "type": "3",
-      "grade":"AAA级",
-      "serve":"合肥，乌鲁木齐，西安"
+      "grade": "AAA级",
+      "serve": "合肥，乌鲁木齐，西安",
+      "companyName": "苹果",
+      "companyAddress": "美国"
     },
     {
       "id": 28,
@@ -390,8 +444,10 @@
       "phone": "13098758394",
       "address": "洛杉矶快船",
       "type": "6",
-      "grade":"A级",
-      "serve":"上海，长春，石家庄"
+      "grade": "A级",
+      "serve": "上海，长春，石家庄",
+      "companyName": "AMD",
+      "companyAddress": "美国"
     },
     {
       "id": 29,
@@ -404,8 +460,10 @@
       "phone": "14596054920",
       "address": "洛杉矶",
       "type": "4",
-      "grade":"AA级",
-      "serve":"北京，上海，重庆"
+      "grade": "AA级",
+      "serve": "北京，上海，重庆",
+      "companyName": "英特尔",
+      "companyAddress": "美国"
     },
     {
       "id": 30,
@@ -418,8 +476,10 @@
       "phone": "13496756944",
       "address": "犹他高原",
       "type": "5",
-      "grade":"AAA级",
-      "serve":"武汉，哈尔滨，广州"
+      "grade": "AAA级",
+      "serve": "武汉，哈尔滨，广州",
+      "companyName": "新浪",
+      "companyAddress": "中国"
     },
     {
       "id": 31,
@@ -432,8 +492,10 @@
       "phone": "13585697904",
       "address": "米国",
       "type": "6",
-      "grade":"A级",
-      "serve":"合肥，南昌，南京"
+      "grade": "A级",
+      "serve": "合肥，南昌，南京",
+      "companyName": "Facebook",
+      "companyAddress": "美国"
     },
     {
       "id": 32,
@@ -446,8 +508,10 @@
       "phone": "15685920928",
       "address": "貌似太阳",
       "type": "4",
-      "grade":"A级",
-      "serve":"乌鲁木齐，包头，青岛"
+      "grade": "A级",
+      "serve": "乌鲁木齐，包头，青岛",
+      "companyName": "adobe",
+      "companyAddress": "美国"
     },
     {
       "id": 33,
@@ -460,8 +524,10 @@
       "phone": "13495479363",
       "address": "从网队跑出来",
       "type": "5",
-      "grade":"AA级",
-      "serve":"济南，大连"
+      "grade": "AA级",
+      "serve": "济南，大连",
+      "companyName": "oracle",
+      "companyAddress": "美国"
     },
     {
       "id": 34,
@@ -474,8 +540,10 @@
       "phone": "15496039570",
       "address": "又是太阳",
       "type": "4",
-      "grade":"A级",
-      "serve":"杭州，珠海，岳阳"
+      "grade": "A级",
+      "serve": "杭州，珠海，岳阳",
+      "companyName": "Twitter",
+      "companyAddress": "美国"
     },
     {
       "id": 35,
@@ -488,8 +556,10 @@
       "phone": "15098549025",
       "address": "波士顿凯尔特人指环王",
       "type": "3",
-      "grade":"A级",
-      "serve":"上海，株洲，贵阳，福州"
+      "grade": "A级",
+      "serve": "上海，株洲，贵阳，福州",
+      "companyName": "雅虎",
+      "companyAddress": "美国"
     }
   ]
 }
