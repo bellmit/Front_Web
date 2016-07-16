@@ -4,202 +4,6 @@ name:city select
 级联城市选择器
 */
 
-/*地区信息对应表*/
-define('area',function () {
-		return
-});
-
-
-/*查询方法*/
-define(['jquery','area'],function ($,Area) {
-	
-	
-	//构造函数(配置对象)
-	this.areaSelect=function(options){
-			var settings=$.extend({},{
-				flag:true,
-				$province:null,
-				$city:null,
-				$area:null,
-				city_active:'city_active',
-				province_key:'0',
-				city_key:'',
-				area_key:'',
-				$curselect:null,
-				$relationinput:null,
-				$provinceshow:null,
-				$provinceinput:null,
-				$cityshow:null,
-				$cityinput:null,
-				$areashow:null,
-				$areainput:null
-			},options);
-			
-			//初始化调用
-			this.areaInit(settings);
-	}
-	
-	
-	//初始化
-	this.areaInit=function(set){
-			var self=this;
-		
-			//初始化数据
-			//如果是级联
-			if(set.flag){
-					//绑定事件
-					$.each([set.$province,set.$city,set.$area],function(){
-							if(this.length!==0){
-		
-								var $prevs=this.prevAll(),
-								$input=$prevs.eq(2),
-								$p=$prevs.eq(1),
-								selector=this.selector;
-								
-								if(selector.indexOf('province')!=-1){
-										set.provinceshow=$p;
-										set.provinceinput=$input;
-								}else if(selector.indexOf('city')!=-1){
-										set.cityshow=$p;
-										set.cityinput=$input;
-								}else if(selector.indexOf('area')!=-1){
-										set.areashow=$p;
-										set.areainput=$input;
-								}
-								
-								if($input.val()==''){
-									//如果存在省份、城市、地区
-									self.areaDataHandler(set,this,false);
-								}else{
-									self.areaDataHandler(set,this);
-								}
-								
-								
-								
-								//绑定点击事件
-								this.delegate('li','click',function(){
-										var $this=$(this),
-										key=$this.attr('data-key'),
-										text=$this.text();
-										
-										//效果
-										$this.addClass(set.city_active)
-										.attr('data-select','true')
-										.siblings()
-										.removeClass()
-										.attr('data-select','false');
-										
-										//赋值
-										$input.val(text);
-										$p.text(text);
-										if(selector.indexOf('province')!==-1&&set.$city){
-											set.city_key=key;
-											//级联事件
-											self.areaDataHandler(set,set.$city);
-										}else if(selector.indexOf('city')!==-1&&set.$area){
-											set.area_key=key;
-											//级联事件
-											self.areaDataHandler(set,set.$area);
-										}
-								});
-							}
-					});
-			}else{
-				
-					//非级联情况即与城市无关系
-					//绑定事件
-					set.$curselect.delegate('li','click',function(){
-						
-							var $this=$(this),
-							$wrap=$this.parent(),
-							$prevs=$wrap.prevAll(),
-							$input=$prevs.eq(2),
-							$p=$prevs.eq(1),
-							key=$this.attr('data-key'),
-							text=$this.text();
-							
-							//效果
-							$this.addClass(set.city_active)
-							.attr('data-select','true')
-							.siblings()
-							.removeClass()
-							.attr('data-select','false');
-							
-							//赋值
-							$input.val(key);
-							$p.text(text);
-							
-							if(set.$relationinput){
-								set.$relationinput.focus;
-							}
-					});
-					
-				
-			}
-	}
-	
-	//辅助初始化操作(内部对象集合、下拉选择类型,是否已经有值)
-	this.areaDataHandler=function(set,type,flag){
-				var str='',
-						data,
-						curwrap,
-						curkey,
-						count=0,
-						selector=type.selector,
-						flagstr='province';
-						
-				if(selector.indexOf('province')!==-1){
-						data=Area[set.province_key];
-						curwrap=set.$province;
-						curkey='city_key';
-						flagstr='province';
-				}else if(selector.indexOf('city')!==-1){
-						data=Area[set.province_key+','+set.city_key];
-						curwrap=set.$city;
-						curkey='area_key';
-						flagstr='city';
-				}else if(selector.indexOf('area')!==-1){
-						data=Area[set.province_key+','+set.city_key+','+set.area_key];
-						curwrap=set.$area;
-						curkey='area_key';
-						flagstr='area';
-				}
-				
-				
-		
-				for(var i in data){
-					if(!flag){
-						if(count===0){
-							str+='<li data-select="true" class="'+set.city_active+'" data-key="'+i+'" >'+data[i]+'</li>';
-							if(curkey){
-								set[curkey]=i;
-							}
-							if(flagstr=='province'){
-								set.provinceshow.text(data[i]);
-								set.provinceinput.val(data[i]);
-							}else if(flagstr=='city'){
-								set.cityshow.text(data[i]);
-								set.cityinput.val(data[i]);
-							}else if(flagstr=='area'){
-								set.areashow.text(data[i]);
-								set.areainput.val(data[i]);
-							}
-						}else{
-							str+='<li data-select="false" data-key="'+i+'" >'+data[i]+'</li>';
-						}
-						count++;
-						curwrap
-					}else{
-						
-					}
-				}
-				$(str).appendTo(curwrap.html(''));
-				
-	}
-	
-	return this;
-});
-
 /*级联地址调用*/
 (function($){
 	/*设置地址表*/
@@ -210,7 +14,7 @@ define(['jquery','area'],function ($,Area) {
 		'0,22':{23:'天津市'},
 		'0,22,23':{24:'和平区',25:'河东区',26:'河西区',27:'南开区',28:'河北区',29:'红桥区',30:'塘沽区',31:'汉沽区',32:'大港区',33:'东丽区',34:'西青区',35:'津南区',36:'北辰区',37:'武清区',38:'宝坻区',39:'蓟县',40:'宁河县',41:'芦台镇',42:'静海县',43:'静海镇'},
 		'0,44':{45:'上海市'},
-		'0,44,45':{46:'黄浦区',47:'卢湾区',48:'徐汇区',49:'长宁区',50:'静安区',51:'普陀区',52:'闸北区',53:'虹口区',54:'杨浦区',55:'闵行区',56:'宝山区',57:'嘉定区',58:'浦东新区',59:'金山区',60:'松江区',61:'青浦区',62:'南汇区',63:'奉贤区',64:'崇明县',65:'城桥镇'},
+		'0,44,45':{46:'黄浦区',47:'卢湾区',48:'徐汇区',49:'长宁区',50:'静安区',51:'普陀区',52:'闸北区',53:'虹口区',54:'杨浦区',55:'闵行区',56:'宝山区',57:'嘉定区',58:'浦东新区',59:'金山区',60:'松江区',61:'青浦区',62:'南汇区',63:'奉贤区',64:'崇明县',65:'城桥镇'},
 		'0,66':{67:'重庆市'},
 		'0,66,67':{68:'渝中区',69:'大渡口区',70:'江北区',71:'沙坪坝区',72:'九龙坡区',73:'南岸区',74:'北碚区',75:'万盛区',76:'双桥区',77:'渝北区',78:'巴南区',79:'万州区',80:'涪陵区',81:'黔江区',82:'长寿区',83:'合川市',84:'永川区市',85:'江津市',86:'南川市',87:'綦江县',88:'潼南县',89:'铜梁县',90:'大足县',91:'荣昌县',92:'璧山县',93:'垫江县',94:'武隆县',95:'丰都县',96:'城口县',97:'梁平县',98:'开县',99:'巫溪县',100:'巫山县',101:'奉节县',102:'云阳县',103:'忠县',104:'石柱土家族自治县',105:'彭水苗族土家族自治县',106:'酉阳土家族苗族自治县',107:'秀山土家族苗族自治县'},
 		'0,108':{109:'石家庄市',145:'张家口市',176:'承德市',196:'秦皇岛市',208:'唐山市',229:'廊坊市',246:'保定市',290:'衡水市',310:'沧州市',337:'邢台市',372:'邯郸市'},
@@ -580,12 +384,21 @@ define(['jquery','area'],function ($,Area) {
 		'0,4825':{4826:'台北',4827:'高雄',4828:'台中',4829:'花莲',4830:'基隆',4831:'嘉义',4832:'金门',4833:'连江',4834:'苗栗',4835:'南投',4836:'澎湖',4837:'屏东',4838:'台东',4839:'台南',4840:'桃园',4841:'新竹',4842:'宜兰',4843:'云林',4844:'彰化'}
 	};
 
-	/*设置地址对外接口*/
-	var areaObj=function(){},
-		fn=function(){},
-		areaFn=new fn();
+	/*父类*/
+	function parent_Area(){};
 
-	areaObj.prototype={
+	/*子类*/
+	function child_Area(){
+		/*设置构造函数*/
+		this.areaMap= $.extend(true,{},areaModule);
+	};
+
+	var noop=function(){}/*空函数*/;
+
+
+
+	/*设置父类原型*/
+	parent_Area.prototype={
 			/*初始化函数*/
 			areaInit:function(set){
 				var self=this;
@@ -597,23 +410,30 @@ define(['jquery','area'],function ($,Area) {
 					$.each([set.$province,set.$city,set.$area],function(){
 						if(this.length!==0){
 
-							var $prevs=this.prevAll(),
-								$input=$prevs.eq(2),
-								$p=$prevs.eq(1),
-								selector=this.selector;
+
+							var selector=this.selector,
+								$parent=this.parent(),
+								$input,
+								$p;
 
 							if(selector.indexOf('province')!=-1){
-								set.provinceshow=$p;
-								set.provinceinput=$input;
+								set.provinceshow=set.provinceshow?set.provinceshow:this.prev()||$parent.find('>p');
+								set.provinceinput=set.provinceinput?set.provinceinput:$(selector+'_value')||this.closest('.selectwrap').parent().find('input["name="'+selector.slice(1)+']');
+								$input=set.provinceinput;
+								$p=set.provinceshow;
 							}else if(selector.indexOf('city')!=-1){
-								set.cityshow=$p;
-								set.cityinput=$input;
+								set.cityshow=set.cityshow?set.cityshow:this.prev()||$parent.find('>p');
+								set.cityinput=set.cityinput?set.cityinput:$(selector+'_value')||this.closest('.selectwrap').parent().find('input["name="'+selector.slice(1)+']');
+								$input=set.cityinput;
+								$p=set.cityshow;
 							}else if(selector.indexOf('area')!=-1){
-								set.areashow=$p;
-								set.areainput=$input;
+								set.areashow=set.areashow?set.areashow:this.prev()||$parent.find('>p');
+								set.areainput=set.areainput?set.areainput:$(selector+'_value')||this.closest('.selectwrap').parent().find('input["name="'+selector.slice(1)+']');
+								$input=set.areainput;
+								$p=set.areashow;
 							}
 
-							if($input.val()==''){
+							if($input.val()===''){
 								//如果存在省份、城市、地区
 								self.areaDataHandler(set,this,false);
 							}else{
@@ -656,12 +476,12 @@ define(['jquery','area'],function ($,Area) {
 					set.$curselect.delegate('li','click',function(){
 
 						var $this=$(this),
-							$wrap=$this.parent(),
-							$prevs=$wrap.prevAll(),
-							$input=$prevs.eq(2),
-							$p=$prevs.eq(1),
+							selector=$this.selector,
+							$input=$(selector+'_value')||$this.closest('.selectwrap').next()||$this.closest('.selectwrap').prev(),
+							$p=$this.prev()||$this.parent().find('>p'),
 							key=$this.attr('data-key'),
 							text=$this.text();
+
 
 						//效果
 						$this.addClass(set.city_active)
@@ -682,7 +502,7 @@ define(['jquery','area'],function ($,Area) {
 			},
 			/*构造函数*/
 			areaSelect:function(options){
-				var settings=$.extend({},{
+				var settings=$.extend(true,{},{
 					flag:true,
 					$province:null,
 					$city:null,
@@ -714,17 +534,17 @@ define(['jquery','area'],function ($,Area) {
 					flagstr='province';
 
 				if(selector.indexOf('province')!==-1){
-					data=Area[set.province_key];
+					data=this.areaMap[set.province_key];
 					curwrap=set.$province;
 					curkey='city_key';
 					flagstr='province';
 				}else if(selector.indexOf('city')!==-1){
-					data=Area[set.province_key+','+set.city_key];
+					data=this.areaMap[set.province_key+','+set.city_key];
 					curwrap=set.$city;
 					curkey='area_key';
 					flagstr='city';
 				}else if(selector.indexOf('area')!==-1){
-					data=Area[set.province_key+','+set.city_key+','+set.area_key];
+					data=this.areaMap[set.province_key+','+set.city_key+','+set.area_key];
 					curwrap=set.$area;
 					curkey='area_key';
 					flagstr='area';
@@ -763,11 +583,18 @@ define(['jquery','area'],function ($,Area) {
 			}
 	};
 
-	/*设置原型链*/
-	areaFn.prototype=areaObj.prototype;
 
-	/*对外接口*/
-	window.areaTool=areaFn;
+	/*设置原型链*/
+	noop.prototype=parent_Area.prototype;
+
+	child_Area.prototype=new noop();
+
+	/*设置地址对外接口*/
+	if(public_tool){
+		public_tool.areaSelect=child_Area;
+	}else{
+		window.areaSelect=child_Area;
+	}
 
 
 })(jQuery);

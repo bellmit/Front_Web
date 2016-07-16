@@ -24,8 +24,8 @@
 			dialogObj=public_tool.dialog()/*回调提示对象*/,
 			visible_arr=[2,3]/*定义需要隐藏的列索引*/,
 			$colgroup_wrap=$('#colgroup_wrap')/*表格分组控制容器*/,
-			init_group='<col class="g-w-number2"><col class="g-w-number10"><col class="g-w-number10"><col class="g-w-number10"><col class="g-w-number18">'/*表格分组控制全显示情况*/,
-			visible_group='<col class="g-w-number4"><col class="g-w-number16"><col class="g-w-number30">'/*表格分组控制部分隐藏情况*/;
+			init_group='<col class="g-w-percent2"><col class="g-w-percent10"><col class="g-w-percent10"><col class="g-w-percent10"><col class="g-w-percent18">'/*表格分组控制全显示情况*/,
+			visible_group='<col class="g-w-percent4"><col class="g-w-percent16"><col class="g-w-percent30">'/*表格分组控制部分隐藏情况*/;
 
 
 		var operate_config={
@@ -668,7 +668,7 @@
 								}else{
 									config.data.data='';
 								}
-								tablestr='<colgroup><col class="g-w-number12"><col class="g-w-number14"><col class="g-w-number12"><col class="g-w-number12"></colgroup><thead><tr><th class="sorting">发货价格</th><th class="sorting">客户电话</th><th class="sorting">发货数量</th><th class="sorting">发货时间</th></tr></thead><tbody class="middle-align"></tbody>';
+								tablestr='<colgroup><col class="g-w-percent12"><col class="g-w-percent14"><col class="g-w-percent12"><col class="g-w-percent12"></colgroup><thead><tr><th class="sorting">发货价格</th><th class="sorting">客户电话</th><th class="sorting">发货数量</th><th class="sorting">发货时间</th></tr></thead><tbody class="middle-align"></tbody>';
 								config['columns']=[
 									{
 										"data":"price"
@@ -701,7 +701,7 @@
 								}else{
 									config.data.data='';
 								}
-								tablestr='<colgroup><col class="g-w-number10"><col class="g-w-number10"><col class="g-w-number8"><col class="g-w-number8"><col class="g-w-number14"></colgroup><thead><tr><th class="sorting">发货价格</th><th class="sorting">客户电话</th><th class="sorting">发货数量</th><th class="sorting">发货时间</th><th class="no-sorting">描述</th></tr></thead><tbody class="middle-align"></tbody>';
+								tablestr='<colgroup><col class="g-w-percent10"><col class="g-w-percent10"><col class="g-w-percent8"><col class="g-w-percent8"><col class="g-w-percent14"></colgroup><thead><tr><th class="sorting">发货价格</th><th class="sorting">客户电话</th><th class="sorting">发货数量</th><th class="sorting">发货时间</th><th class="no-sorting">描述</th></tr></thead><tbody class="middle-align"></tbody>';
 								config['columns']=[
 									{
 										"data":"price"
@@ -738,7 +738,7 @@
 								}else{
 									config.data.data='';
 								}
-								tablestr='<colgroup><col class="g-w-number20"><col class="g-w-number16"><col class="g-w-number14"></colgroup><thead><tr><th class="sorting">名称</th><th class="sorting">电话</th><th class="sorting">数量</th></tr></thead><tbody class="middle-align"></tbody>';
+								tablestr='<colgroup><col class="g-w-percent20"><col class="g-w-percent16"><col class="g-w-percent14"></colgroup><thead><tr><th class="sorting">名称</th><th class="sorting">电话</th><th class="sorting">数量</th></tr></thead><tbody class="middle-align"></tbody>';
 								config['columns']=[
 									{
 										"data":"name"

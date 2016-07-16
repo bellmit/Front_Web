@@ -313,11 +313,11 @@
 ///*----百分比宽度----*/
 .g-w-percentfor(@n,@i:1) when (@i =< @n) {
 	.g-w-percent@{i}{
-		width:@i * 2.5% !important;
+		width:@i * 2% !important;
 	}
 	.g-w-percentfor(@n,(@i+1));
 }
-.g-w-percentfor(40);
+.g-w-percentfor(50);
 
 ///*----具体宽度----*/
 .g-w-numberfor(@n,@i:1) when (@i =< @n) {

@@ -24,8 +24,8 @@
 			dialogObj=public_tool.dialog()/*回调提示对象*/,
 			visible_arr=[4,5,6,7]/*定义需要隐藏的列索引*/,
 			$colgroup_wrap=$('#colgroup_wrap')/*表格分组控制容器*/,
-			init_group='<col class="g-w-number2"><col class="g-w-number4"><col class="g-w-number4"><col class="g-w-number5"><col class="g-w-number7"><col class="g-w-number7"><col class="g-w-number5"><col class="g-w-number6"><col class="g-w-number10">'/*表格分组控制全显示情况*/,
-			visible_group='<col class="g-w-number4"><col class="g-w-number10"><col class="g-w-number10"><col class="g-w-number12"><col class="g-w-number14">'/*表格分组控制部分隐藏情况*/,
+			init_group='<col class="g-w-percent2"><col class="g-w-percent4"><col class="g-w-percent4"><col class="g-w-percent5"><col class="g-w-percent7"><col class="g-w-percent7"><col class="g-w-percent5"><col class="g-w-percent6"><col class="g-w-percent10">'/*表格分组控制全显示情况*/,
+			visible_group='<col class="g-w-percent4"><col class="g-w-percent10"><col class="g-w-percent10"><col class="g-w-percent12"><col class="g-w-percent14">'/*表格分组控制部分隐藏情况*/,
 			$member_detail_wrap=$('#member_detail_wrap')/*查看详情容器*/,
 			$member_detail_title=$('#member_detail_title')/*查看详情标题*/,
 			$member_detail_show=$('#member_detail_show')/*查看详情内容*/;

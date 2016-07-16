@@ -28,6 +28,12 @@
 		/*表单对象*/
 		var $edit_cance_btn=$('#edit_cance_btn')/*编辑取消按钮*/,
 			edit_form=document.getElementById('manage_edit_form'),
+			$province=$('#province'),
+			$city=$('#city'),
+			$area=$('#area'),
+			$province_value=$('#province_value'),
+			$city_value=$('#city_value'),
+			$area_value=$('#area_value'),
 		$manage_edit_form=$('#manage_edit_form')/*编辑表单*/,
 		$manage_id=$('#manage_id'),/*成员id*/
 		$member_username=$('#member_username'),/*成员用户名*/
@@ -342,6 +348,32 @@
 		$member_adminphone.on('keyup',function(){
 			this.value=public_tool.phoneFormat(this.value);
 		});
+
+
+
+
+		/*初始化地址信息*/
+		if(public_tool){
+			//var areaSelect=new public_tool.areaSelect();
+			new public_tool.areaSelect().areaSelect({
+				$province:$province,
+				$city:$city,
+				$area:$area,
+				$provinceinput:$province_value,
+				$cityinput:$city_value,
+				$areainput:$area_value
+			});
+		}else{
+			new areaSelect().areaSelect({
+				$province:$province,
+				$city:$city,
+				$area:$area,
+				$provinceinput:$province_value,
+				$cityinput:$city_value,
+				$areainput:$area_value
+			});
+		}
+
 
 
 

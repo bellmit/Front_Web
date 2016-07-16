@@ -301,14 +301,14 @@
                             <table id="serve_manage_wrap" class="table table-bordered table-striped table-hover serve_table">
                                 <!--分组样式-->
                                 <colgroup>
-                                    <col class="g-w-number2">
-                                    <col class="g-w-number8">
-                                    <col class="g-w-number4">
-                                    <col class="g-w-number5">
-                                    <col class="g-w-number10">
-                                    <col class="g-w-number7">
-                                    <col class="g-w-number4">
-                                    <col class="g-w-number10">
+                                    <col class="g-w-percent2">
+                                    <col class="g-w-percent8">
+                                    <col class="g-w-percent4">
+                                    <col class="g-w-percent5">
+                                    <col class="g-w-percent10">
+                                    <col class="g-w-percent7">
+                                    <col class="g-w-percent4">
+                                    <col class="g-w-percent10">
                                 </colgroup>
 
                                 <!--表头-->
@@ -354,34 +354,81 @@
                                     <form role="form" id="manage_edit_form" method="post" class="validate">
                                         <input type="hidden" value="" id="manage_id" name="id">
                                         <div class="form-group">
-                                            <label class="control-label">用户名：</label>
+                                            <label class="control-label">服务站名称：</label>
 
-                                            <input type="text" class="form-control" id="member_username" name="userName" data-validate="required" data-message-required="成员用户名不能为空" placeholder="请输入成员用户名" />
+                                            <input type="text" class="form-control" name="serveName" data-validate="required" data-message-required="服务站名称不能为空" placeholder="请输入服务站名称" />
                                         </div>
 
                                         <div class="form-group">
-                                            <label class="control-label">管理员姓名：</label>
+                                            <label class="control-label">服务站简称：</label>
 
-                                            <input type="text" class="form-control" name="adminName" id="member_adminname"  placeholder="管理员姓名" data-validate="required" data-message-required="管理员姓名不能为空" />
+                                            <input type="text" class="form-control" name="miniName" placeholder="服务站简称" />
                                         </div>
 
 
                                         <div class="form-group">
-                                            <label class="control-label">管理员电话：</label>
+                                            <label class="control-label">负责人：</label>
 
-                                            <input type="text" class="form-control" name="adminPhone" id="member_adminphone"  placeholder="管理员电话" data-validate="required,zh_phone" data-message-required="管理员电话不能为空" data-message-zh_phone="管理员电话不合法" maxlength="13" />
+                                            <input type="text" class="form-control" name="leader"  placeholder="请输入负责人" data-validate="required" data-message-required="负责人不能为空" />
                                         </div>
 
+
                                         <div class="form-group">
+                                            <label class="control-label">绑定代理商：</label>
+
+                                            <select class="form-control" name="agent">
+                                                <option selected value="-1">无</option>
+                                                <option value="1">代理商1</option>
+                                                <option value="2">代理商2</option>
+                                                <option value="3">代理商3</option>
+                                                <option value="4">代理商4</option>
+                                            </select>
+                                        </div>
+
+
+                                        <div class="form-group">
+                                            <label class="control-label">手机：</label>
+
+                                            <input type="text" class="form-control" name="mobliePhone"  placeholder="请输入手机号" data-validate="required,zh_phone" maxlength="13" data-message-required="手机号不能为空" data-message-zh_phone="手机号格式不正确" />
+                                        </div>
+
+
+                                        <div class="form-group">
+                                            <label class="control-label">地址：</label>
+                                            <div class="selectwrap">
+                                                <div class="select-item g-w-percent12">
+                                                    <p>请选择省份</p>
+                                                    <ul id="province"></ul>
+                                                </div>
+                                                <div class="select-item g-w-number13">
+                                                    <p>请选择市</p>
+                                                    <ul id="city"></ul>
+                                                </div>
+                                                <div class="select-item g-w-number13">
+                                                    <p>请选择区</p>
+                                                    <ul id="area"></ul>
+                                                </div>
+                                            </div>
+                                            <input class="select-input-def form-control" type="text" data-validate="required" data-message-required="省份不能为空" name="Province" id="province_value">
+                                            <input class="select-input-def form-control" type="text" data-validate="required" data-message-required="市不能为空" name="City" id="city_value">
+                                            <input class="select-input-def form-control" type="text" data-validate="required" data-message-required="区不能为空" name="Area" id="area_value">
+                                        </div>
+
+
+
+
+
+                                        <!--<div class="form-group">
                                             <label class="control-label">备&nbsp;&nbsp;注：</label>
 
                                             <textarea type="text" class="form-control" name="remark" id="member_remark"  placeholder="备注"></textarea>
-                                        </div>
+                                        </div>-->
 
 
 
                                         <div class="form-group">
                                             <button type="submit" class="btn btn-success"></button>
+                                            <button id="edit_continue_btn" type="reset" class="btn btn-white">保存继续添加</button>
                                             <button id="edit_cance_btn" type="reset" class="btn btn-white">取消</button>
                                         </div>
 
@@ -467,6 +514,8 @@
     <script src="../../js/plugins/datatables/dataTables.bootstrap.js"></script>
     <!--表单验证插件-->
     <script src="../../js/plugins/jquery-validate/jquery.validate.js"></script>
+    <!--地址选择插件-->
+    <script src="../../js/widgets/city_select.js"></script>
 
     <script src="../../js/serve/serve_manage.js"></script>
 </body>
