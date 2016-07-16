@@ -401,28 +401,30 @@
                                                     <ul id="province"></ul>
                                                 </div>
                                                 <div class="select-item g-w-number13">
-                                                    <p>请选择市</p>
+                                                    <p>请选择城市</p>
                                                     <ul id="city"></ul>
                                                 </div>
                                                 <div class="select-item g-w-number13">
-                                                    <p>请选择区</p>
+                                                    <p>请选择地区</p>
                                                     <ul id="area"></ul>
                                                 </div>
                                             </div>
-                                            <input class="select-input-def form-control" type="text" data-validate="required" data-message-required="省份不能为空" name="Province" id="province_value">
-                                            <input class="select-input-def form-control" type="text" data-validate="required" data-message-required="市不能为空" name="City" id="city_value">
-                                            <input class="select-input-def form-control" type="text" data-validate="required" data-message-required="区不能为空" name="Area" id="area_value">
+                                            <input type="text"  class="select-input-def form-control" value=""data-validate="required" data-message-required="省份不能为空" name="Province" id="province_value">
+                                            <input type="text" class="select-input-def form-control" data-validate="required" data-message-required="城市不能为空" value="" name="City" id="city_value">
+                                            <input type="text" class="select-input-def form-control" data-validate="required" data-message-required="地区不能为空" value="" name="Area" id="area_value">
                                         </div>
 
 
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" name="Address"  placeholder="请输入详细地址" data-validate="required" data-message-required="详细地址不能为空" name="Address" value="" id="address" />
+                                        </div>
 
 
-
-                                        <!--<div class="form-group">
+                                        <div class="form-group">
                                             <label class="control-label">备&nbsp;&nbsp;注：</label>
 
-                                            <textarea type="text" class="form-control" name="remark" id="member_remark"  placeholder="备注"></textarea>
-                                        </div>-->
+                                            <textarea class="form-control" name="remark" placeholder="备注"></textarea>
+                                        </div>
 
 
 
