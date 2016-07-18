@@ -479,7 +479,7 @@
 								}
 							};
 
-						if(id!==''&&typeof id==='number'){
+						if(id!==''){
 							//此处配置修改稿角色地址（开发阶段）
 							config.url="../../json/admin/admin_role_update.json";
 							config.data['role_Id']=id;
