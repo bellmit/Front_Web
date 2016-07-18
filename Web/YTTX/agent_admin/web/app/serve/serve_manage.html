@@ -271,7 +271,7 @@
             <!--主内容-->
             <div class="row row-main-wrap">
                 <div class="col-md-12">
-                    <div class="panel">
+                    <div class="panel" id="data_wrap">
 
                         <!--表格标题-->
                         <div class="panel-heading">
@@ -342,7 +342,7 @@
                                 <!--编辑表单标题-->
                                 <div class="panel-heading">
                                     <h3 class="panel-title"></h3>
-                                    <div class="panel-options" id="edit_close_btn">
+                                    <div class="panel-options" id="edit_min_btn">
                                         <a href="#" data-toggle="panel">
                                             <span class="collapse-icon">&ndash;</span>
                                             <span class="expand-icon">+</span>
@@ -378,11 +378,12 @@
                                             <label class="control-label">绑定代理商：</label>
 
                                             <select id="manage_bindagent" class="form-control" name="bindagent">
-                                                <option selected value="-1">无</option>
-                                                <option value="1">代理商1</option>
-                                                <option value="2">代理商2</option>
-                                                <option value="3">代理商3</option>
-                                                <option value="4">代理商4</option>
+                                                <option selected value="">无</option>
+                                                <option value="张三">代理商--张三</option>
+                                                <option value="李四">代理商--李四</option>
+                                                <option value="王五">代理商--王五</option>
+                                                <option value="赵六">代理商--赵六</option>
+                                                <option value="马七">代理商--马七</option>
                                             </select>
                                         </div>
 
@@ -391,6 +392,12 @@
                                             <label class="control-label">手机：</label>
 
                                             <input type="text" class="form-control" name="mobliePhone" id="manage_mobliephone"  placeholder="请输入手机号" data-validate="required,zh_phone" maxlength="13" data-message-required="手机号不能为空" data-message-zh_phone="手机号格式不正确" />
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="control-label">电话：</label>
+
+                                            <input type="text" class="form-control" name="phone" id="manage_phone"  placeholder=""  />
                                         </div>
 
 
@@ -417,25 +424,40 @@
 
 
                                         <div class="form-group">
-                                            <input type="text" class="form-control" name="Address"  placeholder="请输入详细地址" data-validate="required" data-message-required="详细地址不能为空" value="" id="address" />
+                                            <input type="text" class="form-control" name="Address"  placeholder="请输入详细地址" data-validate="required" data-message-required="详细地址不能为空" value="" id="manage_address" />
                                         </div>
 
 
                                         <div class="form-group">
-                                            <label class="control-label">备&nbsp;&nbsp;注：</label>
+                                            <label class="control-label">备注：</label>
 
-                                            <textarea id="manage_remark" class="form-control" name="remark" placeholder="备注"></textarea>
+                                            <textarea id="manage_remark" class="form-control" name="manage_remark" placeholder="备注"></textarea>
                                         </div>
                                         
                                         <div class="form-group">
-                                            <label class="control-label"><input type="checkbox" id="manage_agent" name="agent"/>同时成为代理商：</label>
-																						<span class="control-label">代理商级别：<label><input type="radio" id="manage_agentlevela" name="agentLevel"/>:A级</label><label><input id="manage_agentlevelaa" type="radio" name="agentLevel"/>:AA级</label><label><input type="radio" id="manage_agentlevelaaa" name="agentLevel"/>:AAA级</label></span>
+                                            <span class="control-label">
+                                                <label class="checkbox-inline">
+                                                    <input type="checkbox" id="manage_agent" name="agent"/>同时成为代理商&nbsp;&nbsp;&nbsp;&nbsp;
+                                                </label>
+                                            </span>
+																						<span class="control-label">代理商级别：
+                                                <label class="radio-inline">
+                                                    <input type="radio"  id="manage_agentlevela" name="agentLevel"/>:A级
+                                                </label>
+                                                <label class="radio-inline">
+                                                    &nbsp;&nbsp;<input id="manage_agentlevelaa" type="radio"  name="agentLevel"/>:AA级
+                                                </label>
+                                                <label class="radio-inline">
+                                                    &nbsp;&nbsp;<input type="radio" id="manage_agentlevelaaa"  name="agentLevel"/>:AAA级
+                                                </label>
+                                            </span>
+                                            <br />
                                             <div class="control-label">以上内容请根据合同如实填写。</div>
                                         </div>
 
 
                                         <div class="form-group">
-                                            <button type="submit" class="btn btn-success"></button>
+                                            <button type="submit" class="btn btn-success">保存</button>
                                             <button id="edit_continue_btn" type="button" class="btn btn-white">保存继续添加</button>
                                             <button id="edit_cance_btn" type="reset" class="btn btn-white">取消</button>
                                         </div>
@@ -476,20 +498,20 @@
 
 
 
-    <div class="modal fade custom-width" id="member_detail_wrap">
-        <div class="modal-dialog g-w-number40">
+    <div class="modal fade custom-width" id="manage_detail_wrap">
+        <div class="modal-dialog g-w-percent46">
             <div class="modal-content">
 
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 id="member_detail_title" class="modal-title"></h4>
+                    <h4 id="manage_detail_title" class="modal-title"></h4>
                 </div>
                 <div class="modal-body">
                         <table class="table table-bordered table-striped table-hover admin_table">
                             <colgroup>
-                                <col class="g-w-number10"/>
-                                <col class="g-w-number40"/>
-                                <tbody id="member_detail_show"></tbody>
+                                <col class="g-w-percent10"/>
+                                <col class="g-w-percent40"/>
+                                <tbody id="manage_detail_show"></tbody>
                             </colgroup>
                         </table>
                 </div>

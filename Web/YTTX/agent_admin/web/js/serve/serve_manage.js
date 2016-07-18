@@ -7,9 +7,10 @@
 		var $serve_manage_wrap=$('#serve_manage_wrap')/*表格*/,
 			module_id='serve_manage'/*模块id，主要用于本地存储传值*/,
 			table=null,
-			$edit_wrap=$('#edit_wrap')/*编辑容器*/,
+			$data_wrap=$('#data_wrap')/*数据展现面板*/,
+			$edit_wrap=$('#edit_wrap')/*编辑容器面板*/,
 			$manage_add_btn=$('#manage_add_btn'),/*添加角色*/
-			$edit_close_btn=$('#edit_close_btn')/*编辑关闭按钮*/,
+			$edit_min_btn=$('#edit_min_btn')/*编辑最小化按钮*/,
 			dia=dialog({
 				title:'温馨提示',
 				okValue:'确定',
@@ -21,25 +22,35 @@
 				cancel:false
 			})/*一般提示对象*/,
 			dialogObj=public_tool.dialog()/*回调提示对象*/,
-			$member_detail_wrap=$('#member_detail_wrap')/*查看详情容器*/,
-			$member_detail_title=$('#member_detail_title')/*查看详情标题*/,
-			$member_detail_show=$('#member_detail_show')/*查看详情内容*/;
+			$manage_detail_wrap=$('#manage_detail_wrap')/*查看详情容器*/,
+			$manage_detail_title=$('#manage_detail_title')/*查看详情标题*/,
+			$manage_detail_show=$('#manage_detail_show')/*查看详情内容*/;
 
 		/*表单对象*/
-		var $edit_cance_btn=$('#edit_cance_btn')/*编辑取消按钮*/,
-			edit_form=document.getElementById('manage_edit_form'),
-			$province=$('#province'),
-			$city=$('#city'),
-			$area=$('#area'),
-			$province_value=$('#province_value'),
-			$city_value=$('#city_value'),
-			$area_value=$('#area_value'),
-		$manage_edit_form=$('#manage_edit_form')/*编辑表单*/,
-		$manage_id=$('#manage_id'),/*成员id*/
-		$member_username=$('#member_username'),/*成员用户名*/
-		$member_adminname=$('#member_adminname')/*成员管理员姓名*/,
-		$member_adminphone=$('#member_adminphone')/*成员管理员电话*/,
-		$member_remark=$('#member_remark')/*成员描述*/;
+		var edit_form=document.getElementById('manage_edit_form')/*表单dom*/,
+			$manage_edit_form=$(edit_form)/*编辑表单*/,
+			$manage_id=$('#manage_id'),/*成员id*/
+			$edit_continue_btn=$('#edit_continue_btn')/*保存继续添加*/,
+			$edit_cance_btn=$('#edit_cance_btn')/*编辑取消按钮*/,
+			$manage_servename=$('#manage_servename'),/*服务站名称*/
+			$manage_mininame=$('#manage_mininame')/*服务站简称*/,
+			$manage_leader=$('#manage_leader')/*负责人*/,
+			$manage_bindagent=$('#manage_bindagent')/*绑定代理商*/,
+			$manage_mobliephone=$('#manage_mobliephone')/*手机号*/,
+			$manage_phone=$('#manage_phone')/*电话*/,
+			$member_remark=$('#member_remark')/*成员描述*/,
+			$province=$('#province')/*地址下拉--省*/,
+			$city=$('#city')/*地址下拉--市*/,
+			$area=$('#area')/*地址下拉--区*/,
+			$province_value=$('#province_value')/*地址选中--省*/,
+			$city_value=$('#city_value')/*地址选中--市*/,
+			$area_value=$('#area_value')/*地址选中--区*/,
+			$manage_address=$('#manage_address')/*详细地址*/,
+			$manage_remark=$('#manage_remark')/*描述，备注*/,
+			$manage_agent=$('#manage_agent')/*成为代理商*/,
+			$manage_agentlevela=$('#manage_agentlevela')/*A级代理商*/,
+			$manage_agentlevelaa=$('#manage_agentlevelaa')/*AA级代理商*/,
+			$manage_agentlevelaaa=$('#manage_agentlevelaaa')/*AAA级代理商*/;
 
 
 		//初始化请求
@@ -87,22 +98,26 @@
 				{"data":"serve"},
 				{"data":"grade"},
 				{
-					"data":"id",
+					"data":{
+						id:'id',
+						type:'type'
+					},
 					"render":function(data, type, full, meta ){
 						var id=full.id,
-							btns='<span data-action="select" data-id="'+id+'" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+							type=full.type,
+							btns='<span data-action="select" data-type="'+type+'" data-id="'+id+'" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 											<i class="fa-group"></i>\
 											<span>查看</span>\
 											</span>\
-											<span data-id="'+id+'" data-action="update" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+											<span data-id="'+id+'" data-type="'+type+'"  data-action="update" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 											<i class="fa fa-pencil"></i>\
 											<span>修改</span>\
 											</span>\
-											<span data-href="serve_send.html" data-module="serve_send" data-action="select" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+											<span data-href="serve_send.html" data-module="serve_send" data-action="select" data-type="'+type+'"  data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 											<i class="fa-gear"></i>\
 											<span>发货</span>\
 											</span>\
-											<span data-href="serve_repair.html" data-module="serve_repair" data-action="select" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+											<span data-href="serve_repair.html" data-module="serve_repair" data-action="select" data-type="'+type+'"  data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 											<i class="fa-gear"></i>\
 											<span>返修</span>\
 											</span>';
@@ -178,38 +193,112 @@
 				/*修改操作*/
 				if(action==='update'){
 					/*调整布局*/
-					$edit_wrap.addClass('g-d-showi');
-					table.columns(visible_arr).visible(false);
-					$colgroup_wrap.html(visible_group);
+					$data_wrap.addClass('collapsed');
+					$edit_wrap.removeClass('collapsed');
+					$("html,body").animate({scrollTop:300},300);
 					//重置信息
-					$edit_close_btn.prev().html('修改成员');
-					$edit_cance_btn.prev().html('修改成员');
-					//赋值
-					var datas=table.row($tr).data();
-							for(var i in datas){
-								switch (i){
-									case 'userName':
-										$member_username.val(datas[i]);
-										break;
-									case 'adminName':
-										$member_adminname.val(datas[i]);
-										break;
-									case 'adminPhone':
-										$member_adminphone.val(datas[i]);
-										break;
-									case 'remark':
-										$member_remark.val(datas[i]);
-										break;
-									case 'btn':;
-										$manage_id.val(datas[i][id]);
-										break;
-								}
+					$edit_min_btn.prev().html('修改服务站');
+					//请求并赋值
+					$.ajax({
+							url:"../../json/admin/admin_power_user.json",
+							dataType:'JSON',
+							method:'post',
+							data:{
+								"id":id,
+								"type":type
 							}
+						})
+						.done(function(resp){
+							if(resp.flag){
+								var datas=resp.data,
+									str='',
+									len=datas.length,
+									i=0;
+								/*是否有返回数据*/
+								if(len!==0){
+									for(i;i<len;i++){
+										if(datas[i]['id']===id){
+											datas=datas[i];
+											break;
+										}
+									}
+								}
+								/*是否是正确的返回数据*/
+								if($.isPlainObject(datas)){
+									var res;
+									for(var j in datas){
+										res=datas[j];
+										switch (j){
+											case "id":
+												$manage_id.val(res);
+												break;
+											case "companyName":
+												$manage_servename.val(res);
+												break;
+											case "companyName":
+												$manage_servename.val(res);
+												break;
+											case "name":
+												$manage_leader.val(res);
+												break;
+											case "agent":
+												$manage_bindagent.children().each(function(index){
+													var $this=$(this);
+													if($this.val()===res){
+														$this.prop('selected',true).siblings().prop('selected',false);
+														return false;
+													}
+												});
+												break;
+											case "phone":
+												$manage_mobliephone.val(public_tool.phoneFormat(res));
+												break;
+											case "address":
+												$manage_address.val(res);
+												break;
+											case "remark":
+												$manage_remark.val(res);
+												break;
+											case "isAgent":
+												if(res==='0'){
+													$manage_agent.prop('checked',false);
+													$.each([$manage_agentlevela,$manage_agentlevelaa,$manage_agentlevelaaa],function(){
+														this.prop('checked',false).attr('disabled',true);
+													});
+												}else if(res==='1'){
+													$manage_agent.prop('checked',true);
+													$.each([$manage_agentlevela,$manage_agentlevelaa,$manage_agentlevelaaa],function(){
+														this.prop('checked',false).removeAttr('disabled');
+													});
+												}
+												break;
+										}
+									}
+								}else{
+									/*调用表单的重置功能*/
+									edit_form.reset();
+									dia.content('<span class="g-c-bs-warning g-btips-warn">没有获取到数据</span>').show();
+								};
+							}else{
+								/*调用表单的重置功能*/
+								edit_form.reset();
+								dia.content('<span class="g-c-bs-warning g-btips-warn">没有获取到数据</span>').show();
+							}
+						})
+						.fail(function(resp){
+							if(!resp.flag){
+								console.log('获取数据失败');
+							}
+							/*调用表单的重置功能*/
+							edit_form.reset();
+							dia.content('<span class="g-c-bs-warning g-btips-warn">没有获取到数据</span>').show();
+
+						});
 				}else if(action==='select'){
 							/*查看详情*/
-							$member_detail_wrap.modal('show',{backdrop:'static'});
+							$manage_detail_wrap.modal('show',{backdrop:'static'});
 							$.ajax({
-									url:"../../json/admin/admin_memberdetail.json",
+									url:"../../json/admin/admin_power_user.json",
 									dataType:'JSON',
 									method:'post',
 									data:{
@@ -219,25 +308,42 @@
 							})
 							.done(function(resp){
 									if(resp.flag){
+
 										var datas=resp.data,
-											str='';
-										for(var i in datas){
+											str='',
+											len=datas.length,
+											i=0;
+										/*是否有返回数据*/
+										if(len!==0){
+											for(i;i<len;i++){
+												if(datas[i]['id']===id){
+													datas=datas[i];
+													break;
+												}
+											}
+										}
+										/*是否是正确的返回数据*/
+										if($.isPlainObject(datas)){
+											var str='';
+											for(var i in datas){
 												if(i==='userName'||i==='username'){
-													$member_detail_title.html(i+'成员详情信息');
+													$manage_detail_title.html(i+'服务站详情信息');
 												}else{
 													str+='<tr><th>'+i+'</th><td>'+datas[i]+'</td></tr>';
 												}
-										};
-										$member_detail_show.html(str);
+											};
+											$manage_detail_show.html(str);
+										}
+										$manage_detail_show.html(str);
 									}else{
-										$member_detail_title.html('');
-										$member_detail_show.html('');
+										$manage_detail_title.html('');
+										$manage_detail_show.html('');
 									}
 							})
 							.fail(function(resp){
 									if(!resp.flag){
-											$member_detail_title.html('');
-											$member_detail_show.html('');
+											$manage_detail_title.html('');
+											$manage_detail_show.html('');
 									}
 							});
 				}
@@ -248,31 +354,31 @@
 		});
 
 
-		/*//取消修改*/
+		/*取消修改*/
 		$edit_cance_btn.on('click',function(e){
 			//切换显示隐藏表格和编辑区
 			/*调整布局*/
-			$edit_wrap.removeClass('g-d-showi');
-			table.columns(visible_arr).visible(true);
-			$colgroup_wrap.html(init_group);
+			$data_wrap.removeClass('collapsed');
+			$edit_wrap.addClass('collapsed');
+			if(!$data_wrap.hasClass('collapsed')){
+				$("html,body").animate({scrollTop:150},300);
+			}
 		});
 
 		/*添加角色*/
 		$manage_add_btn.on('click',function(){
 			//重置表单
 			edit_form.reset();
-			$edit_close_btn.prev().html('添加成员');
-			$edit_cance_btn.prev().html('添加成员');
+			$edit_min_btn.prev().html('添加服务站');
 			/*调整布局*/
-			$edit_wrap.addClass('g-d-showi');
-			table.columns(visible_arr).visible(false);
-			$colgroup_wrap.html(visible_group);
+			$data_wrap.addClass('collapsed');
+			$edit_wrap.removeClass('collapsed');
 			//第一行获取焦点
-			$member_username.focus();
+			$manage_edit_form.find('.form-group:first-child input').focus();
 		});
 
-		/*//关闭编辑区*/
-		$edit_close_btn.click(function(e){
+		/*//最小化编辑区*/
+		$edit_min_btn.click(function(e){
 			e.preventDefault();
 			$edit_cance_btn.trigger('click');
 		});
@@ -345,7 +451,7 @@
 
 
 		/*格式化手机号码*/
-		$member_adminphone.on('keyup',function(){
+		$manage_mobliephone.on('keyup',function(){
 			this.value=public_tool.phoneFormat(this.value);
 		});
 
@@ -354,7 +460,6 @@
 
 		/*初始化地址信息*/
 		if(public_tool){
-			//var areaSelect=new public_tool.areaSelect();
 			new public_tool.areaSelect().areaSelect({
 				$province:$province,
 				$city:$city,
