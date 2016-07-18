@@ -21,7 +21,6 @@
 				},
 				cancel:false
 			})/*一般提示对象*/,
-			dialogObj=public_tool.dialog()/*回调提示对象*/,
 			$manage_detail_wrap=$('#manage_detail_wrap')/*查看详情容器*/,
 			$manage_detail_title=$('#manage_detail_title')/*查看详情标题*/,
 			$manage_detail_show=$('#manage_detail_show')/*查看详情内容*/;

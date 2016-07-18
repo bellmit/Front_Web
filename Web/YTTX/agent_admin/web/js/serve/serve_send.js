@@ -4,12 +4,18 @@
 	$(function(){
 
 		/*dom引用和相关变量定义*/
-		var $serve_manage_wrap=$('#serve_manage_wrap')/*表格*/,
-			module_id='serve_manage'/*模块id，主要用于本地存储传值*/,
-			table=null,
+		var $serve_send_wrap=$('#serve_send_wrap')/*表格*/,
+			$serve_send_mobile=$('#serve_send_mobile')/*移动设备*/,
+			$serve_send_repair=$('#serve_send_repair')/*返修*/,
+			$serve_send_parts=$('#serve_send_parts')/*配件*/,
+			module_id='serve_send'/*模块id，主要用于本地存储传值*/,
+			table=null/*主数据区*/,
+			tablemobile=null/*订货--移动支付数设备据区*/,
+			tablerepair=null/*返修数据区*/,
+			tableparts=null/*订货--配件数据区*/,
 			$data_wrap=$('#data_wrap')/*数据展现面板*/,
 			$edit_wrap=$('#edit_wrap')/*编辑容器面板*/,
-			$manage_add_btn=$('#manage_add_btn'),/*添加角色*/
+			$send_add_btn=$('#send_add_btn'),/*添加角色*/
 			$edit_title=$('#edit_title')/*编辑标题*/,
 			dia=dialog({
 				title:'温馨提示',
@@ -53,8 +59,8 @@
 			$manage_agentlevelaaa=$('#manage_agentlevelaaa')/*AAA级代理商*/;
 
 
-		//初始化请求
-		table=$serve_manage_wrap.DataTable({
+		//初始化请求数据源
+		table=$serve_send_wrap.DataTable({
 			deferRender:true,/*是否延迟加载数据*/
 			//serverSide:true,/*是否服务端处理*/
 			searching:true,/*是否搜索*/
@@ -91,12 +97,12 @@
 						return '<input type="checkbox" data-id="'+full.id+'" name="member" class="cbr">';
 					}
 				},
-				{"data":"companyName"},
+				{"data":"serve"},
 				{"data":"name"},
 				{"data":"phone"},
 				{"data":"companyAddress"},
-				{"data":"serve"},
-				{"data":"grade"},
+				{"data":"sale"},
+				{"data":"stock"},
 				{
 					"data":{
 						id:'id',
@@ -108,18 +114,6 @@
 							btns='<span data-action="select" data-type="'+type+'" data-id="'+id+'" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 											<i class="fa-group"></i>\
 											<span>查看</span>\
-											</span>\
-											<span data-id="'+id+'" data-type="'+type+'"  data-action="update" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
-											<i class="fa fa-pencil"></i>\
-											<span>修改</span>\
-											</span>\
-											<span data-href="serve_send.html" data-module="serve_send" data-action="select" data-type="'+type+'"  data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
-											<i class="fa-gear"></i>\
-											<span>发货</span>\
-											</span>\
-											<span data-href="serve_repair.html" data-module="serve_repair" data-action="select" data-type="'+type+'"  data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
-											<i class="fa-gear"></i>\
-											<span>返修</span>\
 											</span>';
 
 						return btns;
@@ -133,35 +127,90 @@
 			lengthChange:true/*是否可改变长度*/
 		});
 
+		//初始化数据源
+		$.each([$serve_send_wrap,$serve_send_mobile,$serve_send_repair,$serve_send_parts],function(index){
 
+		});
 
-		/*初始化地址信息*/
-		if(public_tool){
-			new public_tool.areaSelect().areaSelect({
-				$province:$province,
-				$city:$city,
-				$area:$area,
-				$provinceinput:$province_value,
-				$cityinput:$city_value,
-				$areainput:$area_value
-			});
-		}else{
-			new areaSelect().areaSelect({
-				$province:$province,
-				$city:$city,
-				$area:$area,
-				$provinceinput:$province_value,
-				$cityinput:$city_value,
-				$areainput:$area_value
-			});
+		tablemobile_config={
+			deferRender:true,/*是否延迟加载数据*/
+			//serverSide:true,/*是否服务端处理*/
+			searching:true,/*是否搜索*/
+			ordering:true,/*是否排序*/
+			//order:[[1,'asc']],/*默认排序*/
+			paging:true,/*是否开启本地分页*/
+			pagingType:'simple_numbers',/*分页按钮排列*/
+			autoWidth:true,/*是否自适应宽度*/
+			info:true,/*显示分页信息*/
+			stateSave:false,/*是否保存重新加载的状态*/
+			processing:true,/*大消耗操作时是否显示处理状态*/
+			/*异步请求地址及相关配置*/
+			ajax:{
+				url:"../../json/admin/admin_power_user.json",
+				dataType:'JSON',
+				method:'post',
+				data:(function(){
+					/*查询本地,如果有则带参数查询，如果没有则初始化查询*/
+					var param=public_tool.getParams(module_id);
+					//获取参数后清除参数
+					public_tool.removeParams(module_id);
+					if(param){
+						return {"id":param.id};
+					}
+					return '';
+				}()),
+				dataSrc:"data"
+			},/*默认配置排序规则*/
+			columns: [
+				{
+					"data":"id",
+					"orderable":false,
+					"render":function(data, type, full, meta ){
+						return '<input type="checkbox" data-id="'+full.id+'" name="member" class="cbr">';
+					}
+				},
+				{"data":"serve"},
+				{"data":"name"},
+				{"data":"phone"},
+				{"data":"companyAddress"},
+				{"data":"sale"},
+				{"data":"stock"},
+				{
+					"data":{
+						id:'id',
+						type:'type'
+					},
+					"render":function(data, type, full, meta ){
+						var id=full.id,
+							type=full.type,
+							btns='<span data-action="select" data-type="'+type+'" data-id="'+id+'" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+											<i class="fa-group"></i>\
+											<span>查看</span>\
+											</span>';
+
+						return btns;
+					}
+				}
+			],/*控制列数*/
+			aLengthMenu: [
+				[10,20,50],
+				[10,20,50]
+			],/*控制是否每页可改变显示条数*/
+			lengthChange:true/*是否可改变长度*/
 		}
+
+
+
+
+
+
 
 
 
 
 		/*事件绑定*/
 		/*绑定查看，修改操作*/
-		$serve_manage_wrap.delegate('span','click',function(e){
+		$serve_send_wrap.delegate('span','click',function(e){
 			e.stopPropagation();
 			e.preventDefault();
 
@@ -405,7 +454,7 @@
 		});
 
 		/*添加服务站*/
-		$manage_add_btn.on('click',function(e){
+		$send_add_btn.on('click',function(e){
 			e.preventDefault();
 			//重置表单
 			edit_form.reset();
@@ -476,7 +525,7 @@
 									if(public_tool.cache.form_opt_0['continue']){
 										form.reset();
 										setTimeout(function(){
-											$manage_add_btn.trigger('click');
+											$send_add_btn.trigger('click');
 										},200);
 									}
 									setTimeout(function(){
