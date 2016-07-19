@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	
+	<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0,maximum-scale=1">
+	<meta name="description" content="银通天下后台管理系统" />
+	<meta name="keywords" content="银通天下后台管理系统">
+  <meta name="author" content="yp" />
+	<title>银通天下后台管理系统</title>
+	<link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" type="text/css" href="../js/daterangepicker/daterangepicker-bs3.css">
+	<link rel="stylesheet" href="../css/index.css">
+  <script>var SIDE_MENU_URL="../json/menu.json"</script>
+  <script src="../js/commom/jquery-1.11.1.min.js"></script>
+	<!--[if lt IE 9]>
+		<script src="../js/html5shiv.min.js"></script>
+		<script src="../js/respond.min.js"></script>
+	<![endif]-->
+</head>
+<body class="page-body">
+
+ 
+	<div class="page-container">
+  
+  	<!--测边栏--菜单导航模块-->
+		<div class="sidebar-menu toggle-others fixed">
+			<div class="sidebar-menu-inner">
+      	<!--菜单头部按钮-->
+				<header class="logo-env">
+					<!-- logo -->
+					<div class="logo">
+						<a href="dashboard-1.html" class="logo-expanded">
+							<img src="../images/logo@2x.png" width="80" alt="" />
+						</a>
+						
+						<a href="dashboard-1.html" class="logo-collapsed">
+							<img src="../images/logo-collapsed@2x.png" width="40" alt="" />
+						</a>
+					</div>
+					
+					<!--小屏模式下按钮-->
+					<div class="mobile-menu-toggle visible-xs">
+						<a href="#" data-toggle="mobile-menu">
+							<i class="fa-bars"></i>
+						</a>
+					</div>		
+				</header>
+				<!--菜单条-->
+        <ul id="main_menu" class="main-menu">
+        	<li>
+  	<a href="index.html">
+      <i class="menu-ux-home"></i>
+      <span>首页</span>
+    </a>
+  </li>
+  <li class="has-sub">
+    <a href="../agent/agent_manage.html">
+      <i class="menu-ux-agent"></i>
+      <span>代理管理</span>
+    </a>
+    <ul>
+      <li>
+        <a href="../agent/serve_manage.html">
+          <span>服务站管理</span>
+        </a>
+      </li>
+      <li>
+        <a href="../agent/agent_manage.html">
+          <span>代理商管理</span>
+        </a>
+      </li>
+      <li>
+        <a href="../agent/sales_manage.html">
+          <span>代理销售管理</span>
+        </a>
+      </li>
+    </ul>
+  </li>
+  <li class="has-sub"><a href="../content/content_manage.html"><i class="menu-ux-article"></i><span>内容管理</span></a>
+    <ul>
+      <li><a href="../content/channel_manage.html"><span>频道管理</span></a></li>
+      <li><a href="../content/article_manage.html"><span>文章管理</span></a></li>
+      <li><a href="../content/comment_manage.html"><span>评论管理</span></a></li>
+      <li><a href="../content/grab_manage.html"><span>内容抓取</span></a></li>
+      <li><a href="../content/release_manage.html"><span>发布文章</span></a></li>
+      <li><a href="../content/news_manage.html"><span>消息管理</span></a></li>
+      <li><a href="../content/feedback_manage.html"><span>用户反馈</span></a></li>
+    </ul>
+  </li>
+  <li class="has-sub"><a href="../shop/shop_manage.html"><i class="menu-ux-shop"></i><span>商城管理</span></a>
+    <ul>
+      <li><a href="..//.html"><span>商城管理扩展1</span></a></li>
+      <li><a href="..//.html"><span>商城管理扩展2</span></a></li>
+      <li><a href="..//.html"><span>商城管理扩展3</span></a></li>
+    </ul>
+  </li>
+  <li class="has-sub"><a href="../serve/serve_manage.html"><i class="menu-ux-serve"></i><span>服务栏管理</span></a>
+    <ul>
+      <li><a href="..//.html"><span>服务栏管理扩展1</span></a></li>
+      <li><a href="..//.html"><span>服务栏管理扩展2</span></a></li>
+      <li><a href="..//.html"><span>服务栏管理扩展3</span></a></li>
+    </ul>
+  </li>
+  <li class="has-sub"><a href="../credit/credit_manage.html"><i class="menu-ux-credit"></i><span>信用卡管理</span></a>
+    <ul>
+      <li><a href="../credit/guide_check.html"><span>攻略审核</span></a></li>
+      <li><a href="../credit/guide_manage.html"><span>攻略管理</span></a></li>
+      <li><a href="../credit/consumption_plan.html"><span>消费计划</span></a></li>
+      <li><a href="../credit/consumption_check.html"><span>消费计划审核</span></a></li>
+    </ul>
+  </li>
+  <li class="has-sub"><a href="../finance/finance_manage.html"><i class="menu-ux-finance"></i><span>财务管理</span></a>
+    <ul>
+      <li><a href="..//.html"><span>财务管理扩展1</span></a></li>
+      <li><a href="..//.html"><span>财务管理扩展2</span></a></li>
+      <li><a href="..//.html"><span>财务管理扩展3</span></a></li>
+    </ul>
+  </li>
+  <li class="has-sub"><a href="../payment/payment_manage.html"><i class="menu-ux-payment"></i><span>收付款管理</span></a>
+    <ul>
+      <li><a href="../payment/card_manage.html"><span>刷卡收款管理</span></a></li>
+      <li><a href="../payment/withdrawals_manage.html"><span>提现管理</span></a></li>
+    </ul>
+  </li>
+  <li class="has-sub"><a href="../user/user_manage.html"><i class="menu-ux-user"></i><span>用户管理</span></a>
+    <ul>
+      <li><a href="../user/account_manage.html"><span>账号管理</span></a></li>
+      <li><a href="../user/vest_manage.html"><span>马甲用户</span></a></li>
+      <li><a href="../user/orbit_manage.html"><span>轨迹列表</span></a></li>
+      <li><a href="../user/card_manage.html"><span>银行卡</span></a></li>
+    </ul>
+  </li>
+  <li class="has-sub"><a href="../ad/ad_manage.html"><i class="menu-ux-ad"></i><span>广告管理</span></a>
+    <ul>
+      <li><a href="../ad/article_ad.html"><span>文章广告</span></a></li>
+      <li><a href="../ad/articleimg_ad.html"><span>文章图片广告</span></a></li>
+      <li><a href="../ad/index_ad.html"><span>首页图片广告</span></a></li>
+      <li><a href="../ad/serve_ad.html"><span>服务栏图片广告</span></a></li>
+    </ul>
+  </li>
+  <li class="has-sub"><a href="../admin/admin_manage.html"><i class="menu-ux-admin"></i><span>系统管理</span></a>
+    <ul>
+      <li><a href="../admin/bank_manage.html"><span>银行管理</span></a></li>
+      <li><a href="../admin/role_manage.html"><span>角色管理</span></a></li>
+      <li><a href="../admin/power_manage.html"><span>权限</span></a></li>
+      <li><a href="../admin/system_setting.html"><span>系统设置</span></a></li>
+    </ul>
+  </li>
+        </ul>
+			</div>
+		</div>
+		
+    <!--主模块-->
+		<div class="main-content">
+					
+			<!--顶部按钮区域-->
+			<nav class="navbar user-info-navbar" role="navigation">
+      	<!-- 顶部左侧部分 -->
+				<ul class="user-info-menu left-links list-inline list-unstyled">
+        	<!--切换菜单为全部模式或者缩略模式-->
+					<li class="hidden-sm hidden-xs">
+						<a href="#" data-toggle="sidebar">
+							<i class="fa-bars"></i>
+						</a>
+					</li>
+				</ul>
+				<!-- 顶部右侧部分 -->
+				<ul class="user-info-menu right-links list-inline list-unstyled">
+
+					<li class="dropdown user-profile">
+						<a href="#" data-toggle="dropdown">
+							<img src="../images/user-4.png" alt="user-image" class="img-circle img-inline userpic-32" width="28" />
+							<span>系统管理员<i class="fa-angle-down"></i>
+							</span>
+						</a>
+						
+						<ul class="dropdown-menu user-profile-menu list-unstyled">
+							<li>
+								<a href="#">
+									<i class="">其他选项扩展1...</i>
+								</a>
+							</li>
+              <li>
+								<a href="#">
+									<i class="">其他选项扩展2...</i>
+								</a>
+							</li>
+							<li class="last">
+								<a href="#"><i class="fa-lock"></i>登出</a>
+							</li>
+						</ul>
+					</li>
+					
+				</ul>
+			</nav>
+      
+      <!--主题描述-->
+      <div class="page-title">
+				<div class="title-env">
+					<h1 class="title">我的主题</h1>
+					<p class="description">我的描述</p>
+				</div>
+				<div class="breadcrumb-env">
+								<ol class="breadcrumb bc-1">
+									<li><a href="index.html"><i class="fa-home"></i>首页</a></li>
+                  <li class="active"><strong>我的主题</strong></li>
+								</ol>
+				</div>
+			</div>
+      
+      
+      <!--主内容-->
+			<div class="row">
+				<div class="col-md-12">
+        		<div class="panel">
+              <div class="panel-heading">新增入网用户统计
+                <div class="chart-search-wrap">
+                  <input id="chart_search_time" placeholder="请选择日期" readonly class="form-control daterange" type="text" >
+                  <button id="chart_search_btn" class="btn btn-success">查询</button>
+                </div>
+							</div>
+              <div class="panel-body">
+                <div id="chart_wrap" class="credit-chart-wrap"></div>
+              </div>
+            </div>
+       	</div>
+        
+        
+        <div class="col-md-12">
+        		<div class="row">
+            		<div class="col-md-4">
+                  <div class="pie-panel-wrap">
+                  		<div class="g-b-bs-success">3646</div>
+                      <span>总计入网用户</span>
+                  </div>
+                </div>
+                
+                <div class="col-md-4">
+                  <div class="pie-panel-wrap">
+                  		<div class="g-b-bs-info">835</div>
+                      <span>今日入网用户</span>
+                  </div>
+                </div>
+                
+                <div class="col-md-4">
+                  <div class="pie-panel-wrap">
+                  		<div class="g-b-bs-warning">82</div>
+                      <span>今日上线用户</span>
+                  </div>
+                </div>
+            </div>
+       	</div>
+      </div>
+			
+			
+      
+
+			<!--底部信息-->
+			<footer class="main-footer sticky footer-type-1">
+				<div class="footer-inner">
+					<!-- 版权所有 -->
+					<div class="footer-text">
+						&copy; 2016
+						<strong>银通天下</strong> 
+						 <a href="#" target="_blank" title="">****</a>
+					</div>
+					
+					<!--回到顶部-->
+					<div class="go-up">
+						<a href="#" rel="go-top">
+							<i class="fa-angle-up"></i>
+						</a>
+					</div>
+				</div>
+			</footer>
+      
+      
+		</div>
+	</div>
+	
+	<!--加载遮罩层-->
+	<div class="page-loading-overlay">
+		<div class="loader-2"></div>
+	</div>
+	<script src="../js/commom/bootstrap.js"></script>
+	<script src="../js/commom/TweenMax.min.js"></script>
+	<script src="../js/commom/resizeable.js"></script>
+	<script src="../js/commom/joinable.js"></script>
+  <script src="../js/moment/moment.js"></script>
+  <script src="../js/daterangepicker/daterangepicker.js"></script>
+	<script src="../js/commom/toggles.js"></script>
+	<script src="../js/commom/widgets.js"></script>
+	<script src="../js/commom/common.js"></script>
+  <script src="../js/highcharts/highcharts.js"></script>
+  <script src="../js/index/index.js"></script>
+</body>
+</html>

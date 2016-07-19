@@ -82,3 +82,16 @@
 		content:'\e634';
 	}
 }
+.menu-ux-logistics{
+	&:before{
+		content:'\e625';
+	}
+}
+
+//主显示区设置
+.row-main-wrap{
+	@heightgap:275px;
+	min-height:300px;
+	.calc-base(min-height,'100% - @{heightgap}');
+	.calc-base(min-height,'100vh - @{heightgap}');
+}

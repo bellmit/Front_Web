@@ -6,7 +6,8 @@
 	z-index: 1;
 	
 	.logo-env {
-		padding: @default-padding (@double-margin + @sidebar-horizontal-link-padding);
+		padding: @default-padding - 8 (@double-margin + @sidebar-horizontal-link-padding);
+		/*padding: @default-padding (@double-margin + @sidebar-horizontal-link-padding);*/
 		border-bottom: 1px solid @sidebar-menu-border;
 		&:extend(.clearfix all);
 		
