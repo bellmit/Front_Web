@@ -3,6 +3,9 @@
 	'use strict';
 	$(function(){
 
+		/*菜单调用*/
+		public_tool.loadSideMenu(public_vars.$main_menu,public_vars.$main_menu_wrap,'../../json/common/menu.json');
+
 		/*dom引用和相关变量定义*/
 		var $admin_member_wrap=$('#admin_member_wrap')/*表格*/,
 			module_id='admin_member'/*模块id，主要用于本地存储传值*/,

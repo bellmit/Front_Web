@@ -1,6 +1,7 @@
 {
   "flag":true,
-	"message":"登陆成功"
+	"message":"登陆成功",
+  "src":"../../images/body_bg.png"
 }
 
 

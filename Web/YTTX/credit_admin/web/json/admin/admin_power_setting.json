@@ -10,7 +10,7 @@
     {
       "funcCode": "admin-role-add",
       "funcName": "角色增加",
-      "isPermit": 0,
+      "isPermit": 1,
       "modId": 1,
       "prid": 2
     },
@@ -31,7 +31,7 @@
     {
       "funcCode": "admin-setting",
       "funcName": "系统设置",
-      "isPermit":0,
+      "isPermit":1,
       "modId": 1,
       "prid": 5
     },
@@ -52,7 +52,7 @@
     {
       "funcCode": "admin-member-update",
       "funcName": "成员修改",
-      "isPermit":0,
+      "isPermit":1,
       "modId": 1,
       "prid": 8
     },
@@ -65,7 +65,7 @@
     },{
       "funcCode": "ad-article-shelves",
       "funcName": "文章广告上架/下架",
-      "isPermit":0,
+      "isPermit":1,
       "modId": 5,
       "prid": 10
     },
@@ -79,7 +79,7 @@
     {
       "funcCode": "ad-articlepic-shelves",
       "funcName": "文章图片广告上架/下架",
-      "isPermit":0,
+      "isPermit":1,
       "modId": 5,
       "prid": 12
     },
@@ -100,7 +100,7 @@
     {
       "funcCode": "ad-homepic-update",
       "funcName": "首页图片广告修改",
-      "isPermit":0,
+      "isPermit":1,
       "modId": 5,
       "prid": 15
     },
@@ -114,7 +114,7 @@
     {
       "funcCode": "ad-servicepic-update",
       "funcName": "服务栏图片广告修改",
-      "isPermit":0,
+      "isPermit":1,
       "modId": 5,
       "prid": 17
     },{
@@ -134,7 +134,7 @@
     {
       "funcCode": "user-account-delete",
       "funcName": "帐号删除",
-      "isPermit":0,
+      "isPermit":1,
       "modId": 10,
       "prid": 20
     },
@@ -155,7 +155,7 @@
     {
       "funcCode": "user-horse-delete",
       "funcName": "马甲用户删除",
-      "isPermit":0,
+      "isPermit":1,
       "modId": 10,
       "prid": 23
     }]

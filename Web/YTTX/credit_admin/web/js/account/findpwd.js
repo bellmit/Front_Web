@@ -3,13 +3,10 @@
 	$(function(){
 
 		//dom节点引用或者其他变量定义
-		var $loginform=$('#login'),
+		var $findpwdform=$('#findpwd'),
 			$username=$('#username'),
 			$pwd=$('#passwd'),
-			$vcode=$('#validcode');
-			$error_wrap=$('#error_wrap'),
-			$validcode_btn=$('#validcode_btn'),
-			$validimg=$validcode_btn.find('img'),
+			$repwd=$('#repasswd');
 			error_tpl='<div class="alert alert-danger">\
 								<button type="button" class="close" data-dismiss="alert">\
 									<span aria-hidden="true">&times;</span>\
@@ -24,7 +21,7 @@
 
 
 		//异步校验
-		$loginform.validate({
+		$findpwdform.validate({
 			rules: {
 				username: {
 					required: true
@@ -33,8 +30,9 @@
 					required: true,
 					minlength:6
 				},
-				validcode:{
-					required:true
+				repasswd:{
+					required:true,
+					equalTo:$pwd
 				}
 			},
 
@@ -43,11 +41,12 @@
 					required: '请输入用户名'
 				},
 				passwd: {
-					required: '请输入密码',
+					required: '请输入新密码',
 					minlength:'密码必须超过6位字符'
 				},
-				validcode:{
-					required:'验证码不能为空'
+				repasswd:{
+					required:'确认密码不能为空',
+					equalTo:'确认密码必须与新密码一致'
 				}
 			},
 
@@ -78,7 +77,7 @@
 						do_login: true,
 						username:$username.val(),
 						passwd:$pwd.val(),
-						validcode:$vcode.val()
+						repasswd:$repwd.val()
 					}
 				}).done(function(resp){
 					//调用进度条组件
@@ -109,7 +108,7 @@
 					//移除提示的错误信息
 					$error_wrap.find('.alert').slideUp('fast');
 					//显示错误信息
-					$error_wrap.html(error_tpl.replace('$info','登陆失败请重新登陆'));
+					$error_wrap.html(error_tpl.replace('$info','修改密码失败'));
 					$error_wrap.find('.alert').hide().slideDown();
 					$pwd.select();
 				});
@@ -118,24 +117,7 @@
 		});
 
 		//设置获取焦点
-		$loginform.find(".form-group:has(.form-control):first .form-control").focus();
-
-
-		/*重新生成验证码*/
-		$validcode_btn.on('click',function(){
-			$.ajax({
-				url: "../../json/account/login.json",
-				method: 'POST',
-				dataType: 'json'
-			}).done(function(resp){
-				if(resp.flag){
-					$validimg.attr({'src':resp.src});
-				}
-			}).fail(function(){
-
-			});
-
-		});
+		$findpwdform.find(".form-group:has(.form-control):first .form-control").focus();
 
 
 	});

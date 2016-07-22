@@ -2,6 +2,9 @@
 (function($){
 	'use strict';
 	$(function(){
+
+		/*菜单调用*/
+		public_tool.loadSideMenu(public_vars.$main_menu,public_vars.$main_menu_wrap,'../../json/common/menu.json');
 		
 		
 

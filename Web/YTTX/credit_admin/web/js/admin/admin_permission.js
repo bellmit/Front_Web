@@ -3,6 +3,10 @@
 	'use strict';
 	$(function(){
 
+		/*菜单调用*/
+		public_tool.loadSideMenu(public_vars.$main_menu,public_vars.$main_menu_wrap,'../../json/common/menu.json');
+
+
 		/*dom引用和相关变量定义*/
 		var $admin_power_wrap=$('#admin_power_wrap')/*表格*/,
 			module_id='1'/*模块id，主要用于查询传参*/,
@@ -287,33 +291,42 @@
 								//存在数据
 								if(len!==0){
 
-									if(item){
-										/*传递父参数，并显示设置权限按钮*/
-										/*开启权限控制按钮区域*/
-										$operate_setting.attr({
-											'data-id':id
-										});
-										/*解析数据*/
-										var headlen=setting_header.length,
-											j= 0,
-											res={},
-											str='';
-										for(j;j<headlen;j++){
-												res[j]=[];
-										}
-
-										for(i;i<len;i++){
-											str+='';
-										}
-
-										var subitem,sublen,res='';
-										$(res).appendTo();
-									}else{
-										/*关闭权限控制按钮区域*/
-										$operate_setting.attr({
-											'data-id':''
-										}).html('<td colspan="4">&nbsp;</td>');
+									/*开启权限控制按钮区域*/
+									$operate_setting.attr({
+										'data-id':id
+									});
+									/*解析数据*/
+									var headlen=setting_header.length,
+										j= 0,
+										res={},
+										str='';
+									for(j;j<headlen;j++){
+										res[setting_header[j]]=[];
 									}
+
+									for(i;i<len;i++){
+										item=datas[i];
+										var modid=item.modId;
+										if(modid in res){
+											res[modid].push((function(){
+												var ispermit=parseInt(item.isPermit,10),
+													str='';
+													if(ispermit===0){
+														str='<span data-count="0" data-modId="'+modid+'" data-prid="'+item.prid+'"data-isPermit="'+ispermit+'" class="">'+item.funcName+'</span>';
+													}else if(ispermit===1){
+														str='<span data-count="0" data-modId="'+modid+'" data-prid="'+item.prid+'"data-isPermit="'+ispermit+'" class="setting_active">'+item.funcName+'</span>';
+													}
+													return str;
+											}()));
+										}
+									}
+
+									var power='';
+									for(var k in res){
+										res[k]='<td data-modId="'+k+'">'+res[k].join('')+'</td>';
+										power+=res[k];
+									}
+									$(power).appendTo($operate_setting.html(''));
 								}else{
 									/*关闭权限控制按钮区域*/
 									$operate_setting.attr({
@@ -433,6 +446,7 @@
 
 
 		/*绑定确定修改*/
+		var countitem={};
 		$operate_setting.on('click',function(e){
 			var target= e.target,
 				nodename=target.nodeName.toLowerCase(),
@@ -453,8 +467,29 @@
 			}
 
 
+			/*防止频繁点击*/
+			var count=parseInt($this.attr('data-count'),10);
+			count++;
+			$this.attr({'data-count':count});
+			if(count>=3){
+				dia.content('<span class="g-c-bs-warning g-btips-warn">请不要频繁点击</span>').show();
+				if(typeof countitem[prid]==='undefined'){
+					countitem[prid]=null;
+				}else{
+					clearTimeout(countitem[prid]);
+					countitem[prid]=null;
+				}
+				//定时函数
+				countitem[prid]=setTimeout(function(){
+					$this.attr({'data-count':0});
+					clearTimeout(countitem[prid]);
+					countitem[prid]=null;
+				},5000);
+				return false;
+			}
+
 			var modId=$this.attr('data-modId'),
-				isPermit=$this.attr('data-isPermit'),
+				isPermit=parseInt($this.attr('data-isPermit'),10),
 				prid=$this.attr('data-prid');
 
 			/*过滤*/
@@ -464,26 +499,48 @@
 			}
 
 
+			/*更改状态*/
+			if(isPermit===0){
+				isPermit=1;
+				$this.addClass('setting_active').attr({'data-isPermit':isPermit});
+			}else if(isPermit===1){
+				isPermit=0;
+				$this.removeClass('setting_active').attr({'data-isPermit':isPermit});
+			}
+
 
 			/*发送请求*/
-			$this.addClass('setting_active').attr({'data-isPermit':1});
 			$.ajax({
 					url: "../../json/admin/admin_power_user.json",
 					method: 'POST',
 					dataType: 'json',
 					data:{
 						"prid":prid,
-						"isPermit":$this.attr('data-isPermit'),
+						"isPermit":isPermit,
 						"modId":modId
 					}
 				})
 				.done(function (resp) {
 					if(!resp.flag){
-						$this.removeClass('setting_active').attr({'data-isPermit':0});
+						/*回滚至以前状态*/
+						if(isPermit===0){
+							isPermit=1;
+							$this.addClass('setting_active').attr({'data-isPermit':isPermit});
+						}else if(isPermit===1){
+							isPermit=0;
+							$this.removeClass('setting_active').attr({'data-isPermit':isPermit});
+						}
 					}
 				})
 				.fail(function(resp){
-					$this.removeClass('setting_active').attr({'data-isPermit':0});
+					/*回滚至以前状态*/
+					if(isPermit===0){
+						isPermit=1;
+						$this.addClass('setting_active').attr({'data-isPermit':isPermit});
+					}else if(isPermit===1){
+						isPermit=0;
+						$this.removeClass('setting_active').attr({'data-isPermit':isPermit});
+					}
 					if(!resp.flag&&resp.message){
 						console.log(resp.message);
 					}else{

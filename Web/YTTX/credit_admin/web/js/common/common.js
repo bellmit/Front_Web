@@ -343,9 +343,9 @@
 		var count=0,
 			id=tid,
 			t=times,
-			n=nodes;
-		n.html(times+'秒后重新获取').prop("disabled",true).addClass(classname),
+			n=nodes,
 			timer=this.getTimer();
+		n.html(times+'秒后重新获取').prop("disabled",true).addClass(classname);
 		id=setInterval(function(){
 			count=timer();
 			count=count<=t?count:count%t;
@@ -468,6 +468,11 @@
 	/*左侧菜单导航*/
 	/*菜单id映射*/
 	public_tool.menuMap={
+		"0":{
+			"name":"主页",
+			"code":"index",
+			"match":"index"
+		},
 		"1":{
 			"name":"系统管理",
 			"code":"admin",
@@ -582,186 +587,203 @@
 			}
 		}
 	};
-	/*菜单权限映射*/
-	public_tool.menuPowerMap={};
+	/*路由映射*/
+	public_tool.routeMap={
+			path:'',
+			module:'',
+			isindex:false,
+			issamemodule:false
+	};
+	/*获取路由信息*/
+	public_tool.getRoute=function(){
+		/*处理路径*/
+		var self=this,
+			currentfile=location.pathname,
+			carr=currentfile.split('/'),
+			clen=carr.length,
+			cp_suffix=carr[clen - 1].lastIndexOf('.'),
+			path=carr[clen - 1].slice(0,cp_suffix),
+			isindex=path===''?true:path.indexOf('index')!==-1,
+			module=isindex?'':carr[clen - 2];
+
+
+		/*调用路由记录*/
+		var history_path={
+			/*当前文件*/
+			current:{
+				isindex:isindex,
+				path:path,
+				module:module
+			},
+			/*上一次文件路径*/
+			prev:{
+				isindex:false,
+				path:'',
+				module:''
+			}
+		},
+		route=self.getParams('route_module')/*查找上一次记录*/;
+
+
+		/*重新赋值*/
+		if(route){
+			history_path.prev=route.current;
+			public_tool.routeMap.issamemodule=module===route.current
+		}else{
+			public_tool.routeMap.issamemodule=false;
+		}
+		/*放入本地存储*/
+		self.setParams('route_module',history_path);
+
+		/*存入临时目录*/
+		public_tool.routeMap.isindex=isindex;
+		public_tool.routeMap.path=path;
+		public_tool.routeMap.module=module;
+	};
 	/*加载左侧菜单*/
-	public_tool.loadSideMenu=function($menu,$wrap){
+	public_tool.loadSideMenu=function($menu,$wrap,url){
 
 		var self=this,
-			//cacheMenu=self.getParams('menu_module'),
-			currentfile=location.pathname,
-			cp_prefix=currentfile.lastIndexOf('/'),
-			cp_suffix=currentfile.lastIndexOf('.'),
-			path=currentfile.slice(cp_prefix + 1,cp_suffix),
-			url='',
-			isindex=path===''?true:path.indexOf('index')!==-1;
+		cacheMenu=self.getParams('menu_module');
 
-		if(isindex){
-			//如果判断是主页
-			/*if(cacheMenu){
-				self.removeParams('menu_module');
-				cacheMenu=null;
-			}*/
-			url='../json/common/menu.json';
+		/*调用路由*/
+		self.getRoute();
+
+
+
+		/*判断路由模块*/
+		if(public_tool.routeMap.issamemodule){
+			if(cacheMenu){
+				/*如果是同一模块侧直接获取缓存*/
+				/*如果存在缓存，则读取缓存*/
+				//放入dom中
+				$(cacheMenu).appendTo($menu.html(''));
+				//初始化
+				self.initSideMenu($wrap);
+				return;
+			}else{
+				/*不同模块则重新加载*/
+				self.requestSideMenu($menu,$wrap,url);
+			}
 		}else{
-			url='../../json/common/menu.json';
+			self.requestSideMenu($menu,$wrap,url);
 		}
+	};
+	/*请求菜单*/
+	public_tool.requestSideMenu= function ($menu,$wrap,url) {
+		var self=this;
+		/*如果不存在缓存，则重新请求并放入缓存*/
+		$.ajax({
+			url:url||"../json/common/menu.json",
+			async:true,
+			type:"post",
+			dataType:"json"
+		}).done(function(data){
+			if(parseInt(data.code,10)===0){
+				//查询异常
+				return false;
+			}
+			var menu=data.result.menu,
+				len=menu.length,
+				menustr='',
+				i=0,
+				j=0,
+				key='modItem',
+				suffix='.html',
+				link='',
+				item=null,
+				sublen='',
+				subitem=null,
+				isindex=self.routeMap.isindex,
+				path=self.routeMap.path;
 
-
-		/*if(cacheMenu){
-			/!*如果存在缓存，则读取缓存*!/
-			//放入dom中
-			$(cacheMenu).appendTo($menu.html(''));
-			//初始化
-			self.initSideMenu($wrap);
-			return;
-		}else{*/
-			/*如果不存在缓存，则重新请求并放入缓存*/
-			$.ajax({
-				url:url||"../json/common/menu.json",
-				async:true,
-				type:"post",
-				dataType:"json"
-			}).done(function(data){
-				if(parseInt(data.code,10)===0){
-						//查询异常
-						return false;
-				}
-				var menu=data.result.menu,
-					len=menu.length,
-					menustr='',
-					i=0,
-					j=0,
-					k=0,
-					key='modItem',
-					prkey='permitItem',
-					suffix='.html',
-					link='',
-					item=null,
-					sublen='',
-					templen='',
-					subitem=null,
-					pritem=null,
-					modid_map={},
-					pr_map={};
-
-
-
-
-				for(i;i<len;i++){
-					item=menu[i];
-					link=self.menuMap[item.modId];
-					/*解析权限*/
-					(function(){
-						var ispr=typeof (pritem=item[prkey])!=='undefined';
-						if(ispr){
-							var k= 0,
-								prlen=pritem.length,
-								poweritem={};
-							for(k;k<prlen;k++){
-								var temppt=pritem[k],
-									prid=temppt.prid;
-								poweritem[prid]=temppt;
-							}
-							if(typeof modid_map[item.modId]==='undefined'){
-								modid_map[item.modId]=poweritem;
-							}else{
-								modid_map[item.modId]=$.extend(true,{},poweritem);
-							}
-						}
-						self.menuPowerMap=$.extend(true,{},modid_map);
-					})();
-					//解析菜单
-					if(isindex){
-						//当前页为首页的情况
-						if(i===0){
-							//首页数据
-							//如果是当前路径和当前模块一致
-							menustr='<li data-module="'+item.modId+'"><a href=\"'+item.modLink+suffix+'\"><i class=\"'+item.modClass+'\"></i><span>'+item.modName+'</span></a></li>';
-						}else{
-							//其他模块
-							//如果是当前路径和当前模块一致
-							var issub=typeof (subitem=item[key])!=='undefined';
-							if(issub){
-								//子菜单循环
-								if(path.indexOf(link.match)!==-1){
-									menustr+='<li data-modId="'+item.modId+'" class="has-sub expanded"><a href=\"\"><i class=\"'+item.modClass+'\"></i><span>'+item.modName+'</span></a>';
-									menustr+="<ul style='display:block;'>";
-								}else{
-									menustr+='<li data-modId="'+item.modId+'" class="has-sub"><a href=\"\"><i class=\"'+item.modClass+'\"></i><span>'+item.modName+'</span></a>';
-									menustr+="<ul>";
-								}
-								sublen=subitem.length;
-								j=0;
-								for(j;j<sublen;j++){
-									item=subitem[j];
-									menustr+='<li data-module="'+item.modId+'"><a href=\"'+self.menuMap[item.modId].code+'/'+item.modLink+suffix+'\"><span>'+item.modName+'</span></a></li>';
-								}
-								menustr+="</li></ul>";
-							}else{
-								menustr+='<li data-modId="'+item.modId+'" class="has-sub"><a href=\"'+self.menuMap[item.modId].code+'/'+item.modLink+suffix+'\"><i class=\"'+item.modClass+'\"></i><span>'+item.modName+'</span></a>';
-							}
-						}
+			for(i;i<len;i++){
+				item=menu[i];
+				link=self.menuMap[item.modId];
+				//解析菜单
+				if(isindex){
+					//当前页为首页的情况
+					if(i===0){
+						//首页数据
+						//如果是当前路径和当前模块一致
+						menustr='<li data-module="'+item.modId+'"><a href=\"'+item.modLink+suffix+'\"><i class=\"'+item.modClass+'\"></i><span>'+item.modName+'</span></a></li>';
 					}else{
-						//当前页为其他页的情况
-						if(i===0){
-							//首页数据
-							//如果是当前路径和当前模块一致
-							menustr='<li data-modId="'+item.modId+'"><a href=\"../'+item.modLink+suffix+'\"><i class=\"'+item.modClass+'\"></i><span>'+item.modName+'</span></a></li>';
-						}else{
-							//其他模块
-							//如果是当前路径和当前模块一致
-							var issub=typeof (subitem=item[key])!=='undefined';
-							if(issub){
-								//子菜单循环
-								if(path.indexOf(link.match)!==-1){
-									menustr+='<li data-modId="'+item.modId+'" class="has-sub expanded"><a href=\"\"><i class=\"'+item.modClass+'\"></i><span>'+item.modName+'</span></a>';
-									menustr+="<ul style='display:block;'>";
-								}else{
-									menustr+='<li data-modId="'+item.modId+'" class="has-sub"><a href=\"\"><i class=\"'+item.modClass+'\"></i><span>'+item.modName+'</span></a>';
-									menustr+="<ul>";
-								}
-								sublen=subitem.length;
-								j=0;
-								for(j;j<sublen;j++){
-									item=subitem[j];
-									if(link===path){
-										menustr+='<li data-module="'+item.modId+'"><a href=\"'+item.modLink+suffix+'\"><span>'+item.modName+'</span></a></li>';
-									}else{
-										menustr+='<li data-module="'+item.modId+'"><a href=\"../'+self.menuMap[item.modId].code+'/'+item.modLink+suffix+'\"><span>'+item.modName+'</span></a></li>';
-									}
-								}
-								menustr+="</li></ul>";
+						//其他模块
+						//如果是当前路径和当前模块一致
+						var issub=typeof (subitem=item[key])!=='undefined';
+						if(issub){
+							//子菜单循环
+							if(path.indexOf(link.match)!==-1){
+								menustr+='<li data-modId="'+item.modId+'" class="has-sub expanded"><a href=\"\"><i class=\"'+item.modClass+'\"></i><span>'+item.modName+'</span></a>';
+								menustr+="<ul style='display:block;'>";
 							}else{
-								if(path.indexOf(link.match)!==-1){
-									menustr+='<li data-modId="'+item.modId+'" class="has-sub expanded"><a href=\"'+item.modLink+suffix+'\"><i class=\"'+item.modClass+'\"></i><span>'+item.modName+'</span></a>';
+								menustr+='<li data-modId="'+item.modId+'" class="has-sub"><a href=\"\"><i class=\"'+item.modClass+'\"></i><span>'+item.modName+'</span></a>';
+								menustr+="<ul>";
+							}
+							sublen=subitem.length;
+							j=0;
+							for(j;j<sublen;j++){
+								item=subitem[j];
+								menustr+='<li data-module="'+item.modId+'"><a href=\"'+self.menuMap[item.modId].code+'/'+item.modLink+suffix+'\"><span>'+item.modName+'</span></a></li>';
+							}
+							menustr+="</li></ul>";
+						}else{
+							menustr+='<li data-modId="'+item.modId+'" class="has-sub"><a href=\"'+self.menuMap[item.modId].code+'/'+item.modLink+suffix+'\"><i class=\"'+item.modClass+'\"></i><span>'+item.modName+'</span></a>';
+						}
+					}
+				}else{
+					//当前页为其他页的情况
+					if(i===0){
+						//首页数据
+						//如果是当前路径和当前模块一致
+						menustr='<li data-modId="'+item.modId+'"><a href=\"../'+item.modLink+suffix+'\"><i class=\"'+item.modClass+'\"></i><span>'+item.modName+'</span></a></li>';
+					}else{
+						//其他模块
+						//如果是当前路径和当前模块一致
+						var issub=typeof (subitem=item[key])!=='undefined';
+						if(issub){
+							//子菜单循环
+							if(path.indexOf(link.match)!==-1){
+								menustr+='<li data-modId="'+item.modId+'" class="has-sub expanded"><a href=\"\"><i class=\"'+item.modClass+'\"></i><span>'+item.modName+'</span></a>';
+								menustr+="<ul style='display:block;'>";
+							}else{
+								menustr+='<li data-modId="'+item.modId+'" class="has-sub"><a href=\"\"><i class=\"'+item.modClass+'\"></i><span>'+item.modName+'</span></a>';
+								menustr+="<ul>";
+							}
+							sublen=subitem.length;
+							j=0;
+							for(j;j<sublen;j++){
+								item=subitem[j];
+								if(link===path){
+									menustr+='<li data-module="'+item.modId+'"><a href=\"'+item.modLink+suffix+'\"><span>'+item.modName+'</span></a></li>';
 								}else{
-									menustr+='<li data-modId="'+item.modId+'" class="has-sub"><a href=\"../'+self.menuMap[item.modId].code+'/'+item.modLink+suffix+'\"><i class=\"'+item.modClass+'\"></i><span>'+item.modName+'</span></a>';
+									menustr+='<li data-module="'+item.modId+'"><a href=\"../'+self.menuMap[item.modId].code+'/'+item.modLink+suffix+'\"><span>'+item.modName+'</span></a></li>';
 								}
+							}
+							menustr+="</li></ul>";
+						}else{
+							if(path.indexOf(link.match)!==-1){
+								menustr+='<li data-modId="'+item.modId+'" class="has-sub expanded"><a href=\"'+item.modLink+suffix+'\"><i class=\"'+item.modClass+'\"></i><span>'+item.modName+'</span></a>';
+							}else{
+								menustr+='<li data-modId="'+item.modId+'" class="has-sub"><a href=\"../'+self.menuMap[item.modId].code+'/'+item.modLink+suffix+'\"><i class=\"'+item.modClass+'\"></i><span>'+item.modName+'</span></a>';
 							}
 						}
 					}
 				}
+			}
 
-				/*清除缓存，然后存入缓存*/
-				self.removeParams('menuPower_module');
-				self.setParams('menupower_module',self.menuPowerMap);
+			//放入本地存储(除了首页之外)
+			self.setParams('menu_module',menustr);
 
-				//放入本地存储(除了首页之外)
-				/*if(!isindex){
-					self.setParams('menu_module',menustr);
-				}*/
+			//放入dom中
+			$(menustr).appendTo($menu.html(''));
 
-				//放入dom中
-				$(menustr).appendTo($menu.html(''));
+			//调用菜单渲染
+			self.initSideMenu($wrap);
 
-				//调用菜单渲染
-				self.initSideMenu($wrap);
-
-			}).fail(function(){
-				console.log('error');
-			});
-		//}
+		}).fail(function(){
+			console.log('error');
+		});
 	};
 	//卸载左侧菜单条
 	public_tool.removeSideMenu=function($menu){
@@ -956,6 +978,67 @@
 		}
 	};
 
+
+
+
+
+
+	/*权限分配*/
+	/*菜单权限映射*/
+	public_tool.powerMap={};
+	//加载权限方法
+	public_tool.powerControl=function(url){
+		var self=this;
+		$.ajax({
+			url:url,
+			async:true,
+			type:"post",
+			dataType:"json"
+		}).done(function(data){
+			if(parseInt(data.code,10)===0){
+				//查询异常
+				return false;
+			}
+			var menu=data.result.menu,
+				len=menu.length,
+				i=0,
+				prkey='permitItem',
+				item=null,
+				pritem=null,
+				modid_map={};
+
+			for(i;i<len;i++){
+				item=menu[i];
+				/*解析权限*/
+				var ispr=typeof (pritem=item[prkey])!=='undefined';
+				if(ispr){
+					var k= 0,
+						prlen=pritem.length,
+						poweritem={};
+					for(k;k<prlen;k++){
+						var temppt=pritem[k],
+							prid=temppt.prid;
+						poweritem[prid]=temppt;
+					}
+					if(typeof modid_map[item.modId]==='undefined'){
+						modid_map[item.modId]=poweritem;
+					}else{
+						modid_map[item.modId]=$.extend(true,{},poweritem);
+					}
+				}
+				self.powerMap=$.extend(true,{},modid_map);
+			}
+
+			/*清除缓存，然后存入缓存*/
+			self.removeParams('power_module');
+			self.setParams('power_module',self.powerMap);
+
+		}).fail(function(){
+			console.log('error');
+		});
+	};
+
+
 	window.public_tool=public_tool;
 })(jQuery);
 
@@ -978,56 +1061,63 @@ var public_vars = public_vars || {};
 		
 		public_vars.$userInfoMenuHor      = public_vars.$body.find('.navbar.horizontal-menu');
 		public_vars.$userInfoMenu         = public_vars.$body.find('nav.navbar.user-info-navbar');
-
-
-
-
 		//自定义扩展变量
-		var $main_menu=$('#main_menu'),
-			$main_menu_wrap=$('#main_menu_wrap'),
-			$page_loading_wrap=$('#page_loading_wrap'),
-			$main_content=$('#main_content'),
-			$logout_btn=$('#logout_btn');
+		public_vars.$main_menu=$('#main_menu');
+		public_vars.$main_menu_wrap=$('#main_menu_wrap');
+		public_vars.$page_loading_wrap=$('#page_loading_wrap');
+		public_vars.$main_content=$('#main_content');
+		public_vars.$logout_btn=$('#logout_btn');
 
-		
-		//加载成功隐藏动画
-		if ($page_loading_wrap.length) {
-			$(window).load(function() {
-				$page_loading_wrap.addClass('loaded');
-			});
+
+		/*判断是否支持浏览器版本*/
+		if(public_tool.supportStorage){
+			//加载成功隐藏动画
+			if (public_vars.$page_loading_wrap.length) {
+				$(window).load(function() {
+					public_vars.$page_loading_wrap.addClass('loaded');
+				});
+			}
+
+			//加载失败
+			window.onerror = function() {
+				public_vars.$page_loading_wrap.addClass('loaded');
+			};
+		}else{
+
+
 		}
+
 		
-		//加载失败
-		window.onerror = function() {
-			$page_loading_wrap.addClass('loaded');
-		};
 
 
-		//加载左侧导航
-		public_tool.loadSideMenu($main_menu,$main_menu_wrap);
+
+
 
 
 		/*登出操作*/
-		$logout_btn.on('click',function(){
-			public_tool.removeSideMenu($main_menu);
-		});
+		if(public_vars.$logout_btn){
+			public_vars.$logout_btn.on('click',function(){
+				public_tool.removeSideMenu(public_vars.$main_menu);
+			});
+		}
+
 
 
 
 		//计算左侧菜单滚动条
 		if (public_vars.$mainFooter.hasClass('sticky')) {
-			stickFooterToBottom($main_content,$main_menu_wrap);
+			stickFooterToBottom(public_vars.$main_content,public_vars.$main_menu_wrap);
 			$(window).on('xenon.resized',{
-				$content:$main_content,
-				$wrap:$main_menu_wrap
+				$content:public_vars.$main_content,
+				$wrap:public_vars.$main_menu_wrap
 			},stickFooterToBottom);
 		}
 		
 		
 		//模拟滚动条
-		if ($.isFunction($.fn.perfectScrollbar)) {
-			if ($main_menu_wrap.hasClass('fixed')){
-				public_tool.scrollInit($main_menu_wrap);
+		if($.isFunction($.fn.perfectScrollbar)) {
+			if (public_vars.$main_menu_wrap.hasClass('fixed')){
+				public_tool.scrollInit(public_vars.$main_menu_wrap);
 			} 
 
 			// Scrollable
@@ -1048,7 +1138,7 @@ var public_vars = public_vars || {};
 
 		//计算左侧菜单滚动条
 		if (public_vars.$mainFooter.hasClass('fixed')) {
-			$main_content.css({
+			public_vars.$main_content.css({
 				paddingBottom: public_vars.$mainFooter.outerHeight(true)
 			});
 		}

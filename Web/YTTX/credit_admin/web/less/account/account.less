@@ -15,7 +15,33 @@
 		}
 	}
 }
+
 .login-form-wrap{
 	.layout-base;
 }
+/*验证码*/
+.vc-txt-wrap{
+	float:left;
+	.layout-relative-base;
+}
 
+.vc-img-wrap{
+		height:100%;
+		float:right;
+		text-align: left;
+		cursor: pointer;
+		&:after{
+			content:'看不清楚';
+			color:@color-red1;
+			font-size:@font-size-base - 2;
+			padding:0 0 0 10px;
+		}
+		img{
+			.box-sizing-base;
+			border:1px solid @color-gray9;
+			height:36px;
+			width:80px;
+			display:inline-block;
+			overflow: hidden;
+		}
+}
