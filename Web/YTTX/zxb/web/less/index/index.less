@@ -1,0 +1,165 @@
+@import '../layout/variable/base_variable_support.less';
+
+
+@import 'mixin/fullpage.less';
+
+
+@header-bg:rgba(64,61,60,1.0);
+@dark-bg:rgba(236,236,236,1.0);
+@icon-disable-bg:rgba(206,206,206,1.0);
+@footer-bg:rgba(40,40,40,1.0);
+
+
+/*body*/
+body{
+	.layout-base;
+	padding:60px 0 0 0;
+	min-height:500px;
+	height:100%;
+	.calc-base(height,'100vh');
+}
+/*头部*/
+.header-wrap{
+	.layout-fixedl-base;
+	width:100%;
+	min-width:1200px;
+	height:160px;
+	.header-info{
+		width:100%;
+		height:30px;
+		background:@header-bg;
+		div{
+			width:1200px;
+			margin:0 auto;
+			height: 100%;
+			text-align: right;
+			span{
+				padding:0 20px 0 0;
+				display:inline-block;
+				height:100%;
+				line-height:30px;
+				font-size:@font-size-base;
+				color:@color-white;
+			}
+		}
+	}
+	.menu-wrap{
+		width:100%;
+		height:70px;
+		background:transparent url(../images/header_repeat.png) repeat-x left bottom;
+	}
+	.menu-main{
+		height:58px;
+		width:100%;
+		background:@color-white;
+	}
+	.nav-wrap{
+			.layout-base(1200px);
+			margin:0 auto;
+			height: 100%;
+			a{
+				display:inline-block;
+				width:19.5%;
+				height:50px;
+				line-height:50px;
+				text-align: center;
+				font-size:@font-size-base + 2;
+				color:@color-gray3;
+				.no-outline-base;
+			}
+			.active{
+				color:@color-red1;
+				font-weight:bold;
+			}
+		}
+	.menu-sub{
+		height:12px;
+		width:100%;
+		>div{
+			.layout-base(1200px);
+			.layout-relative-base;
+			margin:0 auto;
+			height: 100%;
+		}
+		.logo{
+			@logowidth:232px;
+			.layout-absolutel-base(50%,1px);
+			width:@logowidth;
+			margin:0 0 0 -@logowidth/2;
+			height:64px;
+			background:transparent url(../images/header_logo.png) 0 0 no-repeat;
+		}
+		img{
+			@imgwidth:160px;
+			.layout-absolutel-base(50%,-10px);
+			width:@imgwidth;
+			margin:0 0 0 -@imgwidth/2;
+			display: block;
+		}
+	}
+}
+
+/*分屏*/
+.screen-item{
+	.layout-base;
+	min-height:500px;
+	height:100%;
+	.calc-base(height,'100vh');
+}
+
+.screen-wrap1{
+	background:@dark-bg url(../images/screen1_bg.jpg) 0 0 no-repeat;
+	.layout-relative-base;
+	.screen1-info{
+		.layout-absolutelb-base;
+		.layout-base;
+		height:250px;
+		background-color:@dark-bg;
+		>div{
+			.layout-base(1000px);
+			padding:20px 0;
+			margin:0 auto;
+			height:100%;
+		}
+		h1{
+			text-align:center;
+			font-size:@font-size-base + 10;
+			color:@color-gray3;
+			font-weight:bold;
+		}
+		h3{
+			text-align:center;
+			font-size:@font-size-base + 2;
+			color:@color-gray5;
+		}
+		p{
+			.layout-base;
+			font-size:@font-size-base - 2;
+			color:@color-gray7;
+			overflow:hidden;
+			padding:30px 0 20px 0;
+			line-height:30px;
+		}
+	}
+}
+.screen-wrap2{
+	background-color:@header-bg;
+}
+.screen-wrap3{
+	background-color:@dark-bg;
+}
+.screen-wrap4{
+	background-color:@color-red1;
+}
+.screen-wrap5{
+	background-color:@header-bg;
+}
+
+
+
+
+
+
+/*@media screen and (max-width: @screen-sm){
+		
+}*/
