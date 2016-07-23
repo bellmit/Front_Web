@@ -1,9 +1,6 @@
 @import '../layout/variable/base_variable_support.less';
 
 
-@import 'mixin/fullpage.less';
-
-
 @header-bg:rgba(64,61,60,1.0);
 @dark-bg:rgba(236,236,236,1.0);
 @icon-disable-bg:rgba(206,206,206,1.0);
@@ -13,7 +10,7 @@
 /*body*/
 body{
 	.layout-base;
-	padding:60px 0 0 0;
+	padding:80px 0 0 0;
 	min-height:500px;
 	height:100%;
 	.calc-base(height,'100vh');
@@ -101,33 +98,83 @@ body{
 
 /*分屏*/
 .screen-item{
+	.layout-relative-base;
 	.layout-base;
 	min-height:500px;
 	height:100%;
 	.calc-base(height,'100vh');
 }
+/*主题*/
+.screen-theme{
+	@themewidth:1200px;
+	.layout-absolutel-base(50%,30px);
+	.layout-base(@themewidth);
+	margin:0 auto 0 -@themewidth/2;
+	height:70px;
+	h1,
+	h2{
+		.layout-base;
+		text-align:center;
+		display: block;
+		overflow: hidden;
+		.text-ww;
+	}
+	h1{
+		height:40px;
+		line-height:30px;
+		font-size:@font-size-base + 15;
+	}
+	h2{
+		.layout-relative-base;
+		height:30px;
+		line-height:20px;
+		font-size:@font-size-base;
+		&:after{
+			@linewidth:100px;
+			.layout-absolutelb-base(50%,0);
+			content:'';
+			display: block;
+			width:@linewidth;
+			margin:0 0 0 -@linewidth/2;
+			height:4px;
+		}
+	}
+}
+/*展示区*/
+.screen-box{
+	@boxwidth:1200px;
+	.layout-absolutel-base(50%,10px);
+	.layout-base(@boxwidth);
+	margin:0 auto 0 -@boxwidth/2;
+	.calc-base(height,'100% - 120px');
+}
 
 .screen-wrap1{
 	background:@dark-bg url(../images/screen1_bg.jpg) 0 0 no-repeat;
-	.layout-relative-base;
-	.screen1-info{
+	.screen-info1{
 		.layout-absolutelb-base;
 		.layout-base;
 		height:250px;
 		background-color:@dark-bg;
 		>div{
-			.layout-base(1000px);
+			.layout-base(1200px);
 			padding:20px 0;
 			margin:0 auto;
 			height:100%;
 		}
-		h1{
+		h2{
+			display:block;
 			text-align:center;
 			font-size:@font-size-base + 10;
+			height:40px;
+			line-height:30px;
 			color:@color-gray3;
 			font-weight:bold;
 		}
 		h3{
+			display:block;
+			height:20px;
+			line-height:20px;
 			text-align:center;
 			font-size:@font-size-base + 2;
 			color:@color-gray5;
@@ -142,8 +189,21 @@ body{
 		}
 	}
 }
+
+
 .screen-wrap2{
 	background-color:@header-bg;
+	.screen-theme{
+		h1{
+			color:@color-white;
+		}
+		h2{
+			color:@color-white;
+			&:after{
+				background-color:@color-red1;
+			}
+		}
+	}
 }
 .screen-wrap3{
 	background-color:@dark-bg;
