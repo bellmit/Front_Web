@@ -29,7 +29,7 @@
 			<div class="menu-wrap">
       	<div class="menu-main">
         	<div class="nav-wrap" id="screen_btn">
-            <a data-menuanchor="screen1" class="active" href="#screen1">首页</a>
+            <a data-menuanchor="screen1"  href="#screen1">首页</a>
             <a data-menuanchor="screen2" href="#screen2">产品与服务</a>
             <a data-menuanchor="screen3" href="#screen3">行业干货</a>
             <a data-menuanchor="screen4" href="#screen4">用户问题</a>
@@ -109,19 +109,19 @@
 		<div class="screen-box">
 			<div class="screen-tab3-wrap">
 				<div class="tab3-btn tab3-btn-left" id="tab3_btn_left"></div>
-				<div class="tab3-show" id="tab3_show">
-					<span class="tab3-active" data-index="0">一般规定</span>
-					<span data-index="1">法律条文</span>
-					<span data-index="2">理解适用</span>
-					<span data-index="3">顾问意见</span>
-					<span data-index="4">服务范围</span>
-					<span data-index="5">扩展1</span>
-					<span data-index="6">扩展2</span>
+				<div class="tab3-show" id="tab3_btn">
+					<span data-index="0">一般规定</span>
+					<span data-index="1" data-theme="faw">法律条文</span>
+					<span data-index="2" data-theme="understand">理解适用</span>
+					<span data-index="3" data-theme="view">顾问意见</span>
+					<span data-index="4" data-theme="serve">服务范围</span>
+					<span data-index="5" data-theme="extend1">扩展1</span>
+					<span data-index="6" data-theme="extend2">扩展2</span>
 				</div>
 				<div class="tab3-btn tab3-btn-right" id="tab3_btn_right"></div>
 			</div>
 			<div class="screen-list3">
-					<ul>
+					<ul id="tab3_show">
 						<li>
 							<div><img alt="" src="../images/1.jpg"></div>
 							<h4>打车遇交通事故可“双向”索赔</h4>
@@ -175,15 +175,15 @@
             <div class="form4-item g-f-r g-w-percent24">
                 <input placeholder="手机号码" type="text" name="Phone" id="phone">
             </div>
-            <div class="form4-tip"></div>
+            <div class="form4-tip g-f-l g-w-percent24"></div>
+						<div class="form4-tip g-f-r g-w-percent24"></div>
             <div class="form4-item">
                 <input placeholder="您的公司" type="text" name="Company" id="company">
             </div>
             <div class="form4-tip"></div>
             <div class="form4-item">
                 <select name="Province" id="province">
-                	<option value="-1" selected>所在省份</option>
-                  <option value="1">北京市</option>
+                  <option value="1" selected>北京市</option>
                   <option value="22">天津市</option>
                   <option value="44">上海市</option>
                   <option value="66">重庆市</option>
@@ -226,8 +226,7 @@
             <div class="form4-tip"></div>
             <div class="form4-item">
                 <select name="Case" id="case">
-                	<option value="-1" selected>案件类型</option>
-                  <option value="1">案件类型1</option>
+                  <option value="1" selected>案件类型1</option>
                   <option value="2">案件类型2</option>
                   <option value="3">案件类型3</option>
                   <option value="4">案件类型4</option>
@@ -246,7 +245,7 @@
 			</div>
 			<div class="screen-info4 screen-list4">
       	<h3>最新问答</h3>
-				<dl>
+				<dl id="list4_wrap">
 					<dt><span>【民间借贷】</span>半数民间借贷伤了朋友<em>2016-07-10</em></dt>
 					<dd>
 						<p>民间借贷，是指自然人、法人、其他组织之间及其相互之间，而非经金融监管部门批准设立的从事贷款业务的金融机构及其分支机构进行资金融通的行为</p>
@@ -349,7 +348,9 @@
 			</div>
 		</div>
 	</section>
-
+	<script src="../js/common/jquery-mobile.min.js"></script>
+	<script src="../js/common/dialog.js"></script>
+	<script src="../js/plugins/validform.js"></script>
 	<script src="../js/index/index.js"></script>
 </body>
 </html>
