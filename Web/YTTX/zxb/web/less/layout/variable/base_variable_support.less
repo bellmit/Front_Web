@@ -162,6 +162,12 @@
 ///*动态及时尺寸*/
 .calc-base(@obj,@str){@{obj}:-webkit-calc(~'@{str}');@{obj}:-moz-calc(~'@{str}');@{obj}:calc(~'@{str}');}
 
+/*选中的样式*/
+/*.selection-base(@obj,@str){
+    @{obj}::-moz-selection{@str;},
+    @{obj}::selection{@str;}
+}*/
+
 ///*伪对象*/
 .placeholder-base(@obj,@str){@{obj}:-ms-input-placeholder,@{obj}::-webkit-input-placeholder,@{obj}:-moz-placeholder,@{obj}::-moz-placeholder{@str();}}
 
