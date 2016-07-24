@@ -482,7 +482,103 @@ body{
 			}
 		}
 	}
+	.screen-box{
+		padding:20px 0 40px 0;
+	}
 }
+.screen-info4{
+	.box-sizing-base;
+	padding:20px;
+	background:@color-white;
+	height:100%;
+	h3{
+		width:100%;
+		height:40px;
+		line-height:20px;
+		text-align:left;
+		font-size:@font-size-base + 2;
+		color:@color-gray3;
+	}
+}
+.screen-form4-wrap{
+	float:left;
+	width:38%;
+	background:@color-gray16;
+}
+.screen-list4{
+	float:right;
+	width:58%;
+}
+
+.form4-wrap{
+	.layout-base;
+	height:100%;
+}
+.form4-item{
+	>input,
+	>textarea,
+	>button,
+	>select{
+		.box-sizing-base;
+		font-size:@font-size-base + 2;
+	}
+	>input,
+	>textarea,
+	>button{
+		.border-radius-base(20px);
+	}
+	>input,
+	>textarea,
+	>select{
+		border:1px solid @color-gray16;
+		color:@color-gray9;
+		width:100%;
+		padding:10px 10px 10px 10px;
+		margin:0 auto;
+		background:@color-white;
+		&:focus{
+			border:1px solid @color-gray12;
+		}
+	}
+	>input{
+		line-height:20px;
+		height:40px;
+	}
+	>textarea{
+		line-height:24px;
+		height:120px;
+	}
+	>button{
+		height:40px;
+		line-height:35px;
+		text-align:center;
+		vertical-align:middle;
+		display:inline-block;
+		width:100%;
+		color:@color-white;
+		background:@header-bg;
+		&:hover{
+			background:@color-gray3;
+		}
+	}
+}
+.form4-tip{
+	float:left;
+	width:100%;
+	height:20px;
+	line-height:20px;
+	font-size:@font-size-base;
+	text-align:left;
+	text-indent:10px;
+	color:@color-gray9;
+	
+}
+
+
+
+
+
+
 
 /*第五屏*/
 .screen-wrap5{
