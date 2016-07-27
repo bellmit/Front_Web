@@ -32,9 +32,7 @@
 			$tab3_btn_left=$('#tab3_btn_left'),
 			$tab3_btn_right=$('#tab3_btn_right'),
 			$tab3_show=$('#tab3_show'),
-			$list2_wrap=$('#list2_wrap'),
-			isMobile=false,
-			$logo=$('#logo');
+			$list2_wrap=$('#list2_wrap');
 
 		//dom 表单对象引用
 		var $case_form=$('#case_form'),
@@ -71,7 +69,7 @@
 		},{
 			ele:$email,
 			datatype:"selfemail",
-			nullmsg: "公司不能为空",
+			nullmsg: "邮箱不能为空",
 			errormsg: "邮箱格式不规范",
 			sucmsg: ""
 		},{
@@ -115,20 +113,6 @@
 					}
 				}
 			}
-
-
-			/*
-			 * 初始化pc或移动视口标识
-			 *
-			 * */
-			var winwidth=$win.width();
-			if(winwidth>=1000){
-				isMobile=false;
-			}else{
-				isMobile=true;
-			}
-
-
 
 
 
@@ -354,16 +338,6 @@
 			}
 			if(type=='resize'){
 				(function(){
-					//隐藏菜单导航
-					var winwidth=$win.width();
-					if(winwidth>=1000||(winwidth>=1000&&e.orientation=='landscape')){
-						//隐藏已经存在的class
-
-						isMobile=false;
-					}else{
-						isMobile=true;
-					}
-
 
 					//重新定位滚动条位置
 					var i= 0,

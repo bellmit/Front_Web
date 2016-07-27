@@ -1,172 +1,15 @@
 @import '../layout/variable/base_variable_support.less';
 
 /*select2 插件*/
-@import '../layout/widget/select2.less';
-
-/*select 扩展*/
-
-.select2-container--default .select2-selection--single{
-	border:1px solid @color-gray16;
-	.border-radius-base(20px);
-}
-.select2-container .select2-selection--single{
-	height:40px;
-}
-.select2-container--default .select2-selection--single .select2-selection__rendered{
-	line-height: 20px;
-}
-.select2-container .select2-selection--single .select2-selection__rendered{
-	color:@color-gray6;
-	padding-top:10px;
-	padding-bottom:10px;
-}
-.select2-container--default .select2-selection--single .select2-selection__arrow{
-	height:40px;
-	width:40px;
-}
+@import '../mixin/select2_extend.less';
 
 
+/*自定义变量*/
+@import '../mixin/variable.less';
 
 
-@header-bg:rgba(64,61,60,1.0);
-@dark-bg:rgba(236,236,236,1.0);
-@icon-disable-bg:rgba(206,206,206,1.0);
-@footer-bg:rgba(40,40,40,1.0);
-@global-screen-width:1000px;
-@global-screen-height:850px;
-
-
-/*body*/
-body{
-	.layout-base;
-	padding:80px 0 0 0;
-	height:100%;
-	.calc-base(height,'100vh');
-	min-width:@global-screen-width;
-	min-height:@global-screen-height;
-}
 /*头部*/
-.header-wrap{
-	.layout-fixedl-base;
-	width:100%;
-	min-width:@global-screen-width;
-	height:160px;
-	.header-info{
-		width:100%;
-		height:30px;
-		background:@header-bg;
-		div{
-			width:@global-screen-width;
-			margin:0 auto;
-			height: 100%;
-			text-align: right;
-			span{
-				padding:0 20px 0 0;
-				display:inline-block;
-				height:100%;
-				line-height:30px;
-				font-size:@font-size-base;
-				color:@color-white;
-			}
-		}
-	}
-	.menu-wrap{
-		width:100%;
-		height:70px;
-		background:transparent url(../images/header_repeat.png) repeat-x left bottom;
-	}
-	.menu-main{
-		height:58px;
-		width:100%;
-		background:@color-white;
-	}
-	.nav-wrap{
-			.layout-base(@global-screen-width);
-			text-align:right;
-			margin:0 auto;
-			font-size:0;
-			height: 100%;
-			a{
-				display:inline-block;
-				height:50px;
-				line-height:50px;
-				text-align: center;
-				font-size:@font-size-base + 2;
-				color:@color-gray3;
-				.no-outline-base;
-			}
-			.active{
-				color:@color-red1;
-				font-weight:bold;
-			}
-		}
-	.menu-sub{
-		height:12px;
-		width:100%;
-		>div{
-			.layout-base(@global-screen-width);
-			.layout-relative-base;
-			margin:0 auto;
-			height: 100%;
-		}
-		.logo{
-			@logowidth:232px;
-			.layout-absolutel-base(50%,1px);
-			width:@logowidth;
-			margin:0 0 0 -@logowidth/2;
-			height:64px;
-			background:transparent url(../images/header_logo.png) 0 0 no-repeat;
-		}
-		img{
-			@imgwidth:160px;
-			.layout-absolutel-base(50%,-10px);
-			width:@imgwidth;
-			margin:0 0 0 -@imgwidth/2;
-			display: block;
-		}
-	}
-	.nav-item1,.nav-item2,.nav-item3{
-		width:120px;
-	}
-	.nav-iteml{
-		float:left;
-	}
-	.nav-item4,.nav-item5{
-		width:180px;
-	}
-}
-
-.header-scroll{
-	height:52px;
-	.header-info{
-		height:0;
-		display: none;
-	}
-	.menu-wrap{
-		height:52px;
-	}
-	.menu-main{
-		height:40px;
-	}
-	.nav-wrap{
-		a{
-			text-align: center;
-			height:40px;
-			line-height:40px;
-		}
-	}
-	.menu-sub{
-		>div{
-			display:none;
-		}
-	}
-	.nav-item1,.nav-item2,.nav-item3,.nav-item4,.nav-item5{
-		width:19.5% !important;
-	}
-	.nav-iteml{
-		float:none !important;
-	}
-}
+@import '../mixin/header.less';
 
 /*分屏*/
 .screen-item{
@@ -824,12 +667,12 @@ body{
 		}
 	}
 	.screen-box{
-		padding:10px 0 20px 0;
+		padding:10px 0;
 	}
 }
 .screen-info5-map{
 	.layout-base;
-	padding:20px 0;
+	padding:10px 0;
 	height:60%;
 	img{
 		max-width:100%;
@@ -840,7 +683,7 @@ body{
 }
 .screen-info5-remark{
 	.layout-base;
-	padding:20px 0;
+	padding:10px 0 0 0;
 	height:40%;
 }
 .screen-contact5-list{
@@ -897,26 +740,6 @@ body{
 	line-height:40px;
 	background:@footer-bg;
 }
-.contact5-link-wrap{
-	width:@global-screen-width;
-	margin:0 auto;
-	height:100%;
-	color:@color-gray10;
-	font-size:@font-size-base - 2;
-	p{
-		width:49%;
-		height:40px;
-		line-height:40px;
-	}
-}
 
-
-
-
-
-
-
-
-/*@media screen and (max-width: @screen-sm){
-		
-}*/
+/*底部*/
+@import '../mixin/footer.less';

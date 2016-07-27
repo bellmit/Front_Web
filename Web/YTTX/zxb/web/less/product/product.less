@@ -1,0 +1,24 @@
+@import '../layout/variable/base_variable_support.less';
+
+
+/*自定义变量*/
+@import '../mixin/variable.less';
+
+
+/*头部*/
+@import '../mixin/header.less';
+
+
+/*展示区*/
+.screen-box{
+	@boxwidth:@global-screen-width;
+	.layout-absolutel-base(50%,110px);
+	.layout-base(@boxwidth);
+	margin:0 auto 0 -@boxwidth/2;
+	.calc-base(height,'100% - 120px');
+}
+
+
+
+/*底部*/
+@import '../mixin/footer.less';
