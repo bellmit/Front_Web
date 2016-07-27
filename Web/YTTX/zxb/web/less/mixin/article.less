@@ -1,19 +1,61 @@
+/*文章主体*/
 
-/*底部*/
-.footer-wrap{
-	background-color:@footer-bg;
+.content-wrap{
+	.layout-relative-base;
 	.layout-base;
-	min-height:40px;
-}
-.footer-content-wrap{
-	width:@global-screen-width;
-	margin:0 auto;
-	min-height:40px;
-	color:@color-gray10;
-	font-size:@font-size-base - 2;
-	p{
-		width:49%;
-		height:40px;
-		line-height:40px;
+	min-height:400px;
+	.calc-base(min-height,'100vh - 360px');
+	background:@color-gray16;
+	.content-show{
+		.layout-absolutel-base(50%,-50px);
+		.layout-base(@global-screen-width);
+		margin:0 0 0 -@global-screen-width/2;
+		height:100%;
+		min-height:300px;
+		background:@color-white;
+		.box-shadow-base(0 10px 10px 0 @color-gray10);
+		padding:20px;
+		.content-theme{
+			.layout-base;
+			height:40px;
+			text-align:left;
+			line-height:38px;
+			.text-ww;
+			color:@color-gray6;
+			font-size:@font-size-base;
+			border-bottom:1px solid @color-gray9;
+			&:after{
+				content:'';
+				border-bottom:1px solid @color-red1;
+			}
+		}
 	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
