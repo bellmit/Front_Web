@@ -2,7 +2,8 @@
 	"use strict";
 	$(function(){
 		/*dom引用*/
-		var $screen_btn=$('#screen_btn'),
+		var $header_wrap=$('#header_wrap'),
+			$screen_btn=$('#screen_btn'),
 			$screen_item=$screen_btn.children(),
 			$screen1=$('#screen1'),
 			$screen2=$('#screen2'),
@@ -32,7 +33,8 @@
 			$tab3_btn_right=$('#tab3_btn_right'),
 			$tab3_show=$('#tab3_show'),
 			$list2_wrap=$('#list2_wrap'),
-			isMobile=false;
+			isMobile=false,
+			$logo=$('#logo');
 
 		//dom 表单对象引用
 		var $case_form=$('#case_form'),
@@ -90,12 +92,21 @@
 				pos=$(window).scrollTop();
 			for(i;i<len;i++){
 				var temptop=screen_pos[i]["node"].offset().top;
+
 				screen_pos[i]["pos"]=temptop;
 
-				var minpos=parseInt(pos - 150,0),
-					maxpos=parseInt(pos + 150,0);
+				var minpos=parseInt(pos - 350,0),
+					maxpos=parseInt(pos + 350,0);
 				if(temptop>=minpos&&temptop<=maxpos){
 					$screen_item.eq(i).addClass('active').siblings().removeClass('active');
+
+					/*非第一屏则应用简略模式导航*/
+					if(i===0){
+						$header_wrap.removeClass('header-scroll');
+					}else{
+						$header_wrap.addClass('header-scroll');
+					}
+
 					/*第二屏加载动画*/
 					if(i===1){
 						$list2_wrap.addClass('list2-active');
@@ -111,7 +122,7 @@
 			 *
 			 * */
 			var winwidth=$win.width();
-			if(winwidth>=1200){
+			if(winwidth>=1000){
 				isMobile=false;
 			}else{
 				isMobile=true;
@@ -134,7 +145,7 @@
 			/*初始化加载信息*/
 			if(tablen>=1){
 				$tabs.addClass('tab3-active').siblings().removeClass('tab3-active');
-				
+
 				/*查询信息*/
 				getNews({
 					url:'../json/test.json',
@@ -142,8 +153,15 @@
 					$wrap:$tab3_show
 				});
 
-				/*绑定tab按钮事件*/
 				if(tablen>TABLEN){
+
+					if(tab_index===0){
+						$tab3_btn_left.addClass('tab3-btn-disabled');
+					}else if(tab_index===tablen - 1){
+						$tab3_btn_right.addClass('tab3-btn-disabled');
+					}
+
+					/*绑定tab按钮事件*/
 					/*左按钮*/
 					$tab3_btn_left.on('click',function(){
 						if(tab_index===0){
@@ -197,10 +215,57 @@
 						}
 						
 					});
+				}else{
+					$tab3_btn_left.addClass('g-d-hidei');
+					$tab3_btn_right.addClass('g-d-hidei');
 				}
+
+				/*绑定行业tab选项*/
+				$tab3_btn.on('click','span',function(){
+					var $this=$(this),
+						theme=$this.attr('data-theme');
+
+					/*同步索引*/
+					tab_index=$this.index();
+
+					/*索引极限*/
+					if(tablen>TABLEN){
+						if(tab_index===0){
+							/*第一个的情况*/
+							$tab3_btn_left.addClass('tab3-btn-disabled');
+							$tab3_btn_right.removeClass('tab3-btn-disabled');
+						}else if(tab_index===tablen - 1){
+							/*最后一个的情况*/
+							$tab3_btn_left.removeClass('tab3-btn-disabled');
+							$tab3_btn_right.addClass('tab3-btn-disabled');
+						}else{
+							$tab3_btn_left.removeClass('tab3-btn-disabled');
+							$tab3_btn_right.removeClass('tab3-btn-disabled');
+						}
+					}
+
+
+					/*状态切换*/
+					$this.addClass('tab3-active').siblings().removeClass('tab3-active');
+
+					/*数据请求*/
+					getNews({
+						url:'../json/test.json',
+						theme:theme,
+						$wrap:$tab3_show
+					});
+
+
+				});
+
+			}else{
+				$tab3_btn_left.addClass('g-d-hidei');
+				$tab3_btn_right.addClass('g-d-hidei');
+				$tab3_btn.addClass('g-d-hidei');
 			}
+
 			
-			/*获取信息*/
+			/*获取信息ajax*/
 			function getNews(obj){
 				$.ajax({
 					url:obj.url,
@@ -231,7 +296,12 @@
 				index=$this.index();
 					
 			/*滚动动画*/
-			$('html,body').animate({'scrollTop':screen_pos[index]['pos'] +'px'},500);
+			if(index===0){
+				$('html,body').animate({'scrollTop':screen_pos[index]['pos'] +'px'},500);
+			}else{
+				$('html,body').animate({'scrollTop':screen_pos[index]['pos'] - 30 +'px'},500);
+			}
+
 			
 			/*第二屏加载动画*/
 			if(index===1){
@@ -258,11 +328,17 @@
 
 						for(i;i<len;i++){
 							var pos=screen_pos[i]['pos'],
-								minpos=parseInt(pos - 150,0),
-								maxpos=parseInt(pos + 150,0);
+								minpos=parseInt(pos - 350,0),
+								maxpos=parseInt(pos + 350,0);
 
 							if(currenttop>=minpos&&currenttop<=maxpos){
 								$screen_item.eq(i).addClass('active').siblings().removeClass('active');
+								/*非第一屏则应用简略模式导航*/
+								if(i===0){
+									$header_wrap.removeClass('header-scroll');
+								}else{
+									$header_wrap.addClass('header-scroll');
+								}
 								
 								/*第二屏加载动画*/
 								if(i===1){
@@ -280,7 +356,7 @@
 				(function(){
 					//隐藏菜单导航
 					var winwidth=$win.width();
-					if(winwidth>=1200||(winwidth>=1200&&e.orientation=='landscape')){
+					if(winwidth>=1000||(winwidth>=1000&&e.orientation=='landscape')){
 						//隐藏已经存在的class
 
 						isMobile=false;
@@ -298,11 +374,18 @@
 						var temptop=screen_pos[i]["node"].offset().top;
 						screen_pos[i]["pos"]=temptop;
 
-						var minpos=parseInt(pos - 150,0),
-							maxpos=parseInt(pos + 150,0);
+						var minpos=parseInt(pos - 350,0),
+							maxpos=parseInt(pos + 350,0);
 						if(temptop>=minpos&&temptop<=maxpos){
 							$screen_item.eq(i).addClass('active').siblings().removeClass('active');
-							
+
+							/*非第一屏则应用简略模式导航*/
+							if(i===0){
+								$header_wrap.removeClass('header-scroll');
+							}else{
+								$header_wrap.addClass('header-scroll');
+							}
+
 							/*第二屏加载动画*/
 							if(i===1){
 								$list2_wrap.addClass('list2-active');
@@ -334,31 +417,10 @@
 		});
 
 
-		/*搬到行业tab选项*/
-		$tab3_btn.on('click','span',function(){
-			var $this=$(this),
-				theme=$this.attr('data-theme');
-
-			$this.addClass('tab3-active').siblings().removeClass('tab3-active');
-
-			$.ajax({
-				url:'../json/test.json',
-				type:'post',
-				dataType:"json",
-				data:{
-					"Theme":theme
-				}
-			}).done(function(data){
-					if(data.flag){
-						//加载操作
-					}else{
-						$tab3_show.html('');
-					}
-				})
-				.fail(function(){
-					$tab3_show.html('');
-				});
-		});
+		/*select2 城市调用*/
+		$province.select2();
+		/*select2 案件类型调用*/
+		$case.select2();
 
 
 		//表单校验
@@ -374,14 +436,14 @@
 					return phone.test(gets.replace(/\s*/g,''))?true:false;
 				}
 			},
-			beforeSubmit: function(curform) {
+			beforeSubmit: function(curform){
 				//拼合参数
 				var params={},rules=/\s*/g;
 				params['UserName']=$username.val();
 				params['Phone']=(function(){
 					var val=$phone.val();
 					return val.replace(rules,'');
-				}());;
+				}());
 				params['Company']=$company.val();
 				params['Province']=$province.val();
 				params['Email']=$email.val();
