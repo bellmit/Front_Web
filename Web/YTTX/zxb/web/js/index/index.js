@@ -32,7 +32,8 @@
 			$tab3_btn_left=$('#tab3_btn_left'),
 			$tab3_btn_right=$('#tab3_btn_right'),
 			$tab3_show=$('#tab3_show'),
-			$list2_wrap=$('#list2_wrap');
+			$list2_wrap=$('#list2_wrap'),
+			isMobile=$win.width()>=1000?false:true;
 
 		//dom 表单对象引用
 		var $case_form=$('#case_form'),
@@ -88,6 +89,9 @@
 				len=screen_pos.length,
 				j= 0,
 				pos=$(window).scrollTop();
+
+
+
 			for(i;i<len;i++){
 				var temptop=screen_pos[i]["node"].offset().top;
 
@@ -99,10 +103,18 @@
 					$screen_item.eq(i).addClass('active').siblings().removeClass('active');
 
 					/*非第一屏则应用简略模式导航*/
-					if(i===0){
-						$header_wrap.removeClass('header-scroll');
+					if(!isMobile){
+						if(i===0){
+							$header_wrap.removeClass('header-scroll');
+						}else{
+							$header_wrap.addClass('header-scroll');
+						}
 					}else{
-						$header_wrap.addClass('header-scroll');
+						if(i===0){
+							$header_wrap.removeClass('header-scroll');
+						}else if($header_wrap.hasClass('header-scroll')){
+							$header_wrap.removeClass('header-scroll');
+						}
 					}
 
 					/*第二屏加载动画*/
@@ -318,10 +330,18 @@
 							if(currenttop>=minpos&&currenttop<=maxpos){
 								$screen_item.eq(i).addClass('active').siblings().removeClass('active');
 								/*非第一屏则应用简略模式导航*/
-								if(i===0){
-									$header_wrap.removeClass('header-scroll');
+								if(!isMobile){
+									if(i===0){
+										$header_wrap.removeClass('header-scroll');
+									}else{
+										$header_wrap.addClass('header-scroll');
+									}
 								}else{
-									$header_wrap.addClass('header-scroll');
+									if(i===0){
+										$header_wrap.removeClass('header-scroll');
+									}else if($header_wrap.hasClass('header-scroll')){
+										$header_wrap.removeClass('header-scroll');
+									}
 								}
 								
 								/*第二屏加载动画*/
@@ -338,7 +358,7 @@
 			}
 			if(type=='resize'){
 				(function(){
-
+					isMobile=$win.width()>=1000?false:true;
 					//重新定位滚动条位置
 					var i= 0,
 						len=screen_pos.length,
@@ -354,11 +374,20 @@
 							$screen_item.eq(i).addClass('active').siblings().removeClass('active');
 
 							/*非第一屏则应用简略模式导航*/
-							if(i===0){
-								$header_wrap.removeClass('header-scroll');
+							if(!isMobile){
+								if(i===0){
+									$header_wrap.removeClass('header-scroll');
+								}else{
+									$header_wrap.addClass('header-scroll');
+								}
 							}else{
-								$header_wrap.addClass('header-scroll');
+								if(i===0){
+									$header_wrap.removeClass('header-scroll');
+								}else if($header_wrap.hasClass('header-scroll')){
+									$header_wrap.removeClass('header-scroll');
+								}
 							}
+
 
 							/*第二屏加载动画*/
 							if(i===1){
