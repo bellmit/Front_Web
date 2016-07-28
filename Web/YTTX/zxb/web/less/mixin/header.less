@@ -120,3 +120,69 @@
 		float:none !important;
 	}
 }
+
+
+///max 1000px
+@media screen and (max-width:999px){
+	//变量适配
+	@global-screen-width:640px;
+	@global-screen-height:850px;
+	/*body*/
+	body{
+		padding:40px 0 0 0;
+		min-width:@global-screen-width;
+		min-height:@global-screen-height;
+	}
+
+	/*头部*/
+	.header-wrap{
+		height:52px;
+		min-width:@global-screen-width;
+		.header-info{
+			height:0;
+			display: none;
+		}
+		.menu-wrap{
+			height:52px;
+		}
+		.menu-main{
+			height:40px;
+		}
+		.nav-wrap{
+			.layout-base(@global-screen-width);
+			padding-left:50px;
+			a{
+				text-align: center;
+				height:40px;
+				line-height:40px;
+				font-size:@font-size-base;
+			}
+		}
+		.menu-sub{
+			>div{
+				.layout-base(@global-screen-width);
+				float:left;
+			}
+			.logo{
+				width:0 !important;
+				height:0 !important;
+				display: none !important;
+				left:0 !important;
+				top:0 !important;
+			}
+			img{
+				@imgwidth:80px;
+				left:10px;
+				top:-30px;
+				width:@imgwidth;
+				margin:0;
+			}
+		}
+		.nav-item1,.nav-item2,.nav-item3,.nav-item4,.nav-item5{
+			width:19.5% !important;
+		}
+		.nav-iteml{
+			float:none !important;
+		}
+	}
+}

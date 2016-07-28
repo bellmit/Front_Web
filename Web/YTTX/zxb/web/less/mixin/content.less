@@ -42,8 +42,20 @@
 	}
 }
 
-
-
+///max 1000px
+@media screen and (max-width:999px){
+	//变量适配
+	@global-screen-width:640px;
+	@global-screen-height:850px;
+	
+	/*文章主体*/
+	.content-wrap{	
+		.content-show{
+			.layout-base(@global-screen-width);
+			margin:0 0 0 -@global-screen-width/2;
+		}
+	}
+}
 
 
 

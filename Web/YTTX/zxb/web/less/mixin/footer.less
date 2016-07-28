@@ -17,3 +17,23 @@
 		line-height:40px;
 	}
 }
+
+///max 1000px
+@media screen and (max-width:999px){
+	//变量适配
+	@global-screen-width:640px;
+	@global-screen-height:850px;
+
+	/*底部*/
+	.footer-content-wrap{
+		width:@global-screen-width;
+		p{
+			height:auto;
+			line-height:24px;
+			float:none !important;
+			display:inline-block;
+			width:100% !important;
+			text-align:center !important;
+		}
+	}
+}

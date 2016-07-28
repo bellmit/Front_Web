@@ -411,10 +411,10 @@
 		$list4_wrap.on('click','dt',function(e){
 			var $this=$(this),
 				$dd=$this.next('dd');
-			if($dd.hasClass('g-d-showi')){
-				$dd.removeClass('g-d-showi').siblings('dd').removeClass('g-d-showi');
+			if($dd.is(':hidden')){
+				$dd.slideDown().siblings('dd:not(:hidden)').slideUp();
 			}else{
-				$dd.addClass('g-d-showi').siblings('dd').removeClass('g-d-showi');
+				$dd.slideUp().siblings('dd:not(:hidden)').slideUp();
 			}
 
 		});

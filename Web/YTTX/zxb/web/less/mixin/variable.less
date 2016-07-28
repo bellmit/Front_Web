@@ -14,3 +14,17 @@ body{
 	min-width:@global-screen-width;
 	min-height:@global-screen-height;
 }
+
+
+///max 1000px
+@media screen and (max-width:999px){
+	//变量适配
+	@global-screen-width:640px;
+	@global-screen-height:850px;
+	/*body*/
+	body{
+		padding:40px 0 0 0;
+		min-width:@global-screen-width;
+		min-height:@global-screen-height;
+	}
+}

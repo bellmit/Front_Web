@@ -45,3 +45,24 @@
 	}
 }
 
+
+///max 1000px
+@media screen and (max-width:999px){
+	//变量适配
+	@global-screen-width:640px;
+	@global-screen-height:850px;
+	
+	
+	/*banner广告*/
+	.banner-wrap{
+		.banner-theme{
+			.layout-absolutelb-base(50%,-50px);
+			margin:0 0 0 -@global-screen-width/2;
+			width:@global-screen-width;
+		}
+	}
+
+	
+	
+}
+
