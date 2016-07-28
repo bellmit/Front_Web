@@ -1,0 +1,86 @@
+/*列表*/
+
+/*列表容器*/
+.list-wrap() {
+	.layout-base;
+	li {
+		.layout-relative-base;
+		.layout-float-base;
+		width: 50%;
+		height: 140px;
+		padding: 10px 10px 10px 100px;
+		&:after {
+			content: '';
+			clear: both;
+			height: 0;
+			width: 50%;
+			display: block;
+		}
+	}
+	div {
+		.layout-absolutel-base(0, 10px);
+		display: block;
+		height: 100px;
+		width: 100px;
+		overflow: hidden;
+		img {
+			width: 80px;
+			height: 80px;
+			padding: 10px;
+		}
+	}
+	h4,
+	p {
+		.layout-float-base;
+	}
+	h4 {
+		height: 30px;
+		line-height: 30px;
+		white-space: nowrap;
+		overflow: hidden;
+		.text-of;
+		color: @color-gray3;
+		font-size: @font-size-base;
+	}
+	p {
+		.text-ww;
+		line-height: 20px;
+		height: 70px;
+		overflow: hidden;
+		font-size: @font-size-base - 2;
+		color: @color-gray6;
+	}
+	a {
+		display: inline-block;
+		padding: 0 0 0 10px;
+		&:hover {
+			color: @color-red1;
+		}
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

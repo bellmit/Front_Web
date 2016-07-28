@@ -3,18 +3,25 @@
 /*外部包装容器*/
 .art-wrap(){
 	.layout-base;
+	>h1,
+	>h2{
+		.layout-base;
+		text-align: center;
+		.text-ww;
+		display:inline-block;
+	}
 	>h1{
 		font-size:@font-size-base + 16;
 		line-height:@font-size-base + 26;
 		color:@color-gray3;
-		.text-ww;
 		font-weight:bold;
+		padding:8px 0;
 	}
 	>h2{
-		font-size:@font-size-base + 6;
-		line-height:@font-size-base + 16;
-		color:@color-gray6;
-		.text-ww;
+		font-size:@font-size-base + 2;
+		line-height:@font-size-base + 12;
+		color:@color-gray3;
+		padding:5px 0;
 	}
 }
 
@@ -83,7 +90,8 @@
 			}
 			img{
 				max-width:100% !important;
-				margin:10px 0;
+				display:block;
+				margin:10px auto;
 			}
 		}
 	>a{
@@ -93,7 +101,8 @@
 			padding:5px 0;
 			img{
 				max-width:100%;
-				margin:10px 0;
+				margin:10px auto;
+				display:block;
 			}
 	}
 }
