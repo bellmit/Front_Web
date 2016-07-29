@@ -17,6 +17,11 @@
 			width: 50%;
 			display: block;
 		}
+		>a {
+			.layout-base;
+			display:inline-block;
+			height:100%;
+		}
 	}
 	div {
 		.layout-absolutel-base(0, 10px);
@@ -50,12 +55,12 @@
 		overflow: hidden;
 		font-size: @font-size-base - 2;
 		color: @color-gray6;
-	}
-	a {
-		display: inline-block;
-		padding: 0 0 0 10px;
-		&:hover {
-			color: @color-red1;
+		a {
+			display: inline-block;
+			padding: 0 0 0 10px;
+			&:hover {
+				color: @color-red1;
+			}
 		}
 	}
 }

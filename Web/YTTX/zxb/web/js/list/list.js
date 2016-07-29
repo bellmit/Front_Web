@@ -10,11 +10,11 @@
 
 
 		/*列表模板*/
-		var	listTemplate='<li>'+
+		var	listTemplate='<li><a href="$LINKURL">'+
 											'<div><img alt="" src="$IMGURL"></div>'+
 											'<h4>$THEME</h4>'+
-											'<p>$CONTENT<a href="$LINKURL">详情</a></p>'+
-										'</li>';
+											'<p>$CONTENT</p>'+
+										'</a></li>';
 
 
 		/*重置绝对定位容器的高度*/

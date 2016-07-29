@@ -992,6 +992,7 @@
 	public_tool.powerMap={};
 	//加载权限方法
 	public_tool.powerControl=function(url){
+		console.log(url);
 		var self=this;
 		$.ajax({
 			url:url,
@@ -1033,9 +1034,13 @@
 				self.powerMap=$.extend(true,{},modid_map);
 			}
 
+			console.log('power:'+self.powerMap);
+
 			/*清除缓存，然后存入缓存*/
 			self.removeParams('power_module');
 			self.setParams('power_module',self.powerMap);
+
+			console.log('power:'+self.powerMap);
 
 		}).fail(function(){
 			console.log('error');
