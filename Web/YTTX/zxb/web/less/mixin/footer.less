@@ -15,6 +15,22 @@
 		width:49%;
 		height:40px;
 		line-height:40px;
+		display: inline-block;
+	}
+	.footer-list-wrap{
+		.layout-base;
+		padding:20px 0 30px 0;
+		text-align:left;
+		a{
+			display: inline-block;
+			padding:3px 5px 0 0;
+			margin:3px 0 0 5px;
+			font-size:@font-size-base - 2;
+			color:@color-gray12;
+			&:hover{
+				text-decoration: underline;
+			}
+		}
 	}
 }
 
@@ -30,8 +46,6 @@
 		p{
 			height:auto;
 			line-height:24px;
-			float:none !important;
-			display:inline-block;
 			width:100% !important;
 			text-align:center !important;
 		}

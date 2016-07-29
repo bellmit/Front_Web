@@ -33,7 +33,10 @@
 			$tab3_btn_right=$('#tab3_btn_right'),
 			$tab3_show=$('#tab3_show'),
 			$list2_wrap=$('#list2_wrap'),
-			isMobile=$win.width()>=1000?false:true;
+			isMobile=$win.width()>=1000?false:true,
+			$slideimg_show=$('#slideimg_show'),
+			$slide_img=$('#slide_img'),
+			$slideimg_btn=$('#slideimg_btn');
 
 		//dom 表单对象引用
 		var $case_form=$('#case_form'),
@@ -284,6 +287,20 @@
 
 		}());
 
+
+		/*轮播调用*/
+		Slide.slideToggle({
+			$wrap:$slideimg_show,
+			$slide_img:$slide_img,
+			$btnwrap:$slideimg_btn,
+			isBackground:true,
+			minwidth:640,
+			isresize:true,
+			size:3,
+			times:5000,
+			eff_time:500,
+			btn_active:'slidebtn-active'
+		});
 
 		//监听菜单导航
 		$screen_btn.on($.EventName.click,'a',function(e){
