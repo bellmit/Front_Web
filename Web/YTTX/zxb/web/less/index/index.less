@@ -162,9 +162,12 @@
 			height:@iconwidth;
 			margin:30px 0 20px 0;
 			border:2px solid @color-white;
-			&:after{
-				line-height:@iconwidth;
-				font-size:@font-size-base * 5;
+			overflow: hidden;
+			img{
+				display:block;
+				margin:5px auto 0 auto;
+				max-width:90%;
+				max-height:90%;
 			}
 		}
 		h3,h4,p{
@@ -239,39 +242,6 @@
 		left:75%;
 	}
 }
-.list2-item1-wrap{
-	div{
-		&:after{
-			font-family:'ux_one';
-			content:'\e726';
-		}
-	}
-}
-.list2-item2-wrap{
-	div{
-		&:after{
-			font-family:'ux_one';
-			content:'\e65b';
-		}
-	}
-}
-.list2-item3-wrap{
-	div{
-		&:after{
-			font-family:'ux_two';
-			content:'\e67e';
-		}
-	}
-}
-.list2-item4-wrap{
-	div{
-		&:after{
-			font-family:'ux_one';
-			content:'\e6c7';
-		}
-	}
-}
-
 
 /*第三屏*/
 .screen-wrap3{
