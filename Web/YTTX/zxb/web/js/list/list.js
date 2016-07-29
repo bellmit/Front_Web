@@ -121,8 +121,6 @@
 						});
 					}
 				}else{
-
-					console.log('bbbb');
 					opt.listwrap.html('');
 					listdata.length=0;
 					opt.pagewrap.html('');

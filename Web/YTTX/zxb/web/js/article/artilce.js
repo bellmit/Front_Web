@@ -9,7 +9,7 @@
 		/*重置绝对定位容器的高度*/
 		$content_wrap.css({
 			'min-height':$content_show.height() + 200
-		})
+		});
 
 	});
 

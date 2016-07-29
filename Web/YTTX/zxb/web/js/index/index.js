@@ -509,17 +509,16 @@
 					curitem=o.obj,
 					id=curitem[0].id;
 
-				console.log(curitem.selector);
-				if(id=='phone'||id=='username'){
-					if(curtype==1||curtype==3){
+				if(id==='phone'||id==='username'){
+					if(curtype===1||curtype===3){
 						curitem.parent().next().next().text(msg);
-					}else if(curtype==2){
+					}else if(curtype===2){
 						curitem.parent().next().next().text('');
 					}
 				}else{
-					if(curtype==1||curtype==3){
+					if(curtype===1||curtype===3){
 						curitem.parent().next().text(msg);
-					}else if(curtype==2){
+					}else if(curtype===2){
 						curitem.parent().next().text('');
 					}
 				}
