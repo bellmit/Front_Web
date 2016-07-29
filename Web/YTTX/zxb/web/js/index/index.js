@@ -52,7 +52,7 @@
 		var ruleobj=[{
 			ele:$username,
 			datatype:"*",
-			nullmsg: "名称不能为空",
+			nullmsg: "姓名不能为空",
 			errormsg: "",
 			sucmsg: ""
 		},{
@@ -425,6 +425,29 @@
 		/*select2 案件类型调用*/
 		$case.select2();
 
+
+		/*绑定手机格式化*/
+		$phone.on('keyup',function(){
+			var phoneno=this.value.toString().replace(/\s*/g,'');
+			if(phoneno==''){
+				return '';
+			}
+			phoneno=phoneno.split('');
+
+			var len=phoneno.length,
+				i=0;
+			for(i;i<len;i++){
+				var j=i+2;
+				if(i!=0){
+					if(i==2){
+						phoneno.splice(i,1,phoneno[i]+" ");
+					}else if(j%4==0&&j!=len+1){
+						phoneno.splice(i,1,phoneno[i]+" ");
+					}
+				}
+			}
+			this.value=phoneno.join('');
+		});
 
 		//表单校验
 		validobj=$case_form.Validform({

@@ -628,7 +628,7 @@
 		/*重新赋值*/
 		if(route){
 			history_path.prev=route.current;
-			public_tool.routeMap.issamemodule=module===route.current
+			public_tool.routeMap.issamemodule=module===route.current.module
 		}else{
 			public_tool.routeMap.issamemodule=false;
 		}
@@ -640,16 +640,17 @@
 		public_tool.routeMap.path=path;
 		public_tool.routeMap.module=module;
 	};
+
+
+
 	/*加载左侧菜单*/
 	public_tool.loadSideMenu=function($menu,$wrap,url){
 
 		var self=this,
-		cacheMenu=self.getParams('menu_module');
+		cacheMenu=self.getParams('menu_module')/*调用缓存*/;
 
 		/*调用路由*/
 		self.getRoute();
-
-
 
 		/*判断路由模块*/
 		if(public_tool.routeMap.issamemodule){
@@ -934,6 +935,9 @@
 			self.collapseSideMenu($_li, $_sub,$wrap);
 		});
 	};
+
+
+
 	//模拟滚动条更新
 	public_tool.scrollUpdate=function(flag,$wrap){
 		var self=this;

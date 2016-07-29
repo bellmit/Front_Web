@@ -343,9 +343,9 @@
 		var count=0,
 			id=tid,
 			t=times,
-			n=nodes;
-		n.html(times+'秒后重新获取').prop("disabled",true).addClass(classname),
+			n=nodes,
 			timer=this.getTimer();
+		n.html(times+'秒后重新获取').prop("disabled",true).addClass(classname);
 		id=setInterval(function(){
 			count=timer();
 			count=count<=t?count:count%t;
