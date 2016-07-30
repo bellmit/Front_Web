@@ -402,16 +402,7 @@
 			</div>
 		</div>
 	</section>
-
-	<?php if(count($structs)):?>
-	<h2 style="text-align: center;color: white">分支机构</h2>
-	<div>
-		<?php foreach ($structs as $struct):?>
-		<a style="display:inline-block;color:white;" href="<?php echo base_url('web/struct_detail?id='.$struct['id'])?>"><?php echo $struct['name']?></a>&nbsp;&nbsp;
-		<?php endforeach;?>
-	</div>
-	<?php endif;?>
-
+	
 
 	<script src="../js/common/jquery-mobile.min.js"></script>
 	<script src="../js/plugins/select2.full.js"></script>
