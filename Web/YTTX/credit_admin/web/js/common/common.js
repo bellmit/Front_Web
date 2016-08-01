@@ -11,15 +11,17 @@
 	public_tool.cache={};
 	//判断是否支持本地存储
 	public_tool.supportStorage=(function(){
-		return sessionStorage?true:false;
+		return localStorage||sessionStorage?true:false;
 	}());
 	//设置本地存储
 	public_tool.setParams=function(key,value,flag){
 		if(this.supportStorage){
 			if(flag){
-				sessionStorage.setItem(key,value);
-			}else{
+				/*为localstorage*/
 				sessionStorage.setItem(key,JSON.stringify(value));
+			}else{
+				/*默认为localstorage*/
+				localStorage.setItem(key,JSON.stringify(value));
 			}
 		}
 	};
@@ -27,23 +29,31 @@
 	public_tool.getParams=function(key,flag){
 		if(this.supportStorage){
 			if(flag){
-				return sessionStorage.getItem(key)||null;
-			}else{
 				return JSON.parse(sessionStorage.getItem(key))||null;
+			}else{
+				return JSON.parse(localStorage.getItem(key))||null;
 			}
 		}
 		return null;
 	};
 	//删除本地存储
-	public_tool.removeParams=function(key){
+	public_tool.removeParams=function(key,flag){
 		if(this.supportStorage){
-			sessionStorage.removeItem(key);
+			if(flag){
+				sessionStorage.removeItem(key);
+			}else{
+				localStorage.removeItem(key);
+			}
 		}
 	};
 	//清除本地存储
-	public_tool.clear=function(){
+	public_tool.clear=function(flag){
 		if(this.supportStorage){
-			sessionStorage.clear();
+			if(flag){
+				sessionStorage.clear();
+			}else{
+				localStorage.clear();
+			}
 		}
 	};
 	//遍历本地存储
@@ -58,9 +68,9 @@
 				for(i;i<len;i++){
 					key=sessionStorage.key(i);
 					if(flag){
-						value=sessionStorage.getItem(key);
-					}else{
 						value=JSON.parse(sessionStorage.getItem(key));
+					}else{
+						value=JSON.parse(localStorage.getItem(key));
 					}
 					res.push(value);
 				}
@@ -516,7 +526,7 @@
 				}
 			}
 		},
-		"5":{
+		"6":{
 			"name":"广告管理",
 			"code":"ad",
 			"match":"-ad-",
@@ -555,34 +565,155 @@
 				}
 			}
 		},
-		"10":{
+		"11":{
 			"name":"用户管理",
 			"code":"user",
 			"match":"-user-",
 			"prid":{
 				18:{
 					"funcCode": "user-account-view",
-          "funcName": "帐号查看"
+					"funcName": "帐号查看"
 				},
 				19:{
-					 "funcCode": "user-account-update",
-           "funcName": "帐号修改"
+					"funcCode": "user-account-update",
+					"funcName": "帐号修改"
 				},
 				20:{
 					"funcCode": "user-account-delete",
-          "funcName": "帐号删除"
+					"funcName": "帐号删除"
 				},
 				21:{
 					"funcCode": "user-horse-add",
-          "funcName": "马甲用户添加"
+					"funcName": "马甲用户添加"
 				},
 				22:{
 					"funcCode": "user-horse-update",
-          "funcName": "马甲用户修改"
+					"funcName": "马甲用户修改"
 				},
 				23:{
-					 "funcCode": "user-horse-delete",
-           "funcName": "马甲用户删除"
+					"funcCode": "user-horse-delete",
+					"funcName": "马甲用户删除"
+				}
+			}
+		},
+		"19":{
+			"name":"内容管理",
+			"code":"content",
+			"match":"-content-",
+			"prid":{
+				24:{
+					"funcCode": "content-article-view",
+					"funcName": "文章查看"
+				},
+				25:{
+					"funcCode": "content-article-verify",
+					"funcName": "文章审核"
+				},
+				26:{
+					"funcCode": "content-article-stick",
+					"funcName": "文章置顶"
+				},
+				27:{
+					"funcCode": "content-article-delete",
+					"funcName": "文章删除"
+				},
+				28:{
+					"funcCode": "content-article-update",
+					"funcName": "文章修改"
+				},
+				29:{
+					"funcCode": "content-article-extend",
+					"funcName": "文章推广"
+				},
+				30:{
+					"funcCode": "content-comment-view",
+					"funcName": "评论查看"
+				},
+				31:{
+					"funcCode": "content-comment-verify",
+					"funcName": "评论审核"
+				},
+				32:{
+					"funcCode": "content-comment-spider",
+					"funcName": "内容抓取"
+				},
+				33:{
+					"funcCode": "content-article-publish",
+					"funcName": "发布文章"
+				},
+				34:{
+					"funcCode": "content-user-feedback",
+					"funcName": "用户反馈"
+				},
+				35:{
+					"funcCode": "content-channel-setting",
+					"funcName": "频道设置"
+				}
+			}
+		},
+		"28":{
+			"name":"服务栏管理",
+			"code":"service",
+			"match":"-service-",
+			"prid":{
+				36:{
+					"funcCode": "service-add",
+					"funcName": "增加服务"
+				},
+				37:{
+					"funcCode": "service-update",
+					"funcName": "修改服务"
+				},
+				38:{
+					"funcCode": "service-delete",
+					"funcName": "删除服务"
+				}
+			}
+		},
+		"30":{
+			"name":"信用卡管理",
+			"code":"credit",
+			"match":"-credit-",
+			"prid":{
+				39:{
+					"funcCode": "credit-strategy-verify",
+					"funcName": "攻略审核"
+				},
+				40:{
+					"funcCode": "credit-strategy-add",
+					"funcName": "攻略添加"
+				},
+				41:{
+					"funcCode": "credit-strategy-update",
+					"funcName": "攻略修改"
+				},
+				42:{
+					"funcCode": "credit-strategy-delete",
+					"funcName": "攻略删除"
+				},
+				43:{
+					"funcCode": "credit-account-manage",
+					"funcName": "帐单管理"
+				},
+				44:{
+					"funcCode": "credit-lifting-view",
+					"funcName": "提额策略查看"
+				},
+				45:{
+					"funcCode": "credit-lifting-add",
+					"funcName": "提额策略添加"
+				},
+				46:{
+					"funcCode": "credit-lifting-update",
+					"funcName": "提额策略修改"
+				},
+				47:{
+					"funcCode": "credit-lifting-delete",
+					"funcName": "提额策略删除"
+				},
+				48:{
+					"funcCode": "credit-lifting-verify",
+					"funcName": "提额策略审核"
 				}
 			}
 		}
@@ -644,7 +775,7 @@
 
 
 	/*加载左侧菜单*/
-	public_tool.loadSideMenu=function($menu,$wrap,url){
+	public_tool.loadSideMenu=function($menu,$wrap,opt){
 
 		var self=this,
 		cacheMenu=self.getParams('menu_module')/*调用缓存*/;
@@ -664,23 +795,30 @@
 				return;
 			}else{
 				/*不同模块则重新加载*/
-				self.requestSideMenu($menu,$wrap,url);
+				self.requestSideMenu($menu,$wrap,opt);
 			}
 		}else{
-			self.requestSideMenu($menu,$wrap,url);
+			self.requestSideMenu($menu,$wrap,opt);
 		}
+
+		/*解析权限*/
+		self.resolvePower(opt);
 	};
 	/*请求菜单*/
-	public_tool.requestSideMenu= function ($menu,$wrap,url) {
+	public_tool.requestSideMenu= function ($menu,$wrap,opt) {
 		var self=this;
+
 		/*如果不存在缓存，则重新请求并放入缓存*/
+
+
 		$.ajax({
-			url:url||"../json/common/menu.json",
-			async:true,
-			type:"post",
-			dataType:"json"
+			url:opt.url,
+			async:opt.async,
+			type:opt.type,
+			data:opt.param,
+			dataType:opt.datatype
 		}).done(function(data){
-			if(parseInt(data.code,10)===0){
+			if(parseInt(data.code,10)!==0){
 				//查询异常
 				return false;
 			}
@@ -697,6 +835,9 @@
 				subitem=null,
 				isindex=self.routeMap.isindex,
 				path=self.routeMap.path;
+
+			/*解析权限*/
+			self.resolvePower(menu);
 
 			for(i;i<len;i++){
 				item=menu[i];
@@ -782,7 +923,7 @@
 			//调用菜单渲染
 			self.initSideMenu($wrap);
 
-		}).fail(function(){
+		}).fail(function(xhr){
 			console.log('error');
 		});
 	};
@@ -990,21 +1131,18 @@
 	/*权限分配*/
 	/*菜单权限映射*/
 	public_tool.powerMap={};
-	//加载权限方法
-	public_tool.powerControl=function(url){
-		console.log(url);
-		var self=this;
-		$.ajax({
-			url:url,
-			async:true,
-			type:"post",
-			dataType:"json"
-		}).done(function(data){
-			if(parseInt(data.code,10)===0){
-				//查询异常
-				return false;
-			}
-			var menu=data.result.menu,
+	/*解析权限*/
+	public_tool.resolvePower=function(data){
+		var self=this,
+			cachePower=self.getParams('power_module')/*调用缓存*/;
+
+		if(cachePower){
+			/*如果是同一模块侧直接获取缓存*/
+			/*如果存在缓存，则读取缓存*/
+			self.powerMap=cachePower;
+			return;
+		}else{
+			var menu=data,
 				len=menu.length,
 				i=0,
 				prkey='permitItem',
@@ -1034,17 +1172,42 @@
 				self.powerMap=$.extend(true,{},modid_map);
 			}
 
-			console.log('power:'+self.powerMap);
-
 			/*清除缓存，然后存入缓存*/
 			self.removeParams('power_module');
 			self.setParams('power_module',self.powerMap);
+		}
+	};
+	//加载权限
+	public_tool.getPower=function(opt){
+		var self=this,
+			cachePower=self.getParams('power_module')/*调用缓存*/;
 
-			console.log('power:'+self.powerMap);
+		if(cachePower){
+			/*如果是同一模块侧直接获取缓存*/
+			/*如果存在缓存，则读取缓存*/
+			self.powerMap=cachePower;
+			return;
+		}else{
+			//没有缓存则重新请求
 
-		}).fail(function(){
-			console.log('error');
-		});
+			/*判断是否已经加载权限*/
+			$.ajax({
+				url:opt.url,
+				async:opt.async,
+				type:opt.type,
+				data:opt.param,
+				dataType:opt.datatype
+			}).done(function(data){
+				if(parseInt(data.code,10)!==0){
+					//查询异常
+					return false;
+				}
+				/*解析权限*/
+				self.resolvePower(data.result.menu);
+			}).fail(function(){
+				console.log('power error');
+			});
+		}
 	};
 
 

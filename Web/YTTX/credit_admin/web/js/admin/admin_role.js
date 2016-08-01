@@ -4,10 +4,17 @@
 	$(function(){
 
 		/*菜单调用*/
-		public_tool.loadSideMenu(public_vars.$main_menu,public_vars.$main_menu_wrap,'../../json/common/menu.json');
-
-		/*获取权限*/
-		public_tool.powerControl('../../json/commom/menu.json');
+		public_tool.loadSideMenu(public_vars.$main_menu,public_vars.$main_menu_wrap,{
+			url:'http://120.24.226.70:8081/yttx-adminbms-api/module/menu',
+			async:false,
+			type:'post',
+			param:{
+				roleId:1,
+				adminId:1,
+				token:'90e2d4e7-c9c9-4e5d-a942-3cfbfe0f0386'
+			},
+			datatype:'json'
+		});
 
 
 
@@ -103,7 +110,7 @@
 											<i class="fa-group"></i>\
 											<span>成员</span>\
 											</span>\
-											<span data-href="admin_power.html" data-module="admin_power" data-action="select" data-id="'+id+'" data-type="'+types+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+											<span data-href="yttx-admin-permission.html" data-module="admin_permission" data-action="select" data-id="'+id+'" data-type="'+types+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 											<i class="fa-gear"></i>\
 											<span>权限</span>\
 											</span>\
