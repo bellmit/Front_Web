@@ -774,6 +774,7 @@
 
 
 
+
 	/*加载左侧菜单*/
 	public_tool.loadSideMenu=function($menu,$wrap,opt){
 
@@ -1125,6 +1126,42 @@
 
 
 
+	/*登陆缓存*/
+	public_tool.loginMap={};
+	/*登陆接口*/
+	public_tool.isLogin=function(){
+		var self=this,
+			cacheLogin=self.getParms('login_module');
+
+		if(cacheLogin){
+			/*如果已经存在登陆信息则传入登陆信息*/
+			self.loginMap= $.extend(true,{},cacheLogin);
+		}else{
+			/*跳转到登陆界面*/
+
+		}
+
+	};
+	/*退出系统*/
+	public_tool.loginOut=function(){
+		var self=this,
+			isindex=routeMap.isindex;
+
+		/*清除所有记录*/
+		self.clear();
+
+		/*根据路径跳转*/
+		if(isindex){
+			location.href='account/login.html';
+		}else{
+			location.href='../account/login.html';
+		}
+	};
+
+
+
+
+
 
 
 
@@ -1239,10 +1276,12 @@ var public_vars = public_vars || {};
 		public_vars.$page_loading_wrap=$('#page_loading_wrap');
 		public_vars.$main_content=$('#main_content');
 		public_vars.$logout_btn=$('#logout_btn');
+		public_vars.$page_support_wrap=$('#page_support_wrap');
+		public_vars.$page_support=public_vars.$page_support_wrap.children();
 
 
 		/*判断是否支持浏览器版本*/
-		if(public_tool.supportStorage){
+		if(!public_tool.supportStorage){
 			//加载成功隐藏动画
 			if (public_vars.$page_loading_wrap.length) {
 				$(window).load(function() {
@@ -1254,8 +1293,11 @@ var public_vars = public_vars || {};
 			window.onerror = function() {
 				public_vars.$page_loading_wrap.addClass('loaded');
 			};
+		}else if(public_tool.supportStorage){
+			/*如果不支持本地存储则弹出升级浏览器提示*/
+			public_vars.$page_support_wrap.removeClass('g-d-hidei');
+			public_vars.$page_support.eq(1).addClass('page-support-active');
 		}else{
-
 
 		}
 
@@ -1269,7 +1311,7 @@ var public_vars = public_vars || {};
 		/*登出操作*/
 		if(public_vars.$logout_btn){
 			public_vars.$logout_btn.on('click',function(){
-				public_tool.removeSideMenu(public_vars.$main_menu);
+				public_tool.loginOut();
 			});
 		}
 

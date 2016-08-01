@@ -70,40 +70,69 @@
 					"hideMethod": "fadeOut"
 				};
 
+
+				var cacheLogin=public_tool.getParms('login_module');
+
+				if(cacheLogin){
+					/*如果存在缓存，则删除缓存*/
+					public_tool.removeParams('login_module');
+				}
+
+
 				$.ajax({
-					url: "../../json/account/login.json",
+					url: "http://120.24.226.70:8081/yttx-adminbms-api/sysuser/login",
 					method: 'POST',
 					dataType: 'json',
+					async:false,
 					data: {
 						do_login: true,
 						username:$username.val(),
-						passwd:$pwd.val(),
-						validcode:$vcode.val()
+						password:$pwd.val()
 					}
 				}).done(function(resp){
-					//调用进度条组件
-					show_loading_bar({
-						delay: .5,
-						pct: 100,
-						finish: function(){
-							if(resp.flag){
-								//成功后跳入主页面
-								location.href = '../index.html';
-							}
-						}
-					});
+					var code=parseInt(resp.code,10),
+						result=resp.result;
+
+					//显示错误
+					if(code!==0){
+						$error_wrap.html(error_tpl.replace('$info',resp.message));
+						$error_wrap.find('.alert').hide().slideDown();
+						$pwd.select();
+						return false;
+					}
+
+
+					$error_wrap.html(error_tpl.replace('$info',resp.message));
+					$error_wrap.find('.alert').hide().slideDown();
 
 
 					//移除提示的错误信息
 					$error_wrap.find('.alert').slideUp('fast');
 
 
-					//显示错误
-					if(!resp.flag){
-						$error_wrap.html(error_tpl.replace('$info',resp.message));
-						$error_wrap.find('.alert').hide().slideDown();
-						$pwd.select();
-					}
+					//放入本地存储
+					public_tool.setParams('login_module',{
+						'isLogin':true,
+						'param':{
+							'adminId':encodeURIComponent(result.adminId),
+							'token':encodeURIComponent(result.token)
+						}
+					});
+
+
+					//调用进度条组件
+					show_loading_bar({
+						delay: .5,
+						pct: 100,
+						finish: function(){
+							if(code===0){
+								//成功后跳入主页面
+								location.href = '../index.html';
+
+							}
+						}
+					});
+
 
 				}).fail(function(){
 					//移除提示的错误信息
@@ -114,8 +143,34 @@
 					$pwd.select();
 				});
 
+				return false;
+
 			}
 		});
+
+
+		/* /!*调用登陆接口*!/
+		 public_tool.doLogin({
+			 url:'http://120.24.226.70:8081/yttx-adminbms-api/sysuser/login',
+			 async:false,
+			 type:'post',
+			 do_login: true,
+			 param:{
+				 username:$username.val(),
+				 password:$pwd.val(),
+				 validcode:$vcode.val()
+				},
+				datatype:'json',
+				$error_wrap:$error_wrap,
+				error_tpl:error_tpl,
+				$pwd:$pwd,
+				show_loading_bar:show_loading_bar
+		});
+
+		return false;
+
+		*/
+
 
 		//设置获取焦点
 		$loginform.find(".form-group:has(.form-control):first .form-control").focus();
