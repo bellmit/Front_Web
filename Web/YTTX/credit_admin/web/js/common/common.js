@@ -1131,16 +1131,15 @@
 	/*登陆接口*/
 	public_tool.isLogin=function(){
 		var self=this,
-			cacheLogin=self.getParms('login_module');
+			cacheLogin=self.getParams('login_module');
 
 		if(cacheLogin){
 			/*如果已经存在登陆信息则传入登陆信息*/
+			self.loginMap={};
 			self.loginMap= $.extend(true,{},cacheLogin);
 		}else{
-			/*跳转到登陆界面*/
-
+			self.loginTips();
 		}
-
 	};
 	/*退出系统*/
 	public_tool.loginOut=function(){
@@ -1157,8 +1156,30 @@
 			location.href='../account/login.html';
 		}
 	};
+	/*跳转提示*/
+	public_tool.loginTips=function(){
+		var self=this;
 
+		/*如果没有登陆则提示跳转至登陆页*/
+		public_vars.$page_support_wrap.removeClass('g-d-hidei');
+		public_vars.$page_support.eq(1).addClass('page-support-active');
+		var count= 5,
+				tipid=null;
 
+		public_vars.$goto_login.html(count);
+		tipid=setInterval(function(){
+			count--;
+			public_vars.$goto_login.html(count);
+			if(count<=0){
+					/*清除定时操作*/
+					clearInterval(tipid);
+					tipid=null;
+					count= 5;
+					/*跳转到登陆位置*/
+					location.href='../account/login.html';
+			}
+		},1000);
+	};
 
 
 
@@ -1259,7 +1280,38 @@ var public_vars = public_vars || {};
 	
 	"use strict";
 	//初始化加载
-	$(function(){	
+	$(function(){
+		//自定义扩展变量
+		public_vars.$main_menu=$('#main_menu');
+		public_vars.$main_menu_wrap=$('#main_menu_wrap');
+		public_vars.$page_loading_wrap=$('#page_loading_wrap');
+		public_vars.$main_content=$('#main_content');
+		public_vars.$logout_btn=$('#logout_btn');
+		public_vars.$page_support_wrap=$('#page_support_wrap');
+		public_vars.$page_support=public_vars.$page_support_wrap.children();
+		public_vars.$goto_login=$('#goto_login');
+
+		/*首先加载动画*/
+		public_vars.$page_loading_wrap.removeClass('g-d-hidei');
+		if(public_tool.supportStorage){
+			//加载成功隐藏动画
+			if (public_vars.$page_loading_wrap.length) {
+				$(window).load(function() {
+					public_vars.$page_loading_wrap.addClass('loaded');
+				});
+			}
+			//加载失败
+			window.onerror = function() {
+				public_vars.$page_loading_wrap.addClass('loaded');
+			};
+			/*判断是否登陆*/
+			public_tool.isLogin();
+		}else{
+			/*如果不支持本地存储则弹出升级浏览器提示*/
+			public_vars.$page_support_wrap.removeClass('g-d-hidei');
+			public_vars.$page_support.eq(0).addClass('page-support-active');
+		}
+
 
 		public_vars.$body                 = $("body");
 		public_vars.$pageContainer        = public_vars.$body.find(".page-container");
@@ -1270,38 +1322,6 @@ var public_vars = public_vars || {};
 		
 		public_vars.$userInfoMenuHor      = public_vars.$body.find('.navbar.horizontal-menu');
 		public_vars.$userInfoMenu         = public_vars.$body.find('nav.navbar.user-info-navbar');
-		//自定义扩展变量
-		public_vars.$main_menu=$('#main_menu');
-		public_vars.$main_menu_wrap=$('#main_menu_wrap');
-		public_vars.$page_loading_wrap=$('#page_loading_wrap');
-		public_vars.$main_content=$('#main_content');
-		public_vars.$logout_btn=$('#logout_btn');
-		public_vars.$page_support_wrap=$('#page_support_wrap');
-		public_vars.$page_support=public_vars.$page_support_wrap.children();
-
-
-		/*判断是否支持浏览器版本*/
-		if(!public_tool.supportStorage){
-			//加载成功隐藏动画
-			if (public_vars.$page_loading_wrap.length) {
-				$(window).load(function() {
-					public_vars.$page_loading_wrap.addClass('loaded');
-				});
-			}
-
-			//加载失败
-			window.onerror = function() {
-				public_vars.$page_loading_wrap.addClass('loaded');
-			};
-		}else if(public_tool.supportStorage){
-			/*如果不支持本地存储则弹出升级浏览器提示*/
-			public_vars.$page_support_wrap.removeClass('g-d-hidei');
-			public_vars.$page_support.eq(1).addClass('page-support-active');
-		}else{
-
-		}
-
-		
 
 
 
