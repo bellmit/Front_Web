@@ -12,7 +12,7 @@
 		/*列表模板*/
 		var	listTemplate='<li><a href="$LINKURL">'+
 											'<div><img alt="" src="$IMGURL"></div>'+
-											'<h4>$THEME</h4>'+
+											'<h4>$TITLE</h4>'+
 											'<p>$CONTENT</p>'+
 										'</a></li>';
 
@@ -79,7 +79,7 @@
 						for(i;i<len;i++){
 							htmlstr=opt.template;
 							resultset.push(htmlstr.replace('$IMGURL',listdata[i]['imgurl'])
-								.replace('$THEME',listdata[i]['theme'])
+								.replace('$TITLE',listdata[i]['title'])
 								.replace('$CONTENT',listdata[i]['content'])
 								.replace('$LINKURL',listdata[i]['linkurl']));
 						}

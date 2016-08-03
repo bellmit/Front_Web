@@ -1,7 +1,36 @@
-/*列表主体*/
-.content-list-wrap{
+/*列表主体1*/
+.content-list-wrap1{
+	 padding:20px 0;
+	 .list-wrap1;
+	 &:after{
+		 content:'';
+		 clear:both;
+		 width:100%;
+		 height:0;
+		 display:table;
+	 }
+	 li{
+		 width:450px;
+		 .calc-base(width,'(100% - 100px) / 2');
+		 border-bottom:1px solid @color-gray12;
+		 >a{
+			 padding:10px 0;
+		 }
+		 &:hover{
+			 border-bottom:1px solid @color-red1;
+		 }
+		 &:nth-child(2n){
+			 float:right;
+		 }
+	 }
+ }
+
+
+/*列表主体2*/
+.content-list-wrap2{
+	.list-wrap2;
 	padding:20px 0;
-	.list-wrap;
+	overflow: hidden;
 	&:after{
 		content:'';
 		clear:both;
@@ -9,21 +38,16 @@
 		height:0;
 		display:table;
 	}
-	li{
-		width:450px;
-		.calc-base(width,'(100% - 100px) / 2');
+	>li{
+		width:100%;
 		border-bottom:1px solid @color-gray12;
-		>a{
-			padding:10px 0;
-		}
 		&:hover{
 			border-bottom:1px solid @color-red1;
 		}
-		&:nth-child(2n){
-			float:right;
-		}
 	}
 }
+
+
 /*分页主体*/
 .list-page-wrap{
 	.layout-base;

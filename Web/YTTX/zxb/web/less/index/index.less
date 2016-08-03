@@ -364,7 +364,7 @@
 		height:99%;
 		padding:0 0 30px 0;
 		overflow: hidden;
-		.list-wrap;
+		.list-wrap1;
 	}
 	>div{
 		.user-select-base;
@@ -429,67 +429,22 @@
 	width:58%;
 	background:@color-gray16;
 	dl{
-		.layout-base;
+		.list-wrap2;
+		width:100%;
 		.calc-base(height,'100% - 70px');
 		padding:0 0 20px 0;
 		overflow: hidden;
-		dt{
+		>dt{
 			float:left;
-			width: 100%;
-			.user-select-base;
-			padding:0 120px 0 100px;
-			line-height:38px;
-			cursor: pointer;
-			border-bottom:1px dashed @color-gray9;
-			font-size:@font-size-base;
-			color:@color-gray6;
-			&:hover{
-				span{
-					color:@color-red1;
-				}
-			}
-			span{
-				text-align: center;
-				color:@color-gray5;
-				float: left;
-				margin:0 0 0 -95px;
-				width:90px;
-			}
-			em{
-				text-align: right;
-				color:@color-gray9;
-				float: right;
-				margin:0 -110px 0 0;
-				width:100px;
-			}
+			width:100%;
 		}
-		dt,dt span,dt em{
-			.box-sizing-base;
-			height:40px;
-			display:inline-block;
-			white-space:nowrap;
-			overflow: hidden;
-			text-overflow: ellipsis;
-		}
-		dd{
-			.layout-float-base;
-			display:none;
-			padding:20px 10px;
+		>dd{
+			width:100%;
 			max-height:70%;
 			min-height:100px;
 			overflow-y:auto;
 			overflow-x: hidden;
-			p{
-				.layout-base;
-				.text-ww;
-				text-indent: 2em;
-				font-size:@font-size-base;
-				line-height:24px;
-				padding:5px 0;
-				color:@color-gray6;
-				&::-moz-selection{background:@color-gray16;color:@color-red1;}
-				&::selection{background:@color-gray16;color:@color-red1;}
-			}
+			display:none;
 		}
 	}
 	>div{
