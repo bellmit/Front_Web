@@ -71,7 +71,7 @@
 				};
 
 
-				var cacheLogin=public_tool.getParms('login_module');
+				var cacheLogin=public_tool.getParams('login_module');
 
 				if(cacheLogin){
 					/*如果存在缓存，则删除缓存*/
@@ -85,13 +85,13 @@
 					dataType: 'json',
 					async:false,
 					data: {
-						do_login: true,
 						username:$username.val(),
 						password:$pwd.val()
 					}
 				}).done(function(resp){
 					var code=parseInt(resp.code,10),
 						result=resp.result;
+
 
 					//显示错误
 					if(code!==0){
@@ -113,16 +113,13 @@
 					//放入本地存储
 					public_tool.setParams('login_module',{
 						'isLogin':true,
-						'datetime':(function(){
-							var date=new Date();
-							mo
-						}()),
+						'datetime':moment().format('YYYY-MM-DD|HH:mm:ss'),
 						'param':{
 							'adminId':encodeURIComponent(result.adminId),
-							'token':encodeURIComponent(result.token)
+							'token':encodeURIComponent(result.token),
+							'roleId':encodeURIComponent(result.roleId||1)
 						}
 					});
-
 
 					//调用进度条组件
 					show_loading_bar({
@@ -145,11 +142,11 @@
 					$error_wrap.find('.alert').hide().slideDown();
 					$pwd.select();
 				});
-
 				return false;
 
 			}
 		});
+
 
 
 		//设置获取焦点

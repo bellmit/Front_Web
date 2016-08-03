@@ -846,7 +846,7 @@
 					if(i===0){
 						//首页数据
 						//如果是当前路径和当前模块一致
-						menustr='<li><a href=\"'+item.modLink+suffix+'\"><i class=\"'+item.modClass+'\"></i><span>'+item.modName+'</span></a></li>';
+						menustr='<li data-module="'+item.modId+'"><a href=\"'+item.modLink+suffix+'\"><i class=\"'+item.modClass+'\"></i><span>'+item.modName+'</span></a></li>';
 					}else{
 						//其他模块
 						//如果是当前路径和当前模块一致
@@ -854,21 +854,21 @@
 						if(issub){
 							//子菜单循环
 							if(path.indexOf(link.match)!==-1){
-								menustr+='<li class="has-sub expanded"><a href=\"\"><i class=\"'+item.modClass+'\"></i><span>'+item.modName+'</span></a>';
+								menustr+='<li data-modId="'+item.modId+'" class="has-sub expanded"><a href=\"\"><i class=\"'+item.modClass+'\"></i><span>'+item.modName+'</span></a>';
 								menustr+="<ul style='display:block;'>";
 							}else{
-								menustr+='<li class="has-sub"><a href=\"\"><i class=\"'+item.modClass+'\"></i><span>'+item.modName+'</span></a>';
+								menustr+='<li data-modId="'+item.modId+'" class="has-sub"><a href=\"\"><i class=\"'+item.modClass+'\"></i><span>'+item.modName+'</span></a>';
 								menustr+="<ul>";
 							}
 							sublen=subitem.length;
 							j=0;
 							for(j;j<sublen;j++){
 								item=subitem[j];
-								menustr+='<li><a href=\"'+self.menuMap[item.modId].code+'/'+item.modLink+suffix+'\"><span>'+item.modName+'</span></a></li>';
+								menustr+='<li data-module="'+item.modId+'"><a href=\"'+self.menuMap[item.modId].code+'/'+item.modLink+suffix+'\"><span>'+item.modName+'</span></a></li>';
 							}
 							menustr+="</li></ul>";
 						}else{
-							menustr+='<li class="has-sub"><a href=\"'+self.menuMap[item.modId].code+'/'+item.modLink+suffix+'\"><i class=\"'+item.modClass+'\"></i><span>'+item.modName+'</span></a>';
+							menustr+='<li data-modId="'+item.modId+'" class="has-sub"><a href=\"'+self.menuMap[item.modId].code+'/'+item.modLink+suffix+'\"><i class=\"'+item.modClass+'\"></i><span>'+item.modName+'</span></a>';
 						}
 					}
 				}else{
@@ -876,7 +876,7 @@
 					if(i===0){
 						//首页数据
 						//如果是当前路径和当前模块一致
-						menustr='<li><a href=\"../'+item.modLink+suffix+'\"><i class=\"'+item.modClass+'\"></i><span>'+item.modName+'</span></a></li>';
+						menustr='<li data-modId="'+item.modId+'"><a href=\"../'+item.modLink+suffix+'\"><i class=\"'+item.modClass+'\"></i><span>'+item.modName+'</span></a></li>';
 					}else{
 						//其他模块
 						//如果是当前路径和当前模块一致
@@ -884,10 +884,10 @@
 						if(issub){
 							//子菜单循环
 							if(path.indexOf(link.match)!==-1){
-								menustr+='<li class="has-sub expanded"><a href=\"\"><i class=\"'+item.modClass+'\"></i><span>'+item.modName+'</span></a>';
+								menustr+='<li data-modId="'+item.modId+'" class="has-sub expanded"><a href=\"\"><i class=\"'+item.modClass+'\"></i><span>'+item.modName+'</span></a>';
 								menustr+="<ul style='display:block;'>";
 							}else{
-								menustr+='<li class="has-sub"><a href=\"\"><i class=\"'+item.modClass+'\"></i><span>'+item.modName+'</span></a>';
+								menustr+='<li data-modId="'+item.modId+'" class="has-sub"><a href=\"\"><i class=\"'+item.modClass+'\"></i><span>'+item.modName+'</span></a>';
 								menustr+="<ul>";
 							}
 							sublen=subitem.length;
@@ -895,17 +895,17 @@
 							for(j;j<sublen;j++){
 								item=subitem[j];
 								if(link===path){
-									menustr+='<li><a href=\"'+item.modLink+suffix+'\"><span>'+item.modName+'</span></a></li>';
+									menustr+='<li data-module="'+item.modId+'"><a href=\"'+item.modLink+suffix+'\"><span>'+item.modName+'</span></a></li>';
 								}else{
-									menustr+='<li><a href=\"../'+self.menuMap[item.modId].code+'/'+item.modLink+suffix+'\"><span>'+item.modName+'</span></a></li>';
+									menustr+='<li data-module="'+item.modId+'"><a href=\"../'+self.menuMap[item.modId].code+'/'+item.modLink+suffix+'\"><span>'+item.modName+'</span></a></li>';
 								}
 							}
 							menustr+="</li></ul>";
 						}else{
 							if(path.indexOf(link.match)!==-1){
-								menustr+='<li class="has-sub expanded"><a href=\"'+item.modLink+suffix+'\"><i class=\"'+item.modClass+'\"></i><span>'+item.modName+'</span></a>';
+								menustr+='<li data-modId="'+item.modId+'" class="has-sub expanded"><a href=\"'+item.modLink+suffix+'\"><i class=\"'+item.modClass+'\"></i><span>'+item.modName+'</span></a>';
 							}else{
-								menustr+='<li class="has-sub"><a href=\"../'+self.menuMap[item.modId].code+'/'+item.modLink+suffix+'\"><i class=\"'+item.modClass+'\"></i><span>'+item.modName+'</span></a>';
+								menustr+='<li data-modId="'+item.modId+'" class="has-sub"><a href=\"../'+self.menuMap[item.modId].code+'/'+item.modLink+suffix+'\"><i class=\"'+item.modClass+'\"></i><span>'+item.modName+'</span></a>';
 							}
 						}
 					}
