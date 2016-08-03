@@ -781,9 +781,6 @@
 		var self=this,
 		cacheMenu=self.getParams('menu_module')/*调用缓存*/;
 
-		/*调用路由*/
-		self.getRoute();
-
 		/*判断路由模块*/
 		if(public_tool.routeMap.issamemodule){
 			if(cacheMenu){
@@ -1127,19 +1124,25 @@
 
 
 	/*登陆缓存*/
-	public_tool.loginMap={};
+	public_tool.initMap={
+		isrender:false,
+		loginMap:{}
+	};
 	/*登陆接口*/
 	public_tool.isLogin=function(){
 		var self=this,
 			cacheLogin=self.getParams('login_module');
 
+		self.initMap.loginMap={};
 		if(cacheLogin){
 			/*如果已经存在登陆信息则传入登陆信息*/
-			self.loginMap={};
-			self.loginMap= $.extend(true,{},cacheLogin);
+			self.initMap.loginMap= $.extend(true,{},cacheLogin);
+			return true;
 		}else{
 			self.loginTips();
+			return false;
 		}
+		return false;
 	};
 	/*退出系统*/
 	public_tool.loginOut=function(){
@@ -1166,19 +1169,70 @@
 		var count= 5,
 				tipid=null;
 
-		public_vars.$goto_login.html(count);
-		tipid=setInterval(function(){
-			count--;
+
 			public_vars.$goto_login.html(count);
-			if(count<=0){
+			tipid=setInterval(function(){
+				count--;
+				public_vars.$goto_login.html(count);
+				if(count<=0){
 					/*清除定时操作*/
 					clearInterval(tipid);
 					tipid=null;
 					count= 5;
 					/*跳转到登陆位置*/
-					location.href='../account/login.html';
+					if(self.routeMap.isindex){
+						location.href='account/login.html';
+					}else{
+						location.href='../account/login.html';
+					}
+				}
+			},1000);
+
+	};
+
+
+
+
+	/*初始化判定*/
+	public_tool.isRender=function(){
+		var self=this;
+		/*判定兼容性*/
+		if(self.supportStorage){
+			/*调用路由*/
+			self.getRoute();
+			/*判断是否登陆*/
+			if(self.routeMap.module.indexOf('account')!==-1){
+				self.initMap.isrender=true;
+				return true;
+			}else{
+				var templogin=self.isLogin();
+				templogin?self.initMap.isrender=true:self.initMap.isrender=false;
+				return templogin;
 			}
-		},1000);
+		}else{
+			/*如果不支持本地存储则弹出升级浏览器提示*/
+			public_vars.$page_support_wrap.removeClass('g-d-hidei');
+			public_vars.$page_support.eq(0).addClass('page-support-active');
+			self.initMap.isrender=false;
+			return false;
+		}
+		self.initMap.isrender=false;
+		return false;
+	};
+	/*加载进度条*/
+	public_tool.initLoading=function(){
+		/*首先加载动画*/
+		public_vars.$page_loading_wrap.removeClass('g-d-hidei');
+		//加载成功隐藏动画
+		if (public_vars.$page_loading_wrap.length) {
+			$(window).load(function() {
+				public_vars.$page_loading_wrap.addClass('loaded');
+			});
+		}
+		//加载失败
+		window.onerror = function() {
+			public_vars.$page_loading_wrap.addClass('loaded');
+		};
 	};
 
 
@@ -1291,248 +1345,221 @@ var public_vars = public_vars || {};
 		public_vars.$page_support=public_vars.$page_support_wrap.children();
 		public_vars.$goto_login=$('#goto_login');
 
+
+		/*初始化判定*/
+		public_tool.isRender();
 		/*首先加载动画*/
-		public_vars.$page_loading_wrap.removeClass('g-d-hidei');
-		if(public_tool.supportStorage){
-			//加载成功隐藏动画
-			if (public_vars.$page_loading_wrap.length) {
-				$(window).load(function() {
-					public_vars.$page_loading_wrap.addClass('loaded');
+		if(public_tool.initMap.isrender){
+			/*加载动画*/
+			public_tool.initLoading();
+
+			/*其他加载*/
+			public_vars.$body                 = $("body");
+			public_vars.$pageContainer        = public_vars.$body.find(".page-container");
+			public_vars.$horizontalNavbar     = public_vars.$body.find('.navbar.horizontal-menu');
+			public_vars.$horizontalMenu       = public_vars.$horizontalNavbar.find('.navbar-nav');
+
+			public_vars.$mainFooter           = public_vars.$body.find('footer.main-footer');
+
+			public_vars.$userInfoMenuHor      = public_vars.$body.find('.navbar.horizontal-menu');
+			public_vars.$userInfoMenu         = public_vars.$body.find('nav.navbar.user-info-navbar');
+
+			/*登出操作*/
+			if(public_vars.$logout_btn){
+				public_vars.$logout_btn.on('click',function(){
+					public_tool.loginOut();
 				});
 			}
-			//加载失败
-			window.onerror = function() {
-				public_vars.$page_loading_wrap.addClass('loaded');
-			};
-			/*判断是否登陆*/
-			public_tool.isLogin();
-		}else{
-			/*如果不支持本地存储则弹出升级浏览器提示*/
-			public_vars.$page_support_wrap.removeClass('g-d-hidei');
-			public_vars.$page_support.eq(0).addClass('page-support-active');
-		}
-
-
-		public_vars.$body                 = $("body");
-		public_vars.$pageContainer        = public_vars.$body.find(".page-container");
-		public_vars.$horizontalNavbar     = public_vars.$body.find('.navbar.horizontal-menu');
-		public_vars.$horizontalMenu       = public_vars.$horizontalNavbar.find('.navbar-nav');
-
-		public_vars.$mainFooter           = public_vars.$body.find('footer.main-footer');
-		
-		public_vars.$userInfoMenuHor      = public_vars.$body.find('.navbar.horizontal-menu');
-		public_vars.$userInfoMenu         = public_vars.$body.find('nav.navbar.user-info-navbar');
 
 
 
 
+			//计算左侧菜单滚动条
+			if (public_vars.$mainFooter.hasClass('sticky')) {
+				stickFooterToBottom(public_vars.$main_content,public_vars.$main_menu_wrap);
+				$(window).on('xenon.resized',{
+					$content:public_vars.$main_content,
+					$wrap:public_vars.$main_menu_wrap
+				},stickFooterToBottom);
+			}
 
 
-		/*登出操作*/
-		if(public_vars.$logout_btn){
-			public_vars.$logout_btn.on('click',function(){
-				public_tool.loginOut();
-			});
-		}
+			//模拟滚动条
+			if($.isFunction($.fn.perfectScrollbar)) {
+				if (public_vars.$main_menu_wrap.hasClass('fixed')){
+					public_tool.scrollInit(public_vars.$main_menu_wrap);
+				}
+
+				// Scrollable
+				$("div.scrollable").each(function(i, el) {
+					var $this = $(el),
+						max_height = parseInt(attrDefault($this, 'max-height', 200), 10);
+
+					max_height = max_height < 0 ? 200 : max_height;
+
+					$this.css({
+						maxHeight: max_height
+					}).perfectScrollbar({
+						wheelPropagation: true
+					});
+				});
+			}
+
+
+			//计算左侧菜单滚动条
+			if (public_vars.$mainFooter.hasClass('fixed')) {
+				public_vars.$main_content.css({
+					paddingBottom: public_vars.$mainFooter.outerHeight(true)
+				});
+			}
 
 
 
+			//返回顶部
+			$('body').on('click', 'a[rel="go-top"]', function(ev) {
+				ev.preventDefault();
 
-		//计算左侧菜单滚动条
-		if (public_vars.$mainFooter.hasClass('sticky')) {
-			stickFooterToBottom(public_vars.$main_content,public_vars.$main_menu_wrap);
-			$(window).on('xenon.resized',{
-				$content:public_vars.$main_content,
-				$wrap:public_vars.$main_menu_wrap
-			},stickFooterToBottom);
-		}
-		
-		
-		//模拟滚动条
-		if($.isFunction($.fn.perfectScrollbar)) {
-			if (public_vars.$main_menu_wrap.hasClass('fixed')){
-				public_tool.scrollInit(public_vars.$main_menu_wrap);
-			} 
+				var obj = {
+					pos: $(window).scrollTop()
+				};
 
-			// Scrollable
-			$("div.scrollable").each(function(i, el) {
-				var $this = $(el),
-					max_height = parseInt(attrDefault($this, 'max-height', 200), 10);
-
-				max_height = max_height < 0 ? 200 : max_height;
-
-				$this.css({
-					maxHeight: max_height
-				}).perfectScrollbar({
-					wheelPropagation: true
+				TweenLite.to(obj, 0.3, {
+					pos: 0,
+					ease: Power4.easeOut,
+					onUpdate: function() {
+						$(window).scrollTop(obj.pos);
+					}
 				});
 			});
-		}
 
 
-		//计算左侧菜单滚动条
-		if (public_vars.$mainFooter.hasClass('fixed')) {
-			public_vars.$main_content.css({
-				paddingBottom: public_vars.$mainFooter.outerHeight(true)
-			});
-		}
-		
-		
-		
-		//返回顶部
-		$('body').on('click', 'a[rel="go-top"]', function(ev) {
-			ev.preventDefault();
-
-			var obj = {
-				pos: $(window).scrollTop()
-			};
-
-			TweenLite.to(obj, 0.3, {
-				pos: 0,
-				ease: Power4.easeOut,
-				onUpdate: function() {
-					$(window).scrollTop(obj.pos);
-				}
-			});
-		});
-		
-		
-		
-		
-		//用户信息下拉列表
-		if(public_vars.$userInfoMenu.length){
-			public_vars.$userInfoMenu.find('.user-info-menu > li').css({
-				minHeight: public_vars.$userInfoMenu.outerHeight() - 1
-			});
-		}
 
 
-		//表单验证
-		if($.isFunction($.fn.validate)) {
-			$("form.validate").each(function(i, el) {
-				var $this = $(el),
-					opts = {
-						rules: {},
-						messages: {},
-						errorElement: 'span',
-						errorClass: 'validate-has-error',
-						highlight: function (element) {
-							$(element).closest('.form-group').addClass('validate-has-error');
+			//用户信息下拉列表
+			if(public_vars.$userInfoMenu.length){
+				public_vars.$userInfoMenu.find('.user-info-menu > li').css({
+					minHeight: public_vars.$userInfoMenu.outerHeight() - 1
+				});
+			}
+
+
+			//表单验证
+			if($.isFunction($.fn.validate)) {
+				$("form.validate").each(function(i, el) {
+					var $this = $(el),
+						opts = {
+							rules: {},
+							messages: {},
+							errorElement: 'span',
+							errorClass: 'validate-has-error',
+							highlight: function (element) {
+								$(element).closest('.form-group').addClass('validate-has-error');
+							},
+							unhighlight: function (element) {
+								$(element).closest('.form-group').removeClass('validate-has-error');
+							},
+							errorPlacement: function (error, element)
+							{
+								if(element.closest('.has-switch').length) {
+									error.insertAfter(element.closest('.has-switch'));
+								}
+								else if(element.parent('.checkbox, .radio').length || element.parent('.input-group').length) {
+									error.insertAfter(element.parent());
+								} else {
+									error.insertAfter(element);
+								}
+							}
 						},
-						unhighlight: function (element) {
-							$(element).closest('.form-group').removeClass('validate-has-error');
-						},
-						errorPlacement: function (error, element)
-						{
-							if(element.closest('.has-switch').length) {
-								error.insertAfter(element.closest('.has-switch'));
+						$fields = $this.find('[data-validate]');
+
+					$fields.each(function(j, el2) {
+						var $field = $(el2),
+							name = $field.attr('name'),
+							validate = attrDefault($field, 'validate', '').toString(),
+							_validate = validate.split(',');
+
+
+						for(var k in _validate){
+							var rule = _validate[k],
+								params,
+								message;
+
+							if(typeof opts['rules'][name] == 'undefined'){
+								opts['rules'][name] = {};
+								opts['messages'][name] = {};
 							}
-							else if(element.parent('.checkbox, .radio').length || element.parent('.input-group').length) {
-								error.insertAfter(element.parent());
-							} else {
-								error.insertAfter(element);
-							}
-						}
-					},
-					$fields = $this.find('[data-validate]');
-
-				$fields.each(function(j, el2) {
-					var $field = $(el2),
-						name = $field.attr('name'),
-						validate = attrDefault($field, 'validate', '').toString(),
-						_validate = validate.split(',');
-
-
-					for(var k in _validate){
-						var rule = _validate[k],
-							params,
-							message;
-
-						if(typeof opts['rules'][name] == 'undefined'){
-							opts['rules'][name] = {};
-							opts['messages'][name] = {};
-						}
 
 
 
-						if($.inArray(rule, ['required', 'url', 'email', 'number', 'date','zh_phone','poe','money','num']) != -1){
-							opts['rules'][name][rule] = true;
+							if($.inArray(rule, ['required', 'url', 'email', 'number', 'date','zh_phone','poe','money','num']) != -1){
+								opts['rules'][name][rule] = true;
 
-							message = $field.data('message-' + rule);
+								message = $field.data('message-' + rule);
 
-							if(message){
-								opts['messages'][name][rule] = message;
-							}
-						} else if(params = rule.match(/(\w+)\[(.*?)\]/i)) {
-							if($.inArray(params[1], ['min', 'max', 'minlength', 'maxlength', 'dotminlength', 'dotmaxlength', 'equalTo']) != -1) {
-								opts['rules'][name][params[1]] = params[2];
+								if(message){
+									opts['messages'][name][rule] = message;
+								}
+							} else if(params = rule.match(/(\w+)\[(.*?)\]/i)) {
+								if($.inArray(params[1], ['min', 'max', 'minlength', 'maxlength', 'dotminlength', 'dotmaxlength', 'equalTo']) != -1) {
+									opts['rules'][name][params[1]] = params[2];
 
 
-								message = $field.data('message-' + params[1]);
+									message = $field.data('message-' + params[1]);
 
-								if(message) {
-									opts['messages'][name][params[1]] = message;
+									if(message) {
+										opts['messages'][name][params[1]] = message;
+									}
 								}
 							}
 						}
+					});
+
+
+
+					if(public_tool.cache){
+						public_tool.cache['form_opt_'+i]=opts;
+					}else{
+						$this.validate(opts);
+					}
+
+				});
+			}
+
+
+			//登陆获取焦点隐藏默认文字
+			$(".login-form .form-group:has(label)").each(function(i, el){
+				var $this = $(el),
+					$label = $this.find('label'),
+					$input = $this.find('.form-control');
+
+				$input.on('focus', function() {
+					$this.addClass('is-focused');
+				});
+
+				$input.on('keydown', function(){
+					$this.addClass('is-focused');
+				});
+
+				$input.on('blur', function() {
+					$this.removeClass('is-focused');
+
+					if($input.val().trim().length > 0)
+					{
+						$this.addClass('is-focused');
 					}
 				});
 
+				$label.on('click', function(){
+					$input.focus();
+				});
 
-
-				if(public_tool.cache){
-					public_tool.cache['form_opt_'+i]=opts;
-				}else{
-					$this.validate(opts);
-				}
-
-			});
-		}
-
-		
-		//登陆获取焦点隐藏默认文字
-		$(".login-form .form-group:has(label)").each(function(i, el)
-		{
-			var $this = $(el),
-				$label = $this.find('label'),
-				$input = $this.find('.form-control');
-			
-			$input.on('focus', function()
-			{
-				$this.addClass('is-focused');
-			});
-			
-			$input.on('keydown', function()
-			{
-				$this.addClass('is-focused');
-			});
-				
-			$input.on('blur', function()
-			{
-				$this.removeClass('is-focused');
-				
-				if($input.val().trim().length > 0)
-				{
+				if($input.val().trim().length > 0) {
 					$this.addClass('is-focused');
 				}
 			});
-			
-			$label.on('click', function()
-			{
-				$input.focus();
-			});
-			
-			if($input.val().trim().length > 0)
-			{
-				$this.addClass('is-focused');
-			}
-		});
-		
-		
-		
-		
-		
 
+
+		}
 
 	});
 	

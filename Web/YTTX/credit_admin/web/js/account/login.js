@@ -113,6 +113,10 @@
 					//放入本地存储
 					public_tool.setParams('login_module',{
 						'isLogin':true,
+						'datetime':(function(){
+							var date=new Date();
+							mo
+						}()),
 						'param':{
 							'adminId':encodeURIComponent(result.adminId),
 							'token':encodeURIComponent(result.token)
@@ -128,7 +132,6 @@
 							if(code===0){
 								//成功后跳入主页面
 								location.href = '../index.html';
-
 							}
 						}
 					});
@@ -147,29 +150,6 @@
 
 			}
 		});
-
-
-		/* /!*调用登陆接口*!/
-		 public_tool.doLogin({
-			 url:'http://120.24.226.70:8081/yttx-adminbms-api/sysuser/login',
-			 async:false,
-			 type:'post',
-			 do_login: true,
-			 param:{
-				 username:$username.val(),
-				 password:$pwd.val(),
-				 validcode:$vcode.val()
-				},
-				datatype:'json',
-				$error_wrap:$error_wrap,
-				error_tpl:error_tpl,
-				$pwd:$pwd,
-				show_loading_bar:show_loading_bar
-		});
-
-		return false;
-
-		*/
 
 
 		//设置获取焦点
