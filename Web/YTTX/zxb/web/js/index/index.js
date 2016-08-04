@@ -163,6 +163,10 @@
 					/*绑定tab按钮事件*/
 					/*左按钮*/
 					$tab3_btn_left.on('click',function(){
+						var $this=$(this);
+						if($this.hasClass('tab3-btn-disabled')){
+							return false;
+						}
 						if(tab_index===0){
 							return false;
 						}else{
@@ -189,6 +193,10 @@
 					});
 					/*右按钮*/
 					$tab3_btn_right.on('click',function(){
+						var $this=$(this);
+						if($this.hasClass('tab3-btn-disabled')){
+							return false;
+						}
 						if(tab_index===tablen - 1){
 							return false;
 						}else{
@@ -215,8 +223,8 @@
 						
 					});
 				}else{
-					$tab3_btn_left.addClass('g-d-hidei');
-					$tab3_btn_right.addClass('g-d-hidei');
+					$tab3_btn_left.addClass('tab3-btn-disabled');
+					$tab3_btn_right.addClass('tab3-btn-disabled');
 				}
 
 				/*绑定行业tab选项*/
@@ -258,9 +266,9 @@
 				});
 
 			}else{
-				$tab3_btn_left.addClass('g-d-hidei');
-				$tab3_btn_right.addClass('g-d-hidei');
-				$tab3_btn.addClass('g-d-hidei');
+				$tab3_btn_left.addClass('tab3-btn-disabled');
+				$tab3_btn_right.addClass('tab3-btn-disabled');
+				$tab3_btn.html('');
 			}
 
 			
