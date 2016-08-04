@@ -907,11 +907,11 @@
 					j=0;
 					for(j;j<sublen;j++){
 						item=subitem[j];
-						if(item.modLink===path){
+						/*if(item.modLink===path){
 							menustr+='<li class="'+subactive+'"><a href=\"'+link.code+'/'+item.modLink+suffix+'\"><span>'+item.modName+'</span></a></li>';
-						}else{
+						}else{*/
 							menustr+='<li><a href=\"'+link.code+'/'+item.modLink+suffix+'\"><span>'+item.modName+'</span></a></li>';
-						}
+						/*}*/
 					}
 					menustr+="</li></ul>";
 				}else{
@@ -945,11 +945,11 @@
 					for(j;j<sublen;j++){
 						item=subitem[j];
 						if(ismodule){
-							if(item.modLink===path){
+							/*if(item.modLink===path){
 								menustr+='<li class="'+subactive+'"><a href=\"'+item.modLink+suffix+'\"><span>'+item.modName+'</span></a></li>';
-							}else{
+							}else{*/
 								menustr+='<li><a href=\"'+item.modLink+suffix+'\"><span>'+item.modName+'</span></a></li>';
-							}
+							/*}*/
 						}else{
 							menustr+='<li><a href=\"../'+link.code+'/'+item.modLink+suffix+'\"><span>'+item.modName+'</span></a></li>';
 						}
@@ -986,6 +986,7 @@
 		$menu.html('');
 		//清除本地存储缓存
 		this.removeParams('menu_module');
+		this.removeParams('source_module');
 	};
 	//初始化左侧导航
 	public_tool.initSideMenu=function($wrap){
@@ -1176,39 +1177,19 @@
 			/*然后存入缓存*/
 			self.setParams('power_module',self.powerMap);
 		}
-		console.log(self.powerMap);
 	};
-	//加载权限
-	public_tool.getPower=function(opt){
+	//根据模块判断拥有的权限
+	public_tool.getPower=function(){
 		var self=this,
-			cachePower=self.getParams('power_module')/*调用缓存*/;
+			havepower=$.isEmptyObject(self.powerMap);
 
-		if(cachePower){
-			/*如果是同一模块侧直接获取缓存*/
-			/*如果存在缓存，则读取缓存*/
-			self.powerMap=cachePower;
-			return;
+		if(havepower){
+			console.log('need loading');
 		}else{
-			//没有缓存则重新请求
-
-			/*判断是否已经加载权限*/
-			$.ajax({
-				url:opt.url,
-				async:opt.async,
-				type:opt.type,
-				data:opt.param,
-				dataType:opt.datatype
-			}).done(function(data){
-				if(parseInt(data.code,10)!==0){
-					//查询异常
-					return false;
-				}
-				/*解析权限*/
-				self.resolvePower(data.result.menu);
-			}).fail(function(){
-				console.log('power error');
-			});
+			console.log('ok');
 		}
+
+
 	};
 
 

@@ -20,6 +20,9 @@
 			});
 
 
+			/*权限调用*/
+			public_tool.getPower();
+
 			/*dom引用和相关变量定义*/
 			var $admin_role_wrap=$('#admin_role_wrap')/*表格*/,
 				module_id='admin_role'/*模块id，主要用于本地存储传值*/,
