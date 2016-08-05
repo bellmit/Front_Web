@@ -1,3 +1,29 @@
+/*
+{
+  "result":{
+    "list":[{
+      "description":"管理全部系统，有全部权限",
+      "id":1,
+      "name":"超级管理员",
+      "roleCode":"SUPER"
+    },{
+      "description":"管理员",
+      "id":2,
+      "name":"管理员",
+      "roleCode":"MANAGER"
+    },{
+      "description":"高级会员",
+      "id":3,
+      "name":"高级会员",
+      "roleCode":"OTHER"
+    }]
+  }
+}
+
+*/
+
+
+
 {
   "data":[{
     "btn":{

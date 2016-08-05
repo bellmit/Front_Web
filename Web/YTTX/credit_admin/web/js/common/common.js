@@ -811,6 +811,8 @@
 				$(cacheMenu).appendTo($menu.html(''));
 				//初始化
 				self.initSideMenu($wrap);
+				/*导航高亮*/
+				self.highSideMenu($menu);
 				/*解析权限*/
 				var cacheSource=self.getParams('source_module');
 				self.resolvePower(cacheSource);
@@ -907,11 +909,7 @@
 					j=0;
 					for(j;j<sublen;j++){
 						item=subitem[j];
-						/*if(item.modLink===path){
-							menustr+='<li class="'+subactive+'"><a href=\"'+link.code+'/'+item.modLink+suffix+'\"><span>'+item.modName+'</span></a></li>';
-						}else{*/
 							menustr+='<li><a href=\"'+link.code+'/'+item.modLink+suffix+'\"><span>'+item.modName+'</span></a></li>';
-						/*}*/
 					}
 					menustr+="</li></ul>";
 				}else{
@@ -945,11 +943,7 @@
 					for(j;j<sublen;j++){
 						item=subitem[j];
 						if(ismodule){
-							/*if(item.modLink===path){
-								menustr+='<li class="'+subactive+'"><a href=\"'+item.modLink+suffix+'\"><span>'+item.modName+'</span></a></li>';
-							}else{*/
 								menustr+='<li><a href=\"'+item.modLink+suffix+'\"><span>'+item.modName+'</span></a></li>';
-							/*}*/
 						}else{
 							menustr+='<li><a href=\"../'+link.code+'/'+item.modLink+suffix+'\"><span>'+item.modName+'</span></a></li>';
 						}
@@ -979,6 +973,8 @@
 
 		//调用菜单渲染
 		self.initSideMenu($wrap);
+		/*导航高亮*/
+		self.highSideMenu($menu);
 	};
 	//卸载左侧菜单条
 	public_tool.removeSideMenu=function($menu){
@@ -1021,6 +1017,11 @@
 				});
 			});
 		}
+	};
+	//当前高亮菜单
+	public_tool.highSideMenu=function($menu){
+		var self=this;
+		$menu.find("a[href='"+self.routeMap.path+".html']").parent().addClass('sub-menu-active');
 	};
 	//导航展开服务类
 	public_tool.expandSideMenu=function($li,$sub,$wrap){
@@ -1179,17 +1180,71 @@
 		}
 	};
 	//根据模块判断拥有的权限
-	public_tool.getPower=function(){
+	public_tool.getPower=function(key){
 		var self=this,
 			havepower=$.isEmptyObject(self.powerMap);
 
 		if(havepower){
-			console.log('need loading');
+			/*没有获取到权限*/
+			return null;
 		}else{
-			console.log('ok');
+			var path,
+				module,
+				currentpower,
+				menumap=self.menuMap,
+				modid;
+			if(typeof key!=='undefined'){
+				modid=key;
+			}else{
+				path=self.routeMap.path;
+				module=self.routeMap.module;
+				if(module==''&&module=='account'){
+					return null;
+				}
+				for(var i in menumap){
+					if(path.indexOf(menumap[i].match)!==-1){
+						modid=i;
+						break;
+					}
+				}
+			}
+
+			currentpower= $.extend(true,{},self.powerMap[modid]);
+			for(var j in currentpower){
+				if(currentpower[j].isPermit===0){
+					delete currentpower[j];
+				}
+			}
+			return currentpower;
 		}
+		return null;
+	};
+	//根据模块判断拥有的权限
+	public_tool.getAllPower=function(){
+		var self=this,
+			havepower=$.isEmptyObject(self.powerMap);
 
+		if(havepower){
+			/*没有获取到权限*/
+			return null;
+		}else{
+			var module=self.routeMap.module;
 
+				if(module==''&&module=='account'){
+					return null;
+				}
+			var currentpower= $.extend(true,{},self.powerMap);
+			for(var i in currentpower){
+				var temppower=currentpower[i];
+				for(var j in temppower){
+					if(temppower[j].isPermit===0){
+						delete temppower[j];
+					}
+				}
+			}
+			return currentpower;
+		}
+		return null;
 	};
 
 
@@ -1255,6 +1310,8 @@
 			var tempvalid=self.validLogin(cacheLogin);
 			if(tempvalid){
 				self.initMap.loginMap= $.extend(true,{},cacheLogin);
+				var name=self.initMap.loginMap.name||'匿名用户';
+				public_vars.$admin_show_wrap.html(name+'<i class="fa-angle-down"></i>');
 				return true;
 			}else{
 				/*清除缓存*/
@@ -1291,8 +1348,9 @@
 
 			/*判断日期*/
 			if(login_rq!==now_rq){
+				//同一天有效
 				return false;
-			}else if(login_rq===now_rq){
+			}/*else if(login_rq===now_rq){
 				login_sj=login_sj.split(':');
 				now_sj=now_sj.split(':');
 				var login_hh=login_sj[0],
@@ -1301,13 +1359,14 @@
 					now_mm=now_sj[1];
 
 				if(login_hh!==now_hh){
+					//同一小时有效
 					return false;
 				}else if(now_mm - login_mm >30){
-					console.log(now_mm - login_mm);
+					//多少分钟内有效
 					return false;
 				}
 				return true;
-			}
+			}*/
 			return true;
 		}else{
 			return false;
@@ -1425,7 +1484,8 @@ var public_vars = public_vars || {};
 		public_vars.$logout_btn=$('#logout_btn');
 		public_vars.$page_support_wrap=$('#page_support_wrap');
 		public_vars.$page_support=public_vars.$page_support_wrap.children();
-		public_vars.$goto_login=$('#goto_login');
+		public_vars.$goto_login=$('#goto_login'),
+		public_vars.$admin_show_wrap=$('#admin_show_wrap');
 
 
 		/*初始化判定*/

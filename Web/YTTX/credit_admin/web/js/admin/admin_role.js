@@ -21,7 +21,7 @@
 
 
 			/*权限调用*/
-			public_tool.getPower();
+			var powermap=public_tool.getPower();
 
 			/*dom引用和相关变量定义*/
 			var $admin_role_wrap=$('#admin_role_wrap')/*表格*/,
@@ -52,88 +52,115 @@
 				$role_remark=$('#role_remark')/*角色描述*/;
 
 
-			//初始化请求
+
+			/*数据加载*/
 			table=$admin_role_wrap.DataTable({
 				deferRender:true,/*是否延迟加载数据*/
 				//serverSide:true,/*是否服务端处理*/
 				searching:false,/*是否搜索*/
 				ordering:false,/*是否排序*/
 				//order:[[1,'asc']],/*默认排序*/
-				paging:true,/*是否开启本地分页*/
+				paging:false,/*是否开启本地分页*/
 				pagingType:'simple_numbers',/*分页按钮排列*/
 				autoWidth:true,/*是否*/
-				info:true,/*显示分页信息*/
+				info:false,/*显示分页信息*/
 				stateSave:false,/*是否保存重新加载的状态*/
 				processing:true,/*大消耗操作时是否显示处理状态*/
-				/*异步请求地址及相关配置*/
 				ajax:{
-					url:"../../json/admin/admin_role.json",
+					url:"http://120.24.226.70:8081/yttx-adminbms-api/roles",
 					dataType:'JSON',
 					method:'post',
+					dataSrc:function ( json ) {
+						var code=parseInt(json.code,10);
+						if(code!==0){
+							if(code===999){
+								/*清空缓存*/
+								public_tool.clear();
+								public_tool.loginTips();
+							}
+							console.log(json.message);
+							return null;
+						}
+						return json.result.list;
+					},
 					data:(function(){
 						/*查询本地,如果有则带参数查询，如果没有则初始化查询*/
 						var param=public_tool.getParams(module_id);
 						//获取参数后清除参数
 						public_tool.removeParams(module_id);
 						if(param){
-							return {"id":param.id,"type":param.type};
+							return {
+								roleId:decodeURIComponent(logininfo.param.roleId),
+								adminId:decodeURIComponent(logininfo.param.adminId),
+								token:decodeURIComponent(logininfo.param.token)
+							};
 						}
-						return '';
+						return {
+							roleId:decodeURIComponent(logininfo.param.roleId),
+							adminId:decodeURIComponent(logininfo.param.adminId),
+							token:decodeURIComponent(logininfo.param.token)
+						};
 					}())
-				},/*解析每列数据*/
+				},/*异步请求地址及相关配置*/
 				columns: [
 					{
-						"data":"btn",
+						"data":"id",
 						"render":function(data, type, full, meta ){
-							return '<input type="checkbox" data-id="'+full.btn.id+'" name="role" class="cbr">';
+							return '<input type="checkbox" data-id="'+full.id+'" name="role" class="cbr">';
 						}
 					},
 					{"data":"name"},
-					{"data":"remark"},
+					{"data":"description"},
 					{
-						"data":"btn",
+						"data":"id",
 						"render":function(data, type, full, meta ){
-							var id=full.btn.id,
-								types=parseInt(full.btn.type,10),
+							var id=parseInt(full.id,10),
 								btns='';
 
-							if(types===1){
-								//超级管理员角色
-								btns='<span data-id="'+id+'" data-type="'+types+'" data-action="update" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
-											<i class="fa-pencil"></i>\
-											<span>修改</span>\
-											</span>';
-							}else if(types===2||types===3){
-								//普通管理员角色
-								btns='<span data-id="'+id+'" data-type="'+types+'" data-action="update" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
-											<i class="fa fa-pencil"></i>\
-											<span>修改</span>\
-											</span>\
-											<span data-href="admin_member.html" data-module="admin_member" data-action="select" data-id="'+id+'" data-type="'+types+'" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
-											<i class="fa-group"></i>\
-											<span>成员</span>\
-											</span>\
-											<span data-href="yttx-admin-permission.html" data-module="admin_permission" data-action="select" data-id="'+id+'" data-type="'+types+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
-											<i class="fa-gear"></i>\
-											<span>权限</span>\
-											</span>\
-											<span  data-id="'+id+'" data-type="'+types+'" data-action="delete" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
-											<i class="fa-trash"></i>\
-											<span>删除</span>\
-											</span>';
+							if(id===1){
+								//超级管理员
+								if(typeof powermap[3]!=='undefined'){
+									btns='<span data-id="'+id+'" data-action="update" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+									 <i class="fa-pencil"></i>\
+									 <span>修改</span>\
+									 </span>';
+								}
 							}else{
-								//其他角色
+								//管理员||高级会员
+								/*修改*/
+								if(typeof powermap[3]!=='undefined'){
+									btns+='<span data-id="'+id+'" data-action="update" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+									 <i class="fa-pencil"></i>\
+									 <span>修改</span>\
+									 </span>';
+								}
+								/*成员*/
+								btns+='<span data-href="admin_member.html" data-module="admin_member" data-action="select" data-id="'+id+'" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+								 <i class="fa-group"></i>\
+								 <span>成员</span>\
+								 </span>';
+								/*权限*/
+								if(typeof powermap[6]!=='undefined'){
+									btns+='<span data-href="yttx-admin-permission.html" data-module="admin_permission" data-action="select" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+									<i class="fa-gear"></i>\
+									<span>权限</span>\
+									</span>';
+								}
+								/*删除*/
+								if(typeof powermap[4]!=='undefined'){
+									btns+='<span  data-id="'+id+'" data-action="delete" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+									<i class="fa-trash"></i>\
+									<span>删除</span>\
+									</span>';
+								}
 							}
 							return btns;
 						}
 					}
 				],/*控制分页数*/
-				aLengthMenu: [
-					[10,20,50],
-					[10,20,50]
-				],/*控制是否每页可改变显示条数*/
 				lengthChange:false/*是否可改变长度*/
 			});
+
 
 
 
@@ -147,7 +174,6 @@
 				var target= e.target,
 					$this,
 					id,
-					type,
 					module,
 					action,
 					href,
@@ -170,7 +196,6 @@
 				}
 
 				id=$this.attr('data-id');
-				type=$this.attr('data-type');
 				action=$this.attr('data-action');
 				href=$this.attr('data-href');
 
@@ -183,7 +208,6 @@
 					public_tool.setParams(module,{
 						'module':module,
 						'id':id,
-						'type':type,
 						'action':action
 					});
 					//地址跳转
@@ -198,22 +222,28 @@
 						dialogObj.setFn(function(){
 							var self=this;
 							$.ajax({
-									url: "../../json/admin/admin_role_delete.json",
+									url:"http://120.24.226.70:8081/yttx-adminbms-api/role/delete",
 									method: 'POST',
 									dataType: 'json',
 									data:{
-										"id":id,
-										"type":type
+										"roleId":id,
+										"adminId":decodeURIComponent(logininfo.param.adminId),
+										"token":decodeURIComponent(logininfo.param.token)
 									}
 								})
 								.done(function (resp) {
-									if(resp.flag){
-										//datatable重绘
-										table.row($tr).remove().draw();
-										setTimeout(function(){
-											self.content('<span class="g-c-bs-success g-btips-succ">删除数据成功</span>');
-										},100);
+									var code=parseInt(resp.code,10);
+									if(code!==0){
+										dia.content('<span class="g-c-bs-warning g-btips-warn">删除失败</span>').show();
+										setTimeout(function () {
+											dia.close();
+										},2000);
+										return false;
 									}
+									table.row($tr).remove().draw();
+									setTimeout(function(){
+										self.content('<span class="g-c-bs-success g-btips-succ">删除数据成功</span>');
+									},100);
 								})
 								.fail(function(resp){
 									if(!resp.flag&&resp.message){
@@ -245,14 +275,15 @@
 								case 'name':
 									$role_name.val(datas[i]);
 									break;
-								case 'remark':
+								case 'description':
 									$role_remark.val(datas[i]);
 									break;
-								case 'btn':;
-									$role_id.val(datas[i][id]);
+								case 'id':
+									$role_id.val(datas[i]);
 									break;
 							}
 						}
+
 					}
 				}
 
@@ -269,17 +300,22 @@
 			});
 
 			/*添加角色*/
-			$role_add_btn.on('click',function(){
-				//重置表单
-				edit_form.reset();
-				$edit_close_btn.prev().html('添加角色');
-				$edit_cance_btn.prev().html('添加角色');
-				//显示表单
-				$table_wrap.addClass('col-md-9');
-				$edit_wrap.addClass('g-d-showi');
-				//第一行获取焦点
-				$role_name.focus();
-			});
+			if(typeof powermap[2]!=='undefined'){
+				$role_add_btn.on('click',function(){
+					//重置表单
+					edit_form.reset();
+					$edit_close_btn.prev().html('添加角色');
+					$edit_cance_btn.prev().html('添加角色');
+					//显示表单
+					$table_wrap.addClass('col-md-9');
+					$edit_wrap.addClass('g-d-showi');
+					//第一行获取焦点
+					$role_name.focus();
+				});
+			}else{
+				$role_add_btn.addClass('g-d-hidei');
+			}
+
 
 			/*//关闭编辑区*/
 			$edit_close_btn.click(function(e){
@@ -296,40 +332,64 @@
 					$.extend(true,form_opt,public_tool.cache.form_opt_0,{
 						submitHandler: function(form){
 							//判断是否存在id号
-							var id=$role_id.val(),
-								config={
-									url:"",
+							var id=$role_id.val();
+							if(id!==''){
+								//修改角色
+								var config={
+											url:"http://120.24.226.70:8081/yttx-adminbms-api/role/update",
+											method: 'POST',
+											dataType: 'json',
+											data:{
+												"roleId":id,
+												"adminId":decodeURIComponent(logininfo.param.adminId),
+												"token":decodeURIComponent(logininfo.param.token),
+												"updateUserId":decodeURIComponent(logininfo.param.adminId),
+												"name":$role_name.val(),
+												"description":$role_remark.val()
+											}
+										};
+								//config.data['id']=id;
+							}else{
+								//添加角色
+								var config={
+									url:"http://120.24.226.70:8081/yttx-adminbms-api/role/add",
 									method: 'POST',
 									dataType: 'json',
-									data: {
-										"roleName":$role_name.val(),
-										"roleRemark":$role_remark.val()
+									data:{
+										"roleId":decodeURIComponent(logininfo.param.roleId),
+										"adminId":decodeURIComponent(logininfo.param.adminId),
+										"token":decodeURIComponent(logininfo.param.token),
+										"addUserId":decodeURIComponent(logininfo.param.adminId),
+										"name":$role_name.val(),
+										"description":$role_remark.val()
 									}
 								};
-
-							if(id!==''){
-								//此处配置修改稿角色地址（开发阶段）
-								config.url="../../json/admin/admin_role_update.json";
-								config.data['role_Id']=id;
-							}else{
-								//此处配置添加角色地址（开发阶段）
-								config.url="../../json/admin/admin_role_update.json";
-								if(config.data['role_Id']){
-									delete config.data['role_Id'];
-								}
 							}
 
 							$.ajax(config)
 								.done(function(resp){
-									if(resp.flag){
-										dia.content('<span class="g-c-bs-success g-btips-succ">操作成功</span>').show();
-										//重置表单
-										$edit_cance_btn.trigger('click');
-										//重绘表格
-										table.draw();
-									}else{
+									var code=parseInt(resp.code,10);
+									if(code!==0){
+										console.log(resp.message);
 										dia.content('<span class="g-c-bs-warning g-btips-warn">操作失败</span>').show();
+										setTimeout(function () {
+											dia.close();
+										},2000);
+										return false;
 									}
+
+									if(id!==''){
+										//修改
+										dia.content('<span class="g-c-bs-success g-btips-succ">修改成功</span>').show();
+
+									}else{
+										//添加
+										dia.content('<span class="g-c-bs-success g-btips-succ">添加成功</span>').show();
+									}
+									//重置表单
+									$edit_cance_btn.trigger('click');
+									//重绘表格
+									table.ajax.reload();
 									setTimeout(function () {
 										dia.close();
 									},2000);
@@ -338,7 +398,7 @@
 									dia.content('<span class="g-c-bs-warning g-btips-warn">操作失败</span>').show();
 									setTimeout(function () {
 										dia.close();
-									},2000)
+									},2000);
 
 								});
 
@@ -351,6 +411,8 @@
 			}
 
 		}
+
+
 
 
 	});
