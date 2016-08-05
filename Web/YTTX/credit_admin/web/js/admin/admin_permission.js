@@ -19,6 +19,10 @@
 				datatype:'json'
 			});
 
+
+			/*权限调用*/
+			var powermap=public_tool.getPower();
+
 			/*dom引用和相关变量定义*/
 			var $admin_power_wrap=$('#admin_power_wrap')/*表格*/,
 				module_id='1'/*模块id，主要用于查询传参*/,
