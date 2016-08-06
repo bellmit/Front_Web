@@ -109,89 +109,94 @@
 
             <!--主内容-->
             <div class="row row-main-wrap">
-                <div class="col-md-12" id="table_wrap">
-                    <div class="panel">
 
-                        <!--表格标题-->
-                        <div class="panel-heading">
-                            <h3 class="panel-title">角色管理</h3>
+                <!--角色区域-->
+                <div class="g-w-percent50">
+                    <!--角色列表-->
+                    <div class="col-md-12" id="table_wrap">
+                        <div class="panel">
 
-                            <div class="panel-options">
-                                <a href="#" data-toggle="panel">
-                                    <span class="collapse-icon">&ndash;</span>
-                                    <span class="expand-icon">+</span>
-                                </a>
-                                <a href="#" data-toggle="reload">
-                                    <i class="fa-rotate-right"></i>
-                                </a>
+                            <!--表格标题-->
+                            <div class="panel-heading">
+                                <h3 class="panel-title">角色管理</h3>
+
+                                <div class="panel-options">
+                                    <a href="#" data-toggle="panel">
+                                        <span class="collapse-icon">&ndash;</span>
+                                        <span class="expand-icon">+</span>
+                                    </a>
+                                    <a href="#" data-toggle="reload">
+                                        <i class="fa-rotate-right"></i>
+                                    </a>
+                                </div>
                             </div>
-                        </div>
 
-                        <!--表格主体-->
-                        <div class="panel-body">
-                            <div>
-                                <span id="role_add_btn" class="btn btn-info btn-icon btn-xs g-br2">
+                            <!--表格主体-->
+                            <div class="panel-body">
+                                <div>
+                                <span id="role_add_btn" class="btn btn-info btn-icon btn-xs g-br2 g-d-hidei">
                                     <i class="fa-plus"></i>
                                     <span>添加角色</span>
                                 </span>
+                                </div>
+
+
+                                <!--
+                                <tr>
+                                        <td><input type="checkbox" name="role" class="cbr"></td>
+                                        <td>超级管理员</td>
+                                        <td>管理全部系统，有全部权限</td>
+                                        <td>
+                                            <span data-id="1" data-type="1" data-action="update" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">
+                                                <i class="fa-pencil"></i>
+                                                <span>修改</span>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                -->
+
+
+                                <table id="admin_role_wrap" class="table table-bordered table-striped table-hover admin_table">
+                                    <!--分组样式-->
+                                    <colgroup>
+                                        <col class="g-w-percent2">
+                                        <col class="g-w-percent10">
+                                        <col class="g-w-percent20">
+                                        <col class="g-w-percent18">
+                                    </colgroup>
+
+                                    <!--表头-->
+                                    <thead>
+                                    <tr>
+                                        <th>&nbsp;</th>
+                                        <th>角色</th>
+                                        <th>角色描述</th>
+                                        <th>操作</th>
+                                    </tr>
+                                    </thead>
+
+                                    <!--表尾-->
+                                    <tfoot>
+                                    <tr>
+                                        <th>&nbsp;</th>
+                                        <th>角色</th>
+                                        <th>角色描述</th>
+                                        <th>操作</th>
+                                    </tr>
+                                    </tfoot>
+
+                                    <!--表主体-->
+                                    <tbody class="middle-align"></tbody>
+                                </table>
                             </div>
-                            
-                            
-                            <!--
-                            <tr>
-                                    <td><input type="checkbox" name="role" class="cbr"></td>
-                                    <td>超级管理员</td>
-                                    <td>管理全部系统，有全部权限</td>
-                                    <td>
-                                        <span data-id="1" data-type="1" data-action="update" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">
-                                            <i class="fa-pencil"></i>
-                                            <span>修改</span>
-                                        </span>
-                                    </td>
-                                </tr>
-                            -->
 
 
-                            <table id="admin_role_wrap" class="table table-bordered table-striped table-hover admin_table">
-                                <!--分组样式-->
-                                <colgroup>
-                                    <col class="g-w-percent2">
-                                    <col class="g-w-percent10">
-                                    <col class="g-w-percent20">
-                                    <col class="g-w-percent18">
-                                </colgroup>
-
-                                <!--表头-->
-                                <thead>
-                                <tr>
-                                    <th>&nbsp;</th>
-                                    <th>角色</th>
-                                    <th>角色描述</th>
-                                    <th>操作</th>
-                                </tr>
-                                </thead>
-
-                                <!--表尾-->
-                                <tfoot>
-                                <tr>
-                                    <th>&nbsp;</th>
-                                    <th>角色</th>
-                                    <th>角色描述</th>
-                                    <th>操作</th>
-                                </tr>
-                                </tfoot>
-
-                                <!--表主体-->
-                                <tbody class="middle-align"></tbody>
-                            </table>
                         </div>
-
-
                     </div>
-                </div>
 
 
-                <div class="col-md-3 row-edit-wrap" id="edit_wrap">
+                    <!--角色编辑-->
+                    <div class="col-md-3 row-edit-wrap" id="edit_wrap">
                         <div class="main-edit-show">
                             <div class="panel">
 
@@ -236,7 +241,127 @@
                             </div>
 
                         </div>
+                    </div>
+
                 </div>
+
+                <!--成员区域-->
+                <div class="g-w-percent50" data-id="" id="member_wrap">
+
+                    <!--成员列表-->
+                    <div class="col-md-12" id="table_member_wrap">
+                        <div class="panel">
+
+                            <!--表格标题-->
+                            <div class="panel-heading">
+                                <h3 class="panel-title">成员管理</h3>
+
+                                <div class="panel-options">
+                                    <a href="#" data-toggle="panel">
+                                        <span class="collapse-icon">&ndash;</span>
+                                        <span class="expand-icon">+</span>
+                                    </a>
+                                    <a href="#" data-toggle="reload">
+                                        <i class="fa-rotate-right"></i>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <!--表格主体-->
+                            <div class="panel-body">
+                                <div>
+                                <span id="member_add_btn" class="btn btn-info btn-icon btn-xs g-br2 g-d-hidei">
+                                    <i class="fa-plus"></i>
+                                    <span>添加成员</span>
+                                </span>
+                                </div>
+
+
+                                <table id="admin_member_wrap" class="table table-bordered table-striped table-hover admin_table">
+                                    <!--分组样式-->
+                                    <colgroup>
+                                        <col class="g-w-percent2">
+                                        <col class="g-w-percent15">
+                                        <col class="g-w-percent15">
+                                        <col class="g-w-percent18">
+                                        <col class="g-d-hidei">
+                                    </colgroup>
+
+                                    <!--表头-->
+                                    <thead>
+                                    <tr>
+                                        <th>&nbsp;</th>
+                                        <th>登陆名</th>
+                                        <th>用户名称</th>
+                                        <th>操作</th>
+                                        <th></th>
+                                    </tr>
+                                    </thead>
+
+                                    <!--表主体-->
+                                    <tbody class="middle-align"></tbody>
+                                </table>
+                            </div>
+
+
+                        </div>
+                    </div>
+
+                    <!--成员编辑-->
+                    <div class="col-md-3 row-edit-wrap" id="edit_memeber_wrap">
+                        <div class="main-edit-show">
+                            <div class="panel">
+
+                                <!--编辑表单标题-->
+                                <div class="panel-heading">
+                                    <h3 class="panel-title"></h3>
+                                    <div class="panel-options" id="editmember_close_btn">
+                                        <a href="#">
+                                            &times;
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <!--修改或添加主体-->
+                                <div class="panel-body">
+                                    <form role="form" id="member_edit_form" method="post" class="validate">
+                                        <input  type="text" class="g-d-hidei" value="" id="member_id" name="id">
+                                        <div class="form-group">
+                                            <label class="control-label">登录名：</label>
+
+                                            <input type="text" class="form-control" id="member_username" name="member_username" data-validate="required" data-message-required="登录名不能为空" placeholder="请输入成员登录名" />
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="control-label">登录密码：</label>
+
+                                            <input type="password" class="form-control" id="member_password" name="member_password" data-validate="required" data-message-required="登录密码不能为空" placeholder="请输入成员登录密码" />
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="control-label">用户名称：</label>
+
+                                            <input type="text" class="form-control" id="member_name" name="member_name" data-validate="required" data-message-required="用户名称不能为空" placeholder="请输入成员用户名称" />
+                                        </div>
+
+
+                                        <div class="form-group">
+                                            <button type="submit" class="btn btn-success"></button>
+                                            <button id="editmember_cance_btn" type="reset" class="btn btn-white">取消</button>
+                                        </div>
+
+                                    </form>
+
+                                </div>
+
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+
 
             </div>
 
