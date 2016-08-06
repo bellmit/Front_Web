@@ -291,7 +291,7 @@
                                     <thead>
                                     <tr>
                                         <th>&nbsp;</th>
-                                        <th>登陆名</th>
+                                        <th>登录名</th>
                                         <th>用户名称</th>
                                         <th>操作</th>
                                         <th></th>
@@ -308,7 +308,7 @@
                     </div>
 
                     <!--成员编辑-->
-                    <div class="col-md-3 row-edit-wrap" id="edit_memeber_wrap">
+                    <div class="col-md-3 row-edit-wrap" id="edit_member_wrap">
                         <div class="main-edit-show">
                             <div class="panel">
 
@@ -390,6 +390,34 @@
 
         </div>
     </div>
+
+
+
+    <div class="modal fade custom-width" id="show_detail_wrap">
+        <div class="modal-dialog g-w-percent46">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 id="show_detail_title" class="modal-title"></h4>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-bordered table-striped table-hover admin_table">
+                        <colgroup>
+                            <col class="g-w-percent10"/>
+                            <col class="g-w-percent40"/>
+                        </colgroup>
+                        <tbody id="show_detail_content"></tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-info" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 	
 	<!--加载遮罩层-->
 	<div id="page_loading_wrap" class="page-loading-overlay g-d-hidei">
