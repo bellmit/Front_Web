@@ -1,45 +1,11 @@
-/*
-
-首页：menu-ux-home
-代理管理：menu-ux-agent
-内容管理：menu-ux-article
-商城管理：menu-ux-shop
-服务栏管理：menu-ux-serve
-信用卡管理：menu-ux-credit
-财务管理：menu-ux-finance
-收付款管理：menu-ux-payment
-用户管理：menu-ux-user
-广告管理:menu-ux-ad
-系统管理：menu-ux-admin
 
 
-if(!link&&!issub&&i===0){
-menustr+='<li><a href=\"index'+suffix+'\"><i class=\"'+item.modClass+'\"></i><span>'+item.modName+'</span></a></li>';
-}
-if(link&&!issub&&i===0){
-//匹配首页且没有子菜单
-menustr+='<li><a href=\"index'+item.modLink+suffix+'\"><i class=\"'+item.modClass+'\"></i><span>'+item.modName+'</span></a></li>'
-}else if(link&&i===0&&issub){
-//匹配首页且有子菜单
-}
 
+/* 
+菜单模块
+roleId
 
-*/
-
-/*
-if(i===0){
-						//首页数据
-						//如果是当前路径和当前模块一致
-						menustr='<li><a href=\"'+item.modLink+suffix+'\"><i class=\"'+item.modClass+'\"></i><span>'+item.modName+'</span></a></li>';
-					}else{
-						//其他模块
-						//如果是当前路径和当前模块一致
-						var issub=typeof (subitem=item[key])!=='undefined';
-						if(issub){
-							//子菜单循环
-							if(path.indexOf(link.match)!==-1){
-
-
+http://120.24.226.70:8081/yttx-adminbms-api/module/menu
 */
 
 {
@@ -139,143 +105,6 @@ if(i===0){
             "isPermit": 1,
             "modId": 1,
             "prid": 9
-          }
-        ]
-      },
-      {
-        "modClass": "yttx-content",
-        "modCode": "yttx-content",
-        "modId": 19,
-        "modItem": [
-          {
-            "modClass": "yttx-content-channel",
-            "modCode": "yttx-content-channel",
-            "modId": 19,
-            "modLink": "yttx-content-channel",
-            "modName": "频道设置"
-          },
-          {
-            "modClass": "yttx-content-article",
-            "modCode": "yttx-content-article",
-            "modId": 19,
-            "modLink": "yttx-content-article",
-            "modName": "文章管理"
-          },
-          {
-            "modClass": "yttx-content-comment",
-            "modCode": "yttx-content-comment",
-            "modId": 19,
-            "modLink": "yttx-content-comment",
-            "modName": "评论管理"
-          },
-          {
-            "modClass": "yttx-content-publish",
-            "modCode": "yttx-content-publish",
-            "modId": 19,
-            "modLink": "yttx-content-publish",
-            "modName": "发布文章"
-          },
-          {
-            "modClass": "yttx-content-message",
-            "modCode": "yttx-content-message",
-            "modId": 19,
-            "modLink": "yttx-content-message",
-            "modName": "消息管理"
-          },
-          {
-            "modClass": "yttx-content-feedback",
-            "modCode": "yttx-content-feedback",
-            "modId": 19,
-            "modLink": "yttx-content-feedback",
-            "modName": "用户反馈"
-          }
-        ],
-        "modLink": "yttx-content",
-        "modName": "内容管理",
-        "permitItem": [
-          {
-            "funcCode": "content-article-view",
-            "funcName": "文章查看",
-            "isPermit": 1,
-            "modId": 19,
-            "prid": 24
-          },
-          {
-            "funcCode": "content-article-verify",
-            "funcName": "文章审核",
-            "isPermit": 1,
-            "modId": 19,
-            "prid": 25
-          },
-          {
-            "funcCode": "content-article-stick",
-            "funcName": "文章置顶",
-            "isPermit": 1,
-            "modId": 19,
-            "prid": 26
-          },
-          {
-            "funcCode": "content-article-delete",
-            "funcName": "文章删除",
-            "isPermit": 1,
-            "modId": 19,
-            "prid": 27
-          },
-          {
-            "funcCode": "content-article-update",
-            "funcName": "文章修改",
-            "isPermit": 1,
-            "modId": 19,
-            "prid": 28
-          },
-          {
-            "funcCode": "content-article-extend",
-            "funcName": "文章推广",
-            "isPermit": 1,
-            "modId": 19,
-            "prid": 29
-          },
-          {
-            "funcCode": "content-comment-view",
-            "funcName": "评论查看",
-            "isPermit": 1,
-            "modId": 19,
-            "prid": 30
-          },
-          {
-            "funcCode": "content-comment-verify",
-            "funcName": "评论审核",
-            "isPermit": 1,
-            "modId": 19,
-            "prid": 31
-          },
-          {
-            "funcCode": "content-comment-spider",
-            "funcName": "内容抓取",
-            "isPermit": 1,
-            "modId": 19,
-            "prid": 32
-          },
-          {
-            "funcCode": "content-article-publish",
-            "funcName": "发布文章",
-            "isPermit": 1,
-            "modId": 19,
-            "prid": 33
-          },
-          {
-            "funcCode": "content-user-feedback",
-            "funcName": "用户反馈",
-            "isPermit": 1,
-            "modId": 19,
-            "prid": 34
-          },
-          {
-            "funcCode": "content-channel-setting",
-            "funcName": "频道设置",
-            "isPermit": 1,
-            "modId": 19,
-            "prid": 35
           }
         ]
       },
@@ -449,6 +278,143 @@ if(i===0){
         ]
       },
       {
+        "modClass": "yttx-content",
+        "modCode": "yttx-content",
+        "modId": 19,
+        "modItem": [
+          {
+            "modClass": "yttx-content-channel",
+            "modCode": "yttx-content-channel",
+            "modId": 19,
+            "modLink": "yttx-content-channel",
+            "modName": "频道设置"
+          },
+          {
+            "modClass": "yttx-content-article",
+            "modCode": "yttx-content-article",
+            "modId": 19,
+            "modLink": "yttx-content-article",
+            "modName": "文章管理"
+          },
+          {
+            "modClass": "yttx-content-comment",
+            "modCode": "yttx-content-comment",
+            "modId": 19,
+            "modLink": "yttx-content-comment",
+            "modName": "评论管理"
+          },
+          {
+            "modClass": "yttx-content-publish",
+            "modCode": "yttx-content-publish",
+            "modId": 19,
+            "modLink": "yttx-content-publish",
+            "modName": "发布文章"
+          },
+          {
+            "modClass": "yttx-content-message",
+            "modCode": "yttx-content-message",
+            "modId": 19,
+            "modLink": "yttx-content-message",
+            "modName": "消息管理"
+          },
+          {
+            "modClass": "yttx-content-feedback",
+            "modCode": "yttx-content-feedback",
+            "modId": 19,
+            "modLink": "yttx-content-feedback",
+            "modName": "用户反馈"
+          }
+        ],
+        "modLink": "yttx-content",
+        "modName": "内容管理",
+        "permitItem": [
+          {
+            "funcCode": "content-article-view",
+            "funcName": "文章查看",
+            "isPermit": 1,
+            "modId": 19,
+            "prid": 24
+          },
+          {
+            "funcCode": "content-article-verify",
+            "funcName": "文章审核",
+            "isPermit": 1,
+            "modId": 19,
+            "prid": 25
+          },
+          {
+            "funcCode": "content-article-stick",
+            "funcName": "文章置顶",
+            "isPermit": 1,
+            "modId": 19,
+            "prid": 26
+          },
+          {
+            "funcCode": "content-article-delete",
+            "funcName": "文章删除",
+            "isPermit": 1,
+            "modId": 19,
+            "prid": 27
+          },
+          {
+            "funcCode": "content-article-update",
+            "funcName": "文章修改",
+            "isPermit": 1,
+            "modId": 19,
+            "prid": 28
+          },
+          {
+            "funcCode": "content-article-extend",
+            "funcName": "文章推广",
+            "isPermit": 1,
+            "modId": 19,
+            "prid": 29
+          },
+          {
+            "funcCode": "content-comment-view",
+            "funcName": "评论查看",
+            "isPermit": 1,
+            "modId": 19,
+            "prid": 30
+          },
+          {
+            "funcCode": "content-comment-verify",
+            "funcName": "评论审核",
+            "isPermit": 1,
+            "modId": 19,
+            "prid": 31
+          },
+          {
+            "funcCode": "content-comment-spider",
+            "funcName": "内容抓取",
+            "isPermit": 1,
+            "modId": 19,
+            "prid": 32
+          },
+          {
+            "funcCode": "content-article-publish",
+            "funcName": "发布文章",
+            "isPermit": 1,
+            "modId": 19,
+            "prid": 33
+          },
+          {
+            "funcCode": "content-user-feedback",
+            "funcName": "用户反馈",
+            "isPermit": 1,
+            "modId": 19,
+            "prid": 34
+          },
+          {
+            "funcCode": "content-channel-setting",
+            "funcName": "频道设置",
+            "isPermit": 1,
+            "modId": 19,
+            "prid": 35
+          }
+        ]
+      },
+      {
         "modClass": "yttx-service",
         "modCode": "yttx-service",
         "modId": 28,
@@ -599,3 +565,5 @@ if(i===0){
     ]
   }
 }
+
+

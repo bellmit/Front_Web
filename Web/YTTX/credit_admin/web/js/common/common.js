@@ -815,7 +815,7 @@
 				self.highSideMenu($menu);
 				/*解析权限*/
 				var cacheSource=self.getParams('source_module');
-				self.resolvePower(cacheSource);
+				self.resolvePower(cacheSource,true);
 				return;
 			}else{
 				/*不同模块则重新加载*/
@@ -939,13 +939,13 @@
 					}
 					sublen=subitem.length;
 					j=0;
-					var ismodule=link.match.indexOf(module)!==-1;
+					var ismodule=path.indexOf(link.match)!==-1;
 					for(j;j<sublen;j++){
 						item=subitem[j];
 						if(ismodule){
 								menustr+='<li><a href=\"'+item.modLink+suffix+'\"><span>'+item.modName+'</span></a></li>';
 						}else{
-							menustr+='<li><a href=\"../'+link.code+'/'+item.modLink+suffix+'\"><span>'+item.modName+'</span></a></li>';
+								menustr+='<li><a href=\"../'+link.code+'/'+item.modLink+suffix+'\"><span>'+item.modName+'</span></a></li>';
 						}
 					}
 					menustr+="</li></ul>";
@@ -961,7 +961,7 @@
 
 
 		/*解析权限*/
-		self.resolvePower(data);
+		self.resolvePower(data,true);
 
 		//放入菜单模块
 		self.setParams('menu_module',menustr);
@@ -1137,46 +1137,70 @@
 	/*菜单权限映射*/
 	public_tool.powerMap={};
 	/*解析权限*/
-	public_tool.resolvePower=function(data){
+	public_tool.resolvePower=function(data,flag){
+		/*
+		 * data:数据源
+		 * flag:是否存入缓存
+		 * */
 		var self=this,
-			cachePower=self.getParams('power_module')/*调用缓存*/;
+			cachePower;
 
-		if(cachePower){
-			/*如果存在缓存，则读取缓存*/
-			self.powerMap=cachePower;
-		}else{
-			/*解析权限*/
-			var menu=data.result.menu,
-				len=menu.length,
-				i=0,
-				prkey='permitItem',
-				item=null,
-				pritem=null,
-				modid_map={};
-
-			for(i;i<len;i++){
-				item=menu[i];
-				/*解析权限*/
-				var ispr=typeof (pritem=item[prkey])!=='undefined';
-				if(ispr){
-					var k= 0,
-						prlen=pritem.length,
-						poweritem={};
-					for(k;k<prlen;k++){
-						var temppt=pritem[k],
-							prid=temppt.prid;
-						poweritem[prid]=temppt;
-					}
-					if(typeof modid_map[item.modId]==='undefined'){
-						modid_map[item.modId]=poweritem;
-					}else{
-						modid_map[item.modId]=$.extend(true,{},poweritem);
-					}
-				}
-				self.powerMap=$.extend(true,{},modid_map);
+		if(flag){
+			cachePower=self.getParams('power_module')/*调用缓存*/
+			if(cachePower){
+				/*如果存在缓存，则读取缓存*/
+				self.powerMap=cachePower;
+			}else{
+				self.handlePower(data,flag);
 			}
-			/*然后存入缓存*/
-			self.setParams('power_module',self.powerMap);
+		}else{
+			return self.handlePower(data,flag);
+		}
+	};
+	/*处理权限*/
+	public_tool.handlePower=function(data,flag){
+		var self=this;
+		/*
+		* data:数据源
+		* flag:是否存入缓存
+		* */
+		/*解析权限*/
+		var menu=data.result.menu,
+			len=menu.length,
+			i=0,
+			prkey='permitItem',
+			item=null,
+			pritem=null,
+			modid_map={},
+			result={};
+
+		for(i;i<len;i++){
+			item=menu[i];
+			/*解析权限*/
+			var ispr=typeof (pritem=item[prkey])!=='undefined';
+			if(ispr){
+				var k= 0,
+					prlen=pritem.length,
+					poweritem={};
+				for(k;k<prlen;k++){
+					var temppt=pritem[k],
+						prid=temppt.prid;
+					poweritem[prid]=temppt;
+				}
+				if(typeof modid_map[item.modId]==='undefined'){
+					modid_map[item.modId]=poweritem;
+				}else{
+					modid_map[item.modId]=$.extend(true,{},poweritem);
+				}
+			}
+			result=$.extend(true,{},modid_map);
+		}
+		/*然后存入缓存*/
+		if(flag){
+			self.powerMap=$.extend(true,{},result);
+			self.setParams('power_module',result);
+		}else{
+			return result;
 		}
 	};
 	//根据模块判断拥有的权限

@@ -5,10 +5,10 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	
 	<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0,maximum-scale=1">
-	<meta name="description" content="银通天下代理商管理系统--系统管理--权限设置" />
-	<meta name="keywords" content="银通天下代理商管理系统--系统管理--权限设置">
+	<meta name="description" content="银通天下代理商管理系统--系统设置--分润设置" />
+	<meta name="keywords" content="银通天下代理商管理系统--系统设置--分润设置">
   <meta name="author" content="yp" />
-	<title>银通天下代理商管理系统--系统管理--权限设置</title>
+	<title>银通天下代理商管理系统--系统设置--分润设置</title>
 	<link rel="stylesheet" href="../../css/base.css">
     <link rel="stylesheet" href="../../js/plugins/datatables/dataTables.bootstrap.css">
 	<link rel="stylesheet" href="../../css/admin.css">
@@ -95,13 +95,13 @@
             <!--主题描述-->
             <div class="page-title">
                 <div class="title-env">
-                    <h1 class="title">权限管理</h1>
-                    <p class="description">根据系统设置的安全规则或者安全策略</p>
+                    <h1 class="title">分润设置</h1>
+                    <p class="description">设置不同代理对象利润分配</p>
                 </div>
                 <div class="breadcrumb-env">
                     <ol class="breadcrumb bc-1">
-                        <li><a href="../system/admin_manage.html"><i class="fa-home"></i>系统管理</a></li>
-                        <li class="active"><strong>权限管理</strong></li>
+                        <li><a href="../system/admin_manage.html"><i class="fa-home"></i>系统设置</a></li>
+                        <li class="active"><strong>分润设置</strong></li>
                     </ol>
                 </div>
             </div>
@@ -109,106 +109,44 @@
 
             <!--主内容-->
             <div class="row row-main-wrap">
-                <!--角色列表-->
                 <div class="col-md-12">
                     <div class="panel">
 
-                        <!--表格标题-->
-                        <div class="panel-heading">
-                            <h3 class="panel-title">权限管理</h3>
-
-                            <div class="panel-options">
-                                <a href="#" data-toggle="panel">
-                                    <span class="collapse-icon">&ndash;</span>
-                                    <span class="expand-icon">+</span>
-                                </a>
-                            </div>
-                        </div>
-
-                        <!--表格主体-->
+                        <!--修改或添加主体-->
                         <div class="panel-body">
+                            <form role="form" id="profit_edit_form" method="post" class="validate">
+                                <div class="form-group">
+                                    <label class="control-label">A级：</label>
 
-                            <table id="admin_role_wrap" class="table table-bordered table-striped table-hover admin_table">
-                                <!--分组样式-->
-                                <colgroup>
-                                    <col class="g-w-percent2">
-                                    <col class="g-w-percent10">
-                                    <col class="g-w-percent10">
-                                    <col class="g-w-percent20">
-                                    <col class="g-w-percent8">
-                                </colgroup>
+                                    <input type="text" class="form-control" id="profit_a" name="profit_A" data-validate="required,number,dotmaxlength[2]" data-message-required="A级分销不能为空" data-message-number="A级分销必须是数值" data-message-dotmaxlength="A级分销需小于3位数值" maxlength="5" placeholder="请输入小于100的数字" />
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="control-label">AA级：</label>
 
-                                <!--表头-->
-                                <thead>
-                                <tr>
-                                    <th>&nbsp;</th>
-                                    <th>角色</th>
-                                    <th>角色描述</th>
-                                    <th>用户列表</th>
-                                    <th>操作</th>
-                                </tr>
-                                </thead>
+                                    <input type="text" class="form-control" id="profit_aa" name="profit_AA" data-validate="required,number,dotmaxlength[2]" data-message-required="AA级分销不能为空" data-message-number="AA级分销必须是数值" data-message-dotmaxlength="AA级分销需小于3位数值" maxlength="5" placeholder="请输入小于100的数字" />
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="control-label">AAA级：</label>
 
-                                <!--表主体-->
-                                <tbody class="middle-align"></tbody>
-                            </table>
+                                    <input type="text" class="form-control" id="profit_aaa" name="profit_AAA" data-validate="required,number,dotmaxlength[2]" data-message-required="AAA级分销不能为空" data-message-number="AAA级分销必须是数值" data-message-dotmaxlength="AAA级分销需小于3位数值" maxlength="5" placeholder="请输入小于100的数字" />
+                                </div>
+
+                               
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-success">设置</button>
+                                </div>
+
+                            </form>
+
                         </div>
 
-
-                    </div>
-                </div>
-
-                <!--数据操作区-->
-                <div class="col-md-12">
-                    <div class="panel">
-
-                        <!--表格标题-->
-                        <div class="panel-heading">
-                            <h3 class="panel-title">权限设置</h3>
-
-                            <div class="panel-options">
-                                <a href="#" data-toggle="panel">
-                                    <span class="collapse-icon">&ndash;</span>
-                                    <span class="expand-icon">+</span>
-                                </a>
-                            </div>
-                        </div>
-
-                        <!--表格主体-->
-                        <div class="panel-body">
-                            <table class="table table-bordered table-striped">
-                                <!--分组样式-->
-                                <colgroup>
-                                    <col class="g-w-percent5">
-                                    <col class="g-w-percent6">
-                                    <col class="g-w-percent6">
-                                    <col class="g-w-percent5">
-                                    <col class="g-w-percent6">
-                                    <col class="g-w-percent6">
-                                    <col class="g-w-percent6">
-                                </colgroup>
-
-                                <!--表头-->
-                                <thead>
-                                <tr>
-                                    <th>系统管理</th>
-                                    <th>广告管理</th>
-                                    <th>用户管理</th>
-                                    <th>内容管理</th>
-                                    <th>商城管理</th>
-                                    <th>服务栏管理</th>
-                                    <th>信用卡管理</th>
-                                </tr>
-                                </thead>
-                                <!--表主体-->
-                                <tbody class="middle-align operate-setting-wrap">
-                                <tr id="operate_setting" data-id="-1"></tr>
-                                </tbody>
-                            </table>
-                        </div>
                     </div>
                 </div>
             </div>
+
+
 
 
             <!--底部信息-->
@@ -233,10 +171,6 @@
 
         </div>
     </div>
-    
-    
-    
-
 	
 	<!--加载遮罩层-->
 	<div id="page_loading_wrap" class="page-loading-overlay g-d-hidei">
@@ -291,14 +225,9 @@
 
     <script src="../../js/common/base.js"></script>
     <script src="../../js/common/common.js"></script>
-    <script src="../../js/plugins/datatables/js/jquery.dataTables.js"></script>
-
-
-    <!--修饰分页，搜索等操作 -->
-    <script src="../../js/plugins/datatables/dataTables.bootstrap.js"></script>
     <!--表单验证插件-->
     <script src="../../js/plugins/jquery-validate/jquery.validate.js"></script>
 
-    <script src="../../js/admin/admin_permission.js"></script>
+    <script src="../../js/admin/admin_setting.js"></script>
 </body>
 </html>
