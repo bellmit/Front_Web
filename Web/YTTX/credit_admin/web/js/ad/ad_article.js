@@ -164,14 +164,28 @@
 
 							/*上架,下架*/
 							if(typeof powermap[12]!=='undefined'){
-								btns+='<span data-action="up" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+								var status=parseInt(full.status,10);
+								if(status===0){
+									//上架
+									btns+='<span data-action="up" data-id="'+id+'" data-isstate="true"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray12">\
 									<i class="fa-arrow-up"></i>\
 									<span>上架</span>\
 									</span>\
-									<span data-action="down" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+									<span data-action="down" data-id="'+id+'" data-isstate="false"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 									<i class="fa-arrow-down"></i>\
 									<span>下架</span>\
 									</span>';
+								}else if(status===1){
+									//下架
+									btns+='<span data-action="up" data-id="'+id+'" data-isstate="false"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+									<i class="fa-arrow-up"></i>\
+									<span>上架</span>\
+									</span>\
+									<span data-action="down" data-id="'+id+'"  data-isstate="true"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray12">\
+									<i class="fa-arrow-down"></i>\
+									<span>下架</span>\
+									</span>';
+								}
 							}
 
 							/*修改*/
@@ -259,13 +273,14 @@
 						var self=this;
 
 						$.ajax({
-								url:"http://120.24.226.70:8081/yttx-adminbms-api/role/delete",
+								url:"http://120.24.226.70:8081/yttx-adminbms-api/article/advertisement/operate",
 								method: 'POST',
 								dataType: 'json',
 								data:{
-									"roleId":id,
+									"articleId":id,
 									"adminId":decodeURIComponent(logininfo.param.adminId),
-									"token":decodeURIComponent(logininfo.param.token)
+									"token":decodeURIComponent(logininfo.param.token),
+									"operate":3
 								}
 							})
 							.done(function (resp) {
@@ -275,9 +290,10 @@
 									setTimeout(function () {
 										dia.close();
 									},2000);
+									console.log(resp.message);
 									return false;
 								}
-								isrole?table.row($tr).remove().draw():table_member.row($tr).remove().draw();
+								table.row($tr).remove().draw(false);
 								setTimeout(function(){
 									self.content('<span class="g-c-bs-success g-btips-succ">删除数据成功</span>');
 								},100);
@@ -290,14 +306,33 @@
 					dialogObj.dialog.content('<span class="g-c-bs-warning g-btips-warn">是否删除此数据？</span>').showModal();
 
 				}else if(action==='up'||action==='down'){
-					/*查看详情*/
+					/*判断是否可以上下架*/
+					var isstate=$this.attr('data-isstate');
+
+					if(action==='up'){
+						if(isstate){
+							dia.content('<span class="g-c-bs-warning g-btips-warn">目前是已经是上架状态请选择下架状态</span>').show();
+							return false;
+						}
+						var state=1;
+					}else if(action==='down'){
+						if(isstate){
+							dia.content('<span class="g-c-bs-warning g-btips-warn">目前是已经是下架状态请选择上架状态</span>').show();
+							return false;
+						}
+						var state=2;
+					}
+
+					/*上架和下架*/
 					$.ajax({
-							url:"../../json/admin/admin_power_user.json",
-							dataType:'JSON',
-							method:'post',
+							url:"http://120.24.226.70:8081/yttx-adminbms-api/article/advertisement/operate",
+							method: 'POST',
+							dataType: 'json',
 							data:{
-								"id":id,
-								"type":type
+								"articleId":id,
+								"adminId":decodeURIComponent(logininfo.param.adminId),
+								"token":decodeURIComponent(logininfo.param.token),
+								"operate":state
 							}
 						})
 						.done(function(resp){
@@ -396,20 +431,12 @@
 					$.extend(true,form_opt,public_tool.cache.form_opt_0,{
 						submitHandler: function(form){
 							//判断是否存在id号
-							var id=$article_id.val(),
-								config={
-									url:"",
-									method: 'POST',
-									dataType: 'json'
-								},
-								data=$article_edit_form.serializeArray(),
-								datalen=data.length,
-								i= 0,
-								res={};
+							var id=$article_id.val();
 
 
 							if(id!==''){
 								//此处配置修改稿角色地址（开发阶段）
+								var config={};
 								config.url="../../json/admin/admin_role_update.json";
 							}else{
 								//此处配置添加角色地址（开发阶段）
@@ -473,56 +500,6 @@
 				/*提交验证*/
 				$article_edit_form.validate(form_opt);
 			}
-
-
-
-			/*格式化手机号码*/
-			$article_thumbnail.on('keyup',function(){
-				this.value=public_tool.phoneFormat(this.value);
-			});
-
-
-
-			/*绑定选中成为代理*/
-			$manage_agent.on('click',function(e){
-				var $this=$(this),
-					isflag=$this.is(':checked');
-
-				$.each([$manage_agentlevela,$manage_agentlevelaa,$manage_agentlevelaaa],function (index) {
-					if(isflag){
-						if(index===0){
-							this.removeAttr('disabled').prop('checked',true);
-						}else{
-							this.removeAttr('disabled').prop('checked',false);
-						}
-					}else{
-						this.attr({'disabled':true}).prop('checked',false);
-					}
-				});
-
-
-			});
-
-
-			/*绑定保存继续添加*/
-			$edit_continue_btn.on('click',function(e){
-				//e.preventDefault();
-
-				//设置标识
-				public_tool.cache.form_opt_0['continue']=true;
-				//表单提交
-				$(this).prev().trigger('click');
-			});
-
-
-
-
-
-
-
-
-
-
 
 
 
