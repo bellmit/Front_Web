@@ -105,9 +105,6 @@
 					}())
 				},/*异步请求地址及相关配置*/
 				columns: [
-					{
-						defaultContent:'<input type="checkbox" name="role" class="cbr">'
-					},
 					{"data":"name"},
 					{"data":"description"},
 					{
@@ -190,7 +187,6 @@
 					$this,
 					id,
 					action,
-					$cbx,
 					$tr;
 
 				//适配对象
@@ -199,15 +195,7 @@
 				}else{
 					$this=$(target).parent();
 				}
-				$tr=$this.closest('tr'),
-					$cbx=$tr.find('td:first-child input');
-
-				//先选中数据
-				if(!$cbx.is(':checked')){
-					dia.content('<span class="g-c-bs-warning g-btips-warn">请选中数据</span>').show();
-					return false;
-				}
-
+				$tr=$this.closest('tr');
 				id=$this.attr('data-id');
 				action=$this.attr('data-action');
 

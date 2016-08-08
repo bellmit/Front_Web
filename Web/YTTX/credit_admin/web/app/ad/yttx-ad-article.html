@@ -10,7 +10,8 @@
   <meta name="author" content="yp" />
 	<title>银通天下代理商管理系统--广告管理--文章广告</title>
 	<link rel="stylesheet" href="../../css/base.css">
-    <link rel="stylesheet" href="../../js/plugins/datatables/dataTables.bootstrap.css">
+  <link rel="stylesheet" href="../../js/plugins/datatables/dataTables.bootstrap.css">
+  <link rel="stylesheet" href="../../js/plugins/kindeditor/themes/default/default.css">
 	<link rel="stylesheet" href="../../css/admin.css">
   <script src="../../js/common/jquery-1.11.1.js"></script>
 	<!--[if lt IE 9]>
@@ -140,20 +141,18 @@
                             <table id="ad_article_wrap" class="table table-bordered table-striped table-hover admin_table">
                                 <!--分组样式-->
                                 <colgroup>
-                                    <col class="g-w-percent2">
                                     <col class="g-w-percent6">
                                     <col class="g-w-percent10">
                                     <col class="g-w-percent6">
                                     <col class="g-w-percent6">
                                     <col class="g-w-percent6">
                                     <col class="g-w-percent6">
-                                    <col class="g-w-percent8">
+                                    <col class="g-w-percent10">
                                 </colgroup>
 
                                 <!--表头-->
                                 <thead>
                                 <tr>
-                                    <th class="no-sorting">&nbsp;</th>
                                     <th class="no-sorting">标题</th>
                                     <th class="no-sorting">内容</th>
                                     <th class="no-sorting">开始时间</th>
@@ -191,113 +190,52 @@
 
                         <!--修改或添加主体-->
                         <div class="panel-body">
-                            <form role="form" id="article_edit_form" method="post" class="validate">
+                            <form role="form" id="article_edit_form" method="post" class="admin-form1 validate">
                                 <input type="text" class="g-d-hidei" value="" id="article_id" name="id">
                                 <div class="form-group">
-                                    <label class="control-label">标题：</label>
+                                    <label class="control-label">文章广告标题：</label>
 
-                                    <input type="text" class="form-control" name="serveName" id="manage_servename" data-validate="required" data-message-required="服务站名称不能为空" placeholder="请输入服务站名称" />
+                                    <input type="text" class="form-control" name="title" id="article_title" data-validate="required" data-message-required="文章广告标题不能为空" placeholder="请输入文章广告标题" />
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="control-label">内容：</label>
+                                    <label class="control-label">文章广告内容：</label>
 
-                                    <input type="text" class="form-control" name="miniName" id="manage_mininame" placeholder="服务站简称" />
-                                </div>
-
-
-                                <div class="form-group">
-                                    <label class="control-label">负责人：</label>
-
-                                    <input type="text" class="form-control" name="leader" id="manage_leader"  placeholder="请输入负责人" data-validate="required" data-message-required="负责人不能为空" />
+                                    <textarea class="form-control  form-admin-editor" name="content" id="article_content"  placeholder="请输入文章广告内容" data-validate="required" data-message-required="文章广告内容不能为空" ></textarea>
                                 </div>
 
 
                                 <div class="form-group">
-                                    <label class="control-label">绑定代理商：</label>
+                                    <label class="control-label">开始时间：</label>
 
-                                    <select id="manage_bindagent" class="form-control" name="bindagent">
-                                        <option selected value="">无</option>
-                                        <option value="张三">代理商--张三</option>
-                                        <option value="李四">代理商--李四</option>
-                                        <option value="王五">代理商--王五</option>
-                                        <option value="赵六">代理商--赵六</option>
-                                        <option value="马七">代理商--马七</option>
-                                    </select>
+                                    <input type="text" readonly class="form-control" name="startTime" id="article_starttime"  placeholder="请输入开始时间" data-validate="required" data-message-required="开始时间不能为空" />
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label">结束时间：</label>
+
+                                    <input type="text" readonly class="form-control" name="endTime" id="article_endtime"  placeholder="请输入结束时间" data-validate="required" data-message-required="结束时间不能为空" />
                                 </div>
 
 
                                 <div class="form-group">
-                                    <label class="control-label">手机：</label>
+                                    <label class="control-label">缩略图地址：</label>
 
-                                    <input type="text" class="form-control" name="mobliePhone" id="manage_mobliephone"  placeholder="请输入手机号" data-validate="required,zh_phone" maxlength="13" data-message-required="手机号不能为空" data-message-zh_phone="手机号格式不正确" />
+                                    <input type="text" class="form-control" name="thumbnail" id="article_thumbnail"  placeholder=""  />
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="control-label">电话：</label>
+                                    <label class="control-label">所属企业：</label>
 
-                                    <input type="text" class="form-control" name="phone" id="manage_phone"  placeholder=""  />
+                                    <input type="text" class="form-control" name="belongsCompany" id="article_belongscompany"  placeholder=""  />
                                 </div>
 
 
-                                <div class="form-group">
-                                    <label class="control-label">地址：</label>
-                                    <div class="selectwrap">
-                                        <div class="select-item g-w-percent12">
-                                            <p>请选择省份</p>
-                                            <ul id="province"></ul>
-                                        </div>
-                                        <div class="select-item g-w-number13">
-                                            <p>请选择城市</p>
-                                            <ul id="city"></ul>
-                                        </div>
-                                        <div class="select-item g-w-number13">
-                                            <p>请选择地区</p>
-                                            <ul id="area"></ul>
-                                        </div>
-                                    </div>
-                                    <input type="text"  class="select-input-def form-control" value=""data-validate="required" data-message-required="省份不能为空" name="Province" id="province_value">
-                                    <input type="text" class="select-input-def form-control" data-validate="required" data-message-required="城市不能为空" value="" name="City" id="city_value">
-                                    <input type="text" class="select-input-def form-control" data-validate="required" data-message-required="地区不能为空" value="" name="Area" id="area_value">
-                                </div>
 
-
-                                <div class="form-group">
-                                    <input type="text" class="form-control" name="Address"  placeholder="请输入详细地址" data-validate="required" data-message-required="详细地址不能为空" value="" id="manage_address" />
-                                </div>
-
-
-                                <div class="form-group">
-                                    <label class="control-label">备注：</label>
-
-                                    <textarea id="manage_remark" class="form-control" name="manage_remark" placeholder="备注"></textarea>
-                                </div>
-
-                                <div class="form-group">
-                                            <span class="control-label">
-                                                <label class="checkbox-inline">
-                                                    <input type="checkbox" id="manage_agent" name="agent"/>同时成为代理商&nbsp;&nbsp;&nbsp;&nbsp;
-                                                </label>
-                                            </span>
-																						<span class="control-label">代理商级别：
-                                                <label class="radio-inline">
-                                                    <input type="radio"  id="manage_agentlevela" name="agentLevel"/>:A级
-                                                </label>
-                                                <label class="radio-inline">
-                                                    &nbsp;&nbsp;<input id="manage_agentlevelaa" type="radio"  name="agentLevel"/>:AA级
-                                                </label>
-                                                <label class="radio-inline">
-                                                    &nbsp;&nbsp;<input type="radio" id="manage_agentlevelaaa"  name="agentLevel"/>:AAA级
-                                                </label>
-                                            </span>
-                                    <br />
-                                    <div class="control-label">以上内容请根据合同如实填写。</div>
-                                </div>
 
 
                                 <div class="form-group">
                                     <button type="submit" class="btn btn-success">保存</button>
-                                    <button id="edit_continue_btn" type="button" class="btn btn-white">保存继续添加</button>
                                     <button id="edit_cance_btn" type="reset" class="btn btn-white">取消</button>
                                 </div>
                             </form>
@@ -390,6 +328,7 @@
 
     <script src="../../js/common/base.js"></script>
     <script src="../../js/common/common.js"></script>
+    <script src="../../js/plugins/kindeditor/kindeditor-all-min.js"></script>
     <script src="../../js/plugins/datatables/js/jquery.dataTables.js"></script>
 
 

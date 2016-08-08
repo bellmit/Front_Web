@@ -1,5 +1,5 @@
 /*admin_member:成员设置*/
-(function($){
+(function($,KE){
 	'use strict';
 	$(function(){
 
@@ -42,27 +42,40 @@
 						return false;
 					},
 					cancel:false
-				})/*一般提示对象*/;
+				})/*一般提示对象*/,
+				dialogObj=public_tool.dialog()/*回调提示对象*/;
 
 			/*表单对象*/
 			var edit_form=document.getElementById('article_edit_form')/*表单dom*/,
 				$article_edit_form=$(edit_form)/*编辑表单*/,
-				$manage_id=$('#manage_id'),/*成员id*/
+				$article_id=$('#article_id'),/*成员id*/
 				$edit_continue_btn=$('#edit_continue_btn')/*保存继续添加*/,
 				$edit_cance_btn=$('#edit_cance_btn')/*编辑取消按钮*/,
-				$manage_servename=$('#manage_servename'),/*服务站名称*/
-				$manage_mininame=$('#manage_mininame')/*服务站简称*/,
-				$manage_leader=$('#manage_leader')/*负责人*/,
-				$manage_bindagent=$('#manage_bindagent')/*绑定代理商*/,
-				$manage_mobliephone=$('#manage_mobliephone')/*手机号*/,
-				$manage_phone=$('#manage_phone')/*电话*/,
-				$member_remark=$('#member_remark')/*成员描述*/,
-				$manage_address=$('#manage_address')/*详细地址*/,
-				$manage_remark=$('#manage_remark')/*描述，备注*/,
-				$manage_agent=$('#manage_agent')/*成为代理商*/,
-				$manage_agentlevela=$('#manage_agentlevela')/*A级代理商*/,
-				$manage_agentlevelaa=$('#manage_agentlevelaa')/*AA级代理商*/,
-				$manage_agentlevelaaa=$('#manage_agentlevelaaa')/*AAA级代理商*/;
+				$article_title=$('#article_title'),/*服务站名称*/
+				$article_content=$('#article_content')/*服务站简称*/,
+				$article_starttime=$('#article_starttime')/*负责人*/,
+				$article_endtime=$('#article_endtime')/*绑定代理商*/,
+				$article_thumbnail=$('#article_thumbnail')/*手机号*/,
+				$article_belongscompany=$('#article_belongscompany')/*描述，备注*/;
+
+
+			/*编辑器调用*/
+			var editor=KE.create("#article_content",{
+					minHeight:'300px',
+					height:'300px',
+					filterMode :false,
+					resizeType:1,/*改变外观大小模式*/
+				  bodyClass:"ke-admin-wrap",
+					syncType:""/*数据同步模式*/,
+					afterUpload : function(url) {
+						/*指定上传文件的回调*/
+						alert(url);
+					},
+					uploadJson : '地址',/*指定上传文件的服务器端程序*/
+					allowFileManager : true,
+					imageSizeLimit : "2MB",
+			});
+
 
 
 
@@ -103,7 +116,7 @@
 						adminId:decodeURIComponent(logininfo.param.adminId),
 						token:decodeURIComponent(logininfo.param.token),
 						page:1,
-						pageSize:20,
+						pageSize:20
 					};
 				}())
 			};
@@ -124,9 +137,6 @@
 				processing:true,/*大消耗操作时是否显示处理状态*/
 				ajax:article_config,/*异步请求地址及相关配置*/
 				columns: [
-					{
-						defaultContent:'<input type="checkbox" name="role" class="cbr">'
-					},
 					{"data":"title"},
 					{
 						"data":"content",
@@ -195,7 +205,6 @@
 					$this,
 					id,
 					action,
-					$cbx,
 					$tr;
 
 				//适配对象
@@ -204,15 +213,7 @@
 				}else{
 					$this=$(target).parent();
 				}
-				$tr=$this.closest('tr'),
-					$cbx=$tr.find('td:first-child input');
-
-				//先选中数据
-				if(!$cbx.is(':checked')){
-					dia.content('<span class="g-c-bs-warning g-btips-warn">请选中数据</span>').show();
-					return false;
-				}
-
+				$tr=$this.closest('tr');
 				id=$this.attr('data-id');
 				action=$this.attr('data-action');
 
@@ -223,109 +224,71 @@
 					$edit_wrap.removeClass('collapsed');
 					$("html,body").animate({scrollTop:300},200);
 					//重置信息
-					$edit_title.html('修改服务站');
-					//请求并赋值
-					$.ajax({
-							url:"../../json/admin/admin_power_user.json",
-							dataType:'JSON',
-							method:'post',
-							data:{
-								"id":id,
-								"type":type
-							}
-						})
-						.done(function(resp){
-							if(resp.flag){
-								var datas=resp.data,
-									str='',
-									len=datas.length,
-									i=0;
-								/*是否有返回数据*/
-								if(len!==0){
-									for(i;i<len;i++){
-										if(datas[i]['id']===id){
-											datas=datas[i];
-											break;
-										}
-									}
-								}
-								/*是否是正确的返回数据*/
-								if($.isPlainObject(datas)){
-									var res;
-									for(var j in datas){
-										res=datas[j];
-										switch (j){
-											case "id":
-												$manage_id.val(res);
-												break;
-											case "companyName":
-												$manage_servename.val(res);
-												break;
-											case "name":
-												$manage_leader.val(res);
-												break;
-											case "agent":
-												$manage_bindagent.children().each(function(index){
-													var $this=$(this);
-													if($this.val()===res){
-														$this.prop('selected',true).siblings().prop('selected',false);
-														return false;
-													}
-												});
-												break;
-											case "phone":
-												$manage_mobliephone.val(public_tool.phoneFormat(res));
-												break;
-											case "address":
-												$manage_address.val(res);
-												break;
-											case "remark":
-												$manage_remark.val(res);
-												break;
-											case "isAgent":
-												if(res==='0'){
-													$manage_agent.prop('checked',false);
-													$.each([$manage_agentlevela,$manage_agentlevelaa,$manage_agentlevelaaa],function(){
-														this.prop('checked',false).attr('disabled',true);
-													});
-												}else if(res==='1'){
-													$manage_agent.prop('checked',true);
-													var current_level=datas['grade'].replace(/级/g,'');
-													$.each([$manage_agentlevela,$manage_agentlevelaa,$manage_agentlevelaaa],function(index){
-														if(current_level==='A'&&index===0){
-															this.prop('checked',true).removeAttr('disabled');
-														}else if(current_level==='AA'&&index===1){
-															this.prop('checked',true).removeAttr('disabled');
-														}else if(current_level==='AAA'&&index===2){
-															this.prop('checked',true).removeAttr('disabled');
-														}else{
-															this.prop('checked',false).removeAttr('disabled');
-														}
-													});
-												}
-												break;
-										}
-									}
-								}else{
-									/*调用表单的重置功能*/
-									edit_form.reset();
-									dia.content('<span class="g-c-bs-warning g-btips-warn">没有获取到数据</span>').show();
-								};
-							}else{
-								/*调用表单的重置功能*/
-								edit_form.reset();
-								dia.content('<span class="g-c-bs-warning g-btips-warn">没有获取到数据</span>').show();
-							}
-						})
-						.fail(function(resp){
-							if(!resp.flag){
-								console.log('获取数据失败');
-							}
-							/*调用表单的重置功能*/
-							edit_form.reset();
-							dia.content('<span class="g-c-bs-warning g-btips-warn">没有获取到数据</span>').show();
+					$edit_title.html('修改文章广告');
 
-						});
+					var datas=table.row($tr).data();
+					for(var i in datas) {
+						switch (i) {
+							case "id":
+								$article_id.val(datas[i]);
+								break;
+							case "title":
+								$article_title.val(datas[i]);
+								break;
+							case "content":
+								$article_content.val(datas[i]);
+								break;
+							case "startTime":
+								$article_starttime.val(datas[i]);
+								break;
+							case "endTime":
+								$article_endtime.val(datas[i]);
+								break;
+							case "thumbnail":
+								$article_thumbnail.val(datas[i]);
+								break;
+							case "belongsCompany":
+								$article_belongscompany.val(datas[i]);
+								break;
+						}
+					}
+				}else if(action==='delete'){
+					/*删除操作*/
+					//没有回调则设置回调对象
+					dialogObj.setFn(function(){
+						var self=this;
+
+						$.ajax({
+								url:"http://120.24.226.70:8081/yttx-adminbms-api/role/delete",
+								method: 'POST',
+								dataType: 'json',
+								data:{
+									"roleId":id,
+									"adminId":decodeURIComponent(logininfo.param.adminId),
+									"token":decodeURIComponent(logininfo.param.token)
+								}
+							})
+							.done(function (resp) {
+								var code=parseInt(resp.code,10);
+								if(code!==0){
+									dia.content('<span class="g-c-bs-warning g-btips-warn">删除失败</span>').show();
+									setTimeout(function () {
+										dia.close();
+									},2000);
+									return false;
+								}
+								isrole?table.row($tr).remove().draw():table_member.row($tr).remove().draw();
+								setTimeout(function(){
+									self.content('<span class="g-c-bs-success g-btips-succ">删除数据成功</span>');
+								},100);
+							})
+							.fail(function(resp){
+								console.log(resp.message);
+							});
+					},'article_delete');
+					//确认删除
+					dialogObj.dialog.content('<span class="g-c-bs-warning g-btips-warn">是否删除此数据？</span>').showModal();
+
 				}else if(action==='up'||action==='down'){
 					/*查看详情*/
 					$.ajax({
@@ -417,7 +380,7 @@
 				$edit_wrap.removeClass('collapsed');
 				$("html,body").animate({scrollTop:300},200);
 				//第一行获取焦点
-				$manage_servename.focus();
+				$article_title.focus();
 			});
 			if(typeof powermap[11]!=='undefined'){
 				$article_add_btn.removeClass('g-d-hidei');
@@ -433,7 +396,7 @@
 					$.extend(true,form_opt,public_tool.cache.form_opt_0,{
 						submitHandler: function(form){
 							//判断是否存在id号
-							var id=$manage_id.val(),
+							var id=$article_id.val(),
 								config={
 									url:"",
 									method: 'POST',
@@ -514,7 +477,7 @@
 
 
 			/*格式化手机号码*/
-			$manage_mobliephone.on('keyup',function(){
+			$article_thumbnail.on('keyup',function(){
 				this.value=public_tool.phoneFormat(this.value);
 			});
 
@@ -572,4 +535,4 @@
 	});
 
 
-})(jQuery);
+})(jQuery,KindEditor);
