@@ -1,6 +1,11 @@
 @import 'layout/bootstrap/variables.less';
 @import 'layout/variable/base_variable_support.less';
+/*导入城市选择器*/
 @import 'mixin/city_select.less';
+/*导入分页控件*/
+@import 'mixin/pagination.less';
+
+
 
 /*-----登陆-----*/
 .login-header{
@@ -125,7 +130,7 @@
 
 
 /*-----表格样式-----*/
-.admin_table{
+.admin-table{
   width:100% !important;
 	tr{
 		width:100%;
@@ -142,6 +147,45 @@
 	.ul-btn{
 		display:inline-block;
 		padding:0 5px;
+	}
+}
+/*分页*/
+.admin-page-wrap{
+	.layout-base;
+	height:50px;
+}
+/*查询区域*/
+.admin-search-wrap{
+	.layout-base;
+	padding:10px;
+	.admin-search-item{
+		display: inline-block;
+		height:50px;
+		.box-sizing-base;
+		padding:10px 50px 10px 0;
+		label{
+			width:80px;
+			height:100%;
+			display: inline-block;
+			line-height:30px;
+			text-align: right;
+			color:@color-gray6;
+			font-size:@font-size-base;
+			.user-select-base;
+		}
+		input{
+			.box-sizing-base;
+			width:150px;
+			height:30px;
+			padding:5px;
+			line-height: 20px;
+			font-size: @font-size-base;
+			color:@color-gray9;
+			border:1px solid @color-gray12;
+			&:focus{
+				border:1px solid @btn-success-bg;
+			}
+		}
 	}
 }
 

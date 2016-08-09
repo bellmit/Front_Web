@@ -43,20 +43,19 @@
 					},
 					cancel:false
 				})/*一般提示对象*/,
-				dialogObj=public_tool.dialog()/*回调提示对象*/;
+				dialogObj=public_tool.dialog()/*回调提示对象*/,
+				$admin_page_wrap=$('#admin_page_wrap')/*分页数据*/;
 
 			/*表单对象*/
 			var edit_form=document.getElementById('article_edit_form')/*表单dom*/,
 				$article_edit_form=$(edit_form)/*编辑表单*/,
 				$article_id=$('#article_id'),/*成员id*/
-				$edit_continue_btn=$('#edit_continue_btn')/*保存继续添加*/,
 				$edit_cance_btn=$('#edit_cance_btn')/*编辑取消按钮*/,
-				$article_title=$('#article_title'),/*服务站名称*/
-				$article_content=$('#article_content')/*服务站简称*/,
-				$article_starttime=$('#article_starttime')/*负责人*/,
-				$article_endtime=$('#article_endtime')/*绑定代理商*/,
-				$article_thumbnail=$('#article_thumbnail')/*手机号*/,
-				$article_belongscompany=$('#article_belongscompany')/*描述，备注*/;
+				$article_title=$('#article_title'),/*标题*/
+				$article_content=$('#article_content')/*内容*/,
+				$article_time=$('#article_time')/*时间*/,
+				$article_thumbnail=$('#article_thumbnail')/*缩略图*/,
+				$article_belongscompany=$('#article_belongscompany')/*所属公司*/;
 
 
 			/*编辑器调用*/
@@ -71,142 +70,78 @@
 						/*指定上传文件的回调*/
 						alert(url);
 					},
+					afterBlur:function(){
+						/*失去焦点的回调*/
+						this.sync();
+					},
 					uploadJson : '地址',/*指定上传文件的服务器端程序*/
 					allowFileManager : true,
 					imageSizeLimit : "2MB",
 			});
 
 
+			/*时间对象*/
+			var now=moment().format('YYYY-MM-DD'),
+				start_format='',
+				end_format='';
 
 
 			/*列表请求配置*/
 			var article_config={
-				url:"http://120.24.226.70:8081/yttx-adminbms-api/article/advertisement/list",
-				dataType:'JSON',
-				method:'post',
-				dataSrc:function ( json ) {
-					var code=parseInt(json.code,10);
-					if(code!==0){
-						if(code===999){
-							/*清空缓存*/
-							public_tool.clear();
-							public_tool.loginTips();
+						$ad_article_wrap:$ad_article_wrap,
+						$admin_page_wrap:$admin_page_wrap,
+						isinit:true,
+						pageSize:20,
+						total:0,
+						list:null,
+						ajax:{
+							url:"http://120.24.226.70:8081/yttx-adminbms-api/article/advertisement/list",
+							dataType:'JSON',
+							method:'post',
+							data:{
+									roleId:decodeURIComponent(logininfo.param.roleId),
+									adminId:decodeURIComponent(logininfo.param.adminId),
+									token:decodeURIComponent(logininfo.param.token),
+									page:this.page,
+									pageSize:this.pageSize
+							}
 						}
-						console.log(json.message);
-						return null;
-					}
-					return json.result.list;
-				},
-				data:(function(){
-					/*查询本地,如果有则带参数查询，如果没有则初始化查询*/
-					var param=public_tool.getParams(module_id);
-					//获取参数后清除参数
-					public_tool.removeParams(module_id);
-					if(param){
-						return {
-							roleId:param.roleId,
-							adminId:decodeURIComponent(logininfo.param.adminId),
-							token:decodeURIComponent(logininfo.param.token),
-							page:1,
-							pageSize:20,
-						};
-					}
-					return {
-						roleId:decodeURIComponent(logininfo.param.roleId),
-						adminId:decodeURIComponent(logininfo.param.adminId),
-						token:decodeURIComponent(logininfo.param.token),
-						page:1,
-						pageSize:20
-					};
-				}())
-			};
-
+				};
+			
 
 			//初始化请求
-			table=$ad_article_wrap.DataTable({
-				deferRender:true,/*是否延迟加载数据*/
-				serverSide:false,/*是否服务端处理*/
-				searching:false,/*是否搜索*/
-				ordering:false,/*是否排序*/
-				//order:[[1,'asc']],/*默认排序*/
-				paging:true,/*是否开启本地分页*/
-				pagingType:'simple_numbers',/*分页按钮排列*/
-				autoWidth:true,/*是否*/
-				info:true,/*显示分页信息*/
-				stateSave:false,/*是否保存重新加载的状态*/
-				processing:true,/*大消耗操作时是否显示处理状态*/
-				ajax:article_config,/*异步请求地址及相关配置*/
-				columns: [
-					{"data":"title"},
-					{
-						"data":"content",
-						"render":function(data, type, full, meta ){
-							return data.subString(0,10)+'...';
-						}
-					},
-					{
-						"data":"startTime"
-					},
-					{
-						"data":"endTime"
-					},
-					{
-						"data":"belongsCompany"
-					},
-					{
-						"data":"createTime"
-					},
-					{
-						"data":"id",
-						"render":function(data, type, full, meta ){
-							var id=parseInt(data,10),
-								btns='';
+			table=getColumnData(article_config);
 
-							/*上架,下架*/
-							if(typeof powermap[12]!=='undefined'){
-								var status=parseInt(full.status,10);
-								if(status===0){
-									//上架
-									btns+='<span data-action="up" data-id="'+id+'" data-isstate="true"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray12">\
-									<i class="fa-arrow-up"></i>\
-									<span>上架</span>\
-									</span>\
-									<span data-action="down" data-id="'+id+'" data-isstate="false"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
-									<i class="fa-arrow-down"></i>\
-									<span>下架</span>\
-									</span>';
-								}else if(status===1){
-									//下架
-									btns+='<span data-action="up" data-id="'+id+'" data-isstate="false"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
-									<i class="fa-arrow-up"></i>\
-									<span>上架</span>\
-									</span>\
-									<span data-action="down" data-id="'+id+'"  data-isstate="true"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray12">\
-									<i class="fa-arrow-down"></i>\
-									<span>下架</span>\
-									</span>';
-								}
-							}
 
-							/*修改*/
-							if(typeof powermap[11]!=='undefined'){
-								btns+='<span data-action="update" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
-									<i class="fa-pencil"></i>\
-									<span>修改</span>\
-									</span>';
-							}
-							return btns;
-						}
-					}
-				],
-				aLengthMenu: [
-					[20,30,50],
-					[20,30,50]
-				],/*控制分页数*/
-				lengthChange:true/*是否可改变长度*/
+			/*
+			* 初始化
+			* */
+			(function(){
+				/*清空编辑器内容*/
+				editor.html('');
+				/*重置表单*/
+				edit_form.reset();
+			}());
+
+
+
+			/*日历调用*/
+			$.each([$article_time],function(index){
+				var selector=this.selector;
+
+				if(index===0){
+					this.val('').daterangepicker({
+						format: 'YYYY-MM-DD',
+						todayBtn: true,
+						endDate:end_format,
+						startDate:start_format,
+						separator:','
+					});
+				}
+
+
+
 			});
-
-
 
 
 			/*事件绑定*/
@@ -253,10 +188,10 @@
 								$article_content.val(datas[i]);
 								break;
 							case "startTime":
-								$article_starttime.val(datas[i]);
+								start_format=datas[i];
 								break;
 							case "endTime":
-								$article_endtime.val(datas[i]);
+								end_format=datas[i];
 								break;
 							case "thumbnail":
 								$article_thumbnail.val(datas[i]);
@@ -266,6 +201,14 @@
 								break;
 						}
 					}
+					/*设置时间和日历控件*/
+					$article_time.val(start_format+','+end_format).daterangepicker({
+						format: 'YYYY-MM-DD',
+						todayBtn: true,
+						endDate:end_format,
+						startDate:start_format,
+						separator:','
+					});
 				}else if(action==='delete'){
 					/*删除操作*/
 					//没有回调则设置回调对象
@@ -315,12 +258,24 @@
 							return false;
 						}
 						var state=1;
+						/*更改状态*/
+						$this.attr({
+							"data-isstate":true
+						}).removeClass('g-c-gray8').addClass("g-c-gray12").next().attr({
+							"data-isstate":false
+						}).removeClass('g-c-gray12').addClass("g-c-gray8");
 					}else if(action==='down'){
 						if(isstate){
 							dia.content('<span class="g-c-bs-warning g-btips-warn">目前是已经是下架状态请选择上架状态</span>').show();
 							return false;
 						}
 						var state=2;
+						/*更改状态*/
+						$this.attr({
+							"data-isstate":true
+						}).removeClass('g-c-gray8').addClass("g-c-gray12").prev().attr({
+							"data-isstate":false
+						}).removeClass('g-c-gray12').addClass("g-c-gray8");
 					}
 
 					/*上架和下架*/
@@ -336,44 +291,31 @@
 							}
 						})
 						.done(function(resp){
-							if(resp.flag){
-
-								var datas=resp.data,
-									str='',
-									len=datas.length,
-									i=0;
-								/*是否有返回数据*/
-								if(len!==0){
-									for(i;i<len;i++){
-										if(datas[i]['id']===id){
-											datas=datas[i];
-											break;
-										}
-									}
+							var code=parseInt(resp.code,10);
+							if(code!==0){
+								/*回滚状态*/
+								if(action==='up'){
+									/*更改状态*/
+									$this.attr({
+										"data-isstate":false
+									}).removeClass('g-c-gray12').addClass("g-c-gray8").next().attr({
+										"data-isstate":false
+									}).removeClass('g-c-gray8').addClass("g-c-gray12");
+								}else if(action==='down'){
+									/*更改状态*/
+									$this.attr({
+										"data-isstate":false
+									}).removeClass('g-c-gray12').addClass("g-c-gray8").prev().attr({
+										"data-isstate":false
+									}).removeClass('g-c-gray8').addClass("g-c-gray12");
 								}
-								/*是否是正确的返回数据*/
-								if($.isPlainObject(datas)){
-									var str='';
-									for(var i in datas){
-										if(i==='userName'||i==='username'){
-											$manage_detail_title.html(i+'服务站详情信息');
-										}else{
-											str+='<tr><th>'+i+'</th><td>'+datas[i]+'</td></tr>';
-										}
-									};
-									$manage_detail_show.html(str);
-								}
-								$manage_detail_show.html(str);
-							}else{
-								$manage_detail_title.html('');
-								$manage_detail_show.html('');
+								console.log(resp.message);
+								return false;
 							}
+
 						})
 						.fail(function(resp){
-							if(!resp.flag){
-								$manage_detail_title.html('');
-								$manage_detail_show.html('');
-							}
+							console.log(resp.message);
 						});
 				}
 
@@ -419,6 +361,7 @@
 			});
 			if(typeof powermap[11]!=='undefined'){
 				$article_add_btn.removeClass('g-d-hidei');
+				$data_wrap.removeClass('g-d-hidei');
 			}
 
 
@@ -431,68 +374,73 @@
 					$.extend(true,form_opt,public_tool.cache.form_opt_0,{
 						submitHandler: function(form){
 							//判断是否存在id号
-							var id=$article_id.val();
+							var id=$article_id.val(),
+								times=$article_time.val().split(',');
 
 
 							if(id!==''){
 								//此处配置修改稿角色地址（开发阶段）
-								var config={};
+								var config={
+									url:"http://120.24.226.70:8081/yttx-adminbms-api/article/advertisement/update",
+									dataType:'JSON',
+									method:'post',
+									data:{
+										articleId:id,
+										adminId:decodeURIComponent(logininfo.param.adminId),
+										token:decodeURIComponent(logininfo.param.token),
+										title:$article_title.val(),
+										content:$article_content.val(),
+										startTime:times[0],
+										endTime:times[1],
+										thumbnail:$article_thumbnail.val(),
+										belongsCompany:$article_belongscompany.val()
+									}
+								};
 								config.url="../../json/admin/admin_role_update.json";
 							}else{
 								//此处配置添加角色地址（开发阶段）
-								config.url="../../json/admin/admin_role_update.json";
-								for(i;i<datalen;i++){
-									if(data[i]['name']==='id'){
-										delete data[i];
-										i=0;
-										datalen=data.length;
-										break;
+								var config={
+									url:"http://120.24.226.70:8081/yttx-adminbms-api/article/advertisement/add",
+									dataType:'JSON',
+									method:'post',
+									data:{
+										adminId:decodeURIComponent(logininfo.param.adminId),
+										token:decodeURIComponent(logininfo.param.token),
+										title:$article_title.val(),
+										content:$article_content.val(),
+										startTime:times[0],
+										endTime:times[1],
+										thumbnail:$article_thumbnail.val(),
+										belongsCompany:$article_belongscompany.val()
 									}
-								}
+								};
 							}
-
-
-							for(i;i<datalen;i++){
-								var tempdata=data[i];
-								if(tempdata['name']==='mobliePhone'){
-									tempdata['value']=tempdata['value'].replace(/\s*/g,'');
-								}
-								res[tempdata['name']]=tempdata['value'];
-							}
-							config.data=res;
 
 							$.ajax(config)
 								.done(function(resp){
-									if(resp.flag){
-										//重绘表格
-										table.draw();
-										$edit_cance_btn.trigger('click');
-
-										if(public_tool.cache.form_opt_0['continue']){
-											form.reset();
-											setTimeout(function(){
-												$article_add_btn.trigger('click');
-											},200);
-										}
-										setTimeout(function(){
-											dia.content('<span class="g-c-bs-success g-btips-succ">操作成功</span>').show();
-										},200);
-									}else{
-										dia.content('<span class="g-c-bs-warning g-btips-warn">操作失败</span>').show();
+									var code=parseInt(resp.code,10);
+									if(code!==0){
+										console.log(resp.message);
+										id!==''?dia.content('<span class="g-c-bs-warning g-btips-warn">修改文章广告失败</span>').show():dia.content('<span class="g-c-bs-warning g-btips-warn">添加文章广告失败</span>').show();
+										setTimeout(function () {
+											dia.close();
+										},2000);
+										return false;
 									}
-									public_tool.cache.form_opt_0['continue']=false;
+
+									id!==''?dia.content('<span class="g-c-bs-success g-btips-succ">修改文章广告成功</span>').show():dia.content('<span class="g-c-bs-success g-btips-succ">添加文章广告成功</span>').show();
+
+									//重置表单
+									$edit_cance_btn.trigger('click');
+									//重绘表格
+									getColumnData(article_config);
 									setTimeout(function () {
 										dia.close();
 									},2000);
 								})
-								.fail(function(){
-									dia.content('<span class="g-c-bs-warning g-btips-warn">操作失败</span>').show();
-									setTimeout(function () {
-										dia.close();
-									},2000)
-									public_tool.cache.form_opt_0['continue']=false;
+								.fail(function(resp){
+									console.log(resp.message);
 								});
-
 							return false;
 						}
 					});
@@ -506,6 +454,142 @@
 
 
 		}
+
+
+
+
+		/*获取数据*/
+		function getColumnData(opt){
+			var table=null;
+
+			$.ajax(opt.ajax).done(function(resp){
+				var code=parseInt(resp.code,10);
+				if(code!==0){
+					if(code===999){
+						/*清空缓存*/
+						public_tool.clear();
+						public_tool.loginTips();
+					}
+					console.log(resp.message);
+					return null;
+				}
+
+				var result=resp.result;
+				opt.total=result.count;
+
+				if(opt.isinit){
+					/*数据渲染*/
+					var table=opt.$ad_article_wrap.DataTable({
+						deferRender:true,/*是否延迟加载数据*/
+						autoWidth:true,/*是否*/
+						data:result.list,
+						paging:false,
+						info:false,
+						searching:true,
+						ordering:true,
+						processing:true,/*大消耗操作时是否显示处理状态*/
+						columns: [
+							{"data":"title"},
+							{
+								"data":"content",
+								"render":function(data, type, full, meta ){
+									return data.toString().substring(0,10)+'...';
+								}
+							},
+							{
+								"data":"startTime"
+							},
+							{
+								"data":"endTime"
+							},
+							{
+								"data":"belongsCompany"
+							},
+							{
+								"data":"createTime"
+							},
+							{
+								"data":"id",
+								"render":function(data, type, full, meta ){
+									var id=parseInt(data,10),
+										btns='';
+
+									/*上架,下架*/
+									if(typeof powermap[12]!=='undefined'){
+										var status=parseInt(full.status,10);
+										if(status===0){
+											//上架
+											btns+='<span data-action="up" data-id="'+id+'" data-isstate="true"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray12">\
+									<i class="fa-arrow-up"></i>\
+									<span>上架</span>\
+									</span>\
+									<span data-action="down" data-id="'+id+'" data-isstate="false"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+									<i class="fa-arrow-down"></i>\
+									<span>下架</span>\
+									</span>';
+										}else if(status===1){
+											//下架
+											btns+='<span data-action="up" data-id="'+id+'" data-isstate="false"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+									<i class="fa-arrow-up"></i>\
+									<span>上架</span>\
+									</span>\
+									<span data-action="down" data-id="'+id+'"  data-isstate="true"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray12">\
+									<i class="fa-arrow-down"></i>\
+									<span>下架</span>\
+									</span>';
+										}
+									}
+
+									/*修改*/
+									if(typeof powermap[11]!=='undefined'){
+										btns+='<span data-action="update" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+									<i class="fa-pencil"></i>\
+									<span>修改</span>\
+									</span>';
+									}
+									return btns;
+								}
+							}
+						],
+						lengthChange:false
+					});
+					if(!opt['table']){
+						opt['table']=table;
+						/*分页调用*/
+						/*opt.$admin_page_wrap.pagination({
+							 pageSize:opt.pageSize,
+							 total:opt.total,
+							 pageNumber:opt.page,
+							 onSelectPage:function(pageNumber,pageSize){
+							 opt.pageSize=pageSize;
+							 opt.page=pageNumber;
+							 /!*再次查询*!/
+							 getColumnData(opt);
+							 }
+						 });*/
+					}
+				}else{
+					if(opt.isinit){
+						table.draw();
+						return false;
+					}
+					opt.table.draw();
+				}
+			}).fail(function (resp) {
+				console.log(resp.message);
+			});
+
+			if(opt.isinit){
+				if(opt['table']){
+					opt.isinit=false;
+				}
+				return table;
+			}
+		};
+
+
+
+
 
 
 

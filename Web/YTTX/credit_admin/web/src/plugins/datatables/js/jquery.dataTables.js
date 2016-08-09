@@ -7331,9 +7331,6 @@
 /*
 * 扩展ajax 配置方法
 *
-*
-*
-*
 * */
 	_api_register('ajax.config()',function(config){
 		if ( config === undefined ) {

@@ -12,6 +12,7 @@
 	<link rel="stylesheet" href="../../css/base.css">
   <link rel="stylesheet" href="../../js/plugins/datatables/dataTables.bootstrap.css">
   <link rel="stylesheet" href="../../js/plugins/kindeditor/themes/default/default.css">
+  <link rel="stylesheet" type="text/css" href="../../js/plugins/daterangepicker/daterangepicker-bs3.css">
 	<link rel="stylesheet" href="../../css/admin.css">
   <script src="../../js/common/jquery-1.11.1.js"></script>
 	<!--[if lt IE 9]>
@@ -128,8 +129,28 @@
                             </div>
                         </div>
 
+
                         <!--表格主体-->
                         <div class="panel-body">
+                            <div class="admin-search-wrap">
+                                <div class="admin-search-item">
+                                    <label>标题：</label>
+                                    <input type="text" id="search_title">
+                                </div>
+                                <div class="admin-search-item">
+                                    <label>开始时间--结束时间：</label>
+                                    <input type="text" readonly id="search_time">
+                                </div>
+                                <div class="admin-search-item">
+                                    <label>上架：</label>
+                                    <input type="text" id="search_stateup">
+                                </div>
+                                <div class="admin-search-item">
+                                    <label>下架：</label>
+                                    <input type="text" id="search_statedown">
+                                </div>
+                            </div>
+
                             <div>
                                 <span id="article_add_btn" class="btn btn-info btn-icon btn-xs g-br2 g-d-hidei">
                                     <i class="fa-plus"></i>
@@ -138,7 +159,7 @@
 
                             </div>
 
-                            <table id="ad_article_wrap" class="table table-bordered table-striped table-hover admin_table">
+                            <table id="ad_article_wrap" class="table table-bordered table-striped table-hover admin-table">
                                 <!--分组样式-->
                                 <colgroup>
                                     <col class="g-w-percent6">
@@ -167,6 +188,9 @@
                                 <!--表主体-->
                                 <tbody class="middle-align"></tbody>
                             </table>
+                            <div class="admin-page-wrap">
+                                <div class="easyui-pagination g-w-percent50" id="admin_page_wrap" data-options="links:5,layout:['prev','links','next'],displayMsg:'显示{from}&nbsp;到&nbsp;{to}&nbsp;共&nbsp;{total}条记录'"></div>
+                            </div>
                         </div>
 
 
@@ -175,7 +199,7 @@
 
 
                 <div class="col-md-12">
-                    <div class="panel collapsed" id="edit_wrap">
+                    <div class="panel collapsed g-d-hidei" id="edit_wrap">
 
                         <!--编辑表单标题-->
                         <div class="panel-heading">
@@ -206,17 +230,10 @@
 
 
                                 <div class="form-group">
-                                    <label class="control-label">开始时间：</label>
+                                    <label class="control-label">开始时间--结束时间：</label>
 
-                                    <input type="text" readonly class="form-control" name="startTime" id="article_starttime"  placeholder="请输入开始时间" data-validate="required" data-message-required="开始时间不能为空" />
+                                    <input type="text" readonly class="form-control daterange" name="articleTime" id="article_time"  placeholder="请选择开始时间,结束时间" data-validate="required" data-message-required="开始时间和结束时间不能为空" />
                                 </div>
-
-                                <div class="form-group">
-                                    <label class="control-label">结束时间：</label>
-
-                                    <input type="text" readonly class="form-control" name="endTime" id="article_endtime"  placeholder="请输入结束时间" data-validate="required" data-message-required="结束时间不能为空" />
-                                </div>
-
 
                                 <div class="form-group">
                                     <label class="control-label">缩略图地址：</label>
@@ -336,7 +353,8 @@
     <script src="../../js/plugins/datatables/dataTables.bootstrap.js"></script>
     <!--表单验证插件-->
     <script src="../../js/plugins/jquery-validate/jquery.validate.js"></script>
-
+    <script src="../../js/plugins/daterangepicker/daterangepicker.js"></script>
+    <script src="../../js/plugins/pagination/pagination.js"></script>
     <script src="../../js/ad/ad_article.js"></script>
 </body>
 </html>
