@@ -883,6 +883,9 @@
 		for(i;i<len;i++){
 			item=menu[i];
 			link=self.menuMap[item.modId];
+			if(typeof link==='undefined'){
+				continue;
+			}
 			//解析菜单
 			if(isindex){
 				//当前页为首页的情况
