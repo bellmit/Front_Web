@@ -157,15 +157,18 @@
 /*查询区域*/
 .admin-search-wrap{
 	.layout-base;
-	padding:10px;
+	padding:5px;
+	border-bottom:1px solid @color-gray14;
+	margin:20px 0;
 	.admin-search-item{
 		display: inline-block;
 		height:50px;
 		.box-sizing-base;
-		padding:10px 50px 10px 0;
+		padding:10px 20px 10px 0;
 		label{
-			width:80px;
+			max-width:200px;
 			height:100%;
+			margin:0;
 			display: inline-block;
 			line-height:30px;
 			text-align: right;
@@ -175,15 +178,31 @@
 		}
 		input{
 			.box-sizing-base;
-			width:150px;
+			width:180px;
 			height:30px;
-			padding:5px;
+			padding:4px;
 			line-height: 20px;
 			font-size: @font-size-base;
 			color:@color-gray9;
 			border:1px solid @color-gray12;
 			&:focus{
 				border:1px solid @btn-success-bg;
+			}
+		}
+		.btn{
+			.box-sizing-base;
+			height:100%;
+			margin:0;
+			padding:5px 10px;
+			line-height:18px;
+			font-size: @font-size-base - 2;
+			i{
+				.box-sizing-base;
+				display: inline-block;
+				height:100%;
+				padding:0 3px;
+				margin:0;
+				line-height:16px;
 			}
 		}
 	}

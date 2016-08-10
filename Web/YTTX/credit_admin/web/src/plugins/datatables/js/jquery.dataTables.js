@@ -7359,6 +7359,7 @@
 	});
 
 
+
 	/**
 	 * Get the current Ajax URL. Note that this returns the URL from the first
 	 * table in the current context.
@@ -7410,6 +7411,22 @@
 			__reload( ctx, resetPaging===false, callback );
 		} );
 	} );
+
+
+
+
+
+	/*_api_register('dataSource()',function(source){
+		if ( source === undefined ) {
+			return false;
+		}
+		DataTable.defaults.aaData=source.slice(0);
+		return this;
+	});*/
+
+
+
+
 
 
 	/**

@@ -737,6 +737,14 @@
 					"funcName": "提额策略审核"
 				}
 			}
+		},
+		"35":{
+			"name":"财务管理",
+			"code":"finance",
+			"match":"-finance-",
+			"class":"menu-ux-finance",
+			"module":"finance",
+			"modid":"30"
 		}
 	};
 	/*路由映射*/
