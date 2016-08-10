@@ -116,7 +116,7 @@
 
                         <!--表格标题-->
                         <div class="panel-heading">
-                            <h3 class="panel-title">添加服务站</h3>
+                            <h3 class="panel-title">文章广告</h3>
 
                             <div class="panel-options">
                                 <a href="#" data-toggle="panel">
@@ -148,6 +148,9 @@
                                 <div class="admin-search-item">
                                     <span id="admin_search_btn" class="btn btn-info btn-icon g-br2">
                                         <i class="fa-search"></i>查询
+                                    </span>
+                                    <span id="admin_search_clear" class="btn btn-info btn-icon g-br2">
+                                        <i class="fa-spinner"></i>清空
                                     </span>
                                 </div>
                             </div>
@@ -229,23 +232,37 @@
                                     <textarea class="form-control  form-admin-editor" name="content" id="article_content"  placeholder="请输入文章广告内容" data-validate="required" data-message-required="文章广告内容不能为空" ></textarea>
                                 </div>
 
+                                <div class="form-group admin-rpos-wrap">
+                                    <div class="img-url-wrap">
+                                        <div class="btn btn-info g-br2 img-url-btn">选择缩略图地址</div>
+                                        <ul class=" img-url-list">
+                                            <li><img alt="" src="../../images/"></li>
+                                            <li>skfjskfjskfjsf</li>
+                                            <li>skfjskfjskfjsf</li>
+                                            <li>skfjskfjskfjsf</li>
+                                            <li>skfjskfjskfjsf</li>
+                                        </ul>
+                                    </div>
+
+                                    <label class="control-label">缩略图地址：</label>
+
+                                    <input type="text" class="form-control" name="thumbnail" id="article_thumbnail" readonly  placeholder="请选择缩略图地址"  />
+                                </div>
+
 
                                 <div class="form-group">
+                                    <div></div>
                                     <label class="control-label">开始时间--结束时间：</label>
 
                                     <input type="text" readonly class="form-control daterange" name="articleTime" id="article_time"  placeholder="请选择开始时间,结束时间" data-validate="required" data-message-required="开始时间和结束时间不能为空" />
                                 </div>
 
-                                <div class="form-group">
-                                    <label class="control-label">缩略图地址：</label>
 
-                                    <input type="text" class="form-control" name="thumbnail" id="article_thumbnail"  placeholder=""  />
-                                </div>
 
                                 <div class="form-group">
                                     <label class="control-label">所属企业：</label>
 
-                                    <input type="text" class="form-control" name="belongsCompany" id="article_belongscompany"  placeholder=""  />
+                                    <input type="text" class="form-control" name="belongsCompany" id="article_belongscompany"  placeholder="请输入所属企业"  />
                                 </div>
 
 

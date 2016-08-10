@@ -52,7 +52,8 @@
 			var $search_title=$('#search_title'),
 				$search_time=$('#search_time'),
 				$search_content=$('#search_content'),
-				$admin_search_btn=$('#admin_search_btn');
+				$admin_search_btn=$('#admin_search_btn'),
+				$admin_search_clear=$('#admin_search_clear');
 
 
 
@@ -99,15 +100,56 @@
 			/*列表请求配置*/
 			var article_page={
 					page:1,
-					pageSize:20,
+					pageSize:10,
 					total:0
 				},
 				article_config={
 					$ad_article_wrap:$ad_article_wrap,
 					$admin_page_wrap:$admin_page_wrap,
 					config:{
+						processing:true,/*大消耗操作时是否显示处理状态*/
+						deferRender:true,/*是否延迟加载数据*/
 						autoWidth:true,/*是否*/
 						paging:false,
+						ajax:{
+							url:"http://120.24.226.70:8081/yttx-adminbms-api/article/advertisement/list",
+							dataType:'JSON',
+							method:'post',
+							dataSrc:function ( json ) {
+								var code=parseInt(json.code,10);
+								if(code!==0){
+									console.log(json.message);
+									return null;
+								}
+								var result=json.result;
+								/*设置分页*/
+								article_page.page=result.page;
+								article_page.pageSize=result.pageSize;
+								article_page.total=result.count;
+								/*分页调用*/
+								$admin_page_wrap.pagination({
+									pageSize:article_page.pageSize,
+									total:article_page.total,
+									pageNumber:article_page.page,
+									onSelectPage:function(pageNumber,pageSize){
+										/*再次查询*/
+										var param=article_config.config.ajax.data;
+										param.page=pageNumber;
+										param.pageSize=pageSize;
+										article_config.config.ajax.data=param;
+										getColumnData(article_page,article_config);
+									}
+								});
+								return result.list;
+							},
+							data:{
+								roleId:decodeURIComponent(logininfo.param.roleId),
+								adminId:decodeURIComponent(logininfo.param.adminId),
+								token:decodeURIComponent(logininfo.param.token),
+								page:1,
+								pageSize:10
+							}
+						},
 						info:false,
 						searching:true,
 						ordering:true,
@@ -126,10 +168,10 @@
 								"data":"endTime"
 							},
 							{
-								"data":"belongsCompany"
+								"data":"createTime"
 							},
 							{
-								"data":"createTime"
+								"data":"belongsCompany"
 							},
 							{
 								"data":"id",
@@ -178,47 +220,19 @@
 								}
 							}
 						]
-					},
-					ajax:{
-						url:"http://120.24.226.70:8081/yttx-adminbms-api/article/advertisement/list",
-						dataType:'JSON',
-						method:'post',
-						dataSrc:function ( json ) {
-							var code=parseInt(json.code,10);
-							if(code!==0){
-								console.log(json.message);
-								return null;
-							}
-							var result=json.result;
-							/*设置分页*/
-							article_page.page=result.page;
-							article_page.pageSize=result.pageSize;
-							article_page.total=result.count;
-							return result.list;
-						},
-						data:{
-								roleId:decodeURIComponent(logininfo.param.roleId),
-								adminId:decodeURIComponent(logininfo.param.adminId),
-								token:decodeURIComponent(logininfo.param.token),
-								page:1,
-								pageSize:20
-						}
 					}
 				};
 			
 
 			//初始化请求
-			getColumnData(article_config);
+			getColumnData(article_page,article_config);
+
 
 
 			/*
 			* 初始化
 			* */
 			(function(){
-				/*清空查询条件*/
-				$.each([$search_title,$search_time,$search_content],function(){
-					this.val('');
-				});
 				/*清空编辑器内容*/
 				editor.html('');
 				/*重置表单*/
@@ -241,10 +255,17 @@
 			});
 
 
+			/*清空查询条件*/
+			$admin_search_clear.on('click',function(){
+				$.each([$search_title,$search_time,$search_content],function(){
+					this.val('');
+				});
+			})
+
+
 			/*联合查询*/
 			$admin_search_btn.on('click',function(){
-				var data= $.extend(true,{},article_config.ajax.data),
-					count=0;
+				var data= $.extend(true,{},article_config.config.ajax.data);
 
 				$.each([$search_title,$search_time,$search_content],function(){
 					var text=this.val(),
@@ -288,11 +309,8 @@
 							break;
 					}
 				});
-				article_config.ajax.data= $.extend(true,{},data);
-				/*有条件时查询*/
-				if(count!==0){
-					getColumnData(article_config);
-				}
+				article_config.config.ajax.data= $.extend(true,{},data);
+				getColumnData(article_page,article_config);
 			});
 
 
@@ -389,7 +407,8 @@
 									console.log(resp.message);
 									return false;
 								}
-								table.row($tr).remove().draw(false);
+								getColumnData(article_page,article_config);
+								//table.row($tr).remove().draw(false);
 								setTimeout(function(){
 									self.content('<span class="g-c-bs-success g-btips-succ">删除数据成功</span>');
 								},100);
@@ -584,7 +603,7 @@
 										return false;
 									}
 									//重绘表格
-									getColumnData(article_config);
+									getColumnData(article_page,article_config);
 									//重置表单
 									$edit_cance_btn.trigger('click');
 									setTimeout(function(){
@@ -617,65 +636,12 @@
 			return opt;
 		};
 		/*获取数据*/
-		function getColumnData(opt){
-			var param=opt.ajax.data;
+		function getColumnData(page,opt){
 			if(table===null){
-				opt.config['ajax']=opt.ajax;
 				table=opt.$ad_article_wrap.DataTable(opt.config);
 			}else{
-				table.ajax.config(opt.config).load();
+				table.ajax.config(opt.config.ajax).load();
 			}
-
-			/*分页调用*/
-			opt.$admin_page_wrap.pagination({
-				pageSize:param.pageSize,
-				total:opt.total,
-				pageNumber:param.page,
-				onSelectPage:function(pageNumber,pageSize){
-					/*再次查询*/
-					param.page=pageNumber;
-					param.pageSize=pageSize;
-					opt.ajax.data=param;
-					getColumnData(opt);
-				}
-			});
-
-			/*$.ajax(opt.ajax).done(function(resp){
-				var code=parseInt(resp.code,10);
-				if(code!==0){
-					if(code===999){
-						/!*清空缓存*!/
-						public_tool.clear();
-						public_tool.loginTips();
-					}
-					console.log(resp.message);
-					return null;
-				}
-				var result=resp.result;
-				opt.total=result.count;
-				opt.config.data=result.list;
-				/!*if(table!==null){
-					table.destroy();
-					table=null;
-				}*!/
-				table=opt.$ad_article_wrap.DataTable(opt.config);
-				/!*分页调用*!/
-				opt.$admin_page_wrap.pagination({
-					pageSize:param.pageSize,
-					total:opt.total,
-					pageNumber:param.page,
-					onSelectPage:function(pageNumber,pageSize){
-						/!*再次查询*!/
-						param.page=pageNumber;
-						param.pageSize=pageSize;
-						opt.ajax.data=param;
-						getColumnData(opt);
-					}
-				});
-			}).fail(function (resp) {
-				console.log(resp.message);
-			});*/
-
 		};
 
 
