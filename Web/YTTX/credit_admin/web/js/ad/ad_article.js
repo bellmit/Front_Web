@@ -66,7 +66,12 @@
 				$article_content=$('#article_content')/*内容*/,
 				$article_time=$('#article_time')/*时间*/,
 				$article_thumbnail=$('#article_thumbnail')/*缩略图*/,
-				$article_belongscompany=$('#article_belongscompany')/*所属公司*/;
+				$article_belongscompany=$('#article_belongscompany')/*所属公司*/,
+				$img_url_btn=$('#img_url_btn')/*缩略图按钮*/,
+				$img_url_list=$('#img_url_list')/*缩略图列表*/;
+
+
+
 
 
 			/*编辑器调用*/
@@ -224,9 +229,16 @@
 				};
 			
 
-			//初始化请求
+			/*初始化请求*/
 			getColumnData(article_page,article_config);
 
+
+			/*请求缩略图资源*/
+			$.ajax({
+
+			})
+				.done(function(resp){})
+				.fail(function(resp){});
 
 
 			/*
@@ -537,6 +549,18 @@
 				$article_add_btn.removeClass('g-d-hidei');
 				$edit_wrap.removeClass('g-d-hidei');
 			}
+
+
+			/*缩略图切换*/
+			$img_url_btn.on('click', function () {
+				$img_url_list.toggleClass('g-d-hidei');
+			});
+
+			/*缩略图选中*/
+			$img_url_list.delegate('li','click',function(){
+				var $this=$(this);
+				$article_thumbnail.val($this.attr('data-src'));
+			});
 
 
 

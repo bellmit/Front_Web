@@ -276,23 +276,36 @@
 		font-size:@font-size-base - 2;
 	}
 	.img-url-list{
-		.layout-absoluter-base(3px,35px);
+		.layout-absoluter-base(0,35px);
 		.box-sizing-base;
-		padding:5px;
+		padding:20px;
 		border:1px solid @color-gray12;
-		width:300px;
+		width:500px;
 		height:200px;
 		overflow-y: auto;
 		background:@color-white;
 		li{
-			.layout-float-base(50%);
-			height:30px;
-			font-size: @font-size-base - 2;
-			color:@color-gray6;
-			line-height:20px;
-			margin:5px 0;
+			.layout-float-base(25%);
+			height:90px;
+			cursor: pointer;
 			padding:5px;
+			margin:3px 0 0 0;
 			.user-select-base;
+			&:hover{
+				img{
+					border:1px solid @color-gray12;
+				}
+			}
+			img{
+				.layout-base;
+				height:100%;
+				display:block;
+				padding:5px;
+				overflow: hidden;
+				margin:0 auto;
+				border:1px solid @color-gray14;
+				.border-radius-base(3px);
+			}
 		}
 	}
 }
