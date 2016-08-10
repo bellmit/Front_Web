@@ -649,7 +649,7 @@
 			}
 
 
-
+			getToken();
 
 
 		}
@@ -668,7 +668,29 @@
 			}
 		};
 
+		/*获取七牛token*/
+		function getToken(){
+			/*
+			* http://<domain>/<key>?e=<deadline>&token=<downloadToken>
+			* */
+			/*var url="",
+				protocol="http://",
+				domain="7xv6zz.com1.z0.glb.clouddn.com",
+				key="",
+				dealine="",
+				token="";*/
+			/*grant_type=password&username=<UrlEncodedUserEmailAddress>&password=<UrlEncodedUserPassword>*/
+			var url="grant_type=password&username="+encodeURIComponent('372884807@qq.com')+"&password="+encodeURIComponent('yttx@357159');
+			$.ajax({
+				url:url,type:'post',
+				datatype:'json'
+			}).done(function(resp){
+				console.log(resp);
+			}).fail(function(resp){
+				console.log(resp);
+			});
 
+		}
 
 
 
