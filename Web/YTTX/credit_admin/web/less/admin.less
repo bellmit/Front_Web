@@ -211,6 +211,7 @@
 
 
 /*-----编辑区域-----*/
+/*右侧表单*/
 .row-edit-wrap{
   .layout-relative-base;
   height:auto;
@@ -230,6 +231,8 @@
 	}
 }
 
+
+/*下侧表单*/
 .admin-form1{
 	input[readonly],
 	textarea[readonly]{
@@ -247,6 +250,7 @@
 		display:inline-block !important;
 		min-height: 0 !important;
 	}
+
 	/*编辑器*/
 	.ke-container{
 		border:1px solid @color-gray14;
@@ -258,55 +262,42 @@
 			border:1px solid #cc3f44;
 		}
 	}
-	/*获取上传地址*/
+
+	/*缩略图上传地址*/
 	.admin-rpos-wrap{
 		.layout-relative-base;
 	};
 	.img-url-wrap{
 		.layout-absoluterb-base(5px,2px);
-		width:100px;
+		width:220px;
 		height:30px;
 	}
-	.img-url-btn{
-		width:100%;
+	.img-url-item{
+		.box-sizing-base;
+		position: absolute;
+		top:0;
 		height:100%;
-		line-height:30px;
 		margin:0;
 		padding:0;
-		font-size:@font-size-base - 2;
 	}
-	.img-url-list{
-		.layout-absoluter-base(0,35px);
-		.box-sizing-base;
-		padding:20px;
-		border:1px solid @color-gray12;
-		width:500px;
-		height:200px;
-		overflow-y: auto;
-		background:@color-white;
-		li{
-			.layout-float-base(25%);
-			height:90px;
-			cursor: pointer;
-			padding:5px;
-			margin:3px 0 0 0;
-			.user-select-base;
-			&:hover{
-				img{
-					border:1px solid @color-gray12;
-				}
-			}
-			img{
-				.layout-base;
-				height:100%;
-				display:block;
-				padding:5px;
-				overflow: hidden;
-				margin:0 auto;
-				border:1px solid @color-gray14;
-				.border-radius-base(3px);
-			}
-		}
+	.img-url-select,
+	.img-url-upload{
+		z-index: 10;
+		line-height:30px;
+		font-size:@font-size-base - 2;
+		width:48%;
+	}
+	.img-url-select{
+		left:0;
+	}
+	.img-url-upload{
+		right:0;
+	}
+	.img-url-file{
+		.opacity-base(0);
+		width:100%;
+		left:0;
+		z-index: 100;
 	}
 }
 

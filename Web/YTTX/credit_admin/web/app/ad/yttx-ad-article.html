@@ -232,17 +232,6 @@
                                     <textarea class="form-control  form-admin-editor" name="content" id="article_content"  placeholder="请输入文章广告内容" data-validate="required" data-message-required="文章广告内容不能为空" ></textarea>
                                 </div>
 
-                                <div class="form-group admin-rpos-wrap">
-                                    <div class="img-url-wrap">
-                                        <div id="img_url_btn" class="btn btn-info g-br2 img-url-btn">选择缩略图地址</div>
-                                        <ul id="img_url_list" class="img-url-list g-d-hidei"></ul>
-                                    </div>
-
-                                    <label class="control-label">缩略图地址：</label>
-
-                                    <input type="text" class="form-control" name="thumbnail" id="article_thumbnail" readonly  placeholder="请选择缩略图地址"  />
-                                </div>
-
 
                                 <div class="form-group">
                                     <label class="control-label">开始时间--结束时间：</label>
@@ -250,6 +239,17 @@
                                     <input type="text" readonly class="form-control daterange" name="articleTime" id="article_time"  placeholder="请选择开始时间,结束时间" data-validate="required" data-message-required="开始时间和结束时间不能为空" />
                                 </div>
 
+
+                                <div class="form-group admin-rpos-wrap">
+                                    <div class="img-url-wrap">
+                                        <div class="btn btn-info g-br2 img-url-item img-url-select">选择图片<input type="file" value="" id="img_url_file" class="img-url-item img-url-file" /></div>
+                                        <div id="img_url_upload" class="btn btn-info g-br2 img-url-item img-url-upload">上传图片</div>
+                                    </div>
+
+                                    <label class="control-label">缩略图地址：</label>
+
+                                    <input type="text" class="form-control" name="thumbnail" id="article_thumbnail" readonly  placeholder="请选择缩略图地址"  />
+                                </div>
 
 
                                 <div class="form-group">
@@ -366,6 +366,9 @@
     <script src="../../js/plugins/jquery-validate/jquery.validate.js"></script>
     <script src="../../js/plugins/daterangepicker/daterangepicker.js"></script>
     <script src="../../js/plugins/pagination/pagination.js"></script>
+    <script src="../../js/plugins/plupload/plupload.full.min.js"></script>
+    <script src="../../js/plugins/plupload/i18n/zh_CN.js"></script>
+    <script src="../../js/plugins/qn/qiniu.min.js"></script>
     <script src="../../js/ad/ad_article.js"></script>
 </body>
 </html>

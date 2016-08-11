@@ -67,11 +67,8 @@
 				$article_time=$('#article_time')/*时间*/,
 				$article_thumbnail=$('#article_thumbnail')/*缩略图*/,
 				$article_belongscompany=$('#article_belongscompany')/*所属公司*/,
-				$img_url_btn=$('#img_url_btn')/*缩略图按钮*/,
-				$img_url_list=$('#img_url_list')/*缩略图列表*/;
-
-
-
+				$img_url_file=$('#img_url_file')/*缩略图文件浏览*/,
+				$img_url_upload=$('#img_url_upload')/*缩略图文件上传按钮*/;
 
 
 			/*编辑器调用*/
@@ -81,11 +78,17 @@
 					filterMode :false,
 					resizeType:1,/*改变外观大小模式*/
 				  bodyClass:"ke-admin-wrap",
+					items:[
+						'source', '|', 'undo', 'redo', '|', 'preview', 'print', 'template', 'code', 'cut', 'copy', 'paste',
+					'plainpaste', 'wordpaste', '|', 'justifyleft', 'justifycenter', 'justifyright',
+					'justifyfull', 'insertorderedlist', 'insertunorderedlist', 'indent', 'outdent', 'subscript',
+					'superscript', 'clearhtml', 'quickformat', 'selectall', '|', 'fullscreen', '/',
+					'formatblock', 'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold',
+					'italic', 'underline', 'strikethrough', 'lineheight', 'removeformat', '|', 'image', 'multiimage',
+					'flash', 'media', 'insertfile', 'table', 'hr', 'emoticons', 'baidumap', 'pagebreak',
+					'anchor', 'link', 'unlink', '|', 'about'
+			],
 					syncType:""/*数据同步模式*/,
-					afterUpload : function(url) {
-						/*指定上传文件的回调*/
-						alert(url);
-					},
 					afterBlur:function(){
 						/*失去焦点的回调*/
 						this.sync();
@@ -233,13 +236,6 @@
 			getColumnData(article_page,article_config);
 
 
-			/*请求缩略图资源*/
-			$.ajax({
-
-			})
-				.done(function(resp){})
-				.fail(function(resp){});
-
 
 			/*
 			* 初始化
@@ -250,7 +246,6 @@
 				/*重置表单*/
 				edit_form.reset();
 			}());
-
 
 
 			/*日历调用*/
@@ -551,16 +546,118 @@
 			}
 
 
-			/*缩略图切换*/
-			$img_url_btn.on('click', function () {
-				$img_url_list.toggleClass('g-d-hidei');
-			});
+			/*缩略图文件上传初始化*/
+			var img_token=getToken();
+			if(img_token!==null){
+				// domain为七牛空间对应的域名，选择某个空间后，可通过 空间设置->基本设置->域名设置 查看获取
+				// uploader为一个plupload对象，继承了所有plupload的方法
+				var thumbnail_upload = Qiniu.uploader({
+							runtimes: 'html5,flash,html4',
+							browse_button: 'img-url-upload',// 上传选择的点选按钮，必需
+							uptoken :img_token.qiniuToken,// uptoken是上传凭证，由其他程序生成
+							get_new_uptoken: false,// 设置上传文件的时候是否每次都重新获取新的uptoken
+							//downtoken_url: '/downtoken',
+							//Ajax请求downToken的Url，私有空间时使用，JS-SDK将向该地址POST文件的key和domain，服务端返回的JSON必须包含url字段，url值为该文件的下载地址
+							unique_names:false,// 默认false，key为文件名。若开启该选项，JS-SDK会为每个文件自动生成key（文件名）
+							save_key:false,//默认false。若在服务端生成uptoken的上传策略中指定了sava_key，则开启，SDK在前端将不对key进行任何处理
+							domain:img_token.qiniuDomain,//bucket域名，下载资源时用到，必需
+							container:'',// 上传区域DOM ID，默认是browser_button的父元素
+							max_file_size: '4mb',// 最大文件体积限制
+							flash_swf_url: '../../js/plugins/plupload/Moxie.swf',//引入flash，相对路径
+							max_retries: 3,// 上传失败最大重试次数
+							dragdrop:false,
+							drop_element:'',
+							chunk_size: '2mb',
+							auto_start:true,
+							filters:{
+								mime_types: [
+									{
+										title : "flv files", extensions : "flv"
+									},
+									{
+										title : "Video files", extensions : "flv,mpg,mpeg,avi,wmv,mov,asf,rm,rmvb,mkv,m4v,mp4"
+									},
+									{
+										title : "Image files", extensions : "jpg,gif,png,jpeg"
+									}
+								]
+							},
+							x_vars : {
+								/*查看自定义变量*/
+								'time' : function(up,file) {
+									var d=new Date();
+									return d.getTime();
+								},
+								'size' : function(up,file) {
+									return file.size;
+								}
+							},
+							init: {
+								'FilesAdded': function(up, files) {
+									plupload.each(files, function(file) {
+										// 文件添加进队列后，处理相关的事情
+										console.log("plupload:",file);
+									});
+								},
+								'BeforeUpload': function(up, file) {
+									// 每个文件上传前，处理相关的事情
+									console.log("BeforeUpload:",file);
+								},
+								'UploadProgress': function(up, file) {
+									// 每个文件上传时，处理相关的事情
+									console.log("UploadProgress:",file);
+								},
+								'FileUploaded': function(up, file, info) {
+									console.log("FileUploaded:",file);
+									/*每个文件上传成功后，处理相关的事情*/
+									/*其中info是文件上传成功后，服务端返回的json，形式如：
+									 {
+									 "hash": "Fh8xVqod2MQ1mocfI4S4KpRL6D98",
+									 "key": "gogopher.jpg"
+									 }*/
+									var domain = up.getOption('domain');
+									var res = parseJSON(info);
+									var sourceLink = domain + res.key; /*获取上传成功后的文件的Url*/
+									return sourceLink;
+								},
+								'Error': function(up, err, errTip) {
+									//上传出错时，处理相关的事情
+								},
+								'UploadComplete': function() {
+									//队列文件处理完毕后，处理相关的事情
+								},
+								'Key': function(up, file) {
+									// 若想在前端对每个文件的key进行个性化处理，可以配置该函数
+									// 该配置必须要在unique_names: false，save_key: false时才生效
 
-			/*缩略图选中*/
-			$img_url_list.delegate('li','click',function(){
-				var $this=$(this);
-				$article_thumbnail.val($this.attr('data-src'));
-			});
+									/*var key = "";
+									 return key*/
+								}
+							}
+				});
+
+				/*$img_url_upload.on('click',function(){
+					var text=$img_url_file.val();
+					if(text===''){
+						dia.content('<span class="g-c-bs-warning g-btips-warn">请先选择文件</span>').show();
+						setTimeout(function(){
+							dia.close();
+						},2000);
+						return false;
+					}
+					/!*执行上传*!/
+					thumbnail_upload.start();
+				});*/
+
+				thumbnail_upload.bind('FileUploaded',function(str){
+					console.log(str);
+					console.log('ok......');
+				});
+
+
+			}
+
+
 
 
 
@@ -649,16 +746,10 @@
 			}
 
 
-			getToken();
-
 
 		}
 
 
-		/*设置数据*/
-		function setTablePages(opt){
-			return opt;
-		};
 		/*获取数据*/
 		function getColumnData(page,opt){
 			if(table===null){
@@ -667,29 +758,30 @@
 				table.ajax.config(opt.config.ajax).load();
 			}
 		};
-
 		/*获取七牛token*/
 		function getToken(){
-			/*
-			* http://<domain>/<key>?e=<deadline>&token=<downloadToken>
-			* */
-			/*var url="",
-				protocol="http://",
-				domain="7xv6zz.com1.z0.glb.clouddn.com",
-				key="",
-				dealine="",
-				token="";*/
-			/*grant_type=password&username=<UrlEncodedUserEmailAddress>&password=<UrlEncodedUserPassword>*/
-			var url="grant_type=password&username="+encodeURIComponent('372884807@qq.com')+"&password="+encodeURIComponent('yttx@357159');
+			var result=null;
 			$.ajax({
-				url:url,type:'post',
-				datatype:'json'
+				url:'http://120.24.226.70:8081/yttx-adminbms-api/commom/getQiniuToken',
+				async:false,
+				type:'post',
+				datatype:'json',
+				data:{
+					bizType:"2",
+					adminId:decodeURIComponent(logininfo.param.adminId),
+					token:decodeURIComponent(logininfo.param.token)
+				}
 			}).done(function(resp){
-				console.log(resp);
+				var code=parseInt(resp.code,10);
+				if(code!==0){
+					console.log(resp.message);
+					return false;
+				}
+				result=resp.result;
 			}).fail(function(resp){
-				console.log(resp);
+				console.log(resp.message);
 			});
-
+			return result;
 		}
 
 
