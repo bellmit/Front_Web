@@ -66,13 +66,24 @@
 				$article_content=$('#article_content')/*内容*/,
 				$article_time=$('#article_time')/*时间*/,
 				$article_thumbnail=$('#article_thumbnail')/*缩略图*/,
-				$article_belongscompany=$('#article_belongscompany')/*所属公司*/,
+				$article_belongscompany=$('#article_belongscompany')/*所属公司*/;
+
+
+			/*图片上传对象*/
+			var $editor_image_toggle=$('#editor_image_toggle'),
+				$editor_image_list=$('#editor_image_list'),
+				$editor_image_select=$('#editor_image_select'),
+				$editor_image_upload=$('#editor_image_upload'),
+				$editor_image_show=$('#editor_image_show'),
+				$img_url_wrap=$('#img_url_wrap')/*缩略图容器*/,
 				$img_url_file=$('#img_url_file')/*缩略图文件浏览*/,
 				$img_url_upload=$('#img_url_upload')/*缩略图文件上传按钮*/;
 
 
 			/*编辑器调用*/
-			var editor=KE.create("#article_content",{
+			var QN=new QiniuJsSDK()/*七牛对象*/,
+				img_token=getToken()/*获取token*/,
+			editor=KE.create("#article_content",{
 					minHeight:'300px',
 					height:'300px',
 					filterMode :false,
@@ -84,8 +95,8 @@
 					'justifyfull', 'insertorderedlist', 'insertunorderedlist', 'indent', 'outdent', 'subscript',
 					'superscript', 'clearhtml', 'quickformat', 'selectall', '|', 'fullscreen', '/',
 					'formatblock', 'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold',
-					'italic', 'underline', 'strikethrough', 'lineheight', 'removeformat', '|', 'image', 'multiimage',
-					'flash', 'media', 'insertfile', 'table', 'hr', 'emoticons', 'baidumap', 'pagebreak',
+					'italic', 'underline', 'strikethrough', 'lineheight', 'removeformat', '|',
+					 'table', 'hr', 'emoticons', 'baidumap', 'pagebreak',
 					'anchor', 'link', 'unlink', '|', 'about'
 			],
 					syncType:""/*数据同步模式*/,
@@ -97,6 +108,81 @@
 					allowFileManager : true,
 					imageSizeLimit : "2MB",
 			});
+			/*图片上传初始化*/
+			if(img_token!==null){
+				/*切换显示隐藏*/
+				$editor_image_toggle.on('click', function () {
+					$editor_image_list.toggleClass('g-d-hidei')
+				});
+
+				/*上传*/
+				var editor_upload = QN.uploader({
+					runtimes: 'html5,flash,html4',
+					browse_button: 'editor_image_select',
+					uptoken :img_token.qiniuToken,// uptoken是上传凭证，由其他程序生成
+					multi_selection:true,
+					get_new_uptoken: false,// 设置上传文件的时候是否每次都重新获取新的uptoken
+					unique_names:false,// 默认false，key为文件名。若开启该选项，JS-SDK会为每个文件自动生成key（文件名）
+					save_key:false,//默认false。若在服务端生成uptoken的上传策略中指定了sava_key，则开启，SDK在前端将不对key进行任何处理
+					domain:img_token.qiniuDomain,//bucket域名，下载资源时用到，必需
+					container:'editor_image_list',// 上传区域DOM ID，默认是browser_button的父元素
+					flash_swf_url: '../../js/plugins/plupload/Moxie.swf',//引入flash，相对路径
+					max_retries: 3,// 上传失败最大重试次数
+					dragdrop:false,
+					chunk_size: '4m',
+					auto_start:false,
+					filters:{
+						max_file_size : '4m',
+						mime_types: [
+							{
+								title : "Image files", extensions : "jpg,gif,png,jpeg"
+							}
+						]
+					},
+					init: {
+						'FilesAdded': function(up, files) {},
+						'BeforeUpload': function(up, file) {},
+						'UploadProgress': function(up, file) {},
+						'FileUploaded': function(up, file, info) {
+							/*获取上传成功后的文件的Url*/
+							var domain=up.getOption('domain'),
+								name=JSON.parse(info),
+								str=domain+'/'+name.key;
+							$('<li><div><img alt="" src="'+str+'"></div>&lt;img alt="" src="'+str+'"&gt;</li>').appendTo($editor_image_show);
+						},
+						'Error': function(up, err, errTip) {
+							var opt=up.settings,
+								file=err.file,
+								setsize=parseInt(opt.filters.max_file_size,10),
+								realsize=parseInt((file.size / 1024) / 1024,10);
+
+							if(realsize>setsize){
+								dia.content('<span class="g-c-bs-warning g-btips-warn">您选择的文件太大(<span class="g-c-red1"> '+realsize+'m</span>),不能超过(<span class="g-c-red1"> '+setsize+'m</span>)</span>').show();
+								setTimeout(function(){
+									dia.close();
+								},3000);
+							}
+							console.log(errTip);
+						},
+						'UploadComplete': function() {
+							dia.content('<span class="g-c-bs-success g-btips-succ">上传成功</span>').show()
+							setTimeout(function(){
+								dia.close();
+							},2000);
+						},
+						'Key': function(up, file) {
+							var str=moment().format("YYYYMMDDHHmmSSSS");
+							return "admin"+decodeURIComponent(logininfo.param.adminId)+"_"+str;
+						}
+					}
+				});
+
+
+				/*执行上传*/
+				$editor_image_upload.on('click',function(){
+					editor_upload.start();
+				});
+			}
 
 
 			/*时间对象*/
@@ -362,8 +448,18 @@
 								$article_title.val(datas[i]);
 								break;
 							case "content":
-								$article_content.val(datas[i]);
-								editor.html(datas[i]);
+								var htmlstr=datas[i],
+									$img=$(htmlstr).find('img'),
+									imgstr='';
+								$article_content.val(htmlstr);
+								editor.html(htmlstr);
+								if($img.size()!==0){
+									$img.each(function(){
+										var imgsrc=$(this).attr('src');
+										imgstr+='<li><div><img alt="" src="'+imgsrc+'"></div>&lt;img alt="" src="'+imgsrc+'"&gt;</li>';
+									});
+								$(imgstr).appendTo($editor_image_show);
+								}
 								break;
 							case "startTime":
 								start_format=datas[i];
@@ -547,114 +643,72 @@
 
 
 			/*缩略图文件上传初始化*/
-			var img_token=getToken();
 			if(img_token!==null){
-				// domain为七牛空间对应的域名，选择某个空间后，可通过 空间设置->基本设置->域名设置 查看获取
-				// uploader为一个plupload对象，继承了所有plupload的方法
-				var thumbnail_upload = Qiniu.uploader({
+
+				var thumbnail_upload = QN.uploader({
 							runtimes: 'html5,flash,html4',
-							browse_button: 'img-url-upload',// 上传选择的点选按钮，必需
+							browse_button: 'img_url_file',
 							uptoken :img_token.qiniuToken,// uptoken是上传凭证，由其他程序生成
+							multi_selection:false,
 							get_new_uptoken: false,// 设置上传文件的时候是否每次都重新获取新的uptoken
-							//downtoken_url: '/downtoken',
-							//Ajax请求downToken的Url，私有空间时使用，JS-SDK将向该地址POST文件的key和domain，服务端返回的JSON必须包含url字段，url值为该文件的下载地址
 							unique_names:false,// 默认false，key为文件名。若开启该选项，JS-SDK会为每个文件自动生成key（文件名）
 							save_key:false,//默认false。若在服务端生成uptoken的上传策略中指定了sava_key，则开启，SDK在前端将不对key进行任何处理
 							domain:img_token.qiniuDomain,//bucket域名，下载资源时用到，必需
-							container:'',// 上传区域DOM ID，默认是browser_button的父元素
-							max_file_size: '4mb',// 最大文件体积限制
+							container:'img_url_wrap',// 上传区域DOM ID，默认是browser_button的父元素
 							flash_swf_url: '../../js/plugins/plupload/Moxie.swf',//引入flash，相对路径
 							max_retries: 3,// 上传失败最大重试次数
 							dragdrop:false,
-							drop_element:'',
-							chunk_size: '2mb',
-							auto_start:true,
+							chunk_size: '500kb',
+							auto_start:false,
 							filters:{
+								max_file_size : '500kb',
 								mime_types: [
-									{
-										title : "flv files", extensions : "flv"
-									},
-									{
-										title : "Video files", extensions : "flv,mpg,mpeg,avi,wmv,mov,asf,rm,rmvb,mkv,m4v,mp4"
-									},
 									{
 										title : "Image files", extensions : "jpg,gif,png,jpeg"
 									}
 								]
 							},
-							x_vars : {
-								/*查看自定义变量*/
-								'time' : function(up,file) {
-									var d=new Date();
-									return d.getTime();
-								},
-								'size' : function(up,file) {
-									return file.size;
-								}
-							},
 							init: {
-								'FilesAdded': function(up, files) {
-									plupload.each(files, function(file) {
-										// 文件添加进队列后，处理相关的事情
-										console.log("plupload:",file);
-									});
-								},
-								'BeforeUpload': function(up, file) {
-									// 每个文件上传前，处理相关的事情
-									console.log("BeforeUpload:",file);
-								},
-								'UploadProgress': function(up, file) {
-									// 每个文件上传时，处理相关的事情
-									console.log("UploadProgress:",file);
-								},
+								'FilesAdded': function(up, files) {},
+								'BeforeUpload': function(up, file) {},
+								'UploadProgress': function(up, file) {},
 								'FileUploaded': function(up, file, info) {
-									console.log("FileUploaded:",file);
-									/*每个文件上传成功后，处理相关的事情*/
-									/*其中info是文件上传成功后，服务端返回的json，形式如：
-									 {
-									 "hash": "Fh8xVqod2MQ1mocfI4S4KpRL6D98",
-									 "key": "gogopher.jpg"
-									 }*/
-									var domain = up.getOption('domain');
-									var res = parseJSON(info);
-									var sourceLink = domain + res.key; /*获取上传成功后的文件的Url*/
-									return sourceLink;
+									/*获取上传成功后的文件的Url*/
+									var domain=up.getOption('domain'),
+										name=JSON.parse(info);
+									$article_thumbnail.val(domain+'/'+name.key);
 								},
 								'Error': function(up, err, errTip) {
-									//上传出错时，处理相关的事情
+										var opt=up.settings,
+											file=err.file,
+											setsize=parseInt(opt.filters.max_file_size,10),
+											realsize=parseInt(file.size / 1024,10);
+
+									if(realsize>setsize){
+										dia.content('<span class="g-c-bs-warning g-btips-warn">您选择的文件太大(<span class="g-c-red1"> '+realsize+'kb</span>),不能超过(<span class="g-c-red1"> '+setsize+'kb</span>)</span>').show();
+										setTimeout(function(){
+											dia.close();
+										},3000);
+									}
+									console.log(errTip);
 								},
 								'UploadComplete': function() {
-									//队列文件处理完毕后，处理相关的事情
+									dia.content('<span class="g-c-bs-success g-btips-succ">上传成功</span>').show()
+									setTimeout(function(){
+										dia.close();
+									},2000);
 								},
 								'Key': function(up, file) {
-									// 若想在前端对每个文件的key进行个性化处理，可以配置该函数
-									// 该配置必须要在unique_names: false，save_key: false时才生效
-
-									/*var key = "";
-									 return key*/
+									var str=moment().format("YYYYMMDDHHmmSSSS");
+									 return "admin"+decodeURIComponent(logininfo.param.adminId)+"_"+str;
 								}
 							}
 				});
 
-				/*$img_url_upload.on('click',function(){
-					var text=$img_url_file.val();
-					if(text===''){
-						dia.content('<span class="g-c-bs-warning g-btips-warn">请先选择文件</span>').show();
-						setTimeout(function(){
-							dia.close();
-						},2000);
-						return false;
-					}
-					/!*执行上传*!/
+				$img_url_upload.on('click',function(){
+					/*执行上传*/
 					thumbnail_upload.start();
-				});*/
-
-				thumbnail_upload.bind('FileUploaded',function(str){
-					console.log(str);
-					console.log('ok......');
 				});
-
-
 			}
 
 

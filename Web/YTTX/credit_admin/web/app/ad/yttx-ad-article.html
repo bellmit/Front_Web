@@ -226,7 +226,16 @@
                                     <input type="text" class="form-control" name="title" id="article_title" data-validate="required" data-message-required="文章广告标题不能为空" placeholder="请输入文章广告标题" />
                                 </div>
 
-                                <div class="form-group">
+                                <div class="form-group admin-rpos-wrap">
+                                    <div class="editor-image-wrap">
+                                        <div id="editor_image_toggle" class="editor-image-toggle"></div>
+                                        <div class="editor-image-list g-d-hidei" id="editor_image_list">
+                                            <div class="btn btn-info g-br2 editor-image-btn" id="editor_image_select">选择图片</div>
+                                            <div class="btn btn-info g-br2 editor-image-btn" id="editor_image_upload">上传图片</div>
+                                            <ul class="editor-image-show" id="editor_image_show"></ul>
+                                        </div>
+
+                                    </div>
                                     <label class="control-label">文章广告内容：</label>
 
                                     <textarea class="form-control  form-admin-editor" name="content" id="article_content"  placeholder="请输入文章广告内容" data-validate="required" data-message-required="文章广告内容不能为空" ></textarea>
@@ -241,8 +250,8 @@
 
 
                                 <div class="form-group admin-rpos-wrap">
-                                    <div class="img-url-wrap">
-                                        <div class="btn btn-info g-br2 img-url-item img-url-select">选择图片<input type="file" value="" id="img_url_file" class="img-url-item img-url-file" /></div>
+                                    <div class="img-url-wrap" id="img_url_wrap">
+                                        <div class="btn btn-info g-br2 img-url-item img-url-select" id="img_url_file">选择图片</div>
                                         <div id="img_url_upload" class="btn btn-info g-br2 img-url-item img-url-upload">上传图片</div>
                                     </div>
 
