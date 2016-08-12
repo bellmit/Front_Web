@@ -1,5 +1,5 @@
 /*admin_member:成员设置*/
-(function($,KE){
+(function($){
 	'use strict';
 	$(function(){
 
@@ -51,7 +51,7 @@
 			/*查询对象*/
 			var $search_title=$('#search_title'),
 				$search_time=$('#search_time'),
-				$search_content=$('#search_content'),
+				$search_status=$('#search_status'),
 				$admin_search_btn=$('#admin_search_btn'),
 				$admin_search_clear=$('#admin_search_clear');
 
@@ -63,130 +63,25 @@
 				$article_id=$('#article_id'),/*成员id*/
 				$edit_cance_btn=$('#edit_cance_btn')/*编辑取消按钮*/,
 				$article_title=$('#article_title'),/*标题*/
-				$article_content=$('#article_content')/*内容*/,
+				$article_url=$('#article_url')/*链接*/,
 				$article_time=$('#article_time')/*时间*/,
-				$article_thumbnail=$('#article_thumbnail')/*缩略图*/,
+				$article_imageurl=$('#article_imageurl')/*图片链接地址*/,
+				$article_remark=$('#article_remark')/*备注*/,
 				$article_belongscompany=$('#article_belongscompany')/*所属公司*/;
 
 
-			/*图片上传对象*/
-			var $editor_image_toggle=$('#editor_image_toggle'),
-				$editor_image_list=$('#editor_image_list'),
-				$editor_image_select=$('#editor_image_select'),
-				$editor_image_upload=$('#editor_image_upload'),
-				$editor_image_show=$('#editor_image_show'),
-				$img_url_wrap=$('#img_url_wrap')/*缩略图容器*/,
-				$img_url_file=$('#img_url_file')/*缩略图文件浏览*/,
-				$img_url_upload=$('#img_url_upload')/*缩略图文件上传按钮*/;
+			/*图片地址上传对象*/
+			var $img_url_wrap=$('#img_url_wrap')/*图片地址容器*/,
+				$img_url_file=$('#img_url_file')/*图片地址文件浏览*/,
+				$img_url_upload=$('#img_url_upload')/*图片地址文件上传按钮*/;
 
 
-			/*编辑器调用*/
-			var QN=new QiniuJsSDK()/*七牛对象*/,
-				img_token=getToken()/*获取token*/,
-			editor=KE.create("#article_content",{
-					minHeight:'300px',
-					height:'300px',
-					filterMode :false,
-					resizeType:1,/*改变外观大小模式*/
-				  bodyClass:"ke-admin-wrap",
-					items:[
-						'source', '|', 'undo', 'redo', '|', 'preview', 'print', 'template', 'code', 'cut', 'copy', 'paste',
-					'plainpaste', 'wordpaste', '|', 'justifyleft', 'justifycenter', 'justifyright',
-					'justifyfull', 'insertorderedlist', 'insertunorderedlist', 'indent', 'outdent', 'subscript',
-					'superscript', 'clearhtml', 'quickformat', 'selectall', '|', 'fullscreen', '/',
-					'formatblock', 'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold',
-					'italic', 'underline', 'strikethrough', 'lineheight', 'removeformat', '|',
-					 'table', 'hr', 'emoticons', 'baidumap', 'pagebreak',
-					'anchor', 'link', 'unlink', '|', 'about'
-			],
-					syncType:""/*数据同步模式*/,
-					afterBlur:function(){
-						/*失去焦点的回调*/
-						this.sync();
-					},
-					uploadJson : '地址',/*指定上传文件的服务器端程序*/
-					allowFileManager : true,
-					imageSizeLimit : "2MB",
-			});
-			/*图片上传初始化*/
-			if(img_token!==null){
-				/*切换显示隐藏*/
-				$editor_image_toggle.on('click', function () {
-					$editor_image_list.toggleClass('g-d-hidei')
-				});
-
-				/*上传*/
-				var editor_upload = QN.uploader({
-					runtimes: 'html5,flash,html4',
-					browse_button: 'editor_image_select',
-					uptoken :img_token.qiniuToken,// uptoken是上传凭证，由其他程序生成
-					multi_selection:true,
-					get_new_uptoken: false,// 设置上传文件的时候是否每次都重新获取新的uptoken
-					unique_names:false,// 默认false，key为文件名。若开启该选项，JS-SDK会为每个文件自动生成key（文件名）
-					save_key:false,//默认false。若在服务端生成uptoken的上传策略中指定了sava_key，则开启，SDK在前端将不对key进行任何处理
-					domain:img_token.qiniuDomain,//bucket域名，下载资源时用到，必需
-					container:'editor_image_list',// 上传区域DOM ID，默认是browser_button的父元素
-					flash_swf_url: '../../js/plugins/plupload/Moxie.swf',//引入flash，相对路径
-					max_retries: 3,// 上传失败最大重试次数
-					dragdrop:false,
-					chunk_size: '4m',
-					auto_start:false,
-					filters:{
-						max_file_size : '4m',
-						mime_types: [
-							{
-								title : "Image files", extensions : "jpg,gif,png,jpeg"
-							}
-						]
-					},
-					init: {
-						'FilesAdded': function(up, files) {},
-						'BeforeUpload': function(up, file) {},
-						'UploadProgress': function(up, file) {},
-						'FileUploaded': function(up, file, info) {
-							/*获取上传成功后的文件的Url*/
-							var domain=up.getOption('domain'),
-								name=JSON.parse(info),
-								str=domain+'/'+name.key;
-							$('<li><div><img alt="" src="'+str+'"></div>&lt;img alt="" src="'+str+'"&gt;</li>').appendTo($editor_image_show);
-						},
-						'Error': function(up, err, errTip) {
-							var opt=up.settings,
-								file=err.file,
-								setsize=parseInt(opt.filters.max_file_size,10),
-								realsize=parseInt((file.size / 1024) / 1024,10);
-
-							if(realsize>setsize){
-								dia.content('<span class="g-c-bs-warning g-btips-warn">您选择的文件太大(<span class="g-c-red1"> '+realsize+'m</span>),不能超过(<span class="g-c-red1"> '+setsize+'m</span>)</span>').show();
-								setTimeout(function(){
-									dia.close();
-								},3000);
-							}
-							console.log(errTip);
-						},
-						'UploadComplete': function() {
-							dia.content('<span class="g-c-bs-success g-btips-succ">上传成功</span>').show()
-							setTimeout(function(){
-								dia.close();
-							},2000);
-						},
-						'Key': function(up, file) {
-							var str=moment().format("YYYYMMDDHHmmSSSS");
-							return "admin"+decodeURIComponent(logininfo.param.adminId)+"_"+str;
-						}
-					}
-				});
-
-
-				/*执行上传*/
-				$editor_image_upload.on('click',function(){
-					editor_upload.start();
-				});
-			}
 
 
 			/*时间对象*/
-			var now=moment().format('YYYY-MM-DD'),
+			var QN=new QiniuJsSDK()/*七牛对象*/,
+				img_token=getToken()/*获取token*/,
+				now=moment().format('YYYY-MM-DD'),
 				start_format='',
 				end_format='';
 
@@ -206,7 +101,7 @@
 						autoWidth:true,/*是否*/
 						paging:false,
 						ajax:{
-							url:"http://120.24.226.70:8081/yttx-adminbms-api/article/advertisement/list",
+							url:"http://120.24.226.70:8081/yttx-adminbms-api/advertisement/list",
 							dataType:'JSON',
 							method:'post',
 							dataSrc:function ( json ) {
@@ -240,6 +135,7 @@
 								roleId:decodeURIComponent(logininfo.param.roleId),
 								adminId:decodeURIComponent(logininfo.param.adminId),
 								token:decodeURIComponent(logininfo.param.token),
+								type:'2',
 								page:1,
 								pageSize:10
 							}
@@ -249,12 +145,8 @@
 						ordering:true,
 						columns: [
 							{"data":"title"},
-							{
-								"data":"content",
-								"render":function(data, type, full, meta ){
-									return data.toString().substring(0,10)+'...';
-								}
-							},
+							{"data":"url"},
+							{"data":"imageUrl"},
 							{
 								"data":"startTime"
 							},
@@ -262,10 +154,10 @@
 								"data":"endTime"
 							},
 							{
-								"data":"createTime"
+								"data":"belongsCompany"
 							},
 							{
-								"data":"belongsCompany"
+								"data":"remark"
 							},
 							{
 								"data":"id",
@@ -327,8 +219,6 @@
 			* 初始化
 			* */
 			(function(){
-				/*清空编辑器内容*/
-				editor.html('');
 				/*重置表单*/
 				edit_form.reset();
 			}());
@@ -350,7 +240,7 @@
 
 			/*清空查询条件*/
 			$admin_search_clear.on('click',function(){
-				$.each([$search_title,$search_time,$search_content],function(){
+				$.each([$search_title,$search_time,$search_status],function(){
 					this.val('');
 				});
 			})
@@ -360,7 +250,7 @@
 			$admin_search_btn.on('click',function(){
 				var data= $.extend(true,{},article_config.config.ajax.data);
 
-				$.each([$search_title,$search_time,$search_content],function(){
+				$.each([$search_title,$search_time,$search_status],function(){
 					var text=this.val(),
 						selector=this.selector.slice(1);
 
@@ -388,13 +278,13 @@
 								data['endTime']=temptime[1];
 							}
 							break;
-						case "search_content":
+						case "search_status":
 							if(text===""){
-								if(typeof data['content']!=='undefined'){
-									delete data['content'];
+								if(typeof data['status']!=='undefined'){
+									delete data['status'];
 								}
 							}else{
-								data['content']=text;
+								data['status']=text;
 							}
 							break;
 					}
@@ -448,7 +338,7 @@
 								var htmlstr=datas[i],
 									$img=$(htmlstr).find('img'),
 									imgstr='';
-								$article_content.val(htmlstr);
+								$article_url.val(htmlstr);
 								editor.html(htmlstr);
 								if($img.size()!==0){
 									$img.each(function(){
@@ -465,7 +355,7 @@
 								end_format=datas[i];
 								break;
 							case "thumbnail":
-								$article_thumbnail.val(datas[i]);
+								$article_imageurl.val(datas[i]);
 								break;
 							case "belongsCompany":
 								$article_belongscompany.val(datas[i]);
@@ -673,7 +563,7 @@
 									/*获取上传成功后的文件的Url*/
 									var domain=up.getOption('domain'),
 										name=JSON.parse(info);
-									$article_thumbnail.val(domain+'/'+name.key);
+									$article_imageurl.val(domain+'/'+name.key);
 								},
 								'Error': function(up, err, errTip) {
 										var opt=up.settings,
@@ -735,10 +625,10 @@
 										adminId:decodeURIComponent(logininfo.param.adminId),
 										token:decodeURIComponent(logininfo.param.token),
 										title:$article_title.val(),
-										content:$article_content.val(),
+										content:$article_url.val(),
 										startTime:times[0],
 										endTime:times[1],
-										thumbnail:$article_thumbnail.val(),
+										thumbnail:$article_imageurl.val(),
 										belongsCompany:$article_belongscompany.val()
 									}
 								};
@@ -752,10 +642,10 @@
 										adminId:decodeURIComponent(logininfo.param.adminId),
 										token:decodeURIComponent(logininfo.param.token),
 										title:$article_title.val(),
-										content:$article_content.val(),
+										content:$article_url.val(),
 										startTime:times[0],
 										endTime:times[1],
-										thumbnail:$article_thumbnail.val(),
+										thumbnail:$article_imageurl.val(),
 										belongsCompany:$article_belongscompany.val()
 									}
 								};
@@ -842,4 +732,4 @@
 	});
 
 
-})(jQuery,KindEditor);
+})(jQuery);
