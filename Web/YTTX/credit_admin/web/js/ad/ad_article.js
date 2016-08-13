@@ -72,11 +72,9 @@
 			/*图片上传对象*/
 			var $editor_image_toggle=$('#editor_image_toggle'),
 				$editor_image_list=$('#editor_image_list'),
-				$editor_image_select=$('#editor_image_select'),
 				$editor_image_upload=$('#editor_image_upload'),
 				$editor_image_show=$('#editor_image_show'),
-				$img_url_wrap=$('#img_url_wrap')/*缩略图容器*/,
-				$img_url_file=$('#img_url_file')/*缩略图文件浏览*/,
+				$toggle_edit_btn=$('#toggle_edit_btn'),
 				$img_url_upload=$('#img_url_upload')/*缩略图文件上传按钮*/;
 
 
@@ -99,20 +97,16 @@
 					 'table', 'hr', 'emoticons', 'baidumap', 'pagebreak',
 					'anchor', 'link', 'unlink', '|', 'about'
 			],
-					syncType:""/*数据同步模式*/,
 					afterBlur:function(){
 						/*失去焦点的回调*/
 						this.sync();
-					},
-					uploadJson : '地址',/*指定上传文件的服务器端程序*/
-					allowFileManager : true,
-					imageSizeLimit : "2MB",
+					}
 			});
 			/*图片上传初始化*/
 			if(img_token!==null){
 				/*切换显示隐藏*/
 				$editor_image_toggle.on('click', function () {
-					$editor_image_list.toggleClass('g-d-hidei')
+					$editor_image_list.toggleClass('g-d-hidei');
 				});
 
 				/*上传*/
@@ -212,6 +206,11 @@
 							dataSrc:function ( json ) {
 								var code=parseInt(json.code,10);
 								if(code!==0){
+									if(code===999){
+										/*清空缓存*/
+										public_tool.clear();
+										public_tool.loginTips();
+									}
 									console.log(json.message);
 									return null;
 								}
@@ -274,7 +273,7 @@
 										btns='';
 
 									/*上架,下架*/
-									if(typeof powermap[12]!=='undefined'){
+									if(typeof powermap[10]!=='undefined'){
 										var status=parseInt(full.status,10);
 										if(status===0){
 											//上架
@@ -362,42 +361,35 @@
 
 				$.each([$search_title,$search_time,$search_content],function(){
 					var text=this.val(),
-						selector=this.selector.slice(1);
+						selector=this.selector.slice(1),
+						istime=selector.indexOf('time')!==-1?true:false,
+						key=selector.split('_');
 
-					switch (selector){
-						case "search_title":
-							if(text===""){
-								if(typeof data['title']!=='undefined'){
-										delete data['title'];
-								}
-							}else{
-								data['title']=text;
+
+
+					if(text===""){
+						if(istime){
+							if(typeof data['startTime']!=='undefined'){
+								delete data['startTime'];
 							}
-							break;
-						case "search_time":
-							if(text===""){
-								if(typeof data['startTime']!=='undefined'){
-									delete data['startTime'];
-								}
-								if(typeof data['endtTime']!=='undefined'){
-									delete data['endTime'];
-								}
-							}else{
-								var temptime=text.split(',');
-								data['startTime']=temptime[0];
-								data['endTime']=temptime[1];
+							if(typeof data['endTime']!=='undefined'){
+								delete data['endTime'];
 							}
-							break;
-						case "search_content":
-							if(text===""){
-								if(typeof data['content']!=='undefined'){
-									delete data['content'];
-								}
-							}else{
-								data['content']=text;
+						}else{
+							if(typeof data[key[1]]!=='undefined'){
+								delete data[key[1]];
 							}
-							break;
+						}
+					}else{
+						if(istime){
+							var temptime=text.split(',');
+							data['startTime']=temptime[0];
+							data['endTime']=temptime[1];
+						}else{
+							data[key[1]]=text;
+						}
 					}
+
 				});
 				article_config.config.ajax.data= $.extend(true,{},data);
 				getColumnData(article_page,article_config);
@@ -624,6 +616,9 @@
 				//重置表单
 				edit_form.reset();
 				$edit_title.html('添加文章广告');
+				/*重置图片上传*/
+				$editor_image_list.addClass('g-d-hidei');
+				$editor_image_show.html('');
 				/*重置编辑器*/
 				editor.html('');
 				/*调整布局*/
@@ -638,6 +633,24 @@
 				$edit_wrap.removeClass('g-d-hidei');
 			}
 
+
+			/*缩略图切换编辑状态*/
+			$toggle_edit_btn.on('click',function(){
+				var $this=$(this),
+					isactive=$this.hasClass('toggle-edit-btnactive');
+					if(isactive){
+						$this.removeClass('toggle-edit-btnactive');
+						$article_thumbnail.prop({
+							'readonly':true
+						});
+					}else{
+						$this.addClass('toggle-edit-btnactive');
+						$article_thumbnail.prop({
+							'readonly':false
+						});
+					}
+
+			});
 
 			/*缩略图文件上传初始化*/
 			if(img_token!==null){
@@ -673,7 +686,7 @@
 									/*获取上传成功后的文件的Url*/
 									var domain=up.getOption('domain'),
 										name=JSON.parse(info);
-									$article_thumbnail.val(domain+'/'+name.key);
+									$article_thumbnail.val(domain+'/'+name.key+"?imageView2/1/w/250/h/170");
 								},
 								'Error': function(up, err, errTip) {
 										var opt=up.settings,

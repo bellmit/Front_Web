@@ -172,11 +172,11 @@
                                     <col class="g-w-percent6">
                                     <col class="g-w-percent5">
                                     <col class="g-w-percent5">
+                                    <col class="g-w-percent4">
+                                    <col class="g-w-percent4">
                                     <col class="g-w-percent6">
                                     <col class="g-w-percent6">
-                                    <col class="g-w-percent6">
-                                    <col class="g-w-percent6">
-                                    <col class="g-w-percent10">
+                                    <col class="g-w-percent14">
                                 </colgroup>
 
                                 <!--表头-->
@@ -234,7 +234,7 @@
                                 <div class="form-group">
                                     <label class="control-label">文章图片链接：</label>
 
-                                    <input type="text" class="form-control" name="title" id="article_url" placeholder="请输入文章图片链接" />
+                                    <input type="text" data-validate="url" data-message-url="文章图片链接格式不合法"  class="form-control" name="url" id="article_url" placeholder="请输入文章图片链接" />
                                 </div>
 
 
@@ -247,6 +247,7 @@
 
                                 <div class="form-group admin-rpos-wrap">
                                     <div class="img-url-wrap" id="img_url_wrap">
+                                        <div class="toggle-edit-btn" id="toggle_edit_btn"></div>
                                         <div class="btn btn-info g-br2 img-url-item img-url-select" id="img_url_file">选择图片</div>
                                         <div id="img_url_upload" class="btn btn-info g-br2 img-url-item img-url-upload">上传图片</div>
                                     </div>

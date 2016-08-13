@@ -136,10 +136,10 @@
 								return result.list;
 							},
 							data:{
-								roleId:decodeURIComponent(logininfo.param.roleId),
+								//roleId:decodeURIComponent(logininfo.param.roleId),
 								adminId:decodeURIComponent(logininfo.param.adminId),
 								token:decodeURIComponent(logininfo.param.token),
-								type:2,
+								type:1,
 								page:1,
 								pageSize:10
 							}
@@ -170,7 +170,7 @@
 										btns='';
 
 									/*上架,下架*/
-									if(typeof powermap[12]!=='undefined'){
+									if(typeof powermap[16]!=='undefined'){
 										var status=parseInt(full.status,10);
 										if(status===0){
 											//上架
@@ -196,7 +196,7 @@
 									}
 
 									/*修改*/
-									if(typeof powermap[13]!=='undefined'){
+									if(typeof powermap[17]!=='undefined'){
 										btns+='<span data-action="update" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 											<i class="fa-pencil"></i>\
 											<span>修改</span>\
@@ -260,7 +260,6 @@
 						istime=selector.indexOf('time')!==-1?true:false,
 						key=selector.split('_');
 
-
 					if(text===""){
 						if(istime){
 							if(typeof data['startTime']!=='undefined'){
@@ -269,7 +268,6 @@
 							if(typeof data['endTime']!=='undefined'){
 								delete data['endTime'];
 							}
-
 						}else{
 							if(typeof data[key[1]]!=='undefined'){
 								delete data[key[1]];
@@ -320,7 +318,7 @@
 					$edit_wrap.removeClass('collapsed');
 					$("html,body").animate({scrollTop:300},200);
 					//重置信息
-					$edit_title.html('修改文章广告图片');
+					$edit_title.html('修改服务栏广告图片');
 
 					var datas=table.row($tr).data();
 					for(var i in datas) {
@@ -501,7 +499,7 @@
 				e.preventDefault();
 				//重置表单
 				edit_form.reset();
-				$edit_title.html('添加文章广告图片');
+				$edit_title.html('添加服务栏广告图片');
 				/*调整布局*/
 				$data_wrap.addClass('collapsed');
 				$edit_wrap.removeClass('collapsed');
@@ -509,7 +507,7 @@
 				//第一行获取焦点
 				$article_title.focus();
 			});
-			if(typeof powermap[13]!=='undefined'){
+			if(typeof powermap[17]!=='undefined'){
 				$article_add_btn.removeClass('g-d-hidei');
 				$edit_wrap.removeClass('g-d-hidei');
 			}
@@ -632,7 +630,7 @@
 										token:decodeURIComponent(logininfo.param.token),
 										title:$article_title.val(),
 										url:$article_url.val(),
-										type:2,
+										type:1,
 										startTime:times[0],
 										endTime:times[1],
 										remark:$article_remark.val(),
@@ -651,7 +649,7 @@
 										token:decodeURIComponent(logininfo.param.token),
 										title:$article_title.val(),
 										url:$article_url.val(),
-										type:2,
+										type:1,
 										startTime:times[0],
 										endTime:times[1],
 										remark:$article_remark.val(),

@@ -179,7 +179,7 @@
 		select{
 			color:@color-gray9;
 			border:1px solid @color-gray12;
-			padding:4px;
+			padding:4px 20px 4px 4px;
 			.box-sizing-base;
 			height:30px;
 		}
@@ -367,33 +367,61 @@
 		.layout-absoluterb-base(5px,2px);
 		width:220px;
 		height:30px;
-	}
-	.img-url-item{
-		.box-sizing-base;
-		position: absolute;
-		top:0;
-		height:100%;
-		margin:0;
-		padding:0;
-	}
-	.img-url-select,
-	.img-url-upload{
-		z-index: 10;
-		line-height:30px;
-		font-size:@font-size-base - 2;
-		width:48%;
-	}
-	.img-url-select{
-		left:0;
-	}
-	.img-url-upload{
-		right:0;
-	}
-	.img-url-file{
-		.opacity-base(0);
-		width:100%;
-		left:0;
-		z-index: 100;
+		.img-url-item{
+			.box-sizing-base;
+			position: absolute;
+			top:0;
+			height:100%;
+			margin:0;
+			padding:0;
+		}
+		.img-url-select,
+		.img-url-upload{
+			z-index: 10;
+			line-height:30px;
+			font-size:@font-size-base - 2;
+			width:48%;
+		}
+		.img-url-select{
+			left:0;
+		}
+		.img-url-upload{
+			right:0;
+		}
+		.img-url-file{
+			.opacity-base(0);
+			width:100%;
+			left:0;
+			z-index: 100;
+		}
+		/*切换编辑状态*/
+		.toggle-edit-btn{
+			position: absolute;
+			left:-40px;
+			.layout-base(30px);
+			height:30px;
+			text-align:right;
+			padding:0 3px 0 0;
+			line-height: 30px;
+			color:@color-gray3;
+			font-size:@font-size-base + 6;
+			.transition-base(all .2s ease-in .03s);
+			.user-select-base;
+			cursor: pointer;
+			&:after{
+				display:inline-block;
+				width:100%;
+				height:100%;
+				font-family:'ux_four';
+				content:'\e6db';
+			}
+		}
+		.toggle-edit-btnactive{
+			&:after{
+				content:'\e6e6';
+			}
+		}
+
 	}
 }
 
