@@ -132,7 +132,7 @@
 
 		});
 
-		tablemobile_config={
+		var tablemobile_config={
 			deferRender:true,/*是否延迟加载数据*/
 			//serverSide:true,/*是否服务端处理*/
 			searching:true,/*是否搜索*/

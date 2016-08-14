@@ -665,7 +665,7 @@
 									if(code!==0){
 										console.log(resp.message);
 										setTimeout(function(){
-											id!==''?dia.content('<span class="g-c-bs-warning g-btips-warn">修改文章广告失败</span>').show():dia.content('<span class="g-c-bs-warning g-btips-warn">添加文章广告失败</span>').show();
+											id!==''?dia.content('<span class="g-c-bs-warning g-btips-warn">修改首页广告失败</span>').show():dia.content('<span class="g-c-bs-warning g-btips-warn">添加首页广告失败</span>').show();
 										},300);
 										setTimeout(function () {
 											dia.close();
@@ -677,7 +677,7 @@
 									//重置表单
 									$edit_cance_btn.trigger('click');
 									setTimeout(function(){
-										id!==''?dia.content('<span class="g-c-bs-success g-btips-succ">修改文章广告成功</span>').show():dia.content('<span class="g-c-bs-success g-btips-succ">添加文章广告成功</span>').show();
+										id!==''?dia.content('<span class="g-c-bs-success g-btips-succ">修改首页广告成功</span>').show():dia.content('<span class="g-c-bs-success g-btips-succ">添加首页广告成功</span>').show();
 									},300);
 									setTimeout(function () {
 										dia.close();

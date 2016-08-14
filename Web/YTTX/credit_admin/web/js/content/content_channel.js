@@ -1,8 +1,11 @@
-/*admin_profit:分润管理*/
+/*admin_member:成员设置*/
 (function($){
 	'use strict';
 	$(function(){
 
+		var table=null/*数据展现*/;
+
+		/*初始化数据*/
 		if(public_tool.initMap.isrender){
 			/*菜单调用*/
 			var logininfo=public_tool.initMap.loginMap;
@@ -21,8 +24,8 @@
 
 
 		}
-		
-		
+
+
 
 
 	});

@@ -5,13 +5,12 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	
 	<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0,maximum-scale=1">
-	<meta name="description" content="银通天下代理商管理系统--广告管理--文章广告图片" />
-	<meta name="keywords" content="银通天下代理商管理系统--广告管理--文章广告图片">
+	<meta name="description" content="银通天下代理商管理系统--信用卡管理--消费计划审核" />
+	<meta name="keywords" content="银通天下代理商管理系统--信用卡管理--消费计划审核">
   <meta name="author" content="yp" />
-	<title>银通天下代理商管理系统--广告管理--文章广告图片</title>
+	<title>银通天下代理商管理系统--信用卡管理--消费计划审核</title>
 	<link rel="stylesheet" href="../../css/base.css">
   <link rel="stylesheet" href="../../js/plugins/datatables/dataTables.bootstrap.css">
-  <link rel="stylesheet" type="text/css" href="../../js/plugins/daterangepicker/daterangepicker-bs3.css">
 	<link rel="stylesheet" href="../../css/admin.css">
   <script src="../../js/common/jquery-1.11.1.js"></script>
 	<!--[if lt IE 9]>
@@ -96,13 +95,13 @@
             <!--主题描述-->
             <div class="page-title">
                 <div class="title-env">
-                    <h1 class="title">文章广告图片</h1>
-                    <p class="description">文章广告图片</p>
+                    <h1 class="title">消费计划审核</h1>
+                    <p class="description">消费计划审核</p>
                 </div>
                 <div class="breadcrumb-env">
                     <ol class="breadcrumb bc-1">
-                        <li><a href=""><i class="fa-home"></i>广告管理</a></li>
-                        <li class="active"><strong>文章广告图片</strong></li>
+                        <li><a href=""><i class="fa-home"></i>信用卡管理</a></li>
+                        <li class="active"><strong>消费计划审核</strong></li>
                     </ol>
                 </div>
             </div>
@@ -115,7 +114,7 @@
 
                         <!--表格标题-->
                         <div class="panel-heading">
-                            <h3 class="panel-title">文章图片广告</h3>
+                            <h3 class="panel-title">消费计划审核</h3>
 
                             <div class="panel-options">
                                 <a href="#" data-toggle="panel">
@@ -132,64 +131,28 @@
                         <!--表格主体-->
                         <div class="panel-body">
                             <div class="admin-search-wrap">
-                                <div class="admin-search-item">
-                                    <label>标题：</label>
-                                    <input type="text" id="search_title">
-                                </div>
-                                <div class="admin-search-item">
-                                    <label>状态：</label>
-                                    <select id="search_status">
-                                        <option selected value="">所有状态</option>
-                                        <option value="0">上架</option>
-                                        <option value="1">下架</option>
-                                    </select>
-                                </div>
-                                <div class="admin-search-item">
-                                    <label>开始时间--结束时间：</label>
-                                    <input type="text" readonly id="search_time">
-                                </div>
-                                <div class="admin-search-item">
-                                    <span id="admin_search_btn" class="btn btn-info btn-icon g-br2">
-                                        <i class="fa-search"></i>查询
-                                    </span>
-                                    <span id="admin_search_clear" class="btn btn-info btn-icon g-br2">
-                                        <i class="fa-spinner"></i>清空
-                                    </span>
-                                </div>
-                            </div>
-
-                            <div>
-                                <span id="article_add_btn" class="btn btn-info btn-icon btn-xs g-br2 g-d-hidei">
-                                    <i class="fa-plus"></i>
-                                    <span>添加文章图片广告</span>
-                                </span>
 
                             </div>
 
-                            <table id="ad_article_wrap" class="table table-bordered table-striped table-hover admin-table">
+
+                            <table id="user_account_wrap" class="table table-bordered table-striped table-hover admin-table">
                                 <!--分组样式-->
                                 <colgroup>
-                                    <col class="g-w-percent6">
-                                    <col class="g-w-percent5">
-                                    <col class="g-w-percent5">
-                                    <col class="g-w-percent4">
-                                    <col class="g-w-percent4">
-                                    <col class="g-w-percent6">
-                                    <col class="g-w-percent6">
-                                    <col class="g-w-percent14">
+                                    <col class="g-w-percent10">
+                                    <col class="g-w-percent10">
+                                    <col class="g-w-percent10">
+                                    <col class="g-w-percent10">
+                                    <col class="g-w-percent10">
                                 </colgroup>
 
                                 <!--表头-->
                                 <thead>
                                 <tr>
-                                    <th>广告标题</th>
-                                    <th>链接</th>
-                                    <th>图片</th>
-                                    <th>开始时间</th>
-                                    <th>结束时间</th>
-                                    <th>所属企业</th>
-                                    <th>备注</th>
-                                    <th class="no-sorting">操作</th>
+                                    <th>表头</th>
+                                    <th>表头</th>
+                                    <th>表头</th>
+                                    <th>表头</th>
+                                    <th class="no-sorting">表头</th>
                                 </tr>
                                 </thead>
 
@@ -223,63 +186,7 @@
 
                         <!--修改或添加主体-->
                         <div class="panel-body">
-                            <form role="form" id="article_edit_form" method="post" class="admin-form1 validate">
-                                <input type="text" class="g-d-hidei" value="" id="article_id" name="id">
-                                <div class="form-group">
-                                    <label class="control-label">文章图片广告标题：</label>
 
-                                    <input type="text" class="form-control" name="title" id="article_title" data-validate="required" data-message-required="文章图片广告标题不能为空" placeholder="请输入文章图片广告标题" />
-                                </div>
-
-                                <div class="form-group">
-                                    <label class="control-label">文章图片链接：</label>
-
-                                    <input type="text" data-validate="url" data-message-url="文章图片链接格式不合法"  class="form-control" name="url" id="article_url" placeholder="请输入文章图片链接" />
-                                </div>
-
-
-                                <div class="form-group">
-                                    <label class="control-label">开始时间--结束时间：</label>
-
-                                    <input type="text" readonly class="form-control daterange" name="articleTime" id="article_time"  placeholder="请选择开始时间,结束时间" data-validate="required" data-message-required="开始时间和结束时间不能为空" />
-                                </div>
-
-
-                                <div class="form-group admin-rpos-wrap">
-                                    <div class="img-url-wrap" id="img_url_wrap">
-                                        <div class="toggle-edit-btn" id="toggle_edit_btn"></div>
-                                        <div class="btn btn-info g-br2 img-url-item img-url-select" id="img_url_file">选择图片</div>
-                                        <div id="img_url_upload" class="btn btn-info g-br2 img-url-item img-url-upload">上传图片</div>
-                                    </div>
-
-                                    <label class="control-label">图片地址：</label>
-
-                                    <input type="text" class="form-control" name="imageurl" id="article_imageurl" readonly  placeholder="请选择图片地址" />
-                                </div>
-
-                                <div class="form-group">
-                                    <label class="control-label">备注：</label>
-
-                                    <textarea class="form-control" name="remark" id="article_remark"  placeholder="请输入备注"  ></textarea>
-
-                                </div>
-
-
-                                <div class="form-group">
-                                    <label class="control-label">所属企业：</label>
-
-                                    <input type="text" class="form-control" name="belongsCompany" id="article_belongscompany"  placeholder="请输入所属企业"  />
-                                </div>
-
-
-
-
-
-                                <div class="form-group">
-                                    <button type="submit" class="btn btn-success">保存</button>
-                                    <button id="edit_cance_btn" type="reset" class="btn btn-white">取消</button>
-                                </div>
-                            </form>
                         </div>
 
 
@@ -311,12 +218,10 @@
 
         </div>
     </div>
-    
-    
-    
 
-	
-	<!--加载遮罩层-->
+
+
+    <!--加载遮罩层-->
 	<div id="page_loading_wrap" class="page-loading-overlay g-d-hidei">
 		<div class="loader-2"></div>
 	</div>
@@ -376,11 +281,7 @@
     <script src="../../js/plugins/datatables/dataTables.bootstrap.js"></script>
     <!--表单验证插件-->
     <script src="../../js/plugins/jquery-validate/jquery.validate.js"></script>
-    <script src="../../js/plugins/daterangepicker/daterangepicker.js"></script>
     <script src="../../js/plugins/pagination/pagination.js"></script>
-    <script src="../../js/plugins/plupload/plupload.full.min.js"></script>
-    <script src="../../js/plugins/plupload/i18n/zh_CN.js"></script>
-    <script src="../../js/plugins/qn/qiniu.min.js"></script>
-    <script src="../../js/ad/ad_articlepic.js"></script>
+    <script src="../../js/credit/credit_consumeV.js"></script>
 </body>
 </html>

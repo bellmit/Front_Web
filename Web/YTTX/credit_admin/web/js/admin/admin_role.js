@@ -52,7 +52,17 @@
 				dialogObj=public_tool.dialog()/*回调提示对象*/,
 				$show_detail_wrap=$('#show_detail_wrap')/*详情容器*/,
 				$show_detail_title=$('#show_detail_title')/*详情标题*/,
-				$show_detail_content=$('#show_detail_content')/*详情内容*/;
+				$show_detail_content=$('#show_detail_content')/*详情内容*/,
+				detail_map={
+					createTime:'创建时间',
+					lastLoginIp:"登陆IP地址",
+					lastLoginTime:"登陆时间",
+					modifyTime:"修改时间",
+					nickName:"用户名",
+					password:"密码",
+					token:"权限码",
+					tokenInvalidTime:"登陆权限时间"
+				}/*详情映射*/;
 
 			/*表单对象*/
 			var $edit_cance_btn=$('#edit_cance_btn')/*编辑取消按钮*/,
@@ -430,16 +440,24 @@
 										}
 										/*是否是正确的返回数据*/
 										var list=resp.result,
-											str='';
+											str='',
+											istitle=false;
 
 										if(!$.isEmptyObject(list)){
 											for(var j in list){
-												if(j==='name'||j==='Name'){
-													$show_detail_title.html(list[j]+'成员详情信息');
-												}else{
-													str+='<tr><th>'+j+'</th><td>'+list[j]+'</td></tr>';
+												if(typeof detail_map[j]!=='undefined'){
+													if(j==='name'||j==='Name'){
+														istitle=true;
+														$show_detail_title.html(list[j]+'成员详情信息');
+													}else{
+														str+='<tr><th>'+detail_map[j]+':</th><td>'+list[j]+'</td></tr>';
+													}
 												}
+
 											};
+											if(!istitle){
+												$show_detail_title.html('成员详情信息');
+											}
 											$show_detail_content.html(str);
 											$show_detail_wrap.modal('show',{backdrop:'static'});
 										}else{
