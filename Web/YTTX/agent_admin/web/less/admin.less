@@ -127,6 +127,38 @@
 	}
 }
 
+/*首页欢迎页面*/
+.admin-welcome-wrap{
+	.layout-base;
+	padding:10px;
+	min-height:500px;
+	height:100%;
+	.calc-base(min-height,'100vh - 300px');
+	.user-select-base;
+	display:block;
+	background:@color-white url('../images/welcome_bg_top.png')
+	left top no-repeat,url('../images/welcome_bg_bottom.png')
+	right bottom no-repeat;
+	h1{
+		.layout-base;
+		height:50px;
+		line-height:25px;
+		font-size:@font-size-base + 4;
+		color:@color-gray3;
+		text-align:center;
+	}
+	p{
+		.layout-base;
+		.text-ww;
+		line-height:@font-size-base +10;
+		font-size:@font-size-base;
+		color:@btn-info-bg;
+		text-indent:2em;
+		padding:3px 0 !important;
+		margin:2px 0 !important;
+	}
+}
+
 
 
 /*-----表格样式-----*/

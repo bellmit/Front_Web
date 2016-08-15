@@ -157,18 +157,22 @@
 					{
 						"data":"id",
 						"render":function(data, type, full, meta ){
+							console.log(full);
+							console.log(full.roleCode);
 							var id=parseInt(data,10),
+								code=full.roleCode?full.roleCode.toLowerCase():'',
 								btns='';
 
 							/*修改*/
 							if(typeof powermap[3]!=='undefined'){
-								btns+='<span data-id="'+id+'" data-action="update" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+								if(code!=='super'){
+									btns+='<span data-id="'+id+'" data-action="update" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 									 <i class="fa-pencil"></i>\
 									 <span>修改</span>\
 									 </span>';
-							}
-							/*成员*/
-							if(typeof powermap[7]!=='undefined'){
+								}
+
+								/*成员*/
 								btns+='<span data-action="select" data-id="'+id+'" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 									 <i class="fa-group"></i>\
 									 <span>成员</span>\
@@ -177,7 +181,7 @@
 
 							/*删除*/
 							if(typeof powermap[4]!=='undefined'){
-								if(id!==1){
+								if(code!=='super'){
 									btns+='<span  data-id="'+id+'" data-action="delete" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 									<i class="fa-trash"></i>\
 									<span>删除</span>\
@@ -574,7 +578,6 @@
 												"roleId":id,
 												"adminId":decodeURIComponent(logininfo.param.adminId),
 												"token":decodeURIComponent(logininfo.param.token),
-												"updateUserId":decodeURIComponent(logininfo.param.adminId),
 												"name":$role_name.val(),
 												"description":$role_remark.val()
 											}
@@ -589,7 +592,6 @@
 										"roleId":decodeURIComponent(logininfo.param.roleId),
 										"adminId":decodeURIComponent(logininfo.param.adminId),
 										"token":decodeURIComponent(logininfo.param.token),
-										"addUserId":decodeURIComponent(logininfo.param.adminId),
 										"name":$role_name.val(),
 										"description":$role_remark.val()
 									}

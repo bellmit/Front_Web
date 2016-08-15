@@ -8,7 +8,7 @@
 			/*菜单调用*/
 			var logininfo=public_tool.initMap.loginMap;
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
-				url:'http://120.24.226.70:8081/yttx-adminbms-api/module/menu',
+				url:'http://120.24.226.70:8081/yttx-agentbms-api/module/menu',
 				async:false,
 				type:'post',
 				param:{
@@ -41,7 +41,7 @@
 
 			/*列表请求配置*/
 			var article_config={
-						url:"http://120.24.226.70:8081/yttx-adminbms-api/article/advertisement/list",
+						url:"http://120.24.226.70:8081/yttx-agentbms-api/article/advertisement/list",
 						dataType:'JSON',
 						method:'post',
 						dataSrc:function ( json ) {

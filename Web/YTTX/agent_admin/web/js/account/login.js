@@ -7,10 +7,7 @@
 			var $loginform=$('#login'),
 				$username=$('#username'),
 				$pwd=$('#passwd'),
-				$vcode=$('#validcode');
 			$error_wrap=$('#error_wrap'),
-				$validcode_btn=$('#validcode_btn'),
-				$validimg=$validcode_btn.find('img'),
 				error_tpl='<div class="alert alert-danger">\
 								<button type="button" class="close" data-dismiss="alert">\
 									<span aria-hidden="true">&times;</span>\
@@ -33,9 +30,6 @@
 					passwd: {
 						required: true,
 						minlength:6
-					},
-					validcode:{
-						required:true
 					}
 				},
 
@@ -46,9 +40,6 @@
 					passwd: {
 						required: '请输入密码',
 						minlength:'密码必须超过6位字符'
-					},
-					validcode:{
-						required:'验证码不能为空'
 					}
 				},
 
@@ -81,7 +72,7 @@
 
 
 					$.ajax({
-						url: "http://120.24.226.70:8081/yttx-adminbms-api/sysuser/login",
+						url: "http://120.24.226.70:8081/yttx-agentbms-api/sysuser/login",
 						method: 'POST',
 						dataType: 'json',
 						async:false,
@@ -118,7 +109,7 @@
 							'param':{
 								'adminId':encodeURIComponent(result.adminId),
 								'token':encodeURIComponent(result.token),
-								'roleId':encodeURIComponent(result.roleId||1)
+								'roleId':encodeURIComponent(result.roleId||4)
 							}
 						});
 
@@ -154,21 +145,6 @@
 			$loginform.find(".form-group:has(.form-control):first .form-control").focus();
 
 
-			/*重新生成验证码*/
-			$validcode_btn.on('click',function(){
-				$.ajax({
-					url: "../../json/account/login.json",
-					method: 'POST',
-					dataType: 'json'
-				}).done(function(resp){
-					if(resp.flag){
-						$validimg.attr({'src':resp.src});
-					}
-				}).fail(function(){
-
-				});
-
-			});
 
 		}
 	});

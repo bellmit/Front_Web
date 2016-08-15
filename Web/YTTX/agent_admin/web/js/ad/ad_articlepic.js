@@ -10,7 +10,7 @@
 			/*菜单调用*/
 			var logininfo=public_tool.initMap.loginMap;
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
-				url:'http://120.24.226.70:8081/yttx-adminbms-api/module/menu',
+				url:'http://120.24.226.70:8081/yttx-agentbms-api/module/menu',
 				async:false,
 				type:'post',
 				param:{
@@ -100,7 +100,7 @@
 						autoWidth:true,/*是否*/
 						paging:false,
 						ajax:{
-							url:"http://120.24.226.70:8081/yttx-adminbms-api/advertisement/list",
+							url:"http://120.24.226.70:8081/yttx-agentbms-api/advertisement/list",
 							dataType:'JSON',
 							method:'post',
 							dataSrc:function ( json ) {
@@ -366,7 +366,7 @@
 						var self=this;
 
 						$.ajax({
-								url:"http://120.24.226.70:8081/yttx-adminbms-api/advertisement/operate",
+								url:"http://120.24.226.70:8081/yttx-agentbms-api/advertisement/operate",
 								method: 'POST',
 								dataType: 'json',
 								data:{
@@ -430,7 +430,7 @@
 
 					/*上架和下架*/
 					$.ajax({
-							url:"http://120.24.226.70:8081/yttx-adminbms-api/advertisement/operate",
+							url:"http://120.24.226.70:8081/yttx-agentbms-api/advertisement/operate",
 							method: 'POST',
 							dataType: 'json',
 							data:{
@@ -623,7 +623,7 @@
 							if(id!==''){
 								//此处配置修改稿角色地址（开发阶段）
 								var config={
-									url:"http://120.24.226.70:8081/yttx-adminbms-api/advertisement/update",
+									url:"http://120.24.226.70:8081/yttx-agentbms-api/advertisement/update",
 									dataType:'JSON',
 									method:'post',
 									data:{
@@ -643,7 +643,7 @@
 							}else{
 								//此处配置添加角色地址（开发阶段）
 								var config={
-									url:"http://120.24.226.70:8081/yttx-adminbms-api/advertisement/add",
+									url:"http://120.24.226.70:8081/yttx-agentbms-api/advertisement/add",
 									dataType:'JSON',
 									method:'post',
 									data:{
@@ -713,7 +713,7 @@
 		function getToken(){
 			var result=null;
 			$.ajax({
-				url:'http://120.24.226.70:8081/yttx-adminbms-api/commom/getQiniuToken',
+				url:'http://120.24.226.70:8081/yttx-agentbms-api/commom/getQiniuToken',
 				async:false,
 				type:'post',
 				datatype:'json',

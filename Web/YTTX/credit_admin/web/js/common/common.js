@@ -924,7 +924,7 @@
 					}
 					menustr+="</li></ul>";
 				}else{
-					menustr+='<li class="has-sub"><a href=\"'+link.code+'/'+item.modLink+suffix+'\"><i class=\"'+matchClass(link,item.modClass)+'\"></i><span>'+item.modName+'</span></a>';
+					menustr+='<li><a href=\"'+link.code+'/'+item.modLink+suffix+'\"><i class=\"'+matchClass(link,item.modClass)+'\"></i><span>'+item.modName+'</span></a>';
 				}
 			}else{
 				//当前页为其他页的情况
@@ -962,9 +962,9 @@
 					menustr+="</li></ul>";
 				}else{
 					if(path.indexOf(link.match)!==-1){
-						menustr+='<li class="has-sub expanded"><a href=\"'+item.modLink+suffix+'\"><i class=\"'+matchClass(link,item.modClass)+'\"></i><span>'+item.modName+'</span></a>';
+						menustr+='<li><a href=\"'+item.modLink+suffix+'\"><i class=\"'+matchClass(link,item.modClass)+'\"></i><span>'+item.modName+'</span></a>';
 					}else{
-						menustr+='<li class="has-sub"><a href=\"../'+link.code+'/'+item.modLink+suffix+'\"><i class=\"'+matchClass(link,item.modClass)+'\"></i><span>'+item.modName+'</span></a>';
+						menustr+='<li><a href=\"../'+link.code+'/'+item.modLink+suffix+'\"><i class=\"'+matchClass(link,item.modClass)+'\"></i><span>'+item.modName+'</span></a>';
 					}
 				}
 			}

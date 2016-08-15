@@ -486,265 +486,211 @@
 			"module":"",
 			"modid":"0"
 		},
-		"1":{
+		"36":{
 			"name":"系统管理",
 			"code":"admin",
 			"match":"-admin-",
 			"class":"menu-ux-admin",
 			"module":"admin",
-			"modid":"1",
+			"modid":"36",
 			"prid":{
-				1:{
-					"funcCode": "admin-message-management",
-          "funcName": "消息管理"
+				538:{
+					"funcCode": "admin-agent-set",
+					"funcName": "代理级别设置"
 				},
-				2:{
-					"funcCode": "admin-role-add",
-          "funcName": "角色增加"
+				537:{
+					"funcCode": "admin-other-set",
+					"funcName": "其它设置"
 				},
-				3:{
-					"funcCode": "admin-role-update",
-          "funcName": "角色修改"
+				536:{
+					"funcCode": "admin-member-delete",
+					"funcName": "成员删除"
 				},
-				4:{
-					"funcCode": "admin-role-delete",
-          "funcName": "角色删除"
+				535:{
+					"funcCode": "admin-member-update",
+					"funcName": "成员修改"
 				},
-				5:{
-					"funcCode": "admin-setting",
-          "funcName": "系统设置"
+				534:{
+					"funcCode": "admin-member-add",
+					"funcName": "成员增加"
 				},
-				6:{
+				533:{
 					"funcCode": "admin-permission-management",
-          "funcName": "权限管理"
+					"funcName": "权限管理"
 				},
-				7:{
-					 "funcCode": "admin-member-add",
-           "funcName": "成员增加"
+				532:{
+					"funcCode": "admin-setting",
+					"funcName": "系统设置"
 				},
-				8:{
-					 "funcCode": "admin-member-update",
-           "funcName": "成员修改"
+				531:{
+					"funcCode": "admin-role-delete",
+					"funcName": "角色删除"
 				},
-				9:{
-					 "funcCode": "admin-member-delete",
-           "funcName": "成员删除"
+				530:{
+					"funcCode": "admin-role-update",
+					"funcName": "角色修改"
+				},
+				529:{
+					"funcCode": "admin-role-add",
+					"funcName": "角色增加"
 				}
 			}
 		},
-		"6":{
-			"name":"广告管理",
-			"code":"ad",
-			"match":"-ad-",
-			"class":"menu-ux-ad",
-			"module":"ad",
-			"modid":"6",
-			"prid":{
-				10:{
-					"funcCode": "ad-article-shelves",
-          "funcName": "文章广告上架/下架"
-				},
-				11:{
-					 "funcCode": "ad-article-update",
-           "funcName": "文章广告修改"
-				},
-				12:{
-					"funcCode": "ad-articlepic-shelves",
-          "funcName": "文章图片广告上架/下架"
-				},
-				13:{
-					"funcCode": "ad-articlepic-update",
-          "funcName": "文章图片广告修改"
-				},
-				14:{
-					"funcCode": "ad-homepic-shelves",
-          "funcName": "首页图片广告上架/下架"
-				},
-				15:{
-					"funcCode": "ad-homepic-update",
-          "funcName": "首页图片广告修改"
-				},
-				16:{
-					 "funcCode": "ad-servicepic-shelves",
-           "funcName": "服务栏图片广告上架/下架"
-				},
-				17:{
-					"funcCode": "ad-servicepic-update",
-          "funcName": "服务栏图片广告修改"
-				}
-			}
-		},
-		"11":{
-			"name":"用户管理",
-			"code":"user",
-			"match":"-user-",
-			"class":"menu-ux-user",
-			"module":"user",
-			"modid":"11",
-			"prid":{
-				18:{
-					"funcCode": "user-account-view",
-					"funcName": "帐号查看"
-				},
-				19:{
-					"funcCode": "user-account-update",
-					"funcName": "帐号修改"
-				},
-				20:{
-					"funcCode": "user-account-delete",
-					"funcName": "帐号删除"
-				},
-				21:{
-					"funcCode": "user-horse-add",
-					"funcName": "马甲用户添加"
-				},
-				22:{
-					"funcCode": "user-horse-update",
-					"funcName": "马甲用户修改"
-				},
-				23:{
-					"funcCode": "user-horse-delete",
-					"funcName": "马甲用户删除"
-				}
-			}
-		},
-		"19":{
-			"name":"内容管理",
-			"code":"content",
-			"match":"-content-",
-			"class":"menu-ux-article",
-			"module":"content",
-			"modid":"19",
-			"prid":{
-				24:{
-					"funcCode": "content-article-view",
-					"funcName": "文章查看"
-				},
-				25:{
-					"funcCode": "content-article-verify",
-					"funcName": "文章审核"
-				},
-				26:{
-					"funcCode": "content-article-stick",
-					"funcName": "文章置顶"
-				},
-				27:{
-					"funcCode": "content-article-delete",
-					"funcName": "文章删除"
-				},
-				28:{
-					"funcCode": "content-article-update",
-					"funcName": "文章修改"
-				},
-				29:{
-					"funcCode": "content-article-extend",
-					"funcName": "文章推广"
-				},
-				30:{
-					"funcCode": "content-comment-view",
-					"funcName": "评论查看"
-				},
-				31:{
-					"funcCode": "content-comment-verify",
-					"funcName": "评论审核"
-				},
-				32:{
-					"funcCode": "content-comment-spider",
-					"funcName": "内容抓取"
-				},
-				33:{
-					"funcCode": "content-article-publish",
-					"funcName": "发布文章"
-				},
-				34:{
-					"funcCode": "content-user-feedback",
-					"funcName": "用户反馈"
-				},
-				35:{
-					"funcCode": "content-channel-setting",
-					"funcName": "频道设置"
-				}
-			}
-		},
-		"28":{
-			"name":"服务栏管理",
-			"code":"service",
-			"match":"-service-",
+		"41":{
+			"name":"服务站管理",
+			"code":"service-station",
+			"match":"-service-station-",
 			"class":"menu-ux-serve",
 			"module":"service",
-			"modid":"28",
+			"modid":"41",
 			"prid":{
-				36:{
-					"funcCode": "service-add",
-					"funcName": "增加服务"
+				543:{
+					"funcCode": "service-station-invoice",
+					"funcName": "发货"
 				},
-				37:{
-					"funcCode": "service-update",
-					"funcName": "修改服务"
+				542:{
+					"funcCode": "service-station-delete",
+					"funcName": "删除"
 				},
-				38:{
-					"funcCode": "service-delete",
-					"funcName": "删除服务"
+				541:{
+					"funcCode": "service-station-update",
+					"funcName": "修改"
+				},
+				540:{
+					"funcCode": "service-station-view",
+					"funcName": "查看"
+				},
+				539:{
+					"funcCode": "service-station-add",
+					"funcName": "添加"
 				}
 			}
 		},
-		"30":{
-			"name":"信用卡管理",
-			"code":"credit",
-			"match":"-credit-",
-			"class":"menu-ux-credit",
-			"module":"credit",
-			"modid":"30",
+		"47":{
+			"name":"代理商管理",
+			"code":"agent",
+			"match":"-agent-",
+			"class":"menu-ux-agent",
+			"module":"agent",
+			"modid":"47",
 			"prid":{
-				39:{
-					"funcCode": "credit-strategy-verify",
-					"funcName": "攻略审核"
+				544:{
+					"funcCode": "agent-add",
+					"funcName": "添加"
 				},
-				40:{
-					"funcCode": "credit-strategy-add",
-					"funcName": "攻略添加"
+				545:{
+					"funcCode": "agent-binding-service",
+					"funcName": "绑定服务站"
 				},
-				41:{
-					"funcCode": "credit-strategy-update",
-					"funcName": "攻略修改"
+				546:{
+					"funcCode": "agent-view",
+					"funcName": "查看"
 				},
-				42:{
-					"funcCode": "credit-strategy-delete",
-					"funcName": "攻略删除"
+				547:{
+					"funcCode": "agent-update",
+					"funcName": "修改"
 				},
-				43:{
-					"funcCode": "credit-account-manage",
-					"funcName": "帐单管理"
-				},
-				44:{
-					"funcCode": "credit-lifting-view",
-					"funcName": "提额策略查看"
-				},
-				45:{
-					"funcCode": "credit-lifting-add",
-					"funcName": "提额策略添加"
-				},
-				46:{
-					"funcCode": "credit-lifting-update",
-					"funcName": "提额策略修改"
-				},
-				47:{
-					"funcCode": "credit-lifting-delete",
-					"funcName": "提额策略删除"
-				},
-				48:{
-					"funcCode": "credit-lifting-verify",
-					"funcName": "提额策略审核"
+				548:{
+					"funcCode": "agent-delete",
+					"funcName": "删除"
 				}
 			}
 		},
-		"35":{
+		"54":{
+			"name":"物流管理",
+			"code":"logistics",
+			"match":"-logistics-",
+			"class":"menu-ux-logistics",
+			"module":"logistics",
+			"modid":"54",
+			"prid":{
+				554:{
+					"funcCode": "logistics-take-delivery",
+					"funcName": "收货"
+				},
+				555:{
+					"funcCode": "logistics-view",
+					"funcName": "查看"
+				},
+				556:{
+					"funcCode": "logistics-take-exception",
+					"funcName": "收货异常管理"
+				},
+				557:{
+					"funcCode": "logistics-repair",
+					"funcName": "返修管理"
+				}
+			}
+		},
+		"52":{
+			"name":"销售管理",
+			"code":"sales",
+			"match":"-sales-",
+			"class":"menu-ux-shop",
+			"module":"sales",
+			"modid":"52",
+			"prid":{
+				553:{
+					"funcCode": "sales-subscriber-acquiring",
+					"funcName": "收单查看"
+				},
+				552:{
+					"funcCode": "sales-subscriber-delete",
+					"funcName": "删除"
+				},
+				551:{
+					"funcCode": "sales-subscriber-update",
+					"funcName": "修改"
+				},
+				550:{
+					"funcCode": "sales-subscriber-view",
+					"funcName": "查看"
+				},
+				549:{
+					"funcCode": "sales-subscriber-add",
+					"funcName": "添加"
+				}
+			}
+		},
+		"59":{
+			"name":"三级分销管理",
+			"code":"distributor",
+			"match":"-distributor-",
+			"class":"menu-ux-distribution",
+			"module":"distributor",
+			"modid":"59",
+			"prid":{
+				560:{
+					"funcCode": "distributor-lower-view",
+					"funcName": "分销查看"
+				},
+				561:{
+					"funcCode": "distributor-acquiring-view",
+					"funcName": "收单查看"
+				},
+				562:{
+					"funcCode": "distributor-lower-stats",
+					"funcName": "分销统计"
+				}
+			}
+		},
+		"56":{
 			"name":"财务管理",
 			"code":"finance",
 			"match":"-finance-",
 			"class":"menu-ux-finance",
 			"module":"finance",
-			"modid":"30"
+			"modid":"56",
+			"prid":{
+				558:{
+					"funcCode": "finance-sales-profit-view",
+					"funcName": "销售分润查看"
+				},
+				559:{
+					"funcCode": "finance-swing-profit-view",
+					"funcName": "刷卡分润查看"
+				}
+			}
 		}
 	};
 	/*路由映射*/
@@ -924,7 +870,7 @@
 					}
 					menustr+="</li></ul>";
 				}else{
-					menustr+='<li class="has-sub"><a href=\"'+link.code+'/'+item.modLink+suffix+'\"><i class=\"'+matchClass(link,item.modClass)+'\"></i><span>'+item.modName+'</span></a>';
+					menustr+='<li><a href=\"'+link.code+'/'+item.modLink+suffix+'\"><i class=\"'+matchClass(link,item.modClass)+'\"></i><span>'+item.modName+'</span></a>';
 				}
 			}else{
 				//当前页为其他页的情况
@@ -962,9 +908,9 @@
 					menustr+="</li></ul>";
 				}else{
 					if(path.indexOf(link.match)!==-1){
-						menustr+='<li class="has-sub expanded"><a href=\"'+item.modLink+suffix+'\"><i class=\"'+matchClass(link,item.modClass)+'\"></i><span>'+item.modName+'</span></a>';
+						menustr+='<li><a href=\"'+item.modLink+suffix+'\"><i class=\"'+matchClass(link,item.modClass)+'\"></i><span>'+item.modName+'</span></a>';
 					}else{
-						menustr+='<li class="has-sub"><a href=\"../'+link.code+'/'+item.modLink+suffix+'\"><i class=\"'+matchClass(link,item.modClass)+'\"></i><span>'+item.modName+'</span></a>';
+						menustr+='<li><a href=\"../'+link.code+'/'+item.modLink+suffix+'\"><i class=\"'+matchClass(link,item.modClass)+'\"></i><span>'+item.modName+'</span></a>';
 					}
 				}
 			}
