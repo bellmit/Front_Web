@@ -155,10 +155,11 @@
 						"data":"id",
 						"render":function(data, type, full, meta ){
 							var id=parseInt(data,10),
-								btns='';
+								btns='',
+								code=full.roleCode?full.roleCode.toLowerCase():'';
 
 							/*权限*/
-							if(typeof powermap[6]!=='undefined'&&id!==1){
+							if(typeof powermap[6]!=='undefined'&&code!=='super'){
 								btns+='<span data-action="select" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 									<i class="fa-gear"></i>\
 									<span>权限</span>\

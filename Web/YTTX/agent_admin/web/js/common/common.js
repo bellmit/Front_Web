@@ -538,10 +538,10 @@
 		},
 		"41":{
 			"name":"服务站管理",
-			"code":"service-station",
+			"code":"servicestation",
 			"match":"-service-station-",
 			"class":"menu-ux-serve",
-			"module":"service",
+			"module":"servicestation",
 			"modid":"41",
 			"prid":{
 				543:{

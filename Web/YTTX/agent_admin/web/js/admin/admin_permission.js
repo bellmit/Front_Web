@@ -38,7 +38,7 @@
 					},
 					cancel:false
 				})/*一般提示对象*/,
-				setting_header=[1,6,11,19,-1,28,30]/*权限模块对应*/,
+				setting_header=[36,41,47,52,54,56,59]/*权限模块对应*/,
 				$operate_setting=$('#operate_setting')/*查询数据展现容器*/;
 
 			/*权限请求配置*/
@@ -109,56 +109,16 @@
 					{"data":"description"},
 					{
 						defaultContent:''
-						/*
-						"data":"id",
-						"render":function(data, type, full, meta ){
-							var id=parseInt(data,10),
-								str='';
-
-							console.log(id);
-
-							member_config.data.roleId=id;
-
-							$.ajax(member_config)
-								.done(function (resp) {
-									var code=parseInt(resp.code,10);
-									if(code!==0){
-										str='';
-										return false;
-									}
-									var list=resp.result.list,
-											len=list.length,
-											i=0;
-
-									if(len!==0){
-										for(i;i<len;i++){
-											if(i===len - 1){
-												str+=list[i]["name"];
-											}else{
-												str+=list[i]["name"]+',';
-											}
-										}
-										return true;
-									}
-									str='';
-									return false;
-								})
-								.fail(function(resp){
-									console.log(resp.message);
-									str="";
-								});
-							return str;
-						}
-						*/
 					},
 					{
 						"data":"id",
 						"render":function(data, type, full, meta ){
 							var id=parseInt(data,10),
-								btns='';
+								btns='',
+								code=full.roleCode?full.roleCode.toLowerCase():'';
 
 							/*权限*/
-							if(typeof powermap[6]!=='undefined'&&id!==1){
+							if(typeof powermap[533]!=='undefined'&&code!=='super'){
 								btns+='<span data-action="select" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 									<i class="fa-gear"></i>\
 									<span>权限</span>\
@@ -327,7 +287,7 @@
 
 				/*发送请求*/
 				$.ajax({
-						url:"http://120.24.226.70:8081/yttx-agentbms-api/module/permission/update",
+						url:"http://120.24.226.70:8081/yttx-agentbms-api/permission/state/update",
 						dataType:'JSON',
 						method:'post',
 						data:{

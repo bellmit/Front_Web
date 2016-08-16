@@ -139,23 +139,21 @@
 	background:@color-white url('../images/welcome_bg_top.png')
 	left top no-repeat,url('../images/welcome_bg_bottom.png')
 	right bottom no-repeat;
-	h1{
-		.layout-base;
-		height:50px;
-		line-height:25px;
-		font-size:@font-size-base + 4;
-		color:@color-gray3;
-		text-align:center;
-	}
-	p{
-		.layout-base;
-		.text-ww;
-		line-height:@font-size-base +10;
-		font-size:@font-size-base;
-		color:@btn-info-bg;
-		text-indent:2em;
-		padding:3px 0 !important;
-		margin:2px 0 !important;
+	>div{
+		.layout-base(50%);
+		min-width:300px;
+		margin:0 auto;
+		padding:100px 0 0 0;
+		p{
+			.layout-base;
+			.text-ww;
+			line-height:@font-size-base +10;
+			font-size:@font-size-base;
+			color:@btn-info-bg;
+			text-align:left;
+			padding:5px 0 !important;
+			margin:2px 0 !important;
+		}
 	}
 }
 
