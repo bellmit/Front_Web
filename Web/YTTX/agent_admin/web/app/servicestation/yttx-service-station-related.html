@@ -120,7 +120,7 @@
 
 
                         <!--表格主体-->
-                        <div class="panel-body g-d-hidei">
+                        <div class="panel-body">
                             <div class="admin-search-wrap">
                                 <div class="admin-search-item">
                                     <label>服务站简称：</label>
@@ -204,7 +204,7 @@
 
                 <div class="col-md-12">
                     <!--collapsed-->
-                    <div class="panel" id="send_wrap">
+                    <div class="panel collapsed" id="send_wrap">
 
                         <!--编辑表单标题-->
                         <div class="panel-heading">
@@ -246,7 +246,7 @@
                                             <input type="checkbox" name="IsCheckedDevice" id="send_ischeckeddevice" value="" />选中移动支付设备：
                                         </label>
                                     </div>
-                                    <div class="admin-sub-items1 admin-rpos-wrap g-d-hidei"  id="send_devicewrap">
+                                    <div class="admin-sub-items1 g-d-hidei"  id="send_devicewrap">
                                         <ul>
                                             <li>
                                                 <label>设备起始号:<input type="text" class="form-control" name="startNumberForDevice" placeholder="请输入设备起始号" /></label>
@@ -256,7 +256,6 @@
                                                 <label>数量:<input type="text" class="form-control" name="quantityForDevice"  placeholder="请输入数量" /></label>
                                             </li>
                                         </ul>
-                                        <div class="btn btn-info g-br2">+添加</div>
                                     </div>
 
                                 </div>
@@ -277,6 +276,7 @@
                                                 <label>备注:<input type="text" class="form-control" name="Remark" placeholder="请输入备注" /></label>
                                             </li>
                                         </ul>
+                                        <div class="btn btn-info g-br2" id="send_fittingadd_btn">+添加</div>
                                     </div>
                                 </div>
 
@@ -286,10 +286,10 @@
                                             <input type="checkbox" name="IsCheckedRepair" id="send_ischeckedrepair" value="" />选中返修：
                                         </label>
                                     </div>
-                                    <div class="admin-sub-items1 admin-rpos-wrap g-d-hidei" id="send_repairwrap">
+                                    <div class="admin-sub-items1 g-d-hidei" id="send_repairwrap">
                                         <ul>
                                             <li>
-                                                <label>返修时间:<input type="text" class="form-control" name="repairTime" placeholder="请输入返修时间" /> </label>
+                                                <label>返修时间:<input type="text" class="form-control" id="send_repairtime" name="repairTime" readonly placeholder="请输入返修时间" /> </label>
                                                 <label>设备起始号:<input type="text" class="form-control" name="startNumberForRepair" placeholder="请输入设备起始号" /></label>
                                                 <label>设备结止号:<input type="text" class="form-control" name="endNumberForRepair" placeholder="请输入设备结止号" /></label>
                                                 <label>机器号（多个以逗号分开):<input type="text" class="form-control" name="endNumberForRepair" placeholder="请输入机器号" /></label>
@@ -302,7 +302,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <button type="submit" class="btn btn-success">保存</button>
+                                    <button type="submit" class="btn btn-success">发货</button>
                                     <button id="send_cance_btn" type="reset" class="btn btn-white">取消</button>
                                 </div>
                             </form>
@@ -314,8 +314,7 @@
 
 
                 <div class="col-md-12">
-                    <!--collapsed-->
-                    <div class="panel" id="repair_wrap">
+                    <div class="panel collapsed" id="repair_wrap">
 
                         <!--编辑表单标题-->
                         <div class="panel-heading">
@@ -332,15 +331,59 @@
                         <div class="panel-body">
                             <form role="form" id="station_repair_form" method="post" class="admin-form1 validate">
                                 <input type="text" class="g-d-hidei" value="" id="repair_id" name="serviceStationId">
+
                                 <div class="form-group">
                                     <label class="control-label">快递单号：</label>
 
-                                    <input type="text" class="form-control" name="trackingNumber" data-validate="required" data-message-required="快递单号不能为空" placeholder="请输入快递单号" />
+                                    <input type="text" class="form-control" name="trackingNumber" id="repair_trackingnumber" data-validate="required" data-message-required="快递单号不能为空" placeholder="请输入快递单号" />
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label">发货经手人：</label>
+
+                                    <input type="text" class="form-control" name="deliveryHandler" id="repair_deliveryhandler" data-validate="required" data-message-required="发货经手人不能为空" placeholder="请输入发货经手人" />
                                 </div>
 
 
                                 <div class="form-group">
-                                    <button type="submit" class="btn btn-success">保存</button>
+                                    <label class="control-label">发货时间：</label>
+
+                                    <input type="text" class="form-control" name="deliveryTime" readonly id="repair_deliverytime" data-validate="required" data-message-required="发货时间不能为空" placeholder="请选择发货时间" />
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label">商品名称：</label>
+
+                                    <input type="text" class="form-control" name="name" id="repair_name" data-validate="required" data-message-required="商品名称不能为空" placeholder="请输入商品名称" />
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label">机器起始号：</label>
+
+                                    <input type="text" class="form-control" name="startNumber" id="repair_startnumber" placeholder="请输入机器起始号" />
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label">机器结束号：</label>
+
+                                    <input type="text" class="form-control" name="endNumber" id="repair_endnumber" data-validate="required" data-message-required="机器结束号不能为空" placeholder="请输入机器结束号" />
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label">机器号：</label>
+
+                                    <input type="text" class="form-control" name="listNumber" id="repair_listnumber" data-validate="required" data-message-required="机器号不能为空" placeholder="请输入机器号" />
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label">数量：</label>
+
+                                    <input type="text" class="form-control" name="quantity" id="repair_quantity" data-validate="required" data-message-required="数量不能为空" placeholder="请输入数量" />
+                                </div>
+
+
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-success">返修</button>
                                     <button id="repair_cance_btn" type="reset" class="btn btn-white">取消</button>
                                 </div>
                             </form>
@@ -440,7 +483,7 @@
     <script src="../../js/plugins/datatables/dataTables.bootstrap.js"></script>
     <!--表单验证插件-->
     <script src="../../js/plugins/jquery-validate/jquery.validate.js"></script>
-    <script src="../../js/plugins/qn/qiniu.min.js"></script>
-    <script src="../../js/servicestation/service_station.js"></script>
+    <script src="../../js/plugins/datepicker/datepicker.js"></script>
+    <script src="../../js/servicestation/service_station_related.js"></script>
 </body>
 </html>

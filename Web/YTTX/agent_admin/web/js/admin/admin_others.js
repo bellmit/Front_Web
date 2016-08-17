@@ -20,7 +20,8 @@
 
 
 			/*权限调用*/
-			var powermap=public_tool.getPower();
+			var powermap=public_tool.getPower(),
+				profit_power=public_tool.getKeyPower('其它设置',powermap);
 
 			/*dom引用和相关变量定义*/
 			var module_id='admin_profit'/*模块id，主要用于本地存储传值*/,
@@ -54,7 +55,7 @@
 
 
 			/*设置分润权限*/
-			if(typeof powermap[537]!=='undefined'){
+			if(profit_power){
 				$profit_setting_wrap0.removeClass('g-d-hidei');
 				$profit_setting_wrap1.removeClass('g-d-hidei');
 				$profit_setting_wrap2.removeClass('g-d-hidei');

@@ -22,7 +22,8 @@
 
 
 			/*权限调用*/
-			var powermap=public_tool.getPower();
+			var powermap=public_tool.getPower(),
+				send_power=public_tool.getKeyPower('发货',powermap);
 
 
 			/*dom引用和相关变量定义*/
@@ -71,17 +72,37 @@
 				$send_cance_btn=$('#send_cance_btn')/*编辑取消按钮*/,
 				$repair_cance_btn=$('#repair_cance_btn')/*编辑取消按钮*/,
 				$send_trackingnumber=$('#send_trackingnumber'),/*快递单号*/
+				$repair_trackingnumber=$('#repair_trackingnumber'),
 				$send_deliveryhandler=$('#send_deliveryhandler')/*发货经手人*/,
-				$send_deliverytime=$('#send_deliverytime')/*发货时间*/;
+				$repair_deliveryhandler=$('#repair_deliveryhandler'),
+				$send_deliverytime=$('#send_deliverytime')/*发货时间*/,
+				$repair_deliverytime=$('#repair_deliverytime'),
+				$repair_name=$('#repair_name'),
+				$repair_startnumber=$('#repair_startnumber'),
+				$repair_endnumber=$('#repair_endnumber'),
+				$repair_listnumber=$('#repair_listnumber'),
+				$repair_quantity=$('#repair_quantity');
+
+
 
 
 			/*发货单附件*/
 			var $send_ischeckeddevice=$('#send_ischeckeddevice'),
 				$send_devicewrap=$('#send_devicewrap'),
+				$send_devicelist=$send_devicewrap.find('ul'),
 				$send_ischeckedfittings=$('#send_ischeckedfittings'),
 				$send_fittingwrap=$('#send_fittingwrap'),
+				$send_fittinglist=$send_fittingwrap.find('ul'),
 				$send_ischeckedrepair=$('#send_ischeckedrepair'),
-				$send_repairwrap=$('#send_repairwrap');
+				$send_repairwrap=$('#send_repairwrap'),
+				$send_repairlist=$send_repairwrap.find('ul'),
+				$send_fittingadd_btn=$('#send_fittingadd_btn'),
+				$send_repairtime=$('#send_repairtime'),
+				send_checkconfig={
+					check:[$send_ischeckeddevice,$send_ischeckedfittings,$send_ischeckedrepair],
+					wrap:[$send_devicewrap,$send_fittingwrap,$send_repairwrap],
+					list:[$send_devicelist,$send_fittinglist,$send_repairlist]
+				};
 
 
 
@@ -168,7 +189,7 @@
 							var btns='';
 
 
-							if(typeof powermap[543]!=='undefined'){
+							if(send_power){
 									/*发货*/
 									btns+='<span data-id="'+data+'" data-action="send" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 									 <i class="fa-truck"></i>\
@@ -201,6 +222,7 @@
 				/*重置表单*/
 				send_form.reset();
 				repair_form.reset();
+				$admin_search_clear.trigger('click');
 			}());
 
 
@@ -327,6 +349,66 @@
 			});
 
 
+			/*绑定时间插件*/
+			$.each([$send_deliverytime,$send_repairtime,$repair_deliverytime],function(){
+				this.val('').datepicker({
+					autoclose:true,
+					clearBtn:true,
+					format: 'yyyy-mm-dd',
+					todayBtn: true,
+					endDate:moment().format('YYYY-MM-DD')
+				})
+			});
+
+
+
+
+			/*绑定发货插件显示隐藏*/
+			$.each(send_checkconfig.check, function () {
+				var self=this,
+					selector=self.selector;
+
+				self.on('click',function(){
+					var $this=$(this),
+					ischeck=$this.is(':checked'),
+						wrap=null;
+
+
+					if(selector.indexOf('device')!==-1){
+						wrap=$send_devicewrap;
+					}else if(selector.indexOf('fittings')!==-1){
+						wrap=$send_fittingwrap;
+					}else if(selector.indexOf('repair')!==-1){
+						wrap=$send_repairwrap;
+					}
+
+					if(ischeck){
+						wrap.removeClass('g-d-hidei');
+					}else {
+						wrap.addClass('g-d-hidei');
+					}
+				});
+			});
+
+
+
+			/*绑定添加发货插件--配件*/
+			var $send_fittingstr=$send_fittinglist.find('li:first');
+			$send_fittingadd_btn.on('click',function(){
+				var $tempfittingstr=$send_fittingstr.clone();
+				$('<label>&nbsp;<button type="button" class="form-control g-br2">-删除</button></label>').appendTo($tempfittingstr);
+				$tempfittingstr.find('input').each(function(){
+					this.value='';
+				});
+				$tempfittingstr.appendTo($send_fittinglist);
+			});
+
+
+			/*绑定删除发货插件--配件*/
+			$send_fittinglist.on('click','button',function(){
+				$(this).closest('li').remove();
+			});
+
 
 			/*表单验证*/
 			if($.isFunction($.fn.validate)) {
@@ -344,40 +426,55 @@
 							return issend?formcache.form_opt_0:formcache.form_opt_1;
 						}()),{
 							submitHandler: function(form){
-								//判断是否存在id号
-								
+								var id=issend?$send_id.val():$repair_id.val();
+
+								if(id===''){
+									issend?$send_cance_btn.trigger('click'):$repair_cance_btn.trigger('click');
+									dia.content('<span class="g-c-bs-warning g-btips-warn">请选择需要操作的服务站</span>').show();
+									setTimeout(function(){
+										dia.close();
+									},3000);
+									return false;
+								}
+
+
 								if(issend){
-									var config={
-										url:"http://120.24.226.70:8081/yttx-agentbms-api/article/advertisement/update",
-										dataType:'JSON',
-										method:'post',
-										data:{
-											articleId:$send_id.val(),
-											adminId:decodeURIComponent(logininfo.param.adminId),
-											token:decodeURIComponent(logininfo.param.token),
-											title:$article_title.val(),
-											content:$article_content.val(),
-											startTime:times[0],
-											endTime:times[1],
-											thumbnail:$article_thumbnail.val(),
-											belongsCompany:$article_belongscompany.val()
-										}
+									var checkdata=getCheckPlugin(send_checkconfig),
+										config={
+											url:"http://120.24.226.70:8081/yttx-agentbms-api/servicestation/invoice/add",
+											dataType:'JSON',
+											method:'post',
+											data:{
+												serviceStationId:id,
+												adminId:decodeURIComponent(logininfo.param.adminId),
+												token:decodeURIComponent(logininfo.param.token),
+												trackingNumber:$send_trackingnumber.val(),
+												deliveryHandler:$send_deliveryhandler.val(),
+												deliveryTime:$send_deliverytime.val()
+											}
 									};
+									if(!$.isEmptyObject(checkdata)){
+										for(var i in checkdata){
+											config.data[i]=JSON.stringify(checkdata[i]);
+										}
+									}
 								}else{
 									var config={
-										url:"http://120.24.226.70:8081/yttx-agentbms-api/article/advertisement/update",
+										url:"http://120.24.226.70:8081/yttx-agentbms-api/servicestation/repairorder/add",
 										dataType:'JSON',
 										method:'post',
 										data:{
-											articleId:$repair_id.val(),
+											serviceStationId:id,
 											adminId:decodeURIComponent(logininfo.param.adminId),
 											token:decodeURIComponent(logininfo.param.token),
-											title:$article_title.val(),
-											content:$article_content.val(),
-											startTime:times[0],
-											endTime:times[1],
-											thumbnail:$article_thumbnail.val(),
-											belongsCompany:$article_belongscompany.val()
+											trackingNumber:$repair_trackingnumber.val(),
+											deliveryHandler:$repair_deliveryhandler.val(),
+											deliveryTime:$repair_deliverytime.val(),
+											name:$repair_name.val(),
+											startNumber:$repair_startnumber.val(),
+											endNumber:$repair_endnumber.val(),
+											listNumber:$repair_listnumber.val(),
+											quantity:$repair_quantity.val()
 										}
 									};
 								}
@@ -389,7 +486,7 @@
 										if(code!==0){
 											console.log(resp.message);
 											setTimeout(function(){
-												id!==''?dia.content('<span class="g-c-bs-warning g-btips-warn">修改文章广告失败</span>').show():dia.content('<span class="g-c-bs-warning g-btips-warn">添加文章广告失败</span>').show();
+												issend?dia.content('<span class="g-c-bs-warning g-btips-warn">发货失败</span>').show():dia.content('<span class="g-c-bs-warning g-btips-warn">返修失败</span>').show();
 											},300);
 											setTimeout(function () {
 												dia.close();
@@ -397,11 +494,11 @@
 											return false;
 										}
 										//重绘表格
-										getColumnData(article_page,article_config);
+										table.ajax.reload(null,false);
 										//重置表单
-										$send_cance_btn.trigger('click');
+										issend?$send_cance_btn.trigger('click'):$repair_cance_btn.trigger('click');
 										setTimeout(function(){
-											id!==''?dia.content('<span class="g-c-bs-success g-btips-succ">修改文章广告成功</span>').show():dia.content('<span class="g-c-bs-success g-btips-succ">添加文章广告成功</span>').show();
+											issend?dia.content('<span class="g-c-bs-success g-btips-succ">发货成功</span>').show():dia.content('<span class="g-c-bs-success g-btips-succ">返修成功</span>').show();
 										},300);
 										setTimeout(function () {
 											dia.close();
@@ -422,11 +519,70 @@
 			}
 		}
 
-
-
-
-
 	});
+
+	/*解析发货插件*/
+	function getCheckPlugin(opt){
+		if(!opt){
+			return null;
+		}
+		var check=opt.check,
+			wrap=opt.wrap,
+			list=opt.list,
+			len=check.length,
+			result={},
+			i=0;
+		for(i;i<len;i++){
+			var $checkbox=check[i],
+				ischeck=$checkbox.is(':checked'),
+				key=$checkbox.attr('name');
+
+			if(ischeck){
+				var items=list[i].children(),
+					arr=[];
+
+				items.each(function(index){
+					/*循环li*/
+					var subresult={},
+						subitems=items.eq(index).find('input'),
+						sublen=subitems.size(),
+						count=0;
+					/*循环input*/
+					subitems.each(function(){
+						var $this=$(this),
+							name=$this.attr('name'),
+							value=$this.val();
+
+						if(value===''){
+							count++;
+						}
+						if(subresult[name]){
+							subresult[name]=subresult[name]+','+value;
+						}else{
+							subresult[name]=value;
+						}
+					});
+					if(count===sublen){
+						subresult={};
+					}else{
+						arr.push(subresult);
+					}
+				});
+
+				if(arr.length!==0){
+					result[key]=arr;
+				}
+			}else {
+				if(typeof result[key]!=='undefined'){
+					delete result[key];
+				}
+			}
+		}
+		return result;
+	};
+
+
+
 
 
 })(jQuery);

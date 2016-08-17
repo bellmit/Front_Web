@@ -21,7 +21,13 @@
 
 
 			/*权限调用*/
-			var powermap=public_tool.getPower();
+			var powermap=public_tool.getPower(),
+				roleupdate_power=public_tool.getKeyPower('角色修改',powermap),
+				roledelete_power=public_tool.getKeyPower('角色删除',powermap),
+				roleadd_power=public_tool.getKeyPower('角色增加',powermap),
+				memberupdate_power=public_tool.getKeyPower('成员修改',powermap),
+				memberdelete_power=public_tool.getKeyPower('成员删除',powermap),
+				memberadd_power=public_tool.getKeyPower('成员增加',powermap);
 
 
 			/*dom引用和相关变量定义*/
@@ -164,7 +170,7 @@
 								btns='';
 
 							/*修改*/
-							if(typeof powermap[3]!=='undefined'){
+							if(roleupdate_power){
 								if(code!=='super'){
 									btns+='<span data-id="'+id+'" data-action="update" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 									 <i class="fa-pencil"></i>\
@@ -180,7 +186,7 @@
 							}
 
 							/*删除*/
-							if(typeof powermap[4]!=='undefined'){
+							if(roledelete_power){
 								if(code!=='super'){
 									btns+='<span  data-id="'+id+'" data-action="delete" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 									<i class="fa-trash"></i>\
@@ -225,7 +231,7 @@
 								btns='';
 
 							/*修改*/
-							if(typeof powermap[8]!=='undefined'){
+							if(memberupdate_power){
 								btns+='<span data-id="'+id+'" data-action="update" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 									 <i class="fa-pencil"></i>\
 									 <span>修改</span>\
@@ -234,7 +240,7 @@
 
 
 							/*删除*/
-							if(typeof powermap[9]!=='undefined'){
+							if(memberdelete_power){
 									btns+='<span  data-id="'+id+'" data-action="delete" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 									<i class="fa-trash"></i>\
 									<span>删除</span>\
@@ -535,9 +541,9 @@
 				});
 
 				/*显示*/
-				if(selector.indexOf('role')!==-1&&typeof powermap[2]!=='undefined'){
+				if(selector.indexOf('role')!==-1&&roleadd_power){
 					this.removeClass('g-d-hidei');
-				}else if(selector.indexOf('member')!==-1&&typeof powermap[7]!=='undefined'){
+				}else if(selector.indexOf('member')!==-1&&memberadd_power){
 					this.removeClass('g-d-hidei');
 				}
 			})
@@ -554,7 +560,6 @@
 						$edit_cance_btn.trigger('click');
 					}
 				});
-
 			});
 
 

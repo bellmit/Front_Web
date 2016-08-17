@@ -21,7 +21,8 @@
 
 
 			/*权限调用*/
-			var powermap=public_tool.getPower();
+			var powermap=public_tool.getPower(),
+				permission_power=public_tool.getKeyPower('权限管理',powermap);
 
 
 			/*dom引用和相关变量定义*/
@@ -118,7 +119,7 @@
 								code=full.roleCode?full.roleCode.toLowerCase():'';
 
 							/*权限*/
-							if(typeof powermap[533]!=='undefined'&&code!=='super'){
+							if(permission_power&&code!=='super'){
 								btns+='<span data-action="select" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 									<i class="fa-gear"></i>\
 									<span>权限</span>\

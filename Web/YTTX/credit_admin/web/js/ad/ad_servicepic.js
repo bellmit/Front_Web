@@ -23,7 +23,9 @@
 
 
 			/*权限调用*/
-			var powermap=public_tool.getPower();
+			var powermap=public_tool.getPower(),
+				updown_power=public_tool.getKeyPower('服务栏图片广告上架/下架',powermap),
+				update_power=public_tool.getKeyPower('服务栏图片广告修改',powermap);
 
 
 			/*dom引用和相关变量定义*/
@@ -170,7 +172,7 @@
 										btns='';
 
 									/*上架,下架*/
-									if(typeof powermap[16]!=='undefined'){
+									if(updown_power){
 										var status=parseInt(full.status,10);
 										if(status===0){
 											//上架
@@ -196,7 +198,7 @@
 									}
 
 									/*修改*/
-									if(typeof powermap[17]!=='undefined'){
+									if(update_power){
 										btns+='<span data-action="update" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 											<i class="fa-pencil"></i>\
 											<span>修改</span>\
@@ -507,7 +509,7 @@
 				//第一行获取焦点
 				$article_title.focus();
 			});
-			if(typeof powermap[17]!=='undefined'){
+			if(update_power){
 				$article_add_btn.removeClass('g-d-hidei');
 				$edit_wrap.removeClass('g-d-hidei');
 			}

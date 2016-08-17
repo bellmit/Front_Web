@@ -1254,6 +1254,20 @@
 		}
 		return null;
 	};
+	//根据关键词判断权限
+	public_tool.getKeyPower=function(key,list){
+		if(!key||!list){
+			return false;
+		}
+		var ispower=false;
+		for(var i in list){
+			if(list[i]['funcName']===key){
+				ispower=true;
+				break;
+			}
+		}
+		return ispower;
+	};
 	//根据模块判断拥有的权限
 	public_tool.getAllPower=function(){
 		var self=this,

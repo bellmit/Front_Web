@@ -492,49 +492,7 @@
 			"match":"-admin-",
 			"class":"menu-ux-admin",
 			"module":"admin",
-			"modid":"36",
-			"prid":{
-				538:{
-					"funcCode": "admin-agent-set",
-					"funcName": "代理级别设置"
-				},
-				537:{
-					"funcCode": "admin-other-set",
-					"funcName": "其它设置"
-				},
-				536:{
-					"funcCode": "admin-member-delete",
-					"funcName": "成员删除"
-				},
-				535:{
-					"funcCode": "admin-member-update",
-					"funcName": "成员修改"
-				},
-				534:{
-					"funcCode": "admin-member-add",
-					"funcName": "成员增加"
-				},
-				533:{
-					"funcCode": "admin-permission-management",
-					"funcName": "权限管理"
-				},
-				532:{
-					"funcCode": "admin-setting",
-					"funcName": "系统设置"
-				},
-				531:{
-					"funcCode": "admin-role-delete",
-					"funcName": "角色删除"
-				},
-				530:{
-					"funcCode": "admin-role-update",
-					"funcName": "角色修改"
-				},
-				529:{
-					"funcCode": "admin-role-add",
-					"funcName": "角色增加"
-				}
-			}
+			"modid":"36"
 		},
 		"41":{
 			"name":"服务站管理",
@@ -542,29 +500,7 @@
 			"match":"-service-station-",
 			"class":"menu-ux-serve",
 			"module":"servicestation",
-			"modid":"41",
-			"prid":{
-				543:{
-					"funcCode": "service-station-invoice",
-					"funcName": "发货"
-				},
-				542:{
-					"funcCode": "service-station-delete",
-					"funcName": "删除"
-				},
-				541:{
-					"funcCode": "service-station-update",
-					"funcName": "修改"
-				},
-				540:{
-					"funcCode": "service-station-view",
-					"funcName": "查看"
-				},
-				539:{
-					"funcCode": "service-station-add",
-					"funcName": "添加"
-				}
-			}
+			"modid":"41"
 		},
 		"47":{
 			"name":"代理商管理",
@@ -572,29 +508,7 @@
 			"match":"-agent-",
 			"class":"menu-ux-agent",
 			"module":"agent",
-			"modid":"47",
-			"prid":{
-				544:{
-					"funcCode": "agent-add",
-					"funcName": "添加"
-				},
-				545:{
-					"funcCode": "agent-binding-service",
-					"funcName": "绑定服务站"
-				},
-				546:{
-					"funcCode": "agent-view",
-					"funcName": "查看"
-				},
-				547:{
-					"funcCode": "agent-update",
-					"funcName": "修改"
-				},
-				548:{
-					"funcCode": "agent-delete",
-					"funcName": "删除"
-				}
-			}
+			"modid":"47"
 		},
 		"54":{
 			"name":"物流管理",
@@ -602,25 +516,7 @@
 			"match":"-logistics-",
 			"class":"menu-ux-logistics",
 			"module":"logistics",
-			"modid":"54",
-			"prid":{
-				554:{
-					"funcCode": "logistics-take-delivery",
-					"funcName": "收货"
-				},
-				555:{
-					"funcCode": "logistics-view",
-					"funcName": "查看"
-				},
-				556:{
-					"funcCode": "logistics-take-exception",
-					"funcName": "收货异常管理"
-				},
-				557:{
-					"funcCode": "logistics-repair",
-					"funcName": "返修管理"
-				}
-			}
+			"modid":"54"
 		},
 		"52":{
 			"name":"销售管理",
@@ -628,29 +524,7 @@
 			"match":"-sales-",
 			"class":"menu-ux-shop",
 			"module":"sales",
-			"modid":"52",
-			"prid":{
-				553:{
-					"funcCode": "sales-subscriber-acquiring",
-					"funcName": "收单查看"
-				},
-				552:{
-					"funcCode": "sales-subscriber-delete",
-					"funcName": "删除"
-				},
-				551:{
-					"funcCode": "sales-subscriber-update",
-					"funcName": "修改"
-				},
-				550:{
-					"funcCode": "sales-subscriber-view",
-					"funcName": "查看"
-				},
-				549:{
-					"funcCode": "sales-subscriber-add",
-					"funcName": "添加"
-				}
-			}
+			"modid":"52"
 		},
 		"59":{
 			"name":"三级分销管理",
@@ -658,21 +532,7 @@
 			"match":"-distributor-",
 			"class":"menu-ux-distribution",
 			"module":"distributor",
-			"modid":"59",
-			"prid":{
-				560:{
-					"funcCode": "distributor-lower-view",
-					"funcName": "分销查看"
-				},
-				561:{
-					"funcCode": "distributor-acquiring-view",
-					"funcName": "收单查看"
-				},
-				562:{
-					"funcCode": "distributor-lower-stats",
-					"funcName": "分销统计"
-				}
-			}
+			"modid":"59"
 		},
 		"56":{
 			"name":"财务管理",
@@ -680,17 +540,7 @@
 			"match":"-finance-",
 			"class":"menu-ux-finance",
 			"module":"finance",
-			"modid":"56",
-			"prid":{
-				558:{
-					"funcCode": "finance-sales-profit-view",
-					"funcName": "销售分润查看"
-				},
-				559:{
-					"funcCode": "finance-swing-profit-view",
-					"funcName": "刷卡分润查看"
-				}
-			}
+			"modid":"56"
 		}
 	};
 	/*路由映射*/
@@ -1199,6 +1049,20 @@
 			return currentpower;
 		}
 		return null;
+	};
+	//根据关键词判断权限
+	public_tool.getKeyPower=function(key,list){
+		if(!key||!list){
+			return false;
+		}
+		var ispower=false;
+		for(var i in list){
+			if(list[i]['funcName']===key){
+					ispower=true;
+					break;
+			}
+		}
+		return ispower;
 	};
 	//根据模块判断拥有的权限
 	public_tool.getAllPower=function(){

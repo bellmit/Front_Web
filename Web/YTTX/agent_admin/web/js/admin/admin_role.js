@@ -21,7 +21,11 @@
 
 
 			/*权限调用*/
-			var powermap=public_tool.getPower();
+			var powermap=public_tool.getPower(),
+				roleedit_power=public_tool.getKeyPower('角色修改',powermap),
+				roledelete_power=public_tool.getKeyPower('角色删除',powermap),
+				roleadd_power=public_tool.getKeyPower('角色增加',powermap),
+				memberadd_power=public_tool.getKeyPower('成员增加',powermap);
 
 
 			/*dom引用和相关变量定义*/
@@ -159,7 +163,7 @@
 								btns='';
 
 							/*修改*/
-							if(typeof powermap[530]!=='undefined'){
+							if(roleedit_power){
 								if(code!=='super'){
 									btns+='<span data-id="'+id+'" data-action="update" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 									 <i class="fa-pencil"></i>\
@@ -174,7 +178,7 @@
 							}
 
 							/*删除*/
-							if(typeof powermap[536]!=='undefined'){
+							if(roledelete_power){
 								if(code!=='super'){
 									btns+='<span  data-id="'+id+'" data-action="delete" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 									<i class="fa-trash"></i>\
@@ -529,9 +533,9 @@
 				});
 
 				/*显示*/
-				if(selector.indexOf('role')!==-1&&typeof powermap[529]!=='undefined'){
+				if(selector.indexOf('role')!==-1&&roleadd_power){
 					this.removeClass('g-d-hidei');
-				}else if(selector.indexOf('member')!==-1&&typeof powermap[534]!=='undefined'){
+				}else if(selector.indexOf('member')!==-1&&memberadd_power){
 					this.removeClass('g-d-hidei');
 				}
 			});

@@ -23,7 +23,10 @@
 
 
 			/*权限调用*/
-			var powermap=public_tool.getPower();
+			var powermap=public_tool.getPower(),
+				horseupdate_power=public_tool.getKeyPower('马甲用户修改',powermap),
+				horsedelete_power=public_tool.getKeyPower('马甲用户删除',powermap),
+				horseadd_power=public_tool.getKeyPower('马甲用户添加',powermap);
 
 
 			/*dom引用和相关变量定义*/
@@ -160,7 +163,7 @@
 										btns='';
 
 									/*修改*/
-									if(typeof powermap[22]!=='undefined'){
+									if(horseupdate_power){
 										btns+='<span data-action="update" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 											<i class="fa-pencil"></i>\
 											<span>修改</span>\
@@ -168,7 +171,7 @@
 									}
 
 									/*删除*/
-									if(typeof powermap[23]!=='undefined'){
+									if(horsedelete_power){
 										btns+='<span data-action="delete" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 											<i class="fa-trash"></i>\
 											<span>删除</span>\
@@ -378,7 +381,7 @@
 				//第一行获取焦点
 				$user_nickname.focus();
 			});
-			if(typeof powermap[21]!=='undefined'){
+			if(horseadd_power){
 				$user_add_btn.removeClass('g-d-hidei');
 				$edit_wrap.removeClass('g-d-hidei');
 			};
