@@ -49,7 +49,22 @@
 					},
 					cancel:false
 				})/*一般提示对象*/,
-				dialogObj=public_tool.dialog()/*回调提示对象*/;
+				dialogObj=public_tool.dialog()/*回调提示对象*/,
+				$show_detail_wrap=$('#show_detail_wrap')/*详情容器*/,
+				$show_detail_title=$('#show_detail_title')/*详情标题*/,
+				$show_detail_content=$('#show_detail_content')/*详情内容*/,
+				detail_map={
+					fullName:'服务站全称',
+					shortName:"服务站简称",
+					name:"负责人姓名",
+					phone:"负责人手机号码",
+					address:"地址",
+					sales:"销售",
+					inventory:"库存",
+					repairs:"返修",
+					agentShortName:"所属代理",
+					superShortName:"上级代理"
+				}/*详情映射*/;
 
 
 
@@ -259,16 +274,20 @@
 
 					/*调整布局*/
 					$data_wrap.addClass('collapsed');
-					$edit_wrap.removeClass('collapsed');
-					$("html,body").animate({scrollTop:300},200);
+					$update_wrap.removeClass('collapsed');
+					$add_wrap.addClass('collapsed');
+
 					//重置信息
-					$edit_title.html('修改账户');
+					add_form.reset();
+
+					$("html,body").animate({scrollTop:380},200);
+					//重置信息
 
 					var datas=table.row($tr).data();
 					for(var i in datas) {
 						switch (i) {
 							case "id":
-								$user_id.val(datas[i]);
+								$update_id.val(id);
 								break;
 							case "nickName":
 								$user_nickname.val(datas[i]);
@@ -288,44 +307,6 @@
 						}
 					}
 				}else if(action==='delete'){
-					/*删除操作*/
-					//没有回调则设置回调对象
-					dialogObj.setFn(function(){
-						var self=this;
-
-						$.ajax({
-								url:"http://120.24.226.70:8081/yttx-agentbms-api/user/delete",
-								method: 'POST',
-								dataType: 'json',
-								data:{
-									"id":id,
-									"adminId":decodeURIComponent(logininfo.param.adminId),
-									"token":decodeURIComponent(logininfo.param.token)
-								}
-							})
-							.done(function (resp) {
-								var code=parseInt(resp.code,10);
-								if(code!==0){
-									dia.content('<span class="g-c-bs-warning g-btips-warn">删除失败</span>').show();
-									setTimeout(function () {
-										dia.close();
-									},2000);
-									console.log(resp.message);
-									return false;
-								}
-								getColumnData(article_page,article_config);
-								//table.row($tr).remove().draw(false);
-								setTimeout(function(){
-									self.content('<span class="g-c-bs-success g-btips-succ">删除数据成功</span>');
-								},100);
-							})
-							.fail(function(resp){
-								console.log(resp.message);
-							});
-					},'user_delete');
-					//确认删除
-					dialogObj.dialog.content('<span class="g-c-bs-warning g-btips-warn">是否删除此数据？</span>').showModal();
-				}else if(action==='audit'){
 					/*判断是否可以上下架*/
 					dia.content('<span class="g-c-bs-warning g-btips-warn">目前暂未开放此功能</span>').show();
 					setTimeout(function(){
@@ -335,11 +316,11 @@
 				}else if(action==='select'){
 					/*查看*/
 					$.ajax({
-							url:"http://120.24.226.70:8081/yttx-agentbms-api/user/detail",
+							url:"http://120.24.226.70:8081/yttx-agentbms-api/servicestation/detail",
 							method: 'POST',
 							dataType: 'json',
 							data:{
-								"id":id,
+								"serviceStationId":id,
 								"adminId":decodeURIComponent(logininfo.param.adminId),
 								"token":decodeURIComponent(logininfo.param.token)
 							}
@@ -361,32 +342,14 @@
 									if(typeof detail_map[j]!=='undefined'){
 										if(j==='name'||j==='Name'){
 											istitle=true;
-											$show_detail_title.html(list[j]+'成员详情信息');
+											$show_detail_title.html(list[j]+'服务站详情信息');
 										}else{
-											if(j==='status'){
-												var status=parseInt(list[j],10);
-												if(status===0){
-													status="正常";
-												}else if(state===1){
-													status="锁定";
-												}
-												str+='<tr><th>'+detail_map[j]+':</th><td>'+status+'</td></tr>';
-											}else if(j==='grade'){
-												var grade=parseInt(list[j],10);
-												if(grade===0){
-													grade="普通用户";
-												}else if(grade===1){
-													grade="马甲用户";
-												}
-												str+='<tr><th>'+detail_map[j]+':</th><td>'+grade+'</td></tr>';
-											}else{
-												str+='<tr><th>'+detail_map[j]+':</th><td>'+list[j]+'</td></tr>';
-											}
+											str+='<tr><th>'+detail_map[j]+':</th><td>'+list[j]+'</td></tr>';
 										}
 									}
 								};
 								if(!istitle){
-									$show_detail_title.html('账户详情信息');
+									$show_detail_title.html('服务站详情信息');
 								}
 								$show_detail_content.html(str);
 								$show_detail_wrap.modal('show',{backdrop:'static'});
@@ -406,19 +369,6 @@
 			});
 
 
-			/*if(action==='repair'){
-				/!*调整布局*!/
-				$data_wrap.addClass('collapsed');
-				$update_wrap.removeClass('collapsed');
-				$add_wrap.addClass('collapsed');
-				$("html,body").animate({scrollTop:380},200);
-				//重置信息
-				add_form.reset();
-				$add_title.html('');
-				$update_title.html(datas['shortName']+'"服务站返修');
-				$update_id.val(id);
-			}*/
-
 
 			$station_add_btn.on('click',function(e){
 				e.preventDefault();
@@ -429,7 +379,6 @@
 				$("html,body").animate({scrollTop:300},200);
 				//重置信息
 				update_form.reset();
-				$update_title.html('');
 				//第一行获取焦点
 				//$user_nickname.focus();
 			});
