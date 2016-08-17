@@ -84,21 +84,27 @@
 				update_form=document.getElementById('station_update_form')/*表单dom*/,
 				$station_add_form=$(add_form)/*编辑表单*/,
 				$station_update_form=$(update_form)/*编辑表单*/,
-				$add_id=$('#add_id'),/*发货id*/
 				$update_id=$('#update_id'),/*返修id*/
 				$add_cance_btn=$('#add_cance_btn')/*编辑取消按钮*/,
 				$update_cance_btn=$('#update_cance_btn')/*编辑取消按钮*/,
-				$add_trackingnumber=$('#add_trackingnumber'),/*快递单号*/
-				$update_trackingnumber=$('#update_trackingnumber'),
-				$add_deliveryhandler=$('#add_deliveryhandler')/*发货经手人*/,
-				$update_deliveryhandler=$('#update_deliveryhandler'),
-				$add_deliverytime=$('#add_deliverytime')/*发货时间*/,
-				$update_deliverytime=$('#update_deliverytime'),
-				$update_name=$('#update_name'),
-				$update_startnumber=$('#update_startnumber'),
-				$update_endnumber=$('#update_endnumber'),
-				$update_listnumber=$('#update_listnumber'),
-				$update_quantity=$('#update_quantity');
+				$add_fullname=$('#add_fullname'),/*快递单号*/
+				$add_shortname=$('#add_shortname'),
+				$add_name=$('#add_name')/*发货经手人*/,
+				$add_phone=$('#add_phone'),
+				$add_tel=$('#add_tel')/*发货时间*/,
+				$province=$('#province'),
+				$city=$('#city'),
+				$area=$('#area'),
+				$province_value=$('#province_value'),
+				$city_value=$('#city_value'),
+				$area_value=$('#area_value'),
+				$add_address=$('#add_address'),
+				$add_agentid=$('#add_agentid'),
+				$add_remark=$('#add_remark'),
+				$add_becomeagent=$('#add_becomeagent'),
+				$add_gradea=$('#add_gradea'),
+				$add_gradeaa=$('#add_gradeaa'),
+				$add_gradeaaa=$('#add_gradeaaa');
 
 
 

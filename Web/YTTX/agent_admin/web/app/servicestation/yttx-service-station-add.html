@@ -219,7 +219,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="control-label">发货经手人：</label>
+                                <label class="control-label">服务站简称：</label>
 
                                 <input type="text" class="form-control" name="shortName" id="add_shortname" data-validate="required" data-message-required="服务站简称不能为空" placeholder="请输入服务站简称" />
                             </div>
@@ -261,39 +261,17 @@
                                         <ul id="area"></ul>
                                     </div>
                                 </div>
-                                <input type="text"  class="select-input-def form-control" value=""data-validate="required" data-message-required="省份不能为空" name="Province" id="province_value">
-                                <input type="text" class="select-input-def form-control" data-validate="required" data-message-required="城市不能为空" value="" name="City" id="city_value">
-                                <input type="text" class="select-input-def form-control" data-validate="required" data-message-required="地区不能为空" value="" name="Area" id="area_value">
+                                <input type="text"  class="select-input-def form-control" value="" data-validate="required" data-message-required="省份不能为空" name="province" id="province_value">
+                                <input type="text" class="select-input-def form-control" data-validate="required" data-message-required="城市不能为空" value="" name="city" id="city_value">
+                                <input type="text" class="select-input-def form-control" data-validate="required" data-message-required="地区不能为空" value="" name="country" id="area_value">
                             </div>
 
 
                             <div class="form-group">
-                                <input type="text" class="form-control" name="Address"  placeholder="请输入详细地址" data-validate="required" data-message-required="详细地址不能为空" value="" id="manage_address" />
+                                <input type="text" class="form-control" name="address"  placeholder="请输入详细地址" data-validate="required" data-message-required="详细地址不能为空" value="" id="add_address" />
                             </div>
-
-
-                            <div class="form-group">
-                                <span class="control-label">
-                                    <label class="checkbox-inline">
-                                        <input type="checkbox" id="manage_agent" name="agent"/>同时成为代理商&nbsp;&nbsp;&nbsp;&nbsp;
-                                    </label>
-                                </span>
-                                <span class="control-label">代理商级别：
-                                    <label class="radio-inline">
-                                        <input type="radio"  id="manage_agentlevela" name="agentLevel"/>:A级
-                                    </label>
-                                    <label class="radio-inline">
-                                        &nbsp;&nbsp;<input id="manage_agentlevelaa" type="radio"  name="agentLevel"/>:AA级
-                                    </label>
-                                    <label class="radio-inline">
-                                        &nbsp;&nbsp;<input type="radio" id="manage_agentlevelaaa"  name="agentLevel"/>:AAA级
-                                    </label>
-                                </span>
-                                <br />
-                                <div class="control-label">以上内容请根据合同如实填写。</div>
-                            </div>
-
-
+                            
+                            
                             <div class="form-group">
                                 <label class="control-label">绑定代理商ID：</label>
 
@@ -306,67 +284,28 @@
                                 <textarea class="form-control" name="Remark" id="add_remark"   placeholder="请输入备注"></textarea>
                             </div>
 
-                            
-                            <div class="form-group">
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" name="IsCheckedDevice" id="add_ischeckeddevice" value="" />选中移动支付设备：
-                                    </label>
-                                </div>
-                                <div class="admin-sub-items1 g-d-hidei"  id="add_devicewrap">
-                                    <ul>
-                                        <li>
-                                            <label>设备起始号:<input type="text" class="form-control" name="startNumberForDevice" placeholder="请输入设备起始号" /></label>
-
-                                            <label>设备结止号:<input type="text" class="form-control" name="endNumberForDevice" placeholder="请输入设备结止号" /></label>
-                                            <label>机器号（多个以逗号分开):<input type="text" class="form-control" name="endNumberForDevice" id="add_endnumberfordevices" placeholder="请输入机器号（多个以逗号分开)" /></label>
-                                            <label>数量:<input type="text" class="form-control" name="quantityForDevice"  placeholder="请输入数量" /></label>
-                                        </li>
-                                    </ul>
-                                </div>
-
-                            </div>
-
 
                             <div class="form-group">
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" name="IsCheckedFittings" id="add_ischeckedfittings" value="" />选中配件：
+                                <span class="control-label">
+                                    <label class="checkbox-inline">
+                                        <input value="1" type="checkbox" id="add_becomeagent" name="becomeAgent"/>同时成为代理商&nbsp;&nbsp;&nbsp;&nbsp;
                                     </label>
-                                </div>
-                                <div class="admin-sub-items1 admin-rpos-wrap g-d-hidei"  id="add_fittingwrap">
-                                    <ul>
-                                        <li>
-                                            <label>配件名称:<input type="text" class="form-control" name="name" placeholder="请输入配件名称" /></label>
-                                            <label>规格:<input type="text" class="form-control" name="specification" placeholder="请输入规格" /></label>
-                                            <label>数量:<input type="text" class="form-control" name="quantityForFittings" placeholder="请输入数量" /></label>
-                                            <label>备注:<input type="text" class="form-control" name="Remark" placeholder="请输入备注" /></label>
-                                        </li>
-                                    </ul>
-                                    <div class="btn btn-info g-br2" id="add_fittingadd_btn">+添加</div>
-                                </div>
+                                </span>
+                                <span class="control-label">代理商级别：
+                                    <label class="radio-inline">
+                                        <input type="radio" value="1"  id="add_gradea" name="grade"/>:A级
+                                    </label>
+                                    <label class="radio-inline">
+                                        &nbsp;&nbsp;<input value="2"  id="add_gradeaa" type="radio"  name="grade"/>:AA级
+                                    </label>
+                                    <label class="radio-inline">
+                                        &nbsp;&nbsp;<input value="3"  type="radio" id="add_gradeaaa"  name="grade"/>:AAA级
+                                    </label>
+                                </span>
+                                <br />
+                                <div class="control-label">以上内容请根据合同如实填写。</div>
                             </div>
 
-                            <div class="form-group">
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" name="IsCheckedRepair" id="add_ischeckedrepair" value="" />选中返修：
-                                    </label>
-                                </div>
-                                <div class="admin-sub-items1 g-d-hidei" id="add_repairwrap">
-                                    <ul>
-                                        <li>
-                                            <label>返修时间:<input type="text" class="form-control" id="add_repairtime" name="repairTime" readonly placeholder="请输入返修时间" /> </label>
-                                            <label>设备起始号:<input type="text" class="form-control" name="startNumberForRepair" placeholder="请输入设备起始号" /></label>
-                                            <label>设备结止号:<input type="text" class="form-control" name="endNumberForRepair" placeholder="请输入设备结止号" /></label>
-                                            <label>机器号（多个以逗号分开):<input type="text" class="form-control" name="endNumberForRepair" placeholder="请输入机器号" /></label>
-                                            <label>数量:<input type="text" class="form-control" name="quantityForRepair" placeholder="请输入数量" /></label>
-                                        </li>
-                                    </ul>
-
-                                </div>
-
-                            </div>
 
                             <div class="form-group">
                                 <button type="submit" class="btn btn-success">发货</button>
