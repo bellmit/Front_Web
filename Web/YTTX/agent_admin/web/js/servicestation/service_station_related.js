@@ -250,6 +250,9 @@
 							delete data[key[1]];
 						}
 					}else{
+						if(key[1].indexOf('phone')!==-1){
+							text=text.replace(/\s*/g,'');
+						}
 						data[key[1]]=text;
 					}
 
@@ -361,6 +364,17 @@
 			});
 
 
+			/*格式化手机号码*/
+			$.each([$search_phone],function(){
+				this.on('keyup',function(){
+					var phoneno=this.value.replace(/\D*/g,'');
+					if(phoneno==''){
+						this.value='';
+						return false;
+					}
+					this.value=public_tool.phoneFormat(this.value);
+				});
+			});
 
 
 			/*绑定发货插件显示隐藏*/

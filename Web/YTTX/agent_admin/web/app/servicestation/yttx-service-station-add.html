@@ -101,7 +101,7 @@
         <!--主内容-->
         <div class="row row-main-wrap">
             <div class="col-md-12">
-                <div class="panel" id="data_wrap">
+                <div class="panel g-d-hidei" id="data_wrap">
 
                     <!--表格标题-->
                     <div class="panel-heading">
@@ -196,7 +196,8 @@
 
 
             <div class="col-md-12">
-                <div class="panel collapsed g-d-hidei" id="add_wrap">
+                <!-- collapsed-->
+                <div class="panel g-d-hidei" id="add_wrap">
 
                     <!--编辑表单标题-->
                     <div class="panel-heading">
@@ -230,21 +231,6 @@
                                 <input type="text" class="form-control" name="name" id="add_name" data-validate="required" data-message-required="服务站负责人不能为空" placeholder="请输入服务站负责人" />
                             </div>
 
-
-                            <div class="form-group">
-                                <label class="control-label">服务站手机号码：</label>
-
-                                <input type="text" class="form-control" name="phone" id="add_phone" data-validate="required,zh_phone" maxlength="13" data-message-required="服务站手机号码不能为空" data-message-zh_phone="服务站手机号码格式不正确" placeholder="请输入服务站手机号码" />
-                            </div>
-
-
-                            <div class="form-group">
-                                <label class="control-label">服务站电话号码：</label>
-
-                                <input type="text" class="form-control" name="tel" id="add_tel" placeholder="请输入服务站电话号码" />
-                            </div>
-
-
                             <div class="form-group">
                                 <label class="control-label">地址：</label>
                                 <div class="selectwrap">
@@ -270,8 +256,22 @@
                             <div class="form-group">
                                 <input type="text" class="form-control" name="address"  placeholder="请输入详细地址" data-validate="required" data-message-required="详细地址不能为空" value="" id="add_address" />
                             </div>
-                            
-                            
+
+
+                            <div class="form-group">
+                                <label class="control-label">服务站手机号码：</label>
+
+                                <input type="text" class="form-control" name="phone" id="add_phone" data-validate="required,zh_phone" maxlength="13" data-message-required="服务站手机号码不能为空" data-message-zh_phone="服务站手机号码格式不正确" placeholder="请输入服务站手机号码" />
+                            </div>
+
+
+                            <div class="form-group">
+                                <label class="control-label">服务站电话号码：</label>
+
+                                <input type="text" class="form-control" name="tel" id="add_tel" placeholder="请输入服务站电话号码" />
+                            </div>
+
+
                             <div class="form-group">
                                 <label class="control-label">绑定代理商ID：</label>
 
@@ -286,29 +286,89 @@
 
 
                             <div class="form-group">
-                                <span class="control-label">
-                                    <label class="checkbox-inline">
-                                        <input value="1" type="checkbox" id="add_becomeagent" name="becomeAgent"/>同时成为代理商&nbsp;&nbsp;&nbsp;&nbsp;
+                                <div class="checkbox">
+                                    <label>
+                                        <input value="1" type="checkbox" id="add_becomeagent" name="becomeAgent" />同时成为代理商&nbsp;&nbsp;
                                     </label>
-                                </span>
-                                <span class="control-label">代理商级别：
-                                    <label class="radio-inline">
-                                        <input type="radio" value="1"  id="add_gradea" name="grade"/>:A级
+                                </div>
+                                <div class="admin-sub-items1 g-d-hidei" id="add_agentwrap">
+                                    代理商级别：
+                                    <label>
+                                        &nbsp;&nbsp;A级:&nbsp;<input type="radio"  value="1" name="grade" />
                                     </label>
-                                    <label class="radio-inline">
-                                        &nbsp;&nbsp;<input value="2"  id="add_gradeaa" type="radio"  name="grade"/>:AA级
+                                    <label>
+                                        &nbsp;&nbsp;AA级:&nbsp;<input value="2" type="radio"  name="grade" />
                                     </label>
-                                    <label class="radio-inline">
-                                        &nbsp;&nbsp;<input value="3"  type="radio" id="add_gradeaaa"  name="grade"/>:AAA级
+                                    <label>
+                                        &nbsp;&nbsp;AAA级:&nbsp;<input value="3"  type="radio"  name="grade" />
                                     </label>
-                                </span>
-                                <br />
+                                </div>
                                 <div class="control-label">以上内容请根据合同如实填写。</div>
                             </div>
 
 
                             <div class="form-group">
-                                <button type="submit" class="btn btn-success">发货</button>
+                                <div class="checkbox" id="add_salescheck">
+                                    销售分润设置:&nbsp;&nbsp;
+                                    <label>
+                                        自定义：<input type="radio" name="isCustomSalesProfit" id="add_salesself" value="1" />
+                                    </label>
+                                    <label>
+                                        按系统定义：<input type="radio" name="isCustomSalesProfit" value="0" />
+                                    </label>
+                                </div>
+                                <div class="admin-sub-items1 g-d-hidei" id="add_saleswrap">
+                                    <ul>
+                                        <li>
+                                            <label>总销售利润:<input type="text" class="form-control" name="profitSumForSales" placeholder="" />
+                                            </label>
+                                        </li>
+                                        <li id="add_salessetting">
+                                            <label>一级分润:<input type="text" class="form-control" name="distributorP1ForSales" data-validate="required,number,dotmaxlength[2]" data-message-required="一级分润不能为空" data-message-number="一级分润必须是数值" data-message-dotmaxlength="一级分润需小于3位数值" maxlength="5" placeholder="请输入小于100的数字" />
+                                            </label>
+                                            <label>二级分润:<input type="text" class="form-control" data-validate="required,number,dotmaxlength[2]" data-message-required="二级分润不能为空" data-message-number="二级分润必须是数值" data-message-dotmaxlength="二级分润需小于3位数值" maxlength="5" placeholder="请输入小于100的数字" name="distributorP2ForSales" />
+                                            </label>
+                                            <label>三级分润:<input type="text" class="form-control" data-validate="required,number,dotmaxlength[2]" data-message-required="三级分润不能为空" data-message-number="三级分润必须是数值" data-message-dotmaxlength="三级分润需小于3位数值" maxlength="5" placeholder="请输入小于100的数字" name="distributorP3ForSales" />
+                                            </label>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                            </div>
+
+
+                            <div class="form-group">
+                                <div class="checkbox" id="add_acqcheck">
+                                    收单分润设置:&nbsp;&nbsp;
+                                    <label>
+                                        自定义：<input type="radio" name="isCustomAcquiringProfit" id="add_acqself"  value="1" />
+                                    </label>
+                                    <label>
+                                        按系统定义：<input type="radio" name="isCustomAcquiringProfit" value="0" />
+                                    </label>
+                                </div>
+                                <div class="admin-sub-items1 g-d-hidei"  id="add_acqwrap">
+                                    <ul>
+                                        <li class="clear-validate-error">
+                                            <label>总销售利润:<input type="text" class="form-control" name="profitSumForAcquiring" placeholder="" />
+                                            </label>
+                                        </li>
+                                        <li id="add_acqsetting" class="need-valid">
+                                            <label>一级分润:<input type="text" class="form-control" name="distributorP1ForAcquiring"  data-validate="required,number,dotmaxlength[2]" data-message-required="一级分润不能为空" data-message-number="一级分润必须是数值" data-message-dotmaxlength="一级分润需小于3位数值" maxlength="5" placeholder="请输入小于100的数字"  />
+                                            </label>
+                                            <label>二级分润:<input type="text" class="form-control"  data-validate="required,number,dotmaxlength[2]" data-message-required="二级分润不能为空" data-message-number="二级分润必须是数值" data-message-dotmaxlength="二级分润需小于3位数值" maxlength="5" placeholder="请输入小于100的数字"  name="distributorP2ForAcquiring" />
+                                            </label>
+                                            <label>三级分润:<input type="text" class="form-control"  data-validate="required,number,dotmaxlength[2]" data-message-required="三级分润不能为空" data-message-number="三级分润必须是数值" data-message-dotmaxlength="三级分润需小于3位数值" maxlength="5" placeholder="请输入小于100的数字"  name="distributorP3ForAcquiring" />
+                                            </label>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                            </div>
+
+
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-success">添加</button>
                                 <button id="add_cance_btn" type="reset" class="btn btn-white">取消</button>
                             </div>
                         </form>
@@ -515,7 +575,7 @@
 <script src="../../js/plugins/datatables/dataTables.bootstrap.js"></script>
 <!--表单验证插件-->
 <script src="../../js/plugins/jquery-validate/jquery.validate.js"></script>
-<script src="../../js/plugins/datepicker/datepicker.js"></script>
+<script src="../../js/widgets/city_select.js"></script>
 <script src="../../js/servicestation/service_station_add.js"></script>
 </body>
 </html>

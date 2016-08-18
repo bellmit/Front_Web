@@ -100,11 +100,23 @@
 				$area_value=$('#area_value'),
 				$add_address=$('#add_address'),
 				$add_agentid=$('#add_agentid'),
-				$add_remark=$('#add_remark'),
-				$add_becomeagent=$('#add_becomeagent'),
-				$add_gradea=$('#add_gradea'),
-				$add_gradeaa=$('#add_gradeaa'),
-				$add_gradeaaa=$('#add_gradeaaa');
+				$add_remark=$('#add_remark');
+
+
+			/*分润设置*/
+			var	$add_becomeagent=$('#add_becomeagent'),
+				$add_agentwrap=$('#add_agentwrap'),
+				$add_salescheck=$('#add_salescheck'),
+				$add_saleswrap=$('#add_saleswrap'),
+				$add_salessetting=$('#add_salessetting'),
+				$add_salesprofit=$add_salessetting.find('input'),
+				$add_salesself=$('#add_salesself'),
+				$add_acqcheck=$('#add_acqcheck'),
+				$add_acqwrap=$('#add_acqwrap'),
+				$add_acqsetting=$('#add_acqsetting'),
+				$add_acqprofit=$add_acqsetting.find('input'),
+				$add_acqself=$('#add_acqself'),
+				profit_data={};
 
 
 
@@ -217,6 +229,15 @@
 				add_form.reset();
 				update_form.reset();
 				$admin_search_clear.trigger('click');
+				/*地址调用*/
+				new public_tool.areaSelect().areaSelect({
+					$province:$province,
+					$city:$city,
+					$area:$area,
+					$provinceinput:$province_value,
+					$cityinput:$city_value,
+					$areainput:$area_value
+				});
 			}());
 
 
@@ -244,6 +265,9 @@
 							delete data[key[1]];
 						}
 					}else{
+						if(key[1].indexOf('phone')!==-1){
+							text=text.replace(/\s*/g,'');
+						}
 						data[key[1]]=text;
 					}
 
@@ -376,6 +400,7 @@
 
 
 
+			/*添加服务站*/
 			$station_add_btn.on('click',function(e){
 				e.preventDefault();
 				/*调整布局*/
@@ -417,34 +442,175 @@
 			});
 
 
+			/*手机格式化*/
+			/*格式化手机号码*/
+			$.each([$search_phone,$add_phone],function(){
+				this.on('keyup',function(){
+					var phoneno=this.value.replace(/\D*/g,'');
+					if(phoneno==''){
+						this.value='';
+						return false;
+					}
+					this.value=public_tool.phoneFormat(this.value);
+				});
+			});
 
+
+			/*设置代理*/
+			/*切换代理*/
+			$add_becomeagent.on('click',function(){
+				var $this=$(this),
+					ischeck=$this.is(':checked'),
+					name=$this.attr('name'),
+					$radio=$add_agentwrap.find('input'),
+					becomeagent=$this.val(),
+					gradecheck=$radio.eq(0);
+
+				if(ischeck){
+					$add_agentwrap.removeClass('g-d-hidei');
+					profit_data[name]=$this.val();
+					gradecheck.prop({
+						'checked':true
+					});
+					profit_data['grade']=gradecheck.val();
+				}else{
+					$add_agentwrap.addClass('g-d-hidei');
+					$radio.each(function(){
+						$(this).prop({
+							'checked':false
+						});
+					});
+					/*设置数据*/
+					if(typeof profit_data[name]!=='undefined'){
+						delete profit_data[name];
+					}
+					if(typeof profit_data['grade']!=='undefined'){
+						delete profit_data[name];
+					}
+				}
+			});
+			/*选择代理*/
+			$add_agentwrap.on('click','input',function(){
+				profit_data['grade']=this.value;
+			});
+
+
+			/*设置分润*/
+			$.each([$add_salescheck,$add_acqcheck],function(index){
+				var selector=this.selector,
+					issale=selector.indexOf('sales')!==-1?true:false,
+					$radio=this.find('input');
+
+
+
+				/*绑定设置显示隐藏和初始化*/
+				$radio.each(function(){
+					var $this=$(this),
+						value=parseInt($this.val(),10);
+
+					/*设置默认值为系统设置*//*初始化*/
+					if(value===0){
+						$this.prop({
+							'checked':true
+						});
+						if(issale){
+							profit_data['isCustomSalesProfit']=value;
+						}else{
+							profit_data['isCustomAcquiringProfit']=value;
+						}
+					}
+
+					/*绑定事件*/
+					$this.on('click',function(){
+						if(value===1){
+							/*自定义*/
+							if(issale){
+								$add_saleswrap.removeClass('g-d-hidei');
+								$add_salessetting.addClass('need-valid');
+								profit_data['isCustomSalesProfit']=value;
+								/*设置了的三级分润默认值*/
+								profit_data['distributorP1ForSales']='';
+								profit_data['distributorP2ForSales']='';
+								profit_data['distributorP3ForSales']='';
+
+							}else{
+								$add_acqwrap.removeClass('g-d-hidei');
+								$add_acqsetting.addClass('need-valid');
+								profit_data['isCustomAcquiringProfit']=value;
+								/*设置了的三级分润默认值*/
+								profit_data['distributorP1ForAcquiring']='';
+								profit_data['distributorP2ForAcquiring']='';
+								profit_data['distributorP3ForAcquiring']='';
+							}
+						}else if(value===0){
+							/*系统默认*/
+							if(issale){
+								$add_saleswrap.addClass('g-d-hidei');
+								$add_salessetting.removeClass('need-valid');
+								profit_data['isCustomSalesProfit']=value;
+								/*删除已经设置了的三级分润*/
+								if(typeof profit_data['distributorP1ForSales']!=='undefined'){
+									delete profit_data['distributorP1ForSales'];
+								}
+								if(typeof profit_data['distributorP2ForSales']!=='undefined'){
+									delete profit_data['distributorP2ForSales'];
+								}
+								if(typeof profit_data['distributorP3ForSales']!=='undefined'){
+									delete profit_data['distributorP3ForSales'];
+								}
+							}else{
+								$add_acqwrap.addClass('g-d-hidei');
+								$add_acqsetting.removeClass('need-valid');
+								profit_data['isCustomAcquiringProfit']=value;
+								/*删除已经设置了的三级分润*/
+								if(typeof profit_data['distributorP1ForAcquiring']!=='undefined'){
+									delete profit_data['distributorP1ForAcquiring'];
+								}
+								if(typeof profit_data['distributorP2ForAcquiring']!=='undefined'){
+									delete profit_data['distributorP2ForAcquiring'];
+								}
+								if(typeof profit_data['distributorP3ForAcquiring']!=='undefined'){
+									delete profit_data['distributorP3ForAcquiring'];
+								}
+							}
+						}
+					});
+				});
+			});
+
+
+			/*绑定分润输入限制*/
+			$.each([$add_salesprofit,$add_acqprofit],function(){
+				this.each(function () {
+					$(this).on('keyup',function(){
+						var val=this.value.replace(/[^0-9*\-*^\.]/g,'');
+						if(val.indexOf('.')!==-1){
+							val=val.split('.');
+							if(val.length>=3){
+								val.length=2;
+								val=val[0]+'.'+val[1];
+							}else{
+								val=val.join('.');
+							}
+						}
+						this.value=val;
+					});
+				});
+			});
 
 			/*最小化窗口*/
 			$.each([$add_title,$update_title], function () {
 				var selector=this.selector,
-					issend=selector.indexOf('send')!==-1?true:false;
+					isadd=selector.indexOf('add')!==-1?true:false;
 
 				this.next().on('click',function(e){
 					if($data_wrap.hasClass('collapsed')){
 						e.stopPropagation();
 						e.preventDefault();
-						issend?$add_cance_btn.trigger('click'):$update_cance_btn.trigger('click');
+						isadd?$add_cance_btn.trigger('click'):$update_cance_btn.trigger('click');
 					}
 				});
 			});
-
-
-			/*绑定时间插件*/
-			$.each([$add_deliverytime,$add_repairtime,$update_deliverytime],function(){
-				this.val('').datepicker({
-					autoclose:true,
-					clearBtn:true,
-					format: 'yyyy-mm-dd',
-					todayBtn: true,
-					endDate:moment().format('YYYY-MM-DD')
-				})
-			});
-
 
 
 
@@ -457,62 +623,81 @@
 
 				if(formcache.form_opt_0 && formcache.form_opt_1){
 					$.each([formcache.form_opt_0,formcache.form_opt_1], function (index) {
-						var issend=index===0?true:false;
+						var isadd=index===0?true:false;
 						$.extend(true,(function () {
-							return issend?form_opt0:form_opt1;
+							return isadd?form_opt0:form_opt1;
 						}()),(function () {
-							return issend?formcache.form_opt_0:formcache.form_opt_1;
+							return isadd?formcache.form_opt_0:formcache.form_opt_1;
 						}()),{
 							submitHandler: function(form){
-								var id=issend?$add_id.val():$update_id.val();
+								if(isadd){
+									/*添加*/
+									/*校验分润对象*/
+									var isvalid1=false,
+											isvalid2=false;
 
-								if(id===''){
-									issend?$add_cance_btn.trigger('click'):$update_cance_btn.trigger('click');
-									dia.content('<span class="g-c-bs-warning g-btips-warn">请选择需要操作的服务站</span>').show();
-									setTimeout(function(){
-										dia.close();
-									},3000);
-									return false;
-								}
-
-
-								if(issend){
-									var checkdata=getCheckPlugin(add_checkconfig),
-										config={
-											url:"http://120.24.226.70:8081/yttx-agentbms-api/servicestation/invoice/add",
-											dataType:'JSON',
-											method:'post',
-											data:{
-												serviceStationId:id,
-												adminId:decodeURIComponent(logininfo.param.adminId),
-												token:decodeURIComponent(logininfo.param.token),
-												trackingNumber:$add_trackingnumber.val(),
-												deliveryHandler:$add_deliveryhandler.val(),
-												deliveryTime:$add_deliverytime.val()
-											}
-										};
-									if(!$.isEmptyObject(checkdata)){
-										for(var i in checkdata){
-											config.data[i]=JSON.stringify(checkdata[i]);
-										}
+									if($add_salesself.is(':checked')){
+										/*自定义*/
+										isvalid1=validProfit($add_salesprofit,dia,profit_data,true);
+									}else {
+										isvalid1=true;
 									}
-								}else{
+									if($add_acqself.is(':checked')){
+										isvalid2=validProfit($add_acqprofit,dia,profit_data,false);
+									}else{
+										isvalid2=true;
+									}
+
+									if(!isvalid1&&!isvalid2){
+										return false;
+									}
+
 									var config={
-										url:"http://120.24.226.70:8081/yttx-agentbms-api/servicestation/repairorder/add",
+										url:"http://120.24.226.70:8081/yttx-agentbms-api/servicestation/addupdate",
+										dataType:'JSON',
+										method:'post',
+										data:{
+											roleId:decodeURIComponent(logininfo.param.roleId),
+											adminId:decodeURIComponent(logininfo.param.adminId),
+											token:decodeURIComponent(logininfo.param.token),
+											fullName:$add_fullname.val(),
+											shortName:$add_shortname.val(),
+											name:$add_name.val(),
+											province:$province_value.val(),
+											city:$city_value.val(),
+											country:$area_value.val(),
+											address:$add_address.val(),
+											phone:$add_phone.val().replace(/\s*/g,''),
+											tel:$add_tel.val(),
+											agentId:$add_agentid.val(),
+											Remark:$add_remark.val()
+										}
+									};
+
+									console.log(config.data);
+									$.extend(true,config.data,profit_data);
+									console.log(profit_data);
+									console.log(config.data);
+
+								}else{
+									/*更新*/
+									var id=$update_id.val();
+									if(!isadd&&id===''){
+										$update_cance_btn.trigger('click');
+										dia.content('<span class="g-c-bs-warning g-btips-warn">请选择需要操作的服务站</span>').show();
+										setTimeout(function(){
+											dia.close();
+										},3000);
+										return false;
+									}
+									var config={
+										url:"http://120.24.226.70:8081/yttx-agentbms-api/servicestation/update",
 										dataType:'JSON',
 										method:'post',
 										data:{
 											serviceStationId:id,
 											adminId:decodeURIComponent(logininfo.param.adminId),
-											token:decodeURIComponent(logininfo.param.token),
-											trackingNumber:$update_trackingnumber.val(),
-											deliveryHandler:$update_deliveryhandler.val(),
-											deliveryTime:$update_deliverytime.val(),
-											name:$update_name.val(),
-											startNumber:$update_startnumber.val(),
-											endNumber:$update_endnumber.val(),
-											listNumber:$update_listnumber.val(),
-											quantity:$update_quantity.val()
+											token:decodeURIComponent(logininfo.param.token)
 										}
 									};
 								}
@@ -524,7 +709,7 @@
 										if(code!==0){
 											console.log(resp.message);
 											setTimeout(function(){
-												issend?dia.content('<span class="g-c-bs-warning g-btips-warn">发货失败</span>').show():dia.content('<span class="g-c-bs-warning g-btips-warn">返修失败</span>').show();
+												isadd?dia.content('<span class="g-c-bs-warning g-btips-warn">添加服务站失败</span>').show():dia.content('<span class="g-c-bs-warning g-btips-warn">修改服务站失败</span>').show();
 											},300);
 											setTimeout(function () {
 												dia.close();
@@ -534,9 +719,9 @@
 										//重绘表格
 										table.ajax.reload(null,false);
 										//重置表单
-										issend?$add_cance_btn.trigger('click'):$update_cance_btn.trigger('click');
+										isadd?$add_cance_btn.trigger('click'):$update_cance_btn.trigger('click');
 										setTimeout(function(){
-											issend?dia.content('<span class="g-c-bs-success g-btips-succ">发货成功</span>').show():dia.content('<span class="g-c-bs-success g-btips-succ">返修成功</span>').show();
+											isadd?dia.content('<span class="g-c-bs-success g-btips-succ">添加服务站成功</span>').show():dia.content('<span class="g-c-bs-success g-btips-succ">修改服务站成功</span>').show();
 										},300);
 										setTimeout(function () {
 											dia.close();
@@ -555,6 +740,62 @@
 				$station_add_form.validate(form_opt0);
 				$station_update_form.validate(form_opt1);
 			}
+		}
+
+
+		/*校验分润设置数据合法性*/
+		function validProfit(input,dia,data,type){
+			if(!input){
+					return false;
+			}
+
+			if(!data){
+				return false;
+			}
+
+			var isvalid=false,
+				ele_a=input.eq(0).val(),
+				ele_aa=input.eq(1).val(),
+				ele_aaa=input.eq(2).val(),
+				temp_a=parseInt(ele_a * 10000,10) / 10000,
+				temp_aa=parseInt(ele_aa * 10000,10) / 10000,
+				temp_aaa=parseInt(ele_aaa * 10000,10) / 10000;
+
+			/*设置分润规则*/
+			if(isNaN(temp_a)||isNaN(temp_aa)||isNaN(temp_aaa)){
+				dia.content('<span class="g-c-bs-warning g-btips-warn">分润设置数据非法值</span>').show();
+				isvalid=false;
+				return isvalid;
+			}
+			if((temp_a===0||temp_a>=100)||(temp_aa===0||temp_aa>=100)||(temp_aaa===0||temp_aaa>=100)){
+				dia.content('<span class="g-c-bs-warning g-btips-warn">分润设置数据不能大于100或为0</span>').show();
+				isvalid=false;
+				return isvalid;
+			}else if((temp_a+temp_aa+temp_aaa)>100){
+				dia.content('<span class="g-c-bs-warning g-btips-warn">分润设置总和不能大于100</span>').show();
+				isvalid=false;
+				return isvalid;
+			}else if((temp_a+temp_aa+temp_aaa)<100){
+				dia.content('<span class="g-c-bs-warning g-btips-warn">分润设置总和应为100</span>').show();
+				isvalid=false;
+				return isvalid;
+			}
+
+			/*校验*/
+			isvalid=true;
+
+			/*设置值*/
+			if(type){
+				data['distributorP1ForSales']=ele_a;
+				data['distributorP2ForSales']=ele_aa;
+				data['distributorP3ForSales']=ele_aa;
+			}else{
+				data['distributorP1ForAcquiring']=ele_a;
+				data['distributorP2ForAcquiring']=ele_aa;
+				data['distributorP3ForAcquiring']=ele_aaa;
+			}
+
+			return isvalid;
 		}
 
 	});

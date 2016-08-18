@@ -524,11 +524,32 @@
 	}
 	
 	
-	
-	
-	
-	
-	
+	/*地址设置*/
+	.selectwrap{
+		.select-item{
+			ul{
+				max-height:300px;
+			}
+		}
+	}
+
+	/*设置分润*/
+	.need-valid{
+		.validate-has-error{
+			display:inline-block;
+			width:100%;
+			float:right;
+		}
+	}
+	.clear-validate-error{
+		input{
+			border:1px solid @color-gray12 !important;
+			color:@color-gray5  !important;
+			&:focus{
+				border:1px solid rgba(104,184,40,.5) !important;
+			}
+		}
+	}
 }
 
 

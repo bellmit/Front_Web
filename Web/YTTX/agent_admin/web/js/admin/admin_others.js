@@ -145,6 +145,10 @@
 									temp_aaa=parseInt(ele_aaa * 10000,10) / 10000;
 
 								/*设置分润规则*/
+								if(isNaN(temp_a)||isNaN(temp_aa)||isNaN(temp_aaa)){
+									dia.content('<span class="g-c-bs-warning g-btips-warn">分润设置数据非法值</span>').show();
+									return false;
+								}
 								if((temp_a===0||temp_a>=100)||(temp_aa===0||temp_aa>=100)||(temp_aaa===0||temp_aaa>=100)){
 									dia.content('<span class="g-c-bs-warning g-btips-warn">分润设置数据不能大于100或为0</span>').show();
 									return false;
