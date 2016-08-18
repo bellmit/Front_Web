@@ -336,6 +336,13 @@
 
 
 
+			/*发货，返修权限*/
+			if(send_power){
+				$send_wrap.removeClass('g-d-hidei');
+				$repair_wrap.removeClass('g-d-hidei');
+			}
+
+
 
 			/*最小化窗口*/
 			$.each([$send_title,$repair_title], function () {

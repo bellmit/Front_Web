@@ -92,15 +92,29 @@
 				$add_name=$('#add_name')/*发货经手人*/,
 				$add_phone=$('#add_phone'),
 				$add_tel=$('#add_tel')/*发货时间*/,
-				$province=$('#province'),
-				$city=$('#city'),
-				$area=$('#area'),
-				$province_value=$('#province_value'),
-				$city_value=$('#city_value'),
-				$area_value=$('#area_value'),
+				$add_province=$('#add_province'),
+				$add_city=$('#add_city'),
+				$add_area=$('#add_area'),
+				$add_province_value=$('#add_province_value'),
+				$add_city_value=$('#add_city_value'),
+				$add_area_value=$('#add_area_value'),
 				$add_address=$('#add_address'),
 				$add_agentid=$('#add_agentid'),
-				$add_remark=$('#add_remark');
+				$add_remark=$('#add_remark'),
+				$update_fullname=$('#update_fullname'),/*快递单号*/
+				$update_shortname=$('#update_shortname'),
+				$update_name=$('#update_name')/*发货经手人*/,
+				$update_phone=$('#update_phone'),
+				$update_tel=$('#update_tel')/*发货时间*/,
+				$update_province=$('#update_province'),
+				$update_city=$('#update_city'),
+				$update_area=$('#update_area'),
+				$update_province_value=$('#update_province_value'),
+				$update_city_value=$('#update_city_value'),
+				$update_area_value=$('#update_area_value'),
+				$update_address=$('#update_address'),
+				$update_agentid=$('#update_agentid'),
+				$update_remark=$('#update_remark');
 
 
 			/*分润设置*/
@@ -116,7 +130,9 @@
 				$add_acqsetting=$('#add_acqsetting'),
 				$add_acqprofit=$add_acqsetting.find('input'),
 				$add_acqself=$('#add_acqself'),
-				profit_data={};
+				profit_data={},
+				$add_bindagentwrap=$('#add_bindagentwrap'),
+				$add_becomeagentwrap=$('#add_becomeagentwrap');
 
 
 
@@ -231,12 +247,21 @@
 				$admin_search_clear.trigger('click');
 				/*地址调用*/
 				new public_tool.areaSelect().areaSelect({
-					$province:$province,
-					$city:$city,
-					$area:$area,
-					$provinceinput:$province_value,
-					$cityinput:$city_value,
-					$areainput:$area_value
+					$province:$add_province,
+					$city:$add_city,
+					$area:$add_area,
+					$provinceinput:$add_province_value,
+					$cityinput:$add_city_value,
+					$areainput:$add_area_value
+				});
+				/*地址调用*/
+				new public_tool.areaSelect().areaSelect({
+					$province:$update_province,
+					$city:$update_city,
+					$area:$update_area,
+					$provinceinput:$update_province_value,
+					$cityinput:$update_city_value,
+					$areainput:$update_area_value
 				});
 			}());
 
@@ -319,20 +344,20 @@
 							case "id":
 								$update_id.val(id);
 								break;
-							case "nickName":
-								$user_nickname.val(datas[i]);
+							case "fullName":
+								$update_fullname.val(datas[i]);
 								break;
 							case "phone":
-								$user_phone.val(datas[i]);
+								$update_phone.val(public_tool.phoneFormat(datas[i]));
 								break;
-							case "machineCode":
-								$user_machinecode.val(datas[i]);
+							case "shortName":
+								$update_shortname.val(datas[i]);
 								break;
-							case "agentName":
-								$user_agentname.val(datas[i]);
+							case "name":
+								$update_name.val(datas[i]);
 								break;
-							case "serviceStationName":
-								$user_servicestationname.val(datas[i]);
+							case "address":
+								$update_address.val(datas[i]);
 								break;
 						}
 					}
@@ -366,6 +391,10 @@
 							var list=resp.result,
 								str='',
 								istitle=false;
+
+							if(list.length){
+								list=list[0];
+							}
 
 							if(!$.isEmptyObject(list)){
 								for(var j in list){
@@ -411,12 +440,16 @@
 				//重置信息
 				update_form.reset();
 				//第一行获取焦点
-				//$user_nickname.focus();
+				$add_fullname.focus();
 			});
+			/*配置添加和修改的权限*/
 			if(stationadd_power){
 				$station_add_btn.removeClass('g-d-hidei');
 				$add_wrap.removeClass('g-d-hidei');
 			};
+			if(stationupdate_power){
+				$update_wrap.removeClass('g-d-hidei');
+			}
 
 
 			/*取消发货，返修*/
@@ -444,7 +477,7 @@
 
 			/*手机格式化*/
 			/*格式化手机号码*/
-			$.each([$search_phone,$add_phone],function(){
+			$.each([$search_phone,$add_phone,$update_phone],function(){
 				this.on('keyup',function(){
 					var phoneno=this.value.replace(/\D*/g,'');
 					if(phoneno==''){
@@ -461,19 +494,23 @@
 			$add_becomeagent.on('click',function(){
 				var $this=$(this),
 					ischeck=$this.is(':checked'),
-					name=$this.attr('name'),
 					$radio=$add_agentwrap.find('input'),
-					becomeagent=$this.val(),
 					gradecheck=$radio.eq(0);
 
 				if(ischeck){
+					$add_agentid.val('');
+					$add_bindagentwrap.addClass('g-d-hidei');
+
 					$add_agentwrap.removeClass('g-d-hidei');
-					profit_data[name]=$this.val();
+					profit_data['becomeAgent']=1;
 					gradecheck.prop({
 						'checked':true
 					});
 					profit_data['grade']=gradecheck.val();
 				}else{
+					$add_agentid.val('');
+					$add_bindagentwrap.removeClass('g-d-hidei');
+
 					$add_agentwrap.addClass('g-d-hidei');
 					$radio.each(function(){
 						$(this).prop({
@@ -481,11 +518,9 @@
 						});
 					});
 					/*设置数据*/
-					if(typeof profit_data[name]!=='undefined'){
-						delete profit_data[name];
-					}
+					profit_data['becomeAgent']=0;
 					if(typeof profit_data['grade']!=='undefined'){
-						delete profit_data[name];
+						delete profit_data['grade'];
 					}
 				}
 			});
@@ -633,24 +668,18 @@
 								if(isadd){
 									/*添加*/
 									/*校验分润对象*/
-									var isvalid1=false,
-											isvalid2=false;
-
 									if($add_salesself.is(':checked')){
 										/*自定义*/
-										isvalid1=validProfit($add_salesprofit,dia,profit_data,true);
-									}else {
-										isvalid1=true;
+										if(!validProfit($add_salesprofit,dia,profit_data,true)){
+											return false;
+										}
 									}
 									if($add_acqself.is(':checked')){
-										isvalid2=validProfit($add_acqprofit,dia,profit_data,false);
-									}else{
-										isvalid2=true;
+										if(!validProfit($add_acqprofit,dia,profit_data,false)){
+											return false;
+										}
 									}
 
-									if(!isvalid1&&!isvalid2){
-										return false;
-									}
 
 									var config={
 										url:"http://120.24.226.70:8081/yttx-agentbms-api/servicestation/addupdate",
@@ -663,9 +692,9 @@
 											fullName:$add_fullname.val(),
 											shortName:$add_shortname.val(),
 											name:$add_name.val(),
-											province:$province_value.val(),
-											city:$city_value.val(),
-											country:$area_value.val(),
+											province:$add_province_value.val(),
+											city:$add_city_value.val(),
+											country:$add_area_value.val(),
 											address:$add_address.val(),
 											phone:$add_phone.val().replace(/\s*/g,''),
 											tel:$add_tel.val(),
@@ -673,11 +702,8 @@
 											Remark:$add_remark.val()
 										}
 									};
-
-									console.log(config.data);
 									$.extend(true,config.data,profit_data);
-									console.log(profit_data);
-									console.log(config.data);
+
 
 								}else{
 									/*更新*/
@@ -697,7 +723,19 @@
 										data:{
 											serviceStationId:id,
 											adminId:decodeURIComponent(logininfo.param.adminId),
-											token:decodeURIComponent(logininfo.param.token)
+											token:decodeURIComponent(logininfo.param.token),
+											roleId:decodeURIComponent(logininfo.param.roleId),
+											fullName:$update_fullname.val(),
+											shortName:$update_shortname.val(),
+											name:$update_name.val(),
+											province:$update_province_value.val(),
+											city:$update_city_value.val(),
+											country:$update_area_value.val(),
+											address:$update_address.val(),
+											phone:$update_phone.val().replace(/\s*/g,''),
+											tel:$update_tel.val(),
+											agentId:$update_agentid.val(),
+											Remark:$update_remark.val()
 										}
 									};
 								}
@@ -718,6 +756,7 @@
 										}
 										//重绘表格
 										table.ajax.reload(null,false);
+										//重置表单
 										//重置表单
 										isadd?$add_cance_btn.trigger('click'):$update_cance_btn.trigger('click');
 										setTimeout(function(){
@@ -788,7 +827,7 @@
 			if(type){
 				data['distributorP1ForSales']=ele_a;
 				data['distributorP2ForSales']=ele_aa;
-				data['distributorP3ForSales']=ele_aa;
+				data['distributorP3ForSales']=ele_aaa;
 			}else{
 				data['distributorP1ForAcquiring']=ele_a;
 				data['distributorP2ForAcquiring']=ele_aa;

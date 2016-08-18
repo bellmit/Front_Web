@@ -132,7 +132,7 @@
                                 </div>
                                 <div class="admin-search-item">
                                     <label>负责人手机号码：</label>
-                                    <input type="text" id="search_phone">
+                                    <input type="text" maxlength="13" id="search_phone">
                                 </div>
                                 <div class="admin-search-item">
                                     <label>库存：</label>
@@ -204,11 +204,11 @@
 
                 <div class="col-md-12">
                     <!--collapsed-->
-                    <div class="panel collapsed" id="send_wrap">
+                    <div class="panel collapsed g-d-hidei" id="send_wrap">
 
                         <!--编辑表单标题-->
                         <div class="panel-heading">
-                            <h3 class="panel-title" id="send_title"></h3>
+                            <h3 class="panel-title" id="send_title">向服务站发货</h3>
                             <div class="panel-options">
                                 <a href="#" data-toggle="panel">
                                     <span class="collapse-icon">&ndash;</span>
@@ -314,11 +314,11 @@
 
 
                 <div class="col-md-12">
-                    <div class="panel collapsed" id="repair_wrap">
+                    <div class="panel collapsed g-d-hidei" id="repair_wrap">
 
                         <!--编辑表单标题-->
                         <div class="panel-heading">
-                            <h3 class="panel-title" id="repair_title"></h3>
+                            <h3 class="panel-title" id="repair_title">返修单</h3>
                             <div class="panel-options">
                                 <a href="#" data-toggle="panel">
                                     <span class="collapse-icon">&ndash;</span>
@@ -327,7 +327,7 @@
                             </div>
                         </div>
 
-                        <!--发货单-->
+                        <!--返修单-->
                         <div class="panel-body">
                             <form role="form" id="station_repair_form" method="post" class="admin-form1 validate">
                                 <input type="text" class="g-d-hidei" value="" id="repair_id" name="serviceStationId">

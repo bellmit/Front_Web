@@ -101,7 +101,7 @@
         <!--主内容-->
         <div class="row row-main-wrap">
             <div class="col-md-12">
-                <div class="panel g-d-hidei" id="data_wrap">
+                <div class="panel" id="data_wrap">
 
                     <!--表格标题-->
                     <div class="panel-heading">
@@ -196,8 +196,7 @@
 
 
             <div class="col-md-12">
-                <!-- collapsed-->
-                <div class="panel g-d-hidei" id="add_wrap">
+                <div class="panel collapsed g-d-hidei" id="add_wrap">
 
                     <!--编辑表单标题-->
                     <div class="panel-heading">
@@ -236,24 +235,25 @@
                                 <div class="selectwrap">
                                     <div class="select-item g-w-percent12">
                                         <p>请选择省份</p>
-                                        <ul id="province"></ul>
+                                        <ul id="add_province"></ul>
                                     </div>
                                     <div class="select-item g-w-number13">
                                         <p>请选择城市</p>
-                                        <ul id="city"></ul>
+                                        <ul id="add_city"></ul>
                                     </div>
                                     <div class="select-item g-w-number13">
                                         <p>请选择地区</p>
-                                        <ul id="area"></ul>
+                                        <ul id="add_area"></ul>
                                     </div>
                                 </div>
-                                <input type="text"  class="select-input-def form-control" value="" data-validate="required" data-message-required="省份不能为空" name="province" id="province_value">
-                                <input type="text" class="select-input-def form-control" data-validate="required" data-message-required="城市不能为空" value="" name="city" id="city_value">
-                                <input type="text" class="select-input-def form-control" data-validate="required" data-message-required="地区不能为空" value="" name="country" id="area_value">
+                                <input type="text"  class="select-input-def form-control" value="" data-validate="required" data-message-required="省份不能为空" name="province" id="add_province_value">
+                                <input type="text" class="select-input-def form-control" data-validate="required" data-message-required="城市不能为空" value="" name="city" id="add_city_value">
+                                <input type="text" class="select-input-def form-control" data-validate="required" data-message-required="地区不能为空" value="" name="country" id="add_area_value">
                             </div>
 
 
                             <div class="form-group">
+                                <label class="control-label">详细地址：</label>
                                 <input type="text" class="form-control" name="address"  placeholder="请输入详细地址" data-validate="required" data-message-required="详细地址不能为空" value="" id="add_address" />
                             </div>
 
@@ -271,24 +271,23 @@
                                 <input type="text" class="form-control" name="tel" id="add_tel" placeholder="请输入服务站电话号码" />
                             </div>
 
-
-                            <div class="form-group">
-                                <label class="control-label">绑定代理商ID：</label>
-
-                                <input type="text" class="form-control" name="agentId" id="add_agentid" placeholder="请输入绑定代理商ID" />
-                            </div>
-
                             <div class="form-group">
                                 <label class="control-label">备注：</label>
 
                                 <textarea class="form-control" name="Remark" id="add_remark"   placeholder="请输入备注"></textarea>
                             </div>
 
+                            <div class="form-group" id="add_bindagentwrap">
+                                <label class="control-label">绑定代理商ID：</label>
 
-                            <div class="form-group">
+                                <input type="text" class="form-control" name="agentId" id="add_agentid" placeholder="请输入绑定代理商ID" />
+                            </div>
+
+
+                            <div class="form-group" id="add_becomeagentwrap">
                                 <div class="checkbox">
                                     <label>
-                                        <input value="1" type="checkbox" id="add_becomeagent" name="becomeAgent" />同时成为代理商&nbsp;&nbsp;
+                                        <input value="0" type="checkbox" id="add_becomeagent" name="becomeAgent" />同时成为代理商&nbsp;&nbsp;
                                     </label>
                                 </div>
                                 <div class="admin-sub-items1 g-d-hidei" id="add_agentwrap">
@@ -380,7 +379,7 @@
 
 
             <div class="col-md-12">
-                <div class="panel collapsed" id="update_wrap">
+                <div class="panel collapsed g-d-hidei" id="update_wrap">
 
                     <!--编辑表单标题-->
                     <div class="panel-heading">
@@ -399,57 +398,78 @@
                             <input type="text" class="g-d-hidei" value="" id="update_id" name="serviceStationId">
 
                             <div class="form-group">
-                                <label class="control-label">快递单号：</label>
+                                <label class="control-label">服务站全称：</label>
 
-                                <input type="text" class="form-control" name="trackingNumber" id="update_trackingnumber" data-validate="required" data-message-required="快递单号不能为空" placeholder="请输入快递单号" />
+                                <input type="text" class="form-control" name="fullName" id="update_fullname" data-validate="required" data-message-required="服务站全称不能为空" placeholder="请输入服务站全称" />
                             </div>
 
                             <div class="form-group">
-                                <label class="control-label">发货经手人：</label>
+                                <label class="control-label">服务站简称：</label>
 
-                                <input type="text" class="form-control" name="deliveryHandler" id="update_deliveryhandler" data-validate="required" data-message-required="发货经手人不能为空" placeholder="请输入发货经手人" />
-                            </div>
-
-
-                            <div class="form-group">
-                                <label class="control-label">发货时间：</label>
-
-                                <input type="text" class="form-control" name="deliveryTime" readonly id="update_deliverytime" data-validate="required" data-message-required="发货时间不能为空" placeholder="请选择发货时间" />
+                                <input type="text" class="form-control" name="shortName" id="update_shortname" data-validate="required" data-message-required="服务站简称不能为空" placeholder="请输入服务站简称" />
                             </div>
 
                             <div class="form-group">
-                                <label class="control-label">商品名称：</label>
+                                <label class="control-label">服务站负责人：</label>
 
-                                <input type="text" class="form-control" name="name" id="update_name" data-validate="required" data-message-required="商品名称不能为空" placeholder="请输入商品名称" />
+                                <input type="text" class="form-control" name="name" id="update_name" data-validate="required" data-message-required="服务站负责人不能为空" placeholder="请输入服务站负责人" />
                             </div>
 
                             <div class="form-group">
-                                <label class="control-label">机器起始号：</label>
-
-                                <input type="text" class="form-control" name="startNumber" id="update_startnumber" placeholder="请输入机器起始号" />
+                                <label class="control-label">地址：</label>
+                                <div class="selectwrap">
+                                    <div class="select-item g-w-percent12">
+                                        <p>请选择省份</p>
+                                        <ul id="update_province"></ul>
+                                    </div>
+                                    <div class="select-item g-w-number13">
+                                        <p>请选择城市</p>
+                                        <ul id="update_city"></ul>
+                                    </div>
+                                    <div class="select-item g-w-number13">
+                                        <p>请选择地区</p>
+                                        <ul id="update_area"></ul>
+                                    </div>
+                                </div>
+                                <input type="text"  class="select-input-def form-control" value="" data-validate="required" data-message-required="省份不能为空" name="province" id="update_province_value">
+                                <input type="text" class="select-input-def form-control" data-validate="required" data-message-required="城市不能为空" value="" name="city" id="update_city_value">
+                                <input type="text" class="select-input-def form-control" data-validate="required" data-message-required="地区不能为空" value="" name="country" id="update_area_value">
                             </div>
 
                             <div class="form-group">
-                                <label class="control-label">机器结束号：</label>
-
-                                <input type="text" class="form-control" name="endNumber" id="update_endnumber" data-validate="required" data-message-required="机器结束号不能为空" placeholder="请输入机器结束号" />
+                                <label class="control-label">详细地址：</label>
+                                <input type="text" class="form-control" name="address"  placeholder="请输入详细地址" data-validate="required" data-message-required="详细地址不能为空" value="" id="update_address" />
                             </div>
 
                             <div class="form-group">
-                                <label class="control-label">机器号：</label>
+                                <label class="control-label">服务站手机号码：</label>
 
-                                <input type="text" class="form-control" name="listNumber" id="update_listnumber" data-validate="required" data-message-required="机器号不能为空" placeholder="请输入机器号" />
+                                <input type="text" class="form-control" name="phone" id="update_phone" data-validate="required,zh_phone" maxlength="13" data-message-required="服务站手机号码不能为空" data-message-zh_phone="服务站手机号码格式不正确" placeholder="请输入服务站手机号码" />
                             </div>
 
                             <div class="form-group">
-                                <label class="control-label">数量：</label>
+                                <label class="control-label">服务站电话号码：</label>
 
-                                <input type="text" class="form-control" name="quantity" id="update_quantity" data-validate="required" data-message-required="数量不能为空" placeholder="请输入数量" />
+                                <input type="text" class="form-control" name="tel" id="update_tel" placeholder="请输入服务站电话号码" />
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label">绑定代理商ID：</label>
+
+                                <input type="text" class="form-control" name="agentId" id="update_agentid" placeholder="请输入绑定代理商ID" />
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label">备注：</label>
+
+                                <textarea class="form-control" name="Remark" id="update_remark"   placeholder="请输入备注"></textarea>
                             </div>
 
 
+
+
                             <div class="form-group">
-                                <button type="submit" class="btn btn-success">返修</button>
+                                <button type="submit" class="btn btn-success">修改</button>
                                 <button id="update_cance_btn" type="reset" class="btn btn-white">取消</button>
                             </div>
                         </form>
@@ -461,31 +481,6 @@
 
         </div>
 
-
-        <!--详情展现-->
-        <div class="modal fade custom-width" id="show_detail_wrap">
-            <div class="modal-dialog g-w-percent46">
-                <div class="modal-content">
-
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 id="show_detail_title" class="modal-title"></h4>
-                    </div>
-                    <div class="modal-body">
-                        <table class="table table-bordered table-striped table-hover admin-table">
-                            <colgroup>
-                                <col class="g-w-percent10"/>
-                                <col class="g-w-percent40"/>
-                            </colgroup>
-                            <tbody id="show_detail_content"></tbody>
-                        </table>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-info" data-dismiss="modal">关闭</button>
-                    </div>
-                </div>
-            </div>
-        </div>
 
 
         <!--底部信息-->
@@ -512,7 +507,30 @@
 </div>
 
 
+<!--详情展现-->
+<div class="modal fade custom-width" id="show_detail_wrap">
+    <div class="modal-dialog g-w-percent46">
+        <div class="modal-content">
 
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 id="show_detail_title" class="modal-title"></h4>
+            </div>
+            <div class="modal-body">
+                <table class="table table-bordered table-striped table-hover admin-table">
+                    <colgroup>
+                        <col class="g-w-percent10"/>
+                        <col class="g-w-percent40"/>
+                    </colgroup>
+                    <tbody id="show_detail_content"></tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 <!--加载遮罩层-->

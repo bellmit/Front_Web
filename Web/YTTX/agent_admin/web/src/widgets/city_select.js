@@ -438,7 +438,7 @@ name:city select
 								//如果存在省份、城市、地区
 								self.areaDataHandler(set,this,false);
 							}else{
-								self.areaDataHandler(set,this);
+								self.areaDataHandler(set,this,true);
 							}
 
 
@@ -457,7 +457,7 @@ name:city select
 									.attr('data-select','false');
 
 								//赋值
-								$input.val(text);
+								$input.val(key);
 								$p.text(text);
 								if(selector.indexOf('province')!==-1&&set.$city){
 									set.city_key=key;
@@ -562,19 +562,19 @@ name:city select
 							}
 							if(flagstr=='province'){
 								set.provinceshow.text(data[i]);
-								set.provinceinput.val(data[i]);
+								set.provinceinput.val(i);
 							}else if(flagstr=='city'){
 								set.cityshow.text(data[i]);
-								set.cityinput.val(data[i]);
+								set.cityinput.val(i);
 							}else if(flagstr=='area'){
 								set.areashow.text(data[i]);
-								set.areainput.val(data[i]);
+								set.areainput.val(i);
 							}
 						}else{
 							str+='<li data-select="false" data-key="'+i+'" >'+data[i]+'</li>';
 						}
 						count++;
-						curwrap
+						//curwrap
 					}else{
 
 					}
