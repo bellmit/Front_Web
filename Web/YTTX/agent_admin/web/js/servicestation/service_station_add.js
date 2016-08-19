@@ -25,7 +25,6 @@
 			var powermap=public_tool.getPower(),
 				stationdelete_power=public_tool.getKeyPower('删除',powermap),
 				stationupdate_power=public_tool.getKeyPower('修改',powermap),
-				stationdetail_power=public_tool.getKeyPower('查看',powermap),
 				stationadd_power=public_tool.getKeyPower('添加',powermap);
 
 
@@ -49,22 +48,7 @@
 					},
 					cancel:false
 				})/*一般提示对象*/,
-				dialogObj=public_tool.dialog()/*回调提示对象*/,
-				$show_detail_wrap=$('#show_detail_wrap')/*详情容器*/,
-				$show_detail_title=$('#show_detail_title')/*详情标题*/,
-				$show_detail_content=$('#show_detail_content')/*详情内容*/,
-				detail_map={
-					fullName:'服务站全称',
-					shortName:"服务站简称",
-					name:"负责人姓名",
-					phone:"负责人手机号码",
-					address:"地址",
-					sales:"销售",
-					inventory:"库存",
-					repairs:"返修",
-					agentShortName:"所属代理",
-					superShortName:"上级代理"
-				}/*详情映射*/;
+				dialogObj=public_tool.dialog()/*回调提示对象*/;
 
 
 
@@ -201,14 +185,6 @@
 						"render":function(data, type, full, meta ){
 							var btns='';
 
-
-							if(stationdetail_power){
-								/*查看*/
-								btns+='<span data-id="'+data+'" data-action="select" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
-									 <i class="fa-file-text-o"></i>\
-									 <span>查看</span>\
-									 </span>';
-							}
 							if(stationupdate_power){
 								/*修改*/
 								btns+='<span  data-id="'+data+'" data-action="update" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
@@ -368,59 +344,6 @@
 						dia.close();
 					},2000);
 					return false;
-				}else if(action==='select'){
-					/*查看*/
-					$.ajax({
-							url:"http://120.24.226.70:8081/yttx-agentbms-api/servicestation/detail",
-							method: 'POST',
-							dataType: 'json',
-							data:{
-								"serviceStationId":id,
-								"adminId":decodeURIComponent(logininfo.param.adminId),
-								"token":decodeURIComponent(logininfo.param.token)
-							}
-						})
-						.done(function(resp){
-							var code=parseInt(resp.code,10);
-							if(code!==0){
-								/*回滚状态*/
-								console.log(resp.message);
-								return false;
-							}
-							/*是否是正确的返回数据*/
-							var list=resp.result,
-								str='',
-								istitle=false;
-
-							if(list.length){
-								list=list[0];
-							}
-
-							if(!$.isEmptyObject(list)){
-								for(var j in list){
-									if(typeof detail_map[j]!=='undefined'){
-										if(j==='name'||j==='Name'){
-											istitle=true;
-											$show_detail_title.html(list[j]+'服务站详情信息');
-										}else{
-											str+='<tr><th>'+detail_map[j]+':</th><td>'+list[j]+'</td></tr>';
-										}
-									}
-								};
-								if(!istitle){
-									$show_detail_title.html('服务站详情信息');
-								}
-								$show_detail_content.html(str);
-								$show_detail_wrap.modal('show',{backdrop:'static'});
-							}else{
-								$show_detail_content.html('');
-								$show_detail_title.html('');
-							}
-
-						})
-						.fail(function(resp){
-							console.log(resp.message);
-						});
 				}
 
 
