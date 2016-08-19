@@ -114,6 +114,7 @@
 				$send_repairlist=$send_repairwrap.find('ul'),
 				$send_fittingadd_btn=$('#send_fittingadd_btn'),
 				$send_repairtime=$('#send_repairtime'),
+				$send_fittingstr=$send_fittinglist.find('li:first'),
 				send_checkconfig={
 					check:[$send_ischeckeddevice,$send_ischeckedfittings,$send_ischeckedrepair],
 					wrap:[$send_devicewrap,$send_fittingwrap,$send_repairwrap],
@@ -357,31 +358,64 @@
 
 							if(list.length){
 								list=list[0];
-							}
-
-							if(!$.isEmptyObject(list)){
-								for(var j in list){
-									if(typeof detail_map[j]!=='undefined'){
-										if(j==='name'||j==='Name'){
-											istitle=true;
-											$show_detail_title.html(list[j]+'服务站详情信息');
+								if(!$.isEmptyObject(list)){
+									for(var j in list){
+										if(typeof detail_map[j]!=='undefined'){
+											if(j==='name'||j==='Name'){
+												istitle=true;
+												$show_detail_title.html(list[j]+'服务站详情信息');
+											}else{
+												str+='<tr><th>'+detail_map[j]+':</th><td>'+list[j]+'</td></tr>';
+											}
 										}else{
-											str+='<tr><th>'+detail_map[j]+':</th><td>'+list[j]+'</td></tr>';
+											str+='<tr><th>'+j+':</th><td>'+list[j]+'</td></tr>';
 										}
-									}
-								};
-								if(!istitle){
-									$show_detail_title.html('服务站详情信息');
-								}
-								$show_detail_content.html(str);
-								$show_detail_wrap.modal('show',{backdrop:'static'});
-							}else{
-								$show_detail_content.html('');
-								$show_detail_title.html('');
-							}
+									};
 
+									if(!istitle){
+										$show_detail_title.html('服务站详情信息');
+									}
+								}
+							}else{
+								var station=list.serviceStation,
+									sales=list.salesProfit;
+								if(!$.isEmptyObject(station)){
+									str+='<tr><th colspan="2">serviceStation</th></tr>';
+									for(var j in station){
+										if(typeof detail_map[j]!=='undefined'){
+											if(j==='name'||j==='Name'){
+												istitle=true;
+												$show_detail_title.html(station[j]+'服务站详情信息');
+											}else{
+												str+='<tr><th>'+detail_map[j]+':</th><td>'+station[j]+'</td></tr>';
+											}
+										}else{
+											str+='<tr><th>'+j+':</th><td>'+station[j]+'</td></tr>';
+										}
+									};
+
+									if(!istitle){
+										$show_detail_title.html('服务站详情信息');
+									}
+								}
+
+								if(!$.isEmptyObject(sales)){
+									str+='<tr><th colspan="2">salesProfit</th></tr>';
+									for(var j in sales){
+										if(typeof detail_map[j]!=='undefined'){
+											str+='<tr><th>'+detail_map[j]+':</th><td>'+sales[j]+'</td></tr>';
+										}else{
+											str+='<tr><th>'+j+':</th><td>'+sales[j]+'</td></tr>';
+										}
+									};
+								}
+							}
+							$show_detail_content.html(str);
+							$show_detail_wrap.modal('show',{backdrop:'static'});
 						})
 						.fail(function(resp){
+							$show_detail_content.html('');
+							$show_detail_title.html('');
 							console.log(resp.message);
 						});
 				}
@@ -396,7 +430,20 @@
 				this.on('click',function(e){
 					/*调整布局*/
 					if(issend){
+						/*重置表单*/
 						send_form.reset();
+						/*隐藏发货插件*/
+						var wrap=send_checkconfig.wrap,
+							len=wrap.length,
+							i=0;
+						for(i;i<len;i++){
+							wrap[i].addClass('g-d-hidei');
+							/*初始化发货插件*/
+							if(i===1){
+								var list=send_checkconfig.list;
+								$send_fittingstr.appendTo(list[i].html(''));
+							}
+						};
 					}else{
 						repair_form.reset();
 					}
@@ -490,7 +537,6 @@
 
 
 			/*绑定添加发货插件--配件*/
-			var $send_fittingstr=$send_fittinglist.find('li:first');
 			$send_fittingadd_btn.on('click',function(){
 				var $tempfittingstr=$send_fittingstr.clone();
 				$('<label>&nbsp;<button type="button" class="form-control g-br2">-删除</button></label>').appendTo($tempfittingstr);
@@ -536,6 +582,8 @@
 
 
 								if(issend){
+									/*servicestation/invoice/add*/
+									/*http://120.24.226.70:8081/yttx-agentbms-api/servicestation/invoice/add*/
 									var checkdata=getCheckPlugin(send_checkconfig),
 										config={
 											url:"http://120.24.226.70:8081/yttx-agentbms-api/servicestation/invoice/add",
@@ -619,20 +667,16 @@
 		if(!opt){
 			var result={
 				IsCheckedDevice:0,
-				IsCheckedFittings:{
-					value:0,
-					list:[]
-				},
+				IsCheckedFittings:0,
+				invoiceFittinglist:[],
 				IsCheckedRepair:0
 			};
 			return result;
 		}
 		var result={
 			IsCheckedDevice:0,
-			IsCheckedFittings:{
-				value:0,
-					list:[]
-			},
+			IsCheckedFittings:0,
+			invoiceFittinglist:[],
 			IsCheckedRepair:0
 		};
 		var check=opt.check,
@@ -649,13 +693,7 @@
 				var items=list[i].children(),
 					arr=[];
 
-				if(i===1){
-					result[key]['value']=1;
-					result[key]['list'].length=0;
-				}else{
-					result[key]=1;
-				}
-
+				result[key]=1;
 				items.each(function(index){
 					/*循环li*/
 					var subresult={},
@@ -686,8 +724,7 @@
 
 				if(arr.length!==0){
 					if(i===1){
-						result[key]['list']=arr.slice(0);
-						result[key]=JSON.stringify(result[key]);
+						result['invoiceFittinglist']=JSON.stringify(arr.slice(0));
 					}else{
 						var k= 0,
 							klen=arr.length;
@@ -702,7 +739,7 @@
 			}else {
 				result[key]=0;
 				if(i===1){
-					result[key]['list'].length=0;
+					result['invoiceFittinglist'].length=0;
 				}
 			}
 		}

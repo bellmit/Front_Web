@@ -484,7 +484,6 @@
 							/*自定义*/
 							if(issale){
 								$add_saleswrap.removeClass('g-d-hidei');
-								$add_salessetting.addClass('need-valid');
 								profit_data['isCustomSalesProfit']=value;
 								/*设置了的三级分润默认值*/
 								profit_data['distributorP1ForSales']='';
@@ -493,7 +492,6 @@
 
 							}else{
 								$add_acqwrap.removeClass('g-d-hidei');
-								$add_acqsetting.addClass('need-valid');
 								profit_data['isCustomAcquiringProfit']=value;
 								/*设置了的三级分润默认值*/
 								profit_data['distributorP1ForAcquiring']='';
@@ -504,7 +502,6 @@
 							/*系统默认*/
 							if(issale){
 								$add_saleswrap.addClass('g-d-hidei');
-								$add_salessetting.removeClass('need-valid');
 								profit_data['isCustomSalesProfit']=value;
 								/*删除已经设置了的三级分润*/
 								if(typeof profit_data['distributorP1ForSales']!=='undefined'){
@@ -518,7 +515,6 @@
 								}
 							}else{
 								$add_acqwrap.addClass('g-d-hidei');
-								$add_acqsetting.removeClass('need-valid');
 								profit_data['isCustomAcquiringProfit']=value;
 								/*删除已经设置了的三级分润*/
 								if(typeof profit_data['distributorP1ForAcquiring']!=='undefined'){

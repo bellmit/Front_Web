@@ -124,11 +124,12 @@
 						console.log(json.message);
 						return null;
 					}
-					var list=json.result.list;
-					
-
-
-					return json.result.list;
+					var list=json.result.list,
+						stationobj=list[0];
+					if('serivceStationlist' in stationobj){
+						list=list.slice(1);
+					}
+					return list;
 				},
 				data:{
 					roleId:decodeURIComponent(logininfo.param.roleId),
@@ -186,8 +187,8 @@
 									</span>';
 							}
 							if(agentbind_power){
-								/*修改*/
-								btns+='<span  data-id="'+data+'" data-action="update" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+								/*绑定*/
+								btns+='<span  data-id="'+data+'" data-action="bind" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 									<i class="fa-cogs"></i>\
 									<span>绑定服务站</span>\
 									</span>';
@@ -323,7 +324,7 @@
 						}
 					}
 				}else if(action==='delete'){
-					/*判断是否可以上下架*/
+					/*删除操作*/
 					dia.content('<span class="g-c-bs-warning g-btips-warn">目前暂未开放此功能</span>').show();
 					setTimeout(function(){
 						dia.close();

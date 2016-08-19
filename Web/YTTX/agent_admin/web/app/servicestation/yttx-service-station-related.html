@@ -203,7 +203,6 @@
 
 
                 <div class="col-md-12">
-                    <!--collapsed-->
                     <div class="panel collapsed g-d-hidei" id="send_wrap">
 
                         <!--编辑表单标题-->
@@ -248,12 +247,12 @@
                                     </div>
                                     <div class="admin-sub-items1 g-d-hidei"  id="send_devicewrap">
                                         <ul>
-                                            <li>
-                                                <label>设备起始号:<input type="text" class="form-control" name="startNumberForDevice" placeholder="请输入设备起始号" /></label>
+                                            <li class="clear-validate-tip">
+                                                <label class="clear-validate-error">设备起始号:<input type="text" class="form-control" name="startNumberForDevice" placeholder="请输入设备起始号" /></label>
 
-                                                <label>设备结止号:<input type="text" class="form-control" name="endNumberForDevice" placeholder="请输入设备结止号" /></label>
-                                                <label>机器号（多个以逗号分开):<input type="text" class="form-control" name="endNumberForDevice" placeholder="请输入机器号（多个以逗号分开)" /></label>
-                                                <label>数量:<input type="text" class="form-control" name="quantityForDevice"  placeholder="请输入数量" /></label>
+                                                <label>设备结止号:<input type="text" class="form-control" name="endNumberForDevice" data-validate="required" data-message-required="设备结止号不能为空" placeholder="请输入设备结止号" /></label>
+                                                <label class="clear-validate-error">机器号（多个以逗号分开):<input type="text" class="form-control" name="listNumberForDevic" placeholder="请输入机器号（多个以逗号分开)" /></label>
+                                                <label class="clear-validate-error">数量:<input type="text" class="form-control" name="quantityForDevice"  placeholder="请输入数量" /></label>
                                             </li>
                                         </ul>
                                     </div>
@@ -269,11 +268,11 @@
                                     </div>
                                     <div class="admin-sub-items1 admin-rpos-wrap g-d-hidei"  id="send_fittingwrap">
                                         <ul>
-                                            <li>
-                                                <label>配件名称:<input type="text" class="form-control" name="name" placeholder="请输入配件名称" /></label>
-                                                <label>规格:<input type="text" class="form-control" name="specification" placeholder="请输入规格" /></label>
-                                                <label>数量:<input type="text" class="form-control" name="quantityForFittings" placeholder="请输入数量" /></label>
-                                                <label>备注:<input type="text" class="form-control" name="Remark" placeholder="请输入备注" /></label>
+                                            <li class="clear-validate-tip">
+                                                <label>配件名称:<input type="text" class="form-control" name="name" data-validate="required" data-message-required="配件名称不能为空"  placeholder="请输入配件名称" /></label>
+                                                <label>规格:<input type="text" class="form-control" name="specifications" data-validate="required" data-message-required="规格不能为空"  placeholder="请输入规格" /></label>
+                                                <label class="clear-validate-error">数量:<input type="text" class="form-control" name="quantity" placeholder="请输入数量" /></label>
+                                                <label class="clear-validate-error">备注:<input type="text" class="form-control" name="Remark" placeholder="请输入备注" /></label>
                                             </li>
                                         </ul>
                                         <div class="btn btn-info g-br2" id="send_fittingadd_btn">+添加</div>
@@ -288,12 +287,12 @@
                                     </div>
                                     <div class="admin-sub-items1 g-d-hidei" id="send_repairwrap">
                                         <ul>
-                                            <li>
-                                                <label>返修时间:<input type="text" class="form-control" id="send_repairtime" name="repairTime" readonly placeholder="请输入返修时间" /> </label>
-                                                <label>设备起始号:<input type="text" class="form-control" name="startNumberForRepair" placeholder="请输入设备起始号" /></label>
-                                                <label>设备结止号:<input type="text" class="form-control" name="endNumberForRepair" placeholder="请输入设备结止号" /></label>
-                                                <label>机器号（多个以逗号分开):<input type="text" class="form-control" name="endNumberForRepair" placeholder="请输入机器号" /></label>
-                                                <label>数量:<input type="text" class="form-control" name="quantityForRepair" placeholder="请输入数量" /></label>
+                                            <li class="clear-validate-tip">
+                                                <label class="clear-validate-error">返修时间:<input type="text" class="form-control" id="send_repairtime" name="repairTime" readonly placeholder="请输入返修时间" /> </label>
+                                                <label class="clear-validate-error">设备起始号:<input type="text" class="form-control" name="startNumberForRepair" placeholder="请输入设备起始号" /></label>
+                                                <label>设备结止号:<input type="text" class="form-control" name="endNumberForRepair" data-validate="required" data-message-required="设备结止号不能为空"  placeholder="请输入设备结止号" /></label>
+                                                <label class="clear-validate-error">机器号（多个以逗号分开):<input type="text" class="form-control" name="listNumberForRepair" placeholder="请输入机器号" /></label>
+                                                <label class="clear-validate-error">数量:<input type="text" class="form-control" name="quantityForRepair" placeholder="请输入数量" /></label>
                                             </li>
                                         </ul>
 
