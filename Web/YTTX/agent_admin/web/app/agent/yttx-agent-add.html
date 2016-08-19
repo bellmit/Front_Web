@@ -277,7 +277,6 @@
                             <div class="form-group">
                                 <label class="control-label">代理商级别：</label>
                                 <div class="admin-sub-items1" id="agent_gradewrap">
-                                    代理商级别：
                                     <label>
                                         &nbsp;&nbsp;A级:&nbsp;<input type="radio" checked  value="1" name="grade" />
                                     </label>
@@ -292,14 +291,18 @@
 
 
                             <div class="form-group">
-                                <label class="control-label">分润设置：</label>
-                                <div class="admin-sub-items1">
-                                    <ul  id="agent_runsetupwrap">
-                                        <li class="clear-validate-error">
-                                            <label>分润设置:<input type="text" class="form-control" name="runSetup" id="agent_runsetup" data-validate="required,number,max[100]" data-message-required="分润设置不能为空" data-message-number="分润设置需为数字" placeholder="请输入分润设置" />
-                                            </label>
-                                        </li>
-                                        <li id="agent_acqsetting">
+                                <div class="checkbox">
+                                    分润设置：&nbsp;&nbsp;
+                                    <label>
+                                        自定义：<input type="radio" name="runSetup" id="agent_runsetupself" value="1" />
+                                    </label>
+                                    <label>
+                                        按系统定义：<input type="radio" name="runSetup" id="agent_runsetupauto"  value="0" />
+                                    </label>
+                                </div>
+                                <div class="admin-sub-items1 g-d-hidei" id="agent_runsetupwrap">
+                                    <ul>
+                                        <li id="agent_runsetupsetting" class="clear-validate-tip">
                                             <label>级别A分润:<input type="text" class="form-control" name="distributorProfit1"  data-validate="required,number,dotmaxlength[2]" data-message-required="一级分润不能为空" data-message-number="一级分润必须是数值" data-message-dotmaxlength="一级分润需小于3位数值" maxlength="5" placeholder="请输入小于100的数字"  />
                                             </label>
                                             <label>级别AA分润:<input type="text" class="form-control"  data-validate="required,number,dotmaxlength[2]" data-message-required="二级分润不能为空" data-message-number="二级分润必须是数值" data-message-dotmaxlength="二级分润需小于3位数值" maxlength="5" placeholder="请输入小于100的数字"  name="distributorProfit2" />

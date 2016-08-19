@@ -487,7 +487,7 @@
 							/*更新*/
 							var id=$agent_id.val(),
 							isadd=id===''?true:false;
-							
+
 							if(!validProfit($agent_profit,dia,profit_data,true)){
 								return false;
 							}
