@@ -293,14 +293,16 @@
 
 				/*修改操作*/
 				if(action==='update'){
-
+					var datas=table.row($tr).data();
 					/*调整布局*/
 					$data_wrap.addClass('collapsed');
 					$edit_wrap.removeClass('collapsed');
+					$edit_title.html('修改 "'+datas['fullName']+'" 代理商信息');
+					$agent_cance_btn.prev().html('修改');
 					$("html,body").animate({scrollTop:300},200);
 					//重置信息
 
-					var datas=table.row($tr).data();
+
 					for(var i in datas) {
 						switch (i) {
 							case "id":
@@ -332,6 +334,11 @@
 					return false;
 				}else if(action==='select'){
 					/*查看*/
+					dia.content('<span class="g-c-bs-warning g-btips-warn">目前暂未开放此功能</span>').show();
+					setTimeout(function(){
+						dia.close();
+					},2000);
+					return false;
 					$.ajax({
 							url:"http://120.24.226.70:8081/yttx-agentbms-api/servicestation/detail",
 							method: 'POST',
@@ -397,6 +404,8 @@
 				/*调整布局*/
 				$data_wrap.addClass('collapsed');
 				$edit_wrap.removeClass('collapsed');
+				$edit_title.html('添加代理商');
+				$agent_cance_btn.prev().html('添加');
 				$("html,body").animate({scrollTop:300},200);
 				//重置信息
 				edit_form.reset();
@@ -416,6 +425,8 @@
 				/*调整布局*/
 				$data_wrap.removeClass('collapsed');
 				$edit_wrap.addClass('collapsed');
+				$edit_title.html('添加代理商');
+				$agent_cance_btn.prev().html('添加');
 				if(!$data_wrap.hasClass('collapsed')){
 					$("html,body").animate({scrollTop:200},200);
 				}
@@ -474,11 +485,13 @@
 					$.extend(true,form_opt,formcache.form_opt_0,{
 						submitHandler: function(form){
 							/*更新*/
-							var id=$agent_id.val();
+							var id=$agent_id.val(),
+							isadd=id===''?true:false;
+							
 							if(!validProfit($agent_profit,dia,profit_data,true)){
 								return false;
 							}
-							if(isadd){
+							if(id===''){
 
 
 
