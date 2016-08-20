@@ -104,6 +104,7 @@
 			/*分润设置*/
 			var	$add_becomeagent=$('#add_becomeagent'),
 				$add_agentwrap=$('#add_agentwrap'),
+				$add_agentinput=$add_agentwrap.find('input'),
 				$add_salescheck=$('#add_salescheck'),
 				$add_saleswrap=$('#add_saleswrap'),
 				$add_salessetting=$('#add_salessetting'),
@@ -302,41 +303,132 @@
 
 				/*修改操作*/
 				if(action==='update'){
-
-					/*调整布局*/
-					$data_wrap.addClass('collapsed');
-					$update_wrap.removeClass('collapsed');
-					$add_wrap.addClass('collapsed');
-
 					//重置信息
 					add_form.reset();
-
-					$("html,body").animate({scrollTop:380},200);
 					//重置信息
-
-					var datas=table.row($tr).data();
-					for(var i in datas) {
-						switch (i) {
-							case "id":
-								$update_id.val(id);
-								break;
-							case "fullName":
-								$update_fullname.val(datas[i]);
-								break;
-							case "phone":
-								$update_phone.val(public_tool.phoneFormat(datas[i]));
-								break;
-							case "shortName":
-								$update_shortname.val(datas[i]);
-								break;
-							case "name":
-								$update_name.val(datas[i]);
-								break;
-							case "address":
-								$update_address.val(datas[i]);
-								break;
+					$update_id.val(id);
+					$.ajax({
+						url:"http://120.24.226.70:8081/yttx-agentbms-api/servicestation/detail",
+						dataType:'JSON',
+						method:'post',
+						data:{
+							serviceStationId:id,
+							roleId:decodeURIComponent(logininfo.param.roleId),
+							adminId:decodeURIComponent(logininfo.param.adminId),
+							token:decodeURIComponent(logininfo.param.token)
 						}
-					}
+					}).done(function(resp){
+						var code=parseInt(resp.code,10);
+						if(code!==0){
+							if(code===999){
+								/*清空缓存*/
+								public_tool.clear();
+								public_tool.loginTips();
+							}
+							console.log(resp.message);
+							return false;
+						}
+
+						var result=resp.result,
+							station=result.serviceStation;
+
+						if(!$.isEmptyObject(station)){
+							/*调整布局*/
+							$data_wrap.addClass('collapsed');
+							$update_wrap.removeClass('collapsed');
+							$add_wrap.addClass('collapsed');
+							$("html,body").animate({scrollTop:380},200);
+
+							for(var i in station){
+								switch (i){
+									case 'fullName':
+										$update_fullname.val(station[i]);
+										break;
+
+									case 'shortName':
+										$update_shortname.val(station[i]);
+										break;
+
+									case 'name':
+										$update_name.val(station[i]);
+										break;
+
+									case 'province':
+										$update_province_value.val(station[i]);
+										break;
+
+									case 'city':
+										$update_city_value.val(station[i]);
+										break;
+
+									case 'country':
+										$update_area_value.val(station[i]);
+										break;
+
+									case 'address':
+										$update_address.val(station[i]);
+										break;
+
+									case 'phone':
+										$update_phone.val(public_tool.phoneFormat(station[i]));
+										break;
+
+									case 'tel':
+										$update_tel.val(station[i]);
+										break;
+
+									case 'agentId':
+										var tempagentid=station[i];
+										$.ajax({
+											url:"http://120.24.226.70:8081/yttx-agentbms-api/agents/list",
+											dataType:'JSON',
+											method:'post',
+											data:{
+												roleId:decodeURIComponent(logininfo.param.roleId),
+												adminId:decodeURIComponent(logininfo.param.adminId),
+												token:decodeURIComponent(logininfo.param.token)
+											}
+										}).done(function(resp){
+											var code1=parseInt(resp.code,10);
+											if(code1!==0){
+												$update_agentid.html('<option value="'+tempagentid+'" selected>'+tempagentid+'</option>');
+												return false;
+											}
+
+											var bindlist=resp.result.list,
+												len=bindlist.length,
+												k= 0,
+												str='';
+											for(k;k<len;k++){
+													if(bindlist[k]["id"]===tempagentid){
+														str+='<option selected value="'+bindlist[k]["id"]+'">'+bindlist[k]["shortName"]+'</option>';
+													}else{
+														str+='<option value="'+bindlist[k]["id"]+'">'+bindlist[k]["shortName"]+'</option>';
+													}
+											}
+											$(str).appendTo($update_agentid.html(''));
+										}).fail(function(resp){
+											console.log('error');
+											$update_agentid.html('<option value="'+tempagentid+'" selected>'+tempagentid+'</option>');
+										});
+										break;
+
+									case 'Remark':
+										$update_remark.val(station[i]);
+										break;
+								}
+							};
+							return true;
+						}
+
+						dia.content('<span class="g-c-bs-warning g-btips-warn">修改失败请重新操作</span>').show();
+						setTimeout(function(){
+							dia.close();
+						},2000);
+
+					}).fail(function(resp){
+						console.log('error');
+					});
 				}else if(action==='delete'){
 					/*判断是否可以上下架*/
 					dia.content('<span class="g-c-bs-warning g-btips-warn">目前暂未开放此功能</span>').show();
@@ -413,17 +505,104 @@
 
 
 			/*设置代理*/
+			/*初始化绑定代理列表*/
+			var binddisabled=false;
+			$.ajax({
+				url:"http://120.24.226.70:8081/yttx-agentbms-api/agents/list",
+				dataType:'JSON',
+				method:'post',
+				data:{
+					roleId:decodeURIComponent(logininfo.param.roleId),
+					adminId:decodeURIComponent(logininfo.param.adminId),
+					token:decodeURIComponent(logininfo.param.token)
+				}
+			}).done(function(resp){
+				var code=parseInt(resp.code,10);
+				if(code!==0){
+					if(code===999){
+						/*清空缓存*/
+						public_tool.clear();
+						public_tool.loginTips();
+					}
+					console.log(resp.message);
+					$add_agentid.html('');
+					binddisabled=true;
+					$add_bindagentwrap.addClass('g-d-hidei');
+					return false;
+				}
+				binddisabled=false;
+				$add_bindagentwrap.removeClass('g-d-hidei');
+				var bindlist=resp.result.list,
+					len=bindlist.length,
+					k= 0,
+					str='<option value="" selected>请选择绑定代理商ID</option>';
+				for(k;k<len;k++){
+					str+='<option value="'+bindlist[k]["id"]+'">'+bindlist[k]["shortName"]+'</option>';
+				}
+				$(str).appendTo($add_agentid.html(''));
+
+				/*绑定事件*/
+				$add_agentid.on('change',function(){
+					var $this=$(this),
+						value=$this.val();
+					if(value===''){
+						$add_becomeagentwrap.removeClass('g-d-hidei');
+					}else{
+						/*如果设置了值则重置值*/
+						$add_becomeagentwrap.addClass('g-d-hidei');
+						if(profit_data['becomeAgent']===1){
+							profit_data['becomeAgent']=0;
+							$add_becomeagent.prop({
+								'checked':false
+							});
+							$add_agentwrap.addClass('g-d-hidei');
+							$add_agentinput.each(function(){
+								$(this).prop({
+									'checked':false
+								});
+							});
+							/*设置数据*/
+							if(typeof profit_data['grade']!=='undefined'){
+								delete profit_data['grade'];
+							}
+						};
+					}
+				});
+			}).fail(function(resp){
+					console.log('error');
+					$add_agentid.html('');
+					binddisabled=true;
+					$add_bindagentwrap.addClass('g-d-hidei');
+			});
+
+
 			/*切换代理*/
+			profit_data['becomeAgent']=0;
 			$add_becomeagent.on('click',function(){
 				var $this=$(this),
 					ischeck=$this.is(':checked'),
-					$radio=$add_agentwrap.find('input'),
-					gradecheck=$radio.eq(0);
+					gradecheck=$add_agentinput.eq(0);
 
 				if(ischeck){
-					$add_agentid.val('');
-					$add_bindagentwrap.addClass('g-d-hidei');
+					/*置空绑定代理商ID并隐藏选项*/
+					if(!binddisabled){
+						if($add_agentid.val()!==''){
+							$add_agentid.find('option').each(function (index) {
+								if(index===0){
+									$(this).prop({
+										'selected':true
+									});
+								}else{
+									$(this).prop({
+										'selected':false
+									});
+								}
+							});
+						}
+						$add_bindagentwrap.addClass('g-d-hidei');
+					}
 
+					/*初始化成为代理商*/
 					$add_agentwrap.removeClass('g-d-hidei');
 					profit_data['becomeAgent']=1;
 					gradecheck.prop({
@@ -431,11 +610,13 @@
 					});
 					profit_data['grade']=gradecheck.val();
 				}else{
-					$add_agentid.val('');
-					$add_bindagentwrap.removeClass('g-d-hidei');
+					if(!binddisabled){
+						$add_bindagentwrap.removeClass('g-d-hidei');
+					}
+
 
 					$add_agentwrap.addClass('g-d-hidei');
-					$radio.each(function(){
+					$add_agentinput.each(function(){
 						$(this).prop({
 							'checked':false
 						});
@@ -617,13 +798,17 @@
 											address:$add_address.val(),
 											phone:$add_phone.val().replace(/\s*/g,''),
 											tel:$add_tel.val(),
-											agentId:$add_agentid.val(),
 											Remark:$add_remark.val()
 										}
 									};
 									$.extend(true,config.data,profit_data);
-
-
+									if(profit_data['becomeAgent']===0){
+										config.data['agentId']=$add_agentid.val();
+									}else if(profit_data['becomeAgent']===1){
+										if(typeof config.data['agentId']!=='undefined'){
+											delete config.data['agentId'];
+										}
+									}
 								}else{
 									/*更新*/
 									var id=$update_id.val();

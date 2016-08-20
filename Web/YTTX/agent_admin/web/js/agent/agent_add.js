@@ -94,14 +94,16 @@
 				$agent_city_value=$('#agent_city_value'),
 				$agent_area_value=$('#agent_area_value'),
 				$agent_address=$('#agent_address'),
-				$agent_agentid=$('#agent_agentid'),
-				$agent_remark=$('#agent_remark');
+				$agent_parentid=$('#agent_parentid');
 
 
 			/*分润设置*/
 			var	$agent_gradewrap=$('#agent_gradewrap'),
 				$agent_runsetupwrap=$('#agent_runsetupwrap'),
-				$agent_profit=$agent_runsetupwrap.find('input'),
+				$agent_runsetupsetting=$('#agent_runsetupsetting'),
+				$agent_profit=$agent_runsetupsetting.find('input'),
+				$agent_self=$('#agent_self'),
+				$agent_auto=$('#agent_auto'),
 				profit_data={};
 
 
@@ -230,6 +232,44 @@
 					$cityinput:$agent_city_value,
 					$areainput:$agent_area_value
 				});
+
+				/*查询上级代理商ID*/
+				$.ajax({
+					url:"http://120.24.226.70:8081/yttx-agentbms-api/agents/list",
+					dataType:'JSON',
+					method:'post',
+					data:{
+						roleId:decodeURIComponent(logininfo.param.roleId),
+						adminId:decodeURIComponent(logininfo.param.adminId),
+						token:decodeURIComponent(logininfo.param.token)
+					}
+				}).done(function(resp){
+					var code=parseInt(resp.code,10);
+					if(code!==0){
+						if(code===999){
+							/*清空缓存*/
+							public_tool.clear();
+							public_tool.loginTips();
+						}
+						console.log(resp.message);
+						$agent_parentid.html('');
+						return false;
+					}
+
+					var bindlist=resp.result.list,
+						len=bindlist.length,
+						k= 0,
+						str='<option value="" selected >请选择绑定代理商ID</option>';
+					for(k;k<len;k++){
+						str+='<option value="'+bindlist[k]["id"]+'">'+bindlist[k]["shortName"]+'</option>';
+					}
+					$(str).appendTo($agent_parentid.html(''));
+
+				}).fail(function(resp){
+					console.log('error');
+					$agent_parentid.html('');
+				});
+
 			}());
 
 
@@ -427,10 +467,20 @@
 				$edit_wrap.addClass('collapsed');
 				$edit_title.html('添加代理商');
 				$agent_cance_btn.prev().html('添加');
+				edit_form.reset();
 				if(!$data_wrap.hasClass('collapsed')){
 					$("html,body").animate({scrollTop:200},200);
 				}
+				/*重置选中信息*/
+				$agent_runsetupwrap.addClass('g-d-hidei');
+				profit_data['runSetup']=0;
+				if(typeof profit_data['distributorProfit1']!=='undefined') {
+					delete profit_data['distributorProfit1'];
+					delete profit_data['distributorProfit2'];
+					delete profit_data['distributorProfit3'];
+				}
 			});
+
 
 
 			/*手机格式化*/
@@ -445,6 +495,33 @@
 					this.value=public_tool.phoneFormat(this.value);
 				});
 			});
+
+
+
+			/*分润切换*/
+			profit_data['runSetup']=0;
+			$.each([$agent_self,$agent_auto],function(){
+					this.on('click', function (){
+						var value=this.value;
+
+						profit_data['runSetup']=value;
+						if(value==='1'){
+							/*自定义*/
+							$agent_runsetupwrap.removeClass('g-d-hidei');
+							profit_data['distributorProfit1']='';
+							profit_data['distributorProfit2']='';
+							profit_data['distributorProfit3']='';
+						}else if(value==='0'){
+							$agent_runsetupwrap.addClass('g-d-hidei');
+							if(typeof profit_data['distributorProfit1']!=='undefined') {
+								delete profit_data['distributorProfit1'];
+								delete profit_data['distributorProfit2'];
+								delete profit_data['distributorProfit3'];
+							}
+						}
+					});
+			});
+
 
 
 			/*绑定分润输入限制*/
@@ -488,15 +565,14 @@
 							var id=$agent_id.val(),
 							isadd=id===''?true:false;
 
-							if(!validProfit($agent_profit,dia,profit_data,true)){
+							/*校验分润合法性*/
+							if(profit_data['runSetup']==='1'&&!validProfit($agent_profit,dia,profit_data)){
 								return false;
 							}
-							if(id===''){
 
-
-
+							if(isadd){
 								var config={
-									url:"http://120.24.226.70:8081/yttx-agentbms-api/servicestation/addupdate",
+									url:"http://120.24.226.70:8081/yttx-agentbms-api/agent/add",
 									dataType:'JSON',
 									method:'post',
 									data:{
@@ -505,6 +581,7 @@
 										token:decodeURIComponent(logininfo.param.token),
 										fullName:$agent_fullname.val(),
 										shortName:$agent_shortname.val(),
+										grade:$agent_gradewrap.find('input:checked').val(),
 										name:$agent_name.val(),
 										province:$agent_province_value.val(),
 										city:$agent_city_value.val(),
@@ -512,45 +589,42 @@
 										address:$agent_address.val(),
 										phone:$agent_phone.val().replace(/\s*/g,''),
 										tel:$agent_tel.val(),
-										agentId:$agent_agentid.val(),
-										Remark:$agent_remark.val()
+										parentId:$agent_parentid.val()
 									}
 								};
-								$.extend(true,config.data,profit_data);
-
-
 							}else{
-
 								if(id===''){
-									dia.content('<span class="g-c-bs-warning g-btips-warn">请选择需要操作的服务站</span>').show();
+									dia.content('<span class="g-c-bs-warning g-btips-warn">请选择需要操作的代理商</span>').show();
 									setTimeout(function(){
 										dia.close();
 									},3000);
 									return false;
 								}
 								var config={
-									url:"http://120.24.226.70:8081/yttx-agentbms-api/servicestation/update",
+									url:"http://120.24.226.70:8081/yttx-agentbms-api/agent/update",
 									dataType:'JSON',
 									method:'post',
 									data:{
-										serviceStationId:id,
+										agentId:id,
 										adminId:decodeURIComponent(logininfo.param.adminId),
 										token:decodeURIComponent(logininfo.param.token),
 										roleId:decodeURIComponent(logininfo.param.roleId),
-										fullName:$update_fullname.val(),
-										shortName:$update_shortname.val(),
-										name:$update_name.val(),
-										province:$update_province_value.val(),
-										city:$update_city_value.val(),
-										country:$update_area_value.val(),
-										address:$update_address.val(),
-										phone:$update_phone.val().replace(/\s*/g,''),
-										tel:$update_tel.val(),
-										agentId:$update_agentid.val(),
-										Remark:$update_remark.val()
+										fullName:$agent_fullname.val(),
+										shortName:$agent_shortname.val(),
+										grade:$agent_gradewrap.find('input:checked').val(),
+										name:$agent_name.val(),
+										province:$agent_province_value.val(),
+										city:$agent_city_value.val(),
+										country:$agent_area_value.val(),
+										address:$agent_address.val(),
+										phone:$agent_phone.val().replace(/\s*/g,''),
+										tel:$agent_tel.val(),
+										parentId:$agent_parentid.val()
 									}
 								};
 							}
+
+							$.extend(true,config.data,profit_data);
 
 
 							$.ajax(config)
@@ -559,7 +633,7 @@
 									if(code!==0){
 										console.log(resp.message);
 										setTimeout(function(){
-											isadd?dia.content('<span class="g-c-bs-warning g-btips-warn">添加服务站失败</span>').show():dia.content('<span class="g-c-bs-warning g-btips-warn">修改服务站失败</span>').show();
+											isadd?dia.content('<span class="g-c-bs-warning g-btips-warn">添加代理商失败</span>').show():dia.content('<span class="g-c-bs-warning g-btips-warn">修改代理商失败</span>').show();
 										},300);
 										setTimeout(function () {
 											dia.close();
@@ -572,7 +646,7 @@
 									//重置表单
 									$agent_cance_btn.trigger('click');
 									setTimeout(function(){
-										isadd?dia.content('<span class="g-c-bs-success g-btips-succ">添加服务站成功</span>').show():dia.content('<span class="g-c-bs-success g-btips-succ">修改服务站成功</span>').show();
+										isadd?dia.content('<span class="g-c-bs-success g-btips-succ">添加代理商成功</span>').show():dia.content('<span class="g-c-bs-success g-btips-succ">修改代理商成功</span>').show();
 									},300);
 									setTimeout(function () {
 										dia.close();
@@ -594,7 +668,7 @@
 
 
 		/*校验分润设置数据合法性*/
-		function validProfit(input,dia,data,type){
+		function validProfit(input,dia,data){
 			if(!input){
 					return false;
 			}
@@ -635,15 +709,9 @@
 			isvalid=true;
 
 			/*设置值*/
-			if(type){
-				data['distributorP1ForSales']=ele_a;
-				data['distributorP2ForSales']=ele_aa;
-				data['distributorP3ForSales']=ele_aaa;
-			}else{
-				data['distributorP1ForAcquiring']=ele_a;
-				data['distributorP2ForAcquiring']=ele_aa;
-				data['distributorP3ForAcquiring']=ele_aaa;
-			}
+			data['distributorProfit1']=ele_a;
+			data['distributorProfit2']=ele_aa;
+			data['distributorProfit3']=ele_aaa;
 
 			return isvalid;
 		}

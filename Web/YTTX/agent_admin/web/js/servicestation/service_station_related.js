@@ -51,6 +51,7 @@
 				$show_detail_title=$('#show_detail_title')/*详情标题*/,
 				$show_detail_content=$('#show_detail_content')/*详情内容*/,
 				detail_map={
+					agentFullName:'代理商全称',
 					fullName:'服务站全称',
 					shortName:"服务站简称",
 					name:"负责人姓名",
@@ -58,6 +59,8 @@
 					address:"地址",
 					sales:"销售",
 					inventory:"库存",
+					monthSales:"本月销售",
+					totalSales:"总计销售",
 					repairs:"返修",
 					agentShortName:"所属代理",
 					superShortName:"上级代理"
@@ -319,7 +322,7 @@
 					//重置信息
 					repair_form.reset();
 					$repair_title.html('');
-					$send_title.html('给"'+datas['shortName']+'"服务站发货');
+					$send_title.html('给"'+datas['fullName']+'"服务站发货');
 					$send_id.val(id);
 				}else if(action==='repair'){
 					/*调整布局*/
@@ -330,12 +333,12 @@
 					//重置信息
 					send_form.reset();
 					$send_title.html('');
-					$repair_title.html(datas['shortName']+'"服务站返修');
+					$repair_title.html('"'+datas['fullName']+'"服务站返修设备');
 					$repair_id.val(id);
 				}else if(action==='select'){
 					/*查看*/
 					$.ajax({
-							url:"http://120.24.226.70:8081/yttx-agentbms-api/servicestation/detail",
+							url:"http://120.24.226.70:8081/yttx-agentbms-api/servicestation/view",
 							method: 'POST',
 							dataType: 'json',
 							data:{
@@ -356,28 +359,26 @@
 								str='',
 								istitle=false;
 
-							if(list.length){
-								list=list[0];
-								if(!$.isEmptyObject(list)){
-									for(var j in list){
-										if(typeof detail_map[j]!=='undefined'){
-											if(j==='name'||j==='Name'){
-												istitle=true;
-												$show_detail_title.html(list[j]+'服务站详情信息');
-											}else{
-												str+='<tr><th>'+detail_map[j]+':</th><td>'+list[j]+'</td></tr>';
-											}
+							if(!$.isEmptyObject(list)){
+								for(var j in list){
+									if(typeof detail_map[j]!=='undefined'){
+										if(j==='name'||j==='Name'){
+											istitle=true;
+											$show_detail_title.html(list[j]+'服务站详情信息');
 										}else{
-											str+='<tr><th>'+j+':</th><td>'+list[j]+'</td></tr>';
+											str+='<tr><th>'+detail_map[j]+':</th><td>'+list[j]+'</td></tr>';
 										}
-									};
-
-									if(!istitle){
-										$show_detail_title.html('服务站详情信息');
+									}else{
+										str+='<tr><th>'+j+':</th><td>'+list[j]+'</td></tr>';
 									}
+								};
+
+								if(!istitle){
+									$show_detail_title.html('服务站详情信息');
 								}
-							}else{
-								var station=list.serviceStation,
+							}
+
+								/*var station=list.serviceStation,
 									sales=list.salesProfit;
 								if(!$.isEmptyObject(station)){
 									str+='<tr><th colspan="2">serviceStation</th></tr>';
@@ -408,8 +409,8 @@
 											str+='<tr><th>'+j+':</th><td>'+sales[j]+'</td></tr>';
 										}
 									};
-								}
-							}
+								}*/
+
 							$show_detail_content.html(str);
 							$show_detail_wrap.modal('show',{backdrop:'static'});
 						})
