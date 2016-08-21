@@ -23,20 +23,20 @@
 
 			/*权限调用*/
 			var powermap=public_tool.getPower(),
-				agentdelete_power=public_tool.getKeyPower('删除',powermap),
-				agentupdate_power=public_tool.getKeyPower('修改',powermap),
-				agentdetail_power=public_tool.getKeyPower('查看',powermap),
-				agentadd_power=public_tool.getKeyPower('添加',powermap),
-				agentbind_power=public_tool.getKeyPower('绑定服务站',powermap);
+				salesdelete_power=public_tool.getKeyPower('删除',powermap),
+				salesupdate_power=public_tool.getKeyPower('修改',powermap),
+				salesdetail_power=public_tool.getKeyPower('查看',powermap),
+				salesadd_power=public_tool.getKeyPower('添加',powermap),
+				salesacquiring_power=public_tool.getKeyPower('收单查看',powermap);
 
 
 			/*dom引用和相关变量定义*/
-			var $agent_list_wrap=$('#agent_list_wrap')/*表格*/,
+			var $sales_list_wrap=$('#sales_list_wrap')/*表格*/,
 				module_id='agent_add'/*模块id，主要用于本地存储传值*/,
 				$data_wrap=$('#data_wrap')/*数据展现面板*/,
 				$edit_wrap=$('#edit_wrap')/*发货容器面板*/,
 				table=null/*数据展现*/,
-				$agent_add_btn=$('#agent_add_btn')/*添加*/,
+				$sales_add_btn=$('#sales_add_btn')/*添加*/,
 				$edit_title=$('#edit_title')/*编辑标题*/,
 				dia=dialog({
 					title:'温馨提示',
@@ -68,9 +68,11 @@
 
 
 			/*查询对象*/
-			var $search_fullName=$('#search_fullName'),
+			var $search_agentName=$('#search_agentName'),
+				$search_serviceStationName=$('#search_serviceStationName'),
 				$search_name=$('#search_name'),
-				$search_phone=$('#search_phone'),
+				$search_cellphone=$('#search_cellphone'),
+				$search_addTime=$('#search_addTime'),
 				$admin_search_btn=$('#admin_search_btn'),
 				$admin_search_clear=$('#admin_search_clear');
 
@@ -79,31 +81,15 @@
 			/*表单对象*/
 			var edit_form=document.getElementById('edit_form')/*表单dom*/,
 				$edit_form=$(edit_form)/*编辑表单*/,
-				$agent_id=$('#agent_id'),/*返修id*/
-				$agent_cance_btn=$('#agent_cance_btn')/*编辑取消按钮*/,
-				$agent_fullname=$('#agent_fullname'),/*快递单号*/
-				$agent_shortname=$('#agent_shortname'),
-				$agent_name=$('#agent_name')/*发货经手人*/,
-				$agent_phone=$('#agent_phone'),
-				$agent_tel=$('#agent_tel')/*发货时间*/,
-				$agent_province=$('#agent_province'),
-				$agent_city=$('#agent_city'),
-				$agent_area=$('#agent_area'),
-				$agent_province_value=$('#agent_province_value'),
-				$agent_city_value=$('#agent_city_value'),
-				$agent_area_value=$('#agent_area_value'),
-				$agent_address=$('#agent_address'),
-				$agent_parentid=$('#agent_parentid');
+				$sales_servicestationid=$('#sales_servicestationid'),/*返修id*/
+				$sales_cance_btn=$('#sales_cance_btn')/*编辑取消按钮*/,
+				$remark=$('#remark'),/*快递单号*/
+				$sales_imeicode=$('#sales_imeicode'),
+				$sales_name=$('#sales_name')/*发货经手人*/,
+				$sales_cellphone=$('#sales_cellphone'),
+				$sales_telephone=$('#sales_telephone')/*发货时间*/,
+				$sales_address=$('#sales_address');
 
-
-			/*分润设置*/
-			var	$agent_gradewrap=$('#agent_gradewrap'),
-				$agent_runsetupwrap=$('#agent_runsetupwrap'),
-				$agent_runsetupsetting=$('#agent_runsetupsetting'),
-				$agent_profit=$agent_runsetupsetting.find('input'),
-				$agent_self=$('#agent_self'),
-				$agent_auto=$('#agent_auto'),
-				profit_data={};
 
 
 			/*绑定代理商*/
@@ -119,8 +105,8 @@
 
 
 			/*数据加载*/
-			var agent_config={
-				url:"http://120.24.226.70:8081/yttx-agentbms-api/agents/related",
+			var sales_config={
+				url:"http://120.24.226.70:8081/yttx-agentbms-api/marketing/subscribers/related",
 				dataType:'JSON',
 				method:'post',
 				dataSrc:function ( json ) {
@@ -134,12 +120,8 @@
 						console.log(json.message);
 						return null;
 					}
-					var list=json.result.list,
-						stationobj=list[0];
-					if('serivceStationlist' in stationobj){
-						list=list.slice(1);
-					}
-					return list;
+
+					return json.result.list;
 				},
 				data:{
 					roleId:decodeURIComponent(logininfo.param.roleId),
@@ -147,11 +129,11 @@
 					token:decodeURIComponent(logininfo.param.token)
 				}
 			};
-			table=$agent_list_wrap.DataTable({
+			table=$sales_list_wrap.DataTable({
 				deferRender:true,/*是否延迟加载数据*/
 				//serverSide:true,/*是否服务端处理*/
 				searching:true,/*是否搜索*/
-				ordering:true,/*是否排序*/
+				ordering:false,/*是否排序*/
 				//order:[[1,'asc']],/*默认排序*/
 				paging:true,/*是否开启本地分页*/
 				pagingType:'simple_numbers',/*分页按钮排列*/
@@ -159,13 +141,13 @@
 				info:true,/*显示分页信息*/
 				stateSave:false,/*是否保存重新加载的状态*/
 				processing:true,/*大消耗操作时是否显示处理状态*/
-				ajax:agent_config,/*异步请求地址及相关配置*/
+				ajax:sales_config,/*异步请求地址及相关配置*/
 				columns: [
-					{"data":"fullName"},
-					{"data":"shortName"},
+					{"data":"serviceStationName"},
+					{"data":"agentName"},
 					{"data":"name"},
 					{
-						"data":"phone",
+						"data":"cellphone",
 						"render":function(data, type, full, meta ){
 							return public_tool.phoneFormat(data);
 						}
@@ -177,33 +159,42 @@
 						}
 					},
 					{
+						"data":"imeiCode"
+					},
+					{
+						"data":"addTime"
+					},
+					{
+						"data":"status"
+					},
+					{
 						"data":"id",
 						"render":function(data, type, full, meta ){
 							var btns='';
 
 
-							if(agentdetail_power){
+							if(salesdetail_power){
 								/*查看*/
 								btns+='<span data-id="'+data+'" data-action="select" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 									 <i class="fa-file-text-o"></i>\
 									 <span>查看</span>\
 									 </span>';
 							}
-							if(agentupdate_power){
+							if(salesupdate_power){
 								/*修改*/
 								btns+='<span  data-id="'+data+'" data-action="update" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 									<i class="fa-pencil"></i>\
 									<span>修改</span>\
 									</span>';
 							}
-							if(agentbind_power){
+							if(salesacquiring_power){
 								/*绑定*/
-								btns+='<span  data-id="'+data+'" data-action="bind" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+								btns+='<span  data-id="'+data+'" data-action="selectacquiring" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 									<i class="fa-cogs"></i>\
-									<span>绑定服务站</span>\
+									<span>收单查看</span>\
 									</span>';
 							}
-							if(agentdelete_power){
+							if(salesdelete_power){
 								/*删除*/
 								btns+='<span  data-id="'+data+'" data-action="delete" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 									<i class="fa-trash"></i>\
@@ -215,8 +206,8 @@
 					}
 				],/*控制分页数*/
 				aLengthMenu: [
-					[5,10,20,30],
-					[5,10,20,30]
+					[20,30,40,50],
+					[20,30,40,50]
 				],
 				lengthChange:true/*是否可改变长度*/
 			});
@@ -231,52 +222,6 @@
 				/*重置表单*/
 				edit_form.reset();
 				$admin_search_clear.trigger('click');
-				/*地址调用*/
-				new public_tool.areaSelect().areaSelect({
-					$province:$agent_province,
-					$city:$agent_city,
-					$area:$agent_area,
-					$provinceinput:$agent_province_value,
-					$cityinput:$agent_city_value,
-					$areainput:$agent_area_value
-				});
-
-				/*查询上级代理商ID*/
-				$.ajax({
-					url:"http://120.24.226.70:8081/yttx-agentbms-api/agents/list",
-					dataType:'JSON',
-					method:'post',
-					data:{
-						roleId:decodeURIComponent(logininfo.param.roleId),
-						adminId:decodeURIComponent(logininfo.param.adminId),
-						token:decodeURIComponent(logininfo.param.token)
-					}
-				}).done(function(resp){
-					var code=parseInt(resp.code,10);
-					if(code!==0){
-						if(code===999){
-							/*清空缓存*/
-							public_tool.clear();
-							public_tool.loginTips();
-						}
-						console.log(resp.message);
-						$agent_parentid.html('');
-						return false;
-					}
-
-					var bindlist=resp.result.list,
-						len=bindlist.length,
-						k= 0,
-						str='<option value="" selected >请选择绑定代理商ID</option>';
-					for(k;k<len;k++){
-						str+='<option value="'+bindlist[k]["id"]+'">'+bindlist[k]["shortName"]+'</option>';
-					}
-					$(str).appendTo($agent_parentid.html(''));
-
-				}).fail(function(resp){
-					console.log('error');
-					$agent_parentid.html('');
-				});
 
 			}());
 
@@ -286,7 +231,7 @@
 
 			/*清空查询条件*/
 			$admin_search_clear.on('click',function(){
-				$.each([$search_fullName,$search_name,$search_phone],function(){
+				$.each([$search_agentName,$search_serviceStationName,$search_name,$search_cellphone,$search_addTime],function(){
 					this.val('');
 				});
 			});
@@ -294,9 +239,9 @@
 
 			/*联合查询*/
 			$admin_search_btn.on('click',function(){
-				var data= $.extend(true,{},agent_config.data);
+				var data= $.extend(true,{},sales_config.data);
 
-				$.each([$search_fullName,$search_name,$search_phone],function(){
+				$.each([$search_agentName,$search_serviceStationName,$search_name,$search_cellphone,$search_addTime],function(){
 					var text=this.val(),
 						selector=this.selector.slice(1),
 						key=selector.split('_');
@@ -315,14 +260,14 @@
 					}
 
 				});
-				agent_config.data= $.extend(true,{},data);
-				table.ajax.config(agent_config).load(false);
+				sales_config.data= $.extend(true,{},data);
+				table.ajax.config(sales_config).load(false);
 			});
 
 
 			/*事件绑定*/
 			/*绑定查看，修改操作*/
-			$agent_list_wrap.delegate('span','click',function(e){
+			$sales_list_wrap.delegate('span','click',function(e){
 				e.stopPropagation();
 				e.preventDefault();
 
@@ -349,8 +294,10 @@
 					/*调整布局*/
 					$data_wrap.addClass('collapsed');
 					$edit_wrap.removeClass('collapsed');
-					$edit_title.html('修改 "'+datas['fullName']+'" 代理商信息');
-					$agent_cance_btn.prev().html('修改');
+					$edit_title.attr({
+						'data-type':'update'
+					}).html('修改 "'+datas['name']+'" 信息');
+					$sales_cance_btn.prev().html('修改');
 					$("html,body").animate({scrollTop:300},200);
 					//重置信息
 
@@ -358,22 +305,22 @@
 					for(var i in datas) {
 						switch (i) {
 							case "id":
-								$agent_id.val(id);
+								$sales_servicestationid.val(id);
 								break;
 							case "fullName":
-								$agent_fullname.val(datas[i]);
+								$remark.val(datas[i]);
 								break;
 							case "phone":
-								$agent_phone.val(public_tool.phoneFormat(datas[i]));
+								$sales_cellphone.val(public_tool.phoneFormat(datas[i]));
 								break;
 							case "shortName":
-								$agent_shortname.val(datas[i]);
+								$sales_imeicode.val(datas[i]);
 								break;
 							case "name":
-								$agent_name.val(datas[i]);
+								$sales_name.val(datas[i]);
 								break;
 							case "address":
-								$agent_address.val(datas[i]);
+								$sales_address.val(datas[i]);
 								break;
 						}
 					}
@@ -465,46 +412,43 @@
 
 
 			/*添加服务站*/
-			$agent_add_btn.on('click',function(e){
+			$sales_add_btn.on('click',function(e){
 				e.preventDefault();
 				/*调整布局*/
 				$data_wrap.addClass('collapsed');
 				$edit_wrap.removeClass('collapsed');
-				$edit_title.html('添加代理商');
-				$agent_cance_btn.prev().html('添加');
+				$edit_title.attr({
+					'data-type':'add'
+				}).html('添加用户');
+				$sales_cance_btn.prev().html('添加');
 				$("html,body").animate({scrollTop:300},200);
 				//重置信息
 				edit_form.reset();
 				//第一行获取焦点
-				$agent_fullname.focus();
+				$sales_servicestationid.focus();
 			});
 			/*配置添加和修改的权限*/
-			if(agentadd_power){
-				$agent_add_btn.removeClass('g-d-hidei');
+			if(salesadd_power){
+				$sales_add_btn.removeClass('g-d-hidei');
 				$edit_wrap.removeClass('g-d-hidei');
 			};
 
 
 
 			/*取消添加或修改*/
-			$agent_cance_btn.on('click',function(e){
+			$sales_cance_btn.on('click',function(e){
 				/*调整布局*/
 				$data_wrap.removeClass('collapsed');
 				$edit_wrap.addClass('collapsed');
-				$edit_title.html('添加代理商');
-				$agent_cance_btn.prev().html('添加');
+				$edit_title.attr({
+					'data-type':'add'
+				}).html('添加用户');
+				$sales_cance_btn.prev().html('添加');
 				edit_form.reset();
 				if(!$data_wrap.hasClass('collapsed')){
 					$("html,body").animate({scrollTop:200},200);
 				}
-				/*重置选中信息*/
-				$agent_runsetupwrap.addClass('g-d-hidei');
-				profit_data['runSetup']=0;
-				if(typeof profit_data['distributorProfit1']!=='undefined') {
-					delete profit_data['distributorProfit1'];
-					delete profit_data['distributorProfit2'];
-					delete profit_data['distributorProfit3'];
-				}
+
 			});
 
 
@@ -624,7 +568,7 @@
 
 			/*手机格式化*/
 			/*格式化手机号码*/
-			$.each([$search_phone,$agent_phone],function(){
+			$.each([$search_cellphone,$sales_cellphone],function(){
 				this.on('keyup',function(){
 					var phoneno=this.value.replace(/\D*/g,'');
 					if(phoneno==''){
@@ -637,48 +581,18 @@
 
 
 
-			/*分润切换*/
-			profit_data['runSetup']=0;
-			$.each([$agent_self,$agent_auto],function(){
-					this.on('click', function (){
-						var value=this.value;
-
-						profit_data['runSetup']=value;
-						if(value==='1'){
-							/*自定义*/
-							$agent_runsetupwrap.removeClass('g-d-hidei');
-							profit_data['distributorProfit1']='';
-							profit_data['distributorProfit2']='';
-							profit_data['distributorProfit3']='';
-						}else if(value==='0'){
-							$agent_runsetupwrap.addClass('g-d-hidei');
-							if(typeof profit_data['distributorProfit1']!=='undefined') {
-								delete profit_data['distributorProfit1'];
-								delete profit_data['distributorProfit2'];
-								delete profit_data['distributorProfit3'];
-							}
-						}
-					});
+			/*绑定时间插件*/
+			$.each([$search_addTime],function(){
+				this.val('').datepicker({
+					autoclose:true,
+					clearBtn:true,
+					format: 'yyyy-mm-dd',
+					todayBtn: true,
+					endDate:moment().format('YYYY-MM-DD')
+				})
 			});
 
 
-
-			/*绑定分润输入限制*/
-			$agent_profit.each(function () {
-				$(this).on('keyup',function(){
-					var val=this.value.replace(/[^0-9*\-*^\.]/g,'');
-					if(val.indexOf('.')!==-1){
-						val=val.split('.');
-						if(val.length>=3){
-							val.length=2;
-							val=val[0]+'.'+val[1];
-						}else{
-							val=val.join('.');
-						}
-					}
-					this.value=val;
-				});
-			});
 
 
 			/*最小化窗口*/
@@ -686,7 +600,7 @@
 				if($data_wrap.hasClass('collapsed')){
 					e.stopPropagation();
 					e.preventDefault();
-					$agent_cance_btn.trigger('click');
+					$sales_cance_btn.trigger('click');
 				}
 			});
 
@@ -701,69 +615,57 @@
 					$.extend(true,form_opt,formcache.form_opt_0,{
 						submitHandler: function(form){
 							/*更新*/
-							var id=$agent_id.val(),
-							isadd=id===''?true:false;
+							var type=$edit_title.attr('data-type'),
+							isadd=type==='add'?true:false;
 
-							/*校验分润合法性*/
-							if(profit_data['runSetup']==='1'&&!validProfit($agent_profit,dia,profit_data)){
-								return false;
-							}
 
 							if(isadd){
 								var config={
-									url:"http://120.24.226.70:8081/yttx-agentbms-api/agent/add",
+									url:"http://120.24.226.70:8081/yttx-agentbms-api/marketing/subscriber/add",
 									dataType:'JSON',
 									method:'post',
 									data:{
 										roleId:decodeURIComponent(logininfo.param.roleId),
 										adminId:decodeURIComponent(logininfo.param.adminId),
 										token:decodeURIComponent(logininfo.param.token),
-										fullName:$agent_fullname.val(),
-										shortName:$agent_shortname.val(),
-										grade:$agent_gradewrap.find('input:checked').val(),
-										name:$agent_name.val(),
-										province:$agent_province_value.val(),
-										city:$agent_city_value.val(),
-										country:$agent_area_value.val(),
-										address:$agent_address.val(),
-										phone:$agent_phone.val().replace(/\s*/g,''),
-										tel:$agent_tel.val(),
-										parentId:$agent_parentid.val()
+										serviceStationId:$sales_servicestationid.val(),
+										name:$sales_name.val(),
+										address:$sales_address.val(),
+										cellphone:$sales_cellphone.val().replace(/\s*/g,''),
+										telephone:$sales_telephone.val(),
+										imeiCode:$sales_imeicode.val(),
+										remark:$remark.val()
 									}
 								};
 							}else{
+								var id=$sales_servicestationid.val();
 								if(id===''){
-									dia.content('<span class="g-c-bs-warning g-btips-warn">请选择需要操作的代理商</span>').show();
+									dia.content('<span class="g-c-bs-warning g-btips-warn">请选择需要操作的用户</span>').show();
 									setTimeout(function(){
 										dia.close();
 									},3000);
 									return false;
 								}
 								var config={
-									url:"http://120.24.226.70:8081/yttx-agentbms-api/agent/update",
+									url:"http://120.24.226.70:8081/yttx-agentbms-api/marketing/subscriber/update",
 									dataType:'JSON',
 									method:'post',
 									data:{
-										agentId:id,
+										roleId:decodeURIComponent(logininfo.param.roleId),
 										adminId:decodeURIComponent(logininfo.param.adminId),
 										token:decodeURIComponent(logininfo.param.token),
-										roleId:decodeURIComponent(logininfo.param.roleId),
-										fullName:$agent_fullname.val(),
-										shortName:$agent_shortname.val(),
-										grade:$agent_gradewrap.find('input:checked').val(),
-										name:$agent_name.val(),
-										province:$agent_province_value.val(),
-										city:$agent_city_value.val(),
-										country:$agent_area_value.val(),
-										address:$agent_address.val(),
-										phone:$agent_phone.val().replace(/\s*/g,''),
-										tel:$agent_tel.val(),
-										parentId:$agent_parentid.val()
+										serviceStationId:id,
+										name:$sales_name.val(),
+										address:$sales_address.val(),
+										cellphone:$sales_cellphone.val().replace(/\s*/g,''),
+										telephone:$sales_telephone.val(),
+										imeiCode:$sales_imeicode.val(),
+										remark:$remark.val()
 									}
 								};
 							}
 
-							$.extend(true,config.data,profit_data);
+
 
 
 							$.ajax(config)
@@ -772,7 +674,7 @@
 									if(code!==0){
 										console.log(resp.message);
 										setTimeout(function(){
-											isadd?dia.content('<span class="g-c-bs-warning g-btips-warn">添加代理商失败</span>').show():dia.content('<span class="g-c-bs-warning g-btips-warn">修改代理商失败</span>').show();
+											isadd?dia.content('<span class="g-c-bs-warning g-btips-warn">添加用户失败</span>').show():dia.content('<span class="g-c-bs-warning g-btips-warn">修改用户失败</span>').show();
 										},300);
 										setTimeout(function () {
 											dia.close();
@@ -783,9 +685,9 @@
 									table.ajax.reload(null,false);
 									//重置表单
 									//重置表单
-									$agent_cance_btn.trigger('click');
+									$sales_cance_btn.trigger('click');
 									setTimeout(function(){
-										isadd?dia.content('<span class="g-c-bs-success g-btips-succ">添加代理商成功</span>').show():dia.content('<span class="g-c-bs-success g-btips-succ">修改代理商成功</span>').show();
+										isadd?dia.content('<span class="g-c-bs-success g-btips-succ">添加用户成功</span>').show():dia.content('<span class="g-c-bs-success g-btips-succ">修改用户成功</span>').show();
 									},300);
 									setTimeout(function () {
 										dia.close();
@@ -806,54 +708,6 @@
 		}
 
 
-		/*校验分润设置数据合法性*/
-		function validProfit(input,dia,data){
-			if(!input){
-					return false;
-			}
-
-			if(!data){
-				return false;
-			}
-
-			var isvalid=false,
-				ele_a=input.eq(0).val(),
-				ele_aa=input.eq(1).val(),
-				ele_aaa=input.eq(2).val(),
-				temp_a=parseInt(ele_a * 10000,10) / 10000,
-				temp_aa=parseInt(ele_aa * 10000,10) / 10000,
-				temp_aaa=parseInt(ele_aaa * 10000,10) / 10000;
-
-			/*设置分润规则*/
-			if(isNaN(temp_a)||isNaN(temp_aa)||isNaN(temp_aaa)){
-				dia.content('<span class="g-c-bs-warning g-btips-warn">分润设置数据非法值</span>').show();
-				isvalid=false;
-				return isvalid;
-			}
-			if((temp_a===0||temp_a>=100)||(temp_aa===0||temp_aa>=100)||(temp_aaa===0||temp_aaa>=100)){
-				dia.content('<span class="g-c-bs-warning g-btips-warn">分润设置数据不能大于100或为0</span>').show();
-				isvalid=false;
-				return isvalid;
-			}else if((temp_a+temp_aa+temp_aaa)>100){
-				dia.content('<span class="g-c-bs-warning g-btips-warn">分润设置总和不能大于100</span>').show();
-				isvalid=false;
-				return isvalid;
-			}else if((temp_a+temp_aa+temp_aaa)<100){
-				dia.content('<span class="g-c-bs-warning g-btips-warn">分润设置总和应为100</span>').show();
-				isvalid=false;
-				return isvalid;
-			}
-
-			/*校验*/
-			isvalid=true;
-
-			/*设置值*/
-			data['distributorProfit1']=ele_a;
-			data['distributorProfit2']=ele_aa;
-			data['distributorProfit3']=ele_aaa;
-
-			return isvalid;
-		}
 
 	});
 

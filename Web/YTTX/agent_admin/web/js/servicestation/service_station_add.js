@@ -151,7 +151,7 @@
 				deferRender:true,/*是否延迟加载数据*/
 				//serverSide:true,/*是否服务端处理*/
 				searching:true,/*是否搜索*/
-				ordering:false,/*是否排序*/
+				ordering:true,/*是否排序*/
 				//order:[[1,'asc']],/*默认排序*/
 				paging:true,/*是否开启本地分页*/
 				pagingType:'simple_numbers',/*分页按钮排列*/

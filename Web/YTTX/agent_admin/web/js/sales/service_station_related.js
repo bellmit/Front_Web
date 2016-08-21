@@ -23,8 +23,7 @@
 
 			/*权限调用*/
 			var powermap=public_tool.getPower(),
-				send_power=public_tool.getKeyPower('发货',powermap),
-				stationdetail_power=public_tool.getKeyPower('查看',powermap);
+				send_power=public_tool.getKeyPower('发货',powermap);
 
 
 			/*dom引用和相关变量定义*/
@@ -46,25 +45,7 @@
 					},
 					cancel:false
 				})/*一般提示对象*/,
-				dialogObj=public_tool.dialog()/*回调提示对象*/,
-				$show_detail_wrap=$('#show_detail_wrap')/*详情容器*/,
-				$show_detail_title=$('#show_detail_title')/*详情标题*/,
-				$show_detail_content=$('#show_detail_content')/*详情内容*/,
-				detail_map={
-					agentFullName:'代理商全称',
-					fullName:'服务站全称',
-					shortName:"服务站简称",
-					name:"负责人姓名",
-					phone:"负责人手机号码",
-					address:"地址",
-					sales:"销售",
-					inventory:"库存",
-					monthSales:"本月销售",
-					totalSales:"总计销售",
-					repairs:"返修",
-					agentShortName:"所属代理",
-					superShortName:"上级代理"
-				}/*详情映射*/;
+				dialogObj=public_tool.dialog()/*回调提示对象*/;
 
 
 
@@ -117,7 +98,6 @@
 				$send_repairlist=$send_repairwrap.find('ul'),
 				$send_fittingadd_btn=$('#send_fittingadd_btn'),
 				$send_repairtime=$('#send_repairtime'),
-				$send_fittingstr=$send_fittinglist.find('li:first'),
 				send_checkconfig={
 					check:[$send_ischeckeddevice,$send_ischeckedfittings,$send_ischeckedrepair],
 					wrap:[$send_devicewrap,$send_fittingwrap,$send_repairwrap],
@@ -155,7 +135,7 @@
 				deferRender:true,/*是否延迟加载数据*/
 				//serverSide:true,/*是否服务端处理*/
 				searching:true,/*是否搜索*/
-				ordering:true,/*是否排序*/
+				ordering:false,/*是否排序*/
 				//order:[[1,'asc']],/*默认排序*/
 				paging:true,/*是否开启本地分页*/
 				pagingType:'simple_numbers',/*分页按钮排列*/
@@ -208,13 +188,6 @@
 						"render":function(data, type, full, meta ){
 							var btns='';
 
-							if(stationdetail_power){
-								/*查看*/
-								btns+='<span data-id="'+data+'" data-action="select" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
-									 <i class="fa-file-text-o"></i>\
-									 <span>查看</span>\
-									 </span>';
-							}
 
 							if(send_power){
 									/*发货*/
@@ -322,7 +295,7 @@
 					//重置信息
 					repair_form.reset();
 					$repair_title.html('');
-					$send_title.html('给"'+datas['fullName']+'"服务站发货');
+					$send_title.html('给"'+datas['shortName']+'"服务站发货');
 					$send_id.val(id);
 				}else if(action==='repair'){
 					/*调整布局*/
@@ -333,94 +306,8 @@
 					//重置信息
 					send_form.reset();
 					$send_title.html('');
-					$repair_title.html('"'+datas['fullName']+'"服务站返修设备');
+					$repair_title.html(datas['shortName']+'"服务站返修');
 					$repair_id.val(id);
-				}else if(action==='select'){
-					/*查看*/
-					$.ajax({
-							url:"http://120.24.226.70:8081/yttx-agentbms-api/servicestation/view",
-							method: 'POST',
-							dataType: 'json',
-							data:{
-								"serviceStationId":id,
-								"adminId":decodeURIComponent(logininfo.param.adminId),
-								"token":decodeURIComponent(logininfo.param.token)
-							}
-						})
-						.done(function(resp){
-							var code=parseInt(resp.code,10);
-							if(code!==0){
-								/*回滚状态*/
-								console.log(resp.message);
-								return false;
-							}
-							/*是否是正确的返回数据*/
-							var list=resp.result,
-								str='',
-								istitle=false;
-
-							if(!$.isEmptyObject(list)){
-								for(var j in list){
-									if(typeof detail_map[j]!=='undefined'){
-										if(j==='name'||j==='Name'){
-											istitle=true;
-											$show_detail_title.html(list[j]+'服务站详情信息');
-										}else{
-											str+='<tr><th>'+detail_map[j]+':</th><td>'+list[j]+'</td></tr>';
-										}
-									}else{
-										str+='<tr><th>'+j+':</th><td>'+list[j]+'</td></tr>';
-									}
-								};
-
-								if(!istitle){
-									$show_detail_title.html('服务站详情信息');
-								}
-							}
-
-								/*var station=list.serviceStation,
-									sales=list.salesProfit;
-								if(!$.isEmptyObject(station)){
-									str+='<tr><th colspan="2">serviceStation</th></tr>';
-									for(var j in station){
-										if(typeof detail_map[j]!=='undefined'){
-											if(j==='name'||j==='Name'){
-												istitle=true;
-												$show_detail_title.html(station[j]+'服务站详情信息');
-											}else{
-												str+='<tr><th>'+detail_map[j]+':</th><td>'+station[j]+'</td></tr>';
-											}
-										}else{
-											str+='<tr><th>'+j+':</th><td>'+station[j]+'</td></tr>';
-										}
-									};
-
-									if(!istitle){
-										$show_detail_title.html('服务站详情信息');
-									}
-								}
-
-								if(!$.isEmptyObject(sales)){
-									str+='<tr><th colspan="2">salesProfit</th></tr>';
-									for(var j in sales){
-										if(typeof detail_map[j]!=='undefined'){
-											str+='<tr><th>'+detail_map[j]+':</th><td>'+sales[j]+'</td></tr>';
-										}else{
-											str+='<tr><th>'+j+':</th><td>'+sales[j]+'</td></tr>';
-										}
-									};
-								}*/
-
-							$show_detail_content.html(str);
-							$show_detail_wrap.modal('show',{
-								backdrop:'static'
-							});
-						})
-						.fail(function(resp){
-							$show_detail_content.html('');
-							$show_detail_title.html('');
-							console.log(resp.message);
-						});
 				}
 			});
 
@@ -433,20 +320,7 @@
 				this.on('click',function(e){
 					/*调整布局*/
 					if(issend){
-						/*重置表单*/
 						send_form.reset();
-						/*隐藏发货插件*/
-						var wrap=send_checkconfig.wrap,
-							len=wrap.length,
-							i=0;
-						for(i;i<len;i++){
-							wrap[i].addClass('g-d-hidei');
-							/*初始化发货插件*/
-							if(i===1){
-								var list=send_checkconfig.list;
-								$send_fittingstr.appendTo(list[i].html(''));
-							}
-						};
 					}else{
 						repair_form.reset();
 					}
@@ -540,6 +414,7 @@
 
 
 			/*绑定添加发货插件--配件*/
+			var $send_fittingstr=$send_fittinglist.find('li:first');
 			$send_fittingadd_btn.on('click',function(){
 				var $tempfittingstr=$send_fittingstr.clone();
 				$('<label>&nbsp;<button type="button" class="form-control g-br2">-删除</button></label>').appendTo($tempfittingstr);
@@ -585,8 +460,6 @@
 
 
 								if(issend){
-									/*servicestation/invoice/add*/
-									/*http://120.24.226.70:8081/yttx-agentbms-api/servicestation/invoice/add*/
 									var checkdata=getCheckPlugin(send_checkconfig),
 										config={
 											url:"http://120.24.226.70:8081/yttx-agentbms-api/servicestation/invoice/add",
@@ -601,7 +474,11 @@
 												deliveryTime:$send_deliverytime.val()
 											}
 									};
-									$.extend(true,config.data,checkdata);
+									if(!$.isEmptyObject(checkdata)){
+										for(var i in checkdata){
+											config.data[i]=JSON.stringify(checkdata[i]);
+										}
+									}
 								}else{
 									var config={
 										url:"http://120.24.226.70:8081/yttx-agentbms-api/servicestation/repairorder/add",
@@ -668,24 +545,13 @@
 	/*解析发货插件*/
 	function getCheckPlugin(opt){
 		if(!opt){
-			var result={
-				IsCheckedDevice:0,
-				IsCheckedFittings:0,
-				invoiceFittinglist:[],
-				IsCheckedRepair:0
-			};
-			return result;
+			return null;
 		}
-		var result={
-			IsCheckedDevice:0,
-			IsCheckedFittings:0,
-			invoiceFittinglist:[],
-			IsCheckedRepair:0
-		};
 		var check=opt.check,
 			wrap=opt.wrap,
 			list=opt.list,
 			len=check.length,
+			result={},
 			i=0;
 		for(i;i<len;i++){
 			var $checkbox=check[i],
@@ -696,7 +562,6 @@
 				var items=list[i].children(),
 					arr=[];
 
-				result[key]=1;
 				items.each(function(index){
 					/*循环li*/
 					var subresult={},
@@ -712,7 +577,7 @@
 						if(value===''){
 							count++;
 						}
-						if(subresult[name]&&value!==''){
+						if(subresult[name]){
 							subresult[name]=subresult[name]+','+value;
 						}else{
 							subresult[name]=value;
@@ -726,23 +591,11 @@
 				});
 
 				if(arr.length!==0){
-					if(i===1){
-						result['invoiceFittinglist']=JSON.stringify(arr.slice(0));
-					}else{
-						var k= 0,
-							klen=arr.length;
-						for(k;k<klen;k++){
-							var kitem=arr[k];
-							for(var x in kitem){
-								result[x]=kitem[x];
-							}
-						}
-					}
+					result[key]=arr;
 				}
 			}else {
-				result[key]=0;
-				if(i===1){
-					result['invoiceFittinglist'].length=0;
+				if(typeof result[key]!=='undefined'){
+					delete result[key];
 				}
 			}
 		}

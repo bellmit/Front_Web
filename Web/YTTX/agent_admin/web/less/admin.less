@@ -554,6 +554,95 @@
 
 
 
+/*绑定代理商*/
+.admin-service-bindwrap{
+	.layout-base;
+	height:300px;
+	padding:30px 0 0 0;
+	display: table;
+	.service-bindshow,
+	.service-bindbtn{
+		height:100%;
+		display: table-cell;
+		.user-select-base;
+	}
+	.service-bindshow{
+		.layout-base(40%);
+		h3{
+			.layout-float-base;
+			height:30px;
+			text-align: center;
+			line-height: 25px;
+			font-size:@font-size-base;
+			.text-of;
+			text-overflow: ellipsis;
+			color:@color-gray6;
+			margin:-30px 0 0 0;
+			padding:0;
+		}
+		ul{
+			.layout-float-base;
+			border:1px solid @color-gray14;
+			.border-radius-base(3px);
+			height:100%;
+			margin:0;
+			padding:10px;
+			li{
+				.layout-float-base;
+				height:30px;
+				line-height:30px;
+				.text-of;
+				text-overflow: ellipsis;
+				color:@color-gray6;
+				font-size:@font-size-base;
+				cursor: pointer;
+				.border-radius-base(3px);
+				.transition-base(all .2s ease-in 0.01s);
+				padding:0 30px 0 20px;
+				&:hover{
+					background:@color-gray16;
+				}
+			}
+			.service-bindactive{
+				background:@btn-success-bg;
+				color:@color-white;
+				&:after{
+					content:'\e601';
+					width:30px;
+					float: right;
+					margin:0 -30px 0 0;
+					font-family: 'ux_six';
+					height:100%;
+					text-align: center;
+					color:@color-white;
+					font-size:@font-size-base;
+					display: inline-block;
+				}
+				&:hover{
+					background:@btn-success-bg;
+				}
+			}
+		}
+	}
+	.service-bindbtn{
+		.layout-base(20%);
+		vertical-align: middle;
+		text-align: center;
+		span{
+			.layout-base(50%);
+			min-width:80px;
+			margin:0 0 30px 0;
+			display:inline-block;
+			height:36px;
+			line-height:30px;
+			padding:3px 0;
+			i{
+				padding:0 5px;
+			}
+		}
+	}
+}
+
 
 
 
