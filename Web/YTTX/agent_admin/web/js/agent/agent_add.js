@@ -451,10 +451,6 @@
 						})
 						.fail(function(resp){
 							console.log(resp.message);
-							$admin_bind_title.html(datas['fullName']+'代理商绑定');
-							$admin_bind_wrap.attr({
-								'data-id':id
-							}).modal('show',{backdrop:'static'});
 						});
 				}
 
