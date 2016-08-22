@@ -96,9 +96,9 @@
 
 		//缓存区对象
 		var keyflag=false,
-				seq_id=null,
-				fn_cache={},
-				res={};
+			seq_id=null,
+			fn_cache={},
+			res={};
 
 		fn_cache.isFn=false;
 
@@ -112,7 +112,7 @@
 				if(keyflag){
 					if(fn_cache[seq_id].fn&&typeof fn_cache[seq_id].fn==='function'){
 						fn_cache[seq_id].fn.call(self);
-							delete fn_cache[seq_id].fn;
+						delete fn_cache[seq_id].fn;
 					}else{
 						self.close();
 						fn_cache[seq_id].fn=fn_cache[seq_id].FN;

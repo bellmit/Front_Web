@@ -313,6 +313,8 @@
 							/*调整布局*/
 							$data_wrap.addClass('collapsed');
 							$edit_wrap.removeClass('collapsed');
+							$edit_cance_btn.prev().html('修改');
+							$edit_title.html('修改服务站');
 							$("html,body").animate({scrollTop:380},200);
 
 
@@ -374,7 +376,8 @@
 														if(typeof profit_data['grade']!=='undefined'){
 															delete profit_data['grade'];
 														}
-														$station_becomeagentwrap.removeClass('g-d-hidei');
+														$station_agentwrap.addClass('g-d-hidei');
+														$station_becomeagentwrap.addClass('g-d-hidei');
 														return false;
 													}
 												}
@@ -415,6 +418,9 @@
 												profit_data['distributorP1ForSales']=sales['distributorProfit1'];
 												profit_data['distributorP2ForSales']=sales['distributorProfit2'];
 												profit_data['distributorP3ForSales']=sales['distributorProfit3'];
+												$station_salesprofit.eq(0).val(sales['distributorProfit1']);
+												$station_salesprofit.eq(1).val(sales['distributorProfit2']);
+												$station_salesprofit.eq(2).val(sales['distributorProfit3']);
 											}else{
 												$station_profitsumforsales.val('');
 												profit_data['distributorP1ForSales']='';
@@ -440,8 +446,6 @@
 									case 'isCustomAcquiringProfit':
 										/*收单分润设置*/
 										var acqvalue=parseInt(station[i],10);
-										/*profitSumForAcquiring,distributorP1ForAcquiring*/
-										var acqvalue=parseInt(station[i],10);
 										if(acqvalue===1){
 											/*自定义*/
 											$station_acqself.prop({
@@ -454,6 +458,9 @@
 												profit_data['distributorP1ForAcquiring']=acq['distributorProfit1'];
 												profit_data['distributorP2ForAcquiring']=acq['distributorProfit2'];
 												profit_data['distributorP3ForAcquiring']=acq['distributorProfit3'];
+												$station_acqprofit.eq(0).val(sales['distributorProfit1']);
+												$station_acqprofit.eq(1).val(sales['distributorProfit2']);
+												$station_acqprofit.eq(2).val(sales['distributorProfit3']);
 											}else{
 												$station_profitsumforacquiring.val('');
 												profit_data['distributorP1ForAcquiring']='';
@@ -509,6 +516,8 @@
 				/*调整布局*/
 				$data_wrap.addClass('collapsed');
 				$edit_wrap.removeClass('collapsed');
+				$edit_cance_btn.prev().html('添加');
+				$edit_title.html('添加服务站');
 				$("html,body").animate({scrollTop:300},200);
 				//重置信息
 				edit_form.reset();
@@ -531,6 +540,8 @@
 				edit_form.reset();
 				$data_wrap.removeClass('collapsed');
 				$edit_wrap.addClass('collapsed');
+				$edit_cance_btn.prev().html('添加');
+				$edit_title.html('添加服务站');
 				if(!$data_wrap.hasClass('collapsed')){
 					$("html,body").animate({scrollTop:200},200);
 				}
@@ -818,8 +829,6 @@
 			});
 
 
-
-
 			/*表单验证*/
 			if($.isFunction($.fn.validate)) {
 				/*配置信息*/
@@ -889,7 +898,7 @@
 
 							}else{
 								/*更新*/
-								config['url']="http://10.0.5.222:8080/yttx-agentbms-api/servicestation/update";
+								config['url']="http://10.0.5.222:8080/yttx-agentbms-api/servicestation/addupdate";
 								config['data']['serviceStationId']=id;
 							}
 							/*扩展其他参数*/

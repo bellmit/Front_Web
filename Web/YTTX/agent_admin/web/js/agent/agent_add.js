@@ -138,6 +138,9 @@
 						stationobj=list[0];
 					if('serivceStationlist' in stationobj){
 						list=list.slice(1);
+						if('serivceStationlist' in stationobj){
+							list=list.slice(1);
+						}
 					}
 					return list;
 				},
@@ -394,67 +397,80 @@
 
 				}else if(action==='bind'){
 					/*绑定代理商请求数据*/
-					$.ajax({
-							url:"http://10.0.5.222:8080/yttx-agentbms-api/agent/bindings",
-							method: 'POST',
-							dataType: 'json',
-							data:{
-								"id":id,
-								"adminId":decodeURIComponent(logininfo.param.adminId),
-								"token":decodeURIComponent(logininfo.param.token)
+					$.when($.ajax({
+						url:"http://10.0.5.222:8080/yttx-agentbms-api/servicestation/notbound/list",
+						method: 'POST',
+						dataType: 'json',
+						data:{
+							"roleId":decodeURIComponent(logininfo.param.roleId),
+							"adminId":decodeURIComponent(logininfo.param.adminId),
+							"token":decodeURIComponent(logininfo.param.token)
+						}
+					}),$.ajax({
+						url:"http://10.0.5.222:8080/yttx-agentbms-api/servicestation/bound/list",
+						method: 'POST',
+						dataType: 'json',
+						data:{
+							"agentId":id,
+							"adminId":decodeURIComponent(logininfo.param.adminId),
+							"token":decodeURIComponent(logininfo.param.token)
+						}
+					})).done(function(resp1,resp2){
+						var data1 = resp1[0],
+							data2=resp2[0],
+							code1 = parseInt(data1.code, 10),
+							code2 = parseInt(data2.code, 10);
+						if (code1 !== 0&&code2!==0) {
+							console.log(data1.message);
+							console.log(data2.message);
+							return false;
+						}
+						var list1 = data1.result.list,
+							unlen = list1.length,
+							list2=data2.result.list,
+							len=list2.length;
+
+						if (unlen !== 0) {
+							var i = 0,
+								unstr = '';
+							for (i; i < unlen; i++) {
+								unstr += '<li data-id="' + list1[i]['id'] + '">' + list1[i]['shortName'] + '</li>';
 							}
-						})
-						.done(function(resp){
-							var code=parseInt(resp.code,10);
-							if(code!==0){
-								/*回滚状态*/
-								console.log(resp.message);
-								return false;
+							$(unstr).appendTo($service_unbindwrap.html(''));
+						}else{
+							$service_unbindwrap.html('');
+						}
+
+						if(len!==0){
+							var j = 0,
+								str = '';
+							for (j; j < len; j++) {
+								str += '<li data-id="' + list2[j]['id'] + '">' + list2[j]['shortName'] + '</li>';
 							}
-							/*是否是正确的返回数据*/
-							var list=resp.result,
-								unbindarr=list.unbundling,
-								bindarr=list.bundling,
-								unlen=unbindarr.length,
-								len=bindarr.length;
+							$(str).appendTo($service_bindwrap.html(''));
+						}else {
+							$service_bindwrap.html('');
+						}
 
-							if(unbindarr&&bindarr){
-								/*遍历位绑定的*/
-								if(unlen&&unlen!==0){
-									var i= 0,unstr='';
-									for(i;i<unlen;i++){
-										unstr+='<li data-id="'+unbindarr[i]['serviceStationId']+'">'+unbindarr[j]['shortName']+'</li>';
-									}
-									$(unstr).appendTo($service_unbindwrap.html(''));
-								}else{
-									$service_unbindwrap.html('');
-								}
+						/*弹出操作框*/
+						$admin_bind_title.html(datas['fullName']+'代理商绑定');
+						$admin_bind_wrap.attr({
+							'data-id':id
+						}).modal('show',{backdrop:'static'});
 
-								/*遍历已经绑定的*/
-								if(len&&len!==0){
-									var j= 0,str='';
-									for(j;j<len;j++){
-										str+='<li data-id="'+bindarr[j]['serviceStationId']+'">'+bindarr[j]['shortName']+'</li>';
-									}
-								}else{
-									$service_bindwrap.html('');
-								}
+					}).fail(function (resp1,resp2) {
+						var data1 = resp1[0],
+							data2=resp2[0];
+						if(data1.code !==0){
+							console.log('unbind error');
+							$service_unbindwrap.html('');
+						}else if(data2.code !==0){
+							console.log('bind error');
+							$service_bindwrap.html('');
+						}
+					});
 
-								/*弹出操作框*/
-								$admin_bind_title.html(datas['fullName']+'代理商绑定');
-								$admin_bind_wrap.attr({
-									'data-id':id
-								}).modal('show',{backdrop:'static'});
-							}
-
-
-						})
-						.fail(function(resp){
-							console.log(resp.message);
-						});
 				}
-
-
 
 			});
 
@@ -539,12 +555,14 @@
 			$.each([$service_bindbtn,$service_unbindbtn], function () {
 
 				this.on('click', function () {
+
+
 					var $this=$(this),
 						type=$this.attr('data-type'),
 						hasitem,
 						isbind=type==='1'?true:false,
 						config={
-							url:"http://10.0.5.222:8080/yttx-agentbms-api/agent/binding/operation",
+							url:"http://10.0.5.222:8080/yttx-agentbms-api/servicestation/binding/operation",
 							dataType:'JSON',
 							method:'post',
 							data:{
@@ -573,39 +591,44 @@
 					config.data['isBinding']=type;
 
 					/*发送绑定代理或者取消绑定代理请求*/
-					$.ajax(config).done(function(resp){
-						var code=parseInt(resp.code,10);
-						if(code!==0){
-							console.log(resp.message);
-							return false;
-						}
+					//没有回调则设置回调对象
+					dialogObj.setFn(function(){
+						var self=this;
+						$.ajax(config).done(function(resp){
+							var code=parseInt(resp.code,10);
+							if(code!==0){
+								console.log(resp.message);
+								setTimeout(function(){
+									self.content('<span class="g-c-bs-warning g-btips-warn">'+(isbind?"绑定服务站失败":"取消绑定服务站失败")+'</span>').show();
+								},500);
+								return false;
+							}
 
-						/*请求成功执行相应交互*/
-						if(isbind){
-							hasitem.appendTo($service_bindwrap);
-						}else{
-							hasitem.appendTo($service_unbindwrap);
-						}
-						hasitem.siblings().removeClass('service-bindactive');
-						setTimeout(function(){
-							hasitem.removeClass('service-bindactive');
-							servicedia.content('<span class="g-c-bs-success g-btips-succ">'+(isbind?"服务站绑定成功":"服务站取消绑定成功")+'</span>').show();
+							/*请求成功执行相应交互*/
+							self.content('<span class="g-c-bs-success g-btips-succ">'+(isbind?"绑定服务站成功":"取消绑定服务站成功")+'</span>').show();
 							setTimeout(function(){
-								servicedia.close();
-							},2000);
-						},1000);
+								self.close();
+								if(isbind){
+									hasitem.appendTo($service_bindwrap);
+								}else{
+									hasitem.appendTo($service_unbindwrap);
+								}
+								hasitem.siblings().removeClass('service-bindactive');
+								setTimeout(function(){
+									hasitem.removeClass('service-bindactive');
+								},1000);
+							},1000);
 
-					}).fail(function(resp){
-						console.log('error');
-						setTimeout(function(){
-							servicedia.content('<span class="g-c-bs-success g-btips-succ">'+(isbind?"服务站绑定失败":"服务站取消绑定失败")+'</span>').show();
+						}).fail(function(resp){
+							console.log('error');
 							setTimeout(function(){
-								servicedia.close();
-							},2000);
-						},1000);
-					});
+								self.content('<span class="g-c-bs-warning g-btips-warn">'+(isbind?"绑定服务站失败":"取消绑定服务站失败")+'</span>').show();
+							},500);
+						});
 
-
+					},'agent_sure');
+					//确认删除
+					dialogObj.dialog.content('<span class="g-c-bs-warning g-btips-warn">'+(isbind?"是否绑定服务站?":"是否取消绑定服务站?")+'</span>').showModal();
 
 				});
 			});
