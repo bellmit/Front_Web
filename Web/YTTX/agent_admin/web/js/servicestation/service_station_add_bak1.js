@@ -32,10 +32,12 @@
 			var $station_wrap=$('#station_wrap')/*表格*/,
 				module_id='station_add'/*模块id，主要用于本地存储传值*/,
 				$data_wrap=$('#data_wrap')/*数据展现面板*/,
-				$edit_wrap=$('#edit_wrap')/*发货容器面板*/,
+				$add_wrap=$('#add_wrap')/*发货容器面板*/,
+				$update_wrap=$('#update_wrap')/*返修容器面板*/,
 				table=null/*数据展现*/,
 				$station_add_btn=$('#station_add_btn')/*添加*/,
-				$edit_title=$('#edit_title')/*编辑标题*/,
+				$add_title=$('#add_title')/*编辑标题*/,
+				$update_title=$('#update_title')/*编辑标题*/,
 				dia=dialog({
 					title:'温馨提示',
 					okValue:'确定',
@@ -62,47 +64,60 @@
 
 
 			/*表单对象*/
-			var edit_form=document.getElementById('station_edit_form')/*表单dom*/,
-				$station_edit_form=$(edit_form)/*编辑表单*/,
-				$station_servicestationid=$('#station_servicestationid'),/*返修id*/
-				$edit_cance_btn=$('#edit_cance_btn')/*编辑取消按钮*/,
-				$station_fullname=$('#station_fullname'),/*快递单号*/
-				$station_shortname=$('#station_shortname'),
-				$station_name=$('#station_name')/*发货经手人*/,
-				$station_phone=$('#station_phone'),
-				$station_tel=$('#station_tel')/*发货时间*/,
-				$station_province=$('#station_province'),
-				$station_city=$('#station_city'),
-				$station_area=$('#station_area'),
-				$station_province_value=$('#station_province_value'),
-				$station_city_value=$('#station_city_value'),
-				$station_area_value=$('#station_area_value'),
-				$station_address=$('#station_address'),
-				$station_agentid=$('#station_agentid'),
-				$station_remark=$('#station_remark');
+			var add_form=document.getElementById('station_add_form')/*表单dom*/,
+				update_form=document.getElementById('station_update_form')/*表单dom*/,
+				$station_add_form=$(add_form)/*编辑表单*/,
+				$station_update_form=$(update_form)/*编辑表单*/,
+				$update_id=$('#update_id'),/*返修id*/
+				$add_cance_btn=$('#add_cance_btn')/*编辑取消按钮*/,
+				$update_cance_btn=$('#update_cance_btn')/*编辑取消按钮*/,
+				$add_fullname=$('#add_fullname'),/*快递单号*/
+				$add_shortname=$('#add_shortname'),
+				$add_name=$('#add_name')/*发货经手人*/,
+				$add_phone=$('#add_phone'),
+				$add_tel=$('#add_tel')/*发货时间*/,
+				$add_province=$('#add_province'),
+				$add_city=$('#add_city'),
+				$add_area=$('#add_area'),
+				$add_province_value=$('#add_province_value'),
+				$add_city_value=$('#add_city_value'),
+				$add_area_value=$('#add_area_value'),
+				$add_address=$('#add_address'),
+				$add_agentid=$('#add_agentid'),
+				$add_remark=$('#add_remark'),
+				$update_fullname=$('#update_fullname'),/*快递单号*/
+				$update_shortname=$('#update_shortname'),
+				$update_name=$('#update_name')/*发货经手人*/,
+				$update_phone=$('#update_phone'),
+				$update_tel=$('#update_tel')/*发货时间*/,
+				$update_province=$('#update_province'),
+				$update_city=$('#update_city'),
+				$update_area=$('#update_area'),
+				$update_province_value=$('#update_province_value'),
+				$update_city_value=$('#update_city_value'),
+				$update_area_value=$('#update_area_value'),
+				$update_address=$('#update_address'),
+				$update_agentid=$('#update_agentid'),
+				$update_remark=$('#update_remark');
 
 
 			/*分润设置*/
-			var	$station_becomeagent=$('#station_becomeagent'),
-				$station_agentwrap=$('#station_agentwrap'),
-				$station_agentinput=$station_agentwrap.find('input'),
-				$station_salescheck=$('#station_salescheck'),
-				$station_saleswrap=$('#station_saleswrap'),
-				$station_salessetting=$('#station_salessetting'),
-				$station_salesprofit=$station_salessetting.find('input'),
-				$station_salesself=$('#station_salesself'),
-				$station_salesauto=$('#station_salesauto'),
-				$station_acqcheck=$('#station_acqcheck'),
-				$station_acqwrap=$('#station_acqwrap'),
-				$station_acqsetting=$('#station_acqsetting'),
-				$station_acqprofit=$station_acqsetting.find('input'),
-				$station_acqself=$('#station_acqself'),
-				$station_acqauto=$('#station_acqauto'),
-				$station_profitsumforsales=$('#station_profitsumforsales'),
-				$station_profitsumforacquiring=$('#station_profitsumforacquiring'),
+			var	$add_becomeagent=$('#add_becomeagent'),
+				$add_agentwrap=$('#add_agentwrap'),
+				$add_agentinput=$add_agentwrap.find('input'),
+				$add_salescheck=$('#add_salescheck'),
+				$add_saleswrap=$('#add_saleswrap'),
+				$add_salessetting=$('#add_salessetting'),
+				$add_salesprofit=$add_salessetting.find('input'),
+				$add_salesself=$('#add_salesself'),
+				$add_acqcheck=$('#add_acqcheck'),
+				$add_acqwrap=$('#add_acqwrap'),
+				$add_acqsetting=$('#add_acqsetting'),
+				$add_acqprofit=$add_acqsetting.find('input'),
+				$add_acqself=$('#add_acqself'),
 				profit_data={},
-				$station_bindagentwrap=$('#station_bindagentwrap'),
-				$station_becomeagentwrap=$('#station_becomeagentwrap');
+				$add_bindagentwrap=$('#add_bindagentwrap'),
+				$add_becomeagentwrap=$('#add_becomeagentwrap');
 
 
 
@@ -204,16 +219,26 @@
 			 * */
 			(function(){
 				/*重置表单*/
-				edit_form.reset();
+				add_form.reset();
+				update_form.reset();
 				$admin_search_clear.trigger('click');
 				/*地址调用*/
 				new public_tool.areaSelect().areaSelect({
-					$province:$station_province,
-					$city:$station_city,
-					$area:$station_area,
-					$provinceinput:$station_province_value,
-					$cityinput:$station_city_value,
-					$areainput:$station_area_value
+					$province:$add_province,
+					$city:$add_city,
+					$area:$add_area,
+					$provinceinput:$add_province_value,
+					$cityinput:$add_city_value,
+					$areainput:$add_area_value
+				});
+				/*地址调用*/
+				new public_tool.areaSelect().areaSelect({
+					$province:$update_province,
+					$city:$update_city,
+					$area:$update_area,
+					$provinceinput:$update_province_value,
+					$cityinput:$update_city_value,
+					$areainput:$update_area_value
 				});
 			}());
 
@@ -279,9 +304,9 @@
 				/*修改操作*/
 				if(action==='update'){
 					//重置信息
-					edit_form.reset();
+					add_form.reset();
 					//重置信息
-					$station_servicestationid.val(id);
+					$update_id.val(id);
 					$.ajax({
 						url:"http://10.0.5.222:8080/yttx-agentbms-api/servicestation/detail",
 						dataType:'JSON',
@@ -305,175 +330,91 @@
 						}
 
 						var result=resp.result,
-							station=result.serviceStation,
-							sales=result.salesProfit,
-							acq=result.acquiringProfit;
+							station=result.serviceStation;
 
 						if(!$.isEmptyObject(station)){
 							/*调整布局*/
 							$data_wrap.addClass('collapsed');
-							$edit_wrap.removeClass('collapsed');
+							$update_wrap.removeClass('collapsed');
+							$add_wrap.addClass('collapsed');
 							$("html,body").animate({scrollTop:380},200);
-
 
 							for(var i in station){
 								switch (i){
 									case 'fullName':
-										$station_fullname.val(station[i]);
+										$update_fullname.val(station[i]);
 										break;
 
 									case 'shortName':
-										$station_shortname.val(station[i]);
+										$update_shortname.val(station[i]);
 										break;
 
 									case 'name':
-										$station_name.val(station[i]);
+										$update_name.val(station[i]);
 										break;
 
 									case 'province':
-										$station_province_value.val(station[i]);
+										$update_province_value.val(station[i]);
 										break;
 
 									case 'city':
-										$station_city_value.val(station[i]);
+										$update_city_value.val(station[i]);
 										break;
 
 									case 'country':
-										$station_area_value.val(station[i]);
+										$update_area_value.val(station[i]);
 										break;
 
 									case 'address':
-										$station_address.val(station[i]);
+										$update_address.val(station[i]);
 										break;
 
 									case 'phone':
-										$station_phone.val(public_tool.phoneFormat(station[i]));
+										$update_phone.val(public_tool.phoneFormat(station[i]));
 										break;
 
 									case 'tel':
-										$station_tel.val(station[i]);
+										$update_tel.val(station[i]);
 										break;
 
 									case 'agentId':
 										var tempagentid=station[i];
-										if(tempagentid!==''){
-											tempagentid=parseInt(tempagentid,10);
-											$station_agentid.find('option').each(function(){
-												var $this=$(this),
-													value=$this.val();
+										$.ajax({
+											url:"http://10.0.5.222:8080/yttx-agentbms-api/agents/list",
+											dataType:'JSON',
+											method:'post',
+											data:{
+												roleId:decodeURIComponent(logininfo.param.roleId),
+												adminId:decodeURIComponent(logininfo.param.adminId),
+												token:decodeURIComponent(logininfo.param.token)
+											}
+										}).done(function(resp){
+											var code1=parseInt(resp.code,10);
+											if(code1!==0){
+												$update_agentid.html('<option value="'+tempagentid+'" selected>'+tempagentid+'</option>');
+												return false;
+											}
 
-												if(value!==''){
-													value=parseInt(value,10);
-													if(value===tempagentid){
-														/*选中*/
-														$this.prop({
-															'selected':true
-														});
-														/*设置代理商数据*/
-														profit_data['becomeAgent']=0;
-														if(typeof profit_data['grade']!=='undefined'){
-															delete profit_data['grade'];
-														}
-														$station_becomeagentwrap.removeClass('g-d-hidei');
-														return false;
+											var bindlist=resp.result.list,
+												len=bindlist.length,
+												k= 0,
+												str='';
+											for(k;k<len;k++){
+													if(bindlist[k]["id"]===tempagentid){
+														str+='<option selected value="'+bindlist[k]["id"]+'">'+bindlist[k]["shortName"]+'</option>';
+													}else{
+														str+='<option value="'+bindlist[k]["id"]+'">'+bindlist[k]["shortName"]+'</option>';
 													}
-												}
-											});
-										}else if(tempagentid===''){
-											$station_becomeagentwrap.removeClass('g-d-hidei');
-											$station_bindagentwrap.addClass('g-d-hidei');
-											$station_agentwrap.removeClass('g-d-hidei');
-
-											profit_data['becomeAgent']=1;
-											profit_data['grade']=1;
-
-											$station_agentid.find('option:first-child').prop({
-												'checked':true
-											});
-											$station_agentinput.eq(0).prop({
-												'checked':true
-											});
-
-										}
+											}
+											$(str).appendTo($update_agentid.html(''));
+										}).fail(function(resp){
+											console.log('error');
+											$update_agentid.html('<option value="'+tempagentid+'" selected>'+tempagentid+'</option>');
+										});
 										break;
+
 									case 'Remark':
-										$station_remark.val(station[i]);
-										break;
-
-									case 'isCustomSalesProfit':
-										/*销售分润设置*/
-										var salesvalue=parseInt(station[i],10);
-										if(salesvalue===1){
-											/*自定义*/
-											$station_salesself.prop({
-												'checked':true
-											});
-											profit_data['isCustomSalesProfit']=1;
-											$station_saleswrap.removeClass('g-d-hidei');
-											if(!$.isEmptyObject(sales)){
-												$station_profitsumforsales.val(sales['profitSum']);
-												profit_data['distributorP1ForSales']=sales['distributorProfit1'];
-												profit_data['distributorP2ForSales']=sales['distributorProfit2'];
-												profit_data['distributorP3ForSales']=sales['distributorProfit3'];
-											}else{
-												$station_profitsumforsales.val('');
-												profit_data['distributorP1ForSales']='';
-												profit_data['distributorP2ForSales']='';
-												profit_data['distributorP3ForSales']='';
-											}
-										}else if(salesvalue===0){
-											/*按系统定义*/
-											$station_salesauto.prop({
-												'checked':true
-											});
-											$station_saleswrap.addClass('g-d-hidei');
-											profit_data['isCustomSalesProfit']=0;
-											$station_profitsumforsales.val('');
-											if(typeof profit_data['distributorP1ForSales']!=='undefined'){
-												delete profit_data['distributorP1ForSales'];
-												delete profit_data['distributorP2ForSales'];
-												delete profit_data['distributorP3ForSales'];
-											}
-										}
-										break;
-
-									case 'isCustomAcquiringProfit':
-										/*收单分润设置*/
-										var acqvalue=parseInt(station[i],10);
-										/*profitSumForAcquiring,distributorP1ForAcquiring*/
-										var acqvalue=parseInt(station[i],10);
-										if(acqvalue===1){
-											/*自定义*/
-											$station_acqself.prop({
-												'checked':true
-											});
-											profit_data['isCustomAcquiringProfit']=1;
-											$station_acqwrap.removeClass('g-d-hidei');
-											if(!$.isEmptyObject(acq)){
-												$station_profitsumforacquiring.val(acq['profitSum']);
-												profit_data['distributorP1ForAcquiring']=acq['distributorProfit1'];
-												profit_data['distributorP2ForAcquiring']=acq['distributorProfit2'];
-												profit_data['distributorP3ForAcquiring']=acq['distributorProfit3'];
-											}else{
-												$station_profitsumforacquiring.val('');
-												profit_data['distributorP1ForAcquiring']='';
-												profit_data['distributorP2ForAcquiring']='';
-												profit_data['distributorP3ForAcquiring']='';
-											}
-										}else if(acqvalue===0){
-											/*按系统定义*/
-											$station_profitsumforacquiring.val('');
-											$station_acqauto.prop({
-												'checked':true
-											});
-											$station_acqwrap.addClass('g-d-hidei');
-											profit_data['isCustomAcquiringProfit']=0;
-											if(typeof profit_data['distributorP1ForAcquiring']!=='undefined'){
-												delete profit_data['distributorP1ForAcquiring'];
-												delete profit_data['distributorP2ForAcquiring'];
-												delete profit_data['distributorP3ForAcquiring'];
-											}
-										}
+										$update_remark.val(station[i]);
 										break;
 								}
 							};
@@ -508,66 +449,50 @@
 				e.preventDefault();
 				/*调整布局*/
 				$data_wrap.addClass('collapsed');
-				$edit_wrap.removeClass('collapsed');
+				$update_wrap.addClass('collapsed');
+				$add_wrap.removeClass('collapsed');
 				$("html,body").animate({scrollTop:300},200);
 				//重置信息
-				edit_form.reset();
+				update_form.reset();
 				//第一行获取焦点
-				$station_fullname.focus();
+				$add_fullname.focus();
 			});
 			/*配置添加和修改的权限*/
 			if(stationadd_power){
 				$station_add_btn.removeClass('g-d-hidei');
-				$edit_wrap.removeClass('g-d-hidei');
+				$add_wrap.removeClass('g-d-hidei');
 			};
 			if(stationupdate_power){
-				$edit_wrap.removeClass('g-d-hidei');
+				$update_wrap.removeClass('g-d-hidei');
 			}
 
 
 			/*取消发货，返修*/
-			$edit_cance_btn.on('click',function(e){
-				/*调整布局*/
-				edit_form.reset();
-				$data_wrap.removeClass('collapsed');
-				$edit_wrap.addClass('collapsed');
-				if(!$data_wrap.hasClass('collapsed')){
-					$("html,body").animate({scrollTop:200},200);
-				}
+			$.each([$add_cance_btn,$update_cance_btn],function(){
+				var selector=this.selector,
+					issend=selector.indexOf('send')!==-1?true:false;
 
-				/*重置绑定代理商ID,代理商，分润信息*/
-				$station_bindagentwrap.removeClass('g-d-hidei').find('option:first-child').prop({
-					'selected':true
+				this.on('click',function(e){
+					/*调整布局*/
+					if(issend){
+						add_form.reset();
+					}else{
+						update_form.reset();
+					}
+					$data_wrap.removeClass('collapsed');
+					$add_wrap.addClass('collapsed');
+					$update_wrap.addClass('collapsed');
+					if(!$data_wrap.hasClass('collapsed')){
+						$("html,body").animate({scrollTop:200},200);
+					}
 				});
 
-				$station_becomeagentwrap.removeClass('g-d-hidei');
-				$station_agentwrap.addClass('g-d-hidei');
-				profit_data['becomeAgent']=0;
-				if(typeof profit_data['grade']!=='undefined'){
-					delete profit_data['grade'];
-				}
-
-				$station_saleswrap.addClass('g-d-hidei');
-				profit_data['isCustomSalesProfit']=0;
-				if(typeof profit_data['distributorP1ForSales']!=='undefined'){
-					delete profit_data['distributorP1ForSales'];
-					delete profit_data['distributorP2ForSales'];
-					delete profit_data['distributorP3ForSales'];
-				}
-
-				$station_acqwrap.addClass('g-d-hidei');
-				profit_data['isCustomAcquiringProfit']=0;
-				if(typeof profit_data['distributorP1ForAcquiring']!=='undefined'){
-					delete profit_data['distributorP1ForAcquiring'];
-					delete profit_data['distributorP2ForAcquiring'];
-					delete profit_data['distributorP3ForAcquiring'];
-				}
 			});
 
 
 			/*手机格式化*/
 			/*格式化手机号码*/
-			$.each([$search_phone,$station_phone],function(){
+			$.each([$search_phone,$add_phone,$update_phone],function(){
 				this.on('keyup',function(){
 					var phoneno=this.value.replace(/\D*/g,'');
 					if(phoneno==''){
@@ -600,13 +525,13 @@
 						public_tool.loginTips();
 					}
 					console.log(resp.message);
-					$station_agentid.html('');
+					$add_agentid.html('');
 					binddisabled=true;
-					$station_bindagentwrap.addClass('g-d-hidei');
+					$add_bindagentwrap.addClass('g-d-hidei');
 					return false;
 				}
 				binddisabled=false;
-				$station_bindagentwrap.removeClass('g-d-hidei');
+				$add_bindagentwrap.removeClass('g-d-hidei');
 				var bindlist=resp.result.list,
 					len=bindlist.length,
 					k= 0,
@@ -614,24 +539,24 @@
 				for(k;k<len;k++){
 					str+='<option value="'+bindlist[k]["id"]+'">'+bindlist[k]["shortName"]+'</option>';
 				}
-				$(str).appendTo($station_agentid.html(''));
+				$(str).appendTo($add_agentid.html(''));
 
 				/*绑定事件*/
-				$station_agentid.on('change',function(){
+				$add_agentid.on('change',function(){
 					var $this=$(this),
 						value=$this.val();
 					if(value===''){
-						$station_becomeagentwrap.removeClass('g-d-hidei');
+						$add_becomeagentwrap.removeClass('g-d-hidei');
 					}else{
 						/*如果设置了值则重置值*/
-						$station_becomeagentwrap.addClass('g-d-hidei');
+						$add_becomeagentwrap.addClass('g-d-hidei');
 						if(profit_data['becomeAgent']===1){
 							profit_data['becomeAgent']=0;
-							$station_becomeagent.prop({
+							$add_becomeagent.prop({
 								'checked':false
 							});
-							$station_agentwrap.addClass('g-d-hidei');
-							$station_agentinput.each(function(){
+							$add_agentwrap.addClass('g-d-hidei');
+							$add_agentinput.each(function(){
 								$(this).prop({
 									'checked':false
 								});
@@ -645,24 +570,24 @@
 				});
 			}).fail(function(resp){
 					console.log('error');
-					$station_agentid.html('');
+					$add_agentid.html('');
 					binddisabled=true;
-					$station_bindagentwrap.addClass('g-d-hidei');
+					$add_bindagentwrap.addClass('g-d-hidei');
 			});
 
 
 			/*切换代理*/
 			profit_data['becomeAgent']=0;
-			$station_becomeagent.on('click',function(){
+			$add_becomeagent.on('click',function(){
 				var $this=$(this),
 					ischeck=$this.is(':checked'),
-					gradecheck=$station_agentinput.eq(0);
+					gradecheck=$add_agentinput.eq(0);
 
 				if(ischeck){
 					/*置空绑定代理商ID并隐藏选项*/
 					if(!binddisabled){
-						if($station_agentid.val()!==''){
-							$station_agentid.find('option').each(function (index) {
+						if($add_agentid.val()!==''){
+							$add_agentid.find('option').each(function (index) {
 								if(index===0){
 									$(this).prop({
 										'selected':true
@@ -674,11 +599,11 @@
 								}
 							});
 						}
-						$station_bindagentwrap.addClass('g-d-hidei');
+						$add_bindagentwrap.addClass('g-d-hidei');
 					}
 
 					/*初始化成为代理商*/
-					$station_agentwrap.removeClass('g-d-hidei');
+					$add_agentwrap.removeClass('g-d-hidei');
 					profit_data['becomeAgent']=1;
 					gradecheck.prop({
 						'checked':true
@@ -686,12 +611,12 @@
 					profit_data['grade']=gradecheck.val();
 				}else{
 					if(!binddisabled){
-						$station_bindagentwrap.removeClass('g-d-hidei');
+						$add_bindagentwrap.removeClass('g-d-hidei');
 					}
 
 
-					$station_agentwrap.addClass('g-d-hidei');
-					$station_agentinput.each(function(){
+					$add_agentwrap.addClass('g-d-hidei');
+					$add_agentinput.each(function(){
 						$(this).prop({
 							'checked':false
 						});
@@ -704,13 +629,13 @@
 				}
 			});
 			/*选择代理*/
-			$station_agentwrap.on('click','input',function(){
+			$add_agentwrap.on('click','input',function(){
 				profit_data['grade']=this.value;
 			});
 
 
 			/*设置分润*/
-			$.each([$station_salescheck,$station_acqcheck],function(index){
+			$.each([$add_salescheck,$add_acqcheck],function(index){
 				var selector=this.selector,
 					issale=selector.indexOf('sales')!==-1?true:false,
 					$radio=this.find('input');
@@ -739,7 +664,7 @@
 						if(value===1){
 							/*自定义*/
 							if(issale){
-								$station_saleswrap.removeClass('g-d-hidei');
+								$add_saleswrap.removeClass('g-d-hidei');
 								profit_data['isCustomSalesProfit']=value;
 								/*设置了的三级分润默认值*/
 								profit_data['distributorP1ForSales']='';
@@ -747,7 +672,7 @@
 								profit_data['distributorP3ForSales']='';
 
 							}else{
-								$station_acqwrap.removeClass('g-d-hidei');
+								$add_acqwrap.removeClass('g-d-hidei');
 								profit_data['isCustomAcquiringProfit']=value;
 								/*设置了的三级分润默认值*/
 								profit_data['distributorP1ForAcquiring']='';
@@ -757,7 +682,7 @@
 						}else if(value===0){
 							/*系统默认*/
 							if(issale){
-								$station_saleswrap.addClass('g-d-hidei');
+								$add_saleswrap.addClass('g-d-hidei');
 								profit_data['isCustomSalesProfit']=value;
 								/*删除已经设置了的三级分润*/
 								if(typeof profit_data['distributorP1ForSales']!=='undefined'){
@@ -770,7 +695,7 @@
 									delete profit_data['distributorP3ForSales'];
 								}
 							}else{
-								$station_acqwrap.addClass('g-d-hidei');
+								$add_acqwrap.addClass('g-d-hidei');
 								profit_data['isCustomAcquiringProfit']=value;
 								/*删除已经设置了的三级分润*/
 								if(typeof profit_data['distributorP1ForAcquiring']!=='undefined'){
@@ -790,7 +715,7 @@
 
 
 			/*绑定分润输入限制*/
-			$.each([$station_salesprofit,$station_acqprofit],function(){
+			$.each([$add_salesprofit,$add_acqprofit],function(){
 				this.each(function () {
 					$(this).on('keyup',function(){
 						var val=this.value.replace(/[^0-9*\-*^\.]/g,'');
@@ -809,134 +734,154 @@
 			});
 
 			/*最小化窗口*/
-			$edit_title.next().on('click',function(e){
-				if($data_wrap.hasClass('collapsed')){
-					e.stopPropagation();
-					e.preventDefault();
-					$edit_cance_btn.trigger('click');
-				}
-			});
+			$.each([$add_title,$update_title], function () {
+				var selector=this.selector,
+					isadd=selector.indexOf('add')!==-1?true:false;
 
+				this.next().on('click',function(e){
+					if($data_wrap.hasClass('collapsed')){
+						e.stopPropagation();
+						e.preventDefault();
+						isadd?$add_cance_btn.trigger('click'):$update_cance_btn.trigger('click');
+					}
+				});
+			});
 
 
 
 			/*表单验证*/
 			if($.isFunction($.fn.validate)) {
 				/*配置信息*/
-				var form_opt={},
+				var form_opt0={},
+					form_opt1={},
 					formcache=public_tool.cache;
 
-				if(formcache.form_opt_0){
-					$.extend(true,form_opt,formcache.form_opt_0,{
-						submitHandler: function(form){
-							var id=$station_servicestationid.val(),
-								isadd=id===''?true:false,
-								config={
-									dataType:'JSON',
-									method:'post',
-									data:{}
-								};
-
-							/*校验分润对象*/
-							if($station_salesself.is(':checked')){
-								/*自定义*/
-								if(!validProfit($station_salesprofit,dia,profit_data,true)){
-									if(typeof config.data['profitSumForSales']!=='undefined'){
-										delete config.data['profitSumForSales'];
+				if(formcache.form_opt_0 && formcache.form_opt_1){
+					$.each([formcache.form_opt_0,formcache.form_opt_1], function (index) {
+						var isadd=index===0?true:false;
+						$.extend(true,(function () {
+							return isadd?form_opt0:form_opt1;
+						}()),(function () {
+							return isadd?formcache.form_opt_0:formcache.form_opt_1;
+						}()),{
+							submitHandler: function(form){
+								if(isadd){
+									/*添加*/
+									/*校验分润对象*/
+									if($add_salesself.is(':checked')){
+										/*自定义*/
+										if(!validProfit($add_salesprofit,dia,profit_data,true)){
+											return false;
+										}
 									}
-									return false;
-								}
-								$.extend(true,config.data,{
-									profitSumForSales:$station_profitsumforsales.val()
-								});
-							}
-							if($station_acqself.is(':checked')){
-								if(!validProfit($station_acqprofit,dia,profit_data,false)){
-									if(typeof config.data['profitSumForAcquiring']!=='undefined'){
-										delete config.data['profitSumForAcquiring'];
+									if($add_acqself.is(':checked')){
+										if(!validProfit($add_acqprofit,dia,profit_data,false)){
+											return false;
+										}
 									}
-									return false;
-								}
-								$.extend(true,config.data,{
-									profitSumForAcquiring:$station_profitsumforacquiring.val()
-								});
-							}
 
 
-							$.extend(true,config.data,{
-								roleId:decodeURIComponent(logininfo.param.roleId),
-								adminId:decodeURIComponent(logininfo.param.adminId),
-								token:decodeURIComponent(logininfo.param.token),
-								fullName:$station_fullname.val(),
-								shortName:$station_shortname.val(),
-								name:$station_name.val(),
-								province:$station_province_value.val(),
-								city:$station_city_value.val(),
-								country:$station_area_value.val(),
-								address:$station_address.val(),
-								phone:$station_phone.val().replace(/\s*/g,''),
-								tel:$station_tel.val(),
-								Remark:$station_remark.val()
-							});
-
-
-							if(isadd){
-								/*添加*/
-								config['url']="http://10.0.5.222:8080/yttx-agentbms-api/servicestation/addupdate";
-								if(typeof config['data']['serviceStationId']!=='undefined'){
-									delete config['data']['serviceStationId'];
-								}
-
-							}else{
-								/*更新*/
-								config['url']="http://10.0.5.222:8080/yttx-agentbms-api/servicestation/update";
-								config['data']['serviceStationId']=id;
-							}
-							/*扩展其他参数*/
-							$.extend(true,config.data,profit_data);
-							if(profit_data['becomeAgent']===0){
-								config.data['agentId']=$station_agentid.val();
-							}else if(profit_data['becomeAgent']===1){
-								if(typeof config.data['agentId']!=='undefined'){
-									delete config.data['agentId'];
-								}
-							}
-
-
-							$.ajax(config)
-								.done(function(resp){
-									var code=parseInt(resp.code,10);
-									if(code!==0){
-										console.log(resp.message);
+									var config={
+										url:"http://10.0.5.222:8080/yttx-agentbms-api/servicestation/addupdate",
+										dataType:'JSON',
+										method:'post',
+										data:{
+											roleId:decodeURIComponent(logininfo.param.roleId),
+											adminId:decodeURIComponent(logininfo.param.adminId),
+											token:decodeURIComponent(logininfo.param.token),
+											fullName:$add_fullname.val(),
+											shortName:$add_shortname.val(),
+											name:$add_name.val(),
+											province:$add_province_value.val(),
+											city:$add_city_value.val(),
+											country:$add_area_value.val(),
+											address:$add_address.val(),
+											phone:$add_phone.val().replace(/\s*/g,''),
+											tel:$add_tel.val(),
+											Remark:$add_remark.val()
+										}
+									};
+									$.extend(true,config.data,profit_data);
+									if(profit_data['becomeAgent']===0){
+										config.data['agentId']=$add_agentid.val();
+									}else if(profit_data['becomeAgent']===1){
+										if(typeof config.data['agentId']!=='undefined'){
+											delete config.data['agentId'];
+										}
+									}
+								}else{
+									/*更新*/
+									var id=$update_id.val();
+									if(!isadd&&id===''){
+										$update_cance_btn.trigger('click');
+										dia.content('<span class="g-c-bs-warning g-btips-warn">请选择需要操作的服务站</span>').show();
 										setTimeout(function(){
-											isadd?dia.content('<span class="g-c-bs-warning g-btips-warn">添加服务站失败</span>').show():dia.content('<span class="g-c-bs-warning g-btips-warn">修改服务站失败</span>').show();
+											dia.close();
+										},3000);
+										return false;
+									}
+									var config={
+										url:"http://10.0.5.222:8080/yttx-agentbms-api/servicestation/update",
+										dataType:'JSON',
+										method:'post',
+										data:{
+											serviceStationId:id,
+											adminId:decodeURIComponent(logininfo.param.adminId),
+											token:decodeURIComponent(logininfo.param.token),
+											roleId:decodeURIComponent(logininfo.param.roleId),
+											fullName:$update_fullname.val(),
+											shortName:$update_shortname.val(),
+											name:$update_name.val(),
+											province:$update_province_value.val(),
+											city:$update_city_value.val(),
+											country:$update_area_value.val(),
+											address:$update_address.val(),
+											phone:$update_phone.val().replace(/\s*/g,''),
+											tel:$update_tel.val(),
+											agentId:$update_agentid.val(),
+											Remark:$update_remark.val()
+										}
+									};
+								}
+
+
+								$.ajax(config)
+									.done(function(resp){
+										var code=parseInt(resp.code,10);
+										if(code!==0){
+											console.log(resp.message);
+											setTimeout(function(){
+												isadd?dia.content('<span class="g-c-bs-warning g-btips-warn">添加服务站失败</span>').show():dia.content('<span class="g-c-bs-warning g-btips-warn">修改服务站失败</span>').show();
+											},300);
+											setTimeout(function () {
+												dia.close();
+											},2000);
+											return false;
+										}
+										//重绘表格
+										table.ajax.reload(null,false);
+										//重置表单
+										//重置表单
+										isadd?$add_cance_btn.trigger('click'):$update_cance_btn.trigger('click');
+										setTimeout(function(){
+											isadd?dia.content('<span class="g-c-bs-success g-btips-succ">添加服务站成功</span>').show():dia.content('<span class="g-c-bs-success g-btips-succ">修改服务站成功</span>').show();
 										},300);
 										setTimeout(function () {
 											dia.close();
 										},2000);
-										return false;
-									}
-									//重绘表格
-									table.ajax.reload(null,false);
-									//重置表单
-									//重置表单
-									$edit_cance_btn.trigger('click');
-									setTimeout(function(){
-										isadd?dia.content('<span class="g-c-bs-success g-btips-succ">添加服务站成功</span>').show():dia.content('<span class="g-c-bs-success g-btips-succ">修改服务站成功</span>').show();
-									},300);
-									setTimeout(function () {
-										dia.close();
-									},2000);
-								})
-								.fail(function(resp){
-									console.log(resp.message);
-								});
-							return false;
-						}
+									})
+									.fail(function(resp){
+										console.log(resp.message);
+									});
+								return false;
+							}
+						});
+
 					});
 				}
 				/*提交验证*/
-				$station_edit_form.validate(form_opt);
+				$station_add_form.validate(form_opt0);
+				$station_update_form.validate(form_opt1);
 			}
 		}
 

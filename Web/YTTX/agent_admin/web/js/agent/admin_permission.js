@@ -8,7 +8,7 @@
 			/*菜单调用*/
 			var logininfo=public_tool.initMap.loginMap;
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
-				url:'http://120.24.226.70:8081/yttx-agentbms-api/module/menu',
+				url:'http://10.0.5.222:8080/yttx-agentbms-api/module/menu',
 				async:false,
 				type:'post',
 				param:{
@@ -43,7 +43,7 @@
 
 			/*权限请求配置*/
 			var permission_config={
-						url:"http://120.24.226.70:8081/yttx-agentbms-api/module/permissions",
+						url:"http://10.0.5.222:8080/yttx-agentbms-api/module/permissions",
 						dataType:'JSON',
 						method:'post',
 						data:{
@@ -69,7 +69,7 @@
 				stateSave:false,/*是否保存重新加载的状态*/
 				processing:true,/*大消耗操作时是否显示处理状态*/
 				ajax:{
-					url:"http://120.24.226.70:8081/yttx-agentbms-api/roles",
+					url:"http://10.0.5.222:8080/yttx-agentbms-api/roles",
 					dataType:'JSON',
 					method:'post',
 					dataSrc:function ( json ) {
@@ -339,7 +339,7 @@
 
 				/*发送请求*/
 				$.ajax({
-						url:"http://120.24.226.70:8081/yttx-agentbms-api/module/permission/update",
+						url:"http://10.0.5.222:8080/yttx-agentbms-api/module/permission/update",
 						dataType:'JSON',
 						method:'post',
 						data:{
