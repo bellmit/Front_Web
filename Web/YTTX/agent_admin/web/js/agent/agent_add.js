@@ -39,6 +39,7 @@
 				$agent_add_btn=$('#agent_add_btn')/*添加*/,
 				$edit_title=$('#edit_title')/*编辑标题*/,
 				dia=dialog({
+					zIndex:2000,
 					title:'温馨提示',
 					okValue:'确定',
 					width:300,
@@ -541,17 +542,6 @@
 
 
 			/*绑定代理商绑定和取消绑定*/
-			var servicedia=dialog({
-				zIndex:2000,
-				title:'温馨提示',
-				okValue:'确定',
-				width:300,
-				ok:function(){
-					this.close();
-					return false;
-				},
-				cancel:false
-			});
 			$.each([$service_bindbtn,$service_unbindbtn], function () {
 
 				this.on('click', function () {
@@ -582,7 +572,7 @@
 					}
 
 					if(hasitem.length===0){
-						servicedia.content('<span class="g-c-bs-warning g-btips-warn">请选择需要绑定或取消绑定的数据</span>').show();
+						dia.content('<span class="g-c-bs-warning g-btips-warn">请选择需要绑定或取消绑定的数据</span>').show();
 						return false;
 					}
 
