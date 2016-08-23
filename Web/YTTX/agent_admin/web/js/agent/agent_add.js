@@ -312,7 +312,7 @@
 							delete data[key[1]];
 						}
 					}else{
-						if(key[1].indexOf('phone')!==-1){
+						if(key[1].toLowerCase().indexOf('phone')!==-1){
 							text=text.replace(/\s*/g,'');
 						}
 						data[key[1]]=text;
@@ -556,7 +556,7 @@
 							dataType:'JSON',
 							method:'post',
 							data:{
-								serviceStationId:$admin_bind_wrap.attr('data-id'),
+								agentId:$admin_bind_wrap.attr('data-id'),
 								adminId:decodeURIComponent(logininfo.param.adminId),
 								token:decodeURIComponent(logininfo.param.token)
 							}
@@ -577,7 +577,7 @@
 					}
 
 					/*设置参数*/
-					config.data['agentId']=hasitem.attr('data-id');
+					config.data['serviceStationId']=hasitem.attr('data-id');
 					config.data['isBinding']=type;
 
 					/*发送绑定代理或者取消绑定代理请求*/

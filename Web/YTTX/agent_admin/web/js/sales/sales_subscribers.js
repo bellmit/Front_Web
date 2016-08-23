@@ -76,7 +76,7 @@
 				$edit_form=$(edit_form)/*编辑表单*/,
 				$sales_subscriberid=$('#sales_subscriberid'),
 				$sales_servicestationid=$('#sales_servicestationid'),/*返修id*/
-				$sales_cance_btn=$('#sales_cance_btn')/*编辑取消按钮*/,
+				$edit_cance_btn=$('#edit_cance_btn')/*编辑取消按钮*/,
 				$remark=$('#remark'),/*快递单号*/
 				$sales_imeicode=$('#sales_imeicode'),
 				$sales_name=$('#sales_name')/*发货经手人*/,
@@ -309,7 +309,7 @@
 							delete data[key[1]];
 						}
 					}else{
-						if(key[1].indexOf('phone')!==-1){
+						if(key[1].toLowerCase().indexOf('phone')!==-1){
 							text=text.replace(/\s*/g,'');
 						}
 						data[key[1]]=text;
@@ -352,7 +352,7 @@
 					$edit_title.attr({
 						'data-type':'update'
 					}).html('修改 "'+datas['name']+'" 信息');
-					$sales_cance_btn.prev().html('修改');
+					$edit_cance_btn.prev().html('修改');
 					$("html,body").animate({scrollTop:300},200);
 					//重置信息
 
@@ -539,7 +539,7 @@
 				$edit_title.attr({
 					'data-type':'add'
 				}).html('添加用户');
-				$sales_cance_btn.prev().html('添加');
+				$edit_cance_btn.prev().html('添加');
 				$("html,body").animate({scrollTop:300},200);
 				//重置信息
 				edit_form.reset();
@@ -553,14 +553,14 @@
 			};
 
 			/*取消添加或修改*/
-			$sales_cance_btn.on('click',function(e){
+			$edit_cance_btn.on('click',function(e){
 				/*调整布局*/
 				$data_wrap.removeClass('collapsed');
 				$edit_wrap.addClass('collapsed');
 				$edit_title.attr({
 					'data-type':'add'
 				}).html('添加用户');
-				$sales_cance_btn.prev().html('添加');
+				$edit_cance_btn.prev().html('添加');
 				edit_form.reset();
 				if(!$data_wrap.hasClass('collapsed')){
 					$("html,body").animate({scrollTop:200},200);
@@ -597,7 +597,7 @@
 				if($data_wrap.hasClass('collapsed')){
 					e.stopPropagation();
 					e.preventDefault();
-					$sales_cance_btn.trigger('click');
+					$edit_cance_btn.trigger('click');
 				}
 			});
 
@@ -682,7 +682,7 @@
 									table.ajax.reload(null,false);
 									//重置表单
 									//重置表单
-									$sales_cance_btn.trigger('click');
+									$edit_cance_btn.trigger('click');
 									setTimeout(function(){
 										isadd?dia.content('<span class="g-c-bs-success g-btips-succ">添加用户成功</span>').show():dia.content('<span class="g-c-bs-success g-btips-succ">修改用户成功</span>').show();
 									},300);

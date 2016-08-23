@@ -663,8 +663,8 @@
 		var self=this,
 			matchClass=function(map,str){
 				/*修正class*/
-				if(typeof map!=='undefined'&&str!==map.class){
-					return map.class;
+				if(typeof map!=='undefined'&&str!==map['class']){
+					return map['class'];
 				}
 				return str;
 			},

@@ -22,20 +22,18 @@
 
 			/*权限调用*/
 			var powermap=public_tool.getPower(),
-				salesdelete_power=public_tool.getKeyPower('删除',powermap),
-				salesupdate_power=public_tool.getKeyPower('修改',powermap),
-				salesdetail_power=public_tool.getKeyPower('查看',powermap),
-				salesadd_power=public_tool.getKeyPower('添加',powermap),
-				salesacquiring_power=public_tool.getKeyPower('收单查看',powermap);
+				logisticsreceive_power=public_tool.getKeyPower('收货',powermap),
+				logisticsrepair_power=public_tool.getKeyPower('返修管理',powermap),
+				logisticsdetail_power=public_tool.getKeyPower('查看',powermap),
+				logisticsreceivefail_power=public_tool.getKeyPower('收货异常管理',powermap);
 
 
 			/*dom引用和相关变量定义*/
-			var $sales_list_wrap=$('#sales_list_wrap')/*表格*/,
+			var $logistics_list_wrap=$('#logistics_list_wrap')/*表格*/,
 				module_id='agent_add'/*模块id，主要用于本地存储传值*/,
 				$data_wrap=$('#data_wrap')/*数据展现面板*/,
 				$edit_wrap=$('#edit_wrap')/*发货容器面板*/,
 				table=null/*数据展现*/,
-				$sales_add_btn=$('#sales_add_btn')/*添加*/,
 				$edit_title=$('#edit_title')/*编辑标题*/,
 				dia=dialog({
 					title:'温馨提示',
@@ -63,30 +61,33 @@
 				}/*详情映射*/;
 
 			/*查询对象*/
-			var $search_agentName=$('#search_agentName'),
-				$search_serviceStationName=$('#search_serviceStationName'),
-				$search_name=$('#search_name'),
-				$search_cellphone=$('#search_cellphone'),
-				$search_addTime=$('#search_addTime'),
+			var $search_deliveryHandler=$('#search_deliveryHandler'),
+				$search_receiver=$('#search_receiver'),
+				$search_deliveryPhone=$('#search_deliveryPhone'),
+				$search_receivingPhone=$('#search_receivingPhone'),
 				$admin_search_btn=$('#admin_search_btn'),
 				$admin_search_clear=$('#admin_search_clear');
 
 			/*表单对象*/
 			var edit_form=document.getElementById('edit_form')/*表单dom*/,
 				$edit_form=$(edit_form)/*编辑表单*/,
-				$sales_subscriberid=$('#sales_subscriberid'),
-				$sales_servicestationid=$('#sales_servicestationid'),/*返修id*/
-				$sales_cance_btn=$('#sales_cance_btn')/*编辑取消按钮*/,
+				$logistics_subscriberid=$('#logistics_subscriberid'),
+				$logistics_servicestationid=$('#logistics_servicestationid'),/*返修id*/
+				$edit_sure_btn=$('#edit_sure_btn'),
+				$edit_error_btn=$('#edit_error_btn'),
+				$edit_cance_btn=$('#edit_cance_btn')/*编辑取消按钮*/,
+				$logistics_receiveerror=$('#logistics_receiveerror'),
+				$logistics_receiveerrorwrap=$('#logistics_receiveerrorwrap'),
 				$remark=$('#remark'),/*快递单号*/
-				$sales_imeicode=$('#sales_imeicode'),
-				$sales_name=$('#sales_name')/*发货经手人*/,
-				$sales_cellphone=$('#sales_cellphone'),
-				$sales_telephone=$('#sales_telephone')/*发货时间*/,
-				$sales_address=$('#sales_address');
+				$logistics_imeicode=$('#logistics_imeicode'),
+				$logistics_name=$('#logistics_name')/*发货经手人*/,
+				$logistics_cellphone=$('#logistics_cellphone'),
+				$logistics_telephone=$('#logistics_telephone')/*发货时间*/,
+				$logistics_address=$('#logistics_address');
 
 			/*数据加载*/
-			var sales_config={
-				url:"http://120.24.226.70:8081/yttx-agentbms-api/marketing/subscribers/related",
+			var logistics_config={
+				url:"http://120.24.226.70:8081/yttx-agentbms-api/servicestation/receivings",
 				dataType:'JSON',
 				method:'post',
 				dataSrc:function ( json ) {
@@ -109,7 +110,7 @@
 					token:decodeURIComponent(logininfo.param.token)
 				}
 			};
-			table=$sales_list_wrap.DataTable({
+			table=$logistics_list_wrap.DataTable({
 				deferRender:true,/*是否延迟加载数据*/
 				//serverSide:true,/*是否服务端处理*/
 				searching:true,/*是否搜索*/
@@ -121,114 +122,34 @@
 				info:true,/*显示分页信息*/
 				stateSave:false,/*是否保存重新加载的状态*/
 				processing:true,/*大消耗操作时是否显示处理状态*/
-				ajax:sales_config,/*异步请求地址及相关配置*/
+				ajax:logistics_config,/*异步请求地址及相关配置*/
 				columns: [
-					{"data":"serviceStationName"},
-					{"data":"agentName"},
-					{"data":"name"},
 					{
-						"data":"cellphone",
+						"data":"receivingUnit",
+						"render":function(data, type, full, meta ){
+							return data.toString().slice(0,10);
+						}},
+					{"data":"deliveryHandler"},
+					{
+						"data":"deliveryPhone",
 						"render":function(data, type, full, meta ){
 							return public_tool.phoneFormat(data);
 						}
 					},
 					{
-						"data":"address",
+						"data":"receiver"
+					},
+					{
+						"data":"receivingPhone",
 						"render":function(data, type, full, meta ){
-							return data.toString().slice(0,20)+'...';
+							return public_tool.phoneFormat(data);
 						}
 					},
 					{
-						"data":"imeiCode"
+						"data":"totalQuantity"
 					},
 					{
-						"data":"addTime",
-						"render":function(data, type, full, meta ){
-							return moment(data).format('YYYY-MM-DD');
-						}
-					},
-					{
-						"data":"status",
-						"render":function(data, type, full, meta ){
-							var status=parseInt(data,10),
-							btns='',
-							id=full.id;
-
-							if(status===0){
-								/*未售*/
-								btns+='<span data-id="'+id+'" data-status="0" data-current="0" data-action="unsales" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
-									 <i class="fa-star-o"></i>\
-									 <span>未售</span>\
-									 </span>\
-									 <span data-id="'+id+'" data-status="1" data-current="0" data-action="sales" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray12">\
-									 <i class="fa-star"></i>\
-									 <span>已售</span>\
-									 </span>\
-									 <span data-id="'+id+'" data-status="2" data-current="0" data-action="stop" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray12">\
-									 <i class="fa-lock"></i>\
-									 <span>停用</span>\
-									 </span>\
-									 <span data-id="'+id+'" data-status="3" data-current="0" data-action="repairs" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray12">\
-									 <i class="fa-wrench"></i>\
-									 <span>返修</span>\
-									 </span>';
-							}else if(status===1){
-								/*已售*/
-								btns+='<span data-id="'+id+'" data-status="0" data-current="1" data-action="unsales" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray12">\
-									 <i class="fa-star-o"></i>\
-									 <span>未售</span>\
-									 </span>\
-									 <span data-id="'+id+'" data-status="1" data-current="1" data-action="sales" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
-									 <i class="fa-star"></i>\
-									 <span>已售</span>\
-									 </span>\
-									 <span data-id="'+id+'" data-status="2" data-current="1" data-action="stop" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray12">\
-									 <i class="fa-lock"></i>\
-									 <span>停用</span>\
-									 </span>\
-									 <span data-id="'+id+'" data-status="3" data-current="1" data-action="repairs" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray12">\
-									 <i class="fa-wrench"></i>\
-									 <span>返修</span>\
-									 </span>';
-							}else if(status===2){
-								/*停用*/
-								btns+='<span data-id="'+id+'" data-status="0" data-current="2" data-action="unsales" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray12">\
-									 <i class="fa-star-o"></i>\
-									 <span>未售</span>\
-									 </span>\
-									 <span data-id="'+id+'" data-status="1" data-current="2" data-action="sales" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray12">\
-									 <i class="fa-star"></i>\
-									 <span>已售</span>\
-									 </span>\
-									 <span data-id="'+id+'" data-status="2" data-current="2" data-action="stop" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
-									 <i class="fa-lock"></i>\
-									 <span>停用</span>\
-									 </span>\
-									 <span data-id="'+id+'" data-status="3" data-current="2" data-action="repairs" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray12">\
-									 <i class="fa-wrench"></i>\
-									 <span>返修</span>\
-									 </span>';
-							}else if(status===3){
-								/*返修*/
-								btns+='<span data-id="'+id+'" data-status="0" data-current="3" data-action="unsales" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray12">\
-									 <i class="fa-star-o"></i>\
-									 <span>未售</span>\
-									 </span>\
-									 <span data-id="'+id+'" data-status="1" data-current="3" data-action="sales" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray12">\
-									 <i class="fa-star"></i>\
-									 <span>已售</span>\
-									 </span>\
-									 <span data-id="'+id+'" data-status="2" data-current="3" data-action="stop" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray12">\
-									 <i class="fa-lock"></i>\
-									 <span>停用</span>\
-									 </span>\
-									 <span data-id="'+id+'" data-status="3" data-current="3" data-action="repairs" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
-									 <i class="fa-wrench"></i>\
-									 <span>返修</span>\
-									 </span>';
-							}
-							return btns;
-						}
+						"data":"deliverUnit"
 					},
 					{
 						"data":"id",
@@ -236,32 +157,32 @@
 							var btns='';
 
 
-							if(salesdetail_power){
+							if(logisticsdetail_power){
 								/*查看*/
 								btns+='<span data-id="'+data+'" data-action="select" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 									 <i class="fa-file-text-o"></i>\
 									 <span>查看</span>\
 									 </span>';
 							}
-							if(salesupdate_power){
-								/*修改*/
-								btns+='<span  data-id="'+data+'" data-action="update" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+							if(logisticsreceive_power){
+								/*收货*/
+								btns+='<span  data-id="'+data+'" data-action="receive" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 									<i class="fa-pencil"></i>\
-									<span>修改</span>\
+									<span>收货</span>\
 									</span>';
 							}
-							if(salesacquiring_power){
+							if(logisticsreceivefail_power){
 								/*收单查看*/
-								btns+='<span  data-id="'+data+'" data-action="selectacquiring" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
-									<i class="fa-cogs"></i>\
-									<span>收单查看</span>\
+								btns+='<span  data-id="'+data+'" data-action="selectreceive" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+									<i class="fa-exclamation"></i>\
+									<span>收货异常管理</span>\
 									</span>';
 							}
-							if(salesdelete_power){
+							if(logisticsrepair_power){
 								/*删除*/
-								btns+='<span  data-id="'+data+'" data-action="delete" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
-									<i class="fa-trash"></i>\
-									<span>删除</span>\
+								btns+='<span  data-id="'+data+'" data-action="repair" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+									<i class="fa-wrench"></i>\
+									<span>返修管理</span>\
 									</span>';
 							}
 							return btns;
@@ -269,8 +190,8 @@
 					}
 				],/*控制分页数*/
 				aLengthMenu: [
-					[20,30,40,50],
-					[20,30,40,50]
+					[5,10,15,20],
+					[5,10,15,20]
 				],
 				lengthChange:true/*是否可改变长度*/
 			});
@@ -281,48 +202,47 @@
 			(function(){
 				/*重置表单*/
 				edit_form.reset();
-				$admin_search_clear.trigger('click');
+
 
 			}());
 
 
 			/*清空查询条件*/
 			$admin_search_clear.on('click',function(){
-				$.each([$search_agentName,$search_serviceStationName,$search_name,$search_cellphone,$search_addTime],function(){
+				$.each([$search_deliveryHandler,$search_receiver,$search_deliveryPhone,$search_receivingPhone],function(){
 					this.val('');
 				});
 			});
+			$admin_search_clear.trigger('click');
 
 			/*联合查询*/
 			$admin_search_btn.on('click',function(){
-				var data= $.extend(true,{},sales_config.data);
+				var data= $.extend(true,{},logistics_config.data);
 
-				$.each([$search_agentName,$search_serviceStationName,$search_name,$search_cellphone,$search_addTime],function(){
+				$.each([$search_deliveryHandler,$search_receiver,$search_deliveryPhone,$search_receivingPhone],function(){
 					var text=this.val(),
 						selector=this.selector.slice(1),
 						key=selector.split('_');
-
-
 
 					if(text===""){
 						if(typeof data[key[1]]!=='undefined'){
 							delete data[key[1]];
 						}
 					}else{
-						if(key[1].indexOf('phone')!==-1){
+						if(key[1].toLowerCase().indexOf('phone')!==-1){
 							text=text.replace(/\s*/g,'');
 						}
 						data[key[1]]=text;
 					}
 
 				});
-				sales_config.data= $.extend(true,{},data);
-				table.ajax.config(sales_config).load(false);
+				logistics_config.data= $.extend(true,{},data);
+				table.ajax.config(logistics_config).load(false);
 			});
 
 			/*事件绑定*/
 			/*绑定查看，修改操作*/
-			$sales_list_wrap.delegate('span','click',function(e){
+			$logistics_list_wrap.delegate('span','click',function(e){
 				e.stopPropagation();
 				e.preventDefault();
 
@@ -344,47 +264,21 @@
 
 				var datas=table.row($tr).data();
 
-				/*修改操作*/
-				if(action==='update'){
+				/*收货操作*/
+				if(action==='receive'){
 					/*调整布局*/
 					$data_wrap.addClass('collapsed');
-					$edit_wrap.removeClass('collapsed');
-					$edit_title.attr({
-						'data-type':'update'
-					}).html('修改 "'+datas['name']+'" 信息');
-					$sales_cance_btn.prev().html('修改');
+					$edit_wrap.attr({
+						'data-id':id,
+						'data-type':action
+					}).removeClass('collapsed');
+					$edit_title.html('收货');
 					$("html,body").animate({scrollTop:300},200);
 					//重置信息
+					/*to do
+					ajax request
+					* */
 
-
-					for(var i in datas) {
-						switch (i) {
-							case "subscriberId":
-								$sales_subscriberid.val(id);
-								break;
-							case "serviceStationId":
-								$sales_servicestationid.val(datas[i]);
-								break;
-							case "telephone":
-								$sales_telephone.val(datas[i]);
-								break;
-							case "cellphone":
-								$sales_cellphone.val(public_tool.phoneFormat(datas[i]));
-								break;
-							case "imeiCode":
-								$sales_imeicode.val(datas[i]);
-								break;
-							case "name":
-								$sales_name.val(datas[i]);
-								break;
-							case "address":
-								$sales_address.val(datas[i]);
-								break;
-							case "remark":
-								$sales_remark.val(datas[i]);
-								break;
-						}
-					}
 				}else if(action==='delete'){
 					/*删除操作*/
 					dia.content('<span class="g-c-bs-warning g-btips-warn">目前暂未开放此功能</span>').show();
@@ -394,7 +288,17 @@
 					return false;
 				}else if(action==='select'){
 					/*查看*/
-					
+					$data_wrap.addClass('collapsed');
+					$edit_wrap.attr({
+						'data-id':id,
+						'data-type':action
+					}).removeClass('collapsed');
+					$edit_title.html('查看');
+					$("html,body").animate({scrollTop:300},200);
+
+
+					return false;
+
 					$.ajax({
 							url:"http://120.24.226.70:8081/yttx-agentbms-api/marketing/subscriber/detail",
 							method: 'POST',
@@ -518,59 +422,56 @@
 						.fail(function(resp){
 							console.log(resp.message);
 						});
-				}else if(action==='sales'){
-					/*未售*/
-
-				}else if(action==='unsales'){
-					/*已售*/
-				}else if(action==='stop'){
-					/*停用*/
 				}else if(action==='repairs'){
 					/*返修*/
 				}
 			});
 
-			/*添加服务站*/
-			$sales_add_btn.on('click',function(e){
-				e.preventDefault();
-				/*调整布局*/
-				$data_wrap.addClass('collapsed');
-				$edit_wrap.removeClass('collapsed');
-				$edit_title.attr({
-					'data-type':'add'
-				}).html('添加用户');
-				$sales_cance_btn.prev().html('添加');
-				$("html,body").animate({scrollTop:300},200);
-				//重置信息
-				edit_form.reset();
-				//第一行获取焦点
-				$sales_servicestationid.focus();
-			});
-			/*配置添加和修改的权限*/
-			if(salesadd_power){
-				$sales_add_btn.removeClass('g-d-hidei');
+
+			/*配置查看和收货权限*/
+			if(logisticsdetail_power){
 				$edit_wrap.removeClass('g-d-hidei');
 			};
 
 			/*取消添加或修改*/
-			$sales_cance_btn.on('click',function(e){
+			$edit_cance_btn.on('click',function(e){
 				/*调整布局*/
 				$data_wrap.removeClass('collapsed');
 				$edit_wrap.addClass('collapsed');
-				$edit_title.attr({
-					'data-type':'add'
-				}).html('添加用户');
-				$sales_cance_btn.prev().html('添加');
+				$edit_title.html('查看');
 				edit_form.reset();
+				$logistics_receiveerrorwrap.addClass('g-d-hidei');
+				$edit_sure_btn.removeClass('g-d-hidei');
+				$edit_error_btn.addClass('g-d-hidei');
 				if(!$data_wrap.hasClass('collapsed')){
 					$("html,body").animate({scrollTop:200},200);
 				}
 
 			});
 
+
+			/*绑定收货异常*/
+			$logistics_receiveerror.on('click',function(){
+				var $this=$(this),
+					ischeck=$this.is(':checked');
+
+				if(ischeck){
+					$logistics_receiveerrorwrap.removeClass('g-d-hidei');
+					$edit_sure_btn.addClass('g-d-hidei');
+					$edit_error_btn.removeClass('g-d-hidei');
+				}else{
+					$logistics_receiveerrorwrap.addClass('g-d-hidei');
+					$edit_sure_btn.removeClass('g-d-hidei');
+					$edit_error_btn.addClass('g-d-hidei');
+				}
+
+			});
+
+
+
 			/*手机格式化*/
 			/*格式化手机号码*/
-			$.each([$search_cellphone,$sales_cellphone],function(){
+			$.each([$search_deliveryPhone,$search_receivingPhone],function(){
 				this.on('keyup',function(){
 					var phoneno=this.value.replace(/\D*/g,'');
 					if(phoneno==''){
@@ -581,25 +482,25 @@
 				});
 			});
 
-			/*绑定时间插件*/
-			$.each([$search_addTime],function(){
-				this.val('').datepicker({
-					autoclose:true,
-					clearBtn:true,
-					format: 'yyyy-mm-dd',
-					todayBtn: true,
-					endDate:moment().format('YYYY-MM-DD')
-				})
-			});
 
 			/*最小化窗口*/
 			$edit_title.next().on('click',function(e){
 				if($data_wrap.hasClass('collapsed')){
 					e.stopPropagation();
 					e.preventDefault();
-					$sales_cance_btn.trigger('click');
+					$edit_cance_btn.trigger('click');
+				}
+				if(!$edit_wrap.hasClass('collapsed')){
+					$edit_wrap.attr({
+						'data-id':'',
+						'data-type':''
+					});
 				}
 			});
+
+
+
+
 
 			/*表单验证*/
 			if($.isFunction($.fn.validate)) {
@@ -624,17 +525,17 @@
 										roleId:decodeURIComponent(logininfo.param.roleId),
 										adminId:decodeURIComponent(logininfo.param.adminId),
 										token:decodeURIComponent(logininfo.param.token),
-										serviceStationId:$sales_servicestationid.val(),
-										name:$sales_name.val(),
-										address:$sales_address.val(),
-										cellphone:$sales_cellphone.val().replace(/\s*/g,''),
-										telephone:$sales_telephone.val(),
-										imeiCode:$sales_imeicode.val(),
+										serviceStationId:$logistics_servicestationid.val(),
+										name:$logistics_name.val(),
+										address:$logistics_address.val(),
+										cellphone:$logistics_cellphone.val().replace(/\s*/g,''),
+										telephone:$logistics_telephone.val(),
+										imeiCode:$logistics_imeicode.val(),
 										remark:$remark.val()
 									}
 								};
 							}else{
-								var id=$sales_subscriberid.val();
+								var id=$logistics_subscriberid.val();
 								if(id===''){
 									dia.content('<span class="g-c-bs-warning g-btips-warn">请选择需要操作的用户</span>').show();
 									setTimeout(function(){
@@ -651,12 +552,12 @@
 										adminId:decodeURIComponent(logininfo.param.adminId),
 										token:decodeURIComponent(logininfo.param.token),
 										subscriberId:id,
-										serviceStationId:$sales_servicestationid.val(),
-										name:$sales_name.val(),
-										address:$sales_address.val(),
-										cellphone:$sales_cellphone.val().replace(/\s*/g,''),
-										telephone:$sales_telephone.val(),
-										imeiCode:$sales_imeicode.val(),
+										serviceStationId:$logistics_servicestationid.val(),
+										name:$logistics_name.val(),
+										address:$logistics_address.val(),
+										cellphone:$logistics_cellphone.val().replace(/\s*/g,''),
+										telephone:$logistics_telephone.val(),
+										imeiCode:$logistics_imeicode.val(),
 										remark:$remark.val()
 									}
 								};
@@ -682,7 +583,7 @@
 									table.ajax.reload(null,false);
 									//重置表单
 									//重置表单
-									$sales_cance_btn.trigger('click');
+									$edit_cance_btn.trigger('click');
 									setTimeout(function(){
 										isadd?dia.content('<span class="g-c-bs-success g-btips-succ">添加用户成功</span>').show():dia.content('<span class="g-c-bs-success g-btips-succ">修改用户成功</span>').show();
 									},300);

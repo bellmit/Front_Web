@@ -250,7 +250,7 @@
 							delete data[key[1]];
 						}
 					}else{
-						if(key[1].indexOf('phone')!==-1){
+						if(key[1].toLowerCase().indexOf('phone')!==-1){
 							text=text.replace(/\s*/g,'');
 						}
 						data[key[1]]=text;
