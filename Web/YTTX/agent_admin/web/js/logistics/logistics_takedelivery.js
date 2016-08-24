@@ -429,7 +429,7 @@
 
 			/*绑定确认收货*/
 			$edit_sure_btn.on('click',function(){
-				dia.content('<span class="g-c-bs-success g-btips-succ">确认收货成功</span>').show();
+				dia.content('<span class="g-c-bs-success g-btips-succ">暂未开放此功能</span>').show();
 				setTimeout(function () {
 					dia.close();
 				},2000);
@@ -486,7 +486,7 @@
 					$.extend(true,form_opt,formcache.form_opt_0,{
 						submitHandler: function(form){
 
-							dia.content('<span class="g-c-bs-success g-btips-succ">确认添加收货异常信息成功</span>').show();
+							dia.content('<span class="g-c-bs-success g-btips-succ">暂未开放此功能</span>').show();
 							setTimeout(function () {
 								dia.close();
 							},2000);
