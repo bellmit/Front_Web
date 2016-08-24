@@ -100,19 +100,16 @@
         <!--主内容-->
         <div class="row row-main-wrap">
             <div class="col-md-12">
-                <div class="panel" id="data_wrap">
+                <div class="panel" id="dataagent_wrap">
 
                     <!--表格标题-->
                     <div class="panel-heading">
-                        <h3 class="panel-title">收货</h3>
+                        <h3 class="panel-title">代理商：</h3>
 
                         <div class="panel-options">
                             <a href="#" data-toggle="panel">
                                 <span class="collapse-icon">&ndash;</span>
                                 <span class="expand-icon">+</span>
-                            </a>
-                            <a href="#" data-toggle="reload">
-                                <i class="fa-rotate-right"></i>
                             </a>
                         </div>
                     </div>
@@ -148,30 +145,23 @@
                         </div>
 
 
-                        <table id="logistics_list_wrap" class="table table-bordered table-striped table-hover admin-table">
-                            <caption class="admin-ta-l">代理商物流信息：</caption>
+                        <table id="logistics_agent_wrap" class="table table-bordered table-striped table-hover admin-table">
                             <!--分组样式-->
                             <colgroup>
-                                <col class="g-w-percent5">
-                                <col class="g-w-percent5">
-                                <col class="g-w-percent6">
-                                <col class="g-w-percent5">
-                                <col class="g-w-percent6">
-                                <col class="g-w-percent3">
+                                <col class="g-w-percent10">
+                                <col class="g-w-percent10">
                                 <col class="g-w-percent5">
                                 <col class="g-w-percent15">
+                                <col class="g-w-percent10">
                             </colgroup>
 
                             <!--表头-->
                             <thead>
                             <tr>
-                            	  <th>服务站单位</th>
-                                <th>发货人</th>
-                                <th>发货人电话</th>
-                                <th>收货人</th>
-                                <th>收货人电话</th>
-                                <th>数量</th>
+                                <th>服务站单位</th>
                                 <th>所属代理</th>
+                                <th>代理关系</th>
+                                <th>备注</th>
                                 <th class="no-sorting">操作</th>
                             </tr>
                             </thead>
@@ -186,9 +176,60 @@
                 </div>
             </div>
 
+            <div class="col-md-12">
+                <div class="panel collapsed" id="datalist_wrap">
+
+                    <!--表格标题-->
+                    <div class="panel-heading">
+                        <h3 class="panel-title">物流信息</h3>
+                        <div class="panel-options">
+                            <a href="#" data-toggle="panel">
+                                <span class="collapse-icon">&ndash;</span>
+                                <span class="expand-icon">+</span>
+                            </a>
+                        </div>
+                    </div>
+
+
+                    <!--表格主体-->
+                    <div class="panel-body">
+                        <table id="logistics_list_wrap" class="table table-bordered table-striped table-hover admin-table">
+                            <!--分组样式-->
+                            <colgroup>
+                                <col class="g-w-percent10">
+                                <col class="g-w-percent5">
+                                <col class="g-w-percent6">
+                                <col class="g-w-percent5">
+                                <col class="g-w-percent6">
+                                <col class="g-w-percent3">
+                                <col class="g-w-percent15">
+                            </colgroup>
+
+                            <!--表头-->
+                            <thead>
+                            <tr>
+                                <th>发货方</th>
+                                <th>发货人</th>
+                                <th>发货人电话</th>
+                                <th>收货人</th>
+                                <th>收货人电话</th>
+                                <th>数量</th>
+                                <th class="no-sorting">操作</th>
+                            </tr>
+                            </thead>
+
+
+                            <!--表主体-->
+                            <tbody class="middle-align"></tbody>
+                        </table>
+                    </div>
+
+
+                </div>
+            </div>
 
             <div class="col-md-12">
-                <div class="panel collapsed" data-id="" data-type="" id="edit_wrap">
+                <div class="panel collapsed" data-id="" id="edit_wrap">
 
                     <!--编辑表单标题-->
                     <div class="panel-heading">
@@ -328,32 +369,6 @@
     </div>
 </div>
 
-
-
-<!--详情展现-->
-<div class="modal fade custom-width" id="show_detail_wrap">
-    <div class="modal-dialog g-w-percent46">
-        <div class="modal-content">
-
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 id="show_detail_title" class="modal-title"></h4>
-            </div>
-            <div class="modal-body">
-                <table class="table table-bordered table-striped table-hover admin-table">
-                    <colgroup>
-                        <col class="g-w-percent10"/>
-                        <col class="g-w-percent40"/>
-                    </colgroup>
-                    <tbody id="show_detail_content"></tbody>
-                </table>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-info" data-dismiss="modal">关闭</button>
-            </div>
-        </div>
-    </div>
-</div>
 
 
 <!--加载遮罩层-->
