@@ -8,7 +8,7 @@
 			/*菜单调用*/
 			var logininfo=public_tool.initMap.loginMap;
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
-				url:'http://120.24.226.70:8081/yttx-agentbms-api/module/menu',
+				url:'http://10.0.5.222:8080/yttx-agentbms-api/module/menu',
 				async:false,
 				type:'post',
 				param:{
@@ -68,10 +68,14 @@
 			/*表单对象*/
 			var $edit_cance_btn=$('#edit_cance_btn')/*编辑取消按钮*/,
 				edit_form=document.getElementById('role_edit_form'),
-				$role_edit_form=$('#role_edit_form')/*编辑表单*/,
+				$role_edit_form=$(edit_form)/*编辑表单*/,
 				$role_id=$('#role_id'),/*角色id*/
 				$role_name=$('#role_name'),/*角色名称*/
 				$role_remark=$('#role_remark'),/*角色描述*/
+				$role_typewrap=$('#role_typewrap'),
+				$role_typeauto=$('#role_typeauto'),
+				$role_typeagent=$('#role_typeagent'),
+				$role_typeitem=$('#role_typeitem'),
 				$editmember_cance_btn=$('#editmember_cance_btn')/*编辑取消按钮*/,
 				editmember_form=document.getElementById('member_edit_form'),
 				$member_edit_form=$('#member_edit_form')/*编辑表单*/,
@@ -83,7 +87,7 @@
 
 			/*成员请求信息*/
 			var member_config={
-						url:"http://120.24.226.70:8081/yttx-agentbms-api/sysusers",
+						url:"",
 						dataType:'JSON',
 						method:'post',
 						dataSrc:function ( json ) {
@@ -117,7 +121,7 @@
 				stateSave:false,/*是否保存重新加载的状态*/
 				processing:true,/*大消耗操作时是否显示处理状态*/
 				ajax:{
-					url:"http://120.24.226.70:8081/yttx-agentbms-api/roles",
+					url:"http://10.0.5.222:8080/yttx-agentbms-api/roles",
 					dataType:'JSON',
 					method:'post',
 					dataSrc:function ( json ) {
@@ -323,7 +327,7 @@
 								if(isrole){
 									//删除角色
 									config={
-											url:"http://120.24.226.70:8081/yttx-agentbms-api/role/delete",
+											url:"http://10.0.5.222:8080/yttx-agentbms-api/role/delete",
 											method: 'POST',
 											dataType: 'json',
 											data:{
@@ -335,23 +339,23 @@
 								}else{
 									//删除成员
 									config={
-										url:"http://120.24.226.70:8081/yttx-agentbms-api/sysuser/delete",
+										url:"http://10.0.5.222:8080/yttx-agentbms-api/sysuser/delete",
 										method: 'POST',
 										dataType: 'json',
 										data:{
 											"userId":id,
 											"adminId":decodeURIComponent(logininfo.param.adminId),
 											"token":decodeURIComponent(logininfo.param.token)
+										}
 									}
-								}
 								}
 								$.ajax(config)
 									.done(function (resp) {
 										var code=parseInt(resp.code,10);
 										if(code!==0){
-											dia.content('<span class="g-c-bs-warning g-btips-warn">删除失败</span>').show();
+											self.content('<span class="g-c-bs-warning g-btips-warn">删除失败</span>').show();
 											setTimeout(function () {
-												dia.close();
+												self.close();
 											},2000);
 											return false;
 										}
@@ -362,6 +366,10 @@
 									})
 									.fail(function(resp){
 										console.log(resp.message);
+										self.content('<span class="g-c-bs-warning g-btips-warn">删除失败</span>').show();
+										setTimeout(function () {
+											self.close();
+										},2000);
 									});
 							},'admin_delete');
 							//确认删除
@@ -375,6 +383,8 @@
 								//重置信息
 								$edit_close_btn.prev().html('修改角色');
 								$edit_cance_btn.prev().html('修改角色');
+								/*隐藏角色类型*/
+								$role_typewrap.addClass('g-d-hidei');
 								var datas=table.row($tr).data();
 							}else{
 								/*修改操作*/
@@ -420,12 +430,15 @@
 							/*查询操作*/
 							if(isrole){
 								$member_wrap.attr({'data-id':id});
+								if(member_config.url===''){
+									member_config.url='http://10.0.5.222:8080/yttx-agentbms-api/sysusers';
+								}
 								member_config.data.roleId=id;
 								table_member.ajax.config(member_config).load();
 							}else{
 								/*查看详情*/
 								$.ajax({
-										url:"http://120.24.226.70:8081/yttx-agentbms-api/sysuser/info",
+										url:"http://10.0.5.222:8080/yttx-agentbms-api/sysuser/info",
 										dataType:'JSON',
 										method:'post',
 										data:{
@@ -490,6 +503,8 @@
 						//成员
 						$table_member_wrap.removeClass('col-md-9');
 						$edit_member_wrap.removeClass('g-d-showi');
+						$role_typeitem.addClass('g-d-hidei');
+						$role_typewrap.removeClass('g-d-hidei');
 					}else{
 						//角色
 						$table_wrap.removeClass('col-md-9');
@@ -513,6 +528,11 @@
 						//显示表单
 						$table_wrap.addClass('col-md-9');
 						$edit_wrap.addClass('g-d-showi');
+
+						/*角色类型初始化*/
+						$role_typeitem.addClass('g-d-hidei');
+						$role_typewrap.removeClass('g-d-hidei');
+
 						//第一行获取焦点
 						$role_name.focus();
 					}else{
@@ -556,6 +576,28 @@
 			});
 
 
+			/*绑定选中角色类型*/
+			$.each([$role_typeauto,$role_typeagent],function(){
+
+				this.on('click',function(){
+					var $this=$(this),
+						ischeck=$this.is(':checked'),
+						value=$this.val();
+
+					if(ischeck){
+						if(value==='0'){
+							/*默认*/
+							$role_typeitem.addClass('g-d-hidei');
+						}else if(value==='1'){
+							/*代理商*/
+							$role_typeitem.removeClass('g-d-hidei');
+						}
+					}
+
+				});
+			});
+
+
 			/*表单验证*/
 			if($.isFunction($.fn.validate)) {
 				/*配置信息*/
@@ -569,7 +611,7 @@
 							if(id!==''){
 								//修改角色
 								var config={
-											url:"http://120.24.226.70:8081/yttx-agentbms-api/role/update",
+											url:"http://10.0.5.222:8080/yttx-agentbms-api/role/update",
 											method: 'POST',
 											dataType: 'json',
 											data:{
@@ -583,7 +625,7 @@
 							}else{
 								//添加角色
 								var config={
-									url:"http://120.24.226.70:8081/yttx-agentbms-api/role/add",
+									url:"http://10.0.5.222:8080/yttx-agentbms-api/role/add",
 									method: 'POST',
 									dataType: 'json',
 									data:{
@@ -594,6 +636,13 @@
 										"description":$role_remark.val()
 									}
 								};
+
+								if($role_typeauto.is(':checked')){
+									config['data']['isAgent']=0;
+								}else{
+									config['data']['isAgent']=1;
+									config['data']['roleCode']=$role_typeitem.find('input:checked').val();
+								}
 							}
 
 							$.ajax(config)
@@ -648,7 +697,7 @@
 							if(id!==''){
 								//修改成员
 								var config={
-									url:"http://120.24.226.70:8081/yttx-agentbms-api/sysuser/update",
+									url:"http://10.0.5.222:8080/yttx-agentbms-api/sysuser/update",
 									method: 'POST',
 									dataType: 'json',
 									data:{
@@ -663,7 +712,7 @@
 							}else{
 								//添加成员
 								var config={
-									url:"http://120.24.226.70:8081/yttx-agentbms-api/sysuser/add",
+									url:"http://10.0.5.222:8080/yttx-agentbms-api/sysuser/add",
 									method: 'POST',
 									dataType: 'json',
 									data:{

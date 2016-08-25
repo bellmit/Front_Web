@@ -9,7 +9,7 @@
 			/*菜单调用*/
 			var logininfo=public_tool.initMap.loginMap;
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
-				url:'http://120.24.226.70:8081/yttx-agentbms-api/module/menu',
+				url:'http://10.0.5.222:8080/yttx-agentbms-api/module/menu',
 				async:false,
 				type:'post',
 				param:{
@@ -110,7 +110,7 @@
 
 			/*数据加载*/
 			var station_config={
-				url:"http://120.24.226.70:8081/yttx-agentbms-api/servicestations/related",
+				url:"http://10.0.5.222:8080/yttx-agentbms-api/servicestations/related",
 				dataType:'JSON',
 				method:'post',
 				dataSrc:function ( json ) {
@@ -283,7 +283,7 @@
 					//重置信息
 					$station_servicestationid.val(id);
 					$.ajax({
-						url:"http://120.24.226.70:8081/yttx-agentbms-api/servicestation/detail",
+						url:"http://10.0.5.222:8080/yttx-agentbms-api/servicestation/detail",
 						dataType:'JSON',
 						method:'post',
 						data:{
@@ -594,7 +594,7 @@
 			/*初始化绑定代理列表*/
 			var binddisabled=false;
 			$.ajax({
-				url:"http://120.24.226.70:8081/yttx-agentbms-api/agents/list",
+				url:"http://10.0.5.222:8080/yttx-agentbms-api/agents/list",
 				dataType:'JSON',
 				method:'post',
 				data:{
@@ -891,14 +891,14 @@
 
 							if(isadd){
 								/*添加*/
-								config['url']="http://120.24.226.70:8081/yttx-agentbms-api/servicestation/addupdate";
+								config['url']="http://10.0.5.222:8080/yttx-agentbms-api/servicestation/addupdate";
 								if(typeof config['data']['serviceStationId']!=='undefined'){
 									delete config['data']['serviceStationId'];
 								}
 
 							}else{
 								/*更新*/
-								config['url']="http://120.24.226.70:8081/yttx-agentbms-api/servicestation/addupdate";
+								config['url']="http://10.0.5.222:8080/yttx-agentbms-api/servicestation/addupdate";
 								config['data']['serviceStationId']=id;
 							}
 							/*扩展其他参数*/

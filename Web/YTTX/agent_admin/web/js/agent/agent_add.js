@@ -9,7 +9,7 @@
 			/*菜单调用*/
 			var logininfo=public_tool.initMap.loginMap;
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
-				url:'http://120.24.226.70:8081/yttx-agentbms-api/module/menu',
+				url:'http://10.0.5.222:8080/yttx-agentbms-api/module/menu',
 				async:false,
 				type:'post',
 				param:{
@@ -121,7 +121,7 @@
 
 			/*数据加载*/
 			var agent_config={
-				url:"http://120.24.226.70:8081/yttx-agentbms-api/agents/related",
+				url:"http://10.0.5.222:8080/yttx-agentbms-api/agents/related",
 				dataType:'JSON',
 				method:'post',
 				dataSrc:function ( json ) {
@@ -247,7 +247,7 @@
 
 				/*查询上级代理商ID*/
 				$.ajax({
-					url:"http://120.24.226.70:8081/yttx-agentbms-api/agents/list",
+					url:"http://10.0.5.222:8080/yttx-agentbms-api/agents/list",
 					dataType:'JSON',
 					method:'post',
 					data:{
@@ -399,7 +399,7 @@
 				}else if(action==='bind'){
 					/*绑定代理商请求数据*/
 					$.when($.ajax({
-						url:"http://120.24.226.70:8081/yttx-agentbms-api/servicestation/notbound/list",
+						url:"http://10.0.5.222:8080/yttx-agentbms-api/servicestation/notbound/list",
 						method: 'POST',
 						dataType: 'json',
 						data:{
@@ -408,7 +408,7 @@
 							"token":decodeURIComponent(logininfo.param.token)
 						}
 					}),$.ajax({
-						url:"http://120.24.226.70:8081/yttx-agentbms-api/servicestation/bound/list",
+						url:"http://10.0.5.222:8080/yttx-agentbms-api/servicestation/bound/list",
 						method: 'POST',
 						dataType: 'json',
 						data:{
@@ -552,7 +552,7 @@
 						hasitem,
 						isbind=type==='1'?true:false,
 						config={
-							url:"http://120.24.226.70:8081/yttx-agentbms-api/servicestation/binding/operation",
+							url:"http://10.0.5.222:8080/yttx-agentbms-api/servicestation/binding/operation",
 							dataType:'JSON',
 							method:'post',
 							data:{
@@ -720,7 +720,7 @@
 
 							if(isadd){
 								var config={
-									url:"http://120.24.226.70:8081/yttx-agentbms-api/agent/add",
+									url:"http://10.0.5.222:8080/yttx-agentbms-api/agent/add",
 									dataType:'JSON',
 									method:'post',
 									data:{
@@ -749,7 +749,7 @@
 									return false;
 								}
 								var config={
-									url:"http://120.24.226.70:8081/yttx-agentbms-api/agent/update",
+									url:"http://10.0.5.222:8080/yttx-agentbms-api/agent/update",
 									dataType:'JSON',
 									method:'post',
 									data:{

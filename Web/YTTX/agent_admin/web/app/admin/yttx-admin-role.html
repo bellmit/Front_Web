@@ -150,15 +150,6 @@
                                     </tr>
                                     </thead>
 
-                                    <!--表尾-->
-                                    <tfoot>
-                                    <tr>
-                                        <th>角色</th>
-                                        <th>角色描述</th>
-                                        <th>操作</th>
-                                    </tr>
-                                    </tfoot>
-
                                     <!--表主体-->
                                     <tbody class="middle-align"></tbody>
                                 </table>
@@ -171,48 +162,70 @@
 
                     <!--角色编辑-->
                     <div class="col-md-3 row-edit-wrap" id="edit_wrap">
-                        <div class="main-edit-show">
-                            <div class="panel">
+                        <div class="panel">
 
-                                <!--编辑表单标题-->
-                                <div class="panel-heading">
-                                    <h3 class="panel-title"></h3>
-                                    <div class="panel-options" id="edit_close_btn">
-                                        <a href="#">
-                                            &times;
-                                        </a>
+                            <!--编辑表单标题-->
+                            <div class="panel-heading">
+                                <h3 class="panel-title"></h3>
+                                <div class="panel-options" id="edit_close_btn">
+                                    <a href="#">
+                                        &times;
+                                    </a>
+                                </div>
+                            </div>
+
+                            <!--修改或添加主体-->
+                            <div class="panel-body">
+                                <form role="form" id="role_edit_form" method="post" class="validate">
+                                    <input  type="text" class="g-d-hidei" value="" id="role_id" name="id">
+                                    <div class="form-group">
+                                        <label class="control-label">角&nbsp;&nbsp;色：</label>
+
+                                        <input type="text" class="form-control" id="role_name" name="name" data-validate="required" data-message-required="角色不能为空" placeholder="请输入角色名称" />
                                     </div>
-                                </div>
 
-                                <!--修改或添加主体-->
-                                <div class="panel-body">
-                                    <form role="form" id="role_edit_form" method="post" class="validate">
-                                        <input  type="text" class="g-d-hidei" value="" id="role_id" name="id">
-                                        <div class="form-group">
-                                            <label class="control-label">角&nbsp;&nbsp;色：</label>
 
-                                            <input type="text" class="form-control" id="role_name" name="name" data-validate="required" data-message-required="角色不能为空" placeholder="请输入角色名称" />
+                                    <div class="form-group" id="role_typewrap">
+                                        <div class="control-label">角色类型：
+                                            <label>&nbsp;&nbsp;<input type="radio" id="role_typeauto" checked  value="0" name="isAgent" />&nbsp;默认</label>
+                                            <label>&nbsp;&nbsp;<input type="radio" id="role_typeagent" value="1" name="isAgent" />&nbsp;代理商</label>
+
                                         </div>
+                                        <div class="admin-sub-items1 g-d-hidei" id="role_typeitem">
 
-                                        <div class="form-group">
-                                            <label class="control-label">角色描述：</label>
+                                            <label>
+                                                &nbsp;&nbsp;AAA级:&nbsp;<input type="radio" value="AAA" checked name="roleCode" />
+                                            </label>
 
-                                            <textarea class="form-control" name="remark" id="role_remark"  placeholder="角色的作用，权限"></textarea>
+                                            <label>
+                                                &nbsp;&nbsp;AA级:&nbsp;<input type="radio"  value="AA" name="roleCode" />
+                                            </label>
+                                            <label>
+                                                &nbsp;&nbsp;A级:&nbsp;<input type="radio"  value="A" name="roleCode" />
+                                            </label>
+                                            <label>
+                                                &nbsp;&nbsp;店长:&nbsp;<input type="radio"  value="SS"  name="roleCode" />
+                                            </label>
                                         </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="control-label">角色描述：</label>
+
+                                        <textarea class="form-control" name="remark" id="role_remark"  placeholder="角色的作用，权限"></textarea>
+                                    </div>
 
 
 
-                                        <div class="form-group">
-                                            <button type="submit" class="btn btn-success"></button>
-                                            <button id="edit_cance_btn" type="reset" class="btn btn-white">取消</button>
-                                        </div>
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-success"></button>
+                                        <button id="edit_cance_btn" type="reset" class="btn btn-white">取消</button>
+                                    </div>
 
-                                    </form>
-
-                                </div>
-
+                                </form>
 
                             </div>
+
 
                         </div>
                     </div>
@@ -280,53 +293,50 @@
 
                     <!--成员编辑-->
                     <div class="col-md-3 row-edit-wrap" id="edit_member_wrap">
-                        <div class="main-edit-show">
-                            <div class="panel">
+                        <div class="panel">
 
-                                <!--编辑表单标题-->
-                                <div class="panel-heading">
-                                    <h3 class="panel-title"></h3>
-                                    <div class="panel-options" id="editmember_close_btn">
-                                        <a href="#">
-                                            &times;
-                                        </a>
+                            <!--编辑表单标题-->
+                            <div class="panel-heading">
+                                <h3 class="panel-title"></h3>
+                                <div class="panel-options" id="editmember_close_btn">
+                                    <a href="#">
+                                        &times;
+                                    </a>
+                                </div>
+                            </div>
+
+                            <!--修改或添加主体-->
+                            <div class="panel-body">
+                                <form role="form" id="member_edit_form" method="post" class="validate">
+                                    <input  type="text" class="g-d-hidei" value="" id="member_id" name="id">
+                                    <div class="form-group">
+                                        <label class="control-label">登录名：</label>
+
+                                        <input type="text" class="form-control" id="member_username" name="member_username" data-validate="required" data-message-required="登录名不能为空" placeholder="请输入成员登录名" />
                                     </div>
-                                </div>
 
-                                <!--修改或添加主体-->
-                                <div class="panel-body">
-                                    <form role="form" id="member_edit_form" method="post" class="validate">
-                                        <input  type="text" class="g-d-hidei" value="" id="member_id" name="id">
-                                        <div class="form-group">
-                                            <label class="control-label">登录名：</label>
+                                    <div class="form-group">
+                                        <label class="control-label">登录密码：</label>
 
-                                            <input type="text" class="form-control" id="member_username" name="member_username" data-validate="required" data-message-required="登录名不能为空" placeholder="请输入成员登录名" />
-                                        </div>
+                                        <input type="password" class="form-control" id="member_password" name="member_password" data-validate="required,minlength[6]" data-message-required="登录密码不能为空" placeholder="请输入成员登录密码"  data-message-minlength="登录密码长度不能少于6位"/>
+                                    </div>
 
-                                        <div class="form-group">
-                                            <label class="control-label">登录密码：</label>
+                                    <div class="form-group">
+                                        <label class="control-label">用户名称：</label>
 
-                                            <input type="password" class="form-control" id="member_password" name="member_password" data-validate="required,minlength[6]" data-message-required="登录密码不能为空" placeholder="请输入成员登录密码"  data-message-minlength="登录密码长度不能少于6位"/>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label class="control-label">用户名称：</label>
-
-                                            <input type="text" class="form-control" id="member_name" name="member_name" data-validate="required" data-message-required="用户名称不能为空" placeholder="请输入成员用户名称" />
-                                        </div>
+                                        <input type="text" class="form-control" id="member_name" name="member_name" data-validate="required" data-message-required="用户名称不能为空" placeholder="请输入成员用户名称" />
+                                    </div>
 
 
-                                        <div class="form-group">
-                                            <button type="submit" class="btn btn-success"></button>
-                                            <button id="editmember_cance_btn" type="reset" class="btn btn-white">取消</button>
-                                        </div>
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-success"></button>
+                                        <button id="editmember_cance_btn" type="reset" class="btn btn-white">取消</button>
+                                    </div>
 
-                                    </form>
-
-                                </div>
-
+                                </form>
 
                             </div>
+
 
                         </div>
                     </div>

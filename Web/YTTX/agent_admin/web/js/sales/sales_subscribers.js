@@ -9,7 +9,7 @@
 			/*菜单调用*/
 			var logininfo=public_tool.initMap.loginMap;
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
-				url:'http://120.24.226.70:8081/yttx-agentbms-api/module/menu',
+				url:'http://10.0.5.222:8080/yttx-agentbms-api/module/menu',
 				async:false,
 				type:'post',
 				param:{
@@ -86,7 +86,7 @@
 
 			/*数据加载*/
 			var sales_config={
-				url:"http://120.24.226.70:8081/yttx-agentbms-api/marketing/subscribers/related",
+				url:"http://10.0.5.222:8080/yttx-agentbms-api/marketing/subscribers/related",
 				dataType:'JSON',
 				method:'post',
 				dataSrc:function ( json ) {
@@ -396,7 +396,7 @@
 					/*查看*/
 					
 					$.ajax({
-							url:"http://120.24.226.70:8081/yttx-agentbms-api/marketing/subscriber/detail",
+							url:"http://10.0.5.222:8080/yttx-agentbms-api/marketing/subscriber/detail",
 							method: 'POST',
 							dataType: 'json',
 							data:{
@@ -463,7 +463,7 @@
 					/*收单查看*/
 					return false;
 					$.ajax({
-							url:"http://120.24.226.70:8081/yttx-agentbms-api/agent/bindings",
+							url:"http://10.0.5.222:8080/yttx-agentbms-api/agent/bindings",
 							method: 'POST',
 							dataType: 'json',
 							data:{
@@ -617,7 +617,7 @@
 
 							if(isadd){
 								var config={
-									url:"http://120.24.226.70:8081/yttx-agentbms-api/marketing/subscriber/add",
+									url:"http://10.0.5.222:8080/yttx-agentbms-api/marketing/subscriber/add",
 									dataType:'JSON',
 									method:'post',
 									data:{
@@ -643,7 +643,7 @@
 									return false;
 								}
 								var config={
-									url:"http://120.24.226.70:8081/yttx-agentbms-api/marketing/subscriber/update",
+									url:"http://10.0.5.222:8080/yttx-agentbms-api/marketing/subscriber/update",
 									dataType:'JSON',
 									method:'post',
 									data:{
