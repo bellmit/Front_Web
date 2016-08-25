@@ -84,6 +84,10 @@
 				$agent_cance_btn=$('#agent_cance_btn')/*编辑取消按钮*/,
 				$agent_fullname=$('#agent_fullname'),/*快递单号*/
 				$agent_shortname=$('#agent_shortname'),
+				$agent_userwrap=$('#agent_userwrap'),
+				$agent_username=$('#agent_username'),
+				$agent_password=$('#agent_password'),
+				$agent_nickname=$('#agent_nickname'),
 				$agent_name=$('#agent_name')/*发货经手人*/,
 				$agent_phone=$('#agent_phone'),
 				$agent_tel=$('#agent_tel')/*发货时间*/,
@@ -356,6 +360,7 @@
 					$edit_title.html('修改 "'+datas['fullName']+'" 代理商信息');
 					$agent_cance_btn.prev().html('修改');
 					$("html,body").animate({scrollTop:300},200);
+					$agent_userwrap.addClass('g-d-hidei');
 					//重置信息
 
 
@@ -488,6 +493,7 @@
 				$("html,body").animate({scrollTop:300},200);
 				//重置信息
 				edit_form.reset();
+				$agent_userwrap.removeClass('g-d-hidei');
 				//第一行获取焦点
 				$agent_fullname.focus();
 			});
@@ -507,12 +513,13 @@
 				$edit_title.html('添加代理商');
 				$agent_cance_btn.prev().html('添加');
 				edit_form.reset();
+				$agent_userwrap.addClass('g-d-hidei');
 				if(!$data_wrap.hasClass('collapsed')){
 					$("html,body").animate({scrollTop:200},200);
 				}
 				/*重置选中信息*/
 				$agent_runsetupwrap.addClass('g-d-hidei');
-				profit_data['runSetup']=0;
+				profit_data['isCustomProfit']=0;
 				if(typeof profit_data['distributorProfit1']!=='undefined') {
 					delete profit_data['distributorProfit1'];
 					delete profit_data['distributorProfit2'];
@@ -647,12 +654,12 @@
 
 
 			/*分润切换*/
-			profit_data['runSetup']=0;
+			profit_data['isCustomProfit']=0;
 			$.each([$agent_self,$agent_auto],function(){
 					this.on('click', function (){
 						var value=this.value;
 
-						profit_data['runSetup']=value;
+						profit_data['isCustomProfit']=value;
 						if(value==='1'){
 							/*自定义*/
 							$agent_runsetupwrap.removeClass('g-d-hidei');
@@ -714,7 +721,7 @@
 							isadd=id===''?true:false;
 
 							/*校验分润合法性*/
-							if(profit_data['runSetup']==='1'&&!validProfit($agent_profit,dia,profit_data)){
+							if(profit_data['isCustomProfit']==='1'&&!validProfit($agent_profit,dia,profit_data)){
 								return false;
 							}
 
@@ -737,7 +744,10 @@
 										address:$agent_address.val(),
 										phone:$agent_phone.val().replace(/\s*/g,''),
 										tel:$agent_tel.val(),
-										parentId:$agent_parentid.val()
+										parentId:$agent_parentid.val(),
+										username:$agent_username.val(),
+										password:$agent_password.val(),
+										nickname:$agent_nickname.val()
 									}
 								};
 							}else{

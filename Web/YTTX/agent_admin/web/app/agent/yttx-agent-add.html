@@ -214,6 +214,30 @@
                                 <input type="text" class="form-control" name="shortName" id="agent_shortname" data-validate="required" data-message-required="代理商简称不能为空" placeholder="请输入代理商简称" />
                             </div>
 
+
+
+                            <div class="g-d-hidei" id="agent_userwrap">
+                                <div class="form-group">
+                                    <label class="control-label">代理商登录账户：</label>
+
+                                    <input type="text" class="form-control" name="username" id="agent_username" data-validate="required" data-message-required="代理商登录账户不能为空" placeholder="请输入代理商登录账户" />
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label">代理商登录密码：</label>
+
+                                    <input type="password" class="form-control" name="password" id="agent_password" data-validate="required,minlength[6]" data-message-required="代理商登录密码不能为空" data-message-minlength="代理商登录密码不能少于6位" placeholder="请输入代理商登录密码" />
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label">代理商登录昵称：</label>
+
+                                    <input type="text" class="form-control" name="nickname" id="agent_nickname" data-validate="required" data-message-required="代理商登录昵称不能为空" placeholder="请输入代理商登录昵称" />
+                                </div>
+
+                            </div>
+
+
                             <div class="form-group">
                                 <label class="control-label">服务站负责人：</label>
 
@@ -288,10 +312,10 @@
                                 <div class="checkbox">
                                     分润设置：
                                     <label>
-                                        自定义：<input type="radio" name="runSetup" id="agent_self" value="1" />
+                                        自定义：<input type="radio" name="isCustomProfit" id="agent_self" value="1" />
                                     </label>
                                     <label>
-                                        按系统定义：<input type="radio" checked name="runSetup" id="agent_auto"  value="0" />
+                                        按系统定义：<input type="radio" checked name="isCustomProfit" id="agent_auto"  value="0" />
                                     </label>
                                 </div>
                                 <div class="admin-sub-items1 g-d-hidei" id="agent_runsetupwrap">

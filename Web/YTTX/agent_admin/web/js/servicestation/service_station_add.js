@@ -67,6 +67,10 @@
 				$station_servicestationid=$('#station_servicestationid'),/*返修id*/
 				$edit_cance_btn=$('#edit_cance_btn')/*编辑取消按钮*/,
 				$station_fullname=$('#station_fullname'),/*快递单号*/
+				$station_userwrap=$('#station_userwrap'),
+				$station_username=$('#station_username'),
+				$station_password=$('#station_password'),
+				$station_nickname=$('#station_nickname'),
 				$station_shortname=$('#station_shortname'),
 				$station_name=$('#station_name')/*发货经手人*/,
 				$station_phone=$('#station_phone'),
@@ -280,6 +284,7 @@
 				if(action==='update'){
 					//重置信息
 					edit_form.reset();
+					$station_userwrap.addClass('g-d-hidei');
 					//重置信息
 					$station_servicestationid.val(id);
 					$.ajax({
@@ -521,6 +526,7 @@
 				$("html,body").animate({scrollTop:300},200);
 				//重置信息
 				edit_form.reset();
+				$station_userwrap.removeClass('g-d-hidei');
 				//第一行获取焦点
 				$station_fullname.focus();
 			});
@@ -538,6 +544,7 @@
 			$edit_cance_btn.on('click',function(e){
 				/*调整布局*/
 				edit_form.reset();
+				$station_userwrap.addClass('g-d-hidei');
 				$data_wrap.removeClass('collapsed');
 				$edit_wrap.addClass('collapsed');
 				$edit_cance_btn.prev().html('添加');
@@ -895,11 +902,18 @@
 								if(typeof config['data']['serviceStationId']!=='undefined'){
 									delete config['data']['serviceStationId'];
 								}
-
+								config['data']['username']=$station_username.val();
+								config['data']['password']=$station_password.val();
+								config['data']['nickname']=$station_nickname.val();
 							}else{
 								/*更新*/
 								config['url']="http://10.0.5.222:8080/yttx-agentbms-api/servicestation/addupdate";
 								config['data']['serviceStationId']=id;
+								if(typeof config['data']['username']!=='undefined'){
+									delete config['data']['username'];
+									delete config['data']['password'];
+									delete config['data']['nickname'];
+								}
 							}
 							/*扩展其他参数*/
 							$.extend(true,config.data,profit_data);
