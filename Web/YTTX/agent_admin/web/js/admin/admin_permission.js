@@ -82,7 +82,7 @@
 								public_tool.loginTips();
 							}
 							console.log(json.message);
-							return null;
+							return [];
 						}
 						return json.result.list;
 					},

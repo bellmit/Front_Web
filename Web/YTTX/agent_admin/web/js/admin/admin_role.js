@@ -94,7 +94,7 @@
 							var code=parseInt(json.code,10);
 							if(code!==0){
 								console.log(json.message);
-								return null;
+								return [];
 							}
 							return json.result.list;
 						},
@@ -133,7 +133,7 @@
 								public_tool.loginTips();
 							}
 							console.log(json.message);
-							return null;
+							return [];
 						}
 						return json.result.list;
 					},

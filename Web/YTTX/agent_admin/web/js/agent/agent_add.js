@@ -137,17 +137,29 @@
 							public_tool.loginTips();
 						}
 						console.log(json.message);
-						return null;
+						return [];
 					}
-					var list=json.result.list,
-						stationobj=list[0];
-					if('serivceStationlist' in stationobj){
-						list=list.slice(1);
+					var list=json.result.list;
+
+					if(!list){
+						return [];
+					}
+					if(list.length===0){
+						return list;
+					}else{
+						var stationobj=list[0];
 						if('serivceStationlist' in stationobj){
 							list=list.slice(1);
+							stationobj=list[0]
+							if('serivceStationlist' in stationobj){
+								list=list.slice(1);
+							}
 						}
+						return list;
 					}
-					return list;
+
+
+
 				},
 				data:{
 					roleId:decodeURIComponent(logininfo.param.roleId),
