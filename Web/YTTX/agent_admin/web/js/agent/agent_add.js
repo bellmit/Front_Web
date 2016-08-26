@@ -107,6 +107,12 @@
 				$agent_gradeAA=$('#agent_gradeAA'),
 				$agent_gradeA=$('#agent_gradeA'),
 				$agent_gradeSS=$('#agent_gradeSS'),
+				gradeobj={
+					AAA:$agent_gradeAAA,
+					AA:$agent_gradeAA,
+					A:$agent_gradeA,
+					SS:$agent_gradeSS
+				},
 				$agent_runsetupwrap=$('#agent_runsetupwrap'),
 				$agent_runsetupsetting=$('#agent_runsetupsetting'),
 				$agent_profit=$agent_runsetupsetting.find('input'),
