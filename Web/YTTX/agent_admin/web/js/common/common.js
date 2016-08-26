@@ -1447,13 +1447,17 @@ var public_vars = public_vars || {};
 							},
 							errorPlacement: function (error, element)
 							{
-								if(element.closest('.has-switch').length) {
-									error.insertAfter(element.closest('.has-switch'));
-								}
-								else if(element.parent('.checkbox, .radio').length || element.parent('.input-group').length) {
-									error.insertAfter(element.parent());
-								} else {
-									error.insertAfter(element);
+								if(element.hasClass('self-error-pos')){
+									error.insertAfter(element.closest('.self-error-pos-wrap'));
+								}else{
+									if(element.closest('.has-switch').length) {
+										error.insertAfter(element.closest('.has-switch'));
+									}
+									else if(element.parent('.checkbox, .radio').length || element.parent('.input-group').length) {
+										error.insertAfter(element.parent());
+									} else {
+										error.insertAfter(element);
+									}
 								}
 							}
 						},

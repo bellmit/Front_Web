@@ -6,7 +6,8 @@
 		/*初始化数据*/
 		if(public_tool.initMap.isrender){
 			/*菜单调用*/
-			var logininfo=public_tool.initMap.loginMap;
+			var logininfo=public_tool.initMap.loginMap,
+				roletype=decodeURIComponent(logininfo.param.grade);
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
 				url:'http://10.0.5.222:8080/yttx-agentbms-api/module/menu',
 				async:false,
@@ -75,7 +76,23 @@
 				$role_typewrap=$('#role_typewrap'),
 				$role_typeauto=$('#role_typeauto'),
 				$role_typeagent=$('#role_typeagent'),
+				$role_typetab=$('#role_typetab'),
 				$role_typeitem=$('#role_typeitem'),
+				$role_typeAAA=$('#role_typeAAA'),
+				$role_typeAA=$('#role_typeAA'),
+				$role_typeA=$('#role_typeA'),
+				$role_typeSS=$('#role_typeSS'),
+				roleobj={
+					wrap:$role_typewrap,
+					auto:$role_typeauto,
+					agent:$role_typeagent,
+					tab:$role_typetab,
+					item:$role_typeitem,
+					AAA:$role_typeAAA,
+					AA:$role_typeAA,
+					A:$role_typeA,
+					SS:$role_typeSS
+				},
 				$editmember_cance_btn=$('#editmember_cance_btn')/*编辑取消按钮*/,
 				editmember_form=document.getElementById('member_edit_form'),
 				$member_edit_form=$('#member_edit_form')/*编辑表单*/,
@@ -266,6 +283,17 @@
 				lengthChange:true/*是否可改变长度*/
 			});
 
+			/*初始化*/
+			(function () {
+
+				/*角色类型初始化*/
+				resetAddState(roleobj,roletype);
+				/*角色类型事件绑定*/
+				changeState(roleobj,roletype);
+
+
+			}());
+
 
 
 
@@ -384,7 +412,7 @@
 								$edit_close_btn.prev().html('修改角色');
 								$edit_cance_btn.prev().html('修改角色');
 								/*隐藏角色类型*/
-								$role_typewrap.addClass('g-d-hidei');
+								resetUpdateState(roleobj,roletype);
 								var datas=table.row($tr).data();
 							}else{
 								/*修改操作*/
@@ -503,8 +531,7 @@
 						//成员
 						$table_member_wrap.removeClass('col-md-9');
 						$edit_member_wrap.removeClass('g-d-showi');
-						$role_typeitem.addClass('g-d-hidei');
-						$role_typewrap.removeClass('g-d-hidei');
+						resetAddState(roleobj,roletype);
 					}else{
 						//角色
 						$table_wrap.removeClass('col-md-9');
@@ -530,8 +557,7 @@
 						$edit_wrap.addClass('g-d-showi');
 
 						/*角色类型初始化*/
-						$role_typeitem.addClass('g-d-hidei');
-						$role_typewrap.removeClass('g-d-hidei');
+						resetAddState(roleobj,roletype);
 
 						//第一行获取焦点
 						$role_name.focus();
@@ -576,27 +602,6 @@
 			});
 
 
-			/*绑定选中角色类型*/
-			$.each([$role_typeauto,$role_typeagent],function(){
-
-				this.on('click',function(){
-					var $this=$(this),
-						ischeck=$this.is(':checked'),
-						value=$this.val();
-
-					if(ischeck){
-						if(value==='0'){
-							/*默认*/
-							$role_typeitem.addClass('g-d-hidei');
-						}else if(value==='1'){
-							/*代理商*/
-							$role_typeitem.removeClass('g-d-hidei');
-						}
-					}
-
-				});
-			});
-
 
 			/*表单验证*/
 			if($.isFunction($.fn.validate)) {
@@ -637,12 +642,18 @@
 									}
 								};
 
-								if($role_typeauto.is(':checked')){
-									config['data']['isAgent']=0;
+								if(roletype==='-1'||roletype===undefined){
+									if($role_typeauto.is(':checked')){
+										config['data']['isAgent']=0;
+									}else{
+										config['data']['isAgent']=1;
+										config['data']['roleCode']=$role_typeitem.find('input:checked').val();
+									}
 								}else{
 									config['data']['isAgent']=1;
 									config['data']['roleCode']=$role_typeitem.find('input:checked').val();
 								}
+
 							}
 
 							$.ajax(config)
@@ -775,6 +786,76 @@
 
 
 		}
+
+
+		/*绑定状态切换事件*/
+		function changeState(obj,code){
+			if(code==='-1'||code===undefined){
+				/*绑定选中角色类型*/
+				$.each([obj.auto,obj.agent],function(){
+					this.on('click',function(){
+						var $this=$(this),
+							ischeck=$this.is(':checked'),
+							value=$this.val();
+
+						if(ischeck){
+							if(value==='0'){
+								/*默认*/
+								obj.item.addClass('g-d-hidei');
+							}else if(value==='1'){
+								/*代理商*/
+								obj.item.removeClass('g-d-hidei');
+							}
+						}
+					});
+				});
+			}
+		};
+
+
+		/*重置至添加状态*/
+		function resetAddState(obj,code){
+			obj.wrap.removeClass('g-d-hidei');
+			if(code==='-1'||code===undefined){
+				/*全部*/
+				obj.tab.removeClass('g-d-hidei');
+				obj.item.addClass('g-d-hidei');
+				obj.auto.removeClass('g-d-hidei');
+				obj.agent.removeClass('g-d-hidei');
+
+			}else{
+				/*代理商*/
+				obj.tab.addClass('g-d-hidei');
+				obj.item.removeClass('g-d-hidei');
+				obj.SS.removeClass('g-d-hidei');
+				if(code==='3'){
+					/*AAA*/
+					obj.AAA.addClass('g-d-hidei');
+					obj.AA.removeClass('g-d-hidei');
+					obj.A.removeClass('g-d-hidei');
+				}else if(code==='2'){
+					/*AA*/
+					obj.AAA.addClass('g-d-hidei');
+					obj.AA.addClass('g-d-hidei');
+					obj.A.removeClass('g-d-hidei');
+				}else if(code==='1'){
+					/*A*/
+					obj.AAA.addClass('g-d-hidei');
+					obj.AA.addClass('g-d-hidei');
+					obj.A.addClass('g-d-hidei');
+				}else if(code==='4'){
+					/*店长*/
+					obj.AAA.removeClass('g-d-hidei');
+					obj.AA.removeClass('g-d-hidei');
+					obj.A.removeClass('g-d-hidei');
+				}
+			}
+		};
+
+		/*重置至更新状态*/
+		function resetUpdateState(obj,code){
+			obj.wrap.addClass('g-d-hidei');
+		};
 
 
 

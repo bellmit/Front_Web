@@ -319,6 +319,29 @@
 			margin:0;
 		}
 	}
+	.self-error-pos-wrap+.validate-has-error{
+		color: #cc3f44;
+		display: block;
+		font-size: 12px;
+		padding-top: 5px;
+	}
+	/*设置分润*/
+	.clear-validate-tip{
+		.validate-has-error{
+			display:inline-block;
+			width:100%;
+			float:right;
+		}
+	}
+	.clear-validate-error{
+		input,.form-control{
+			border:1px solid @color-gray12 !important;
+			color:@color-gray5  !important;
+			&:focus{
+				border:1px solid rgba(104,184,40,.5) !important;
+			}
+		}
+	}
 }
 
 

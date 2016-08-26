@@ -103,6 +103,10 @@
 
 			/*分润设置*/
 			var	$agent_gradewrap=$('#agent_gradewrap'),
+				$agent_gradeAAA=$('#agent_gradeAAA'),
+				$agent_gradeAA=$('#agent_gradeAA'),
+				$agent_gradeA=$('#agent_gradeA'),
+				$agent_gradeSS=$('#agent_gradeSS'),
 				$agent_runsetupwrap=$('#agent_runsetupwrap'),
 				$agent_runsetupsetting=$('#agent_runsetupsetting'),
 				$agent_profit=$agent_runsetupsetting.find('input'),
@@ -263,7 +267,7 @@
 
 				/*查询上级代理商ID*/
 				$.ajax({
-					url:"http://10.0.5.222:8080/yttx-agentbms-api/agents/list",
+					url:"http://10.0.5.222:8080/yttx-agentbms-api/agent/role/check",
 					dataType:'JSON',
 					method:'post',
 					data:{
@@ -280,22 +284,47 @@
 							public_tool.loginTips();
 						}
 						console.log(resp.message);
-						$agent_parentid.html('');
+						$agent_parentid.attr({
+							'data-value':'',
+							'data-name':''
+						}).html('');
 						return false;
 					}
 
-					var bindlist=resp.result.list,
-						len=bindlist.length,
-						k= 0,
-						str='<option value="" selected >请选择绑定代理商ID</option>';
-					for(k;k<len;k++){
-						str+='<option value="'+bindlist[k]["id"]+'">'+bindlist[k]["shortName"]+'</option>';
-					}
-					$(str).appendTo($agent_parentid.html(''));
+					console.log(resp);
 
+					var rolegrade=resp.result,
+						gradmap={
+							'3':'AAA级代理商',
+							'2':'AA级代理商',
+							'1':'A级代理商',
+							'4':'店长',
+							'-1':'总代理'
+						},
+						grade=rolegrade['grade'];
+
+
+					if(rolegrade){
+						$agent_parentid.attr({
+							'data-id':rolegrade['parentId']||'',
+							'data-grade':grade,
+							'data-name':rolegrade['parentName']||''
+						}).html(gradmap[grade]);
+						setGradeShow();
+					}else{
+						$agent_parentid.attr({
+							'data-id':'',
+							'data-grade':'',
+							'data-name':''
+						}).html('');
+					}
 				}).fail(function(resp){
 					console.log('error');
-					$agent_parentid.html('');
+					$agent_parentid.attr({
+						'data-id':'',
+						'data-grade':'',
+						'data-name':''
+					}).html('');
 				});
 
 			}());
@@ -884,6 +913,43 @@
 			data['distributorProfit3']=ele_aaa;
 
 			return isvalid;
+		}
+
+
+		/**/
+		function setGradeShow(obj,code){
+			/*设置级别可见度*/
+			if(code==='3'){
+				/*AAA*/
+				obj.AAA.addClass('g-d-hidei');
+				obj.AA.removeClass('g-d-hidei');
+				obj.A.removeClass('g-d-hidei');
+				obj.SS.removeClass('g-d-hidei');
+			}else if(code==='2'){
+				/*AA*/
+				obj.AAA.addClass('g-d-hidei');
+				obj.AA.addClass('g-d-hidei');
+				obj.A.removeClass('g-d-hidei');
+				obj.SS.removeClass('g-d-hidei');
+			}else if(code==='1'){
+				/*A*/
+				obj.AAA.addClass('g-d-hidei');
+				obj.AA.addClass('g-d-hidei');
+				obj.A.addClass('g-d-hidei');
+				obj.SS.removeClass('g-d-hidei');
+			}else if(code==='4'){
+				/*店长*/
+				obj.AAA.removeClass('g-d-hidei');
+				obj.AA.removeClass('g-d-hidei');
+				obj.A.removeClass('g-d-hidei');
+				obj.SS.addClass('g-d-hidei');
+			}else if(code==='-1'){
+				/*总代理*/
+				obj.AAA.removeClass('g-d-hidei');
+				obj.AA.removeClass('g-d-hidei');
+				obj.A.removeClass('g-d-hidei');
+				obj.SS.removeClass('g-d-hidei');
+			}
 		}
 
 	});

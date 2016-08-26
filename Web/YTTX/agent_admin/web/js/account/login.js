@@ -109,7 +109,8 @@
 							'param':{
 								'adminId':encodeURIComponent(result.adminId),
 								'token':encodeURIComponent(result.token),
-								'roleId':encodeURIComponent(result.roleId||4)
+								'roleId':encodeURIComponent(result.roleId||4),
+								'grade':encodeURIComponent(result.grade||-1)
 							}
 						});
 

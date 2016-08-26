@@ -185,7 +185,8 @@
 
 
             <div class="col-md-12">
-                <div class="panel collapsed g-d-hidei" id="edit_wrap">
+                <!--collapsed-->
+                <div class="panel g-d-hidei" id="edit_wrap">
 
                     <!--编辑表单标题-->
                     <div class="panel-heading">
@@ -287,22 +288,19 @@
 
 
                             <div class="form-group">
-                                <label class="control-label">上级代理商ID：</label>
-                                <select class="form-control" name="parentId" id="agent_parentid" ></select>
-                            </div>
-
-
-                            <div class="form-group">
-                                <label class="control-label">代理商级别：</label>
-                                <div class="admin-sub-items1" id="agent_gradewrap">
-                                    <label>
-                                        &nbsp;&nbsp;A级:&nbsp;<input type="radio" checked  value="1" name="grade" />
+                                <label class="control-label">代理商级别&nbsp;--上级代理商ID(<span id="agent_parentid" data-value="" data-name="" class="g-c-bs-info"></span>)：</label>
+                                <div class="admin-sub-items1 self-error-pos-wrap" id="agent_gradewrap">
+                                    <label id="agent_gradeAAA">
+                                        &nbsp;&nbsp;AAA级:&nbsp;<input class="self-error-pos" type="radio" value="3" name="grade" />
                                     </label>
-                                    <label>
-                                        &nbsp;&nbsp;AA级:&nbsp;<input value="2" type="radio"  name="grade" />
+                                    <label id="agent_gradeAA">
+                                        &nbsp;&nbsp;AA级:&nbsp;<input class="self-error-pos" type="radio"  value="2" name="grade" />
                                     </label>
-                                    <label>
-                                        &nbsp;&nbsp;AAA级:&nbsp;<input value="3"  type="radio"  name="grade" />
+                                    <label id="agent_gradeA">
+                                        &nbsp;&nbsp;A级:&nbsp;<input class="self-error-pos" type="radio"  value="1" name="grade" />
+                                    </label>
+                                    <label id="agent_gradeSS">
+                                        &nbsp;&nbsp;店长:&nbsp;<input class="self-error-pos" type="radio"  value="4" name="grade" />
                                     </label>
                                 </div>
                             </div>

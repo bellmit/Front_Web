@@ -186,25 +186,26 @@
 
 
                                     <div class="form-group" id="role_typewrap">
-                                        <div class="control-label">角色类型：
-                                            <label>&nbsp;&nbsp;<input type="radio" id="role_typeauto" checked  value="0" name="isAgent" />&nbsp;默认</label>
+                                        角色类型：
+                                        <div class="control-label" id="role_typetab">
+                                            <label>&nbsp;&nbsp;<input type="radio" id="role_typeauto"  value="0" name="isAgent" />&nbsp;默认</label>
                                             <label>&nbsp;&nbsp;<input type="radio" id="role_typeagent" value="1" name="isAgent" />&nbsp;代理商</label>
 
                                         </div>
-                                        <div class="admin-sub-items1 g-d-hidei" id="role_typeitem">
+                                        <div  class="admin-sub-items1 self-error-pos-wrap g-d-hidei" id="role_typeitem">
 
-                                            <label>
-                                                &nbsp;&nbsp;AAA级:&nbsp;<input type="radio" value="AAA" checked name="roleCode" />
+                                            <label id="role_typeAAA">
+                                                &nbsp;&nbsp;AAA级:&nbsp;<input type="radio" value="AAA" name="roleCode" class="self-error-pos" data-validate="required" data-message-required="请选择角色类型"  />
                                             </label>
 
-                                            <label>
-                                                &nbsp;&nbsp;AA级:&nbsp;<input type="radio"  value="AA" name="roleCode" />
+                                            <label id="role_typeAA">
+                                                &nbsp;&nbsp;AA级:&nbsp;<input type="radio" class="self-error-pos" value="AA" name="roleCode" data-validate="required" data-message-required="请选择角色类型"  />
                                             </label>
-                                            <label>
-                                                &nbsp;&nbsp;A级:&nbsp;<input type="radio"  value="A" name="roleCode" />
+                                            <label id="role_typeA">
+                                                &nbsp;&nbsp;A级:&nbsp;<input type="radio" class="self-error-pos"   value="A" name="roleCode" data-validate="required" data-message-required="请选择角色类型"  />
                                             </label>
-                                            <label>
-                                                &nbsp;&nbsp;店长:&nbsp;<input type="radio"  value="SS"  name="roleCode" />
+                                            <label id="role_typeSS">
+                                                &nbsp;&nbsp;店长:&nbsp;<input type="radio" class="self-error-pos"  value="SS"  name="roleCode" data-validate="required" data-message-required="请选择角色类型"  />
                                             </label>
                                         </div>
                                     </div>
