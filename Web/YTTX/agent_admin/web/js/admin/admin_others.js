@@ -7,7 +7,7 @@
 			/*菜单调用*/
 			var logininfo=public_tool.initMap.loginMap;
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
-				url:'http://10.0.5.222:8080/yttx-agentbms-api/module/menu',
+				url:'http://120.24.226.70:8081/yttx-agentbms-api/module/menu',
 				async:false,
 				type:'post',
 				param:{
@@ -121,7 +121,7 @@
 										ele_aa=$profit_aa0.val(),
 										ele_aaa=$profit_aaa0.val();
 									/*规则通过后校验*/
-									config['url']="http://10.0.5.222:8080/yttx-agentbms-api/agent/profit/default";
+									config['url']="http://120.24.226.70:8081/yttx-agentbms-api/agent/profit/default";
 									config['data']= {
 										type:1,
 										distributorProfit1: ele_a,
@@ -132,7 +132,7 @@
 									var ele_a=$profit_a1.val(),
 										ele_aa=$profit_aa1.val(),
 										ele_aaa=$profit_aaa1.val();
-									config['url']="http://10.0.5.222:8080/yttx-agentbms-api/agent/profit/default";
+									config['url']="http://120.24.226.70:8081/yttx-agentbms-api/agent/profit/default";
 									config['data']= {
 										type:2,
 										distributorProfit1: ele_a,
@@ -143,7 +143,7 @@
 									var ele_a=$profit_a2.val(),
 										ele_aa=$profit_aa2.val(),
 										ele_aaa=$profit_aaa2.val();
-									config['url']="http://10.0.5.222:8080/yttx-agentbms-api/servicestation/profit/default";
+									config['url']="http://120.24.226.70:8081/yttx-agentbms-api/servicestation/profit/default";
 									config['data']= {
 										type:1,
 										distributorProfit1: ele_a,
@@ -154,7 +154,7 @@
 									var ele_a=$profit_a3.val(),
 										ele_aa=$profit_aa3.val(),
 										ele_aaa=$profit_aaa3.val();
-									config['url']="http://10.0.5.222:8080/yttx-agentbms-api/servicestation/profit/default";
+									config['url']="http://120.24.226.70:8081/yttx-agentbms-api/servicestation/profit/default";
 									config['data']= {
 										type:2,
 										distributorProfit1: ele_a,

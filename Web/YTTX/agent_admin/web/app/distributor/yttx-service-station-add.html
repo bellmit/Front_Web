@@ -3,11 +3,12 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0,maximum-scale=1">
-    <meta name="description" content="银通天下代理商后台管理系统--代理商管理--添加代理商" />
-    <meta name="keywords" content="银通天下代理商后台管理系统--代理商管理--添加代理商">
+    <meta name="description" content="银通天下代理商后台管理系统--服务站管理--添加服务站" />
+    <meta name="keywords" content="银通天下代理商后台管理系统--服务站管理--添加服务站">
     <meta name="author" content="yp" />
-    <title>银通天下代理商后台管理系统--代理商管理--添加代理商</title>
+    <title>银通天下代理商后台管理系统--服务站管理--添加服务站</title>
     <link rel="stylesheet" href="../../css/base.css">
     <link rel="stylesheet" href="../../js/plugins/datatables/dataTables.bootstrap.css">
     <link rel="stylesheet" href="../../css/admin.css">
@@ -85,13 +86,13 @@
         <!--主题描述-->
         <div class="page-title">
             <div class="title-env">
-                <h1 class="title">添加代理商</h1>
-                <p class="description">添加代理商</p>
+                <h1 class="title">添加服务站</h1>
+                <p class="description">添加服务站</p>
             </div>
             <div class="breadcrumb-env">
                 <ol class="breadcrumb bc-1">
-                    <li><a href=""><i class="fa-home"></i>代理商管理</a></li>
-                    <li class="active"><strong>添加代理商</strong></li>
+                    <li><a href=""><i class="fa-home"></i>服务站管理</a></li>
+                    <li class="active"><strong>添加服务站</strong></li>
                 </ol>
             </div>
         </div>
@@ -104,7 +105,7 @@
 
                     <!--表格标题-->
                     <div class="panel-heading">
-                        <h3 class="panel-title">添加代理商</h3>
+                        <h3 class="panel-title">添加服务站</h3>
 
                         <div class="panel-options">
                             <a href="#" data-toggle="panel">
@@ -122,8 +123,8 @@
                     <div class="panel-body">
                         <div class="admin-search-wrap">
                             <div class="admin-search-item">
-                                <label>代理商全称：</label>
-                                <input type="text" id="search_fullName">
+                                <label>服务站简称：</label>
+                                <input type="text" id="search_shortName">
                             </div>
                             <div class="admin-search-item">
                                 <label>负责人姓名：</label>
@@ -132,6 +133,14 @@
                             <div class="admin-search-item">
                                 <label>负责人手机号码：</label>
                                 <input type="text" maxlength="13" id="search_phone">
+                            </div>
+                            <div class="admin-search-item">
+                                <label>所属代理：</label>
+                                <input type="text" id="search_agentShortName">
+                            </div>
+                            <div class="admin-search-item">
+                                <label>上级代理：</label>
+                                <input type="text" id="search_superShortName">
                             </div>
                             <div class="admin-search-item">
                                     <span id="admin_search_btn" class="btn btn-info btn-icon g-br2">
@@ -144,31 +153,33 @@
                         </div>
 
                         <div>
-                                <span id="agent_add_btn" class="btn btn-info btn-icon btn-xs g-br2 g-d-hidei">
+                                <span id="station_add_btn" class="btn btn-info btn-icon btn-xs g-br2 g-d-hidei">
                                     <i class="fa-plus"></i>
-                                    <span>添加代理商</span>
+                                    <span>添加服务站</span>
                                 </span>
                         </div>
 
-                        <table id="agent_list_wrap" class="table table-bordered table-striped table-hover admin-table">
+                        <table id="station_wrap" class="table table-bordered table-striped table-hover admin-table">
                             <!--分组样式-->
                             <colgroup>
-                                <col class="g-w-percent10">
                                 <col class="g-w-percent5">
                                 <col class="g-w-percent5">
                                 <col class="g-w-percent5">
                                 <col class="g-w-percent11">
+                                <col class="g-w-percent5">
+                                <col class="g-w-percent5">
                                 <col class="g-w-percent14">
                             </colgroup>
 
                             <!--表头-->
                             <thead>
                             <tr>
-                            		<th>服务站全称</th>
                                 <th>服务站简称</th>
                                 <th>负责人姓名</th>
                                 <th>负责人手机号码</th>
                                 <th>地址</th>
+                                <th>所属代理</th>
+                                <th>上级代理</th>
                                 <th class="no-sorting">操作</th>
                             </tr>
                             </thead>
@@ -189,7 +200,7 @@
 
                     <!--编辑表单标题-->
                     <div class="panel-heading">
-                        <h3 class="panel-title" id="edit_title">添加代理商</h3>
+                        <h3 class="panel-title" id="edit_title">添加服务站</h3>
                         <div class="panel-options">
                             <a href="#" data-toggle="panel">
                                 <span class="collapse-icon">&ndash;</span>
@@ -200,48 +211,45 @@
 
                     <!--添加-->
                     <div class="panel-body">
-                        <form role="form" id="edit_form" method="post" class="admin-form1 validate">
-                            <input type="text" class="g-d-hidei" value="" id="agent_id" name="agentId">
+                        <form role="form" id="station_edit_form" method="post" class="admin-form1 validate">
+                            <input type="text" class="g-d-hidei" name="serviceStationId" id="station_servicestationid"  />
                             <div class="form-group">
-                                <label class="control-label">代理商全称：</label>
+                                <label class="control-label">服务站全称：</label>
 
-                                <input type="text" class="form-control" name="fullName" id="agent_fullname" data-validate="required" data-message-required="代理商全称不能为空" placeholder="请输入代理商全称" />
+                                <input type="text" class="form-control" name="fullName" id="station_fullname" data-validate="required" data-message-required="服务站全称不能为空" placeholder="请输入服务站全称" />
                             </div>
 
                             <div class="form-group">
-                                <label class="control-label">代理商简称：</label>
+                                <label class="control-label">服务站简称：</label>
 
-                                <input type="text" class="form-control" name="shortName" id="agent_shortname" data-validate="required" data-message-required="代理商简称不能为空" placeholder="请输入代理商简称" />
+                                <input type="text" class="form-control" name="shortName" id="station_shortname" data-validate="required" data-message-required="服务站简称不能为空" placeholder="请输入服务站简称" />
                             </div>
 
+                            <div class="form-group">
+                                <label class="control-label">服务站负责人：</label>
 
+                                <input type="text" class="form-control" name="name" id="station_name" data-validate="required" data-message-required="服务站负责人不能为空" placeholder="请输入服务站负责人" />
+                            </div>
 
-                            <div class="g-d-hidei" id="agent_userwrap">
+                            <div class="g-d-hidei" id="station_userwrap">
                                 <div class="form-group">
                                     <label class="control-label">代理商登录账户：</label>
 
-                                    <input type="text" class="form-control" name="username" id="agent_username" data-validate="required" data-message-required="代理商登录账户不能为空" placeholder="请输入代理商登录账户" />
+                                    <input type="text" class="form-control" name="username" id="station_username" data-validate="required" data-message-required="代理商登录账户不能为空" placeholder="请输入代理商登录账户" />
                                 </div>
 
                                 <div class="form-group">
                                     <label class="control-label">代理商登录密码：</label>
 
-                                    <input type="password" class="form-control" name="password" id="agent_password" data-validate="required,minlength[6]" data-message-required="代理商登录密码不能为空" data-message-minlength="代理商登录密码不能少于6位" placeholder="请输入代理商登录密码" />
+                                    <input type="password" class="form-control" name="password" id="station_password" data-validate="required,minlength[6]" data-message-required="代理商登录密码不能为空" data-message-minlength="代理商登录密码不能长度不少于6位" placeholder="请输入代理商登录密码" />
                                 </div>
 
                                 <div class="form-group">
                                     <label class="control-label">代理商登录昵称：</label>
 
-                                    <input type="text" class="form-control" name="nickname" id="agent_nickname" data-validate="required" data-message-required="代理商登录昵称不能为空" placeholder="请输入代理商登录昵称" />
+                                    <input type="text" class="form-control" name="nickname" id="station_nickname" data-validate="required" data-message-required="代理商登录昵称不能为空" placeholder="请输入代理商登录昵称" />
                                 </div>
 
-                            </div>
-
-
-                            <div class="form-group">
-                                <label class="control-label">服务站负责人：</label>
-
-                                <input type="text" class="form-control" name="name" id="agent_name" data-validate="required" data-message-required="代理商负责人不能为空" placeholder="请输入代理商负责人" />
                             </div>
 
                             <div class="form-group">
@@ -249,90 +257,134 @@
                                 <div class="selectwrap">
                                     <div class="select-item g-w-percent12">
                                         <p>请选择省份</p>
-                                        <ul id="agent_province"></ul>
+                                        <ul id="station_province"></ul>
                                     </div>
                                     <div class="select-item g-w-number13">
                                         <p>请选择城市</p>
-                                        <ul id="agent_city"></ul>
+                                        <ul id="station_city"></ul>
                                     </div>
                                     <div class="select-item g-w-number13">
                                         <p>请选择地区</p>
-                                        <ul id="agent_area"></ul>
+                                        <ul id="station_area"></ul>
                                     </div>
                                 </div>
-                                <input type="text"  class="select-input-def form-control" value="" data-validate="required" data-message-required="省份不能为空" name="province" id="agent_province_value">
-                                <input type="text" class="select-input-def form-control" data-validate="required" data-message-required="城市不能为空" value="" name="city" id="agent_city_value">
-                                <input type="text" class="select-input-def form-control" data-validate="required" data-message-required="地区不能为空" value="" name="country" id="agent_area_value">
+                                <input type="text"  class="select-input-def form-control" value="" data-validate="required" data-message-required="省份不能为空" name="province" id="station_province_value">
+                                <input type="text" class="select-input-def form-control" data-validate="required" data-message-required="城市不能为空" value="" name="city" id="station_city_value">
+                                <input type="text" class="select-input-def form-control" data-validate="required" data-message-required="地区不能为空" value="" name="country" id="station_area_value">
                             </div>
-
 
                             <div class="form-group">
                                 <label class="control-label">详细地址：</label>
-                                <input type="text" class="form-control" name="address"  placeholder="请输入详细地址" data-validate="required" data-message-required="详细地址不能为空" value="" id="agent_address" />
+                                <input type="text" class="form-control" name="address"  placeholder="请输入详细地址" data-validate="required" data-message-required="详细地址不能为空" value="" id="station_address" />
                             </div>
-
 
                             <div class="form-group">
                                 <label class="control-label">服务站手机号码：</label>
 
-                                <input type="text" class="form-control" name="phone" id="agent_phone" data-validate="required,zh_phone" maxlength="13" data-message-required="代理商手机号码不能为空" data-message-zh_phone="代理商手机号码格式不正确" placeholder="请输入代理商手机号码" />
+                                <input type="text" class="form-control" name="phone" id="station_phone" data-validate="required,zh_phone" maxlength="13" data-message-required="服务站手机号码不能为空" data-message-zh_phone="服务站手机号码格式不正确" placeholder="请输入服务站手机号码" />
                             </div>
 
-
                             <div class="form-group">
-                                <label class="control-label">代理商电话号码：</label>
+                                <label class="control-label">服务站电话号码：</label>
 
-                                <input type="text" class="form-control" name="tel" id="agent_tel" placeholder="请输入代理商电话号码" />
+                                <input type="text" class="form-control" name="tel" id="station_tel" placeholder="请输入服务站电话号码" />
                             </div>
 
-
                             <div class="form-group">
-                                <label class="control-label">代理商级别&nbsp;--上级代理商ID(<span id="agent_parentid" data-value="" data-name="" class="g-c-bs-info"></span>)：</label>
-                                <div class="admin-sub-items1 self-error-pos-wrap" id="agent_gradewrap">
-                                    <label id="agent_gradeAAA">
-                                        &nbsp;&nbsp;AAA级:&nbsp;<input class="self-error-pos" type="radio" value="3" name="grade" data-validate="required" data-message-required="请选择代理商级别"  />
-                                    </label>
-                                    <label id="agent_gradeAA">
-                                        &nbsp;&nbsp;AA级:&nbsp;<input class="self-error-pos" type="radio"  value="2" name="grade" data-validate="required" data-message-required="请选择代理商级别"  />
-                                    </label>
-                                    <label id="agent_gradeA">
-                                        &nbsp;&nbsp;A级:&nbsp;<input class="self-error-pos" type="radio"  value="1" name="grade" data-validate="required" data-message-required="请选择代理商级别"  />
-                                    </label>
-                                    <label id="agent_gradeSS">
-                                        &nbsp;&nbsp;店长:&nbsp;<input class="self-error-pos" type="radio"  value="4" name="grade" data-validate="required" data-message-required="请选择代理商级别"  />
-                                    </label>
-                                </div>
+                                <label class="control-label">备注：</label>
+
+                                <textarea class="form-control" name="Remark" id="station_remark"   placeholder="请输入备注"></textarea>
                             </div>
 
+                            <div class="form-group" id="station_bindagentwrap">
+                                <label class="control-label">绑定代理商ID：</label>
+                                <!--placeholder="请输入绑定代理商ID"-->
+                                <select class="form-control" name="agentId" id="station_agentid"></select>
 
-                            <div class="form-group">
+                            </div>
+
+                            <div class="form-group" id="station_becomeagentwrap">
                                 <div class="checkbox">
-                                    分润设置：
                                     <label>
-                                        自定义：<input type="radio" name="isCustomProfit" id="agent_self" value="1" />
-                                    </label>
-                                    <label>
-                                        按系统定义：<input type="radio" checked name="isCustomProfit" id="agent_auto"  value="0" />
+                                        <input value="0" type="checkbox" id="station_becomeagent" name="becomeAgent" />同时成为代理商&nbsp;&nbsp;
                                     </label>
                                 </div>
-                                <div class="admin-sub-items1 g-d-hidei" id="agent_runsetupwrap">
+                                <div class="admin-sub-items1 g-d-hidei" id="station_agentwrap">
+                                    代理商级别：
+                                    <label>
+                                        &nbsp;&nbsp;A级:&nbsp;<input type="radio"  value="1" name="grade" />
+                                    </label>
+                                    <label>
+                                        &nbsp;&nbsp;AA级:&nbsp;<input value="2" type="radio"  name="grade" />
+                                    </label>
+                                    <label>
+                                        &nbsp;&nbsp;AAA级:&nbsp;<input value="3"  type="radio"  name="grade" />
+                                    </label>
+                                </div>
+                                <div class="control-label">以上内容请根据合同如实填写。</div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="checkbox" id="station_salescheck">
+                                    销售分润设置:&nbsp;&nbsp;
+                                    <label>
+                                        自定义：<input type="radio" name="isCustomSalesProfit" id="station_salesself" value="1" />
+                                    </label>
+                                    <label>
+                                        按系统定义：<input type="radio" name="isCustomSalesProfit" id="station_salesauto" value="0" checked />
+                                    </label>
+                                </div>
+                                <div class="admin-sub-items1 g-d-hidei" id="station_saleswrap">
                                     <ul>
-                                        <li id="agent_runsetupsetting" class="clear-validate-tip">
-                                            <label>级别A分润:<input type="text" class="form-control" name="distributorProfit1"  data-validate="required,number,dotmaxlength[2]" data-message-required="一级分润不能为空" data-message-number="一级分润必须是数值" data-message-dotmaxlength="一级分润需小于3位数值" maxlength="5" placeholder="请输入小于100的数字"  />
+                                        <li>
+                                            <label class="clear-validate-error">总销售利润:<input type="text" class="form-control" name="profitSumForSales" id="station_profitsumforsales" placeholder="" />
                                             </label>
-                                            <label>级别AA分润:<input type="text" class="form-control"  data-validate="required,number,dotmaxlength[2]" data-message-required="二级分润不能为空" data-message-number="二级分润必须是数值" data-message-dotmaxlength="二级分润需小于3位数值" maxlength="5" placeholder="请输入小于100的数字"  name="distributorProfit2" />
+                                        </li>
+                                        <li id="station_salessetting" class="clear-validate-tip">
+                                            <label>一级分润:<input type="text" class="form-control" name="distributorP1ForSales" data-validate="required,number,dotmaxlength[2]" data-message-required="一级分润不能为空" data-message-number="一级分润必须是数值" data-message-dotmaxlength="一级分润需小于3位数值" maxlength="5" placeholder="请输入小于100的数字" />
                                             </label>
-                                            <label>级别AAA分润:<input type="text" class="form-control"  data-validate="required,number,dotmaxlength[2]" data-message-required="三级分润不能为空" data-message-number="三级分润必须是数值" data-message-dotmaxlength="三级分润需小于3位数值" maxlength="5" placeholder="请输入小于100的数字"  name="distributorProfit3" />
+                                            <label>二级分润:<input type="text" class="form-control" data-validate="required,number,dotmaxlength[2]" data-message-required="二级分润不能为空" data-message-number="二级分润必须是数值" data-message-dotmaxlength="二级分润需小于3位数值" maxlength="5" placeholder="请输入小于100的数字" name="distributorP2ForSales" />
+                                            </label>
+                                            <label>三级分润:<input type="text" class="form-control" data-validate="required,number,dotmaxlength[2]" data-message-required="三级分润不能为空" data-message-number="三级分润必须是数值" data-message-dotmaxlength="三级分润需小于3位数值" maxlength="5" placeholder="请输入小于100的数字" name="distributorP3ForSales" />
                                             </label>
                                         </li>
                                     </ul>
                                 </div>
+
                             </div>
 
+                            <div class="form-group">
+                                <div class="checkbox" id="station_acqcheck">
+                                    收单分润设置:&nbsp;&nbsp;
+                                    <label>
+                                        自定义：<input type="radio" name="isCustomAcquiringProfit" id="station_acqself"  value="1" />
+                                    </label>
+                                    <label>
+                                        按系统定义：<input type="radio" name="isCustomAcquiringProfit" id="station_acqauto" checked  value="0" />
+                                    </label>
+                                </div>
+                                <div class="admin-sub-items1 g-d-hidei"  id="station_acqwrap">
+                                    <ul>
+                                        <li>
+                                            <label class="clear-validate-error">总销售利润:<input type="text" id="station_profitsumforacquiring"  class="form-control" name="profitSumForAcquiring" placeholder="" />
+                                            </label>
+                                        </li>
+                                        <li id="station_acqsetting" class="clear-validate-tip">
+                                            <label>一级分润:<input type="text" class="form-control" name="distributorP1ForAcquiring"  data-validate="required,number,dotmaxlength[2]" data-message-required="一级分润不能为空" data-message-number="一级分润必须是数值" data-message-dotmaxlength="一级分润需小于3位数值" maxlength="5" placeholder="请输入小于100的数字"  />
+                                            </label>
+                                            <label>二级分润:<input type="text" class="form-control"  data-validate="required,number,dotmaxlength[2]" data-message-required="二级分润不能为空" data-message-number="二级分润必须是数值" data-message-dotmaxlength="二级分润需小于3位数值" maxlength="5" placeholder="请输入小于100的数字"  name="distributorP2ForAcquiring" />
+                                            </label>
+                                            <label>三级分润:<input type="text" class="form-control"  data-validate="required,number,dotmaxlength[2]" data-message-required="三级分润不能为空" data-message-number="三级分润必须是数值" data-message-dotmaxlength="三级分润需小于3位数值" maxlength="5" placeholder="请输入小于100的数字"  name="distributorP3ForAcquiring" />
+                                            </label>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                            </div>
 
                             <div class="form-group">
                                 <button type="submit" class="btn btn-success">添加</button>
-                                <button id="agent_cance_btn" type="reset" class="btn btn-white">取消</button>
+                                <button id="edit_cance_btn" type="reset" class="btn btn-white">取消</button>
                             </div>
                         </form>
                     </div>
@@ -340,7 +392,6 @@
 
                 </div>
             </div>
-
 
         </div>
 
@@ -369,64 +420,7 @@
     </div>
 </div>
 
-<!--绑定代理商-->
-<div class="modal fade custom-width" id="admin_bind_wrap" data-id="">
-    <div class="modal-dialog g-w-percent46">
-        <div class="modal-content">
 
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 id="admin_bind_title" class="modal-title">绑定服务站</h4>
-            </div>
-            <div class="modal-body">
-                <div class="admin-service-bindwrap">
-                    <div class="service-bindshow">
-                        <h3>可选服务站</h3>
-                        <ul id="service_unbindwrap"></ul>
-                    </div>
-                    <div class="service-bindbtn">
-                        <span class="btn btn-white g-br3" id="service_bindbtn" data-type="1">绑定<i class="fa-angle-double-right"></i></span>
-                        <span class="btn btn-white g-br3" data-type="2"  id="service_unbindbtn"><i class="fa-angle-double-left"></i>取消绑定</span>
-                    </div>
-                    <div class="service-bindshow">
-                        <h3>已经绑定的服务站</h3>
-                        <ul id="service_bindwrap"></ul>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-info" data-dismiss="modal">关闭</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-
-<!--详情展现-->
-<div class="modal fade custom-width" id="show_detail_wrap">
-    <div class="modal-dialog g-w-percent46">
-        <div class="modal-content">
-
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 id="show_detail_title" class="modal-title"></h4>
-            </div>
-            <div class="modal-body">
-                <table class="table table-bordered table-striped table-hover admin-table">
-                    <colgroup>
-                        <col class="g-w-percent10"/>
-                        <col class="g-w-percent40"/>
-                    </colgroup>
-                    <tbody id="show_detail_content"></tbody>
-                </table>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-info" data-dismiss="modal">关闭</button>
-            </div>
-        </div>
-    </div>
-</div>
 
 
 <!--加载遮罩层-->
@@ -490,6 +484,6 @@
 <!--表单验证插件-->
 <script src="../../js/plugins/jquery-validate/jquery.validate.js"></script>
 <script src="../../js/widgets/city_select.js"></script>
-<script src="../../js/agent/agent_add.js"></script>
+<script src="../../js/servicestation/service_station_add.js"></script>
 </body>
 </html>

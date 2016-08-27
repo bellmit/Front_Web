@@ -529,7 +529,7 @@
 		"59":{
 			"name":"三级分销管理",
 			"code":"distributor",
-			"match":"-distributor-",
+			"match":"-distributor",
 			"class":"menu-ux-distribution",
 			"module":"distributor",
 			"modid":"59"

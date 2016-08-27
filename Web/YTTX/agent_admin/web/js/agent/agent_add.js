@@ -9,7 +9,7 @@
 			/*菜单调用*/
 			var logininfo=public_tool.initMap.loginMap;
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
-				url:'http://10.0.5.222:8080/yttx-agentbms-api/module/menu',
+				url:'http://120.24.226.70:8081/yttx-agentbms-api/module/menu',
 				async:false,
 				type:'post',
 				param:{
@@ -111,7 +111,8 @@
 					AAA:$agent_gradeAAA,
 					AA:$agent_gradeAA,
 					A:$agent_gradeA,
-					SS:$agent_gradeSS
+					SS:$agent_gradeSS,
+					parentWrap:$agent_parentid
 				},
 				$agent_runsetupwrap=$('#agent_runsetupwrap'),
 				$agent_runsetupsetting=$('#agent_runsetupsetting'),
@@ -135,7 +136,7 @@
 
 			/*数据加载*/
 			var agent_config={
-				url:"http://10.0.5.222:8080/yttx-agentbms-api/agents/related",
+				url:"http://120.24.226.70:8081/yttx-agentbms-api/agents/related",
 				dataType:'JSON',
 				method:'post',
 				dataSrc:function ( json ) {
@@ -160,7 +161,7 @@
 						var stationobj=list[0];
 						if('serivceStationlist' in stationobj){
 							list=list.slice(1);
-							stationobj=list[0]
+							stationobj=list[0];
 							if('serivceStationlist' in stationobj){
 								list=list.slice(1);
 							}
@@ -273,7 +274,7 @@
 
 				/*查询上级代理商ID*/
 				$.ajax({
-					url:"http://10.0.5.222:8080/yttx-agentbms-api/agent/role/check",
+					url:"http://120.24.226.70:8081/yttx-agentbms-api/agent/role/check",
 					dataType:'JSON',
 					method:'post',
 					data:{
@@ -297,33 +298,10 @@
 						return false;
 					}
 
-					console.log(resp);
-
-					var rolegrade=resp.result,
-						gradmap={
-							'3':'AAA级代理商',
-							'2':'AA级代理商',
-							'1':'A级代理商',
-							'4':'店长',
-							'-1':'总代理'
-						},
-						grade=rolegrade['grade'];
+					/*初始化代理商级别*/
+					setGradeShow(gradeobj,resp.result);
 
 
-					if(rolegrade){
-						$agent_parentid.attr({
-							'data-id':rolegrade['parentId']||'',
-							'data-grade':grade,
-							'data-name':rolegrade['parentName']||''
-						}).html(gradmap[grade]);
-						setGradeShow();
-					}else{
-						$agent_parentid.attr({
-							'data-id':'',
-							'data-grade':'',
-							'data-name':''
-						}).html('');
-					}
 				}).fail(function(resp){
 					console.log('error');
 					$agent_parentid.attr({
@@ -451,7 +429,7 @@
 				}else if(action==='bind'){
 					/*绑定代理商请求数据*/
 					$.when($.ajax({
-						url:"http://10.0.5.222:8080/yttx-agentbms-api/servicestation/notbound/list",
+						url:"http://120.24.226.70:8081/yttx-agentbms-api/servicestation/notbound/list",
 						method: 'POST',
 						dataType: 'json',
 						data:{
@@ -460,7 +438,7 @@
 							"token":decodeURIComponent(logininfo.param.token)
 						}
 					}),$.ajax({
-						url:"http://10.0.5.222:8080/yttx-agentbms-api/servicestation/bound/list",
+						url:"http://120.24.226.70:8081/yttx-agentbms-api/servicestation/bound/list",
 						method: 'POST',
 						dataType: 'json',
 						data:{
@@ -606,7 +584,7 @@
 						hasitem,
 						isbind=type==='1'?true:false,
 						config={
-							url:"http://10.0.5.222:8080/yttx-agentbms-api/servicestation/binding/operation",
+							url:"http://120.24.226.70:8081/yttx-agentbms-api/servicestation/binding/operation",
 							dataType:'JSON',
 							method:'post',
 							data:{
@@ -774,7 +752,7 @@
 
 							if(isadd){
 								var config={
-									url:"http://10.0.5.222:8080/yttx-agentbms-api/agent/add",
+									url:"http://120.24.226.70:8081/yttx-agentbms-api/agent/add",
 									dataType:'JSON',
 									method:'post',
 									data:{
@@ -791,7 +769,7 @@
 										address:$agent_address.val(),
 										phone:$agent_phone.val().replace(/\s*/g,''),
 										tel:$agent_tel.val(),
-										parentId:$agent_parentid.val(),
+										parentId:$agent_parentid.attr('data-grade')==='-1'?'':$agent_parentid.attr('data-id'),
 										username:$agent_username.val(),
 										password:$agent_password.val(),
 										nickname:$agent_nickname.val()
@@ -806,7 +784,7 @@
 									return false;
 								}
 								var config={
-									url:"http://10.0.5.222:8080/yttx-agentbms-api/agent/update",
+									url:"http://120.24.226.70:8081/yttx-agentbms-api/agent/update",
 									dataType:'JSON',
 									method:'post',
 									data:{
@@ -824,7 +802,7 @@
 										address:$agent_address.val(),
 										phone:$agent_phone.val().replace(/\s*/g,''),
 										tel:$agent_tel.val(),
-										parentId:$agent_parentid.val()
+										parentId:$agent_parentid.attr('data-grade')==='-1'?'':$agent_parentid.attr('data-id')
 									}
 								};
 							}
@@ -922,41 +900,75 @@
 		}
 
 
-		/**/
-		function setGradeShow(obj,code){
+		/*代理商级别初始化*/
+		var tempgrade='';
+		function setGradeShow(obj,result){
+			var gradeobj=result?result:tempgrade!==''?tempgrade:'',
+				grademap={
+					'3':'AAA级代理商',
+					'2':'AA级代理商',
+					'1':'A级代理商',
+					'4':'店长',
+					'-1':'总代理',
+					'':'自定义设置代理商'
+				},
+				grade=(gradeobj['grade']||'').toString();
+
+
+			if(gradeobj){
+				if(tempgrade===''){
+					tempgrade=gradeobj;
+				}
+				obj.parentWrap.attr({
+					'data-id':gradeobj['parentId']||'',
+					'data-grade':grade,
+					'data-name':gradeobj['parentName']||''
+				}).html(grademap[grade]);
+			}else{
+				obj.parentWrap.attr({
+					'data-id':'',
+					'data-grade':'',
+					'data-name':''
+				}).html(grademap[grade]);
+			}
 			/*设置级别可见度*/
-			if(code==='3'){
+			if(grade==='3'){
 				/*AAA*/
 				obj.AAA.addClass('g-d-hidei');
 				obj.AA.removeClass('g-d-hidei');
 				obj.A.removeClass('g-d-hidei');
 				obj.SS.removeClass('g-d-hidei');
-			}else if(code==='2'){
+			}else if(grade==='2'){
 				/*AA*/
 				obj.AAA.addClass('g-d-hidei');
 				obj.AA.addClass('g-d-hidei');
 				obj.A.removeClass('g-d-hidei');
 				obj.SS.removeClass('g-d-hidei');
-			}else if(code==='1'){
+			}else if(grade==='1'){
 				/*A*/
 				obj.AAA.addClass('g-d-hidei');
 				obj.AA.addClass('g-d-hidei');
 				obj.A.addClass('g-d-hidei');
 				obj.SS.removeClass('g-d-hidei');
-			}else if(code==='4'){
+			}else if(grade==='4'){
 				/*店长*/
 				obj.AAA.removeClass('g-d-hidei');
 				obj.AA.removeClass('g-d-hidei');
 				obj.A.removeClass('g-d-hidei');
 				obj.SS.addClass('g-d-hidei');
-			}else if(code==='-1'){
+			}else if(grade==='-1'){
 				/*总代理*/
 				obj.AAA.removeClass('g-d-hidei');
 				obj.AA.removeClass('g-d-hidei');
 				obj.A.removeClass('g-d-hidei');
 				obj.SS.removeClass('g-d-hidei');
+			}else if(grade===''||typeof grade==='undefined'){
+				obj.AAA.removeClass('g-d-hidei');
+				obj.AA.removeClass('g-d-hidei');
+				obj.A.removeClass('g-d-hidei');
+				obj.SS.removeClass('g-d-hidei');
 			}
-		}
+		};
 
 	});
 
