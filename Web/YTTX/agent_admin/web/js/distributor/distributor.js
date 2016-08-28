@@ -165,7 +165,7 @@
 									<option value="3">三级</option>\
 									<option value="4">其他</option>\
 									</select>&nbsp;\
-									<span data-id="'+data+'" data-action="select" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+									<span data-subitem="" data-id="'+data+'" data-action="select" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 									 <i class="fa-angle-right"></i>\
 									 <span>下级分销</span>\
 									 </span>';
@@ -254,98 +254,102 @@
 
 
 				/*发货操作*/
-				if(action==='send'){
-					/*调整布局*/
-					$data_wrap.addClass('collapsed');
-					$repair_wrap.addClass('collapsed');
-					$send_wrap.removeClass('collapsed');
-					$("html,body").animate({scrollTop:300},200);
-					$repair_title.html('');
-					$send_title.html('给"'+datas['fullName']+'"服务站发货');
-				}else if(action==='repair'){
-					/*调整布局*/
-					$data_wrap.addClass('collapsed');
-					$repair_wrap.removeClass('collapsed');
-					$send_wrap.addClass('collapsed');
-					$("html,body").animate({scrollTop:380},200);
-					//重置信息
-					$send_title.html('');
-					$repair_title.html('"'+datas['fullName']+'"服务站返修设备');
-				}else if(action==='select'){
+				if(action==='select'){
 					/*查看下级分销*/
 					var level=$this.prev('select').find('option:selected').val(),
 						subclass=$this.children('i').hasClass('fa-angle-down'),
-						tabletr=table.row($tr);
-
+						tabletr=table.row($tr),
+						subitem=$this.attr('data-subitem');
 
 					if(subclass){
 						/*收缩*/
-						//去除本次索引
 						$this.children('i').removeClass('fa-angle-down');
-						tabletr.child().remove();
+						tabletr.child().hide(200);
 					}else{
-
-						$.ajax({
-							 url:"../../json/all_subdistributor.json"/*"http://120.24.226.70:8081/yttx-agentbms-api/distributor/lower"*/,
-							 method: 'POST',
-							 dataType: 'json',
-							 data:{
-								 "distributorId":id,
-								 "Level":level,
-								 "adminId":decodeURIComponent(logininfo.param.adminId),
-								 "token":decodeURIComponent(logininfo.param.token)
-							 }
-						 }).done(function(resp){
-							 var code=parseInt(resp.code,10);
-							 if(code!==0){
-								 /*回滚状态*/
-								 console.log(resp.message);
-								 return false;
-							 }
-
-							 /*是否是正确的返回数据*/
-							 var result=resp.result;
-
-							if(!result){
-								return [];
-							}
-
-							var list=result.list,
-								len=list.length,
-								i= 0,
-								newstr='<colgroup>\
-								<col class="g-w-percent20">\
-								<col class="g-w-percent20">\
-								<col class="g-w-percent10">\
-								</colgroup>\
-									<thead>\
-									<tr>\
-									<th>用户名称</th>\
-									<th>机器码</th>\
-									<th class="no-sorting">操作</th>\
-								</tr>\
-								</thead>',
-								res='<tr><td colspan="3">代理商：'+result["agentName"]+'</td></tr><tr><td colspan="3">服务站：'+result["serviceStationName"]+'</td></tr><tr><td colspan="3">昵称：'+result["nickName"]+'</td></tr>';
-							if(len!==0){
-
-							}else{
-								res='<tbody class="middle-align">'+res+'</tbody>';
-							}
-
-
-
-						 }).fail(function(resp){
-						 		console.log(resp.message);
-						 });
-
-
-						var $newtr=$('<tr><td colspan="6"></td></tr>');
-						tabletr.child($newtr).show();
-						$this.children('i').addClass('fa-angle-down');
 						/*展开*/
+						if(subitem===''){
+							$.ajax({
+								 url:"../../json/all_subdistributor.json"/*"http://120.24.226.70:8081/yttx-agentbms-api/distributor/lower"*/,
+								 method: 'POST',
+								 dataType: 'json',
+								 data:{
+									 "distributorId":id,
+									 "Level":level,
+									 "adminId":decodeURIComponent(logininfo.param.adminId),
+									 "token":decodeURIComponent(logininfo.param.token)
+								 }
+							 }).done(function(resp){
+								 var code=parseInt(resp.code,10);
+								 if(code!==0){
+									 /*回滚状态*/
+									 console.log(resp.message);
+									 return false;
+								 }
+
+								 /*是否是正确的返回数据*/
+								 var result=resp.result;
+
+								if(!result){
+									return [];
+								}
+
+								var list=result.list,
+									len=list.length,
+									i= 0,
+									newstr='<colgroup>\
+									<col class="g-w-percent20">\
+									<col class="g-w-percent20">\
+									<col class="g-w-percent10">\
+									</colgroup>\
+										<thead>\
+										<tr>\
+										<th>用户名称</th>\
+										<th>机器码</th>\
+										<th class="no-sorting">操作</th>\
+									</tr>\
+									</thead>',
+									res='<tr><td colspan="3">代理商：'+result["agentName"]+'</td></tr><tr><td colspan="3">服务站：'+result["serviceStationName"]+'</td></tr><tr><td colspan="3">昵称：'+result["nickName"]+'</td></tr>';
+								if(len!==0){
+									for(i;i<len;i++){
+										var tempitem=list[i];
+										res+='<tr><td>用户名:'+tempitem["name"]+'</td><td>机器号:'+tempitem["machineCode"]+'</td><td>'+(function(){
+												var btns='';
+												if(distributorlower_power){
+													/*查看*/
+													btns+='<span data-id="'+tempitem["distributorId"]+'" data-action="lower" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+														 <i class="fa-bar-chart"></i>\
+														 <span>分销统计</span>\
+														 </span>';
+												}
+												return btns;
+										}())+'</td></tr>';
+
+									}
+								}
+								res='<tbody class="middle-align">'+res+'</tbody>';
+								newstr='<tr><td colspan="6"><table class="table table-bordered table-striped table-hover admin-table" >'+newstr+res+'</table></td></tr>';
+
+								var $newtr=$(newstr);
+								tabletr.child($newtr).show();
+								$this.attr({
+									'data-subitem':'true'
+								}).children('i').addClass('fa-angle-down')
+
+
+							 }).fail(function(resp){
+							 		console.log(resp.message);
+							 });
+
+						}else{
+								tabletr.child().show();
+								$this.children('i').addClass('fa-angle-down');
+						}
+						
+
+						
 					}
-
-
+				}else if(action==='lower'){
+					alert('ni mei');
 				}
 			});
 
