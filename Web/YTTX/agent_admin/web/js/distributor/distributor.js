@@ -31,13 +31,10 @@
 
 			/*dom引用和相关变量定义*/
 			var $distributor_wrap=$('#distributor_wrap')/*表格*/,
+				$stats_wrap=$('#stats_wrap'),
 				module_id='distributor_list'/*模块id，主要用于本地存储传值*/,
-				$data_wrap=$('#data_wrap')/*数据展现面板*/,
-				$send_wrap=$('#send_wrap')/*发货容器面板*/,
-				$repair_wrap=$('#repair_wrap')/*返修容器面板*/,
 				table=null/*数据展现*/,
-				$send_title=$('#send_title')/*编辑标题*/,
-				$repair_title=$('#repair_title')/*编辑标题*/,
+				statstable=null,
 				dia=dialog({
 					title:'温馨提示',
 					okValue:'确定',
@@ -48,25 +45,7 @@
 					},
 					cancel:false
 				})/*一般提示对象*/,
-				dialogObj=public_tool.dialog()/*回调提示对象*/,
-				$show_detail_wrap=$('#show_detail_wrap')/*详情容器*/,
-				$show_detail_title=$('#show_detail_title')/*详情标题*/,
-				$show_detail_content=$('#show_detail_content')/*详情内容*/,
-				detail_map={
-					agentFullName:'代理商全称',
-					fullName:'服务站全称',
-					shortName:"服务站简称",
-					name:"负责人姓名",
-					phone:"负责人手机号码",
-					address:"地址",
-					sales:"销售",
-					inventory:"库存",
-					monthSales:"本月销售",
-					totalSales:"总计销售",
-					repairs:"返修",
-					agentShortName:"所属代理",
-					superShortName:"上级代理"
-				}/*详情映射*/;
+				dialogObj=public_tool.dialog()/*回调提示对象*/;
 
 
 
@@ -75,11 +54,10 @@
 				$search_nickName=$('#search_nickName'),
 				$search_Phone=$('#search_Phone'),
 				$admin_search_btn=$('#admin_search_btn'),
-				$admin_search_clear=$('#admin_search_clear');
-
-
-
-			/*表单对象*/
+				$admin_search_clear=$('#admin_search_clear'),
+				$search_Time=$('#search_Time'),
+				$stats_search_btn=$('#stats_search_btn'),
+				$stats_search_clear=$('#stats_search_clear');
 
 
 
@@ -180,54 +158,223 @@
 				],
 				lengthChange:true/*是否可改变长度*/
 			});
+
+
+
+
+			/*统计数据加载配置*/
+			var stats_config={
+					url:"../../json/all_stats.json"/*http://120.24.226.70:8081/yttx-agentbms-api/distributor/profit/stats*/,
+					dataType:'JSON',
+					method:'post',
+					dataSrc:function ( json ) {
+						alert('aaaa');
+						var code=parseInt(json.code,10);
+						if(code!==0){
+							console.log(json.message);
+							return [];
+						}
+						var tempresult=[],
+						sales=json.result.salesprofit;
+
+						if(!sales){
+							return [];
+						}
+						console.log(tempresult);
+
+						for(var i in sales){
+							tempresult.push(sales[i].slice(0));
+						}
+						console.log(tempresult);
+						return tempresult;
+					},
+					data:{
+						distributorId:'',
+						adminId:decodeURIComponent(logininfo.param.adminId),
+						token:decodeURIComponent(logininfo.param.token)
+					}
+				},
+				stats_opt={
+					deferRender:true,/*是否延迟加载数据*/
+					//serverSide:true,/*是否服务端处理*/
+					searching:true,/*是否搜索*/
+					ordering:false,/*是否排序*/
+					//order:[[1,'asc']],/*默认排序*/
+					paging:true,/*是否开启本地分页*/
+					pagingType:'simple_numbers',/*分页按钮排列*/
+					autoWidth:true,/*是否*/
+					info:true,/*显示分页信息*/
+					stateSave:false,/*是否保存重新加载的状态*/
+					processing:true,/*大消耗操作时是否显示处理状态*/
+					ajax:stats_config,/*异步请求地址及相关配置*/
+					columns:'',/*控制分页数*/
+					aLengthMenu: [
+						[5,10,20,30],
+						[5,10,20,30]
+					],
+					lengthChange:true/*是否可改变长度*/
+				};
+
+
+
+
+
+
+			/*时间调用*/
+			var end_date=moment().format('YYYY-MM-DD'),
+				start_date=moment().subtract(2, 'month').format('YYYY-MM-DD');
+			$search_Time.val(start_date+','+end_date).daterangepicker({
+				format: 'YYYY-MM-DD',
+				todayBtn: true,
+				maxDate:end_date,
+				endDate:end_date,
+				startDate:start_date,
+				separator:','
+			}).on('apply.daterangepicker',function(ev, picker){
+					var end=moment(picker.endDate).format('YYYY-MM-DD'),
+						start=moment(picker.startDate).format('YYYY-MM-DD'),
+						limitstart=moment(end).subtract(2, 'month').format('YYYY-MM-DD'),
+						isstart=moment(start).isBetween(limitstart,end);
+
+				/*校验时间区间合法性*/
+				if(!isstart){
+					picker.setStartDate(limitstart);
+				}
+			});
 			
 
 
 
-			/*
-			* 初始化
-			* */
-			(function(){
-				/*重置表单*/
-
-			}());
-
-
 			/*清空查询条件*/
-			$admin_search_clear.on('click',function(){
-				$.each([$search_serviceStationName,$search_nickName,$search_Phone],function(){
-					this.val('');
-				});
-			});
-			$admin_search_clear.trigger('click');
+			$.each([$admin_search_clear,$stats_search_clear],function(){
+				var selector=this.selector,
+				isstats=selector.toLowerCase().indexOf('stats')!==-1?true:false;
 
-
-			/*联合查询*/
-			$admin_search_btn.on('click',function(){
-				var data= $.extend(true,{},distributor_config.data);
-
-				$.each([$search_serviceStationName,$search_nickName,$search_Phone],function(){
-					var text=this.val(),
-						selector=this.selector.slice(1),
-						key=selector.split('_');
-
-
-
-					if(text===""){
-						if(typeof data[key[1]]!=='undefined'){
-							delete data[key[1]];
-						}
+				this.on('click',function(){
+					if(isstats){
+						/*统计查询*/
+						$.each([$search_Time],function(){
+							if(this.selector.toLowerCase().indexOf('time')!==-1){
+								this.val(start_date+','+end_date);
+							}else{
+								this.val('');
+							}
+						});
+						stats_config['data']['distributorId']='';
 					}else{
-						if(key[1].toLowerCase().indexOf('phone')!==-1){
-							text=text.replace(/\s*/g,'');
-						}
-						data[key[1]]=text;
+						/*三级分销查询*/
+						$.each([$search_serviceStationName,$search_nickName,$search_Phone],function(){
+							this.val('');
+						});
 					}
 
 				});
-				distributor_config.data= $.extend(true,{},data);
-				table.ajax.config(distributor_config).load(false);
 			});
+			/*清空查询条件*/
+			$admin_search_clear.trigger('click');
+			$stats_search_clear.trigger('click');
+
+
+
+			
+
+			/*联合查询*/
+			$.each([$admin_search_btn,$stats_search_btn],function(){
+				var selector=this.selector,
+				isstats=selector.toLowerCase().indexOf('stats')!==-1?true:false;
+
+				this.on('click',function(){
+
+					if(isstats){
+						/*统计*/
+						var statsdata= $.extend(true,{},stats_config.data),
+						startvalue='',
+						endvalue='';
+
+
+						if(statsdata['distributorId']===''){
+							dia.content('<span class="g-c-bs-warning g-btips-warn">请选择需要查询的分销统计对象</span>').show();
+							setTimeout(function(){
+								dia.close();
+							},2000);
+							return false;
+						}
+
+						/*清除数据并摧毁实例*/
+						if(statstable){
+							statstable.destroy();
+							statstable=null;
+							$stats_wrap.html('');
+						}
+
+
+						$.each([$search_Time],function(){
+							var text=this.val(),
+								subselector=this.selector.slice(1),
+								key=subselector.split('_');
+
+							if(text===""){
+								if(typeof statsdata['start'+key[1]]!=='undefined'){
+									startvalue=start_date;
+									endvalue=end_date;
+									statsdata['start'+key[1]]=startvalue;
+									statsdata['end'+key[1]]=endvalue;
+								}
+							}else{
+								text=text.split(',');
+								startvalue=text[0];
+								endvalue=text[1];
+								statsdata['start'+key[1]]=startvalue;
+								statsdata['end'+key[1]]=endvalue;
+							}
+						});
+						/*合并参数*/
+						stats_config.data= $.extend(true,{},statsdata);
+
+
+
+
+						/*组合视图对象*/
+						var tempobj1=statsSearch(startvalue+','+endvalue,'stats');
+						$(tempobj1['col']+tempobj1['th']+tempobj1['tbody']).appendTo($stats_wrap.html(''));
+						stats_opt.columns=tempobj1['tr'];
+						/*创建新实例并初始化请求数据*/
+						statstable=$stats_wrap.DataTable($.extend(true,{},stats_opt));
+
+
+					}else{
+						/*三级分销*/
+						var data= $.extend(true,{},distributor_config.data);
+
+						$.each([$search_serviceStationName,$search_nickName,$search_Phone],function(){
+							var text=this.val(),
+								selector=this.selector.slice(1),
+								key=selector.split('_');
+
+
+
+							if(text===""){
+								if(typeof data[key[1]]!=='undefined'){
+									delete data[key[1]];
+								}
+							}else{
+								if(key[1].toLowerCase().indexOf('phone')!==-1){
+									text=text.replace(/\s*/g,'');
+								}
+								data[key[1]]=text;
+							}
+
+						});
+						distributor_config.data= $.extend(true,{},data);
+						table.ajax.config(distributor_config).load(false);
+					}
+
+
+				});
+			});
+			
+
+
 
 
 			/*事件绑定*/
@@ -316,7 +463,7 @@
 												var btns='';
 												if(distributorlower_power){
 													/*查看*/
-													btns+='<span data-id="'+tempitem["distributorId"]+'" data-action="lower" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+													btns+='<span data-id="'+tempitem["distributorId"]+'" data-action="stats" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 														 <i class="fa-bar-chart"></i>\
 														 <span>分销统计</span>\
 														 </span>';
@@ -344,34 +491,11 @@
 								tabletr.child().show();
 								$this.children('i').addClass('fa-angle-down');
 						}
-						
-
-						
 					}
-				}else if(action==='lower'){
-					alert('ni mei');
+				}else if(action==='stats'){
+					stats_config['data']['distributorId']=id;
+					$stats_search_btn.trigger('click');
 				}
-			});
-
-
-
-
-
-			/*发货，返修权限*/
-
-
-
-			/*最小化窗口*/
-			$.each([$send_title,$repair_title], function () {
-				var selector=this.selector,
-					issend=selector.indexOf('send')!==-1?true:false;
-
-				this.next().on('click',function(e){
-					if($data_wrap.hasClass('collapsed')){
-						e.stopPropagation();
-						e.preventDefault();
-					}
-				});
 			});
 
 
@@ -389,121 +513,91 @@
 			});
 
 
-
-
-
-			/*表单验证*/
-			/*if($.isFunction($.fn.validate)) {
-				/!*配置信息*!/
-				var form_opt0={},
-					form_opt1={},
-					formcache=public_tool.cache;
-
-				if(formcache.form_opt_0 && formcache.form_opt_1){
-					$.each([formcache.form_opt_0,formcache.form_opt_1], function (index) {
-						var issend=index===0?true:false;
-						$.extend(true,(function () {
-							return issend?form_opt0:form_opt1;
-						}()),(function () {
-							return issend?formcache.form_opt_0:formcache.form_opt_1;
-						}()),{
-							submitHandler: function(form){
-								var id=issend?$send_id.val():$repair_id.val();
-
-								if(id===''){
-									issend?$send_cance_btn.trigger('click'):$repair_cance_btn.trigger('click');
-									dia.content('<span class="g-c-bs-warning g-btips-warn">请选择需要操作的服务站</span>').show();
-									setTimeout(function(){
-										dia.close();
-									},3000);
-									return false;
-								}
-
-
-								if(issend){
-									/!*servicestation/invoice/add*!/
-									/!*http://120.24.226.70:8081/yttx-agentbms-api/servicestation/invoice/add*!/
-									var checkdata=getCheckPlugin(send_checkconfig),
-										config={
-											url:"http://120.24.226.70:8081/yttx-agentbms-api/servicestation/invoice/add",
-											dataType:'JSON',
-											method:'post',
-											data:{
-												serviceStationId:id,
-												adminId:decodeURIComponent(logininfo.param.adminId),
-												token:decodeURIComponent(logininfo.param.token),
-												trackingNumber:$send_trackingnumber.val(),
-												deliveryHandler:$send_deliveryhandler.val(),
-												deliveryTime:$send_deliverytime.val()
-											}
-									};
-									$.extend(true,config.data,checkdata);
-								}else{
-									var config={
-										url:"http://120.24.226.70:8081/yttx-agentbms-api/servicestation/repairorder/add",
-										dataType:'JSON',
-										method:'post',
-										data:{
-											serviceStationId:id,
-											adminId:decodeURIComponent(logininfo.param.adminId),
-											token:decodeURIComponent(logininfo.param.token),
-											trackingNumber:$repair_trackingnumber.val(),
-											deliveryHandler:$repair_deliveryhandler.val(),
-											deliveryTime:$repair_deliverytime.val(),
-											name:$repair_name.val(),
-											startNumber:$repair_startnumber.val(),
-											endNumber:$repair_endnumber.val(),
-											listNumber:$repair_listnumber.val(),
-											quantity:$repair_quantity.val()
-										}
-									};
-								}
-
-
-								$.ajax(config)
-									.done(function(resp){
-										var code=parseInt(resp.code,10);
-										if(code!==0){
-											console.log(resp.message);
-											setTimeout(function(){
-												issend?dia.content('<span class="g-c-bs-warning g-btips-warn">发货失败</span>').show():dia.content('<span class="g-c-bs-warning g-btips-warn">返修失败</span>').show();
-											},300);
-											setTimeout(function () {
-												dia.close();
-											},2000);
-											return false;
-										}
-										//重绘表格
-										table.ajax.reload(null,false);
-										//重置表单
-										issend?$send_cance_btn.trigger('click'):$repair_cance_btn.trigger('click');
-										setTimeout(function(){
-											issend?dia.content('<span class="g-c-bs-success g-btips-succ">发货成功</span>').show():dia.content('<span class="g-c-bs-success g-btips-succ">返修成功</span>').show();
-										},300);
-										setTimeout(function () {
-											dia.close();
-										},2000);
-									})
-									.fail(function(resp){
-										console.log(resp.message);
-									});
-								return false;
-							}
-						});
-						
-					});
-				}
-				/!*提交验证*!/
-				$station_send_form.validate(form_opt0);
-				$station_repair_form.validate(form_opt1);
-			}*/
 		}
 
 	});
 
 
 
-	/*解析发货插件*/
+	/*统计查询--按月份*/
+	function statsSearch(datestr,type){
+
+
+		if(datestr){
+			var date=datestr.split(','),
+				startobj=moment(date[0]),
+				endobj=moment(date[1]);
+
+		}else{
+			var startobj=moment().subtract(2, 'month'),
+			endobj=moment();
+		}
+
+
+		var startmonth=parseInt(startobj.month()) ,
+			endmonth=parseInt(endobj.month()),
+			len= 0,
+			res={},
+			i= 0,
+			colstr='',
+			thstr='',
+			tdstr=[],
+			colitem= 5,
+			itemlen=5;
+
+		if(endmonth<startmonth){
+			endmonth=endmonth + 12;
+		}
+
+		len=endmonth - startmonth;
+		if(type==='stats'){
+			itemlen=len===0?3:len * 2 + 1;
+		}else if(type==='other'){
+			itemlen=len===0?6:len * 2 + 4;
+		}
+		colitem=parseInt(50/(itemlen * 2),10);
+		if(colitem * itemlen<=(50 - itemlen)){
+			colitem=colitem+1;
+		}
+
+
+		for(i;i<=len;i++){
+			var tempobj=startobj.add(1,'month'),
+				tempth=tempobj.year()+'年'+tempobj.month()+'月';
+
+			if(type==='stats'){
+				if(i===0){
+					colstr+='<col class="g-w-percent'+colitem+'"><col class="g-w-percent'+colitem+'"><col class="g-w-percent'+colitem+'">';
+					thstr+='<th>所属关系</th><th class="no-sorting">'+tempth+'销售</th><th class="no-sorting">'+tempth+'分润</th>';
+					tdstr.push({defaultContent:''},{'data':'m'+tempobj.month()+'Sales'},{'data':'m'+tempobj.month()+'Profits'});
+				}else{
+					colstr+='<col class="g-w-percent'+colitem+'"><col class="g-w-percent'+colitem+'">';
+					thstr+='<th class="no-sorting">'+tempth+'销售</th><th class="no-sorting">'+tempth+'分润</th>';
+					tdstr.push({'data':'m'+tempobj.month()+'Sales'},{'data':'m'+tempobj.month()+'Profits'});
+				}
+				console.log(tdstr);
+			}else if(type==='other'){
+				if(i===0){
+					colstr+='<col class="g-w-percent'+colitem+'"><col class="g-w-percent'+colitem+'"><col class="g-w-percent'+colitem+'"><col class="g-w-percent'+colitem+'"><col class="g-w-percent'+colitem+'"><col class="g-w-percent'+colitem+'">';
+					thstr+='<th>服务站</th><th>所属代理</th><th>所属关系</th><th>上级代理</th><th class="no-sorting">'+tempth+'销售</th><th class="no-sorting">'+tempth+'分润</th>';
+					tdstr.push({defaultContent:''},{defaultContent:''},{defaultContent:''},{defaultContent:''},{defaultContent:''},{defaultContent:''});
+				}else{
+					colstr+='<col class="g-w-percent'+colitem+'"><col class="g-w-percent'+colitem+'">';
+					thstr+='<th class="no-sorting">'+tempth+'销售</th><th class="no-sorting">'+tempth+'分润</th>';
+					tdstr.push({defaultContent:''},{defaultContent:''});
+				}
+
+			}
+
+
+
+		}
+		res['col']='<colgroup>'+colstr+'</colgroup>';
+		res['th']='<thead><tr>'+thstr+'</tr></thead>';
+		res['tbody']='<tbody class="middle-align"></tbody>';
+		res['tr']=tdstr.slice(0);
+		return res;
+	}
 
 
 

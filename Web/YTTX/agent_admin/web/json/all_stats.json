@@ -1,0 +1,94 @@
+{
+  "code": 0,
+  "message":"成功",
+  "result":{
+    "salesprofit":{
+        list1:[{
+            "id":"1",
+            "m1Sales": "665",
+            "m1Profits": "424"
+          },
+          {
+            "id":"2",
+            "m2Sales": "825",
+            "m2Profits": "856"
+          },{
+            "id":"3",
+            "m3Sales": "995",
+            "m3Profits": "231"
+          }],
+        list2:[{
+            "id":"1",
+            "m1Sales": "538",
+            "m1Profits": "457"
+          },
+          {
+            "id":"2",
+            "m2Sales": "865",
+            "m2Profits": "265"
+          },{
+            "id":"3",
+            "m3Sales": "386",
+            "m3Profits": "5465"
+          }],
+        list3:[{
+            "id":"1",
+            "m1Sales": "82565",
+            "m1Profits": "2686"
+          },
+          {
+            "id":"2",
+            "m2Sales": "2549",
+            "m2Profits": "3845"
+          },{
+            "id":"3",
+            "m3Sales": "4566",
+            "m3Profits": "4755"
+          }]
+    },
+    "acquiringprofit":{
+        list1:[{
+            "id":"1",
+            "m1Sales": "665",
+            "m1Profits": "424"
+          },
+          {
+            "id":"2",
+            "m2Sales": "825",
+            "m2Profits": "856"
+          },{
+            "id":"3",
+            "m3Sales": "995",
+            "m3Profits": "231"
+          }],
+        list2:[{
+            "id":"1",
+            "m1Sales": "538",
+            "m1Profits": "457"
+          },
+          {
+            "id":"2",
+            "m2Sales": "865",
+            "m2Profits": "265"
+          },{
+            "id":"3",
+            "m3Sales": "386",
+            "m3Profits": "5465"
+          }],
+        list3:[{
+            "id":"1",
+            "m1Sales": "82565",
+            "m1Profits": "2686"
+          },
+          {
+            "id":"2",
+            "m2Sales": "2549",
+            "m2Profits": "3845"
+          },{
+            "id":"3",
+            "m3Sales": "4566",
+            "m3Profits": "4755"
+          }]
+    }
+  }
+}

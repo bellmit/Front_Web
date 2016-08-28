@@ -11,6 +11,7 @@
 	<title>银通天下代理商后台管理系统--三级分销管理--三级分销列表</title>
 	<link rel="stylesheet" href="../../css/base.css">
   <link rel="stylesheet" href="../../js/plugins/datatables/dataTables.bootstrap.css">
+  <link rel="stylesheet" type="text/css" href="../../js/plugins/daterangepicker/daterangepicker-bs3.css">
 	<link rel="stylesheet" href="../../css/admin.css">
   <script src="../../js/common/jquery-1.11.1.js"></script>
 	<!--[if lt IE 9]>
@@ -180,11 +181,12 @@
 
 
                 <div class="col-md-12">
-                    <div class="panel collapsed g-d-hidei" id="send_wrap">
+                    <div class="panel">
 
-                        <!--编辑表单标题-->
+                        <!--表格标题-->
                         <div class="panel-heading">
-                            <h3 class="panel-title" id="send_title">向服务站发货</h3>
+                            <h3 class="panel-title">查询分销统计</h3>
+
                             <div class="panel-options">
                                 <a href="#" data-toggle="panel">
                                     <span class="collapse-icon">&ndash;</span>
@@ -193,9 +195,26 @@
                             </div>
                         </div>
 
-                        <!--发货单-->
-                        <div class="panel-body">
 
+                        <!--表格主体-->
+                        <div class="panel-body">
+                            <div class="admin-search-wrap">
+                                <div class="admin-search-item">
+                                    <label>查询时间(最多查询3个月)：</label>
+                                    <input readonly type="text" id="search_Time">
+                                </div>
+                                <div class="admin-search-item">
+                                    <span id="stats_search_btn" class="btn btn-info btn-icon g-br2">
+                                        <i class="fa-search"></i>查询
+                                    </span>
+                                    <span id="stats_search_clear" class="btn btn-info btn-icon g-br2">
+                                        <i class="fa-spinner"></i>清空
+                                    </span>
+                                </div>
+                            </div>
+
+
+                            <table id="stats_wrap" class="table table-bordered table-striped table-hover admin-table"></table>
                         </div>
 
 
@@ -230,33 +249,7 @@
 
 
 
-    <!--详情展现-->
-    <div class="modal fade custom-width" id="show_detail_wrap">
-        <div class="modal-dialog g-w-percent46">
-            <div class="modal-content">
-
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 id="show_detail_title" class="modal-title"></h4>
-                </div>
-                <div class="modal-body">
-                    <table class="table table-bordered table-striped table-hover admin-table">
-                        <colgroup>
-                            <col class="g-w-percent10"/>
-                            <col class="g-w-percent40"/>
-                        </colgroup>
-                        <tbody id="show_detail_content"></tbody>
-                    </table>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-info" data-dismiss="modal">关闭</button>
-                </div>
-            </div>
-        </div>
-    </div>
     
-
-	
 	<!--加载遮罩层-->
 	<div id="page_loading_wrap" class="page-loading-overlay g-d-hidei">
 		<div class="loader-2"></div>
@@ -316,8 +309,7 @@
     <!--修饰分页，搜索等操作 -->
     <script src="../../js/plugins/datatables/dataTables.bootstrap.js"></script>
     <!--表单验证插件-->
-    <script src="../../js/plugins/jquery-validate/jquery.validate.js"></script>
-    <script src="../../js/plugins/datepicker/datepicker.js"></script>
+    <script src="../../js/plugins/daterangepicker/daterangepicker.js"></script>
     <script src="../../js/distributor/distributor.js"></script>
 </body>
 </html>
