@@ -1,0 +1,384 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>无标题文档</title>
+</head>
+
+<body>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%
+String path = request.getContextPath();
+String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+%>
+
+<html>
+<head>
+	<title>添加商品</title>
+	<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+	<script type="text/javascript">
+		function parentIdChange() {
+			var parentId = document.getElementById("parentId").value;
+			
+			document.getElementById("parentId3").hidden=true;
+			if (parentId==0) {
+				document.getElementById("parentId2").hidden=true;
+			} else {
+				document.getElementById("parentId2").hidden=false;
+				
+				// 异步请求加载子分类数据
+				$.ajax({
+		            url : "<%=basePath%>tmp/getgoodstypelist",
+		            data : "parentId=" + parentId,
+		            type: "POST",
+		            success : function(result) {
+		            	var obj = eval(result);
+		            	jQuery("#parentId2").empty();
+		            	jQuery("#parentId2").append("<option value='0'>---请选择二级分类---</option>"); 
+		            	
+		            	for (var i=0; i<obj.length; i++) {
+		            		var o = obj[i];
+		            		jQuery("#parentId2").append("<option value='" + o.id + "'>" + o.name + "</option>"); 
+		            	}
+		            },
+		            error : function() {
+		                alert("提交失败");
+		            }
+		        });
+				
+			}
+			
+			// 清空标签/属性中2个表格的数据
+			$("#tb_tag_attr").html("");
+			$("#tb_price_inventory").html("");
+		}
+		
+		function parentId2Change() {
+			var parentId2 = document.getElementById("parentId2").value;
+			
+			if (parentId2==0) {
+				document.getElementById("parentId3").hidden=true;
+			} else {
+				document.getElementById("parentId3").hidden=false;
+				
+				// 异步请求加载子分类数据
+				$.ajax({
+		            url : "<%=basePath%>tmp/getgoodstypelist",
+		            data : "parentId=" + parentId2,
+		            type: "POST",
+		            success : function(result) {
+		            	var obj = eval(result);
+		            	jQuery("#parentId3").empty();
+		            	jQuery("#parentId3").append("<option value='0'>---请选择三级分类---</option>"); 
+		            	
+		            	for (var i=0; i<obj.length; i++) {
+		            		var o = obj[i];
+		            		jQuery("#parentId3").append("<option value='" + o.id + "'>" + o.name + "</option>"); 
+		            	}
+		            },
+		            error : function() {
+		                alert("提交失败");
+		            }
+		        });
+				
+			}
+			
+			// 清空标签/属性中2个表格的数据
+			$("#tb_tag_attr").html("");
+			$("#tb_price_inventory").html("");
+		}
+		
+		// 三级分类change事件，动态加载  标签/属性
+		function parentId3Change() {
+			
+			// 清空标签/属性中2个表格的数据
+			$("#tb_tag_attr").html("");
+			$("#tb_price_inventory").html("");
+			
+			// 异步加载标签/属性中的数据
+			var parentId3 = document.getElementById("parentId3").value;
+			$.ajax({
+	            url : "<%=basePath%>tmp/gettagsandattrslist",
+	            data : "goodsTypeId=" + parentId3,
+	            type: "POST",
+	            success : function(result) {
+	            	var obj = eval(result);
+	            	
+	            	for (var i=0; i<obj.length; i++) {
+	            		var tagObj = obj[i];
+	            		
+	            		// tr的id规则：tagtr_标签ID，如：tagtr_1
+	            		var tr = "<tr id=\"tagtr_" + tagObj.id + "\"><th width=\"20%;\">" + tagObj.name + "</th><td colspan=\"3\">";
+	            		
+	            		for (var j=0; j<tagObj.list.length; j++) {
+	            			var attrObj = tagObj.list[j];
+	            			
+	            			// input的id规则：attrcb_标签ID_属性ID，如：cb_1_1
+	            			// input的name规则：attrcb_标签ID，如：cb_1
+	            			// onclick=attrcbClick(id)
+	            			tr += "<input type=\"checkbox\" name=\"attrcb_" + tagObj.id + "\" id=\"attrcb_" + tagObj.id + "_" + attrObj.id + "\" value=\"" + attrObj.id +"\" onclick=\"attrcbClick(attrcb_" + tagObj.id + "_" + attrObj.id + ")\" />" + attrObj.name;
+	            		}
+	            		
+	            		tr += "</td></tr>";
+	            		
+	            		$("#tb_tag_attr").append(tr);
+	            	}
+	            },
+	            error : function() {
+	                alert("提交失败");
+	            }
+	        });
+			
+		}
+		
+		// 标签/属性 的点击事件
+		function attrcbClick(id) {
+			
+			// 遍历tb_tag_attr的所有行
+			var $table = $("#tb_tag_attr"),
+			$tr=$table.find('tr'),
+			len=$tr.size(),
+			goods=[],
+			i=0,
+			sel=0;
+			$tr.each(function(){
+				var $this=$(this),
+				$input=$this.find('input'),
+				inputlen=$input.size();
+				if(inputlen!==0){
+					sel++;
+					$input.each(function(){
+						var $subinput=$(this),
+						ischeck=$subinput.is('checked'),
+						key=this.attr('id'),
+						value=$subinput.attr('name'),
+						sublen=goods.length,
+						j=0;
+						if(sublen>2){
+							return false;
+						}
+						for(j;j<sublen;j++){
+							var tempobj=goods[j];
+							if(key in tempobj){
+								if(ischeck){
+									tempobj[value]=$subinput.val();
+								}else{
+									delete tempobj[value];
+								}
+								return false;
+							}
+						}
+						
+						goods.push();
+					});
+					
+				}
+				
+				
+				
+			});
+		
+			
+			
+			// 遍历tb_tag_attr的所有行的所有attrcb
+			
+			
+		}
+		
+		function onSubmit() {
+			var gtCode = document.getElementById("gtCode").value;
+			if (gtCode==null || gtCode=="") {
+				alert("分类编码不能为空");
+				return false;
+			}
+			
+			var name = document.getElementById("name").value;
+			if (name==null || name=="") {
+				alert("分类名称不能为空");
+				return false;
+			}
+			
+			var sort = document.getElementById("sort").value;
+			if (sort==null || sort=="") {
+				alert("排序号不能为空");
+				return false;
+			}
+			
+			document.getElementById("form").submit();
+			
+		}
+		
+		function toGoodstypeList() {
+			window.location = "<%=basePath %>tmp/togoodstypelist";
+		}
+	</script>
+	
+	<style type="text/css">
+		th {
+			background-color: #ADD8E6;
+			text-align: right;
+		}
+		
+		tr {
+			height: 30px;
+		}
+		
+	</style>
+</head>
+<body>
+	<form action="<%=basePath%>tmp/goodstypeadd" method="post" id="form" enctype="multipart/form-data">
+		<table border="1px;" cellspacing="0" align="center" width="1000px;" style="border-color: #9FB6CD;">
+			<tr style="text-align: left; height: 30px;">
+				<th colspan="4" style="text-align: left; background-color: #4682B4;">
+					商品分类信息
+				</th>
+			</tr>
+			<tr>
+				<th>
+					商品分类
+				</th>
+				<td colspan="3">
+					<select name="parentId" id="parentId" onchange="parentIdChange();">
+						<option value="0">---请选择一级分类---</option>
+						<c:forEach var="parentType" items="${requestScope.typesList}">
+							<option value="${parentType.id}">${parentType.name }</option>
+						</c:forEach>
+					</select>
+					<select name="parentId2" id="parentId2" hidden="true" onchange="parentId2Change();">
+						<option value="0">---请选择二级分类---</option>
+					</select>
+					<select name="parentId2" id="parentId3" hidden="true" onchange="parentId3Change();">
+						<option value="0">---请选择三级分类---</option>
+					</select>
+					&nbsp;
+					<a href="<%=basePath %>tmp/togoodstypeadd">添加分类</a>
+				</td>
+			</tr>
+			<tr style="text-align: left; height: 30px;">
+				<th colspan="4" style="text-align: left; background-color: #4682B4">
+					商品基本信息
+				</th>
+			</tr>
+			<tr>
+				<th width="20%">
+					商品编码
+				</th>
+				<td>
+					<input type="text" name="gCode" id="gCode" style="width: 200px;"/>
+				</td>
+				<th width="20%">
+					商品名称
+				</th>
+				<td>
+					<input type="text" name="name" id="name" style="width: 200px;"/>
+				</td>
+			</tr>
+			<tr>
+				<th width="20%">
+					默认售价
+				</th>
+				<td>
+					<input type="text" name="price" id="price" style="width: 200px;"/>
+				</td>
+				<th width="20%">
+					默认库存
+				</th>
+				<td>
+					<input type="text" name="inventory" id="inventory" style="width: 200px;"/>
+				</td>
+			</tr>
+			<tr>
+				<th>
+					缩略图
+				</th>
+				<td colspan="3">
+					<input type="file" name="goodsPictures0" accept="image/*" style="width: 200px;"/>&nbsp;(限1张)
+				</td>
+			</tr>
+			<tr>
+				<th>
+					banner轮播图
+				</th>
+				<td colspan="3">
+					<input type="file" name="goodsPictures1" accept="image/*" style="width: 200px;" multiple="multiple"/>&nbsp;(可多张)
+				</td>
+			</tr>
+			<tr>
+				<th>
+					详情图
+				</th>
+				<td colspan="3">
+					<input type="file" name="goodsPictures2" accept="image/*" style="width: 200px;" multiple="multiple"/>&nbsp;(可多张)
+				</td>
+			</tr>
+			<tr>
+				<th colspan="4" style="text-align: left; background-color: #4682B4">
+					标签/属性
+				</th>
+			</tr>
+			<tr>
+				<td colspan="4">
+					<table id="tb_tag_attr" border="1px;" cellspacing="0" width="100%;">
+					</table>
+				</td>
+			</tr>
+			<tr>
+				<th>
+					价格/库存
+				</th>
+				<td colspan="3">
+					<table id="tb_price_inventory" border="1px;" cellspacing="0" width="100%;">
+						<tr>
+							<td width="20%">&nbsp;</td>
+							<td width="20%">金色</td>
+							<td width="20%">玫瑰金</td>
+							<td width="20%">星空灰</td>
+						</tr>
+						<tr>
+							<td width="20%">4.7&quot;</td>
+							<td width="20%"><input type="text" title="价格" style="width: 60px;"/>&nbsp;<input type="text" title="库存" style="width: 60px;"/></td>
+							<td width="20%"><input type="text" title="价格" style="width: 60px;"/>&nbsp;<input type="text" title="库存" style="width: 60px;"/></td>
+							<td width="20%"><input type="text" title="价格" style="width: 60px;"/>&nbsp;<input type="text" title="库存" style="width: 60px;"/></td>
+						</tr>
+						<tr>
+							<td width="20%">5.5&quot;</td>
+							<td width="20%"><input type="text" title="价格" style="width: 60px;"/>&nbsp;<input type="text" title="库存" style="width: 60px;"/></td>
+							<td width="20%"><input type="text" title="价格" style="width: 60px;"/>&nbsp;<input type="text" title="库存" style="width: 60px;"/></td>
+							<td width="20%"><input type="text" title="价格" style="width: 60px;"/>&nbsp;<input type="text" title="库存" style="width: 60px;"/></td>
+						</tr>
+						<tr>
+							<td width="20%">6.1&quot;</td>
+							<td width="20%"><input type="text" title="价格" style="width: 60px;"/>&nbsp;<input type="text" title="库存" style="width: 60px;"/></td>
+							<td width="20%"><input type="text" title="价格" style="width: 60px;"/>&nbsp;<input type="text" title="库存" style="width: 60px;"/></td>
+							<td width="20%"><input type="text" title="价格" style="width: 60px;"/>&nbsp;<input type="text" title="库存" style="width: 60px;"/></td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+			
+			
+			
+			<tr style="text-align: center;">
+				<td colspan="4">
+					<input type="button" value=" 提 交 " onclick="onSubmit();"/>&nbsp;
+					<input type="button" value="查看分类" onclick="toGoodstypeList()"/>
+				</td>
+			</tr>
+		</table>
+		
+	</form>
+</body>
+</html>
+

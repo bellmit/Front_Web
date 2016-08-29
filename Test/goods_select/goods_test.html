@@ -1,0 +1,55 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>添加商品</title>
+<script src="js/jquery-1.9.0.min.js"></script>
+<script src="js/select.js"></script>
+</head>
+<style type="text/css">
+		th {
+			background-color: #ADD8E6;
+			text-align: right;
+		}
+		
+		tr {
+			height: 30px;
+		}
+		
+	</style>
+<body>
+
+<table id="tb_tag_attr" border="1px;" cellspacing="0" width="100%;">
+		<tr id="tagtr_1">
+      <th width="20%;">测试1</th>
+      <td colspan="3">
+      	<label><input type="checkbox" name="attrcb_1" id="attrcb_1_1" value="1" onclick="attrcbClick(this)"  data-name="商品1"/>商品1</label>
+        <label><input type="checkbox" name="attrcb_1" id="attrcb_1_2" value="2" onclick="attrcbClick(this)" data-name="商品2"/>商品2</label>
+        <label><input type="checkbox" name="attrcb_1" id="attrcb_1_3" value="3" onclick="attrcbClick(this)" data-name="商品3"/>商品3</label>
+      </td>
+    </tr>
+    <tr id="tagtr_2">
+      <th width="20%;">测试2</th>
+      <td colspan="3">
+      	<label><input type="checkbox" name="attrcb_2" id="attrcb_2_1" value="1" onclick="attrcbClick(this)" data-name="颜色1"/>颜色1</label>
+        <label><input type="checkbox" name="attrcb_2" id="attrcb_2_2" value="2" onclick="attrcbClick(this)" data-name="颜色2"/>颜色2</label>
+        <label><input type="checkbox" name="attrcb_2" id="attrcb_2_3" value="3" onclick="attrcbClick(this)" data-name="颜色3"/>颜色3</label>
+      </td>
+    </tr>
+    <tr id="tagtr_3">
+      <th width="20%;">测试3</th>
+      <td colspan="3">
+      	<label><input type="checkbox" name="attrcb_3" id="attrcb_3_1" value="1" onclick="attrcbClick(this)" data-name="规格1"/>规格1</label>
+        <label><input type="checkbox" name="attrcb_3" id="attrcb_3_2" value="2" onclick="attrcbClick(this)" data-name="规格2"/>规格2</label>
+        <label><input type="checkbox" name="attrcb_3" id="attrcb_3_3" value="3" onclick="attrcbClick(this)" data-name="规格3"/>规格3</label>
+      </td>
+    </tr>
+</table>
+
+
+<table id="test2" border="1px;" cellspacing="0" width="100%;"></table>
+</body>
+</html>
+
+
+

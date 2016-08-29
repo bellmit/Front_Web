@@ -168,7 +168,6 @@
 					dataType:'JSON',
 					method:'post',
 					dataSrc:function ( json ) {
-						alert('aaaa');
 						var code=parseInt(json.code,10);
 						if(code!==0){
 							console.log(json.message);
@@ -180,10 +179,14 @@
 						if(!sales){
 							return [];
 						}
-						console.log(tempresult);
 
 						for(var i in sales){
-							tempresult.push(sales[i].slice(0));
+							var item=sales[i],
+								len=item.length,
+								j=0;
+							for(j;j<len;j++){
+								tempresult.push(item[j]);
+							}
 						}
 						console.log(tempresult);
 						return tempresult;
@@ -207,7 +210,7 @@
 					stateSave:false,/*是否保存重新加载的状态*/
 					processing:true,/*大消耗操作时是否显示处理状态*/
 					ajax:stats_config,/*异步请求地址及相关配置*/
-					columns:'',/*控制分页数*/
+					columns:[],
 					aLengthMenu: [
 						[5,10,20,30],
 						[5,10,20,30]
@@ -292,7 +295,7 @@
 						endvalue='';
 
 
-						if(statsdata['distributorId']===''){
+						if(stats_config['data']['distributorId']===''){
 							dia.content('<span class="g-c-bs-warning g-btips-warn">请选择需要查询的分销统计对象</span>').show();
 							setTimeout(function(){
 								dia.close();
@@ -569,13 +572,12 @@
 				if(i===0){
 					colstr+='<col class="g-w-percent'+colitem+'"><col class="g-w-percent'+colitem+'"><col class="g-w-percent'+colitem+'">';
 					thstr+='<th>所属关系</th><th class="no-sorting">'+tempth+'销售</th><th class="no-sorting">'+tempth+'分润</th>';
-					tdstr.push({defaultContent:''},{'data':'m'+tempobj.month()+'Sales'},{'data':'m'+tempobj.month()+'Profits'});
+					tdstr.push({defaultContent:""},{"data":"m"+tempobj.month()+"Sales"},{"data":"m"+tempobj.month()+"Profits"});
 				}else{
 					colstr+='<col class="g-w-percent'+colitem+'"><col class="g-w-percent'+colitem+'">';
 					thstr+='<th class="no-sorting">'+tempth+'销售</th><th class="no-sorting">'+tempth+'分润</th>';
-					tdstr.push({'data':'m'+tempobj.month()+'Sales'},{'data':'m'+tempobj.month()+'Profits'});
+					tdstr.push({"data":"m"+tempobj.month()+"Sales"},{"data":"m"+tempobj.month()+"Profits"});
 				}
-				console.log(tdstr);
 			}else if(type==='other'){
 				if(i===0){
 					colstr+='<col class="g-w-percent'+colitem+'"><col class="g-w-percent'+colitem+'"><col class="g-w-percent'+colitem+'"><col class="g-w-percent'+colitem+'"><col class="g-w-percent'+colitem+'"><col class="g-w-percent'+colitem+'">';

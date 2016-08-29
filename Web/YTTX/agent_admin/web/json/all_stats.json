@@ -3,7 +3,7 @@
   "message":"成功",
   "result":{
     "salesprofit":{
-        list1:[{
+        "list1":[{
             "id":"1",
             "m1Sales": "665",
             "m1Profits": "424"
@@ -17,7 +17,7 @@
             "m3Sales": "995",
             "m3Profits": "231"
           }],
-        list2:[{
+        "list2":[{
             "id":"1",
             "m1Sales": "538",
             "m1Profits": "457"
@@ -31,7 +31,7 @@
             "m3Sales": "386",
             "m3Profits": "5465"
           }],
-        list3:[{
+        "list3":[{
             "id":"1",
             "m1Sales": "82565",
             "m1Profits": "2686"
@@ -47,7 +47,7 @@
           }]
     },
     "acquiringprofit":{
-        list1:[{
+        "list1":[{
             "id":"1",
             "m1Sales": "665",
             "m1Profits": "424"
@@ -61,7 +61,7 @@
             "m3Sales": "995",
             "m3Profits": "231"
           }],
-        list2:[{
+        "list2":[{
             "id":"1",
             "m1Sales": "538",
             "m1Profits": "457"
@@ -75,7 +75,7 @@
             "m3Sales": "386",
             "m3Profits": "5465"
           }],
-        list3:[{
+        "list3":[{
             "id":"1",
             "m1Sales": "82565",
             "m1Profits": "2686"

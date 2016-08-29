@@ -429,21 +429,15 @@
 
 			/*绑定确认收货*/
 			$edit_sure_btn.on('click',function(){
-				dia.content('<span class="g-c-bs-success g-btips-succ">暂未开放此功能</span>').show();
-				setTimeout(function () {
-					dia.close();
-				},2000);
-
-				return false;
 				$.ajax({
-						url:"http://120.24.226.70:8081/yttx-agentbms-api/",
+						url:"http://120.24.226.70:8081/yttx-agentbms-api/logistics/confirmreceipt",
 						dataType:'JSON',
 						method:'post',
 						data:{
-							roleId:decodeURIComponent(logininfo.param.roleId),
+							type:'2',
 							adminId:decodeURIComponent(logininfo.param.adminId),
 							token:decodeURIComponent(logininfo.param.token),
-							id:$edit_wrap.attr('data-id')
+							Id:$edit_wrap.attr('data-id')
 						}
 					})
 					.done(function(resp){
@@ -461,7 +455,7 @@
 						//重置表单
 						//重置表单
 						$edit_cance_btn.trigger('click');
-						dia.content('<span class="g-c-bs-success g-btips-succ"确认添加收货异常信息成功</span>').show();
+						dia.content('<span class="g-c-bs-success g-btips-succ">确认添加收货异常信息成功</span>').show();
 						setTimeout(function () {
 							dia.close();
 						},2000);
