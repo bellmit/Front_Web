@@ -9,7 +9,7 @@
 			var logininfo=public_tool.initMap.loginMap,
 				roletype=decodeURIComponent(logininfo.param.grade);
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
-				url:'http://10.0.5.222:8080/yttx-agentbms-api/module/menu',
+				url:'http://120.24.226.70:8081/yttx-agentbms-api/module/menu',
 				async:false,
 				type:'post',
 				param:{
@@ -138,7 +138,7 @@
 				stateSave:false,/*是否保存重新加载的状态*/
 				processing:true,/*大消耗操作时是否显示处理状态*/
 				ajax:{
-					url:"http://10.0.5.222:8080/yttx-agentbms-api/roles",
+					url:"http://120.24.226.70:8081/yttx-agentbms-api/roles",
 					dataType:'JSON',
 					method:'post',
 					dataSrc:function ( json ) {
@@ -299,6 +299,7 @@
 
 			/*事件绑定*/
 			/*绑定查看，修改，删除操作*/
+			var operate_item;
 			$.each([$admin_role_wrap,$admin_member_wrap],function(){
 				var self=this,
 						selector=this.selector,
@@ -355,7 +356,7 @@
 								if(isrole){
 									//删除角色
 									config={
-											url:"http://10.0.5.222:8080/yttx-agentbms-api/role/delete",
+											url:"http://120.24.226.70:8081/yttx-agentbms-api/role/delete",
 											method: 'POST',
 											dataType: 'json',
 											data:{
@@ -367,7 +368,7 @@
 								}else{
 									//删除成员
 									config={
-										url:"http://10.0.5.222:8080/yttx-agentbms-api/sysuser/delete",
+										url:"http://120.24.226.70:8081/yttx-agentbms-api/sysuser/delete",
 										method: 'POST',
 										dataType: 'json',
 										data:{
@@ -404,6 +405,11 @@
 							dialogObj.dialog.content('<span class="g-c-bs-warning g-btips-warn">是否删除此数据？</span>').showModal();
 
 						}else if(action==='update'){
+							if(operate_item){
+								operate_item.removeClass('item-lighten');
+								operate_item=null;
+							}
+							operate_item=$tr.addClass('item-lighten');
 							if(isrole){
 								/*修改操作*/
 								$table_wrap.addClass('col-md-9');
@@ -459,14 +465,19 @@
 							if(isrole){
 								$member_wrap.attr({'data-id':id});
 								if(member_config.url===''){
-									member_config.url='http://10.0.5.222:8080/yttx-agentbms-api/sysusers';
+									member_config.url='http://120.24.226.70:8081/yttx-agentbms-api/sysusers';
 								}
 								member_config.data.roleId=id;
 								table_member.ajax.config(member_config).load();
 							}else{
 								/*查看详情*/
+								if(operate_item){
+									operate_item.removeClass('item-lighten');
+									operate_item=null;
+								}
+								operate_item=$tr.addClass('item-lighten');
 								$.ajax({
-										url:"http://10.0.5.222:8080/yttx-agentbms-api/sysuser/info",
+										url:"http://120.24.226.70:8081/yttx-agentbms-api/sysuser/info",
 										dataType:'JSON',
 										method:'post',
 										data:{
@@ -519,6 +530,17 @@
 
 				});
 
+			});
+			
+			
+			/*关闭弹出框*/
+			$show_detail_wrap.on('hide.bs.modal',function(){
+				if(operate_item){
+					setTimeout(function(){
+						operate_item.removeClass('item-lighten');
+						operate_item=null;
+					},500);
+				}
 			});
 
 
@@ -616,7 +638,7 @@
 							if(id!==''){
 								//修改角色
 								var config={
-											url:"http://10.0.5.222:8080/yttx-agentbms-api/role/update",
+											url:"http://120.24.226.70:8081/yttx-agentbms-api/role/update",
 											method: 'POST',
 											dataType: 'json',
 											data:{
@@ -630,7 +652,7 @@
 							}else{
 								//添加角色
 								var config={
-									url:"http://10.0.5.222:8080/yttx-agentbms-api/role/add",
+									url:"http://120.24.226.70:8081/yttx-agentbms-api/role/add",
 									method: 'POST',
 									dataType: 'json',
 									data:{
@@ -708,7 +730,7 @@
 							if(id!==''){
 								//修改成员
 								var config={
-									url:"http://10.0.5.222:8080/yttx-agentbms-api/sysuser/update",
+									url:"http://120.24.226.70:8081/yttx-agentbms-api/sysuser/update",
 									method: 'POST',
 									dataType: 'json',
 									data:{
@@ -723,7 +745,7 @@
 							}else{
 								//添加成员
 								var config={
-									url:"http://10.0.5.222:8080/yttx-agentbms-api/sysuser/add",
+									url:"http://120.24.226.70:8081/yttx-agentbms-api/sysuser/add",
 									method: 'POST',
 									dataType: 'json',
 									data:{

@@ -9,7 +9,7 @@
 			/*菜单调用*/
 			var logininfo=public_tool.initMap.loginMap;
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
-				url:'http://10.0.5.222:8080/yttx-agentbms-api/module/menu',
+				url:'http://120.24.226.70:8081/yttx-agentbms-api/module/menu',
 				async:false,
 				type:'post',
 				param:{
@@ -66,7 +66,7 @@
 
 			/*数据加载*/
 			var distributor_config={
-				url:"http://10.0.5.222:8080/yttx-agentbms-api/distributor/related",
+				url:"http://120.24.226.70:8081/yttx-agentbms-api/distributor/related",
 				dataType:'JSON',
 				method:'post',
 				dataSrc:function ( json ) {
@@ -177,7 +177,7 @@
 
 			/*统计数据加载配置*/
 			var stats_config={
-					url:"http://10.0.5.222:8080/yttx-agentbms-api/distributor/profit/stats",
+					url:"http://120.24.226.70:8081/yttx-agentbms-api/distributor/profit/stats",
 					dataType:'JSON',
 					method:'post',
 					data:{
@@ -427,7 +427,7 @@
 						/*展开*/
 						if(subitem===''){
 							$.ajax({
-								 url:"http://10.0.5.222:8080/yttx-agentbms-api/distributor/lower",
+								 url:"http://120.24.226.70:8081/yttx-agentbms-api/distributor/lower",
 								 method: 'POST',
 								 dataType: 'json',
 								 data:{
@@ -440,6 +440,10 @@
 								 var code=parseInt(resp.code,10);
 								 if(code!==0){
 									 /*回滚状态*/
+									 tabletr.child($('<tr><td colspan="6">暂无数据</td></tr>')).show();
+									 $this.attr({
+										 'data-subitem':'true'
+									 }).children('i').addClass('fa-angle-down');
 									 console.log(resp.message);
 									 return false;
 								 }

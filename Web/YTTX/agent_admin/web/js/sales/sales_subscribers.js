@@ -9,7 +9,7 @@
 			/*菜单调用*/
 			var logininfo=public_tool.initMap.loginMap;
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
-				url:'http://10.0.5.222:8080/yttx-agentbms-api/module/menu',
+				url:'http://120.24.226.70:8081/yttx-agentbms-api/module/menu',
 				async:false,
 				type:'post',
 				param:{
@@ -86,7 +86,7 @@
 
 			/*数据加载*/
 			var sales_config={
-				url:"http://10.0.5.222:8080/yttx-agentbms-api/marketing/subscribers/related",
+				url:"http://120.24.226.70:8081/yttx-agentbms-api/marketing/subscribers/related",
 				dataType:'JSON',
 				method:'post',
 				dataSrc:function ( json ) {
@@ -252,10 +252,10 @@
 							}
 							if(salesacquiring_power){
 								/*收单查看*/
-								btns+='<span  data-id="'+data+'" data-action="selectacquiring" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
-									<i class="fa-cogs"></i>\
-									<span>收单查看</span>\
-									</span>';
+								btns+='<span data-subitem="" data-id="'+data+'" data-action="selectacquiring" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+									 <i class="fa-angle-right"></i>\
+									 <span>收单查看</span>\
+									 </span>';
 							}
 							if(salesdelete_power){
 								/*删除*/
@@ -281,8 +281,6 @@
 			(function(){
 				/*重置表单*/
 				edit_form.reset();
-				$admin_search_clear.trigger('click');
-
 			}());
 
 
@@ -292,6 +290,8 @@
 					this.val('');
 				});
 			});
+			$admin_search_clear.trigger('click');
+
 
 			/*联合查询*/
 			$admin_search_btn.on('click',function(){
@@ -349,9 +349,7 @@
 					/*调整布局*/
 					$data_wrap.addClass('collapsed');
 					$edit_wrap.removeClass('collapsed');
-					$edit_title.attr({
-						'data-type':'update'
-					}).html('修改 "'+datas['name']+'" 信息');
+					$edit_title.html('修改 "'+datas['name']+'" 信息');
 					$edit_cance_btn.prev().html('修改');
 					$("html,body").animate({scrollTop:300},200);
 					//重置信息
@@ -396,7 +394,7 @@
 					/*查看*/
 					
 					$.ajax({
-							url:"http://10.0.5.222:8080/yttx-agentbms-api/marketing/subscriber/detail",
+							url:"http://120.24.226.70:8081/yttx-agentbms-api/marketing/subscriber/detail",
 							method: 'POST',
 							dataType: 'json',
 							data:{
@@ -461,63 +459,106 @@
 						});
 				}else if(action==='selectacquiring'){
 					/*收单查看*/
-					return false;
-					$.ajax({
-							url:"http://10.0.5.222:8080/yttx-agentbms-api/agent/bindings",
-							method: 'POST',
-							dataType: 'json',
-							data:{
-								"id":id,
-								"adminId":decodeURIComponent(logininfo.param.adminId),
-								"token":decodeURIComponent(logininfo.param.token)
-							}
-						})
-						.done(function(resp){
-							var code=parseInt(resp.code,10);
-							if(code!==0){
-								/*回滚状态*/
+					var subclass=$this.children('i').hasClass('fa-angle-down'),
+						tabletr=table.row($tr),
+						subitem=$this.attr('data-subitem');
+
+					if(subclass){
+						/*收缩*/
+						$this.children('i').removeClass('fa-angle-down');
+						tabletr.child().hide(200);
+					}else{
+						/*展开*/
+						if(subitem===''){
+							$.ajax({
+								url:"http://120.24.226.70:8081/yttx-agentbms-api/marketing/subscriber/acquirings",
+								method: 'POST',
+								dataType: 'json',
+								data:{
+									"subscriberId":id,
+									"adminId":decodeURIComponent(logininfo.param.adminId),
+									"token":decodeURIComponent(logininfo.param.token)
+								}
+							}).done(function(resp){
+								var code=parseInt(resp.code,10);
+								if(code!==0){
+									/*回滚状态*/
+									console.log(resp.message);
+									tabletr.child($('<tr><td colspan="10">暂无数据</td></tr>')).show();
+									$this.attr({
+										'data-subitem':'true'
+									}).children('i').addClass('fa-angle-down');
+									return false;
+								}
+
+								/*是否是正确的返回数据*/
+								var result=resp.result;
+
+								if(!result){
+									return [];
+								}
+
+								var list=result.list,
+									len=list.length,
+									i= 0,
+									newstr='<colgroup>\
+									<col class="g-w-percent5">\
+									<col class="g-w-percent5">\
+									<col class="g-w-percent5">\
+									<col class="g-w-percent5">\
+									<col class="g-w-percent5">\
+									<col class="g-w-percent5">\
+									<col class="g-w-percent5">\
+									<col class="g-w-percent5">\
+									<col class="g-w-percent5">\
+									<col class="g-w-percent5">\
+									</colgroup>\
+										<thead>\
+										<tr>\
+										<th>订单号</th>\
+										<th>交易金额</th>\
+										<th>交易费率</th>\
+										<th>手续费</th>\
+										<th>到帐时间</th>\
+										<th>对方户名</th>\
+										<th>对方帐号</th>\
+										<th>对方银行</th>\
+										<th>对方卡类型</th>\
+										<th>状态</th>\
+									</tr>\
+									</thead>',
+									res='<tr><td colspan="10">收单人：'+result["acquiringer"]+'</td></tr><tr><td colspan="10">结算银行：'+result["settlingBank"]+'</td></tr><tr><td colspan="10">结算帐号：'+result["cardNumber"]+'</td></tr>';
+								if(len!==0){
+									for(i;i<len;i++){
+										var tempitem=list[i];
+										res+='<tr><td>'+tempitem["orderSum"]+'</td><td>'+tempitem["mainFee"]+'</td><td>'+tempitem["poundage"]+'</td><td>'+tempitem["issueTime"]+'</td><td>'+tempitem["counterpartyName"]+'</td><td>'+tempitem["counterpartyAccount"]+'</td><td>'+tempitem["counterpartyBank"]+'</td><td>'+tempitem["counterpartyCardType"]+'</td><td>'+(function(){
+												var state=parseInt(tempitem["issueStatus"],10);
+
+												return state===0?'未清算':'已清算';
+											}())+'</td></tr>';
+
+									}
+								}
+								res='<tbody class="middle-align">'+res+'</tbody>';
+								newstr='<tr><td colspan="9"><table class="table table-bordered table-striped table-hover admin-table" >'+newstr+res+'</table></td></tr>';
+
+								var $newtr=$(newstr);
+								tabletr.child($newtr).show();
+								$this.attr({
+									'data-subitem':'true'
+								}).children('i').addClass('fa-angle-down');
+
+
+							}).fail(function(resp){
 								console.log(resp.message);
-								return false;
-							}
-							/*是否是正确的返回数据*/
-							var list=resp.result,
-								unbindarr=list.unbundling,
-								bindarr=list.bundling,
-								unlen=unbindarr.length,
-								len=bindarr.length;
+							});
 
-							if(unbindarr&&bindarr){
-								/*遍历位绑定的*/
-								if(unlen&&unlen!==0){
-									var i= 0,unstr='';
-									for(i;i<unlen;i++){
-										unstr+='<li data-id="'+unbindarr[i]['serviceStationId']+'">'+unbindarr[j]['shortName']+'</li>';
-									}
-									$(unstr).appendTo($service_unbindwrap.html(''));
-								}else{
-									$service_unbindwrap.html('');
-								}
+						}else{
+							tabletr.child().show();
+							$this.children('i').addClass('fa-angle-down');
+						}
+					}
 
-								/*遍历已经绑定的*/
-								if(len&&len!==0){
-									var j= 0,str='';
-									for(j;j<len;j++){
-										str+='<li data-id="'+bindarr[j]['serviceStationId']+'">'+bindarr[j]['shortName']+'</li>';
-									}
-								}else{
-									$service_bindwrap.html('');
-								}
-
-								/*弹出操作框*/
-								$admin_bind_title.html(datas['fullName']+'代理商绑定');
-								$admin_bind_wrap.attr({
-									'data-id':id
-								}).modal('show',{backdrop:'static'});
-							}
-						})
-						.fail(function(resp){
-							console.log(resp.message);
-						});
 				}else if(action==='sales'){
 					/*未售*/
 
@@ -529,6 +570,12 @@
 					/*返修*/
 				}
 			});
+			
+			
+			/*关闭弹出框*/
+			$show_detail_wrap.on('hide.bs.modal',function(){
+					
+			});
 
 			/*添加服务站*/
 			$sales_add_btn.on('click',function(e){
@@ -536,9 +583,7 @@
 				/*调整布局*/
 				$data_wrap.addClass('collapsed');
 				$edit_wrap.removeClass('collapsed');
-				$edit_title.attr({
-					'data-type':'add'
-				}).html('添加用户');
+				$edit_title.html('添加用户');
 				$edit_cance_btn.prev().html('添加');
 				$("html,body").animate({scrollTop:300},200);
 				//重置信息
@@ -557,9 +602,7 @@
 				/*调整布局*/
 				$data_wrap.removeClass('collapsed');
 				$edit_wrap.addClass('collapsed');
-				$edit_title.attr({
-					'data-type':'add'
-				}).html('添加用户');
+				$edit_title.html('添加用户');
 				$edit_cance_btn.prev().html('添加');
 				edit_form.reset();
 				if(!$data_wrap.hasClass('collapsed')){
@@ -611,13 +654,13 @@
 					$.extend(true,form_opt,formcache.form_opt_0,{
 						submitHandler: function(form){
 							/*更新*/
-							var type=$edit_title.attr('data-type'),
-							isadd=type==='add'?true:false;
+							var id=$sales_subscriberid.val(),
+								isadd=id===''?true:false;
 
 
 							if(isadd){
 								var config={
-									url:"http://10.0.5.222:8080/yttx-agentbms-api/marketing/subscriber/add",
+									url:"http://120.24.226.70:8081/yttx-agentbms-api/marketing/subscriber/add",
 									dataType:'JSON',
 									method:'post',
 									data:{
@@ -634,16 +677,8 @@
 									}
 								};
 							}else{
-								var id=$sales_subscriberid.val();
-								if(id===''){
-									dia.content('<span class="g-c-bs-warning g-btips-warn">请选择需要操作的用户</span>').show();
-									setTimeout(function(){
-										dia.close();
-									},3000);
-									return false;
-								}
 								var config={
-									url:"http://10.0.5.222:8080/yttx-agentbms-api/marketing/subscriber/update",
+									url:"http://120.24.226.70:8081/yttx-agentbms-api/marketing/subscriber/update",
 									dataType:'JSON',
 									method:'post',
 									data:{
