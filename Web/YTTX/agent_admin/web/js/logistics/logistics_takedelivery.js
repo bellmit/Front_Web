@@ -9,7 +9,7 @@
 			/*菜单调用*/
 			var logininfo=public_tool.initMap.loginMap;
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
-				url:'http://120.24.226.70:8081/yttx-agentbms-api/module/menu',
+				url:'http://10.0.5.222:8080/yttx-agentbms-api/module/menu',
 				async:false,
 				type:'post',
 				param:{
@@ -72,7 +72,7 @@
 
 			/*数据加载*/
 			var agent_config={
-				url:"http://120.24.226.70:8081/yttx-agentbms-api/servicestation/receivings",
+				url:"http://10.0.5.222:8080/yttx-agentbms-api/servicestation/receivings",
 				dataType:'JSON',
 				method:'post',
 				dataSrc:function ( json ) {
@@ -327,7 +327,7 @@
 						if(action==='select'){
 							/*查看*/
 							if(list_config.url===''){
-								list_config.url='http://120.24.226.70:8081/yttx-agentbms-api/servicestation/receivings';
+								list_config.url='http://10.0.5.222:8080/yttx-agentbms-api/servicestation/receivings';
 							}
 							listtable.ajax.config(list_config).load();
 							$edit_cance_btn.trigger('click');
@@ -430,7 +430,7 @@
 			/*绑定确认收货*/
 			$edit_sure_btn.on('click',function(){
 				$.ajax({
-						url:"http://120.24.226.70:8081/yttx-agentbms-api/logistics/confirmreceipt",
+						url:"http://10.0.5.222:8080/yttx-agentbms-api/logistics/confirmreceipt",
 						dataType:'JSON',
 						method:'post',
 						data:{
@@ -489,7 +489,7 @@
 							return false;
 							/*更新*/
 							var config={
-								url:"http://120.24.226.70:8081/yttx-agentbms-api/",
+								url:"http://10.0.5.222:8080/yttx-agentbms-api/",
 								dataType:'JSON',
 								method:'post',
 								data:{
