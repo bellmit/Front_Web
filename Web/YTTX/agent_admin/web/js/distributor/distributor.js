@@ -31,10 +31,12 @@
 
 			/*dom引用和相关变量定义*/
 			var $distributor_wrap=$('#distributor_wrap')/*表格*/,
-				$stats_wrap=$('#stats_wrap'),
+				$stats_wrap1=$('#stats_wrap1'),
+				$stats_wrap2=$('#stats_wrap2'),
 				module_id='distributor_list'/*模块id，主要用于本地存储传值*/,
 				table=null/*数据展现*/,
-				statstable=null,
+				statstable1=null,
+				statstable2=null,
 				dia=dialog({
 					title:'温馨提示',
 					okValue:'确定',
@@ -80,17 +82,29 @@
 					}
 
 					var map=json.result.map,
-						key=map.key,
-						list=map.list;
+						list=[];
 
-					if(key){
-						$distributor_wrap.find('caption').html(key);
+
+
+					if(map && !$.isEmptyObject(map)){
+						$distributor_wrap.find('caption').html('代理商');
+
+						for(var i in map){
+							var agentarr=map[i],
+								len=agentarr.length,
+								j=0;
+
+								for(j;j<len;j++){
+								 	agentarr[j]['agentName']=i;
+									list.push(agentarr[j]);
+								}
+						}
+						if(list.length===0){
+							return [];
+						}
+						return list;
 					}else{
 						$distributor_wrap.find('caption').html('');
-					}
-
-					if(map){
-						return list;
 					}
 					return [];
 				},
@@ -114,10 +128,15 @@
 				processing:true,/*大消耗操作时是否显示处理状态*/
 				ajax:distributor_config,/*异步请求地址及相关配置*/
 				columns: [
-					{"data":"serviceStationName"},
+					{
+						"data":"serviceStationName",
+						"render":function(data, type, full, meta ){
+							return data + '&nbsp;&nbsp;<em class="g-c-gray9">代理商:(<i class="g-c-bs-info">'+full['agentName']+'</i>)</em>';
+						}
+					},
 					{"data":"nickName"},
 					{
-						"data":"Phone",
+						"data":"phone",
 						"render":function(data, type, full, meta ){
 							return public_tool.phoneFormat(data);
 						}
@@ -132,7 +151,7 @@
 						"data":"machineCode"
 					},
 					{
-						"data":"id",
+						"data":"distributorId",
 						"render":function(data, type, full, meta ){
 							var btns='';
 
@@ -160,37 +179,11 @@
 			});
 
 
-
-
 			/*统计数据加载配置*/
 			var stats_config={
-					url:"../../json/all_stats.json"/*http://120.24.226.70:8081/yttx-agentbms-api/distributor/profit/stats*/,
+					url:"http://120.24.226.70:8081/yttx-agentbms-api/distributor/profit/stats",
 					dataType:'JSON',
 					method:'post',
-					dataSrc:function ( json ) {
-						var code=parseInt(json.code,10);
-						if(code!==0){
-							console.log(json.message);
-							return [];
-						}
-						var tempresult=[],
-						sales=json.result.salesprofit;
-
-						if(!sales){
-							return [];
-						}
-
-						for(var i in sales){
-							var item=sales[i],
-								len=item.length,
-								j=0;
-							for(j;j<len;j++){
-								tempresult.push(item[j]);
-							}
-						}
-						console.log(tempresult);
-						return tempresult;
-					},
 					data:{
 						distributorId:'',
 						adminId:decodeURIComponent(logininfo.param.adminId),
@@ -209,7 +202,6 @@
 					info:true,/*显示分页信息*/
 					stateSave:false,/*是否保存重新加载的状态*/
 					processing:true,/*大消耗操作时是否显示处理状态*/
-					ajax:stats_config,/*异步请求地址及相关配置*/
 					columns:[],
 					aLengthMenu: [
 						[5,10,20,30],
@@ -217,7 +209,6 @@
 					],
 					lengthChange:true/*是否可改变长度*/
 				};
-
 
 
 
@@ -263,12 +254,13 @@
 								this.val('');
 							}
 						});
-						stats_config['data']['distributorId']='';
 					}else{
 						/*三级分销查询*/
 						$.each([$search_serviceStationName,$search_nickName,$search_Phone],function(){
 							this.val('');
 						});
+						/*清空统计查询条件*/
+						stats_config['data']['distributorId']='';
 					}
 
 				});
@@ -304,11 +296,17 @@
 						}
 
 						/*清除数据并摧毁实例*/
-						if(statstable){
-							statstable.destroy();
-							statstable=null;
-							$stats_wrap.html('');
+						if(statstable1){
+							statstable1.destroy();
+							statstable1=null;
+							$stats_wrap1.html('');
 						}
+						if(statstable2){
+							statstable2.destroy();
+							statstable2=null;
+							$stats_wrap2.html('');
+						}
+
 
 
 						$.each([$search_Time],function(){
@@ -338,11 +336,23 @@
 
 
 						/*组合视图对象*/
-						var tempobj1=statsSearch(startvalue+','+endvalue,'stats');
-						$(tempobj1['col']+tempobj1['th']+tempobj1['tbody']).appendTo($stats_wrap.html(''));
-						stats_opt.columns=tempobj1['tr'];
+						var tempobj=statsSearch(startvalue+','+endvalue,'stats');
+						$(tempobj['col']+tempobj['th']+tempobj['tbody']).appendTo($stats_wrap1.html(''));
+						$(tempobj['col']+tempobj['th']+tempobj['tbody']).appendTo($stats_wrap2.html(''));
+						stats_opt.columns=tempobj['tr'];
 						/*创建新实例并初始化请求数据*/
-						statstable=$stats_wrap.DataTable($.extend(true,{},stats_opt));
+						getStatsData(stats_config,function(list1,list2){
+								var stats1=$.extend(true,{},stats_opt),
+									stats2=$.extend(true,{},stats_opt);
+
+							stats1['data']=list1;
+							stats2['data']=list2;
+
+							statstable1=$stats_wrap1.DataTable(stats1);
+							statstable2=$stats_wrap2.DataTable(stats2);
+
+						});
+
 
 
 					}else{
@@ -370,6 +380,8 @@
 						});
 						distributor_config.data= $.extend(true,{},data);
 						table.ajax.config(distributor_config).load(false);
+						/*清空统计查询条件*/
+						stats_config['data']['distributorId']='';
 					}
 
 
@@ -419,7 +431,7 @@
 						/*展开*/
 						if(subitem===''){
 							$.ajax({
-								 url:"../../json/all_subdistributor.json"/*"http://120.24.226.70:8081/yttx-agentbms-api/distributor/lower"*/,
+								 url:"http://120.24.226.70:8081/yttx-agentbms-api/distributor/lower",
 								 method: 'POST',
 								 dataType: 'json',
 								 data:{
@@ -572,7 +584,7 @@
 				if(i===0){
 					colstr+='<col class="g-w-percent'+colitem+'"><col class="g-w-percent'+colitem+'"><col class="g-w-percent'+colitem+'">';
 					thstr+='<th>所属关系</th><th class="no-sorting">'+tempth+'销售</th><th class="no-sorting">'+tempth+'分润</th>';
-					tdstr.push({defaultContent:""},{"data":"m"+tempobj.month()+"Sales"},{"data":"m"+tempobj.month()+"Profits"});
+					tdstr.push({"data":"relationName"},{"data":"m"+tempobj.month()+"Sales"},{"data":"m"+tempobj.month()+"Profits"});
 				}else{
 					colstr+='<col class="g-w-percent'+colitem+'"><col class="g-w-percent'+colitem+'">';
 					thstr+='<th class="no-sorting">'+tempth+'销售</th><th class="no-sorting">'+tempth+'分润</th>';
@@ -599,6 +611,88 @@
 		res['tbody']='<tbody class="middle-align"></tbody>';
 		res['tr']=tdstr.slice(0);
 		return res;
+	}
+
+
+	/*获取数据*/
+	function getStatsData(config,fn){
+
+		$.ajax(config).done(function (resp) {
+			var code=parseInt(resp.code,10);
+			if(code!==0){
+				console.log(resp.message);
+				return false;
+			}
+
+			var list1=[],
+				list2=[],
+				sales=resp.result.salesprofit,
+				acq=resp.result.acquiringprofit,
+				relation={
+					0:'一级',
+					1:'二级',
+					2:'三级',
+					3:'四级',
+					4:'五级',
+					5:'六级',
+					6:'七级',
+					7:'八级',
+					8:'九级'
+				};
+
+			if(!sales){
+				list1=[];
+			}else{
+				var m=0;
+				for(var i in sales){
+					var result1={},
+						item1=sales[i],
+						len1=item1.length,
+						j=0;
+
+					for(j;j<len1;j++){
+						if(item1[j]){
+							item1[j]['relationName']=relation[m];
+							$.extend(true,result1,item1[j]);
+						}
+					}
+					if(!$.isEmptyObject(result2)){
+						list1.push(result1);
+					}
+					m++;
+				}
+			}
+			if(!acq){
+				list2=[];
+			}else{
+				var n=0;
+				for(var x in acq){
+					var result2={},
+						item2=acq[x],
+						len2=item2.length,
+						y=0;
+					for(y;y<len2;y++){
+						if(item2[y]){
+							item2[y]['relationName']=relation[n];
+							$.extend(true,result2,item2[y]);
+						}
+					}
+					if(!$.isEmptyObject(result2)){
+						list2.push(result2);
+					}
+					n++;
+				}
+			}
+
+			if(fn&&typeof fn==='function'){
+					fn.call(null,list1,list2);
+			}
+
+
+		}).fail(function (resp) {
+			console.log('error');
+		});
+
 	}
 
 
