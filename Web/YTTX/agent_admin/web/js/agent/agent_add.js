@@ -355,6 +355,7 @@
 
 			/*事件绑定*/
 			/*绑定查看，修改操作*/
+			var operate_item;
 			$agent_list_wrap.delegate('span','click',function(e){
 				e.stopPropagation();
 				e.preventDefault();
@@ -379,6 +380,12 @@
 
 				/*修改操作*/
 				if(action==='update'){
+					/*添加高亮状态*/
+					if(operate_item){
+						operate_item.removeClass('item-lighten');
+						operate_item=null;
+					}
+					operate_item=$tr.addClass('item-lighten');
 					/*调整布局*/
 					$data_wrap.addClass('collapsed');
 					$edit_wrap.removeClass('collapsed');
@@ -483,6 +490,13 @@
 							$service_bindwrap.html('');
 						}
 
+						/*添加高亮状态*/
+						if(operate_item){
+							operate_item.removeClass('item-lighten');
+							operate_item=null;
+						}
+						operate_item=$tr.addClass('item-lighten');
+
 						/*弹出操作框*/
 						$admin_bind_title.html(datas['fullName']+'代理商绑定');
 						$admin_bind_wrap.attr({
@@ -503,12 +517,6 @@
 
 				}
 
-			});
-			
-			
-			/*关闭弹出框*/
-			$admin_bind_wrap.on('hide.bs.modal',function(){
-					
 			});
 
 
@@ -555,6 +563,11 @@
 					delete profit_data['distributorProfit1'];
 					delete profit_data['distributorProfit2'];
 					delete profit_data['distributorProfit3'];
+				}
+				/*删除高亮状态*/
+				if(operate_item){
+					operate_item.removeClass('item-lighten');
+					operate_item=null;
 				}
 			});
 
@@ -660,11 +673,19 @@
 
 				});
 			});
+
+
 			/*关闭弹出框并重置值*/
 			$admin_bind_wrap.on('hide.bs.modal',function(){
 				$admin_bind_wrap.attr({
 					'data-id':''
 				})
+				if(operate_item){
+					setTimeout(function(){
+						operate_item.removeClass('item-lighten');
+						operate_item=null;
+					},1000);
+				}
 			});
 
 

@@ -52,6 +52,11 @@
 			if(flag){
 				sessionStorage.clear();
 			}else{
+				if(localStorage.clear){
+					localStorage.clear();
+				}else{
+
+				}
 				localStorage.clear();
 			}
 		}
@@ -545,6 +550,7 @@
 	};
 	/*路由映射*/
 	public_tool.routeMap={
+			issetting:false,
 			path:'',
 			module:'',
 			isindex:false,
@@ -565,6 +571,7 @@
 
 		/*调用路由记录*/
 		var history_path={
+			issetting:false,
 			/*当前文件*/
 			current:{
 				isindex:isindex,
@@ -584,18 +591,56 @@
 		/*重新赋值*/
 		if(route){
 			history_path.prev=route.current;
-			public_tool.routeMap.issamemodule=module===route.current.module
+			self.routeMap.issamemodule=module===route.current.module;
+			self.routeMap.issetting=history_path.issetting=route.issetting;
 		}else{
-			public_tool.routeMap.issamemodule=false;
+			self.routeMap.issamemodule=false;
 		}
 		/*放入本地存储*/
 		self.setParams('route_module',history_path);
 
 		/*存入临时目录*/
-		public_tool.routeMap.isindex=isindex;
-		public_tool.routeMap.path=path;
-		public_tool.routeMap.module=module;
+		self.routeMap.isindex=isindex;
+		self.routeMap.path=path;
+		self.routeMap.module=module;
+
+		if(route){
+			/*判断是否设置权限*/
+			self.isPermission(route.issetting);
+		}
 	};
+	/*判断是否修改了权限*/
+	public_tool.isPermission=function(flag){
+		var self=this,
+			flag=flag||self.routeMap.issetting;
+
+		if(flag){
+			var count= 3,
+			tips=dialog({
+				title:'温馨提示',
+				width:300,
+				ok:false,
+				cancel:false,
+				content:'<span class="g-c-bs-warning g-btips-warn">您已设置了新的系统权限，&nbsp;<span class="g-c-bs-info" id="permission_tips"></span>&nbsp;秒后将自动退出系统</span>'
+			}).show(),
+			pertip=null,
+			tipsdom=document.getElementById('permission_tips');
+
+
+			tipsdom.innerHTML=count;
+			pertip=setInterval(function(){
+				count--;
+				tipsdom.innerHTML=count;
+				if(count<0){
+					clearInterval(pertip);
+					pertip=null;
+					tips.close().remove();
+					tipsdom=null;
+					self.loginOut();
+				}
+			},1000);
+		}
+	}
 
 
 
@@ -1221,10 +1266,11 @@
 	/*退出系统*/
 	public_tool.loginOut=function(){
 		var self=this,
-			isindex=routeMap.isindex;
+			isindex=self.routeMap.isindex;
 
 		/*清除所有记录*/
 		self.clear();
+		self.clearCacheData();
 
 		/*根据路径跳转*/
 		if(isindex){
@@ -1232,6 +1278,27 @@
 		}else{
 			location.href='../account/login.html';
 		}
+	};
+	/*清除内存数据*/
+	public_tool.clearCacheData=function(){
+		var self=this;
+		/*清除菜单权限映射*/
+		if(!$.isEmptyObject(self.powerMap)){
+			self.powerMap={};
+		}
+		/*初始化登陆缓存*/
+		self.initMap={
+			isrender:false,
+			loginMap:{}
+		};
+		/*路由映射*/
+		self.routeMap={
+			issetting:false,
+			path:'',
+			module:'',
+			isindex:false,
+			issamemodule:false
+		};
 	};
 	/*跳转提示*/
 	public_tool.loginTips=function(){

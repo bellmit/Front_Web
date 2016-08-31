@@ -390,6 +390,7 @@
 
 			/*事件绑定*/
 			/*绑定查看，修改操作*/
+			var operate_item;
 			$distributor_wrap.delegate('span','click',function(e){
 				e.stopPropagation();
 				e.preventDefault();
@@ -424,6 +425,12 @@
 						$this.children('i').removeClass('fa-angle-down');
 						tabletr.child().hide(200);
 					}else{
+						/*添加高亮状态*/
+						if(operate_item){
+							operate_item.removeClass('item-lighten');
+							operate_item=null;
+						}
+						operate_item=$tr.addClass('item-lighten');
 						/*展开*/
 						if(subitem===''){
 							$.ajax({
@@ -501,7 +508,6 @@
 							 }).fail(function(resp){
 							 		console.log(resp.message);
 							 });
-
 						}else{
 								tabletr.child().show();
 								$this.children('i').addClass('fa-angle-down');

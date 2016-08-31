@@ -299,6 +299,7 @@
 
 			/*事件绑定*/
 			/*绑定查看，修改操作*/
+			var operate_item;
 			$.each([$logistics_agent_wrap,$logistics_list_wrap],function(){
 				var selector=this.selector,
 					isagent=selector.indexOf('agent')!==-1?true:false;
@@ -336,6 +337,12 @@
 					}else{
 						/*收货操作*/
 						if(action==='select'){
+							/*添加高亮状态*/
+							if(operate_item){
+								operate_item.removeClass('item-lighten');
+								operate_item=null;
+							}
+							operate_item=$tr.addClass('item-lighten');
 							/*查看*/
 							$dataagent_wrap.addClass('collapsed');
 							$edit_wrap.attr({
@@ -374,6 +381,11 @@
 				$edit_error_btn.addClass('g-d-hidei');
 				if(!$dataagent_wrap.hasClass('collapsed')){
 					$("html,body").animate({scrollTop:200},200);
+				}
+				/*添加高亮状态*/
+				if(operate_item){
+					operate_item.removeClass('item-lighten');
+					operate_item=null;
 				}
 
 			});

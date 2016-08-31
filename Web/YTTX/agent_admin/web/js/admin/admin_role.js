@@ -288,8 +288,6 @@
 
 				/*角色类型初始化*/
 				resetAddState(roleobj,roletype);
-				/*角色类型事件绑定*/
-				changeState(roleobj,roletype);
 
 
 			}());
@@ -388,9 +386,18 @@
 											},2000);
 											return false;
 										}
-										isrole?table.row($tr).remove().draw():table_member.row($tr).remove().draw();
+										/*添加高亮状态*/
+										if(operate_item){
+											operate_item.removeClass('item-lighten');
+											operate_item=null;
+										}
+										operate_item=$tr.addClass('item-lighten');
 										setTimeout(function(){
 											self.content('<span class="g-c-bs-success g-btips-succ">删除数据成功</span>');
+											setTimeout(function(){
+												operate_item=$tr.removeClass('item-lighten');
+												isrole?table.row($tr).remove().draw():table_member.row($tr).remove().draw();
+											},1000);
 										},100);
 									})
 									.fail(function(resp){
@@ -405,6 +412,7 @@
 							dialogObj.dialog.content('<span class="g-c-bs-warning g-btips-warn">是否删除此数据？</span>').showModal();
 
 						}else if(action==='update'){
+							/*添加高亮状态*/
 							if(operate_item){
 								operate_item.removeClass('item-lighten');
 								operate_item=null;
@@ -463,6 +471,12 @@
 						}else if(action==='select'){
 							/*查询操作*/
 							if(isrole){
+								/*添加高亮状态*/
+								if(operate_item){
+									operate_item.removeClass('item-lighten');
+									operate_item=null;
+								}
+								operate_item=$tr.addClass('item-lighten');
 								$member_wrap.attr({'data-id':id});
 								if(member_config.url===''){
 									member_config.url='http://120.24.226.70:8081/yttx-agentbms-api/sysusers';
@@ -471,11 +485,6 @@
 								table_member.ajax.config(member_config).load();
 							}else{
 								/*查看详情*/
-								if(operate_item){
-									operate_item.removeClass('item-lighten');
-									operate_item=null;
-								}
-								operate_item=$tr.addClass('item-lighten');
 								$.ajax({
 										url:"http://120.24.226.70:8081/yttx-agentbms-api/sysuser/info",
 										dataType:'JSON',
@@ -512,6 +521,12 @@
 											if(!istitle){
 												$show_detail_title.html('成员详情信息');
 											}
+											/*添加高亮状态*/
+											if(operate_item){
+												operate_item.removeClass('item-lighten');
+												operate_item=null;
+											}
+											operate_item=$tr.addClass('item-lighten');
 											$show_detail_content.html(str);
 											$show_detail_wrap.modal('show',{backdrop:'static'});
 										}else{
@@ -539,7 +554,7 @@
 					setTimeout(function(){
 						operate_item.removeClass('item-lighten');
 						operate_item=null;
-					},500);
+					},1000);
 				}
 			});
 
@@ -558,6 +573,11 @@
 						//角色
 						$table_wrap.removeClass('col-md-9');
 						$edit_wrap.removeClass('g-d-showi');
+					}
+					/*删除高亮状态*/
+					if(operate_item){
+						operate_item.removeClass('item-lighten');
+						operate_item=null;
 					}
 				});
 			});
@@ -666,14 +686,10 @@
 
 								if(roletype==='-1'||roletype===undefined){
 									if($role_typeauto.is(':checked')){
-										config['data']['isAgent']=0;
+										config['data']['type']=0;
 									}else{
-										config['data']['isAgent']=1;
-										config['data']['roleCode']=$role_typeitem.find('input:checked').val();
+										config['data']['type']=1;
 									}
-								}else{
-									config['data']['isAgent']=1;
-									config['data']['roleCode']=$role_typeitem.find('input:checked').val();
 								}
 
 							}
@@ -812,7 +828,12 @@
 
 		/*绑定状态切换事件*/
 		function changeState(obj,code){
-			if(code==='-1'||code===undefined){
+			if(typeof code==='undefined'){
+				code=-1;
+			}else{
+				code=parseInt(code,10);
+			}
+			if(code===-1){
 				/*绑定选中角色类型*/
 				$.each([obj.auto,obj.agent],function(){
 					this.on('click',function(){
@@ -837,40 +858,24 @@
 
 		/*重置至添加状态*/
 		function resetAddState(obj,code){
-			obj.wrap.removeClass('g-d-hidei');
-			if(code==='-1'||typeof code==='undefined'){
+			if(typeof code==='undefined'){
+				code=-1;
+			}else{
+				code=parseInt(code,10);
+			}
+
+			if(code===-1){
 				/*全部*/
+				obj.wrap.removeClass('g-d-hidei');
 				obj.tab.removeClass('g-d-hidei');
-				obj.item.addClass('g-d-hidei');
 				obj.auto.removeClass('g-d-hidei');
 				obj.agent.removeClass('g-d-hidei');
-
+				obj.item.addClass('g-d-hidei');
 			}else{
 				/*代理商*/
+				obj.wrap.addClass('g-d-hidei');
 				obj.tab.addClass('g-d-hidei');
-				obj.item.removeClass('g-d-hidei');
-				obj.SS.removeClass('g-d-hidei');
-				if(code==='3'){
-					/*AAA*/
-					obj.AAA.addClass('g-d-hidei');
-					obj.AA.removeClass('g-d-hidei');
-					obj.A.removeClass('g-d-hidei');
-				}else if(code==='2'){
-					/*AA*/
-					obj.AAA.addClass('g-d-hidei');
-					obj.AA.addClass('g-d-hidei');
-					obj.A.removeClass('g-d-hidei');
-				}else if(code==='1'){
-					/*A*/
-					obj.AAA.addClass('g-d-hidei');
-					obj.AA.addClass('g-d-hidei');
-					obj.A.addClass('g-d-hidei');
-				}else if(code==='4'){
-					/*店长*/
-					obj.AAA.removeClass('g-d-hidei');
-					obj.AA.removeClass('g-d-hidei');
-					obj.A.removeClass('g-d-hidei');
-				}
+				obj.item.addClass('g-d-hidei');
 			}
 		};
 

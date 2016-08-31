@@ -260,6 +260,7 @@
 
 			/*事件绑定*/
 			/*绑定查看，修改操作*/
+			var operate_item;
 			$station_wrap.delegate('span','click',function(e){
 				e.stopPropagation();
 				e.preventDefault();
@@ -282,6 +283,12 @@
 
 				/*修改操作*/
 				if(action==='update'){
+					/*添加高亮状态*/
+					if(operate_item){
+						operate_item.removeClass('item-lighten');
+						operate_item=null;
+					}
+					operate_item=$tr.addClass('item-lighten');
 					//重置信息
 					edit_form.reset();
 					$station_userwrap.addClass('g-d-hidei');
@@ -551,6 +558,11 @@
 				$edit_title.html('添加服务站');
 				if(!$data_wrap.hasClass('collapsed')){
 					$("html,body").animate({scrollTop:200},200);
+				}
+				/*添加高亮状态*/
+				if(operate_item){
+					operate_item.removeClass('item-lighten');
+					operate_item=null;
 				}
 
 				/*重置绑定代理商ID,代理商，分润信息*/

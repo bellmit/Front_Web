@@ -290,6 +290,7 @@
 
 			/*事件绑定*/
 			/*绑定查看，修改操作*/
+			var operate_item;
 			$station_wrap.delegate('span','click',function(e){
 				e.stopPropagation();
 				e.preventDefault();
@@ -313,6 +314,12 @@
 
 				/*发货操作*/
 				if(action==='send'){
+					/*添加高亮状态*/
+					if(operate_item){
+						operate_item.removeClass('item-lighten');
+						operate_item=null;
+					}
+					operate_item=$tr.addClass('item-lighten');
 					/*调整布局*/
 					$data_wrap.addClass('collapsed');
 					$repair_wrap.addClass('collapsed');
@@ -324,6 +331,12 @@
 					$send_title.html('给"'+datas['fullName']+'"服务站发货');
 					$send_id.val(id);
 				}else if(action==='repair'){
+					/*添加高亮状态*/
+					if(operate_item){
+						operate_item.removeClass('item-lighten');
+						operate_item=null;
+					}
+					operate_item=$tr.addClass('item-lighten');
 					/*调整布局*/
 					$data_wrap.addClass('collapsed');
 					$repair_wrap.removeClass('collapsed');
@@ -377,7 +390,13 @@
 								}
 							}
 
-							
+							/*添加高亮状态*/
+							if(operate_item){
+								operate_item.removeClass('item-lighten');
+								operate_item=null;
+							}
+							operate_item=$tr.addClass('item-lighten');
+
 							$show_detail_content.html(str);
 							$show_detail_wrap.modal('show',{
 								backdrop:'static'
@@ -422,6 +441,11 @@
 					$repair_wrap.addClass('collapsed');
 					if(!$data_wrap.hasClass('collapsed')){
 						$("html,body").animate({scrollTop:200},200);
+					}
+					/*删除高亮状态*/
+					if(operate_item){
+						operate_item.removeClass('item-lighten');
+						operate_item=null;
 					}
 				});
 
@@ -516,10 +540,16 @@
 				$tempfittingstr.appendTo($send_fittinglist);
 			});
 			
-			
+
+
 			/*关闭弹出框*/
 			$show_detail_wrap.on('hide.bs.modal',function(){
-					
+				if(operate_item){
+					setTimeout(function(){
+						operate_item.removeClass('item-lighten');
+						operate_item=null;
+					},1000);
+				}
 			});
 
 
