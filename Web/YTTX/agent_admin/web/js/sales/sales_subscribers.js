@@ -58,6 +58,7 @@
 					addTime:"销售时间",
 					address:"地址",
 					remark:"备注",
+					userId:"手机用户ID",
 					serviceStationId:"服务站ID",
 					status:"状态"
 				}/*详情映射*/;
