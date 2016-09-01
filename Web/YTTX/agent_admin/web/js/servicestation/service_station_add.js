@@ -15,6 +15,7 @@
 				param:{
 					roleId:decodeURIComponent(logininfo.param.roleId),
 					adminId:decodeURIComponent(logininfo.param.adminId),
+					grade:decodeURIComponent(logininfo.param.grade),
 					token:decodeURIComponent(logininfo.param.token)
 				},
 				datatype:'json'
@@ -133,6 +134,7 @@
 				data:{
 					roleId:decodeURIComponent(logininfo.param.roleId),
 					adminId:decodeURIComponent(logininfo.param.adminId),
+					grade:decodeURIComponent(logininfo.param.grade),
 					token:decodeURIComponent(logininfo.param.token)
 				}
 			};
@@ -302,6 +304,7 @@
 							serviceStationId:id,
 							roleId:decodeURIComponent(logininfo.param.roleId),
 							adminId:decodeURIComponent(logininfo.param.adminId),
+							grade:decodeURIComponent(logininfo.param.grade),
 							token:decodeURIComponent(logininfo.param.token)
 						}
 					}).done(function(resp){
@@ -619,6 +622,7 @@
 				data:{
 					roleId:decodeURIComponent(logininfo.param.roleId),
 					adminId:decodeURIComponent(logininfo.param.adminId),
+					grade:decodeURIComponent(logininfo.param.grade),
 					token:decodeURIComponent(logininfo.param.token)
 				}
 			}).done(function(resp){
@@ -820,9 +824,10 @@
 
 
 			/*绑定分润输入限制*/
-			$.each([$station_salesprofit,$station_acqprofit],function(){
-				this.each(function () {
-					$(this).on('keyup',function(){
+			$.each([$station_salesprofit,$station_acqprofit,$station_profitsumforsales,$station_profitsumforacquiring],function(){
+				var selector=this.selector;
+				if(selector.indexOf('sumfor')!==-1){
+					this.on('keyup',function(){
 						var val=this.value.replace(/[^0-9*\-*^\.]/g,'');
 						if(val.indexOf('.')!==-1){
 							val=val.split('.');
@@ -835,7 +840,23 @@
 						}
 						this.value=val;
 					});
-				});
+				}else{
+					this.each(function () {
+						$(this).on('keyup',function(){
+							var val=this.value.replace(/[^0-9*\-*^\.]/g,'');
+							if(val.indexOf('.')!==-1){
+								val=val.split('.');
+								if(val.length>=3){
+									val.length=2;
+									val=val[0]+'.'+val[1];
+								}else{
+									val=val.join('.');
+								}
+							}
+							this.value=val;
+						});
+					});
+				}
 			});
 
 			/*最小化窗口*/
@@ -868,7 +889,7 @@
 							/*校验分润对象*/
 							if($station_salesself.is(':checked')){
 								/*自定义*/
-								if(!validProfit($station_salesprofit,dia,profit_data,true)){
+								if(!validProfit($station_salesprofit,dia,profit_data,true,$station_profitsumforsales)){
 									if(typeof config.data['profitSumForSales']!=='undefined'){
 										delete config.data['profitSumForSales'];
 									}
@@ -879,7 +900,7 @@
 								});
 							}
 							if($station_acqself.is(':checked')){
-								if(!validProfit($station_acqprofit,dia,profit_data,false)){
+								if(!validProfit($station_acqprofit,dia,profit_data,false,$station_profitsumforacquiring)){
 									if(typeof config.data['profitSumForAcquiring']!=='undefined'){
 										delete config.data['profitSumForAcquiring'];
 									}
@@ -894,6 +915,7 @@
 							$.extend(true,config.data,{
 								roleId:decodeURIComponent(logininfo.param.roleId),
 								adminId:decodeURIComponent(logininfo.param.adminId),
+								grade:decodeURIComponent(logininfo.param.grade),
 								token:decodeURIComponent(logininfo.param.token),
 								fullName:$station_fullname.val(),
 								shortName:$station_shortname.val(),
@@ -977,7 +999,7 @@
 
 
 		/*校验分润设置数据合法性*/
-		function validProfit(input,dia,data,type){
+		function validProfit(input,dia,data,type,maxdata){
 			if(!input){
 					return false;
 			}
@@ -986,13 +1008,24 @@
 				return false;
 			}
 
-			var isvalid=false,
+			if(!maxdata){
+				return false;
+			}
+
+			var profit_maxdata=maxdata.val(),
+				isvalid=false,
 				ele_a=input.eq(0).val(),
 				ele_aa=input.eq(1).val(),
 				ele_aaa=input.eq(2).val(),
-				temp_a=parseInt(ele_a * 10000,10) / 10000,
-				temp_aa=parseInt(ele_aa * 10000,10) / 10000,
-				temp_aaa=parseInt(ele_aaa * 10000,10) / 10000;
+				temp_a=parseInt(ele_a * 100,10) / 100,
+				temp_aa=parseInt(ele_aa * 100,10) / 100,
+				temp_aaa=parseInt(ele_aaa * 100,10) / 100;
+
+			if(profit_maxdata===''){
+				return false;
+			}
+
+
 
 			/*设置分润规则*/
 			if(isNaN(temp_a)||isNaN(temp_aa)||isNaN(temp_aaa)){
@@ -1000,16 +1033,16 @@
 				isvalid=false;
 				return isvalid;
 			}
-			if((temp_a===0||temp_a>=100)||(temp_aa===0||temp_aa>=100)||(temp_aaa===0||temp_aaa>=100)){
-				dia.content('<span class="g-c-bs-warning g-btips-warn">分润设置数据不能大于100或为0</span>').show();
+			if((temp_a===0||temp_a>=profit_maxdata)||(temp_aa===0||temp_aa>=profit_maxdata)||(temp_aaa===0||temp_aaa>=profit_maxdata)){
+				dia.content('<span class="g-c-bs-warning g-btips-warn">分润设置数据不能大于'+profit_maxdata+'或为0</span>').show();
 				isvalid=false;
 				return isvalid;
-			}else if((temp_a+temp_aa+temp_aaa)>100){
-				dia.content('<span class="g-c-bs-warning g-btips-warn">分润设置总和不能大于100</span>').show();
+			}else if((temp_a+temp_aa+temp_aaa)>profit_maxdata){
+				dia.content('<span class="g-c-bs-warning g-btips-warn">分润设置总和不能大于'+profit_maxdata+'</span>').show();
 				isvalid=false;
 				return isvalid;
-			}else if((temp_a+temp_aa+temp_aaa)<100){
-				dia.content('<span class="g-c-bs-warning g-btips-warn">分润设置总和应为100</span>').show();
+			}else if((temp_a+temp_aa+temp_aaa)<profit_maxdata){
+				dia.content('<span class="g-c-bs-warning g-btips-warn">分润设置总和应为'+profit_maxdata+'</span>').show();
 				isvalid=false;
 				return isvalid;
 			}

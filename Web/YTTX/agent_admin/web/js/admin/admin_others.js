@@ -13,6 +13,7 @@
 				param:{
 					roleId:decodeURIComponent(logininfo.param.roleId),
 					adminId:decodeURIComponent(logininfo.param.adminId),
+					grade:decodeURIComponent(logininfo.param.grade),
 					token:decodeURIComponent(logininfo.param.token)
 				},
 				datatype:'json'
@@ -56,7 +57,8 @@
 				$profit_aaa2=$('#profit_aaa2')/*AAA级*/,
 				$profit_a3=$('#profit_a3')/*A级*/,
 				$profit_aa3=$('#profit_aa3')/*AA级*/,
-				$profit_aaa3=$('#profit_aaa3')/*AAA级*/;
+				$profit_aaa3=$('#profit_aaa3')/*AAA级*/,
+				profit_maxdata=100;
 
 
 			/*设置分润权限*/
@@ -162,23 +164,23 @@
 										distributorProfit3: ele_aaa
 									};
 								}
-								var temp_a=parseInt(ele_a * 10000,10) / 10000,
-									temp_aa=parseInt(ele_aa * 10000,10) / 10000,
-									temp_aaa=parseInt(ele_aaa * 10000,10) / 10000;
+								var temp_a=parseInt(ele_a * 100,10) / 100,
+									temp_aa=parseInt(ele_aa * 100,10) / 100,
+									temp_aaa=parseInt(ele_aaa * 100,10) / 100;
 
 								/*设置分润规则*/
 								if(isNaN(temp_a)||isNaN(temp_aa)||isNaN(temp_aaa)){
 									dia.content('<span class="g-c-bs-warning g-btips-warn">分润设置数据非法值</span>').show();
 									return false;
 								}
-								if((temp_a===0||temp_a>=100)||(temp_aa===0||temp_aa>=100)||(temp_aaa===0||temp_aaa>=100)){
-									dia.content('<span class="g-c-bs-warning g-btips-warn">分润设置数据不能大于100或为0</span>').show();
+								if((temp_a===0||temp_a>=profit_maxdata)||(temp_aa===0||temp_aa>=profit_maxdata)||(temp_aaa===0||temp_aaa>=profit_maxdata)){
+									dia.content('<span class="g-c-bs-warning g-btips-warn">分润设置数据不能大于'+profit_maxdata+'或为0</span>').show();
 									return false;
-								}else if((temp_a+temp_aa+temp_aaa)>100){
-									dia.content('<span class="g-c-bs-warning g-btips-warn">分润设置总和不能大于100</span>').show();
+								}else if((temp_a+temp_aa+temp_aaa)>profit_maxdata){
+									dia.content('<span class="g-c-bs-warning g-btips-warn">分润设置总和不能大于'+profit_maxdata+'</span>').show();
 									return false;
-								}else if((temp_a+temp_aa+temp_aaa)<100){
-									dia.content('<span class="g-c-bs-warning g-btips-warn">分润设置总和应为100</span>').show();
+								}else if((temp_a+temp_aa+temp_aaa)<profit_maxdata){
+									dia.content('<span class="g-c-bs-warning g-btips-warn">分润设置总和应为'+profit_maxdata+'</span>').show();
 									return false;
 								}
 

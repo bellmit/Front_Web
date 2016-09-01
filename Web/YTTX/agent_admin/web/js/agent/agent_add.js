@@ -15,6 +15,7 @@
 				param:{
 					roleId:decodeURIComponent(logininfo.param.roleId),
 					adminId:decodeURIComponent(logininfo.param.adminId),
+					grade:decodeURIComponent(logininfo.param.grade),
 					token:decodeURIComponent(logininfo.param.token)
 				},
 				datatype:'json'
@@ -119,7 +120,8 @@
 				$agent_profit=$agent_runsetupsetting.find('input'),
 				$agent_self=$('#agent_self'),
 				$agent_auto=$('#agent_auto'),
-				profit_data={};
+				profit_data={},
+				maxdata;
 
 
 			/*绑定代理商*/
@@ -175,6 +177,7 @@
 				data:{
 					roleId:decodeURIComponent(logininfo.param.roleId),
 					adminId:decodeURIComponent(logininfo.param.adminId),
+					grade:decodeURIComponent(logininfo.param.grade),
 					token:decodeURIComponent(logininfo.param.token)
 				}
 			};
@@ -280,6 +283,7 @@
 					data:{
 						roleId:decodeURIComponent(logininfo.param.roleId),
 						adminId:decodeURIComponent(logininfo.param.adminId),
+						grade:decodeURIComponent(logininfo.param.grade),
 						token:decodeURIComponent(logininfo.param.token)
 					}
 				}).done(function(resp){
@@ -609,6 +613,7 @@
 							data:{
 								agentId:$admin_bind_wrap.attr('data-id'),
 								adminId:decodeURIComponent(logininfo.param.adminId),
+								grade:decodeURIComponent(logininfo.param.grade),
 								token:decodeURIComponent(logininfo.param.token)
 							}
 						};
@@ -773,7 +778,7 @@
 							isadd=id===''?true:false;
 
 							/*校验分润合法性*/
-							if(profit_data['isCustomProfit']==='1'&&!validProfit($agent_profit,dia,profit_data)){
+							if(profit_data['isCustomProfit']==='1'&&!validProfit($agent_profit,dia,profit_data,maxdata)){
 								return false;
 							}
 
@@ -878,7 +883,7 @@
 
 
 		/*校验分润设置数据合法性*/
-		function validProfit(input,dia,data){
+		function validProfit(input,dia,data,maxdata){
 			if(!input){
 					return false;
 			}
@@ -887,13 +892,15 @@
 				return false;
 			}
 
-			var isvalid=false,
+
+			var profit_maxdata=maxdata||100,
+				isvalid=false,
 				ele_a=input.eq(0).val(),
 				ele_aa=input.eq(1).val(),
 				ele_aaa=input.eq(2).val(),
-				temp_a=parseInt(ele_a * 10000,10) / 10000,
-				temp_aa=parseInt(ele_aa * 10000,10) / 10000,
-				temp_aaa=parseInt(ele_aaa * 10000,10) / 10000;
+				temp_a=parseInt(ele_a * 100,10) / 100,
+				temp_aa=parseInt(ele_aa * 100,10) / 100,
+				temp_aaa=parseInt(ele_aaa * 100,10) / 100;
 
 			/*设置分润规则*/
 			if(isNaN(temp_a)||isNaN(temp_aa)||isNaN(temp_aaa)){
@@ -901,16 +908,16 @@
 				isvalid=false;
 				return isvalid;
 			}
-			if((temp_a===0||temp_a>=100)||(temp_aa===0||temp_aa>=100)||(temp_aaa===0||temp_aaa>=100)){
-				dia.content('<span class="g-c-bs-warning g-btips-warn">分润设置数据不能大于100或为0</span>').show();
+			if((temp_a===0||temp_a>=profit_maxdata)||(temp_aa===0||temp_aa>=profit_maxdata)||(temp_aaa===0||temp_aaa>=profit_maxdata)){
+				dia.content('<span class="g-c-bs-warning g-btips-warn">分润设置数据不能大于'+profit_maxdata+'或为0</span>').show();
 				isvalid=false;
 				return isvalid;
-			}else if((temp_a+temp_aa+temp_aaa)>100){
-				dia.content('<span class="g-c-bs-warning g-btips-warn">分润设置总和不能大于100</span>').show();
+			}else if((temp_a+temp_aa+temp_aaa)>profit_maxdata){
+				dia.content('<span class="g-c-bs-warning g-btips-warn">分润设置总和不能大于'+profit_maxdata+'</span>').show();
 				isvalid=false;
 				return isvalid;
-			}else if((temp_a+temp_aa+temp_aaa)<100){
-				dia.content('<span class="g-c-bs-warning g-btips-warn">分润设置总和应为100</span>').show();
+			}else if((temp_a+temp_aa+temp_aaa)<profit_maxdata){
+				dia.content('<span class="g-c-bs-warning g-btips-warn">分润设置总和应为'+profit_maxdata+'</span>').show();
 				isvalid=false;
 				return isvalid;
 			}

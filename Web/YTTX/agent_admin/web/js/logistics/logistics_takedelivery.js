@@ -15,6 +15,7 @@
 				param:{
 					roleId:decodeURIComponent(logininfo.param.roleId),
 					adminId:decodeURIComponent(logininfo.param.adminId),
+					grade:decodeURIComponent(logininfo.param.grade),
 					token:decodeURIComponent(logininfo.param.token)
 				},
 				datatype:'json'
@@ -92,6 +93,7 @@
 				data:{
 					roleId:decodeURIComponent(logininfo.param.roleId),
 					adminId:decodeURIComponent(logininfo.param.adminId),
+					grade:decodeURIComponent(logininfo.param.grade),
 					token:decodeURIComponent(logininfo.param.token)
 				}
 			},list_config={
@@ -115,6 +117,7 @@
 				data:{
 					roleId:decodeURIComponent(logininfo.param.roleId),
 					adminId:decodeURIComponent(logininfo.param.adminId),
+					grade:decodeURIComponent(logininfo.param.grade),
 					token:decodeURIComponent(logininfo.param.token)
 				}
 			};
@@ -448,6 +451,7 @@
 						data:{
 							type:'2',
 							adminId:decodeURIComponent(logininfo.param.adminId),
+							grade:decodeURIComponent(logininfo.param.grade),
 							token:decodeURIComponent(logininfo.param.token),
 							Id:$edit_wrap.attr('data-id')
 						}
@@ -507,6 +511,7 @@
 								data:{
 									roleId:decodeURIComponent(logininfo.param.roleId),
 									adminId:decodeURIComponent(logininfo.param.adminId),
+									grade:decodeURIComponent(logininfo.param.grade),
 									token:decodeURIComponent(logininfo.param.token),
 									id:$edit_wrap.attr('data-id'),
 									receiveNo:$logistics_receiveno.val(),

@@ -15,6 +15,7 @@
 				param:{
 					roleId:decodeURIComponent(logininfo.param.roleId),
 					adminId:decodeURIComponent(logininfo.param.adminId),
+					grade:decodeURIComponent(logininfo.param.grade),
 					token:decodeURIComponent(logininfo.param.token)
 				},
 				datatype:'json'
@@ -148,6 +149,7 @@
 				data:{
 					roleId:decodeURIComponent(logininfo.param.roleId),
 					adminId:decodeURIComponent(logininfo.param.adminId),
+					grade:decodeURIComponent(logininfo.param.grade),
 					token:decodeURIComponent(logininfo.param.token)
 				}
 			};
@@ -598,6 +600,7 @@
 											data:{
 												serviceStationId:id,
 												adminId:decodeURIComponent(logininfo.param.adminId),
+												grade:decodeURIComponent(logininfo.param.grade),
 												token:decodeURIComponent(logininfo.param.token),
 												trackingNumber:$send_trackingnumber.val(),
 												deliveryHandler:$send_deliveryhandler.val(),
@@ -613,6 +616,7 @@
 										data:{
 											serviceStationId:id,
 											adminId:decodeURIComponent(logininfo.param.adminId),
+											grade:decodeURIComponent(logininfo.param.grade),
 											token:decodeURIComponent(logininfo.param.token),
 											trackingNumber:$repair_trackingnumber.val(),
 											deliveryHandler:$repair_deliveryhandler.val(),

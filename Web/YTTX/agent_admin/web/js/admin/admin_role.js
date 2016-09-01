@@ -15,6 +15,7 @@
 				param:{
 					roleId:decodeURIComponent(logininfo.param.roleId),
 					adminId:decodeURIComponent(logininfo.param.adminId),
+					grade:decodeURIComponent(logininfo.param.grade),
 					token:decodeURIComponent(logininfo.param.token)
 				},
 				datatype:'json'
@@ -116,8 +117,10 @@
 							return json.result.list;
 						},
 						data:{
-							roleId:'-1',
+							roleId:'',
+							selectedId:'',
 							adminId:decodeURIComponent(logininfo.param.adminId),
+							grade:decodeURIComponent(logininfo.param.grade),
 							token:decodeURIComponent(logininfo.param.token)
 						}
 				};
@@ -163,12 +166,14 @@
 							return {
 								roleId:param.roleId,
 								adminId:decodeURIComponent(logininfo.param.adminId),
+								grade:decodeURIComponent(logininfo.param.grade),
 								token:decodeURIComponent(logininfo.param.token)
 							};
 						}
 						return {
 							roleId:decodeURIComponent(logininfo.param.roleId),
 							adminId:decodeURIComponent(logininfo.param.adminId),
+							grade:decodeURIComponent(logininfo.param.grade),
 							token:decodeURIComponent(logininfo.param.token)
 						};
 					}())
@@ -481,7 +486,8 @@
 								if(member_config.url===''){
 									member_config.url='http://120.24.226.70:8081/yttx-agentbms-api/sysusers';
 								}
-								member_config.data.roleId=id;
+								member_config.data.roleId=decodeURIComponent(logininfo.param.roleId);
+								member_config.data.selectedId=id;
 								table_member.ajax.config(member_config).load();
 							}else{
 								/*查看详情*/
