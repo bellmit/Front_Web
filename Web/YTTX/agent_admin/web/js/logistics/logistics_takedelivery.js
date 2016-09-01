@@ -73,7 +73,7 @@
 
 			/*数据加载*/
 			var agent_config={
-				url:"http://120.24.226.70:8081/yttx-agentbms-api/servicestation/receivings",
+				url:"http://120.24.226.70:8081/yttx-agentbms-api/logistics/receivings",
 				dataType:'JSON',
 				method:'post',
 				dataSrc:function ( json ) {
@@ -94,7 +94,8 @@
 					roleId:decodeURIComponent(logininfo.param.roleId),
 					adminId:decodeURIComponent(logininfo.param.adminId),
 					grade:decodeURIComponent(logininfo.param.grade),
-					token:decodeURIComponent(logininfo.param.token)
+					token:decodeURIComponent(logininfo.param.token),
+					type:1
 				}
 			},list_config={
 				url:"",
@@ -117,6 +118,8 @@
 				data:{
 					roleId:decodeURIComponent(logininfo.param.roleId),
 					adminId:decodeURIComponent(logininfo.param.adminId),
+					invoiceId:'',
+					type:1,
 					grade:decodeURIComponent(logininfo.param.grade),
 					token:decodeURIComponent(logininfo.param.token)
 				}
@@ -207,17 +210,23 @@
 							}
 						},
 						{
-							"data":"totalQuantity"
+							"data":"deliveryTime"
 						},
 						{
-							"data":"id",
+							"data":"logisticsCompany"
+						},
+						{
+							"data":"trackingNumber"
+						},
+						{
+							"data":"receivingUnit",
 							"render":function(data, type, full, meta ){
 								var btns='';
 
 
 								if(logisticsdetail_power){
 									/*查看*/
-									btns+='<span data-id="'+data+'" data-action="select" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+									btns+='<span data-id="'+logistics_list_wrap.attr('data-id')+'" data-action="select" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 									 <i class="fa-file-text-o"></i>\
 									 <span>查看</span>\
 									 </span>';
@@ -245,6 +254,9 @@
 								}*/
 								return btns;
 							}
+						},
+						{
+							"data":"list"
 						}
 					],/*控制分页数*/
 					aLengthMenu: [
@@ -329,10 +341,19 @@
 
 					if(isagent){
 						if(action==='select'){
+							if(operate_item){
+								operate_item.removeClass('item-lighten');
+								operate_item=null;
+							}
+							operate_item=$tr.addClass('item-lighten');
 							/*查看*/
 							if(list_config.url===''){
-								list_config.url='http://120.24.226.70:8081/yttx-agentbms-api/servicestation/receivings';
+								list_config.url='http://120.24.226.70:8081/yttx-agentbms-api/logistics/receiving/view';
 							}
+							$logistics_list_wrap.attr({
+								'data-id':id
+							});
+							list_config.data.invoiceId=id;
 							listtable.ajax.config(list_config).load();
 							$edit_cance_btn.trigger('click');
 							$("html,body").animate({scrollTop:300},200);
@@ -373,7 +394,7 @@
 			/*取消添加或修改*/
 			$edit_cance_btn.on('click',function(e){
 				/*调整布局*/
-				$dataagent_wrap.addClass('collapsed');
+				$dataagent_wrap.removeClass('collapsed');
 				$datalist_wrap.removeClass('collapsed');
 				$edit_wrap.attr({
 					'data-id':''
@@ -382,9 +403,7 @@
 				$logistics_receiveerrorwrap.addClass('g-d-hidei');
 				$edit_sure_btn.removeClass('g-d-hidei');
 				$edit_error_btn.addClass('g-d-hidei');
-				if(!$dataagent_wrap.hasClass('collapsed')){
-					$("html,body").animate({scrollTop:200},200);
-				}
+				$("html,body").animate({scrollTop:200},200);
 				/*添加高亮状态*/
 				if(operate_item){
 					operate_item.removeClass('item-lighten');
@@ -429,15 +448,10 @@
 
 			/*最小化窗口*/
 			$edit_title.next().on('click',function(e){
-				if($dataagent_wrap.hasClass('collapsed')||$datalist_wrap.hasClass('collapsed')){
+				if($edit_wrap.attr('data-id')!==''&&!$edit_wrap.hasClass('collapsed')){
 					e.stopPropagation();
 					e.preventDefault();
 					$edit_cance_btn.trigger('click');
-				}
-				if(!$edit_wrap.hasClass('collapsed')){
-					$edit_wrap.attr({
-						'data-id':''
-					});
 				}
 			});
 
@@ -449,18 +463,18 @@
 						dataType:'JSON',
 						method:'post',
 						data:{
-							type:'2',
+							type:1,
 							adminId:decodeURIComponent(logininfo.param.adminId),
 							grade:decodeURIComponent(logininfo.param.grade),
 							token:decodeURIComponent(logininfo.param.token),
-							Id:$edit_wrap.attr('data-id')
+							invoiceId:$edit_wrap.attr('data-id')
 						}
 					})
 					.done(function(resp){
 						var code=parseInt(resp.code,10);
 						if(code!==0){
 							console.log(resp.message);
-							dia.content('<span class="g-c-bs-warning g-btips-warn">确认添加收货异常信息失败</span>').show();
+							dia.content('<span class="g-c-bs-warning g-btips-warn">确认收货失败</span>').show();
 							setTimeout(function () {
 								dia.close();
 							},2000);
@@ -471,7 +485,7 @@
 						//重置表单
 						//重置表单
 						$edit_cance_btn.trigger('click');
-						dia.content('<span class="g-c-bs-success g-btips-succ">确认添加收货异常信息成功</span>').show();
+						dia.content('<span class="g-c-bs-success g-btips-succ">确认收货成功</span>').show();
 						setTimeout(function () {
 							dia.close();
 						},2000);
@@ -481,8 +495,6 @@
 					});
 
 			});
-
-
 
 
 
@@ -496,7 +508,7 @@
 					$.extend(true,form_opt,formcache.form_opt_0,{
 						submitHandler: function(form){
 
-							dia.content('<span class="g-c-bs-success g-btips-succ">暂未开放此功能</span>').show();
+							dia.content('<span class="g-c-bs-warning g-btips-warn">暂未开放此功能</span>').show();
 							setTimeout(function () {
 								dia.close();
 							},2000);
@@ -540,7 +552,7 @@
 									//重置表单
 									$edit_cance_btn.trigger('click');
 									setTimeout(function(){
-										dia.content('<span class="g-c-bs-success g-btips-succ"确认添加收货异常信息成功</span>').show();
+										dia.content('<span class="g-c-bs-success g-btips-succ">确认添加收货异常信息成功</span>').show();
 									},300);
 									setTimeout(function () {
 										dia.close();
