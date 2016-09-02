@@ -32,6 +32,7 @@
 			/*dom引用和相关变量定义*/
 			var $logistics_agent_wrap=$('#logistics_agent_wrap')/*代理商信息表格*/,
 				$logistics_list_wrap=$('#logistics_list_wrap')/*物流信息表格*/,
+				$logistics_detail_wrap=$('#logistics_detail_wrap'),
 				module_id='agent_add'/*模块id，主要用于本地存储传值*/,
 				$dataagent_wrap=$('#dataagent_wrap')/*数据展现面板*/,
 				$datalist_wrap=$('#datalist_wrap')/*数据展现面板*/,
@@ -119,7 +120,7 @@
 					roleId:decodeURIComponent(logininfo.param.roleId),
 					adminId:decodeURIComponent(logininfo.param.adminId),
 					invoiceId:'',
-					type:1,
+					type:'',
 					grade:decodeURIComponent(logininfo.param.grade),
 					token:decodeURIComponent(logininfo.param.token)
 				}
@@ -161,7 +162,7 @@
 
 							if(logisticsdetail_power){
 								/*查看*/
-								btns+='<span data-id="'+data+'" data-action="select" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+								btns+='<span data-id="'+data+'" data-type="'+agent_config.data.type+'" data-action="select" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 									 <i class="fa-file-text-o"></i>\
 									 <span>查看</span>\
 									 </span>';
@@ -327,7 +328,8 @@
 						$this,
 						id,
 						action,
-						$tr;
+						$tr,
+						type;
 
 					//适配对象
 					if(target.className.indexOf('btn')!==-1){
@@ -338,6 +340,7 @@
 					$tr=$this.closest('tr');
 					id=$this.attr('data-id');
 					action=$this.attr('data-action');
+					type=$this.attr('data-type');
 
 					if(isagent){
 						if(action==='select'){
@@ -351,9 +354,11 @@
 								list_config.url='http://120.24.226.70:8081/yttx-agentbms-api/logistics/receiving/view';
 							}
 							$logistics_list_wrap.attr({
-								'data-id':id
+								'data-id':id,
+								'data-type':type
 							});
 							list_config.data.invoiceId=id;
+							list_config.data.type=type;
 							listtable.ajax.config(list_config).load();
 							$edit_cance_btn.trigger('click');
 							$("html,body").animate({scrollTop:300},200);
@@ -370,8 +375,56 @@
 							/*查看*/
 							$dataagent_wrap.addClass('collapsed');
 							$edit_wrap.attr({
-								'data-id':id
+								'data-id':id,
+								'data-type':type
 							}).removeClass('collapsed');
+							var datas=table.row($tr).data(),
+								trstr='<tr><td colspan="10">物流信息</td></tr>';
+							for(var i in datas){
+								switch (i){
+									case 'logisticsCompany':
+										trstr+='<tr><td colspan="2">物流公司：</td><td colspan="8">'+datas[i]+'</td></tr>';
+										break;
+									case 'trackingNumber':
+										trstr+='<tr><td colspan="2">物流号：</td><td colspan="8">'+datas[i]+'</td></tr>';
+										break;
+									case 'deliveryTime':
+										trstr+='<tr><td colspan="2">发货时间：</td><td colspan="8">'+datas[i]+'</td></tr>';
+										break;
+									case 'deliveryUnit':
+										trstr+='<tr><td colspan="2">发货方：</td><td colspan="8">'+datas[i]+'</td></tr>';
+										break;
+									case 'deliveryHandler':
+										trstr+='<tr><td colspan="2">发货人：</td><td colspan="8">'+datas[i]+'</td></tr>';
+										break;
+									case 'deliveryPhone':
+										trstr+='<tr><td colspan="2">发货人电话：</td><td colspan="8">'+datas[i]+'</td></tr>';
+										break;
+									case 'receivingUnit':
+										trstr+='<tr><td colspan="2">收货方：</td><td colspan="8">'+datas[i]+'</td></tr>';
+										break;
+									case 'receivingPhone':
+										trstr+='<tr><td colspan="2">收货人电话：</td><td colspan="8">'+datas[i]+'</td></tr>';
+										break;
+									case 'list':
+
+										var templist=datas[i],
+											len=templist.length,
+											k=0;
+										if(len!==0){
+											trstr+='<tr><td colspan="10">商品信息</td></tr><tr><th colspan="2">商品名称</th><th colspan="1">数量</th><th colspan="1">属性</th><th colspan="2">机器码</th><th colspan="4">备注</th></tr>';
+											for(k;k<len;k++){
+												trstr+='<tr><td colspan="2">'+templist[k]["name"]+'</td>' +
+													'<td>'+templist[k]["quantity"]+'</td>' +
+													'<td>'+templist[k]["property"]+'</td>'+
+													'<td>'+templist[k]["value"]+'</td>'+
+													'<td>'+templist[k]["remark"]+'</td></tr>';
+											}
+											$(trstr).appendTo($logistics_detail_wrap.html(''));
+										}
+										break;
+								}
+							}
 							$("html,body").animate({scrollTop:600},200);
 						}
 
@@ -458,16 +511,27 @@
 
 			/*绑定确认收货*/
 			$edit_sure_btn.on('click',function(){
+				var type =$edit_wrap.attr('data-type'),
+					id=$edit_wrap.attr('data-id');
+
+				if(type===''||id===''){
+					dia.content('<span class="g-c-bs-warning g-btips-warn">请选择需要操作的物流单</span>').show();
+					setTimeout(function () {
+						dia.close();
+					},2000);
+					return false;
+				}
+
 				$.ajax({
 						url:"http://120.24.226.70:8081/yttx-agentbms-api/logistics/confirmreceipt",
 						dataType:'JSON',
 						method:'post',
 						data:{
-							type:1,
+							type:type,
 							adminId:decodeURIComponent(logininfo.param.adminId),
 							grade:decodeURIComponent(logininfo.param.grade),
 							token:decodeURIComponent(logininfo.param.token),
-							invoiceId:$edit_wrap.attr('data-id')
+							invoiceId:id
 						}
 					})
 					.done(function(resp){
@@ -508,6 +572,17 @@
 					$.extend(true,form_opt,formcache.form_opt_0,{
 						submitHandler: function(form){
 
+							var type =$edit_wrap.attr('data-type'),
+								id=$edit_wrap.attr('data-id');
+
+							if(type===''||id===''){
+								dia.content('<span class="g-c-bs-warning g-btips-warn">请选择需要操作的物流单</span>').show();
+								setTimeout(function () {
+									dia.close();
+								},2000);
+								return false;
+							}
+
 							dia.content('<span class="g-c-bs-warning g-btips-warn">暂未开放此功能</span>').show();
 							setTimeout(function () {
 								dia.close();
@@ -525,13 +600,13 @@
 									adminId:decodeURIComponent(logininfo.param.adminId),
 									grade:decodeURIComponent(logininfo.param.grade),
 									token:decodeURIComponent(logininfo.param.token),
-									id:$edit_wrap.attr('data-id'),
+									invoiceId:id,
+									type:type,
 									receiveNo:$logistics_receiveno.val(),
 									receiveAuthor:$logistics_receiveauthor.val(),
 									remark:$logistics_remark.val()
 								}
 							};
-
 
 							$.ajax(config)
 								.done(function(resp){
@@ -539,7 +614,7 @@
 									if(code!==0){
 										console.log(resp.message);
 										setTimeout(function(){
-											dia.content('<span class="g-c-bs-warning g-btips-warn">确认添加收货异常信息失败</span>').show();
+											dia.content('<span class="g-c-bs-warning g-btips-warn">确认收货异常失败</span>').show();
 										},300);
 										setTimeout(function () {
 											dia.close();
@@ -552,7 +627,7 @@
 									//重置表单
 									$edit_cance_btn.trigger('click');
 									setTimeout(function(){
-										dia.content('<span class="g-c-bs-success g-btips-succ">确认添加收货异常信息成功</span>').show();
+										dia.content('<span class="g-c-bs-success g-btips-succ">确认收货异常成功</span>').show();
 									},300);
 									setTimeout(function () {
 										dia.close();

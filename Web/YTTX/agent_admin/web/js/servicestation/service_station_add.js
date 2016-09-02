@@ -87,11 +87,26 @@
 				$station_remark=$('#station_remark');
 
 
-			/*分润设置*/
+			/*代理商设置*/
 			var	$station_becomeagent=$('#station_becomeagent'),
 				$station_agentwrap=$('#station_agentwrap'),
 				$station_agentinput=$station_agentwrap.find('input'),
-				$station_salescheck=$('#station_salescheck'),
+				$agent_gradewrap=$('#agent_gradewrap'),
+				$agent_gradeAAA=$('#agent_gradeAAA'),
+				$agent_gradeAA=$('#agent_gradeAA'),
+				$agent_gradeA=$('#agent_gradeA'),
+				$agent_gradeSS=$('#agent_gradeSS'),
+				gradeobj={
+					AAA:$agent_gradeAAA,
+					AA:$agent_gradeAA,
+					A:$agent_gradeA,
+					SS:$agent_gradeSS,
+					parentWrap:$agent_parentid
+				};
+
+
+			/*分润设置*/
+			var	$station_salescheck=$('#station_salescheck'),
 				$station_saleswrap=$('#station_saleswrap'),
 				$station_salessetting=$('#station_salessetting'),
 				$station_salesprofit=$station_salessetting.find('input'),

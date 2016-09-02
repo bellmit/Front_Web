@@ -76,14 +76,14 @@
 			/*表单对象*/
 			var edit_form=document.getElementById('edit_form')/*表单dom*/,
 				$edit_form=$(edit_form)/*编辑表单*/,
+				$edit_cance_btn=$('#edit_cance_btn')/*编辑取消按钮*/,
 				$sales_subscriberid=$('#sales_subscriberid'),
 				$sales_servicestationid=$('#sales_servicestationid'),/*返修id*/
-				$edit_cance_btn=$('#edit_cance_btn')/*编辑取消按钮*/,
-				$remark=$('#remark'),/*快递单号*/
-				$sales_imeicode=$('#sales_imeicode'),
 				$sales_name=$('#sales_name')/*发货经手人*/,
 				$sales_cellphone=$('#sales_cellphone'),
 				$sales_telephone=$('#sales_telephone')/*发货时间*/,
+				$sales_remark=$('#sales_remark'),/*快递单号*/
+				$sales_imeicode=$('#sales_imeicode'),
 				$sales_address=$('#sales_address');
 
 			/*数据加载*/
@@ -284,6 +284,42 @@
 			(function(){
 				/*重置表单*/
 				edit_form.reset();
+
+				/*查询服务站ID*/
+				$.ajax({
+					url:"http://120.24.226.70:8081/yttx-agentbms-api/servicestations/list",
+					dataType:'JSON',
+					method:'post',
+					data:{
+						roleId:decodeURIComponent(logininfo.param.roleId),
+						adminId:decodeURIComponent(logininfo.param.adminId),
+						grade:decodeURIComponent(logininfo.param.grade),
+						token:decodeURIComponent(logininfo.param.token)
+					}
+				}).done(function (resp) {
+					var code=parseInt(resp.code,10);
+					if(code!==0){
+						console.log(resp.message);
+						return false;
+					}
+					var list=resp.result.list,
+						i= 0,
+						len=list.length,
+						str='<option selected value="">请选择服务站ID</option>';
+
+					if(len!==0){
+						for(i;i<len;i++){
+							str+='<option value="'+list[i]['id']+'">'+list[i]['shortName']+'</option>';
+						}
+					}
+
+					$(str).appendTo($sales_servicestationid.html(''));
+
+					
+				}).fail(function (resp) {
+					console.log('error');
+
+				});
 			}());
 
 

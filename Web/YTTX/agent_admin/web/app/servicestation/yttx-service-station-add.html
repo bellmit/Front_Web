@@ -122,7 +122,7 @@
 
                     <!--表格主体-->
                     <div class="panel-body">
-                        <div class="admin-search-wrap">
+                        <div class="admin-search-wrap g-d-hidei">
                             <div class="admin-search-item">
                                 <label>服务站简称：</label>
                                 <input type="text" id="search_shortName">
@@ -298,10 +298,21 @@
                             </div>
 
                             <div class="form-group" id="station_bindagentwrap">
-                                <label class="control-label">绑定代理商ID：</label>
-                                <!--placeholder="请输入绑定代理商ID"-->
-                                <select class="form-control" name="agentId" id="station_agentid"></select>
-
+                                <label class="control-label">绑定代理商ID&nbsp;--上级代理商ID(<span id="station_agentid" data-value=""  name="agentId" data-name="" class="g-c-bs-info"></span>)：</label>
+                                <div class="admin-sub-items1 self-error-pos-wrap" id="agent_gradewrap">
+                                    <label id="agent_gradeAAA">
+                                        &nbsp;&nbsp;AAA级:&nbsp;<input class="self-error-pos" type="radio" value="3" name="parentGrade" data-validate="required" data-message-required="请选择代理商级别"  />
+                                    </label>
+                                    <label id="agent_gradeAA">
+                                        &nbsp;&nbsp;AA级:&nbsp;<input class="self-error-pos" type="radio"  value="2" name="parentGrade" data-validate="required" data-message-required="请选择代理商级别"  />
+                                    </label>
+                                    <label id="agent_gradeA">
+                                        &nbsp;&nbsp;A级:&nbsp;<input class="self-error-pos" type="radio"  value="1" name="parentGrade" data-validate="required" data-message-required="请选择代理商级别"  />
+                                    </label>
+                                    <label id="agent_gradeSS">
+                                        &nbsp;&nbsp;店长:&nbsp;<input class="self-error-pos" type="radio"  value="4" name="parentGrade" data-validate="required" data-message-required="请选择代理商级别"  />
+                                    </label>
+                                </div>
                             </div>
 
                             <div class="form-group" id="station_becomeagentwrap">

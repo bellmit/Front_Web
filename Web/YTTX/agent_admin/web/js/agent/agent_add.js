@@ -102,7 +102,8 @@
 				$agent_parentid=$('#agent_parentid');
 
 
-			/*分润设置*/
+
+			/*代理商设置*/
 			var	$agent_gradewrap=$('#agent_gradewrap'),
 				$agent_gradeAAA=$('#agent_gradeAAA'),
 				$agent_gradeAA=$('#agent_gradeAA'),
@@ -114,8 +115,12 @@
 					A:$agent_gradeA,
 					SS:$agent_gradeSS,
 					parentWrap:$agent_parentid
-				},
-				$agent_runsetupwrap=$('#agent_runsetupwrap'),
+				};
+
+
+
+			/*分润设置*/
+			var $agent_runsetupwrap=$('#agent_runsetupwrap'),
 				$agent_runsetupsetting=$('#agent_runsetupsetting'),
 				$agent_profit=$agent_runsetupsetting.find('input'),
 				$agent_self=$('#agent_self'),
