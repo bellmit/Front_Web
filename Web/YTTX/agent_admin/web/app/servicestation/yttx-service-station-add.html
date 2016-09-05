@@ -297,41 +297,41 @@
                                 <textarea class="form-control" name="Remark" id="station_remark"   placeholder="请输入备注"></textarea>
                             </div>
 
-                            <div class="form-group" id="station_bindagentwrap">
-                                <label class="control-label">绑定代理商ID&nbsp;--上级代理商ID(<span id="station_agentid" data-value=""  name="agentId" data-name="" data-grade="" class="g-c-bs-info"></span>)：</label>
-                                <div class="admin-sub-items1 self-error-pos-wrap" id="agent_gradewrap">
+                            <div class="form-group" data-disabled="false"  id="station_bindagentwrap">
+                                <label class="control-label">绑定代理商ID&nbsp;--上级代理商ID(<span id="station_agentid" data-value="" data-name="" data-grade="" class="g-c-bs-info"></span>)：</label>
+                                <div class="admin-sub-items1" id="agent_gradewrap">
                                     <label id="agent_gradeAAA">
-                                        &nbsp;&nbsp;AAA级:&nbsp;<input class="self-error-pos" type="radio" value="3" name="parentGrade" data-validate="required" data-message-required="请选择代理商级别"  />
+                                        &nbsp;&nbsp;AAA级:&nbsp;<input  type="radio" value="3" name="parentGrade" />
                                     </label>
                                     <label id="agent_gradeAA">
-                                        &nbsp;&nbsp;AA级:&nbsp;<input class="self-error-pos" type="radio"  value="2" name="parentGrade" data-validate="required" data-message-required="请选择代理商级别"  />
+                                        &nbsp;&nbsp;AA级:&nbsp;<input  type="radio"  value="2" name="parentGrade" />
                                     </label>
                                     <label id="agent_gradeA">
-                                        &nbsp;&nbsp;A级:&nbsp;<input class="self-error-pos" type="radio"  value="1" name="parentGrade" data-validate="required" data-message-required="请选择代理商级别"  />
+                                        &nbsp;&nbsp;A级:&nbsp;<input  type="radio"  value="1" name="parentGrade" />
                                     </label>
                                     <label id="agent_gradeSS">
-                                        &nbsp;&nbsp;店长:&nbsp;<input class="self-error-pos" type="radio"  value="4" name="parentGrade" data-validate="required" data-message-required="请选择代理商级别"  />
+                                        &nbsp;&nbsp;店长:&nbsp;<input type="radio"  value="4" name="parentGrade" />
                                     </label>
                                     &nbsp;&nbsp;&nbsp;&nbsp;<label class="btn btn-info btn-sm g-br2" id="agent_gradeclear">清除</label>
                                 </div>
                             </div>
 
-                            <div class="form-group" id="station_becomeagentwrap">
+                            <div class="form-group" data-disabled="false" id="station_becomeagentwrap">
                                 <div class="checkbox">
                                     <label>
                                         <input value="0" type="checkbox" id="station_becomeagent" name="becomeAgent" />同时成为代理商&nbsp;&nbsp;
                                     </label>
                                 </div>
-                                <div class="admin-sub-items1 g-d-hidei" id="station_agentwrap">
+                                <div class="admin-sub-items1 self-error-pos-wrap g-d-hidei" id="station_agentwrap">
                                     代理商级别：
-                                    <label>
-                                        &nbsp;&nbsp;A级:&nbsp;<input type="radio"  value="1" name="grade" />
+                                    <label id="become_gradeA" >
+                                        &nbsp;&nbsp;A级:&nbsp;<input type="radio" data-validate="required" data-message-required="请选择代理商级别"  class="self-error-pos"  value="1" name="grade"/>
                                     </label>
-                                    <label>
-                                        &nbsp;&nbsp;AA级:&nbsp;<input value="2" type="radio"  name="grade" />
+                                    <label id="become_gradeAA" >
+                                        &nbsp;&nbsp;AA级:&nbsp;<input value="2" data-validate="required" data-message-required="请选择代理商级别"  class="self-error-pos" type="radio"  name="grade"/>
                                     </label>
-                                    <label>
-                                        &nbsp;&nbsp;AAA级:&nbsp;<input value="3"  type="radio"  name="grade" />
+                                    <label id="become_gradeAAA">
+                                        &nbsp;&nbsp;AAA级:&nbsp;<input value="3" data-validate="required" data-message-required="请选择代理商级别"  class="self-error-pos"  type="radio"  name="grade" />
                                     </label>
                                 </div>
                                 <div class="control-label">以上内容请根据合同如实填写。</div>
