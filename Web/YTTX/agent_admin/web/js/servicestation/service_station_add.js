@@ -92,16 +92,18 @@
 				$station_agentwrap=$('#station_agentwrap'),
 				$station_agentinput=$station_agentwrap.find('input'),
 				$agent_gradewrap=$('#agent_gradewrap'),
+				$agent_gradeinput=$agent_gradewrap.find('input'),
 				$agent_gradeAAA=$('#agent_gradeAAA'),
 				$agent_gradeAA=$('#agent_gradeAA'),
 				$agent_gradeA=$('#agent_gradeA'),
 				$agent_gradeSS=$('#agent_gradeSS'),
+				$agent_gradeclear=$('#agent_gradeclear'),
 				gradeobj={
 					AAA:$agent_gradeAAA,
 					AA:$agent_gradeAA,
 					A:$agent_gradeA,
 					SS:$agent_gradeSS,
-					parentWrap:$agent_parentid
+					parentWrap:$station_agentid
 				};
 
 
@@ -259,13 +261,88 @@
 						console.log(resp.message);
 						$station_agentid.attr({
 							'data-value':'',
-							'data-name':''
+							'data-name':'',
+							'data-grade':''
 						}).html('');
+						$station_bindagentwrap.addClass('g-d-hidei');
 						return false;
 					}
 
 					/*初始化代理商级别*/
+					$station_bindagentwrap.removeClass('g-d-hidei');
 					setGradeShow(gradeobj,resp.result);
+
+
+					/*绑定事件*/
+					$agent_gradeinput.on('click',function(){
+						var $this=$(this),
+							ischeck=$this.is('checked');
+						if(ischeck){
+							if(!$station_becomeagentwrap.hasClass('g-d-hidei')){
+								$station_becomeagentwrap.addClass('g-d-hidei');
+								$station_bindagentwrap.removeClass('g-d-hidei');
+								$station_agentwrap.addClass('g-d-hidei');
+								$station_agentinput.each(function(){
+									$(this).prop({
+										'checked':false
+									});
+								});
+								/*设置数据*/
+								profit_data['becomeAgent']=0;
+								if(typeof profit_data['grade']!=='undefined'){
+									delete profit_data['grade'];
+								}
+							}
+						}else{
+							/*如果设置了值则重置值*/
+							if(!$station_becomeagentwrap.hasClass('g-d-hidei')){
+								$station_becomeagentwrap.addClass('g-d-hidei');
+								if(profit_data['becomeAgent']===1){
+									profit_data['becomeAgent']=0;
+									$station_becomeagent.prop({
+										'checked':false
+									});
+									$station_agentwrap.addClass('g-d-hidei');
+									$station_agentinput.each(function(){
+										$(this).prop({
+											'checked':false
+										});
+									});
+									/*设置数据*/
+									if(typeof profit_data['grade']!=='undefined'){
+										delete profit_data['grade'];
+									}
+								};
+							}
+						}
+					});
+
+					/*绑定清除*/
+					$agent_gradeclear.on('click',function(){
+						if($station_becomeagentwrap.hasClass('g-d-hidei')){
+							$station_becomeagentwrap.removeClass('g-d-hidei');
+							$station_agentwrap.addClass('g-d-hidei');
+							$station_agentinput.each(function(){
+								$(this).prop({
+									'checked':false
+								});
+							});
+							$station_becomeagent.prop({
+								'checked':false
+							});
+							$agent_gradeinput.each(function(){
+								$(this).prop({
+									'checked':false
+								});
+							});
+							/*设置数据*/
+							profit_data['becomeAgent']=0;
+							if(typeof profit_data['grade']!=='undefined'){
+								delete profit_data['grade'];
+							}
+						}
+
+					});
 
 
 				}).fail(function(resp){
@@ -672,7 +749,6 @@
 
 			/*设置代理*/
 			/*初始化绑定代理列表*/
-			var binddisabled=false;
 			$.ajax({
 				url:"http://120.24.226.70:8081/yttx-agentbms-api/agents/list",
 				dataType:'JSON',
@@ -693,52 +769,13 @@
 					}
 					console.log(resp.message);
 					$station_agentid.html('');
-					binddisabled=true;
 					$station_bindagentwrap.addClass('g-d-hidei');
 					return false;
 				}
-				binddisabled=false;
-				$station_bindagentwrap.removeClass('g-d-hidei');
-				var bindlist=resp.result.list,
-					len=bindlist.length,
-					k= 0,
-					str='<option value="" selected>请选择绑定代理商ID</option>';
-				for(k;k<len;k++){
-					str+='<option value="'+bindlist[k]["id"]+'">'+bindlist[k]["shortName"]+'</option>';
-				}
-				$(str).appendTo($station_agentid.html(''));
 
-				/*绑定事件*/
-				$station_agentid.on('change',function(){
-					var $this=$(this),
-						value=$this.val();
-					if(value===''){
-						$station_becomeagentwrap.removeClass('g-d-hidei');
-					}else{
-						/*如果设置了值则重置值*/
-						$station_becomeagentwrap.addClass('g-d-hidei');
-						if(profit_data['becomeAgent']===1){
-							profit_data['becomeAgent']=0;
-							$station_becomeagent.prop({
-								'checked':false
-							});
-							$station_agentwrap.addClass('g-d-hidei');
-							$station_agentinput.each(function(){
-								$(this).prop({
-									'checked':false
-								});
-							});
-							/*设置数据*/
-							if(typeof profit_data['grade']!=='undefined'){
-								delete profit_data['grade'];
-							}
-						};
-					}
-				});
 			}).fail(function(resp){
 					console.log('error');
 					$station_agentid.html('');
-					binddisabled=true;
 					$station_bindagentwrap.addClass('g-d-hidei');
 			});
 
@@ -751,25 +788,21 @@
 					gradecheck=$station_agentinput.eq(0);
 
 				if(ischeck){
-					/*置空绑定代理商ID并隐藏选项*/
-					if(!binddisabled){
-						$station_bindagentwrap.addClass('g-d-hidei');
-						setGradeShow(gradeobj);
-					}
-
 					/*初始化成为代理商*/
+					$station_bindagentwrap.addClass('g-d-hidei');
 					$station_agentwrap.removeClass('g-d-hidei');
 					profit_data['becomeAgent']=1;
 					gradecheck.prop({
 						'checked':true
 					});
 					profit_data['grade']=gradecheck.val();
+					$agent_gradeinput.each(function () {
+						$(this).prop({
+							'checked':false
+						})
+					});
 				}else{
-					if(!binddisabled){
-						$station_bindagentwrap.removeClass('g-d-hidei');
-					}
-
-
+					$station_bindagentwrap.removeClass('g-d-hidei');
 					$station_agentwrap.addClass('g-d-hidei');
 					$station_agentinput.each(function(){
 						$(this).prop({
@@ -1113,7 +1146,7 @@
 
 		/*代理商级别初始化*/
 		function setGradeShow(obj,result){
-			var gradeobj=result,
+			var gradeobj=result||'',
 				grademap={
 					'3':'AAA级代理商',
 					'2':'AA级代理商',

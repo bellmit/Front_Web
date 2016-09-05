@@ -302,7 +302,8 @@
 						console.log(resp.message);
 						$agent_parentid.attr({
 							'data-value':'',
-							'data-name':''
+							'data-name':'',
+							'data-grade':''
 						}).html('');
 						return false;
 					}
