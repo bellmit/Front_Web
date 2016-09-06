@@ -2,8 +2,6 @@
 (function($){
 	'use strict';
 	$(function(){
-
-
 		/*初始化数据*/
 		if(public_tool.initMap.isrender){
 			/*菜单调用*/
@@ -21,15 +19,10 @@
 				datatype:'json'
 			});
 
-
 			/*权限调用*/
 			var powermap=public_tool.getPower(),
-				agentdelete_power=public_tool.getKeyPower('删除',powermap),
 				agentupdate_power=public_tool.getKeyPower('修改',powermap),
-				agentdetail_power=public_tool.getKeyPower('查看',powermap),
-				agentadd_power=public_tool.getKeyPower('添加',powermap),
-				agentbind_power=public_tool.getKeyPower('绑定服务站',powermap);
-
+				agentadd_power=public_tool.getKeyPower('添加',powermap);
 
 			/*dom引用和相关变量定义*/
 			var $agent_list_wrap=$('#agent_list_wrap')/*表格*/,
@@ -50,24 +43,7 @@
 					},
 					cancel:false
 				})/*一般提示对象*/,
-				dialogObj=public_tool.dialog()/*回调提示对象*/,
-				$show_detail_wrap=$('#show_detail_wrap')/*详情容器*/,
-				$show_detail_title=$('#show_detail_title')/*详情标题*/,
-				$show_detail_content=$('#show_detail_content')/*详情内容*/,
-				detail_map={
-					fullName:'服务站全称',
-					shortName:"服务站简称",
-					name:"负责人姓名",
-					phone:"负责人手机号码",
-					address:"地址",
-					sales:"销售",
-					inventory:"库存",
-					repairs:"返修",
-					agentShortName:"所属代理",
-					superShortName:"上级代理"
-				}/*详情映射*/;
-
-
+				dialogObj=public_tool.dialog()/*回调提示对象*/;
 
 			/*查询对象*/
 			var $search_fullName=$('#search_fullName'),
@@ -75,8 +51,6 @@
 				$search_phone=$('#search_phone'),
 				$admin_search_btn=$('#admin_search_btn'),
 				$admin_search_clear=$('#admin_search_clear');
-
-
 
 			/*表单对象*/
 			var edit_form=document.getElementById('edit_form')/*表单dom*/,
@@ -101,8 +75,6 @@
 				$agent_address=$('#agent_address'),
 				$agent_parentid=$('#agent_parentid');
 
-
-
 			/*代理商设置*/
 			var	$agent_gradewrap=$('#agent_gradewrap'),
 				$agent_gradeAAA=$('#agent_gradeAAA'),
@@ -117,8 +89,6 @@
 					parentWrap:$agent_parentid
 				};
 
-
-
 			/*分润设置*/
 			var $agent_runsetupwrap=$('#agent_runsetupwrap'),
 				$agent_runsetupsetting=$('#agent_runsetupsetting'),
@@ -127,19 +97,6 @@
 				$agent_auto=$('#agent_auto'),
 				profit_data={},
 				maxdata;
-
-
-			/*绑定代理商*/
-			var $admin_bind_wrap=$('#admin_bind_wrap'),
-				$admin_bind_title=$('#admin_bind_title'),
-				$service_unbindwrap=$('#service_unbindwrap'),
-				$service_bindwrap=$('#service_bindwrap'),
-				$service_bindbtn=$('#service_bindbtn'),
-				$service_unbindbtn=$('#service_unbindbtn');
-
-
-
-
 
 			/*数据加载*/
 			var agent_config={
@@ -212,7 +169,22 @@
 					{
 						"data":"address",
 						"render":function(data, type, full, meta ){
-							return data.toString().slice(0,20)+'...';
+							return data.toString().slice(0,40)+'...';
+						}
+					},
+					{
+						"data":"grade",
+						"render":function(data, type, full, meta ){
+							var str='',
+								grade=parseInt(data,10);
+							if(grade===1){
+								str='A';
+							}else if(grade===2){
+								str='AA';
+							}else if(grade===3){
+								str='AAA';
+							}
+							return str;
 						}
 					},
 					{
@@ -220,33 +192,11 @@
 						"render":function(data, type, full, meta ){
 							var btns='';
 
-
-							if(agentdetail_power){
-								/*查看*/
-								btns+='<span data-id="'+data+'" data-action="select" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
-									 <i class="fa-file-text-o"></i>\
-									 <span>查看</span>\
-									 </span>';
-							}
 							if(agentupdate_power){
 								/*修改*/
 								btns+='<span  data-id="'+data+'" data-action="update" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 									<i class="fa-pencil"></i>\
 									<span>修改</span>\
-									</span>';
-							}
-							if(agentbind_power){
-								/*绑定*/
-								btns+='<span  data-id="'+data+'" data-action="bind" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
-									<i class="fa-cogs"></i>\
-									<span>绑定服务站</span>\
-									</span>';
-							}
-							if(agentdelete_power){
-								/*删除*/
-								btns+='<span  data-id="'+data+'" data-action="delete" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
-									<i class="fa-trash"></i>\
-									<span>删除</span>\
 									</span>';
 							}
 							return btns;
@@ -260,16 +210,12 @@
 				lengthChange:true/*是否可改变长度*/
 			});
 
-
-
-
 			/*
 			 * 初始化
 			 * */
 			(function(){
 				/*重置表单*/
 				edit_form.reset();
-				$admin_search_clear.trigger('click');
 				/*地址调用*/
 				new public_tool.areaSelect().areaSelect({
 					$province:$agent_province,
@@ -323,17 +269,13 @@
 
 			}());
 
-
-
-
-
 			/*清空查询条件*/
 			$admin_search_clear.on('click',function(){
 				$.each([$search_fullName,$search_name,$search_phone],function(){
 					this.val('');
 				});
 			});
-
+			$admin_search_clear.trigger('click');
 
 			/*联合查询*/
 			$admin_search_btn.on('click',function(){
@@ -361,7 +303,6 @@
 				agent_config.data= $.extend(true,{},data);
 				table.ajax.config(agent_config).load(false);
 			});
-
 
 			/*事件绑定*/
 			/*绑定查看，修改操作*/
@@ -405,7 +346,6 @@
 					$agent_userwrap.addClass('g-d-hidei');
 					//重置信息
 
-
 					for(var i in datas) {
 						switch (i) {
 							case "id":
@@ -428,108 +368,9 @@
 								break;
 						}
 					}
-				}else if(action==='delete'){
-					/*删除操作*/
-					dia.content('<span class="g-c-bs-warning g-btips-warn">目前暂未开放此功能</span>').show();
-					setTimeout(function(){
-						dia.close();
-					},2000);
-					return false;
-				}else if(action==='select'){
-					/*查看*/
-					dia.content('<span class="g-c-bs-warning g-btips-warn">目前暂未开放此功能</span>').show();
-					setTimeout(function(){
-						dia.close();
-					},2000);
-					return false;
-
-				}else if(action==='bind'){
-					/*绑定代理商请求数据*/
-					$.when($.ajax({
-						url:"http://120.24.226.70:8081/yttx-agentbms-api/servicestation/notbound/list",
-						method: 'POST',
-						dataType: 'json',
-						data:{
-							"roleId":decodeURIComponent(logininfo.param.roleId),
-							"adminId":decodeURIComponent(logininfo.param.adminId),
-							"token":decodeURIComponent(logininfo.param.token)
-						}
-					}),$.ajax({
-						url:"http://120.24.226.70:8081/yttx-agentbms-api/servicestation/bound/list",
-						method: 'POST',
-						dataType: 'json',
-						data:{
-							"agentId":id,
-							"adminId":decodeURIComponent(logininfo.param.adminId),
-							"token":decodeURIComponent(logininfo.param.token)
-						}
-					})).done(function(resp1,resp2){
-						var data1 = resp1[0],
-							data2=resp2[0],
-							code1 = parseInt(data1.code, 10),
-							code2 = parseInt(data2.code, 10);
-						if (code1 !== 0&&code2!==0) {
-							console.log(data1.message);
-							console.log(data2.message);
-							return false;
-						}
-						var list1 = data1.result.list,
-							unlen = list1.length,
-							list2=data2.result.list,
-							len=list2.length;
-
-						if (unlen !== 0) {
-							var i = 0,
-								unstr = '';
-							for (i; i < unlen; i++) {
-								unstr += '<li data-id="' + list1[i]['id'] + '">' + list1[i]['shortName'] + '</li>';
-							}
-							$(unstr).appendTo($service_unbindwrap.html(''));
-						}else{
-							$service_unbindwrap.html('');
-						}
-
-						if(len!==0){
-							var j = 0,
-								str = '';
-							for (j; j < len; j++) {
-								str += '<li data-id="' + list2[j]['id'] + '">' + list2[j]['shortName'] + '</li>';
-							}
-							$(str).appendTo($service_bindwrap.html(''));
-						}else {
-							$service_bindwrap.html('');
-						}
-
-						/*添加高亮状态*/
-						if(operate_item){
-							operate_item.removeClass('item-lighten');
-							operate_item=null;
-						}
-						operate_item=$tr.addClass('item-lighten');
-
-						/*弹出操作框*/
-						$admin_bind_title.html(datas['fullName']+'代理商绑定');
-						$admin_bind_wrap.attr({
-							'data-id':id
-						}).modal('show',{backdrop:'static'});
-
-					}).fail(function (resp1,resp2) {
-						var data1 = resp1[0],
-							data2=resp2[0];
-						if(data1.code !==0){
-							console.log('unbind error');
-							$service_unbindwrap.html('');
-						}else if(data2.code !==0){
-							console.log('bind error');
-							$service_bindwrap.html('');
-						}
-					});
-
 				}
 
 			});
-
-
 
 			/*添加服务站*/
 			$agent_add_btn.on('click',function(e){
@@ -551,8 +392,6 @@
 				$agent_add_btn.removeClass('g-d-hidei');
 				$edit_wrap.removeClass('g-d-hidei');
 			};
-
-
 
 			/*取消添加或修改*/
 			$agent_cance_btn.on('click',function(e){
@@ -581,126 +420,6 @@
 				}
 			});
 
-
-			/*绑定代理商绑定和取消绑定选中*/
-			$.each([$service_unbindwrap,$service_bindwrap], function () {
-					this.on('click','li',function(){
-						var $this=$(this),
-							id=$this.attr('data-id');
-
-						if(id===''){
-							return false;
-						}
-
-						if($this.hasClass('service-bindactive')){
-							$this.removeClass('service-bindactive');
-						}else{
-							$this.addClass('service-bindactive').siblings().removeClass('service-bindactive');
-						}
-					});
-			});
-
-
-
-			/*绑定代理商绑定和取消绑定*/
-			$.each([$service_bindbtn,$service_unbindbtn], function () {
-
-				this.on('click', function () {
-
-
-					var $this=$(this),
-						type=$this.attr('data-type'),
-						hasitem,
-						isbind=type==='1'?true:false,
-						config={
-							url:"http://120.24.226.70:8081/yttx-agentbms-api/servicestation/binding/operation",
-							dataType:'JSON',
-							method:'post',
-							data:{
-								agentId:$admin_bind_wrap.attr('data-id'),
-								adminId:decodeURIComponent(logininfo.param.adminId),
-								grade:decodeURIComponent(logininfo.param.grade),
-								token:decodeURIComponent(logininfo.param.token)
-							}
-						};
-
-
-					if(isbind){
-						/*绑定*/
-						hasitem=$service_unbindwrap.find('li.service-bindactive');
-					}else{
-						/*取消绑定*/
-						hasitem=$service_bindwrap.find('li.service-bindactive');
-					}
-
-					if(hasitem.length===0){
-						dia.content('<span class="g-c-bs-warning g-btips-warn">请选择需要绑定或取消绑定的数据</span>').show();
-						return false;
-					}
-
-					/*设置参数*/
-					config.data['serviceStationId']=hasitem.attr('data-id');
-					config.data['isBinding']=type;
-
-					/*发送绑定代理或者取消绑定代理请求*/
-					//没有回调则设置回调对象
-					dialogObj.setFn(function(){
-						var self=this;
-						$.ajax(config).done(function(resp){
-							var code=parseInt(resp.code,10);
-							if(code!==0){
-								console.log(resp.message);
-								setTimeout(function(){
-									self.content('<span class="g-c-bs-warning g-btips-warn">'+(isbind?"绑定服务站失败":"取消绑定服务站失败")+'</span>').show();
-								},500);
-								return false;
-							}
-
-							/*请求成功执行相应交互*/
-							self.content('<span class="g-c-bs-success g-btips-succ">'+(isbind?"绑定服务站成功":"取消绑定服务站成功")+'</span>').show();
-							setTimeout(function(){
-								self.close();
-								if(isbind){
-									hasitem.appendTo($service_bindwrap);
-								}else{
-									hasitem.appendTo($service_unbindwrap);
-								}
-								hasitem.siblings().removeClass('service-bindactive');
-								setTimeout(function(){
-									hasitem.removeClass('service-bindactive');
-								},1000);
-							},1000);
-
-						}).fail(function(resp){
-							console.log('error');
-							setTimeout(function(){
-								self.content('<span class="g-c-bs-warning g-btips-warn">'+(isbind?"绑定服务站失败":"取消绑定服务站失败")+'</span>').show();
-							},500);
-						});
-
-					},'agent_sure');
-					//确认删除
-					dialogObj.dialog.content('<span class="g-c-bs-warning g-btips-warn">'+(isbind?"是否绑定服务站?":"是否取消绑定服务站?")+'</span>').showModal();
-
-				});
-			});
-
-
-			/*关闭弹出框并重置值*/
-			$admin_bind_wrap.on('hide.bs.modal',function(){
-				$admin_bind_wrap.attr({
-					'data-id':''
-				})
-				if(operate_item){
-					setTimeout(function(){
-						operate_item.removeClass('item-lighten');
-						operate_item=null;
-					},1000);
-				}
-			});
-
-
-
 			/*手机格式化*/
 			/*格式化手机号码*/
 			$.each([$search_phone,$agent_phone],function(){
@@ -713,8 +432,6 @@
 					this.value=public_tool.phoneFormat(this.value);
 				});
 			});
-
-
 
 			/*分润切换*/
 			profit_data['isCustomProfit']=0;
@@ -740,8 +457,6 @@
 					});
 			});
 
-
-
 			/*绑定分润输入限制*/
 			$agent_profit.each(function () {
 				$(this).on('keyup',function(){
@@ -759,7 +474,6 @@
 				});
 			});
 
-
 			/*最小化窗口*/
 			$edit_title.next().on('click',function(e){
 				if($data_wrap.hasClass('collapsed')){
@@ -768,7 +482,6 @@
 					$agent_cance_btn.trigger('click');
 				}
 			});
-
 
 			/*表单验证*/
 			if($.isFunction($.fn.validate)) {
