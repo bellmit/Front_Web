@@ -279,7 +279,7 @@
 				}else if(action==='select'){
 					/*查看*/
 					$.ajax({
-							url:"http://120.24.226.70:8081/yttx-agentbms-api/agents/view",
+							url:"http://120.24.226.70:8081/yttx-agentbms-api/agent/view",
 							method: 'POST',
 							dataType: 'json',
 							data:{
@@ -303,7 +303,7 @@
 							if(!$.isEmptyObject(list)){
 								for(var j in list){
 									if(j==='serivceStationlist'||j==='serivcestationlist'){
-										str+='<tr><th colspan="12">管理的服务站</th></tr>';
+										str+='<tr><th colspan="12" class="g-t-c">管理的服务站</th></tr>';
 										var ssl=list[j],
 											sslen=ssl.length,
 											ssi=0;
@@ -315,7 +315,7 @@
 											str+='<tr><td colspan="12">暂无数据</td></tr>';
 										}
 									}else if(j==='serivceStationStats'||j==='serivcestationstats'){
-										str+='<tr><th colspan="12">销售情况</th></tr>';
+										str+='<tr><th colspan="12" class="g-t-c">销售情况</th></tr>';
 										var sss=list[j],
 											ssslen=sss.length,
 											sssj=0;
@@ -349,7 +349,16 @@
 										if(typeof detail_map[j]!=='undefined'){
 											if(j==='fullName'||j==='fullname'){
 												istitle=true;
-												$show_detail_title.html(list[j]+'代理商详情信息');
+												$show_detail_title.html('"<span class="g-c-info">'+list[j]+'</span>"代理商详情信息');
+											}else if(j==='grade'){
+												var gradestr=parseInt(list[j],10);
+												if(gradestr===1){
+													str+='<tr><th colspan="4">'+detail_map[j]+':</th><td colspan="8">A</td></tr>';
+												}else if(gradestr===2){
+													str+='<tr><th colspan="4">'+detail_map[j]+':</th><td colspan="8">AA</td></tr>';
+												}else if(gradestr===3){
+													str+='<tr><th colspan="4">'+detail_map[j]+':</th><td colspan="8">AAA</td></tr>';
+												}
 											}else{
 												str+='<tr><th colspan="4">'+detail_map[j]+':</th><td colspan="8">'+list[j]+'</td></tr>';
 											}
@@ -449,7 +458,7 @@
 						operate_item=$tr.addClass('item-lighten');
 
 						/*弹出操作框*/
-						$admin_bind_title.html(datas['fullName']+'代理商绑定');
+						$admin_bind_title.html('"<span class="g-c-info">'+datas['fullName']+'</span>"代理商绑定');
 						$admin_bind_wrap.attr({
 							'data-id':id
 						}).modal('show',{backdrop:'static'});

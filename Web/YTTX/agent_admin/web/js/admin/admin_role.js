@@ -517,7 +517,7 @@
 												if(typeof detail_map[j]!=='undefined'){
 													if(j==='name'||j==='Name'){
 														istitle=true;
-														$show_detail_title.html(list[j]+'详情信息');
+														$show_detail_title.html('"<span class="g-c-info">'+list[j]+'</span>"详情信息');
 													}else{
 														str+='<tr><th>'+detail_map[j]+':</th><td>'+list[j]+'</td></tr>';
 													}

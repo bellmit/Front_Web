@@ -100,7 +100,7 @@
 
             <!--主内容-->
             <div class="row row-main-wrap">
-                <div class="col-md-12">
+                <div class="col-md-12 g-d-hidei">
                     <div class="panel" id="data_wrap">
 
                         <!--表格标题-->
@@ -202,8 +202,8 @@
                 </div>
 
 
-                <div class="col-md-12">
-                    <div class="panel collapsed g-d-hidei" id="send_wrap">
+                <div class="col-md-12"><!-- collapsed g-d-hidei-->
+                    <div class="panel" id="send_wrap">
 
                         <!--编辑表单标题-->
                         <div class="panel-heading">
@@ -245,9 +245,15 @@
                                             <input type="checkbox" name="IsCheckedDevice" id="send_ischeckeddevice" value="" />选中移动支付设备：
                                         </label>
                                     </div>
-                                    <div class="admin-sub-items1 g-d-hidei"  id="send_devicewrap">
+                                    <div class="admin-sub-items1 admin-rpos-wrap admin-item-animate1 g-d-hidei"  id="send_devicewrap">
                                         <ul>
                                             <li class="clear-validate-tip">
+                                                <label class="clear-validate-error">设备类型:
+                                                    <select class="form-control" name="typeForDevice" >
+                                                        <option selected value="1">S67</option>
+                                                        <option value="2">T6</option>
+                                                    </select>
+                                                </label>
                                                 <label class="clear-validate-error">设备起始号:<input type="text" class="form-control" name="startNumberForDevice" placeholder="请输入设备起始号" /></label>
 
                                                 <label>设备结止号:<input type="text" class="form-control" name="endNumberForDevice" data-validate="required" data-message-required="设备结止号不能为空" placeholder="请输入设备结止号" /></label>
@@ -255,6 +261,7 @@
                                                 <label class="clear-validate-error">数量:<input type="text" class="form-control" name="quantityForDevice"  placeholder="请输入数量" /></label>
                                             </li>
                                         </ul>
+                                        <div class="btn btn-info g-br2 pos-rb-btn" id="send_deviceadd_btn">+&nbsp;添加</div>
                                     </div>
 
                                 </div>
@@ -266,7 +273,7 @@
                                             <input type="checkbox" name="IsCheckedFittings" id="send_ischeckedfittings" value="" />选中配件：
                                         </label>
                                     </div>
-                                    <div class="admin-sub-items1 admin-rpos-wrap g-d-hidei"  id="send_fittingwrap">
+                                    <div class="admin-sub-items1 admin-rpos-wrap admin-item-animate1 g-d-hidei"  id="send_fittingwrap">
                                         <ul>
                                             <li class="clear-validate-tip">
                                                 <label>配件名称:<input type="text" class="form-control" name="name" data-validate="required" data-message-required="配件名称不能为空"  placeholder="请输入配件名称" /></label>
@@ -275,7 +282,7 @@
                                                 <label class="clear-validate-error">备注:<input type="text" class="form-control" name="Remark" placeholder="请输入备注" /></label>
                                             </li>
                                         </ul>
-                                        <div class="btn btn-info g-br2" id="send_fittingadd_btn">+添加</div>
+                                        <div class="btn btn-info g-br2 pos-rb-btn" id="send_fittingadd_btn">+&nbsp;添加</div>
                                     </div>
                                 </div>
 
@@ -285,17 +292,23 @@
                                             <input type="checkbox" name="IsCheckedRepair" id="send_ischeckedrepair" value="" />选中返修：
                                         </label>
                                     </div>
-                                    <div class="admin-sub-items1 g-d-hidei" id="send_repairwrap">
+                                    <div class="admin-sub-items1 admin-rpos-wrap admin-item-animate1 g-d-hidei" style="z-index:20;" id="send_repairwrap">
                                         <ul>
                                             <li class="clear-validate-tip">
-                                                <label class="clear-validate-error">返修时间:<input type="text" class="form-control" id="send_repairtime" name="repairTime" readonly placeholder="请输入返修时间" /> </label>
+                                                <label class="clear-validate-error">设备类型:
+                                                    <select class="form-control" name="typeForRepair" >
+                                                        <option selected value="1">S67</option>
+                                                        <option value="2">T6</option>
+                                                    </select>
+                                                </label>
+                                                <label class="clear-validate-error">返修时间:<input type="text" class="form-control send_repairtime" name="repairTime" readonly placeholder="请输入返修时间" /> </label>
                                                 <label class="clear-validate-error">设备起始号:<input type="text" class="form-control" name="startNumberForRepair" placeholder="请输入设备起始号" /></label>
                                                 <label>设备结止号:<input type="text" class="form-control" name="endNumberForRepair" data-validate="required" data-message-required="设备结止号不能为空"  placeholder="请输入设备结止号" /></label>
                                                 <label class="clear-validate-error">机器号（多个以逗号分开):<input type="text" class="form-control" name="listNumberForRepair" placeholder="请输入机器号" /></label>
                                                 <label class="clear-validate-error">数量:<input type="text" class="form-control" name="quantityForRepair" placeholder="请输入数量" /></label>
                                             </li>
                                         </ul>
-
+                                        <div class="btn btn-info g-br2 pos-rb-btn" id="send_repairadd_btn">+&nbsp;添加</div>
                                     </div>
 
                                 </div>
@@ -444,9 +457,9 @@
             </div>
         </div>
     </div>
-    
 
-	
+
+
 	<!--加载遮罩层-->
 	<div id="page_loading_wrap" class="page-loading-overlay g-d-hidei">
 		<div class="loader-2"></div>

@@ -395,7 +395,7 @@
 					/*调整布局*/
 					$data_wrap.addClass('collapsed');
 					$edit_wrap.removeClass('collapsed');
-					$edit_title.html('修改 "'+datas['name']+'" 信息');
+					$edit_title.html('修改 "<span class="g-c-info">'+datas['name']+' </span>"信息');
 					$edit_cance_btn.prev().html('修改');
 					$("html,body").animate({scrollTop:300},200);
 					//重置信息
@@ -464,7 +464,7 @@
 									if(typeof detail_map[j]!=='undefined'){
 										if(j==='name'||j==='Name'){
 											istitle=true;
-											$show_detail_title.html(list[j]+'用户销售记录详情信息');
+											$show_detail_title.html('"<span class="g-c-info">'+list[j]+'</span>"用户销售记录详情信息');
 										}else if(j==='status'||j==='Status'){
 											var status=parseInt(list[j],10);
 											if(status===0){

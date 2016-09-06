@@ -204,12 +204,16 @@
 		text-align: right;
 	}
 }
+
+
 /*分页*/
 .admin-page-wrap{
 	.layout-base;
 	height:50px;
 	text-align: right;
 }
+
+
 /*查询区域*/
 .admin-search-wrap{
 	.layout-base;
@@ -270,6 +274,8 @@
 		}
 	}
 }
+
+
 /*日历*/
 .datepicker-days,
 .datepicker-months,
@@ -593,20 +599,30 @@
 			li{
 				.layout-base;
 				margin-top:8px;
-				input,button{
+				input,button,select{
 					margin-top:3px;
+				}
+				select{
+					display: inline-block;
+					float: right;
 				}
 			}
 		}
-		>div{
+		.pos-rb-btn{
 			.layout-base(60px);
 			.layout-absoluterb-base(20px,15px);
 			height:24px;
-			line-height:24px;
+			line-height:22px;
 			font-size:@font-size-base - 2;
 			padding:0;
 			margin:0;
 		}
+	}
+
+
+	/*css3动画*/
+	.admin-item-animate1{
+		.transition-base(all 2s ease-in .02s);
 	}
 	
 	
@@ -629,7 +645,7 @@
 	}
 	.clear-validate-error{
 		input,.form-control{
-			border:1px solid @color-gray12 !important;
+			border:1px solid #e4e4e4 !important;
 			color:@color-gray5  !important;
 			&:focus{
 				border:1px solid rgba(104,184,40,.5) !important;

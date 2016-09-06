@@ -340,7 +340,7 @@
 					/*调整布局*/
 					$data_wrap.addClass('collapsed');
 					$edit_wrap.removeClass('collapsed');
-					$edit_title.html('修改 "'+datas['fullName']+'" 代理商信息');
+					$edit_title.html('修改 "<span class="g-c-info">'+datas['fullName']+'</span>" 代理商信息');
 					$agent_cance_btn.prev().html('修改');
 					$("html,body").animate({scrollTop:300},200);
 					$agent_userwrap.addClass('g-d-hidei');
