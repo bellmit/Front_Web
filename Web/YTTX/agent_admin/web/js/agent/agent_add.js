@@ -7,7 +7,7 @@
 			/*菜单调用*/
 			var logininfo=public_tool.initMap.loginMap;
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
-				url:'http://120.24.226.70:8081/yttx-agentbms-api/module/menu',
+				url:'http://10.0.5.222:8080/yttx-agentbms-api/module/menu',
 				async:false,
 				type:'post',
 				param:{
@@ -100,7 +100,7 @@
 
 			/*数据加载*/
 			var agent_config={
-				url:"http://120.24.226.70:8081/yttx-agentbms-api/agents/related",
+				url:"http://10.0.5.222:8080/yttx-agentbms-api/agents/related",
 				dataType:'JSON',
 				method:'post',
 				dataSrc:function ( json ) {
@@ -121,12 +121,14 @@
 					}
 					if(list.length===0){
 						return list;
+					}else if(!$.isEmptyObject(list)){
+						return list;
 					}else{
 						var stationobj=list[0];
-						if('serivceStationlist' in stationobj){
+						if(typeof stationobj['serivceStationlist']!=='undefined'){
 							list=list.slice(1);
 							stationobj=list[0];
-							if('serivceStationlist' in stationobj){
+							if(typeof stationobj['serivceStationlist']!=='undefined'){
 								list=list.slice(1);
 							}
 						}
@@ -213,61 +215,58 @@
 			/*
 			 * 初始化
 			 * */
-			(function(){
-				/*重置表单*/
-				edit_form.reset();
-				/*地址调用*/
-				new public_tool.areaSelect().areaSelect({
-					$province:$agent_province,
-					$city:$agent_city,
-					$area:$agent_area,
-					$provinceinput:$agent_province_value,
-					$cityinput:$agent_city_value,
-					$areainput:$agent_area_value
-				});
+			/*重置表单*/
+			edit_form.reset();
+			/*地址调用*/
+			new public_tool.areaSelect().areaSelect({
+				$province:$agent_province,
+				$city:$agent_city,
+				$area:$agent_area,
+				$provinceinput:$agent_province_value,
+				$cityinput:$agent_city_value,
+				$areainput:$agent_area_value
+			});
 
-				/*查询上级代理商ID*/
-				$.ajax({
-					url:"http://120.24.226.70:8081/yttx-agentbms-api/agent/role/check",
-					dataType:'JSON',
-					method:'post',
-					data:{
-						roleId:decodeURIComponent(logininfo.param.roleId),
-						adminId:decodeURIComponent(logininfo.param.adminId),
-						grade:decodeURIComponent(logininfo.param.grade),
-						token:decodeURIComponent(logininfo.param.token)
+			/*查询上级代理商ID*/
+			$.ajax({
+				url:"http://10.0.5.222:8080/yttx-agentbms-api/agent/role/check",
+				dataType:'JSON',
+				method:'post',
+				data:{
+					roleId:decodeURIComponent(logininfo.param.roleId),
+					adminId:decodeURIComponent(logininfo.param.adminId),
+					grade:decodeURIComponent(logininfo.param.grade),
+					token:decodeURIComponent(logininfo.param.token)
+				}
+			}).done(function(resp){
+				var code=parseInt(resp.code,10);
+				if(code!==0){
+					if(code===999){
+						/*清空缓存*/
+						public_tool.clear();
+						public_tool.loginTips();
 					}
-				}).done(function(resp){
-					var code=parseInt(resp.code,10);
-					if(code!==0){
-						if(code===999){
-							/*清空缓存*/
-							public_tool.clear();
-							public_tool.loginTips();
-						}
-						console.log(resp.message);
-						$agent_parentid.attr({
-							'data-value':'',
-							'data-name':'',
-							'data-grade':''
-						}).html('');
-						return false;
-					}
-
-					/*初始化代理商级别*/
-					setGradeShow(gradeobj,resp.result);
-
-
-				}).fail(function(resp){
-					console.log('error');
+					console.log(resp.message);
 					$agent_parentid.attr({
-						'data-id':'',
-						'data-grade':'',
-						'data-name':''
+						'data-value':'',
+						'data-name':'',
+						'data-grade':''
 					}).html('');
-				});
+					return false;
+				}
 
-			}());
+				/*初始化代理商级别*/
+				setGradeShow(gradeobj,resp.result);
+
+
+			}).fail(function(resp){
+				console.log('error');
+				$agent_parentid.attr({
+					'data-id':'',
+					'data-grade':'',
+					'data-name':''
+				}).html('');
+			});
 
 			/*清空查询条件*/
 			$admin_search_clear.on('click',function(){
@@ -503,7 +502,7 @@
 
 							if(isadd){
 								var config={
-									url:"http://120.24.226.70:8081/yttx-agentbms-api/agent/add",
+									url:"http://10.0.5.222:8080/yttx-agentbms-api/agent/add",
 									dataType:'JSON',
 									method:'post',
 									data:{
@@ -535,7 +534,7 @@
 									return false;
 								}
 								var config={
-									url:"http://120.24.226.70:8081/yttx-agentbms-api/agent/update",
+									url:"http://10.0.5.222:8080/yttx-agentbms-api/agent/update",
 									dataType:'JSON',
 									method:'post',
 									data:{

@@ -9,7 +9,7 @@
 			/*菜单调用*/
 			var logininfo=public_tool.initMap.loginMap;
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
-				url:'http://120.24.226.70:8081/yttx-agentbms-api/module/menu',
+				url:'http://10.0.5.222:8080/yttx-agentbms-api/module/menu',
 				async:false,
 				type:'post',
 				param:{
@@ -76,7 +76,7 @@
 
 			/*数据加载*/
 			var agent_config={
-				url:"http://120.24.226.70:8081/yttx-agentbms-api/logistics/receivings",
+				url:"http://10.0.5.222:8080/yttx-agentbms-api/logistics/receivings",
 				dataType:'JSON',
 				method:'post',
 				dataSrc:function ( json ) {
@@ -280,6 +280,12 @@
 			/*绑定选择发货类型*/
 			$search_receiptType.on('change',function(){
 				searchtype=$(this).val();
+				var data= $.extend(true,{},agent_config.data);
+
+				data.receiptType=searchtype;
+				agent_config.data= $.extend(true,{},data);
+				agenttable.ajax.config(agent_config).load(false);
+				listtable.clear().draw();
 			});
 
 			/*清空查询条件*/
@@ -353,7 +359,7 @@
 							operate_item=$tr.addClass('item-lighten');
 							/*查看*/
 							if(list_config.url===''){
-								list_config.url='http://120.24.226.70:8081/yttx-agentbms-api/logistics/receiving/view';
+								list_config.url='http://10.0.5.222:8080/yttx-agentbms-api/logistics/receiving/view';
 							}
 							$logistics_list_wrap.attr({
 								'data-id':id
@@ -522,7 +528,7 @@
 				}
 
 				$.ajax({
-						url:"http://120.24.226.70:8081/yttx-agentbms-api/logistics/confirmreceipt",
+						url:"http://10.0.5.222:8080/yttx-agentbms-api/logistics/confirmreceipt",
 						dataType:'JSON',
 						method:'post',
 						data:{
@@ -590,7 +596,7 @@
 							return false;
 							/*更新*/
 							var config={
-								url:"http://120.24.226.70:8081/yttx-agentbms-api/",
+								url:"http://10.0.5.222:8080/yttx-agentbms-api/",
 								dataType:'JSON',
 								method:'post',
 								data:{

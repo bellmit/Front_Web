@@ -264,7 +264,8 @@
 
 
 			/*绑定确定修改*/
-			var countitem={};
+			var countitem={},
+				issetting=false;
 			$operate_setting.on('click',function(e){
 				var target= e.target,
 					nodename=target.nodeName.toLowerCase(),
@@ -351,6 +352,14 @@
 								$this.removeClass('setting_active').attr({'data-isPermit':isPermit});
 							}
 							console.log(resp.message);
+						}
+						if(!issetting){
+							/*更改系统设置*/
+							issetting=true;
+							var history_route=public_tool.getParams('route_module');
+							history_route.issetting=true;
+							public_tool.removeParams('route_module');
+							public_tool.setParams('route_module',history_route);
 						}
 					})
 					.fail(function(resp){

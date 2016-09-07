@@ -297,7 +297,7 @@
 			});
 
 			/*//关闭编辑区*/
-			$edit_close_btn.click(function(e){
+			$edit_close_btn.on('click',function(e){
 				e.preventDefault();
 				$edit_cance_btn.trigger('click');
 			});

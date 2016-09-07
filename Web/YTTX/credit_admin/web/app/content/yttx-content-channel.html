@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="zh" xmlns="http://www.w3.org/1999/html">
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -132,33 +132,15 @@
                         <div class="panel-body">
                             <div class="admin-search-wrap">
                                 <div class="admin-search-item">
-                                    <label>用户名：</label>
-                                    <input type="text" id="search_nickName">
+                                    <label>名称：</label>
+                                    <input type="text" id="search_name">
                                 </div>
                                 <div class="admin-search-item">
-                                    <label>手机号：</label>
-                                    <input maxlength="13"  type="text" id="search_phone">
-                                </div>
-                                <div class="admin-search-item">
-                                    <label>设备号：</label>
-                                    <input type="text" id="search_machineCode">
-                                </div>
-                                <div class="admin-search-item">
-                                    <label>所属代理名称：</label>
-                                    <input type="text" id="search_agentName">
-                                </div>
-                                <div class="admin-search-item">
-                                    <label>所属服务站名称：</label>
-                                    <input type="text" id="search_serviceStationName">
-                                </div>
-                                <div class="admin-search-item">
-                                    <label>实名认证：</label>
-                                    <select id="search_identityState">
+                                    <label>是否启用：</label>
+                                    <select id="search_isEnable">
                                         <option selected value="">全部</option>
-                                        <option value="0">未验证</option>
-                                        <option value="1">正在验证</option>
-                                        <option value="2">验证通过</option>
-                                        <option value="3">验证不通过</option>
+                                        <option value="0">启用</option>
+                                        <option value="1">禁用</option>
                                     </select>
                                 </div>
                                 <div class="admin-search-item">
@@ -172,24 +154,36 @@
                             </div>
 
 
-                            <table id="user_account_wrap" class="table table-bordered table-striped table-hover admin-table">
+                            <div>
+                                <span id="content_add_btn" class="btn btn-info btn-icon btn-xs g-br2 g-d-hidei">
+                                    <i class="fa-plus"></i>
+                                    <span>添加频道</span>
+                                </span>
+                            </div>
+
+
+                            <table id="content_wrap" class="table table-bordered table-striped table-hover admin-table">
                                 <!--分组样式-->
                                 <colgroup>
-                                    <col class="g-w-percent10">
-                                    <col class="g-w-percent10">
-                                    <col class="g-w-percent10">
-                                    <col class="g-w-percent10">
+                                    <col class="g-w-percent6">
+                                    <col class="g-w-percent6">
+                                    <col class="g-w-percent8">
+                                    <col class="g-w-percent8">
+                                    <col class="g-w-percent8">
+                                    <col class="g-w-percent4">
                                     <col class="g-w-percent10">
                                 </colgroup>
 
                                 <!--表头-->
                                 <thead>
                                 <tr>
-                                    <th>表头</th>
-                                    <th>表头</th>
-                                    <th>表头</th>
-                                    <th>表头</th>
-                                    <th class="no-sorting">表头</th>
+                                    <th>名称</th>
+                                    <th>父级频道名称</th>
+                                    <th>结束时间</th>
+                                    <th>创建时间</th>
+                                    <th>修改时间</th>
+                                    <th>排序号</th>
+                                    <th class="no-sorting">操作</th>
                                 </tr>
                                 </thead>
 
@@ -223,7 +217,46 @@
 
                         <!--修改或添加主体-->
                         <div class="panel-body">
+                            <form role="form" id="content_form" method="post" class="admin-form1 validate">
+                                <input type="text" class="g-d-hidei" value="" id="content_id" name="id">
 
+                                <div class="form-group">
+                                    <label class="control-label">名称：</label>
+
+                                    <input type="text" class="form-control" name="name" id="content_name" data-validate="required" data-message-required="名称不能为空" placeholder="请输入名称" />
+                                </div>
+
+
+                                <div class="form-group">
+                                    <label class="control-label">父级频道ID：</label>
+
+                                    <input type="text" class="form-control" name="parentId" data-validate="number" data-message-number="父级频道ID只能为数字"  id="content_parentid"  placeholder="请输入父级频道ID"  />
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label">排序号(数字越大优先级越高,默认为0)：</label>
+
+                                    <input type="text" class="form-control" name="ordinal" value="0" data-validate="number" data-message-number="排序号只能为数字"  id="content_ordinal"  placeholder="请输入排序号"  />
+                                </div>
+
+
+                                <div class="form-group">
+                                    <label class="control-label">银行ID(仅限攻略的频道有效)：</label>
+
+                                    <input type="text" class="form-control" name="bankId" data-validate="number" data-message-number="银行ID只能为数字"  id="content_bankid"  placeholder="请输入银行ID"  />
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label">描述：</label>
+
+                                    <textarea class="form-control" name="remark"  id="content_remark"  placeholder="请输入描述"></textarea>
+                                </div>
+
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-success">保存</button>
+                                    <button id="edit_cance_btn" type="reset" class="btn btn-white">取消</button>
+                                </div>
+                            </form>
                         </div>
 
 

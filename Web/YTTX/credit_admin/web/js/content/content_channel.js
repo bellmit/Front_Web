@@ -24,16 +24,15 @@
 
 			/*权限调用*/
 			var powermap=public_tool.getPower(),
-				accountdelete_power=public_tool.getKeyPower('帐号删除',powermap),
-				accountupdate_power=public_tool.getKeyPower('帐号修改',powermap),
-				accountdetail_power=public_tool.getKeyPower('帐号查看',powermap);
+				channelsetting_power=public_tool.getKeyPower('频道设置',powermap);
 
 
 			/*dom引用和相关变量定义*/
-			var $user_account_wrap=$('#user_account_wrap')/*表格*/,
-				module_id='user_account'/*模块id，主要用于本地存储传值*/,
+			var $content_wrap=$('#content_wrap')/*表格*/,
+				module_id='content_channel'/*模块id，主要用于本地存储传值*/,
 				$data_wrap=$('#data_wrap')/*数据展现面板*/,
 				$edit_wrap=$('#edit_wrap')/*编辑容器面板*/,
+				$content_add_btn=$('#content_add_btn'),/*添加角色*/
 				$edit_title=$('#edit_title')/*编辑标题*/,
 				dia=dialog({
 					title:'温馨提示',
@@ -46,57 +45,39 @@
 					cancel:false
 				})/*一般提示对象*/,
 				dialogObj=public_tool.dialog()/*回调提示对象*/,
-				$admin_page_wrap=$('#admin_page_wrap')/*分页数据*/,
-				$show_detail_wrap=$('#show_detail_wrap')/*详情容器*/,
-				$show_detail_title=$('#show_detail_title')/*详情标题*/,
-				$show_detail_content=$('#show_detail_content')/*详情内容*/,
-				detail_map={
-					createTime:'创建时间',
-					grade:"级别",
-					lastLoginIp:"登陆IP地址",
-					lastLoginTime:"登陆时间",
-					machineCode:"机器码",
-					nickName:"用户名",
-					phone:"手机号码",
-					status:"状态",
-					tokenInvalidTime:"登陆权限时间"
-				}/*详情映射*/;
+				$admin_page_wrap=$('#admin_page_wrap')/*分页数据*/;
 
 
 
 			/*查询对象*/
-			var $search_nickName=$('#search_nickName'),
-				$search_phone=$('#search_phone'),
-				$search_machineCode=$('#search_machineCode'),
-				$search_agentName=$('#search_agentName'),
-				$search_serviceStationName=$('#search_serviceStationName'),
-				$search_identityState=$('#search_identityState'),
+			var $search_name=$('#search_name'),
+				$search_isEnable=$('#search_isEnable'),
 				$admin_search_btn=$('#admin_search_btn'),
 				$admin_search_clear=$('#admin_search_clear');
 
 
 
 			/*表单对象*/
-			var edit_form=document.getElementById('user_edit_form')/*表单dom*/,
-				$user_edit_form=$(edit_form)/*编辑表单*/,
-				$user_id=$('#user_id'),/*成员id*/
+			var edit_form=document.getElementById('content_form')/*表单dom*/,
 				$edit_cance_btn=$('#edit_cance_btn')/*编辑取消按钮*/,
-				$user_nickname=$('#user_nickname'),/*用户名*/
-				$user_phone=$('#user_phone')/*手机*/,
-				$user_machinecode=$('#user_machinecode')/*机器码*/,
-				$user_agentname=$('#user_agentname')/*所属代理名称*/,
-				$user_servicestationname=$('#user_servicestationname')/*所属服务站名称*/;
+				$content_form=$(edit_form)/*编辑表单*/,
+				$content_id=$('#content_id'),/*成员id*/
+				$content_name=$('#content_name'),/*标题*/
+				$content_parentid=$('#content_parentid')/*内容*/,
+				$content_ordinal=$('#content_ordinal')/*时间*/,
+				$content_bankid=$('#content_bankid')/*缩略图*/,
+				$content_remark=$('#content_remark')/*所属公司*/;
 
 
 
 			/*列表请求配置*/
-			var article_page={
+			var content_page={
 					page:1,
 					pageSize:10,
 					total:0
 				},
-				article_config={
-					$user_account_wrap:$user_account_wrap,
+				content_config={
+					$content_wrap:$content_wrap,
 					$admin_page_wrap:$admin_page_wrap,
 					config:{
 						processing:true,/*大消耗操作时是否显示处理状态*/
@@ -104,7 +85,7 @@
 						autoWidth:true,/*是否*/
 						paging:false,
 						ajax:{
-							url:"http://120.24.226.70:8081/yttx-adminbms-api/user/list",
+							url:"http://120.24.226.70:8081/yttx-adminbms-api/article/type/list",
 							dataType:'JSON',
 							method:'post',
 							dataSrc:function ( json ) {
@@ -120,26 +101,27 @@
 								}
 								var result=json.result;
 								/*设置分页*/
-								article_page.page=result.page;
-								article_page.pageSize=result.pageSize;
-								article_page.total=result.count;
+								content_page.page=result.page;
+								content_page.pageSize=result.pageSize;
+								content_page.total=result.count;
 								/*分页调用*/
 								$admin_page_wrap.pagination({
-									pageSize:article_page.pageSize,
-									total:article_page.total,
-									pageNumber:article_page.page,
+									pageSize:content_page.pageSize,
+									total:content_page.total,
+									pageNumber:content_page.page,
 									onSelectPage:function(pageNumber,pageSize){
 										/*再次查询*/
-										var param=article_config.config.ajax.data;
+										var param=content_config.config.ajax.data;
 										param.page=pageNumber;
 										param.pageSize=pageSize;
-										article_config.config.ajax.data=param;
-										getColumnData(article_page,article_config);
+										content_config.config.ajax.data=param;
+										getColumnData(content_page,content_config);
 									}
 								});
 								return result.list;
 							},
 							data:{
+								roleId:decodeURIComponent(logininfo.param.roleId),
 								adminId:decodeURIComponent(logininfo.param.adminId),
 								token:decodeURIComponent(logininfo.param.token),
 								page:1,
@@ -150,36 +132,21 @@
 						searching:true,
 						ordering:true,
 						columns: [
-							{"data":"nickName"},
-							{"data":"phone"},
+							{"data":"name"},
 							{
-								"data":"identityState",
-								"render":function(data, type, full, meta ){
-									var state=parseInt(data,10),
-										str='';
-									if(state===0){
-										str="未验证";
-									}else if(state===1){
-										str="正在验证";
-									}else if(state===2){
-										str="验证通过";
-									}else if(state===3){
-										str="验证不通过";
-									}
-									return str;
-								}
+								"data":"parentId"
 							},
 							{
-								"data":"agentName"
+								"data":"endTime"
 							},
 							{
-								"data":"serviceStationName"
+								"data":"createTime"
 							},
 							{
-								"data":"machineCode"
+								"data":"modifyTime"
 							},
 							{
-								"data":"balance"
+								"data":"ordinal"
 							},
 							{
 								"data":"id",
@@ -187,111 +154,101 @@
 									var id=parseInt(data,10),
 										btns='';
 
-									/*查看*/
-										btns+='<span data-action="audit" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
-											<i class="fa-hand-o-up"></i>\
-											<span>审核</span>\
+									/*上架,下架*/
+									if(channelsetting_power){
+										var isenable=parseInt(full.isEnable,10);
+										if(isenable===0){
+											//启用
+											btns+='<span data-action="on" data-id="'+id+'" data-isenable="0" data-current="0" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+											<i class="fa-toggle-on"></i>\
+											<span>启用</span>\
+											</span>\
+											<span data-action="off" data-id="'+id+'" data-isenable="1" data-current="0" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray12">\
+											<i class="fa-toggle-off"></i>\
+											<span>禁用</span>\
 											</span>';
-
-
-									/*查看*/
-									if(accountdetail_power){
-										btns+='<span data-action="select" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
-											<i class="fa-file-text-o"></i>\
-											<span>查看</span>\
+										}else if(isenable===1){
+											//禁用
+											btns+='<span data-action="on" data-id="'+id+'" data-isenable="0" data-current="1" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray12">\
+											<i class="fa-toggle-off"></i>\
+											<span>启用</span>\
+											</span>\
+											<span data-action="off" data-id="'+id+'" data-isenable="1" data-current="1" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+											<i class="fa-toggle-on"></i>\
+											<span>禁用</span>\
 											</span>';
-									}
+										}
 
-									/*修改*/
-									if(accountupdate_power){
 										btns+='<span data-action="update" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 											<i class="fa-pencil"></i>\
 											<span>修改</span>\
-											</span>';
-									}
-
-									/*删除*/
-									if(accountdelete_power){
-										btns+='<span data-action="delete" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+											</span>\
+											<span data-action="delete" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 											<i class="fa-trash"></i>\
 											<span>删除</span>\
 											</span>';
 									}
+
+
 									return btns;
 								}
 							}
 						]
 					}
 				};
-			
+
 
 			/*初始化请求*/
-			getColumnData(article_page,article_config);
-
+			getColumnData(content_page,content_config);
 
 
 			/*
-			* 初始化
-			* */
-			(function(){
-				/*重置表单*/
-				edit_form.reset();
-			}());
-
-
-
-			/*格式化手机号码*/
-			$.each([$search_phone,$user_phone],function(){
-				this.on('keyup',function(){
-					var phoneno=this.value.replace(/\D*/g,'');
-					if(phoneno==''){
-						this.value='';
-						return false;
-					}
-					this.value=public_tool.phoneFormat(this.value);
-				});
-			});
-
-
+			 * 初始化
+			 * */
+			/*重置表单*/
+			edit_form.reset();
 
 			/*清空查询条件*/
 			$admin_search_clear.on('click',function(){
-				$.each([$search_nickName,$search_phone,$search_machineCode,$search_agentName,$search_serviceStationName,$search_identityState],function(){
-					this.val('');
+				$.each([$search_name,$search_isEnable],function(){
+					var isselect=this.selector.toLowerCase().indexOf('isenable')!==-1?true:false;
+					if(isselect){
+						this.find('option:first-child').prop({
+							'selected':true
+						});
+					}else {
+						this.val('');
+					}
 				});
-			})
-
+			});
+			$admin_search_clear.trigger('click');
 
 			/*联合查询*/
 			$admin_search_btn.on('click',function(){
-				var data= $.extend(true,{},article_config.config.ajax.data);
+				var data= $.extend(true,{},content_config.config.ajax.data);
 
-				$.each([$search_nickName,$search_phone,$search_machineCode,$search_agentName,$search_serviceStationName,$search_identityState],function(){
-					var text=this.val(),
-						selector=this.selector.slice(1),
-						key=selector.split('_');
-
+				$.each([$search_name,$search_isEnable],function(){
+					var selector=this.selector.slice(1),
+						isselect=this.selector.toLowerCase().indexOf('isenable')!==-1?true:false,
+						key=selector.split('_'),
+						text=isselect?this.find('option:selected').val():this.val();
 
 					if(text===""){
 						if(typeof data[key[1]]!=='undefined'){
 							delete data[key[1]];
 						}
 					}else{
-						if(key[1].indexOf('phone')!==-1){
-							text=text.replace(/\s*/g,'');
-						}
 						data[key[1]]=text;
 					}
-
 				});
-				article_config.config.ajax.data= $.extend(true,{},data);
-				getColumnData(article_page,article_config);
+				content_config.config.ajax.data= $.extend(true,{},data);
+				getColumnData(content_page,content_config);
 			});
 
 
 			/*事件绑定*/
 			/*绑定查看，修改操作*/
-			$user_account_wrap.delegate('span','click',function(e){
+			$content_wrap.delegate('span','click',function(e){
 				e.stopPropagation();
 				e.preventDefault();
 
@@ -313,51 +270,53 @@
 
 				/*修改操作*/
 				if(action==='update'){
-
 					/*调整布局*/
 					$data_wrap.addClass('collapsed');
 					$edit_wrap.removeClass('collapsed');
 					$("html,body").animate({scrollTop:300},200);
 					//重置信息
-					$edit_title.html('修改账户');
+					$edit_title.html('修改频道');
 
 					var datas=table.row($tr).data();
 					for(var i in datas) {
 						switch (i) {
 							case "id":
-								$user_id.val(datas[i]);
+								$content_id.val(datas[i]);
 								break;
-							case "nickName":
-								$user_nickname.val(datas[i]);
+							case "name":
+								$content_name.val(datas[i]);
 								break;
-							case "phone":
-								$user_phone.val(datas[i]);
+							case "parentId":
+								$content_parentid.val(datas[i]);
 								break;
-							case "machineCode":
-								$user_machinecode.val(datas[i]);
+							case "ordinal":
+								$content_ordinal.val(datas[i]);
 								break;
-							case "agentName":
-								$user_agentname.val(datas[i]);
+							case "bankId":
+								$content_bankid.val(datas[i]);
 								break;
-							case "serviceStationName":
-								$user_servicestationname.val(datas[i]);
+							case "remark":
+								$content_remark.val(datas[i]);
 								break;
 						}
 					}
 				}else if(action==='delete'){
 					/*删除操作*/
 					//没有回调则设置回调对象
+
+					return false;
 					dialogObj.setFn(function(){
 						var self=this;
 
 						$.ajax({
-								url:"http://120.24.226.70:8081/yttx-adminbms-api/user/delete",
+								url:"http://120.24.226.70:8081/yttx-adminbms-api/article/advertisement/operate",
 								method: 'POST',
 								dataType: 'json',
 								data:{
-									"id":id,
+									"articleId":id,
 									"adminId":decodeURIComponent(logininfo.param.adminId),
-									"token":decodeURIComponent(logininfo.param.token)
+									"token":decodeURIComponent(logininfo.param.token),
+									"operate":3
 								}
 							})
 							.done(function (resp) {
@@ -370,7 +329,7 @@
 									console.log(resp.message);
 									return false;
 								}
-								getColumnData(article_page,article_config);
+								getColumnData(content_page,content_config);
 								//table.row($tr).remove().draw(false);
 								setTimeout(function(){
 									self.content('<span class="g-c-bs-success g-btips-succ">删除数据成功</span>');
@@ -379,77 +338,73 @@
 							.fail(function(resp){
 								console.log(resp.message);
 							});
-					},'user_delete');
+					},'article_delete');
 					//确认删除
 					dialogObj.dialog.content('<span class="g-c-bs-warning g-btips-warn">是否删除此数据？</span>').showModal();
-				}else if(action==='audit'){
+
+				}else if(action==='up'||action==='down'){
 					/*判断是否可以上下架*/
-					dia.content('<span class="g-c-bs-warning g-btips-warn">目前暂未开放此功能</span>').show();
-					setTimeout(function(){
-						dia.close();
-					},2000);
-					return false;
-				}else if(action==='select'){
-					/*查看*/
+					var isstate=$this.attr('data-isstate');
+
+					if(action==='up'){
+						if(isstate==='true'){
+							dia.content('<span class="g-c-bs-warning g-btips-warn">目前是已经是\"上架状态\",请选择\"下架状态\"</span>').show();
+							return false;
+						}
+						var state=1;
+						/*更改状态*/
+						$this.attr({
+							"data-isstate":true
+						}).removeClass('g-c-gray8').addClass("g-c-gray12").next().attr({
+							"data-isstate":false
+						}).removeClass('g-c-gray12').addClass("g-c-gray8");
+					}else if(action==='down'){
+						if(isstate==='true'){
+							dia.content('<span class="g-c-bs-warning g-btips-warn">目前是已经是\"下架状态\",请选择\"上架状态\"</span>').show();
+							return false;
+						}
+						var state=2;
+						/*更改状态*/
+						$this.attr({
+							"data-isstate":true
+						}).removeClass('g-c-gray8').addClass("g-c-gray12").prev().attr({
+							"data-isstate":false
+						}).removeClass('g-c-gray12').addClass("g-c-gray8");
+					}
+
+					/*上架和下架*/
 					$.ajax({
-							url:"http://120.24.226.70:8081/yttx-adminbms-api/user/detail",
+							url:"http://120.24.226.70:8081/yttx-adminbms-api/article/advertisement/operate",
 							method: 'POST',
 							dataType: 'json',
 							data:{
-								"id":id,
+								"articleId":id,
 								"adminId":decodeURIComponent(logininfo.param.adminId),
-								"token":decodeURIComponent(logininfo.param.token)
+								"token":decodeURIComponent(logininfo.param.token),
+								"operate":state
 							}
 						})
 						.done(function(resp){
 							var code=parseInt(resp.code,10);
 							if(code!==0){
 								/*回滚状态*/
+								if(action==='up'){
+									/*更改状态*/
+									$this.attr({
+										"data-isstate":false
+									}).removeClass('g-c-gray12').addClass("g-c-gray8").next().attr({
+										"data-isstate":false
+									}).removeClass('g-c-gray8').addClass("g-c-gray12");
+								}else if(action==='down'){
+									/*更改状态*/
+									$this.attr({
+										"data-isstate":false
+									}).removeClass('g-c-gray12').addClass("g-c-gray8").prev().attr({
+										"data-isstate":false
+									}).removeClass('g-c-gray8').addClass("g-c-gray12");
+								}
 								console.log(resp.message);
 								return false;
-							}
-							/*是否是正确的返回数据*/
-							var list=resp.result,
-								str='',
-								istitle=false;
-
-							if(!$.isEmptyObject(list)){
-								for(var j in list){
-									if(typeof detail_map[j]!=='undefined'){
-										if(j==='name'||j==='Name'){
-											istitle=true;
-											$show_detail_title.html(list[j]+'成员详情信息');
-										}else{
-											if(j==='status'){
-												var status=parseInt(list[j],10);
-												if(status===0){
-													status="正常";
-												}else if(state===1){
-													status="锁定";
-												}
-												str+='<tr><th>'+detail_map[j]+':</th><td>'+status+'</td></tr>';
-											}else if(j==='grade'){
-												var grade=parseInt(list[j],10);
-												if(grade===0){
-													grade="普通用户";
-												}else if(grade===1){
-													grade="马甲用户";
-												}
-												str+='<tr><th>'+detail_map[j]+':</th><td>'+grade+'</td></tr>';
-											}else{
-												str+='<tr><th>'+detail_map[j]+':</th><td>'+list[j]+'</td></tr>';
-											}
-										}
-									}
-								};
-								if(!istitle){
-									$show_detail_title.html('账户详情信息');
-								}
-								$show_detail_content.html(str);
-								$show_detail_wrap.modal('show',{backdrop:'static'});
-							}else{
-								$show_detail_content.html('');
-								$show_detail_title.html('');
 							}
 
 						})
@@ -485,13 +440,28 @@
 			});
 
 
-			/*开启修改权限*/
-			if(accountupdate_power){
+			/*添加文章广告*/
+			$content_add_btn.on('click',function(e){
+				e.preventDefault();
+				//重置表单
+				edit_form.reset();
+				$edit_title.html('添加文章广告');
+				/*重置图片上传*/
+				$editor_image_list.addClass('g-d-hidei');
+				$editor_image_show.html('');
+				/*重置编辑器*/
+				editor.html('');
+				/*调整布局*/
+				$data_wrap.addClass('collapsed');
+				$edit_wrap.removeClass('collapsed');
+				$("html,body").animate({scrollTop:300},200);
+				//第一行获取焦点
+				$content_name.focus();
+			});
+			if(channelsetting_power){
+				$content_add_btn.removeClass('g-d-hidei');
 				$edit_wrap.removeClass('g-d-hidei');
 			}
-
-
-
 
 			/*表单验证*/
 			if($.isFunction($.fn.validate)) {
@@ -501,51 +471,42 @@
 					$.extend(true,form_opt,public_tool.cache.form_opt_0,{
 						submitHandler: function(form){
 							//判断是否存在id号
-							var id=$user_id.val();
+							var id=$content_id.val();
 
-							dia.content('<span class="g-c-bs-warning g-btips-warn">目前暂未开放此功能</span>').show();
-							setTimeout(function(){
-								dia.close();
-							},2000);
-							return false;
 
 							if(id!==''){
 								//此处配置修改稿角色地址（开发阶段）
 								var config={
-									url:"http://120.24.226.70:8081/yttx-adminbms-api/user/update",
+									url:"http://120.24.226.70:8081/yttx-adminbms-api/article/advertisement/update",
 									dataType:'JSON',
 									method:'post',
 									data:{
-										id:id,
+										articleId:id,
 										adminId:decodeURIComponent(logininfo.param.adminId),
 										token:decodeURIComponent(logininfo.param.token),
-										nickName:$user_nickname.val(),
-										phone: function () {
-											var txt=$user_phone.val();
-											return txt.replace(/\s*/g,'');
-										},
-										agentName:$user_agentname.val(),
-										machineCode:$user_machinecode.val(),
-										serviceStationName:$user_servicestationname.val()
+										title:$content_name.val(),
+										content:$content_parentid.val(),
+										startTime:times[0],
+										endTime:times[1],
+										thumbnail:$ontent_bankid.val(),
+										belongsCompany:$content_remark.val()
 									}
 								};
 							}else{
 								//此处配置添加角色地址（开发阶段）
 								var config={
-									url:"http://120.24.226.70:8081/yttx-adminbms-api/user/add",
+									url:"http://120.24.226.70:8081/yttx-adminbms-api/article/advertisement/add",
 									dataType:'JSON',
 									method:'post',
 									data:{
 										adminId:decodeURIComponent(logininfo.param.adminId),
 										token:decodeURIComponent(logininfo.param.token),
-										nickName:$user_nickname.val(),
-										phone: function () {
-											var txt=$user_phone.val();
-											return txt.replace(/\s*/g,'');
-										},
-										agentName:$user_agentname.val(),
-										machineCode:$user_machinecode.val(),
-										serviceStationName:$user_servicestationname.val()
+										title:$content_name.val(),
+										content:$content_parentid.val(),
+										startTime:times[0],
+										endTime:times[1],
+										thumbnail:$ontent_bankid.val(),
+										belongsCompany:$content_remark.val()
 									}
 								};
 							}
@@ -556,7 +517,7 @@
 									if(code!==0){
 										console.log(resp.message);
 										setTimeout(function(){
-											id!==''?dia.content('<span class="g-c-bs-warning g-btips-warn">修改用户信息失败</span>').show():dia.content('<span class="g-c-bs-warning g-btips-warn">添加用户信息失败</span>').show();
+											id!==''?dia.content('<span class="g-c-bs-warning g-btips-warn">修改文章广告失败</span>').show():dia.content('<span class="g-c-bs-warning g-btips-warn">添加文章广告失败</span>').show();
 										},300);
 										setTimeout(function () {
 											dia.close();
@@ -564,11 +525,11 @@
 										return false;
 									}
 									//重绘表格
-									getColumnData(article_page,article_config);
+									getColumnData(content_page,content_config);
 									//重置表单
 									$edit_cance_btn.trigger('click');
 									setTimeout(function(){
-										id!==''?dia.content('<span class="g-c-bs-success g-btips-succ">修改用户信息成功</span>').show():dia.content('<span class="g-c-bs-success g-btips-succ">添加用户信息成功</span>').show();
+										id!==''?dia.content('<span class="g-c-bs-success g-btips-succ">修改文章广告成功</span>').show():dia.content('<span class="g-c-bs-success g-btips-succ">添加文章广告成功</span>').show();
 									},300);
 									setTimeout(function () {
 										dia.close();
@@ -582,7 +543,7 @@
 					});
 				}
 				/*提交验证*/
-				$user_edit_form.validate(form_opt);
+				$content_form.validate(form_opt);
 			}
 
 
@@ -593,7 +554,7 @@
 		/*获取数据*/
 		function getColumnData(page,opt){
 			if(table===null){
-				table=opt.$user_account_wrap.DataTable(opt.config);
+				table=opt.$content_wrap.DataTable(opt.config);
 			}else{
 				table.ajax.config(opt.config.ajax).load();
 			}
