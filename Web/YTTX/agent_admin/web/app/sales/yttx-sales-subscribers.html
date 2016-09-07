@@ -169,8 +169,8 @@
                                 <col class="g-w-percent5">
                                 <col class="g-w-percent5">
                                 <col class="g-w-percent4">
-                                <col class="g-w-percent9">
-                                <col class="g-w-percent11">
+                                <col class="g-w-percent7">
+                                <col class="g-w-percent13">
                             </colgroup>
 
                             <!--表头-->
@@ -217,6 +217,16 @@
                     <div class="panel-body">
                         <form role="form" id="edit_form" method="post" class="admin-form1 validate">
                             <input type="text" class="g-d-hidei" name="subscriberId" id="sales_subscriberid" />
+
+                            <div class="form-group">
+                                <label class="control-label">机器类型：</label>
+
+                                <select class="form-control" name="type" id="sales_type" >
+                                  <option selected value="1">S67</option>
+                                  <option value="2">T6</option>
+                                </select>
+                            </div>
+
                             <div class="form-group">
                                 <label class="control-label">服务站ID：</label>
 

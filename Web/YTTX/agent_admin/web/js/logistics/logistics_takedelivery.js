@@ -58,7 +58,9 @@
 				$search_deliveryPhone=$('#search_deliveryPhone'),
 				$search_receivingPhone=$('#search_receivingPhone'),
 				$admin_search_btn=$('#admin_search_btn'),
-				$admin_search_clear=$('#admin_search_clear');
+				$admin_search_clear=$('#admin_search_clear'),
+				$search_receiptType=$('#search_receiptType'),
+				searchtype=$search_receiptType.find('option:selected').val();
 
 			/*表单对象*/
 			var edit_form=document.getElementById('edit_form')/*表单dom*/,
@@ -96,7 +98,7 @@
 					adminId:decodeURIComponent(logininfo.param.adminId),
 					grade:decodeURIComponent(logininfo.param.grade),
 					token:decodeURIComponent(logininfo.param.token),
-					type:1
+					receiptType:searchtype
 				}
 			},list_config={
 				url:"",
@@ -120,7 +122,7 @@
 					roleId:decodeURIComponent(logininfo.param.roleId),
 					adminId:decodeURIComponent(logininfo.param.adminId),
 					invoiceId:'',
-					type:'',
+					receiptType:searchtype,
 					grade:decodeURIComponent(logininfo.param.grade),
 					token:decodeURIComponent(logininfo.param.token)
 				}
@@ -162,7 +164,7 @@
 
 							if(logisticsdetail_power){
 								/*查看*/
-								btns+='<span data-id="'+data+'" data-type="'+agent_config.data.type+'" data-action="select" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+								btns+='<span data-id="'+data+'" data-action="select" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 									 <i class="fa-file-text-o"></i>\
 									 <span>查看</span>\
 									 </span>';
@@ -227,7 +229,7 @@
 
 								if(logisticsdetail_power){
 									/*查看*/
-									btns+='<span data-id="'+logistics_list_wrap.attr('data-id')+'" data-action="select" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+									btns+='<span data-id="'+$logistics_list_wrap.attr('data-id')+'" data-action="select" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 									 <i class="fa-file-text-o"></i>\
 									 <span>查看</span>\
 									 </span>';
@@ -272,11 +274,13 @@
 			/*
 			 * 初始化
 			 * */
-			(function(){
-				/*重置表单*/
-				edit_form.reset();
-			}());
+			/*重置表单*/
+			edit_form.reset();
 
+			/*绑定选择发货类型*/
+			$search_receiptType.on('change',function(){
+				searchtype=$(this).val();
+			});
 
 			/*清空查询条件*/
 			$admin_search_clear.on('click',function(){
@@ -328,8 +332,7 @@
 						$this,
 						id,
 						action,
-						$tr,
-						type;
+						$tr;
 
 					//适配对象
 					if(target.className.indexOf('btn')!==-1){
@@ -340,7 +343,6 @@
 					$tr=$this.closest('tr');
 					id=$this.attr('data-id');
 					action=$this.attr('data-action');
-					type=$this.attr('data-type');
 
 					if(isagent){
 						if(action==='select'){
@@ -354,11 +356,10 @@
 								list_config.url='http://120.24.226.70:8081/yttx-agentbms-api/logistics/receiving/view';
 							}
 							$logistics_list_wrap.attr({
-								'data-id':id,
-								'data-type':type
+								'data-id':id
 							});
 							list_config.data.invoiceId=id;
-							list_config.data.type=type;
+							list_config.data.receiptType=searchtype;
 							listtable.ajax.config(list_config).load();
 							$edit_cance_btn.trigger('click');
 							$("html,body").animate({scrollTop:300},200);
@@ -375,8 +376,7 @@
 							/*查看*/
 							$dataagent_wrap.addClass('collapsed');
 							$edit_wrap.attr({
-								'data-id':id,
-								'data-type':type
+								'data-id':id
 							}).removeClass('collapsed');
 							var datas=table.row($tr).data(),
 								trstr='<tr><td colspan="10">物流信息</td></tr>';
@@ -511,10 +511,9 @@
 
 			/*绑定确认收货*/
 			$edit_sure_btn.on('click',function(){
-				var type =$edit_wrap.attr('data-type'),
-					id=$edit_wrap.attr('data-id');
+				var id=$edit_wrap.attr('data-id');
 
-				if(type===''||id===''){
+				if(id===''){
 					dia.content('<span class="g-c-bs-warning g-btips-warn">请选择需要操作的物流单</span>').show();
 					setTimeout(function () {
 						dia.close();
@@ -527,7 +526,7 @@
 						dataType:'JSON',
 						method:'post',
 						data:{
-							type:type,
+							receiptType:searchtype,
 							adminId:decodeURIComponent(logininfo.param.adminId),
 							grade:decodeURIComponent(logininfo.param.grade),
 							token:decodeURIComponent(logininfo.param.token),
@@ -572,10 +571,9 @@
 					$.extend(true,form_opt,formcache.form_opt_0,{
 						submitHandler: function(form){
 
-							var type =$edit_wrap.attr('data-type'),
-								id=$edit_wrap.attr('data-id');
+							var id=$edit_wrap.attr('data-id');
 
-							if(type===''||id===''){
+							if(id===''){
 								dia.content('<span class="g-c-bs-warning g-btips-warn">请选择需要操作的物流单</span>').show();
 								setTimeout(function () {
 									dia.close();
@@ -601,7 +599,7 @@
 									grade:decodeURIComponent(logininfo.param.grade),
 									token:decodeURIComponent(logininfo.param.token),
 									invoiceId:id,
-									type:type,
+									receiptType:searchtype,
 									receiveNo:$logistics_receiveno.val(),
 									receiveAuthor:$logistics_receiveauthor.val(),
 									remark:$logistics_remark.val()

@@ -78,6 +78,7 @@
 				$edit_form=$(edit_form)/*编辑表单*/,
 				$edit_cance_btn=$('#edit_cance_btn')/*编辑取消按钮*/,
 				$sales_subscriberid=$('#sales_subscriberid'),
+				$sales_type=$('#sales_type'),
 				$sales_servicestationid=$('#sales_servicestationid'),/*返修id*/
 				$sales_name=$('#sales_name')/*发货经手人*/,
 				$sales_cellphone=$('#sales_cellphone'),
@@ -88,7 +89,7 @@
 
 			/*数据加载*/
 			var sales_config={
-				url:"http://120.24.226.70:8081/yttx-agentbms-api/marketing/subscribers/related",
+				url:"http://120.24.226.70:8081/yttx-agentbms-api/subscribers/related",
 				dataType:'JSON',
 				method:'post',
 				dataSrc:function ( json ) {
@@ -157,31 +158,16 @@
 							btns='',
 							id=full.id;
 
-							if(status===0){
-								/*未售*/
-								btns+='<span data-id="'+id+'" data-status="0" data-current="0" data-action="unsales" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
-									 <i class="fa-star-o"></i>\
-									 <span>未售</span>\
-									 </span>\
-									 <span data-id="'+id+'" data-status="1" data-current="0" data-action="sales" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray12">\
-									 <i class="fa-star"></i>\
-									 <span>已售</span>\
-									 </span>\
-									 <span data-id="'+id+'" data-status="2" data-current="0" data-action="stop" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray12">\
-									 <i class="fa-lock"></i>\
-									 <span>停用</span>\
-									 </span>\
-									 <span data-id="'+id+'" data-status="3" data-current="0" data-action="repairs" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray12">\
-									 <i class="fa-wrench"></i>\
-									 <span>返修</span>\
-									 </span>';
-							}else if(status===1){
+							/*
+							 <span data-id="'+id+'" data-status="0" data-current="0" data-action="unsales" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+							 <i class="fa-star-o"></i>\
+							 <span>未售</span>\
+							 </span>
+							* */
+
+							if(status===1){
 								/*已售*/
-								btns+='<span data-id="'+id+'" data-status="0" data-current="1" data-action="unsales" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray12">\
-									 <i class="fa-star-o"></i>\
-									 <span>未售</span>\
-									 </span>\
-									 <span data-id="'+id+'" data-status="1" data-current="1" data-action="sales" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+								btns+='<span data-id="'+id+'" data-status="1" data-current="1" data-action="sales" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 									 <i class="fa-star"></i>\
 									 <span>已售</span>\
 									 </span>\
@@ -195,11 +181,7 @@
 									 </span>';
 							}else if(status===2){
 								/*停用*/
-								btns+='<span data-id="'+id+'" data-status="0" data-current="2" data-action="unsales" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray12">\
-									 <i class="fa-star-o"></i>\
-									 <span>未售</span>\
-									 </span>\
-									 <span data-id="'+id+'" data-status="1" data-current="2" data-action="sales" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray12">\
+								btns+='<span data-id="'+id+'" data-status="1" data-current="2" data-action="sales" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray12">\
 									 <i class="fa-star"></i>\
 									 <span>已售</span>\
 									 </span>\
@@ -213,11 +195,7 @@
 									 </span>';
 							}else if(status===3){
 								/*返修*/
-								btns+='<span data-id="'+id+'" data-status="0" data-current="3" data-action="unsales" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray12">\
-									 <i class="fa-star-o"></i>\
-									 <span>未售</span>\
-									 </span>\
-									 <span data-id="'+id+'" data-status="1" data-current="3" data-action="sales" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray12">\
+								btns+='<span data-id="'+id+'" data-status="1" data-current="3" data-action="sales" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray12">\
 									 <i class="fa-star"></i>\
 									 <span>已售</span>\
 									 </span>\
@@ -236,7 +214,8 @@
 					{
 						"data":"id",
 						"render":function(data, type, full, meta ){
-							var btns='';
+							var btns='',
+								status=parseInt(full.status,10);
 
 
 							if(salesdetail_power){
@@ -248,10 +227,12 @@
 							}
 							if(salesupdate_power){
 								/*修改*/
-								btns+='<span  data-id="'+data+'" data-action="update" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+								if(status!==2){
+									btns+='<span  data-id="'+data+'" data-action="update" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 									<i class="fa-pencil"></i>\
 									<span>修改</span>\
 									</span>';
+								}
 							}
 							if(salesacquiring_power){
 								/*收单查看*/
@@ -262,11 +243,21 @@
 							}
 							if(salesdelete_power){
 								/*删除*/
-								btns+='<span  data-id="'+data+'" data-action="delete" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+								if(status!==2){
+									btns+='<span  data-id="'+data+'" data-action="delete" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 									<i class="fa-trash"></i>\
 									<span>删除</span>\
 									</span>';
+								}
 							}
+							if(typeof full.userId==='undefined'&&status!==2){
+								/*同步*/
+								btns+='<span  data-id="'+data+'" data-action="sync" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+									<i class="fa-spinner"></i>\
+									<span>同步</span>\
+									</span>';
+							}
+
 							return btns;
 						}
 					}
@@ -281,46 +272,46 @@
 			/*
 			 * 初始化
 			 * */
-			(function(){
-				/*重置表单*/
-				edit_form.reset();
+			/*重置表单*/
+			edit_form.reset();
 
-				/*查询服务站ID*/
-				$.ajax({
-					url:"http://120.24.226.70:8081/yttx-agentbms-api/servicestations/list",
-					dataType:'JSON',
-					method:'post',
-					data:{
-						roleId:decodeURIComponent(logininfo.param.roleId),
-						adminId:decodeURIComponent(logininfo.param.adminId),
-						grade:decodeURIComponent(logininfo.param.grade),
-						token:decodeURIComponent(logininfo.param.token)
+			/*查询服务站ID*/
+			$.ajax({
+				url:"http://120.24.226.70:8081/yttx-agentbms-api/servicestations/list",
+				dataType:'JSON',
+				method:'post',
+				data:{
+					roleId:decodeURIComponent(logininfo.param.roleId),
+					adminId:decodeURIComponent(logininfo.param.adminId),
+					grade:decodeURIComponent(logininfo.param.grade),
+					token:decodeURIComponent(logininfo.param.token)
+				}
+			}).done(function (resp) {
+				var code=parseInt(resp.code,10);
+				if(code!==0){
+					console.log(resp.message);
+					return false;
+				}
+				var list=resp.result.list,
+					i= 0,
+					len=list.length,
+					str='<option selected value="">请选择服务站ID</option>';
+
+				if(len!==0){
+					for(i;i<len;i++){
+						str+='<option value="'+list[i]['id']+'">'+list[i]['shortName']+'</option>';
 					}
-				}).done(function (resp) {
-					var code=parseInt(resp.code,10);
-					if(code!==0){
-						console.log(resp.message);
-						return false;
-					}
-					var list=resp.result.list,
-						i= 0,
-						len=list.length,
-						str='<option selected value="">请选择服务站ID</option>';
+				}
 
-					if(len!==0){
-						for(i;i<len;i++){
-							str+='<option value="'+list[i]['id']+'">'+list[i]['shortName']+'</option>';
-						}
-					}
+				$(str).appendTo($sales_servicestationid.html(''));
 
-					$(str).appendTo($sales_servicestationid.html(''));
 
-					
-				}).fail(function (resp) {
-					console.log('error');
+			}).fail(function (resp) {
+				console.log('error');
+			});
 
-				});
-			}());
+
+
 
 
 			/*清空查询条件*/
@@ -438,7 +429,7 @@
 					/*查看*/
 					
 					$.ajax({
-							url:"http://120.24.226.70:8081/yttx-agentbms-api/marketing/subscriber/detail",
+							url:"http://120.24.226.70:8081/yttx-agentbms-api/subscriber/detail",
 							method: 'POST',
 							dataType: 'json',
 							data:{
@@ -526,7 +517,7 @@
 						/*展开*/
 						if(subitem===''){
 							$.ajax({
-								url:"http://120.24.226.70:8081/yttx-agentbms-api/marketing/subscriber/acquirings",
+								url:"http://120.24.226.70:8081/yttx-agentbms-api/subscriber/acquirings",
 								method: 'POST',
 								dataType: 'json',
 								data:{
@@ -582,7 +573,7 @@
 										<th>状态</th>\
 									</tr>\
 									</thead>',
-									res='<tr><td colspan="10">收单人：'+result["acquiringer"]+'</td></tr><tr><td colspan="10">结算银行：'+result["settlingBank"]+'</td></tr><tr><td colspan="10">结算帐号：'+result["cardNumber"]+'</td></tr>';
+									res='<tr><td colspan="3">收单人：'+result["acquiringer"]+'</td><td colspan="3">结算银行：'+result["settlingBank"]+'</td><td colspan="4">结算帐号：'+result["cardNumber"]+'</td></tr>';
 								if(len!==0){
 									for(i;i<len;i++){
 										var tempitem=list[i];
@@ -614,15 +605,122 @@
 						}
 					}
 
-				}else if(action==='sales'){
-					/*未售*/
+				}else if(action==='sales'||action==='unsales'||action==='stop'||action==='repairs'){
+					/*切换状态：未售,已售,停用,返修*/
+					var status=$this.attr('data-status'),
+						current=$this.attr('data-current'),
+						statusmap={
+							0:'未售',
+							1:'已售',
+							2:'停用',
+							3:'返修'
+						};
+					if(status===current){
+						return false;
+					}
+					/*高亮*/
+					if(operate_item){
+						operate_item.removeClass('item-lighten');
+						operate_item=null;
+					}
+					operate_item=$tr.addClass('item-lighten');
+					$.ajax({
+						url:"http://120.24.226.70:8081/yttx-agentbms-api/subscriber/binding/user",
+						method: 'POST',
+						dataType: 'json',
+						data:{
+							"subscriberId":id,
+							"status":status,
+							"grade":decodeURIComponent(logininfo.param.grade),
+							"adminId":decodeURIComponent(logininfo.param.adminId),
+							"token":decodeURIComponent(logininfo.param.token)
+						}
+					}).done(function(resp){
+						var code=parseInt(resp.code,10);
+						if(code!==0){
+							/*回滚状态*/
+							console.log(resp.message);
+							setTimeout(function(){
+								dia.content('<span class="g-c-bs-warning g-btips-warn">变更 "'+statusmap[status]+'" 失败</span>').show();
+							},300);
+							setTimeout(function () {
+								dia.close();
+							},2000);
+							return false;
+						}
 
-				}else if(action==='unsales'){
-					/*已售*/
-				}else if(action==='stop'){
-					/*停用*/
-				}else if(action==='repairs'){
-					/*返修*/
+						/*是否是正确的返回数据*/
+						setTimeout(function(){
+							dia.content('<span class="g-c-bs-success g-btips-succ">变更 "'+statusmap[status]+'" 成功</span>').show();
+						},300);
+						setTimeout(function () {
+							dia.close();
+							/*去除高亮*/
+							if(operate_item){
+								operate_item.removeClass('item-lighten');
+								operate_item=null;
+							}
+							//重绘表格
+							table.ajax.reload(null,false);
+						},2000);
+
+
+					}).fail(function(resp){
+						console.log(resp.message);
+					});
+
+				}else if(action==='sync'){
+					/*同步到APP*/
+					/*高亮*/
+					if(operate_item){
+						operate_item.removeClass('item-lighten');
+						operate_item=null;
+					}
+					operate_item=$tr.addClass('item-lighten');
+					$.ajax({
+						url:"http://120.24.226.70:8081/yttx-agentbms-api/subscriber/binding/user",
+						method: 'POST',
+						dataType: 'json',
+						data:{
+							"subscriberId":id,
+							"grade":decodeURIComponent(logininfo.param.grade),
+							"adminId":decodeURIComponent(logininfo.param.adminId),
+							"token":decodeURIComponent(logininfo.param.token)
+						}
+					}).done(function(resp){
+						var code=parseInt(resp.code,10);
+						if(code!==0){
+							/*回滚状态*/
+							console.log(resp.message);
+							setTimeout(function(){
+								dia.content('<span class="g-c-bs-warning g-btips-warn">同步绑定App用户失败</span>').show();
+							},300);
+							setTimeout(function () {
+								dia.close();
+							},2000);
+							return false;
+						}
+
+						/*是否是正确的返回数据*/
+						setTimeout(function(){
+							dia.content('<span class="g-c-bs-success g-btips-succ">同步绑定App用户成功</span>').show();
+						},300);
+						setTimeout(function () {
+							dia.close();
+							/*去除高亮*/
+							if(operate_item){
+								operate_item.removeClass('item-lighten');
+								operate_item=null;
+							}
+							//重绘表格
+							table.ajax.reload(null,false);
+						},2000);
+
+
+					}).fail(function(resp){
+						console.log(resp.message);
+					});
+
 				}
 			});
 			
@@ -727,7 +825,7 @@
 
 							if(isadd){
 								var config={
-									url:"http://120.24.226.70:8081/yttx-agentbms-api/marketing/subscriber/add",
+									url:"http://120.24.226.70:8081/yttx-agentbms-api/subscriber/add",
 									dataType:'JSON',
 									method:'post',
 									data:{
@@ -737,16 +835,17 @@
 										token:decodeURIComponent(logininfo.param.token),
 										serviceStationId:$sales_servicestationid.val(),
 										name:$sales_name.val(),
+										type:$sales_type.find('option:selected').val(),
 										address:$sales_address.val(),
 										cellphone:$sales_cellphone.val().replace(/\s*/g,''),
 										telephone:$sales_telephone.val(),
 										imeiCode:$sales_imeicode.val(),
-										remark:$remark.val()
+										remark:$sales_remark.val()
 									}
 								};
 							}else{
 								var config={
-									url:"http://120.24.226.70:8081/yttx-agentbms-api/marketing/subscriber/update",
+									url:"http://120.24.226.70:8081/yttx-agentbms-api/subscriber/update",
 									dataType:'JSON',
 									method:'post',
 									data:{
@@ -757,11 +856,12 @@
 										subscriberId:id,
 										serviceStationId:$sales_servicestationid.val(),
 										name:$sales_name.val(),
+										type:$sales_type.find('option:selected').val(),
 										address:$sales_address.val(),
 										cellphone:$sales_cellphone.val().replace(/\s*/g,''),
 										telephone:$sales_telephone.val(),
 										imeiCode:$sales_imeicode.val(),
-										remark:$remark.val()
+										remark:$sales_remark.val()
 									}
 								};
 							}

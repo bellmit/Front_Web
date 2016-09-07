@@ -118,30 +118,37 @@
 
                     <!--表格主体-->
                     <div class="panel-body">
-                        <div class="admin-search-wrap g-d-hidei">
-                            <div class="admin-search-item">
+                        <div class="admin-search-wrap">
+                            <div class="admin-search-item g-d-hidei">
                                 <label>发货人：</label>
                                 <input type="text" id="search_deliveryHandler">
                             </div>
-                            <div class="admin-search-item">
+                            <div class="admin-search-item g-d-hidei">
                                 <label>发货人电话：</label>
                                 <input type="text" maxlength="13" id="search_deliveryPhone">
                             </div>
-                            <div class="admin-search-item">
+                            <div class="admin-search-item g-d-hidei">
                                 <label>收货人：</label>
                                 <input type="text" id="search_receiver">
                             </div>
-                            <div class="admin-search-item">
+                            <div class="admin-search-item g-d-hidei">
                                 <label>收货人电话：</label>
                                 <input type="text" maxlength="13" id="search_receivingPhone">
                             </div>
-                            <div class="admin-search-item">
+                            <div class="admin-search-item g-d-hidei">
                                     <span id="admin_search_btn" class="btn btn-info btn-icon g-br2">
                                         <i class="fa-search"></i>查询
                                     </span>
                                     <span id="admin_search_clear" class="btn btn-info btn-icon g-br2">
                                         <i class="fa-spinner"></i>清空
                                     </span>
+                            </div>
+                            <div class="admin-search-item">
+                                <label>收货类型：</label>
+                                <select id="search_receiptType">
+                                    <option selected value="1">服务站收货</option>
+                                    <option value="2">代理商收货</option>
+                                </select>
                             </div>
                         </div>
 
@@ -194,7 +201,7 @@
 
                     <!--表格主体-->
                     <div class="panel-body">
-                        <table id="logistics_list_wrap" data-id="" data-type="" class="table table-bordered table-striped table-hover admin-table">
+                        <table id="logistics_list_wrap" data-id="" class="table table-bordered table-striped table-hover admin-table">
                             <!--分组样式-->
                             <colgroup>
                                 <col class="g-w-percent7">
@@ -236,7 +243,7 @@
             </div>
 
             <div class="col-md-12">
-                <div class="panel collapsed" data-type="" data-id="" id="edit_wrap">
+                <div class="panel collapsed" data-id="" id="edit_wrap">
 
                     <!--编辑表单标题-->
                     <div class="panel-heading">

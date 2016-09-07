@@ -428,6 +428,10 @@
 							list2=data2.result.list,
 							len=list2.length;
 
+						if(!list1&&!list2){
+							return false
+						}
+
 						if (unlen !== 0) {
 							var i = 0,
 								unstr = '';

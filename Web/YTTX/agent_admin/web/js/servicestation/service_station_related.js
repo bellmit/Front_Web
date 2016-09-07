@@ -412,14 +412,8 @@
 							i=0;
 						for(i;i<len;i++){
 							wrap[i].addClass('g-d-hidei');
-							/*初始化发货插件*/
-							if(i===2){
-								list[i].find('button').each(function(){
-									$(this).trigger('click');
-								});
-							}else{
-								dom[i].appendTo(list[i].html(''));
-							}
+							/*清除多余选项*/
+							dom[i].siblings().remove();
 						};
 					}else{
 						repair_form.reset();
@@ -523,8 +517,16 @@
 						$itemdom=$send_fittingstr.clone();
 						$wrap=$send_fittinglist;
 					}else if(selector.indexOf('repair')!==-1){
-						$itemdom=$send_repairstr.clone(true);
+						$itemdom=$send_repairstr.clone();
 						$wrap=$send_repairlist;
+						$itemdom.find('.send_repairtime').datepicker({
+							autoclose:true,
+							clearBtn:true,
+							format: 'yyyy-mm-dd',
+							todayBtn: true,
+							endDate:moment().format('YYYY-MM-DD')
+						});
+
 					}
 					$('<label>&nbsp;<button type="button" class="form-control g-br2">-删除</button></label>').appendTo($itemdom);
 					$itemdom.find('input').each(function(){
