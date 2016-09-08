@@ -7,7 +7,7 @@
 			/*菜单调用*/
 			var logininfo=public_tool.initMap.loginMap;
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
-				url:'http://10.0.5.222:8080/yttx-agentbms-api/module/menu',
+				url:'http://120.24.226.70:8081/yttx-agentbms-api/module/menu',
 				async:false,
 				type:'post',
 				param:{
@@ -90,17 +90,23 @@
 				};
 
 			/*分润设置*/
-			var $agent_runsetupwrap=$('#agent_runsetupwrap'),
-				$agent_runsetupsetting=$('#agent_runsetupsetting'),
-				$agent_profit=$agent_runsetupsetting.find('input'),
-				$agent_self=$('#agent_self'),
-				$agent_auto=$('#agent_auto'),
-				profit_data={},
-				maxdata;
+			var $agent_salesrunsetupwrap=$('#agent_salesrunsetupwrap'),
+				$agent_salesrunsetupsetting=$('#agent_salesrunsetupsetting'),
+				$agent_salesprofit=$agent_salesrunsetupsetting.find('input'),
+				$agent_salesself=$('#agent_salesself'),
+				$agent_salesauto=$('#agent_salesauto'),
+				$agent_acqrunsetupwrap=$('#agent_acqrunsetupwrap'),
+				$agent_acqrunsetupsetting=$('#agent_acqrunsetupsetting'),
+				$agent_acqprofit=$agent_acqrunsetupsetting.find('input'),
+				$agent_acqself=$('#agent_acqself'),
+				$agent_acqauto=$('#agent_acqauto'),
+				$salesprofit_labels=$('#salesprofit_labels'),
+				$acqprofit_labels=$('#acqprofit_labels'),
+				profit_data={};
 
 			/*数据加载*/
 			var agent_config={
-				url:"http://10.0.5.222:8080/yttx-agentbms-api/agents/related",
+				url:"http://120.24.226.70:8081/yttx-agentbms-api/agents/related",
 				dataType:'JSON',
 				method:'post',
 				dataSrc:function ( json ) {
@@ -119,11 +125,12 @@
 					if(!list){
 						return [];
 					}
-					if(list.length===0){
+					if($.isArray(list)){
+						if(list.length===0){
+							return [];
+						}
 						return list;
 					}else if(!$.isEmptyObject(list)){
-						return list;
-					}else{
 						var stationobj=list[0];
 						if(typeof stationobj['serivceStationlist']!=='undefined'){
 							list=list.slice(1);
@@ -228,45 +235,19 @@
 			});
 
 			/*查询上级代理商ID*/
-			$.ajax({
-				url:"http://10.0.5.222:8080/yttx-agentbms-api/agent/role/check",
-				dataType:'JSON',
-				method:'post',
-				data:{
-					roleId:decodeURIComponent(logininfo.param.roleId),
-					adminId:decodeURIComponent(logininfo.param.adminId),
-					grade:decodeURIComponent(logininfo.param.grade),
-					token:decodeURIComponent(logininfo.param.token)
-				}
-			}).done(function(resp){
-				var code=parseInt(resp.code,10);
-				if(code!==0){
-					if(code===999){
-						/*清空缓存*/
-						public_tool.clear();
-						public_tool.loginTips();
-					}
-					console.log(resp.message);
-					$agent_parentid.attr({
-						'data-value':'',
-						'data-name':'',
-						'data-grade':''
-					}).html('');
-					return false;
-				}
-
+			var grade_data=null;
+			requestGrade(function(resp){
 				/*初始化代理商级别*/
 				setGradeShow(gradeobj,resp.result);
+				grade_data=resp.result;
+
+				$salesprofit_labels.html('不能大于'+$agent_parentid.attr('data-sales'));
+				$acqprofit_labels.html('不能大于'+$agent_parentid.attr('data-acq'));
 
 
-			}).fail(function(resp){
-				console.log('error');
-				$agent_parentid.attr({
-					'data-id':'',
-					'data-grade':'',
-					'data-name':''
-				}).html('');
+
 			});
+
 
 			/*清空查询条件*/
 			$admin_search_clear.on('click',function(){
@@ -383,6 +364,12 @@
 				//重置信息
 				edit_form.reset();
 				$agent_userwrap.removeClass('g-d-hidei');
+
+				/*重置绑定代理商ID,代理商*/
+				if(grade_data!==null){
+					setGradeShow(gradeobj,grade_data);
+				}
+
 				//第一行获取焦点
 				$agent_fullname.focus();
 			});
@@ -405,18 +392,23 @@
 					$("html,body").animate({scrollTop:200},200);
 				}
 				/*重置选中信息*/
-				$agent_runsetupwrap.addClass('g-d-hidei');
-				profit_data['isCustomProfit']=0;
-				if(typeof profit_data['distributorProfit1']!=='undefined') {
-					delete profit_data['distributorProfit1'];
-					delete profit_data['distributorProfit2'];
-					delete profit_data['distributorProfit3'];
+				$agent_salesrunsetupwrap.addClass('g-d-hidei');
+				$agent_acqrunsetupwrap.addClass('g-d-hidei');
+				profit_data['isCustomSalesProfit']=0;
+				profit_data['isCustomAcquiringProfit']=0;
+				if(typeof profit_data['salesProfit']!=='undefined') {
+					delete profit_data['salesProfit'];
+				}
+				if(typeof profit_data['acquiringProfit']!=='undefined') {
+					delete profit_data['acquiringProfit'];
 				}
 				/*删除高亮状态*/
 				if(operate_item){
 					operate_item.removeClass('item-lighten');
 					operate_item=null;
 				}
+
+
 			});
 
 			/*手机格式化*/
@@ -433,43 +425,66 @@
 			});
 
 			/*分润切换*/
-			profit_data['isCustomProfit']=0;
-			$.each([$agent_self,$agent_auto],function(){
-					this.on('click', function (){
-						var value=this.value;
+			profit_data['isCustomSalesProfit']=0;
+			profit_data['isCustomAcquiringProfit']=0;
+			$.each([$agent_salesself,$agent_salesauto,$agent_acqself,$agent_acqauto],function(){
 
-						profit_data['isCustomProfit']=value;
-						if(value==='1'){
-							/*自定义*/
-							$agent_runsetupwrap.removeClass('g-d-hidei');
-							profit_data['distributorProfit1']='';
-							profit_data['distributorProfit2']='';
-							profit_data['distributorProfit3']='';
-						}else if(value==='0'){
-							$agent_runsetupwrap.addClass('g-d-hidei');
-							if(typeof profit_data['distributorProfit1']!=='undefined') {
-								delete profit_data['distributorProfit1'];
-								delete profit_data['distributorProfit2'];
-								delete profit_data['distributorProfit3'];
+				var self=this,
+					issales=this.selector.indexOf('sales')!==-1?true:false;
+
+					this.on('click', function (){
+						var value=self.val();
+
+						issales?profit_data['isCustomSalesProfit']=value:profit_data['isCustomAcquiringProfit']=value;
+
+
+						if(issales){
+							profit_data['isCustomSalesProfit']=value;
+							if(value==='1'){
+								/*自定义*/
+								$agent_salesrunsetupwrap.removeClass('g-d-hidei');
+								profit_data['salesProfit']=$agent_parentid.attr('data-sales')||'';
+							}else if(value==='0'){
+								/*系统设置*/
+								$agent_salesrunsetupwrap.addClass('g-d-hidei');
+								if(typeof profit_data['salesProfit']!=='undefined'){
+									delete profit_data['salesProfit'];
+								}
+							}
+						}else{
+							profit_data['isCustomAcquiringProfit']=value;
+							if(value==='1'){
+								/*自定义*/
+								$agent_acqrunsetupwrap.removeClass('g-d-hidei');
+								profit_data['acquiringProfit']=$agent_parentid.attr('data-acq')||'';
+							}else if(value==='0'){
+								/*系统设置*/
+								$agent_acqrunsetupwrap.addClass('g-d-hidei');
+								if(typeof profit_data['acquiringProfit']!=='undefined'){
+									delete profit_data['acquiringProfit'];
+								}
 							}
 						}
+
 					});
 			});
 
 			/*绑定分润输入限制*/
-			$agent_profit.each(function () {
-				$(this).on('keyup',function(){
-					var val=this.value.replace(/[^0-9*\-*^\.]/g,'');
-					if(val.indexOf('.')!==-1){
-						val=val.split('.');
-						if(val.length>=3){
-							val.length=2;
-							val=val[0]+'.'+val[1];
-						}else{
-							val=val.join('.');
+			$.each([$agent_salesprofit,$agent_acqprofit],function(){
+				this.each(function(){
+					$(this).on('keyup',function(){
+						var val=this.value.replace(/[^0-9*\-*^\.]/g,'');
+						if(val.indexOf('.')!==-1){
+							var tempval=val.split('.');
+							if(tempval.length>=3){
+								tempval.length=2;
+								val=tempval[0]+'.'+tempval[1];
+							}else{
+								val=tempval.join('.');
+							}
 						}
-					}
-					this.value=val;
+						this.value=val;
+					});
 				});
 			});
 
@@ -496,13 +511,17 @@
 							isadd=id===''?true:false;
 
 							/*校验分润合法性*/
-							if(profit_data['isCustomProfit']==='1'&&!validProfit($agent_profit,dia,profit_data,maxdata)){
+							if(profit_data['isCustomSalesProfit']==='1'&&!validProfit($agent_salesprofit,dia,profit_data,$agent_parentid.attr('data-sales'),'sales')){
+								return false;
+							}
+
+							if(profit_data['isCustomAcquiringProfit']==='1'&&!validProfit($agent_acqprofit,dia,profit_data,$agent_parentid.attr('data-acq'),'acq')){
 								return false;
 							}
 
 							if(isadd){
 								var config={
-									url:"http://10.0.5.222:8080/yttx-agentbms-api/agent/add",
+									url:"http://120.24.226.70:8081/yttx-agentbms-api/agent/add",
 									dataType:'JSON',
 									method:'post',
 									data:{
@@ -534,7 +553,7 @@
 									return false;
 								}
 								var config={
-									url:"http://10.0.5.222:8080/yttx-agentbms-api/agent/update",
+									url:"http://120.24.226.70:8081/yttx-agentbms-api/agent/update",
 									dataType:'JSON',
 									method:'post',
 									data:{
@@ -601,7 +620,7 @@
 
 
 		/*校验分润设置数据合法性*/
-		function validProfit(input,dia,data,maxdata){
+		function validProfit(input,dia,data,maxdata,type){
 			if(!input){
 					return false;
 			}
@@ -611,31 +630,24 @@
 			}
 
 
-			var profit_maxdata=maxdata||100,
+			var profit_maxdata=maxdata,
 				isvalid=false,
 				ele_a=input.eq(0).val(),
-				ele_aa=input.eq(1).val(),
-				ele_aaa=input.eq(2).val(),
-				temp_a=parseInt(ele_a * 100,10) / 100,
-				temp_aa=parseInt(ele_aa * 100,10) / 100,
-				temp_aaa=parseInt(ele_aaa * 100,10) / 100;
+				temp_a=parseInt(ele_a * 10000,10) / 10000;
 
 			/*设置分润规则*/
-			if(isNaN(temp_a)||isNaN(temp_aa)||isNaN(temp_aaa)){
+			if(isNaN(temp_a)){
 				dia.content('<span class="g-c-bs-warning g-btips-warn">分润设置数据非法值</span>').show();
 				isvalid=false;
 				return isvalid;
 			}
-			if((temp_a===0||temp_a>=profit_maxdata)||(temp_aa===0||temp_aa>=profit_maxdata)||(temp_aaa===0||temp_aaa>=profit_maxdata)){
-				dia.content('<span class="g-c-bs-warning g-btips-warn">分润设置数据不能大于'+profit_maxdata+'或为0</span>').show();
+			if(temp_a<0||temp_a>profit_maxdata){
+				dia.content('<span class="g-c-bs-warning g-btips-warn">分润设置数据不能大于'+profit_maxdata+'或小于0</span>').show();
 				isvalid=false;
 				return isvalid;
-			}else if((temp_a+temp_aa+temp_aaa)>profit_maxdata){
-				dia.content('<span class="g-c-bs-warning g-btips-warn">分润设置总和不能大于'+profit_maxdata+'</span>').show();
-				isvalid=false;
-				return isvalid;
-			}else if((temp_a+temp_aa+temp_aaa)<profit_maxdata){
-				dia.content('<span class="g-c-bs-warning g-btips-warn">分润设置总和应为'+profit_maxdata+'</span>').show();
+			}
+			if(type==='acq'&&temp_a>100){
+				dia.content('<span class="g-c-bs-warning g-btips-warn">分润设置百分比数据不能大于100%</span>').show();
 				isvalid=false;
 				return isvalid;
 			}
@@ -644,43 +656,99 @@
 			isvalid=true;
 
 			/*设置值*/
-			data['distributorProfit1']=ele_a;
-			data['distributorProfit2']=ele_aa;
-			data['distributorProfit3']=ele_aaa;
-
+			if(type==='sales'){
+				data['salesProfit']=ele_a;
+			}else if(type==='acq'){
+				data['acquiringProfit']=ele_a;
+			}
 			return isvalid;
 		}
 
 
+		/*请求代理商级别*/
+		function requestGrade(fn){
+			var self=this;
+
+			/*查询上级代理商ID*/
+			$.ajax({
+				url:"http://120.24.226.70:8081/yttx-agentbms-api/agent/role/check",
+				dataType:'JSON',
+				method:'post',
+				data:{
+					roleId:decodeURIComponent(logininfo.param.roleId),
+					adminId:decodeURIComponent(logininfo.param.adminId),
+					grade:decodeURIComponent(logininfo.param.grade),
+					token:decodeURIComponent(logininfo.param.token)
+				}
+			}).done(function(resp){
+				var code=parseInt(resp.code,10);
+				if(code!==0){
+					if(code===999){
+						/*清空缓存*/
+						public_tool.clear();
+						public_tool.loginTips();
+					}
+					console.log(resp.message);
+					$agent_parentid.attr({
+						'data-value':'',
+						'data-name':'',
+						'data-grade':'',
+						'data-sales':'',
+						'data-acq':''
+					}).html('');
+					return false;
+				}
+
+				if(fn&&typeof fn==='function'){
+					fn.call(self,resp);
+				}
+
+
+			}).fail(function(resp){
+				console.log('error');
+				$agent_parentid.attr({
+					'data-id':'',
+					'data-grade':'',
+					'data-name':'',
+					'data-sales':'',
+					'data-acq':''
+				}).html('');
+			});
+
+		};
+
+
 		/*代理商级别初始化*/
-		var tempgrade='';
 		function setGradeShow(obj,result){
-			var gradeobj=result?result:tempgrade!==''?tempgrade:'',
+			var gradeobj=result||'',
 				grademap={
 					'3':'AAA级代理商',
 					'2':'AA级代理商',
 					'1':'A级代理商',
 					'4':'店长',
-					'-1':'总代理',
+					'-1':'超级管理员',
+					'-2':'默认',
+					'-3':'总代理',
 					'':'自定义设置代理商'
 				},
 				grade=(gradeobj['grade']||'').toString();
 
 
 			if(gradeobj){
-				if(tempgrade===''){
-					tempgrade=gradeobj;
-				}
 				obj.parentWrap.attr({
 					'data-id':gradeobj['parentId']||'',
 					'data-grade':grade,
-					'data-name':gradeobj['parentName']||''
+					'data-name':gradeobj['parentName']||'',
+					'data-sales':gradeobj['parentSalesProfit']||100,
+					'data-acq':gradeobj['ParentAcquiringProfit']||100
 				}).html(grademap[grade]);
 			}else{
 				obj.parentWrap.attr({
 					'data-id':'',
 					'data-grade':'',
-					'data-name':''
+					'data-name':'',
+					'data-sales':'',
+					'data-acq':''
 				}).html(grademap[grade]);
 			}
 			/*设置级别可见度*/
@@ -704,17 +772,30 @@
 				obj.SS.removeClass('g-d-hidei');
 			}else if(grade==='4'){
 				/*店长*/
-				obj.AAA.removeClass('g-d-hidei');
-				obj.AA.removeClass('g-d-hidei');
-				obj.A.removeClass('g-d-hidei');
+				obj.AAA.addClass('g-d-hidei');
+				obj.AA.addClass('g-d-hidei');
+				obj.A.addClass('g-d-hidei');
 				obj.SS.addClass('g-d-hidei');
 			}else if(grade==='-1'){
+				/*超级管理员*/
+				obj.AAA.addClass('g-d-hidei');
+				obj.AA.addClass('g-d-hidei');
+				obj.A.addClass('g-d-hidei');
+				obj.SS.addClass('g-d-hidei');
+			}else if(grade==='-2'){
+				/*默认*/
+				obj.AAA.addClass('g-d-hidei');
+				obj.AA.addClass('g-d-hidei');
+				obj.A.addClass('g-d-hidei');
+				obj.SS.addClass('g-d-hidei');
+			}else if(grade==='-3'){
 				/*总代理*/
 				obj.AAA.removeClass('g-d-hidei');
 				obj.AA.removeClass('g-d-hidei');
 				obj.A.removeClass('g-d-hidei');
 				obj.SS.removeClass('g-d-hidei');
 			}else if(grade===''||typeof grade==='undefined'){
+				/*未查询到情况*/
 				obj.AAA.removeClass('g-d-hidei');
 				obj.AA.removeClass('g-d-hidei');
 				obj.A.removeClass('g-d-hidei');

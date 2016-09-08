@@ -9,7 +9,7 @@
 			/*菜单调用*/
 			var logininfo=public_tool.initMap.loginMap;
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
-				url:'http://10.0.5.222:8080/yttx-agentbms-api/module/menu',
+				url:'http://120.24.226.70:8081/yttx-agentbms-api/module/menu',
 				async:false,
 				type:'post',
 				param:{
@@ -140,7 +140,7 @@
 
 			/*数据加载*/
 			var station_config={
-				url:"http://10.0.5.222:8080/yttx-agentbms-api/servicestations/related",
+				url:"http://120.24.226.70:8081/yttx-agentbms-api/servicestations/related",
 				dataType:'JSON',
 				method:'post',
 				dataSrc:function ( json ) {
@@ -439,7 +439,7 @@
 					//重置信息
 					$station_servicestationid.val(id);
 					$.ajax({
-						url:"http://10.0.5.222:8080/yttx-agentbms-api/servicestation/detail",
+						url:"http://120.24.226.70:8081/yttx-agentbms-api/servicestation/detail",
 						dataType:'JSON',
 						method:'post',
 						data:{
@@ -899,7 +899,7 @@
 
 							if(isadd){
 								/*添加*/
-								config['url']="http://10.0.5.222:8080/yttx-agentbms-api/servicestation/addupdate";
+								config['url']="http://120.24.226.70:8081/yttx-agentbms-api/servicestation/addupdate";
 								if(typeof config['data']['serviceStationId']!=='undefined'){
 									delete config['data']['serviceStationId'];
 								}
@@ -925,7 +925,7 @@
 
 							}else{
 								/*更新*/
-								config['url']="http://10.0.5.222:8080/yttx-agentbms-api/servicestation/addupdate";
+								config['url']="http://120.24.226.70:8081/yttx-agentbms-api/servicestation/addupdate";
 								config['data']['serviceStationId']=id;
 								if(typeof config['data']['username']!=='undefined'){
 									delete config['data']['username'];
@@ -1056,7 +1056,7 @@
 		function requestGrade(fn){
 			var self=this;
 			$.ajax({
-				url:"http://10.0.5.222:8080/yttx-agentbms-api/agent/role/check",
+				url:"http://120.24.226.70:8081/yttx-agentbms-api/agent/role/check",
 				dataType:'JSON',
 				method:'post',
 				data:{
@@ -1100,8 +1100,6 @@
 					'data-disabled':'true'
 				}).addClass('g-d-hidei');
 			});
-
-
 		};
 
 
@@ -1113,7 +1111,9 @@
 					'2':'AA级代理商',
 					'1':'A级代理商',
 					'4':'店长',
-					'-1':'总代理',
+					'-1':'超级管理员',
+					'-2':'默认',
+					'-3':'总代理',
 					'':'自定义设置代理商'
 				},
 				grade=(gradeobj['grade']||'').toString();
@@ -1123,7 +1123,9 @@
 				obj.parentWrap.attr({
 					'data-id':gradeobj['parentId']||'',
 					'data-grade':grade,
-					'data-name':gradeobj['parentName']||''
+					'data-name':gradeobj['parentName']||'',
+					'data-sales':gradeobj['parentSalesProfit']||100,
+					'data-acq':gradeobj['ParentAcquiringProfit']||100
 				}).html(grademap[grade]);
 				obj.bindWrap.attr({
 					'data-disabled':'false'
@@ -1132,7 +1134,9 @@
 				obj.parentWrap.attr({
 					'data-id':'',
 					'data-grade':'',
-					'data-name':''
+					'data-name':'',
+					'data-sales':'',
+					'data-acq':''
 				}).html(grademap[grade]);
 				obj.bindWrap.attr({
 					'data-disabled':'true'
@@ -1177,17 +1181,41 @@
 				}).addClass('g-d-hidei');
 			}else if(grade==='4'){
 				/*店长*/
-				obj.AAA.removeClass('g-d-hidei');
-				obj.AA.removeClass('g-d-hidei');
-				obj.A.removeClass('g-d-hidei');
+				obj.AAA.addClass('g-d-hidei');
+				obj.AA.addClass('g-d-hidei');
+				obj.A.addClass('g-d-hidei');
 				obj.SS.addClass('g-d-hidei');
-				obj.becomeAAA.removeClass('g-d-hidei');
-				obj.becomeAA.removeClass('g-d-hidei');
-				obj.becomeA.removeClass('g-d-hidei');
+				obj.becomeAAA.addClass('g-d-hidei');
+				obj.becomeAA.addClass('g-d-hidei');
+				obj.becomeA.addClass('g-d-hidei');
 				obj.becomeWrap.attr({
-					'data-disabled':'false'
-				}).removeClass('g-d-hidei');
+					'data-disabled':'true'
+				}).addClass('g-d-hidei');
 			}else if(grade==='-1'){
+				/*超级管理员*/
+				obj.AAA.addClass('g-d-hidei');
+				obj.AA.addClass('g-d-hidei');
+				obj.A.addClass('g-d-hidei');
+				obj.SS.addClass('g-d-hidei');
+				obj.becomeAAA.addClass('g-d-hidei');
+				obj.becomeAA.addClass('g-d-hidei');
+				obj.becomeA.addClass('g-d-hidei');
+				obj.becomeWrap.attr({
+					'data-disabled':'true'
+				}).addClass('g-d-hidei');
+			}else if(grade==='-2'){
+				/*默认*/
+				obj.AAA.addClass('g-d-hidei');
+				obj.AA.addClass('g-d-hidei');
+				obj.A.addClass('g-d-hidei');
+				obj.SS.addClass('g-d-hidei');
+				obj.becomeAAA.addClass('g-d-hidei');
+				obj.becomeAA.addClass('g-d-hidei');
+				obj.becomeA.addClass('g-d-hidei');
+				obj.becomeWrap.attr({
+					'data-disabled':'true'
+				}).addClass('g-d-hidei');
+			}else if(grade==='-3'){
 				/*总代理*/
 				obj.AAA.removeClass('g-d-hidei');
 				obj.AA.removeClass('g-d-hidei');
@@ -1200,6 +1228,7 @@
 					'data-disabled':'false'
 				}).removeClass('g-d-hidei');
 			}else if(grade===''||typeof grade==='undefined'){
+				/*未查询到情况*/
 				obj.AAA.removeClass('g-d-hidei');
 				obj.AA.removeClass('g-d-hidei');
 				obj.A.removeClass('g-d-hidei');

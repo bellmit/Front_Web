@@ -70,7 +70,7 @@
 					};
 
 					$.ajax({
-						url: "http://10.0.5.222:8080/yttx-agentbms-api/sysuser/updatePassword",
+						url: "http://120.24.226.70:8081/yttx-agentbms-api/sysuser/updatePassword",
 						method: 'POST',
 						dataType: 'json',
 						async:false,

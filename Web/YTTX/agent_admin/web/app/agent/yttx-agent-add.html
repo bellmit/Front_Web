@@ -100,7 +100,7 @@
 
         <!--主内容-->
         <div class="row row-main-wrap">
-            <div class="col-md-12">
+            <div class="col-md-12 g-d-hidei">
                 <div class="panel" id="data_wrap">
 
                     <!--表格标题-->
@@ -187,8 +187,8 @@
             </div>
 
 
-            <div class="col-md-12">
-                <div class="panel collapsed g-d-hidei" id="edit_wrap">
+            <div class="col-md-12"><!-- collapsed g-d-hidei-->
+                <div class="panel" id="edit_wrap">
 
                     <!--编辑表单标题-->
                     <div class="panel-heading">
@@ -217,8 +217,6 @@
                                 <input type="text" class="form-control" name="shortName" id="agent_shortname" data-validate="required" data-message-required="代理商简称不能为空" placeholder="请输入代理商简称" />
                             </div>
 
-
-
                             <div class="g-d-hidei" id="agent_userwrap">
                                 <div class="form-group">
                                     <label class="control-label">代理商登录账户：</label>
@@ -239,7 +237,6 @@
                                 </div>
 
                             </div>
-
 
                             <div class="form-group">
                                 <label class="control-label">服务站负责人：</label>
@@ -268,12 +265,10 @@
                                 <input type="text" class="select-input-def form-control" data-validate="required" data-message-required="地区不能为空" value="" name="country" id="agent_area_value">
                             </div>
 
-
                             <div class="form-group">
                                 <label class="control-label">详细地址：</label>
                                 <input type="text" class="form-control" name="address"  placeholder="请输入详细地址" data-validate="required" data-message-required="详细地址不能为空" value="" id="agent_address" />
                             </div>
-
 
                             <div class="form-group">
                                 <label class="control-label">服务站手机号码：</label>
@@ -281,16 +276,14 @@
                                 <input type="text" class="form-control" name="phone" id="agent_phone" data-validate="required,zh_phone" maxlength="13" data-message-required="代理商手机号码不能为空" data-message-zh_phone="代理商手机号码格式不正确" placeholder="请输入代理商手机号码" />
                             </div>
 
-
                             <div class="form-group">
                                 <label class="control-label">代理商电话号码：</label>
 
                                 <input type="text" class="form-control" name="tel" id="agent_tel" placeholder="请输入代理商电话号码" />
                             </div>
 
-
                             <div class="form-group">
-                                <label class="control-label">代理商级别&nbsp;--上级代理商ID(<span id="agent_parentid" data-grade="" data-value="" data-name="" class="g-c-bs-info"></span>)：</label>
+                                <label class="control-label">代理商级别&nbsp;--上级代理商ID(<span id="agent_parentid" data-grade="" data-sales="" data-acq="" data-value="" data-name="" class="g-c-bs-info"></span>)：</label>
                                 <div class="admin-sub-items1 self-error-pos-wrap" id="agent_gradewrap">
                                     <label id="agent_gradeAAA">
                                         &nbsp;&nbsp;AAA级:&nbsp;<input class="self-error-pos" type="radio" value="3" name="grade" data-validate="required" data-message-required="请选择代理商级别"  />
@@ -307,25 +300,41 @@
                                 </div>
                             </div>
 
+                            <div class="form-group">
+                                <div class="checkbox">
+                                    分润设置--销售分润：
+                                    <label>
+                                        自定义：<input type="radio" name="isCustomSalesProfit" id="agent_salesself" value="1" />
+                                    </label>
+                                    <label>
+                                        按系统定义：<input type="radio" checked name="isCustomSalesProfit" id="agent_salesauto"  value="0" />
+                                    </label>
+                                </div>
+                                <div class="admin-sub-items1 g-d-hidei" id="agent_salesrunsetupwrap">
+                                    <ul>
+                                        <li id="agent_salesrunsetupsetting" class="clear-validate-tip">
+                                            <label>销售分润(<span class="g-c-bs-info" id="salesprofit_labels"></span>):<input type="text" class="form-control" name="salesProfit"  data-validate="required,number,dotmaxlength[7]" data-message-required="销售分润不能为空" data-message-number="销售分润必须是数值" data-message-dotmaxlength="销售分润需小于8位数值" maxlength="10" placeholder="请输入数字"  />
+                                            </label>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
 
                             <div class="form-group">
                                 <div class="checkbox">
-                                    分润设置：
+                                    分润设置--收单分润：
                                     <label>
-                                        自定义：<input type="radio" name="isCustomProfit" id="agent_self" value="1" />
+                                        自定义：<input type="radio" name="isCustomAcquiringProfit" id="agent_acqself" value="1" />
                                     </label>
                                     <label>
-                                        按系统定义：<input type="radio" checked name="isCustomProfit" id="agent_auto"  value="0" />
+                                        按系统定义：<input type="radio" checked name="isCustomAcquiringProfit" id="agent_acqauto"  value="0" />
                                     </label>
                                 </div>
-                                <div class="admin-sub-items1 g-d-hidei" id="agent_runsetupwrap">
+                                <div class="admin-sub-items1 g-d-hidei" id="agent_acqrunsetupwrap">
                                     <ul>
-                                        <li id="agent_runsetupsetting" class="clear-validate-tip">
-                                            <label>级别A分润:<input type="text" class="form-control" name="distributorProfit1"  data-validate="required,number,dotmaxlength[7]" data-message-required="一级分润不能为空" data-message-number="一级分润必须是数值" data-message-dotmaxlength="一级分润需小于8位数值" maxlength="10" placeholder="请输入数字"  />
-                                            </label>
-                                            <label>级别AA分润:<input type="text" class="form-control"  data-validate="required,number,dotmaxlength[7]" data-message-required="二级分润不能为空" data-message-number="二级分润必须是数值" data-message-dotmaxlength="二级分润需小于8位数值" maxlength="10" placeholder="请输入数字"  name="distributorProfit2" />
-                                            </label>
-                                            <label>级别AAA分润:<input type="text" class="form-control"  data-validate="required,number,dotmaxlength[7]" data-message-required="三级分润不能为空" data-message-number="三级分润必须是数值" data-message-dotmaxlength="三级分润需小于8位数值" maxlength="10" placeholder="请输入数字"  name="distributorProfit3" />
+                                        <li id="agent_acqrunsetupsetting" class="clear-validate-tip">
+                                            <label>收单分润[百分比](<span
+                                              class="g-c-bs-info" id="acqprofit_labels"></span>):<input type="text" class="form-control" name="acquiringProfit"  data-validate="required,number,dotmaxlength[2]" data-message-required="收单分润不能为空" data-message-number="收单分润必须是数值" data-message-dotmaxlength="收单分润需小于3位数值" maxlength="5" placeholder="请输入数字"  />
                                             </label>
                                         </li>
                                     </ul>
