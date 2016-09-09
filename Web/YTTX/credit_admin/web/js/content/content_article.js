@@ -21,10 +21,14 @@
 				datatype:'json'
 			});
 
-
 			/*权限调用*/
 			var powermap=public_tool.getPower(),
-				channelsetting_power=public_tool.getKeyPower('频道设置',powermap);
+				articleaudit_power=public_tool.getKeyPower('文章审核',powermap),
+				articletop_power=public_tool.getKeyPower('文章置顶',powermap),
+				articlead_power=public_tool.getKeyPower('文章推广',powermap),
+				articledelete_power=public_tool.getKeyPower('文章删除',powermap),
+				articleupdate_power=public_tool.getKeyPower('文章修改',powermap);
+
 
 
 			/*dom引用和相关变量定义*/
@@ -137,16 +141,34 @@
 								"data":"userNickName"
 							},
 							{
-								"data":"state"
+								"data":"auditStatus",
+								"render":function(data, type, full, meta ){
+									var audit=parseInt(data,10);
+									if(audit===0){
+										return '<span class="g-c-gray1">待审核</span>';
+									}else if(audit===1){
+										return '<span class="g-c-info">审核成功</span>';
+									}else if(audit===2){
+										return '<span class="g-c-warn">审核失败</span>';
+									}
+								}
 							},
 							{
-								"data":"createTime"
+								"data":"typeName"
 							},
 							{
-								"data":"modifyTime"
+								"data":"thumbnail"
 							},
 							{
-								"data":"ordinal"
+								"data":"content",
+								"render":function(data, type, full, meta ){
+									var htmlstr=data.toString().replace(/[<*]/g,'&lt;').replace(/[>*]/g,'&gt;');
+									if(htmlstr.length>200){
+										return htmlstr.slice(0,30)+'&lt;/br&gt;'+htmlstr.slice(30,60)+'&lt;/br&gt;'+htmlstr.slice(60,90)+'...';
+									}else{
+										return htmlstr.slice(0,30)+'...'
+									}
+								}
 							},
 							{
 								"data":"id",
@@ -154,41 +176,75 @@
 									var id=parseInt(data,10),
 										btns='';
 
-									/*上架,下架*/
-									if(channelsetting_power){
-										var isenable=parseInt(full.isEnable,10);
-										if(isenable===0){
-											//启用
-											btns+='<span data-action="on" data-id="'+id+'" data-isenable="0" data-current="0" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
-											<i class="fa-toggle-on"></i>\
-											<span>启用</span>\
+										var state=parseInt(full.state,10),
+											audit=parseInt(full.auditStatus,10);
+
+										if(state===0&&articletop_power){
+											/*默认*/
+											btns+='<span data-action="normal" data-id="'+id+'" data-state="0" data-current="0" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+											<i class="fa-file-o"></i>\
+											<span>默认</span>\
 											</span>\
-											<span data-action="off" data-id="'+id+'" data-isenable="1" data-current="0" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray12">\
-											<i class="fa-toggle-off"></i>\
-											<span>禁用</span>\
+											<span data-action="top" data-id="'+id+'" data-state="1" data-current="0" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray12">\
+											<i class="fa-star"></i>\
+											<span>置顶</span>\
+											</span>\
+											<span data-action="ad" data-id="'+id+'" data-state="2" data-current="0" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray12">\
+											<i class="fa-tag"></i>\
+											<span>推广</span>\
 											</span>';
-										}else if(isenable===1){
-											//禁用
-											btns+='<span data-action="on" data-id="'+id+'" data-isenable="0" data-current="1" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray12">\
-											<i class="fa-toggle-off"></i>\
-											<span>启用</span>\
+										}else if(state===1&&articletop_power){
+											/*置顶*/
+											btns+='<span data-action="normal" data-id="'+id+'" data-state="0" data-current="1" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray12">\
+											<i class="fa-file-o"></i>\
+											<span>默认</span>\
 											</span>\
-											<span data-action="off" data-id="'+id+'" data-isenable="1" data-current="1" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
-											<i class="fa-toggle-on"></i>\
-											<span>禁用</span>\
+											<span data-action="top" data-id="'+id+'" data-state="1" data-current="1" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+											<i class="fa-star"></i>\
+											<span>置顶</span>\
+											</span>\
+											<span data-action="ad" data-id="'+id+'" data-state="2" data-current="1" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray12">\
+											<i class="fa-tag"></i>\
+											<span>推广</span>\
+											</span>';
+										}else if(state===2&&articlead_power){
+											/*推广*/
+											btns+='<span data-action="normal" data-id="'+id+'" data-state="0" data-current="2" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray12">\
+											<i class="fa-file-o"></i>\
+											<span>默认</span>\
+											</span>\
+											<span data-action="top" data-id="'+id+'" data-state="1" data-current="2" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray12">\
+											<i class="fa-star"></i>\
+											<span>置顶</span>\
+											</span>\
+											<span data-action="ad" data-id="'+id+'" data-state="2" data-current="2" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+											<i class="fa-tag"></i>\
+											<span>推广</span>\
 											</span>';
 										}
 
-										btns+='<span data-action="update" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
-											<i class="fa-pencil"></i>\
-											<span>修改</span>\
-											</span>\
-											<span data-action="delete" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+										if(audit===0&&articleaudit_power){
+											/*待审核*/
+											btns+='<span data-action="audit" data-id="'+id+'" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+											<i class="fa-gavel"></i>\
+											<span>待审核</span>\
+											</span>';
+										}
+
+									if(articledelete_power){
+										btns+='<span data-action="delete" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 											<i class="fa-trash"></i>\
 											<span>删除</span>\
 											</span>';
+
 									}
 
+									if(articleupdate_power){
+										btns+='<span data-action="update" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+											<i class="fa-pencil"></i>\
+											<span>修改</span>\
+											</span>';
+									}
 
 									return btns;
 								}
@@ -459,7 +515,7 @@
 				//第一行获取焦点
 				$content_name.focus();
 			});
-			if(channelsetting_power){
+			if(articleupdate_power){
 				$content_add_btn.removeClass('g-d-hidei');
 				$edit_wrap.removeClass('g-d-hidei');
 			}
