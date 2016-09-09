@@ -451,12 +451,7 @@
 				e.preventDefault();
 				//重置表单
 				edit_form.reset();
-				$edit_title.html('添加文章广告');
-				/*重置图片上传*/
-				$editor_image_list.addClass('g-d-hidei');
-				$editor_image_show.html('');
-				/*重置编辑器*/
-				editor.html('');
+				$edit_title.html('添加频道');
 				/*调整布局*/
 				$data_wrap.addClass('collapsed');
 				$edit_wrap.removeClass('collapsed');
@@ -483,36 +478,35 @@
 							if(id!==''){
 								//此处配置修改稿角色地址（开发阶段）
 								var config={
-									url:"http://120.24.226.70:8081/yttx-adminbms-api/article/advertisement/update",
+									url:"http://120.24.226.70:8081/yttx-adminbms-api/article/type/update",
 									dataType:'JSON',
 									method:'post',
 									data:{
-										articleId:id,
+										typeId:id,
 										adminId:decodeURIComponent(logininfo.param.adminId),
 										token:decodeURIComponent(logininfo.param.token),
-										title:$content_name.val(),
-										content:$content_parentid.val(),
-										startTime:times[0],
-										endTime:times[1],
-										thumbnail:$ontent_bankid.val(),
-										belongsCompany:$content_remark.val()
+										name:$content_name.val(),
+										parentId:$content_parentid.val(),
+										ordinal:$content_ordinal.val(),
+										bankId:$content_bankid.val(),
+										remark:$content_remark.val()
 									}
 								};
 							}else{
 								//此处配置添加角色地址（开发阶段）
 								var config={
-									url:"http://120.24.226.70:8081/yttx-adminbms-api/article/advertisement/add",
+									url:"http://120.24.226.70:8081/yttx-adminbms-api/article/type/add",
 									dataType:'JSON',
 									method:'post',
 									data:{
+										typeId:id,
 										adminId:decodeURIComponent(logininfo.param.adminId),
 										token:decodeURIComponent(logininfo.param.token),
-										title:$content_name.val(),
-										content:$content_parentid.val(),
-										startTime:times[0],
-										endTime:times[1],
-										thumbnail:$ontent_bankid.val(),
-										belongsCompany:$content_remark.val()
+										name:$content_name.val(),
+										parentId:$content_parentid.val(),
+										ordinal:$content_ordinal.val(),
+										bankId:$content_bankid.val(),
+										remark:$content_remark.val()
 									}
 								};
 							}
@@ -522,21 +516,21 @@
 									var code=parseInt(resp.code,10);
 									if(code!==0){
 										console.log(resp.message);
-										setTimeout(function(){
-											id!==''?dia.content('<span class="g-c-bs-warning g-btips-warn">修改文章广告失败</span>').show():dia.content('<span class="g-c-bs-warning g-btips-warn">添加文章广告失败</span>').show();
-										},300);
+										id!==''?dia.content('<span class="g-c-bs-warning g-btips-warn">修改频道失败</span>').show():dia.content('<span class="g-c-bs-warning g-btips-warn">添加频道失败</span>').show();
 										setTimeout(function () {
 											dia.close();
 										},2000);
 										return false;
 									}
+									if(operate_item&&id!==''){
+										operate_item.removeClass('item-lighten');
+										operate_item=null;
+									}
 									//重绘表格
 									getColumnData(content_page,content_config);
 									//重置表单
 									$edit_cance_btn.trigger('click');
-									setTimeout(function(){
-										id!==''?dia.content('<span class="g-c-bs-success g-btips-succ">修改文章广告成功</span>').show():dia.content('<span class="g-c-bs-success g-btips-succ">添加文章广告成功</span>').show();
-									},300);
+									id!==''?dia.content('<span class="g-c-bs-success g-btips-succ">修改频道成功</span>').show():dia.content('<span class="g-c-bs-success g-btips-succ">添加频道成功</span>').show();
 									setTimeout(function () {
 										dia.close();
 									},2000);
