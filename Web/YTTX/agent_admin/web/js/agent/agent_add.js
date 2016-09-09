@@ -7,7 +7,7 @@
 			/*菜单调用*/
 			var logininfo=public_tool.initMap.loginMap;
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
-				url:'http://120.24.226.70:8081/yttx-agentbms-api/module/menu',
+				url:'http://10.0.5.222:8080/yttx-agentbms-api/module/menu',
 				async:false,
 				type:'post',
 				param:{
@@ -106,7 +106,7 @@
 
 			/*数据加载*/
 			var agent_config={
-				url:"http://120.24.226.70:8081/yttx-agentbms-api/agents/related",
+				url:"http://10.0.5.222:8080/yttx-agentbms-api/agents/related",
 				dataType:'JSON',
 				method:'post',
 				dataSrc:function ( json ) {
@@ -521,7 +521,7 @@
 
 							if(isadd){
 								var config={
-									url:"http://120.24.226.70:8081/yttx-agentbms-api/agent/add",
+									url:"http://10.0.5.222:8080/yttx-agentbms-api/agent/add",
 									dataType:'JSON',
 									method:'post',
 									data:{
@@ -553,7 +553,7 @@
 									return false;
 								}
 								var config={
-									url:"http://120.24.226.70:8081/yttx-agentbms-api/agent/update",
+									url:"http://10.0.5.222:8080/yttx-agentbms-api/agent/update",
 									dataType:'JSON',
 									method:'post',
 									data:{
@@ -630,30 +630,34 @@
 			}
 
 
-			var profit_maxdata=maxdata,
+			var profit_maxdata=maxdata * 10000,
 				isvalid=false,
 				ele_a=input.eq(0).val(),
-				temp_a=parseInt(ele_a * 10000,10) / 10000;
+				temp_a=parseInt(ele_a * 10000,10);
 
 			/*设置分润规则*/
 			if(isNaN(temp_a)){
 				dia.content('<span class="g-c-bs-warning g-btips-warn">分润设置数据非法值</span>').show();
 				isvalid=false;
+				input.closest('div.form-group').addClass('validate-has-error');
 				return isvalid;
 			}
 			if(temp_a<0||temp_a>profit_maxdata){
-				dia.content('<span class="g-c-bs-warning g-btips-warn">分润设置数据不能大于'+profit_maxdata+'或小于0</span>').show();
+				dia.content('<span class="g-c-bs-warning g-btips-warn">分润设置数据不能大于'+profit_maxdata/10000+'或小于0</span>').show();
 				isvalid=false;
+				input.closest('div.form-group').addClass('validate-has-error');
 				return isvalid;
 			}
-			if(type==='acq'&&temp_a>100){
+			if(type==='acq'&&temp_a>1000000){
 				dia.content('<span class="g-c-bs-warning g-btips-warn">分润设置百分比数据不能大于100%</span>').show();
 				isvalid=false;
+				input.closest('div.form-group').addClass('validate-has-error');
 				return isvalid;
 			}
 
 			/*校验*/
 			isvalid=true;
+			input.closest('div.form-group').removeClass('validate-has-error');
 
 			/*设置值*/
 			if(type==='sales'){
@@ -671,7 +675,7 @@
 
 			/*查询上级代理商ID*/
 			$.ajax({
-				url:"http://120.24.226.70:8081/yttx-agentbms-api/agent/role/check",
+				url:"http://10.0.5.222:8080/yttx-agentbms-api/agent/role/check",
 				dataType:'JSON',
 				method:'post',
 				data:{

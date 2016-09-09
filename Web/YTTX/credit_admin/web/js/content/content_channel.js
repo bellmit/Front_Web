@@ -248,6 +248,7 @@
 
 			/*事件绑定*/
 			/*绑定查看，修改操作*/
+			var operate_item;
 			$content_wrap.delegate('span','click',function(e){
 				e.stopPropagation();
 				e.preventDefault();
@@ -270,6 +271,11 @@
 
 				/*修改操作*/
 				if(action==='update'){
+					if(operate_item){
+						operate_item.removeClass('item-lighten');
+						operate_item=null;
+					}
+					operate_item=$tr.addClass('item-lighten');
 					/*调整布局*/
 					$data_wrap.addClass('collapsed');
 					$edit_wrap.removeClass('collapsed');
@@ -303,17 +309,21 @@
 				}else if(action==='delete'){
 					/*删除操作*/
 					//没有回调则设置回调对象
+					if(operate_item){
+						operate_item.removeClass('item-lighten');
+						operate_item=null;
+					}
+					operate_item=$tr.addClass('item-lighten');
 
-					return false;
 					dialogObj.setFn(function(){
 						var self=this;
 
 						$.ajax({
-								url:"http://120.24.226.70:8081/yttx-adminbms-api/article/advertisement/operate",
+								url:"http://120.24.226.70:8081/yttx-adminbms-api/article/type/operate",
 								method: 'POST',
 								dataType: 'json',
 								data:{
-									"articleId":id,
+									"typeId":id,
 									"adminId":decodeURIComponent(logininfo.param.adminId),
 									"token":decodeURIComponent(logininfo.param.token),
 									"operate":3
@@ -322,15 +332,22 @@
 							.done(function (resp) {
 								var code=parseInt(resp.code,10);
 								if(code!==0){
-									dia.content('<span class="g-c-bs-warning g-btips-warn">删除失败</span>').show();
+									self.content('<span class="g-c-bs-warning g-btips-warn">删除失败</span>').show();
 									setTimeout(function () {
-										dia.close();
+										self.close();
+										if(operate_item){
+											operate_item.removeClass('item-lighten');
+											operate_item=null;
+										}
 									},2000);
 									console.log(resp.message);
 									return false;
 								}
+								if(operate_item){
+									operate_item.removeClass('item-lighten');
+									operate_item=null;
+								}
 								getColumnData(content_page,content_config);
-								//table.row($tr).remove().draw(false);
 								setTimeout(function(){
 									self.content('<span class="g-c-bs-success g-btips-succ">删除数据成功</span>');
 								},100);
@@ -338,75 +355,64 @@
 							.fail(function(resp){
 								console.log(resp.message);
 							});
-					},'article_delete');
+					},'content_delete');
 					//确认删除
-					dialogObj.dialog.content('<span class="g-c-bs-warning g-btips-warn">是否删除此数据？</span>').showModal();
+					dialogObj.dialog.content('<span class="g-c-bs-warning g-btips-warn">是否删除此频道？</span>').showModal();
 
-				}else if(action==='up'||action==='down'){
+				}else if(action==='on'||action==='off'){
+					if(operate_item){
+						operate_item.removeClass('item-lighten');
+						operate_item=null;
+					}
+					operate_item=$tr.addClass('item-lighten');
 					/*判断是否可以上下架*/
-					var isstate=$this.attr('data-isstate');
+					var isenable=$this.attr('data-isenable'),
+						current=$this.attr('data-current'),
+						statemap={
+							'on':'启用',
+							'off':'禁用'
+						};
 
-					if(action==='up'){
-						if(isstate==='true'){
-							dia.content('<span class="g-c-bs-warning g-btips-warn">目前是已经是\"上架状态\",请选择\"下架状态\"</span>').show();
-							return false;
-						}
-						var state=1;
-						/*更改状态*/
-						$this.attr({
-							"data-isstate":true
-						}).removeClass('g-c-gray8').addClass("g-c-gray12").next().attr({
-							"data-isstate":false
-						}).removeClass('g-c-gray12').addClass("g-c-gray8");
-					}else if(action==='down'){
-						if(isstate==='true'){
-							dia.content('<span class="g-c-bs-warning g-btips-warn">目前是已经是\"下架状态\",请选择\"上架状态\"</span>').show();
-							return false;
-						}
-						var state=2;
-						/*更改状态*/
-						$this.attr({
-							"data-isstate":true
-						}).removeClass('g-c-gray8').addClass("g-c-gray12").prev().attr({
-							"data-isstate":false
-						}).removeClass('g-c-gray12').addClass("g-c-gray8");
+					if(isenable===current){
+						dia.content('<span class="g-c-bs-warning g-btips-warn">目前已经是\"'+statemap[action]+'\"</span>').show();
+						return false;
 					}
 
-					/*上架和下架*/
+
 					$.ajax({
-							url:"http://120.24.226.70:8081/yttx-adminbms-api/article/advertisement/operate",
+							url:"http://120.24.226.70:8081/yttx-adminbms-api/article/type/operate",
 							method: 'POST',
 							dataType: 'json',
 							data:{
-								"articleId":id,
+								"typeId":id,
 								"adminId":decodeURIComponent(logininfo.param.adminId),
 								"token":decodeURIComponent(logininfo.param.token),
-								"operate":state
+								"operate":action==='on'?1:2
 							}
 						})
-						.done(function(resp){
+						.done(function (resp) {
 							var code=parseInt(resp.code,10);
 							if(code!==0){
-								/*回滚状态*/
-								if(action==='up'){
-									/*更改状态*/
-									$this.attr({
-										"data-isstate":false
-									}).removeClass('g-c-gray12').addClass("g-c-gray8").next().attr({
-										"data-isstate":false
-									}).removeClass('g-c-gray8').addClass("g-c-gray12");
-								}else if(action==='down'){
-									/*更改状态*/
-									$this.attr({
-										"data-isstate":false
-									}).removeClass('g-c-gray12').addClass("g-c-gray8").prev().attr({
-										"data-isstate":false
-									}).removeClass('g-c-gray8').addClass("g-c-gray12");
-								}
+								dia.content('<span class="g-c-bs-warning g-btips-warn">'+statemap[action]+'失败</span>').show();
+								setTimeout(function () {
+									dia.close();
+									if(operate_item){
+										operate_item.removeClass('item-lighten');
+										operate_item=null;
+									}
+								},2000);
 								console.log(resp.message);
 								return false;
 							}
-
+							if(operate_item){
+								operate_item.removeClass('item-lighten');
+								operate_item=null;
+							}
+							getColumnData(content_page,content_config);
+							dia.content('<span class="g-c-bs-success g-btips-succ">'+statemap[action]+'成功</span>').show();
+							setTimeout(function(){
+								dia.close();
+							},2000);
 						})
 						.fail(function(resp){
 							console.log(resp.message);
