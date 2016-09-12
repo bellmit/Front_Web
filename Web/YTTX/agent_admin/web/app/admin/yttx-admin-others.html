@@ -101,28 +101,29 @@
 
             <!--主内容-->
             <div class="row row-main-wrap">
-                <div class="col-md-3 g-d-hidei" id="profit_setting_wrap0">
+                <div class="col-md-6 g-d-hidei" id="profit_setting_wrap0">
                     <div class="panel">
                         <div class="panel-heading">
-                            <h3 class="panel-title admin-panel-theme">分润默认设置(<span class="g-c-gray3">代理商</span>)--销售分润</h3>
+                            <h3 class="panel-title admin-panel-theme">分润默认设置(<span class="g-c-gray3">代理商</span>)--销售分润&nbsp;&nbsp;(最大分润：<span class="g-c-info" id="profit_maxsales"></span>)</h3>
                         </div>
                         <!--修改或添加主体-->
                         <div class="panel-body">
-                            <form role="form" id="profit_edit_form0" method="post" class="validate">
+                            <form role="form" id="profit_edit_form0" data-setting="" method="post" class="validate">
                                 <div class="form-group">
-                                    <label class="control-label">A级：</label>
+
+                                    <label class="control-label">A级(不能超过最大分润)：</label>
 
                                     <input type="text" class="form-control" id="profit_a0" name="profit_A0" data-validate="required,number,dotmaxlength[7]" data-message-required="A级分销不能为空" data-message-number="A级分销必须是数值" data-message-dotmaxlength="A级分销需小于8位数值" maxlength="10" placeholder="请输入数字" />
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="control-label">AA级：</label>
+                                    <label class="control-label">AA级(不能超过最大分润)：</label>
 
                                     <input type="text" class="form-control" id="profit_aa0" name="profit_AA0" data-validate="required,number,dotmaxlength[7]" data-message-required="AA级分销不能为空" data-message-number="AA级分销必须是数值" data-message-dotmaxlength="AA级分销需小于8位数值" maxlength="10" placeholder="请输入数字" />
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="control-label">AAA级：</label>
+                                    <label class="control-label">AAA级(不能超过最大分润)：</label>
 
                                     <input type="text" class="form-control" id="profit_aaa0" name="profit_AAA0" data-validate="required,number,dotmaxlength[7]" data-message-required="AAA级分销不能为空" data-message-number="AAA级分销必须是数值" data-message-dotmaxlength="AAA级分销需小于8位数值" maxlength="10" placeholder="请输入数字" />
                                 </div>
@@ -137,28 +138,29 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3 g-d-hidei" id="profit_setting_wrap1">
+                <div class="col-md-6 g-d-hidei" id="profit_setting_wrap1">
                     <div class="panel">
                         <div class="panel-heading">
-                            <h3 class="panel-title admin-panel-theme">分润默认设置(<span class="g-c-gray3">代理商</span>)--收单分润</h3>
+                            <h3 class="panel-title admin-panel-theme">分润默认设置(<span class="g-c-gray3">代理商</span>)--收单分润&nbsp;&nbsp;(最大分润：<span class="g-c-info" id="profit_maxacq"></span>)</h3>
                         </div>
                         <!--修改或添加主体-->
                         <div class="panel-body">
                             <form role="form" id="profit_edit_form1" method="post" class="validate">
+
                                 <div class="form-group">
-                                    <label class="control-label">A级：</label>
+                                    <label class="control-label">A级(不能超过最大分润)：</label>
 
                                     <input type="text" class="form-control" id="profit_a1" name="profit_A1" data-validate="required,number,dotmaxlength[7]" data-message-required="A级分销不能为空" data-message-number="A级分销必须是数值" data-message-dotmaxlength="A级分销需小于8位数值" maxlength="10" placeholder="请输入数字" />
                                 </div>
                                 
                                 <div class="form-group">
-                                    <label class="control-label">AA级：</label>
+                                    <label class="control-label">AA级(不能超过最大分润)：</label>
 
                                     <input type="text" class="form-control" id="profit_aa1" name="profit_AA1" data-validate="required,number,dotmaxlength[7]" data-message-required="AA级分销不能为空" data-message-number="AA级分销必须是数值" data-message-dotmaxlength="AA级分销需小于8位数值" maxlength="10" placeholder="请输入数字" />
                                 </div>
                                 
                                 <div class="form-group">
-                                    <label class="control-label">AAA级：</label>
+                                    <label class="control-label">AAA级(不能超过最大分润)：</label>
 
                                     <input type="text" class="form-control" id="profit_aaa1" name="profit_AAA1" data-validate="required,number,dotmaxlength[7]" data-message-required="AAA级分销不能为空" data-message-number="AAA级分销必须是数值" data-message-dotmaxlength="AAA级分销需小于8位数值" maxlength="10" placeholder="请输入数字" />
                                 </div>
@@ -173,7 +175,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3 g-d-hidei" id="profit_setting_wrap2">
+                <div class="col-md-6 g-d-hidei" id="profit_setting_wrap2">
                     <div class="panel" >
                         <div class="panel-heading">
                             <h3 class="panel-title admin-panel-theme">分润默认设置(<span class="g-c-gray3">三级分销</span>)--销售分润</h3>
@@ -181,6 +183,7 @@
                         <!--修改或添加主体-->
                         <div class="panel-body">
                             <form role="form" id="profit_edit_form2" method="post" class="validate">
+
                                 <div class="form-group">
                                     <label class="control-label">一级分润：</label>
 
@@ -209,7 +212,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3 g-d-hidei" id="profit_setting_wrap3">
+                <div class="col-md-6 g-d-hidei" id="profit_setting_wrap3">
                     <div class="panel" >
                         <div class="panel-heading">
                             <h3 class="panel-title admin-panel-theme">分润默认设置(<span class="g-c-gray3">三级分销</span>)--收单分润</h3>

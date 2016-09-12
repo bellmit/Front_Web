@@ -569,6 +569,7 @@
 			module=isindex?'':carr[clen - 2];
 
 
+
 		/*调用路由记录*/
 		var history_path={
 			issetting:false,
@@ -684,6 +685,20 @@
 			/*解析菜单*/
 			self.doSideMenu(cacheSource,$menu,$wrap);
 		}else{
+			/*var cacheLogin=self.getParams('login_module'),
+				currentdomain=cacheLogin.currentdomain;
+			if(currentdomain===''){
+				var baseurl=opt.url.split('/',3);
+
+				cacheLogin.currentdomain=baseurl[0]+'//'+baseurl[2];
+				self.removeParams('login_module');
+				self.setParams('login_module',cacheLogin);
+
+				/!*检测是否改变了地址*!/
+				var isvalid=self.validLogin();
+				//console.log(isvalid);
+			}*/
+
 			/*不存在资源则重新加载*/
 			$.ajax({
 				url:opt.url,
@@ -1234,7 +1249,10 @@
 				login_sj=login_dt[1],
 				now=moment().format('YYYY-MM-DD|HH:mm:ss').split('|'),
 				now_rq=now[0],
-				now_sj=now[1];
+				now_sj=now[1],
+				reqdomain=cacheLogin.reqdomain/*,
+				currentdomain=cacheLogin.currentdomain*/;
+
 
 			/*判断日期*/
 			if(login_rq!==now_rq){
@@ -1257,6 +1275,16 @@
 				}
 				return true;
 			}*/
+
+			/*console.log(reqdomain);
+			console.log(currentdomain);
+
+			if(reqdomain){
+
+				return true;
+
+			}*/
+
 			return true;
 		}else{
 			return false;

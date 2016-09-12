@@ -35,7 +35,8 @@
 						return false;
 					},
 					cancel:false
-				});
+				}),
+				dialogObj=public_tool.dialog()/*回调提示对象*/;
 
 			/*表单对象*/
 			var $profit_edit_form0=$('#profit_edit_form0')/*编辑表单*/,
@@ -58,7 +59,10 @@
 				$profit_a3=$('#profit_a3')/*A级*/,
 				$profit_aa3=$('#profit_aa3')/*AA级*/,
 				$profit_aaa3=$('#profit_aaa3')/*AAA级*/,
-				profit_maxdata=100;
+				$profit_maxsales=$('#profit_maxsales'),
+				$profit_maxacq=$('#profit_maxacq'),
+				profit_maxsales='',
+				profit_maxacq='';
 
 
 			/*设置分润权限*/
@@ -68,6 +72,98 @@
 				$profit_setting_wrap2.removeClass('g-d-hidei');
 				$profit_setting_wrap3.removeClass('g-d-hidei');
 			}
+
+
+
+			/*查询分润设置情况*/
+			$.ajax({
+				url:'http://120.24.226.70:8081/yttx-agentbms-api/agent/default/profits',
+				type:'post',
+				data:{
+					roleId:decodeURIComponent(logininfo.param.roleId),
+					adminId:decodeURIComponent(logininfo.param.adminId),
+					grade:decodeURIComponent(logininfo.param.grade),
+					token:decodeURIComponent(logininfo.param.token)
+				},
+				datatype:'json'
+			}).done(function(resp){
+				var code=parseInt(resp.code,10);
+				if(code!==0){
+					if(code===999){
+						/*清空缓存*/
+						public_tool.clear();
+						public_tool.loginTips();
+					}
+					console.log(resp.message);
+					return false;
+				}
+				var result=resp.result;
+
+				if(!$.isEmptyObject(result)){
+					var sales=result.agentSalesProfit,
+						acq=result.agentAcquiringProfit;
+
+					if(sales){
+						profit_maxsales=sales.topProfit;
+						$profit_maxsales.html(profit_maxsales);
+
+						$profit_edit_form0.attr({
+							'data-setting':'true'
+						});
+
+						$profit_a0.attr({
+							'data-value':sales.agentProfit1
+						}).val(sales.agentProfit1);
+						$profit_aa0.attr({
+							'data-value':sales.agentProfit2
+						}).val(sales.agentProfit2);
+						$profit_aaa0.attr({
+							'data-value':sales.agentProfit3
+						}).val(sales.agentProfit3);
+
+
+
+					}
+					if(acq){
+						profit_maxacq=acq.topProfit;
+						$profit_maxacq.html(profit_maxacq);
+
+						$profit_edit_form1.attr({
+							'data-setting':'true'
+						});
+
+						$profit_a1.attr({
+							'data-value':acq.agentProfit1
+						}).val(acq.agentProfit1);
+						$profit_aa1.attr({
+							'data-value':acq.agentProfit2
+						}).val(acq.agentProfit2);
+						$profit_aaa1.attr({
+							'data-value':acq.agentProfit3
+						}).val(acq.agentProfit3);
+					}
+
+				}else {
+					$profit_maxsales.html('');
+					$profit_maxacq.html('');
+					$profit_edit_form0.attr({
+						'data-setting':'false'
+					});
+					$profit_edit_form1.attr({
+						'data-setting':'false'
+					});
+				}
+
+			}).fail(function(resp){
+				$profit_maxsales.html('');
+				$profit_maxacq.html('');
+				$profit_edit_form0.attr({
+					'data-setting':'false'
+				});
+				$profit_edit_form1.attr({
+					'data-setting':'false'
+				});
+			});
 
 
 
@@ -117,98 +213,153 @@
 							return opt;
 						})(index),{
 							submitHandler: function(form){
-								var config= $.extend(true,{},defconfig);
 								if(index===0){
+									var config1= $.extend(true,{},defconfig);
 									var ele_a=$profit_a0.val(),
 										ele_aa=$profit_aa0.val(),
 										ele_aaa=$profit_aaa0.val();
 									/*规则通过后校验*/
-									config['url']="http://120.24.226.70:8081/yttx-agentbms-api/agent/profit/default";
-									config['data']= {
+									config1['url']="http://120.24.226.70:8081/yttx-agentbms-api/agent/profit/default";
+									config1['data']= {
 										type:1,
-										distributorProfit1: ele_a,
-										distributorProfit2: ele_aa,
-										distributorProfit3: ele_aaa
+										agentProfit1: ele_a,
+										agentProfit2: ele_aa,
+										agentProfit3: ele_aaa,
+										topProfit:profit_maxsales
 									};
 								}else if(index===1){
+									var config1= $.extend(true,{},defconfig);
 									var ele_a=$profit_a1.val(),
 										ele_aa=$profit_aa1.val(),
 										ele_aaa=$profit_aaa1.val();
-									config['url']="http://120.24.226.70:8081/yttx-agentbms-api/agent/profit/default";
-									config['data']= {
+									config1['url']="http://120.24.226.70:8081/yttx-agentbms-api/agent/profit/default";
+									config1['data']= {
 										type:2,
-										distributorProfit1: ele_a,
-										distributorProfit2: ele_aa,
-										distributorProfit3: ele_aaa
+										agentProfit1: ele_a,
+										agentProfit2: ele_aa,
+										agentProfit3: ele_aaa,
+										topProfit:profit_maxacq
 									};
 								}else if(index===2){
+									var config2= $.extend(true,{},defconfig);
 									var ele_a=$profit_a2.val(),
 										ele_aa=$profit_aa2.val(),
 										ele_aaa=$profit_aaa2.val();
-									config['url']="http://120.24.226.70:8081/yttx-agentbms-api/servicestation/profit/default";
-									config['data']= {
+									config2['url']="http://120.24.226.70:8081/yttx-agentbms-api/servicestation/profit/default";
+									config2['data']= {
 										type:1,
 										distributorProfit1: ele_a,
 										distributorProfit2: ele_aa,
 										distributorProfit3: ele_aaa
 									};
 								}else if(index===3){
+									var config2= $.extend(true,{},defconfig);
 									var ele_a=$profit_a3.val(),
 										ele_aa=$profit_aa3.val(),
 										ele_aaa=$profit_aaa3.val();
-									config['url']="http://120.24.226.70:8081/yttx-agentbms-api/servicestation/profit/default";
-									config['data']= {
+									config2['url']="http://120.24.226.70:8081/yttx-agentbms-api/servicestation/profit/default";
+									config2['data']= {
 										type:2,
 										distributorProfit1: ele_a,
 										distributorProfit2: ele_aa,
 										distributorProfit3: ele_aaa
 									};
 								}
-								var temp_a=parseInt(ele_a * 100,10) / 100,
-									temp_aa=parseInt(ele_aa * 100,10) / 100,
-									temp_aaa=parseInt(ele_aaa * 100,10) / 100;
+								var temp_a=parseInt(ele_a * 1000,10),
+									temp_aa=parseInt(ele_aa * 1000,10),
+									temp_aaa=parseInt(ele_aaa * 1000,10);
 
 								/*设置分润规则*/
 								if(isNaN(temp_a)||isNaN(temp_aa)||isNaN(temp_aaa)){
 									dia.content('<span class="g-c-bs-warning g-btips-warn">分润设置数据非法值</span>').show();
 									return false;
 								}
-								if((temp_a===0||temp_a>=profit_maxdata)||(temp_aa===0||temp_aa>=profit_maxdata)||(temp_aaa===0||temp_aaa>=profit_maxdata)){
-									dia.content('<span class="g-c-bs-warning g-btips-warn">分润设置数据不能大于'+profit_maxdata+'或为0</span>').show();
-									return false;
-								}else if((temp_a+temp_aa+temp_aaa)>profit_maxdata){
-									dia.content('<span class="g-c-bs-warning g-btips-warn">分润设置总和不能大于'+profit_maxdata+'</span>').show();
-									return false;
-								}else if((temp_a+temp_aa+temp_aaa)<profit_maxdata){
-									dia.content('<span class="g-c-bs-warning g-btips-warn">分润设置总和应为'+profit_maxdata+'</span>').show();
-									return false;
+
+								if(index===0&&profit_maxsales!==''){
+									var tempmaxsales=profit_maxsales * 1000;
+									if(temp_a>tempmaxsales||temp_aa>tempmaxsales||temp_aaa>tempmaxsales){
+										dia.content('<span class="g-c-bs-warning g-btips-warn">分润设置数据不能大于 "'+tempmaxsales/1000+' "</span>').show();
+										return false;
+									}
+									/*if((temp_a+temp_aa+temp_aaa)!==profit_maxsales){
+										dia.content('<span class="g-c-bs-warning g-btips-warn">分润设置总和应和 "'+profit_maxsales+'" 相等</span>').show();
+										return false;
+									}*/
 								}
 
 
+								if(index===1&&profit_maxacq!==''){
+									var tempmaxacq=profit_maxacq * 1000;
+									if(temp_a>tempmaxacq||temp_aa>tempmaxacq||temp_aaa>tempmaxacq){
+										dia.content('<span class="g-c-bs-warning g-btips-warn">分润设置数据不能大于 "'+tempmaxacq/1000+'" </span>').show();
+										return false;
+									}
+									/*if((temp_a+temp_aa+temp_aaa)!==profit_maxacq){
+										dia.content('<span class="g-c-bs-warning g-btips-warn">分润设置总和应和 "'+profit_maxacq+'" 相等</span>').show();
+										return false;
+									}*/
+								}
 
-								$.ajax(config)
-									.done(function(resp){
-										var code=parseInt(resp.code,10);
-										if(code!==0){
-											console.log(resp.message);
-											dia.content('<span class="g-c-bs-warning g-btips-warn">设置失败</span>').show();
+
+								if((index===0&&$profit_edit_form0.attr('data-setting')==='true')||(index===1&&$profit_edit_form1.attr('data-setting')==='true')){
+									dialogObj.setFn(function(){
+										var self=this;
+										$.ajax(config1)
+											.done(function(resp){
+												var code=parseInt(resp.code,10);
+												if(code!==0){
+													console.log(resp.message);
+													self.content('<span class="g-c-bs-warning g-btips-warn">设置失败</span>').show();
+													setTimeout(function () {
+														self.close();
+													},2000);
+													return false;
+												}
+												self.content('<span class="g-c-bs-success g-btips-succ">设置成功</span>').show();
+												setTimeout(function () {
+													self.close();
+												},2000);
+											})
+											.fail(function(){
+												self.content('<span class="g-c-bs-warning g-btips-warn">操作失败</span>').show();
+												setTimeout(function () {
+													self.close();
+												},2000)
+
+											});
+									},'admin_delete');
+									//确认删除
+									dialogObj.dialog.content('<span class="g-c-bs-warning g-btips-warn">您已经设置了此数据，是否真要重新设置？</span>').showModal();
+
+
+								}else{
+
+									$.ajax(config2)
+										.done(function(resp){
+											var code=parseInt(resp.code,10);
+											if(code!==0){
+												console.log(resp.message);
+												dia.content('<span class="g-c-bs-warning g-btips-warn">设置失败</span>').show();
+												setTimeout(function () {
+													dia.close();
+												},2000);
+												return false;
+											}
+											dia.content('<span class="g-c-bs-success g-btips-succ">设置成功</span>').show();
 											setTimeout(function () {
 												dia.close();
 											},2000);
-											return false;
-										}
-										dia.content('<span class="g-c-bs-success g-btips-succ">设置成功</span>').show();
-										setTimeout(function () {
-											dia.close();
-										},2000);
-									})
-									.fail(function(){
-										dia.content('<span class="g-c-bs-warning g-btips-warn">操作失败</span>').show();
-										setTimeout(function () {
-											dia.close();
-										},2000)
+										})
+										.fail(function(){
+											dia.content('<span class="g-c-bs-warning g-btips-warn">操作失败</span>').show();
+											setTimeout(function () {
+												dia.close();
+											},2000)
 
-									});
+										});
+								}
+
+
 
 								return false;
 							}

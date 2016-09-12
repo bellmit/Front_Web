@@ -71,8 +71,10 @@
 					}
 
 
+					var basedomain='http://120.24.226.70:8081',
+						basepathname="/yttx-agentbms-api/sysuser/login";
 					$.ajax({
-						url: "http://120.24.226.70:8081/yttx-agentbms-api/sysuser/login",
+						url:basedomain+basepathname,
 						method: 'POST',
 						dataType: 'json',
 						async:false,
@@ -106,11 +108,13 @@
 						public_tool.setParams('login_module',{
 							'isLogin':true,
 							'datetime':moment().format('YYYY-MM-DD|HH:mm:ss'),
+							'reqdomain':basedomain,
+							'currentdomain':'',
 							'param':{
 								'adminId':encodeURIComponent(result.adminId),
 								'token':encodeURIComponent(result.token),
-								'roleId':encodeURIComponent(result.roleId||4),
-								'grade':encodeURIComponent(result.grade||-1)
+								'roleId':encodeURIComponent(result.roleId),
+								'grade':encodeURIComponent(result.grade)
 							}
 						});
 

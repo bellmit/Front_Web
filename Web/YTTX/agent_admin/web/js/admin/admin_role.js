@@ -7,15 +7,16 @@
 		if(public_tool.initMap.isrender){
 			/*菜单调用*/
 			var logininfo=public_tool.initMap.loginMap,
+				roleid=decodeURIComponent(logininfo.param.roleId),
 				roletype=decodeURIComponent(logininfo.param.grade);
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
 				url:'http://120.24.226.70:8081/yttx-agentbms-api/module/menu',
 				async:false,
 				type:'post',
 				param:{
-					roleId:decodeURIComponent(logininfo.param.roleId),
+					roleId:roleid,
 					adminId:decodeURIComponent(logininfo.param.adminId),
-					grade:decodeURIComponent(logininfo.param.grade),
+					grade:roletype,
 					token:decodeURIComponent(logininfo.param.token)
 				},
 				datatype:'json'
@@ -155,7 +156,19 @@
 							console.log(json.message);
 							return [];
 						}
-						return json.result.list;
+						var list=json.result.list,
+							len=list.length,
+							m=0;
+						if(len!==0){
+							for(m;m<len;m++){
+								if(parseInt(list[m]['id'],10)===parseInt(roleid,10)){
+									list.splice(m,1);
+									break;
+								}
+							}
+							return list;
+						}
+						return [];
 					},
 					data:(function(){
 						/*查询本地,如果有则带参数查询，如果没有则初始化查询*/
@@ -288,15 +301,9 @@
 				lengthChange:true/*是否可改变长度*/
 			});
 
-			/*初始化*/
-			(function () {
 
-				/*角色类型初始化*/
-				resetAddState(roleobj,roletype);
-
-
-			}());
-
+			/*角色类型初始化*/
+			resetAddState(roleobj,roletype);
 
 
 
