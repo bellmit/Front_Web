@@ -149,6 +149,7 @@
 						if(code===999){
 							/*清空缓存*/
 							public_tool.clear();
+							public_tool.clearCacheData();
 							public_tool.loginTips();
 						}
 						console.log(json.message);
@@ -461,6 +462,7 @@
 							if(code===999){
 								/*清空缓存*/
 								public_tool.clear();
+								public_tool.clearCacheData();
 								public_tool.loginTips();
 							}
 							console.log(resp.message);
@@ -1067,6 +1069,7 @@
 					if(code===999){
 						/*清空缓存*/
 						public_tool.clear();
+						public_tool.clearCacheData();
 						public_tool.loginTips();
 					}
 					console.log(resp.message);

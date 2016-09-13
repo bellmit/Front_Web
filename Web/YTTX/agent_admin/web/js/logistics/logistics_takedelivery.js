@@ -85,6 +85,7 @@
 						if(code===999){
 							/*清空缓存*/
 							public_tool.clear();
+							public_tool.clearCacheData();
 							public_tool.loginTips();
 						}
 						console.log(json.message);
@@ -101,15 +102,17 @@
 					receiptType:searchtype
 				}
 			},list_config={
-				url:"",
+				url:"http://120.24.226.70:8081/yttx-agentbms-api/logistics/receiving/view",
 				dataType:'JSON',
 				method:'post',
 				dataSrc:function ( json ) {
+					console.log(json);
 					var code=parseInt(json.code,10);
 					if(code!==0){
 						if(code===999){
 							/*清空缓存*/
 							public_tool.clear();
+							public_tool.clearCacheData();
 							public_tool.loginTips();
 						}
 						console.log(json.message);
@@ -126,7 +129,96 @@
 					grade:decodeURIComponent(logininfo.param.grade),
 					token:decodeURIComponent(logininfo.param.token)
 				}
+			},list_opt={
+				deferRender:true,/*是否延迟加载数据*/
+				//serverSide:true,/*是否服务端处理*/
+				searching:true,/*是否搜索*/
+				ordering:true,/*是否排序*/
+				//order:[[1,'asc']],/*默认排序*/
+				paging:true,/*是否开启本地分页*/
+				pagingType:'simple_numbers',/*分页按钮排列*/
+				autoWidth:true,/*是否*/
+				info:true,/*显示分页信息*/
+				stateSave:false,/*是否保存重新加载的状态*/
+				processing:true,/*大消耗操作时是否显示处理状态*/
+				ajax:list_config,/*异步请求地址及相关配置*/
+				columns: [
+					{
+						"data":"deliveryUnit"
+					},
+					{"data":"deliveryHandler"},
+					{
+						"data":"deliveryPhone",
+						"render":function(data, type, full, meta ){
+							return public_tool.phoneFormat(data);
+						}
+					},
+					{
+						"data":"receiver"
+					},
+					{
+						"data":"receivingPhone",
+						"render":function(data, type, full, meta ){
+							return public_tool.phoneFormat(data);
+						}
+					},
+					{
+						"data":"deliveryTime"
+					},
+					{
+						"data":"logisticsCompany"
+					},
+					{
+						"data":"trackingNumber"
+					},
+					{
+						"data":"receivingUnit",
+						"render":function(data, type, full, meta ){
+							var btns='';
+
+
+							if(logisticsdetail_power){
+								/*查看*/
+								btns+='<span data-id="'+$logistics_list_wrap.attr('data-id')+'" data-action="select" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+									 <i class="fa-file-text-o"></i>\
+									 <span>查看</span>\
+									 </span>';
+							}
+							/*if(logisticsreceive_power){
+							 /!*收货*!/
+							 btns+='<span  data-id="'+data+'" data-action="receive" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+							 <i class="fa-pencil"></i>\
+							 <span>收货</span>\
+							 </span>';
+							 }*/
+							/*if(logisticsreceivefail_power){
+							 /!*收单查看*!/
+							 btns+='<span  data-id="'+data+'" data-action="selectreceive" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+							 <i class="fa-exclamation"></i>\
+							 <span>收货异常管理</span>\
+							 </span>';
+							 }
+							 if(logisticsrepair_power){
+							 /!*返修管理*!/
+							 btns+='<span  data-id="'+data+'" data-action="repair" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+							 <i class="fa-wrench"></i>\
+							 <span>返修管理</span>\
+							 </span>';
+							 }*/
+							return btns;
+						}
+					},
+					{
+						"data":"list"
+					}
+				],/*控制分页数*/
+				aLengthMenu: [
+					[5,10,15,20],
+					[5,10,15,20]
+				],
+				lengthChange:true/*是否可改变长度*/
 			};
+
 			agenttable=$logistics_agent_wrap.DataTable({
 				deferRender:true,/*是否延迟加载数据*/
 				//serverSide:true,/*是否服务端处理*/
@@ -148,13 +240,10 @@
 						}
 					},
 					{
-						"data":"deliverUnit"
+						"data":"agentName"
 					},
 					{
 						"data":"grade",
-					},
-					{
-						"data":"Reamrk",
 					},
 					{
 						"data":"id",
@@ -178,96 +267,7 @@
 					[5,10,15,20]
 				],
 				lengthChange:true/*是否可改变长度*/
-			}),
-			listtable=$logistics_list_wrap.DataTable({
-					deferRender:true,/*是否延迟加载数据*/
-					//serverSide:true,/*是否服务端处理*/
-					searching:true,/*是否搜索*/
-					ordering:true,/*是否排序*/
-					//order:[[1,'asc']],/*默认排序*/
-					paging:true,/*是否开启本地分页*/
-					pagingType:'simple_numbers',/*分页按钮排列*/
-					autoWidth:true,/*是否*/
-					info:true,/*显示分页信息*/
-					stateSave:false,/*是否保存重新加载的状态*/
-					processing:true,/*大消耗操作时是否显示处理状态*/
-					ajax:list_config,/*异步请求地址及相关配置*/
-					columns: [
-						{
-							"data":"deliveryUnit"
-						},
-						{"data":"deliveryHandler"},
-						{
-							"data":"deliveryPhone",
-							"render":function(data, type, full, meta ){
-								return public_tool.phoneFormat(data);
-							}
-						},
-						{
-							"data":"receiver"
-						},
-						{
-							"data":"receivingPhone",
-							"render":function(data, type, full, meta ){
-								return public_tool.phoneFormat(data);
-							}
-						},
-						{
-							"data":"deliveryTime"
-						},
-						{
-							"data":"logisticsCompany"
-						},
-						{
-							"data":"trackingNumber"
-						},
-						{
-							"data":"receivingUnit",
-							"render":function(data, type, full, meta ){
-								var btns='';
-
-
-								if(logisticsdetail_power){
-									/*查看*/
-									btns+='<span data-id="'+$logistics_list_wrap.attr('data-id')+'" data-action="select" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
-									 <i class="fa-file-text-o"></i>\
-									 <span>查看</span>\
-									 </span>';
-								}
-								/*if(logisticsreceive_power){
-									/!*收货*!/
-									btns+='<span  data-id="'+data+'" data-action="receive" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
-									<i class="fa-pencil"></i>\
-									<span>收货</span>\
-									</span>';
-								}*/
-								/*if(logisticsreceivefail_power){
-									/!*收单查看*!/
-									btns+='<span  data-id="'+data+'" data-action="selectreceive" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
-									<i class="fa-exclamation"></i>\
-									<span>收货异常管理</span>\
-									</span>';
-								}
-								if(logisticsrepair_power){
-									/!*返修管理*!/
-									btns+='<span  data-id="'+data+'" data-action="repair" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
-									<i class="fa-wrench"></i>\
-									<span>返修管理</span>\
-									</span>';
-								}*/
-								return btns;
-							}
-						},
-						{
-							"data":"list"
-						}
-					],/*控制分页数*/
-					aLengthMenu: [
-						[5,10,15,20],
-						[5,10,15,20]
-					],
-					lengthChange:true/*是否可改变长度*/
-				});
+			});
 
 
 
@@ -293,7 +293,9 @@
 				$.each([$search_deliveryHandler,$search_receiver,$search_deliveryPhone,$search_receivingPhone],function(){
 					this.val('');
 				});
-				listtable.clear().draw();
+				if(listtable!==null){
+					listtable.clear().draw();
+				}
 			});
 			$admin_search_clear.trigger('click');
 
@@ -320,7 +322,9 @@
 				});
 				agent_config.data= $.extend(true,{},data);
 				agenttable.ajax.config(agent_config).load(false);
-				listtable.clear().draw();
+				if(listtable!==null){
+					listtable.clear().draw();
+				}
 			});
 
 			/*事件绑定*/
@@ -358,15 +362,18 @@
 							}
 							operate_item=$tr.addClass('item-lighten');
 							/*查看*/
-							if(list_config.url===''){
-								list_config.url='http://120.24.226.70:8081/yttx-agentbms-api/logistics/receiving/view';
-							}
 							$logistics_list_wrap.attr({
 								'data-id':id
 							});
+
+
 							list_config.data.invoiceId=id;
 							list_config.data.receiptType=searchtype;
-							listtable.ajax.config(list_config).load();
+							if(listtable===null){
+								listtable=$logistics_list_wrap.DataTable($.extend(true,{},list_opt));
+							}else{
+								listtable.ajax.config(list_config).load();
+							}
 							$edit_cance_btn.trigger('click');
 							$("html,body").animate({scrollTop:300},200);
 						}

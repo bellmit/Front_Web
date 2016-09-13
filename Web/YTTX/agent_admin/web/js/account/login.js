@@ -110,6 +110,7 @@
 							'datetime':moment().format('YYYY-MM-DD|HH:mm:ss'),
 							'reqdomain':basedomain,
 							'currentdomain':'',
+							'username':$username.val()||'匿名用户',
 							'param':{
 								'adminId':encodeURIComponent(result.adminId),
 								'token':encodeURIComponent(result.token),

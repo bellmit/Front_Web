@@ -69,8 +69,10 @@
 						"hideMethod": "fadeOut"
 					};
 
+					var basedomain='http://120.24.226.70:8081',
+						basepathname="/yttx-agentbms-api/sysuser/login";
 					$.ajax({
-						url: "http://120.24.226.70:8081/yttx-agentbms-api/sysuser/updatePassword",
+						url:basedomain+basepathname,
 						method: 'POST',
 						dataType: 'json',
 						async:false,
@@ -105,6 +107,9 @@
 						public_tool.setParams('login_module',{
 							'isLogin':true,
 							'datetime':moment().format('YYYY-MM-DD|HH:mm:ss'),
+							'reqdomain':basedomain,
+							'currentdomain':'',
+							'username':$username.val()||'匿名用户',
 							'param':{
 								'adminId':encodeURIComponent(result.adminId),
 								'token':encodeURIComponent(result.token),

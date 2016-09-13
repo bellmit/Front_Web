@@ -131,6 +131,7 @@
 						if(code===999){
 							/*清空缓存*/
 							public_tool.clear();
+							public_tool.clearCacheData();
 							public_tool.loginTips();
 						}
 						console.log(json.message);
@@ -569,6 +570,7 @@
 							return issend?formcache.form_opt_0:formcache.form_opt_1;
 						}()),{
 							submitHandler: function(form){
+
 								var id=issend?$send_id.val():$repair_id.val();
 
 								if(id===''){
@@ -580,10 +582,9 @@
 									return false;
 								}
 
-
 								if(issend){
 									var checkdata=getCheckPlugin(send_checkconfig),
-										config={
+										config1={
 											url:"http://120.24.226.70:8081/yttx-agentbms-api/servicestation/invoice/add",
 											dataType:'JSON',
 											method:'post',
@@ -597,9 +598,9 @@
 												deliveryTime:$send_deliverytime.val()
 											}
 									};
-									$.extend(true,config.data,checkdata);
+									$.extend(true,config1.data,checkdata);
 								}else{
-									var config={
+									var config2={
 										url:"http://120.24.226.70:8081/yttx-agentbms-api/servicestation/repairorder/add",
 										dataType:'JSON',
 										method:'post',
@@ -620,8 +621,13 @@
 									};
 								}
 
-
-								$.ajax(config)
+								$.ajax((function(){
+									if(issend){
+										return config1;
+									}else{
+										return config2;
+									}
+								})())
 									.done(function(resp){
 										var code=parseInt(resp.code,10);
 										if(code!==0){
@@ -635,9 +641,9 @@
 											return false;
 										}
 										//重绘表格
-										table.ajax.reload(null,false);
+										//table.ajax.reload(null,false);
 										//重置表单
-										issend?$send_cance_btn.trigger('click'):$repair_cance_btn.trigger('click');
+										//issend?$send_cance_btn.trigger('click'):$repair_cance_btn.trigger('click');
 										setTimeout(function(){
 											issend?dia.content('<span class="g-c-bs-success g-btips-succ">发货成功</span>').show():dia.content('<span class="g-c-bs-success g-btips-succ">返修成功</span>').show();
 										},300);
@@ -680,6 +686,7 @@
 			IsCheckedFittings:0,
 			invoiceDevicelist:[],
 			invoiceFittinglist:[],
+			invoiceRepairlist:[],
 			IsCheckedRepair:0
 		};
 		var check=opt.check,

@@ -52,11 +52,6 @@
 			if(flag){
 				sessionStorage.clear();
 			}else{
-				if(localStorage.clear){
-					localStorage.clear();
-				}else{
-
-				}
 				localStorage.clear();
 			}
 		}
@@ -650,7 +645,24 @@
 	public_tool.loadSideMenu=function($menu,$wrap,opt){
 
 		var self=this,
-		cacheMenu=self.getParams('menu_module')/*调用缓存*/;
+			cacheMenu=self.getParams('menu_module')/*调用缓存*/,
+			cacheLogin=self.getParams('login_module'),
+			currentdomain=cacheLogin.currentdomain,
+			baseurl=opt.url.split('/',3);
+
+		cacheLogin.currentdomain=baseurl[0]+'//'+baseurl[2];
+		self.removeParams('login_module');
+		self.setParams('login_module',cacheLogin);
+
+		/*检测是否改变了地址，且登陆地址和请求地址不一致*/
+		if(!self.validLogin()){
+			self.clear();
+			self.clearCacheData();
+			self.loginTips();
+			return false;
+		}
+
+
 
 		/*判断路由模块*/
 		if(public_tool.routeMap.issamemodule){
@@ -680,25 +692,12 @@
 		var self=this,
 			cacheSource=self.getParams('source_module');
 
+
 		if(cacheSource){
 			//存在数据源
 			/*解析菜单*/
 			self.doSideMenu(cacheSource,$menu,$wrap);
 		}else{
-			/*var cacheLogin=self.getParams('login_module'),
-				currentdomain=cacheLogin.currentdomain;
-			if(currentdomain===''){
-				var baseurl=opt.url.split('/',3);
-
-				cacheLogin.currentdomain=baseurl[0]+'//'+baseurl[2];
-				self.removeParams('login_module');
-				self.setParams('login_module',cacheLogin);
-
-				/!*检测是否改变了地址*!/
-				var isvalid=self.validLogin();
-				//console.log(isvalid);
-			}*/
-
 			/*不存在资源则重新加载*/
 			$.ajax({
 				url:opt.url,
@@ -1215,12 +1214,13 @@
 			var tempvalid=self.validLogin(cacheLogin);
 			if(tempvalid){
 				self.initMap.loginMap= $.extend(true,{},cacheLogin);
-				var name=self.initMap.loginMap.name||'匿名用户';
-				public_vars.$admin_show_wrap.html(name+'<i class="fa-angle-down"></i>');
+				var name=self.initMap.loginMap.username;
+				public_vars.$admin_show_wrap.html('您好：<span class="g-c-info">&nbsp;'+name+'&nbsp;&nbsp;</span><i class="fa-angle-down"></i>');
 				return true;
 			}else{
 				/*清除缓存*/
 				self.clear();
+				self.clearCacheData();
 				self.loginTips();
 				return false;
 			}
@@ -1250,8 +1250,8 @@
 				now=moment().format('YYYY-MM-DD|HH:mm:ss').split('|'),
 				now_rq=now[0],
 				now_sj=now[1],
-				reqdomain=cacheLogin.reqdomain/*,
-				currentdomain=cacheLogin.currentdomain*/;
+				reqdomain=cacheLogin.reqdomain,
+				currentdomain=cacheLogin.currentdomain;
 
 
 			/*判断日期*/
@@ -1276,14 +1276,10 @@
 				return true;
 			}*/
 
-			/*console.log(reqdomain);
-			console.log(currentdomain);
-
-			if(reqdomain){
-
-				return true;
-
-			}*/
+			/*请求域与登陆域不一致*/
+			if(currentdomain!==''&&reqdomain!==currentdomain){
+				return false;
+			}
 
 			return true;
 		}else{
@@ -1292,7 +1288,7 @@
 		return false;
 	};
 	/*退出系统*/
-	public_tool.loginOut=function(){
+	public_tool.loginOut=function(istips){
 		var self=this,
 			isindex=self.routeMap.isindex;
 
@@ -1301,10 +1297,14 @@
 		self.clearCacheData();
 
 		/*根据路径跳转*/
-		if(isindex){
-			location.href='account/login.html';
-		}else{
-			location.href='../account/login.html';
+		if(istips){
+			self.loginTips();
+		}else {
+			if(isindex){
+				location.href='account/login.html';
+			}else{
+				location.href='../account/login.html';
+			}
 		}
 	};
 	/*清除内存数据*/
