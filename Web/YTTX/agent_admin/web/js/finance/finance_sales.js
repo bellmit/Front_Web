@@ -9,7 +9,7 @@
 			/*菜单调用*/
 			var logininfo=public_tool.initMap.loginMap;
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
-				url:'http://10.0.5.222:8080/yttx-agentbms-api/module/menu',
+				url:'http://120.24.226.70:8081/yttx-agentbms-api/module/menu',
 				async:false,
 				type:'post',
 				param:{
@@ -45,75 +45,31 @@
 
 
 			/*数据加载配置*/
-			var finance_config1={
-				url:"",
-				dataType:'JSON',
-				method:'post',
-				dataSrc:function ( json ) {
-					var code=parseInt(json.code,10);
-					if(code!==0){
-						if(code===999){
-							/*清空缓存*/
-							public_tool.clear();
-							public_tool.clearCacheData();
-							public_tool.loginTips();
+			var finance_config={
+						url:"http://120.24.226.70:8081/yttx-agentbms-api/finance/profits",
+						dataType:'JSON',
+						method:'post',
+						data:{
+							roleId:decodeURIComponent(logininfo.param.roleId),
+							adminId:decodeURIComponent(logininfo.param.adminId),
+							grade:decodeURIComponent(logininfo.param.grade),
+							token:decodeURIComponent(logininfo.param.token),
+							type:1
 						}
-						console.log(json.message);
-						return [];
-					}
-					return json.result.list;
-				},
-				data:{
-					roleId:decodeURIComponent(logininfo.param.roleId),
-					adminId:decodeURIComponent(logininfo.param.adminId),
-					grade:decodeURIComponent(logininfo.param.grade),
-					token:decodeURIComponent(logininfo.param.token)
-				}
-			},
-				finance_config2={
-					url:"",
-					dataType:'JSON',
-					method:'post',
-					dataSrc:function ( json ) {
-						var code=parseInt(json.code,10);
-						if(code!==0){
-							if(code===999){
-								/*清空缓存*/
-								public_tool.clear();
-								public_tool.clearCacheData();
-								public_tool.loginTips();
-							}
-							console.log(json.message);
-							return [];
-						}
-						return json.result.list;
-					},
-					data:{
-						roleId:decodeURIComponent(logininfo.param.roleId),
-						adminId:decodeURIComponent(logininfo.param.adminId),
-						grade:decodeURIComponent(logininfo.param.grade),
-						token:decodeURIComponent(logininfo.param.token)
-					}
 				},
 				finance_opt1={
 					deferRender:true,/*是否延迟加载数据*/
 					//serverSide:true,/*是否服务端处理*/
-					searching:true,/*是否搜索*/
+					searching:false,/*是否搜索*/
 					ordering:false,/*是否排序*/
 					//order:[[1,'asc']],/*默认排序*/
-					paging:true,/*是否开启本地分页*/
-					pagingType:'simple_numbers',/*分页按钮排列*/
+					paging:false,/*是否开启本地分页*/
 					autoWidth:true,/*是否*/
-					info:true,/*显示分页信息*/
+					info:false,/*显示分页信息*/
 					stateSave:false,/*是否保存重新加载的状态*/
 					processing:true,/*大消耗操作时是否显示处理状态*/
-					ajax:finance_config1,/*异步请求地址及相关配置*/
-					columns:'',/*控制分页数*/
-					aLengthMenu: [
-						[5,10,20,30],
-						[5,10,20,30]
-					],
-					lengthChange:true/*是否可改变长度*/
+					columns:[],
+					lengthChange:false/*是否可改变长度*/
 				},
 				finance_opt2={
 					deferRender:true,/*是否延迟加载数据*/
@@ -127,14 +83,13 @@
 					info:true,/*显示分页信息*/
 					stateSave:false,/*是否保存重新加载的状态*/
 					processing:true,/*大消耗操作时是否显示处理状态*/
-					ajax:finance_config2,/*异步请求地址及相关配置*/
-					columns:'',/*控制分页数*/
+					columns:[],
 					aLengthMenu: [
 						[5,10,20,30],
 						[5,10,20,30]
-						],
+					],
 					lengthChange:true/*是否可改变长度*/
-					};
+				};
 
 
 
@@ -175,11 +130,11 @@
 					}
 				});
 			});
-
+			$admin_search_clear.trigger('click');
 
 			/*联合查询*/
 			$admin_search_btn.on('click',function(){
-				var data= $.extend(true,{},finance_config1.data),
+				var data= $.extend(true,{},finance_config.data),
 					startvalue='',
 					endvalue='';
 
@@ -218,50 +173,36 @@
 
 				});
 				/*合并参数*/
-				finance_config1.data= $.extend(true,{},data);
-				finance_config2.data= $.extend(true,{},data);
-
-
+				finance_config.data=$.extend(true,{},data);
 
 
 				/*组合视图对象*/
 				var tempobj1=financeSearch(startvalue+','+endvalue,'finance');
 				$(tempobj1['col']+tempobj1['th']+tempobj1['tbody']).appendTo($finance_wrap1.html(''));
 				finance_opt1.columns=tempobj1['tr'];
-				/*创建新实例并初始化请求数据*/
-				table1=$finance_wrap1.DataTable($.extend(true,{},finance_opt1));
-
 
 				/*组合视图对象*/
 				var tempobj2=financeSearch(startvalue+','+endvalue,'station');
 				$(tempobj2['col']+tempobj2['th']+tempobj2['tbody']).appendTo($finance_wrap2.html(''));
 				finance_opt2.columns=tempobj2['tr'];
 				/*创建新实例并初始化请求数据*/
-				table2=$finance_wrap2.DataTable($.extend(true,{},finance_opt2));
+				getFinanceData(finance_config,function(res1,res2){
+						var finance1=$.extend(true,{},finance_opt1),
+							finance2=$.extend(true,{},finance_opt2);
+
+					finance1['data']=res1;
+					finance2['data']=res2;
+
+					table1=$finance_wrap1.DataTable(finance1);
+					table2=$finance_wrap2.DataTable(finance2);
+				});
 
 			});
 
 
 
-
 			/*数据加载*/
-			(function(){
-
-				/*列表1加载数据*/
-				var dataobj1=financeSearch(start_date+','+end_date,'finance');
-				$(dataobj1['col']+dataobj1['th']+dataobj1['tbody']).appendTo($finance_wrap1.html(''));
-				finance_opt1.columns=dataobj1['tr'];
-				table1=$finance_wrap1.DataTable($.extend(true,{},finance_opt1));
-
-				/*列表2加载数据*/
-				var dataobj2=financeSearch(start_date+','+end_date,'station');
-				$(dataobj2['col']+dataobj2['th']+dataobj2['tbody']).appendTo($finance_wrap2.html(''));
-				finance_opt2.columns=dataobj2['tr'];
-				table2=$finance_wrap2.DataTable($.extend(true,{},finance_opt2));
-
-			}());
-
-
+			$admin_search_btn.trigger('click');
 
 
 		}
@@ -318,34 +259,101 @@
 				if(i===0){
 					colstr+='<col class="g-w-percent'+colitem+'"><col class="g-w-percent'+colitem+'"><col class="g-w-percent'+colitem+'">';
 					thstr+='<th>所属关系</th><th class="no-sorting">'+tempth+'销售</th><th class="no-sorting">'+tempth+'分润</th>';
-					tdstr.push({defaultContent:''},{defaultContent:''},{defaultContent:''});
+					tdstr.push({"data":'relationName'},{"data":"m"+tempobj.month()+"Sales"},{"data":"m"+tempobj.month()+"Profits"});
 				}else{
 					colstr+='<col class="g-w-percent'+colitem+'"><col class="g-w-percent'+colitem+'">';
 					thstr+='<th class="no-sorting">'+tempth+'销售</th><th class="no-sorting">'+tempth+'分润</th>';
-					tdstr.push({defaultContent:''},{defaultContent:''});
+					tdstr.push({"data":"m"+tempobj.month()+"Sales"},{"data":"m"+tempobj.month()+"Profits"});
 				}
-				/*{data:"month"+tempobj.month()}*/
 			}else if(type==='station'){
 				if(i===0){
-					colstr+='<col class="g-w-percent'+colitem+'"><col class="g-w-percent'+colitem+'"><col class="g-w-percent'+colitem+'"><col class="g-w-percent'+colitem+'"><col class="g-w-percent'+colitem+'"><col class="g-w-percent'+colitem+'">';
-					thstr+='<th>服务站</th><th>所属代理</th><th>所属关系</th><th>上级代理</th><th class="no-sorting">'+tempth+'销售</th><th class="no-sorting">'+tempth+'分润</th>';
-					tdstr.push({defaultContent:''},{defaultContent:''},{defaultContent:''},{defaultContent:''},{defaultContent:''},{defaultContent:''});
+					colstr+='<col class="g-w-percent'+colitem+'"><col class="g-w-percent'+colitem+'"><col class="g-w-percent'+colitem+'"><col class="g-w-percent'+colitem+'"><col class="g-w-percent'+colitem+'"><col class="g-w-percent'+colitem+'"><col class="g-w-percent'+colitem+'">';
+					thstr+='<th>序号</th><th>服务站</th><th>所属代理</th><th>所属关系</th><th>上级代理</th><th class="no-sorting">'+tempth+'销售</th><th class="no-sorting">'+tempth+'分润</th>';
+					tdstr.push({"data":"id"},{"data":"shortName"},{"data":"agentShortName"},{"data":"agentGrade"},{"data":"superShortName"},{"data":"m"+tempobj.month()+"Sales"},{"data":"m"+tempobj.month()+"Profits"});
 				}else{
 					colstr+='<col class="g-w-percent'+colitem+'"><col class="g-w-percent'+colitem+'">';
 					thstr+='<th class="no-sorting">'+tempth+'销售</th><th class="no-sorting">'+tempth+'分润</th>';
-					tdstr.push({defaultContent:''},{defaultContent:''});
+					tdstr.push({"data":"m"+tempobj.month()+"Sales"},{"data":"m"+tempobj.month()+"Profits"});
 				}
-
 			}
-
-
-
 		}
 		res['col']='<colgroup>'+colstr+'</colgroup>';
 		res['th']='<thead><tr>'+thstr+'</tr></thead>';
 		res['tbody']='<tbody class="middle-align"></tbody>';
 		res['tr']=tdstr.slice(0);
 		return res;
+	};
+
+
+	/*获取数据*/
+	function getFinanceData(config,fn){
+
+		$.ajax(config).done(function (resp) {
+			var code=parseInt(resp.code,10);
+			if(code!==0){
+				if(code===999){
+					/*清空缓存*/
+					public_tool.clear();
+					public_tool.clearCacheData();
+					public_tool.loginTips();
+				}
+				console.log(resp.message);
+				return [];
+			}
+
+			var res1=[],
+				res2=[],
+				result=resp.result;
+
+			if(!result){
+				res1=[];
+				res2=[];
+			}else{
+				var agent1=result.agent1,
+					agent2=result.agent2,
+					agent3=result.agent3,
+					total=result.total,
+					list=result.list,
+					relation={
+						0:'一级',
+						1:'二级',
+						2:'三级',
+						3:'四级',
+						4:'五级',
+						5:'六级',
+						6:'七级',
+						7:'八级',
+						8:'九级',
+						"total":"合计"
+					};
+
+
+				if(!$.isEmptyObject(agent1)&&agent1){
+					res1.push($.extend(true,{"relationName":relation[0]},agent1));
+				}
+				if(!$.isEmptyObject(agent2)&&agent2){
+					res1.push($.extend(true,{"relationName":relation[1]},agent2));
+				}
+				if(!$.isEmptyObject(agent3)&&agent3){
+					res1.push($.extend(true,{"relationName":relation[2]},agent3));
+				}
+				if(!$.isEmptyObject(total)&&total){
+					res1.push($.extend(true,{"relationName":relation['total']},total));
+				}
+				if(list){
+					res2=list.slice(0);
+				}
+			}
+
+			if(fn&&typeof fn==='function'){
+				fn.call(null,res1,res2);
+			}
+
+
+		}).fail(function (resp) {
+			console.log('error');
+		});
+
 	}
 
 

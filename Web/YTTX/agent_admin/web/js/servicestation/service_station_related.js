@@ -8,7 +8,7 @@
 			/*菜单调用*/
 			var logininfo=public_tool.initMap.loginMap;
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
-				url:'http://10.0.5.222:8080/yttx-agentbms-api/module/menu',
+				url:'http://120.24.226.70:8081/yttx-agentbms-api/module/menu',
 				async:false,
 				type:'post',
 				param:{
@@ -122,7 +122,7 @@
 
 			/*数据加载*/
 			var station_config={
-				url:"http://10.0.5.222:8080/yttx-agentbms-api/servicestations/related",
+				url:"http://120.24.226.70:8081/yttx-agentbms-api/servicestations/related",
 				dataType:'JSON',
 				method:'post',
 				dataSrc:function ( json ) {
@@ -335,7 +335,7 @@
 				}else if(action==='select'){
 					/*查看*/
 					$.ajax({
-							url:"http://10.0.5.222:8080/yttx-agentbms-api/servicestation/view",
+							url:"http://120.24.226.70:8081/yttx-agentbms-api/servicestation/view",
 							method: 'POST',
 							dataType: 'json',
 							data:{
@@ -585,7 +585,7 @@
 								if(issend){
 									var checkdata=getCheckPlugin(send_checkconfig),
 										config1={
-											url:"http://10.0.5.222:8080/yttx-agentbms-api/servicestation/invoice/add",
+											url:"http://120.24.226.70:8081/yttx-agentbms-api/servicestation/invoice/add",
 											dataType:'JSON',
 											method:'post',
 											data:{
@@ -601,7 +601,7 @@
 									$.extend(true,config1.data,checkdata);
 								}else{
 									var config2={
-										url:"http://10.0.5.222:8080/yttx-agentbms-api/servicestation/repairorder/add",
+										url:"http://120.24.226.70:8081/yttx-agentbms-api/servicestation/repairorder/add",
 										dataType:'JSON',
 										method:'post',
 										data:{

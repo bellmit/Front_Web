@@ -9,7 +9,7 @@
 			/*菜单调用*/
 			var logininfo=public_tool.initMap.loginMap;
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
-				url:'http://10.0.5.222:8080/yttx-agentbms-api/module/menu',
+				url:'http://120.24.226.70:8081/yttx-agentbms-api/module/menu',
 				async:false,
 				type:'post',
 				param:{
@@ -108,6 +108,7 @@
 					AA:$agent_gradeAA,
 					A:$agent_gradeA,
 					SS:$agent_gradeSS,
+					agentItem:$agent_gradewrap,
 					becomeA:$become_gradeA,
 					becomeAA:$become_gradeAA,
 					becomeAAA:$become_gradeAAA,
@@ -140,7 +141,7 @@
 
 			/*数据加载*/
 			var station_config={
-				url:"http://10.0.5.222:8080/yttx-agentbms-api/servicestations/related",
+				url:"http://120.24.226.70:8081/yttx-agentbms-api/servicestations/related",
 				dataType:'JSON',
 				method:'post',
 				dataSrc:function ( json ) {
@@ -292,14 +293,14 @@
 				});*/
 
 				/*绑定清除上级代理商*/
-				$agent_gradeclear.on('click',function(){
-					/*清除已选择*/
+				/*$agent_gradeclear.on('click',function(){
+					/!*清除已选择*!/
 					$agent_gradeinput.each(function(){
 						$(this).prop({
 							'checked':false
 						});
 					});
-					/*if($station_becomeagentwrap.hasClass('g-d-hidei')){
+					/!*if($station_becomeagentwrap.hasClass('g-d-hidei')){
 						/!*清除已选择*!/
 						$agent_gradeinput.each(function(){
 							$(this).prop({
@@ -323,10 +324,10 @@
 							});
 						});
 						$station_agentwrap.addClass('g-d-hidei');
-					}*/
+					}*!/
 
 
-				});
+				});*/
 
 				/*切换成为代理*/
 				/*$station_becomeagent.on('click',function(){
@@ -446,7 +447,7 @@
 					//重置信息
 					$station_servicestationid.val(id);
 					$.ajax({
-						url:"http://10.0.5.222:8080/yttx-agentbms-api/servicestation/detail",
+						url:"http://120.24.226.70:8081/yttx-agentbms-api/servicestation/detail",
 						dataType:'JSON',
 						method:'post',
 						data:{
@@ -646,9 +647,9 @@
 				$station_userwrap.removeClass('g-d-hidei');
 
 				/*重置绑定代理商ID,代理商*/
-				if(grade_data!==null){
+				/*if(grade_data!==null){
 					setGradeShow(gradeobj,grade_data);
-				}
+				}*/
 
 				//第一行获取焦点
 				$station_fullname.focus();
@@ -904,7 +905,7 @@
 
 							if(isadd){
 								/*添加*/
-								config['url']="http://10.0.5.222:8080/yttx-agentbms-api/servicestation/addupdate";
+								config['url']="http://120.24.226.70:8081/yttx-agentbms-api/servicestation/addupdate";
 								if(typeof config['data']['serviceStationId']!=='undefined'){
 									delete config['data']['serviceStationId'];
 								}
@@ -930,7 +931,7 @@
 
 							}else{
 								/*更新*/
-								config['url']="http://10.0.5.222:8080/yttx-agentbms-api/servicestation/addupdate";
+								config['url']="http://120.24.226.70:8081/yttx-agentbms-api/servicestation/addupdate";
 								config['data']['serviceStationId']=id;
 								if(typeof config['data']['username']!=='undefined'){
 									delete config['data']['username'];
@@ -940,7 +941,7 @@
 							}
 
 							config.data['agentId']=$station_agentid.attr('data-grade')==='-1'?'':$station_agentid.attr('data-id');
-							config.data['subGrade']=$agent_gradewrap.find('input:checked').val();
+							/*config.data['subGrade']=$agent_gradewrap.find('input:checked').val();*/
 
 							/*扩展其他参数*/
 							$.extend(true,config.data,profit_data);
@@ -1054,7 +1055,7 @@
 		function requestGrade(fn){
 			var self=this;
 			$.ajax({
-				url:"http://10.0.5.222:8080/yttx-agentbms-api/agent/role/check",
+				url:"http://120.24.226.70:8081/yttx-agentbms-api/agent/role/check",
 				dataType:'JSON',
 				method:'post',
 				data:{
@@ -1141,6 +1142,8 @@
 					'data-disabled':'true'
 				}).addClass('g-d-hidei');
 			}
+			/*禁用选择*/
+			obj.agentItem.addClass('g-d-hidei');
 			/*设置级别可见度*/
 			if(grade==='3'){
 				/*AAA*/

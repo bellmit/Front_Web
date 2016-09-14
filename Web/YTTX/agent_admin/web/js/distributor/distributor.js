@@ -9,7 +9,7 @@
 			/*菜单调用*/
 			var logininfo=public_tool.initMap.loginMap;
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
-				url:'http://10.0.5.222:8080/yttx-agentbms-api/module/menu',
+				url:'http://120.24.226.70:8081/yttx-agentbms-api/module/menu',
 				async:false,
 				type:'post',
 				param:{
@@ -67,7 +67,7 @@
 
 			/*数据加载*/
 			var distributor_config={
-				url:"http://10.0.5.222:8080/yttx-agentbms-api/distributor/related",
+				url:"http://120.24.226.70:8081/yttx-agentbms-api/distributor/related",
 				dataType:'JSON',
 				method:'post',
 				dataSrc:function ( json ) {
@@ -186,7 +186,7 @@
 
 			/*统计数据加载配置*/
 			var stats_config={
-					url:"http://10.0.5.222:8080/yttx-agentbms-api/distributor/profit/stats",
+					url:"http://120.24.226.70:8081/yttx-agentbms-api/distributor/profit/stats",
 					dataType:'JSON',
 					method:'post',
 					data:{
@@ -435,7 +435,7 @@
 						/*展开*/
 						if(subitem===''){
 							$.ajax({
-								 url:"http://10.0.5.222:8080/yttx-agentbms-api/distributor/lower",
+								 url:"http://120.24.226.70:8081/yttx-agentbms-api/distributor/lower",
 								 method: 'POST',
 								 dataType: 'json',
 								 data:{
@@ -615,11 +615,11 @@
 				if(i===0){
 					colstr+='<col class="g-w-percent'+colitem+'"><col class="g-w-percent'+colitem+'"><col class="g-w-percent'+colitem+'"><col class="g-w-percent'+colitem+'"><col class="g-w-percent'+colitem+'"><col class="g-w-percent'+colitem+'">';
 					thstr+='<th>服务站</th><th>所属代理</th><th>所属关系</th><th>上级代理</th><th class="no-sorting">'+tempth+'销售</th><th class="no-sorting">'+tempth+'分润</th>';
-					tdstr.push({defaultContent:''},{defaultContent:''},{defaultContent:''},{defaultContent:''},{defaultContent:''},{defaultContent:''});
+					tdstr.push({defaultContent:''},{defaultContent:''},{defaultContent:''},{defaultContent:''},{"data":"m"+tempobj.month()+"Sales"},{"data":"m"+tempobj.month()+"Profits"});
 				}else{
 					colstr+='<col class="g-w-percent'+colitem+'"><col class="g-w-percent'+colitem+'">';
 					thstr+='<th class="no-sorting">'+tempth+'销售</th><th class="no-sorting">'+tempth+'分润</th>';
-					tdstr.push({defaultContent:''},{defaultContent:''});
+					tdstr.push({"data":"m"+tempobj.month()+"Sales"},{"data":"m"+tempobj.month()+"Profits"});
 				}
 
 			}

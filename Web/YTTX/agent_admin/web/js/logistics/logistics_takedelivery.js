@@ -9,7 +9,7 @@
 			/*菜单调用*/
 			var logininfo=public_tool.initMap.loginMap;
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
-				url:'http://10.0.5.222:8080/yttx-agentbms-api/module/menu',
+				url:'http://120.24.226.70:8081/yttx-agentbms-api/module/menu',
 				async:false,
 				type:'post',
 				param:{
@@ -76,7 +76,7 @@
 
 			/*数据加载*/
 			var agent_config={
-				url:"http://10.0.5.222:8080/yttx-agentbms-api/logistics/receivings",
+				url:"http://120.24.226.70:8081/yttx-agentbms-api/logistics/receivings",
 				dataType:'JSON',
 				method:'post',
 				dataSrc:function ( json ) {
@@ -102,11 +102,10 @@
 					receiptType:searchtype
 				}
 			},list_config={
-				url:"http://10.0.5.222:8080/yttx-agentbms-api/logistics/receiving/view",
+				url:"http://120.24.226.70:8081/yttx-agentbms-api/logistics/receiving/view",
 				dataType:'JSON',
 				method:'post',
 				dataSrc:function ( json ) {
-					console.log(json);
 					var code=parseInt(json.code,10);
 					if(code!==0){
 						if(code===999){
@@ -118,8 +117,12 @@
 						console.log(json.message);
 						return [];
 					}
-
-					return json.result.list;
+					var result=json.result;
+					if(!$.isEmptyObject(result)){
+						return [result];
+					}else{
+						return [];
+					}
 				},
 				data:{
 					roleId:decodeURIComponent(logininfo.param.roleId),
@@ -207,9 +210,6 @@
 							 }*/
 							return btns;
 						}
-					},
-					{
-						"data":"list"
 					}
 				],/*控制分页数*/
 				aLengthMenu: [
@@ -285,7 +285,9 @@
 				data.receiptType=searchtype;
 				agent_config.data= $.extend(true,{},data);
 				agenttable.ajax.config(agent_config).load(false);
-				listtable.clear().draw();
+				if(listtable!==null){
+					listtable.clear().draw();
+				}
 			});
 
 			/*清空查询条件*/
@@ -391,7 +393,7 @@
 							$edit_wrap.attr({
 								'data-id':id
 							}).removeClass('collapsed');
-							var datas=table.row($tr).data(),
+							var datas=listtable.row($tr).data(),
 								trstr='<tr><td colspan="10">物流信息</td></tr>';
 							for(var i in datas){
 								switch (i){
@@ -425,19 +427,34 @@
 											len=templist.length,
 											k=0;
 										if(len!==0){
-											trstr+='<tr><td colspan="10">商品信息</td></tr><tr><th colspan="2">商品名称</th><th colspan="1">数量</th><th colspan="1">属性</th><th colspan="2">机器码</th><th colspan="4">备注</th></tr>';
+											trstr+='<tr><td colspan="10">商品信息</td></tr><tr><th colspan="2">商品名称</th><th>数量</th><th>属性</th><th colspan="2">机器码</th><th colspan="4">备注</th></tr>';
 											for(k;k<len;k++){
-												trstr+='<tr><td colspan="2">'+templist[k]["name"]+'</td>' +
-													'<td>'+templist[k]["quantity"]+'</td>' +
-													'<td>'+templist[k]["property"]+'</td>'+
-													'<td>'+templist[k]["value"]+'</td>'+
-													'<td>'+templist[k]["remark"]+'</td></tr>';
+												trstr+='<tr><td colspan="2">'+(function(){
+														var tempres=templist[k]["name"];
+														return typeof tempres==='undefined'?'':tempres;
+													}())+'</td>' +
+													'<td colspan="2">'+(function(){
+													var tempres=templist[k]["quantity"];
+														return typeof tempres==='undefined'?'':tempres;
+												}())+'</td>' +
+													'<td colspan="2">'+(function(){
+													var tempres=templist[k]["property"];
+														return typeof tempres==='undefined'?'':tempres;
+												}())+'</td>'+
+													'<td colspan="2">'+(function(){
+													var tempres=templist[k]["value"];
+														return typeof tempres==='undefined'?'':tempres;
+												}())+'</td>'+
+													'<td colspan="2">'+(function(){
+													var tempres=templist[k]["remark"];
+														return typeof tempres==='undefined'?'':tempres;
+												}())+'</td></tr>';
 											}
-											$(trstr).appendTo($logistics_detail_wrap.html(''));
 										}
 										break;
 								}
 							}
+							$(trstr).appendTo($logistics_detail_wrap.html(''));
 							$("html,body").animate({scrollTop:600},200);
 						}
 
@@ -535,7 +552,7 @@
 				}
 
 				$.ajax({
-						url:"http://10.0.5.222:8080/yttx-agentbms-api/logistics/confirmreceipt",
+						url:"http://120.24.226.70:8081/yttx-agentbms-api/logistics/confirmreceipt",
 						dataType:'JSON',
 						method:'post',
 						data:{
@@ -603,7 +620,7 @@
 							return false;
 							/*更新*/
 							var config={
-								url:"http://10.0.5.222:8080/yttx-agentbms-api/",
+								url:"http://120.24.226.70:8081/yttx-agentbms-api/",
 								dataType:'JSON',
 								method:'post',
 								data:{
