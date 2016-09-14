@@ -121,36 +121,36 @@
 
                         <!--表格主体-->
                         <div class="panel-body">
-                            <div class="admin-search-wrap g-d-hidei">
-                                <div class="admin-search-item">
+                            <div class="admin-search-wrap">
+                                <div class="admin-search-item g-d-hidei">
                                     <label>服务站简称：</label>
                                     <input type="text" id="search_shortName">
                                 </div>
-                                <div class="admin-search-item">
+                                <div class="admin-search-item g-d-hidei">
                                     <label>负责人姓名：</label>
                                     <input type="text" id="search_name">
                                 </div>
-                                <div class="admin-search-item">
+                                <div class="admin-search-item g-d-hidei">
                                     <label>负责人手机号码：</label>
                                     <input type="text" maxlength="13" id="search_phone">
                                 </div>
-                                <div class="admin-search-item">
+                                <div class="admin-search-item g-d-hidei">
                                     <label>库存：</label>
                                     <input type="text" id="search_inventory">
                                 </div>
-                                <div class="admin-search-item">
+                                <div class="admin-search-item g-d-hidei">
                                     <label>返修：</label>
                                     <input type="text" id="search_repairs">
                                 </div>
-                                <div class="admin-search-item">
+                                <div class="admin-search-item g-d-hidei">
                                     <label>所属代理：</label>
                                     <input type="text" id="search_agentShortName">
                                 </div>
-                                <div class="admin-search-item">
+                                <div class="admin-search-item g-d-hidei">
                                     <label>上级代理：</label>
                                     <input type="text" id="search_superShortName">
                                 </div>
-                                <div class="admin-search-item">
+                                <div class="admin-search-item g-d-hidei">
                                     <span id="admin_search_btn" class="btn btn-info btn-icon g-br2">
                                         <i class="fa-search"></i>查询
                                     </span>
@@ -158,7 +158,18 @@
                                         <i class="fa-spinner"></i>清空
                                     </span>
                                 </div>
+                                <div class="admin-search-item">
+                                    <label>设备类型：</label>
+                                    <select id="search_type">
+                                        <option selected value="1">S67</option>
+                                        <option value="2">T6</option>
+                                    </select>
+                                </div>
                             </div>
+
+
+
+
 
                             <table id="station_wrap" class="table table-bordered table-striped table-hover admin-table">
                                 <!--分组样式-->
@@ -221,19 +232,19 @@
                             <form role="form" id="station_send_form" method="post" class="admin-form1 validate">
                                 <input type="text" class="g-d-hidei" value="" id="send_id" name="serviceStationId">
                                 <div class="form-group">
-                                    <label class="control-label">快递单号：</label>
+                                    <label class="control-label"><span class="form-require-item g-c-red1">*</span>快递单号：</label>
 
                                     <input type="text" class="form-control" name="trackingNumber" id="send_trackingnumber" data-validate="required" data-message-required="快递单号不能为空" placeholder="请输入快递单号" />
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="control-label">发货经手人：</label>
+                                    <label class="control-label"><span class="form-require-item g-c-red1">*</span>发货经手人：</label>
 
                                     <input type="text" class="form-control" name="deliveryHandler" id="send_deliveryhandler" data-validate="required" data-message-required="发货经手人不能为空" placeholder="请输入发货经手人" />
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="control-label">发货时间：</label>
+                                    <label class="control-label"><span class="form-require-item g-c-red1">*</span>发货时间：</label>
 
                                     <input type="text" class="form-control" name="deliveryTime" id="send_deliverytime" readonly data-validate="required" data-message-required="发货时间不能为空" placeholder="请选择发货时间" />
                                 </div>
@@ -248,8 +259,7 @@
                                     <div class="admin-sub-items1 admin-rpos-wrap admin-item-animate1 g-d-hidei"  id="send_devicewrap">
                                         <ul>
                                             <li class="clear-validate-tip">
-                                                <label class="clear-validate-error">设备类型:
-                                                    <select class="form-control" name="type" >
+                                                <label class="g-f-l clear-validate-error">设备类型:<select class="form-control" name="type" >
                                                         <option selected value="1">S67</option>
                                                         <option value="2">T6</option>
                                                     </select>
@@ -295,8 +305,7 @@
                                     <div class="admin-sub-items1 admin-rpos-wrap admin-item-animate1 g-d-hidei" style="z-index:20;" id="send_repairwrap">
                                         <ul>
                                             <li class="clear-validate-tip">
-                                                <label class="clear-validate-error">设备类型:
-                                                    <select class="form-control" name="type" >
+                                                <label class="g-f-l clear-validate-error">设备类型:<select class="form-control" name="type" >
                                                         <option selected value="1">S67</option>
                                                         <option value="2">T6</option>
                                                     </select>
@@ -345,26 +354,26 @@
                                 <input type="text" class="g-d-hidei" value="" id="repair_id" name="serviceStationId">
 
                                 <div class="form-group">
-                                    <label class="control-label">快递单号：</label>
+                                    <label class="control-label"><span class="form-require-item g-c-red1">*</span>快递单号：</label>
 
                                     <input type="text" class="form-control" name="trackingNumber" id="repair_trackingnumber" data-validate="required" data-message-required="快递单号不能为空" placeholder="请输入快递单号" />
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="control-label">发货经手人：</label>
+                                    <label class="control-label"><span class="form-require-item g-c-red1">*</span>发货经手人：</label>
 
                                     <input type="text" class="form-control" name="deliveryHandler" id="repair_deliveryhandler" data-validate="required" data-message-required="发货经手人不能为空" placeholder="请输入发货经手人" />
                                 </div>
 
 
                                 <div class="form-group">
-                                    <label class="control-label">发货时间：</label>
+                                    <label class="control-label"><span class="form-require-item g-c-red1">*</span>发货时间：</label>
 
                                     <input type="text" class="form-control" name="deliveryTime" readonly id="repair_deliverytime" data-validate="required" data-message-required="发货时间不能为空" placeholder="请选择发货时间" />
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="control-label">商品名称：</label>
+                                    <label class="control-label"><span class="form-require-item g-c-red1">*</span>商品名称：</label>
 
                                     <input type="text" class="form-control" name="name" id="repair_name" data-validate="required" data-message-required="商品名称不能为空" placeholder="请输入商品名称" />
                                 </div>
@@ -376,19 +385,19 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="control-label">机器结束号：</label>
+                                    <label class="control-label"><span class="form-require-item g-c-red1">*</span>机器结束号：</label>
 
                                     <input type="text" class="form-control" name="endNumber" id="repair_endnumber" data-validate="required" data-message-required="机器结束号不能为空" placeholder="请输入机器结束号" />
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="control-label">机器号：</label>
+                                    <label class="control-label"><span class="form-require-item g-c-red1">*</span>机器号：</label>
 
                                     <input type="text" class="form-control" name="listNumber" id="repair_listnumber" data-validate="required" data-message-required="机器号不能为空" placeholder="请输入机器号" />
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="control-label">数量：</label>
+                                    <label class="control-label"><span class="form-require-item g-c-red1">*</span>数量：</label>
 
                                     <input type="text" class="form-control" name="quantity" id="repair_quantity" data-validate="required" data-message-required="数量不能为空" placeholder="请输入数量" />
                                 </div>
@@ -399,6 +408,67 @@
                                     <button id="repair_cance_btn" type="reset" class="btn btn-white">取消</button>
                                 </div>
                             </form>
+                        </div>
+
+
+                    </div>
+                </div>
+
+
+                <!--发货记录-->
+                <div class="col-md-12">
+                    <div class="panel collapsed" id="record_wrap">
+
+                        <!--表格标题-->
+                        <div class="panel-heading">
+                            <h3 class="panel-title">发货记录</h3>
+
+                            <div class="panel-options">
+                                <a href="#" data-toggle="panel">
+                                    <span class="collapse-icon">&ndash;</span>
+                                    <span class="expand-icon">+</span>
+                                </a>
+                            </div>
+                        </div>
+
+
+                        <!--表格主体-->
+                        <div class="panel-body">
+                            <table id="record_list" class="table table-bordered table-striped table-hover admin-table">
+                                <!--分组样式-->
+                                <colgroup>
+                                    <col class="g-w-percent5">
+                                    <col class="g-w-percent5">
+                                    <col class="g-w-percent6">
+                                    <col class="g-w-percent7">
+                                    <col class="g-w-percent8">
+                                    <col class="g-w-percent3">
+                                    <col class="g-w-percent3">
+                                    <col class="g-w-percent3">
+                                    <col class="g-w-percent5">
+                                    <col class="g-w-percent5">
+                                </colgroup>
+
+                                <!--表头-->
+                                <thead>
+                                <tr>
+                                    <th>服务站ID</th>
+                                    <th>服务站简称</th>
+                                    <th>负责人姓名</th>
+                                    <th>负责人手机号码</th>
+                                    <th>地址</th>
+                                    <th>销售</th>
+                                    <th>库存</th>
+                                    <th>返修</th>
+                                    <th>所属代理</th>
+                                    <th>上级代理</th>
+                                </tr>
+                                </thead>
+
+
+                                <!--表主体-->
+                                <tbody class="middle-align"></tbody>
+                            </table>
                         </div>
 
 

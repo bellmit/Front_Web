@@ -27,11 +27,13 @@
 
 			/*dom引用和相关变量定义*/
 			var $station_wrap=$('#station_wrap')/*表格*/,
+				$record_list=$('#record_list'),
 				module_id='station_list'/*模块id，主要用于本地存储传值*/,
 				$data_wrap=$('#data_wrap')/*数据展现面板*/,
 				$send_wrap=$('#send_wrap')/*发货容器面板*/,
 				$repair_wrap=$('#repair_wrap')/*返修容器面板*/,
 				table=null/*数据展现*/,
+				recordtable=null,
 				$send_title=$('#send_title')/*编辑标题*/,
 				$repair_title=$('#repair_title')/*编辑标题*/,
 				dia=dialog({
@@ -72,6 +74,7 @@
 				$search_agentShortName=$('#search_agentShortName'),
 				$search_superShortName=$('#search_superShortName'),
 				$search_repairs=$('#search_repairs'),
+				$search_type=$('#search_type'),
 				$admin_search_btn=$('#admin_search_btn'),
 				$admin_search_clear=$('#admin_search_clear');
 
@@ -143,9 +146,36 @@
 					roleId:decodeURIComponent(logininfo.param.roleId),
 					adminId:decodeURIComponent(logininfo.param.adminId),
 					grade:decodeURIComponent(logininfo.param.grade),
+					token:decodeURIComponent(logininfo.param.token),
+					type:$search_type.find('option:selected').val()
+				}
+			},
+			record_config={
+				url:"http://120.24.226.70:8081/yttx-agentbms-api/servicestations/invoice/search",
+				dataType:'JSON',
+				method:'post',
+				dataSrc:function ( json ) {
+					var code=parseInt(json.code,10);
+					if(code!==0){
+						if(code===999){
+							/*清空缓存*/
+							public_tool.clear();
+							public_tool.clearCacheData();
+							public_tool.loginTips();
+						}
+						console.log(json.message);
+						return [];
+					}
+					return json.result.list;
+				},
+				data:{
+					roleId:decodeURIComponent(logininfo.param.roleId),
+					adminId:decodeURIComponent(logininfo.param.adminId),
+					grade:decodeURIComponent(logininfo.param.grade),
 					token:decodeURIComponent(logininfo.param.token)
 				}
 			};
+
 			table=$station_wrap.DataTable({
 				deferRender:true,/*是否延迟加载数据*/
 				//serverSide:true,/*是否服务端处理*/
@@ -233,10 +263,78 @@
 				],
 				lengthChange:true/*是否可改变长度*/
 			});
+			recordtable=$record_list.DataTable({
+				deferRender:true,/*是否延迟加载数据*/
+				//serverSide:true,/*是否服务端处理*/
+				searching:true,/*是否搜索*/
+				ordering:true,/*是否排序*/
+				//order:[[1,'asc']],/*默认排序*/
+				paging:true,/*是否开启本地分页*/
+				pagingType:'simple_numbers',/*分页按钮排列*/
+				autoWidth:true,/*是否*/
+				info:true,/*显示分页信息*/
+				stateSave:false,/*是否保存重新加载的状态*/
+				processing:true,/*大消耗操作时是否显示处理状态*/
+				ajax:record_config,/*异步请求地址及相关配置*/
+				columns: [
+					{"data":"id"},
+					{"data":"shortName"},
+					{"data":"name"},
+					{
+						"data":"phone",
+						"render":function(data, type, full, meta ){
+							return public_tool.phoneFormat(data);
+						}
+					},
+					{
+						"data":"address",
+						"render":function(data, type, full, meta ){
+							return data.toString().slice(0,20)+'...';
+						}
+					},
+					{
+						"data":"sales",
+						"render":function(data, type, full, meta ){
+							return data?"<span class='g-c-info'>"+data+"</span>":'';
+						}
+					},
+					{
+						"data":"inventory",
+						"render":function(data, type, full, meta ){
+							return data?"<span class='g-c-gray3'>"+data+"</span>":'';
+						}
+					},
+					{
+						"data":"repairs",
+						"render":function(data, type, full, meta ){
+							return data?"<span class='g-c-red1'>"+data+"</span>":'';
+						}
+					},
+					{
+						"data":"agentShortName"
+					},
+					{
+						"data":"supershortName"
+					}
+				],/*控制分页数*/
+				aLengthMenu: [
+					[5,10,20,30],
+					[5,10,20,30]
+				],
+				lengthChange:true/*是否可改变长度*/
+			});
 
 			/*初始化--重置表单*/
 			send_form.reset();
 			repair_form.reset();
+
+
+			/*绑定切换设备类型*/
+			$search_type.on('change', function () {
+				station_config.data.type=$(this).val();
+				table.ajax.config(station_config).load();
+			});
+
 
 			/*清空查询条件*/
 			$admin_search_clear.on('click',function(){
@@ -641,9 +739,15 @@
 											return false;
 										}
 										//重绘表格
-										//table.ajax.reload(null,false);
-										//重置表单
-										//issend?$send_cance_btn.trigger('click'):$repair_cance_btn.trigger('click');
+										table.ajax.reload(null,false);
+										if(issend){
+											//重置表单;
+											$send_cance_btn.trigger('click');
+											recordtable.ajax.reload(null,false);
+										}else{
+											//重置表单;
+											$repair_cance_btn.trigger('click');
+										}
 										setTimeout(function(){
 											issend?dia.content('<span class="g-c-bs-success g-btips-succ">发货成功</span>').show():dia.content('<span class="g-c-bs-success g-btips-succ">返修成功</span>').show();
 										},300);

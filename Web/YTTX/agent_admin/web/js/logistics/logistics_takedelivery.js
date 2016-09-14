@@ -611,16 +611,9 @@
 								return false;
 							}
 
-							dia.content('<span class="g-c-bs-warning g-btips-warn">暂未开放此功能</span>').show();
-							setTimeout(function () {
-								dia.close();
-							},2000);
-
-
-							return false;
 							/*更新*/
 							var config={
-								url:"http://120.24.226.70:8081/yttx-agentbms-api/",
+								url:"http://120.24.226.70:8081/yttx-agentbms-api/logistics/confirmexception",
 								dataType:'JSON',
 								method:'post',
 								data:{
@@ -628,11 +621,8 @@
 									adminId:decodeURIComponent(logininfo.param.adminId),
 									grade:decodeURIComponent(logininfo.param.grade),
 									token:decodeURIComponent(logininfo.param.token),
-									invoiceId:id,
-									receiptType:searchtype,
-									receiveNo:$logistics_receiveno.val(),
-									receiveAuthor:$logistics_receiveauthor.val(),
-									remark:$logistics_remark.val()
+									receiptId:id,
+									receiptType:searchtype
 								}
 							};
 
@@ -651,7 +641,7 @@
 									}
 									//重绘表格
 									agenttable.ajax.reload(null,false);
-									//重置表单
+									listtable.ajax.reload(null,false);
 									//重置表单
 									$edit_cance_btn.trigger('click');
 									setTimeout(function(){
@@ -663,6 +653,12 @@
 								})
 								.fail(function(resp){
 									console.log(resp.message);
+									setTimeout(function(){
+										dia.content('<span class="g-c-bs-warning g-btips-warn">确认收货异常失败</span>').show();
+									},300);
+									setTimeout(function () {
+										dia.close();
+									},2000);
 								});
 							return false;
 						}
