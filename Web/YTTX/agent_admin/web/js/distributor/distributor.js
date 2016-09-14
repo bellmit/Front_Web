@@ -9,7 +9,7 @@
 			/*菜单调用*/
 			var logininfo=public_tool.initMap.loginMap;
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
-				url:'http://120.24.226.70:8081/yttx-agentbms-api/module/menu',
+				url:'http://10.0.5.222:8080/yttx-agentbms-api/module/menu',
 				async:false,
 				type:'post',
 				param:{
@@ -67,7 +67,7 @@
 
 			/*数据加载*/
 			var distributor_config={
-				url:"http://120.24.226.70:8081/yttx-agentbms-api/distributor/related",
+				url:"http://10.0.5.222:8080/yttx-agentbms-api/distributor/related",
 				dataType:'JSON',
 				method:'post',
 				dataSrc:function ( json ) {
@@ -156,7 +156,7 @@
 
 							if(distributordetail_power){
 								/*查看*/
-								btns+='<select class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+								btns+='<select class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8 selectlevel">\
 									<option selected value="2">二级</option>\
 									<option value="3">三级</option>\
 									<option value="4">其他</option>\
@@ -165,6 +165,12 @@
 									 <i class="fa-angle-right"></i>\
 									 <span>下级分销</span>\
 									 </span>';
+							}
+							if(distributorlower_power){
+								btns+='<span data-id="'+data+'" data-action="stats" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+														 <i class="fa-bar-chart"></i>\
+														 <span>分销统计</span>\
+														 </span>';
 							}
 							return btns;
 						}
@@ -180,7 +186,7 @@
 
 			/*统计数据加载配置*/
 			var stats_config={
-					url:"http://120.24.226.70:8081/yttx-agentbms-api/distributor/profit/stats",
+					url:"http://10.0.5.222:8080/yttx-agentbms-api/distributor/profit/stats",
 					dataType:'JSON',
 					method:'post',
 					data:{
@@ -211,9 +217,6 @@
 				};
 
 
-
-
-
 			/*时间调用*/
 			var end_date=moment().format('YYYY-MM-DD'),
 				start_date=moment().subtract(2, 'month').format('YYYY-MM-DD');
@@ -236,8 +239,6 @@
 				}
 			});
 			
-
-
 
 			/*清空查询条件*/
 			$.each([$admin_search_clear,$stats_search_clear],function(){
@@ -269,9 +270,6 @@
 			$admin_search_clear.trigger('click');
 			$stats_search_clear.trigger('click');
 
-
-
-			
 
 			/*联合查询*/
 			$.each([$admin_search_btn,$stats_search_btn],function(){
@@ -389,9 +387,6 @@
 			});
 			
 
-
-
-
 			/*事件绑定*/
 			/*绑定查看，修改操作*/
 			var operate_item;
@@ -416,6 +411,8 @@
 				action=$this.attr('data-action');
 
 
+
+
 				/*发货操作*/
 				if(action==='select'){
 					/*查看下级分销*/
@@ -438,13 +435,14 @@
 						/*展开*/
 						if(subitem===''){
 							$.ajax({
-								 url:"http://120.24.226.70:8081/yttx-agentbms-api/distributor/lower",
+								 url:"http://10.0.5.222:8080/yttx-agentbms-api/distributor/lower",
 								 method: 'POST',
 								 dataType: 'json',
 								 data:{
 									 "distributorId":id,
 									 "Level":level,
 									 "adminId":decodeURIComponent(logininfo.param.adminId),
+									 "grade":decodeURIComponent(logininfo.param.grade),
 									 "token":decodeURIComponent(logininfo.param.token)
 								 }
 							 }).done(function(resp){
@@ -485,17 +483,7 @@
 								if(len!==0){
 									for(i;i<len;i++){
 										var tempitem=list[i];
-										res+='<tr><td>用户名:'+tempitem["name"]+'</td><td>机器号:'+tempitem["machineCode"]+'</td><td>'+(function(){
-												var btns='';
-												if(distributorlower_power){
-													/*查看*/
-													btns+='<span data-id="'+tempitem["distributorId"]+'" data-action="stats" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
-														 <i class="fa-bar-chart"></i>\
-														 <span>分销统计</span>\
-														 </span>';
-												}
-												return btns;
-										}())+'</td></tr>';
+										res+='<tr><td>用户名:'+tempitem["name"]+'</td><td>机器号:'+tempitem["machineCode"]+'</td><td>分销商ID:'+tempitem["distributorId"]+'</td></tr>';
 
 									}
 								}
@@ -518,11 +506,34 @@
 						}
 					}
 				}else if(action==='stats'){
+					/*统计*/
 					stats_config['data']['distributorId']=id;
 					$stats_search_btn.trigger('click');
+				}else if(action==='acq'){
+					/*收单*/
+					/*
+					to do
+					* */
+
 				}
 			});
 
+
+			/*绑定切换查询条件*/
+			$distributor_wrap.delegate('select','change',function(e){
+				e.stopPropagation();
+				e.preventDefault();
+
+				var target= e.target;
+
+				if(target.className.indexOf('selectlevel')!==-1){
+					/*切换条件*/
+					$(target).next('span').attr({
+						'data-subitem':''
+					});
+				}
+
+			});
 
 
 			/*格式化手机号码*/

@@ -20,6 +20,14 @@
 			},1);
 
 
+			var cacheLogin=public_tool.getParams('login_module');
+			if(cacheLogin){
+				/*如果存在缓存，则删除缓存*/
+				public_tool.clear();
+				public_tool.clearCacheData();
+			}
+
+
 			//异步校验
 			$findpwdform.validate({
 				rules: {
@@ -69,7 +77,7 @@
 						"hideMethod": "fadeOut"
 					};
 
-					var basedomain='http://120.24.226.70:8081',
+					var basedomain='http://10.0.5.222:8080',
 						basepathname="/yttx-agentbms-api/sysuser/login";
 					$.ajax({
 						url:basedomain+basepathname,
