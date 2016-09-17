@@ -7,10 +7,7 @@
 			var $loginform=$('#login'),
 				$username=$('#username'),
 				$pwd=$('#passwd'),
-				$vcode=$('#validcode');
 			$error_wrap=$('#error_wrap'),
-				$validcode_btn=$('#validcode_btn'),
-				$validimg=$validcode_btn.find('img'),
 				error_tpl='<div class="alert alert-danger">\
 								<button type="button" class="close" data-dismiss="alert">\
 									<span aria-hidden="true">&times;</span>\
@@ -24,6 +21,15 @@
 			},1);
 
 
+			var cacheLogin=public_tool.getParams('login_module');
+			if(cacheLogin){
+				/*如果存在缓存，则删除缓存*/
+				public_tool.clear();
+				public_tool.clearCacheData();
+			}
+
+
+
 			//异步校验
 			$loginform.validate({
 				rules: {
@@ -33,9 +39,6 @@
 					passwd: {
 						required: true,
 						minlength:6
-					},
-					validcode:{
-						required:true
 					}
 				},
 
@@ -46,9 +49,6 @@
 					passwd: {
 						required: '请输入密码',
 						minlength:'密码必须超过6位字符'
-					},
-					validcode:{
-						required:'验证码不能为空'
 					}
 				},
 
@@ -71,17 +71,10 @@
 						"hideMethod": "fadeOut"
 					};
 
-
-					var cacheLogin=public_tool.getParams('login_module');
-
-					if(cacheLogin){
-						/*如果存在缓存，则删除缓存*/
-						public_tool.removeParams('login_module');
-					}
-
-
+					var basedomain='http://120.24.226.70:8081',
+						basepathname="/yttx-adminbms-api/sysuser/login";
 					$.ajax({
-						url: "http://120.24.226.70:8081/yttx-adminbms-api/sysuser/login",
+						url:basedomain+basepathname,
 						method: 'POST',
 						dataType: 'json',
 						async:false,
@@ -115,10 +108,13 @@
 						public_tool.setParams('login_module',{
 							'isLogin':true,
 							'datetime':moment().format('YYYY-MM-DD|HH:mm:ss'),
+							'reqdomain':basedomain,
+							'currentdomain':'',
+							'username':$username.val()||'匿名用户',
 							'param':{
 								'adminId':encodeURIComponent(result.adminId),
 								'token':encodeURIComponent(result.token),
-								'roleId':encodeURIComponent(result.roleId||1)
+								'roleId':encodeURIComponent(result.roleId)
 							}
 						});
 
@@ -154,21 +150,6 @@
 			$loginform.find(".form-group:has(.form-control):first .form-control").focus();
 
 
-			/*重新生成验证码*/
-			$validcode_btn.on('click',function(){
-				$.ajax({
-					url: "../../json/account/login.json",
-					method: 'POST',
-					dataType: 'json'
-				}).done(function(resp){
-					if(resp.flag){
-						$validimg.attr({'src':resp.src});
-					}
-				}).fail(function(){
-
-				});
-
-			});
 
 		}
 	});

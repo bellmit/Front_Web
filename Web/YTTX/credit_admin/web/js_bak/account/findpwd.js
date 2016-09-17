@@ -70,16 +70,50 @@
 					};
 
 					$.ajax({
-						url: "../../json/account/login.json",
+						url: "http://120.24.226.70:8081/yttx-adminbms-api/sysuser/updatePassword",
 						method: 'POST',
 						dataType: 'json',
+						async:false,
 						data: {
-							do_login: true,
-							username:$username.val(),
-							passwd:$pwd.val(),
-							repasswd:$repwd.val()
+							adminId:$username.val(),
+							password:$pwd.val(),
+							newPassword:$repwd.val()
 						}
 					}).done(function(resp){
+						var code=parseInt(resp.code,10),
+							result=resp.result;
+
+
+						//显示错误
+						if(code!==0){
+							$error_wrap.html(error_tpl.replace('$info',resp.message));
+							$error_wrap.find('.alert').hide().slideDown();
+							$pwd.select();
+							return false;
+						}
+
+
+						$error_wrap.html(error_tpl.replace('$info',resp.message));
+						$error_wrap.find('.alert').hide().slideDown();
+
+
+						//移除提示的错误信息
+						$error_wrap.find('.alert').slideUp('fast');
+
+
+						//放入本地存储
+						public_tool.setParams('login_module',{
+							'isLogin':true,
+							'datetime':moment().format('YYYY-MM-DD|HH:mm:ss'),
+							'param':{
+								'adminId':encodeURIComponent(result.adminId),
+								'token':encodeURIComponent(result.token),
+								'roleId':encodeURIComponent(result.roleId||1)
+							}
+						});
+
+
+
 						//调用进度条组件
 						show_loading_bar({
 							delay: .5,
@@ -93,17 +127,6 @@
 						});
 
 
-						//移除提示的错误信息
-						$error_wrap.find('.alert').slideUp('fast');
-
-
-						//显示错误
-						if(!resp.flag){
-							$error_wrap.html(error_tpl.replace('$info',resp.message));
-							$error_wrap.find('.alert').hide().slideDown();
-							$pwd.select();
-						}
-
 					}).fail(function(){
 						//移除提示的错误信息
 						$error_wrap.find('.alert').slideUp('fast');
@@ -112,7 +135,7 @@
 						$error_wrap.find('.alert').hide().slideDown();
 						$pwd.select();
 					});
-
+					return false;
 				}
 			});
 

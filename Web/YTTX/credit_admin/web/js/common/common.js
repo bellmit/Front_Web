@@ -847,7 +847,23 @@
 	public_tool.loadSideMenu=function($menu,$wrap,opt){
 
 		var self=this,
-		cacheMenu=self.getParams('menu_module')/*调用缓存*/;
+		cacheMenu=self.getParams('menu_module')/*调用缓存*/,
+			cacheLogin=self.getParams('login_module'),
+			currentdomain=cacheLogin.currentdomain,
+			baseurl=opt.url.split('/',3);
+
+		cacheLogin.currentdomain=baseurl[0]+'//'+baseurl[2];
+		self.removeParams('login_module');
+		self.setParams('login_module',cacheLogin);
+
+		/*检测是否改变了地址，且登陆地址和请求地址不一致*/
+		if(!self.validLogin()){
+			self.clear();
+			self.clearCacheData();
+			self.loginTips();
+			return false;
+		};
+
 
 		/*判断路由模块*/
 		if(public_tool.routeMap.issamemodule){
@@ -1398,12 +1414,13 @@
 			var tempvalid=self.validLogin(cacheLogin);
 			if(tempvalid){
 				self.initMap.loginMap= $.extend(true,{},cacheLogin);
-				var name=self.initMap.loginMap.name||'匿名用户';
-				public_vars.$admin_show_wrap.html(name+'<i class="fa-angle-down"></i>');
+				var name=self.initMap.loginMap.username;
+				public_vars.$admin_show_wrap.html('您好：<span class="g-c-info">&nbsp;'+name+'&nbsp;&nbsp;</span><i class="fa-angle-down"></i>');
 				return true;
 			}else{
 				/*清除缓存*/
 				self.clear();
+				self.clearCacheData();
 				self.loginTips();
 				return false;
 			}
@@ -1432,7 +1449,9 @@
 				login_sj=login_dt[1],
 				now=moment().format('YYYY-MM-DD|HH:mm:ss').split('|'),
 				now_rq=now[0],
-				now_sj=now[1];
+				now_sj=now[1],
+				reqdomain=cacheLogin.reqdomain,
+				currentdomain=cacheLogin.currentdomain;
 
 			/*判断日期*/
 			if(login_rq!==now_rq){
@@ -1455,6 +1474,12 @@
 				}
 				return true;
 			}*/
+
+			/*请求域与登陆域不一致*/
+			if(currentdomain!==''&&reqdomain!==currentdomain){
+				return false;
+			}
+
 			return true;
 		}else{
 			return false;
@@ -1712,13 +1737,17 @@ var public_vars = public_vars || {};
 							},
 							errorPlacement: function (error, element)
 							{
-								if(element.closest('.has-switch').length) {
-									error.insertAfter(element.closest('.has-switch'));
-								}
-								else if(element.parent('.checkbox, .radio').length || element.parent('.input-group').length) {
-									error.insertAfter(element.parent());
-								} else {
-									error.insertAfter(element);
+								if(element.hasClass('self-error-pos')){
+									error.insertAfter(element.closest('.self-error-pos-wrap'));
+								}else{
+									if(element.closest('.has-switch').length) {
+										error.insertAfter(element.closest('.has-switch'));
+									}
+									else if(element.parent('.checkbox, .radio').length || element.parent('.input-group').length) {
+										error.insertAfter(element.parent());
+									} else {
+										error.insertAfter(element);
+									}
 								}
 							}
 						},

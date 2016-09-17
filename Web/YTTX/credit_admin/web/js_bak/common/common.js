@@ -482,13 +482,17 @@
 			"name":"主页",
 			"code":"index",
 			"match":"index",
-			"class":"menu-ux-home"
+			"class":"menu-ux-home",
+			"module":"",
+			"modid":"0"
 		},
 		"1":{
 			"name":"系统管理",
 			"code":"admin",
 			"match":"-admin-",
 			"class":"menu-ux-admin",
+			"module":"admin",
+			"modid":"1",
 			"prid":{
 				1:{
 					"funcCode": "admin-message-management",
@@ -533,6 +537,8 @@
 			"code":"ad",
 			"match":"-ad-",
 			"class":"menu-ux-ad",
+			"module":"ad",
+			"modid":"6",
 			"prid":{
 				10:{
 					"funcCode": "ad-article-shelves",
@@ -573,6 +579,8 @@
 			"code":"user",
 			"match":"-user-",
 			"class":"menu-ux-user",
+			"module":"user",
+			"modid":"11",
 			"prid":{
 				18:{
 					"funcCode": "user-account-view",
@@ -605,6 +613,8 @@
 			"code":"content",
 			"match":"-content-",
 			"class":"menu-ux-article",
+			"module":"content",
+			"modid":"19",
 			"prid":{
 				24:{
 					"funcCode": "content-article-view",
@@ -661,6 +671,8 @@
 			"code":"service",
 			"match":"-service-",
 			"class":"menu-ux-serve",
+			"module":"service",
+			"modid":"28",
 			"prid":{
 				36:{
 					"funcCode": "service-add",
@@ -681,6 +693,8 @@
 			"code":"credit",
 			"match":"-credit-",
 			"class":"menu-ux-credit",
+			"module":"credit",
+			"modid":"30",
 			"prid":{
 				39:{
 					"funcCode": "credit-strategy-verify",
@@ -723,10 +737,19 @@
 					"funcName": "提额策略审核"
 				}
 			}
+		},
+		"35":{
+			"name":"财务管理",
+			"code":"finance",
+			"match":"-finance-",
+			"class":"menu-ux-finance",
+			"module":"finance",
+			"modid":"30"
 		}
 	};
 	/*路由映射*/
 	public_tool.routeMap={
+			issetting:false,
 			path:'',
 			module:'',
 			isindex:false,
@@ -747,6 +770,7 @@
 
 		/*调用路由记录*/
 		var history_path={
+			issetting:false,
 			/*当前文件*/
 			current:{
 				isindex:isindex,
@@ -766,7 +790,8 @@
 		/*重新赋值*/
 		if(route){
 			history_path.prev=route.current;
-			public_tool.routeMap.issamemodule=module===route.current.module
+			public_tool.routeMap.issamemodule=module===route.current.module;
+			self.routeMap.issetting=history_path.issetting=route.issetting;
 		}else{
 			public_tool.routeMap.issamemodule=false;
 		}
@@ -777,8 +802,44 @@
 		public_tool.routeMap.isindex=isindex;
 		public_tool.routeMap.path=path;
 		public_tool.routeMap.module=module;
-	};
 
+		if(route){
+			/*判断是否设置权限*/
+			self.isPermission(route.issetting);
+		}
+	};
+	/*判断是否修改了权限*/
+	public_tool.isPermission=function(flag){
+		var self=this,
+			flag=flag||self.routeMap.issetting;
+
+		if(flag){
+			var count= 3,
+				tips=dialog({
+					title:'温馨提示',
+					width:300,
+					ok:false,
+					cancel:false,
+					content:'<span class="g-c-bs-warning g-btips-warn">您已设置了新的系统权限，&nbsp;<span class="g-c-bs-info" id="permission_tips"></span>&nbsp;秒后将自动退出系统</span>'
+				}).show(),
+				pertip=null,
+				tipsdom=document.getElementById('permission_tips');
+
+
+			tipsdom.innerHTML=count;
+			pertip=setInterval(function(){
+				count--;
+				tipsdom.innerHTML=count;
+				if(count<0){
+					clearInterval(pertip);
+					pertip=null;
+					tips.close().remove();
+					tipsdom=null;
+					self.loginOut();
+				}
+			},1000);
+		}
+	}
 
 
 
@@ -786,7 +847,23 @@
 	public_tool.loadSideMenu=function($menu,$wrap,opt){
 
 		var self=this,
-		cacheMenu=self.getParams('menu_module')/*调用缓存*/;
+		cacheMenu=self.getParams('menu_module')/*调用缓存*/,
+			cacheLogin=self.getParams('login_module'),
+			currentdomain=cacheLogin.currentdomain,
+			baseurl=opt.url.split('/',3);
+
+		cacheLogin.currentdomain=baseurl[0]+'//'+baseurl[2];
+		self.removeParams('login_module');
+		self.setParams('login_module',cacheLogin);
+
+		/*检测是否改变了地址，且登陆地址和请求地址不一致*/
+		if(!self.validLogin()){
+			self.clear();
+			self.clearCacheData();
+			self.loginTips();
+			return false;
+		};
+
 
 		/*判断路由模块*/
 		if(public_tool.routeMap.issamemodule){
@@ -797,6 +874,11 @@
 				$(cacheMenu).appendTo($menu.html(''));
 				//初始化
 				self.initSideMenu($wrap);
+				/*导航高亮*/
+				self.highSideMenu($menu);
+				/*解析权限*/
+				var cacheSource=self.getParams('source_module');
+				self.resolvePower(cacheSource,true);
 				return;
 			}else{
 				/*不同模块则重新加载*/
@@ -805,150 +887,160 @@
 		}else{
 			self.requestSideMenu($menu,$wrap,opt);
 		}
-
-		/*解析权限*/
-		self.resolvePower(opt);
 	};
 	/*请求菜单*/
 	public_tool.requestSideMenu= function ($menu,$wrap,opt) {
 		var self=this,
+			cacheSource=self.getParams('source_module');
+
+		if(cacheSource){
+			//存在数据源
+			/*解析菜单*/
+			self.doSideMenu(cacheSource,$menu,$wrap);
+		}else{
+			/*不存在资源则重新加载*/
+			$.ajax({
+				url:opt.url,
+				async:opt.async,
+				type:opt.type,
+				data:opt.param,
+				dataType:opt.datatype
+			}).done(function(data){
+				if(parseInt(data.code,10)!==0){
+					//查询异常
+					return false;
+				}
+				self.doSideMenu(data,$menu,$wrap);
+			}).fail(function(){
+				console.log('error');
+			});
+		}
+
+	};
+	//处理菜单
+	public_tool.doSideMenu=function(data,$menu,$wrap){
+		var self=this,
 			matchClass=function(map,str){
 				/*修正class*/
-				if(typeof map!=='undefined'&&str!==map.class){
-					return map.class;
+				if(typeof map!=='undefined'&&str!==map['class']){
+					return map['class'];
 				}
 				return str;
-			};
+			},
+			menu=data.result.menu,
+			len=menu.length,
+			menustr='',
+			i=0,
+			j=0,
+			key='modItem',
+			suffix='.html',
+			subactive="sub-menu-active",
+			link='',
+			item=null,
+			sublen='',
+			subitem=null,
+			isindex=self.routeMap.isindex,
+			module=self.routeMap.module,
+			path=self.routeMap.path;
 
-		$.ajax({
-			url:opt.url,
-			async:opt.async,
-			type:opt.type,
-			data:opt.param,
-			dataType:opt.datatype
-		}).done(function(data){
-			if(parseInt(data.code,10)!==0){
-				//查询异常
-				return false;
+		for(i;i<len;i++){
+			item=menu[i];
+			link=self.menuMap[item.modId];
+			if(typeof link==='undefined'){
+				continue;
 			}
-			var menu=data.result.menu,
-				len=menu.length,
-				menustr='',
-				i=0,
-				j=0,
-				key='modItem',
-				suffix='.html',
-				subactive="sub-menu-active",
-				link='',
-				item=null,
-				sublen='',
-				subitem=null,
-				isindex=self.routeMap.isindex,
-				module=self.routeMap.module,
-				path=self.routeMap.path;
+			//解析菜单
+			if(isindex){
+				//当前页为首页的情况
+				var issub=typeof (subitem=item[key])!=='undefined';
 
-			/*解析权限*/
-			self.resolvePower(menu);
+				if(i===0&&item.modId!==0){
+					/*不匹配首页*/
+					menustr+='<li><a href=\"index'+suffix+'\"><i class=\"menu-ux-home\"></i><span>首页</span></a></li>';
+				}else if(i===0&&!issub){
+					//匹配首页且没有子菜单
+					menustr+='<li><a href=\"index'+item.modLink+suffix+'\"><i class=\"'+matchClass(link,item.modClass)+'\"></i><span>'+item.modName+'</span></a></li>';
+				}
 
-			for(i;i<len;i++){
-				item=menu[i];
-				link=self.menuMap[item.modId];
-				//解析菜单
-				if(isindex){
-					//当前页为首页的情况
-					var issub=typeof (subitem=item[key])!=='undefined';
-
-					if(i===0&&item.modId!==0){
-						/*不匹配首页*/
-						menustr+='<li><a href=\"index'+suffix+'\"><i class=\"menu-ux-home\"></i><span>首页</span></a></li>';
-					}else if(i===0&&!issub){
-						//匹配首页且没有子菜单
-						menustr+='<li><a href=\"index'+item.modLink+suffix+'\"><i class=\"'+matchClass(link,item.modClass)+'\"></i><span>'+item.modName+'</span></a></li>';
-					}
-
-					if(issub){
-						//子菜单循环
-						if(path.indexOf(link.match)!==-1){
-							menustr+='<li class="has-sub expanded"><a href=\"\"><i class=\"'+matchClass(link,item.modClass)+'\"></i><span>'+item.modName+'</span></a>';
-							menustr+="<ul style='display:block;'>";
-						}else{
-							menustr+='<li class="has-sub"><a href=\"\"><i class=\"'+matchClass(link,item.modClass)+'\"></i><span>'+item.modName+'</span></a>';
-							menustr+="<ul>";
-						}
-						sublen=subitem.length;
-						j=0;
-						for(j;j<sublen;j++){
-							item=subitem[j];
-							if(item.modLink===path){
-								menustr+='<li class="'+subactive+'"><a href=\"'+link.code+'/'+item.modLink+suffix+'\"><span>'+item.modName+'</span></a></li>';
-							}else{
-								menustr+='<li><a href=\"'+link.code+'/'+item.modLink+suffix+'\"><span>'+item.modName+'</span></a></li>';
-							}
-						}
-						menustr+="</li></ul>";
+				if(issub){
+					//子菜单循环
+					if(path.indexOf(link.match)!==-1){
+						menustr+='<li class="has-sub expanded"><a href=\"\"><i class=\"'+matchClass(link,item.modClass)+'\"></i><span>'+item.modName+'</span></a>';
+						menustr+="<ul style='display:block;'>";
 					}else{
-						menustr+='<li class="has-sub"><a href=\"'+link.code+'/'+item.modLink+suffix+'\"><i class=\"'+matchClass(link,item.modClass)+'\"></i><span>'+item.modName+'</span></a>';
+						menustr+='<li class="has-sub"><a href=\"\"><i class=\"'+matchClass(link,item.modClass)+'\"></i><span>'+item.modName+'</span></a>';
+						menustr+="<ul>";
 					}
+					sublen=subitem.length;
+					j=0;
+					for(j;j<sublen;j++){
+						item=subitem[j];
+							menustr+='<li><a href=\"'+link.code+'/'+item.modLink+suffix+'\"><span>'+item.modName+'</span></a></li>';
+					}
+					menustr+="</li></ul>";
 				}else{
-					//当前页为其他页的情况
-					var issub=typeof (subitem=item[key])!=='undefined';
+					menustr+='<li><a href=\"'+link.code+'/'+item.modLink+suffix+'\"><i class=\"'+matchClass(link,item.modClass)+'\"></i><span>'+item.modName+'</span></a>';
+				}
+			}else{
+				//当前页为其他页的情况
+				var issub=typeof (subitem=item[key])!=='undefined';
 
 
-					if(i===0&&item.modId!==0){
-						/*不匹配首页*/
-						menustr+='<li><a href=\"../index'+suffix+'\"><i class=\"menu-ux-home\"></i><span>首页</span></a></li>';
-					}else if(i===0&&!issub){
-						//匹配首页且没有子菜单
-						menustr+='<li><a href=\"../index'+item.modLink+suffix+'\"><i class=\"'+matchClass(link,item.modClass)+'\"></i><span>'+item.modName+'</span></a></li>';
-					}
+				if(i===0&&item.modId!==0){
+					/*不匹配首页*/
+					menustr+='<li><a href=\"../index'+suffix+'\"><i class=\"menu-ux-home\"></i><span>首页</span></a></li>';
+				}else if(i===0&&!issub){
+					//匹配首页且没有子菜单
+					menustr+='<li><a href=\"../index'+item.modLink+suffix+'\"><i class=\"'+matchClass(link,item.modClass)+'\"></i><span>'+item.modName+'</span></a></li>';
+				}
 
-					if(issub){
-						//子菜单循环
-						if(path.indexOf(link.match)!==-1){
-							menustr+='<li class="has-sub expanded"><a href=\"\"><i class=\"'+matchClass(link,item.modClass)+'\"></i><span>'+item.modName+'</span></a>';
-							menustr+="<ul style='display:block;'>";
-						}else{
-							menustr+='<li class="has-sub"><a href=\"\"><i class=\"'+matchClass(link,item.modClass)+'\"></i><span>'+item.modName+'</span></a>';
-							menustr+="<ul>";
-						}
-						sublen=subitem.length;
-						j=0;
-						var ismodule=link.match.indexOf(module)!==-1;
-						for(j;j<sublen;j++){
-							item=subitem[j];
-							if(ismodule){
-								if(item.modLink===path){
-									menustr+='<li class="'+subactive+'"><a href=\"'+item.modLink+suffix+'\"><span>'+item.modName+'</span></a></li>';
-								}else{
-									menustr+='<li><a href=\"'+item.modLink+suffix+'\"><span>'+item.modName+'</span></a></li>';
-								}
-							}else{
-								menustr+='<li><a href=\"../'+link.code+'/'+item.modLink+suffix+'\"><span>'+item.modName+'</span></a></li>';
-							}
-						}
-						menustr+="</li></ul>";
+				if(issub){
+					//子菜单循环
+					if(path.indexOf(link.match)!==-1){
+						menustr+='<li class="has-sub expanded"><a href=\"\"><i class=\"'+matchClass(link,item.modClass)+'\"></i><span>'+item.modName+'</span></a>';
+						menustr+="<ul style='display:block;'>";
 					}else{
-						if(path.indexOf(link.match)!==-1){
-							menustr+='<li class="has-sub expanded"><a href=\"'+item.modLink+suffix+'\"><i class=\"'+matchClass(link,item.modClass)+'\"></i><span>'+item.modName+'</span></a>';
+						menustr+='<li class="has-sub"><a href=\"\"><i class=\"'+matchClass(link,item.modClass)+'\"></i><span>'+item.modName+'</span></a>';
+						menustr+="<ul>";
+					}
+					sublen=subitem.length;
+					j=0;
+					var ismodule=path.indexOf(link.match)!==-1;
+					for(j;j<sublen;j++){
+						item=subitem[j];
+						if(ismodule){
+								menustr+='<li><a href=\"'+item.modLink+suffix+'\"><span>'+item.modName+'</span></a></li>';
 						}else{
-							menustr+='<li class="has-sub"><a href=\"../'+link.code+'/'+item.modLink+suffix+'\"><i class=\"'+matchClass(link,item.modClass)+'\"></i><span>'+item.modName+'</span></a>';
+								menustr+='<li><a href=\"../'+link.code+'/'+item.modLink+suffix+'\"><span>'+item.modName+'</span></a></li>';
 						}
+					}
+					menustr+="</li></ul>";
+				}else{
+					if(path.indexOf(link.match)!==-1){
+						menustr+='<li><a href=\"'+item.modLink+suffix+'\"><i class=\"'+matchClass(link,item.modClass)+'\"></i><span>'+item.modName+'</span></a>';
+					}else{
+						menustr+='<li><a href=\"../'+link.code+'/'+item.modLink+suffix+'\"><i class=\"'+matchClass(link,item.modClass)+'\"></i><span>'+item.modName+'</span></a>';
 					}
 				}
 			}
+		}
 
-			//放入本地存储(除了首页之外)
-			self.setParams('menu_module',menustr);
 
-			//放入dom中
-			$(menustr).appendTo($menu.html(''));
+		/*解析权限*/
+		self.resolvePower(data,true);
 
-			//调用菜单渲染
-			self.initSideMenu($wrap);
+		//放入菜单模块
+		self.setParams('menu_module',menustr);
+		//存入数据源
+		self.setParams('source_module',data);
 
-		}).fail(function(){
-			console.log('error');
-		});
+		//放入dom中
+		$(menustr).appendTo($menu.html(''));
+
+		//调用菜单渲染
+		self.initSideMenu($wrap);
+		/*导航高亮*/
+		self.highSideMenu($menu);
 	};
 	//卸载左侧菜单条
 	public_tool.removeSideMenu=function($menu){
@@ -956,6 +1048,7 @@
 		$menu.html('');
 		//清除本地存储缓存
 		this.removeParams('menu_module');
+		this.removeParams('source_module');
 	};
 	//初始化左侧导航
 	public_tool.initSideMenu=function($wrap){
@@ -990,6 +1083,11 @@
 				});
 			});
 		}
+	};
+	//当前高亮菜单
+	public_tool.highSideMenu=function($menu){
+		var self=this;
+		$menu.find("a[href='"+self.routeMap.path+".html']").parent().addClass('sub-menu-active');
 	};
 	//导航展开服务类
 	public_tool.expandSideMenu=function($li,$sub,$wrap){
@@ -1101,6 +1199,158 @@
 	};
 
 
+	/*权限分配*/
+	/*菜单权限映射*/
+	public_tool.powerMap={};
+	/*解析权限*/
+	public_tool.resolvePower=function(data,flag){
+		/*
+		 * data:数据源
+		 * flag:是否存入缓存
+		 * */
+		var self=this,
+			cachePower;
+
+		if(flag){
+			cachePower=self.getParams('power_module')/*调用缓存*/
+			if(cachePower){
+				/*如果存在缓存，则读取缓存*/
+				self.powerMap=cachePower;
+			}else{
+				self.handlePower(data,flag);
+			}
+		}else{
+			return self.handlePower(data,flag);
+		}
+	};
+	/*处理权限*/
+	public_tool.handlePower=function(data,flag){
+		var self=this;
+		/*
+		* data:数据源
+		* flag:是否存入缓存
+		* */
+		/*解析权限*/
+		var menu=data.result.menu,
+			len=menu.length,
+			i=0,
+			prkey='permitItem',
+			item=null,
+			pritem=null,
+			modid_map={},
+			result={};
+
+		for(i;i<len;i++){
+			item=menu[i];
+			/*解析权限*/
+			var ispr=typeof (pritem=item[prkey])!=='undefined';
+			if(ispr){
+				var k= 0,
+					prlen=pritem.length,
+					poweritem={};
+				for(k;k<prlen;k++){
+					var temppt=pritem[k],
+						prid=temppt.prid;
+					poweritem[prid]=temppt;
+				}
+				if(typeof modid_map[item.modId]==='undefined'){
+					modid_map[item.modId]=poweritem;
+				}else{
+					modid_map[item.modId]=$.extend(true,{},poweritem);
+				}
+			}
+			result=$.extend(true,{},modid_map);
+		}
+		/*然后存入缓存*/
+		if(flag){
+			self.powerMap=$.extend(true,{},result);
+			self.setParams('power_module',result);
+		}else{
+			return result;
+		}
+	};
+	//根据模块判断拥有的权限
+	public_tool.getPower=function(key){
+		var self=this,
+			havepower=$.isEmptyObject(self.powerMap);
+
+		if(havepower){
+			/*没有获取到权限*/
+			return null;
+		}else{
+			var path,
+				module,
+				currentpower,
+				menumap=self.menuMap,
+				modid;
+			if(typeof key!=='undefined'){
+				modid=key;
+			}else{
+				path=self.routeMap.path;
+				module=self.routeMap.module;
+				if(module==''&&module=='account'){
+					return null;
+				}
+				for(var i in menumap){
+					if(path.indexOf(menumap[i].match)!==-1){
+						modid=i;
+						break;
+					}
+				}
+			}
+
+			currentpower= $.extend(true,{},self.powerMap[modid]);
+			for(var j in currentpower){
+				if(currentpower[j].isPermit===0){
+					delete currentpower[j];
+				}
+			}
+			return currentpower;
+		}
+		return null;
+	};
+	//根据关键词判断权限
+	public_tool.getKeyPower=function(key,list){
+		if(!key||!list){
+			return false;
+		}
+		var ispower=false;
+		for(var i in list){
+			if(list[i]['funcName']===key){
+				ispower=true;
+				break;
+			}
+		}
+		return ispower;
+	};
+	//根据模块判断拥有的权限
+	public_tool.getAllPower=function(){
+		var self=this,
+			havepower=$.isEmptyObject(self.powerMap);
+
+		if(havepower){
+			/*没有获取到权限*/
+			return null;
+		}else{
+			var module=self.routeMap.module;
+
+				if(module==''&&module=='account'){
+					return null;
+				}
+			var currentpower= $.extend(true,{},self.powerMap);
+			for(var i in currentpower){
+				var temppower=currentpower[i];
+				for(var j in temppower){
+					if(temppower[j].isPermit===0){
+						delete temppower[j];
+					}
+				}
+			}
+			return currentpower;
+		}
+		return null;
+	};
+
 
 	//模拟滚动条更新
 	public_tool.scrollUpdate=function(flag,$wrap){
@@ -1164,10 +1414,13 @@
 			var tempvalid=self.validLogin(cacheLogin);
 			if(tempvalid){
 				self.initMap.loginMap= $.extend(true,{},cacheLogin);
+				var name=self.initMap.loginMap.name||'匿名用户';
+				public_vars.$admin_show_wrap.html('您好：<span class="g-c-info">&nbsp;'+name+'&nbsp;&nbsp;</span><i class="fa-angle-down"></i>');
 				return true;
 			}else{
 				/*清除缓存*/
 				self.clear();
+				self.clearCacheData();
 				self.loginTips();
 				return false;
 			}
@@ -1200,8 +1453,9 @@
 
 			/*判断日期*/
 			if(login_rq!==now_rq){
+				//同一天有效
 				return false;
-			}else if(login_rq===now_rq){
+			}/*else if(login_rq===now_rq){
 				login_sj=login_sj.split(':');
 				now_sj=now_sj.split(':');
 				var login_hh=login_sj[0],
@@ -1210,13 +1464,20 @@
 					now_mm=now_sj[1];
 
 				if(login_hh!==now_hh){
+					//同一小时有效
 					return false;
 				}else if(now_mm - login_mm >30){
-					console.log(now_mm - login_mm);
+					//多少分钟内有效
 					return false;
 				}
 				return true;
+			}*/
+
+			/*请求域与登陆域不一致*/
+			if(currentdomain!==''&&reqdomain!==currentdomain){
+				return false;
 			}
+
 			return true;
 		}else{
 			return false;
@@ -1226,10 +1487,11 @@
 	/*退出系统*/
 	public_tool.loginOut=function(){
 		var self=this,
-			isindex=routeMap.isindex;
+			isindex=self.routeMap.isindex;
 
 		/*清除所有记录*/
 		self.clear();
+		self.clearCacheData();
 
 		/*根据路径跳转*/
 		if(isindex){
@@ -1237,6 +1499,27 @@
 		}else{
 			location.href='../account/login.html';
 		}
+	};
+	/*清除内存数据*/
+	public_tool.clearCacheData=function(){
+		var self=this;
+		/*清除菜单权限映射*/
+		if(!$.isEmptyObject(self.powerMap)){
+			self.powerMap={};
+		}
+		/*初始化登陆缓存*/
+		self.initMap={
+			isrender:false,
+			loginMap:{}
+		};
+		/*路由映射*/
+		self.routeMap={
+			issetting:false,
+			path:'',
+			module:'',
+			isindex:false,
+			issamemodule:false
+		};
 	};
 	/*跳转提示*/
 	public_tool.loginTips=function(){
@@ -1268,8 +1551,6 @@
 			},1000);
 
 	};
-
-
 
 
 	/*初始化判定*/
@@ -1316,93 +1597,6 @@
 	};
 
 
-
-
-
-
-	/*权限分配*/
-	/*菜单权限映射*/
-	public_tool.powerMap={};
-	/*解析权限*/
-	public_tool.resolvePower=function(data){
-		var self=this,
-			cachePower=self.getParams('power_module')/*调用缓存*/;
-
-		if(cachePower){
-			/*如果是同一模块侧直接获取缓存*/
-			/*如果存在缓存，则读取缓存*/
-			self.powerMap=cachePower;
-			return;
-		}else{
-			var menu=data,
-				len=menu.length,
-				i=0,
-				prkey='permitItem',
-				item=null,
-				pritem=null,
-				modid_map={};
-
-			for(i;i<len;i++){
-				item=menu[i];
-				/*解析权限*/
-				var ispr=typeof (pritem=item[prkey])!=='undefined';
-				if(ispr){
-					var k= 0,
-						prlen=pritem.length,
-						poweritem={};
-					for(k;k<prlen;k++){
-						var temppt=pritem[k],
-							prid=temppt.prid;
-						poweritem[prid]=temppt;
-					}
-					if(typeof modid_map[item.modId]==='undefined'){
-						modid_map[item.modId]=poweritem;
-					}else{
-						modid_map[item.modId]=$.extend(true,{},poweritem);
-					}
-				}
-				self.powerMap=$.extend(true,{},modid_map);
-			}
-
-			/*清除缓存，然后存入缓存*/
-			self.removeParams('power_module');
-			self.setParams('power_module',self.powerMap);
-		}
-	};
-	//加载权限
-	public_tool.getPower=function(opt){
-		var self=this,
-			cachePower=self.getParams('power_module')/*调用缓存*/;
-
-		if(cachePower){
-			/*如果是同一模块侧直接获取缓存*/
-			/*如果存在缓存，则读取缓存*/
-			self.powerMap=cachePower;
-			return;
-		}else{
-			//没有缓存则重新请求
-
-			/*判断是否已经加载权限*/
-			$.ajax({
-				url:opt.url,
-				async:opt.async,
-				type:opt.type,
-				data:opt.param,
-				dataType:opt.datatype
-			}).done(function(data){
-				if(parseInt(data.code,10)!==0){
-					//查询异常
-					return false;
-				}
-				/*解析权限*/
-				self.resolvePower(data.result.menu);
-			}).fail(function(){
-				console.log('power error');
-			});
-		}
-	};
-
-
 	window.public_tool=public_tool;
 })(jQuery);
 
@@ -1423,7 +1617,8 @@ var public_vars = public_vars || {};
 		public_vars.$logout_btn=$('#logout_btn');
 		public_vars.$page_support_wrap=$('#page_support_wrap');
 		public_vars.$page_support=public_vars.$page_support_wrap.children();
-		public_vars.$goto_login=$('#goto_login');
+		public_vars.$goto_login=$('#goto_login'),
+		public_vars.$admin_show_wrap=$('#admin_show_wrap');
 
 
 		/*初始化判定*/
@@ -1540,13 +1735,17 @@ var public_vars = public_vars || {};
 							},
 							errorPlacement: function (error, element)
 							{
-								if(element.closest('.has-switch').length) {
-									error.insertAfter(element.closest('.has-switch'));
-								}
-								else if(element.parent('.checkbox, .radio').length || element.parent('.input-group').length) {
-									error.insertAfter(element.parent());
-								} else {
-									error.insertAfter(element);
+								if(element.hasClass('self-error-pos')){
+									error.insertAfter(element.closest('.self-error-pos-wrap'));
+								}else{
+									if(element.closest('.has-switch').length) {
+										error.insertAfter(element.closest('.has-switch'));
+									}
+									else if(element.parent('.checkbox, .radio').length || element.parent('.input-group').length) {
+										error.insertAfter(element.parent());
+									} else {
+										error.insertAfter(element);
+									}
 								}
 							}
 						},
