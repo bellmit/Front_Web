@@ -1290,7 +1290,8 @@
 	/*退出系统*/
 	public_tool.loginOut=function(istips){
 		var self=this,
-			isindex=self.routeMap.isindex;
+			isindex=self.routeMap.isindex,
+			module=self.routeMap.module;
 
 		/*清除所有记录*/
 		self.clear();
@@ -1303,7 +1304,11 @@
 			if(isindex){
 				location.href='account/login.html';
 			}else{
-				location.href='../account/login.html';
+				if(module.indexOf('account')!==-1){
+					location.href='login.html';
+				}else{
+					location.href='../account/login.html';
+				}
 			}
 		}
 	};

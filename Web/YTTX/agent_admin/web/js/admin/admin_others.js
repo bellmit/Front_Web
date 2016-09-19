@@ -98,8 +98,13 @@
 						public_tool.clear();
 						public_tool.clearCacheData();
 						public_tool.loginTips();
+						return false;
 					}
 					console.log(resp.message);
+					dia.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"操作失败")+'</span>').show();
+					setTimeout(function () {
+						dia.close();
+					},2000);
 					return false;
 				}
 				var result=resp.result;
@@ -220,6 +225,10 @@
 				$profit_edit_form1.attr({
 					'data-setting':''
 				});
+				dia.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"操作失败")+'</span>').show();
+				setTimeout(function () {
+					dia.close();
+				},2000);
 			});
 
 
@@ -242,8 +251,13 @@
 						public_tool.clear();
 						public_tool.clearCacheData();
 						public_tool.loginTips();
+						return false
 					}
 					console.log(resp.message);
+					dia.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"操作失败")+'</span>').show();
+					setTimeout(function () {
+						dia.close();
+					},2000);
 					return false;
 				}
 				var result=resp.result;
@@ -369,6 +383,10 @@
 				$profit_edit_form1.attr({
 					'data-setting':''
 				});
+				dia.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"操作失败")+'</span>').show();
+				setTimeout(function () {
+					dia.close();
+				},2000);
 			});
 
 
@@ -523,9 +541,9 @@
 												var code=parseInt(resp.code,10);
 												if(code!==0){
 													console.log(resp.message);
-													self.content('<span class="g-c-bs-warning g-btips-warn">设置失败</span>').show();
+													dia.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"设置失败")+'</span>').show();
 													setTimeout(function () {
-														self.close();
+														dia.close();
 													},2000);
 													return false;
 												}
@@ -534,11 +552,11 @@
 													self.close();
 												},2000);
 											})
-											.fail(function(){
-												self.content('<span class="g-c-bs-warning g-btips-warn">操作失败</span>').show();
+											.fail(function(resp){
+												dia.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"操作失败")+'</span>').show();
 												setTimeout(function () {
-													self.close();
-												},2000)
+													dia.close();
+												},2000);
 
 											});
 									},'admin_update');
@@ -550,7 +568,7 @@
 											var code=parseInt(resp.code,10);
 											if(code!==0){
 												console.log(resp.message);
-												dia.content('<span class="g-c-bs-warning g-btips-warn">设置失败</span>').show();
+												dia.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"设置失败")+'</span>').show();
 												setTimeout(function () {
 													dia.close();
 												},2000);
@@ -561,11 +579,11 @@
 												dia.close();
 											},2000);
 										})
-										.fail(function(){
-											dia.content('<span class="g-c-bs-warning g-btips-warn">操作失败</span>').show();
+										.fail(function(resp){
+											dia.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"操作失败")+'</span>').show();
 											setTimeout(function () {
 												dia.close();
-											},2000)
+											},2000);
 
 										});
 								}
@@ -578,9 +596,9 @@
 												var code=parseInt(resp.code,10);
 												if(code!==0){
 													console.log(resp.message);
-													self.content('<span class="g-c-bs-warning g-btips-warn">设置失败</span>').show();
+													dia.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"设置失败")+'</span>').show();
 													setTimeout(function () {
-														self.close();
+														dia.close();
 													},2000);
 													return false;
 												}
@@ -589,11 +607,11 @@
 													self.close();
 												},2000);
 											})
-											.fail(function(){
-												self.content('<span class="g-c-bs-warning g-btips-warn">操作失败</span>').show();
+											.fail(function(resp){
+												dia.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"操作失败")+'</span>').show();
 												setTimeout(function () {
-													self.close();
-												},2000)
+													dia.close();
+												},2000);
 
 											});
 									},'admin_update');
@@ -605,7 +623,7 @@
 											var code=parseInt(resp.code,10);
 											if(code!==0){
 												console.log(resp.message);
-												dia.content('<span class="g-c-bs-warning g-btips-warn">设置失败</span>').show();
+												dia.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"设置失败")+'</span>').show();
 												setTimeout(function () {
 													dia.close();
 												},2000);
@@ -616,12 +634,11 @@
 												dia.close();
 											},2000);
 										})
-										.fail(function(){
-											dia.content('<span class="g-c-bs-warning g-btips-warn">操作失败</span>').show();
+										.fail(function(resp){
+											dia.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"操作失败")+'</span>').show();
 											setTimeout(function () {
 												dia.close();
-											},2000)
-
+											},2000);
 										});
 								}
 								return false;

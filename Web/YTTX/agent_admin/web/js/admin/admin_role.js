@@ -113,6 +113,10 @@
 							var code=parseInt(json.code,10);
 							if(code!==0){
 								console.log(json.message);
+								dia.content('<span class="g-c-bs-warning g-btips-warn">'+(json.message||"操作失败")+'</span>').show();
+								setTimeout(function () {
+									dia.close();
+								},2000);
 								return [];
 							}
 							return json.result.list;
@@ -153,8 +157,13 @@
 								public_tool.clear();
 								public_tool.clearCacheData();
 								public_tool.loginTips();
+								return [];
 							}
 							console.log(json.message);
+							dia.content('<span class="g-c-bs-warning g-btips-warn">'+(json.message||"操作失败")+'</span>').show();
+							setTimeout(function () {
+								dia.close();
+							},2000);
 							return [];
 						}
 						var list=json.result.list,
@@ -415,7 +424,7 @@
 									})
 									.fail(function(resp){
 										console.log(resp.message);
-										self.content('<span class="g-c-bs-warning g-btips-warn">删除失败</span>').show();
+										self.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"删除失败")+'</span>').show();
 										setTimeout(function () {
 											self.close();
 										},2000);
@@ -513,6 +522,10 @@
 										var code=parseInt(resp.code,10);
 										if(code!==0){
 											console.log(resp.message);
+											dia.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"操作失败")+'</span>').show();
+											setTimeout(function () {
+												dia.close();
+											},2000);
 											return false;
 										}
 										/*是否是正确的返回数据*/
@@ -550,6 +563,10 @@
 									})
 									.fail(function(resp){
 										console.log(resp.message);
+										dia.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"操作失败")+'</span>').show();
+										setTimeout(function () {
+											dia.close();
+										},2000);
 									});
 							}
 						}
@@ -713,7 +730,7 @@
 									var code=parseInt(resp.code,10);
 									if(code!==0){
 										console.log(resp.message);
-										dia.content('<span class="g-c-bs-warning g-btips-warn">操作失败</span>').show();
+										dia.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"操作失败")+'</span>').show();
 										setTimeout(function () {
 											dia.close();
 										},2000);
@@ -794,7 +811,7 @@
 									var code=parseInt(resp.code,10);
 									if(code!==0){
 										console.log(resp.message);
-										dia.content('<span class="g-c-bs-warning g-btips-warn">操作失败</span>').show();
+										dia.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"操作失败")+'</span>').show();
 										setTimeout(function () {
 											dia.close();
 										},2000);

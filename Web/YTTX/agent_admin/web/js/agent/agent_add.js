@@ -117,8 +117,13 @@
 							public_tool.clear();
 							public_tool.clearCacheData();
 							public_tool.loginTips();
+							return [];
 						}
 						console.log(json.message);
+						dia.content('<span class="g-c-bs-warning g-btips-warn">'+(json.message||"操作失败")+'</span>').show();
+						setTimeout(function () {
+							dia.close();
+						},2000);
 						return [];
 					}
 					var list=json.result.list;
@@ -611,6 +616,10 @@
 								})
 								.fail(function(resp){
 									console.log(resp.message);
+									dia.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"操作失败")+'</span>').show();
+									setTimeout(function () {
+										dia.close();
+									},2000);
 								});
 							return false;
 						}
@@ -718,6 +727,7 @@
 						public_tool.clear();
 						public_tool.clearCacheData();
 						public_tool.loginTips();
+						return false;
 					}
 					console.log(resp.message);
 					$agent_parentid.attr({
@@ -727,6 +737,10 @@
 						'data-sales':'',
 						'data-acq':''
 					}).html('');
+					dia.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"上级代理商Id不存在")+'</span>').show();
+					setTimeout(function () {
+						dia.close();
+					},2000);
 					return false;
 				}
 
@@ -744,6 +758,10 @@
 					'data-sales':'',
 					'data-acq':''
 				}).html('');
+				dia.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"操作失败")+'</span>').show();
+				setTimeout(function () {
+					dia.close();
+				},2000);
 			});
 
 		};

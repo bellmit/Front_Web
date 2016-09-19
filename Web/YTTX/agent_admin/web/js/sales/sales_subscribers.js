@@ -100,8 +100,13 @@
 							public_tool.clear();
 							public_tool.clearCacheData();
 							public_tool.loginTips();
+							return [];
 						}
 						console.log(json.message);
+						dia.content('<span class="g-c-bs-warning g-btips-warn">'+(json.message||"操作失败")+'</span>').show();
+						setTimeout(function () {
+							dia.close();
+						},2000);
 						return [];
 					}
 
@@ -291,6 +296,10 @@
 				var code=parseInt(resp.code,10);
 				if(code!==0){
 					console.log(resp.message);
+					dia.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"操作失败")+'</span>').show();
+					setTimeout(function () {
+						dia.close();
+					},2000);
 					return false;
 				}
 				var list=resp.result.list,
@@ -444,6 +453,10 @@
 							if(code!==0){
 								/*回滚状态*/
 								console.log(resp.message);
+								dia.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"操作失败")+'</span>').show();
+								setTimeout(function () {
+									dia.close();
+								},2000);
 								return false;
 							}
 							/*是否是正确的返回数据*/
@@ -497,6 +510,10 @@
 							$show_detail_content.html('');
 							$show_detail_title.html('');
 							console.log(resp.message);
+							dia.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"操作失败")+'</span>').show();
+							setTimeout(function () {
+								dia.close();
+							},2000);
 						});
 				}else if(action==='selectacquiring'){
 					/*收单查看*/
@@ -535,6 +552,10 @@
 									$this.attr({
 										'data-subitem':'true'
 									}).children('i').addClass('fa-angle-down');
+									dia.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"操作失败")+'</span>').show();
+									setTimeout(function () {
+										dia.close();
+									},2000);
 									return false;
 								}
 
@@ -598,6 +619,10 @@
 
 							}).fail(function(resp){
 								console.log(resp.message);
+								dia.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"操作失败")+'</span>').show();
+								setTimeout(function () {
+									dia.close();
+								},2000);
 							});
 
 						}else{
@@ -668,6 +693,10 @@
 
 					}).fail(function(resp){
 						console.log(resp.message);
+						dia.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"操作失败")+'</span>').show();
+						setTimeout(function () {
+							dia.close();
+						},2000);
 					});
 
 				}else if(action==='sync'){
@@ -720,6 +749,10 @@
 
 					}).fail(function(resp){
 						console.log(resp.message);
+						dia.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"操作失败")+'</span>').show();
+						setTimeout(function () {
+							dia.close();
+						},2000);
 					});
 
 				}
@@ -897,6 +930,10 @@
 								})
 								.fail(function(resp){
 									console.log(resp.message);
+									dia.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"操作失败")+'</span>').show();
+									setTimeout(function () {
+										dia.close();
+									},2000);
 								});
 							return false;
 						}

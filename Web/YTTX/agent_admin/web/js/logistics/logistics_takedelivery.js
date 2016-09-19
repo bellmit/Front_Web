@@ -87,8 +87,13 @@
 							public_tool.clear();
 							public_tool.clearCacheData();
 							public_tool.loginTips();
+							return [];
 						}
 						console.log(json.message);
+						dia.content('<span class="g-c-bs-warning g-btips-warn">'+(json.message||"操作失败")+'</span>').show();
+						setTimeout(function () {
+							dia.close();
+						},2000);
 						return [];
 					}
 
@@ -113,8 +118,13 @@
 							public_tool.clear();
 							public_tool.clearCacheData();
 							public_tool.loginTips();
+							return [];
 						}
 						console.log(json.message);
+						dia.content('<span class="g-c-bs-warning g-btips-warn">'+(json.message||"操作失败")+'</span>').show();
+						setTimeout(function () {
+							dia.close();
+						},2000);
 						return [];
 					}
 					var result=json.result;
@@ -560,14 +570,14 @@
 							adminId:decodeURIComponent(logininfo.param.adminId),
 							grade:decodeURIComponent(logininfo.param.grade),
 							token:decodeURIComponent(logininfo.param.token),
-							invoiceId:id
+							receiptId:id
 						}
 					})
 					.done(function(resp){
 						var code=parseInt(resp.code,10);
 						if(code!==0){
 							console.log(resp.message);
-							dia.content('<span class="g-c-bs-warning g-btips-warn">确认收货失败</span>').show();
+							dia.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"确认收货失败")+'</span>').show();
 							setTimeout(function () {
 								dia.close();
 							},2000);
@@ -578,13 +588,19 @@
 						//重置表单
 						//重置表单
 						$edit_cance_btn.trigger('click');
-						dia.content('<span class="g-c-bs-success g-btips-succ">确认收货成功</span>').show();
-						setTimeout(function () {
-							dia.close();
-						},2000);
+						setTimeout(function(){
+							dia.content('<span class="g-c-bs-success g-btips-succ">确认收货成功</span>').show();
+							setTimeout(function () {
+								dia.close();
+							},2000);
+						},300);
 					})
 					.fail(function(resp){
 						console.log(resp.message);
+						dia.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"操作失败")+'</span>').show();
+						setTimeout(function () {
+							dia.close();
+						},2000);
 					});
 
 			});
@@ -632,7 +648,7 @@
 									if(code!==0){
 										console.log(resp.message);
 										setTimeout(function(){
-											dia.content('<span class="g-c-bs-warning g-btips-warn">确认收货异常失败</span>').show();
+											dia.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"确认收货异常失败")+'</span>').show();
 										},300);
 										setTimeout(function () {
 											dia.close();
@@ -654,7 +670,7 @@
 								.fail(function(resp){
 									console.log(resp.message);
 									setTimeout(function(){
-										dia.content('<span class="g-c-bs-warning g-btips-warn">确认收货异常失败</span>').show();
+										dia.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"确认收货异常失败")+'</span>').show();
 									},300);
 									setTimeout(function () {
 										dia.close();

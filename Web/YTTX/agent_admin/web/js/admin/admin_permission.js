@@ -84,8 +84,13 @@
 								public_tool.clear();
 								public_tool.clearCacheData();
 								public_tool.loginTips();
+								return [];
 							}
 							console.log(json.message);
+							dia.content('<span class="g-c-bs-warning g-btips-warn">'+(json.message||"操作失败")+'</span>').show();
+							setTimeout(function () {
+								dia.close();
+							},2000);
 							return [];
 						}
 						var list=json.result.list,
@@ -190,6 +195,10 @@
 							var code=parseInt(resp.code,10);
 							if(code!==0){
 								console.log(resp.message);
+								dia.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"操作失败")+'</span>').show();
+								setTimeout(function () {
+									dia.close();
+								},2000);
 								return false;
 							}
 							/*处理权限*/
@@ -333,6 +342,10 @@
 								$this.removeClass('setting_active').attr({'data-isPermit':isPermit});
 							}
 							console.log(resp.message);
+							dia.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"操作失败")+'</span>').show();
+							setTimeout(function () {
+								dia.close();
+							},2000);
 						}
 						if(!issetting){
 							/*更改系统设置*/
@@ -353,6 +366,10 @@
 							$this.removeClass('setting_active').attr({'data-isPermit':isPermit});
 						}
 						console.log(resp.message);
+						dia.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"操作失败")+'</span>').show();
+						setTimeout(function () {
+							dia.close();
+						},2000);
 					});
 			});
 
