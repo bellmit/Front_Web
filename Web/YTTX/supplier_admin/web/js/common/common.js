@@ -498,7 +498,7 @@
 			"name":"商品管理",
 			"code":"goods",
 			"match":"-goods-",
-			"class":"menu-ux-serve",
+			"class":"menu-ux-shop",
 			"module":"goods",
 			"modid":"2"
 		},
@@ -506,41 +506,17 @@
 			"name":"订单管理",
 			"code":"order",
 			"match":"-order-",
-			"class":"menu-ux-agent",
+			"class":"menu-ux-order",
 			"module":"agent",
 			"modid":"3"
 		},
 		"4":{
-			"name":"物流管理",
-			"code":"logistics",
-			"match":"-logistics-",
-			"class":"menu-ux-logistics",
-			"module":"logistics",
-			"modid":"54"
-		},
-		"5":{
-			"name":"销售管理",
-			"code":"sales",
-			"match":"-sales-",
-			"class":"menu-ux-shop",
-			"module":"sales",
-			"modid":"52"
-		},
-		"6":{
-			"name":"三级分销管理",
-			"code":"distributor",
-			"match":"-distributor",
-			"class":"menu-ux-distribution",
-			"module":"distributor",
-			"modid":"59"
-		},
-		"7":{
-			"name":"财务管理",
-			"code":"finance",
-			"match":"-finance-",
+			"name":"资金管理",
+			"code":"capital",
+			"match":"-capital-",
 			"class":"menu-ux-finance",
-			"module":"finance",
-			"modid":"56"
+			"module":"capital",
+			"modid":"4"
 		}
 	};
 	/*路由映射*/
@@ -754,14 +730,6 @@
 				//当前页为首页的情况
 				var issub=typeof (subitem=item[key])!=='undefined';
 
-				if(i===0&&item.modId!==0){
-					/*不匹配首页*/
-					menustr+='<li><a href=\"index'+suffix+'\"><i class=\"menu-ux-home\"></i><span>首页</span></a></li>';
-				}else if(i===0&&!issub){
-					//匹配首页且没有子菜单
-					menustr+='<li><a href=\"index'+item.modLink+suffix+'\"><i class=\"'+matchClass(link,item.modClass)+'\"></i><span>'+item.modName+'</span></a></li>';
-				}
-
 				if(issub){
 					//子菜单循环
 					if(path.indexOf(link.match)!==-1){
@@ -784,15 +752,6 @@
 			}else{
 				//当前页为其他页的情况
 				var issub=typeof (subitem=item[key])!=='undefined';
-
-
-				if(i===0&&item.modId!==0){
-					/*不匹配首页*/
-					menustr+='<li><a href=\"../index'+suffix+'\"><i class=\"menu-ux-home\"></i><span>首页</span></a></li>';
-				}else if(i===0&&!issub){
-					//匹配首页且没有子菜单
-					menustr+='<li><a href=\"../index'+item.modLink+suffix+'\"><i class=\"'+matchClass(link,item.modClass)+'\"></i><span>'+item.modName+'</span></a></li>';
-				}
 
 				if(issub){
 					//子菜单循环
@@ -1363,7 +1322,7 @@
 			/*调用路由*/
 			self.getRoute();
 			/*判断是否登陆*/
-			if(self.routeMap.module.indexOf('account')!==-1){
+			if(self.routeMap.module.indexOf('account')!==-1||self.routeMap.module===''){
 				/*登陆模块不做判断*/
 				self.initMap.isrender=true;
 				return true;

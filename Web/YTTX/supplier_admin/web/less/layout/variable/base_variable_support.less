@@ -155,6 +155,10 @@
 ///*图像灰度*/
 .filter-grayscale-base(@str:100){-webkit-filter:grayscale(~'@{str}%');-moz-filter:grayscale(~'@{str}%');-o-filter:grayscale(~'@{str}%');-ms-filter:grayscale(~'@{str}%');filter:grayscale(~'@{str}%');filter:gray;}
 
+///*图像模糊*/
+.filter-blur-base(@str:5){-webkit-filter:blur(~'@{str}px');-moz-filter:blur(~'@{str}px');-o-filter:blur(~'@{str}px');-ms-filter:blur(~'@{str}px');filter:blur(~'@{str}px');filter:progid:DXImageTransform.Microsoft.Blur(PixelRadius=~'@{str}', MakeShadow=false);
+}
+
 
 ///*屏幕模式下的文字缩放(none或者100%为关闭)*/
 .text-size-adjust-base(@str:100%){-moz-text-size-adjust:@str;-o-text-size-adjust:@str;-webkit-text-size-adjust:@str;-ms-text-size-adjust:@str;text-size-adjust:@str;}

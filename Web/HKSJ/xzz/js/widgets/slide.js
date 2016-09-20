@@ -16,6 +16,7 @@ define(['jquery'],function($){
 							 $items:null,
 							 $btnwrap:null,
 							 $btn:null,
+					     isBackground:false,
 							 $slide_tipwrap:null,
 							 $slide_tip:null,
 							 tipheight:0,
@@ -23,14 +24,14 @@ define(['jquery'],function($){
 							 winwidth:$(win).width(),
 							 img_alt:false,
 							 tip_text:[],
-							 btn_action:false,
-						     isMobile:(function(){
+						   isMobile:(function(){
 								 if(/(iPhone|iPod|Android|ios|iOS|iPad|Backerry|WebOS|Symbian|Windows Phone|Phone)/i.test(navigator.userAgent)){
 									 return true;
 								 }else{
 									 return false;
 								 }
 							 }()),
+							 btn_action:false,
 							 btn_active:'slidebtn-active',
 							 eff_time:500,
 							 times:6000,

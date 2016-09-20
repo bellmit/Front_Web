@@ -8,6 +8,45 @@
 
 
 /*-----登陆-----*/
+.login-body{
+	width:100%;
+	min-width:1000px;
+	height:100%;
+	min-height:700px;
+}
+.login-logo-wrap{
+	.layout-fixedl-base(10px,10px,200);
+	.layout-base(152px);
+	height:38px;
+	background:url("../images/logo-red-bg@2x.png")
+	center center no-repeat;
+}
+.login-layout{
+	width:100%;
+	min-width:1000px;
+	height:100%;
+	min-height:700px;
+	&:after,
+	&::after{
+		content:'';
+		clear: both;
+		width:100%;
+		height:0;
+		display: table;
+	}
+}
+.login-slide-wrap{
+	.layout-relative-base;
+	.layout-float-base(70%);
+	height:100%;
+	padding:200px 0 0 0;
+}
+.login-main-wrap{
+	.layout-float-base(30%);
+	height:100%;
+	padding:200px 20px 20px 20px;
+	background:@color-white;
+}
 .login-header{
 	.login-icon{
 		img,
@@ -956,6 +995,9 @@
 	}
 }
 @media screen and (max-width: @screen-sm){
+	.login-logo-wrap{
+		background:url("../images/logo-red-bg.png")
+	}
 	.credit-chart-wrap{
 		height:200px;
 		padding:5px;

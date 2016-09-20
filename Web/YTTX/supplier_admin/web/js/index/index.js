@@ -15,6 +15,30 @@
 								</button>\$info\
 							</div>';
 
+
+			//dom对象引用
+			var $slideimg_show=$('#slideimg_show'),
+				$slide_tips=$('#slide_tips'),
+				$slide_img=$('#slide_img'),
+				$slideimg_btn=$('#slideimg_btn');
+
+
+			//轮播动画
+			slidePlay.slideToggle({
+				$wrap:$slideimg_show,
+				$slide_img:$slide_img,
+				$btnwrap:$slideimg_btn,
+				$slide_tipwrap:$slide_tips,
+				minwidth:640,
+				isresize:true,
+				size:3,
+				times:5000,
+				eff_time:500,
+				isblur:'g-filter-blur5',
+				btn_active:'slidebtn-active'
+			});
+
+
 			//初始化效果
 			setTimeout(function(){
 				$(".fade-in-effect").addClass('in');
