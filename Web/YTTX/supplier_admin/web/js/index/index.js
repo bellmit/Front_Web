@@ -24,7 +24,7 @@
 
 
 			//轮播动画
-			slidePlay.slideToggle({
+			slide.slideToggle({
 				$wrap:$slideimg_show,
 				$slide_img:$slide_img,
 				$btnwrap:$slideimg_btn,

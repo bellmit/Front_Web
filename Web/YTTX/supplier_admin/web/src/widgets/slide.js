@@ -28,6 +28,7 @@
 					itemheight:0,
 					winwidth:$(win).width(),
 					isblur:'',
+					blurarr:[],
 					img_alt:false,
 					tip_text:[],
 					isTouch:false,
@@ -171,6 +172,8 @@
 
 			/*添加模糊效果*/
 			if(settings.isblur!==''){
+				var blurcount=parseInt(settings.isblur.toString().match(/\d*/g),10);
+				console.log(blurcount);
 				settings.$items.each(function(){
 					$(this).addClass('filter-blur').find("img").addClass(settings.isblur);
 				});
