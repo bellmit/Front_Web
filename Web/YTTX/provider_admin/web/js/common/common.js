@@ -473,6 +473,10 @@
 		}
 		return true;
 	};
+	/*是否是合法手机号*/
+	public_tool.isMobilePhone=function(str){
+		return /^(13[0-9]|15[012356789]|18[0-9]|14[57]|170)[0-9]{8}$/.test(this.trims(str))?true:false;
+	};
 
 
 	/*左侧菜单导航*/
@@ -615,16 +619,12 @@
 	}
 
 
-
-
-	/*加载左侧菜单*/
-	public_tool.loadSideMenu=function($menu,$wrap,opt){
-
+	/*判断请求域是否一致*/
+	public_tool.isSameDomain=function(url){
 		var self=this,
-			cacheMenu=self.getParams('menu_module')/*调用缓存*/,
 			cacheLogin=self.getParams('login_module'),
 			currentdomain=cacheLogin.currentdomain,
-			baseurl=opt.url.split('/',3);
+			baseurl=url.split('/',3);
 
 		cacheLogin.currentdomain=baseurl[0]+'//'+baseurl[2];
 		self.removeParams('login_module');
@@ -637,8 +637,14 @@
 			self.loginTips();
 			return false;
 		}
+		return true;
+	};
 
+	/*加载左侧菜单*/
+	public_tool.loadSideMenu=function($menu,$wrap,opt){
 
+		var self=this,
+			cacheMenu=self.getParams('menu_module')/*调用缓存*/;
 
 		/*判断路由模块*/
 		if(public_tool.routeMap.issamemodule){

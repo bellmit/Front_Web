@@ -7,6 +7,8 @@
 			var $loginform=$('#login'),
 				$username=$('#username'),
 				$pwd=$('#passwd'),
+				$validcode=$('#validcode'),
+				$validcode_btn=$('#validcode_btn'),
 			$error_wrap=$('#error_wrap'),
 				error_tpl='<div class="alert alert-danger">\
 								<button type="button" class="close" data-dismiss="alert">\
@@ -16,7 +18,7 @@
 							</div>';
 
 
-			//dom对象引用
+			//轮播dom节点
 			var $slideimg_show=$('#slideimg_show'),
 				$slide_tips=$('#slide_tips'),
 				$slide_img=$('#slide_img'),
@@ -53,26 +55,49 @@
 			}
 
 
+			/*获取验证码*/
+			getValidCode();
+
+
+			/*格式化手机号*/
+			$username.on('keyup',function(){
+				var phoneno=this.value.replace(/\D*/g,'');
+				if(phoneno==''){
+					this.value='';
+					return false;
+				}
+				this.value=public_tool.phoneFormat(this.value);
+			});
+
+
 
 			//异步校验
 			$loginform.validate({
 				rules: {
 					username: {
-						required: true
+						required: true,
+						zh_phone:true
 					},
 					passwd: {
 						required: true,
 						minlength:6
+					},
+					validcode:{
+						required: true
 					}
 				},
 
 				messages: {
 					username: {
-						required: '请输入用户名'
+						required: '请输入手机号',
+						zh_phone:'手机号格式不合法'
 					},
 					passwd: {
 						required: '请输入密码',
 						minlength:'密码必须超过6位字符'
+					},
+					validcode:{
+						required: '请输入验证码'
 					}
 				},
 
@@ -96,15 +121,17 @@
 					};
 
 					var basedomain='http://120.24.226.70:8081',
-						basepathname="/yttx-agentbms-api/sysuser/login";
+						basepathname="/yttx-providerbms-api/user/login";
 					$.ajax({
 						url:basedomain+basepathname,
 						method: 'POST',
 						dataType: 'json',
 						async:false,
 						data: {
-							username:$username.val(),
-							password:$pwd.val()
+							loginType:4,
+							phone:public_tool.trims($username.val()),
+							password:$pwd.val(),
+							identifyingCode:$validcode.val()
 						}
 					}).done(function(resp){
 						var code=parseInt(resp.code,10),
@@ -136,10 +163,8 @@
 							'currentdomain':'',
 							'username':$username.val()||'匿名用户',
 							'param':{
-								'adminId':encodeURIComponent(result.adminId),
-								'token':encodeURIComponent(result.token),
-								'roleId':encodeURIComponent(result.roleId),
-								'grade':encodeURIComponent(result.grade)
+								'userId':encodeURIComponent(result.userId),
+								'token':encodeURIComponent(result.token)
 							}
 						});
 
@@ -150,7 +175,7 @@
 							finish: function(){
 								if(code===0){
 									//成功后跳入主页面
-									location.href = '../index.html';
+									location.href = 'setting/yttx-setting-base.html';
 								}
 							}
 						});
@@ -175,7 +200,40 @@
 			$loginform.find(".form-group:has(.form-control):first .form-control").focus();
 
 
+			/*重新生成验证码*/
+			$validcode_btn.on('click',function(){
+				getValidCode();
+			});
 
 		}
+
+
+
+		function getValidCode(){
+			var xhr = new XMLHttpRequest();
+			xhr.open("post",'http://120.24.226.70:8081/yttx-providerbms-api/user/identifying/code', true);
+			xhr.responseType = "blob";
+			xhr.onreadystatechange = function() {
+				if (this.status == 200) {
+					var blob = this.response,
+						img = document.createElement("img");
+
+						img.alt='验证码';
+					try{
+						img.onload = function(e) {
+							window.URL.revokeObjectURL(img.src);
+						};
+						img.src = window.URL.createObjectURL(blob);
+					}catch (e){
+						console.log('不支持URL.createObjectURL');
+					}
+					$validcode_btn.html(img);
+				}
+			};
+			xhr.send();
+		};
+
 	});
 })(jQuery);
+
+
