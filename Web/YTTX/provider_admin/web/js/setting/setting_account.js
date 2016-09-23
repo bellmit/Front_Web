@@ -33,7 +33,6 @@
 				$admin_phone=$('#admin_phone'),
 				$admin_consigneeName=$('#admin_consigneeName'),
 				$admin_consigneePhone=$('#admin_consigneePhone'),
-				$admin_addressadd_btn=$('#admin_addressadd_btn'),
 				$admin_addresstoggle=$('#admin_addresstoggle'),
 				$admin_province=$('#admin_province'),
 				$admin_city=$('#admin_city'),
@@ -46,7 +45,9 @@
 				$admin_address=$('#admin_address'),
 				$admin_isDefault=$('#admin_isDefault'),
 				$admin_nickName_btn=$('#admin_nickName_btn'),
-				admin_address_form=document.getElementById('admin_address_form');
+				admin_address_form=document.getElementById('admin_address_form'),
+				$admin_address_form=$(admin_address_form),
+				resetform=null;
 
 
 			/*加载数据*/
@@ -70,6 +71,7 @@
 					method:'post',
 					data:{
 						userId:decodeURIComponent(logininfo.param.userId),
+						providerId:decodeURIComponent(logininfo.param.providerId),
 						token:decodeURIComponent(logininfo.param.token),
 						nickName:tempnickname
 					}
@@ -109,11 +111,17 @@
 				this.value=public_tool.phoneFormat(this.value);
 			});
 
+
 			/*切换添加地址*/
 			$admin_addresstoggle.on('click',function(){
 				if($admin_address_wrap.hasClass('g-d-hidei')){
 					$admin_address_wrap.removeClass('g-d-hidei');
 					$admin_addresstoggle.html('-&nbsp;取消');
+
+					/*重置表单*/
+					if(resetform!==null){
+						resetform.resetForm();
+					}
 					admin_address_form.reset();
 				}else{
 					$admin_address_wrap.addClass('g-d-hidei');
@@ -135,11 +143,14 @@
 
 			/*绑定地址操作*/
 			$admin_address_list.on('click','li',function(e){
+				e.stopPropagation();
+				e.preventDefault();
 				var target= e.target,
 					node=target.nodeName.toLowerCase(),
 					$this,
 					type='active',
-					id=null;
+					id=null,
+					$parent;
 
 				if(node==='li'){
 					type='active';
@@ -152,19 +163,47 @@
 				}else if(node==='span'){
 					type='delete';
 					$this=$(target);
-					id=$this.parent().attr('data-id');
+					$parent=$this.parent();
+					id=$parent.attr('data-id');
 				}
+
 
 				if(type==='active'){
 					/*切换默认地址操作*/
-					return false;
 					var isactive=$this.hasClass('address-active');
 					if(isactive){
-						$this.removeClass('address-active');
 						return false;
 					}else{
-						$admin_address_list.append($this.addClass('address-active'));
 						/*to do*/
+						$.ajax({
+							url:"http://120.24.226.70:8081/yttx-providerbms-api/receiptaddress/default/set",
+							dataType:'JSON',
+							method:'post',
+							data:{
+								userId:decodeURIComponent(logininfo.param.userId),
+								providerId:decodeURIComponent(logininfo.param.providerId),
+								token:decodeURIComponent(logininfo.param.token),
+								isDefault:1,
+								id:id
+							}
+						}).done(function(resp){
+							var code=parseInt(resp.code,10);
+							if(code!==0){
+								console.log(resp.message);
+								dia.content('<span class="g-c-bs-warning g-btips-warn">设置默认地址失败</span>').show();
+								setTimeout(function () {
+									dia.close();
+								},2000);
+								return false;
+							}
+							$this.addClass('address-active').siblings().removeClass('address-active')
+						}).fail(function(resp){
+							console.log('error');
+							dia.content('<span class="g-c-bs-warning g-btips-warn">设置默认地址失败</span>').show();
+							setTimeout(function () {
+								dia.close();
+							},2000);
+						});
 					}
 				}else if(type==='delete'){
 					if(!id||id===null){
@@ -183,6 +222,7 @@
 							method:'post',
 							data:{
 								userId:decodeURIComponent(logininfo.param.userId),
+								providerId:decodeURIComponent(logininfo.param.providerId),
 								token:decodeURIComponent(logininfo.param.token),
 								id:id
 							}
@@ -202,7 +242,8 @@
 							setTimeout(function(){
 								self.close();
 							},1000);
-							$this.remove();
+
+							$parent.remove();
 
 						}).fail(function(resp){
 							console.log('error');
@@ -219,69 +260,89 @@
 			});
 
 
+
 			/*绑定添加地址*/
-			$admin_addressadd_btn.on('click',function(){
-				var province=$admin_province_value.val(),
-					city=$admin_city_value.val(),
-					area=$admin_area_value.val(),
-					detailed=$admin_address.val(),
-					name=$admin_consigneeName.val(),
-					phone=public_tool.trims($admin_consigneePhone.val());
+			/*表单验证*/
+			if($.isFunction($.fn.validate)) {
+				/*配置信息*/
+				var form_opt={},
+					formcache=public_tool.cache;
 
+				if(formcache.form_opt_0){
+					$.extend(true,form_opt,formcache.form_opt_0,{
+						submitHandler: function(form){
+							var active=$admin_isDefault.is(':checked')?1:0,
+								province=$admin_province_value.val(),
+								city=$admin_city_value.val(),
+								area=$admin_area_value.val(),
+								detailed=$admin_address.val(),
+								name=$admin_consigneeName.val(),
+								phone=public_tool.trims($admin_consigneePhone.val());
 
+							$.ajax({
+								url:"http://120.24.226.70:8081/yttx-providerbms-api/receiptaddress/add",
+								dataType:'JSON',
+								method:'post',
+								data:{
+									userId:decodeURIComponent(logininfo.param.userId),
+									token:decodeURIComponent(logininfo.param.token),
+									providerId:decodeURIComponent(logininfo.param.providerId),
+									consigneeName:name,
+									consigneePhone:phone,
+									detailedAddress:detailed,
+									province:province,
+									city:city,
+									county:area,
+									isDefault:active
+								}
+							}).done(function(resp){
+								var code=parseInt(resp.code,10);
+								if(code!==0){
+									console.log(resp.message);
+									dia.content('<span class="g-c-bs-warning g-btips-warn">添加地址失败</span>').show();
+									setTimeout(function () {
+										dia.close();
+									},2000);
+									return false;
+								}
 
+								var id=resp.result;
+								if(id){
+									dia.content('<span class="g-c-bs-success g-btips-succ">添加地址成功</span>').show();
+									setTimeout(function () {
+										dia.close();
+									},2000);
+									if(active===1){
+										$admin_address_list.find('li').each(function(){
+											$(this).removeClass('address-active');
+										});
+										$admin_address_list.append($('<li class="address-active" data-id="' + id + '"><label>'+province+city+area+detailed+'</label>,<label>'+name+'</label>,<label>'+phone+'</label><span class="btn btn-sm btn-white g-br2">-删除</span></li>'));
+									}else{
+										$('<li data-id="' + id + '"><label>'+province+city+area+detailed+'</label>,<label>'+name+'</label>,<label>'+phone+'</label><span class="btn btn-sm btn-white g-br2">-删除</span></li>').appendTo($admin_address_list);
+									}
+								}else{
+									dia.content('<span class="g-c-bs-warning g-btips-warn">添加地址失败</span>').show();
+									setTimeout(function () {
+										dia.close();
+									},2000);
+									return false;
+								}
+							}).fail(function(resp){
+								console.log('error');
+							});
 
-				if(province===''||city===''||area===''||detailed===''||name===''||phone===''){
-					dia.content('<span class="g-c-bs-warning g-btips-warn">相关地址信息不能为空</span>').show();
-					setTimeout(function () {
-						dia.close();
-					},2000);
-					return false;
+						}
+					});
 				}
-				if(!public_tool.isMobilePhone(phone)){
-					dia.content('<span class="g-c-bs-warning g-btips-warn">收货人手机号不合法</span>').show();
-					setTimeout(function () {
-						dia.close();
-					},2000);
-					return false;
-				}
-				var active=$admin_isDefault.is('checked')?1:0;
-				$.ajax({
-					url:"http://120.24.226.70:8081/yttx-providerbms-api/user/account/info",
-					dataType:'JSON',
-					method:'post',
-					data:{
-						userId:decodeURIComponent(logininfo.param.userId),
-						token:decodeURIComponent(logininfo.param.token),
-						consigneeName:name,
-						consigneePhone:phone,
-						detailedAddress:detailed,
-						province:province,
-						city:city,
-						county:area,
-						isDefault:active
-					}
-				}).done(function(resp){
-					var code=parseInt(resp.code,10);
-					if(code!==0){
-						console.log(resp.message);
-						return false;
-					}
-					var id=resp.result;
-					if(active===1){
-						$admin_address_list.append($('<li class="address-active" data-id="' + id + '" xmlns="http://www.w3.org/1999/html"><label>'+province+city+area+detailed+'</label>,</label>'+name+'</label>,</label>'+phone+'</label><span class="btn btn-sm btn-white g-br2">-删除</span></li>'));
-					}else{
-						$('<li data-id="' + id + '" xmlns="http://www.w3.org/1999/html"><label>'+province+city+area+detailed+'</label>,</label>'+name+'</label>,</label>'+phone+'</label><span class="btn btn-sm btn-white g-br2">-删除</span></li>').appendTo($admin_address_list);
-					}
-					dia.content('<span class="g-c-bs-success g-btips-succ">添加地址成功</span>').show();
-					setTimeout(function () {
-						dia.close();
-					},2000);
-				}).fail(function(resp){
-					console.log('error');
-				});
 
-			});
+
+				/*提交验证*/
+				if(resetform===null){
+					resetform=$admin_address_form.validate(form_opt);
+				}
+
+			}
+
 
 
 		}
@@ -294,6 +355,7 @@
 				dataType:'JSON',
 				method:'post',
 				data:{
+					providerId:decodeURIComponent(logininfo.param.providerId),
 					userId:decodeURIComponent(logininfo.param.userId),
 					token:decodeURIComponent(logininfo.param.token)
 				}

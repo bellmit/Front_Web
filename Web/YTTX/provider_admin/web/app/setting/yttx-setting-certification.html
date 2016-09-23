@@ -4,10 +4,10 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0,maximum-scale=1">
-    <meta name="description" content="新安街店铺管理系统--店铺设置--基本设置" />
-    <meta name="keywords" content="新安街店铺管理系统--店铺设置--基本设置">
+    <meta name="description" content="新安街店铺管理系统--店铺设置--企业认证" />
+    <meta name="keywords" content="新安街店铺管理系统--店铺设置--企业认证">
     <meta name="author" content="yp" />
-    <title>新安街店铺管理系统--店铺设置--基本设置</title>
+    <title>新安街店铺管理系统--店铺设置--企业认证</title>
     <link href="../../images/logo_icon.ico" rel="icon">
     <link rel="stylesheet" href="../../css/base.css">
     <link rel="stylesheet" href="../../css/admin.css">
@@ -85,13 +85,13 @@
         <!--主题描述-->
         <div class="page-title">
             <div class="title-env">
-                <h1 class="title">基本设置</h1>
-                <p class="description">基本设置</p>
+                <h1 class="title">企业认证</h1>
+                <p class="description">企业认证</p>
             </div>
             <div class="breadcrumb-env">
                 <ol class="breadcrumb bc-1">
                     <li><a href=""><i class="fa-home"></i>店铺设置</a></li>
-                    <li class="active"><strong>基本设置</strong></li>
+                    <li class="active"><strong>企业认证</strong></li>
                 </ol>
             </div>
         </div>
@@ -104,7 +104,7 @@
 
                     <!--编辑表单标题-->
                     <div class="panel-heading">
-                        <h3 class="panel-title">基本设置</h3>
+                        <h3 class="panel-title">企业认证</h3>
                         <div class="panel-options">
                             <a href="#" data-toggle="panel">
                                 <span class="collapse-icon">&ndash;</span>
@@ -115,76 +115,7 @@
 
                     <!--添加-->
                     <div class="panel-body">
-                        <form role="form" method="post" class="admin-form1">
-                            <input type="text" class="g-d-hidei" value="" id="admin_id">
-
-                            <div class="form-group">
-                                <label class="control-label">公司地址：</label>
-                                <div class="selectwrap">
-                                    <div class="select-item g-w-percent8" style="z-index:50">
-                                        <p>请选择省份</p>
-                                        <ul id="admin_province"></ul>
-                                    </div>
-                                    <div class="select-item g-w-percent8" style="z-index:50">
-                                        <p>请选择城市</p>
-                                        <ul id="admin_city"></ul>
-                                    </div>
-                                    <div class="select-item g-w-percent8" style="z-index:50">
-                                        <p>请选择地区</p>
-                                        <ul id="admin_area"></ul>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <br />
-                                <div class="input-group">
-                                    <input type="text"  class="form-control no-right-border g-w-percent10" value="" name="province" id="admin_province_value">
-                                    <input type="text" class="form-control no-right-border g-w-percent10" value="" name="city" id="admin_city_value">
-                                    <input type="text" class="form-control no-right-border g-w-percent10" value="" name="country" id="admin_area_value">
-                                    <input type="text" class="form-control no-right-border  g-w-percent20" name="address" id="admin_address" placeholder="请输入公司地址详情" />
-                                    <span class="input-group-btn">
-                                        <button type="button"  id="admin_address_btn" class="btn btn-success">更改</button>
-                                  </span>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="control-label">店铺名称(只能修改一次)：</label>
-                                <div class="input-group">
-                                    <input type="text" class="form-control no-right-border" name="storeName" id="admin_storeName" placeholder="请输入店铺名称" />
-                                    <span class="input-group-btn">
-                                        <button type="button"  id="admin_storeName_btn" class="btn btn-success">更改</button>
-                                  </span>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="control-label">公司名称：</label>
-                                <div id="admin_companyName" class="form-control" ></div>
-                            </div>
-
-
-                            <div class="form-group">
-                                <label class="control-label">联系电话：</label>
-                                <div class="input-group">
-                                    <input type="text" maxlength="13" class="form-control no-right-border" name="telephone" id="admin_telephone" placeholder="请输入联系电话" />
-                                    <span class="input-group-btn">
-                                        <button type="button"  id="admin_telephone_btn" class="btn btn-success">更改</button>
-                                  </span>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="control-label">店铺LOGO：</label>
-                                    <div class="form-control admin-image-view" data-image="" id="admin_logoImage"></div>
-                                    <br />
-                                    <button type="button"  id="admin_logoImage_file" class="btn btn-success">查看文件</button>
-                                    <button type="button"  id="admin_logoImage_upload" class="btn btn-success">上传文件</button>
-                                    <button type="button"  id="admin_logoImage_btn" class="btn btn-success">更改</button>
-                            </div>
-
-
-                        </form>
+                        <blockquote class="blockquote admin-blockquote" id="admin_certification_wrap"></blockquote>
                     </div>
 
 
@@ -267,11 +198,9 @@
 
 <script src="../../js/common/base.js"></script>
 <script src="../../js/common/common.js"></script>
-<!--表单验证插件-->
-<script src="../../js/widgets/city_select.js"></script>
 <script src="../../js/plugins/plupload/plupload.full.min.js"></script>
 <script src="../../js/plugins/plupload/i18n/zh_CN.js"></script>
 <script src="../../js/plugins/qn/qiniu.min.js"></script>
-<script src="../../js/setting/setting_base.js"></script>
+<script src="../../js/setting/setting_certification.js"></script>
 </body>
 </html>

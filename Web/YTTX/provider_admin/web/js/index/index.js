@@ -164,7 +164,8 @@
 							'username':$username.val()||'匿名用户',
 							'param':{
 								'userId':encodeURIComponent(result.userId),
-								'token':encodeURIComponent(result.token)
+								'token':encodeURIComponent(result.token),
+								'providerId':encodeURIComponent(result.providerId)
 							}
 						});
 

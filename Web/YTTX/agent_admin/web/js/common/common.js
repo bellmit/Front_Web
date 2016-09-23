@@ -1595,7 +1595,7 @@ var public_vars = public_vars || {};
 									opts['rules'][name][params[1]] = params[2];
 
 
-									message = $field.data('message-' + params[1]);
+									message = $field.data('message-' + params[1])||$field.attr('data-message-'+ params[1]);
 
 									if(message) {
 										opts['messages'][name][params[1]] = message;

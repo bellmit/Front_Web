@@ -58,7 +58,8 @@
 						token:decodeURIComponent(logininfo.param.token),
 						id:$admin_id.val(),
 						operationType:1,
-						updateValue:''
+						updateValue:'',
+						providerId:decodeURIComponent(logininfo.param.providerId)
 					}
 				};
 
@@ -294,6 +295,7 @@
 				method:'post',
 				data:{
 					userId:decodeURIComponent(logininfo.param.userId),
+					providerId:decodeURIComponent(logininfo.param.providerId),
 					token:decodeURIComponent(logininfo.param.token)
 				}
 			}).done(function(resp){
@@ -331,7 +333,7 @@
 								break;
 							case 'logoImage':
 								var tempimg=result[i],
-									imgreg=/[jpeg|jpg|gif|png]/g;
+									imgreg=/(jpeg|jpg|gif|png)/g;
 
 								if(tempimg.indexOf('.')!==-1){
 									if(imgreg.test(tempimg)){
@@ -363,6 +365,7 @@
 				type:'post',
 				datatype:'json',
 				data:{
+					providerId:decodeURIComponent(logininfo.param.providerId),
 					userId:decodeURIComponent(logininfo.param.userId),
 					token:decodeURIComponent(logininfo.param.token)
 				}

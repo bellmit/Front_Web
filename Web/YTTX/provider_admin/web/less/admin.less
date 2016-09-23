@@ -706,6 +706,7 @@
 	.admin-sub-items2{
 		>ul{
 			li{
+				.user-select-base;
 				border-bottom:1px solid @color-gray16;
 				padding:8px 20px;
 				cursor: pointer;
@@ -717,11 +718,14 @@
 					margin:0 5px;
 				}
 				&:hover{
-					border-bottom:1px solid @color-gray14;
+					background:lighten(@color-gray16,2%);
 				}
 			}
 			.address-active{
-				//border-left:2px solid @color-red1;
+				background:lighten(@btn-success-bg,45%);
+				&:hover{
+					background:lighten(@btn-success-bg,45%);
+				}
 				&:before,
 				&::before{
 					content:'\e608';
@@ -773,7 +777,10 @@
 		border-color: #cc3f44 !important;
 		color: #cc3f44 !important;
 	}
-	.self-error-pos-wrap+.validate-has-error{
+	.self-error-pos-wrap+.validate-has-error,
+	.self-error-pos-wrap+.validate-has-error+.validate-has-error,
+	.self-error-pos-wrap+.validate-has-error+.validate-has-error+.validate-has-error,
+	.self-error-pos-wrap+.validate-has-error+.validate-has-error+.validate-has-error+.validate-has-error{
 		color: #cc3f44;
 		display: block;
 		font-size: 12px;
@@ -869,6 +876,67 @@
 				padding:0 5px;
 			}
 		}
+	}
+}
+
+
+/*排版*/
+.admin-blockquote{
+	font-size:@font-size-base;
+	&:empty{
+		min-height: 300px;
+		padding:20px;
+	}
+	&:empty:before,
+	&:empty::before{
+		.layout-base;
+		display: block;
+		line-height: 270px;
+		content:'暂无数据';
+		color:@color-gray9;
+		font-size:@font-size-base;
+		text-align: center;
+		.user-select-base;
+	}
+}
+.admin-list-item{
+	.layout-base;
+	padding:10px 5px;
+	border-bottom: 1px solid @color-gray14;
+	&:hover{
+		background:lighten(@btn-success-bg,45%);
+	}
+	.admin-upload-imgage{
+		background:@color-white;
+		.layout-relative-base;
+		.layout-base;
+		height:250px;
+		overflow: hidden;
+		text-align:center;
+		cursor: pointer;
+		padding:10px;
+		border:1px solid @color-gray16;
+		.border-radius-base(3px);
+		&:empty{
+			&:before{
+				content:"请上传图片";
+				display: block;
+				width:100%;
+				height:100%;
+				line-height:220px;
+				color:@color-gray9;
+				font-size:@font-size-base;
+			}
+		}
+		img{
+			max-width:100%;
+			max-height:100%;
+			padding:5px;
+			display: inline-block;
+		}
+	}
+	.admin-upload-imgage+p{
+		text-align: center;;
 	}
 }
 
