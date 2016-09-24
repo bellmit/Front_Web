@@ -901,12 +901,28 @@
 }
 .admin-list-item{
 	.layout-base;
-	padding:10px 5px;
-	border-bottom: 1px solid @color-gray14;
-	&:hover{
-		background:lighten(@btn-success-bg,45%);
+	padding:20px 5px;
+	border-bottom: 1px solid @color-gray16;
+	.admin-pull-right{
+		padding:10px 0 10px 60px;
 	}
-	.admin-upload-imgage{
+	.admin-upload-detail{
+		.layout-absolutel-base(0,-50px,200);
+		width:100%;
+		height:50px;
+		overflow: hidden;
+		background:none;
+		text-align: right;
+		span{
+			display:inline-block;
+			padding:3px 20px;
+			margin:8px 30px 0 0;
+		}
+	}
+	.admin-upload-detail-active{
+		top:0;
+	}
+	.admin-upload-image{
 		background:@color-white;
 		.layout-relative-base;
 		.layout-base;
@@ -915,7 +931,7 @@
 		text-align:center;
 		cursor: pointer;
 		padding:10px;
-		border:1px solid @color-gray16;
+		border:1px solid @color-gray14;
 		.border-radius-base(3px);
 		&:empty{
 			&:before{
@@ -935,8 +951,10 @@
 			display: inline-block;
 		}
 	}
-	.admin-upload-imgage+p{
-		text-align: center;;
+	.admin-upload-image+p{
+		text-align: center;
+		margin:10px 0 0 0;
+		.text-ww;
 	}
 }
 

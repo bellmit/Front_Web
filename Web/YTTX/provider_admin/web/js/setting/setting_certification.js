@@ -16,7 +16,7 @@
 
 
 			/*dom引用和相关变量定义*/
-			var module_id='setting_certification'/*模块id，主要用于本地存储传值*/,
+			var module_id='yttx-setting-certification'/*模块id，主要用于本地存储传值*/,
 				dia=dialog({
 					zIndex:2000,
 					title:'温馨提示',
@@ -28,9 +28,18 @@
 					},
 					cancel:false
 				})/*一般提示对象*/,
-				$admin_certification_wrap=$('#admin_certification_wrap'),
+				$admin_legalName=$('#admin_legalName'),
+				$admin_identity=$('#admin_identity'),
+				$admin_identityJust=$('#admin_identityJust'),
+				$admin_identityBack=$('#admin_identityBack'),
+				$admin_identityHand=$('#admin_identityHand'),
+				$admin_businessLicense=$('#admin_businessLicense'),
+				$admin_businessLicenseImage=$('#admin_businessLicenseImage'),
+				$show_detail_wrap=$('#show_detail_wrap')/*详情容器*/,
+				$show_detail_title=$('#show_detail_title')/*详情标题*/,
+				$show_detail_content=$('#show_detail_content')/*详情内容*/,
 				QN=new QiniuJsSDK()/*七牛对象*/,
-				img_token=/*getToken()||*/null,
+				img_token=getToken()||null,
 				logo_upload=null;
 
 
@@ -111,25 +120,48 @@
 
 			}
 
-			$('.admin-upload-imgage',$admin_certification_wrap).on('click',function(){
-				console.log('aaa');
-				if(img_token===null){
-					dia.content('<span class="g-c-bs-warning g-btips-warn">暂未开通此接口</span>').show();
-					setTimeout(function () {
-						dia.close();
-					},2000);
-					return false;
-				}
+			$.each([$admin_identityJust,$admin_identityBack,$admin_identityHand,$admin_businessLicenseImage],function(){
+
+				var self=this;
+
+				/*上传图片*/
+				this.on('click',function(e){
+					if(img_token===null){
+						dia.content('<span class="g-c-bs-warning g-btips-warn">暂未开通此接口</span>').show();
+						setTimeout(function () {
+							dia.close();
+						},2000);
+						return false;
+					}
+				});
+
+				/*查询切换显示隐藏*/
+				this.parent().on('mouseover mouseout',function(e){
+					var type= e.type;
+					if(type==='mouseover'){
+						self.prev().addClass('admin-upload-detail-active');
+					}else if(type==='mouseout'){
+						self.prev().removeClass('admin-upload-detail-active');
+					}
+				});
+
+				/*绑定查看*/
+				this.prev().on('click',function(e){
+					$show_detail_title.html(self.next().html());
+					$show_detail_content.html('<tr><td>'+self.html()+'</td></tr>');
+					$show_detail_wrap.modal('show',{
+						backdrop:'static'
+					});
+				});
+
 			});
 
 
-
-
-
-
-
-
 		}
+
+
+		/*关闭弹出框并重置值*/
+		/*hide.bs.modal*/
 
 
 		/*获取*/
@@ -160,36 +192,51 @@
 
 				var result=resp.result;
 				if(result&&!$.isEmptyObject(result)){
-					var str='',
-						identity='',
-						business='';
 					for(var i in result){
 						switch (i){
 							case 'legalName':
-								str+='<div class="admin-list-item">法人名称:<br />'+result[i]+'</div>';
+								$admin_legalName.html(result[i]);
 								break;
 							case 'identity':
-								str+='<div class="admin-list-item">身份证号:<br />'+result[i]+'</div>';
+								$admin_identity.html(result[i]);
 								break;
 							case 'identityJust':
-								identity+=validImages(i,result[i],'身份证照(正面)');
+								var just=validImages(result[i]);
+								if(just!==''){
+									$('<img alt="身份证照(正面)" src="'+just+'" />').appendTo($admin_identityJust.html(''));
+								}else{
+									$admin_identityJust.html('');
+								}
 								break;
 							case 'identityBack':
-								identity+=validImages(i,result[i],'身份证照(反面)');
+								var back=validImages(result[i]);
+								if(back!==''){
+									$('<img alt="身份证照(反面)" src="'+back+'" />').appendTo($admin_identityBack.html(''));
+								}else{
+									$admin_identityBack.html('');
+								}
 								break;
 							case 'identityHand':
-								identity+=validImages(i,result[i],'手持身份证正面照片');
+								var hand=validImages(result[i]);
+								if(hand!==''){
+									$('<img alt="手持身份证正面照片" src="'+hand+'" />').appendTo($admin_identityHand.html(''));
+								}else{
+									$admin_identityHand.html('');
+								}
 								break;
 							case 'businessLicense':
-								str+='<div class="admin-list-item">营业执照号:<br />'+result[i]+'</div>';
+								$admin_businessLicense.html(result[i]);
 								break;
 							case 'businessLicenseImage':
-								business+=validImages(i,result[i],'营业执照图片');
+								var license=validImages(result[i]);
+								if(license!==''){
+									$('<img alt="营业执照图片" src="'+license+'" />').appendTo($admin_businessLicenseImage.html(''));
+								}else{
+									$admin_businessLicenseImage.html('');
+								}
 								break;
 						}
 					}
-					str+='<div class="admin-list-item"><div class="row">'+identity+'</div></div><div class="admin-list-item"><div class="row">'+business+'</div></div>';
-					$(str).appendTo($admin_certification_wrap.html(''));
 				}
 
 
@@ -200,19 +247,19 @@
 
 
 		/*判断图片合法格式*/
-		function validImages(key,value,txt){
+		function validImages(value){
 			var str='';
 			var tempimg=value,
 				imgreg=/(jpeg|jpg|gif|png)/g;
 
 			if(tempimg.indexOf('.')!==-1){
 				if(imgreg.test(tempimg)){
-					str+='<div class="col-md-4"><div data-type="'+key+'"  class="admin-upload-imgage"><img alt="" src="'+value+'"></div><p>'+txt+'</p></div>';
+					str=value;
 				}else{
-					str+='<div class="col-md-4"><div data-type="'+key+'"  class="admin-upload-imgage"></div><p>'+txt+'</p></div>';
+					str='';
 				};
 			}else{
-				str+='<div class="col-md-4"><div data-type="'+key+'"  class="admin-upload-imgage"></div><p>'+txt+'</p></div>';
+				str='';
 			}
 			return str;
 		}

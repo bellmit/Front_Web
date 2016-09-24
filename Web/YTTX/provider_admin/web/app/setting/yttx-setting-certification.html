@@ -115,7 +115,48 @@
 
                     <!--添加-->
                     <div class="panel-body">
-                        <blockquote class="blockquote admin-blockquote" id="admin_certification_wrap"></blockquote>
+                        <ul class="blockquote admin-blockquote">
+                            <li class="admin-list-item">
+                                <p>法人名称:</p>
+                                <div class="admin-pull-right" id="admin_legalName"></div>
+                            </li>
+                            <li class="admin-list-item">
+                                <p>身份证号:</p>
+                                <div class="admin-pull-right" id="admin_identity"></div>
+                            </li>
+                            <li class="admin-list-item">
+                                <div class="row">
+                                    <div class="col-md-4 g-o-hide">
+                                        <div class="admin-upload-detail"><span class="btn btn-white g-br2">查看</span></div>
+                                        <div id="admin_identityJust" data-type="identityJust" class="admin-upload-image"></div>
+                                        <p>身份证照(正面)</p>
+                                    </div>
+                                    <div class="col-md-4 g-o-hide">
+                                        <div class="admin-upload-detail"><span class="btn btn-white g-br2">查看</span></div>
+                                        <div id="admin_identityBack"  data-type="identityBack" class="admin-upload-image"></div>
+                                        <p>身份证照(反面)</p>
+                                    </div>
+                                    <div class="col-md-4 g-o-hide">
+                                        <div class="admin-upload-detail"><span class="btn btn-white g-br2">查看</span></div>
+                                        <div id="admin_identityHand"  data-type="identityHand" class="admin-upload-image"></div>
+                                        <p>手持身份证正面照片</p>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="admin-list-item">
+                                <p>营业执照号:</p>
+                                <div class="admin-pull-right" id="admin_businessLicense"></div>
+                            </li>
+                            <li class="admin-list-item">
+                                <div class="row">
+                                    <div class="col-md-4 g-o-hide">
+                                        <div class="admin-upload-detail"><span class="btn btn-white g-br2">查看</span></div>
+                                        <div id="admin_businessLicenseImage"  data-type="businessLicenseImage" class="admin-upload-image"></div>
+                                        <p>营业执照图片</p>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
                     </div>
 
 
@@ -147,6 +188,28 @@
         </footer>
 
 
+    </div>
+</div>
+
+
+<!--详情展现-->
+<div class="modal fade custom-width" id="show_detail_wrap">
+    <div class="modal-dialog g-w-percent46">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 id="show_detail_title" class="modal-title"></h4>
+            </div>
+            <div class="modal-body">
+                <table class="table table-bordered table-striped table-hover admin-table">
+                    <tbody id="show_detail_content"></tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
     </div>
 </div>
 

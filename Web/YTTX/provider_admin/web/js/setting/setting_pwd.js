@@ -16,7 +16,7 @@
 
 
 			/*dom引用和相关变量定义*/
-			var module_id='setting_pwd'/*模块id，主要用于本地存储传值*/,
+			var module_id='yttx-setting-pwd'/*模块id，主要用于本地存储传值*/,
 				dia=dialog({
 					zIndex:2000,
 					title:'温馨提示',
