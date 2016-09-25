@@ -59,7 +59,7 @@
 						autoWidth:true,/*是否*/
 						paging:false,
 						ajax:{
-							url:"http://120.24.226.70:8081/yttx-providerbms-api/goods/list",
+							url:/*"../../json/goods/goods_list.json"*/"http://120.24.226.70:8081/yttx-providerbms-api/goods/list",
 							dataType:'JSON',
 							method:'post',
 							dataSrc:function ( json ) {
@@ -107,20 +107,52 @@
 						searching:true,
 						ordering:true,
 						columns: [
+							{
+								"data":"imageUrl",
+								"render":function(data, type, full, meta ){
+									var img=validImages(data),str='';
+									if(img!==''){
+										if(img.indexOf('qiniucdn.com')!==-1){
+											str='<div class="admin-goods-thumbnail "><img alt="" src="'+img+'?imageView2/1/w/80/h/80" /></div>';
+										}else{
+											str='<div class="admin-goods-thumbnail "><img alt="" src="'+img+'" /></div>';
+										}
+									}else{
+										str='<div class="admin-goods-thumbnail "></div>';
+									}
+									return str;
+								}
+							},
 							{"data":"name"},
 							{
 								"data":"goodsTypeName"
 							},
 							{
-								"data":"imageUrl",
-								"render":function(data, type, full, meta ){
-									var img=validImages(data),
-										str='<div class="admin-goods-thumbnail ">' +(img===''?'':'<img alt="" src="'+img+'" />')+'</div>';
-									return str;
-								}
+								"data":"sort"
 							},
 							{
-								"data":"Sort"
+								"data":"status",
+								"render":function(data, type, full, meta ){
+									var stauts=parseInt(data,10),
+										statusmap={
+											0:"仓库",
+											1:"上架",
+											2:"下架",
+											3:"删除"
+										},
+										str='';
+
+									if(stauts===0){
+										str='<div class="g-c-succ">'+statusmap[stauts]+'</div>';
+									}else if(stauts===1){
+										str='<div class="g-c-info">'+statusmap[stauts]+'</div>';
+									}else if(stauts===2){
+										str='<div class="g-c-gray12">'+statusmap[stauts]+'</div>';
+									}else if(stauts===3){
+										str='<div class="g-c-red1">'+statusmap[stauts]+'</div>';
+									}
+									return str;
+								}
 							},
 							{
 								"data":"id",
@@ -132,11 +164,7 @@
 									var status=parseInt(full.status,10);
 									if(status===0){
 										/*仓库*/
-										btns+='<span data-action="store" data-id="'+id+'" data-status="0" data-currentstatus="0"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray12">\
-											<i class="fa-database"></i>\
-											<span>仓库</span>\
-											</span>\
-											<span data-action="up" data-id="'+id+'" data-status="1" data-currentstatus="0" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+										btns+='<span data-action="up" data-id="'+id+'" data-status="1" data-currentstatus="0" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 											<i class="fa-arrow-up"></i>\
 											<span>上架</span>\
 											</span>\
@@ -158,15 +186,7 @@
 											</span>';
 									}else if(status===1){
 										/*上架*/
-										btns+='<span data-action="store" data-id="'+id+'" data-status="0" data-currentstatus="1"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
-											<i class="fa-database"></i>\
-											<span>仓库</span>\
-											</span>\
-											<span data-action="up" data-id="'+id+'" data-status="1" data-currentstatus="1" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray12">\
-											<i class="fa-arrow-up"></i>\
-											<span>上架</span>\
-											</span>\
-											<span data-action="down" data-id="'+id+'" data-status="2" data-currentstatus="1"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+										btns+='<span data-action="down" data-id="'+id+'" data-status="2" data-currentstatus="1"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 											<i class="fa-arrow-down"></i>\
 											<span>下架</span>\
 											</span>\
@@ -184,17 +204,10 @@
 											</span>';
 									}else if(status===2){
 										/*下架*/
-										btns+='<span data-action="store" data-id="'+id+'" data-status="0" data-currentstatus="2"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
-											<i class="fa-database"></i>\
-											<span>仓库</span>\
-											</span>\
-											<span data-action="up" data-id="'+id+'" data-status="1" data-currentstatus="2" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+										btns+='<span data-action="up" data-id="'+id+'" data-status="1" data-currentstatus="2" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 											<i class="fa-arrow-up"></i>\
 											<span>上架</span>\
 											</span>\
-											<span data-action="down" data-id="'+id+'" data-status="2" data-currentstatus="2"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray12">\
-											<i class="fa-arrow-down"></i>\
-											<span>下架</span>\
 											</span>\
 											<span data-action="delete" data-id="'+id+'" data-status="3" data-currentstatus="2"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 											<i class="fa-trash"></i>\
@@ -210,6 +223,14 @@
 											</span>';
 									}else if(status===3){
 										/*删除*/
+										btns+='<span data-action="up" data-id="'+id+'" data-status="1" data-currentstatus="3" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+											<i class="fa-arrow-up"></i>\
+											<span>上架</span>\
+											</span>\
+											<span data-action="down" data-id="'+id+'" data-status="2" data-currentstatus="3"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray12">\
+											<i class="fa-arrow-down"></i>\
+											<span>下架</span>\
+											</span>';
 									}
 									return btns;
 								}
