@@ -45,7 +45,12 @@
           {
             "modCode": "yttx-goods-add",
             "modLink": "yttx-goods-add",
-            "modName": "新增商品|编辑"
+            "modName": "商品新增"
+          },
+          {
+            "modCode": "yttx-goods-edit",
+            "modLink": "yttx-goods-edit",
+            "modName": "商品编辑"
           },
           {
             "modCode": "yttx-goods-detail",
