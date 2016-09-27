@@ -316,7 +316,6 @@
 						}else{
 							$input=iscolor?$admin_color.find('input'):$admin_rule.find('input');
 							size=$input.size();
-							console.log(size);
 							$input.each(function(){
 								var $this=$(this);
 								if($this.val()===''){
@@ -468,6 +467,8 @@
 
 		}
 
+
+		/*级联类型查询*/
 		function getGoodsTypes(value,obj,type){
 			var typemap={
 				'one':'一级',
@@ -545,7 +546,17 @@
 				}
 			});
 
-		}
+		};
+
+
+		/*组合颜色与尺寸*/
+		function groupCondition(obj){
+			if(obj){
+
+			}
+
+
+		};
 
 
 
