@@ -62,7 +62,30 @@
 				attr_data={},
 				admin_goodsadd_form=document.getElementById('admin_goodsadd_form'),
 				$admin_goodsadd_form=$(admin_goodsadd_form),
-				resetform=null;
+				resetform=null,
+				colormap={
+					'白色':'4_8',
+					'黑色':'4_9',
+					'红色':'4_10',
+					'蓝色':'4_59',
+					'黄色':'4_60',
+					'黑色1':'4_64',
+					'紫色':'4_69',
+					'肉粉':'4_70',
+					'土豪金':'4_73',
+					'银色':'4_74',
+					'深灰色':'4_75'
+				},
+				rulemap={
+					'1.5米':'5_11',
+					'2.0米':'5_12',
+					'2.5米':'5_13',
+					'13.3':'5_71',
+					'14':'5_72',
+					'9.7':'5_76',
+					'10.1':'5_77',
+					'10.30':'5_78'
+				};
 
 
 			/*图片上传对象*/
@@ -550,9 +573,40 @@
 
 
 		/*组合颜色与尺寸*/
-		function groupCondition(obj){
-			if(obj){
+		function groupCondition(){
+			if($.isEmptyObject(attr_data)){
+				$admin_wholesale_price_list.html('');
+				return false;
+			}
+			var color={},
+				rule=[],
+				len= 0,
+				str='';
+			for(var i in attr_data){
+				if(i.indexOf('color')!==-1){
+					color[i]=attr_data[i];
+				}else if(i.indexOf('rule')!==-1){
+					var tempobj={};
+					tempobj[i]=attr_data[i];
+					rule.push(tempobj);
+				}
+			}
 
+			len=rule.length;
+			if($.isEmptyObject(color)||len===0){
+				$admin_wholesale_price_list.html('');
+				return false;
+			}
+
+
+			for(var j in color){
+				var k=0;
+				str=+'<tr><td rowspan="'+len+'">'+color[j]+'</td>';
+				for(k;k<len;k++){
+					if(k===0){
+						str+='<td><input type="text" data-valid="'++'"></td>';
+					}
+				}
 			}
 
 
