@@ -573,6 +573,36 @@
 		}
 	}
 
+	/*查看属性，颜色，尺寸*/
+	.admin-list-widget{
+		.layout-absoluter-base(-70px,36px,100);
+		width:482px;
+		height:242px;
+		overflow: auto;
+		background:@color-white;
+		border:1px solid @color-gray12;
+		.user-select-base;
+		li{
+			.layout-float-base(60px);
+			text-align: center;
+			height:60px;
+			padding:10px 0;
+			line-height:40px;
+			color:@color-gray6;
+			font-size:@font-size-base;
+			cursor: pointer;
+			&:hover{
+				background:@color-gray14;
+			}
+		}
+		.admin-list-widget-active{
+			background:lighten(@btn-success-bg,40%);
+			&:hover{
+				background:lighten(@btn-success-bg,40%);
+			}
+		}
+	}
+
 
 	/*表单轮播图*/
 	.admin-slide-wrap{

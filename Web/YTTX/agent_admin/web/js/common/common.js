@@ -291,7 +291,7 @@
 	};
 	//手机格式化
 	public_tool.phoneFormat=function(str){
-		var phoneno=str.toString().replace(/\s*/g,'');
+		var phoneno=str.toString().replace(/\s*\D*/g,'');
 		if(phoneno==''){
 			return '';
 		}

@@ -54,6 +54,10 @@
 				$admin_details=$('#admin_details'),
 				$admin_status=$('#admin_status'),
 				$admin_goodsPictures0=$('#admin_goodsPictures0'),
+				$admin_color_listbtn=$('#admin_color_listbtn'),
+				$admin_color_list=$('#admin_color_list'),
+				$admin_rule_listbtn=$('#admin_rule_listbtn'),
+				$admin_rule_list=$('#admin_rule_list'),
 				price_data={},
 				attr_data={},
 				admin_goodsadd_form=document.getElementById('admin_goodsadd_form'),
@@ -83,7 +87,6 @@
 				token:decodeURIComponent(logininfo.param.token),
 				providerId:decodeURIComponent(logininfo.param.providerId)
 			};
-			getGoodsTypes('',typeobj,'one');
 
 
 			/*绑定查询选中*/
@@ -91,27 +94,43 @@
 				var self=this,
 					selector=this.selector;
 
+				/*初始化查询一级分类*/
+				if(selector.indexOf('1')!==-1){
+					getGoodsTypes('',typeobj,'one');
+					if(!$.isEmptyObject(price_data)){
+						$admin_attrwrap.addClass('g-d-hidei');
+					}
+				}
+
 				this.on('change',function(){
 					var value=$(this).val();
 					if(selector.indexOf('1')!==-1){
 						if(value===''){
 							$admin_goodsTypeId_Level2.html('');
 							$admin_goodsTypeId_Level3.html('');
+							if($.isEmptyObject(price_data)){
+								$admin_attrwrap.removeClass('g-d-hidei');
+							}else{
+								$admin_attrwrap.addClass('g-d-hidei');
+							}
+							attr_data={};
+							$admin_color.find('input').attr({
+								'data-value':''
+							}).val('');
+							$admin_rule.find('input').attr({
+								'data-value':''
+							}).val('');
 							$admin_attrwrap.addClass('g-d-hidei');
-							$admin_wholesale_price_list.addClass('g-d-hidei');
+							$admin_wholesale_price_list.html('').addClass('g-d-hidei');
 							return false;
 						}
-						getGoodsTypes(value,typeobj,'two');
 						if($.isEmptyObject(price_data)){
 							$admin_attrwrap.removeClass('g-d-hidei');
 						}else{
 							$admin_attrwrap.addClass('g-d-hidei');
 						}
-						if($.isEmptyObject(attr_data)){
-							$admin_pricewrap.removeClass('g-d-hidei');
-						}else{
-							$admin_pricewrap.addClass('g-d-hidei');
-						}
+						$admin_wholesale_price_list.html('').addClass('g-d-hidei');
+						getGoodsTypes(value,typeobj,'two');
 					}else if(selector.indexOf('2')!==-1){
 						if(value===''){
 							$admin_goodsTypeId_Level3.html('');
@@ -131,21 +150,8 @@
 			/*绑定价格输入,属性*/
 			$.each([$admin_wholesale_price,$admin_retail_price,$admin_inventory],function(){
 				/*初始化*/
-				var selector=this.selector,
-					val=this.val();
+				var selector=this.selector;
 
-				if(val!==''){
-					price_data[selector]=val;
-				}else{
-					if(typeof price_data[selector]!=='undefined'){
-						delete price_data[selector];
-					}
-				}
-				if($.isEmptyObject(price_data)){
-					$admin_attrwrap.removeClass('g-d-hidei');
-				}else{
-					$admin_attrwrap.addClass('g-d-hidei');
-				}
 
 				/*事件绑定*/
 				this.on('focusout',function(){
@@ -163,11 +169,23 @@
 						$admin_attrwrap.addClass('g-d-hidei');
 					}
 				});
+
+				/*绑定价格格式化*/
+				if(selector.indexOf('price')!==-1){
+					this.on('keyup',function(e){
+						var tempval=this.value,
+							result=public_tool.moneyCorrect(tempval,12,true);
+						this.value=result[0];
+						public_tool.cursorPos(this,result[0],'.');
+					});
+
+				}
 			});
-			$.each([$admin_color.find('input'),$admin_rule.find('input')],function(){
+			$.each([$admin_color,$admin_rule],function(){
 				/*初始化*/
-				var selector=this.attr('name'),
-					val=this.val();
+				var $input=this.find('input'),
+					selector=$input.attr('name'),
+					val=$input.val();
 
 				if(val!==''){
 					attr_data[selector]=val;
@@ -183,7 +201,7 @@
 				}
 
 				/*事件绑定*/
-				this.on('focusout',function(){
+				$input.on('focusout',function(){
 					var value=this.value;
 					if(value!==''){
 						attr_data[selector]=value;
@@ -201,20 +219,85 @@
 			});
 
 
+
+
 			/*绑定新增颜色和规格尺寸*/
 			$.each([$admin_color_btn,$admin_rule_btn],function(){
-				var self=this;
+				var self=this,
+					iscolor=this.selector.indexOf('color')!==-1?true:false;
 
 				this.on('click',function(){
 					var $last=self.parent().prev('input'),
 						$input=$last.clone(true),
-						name=$input.attr('name').replace('color','');
+						name=iscolor?$input.attr('name').replace('color',''):$input.attr('name').replace('rule','');
 
 					$input.attr({
-						'name':'color'+(parseInt(name,10)+1)
+						'name':iscolor?'color'+(parseInt(name,10)+1):'rule'+(parseInt(name,10)+1)
 					}).insertAfter($last);
 				});
 
+
+
+
+			});
+
+
+			/*绑定查看属性列表*/
+			$.each([$admin_color_listbtn,$admin_rule_listbtn],function(){
+
+				var iscolor=this.selector.indexOf('color')!==-1?true:false;
+
+				this.on('click',function(){
+					if(iscolor){
+						if($admin_color_list.hasClass('g-d-hidei')){
+							$admin_color_list.removeClass('g-d-hidei');
+						}else{
+							$admin_color_list.addClass('g-d-hidei');
+						}
+					}else {
+						if($admin_rule_list.hasClass('g-d-hidei')){
+							$admin_rule_list.removeClass('g-d-hidei');
+						}else{
+							$admin_rule_list.addClass('g-d-hidei');
+						}
+					}
+				});
+
+
+
+			});
+
+
+			/*绑定选择属性列表*/
+			$.each([$admin_color_list,$admin_rule_list],function(){
+
+				var iscolor=this.selector.indexOf('color')!==-1?true:false;
+
+				this.on('click','li',function(){
+					var $this=$(this),
+						txt=$this.html(),
+						value=$this.attr('data-value');
+					if(iscolor){
+						if($this.hasClass('admin-list-widget-active')){
+							$this.removeClass('admin-list-widget-active');
+
+						}else{
+							$this.addClass('admin-list-widget-active');
+							if($.isEmptyObject(price_data)){
+								$admin_color
+
+							}else{
+
+							}
+						}
+					}else {
+						if($this.hasClass('admin-list-widget-active')){
+							$this.removeClass('admin-list-widget-active');
+						}else{
+							$this.addClass('admin-list-widget-active');
+						}
+					}
+				});
 
 
 
