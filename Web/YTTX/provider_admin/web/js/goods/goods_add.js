@@ -114,12 +114,8 @@
 								$admin_attrwrap.addClass('g-d-hidei');
 							}
 							attr_data={};
-							$admin_color.find('input').attr({
-								'data-value':''
-							}).val('');
-							$admin_rule.find('input').attr({
-								'data-value':''
-							}).val('');
+							$admin_color.find('input').val('');
+							$admin_rule.find('input').val('');
 							$admin_attrwrap.addClass('g-d-hidei');
 							$admin_wholesale_price_list.html('').addClass('g-d-hidei');
 							return false;
@@ -167,6 +163,18 @@
 						$admin_attrwrap.removeClass('g-d-hidei');
 					}else{
 						$admin_attrwrap.addClass('g-d-hidei');
+						/*清除属性数据*/
+						attr_data={};
+						$.each([$admin_color,$admin_rule], function () {
+							this.find('input').each(function () {
+								$(this).val('');
+							});
+						});
+						$.each([$admin_color_list.find('li.admin-list-widget-active'),$admin_rule_list.find('li.admin-list-widget-active')],function(){
+							this.each(function(){
+								$(this).removeClass('admin-list-widget-active');
+							});
+						});
 					}
 				});
 
@@ -214,6 +222,11 @@
 						$admin_pricewrap.removeClass('g-d-hidei');
 					}else{
 						$admin_pricewrap.addClass('g-d-hidei');
+						/*清除属性数据*/
+						price_data={};
+						$.each([$admin_wholesale_price,$admin_retail_price,$admin_inventory], function () {
+							this.val('');
+						});
 					}
 				});
 			});
@@ -228,7 +241,7 @@
 
 				this.on('click',function(){
 					var $last=self.parent().prev('input'),
-						$input=$last.clone(true),
+						$input=$last.clone(true).val(''),
 						name=iscolor?$input.attr('name').replace('color',''):$input.attr('name').replace('rule','');
 
 					$input.attr({
@@ -271,32 +284,67 @@
 			/*绑定选择属性列表*/
 			$.each([$admin_color_list,$admin_rule_list],function(){
 
-				var iscolor=this.selector.indexOf('color')!==-1?true:false;
+				var self=this,
+					iscolor=this.selector.indexOf('color')!==-1?true:false;
 
 				this.on('click','li',function(){
 					var $this=$(this),
 						txt=$this.html(),
-						value=$this.attr('data-value');
-					if(iscolor){
-						if($this.hasClass('admin-list-widget-active')){
-							$this.removeClass('admin-list-widget-active');
+						count=0,
+						size,
+						$input;
 
+
+					if($this.hasClass('admin-list-widget-active')){
+						$this.removeClass('admin-list-widget-active');
+						$input=iscolor?$admin_color.find('input'):$admin_rule.find('input');
+						$input.each(function(){
+							var $this=$(this);
+							if($this.val()===txt){
+								$this.val('');
+								delete attr_data[$input.attr('name')];
+								return false;
+							}
+						});
+					}else{
+						$this.addClass('admin-list-widget-active');
+
+						if($.isEmptyObject(attr_data)){
+							$input=iscolor?$admin_color.find('input:first-child'):$admin_rule.find('input:first-child');
+							$input.val(txt);
+							attr_data[$input.attr('name')]=txt;
 						}else{
-							$this.addClass('admin-list-widget-active');
-							if($.isEmptyObject(price_data)){
-								$admin_color
-
-							}else{
-
+							$input=iscolor?$admin_color.find('input'):$admin_rule.find('input');
+							size=$input.size();
+							console.log(size);
+							$input.each(function(){
+								var $this=$(this);
+								if($this.val()===''){
+									$this.val(txt);
+									attr_data[$input.attr('name')]=txt;
+									return false;
+								}
+								count++;
+							});
+							if(count===size){
+								var $lastinput=$input.eq(size-1),
+									lasttxt=$lastinput.val(),
+									lastname=$lastinput.attr('name');
+								self.find('li.admin-list-widget-active').each(function(){
+									var $templi=$(this),
+										temptxt=$templi.html();
+									if(lasttxt===temptxt){
+										$templi.removeClass('admin-list-widget-active');
+										delete attr_data[lastname];
+										return false;
+									}
+								});
+								$lastinput.val(txt);
+								attr_data[lastname]=txt;
 							}
 						}
-					}else {
-						if($this.hasClass('admin-list-widget-active')){
-							$this.removeClass('admin-list-widget-active');
-						}else{
-							$this.addClass('admin-list-widget-active');
-						}
 					}
+
 				});
 
 
