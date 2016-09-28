@@ -49,6 +49,8 @@
 				$admin_color_btn=$('#admin_color_btn'),
 				$admin_rule=$('#admin_rule'),
 				$admin_rule_btn=$('#admin_rule_btn'),
+				$admin_color_tips=$('#admin_color_tips'),
+				$admin_rule_tips=$('#admin_rule_tips'),
 				$admin_wholesale_price_list=$('#admin_wholesale_price_list'),
 				$admin_isRecommended=$('#admin_isRecommended'),
 				$admin_details=$('#admin_details'),
@@ -63,29 +65,8 @@
 				admin_goodsadd_form=document.getElementById('admin_goodsadd_form'),
 				$admin_goodsadd_form=$(admin_goodsadd_form),
 				resetform=null,
-				colormap={
-					'白色':'4_8',
-					'黑色':'4_9',
-					'红色':'4_10',
-					'蓝色':'4_59',
-					'黄色':'4_60',
-					'黑色1':'4_64',
-					'紫色':'4_69',
-					'肉粉':'4_70',
-					'土豪金':'4_73',
-					'银色':'4_74',
-					'深灰色':'4_75'
-				},
-				rulemap={
-					'1.5米':'5_11',
-					'2.0米':'5_12',
-					'2.5米':'5_13',
-					'13.3':'5_71',
-					'14':'5_72',
-					'9.7':'5_76',
-					'10.1':'5_77',
-					'10.30':'5_78'
-				};
+				colormap={},
+				rulemap={};
 
 
 			/*图片上传对象*/
@@ -115,18 +96,21 @@
 			/*绑定查询选中*/
 			$.each([$admin_goodsTypeId_Level1,$admin_goodsTypeId_Level2,$admin_goodsTypeId_Level3],function(){
 				var self=this,
-					selector=this.selector;
+					selector=this.selector,
+					goodsresult=false;
 
 				/*初始化查询一级分类*/
 				if(selector.indexOf('1')!==-1){
-					getGoodsTypes('',typeobj,'one');
-					if(!$.isEmptyObject(price_data)){
-						$admin_attrwrap.addClass('g-d-hidei');
+					clearAttrData();
+					goodsresult=getGoodsTypes('',typeobj,'one');
+					if(goodsresult){
+						$admin_attrwrap.removeClass('g-d-hidei');
 					}
 				}
 
 				this.on('change',function(){
 					var value=$(this).val();
+					clearAttrData();
 					if(selector.indexOf('1')!==-1){
 						if(value===''){
 							$admin_goodsTypeId_Level2.html('');
@@ -136,11 +120,6 @@
 							}else{
 								$admin_attrwrap.addClass('g-d-hidei');
 							}
-							attr_data={};
-							$admin_color.find('input').val('');
-							$admin_rule.find('input').val('');
-							$admin_attrwrap.addClass('g-d-hidei');
-							$admin_wholesale_price_list.html('').addClass('g-d-hidei');
 							return false;
 						}
 						if($.isEmptyObject(price_data)){
@@ -148,19 +127,22 @@
 						}else{
 							$admin_attrwrap.addClass('g-d-hidei');
 						}
-						$admin_wholesale_price_list.html('').addClass('g-d-hidei');
+						getAttrData(value,typeobj);
 						getGoodsTypes(value,typeobj,'two');
 					}else if(selector.indexOf('2')!==-1){
 						if(value===''){
 							$admin_goodsTypeId_Level3.html('');
+							getAttrData($admin_goodsTypeId_Level1.find('option:selected').val(),typeobj);
 							return false;
 						}
+						getAttrData(value,typeobj);
 						getGoodsTypes(value,typeobj,'three');
 					}else if(selector.indexOf('3')!==-1){
 						if(value===''){
-
+							getAttrData($admin_goodsTypeId_Level2.find('option:selected').val(),typeobj);
 							return false;
 						}
+						getAttrData(value,typeobj);
 					}
 				});
 			});
@@ -185,19 +167,7 @@
 					if($.isEmptyObject(price_data)){
 						$admin_attrwrap.removeClass('g-d-hidei');
 					}else{
-						$admin_attrwrap.addClass('g-d-hidei');
-						/*清除属性数据*/
-						attr_data={};
-						$.each([$admin_color,$admin_rule], function () {
-							this.find('input').each(function () {
-								$(this).val('');
-							});
-						});
-						$.each([$admin_color_list.find('li.admin-list-widget-active'),$admin_rule_list.find('li.admin-list-widget-active')],function(){
-							this.each(function(){
-								$(this).removeClass('admin-list-widget-active');
-							});
-						});
+						clearAttrData('attr');
 					}
 				});
 
@@ -215,41 +185,40 @@
 			$.each([$admin_color,$admin_rule],function(){
 				/*初始化*/
 				var $input=this.find('input'),
+					type=this.selector.indexOf('color')!==-1?'color':'rule',
 					selector=$input.attr('name'),
-					val=$input.val();
+					isvalid=false;
 
-				if(val!==''){
-					attr_data[selector]=val;
-				}else{
-					if(typeof attr_data[selector]!=='undefined'){
-						delete attr_data[selector];
-					}
-				}
-				if($.isEmptyObject(attr_data)){
-					$admin_pricewrap.removeClass('g-d-hidei');
-				}else{
-					$admin_pricewrap.addClass('g-d-hidei');
-				}
 
 				/*事件绑定*/
 				$input.on('focusout',function(){
-					var value=this.value;
+					var $this=$(this),
+						value=$this.val();
 					if(value!==''){
-						attr_data[selector]=value;
+						isvalid=validAttrData($this,type);
+						if(isvalid){
+							attr_data[selector]=value;
+							attr_data[value]=value;
+							$this.attr({
+								'data-value':value
+							});
+						}
 					}else{
 						if(typeof attr_data[selector]!=='undefined'){
+							var tempvalue=$this.attr('data-value');
 							delete attr_data[selector];
+							if(tempvalue!==''){
+								delete attr_data[tempvalue];
+								$this.attr({
+									'data-value':''
+								});
+							}
 						}
 					}
 					if($.isEmptyObject(attr_data)){
 						$admin_pricewrap.removeClass('g-d-hidei');
 					}else{
-						$admin_pricewrap.addClass('g-d-hidei');
-						/*清除属性数据*/
-						price_data={};
-						$.each([$admin_wholesale_price,$admin_retail_price,$admin_inventory], function () {
-							this.val('');
-						});
+						clearAttrData('price');
 					}
 				});
 			});
@@ -326,6 +295,8 @@
 							if($this.val()===txt){
 								$this.val('');
 								delete attr_data[$input.attr('name')];
+								delete attr_data[txt];
+								$this.attr({'data-value':''});
 								return false;
 							}
 						});
@@ -336,6 +307,7 @@
 							$input=iscolor?$admin_color.find('input:first-child'):$admin_rule.find('input:first-child');
 							$input.val(txt);
 							attr_data[$input.attr('name')]=txt;
+							attr_data[txt]=txt;
 						}else{
 							$input=iscolor?$admin_color.find('input'):$admin_rule.find('input');
 							size=$input.size();
@@ -344,6 +316,8 @@
 								if($this.val()===''){
 									$this.val(txt);
 									attr_data[$input.attr('name')]=txt;
+									attr_data[txt]=txt;
+									$this.attr({'data-value':txt});
 									return false;
 								}
 								count++;
@@ -358,18 +332,22 @@
 									if(lasttxt===temptxt){
 										$templi.removeClass('admin-list-widget-active');
 										delete attr_data[lastname];
+										delete attr_data[lasttxt];
+										$lastinput.attr({'data-value':''});
 										return false;
 									}
 								});
 								$lastinput.val(txt);
 								attr_data[lastname]=txt;
+								attr_data[txt]=txt;
+								$lastinput.attr({'data-value':txt});
 							}
 						}
 					}
 
+					/*组合条件*/
+					groupCondition();
 				});
-
-
 
 			});
 
@@ -497,11 +475,12 @@
 				'one':'一级',
 				'two':'二级',
 				'three':'三级'
-			};
+			},istype=false;
 
 			$.ajax({
 				url:"http://120.24.226.70:8081/yttx-providerbms-api/goodstypes",
 				dataType:'JSON',
+				async:false,
 				method:'post',
 				data:{
 					userId:obj.userId,
@@ -519,7 +498,8 @@
 						public_tool.loginTips();
 					}
 					console.log(resp.message);
-					return false;
+					istype=false;
+					return istype;
 				}
 
 				var result=resp.result.parentTypesList,
@@ -528,15 +508,26 @@
 					str='';
 
 				if(len!==0){
+					istype=true;
 					for(i;i<len;i++){
 						if(i===0){
-							str+='<option value="" selected >请选择'+typemap[type]+'分类</option><option value="'+result[i]["id"]+'" >'+result[i]["name"]+'</option>';
+							var auto_selected=null;
+							if(type==='one'){
+								auto_selected=result[i]["id"]||null;
+								str+='<option  selected value="'+result[i]["id"]+'" >'+result[i]["name"]+'</option>';
+							}else{
+								str+='<option value="" selected >请选择'+typemap[type]+'分类</option><option value="'+result[i]["id"]+'" >'+result[i]["name"]+'</option>';
+							}
 						}else{
 							str+='<option value="'+result[i]["id"]+'" >'+result[i]["name"]+'</option>';
 						}
 					}
 					if(type==='one'){
 						$(str).appendTo(obj.$typeone.html(''));
+						if(auto_selected!==null){
+							getAttrData(auto_selected,obj);
+							getGoodsTypes(auto_selected,obj,'two');
+						}
 					}else if(type==='two'){
 						$(str).appendTo(obj.$typetwo.html(''));
 					}else if(type==='three'){
@@ -544,6 +535,7 @@
 					}
 				}else{
 					console.log(resp.message||'error');
+					istype=false;
 					if(type==='one'){
 						obj.$typeone.html('');
 						obj.$typetwo.html('');
@@ -556,6 +548,7 @@
 					}
 				}
 			}).fail(function(resp){
+				istype=false;
 				console.log(resp.message||'error');
 				if(type==='one'){
 					obj.$typeone.html('');
@@ -568,8 +561,173 @@
 					obj.$typethree.html('');
 				}
 			});
+			return istype;
+		}
 
-		};
+
+		/*清空属性数据*/
+		function clearAttrData(type){
+			if(!type){
+				attr_data={};
+				price_data={};
+				colormap={};
+				rulemap={};
+				$admin_color.find('input').val('').attr({'data-value':''});
+				$admin_rule.find('input').val('').attr({'data-value':''});
+				$admin_wholesale_price.val('');
+				$admin_retail_price.val('');
+				$admin_inventory.val('');
+				$admin_pricewrap.removeClass('g-d-hidei');
+				$admin_attrwrap.removeClass('g-d-hidei');
+				$admin_wholesale_price_list.html('').addClass('g-d-hidei');
+				$admin_color_list.html('');
+				$admin_rule_list.html('');
+			}else if(type==='price'){
+				price_data={};
+				$admin_wholesale_price.val('');
+				$admin_retail_price.val('');
+				$admin_inventory.val('');
+				$admin_pricewrap.addClass('g-d-hidei');
+				$admin_attrwrap.removeClass('g-d-hidei');
+			}else if(type==='attr'){
+				attr_data={};
+				colormap={};
+				rulemap={};
+				$admin_color.find('input').val('').attr({'data-value':''});
+				$admin_rule.find('input').val('').attr({'data-value':''});
+				$admin_pricewrap.removeClass('g-d-hidei');
+				$admin_attrwrap.addClass('g-d-hidei');
+				$admin_wholesale_price_list.html('').addClass('g-d-hidei');
+				$admin_color_list.html('');
+				$admin_rule_list.html('');
+			}
+		}
+
+
+		/*查询标签与属性*/
+		function getAttrData(id,obj){
+			if(typeof id ==='undefined'){
+				return false;
+			}
+			$.ajax({
+				url:"http://120.24.226.70:8081/yttx-providerbms-api/goods/tags/attrs",
+				dataType:'JSON',
+				method:'post',
+				data:{
+					userId:obj.userId,
+					token:obj.token,
+					providerId:obj.providerId,
+					goodsTypeId:id
+				}
+			}).done(function(resp){
+				var code=parseInt(resp.code,10)||0;
+				if(code!==0){
+					if(code===999){
+						/*清空缓存*/
+						public_tool.clear();
+						public_tool.clearCacheData();
+						public_tool.loginTips();
+					}
+					console.log(resp.message);
+					return false;
+				}
+
+				var list=resp,
+					len=list.length,
+					i= 0,
+					attrmap={
+						'color':{
+							'wrap':$admin_color_list,
+							'map':colormap
+						},
+						'rule':{
+							'wrap':$admin_rule_list,
+							'map':rulemap
+						}
+					};
+
+				if(len!==0){
+					for(i;i<len;i++){
+						var name=list[i]['name'],
+							arr=list[i]['list'],
+							j= 0,
+							sublen=arr.length,
+							str='',
+							subobj,
+							key='';
+
+						if(name.indexOf('颜色')!==-1&&name.indexOf('公共属性')!==-1){
+							key='color';
+						}else if(name.indexOf('规格')!==-1){
+							key='rule';
+						}else{
+							continue;
+						}
+
+						if(sublen!==0){
+							for(j;j<sublen;j++){
+								subobj=arr[j];
+								var attrvalue=subobj["goodsTagId"]+'_'+subobj["id"],
+									  attrtxt=subobj["name"];
+								if(attrtxt in attrmap[key]['map']){
+									attrtxt=attrtxt+1;
+								}
+								str+='<li data-value="'+attrvalue+'">'+attrtxt+'</li>';
+								attrmap[key]['map'][attrtxt]=attrvalue;
+							}
+							$(str).appendTo(attrmap[key]['wrap']);
+						}else{
+							continue;
+						}
+					}
+				}else{
+					return false;
+				}
+			}).fail(function(resp){
+				console.log(resp.message||'error');
+			});
+
+		}
+
+
+		/*校验是否存在正确值*/
+		function validAttrData($elem,type){
+			var txt=$elem.val()||$elem.html(),
+				prevtxt=$elem.attr('data-value');
+			if(type==='color'){
+				if(!(txt in colormap)){
+					$admin_color_tips.html('不存在 "'+txt+'" 颜色');
+					if(prevtxt!==''){
+						$elem.val(prevtxt)||$elem.html(prevtxt);
+					}else{
+						$elem.val('')||$elem.html('');
+					}
+					setTimeout(function () {
+						$admin_color_tips.html('');
+						$admin_color_list.removeClass('g-d-hidei');
+					},2000);
+					return false;
+				}
+				return true;
+			}else if(type==='rule'){
+				if(!(txt in rulemap)){
+					$admin_rule_tips.html('不存在 "'+txt+'" 规格/尺寸');
+					if(prevtxt!==''){
+						$elem.val(prevtxt)||$elem.html(prevtxt);
+					}else{
+						$elem.val('')||$elem.html('');
+					}
+					setTimeout(function () {
+						$admin_rule_tips.html('');
+						$admin_rule_list.removeClass('g-d-hidei');
+					},2000);
+					$admin_rule_list.removeClass('g-d-hidei');
+					return false;
+				}
+				return true;
+			}
+			return false;
+		}
 
 
 		/*组合颜色与尺寸*/
@@ -587,7 +745,7 @@
 					color[i]=attr_data[i];
 				}else if(i.indexOf('rule')!==-1){
 					var tempobj={};
-					tempobj[i]=attr_data[i];
+					tempobj['value']=attr_data[i];
 					rule.push(tempobj);
 				}
 			}
@@ -600,17 +758,28 @@
 
 
 			for(var j in color){
-				var k=0;
-				str=+'<tr><td rowspan="'+len+'">'+color[j]+'</td>';
+				var k= 0,
+					colorlabel=color[j];
+				str=+'<tr><td rowspan="'+len+'">'+j+'</td>';
 				for(k;k<len;k++){
-					if(k===0){
-						str+='<td><input type="text" data-valid="'++'"></td>';
-					}
+					/*if(k===0){
+						var code=colorlabel.split('_')[1]+'_'+rule[k]["name"].split('_')[1];
+						str+='<td>'+rule[k]["name"]+'</td>' +
+							'<td><input name="inventory" maxlength="5" type="text" data-value="inventory#'+code+'"></td>' +
+							'<td><input name="wholesalePrice" maxlength="12" type="text" data-value="wholesalePrice#'+code+'"></td>' +
+							'<td><input name="retailPrice" maxlength="12" type="text" data-value="retailPrice#'+code+'"></td>' +
+							'<td><input name="isDefault"  type="checkbox" data-value="isDefalut#'+code+'"></td></tr>';
+					}else{
+						str+='<tr><td>'+rule[k]["name"]+'</td>' +
+							'<td><input name="inventory" maxlength="5" type="text" data-value="inventory#'+code+'"></td>' +
+							'<td><input name="wholesalePrice" maxlength="12" type="text" data-value="wholesalePrice#'+code+'"></td>' +
+							'<td><input name="retailPrice" maxlength="12" type="text" data-value="retailPrice#'+code+'"></td>' +
+							'<td><input name="isDefault"  type="checkbox" data-value="isDefalut#'+code+'"></td></tr>';
+					}*/
 				}
 			}
-
-
-		};
+			//$(str).appendTo($admin_wholesale_price_list);
+		}
 
 
 
