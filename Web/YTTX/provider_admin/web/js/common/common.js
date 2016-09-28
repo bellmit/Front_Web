@@ -562,7 +562,7 @@
 				};
 				partz=partz.slice(filtercount);
 			}
-		}
+		};
 		return [partz+partx,tempstr];
 	};
 	//光标定位至具体位置(需定位元素,[元素中字符],定位位置，[是否在特定位置的前或者后])

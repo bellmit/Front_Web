@@ -182,6 +182,7 @@
 
 				}
 			});
+
 			$.each([$admin_color,$admin_rule],function(){
 				/*初始化*/
 				var $input=this.find('input'),
@@ -198,7 +199,6 @@
 						isvalid=validAttrData($this,type);
 						if(isvalid){
 							attr_data[selector]=value;
-							attr_data[value]=value;
 							$this.attr({
 								'data-value':value
 							});
@@ -208,7 +208,6 @@
 							var tempvalue=$this.attr('data-value');
 							delete attr_data[selector];
 							if(tempvalue!==''){
-								delete attr_data[tempvalue];
 								$this.attr({
 									'data-value':''
 								});
@@ -291,12 +290,11 @@
 						$this.removeClass('admin-list-widget-active');
 						$input=iscolor?$admin_color.find('input'):$admin_rule.find('input');
 						$input.each(function(){
-							var $this=$(this);
-							if($this.val()===txt){
-								$this.val('');
-								delete attr_data[$input.attr('name')];
-								delete attr_data[txt];
-								$this.attr({'data-value':''});
+							var $self=$(this);
+							if($self.val()===txt){
+								$self.val('');
+								delete attr_data[$self.attr('name')];
+								$self.attr({'data-value':''});
 								return false;
 							}
 						});
@@ -307,17 +305,16 @@
 							$input=iscolor?$admin_color.find('input:first-child'):$admin_rule.find('input:first-child');
 							$input.val(txt);
 							attr_data[$input.attr('name')]=txt;
-							attr_data[txt]=txt;
+							$input.attr({'data-value':txt});
 						}else{
 							$input=iscolor?$admin_color.find('input'):$admin_rule.find('input');
 							size=$input.size();
 							$input.each(function(){
-								var $this=$(this);
-								if($this.val()===''){
-									$this.val(txt);
-									attr_data[$input.attr('name')]=txt;
-									attr_data[txt]=txt;
-									$this.attr({'data-value':txt});
+								var $self=$(this);
+								if($self.val()===''){
+									$self.val(txt);
+									attr_data[$self.attr('name')]=txt;
+									$self.attr({'data-value':txt});
 									return false;
 								}
 								count++;
@@ -332,23 +329,90 @@
 									if(lasttxt===temptxt){
 										$templi.removeClass('admin-list-widget-active');
 										delete attr_data[lastname];
-										delete attr_data[lasttxt];
 										$lastinput.attr({'data-value':''});
 										return false;
 									}
 								});
 								$lastinput.val(txt);
 								attr_data[lastname]=txt;
-								attr_data[txt]=txt;
 								$lastinput.attr({'data-value':txt});
 							}
 						}
 					}
 
+					if($.isEmptyObject(attr_data)){
+						clearAttrData();
+					}else{
+						$admin_pricewrap.addClass('g-d-hidei');
+					}
+
+
 					/*组合条件*/
 					groupCondition();
 				});
 
+			});
+
+
+			/*绑定表格输入限制*/
+			$admin_wholesale_price_list.delegate('input[type="text"]','keyup',function(){
+				var $this=$(this),
+					name=$this.attr('name'),
+					value=$this.val(),
+					result;
+
+				if(name==="inventory"){
+					result=value.replace(/\D*/g,'');
+					$this.val(result);
+				}else if(name==="wholesalePrice"){
+					var maxvalue=$thir.parent().next().find('input[type="text"]');
+					result=public_tool.moneyCorrect(value,12,true);
+					if(limitarr){
+						var minwrap=null,
+							maxwrap=null,
+							limitmin=0,
+							limitmax= 0,
+							templimit=partz * 100;
+
+						if(typeof limitarr[0]!=='Number'&&typeof limitarr[0]==='Object'){
+							minwrap=limitarr[0];
+							limitmin=minwrap.val() * 100||minwrap.html() * 100;
+						}else{
+							if(!isNaN(limitarr[0])){
+								limitmin=limitarr[0] * 100;
+							}
+						}
+
+						if(typeof limitarr[1]!=='Number'&&typeof limitarr[1]==='Object'){
+							maxwrap=limitarr[1];
+							limitmax=maxwrap.val() * 100||maxwrap.html() * 100;
+						}else{
+							if(!isNaN(limitarr[1])){
+								limitmax=limitarr[1] * 100;
+							}
+						}
+
+						if(minwrap!==null&&templimit<limitmin){
+							minwrap.addClass('g-c-red1');
+							setTimeout(function(){
+								minwrap.removeClass('g-c-red1');
+								minwrap.val(limitmin)||limitmin.html(limitmin);
+							},100);
+						}else if((minwrap===null&&templimit<limitmin){
+
+						}
+
+
+
+
+					}
+					$this.val(result[0]);
+					public_tool.cursorPos(this,result[0],'.');
+				}else if(name==="retailPrice"){
+					result=public_tool.moneyCorrect(value,12,true);
+					$this.val(result[0]);
+					public_tool.cursorPos(this,result[0],'.');
+				}
 			});
 
 
@@ -745,7 +809,7 @@
 					color[i]=attr_data[i];
 				}else if(i.indexOf('rule')!==-1){
 					var tempobj={};
-					tempobj['value']=attr_data[i];
+					tempobj['name']=attr_data[i];
 					rule.push(tempobj);
 				}
 			}
@@ -759,26 +823,27 @@
 
 			for(var j in color){
 				var k= 0,
-					colorlabel=color[j];
-				str=+'<tr><td rowspan="'+len+'">'+j+'</td>';
+					colorvalue=color[j];
+				str+='<tr><td rowspan="'+len+'">'+colorvalue+'</td>';
 				for(k;k<len;k++){
-					/*if(k===0){
-						var code=colorlabel.split('_')[1]+'_'+rule[k]["name"].split('_')[1];
-						str+='<td>'+rule[k]["name"]+'</td>' +
-							'<td><input name="inventory" maxlength="5" type="text" data-value="inventory#'+code+'"></td>' +
-							'<td><input name="wholesalePrice" maxlength="12" type="text" data-value="wholesalePrice#'+code+'"></td>' +
-							'<td><input name="retailPrice" maxlength="12" type="text" data-value="retailPrice#'+code+'"></td>' +
+					var name=rule[k]["name"],
+						code=colormap[colorvalue].split('_')[1]+'_'+rulemap[name].split('_')[1];
+					if(k===0){
+						str+='<td>'+name+'</td>' +
+							'<td><input class="admin-table-input" name="inventory" maxlength="5" type="text" data-value="inventory#'+code+'"></td>' +
+							'<td><input class="admin-table-input" name="wholesalePrice" maxlength="12" type="text" data-value="wholesalePrice#'+code+'"></td>' +
+							'<td><input class="admin-table-input" name="retailPrice" maxlength="12" type="text" data-value="retailPrice#'+code+'"></td>' +
 							'<td><input name="isDefault"  type="checkbox" data-value="isDefalut#'+code+'"></td></tr>';
 					}else{
-						str+='<tr><td>'+rule[k]["name"]+'</td>' +
-							'<td><input name="inventory" maxlength="5" type="text" data-value="inventory#'+code+'"></td>' +
-							'<td><input name="wholesalePrice" maxlength="12" type="text" data-value="wholesalePrice#'+code+'"></td>' +
-							'<td><input name="retailPrice" maxlength="12" type="text" data-value="retailPrice#'+code+'"></td>' +
+						str+='<tr><td>'+name+'</td>' +
+							'<td><input class="admin-table-input" name="inventory" maxlength="5" type="text" data-value="inventory#'+code+'"></td>' +
+							'<td><input class="admin-table-input" name="wholesalePrice" maxlength="12" type="text" data-value="wholesalePrice#'+code+'"></td>' +
+							'<td><input class="admin-table-input" name="retailPrice" maxlength="12" type="text" data-value="retailPrice#'+code+'"></td>' +
 							'<td><input name="isDefault"  type="checkbox" data-value="isDefalut#'+code+'"></td></tr>';
-					}*/
+					}
 				}
 			}
-			//$(str).appendTo($admin_wholesale_price_list);
+			$(str).appendTo($admin_wholesale_price_list.html('').removeClass('g-d-hidei'));
 		}
 
 
