@@ -116,7 +116,7 @@
 
                     <!--添加-->
                     <div class="panel-body">
-                        <form role="form" method="post" id="admin_goodsadd_form" class="admin-form1 validate">
+                        <form role="form" enctype="multipart/form-data" method="post" id="admin_goodsadd_form" class="admin-form1 validate">
                             <div class="form-group">
                                 <label class="control-label">商品分类：</label>
                                 <div class="input-group">
@@ -140,7 +140,10 @@
                                                 <div class="admin-slide-btn  admin-slide-btnr" id="admin_slide_btnr"></div>
                                             </div>
                                             <ul class="admin-slide-tool"  id="admin_slide_tool"></ul>
-                                            <div class="admin-slide-upload btn btn-white g-br2" id="admin_slide_upload">上传商品组图</div>
+                                            <div class="admin-slide-upload" >
+                                                <div class="btn btn-white g-br2 g-w-percent50 admin-rpos-wrap">
+                                                    <input type="file" name="goodsPictures1" id="admin_slide_view" accept="image/*" multiple="multiple"/>浏览商品组图</div>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="col-md-7">
@@ -163,18 +166,18 @@
                                         <div id="admin_pricewrap">
                                             <div class="form-group">
                                                 <label class="control-label">批发价：</label>
-                                                <input type="text" data-value="" maxlength="12" class="form-control" name="wholesale_price" id="admin_wholesale_price" />
+                                                <input type="text" data-value="" maxlength="12" data-validate="required" data-message-required="批发价不能为空"  class="form-control" name="wholesale_price" id="admin_wholesale_price" />
                                             </div>
                                             <div class="form-group">
                                                 <label class="control-label">建议零售价：</label>
-                                                <input type="text" data-value=""  maxlength="12" class="form-control" name="retail_price" id="admin_retail_price" />
+                                                <input type="text" data-value=""  maxlength="12" data-validate="required" data-message-required="建议零售价不能为空"  class="form-control" name="retail_price" id="admin_retail_price" />
                                             </div>
                                             <div class="form-group">
                                                 <label class="control-label">库存：</label>
-                                                <input type="text" data-value="" maxlength="9"  class="form-control" name="inventory" id="admin_inventory" />
+                                                <input type="text" data-value="" maxlength="9" data-validate="required" data-message-required="库存不能为空"   class="form-control" name="inventory" id="admin_inventory" />
                                             </div>
                                         </div>
-                                        <div class="g-d-hidei" id="admin_attrwrap">
+                                        <div id="admin_attrwrap">
                                             <div class="form-group">
                                                 <label class="control-label">颜色：<span class="g-c-red1" id="admin_color_tips"></span></label>
                                                 <div class="input-group" id="admin_color">
@@ -184,19 +187,7 @@
                                                     <span class="input-group-btn pull-left admin-rpos-wrap" style="z-index:20;">
                                                         <button type="button"  id="admin_color_btn" class="btn btn-white">+</button>
                                                         <button type="button"  id="admin_color_listbtn" class="btn btn-white"><i class="fa-list"></i></button>
-                                                        <ul class="admin-list-widget g-d-hidei" id="admin_color_list">
-                                                            <li data-value="4_8">白色</li>
-                                                            <li data-value="4_9">黑色</li>
-                                                            <li data-value="4_10">红色</li>
-                                                            <li data-value="4_59">蓝色</li>
-                                                            <li data-value="4_60">黄色</li>
-                                                            <li data-value="4_64">黑色1</li>
-                                                            <li data-value="4_69">紫色</li>
-                                                            <li data-value="4_70">肉粉</li>
-                                                            <li data-value="4_73">土豪金</li>
-                                                            <li data-value="4_74">银色</li>
-                                                            <li data-value="4_75">深灰色</li>
-                                                        </ul>
+                                                        <ul class="admin-list-widget g-d-hidei" id="admin_color_list"></ul>
                                                     </span>
                                                 </div>
                                             </div>
@@ -209,16 +200,7 @@
                                                     <span class="input-group-btn pull-left admin-rpos-wrap" style="z-index:10;">
                                                         <button type="button"  id="admin_rule_btn" class="btn btn-white">+</button>
                                                         <button type="button"  id="admin_rule_listbtn" class="btn btn-white"><i class="fa-list"></i></button>
-                                                        <ul class="admin-list-widget g-d-hidei" id="admin_rule_list">
-                                                            <li data-value="5_11">1.5米</li>
-                                                            <li data-value="5_12">2.0米</li>
-                                                            <li data-value="5_13">2.5米</li>
-                                                            <li data-value="5_71">13.3</li>
-                                                            <li data-value="5_72">14</li>
-                                                            <li data-value="5_76">9.7</li>
-                                                            <li data-value="5_77">10.1</li>
-                                                            <li data-value="5_78">10.30</li>
-                                                        </ul>
+                                                        <ul class="admin-list-widget g-d-hidei" id="admin_rule_list"></ul>
                                                     </span>
                                                 </div>
                                             </div>
@@ -229,7 +211,7 @@
 
 
                             <div class="form-group">
-                                <label class="control-label">批发价：</label>
+                                <label class="control-label">批发价：<span class="g-c-red1" id="admin_wholesale_tips"></span></label>
                                 <table class="table table-bordered table-striped table-hover admin-table">
                                     <!--分组样式-->
                                     <colgroup>
@@ -262,20 +244,6 @@
                                     </label>
                                 </div>
                             </div>
-
-
-                            <div class="form-group admin-rpos-wrap">
-                                <div class="img-url-wrap" id="img_url_wrap">
-                                    <div class="toggle-edit-btn" id="toggle_edit_btn"></div>
-                                    <div class="btn btn-white g-br2 img-url-item img-url-select" id="img_url_file">选择图片</div>
-                                    <div id="img_url_upload" class="btn btn-white g-br2 img-url-item img-url-upload">上传图片</div>
-                                </div>
-
-                                <label class="control-label">缩略图地址：</label>
-
-                                <input type="text" class="form-control" name="admin_goodsPictures0" id="admin_goodsPictures0" readonly  placeholder="请选择缩略图地址"  />
-                            </div>
-
 
                             <div class="form-group">
                                 <label class="control-label">商品描述：</label>

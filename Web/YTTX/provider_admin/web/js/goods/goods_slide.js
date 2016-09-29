@@ -15,6 +15,7 @@
 
 		if(this.size>=1){
 			this.play(0);
+			this.unbindEvent();
 			this.bindEvent();
 		}else{
 			this.unbindEvent();
@@ -26,12 +27,23 @@
 		var self=this;
 
 		/*绑定按钮*/
-		this.$slide_tool.on('click','li',function(){
-			var $this=$(this),
+		this.$slide_tool.on('click','li',function(e){
+			var target= e.target,
+				nodename=target.nodeName.toLowerCase(),
+				$this=$(this),
 				index=$this.index();
 
-			self.front=self.index;
-			self.play(index);
+			if(self.isDelete&&nodename==='span'){
+				if(self.deleteFn&&typeof self.deleteFn==='Function'){
+					self.deleteFn.call();
+				}
+				return false;
+			}else{
+				$this=$(this);
+				index=$this.index();
+				self.front=self.index;
+				self.play(index);
+			}
 		});
 
 		/*绑定左右切换*/
