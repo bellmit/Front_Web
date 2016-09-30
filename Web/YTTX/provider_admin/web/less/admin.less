@@ -541,6 +541,7 @@
 		overflow: hidden;
 	}
 	.editor-image-btn{
+		.layout-relative-base;
 		.layout-base(90px);
 		display:inline-block;
 		font-size:@font-size-base - 2;
@@ -548,6 +549,12 @@
 		margin:-60px 10px 0 0;
 		padding:2px 10px;
 		line-height:20px;
+		input[type="file"]{
+			.layout-absolutel-base;
+			.layout-base;
+			height:100%;
+			.opacity-base(0);
+		}
 	}
 	.editor-image-show{
 		.layout-float-base;
@@ -584,6 +591,12 @@
 					height:100%;
 					display: inline-block;
 				}
+			}
+		}
+		.editor-image-active{
+			background:lighten(@btn-success-bg,40%);
+			&:hover{
+				background:lighten(@btn-success-bg,40%);
 			}
 		}
 	}
@@ -730,7 +743,7 @@
 			margin:10px auto 0 auto;
 			text-align:center;
 			.admin-rpos-wrap{
-				input{
+				input[type="file"]{
 					.layout-absolutel-base;
 					.layout-base;
 					height:100%;
