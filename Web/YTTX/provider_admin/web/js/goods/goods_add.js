@@ -61,7 +61,8 @@
 				attr_data={},
 				admin_goodsadd_form=document.getElementById('admin_goodsadd_form'),
 				$admin_goodsadd_form=$(admin_goodsadd_form),
-				resetform=null,
+				resetform0=null,
+				resetform1=null,
 				colormap={},
 				rulemap={},
 				issetprice=false,
@@ -773,69 +774,123 @@
 			/*表单验证*/
 			if($.isFunction($.fn.validate)) {
 				/*配置信息*/
-				var form_opt={},
+				var form_opt0={},
+					form_opt1={},
 					formcache=public_tool.cache,
 					basedata={
 						userId:decodeURIComponent(logininfo.param.userId),
 						token:decodeURIComponent(logininfo.param.token),
 						providerId:decodeURIComponent(logininfo.param.providerId)
-					};
+					},
+					formtype;
 
 
-				if(formcache.form_opt_0){
-					$.extend(true,form_opt,formcache.form_opt_0,{
-						submitHandler: function(form){
-
-							var setdata={};
-							$.extend(true,setdata,basedata);
-							$.extend(true,setdata,{
-								code:$admin_code.val(),
-								name:$admin_name.val(),
-								isRecommended:$admin_isRecommended.find(':selected')?true:false,
-								status:$admin_status.find(':selected').val(),
-								goodsBrandId:1,
-								goodsTypeId:istypeid,
-								details:$admin_details.val(),
-								goodsPictures1:$admin_slide_view.val()||file_read
-							});
-							if(issetprice){
-								setdata['attrIventoryPrices']=getSetPrice();
-							}else{
-								setdata['attrIventoryPrices']=[$admin_inventory.val()+'#'+$admin_wholesale_price.val()+'#'+$admin_retail_price.val()];
+				if(formcache.form_opt_0 && formcache.form_opt_1){
+					$.each([formcache.form_opt_0,formcache.form_opt_1],function(index){
+						if(index===0){
+							formtype='addgoods';
+						}else if(index===1){
+							formtype='addtype';
+						}
+						$.extend(true,(function () {
+							if(formtype==='addgoods'){
+								return form_opt0;
+							}else if(formtype==='addtype'){
+								return form_opt1;
 							}
+						}()),(function () {
+							if(formtype==='addgoods'){
+								return formcache.form_opt_0;
+							}else if(formtype==='addtype'){
+								return formcache.form_opt_1;
+							}
+						}()),{
+							submitHandler: function(form){
+								var setdata={},
+									config={
+									dataType:'JSON',
+									method:'post'
+								};
+								$.extend(true,setdata,basedata);
+								if(formtype==='addgoods'){
+									$.extend(true,setdata,{
+										code:$admin_code.val(),
+										name:$admin_name.val(),
+										isRecommended:$admin_isRecommended.find(':selected')?true:false,
+										status:$admin_status.find(':selected').val(),
+										goodsBrandId:1,
+										goodsTypeId:istypeid,
+										details:$admin_details.val(),
+										goodsPictures1:$admin_slide_view.val()||file_read
+									});
+									if(issetprice){
+										setdata['attrIventoryPrices']=getSetPrice();
+									}else{
+										setdata['attrIventoryPrices']=[$admin_inventory.val()+'#'+$admin_wholesale_price.val()+'#'+$admin_retail_price.val()];
+									}
+									config['url']="http://120.24.226.70:8081/yttx-providerbms-api/goods/addupdate";
+								}else if(formtype==='addtype'){
+									$.extend(true,setdata,{
+										gtCode:$admin_gtCode.val(),
+										name:$admin_typename.val(),
+										sort:$admin_sort.val()
+									});
+									var parentid=$admin_goodsTypeId_addone.find('option:selected').val(),
+										parentid2='';
+									if(parentid===''){
+										setdata['parentId']='';
+									}else{
+										setdata['parentId']=parentid;
+										parentid2=$admin_goodsTypeId_addtwo.find('option:selected').val();
+										if(parentid2!==''){
+											setdata['parentId2']=parentid;
+										}
+									}
+									config['url']="http://120.24.226.70:8081/yttx-providerbms-api/goodstype/add";
+								}
+								config['data']=setdata;
 
-							$.ajax({
-								url:"http://120.24.226.70:8081/yttx-providerbms-api/goods/addupdate",
-								dataType:'JSON',
-								method:'post',
-								data:setdata
-							}).done(function(resp){
-								var code=parseInt(resp.code,10);
-								if(code!==0){
-									console.log(resp.message);
-									dia.content('<span class="g-c-bs-warning g-btips-warn">添加商品失败</span>').show();
+
+								$.ajax(config).done(function(resp){
+									var code=parseInt(resp.code,10);
+									if(code!==0){
+										console.log(resp.message);
+										if(formtype==='addgoods'){
+											dia.content('<span class="g-c-bs-warning g-btips-warn">添加商品失败</span>').show();
+										}else if(formtype==='addtype'){
+											dia.content('<span class="g-c-bs-warning g-btips-warn">添加商品分类失败</span>').show();
+										}
+										setTimeout(function () {
+											dia.close();
+										},2000);
+										return false;
+									}
+									if(formtype==='addgoods'){
+										dia.content('<span class="g-c-bs-success g-btips-succ">添加商品成功</span>').show();
+									}else if(formtype==='addtype'){
+										dia.content('<span class="g-c-bs-success g-btips-succ">添加商品类型成功</span>').show();
+									}
+
 									setTimeout(function () {
 										dia.close();
 									},2000);
-									return false;
-								}
+								}).fail(function(resp){
+									console.log('error');
+								});
 
-								dia.content('<span class="g-c-bs-success g-btips-succ">添加商品成功</span>').show();
-								setTimeout(function () {
-									dia.close();
-								},2000);
-							}).fail(function(resp){
-								console.log('error');
-							});
-
-						}
+							}
+						});
 					});
+
 				}
 
 
 				/*提交验证*/
-				if(resetform===null){
-					resetform=$admin_goodsadd_form.validate(form_opt);
+				if(resetform0===null){
+					resetform0=$admin_goodsadd_form.validate(form_opt0);
+				}
+				if(resetform1===null){
+					resetform1=$admin_typeadd_form.validate(form_opt1);
 				}
 
 			}
