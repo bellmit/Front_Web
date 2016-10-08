@@ -603,9 +603,6 @@
 
 	/*查看属性，颜色，尺寸*/
 	.admin-list-widget{
-		.layout-absoluter-base(-70px,36px,100);
-		width:482px;
-		height:242px;
 		overflow: auto;
 		background:@color-white;
 		border:1px solid @color-gray12;
@@ -629,6 +626,19 @@
 				background:lighten(@btn-success-bg,40%);
 			}
 		}
+	}
+
+	.color-list-widget,
+	.rule-list-widget{
+		.layout-absoluter-base(-70px,36px,100);
+		width:482px;
+		height:242px;
+	}
+	.addcode-list-widget{
+		.layout-absoluter-base(2px,36px,100);
+		min-width:722px;
+		max-width:1202px;
+		height:242px;
 	}
 
 
