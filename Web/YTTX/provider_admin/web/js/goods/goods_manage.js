@@ -384,15 +384,15 @@
 
 					/*上架和下架*/
 					$.ajax({
-							url:"http://120.24.226.70:8081/yttx-providerbms-api/goods/operate",
+							url:"http://120.24.226.70:8081/yttx-providerbms-api/goods/status/update",
 							method: 'POST',
 							dataType: 'json',
 							data:{
-								id:id,
+								ids:id,
 								providerId:decodeURIComponent(logininfo.param.providerId),
 								userId:decodeURIComponent(logininfo.param.userId),
 								token:decodeURIComponent(logininfo.param.token),
-								operate:status
+								status:status
 							}
 						})
 						.done(function(resp){
@@ -444,7 +444,7 @@
 			}else{
 				table.ajax.config(opt.config.ajax).load();
 			}
-		};
+		}
 
 
 		/*判断图片合法格式*/
@@ -458,7 +458,7 @@
 					str=value;
 				}else{
 					str='';
-				};
+				}
 			}else{
 				str='';
 			}
