@@ -46,16 +46,6 @@
             "modCode": "yttx-goods-add",
             "modLink": "yttx-goods-add",
             "modName": "商品新增"
-          },
-          {
-            "modCode": "yttx-goods-edit",
-            "modLink": "yttx-goods-edit",
-            "modName": "商品编辑"
-          },
-          {
-            "modCode": "yttx-goods-detail",
-            "modLink": "yttx-goods-detail",
-            "modName": "查看商品"
           }
         ]
       },

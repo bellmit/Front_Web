@@ -33,71 +33,201 @@
 				$admin_identityJust=$('#admin_identityJust'),
 				$admin_identityBack=$('#admin_identityBack'),
 				$admin_identityHand=$('#admin_identityHand'),
-				$admin_businessLicense=$('#admin_businessLicense'),
 				$admin_businessLicenseImage=$('#admin_businessLicenseImage'),
+				$admin_identityJust_upload=$('#admin_identityJust_upload'),
+				$admin_identityBack_upload=$('#admin_identityBack_upload'),
+				$admin_identityHand_upload=$('#admin_identityHand_upload'),
+				$admin_businessLicenseImage_upload=$('#admin_businessLicenseImage_upload'),
+				$admin_identityJust_show=$('#admin_identityJust_show'),
+				$admin_identityBack_show=$('#admin_identityBack_show'),
+				$admin_identityHand_show=$('#admin_identityHand_show'),
+				$admin_businessLicenseImage_show=$('#admin_businessLicenseImage_show'),
+				$admin_businessLicense=$('#admin_businessLicense'),
 				$show_detail_wrap=$('#show_detail_wrap')/*详情容器*/,
 				$show_detail_title=$('#show_detail_title')/*详情标题*/,
-				$show_detail_content=$('#show_detail_content')/*详情内容*/,
+				$show_detail_content=$('#show_detail_content'),
 				QN=new QiniuJsSDK()/*七牛对象*/,
-				img_token=getToken()||null,
-				logo_upload=null;
+				img_token=getToken()||null/*详情内容*/;
 
 
-			/*加载数据*/
-			getSettingData();
 
+			/*上传对象*/
+			var logo_uploadjust=new plupload.Uploader({
+						runtimes: 'html5,html4,flash,silverlight',
+						browse_button : 'admin_identityJust_view',
+						multi_selection:false,
+						multipart:true,/*默认上传方式表单或二进制*/
+						multipart_params:{
+							"providerId":decodeURIComponent(logininfo.param.providerId),
+							"userId":decodeURIComponent(logininfo.param.userId),
+							"token":decodeURIComponent(logininfo.param.token),
+							"operationType":2,
+							"logoImage":''
+						},/*自定义其他参数*/
+						container: document.getElementById('admin_identityJust'),
+						url : "http://10.0.5.222:8080/yttx-providerbms-api/provider/basicset/update",
+						chunk_size: '2mb',
+						filters : {
+							max_file_size : '3mb',
+							mime_types: [
+								{title : "Image files", extensions : "jpg,gif,png,jpeg"}
+							]
+						},
+						flash_swf_url : '../../js/plugins/plupload/Moxie.swf',
+						max_retries: 3,
+						silverlight_xap_url : '../../js/plugins/plupload/Moxie.xap',
+						init: {
+							'PostInit': function() {
+								$admin_identityJust.attr({
+									'data-value':''
+								});
+								/*绑定上传相片*/
+								$admin_identityJust_upload.on('click',function(){
+									var isupload=$admin_identityJust.attr('data-value');
+									if(isupload===''){
+										dia.content('<span class="g-c-bs-warning g-btips-warn">您还未选择需要上传的文件</span>').show();
+										setTimeout(function(){
+											dia.close();
+										},3000);
+										return false;
+									}else{
+										logo_uploadjust.start();
+										return false;
+									}
+								});
+							},
+							'FilesAdded': function(up, files) {
+								console.log(files);
+								$admin_identityJust.attr({
+									'data-value':'image'
+								});
+							},
+							'BeforeUpload': function(up, file) {},
+							'UploadProgress': function(up, file) {},
+							'FileUploaded': function(up, file, info) {
+								/*获取上传成功后的文件的Url*/
+								console.log(up);
+								console.log(file);
+								console.log(info.response);
+								/*var domain=up.getOption('domain'),
+								 name=JSON.parse(info);
 
-			/*上传图片*/
-			if(img_token!==null){
-				/*logo_upload = QN.uploader({
-					runtimes: 'html5,flash,html4',
-					browse_button: 'admin_logoImage_file',
-					uptoken :img_token.qiniuToken,// uptoken是上传凭证，由其他程序生成
-					multi_selection:false,
-					get_new_uptoken: false,// 设置上传文件的时候是否每次都重新获取新的uptoken
-					unique_names:false,// 默认false，key为文件名。若开启该选项，JS-SDK会为每个文件自动生成key（文件名）
-					save_key:false,//默认false。若在服务端生成uptoken的上传策略中指定了sava_key，则开启，SDK在前端将不对key进行任何处理
-					domain:img_token.qiniuDomain,//bucket域名，下载资源时用到，必需
-					container:'admin_logoImage',// 上传区域DOM ID，默认是browser_button的父元素
-					flash_swf_url: '../../js/plugins/plupload/Moxie.swf',//引入flash，相对路径
-					max_retries: 3,// 上传失败最大重试次数
-					dragdrop:false,
-					chunk_size: '500kb',
-					auto_start:false,
-					filters:{
-						max_file_size : '500kb',
-						mime_types: [
-							{
-								title : "Image files", extensions : "jpg,png,jpeg"
+								 $admin_logoImage.attr({
+								 'data-image':domain+'/'+name.key+"?imageView2/1/w/160/h/160"
+								 }).html('<img src="'+domain+'/'+name.key+"?imageView2/1/w/160/h/160"+'" alt="店铺LOGO">');*/
+								$admin_identityJust.attr({
+									'data-src':info.response
+								});
+							},
+							'Error': function(up, err, errTip) {
+								$admin_identityJust.attr({
+									'data-value':''
+								});
+								var opt=up.settings,
+									file=err.file,
+									setsize=parseInt(opt.filters.max_file_size,10),
+									realsize=parseInt((file.size / 1024) / 1024,10);
+
+								if(realsize>setsize){
+									dia.content('<span class="g-c-bs-warning g-btips-warn">您选择的文件太大(<span class="g-c-red1"> '+realsize+'mb</span>),不能超过(<span class="g-c-red1"> '+setsize+'mb</span>)</span>').show();
+									setTimeout(function(){
+										dia.close();
+									},3000);
+								}
+								console.log(errTip);
+							},
+							'UploadComplete': function() {
+								$admin_identityJust.attr({
+									'data-value':''
+								});
+								dia.content('<span class="g-c-bs-success g-btips-succ">上传成功</span>').show();
+								setTimeout(function(){
+									dia.close();
+								},2000);
+							},
+							'Key': function(up, file) {
+								var str=moment().format("YYYYMMDDHHmmSSSS");
+								return "provider_"+str;
 							}
+						}
+					}),
+				logo_uploadback=new plupload.Uploader({
+					runtimes: 'html5,html4,flash,silverlight',
+					browse_button : 'admin_identityBack_view',
+					multi_selection:false,
+					multipart:true,/*默认上传方式表单或二进制*/
+					multipart_params:{
+						providerId:decodeURIComponent(logininfo.param.providerId),
+						userId:decodeURIComponent(logininfo.param.userId),
+						token:decodeURIComponent(logininfo.param.token),
+						operationType:2,
+						logoImage:''
+					},/*自定义其他参数*/
+					container: document.getElementById('admin_identityBack'),
+					url : "http://10.0.5.222:8080/yttx-providerbms-api/provider/basicset/update",
+					chunk_size: '2mb',
+					filters : {
+						max_file_size : '3mb',
+						mime_types: [
+							{title : "Image files", extensions : "jpg,gif,png,jpeg"}
 						]
 					},
+					flash_swf_url : '../../js/plugins/plupload/Moxie.swf',
+					max_retries: 3,
+					silverlight_xap_url : '../../js/plugins/plupload/Moxie.xap',
 					init: {
-						'FilesAdded': function(up, files) {
-							$admin_logoImage.attr({
-								'data-image':''
+						'PostInit': function() {
+							$admin_identityBack.attr({
+								'data-value':''
+							});
+							/*绑定上传相片*/
+							$admin_identityBack_upload.on('click',function(){
+								var isupload=$admin_identityBack.attr('data-value');
+								if(isupload===''){
+									dia.content('<span class="g-c-bs-warning g-btips-warn">您还未选择需要上传的文件</span>').show();
+									setTimeout(function(){
+										dia.close();
+									},3000);
+									return false;
+								}else{
+									logo_uploadback.start();
+									return false;
+								}
 							});
 						},
-						'BeforeUpload': function(up, file) {
+						'FilesAdded': function(up, files) {
+							$admin_identityBack.attr({
+								'data-value':'image'
+							});
 						},
+						'BeforeUpload': function(up, file) {},
 						'UploadProgress': function(up, file) {},
 						'FileUploaded': function(up, file, info) {
-							/!*获取上传成功后的文件的Url*!/
-							var domain=up.getOption('domain'),
-								name=JSON.parse(info);
+							/*获取上传成功后的文件的Url*/
+							console.log(up);
+							console.log(file);
+							console.log(info.response);
+							/*var domain=up.getOption('domain'),
+							 name=JSON.parse(info);
 
-							$admin_logoImage.attr({
-								'data-image':domain+'/'+name.key+"?imageView2/1/w/160/h/160"
-							}).html('<img src="'+domain+'/'+name.key+"?imageView2/1/w/160/h/160"+'" alt="店铺LOGO">');
+							 $admin_logoImage.attr({
+							 'data-image':domain+'/'+name.key+"?imageView2/1/w/160/h/160"
+							 }).html('<img src="'+domain+'/'+name.key+"?imageView2/1/w/160/h/160"+'" alt="店铺LOGO">');*/
+							$admin_identityBack.attr({
+								'data-src':info.response
+							});
 						},
 						'Error': function(up, err, errTip) {
+							$admin_identityBack.attr({
+								'data-value':''
+							});
 							var opt=up.settings,
 								file=err.file,
 								setsize=parseInt(opt.filters.max_file_size,10),
-								realsize=parseInt(file.size / 1024,10);
+								realsize=parseInt((file.size / 1024) / 1024,10);
 
 							if(realsize>setsize){
-								dia.content('<span class="g-c-bs-warning g-btips-warn">您选择的文件太大(<span class="g-c-red1"> '+realsize+'kb</span>),不能超过(<span class="g-c-red1"> '+setsize+'kb</span>)</span>').show();
+								dia.content('<span class="g-c-bs-warning g-btips-warn">您选择的文件太大(<span class="g-c-red1"> '+realsize+'mb</span>),不能超过(<span class="g-c-red1"> '+setsize+'mb</span>)</span>').show();
 								setTimeout(function(){
 									dia.close();
 								},3000);
@@ -105,35 +235,237 @@
 							console.log(errTip);
 						},
 						'UploadComplete': function() {
+							$admin_identityBack.attr({
+								'data-value':''
+							});
 							dia.content('<span class="g-c-bs-success g-btips-succ">上传成功</span>').show()
 							setTimeout(function(){
 								dia.close();
 							},2000);
 						},
 						'Key': function(up, file) {
-							var str=moment().format("YYYYMMDDHHmmSSSS");
-							return "provider_"+str;
+							var str="provider_"+moment().format("YYYYMMDDHHmmSSSS");
+							return str;
 						}
 					}
-				});*/
-			}else {
+				}),
+				logo_uploadhand=new plupload.Uploader({
+					runtimes: 'html5,html4,flash,silverlight',
+					browse_button : 'admin_identityHand_view',
+					multi_selection:false,
+					multipart:true,/*默认上传方式表单或二进制*/
+					multipart_params:{
+						providerId:decodeURIComponent(logininfo.param.providerId),
+						userId:decodeURIComponent(logininfo.param.userId),
+						token:decodeURIComponent(logininfo.param.token),
+						operationType:2,
+						logoImage:''
+					},/*自定义其他参数*/
+					container: document.getElementById('admin_identityHand'),
+					url : "http://10.0.5.222:8080/yttx-providerbms-api/provider/basicset/update",
+					chunk_size: '2mb',
+					filters : {
+						max_file_size : '3mb',
+						mime_types: [
+							{title : "Image files", extensions : "jpg,gif,png,jpeg"}
+						]
+					},
+					flash_swf_url : '../../js/plugins/plupload/Moxie.swf',
+					max_retries: 3,
+					silverlight_xap_url : '../../js/plugins/plupload/Moxie.xap',
+					init: {
+						'PostInit': function() {
+							$admin_identityHand.attr({
+								'data-value':''
+							});
+							/*绑定上传相片*/
+							$admin_identityHand_upload.on('click',function(){
+								var isupload=$admin_identityHand.attr('data-value');
+								if(isupload===''){
+									dia.content('<span class="g-c-bs-warning g-btips-warn">您还未选择需要上传的文件</span>').show();
+									setTimeout(function(){
+										dia.close();
+									},3000);
+									return false;
+								}else{
+									logo_uploadhand.start();
+									return false;
+								}
+							});
+						},
+						'FilesAdded': function(up, files) {
+							$admin_identityHand.attr({
+								'data-value':'image'
+							});
+						},
+						'BeforeUpload': function(up, file) {},
+						'UploadProgress': function(up, file) {},
+						'FileUploaded': function(up, file, info) {
+							/*获取上传成功后的文件的Url*/
+							console.log(up);
+							console.log(file);
+							console.log(info.response);
+							/*var domain=up.getOption('domain'),
+							 name=JSON.parse(info);
 
-			}
+							 $admin_logoImage.attr({
+							 'data-image':domain+'/'+name.key+"?imageView2/1/w/160/h/160"
+							 }).html('<img src="'+domain+'/'+name.key+"?imageView2/1/w/160/h/160"+'" alt="店铺LOGO">');*/
+							$admin_identityHand.attr({
+								'data-src':info.response
+							});
+						},
+						'Error': function(up, err, errTip) {
+							$admin_identityHand.attr({
+								'data-value':''
+							});
+							var opt=up.settings,
+								file=err.file,
+								setsize=parseInt(opt.filters.max_file_size,10),
+								realsize=parseInt((file.size / 1024) / 1024,10);
 
+							if(realsize>setsize){
+								dia.content('<span class="g-c-bs-warning g-btips-warn">您选择的文件太大(<span class="g-c-red1"> '+realsize+'mb</span>),不能超过(<span class="g-c-red1"> '+setsize+'mb</span>)</span>').show();
+								setTimeout(function(){
+									dia.close();
+								},3000);
+							}
+							console.log(errTip);
+						},
+						'UploadComplete': function() {
+							$admin_identityHand.attr({
+								'data-value':''
+							});
+							dia.content('<span class="g-c-bs-success g-btips-succ">上传成功</span>').show()
+							setTimeout(function(){
+								dia.close();
+							},2000);
+						},
+						'Key': function(up, file) {
+							var str="provider_"+moment().format("YYYYMMDDHHmmSSSS");
+							return str;
+						}
+					}
+				}),
+				logo_uploadlicense=new plupload.Uploader({
+					runtimes: 'html5,html4,flash,silverlight',
+					browse_button : 'admin_businessLicenseImage_view',
+					multi_selection:false,
+					multipart:true,/*默认上传方式表单或二进制*/
+					multipart_params:{
+						providerId:decodeURIComponent(logininfo.param.providerId),
+						userId:decodeURIComponent(logininfo.param.userId),
+						token:decodeURIComponent(logininfo.param.token),
+						operationType:2,
+						logoImage:''
+					},/*自定义其他参数*/
+					container: document.getElementById('admin_businessLicenseImage'),
+					url : "http://10.0.5.222:8080/yttx-providerbms-api/provider/basicset/update",
+					chunk_size: '2mb',
+					filters : {
+						max_file_size : '3mb',
+						mime_types: [
+							{title : "Image files", extensions : "jpg,gif,png,jpeg"}
+						]
+					},
+					flash_swf_url : '../../js/plugins/plupload/Moxie.swf',
+					max_retries: 3,
+					silverlight_xap_url : '../../js/plugins/plupload/Moxie.xap',
+					init: {
+						'PostInit': function() {
+							$admin_businessLicenseImage.attr({
+								'data-value':''
+							});
+							/*绑定上传相片*/
+							$admin_businessLicenseImage_upload.on('click',function(){
+								var isupload=$admin_businessLicenseImage.attr('data-value');
+								if(isupload===''){
+									dia.content('<span class="g-c-bs-warning g-btips-warn">您还未选择需要上传的文件</span>').show();
+									setTimeout(function(){
+										dia.close();
+									},3000);
+									return false;
+								}else{
+									logo_uploadlicense.start();
+									return false;
+								}
+							});
+						},
+						'FilesAdded': function(up, files) {
+							$admin_businessLicenseImage.attr({
+								'data-value':'image'
+							});
+						},
+						'BeforeUpload': function(up, file) {},
+						'UploadProgress': function(up, file) {},
+						'FileUploaded': function(up, file, info) {
+							/*获取上传成功后的文件的Url*/
+							console.log(up);
+							console.log(file);
+							console.log(info.response);
+							/*var domain=up.getOption('domain'),
+							 name=JSON.parse(info);
+
+							 $admin_logoImage.attr({
+							 'data-image':domain+'/'+name.key+"?imageView2/1/w/160/h/160"
+							 }).html('<img src="'+domain+'/'+name.key+"?imageView2/1/w/160/h/160"+'" alt="店铺LOGO">');*/
+							$admin_businessLicenseImage.attr({
+								'data-src':info.response
+							});
+						},
+						'Error': function(up, err, errTip) {
+							$admin_businessLicenseImage.attr({
+								'data-value':''
+							});
+							var opt=up.settings,
+								file=err.file,
+								setsize=parseInt(opt.filters.max_file_size,10),
+								realsize=parseInt((file.size / 1024) / 1024,10);
+
+							if(realsize>setsize){
+								dia.content('<span class="g-c-bs-warning g-btips-warn">您选择的文件太大(<span class="g-c-red1"> '+realsize+'mb</span>),不能超过(<span class="g-c-red1"> '+setsize+'mb</span>)</span>').show();
+								setTimeout(function(){
+									dia.close();
+								},3000);
+							}
+							console.log(errTip);
+						},
+						'UploadComplete': function() {
+							$admin_businessLicenseImage.attr({
+								'data-value':''
+							});
+							dia.content('<span class="g-c-bs-success g-btips-succ">上传成功</span>').show()
+							setTimeout(function(){
+								dia.close();
+							},2000);
+						},
+						'Key': function(up, file) {
+							var str="provider_"+moment().format("YYYYMMDDHHmmSSSS");
+							return str;
+						}
+					}
+				});
+
+
+
+
+			/*加载数据*/
+			getSettingData();
+
+
+			/*上传图片*/
+			logo_uploadjust.init();
+			//logo_uploadback.init();
+			//logo_uploadhand.init();
+			//logo_uploadlicense.init();
+
+
+
+			/*绑定切换显示隐藏*/
 			$.each([$admin_identityJust,$admin_identityBack,$admin_identityHand,$admin_businessLicenseImage],function(){
 
 				var self=this;
 
-				/*上传图片*/
-				this.on('click',function(e){
-					if(img_token===null){
-						dia.content('<span class="g-c-bs-warning g-btips-warn">暂未开通此接口</span>').show();
-						setTimeout(function () {
-							dia.close();
-						},2000);
-						return false;
-					}
-				});
 
 				/*查询切换显示隐藏*/
 				this.parent().on('mouseover mouseout',function(e){
@@ -144,11 +476,30 @@
 						self.prev().removeClass('admin-upload-detail-active');
 					}
 				});
+			});
+
+
+
+			/*绑定查看详情*/
+			$.each([$admin_identityJust_show,$admin_identityBack_show,$admin_identityHand_show,$admin_businessLicenseImage_show],function(){
+
+				var self=this,
+					selector=this.selector;
+
 
 				/*绑定查看*/
-				this.prev().on('click',function(e){
-					$show_detail_title.html(self.next().html());
-					$show_detail_content.html('<tr><td>'+self.html()+'</td></tr>');
+				this.on('click',function(e){
+					var $parent=self.parent();
+					if(selector.indexOf('Just')!==-1){
+						$show_detail_title.html('身份证照(正面)');
+					}else if(selector.indexOf('Back')!==-1){
+						$show_detail_title.html('身份证照(反面)');
+					}else if(selector.indexOf('Hand')!==-1){
+						$show_detail_title.html('手持身份证正面照片');
+					}else if(selector.indexOf('Image')!==-1){
+						$show_detail_title.html('营业执照图片');
+					}
+					$show_detail_content.html('<tr><td>'+$parent.next().html()+'</td></tr>');
 					$show_detail_wrap.modal('show',{
 						backdrop:'static'
 					});
@@ -167,7 +518,7 @@
 		/*获取*/
 		function getSettingData(){
 			$.ajax({
-				url:"http://120.24.226.70:8081/yttx-providerbms-api/provider/enterprise/certification",
+				url:"http://10.0.5.222:8080/yttx-providerbms-api/provider/enterprise/certification",
 				dataType:'JSON',
 				method:'post',
 				data:{
@@ -243,7 +594,7 @@
 			}).fail(function(resp){
 				console.log('error');
 			});
-		};
+		}
 
 
 		/*判断图片合法格式*/
@@ -269,11 +620,12 @@
 		function getToken(){
 			var result=null;
 			$.ajax({
-				url:'http://120.24.226.70:8081/yttx-providerbms-api/commom/getQiniuToken',
+				url:'http://10.0.5.222:8080/yttx-providerbms-api/qiniu/token/get',
 				async:false,
 				type:'post',
 				datatype:'json',
 				data:{
+					bizType:1,
 					providerId:decodeURIComponent(logininfo.param.providerId),
 					userId:decodeURIComponent(logininfo.param.userId),
 					token:decodeURIComponent(logininfo.param.token)
@@ -289,7 +641,7 @@
 				console.log(resp.message);
 			});
 			return result;
-		};
+		}
 
 	});
 

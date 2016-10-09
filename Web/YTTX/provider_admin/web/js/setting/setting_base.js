@@ -50,7 +50,7 @@
 				img_token=getToken(),
 				logo_upload=null,
 				update_config={
-					url:"http://120.24.226.70:8081/yttx-providerbms-api/provider/basicset/update",
+					url:"http://10.0.5.222:8080/yttx-providerbms-api/provider/basicset/update",
 					dataType:'JSON',
 					method:'post',
 					data:{
@@ -290,7 +290,7 @@
 		/*获取*/
 		function getSettingData(){
 			$.ajax({
-				url:"http://120.24.226.70:8081/yttx-providerbms-api/provider/basicset/info",
+				url:"http://10.0.5.222:8080/yttx-providerbms-api/provider/basicset/info",
 				dataType:'JSON',
 				method:'post',
 				data:{
@@ -360,7 +360,7 @@
 		function getToken(){
 			var result=null;
 			$.ajax({
-				url:'http://120.24.226.70:8081/yttx-providerbms-api/commom/getQiniuToken',
+				url:'http://10.0.5.222:8080/yttx-adminbms-api/commom/getQiniuToken',
 				async:false,
 				type:'post',
 				datatype:'json',

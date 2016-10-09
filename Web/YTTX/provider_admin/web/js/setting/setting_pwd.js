@@ -71,7 +71,7 @@
 					$.extend(true,form_opt,formcache.form_opt_0,{
 						submitHandler: function(form){
 							$.ajax({
-								url:"http://120.24.226.70:8081/yttx-providerbms-api/user/password/update",
+								url:"http://10.0.5.222:8080/yttx-providerbms-api/user/password/update",
 								dataType:'JSON',
 								method:'post',
 								data:{
@@ -120,7 +120,7 @@
 		/*获取*/
 		function getSettingData(){
 			$.ajax({
-				url:"http://120.24.226.70:8081/yttx-providerbms-api/user/password/info",
+				url:"http://10.0.5.222:8080/yttx-providerbms-api/user/password/info",
 				dataType:'JSON',
 				method:'post',
 				data:{

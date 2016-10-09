@@ -75,22 +75,12 @@
 				issetprice=false,
 				istypeid=null;
 
-
-			/*上传对象*/
-			var QN_Upload=new QiniuJsSDK()/*七牛对象*/,
-				ImageUpload_Token=getToken()||null/*获取token*/;
-
-
-
 			/*新增类弹出框*/
 			var $show_addtype_wrap=$('#show_addtype_wrap'),
 				$admin_gtCode=$('#admin_gtCode'),
 				$admin_typename=$('#admin_typename'),
 				$admin_sort=$('#admin_sort'),
 				$admin_image=$('#admin_image'),
-				$toggle_edit_btn=$('#toggle_edit_btn'),
-				$image_url_file=$('#image_url_file'),
-				$image_url_upload=$('#image_url_upload'),
 				$admin_goodsTypeId_addone=$('#admin_goodsTypeId_addone'),
 				$admin_goodsTypeId_addtwo=$('#admin_goodsTypeId_addtwo'),
 				$admin_addcode_btn=$('#admin_addcode_btn'),
@@ -115,7 +105,10 @@
 				$admin_addrule_tips=$('#admin_addrule_tips'),
 				$admin_newrule=$('#admin_newrule'),
 				$admin_addrule_btn=$('#admin_addrule_btn'),
-				$admin_addrule_list=$('#admin_addrule_list');
+				$admin_addrule_list=$('#admin_addrule_list'),
+				typeimage_setsize=200,
+				typeimage_resource=[],
+				typeimage_read=[];
 
 
 
@@ -139,7 +132,6 @@
 				$admin_slide_btnr=$('#admin_slide_btnr'),
 				$admin_slide_tool=$('#admin_slide_tool'),
 				$admin_slide_view=$('#admin_slide_view'),
-				$admin_slide_upload=$('#admin_slide_upload'),
 				slide_config={
 					$slide_tool:$admin_slide_tool,
 					$image:$admin_slide_image,
@@ -147,7 +139,11 @@
 					$btnr:$admin_slide_btnr,
 					active:'admin-slide-active',
 					len:5
-				};
+				},
+				file_setsize=1024 * 1024,
+				file_size=10,
+				file_resource=[],
+				file_read=[];
 
 
 			/*编辑器图片上传对象*/
@@ -168,215 +164,56 @@
 			admin_addcolor_form.reset();
 
 
+			/*商品上传预览*/
+			$admin_slide_view.on('change',function(e){
+				var files = e.target.files,
+					image,
+					file_realsize= 0,
+					len=files.length,
+					k=0;
 
-			/*图片上传预览*/
-			if(ImageUpload_Token!==null){
-				/*类型图片上传预览*/
-				var addtype_image_upload = QN_Upload.uploader({
-					runtimes: 'html5,html4,flash,silverlight',
-					browse_button: 'image_url_file',
-					uptoken :ImageUpload_Token.qiniuToken,// uptoken是上传凭证，由其他程序生成
-					multi_selection:false,
-					get_new_uptoken: false,// 设置上传文件的时候是否每次都重新获取新的uptoken
-					unique_names:false,// 默认false，key为文件名。若开启该选项，JS-SDK会为每个文件自动生成key（文件名）
-					save_key:false,//默认false。若在服务端生成uptoken的上传策略中指定了sava_key，则开启，SDK在前端将不对key进行任何处理
-					domain:ImageUpload_Token.qiniuDomain,//bucket域名，下载资源时用到，必需
-					container:'image_url_wrap',// 上传区域DOM ID，默认是browser_button的父元素
-					flash_swf_url: '../../js/plugins/plupload/Moxie.swf',//引入flash，相对路径
-					silverlight_xap_url : '../../js/plugins/plupload/Moxie.xap',
-					max_retries: 3,// 上传失败最大重试次数
-					dragdrop:false,
-					chunk_size: '500kb',
-					auto_start:false,
-					filters:{
-						max_file_size : '200kb',
-						mime_types: [
-							{
-								title : "Image files",
-								extensions : "jpg,gif,png,jpeg"
-							}
-						]
-					},
-					init: {
-						'PostInit': function() {
-							$image_url_file.attr({
-								'data-value':''
-							});
-							/*绑定上传相片*/
-							$image_url_upload.on('click',function(){
-								var isupload=$image_url_file.attr('data-value');
-								if(isupload===''){
-									dia.content('<span class="g-c-bs-warning g-btips-warn">您还未选择需要上传的文件</span>').show();
-									setTimeout(function(){
-										dia.close();
-									},3000);
-									return false;
-								}else{
-									addtype_image_upload.start();
-									return false;
-								}
-							});
-						},
-						'FilesAdded': function(up, file) {
-							$image_url_file.attr({
-								'data-value':'image'
-							});
-						},
-						'BeforeUpload': function(up, file) {},
-						'UploadProgress': function(up, file) {},
-						'FileUploaded': function(up, file, info) {
-							/*获取上传成功后的文件的Url*/
-							/*var domain=up.getOption('domain'),
-								name=JSON.parse(info);
-							$admin_image.val(domain+'/'+name.key+"?imageView2/1/w/150/h/150");*/
-							$image_url_file.attr({
-								'data-value':''
-							});
-						},
-						'Error': function(up, err, errTip) {
-							var opt=up.settings,
-								file=err.file,
-								setsize=parseInt(opt.filters.max_file_size,10),
-								realsize=parseInt(file.size / 1024,10);
+				if($admin_slide_tool.find('li').size()>=file_size){
+					dia.content('<span class="g-c-bs-warning g-btips-warn">最多只能上传'+file_size+'张图片</span>').show();
+					setTimeout(function(){
+						dia.close();
+					},3000);
+					return false;
+				}
 
-							if(realsize>setsize){
-								dia.content('<span class="g-c-bs-warning g-btips-warn">您选择的文件太大(<span class="g-c-red1"> '+realsize+'kb</span>),不能超过(<span class="g-c-red1"> '+setsize+'kb</span>)</span>').show();
-								$image_url_file.attr({
-									'data-value':''
-								});
-								setTimeout(function(){
-									dia.close();
-								},3000);
-							}
-							console.log(errTip);
-						},
-						'UploadComplete': function(up, file) {
-							dia.content('<span class="g-c-bs-success g-btips-succ">上传成功</span>').show();
-							$image_url_file.attr({
-								'data-value':''
-							});
+				if (files && len > 0) {
+					for(k;k<len;k++){
+						image = files[k];
+						file_realsize=image.size;
+						if(file_realsize > file_setsize) {
+							dia.content('<span class="g-c-bs-warning g-btips-warn">您选择的文件太大(<span class="g-c-red1"> '+parseInt((file_realsize / 1024)/1024,10)+'mb</span>),不能超过(<span class="g-c-red1"> '+parseInt((file_setsize / 1024)/1024,10)+'mb</span>)</span>').show();
 							setTimeout(function(){
 								dia.close();
-							},2000);
-							try {
-								var domain=up.getOption('domain'),
-									name=up.getOption('multipart_params');
-								$admin_image.val(domain+'/'+name.key+"?imageView2/1/w/150/h/150");
-							}catch (e){
-								console.log('业务服务器回调异常');
+							},3000);
+							continue;
+						}
+						file_resource.push(image);
+						(function(){
+							var reader=new FileReader();
+							reader.readAsBinaryString(image);
+							reader.onload=function(){
+								file_read.push(reader.result);
+								reader=null;
 							}
-
-						},
-						'Key': function(up, file) {
-							var str=moment().format("YYYYMMDDHHmmSSSS");
-							return "provider_"+str;
+						}());
+						var URLOBJ,imgURL;
+						try{
+							URLOBJ = window.URL || window.webkitURL;
+							imgURL = URLOBJ.createObjectURL(image);
+							$('<li><img alt="" src="'+imgURL+'" /></li>').appendTo($admin_slide_tool);
+						}catch(e){
+							console.log('window.URL 对象支持不友好');
+							throw(e);
 						}
 					}
-				});
-
-
-				/*类型图片上传预览*/
-				var slide_image_upload = QN_Upload.uploader({
-					runtimes: 'html5,html4,flash,silverlight',
-					browse_button: 'admin_slide_view',
-					uptoken :ImageUpload_Token.qiniuToken,// uptoken是上传凭证，由其他程序生成
-					multi_selection:true,
-					get_new_uptoken: false,// 设置上传文件的时候是否每次都重新获取新的uptoken
-					unique_names:false,// 默认false，key为文件名。若开启该选项，JS-SDK会为每个文件自动生成key（文件名）
-					save_key:false,//默认false。若在服务端生成uptoken的上传策略中指定了sava_key，则开启，SDK在前端将不对key进行任何处理
-					domain:ImageUpload_Token.qiniuDomain,//bucket域名，下载资源时用到，必需
-					flash_swf_url: '../../js/plugins/plupload/Moxie.swf',//引入flash，相对路径
-					silverlight_xap_url : '../../js/plugins/plupload/Moxie.xap',
-					max_retries: 3,// 上传失败最大重试次数
-					dragdrop:false,
-					chunk_size: '2mb',
-					auto_start:false,
-					filters:{
-						max_file_size : '3mb',
-						mime_types: [
-							{
-								title : "Image files",
-								extensions : "jpg,gif,png,jpeg"
-							}
-						]
-					},
-					init: {
-						'PostInit': function() {
-
-							$admin_slide_view.attr({
-								'data-value':''
-							});
-							/*绑定上传相片*/
-							$admin_slide_upload.on('click',function(){
-								var isupload=$admin_slide_view.attr('data-value');
-								if(isupload===''){
-									dia.content('<span class="g-c-bs-warning g-btips-warn">您还未选择需要上传的文件</span>').show();
-									setTimeout(function(){
-										dia.close();
-									},3000);
-									return false;
-								}else{
-									slide_image_upload.start();
-									return false;
-								}
-							});
-						},
-						'FilesAdded': function(up, file) {
-							$admin_slide_view.attr({
-								'data-value':'image'
-							});
-						},
-						'BeforeUpload': function(up, file) {},
-						'UploadProgress': function(up, file) {},
-						'FileUploaded': function(up, file, info) {
-							/*获取上传成功后的文件的Url*/
-							$admin_slide_view.attr({
-								'data-value':''
-							});
-						},
-						'Error': function(up, err, errTip) {
-							var opt=up.settings,
-								file=err.file,
-								setsize=parseInt(opt.filters.max_file_size,10),
-								realsize=parseInt((file.size / 1024)/1024,10);
-
-							if(realsize>setsize){
-								dia.content('<span class="g-c-bs-warning g-btips-warn">您选择的文件太大(<span class="g-c-red1"> '+realsize+'mb</span>),不能超过(<span class="g-c-red1"> '+setsize+'mb</span>)</span>').show();
-								$admin_slide_view.attr({
-									'data-value':''
-								});
-								setTimeout(function(){
-									dia.close();
-								},3000);
-							}
-							console.log(errTip);
-						},
-						'UploadComplete': function(up, file) {
-							dia.content('<span class="g-c-bs-success g-btips-succ">上传成功</span>').show();
-							$admin_slide_view.attr({
-								'data-value':''
-							});
-							setTimeout(function(){
-								dia.close();
-							},2000);
-							/*初始化轮播图*/
-							goodsSlide.GoodsSlide(slide_config);
-						},
-						'Key': function(up, file) {
-							var str="provider_"+moment().format("YYYYMMDDHHmmSSSS");
-							try {
-								var domain=up.getOption('domain');
-								setTimeout(function(){
-									$('<li><img alt="" src="'+domain+'/'+str+"?imageView2/1/w/300/h/300"+'" /></li>').appendTo($admin_slide_tool);
-								},10);
-							}catch (e){
-								console.log('业务服务器回调异常');
-							}
-							return str;
-						}
-					}
-				});
-			}
+					/*初始化轮播图*/
+					goodsSlide.GoodsSlide(slide_config);
+				}
+			});
 
 
 			/*编辑器调用*/
@@ -653,6 +490,131 @@
 
 
 
+			/*$admin_color_extendbtn*/
+			/*$.ajax({
+					url:"http://10.0.5.222:8080/yttx-agentbms-api/agent/view",
+					method: 'POST',
+					dataType: 'json',
+					data:{
+						"agentId":id,
+						"adminId":decodeURIComponent(logininfo.param.adminId),
+						"token":decodeURIComponent(logininfo.param.token)
+					}
+				})
+				.done(function(resp){
+					var code=parseInt(resp.code,10);
+					if(code!==0){
+						/!*回滚状态*!/
+						console.log(resp.message);
+						dia.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"操作失败")+'</span>').show();
+						setTimeout(function () {
+							dia.close();
+						},2000);
+						return false;
+					}
+					/!*是否是正确的返回数据*!/
+					var list=resp.result,
+						str='',
+						istitle=false;
+
+					if(!$.isEmptyObject(list)){
+						for(var j in list){
+							if(j==='serivceStationlist'||j==='serivcestationlist'){
+								str+='<tr><th colspan="12" class="g-t-c">管理的服务站</th></tr>';
+								var ssl=list[j],
+									sslen=ssl.length,
+									ssi=0;
+								if(sslen!==0){
+									for(ssi;ssi<sslen;ssi++){
+										str+='<tr><th>服务站'+(parseInt(ssi,10)+10)+':</th><td>'+ssl[ssi]+'</td></tr>';
+									}
+								}else{
+									str+='<tr><td colspan="12">暂无数据</td></tr>';
+								}
+							}else if(j==='serivceStationStats'||j==='serivcestationstats'){
+								str+='<tr><th colspan="12" class="g-t-c">销售情况</th></tr>';
+								var sss=list[j],
+									ssslen=sss.length,
+									sssj=0;
+								if(ssslen!==0){
+									var tempmap={
+										shortName:"服务站",
+										agentShortName:"所属代理",
+										agentRelated:"代理关系",
+										Inventory:"库存",
+										monthSales:"本月销售",
+										Sales:"总计销售"
+									};
+									for(sssj;sssj<ssslen;sssj++){
+										var tempobj=sss[sssj];
+										if(!$.isEmptyObject(tempobj)){
+											str+='<tr>';
+											for(var k in tempobj){
+												if(typeof tempmap[k]!=='undefined'){
+													str+='<th>'+tempmap[k]+':</th><td>'+tempobj[k]+'</td>';
+												}else{
+													str+='<th>'+k+':</th><td>'+tempobj[k]+'</td>';
+												}
+											}
+											str+='</tr>';
+										}
+									}
+								}else{
+									str+='<tr><td colspan="12">暂无数据</td></tr>';
+								}
+							}else{
+								if(typeof detail_map[j]!=='undefined'){
+									if(j==='fullName'||j==='fullname'){
+										istitle=true;
+										$show_detail_title.html('"<span class="g-c-info">'+list[j]+'</span>"代理商详情信息');
+									}else if(j==='grade'){
+										var gradestr=parseInt(list[j],10);
+										if(gradestr===1){
+											str+='<tr><th colspan="4">'+detail_map[j]+':</th><td colspan="8">A</td></tr>';
+										}else if(gradestr===2){
+											str+='<tr><th colspan="4">'+detail_map[j]+':</th><td colspan="8">AA</td></tr>';
+										}else if(gradestr===3){
+											str+='<tr><th colspan="4">'+detail_map[j]+':</th><td colspan="8">AAA</td></tr>';
+										}
+									}else{
+										str+='<tr><th colspan="4">'+detail_map[j]+':</th><td colspan="8">'+list[j]+'</td></tr>';
+									}
+								}else{
+									str+='<tr><th colspan="4">'+j+':</th><td colspan="8">'+list[j]+'</td></tr>';
+								}
+
+							}
+
+
+						};
+						if(!istitle){
+							$show_detail_title.html('服务站详情信息');
+						}
+					}
+
+					/!*添加高亮状态*!/
+					if(operate_item){
+						operate_item.removeClass('item-lighten');
+						operate_item=null;
+					}
+					operate_item=$tr.addClass('item-lighten');
+
+					$show_detail_content.html(str);
+					$show_detail_wrap.modal('show',{
+						backdrop:'static'
+					});
+				})
+				.fail(function(resp){
+					$show_detail_content.html('');
+					$show_detail_title.html('');
+					console.log(resp.message);
+					dia.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"操作失败")+'</span>').show();
+					setTimeout(function () {
+						dia.close();
+					},2000);
+				});*/
+
+
 			/*绑定查看属性列表*/
 			$.each([$admin_color_listbtn,$admin_rule_listbtn],function(){
 
@@ -878,23 +840,37 @@
 			});
 
 
+			/*类型图片上传预览*/
+			$admin_image.on('change',function(e){
+				var files = e.target.files,
+					image,
+					typeimage_realsize= 0,
+					len=files.length,
+					k=0;
 
-			/*类型图片缩略图切换编辑状态*/
-			$toggle_edit_btn.on('click',function(){
-				var $this=$(this),
-					isactive=$this.hasClass('toggle-edit-btnactive');
-				if(isactive){
-					$this.removeClass('toggle-edit-btnactive');
-					$admin_image.prop({
-						'readonly':true
-					});
-				}else{
-					$this.addClass('toggle-edit-btnactive');
-					$admin_image.prop({
-						'readonly':false
-					});
+				if (files && len > 0) {
+					typeimage_resource.length=0;
+					typeimage_read.length=0;
+					for(k;k<len;k++){
+						image = files[k];
+						typeimage_realsize=parseInt((image.size / 1024),10);
+						if(typeimage_realsize > typeimage_setsize) {
+							dia.content('<span class="g-c-bs-warning g-btips-warn">您选择的文件太大(<span class="g-c-red1"> '+typeimage_realsize+'kb</span>),不能超过(<span class="g-c-red1"> '+typeimage_setsize+'kb</span>)</span>').show();
+							setTimeout(function(){
+								dia.close();
+							},3000);
+							continue;
+						}
+
+						typeimage_resource.push(image);
+						var reader=new FileReader();
+						reader.readAsDataURL(image);
+						reader.onload=function(){
+							typeimage_read.push(reader.result);
+							reader=null;
+						}
+					}
 				}
-
 			});
 
 
@@ -1062,7 +1038,7 @@
 										gtCode:$admin_gtCode.val(),
 										name:$admin_typename.val(),
 										sort:$admin_sort.val(),
-										imageUrl:$admin_image.val()
+										image:typeimage_read[0]||''
 									});
 									var parentid=$admin_goodsTypeId_addone.find('option:selected').val(),
 										parentid2='';
@@ -1678,34 +1654,6 @@
 				}
 				result.push(str);
 			}
-			return result;
-		}
-
-
-		/*获取七牛token*/
-		function getToken(){
-			var result=null;
-			$.ajax({
-				url:'http://10.0.5.222:8080/yttx-providerbms-api/qiniu/token/get',
-				async:false,
-				type:'post',
-				datatype:'json',
-				data:{
-					bizType:1,
-					providerId:decodeURIComponent(logininfo.param.providerId),
-					userId:decodeURIComponent(logininfo.param.userId),
-					token:decodeURIComponent(logininfo.param.token)
-				}
-			}).done(function(resp){
-				var code=parseInt(resp.code,10);
-				if(code!==0){
-					console.log(resp.message);
-					return false;
-				}
-				result=resp.result;
-			}).fail(function(resp){
-				console.log(resp.message);
-			});
 			return result;
 		}
 

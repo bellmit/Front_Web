@@ -17,6 +17,10 @@
 				datatype:'json'
 			});
 
+			/*清除查看和编辑缓存*/
+			public_tool.removeParams('yttx-goods-edit');
+			public_tool.removeParams('yttx-goods-detail');
+
 
 
 			/*dom引用和相关变量定义*/
@@ -34,6 +38,8 @@
 				})/*一般提示对象*/,
 				dialogObj=public_tool.dialog()/*回调提示对象*/,
 				$admin_page_wrap=$('#admin_page_wrap')/*分页数据*/;
+
+
 
 
 
@@ -59,7 +65,7 @@
 						autoWidth:true,/*是否*/
 						paging:false,
 						ajax:{
-							url:/*"../../json/goods/goods_list.json"*/"http://120.24.226.70:8081/yttx-providerbms-api/goods/list",
+							url:/*"../../json/goods/goods_list.json"*/"http://10.0.5.222:8080/yttx-providerbms-api/goods/list",
 							dataType:'JSON',
 							method:'post',
 							dataSrc:function ( json ) {
@@ -301,10 +307,10 @@
 
 				/*修改,编辑操作*/
 				if(action==='update'){
-					public_tool.setParams('yttx-goods-add',{
+					public_tool.setParams('yttx-goods-edit',{
 						id:id
 					});
-					location.href='yttx-goods-add.html';
+					location.href='yttx-goods-edit.html';
 				}else if(action==='select'){
 					public_tool.setParams('yttx-goods-detail',{
 						id:id
@@ -324,7 +330,7 @@
 						var self=this;
 
 						$.ajax({
-								url:"http://120.24.226.70:8081/yttx-providerbms-api/goods/delete",
+								url:"http://10.0.5.222:8080/yttx-providerbms-api/goods/delete",
 								method: 'POST',
 								dataType: 'json',
 								data:{
@@ -384,7 +390,7 @@
 
 					/*上架和下架*/
 					$.ajax({
-							url:"http://120.24.226.70:8081/yttx-providerbms-api/goods/status/update",
+							url:"http://10.0.5.222:8080/yttx-providerbms-api/goods/status/update",
 							method: 'POST',
 							dataType: 'json',
 							data:{
