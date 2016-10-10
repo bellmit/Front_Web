@@ -454,10 +454,7 @@
 
 
 			/*上传图片*/
-			logo_uploadjust.init();
-			//logo_uploadback.init();
-			//logo_uploadhand.init();
-			//logo_uploadlicense.init();
+
 
 
 
@@ -552,27 +549,42 @@
 								$admin_identity.html(result[i]);
 								break;
 							case 'identityJust':
-								var just=validImages(result[i]);
-								if(just!==''){
-									$('<img alt="身份证照(正面)" src="'+just+'" />').appendTo($admin_identityJust.html(''));
-								}else{
-									$admin_identityJust.html('');
+								var just=result[i];
+								if(just.indexOf('qiniucdn.com')!==-1){
+									$('<div class="admin-goods-thumbnail "><img alt="身份证照(正面)" src="'+just+'?imageView2/1/w/400/h/200" /></div>').appendTo($admin_identityJust.html(''));
+								}else {
+									just=validImages(just);
+									if(just!==''){
+										$('<img alt="身份证照(正面)" src="'+just+'" />').appendTo($admin_identityJust.html(''));
+									}else{
+										$admin_identityJust.html('');
+									}
 								}
 								break;
 							case 'identityBack':
-								var back=validImages(result[i]);
-								if(back!==''){
-									$('<img alt="身份证照(反面)" src="'+back+'" />').appendTo($admin_identityBack.html(''));
-								}else{
-									$admin_identityBack.html('');
+								var back=result[i];
+								if(back.indexOf('qiniucdn.com')!==-1){
+									$('<div class="admin-goods-thumbnail "><img alt="身份证照(反面)" src="'+back+'?imageView2/1/w/400/h/200" /></div>').appendTo($admin_identityBack.html(''));
+								}else {
+									back=validImages(back);
+									if(back!==''){
+										$('<img alt="身份证照(反面)" src="'+back+'" />').appendTo($admin_identityBack.html(''));
+									}else{
+										$admin_identityBack.html('');
+									}
 								}
 								break;
 							case 'identityHand':
-								var hand=validImages(result[i]);
-								if(hand!==''){
-									$('<img alt="手持身份证正面照片" src="'+hand+'" />').appendTo($admin_identityHand.html(''));
-								}else{
-									$admin_identityHand.html('');
+								var hand=result[i];
+								if(hand.indexOf('qiniucdn.com')!==-1){
+									$('<div class="admin-goods-thumbnail "><img alt="手持身份证正面照片" src="'+hand+'?imageView2/1/w/400/h/200" /></div>').appendTo($admin_identityHand.html(''));
+								}else {
+									hand=validImages(hand);
+									if(hand!==''){
+										$('<img alt="手持身份证正面照片" src="'+hand+'" />').appendTo($admin_identityHand.html(''));
+									}else{
+										$admin_identityHand.html('');
+									}
 								}
 								break;
 							case 'businessLicense':
@@ -608,7 +620,7 @@
 					str=value;
 				}else{
 					str='';
-				};
+				}
 			}else{
 				str='';
 			}
@@ -641,6 +653,30 @@
 				console.log(resp.message);
 			});
 			return result;
+		}
+
+
+		/*上传进度条*/
+		function uploadShowBars(id){
+			var len=upload_bars.length;
+			if(len>0){
+				var j= 0;
+				for(j;j<len;j++){
+					if(upload_bars[j]===id){
+						var bars=parseInt(((j+1)/len) * 100,10);
+						if(j!==len -1){
+							setTimeout(function(){
+								show_loading_bar(bars);
+							},0);
+						}else{
+							setTimeout(function(){
+								show_loading_bar(bars);
+							},1000);
+						}
+						break;
+					}
+				}
+			}
 		}
 
 	});

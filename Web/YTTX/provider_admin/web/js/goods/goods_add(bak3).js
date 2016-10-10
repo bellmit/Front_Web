@@ -96,6 +96,9 @@
 				$image_url_upload=$('#image_url_upload'),
 				$admin_goodsTypeId_addone=$('#admin_goodsTypeId_addone'),
 				$admin_goodsTypeId_addtwo=$('#admin_goodsTypeId_addtwo'),
+				$admin_addcode_btn=$('#admin_addcode_btn'),
+				$admin_addcode_list=$('#admin_addcode_list'),
+				$admin_addcode_tips=$('#admin_addcode_tips'),
 				admin_addtype_form=document.getElementById('admin_addtype_form'),
 				$admin_addtype_form=$(admin_addtype_form);
 
@@ -583,7 +586,10 @@
 
 				/*初始化查询一级分类*/
 				if(selector.indexOf('1')!==-1){
-					getGoodsTypes('',typeobj,'one',true);
+					hastype=getGoodsTypes('',typeobj,'one',true);
+					if(hastype){
+						searchAddGoodsTypes($admin_goodsTypeId_addone,true);
+					}
 				}
 
 				this.on('change',function(){
@@ -642,11 +648,15 @@
 							$admin_pricewrap.addClass('g-d-hidei');
 						}
 					}else if(selector.indexOf('one')!==-1){
+						searchAddGoodsTypes($admin_goodsTypeId_addone,true);
 						if(value===''){
 							$admin_goodsTypeId_addtwo.html('');
 							return false;
 						}
-						getAddGoodsTypes(value,typeobj,'two');
+						hastype=getAddGoodsTypes(value,typeobj,'two');
+						if(hastype){
+							searchAddGoodsTypes($admin_goodsTypeId_addtwo);
+						}
 					}
 				});
 			});
@@ -974,12 +984,18 @@
 
 
 			/*绑定显示隐藏新增类型中的已存在编码和名称*/
-			$.each([$admin_addcolor_btn,$admin_addrule_btn],function(){
+			$.each([$admin_addcode_btn,$admin_addcolor_btn,$admin_addrule_btn],function(){
 				var self=this,
 					selector=this.selector;
 
 				this.on('click',function(e){
-					if(selector.indexOf('addcolor')!==-1){
+					if(selector.indexOf('addcode')!==-1){
+						if($admin_addcode_list.hasClass('g-d-hidei')){
+							$admin_addcode_list.removeClass('g-d-hidei');
+						}else{
+							$admin_addcode_list.addClass('g-d-hidei');
+						}
+					}else if(selector.indexOf('addcolor')!==-1){
 						if($admin_addcolor_list.hasClass('g-d-hidei')){
 							$admin_addcolor_list.removeClass('g-d-hidei');
 						}else{
@@ -999,7 +1015,7 @@
 
 
 			/*绑定验证是否已经编写存在的分类编码*/
-			$.each([$admin_newcolor,$admin_newrule],function(){
+			$.each([$admin_gtCode,$admin_newcolor,$admin_newrule],function(){
 				var own=this,
 					selector=this.selector;
 
@@ -1009,7 +1025,18 @@
 						value=public_tool.trims(txt);
 
 					if(value!==''){
-						if(selector.indexOf('color')!==-1){
+						if(selector.indexOf('gtCode')!==-1){
+							$admin_addcode_list.find('li').each(function(){
+								if(this.innerHTML===value){
+									$admin_addcode_tips.html('"'+value+'" 已经存在，请填写其他"分类编码"');
+									self.value='';
+									setTimeout(function () {
+										$admin_addcode_tips.html('');
+									},3000);
+									return false;
+								}
+							});
+						}else if(selector.indexOf('color')!==-1){
 							$admin_addcolor_list.find('li').each(function(){
 								if(this.innerHTML===value){
 									$admin_addcolor_tips.html('"'+value+'" 已经存在，请填写其他"颜色"');
@@ -1096,28 +1123,17 @@
 								$.extend(true,setdata,basedata);
 
 								if(formtype==='addgoods'){
-
-									if($admin_slide_tool.html()===''){
-										$admin_slide_image.html('<div class="g-c-red1">请上传商品组图</div>');
-										$("html,body").animate({scrollTop:300},200);
-										setTimeout(function () {
-											dia.close();
-										},2000);
-										return false;
-									}
-
-
 									/*同步编辑器*/
 									editor.sync();
 									$.extend(true,setdata,{
 										code:$admin_code.val(),
 										name:$admin_name.val(),
-										isRecommended:$admin_isRecommended.is(':checked')?true:false,
+										isRecommended:$admin_isRecommended.is(':selected')?true:false,
 										status:$admin_status.find(':selected').val(),
 										goodsBrandId:1,
-										parentId:$admin_goodsTypeId_Level1.find('option:selected').val()||'',
-										parentId2:$admin_goodsTypeId_Level2.find('option:selected').val()||'',
-										parentId3:$admin_goodsTypeId_Level3.find('option:selected').val()||'',
+										goodsTypeId:$admin_goodsTypeId_Level1.find('option:selected').val()||'',
+										goodsTypeId2:$admin_goodsTypeId_Level2.find('option:selected').val()||'',
+										goodsTypeId3:$admin_goodsTypeId_Level3.find('option:selected').val()||'',
 										details:$admin_details.val(),
 										goodsPictures1:(function(){
 											var $imagelist=$admin_slide_tool.find('li'),
@@ -1147,7 +1163,7 @@
 									if(issetprice){
 										setdata['attrIventoryPrices']=getSetPrice();
 									}else{
-										setdata['attrIventoryPrices']='['+$admin_inventory.val()+'#'+public_tool.trimSep($admin_wholesale_price.val(),',')+'#'+public_tool.trimSep($admin_retail_price.val(),',')+']';
+										setdata['attrIventoryPrices']='['+$admin_inventory.val()+'#'+$admin_wholesale_price.val()+'#'+$admin_retail_price.val()+']';
 									}
 									config['url']="http://10.0.5.222:8080/yttx-providerbms-api/goods/addupdate";
 									config['data']=setdata;
@@ -1207,13 +1223,15 @@
 											dia.content('<span class="g-c-bs-success g-btips-succ">添加商品成功</span>').show();
 										}
 									}else if(formtype==='addtype'){
-										code=parseInt(resp.code,10);
+										console.log(resp);
+										/*code=parseInt(resp.code,10);
 										if(code!==0){
 											dia.content('<span class="g-c-bs-warning g-btips-warn">添加商品分类失败</span>').show();
 											return false;
 										}else{
 											dia.content('<span class="g-c-bs-success g-btips-succ">添加商品类型成功</span>').show();
-										}
+										}*/
+
 									}else if(formtype==='addcolor'){
 										if(resp.attrs.length!==0){
 											dia.content('<span class="g-c-bs-success g-btips-succ">添加商品颜色属性成功</span>').show();
@@ -1480,6 +1498,23 @@
 		}
 
 
+		/*在新增类型中查询已经获取的类型*/
+		function searchAddGoodsTypes(wrap,flag){
+			var add_selected='';
+			wrap.find('option').each(function(e){
+				var txt=this.value;
+				if(txt!==''){
+					add_selected+='<li>'+txt+'</li>';
+				}
+			});
+			if(add_selected!==''){
+				if(flag){
+					$(add_selected).appendTo($admin_addcode_list.html(''));
+				}else{
+					$(add_selected).appendTo($admin_addcode_list);
+				}
+			}
+		}
 
 
 
@@ -1741,11 +1776,7 @@
 					var $this=$input.eq(m);
 
 					if(m!==3){
-						var tempstr=$this.val();
-						if(tempstr.indexOf(',')!==-1){
-							tempstr=public_tool.trimSep(tempstr,',');
-						}
-						str+=tempstr+'#';
+						str+=$this.val()+'#';
 					}else{
 						var key=$this.attr('data-value').split('_'),
 							value=$this.is(':checked')?1:0;
