@@ -140,7 +140,7 @@
 							}
 						},
 						'BeforeUpload': function(up, file) {
-							uploadShowBars(30);
+							show_loading_bar(30);
 						},
 						'UploadProgress': function(up, file) {},
 						'FileUploaded': function(up, file, info) {
