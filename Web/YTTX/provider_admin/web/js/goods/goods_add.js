@@ -138,14 +138,13 @@
 				$admin_slide_btnl=$('#admin_slide_btnl'),
 				$admin_slide_btnr=$('#admin_slide_btnr'),
 				$admin_slide_tool=$('#admin_slide_tool'),
-				$admin_slide_view=$('#admin_slide_view'),
-				$admin_slide_upload=$('#admin_slide_upload'),
 				slide_config={
 					$slide_tool:$admin_slide_tool,
 					$image:$admin_slide_image,
 					$btnl:$admin_slide_btnl,
 					$btnr:$admin_slide_btnr,
 					active:'admin-slide-active',
+					isDelete:true,
 					len:5
 				};
 
@@ -154,9 +153,7 @@
 			var $editor_image_toggle=$('#editor_image_toggle'),
 				$editor_image_list=$('#editor_image_list'),
 				$editor_image_show=$('#editor_image_show'),
-				$editor_image_btn=$('#editor_image_btn'),
-				$editor_image_select=$('#editor_image_select'),
-				$editor_image_view=$('#editor_image_view');
+				$editor_image_select=$('#editor_image_select');
 
 
 			/*重置表单*/
@@ -295,7 +292,7 @@
 					max_retries: 3,// 上传失败最大重试次数
 					dragdrop:false,
 					chunk_size: '2mb',
-					auto_start:false,
+					auto_start:true,
 					filters:{
 						max_file_size : '3mb',
 						mime_types: [
@@ -306,30 +303,8 @@
 						]
 					},
 					init: {
-						'PostInit': function() {
-
-							$admin_slide_view.attr({
-								'data-value':''
-							});
-							/*绑定上传相片*/
-							$admin_slide_upload.on('click',function(){
-								var isupload=$admin_slide_view.attr('data-value');
-								if(isupload===''){
-									dia.content('<span class="g-c-bs-warning g-btips-warn">您还未选择需要上传的文件</span>').show();
-									setTimeout(function(){
-										dia.close();
-									},3000);
-									return false;
-								}else{
-									slide_image_upload.start();
-									return false;
-								}
-							});
-						},
+						'PostInit': function() {},
 						'FilesAdded': function(up, file) {
-							$admin_slide_view.attr({
-								'data-value':'image'
-							});
 							var temp_bars=this.files.length,
 								j=0;
 							upload_bars.length=0;
@@ -341,9 +316,6 @@
 						'UploadProgress': function(up, file) {},
 						'FileUploaded': function(up, file, info) {
 							/*获取上传成功后的文件的Url*/
-							$admin_slide_view.attr({
-								'data-value':''
-							});
 							upload_bars.length=0;
 						},
 						'Error': function(up, err, errTip) {
@@ -354,9 +326,6 @@
 
 							if(realsize>setsize){
 								dia.content('<span class="g-c-bs-warning g-btips-warn">您选择的文件太大(<span class="g-c-red1"> '+realsize+'mb</span>),不能超过(<span class="g-c-red1"> '+setsize+'mb</span>)</span>').show();
-								$admin_slide_view.attr({
-									'data-value':''
-								});
 								setTimeout(function(){
 									dia.close();
 								},3000);
@@ -366,9 +335,6 @@
 						'UploadComplete': function(up, file) {
 							dia.content('<span class="g-c-bs-success g-btips-succ">上传成功</span>').show();
 							upload_bars.length=0;
-							$admin_slide_view.attr({
-								'data-value':''
-							});
 							setTimeout(function(){
 								dia.close();
 							},2000);
@@ -381,7 +347,7 @@
 							var str="provider_slide_"+moment().format("YYYYMMDDHHmmSSSS");
 							try {
 								var domain=up.getOption('domain');
-								$('<li><img alt="" src="'+domain+'/'+str+"?imageView2/1/w/300/h/300"+'" /></li>').appendTo($admin_slide_tool);
+								$('<li><img alt="" src="'+domain+'/'+str+"?imageView2/1/w/300/h/300"+'" /><span></span></li>').appendTo($admin_slide_tool);
 							}catch (e){
 								console.log('业务服务器回调异常');
 							}
@@ -407,7 +373,7 @@
 					max_retries: 3,// 上传失败最大重试次数
 					dragdrop:false,
 					chunk_size: '2mb',
-					auto_start:false,
+					auto_start:true,
 					filters:{
 						max_file_size : '4mb',
 						mime_types: [
@@ -418,30 +384,8 @@
 						]
 					},
 					init: {
-						'PostInit': function() {
-
-							$editor_image_view.attr({
-								'data-value':''
-							});
-							/*绑定上传相片*/
-							$editor_image_btn.on('click',function(){
-								var isupload=$editor_image_view.attr('data-value');
-								if(isupload===''){
-									dia.content('<span class="g-c-bs-warning g-btips-warn">您还未选择需要上传的文件</span>').show();
-									setTimeout(function(){
-										dia.close();
-									},3000);
-									return false;
-								}else{
-									editor_image_upload.start();
-									return false;
-								}
-							});
-						},
+						'PostInit': function() {},
 						'FilesAdded': function(up, file) {
-							$editor_image_view.attr({
-								'data-value':'image'
-							});
 							var temp_bars=this.files.length,
 								j=0;
 							upload_bars.length=0;
@@ -453,9 +397,6 @@
 						'UploadProgress': function(up, file) {},
 						'FileUploaded': function(up, file, info) {
 							/*获取上传成功后的文件的Url*/
-							$editor_image_view.attr({
-								'data-value':''
-							});
 							upload_bars.length=0;
 						},
 						'Error': function(up, err, errTip) {
@@ -466,9 +407,6 @@
 
 							if(realsize>setsize){
 								dia.content('<span class="g-c-bs-warning g-btips-warn">您选择的文件太大(<span class="g-c-red1"> '+realsize+'mb</span>),不能超过(<span class="g-c-red1"> '+setsize+'mb</span>)</span>').show();
-								$editor_image_view.attr({
-									'data-value':''
-								});
 								setTimeout(function(){
 									dia.close();
 								},3000);
@@ -478,9 +416,6 @@
 						'UploadComplete': function(up, file) {
 							dia.content('<span class="g-c-bs-success g-btips-succ">上传成功</span>').show();
 							upload_bars.length=0;
-							$editor_image_view.attr({
-								'data-value':''
-							});
 							setTimeout(function(){
 								dia.close();
 							},2000);
@@ -508,8 +443,8 @@
 
 			/*编辑器调用*/
 			var editor=KE.create("#admin_details",{
-				minHeight:'300px',
-				height:'300px',
+				minHeight:'500px',
+				height:'500px',
 				filterMode :false,
 				resizeType:1,/*改变外观大小模式*/
 				bodyClass:"ke-admin-wrap",
@@ -1149,7 +1084,7 @@
 									}else{
 										setdata['attrIventoryPrices']='['+$admin_inventory.val()+'#'+public_tool.trimSep($admin_wholesale_price.val(),',')+'#'+public_tool.trimSep($admin_retail_price.val(),',')+']';
 									}
-									config['url']="http://10.0.5.222:8080/yttx-providerbms-api/goods/addupdate";
+									config['url']="http://120.76.237.100:8081/yttx-providerbms-api/goods/addupdate";
 									config['data']=setdata;
 								}else if(formtype==='addtype'){
 									$.extend(true,setdata,{
@@ -1176,7 +1111,7 @@
 											}
 										}
 									}
-									config['url']="http://10.0.5.222:8080/yttx-providerbms-api/goodstype/add";
+									config['url']="http://120.76.237.100:8081/yttx-providerbms-api/goodstype/add";
 									config['data']=setdata;
 								}else if(formtype==='addcolor'){
 									$.extend(true,setdata,{
@@ -1184,7 +1119,7 @@
 										goodsTypeId:istypeid,
 										tagId:'4'
 									});
-									config['url']="http://10.0.5.222:8080/yttx-providerbms-api/goods/tag/attr/add";
+									config['url']="http://120.76.237.100:8081/yttx-providerbms-api/goods/tag/attr/add";
 									config['data']=setdata;
 								}else if(formtype==='addrule'){
 									$.extend(true,setdata,{
@@ -1192,7 +1127,7 @@
 										goodsTypeId:istypeid,
 										tagId:'5'
 									});
-									config['url']="http://10.0.5.222:8080/yttx-providerbms-api/goods/tag/attr/add";
+									config['url']="http://120.76.237.100:8081/yttx-providerbms-api/goods/tag/attr/add";
 									config['data']=setdata;
 								}
 
@@ -1287,7 +1222,7 @@
 			},istype=false;
 
 			$.ajax({
-				url:"http://10.0.5.222:8080/yttx-providerbms-api/goodstypes",
+				url:"http://120.76.237.100:8081/yttx-providerbms-api/goodstypes",
 				dataType:'JSON',
 				async:false,
 				method:'post',
@@ -1407,7 +1342,7 @@
 			},istype=false;
 
 			$.ajax({
-				url:"http://10.0.5.222:8080/yttx-providerbms-api/goodstypes",
+				url:"http://120.76.237.100:8081/yttx-providerbms-api/goodstypes",
 				dataType:'JSON',
 				async:false,
 				method:'post',
@@ -1538,7 +1473,7 @@
 				return isresult;
 			}
 			$.ajax({
-				url:"http://10.0.5.222:8080/yttx-providerbms-api/goods/tags/attrs",
+				url:"http://120.76.237.100:8081/yttx-providerbms-api/goods/tags/attrs",
 				dataType:'JSON',
 				async:false,
 				method:'post',
@@ -1711,13 +1646,13 @@
 							'<td><input class="admin-table-input" name="setinventory" maxlength="5" type="text"></td>' +
 							'<td><input class="admin-table-input" name="setwholesalePrice" maxlength="12" type="text"></td>' +
 							'<td><input class="admin-table-input" name="setretailPrice" maxlength="12" type="text"></td>' +
-							'<td><input name="setisDefault"  type="checkbox" data-value="'+code+'"></td></tr>';
+							'<td><input name="setisDefault"  type="radio" data-value="'+code+'"></td></tr>';
 					}else{
 						str+='<tr><td>'+name+'</td>' +
 							'<td><input class="admin-table-input" name="setinventory" maxlength="5" type="text"></td>' +
 							'<td><input class="admin-table-input" name="setwholesalePrice" maxlength="12" type="text"></td>' +
 							'<td><input class="admin-table-input" name="setretailPrice" maxlength="12" type="text"></td>' +
-							'<td><input name="setisDefault"  type="checkbox" data-value="'+code+'"></td></tr>';
+							'<td><input name="setisDefault"  type="radio" data-value="'+code+'"></td></tr>';
 					}
 				}
 			}
@@ -1763,7 +1698,7 @@
 		function getToken(){
 			var result=null;
 			$.ajax({
-				url:'http://10.0.5.222:8080/yttx-providerbms-api/qiniu/token/get',
+				url:'http://120.76.237.100:8081/yttx-providerbms-api/qiniu/token/get',
 				async:false,
 				type:'post',
 				datatype:'json',

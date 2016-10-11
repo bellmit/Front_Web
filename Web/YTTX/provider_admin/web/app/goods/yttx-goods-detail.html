@@ -4,12 +4,13 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0,maximum-scale=1">
-    <meta name="description" content="新安街店铺管理系统--店铺设置--基本设置" />
-    <meta name="keywords" content="新安街店铺管理系统--店铺设置--基本设置">
+    <meta name="description" content="新安街店铺管理系统--商品管理--商品详情" />
+    <meta name="keywords" content="新安街店铺管理系统--商品管理--商品详情">
     <meta name="author" content="yp" />
-    <title>新安街店铺管理系统--店铺设置--基本设置</title>
+    <title>新安街店铺管理系统--商品管理--商品详情</title>
     <link href="../../images/logo_icon.ico" rel="icon">
     <link rel="stylesheet" href="../../css/base.css">
+    <link rel="stylesheet" href="../../js/plugins/kindeditor/themes/default/default.css">
     <link rel="stylesheet" href="../../css/admin.css">
     <script src="../../js/common/jquery-1.11.1.js"></script>
     <!--[if lt IE 9]>
@@ -85,13 +86,13 @@
         <!--主题描述-->
         <div class="page-title">
             <div class="title-env">
-                <h1 class="title">基本设置</h1>
-                <p class="description">基本设置</p>
+                <h1 class="title">商品详情</h1>
+                <p class="description">商品详情</p>
             </div>
             <div class="breadcrumb-env">
                 <ol class="breadcrumb bc-1">
-                    <li><a href=""><i class="fa-home"></i>店铺设置</a></li>
-                    <li class="active"><strong>基本设置</strong></li>
+                    <li><a href=""><i class="fa-home"></i>商品管理</a></li>
+                    <li class="active"><strong>商品详情</strong></li>
                 </ol>
             </div>
         </div>
@@ -104,7 +105,7 @@
 
                     <!--编辑表单标题-->
                     <div class="panel-heading">
-                        <h3 class="panel-title">基本设置</h3>
+                        <h3 class="panel-title">商品详情</h3>
                         <div class="panel-options">
                             <a href="#" data-toggle="panel">
                                 <span class="collapse-icon">&ndash;</span>
@@ -115,75 +116,88 @@
 
                     <!--添加-->
                     <div class="panel-body">
-                        <form role="form" method="post" class="admin-form1">
-                            <input type="text" class="g-d-hidei" value="" id="admin_id">
-
-                            <div class="form-group">
-                                <label class="control-label">公司地址：</label>
-                                <div class="selectwrap">
-                                    <div class="select-item g-w-percent8" style="z-index:50">
-                                        <p>请选择省份</p>
-                                        <ul id="admin_province"></ul>
+                        <div class="blockquote admin-blockquote">
+                            <div class="panel">
+                                <div class="panel-heading g-t-c" id="admin_name">
+                                </div>
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-md-6 admin-form1">
+                                            <div class="admin-slide-wrap g-f-r">
+                                                <div class="admin-slide-show">
+                                                    <div class="admin-slide-image" id="admin_slide_image"></div>
+                                                    <div class="admin-slide-btn  admin-slide-btnl" id="admin_slide_btnl"></div>
+                                                    <div class="admin-slide-btn  admin-slide-btnr" id="admin_slide_btnr"></div>
+                                                </div>
+                                                <ul class="admin-slide-tool"  id="admin_slide_tool"></ul>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="grid-list-group1">
+                                                商品编号：<p id="admin_code"></p>
+                                            </div>
+                                            <div class="grid-list-group1">
+                                                商品状态：<p id="admin_status"></p>
+                                            </div>
+                                            <div class="grid-list-group1">
+                                                批发价：<p id="admin_wholesale_price"></p>
+                                            </div>
+                                            <div class="grid-list-group1">
+                                                建议零售价：<p id="admin_retail_price"></p>
+                                            </div>
+                                            <div class="grid-list-group1">
+                                                库存：<p id="admin_inventory"></p>
+                                            </div>
+                                            <div class="grid-list-group1">
+                                                颜色：<p id="admin_color"></p>
+                                            </div>
+                                            <div class="grid-list-group1">
+                                                规格/尺寸：<p id="admin_rule"></p>
+                                            </div>
+                                            <div class="grid-list-group1">
+                                                是否被推荐：<p id="admin_isRecommended"></p>
+                                            </div>
+                                            <div class="grid-list-group1">
+                                                商品分类：<p id="admin_goodstype"></p>
+                                            </div>
+                                            <div class="grid-list-group1">
+                                                排序：<p id="admin_sort"></p>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="select-item g-w-percent8" style="z-index:50">
-                                        <p>请选择城市</p>
-                                        <ul id="admin_city"></ul>
-                                    </div>
-                                    <div class="select-item g-w-percent8" style="z-index:50">
-                                        <p>请选择地区</p>
-                                        <ul id="admin_area"></ul>
-                                    </div>
+                                    <table class="table table-bordered table-striped table-hover admin-table">
+                                        <!--分组样式-->
+                                        <colgroup>
+                                            <col class="g-w-percent8">
+                                            <col class="g-w-percent8">
+                                            <col class="g-w-percent8">
+                                            <col class="g-w-percent8">
+                                            <col class="g-w-percent8">
+                                            <col class="g-w-percent8">
+                                        </colgroup>
+
+                                        <!--表头-->
+                                        <thead>
+                                        <tr>
+                                            <th>颜色</th>
+                                            <th>规格</th>
+                                            <th>库存</th>
+                                            <th>批发价</th>
+                                            <th>建议零售价</th>
+                                            <th>是否默认</th>
+                                        </tr>
+                                        </thead>
+
+                                        <!--表主体-->
+                                        <tbody class="middle-align g-d-hidei" id="admin_wholesale_price_list"></tbody>
+                                    </table>
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <br />
-                                <div class="input-group">
-                                    <input type="text"  class="form-control no-right-border g-w-percent10" value="" name="province" id="admin_province_value">
-                                    <input type="text" class="form-control no-right-border g-w-percent10" value="" name="city" id="admin_city_value">
-                                    <input type="text" class="form-control no-right-border g-w-percent10" value="" name="country" id="admin_area_value">
-                                    <input type="text" class="form-control no-right-border  g-w-percent20" name="address" id="admin_address" placeholder="请输入公司地址详情" />
-                                    <span class="input-group-btn">
-                                        <button type="button"  id="admin_address_btn" class="btn btn-success">更改</button>
-                                  </span>
-                                </div>
-                            </div>
+                                <div class="panel-body g-t-c" id="admin_detail">
 
-                            <div class="form-group">
-                                <label class="control-label">店铺名称(只能修改一次)：</label>
-                                <div class="input-group">
-                                    <input type="text" class="form-control no-right-border" name="storeName" id="admin_storeName" placeholder="请输入店铺名称" />
-                                    <span class="input-group-btn">
-                                        <button type="button"  id="admin_storeName_btn" class="btn btn-success">更改</button>
-                                  </span>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="control-label">公司名称：</label>
-                                <div id="admin_companyName" class="form-control" ></div>
-                            </div>
-
-
-                            <div class="form-group">
-                                <label class="control-label">联系电话：</label>
-                                <div class="input-group">
-                                    <input type="text" maxlength="13" class="form-control no-right-border" name="telephone" id="admin_telephone" placeholder="请输入联系电话" />
-                                    <span class="input-group-btn">
-                                        <button type="button"  id="admin_telephone_btn" class="btn btn-success">更改</button>
-                                  </span>
                                 </div>
                             </div>
 
-                            <div class="form-group">
-                                <label class="control-label">店铺LOGO：</label>
-                                    <div class="form-control admin-image-view" data-image="" id="admin_logoImage"></div>
-                                    <br />
-                                    <button type="button"  id="admin_logoImage_file" data-value="" class="btn btn-success">查看文件</button>
-                                    <button type="button"  id="admin_logoImage_btn" class="btn btn-success">更改</button>
-                            </div>
-
-
-                        </form>
+                        </div>
                     </div>
 
 
@@ -214,10 +228,8 @@
             </div>
         </footer>
 
-
     </div>
 </div>
-
 
 <!--加载遮罩层-->
 <div id="page_loading_wrap" class="page-loading-overlay g-d-hidei">
@@ -266,11 +278,7 @@
 
 <script src="../../js/common/base.js"></script>
 <script src="../../js/common/common.js"></script>
-<!--表单验证插件-->
-<script src="../../js/widgets/city_select.js"></script>
-<script src="../../js/plugins/plupload/plupload.full.min.js"></script>
-<script src="../../js/plugins/plupload/i18n/zh_CN.js"></script>
-<script src="../../js/plugins/qn/qiniu.min.js"></script>
-<script src="../../js/setting/setting_base.js"></script>
+<script src="../../js/goods/goods_slide.js"></script>
+<script src="../../js/goods/goods_detail.js"></script>
 </body>
 </html>

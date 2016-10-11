@@ -119,19 +119,13 @@
                         <form role="form"  method="post" id="admin_goodsadd_form" class="admin-form1 validate">
                             <div class="form-group">
                                 <label class="control-label">商品分类：</label>
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <select name="goodsTypeId1" id="admin_goodsTypeId_Level1" class="form-control "></select>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <select name="goodsTypeId2" id="admin_goodsTypeId_Level2" class="form-control "></select>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <select name="goodsTypeId3" id="admin_goodsTypeId_Level3" class="form-control "></select>
-                                    </div>
-                                    <div class="g-d-hidei">
+                                <div class="input-group">
+                                    <select name="goodsTypeId1" id="admin_goodsTypeId_Level1" class="form-control g-w-percent16"></select>
+                                    <select name="goodsTypeId2" id="admin_goodsTypeId_Level2" class="form-control g-w-percent16"></select>
+                                    <select name="goodsTypeId3" id="admin_goodsTypeId_Level3" class="form-control g-w-percent16"></select>
+                                    <span class="input-group-btn">
                                         <button type="button" title="添加分类"  id="admin_goodsTypeId_btn" class="btn btn-white">+</button>
-                                    </div>
+                                    </span>
                                 </div>
                             </div>
 
@@ -147,7 +141,8 @@
                                             </div>
                                             <ul class="admin-slide-tool"  id="admin_slide_tool"></ul>
                                             <div class="admin-slide-upload" >
-                                                <div  id="admin_slide_view" data-value="" class="btn btn-white g-br2 g-w-percent50 admin-rpos-wrap">浏览商品组图</div>
+                                                <div  id="admin_slide_view" data-value="" class="btn btn-white g-br2 g-w-percent24 admin-rpos-wrap">浏览商品组图</div>
+                                                <div  id="admin_slide_upload" class="btn btn-white g-br2 g-w-percent24 admin-rpos-wrap">上传商品组图</div>
                                             </div>
                                         </div>
                                     </div>
@@ -256,7 +251,8 @@
                                 <div class="editor-image-wrap">
                                     <div id="editor_image_toggle" class="ke-toolbar-icon ke-toolbar-icon-url ke-icon-image" title="添加图片"></div>
                                     <div class="editor-image-list g-d-hidei" id="editor_image_list">
-                                        <div class="btn btn-info g-br2 editor-image-btn" id="editor_image_view" data-value="">浏览图片</div>
+                                        <div class="btn btn-info g-br2 editor-image-btn" ><input type="file" id="editor_image_view" data-value="" />浏览图片</div>
+                                        <div class="btn btn-info g-br2 editor-image-btn" id="editor_image_btn">上传图片</div>
                                         <div class="btn btn-info g-br2 editor-image-btn" id="editor_image_select">选中图片</div>
                                         <ul class="editor-image-show" id="editor_image_show"></ul>
                                     </div>

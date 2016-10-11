@@ -12,6 +12,7 @@
 		this.toolitem=this.$slide_tool.find('li');
 		this.size=this.toolitem.size();
 
+
 		if(this.size>=1){
 			this.play(0);
 			this.unbindEvent();
@@ -29,15 +30,12 @@
 		this.$slide_tool.on('click','li',function(e){
 			var target= e.target,
 				nodename=target.nodeName.toLowerCase(),
-				$this,
-				index;
+				$this=$(this),
+				index=$this.index();
 
-			if(self.isDelete&&nodename==='span'&&self.size>=2){
+			if(self.isDelete&&nodename==='span'){
 				if(self.deleteFn&&typeof self.deleteFn==='Function'){
 					self.deleteFn.call();
-				}else{
-					$(target).parent().remove();
-					self.init(self);
 				}
 				return false;
 			}else{
@@ -47,15 +45,6 @@
 				self.play(index);
 			}
 		});
-
-		/*绑定删除*/
-		if(this.isDelete&&this.size>=2){
-			this.toolitem.hover(function(){
-				$(this).find('span').addClass('slide-delete-active');
-			},function(){
-				$(this).find('span').removeClass('slide-delete-active');
-			});
-		}
 
 		/*绑定左右切换*/
 		this.$btnl.on('click',function(){
@@ -83,17 +72,8 @@
 
 		$this.addClass(self.active).siblings().removeClass(self.active);
 
-		var $img=$this.find('img'),
-			src=$img.attr('src');
+		self.$image.html('<div>'+$this.html()+'</div>');
 
-		if(src.indexOf('qiniucdn.com')!==-1){
-			if(src.indexOf('?imageView2')!==-1){
-				src=src.split('?imageView2')[0]+'?imageView2/1/w/300/h/300';
-			}else{
-				src=src+'?imageView2/1/w/300/h/300';
-			}
-		}
-		$('<div><img alt="" src="'+src+'" /></div>').appendTo(self.$image.html(''));
 
 		/*索引范围判断*/
 		if(self.len<self.size){
@@ -123,9 +103,6 @@
 	GoodsSlide.prototype.unbindEvent=function(){
 		var self=this;
 		this.$slide_tool.off('click');
-		if(this.isDelete){
-			this.toolitem.off('mouseenter mouseleave');
-		}
 		this.$btnl.off('click');
 		this.$btnr.off('click');
 	}

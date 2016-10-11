@@ -40,8 +40,10 @@
 				$admin_city_value=$('#admin_city_value'),
 				$admin_area_value=$('#admin_area_value'),
 				$admin_address=$('#admin_address'),
+				$admin_logoImage_file=$('#admin_logoImage_file'),
 				$admin_storeName_btn=$('#admin_storeName_btn'),
 				$admin_logoImage_btn=$('#admin_logoImage_btn'),
+				$admin_logoImage_upload=$('#admin_logoImage_upload'),
 				$admin_telephone_btn=$('#admin_telephone_btn'),
 				$admin_address_btn=$('#admin_address_btn'),
 				update_config={
@@ -57,7 +59,7 @@
 					}
 				},
 				logo_config={
-					url:"http://120.76.237.100:8081/yttx-providerbms-api/provider/logo/update",
+					url:"http://120.76.237.100:8081/yttx-providerbms-api/provider/basicset/update",
 					dataType:'JSON',
 					method:'post',
 					data:{
@@ -96,7 +98,7 @@
 					max_retries: 3,// 上传失败最大重试次数
 					dragdrop:false,
 					chunk_size: '500kb',
-					auto_start:true,
+					auto_start:false,
 					filters:{
 						max_file_size : '500kb',
 						mime_types: [
@@ -107,8 +109,29 @@
 						]
 					},
 					init: {
-						'PostInit': function() {},
+						'PostInit': function() {
+							$admin_logoImage_file.attr({
+								'data-value':''
+							});
+							/*绑定上传相片*/
+							$admin_logoImage_upload.on('click',function(){
+								var isupload=$admin_logoImage_file.attr('data-value');
+								if(isupload===''){
+									dia.content('<span class="g-c-bs-warning g-btips-warn">您还未选择需要上传的文件</span>').show();
+									setTimeout(function(){
+										dia.close();
+									},3000);
+									return false;
+								}else{
+									logo_image_upload.start();
+									return false;
+								}
+							});
+						},
 						'FilesAdded': function(up, file) {
+							$admin_logoImage_file.attr({
+								'data-value':'image'
+							});
 							var temp_bars=this.files.length,
 								j=0;
 							upload_bars.length=0;
@@ -125,6 +148,9 @@
 							/*var domain=up.getOption('domain'),
 							 name=JSON.parse(info);
 							 $admin_image.val(domain+'/'+name.key+"?imageView2/1/w/150/h/150");*/
+							$admin_logoImage_file.attr({
+								'data-value':''
+							});
 							upload_bars.length=0;
 						},
 						'Error': function(up, err, errTip) {
@@ -135,6 +161,9 @@
 
 							if(realsize>setsize){
 								dia.content('<span class="g-c-bs-warning g-btips-warn">您选择的文件太大(<span class="g-c-red1"> '+realsize+'kb</span>),不能超过(<span class="g-c-red1"> '+setsize+'kb</span>)</span>').show();
+								$admin_logoImage_file.attr({
+									'data-value':''
+								});
 								setTimeout(function(){
 									dia.close();
 								},3000);
@@ -143,6 +172,9 @@
 						},
 						'UploadComplete': function(up, file) {
 							dia.content('<span class="g-c-bs-success g-btips-succ">上传成功</span>');
+							$admin_logoImage_file.attr({
+								'data-value':''
+							});
 							setTimeout(function(){
 								dia.close();
 							},2000);
