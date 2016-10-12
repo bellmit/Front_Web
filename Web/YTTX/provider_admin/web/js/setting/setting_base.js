@@ -122,10 +122,12 @@
 						'UploadProgress': function(up, file) {},
 						'FileUploaded': function(up, file, info) {
 							/*获取上传成功后的文件的Url*/
-							/*var domain=up.getOption('domain'),
-							 name=JSON.parse(info);
-							 $admin_image.val(domain+'/'+name.key+"?imageView2/1/w/150/h/150");*/
-							upload_bars.length=0;
+
+							var domain=up.getOption('domain'),
+								name=JSON.parse(info);
+
+							$admin_logoImage.attr({
+								'data-image':domain+'/'+name.key}).html('<img src="'+domain+'/'+name.key+"?imageView2/1/w/160/h/160"+'" alt="店铺LOGO">');
 						},
 						'Error': function(up, err, errTip) {
 							var opt=up.settings,
@@ -142,19 +144,11 @@
 							console.log(errTip);
 						},
 						'UploadComplete': function(up, file) {
-							dia.content('<span class="g-c-bs-success g-btips-succ">上传成功</span>');
+							dia.content('<span class="g-c-bs-success g-btips-succ">上传成功</span>').show();
+							upload_bars.length=0;
 							setTimeout(function(){
 								dia.close();
 							},2000);
-							try {
-								var domain=up.getOption('domain'),
-									name=up.getOption('multipart_params');
-
-								$admin_logoImage.attr({
-									'data-image':domain+'/'+name.key}).html('<img src="'+domain+'/'+name.key+"?imageView2/1/w/160/h/160"+'" alt="店铺LOGO">');
-							}catch (e){
-								console.log('业务服务器回调异常');
-							}
 						},
 						'Key': function(up, file) {
 							/*调用滚动条*/
@@ -371,7 +365,7 @@
 				type:'post',
 				datatype:'json',
 				data:{
-					bizType:1,
+					bizType:2,
 					providerId:decodeURIComponent(logininfo.param.providerId),
 					userId:decodeURIComponent(logininfo.param.userId),
 					token:decodeURIComponent(logininfo.param.token)
@@ -398,15 +392,9 @@
 				for(j;j<len;j++){
 					if(upload_bars[j]===id){
 						var bars=parseInt(((j+1)/len) * 100,10);
-						if(j!==len -1){
-							setTimeout(function(){
-								show_loading_bar(bars);
-							},0);
-						}else{
-							setTimeout(function(){
-								show_loading_bar(bars);
-							},1000);
-						}
+						setTimeout(function(){
+							show_loading_bar(bars);
+						},0);
 						break;
 					}
 				}

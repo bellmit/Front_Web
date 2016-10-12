@@ -14,11 +14,6 @@
 			});
 
 
-			/*清除查看和编辑缓存*/
-			public_tool.removeParams('yttx-goods-edit');
-			public_tool.removeParams('yttx-goods-detail');
-
-
 
 			/*dom引用和相关变量定义*/
 			var module_id='yttx-goods-add'/*模块id，主要用于本地存储传值*/,
@@ -222,17 +217,15 @@
 								upload_bars.push(this.files[j]['id']);
 							}
 						},
-						'BeforeUpload': function(up, file) {},
+						'BeforeUpload': function(up, file) {
+							show_loading_bar(30);
+						},
 						'UploadProgress': function(up, file) {},
 						'FileUploaded': function(up, file, info) {
 							/*获取上传成功后的文件的Url*/
-							/*var domain=up.getOption('domain'),
+							var domain=up.getOption('domain'),
 								name=JSON.parse(info);
-							$admin_image.val(domain+'/'+name.key+"?imageView2/1/w/150/h/150");*/
-							$image_url_file.attr({
-								'data-value':''
-							});
-							upload_bars.length=0;
+							$admin_image.val(domain+'/'+name.key);
 						},
 						'Error': function(up, err, errTip) {
 							var opt=up.settings,
@@ -256,16 +249,10 @@
 							$image_url_file.attr({
 								'data-value':''
 							});
+							upload_bars.length=0;
 							setTimeout(function(){
 								dia.close();
 							},2000);
-							try {
-								var domain=up.getOption('domain'),
-									name=up.getOption('multipart_params');
-								$admin_image.val(domain+'/'+name.key);
-							}catch (e){
-								console.log('业务服务器回调异常');
-							}
 						},
 						'Key': function(up, file) {
 							/*调用滚动条*/
@@ -316,7 +303,10 @@
 						'UploadProgress': function(up, file) {},
 						'FileUploaded': function(up, file, info) {
 							/*获取上传成功后的文件的Url*/
-							upload_bars.length=0;
+							var domain=up.getOption('domain'),
+								name=JSON.parse(info);
+
+							$('<li><img alt="" src="'+domain+'/'+name.key+"?imageView2/1/w/50/h/50"+'" /><span></span></li>').appendTo($admin_slide_tool);
 						},
 						'Error': function(up, err, errTip) {
 							var opt=up.settings,
@@ -344,13 +334,7 @@
 						'Key': function(up, file) {
 							/*调用滚动条*/
 							uploadShowBars(file['id']);
-							var str="provider_slide_"+moment().format("YYYYMMDDHHmmSSSS");
-							try {
-								var domain=up.getOption('domain');
-								$('<li><img alt="" src="'+domain+'/'+str+"?imageView2/1/w/300/h/300"+'" /><span></span></li>').appendTo($admin_slide_tool);
-							}catch (e){
-								console.log('业务服务器回调异常');
-							}
+							var str="provider_goods_"+moment().format("YYYYMMDDHHmmSSSS");
 							return str;
 						}
 					}
@@ -397,7 +381,11 @@
 						'UploadProgress': function(up, file) {},
 						'FileUploaded': function(up, file, info) {
 							/*获取上传成功后的文件的Url*/
-							upload_bars.length=0;
+							var domain=up.getOption('domain'),
+								name=JSON.parse(info),
+								tempstr=domain+'/'+name.key+"?imageView2/1/w/170/h/140";
+
+							$('<li><div><img alt="" src="'+tempstr+'" /></div>&lt;img alt="" src="'+tempstr+'"/&gt;</li>').appendTo($editor_image_show);
 						},
 						'Error': function(up, err, errTip) {
 							var opt=up.settings,
@@ -423,17 +411,7 @@
 						'Key': function(up, file) {
 							/*调用滚动条*/
 							uploadShowBars(file['id']);
-							var str="provider_detail_"+moment().format("YYYYMMDDHHmmSSSS");
-							try {
-								var domain=up.getOption('domain'),
-									tempstr=domain+'/'+str+"?imageView2/1/w/170/h/140";
-
-								$('<li><div><img alt="" src="'+tempstr+'" /></div>&lt;img alt="" src="'+tempstr+'"/&gt;</li>').appendTo($editor_image_show);
-
-
-							}catch (e){
-								console.log('业务服务器回调异常');
-							}
+							var str="provider_goods_"+moment().format("YYYYMMDDHHmmSSSS");
 							return str;
 						}
 					}
@@ -636,6 +614,9 @@
 					}
 					if($.isEmptyObject(attr_data)){
 						clearAttrData('attr');
+					}else{
+						/*组合条件*/
+						groupCondition();
 					}
 				});
 			});
@@ -1703,7 +1684,7 @@
 				type:'post',
 				datatype:'json',
 				data:{
-					bizType:1,
+					bizType:2,
 					providerId:decodeURIComponent(logininfo.param.providerId),
 					userId:decodeURIComponent(logininfo.param.userId),
 					token:decodeURIComponent(logininfo.param.token)
@@ -1742,15 +1723,9 @@
 				for(j;j<len;j++){
 					if(upload_bars[j]===id){
 						var bars=parseInt(((j+1)/len) * 100,10);
-						if(j!==len -1){
-							setTimeout(function(){
-								show_loading_bar(bars);
-							},0);
-						}else{
-							setTimeout(function(){
-								show_loading_bar(bars);
-							},1000);
-						}
+						setTimeout(function(){
+							show_loading_bar(bars);
+						},0);
 						break;
 					}
 				}

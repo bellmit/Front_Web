@@ -13,6 +13,10 @@
 	public_tool.supportStorage=(function(){
 		return localStorage&&sessionStorage?true:false;
 	}());
+	//判断是否支持图片
+	public_tool.supportImage=(function(){
+		return typeof window.URL.createObjectURL==='function'?true:false;
+	}());
 	//设置本地存储
 	public_tool.setParams=function(key,value,flag){
 		if(this.supportStorage){
@@ -1538,6 +1542,7 @@
 
 	/*初始化判定*/
 	public_tool.isRender=function(){
+		console.log(this.supportImage());
 		var self=this;
 		/*判定兼容性*/
 		if(self.supportStorage){

@@ -17,11 +17,6 @@
 				datatype:'json'
 			});
 
-			/*清除查看和编辑缓存*/
-			public_tool.removeParams('yttx-goods-edit');
-			public_tool.removeParams('yttx-goods-detail');
-
-
 
 			/*dom引用和相关变量定义*/
 			var $goods_manage_wrap=$('#goods_manage_wrap')/*表格*/,
@@ -312,7 +307,7 @@
 					public_tool.setParams('yttx-goods-edit',{
 						id:id
 					});
-					location.href='yttx-goods-edit.html';
+					//location.href='yttx-goods-edit.html';
 				}else if(action==='select'){
 					public_tool.setParams('yttx-goods-detail',{
 						id:id

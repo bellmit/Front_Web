@@ -127,10 +127,9 @@
 						'UploadProgress': function(up, file) {},
 						'FileUploaded': function(up, file, info) {
 							/*获取上传成功后的文件的Url*/
-							$admin_identityJust_view.attr({
-								'data-value':''
-							});
-							upload_bars.length=0;
+							var domain=up.getOption('domain'),
+								name=JSON.parse(info);
+							$('<img alt="" src="'+domain+'/'+name.key+'?imageView2/1/w/400/h/200" />').appendTo($admin_identityJust.html(''));
 						},
 						'Error': function(up, err, errTip) {
 							var opt=up.settings,
@@ -158,13 +157,6 @@
 							setTimeout(function(){
 								dia.close();
 							},2000);
-							try {
-								var domain=up.getOption('domain'),
-									name=up.getOption('multipart_params');
-								$('<img alt="" src="'+domain+'/'+name.key+'?imageView2/1/w/400/h/200" />').appendTo($admin_identityJust.html(''));
-							}catch (e){
-								console.log('业务服务器回调异常');
-							}
 						},
 						'Key': function(up, file) {
 							/*调用滚动条*/
@@ -236,10 +228,9 @@
 						'UploadProgress': function(up, file) {},
 						'FileUploaded': function(up, file, info) {
 							/*获取上传成功后的文件的Url*/
-							$admin_identityBack_view.attr({
-								'data-value':''
-							});
-							upload_bars.length=0;
+							var domain=up.getOption('domain'),
+								name=JSON.parse(info);
+							$('<img alt="" src="'+domain+'/'+name.key+'?imageView2/1/w/400/h/200" />').appendTo($admin_identityBack.html(''));
 						},
 						'Error': function(up, err, errTip) {
 							var opt=up.settings,
@@ -267,13 +258,6 @@
 							setTimeout(function(){
 								dia.close();
 							},2000);
-							try {
-								var domain=up.getOption('domain'),
-									name=up.getOption('multipart_params');
-								$('<img alt="" src="'+domain+'/'+name.key+'?imageView2/1/w/400/h/200" />').appendTo($admin_identityBack.html(''));
-							}catch (e){
-								console.log('业务服务器回调异常');
-							}
 						},
 						'Key': function(up, file) {
 							/*调用滚动条*/
@@ -345,10 +329,9 @@
 						'UploadProgress': function(up, file) {},
 						'FileUploaded': function(up, file, info) {
 							/*获取上传成功后的文件的Url*/
-							$admin_identityHand_view.attr({
-								'data-value':''
-							});
-							upload_bars.length=0;
+							var domain=up.getOption('domain'),
+								name=JSON.parse(info);
+							$('<img alt="" src="'+domain+'/'+name.key+'?imageView2/1/w/400/h/200" />').appendTo($admin_identityHand.html(''));
 						},
 						'Error': function(up, err, errTip) {
 							var opt=up.settings,
@@ -376,13 +359,6 @@
 							setTimeout(function(){
 								dia.close();
 							},2000);
-							try {
-								var domain=up.getOption('domain'),
-									name=up.getOption('multipart_params');
-								$('<img alt="" src="'+domain+'/'+name.key+'?imageView2/1/w/400/h/200" />').appendTo($admin_identityHand.html(''));
-							}catch (e){
-								console.log('业务服务器回调异常');
-							}
 						},
 						'Key': function(up, file) {
 							/*调用滚动条*/
@@ -454,10 +430,9 @@
 						'UploadProgress': function(up, file) {},
 						'FileUploaded': function(up, file, info) {
 							/*获取上传成功后的文件的Url*/
-							$admin_businessLicenseImage_view.attr({
-								'data-value':''
-							});
-							upload_bars.length=0;
+							var domain=up.getOption('domain'),
+								name=JSON.parse(info);
+							$('<img alt="" src="'+domain+'/'+name.key+'?imageView2/1/w/400/h/200" />').appendTo($admin_businessLicenseImage.html(''));
 						},
 						'Error': function(up, err, errTip) {
 							var opt=up.settings,
@@ -485,13 +460,6 @@
 							setTimeout(function(){
 								dia.close();
 							},2000);
-							try {
-								var domain=up.getOption('domain'),
-									name=up.getOption('multipart_params');
-								$('<img alt="" src="'+domain+'/'+name.key+'?imageView2/1/w/400/h/200" />').appendTo($admin_businessLicenseImage.html(''));
-							}catch (e){
-								console.log('业务服务器回调异常');
-							}
 						},
 						'Key': function(up, file) {
 							/*调用滚动条*/
@@ -709,7 +677,7 @@
 				type:'post',
 				datatype:'json',
 				data:{
-					bizType:1,
+					bizType:2,
 					providerId:decodeURIComponent(logininfo.param.providerId),
 					userId:decodeURIComponent(logininfo.param.userId),
 					token:decodeURIComponent(logininfo.param.token)
@@ -736,15 +704,9 @@
 				for(j;j<len;j++){
 					if(upload_bars[j]===id){
 						var bars=parseInt(((j+1)/len) * 100,10);
-						if(j!==len -1){
-							setTimeout(function(){
-								show_loading_bar(bars);
-							},0);
-						}else{
-							setTimeout(function(){
-								show_loading_bar(bars);
-							},1000);
-						}
+						setTimeout(function(){
+							show_loading_bar(bars);
+						},0);
 						break;
 					}
 				}
