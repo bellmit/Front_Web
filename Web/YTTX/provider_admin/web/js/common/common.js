@@ -15,7 +15,12 @@
 	}());
 	//判断是否支持图片
 	public_tool.supportImage=(function(){
-		return typeof window.URL.createObjectURL==='function'?true:false;
+		var wURL=window.URL;
+		if(wURL){
+			return typeof wURL.createObjectURL==='function'?true:false;
+		}else{
+			return false;
+		}
 	}());
 	//设置本地存储
 	public_tool.setParams=function(key,value,flag){
@@ -1542,10 +1547,9 @@
 
 	/*初始化判定*/
 	public_tool.isRender=function(){
-		console.log(this.supportImage());
 		var self=this;
 		/*判定兼容性*/
-		if(self.supportStorage){
+		if(self.supportStorage&&self.supportImage){
 			/*调用路由*/
 			self.getRoute();
 			/*判断是否登陆*/
