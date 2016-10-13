@@ -1,8 +1,11 @@
-/*admin_member:成员设置*/
+/*商品轮播图*/
 (function($){
 	'use strict';
 
-	function GoodsSlide(){};
+	/*提示对象*/
+	var sd_tip=public_tool.dialog();
+
+	function GoodsSlide(){}
 
 	GoodsSlide.prototype.init=function(opt){
 		$.extend(true,this,opt);
@@ -20,7 +23,7 @@
 			this.unbindEvent();
 		}
 
-	}
+	};
 
 	GoodsSlide.prototype.bindEvent=function(){
 		var self=this;
@@ -33,12 +36,26 @@
 				index;
 
 			if(self.isDelete&&nodename==='span'&&self.size>=2){
-				if(self.deleteFn&&typeof self.deleteFn==='Function'){
-					self.deleteFn.call();
-				}else{
-					$(target).parent().remove();
-					self.init(self);
-				}
+				/*提示处理*/
+				sd_tip.setFn(function(){
+					var own=this;
+					if(self.deleteFn&&typeof self.deleteFn==='function'){
+						self.deleteFn.call(null,{
+							$liitem:$(target).parent(),
+							slideobj:self,
+							tips:own
+						});
+					}else{
+						$(target).parent().remove();
+						self.init(self);
+						own.content('<span class="g-c-bs-success g-btips-succ">删除数据成功</span>');
+						setTimeout(function(){
+							own.close();
+						},2000);
+					}
+				},'slide_delete');
+				//确认删除
+				sd_tip.dialog.content('<span class="g-c-bs-warning g-btips-warn">是否删除此数据？</span>').showModal();
 				return false;
 			}else{
 				$this=$(this);
@@ -74,7 +91,7 @@
 			self.index++;
 			self.play(self.index);
 		});
-	}
+	};
 
 	GoodsSlide.prototype.play=function(index){
 		var self=this,
@@ -103,22 +120,22 @@
 					if(index>self.front){
 						for(var i=0;i<index - temphide;i++){
 							self.toolitem.eq(i).addClass('g-d-hidei');
-						};
+						}
 					}else if(index<self.front){
 						for(var j=self.size - 1;j>index - temphide;j--){
 							self.toolitem.eq(j).removeClass('g-d-hidei');
-						};
+						}
 					}
 				}else if(index<=self.len - 1){
 					for(var k=0;k<index;k++){
 						self.toolitem.eq(k).removeClass('g-d-hidei');
-					};
+					}
 				}
 			}
 
 		}
 
-	}
+	};
 
 	GoodsSlide.prototype.unbindEvent=function(){
 		var self=this;
@@ -128,7 +145,7 @@
 		}
 		this.$btnl.off('click');
 		this.$btnr.off('click');
-	}
+	};
 
 	/*构造函数*/
 	GoodsSlide.prototype.GoodsSlide=function(opt){
@@ -136,7 +153,7 @@
 
 		this.init(opt);
 
-	}
+	};
 
 
 	//对外接口

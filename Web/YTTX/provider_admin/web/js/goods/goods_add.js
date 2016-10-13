@@ -28,7 +28,6 @@
 					},
 					cancel:false
 				})/*一般提示对象*/,
-				$admin_id=$('#admin_id'),
 				$admin_goodsTypeId_Level1=$('#admin_goodsTypeId_Level1'),
 				$admin_goodsTypeId_Level2=$('#admin_goodsTypeId_Level2'),
 				$admin_goodsTypeId_Level3=$('#admin_goodsTypeId_Level3'),
@@ -155,6 +154,7 @@
 			admin_goodsadd_form.reset();
 			admin_addtype_form.reset();
 			admin_addcolor_form.reset();
+			admin_addrule_form.reset();
 
 
 
@@ -257,7 +257,7 @@
 						'Key': function(up, file) {
 							/*调用滚动条*/
 							uploadShowBars(file['id']);
-							var str="provider_gt_"+moment().format("YYYYMMDDHHmmSSSS");
+							var str="gt_"+moment().format("YYYYMMDDHHmmSSSS");
 							return str;
 						}
 					}
@@ -334,7 +334,7 @@
 						'Key': function(up, file) {
 							/*调用滚动条*/
 							uploadShowBars(file['id']);
-							var str="provider_goods_"+moment().format("YYYYMMDDHHmmSSSS");
+							var str="goods_"+moment().format("YYYYMMDDHHmmSSSS");
 							return str;
 						}
 					}
@@ -411,7 +411,7 @@
 						'Key': function(up, file) {
 							/*调用滚动条*/
 							uploadShowBars(file['id']);
-							var str="provider_goods_"+moment().format("YYYYMMDDHHmmSSSS");
+							var str="goods_"+moment().format("YYYYMMDDHHmmSSSS");
 							return str;
 						}
 					}
@@ -584,15 +584,16 @@
 			$.each([$admin_color,$admin_rule],function(){
 				/*初始化*/
 				var $input=this.find('input'),
-					type=this.selector.indexOf('color')!==-1?'color':'rule',
-					selector=$input.attr('name'),
-					isvalid=false;
+					type=this.selector.indexOf('color')!==-1?'color':'rule';
 
 
 				/*事件绑定*/
 				$input.on('focusout',function(){
+
 					var $this=$(this),
-						value=$this.val();
+						value=$this.val(),
+						selector=$this.attr('name'),
+						isvalid=false;
 					if(value!==''){
 						isvalid=validAttrData($this,type);
 						if(isvalid){
@@ -600,12 +601,16 @@
 							$this.attr({
 								'data-value':value
 							});
+							/*同步列表*/
+							syncAttrList(value,type,'add');
 						}
 					}else{
 						if(typeof attr_data[selector]!=='undefined'){
 							var tempvalue=$this.attr('data-value');
 							delete attr_data[selector];
 							if(tempvalue!==''){
+								/*同步列表*/
+								syncAttrList(tempvalue,type,'remove');
 								$this.attr({
 									'data-value':''
 								});
@@ -613,7 +618,7 @@
 						}
 					}
 					if($.isEmptyObject(attr_data)){
-						clearAttrData('attr');
+						clearAttrData('attrtxt');
 					}else{
 						/*组合条件*/
 						groupCondition();
@@ -1154,9 +1159,17 @@
 										if(formtype==='addgoods'){
 											/*页面跳转*/
 											location.href='yttx-goods-manage.html';
-										}else if(formtype==='addtype'||formtype==='addcolor'||formtype==='addrule'){
+										}else if(formtype==='addtype'){
 											/*重新加载*/
 											location.reload();
+										}else if(formtype==='addcolor'||formtype==='addrule'){
+											/*更新属性值*/
+											updateAttrData(typeobj);
+											if(formtype==='addcolor'){
+												admin_addcolor_form.reset();
+											}else if(formtype==='addrule'){
+												admin_addrule_form.reset();
+											}
 										}
 									},2000);
 								}).fail(function(resp){
@@ -1396,7 +1409,27 @@
 		}
 
 
-
+		/*同步属性选择列表*/
+		function syncAttrList(value,type,action){
+			var $wrap;
+			if(type==='color'){
+				$wrap=$admin_color_list;
+			}else if(type==='rule'){
+				$wrap=$admin_rule_list;
+			}
+			$wrap.find('li').each(function(){
+				var $this=$(this),
+					txt=$this.html();
+				if(txt===value){
+					if(action==='add'){
+						$this.addClass('admin-list-widget-active')
+					}else if(action==='remove'){
+						$this.removeClass('admin-list-widget-active');
+					}
+					return false;
+				}
+			});
+		}
 
 
 		/*清空属性数据*/
@@ -1443,12 +1476,20 @@
 				$admin_wholesale_price_list.html('');
 				$admin_color_list.html('');
 				$admin_rule_list.html('');
+			}else if(type==='pricetxt'){
+				$admin_wholesale_price.val('');
+				$admin_retail_price.val('');
+				$admin_inventory.val('');
+			}else if(type==='attrtxt'){
+				$admin_color.find('input').val('').attr({'data-value':''});
+				$admin_rule.find('input').val('').attr({'data-value':''});
+				$admin_wholesale_price_list.html('').addClass('g-d-hidei');
 			}
 		}
 
 
 		/*查询标签与属性*/
-		function getAttrData(id,obj){
+		function getAttrData(id,obj,flag){
 			var isresult=false;
 			if(typeof id ==='undefined'){
 				return isresult;
@@ -1524,13 +1565,16 @@
 								subobj=arr[j];
 								var attrvalue=subobj["goodsTagId"]+'_'+subobj["id"],
 									  attrtxt=subobj["name"];
-								if(attrtxt in attrmap[key]['map']){
+
+								/*flag:为是否更新标识*/
+								if(attrtxt in attrmap[key]['map']&&!flag){
 									attrtxt=attrtxt+1;
 								}
+
 								str+='<li data-value="'+attrvalue+'">'+attrtxt+'</li>';
 								attrmap[key]['map'][attrtxt]=attrvalue;
 							}
-							$(str).appendTo(attrmap[key]['wrap']);
+							$(str).appendTo(attrmap[key]['wrap'].html(''));
 							$(str).appendTo(attrmap[key]['addwrap'].html(''));
 						}else{
 							continue;
@@ -1703,14 +1747,32 @@
 		}
 
 
-		/*初始化查询*/
-		function reloadInit(type){
-			if(type==='addtype'){
-				admin_addtype_form.reset();
-			}else if(type==='addcolor'){
-				admin_addcolor_form.reset();
-			}else if(type==='addrule'){
-				admin_addrule_form.reset();
+		/*更新属性*/
+		function updateAttrData(obj){
+			var onevalue='',
+				twovalue='',
+				threevalue='',
+				value='';
+			if(obj){
+				onevalue=obj.$typeone.find('option:selected').val();
+				if(onevalue===''){
+					return false;
+				}else{
+					twovalue=obj.$typetwo.find('option:selected').val();
+					if(twovalue===''){
+						value=onevalue;
+						getAttrData(value,obj,true);
+					}else{
+						threevalue=obj.$typethree.find('option:selected').val();
+						if(threevalue===''){
+							value=twovalue;
+							getAttrData(value,obj,true);
+						}else{
+							value=threevalue;
+							getAttrData(value,obj,true);
+						}
+					}
+				}
 			}
 		}
 
@@ -1730,6 +1792,58 @@
 					}
 				}
 			}
+		}
+
+
+		/*删除图片(需要后台支持)和另外的base64方法支持*/
+		function deleteSlideImage(obj){
+			var $li=obj.$liitem,
+				slideobj=obj.slideobj,
+				tips=obj.tips,
+				$img=$li.find('img'),
+				src=$img.attr('src');
+
+			if(src.indexOf('qiniucdn.com/')!==-1){
+				src=src.split('qiniucdn.com/')[1];
+				if(src.indexOf('?imageView2')!==-1){
+					src=src.split('?imageView2')[0];
+				}
+				$.ajax({
+					url:"http://rs.qiniu.com/delete/"+Base64Fun.encode64(src),
+					dataType:'JSON',
+					method:'post',
+					data:{
+						Authorization:'QBox '+ImageUpload_Token.qiniuToken
+					}
+				}).done(function(resp){
+					console.log(resp);
+					$li.remove();
+					slideobj.init(slideobj);
+					tips.content('<span class="g-c-bs-success g-btips-succ">删除数据成功</span>');
+					setTimeout(function(){
+						tips.close();
+					},2000);
+				}).fail(function(resp){
+					tips.content('<span class="g-c-bs-warning g-btips-warn">删除数据成功</span>');
+					setTimeout(function(){
+						tips.close();
+					},2000);
+					console.log(resp);
+				});
+			}
+
+
+
+
+
+
+
+
+			/*console.log(li);
+			console.log(slideobj);
+			console.log(tips);*/
+
+
 		}
 
 

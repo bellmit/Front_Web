@@ -307,7 +307,7 @@
 					public_tool.setParams('yttx-goods-edit',{
 						id:id
 					});
-					//location.href='yttx-goods-edit.html';
+					location.href='yttx-goods-edit.html';
 				}else if(action==='select'){
 					public_tool.setParams('yttx-goods-detail',{
 						id:id

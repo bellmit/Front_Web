@@ -138,11 +138,6 @@
 		}
 
 
-
-
-
-
-
 		/*查询标签与属性*/
 		function getAttrData(attr,price){
 			var attrlen= 0,

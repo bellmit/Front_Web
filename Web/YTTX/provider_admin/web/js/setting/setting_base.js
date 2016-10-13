@@ -153,7 +153,7 @@
 						'Key': function(up, file) {
 							/*调用滚动条*/
 							uploadShowBars(file['id']);
-							var str="provider_logo_"+moment().format("YYYYMMDDHHmmSSSS");
+							var str="logo_"+moment().format("YYYYMMDDHHmmSSSS");
 							return str;
 						}
 					}

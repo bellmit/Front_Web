@@ -161,7 +161,7 @@
 						'Key': function(up, file) {
 							/*调用滚动条*/
 							uploadShowBars(file['id']);
-							var str="provider_just_"+moment().format("YYYYMMDDHHmmSSSS");
+							var str="just_"+moment().format("YYYYMMDDHHmmSSSS");
 							return str;
 						}
 					}
@@ -262,7 +262,7 @@
 						'Key': function(up, file) {
 							/*调用滚动条*/
 							uploadShowBars(file['id']);
-							var str="provider_back_"+moment().format("YYYYMMDDHHmmSSSS");
+							var str="back_"+moment().format("YYYYMMDDHHmmSSSS");
 							return str;
 						}
 					}
@@ -363,7 +363,7 @@
 						'Key': function(up, file) {
 							/*调用滚动条*/
 							uploadShowBars(file['id']);
-							var str="provider_hand_"+moment().format("YYYYMMDDHHmmSSSS");
+							var str="hand_"+moment().format("YYYYMMDDHHmmSSSS");
 							return str;
 						}
 					}
@@ -464,12 +464,11 @@
 						'Key': function(up, file) {
 							/*调用滚动条*/
 							uploadShowBars(file['id']);
-							var str="provider_license_"+moment().format("YYYYMMDDHHmmSSSS");
+							var str="license_"+moment().format("YYYYMMDDHHmmSSSS");
 							return str;
 						}
 					}
 				});
-
 			}
 
 
