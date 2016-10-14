@@ -34,6 +34,7 @@
 				$admin_goodsTypeId_btn=$('#admin_goodsTypeId_btn'),
 				$admin_code=$('#admin_code'),
 				$admin_name=$('#admin_name'),
+				$admin_goodssort=$('#admin_goodssort'),
 				$admin_pricewrap=$('#admin_pricewrap'),
 				$admin_attrwrap=$('#admin_attrwrap'),
 				$admin_wholesale_price=$('#admin_wholesale_price'),
@@ -1031,9 +1032,16 @@
 									/*同步编辑器*/
 									editor.sync();
 									$.extend(true,setdata,{
-										code:$admin_code.val(),
+										gcode:$admin_code.val(),
 										name:$admin_name.val(),
 										isRecommended:$admin_isRecommended.is(':checked')?true:false,
+										sort:(function(){
+											var sort=$admin_goodssort.val();
+											if(sort===''){
+												sort=1;
+											}
+											return sort;
+										}()),
 										status:$admin_status.find(':selected').val(),
 										goodsBrandId:1,
 										parentId:$admin_goodsTypeId_Level1.find('option:selected').val()||'',

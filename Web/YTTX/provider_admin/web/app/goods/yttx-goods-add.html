@@ -147,7 +147,7 @@
                                             </div>
                                             <ul class="admin-slide-tool"  id="admin_slide_tool"></ul>
                                             <div class="admin-slide-upload" >
-                                                <div  id="admin_slide_view" data-value="" class="btn btn-white g-br2 g-w-percent50 admin-rpos-wrap">浏览商品组图</div>
+                                                <div  id="admin_slide_view" data-value="" class="btn btn-white g-br2 g-w-percent50 admin-rpos-wrap">上传商品组图</div>
                                             </div>
                                         </div>
                                     </div>
@@ -167,6 +167,15 @@
                                                 <option value="1" >上架</option>
                                                 <option value="2" >下架</option>
                                             </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label">商品排序：</label>
+                                            <input type="text" class="form-control" data-validate="number" placeholder="商品排序为数值" data-message-number="商品排序必须是数值"  name="goodsort" id="admin_goodssort" />
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="checkbox-inline">
+                                                <input name="isRecommended" id="admin_isRecommended" type="checkbox">是否被推荐
+                                            </label>
                                         </div>
                                         <div id="admin_pricewrap">
                                             <div class="form-group">
@@ -245,11 +254,6 @@
                                     <!--表主体-->
                                     <tbody class="middle-align g-d-hidei" id="admin_wholesale_price_list"></tbody>
                                 </table>
-                                <div>
-                                    <label class="checkbox-inline">
-                                        <input name="isRecommended" id="admin_isRecommended" type="checkbox">是否被推荐
-                                    </label>
-                                </div>
                             </div>
 
                             <div class="form-group admin-rpos-wrap">

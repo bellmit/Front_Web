@@ -130,19 +130,35 @@
                                             </div>
                                             <ul class="admin-slide-tool"  id="admin_slide_tool"></ul>
                                             <div class="admin-slide-upload" >
-                                                <div  id="admin_slide_view" data-value="" class="btn btn-white g-br2 g-w-percent50 admin-rpos-wrap">浏览商品组图</div>
+                                                <div  id="admin_slide_view" data-value="" class="btn btn-white g-br2 g-w-percent50 admin-rpos-wrap">上传商品组图</div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-md-7">
-                                        <div class="form-group">商品基本信息</div><br />
                                         <div class="form-group">
                                             <label class="control-label">商品编号：</label>
-                                            <input type="text" class="form-control" name="code" placeholder="请输入商品编号"  id="admin_code" />
+                                            <input type="text" class="form-control" name="code" placeholder="请输入商品编号" data-validate="required" data-message-required="商品编号不能为空"  id="admin_code" />
                                         </div>
                                         <div class="form-group">
                                             <label class="control-label">商品名称：</label>
                                             <input type="text" class="form-control" placeholder="请输入商品名称" data-validate="required" data-message-required="商品名称不能为空"  name="name" id="admin_name" />
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label">商品状态：</label>
+                                            <select class="form-control" name="admin_status" id="admin_status">
+                                                <option value="0">仓库</option>
+                                                <option value="1" >上架</option>
+                                                <option value="2" >下架</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label">商品排序：</label>
+                                            <input type="text" class="form-control" data-validate="number" placeholder="商品排序为数值" data-message-number="商品排序必须是数值"  name="goodsort" id="admin_goodssort" />
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="checkbox-inline">
+                                                <input name="isRecommended" id="admin_isRecommended" type="checkbox">是否被推荐
+                                            </label>
                                         </div>
                                         <div id="admin_pricewrap">
                                             <div class="form-group">
@@ -186,11 +202,6 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div>
-                                            <label class="checkbox-inline">
-                                                <input name="isRecommended" id="admin_isRecommended" type="checkbox">是否被推荐
-                                            </label>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -224,6 +235,38 @@
                                     <!--表主体-->
                                     <tbody class="middle-align g-d-hidei" id="admin_wholesale_price_list"></tbody>
                                 </table>
+                            </div>
+
+                            <div class="form-group">
+                                <label id="admin_oldprice_btn" class="control-label btn btn-white g-br2">查看以前设置值</label>
+                                <div id="admin_oldprice_show" class="g-d-hidei">
+                                    <table class="table table-bordered table-striped table-hover admin-table">
+                                        <!--分组样式-->
+                                        <colgroup>
+                                            <col class="g-w-percent8">
+                                            <col class="g-w-percent8">
+                                            <col class="g-w-percent8">
+                                            <col class="g-w-percent8">
+                                            <col class="g-w-percent8">
+                                            <col class="g-w-percent8">
+                                        </colgroup>
+
+                                        <!--表头-->
+                                        <thead>
+                                        <tr>
+                                            <th>颜色</th>
+                                            <th>规格</th>
+                                            <th>库存</th>
+                                            <th>批发价</th>
+                                            <th>建议零售价</th>
+                                            <th>是否默认</th>
+                                        </tr>
+                                        </thead>
+
+                                        <!--表主体-->
+                                        <tbody class="middle-align" id="admin_wholesale_price_old"></tbody>
+                                    </table>
+                                </div>
                             </div>
 
                             <div class="form-group admin-rpos-wrap">

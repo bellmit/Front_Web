@@ -110,22 +110,54 @@
 
 				/*解析类型*/
 				var type=result['goodsTypeId'];
-				if(type!=='undefined'){
+				if(typeof type!=='undefined'){
 					document.getElementById('admin_goodstype').innerHTML=type;
 				}
 
 				/*解析名称*/
-				document.getElementById('admin_name').innerHTML=result['name'];
+				var name=result['name'];
+				if(typeof name!=='undefined'){
+					document.getElementById('admin_name').innerHTML=name;
+				}
+
+				/*解析状态*/
+				var status=result['status'],statemap={
+					'0':'状态',
+					'1':'上架',
+					'2':'下架'
+				};
+				if(typeof status !=='undefined'&&status!==''){
+
+					document.getElementById('admin_status').innerHTML=statemap[status];
+				}else{
+					document.getElementById('admin_status').innerHTML=statemap[0];
+				}
+
+
+				/*解析编码*/
+				var gcode=result['gcode'];
+				if(typeof gcode !=='undefined'){
+					document.getElementById('admin_code').innerHTML=gcode;
+				}
+
+
+				/*解析排序*/
+				var sort=result['sort'];
+				if(typeof sort !=='undefined'){
+					document.getElementById('admin_sort').innerHTML=sort;
+				}
+
+
+
 
 				/*解析是否被推荐*/
-				if(result['isRecommended']){
-					document.getElementById('admin_isRecommended').innerHTML='是';
-				}else{
-					document.getElementById('admin_isRecommended').innerHTML='否';
+				var isrec=result['isRecommended'];
+				if(typeof isrec!=='undefined'){
+					document.getElementById('admin_isRecommended').innerHTML=(isrec?'是':'否');
 				}
 
 				/*解析库存，批发价，建议零售价*/
-				getAttrData(result['tagsAttrsList'],result['AttrInventoryPrices']);
+				getAttrData(result['tagsAttrsList'],result['attrInventoryPrices']);
 
 
 
@@ -174,18 +206,16 @@
 							colorlen= 0,
 							rulelen=0;
 						/*查询颜色和规则列表*/
-						if(attr[0]['name'].indexOf('颜色')!==-1){
-							colorlist=attr[0]['list'];
-						}else if(attr[1]['name'].indexOf('颜色')!==-1){
-							colorlist=attr[1]['list'];
+						for(var p=0;p<attrlen;p++){
+							if(attr[p]['name'].indexOf('颜色')!==-1&&attr[p]['name'].indexOf('公共')!==-1){
+								colorlist=attr[p]['list'];
+								colorlen=colorlist.length;
+							}
+							if(attr[p]['name'].indexOf('规格')!==-1&&attr[p]['name'].indexOf('公共')!==-1){
+								rulelist=attr[p]['list'];
+								rulelen=rulelist.length;
+							}
 						}
-						colorlen=colorlist.length;
-						if(attr[0]['name'].indexOf('规格')!==-1){
-							rulelist=attr[0]['list'];
-						}else if(attr[1]['name'].indexOf('规格')!==-1){
-							rulelist=attr[1]['list'];
-						}
-						rulelen=rulelist.length;
 
 						/*是否存在颜色和规则*/
 						if(colorlen===0){
