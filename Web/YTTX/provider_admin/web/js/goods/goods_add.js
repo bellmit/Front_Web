@@ -1252,13 +1252,11 @@
 		function createAttrNode(name,index){
 			var cindex= 1,
 				inputstr='',
-				itemstr='',
-				z_index=(function(){
-					var i=100;
-					return function(){
-						return i-=2;
-					};
-				}());
+				itemstr='';
+
+			if(typeof index==='undefined'){
+				var index=parseInt(Math.random() * 10,10);
+			}
 
 
 			/*创建输入项*/
@@ -1267,10 +1265,10 @@
 			}
 			/*创建属性项*/
 			itemstr='<div class="form-group">\
-									<label class="control-label"><span class="attr-item-title"></span><span class="g-c-red1 attr-item-tips"></span></label>\
+									<label class="control-label"><span class="attr-item-title">'+name+':</span><span class="g-c-red1 attr-item-tips"></span></label>\
 									<div class="input-group">\
-										<span class="attr-item-input">+inputstr+</span>\
-										<span class="input-group-btn pull-left admin-rpos-wrap" style="z-index:'+z_index()+';">\
+										<span class="attr-item-input">'+inputstr+'</span>\
+										<span class="input-group-btn pull-left admin-rpos-wrap" style="z-index:'+(100 - index * 2)+';">\
 											<button type="button" class="btn btn-white attr-item-btn" title=""><i class="fa-angle-double-left"></i></button>\
 											<button type="button" title="" class="btn btn-white attr-item-listbtn"><i class="fa-list"></i></button>\
 											<button type="button" class="btn btn-white attr-item-addbtn" title="">+</button>\
@@ -1621,6 +1619,7 @@
 
 				if(len!==0){
 					isresult=true;
+					$admin_attrwrap.html('');
 					for(i;i<len;i++){
 						var name=list[i]['name'],
 							arr=list[i]['list'],
@@ -1629,6 +1628,8 @@
 							str='',
 							subobj,
 							key='';
+
+						createAttrNode(name,i);
 
 						if(name.indexOf('颜色')!==-1&&name.indexOf('公共属性')!==-1){
 							key='color';
@@ -1654,8 +1655,6 @@
 							}
 							$(str).appendTo(attrmap[key]['wrap'].html(''));
 							$(str).appendTo(attrmap[key]['addwrap'].html(''));
-						}else{
-							continue;
 						}
 					}
 				}else{
