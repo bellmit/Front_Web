@@ -35,25 +35,17 @@
 				$admin_code=$('#admin_code'),
 				$admin_name=$('#admin_name'),
 				$admin_goodssort=$('#admin_goodssort'),
+				$admin_pricewrap=$('#admin_pricewrap'),
+				$admin_attrwrap=$('#admin_attrwrap'),
 				$admin_wholesale_price=$('#admin_wholesale_price'),
 				$admin_retail_price=$('#admin_retail_price'),
 				$admin_inventory=$('#admin_inventory'),
-
-
-
-				$admin_pricewrap=$('#admin_pricewrap'),
-				$admin_attrwrap=$('#admin_attrwrap'),
 				$admin_color=$('#admin_color'),
 				$admin_color_btn=$('#admin_color_btn'),
 				$admin_rule=$('#admin_rule'),
 				$admin_rule_btn=$('#admin_rule_btn'),
 				$admin_color_tips=$('#admin_color_tips'),
 				$admin_rule_tips=$('#admin_rule_tips'),
-
-
-
-
-
 				$admin_wholesale_price_list=$('#admin_wholesale_price_list'),
 				$admin_wholesale_tips=$('#admin_wholesale_tips'),
 				$admin_isRecommended=$('#admin_isRecommended'),
@@ -75,7 +67,7 @@
 				resetform3=null,
 				colormap={},
 				rulemap={},
-				have_attr=false,
+				issetprice=false,
 				istypeid='';
 
 
@@ -496,58 +488,48 @@
 							$admin_pricewrap.removeClass('g-d-hidei');
 							return false;
 						}
-						have_attr=getAttrData(value,typeobj);
-						if(have_attr){
-							$admin_pricewrap.addClass('g-d-hidei');
+						issetprice=getAttrData(value,typeobj);
+						if(issetprice){
 							$admin_attrwrap.removeClass('g-d-hidei');
 						}else{
-							$admin_pricewrap.removeClass('g-d-hidei');
-							$admin_attrwrap.addClass('g-d-hidei');
+							$admin_pricewrap.addClass('g-d-hidei');
 						}
 						getGoodsTypes(value,typeobj,'two');
 					}else if(selector.indexOf('2')!==-1){
 						istypeid=value;
 						if(value===''){
 							$admin_goodsTypeId_Level3.html('');
-							have_attr=getAttrData($admin_goodsTypeId_Level1.find('option:selected').val(),typeobj);
-							if(have_attr){
-								$admin_pricewrap.addClass('g-d-hidei');
+							issetprice=getAttrData($admin_goodsTypeId_Level1.find('option:selected').val(),typeobj);
+							if(issetprice){
 								$admin_attrwrap.removeClass('g-d-hidei');
 							}else{
-								$admin_pricewrap.removeClass('g-d-hidei');
-								$admin_attrwrap.addClass('g-d-hidei');
+								$admin_pricewrap.addClass('g-d-hidei');
 							}
 							return false;
 						}
-						have_attr=getAttrData(value,typeobj);
-						if(have_attr){
-							$admin_pricewrap.addClass('g-d-hidei');
+						issetprice=getAttrData(value,typeobj);
+						if(issetprice){
 							$admin_attrwrap.removeClass('g-d-hidei');
 						}else{
-							$admin_pricewrap.removeClass('g-d-hidei');
-							$admin_attrwrap.addClass('g-d-hidei');
+							$admin_pricewrap.addClass('g-d-hidei');
 						}
 						getGoodsTypes(value,typeobj,'three');
 					}else if(selector.indexOf('3')!==-1){
 						istypeid=value;
 						if(value===''){
-							have_attr=getAttrData($admin_goodsTypeId_Level2.find('option:selected').val(),typeobj);
-							if(have_attr){
-								$admin_pricewrap.addClass('g-d-hidei');
+							issetprice=getAttrData($admin_goodsTypeId_Level2.find('option:selected').val(),typeobj);
+							if(issetprice){
 								$admin_attrwrap.removeClass('g-d-hidei');
 							}else{
-								$admin_pricewrap.removeClass('g-d-hidei');
-								$admin_attrwrap.addClass('g-d-hidei');
+								$admin_pricewrap.addClass('g-d-hidei');
 							}
 							return false;
 						}
-						have_attr=getAttrData(value,typeobj);
-						if(have_attr){
-							$admin_pricewrap.addClass('g-d-hidei');
+						issetprice=getAttrData(value,typeobj);
+						if(issetprice){
 							$admin_attrwrap.removeClass('g-d-hidei');
 						}else{
-							$admin_pricewrap.removeClass('g-d-hidei');
-							$admin_attrwrap.addClass('g-d-hidei');
+							$admin_pricewrap.addClass('g-d-hidei');
 						}
 					}else if(selector.indexOf('one')!==-1){
 						if(value===''){
@@ -576,46 +558,6 @@
 
 				}
 			});
-
-
-
-			/*绑定属性操作*/
-			$admin_attrwrap.on('click focusout',function(e){
-				var etype= e.type,
-					target= e.target,
-					node=target.nodeName.toLowerCase(),
-					$current;
-
-
-
-				/*点击事件*/
-				if(etype==='click'){
-					/*过滤*/
-					if(node==='li'||node==='div'||node==='label'||node==='span'||node==='label'){
-						return false;
-					}
-					/*绑定操作事件*/
-
-
-
-				}else if(etype==='focuout'){
-					/*过滤*/
-					if(node!=='input'){
-						return false;
-					}
-					/*失去焦点事件*/
-
-				}
-
-			});
-
-
-
-
-
-
-
-
 			$.each([$admin_color,$admin_rule],function(){
 				/*初始化*/
 				var $input=this.find('input'),
@@ -1107,7 +1049,7 @@
 										}())
 									});
 
-									if(have_attr){
+									if(issetprice){
 										setdata['attrIventoryPrices']=getSetPrice();
 									}else{
 										setdata['attrIventoryPrices']='['+$admin_inventory.val()+'#'+public_tool.trimSep($admin_wholesale_price.val(),',')+'#'+public_tool.trimSep($admin_retail_price.val(),',')+']';
@@ -1248,40 +1190,6 @@
 
 		}
 
-		/*动态创建属性节点*/
-		function createAttrNode(name,index){
-			var cindex= 1,
-				inputstr='',
-				itemstr='',
-				z_index=(function(){
-					var i=100;
-					return function(){
-						return i-=2;
-					};
-				}());
-
-
-			/*创建输入项*/
-			for(cindex;cindex<4;cindex++){
-				inputstr+='<input type="text" class="form-control g-w-number4" data-value="" name="'+name+cindex+'" />';
-			}
-			/*创建属性项*/
-			itemstr='<div class="form-group">\
-									<label class="control-label"><span class="attr-item-title"></span><span class="g-c-red1 attr-item-tips"></span></label>\
-									<div class="input-group">\
-										<span class="attr-item-input">+inputstr+</span>\
-										<span class="input-group-btn pull-left admin-rpos-wrap" style="z-index:'+z_index()+';">\
-											<button type="button" class="btn btn-white attr-item-btn" title=""><i class="fa-angle-double-left"></i></button>\
-											<button type="button" title="" class="btn btn-white attr-item-listbtn"><i class="fa-list"></i></button>\
-											<button type="button" class="btn btn-white attr-item-addbtn" title="">+</button>\
-											<ul class="admin-list-widget color-list-widget g-d-hidei attr-item-list"></ul>\
-										</span>\
-									</div>\
-								</div>';
-
-			$(itemstr).appendTo($admin_attrwrap);
-		}
-
 
 		/*级联类型查询*/
 		function getGoodsTypes(value,obj,type,extend){
@@ -1353,13 +1261,11 @@
 							clearAttrData('price');
 							$admin_attrwrap.removeClass('g-d-hidei');
 							$admin_pricewrap.addClass('g-d-hidei');
-							have_attr=getAttrData(auto_selected,obj);
-							if(have_attr){
-								$admin_pricewrap.addClass('g-d-hidei');
+							issetprice=getAttrData(auto_selected,obj);
+							if(issetprice){
 								$admin_attrwrap.removeClass('g-d-hidei');
 							}else{
-								$admin_pricewrap.removeClass('g-d-hidei');
-								$admin_attrwrap.addClass('g-d-hidei');
+								$admin_pricewrap.addClass('g-d-hidei');
 							}
 							getGoodsTypes(auto_selected,obj,'two');
 						}else{

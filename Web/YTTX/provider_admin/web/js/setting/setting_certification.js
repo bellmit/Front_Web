@@ -78,10 +78,10 @@
 					silverlight_xap_url : '../../js/plugins/plupload/Moxie.xap',
 					max_retries: 3,// 上传失败最大重试次数
 					dragdrop:false,
-					chunk_size: '2mb',
+					chunk_size: '4mb',
+					max_file_size : '4mb',
 					auto_start:false,
 					filters:{
-						max_file_size : '4mb',
 						mime_types: [
 							{
 								title : "Image files",
@@ -132,20 +132,10 @@
 							$('<img alt="" src="'+domain+'/'+name.key+'?imageView2/1/w/400/h/200" />').appendTo($admin_identityJust.html(''));
 						},
 						'Error': function(up, err, errTip) {
-							var opt=up.settings,
-								file=err.file,
-								setsize=parseInt(opt.filters.max_file_size,10),
-								realsize=parseInt((file.size / 1024)/1024,10);
-
-							if(realsize>setsize){
-								dia.content('<span class="g-c-bs-warning g-btips-warn">您选择的文件太大(<span class="g-c-red1"> '+realsize+'mb</span>),不能超过(<span class="g-c-red1"> '+setsize+'mb</span>)</span>').show();
-								$admin_identityJust_view.attr({
-									'data-value':''
-								});
-								setTimeout(function(){
-									dia.close();
-								},3000);
-							}
+							dia.content('<span class="g-c-bs-warning g-btips-warn">'+errTip+'</span>').show();
+							setTimeout(function(){
+								dia.close();
+							},3000);
 							console.log(errTip);
 						},
 						'UploadComplete': function(up, file) {
@@ -179,10 +169,10 @@
 					silverlight_xap_url : '../../js/plugins/plupload/Moxie.xap',
 					max_retries: 3,// 上传失败最大重试次数
 					dragdrop:false,
-					chunk_size: '2mb',
+					chunk_size: '4mb',
+					max_file_size : '4mb',
 					auto_start:false,
 					filters:{
-						max_file_size : '4mb',
 						mime_types: [
 							{
 								title : "Image files",
@@ -233,20 +223,10 @@
 							$('<img alt="" src="'+domain+'/'+name.key+'?imageView2/1/w/400/h/200" />').appendTo($admin_identityBack.html(''));
 						},
 						'Error': function(up, err, errTip) {
-							var opt=up.settings,
-								file=err.file,
-								setsize=parseInt(opt.filters.max_file_size,10),
-								realsize=parseInt((file.size / 1024)/1024,10);
-
-							if(realsize>setsize){
-								dia.content('<span class="g-c-bs-warning g-btips-warn">您选择的文件太大(<span class="g-c-red1"> '+realsize+'mb</span>),不能超过(<span class="g-c-red1"> '+setsize+'mb</span>)</span>').show();
-								$admin_identityBack_view.attr({
-									'data-value':''
-								});
-								setTimeout(function(){
-									dia.close();
-								},3000);
-							}
+							dia.content('<span class="g-c-bs-warning g-btips-warn">'+errTip+'</span>').show();
+							setTimeout(function(){
+								dia.close();
+							},3000);
 							console.log(errTip);
 						},
 						'UploadComplete': function(up, file) {
@@ -280,10 +260,10 @@
 					silverlight_xap_url : '../../js/plugins/plupload/Moxie.xap',
 					max_retries: 3,// 上传失败最大重试次数
 					dragdrop:false,
-					chunk_size: '2mb',
+					chunk_size: '4mb',
 					auto_start:false,
+					max_file_size : '4mb',
 					filters:{
-						max_file_size : '4mb',
 						mime_types: [
 							{
 								title : "Image files",
@@ -334,20 +314,10 @@
 							$('<img alt="" src="'+domain+'/'+name.key+'?imageView2/1/w/400/h/200" />').appendTo($admin_identityHand.html(''));
 						},
 						'Error': function(up, err, errTip) {
-							var opt=up.settings,
-								file=err.file,
-								setsize=parseInt(opt.filters.max_file_size,10),
-								realsize=parseInt((file.size / 1024)/1024,10);
-
-							if(realsize>setsize){
-								dia.content('<span class="g-c-bs-warning g-btips-warn">您选择的文件太大(<span class="g-c-red1"> '+realsize+'mb</span>),不能超过(<span class="g-c-red1"> '+setsize+'mb</span>)</span>').show();
-								$admin_identityHand_view.attr({
-									'data-value':''
-								});
-								setTimeout(function(){
-									dia.close();
-								},3000);
-							}
+							dia.content('<span class="g-c-bs-warning g-btips-warn">'+errTip+'</span>').show();
+							setTimeout(function(){
+								dia.close();
+							},3000);
 							console.log(errTip);
 						},
 						'UploadComplete': function(up, file) {
@@ -381,10 +351,10 @@
 					silverlight_xap_url : '../../js/plugins/plupload/Moxie.xap',
 					max_retries: 3,// 上传失败最大重试次数
 					dragdrop:false,
-					chunk_size: '2mb',
+					chunk_size: '4mb',
+					max_file_size : '4mb',
 					auto_start:false,
 					filters:{
-						max_file_size : '4mb',
 						mime_types: [
 							{
 								title : "Image files",
@@ -435,20 +405,10 @@
 							$('<img alt="" src="'+domain+'/'+name.key+'?imageView2/1/w/400/h/200" />').appendTo($admin_businessLicenseImage.html(''));
 						},
 						'Error': function(up, err, errTip) {
-							var opt=up.settings,
-								file=err.file,
-								setsize=parseInt(opt.filters.max_file_size,10),
-								realsize=parseInt((file.size / 1024)/1024,10);
-
-							if(realsize>setsize){
-								dia.content('<span class="g-c-bs-warning g-btips-warn">您选择的文件太大(<span class="g-c-red1"> '+realsize+'mb</span>),不能超过(<span class="g-c-red1"> '+setsize+'mb</span>)</span>').show();
-								$admin_businessLicenseImage_view.attr({
-									'data-value':''
-								});
-								setTimeout(function(){
-									dia.close();
-								},3000);
-							}
+							dia.content('<span class="g-c-bs-warning g-btips-warn">'+errTip+'</span>').show();
+							setTimeout(function(){
+								dia.close();
+							},3000);
 							console.log(errTip);
 						},
 						'UploadComplete': function(up, file) {
