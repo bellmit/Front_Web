@@ -73,8 +73,7 @@
 				resetform1=null,
 				resetform2=null,
 				resetform3=null,
-				colormap={},
-				rulemap={},
+				attr_map={},
 				have_attr=false,
 				istypeid='';
 
@@ -104,21 +103,21 @@
 
 
 
-			/*新增颜色,规格/尺寸 属性*/
-			var $show_addcolor_wrap=$('#show_addcolor_wrap'),
-				admin_addcolor_form=document.getElementById('admin_addcolor_form'),
-				$admin_addcolor_form=$(admin_addcolor_form),
-				$admin_addcolor_tips=$('#admin_addcolor_tips'),
+			/*新增属性，标签*/
+			var $show_addattr_wrap=$('#show_addattr_wrap'),
+				admin_addattr_form=document.getElementById('admin_addattr_form'),
+				$admin_addattr_form=$(admin_addattr_form),
+				$admin_addattr_tips=$('#admin_addattr_tips'),
 				$admin_newcolor=$('#admin_newcolor'),
-				$admin_addcolor_btn=$('#admin_addcolor_btn'),
-				$admin_addcolor_list=$('#admin_addcolor_list'),
-				$show_addrule_wrap=$('#show_addrule_wrap'),
-				admin_addrule_form=document.getElementById('admin_addrule_form'),
-				$admin_addrule_form=$(admin_addrule_form),
-				$admin_addrule_tips=$('#admin_addrule_tips'),
-				$admin_newrule=$('#admin_newrule'),
-				$admin_addrule_btn=$('#admin_addrule_btn'),
-				$admin_addrule_list=$('#admin_addrule_list');
+				$admin_addattr_btn=$('#admin_addattr_btn'),
+				$admin_addattr_list=$('#admin_addattr_list'),
+				$show_addlabel_wrap=$('#show_addlabel_wrap'),
+				admin_addlabel_form=document.getElementById('admin_addlabel_form'),
+				$admin_addlabel_form=$(admin_addlabel_form),
+				$admin_addlabel_tips=$('#admin_addlabel_tips'),
+				$admin_newlabel=$('#admin_newlabel'),
+				$admin_addlabel_btn=$('#admin_addlabel_btn'),
+				$admin_addlabel_list=$('#admin_addlabel_list');
 
 
 
@@ -162,8 +161,8 @@
 			/*重置表单*/
 			admin_goodsadd_form.reset();
 			admin_addtype_form.reset();
-			admin_addcolor_form.reset();
-			admin_addrule_form.reset();
+			admin_addattr_form.reset();
+			admin_addlabel_form.reset();
 
 
 
@@ -583,8 +582,7 @@
 			$admin_attrwrap.on('click focusout',function(e){
 				var etype= e.type,
 					target= e.target,
-					node=target.nodeName.toLowerCase(),
-					$current;
+					node=target.nodeName.toLowerCase();
 
 
 
@@ -598,68 +596,60 @@
 
 
 
-				}else if(etype==='focuout'){
+				}else if(etype==='focusout'){
 					/*过滤*/
 					if(node!=='input'){
 						return false;
 					}
 					/*失去焦点事件*/
+					/*绑定输入框失去焦点事件*/
 
+
+
+					(function(){
+						var	$this=$(target),
+							value=$this.val(),
+							selector=$this.attr('name'),
+							key=$this.attr('data-key'),
+							isvalid=false;
+						if(value!==''){
+							isvalid=validAttrData($this,key,value);
+							if(isvalid){
+								attr_data[key][selector]=value;
+								$this.attr({
+									'data-value':value
+								});
+								/*同步列表*/
+								syncAttrList(value,key,'add');
+							}
+						}else{
+							if(typeof attr_data[key][selector]!=='undefined'){
+								var tempvalue=$this.attr('data-value');
+								delete attr_data[key][selector];
+								if(tempvalue!==''){
+									/*同步列表*/
+									syncAttrList(tempvalue,key,'remove');
+									$this.attr({
+										'data-value':''
+									});
+								}
+							}
+						}
+						if($.isEmptyObject(attr_data[key])){
+							clearAttrData('attrtxt',key);
+						}else{
+							/*组合条件*/
+							//groupCondition();
+						}
+						console.log(attr_data);
+
+					}());
 				}
 
 			});
 
 
 
-
-
-
-
-
-			$.each([$admin_color,$admin_rule],function(){
-				/*初始化*/
-				var $input=this.find('input'),
-					type=this.selector.indexOf('color')!==-1?'color':'rule';
-
-
-				/*事件绑定*/
-				$input.on('focusout',function(){
-
-					var $this=$(this),
-						value=$this.val(),
-						selector=$this.attr('name'),
-						isvalid=false;
-					if(value!==''){
-						isvalid=validAttrData($this,type);
-						if(isvalid){
-							attr_data[selector]=value;
-							$this.attr({
-								'data-value':value
-							});
-							/*同步列表*/
-							syncAttrList(value,type,'add');
-						}
-					}else{
-						if(typeof attr_data[selector]!=='undefined'){
-							var tempvalue=$this.attr('data-value');
-							delete attr_data[selector];
-							if(tempvalue!==''){
-								/*同步列表*/
-								syncAttrList(tempvalue,type,'remove');
-								$this.attr({
-									'data-value':''
-								});
-							}
-						}
-					}
-					if($.isEmptyObject(attr_data)){
-						clearAttrData('attrtxt');
-					}else{
-						/*组合条件*/
-						groupCondition();
-					}
-				});
-			});
 
 
 			/*绑定新增颜色和规格尺寸*/
@@ -891,13 +881,13 @@
 					});
 				}else if(selector.indexOf('color')!==-1){
 					this.on('click',function(){
-						$show_addcolor_wrap.modal('show',{
+						$show_addattr_wrap.modal('show',{
 							backdrop:'static'
 						});
 					});
 				}else if(selector.indexOf('rule')!==-1){
 					this.on('click',function(){
-						$show_addrule_wrap.modal('show',{
+						$show_addlabel_wrap.modal('show',{
 							backdrop:'static'
 						});
 					});
@@ -930,22 +920,22 @@
 
 
 			/*绑定显示隐藏新增类型中的已存在编码和名称*/
-			$.each([$admin_addcolor_btn,$admin_addrule_btn],function(){
+			$.each([$admin_addattr_btn,$admin_addlabel_btn],function(){
 				var self=this,
 					selector=this.selector;
 
 				this.on('click',function(e){
 					if(selector.indexOf('addcolor')!==-1){
-						if($admin_addcolor_list.hasClass('g-d-hidei')){
-							$admin_addcolor_list.removeClass('g-d-hidei');
+						if($admin_addattr_list.hasClass('g-d-hidei')){
+							$admin_addattr_list.removeClass('g-d-hidei');
 						}else{
-							$admin_addcolor_list.addClass('g-d-hidei');
+							$admin_addattr_list.addClass('g-d-hidei');
 						}
 					}else if(selector.indexOf('addrule')!==-1){
-						if($admin_addrule_list.hasClass('g-d-hidei')){
-							$admin_addrule_list.removeClass('g-d-hidei');
+						if($admin_addlabel_list.hasClass('g-d-hidei')){
+							$admin_addlabel_list.removeClass('g-d-hidei');
 						}else{
-							$admin_addrule_list.addClass('g-d-hidei');
+							$admin_addlabel_list.addClass('g-d-hidei');
 						}
 					}
 				});
@@ -955,7 +945,7 @@
 
 
 			/*绑定验证是否已经编写存在的分类编码*/
-			$.each([$admin_newcolor,$admin_newrule],function(){
+			$.each([$admin_newcolor,$admin_newlabel],function(){
 				var own=this,
 					selector=this.selector;
 
@@ -966,23 +956,23 @@
 
 					if(value!==''){
 						if(selector.indexOf('color')!==-1){
-							$admin_addcolor_list.find('li').each(function(){
+							$admin_addattr_list.find('li').each(function(){
 								if(this.innerHTML===value){
-									$admin_addcolor_tips.html('"'+value+'" 已经存在，请填写其他"颜色"');
+									$admin_addattr_tips.html('"'+value+'" 已经存在，请填写其他"颜色"');
 									self.value='';
 									setTimeout(function () {
-										$admin_addcolor_tips.html('');
+										$admin_addattr_tips.html('');
 									},3000);
 									return false;
 								}
 							});
 						}else if(selector.indexOf('rule')!==-1){
-							$admin_addrule_list.find('li').each(function(){
+							$admin_addlabel_list.find('li').each(function(){
 								if(this.innerHTML===value){
-									$admin_addrule_tips.html('"'+value+'" 已经存在，请填写其他"规格/尺寸"');
+									$admin_addlabel_tips.html('"'+value+'" 已经存在，请填写其他"规格/尺寸"');
 									self.value='';
 									setTimeout(function () {
-										$admin_addrule_tips.html('');
+										$admin_addlabel_tips.html('');
 									},3000);
 									return false;
 								}
@@ -1151,7 +1141,7 @@
 									config['data']=setdata;
 								}else if(formtype==='addrule'){
 									$.extend(true,setdata,{
-										newAttrs:$admin_newrule.val(),
+										newAttrs:$admin_newlabel.val(),
 										goodsTypeId:istypeid,
 										tagId:'5'
 									});
@@ -1208,9 +1198,9 @@
 											/*更新属性值*/
 											updateAttrData(typeobj);
 											if(formtype==='addcolor'){
-												admin_addcolor_form.reset();
+												admin_addattr_form.reset();
 											}else if(formtype==='addrule'){
-												admin_addrule_form.reset();
+												admin_addlabel_form.reset();
 											}
 										}
 									},2000);
@@ -1236,10 +1226,10 @@
 					resetform1=$admin_addtype_form.validate(form_opt1);
 				}
 				if(resetform2===null){
-					resetform2=$admin_addcolor_form.validate(form_opt2);
+					resetform2=$admin_addattr_form.validate(form_opt2);
 				}
 				if(resetform3===null){
-					resetform3=$admin_addrule_form.validate(form_opt3);
+					resetform3=$admin_addlabel_form.validate(form_opt3);
 				}
 
 			}
@@ -1252,32 +1242,46 @@
 		function createAttrNode(name,index){
 			var cindex= 1,
 				inputstr='',
-				itemstr='';
+				itemstr='',
+				label=name.replace(/(\(.*\))|(\（.*\）)|\s*/g,''),
+				namecode='ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split(''),
+				len=namecode.length,
+				key='',
+				result={};
 
-			if(typeof index==='undefined'){
-				var index=parseInt(Math.random() * 10,10);
+			/*生成唯一值*/
+			var j=0;
+			for(j;j<10;j++){
+				key+=namecode[parseInt(Math.random() * len ,10)];
 			}
+
+
+			/*组装结果对象*/
+			result['name']=name;
+			result['key']=key;
+			result['label']=label;
 
 
 			/*创建输入项*/
 			for(cindex;cindex<4;cindex++){
-				inputstr+='<input type="text" class="form-control g-w-number4" data-value="" name="'+name+cindex+'" />';
+				inputstr+='<input type="text" class="form-control g-w-number4" data-key="'+key+'" data-label="'+label+'" data-value="" name="'+key+cindex+'" />';
 			}
 			/*创建属性项*/
 			itemstr='<div class="form-group">\
-									<label class="control-label"><span class="attr-item-title">'+name+':</span><span class="g-c-red1 attr-item-tips"></span></label>\
+									<label class="control-label"><span class="attr-item-title" >'+label+':</span><span id="attr_tips_'+key+'" class="g-c-red1 attr-item-tips"></span></label>\
 									<div class="input-group">\
-										<span class="attr-item-input">'+inputstr+'</span>\
+										<span class="attr-item-input" id="attr_input_'+key+'">'+inputstr+'</span>\
 										<span class="input-group-btn pull-left admin-rpos-wrap" style="z-index:'+(100 - index * 2)+';">\
-											<button type="button" class="btn btn-white attr-item-btn" title=""><i class="fa-angle-double-left"></i></button>\
-											<button type="button" title="" class="btn btn-white attr-item-listbtn"><i class="fa-list"></i></button>\
-											<button type="button" class="btn btn-white attr-item-addbtn" title="">+</button>\
-											<ul class="admin-list-widget color-list-widget g-d-hidei attr-item-list"></ul>\
+											<button type="button" class="btn btn-white attr-item-btn" title="增加'+label+'条件"><i class="fa-angle-double-left"></i></button>\
+											<button type="button" title="查看'+label+'类型" class="btn btn-white attr-item-listbtn"><i class="fa-list"></i></button>\
+											<button type="button" class="btn btn-white attr-item-addbtn" title="添加'+label+'">+</button>\
+											<ul id="attr_list_'+key+'"  class="admin-list-widget color-list-widget g-d-hidei attr-item-list"></ul>\
 										</span>\
 									</div>\
 								</div>';
 
 			$(itemstr).appendTo($admin_attrwrap);
+			return result;
 		}
 
 
@@ -1486,13 +1490,8 @@
 
 
 		/*同步属性选择列表*/
-		function syncAttrList(value,type,action){
-			var $wrap;
-			if(type==='color'){
-				$wrap=$admin_color_list;
-			}else if(type==='rule'){
-				$wrap=$admin_rule_list;
-			}
+		function syncAttrList(value,key,action){
+			var $wrap=$('attr_list_'+key);
 			$wrap.find('li').each(function(){
 				var $this=$(this),
 					txt=$this.html();
@@ -1513,8 +1512,7 @@
 			if(!type){
 				attr_data={};
 				price_data={};
-				colormap={};
-				rulemap={};
+				attr_map={};
 				$admin_color.find('input').val('').attr({'data-value':''});
 				$admin_rule.find('input').val('').attr({'data-value':''});
 				$admin_wholesale_price.val('');
@@ -1532,8 +1530,7 @@
 				$admin_inventory.val('');
 			}else if(type==='attr'){
 				attr_data={};
-				colormap={};
-				rulemap={};
+				attr_map={};
 				$admin_color.find('input').val('').attr({'data-value':''});
 				$admin_rule.find('input').val('').attr({'data-value':''});
 				$admin_wholesale_price_list.html('').addClass('g-d-hidei');
@@ -1542,8 +1539,7 @@
 			}else if(type==='all'){
 				attr_data={};
 				price_data={};
-				colormap={};
-				rulemap={};
+				attr_map={};
 				$admin_color.find('input').val('').attr({'data-value':''});
 				$admin_rule.find('input').val('').attr({'data-value':''});
 				$admin_wholesale_price.val('');
@@ -1603,58 +1599,55 @@
 				}
 
 				var len=list.length,
-					i= 0,
-					attrmap={
-						'color':{
-							'wrap':$admin_color_list,
-							'addwrap':$admin_addcolor_list,
-							'map':colormap
-						},
-						'rule':{
-							'wrap':$admin_rule_list,
-							'addwrap':$admin_addrule_list,
-							'map':rulemap
-						}
-					};
-
+					i= 0;
 				if(len!==0){
 					isresult=true;
 					$admin_attrwrap.html('');
+					attr_map={};
 					for(i;i<len;i++){
-						var name=list[i]['name'],
+						var attr_obj=list[i],
+							name=list[i]['name'],
 							arr=list[i]['list'],
 							j= 0,
 							sublen=arr.length,
 							str='',
-							subobj,
-							key='';
+							attritem=createAttrNode(name,i),
+							key=attritem['key'],
+							label=attritem['label'];
 
-						createAttrNode(name,i);
+						/*
+						* attr_map:查询到的结果集
+						*	attr_data:已经填入的属性对象
+						* */
 
-						if(name.indexOf('颜色')!==-1&&name.indexOf('公共属性')!==-1){
-							key='color';
-						}else if(name.indexOf('规格')!==-1){
-							key='rule';
-						}else{
-							continue;
-						}
+
+						/*存入属性对象*/
+						attr_obj['label']=label;
+						attr_obj['key']=key;
+						attr_map[key]=attr_obj;
+
 						if(sublen!==0){
-
+							/*没有填入对象即创建相关对象*/
+							if(typeof attr_data[key]==='undefined'){
+								attr_data[key]={};
+							}
+							/*遍历*/
 							for(j;j<sublen;j++){
-								subobj=arr[j];
-								var attrvalue=subobj["goodsTagId"]+'_'+subobj["id"],
+								var subobj=arr[j],
+									attrvalue=subobj["goodsTagId"]+'_'+subobj["id"],
 									  attrtxt=subobj["name"];
 
-								/*flag:为是否更新标识*/
-								if(attrtxt in attrmap[key]['map']&&!flag){
+								/*flag为:是否更新标识*/
+								if(attrtxt in attr_data[key]&&!flag){
 									attrtxt=attrtxt+1;
 								}
 
 								str+='<li data-value="'+attrvalue+'">'+attrtxt+'</li>';
-								attrmap[key]['map'][attrtxt]=attrvalue;
+								attr_data[key][attrtxt]=attrvalue;
 							}
-							$(str).appendTo(attrmap[key]['wrap'].html(''));
-							$(str).appendTo(attrmap[key]['addwrap'].html(''));
+							var $ul=$(document.getElementById('attr_list_'+key));
+							$(str).appendTo($ul.html(''));
+							$ul=null;
 						}
 					}
 				}else{
@@ -1670,42 +1663,30 @@
 
 
 		/*校验是否存在正确值*/
-		function validAttrData($elem,type){
-			var txt=$elem.val()||$elem.html(),
-				prevtxt=$elem.attr('data-value');
-			if(type==='color'){
-				if(!(txt in colormap)){
-					$admin_color_tips.html('不存在 "'+txt+'" 颜色');
-					if(prevtxt!==''){
-						$elem.val(prevtxt)||$elem.html(prevtxt);
-					}else{
-						$elem.val('')||$elem.html('');
-					}
-					setTimeout(function () {
-						$admin_color_tips.html('');
-						$admin_color_list.removeClass('g-d-hidei');
-					},2000);
-					return false;
+		function validAttrData($input,key,txt){
+			var prevtxt=$input.attr('data-value');
+
+			if(!(txt in attr_data[key])){
+				var tips=document.getElementById('attr_tips_'+key);
+				tips.innerHTML='不存在 "'+txt+'" '+$input.attr('data-label');
+				if(prevtxt!==''){
+					$input.val(prevtxt);
+				}else{
+					$input.val('');
 				}
-				return true;
-			}else if(type==='rule'){
-				if(!(txt in rulemap)){
-					$admin_rule_tips.html('不存在 "'+txt+'" 规格/尺寸');
-					if(prevtxt!==''){
-						$elem.val(prevtxt)||$elem.html(prevtxt);
-					}else{
-						$elem.val('')||$elem.html('');
+				setTimeout(function () {
+					tips.innerHTML='';
+					var list=document.getElementById('attr_list_'+key),
+						listclass=list.className;
+
+					if(listclass.indexOf('g-d-hidei')!==-1){
+						listclass=listclass.replace(/g-d-hidei/g,'');
 					}
-					setTimeout(function () {
-						$admin_rule_tips.html('');
-						$admin_rule_list.removeClass('g-d-hidei');
-					},2000);
-					$admin_rule_list.removeClass('g-d-hidei');
-					return false;
-				}
-				return true;
+					list.className=listclass;
+				},2000);
+				return false;
 			}
-			return false;
+			return true;
 		}
 
 
