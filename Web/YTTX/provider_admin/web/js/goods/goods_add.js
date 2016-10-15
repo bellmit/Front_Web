@@ -609,13 +609,12 @@
 					(function(){
 						var	$this=$(target),
 							value=$this.val(),
-							selector=$this.attr('name'),
 							key=$this.attr('data-key'),
 							isvalid=false;
 						if(value!==''){
 							isvalid=validAttrData($this,key,value);
 							if(isvalid){
-								attr_data[key][selector]=value;
+								attr_data[key][value]=value;
 								$this.attr({
 									'data-value':value
 								});
@@ -623,9 +622,9 @@
 								syncAttrList(value,key,'add');
 							}
 						}else{
-							if(typeof attr_data[key][selector]!=='undefined'){
+							if(typeof attr_data[key][value]!=='undefined'){
 								var tempvalue=$this.attr('data-value');
-								delete attr_data[key][selector];
+								delete attr_data[key][value];
 								if(tempvalue!==''){
 									/*同步列表*/
 									syncAttrList(tempvalue,key,'remove');
@@ -641,7 +640,6 @@
 							/*组合条件*/
 							//groupCondition();
 						}
-						console.log(attr_data);
 
 					}());
 				}
@@ -1491,7 +1489,7 @@
 
 		/*同步属性选择列表*/
 		function syncAttrList(value,key,action){
-			var $wrap=$('attr_list_'+key);
+			var $wrap=$(document.getElementById('attr_list_'+key));
 			$wrap.find('li').each(function(){
 				var $this=$(this),
 					txt=$this.html();
@@ -1612,8 +1610,8 @@
 							sublen=arr.length,
 							str='',
 							attritem=createAttrNode(name,i),
-							key=attritem['key'],
-							label=attritem['label'];
+							labels=attritem['label'],
+							key=attritem['key'];
 
 						/*
 						* attr_map:查询到的结果集
@@ -1622,12 +1620,10 @@
 
 
 						/*存入属性对象*/
-						attr_obj['label']=label;
-						attr_obj['key']=key;
-						attr_map[key]=attr_obj;
 
 						if(sublen!==0){
 							/*没有填入对象即创建相关对象*/
+							attr_obj['map']={};
 							if(typeof attr_data[key]==='undefined'){
 								attr_data[key]={};
 							}
@@ -1638,13 +1634,18 @@
 									  attrtxt=subobj["name"];
 
 								/*flag为:是否更新标识*/
-								if(attrtxt in attr_data[key]&&!flag){
+								if(attrtxt in attr_obj['map']&&flag){
 									attrtxt=attrtxt+1;
 								}
 
 								str+='<li data-value="'+attrvalue+'">'+attrtxt+'</li>';
-								attr_data[key][attrtxt]=attrvalue;
+								attr_obj['map'][attrtxt]=attrvalue;
 							}
+
+							attr_obj['label']=labels;
+							attr_obj['key']=key;
+							attr_map[key]=attr_obj;
+
 							var $ul=$(document.getElementById('attr_list_'+key));
 							$(str).appendTo($ul.html(''));
 							$ul=null;
@@ -1666,7 +1667,7 @@
 		function validAttrData($input,key,txt){
 			var prevtxt=$input.attr('data-value');
 
-			if(!(txt in attr_data[key])){
+			if(!(txt in attr_map[key]['map'])){
 				var tips=document.getElementById('attr_tips_'+key);
 				tips.innerHTML='不存在 "'+txt+'" '+$input.attr('data-label');
 				if(prevtxt!==''){
