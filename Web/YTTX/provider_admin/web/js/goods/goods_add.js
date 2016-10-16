@@ -589,12 +589,124 @@
 				/*点击事件*/
 				if(etype==='click'){
 					/*过滤*/
-					if(node==='li'||node==='div'||node==='label'||node==='span'||node==='label'){
+					if(node==='ul'||node==='div'||node==='label'||node==='span'||node==='label'){
 						return false;
 					}
 					/*绑定操作事件*/
 
+					/*绑定查看属性列表*/
+					if(node==='button'||node==='i'){
+						if(node==='i'){
+							/*修正node节点*/
+							target=target.parentNode;
+						}
+						(function(){
+							var $this=$(target),
+								key=$this.attr('data-key');
 
+							if($this.hasClass('attr-item-btn')){
+								/*扩展条件*/
+								(function(){
+									var $last=$(document.getElementById('attr_input_'+key)).find('input:last'),
+										$input=$last.clone(true).val(''),
+										name=$input.attr('name').replace(key,'');
+
+									$input.attr({
+										'name':key+(parseInt(name,10)+1)
+									}).insertAfter($last);
+								}());
+							}else if($this.hasClass('attr-item-listbtn')){
+								/*查看属性类型*/
+								$(document.getElementById('attr_list_'+key)).toggleClass('g-d-hidei');
+							}else if($this.hasClass('attr-item-addbtn')){
+								/*添加属性*/
+								(function(){
+									/*加载数据*/
+									var str='',
+										map=attr_map[key]['map'];
+									for(var i in map){
+										str+='<li data-value="'+map[i]+'">'+i+'</li>';
+									}
+									$(str).appendTo($admin_addattr_list.html(''));
+									/*显示弹出框*/
+									$show_addattr_wrap.modal('show',{
+										backdrop:'static'
+									});
+								}());
+							}
+						}());
+					}else if(node==='li'){
+						/*绑定选择属性列表*/
+						(function(){
+							var $this=$(target),
+								txt=$this.html(),
+								code=$this.attr('data-value'),
+								count=0,
+								size,
+								$ul=$this.parent(),
+								key=$ul.attr('id').replace('attr_list_',''),
+								$inputitem=$(document.getElementById('attr_input_'+key)),
+								$input;
+
+
+
+							if($this.hasClass('admin-list-widget-active')){
+								$this.removeClass('admin-list-widget-active');
+								$input=$inputitem.find('input');
+								$input.each(function(){
+									var $self=$(this);
+									if($self.val()===txt){
+										$self.val('');
+										delete attr_data[key][txt];
+										$self.attr({'data-value':''});
+										return false;
+									}
+								});
+							}else{
+								$this.addClass('admin-list-widget-active');
+								if($.isEmptyObject(attr_data[key])){
+									$input=$inputitem.find('input:first-child');
+									$input.val(txt);
+									attr_data[key][txt]=code;
+									$input.attr({'data-value':txt});
+								}else{
+									$input=$inputitem.find('input');
+									size=$input.size();
+									$input.each(function(){
+										var $self=$(this);
+										if($self.val()===''){
+											$self.val(txt);
+											attr_data[key][txt]=code;
+											$self.attr({'data-value':txt});
+											return false;
+										}
+										count++;
+									});
+									if(count===size){
+										var $lastinput=$input.eq(size-1),
+											lasttxt=$lastinput.val();
+										$ul.find('li.admin-list-widget-active').each(function(){
+											var $templi=$(this),
+												temptxt=$templi.html();
+											if(lasttxt===temptxt){
+												$templi.removeClass('admin-list-widget-active');
+												delete attr_data[key][lasttxt];
+												$lastinput.attr({'data-value':''});
+												return false;
+											}
+										});
+										$lastinput.val(txt);
+										attr_data[key][txt]=code;
+										$lastinput.attr({'data-value':txt});
+									}
+								}
+							}
+
+
+							/*组合条件*/
+							groupCondition();
+						}());
+					}
 
 				}else if(etype==='focusout'){
 					/*过滤*/
@@ -602,10 +714,8 @@
 						return false;
 					}
 					/*失去焦点事件*/
+
 					/*绑定输入框失去焦点事件*/
-
-
-
 					(function(){
 						var	$this=$(target),
 							value=$this.val(),
@@ -614,7 +724,7 @@
 						if(value!==''){
 							isvalid=validAttrData($this,key,value);
 							if(isvalid){
-								attr_data[key][value]=value;
+								attr_data[key][value]=attr_map[key]['map'][value];
 								$this.attr({
 									'data-value':value
 								});
@@ -638,7 +748,7 @@
 							clearAttrData('attrtxt',key);
 						}else{
 							/*组合条件*/
-							//groupCondition();
+							groupCondition();
 						}
 
 					}());
@@ -646,131 +756,6 @@
 
 			});
 
-
-
-
-
-			/*绑定新增颜色和规格尺寸*/
-			$.each([$admin_color_btn,$admin_rule_btn],function(){
-				var self=this,
-					iscolor=this.selector.indexOf('color')!==-1?true:false;
-
-				this.on('click',function(){
-					var $last=self.parent().prev('input'),
-						$input=$last.clone(true).val(''),
-						name=iscolor?$input.attr('name').replace('color',''):$input.attr('name').replace('rule','');
-
-					$input.attr({
-						'name':iscolor?'color'+(parseInt(name,10)+1):'rule'+(parseInt(name,10)+1)
-					}).insertAfter($last);
-				});
-
-
-
-
-			});
-
-
-			/*绑定查看属性列表*/
-			$.each([$admin_color_listbtn,$admin_rule_listbtn],function(){
-
-				var iscolor=this.selector.indexOf('color')!==-1?true:false;
-
-				this.on('click',function(){
-					if(iscolor){
-						if($admin_color_list.hasClass('g-d-hidei')){
-							$admin_color_list.removeClass('g-d-hidei');
-						}else{
-							$admin_color_list.addClass('g-d-hidei');
-						}
-					}else {
-						if($admin_rule_list.hasClass('g-d-hidei')){
-							$admin_rule_list.removeClass('g-d-hidei');
-						}else{
-							$admin_rule_list.addClass('g-d-hidei');
-						}
-					}
-				});
-
-
-
-			});
-
-
-			/*绑定选择属性列表*/
-			$.each([$admin_color_list,$admin_rule_list],function(){
-
-				var self=this,
-					iscolor=this.selector.indexOf('color')!==-1?true:false;
-
-				this.on('click','li',function(){
-					var $this=$(this),
-						txt=$this.html(),
-						count=0,
-						size,
-						$input;
-
-
-					if($this.hasClass('admin-list-widget-active')){
-						$this.removeClass('admin-list-widget-active');
-						$input=iscolor?$admin_color.find('input'):$admin_rule.find('input');
-						$input.each(function(){
-							var $self=$(this);
-							if($self.val()===txt){
-								$self.val('');
-								delete attr_data[$self.attr('name')];
-								$self.attr({'data-value':''});
-								return false;
-							}
-						});
-					}else{
-						$this.addClass('admin-list-widget-active');
-
-						if($.isEmptyObject(attr_data)){
-							$input=iscolor?$admin_color.find('input:first-child'):$admin_rule.find('input:first-child');
-							$input.val(txt);
-							attr_data[$input.attr('name')]=txt;
-							$input.attr({'data-value':txt});
-						}else{
-							$input=iscolor?$admin_color.find('input'):$admin_rule.find('input');
-							size=$input.size();
-							$input.each(function(){
-								var $self=$(this);
-								if($self.val()===''){
-									$self.val(txt);
-									attr_data[$self.attr('name')]=txt;
-									$self.attr({'data-value':txt});
-									return false;
-								}
-								count++;
-							});
-							if(count===size){
-								var $lastinput=$input.eq(size-1),
-									lasttxt=$lastinput.val(),
-									lastname=$lastinput.attr('name');
-								self.find('li.admin-list-widget-active').each(function(){
-									var $templi=$(this),
-										temptxt=$templi.html();
-									if(lasttxt===temptxt){
-										$templi.removeClass('admin-list-widget-active');
-										delete attr_data[lastname];
-										$lastinput.attr({'data-value':''});
-										return false;
-									}
-								});
-								$lastinput.val(txt);
-								attr_data[lastname]=txt;
-								$lastinput.attr({'data-value':txt});
-							}
-						}
-					}
-
-
-					/*组合条件*/
-					groupCondition();
-				});
-
-			});
 
 
 			/*绑定表格输入限制*/
@@ -867,25 +852,12 @@
 
 
 			/*绑定新增类型*/
-			$.each([$admin_goodsTypeId_btn,$admin_color_extendbtn,$admin_rule_extendbtn],function(){
-				var self=this,
-					selector=this.selector;
+			$.each([$admin_goodsTypeId_btn],function(){
+				var selector=this.selector;
 
 				if(selector.indexOf('goodsTypeId')!==-1){
 					this.on('click',function(){
 						$show_addtype_wrap.modal('show',{
-							backdrop:'static'
-						});
-					});
-				}else if(selector.indexOf('color')!==-1){
-					this.on('click',function(){
-						$show_addattr_wrap.modal('show',{
-							backdrop:'static'
-						});
-					});
-				}else if(selector.indexOf('rule')!==-1){
-					this.on('click',function(){
-						$show_addlabel_wrap.modal('show',{
 							backdrop:'static'
 						});
 					});
@@ -923,13 +895,13 @@
 					selector=this.selector;
 
 				this.on('click',function(e){
-					if(selector.indexOf('addcolor')!==-1){
+					if(selector.indexOf('addattr')!==-1){
 						if($admin_addattr_list.hasClass('g-d-hidei')){
 							$admin_addattr_list.removeClass('g-d-hidei');
 						}else{
 							$admin_addattr_list.addClass('g-d-hidei');
 						}
-					}else if(selector.indexOf('addrule')!==-1){
+					}else if(selector.indexOf('addlabel')!==-1){
 						if($admin_addlabel_list.hasClass('g-d-hidei')){
 							$admin_addlabel_list.removeClass('g-d-hidei');
 						}else{
@@ -1265,14 +1237,14 @@
 				inputstr+='<input type="text" class="form-control g-w-number4" data-key="'+key+'" data-label="'+label+'" data-value="" name="'+key+cindex+'" />';
 			}
 			/*创建属性项*/
-			itemstr='<div class="form-group">\
-									<label class="control-label"><span class="attr-item-title" >'+label+':</span><span id="attr_tips_'+key+'" class="g-c-red1 attr-item-tips"></span></label>\
-									<div class="input-group">\
+			itemstr='<div class="form-group" data-key="'+key+'">\
+									<label class="control-label"><span class="attr-item-title" >'+name+':</span><span id="attr_tips_'+key+'" class="g-c-red1 attr-item-tips"></span></label>\
+									<div class="input-group g-w-percent48">\
 										<span class="attr-item-input" id="attr_input_'+key+'">'+inputstr+'</span>\
 										<span class="input-group-btn pull-left admin-rpos-wrap" style="z-index:'+(100 - index * 2)+';">\
-											<button type="button" class="btn btn-white attr-item-btn" title="增加'+label+'条件"><i class="fa-angle-double-left"></i></button>\
-											<button type="button" title="查看'+label+'类型" class="btn btn-white attr-item-listbtn"><i class="fa-list"></i></button>\
-											<button type="button" class="btn btn-white attr-item-addbtn" title="添加'+label+'">+</button>\
+											<button type="button" class="btn btn-white attr-item-btn" title="增加'+label+'条件" data-key="'+key+'"><i class="fa-angle-double-left"></i></button>\
+											<button type="button" data-key="'+key+'" title="查看'+label+'类型" class="btn btn-white attr-item-listbtn"><i class="fa-list"></i></button>\
+											<button type="button" data-key="'+key+'" class="btn btn-white attr-item-addbtn" title="添加'+label+'">+</button>\
 											<ul id="attr_list_'+key+'"  class="admin-list-widget color-list-widget g-d-hidei attr-item-list"></ul>\
 										</span>\
 									</div>\
@@ -1506,21 +1478,19 @@
 
 
 		/*清空属性数据*/
-		function clearAttrData(type){
-			if(!type){
+		function clearAttrData(type,key){
+			if(!type&&!key){
 				attr_data={};
 				price_data={};
 				attr_map={};
-				$admin_color.find('input').val('').attr({'data-value':''});
-				$admin_rule.find('input').val('').attr({'data-value':''});
+				$admin_attrwrap.find('input').val('').attr({'data-value':''});
 				$admin_wholesale_price.val('');
 				$admin_retail_price.val('');
 				$admin_inventory.val('');
 				$admin_pricewrap.removeClass('g-d-hidei');
 				$admin_attrwrap.removeClass('g-d-hidei');
 				$admin_wholesale_price_list.html('').addClass('g-d-hidei');
-				$admin_color_list.html('');
-				$admin_rule_list.html('');
+				$admin_attrwrap.find('ul').html('');
 			}else if(type==='price'){
 				price_data={};
 				$admin_wholesale_price.val('');
@@ -1529,30 +1499,29 @@
 			}else if(type==='attr'){
 				attr_data={};
 				attr_map={};
-				$admin_color.find('input').val('').attr({'data-value':''});
-				$admin_rule.find('input').val('').attr({'data-value':''});
+				$admin_attrwrap.find('input').val('').attr({'data-value':''});
 				$admin_wholesale_price_list.html('').addClass('g-d-hidei');
-				$admin_color_list.html('');
-				$admin_rule_list.html('');
+				$admin_attrwrap.find('ul').html('');
 			}else if(type==='all'){
 				attr_data={};
 				price_data={};
 				attr_map={};
-				$admin_color.find('input').val('').attr({'data-value':''});
-				$admin_rule.find('input').val('').attr({'data-value':''});
+				$admin_attrwrap.find('input').val('').attr({'data-value':''});
 				$admin_wholesale_price.val('');
 				$admin_retail_price.val('');
 				$admin_inventory.val('');
 				$admin_wholesale_price_list.html('');
-				$admin_color_list.html('');
-				$admin_rule_list.html('');
+				$admin_attrwrap.find('ul').html('');
 			}else if(type==='pricetxt'){
 				$admin_wholesale_price.val('');
 				$admin_retail_price.val('');
 				$admin_inventory.val('');
 			}else if(type==='attrtxt'){
-				$admin_color.find('input').val('').attr({'data-value':''});
-				$admin_rule.find('input').val('').attr({'data-value':''});
+				if(key){
+					$(document.getElementById('attr_input_'+key)).find('input').val('').attr({'data-value':''});
+				}else{
+					$admin_attrwrap.find('input').val('').attr({'data-value':''});
+				}
 				$admin_wholesale_price_list.html('').addClass('g-d-hidei');
 			}
 		}
@@ -1693,46 +1662,58 @@
 
 		/*组合颜色与尺寸*/
 		function groupCondition(){
-			if($.isEmptyObject(attr_data)){
-				$admin_wholesale_price_list.html('');
-				return false;
-			}
-			var color={},
+			var conitem=$admin_attrwrap.children(),
+				size=conitem.size(),
+				dataone,
+				datatwo,
 				rule=[],
 				len= 0,
-				str='';
-			for(var i in attr_data){
-				if(i.indexOf('color')!==-1){
-					color[i]=attr_data[i];
-				}else if(i.indexOf('rule')!==-1){
-					var tempobj={};
-					tempobj['name']=attr_data[i];
-					rule.push(tempobj);
-				}
-			}
+				str='',
+				keyitem=[],
+				key1,
+				key2;
 
+
+			for(var y=0;y<size;y++){
+				var curkey=conitem.eq(y).attr('data-key');
+				if($.isEmptyObject(attr_data[curkey])){
+					continue;
+				}
+				keyitem.push(curkey);
+			}
+			if(keyitem.length>=2){
+				key1=keyitem[0];
+				key2=keyitem[1];
+			}
+			dataone=attr_data[key1];
+			datatwo=attr_data[key2];
+			for(var i in datatwo){
+				var tempstr='';
+				tempstr+=i+'_#_'+datatwo[i];
+				rule.push(tempstr);
+			}
 			len=rule.length;
-			if($.isEmptyObject(color)||len===0){
+			if($.isEmptyObject(dataone)||len===0){
 				$admin_wholesale_price_list.html('');
 				return false;
 			}
 
-
-			for(var j in color){
+			console.log(rule);
+			for(var j in dataone){
 				var k= 0,
-					colorvalue=color[j];
-				str+='<tr><td rowspan="'+len+'">'+colorvalue+'</td>';
+					itemone=dataone[j];
+				str+='<tr><td rowspan="'+len+'">'+j+'</td>';
 				for(k;k<len;k++){
-					var name=rule[k]["name"],
-						code=colormap[colorvalue].split('_')[1]+'_'+rulemap[name].split('_')[1];
+					var itemtwo=rule[k].split('_#_'),
+						code=itemone.split('_')[1]+'_'+itemtwo[1].split('_')[1];
 					if(k===0){
-						str+='<td>'+name+'</td>' +
+						str+='<td>'+itemtwo[0]+'</td>' +
 							'<td><input class="admin-table-input" name="setinventory" maxlength="5" type="text"></td>' +
 							'<td><input class="admin-table-input" name="setwholesalePrice" maxlength="12" type="text"></td>' +
 							'<td><input class="admin-table-input" name="setretailPrice" maxlength="12" type="text"></td>' +
 							'<td><input name="setisDefault"  type="radio" data-value="'+code+'"></td></tr>';
 					}else{
-						str+='<tr><td>'+name+'</td>' +
+						str+='<tr><td>'+itemtwo[0]+'</td>' +
 							'<td><input class="admin-table-input" name="setinventory" maxlength="5" type="text"></td>' +
 							'<td><input class="admin-table-input" name="setwholesalePrice" maxlength="12" type="text"></td>' +
 							'<td><input class="admin-table-input" name="setretailPrice" maxlength="12" type="text"></td>' +
