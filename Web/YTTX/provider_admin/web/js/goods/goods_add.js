@@ -650,8 +650,20 @@
 								});
 								isok=dataRecord(key);
 								if(isok!==null){
-									clearAttrData('attrtxt',isok);
-									syncAttrList(value,key,'remove');
+									syncAttrList((function () {
+										var $previnput=$(document.getElementById('attr_input_'+isok)).find('input'),
+											res=[];
+										$previnput.each(function(){
+											var prevtxt=$(this).val();
+											if(prevtxt!==''){
+												res.push(prevtxt);
+											}
+										});
+										if(res.length!==0){
+											clearAttrData('attrtxt',isok);
+										}
+										return res;
+									}()),$(document.getElementById('attr_list_'+isok)).find('li'),'remove');
 								}
 							}else{
 								$this.addClass('admin-list-widget-active');
@@ -693,7 +705,20 @@
 								}
 								isok=dataRecord(key,true);
 								if(isok!==null){
-									clearAttrData('attrtxt',isok);
+									syncAttrList((function () {
+										var $previnput=$(document.getElementById('attr_input_'+isok)).find('input'),
+											res=[];
+										$previnput.each(function(){
+											var prevtxt=$(this).val();
+											if(prevtxt!==''){
+												res.push(prevtxt);
+											}
+										});
+										if(res.length!==0){
+											clearAttrData('attrtxt',isok);
+										}
+										return res;
+									}()),$(document.getElementById('attr_list_'+isok)).find('li'),'remove');
 								}
 							}
 
@@ -1476,7 +1501,14 @@
 
 		/*同步属性选择列表*/
 		function syncAttrList(value,key,action){
-			var $wrap=$(document.getElementById('attr_list_'+key)).find('li');
+			var $wrap;$(document.getElementById('attr_list_'+key)).find('li');
+
+			if(typeof key==='string'){
+				$wrap=$(document.getElementById('attr_list_'+key)).find('li');
+			}else if(typeof key==='object'){
+				$wrap=key;
+			}
+
 			if($.isArray(value)){
 				var len=value.length,
 					i=0;
