@@ -32,8 +32,6 @@
 					token:decodeURIComponent(logininfo.param.token),
 					providerId:decodeURIComponent(logininfo.param.providerId)
 				},
-				attr_data={},
-				attr_map={},
 			 	$admin_slide_image=$('#admin_slide_image'),
 				$admin_slide_btnl=$('#admin_slide_btnl'),
 				$admin_slide_btnr=$('#admin_slide_btnr'),
@@ -199,132 +197,98 @@
 					}
 				}
 			}else {
-				/*存储对象*/
-				(function(){
-					var i=0;
-					for(i;i<attrlen;i++){
-						var attr_obj=attr[i],
-							name=attr[i]['name'],
-							arr=attr[i]['list'],
-							id=attr[i]['id'],
-							j= 0,
-							sublen=arr.length,
-							str='';
-
-						/*存入属性对象*/
-						if(sublen!==0){
-							/*没有填入对象即创建相关对象*/
-							attr_obj['map']={};
-							attr_obj['res']={};
-							/*遍历*/
-							for(j;j<sublen;j++){
-								var subobj=arr[j],
-									attrvalue=subobj["id"],
-									attrtxt=subobj["name"];
-								attr_obj['map'][attrtxt]=attrvalue;
-								attr_obj['res'][attrvalue]=attrtxt;
-							}
-
-							attr_obj['label']=name.replace(/(\(.*\))|(\（.*\）)|\s*/g,'');
-							attr_obj['key']=id;
-							attr_map[id]=attr_obj;
-						}else if(sublen===0){
-							attr_obj['map']={};
-							attr_obj['res']={};
-							attr_obj['label']=name.replace(/(\(.*\))|(\（.*\）)|\s*/g,'');
-							attr_obj['key']=id;
-							attr_map[id]=attr_obj;
-						}
-					}
-				}());
-
-				/*解析结果集*/
+				/*有颜色和规格时*/
 				if(price){
 					pricelen=price.length;
 					if(pricelen!==0){
+						var colorlist,
+							rulelist,
+							colorlen= 0,
+							rulelen=0;
+						/*查询颜色和规则列表*/
+						for(var p=0;p<attrlen;p++){
+							if(attr[p]['name'].indexOf('颜色')!==-1&&attr[p]['name'].indexOf('公共')!==-1){
+								colorlist=attr[p]['list'];
+								colorlen=colorlist.length;
+							}
+							if(attr[p]['name'].indexOf('规格')!==-1&&attr[p]['name'].indexOf('公共')!==-1){
+								rulelist=attr[p]['list'];
+								rulelen=rulelist.length;
+							}
+						}
+
+						/*是否存在颜色和规则*/
+						if(colorlen===0){
+							document.getElementById('admin_wholesale_price_list').innerHTML='';
+							return false;
+						}
+						if(rulelen===0){
+							document.getElementById('admin_wholesale_price_list').innerHTML='';
+							return false;
+						}
+
 						/*过滤空数据和null数据*/
 						priceobj=price;
+						var i= 0,
+							tempprice=[];
+
+						for(i;i<pricelen;i++){
+							if(priceobj[i]!==null){
+								if(priceobj[i]!==''){
+									tempprice.push(priceobj[i]);
+								}
+							}
+						}
+						priceobj=tempprice.slice(0);
+						tempprice.length=0;
 						pricelen=priceobj.length;
+
 
 						if(pricelen===0){
 							document.getElementById('admin_wholesale_price_list').innerHTML='';
-							document.getElementById('admin_wholesale_price_thead').innerHTML='<tr><th>颜色</th><th>规格</th><th>库存</th><th>批发价</th><th>建议零售价</th><th>是否默认</th></tr>';
 							return false;
 						}
 
 
-						/*解析属性*/
-						var i=0;
-						for(i;i<pricelen;i++){
-							var attrdata=priceobj[i].split('#'),
-								attrone=attrdata[4],
-								attrtwo=attrdata[5];
+						/*解析属性和规格*/
+						var j= 0,
+							colormap={};
+						for(j;j<pricelen;j++){
+							var temparr=priceobj[j].split('#'),
+								attrid=parseInt(temparr[4],10),
+								ruleid=parseInt(temparr[5],10),
+								m= 0;
+							for(m;m<colorlen;m++){
+								if(colorlist[m]['id']===attrid){
+									var cname=colorlist[m]['name'];
 
-							(function(){
-								loopone:for(var j in attr_map){
-									var mapdata=attr_map[j],
-										submap=mapdata['res'];
-									for(var p in submap){
-										if(p===attrone&&p!==attrtwo){
-											var id=mapdata['id'],
-												key=submap[p];
-											if(typeof attr_data[id]==='undefined'){
-												attr_data[id]={};
-												attr_data[id]['result']=[];
-											}
-											attr_data[id][key]=p;
-											break loopone;
+									if(!(cname in colormap)){
+										/*不存在即创建*/
+										colormap[cname]=[];
+									}
+									var n=0;
+									for(n;n<rulelen;n++){
+										if(rulelist[n]['id']===ruleid){
+											var rname=rulelist[n]['name'],
+												rarr=[];
+
+											rarr.push(temparr[0],temparr[1],temparr[2],temparr[3],rname)
+											colormap[cname].push(rarr);
+											break;
 										}
 									}
+									break;
 								}
-							}());
 
-							(function(){
-								looptwo:for(var j in attr_map){
-									var mapdata=attr_map[j],
-										submap=mapdata['res'];
-									for(var p in submap){
-										if(p===attrtwo&&p!==attrone){
-											var id=mapdata['id'],
-												key=submap[p];
-											if(typeof attr_data[id]==='undefined'){
-												attr_data[id]={};
-												attr_data[id]['result']=[];
-											}
-											attr_data[id][key]=p;
-											break looptwo;
-										}
-									}
-								}
-							}());
-						}
-
-
-						console.log(priceobj);
-
-						for(var k in attr_data){
-							var dataitem=attr_data[k];
-							looparr:for(var n in dataitem){
-								if(typeof dataitem[n]!=='string'){
-									continue;
-								}
-								var m=0;
-								for(m;m<pricelen;m++){
-									attrdata=priceobj[m].split('#');
-									if(dataitem[n]===attrdata[4]){
-										dataitem['result'].push(attrdata);
-										break;
-									}
-									if(dataitem[n]===attrdata[5]){
-										dataitem['result'].push(attrdata);
-										break;
-									}
-								}
 							}
 						}
 
+						if(!$.isEmptyObject(colormap)){
+							groupCondition(colormap);
+						}else{
+							document.getElementById('admin_wholesale_price_list').innerHTML='';
+						}
 
-						console.log(attr_data);
 					}
 				}
 			}
@@ -333,11 +297,11 @@
 
 
 		/*组合颜色与尺寸*/
-		function groupCondition(resp){
+		function groupCondition(color){
 			var str='';
-			for(var j in resp){
+			for(var j in color){
 				var k= 0,
-					colorvalue=resp[j],
+					colorvalue=color[j],
 					len=colorvalue.length;
 
 				str+='<tr><td rowspan="'+len+'">'+j+'</td>';
