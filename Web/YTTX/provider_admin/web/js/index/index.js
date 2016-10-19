@@ -32,7 +32,7 @@
 				$btnwrap:$slideimg_btn,
 				$slide_tipwrap:$slide_tips,
 				minwidth:640,
-				isresize:true,
+				isresize:false,
 				size:3,
 				times:5000,
 				eff_time:500,

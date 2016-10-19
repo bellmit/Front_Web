@@ -26,6 +26,7 @@
 				$slide_tip:null,
 				tipheight:0,
 				itemheight:0,
+			  initwidth:true,
 				winwidth:$(win).width(),
 				isblur:'',
 				blurarr:[],
@@ -120,22 +121,25 @@
 		}
 
 		//绑定窗口大小事件
-		if(settings.isresize){
-			$(win).resize(function(){
+		$(win).resize(function(){
+			if(settings.isresize){
 				settings.winwidth=$(this).width();
-				settings.winwidth=settings.winwidth<settings.minwidth?settings.minwidth:settings.winwidth;
-				settings.$items.css({"width":settings.winwidth});
-				settings.itemheight=settings.$wrap.height();
-				settings.$slide_img.css({
-					"width":settings.size*settings.winwidth,
-					"left":-settings.curindex*settings.winwidth
-				});
-				settings.$slide_tipwrap.css({
-					"opacity":"0.4",
-					"top":settings.itemheight
-				})
+			}else{
+				settings.winwidth=settings.$wrap.width();
+			}
+			settings.winwidth=settings.winwidth<settings.minwidth?settings.minwidth:settings.winwidth;
+			settings.$items.css({"width":settings.winwidth});
+			settings.itemheight=settings.$wrap.height();
+			settings.$slide_img.css({
+				"width":settings.size*settings.winwidth,
+				"left":-settings.curindex*settings.winwidth
 			});
-		}
+			settings.$slide_tipwrap.css({
+				"opacity":"0.4",
+				"top":settings.itemheight
+			})
+		});
+
 
 	};
 
@@ -145,7 +149,7 @@
 
 		settings.$items=settings.$slide_img.find("li");
 
-		settings.winwidth=settings.winwidth<settings.minwidth?settings.minwidth:settings.winwidth;
+		settings.winwidth=settings.winwidth<settings.minwidth?settings.minwidth:settings.initwidth?settings.winwidth=settings.$wrap.width():settings.winwidth;
 		settings.$items.css({"width":settings.winwidth});
 
 		settings.size=settings.$items.size();

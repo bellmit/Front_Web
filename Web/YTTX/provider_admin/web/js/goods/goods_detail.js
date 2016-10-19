@@ -245,7 +245,7 @@
 					pricelen=price.length;
 					if(pricelen!==0){
 						var	attrmap={};
-						
+
 						/*解析第一属性*/
 						(function(){
 							var i=0;
@@ -271,9 +271,8 @@
 							}
 						}());
 
-
+						/*解析第二属性*/
 						if(!$.isEmptyObject(listone)){
-							/*解析第二属性*/
 							(function(){
 								var i=0;
 								loopout:for(i;i<pricelen;i++){
@@ -303,8 +302,9 @@
 							return false;
 						}
 
+
+						/*解析组合*/
 						if(!$.isEmptyObject(listtwo)){
-							/*解析组合*/
 							(function(){
 								var i=0;
 								for(i;i<pricelen;i++){
