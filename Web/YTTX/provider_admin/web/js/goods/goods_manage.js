@@ -114,13 +114,13 @@
 									var img=data,
 										str='';
 									if(img.indexOf('qiniucdn.com')!==-1){
-										str='<div class="admin-goods-thumbnail "><img alt="" src="'+img+'?imageView2/1/w/80/h/80" /></div>';
+										str='<div class="admin-goods-thumbnail1"><img alt="" src="'+img+'?imageView2/1/w/80/h/80" /></div>';
 									}else{
 										img=validImages(data);
 										if(img!==''){
-											str='<div class="admin-goods-thumbnail "><img alt="" src="'+img+'" /></div>';
+											str='<div class="admin-goods-thumbnail1"><img alt="" src="'+img+'" /></div>';
 										}else{
-											str='<div class="admin-goods-thumbnail "></div>';
+											str='<div class="admin-goods-thumbnail1"></div>';
 										}
 									}
 									return str;
