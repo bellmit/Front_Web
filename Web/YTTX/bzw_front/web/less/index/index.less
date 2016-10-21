@@ -6,7 +6,7 @@ body{
 	width:100%;
 	min-width:1200px;
 	.box-sizing-base;
-	background:@color-gray15;
+	background:@color-white;
 	margin:120px 0 0 0;
 }
 
@@ -25,7 +25,7 @@ body{
 	.layout-fixedl-base;
 	.layout-base;
 	height:120px;
-	background:rgba(27,27,27,1) url(../images/header_bg.jpg) no-repeat center top;
+	background:rgba(255,255,255,.8);
 }
 .heaer-wrapactive{
 	position:fixed !important;
@@ -40,6 +40,7 @@ body{
 		width:256px;
 		height:70px;
 		background:url(../images/pc_logo.png) no-repeat 0 0;
+		background-size:256px 70px;
 	}
 	.header-btn{
 		.layout-fixedr-base;
@@ -81,14 +82,14 @@ body{
 				text-align:center;
 				padding:0 10px;
 				font-size:@font-size-base + 2;
-				color:@color-white;
+				color:@color-gray3;
 				.no-outline-base;
 			}
 		}
 		.menu-active{
-			border-bottom:3px solid @color-yellow1;
+			border-bottom:3px solid @color-red2;
 			a{
-				color:@color-yellow1;
+				color:@color-red2;
 			}
 		}
 	}
@@ -303,7 +304,7 @@ body{
 
 
 //第四屏
-.screen-self{
+.screen-wechat{
 	min-height:805px;
 	background:url(../images/screen_self.jpg) no-repeat center top;
 	background-size:cover;
@@ -321,7 +322,7 @@ body{
 	}
 }
 
-.screen-selfwrap{
+.screen-wechatwrap{
 	height:650px !important;
 	text-align:center;
 	overflow:hidden;
@@ -330,13 +331,13 @@ body{
 		display:inline-block;
 		height:100%;
 	}
-	.selfitem1{
+	.wechatitem1{
 		background:url(../images/screen_selfimg1.png) no-repeat center bottom;
 	}
-	.selfitem2{
+	.wechatitem2{
 		background:url(../images/screen_selfimg2.png) no-repeat center bottom;
 	}
-	.selfitem3{
+	.wechatitem3{
 		background:url(../images/screen_selfimg3.png) no-repeat center bottom;
 	}
 }

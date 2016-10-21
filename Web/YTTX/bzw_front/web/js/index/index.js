@@ -35,7 +35,7 @@ require(['jquery','jquery_mobile','dialog','rule','commonfn','validform','slide'
 			$screen_index=$('#screen_index'),
 			$screen_product=$('#screen_product'),
 			$screen_scene=$('#screen_scene'),
-			$screen_self=$('#screen_self'),
+			$screen_wechat=$('#screen_wechat'),
 			$screen_app=$('#screen_app'),
 			$screen_contact=$('#screen_contact'),
 			$screen_help=$('#screen_help'),
@@ -53,7 +53,7 @@ require(['jquery','jquery_mobile','dialog','rule','commonfn','validform','slide'
 				node:$screen_scene,
 				pos:0
 			},{
-				node:$screen_self,
+				node:$screen_wechat,
 				pos:0
 			},{
 				node:$screen_app,

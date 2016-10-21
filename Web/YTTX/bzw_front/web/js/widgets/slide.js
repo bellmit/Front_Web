@@ -155,10 +155,14 @@ define(['jquery'],function($){
 							"top":settings.itemheight
 					 })
 				 }
-				 
-				 settings.slide_id=setInterval(function(){
-					 self.slidePlay(settings);
-				 },settings.times);
+
+			   if(settings.size>1){
+					 settings.slide_id=setInterval(function(){
+						 self.slidePlay(settings);
+					 },settings.times);
+				 }else{
+					 settings.$btnwrap.addClass('g-d-hidei');
+				 }
 
 		};
 		
