@@ -17,6 +17,12 @@ body{
 	line-height:60px;
 	font-size:@font-size-base + 20;
 	.user-select-base;
+	>p{
+		.layout-base;
+		.text-ww;
+		line-height:24px;
+		font-size:@font-size-base;
+	}
 }
 
 
@@ -54,7 +60,7 @@ body{
 			font-family:'ux_two';
 			text-align:center;
 			font-size:@font-size-base + 8;
-			color:@color-white;
+			color:@color-gray3;
 		}
 	}
 	.header-btnactive{
@@ -113,8 +119,24 @@ body{
 	background-size:cover;
 	height:723px;
 	overflow:hidden;
-	>div{
+	.index-content{
+		.layout-relative-base(0,0,1);
 		padding:0;
+		.index-bg{
+			.transition-base(all 1s ease-in .2s);
+			.layout-absolutel-base(0,0,1);
+			width:100%;
+			height:100%;
+			background:url(../images/screen_indexicon.png) no-repeat center -723px;
+			.opacity-base(0);
+		}
+	}
+	.index-contentactive{
+		.index-bg{
+			background:url(../images/screen_indexicon.png) no-repeat center 0;
+			.opacity-base(100);
+		}
+
 	}
 }
 
@@ -123,69 +145,21 @@ body{
 .part-slide{
 	.layout-relative-base;
 	float:left;
-	margin:52px 0 0 50px;
+	margin:127px 0 0 50px;
 	width:524px;
 	height:596px;
-	background:url(../images/screen_index_hand.png) right top no-repeat;
+	background:url(../images/screen_index_hand.png) left top no-repeat;
 }
 
-//下载按钮和主题
-.part-download{
-	.layout-float-base(520px,border-box,right);
-	margin:100px 0 0 0;
-	height:400px;
-	padding:180px 0 0 0;
-	background:url(../images/screen_index_logo.png) center top no-repeat;
-	.iphone-btn,
-	.android-btn{
-			.layout-float-base(230px);
-			height:78px;
-			border:1px solid @color-white;
-			.border-radius-base(30px);
-			overflow:hidden;
-			a{
-				display:block;
-				width:100%;
-				height:100%;
-				font-size:@font-size-base + 4;
-				.no-outline-base;
-				color:@color-white;
-				text-align:center;
-				line-height:78px;
-				&:before{
-					margin:-5px 5px 0 0;
-					font-size:@font-size-base + 10;
-					display:inline-block;
-					vertical-align:middle;
-				}
-			}
-			&:hover{
-				border:1px solid @color-yellow1;
-				a{
-					color:@color-yellow1;
-					.transition-base(background-color ease-in .5s .02s);
-					background:rgba(250,191,21,.2);
-					&:before{
-						.transition-base(all ease-in .5s .02s);
-						.transform-origin-base(50% 50%);
-						.transform-base(rotate(360deg));
-					}
-				}
-			}
-	}
-	.iphone-btn{
-			a:before{
-				content:'\e6c0';
-				font-family:'ux_two';
-			}
-	}
-	.android-btn{
-			margin:0 0 0 30px;
-			a:before{
-				content:'\e689';
-				font-family:'ux_two';
-			}
-	}
+//二维码
+.index-codewrap{
+	.layout-float-base(423px,border-box,right);
+	.layout-relative-base(0,0,10);
+	margin:200px 100px 0 0;
+	height:415px;
+	display:block;
+	background:url(../images/screen_indexcode.png) center top no-repeat;
+	overflow: hidden;
 }
 
 
@@ -205,26 +179,47 @@ body{
 			width:34px;
 			height:3px;
 			display:block;
-			background:@color-yellow1;
+			background:@color-red2;
 		}
 	}
 }
 
 .product-list{
+	.layout-relative-base;
 	.layout-base;
-	min-height:620px;
+	overflow: hidden;
+	background:url(../images/screen_product.png) no-repeat center center;
+	min-height:500px;
+	margin:100px 0 0 0;
 	text-align:center;
 	font-size:0;
 	li{
-		.layout-base(33.33333%);
-		display:inline-block;
-		min-height:250px;
-		margin:50px 0 0 0;
+		.transition-base(all 1s ease-in .02s);
+		position: absolute;
+		z-index: 10;
+		top:0;
+		.opacity-base(40);
+		padding:0 20px;
+		.layout-base(40%);
+		height:100%;
+		min-width:120px;
+		min-height:500px;
+	}
+	.pl-iteml{
+		left:1500px;
+	}
+	.pl-itemr{
+		right:1500px;
+	}
+	.pl-itemwrap{
+		padding:30px 0 0 0;
+		min-width:120px;
+		min-height:200px;
 		div{
 			.layout-base(120px);
 			.user-select-base;
 			height:120px;
-			margin:10px auto;
+			margin:0 auto 20px auto;
 			overflow:hidden;
 		}
 		h4{
@@ -240,37 +235,41 @@ body{
 			width:100%;
 			line-height:@font-size-base + 10;
 			font-size:@font-size-base;
-			color:@color-gray6;	
+			color:@color-gray6;
 			.text-of;
-			text-overflow:ellipsis;	
+			text-overflow:ellipsis;
 		}
 	}
-	.article-icon{
+	.pl-item1{
 		background:url(../images/screen_icon.png) no-repeat 0 0;
 	}
-	.mind-icon{
+	.pl-item2{
 		background:url(../images/screen_icon.png) no-repeat -120px 0;
 	}
-	.appointment-icon{
+	.pl-item3{
 		background:url(../images/screen_icon.png) no-repeat -240px 0;
 	}
-	.pk-icon{
-		background:url(../images/screen_icon.png) no-repeat 0 -120px;
+	.pl-item4{
+		background:url(../images/screen_icon.png) no-repeat -360px 0;
 	}
-	.talk-icon{
-		background:url(../images/screen_icon.png) no-repeat -120px -120px;
+}
+.product-listactive{
+	li{
+		.opacity-base(100);
 	}
-	.voice-icon{
-		background:url(../images/screen_icon.png) no-repeat -240px -120px;
+	.pl-iteml{
+		left:0;
+	}
+	.pl-itemr{
+		right:0;
 	}
 }
 
 
 //第三屏
 .screen-scene{
-	min-height:718px;
-	background:@color-gray14 url(../images/screen_scene.png) no-repeat center top;
-	background-size:cover;
+	min-height:780px;
+	background:@color-red2;
 	.theme{
 		.layout-relative-base;
 		&:after{
@@ -280,24 +279,65 @@ body{
 			width:34px;
 			height:3px;
 			display:block;
-			background:@color-yellow1;
+			background:@color-white;
 		}
 	}
-	.scene-theme{
-		width:523px;
-		height:520px;
-		float:right;
-		margin:100px 0 0 0;
-		background:url(../images/download_bg.png) 0 0 no-repeat;
-		background-size:cover;
+	>div{
+		min-height:730px;
+		background:url('../images/screen_sceneicon.png') no-repeat center bottom;
 	}
-	.scene-txt{
-		width:373px;
-		height:101px;
-		float:left;
-		margin:200px 0 0 0;
-		background:url(../images/screen_scenetxt.png) center top no-repeat;
-		background-size:cover;
+}
+.scene-itemwrap{
+	.layout-base;
+	height:100%;
+	min-height:650px;
+	padding:50px 0 0 0;
+	text-align:center;
+	font-size:0;
+	li{
+		.layout-base(33.33333%);
+		display: inline-block;
+		height:600px;
+		.perspective-base(800px);
+		.perspective-origin-base;
+		cursor: pointer;
+		&:hover{
+			.scene-item{
+				.transform-origin-base(center center);
+				.transform-base(rotateY(180deg));
+				.scene-itemback{
+					z-index:50;
+				}
+			}
+		}
+	}
+	.scene-item{
+		.layout-relative-base;
+		.transition-base(all .6s linear .2s);
+		margin:20px auto 0 auto;
+		width:280px;
+		height:480px;
+		.box-shadow-base(0 3px 10px 0 @color-gray3);
+		div{
+			.transition-base(all .1s linear .4s);
+			.layout-absolutel-base;
+			.layout-base;
+			padding:40px 40px;
+			height:100%;
+			background:#f4f4f4;
+			overflow:hidden;
+			img{
+				width:100%;
+				height:100%;
+			}
+		}
+		.scene-itemfront{
+			z-index:10;
+		}
+		.scene-itemback{
+			.transform-origin-base(center center);
+			.transform-base(rotateY(180deg));
+		}
 	}
 }
 

@@ -160,6 +160,15 @@
 }
 
 
+///*透视*/
+.perspective-base(@str:50px){-webkit-perspective:@str;-ms-perspective:@str;-moz-perspective:@str;-o-perspective:@str;perspective:@str;
+}
+
+///*透视坐标*/
+.perspective-origin-base(@strx:center,@stry:center){-webkit-perspective-origin:@strx @stry;-moz-perspective-origin:@strx @stry;-ms-perspective-origin:@strx @stry;-o-perspective-origin:@strx @stry;perspective-origin:@strx @stry;
+}
+
+
 ///*屏幕模式下的文字缩放(none或者100%为关闭)*/
 .text-size-adjust-base(@str:100%){-moz-text-size-adjust:@str;-o-text-size-adjust:@str;-webkit-text-size-adjust:@str;-ms-text-size-adjust:@str;text-size-adjust:@str;}
 

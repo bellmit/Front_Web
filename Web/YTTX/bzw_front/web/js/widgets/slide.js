@@ -70,45 +70,45 @@ define(['jquery'],function($){
 				
 				/*mouse hover,out event*/
 				//图片绑定鼠标事件
-				if(settings.isMobile){
-					//手机端
-					settings.$wrap.on('mouseenter mouseleave',function(e){
-						var type= e.type;
+			    if(settings.size>1){
+					if(settings.isMobile){
+						//手机端
+						settings.$wrap.on('mouseenter mouseleave',function(e){
+							var type= e.type;
 
-						if(type=='mouseenter'){
-							//移入
+							if(type=='mouseenter'){
+								//移入
+								settings.$slide_tipwrap.stop(settings.auto_animates,true,false);
+								clearInterval(settings.slide_id);
+								settings.slide_id=null;
+
+							}else if(type=='mouseleave'){
+								//移出
+								clearInterval(settings.slide_id);
+								settings.slide_id=null;
+								settings.slide_id=setInterval(function(){
+									settings.btn_action=false;
+									self.slidePlay(settings);
+								},settings.times);
+							}
+						});
+					}else{
+						//pc端
+						settings.$wrap.hover(function(){
 							settings.$slide_tipwrap.stop(settings.auto_animates,true,false);
 							clearInterval(settings.slide_id);
 							settings.slide_id=null;
-
-						}else if(type=='mouseleave'){
-							//移出
+						},function(){
 							clearInterval(settings.slide_id);
 							settings.slide_id=null;
 							settings.slide_id=setInterval(function(){
 								settings.btn_action=false;
 								self.slidePlay(settings);
 							},settings.times);
-						}
-					});
-				}else{
-					//pc端
-					settings.$wrap.hover(function(){
-						settings.$slide_tipwrap.stop(settings.auto_animates,true,false);
-						clearInterval(settings.slide_id);
-						settings.slide_id=null;
-					},function(){
-						clearInterval(settings.slide_id);
-						settings.slide_id=null;
-						settings.slide_id=setInterval(function(){
-							settings.btn_action=false;
-							self.slidePlay(settings);
-						},settings.times);
-					});
+						});
+					}
 				}
 
-				
-				
 				//window resize
 				if(settings.isresize){
 					$(win).resize(function(){
@@ -156,7 +156,7 @@ define(['jquery'],function($){
 					 })
 				 }
 
-			   if(settings.size>1){
+			     if(settings.size>1){
 					 settings.slide_id=setInterval(function(){
 						 self.slidePlay(settings);
 					 },settings.times);

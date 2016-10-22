@@ -33,7 +33,9 @@ require(['jquery','jquery_mobile','dialog','rule','commonfn','validform','slide'
 			$header_item=$header_menu.children(),
 			$header_btn=$('#header_btn'),
 			$screen_index=$('#screen_index'),
+			$screen_indexcontent=$screen_index.find('>div.index-content'),
 			$screen_product=$('#screen_product'),
+			$screen_productcontent=$screen_product.find('ul'),
 			$screen_scene=$('#screen_scene'),
 			$screen_wechat=$('#screen_wechat'),
 			$screen_app=$('#screen_app'),
@@ -60,9 +62,6 @@ require(['jquery','jquery_mobile','dialog','rule','commonfn','validform','slide'
 				pos:0
 			},{
 				node:$screen_contact,
-				pos:0
-			},{
-				node:$screen_help,
 				pos:0
 			}],
 			isMobile=false;
@@ -174,6 +173,18 @@ require(['jquery','jquery_mobile','dialog','rule','commonfn','validform','slide'
 				$('html,body').animate({'scrollTop':screen_pos[index]['pos'] - 40 +'px'},500);
 			}else{
 				$('html,body').animate({'scrollTop':screen_pos[index]['pos'] - 120 +'px'},500);
+			}
+			/*一屏动画*/
+			if(index===0){
+				$screen_indexcontent.addClass('index-contentactive');
+			}else{
+				$screen_indexcontent.removeClass('index-contentactive');
+			}
+			/*二屏动画*/
+			if(index===1){
+				$screen_productcontent.addClass('product-listactive');
+			}else{
+				$screen_productcontent.removeClass('product-listactive');
 			}
 			return false;
 		});
