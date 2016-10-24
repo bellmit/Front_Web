@@ -4,12 +4,20 @@
 	'use strict';
 	$(function(){
 
-		var table=null/*数据展现*/;
+		var tabledfk=null,
+			tableyfk=null,
+			tabledsh=null,
+			tabledpj=null,
+			tableth=null/*数据展现*/;
 
 		/*初始化数据*/
 		if(public_tool.initMap.isrender){
 			/*菜单调用*/
-			var logininfo=public_tool.initMap.loginMap;
+			var logininfo=public_tool.initMap.loginMap,
+				providerId=decodeURIComponent(logininfo.param.providerId),
+				userId=decodeURIComponent(logininfo.param.userId),
+				token=decodeURIComponent(logininfo.param.token);
+
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
 				url:'../../json/menu.json',
 				async:false,
@@ -19,7 +27,17 @@
 
 
 			/*dom引用和相关变量定义*/
-			var $goods_manage_wrap=$('#goods_manage_wrap')/*表格*/,
+			var $admin_datadfk=$('#admin_datadfk'),
+				$admin_datayfk=$('#admin_datayfk'),
+				$admin_datadsh=$('#admin_datadsh'),
+				$admin_datadpj=$('#admin_datadpj'),
+				$admin_datath=$('#admin_datadth'),
+				$search_orderState=$('#search_orderState'),
+				$goods_manage_wrapdfk=$('#goods_manage_wrapdfk')/*表格*/,
+				$goods_manage_wrapyfk=$('#goods_manage_wrapyfk'),
+				$goods_manage_wrapdsh=$('#goods_manage_wrapdsh'),
+				$goods_manage_wrapdpj=$('#goods_manage_wrapdpj'),
+				$goods_manage_wrapth=$('#goods_manage_wrapdth'),
 				module_id='yttx-order-manage'/*模块id，主要用于本地存储传值*/,
 				dia=dialog({
 					zIndex:2000,
@@ -32,7 +50,11 @@
 					},
 					cancel:false
 				})/*一般提示对象*/,
-				$admin_page_wrap=$('#admin_page_wrap')/*分页数据*/,
+				$admin_page_wrapdfk=$('#admin_page_wrapdfk')/*分页数据*/,
+				$admin_page_wrapyfk=$('#admin_page_wrapyfk'),
+				$admin_page_wrapdsh=$('#admin_page_wrapdsh'),
+				$admin_page_wrapdpj=$('#admin_page_wrapdpj'),
+				$admin_page_wrapth=$('#admin_page_wrapth'),
 				admin_send_form=document.getElementById('admin_send_form'),
 				$admin_send_form=$(admin_send_form),
 				$admin_sendid=$('#admin_sendid'),
@@ -43,22 +65,35 @@
 				resetform0=null;
 
 
-			/*查询对象*/
-			var $search_orderNumber=$('#search_orderNumber'),
-				$search_orderState=$('#search_orderState'),
-				$admin_search_btn=$('#admin_search_btn'),
-				$admin_search_clear=$('#admin_search_clear');
-
-
 			/*列表请求配置*/
-			var ordermanage_page={
+			var ordermanage_pagedfk={
 					page:1,
 					pageSize:10,
 					total:0
 				},
-				ordermanage_config={
-					$goods_manage_wrap:$goods_manage_wrap,
-					$admin_page_wrap:$admin_page_wrap,
+				ordermanage_pageyfk={
+					page:1,
+					pageSize:10,
+					total:0
+				},
+				ordermanage_pagedsh={
+					page:1,
+					pageSize:10,
+					total:0
+				},
+				ordermanage_pagedpj={
+					page:1,
+					pageSize:10,
+					total:0
+				},
+				ordermanage_pageth={
+					page:1,
+					pageSize:10,
+					total:0
+				},
+				ordermanage_configdfk={
+					$goods_manage_wrapdfk:$goods_manage_wrapdfk,
+					$admin_page_wrapdfk:$admin_page_wrapdfk,
 					config:{
 						processing:true,/*大消耗操作时是否显示处理状态*/
 						deferRender:true,/*是否延迟加载数据*/
@@ -82,29 +117,30 @@
 								}
 								var result=json.result;
 								/*设置分页*/
-								ordermanage_page.page=result.page;
-								ordermanage_page.pageSize=result.pageSize;
-								ordermanage_page.total=result.count;
+								ordermanage_pagedfk.page=result.page;
+								ordermanage_pagedfk.pageSize=result.pageSize;
+								ordermanage_pagedfk.total=result.count;
 								/*分页调用*/
-								$admin_page_wrap.pagination({
-									pageSize:ordermanage_page.pageSize,
-									total:ordermanage_page.total,
-									pageNumber:ordermanage_page.page,
+								$admin_page_wrapdfk.pagination({
+									pageSize:ordermanage_pagedfk.pageSize,
+									total:ordermanage_pagedfk.total,
+									pageNumber:ordermanage_pagedfk.page,
 									onSelectPage:function(pageNumber,pageSize){
 										/*再次查询*/
-										var param=ordermanage_config.config.ajax.data;
+										var param=ordermanage_configdfk.config.ajax.data;
 										param.page=pageNumber;
 										param.pageSize=pageSize;
-										ordermanage_config.config.ajax.data=param;
-										getColumnData(ordermanage_page,ordermanage_config);
+										ordermanage_configdfk.config.ajax.data=param;
+										getColumnDatadfk(ordermanage_pagedfk,ordermanage_configdfk);
 									}
 								});
 								return result.list;
 							},
 							data:{
-								providerId:decodeURIComponent(logininfo.param.providerId),
-								userId:decodeURIComponent(logininfo.param.userId),
-								token:decodeURIComponent(logininfo.param.token),
+								providerId:providerId,
+								userId:userId,
+								token:token,
+								orderState:0,
 								page:1,
 								pageSize:10
 							}
@@ -219,6 +255,666 @@
 							}
 						]
 					}
+				},
+				ordermanage_configyfk={
+					$goods_manage_wrapyfk:$goods_manage_wrapyfk,
+					$admin_page_wrapyfk:$admin_page_wrapyfk,
+					config:{
+						processing:true,/*大消耗操作时是否显示处理状态*/
+						deferRender:true,/*是否延迟加载数据*/
+						autoWidth:true,/*是否*/
+						paging:false,
+						ajax:{
+							url:/*"../../json/goods/goods_list.json"*/"http://120.76.237.100:8081/yttx-providerbms-api/goodsorder/list",
+							dataType:'JSON',
+							method:'post',
+							dataSrc:function ( json ) {
+								var code=parseInt(json.code,10);
+								if(code!==0){
+									if(code===999){
+										/*清空缓存*/
+										public_tool.clear();
+										public_tool.clearCacheData();
+										public_tool.loginTips();
+									}
+									console.log(json.message);
+									return [];
+								}
+								var result=json.result;
+								/*设置分页*/
+								ordermanage_pageyfk.page=result.page;
+								ordermanage_pageyfk.pageSize=result.pageSize;
+								ordermanage_pageyfk.total=result.count;
+								/*分页调用*/
+								$admin_page_wrapyfk.pagination({
+									pageSize:ordermanage_pageyfk.pageSize,
+									total:ordermanage_pageyfk.total,
+									pageNumber:ordermanage_pageyfk.page,
+									onSelectPage:function(pageNumber,pageSize){
+										/*再次查询*/
+										var param=ordermanage_configyfk.config.ajax.data;
+										param.page=pageNumber;
+										param.pageSize=pageSize;
+										ordermanage_configyfk.config.ajax.data=param;
+										getColumnDatayfk(ordermanage_pageyfk,ordermanage_configyfk);
+									}
+								});
+								return result.list;
+							},
+							data:{
+								providerId:providerId,
+								userId:userId,
+								token:token,
+								orderState:3,
+								page:1,
+								pageSize:10
+							}
+						},
+						info:false,
+						searching:true,
+						ordering:true,
+						columns: [
+							{
+								"data":"orderNumber"
+							},
+							{
+								"data":"list",
+								"render":function(data, type, full, meta ){
+									var goodsobj=data;
+									if(!goodsobj){
+										return '暂无商品信息';
+									}
+									var len=goodsobj.length;
+									if(len===0){
+										return '暂无商品信息';
+									}
+									var str='',
+										i=0;
+									for(i;i<len;i++){
+										var goodsitem=goodsobj[i];
+										str+='<ul data-id="'+parseInt(i + 1,10)+'" class="admin-order-subitem1">\
+											<li>商品名称:<div  class="g-c-gray6">'+goodsitem["goodsName"]+'</div></li>\
+											<li>'+goodsitem["attributeName"]+'</li>\
+											<li>批发价：<div class="g-c-red1">￥:'+public_tool.moneyCorrect(goodsitem["wholesalePrice"],12,true)[0]+'</div></li>\
+										</ul>';
+									}
+									return str;
+								}
+							},
+							{
+								"data":"totalQuantity"
+							},
+							{
+								"data":"orderTime"
+							},
+							{
+								"data":"customerName"
+							},
+							{
+								"data":"totalMoney",
+								"render":function(data, type, full, meta ){
+									return '<div class="g-c-red1">￥:'+public_tool.moneyCorrect(data,12,true)[0]+'</div>';
+								}
+							},
+							{
+								"data":"orderState",
+								"render":function(data, type, full, meta ){
+									var stauts=parseInt(data,10),
+										statusmap={
+											0:"待付款",
+											1:"取消订单",
+											3:"已付款",
+											5:"已配货",
+											7:"已发货",
+											9:"待收货",
+											11:"已收货",
+											13:"已完成",
+											20:"待评价",
+											21:"已评价",
+											30:"返修",
+											40:"退货"
+										},
+										str='';
+									if(stauts===0){
+										str='<div class="g-c-warn">'+statusmap[stauts]+'</div>';
+									}else if(stauts===1||stauts===30){
+										str='<div class="g-c-gray12">'+statusmap[stauts]+'</div>';
+									}else if(stauts===3||stauts===5||stauts===7||stauts===9){
+										str='<div class="g-c-gray10">'+statusmap[stauts]+'</div>';
+									}else if(stauts===11||stauts===20){
+										str='<div class="g-c-gray8">'+statusmap[stauts]+'</div>';
+									}else if(stauts===40){
+										str='<div class="g-c-red1">'+statusmap[stauts]+'</div>';
+									}else if(stauts===13||stauts===21){
+										str='<div class="g-c-info">'+statusmap[stauts]+'</div>';
+									}
+									return str;
+								}
+							},
+							{
+								"data":"id",
+								"render":function(data, type, full, meta ){
+									var id=parseInt(data,10),
+										btns='';
+
+									var status=parseInt(full.orderState,10);
+									if(status===3||status===5){
+										/*需要发货状态*/
+										btns+='<span data-action="send" data-id="'+id+'" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+											<i class="fa-arrow-up"></i>\
+											<span>发货</span>\
+											</span>';
+									}else if(status===7||status===9){
+										/*需要查看物流*/
+										btns+='<span data-action="logistics" data-id="'+id+'" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+											<i class="fa-truck"></i>\
+											<span>查看物流</span>\
+											</span>';
+									}
+									btns+='<span data-action="select" data-id="'+id+'" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+											<i class="fa-file-text-o"></i>\
+											<span>查看</span>\
+											</span>';
+									return btns;
+								}
+							}
+						]
+					}
+				},
+				ordermanage_configdsh={
+					$goods_manage_wrapdsh:$goods_manage_wrapdsh,
+					$admin_page_wrapdsh:$admin_page_wrapdsh,
+					config:{
+						processing:true,/*大消耗操作时是否显示处理状态*/
+						deferRender:true,/*是否延迟加载数据*/
+						autoWidth:true,/*是否*/
+						paging:false,
+						ajax:{
+							url:/*"../../json/goods/goods_list.json"*/"http://120.76.237.100:8081/yttx-providerbms-api/goodsorder/list",
+							dataType:'JSON',
+							method:'post',
+							dataSrc:function ( json ) {
+								var code=parseInt(json.code,10);
+								if(code!==0){
+									if(code===999){
+										/*清空缓存*/
+										public_tool.clear();
+										public_tool.clearCacheData();
+										public_tool.loginTips();
+									}
+									console.log(json.message);
+									return [];
+								}
+								var result=json.result;
+								/*设置分页*/
+								ordermanage_pagedsh.page=result.page;
+								ordermanage_pagedsh.pageSize=result.pageSize;
+								ordermanage_pagedsh.total=result.count;
+								/*分页调用*/
+								$admin_page_wrapdsh.pagination({
+									pageSize:ordermanage_pagedsh.pageSize,
+									total:ordermanage_pagedsh.total,
+									pageNumber:ordermanage_pagedsh.page,
+									onSelectPage:function(pageNumber,pageSize){
+										/*再次查询*/
+										var param=ordermanage_configdsh.config.ajax.data;
+										param.page=pageNumber;
+										param.pageSize=pageSize;
+										ordermanage_configdsh.config.ajax.data=param;
+										getColumnDatadsh(ordermanage_pagedsh,ordermanage_configdsh);
+									}
+								});
+								return result.list;
+							},
+							data:{
+								providerId:providerId,
+								userId:userId,
+								token:token,
+								orderState:9,
+								page:1,
+								pageSize:10
+							}
+						},
+						info:false,
+						searching:true,
+						ordering:true,
+						columns: [
+							{
+								"data":"orderNumber"
+							},
+							{
+								"data":"list",
+								"render":function(data, type, full, meta ){
+									var goodsobj=data;
+									if(!goodsobj){
+										return '暂无商品信息';
+									}
+									var len=goodsobj.length;
+									if(len===0){
+										return '暂无商品信息';
+									}
+									var str='',
+										i=0;
+									for(i;i<len;i++){
+										var goodsitem=goodsobj[i];
+										str+='<ul data-id="'+parseInt(i + 1,10)+'" class="admin-order-subitem1">\
+											<li>商品名称:<div  class="g-c-gray6">'+goodsitem["goodsName"]+'</div></li>\
+											<li>'+goodsitem["attributeName"]+'</li>\
+											<li>批发价：<div class="g-c-red1">￥:'+public_tool.moneyCorrect(goodsitem["wholesalePrice"],12,true)[0]+'</div></li>\
+										</ul>';
+									}
+									return str;
+								}
+							},
+							{
+								"data":"totalQuantity"
+							},
+							{
+								"data":"orderTime"
+							},
+							{
+								"data":"customerName"
+							},
+							{
+								"data":"totalMoney",
+								"render":function(data, type, full, meta ){
+									return '<div class="g-c-red1">￥:'+public_tool.moneyCorrect(data,12,true)[0]+'</div>';
+								}
+							},
+							{
+								"data":"orderState",
+								"render":function(data, type, full, meta ){
+									var stauts=parseInt(data,10),
+										statusmap={
+											0:"待付款",
+											1:"取消订单",
+											3:"已付款",
+											5:"已配货",
+											7:"已发货",
+											9:"待收货",
+											11:"已收货",
+											13:"已完成",
+											20:"待评价",
+											21:"已评价",
+											30:"返修",
+											40:"退货"
+										},
+										str='';
+									if(stauts===0){
+										str='<div class="g-c-warn">'+statusmap[stauts]+'</div>';
+									}else if(stauts===1||stauts===30){
+										str='<div class="g-c-gray12">'+statusmap[stauts]+'</div>';
+									}else if(stauts===3||stauts===5||stauts===7||stauts===9){
+										str='<div class="g-c-gray10">'+statusmap[stauts]+'</div>';
+									}else if(stauts===11||stauts===20){
+										str='<div class="g-c-gray8">'+statusmap[stauts]+'</div>';
+									}else if(stauts===40){
+										str='<div class="g-c-red1">'+statusmap[stauts]+'</div>';
+									}else if(stauts===13||stauts===21){
+										str='<div class="g-c-info">'+statusmap[stauts]+'</div>';
+									}
+									return str;
+								}
+							},
+							{
+								"data":"id",
+								"render":function(data, type, full, meta ){
+									var id=parseInt(data,10),
+										btns='';
+
+									var status=parseInt(full.orderState,10);
+									if(status===3||status===5){
+										/*需要发货状态*/
+										btns+='<span data-action="send" data-id="'+id+'" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+											<i class="fa-arrow-up"></i>\
+											<span>发货</span>\
+											</span>';
+									}else if(status===7||status===9){
+										/*需要查看物流*/
+										btns+='<span data-action="logistics" data-id="'+id+'" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+											<i class="fa-truck"></i>\
+											<span>查看物流</span>\
+											</span>';
+									}
+									btns+='<span data-action="select" data-id="'+id+'" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+											<i class="fa-file-text-o"></i>\
+											<span>查看</span>\
+											</span>';
+									return btns;
+								}
+							}
+						]
+					}
+				},
+				ordermanage_configdpj={
+					$goods_manage_wrapdpj:$goods_manage_wrapdpj,
+					$admin_page_wrapdpj:$admin_page_wrapdpj,
+					config:{
+						processing:true,/*大消耗操作时是否显示处理状态*/
+						deferRender:true,/*是否延迟加载数据*/
+						autoWidth:true,/*是否*/
+						paging:false,
+						ajax:{
+							url:/*"../../json/goods/goods_list.json"*/"http://120.76.237.100:8081/yttx-providerbms-api/goodsorder/list",
+							dataType:'JSON',
+							method:'post',
+							dataSrc:function ( json ) {
+								var code=parseInt(json.code,10);
+								if(code!==0){
+									if(code===999){
+										/*清空缓存*/
+										public_tool.clear();
+										public_tool.clearCacheData();
+										public_tool.loginTips();
+									}
+									console.log(json.message);
+									return [];
+								}
+								var result=json.result;
+								/*设置分页*/
+								ordermanage_pagedpj.page=result.page;
+								ordermanage_pagedpj.pageSize=result.pageSize;
+								ordermanage_pagedpj.total=result.count;
+								/*分页调用*/
+								$admin_page_wrapdpj.pagination({
+									pageSize:ordermanage_pagedpj.pageSize,
+									total:ordermanage_pagedpj.total,
+									pageNumber:ordermanage_pagedpj.page,
+									onSelectPage:function(pageNumber,pageSize){
+										/*再次查询*/
+										var param=ordermanage_configdpj.config.ajax.data;
+										param.page=pageNumber;
+										param.pageSize=pageSize;
+										ordermanage_configdpj.config.ajax.data=param;
+										getColumnDatadpj(ordermanage_pagedpj,ordermanage_configdpj);
+									}
+								});
+								return result.list;
+							},
+							data:{
+								providerId:providerId,
+								userId:userId,
+								token:token,
+								orderState:20,
+								page:1,
+								pageSize:10
+							}
+						},
+						info:false,
+						searching:true,
+						ordering:true,
+						columns: [
+							{
+								"data":"orderNumber"
+							},
+							{
+								"data":"list",
+								"render":function(data, type, full, meta ){
+									var goodsobj=data;
+									if(!goodsobj){
+										return '暂无商品信息';
+									}
+									var len=goodsobj.length;
+									if(len===0){
+										return '暂无商品信息';
+									}
+									var str='',
+										i=0;
+									for(i;i<len;i++){
+										var goodsitem=goodsobj[i];
+										str+='<ul data-id="'+parseInt(i + 1,10)+'" class="admin-order-subitem1">\
+											<li>商品名称:<div  class="g-c-gray6">'+goodsitem["goodsName"]+'</div></li>\
+											<li>'+goodsitem["attributeName"]+'</li>\
+											<li>批发价：<div class="g-c-red1">￥:'+public_tool.moneyCorrect(goodsitem["wholesalePrice"],12,true)[0]+'</div></li>\
+										</ul>';
+									}
+									return str;
+								}
+							},
+							{
+								"data":"totalQuantity"
+							},
+							{
+								"data":"orderTime"
+							},
+							{
+								"data":"customerName"
+							},
+							{
+								"data":"totalMoney",
+								"render":function(data, type, full, meta ){
+									return '<div class="g-c-red1">￥:'+public_tool.moneyCorrect(data,12,true)[0]+'</div>';
+								}
+							},
+							{
+								"data":"orderState",
+								"render":function(data, type, full, meta ){
+									var stauts=parseInt(data,10),
+										statusmap={
+											0:"待付款",
+											1:"取消订单",
+											3:"已付款",
+											5:"已配货",
+											7:"已发货",
+											9:"待收货",
+											11:"已收货",
+											13:"已完成",
+											20:"待评价",
+											21:"已评价",
+											30:"返修",
+											40:"退货"
+										},
+										str='';
+									if(stauts===0){
+										str='<div class="g-c-warn">'+statusmap[stauts]+'</div>';
+									}else if(stauts===1||stauts===30){
+										str='<div class="g-c-gray12">'+statusmap[stauts]+'</div>';
+									}else if(stauts===3||stauts===5||stauts===7||stauts===9){
+										str='<div class="g-c-gray10">'+statusmap[stauts]+'</div>';
+									}else if(stauts===11||stauts===20){
+										str='<div class="g-c-gray8">'+statusmap[stauts]+'</div>';
+									}else if(stauts===40){
+										str='<div class="g-c-red1">'+statusmap[stauts]+'</div>';
+									}else if(stauts===13||stauts===21){
+										str='<div class="g-c-info">'+statusmap[stauts]+'</div>';
+									}
+									return str;
+								}
+							},
+							{
+								"data":"id",
+								"render":function(data, type, full, meta ){
+									var id=parseInt(data,10),
+										btns='';
+
+									var status=parseInt(full.orderState,10);
+									if(status===3||status===5){
+										/*需要发货状态*/
+										btns+='<span data-action="send" data-id="'+id+'" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+											<i class="fa-arrow-up"></i>\
+											<span>发货</span>\
+											</span>';
+									}else if(status===7||status===9){
+										/*需要查看物流*/
+										btns+='<span data-action="logistics" data-id="'+id+'" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+											<i class="fa-truck"></i>\
+											<span>查看物流</span>\
+											</span>';
+									}
+									btns+='<span data-action="select" data-id="'+id+'" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+											<i class="fa-file-text-o"></i>\
+											<span>查看</span>\
+											</span>';
+									return btns;
+								}
+							}
+						]
+					}
+				},
+				ordermanage_configth={
+					$goods_manage_wrapth:$goods_manage_wrapth,
+					$admin_page_wrapth:$admin_page_wrapth,
+					config:{
+						processing:true,/*大消耗操作时是否显示处理状态*/
+						deferRender:true,/*是否延迟加载数据*/
+						autoWidth:true,/*是否*/
+						paging:false,
+						ajax:{
+							url:/*"../../json/goods/goods_list.json"*/"http://120.76.237.100:8081/yttx-providerbms-api/goodsorder/list",
+							dataType:'JSON',
+							method:'post',
+							dataSrc:function ( json ) {
+								var code=parseInt(json.code,10);
+								if(code!==0){
+									if(code===999){
+										/*清空缓存*/
+										public_tool.clear();
+										public_tool.clearCacheData();
+										public_tool.loginTips();
+									}
+									console.log(json.message);
+									return [];
+								}
+								var result=json.result;
+								/*设置分页*/
+								ordermanage_pageth.page=result.page;
+								ordermanage_pageth.pageSize=result.pageSize;
+								ordermanage_pageth.total=result.count;
+								/*分页调用*/
+								$admin_page_wrapth.pagination({
+									pageSize:ordermanage_pageth.pageSize,
+									total:ordermanage_pageth.total,
+									pageNumber:ordermanage_pageth.page,
+									onSelectPage:function(pageNumber,pageSize){
+										/*再次查询*/
+										var param=ordermanage_configth.config.ajax.data;
+										param.page=pageNumber;
+										param.pageSize=pageSize;
+										ordermanage_configth.config.ajax.data=param;
+										getColumnDatath(ordermanage_pageth,ordermanage_configth);
+									}
+								});
+								return result.list;
+							},
+							data:{
+								providerId:providerId,
+								userId:userId,
+								token:token,
+								orderState:40,
+								page:1,
+								pageSize:10
+							}
+						},
+						info:false,
+						searching:true,
+						ordering:true,
+						columns: [
+							{
+								"data":"orderNumber"
+							},
+							{
+								"data":"list",
+								"render":function(data, type, full, meta ){
+									var goodsobj=data;
+									if(!goodsobj){
+										return '暂无商品信息';
+									}
+									var len=goodsobj.length;
+									if(len===0){
+										return '暂无商品信息';
+									}
+									var str='',
+										i=0;
+									for(i;i<len;i++){
+										var goodsitem=goodsobj[i];
+										str+='<ul data-id="'+parseInt(i + 1,10)+'" class="admin-order-subitem1">\
+											<li>商品名称:<div  class="g-c-gray6">'+goodsitem["goodsName"]+'</div></li>\
+											<li>'+goodsitem["attributeName"]+'</li>\
+											<li>批发价：<div class="g-c-red1">￥:'+public_tool.moneyCorrect(goodsitem["wholesalePrice"],12,true)[0]+'</div></li>\
+										</ul>';
+									}
+									return str;
+								}
+							},
+							{
+								"data":"totalQuantity"
+							},
+							{
+								"data":"orderTime"
+							},
+							{
+								"data":"customerName"
+							},
+							{
+								"data":"totalMoney",
+								"render":function(data, type, full, meta ){
+									return '<div class="g-c-red1">￥:'+public_tool.moneyCorrect(data,12,true)[0]+'</div>';
+								}
+							},
+							{
+								"data":"orderState",
+								"render":function(data, type, full, meta ){
+									var stauts=parseInt(data,10),
+										statusmap={
+											0:"待付款",
+											1:"取消订单",
+											3:"已付款",
+											5:"已配货",
+											7:"已发货",
+											9:"待收货",
+											11:"已收货",
+											13:"已完成",
+											20:"待评价",
+											21:"已评价",
+											30:"返修",
+											40:"退货"
+										},
+										str='';
+									if(stauts===0){
+										str='<div class="g-c-warn">'+statusmap[stauts]+'</div>';
+									}else if(stauts===1||stauts===30){
+										str='<div class="g-c-gray12">'+statusmap[stauts]+'</div>';
+									}else if(stauts===3||stauts===5||stauts===7||stauts===9){
+										str='<div class="g-c-gray10">'+statusmap[stauts]+'</div>';
+									}else if(stauts===11||stauts===20){
+										str='<div class="g-c-gray8">'+statusmap[stauts]+'</div>';
+									}else if(stauts===40){
+										str='<div class="g-c-red1">'+statusmap[stauts]+'</div>';
+									}else if(stauts===13||stauts===21){
+										str='<div class="g-c-info">'+statusmap[stauts]+'</div>';
+									}
+									return str;
+								}
+							},
+							{
+								"data":"id",
+								"render":function(data, type, full, meta ){
+									var id=parseInt(data,10),
+										btns='';
+
+									var status=parseInt(full.orderState,10);
+									if(status===3||status===5){
+										/*需要发货状态*/
+										btns+='<span data-action="send" data-id="'+id+'" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+											<i class="fa-arrow-up"></i>\
+											<span>发货</span>\
+											</span>';
+									}else if(status===7||status===9){
+										/*需要查看物流*/
+										btns+='<span data-action="logistics" data-id="'+id+'" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+											<i class="fa-truck"></i>\
+											<span>查看物流</span>\
+											</span>';
+									}
+									btns+='<span data-action="select" data-id="'+id+'" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+											<i class="fa-file-text-o"></i>\
+											<span>查看</span>\
+											</span>';
+									return btns;
+								}
+							}
+						]
+					}
 				};
 
 
@@ -227,7 +923,16 @@
 			
 
 			/*初始化请求*/
-			getColumnData(ordermanage_page,ordermanage_config);
+			/*请求待付款*/
+			getColumnDatadfk(ordermanage_pagedfk,ordermanage_configdfk);
+			/*请求已付款*/
+			getColumnDatayfk(ordermanage_pageyfk,ordermanage_configyfk);
+			/*请求待收货*/
+			getColumnDatadsh(ordermanage_pagedsh,ordermanage_configdsh);
+			/*请求待评价*/
+			getColumnDatadpj(ordermanage_pagedpj,ordermanage_configdpj);
+			/*请求退货*/
+			getColumnDatath(ordermanage_pageth,ordermanage_configth);
 
 
 			/*查询物流公司*/
@@ -291,43 +996,10 @@
 
 
 
-			/*清空查询条件*/
-			$admin_search_clear.on('click',function(){
-				$.each([$search_orderNumber,$search_orderState],function(){
-					this.val('');
-				});
-			});
-			$admin_search_clear.trigger('click');
-
-
-			/*联合查询*/
-			$admin_search_btn.on('click',function(){
-				var data= $.extend(true,{},ordermanage_config.config.ajax.data);
-
-				$.each([$search_orderNumber,$search_orderState],function(){
-					var text=this.val()||this.find(':selected').val(),
-						selector=this.selector.slice(1),
-						key=selector.split('_');
-
-					if(text===""){
-						if(typeof data[key[1]]!=='undefined'){
-							delete data[key[1]];
-						}
-					}else{
-						data[key[1]]=text;
-					}
-
-				});
-				ordermanage_config.config.ajax.data= $.extend(true,{},data);
-				getColumnData(ordermanage_page,ordermanage_config);
-			});
-
-
-
 			/*事件绑定*/
 			/*绑定查看，修改操作*/
 			var operate_item;
-			$goods_manage_wrap.delegate('span','click',function(e){
+			$goods_manage_wrapdfk.delegate('span','click',function(e){
 				e.stopPropagation();
 				e.preventDefault();
 
@@ -373,6 +1045,51 @@
 
 
 
+			});
+
+
+			/*绑定状态切换*/
+			$search_orderState.on('click','span',function () {
+				var $this=$(this),
+					type=$this.attr('data-value');
+
+				if(type===''){
+					return false;
+				}else{
+					type=parseInt(type,10);
+					$this.addClass('active').siblings().removeClass('active');
+					if(type===0){
+						$admin_datadfk.removeClass('g-d-hidei');
+						$admin_datayfk.addClass('g-d-hidei');
+						$admin_datadsh.addClass('g-d-hidei');
+						$admin_datadpj.addClass('g-d-hidei');
+						$admin_datath.addClass('g-d-hidei');
+					}else if(type===3){
+						$admin_datadfk.addClass('g-d-hidei');
+						$admin_datayfk.removeClass('g-d-hidei');
+						$admin_datadsh.addClass('g-d-hidei');
+						$admin_datadpj.addClass('g-d-hidei');
+						$admin_datath.addClass('g-d-hidei');
+					}else if(type===9){
+						$admin_datadfk.addClass('g-d-hidei');
+						$admin_datayfk.addClass('g-d-hidei');
+						$admin_datadsh.removeClass('g-d-hidei');
+						$admin_datadpj.addClass('g-d-hidei');
+						$admin_datath.addClass('g-d-hidei');
+					}else if(type===20){
+						$admin_datadfk.addClass('g-d-hidei');
+						$admin_datayfk.addClass('g-d-hidei');
+						$admin_datadsh.addClass('g-d-hidei');
+						$admin_datadpj.removeClass('g-d-hidei');
+						$admin_datath.addClass('g-d-hidei');
+					}else if(type===40){
+						$admin_datadfk.addClass('g-d-hidei');
+						$admin_datayfk.addClass('g-d-hidei');
+						$admin_datadsh.addClass('g-d-hidei');
+						$admin_datadpj.addClass('g-d-hidei');
+						$admin_datath.removeClass('g-d-hidei');
+					}
+				}
 			});
 
 
@@ -459,7 +1176,7 @@
 											/*关闭弹窗*/
 											$show_send_wrap.modal('hide');
 											/*重新获取数据*/
-											getColumnData(ordermanage_page,ordermanage_config);
+											getColumnDatadfk(ordermanage_pagedfk,ordermanage_configdfk);
 										}
 									},2000);
 								}).fail(function(resp){
@@ -488,11 +1205,44 @@
 
 
 		/*获取数据*/
-		function getColumnData(page,opt){
-			if(table===null){
-				table=opt.$goods_manage_wrap.DataTable(opt.config);
+		/*待付款*/
+		function getColumnDatadfk(page,opt){
+			if(tabledfk===null){
+				tabledfk=opt.$goods_manage_wrapdfk.DataTable(opt.config);
 			}else{
-				table.ajax.config(opt.config.ajax).load();
+				tabledfk.ajax.config(opt.config.ajax).load();
+			}
+		}
+		/*已付款*/
+		function getColumnDatayfk(page,opt){
+			if(tableyfk===null){
+				tableyfk=opt.$goods_manage_wrapyfk.DataTable(opt.config);
+			}else{
+				tableyfk.ajax.config(opt.config.ajax).load();
+			}
+		}
+		/*待收货*/
+		function getColumnDatadsh(page,opt){
+			if(tabledsh===null){
+				tabledsh=opt.$goods_manage_wrapdsh.DataTable(opt.config);
+			}else{
+				tabledsh.ajax.config(opt.config.ajax).load();
+			}
+		}
+		/*待评价*/
+		function getColumnDatadpj(page,opt){
+			if(tabledpj===null){
+				tabledpj=opt.$goods_manage_wrapdpj.DataTable(opt.config);
+			}else{
+				tabledpj.ajax.config(opt.config.ajax).load();
+			}
+		}
+		/*退货*/
+		function getColumnDatath(page,opt){
+			if(tableth===null){
+				tableth=opt.$goods_manage_wrapth.DataTable(opt.config);
+			}else{
+				tableth.ajax.config(opt.config.ajax).load();
 			}
 		}
 

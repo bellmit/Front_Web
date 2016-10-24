@@ -3,7 +3,8 @@ require.config({
 	baseUrl:'../js/',
 	paths:{
 		'jquery':'lib/jquery/jquery-2.1.4.min',
-		'jquery_mobile':'lib/jquery/jquery-mobile.min'
+		'jquery_mobile':'lib/jquery/jquery-mobile.min',
+		'slide':'widgets/slide'
 	},
 	shim:{
 		'dialog':{
@@ -17,7 +18,7 @@ require.config({
 
 
 /*程序入口*/
-require(['jquery','jquery_mobile'],function($,$jm) {
+require(['jquery','jquery_mobile','slide'],function($,$jm,Slide) {
 	$(function(){
 		
 		//dom对象引用
@@ -215,7 +216,24 @@ require(['jquery','jquery_mobile'],function($,$jm) {
 
 			}
 		});
-		
+
+
+
+		//轮播动画
+		Slide.slideToggle({
+			$wrap:$('#slideimg_show'),
+			$slide_img:$('#slide_img'),
+			$btnwrap:$('#slideimg_btn'),
+			$slide_tipwrap:$('#slide_tips'),
+			minwidth:214,
+			winwidth:214,
+			isresize:false,
+			size:3,
+			times:5000,
+			eff_time:500,
+			btn_active:'slidebtn-active'
+		});
+
 
 	});
 });
