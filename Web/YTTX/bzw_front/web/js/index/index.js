@@ -4,10 +4,6 @@ require.config({
 	paths:{
 		'jquery':'lib/jquery/jquery-2.1.4.min',
 		'jquery_mobile':'lib/jquery/jquery-mobile.min',
-		'dialog':'lib/artDialog/dialog',
-		'rule':'widgets/rules',
-		'commonfn':'widgets/commonfn',
-		'validform':'plugins/validform',
 		'slide':'widgets/slide'
 	},
 	shim:{
@@ -16,16 +12,13 @@ require.config({
 		},
 		'jquery_mobile':{
 			deps:['jquery']
-		},
-		'validform':{
-			deps:['jquery']
 		}
 	}
 });
 
 
 /*程序入口*/
-require(['jquery','jquery_mobile','dialog','rule','commonfn','validform','slide'],function($,$jm,undefined,Rule,CommonFn,undefined,Slide) {
+require(['jquery','jquery_mobile','slide'],function($,$jm,Slide) {
 	$(function(){
 		
 		//dom对象引用
@@ -37,13 +30,9 @@ require(['jquery','jquery_mobile','dialog','rule','commonfn','validform','slide'
 			$screen_product=$('#screen_product'),
 			$screen_productcontent=$screen_product.find('ul'),
 			$screen_scene=$('#screen_scene'),
-			$screen_wechat=$('#screen_wechat'),
 			$screen_app=$('#screen_app'),
 			$screen_contact=$('#screen_contact'),
-			$screen_help=$('#screen_help'),
-			$help_btn=$('#help_btn'),
 			$help_detail=$('#help_detail'),
-			$help_detailshow=$help_detail.children(),
 			$win=$(window),
 			screen_pos=[{
 				node:$screen_index,
@@ -55,9 +44,6 @@ require(['jquery','jquery_mobile','dialog','rule','commonfn','validform','slide'
 				node:$screen_scene,
 				pos:0
 			},{
-				node:$screen_wechat,
-				pos:0
-			},{
 				node:$screen_app,
 				pos:0
 			},{
@@ -67,37 +53,7 @@ require(['jquery','jquery_mobile','dialog','rule','commonfn','validform','slide'
 			isMobile=false;
 
 
-		//dom 表单对象引用
-		var $contact_form=$('#contact_form'),
-				$username=$('#username'),
-				$useremail=$('#useremail'),
-				$remark=$('#remark'),
-				validobj=null,
-				dia=dialog();
 
-
-				
-				
-		//校验规则
-			var ruleobj=[{
-						ele:$username,
-						datatype:"*",
-						nullmsg: "名称不能为空",
-						errormsg: "",
-						sucmsg: ""
-					},{
-							ele:$useremail,
-							datatype:"selfemail",
-							nullmsg: "邮箱不能为空",
-							errormsg: "邮箱格式不规范",
-							sucmsg: ""
-					},{
-							ele:$remark,
-							datatype:"*",
-							nullmsg: "描述信息不能为空",
-							errormsg: "",
-							sucmsg: ""
-					}];
 
 
 		//初始化
@@ -111,10 +67,22 @@ require(['jquery','jquery_mobile','dialog','rule','commonfn','validform','slide'
 				var temptop=screen_pos[i]["node"].offset().top;
 				screen_pos[i]["pos"]=temptop;
 
-				var minpos=parseInt(pos - 150,0),
-					maxpos=parseInt(pos + 150,0);
+				var minpos=parseInt(pos - 350,0),
+					maxpos=parseInt(pos + 350,0);
 				if(temptop>=minpos&&temptop<=maxpos){
 					$header_item.eq(i).addClass('menu-active').siblings().removeClass('menu-active');
+					/*一屏动画*/
+					if(i===0){
+						$screen_indexcontent.addClass('index-contentactive');
+					}else{
+						$screen_indexcontent.removeClass('index-contentactive');
+					}
+					/*二屏动画*/
+					if(i===1){
+						$screen_productcontent.addClass('product-listactive');
+					}else{
+						$screen_productcontent.removeClass('product-listactive');
+					}
 				}
 			}
 
@@ -129,35 +97,6 @@ require(['jquery','jquery_mobile','dialog','rule','commonfn','validform','slide'
 			}else{
 				isMobile=true;
 			}
-
-
-			/*
-			 * 初始化帮助中心按钮
-			 * */
-
-			var helpheight=$help_btn.height();
-			if(parseInt(helpheight,10)<420){
-				$help_btn.addClass('help-wrap-support');
-			}else{
-				$help_btn.removeClass('help-wrap-support');
-			}
-
-
-			/**
-			 * 加载客户端下载链接(此处主要是动态加载)
-			 */
-			/*$.post("phoneversion/getPhoneversionLatest.do",function(result){
-				$.each(result,function(index,value){
-					if (value.os==1) {
-						//android
-						$(".android-btn").children("a").attr("href",value.url);
-					}else {
-						//ios
-						$(".iphone-btn").children("a").attr("href",value.url);
-					}
-				});
-
-			});*/
 
 
 
@@ -204,40 +143,6 @@ require(['jquery','jquery_mobile','dialog','rule','commonfn','validform','slide'
 		});
 
 
-		//监听帮助中心切换显示
-		$help_btn.on($.EventName.click,'li',function(){
-			var $this=$(this),
-				index=$this.index();
-
-			switch(index){
-				case 0:
-					$help_detailshow.eq(index).animate({
-						left:'0',
-						top:'0'
-					},500);
-					break;
-				case 1:
-					$help_detailshow.eq(index).animate({
-						right:'0',
-						top:'0'
-					},500);
-					break;
-				case 2:
-					$help_detailshow.eq(index).animate({
-						left:'0',
-						top:'0'
-					},500);
-					break;
-				case 3:
-					$help_detailshow.eq(index).animate({
-						right:'0',
-						top:'0'
-					},500);
-					break;
-			}
-		});
-
-
 		//监听菜单滚动条滚动
 		var count=0;
 		$win.on('scroll resize',function(e){
@@ -253,11 +158,23 @@ require(['jquery','jquery_mobile','dialog','rule','commonfn','validform','slide'
 
 						for(i;i<len;i++){
 							var pos=screen_pos[i]['pos'],
-								minpos=parseInt(pos - 150,0),
-								maxpos=parseInt(pos + 150,0);
+								minpos=parseInt(pos - 350,0),
+								maxpos=parseInt(pos + 350,0);
 
 							if(currenttop>=minpos&&currenttop<=maxpos){
 								$header_item.eq(i).addClass('menu-active').siblings().removeClass('menu-active');
+								/*一屏动画*/
+								if(i===0){
+									$screen_indexcontent.addClass('index-contentactive');
+								}else{
+									$screen_indexcontent.removeClass('index-contentactive');
+								}
+								/*二屏动画*/
+								if(i===1){
+									$screen_productcontent.addClass('product-listactive');
+								}else{
+									$screen_productcontent.removeClass('product-listactive');
+								}
 							}
 						}
 
@@ -287,158 +204,18 @@ require(['jquery','jquery_mobile','dialog','rule','commonfn','validform','slide'
 						var temptop=screen_pos[i]["node"].offset().top;
 						screen_pos[i]["pos"]=temptop;
 
-						var minpos=parseInt(pos - 150,0),
-							maxpos=parseInt(pos + 150,0);
+						var minpos=parseInt(pos - 350,0),
+							maxpos=parseInt(pos + 350,0);
 						if(temptop>=minpos&&temptop<=maxpos){
 							$header_item.eq(i).addClass('menu-active').siblings().removeClass('menu-active');
 						}
 					}
 
-					//设置不支持vh单位设备
-					var helpheight=$help_btn.height();
-					if(parseInt(helpheight,10)<420){
-						$help_btn.addClass('help-wrap-support');
-					}else{
-						$help_btn.removeClass('help-wrap-support');
-					}
 
 				}());
 
 			}
 		});
-
-
-		//监听帮助中心切换显示
-		$help_btn.on($.EventName.click,'li',function(){
-			var $this=$(this),
-				index=$this.index(),
-				times=500;
-
-			if(index===0||index===2){
-				$help_detailshow.eq(index).animate({
-					left:"0",
-					top:"0"
-				},times);
-			}else if(index===1||index===3){
-				$help_detailshow.eq(index).animate({
-					right:"0",
-					top:"0"
-				},times);
-			}
-
-		});
-
-		//监听帮助中心切换隐藏
-		$help_detail.on($.EventName.click,function(e){
-			var current= e.target,
-				nodename=current.nodeName.toLowerCase(),
-				$this,
-				index,
-				times=500;
-			//适配
-			if(nodename==='ul'){
-				return false;
-			}else if(nodename==='li'){
-				$this=$(current);
-				index=$this.index();
-			}else{
-				$this=$(current).closest('li');
-				index=$this.index();
-			}
-
-			//执行相关动画
-			switch(index){
-				case 0:
-					$this.animate({
-						left:"100%",
-						top:"100%"
-					},times);
-					break;
-				case 1:
-					$this.animate({
-						right:"100%",
-						top:"100%"
-					},times);
-					break;
-				case 2:
-					$this.animate({
-						left:"100%",
-						top:"-100%"
-					},times);
-					break;
-				case 3:
-					$this.animate({
-						right:"100%",
-						top:"-100%"
-					},times);
-					break;
-			}
-			//动画执行完成后10ms还原动画
-			if(index===0||index===1||index===2||index===3){
-				setTimeout(function(){
-					$this.removeAttr("style");
-				},parseInt(times + 10,10));
-			}
-		});
-
-
-
-		//表单校验
-		validobj=$contact_form.Validform({
-					ajaxPost: true,
-					datatype:{
-						'selfemail':function(gets,obj,curform,regxp){
-								return CommonFn.isEmail(gets);
-						}
-					},
-					beforeSubmit: function(curform) {
-						//拼合参数
-						var params={};
-						params['UserName']=$username.val();
-						params['UserEmail']=$useremail.val();
-						params['Remak']=$remark.val();
-						/*to do*/
-						//send ajax 填充具体业务逻辑
-						//开发时开启下部代码
-						$.ajax({
-								url:'../json/contact.json',
-								type:'post',
-								dataType:"json",
-								data:params,
-								success: function(data){
-										if(data.flag){									
-												dia.content('<span class="g-c-succ">保存成功</span>').show();
-												setTimeout(function(){
-													dia.close();
-												},3000);
-										}else{
-												dia.content('<span class="g-c-warn">保存失败</span>').show();
-												setTimeout(function(){
-													dia.close();
-												},3000);
-										}
-								},
-								error: function(){
-										dia.content('<span class="g-c-err">保存失败</span>').show();
-										setTimeout(function(){
-											dia.close();
-										},3000);
-								}
-						});
-						return false;
-					},
-					tiptype: function(msg,o) { 
-						var curtype=o.type,
-								curitem=o.obj;
-						if(curtype==1||curtype==3){
-								curitem.parent().next().text(msg);
-						}else if(curtype==2){
-								curitem.parent().next().text('');
-						}
-					}
-			});
-		validobj.addRule(ruleobj);
-
 
 
 

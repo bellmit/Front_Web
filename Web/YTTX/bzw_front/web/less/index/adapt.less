@@ -11,7 +11,7 @@
 	//头部适配
 	.header-wrap{
 		height:40px;
-		background:rgba(255,255,255,1);
+		background:rgba(244,244,244,1);
 	}
 	.header-content{
 		.layout-relative-base;
@@ -36,7 +36,7 @@
 		.header-menu{
 			.layout-fixedr-base(0,40px);
 			.layout-base(100px);
-			height:290px;
+			height:220px;
 			background:rgba(255,255,255,1);
 			display:none;
 			li{
@@ -96,77 +96,20 @@
 			display:none;
 		}
 	}
-	
-	
-	
-	//第四屏适配
-	.screen-self{
-		min-height:605px;
-	}
-	.screen-selfwrap{
-		height:450px !important;
-		div{
-			width:280px;
-		}
-		.selfitem1{
-			background-size:240px auto;
-		}
-		.selfitem2{
-			background-size:240px auto;
-		}
-		.selfitem3{
-			background-size:240px auto;
-		}
-	}
-	
-	
-	
-	//第六屏适配
-	.contact-forms{
-		padding:0;
-	}
-	.contact-info{
-		padding:0 0 0 10px;
-	}
-	.contact-item{
-		>input,
-		>textarea{
-			width:100%;
-		}
-	}
-	.contact-tip{
-		width:100%;
-		overflow:hidden;
-		.text-of;
-	}
-	
-	
-	//链接适配
-	.screen-links{
-		>ul{
-			max-width:1199px;
-			min-width:801px;
-		}
-	}
-	
-	//第七屏适配
-	.help-wrap{
-		li{
-			>div{
-				h2{
-					height:50px;
-					line-height:50px;
-					font-size:@font-size-base + 4;
-				}
-				&:after{
-					font-size:@font-size-base + 60;
-				}
+
+
+
+	//第四屏
+	.screen-app{
+		.app-wrap{
+			li{
+				.layout-base(49.5%);
 			}
 		}
 	}
 	
 	
-	
+
 	//底部信息适配
 	.screen-footer{
 		min-height:40px;
@@ -201,7 +144,7 @@
 	.index-codewrap{
 		float:none;
 		margin:127px auto 0 auto;
-		width:423px;
+		width:470px;
 		background-size:auto;
 	}
 	
@@ -230,8 +173,7 @@
 		}
 	}
 	
-	
-	
+
 	//第三屏适配
 	.scene-itemwrap{
 		li{
@@ -241,49 +183,8 @@
 			display:none;
 		}
 	}
-	
 
-	//第五屏适配
-	.screen-app{
-		height:600px;
-		>div{
-			background:none;
-		}
-		.app-wrap{
-				float:none;
-				margin:50px auto 0 auto;
-				width:600px;
-				div{
-					width:250px;
-				}
-		}
-	}
-	
-	
-	//第七屏适配
-	.help-wrap{
-		li{
-			>div{
-				h2{
-					height:40px;
-					line-height:40px;
-					font-size:@font-size-base;
-				}
-				&:after{
-					font-size:@font-size-base + 40;
-				}
-			}
-		}
-	}
-	
-	//链接适配
-	.screen-links{
-		>ul{
-			max-width:800px;
-			min-width:641px;
-		}
-	}
-	
+
 }
 
 ///max 640px
@@ -297,56 +198,22 @@
 
 	//第二屏适配
 	.product-list{
+		margin:150px 0 0 0;
 		background-size:120px auto;
 	}
 
-
-	//第三屏适配
-	.scene-itemwrap{
-
-	}
-	
-	
-	//第五屏适配
+	//第四屏
 	.screen-app{
-		height:780px;
+		height:650px;
 		.app-wrap{
-				width:300px;
-				height:700px;
-				div{
-					padding:60px 0 0 0;
-					height:300px;
-					width:300px;
-				}
-		}
-		.app-iphone{
-			background-size:auto 50px;
-		}
-		.app-android{
-			background-size:auto 50px;
-		}
-	}
-	
-	
-	//第七屏适配
-	.help-wrap{
-		li{
-			>div{
-				&:after{
-					font-size:@font-size-base + 30;
+			li{
+				.layout-base(49.5%);
+				img{
+					width:200px;
 				}
 			}
 		}
 	}
-	
-	//链接适配
-	.screen-links{
-		>ul{
-			max-width:640px;
-			min-width:481px;
-		}
-	}
-	
 }
 
 ///max 480px
@@ -373,6 +240,7 @@
 	//第二屏适配
 	.product-list{
 		background:none;
+		margin:180px 0 0 0;
 		li{
 			padding:0 10px;
 		}
@@ -398,20 +266,20 @@
 	}
 
 
-	
-	//第三屏适配
-
-	
-
-	
-	//链接适配
-	.screen-links{
-		>ul{
-			max-width:480px;
-			min-width:320px;
+	//第四屏
+	.screen-app{
+		height:600px;
+		.app-wrap{
+			padding:100px 0 50px 0;
+			li{
+				.layout-base(49.5%);
+				img{
+					width:150px;
+				}
+			}
 		}
 	}
-	
+
 }
 
 ///max 320px
