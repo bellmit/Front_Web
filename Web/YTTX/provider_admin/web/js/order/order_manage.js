@@ -4,7 +4,8 @@
 	'use strict';
 	$(function(){
 
-		var tabledfk=null,
+		var tableall=null,
+			tabledfk=null,
 			tableyfk=null,
 			tabledsh=null,
 			tabledpj=null,
@@ -27,17 +28,19 @@
 
 
 			/*dom引用和相关变量定义*/
-			var $admin_datadfk=$('#admin_datadfk'),
+			var $admin_dataall=$('#admin_dataall'),
+				$admin_datadfk=$('#admin_datadfk'),
 				$admin_datayfk=$('#admin_datayfk'),
 				$admin_datadsh=$('#admin_datadsh'),
 				$admin_datadpj=$('#admin_datadpj'),
-				$admin_datath=$('#admin_datadth'),
+				$admin_datath=$('#admin_datath'),
 				$search_orderState=$('#search_orderState'),
-				$goods_manage_wrapdfk=$('#goods_manage_wrapdfk')/*表格*/,
+				$goods_manage_wrapall=$('#goods_manage_wrapall'),
+				$goods_manage_wrapdfk=$('#goods_manage_wrapdfk'),
 				$goods_manage_wrapyfk=$('#goods_manage_wrapyfk'),
 				$goods_manage_wrapdsh=$('#goods_manage_wrapdsh'),
 				$goods_manage_wrapdpj=$('#goods_manage_wrapdpj'),
-				$goods_manage_wrapth=$('#goods_manage_wrapdth'),
+				$goods_manage_wrapth=$('#goods_manage_wrapth'),
 				module_id='yttx-order-manage'/*模块id，主要用于本地存储传值*/,
 				dia=dialog({
 					zIndex:2000,
@@ -50,6 +53,7 @@
 					},
 					cancel:false
 				})/*一般提示对象*/,
+				$admin_page_wrapall=$('#admin_page_wrapall'),
 				$admin_page_wrapdfk=$('#admin_page_wrapdfk')/*分页数据*/,
 				$admin_page_wrapyfk=$('#admin_page_wrapyfk'),
 				$admin_page_wrapdsh=$('#admin_page_wrapdsh'),
@@ -66,7 +70,12 @@
 
 
 			/*列表请求配置*/
-			var ordermanage_pagedfk={
+			var ordermanage_pageall={
+					page:1,
+					pageSize:10,
+					total:0
+				},
+				ordermanage_pagedfk={
 					page:1,
 					pageSize:10,
 					total:0
@@ -90,6 +99,170 @@
 					page:1,
 					pageSize:10,
 					total:0
+				},
+				ordermanage_configall={
+					$goods_manage_wrapall:$goods_manage_wrapall,
+					$admin_page_wrapall:$admin_page_wrapall,
+					config:{
+						processing:true,/*大消耗操作时是否显示处理状态*/
+						deferRender:true,/*是否延迟加载数据*/
+						autoWidth:true,/*是否*/
+						paging:false,
+						ajax:{
+							url:/*"../../json/goods/goods_list.json"*/"http://120.76.237.100:8081/yttx-providerbms-api/goodsorder/list",
+							dataType:'JSON',
+							method:'post',
+							dataSrc:function ( json ) {
+								var code=parseInt(json.code,10);
+								if(code!==0){
+									if(code===999){
+										/*清空缓存*/
+										public_tool.clear();
+										public_tool.clearCacheData();
+										public_tool.loginTips();
+									}
+									console.log(json.message);
+									return [];
+								}
+								var result=json.result;
+								/*设置分页*/
+								ordermanage_pageall.page=result.page;
+								ordermanage_pageall.pageSize=result.pageSize;
+								ordermanage_pageall.total=result.count;
+								/*分页调用*/
+								$admin_page_wrapall.pagination({
+									pageSize:ordermanage_pageall.pageSize,
+									total:ordermanage_pageall.total,
+									pageNumber:ordermanage_pageall.page,
+									onSelectPage:function(pageNumber,pageSize){
+										/*再次查询*/
+										var param=ordermanage_configall.config.ajax.data;
+										param.page=pageNumber;
+										param.pageSize=pageSize;
+										ordermanage_configall.config.ajax.data=param;
+										getColumnDataall(ordermanage_pageall,ordermanage_configall);
+									}
+								});
+								return result.list;
+							},
+							data:{
+								providerId:providerId,
+								userId:userId,
+								token:token,
+								page:1,
+								pageSize:10
+							}
+						},
+						info:false,
+						searching:true,
+						ordering:true,
+						columns: [
+							{
+								"data":"orderNumber"
+							},
+							{
+								"data":"list",
+								"render":function(data, type, full, meta ){
+									var goodsobj=data;
+									if(!goodsobj){
+										return '暂无商品信息';
+									}
+									var len=goodsobj.length;
+									if(len===0){
+										return '暂无商品信息';
+									}
+									var str='',
+										i=0;
+									for(i;i<len;i++){
+										var goodsitem=goodsobj[i];
+										str+='<ul data-id="'+parseInt(i + 1,10)+'" class="admin-order-subitem1">\
+											<li>商品名称:<div  class="g-c-gray6">'+goodsitem["goodsName"]+'</div></li>\
+											<li>'+goodsitem["attributeName"]+'</li>\
+											<li>批发价：<div class="g-c-red1">￥:'+public_tool.moneyCorrect(goodsitem["wholesalePrice"],12,true)[0]+'</div></li>\
+										</ul>';
+									}
+									return str;
+								}
+							},
+							{
+								"data":"totalQuantity"
+							},
+							{
+								"data":"orderTime"
+							},
+							{
+								"data":"customerName"
+							},
+							{
+								"data":"totalMoney",
+								"render":function(data, type, full, meta ){
+									return '<div class="g-c-red1">￥:'+public_tool.moneyCorrect(data,12,true)[0]+'</div>';
+								}
+							},
+							{
+								"data":"orderState",
+								"render":function(data, type, full, meta ){
+									var stauts=parseInt(data,10),
+										statusmap={
+											0:"待付款",
+											1:"取消订单",
+											3:"已付款",
+											5:"已配货",
+											7:"已发货",
+											9:"待收货",
+											11:"已收货",
+											13:"已完成",
+											20:"待评价",
+											21:"已评价",
+											30:"返修",
+											40:"退货"
+										},
+										str='';
+									if(stauts===0){
+										str='<div class="g-c-warn">'+statusmap[stauts]+'</div>';
+									}else if(stauts===1||stauts===30){
+										str='<div class="g-c-gray12">'+statusmap[stauts]+'</div>';
+									}else if(stauts===3||stauts===5||stauts===7||stauts===9){
+										str='<div class="g-c-gray10">'+statusmap[stauts]+'</div>';
+									}else if(stauts===11||stauts===20){
+										str='<div class="g-c-gray8">'+statusmap[stauts]+'</div>';
+									}else if(stauts===40){
+										str='<div class="g-c-red1">'+statusmap[stauts]+'</div>';
+									}else if(stauts===13||stauts===21){
+										str='<div class="g-c-info">'+statusmap[stauts]+'</div>';
+									}
+									return str;
+								}
+							},
+							{
+								"data":"id",
+								"render":function(data, type, full, meta ){
+									var id=parseInt(data,10),
+										btns='';
+
+									var status=parseInt(full.orderState,10);
+									if(status===3||status===5){
+										/*需要发货状态*/
+										btns+='<span data-action="send" data-id="'+id+'" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+											<i class="fa-arrow-up"></i>\
+											<span>发货</span>\
+											</span>';
+									}else if(status===7||status===9){
+										/*需要查看物流*/
+										btns+='<span data-action="logistics" data-id="'+id+'" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+											<i class="fa-truck"></i>\
+											<span>查看物流</span>\
+											</span>';
+									}
+									btns+='<span data-action="select" data-id="'+id+'" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+											<i class="fa-file-text-o"></i>\
+											<span>查看</span>\
+											</span>';
+									return btns;
+								}
+							}
+						]
+					}
 				},
 				ordermanage_configdfk={
 					$goods_manage_wrapdfk:$goods_manage_wrapdfk,
@@ -924,6 +1097,8 @@
 
 			/*初始化请求*/
 			/*请求待付款*/
+			getColumnDataall(ordermanage_pageall,ordermanage_configall);
+			/*请求待付款*/
 			getColumnDatadfk(ordermanage_pagedfk,ordermanage_configdfk);
 			/*请求已付款*/
 			getColumnDatayfk(ordermanage_pageyfk,ordermanage_configyfk);
@@ -999,52 +1174,55 @@
 			/*事件绑定*/
 			/*绑定查看，修改操作*/
 			var operate_item;
-			$goods_manage_wrapdfk.delegate('span','click',function(e){
-				e.stopPropagation();
-				e.preventDefault();
+			$.each([$goods_manage_wrapall,$goods_manage_wrapdfk,$goods_manage_wrapyfk,$goods_manage_wrapdsh,$goods_manage_wrapdpj,$goods_manage_wrapth],function () {
+				var own=this;
+				this.delegate('span','click',function(e){
+					e.stopPropagation();
+					e.preventDefault();
 
-				var target= e.target,
-					$this,
-					id,
-					action,
-					$tr;
+					var target= e.target,
+						$this,
+						id,
+						action,
+						$tr;
 
-				//适配对象
-				if(target.className.indexOf('btn')!==-1){
-					$this=$(target);
-				}else{
-					$this=$(target).parent();
-				}
-				$tr=$this.closest('tr');
-				id=$this.attr('data-id');
-				action=$this.attr('data-action');
-
-				if(action==='logistics'){
-					/*查看物流*/
-					window.open("http://www.kuaidi100.com");
-				}else if(action==='select'){
-					/*查看详情*/
-					public_tool.setParams('yttx-order-detail',{
-						id:id
-					});
-					location.href='yttx-order-detail.html';
-				}else if(action==='send'){
-					if(operate_item){
-						operate_item.removeClass('item-lighten');
-						operate_item=null;
+					//适配对象
+					if(target.className.indexOf('btn')!==-1){
+						$this=$(target);
+					}else{
+						$this=$(target).parent();
 					}
-					operate_item=$tr.addClass('item-lighten');
+					$tr=$this.closest('tr');
+					id=$this.attr('data-id');
+					action=$this.attr('data-action');
+
+					if(action==='logistics'){
+						/*查看物流*/
+						window.open("http://www.kuaidi100.com");
+					}else if(action==='select'){
+						/*查看详情*/
+						public_tool.setParams('yttx-order-detail',{
+							id:id
+						});
+						location.href='yttx-order-detail.html';
+					}else if(action==='send'){
+						if(operate_item){
+							operate_item.removeClass('item-lighten');
+							operate_item=null;
+						}
+						operate_item=$tr.addClass('item-lighten');
 
 
-					/*弹出框*/
-					$admin_sendid.val(id);
-					$show_send_wrap.modal('show',{
-						backdrop:'static'
-					});
-				}
+						/*弹出框*/
+						$admin_sendid.val(id);
+						$show_send_wrap.modal('show',{
+							backdrop:'static'
+						});
+					}
 
 
 
+				});
 			});
 
 
@@ -1053,36 +1231,47 @@
 				var $this=$(this),
 					type=$this.attr('data-value');
 
+				$this.addClass('g-c-bs-info active').siblings().removeClass('g-c-bs-info active');
 				if(type===''){
+					$admin_dataall.removeClass('g-d-hidei');
+					$admin_datadfk.addClass('g-d-hidei');
+					$admin_datayfk.addClass('g-d-hidei');
+					$admin_datadsh.addClass('g-d-hidei');
+					$admin_datadpj.addClass('g-d-hidei');
+					$admin_datath.addClass('g-d-hidei');
 					return false;
 				}else{
 					type=parseInt(type,10);
-					$this.addClass('active').siblings().removeClass('active');
 					if(type===0){
+						$admin_dataall.addClass('g-d-hidei');
 						$admin_datadfk.removeClass('g-d-hidei');
 						$admin_datayfk.addClass('g-d-hidei');
 						$admin_datadsh.addClass('g-d-hidei');
 						$admin_datadpj.addClass('g-d-hidei');
 						$admin_datath.addClass('g-d-hidei');
 					}else if(type===3){
+						$admin_dataall.addClass('g-d-hidei');
 						$admin_datadfk.addClass('g-d-hidei');
 						$admin_datayfk.removeClass('g-d-hidei');
 						$admin_datadsh.addClass('g-d-hidei');
 						$admin_datadpj.addClass('g-d-hidei');
 						$admin_datath.addClass('g-d-hidei');
 					}else if(type===9){
+						$admin_dataall.addClass('g-d-hidei');
 						$admin_datadfk.addClass('g-d-hidei');
 						$admin_datayfk.addClass('g-d-hidei');
 						$admin_datadsh.removeClass('g-d-hidei');
 						$admin_datadpj.addClass('g-d-hidei');
 						$admin_datath.addClass('g-d-hidei');
 					}else if(type===20){
+						$admin_dataall.addClass('g-d-hidei');
 						$admin_datadfk.addClass('g-d-hidei');
 						$admin_datayfk.addClass('g-d-hidei');
 						$admin_datadsh.addClass('g-d-hidei');
 						$admin_datadpj.removeClass('g-d-hidei');
 						$admin_datath.addClass('g-d-hidei');
 					}else if(type===40){
+						$admin_dataall.addClass('g-d-hidei');
 						$admin_datadfk.addClass('g-d-hidei');
 						$admin_datayfk.addClass('g-d-hidei');
 						$admin_datadsh.addClass('g-d-hidei');
@@ -1176,7 +1365,18 @@
 											/*关闭弹窗*/
 											$show_send_wrap.modal('hide');
 											/*重新获取数据*/
+											/*请求待付款*/
+											getColumnDataall(ordermanage_pageall,ordermanage_configall);
+											/*请求待付款*/
 											getColumnDatadfk(ordermanage_pagedfk,ordermanage_configdfk);
+											/*请求已付款*/
+											getColumnDatayfk(ordermanage_pageyfk,ordermanage_configyfk);
+											/*请求待收货*/
+											getColumnDatadsh(ordermanage_pagedsh,ordermanage_configdsh);
+											/*请求待评价*/
+											getColumnDatadpj(ordermanage_pagedpj,ordermanage_configdpj);
+											/*请求退货*/
+											getColumnDatath(ordermanage_pageth,ordermanage_configth);
 										}
 									},2000);
 								}).fail(function(resp){
@@ -1205,6 +1405,14 @@
 
 
 		/*获取数据*/
+		/*待付款*/
+		function getColumnDataall(page,opt){
+			if(tableall===null){
+				tableall=opt.$goods_manage_wrapall.DataTable(opt.config);
+			}else{
+				tableall.ajax.config(opt.config.ajax).load();
+			}
+		}
 		/*待付款*/
 		function getColumnDatadfk(page,opt){
 			if(tabledfk===null){

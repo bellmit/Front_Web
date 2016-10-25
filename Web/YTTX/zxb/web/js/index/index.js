@@ -91,11 +91,14 @@
 			var i= 0,
 				len=screen_pos.length,
 				j= 0,
-				pos=$(window).scrollTop();
-
+				pos=$(window).scrollTop(),
+				unindex=0;
 
 
 			for(i;i<len;i++){
+				if(!screen_pos[i]){
+					continue;
+				}
 				var temptop=screen_pos[i]["node"].offset().top;
 
 				screen_pos[i]["pos"]=temptop;
@@ -126,7 +129,45 @@
 					}else{
 						$list2_wrap.removeClass('list2-active');
 					}
+				}else{
+					unindex++;
 				}
+			}
+			if(len===unindex){
+				i=0;
+				for(i;i<len;i++){
+					if(!screen_pos[i]){
+						continue;
+					}
+					minpos=parseInt(pos - 500,0);
+					maxpos=parseInt(pos + 500,0);
+					if(screen_pos[i]["pos"]>=minpos&&screen_pos[i]["pos"]<=maxpos){
+						$screen_item.eq(i).addClass('active').siblings().removeClass('active');
+
+						/*非第一屏则应用简略模式导航*/
+						if(!isMobile){
+							if(i===0){
+								$header_wrap.removeClass('header-scroll');
+							}else{
+								$header_wrap.addClass('header-scroll');
+							}
+						}else{
+							if(i===0){
+								$header_wrap.removeClass('header-scroll');
+							}else if($header_wrap.hasClass('header-scroll')){
+								$header_wrap.removeClass('header-scroll');
+							}
+						}
+
+						/*第二屏加载动画*/
+						if(i===1){
+							$list2_wrap.addClass('list2-active');
+						}else{
+							$list2_wrap.removeClass('list2-active');
+						}
+					}
+				}
+				unindex=0;
 			}
 
 
@@ -315,6 +356,14 @@
 			e.preventDefault();
 			var $this=$(this),
 				index=$this.index();
+
+			if(!screen_pos[index]){
+				var href=$this.attr('href');
+				if(href!==''){
+					location.href=href;
+				}
+				return false;
+			}
 					
 			/*滚动动画*/
 			if(index===0){
@@ -348,6 +397,9 @@
 							len=screen_pos.length;
 
 						for(i;i<len;i++){
+							if(!screen_pos[i]){
+								continue;
+							}
 							var pos=screen_pos[i]['pos'],
 								minpos=parseInt(pos - 350,0),
 								maxpos=parseInt(pos + 350,0);
@@ -390,6 +442,9 @@
 						j= 0,
 						pos=$win.scrollTop();
 					for(i;i<len;i++){
+						if(!screen_pos[i]){
+							continue;
+						}
 						var temptop=screen_pos[i]["node"].offset().top;
 						screen_pos[i]["pos"]=temptop;
 

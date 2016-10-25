@@ -29,6 +29,7 @@ require(['jquery','jquery_mobile'],function($,$jm) {
 			$screen_product=$('#screen_product'),
 			$screen_productcontent=$screen_product.find('ul'),
 			$screen_scene=$('#screen_scene'),
+			$screen_3d=$('#screen_3d'),
 			$screen_app=$('#screen_app'),
 			$screen_contact=$('#screen_contact'),
 			$help_detail=$('#help_detail'),
@@ -93,10 +94,11 @@ require(['jquery','jquery_mobile'],function($,$jm) {
 			var winwidth=$win.width();
 			if(winwidth>=1200){
 				isMobile=false;
+				$screen_3d.addClass('scene-itempc');
 			}else{
 				isMobile=true;
+				$screen_3d.removeClass('scene-itempc');
 			}
-
 
 
 		}());
@@ -108,7 +110,7 @@ require(['jquery','jquery_mobile'],function($,$jm) {
 			var $this=$(this),
 				index=$this.index();
 			if(isMobile){
-				$('html,body').animate({'scrollTop':screen_pos[index]['pos'] - 40 +'px'},500);
+				$('html,body').animate({'scrollTop':screen_pos[index]['pos'] - 50 +'px'},500);
 			}else{
 				$('html,body').animate({'scrollTop':screen_pos[index]['pos'] - 120 +'px'},500);
 			}
@@ -189,8 +191,10 @@ require(['jquery','jquery_mobile'],function($,$jm) {
 						$header_btn.removeClass('header-btnactive');
 						$header_menu.removeClass('g-d-showi');
 						isMobile=false;
+						$screen_3d.addClass('scene-itempc');
 					}else{
 						isMobile=true;
+						$screen_3d.removeClass('scene-itempc');
 					}
 
 

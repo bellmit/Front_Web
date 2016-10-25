@@ -145,21 +145,17 @@ body{
 
 //轮播图
 .part-slide{
-	.layout-relative-base;
-	float:left;
-	margin:127px 0 0 50px;
-	width:524px;
+	.layout-base(524px);
+	.layout-absolutelb-base(50px,0,10);
 	height:596px;
-	background:url(../images/screen_index_hand.png) left top no-repeat;
+	background:url(../images/screen_index_hand.png) left bottom no-repeat;
 }
 
 //二维码
 .index-codewrap{
-	.layout-float-base(470px,border-box,right);
-	.layout-relative-base(0,0,10);
-	margin:200px 50px 0 0;
+	.layout-base(470px);
+	.layout-absoluter-base(50px,100px,10);
 	height:437px;
-	display:block;
 	background:url(../images/screen_indexcode.png) center top no-repeat;
 	overflow: hidden;
 }
@@ -298,6 +294,32 @@ body{
 		.layout-base(33.33333%);
 		display: inline-block;
 		height:600px;
+	}
+	.scene-item{
+		.layout-relative-base;
+		margin:20px auto 0 auto;
+		width:280px;
+		height:480px;
+		.box-shadow-base(0 3px 10px 0 @color-gray3);
+		div{
+			.layout-absolutel-base;
+			.layout-base;
+			padding:40px 40px;
+			height:100%;
+			background:#f4f4f4;
+			overflow:hidden;
+			img{
+				width:100%;
+				height:100%;
+			}
+		}
+		.scene-itemfront{
+			z-index:10;
+		}
+	}
+}
+.scene-itempc{
+	li{
 		.perspective-base(800px);
 		.perspective-origin-base;
 		cursor: pointer;
@@ -312,27 +334,9 @@ body{
 		}
 	}
 	.scene-item{
-		.layout-relative-base;
 		.transition-base(all .6s linear .2s);
-		margin:20px auto 0 auto;
-		width:280px;
-		height:480px;
-		.box-shadow-base(0 3px 10px 0 @color-gray3);
 		div{
 			.transition-base(all .1s linear .4s);
-			.layout-absolutel-base;
-			.layout-base;
-			padding:40px 40px;
-			height:100%;
-			background:#f4f4f4;
-			overflow:hidden;
-			img{
-				width:100%;
-				height:100%;
-			}
-		}
-		.scene-itemfront{
-			z-index:10;
 		}
 		.scene-itemback{
 			.transform-origin-base(center center);
