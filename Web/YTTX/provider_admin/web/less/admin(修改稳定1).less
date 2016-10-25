@@ -12,7 +12,7 @@
 	width:100%;
 	min-width:1000px;
 	height:100%;
-	min-height:800px;
+	min-height:700px;
 }
 .login-logo-wrap{
 	.layout-fixedl-base(10px,10px,200);
@@ -22,11 +22,10 @@
 	center center no-repeat;
 }
 .login-layout{
-	.layout-base;
+	width:100%;
 	min-width:1000px;
 	height:100%;
-	min-height:800px;
-	background:#f4f4f4;
+	min-height:700px;
 	&:after,
 	&::after{
 		content:'';
@@ -42,40 +41,11 @@
 	height:100%;
 	padding:200px 0 0 0;
 }
-.login-sideimage-wrap{
-	.layout-float-base(70%);
-	height:100%;
-}
-.login-sideimage-outer{
-	.layout-base;
-	height:100%;
-	display:table;
-}
-.login-sideimage-inner{
-	.layout-base;
-	height:100%;
-	display:table-cell;
-	vertical-align: middle;
-	text-align: center;
-	overflow: hidden;
-	img{
-		max-width:100%;
-		max-height:100%;
-		display: inline-block;
-	}
-}
 .login-main-wrap{
 	.layout-float-base(30%);
 	height:100%;
-	padding:80px 20px 20px 20px;
-	background:#f4f4f4;
-}
-.login-main-show{
-	.layout-base(400px);
-	height:600px;
-	margin:0 0 0 -200px;
+	padding:50px 20px 20px 20px;
 	background:@color-white;
-	.box-shadow-base(0 5px 15px 0 @color-gray12);
 }
 .login-header{
 	.login-icon{
@@ -93,26 +63,6 @@
 }
 .login-form-wrap{
 	.layout-base;
-}
-.admin-label-item{
-	.layout-relative-base;
-	input{
-		padding-left:50px;
-	}
-	.label-item-icon{
-		.layout-absolutel-base;
-		width:40px;
-		height:40px;
-	}
-	.label-item-usernameicon{
-		background:#e4e4e4 url('../images/login-username-icon.png') no-repeat center center;
-	}
-	.label-item-pwdicon{
-		background:#e4e4e4 url('../images/login-pwd-icon.png') no-repeat center center;
-	}
-	.label-item-validcodeicon{
-		background:#e4e4e4 url('../images/login-validcode-icon.png') no-repeat center center;
-	}
 }
 /*验证码*/
 .vc-txt-wrap{
@@ -141,7 +91,7 @@
 }
 .login-qrcode{
 	.layout-base;
-	height:180px;
+	height:200px;
 	div{
 		max-width:160px;
 		max-height: 160px;
