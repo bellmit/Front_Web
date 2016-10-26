@@ -125,7 +125,7 @@
                                 <div class="btn-group"  id="search_orderState">
                                     <span class="btn btn-white g-c-bs-info active g-w-number4" data-value="" >全部</span>
                                     <span class="btn btn-white g-w-number4" data-value="0" >待付款</span>
-                                    <span class="btn btn-white g-w-number4" data-value="3" >已付款</span>
+                                    <span class="btn btn-white g-w-number4" data-value="3" >待发货</span>
                                     <span class="btn btn-white g-w-number4" data-value="9" >待收货</span>
                                     <span class="btn btn-white g-w-number4" data-value="20" >待评价</span>
                                     <span class="btn btn-white g-w-number4" data-value="40" >退货</span>
@@ -398,7 +398,7 @@
                 <div class="modal-body">
                     <div class="blockquote admin-blockquote">
                         <form role="form"  method="post" id="admin_send_form" class="admin-form1 validate">
-                            <input class="g">
+                            <input class="g-d-hidei" id="admin_sendid" value="">
                             <div class="form-group">
                                 <label class="control-label">物流单号：</label>
                                 <input placeholder="请输入物流单号" data-validate="required" data-message-required="物流单号不能为空"  type="text" class="form-control" name="trackingNumber" id="admin_trackingNumber" />

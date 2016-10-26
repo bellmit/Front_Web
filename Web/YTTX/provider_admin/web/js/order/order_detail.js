@@ -56,7 +56,7 @@
 		/*获取数据*/
 		function getDetailData(config){
 			$.ajax({
-				url:"http://120.24.226.70:8081/yttx-providerbms-api/goodsorder/details",
+				url:"http://120.76.237.100:8081/yttx-providerbms-api/goodsorder/details",
 				dataType:'JSON',
 				async:false,
 				method:'post',
@@ -159,7 +159,7 @@
 							str='<div class="grid-list-group1">'+detailmap[i]+'：<p class="g-c-info">'+statusmap[stauts]+'</p></div>';
 						}
 					}else if(i==='freight'||i==='totalMoney'){
-						str+='<div class="grid-list-group1">'+detailmap[i]+'：<p class="g-c-red1">￥：'+public_tool.moneyCorrect(resp[i],12,true)[0]+'</p></div>';
+						str+='<div class="grid-list-group1">'+detailmap[i]+'：<p class="g-c-red1">￥：'+(public_tool.moneyCorrect(resp[i],12,true)[0]||'0.00')+'</p></div>';
 					}else if(i==='consigneePhone'||i==='customerPhone'){
 						str+='<div class="grid-list-group1">'+detailmap[i]+'：<p>'+public_tool.phoneFormat(resp[i])+'</p></div>';
 					}else{

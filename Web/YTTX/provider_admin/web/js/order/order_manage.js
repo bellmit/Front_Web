@@ -109,7 +109,7 @@
 						autoWidth:true,/*是否*/
 						paging:false,
 						ajax:{
-							url:/*"../../json/goods/goods_list.json"*/"http://120.24.226.70:8081/yttx-providerbms-api/goodsorder/list",
+							url:/*"../../json/goods/goods_list.json"*/"http://120.76.237.100:8081/yttx-providerbms-api/goodsorder/list",
 							dataType:'JSON',
 							method:'post',
 							dataSrc:function ( json ) {
@@ -273,7 +273,7 @@
 						autoWidth:true,/*是否*/
 						paging:false,
 						ajax:{
-							url:/*"../../json/goods/goods_list.json"*/"http://120.24.226.70:8081/yttx-providerbms-api/goodsorder/list",
+							url:/*"../../json/goods/goods_list.json"*/"http://120.76.237.100:8081/yttx-providerbms-api/goodsorder/list",
 							dataType:'JSON',
 							method:'post',
 							dataSrc:function ( json ) {
@@ -438,7 +438,7 @@
 						autoWidth:true,/*是否*/
 						paging:false,
 						ajax:{
-							url:/*"../../json/goods/goods_list.json"*/"http://120.24.226.70:8081/yttx-providerbms-api/goodsorder/list",
+							url:/*"../../json/goods/goods_list.json"*/"http://120.76.237.100:8081/yttx-providerbms-api/goodsorder/list",
 							dataType:'JSON',
 							method:'post',
 							dataSrc:function ( json ) {
@@ -603,7 +603,7 @@
 						autoWidth:true,/*是否*/
 						paging:false,
 						ajax:{
-							url:/*"../../json/goods/goods_list.json"*/"http://120.24.226.70:8081/yttx-providerbms-api/goodsorder/list",
+							url:/*"../../json/goods/goods_list.json"*/"http://120.76.237.100:8081/yttx-providerbms-api/goodsorder/list",
 							dataType:'JSON',
 							method:'post',
 							dataSrc:function ( json ) {
@@ -768,7 +768,7 @@
 						autoWidth:true,/*是否*/
 						paging:false,
 						ajax:{
-							url:/*"../../json/goods/goods_list.json"*/"http://120.24.226.70:8081/yttx-providerbms-api/goodsorder/list",
+							url:/*"../../json/goods/goods_list.json"*/"http://120.76.237.100:8081/yttx-providerbms-api/goodsorder/list",
 							dataType:'JSON',
 							method:'post',
 							dataSrc:function ( json ) {
@@ -933,7 +933,7 @@
 						autoWidth:true,/*是否*/
 						paging:false,
 						ajax:{
-							url:/*"../../json/goods/goods_list.json"*/"http://120.24.226.70:8081/yttx-providerbms-api/goodsorder/list",
+							url:/*"../../json/goods/goods_list.json"*/"http://120.76.237.100:8081/yttx-providerbms-api/goodsorder/list",
 							dataType:'JSON',
 							method:'post',
 							dataSrc:function ( json ) {
@@ -1112,7 +1112,7 @@
 
 			/*查询物流公司*/
 			$.ajax({
-					url:"http://120.24.226.70:8081/yttx-providerbms-api/shipping/express/list",
+					url:"http://120.76.237.100:8081/yttx-providerbms-api/shipping/express/list",
 					method: 'POST',
 					dataType: 'json',
 					data:{
@@ -1239,6 +1239,7 @@
 					$admin_datadsh.addClass('g-d-hidei');
 					$admin_datadpj.addClass('g-d-hidei');
 					$admin_datath.addClass('g-d-hidei');
+					/*getColumnDataall(ordermanage_pageall,ordermanage_configall);*/
 					return false;
 				}else{
 					type=parseInt(type,10);
@@ -1249,6 +1250,7 @@
 						$admin_datadsh.addClass('g-d-hidei');
 						$admin_datadpj.addClass('g-d-hidei');
 						$admin_datath.addClass('g-d-hidei');
+						/*getColumnDatadfk(ordermanage_pagedfk,ordermanage_configdfk);*/
 					}else if(type===3){
 						$admin_dataall.addClass('g-d-hidei');
 						$admin_datadfk.addClass('g-d-hidei');
@@ -1256,6 +1258,7 @@
 						$admin_datadsh.addClass('g-d-hidei');
 						$admin_datadpj.addClass('g-d-hidei');
 						$admin_datath.addClass('g-d-hidei');
+						/*getColumnDatayfk(ordermanage_pageyfk,ordermanage_configyfk);*/
 					}else if(type===9){
 						$admin_dataall.addClass('g-d-hidei');
 						$admin_datadfk.addClass('g-d-hidei');
@@ -1263,6 +1266,7 @@
 						$admin_datadsh.removeClass('g-d-hidei');
 						$admin_datadpj.addClass('g-d-hidei');
 						$admin_datath.addClass('g-d-hidei');
+						/*getColumnDatadsh(ordermanage_pagedsh,ordermanage_configdsh);*/
 					}else if(type===20){
 						$admin_dataall.addClass('g-d-hidei');
 						$admin_datadfk.addClass('g-d-hidei');
@@ -1270,6 +1274,7 @@
 						$admin_datadsh.addClass('g-d-hidei');
 						$admin_datadpj.removeClass('g-d-hidei');
 						$admin_datath.addClass('g-d-hidei');
+						/*getColumnDatadpj(ordermanage_pagedpj,ordermanage_configdpj);*/
 					}else if(type===40){
 						$admin_dataall.addClass('g-d-hidei');
 						$admin_datadfk.addClass('g-d-hidei');
@@ -1277,6 +1282,7 @@
 						$admin_datadsh.addClass('g-d-hidei');
 						$admin_datadpj.addClass('g-d-hidei');
 						$admin_datath.removeClass('g-d-hidei');
+						/*getColumnDatath(ordermanage_pageth,ordermanage_configth);*/
 					}
 				}
 			});
@@ -1344,7 +1350,7 @@
 										remark:$admin_remark.val()
 									});
 
-									config['url']="http://120.24.226.70:8081/yttx-providerbms-api/order/tracking/add";
+									config['url']="http://120.76.237.100:8081/yttx-providerbms-api/order/tracking/add";
 									config['data']=setdata;
 								}
 

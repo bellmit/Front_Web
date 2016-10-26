@@ -762,7 +762,7 @@
 									}else{
 										setdata['attrIventoryPrices']='['+$admin_inventory.val()+'#'+public_tool.trimSep($admin_wholesale_price.val(),',')+'#'+public_tool.trimSep($admin_retail_price.val(),',')+']';
 									}
-									config['url']="http://120.24.226.70:8081/yttx-providerbms-api/goods/addupdate";
+									config['url']="http://120.76.237.100:8081/yttx-providerbms-api/goods/addupdate";
 									config['data']=setdata;
 								}
 
@@ -855,7 +855,7 @@
 		/*获取数据*/
 		function getEditData(config){
 			$.ajax({
-				url:"http://120.24.226.70:8081/yttx-providerbms-api/goods/details",
+				url:"http://120.76.237.100:8081/yttx-providerbms-api/goods/details",
 				dataType:'JSON',
 				async:false,
 				method:'post',
@@ -1369,7 +1369,7 @@
 		function getToken(){
 			var result=null;
 			$.ajax({
-				url:'http://120.24.226.70:8081/yttx-providerbms-api/qiniu/token/get',
+				url:'http://120.76.237.100:8081/yttx-providerbms-api/qiniu/token/get',
 				async:false,
 				type:'post',
 				datatype:'json',
@@ -1618,43 +1618,45 @@
 		/*设置属性值*/
 		function setAttrData(list){
 			var count= 0,
-				j=0;
-			for(var i in list){
+				j=0,
+				key1=listone['key'],
+				key2=listtwo['key'],
+				$input1wrap=$(document.getElementById('attr_input_'+key1)),
+				$attrinput1=$input1wrap.find('input'),
+				attrsize1=$attrinput1.size(),
+				$input1btn=$(document.getElementById('attr_btn_'+key1)),
+				$input2wrap=$(document.getElementById('attr_input_'+key2)),
+				$attrinput2=$input2wrap.find('input'),
+				attr2size=$attrinput2.size(),
+				$input2btn=$(document.getElementById('attr_btn_'+key2));
 
+
+
+
+			for(var i in list){
 				/*组合数据一*/
-				var key1=listone['key'],
-					$input1wrap=$(document.getElementById('attr_input_'+key1)),
-					$attrinput1=$input1wrap.find('input'),
-					colorsize=$attrinput1.size();
-				count++;
 				/*如果条件输入框不够，即创建一个条件框*/
-				if($attrinput1.eq(colorsize-1).val()!==''&&count===colorsize){
-					$(document.getElementById('attr_btn_'+key1)).trigger('click');
+				if($attrinput1.eq(attrsize1-1).val()!==''&&count===attrsize1){
+					$input1btn.trigger('click');
 					$attrinput1=$input1wrap.find('input');
-					colorsize=$attrinput1.size();
+					attrsize1=$attrinput1.size();
 				}
 				var $input1=$attrinput1.eq(j);
 				$input1.val(listone['res'][i]);
 				$input1.trigger('focusout');
 
 
-
 				/*组合数据二*/
 				if(j===0){
 					var listitem=list[i],
 						len=listitem.length,
-						k= 0,
-						key2=listtwo['key'];
-
+						k= 0;
 					for(k;k<len;k++){
-						var $input2wrap=$(document.getElementById('attr_input_'+key2)),
-							$attrinput2=$input2wrap.find('input'),
-							rulesize=$attrinput2.size();
 						/*如果条件输入框不够，即创建一个条件框*/
-						if($attrinput2.eq(rulesize-1).val()!==''&&len===rulesize){
-							$(document.getElementById('attr_btn_'+key2)).trigger('click');
+						if($attrinput2.eq(attr2size-1).val()!==''&&len>attr2size){
+							$input2btn.trigger('click');
 							$attrinput2=$input2wrap.find('input');
-							rulesize=$attrinput2.size();
+							attr2size=$attrinput2.size();
 						}
 						var $input2=$attrinput2.eq(k);
 						$input2.val(listtwo['res'][listitem[k][5]]);
@@ -1662,6 +1664,7 @@
 					}
 				}
 				j++;
+				count++;
 			}
 		}
 

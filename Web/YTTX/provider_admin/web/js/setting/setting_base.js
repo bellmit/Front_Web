@@ -45,7 +45,7 @@
 				$admin_telephone_btn=$('#admin_telephone_btn'),
 				$admin_address_btn=$('#admin_address_btn'),
 				update_config={
-					url:"http://120.24.226.70:8081/yttx-providerbms-api/provider/basicset/update",
+					url:"http://120.76.237.100:8081/yttx-providerbms-api/provider/basicset/update",
 					dataType:'JSON',
 					method:'post',
 					data:{
@@ -57,7 +57,7 @@
 					}
 				},
 				logo_config={
-					url:"http://120.24.226.70:8081/yttx-providerbms-api/provider/logo/update",
+					url:"http://120.76.237.100:8081/yttx-providerbms-api/provider/logo/update",
 					dataType:'JSON',
 					method:'post',
 					data:{
@@ -281,7 +281,7 @@
 		/*获取*/
 		function getSettingData(){
 			$.ajax({
-				url:"http://120.24.226.70:8081/yttx-providerbms-api/provider/basicset/info",
+				url:"http://120.76.237.100:8081/yttx-providerbms-api/provider/basicset/info",
 				dataType:'JSON',
 				method:'post',
 				data:{
@@ -353,7 +353,7 @@
 		function getToken(){
 			var result=null;
 			$.ajax({
-				url:'http://120.24.226.70:8081/yttx-providerbms-api/qiniu/token/get',
+				url:'http://120.76.237.100:8081/yttx-providerbms-api/qiniu/token/get',
 				async:false,
 				type:'post',
 				datatype:'json',

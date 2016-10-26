@@ -49,7 +49,7 @@
 						autoWidth:true,/*是否*/
 						paging:false,
 						ajax:{
-							url:/*"../../json/goods/goods_list.json"*/"http://120.24.226.70:8081/yttx-providerbms-api/goodscomment/mycomment/list",
+							url:/*"../../json/goods/goods_list.json"*/"http://120.76.237.100:8081/yttx-providerbms-api/goodscomment/mycomment/list",
 							dataType:'JSON',
 							method:'post',
 							dataSrc:function ( json ) {

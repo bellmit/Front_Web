@@ -60,7 +60,7 @@
 						autoWidth:true,/*是否*/
 						paging:false,
 						ajax:{
-							url:/*"../../json/goods/goods_list.json"*/"http://120.24.226.70:8081/yttx-providerbms-api/goods/list",
+							url:/*"../../json/goods/goods_list.json"*/"http://120.76.237.100:8081/yttx-providerbms-api/goods/list",
 							dataType:'JSON',
 							method:'post',
 							dataSrc:function ( json ) {
@@ -327,7 +327,7 @@
 						var self=this;
 
 						$.ajax({
-								url:"http://120.24.226.70:8081/yttx-providerbms-api/goods/delete",
+								url:"http://120.76.237.100:8081/yttx-providerbms-api/goods/delete",
 								method: 'POST',
 								dataType: 'json',
 								data:{
@@ -387,7 +387,7 @@
 
 					/*上架和下架*/
 					$.ajax({
-							url:"http://120.24.226.70:8081/yttx-providerbms-api/goods/status/update",
+							url:"http://120.76.237.100:8081/yttx-providerbms-api/goods/status/update",
 							method: 'POST',
 							dataType: 'json',
 							data:{
