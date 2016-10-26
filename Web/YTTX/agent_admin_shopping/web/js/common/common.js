@@ -13,6 +13,15 @@
 	public_tool.supportStorage=(function(){
 		return localStorage&&sessionStorage?true:false;
 	}());
+	//判断是否支持图片
+	public_tool.supportImage=(function(){
+		var wURL=window.URL;
+		if(wURL){
+			return typeof wURL.createObjectURL==='function'?true:false;
+		}else{
+			return false;
+		}
+	}());
 	//设置本地存储
 	public_tool.setParams=function(key,value,flag){
 		if(this.supportStorage){
@@ -473,6 +482,229 @@
 		}
 		return true;
 	};
+	/*是否是合法手机号*/
+	public_tool.isMobilePhone=function(str){
+		return /^(13[0-9]|15[012356789]|18[0-9]|14[57]|170)[0-9]{8}$/.test(this.trims(str))?true:false;
+	};
+	/**/
+	public_tool.isNum=function(str){
+		var self=this;
+		return /^[0-9]{0,}$/g.test(self.trims(str));
+	};
+	//自动补全纠错人民币(字符串,最大数位,是否可以返回为空)，返回一个数组['格式化后的数据',带小数点的未格式化数据]
+	public_tool.moneyCorrect=function(str,max,flag){
+		var self=this,
+			money=this.trimSep(str.toString(),','),
+			moneyarr,
+			len=0,
+			partz,
+			partx,
+			tempstr='';
+
+		money=this.trims(money);
+		if(money===''){
+			if(flag){
+				return ['',''];
+			}else{
+				return ['0.00','0.00'];
+			}
+		}
+		if(flag&&(parseInt(money * 100,10)===0)){
+			return ['',''];
+		}
+		if(money.lastIndexOf('.')!==-1){
+			moneyarr=money.split('.');
+			len=moneyarr.length;
+			if(len>2){
+				partz=moneyarr[len-2];
+				partx=moneyarr[len-1];
+			}else{
+				partz=moneyarr[0];
+				partx=moneyarr[1];
+			}
+			if(!self.isNum(partx)){
+				partx=partx.replace(/\D*/g,'');
+			}
+			if(partx.length==0){
+				partx='.00';
+			}else if(partx.length==1){
+				partx='.'+partx+'0';
+			}else if(partx.length>=2){
+				partx='.'+partx.slice(0,2);
+			}
+		}else{
+			partz=money;
+			partx='.00';
+		}
+		if(!self.isNum(partz)){
+			partz=partz.replace(/\D*/g,'');
+		}
+		tempstr=partz+partx;
+		var templen=partz.length;
+		if(templen>3){
+			var i=0,j=1;
+			partz=partz.split('').reverse();
+			for(i;i<templen;i++){
+				if(j%3==0&&j!=templen){
+					partz.splice(i,1,','+partz[i].toString());
+				}
+				j++;
+			}
+			partz=partz.reverse().join('');
+		}else if(templen==0){
+			partz='0';
+		}
+		if(partz.length>=2){
+			if(partz.charAt(0)=='0'||partz.charAt(0)==0){
+				partz=partz.slice(1);
+			}
+		}
+		if(max){
+			if(partz.indexOf(',')!==-1){
+				var filterlen=partz.length,
+					k= 0,
+					filtercount=0;
+				for(k;k<filterlen;k++){
+					if(partx[k]===','){
+						filtercount++;
+					}
+				}
+				partz=partz.slice(filtercount);
+			}
+		}
+		return [partz+partx,tempstr];
+	};
+	//光标定位至具体位置(需定位元素,[元素中字符],定位位置，[是否在特定位置的前或者后])
+	public_tool.cursorPos=function(elem,str,index,flag){
+		var vals='',
+			len=0;
+		if(!str){
+			vals=elem.value||$(elem).val()||elem.innerHTML||$(elem).html();
+			len=vals.length;
+		}else{
+			len = str.lengt
+		}
+		var pos=Number(index);
+
+		if(isNaN(pos)){
+			pos=str.indexOf(index);
+		}
+
+		//elem.focus();
+		setTimeout(function() {
+			if (elem.setSelectionRange) {
+				if(!flag){
+					elem.setSelectionRange(pos,pos);
+				}else{
+					elem.setSelectionRange(pos+1,pos+1);
+				}
+			} else {
+				var range = elem.createTextRange();
+				range.moveStart("character", -len);
+				range.moveEnd("character", -len);
+				if(!flag){
+					range.moveStart("character", pos);
+				}else{
+					range.moveStart("character", pos+1);
+				}
+				range.moveEnd("character", 0);
+				range.select();
+			}
+		},0);
+	};
+	///金额加法
+	public_tool.moneyAdd=function(str1,str2){
+		var r1,
+			r2,
+			m,
+			c,
+			txt1=str1.toString(),
+			txt2=str2.toString();
+		try {
+			r1 = txt1.split(".")[1].length;
+		} catch (e) {
+			r1 = 0;
+		}
+		try {
+			r2 = txt2.split(".")[1].length;
+		} catch (e) {
+			r2 = 0;
+		}
+		c = Math.abs(r1 - r2);
+		m = Math.pow(10, Math.max(r1, r2))
+		if (c > 0) {
+			var cm = Math.pow(10, c);
+			if (r1 > r2) {
+				txt1 = Number(txt1.replace(/\.*/g,''));
+				txt2 = Number(txt2.replace(/\.*/g,'')) * cm;
+			}else{
+				txt1 = Number(txt1.replace(/\.*/g,'')) * cm;
+				txt2 = Number(txt2.replace(/\.*/g,''));
+			}
+		}else{
+			txt1 = Number(txt1.replace(/\.*/g,''));
+			txt2 = Number(txt2.toString().replace(/\.*/g,''));
+		}
+		return (txt1 + txt2) / m;
+	};
+	///金额减法
+	public_tool.moneySub=function(str1,str2){
+		var r1,
+			r2,
+			m,
+			n;
+		try{
+			r1=str1.toString().split(".")[1].length;
+		}catch(e){
+			r1=0;
+		}
+		try{
+			r2=str2.toString().split(".")[1].length;
+		}catch(e){
+			r2=0;
+		}
+		m=Math.pow(10,Math.max(r1,r2));
+		n=(r1>=r2)?r1:r2;
+		return ((str1*m-str2*m)/m).toFixed(n);
+	};
+	///金额乘法
+	public_tool.moneyMul=function(str1,str2){
+		var m = 0,
+			s1 = str1.toString(),
+			s2 = str2.toString();
+		try {
+			m += s1.split(".")[1].length;
+		} catch (e) {
+			m+=0;
+		}
+		try {
+			m += s2.split(".")[1].length;
+		} catch (e) {
+			m+=0;
+		}
+		return Number(s1.replace(/\.*/g,'')) * Number(s2.replace(/\.*/g,'')) / Math.pow(10, m);
+	};
+	///金额除法
+	public_tool.moneyDiv=function(str1,str2){
+		var t1=0,
+			t2=0,
+			r1,
+			r2,
+			txt1=str1.toString(),
+			txt2=str2.toString();
+		try{
+			t1=txt1.split(".")[1].length;
+		}catch(e){}
+		try{
+			t2=txt2.split(".")[1].length;
+		}catch(e){}
+		r1=Number(txt1.replace(/\.*/g,''));
+		r2=Number(txt1.replace(/\.*/g,''));
+		return (r1/r2)*Math.pow(10,t2-t1);
+	};
+
+
+
 
 
 	/*左侧菜单导航*/
