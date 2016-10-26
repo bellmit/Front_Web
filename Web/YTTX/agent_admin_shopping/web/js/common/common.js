@@ -718,61 +718,53 @@
 			"module":"",
 			"modid":"0"
 		},
-		"36":{
+		"62":{
 			"name":"系统管理",
 			"code":"admin",
 			"match":"-admin-",
 			"class":"menu-ux-admin",
 			"module":"admin",
-			"modid":"36"
+			"modid":"62"
 		},
-		"41":{
-			"name":"服务站管理",
-			"code":"servicestation",
-			"match":"-service-station-",
+		"67":{
+			"name":"公告管理",
+			"code":"announcement",
+			"match":"-announcement-",
 			"class":"menu-ux-serve",
-			"module":"servicestation",
-			"modid":"41"
+			"module":"announcement",
+			"modid":"67"
 		},
-		"47":{
+		"71":{
 			"name":"代理商管理",
 			"code":"agent",
 			"match":"-agent-",
 			"class":"menu-ux-agent",
 			"module":"agent",
-			"modid":"47"
+			"modid":"71"
 		},
-		"54":{
-			"name":"物流管理",
-			"code":"logistics",
-			"match":"-logistics-",
+		"75":{
+			"name":"业务员管理",
+			"code":"salesman",
+			"match":"-salesman-",
 			"class":"menu-ux-logistics",
-			"module":"logistics",
-			"modid":"54"
+			"module":"salesman",
+			"modid":"75"
 		},
-		"52":{
-			"name":"销售管理",
-			"code":"sales",
-			"match":"-sales-",
+		"79":{
+			"name":"商户管理",
+			"code":"merchant",
+			"match":"-merchant-",
 			"class":"menu-ux-shop",
-			"module":"sales",
-			"modid":"52"
+			"module":"merchant",
+			"modid":"79"
 		},
-		"59":{
-			"name":"三级分销管理",
-			"code":"distributor",
-			"match":"-distributor",
-			"class":"menu-ux-distribution",
-			"module":"distributor",
-			"modid":"59"
-		},
-		"56":{
+		"83":{
 			"name":"财务管理",
 			"code":"finance",
 			"match":"-finance-",
 			"class":"menu-ux-finance",
 			"module":"finance",
-			"modid":"56"
+			"modid":"83"
 		}
 	};
 	/*路由映射*/
@@ -888,9 +880,10 @@
 
 		/*检测是否改变了地址，且登陆地址和请求地址不一致*/
 		if(!self.validLogin()){
-			self.clear();
-			self.clearCacheData();
-			self.loginTips();
+			self.loginTips(function () {
+				self.clear();
+				self.clearCacheData();
+			});
 			return false;
 		}
 
@@ -1451,13 +1444,14 @@
 				return true;
 			}else{
 				/*清除缓存*/
-				self.clear();
-				self.clearCacheData();
-				self.loginTips();
+				self.loginTips(function () {
+					self.clear();
+					self.clearCacheData();
+				});
 				return false;
 			}
 		}else{
-			self.loginTips();
+			self.loginTips(function () {});
 			return false;
 		}
 		return false;
@@ -1525,14 +1519,19 @@
 			isindex=self.routeMap.isindex,
 			module=self.routeMap.module;
 
-		/*清除所有记录*/
-		self.clear();
-		self.clearCacheData();
+
 
 		/*根据路径跳转*/
 		if(istips){
-			self.loginTips();
+			self.loginTips(function () {
+				/*清除所有记录*/
+				self.clear();
+				self.clearCacheData();
+			});
 		}else {
+			/*清除所有记录*/
+			self.clear();
+			self.clearCacheData();
 			if(isindex){
 				location.href='account/login.html';
 			}else{
@@ -1566,7 +1565,7 @@
 		};
 	};
 	/*跳转提示*/
-	public_tool.loginTips=function(){
+	public_tool.loginTips=function(fn){
 		var self=this;
 
 		/*如果没有登陆则提示跳转至登陆页*/
@@ -1574,7 +1573,6 @@
 		public_vars.$page_support.eq(1).addClass('page-support-active');
 		var count= 2,
 				tipid=null;
-
 
 			public_vars.$goto_login.html(count);
 			tipid=setInterval(function(){
@@ -1587,8 +1585,20 @@
 					count= 5;
 					/*跳转到登陆位置*/
 					if(self.routeMap.isindex){
+						if(typeof fn==='function'){
+							fn.call();
+						}else{
+							self.clear();
+							self.clearCacheData();
+						}
 						location.href='account/login.html';
 					}else{
+						if(typeof fn==='function'){
+							fn.call();
+						}else{
+							self.clear();
+							self.clearCacheData();
+						}
 						location.href='../account/login.html';
 					}
 				}
