@@ -140,7 +140,7 @@
 										</ul>';
 									return str;
 								}
-							},
+							}/*,
 							{
 								"data":"replyTime",
 								"render":function(data, type, full, meta ){
@@ -151,7 +151,7 @@
 										</ul>';
 									return str;
 								}
-							}
+							}*/
 						]
 					}
 				};

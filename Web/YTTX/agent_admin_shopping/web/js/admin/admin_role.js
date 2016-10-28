@@ -25,11 +25,10 @@
 
 			/*权限调用*/
 			var powermap=public_tool.getPower(),
-				roleedit_power=public_tool.getKeyPower('角色修改',powermap),
-				roledelete_power=public_tool.getKeyPower('角色删除',powermap),
-				roleadd_power=public_tool.getKeyPower('角色增加',powermap),
-				memberadd_power=public_tool.getKeyPower('成员增加',powermap);
-
+				roleedit_power=public_tool.getKeyPower('mall-role-update',powermap),
+				roledelete_power=public_tool.getKeyPower('mall-role-delete',powermap),
+				roleadd_power=public_tool.getKeyPower('mall-role-add',powermap),
+				memberadd_power=public_tool.getKeyPower('mall-member-add',powermap);
 
 			/*dom引用和相关变量定义*/
 			var $admin_role_wrap=$('#admin_role_wrap')/*角色表格*/,
@@ -125,7 +124,7 @@
 							roleId:'',
 							selectedId:'',
 							adminId:decodeURIComponent(logininfo.param.adminId),
-							grade:decodeURIComponent(logininfo.param.grade),
+							grade:roletype,
 							token:decodeURIComponent(logininfo.param.token)
 						}
 				};
@@ -189,7 +188,7 @@
 							return {
 								roleId:param.roleId,
 								adminId:decodeURIComponent(logininfo.param.adminId),
-								grade:decodeURIComponent(logininfo.param.grade),
+								grade:roletype,
 								token:decodeURIComponent(logininfo.param.token)
 							};
 						}
@@ -429,7 +428,7 @@
 											self.close();
 										},2000);
 									});
-							},'admin_delete');
+							},module_id+'_delete');
 							//确认删除
 							dialogObj.dialog.content('<span class="g-c-bs-warning g-btips-warn">是否删除此数据？</span>').showModal();
 
@@ -884,7 +883,7 @@
 					});
 				});
 			}
-		};
+		}
 
 
 		/*重置至添加状态*/
@@ -908,12 +907,12 @@
 				obj.tab.addClass('g-d-hidei');
 				obj.item.addClass('g-d-hidei');
 			}
-		};
+		}
 
 		/*重置至更新状态*/
 		function resetUpdateState(obj,code){
 			obj.wrap.addClass('g-d-hidei');
-		};
+		}
 
 
 

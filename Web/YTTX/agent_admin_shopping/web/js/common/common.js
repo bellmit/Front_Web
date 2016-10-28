@@ -1341,10 +1341,14 @@
 		}
 		var ispower=false;
 		for(var i in list){
-			if(list[i]['funcName']===key){
-					ispower=true;
-					break;
+			if(list[i]['funcCode']===key||list[i]['funcCode'].indexOf(key)!==-1){
+				ispower=true;
+				break;
+			}else if(list[i]['funcName']===key||list[i]['funcName'].indexOf(key)!==-1){
+				ispower=true;
+				break;
 			}
+
 		}
 		return ispower;
 	};
