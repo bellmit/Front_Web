@@ -28,7 +28,9 @@
 				roleedit_power=public_tool.getKeyPower('mall-role-update',powermap),
 				roledelete_power=public_tool.getKeyPower('mall-role-delete',powermap),
 				roleadd_power=public_tool.getKeyPower('mall-role-add',powermap),
-				memberadd_power=public_tool.getKeyPower('mall-member-add',powermap);
+				memberadd_power=public_tool.getKeyPower('mall-member-add',powermap),
+				memberupdate_power=public_tool.getKeyPower('mall-member-update',powermap),
+				memberdelete_power=public_tool.getKeyPower('mall-member-delete',powermap);
 
 			/*dom引用和相关变量定义*/
 			var $admin_role_wrap=$('#admin_role_wrap')/*角色表格*/,
@@ -59,13 +61,33 @@
 				$show_detail_wrap=$('#show_detail_wrap')/*详情容器*/,
 				$show_detail_title=$('#show_detail_title')/*详情标题*/,
 				$show_detail_content=$('#show_detail_content')/*详情内容*/,
-				detail_map={
-					createTime:'创建时间',
+				detail_map1={
+					createTime:"创建时间",
+					createUserId:"创建者编号",
+					lastLoginIp:"最后登录IP",
+					lastLoginTime:"最后登录时间",
+					token:"令牌",
+					tokenInvalidTime:"令牌失效时间",
 					username:"昵称（登录名）",
 					password:"密码",
 					id:"序列号",
 					name:"用户名"
+				},
+				detail_map2={
+					description:"角色描述信息",
+					addTime:"创建时间",
+					addUserId:"添加者编号",
+					id:"编号",
+					isDelete:"是否删除状态",
+					isDisplay:"是否显示状态",
+					lastUpdate:"最后更新时间",
+					name:"角色名称",
+					parentId:"上级或父亲",
+					roleCode:"角色编码",
+					type:"类型",
+					updateUserId:"更新者编号"
 				}/*详情映射*/;
+
 
 			/*表单对象*/
 			var $edit_cance_btn=$('#edit_cance_btn')/*编辑取消按钮*/,
@@ -153,9 +175,10 @@
 						if(code!==0){
 							if(code===999){
 								/*清空缓存*/
-								public_tool.clear();
-								public_tool.clearCacheData();
-								public_tool.loginTips();
+								public_tool.loginTips(function(){
+									public_tool.clear();
+									public_tool.clearCacheData();
+								});
 								return [];
 							}
 							console.log(json.message);
@@ -218,6 +241,11 @@
 									 <span>修改</span>\
 									 </span>';
 								}
+								btns+='<span data-action="detail" data-id="'+id+'" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+									 <i class="fa-file-text-o"></i>\
+									 <span>查看</span>\
+									 </span>';
+
 								btns+='<span data-action="select" data-id="'+id+'" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 									 <i class="fa-group"></i>\
 									 <span>成员</span>\
@@ -271,7 +299,7 @@
 								btns='';
 
 							/*修改*/
-							if(typeof powermap[535]!=='undefined'){
+							if(memberupdate_power){
 								btns+='<span data-id="'+id+'" data-action="update" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 									 <i class="fa-pencil"></i>\
 									 <span>修改</span>\
@@ -280,7 +308,7 @@
 
 
 							/*删除*/
-							if(typeof powermap[536]!=='undefined'){
+							if(memberdelete_power){
 									btns+='<span  data-id="'+id+'" data-action="delete" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 									<i class="fa-trash"></i>\
 									<span>删除</span>\
@@ -288,7 +316,7 @@
 							}
 
 							btns+='<span data-id="'+id+'" data-action="select" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
-									 <i class="fa-group"></i>\
+									 <i class="fa-file-text-o"></i>\
 									 <span>查看</span>\
 									 </span>';
 
@@ -489,7 +517,7 @@
 									}
 								}
 							}
-						}else if(action==='select'){
+						}else if(action==='select'||action==='detail'){
 							/*查询操作*/
 							if(isrole){
 								/*添加高亮状态*/
@@ -498,75 +526,21 @@
 									operate_item=null;
 								}
 								operate_item=$tr.addClass('item-lighten');
-								$member_wrap.attr({'data-id':id});
-								if(member_config.url===''){
-									member_config.url='http://120.76.237.100:8081/mall-agentbms-api/sysusers';
+								if(action==='select'){
+									$member_wrap.attr({'data-id':id});
+									if(member_config.url===''){
+										member_config.url='http://120.76.237.100:8081/mall-agentbms-api/sysusers';
+									}
+									member_config.data.roleId=decodeURIComponent(logininfo.param.roleId);
+									member_config.data.selectedId=id;
+									table_member.ajax.config(member_config).load();
+								}else if(action==='detail'){
+									/*查看详情*/
+									showDetail(id,$tr,'detail');
 								}
-								member_config.data.roleId=decodeURIComponent(logininfo.param.roleId);
-								member_config.data.selectedId=id;
-								table_member.ajax.config(member_config).load();
 							}else{
 								/*查看详情*/
-								$.ajax({
-										url:"http://120.76.237.100:8081/mall-agentbms-api/sysuser/info",
-										dataType:'JSON',
-										method:'post',
-										data:{
-											"userId":id,
-											"adminId":decodeURIComponent(logininfo.param.adminId),
-											"token":decodeURIComponent(logininfo.param.token)
-										}
-									})
-									.done(function(resp){
-										var code=parseInt(resp.code,10);
-										if(code!==0){
-											console.log(resp.message);
-											dia.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"操作失败")+'</span>').show();
-											setTimeout(function () {
-												dia.close();
-											},2000);
-											return false;
-										}
-										/*是否是正确的返回数据*/
-										var list=resp.result,
-											str='',
-											istitle=false;
-
-										if(!$.isEmptyObject(list)){
-											for(var j in list){
-												if(typeof detail_map[j]!=='undefined'){
-													if(j==='name'||j==='Name'){
-														istitle=true;
-														$show_detail_title.html('"<span class="g-c-info">'+list[j]+'</span>"详情信息');
-													}else{
-														str+='<tr><th>'+detail_map[j]+':</th><td>'+list[j]+'</td></tr>';
-													}
-												}
-
-											};
-											if(!istitle){
-												$show_detail_title.html('成员详情信息');
-											}
-											/*添加高亮状态*/
-											if(operate_item){
-												operate_item.removeClass('item-lighten');
-												operate_item=null;
-											}
-											operate_item=$tr.addClass('item-lighten');
-											$show_detail_content.html(str);
-											$show_detail_wrap.modal('show',{backdrop:'static'});
-										}else{
-											$show_detail_content.html('');
-											$show_detail_title.html('');
-										}
-									})
-									.fail(function(resp){
-										console.log(resp.message);
-										dia.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"操作失败")+'</span>').show();
-										setTimeout(function () {
-											dia.close();
-										},2000);
-									});
+								showDetail(id,$tr,'select');
 							}
 						}
 					}
@@ -852,6 +826,111 @@
 			}
 
 
+
+		}
+
+
+		/*查看详情*/
+		function showDetail(id,$tr,type) {
+			if(!id){
+				return false;
+			}
+
+			var detailconfig;
+			if(type==='select'){
+				detailconfig={
+					url:"http://120.76.237.100:8081/mall-agentbms-api/sysuser/info",
+					dataType:'JSON',
+					method:'post',
+					data:{
+						"userId":id,
+						"adminId":decodeURIComponent(logininfo.param.adminId),
+						"token":decodeURIComponent(logininfo.param.token),
+						"grade":roletype
+					}
+				};
+			}else if(type==='detail'){
+				detailconfig={
+					url:"http://120.76.237.100:8081/mall-agentbms-api/role/info",
+					dataType:'JSON',
+					method:'post',
+					data:{
+						"roleId":id,
+						"adminId":decodeURIComponent(logininfo.param.adminId),
+						"token":decodeURIComponent(logininfo.param.token),
+						"grade":roletype
+					}
+				};
+			}
+
+			$.ajax(detailconfig)
+				.done(function(resp){
+					var code=parseInt(resp.code,10);
+					if(code!==0){
+						console.log(resp.message);
+						dia.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"操作失败")+'</span>').show();
+						setTimeout(function () {
+							dia.close();
+						},2000);
+						return false;
+					}
+					/*是否是正确的返回数据*/
+					var list=(function () {
+						if(type==='select'){
+							return resp.result;
+						}else if(type==='detail'){
+							return resp.result.role;
+						}
+						return {};
+					}()),
+						str='',
+						istitle=false;
+
+					if(!$.isEmptyObject(list)){
+						var detail_map={};
+						if(type==='select'){
+							detail_map=detail_map1;
+						}else if(type==='detail'){
+							detail_map=detail_map2;
+						}
+						for(var j in list){
+							if(typeof detail_map[j]!=='undefined'){
+								if(j==='name'||j==='Name'){
+									istitle=true;
+									$show_detail_title.html('"<span class="g-c-info">'+list[j]+'</span>"详情信息');
+								}else{
+									str+='<tr><th>'+detail_map[j]+':</th><td>'+list[j]+'</td></tr>';
+								}
+							}
+
+						};
+						if(!istitle){
+							if(type==='detail'){
+								$show_detail_title.html('角色详情信息');
+							}else if(type==='select'){
+								$show_detail_title.html('成员详情信息');
+							}
+						}
+						/*添加高亮状态*/
+						if(operate_item){
+							operate_item.removeClass('item-lighten');
+							operate_item=null;
+						}
+						operate_item=$tr.addClass('item-lighten');
+						$show_detail_content.html(str);
+						$show_detail_wrap.modal('show',{backdrop:'static'});
+					}else{
+						$show_detail_content.html('');
+						$show_detail_title.html('');
+					}
+				})
+				.fail(function(resp){
+					console.log(resp.message);
+					dia.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"操作失败")+'</span>').show();
+					setTimeout(function () {
+						dia.close();
+					},2000);
+				});
 
 		}
 

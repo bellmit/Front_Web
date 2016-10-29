@@ -1,6 +1,6 @@
 {
     "code": "0",
-    "message": "²éÑ¯³É¹¦",
+    "message": "æŸ¥è¯¢æˆåŠŸ",
     "result": {
         "menu": [
             {
@@ -13,85 +13,85 @@
                         "modCode": "yttx-admin-role",
                         "modId": 1,
                         "modLink": "yttx-admin-role",
-                        "modName": "½ÇÉ«"
+                        "modName": "è§’è‰²"
                     },
                     {
                         "modClass": "menu-ux-admin",
                         "modCode": "yttx-admin-permission",
                         "modId": 1,
                         "modLink": "yttx-admin-permission",
-                        "modName": "È¨ÏŞ"
+                        "modName": "æƒé™"
                     },
                     {
                         "modClass": "menu-ux-admin",
                         "modCode": "yttx-admin-setting",
                         "modId": 1,
                         "modLink": "yttx-admin-setting",
-                        "modName": "ÏµÍ³ÉèÖÃ"
+                        "modName": "ç³»ç»Ÿè®¾ç½®"
                     }
                 ],
                 "modLink": "yttx-admin",
-                "modName": "ÏµÍ³¹ÜÀí",
+                "modName": "ç³»ç»Ÿç®¡ç†",
                 "permitItem": [
                     {
                         "funcCode": "admin-message-management",
-                        "funcName": "ÏûÏ¢¹ÜÀí",
+                        "funcName": "æ¶ˆæ¯ç®¡ç†",
                         "isPermit": 1,
                         "modId": 1,
                         "prid": 1
                     },
                     {
                         "funcCode": "admin-role-add",
-                        "funcName": "½ÇÉ«Ôö¼Ó",
+                        "funcName": "è§’è‰²å¢åŠ ",
                         "isPermit": 1,
                         "modId": 1,
                         "prid": 2
                     },
                     {
                         "funcCode": "admin-role-update",
-                        "funcName": "½ÇÉ«ĞŞ¸Ä",
+                        "funcName": "è§’è‰²ä¿®æ”¹",
                         "isPermit": 1,
                         "modId": 1,
                         "prid": 3
                     },
                     {
                         "funcCode": "admin-role-delete",
-                        "funcName": "½ÇÉ«É¾³ı",
+                        "funcName": "è§’è‰²åˆ é™¤",
                         "isPermit": 1,
                         "modId": 1,
                         "prid": 4
                     },
                     {
                         "funcCode": "admin-setting",
-                        "funcName": "ÏµÍ³ÉèÖÃ",
+                        "funcName": "ç³»ç»Ÿè®¾ç½®",
                         "isPermit": 1,
                         "modId": 1,
                         "prid": 5
                     },
                     {
                         "funcCode": "admin-permission-management",
-                        "funcName": "È¨ÏŞ¹ÜÀí",
+                        "funcName": "æƒé™ç®¡ç†",
                         "isPermit": 1,
                         "modId": 1,
                         "prid": 6
                     },
                     {
                         "funcCode": "admin-member-add",
-                        "funcName": "³ÉÔ±Ôö¼Ó",
+                        "funcName": "æˆå‘˜å¢åŠ ",
                         "isPermit": 1,
                         "modId": 1,
                         "prid": 7
                     },
                     {
                         "funcCode": "admin-member-update",
-                        "funcName": "³ÉÔ±ĞŞ¸Ä",
+                        "funcName": "æˆå‘˜ä¿®æ”¹",
                         "isPermit": 1,
                         "modId": 1,
                         "prid": 8
                     },
                     {
                         "funcCode": "admin-member-delete",
-                        "funcName": "³ÉÔ±É¾³ı",
+                        "funcName": "æˆå‘˜åˆ é™¤",
                         "isPermit": 1,
                         "modId": 1,
                         "prid": 9
@@ -103,7 +103,7 @@
                 "modCode": "yttx-finance",
                 "modId": 35,
                 "modLink": "yttx-finance",
-                "modName": "²ÆÎñ¹ÜÀí"
+                "modName": "è´¢åŠ¡ç®¡ç†"
             },
             {
                 "modClass": "menu-ux-ad",
@@ -115,85 +115,85 @@
                         "modCode": "yttx-ad-article",
                         "modId": 6,
                         "modLink": "yttx-ad-article",
-                        "modName": "ÎÄÕÂ¹ã¸æ"
+                        "modName": "æ–‡ç« å¹¿å‘Š"
                     },
                     {
                         "modClass": "menu-ux-ad",
                         "modCode": "yttx-ad-articlepic",
                         "modId": 6,
                         "modLink": "yttx-ad-articlepic",
-                        "modName": "ÎÄÕÂ¹ã¸æÍ¼Æ¬"
+                        "modName": "æ–‡ç« å¹¿å‘Šå›¾ç‰‡"
                     },
                     {
                         "modClass": "menu-ux-ad",
                         "modCode": "yttx-ad-homepic",
                         "modId": 6,
                         "modLink": "yttx-ad-homepic",
-                        "modName": "Ê×Ò³Í¼Æ¬¹ã¸æ"
+                        "modName": "é¦–é¡µå›¾ç‰‡å¹¿å‘Š"
                     },
                     {
                         "modClass": "menu-ux-ad",
                         "modCode": "yttx-ad-servicepic",
                         "modId": 6,
                         "modLink": "yttx-ad-servicepic",
-                        "modName": "·şÎñÀ¸¹ã¸æÍ¼Æ¬"
+                        "modName": "æœåŠ¡æ å¹¿å‘Šå›¾ç‰‡"
                     }
                 ],
                 "modLink": "yttx-advertisement",
-                "modName": "¹ã¸æ¹ÜÀí",
+                "modName": "å¹¿å‘Šç®¡ç†",
                 "permitItem": [
                     {
                         "funcCode": "ad-article-shelves",
-                        "funcName": "ÎÄÕÂ¹ã¸æÉÏ¼Ü/ÏÂ¼Ü",
+                        "funcName": "æ–‡ç« å¹¿å‘Šä¸Šæ¶/ä¸‹æ¶",
                         "isPermit": 1,
                         "modId": 6,
                         "prid": 10
                     },
                     {
                         "funcCode": "ad-article-update",
-                        "funcName": "ÎÄÕÂ¹ã¸æĞŞ¸Ä",
+                        "funcName": "æ–‡ç« å¹¿å‘Šä¿®æ”¹",
                         "isPermit": 1,
                         "modId": 6,
                         "prid": 11
                     },
                     {
                         "funcCode": "ad-articlepic-shelves",
-                        "funcName": "ÎÄÕÂÍ¼Æ¬¹ã¸æÉÏ¼Ü/ÏÂ¼Ü",
+                        "funcName": "æ–‡ç« å›¾ç‰‡å¹¿å‘Šä¸Šæ¶/ä¸‹æ¶",
                         "isPermit": 1,
                         "modId": 6,
                         "prid": 12
                     },
                     {
                         "funcCode": "ad-articlepic-update",
-                        "funcName": "ÎÄÕÂÍ¼Æ¬¹ã¸æĞŞ¸Ä",
+                        "funcName": "æ–‡ç« å›¾ç‰‡å¹¿å‘Šä¿®æ”¹",
                         "isPermit": 1,
                         "modId": 6,
                         "prid": 13
                     },
                     {
                         "funcCode": "ad-homepic-shelves",
-                        "funcName": "Ê×Ò³Í¼Æ¬¹ã¸æÉÏ¼Ü/ÏÂ¼Ü",
+                        "funcName": "é¦–é¡µå›¾ç‰‡å¹¿å‘Šä¸Šæ¶/ä¸‹æ¶",
                         "isPermit": 1,
                         "modId": 6,
                         "prid": 14
                     },
                     {
                         "funcCode": "ad-homepic-update",
-                        "funcName": "Ê×Ò³Í¼Æ¬¹ã¸æĞŞ¸Ä",
+                        "funcName": "é¦–é¡µå›¾ç‰‡å¹¿å‘Šä¿®æ”¹",
                         "isPermit": 1,
                         "modId": 6,
                         "prid": 15
                     },
                     {
                         "funcCode": "ad-servicepic-shelves",
-                        "funcName": "·şÎñÀ¸Í¼Æ¬¹ã¸æÉÏ¼Ü/ÏÂ¼Ü",
+                        "funcName": "æœåŠ¡æ å›¾ç‰‡å¹¿å‘Šä¸Šæ¶/ä¸‹æ¶",
                         "isPermit": 1,
                         "modId": 6,
                         "prid": 16
                     },
                     {
                         "funcCode": "ad-servicepic-update",
-                        "funcName": "·şÎñÀ¸Í¼Æ¬¹ã¸æĞŞ¸Ä",
+                        "funcName": "æœåŠ¡æ å›¾ç‰‡å¹¿å‘Šä¿®æ”¹",
                         "isPermit": 1,
                         "modId": 6,
                         "prid": 17
@@ -210,32 +210,32 @@
                         "modCode": "yttx-admin-role",
                         "modId": 36,
                         "modLink": "yttx-admin-role",
-                        "modName": "½ÇÉ«"
+                        "modName": "è§’è‰²"
                     },
                     {
                         "modClass": "yttx-admin-members",
                         "modCode": "yttx-admin-members",
                         "modId": 36,
                         "modLink": "yttx-admin-members",
-                        "modName": "³ÉÔ±ÉèÖÃ"
+                        "modName": "æˆå‘˜è®¾ç½®"
                     },
                     {
                         "modClass": "yttx-admin-permissions",
                         "modCode": "yttx-admin-permissions",
                         "modId": 36,
                         "modLink": "yttx-admin-permissions",
-                        "modName": "È¨ÏŞÉèÖÃ"
+                        "modName": "æƒé™è®¾ç½®"
                     },
                     {
                         "modClass": "yttx-admin-others",
                         "modCode": "yttx-admin-others",
                         "modId": 36,
                         "modLink": "yttx-admin-others",
-                        "modName": "ÆäËüÉèÖÃ"
+                        "modName": "å…¶å®ƒè®¾ç½®"
                     }
                 ],
                 "modLink": "yttx-admin",
-                "modName": "ÏµÍ³¹ÜÀí"
+                "modName": "ç³»ç»Ÿç®¡ç†"
             },
             {
                 "modClass": "menu-ux-user",
@@ -247,64 +247,64 @@
                         "modCode": "yttx-user-account",
                         "modId": 11,
                         "modLink": "yttx-user-account",
-                        "modName": "ÕË»§¹ÜÀí"
+                        "modName": "è´¦æˆ·ç®¡ç†"
                     },
                     {
                         "modClass": "menu-ux-user",
                         "modCode": "yttx-user-horse",
                         "modId": 11,
                         "modLink": "yttx-user-horse",
-                        "modName": "Âí¼×ÓÃ»§"
+                        "modName": "é©¬ç”²ç”¨æˆ·"
                     },
                     {
                         "modClass": "yttx-user-trail",
                         "modCode": "yttx-user-trail",
                         "modId": 11,
                         "modLink": "yttx-user-trail",
-                        "modName": "¹ì¼£ÁĞ±í"
+                        "modName": "è½¨è¿¹åˆ—è¡¨"
                     }
                 ],
                 "modLink": "yttx-user",
-                "modName": "ÓÃ»§¹ÜÀí",
+                "modName": "ç”¨æˆ·ç®¡ç†",
                 "permitItem": [
                     {
                         "funcCode": "user-account-view",
-                        "funcName": "ÕÊºÅ²é¿´",
+                        "funcName": "å¸å·æŸ¥çœ‹",
                         "isPermit": 1,
                         "modId": 11,
                         "prid": 18
                     },
                     {
                         "funcCode": "user-account-update",
-                        "funcName": "ÕÊºÅĞŞ¸Ä",
+                        "funcName": "å¸å·ä¿®æ”¹",
                         "isPermit": 1,
                         "modId": 11,
                         "prid": 19
                     },
                     {
                         "funcCode": "user-account-delete",
-                        "funcName": "ÕÊºÅÉ¾³ı",
+                        "funcName": "å¸å·åˆ é™¤",
                         "isPermit": 1,
                         "modId": 11,
                         "prid": 20
                     },
                     {
                         "funcCode": "user-horse-add",
-                        "funcName": "Âí¼×ÓÃ»§Ìí¼Ó",
+                        "funcName": "é©¬ç”²ç”¨æˆ·æ·»åŠ ",
                         "isPermit": 1,
                         "modId": 11,
                         "prid": 21
                     },
                     {
                         "funcCode": "user-horse-update",
-                        "funcName": "Âí¼×ÓÃ»§ĞŞ¸Ä",
+                        "funcName": "é©¬ç”²ç”¨æˆ·ä¿®æ”¹",
                         "isPermit": 1,
                         "modId": 11,
                         "prid": 22
                     },
                     {
                         "funcCode": "user-horse-delete",
-                        "funcName": "Âí¼×ÓÃ»§É¾³ı",
+                        "funcName": "é©¬ç”²ç”¨æˆ·åˆ é™¤",
                         "isPermit": 1,
                         "modId": 11,
                         "prid": 23
@@ -321,18 +321,18 @@
                         "modCode": "yttx-service-station-add",
                         "modId": 41,
                         "modLink": "yttx-service-station-add",
-                        "modName": "Ìí¼Ó·şÎñÕ¾"
+                        "modName": "æ·»åŠ æœåŠ¡ç«™"
                     },
                     {
                         "modClass": "yttx-service-station-invoice",
                         "modCode": "yttx-service-station-invoice",
                         "modId": 41,
                         "modLink": "yttx-service-station-invoice",
-                        "modName": "·¢»õ"
+                        "modName": "å‘è´§"
                     }
                 ],
                 "modLink": "yttx-service-station",
-                "modName": "·şÎñÕ¾¹ÜÀí"
+                "modName": "æœåŠ¡ç«™ç®¡ç†"
             },
             {
                 "modClass": "yttx-agent",
@@ -344,11 +344,11 @@
                         "modCode": "yttx-agent-add",
                         "modId": 47,
                         "modLink": "yttx-agent-add",
-                        "modName": "Ìí¼Ó´úÀíÉÌ"
+                        "modName": "æ·»åŠ ä»£ç†å•†"
                     }
                 ],
                 "modLink": "yttx-agent",
-                "modName": "´úÀíÉÌ¹ÜÀí"
+                "modName": "ä»£ç†å•†ç®¡ç†"
             },
             {
                 "modClass": "yttx-content",
@@ -360,127 +360,127 @@
                         "modCode": "yttx-content-channel",
                         "modId": 19,
                         "modLink": "yttx-content-channel",
-                        "modName": "ÆµµÀÉèÖÃ"
+                        "modName": "é¢‘é“è®¾ç½®"
                     },
                     {
                         "modClass": "yttx-content-article",
                         "modCode": "yttx-content-article",
                         "modId": 19,
                         "modLink": "yttx-content-article",
-                        "modName": "ÎÄÕÂ¹ÜÀí"
+                        "modName": "æ–‡ç« ç®¡ç†"
                     },
                     {
                         "modClass": "yttx-content-comment",
                         "modCode": "yttx-content-comment",
                         "modId": 19,
                         "modLink": "yttx-content-comment",
-                        "modName": "ÆÀÂÛ¹ÜÀí"
+                        "modName": "è¯„è®ºç®¡ç†"
                     },
                     {
                         "modClass": "yttx-content-publish",
                         "modCode": "yttx-content-publish",
                         "modId": 19,
                         "modLink": "yttx-content-publish",
-                        "modName": "·¢²¼ÎÄÕÂ"
+                        "modName": "å‘å¸ƒæ–‡ç« "
                     },
                     {
                         "modClass": "yttx-content-message",
                         "modCode": "yttx-content-message",
                         "modId": 19,
                         "modLink": "yttx-content-message",
-                        "modName": "ÏûÏ¢¹ÜÀí"
+                        "modName": "æ¶ˆæ¯ç®¡ç†"
                     },
                     {
                         "modClass": "yttx-content-feedback",
                         "modCode": "yttx-content-feedback",
                         "modId": 19,
                         "modLink": "yttx-content-feedback",
-                        "modName": "ÓÃ»§·´À¡"
+                        "modName": "ç”¨æˆ·åé¦ˆ"
                     }
                 ],
                 "modLink": "yttx-content",
-                "modName": "ÄÚÈİ¹ÜÀí",
+                "modName": "å†…å®¹ç®¡ç†",
                 "permitItem": [
                     {
                         "funcCode": "content-article-view",
-                        "funcName": "ÎÄÕÂ²é¿´",
+                        "funcName": "æ–‡ç« æŸ¥çœ‹",
                         "isPermit": 1,
                         "modId": 19,
                         "prid": 24
                     },
                     {
                         "funcCode": "content-article-verify",
-                        "funcName": "ÎÄÕÂÉóºË",
+                        "funcName": "æ–‡ç« å®¡æ ¸",
                         "isPermit": 1,
                         "modId": 19,
                         "prid": 25
                     },
                     {
                         "funcCode": "content-article-stick",
-                        "funcName": "ÎÄÕÂÖÃ¶¥",
+                        "funcName": "æ–‡ç« ç½®é¡¶",
                         "isPermit": 1,
                         "modId": 19,
                         "prid": 26
                     },
                     {
                         "funcCode": "content-article-delete",
-                        "funcName": "ÎÄÕÂÉ¾³ı",
+                        "funcName": "æ–‡ç« åˆ é™¤",
                         "isPermit": 1,
                         "modId": 19,
                         "prid": 27
                     },
                     {
                         "funcCode": "content-article-update",
-                        "funcName": "ÎÄÕÂĞŞ¸Ä",
+                        "funcName": "æ–‡ç« ä¿®æ”¹",
                         "isPermit": 1,
                         "modId": 19,
                         "prid": 28
                     },
                     {
                         "funcCode": "content-article-extend",
-                        "funcName": "ÎÄÕÂÍÆ¹ã",
+                        "funcName": "æ–‡ç« æ¨å¹¿",
                         "isPermit": 1,
                         "modId": 19,
                         "prid": 29
                     },
                     {
                         "funcCode": "content-comment-view",
-                        "funcName": "ÆÀÂÛ²é¿´",
+                        "funcName": "è¯„è®ºæŸ¥çœ‹",
                         "isPermit": 1,
                         "modId": 19,
                         "prid": 30
                     },
                     {
                         "funcCode": "content-comment-verify",
-                        "funcName": "ÆÀÂÛÉóºË",
+                        "funcName": "è¯„è®ºå®¡æ ¸",
                         "isPermit": 1,
                         "modId": 19,
                         "prid": 31
                     },
                     {
                         "funcCode": "content-comment-spider",
-                        "funcName": "ÄÚÈİ×¥È¡",
+                        "funcName": "å†…å®¹æŠ“å–",
                         "isPermit": 1,
                         "modId": 19,
                         "prid": 32
                     },
                     {
                         "funcCode": "content-article-publish",
-                        "funcName": "·¢²¼ÎÄÕÂ",
+                        "funcName": "å‘å¸ƒæ–‡ç« ",
                         "isPermit": 1,
                         "modId": 19,
                         "prid": 33
                     },
                     {
                         "funcCode": "content-user-feedback",
-                        "funcName": "ÓÃ»§·´À¡",
+                        "funcName": "ç”¨æˆ·åé¦ˆ",
                         "isPermit": 1,
                         "modId": 19,
                         "prid": 34
                     },
                     {
                         "funcCode": "content-channel-setting",
-                        "funcName": "ÆµµÀÉèÖÃ",
+                        "funcName": "é¢‘é“è®¾ç½®",
                         "isPermit": 1,
                         "modId": 19,
                         "prid": 35
@@ -497,11 +497,11 @@
                         "modCode": "yttx-logistics-takedelivery",
                         "modId": 54,
                         "modLink": "yttx-logistics-takedelivery",
-                        "modName": "ÊÕ»õ"
+                        "modName": "æ”¶è´§"
                     }
                 ],
                 "modLink": "yttx-logistics",
-                "modName": "ÎïÁ÷¹ÜÀí"
+                "modName": "ç‰©æµç®¡ç†"
             },
             {
                 "modClass": "yttx-sales",
@@ -513,25 +513,25 @@
                         "modCode": "yttx-sales-subscribers",
                         "modId": 52,
                         "modLink": "yttx-sales-subscribers",
-                        "modName": "ÓÃ»§¹ÜÀí"
+                        "modName": "ç”¨æˆ·ç®¡ç†"
                     }
                 ],
                 "modLink": "yttx-sales",
-                "modName": "ÏúÊÛ¹ÜÀí"
+                "modName": "é”€å”®ç®¡ç†"
             },
             {
                 "modClass": "yttx-distributor",
                 "modCode": "yttx-distributor",
                 "modId": 59,
                 "modLink": "yttx-distributor",
-                "modName": "Èı¼¶·ÖÏú¹ÜÀí"
+                "modName": "ä¸‰çº§åˆ†é”€ç®¡ç†"
             },
             {
                 "modClass": "yttx-mall",
                 "modCode": "yttx-mall",
                 "modId": 27,
                 "modLink": "yttx-mall",
-                "modName": "ÉÌ³Ç¹ÜÀí"
+                "modName": "å•†åŸç®¡ç†"
             },
             {
                 "modClass": "yttx-finance",
@@ -543,18 +543,18 @@
                         "modCode": "yttx-finance-sales",
                         "modId": 56,
                         "modLink": "yttx-finance-sales",
-                        "modName": "ÏúÊÛ·ÖÈó"
+                        "modName": "é”€å”®åˆ†æ¶¦"
                     },
                     {
                         "modClass": "yttx-finance-swingcard",
                         "modCode": "yttx-finance-swingcard",
                         "modId": 56,
                         "modLink": "yttx-finance-swingcard",
-                        "modName": "Ë¢¿¨·ÖÈó"
+                        "modName": "åˆ·å¡åˆ†æ¶¦"
                     }
                 ],
                 "modLink": "yttx-finance",
-                "modName": "²ÆÎñ¹ÜÀí"
+                "modName": "è´¢åŠ¡ç®¡ç†"
             },
             {
                 "modClass": "yttx-service",
@@ -566,29 +566,29 @@
                         "modCode": "yttx-service-add",
                         "modId": 28,
                         "modLink": "yttx-service-add",
-                        "modName": "ĞÂÔö·şÎñ"
+                        "modName": "æ–°å¢æœåŠ¡"
                     }
                 ],
                 "modLink": "yttx-service",
-                "modName": "·şÎñÀ¸¹ÜÀí",
+                "modName": "æœåŠ¡æ ç®¡ç†",
                 "permitItem": [
                     {
                         "funcCode": "service-add",
-                        "funcName": "Ôö¼Ó·şÎñ",
+                        "funcName": "å¢åŠ æœåŠ¡",
                         "isPermit": 1,
                         "modId": 28,
                         "prid": 36
                     },
                     {
                         "funcCode": "service-update",
-                        "funcName": "ĞŞ¸Ä·şÎñ",
+                        "funcName": "ä¿®æ”¹æœåŠ¡",
                         "isPermit": 1,
                         "modId": 28,
                         "prid": 37
                     },
                     {
                         "funcCode": "service-delete",
-                        "funcName": "É¾³ı·şÎñ",
+                        "funcName": "åˆ é™¤æœåŠ¡",
                         "isPermit": 1,
                         "modId": 28,
                         "prid": 38
@@ -605,99 +605,99 @@
                         "modCode": "yttx-credit-strategyV",
                         "modId": 30,
                         "modLink": "yttx-credit-strategyV",
-                        "modName": "¹¥ÂÔÉóºË"
+                        "modName": "æ”»ç•¥å®¡æ ¸"
                     },
                     {
                         "modClass": "yttx-credit-strategyM",
                         "modCode": "yttx-credit-strategyM",
                         "modId": 30,
                         "modLink": "yttx-credit-strategyM",
-                        "modName": "¹¥ÂÔ¹ÜÀí"
+                        "modName": "æ”»ç•¥ç®¡ç†"
                     },
                     {
                         "modClass": "yttx-credit-consumeP",
                         "modCode": "yttx-credit-consumeP",
                         "modId": 30,
                         "modLink": "yttx-credit-consumeP",
-                        "modName": "Ïû·Ñ¼Æ»®"
+                        "modName": "æ¶ˆè´¹è®¡åˆ’"
                     },
                     {
                         "modClass": "yttx-credit-consumeV",
                         "modCode": "yttx-credit-consumeV",
                         "modId": 30,
                         "modLink": "yttx-credit-consumeV",
-                        "modName": "Ïû·Ñ¼Æ»®ÉóºË"
+                        "modName": "æ¶ˆè´¹è®¡åˆ’å®¡æ ¸"
                     }
                 ],
                 "modLink": "yttx-credit",
-                "modName": "ĞÅÓÃ¿¨¹ÜÀí",
+                "modName": "ä¿¡ç”¨å¡ç®¡ç†",
                 "permitItem": [
                     {
                         "funcCode": "credit-strategy-verify",
-                        "funcName": "¹¥ÂÔÉóºË",
+                        "funcName": "æ”»ç•¥å®¡æ ¸",
                         "isPermit": 1,
                         "modId": 30,
                         "prid": 39
                     },
                     {
                         "funcCode": "credit-strategy-add",
-                        "funcName": "¹¥ÂÔÌí¼Ó",
+                        "funcName": "æ”»ç•¥æ·»åŠ ",
                         "isPermit": 1,
                         "modId": 30,
                         "prid": 40
                     },
                     {
                         "funcCode": "credit-strategy-update",
-                        "funcName": "¹¥ÂÔĞŞ¸Ä",
+                        "funcName": "æ”»ç•¥ä¿®æ”¹",
                         "isPermit": 1,
                         "modId": 30,
                         "prid": 41
                     },
                     {
                         "funcCode": "credit-strategy-delete",
-                        "funcName": "¹¥ÂÔÉ¾³ı",
+                        "funcName": "æ”»ç•¥åˆ é™¤",
                         "isPermit": 1,
                         "modId": 30,
                         "prid": 42
                     },
                     {
                         "funcCode": "credit-account-manage",
-                        "funcName": "ÕÊµ¥¹ÜÀí",
+                        "funcName": "å¸å•ç®¡ç†",
                         "isPermit": 1,
                         "modId": 30,
                         "prid": 43
                     },
                     {
                         "funcCode": "credit-lifting-view",
-                        "funcName": "Ìá¶î²ßÂÔ²é¿´",
+                        "funcName": "æé¢ç­–ç•¥æŸ¥çœ‹",
                         "isPermit": 1,
                         "modId": 30,
                         "prid": 44
                     },
                     {
                         "funcCode": "credit-lifting-add",
-                        "funcName": "Ìá¶î²ßÂÔÌí¼Ó",
+                        "funcName": "æé¢ç­–ç•¥æ·»åŠ ",
                         "isPermit": 1,
                         "modId": 30,
                         "prid": 45
                     },
                     {
                         "funcCode": "credit-lifting-update",
-                        "funcName": "Ìá¶î²ßÂÔĞŞ¸Ä",
+                        "funcName": "æé¢ç­–ç•¥ä¿®æ”¹",
                         "isPermit": 1,
                         "modId": 30,
                         "prid": 46
                     },
                     {
                         "funcCode": "credit-lifting-delete",
-                        "funcName": "Ìá¶î²ßÂÔÉ¾³ı",
+                        "funcName": "æé¢ç­–ç•¥åˆ é™¤",
                         "isPermit": 1,
                         "modId": 30,
                         "prid": 47
                     },
                     {
                         "funcCode": "credit-lifting-verify",
-                        "funcName": "Ìá¶î²ßÂÔÉóºË",
+                        "funcName": "æé¢ç­–ç•¥å®¡æ ¸",
                         "isPermit": 1,
                         "modId": 30,
                         "prid": 48

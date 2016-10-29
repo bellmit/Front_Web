@@ -24,7 +24,7 @@
 
 			/*权限调用*/
 			var powermap=public_tool.getPower(),
-				permission_power=public_tool.getKeyPower('权限管理',powermap);
+				permission_power=public_tool.getKeyPower('目前没有权限分配',powermap);
 
 
 			/*dom引用和相关变量定义*/
@@ -41,7 +41,31 @@
 					},
 					cancel:false
 				})/*一般提示对象*/,
-				setting_header=[36,41,47,52,54,56,59]/*权限模块对应*/,
+				$operate_header=$('#operate_header'),
+				setting_header=(function () {
+					var poweritem=public_tool.getAllPower();
+					if(poweritem){
+						var powermap,
+							str='',
+							res=[];
+						for(var i in poweritem){
+							powermap=public_tool.menuMap[i];
+							if(typeof powermap!=='undefined'){
+								res.push(i);
+								str+='<th>'+powermap['name']+'</th>';
+							}
+						}
+						if(res.length!==0){
+							$(str).appendTo($operate_header.html(''));
+							return res;
+						}else{
+							$operate_header.html('');
+							return [];
+						}
+					}else{
+						return [];
+					}
+				}())/*权限模块对应*/,
 				$operate_setting=$('#operate_setting')/*查询数据展现容器*/;
 
 			/*权限请求配置*/
@@ -81,9 +105,10 @@
 						if(code!==0){
 							if(code===999){
 								/*清空缓存*/
-								public_tool.clear();
-								public_tool.clearCacheData();
-								public_tool.loginTips();
+								public_tool.loginTips(function(){
+									public_tool.clear();
+									public_tool.clearCacheData();
+								});
 								return [];
 							}
 							console.log(json.message);
