@@ -172,6 +172,61 @@
 		}
 		return res;
 	};
+	//弹窗确认
+	public_tool.sureDialog=function(){
+		if(!this.supportDia){
+			return null;
+		}
+
+		//弹窗口对象
+		var dia=dialog({
+			title:'温馨提示',
+			cancelValue:'取消',
+			okValue:'确定',
+			width:300,
+			cancel:function(){
+				var self=this;
+				self.close();
+				return false;
+			}
+		});
+		/*确认框类*/
+		function sureDialogFn() {
+			this.fn_cache={};
+		}
+
+		/*设置函数*/
+		sureDialogFn.prototype.setFn=function (fn,key) {
+			if(key&&typeof fn==='function'&&!this.fn_cache[key]){
+				this.fn_cache[key]=fn;
+			}
+		}
+		/*提示对象*/
+		sureDialogFn.prototype.show=function () {
+			dia.show();
+		}
+		/*提示对象*/
+		sureDialogFn.prototype.dialog=function (key) {
+			var own=this;
+			if(key){
+				dia.ok(function () {
+					for(var i in own.fn_cache){
+						if(i===key){
+							own.fn_cache[key].call(dia);
+							break;
+						}
+					}
+					return false;
+				});
+			}else{
+				dia.ok(function () {
+					return false;
+				});
+			}
+		}
+
+		return new sureDialogFn();
+	};
 
 
 
