@@ -24,7 +24,7 @@
 
 			/*权限调用*/
 			var powermap=public_tool.getPower(),
-				permission_power=public_tool.getKeyPower('目前没有权限分配',powermap);
+				permission_power=public_tool.getKeyPower('mall-permission-management',powermap);
 
 
 			/*dom引用和相关变量定义*/

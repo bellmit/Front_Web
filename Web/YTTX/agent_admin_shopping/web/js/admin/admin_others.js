@@ -48,15 +48,7 @@
 				$profit_aaa0=$('#profit_aaa0')/*AAA级*/,
 				$profit_a1=$('#profit_a1')/*A级*/,
 				$profit_aa1=$('#profit_aa1')/*AA级*/,
-				$profit_aaa1=$('#profit_aaa1')/*AAA级*/,
-				$profit_maxsales=$('#profit_maxsales'),
-				$profit_maxacq=$('#profit_maxacq'),
-				profit_maxsales=0,
-				profit_maxacq=0,
-				$profit_sumsales=$('#profit_sumsales'),
-				$profit_sumacq=$('#profit_sumacq'),
-				profit_sumsales=0,
-				profit_sumacq=0;
+				$profit_aaa1=$('#profit_aaa1')/*AAA级*/;
 
 
 			/*设置分润权限*/
@@ -112,7 +104,7 @@
 									if(platformProfit===''||parseInt(platformProfit * 1000,10)===0){
 										i=1;
 									}
-									$profit_a0.attr({
+									$profit_a1.attr({
 										'data-value':platformProfit
 									}).val(platformProfit);
 									break;
@@ -121,7 +113,7 @@
 									if(agentProfit===''||parseInt(agentProfit * 1000,10)===0){
 										i=2;
 									}
-									$profit_aa0.attr({
+									$profit_aa1.attr({
 										'data-value':agentProfit
 									}).val(agentProfit);
 									break;
@@ -130,7 +122,7 @@
 									if(storageProfit===''||parseInt(storageProfit * 1000,10)===0){
 										i=3;
 									}
-									$profit_aaa0.attr({
+									$profit_aaa1.attr({
 										'data-value':storageProfit
 									}).val(storageProfit);
 									break;
@@ -139,11 +131,11 @@
 
 						/*判断设置值是否符合实际*/
 						if(i===3){
-							$profit_edit_form0.attr({
+							$profit_edit_form1.attr({
 								'data-setting':''
 							});
 						}else{
-							$profit_edit_form0.attr({
+							$profit_edit_form1.attr({
 								'data-setting':'true'
 							});
 						}
@@ -158,7 +150,7 @@
 									if(agentProfit1===''||parseInt(agentProfit1 * 1000,10)===0){
 										j=1;
 									}
-									$profit_a1.attr({
+									$profit_a0.attr({
 										'data-value':agentProfit1
 									}).val(agentProfit1);
 									break;
@@ -167,7 +159,7 @@
 									if(agentProfit2===''||parseInt(agentProfit2 * 1000,10)===0){
 										j=2;
 									}
-									$profit_aa1.attr({
+									$profit_aa0.attr({
 										'data-value':agentProfit2
 									}).val(agentProfit2);
 									break;
@@ -176,7 +168,7 @@
 									if(agentProfit3===''||parseInt(agentProfit3 * 1000,10)===0){
 										j=3;
 									}
-									$profit_aaa1.attr({
+									$profit_aaa0.attr({
 										'data-value':agentProfit3
 									}).val(agentProfit3);
 									break;
@@ -185,11 +177,11 @@
 
 						/*判断设置值是否符合实际*/
 						if(j===3){
-							$profit_edit_form1.attr({
+							$profit_edit_form0.attr({
 								'data-setting':''
 							});
 						}else{
-							$profit_edit_form1.attr({
+							$profit_edit_form0.attr({
 								'data-setting':'true'
 							});
 						}
@@ -229,8 +221,10 @@
 						method: 'POST',
 						dataType: 'json',
 						data:{
-							adminId: decodeURIComponent(logininfo.param.adminId),
-							token: decodeURIComponent(logininfo.param.token)
+							Id:decodeURIComponent(logininfo.param.roleId),
+							adminId:decodeURIComponent(logininfo.param.adminId),
+							grade:decodeURIComponent(logininfo.param.grade),
+							token:decodeURIComponent(logininfo.param.token)
 						}
 					};
 
@@ -266,13 +260,11 @@
 									ele_aaa=$profit_aaa0.val();
 
 									/*规则通过后校验*/
-									config1['url']="http://120.76.237.100:8081/mall-agentbms-api/agent/profit/default";
+									config1['url']="http://120.76.237.100:8081/mall-agentbms-api/profit/agent/addupdate";
 									config1['data']= {
-										type:1,
 										agentProfit1: ele_a,
 										agentProfit2: ele_aa,
-										agentProfit3: ele_aaa,
-										topProfit:profit_maxsales
+										agentProfit3: ele_aaa
 									};
 								}else if(index===1){
 									config2= $.extend(true,{},defconfig);
@@ -280,12 +272,11 @@
 									ele_aa=$profit_aa1.val();
 									ele_aaa=$profit_aaa1.val();
 
-									config2['url']="http://120.76.237.100:8081/mall-agentbms-api/servicestation/profit/default";
+									config2['url']="http://120.76.237.100:8081/mall-agentbms-api/profit/platform/addupdate";
 									config2['data']= {
-										type:1,
-										distributorProfit1: ele_a,
-										distributorProfit2: ele_aa,
-										distributorProfit3: ele_aaa
+										platformProfit: ele_a,
+										agentProfit: ele_aa,
+										storageProfit: ele_aaa
 									};
 								}
 								var temp_a=parseInt(ele_a * 1000,10),
@@ -293,6 +284,12 @@
 									temp_aaa=parseInt(ele_aaa * 1000,10);
 
 								/*设置分润规则*/
+								console.log(ele_a);
+								console.log(ele_aa);
+								console.log(ele_aaa);
+								console.log(isNaN(temp_a));
+								console.log(isNaN(temp_aa));
+								console.log(isNaN(temp_aaa));
 								if(isNaN(temp_a)||isNaN(temp_aa)||isNaN(temp_aaa)){
 									dia.content('<span class="g-c-bs-warning g-btips-warn">分润设置数据非法值</span>').show();
 									return false;
@@ -325,7 +322,7 @@
 												},2000);
 
 											});
-									},'admin_profit');
+									},'admin_profitagent');
 									//确认修改
 									dialogObj.dialog.content('<span class="g-c-bs-warning g-btips-warn">您已经设置了此数据，是否真要重新设置？</span>').showModal();
 								}else{
@@ -380,7 +377,7 @@
 												},2000);
 
 											});
-									},'admin_profit');
+									},'admin_profitplatform');
 									//确认删除
 									dialogObj.dialog.content('<span class="g-c-bs-warning g-btips-warn">您已经设置了此数据，是否真要重新设置？</span>').showModal();
 								}else{
@@ -415,12 +412,12 @@
 
 				/*提交验证*/
 				$profit_edit_form0.validate(form_opt0);
-				$profit_edit_form2.validate(form_opt2);
+				$profit_edit_form1.validate(form_opt1);
 			}
 
 
 			/*绑定限制*/
-			$.each([$profit_a0,$profit_aa0,$profit_aaa0,$profit_a1,$profit_aa1,$profit_aaa1,$profit_a2,$profit_aa2,$profit_aaa2,$profit_a3,$profit_aa3,$profit_aaa3],function(){
+			$.each([$profit_a0,$profit_aa0,$profit_aaa0,$profit_a1,$profit_aa1,$profit_aaa1],function(){
 				this.on('keyup',function(){
 					var val=this.value.replace(/[^0-9*\-*^\.]/g,'');
 					if(val.indexOf('.')!==-1){
