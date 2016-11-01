@@ -9,7 +9,7 @@
 			/*菜单调用*/
 			var logininfo=public_tool.initMap.loginMap;
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
-				url:'http://120.24.226.70:8081/yttx-agentbms-api/module/menu',
+				url:'http://120.76.237.100:8081/mall-agentbms-api/module/menu',
 				async:false,
 				type:'post',
 				param:{
@@ -85,7 +85,7 @@
 
 			/*数据加载*/
 			var agent_config={
-				url:"http://120.24.226.70:8081/yttx-agentbms-api/agents/related",
+				url:"http://120.76.237.100:8081/mall-agentbms-api/agents/related",
 				dataType:'JSON',
 				method:'post',
 				dataSrc:function ( json ) {
@@ -93,9 +93,10 @@
 					if(code!==0){
 						if(code===999){
 							/*清空缓存*/
-							public_tool.clear();
-							public_tool.clearCacheData();
-							public_tool.loginTips();
+							public_tool.loginTips(function(){
+									public_tool.clear();
+									public_tool.clearCacheData();
+								});
 							return [];
 						}
 						console.log(json.message);
@@ -285,7 +286,7 @@
 				}else if(action==='select'){
 					/*查看*/
 					$.ajax({
-							url:"http://120.24.226.70:8081/yttx-agentbms-api/agent/view",
+							url:"http://120.76.237.100:8081/mall-agentbms-api/agent/view",
 							method: 'POST',
 							dataType: 'json',
 							data:{
@@ -410,7 +411,7 @@
 				}else if(action==='bind'){
 					/*绑定代理商请求数据*/
 					$.when($.ajax({
-						url:"http://120.24.226.70:8081/yttx-agentbms-api/servicestation/notbound/list",
+						url:"http://120.76.237.100:8081/mall-agentbms-api/servicestation/notbound/list",
 						method: 'POST',
 						dataType: 'json',
 						data:{
@@ -419,7 +420,7 @@
 							"token":decodeURIComponent(logininfo.param.token)
 						}
 					}),$.ajax({
-						url:"http://120.24.226.70:8081/yttx-agentbms-api/servicestation/bound/list",
+						url:"http://120.76.237.100:8081/mall-agentbms-api/servicestation/bound/list",
 						method: 'POST',
 						dataType: 'json',
 						data:{
@@ -530,7 +531,7 @@
 						hasitem,
 						isbind=type==='1'?true:false,
 						config={
-							url:"http://120.24.226.70:8081/yttx-agentbms-api/servicestation/binding/operation",
+							url:"http://120.76.237.100:8081/mall-agentbms-api/servicestation/binding/operation",
 							dataType:'JSON',
 							method:'post',
 							data:{

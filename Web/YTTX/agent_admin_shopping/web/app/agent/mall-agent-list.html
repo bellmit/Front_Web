@@ -5,11 +5,10 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	
 	<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0,maximum-scale=1">
-	<meta name="description" content="布住网商城代理商后台管理系统--系统设置--分润设置" />
-	<meta name="keywords" content="布住网商城代理商后台管理系统--系统设置--分润设置">
+	<meta name="description" content="布住网商城代理商后台管理系统--代理商管理--代理商管理" />
+	<meta name="keywords" content="布住网商城代理商后台管理系统--代理商管理--代理商管理">
   <meta name="author" content="yp" />
-	<title>布住网商城代理商后台管理系统--系统设置--分润设置</title>
-  <link href="../../images/logo_icon.ico" rel="icon">
+	<title>布住网商城代理商后台管理系统--代理商管理--代理商管理</title>
 	<link rel="stylesheet" href="../../css/base.css">
   <link rel="stylesheet" href="../../js/plugins/datatables/dataTables.bootstrap.css">
 	<link rel="stylesheet" href="../../css/admin.css">
@@ -70,13 +69,13 @@
                     <li class="dropdown user-profile">
                         <a href="#" data-toggle="dropdown">
                             <img src="../../images/user-4.png" alt="user-image" class="img-circle img-inline userpic-32" width="28" />
-                                <span id="admin_show_wrap"></span>
+                            <span id="admin_show_wrap"></span>
                         </a>
 
                         <ul class="dropdown-menu user-profile-menu list-unstyled">
-                            
+
                             <li class="last">
-                                <a href="../account/login.html" id="logout_btn"><i class="fa-lock"></i>登出</a>
+                                <a href="../index.html" id="logout_btn"><i class="fa-lock"></i>登出</a>
                             </li>
                         </ul>
                     </li>
@@ -87,13 +86,13 @@
             <!--主题描述-->
             <div class="page-title">
                 <div class="title-env">
-                    <h1 class="title">分润设置</h1>
-                    <p class="description">分润设置</p>
+                    <h1 class="title">代理商管理</h1>
+                    <p class="description">代理商管理</p>
                 </div>
                 <div class="breadcrumb-env">
                     <ol class="breadcrumb bc-1">
-                        <li><a href=""><i class="fa-home"></i>系统设置</a></li>
-                        <li class="active"><strong>分润设置</strong></li>
+                        <li><a href=""><i class="fa-home"></i>代理商管理</a></li>
+                        <li class="active"><strong>代理商管理</strong></li>
                     </ol>
                 </div>
             </div>
@@ -101,83 +100,65 @@
 
             <!--主内容-->
             <div class="row row-main-wrap">
-                <div class="col-md-6 g-d-hidei" id="profit_setting_wrap0">
+                <div class="col-md-12">
                     <div class="panel">
+
+                        <!--表格标题-->
                         <div class="panel-heading">
-                            <h3 class="panel-title admin-panel-theme">代理分润</h3>
+                            <h3 class="panel-title">代理商管理</h3>
+
+                            <div class="panel-options">
+                                <a href="#" data-toggle="panel">
+                                    <span class="collapse-icon">&ndash;</span>
+                                    <span class="expand-icon">+</span>
+                                </a>
+                                <a href="#" data-toggle="reload">
+                                    <i class="fa-rotate-right"></i>
+                                </a>
+                            </div>
                         </div>
-                        <!--修改或添加主体-->
+
+
+                        <!--表格主体-->
                         <div class="panel-body">
-                            <form role="form" id="profit_edit_form0" data-setting="" method="post" class="validate">
-                                <div class="form-group">
+                            <table id="agent_manage_wrap" class="table table-bordered table-striped table-hover admin-table">
+                                <!--分组样式-->
+                                <colgroup>
+                                    <col class="g-w-percent10">
+                                    <col class="g-w-percent5">
+                                    <col class="g-w-percent7">
+                                    <col class="g-w-percent7">
+                                    <col class="g-w-percent8">
+                                    <col class="g-w-percent5">
+                                    <col class="g-w-percent8">
+                                </colgroup>
 
-                                    <label class="control-label"><span class="form-require-item g-c-red1">*</span>省代分润：</label>
+                                <!--表头-->
+                                <thead>
+                                <tr>
+                                    <th>代理商全称</th>
+                                    <th>代理商级别</th>
+                                    <th>归属地</th>
+                                    <th>代理商负责人</th>
+                                    <th>代理商手机</th>
+                                    <th>状态</th>
+                                    <th class="no-sorting">操作</th>
+                                </tr>
+                                </thead>
 
-                                    <input type="text" class="form-control" id="profit_a0" name="profit_A0" data-validate="required,number,dotmaxlength[7]" data-message-required="省代分润不能为空" data-message-number="省代分润必须是数值" data-message-dotmaxlength="省代分润需小于8位数值" maxlength="10" placeholder="请输入数字" />
-                                </div>
 
-                                <div class="form-group">
-                                    <label class="control-label"><span class="form-require-item g-c-red1">*</span>市代分润：</label>
-
-                                    <input type="text" class="form-control" id="profit_aa0" name="profit_AA0" data-validate="required,number,dotmaxlength[7]" data-message-required="市代分润不能为空" data-message-number="市代分润必须是数值" data-message-dotmaxlength="市代分润需小于8位数值" maxlength="10" placeholder="请输入数字" />
-                                </div>
-
-                                <div class="form-group">
-                                    <label class="control-label"><span class="form-require-item g-c-red1">*</span>县代分润：</label>
-
-                                    <input type="text" class="form-control" id="profit_aaa0" name="profit_AAA0" data-validate="required,number,dotmaxlength[7]" data-message-required="县代分润不能为空" data-message-number="县代分润必须是数值" data-message-dotmaxlength="县代分润需小于8位数值" maxlength="10" placeholder="请输入数字" />
-                                </div>
-
-                                <div class="form-group">
-                                    <button type="submit" class="btn btn-success">设置</button>
-                                </div>
-
-                            </form>
-
+                                <!--表主体-->
+                                <tbody class="middle-align"></tbody>
+                            </table>
+                            <div class="admin-page-wrap">
+                                <div class="easyui-pagination g-w-percent50" id="admin_page_wrap" data-options="links:5,layout:['manual','first','prev','links','next','last'],displayMsg:'显示{from}&nbsp;到&nbsp;{to}&nbsp;共&nbsp;{total}条记录'"></div>
+                            </div>
                         </div>
+
+
                     </div>
                 </div>
-
-                <div class="col-md-6 g-d-hidei" id="profit_setting_wrap1">
-                    <div class="panel" >
-                        <div class="panel-heading">
-                            <h3 class="panel-title admin-panel-theme">平台分润</h3>
-                        </div>
-                        <!--修改或添加主体-->
-                        <div class="panel-body">
-                            <form role="form" id="profit_edit_form1" method="post" data-setting=""  class="validate">
-
-                                <div class="form-group">
-                                    <label class="control-label"><span class="form-require-item g-c-red1">*</span>平台分润：</label>
-
-                                    <input type="text" class="form-control" id="profit_a1" name="profit_A2" data-validate="required,number,dotmaxlength[7]" data-message-required="平台分润不能为空" data-message-number="平台分润必须是数值" data-message-dotmaxlength="平台分润需小于8位数值" maxlength="10" placeholder="请输入数字" />
-                                </div>
-
-                                <div class="form-group">
-                                    <label class="control-label"><span class="form-require-item g-c-red1">*</span>代理分润：</label>
-
-                                    <input type="text" class="form-control" id="profit_aa1" name="profit_AA2" data-validate="required,number,dotmaxlength[7]" data-message-required="代理分润不能为空" data-message-number="代理分润必须是数值" data-message-dotmaxlength="代理分润需小于8位数值" maxlength="10" placeholder="请输入数字" />
-                                </div>
-
-                                <div class="form-group">
-                                    <label class="control-label"><span class="form-require-item g-c-red1">*</span>仓储分润：</label>
-
-                                    <input type="text" class="form-control" id="profit_aaa1" name="profit_AAA2" data-validate="required,number,dotmaxlength[7]" data-message-required="仓储分润不能为空" data-message-number="仓储分润必须是数值" data-message-dotmaxlength="仓储分润需小于8位数值" maxlength="10" placeholder="请输入数字" />
-                                </div>
-
-                                <div class="form-group">
-                                    <button type="submit" class="btn btn-success">设置</button>
-                                </div>
-
-                            </form>
-
-                        </div>
-                    </div>
-                </div>
-
             </div>
-
-
 
 
             <!--底部信息-->
@@ -202,6 +183,38 @@
 
         </div>
     </div>
+
+
+
+
+    <!--详情展现-->
+    <div class="modal fade custom-width" id="show_detail_wrap">
+        <div class="modal-dialog g-w-percent46">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="show_detail_title"></h4>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-bordered table-striped table-hover admin-table">
+                        <colgroup>
+                            <col class="g-w-percent10"/>
+                            <col class="g-w-percent40"/>
+                        </colgroup>
+                        <tbody id="show_detail_content"></tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-info" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+    
+
 	
 	<!--加载遮罩层-->
 	<div id="page_loading_wrap" class="page-loading-overlay g-d-hidei">
@@ -249,16 +262,12 @@
   </div>
 
 
-
-
-
-
-
     <script src="../../js/common/base.js"></script>
     <script src="../../js/common/common.js"></script>
-    <!--表单验证插件-->
-    <script src="../../js/plugins/jquery-validate/jquery.validate.js"></script>
-
-    <script src="../../js/admin/admin_others.js"></script>
+    <script src="../../js/plugins/datatables/js/jquery.dataTables.js"></script>
+    <!--修饰分页，搜索等操作 -->
+    <script src="../../js/plugins/datatables/dataTables.bootstrap.js"></script>
+    <script src="../../js/plugins/pagination/pagination.js"></script>
+    <script src="../../js/agent/agent_list.js"></script>
 </body>
 </html>

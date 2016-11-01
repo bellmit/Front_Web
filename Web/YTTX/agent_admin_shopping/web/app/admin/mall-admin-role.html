@@ -184,7 +184,6 @@
                                         <input type="text" class="form-control" id="role_name" name="name" data-validate="required" data-message-required="角色不能为空" placeholder="请输入角色名称" />
                                     </div>
 
-
                                     <div class="form-group" id="role_typewrap">
                                         角色类型：
                                         <div class="control-label" id="role_typetab">
@@ -215,8 +214,6 @@
 
                                         <textarea class="form-control" name="remark" id="role_remark"  placeholder="角色的作用，权限"></textarea>
                                     </div>
-
-
 
                                     <div class="form-group">
                                         <button type="submit" class="btn btn-success"></button>
@@ -311,19 +308,19 @@
                                 <form role="form" id="member_edit_form" method="post" class="validate">
                                     <input  type="text" class="g-d-hidei" value="" id="member_id" name="id">
                                     <div class="form-group">
-                                        <label class="control-label">登录名：</label>
+                                        <label class="control-label"><span class="form-require-item g-c-red1">*</span>登录名：</label>
 
                                         <input type="text" class="form-control" id="member_username" name="member_username" data-validate="required" data-message-required="登录名不能为空" placeholder="请输入成员登录名" />
                                     </div>
 
                                     <div class="form-group">
-                                        <label class="control-label">登录密码：</label>
+                                        <label class="control-label"><span class="form-require-item g-c-red1">*</span>登录密码：</label>
 
                                         <input type="password" class="form-control" id="member_password" name="member_password" data-validate="required,minlength[6]" data-message-required="登录密码不能为空" placeholder="请输入成员登录密码"  data-message-minlength="登录密码长度不能少于6位"/>
                                     </div>
 
                                     <div class="form-group">
-                                        <label class="control-label">用户名称：</label>
+                                        <label class="control-label"><span class="form-require-item g-c-red1">*</span>用户名称：</label>
 
                                         <input type="text" class="form-control" id="member_name" name="member_name" data-validate="required" data-message-required="用户名称不能为空" placeholder="请输入成员用户名称" />
                                     </div>

@@ -56,7 +56,7 @@
 		/*获取数据*/
 		function getDetailData(config){
 			$.ajax({
-				url:"http://120.76.237.100:8081/yttx-providerbms-api/goodsorder/details",
+				url:"http://120.24.226.70:8081/yttx-providerbms-api/goodsorder/details",
 				dataType:'JSON',
 				async:false,
 				method:'post',
@@ -129,12 +129,8 @@
 				statusmap={
 					0:"待付款",
 					1:"取消订单",
-					3:"已付款",
-					5:"已配货",
-					7:"已发货",
+					6:"待发货",
 					9:"待收货",
-					11:"已收货",
-					13:"已完成",
 					20:"待评价",
 					21:"已评价",
 					30:"返修",

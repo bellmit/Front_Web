@@ -20,12 +20,9 @@
 			},1);
 
 
-			var cacheLogin=public_tool.getParams('login_module');
-			if(cacheLogin){
-				/*如果存在缓存，则删除缓存*/
-				public_tool.clear();
-				public_tool.clearCacheData();
-			}
+			/*如果存在缓存，则删除缓存*/
+			public_tool.clear();
+			public_tool.clearCacheData();
 
 
 			//异步校验

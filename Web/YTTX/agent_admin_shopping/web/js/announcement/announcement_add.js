@@ -20,6 +20,11 @@
 			});
 
 
+			/*权限调用*/
+			var powermap=public_tool.getPower(),
+				announcementedit_power=public_tool.getKeyPower('mall-announcement-update',powermap),
+				announcementadd_power=public_tool.getKeyPower('mall-announcement-add',powermap);
+
 
 			/*dom引用和相关变量定义*/
 			var module_id='mall-announcement-add'/*模块id，主要用于本地存储传值*/,
@@ -37,18 +42,18 @@
 				admin_announcementadd_form=document.getElementById('admin_announcementadd_form'),
 				$admin_announcementadd_form=$(admin_announcementadd_form),
 				$admin_id=$('#admin_id'),
-				$admin_Title=$('#admin_Title'),
+				$admin_title=$('#admin_title'),
 				$admin_type=$('#admin_type'),
 				$admin_sort=$('#admin_sort'),
 				$admin_status=$('#admin_status'),
 				$admin_content=$('#admin_content'),
 				$admin_attachmentUrl=$('#admin_attachmentUrl'),
 				$admin_isAllReceived=$('#admin_isAllReceived'),
+				$admin_action=$('#admin_action'),
 				resetform0=null;
 
 
-			var $admin_image=$('#admin_image'),
-				$toggle_edit_btn=$('#toggle_edit_btn'),
+			var $toggle_edit_btn=$('#toggle_edit_btn'),
 				$image_url_file=$('#image_url_file'),
 				$image_url_upload=$('#image_url_upload');
 
@@ -59,10 +64,6 @@
 				ImageUpload_Token=getToken()||null/*获取token*/;
 
 
-			/*重置表单*/
-			admin_announcementadd_form.reset();
-
-
 
 			/*图片上传预览*/
 			if(ImageUpload_Token!==null){
@@ -71,7 +72,7 @@
 					runtimes: 'html5,html4,flash,silverlight',
 					browse_button: 'image_url_file',
 					uptoken :ImageUpload_Token.qiniuToken,// uptoken是上传凭证，由其他程序生成
-					multi_selection:true,
+					multi_selection:false,
 					get_new_uptoken: false,// 设置上传文件的时候是否每次都重新获取新的uptoken
 					unique_names:false,// 默认false，key为文件名。若开启该选项，JS-SDK会为每个文件自动生成key（文件名）
 					save_key:false,//默认false。若在服务端生成uptoken的上传策略中指定了sava_key，则开启，SDK在前端将不对key进行任何处理
@@ -87,9 +88,6 @@
 					init: {
 						'PostInit': function() {
 							$image_url_file.attr({
-								'data-value':''
-							});
-							$admin_attachmentUrl.attr({
 								'data-value':''
 							});
 							/*绑定上传相片*/
@@ -124,9 +122,8 @@
 							/*获取上传成功后的文件的Url*/
 							var domain=up.getOption('domain'),
 								name=JSON.parse(info),
-								str=$admin_image.val()+'#,#'+domain+'/'+name.key;
-							$admin_image.val(str);
-							$admin_attachmentUrl.attr({
+								str=domain+'/'+name.key;
+							$admin_attachmentUrl.val(str).attr({
 								'data-value':str
 							});
 						},
@@ -150,7 +147,8 @@
 						'Key': function(up, file) {
 							/*调用滚动条*/
 							uploadShowBars(file['id']);
-							var str="aaplugin_"+moment().format("YYYYMMDDHHmmSSSS");
+							var prefix=file.name.split('.'),
+								str="announcement_"+moment().format("YYYYMMDDHHmmSSSS")+'.'+prefix[prefix.length - 1];
 							return str;
 						}
 					}
@@ -207,19 +205,16 @@
 					isactive=$this.hasClass('toggle-edit-btnactive');
 				if(isactive){
 					$this.removeClass('toggle-edit-btnactive');
-					$admin_image.prop({
+					$admin_attachmentUrl.prop({
 						'readonly':true
 					});
 					/*附件编辑*/
 					$admin_attachmentUrl.off('keyup');
 				}else{
 					$this.addClass('toggle-edit-btnactive');
-					$admin_image.prop({
+					$admin_attachmentUrl.prop({
 						'readonly':false
-					});
-					/*附件编辑*/
-					$admin_attachmentUrl.on('keyup',function () {
-						console.log('aaa');
+					}).on('keyup',function () {
 						var $self=$(this),
 							value=$self.val();
 						if(value===''){
@@ -229,8 +224,100 @@
 						}
 					});
 				}
-
 			});
+
+
+			/*获取编辑缓存*/
+			admin_announcementadd_form.reset();
+			$admin_attachmentUrl.attr({
+				'data-value':''
+			});
+			var edit_cache=public_tool.getParams('mall-announcement-add');
+			if(edit_cache){
+				$admin_action.html('修改');
+				/*判断权限*/
+				if(announcementedit_power){
+					$admin_action.removeClass('g-d-hidei');
+				}else{
+					$admin_action.addClass('g-d-hidei');
+				}
+				for(var m in edit_cache){
+					switch(m){
+						case 'id':
+							$admin_id.val(edit_cache[m]);
+							break;
+						case 'title':
+							$admin_title.val(edit_cache[m]);
+							break;
+						case 'type':
+							var types=edit_cache[m];
+							$admin_type.find('option').each(function () {
+								var $this=$(this),
+									value=$this.val();
+								if(value===types){
+									$this.prop({
+										'selected':true
+									});
+									return false;
+								}
+							});
+							break;
+						case 'sort':
+							$admin_sort.val(edit_cache[m]);
+							break;
+						case 'status':
+							var status=edit_cache[m];
+							$admin_status.find('option').each(function () {
+								var $this=$(this),
+									value=$this.val();
+								if(value===types){
+									$this.prop({
+										'selected':true
+									});
+									return false;
+								}
+							});
+							break;
+						case 'content':
+							editor.html(edit_cache[m]);
+							editor.sync();
+							break;
+						case 'attachmentUrl':
+							var attach=edit_cache[m];
+                            if(attach){
+                                if($.isArray(attach)){
+                                    $admin_attachmentUrl.val(attach.join('#,#')).attr({
+										'data-value':attach.join('#,#')
+									});
+                                }else{
+                                    $admin_attachmentUrl.val(attach).attr({
+										'data-value':attach
+									});
+                                }
+                            }
+							break;
+						case 'isAllReceived':
+                            var receive=parseInt(edit_cache[m],10);
+                            $admin_isAllReceived.prop({
+                                'checked':(function () {
+                                    if(receive===1){
+                                        return true;
+                                    }else if(receive===0){
+                                        return false;
+                                    }
+                                }())
+                            });
+							break;
+					}
+				}
+			}else{
+				/*判断权限*/
+				if(announcementadd_power){
+					$admin_action.removeClass('g-d-hidei');
+				}else{
+					$admin_action.addClass('g-d-hidei');
+				}
+			}
 
 
 
@@ -277,7 +364,7 @@
 									/*同步编辑器*/
 									editor.sync();
 									$.extend(true,setdata,{
-										Title:$admin_Title.val(),
+										title:$admin_title.val(),
 										type:$admin_type.find(':selected').val(),
 										sort:$admin_sort.val(),
 										status:$admin_status.find(':selected').val(),
@@ -287,11 +374,29 @@
 
 									var attachment=$admin_attachmentUrl.val();
 									if(attachment!==''&&$admin_attachmentUrl.attr('data-value')!==''){
-										setdata['attachmentUrl']=attachment;
+                                        if(attachment.indexOf('#,#')!==-1){
+                                            attachment=attachment.split('#,#');
+                                            setdata['attachmentUrl']=JSON.stringify(attachment);
+                                        }else{
+                                            setdata['attachmentUrl']=attachment;
+                                        }
 									}else{
 										delete setdata['attachmentUrl'];
 									}
-									config['url']="http://120.76.237.100:8081/mall-agentbms-api/announcement/add";
+
+                                    var id=$admin_id.val(),
+										actiontype='';
+                                    if(id!==''){
+										/*修改操作*/
+                                        setdata['id']=id;
+										actiontype='修改';
+										config['url']="http://120.76.237.100:8081/mall-agentbms-api/announcement/update";
+                                    }else{
+										/*新增操作*/
+										config['url']="http://120.76.237.100:8081/mall-agentbms-api/announcement/add";
+										actiontype='新增';
+                                        delete setdata['id'];
+                                    }
 									config['data']=setdata;
 								}
 
@@ -300,10 +405,10 @@
 									if(formtype==='addannouncement'){
 										code=parseInt(resp.code,10);
 										if(code!==0){
-											dia.content('<span class="g-c-bs-warning g-btips-warn">添加公告失败</span>').show();
+											dia.content('<span class="g-c-bs-warning g-btips-warn">'+actiontype+'公告失败</span>').show();
 											return false;
 										}else{
-											dia.content('<span class="g-c-bs-success g-btips-succ">添加公告成功</span>').show();
+											dia.content('<span class="g-c-bs-success g-btips-succ">'+actiontype+'公告成功</span>').show();
 										}
 									}
 
@@ -347,14 +452,15 @@
 		function getToken(){
 			var result=null;
 			$.ajax({
-				url:'http://120.76.237.100:8081/yttx-providerbms-api/qiniu/token/get',
+				url:'http://120.76.237.100:8081/mall-agentbms-api/qiniu/token/get',
 				async:false,
 				type:'post',
 				datatype:'json',
 				data:{
 					bizType:2,
-					adminId:decodeURIComponent(logininfo.param.adminId),
 					roleId:decodeURIComponent(logininfo.param.roleId),
+					adminId:decodeURIComponent(logininfo.param.adminId),
+					grade:decodeURIComponent(logininfo.param.grade),
 					token:decodeURIComponent(logininfo.param.token)
 				}
 			}).done(function(resp){

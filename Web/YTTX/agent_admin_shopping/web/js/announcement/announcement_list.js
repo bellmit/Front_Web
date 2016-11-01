@@ -21,6 +21,15 @@
 				},
 				datatype:'json'
 			});
+			/*权限调用*/
+			var powermap=public_tool.getPower(),
+				announcementedit_power=public_tool.getKeyPower('mall-announcement-update',powermap),
+				announcementdelete_power=public_tool.getKeyPower('mall-announcement-delete',powermap),
+				announcementadd_power=public_tool.getKeyPower('mall-announcement-add',powermap),
+				announcementshow_power=public_tool.getKeyPower('mall-announcement-view',powermap);
+
+			/*清除编辑缓存*/
+			public_tool.removeParams('mall-announcement-add');
 
 
 			/*dom引用和相关变量定义*/
@@ -110,18 +119,18 @@
 						ordering:true,
 						columns: [
 							{
-								"data":"Title"
+								"data":"title"
 							},
 							{
 								"data":"type",
 								"render":function(data, type, full, meta ){
 									var types=parseInt(data,10),
 										typesmap={
-											0:"通知"
+											1:"通知"
 										},
 										str='';
 
-									if(types===0){
+									if(types===1){
 										str='<div class="g-c-bs-info">'+typesmap[types]+'</div>';
 									}
 									return str;
@@ -160,10 +169,14 @@
 							{
 								"data":"attachmentUrl",
 								"render":function(data, type, full, meta ){
-									if(data!==''){
-										return '<a href="'+data+'" class="btn btn-white" target="_blank">查看附件</a>';
+									if(data&&data!==''){
+										if($.isArray(data)){
+											return '<a class="btn btn-white btn-xs g-c-gray8" target="_blank" href="'+data.join('">附件</a><a class="btn btn-white btn-xs g-c-gray8" target="_blank" href="')+'">附件</a>';
+										}else{
+											return '<a href="'+data+'" class="btn btn-white btn-xs g-c-gray8" target="_blank">附件</a>';
+										}
 									}else{
-										return '';
+										return '无附件';
 									}
 								}
 							},
@@ -173,14 +186,20 @@
 									var id=parseInt(data,10),
 										btns='';
 
-									btns+='<span data-action="update" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+									if(announcementedit_power){
+										btns+='<span data-action="update" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 											<i class="fa-pencil"></i>\
 											<span>编辑</span>\
-											</span>\
-											<span data-action="select" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+											</span>';
+									}
+
+									if(announcementshow_power){
+										btns+='<span data-action="select" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 											<i class="fa-file-text-o"></i>\
 											<span>查看</span>\
 											</span>';
+									}
+
 									return btns;
 								}
 							}
@@ -219,9 +238,7 @@
 
 				/*修改,编辑操作*/
 				if(action==='update'){
-					public_tool.setParams('mall-announcement-add',{
-						id:id
-					});
+					public_tool.setParams('mall-announcement-add',table.row($tr).data());
 					location.href='mall-announcement-add.html';
 				}else if(action==='select'){
 					/*添加高亮状态*/
@@ -231,7 +248,7 @@
 					}
 					operate_item=$tr.addClass('item-lighten');
 					var datas=table.row($tr).data();
-					$show_detail_content.html('<tr><th>公共内容:</th><td>'+datas['content']+'</td></tr>');
+					$show_detail_content.html('<tr><th style="vertical-align: middle">公告内容:</th><td style="vertical-align: middle">'+datas['content']+'</td></tr>');
 					$show_detail_wrap.modal('show',{backdrop:'static'});
 				}
 			});

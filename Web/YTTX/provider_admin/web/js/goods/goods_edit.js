@@ -762,7 +762,7 @@
 									}else{
 										setdata['attrIventoryPrices']='['+$admin_inventory.val()+'#'+public_tool.trimSep($admin_wholesale_price.val(),',')+'#'+public_tool.trimSep($admin_retail_price.val(),',')+']';
 									}
-									config['url']="http://120.76.237.100:8081/yttx-providerbms-api/goods/addupdate";
+									config['url']="http://120.24.226.70:8081/yttx-providerbms-api/goods/addupdate";
 									config['data']=setdata;
 								}
 
@@ -855,7 +855,7 @@
 		/*获取数据*/
 		function getEditData(config){
 			$.ajax({
-				url:"http://120.76.237.100:8081/yttx-providerbms-api/goods/details",
+				url:"http://120.24.226.70:8081/yttx-providerbms-api/goods/details",
 				dataType:'JSON',
 				async:false,
 				method:'post',
@@ -1369,7 +1369,7 @@
 		function getToken(){
 			var result=null;
 			$.ajax({
-				url:'http://120.76.237.100:8081/yttx-providerbms-api/qiniu/token/get',
+				url:'http://120.24.226.70:8081/yttx-providerbms-api/qiniu/token/get',
 				async:false,
 				type:'post',
 				datatype:'json',

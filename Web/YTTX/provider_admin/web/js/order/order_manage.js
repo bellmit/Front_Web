@@ -109,7 +109,7 @@
 						autoWidth:true,/*是否*/
 						paging:false,
 						ajax:{
-							url:/*"../../json/goods/goods_list.json"*/"http://120.76.237.100:8081/yttx-providerbms-api/goodsorder/list",
+							url:/*"../../json/goods/goods_list.json"*/"http://120.24.226.70:8081/yttx-providerbms-api/goodsorder/list",
 							dataType:'JSON',
 							method:'post',
 							dataSrc:function ( json ) {
@@ -206,12 +206,8 @@
 										statusmap={
 											0:"待付款",
 											1:"取消订单",
-											3:"已付款",
-											5:"已配货",
-											7:"已发货",
+											6:"待发货",
 											9:"待收货",
-											11:"已收货",
-											13:"已完成",
 											20:"待评价",
 											21:"已评价",
 											30:"返修",
@@ -273,7 +269,7 @@
 						autoWidth:true,/*是否*/
 						paging:false,
 						ajax:{
-							url:/*"../../json/goods/goods_list.json"*/"http://120.76.237.100:8081/yttx-providerbms-api/goodsorder/list",
+							url:/*"../../json/goods/goods_list.json"*/"http://120.24.226.70:8081/yttx-providerbms-api/goodsorder/list",
 							dataType:'JSON',
 							method:'post',
 							dataSrc:function ( json ) {
@@ -365,41 +361,6 @@
 								}
 							},
 							{
-								 "data":"orderState",
-								 "render":function(data, type, full, meta ){
-										 var stauts=parseInt(data,10),
-										 statusmap={
-											 0:"待付款",
-											 1:"取消订单",
-											 3:"已付款",
-											 5:"已配货",
-											 7:"已发货",
-											 9:"待收货",
-											 11:"已收货",
-											 13:"已完成",
-											 20:"待评价",
-											 21:"已评价",
-											 30:"返修",
-											 40:"退货"
-										 },
-										 str='';
-										 if(stauts===0){
-											str='<div class="g-c-warn">'+statusmap[stauts]+'</div>';
-										 }else if(stauts===1||stauts===30){
-											 str='<div class="g-c-gray12">'+statusmap[stauts]+'</div>';
-										 }else if(stauts===3||stauts===5||stauts===7||stauts===9){
-											str='<div class="g-c-gray10">'+statusmap[stauts]+'</div>';
-										 }else if(stauts===11||stauts===20){
-											 str='<div class="g-c-gray8">'+statusmap[stauts]+'</div>';
-										 }else if(stauts===40){
-											str='<div class="g-c-red1">'+statusmap[stauts]+'</div>';
-										 }else if(stauts===13||stauts===21){
-											str='<div class="g-c-info">'+statusmap[stauts]+'</div>';
-										 }
-										 return str;
-								 }
-							},
-							{
 								"data":"id",
 								"render":function(data, type, full, meta ){
 									var id=parseInt(data,10),
@@ -438,7 +399,7 @@
 						autoWidth:true,/*是否*/
 						paging:false,
 						ajax:{
-							url:/*"../../json/goods/goods_list.json"*/"http://120.76.237.100:8081/yttx-providerbms-api/goodsorder/list",
+							url:/*"../../json/goods/goods_list.json"*/"http://120.24.226.70:8081/yttx-providerbms-api/goodsorder/list",
 							dataType:'JSON',
 							method:'post',
 							dataSrc:function ( json ) {
@@ -478,7 +439,7 @@
 								providerId:providerId,
 								userId:userId,
 								token:token,
-								orderState:3,
+								orderState:6,
 								page:1,
 								pageSize:10
 							}
@@ -530,41 +491,6 @@
 								}
 							},
 							{
-								"data":"orderState",
-								"render":function(data, type, full, meta ){
-									var stauts=parseInt(data,10),
-										statusmap={
-											0:"待付款",
-											1:"取消订单",
-											3:"已付款",
-											5:"已配货",
-											7:"已发货",
-											9:"待收货",
-											11:"已收货",
-											13:"已完成",
-											20:"待评价",
-											21:"已评价",
-											30:"返修",
-											40:"退货"
-										},
-										str='';
-									if(stauts===0){
-										str='<div class="g-c-warn">'+statusmap[stauts]+'</div>';
-									}else if(stauts===1||stauts===30){
-										str='<div class="g-c-gray12">'+statusmap[stauts]+'</div>';
-									}else if(stauts===3||stauts===5||stauts===7||stauts===9){
-										str='<div class="g-c-gray10">'+statusmap[stauts]+'</div>';
-									}else if(stauts===11||stauts===20){
-										str='<div class="g-c-gray8">'+statusmap[stauts]+'</div>';
-									}else if(stauts===40){
-										str='<div class="g-c-red1">'+statusmap[stauts]+'</div>';
-									}else if(stauts===13||stauts===21){
-										str='<div class="g-c-info">'+statusmap[stauts]+'</div>';
-									}
-									return str;
-								}
-							},
-							{
 								"data":"id",
 								"render":function(data, type, full, meta ){
 									var id=parseInt(data,10),
@@ -603,7 +529,7 @@
 						autoWidth:true,/*是否*/
 						paging:false,
 						ajax:{
-							url:/*"../../json/goods/goods_list.json"*/"http://120.76.237.100:8081/yttx-providerbms-api/goodsorder/list",
+							url:/*"../../json/goods/goods_list.json"*/"http://120.24.226.70:8081/yttx-providerbms-api/goodsorder/list",
 							dataType:'JSON',
 							method:'post',
 							dataSrc:function ( json ) {
@@ -695,41 +621,6 @@
 								}
 							},
 							{
-								"data":"orderState",
-								"render":function(data, type, full, meta ){
-									var stauts=parseInt(data,10),
-										statusmap={
-											0:"待付款",
-											1:"取消订单",
-											3:"已付款",
-											5:"已配货",
-											7:"已发货",
-											9:"待收货",
-											11:"已收货",
-											13:"已完成",
-											20:"待评价",
-											21:"已评价",
-											30:"返修",
-											40:"退货"
-										},
-										str='';
-									if(stauts===0){
-										str='<div class="g-c-warn">'+statusmap[stauts]+'</div>';
-									}else if(stauts===1||stauts===30){
-										str='<div class="g-c-gray12">'+statusmap[stauts]+'</div>';
-									}else if(stauts===3||stauts===5||stauts===7||stauts===9){
-										str='<div class="g-c-gray10">'+statusmap[stauts]+'</div>';
-									}else if(stauts===11||stauts===20){
-										str='<div class="g-c-gray8">'+statusmap[stauts]+'</div>';
-									}else if(stauts===40){
-										str='<div class="g-c-red1">'+statusmap[stauts]+'</div>';
-									}else if(stauts===13||stauts===21){
-										str='<div class="g-c-info">'+statusmap[stauts]+'</div>';
-									}
-									return str;
-								}
-							},
-							{
 								"data":"id",
 								"render":function(data, type, full, meta ){
 									var id=parseInt(data,10),
@@ -768,7 +659,7 @@
 						autoWidth:true,/*是否*/
 						paging:false,
 						ajax:{
-							url:/*"../../json/goods/goods_list.json"*/"http://120.76.237.100:8081/yttx-providerbms-api/goodsorder/list",
+							url:/*"../../json/goods/goods_list.json"*/"http://120.24.226.70:8081/yttx-providerbms-api/goodsorder/list",
 							dataType:'JSON',
 							method:'post',
 							dataSrc:function ( json ) {
@@ -860,41 +751,6 @@
 								}
 							},
 							{
-								"data":"orderState",
-								"render":function(data, type, full, meta ){
-									var stauts=parseInt(data,10),
-										statusmap={
-											0:"待付款",
-											1:"取消订单",
-											3:"已付款",
-											5:"已配货",
-											7:"已发货",
-											9:"待收货",
-											11:"已收货",
-											13:"已完成",
-											20:"待评价",
-											21:"已评价",
-											30:"返修",
-											40:"退货"
-										},
-										str='';
-									if(stauts===0){
-										str='<div class="g-c-warn">'+statusmap[stauts]+'</div>';
-									}else if(stauts===1||stauts===30){
-										str='<div class="g-c-gray12">'+statusmap[stauts]+'</div>';
-									}else if(stauts===3||stauts===5||stauts===7||stauts===9){
-										str='<div class="g-c-gray10">'+statusmap[stauts]+'</div>';
-									}else if(stauts===11||stauts===20){
-										str='<div class="g-c-gray8">'+statusmap[stauts]+'</div>';
-									}else if(stauts===40){
-										str='<div class="g-c-red1">'+statusmap[stauts]+'</div>';
-									}else if(stauts===13||stauts===21){
-										str='<div class="g-c-info">'+statusmap[stauts]+'</div>';
-									}
-									return str;
-								}
-							},
-							{
 								"data":"id",
 								"render":function(data, type, full, meta ){
 									var id=parseInt(data,10),
@@ -933,7 +789,7 @@
 						autoWidth:true,/*是否*/
 						paging:false,
 						ajax:{
-							url:/*"../../json/goods/goods_list.json"*/"http://120.76.237.100:8081/yttx-providerbms-api/goodsorder/list",
+							url:/*"../../json/goods/goods_list.json"*/"http://120.24.226.70:8081/yttx-providerbms-api/goodsorder/list",
 							dataType:'JSON',
 							method:'post',
 							dataSrc:function ( json ) {
@@ -1025,41 +881,6 @@
 								}
 							},
 							{
-								"data":"orderState",
-								"render":function(data, type, full, meta ){
-									var stauts=parseInt(data,10),
-										statusmap={
-											0:"待付款",
-											1:"取消订单",
-											3:"已付款",
-											5:"已配货",
-											7:"已发货",
-											9:"待收货",
-											11:"已收货",
-											13:"已完成",
-											20:"待评价",
-											21:"已评价",
-											30:"返修",
-											40:"退货"
-										},
-										str='';
-									if(stauts===0){
-										str='<div class="g-c-warn">'+statusmap[stauts]+'</div>';
-									}else if(stauts===1||stauts===30){
-										str='<div class="g-c-gray12">'+statusmap[stauts]+'</div>';
-									}else if(stauts===3||stauts===5||stauts===7||stauts===9){
-										str='<div class="g-c-gray10">'+statusmap[stauts]+'</div>';
-									}else if(stauts===11||stauts===20){
-										str='<div class="g-c-gray8">'+statusmap[stauts]+'</div>';
-									}else if(stauts===40){
-										str='<div class="g-c-red1">'+statusmap[stauts]+'</div>';
-									}else if(stauts===13||stauts===21){
-										str='<div class="g-c-info">'+statusmap[stauts]+'</div>';
-									}
-									return str;
-								}
-							},
-							{
 								"data":"id",
 								"render":function(data, type, full, meta ){
 									var id=parseInt(data,10),
@@ -1112,7 +933,7 @@
 
 			/*查询物流公司*/
 			$.ajax({
-					url:"http://120.76.237.100:8081/yttx-providerbms-api/shipping/express/list",
+					url:"http://120.24.226.70:8081/yttx-providerbms-api/shipping/express/list",
 					method: 'POST',
 					dataType: 'json',
 					data:{
@@ -1230,7 +1051,6 @@
 			$search_orderState.on('click','span',function () {
 				var $this=$(this),
 					type=$this.attr('data-value');
-
 				$this.addClass('g-c-bs-info active').siblings().removeClass('g-c-bs-info active');
 				if(type===''){
 					$admin_dataall.removeClass('g-d-hidei');
@@ -1251,7 +1071,7 @@
 						$admin_datadpj.addClass('g-d-hidei');
 						$admin_datath.addClass('g-d-hidei');
 						/*getColumnDatadfk(ordermanage_pagedfk,ordermanage_configdfk);*/
-					}else if(type===3){
+					}else if(type===6){
 						$admin_dataall.addClass('g-d-hidei');
 						$admin_datadfk.addClass('g-d-hidei');
 						$admin_datayfk.removeClass('g-d-hidei');
@@ -1350,7 +1170,7 @@
 										remark:$admin_remark.val()
 									});
 
-									config['url']="http://120.76.237.100:8081/yttx-providerbms-api/order/tracking/add";
+									config['url']="http://120.24.226.70:8081/yttx-providerbms-api/order/tracking/add";
 									config['data']=setdata;
 								}
 
