@@ -23,16 +23,16 @@
 			});
 			/*权限调用*/
 			var powermap=public_tool.getPower(),
-				agentedit_power=public_tool.getKeyPower('mall-agent-update',powermap),
-				agentshow_power=public_tool.getKeyPower('mall-agent-view',powermap);
+				merchantedit_power=public_tool.getKeyPower('mall-merchant-update',powermap),
+				merchantshow_power=public_tool.getKeyPower('mall-merchant-view',powermap);
 
 			/*清除编辑缓存*/
-			public_tool.removeParams('mall-agent-add');
+			public_tool.removeParams('mall-merchant-add');
 
 
 			/*dom引用和相关变量定义*/
-			var $agent_manage_wrap=$('#agent_manage_wrap')/*表格*/,
-				module_id='mall-agent-list'/*模块id，主要用于本地存储传值*/,
+			var $merchant_manage_wrap=$('#merchant_manage_wrap')/*表格*/,
+				module_id='mall-merchant-list'/*模块id，主要用于本地存储传值*/,
 				dia=dialog({
 					title:'温馨提示',
 					okValue:'确定',
@@ -50,10 +50,11 @@
 				detail_map={
 					username:"登录账户名",
 					name:"登录账号昵称",
-					grade:"代理商级别",
+					type:"商户类型",
 					fullName:"代理商全称",
 					shortName:"代理商简称",
-					adscriptionRegion:"归属地区",
+					imeiCode:"IMEI码",
+					deviceType:"设备类型",
 					remark:"备注",
 					linkman:"代理商负责人",
 					cellphone:"代理商手机号码",
@@ -62,8 +63,6 @@
 					city:"市区",
 					country:"县区",
 					address:"详细地址",
-					parentId:"上级代理商编号",
-					isAudited:"是否已审核",
 					status:"状态",
 					salesmanId:"业务员编号"
 				};
@@ -72,13 +71,13 @@
 
 
 			/*列表请求配置*/
-			var agent_page={
+			var merchant_page={
 					page:1,
-					pageSize:10,
+					pageSize:20,
 					total:0
 				},
-				agent_config={
-					$agent_manage_wrap:$agent_manage_wrap,
+				merchant_config={
+					$merchant_manage_wrap:$merchant_manage_wrap,
 					$admin_page_wrap:$admin_page_wrap,
 					config:{
 						processing:true,/*大消耗操作时是否显示处理状态*/
@@ -86,7 +85,7 @@
 						autoWidth:true,/*是否*/
 						paging:false,
 						ajax:{
-							url:"http://120.76.237.100:8081/mall-agentbms-api/agents/related",
+							url:"http://120.76.237.100:8081/mall-agentbms-api/merchant/related",
 							dataType:'JSON',
 							method:'post',
 							dataSrc:function ( json ) {
@@ -104,32 +103,31 @@
 								}
 								var result=json.result;
 								/*设置分页*/
-								agent_page.page=result.page;
-								agent_page.pageSize=result.pageSize;
-								agent_page.total=result.count;
+								merchant_page.page=result.page;
+								merchant_page.pageSize=result.pageSize;
+								merchant_page.total=result.count;
 								/*分页调用*/
 								$admin_page_wrap.pagination({
-									pageSize:agent_page.pageSize,
-									total:agent_page.total,
-									pageNumber:agent_page.page,
+									pageSize:merchant_page.pageSize,
+									total:merchant_page.total,
+									pageNumber:merchant_page.page,
 									onSelectPage:function(pageNumber,pageSize){
 										/*再次查询*/
-										var param=agent_config.config.ajax.data;
+										var param=merchant_config.config.ajax.data;
 										param.page=pageNumber;
 										param.pageSize=pageSize;
-										agent_config.config.ajax.data=param;
-										getColumnData(agent_page,agent_config);
+										merchant_config.config.ajax.data=param;
+										getColumnData(merchant_page,merchant_config);
 									}
 								});
 								return result.list;
 							},
 							data:{
-								roleId:decodeURIComponent(logininfo.param.roleId),
 								adminId:decodeURIComponent(logininfo.param.adminId),
 								token:decodeURIComponent(logininfo.param.token),
 								grade:decodeURIComponent(logininfo.param.grade),
 								page:1,
-								pageSize:10
+								pageSize:20
 							}
 						},
 						info:false,
@@ -140,33 +138,6 @@
 								"data":"fullName"
 							},
 							{
-								"data":"grade",
-								"render":function(data, type, full, meta ){
-									var grade=parseInt(data,10),
-										grademap={
-											3:"省代",
-											2:"市代",
-											1:"县代"
-										},
-										str='';
-
-									if(grade===1){
-										str='<div class="g-c-gray10">'+grademap[grade]+'</div>';
-									}else if(grade===2){
-										str='<div class="g-c-gray8">'+grademap[grade]+'</div>';
-									}else if(grade===3){
-										str='<div class="g-c-gray6">'+grademap[grade]+'</div>';
-									}
-									return str;
-								}
-							},
-							{
-								"data":"adscriptionRegion",
-								"render":function(data, type, full, meta ){
-									return data.toString().slice(0,10)+'...';
-								}
-							},
-							{
 								"data":"linkman"
 							},
 							{
@@ -174,6 +145,19 @@
 								"render":function(data, type, full, meta ){
 									return public_tool.phoneFormat(data);
 								}
+							},
+							{
+								"data":"type",
+								"render":function(data, type, full, meta ){
+									var typemap={
+										1:"3C数码",
+										2:"白酒"
+									};
+									return typemap[parseInt(data,10)];
+								}
+							},
+							{
+								"data":"addTime"
 							},
 							{
 								"data":"status",
@@ -199,14 +183,14 @@
 									var id=parseInt(data,10),
 										btns='';
 
-									if(agentedit_power){
+									if(merchantedit_power){
 										btns+='<span data-action="update" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 											<i class="fa-pencil"></i>\
 											<span>编辑</span>\
 											</span>';
 									}
 
-									if(agentshow_power){
+									if(merchantshow_power){
 										btns+='<span data-action="select" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 											<i class="fa-file-text-o"></i>\
 											<span>查看</span>\
@@ -222,14 +206,14 @@
 			
 
 			/*初始化请求*/
-			getColumnData(agent_page,agent_config);
+			getColumnData(merchant_page,merchant_config);
 			
 
 
 			/*事件绑定*/
 			/*绑定查看，修改操作*/
 			var operate_item;
-			$agent_manage_wrap.delegate('span','click',function(e){
+			$merchant_manage_wrap.delegate('span','click',function(e){
 				e.stopPropagation();
 				e.preventDefault();
 
@@ -251,10 +235,10 @@
 
 				/*修改,编辑操作*/
 				if(action==='update'){
-					public_tool.setParams('mall-announcement-add',{
+					public_tool.setParams('mall-merchant-add',{
 						'id':id
 					});
-					location.href='mall-announcement-add.html';
+					location.href='mall-merchant-add.html';
 				}else if(action==='select'){
 					showDetail(id,$tr);
 				}
@@ -267,7 +251,7 @@
 		/*获取数据*/
 		function getColumnData(page,opt){
 			if(table===null){
-				table=opt.$agent_manage_wrap.DataTable(opt.config);
+				table=opt.$merchant_manage_wrap.DataTable(opt.config);
 			}else{
 				table.ajax.config(opt.config.ajax).load();
 			}
@@ -281,7 +265,7 @@
 			}
 
 			var detailconfig={
-					url:"http://120.76.237.100:8081/mall-agentbms-api/agent/detail",
+					url:"http://120.76.237.100:8081/mall-agentbms-api/merchant/detail",
 					dataType:'JSON',
 					method:'post',
 					data:{
@@ -313,19 +297,25 @@
 								if(j==='name'||j==='Name'){
 									istitle=true;
 									$show_detail_title.html('"<span class="g-c-info">"'+list[j]+'"代理商</span>"详情信息');
-								}else if(j==='grade'){
-									var grademap={
-										3:"代理商级别--省代",
-										2:"代理商级别--市代",
-										1:"代理商级别--县代"
+								}else if(j==='type'){
+									var typemap={
+										2:"白酒",
+										1:"3C数码"
 									}
-									str+='<tr><th>'+detail_map[j]+':</th><td>'+grademap[list[j]]+'</td></tr>';
-								}else if(j==='isAudited'||j==='isaudited'){
-									var auditmap={
-										0:"默认",
-										1:"已审核"
+									str+='<tr><th>'+detail_map[j]+':</th><td>'+typemap[list[j]]+'</td></tr>';
+								}else if(j==='deviceType'||j==='devicetype'){
+									var devicemap={
+										1:"S67",
+										2:"T6",
+										3:"其它"
 									}
-									str+='<tr><th>'+detail_map[j]+':</th><td>'+auditmap[list[j]]+'</td></tr>';
+									str+='<tr><th>'+detail_map[j]+':</th><td>'+devicemap[list[j]]+'</td></tr>';
+								}else if(j==='status'){
+									var statusmap={
+										0:"正常",
+										1:"停用"
+									}
+									str+='<tr><th>'+detail_map[j]+':</th><td>'+statusmap[list[j]]+'</td></tr>';
 								}else{
 									str+='<tr><th>'+detail_map[j]+':</th><td>'+list[j]+'</td></tr>';
 								}

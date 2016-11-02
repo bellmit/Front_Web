@@ -21,18 +21,19 @@
 				},
 				datatype:'json'
 			});
+
 			/*权限调用*/
 			var powermap=public_tool.getPower(),
-				agentedit_power=public_tool.getKeyPower('mall-agent-update',powermap),
-				agentshow_power=public_tool.getKeyPower('mall-agent-view',powermap);
+				salesmanedit_power=public_tool.getKeyPower('mall-salesman-update',powermap),
+				salesmanshow_power=public_tool.getKeyPower('mall-salesman-view',powermap);
 
 			/*清除编辑缓存*/
-			public_tool.removeParams('mall-agent-add');
+			public_tool.removeParams('mall-salesman-add');
 
 
 			/*dom引用和相关变量定义*/
-			var $agent_manage_wrap=$('#agent_manage_wrap')/*表格*/,
-				module_id='mall-agent-list'/*模块id，主要用于本地存储传值*/,
+			var $salesman_manage_wrap=$('#salesman_manage_wrap')/*表格*/,
+				module_id='mall-salesman-list'/*模块id，主要用于本地存储传值*/,
 				dia=dialog({
 					title:'温馨提示',
 					okValue:'确定',
@@ -48,37 +49,25 @@
 				$show_detail_title=$('#show_detail_title')/*详情容器*/,
 				$show_detail_content=$('#show_detail_content')/*详情内容*/,
 				detail_map={
-					username:"登录账户名",
-					name:"登录账号昵称",
+					name:"业务员名称",
 					grade:"代理商级别",
-					fullName:"代理商全称",
-					shortName:"代理商简称",
-					adscriptionRegion:"归属地区",
-					remark:"备注",
-					linkman:"代理商负责人",
-					cellphone:"代理商手机号码",
-					telephone:"代理商电话号码",
-					province:"省份",
-					city:"市区",
-					country:"县区",
-					address:"详细地址",
-					parentId:"上级代理商编号",
-					isAudited:"是否已审核",
+					cellphone:"业务员手机号码",
+					regionName:"归属地区",
 					status:"状态",
-					salesmanId:"业务员编号"
+					remark:"业务员描述"
 				};
 
 
 
 
 			/*列表请求配置*/
-			var agent_page={
+			var salesman_page={
 					page:1,
-					pageSize:10,
+					pageSize:20,
 					total:0
 				},
-				agent_config={
-					$agent_manage_wrap:$agent_manage_wrap,
+				salesman_config={
+					$salesman_manage_wrap:$salesman_manage_wrap,
 					$admin_page_wrap:$admin_page_wrap,
 					config:{
 						processing:true,/*大消耗操作时是否显示处理状态*/
@@ -86,7 +75,7 @@
 						autoWidth:true,/*是否*/
 						paging:false,
 						ajax:{
-							url:"http://120.76.237.100:8081/mall-agentbms-api/agents/related",
+							url:"http://120.76.237.100:8081/mall-agentbms-api/salesmans/related",
 							dataType:'JSON',
 							method:'post',
 							dataSrc:function ( json ) {
@@ -104,21 +93,21 @@
 								}
 								var result=json.result;
 								/*设置分页*/
-								agent_page.page=result.page;
-								agent_page.pageSize=result.pageSize;
-								agent_page.total=result.count;
+								salesman_page.page=result.page;
+								salesman_page.pageSize=result.pageSize;
+								salesman_page.total=result.count;
 								/*分页调用*/
 								$admin_page_wrap.pagination({
-									pageSize:agent_page.pageSize,
-									total:agent_page.total,
-									pageNumber:agent_page.page,
+									pageSize:salesman_page.pageSize,
+									total:salesman_page.total,
+									pageNumber:salesman_page.page,
 									onSelectPage:function(pageNumber,pageSize){
 										/*再次查询*/
-										var param=agent_config.config.ajax.data;
+										var param=salesman_config.config.ajax.data;
 										param.page=pageNumber;
 										param.pageSize=pageSize;
-										agent_config.config.ajax.data=param;
-										getColumnData(agent_page,agent_config);
+										salesman_config.config.ajax.data=param;
+										getColumnData(salesman_page,salesman_config);
 									}
 								});
 								return result.list;
@@ -129,7 +118,7 @@
 								token:decodeURIComponent(logininfo.param.token),
 								grade:decodeURIComponent(logininfo.param.grade),
 								page:1,
-								pageSize:10
+								pageSize:20
 							}
 						},
 						info:false,
@@ -137,7 +126,19 @@
 						ordering:true,
 						columns: [
 							{
-								"data":"fullName"
+								"data":"name"
+							},
+							{
+								"data":"cellphone",
+								"render":function(data, type, full, meta ){
+									return public_tool.phoneFormat(data);
+								}
+							},
+							{
+								"data":"regionName",
+								"render":function(data, type, full, meta ){
+									return data.toString().slice(0,20);
+								}
 							},
 							{
 								"data":"grade",
@@ -158,21 +159,6 @@
 										str='<div class="g-c-gray6">'+grademap[grade]+'</div>';
 									}
 									return str;
-								}
-							},
-							{
-								"data":"adscriptionRegion",
-								"render":function(data, type, full, meta ){
-									return data.toString().slice(0,10)+'...';
-								}
-							},
-							{
-								"data":"linkman"
-							},
-							{
-								"data":"cellphone",
-								"render":function(data, type, full, meta ){
-									return public_tool.phoneFormat(data);
 								}
 							},
 							{
@@ -222,14 +208,14 @@
 			
 
 			/*初始化请求*/
-			getColumnData(agent_page,agent_config);
+			getColumnData(salesman_page,salesman_config);
 			
 
 
 			/*事件绑定*/
 			/*绑定查看，修改操作*/
 			var operate_item;
-			$agent_manage_wrap.delegate('span','click',function(e){
+			$salesman_manage_wrap.delegate('span','click',function(e){
 				e.stopPropagation();
 				e.preventDefault();
 
@@ -251,10 +237,10 @@
 
 				/*修改,编辑操作*/
 				if(action==='update'){
-					public_tool.setParams('mall-announcement-add',{
+					public_tool.setParams('mall-salesman-add',{
 						'id':id
 					});
-					location.href='mall-announcement-add.html';
+					location.href='mall-salesman-add.html';
 				}else if(action==='select'){
 					showDetail(id,$tr);
 				}
@@ -267,7 +253,7 @@
 		/*获取数据*/
 		function getColumnData(page,opt){
 			if(table===null){
-				table=opt.$agent_manage_wrap.DataTable(opt.config);
+				table=opt.$salesman_manage_wrap.DataTable(opt.config);
 			}else{
 				table.ajax.config(opt.config.ajax).load();
 			}
@@ -281,7 +267,7 @@
 			}
 
 			var detailconfig={
-					url:"http://120.76.237.100:8081/mall-agentbms-api/agent/detail",
+					url:"http://120.76.237.100:8081/mall-agentbms-api/salesman/detail",
 					dataType:'JSON',
 					method:'post',
 					data:{
@@ -312,7 +298,7 @@
 							if(typeof detail_map[j]!=='undefined'){
 								if(j==='name'||j==='Name'){
 									istitle=true;
-									$show_detail_title.html('"<span class="g-c-info">"'+list[j]+'"代理商</span>"详情信息');
+									$show_detail_title.html('"<span class="g-c-info">"'+list[j]+'" 业务员</span>"详情信息');
 								}else if(j==='grade'){
 									var grademap={
 										3:"代理商级别--省代",
@@ -320,12 +306,8 @@
 										1:"代理商级别--县代"
 									}
 									str+='<tr><th>'+detail_map[j]+':</th><td>'+grademap[list[j]]+'</td></tr>';
-								}else if(j==='isAudited'||j==='isaudited'){
-									var auditmap={
-										0:"默认",
-										1:"已审核"
-									}
-									str+='<tr><th>'+detail_map[j]+':</th><td>'+auditmap[list[j]]+'</td></tr>';
+								}else if(j==='cellphone'){
+									str+='<tr><th>'+detail_map[j]+':</th><td>'+public_tool.phoneFormat(list[j])+'</td></tr>';
 								}else{
 									str+='<tr><th>'+detail_map[j]+':</th><td>'+list[j]+'</td></tr>';
 								}

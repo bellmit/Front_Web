@@ -145,13 +145,13 @@
 							str='<div class="grid-list-group1">'+detailmap[i]+'：<p class="g-c-warn">'+statusmap[stauts]+'</p></div>';
 						}else if(stauts===1||stauts===30){
 							str='<div class="grid-list-group1">'+detailmap[i]+'：<p class="g-c-gray12">'+statusmap[stauts]+'</p></div>';
-						}else if(stauts===3||stauts===5||stauts===7||stauts===9){
+						}else if(stauts===6){
 							str='<div class="grid-list-group1">'+detailmap[i]+'：<p class="g-c-gray10">'+statusmap[stauts]+'</p></div>';
-						}else if(stauts===11||stauts===20){
+						}else if(stauts===9||stauts===20){
 							str='<div class="grid-list-group1">'+detailmap[i]+'：<p class="g-c-gray8">'+statusmap[stauts]+'</p></div>';
 						}else if(stauts===40){
 							str='<div class="grid-list-group1">'+detailmap[i]+'：<p class="g-c-red1">'+statusmap[stauts]+'</p></div>';
-						}else if(stauts===13||stauts===21){
+						}else if(stauts===21){
 							str='<div class="grid-list-group1">'+detailmap[i]+'：<p class="g-c-info">'+statusmap[stauts]+'</p></div>';
 						}
 					}else if(i==='freight'||i==='totalMoney'){

@@ -237,13 +237,13 @@
 										btns='';
 
 									var status=parseInt(full.orderState,10);
-									if(status===3||status===5){
+									if(status===6){
 										/*需要发货状态*/
 										btns+='<span data-action="send" data-id="'+id+'" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 											<i class="fa-arrow-up"></i>\
 											<span>发货</span>\
 											</span>';
-									}else if(status===7||status===9){
+									}else if(status===9){
 										/*需要查看物流*/
 										btns+='<span data-action="logistics" data-id="'+id+'" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 											<i class="fa-truck"></i>\
@@ -367,13 +367,13 @@
 										btns='';
 
 									var status=parseInt(full.orderState,10);
-									if(status===3||status===5){
+									if(status===6){
 										/*需要发货状态*/
 										btns+='<span data-action="send" data-id="'+id+'" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 											<i class="fa-arrow-up"></i>\
 											<span>发货</span>\
 											</span>';
-									}else if(status===7||status===9){
+									}else if(status===9){
 										/*需要查看物流*/
 										btns+='<span data-action="logistics" data-id="'+id+'" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 											<i class="fa-truck"></i>\
@@ -497,13 +497,13 @@
 										btns='';
 
 									var status=parseInt(full.orderState,10);
-									if(status===3||status===5){
+									if(status===6){
 										/*需要发货状态*/
 										btns+='<span data-action="send" data-id="'+id+'" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 											<i class="fa-arrow-up"></i>\
 											<span>发货</span>\
 											</span>';
-									}else if(status===7||status===9){
+									}else if(status===9){
 										/*需要查看物流*/
 										btns+='<span data-action="logistics" data-id="'+id+'" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 											<i class="fa-truck"></i>\
@@ -627,13 +627,13 @@
 										btns='';
 
 									var status=parseInt(full.orderState,10);
-									if(status===3||status===5){
+									if(status===6){
 										/*需要发货状态*/
 										btns+='<span data-action="send" data-id="'+id+'" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 											<i class="fa-arrow-up"></i>\
 											<span>发货</span>\
 											</span>';
-									}else if(status===7||status===9){
+									}else if(status===9){
 										/*需要查看物流*/
 										btns+='<span data-action="logistics" data-id="'+id+'" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 											<i class="fa-truck"></i>\
@@ -757,13 +757,13 @@
 										btns='';
 
 									var status=parseInt(full.orderState,10);
-									if(status===3||status===5){
+									if(status===6){
 										/*需要发货状态*/
 										btns+='<span data-action="send" data-id="'+id+'" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 											<i class="fa-arrow-up"></i>\
 											<span>发货</span>\
 											</span>';
-									}else if(status===7||status===9){
+									}else if(status===9){
 										/*需要查看物流*/
 										btns+='<span data-action="logistics" data-id="'+id+'" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 											<i class="fa-truck"></i>\
@@ -887,13 +887,13 @@
 										btns='';
 
 									var status=parseInt(full.orderState,10);
-									if(status===3||status===5){
+									if(status===6){
 										/*需要发货状态*/
 										btns+='<span data-action="send" data-id="'+id+'" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 											<i class="fa-arrow-up"></i>\
 											<span>发货</span>\
 											</span>';
-									}else if(status===7||status===9){
+									}else if(status===9){
 										/*需要查看物流*/
 										btns+='<span data-action="logistics" data-id="'+id+'" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 											<i class="fa-truck"></i>\
