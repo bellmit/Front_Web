@@ -7,7 +7,7 @@
 			/*菜单调用*/
 			var logininfo=public_tool.initMap.loginMap;
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
-				url:'http://10.0.5.222:8080/mall-agentbms-api/module/menu',
+				url:'http://120.76.237.100:8081/mall-agentbms-api/module/menu',
 				async:false,
 				type:'post',
 				param:{
@@ -61,7 +61,7 @@
 
 			/*查询分润设置情况*/
 			$.ajax({
-				url:'http://10.0.5.222:8080/mall-agentbms-api/profits',
+				url:'http://120.76.237.100:8081/mall-agentbms-api/profits',
 				type:'post',
 				data:{
 					roleId:decodeURIComponent(logininfo.param.roleId),
@@ -260,7 +260,7 @@
 									ele_aaa=$profit_aaa0.val();
 
 									/*规则通过后校验*/
-									config1['url']="http://10.0.5.222:8080/mall-agentbms-api/profit/agent/addupdate";
+									config1['url']="http://120.76.237.100:8081/mall-agentbms-api/profit/agent/addupdate";
 									config1['data']= {
 										agentProfit1: ele_a,
 										agentProfit2: ele_aa,
@@ -272,7 +272,7 @@
 									ele_aa=$profit_aa1.val();
 									ele_aaa=$profit_aaa1.val();
 
-									config2['url']="http://10.0.5.222:8080/mall-agentbms-api/profit/platform/addupdate";
+									config2['url']="http://120.76.237.100:8081/mall-agentbms-api/profit/platform/addupdate";
 									config2['data']= {
 										platformProfit: ele_a,
 										agentProfit: ele_aa,

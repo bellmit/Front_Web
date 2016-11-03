@@ -7,7 +7,7 @@
 			/*菜单调用*/
 			var logininfo=public_tool.initMap.loginMap;
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
-				url:'http://10.0.5.222:8080/mall-agentbms-api/module/menu',
+				url:'http://120.76.237.100:8081/mall-agentbms-api/module/menu',
 				async:false,
 				type:'post',
 				param:{
@@ -104,6 +104,28 @@
 						return false;
 					}
 					this.value=public_tool.phoneFormat(this.value);
+				});
+			});
+
+
+			/*绑定切换地址*/
+			$.each([$admin_province,$admin_city,$admin_country],function () {
+				var self=this,
+					selector=this.selector,
+					type='';
+
+				if(selector.indexOf('province')!==-1){
+					type='province';
+				}else if(selector.indexOf('city')!==-1){
+					type='city';
+				}else if(selector.indexOf('country')!==-1){
+					type='country';
+				}
+
+				this.on('change',function () {
+					var $this=$(this),
+						value=$this.val();
+					getAddress(value,'',type,true);
 				});
 			});
 
@@ -209,7 +231,7 @@
 										setdata['username']=$admin_username.val();
                                         delete setdata['id'];
                                     }
-									config['url']="http://10.0.5.222:8080/mall-agentbms-api/agent/addupdate";
+									config['url']="http://120.76.237.100:8081/mall-agentbms-api/agent/addupdate";
 									config['data']=setdata;
 								}
 
@@ -328,7 +350,7 @@
 
 						if(sel!==''&&getflag){
 							if(type==='province'){
-								getAddress(sel,'','city');
+								getAddress(sel,'','city',true);
 							}else if(type==='city'){
 								getAddress(sel,'','country');
 							}
@@ -347,7 +369,7 @@
 
 			/*查询上级代理商ID*/
 			$.ajax({
-				url:"http://10.0.5.222:8080/mall-agentbms-api/agent/role/check",
+				url:"http://120.76.237.100:8081/mall-agentbms-api/agent/role/check",
 				dataType:'JSON',
 				method:'post',
 				data:{
@@ -395,7 +417,7 @@
 				grademap={
 					'3':'省级代理商',
 					'2':'市级代理商',
-					'1':'县级代理商',
+					'1':'市级代理商',
 					'4':'店长',
 					'-1':'超级管理员',
 					'-2':'默认',
@@ -489,7 +511,7 @@
 
 
 			$.ajax({
-				url:"http://10.0.5.222:8080/mall-agentbms-api/agent/detail",
+				url:"http://120.76.237.100:8081/mall-agentbms-api/agent/detail",
 				dataType:'JSON',
 				method:'post',
 				data:{
@@ -622,7 +644,7 @@
 		/*查询业务员Id*/
 		function getSalesmanId() {
 			$.ajax({
-				url:"http://10.0.5.222:8080/mall-agentbms-api/salesmans/notused",
+				url:"http://120.76.237.100:8081/mall-agentbms-api/salesmans/notused",
 				dataType:'JSON',
 				method:'post',
 				data:{
