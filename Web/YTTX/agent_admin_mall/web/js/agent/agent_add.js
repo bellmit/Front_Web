@@ -113,15 +113,14 @@
 			var edit_cache=public_tool.getParams('mall-agent-add');
 			if(edit_cache){
 				$admin_action.html('修改');
+				$admin_username.prop({
+					'readonly':true
+				});
 				/*判断权限*/
 				if(agentedit_power){
 					$admin_action.removeClass('g-d-hidei');
 				}else{
 					$admin_action.addClass('g-d-hidei');
-					/*dia.content('<span class="g-c-bs-warning g-btips-warn">您没有修改代理商权限</span>').show();
-					setTimeout(function () {
-						dia.close();
-					},2000);*/
 				}
 				setAgentData(edit_cache);
 			}else{
@@ -130,10 +129,6 @@
 					$admin_action.removeClass('g-d-hidei');
 				}else{
 					$admin_action.addClass('g-d-hidei');
-					/*dia.content('<span class="g-c-bs-warning g-btips-warn">您没有添加代理商权限</span>').show();
-					setTimeout(function () {
-						dia.close();
-					},2000);*/
 				}
 				/*获取地址*/
 				getAddress(null);
@@ -260,12 +255,10 @@
 			}
 
 
-
 		}
 
 
-
-
+		
 
 
 		/*查询地址*/
@@ -273,19 +266,17 @@
 			if(!id){
 				var id='86';
 			}
-			return false;
-			var addressconfig={
-				url:/*"http://120.76.237.100:8081/mall-agentbms-api/agent/detail"*/"http://120.24.226.70:8080/yttxApp/sys/getAddress.do",
-				dataType:'JSON',
-				method:'post'/*,
-				data:{
-					parentCode:id,
-					"adminId":decodeURIComponent(logininfo.param.adminId),
-					"token":decodeURIComponent(logininfo.param.token),
-					"grade":decodeURIComponent(logininfo.param.grade)
-				}*/
-			};
-			$.ajax(addressconfig)
+			$.ajax({
+					url:"http://120.24.226.70:8081/yttx-public-api/address/get",
+					dataType:'JSON',
+					method:'post',
+					data:{
+						parentCode:id,
+						"adminId":decodeURIComponent(logininfo.param.adminId),
+						"token":decodeURIComponent(logininfo.param.token),
+						"grade":decodeURIComponent(logininfo.param.grade)
+					}
+				})
 				.done(function(resp){
 					var code=parseInt(resp.code,10);
 					if(code!==0){
@@ -494,9 +485,7 @@
 					for(var j in list){
 						switch(j){
 							case 'username':
-								$admin_username.val(list[j]).prop({
-									'readonly':true
-								});
+								$admin_username.val(list[j]);
 								break;
 							case 'password':
 								$admin_password.val(list[j]);
@@ -505,7 +494,7 @@
 								$admin_name.val(list[j]);
 								break;
 							case 'grade':
-								var grade=list[j];
+								var grade=parseInt(list[j],10);
 								$admin_gradewrap.find('input').each(function () {
 									var $this=$(this),
 										value=$this.val();
@@ -565,7 +554,7 @@
 								$admin_status.find('option').each(function () {
 									var $this=$(this),
 										value=$this.val();
-									if(value===audit){
+									if(value===status){
 										$this.prop({
 											'selected':true
 										});
@@ -578,7 +567,7 @@
 								$admin_salesmanId.find('option').each(function () {
 									var $this=$(this),
 										value=$this.val();
-									if(value===audit){
+									if(value===salesman){
 										$this.prop({
 											'selected':true
 										});
@@ -609,19 +598,24 @@
 				dataType:'JSON',
 				method:'post',
 				data:{
-					adminId:decodeURIComponent(logininfo.param.adminId)
+					roleId:decodeURIComponent(logininfo.param.roleId),
+					adminId:decodeURIComponent(logininfo.param.adminId),
+					grade:decodeURIComponent(logininfo.param.grade),
+					token:decodeURIComponent(logininfo.param.token)
 				}
 			})
 			.done(function(resp){
 				var code=parseInt(resp.code,10);
 				if(code!==0){
 					console.log(resp.message);
+					doSalesmanIdFail();
 					return false;
 				}
 				/*是否是正确的返回数据*/
 				var res=resp.result;
 
 				if(!res){
+					doSalesmanIdFail();
 					return false;
 				}
 
@@ -632,6 +626,11 @@
 					var len=list.length,
 						i=0,
 						str='';
+					if(len===0){
+						$('<option value="" selected>请选择业务员</option>').appendTo($admin_salesmanId.html(''));
+						doSalesmanIdFail();
+						return false;
+					}
 					for(i;i<len;i++){
 						if(i===0){
 							str+='<option value="" selected>请选择业务员</option><option value="'+list[i]["id"]+'">'+list[i]["name"]+'</option>';
@@ -642,12 +641,26 @@
 					$(str).appendTo($admin_salesmanId.html(''));
 				}else{
 					$('<option value="" selected>请选择业务员</option>').appendTo($admin_salesmanId.html(''));
+					doSalesmanIdFail();
+					return false;
 				}
 			})
 			.fail(function(resp){
 				$('<option value="" selected>请选择业务员</option>').appendTo($admin_salesmanId.html(''));
 				console.log(resp.message);
+				doSalesmanIdFail();
 			});
+		}
+
+		/*处理无业务员时的情况*/
+		function doSalesmanIdFail() {
+			return false;
+			dia.close();
+			dia.content('<span class="g-c-bs-warning g-btips-warn">还没有业务员，3秒后将跳转至添加业务员处</span>').show();
+			setTimeout(function () {
+				dia.close();
+				location.href='../salesman/mall-salesman-add.html';
+			},3000);
 		}
 
 
