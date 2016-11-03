@@ -7,7 +7,7 @@
 			/*菜单调用*/
 			var logininfo=public_tool.initMap.loginMap;
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
-				url:'http://120.76.237.100:8081/mall-agentbms-api/module/menu',
+				url:'http://10.0.5.222:8080/mall-agentbms-api/module/menu',
 				async:false,
 				type:'post',
 				param:{
@@ -42,7 +42,6 @@
 				admin_agent_form=document.getElementById('admin_agent_form'),
 				$admin_agent_form=$(admin_agent_form),
 				$admin_id=$('#admin_id'),
-				$admin_userwrap=$('#admin_userwrap'),
 				$admin_username=$('#admin_username'),
 				$admin_password=$('#admin_password'),
 				$admin_name=$('#admin_name'),
@@ -122,7 +121,7 @@
 				}else{
 					$admin_action.addClass('g-d-hidei');
 				}
-				setAgentData(edit_cache);
+				setAgentData(edit_cache['id']);
 			}else{
 				/*判断权限*/
 				if(agentadd_power){
@@ -131,7 +130,7 @@
 					$admin_action.addClass('g-d-hidei');
 				}
 				/*获取地址*/
-				getAddress(null);
+				getAddress(86,'','province',true);
 			}
 
 
@@ -210,7 +209,7 @@
 										setdata['username']=$admin_username.val();
                                         delete setdata['id'];
                                     }
-									config['url']="http://120.76.237.100:8081/mall-agentbms-api/agent/addupdate";
+									config['url']="http://10.0.5.222:8080/mall-agentbms-api/agent/addupdate";
 									config['data']=setdata;
 								}
 
@@ -222,6 +221,7 @@
 											dia.content('<span class="g-c-bs-warning g-btips-warn">'+actiontype+'代理商失败</span>').show();
 											return false;
 										}else{
+											public_tool.removeParams('mall-agent-add');
 											dia.content('<span class="g-c-bs-success g-btips-succ">'+actiontype+'代理商成功</span>').show();
 										}
 									}
@@ -262,50 +262,82 @@
 
 
 		/*查询地址*/
-		function getAddress(id,type) {
-			if(!id){
-				var id='86';
-			}
+		function getAddress(id,sel,type,getflag) {
 			$.ajax({
 					url:"http://120.24.226.70:8081/yttx-public-api/address/get",
 					dataType:'JSON',
 					method:'post',
 					data:{
-						parentCode:id,
-						"adminId":decodeURIComponent(logininfo.param.adminId),
-						"token":decodeURIComponent(logininfo.param.token),
-						"grade":decodeURIComponent(logininfo.param.grade)
+						parentCode:id===''?86:id,
+						adminId:decodeURIComponent(logininfo.param.adminId),
+						token:decodeURIComponent(logininfo.param.token),
+						grade:decodeURIComponent(logininfo.param.grade)
 					}
 				})
 				.done(function(resp){
 					var code=parseInt(resp.code,10);
 					if(code!==0){
 						console.log(resp.message);
-						dia.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"操作失败")+'</span>').show();
-						setTimeout(function () {
-							dia.close();
-						},2000);
 						return false;
 					}
 					/*是否是正确的返回数据*/
-					var list=resp.result,
-						str='',
-						istitle=false;
+					var res=resp.result;
+					if(!res){
+						return false;
+					}
+					var list=res.list;
 
+					if(!list){
+						return false;
+					}
+
+					var len=list.length,
+						str='',
+						$wrap='',
+						i=0;
+
+					if(type==='province'){
+						$wrap=$admin_province;
+					}else if(type==='city'){
+						$wrap=$admin_city;
+					}else if(type==='country'){
+						$wrap=$admin_country;
+					}
+
+					if(len!==0){
+						if(sel!==''){
+							for(i;i<len;i++){
+								var codes=list[i]["code"];
+								if(codes===sel){
+									str+='<option selected value="'+codes+'">'+list[i]["name"]+'</option>';
+								}else{
+									str+='<option value="'+codes+'">'+list[i]["name"]+'</option>';
+								}
+							}
+						}else{
+							for(i;i<len;i++){
+								if(i===0){
+									sel=list[i]["code"];
+									str+='<option selected value="'+list[i]["code"]+'">'+list[i]["name"]+'</option>';
+								}else{
+									str+='<option value="'+list[i]["code"]+'">'+list[i]["name"]+'</option>';
+								}
+							}
+						}
+						$(str).appendTo($wrap.html(''));
+
+						if(sel!==''&&getflag){
+							if(type==='province'){
+								getAddress(sel,'','city');
+							}else if(type==='city'){
+								getAddress(sel,'','country');
+							}
+						}
+					}
 				})
 				.fail(function(resp){
 					console.log(resp.message);
-					dia.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"操作失败")+'</span>').show();
-					setTimeout(function () {
-						dia.close();
-					},2000);
 				});
-		}
-
-
-		/*查询并设置地址*/
-		function setAddress(id,sel,type) {
-
 		}
 
 
@@ -315,7 +347,7 @@
 
 			/*查询上级代理商ID*/
 			$.ajax({
-				url:"http://120.76.237.100:8081/mall-agentbms-api/agent/role/check",
+				url:"http://10.0.5.222:8080/mall-agentbms-api/agent/role/check",
 				dataType:'JSON',
 				method:'post',
 				data:{
@@ -336,10 +368,6 @@
 						return false;
 					}
 					console.log(resp.message);
-					dia.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"上级代理商Id不存在")+'</span>').show();
-					setTimeout(function () {
-						dia.close();
-					},2000);
 					if(fn&&typeof fn==='function'){
 						fn.call(self,resp);
 					}
@@ -461,7 +489,7 @@
 
 
 			$.ajax({
-				url:"http://120.76.237.100:8081/mall-agentbms-api/agent/detail",
+				url:"http://10.0.5.222:8080/mall-agentbms-api/agent/detail",
 				dataType:'JSON',
 				method:'post',
 				data:{
@@ -525,13 +553,13 @@
 								$admin_telephone.val(list[j]);
 								break;
 							case 'province':
-								setAddress('86',list[j],'province');
+								getAddress('86',list[j],'province');
 								break;
 							case 'city':
-								setAddress(list['province'],list[j],'city');
+								getAddress(list['province'],list[j],'city');
 								break;
 							case 'country':
-								setAddress(list['city'],list[j],'country');
+								getAddress(list['city'],list[j],'country');
 								break;
 							case 'address':
 								$admin_address.val(list[j]);
@@ -594,7 +622,7 @@
 		/*查询业务员Id*/
 		function getSalesmanId() {
 			$.ajax({
-				url:"http://120.76.237.100:8081/mall-agentbms-api/salesmans/notused",
+				url:"http://10.0.5.222:8080/mall-agentbms-api/salesmans/notused",
 				dataType:'JSON',
 				method:'post',
 				data:{
@@ -627,7 +655,6 @@
 						i=0,
 						str='';
 					if(len===0){
-						$('<option value="" selected>请选择业务员</option>').appendTo($admin_salesmanId.html(''));
 						doSalesmanIdFail();
 						return false;
 					}
@@ -640,13 +667,11 @@
 					}
 					$(str).appendTo($admin_salesmanId.html(''));
 				}else{
-					$('<option value="" selected>请选择业务员</option>').appendTo($admin_salesmanId.html(''));
 					doSalesmanIdFail();
 					return false;
 				}
 			})
 			.fail(function(resp){
-				$('<option value="" selected>请选择业务员</option>').appendTo($admin_salesmanId.html(''));
 				console.log(resp.message);
 				doSalesmanIdFail();
 			});

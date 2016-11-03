@@ -10,7 +10,7 @@
 			/*菜单调用*/
 			var logininfo=public_tool.initMap.loginMap;
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
-				url:'http://120.76.237.100:8081/mall-agentbms-api/module/menu',
+				url:'http://10.0.5.222:8080/mall-agentbms-api/module/menu',
 				async:false,
 				type:'post',
 				param:{
@@ -75,7 +75,7 @@
 						autoWidth:true,/*是否*/
 						paging:false,
 						ajax:{
-							url:"http://120.76.237.100:8081/mall-agentbms-api/salesmans/related",
+							url:"http://10.0.5.222:8080/mall-agentbms-api/salesmans/related",
 							dataType:'JSON',
 							method:'post',
 							dataSrc:function ( json ) {
@@ -135,33 +135,6 @@
 								}
 							},
 							{
-								"data":"regionName",
-								"render":function(data, type, full, meta ){
-									return data.toString().slice(0,20);
-								}
-							},
-							{
-								"data":"grade",
-								"render":function(data, type, full, meta ){
-									var grade=parseInt(data,10),
-										grademap={
-											3:"省代",
-											2:"市代",
-											1:"县代"
-										},
-										str='';
-
-									if(grade===1){
-										str='<div class="g-c-gray10">'+grademap[grade]+'</div>';
-									}else if(grade===2){
-										str='<div class="g-c-gray8">'+grademap[grade]+'</div>';
-									}else if(grade===3){
-										str='<div class="g-c-gray6">'+grademap[grade]+'</div>';
-									}
-									return str;
-								}
-							},
-							{
 								"data":"status",
 								"render":function(data, type, full, meta ){
 									var stauts=parseInt(data,10),
@@ -185,14 +158,14 @@
 									var id=parseInt(data,10),
 										btns='';
 
-									if(agentedit_power){
+									if(salesmanedit_power){
 										btns+='<span data-action="update" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 											<i class="fa-pencil"></i>\
 											<span>编辑</span>\
 											</span>';
 									}
 
-									if(agentshow_power){
+									if(salesmanshow_power){
 										btns+='<span data-action="select" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 											<i class="fa-file-text-o"></i>\
 											<span>查看</span>\
@@ -267,7 +240,7 @@
 			}
 
 			var detailconfig={
-					url:"http://120.76.237.100:8081/mall-agentbms-api/salesman/detail",
+					url:"http://10.0.5.222:8080/mall-agentbms-api/salesman/detail",
 					dataType:'JSON',
 					method:'post',
 					data:{
@@ -308,6 +281,12 @@
 									str+='<tr><th>'+detail_map[j]+':</th><td>'+grademap[list[j]]+'</td></tr>';
 								}else if(j==='cellphone'){
 									str+='<tr><th>'+detail_map[j]+':</th><td>'+public_tool.phoneFormat(list[j])+'</td></tr>';
+								}else if(j==='status'){
+										var statusmap={
+											0:"正常",
+											1:"停用"
+										};
+									str+='<tr><th>'+detail_map[j]+':</th><td>'+statusmap[list[j]]+'</td></tr>';
 								}else{
 									str+='<tr><th>'+detail_map[j]+':</th><td>'+list[j]+'</td></tr>';
 								}
