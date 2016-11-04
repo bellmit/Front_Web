@@ -126,6 +126,33 @@
 		}
 	}
 }
+.admin-notice-btn{
+	.layout-base(24px);
+	.layout-absoluter-base(0,120px);
+	.layout-fixedr-base(0,120px);
+	background:@color-white;
+	overflow: hidden;
+	height:70px;
+	padding:20px 0;
+	margin:0;
+	text-align: center;
+	.user-select-base;
+	cursor: pointer;
+	.transition-base(all .1s ease-in .01s);
+	color:@color-info;
+	&:hover{
+		background:@color-info;
+		color:@color-white;
+	}
+	&:after{
+		width:100%;
+		height:100%;
+		content:'\e61b';
+		font-family:'ux_six';
+		font-size:@font-size-base + 4;
+	}
+}
+
 
 /*首页欢迎页面*/
 .admin-welcome-wrap{
