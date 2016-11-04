@@ -7,7 +7,7 @@
 			/*菜单调用*/
 			var logininfo=public_tool.initMap.loginMap;
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
-				url:'http://120.76.237.100:8081/mall-agentbms-api/module/menu',
+				url:'http://10.0.5.222:8080/mall-agentbms-api/module/menu',
 				async:false,
 				type:'post',
 				param:{
@@ -390,10 +390,10 @@
 										/*修改操作*/
                                         setdata['id']=id;
 										actiontype='修改';
-										config['url']="http://120.76.237.100:8081/mall-agentbms-api/announcement/update";
+										config['url']="http://10.0.5.222:8080/mall-agentbms-api/announcement/update";
                                     }else{
 										/*新增操作*/
-										config['url']="http://120.76.237.100:8081/mall-agentbms-api/announcement/add";
+										config['url']="http://10.0.5.222:8080/mall-agentbms-api/announcement/add";
 										actiontype='新增';
                                         delete setdata['id'];
                                     }
@@ -452,7 +452,7 @@
 		function getToken(){
 			var result=null;
 			$.ajax({
-				url:'http://120.76.237.100:8081/mall-agentbms-api/qiniu/token/get',
+				url:'http://10.0.5.222:8080/mall-agentbms-api/qiniu/token/get',
 				async:false,
 				type:'post',
 				datatype:'json',

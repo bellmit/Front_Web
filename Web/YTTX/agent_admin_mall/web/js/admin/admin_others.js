@@ -7,7 +7,7 @@
 			/*菜单调用*/
 			var logininfo=public_tool.initMap.loginMap;
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
-				url:'http://120.76.237.100:8081/mall-agentbms-api/module/menu',
+				url:'http://10.0.5.222:8080/mall-agentbms-api/module/menu',
 				async:false,
 				type:'post',
 				param:{
@@ -61,7 +61,7 @@
 
 			/*查询分润设置情况*/
 			$.ajax({
-				url:'http://120.76.237.100:8081/mall-agentbms-api/profits',
+				url:'http://10.0.5.222:8080/mall-agentbms-api/profits',
 				type:'post',
 				data:{
 					roleId:decodeURIComponent(logininfo.param.roleId),
@@ -260,72 +260,36 @@
 									ele_aaa=$profit_aaa0.val();
 
 									/*规则通过后校验*/
-									config1['url']="http://120.76.237.100:8081/mall-agentbms-api/profit/agent/addupdate";
-									config1['data']= {
+									config1['url']="http://10.0.5.222:8080/mall-agentbms-api/profit/agent/addupdate";
+									$.extend(true,config1['data'],{
 										agentProfit1: ele_a,
 										agentProfit2: ele_aa,
 										agentProfit3: ele_aaa
-									};
+									});
 								}else if(index===1){
 									config2= $.extend(true,{},defconfig);
 									ele_a=$profit_a1.val();
 									ele_aa=$profit_aa1.val();
 									ele_aaa=$profit_aaa1.val();
 
-									config2['url']="http://120.76.237.100:8081/mall-agentbms-api/profit/platform/addupdate";
-									config2['data']= {
+									config2['url']="http://10.0.5.222:8080/mall-agentbms-api/profit/platform/addupdate";
+									$.extend(true,config2['data'],{
 										platformProfit: ele_a,
 										agentProfit: ele_aa,
 										storageProfit: ele_aaa
-									};
+									});
 								}
 								var temp_a=parseInt(ele_a * 1000,10),
 									temp_aa=parseInt(ele_aa * 1000,10),
 									temp_aaa=parseInt(ele_aaa * 1000,10);
 
 								/*设置分润规则*/
-								console.log(ele_a);
-								console.log(ele_aa);
-								console.log(ele_aaa);
-								console.log(isNaN(temp_a));
-								console.log(isNaN(temp_aa));
-								console.log(isNaN(temp_aaa));
 								if(isNaN(temp_a)||isNaN(temp_aa)||isNaN(temp_aaa)){
 									dia.content('<span class="g-c-bs-warning g-btips-warn">分润设置数据非法值</span>').show();
 									return false;
 								}
-
-
-								if((index===0&&$profit_edit_form0.attr('data-setting')==='true')){
-									dialogObj.setFn(function(){
-										var self=this;
-										$.ajax(config1)
-											.done(function(resp){
-												var code=parseInt(resp.code,10);
-												if(code!==0){
-													console.log(resp.message);
-													self.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"设置失败")+'</span>').show();
-													setTimeout(function () {
-														self.close();
-													},2000);
-													return false;
-												}
-												self.content('<span class="g-c-bs-success g-btips-succ">设置成功</span>').show();
-												setTimeout(function () {
-													self.close();
-												},2000);
-											})
-											.fail(function(resp){
-												self.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"操作失败")+'</span>').show();
-												setTimeout(function () {
-													self.close();
-												},2000);
-
-											});
-									},'admin_profitagent');
-									//确认修改
-									dialogObj.dialog.content('<span class="g-c-bs-warning g-btips-warn">您已经设置了此数据，是否真要重新设置？</span>').showModal();
-								}else{
+								
+								if(index===0){
 									$.ajax(config1)
 										.done(function(resp){
 											var code=parseInt(resp.code,10);
@@ -351,36 +315,7 @@
 										});
 								}
 
-								if((index===1&&$profit_edit_form2.attr('data-setting')==='true')){
-									dialogObj.setFn(function(){
-										var self=this;
-										$.ajax(config2)
-											.done(function(resp){
-												var code=parseInt(resp.code,10);
-												if(code!==0){
-													console.log(resp.message);
-													self.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"设置失败")+'</span>').show();
-													setTimeout(function () {
-														self.close();
-													},2000);
-													return false;
-												}
-												self.content('<span class="g-c-bs-success g-btips-succ">设置成功</span>').show();
-												setTimeout(function () {
-													self.close();
-												},2000);
-											})
-											.fail(function(resp){
-												self.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"操作失败")+'</span>').show();
-												setTimeout(function () {
-													self.close();
-												},2000);
-
-											});
-									},'admin_profitplatform');
-									//确认删除
-									dialogObj.dialog.content('<span class="g-c-bs-warning g-btips-warn">您已经设置了此数据，是否真要重新设置？</span>').showModal();
-								}else{
+								if(index===1){
 									$.ajax(config2)
 										.done(function(resp){
 											var code=parseInt(resp.code,10);

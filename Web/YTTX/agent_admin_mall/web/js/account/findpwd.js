@@ -2,6 +2,11 @@
 (function($){
 	$(function(){
 		if(public_tool.initMap.isrender){
+
+			/*如果存在缓存，则删除缓存*/
+			public_tool.clear();
+			public_tool.clearCacheData();
+
 			//dom节点引用或者其他变量定义
 			var $findpwdform=$('#findpwd'),
 				$username=$('#username'),
@@ -20,9 +25,7 @@
 			},1);
 
 
-			/*如果存在缓存，则删除缓存*/
-			public_tool.clear();
-			public_tool.clearCacheData();
+
 
 
 			//异步校验
@@ -74,7 +77,7 @@
 						"hideMethod": "fadeOut"
 					};
 
-					var basedomain='http://120.76.237.100:8081',
+					var basedomain='http://10.0.5.222:8080',
 						basepathname="/mall-agentbms-api/sysuser/login";
 					$.ajax({
 						url:basedomain+basepathname,

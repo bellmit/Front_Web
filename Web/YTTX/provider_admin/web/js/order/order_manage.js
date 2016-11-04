@@ -109,7 +109,7 @@
 						autoWidth:true,/*是否*/
 						paging:false,
 						ajax:{
-							url:/*"../../json/goods/goods_list.json"*/"http://120.24.226.70:8081/yttx-providerbms-api/goodsorder/list",
+							url:/*"../../json/goods/goods_list.json"*/"http://120.24.226.70:8082/yttx-providerbms-api/goodsorder/list",
 							dataType:'JSON',
 							method:'post',
 							dataSrc:function ( json ) {
@@ -269,7 +269,7 @@
 						autoWidth:true,/*是否*/
 						paging:false,
 						ajax:{
-							url:/*"../../json/goods/goods_list.json"*/"http://120.24.226.70:8081/yttx-providerbms-api/goodsorder/list",
+							url:/*"../../json/goods/goods_list.json"*/"http://120.24.226.70:8082/yttx-providerbms-api/goodsorder/list",
 							dataType:'JSON',
 							method:'post',
 							dataSrc:function ( json ) {
@@ -399,7 +399,7 @@
 						autoWidth:true,/*是否*/
 						paging:false,
 						ajax:{
-							url:/*"../../json/goods/goods_list.json"*/"http://120.24.226.70:8081/yttx-providerbms-api/goodsorder/list",
+							url:/*"../../json/goods/goods_list.json"*/"http://120.24.226.70:8082/yttx-providerbms-api/goodsorder/list",
 							dataType:'JSON',
 							method:'post',
 							dataSrc:function ( json ) {
@@ -529,7 +529,7 @@
 						autoWidth:true,/*是否*/
 						paging:false,
 						ajax:{
-							url:/*"../../json/goods/goods_list.json"*/"http://120.24.226.70:8081/yttx-providerbms-api/goodsorder/list",
+							url:/*"../../json/goods/goods_list.json"*/"http://120.24.226.70:8082/yttx-providerbms-api/goodsorder/list",
 							dataType:'JSON',
 							method:'post',
 							dataSrc:function ( json ) {
@@ -659,7 +659,7 @@
 						autoWidth:true,/*是否*/
 						paging:false,
 						ajax:{
-							url:/*"../../json/goods/goods_list.json"*/"http://120.24.226.70:8081/yttx-providerbms-api/goodsorder/list",
+							url:/*"../../json/goods/goods_list.json"*/"http://120.24.226.70:8082/yttx-providerbms-api/goodsorder/list",
 							dataType:'JSON',
 							method:'post',
 							dataSrc:function ( json ) {
@@ -789,7 +789,7 @@
 						autoWidth:true,/*是否*/
 						paging:false,
 						ajax:{
-							url:/*"../../json/goods/goods_list.json"*/"http://120.24.226.70:8081/yttx-providerbms-api/goodsorder/list",
+							url:/*"../../json/goods/goods_list.json"*/"http://120.24.226.70:8082/yttx-providerbms-api/goodsorder/list",
 							dataType:'JSON',
 							method:'post',
 							dataSrc:function ( json ) {
@@ -933,7 +933,7 @@
 
 			/*查询物流公司*/
 			$.ajax({
-					url:"http://120.24.226.70:8081/yttx-providerbms-api/shipping/express/list",
+					url:"http://120.24.226.70:8082/yttx-providerbms-api/shipping/express/list",
 					method: 'POST',
 					dataType: 'json',
 					data:{
@@ -1170,7 +1170,7 @@
 										remark:$admin_remark.val()
 									});
 
-									config['url']="http://120.24.226.70:8081/yttx-providerbms-api/order/tracking/add";
+									config['url']="http://120.24.226.70:8082/yttx-providerbms-api/order/tracking/add";
 									config['data']=setdata;
 								}
 

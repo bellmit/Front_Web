@@ -8,9 +8,10 @@
 		/*初始化数据*/
 		if(public_tool.initMap.isrender){
 			/*菜单调用*/
-			var logininfo=public_tool.initMap.loginMap;
+			var logininfo=public_tool.initMap.loginMap,
+				merchant_grade=parseInt(decodeURIComponent(logininfo.param.grade),10);
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
-				url:'http://120.76.237.100:8081/mall-agentbms-api/module/menu',
+				url:'http://10.0.5.222:8080/mall-agentbms-api/module/menu',
 				async:false,
 				type:'post',
 				param:{
@@ -85,7 +86,7 @@
 						autoWidth:true,/*是否*/
 						paging:false,
 						ajax:{
-							url:"http://120.76.237.100:8081/mall-agentbms-api/merchant/related",
+							url:"http://10.0.5.222:8080/mall-agentbms-api/merchant/related",
 							dataType:'JSON',
 							method:'post',
 							dataSrc:function ( json ) {
@@ -183,7 +184,7 @@
 									var id=parseInt(data,10),
 										btns='';
 
-									if(merchantedit_power){
+									if(merchantedit_power&&(merchant_grade===3||merchant_grade===2||merchant_grade===1)){
 										btns+='<span data-action="update" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 											<i class="fa-pencil"></i>\
 											<span>编辑</span>\
@@ -245,6 +246,17 @@
 			});
 
 
+			/*绑定关闭详情*/
+			$show_detail_wrap.on('hide.bs.modal',function(){
+				if(operate_item){
+					setTimeout(function(){
+						operate_item.removeClass('item-lighten');
+						operate_item=null;
+					},1000);
+				}
+			});
+
+
 		}
 
 
@@ -265,7 +277,7 @@
 			}
 
 			var detailconfig={
-					url:"http://120.76.237.100:8081/mall-agentbms-api/merchant/detail",
+					url:"http://10.0.5.222:8080/mall-agentbms-api/merchant/detail",
 					dataType:'JSON',
 					method:'post',
 					data:{

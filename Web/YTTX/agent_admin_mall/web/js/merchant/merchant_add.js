@@ -5,9 +5,10 @@
 		/*初始化数据*/
 		if(public_tool.initMap.isrender){
 			/*菜单调用*/
-			var logininfo=public_tool.initMap.loginMap;
+			var logininfo=public_tool.initMap.loginMap,
+			merchant_grade=parseInt(decodeURIComponent(logininfo.param.grade),10);
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
-				url:'http://120.76.237.100:8081/mall-agentbms-api/module/menu',
+				url:'http://10.0.5.222:8080/mall-agentbms-api/module/menu',
 				async:false,
 				type:'post',
 				param:{
@@ -48,7 +49,7 @@
 				$admin_type=$('#admin_type'),
 				$admin_fullName=$('#admin_fullName'),
 				$admin_shortName=$('#admin_shortName'),
-				$admin_imei_code=$('#admin_imei_code'),
+				$admin_imeiCode=$('#admin_imeiCode'),
 				$admin_deviceType=$('#admin_deviceType'),
 				$admin_linkman=$('#admin_linkman'),
 				$admin_cellphone=$('#admin_cellphone'),
@@ -104,7 +105,11 @@
 				this.on('change',function () {
 					var $this=$(this),
 						value=$this.val();
-					getAddress(value,'',type,true);
+					if(type==='province'){
+						getAddress(value,'','city',true);
+					}else if(type==='city'){
+						getAddress(value,'','country',true);
+					}
 				});
 			});
 
@@ -117,7 +122,7 @@
 					'readonly':true
 				});
 				/*判断权限*/
-				if(merchantedit_power){
+				if(merchantedit_power&&(merchant_grade===3||merchant_grade===2||merchant_grade===1)){
 					$admin_action.removeClass('g-d-hidei');
 				}else{
 					$admin_action.addClass('g-d-hidei');
@@ -125,7 +130,7 @@
 				setAgentData(edit_cache['id']);
 			}else{
 				/*判断权限*/
-				if(merchantadd_power){
+				if(merchantadd_power&&(merchant_grade===3||merchant_grade===2||merchant_grade===1)){
 					$admin_action.removeClass('g-d-hidei');
 				}else{
 					$admin_action.addClass('g-d-hidei');
@@ -145,7 +150,7 @@
 						roleId:decodeURIComponent(logininfo.param.roleId),
 						token:decodeURIComponent(logininfo.param.token),
 						adminId:decodeURIComponent(logininfo.param.adminId),
-						loginGrade:decodeURIComponent(logininfo.param.grade)
+						grade:decodeURIComponent(logininfo.param.grade)
 					};
 
 
@@ -177,12 +182,13 @@
 
 									/*同步编辑器*/
 									$.extend(true,setdata,{
+										username:$admin_username.val(),
 										password:$admin_password.val(),
 										name:$admin_name.val(),
 										type:$admin_type.find(':selected').val(),
 										fullName:$admin_fullName.val(),
 										shortName:$admin_shortName.val(),
-										imei_code:$admin_imei_code.val(),
+										imeiCode:$admin_imeiCode.val(),
 										deviceType:$admin_deviceType.find(':selected').val(),
 										linkman:$admin_linkman.val(),
 										cellphone:public_tool.trims($admin_cellphone.val()),
@@ -202,14 +208,12 @@
 										/*修改操作*/
                                         setdata['id']=id;
 										actiontype='修改';
-										delete setdata['username'];
                                     }else{
 										/*新增操作*/
 										actiontype='新增';
-										setdata['username']=$admin_username.val();
                                         delete setdata['id'];
                                     }
-									config['url']="http://120.76.237.100:8081/mall-agentbms-api/merchant/addupdate";
+									config['url']="http://10.0.5.222:8080/mall-agentbms-api/merchant/addupdate";
 									config['data']=setdata;
 								}
 
@@ -219,7 +223,6 @@
 										code=parseInt(resp.code,10);
 										if(code!==0){
 											dia.content('<span class="g-c-bs-warning g-btips-warn">'+actiontype+'商户失败</span>').show();
-											return false;
 										}else{
 											public_tool.removeParams('mall-merchant-add');
 											dia.content('<span class="g-c-bs-success g-btips-succ">'+actiontype+'商户成功</span>').show();
@@ -231,7 +234,9 @@
 										dia.close();
 										if(formtype==='addmerchant'){
 											/*页面跳转*/
-											location.href='mall-merchant-list.html';
+											if(actiontype==='新增'){
+												location.href='mall-merchant-list.html';
+											}
 										}
 									},2000);
 								}).fail(function(resp){
@@ -266,7 +271,7 @@
 		/*查询地址*/
 		function getAddress(id,sel,type,getflag) {
 			$.ajax({
-					url:"http://120.24.226.70:8081/yttx-public-api/address/get",
+					url:"http://120.24.226.70:8082/yttx-public-api/address/get",
 					dataType:'JSON',
 					method:'post',
 					data:{
@@ -342,7 +347,6 @@
 				});
 		}
 
-
 		/*修改时设置值*/
 		function setAgentData(id) {
 			if(!id){
@@ -351,7 +355,7 @@
 
 
 			$.ajax({
-				url:"http://120.76.237.100:8081/mall-agentbms-api/merchant/detail",
+				url:"http://10.0.5.222:8080/mall-agentbms-api/merchant/detail",
 				dataType:'JSON',
 				method:'post',
 				data:{
@@ -384,10 +388,10 @@
 								$admin_name.val(list[j]);
 								break;
 							case 'type':
-								var type=parseInt(list[j],10);
+								var type=list[j];
 								$admin_type.find('option').each(function () {
 									var $this=$(this),
-										value=$this.val();
+										value=parseInt($this.val(),10);
 									if(value===type){
 										$this.prop({
 											'selected':true
@@ -402,14 +406,14 @@
 							case 'shortName':
 								$admin_shortName.val(list[j]);
 								break;
-							case 'imei_code':
-								$admin_imei_code.val(list[j]);
+							case 'imeiCode':
+								$admin_imeiCode.val(list[j]);
 								break;
 							case 'deviceType':
-								var device=parseInt(list[j],10);
+								var device=list[j];
 								$admin_deviceType.find('option').each(function () {
 									var $this=$(this),
-										value=$this.val();
+										value=parseInt($this.val(),10);
 									if(value===device){
 										$this.prop({
 											'selected':true
@@ -440,10 +444,10 @@
 								$admin_address.val(list[j]);
 								break;
 							case 'status':
-								var status=parseInt(list[j],10);
+								var status=list[j];
 								$admin_status.find('option').each(function () {
 									var $this=$(this),
-										value=$this.val();
+										value=parseInt($this.val(),10);
 									if(value===status){
 										$this.prop({
 											'selected':true
@@ -453,10 +457,10 @@
 								});
 								break;
 							case 'salesmanId':
-								var salesman=parseInt(list[j],10);
+								var salesman=list[j];
 								$admin_salesmanId.find('option').each(function () {
 									var $this=$(this),
-										value=$this.val();
+										value=parseInt($this.val(),10);
 									if(value===salesman){
 										$this.prop({
 											'selected':true
@@ -479,11 +483,10 @@
 
 		}
 
-
 		/*查询业务员Id*/
 		function getSalesmanId() {
 			$.ajax({
-				url:"http://120.76.237.100:8081/mall-agentbms-api/salesmans/list",
+				url:"http://10.0.5.222:8080/mall-agentbms-api/salesmans/list",
 				dataType:'JSON',
 				method:'post',
 				data:{
@@ -540,7 +543,6 @@
 
 		/*处理无业务员时的情况*/
 		function doSalesmanIdFail() {
-			return false;
 			dia.close();
 			dia.content('<span class="g-c-bs-warning g-btips-warn">还没有业务员，3秒后将跳转至添加业务员处</span>').show();
 			setTimeout(function () {

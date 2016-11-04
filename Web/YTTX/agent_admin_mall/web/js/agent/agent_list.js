@@ -10,7 +10,7 @@
 			/*菜单调用*/
 			var logininfo=public_tool.initMap.loginMap;
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
-				url:'http://120.76.237.100:8081/mall-agentbms-api/module/menu',
+				url:'http://10.0.5.222:8080/mall-agentbms-api/module/menu',
 				async:false,
 				type:'post',
 				param:{
@@ -86,7 +86,7 @@
 						autoWidth:true,/*是否*/
 						paging:false,
 						ajax:{
-							url:"http://120.76.237.100:8081/mall-agentbms-api/agents/related",
+							url:"http://10.0.5.222:8080/mall-agentbms-api/agents/related",
 							dataType:'JSON',
 							method:'post',
 							dataSrc:function ( json ) {
@@ -251,14 +251,27 @@
 
 				/*修改,编辑操作*/
 				if(action==='update'){
-					public_tool.setParams('mall-announcement-add',{
+					public_tool.setParams('mall-agent-add',{
 						'id':id
 					});
-					location.href='mall-announcement-add.html';
+					location.href='mall-agent-add.html';
 				}else if(action==='select'){
 					showDetail(id,$tr);
 				}
 			});
+
+
+			/*绑定关闭详情*/
+			$show_detail_wrap.on('hide.bs.modal',function(){
+				if(operate_item){
+					setTimeout(function(){
+						operate_item.removeClass('item-lighten');
+						operate_item=null;
+					},1000);
+				}
+			});
+
+
 
 
 		}
@@ -281,7 +294,7 @@
 			}
 
 			var detailconfig={
-					url:"http://120.76.237.100:8081/mall-agentbms-api/agent/detail",
+					url:"http://10.0.5.222:8080/mall-agentbms-api/agent/detail",
 					dataType:'JSON',
 					method:'post',
 					data:{

@@ -7,7 +7,7 @@
 			/*菜单调用*/
 			var logininfo=public_tool.initMap.loginMap;
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
-				url:'http://120.76.237.100:8081/mall-agentbms-api/module/menu',
+				url:'http://10.0.5.222:8080/mall-agentbms-api/module/menu',
 				async:false,
 				type:'post',
 				param:{
@@ -107,7 +107,7 @@
 				});
 			});
 
-
+			
 			/*绑定切换地址*/
 			$.each([$admin_province,$admin_city,$admin_country],function () {
 				var self=this,
@@ -125,7 +125,11 @@
 				this.on('change',function () {
 					var $this=$(this),
 						value=$this.val();
-					getAddress(value,'',type,true);
+					if(type==='province'){
+						getAddress(value,'','city',true);
+					}else if(type==='city'){
+						getAddress(value,'','country',true);
+					}
 				});
 			});
 
@@ -198,6 +202,7 @@
 
 									/*同步编辑器*/
 									$.extend(true,setdata,{
+										username:$admin_username.val(),
 										password:$admin_password.val(),
 										name:$admin_name.val(),
 										parentId:$admin_parentId.attr('data-grade')==='-1'?'':$admin_parentId.attr('data-id'),
@@ -224,14 +229,12 @@
 										/*修改操作*/
                                         setdata['id']=id;
 										actiontype='修改';
-										delete setdata['username'];
                                     }else{
 										/*新增操作*/
 										actiontype='新增';
-										setdata['username']=$admin_username.val();
                                         delete setdata['id'];
                                     }
-									config['url']="http://120.76.237.100:8081/mall-agentbms-api/agent/addupdate";
+									config['url']="http://10.0.5.222:8080/mall-agentbms-api/agent/addupdate";
 									config['data']=setdata;
 								}
 
@@ -241,7 +244,6 @@
 										code=parseInt(resp.code,10);
 										if(code!==0){
 											dia.content('<span class="g-c-bs-warning g-btips-warn">'+actiontype+'代理商失败</span>').show();
-											return false;
 										}else{
 											public_tool.removeParams('mall-agent-add');
 											dia.content('<span class="g-c-bs-success g-btips-succ">'+actiontype+'代理商成功</span>').show();
@@ -253,7 +255,9 @@
 										dia.close();
 										if(formtype==='addagent'){
 											/*页面跳转*/
-											location.href='mall-agent-list.html';
+											if(actiontype==='新增'){
+												location.href='mall-agent-list.html';
+											}
 										}
 									},2000);
 								}).fail(function(resp){
@@ -286,7 +290,7 @@
 		/*查询地址*/
 		function getAddress(id,sel,type,getflag) {
 			$.ajax({
-					url:"http://120.24.226.70:8081/yttx-public-api/address/get",
+					url:"http://120.24.226.70:8082/yttx-public-api/address/get",
 					dataType:'JSON',
 					method:'post',
 					data:{
@@ -369,7 +373,7 @@
 
 			/*查询上级代理商ID*/
 			$.ajax({
-				url:"http://120.76.237.100:8081/mall-agentbms-api/agent/role/check",
+				url:"http://10.0.5.222:8080/mall-agentbms-api/agent/role/check",
 				dataType:'JSON',
 				method:'post',
 				data:{
@@ -511,7 +515,7 @@
 
 
 			$.ajax({
-				url:"http://120.76.237.100:8081/mall-agentbms-api/agent/detail",
+				url:"http://10.0.5.222:8080/mall-agentbms-api/agent/detail",
 				dataType:'JSON',
 				method:'post',
 				data:{
@@ -544,10 +548,10 @@
 								$admin_name.val(list[j]);
 								break;
 							case 'grade':
-								var grade=parseInt(list[j],10);
+								var grade=list[j];
 								$admin_gradewrap.find('input').each(function () {
 									var $this=$(this),
-										value=$this.val();
+										value=parseInt($this.val(),10);
 									if(value===grade){
 										$this.prop({
 											'checked':true
@@ -587,10 +591,10 @@
 								$admin_address.val(list[j]);
 								break;
 							case 'isAudited':
-								var audit=parseInt(list[j],10);
+								var audit=list[j];
 								$admin_isAudited.find('option').each(function () {
 									var $this=$(this),
-										value=$this.val();
+										value=parseInt($this.val(),10);
 									if(value===audit){
 										$this.prop({
 											'selected':true
@@ -600,10 +604,10 @@
 								});
 								break;
 							case 'status':
-								var status=parseInt(list[j],10);
+								var status=list[j];
 								$admin_status.find('option').each(function () {
 									var $this=$(this),
-										value=$this.val();
+										value=parseInt($this.val(),10);
 									if(value===status){
 										$this.prop({
 											'selected':true
@@ -613,10 +617,10 @@
 								});
 								break;
 							case 'salesmanId':
-								var salesman=parseInt(list[j],10);
+								var salesman=list[j];
 								$admin_salesmanId.find('option').each(function () {
 									var $this=$(this),
-										value=$this.val();
+										value=parseInt($this.val(),10);
 									if(value===salesman){
 										$this.prop({
 											'selected':true
@@ -644,7 +648,7 @@
 		/*查询业务员Id*/
 		function getSalesmanId() {
 			$.ajax({
-				url:"http://120.76.237.100:8081/mall-agentbms-api/salesmans/notused",
+				url:"http://10.0.5.222:8080/mall-agentbms-api/salesmans/notused",
 				dataType:'JSON',
 				method:'post',
 				data:{
@@ -701,7 +705,6 @@
 
 		/*处理无业务员时的情况*/
 		function doSalesmanIdFail() {
-			return false;
 			dia.close();
 			dia.content('<span class="g-c-bs-warning g-btips-warn">还没有业务员，3秒后将跳转至添加业务员处</span>').show();
 			setTimeout(function () {

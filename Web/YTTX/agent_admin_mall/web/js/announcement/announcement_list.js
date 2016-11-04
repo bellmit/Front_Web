@@ -10,7 +10,7 @@
 			/*菜单调用*/
 			var logininfo=public_tool.initMap.loginMap;
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
-				url:'http://120.76.237.100:8081/mall-agentbms-api/module/menu',
+				url:'http://10.0.5.222:8080/mall-agentbms-api/module/menu',
 				async:false,
 				type:'post',
 				param:{
@@ -24,8 +24,6 @@
 			/*权限调用*/
 			var powermap=public_tool.getPower(),
 				announcementedit_power=public_tool.getKeyPower('mall-announcement-update',powermap),
-				announcementdelete_power=public_tool.getKeyPower('mall-announcement-delete',powermap),
-				announcementadd_power=public_tool.getKeyPower('mall-announcement-add',powermap),
 				announcementshow_power=public_tool.getKeyPower('mall-announcement-view',powermap);
 
 			/*清除编辑缓存*/
@@ -68,7 +66,7 @@
 						autoWidth:true,/*是否*/
 						paging:false,
 						ajax:{
-							url:"http://120.76.237.100:8081/mall-agentbms-api/announcements/related",
+							url:"http://10.0.5.222:8080/mall-agentbms-api/announcements/related",
 							dataType:'JSON',
 							method:'post',
 							dataSrc:function ( json ) {
@@ -250,6 +248,17 @@
 					var datas=table.row($tr).data();
 					$show_detail_content.html('<tr><th style="vertical-align: middle">公告内容:</th><td style="vertical-align: middle">'+datas['content']+'</td></tr>');
 					$show_detail_wrap.modal('show',{backdrop:'static'});
+				}
+			});
+
+
+			/*绑定关闭详情*/
+			$show_detail_wrap.on('hide.bs.modal',function(){
+				if(operate_item){
+					setTimeout(function(){
+						operate_item.removeClass('item-lighten');
+						operate_item=null;
+					},1000);
 				}
 			});
 
