@@ -127,19 +127,20 @@
 	}
 }
 .admin-notice-btn{
-	.layout-base(24px);
-	.layout-absoluter-base(0,120px);
-	.layout-fixedr-base(0,120px);
+	.layout-base(40px);
+	.layout-absoluter-base(0,180px);
+	.layout-fixedr-base(0,180px);
 	background:@color-white;
 	overflow: hidden;
-	height:70px;
-	padding:20px 0;
+	height:40px;
+	padding:5px 0;
 	margin:0;
 	text-align: center;
 	.user-select-base;
 	cursor: pointer;
 	.transition-base(all .1s ease-in .01s);
 	color:@color-info;
+	.box-shadow-base(0 0 4px 0 @color-gray9);
 	&:hover{
 		background:@color-info;
 		color:@color-white;
@@ -961,6 +962,7 @@
 	}
 }
 
+/*用例：首页通知列表*/
 .grid-list-group2{
 	.layout-base;
 	li{
@@ -986,6 +988,59 @@
 			padding:0 5px;
 			color:@color-gray11;
 		}
+	}
+	&:empty{
+		min-height:300px;
+		height:100%;
+		line-height:300px;
+		text-align: center;
+		color:@color-gray12;
+		font-size:@font-size-base;
+		&:after{
+			content:'暂无数据';
+			display:table;
+			width:100%;
+			height:100%;
+		}
+	}
+}
+
+
+/*用例：财务选项列表*/
+.grid-list-group3{
+	.layout-base(50%);
+	display:inline-block;
+	min-width:400px;
+	min-height:100px;
+	padding:20px 10px;
+	.grid-list-tab{
+		.layout-base;
+		height:36px;
+		text-align: left;
+		span{
+			.box-sizing-base;
+			border-top:1px solid @color-gray14;
+			border-bottom:1px solid @color-gray14;
+			border-right:1px solid @color-gray14;
+			cursor: pointer;
+			height:100%;
+			display:inline-block;
+			padding:0 20px;
+			line-height:36px;
+			color:@color-gray6;
+			background:@color-white;
+			&:hover{
+				background:@color-gray16;
+			}
+		}
+		&:first-child{
+			border-right:none;
+			border-left:1px solid @color-gray14;
+		}
+	}
+	.grid-list-wrap{
+		.layout-base;
+		padding:20px 0 0 0;
 	}
 }
 

@@ -109,7 +109,7 @@
 						title:title,
 						content:list[i]["content"]
 					};
-					str+='<li data-index="'+i+'"><span>'+typemap[list[i]["type"]]+'</span>'+title+'&nbsp;&nbsp;<em>'+list[i]["lastUpdate"]+'</em></li>';
+					str+='<li data-index="'+i+'"><span>'+typemap[list[i]["type"]]+'</span>'+title.slice(0,20)+'&nbsp;&nbsp;<em>'+list[i]["lastUpdate"]+'</em></li>';
 				}
 
 				$(str).appendTo($admin_notice_wrap.html(''));

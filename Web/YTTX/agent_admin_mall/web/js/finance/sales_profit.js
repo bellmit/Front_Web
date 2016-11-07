@@ -23,105 +23,73 @@
 
 
 			/*权限调用*/
-			var powermap=public_tool.getPower(),
-				financesales_power=public_tool.getKeyPower('销售分润查看',powermap),
-				financeswing_power=public_tool.getKeyPower('刷卡分润查看',powermap);
+			var powermap=public_tool.getPower(83),
+				salesprofit_power=public_tool.getKeyPower('mall-sales-profit-view',powermap);
 
 
-			/*dom引用和相关变量定义*/
-			var $finance_wrap1=$('#finance_wrap1')/*表格*/,
-				$finance_wrap2=$('#finance_wrap2')/*表格*/,
-				module_id='finance_list'/*模块id，主要用于本地存储传值*/,
-				table1=null/*数据展现*/,
-				table2=null/*数据展现*/;
+			/*dom引用及其他变量*/
+			var	module_id='mall-sales-profit',
+				$admin_finance_wrap1=$('#admin_finance_wrap1'),
+				$admin_finance_wrap2=$('#admin_finance_wrap2'),
+				$admin_finance_data1=$('#admin_finance_data1'),
+				$admin_finance_data2=$('#admin_finance_data2'),
+				agentheader='<thead><tr><th>时间</th><th>省代</th><th>市代</th><th>县代</th></tr></thead>';
 
 
-			/*查询对象*/
-			var $search_Time=$('#search_Time'),
-				$admin_search_btn=$('#admin_search_btn'),
-				$admin_search_clear=$('#admin_search_clear');
+			if(salesprofit_power){
+				var $admin_search_btn=$('#admin_search_btn');
 
 
 
 
-			/*数据加载配置*/
-			var finance_config={
-						url:"http://10.0.5.222:8080/mall-agentbms-api/finance/profits",
-						dataType:'JSON',
-						method:'post',
-						data:{
-							roleId:decodeURIComponent(logininfo.param.roleId),
-							adminId:decodeURIComponent(logininfo.param.adminId),
-							grade:decodeURIComponent(logininfo.param.grade),
-							token:decodeURIComponent(logininfo.param.token),
-							type:1
-						}
-				},
-				finance_opt1={
-					deferRender:true,/*是否延迟加载数据*/
-					//serverSide:true,/*是否服务端处理*/
-					searching:false,/*是否搜索*/
-					ordering:false,/*是否排序*/
-					//order:[[1,'asc']],/*默认排序*/
-					paging:false,/*是否开启本地分页*/
-					autoWidth:true,/*是否*/
-					info:false,/*显示分页信息*/
-					stateSave:false,/*是否保存重新加载的状态*/
-					processing:true,/*大消耗操作时是否显示处理状态*/
-					columns:[],
-					lengthChange:false/*是否可改变长度*/
-				},
-				finance_opt2={
-					deferRender:true,/*是否延迟加载数据*/
-					//serverSide:true,/*是否服务端处理*/
-					searching:true,/*是否搜索*/
-					ordering:false,/*是否排序*/
-					//order:[[1,'asc']],/*默认排序*/
-					paging:true,/*是否开启本地分页*/
-					pagingType:'simple_numbers',/*分页按钮排列*/
-					autoWidth:true,/*是否*/
-					info:true,/*显示分页信息*/
-					stateSave:false,/*是否保存重新加载的状态*/
-					processing:true,/*大消耗操作时是否显示处理状态*/
-					columns:[],
-					aLengthMenu: [
-						[5,10,20,30],
-						[5,10,20,30]
-					],
-					lengthChange:true/*是否可改变长度*/
-				};
+				/*绑定切换查询不同条件*/
+				$admin_search_btn.on('click','div',function(){
+					var $this=$(this),
+						condition=$this.attr('data-value');
+
+					$this.removeClass('btn-white').addClass('btn-info').siblings().removeClass('btn-info').addClass('btn-white');
+
+					if(condition==='month'){
+						$admin_finance_wrap1.removeClass('g-d-hidei');
+						$admin_finance_wrap2.addClass('g-d-hidei');
+					}else if(condition==='detail'){
+						$admin_finance_wrap1.addClass('g-d-hidei');
+						$admin_finance_wrap2.removeClass('g-d-hidei');
+					}
+				});
+
+				$admin_search_btn.find('div:first-child').trigger('click');
+
+
+				/*绑定切换不同统计*/
+				$admin_finance_data1.on('click',function () {
+					
+				});
+			}
 
 
 
 
 
 
-			/*时间调用*/
-			var end_date=moment().format('YYYY-MM-DD'),
-				start_date=moment().subtract(2, 'month').format('YYYY-MM-DD');
-			$search_Time.val(start_date+','+end_date).daterangepicker({
-				format: 'YYYY-MM-DD',
-				todayBtn: true,
-				maxDate:end_date,
-				endDate:end_date,
-				startDate:start_date,
-				separator:','
-			}).on('apply.daterangepicker',function(ev, picker){
-					var end=moment(picker.endDate).format('YYYY-MM-DD'),
-						start=moment(picker.startDate).format('YYYY-MM-DD'),
-						limitstart=moment(end).subtract(2, 'month').format('YYYY-MM-DD'),
-						isstart=moment(start).isBetween(limitstart,end);
+			/*{
+				url:"http://10.0.5.222:8080/mall-agentbms-api/finance/profits",
+					dataType:'JSON',
+				method:'post',
+				data:{
+				roleId:decodeURIComponent(logininfo.param.roleId),
+					adminId:decodeURIComponent(logininfo.param.adminId),
+					grade:decodeURIComponent(logininfo.param.grade),
+					token:decodeURIComponent(logininfo.param.token),
+					type:1
+			}
+			}*/
 
-				/*校验时间区间合法性*/
-				if(!isstart){
-					picker.setStartDate(limitstart);
-				}
-			});
 
 
 
 			/*清空查询条件*/
-			$admin_search_clear.on('click',function(){
+			/*$admin_search_clear.on('click',function(){
 				$.each([$search_Time],function(){
 					if(this.selector.toLowerCase().indexOf('time')!==-1){
 						this.val(start_date+','+end_date);
@@ -130,79 +98,10 @@
 					}
 				});
 			});
-			$admin_search_clear.trigger('click');
-
-			/*联合查询*/
-			$admin_search_btn.on('click',function(){
-				var data= $.extend(true,{},finance_config.data),
-					startvalue='',
-					endvalue='';
-
-				/*清除数据并摧毁实例*/
-				if(table1){
-					table1.destroy();
-					table1=null;
-					$finance_wrap1.html('');
-				}
-				if(table2){
-					table2.destroy();
-					table2=null;
-					$finance_wrap2.html('');
-				}
-
-
-				$.each([$search_Time],function(){
-					var text=this.val(),
-						selector=this.selector.slice(1),
-						key=selector.split('_');
-
-					if(text===""){
-						if(typeof data['start'+key[1]]!=='undefined'){
-							startvalue=start_date;
-							endvalue=end_date;
-							data['start'+key[1]]=startvalue;
-							data['end'+key[1]]=endvalue;
-						}
-					}else{
-						text=text.split(',');
-						startvalue=text[0];
-						endvalue=text[1];
-						data['start'+key[1]]=startvalue;
-						data['end'+key[1]]=endvalue;
-					}
-
-				});
-				/*合并参数*/
-				finance_config.data=$.extend(true,{},data);
-
-
-				/*组合视图对象*/
-				var tempobj1=financeSearch(startvalue+','+endvalue,'finance');
-				$(tempobj1['col']+tempobj1['th']+tempobj1['tbody']).appendTo($finance_wrap1.html(''));
-				finance_opt1.columns=tempobj1['tr'];
-
-				/*组合视图对象*/
-				var tempobj2=financeSearch(startvalue+','+endvalue,'station');
-				$(tempobj2['col']+tempobj2['th']+tempobj2['tbody']).appendTo($finance_wrap2.html(''));
-				finance_opt2.columns=tempobj2['tr'];
-				/*创建新实例并初始化请求数据*/
-				getFinanceData(finance_config,function(res1,res2){
-						var finance1=$.extend(true,{},finance_opt1),
-							finance2=$.extend(true,{},finance_opt2);
-
-					finance1['data']=res1;
-					finance2['data']=res2;
-
-					table1=$finance_wrap1.DataTable(finance1);
-					table2=$finance_wrap2.DataTable(finance2);
-				});
-
-			});
+			$admin_search_clear.trigger('click');*/
 
 
 
-			/*数据加载*/
-			$admin_search_btn.trigger('click');
 
 
 		}
