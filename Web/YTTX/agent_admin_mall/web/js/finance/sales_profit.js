@@ -62,8 +62,235 @@
 
 
 				/*绑定切换不同统计*/
-				$admin_finance_data1.on('click',function () {
-					
+				$admin_finance_data1.on('click',function (e) {
+					var etype= e.type,
+						target= e.target,
+						node=target.nodeName.toLowerCase();
+
+
+
+					/*点击事件*/
+					if(etype==='click'){
+						/*过滤*/
+						if(node==='ul'||node==='div'||node==='label'||node==='span'||node==='label'){
+							return false;
+						}
+						/*绑定操作事件*/
+
+						/*绑定查看属性列表*/
+						if(node==='button'||node==='i'){
+							if(node==='i'){
+								/*修正node节点*/
+								target=target.parentNode;
+							}
+							(function(){
+								var $this=$(target),
+									key=$this.attr('data-key');
+
+								if($this.hasClass('attr-item-btn')){
+									/*扩展条件*/
+									(function(){
+										var $last=$(document.getElementById('attr_input_'+key)).find('input:last');
+
+
+										$last.clone(true).attr({
+											'data-value':''
+										}).val('').insertAfter($last);
+
+									}());
+								}else if($this.hasClass('attr-item-listbtn')){
+									/*查看属性类型*/
+									$(document.getElementById('attr_list_'+key)).toggleClass('g-d-hidei');
+								}else if($this.hasClass('attr-item-addbtn')){
+									/*添加属性*/
+									(function(){
+										/*加载数据*/
+										var str='',
+											map=attr_map[key]['map'];
+										for(var i in map){
+											str+='<li>'+i+'</li>';
+										}
+										$(str).appendTo($admin_addattr_list.html(''));
+										/*设置key和id值*/
+										$admin_newattr.attr({
+											'data-id':attr_map[key]['id'],
+											'data-key':key
+										});
+										/*显示弹出框*/
+										$show_addattr_wrap.modal('show',{
+											backdrop:'static'
+										});
+									}());
+								}
+							}());
+						}else if(node==='li'){
+							/*绑定选择属性列表*/
+							(function(){
+								var $this=$(target),
+									$ul=$this.parent(),
+									key=$ul.attr('id').replace('attr_list_',''),
+									isok/*数据过滤：只能组合两种数据*/,
+									txt=$this.html(),
+									code=$this.attr('data-value'),
+									count=0,
+									size,
+									$inputitem=$(document.getElementById('attr_input_'+key)),
+									$input;
+
+
+								if($this.hasClass('admin-list-widget-active')){
+									$this.removeClass('admin-list-widget-active');
+									$input=$inputitem.find('input');
+									$input.each(function(){
+										var $self=$(this);
+										if($self.val()===txt){
+											$self.val('');
+											delete attr_data[key][txt];
+											$self.attr({'data-value':''});
+											if($.isEmptyObject(attr_data[key])){
+												dataRecord(key);
+											}
+											return false;
+										}
+									});
+								}else{
+									$this.addClass('admin-list-widget-active');
+									if($.isEmptyObject(attr_data[key])){
+										$input=$inputitem.find('input:first-child');
+										$input.val(txt);
+										attr_data[key][txt]=code;
+										$input.attr({'data-value':txt});
+									}else{
+										$input=$inputitem.find('input');
+										size=$input.size();
+										$input.each(function(){
+											var $self=$(this);
+											if($self.val()===''){
+												$self.val(txt);
+												attr_data[key][txt]=code;
+												$self.attr({'data-value':txt});
+												return false;
+											}
+											count++;
+										});
+										if(count===size){
+											var $lastinput=$input.eq(size-1),
+												lasttxt=$lastinput.val();
+											$ul.find('li.admin-list-widget-active').each(function(){
+												var $templi=$(this),
+													temptxt=$templi.html();
+												if(lasttxt===temptxt){
+													$templi.removeClass('admin-list-widget-active');
+													delete attr_data[key][lasttxt];
+													$lastinput.attr({'data-value':''});
+													return false;
+												}
+											});
+											$lastinput.val(txt);
+											attr_data[key][txt]=code;
+											$lastinput.attr({'data-value':txt});
+										}
+									}
+									isok=dataRecord(key);
+									if(isok!==null){
+										syncAttrList((function () {
+											var $previnput=$(document.getElementById('attr_input_'+isok)).find('input'),
+												res=[];
+											$previnput.each(function(){
+												var prevtxt=$(this).val();
+												if(prevtxt!==''){
+													res.push(prevtxt);
+												}
+											});
+											if(res.length!==0){
+												clearAttrData('attrtxt',isok);
+											}
+											return res;
+										}()),$(document.getElementById('attr_list_'+isok)).find('li'),'remove');
+									}
+								}
+
+								/*组合条件*/
+								groupCondition();
+
+							}());
+						}
+
+					}else if(etype==='focusout'){
+						/*过滤*/
+						if(node!=='input'){
+							return false;
+						}
+						/*失去焦点事件*/
+
+						/*绑定输入框失去焦点事件*/
+						(function(){
+							var	$this=$(target),
+								value=$this.val(),
+								key=$this.attr('data-key'),
+								isvalid=false,
+								isok;
+							if(value!==''){
+								isvalid=validAttrData($this,key,value);
+								if(isvalid){
+									attr_data[key][value]=attr_map[key]['map'][value];
+									$this.attr({
+										'data-value':value
+									});
+									/*同步列表*/
+									syncAttrList(value,key,'add');
+									/*同步上次记录*/
+									isok=dataRecord(key);
+									if(isok!==null){
+										syncAttrList((function () {
+											var $previnput=$(document.getElementById('attr_input_'+isok)).find('input'),
+												res=[];
+											$previnput.each(function(){
+												var prevtxt=$(this).val();
+												if(prevtxt!==''){
+													res.push(prevtxt);
+												}
+											});
+											if(res.length!==0){
+												clearAttrData('attrtxt',isok);
+											}
+											return res;
+										}()),$(document.getElementById('attr_list_'+isok)).find('li'),'remove');
+									}
+								}
+							}else{
+								var tempvalue=$this.attr('data-value');
+								if(typeof attr_data[key][tempvalue]!=='undefined'){
+									delete attr_data[key][tempvalue];
+									/*同步列表*/
+									/*同步上次记录*/
+									isok=dataRecord(key);
+									if(isok!==null){
+										syncAttrList((function () {
+											var $previnput=$(document.getElementById('attr_input_'+isok)).find('input'),
+												res=[];
+											$previnput.each(function(){
+												var prevtxt=$(this).attr('data-value');
+												if(prevtxt!==''){
+													res.push(prevtxt);
+												}
+											});
+											if(res.length!==0){
+												clearAttrData('attrtxt',isok);
+											}
+											return res;
+										}()),$(document.getElementById('attr_list_'+isok)).find('li'),'remove');
+									}else{
+										/*同步列表*/
+										syncAttrList(tempvalue,key,'remove');
+									}
+								}
+							}
+							/*组合条件*/
+							groupCondition();
+
+						}());
+					}
 				});
 			}
 
