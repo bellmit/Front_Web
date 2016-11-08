@@ -10,7 +10,7 @@
 				roleid=decodeURIComponent(logininfo.param.roleId),
 				roletype=decodeURIComponent(logininfo.param.grade);
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
-				url:'http://10.0.5.222:8080/mall-agentbms-api/module/menu',
+				url:'http://120.76.237.100:8082/mall-agentbms-api/module/menu',
 				async:false,
 				type:'post',
 				param:{
@@ -167,7 +167,7 @@
 				stateSave:false,/*是否保存重新加载的状态*/
 				processing:true,/*大消耗操作时是否显示处理状态*/
 				ajax:{
-					url:"http://10.0.5.222:8080/mall-agentbms-api/roles",
+					url:"http://120.76.237.100:8082/mall-agentbms-api/roles",
 					dataType:'JSON',
 					method:'post',
 					dataSrc:function ( json ) {
@@ -403,7 +403,7 @@
 								if(isrole){
 									//删除角色
 									config={
-											url:"http://10.0.5.222:8080/mall-agentbms-api/role/delete",
+											url:"http://120.76.237.100:8082/mall-agentbms-api/role/delete",
 											method: 'POST',
 											dataType: 'json',
 											data:{
@@ -415,7 +415,7 @@
 								}else{
 									//删除成员
 									config={
-										url:"http://10.0.5.222:8080/mall-agentbms-api/sysuser/delete",
+										url:"http://120.76.237.100:8082/mall-agentbms-api/sysuser/delete",
 										method: 'POST',
 										dataType: 'json',
 										data:{
@@ -529,7 +529,7 @@
 								if(action==='select'){
 									$member_wrap.attr({'data-id':id});
 									if(member_config.url===''){
-										member_config.url='http://10.0.5.222:8080/mall-agentbms-api/sysusers';
+										member_config.url='http://120.76.237.100:8082/mall-agentbms-api/sysusers';
 									}
 									member_config.data.roleId=decodeURIComponent(logininfo.param.roleId);
 									member_config.data.selectedId=id;
@@ -662,7 +662,7 @@
 							if(id!==''){
 								//修改角色
 								var config={
-											url:"http://10.0.5.222:8080/mall-agentbms-api/role/update",
+											url:"http://120.76.237.100:8082/mall-agentbms-api/role/update",
 											method: 'POST',
 											dataType: 'json',
 											data:{
@@ -676,7 +676,7 @@
 							}else{
 								//添加角色
 								var config={
-									url:"http://10.0.5.222:8080/mall-agentbms-api/role/add",
+									url:"http://120.76.237.100:8082/mall-agentbms-api/role/add",
 									method: 'POST',
 									dataType: 'json',
 									data:{
@@ -750,7 +750,7 @@
 							if(id!==''){
 								//修改成员
 								var config={
-									url:"http://10.0.5.222:8080/mall-agentbms-api/sysuser/update",
+									url:"http://120.76.237.100:8082/mall-agentbms-api/sysuser/update",
 									method: 'POST',
 									dataType: 'json',
 									data:{
@@ -765,7 +765,7 @@
 							}else{
 								//添加成员
 								var config={
-									url:"http://10.0.5.222:8080/mall-agentbms-api/sysuser/add",
+									url:"http://120.76.237.100:8082/mall-agentbms-api/sysuser/add",
 									method: 'POST',
 									dataType: 'json',
 									data:{
@@ -839,7 +839,7 @@
 			var detailconfig;
 			if(type==='select'){
 				detailconfig={
-					url:"http://10.0.5.222:8080/mall-agentbms-api/sysuser/info",
+					url:"http://120.76.237.100:8082/mall-agentbms-api/sysuser/info",
 					dataType:'JSON',
 					method:'post',
 					data:{
@@ -851,7 +851,7 @@
 				};
 			}else if(type==='detail'){
 				detailconfig={
-					url:"http://10.0.5.222:8080/mall-agentbms-api/role/info",
+					url:"http://120.76.237.100:8082/mall-agentbms-api/role/info",
 					dataType:'JSON',
 					method:'post',
 					data:{

@@ -9,7 +9,7 @@
 			/*菜单调用*/
 			var logininfo=public_tool.initMap.loginMap;
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
-				url:'http://10.0.5.222:8080/mall-agentbms-api/module/menu',
+				url:'http://120.76.237.100:8082/mall-agentbms-api/module/menu',
 				async:false,
 				type:'post',
 				param:{
@@ -33,13 +33,14 @@
 				$admin_finance_wrap2=$('#admin_finance_wrap2'),
 				$admin_finance_data1=$('#admin_finance_data1'),
 				$admin_finance_data2=$('#admin_finance_data2'),
+				$admin_finance_tab2=$('#admin_finance_tab2'),
+				$admin_finance_detail2=$('#admin_finance_detail2'),
+				agentcolgroup='<colgroup><col class="g-w-percent14" /><col class="g-w-percent12" /><col class="g-w-percent12" /><col class="g-w-percent12" /></colgroup>',
 				agentheader='<thead><tr><th>时间</th><th>省代</th><th>市代</th><th>县代</th></tr></thead>';
 
 
 			if(salesprofit_power){
 				var $admin_search_btn=$('#admin_search_btn');
-
-
 
 
 				/*绑定切换查询不同条件*/
@@ -61,6 +62,7 @@
 				$admin_search_btn.find('div:first-child').trigger('click');
 
 
+
 				/*绑定切换不同统计*/
 				$admin_finance_data1.on('click',function (e) {
 					var etype= e.type,
@@ -70,228 +72,47 @@
 
 
 					/*点击事件*/
-					if(etype==='click'){
-						/*过滤*/
-						if(node==='ul'||node==='div'||node==='label'||node==='span'||node==='label'){
-							return false;
+					/*过滤*/
+					if(node==='table'||node==='thead'||node==='tr'||node==='th'||node==='td'||node==='tbody'||node==='tfoot'||node==='div'||node==='ul'||node==='li'||node==='p'){
+						return false;
+					}
+					/*绑定操作事件*/
+
+					/*绑定查看属性列表*/
+					if(node==='span'){
+						var $this=$(target),
+							$listitem=$this.closest('div.grid-list-group3').find('div.grid-list-wrap').children(),
+							value=$this.attr('data-value');
+
+						$this.addClass('grid-list-tabactive').siblings().removeClass('grid-list-tabactive');
+
+						if(value==='sales'){
+							$listitem.eq(0).removeClass('g-d-hidei');
+							$listitem.eq(1).addClass('g-d-hidei');
+						}else if(value==='profit'){
+							$listitem.eq(0).addClass('g-d-hidei');
+							$listitem.eq(1).removeClass('g-d-hidei');
 						}
-						/*绑定操作事件*/
-
-						/*绑定查看属性列表*/
-						if(node==='button'||node==='i'){
-							if(node==='i'){
-								/*修正node节点*/
-								target=target.parentNode;
-							}
-							(function(){
-								var $this=$(target),
-									key=$this.attr('data-key');
-
-								if($this.hasClass('attr-item-btn')){
-									/*扩展条件*/
-									(function(){
-										var $last=$(document.getElementById('attr_input_'+key)).find('input:last');
-
-
-										$last.clone(true).attr({
-											'data-value':''
-										}).val('').insertAfter($last);
-
-									}());
-								}else if($this.hasClass('attr-item-listbtn')){
-									/*查看属性类型*/
-									$(document.getElementById('attr_list_'+key)).toggleClass('g-d-hidei');
-								}else if($this.hasClass('attr-item-addbtn')){
-									/*添加属性*/
-									(function(){
-										/*加载数据*/
-										var str='',
-											map=attr_map[key]['map'];
-										for(var i in map){
-											str+='<li>'+i+'</li>';
-										}
-										$(str).appendTo($admin_addattr_list.html(''));
-										/*设置key和id值*/
-										$admin_newattr.attr({
-											'data-id':attr_map[key]['id'],
-											'data-key':key
-										});
-										/*显示弹出框*/
-										$show_addattr_wrap.modal('show',{
-											backdrop:'static'
-										});
-									}());
-								}
-							}());
-						}else if(node==='li'){
-							/*绑定选择属性列表*/
-							(function(){
-								var $this=$(target),
-									$ul=$this.parent(),
-									key=$ul.attr('id').replace('attr_list_',''),
-									isok/*数据过滤：只能组合两种数据*/,
-									txt=$this.html(),
-									code=$this.attr('data-value'),
-									count=0,
-									size,
-									$inputitem=$(document.getElementById('attr_input_'+key)),
-									$input;
-
-
-								if($this.hasClass('admin-list-widget-active')){
-									$this.removeClass('admin-list-widget-active');
-									$input=$inputitem.find('input');
-									$input.each(function(){
-										var $self=$(this);
-										if($self.val()===txt){
-											$self.val('');
-											delete attr_data[key][txt];
-											$self.attr({'data-value':''});
-											if($.isEmptyObject(attr_data[key])){
-												dataRecord(key);
-											}
-											return false;
-										}
-									});
-								}else{
-									$this.addClass('admin-list-widget-active');
-									if($.isEmptyObject(attr_data[key])){
-										$input=$inputitem.find('input:first-child');
-										$input.val(txt);
-										attr_data[key][txt]=code;
-										$input.attr({'data-value':txt});
-									}else{
-										$input=$inputitem.find('input');
-										size=$input.size();
-										$input.each(function(){
-											var $self=$(this);
-											if($self.val()===''){
-												$self.val(txt);
-												attr_data[key][txt]=code;
-												$self.attr({'data-value':txt});
-												return false;
-											}
-											count++;
-										});
-										if(count===size){
-											var $lastinput=$input.eq(size-1),
-												lasttxt=$lastinput.val();
-											$ul.find('li.admin-list-widget-active').each(function(){
-												var $templi=$(this),
-													temptxt=$templi.html();
-												if(lasttxt===temptxt){
-													$templi.removeClass('admin-list-widget-active');
-													delete attr_data[key][lasttxt];
-													$lastinput.attr({'data-value':''});
-													return false;
-												}
-											});
-											$lastinput.val(txt);
-											attr_data[key][txt]=code;
-											$lastinput.attr({'data-value':txt});
-										}
-									}
-									isok=dataRecord(key);
-									if(isok!==null){
-										syncAttrList((function () {
-											var $previnput=$(document.getElementById('attr_input_'+isok)).find('input'),
-												res=[];
-											$previnput.each(function(){
-												var prevtxt=$(this).val();
-												if(prevtxt!==''){
-													res.push(prevtxt);
-												}
-											});
-											if(res.length!==0){
-												clearAttrData('attrtxt',isok);
-											}
-											return res;
-										}()),$(document.getElementById('attr_list_'+isok)).find('li'),'remove');
-									}
-								}
-
-								/*组合条件*/
-								groupCondition();
-
-							}());
-						}
-
-					}else if(etype==='focusout'){
-						/*过滤*/
-						if(node!=='input'){
-							return false;
-						}
-						/*失去焦点事件*/
-
-						/*绑定输入框失去焦点事件*/
-						(function(){
-							var	$this=$(target),
-								value=$this.val(),
-								key=$this.attr('data-key'),
-								isvalid=false,
-								isok;
-							if(value!==''){
-								isvalid=validAttrData($this,key,value);
-								if(isvalid){
-									attr_data[key][value]=attr_map[key]['map'][value];
-									$this.attr({
-										'data-value':value
-									});
-									/*同步列表*/
-									syncAttrList(value,key,'add');
-									/*同步上次记录*/
-									isok=dataRecord(key);
-									if(isok!==null){
-										syncAttrList((function () {
-											var $previnput=$(document.getElementById('attr_input_'+isok)).find('input'),
-												res=[];
-											$previnput.each(function(){
-												var prevtxt=$(this).val();
-												if(prevtxt!==''){
-													res.push(prevtxt);
-												}
-											});
-											if(res.length!==0){
-												clearAttrData('attrtxt',isok);
-											}
-											return res;
-										}()),$(document.getElementById('attr_list_'+isok)).find('li'),'remove');
-									}
-								}
-							}else{
-								var tempvalue=$this.attr('data-value');
-								if(typeof attr_data[key][tempvalue]!=='undefined'){
-									delete attr_data[key][tempvalue];
-									/*同步列表*/
-									/*同步上次记录*/
-									isok=dataRecord(key);
-									if(isok!==null){
-										syncAttrList((function () {
-											var $previnput=$(document.getElementById('attr_input_'+isok)).find('input'),
-												res=[];
-											$previnput.each(function(){
-												var prevtxt=$(this).attr('data-value');
-												if(prevtxt!==''){
-													res.push(prevtxt);
-												}
-											});
-											if(res.length!==0){
-												clearAttrData('attrtxt',isok);
-											}
-											return res;
-										}()),$(document.getElementById('attr_list_'+isok)).find('li'),'remove');
-									}else{
-										/*同步列表*/
-										syncAttrList(tempvalue,key,'remove');
-									}
-								}
-							}
-							/*组合条件*/
-							groupCondition();
-
-						}());
 					}
 				});
+
+				$admin_finance_data1.find('div.grid-list-tab span:first-child').trigger('click');
+
+
+
+				/*绑定详情请求*/
+				$admin_finance_tab2.on('click','span',function (e) {
+					var $this=$(this),
+						value=$this.attr('data-value');
+
+					$this.addClass('grid-list-tabactive').siblings().removeClass('grid-list-tabactive');
+				});
+
+
+				$admin_finance_tab2.find('span:first-child').trigger('click');
+
+
+
 			}
 
 
@@ -300,7 +121,7 @@
 
 
 			/*{
-				url:"http://10.0.5.222:8080/mall-agentbms-api/finance/profits",
+				url:"http://120.76.237.100:8082/mall-agentbms-api/finance/profits",
 					dataType:'JSON',
 				method:'post',
 				data:{
@@ -408,7 +229,7 @@
 		res['tbody']='<tbody class="middle-align"></tbody>';
 		res['tr']=tdstr.slice(0);
 		return res;
-	};
+	}
 
 
 	/*获取数据*/
