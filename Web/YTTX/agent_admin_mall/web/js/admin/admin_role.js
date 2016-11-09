@@ -57,7 +57,8 @@
 					},
 					cancel:false
 				})/*一般提示对象*/,
-				dialogObj=public_tool.dialog()/*回调提示对象*/,
+				sureObj=public_tool.sureDialog(dia)/*回调提示对象*/,
+				setSure=new sureObj(),
 				$show_detail_wrap=$('#show_detail_wrap')/*详情容器*/,
 				$show_detail_title=$('#show_detail_title')/*详情标题*/,
 				$show_detail_content=$('#show_detail_content')/*详情内容*/,
@@ -394,24 +395,20 @@
 					}else{
 						if(action==='delete'){
 							/*删除操作*/
-							//没有回调则设置回调对象
-							dialogObj.setFn(function(){
-								var self=this,
-									config;
-
-
+							setSure.sure('delete',function (cf) {
+								var config;
 								if(isrole){
 									//删除角色
 									config={
-											url:"http://120.76.237.100:8082/mall-agentbms-api/role/delete",
-											method: 'POST',
-											dataType: 'json',
-											data:{
-												"roleId":id,
-												"adminId":decodeURIComponent(logininfo.param.adminId),
-												"token":decodeURIComponent(logininfo.param.token)
-											}
+										url:"http://120.76.237.100:8082/mall-agentbms-api/role/delete",
+										method: 'POST',
+										dataType: 'json',
+										data:{
+											"roleId":id,
+											"adminId":decodeURIComponent(logininfo.param.adminId),
+											"token":decodeURIComponent(logininfo.param.token)
 										}
+									}
 								}else{
 									//删除成员
 									config={
@@ -425,13 +422,14 @@
 										}
 									}
 								}
+
 								$.ajax(config)
 									.done(function (resp) {
 										var code=parseInt(resp.code,10);
 										if(code!==0){
-											self.content('<span class="g-c-bs-warning g-btips-warn">删除失败</span>').show();
+											cf.dia.content('<span class="g-c-bs-warning g-btips-warn">'+cf.action+'失败</span>').show();
 											setTimeout(function () {
-												self.close();
+												cf.dia.close();
 											},2000);
 											return false;
 										}
@@ -442,24 +440,26 @@
 										}
 										operate_item=$tr.addClass('item-lighten');
 										setTimeout(function(){
-											self.content('<span class="g-c-bs-success g-btips-succ">删除数据成功</span>');
+											cf.dia.content('<span class="g-c-bs-success g-btips-succ">'+cf.action+'成功</span>').show();
 											setTimeout(function(){
 												operate_item=$tr.removeClass('item-lighten');
 												isrole?table.row($tr).remove().draw():table_member.row($tr).remove().draw();
-											},1000);
+												cf.dia.close();
+												
+											},2000);
 										},100);
 									})
 									.fail(function(resp){
 										console.log(resp.message);
-										self.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"删除失败")+'</span>').show();
+										cf.dia.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"'+cf.action+'失败")+'</span>').show();
 										setTimeout(function () {
-											self.close();
+											cf.dia.close();
 										},2000);
 									});
-							},module_id+'_delete');
-							//确认删除
-							dialogObj.dialog.content('<span class="g-c-bs-warning g-btips-warn">是否删除此数据？</span>').showModal();
 
+
+
+							});
 						}else if(action==='update'){
 							/*添加高亮状态*/
 							if(operate_item){

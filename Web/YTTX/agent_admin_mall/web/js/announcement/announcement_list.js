@@ -43,7 +43,6 @@
 					},
 					cancel:false
 				})/*一般提示对象*/,
-				dialogObj=public_tool.dialog()/*回调提示对象*/,
 				$admin_page_wrap=$('#admin_page_wrap'),
 				$show_detail_wrap=$('#show_detail_wrap')/*详情容器*/,
 				$show_detail_content=$('#show_detail_content')/*详情内容*/;

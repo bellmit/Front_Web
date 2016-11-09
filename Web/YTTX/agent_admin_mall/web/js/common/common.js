@@ -98,134 +98,81 @@
 		return (typeof dialog==='function'&&dialog)?true:false;
 	}());
 	//弹窗确认
-	public_tool.dialog=function(){
+	public_tool.sureDialog=function(tips){
 		if(!this.supportDia){
 			return null;
 		}
 
-		//缓存区对象
-		var keyflag=false,
-			seq_id=null,
-			fn_cache={},
-			res={};
 
-		fn_cache.isFn=false;
+		/*内部提示信息*/
+		var innerdia;
+		if(tips&&typeof tips==='object'){
+			innerdia=tips;
+		}else{
+			innerdia=dialog({
+				title:'温馨提示',
+				okValue:'确定',
+				width:300,
+				ok:function(){
+					this.close();
+					return false;
+				},
+				cancel:false
+			});
+		}
+		/*关键匹配*/
+		var actionmap={
+			'delete':'删除',
+			'cancel':'取消',
+			'change':'改变',
+			'add':'添加',
+			'update':'更新'
+		};
 
-		var dia=dialog({
-			title:'温馨提示',
-			cancelValue:'取消',
-			okValue:'确定',
-			width:300,
-			ok:function(){
-				var self=this;
-				if(keyflag){
-					if(fn_cache[seq_id].fn&&typeof fn_cache[seq_id].fn==='function'){
-						fn_cache[seq_id].fn.call(self);
-						delete fn_cache[seq_id].fn;
-					}else{
-						self.close();
-						fn_cache[seq_id].fn=fn_cache[seq_id].FN;
-					}
-				}else{
-					if(fn_cache.fn&&typeof fn_cache.fn==='function'){
-						fn_cache.fn.call(self);
-						delete fn_cache.fn;
-					}else{
-						self.close();
-						fn_cache.fn=fn_cache.FN;
-					}
-				}
-				return false;
-			},
-			cancel:function(){
-				var self=this;
-				self.close();
-				return false;
-			}
-		});
-		//设置对外接口
-		/*设置回调*/
-		var setFn=function(newfn,key){
-			if(typeof key==='string'){
-				keyflag=true;
-				seq_id=key;
-				fn_cache[seq_id]={};
-				fn_cache[seq_id].isFn=true;
-				fn_cache[seq_id].fn=fn_cache[seq_id].FN=newfn;
-			}else{
-				keyflag=false;
-				seq_id=null;
-				fn_cache.isFn=true;
-				fn_cache.fn=fn_cache.FN=newfn;
-			}
-		}
-		/*设置回调判断*/
-		var isFn=function(key){
-			return (key===seq_id	&&	key)?fn_cache[seq_id].isFn:fn_cache.isFn;
-		}
 
-		//返回对外接口
-		res={
-			dialog:dia,
-			setFn:setFn,
-			isFn:isFn
-		}
-		return res;
-	};
-	//弹窗确认
-	public_tool.sureDialog=function(){
-		if(!this.supportDia){
-			return null;
-		}
-
-		//弹窗口对象
-		var dia=dialog({
-			title:'温馨提示',
-			cancelValue:'取消',
-			okValue:'确定',
-			width:300,
-			cancel:function(){
-				var self=this;
-				self.close();
-				return false;
-			}
-		});
 		/*确认框类*/
-		function sureDialogFn() {
-			this.fn_cache={};
-		}
+		function sureDialogFun(){}
 
 		/*设置函数*/
-		sureDialogFn.prototype.setFn=function (fn,key) {
-			if(key&&typeof fn==='function'&&!this.fn_cache[key]){
-				this.fn_cache[key]=fn;
+		sureDialogFun.prototype.sure=function (str,fn,tips) {
+			var tipstr='',
+				iskey=typeof actionmap[str]==='string',
+				key=iskey?actionmap[str]:str;
+
+			if(!tips){
+				tips='';
 			}
-		}
-		/*提示对象*/
-		sureDialogFn.prototype.show=function () {
-			dia.show();
-		}
-		/*提示对象*/
-		sureDialogFn.prototype.dialog=function (key) {
-			var own=this;
-			if(key){
-				dia.ok(function () {
-					for(var i in own.fn_cache){
-						if(i===key){
-							own.fn_cache[key].call(dia);
-							break;
-						}
+
+			if(typeof actionmap[str]==='string'){
+				tipstr='<span class="g-c-bs-warning g-btips-warn">'+tips+'是否真需要 "'+actionmap[str]+'" 此项数据</span>';
+			}else{
+				tipstr='<span class="g-c-bs-warning g-btips-warn">'+tips+'是否真需要 "'+str+'" 此项数据</span>';
+			}
+
+			var tempdia=dialog({
+				title:'温馨提示',
+				content:tipstr,
+				width:300,
+				okValue: '确定',
+				ok: function () {
+					if(fn&&typeof fn==='function'){
+						//执行回调
+						fn.call(null,{
+							action:key,
+							dia:innerdia
+						});
+						this.close().remove();
 					}
 					return false;
-				});
-			}else{
-				dia.ok(function () {
-					return false;
-				});
-			}
-		}
+				},
+				cancelValue: '取消',
+				cancel: function(){
+					this.close().remove();
+				}
+			}).showModal();
+		};
 
-		return new sureDialogFn();
+		return sureDialogFun;
 	};
 
 

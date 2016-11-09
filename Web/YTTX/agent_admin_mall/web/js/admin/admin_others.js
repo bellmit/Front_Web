@@ -36,7 +36,8 @@
 					},
 					cancel:false
 				}),
-				dialogObj=public_tool.dialog()/*回调提示对象*/;
+				sureObj=public_tool.sureDialog(dia)/*回调提示对象*/,
+				setSure=new sureObj();
 
 			/*表单对象*/
 			var $profit_edit_form0=$('#profit_edit_form0')/*编辑表单*/,
@@ -248,32 +249,32 @@
 							return opt;
 						})(index),{
 							submitHandler: function(form){
-								var config1,
-									config2,
+								var config0,
+									config1,
 									ele_a,
 									ele_aa,
 									ele_aaa;
 								if(index===0){
-									config1= $.extend(true,{},defconfig);
+									config0= $.extend(true,{},defconfig);
 									ele_a=$profit_a0.val();
 									ele_aa=$profit_aa0.val();
 									ele_aaa=$profit_aaa0.val();
 
 									/*规则通过后校验*/
-									config1['url']="http://120.76.237.100:8082/mall-agentbms-api/profit/agent/addupdate";
-									$.extend(true,config1['data'],{
+									config0['url']="http://120.76.237.100:8082/mall-agentbms-api/profit/agent/addupdate";
+									$.extend(true,config0['data'],{
 										agentProfit1: ele_a,
 										agentProfit2: ele_aa,
 										agentProfit3: ele_aaa
 									});
 								}else if(index===1){
-									config2= $.extend(true,{},defconfig);
+									config1= $.extend(true,{},defconfig);
 									ele_a=$profit_a1.val();
 									ele_aa=$profit_aa1.val();
 									ele_aaa=$profit_aaa1.val();
 
-									config2['url']="http://120.76.237.100:8082/mall-agentbms-api/profit/platform/addupdate";
-									$.extend(true,config2['data'],{
+									config1['url']="http://120.76.237.100:8082/mall-agentbms-api/profit/platform/addupdate";
+									$.extend(true,config1['data'],{
 										platformProfit: ele_a,
 										agentProfit: ele_aa,
 										storageProfit: ele_aaa
@@ -290,54 +291,26 @@
 								}
 								
 								if(index===0){
-									$.ajax(config1)
-										.done(function(resp){
-											var code=parseInt(resp.code,10);
-											if(code!==0){
-												console.log(resp.message);
-												dia.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"设置失败")+'</span>').show();
-												setTimeout(function () {
-													dia.close();
-												},2000);
-												return false;
-											}
-											dia.content('<span class="g-c-bs-success g-btips-succ">设置成功</span>').show();
-											setTimeout(function () {
-												dia.close();
-											},2000);
-										})
-										.fail(function(resp){
-											dia.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"操作失败")+'</span>').show();
-											setTimeout(function () {
-												dia.close();
-											},2000);
-
-										});
+									/*确认提示框*/
+									if($profit_edit_form0.attr('data-setting')==='true'){
+										setSure.sure('update',function(cf){
+											/*to do*/
+											setProfit(config0,cf);
+										},'您已经设置了分润');
+									}else{
+										setProfit(config0);
+									}
 								}
 
 								if(index===1){
-									$.ajax(config2)
-										.done(function(resp){
-											var code=parseInt(resp.code,10);
-											if(code!==0){
-												console.log(resp.message);
-												dia.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"设置失败")+'</span>').show();
-												setTimeout(function () {
-													dia.close();
-												},2000);
-												return false;
-											}
-											dia.content('<span class="g-c-bs-success g-btips-succ">设置成功</span>').show();
-											setTimeout(function () {
-												dia.close();
-											},2000);
-										})
-										.fail(function(resp){
-											dia.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"操作失败")+'</span>').show();
-											setTimeout(function () {
-												dia.close();
-											},2000);
-										});
+									if($profit_edit_form1.attr('data-setting')==='true'){
+										setSure.sure('update',function(cf){
+											/*to do*/
+											setProfit(config1,cf);
+										},'您已经设置了分润');
+									}else{
+										setProfit(config1);
+									}
 								}
 								return false;
 							}
@@ -371,6 +344,38 @@
 
 
 		}
+		
+
+
+		/*设置分润*/
+		function setProfit(config,tips) {
+			var tip=tips.dia||dia;
+			$.ajax(config)
+				.done(function(resp){
+					var code=parseInt(resp.code,10);
+					if(code!==0){
+						console.log(resp.message);
+						tip.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"设置失败")+'</span>').show();
+						setTimeout(function () {
+							tip.close();
+						},2000);
+						return false;
+					}
+					tip.content('<span class="g-c-bs-success g-btips-succ">设置成功</span>').show();
+					setTimeout(function () {
+						tip.dia.close();
+					},2000);
+				})
+				.fail(function(resp){
+					tip.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"操作失败")+'</span>').show();
+					setTimeout(function () {
+						tip.close();
+					},2000);
+
+				});
+		}
+
+
 		
 		
 
