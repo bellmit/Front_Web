@@ -3,7 +3,7 @@
 	'use strict';
 
 	/*提示对象*/
-	var sd_tip=public_tool.dialog();
+	var sd_tip=new (public_tool.sureDialog())();
 
 	function GoodsSlide(){}
 
@@ -37,25 +37,22 @@
 
 			if(self.isDelete&&nodename==='span'&&self.size>=2){
 				/*提示处理*/
-				sd_tip.setFn(function(){
-					var own=this;
+				sd_tip.sure('delete',function(cf){
 					if(self.deleteFn&&typeof self.deleteFn==='function'){
 						self.deleteFn.call(null,{
 							$liitem:$(target).parent(),
 							slideobj:self,
-							tips:own
+							tips:cf.dia
 						});
 					}else{
 						$(target).parent().remove();
 						self.init(self);
-						own.content('<span class="g-c-bs-success g-btips-succ">删除数据成功</span>');
+						cf.dia.content('<span class="g-c-bs-success g-btips-succ">删除数据成功</span>').show();
 						setTimeout(function(){
-							own.close();
+							cf.dia.close();
 						},2000);
 					}
-				},'slide_delete');
-				//确认删除
-				sd_tip.dialog.content('<span class="g-c-bs-warning g-btips-warn">是否删除此数据？</span>').showModal();
+				});
 				return false;
 			}else{
 				$this=$(this);

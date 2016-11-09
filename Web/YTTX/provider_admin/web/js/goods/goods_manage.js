@@ -31,7 +31,8 @@
 					},
 					cancel:false
 				})/*一般提示对象*/,
-				dialogObj=public_tool.dialog()/*回调提示对象*/,
+				sureObj=public_tool.sureDialog(dia)/*回调提示对象*/,
+				setSure=new sureObj(),
 				$admin_page_wrap=$('#admin_page_wrap')/*分页数据*/;
 
 
@@ -68,9 +69,10 @@
 								if(code!==0){
 									if(code===999){
 										/*清空缓存*/
-										public_tool.clear();
-										public_tool.clearCacheData();
-										public_tool.loginTips();
+										public_tool.loginTips(function () {
+											public_tool.clear();
+											public_tool.clearCacheData();
+										});
 									}
 									console.log(json.message);
 									return [];
@@ -323,9 +325,8 @@
 					}
 					operate_item=$tr.addClass('item-lighten');
 
-					dialogObj.setFn(function(){
-						var self=this;
-
+					setSure.sure('delete',function(cf){
+						/*to do*/
 						$.ajax({
 								url:"http://120.24.226.70:8082/yttx-providerbms-api/goods/delete",
 								method: 'POST',
@@ -340,25 +341,27 @@
 							.done(function (resp) {
 								var code=parseInt(resp.code,10);
 								if(code!==0){
-									self.content('<span class="g-c-bs-warning g-btips-warn">删除失败</span>').show();
+									cf.dia.content('<span class="g-c-bs-warning g-btips-warn">删除失败</span>').show();
 									setTimeout(function () {
-										self.close();
+										cf.dia.close();
 									},2000);
 									console.log(resp.message);
 									return false;
 								}
 								getColumnData(goodsmanage_page,goodsmanage_config);
+								cf.dia.content('<span class="g-c-bs-success g-btips-succ">删除数据成功</span>').show();
 								setTimeout(function(){
-									self.content('<span class="g-c-bs-success g-btips-succ">删除数据成功</span>');
-								},500);
+									cf.dia.close();
+								},2000);
 							})
 							.fail(function(resp){
 								console.log(resp.message);
+								cf.dia.content('<span class="g-c-bs-warning g-btips-warn">删除失败</span>').show();
+								setTimeout(function () {
+									cf.dia.close();
+								},2000);
 							});
-					},'goods_delete');
-					//确认删除
-					dialogObj.dialog.content('<span class="g-c-bs-warning g-btips-warn">是否删除此数据？</span>').showModal();
-
+					});
 				}else if(action==='up'||action==='down'){
 
 					// data-status="0" data-currentstatus

@@ -48,7 +48,6 @@
 					},
 					cancel:false
 				})/*一般提示对象*/,
-				dialogObj=public_tool.dialog()/*回调提示对象*/,
 				$show_detail_wrap=$('#show_detail_wrap')/*详情容器*/,
 				$show_detail_title=$('#show_detail_title')/*详情标题*/,
 				$show_detail_content=$('#show_detail_content')/*详情内容*/,
@@ -97,9 +96,10 @@
 					if(code!==0){
 						if(code===999){
 							/*清空缓存*/
-							public_tool.clear();
-							public_tool.clearCacheData();
-							public_tool.loginTips();
+							public_tool.loginTips(function () {
+								public_tool.clear();
+								public_tool.clearCacheData();
+							});
 							return [];
 						}
 						console.log(json.message);

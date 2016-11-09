@@ -522,9 +522,10 @@
 				if(code!==0){
 					if(code===999){
 						/*清空缓存*/
-						public_tool.clear();
-						public_tool.clearCacheData();
-						public_tool.loginTips();
+						public_tool.loginTips(function () {
+							public_tool.clear();
+							public_tool.clearCacheData();
+						});
 						return false;
 					}
 					console.log(resp.message);

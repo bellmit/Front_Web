@@ -36,7 +36,8 @@
 					},
 					cancel:false
 				}),
-				dialogObj=public_tool.dialog()/*回调提示对象*/;
+				sureObj=public_tool.sureDialog(dia)/*回调提示对象*/,
+				setSure=new sureObj();
 
 			/*表单对象*/
 			var $profit_edit_form0=$('#profit_edit_form0')/*编辑表单*/,
@@ -95,9 +96,10 @@
 				if(code!==0){
 					if(code===999){
 						/*清空缓存*/
-						public_tool.clear();
-						public_tool.clearCacheData();
-						public_tool.loginTips();
+						public_tool.loginTips(function () {
+							public_tool.clear();
+							public_tool.clearCacheData();
+						});
 						return false;
 					}
 					console.log(resp.message);
@@ -248,9 +250,10 @@
 				if(code!==0){
 					if(code===999){
 						/*清空缓存*/
-						public_tool.clear();
-						public_tool.clearCacheData();
-						public_tool.loginTips();
+						public_tool.loginTips(function () {
+							public_tool.clear();
+							public_tool.clearCacheData();
+						});
 						return false
 					}
 					console.log(resp.message);
@@ -437,11 +440,19 @@
 							return opt;
 						})(index),{
 							submitHandler: function(form){
+								var ele_a,
+									ele_aa,
+									ele_aaa,
+									config1,
+									config2;
+
 								if(index===0){
-									var config1= $.extend(true,{},defconfig);
-									var ele_a=$profit_a0.val(),
-										ele_aa=$profit_aa0.val(),
-										ele_aaa=$profit_aaa0.val();
+									config1= $.extend(true,{},defconfig);
+
+									ele_a=$profit_a0.val();
+									ele_aa=$profit_aa0.val();
+									ele_aaa=$profit_aaa0.val();
+
 									/*规则通过后校验*/
 									config1['url']="http://120.24.226.70:8082/yttx-agentbms-api/agent/profit/default";
 									config1['data']= {
@@ -452,10 +463,12 @@
 										topProfit:profit_maxsales
 									};
 								}else if(index===1){
-									var config1= $.extend(true,{},defconfig);
-									var ele_a=$profit_a1.val(),
-										ele_aa=$profit_aa1.val(),
-										ele_aaa=$profit_aaa1.val();
+									config1= $.extend(true,{},defconfig);
+
+									ele_a=$profit_a1.val();
+									ele_aa=$profit_aa1.val();
+									ele_aaa=$profit_aaa1.val();
+
 									config1['url']="http://120.24.226.70:8082/yttx-agentbms-api/agent/profit/default";
 									config1['data']= {
 										type:2,
@@ -465,10 +478,12 @@
 										topProfit:profit_maxacq
 									};
 								}else if(index===2){
-									var config2= $.extend(true,{},defconfig);
-									var ele_a=$profit_a2.val(),
-										ele_aa=$profit_aa2.val(),
-										ele_aaa=$profit_aaa2.val();
+									config2= $.extend(true,{},defconfig);
+
+									ele_a=$profit_a2.val();
+									ele_aa=$profit_aa2.val();
+									ele_aaa=$profit_aaa2.val();
+
 									config2['url']="http://120.24.226.70:8082/yttx-agentbms-api/servicestation/profit/default";
 									config2['data']= {
 										type:1,
@@ -477,10 +492,12 @@
 										distributorProfit3: ele_aaa
 									};
 								}else if(index===3){
-									var config2= $.extend(true,{},defconfig);
-									var ele_a=$profit_a3.val(),
-										ele_aa=$profit_aa3.val(),
-										ele_aaa=$profit_aaa3.val();
+									config2= $.extend(true,{},defconfig);
+
+									ele_a=$profit_a3.val();
+									ele_aa=$profit_aa3.val();
+									ele_aaa=$profit_aaa3.val();
+
 									config2['url']="http://120.24.226.70:8082/yttx-agentbms-api/servicestation/profit/default";
 									config2['data']= {
 										type:2,
@@ -534,112 +551,21 @@
 
 
 								if((index===0&&$profit_edit_form0.attr('data-setting')==='true')||(index===1&&$profit_edit_form1.attr('data-setting')==='true')){
-									dialogObj.setFn(function(){
-										var self=this;
-										$.ajax(config1)
-											.done(function(resp){
-												var code=parseInt(resp.code,10);
-												if(code!==0){
-													console.log(resp.message);
-													dia.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"设置失败")+'</span>').show();
-													setTimeout(function () {
-														dia.close();
-													},2000);
-													return false;
-												}
-												self.content('<span class="g-c-bs-success g-btips-succ">设置成功</span>').show();
-												setTimeout(function () {
-													self.close();
-												},2000);
-											})
-											.fail(function(resp){
-												dia.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"操作失败")+'</span>').show();
-												setTimeout(function () {
-													dia.close();
-												},2000);
-
-											});
-									},'admin_update');
-									//确认删除
-									dialogObj.dialog.content('<span class="g-c-bs-warning g-btips-warn">您已经设置了此数据，是否真要重新设置？</span>').showModal();
+									setSure.sure('update',function(cf){
+										/*to do*/
+										setProfit(config1,cf);
+									},'您已经设置了分润');
 								}else{
-									$.ajax(config1)
-										.done(function(resp){
-											var code=parseInt(resp.code,10);
-											if(code!==0){
-												console.log(resp.message);
-												dia.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"设置失败")+'</span>').show();
-												setTimeout(function () {
-													dia.close();
-												},2000);
-												return false;
-											}
-											dia.content('<span class="g-c-bs-success g-btips-succ">设置成功</span>').show();
-											setTimeout(function () {
-												dia.close();
-											},2000);
-										})
-										.fail(function(resp){
-											dia.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"操作失败")+'</span>').show();
-											setTimeout(function () {
-												dia.close();
-											},2000);
-
-										});
+									setProfit(config1);
 								}
 
 								if((index===2&&$profit_edit_form2.attr('data-setting')==='true')||(index===3&&$profit_edit_form3.attr('data-setting')==='true')){
-									dialogObj.setFn(function(){
-										var self=this;
-										$.ajax(config2)
-											.done(function(resp){
-												var code=parseInt(resp.code,10);
-												if(code!==0){
-													console.log(resp.message);
-													dia.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"设置失败")+'</span>').show();
-													setTimeout(function () {
-														dia.close();
-													},2000);
-													return false;
-												}
-												self.content('<span class="g-c-bs-success g-btips-succ">设置成功</span>').show();
-												setTimeout(function () {
-													self.close();
-												},2000);
-											})
-											.fail(function(resp){
-												dia.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"操作失败")+'</span>').show();
-												setTimeout(function () {
-													dia.close();
-												},2000);
-
-											});
-									},'admin_update');
-									//确认删除
-									dialogObj.dialog.content('<span class="g-c-bs-warning g-btips-warn">您已经设置了此数据，是否真要重新设置？</span>').showModal();
+									setSure.sure('update',function(cf){
+										/*to do*/
+										setProfit(config2,cf);
+									},'您已经设置了分润');
 								}else{
-									$.ajax(config2)
-										.done(function(resp){
-											var code=parseInt(resp.code,10);
-											if(code!==0){
-												console.log(resp.message);
-												dia.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"设置失败")+'</span>').show();
-												setTimeout(function () {
-													dia.close();
-												},2000);
-												return false;
-											}
-											dia.content('<span class="g-c-bs-success g-btips-succ">设置成功</span>').show();
-											setTimeout(function () {
-												dia.close();
-											},2000);
-										})
-										.fail(function(resp){
-											dia.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"操作失败")+'</span>').show();
-											setTimeout(function () {
-												dia.close();
-											},2000);
-										});
+									setProfit(config2);
 								}
 								return false;
 							}
@@ -674,6 +600,34 @@
 
 
 
+		}
+
+
+		/*设置分润*/
+		function setProfit(config,tips) {
+			var tip=tips.dia||dia;
+			$.ajax(config)
+				.done(function(resp){
+					var code=parseInt(resp.code,10);
+					if(code!==0){
+						console.log(resp.message);
+						tip.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"设置失败")+'</span>').show();
+						setTimeout(function () {
+							tip.close();
+						},2000);
+						return false;
+					}
+					tip.content('<span class="g-c-bs-success g-btips-succ">设置成功</span>').show();
+					setTimeout(function () {
+						tip.close();
+					},2000);
+				})
+				.fail(function(resp){
+					tip.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"操作失败")+'</span>').show();
+					setTimeout(function () {
+						tip.close();
+					},2000);
+				});
 		}
 		
 		

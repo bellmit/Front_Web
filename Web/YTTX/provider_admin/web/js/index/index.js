@@ -3,6 +3,11 @@
 	$(function(){
 
 		if(public_tool.initMap.isrender){
+
+			/*如果存在缓存，则删除缓存*/
+			public_tool.clear();
+			public_tool.clearCacheData();
+
 			//dom节点引用或者其他变量定义
 			var $loginform=$('#login'),
 				$username=$('#username'),
@@ -24,14 +29,7 @@
 			},1);
 
 
-			var cacheLogin=public_tool.getParams('login_module');
-			if(cacheLogin){
-				/*如果存在缓存，则删除缓存*/
-				public_tool.clear();
-				public_tool.clearCacheData();
-			}
-
-
+			
 			/*获取验证码*/
 			getValidCode();
 

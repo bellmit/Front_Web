@@ -557,10 +557,11 @@
 				/*绑定价格格式化*/
 				if(selector.indexOf('price')!==-1){
 					this.on('keyup',function(e){
-						var tempval=this.value,
-							result=public_tool.moneyCorrect(tempval,12,true);
-						this.value=result[0];
-						public_tool.cursorPos(this,result[0],'.');
+						var tempval=this.value;
+
+						tempval=tempval.replace(/[^0-9\.]/g,'');
+						tempval=tempval.replace(/[\.{2,}]/g,'');
+						this.value=public_tool.moneyCorrect(tempval,12,true)[0];
 					});
 
 				}
@@ -814,23 +815,24 @@
 
 				if(etype==='keyup'){
 					if(name==="setinventory"){
-						result=value.replace(/\D*/g,'');
+						result=value.replace(/[^0-9\.]/g,'');
+						result=result.replace(/\.{2,}/g,'.');
 						$this.val(result);
 					}else if(name==="setwholesalePrice"){
 						/*错误状态下禁止输入*/
 						if($this.hasClass('g-c-red1')){
 							return false;
 						}
-						result=public_tool.moneyCorrect(value,12,true);
-						$this.val(result[0]);
-						public_tool.cursorPos(this,result[0],'.');
+						result=value.replace(/[^0-9\.]/g,'');
+						result=result.replace(/\.{2,}/g,'.');
+						$this.val(result);
 					}else if(name==="setretailPrice"){
 						if($this.hasClass('g-c-red1')){
 							return false;
 						}
-						result=public_tool.moneyCorrect(value,12,true);
-						$this.val(result[0]);
-						public_tool.cursorPos(this,result[0],'.');
+						result=value.replace(/[^0-9\.]/g,'');
+						result=result.replace(/\.{2,}/g,'.');
+						$this.val(result);
 					}
 				}else if(etype==='focusout'){
 					if(name==="setwholesalePrice"){
@@ -850,15 +852,17 @@
 								$admin_wholesale_tips.html('"批发价"不能大于"建议零售价"');
 								whole=maxvalue / 100;
 								result=public_tool.moneyCorrect(whole,12,true);
+								$this.val(result[0]);
 								setTimeout(function(){
 									$this.removeClass('g-c-red1');
 									$admin_wholesale_tips.html('');
-									$this.val(result[0]);
-									public_tool.cursorPos(self,result[0],'.');
 								},3000);
+							}else{
+								$this.val(result[0]);
 							}
+						}else{
+							$this.val(result[0]);
 						}
-
 					}else if(name==="setretailPrice"){
 						/*错误状态下禁止输入*/
 						if($this.hasClass('g-c-red1')){
@@ -875,15 +879,17 @@
 								$admin_wholesale_tips.html('"建议零售价"不能小于"批发价"');
 								retail=minvalue / 100;
 								result=public_tool.moneyCorrect(retail,12,true);
+								$this.val(result[0]);
 								setTimeout(function(){
 									$this.removeClass('g-c-red1');
 									$admin_wholesale_tips.html('');
-									$this.val(result[0]);
-									public_tool.cursorPos(self,result[0],'.');
 								},3000);
+							}else{
+								$this.val(result[0]);
 							}
+						}else{
+							$this.val(result[0]);
 						}
-
 					}
 				}
 
@@ -1345,9 +1351,10 @@
 				if(code!==0){
 					if(code===999){
 						/*清空缓存*/
-						public_tool.clear();
-						public_tool.clearCacheData();
-						public_tool.loginTips();
+						public_tool.loginTips(function () {
+							public_tool.clear();
+							public_tool.clearCacheData();
+						});
 					}
 					console.log(resp.message);
 					istype=false;
@@ -1467,9 +1474,10 @@
 				if(code!==0){
 					if(code===999){
 						/*清空缓存*/
-						public_tool.clear();
-						public_tool.clearCacheData();
-						public_tool.loginTips();
+						public_tool.loginTips(function () {
+							public_tool.clear();
+							public_tool.clearCacheData();
+						});
 					}
 					console.log(resp.message);
 					istype=false;
@@ -1654,9 +1662,10 @@
 				if(code!==0){
 					if(code===999){
 						/*清空缓存*/
-						public_tool.clear();
-						public_tool.clearCacheData();
-						public_tool.loginTips();
+						public_tool.loginTips(function () {
+							public_tool.clear();
+							public_tool.clearCacheData();
+						});
 					}
 					console.log(resp.message);
 					isresult=false;

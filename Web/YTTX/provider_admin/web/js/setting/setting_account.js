@@ -28,7 +28,8 @@
 					},
 					cancel:false
 				})/*一般提示对象*/,
-				dialogObj=public_tool.dialog()/*回调提示对象*/,
+				sureObj=public_tool.sureDialog(dia)/*回调提示对象*/,
+				setSure=new sureObj(),
 				$admin_nickName=$('#admin_nickName'),
 				$admin_phone=$('#admin_phone'),
 				$admin_consigneeName=$('#admin_consigneeName'),
@@ -213,9 +214,10 @@
 						},2000);
 						return false;
 					}
+
 					/*删除操作*/
-					dialogObj.setFn(function(){
-						var self=this;
+					setSure.sure('delete',function(cf){
+						/*to do*/
 						$.ajax({
 							url:"http://120.24.226.70:8082/yttx-providerbms-api/receiptaddress/delete",
 							dataType:'JSON',
@@ -230,32 +232,29 @@
 							var code=parseInt(resp.code,10);
 							if(code!==0){
 								console.log(resp.message);
-								self.content('<span class="g-c-bs-warning g-btips-warn">删除地址失败</span>').show();
+								cf.dia.content('<span class="g-c-bs-warning g-btips-warn">删除地址失败</span>').show();
 								setTimeout(function(){
-									self.close();
+									cf.dia.close();
 								},2000);
 								return false;
 							}
 
 							/*请求成功执行相应交互*/
-							self.content('<span class="g-c-bs-success g-btips-succ">删除地址成功</span>').show();
+							cf.dia.content('<span class="g-c-bs-success g-btips-succ">删除地址成功</span>').show();
 							setTimeout(function(){
-								self.close();
-							},1000);
+								cf.dia.close();
+							},2000);
 
 							$parent.remove();
 
 						}).fail(function(resp){
 							console.log('error');
-							self.content('<span class="g-c-bs-warning g-btips-warn">删除地址失败</span>').show();
+							cf.dia.content('<span class="g-c-bs-warning g-btips-warn">删除地址失败</span>').show();
 							setTimeout(function(){
-								self.close();
+								cf.dia.close();
 							},2000);
 						});
-
-					},'setting_account');
-					//确认删除
-					dialogObj.dialog.content('<span class="g-c-bs-warning g-btips-warn">是否真要删除此地址</span>').showModal();
+					});
 				}
 			});
 
@@ -364,9 +363,10 @@
 				if(code!==0){
 					if(code===999){
 						/*清空缓存*/
-						public_tool.clear();
-						public_tool.clearCacheData();
-						public_tool.loginTips();
+						public_tool.loginTips(function () {
+							public_tool.clear();
+							public_tool.clearCacheData();
+						});
 						return false;
 					}
 					console.log(resp.message);

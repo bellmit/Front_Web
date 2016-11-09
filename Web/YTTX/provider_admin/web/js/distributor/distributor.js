@@ -47,8 +47,7 @@
 						return false;
 					},
 					cancel:false
-				})/*一般提示对象*/,
-				dialogObj=public_tool.dialog()/*回调提示对象*/;
+				})/*一般提示对象*/;
 
 
 
@@ -75,9 +74,10 @@
 					if(code!==0){
 						if(code===999){
 							/*清空缓存*/
-							public_tool.clear();
-							public_tool.clearCacheData();
-							public_tool.loginTips();
+							public_tool.loginTips(function () {
+								public_tool.clear();
+								public_tool.clearCacheData();
+							});
 							return [];
 						}
 						console.log(json.message);

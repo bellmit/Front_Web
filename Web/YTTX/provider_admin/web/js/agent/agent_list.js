@@ -45,7 +45,8 @@
 					},
 					cancel:false
 				})/*一般提示对象*/,
-				dialogObj=public_tool.dialog()/*回调提示对象*/,
+				sureObj=public_tool.sureDialog(dia)/*回调提示对象*/,
+				setSure=new sureObj()/*回调提示对象*/,
 				$show_detail_wrap=$('#show_detail_wrap')/*详情容器*/,
 				$show_detail_title=$('#show_detail_title')/*详情标题*/,
 				$show_detail_content=$('#show_detail_content')/*详情内容*/,
@@ -93,9 +94,10 @@
 					if(code!==0){
 						if(code===999){
 							/*清空缓存*/
-							public_tool.clear();
-							public_tool.clearCacheData();
-							public_tool.loginTips();
+							public_tool.loginTips(function () {
+								public_tool.clear();
+								public_tool.clearCacheData();
+							});
 							return [];
 						}
 						console.log(json.message);
@@ -561,22 +563,22 @@
 
 					/*发送绑定代理或者取消绑定代理请求*/
 					//没有回调则设置回调对象
-					dialogObj.setFn(function(){
-						var self=this;
+					setSure.sure('delete',function(cf){
+						/*to do*/
 						$.ajax(config).done(function(resp){
 							var code=parseInt(resp.code,10);
 							if(code!==0){
 								console.log(resp.message);
 								setTimeout(function(){
-									self.content('<span class="g-c-bs-warning g-btips-warn">'+(isbind?"绑定服务站失败":"取消绑定服务站失败")+'</span>').show();
+									cf.dia.content('<span class="g-c-bs-warning g-btips-warn">'+(isbind?"绑定服务站失败":"取消绑定服务站失败")+'</span>').show();
 								},500);
 								return false;
 							}
 
 							/*请求成功执行相应交互*/
-							self.content('<span class="g-c-bs-success g-btips-succ">'+(isbind?"绑定服务站成功":"取消绑定服务站成功")+'</span>').show();
+							cf.dia.content('<span class="g-c-bs-success g-btips-succ">'+(isbind?"绑定服务站成功":"取消绑定服务站成功")+'</span>').show();
 							setTimeout(function(){
-								self.close();
+								cf.dia.close();
 								if(isbind){
 									hasitem.appendTo($service_bindwrap);
 								}else{
@@ -591,14 +593,10 @@
 						}).fail(function(resp){
 							console.log('error');
 							setTimeout(function(){
-								self.content('<span class="g-c-bs-warning g-btips-warn">'+(isbind?"绑定服务站失败":"取消绑定服务站失败")+'</span>').show();
+								cf.dia.content('<span class="g-c-bs-warning g-btips-warn">'+(isbind?"绑定服务站失败":"取消绑定服务站失败")+'</span>').show();
 							},500);
 						});
-
-					},'agent_sure');
-					//确认删除
-					dialogObj.dialog.content('<span class="g-c-bs-warning g-btips-warn">'+(isbind?"是否绑定服务站?":"是否取消绑定服务站?")+'</span>').showModal();
-
+					});
 				});
 			});
 
