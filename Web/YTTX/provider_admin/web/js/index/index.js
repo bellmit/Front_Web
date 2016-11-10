@@ -20,7 +20,13 @@
 									<span aria-hidden="true">&times;</span>\
 									<span class="sr-only">Close</span>\
 								</button>\$info\
-							</div>';
+							</div>',
+				loginmap={
+					1:"乾汇通",
+					2:"新安街",
+					3:"分销商",
+					4:"供应商"
+				};
 
 			
 			//初始化效果

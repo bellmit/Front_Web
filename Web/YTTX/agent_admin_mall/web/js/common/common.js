@@ -767,6 +767,14 @@
 			"class":"menu-ux-finance",
 			"module":"finance",
 			"modid":"83"
+		},
+		"88":{
+			"name":"分仓管理",
+			"code":"store",
+			"match":"-store-",
+			"class":"menu-ux-distribution",
+			"module":"store",
+			"modid":"88"
 		}
 	};
 	/*路由映射*/
@@ -915,7 +923,7 @@
 		}
 	};
 	/*请求菜单*/
-	public_tool.requestSideMenu= function ($menu,$wrap,opt) {
+	public_tool.requestSideMenu= function ($menu,$wrap,opt,injectobj) {
 		var self=this,
 			cacheSource=self.getParams('source_module');
 
@@ -926,6 +934,16 @@
 			self.doSideMenu(cacheSource,$menu,$wrap);
 		}else{
 			/*不存在资源则重新加载*/
+			/*静态注入*/
+			if(injectobj){
+				var menuinject=self.injectSideMenu($menu,$wrap,{
+					url:self.routeMap.isindex?'../json/menu.json':'../../json/menu.json',
+					async:false,
+					type:'post',
+					datatype:'json'
+				},{});
+
+			}
 			$.ajax({
 				url:opt.url,
 				async:opt.async,
@@ -944,8 +962,8 @@
 		}
 
 	};
-	//处理菜单
-	public_tool.doSideMenu=function(data,$menu,$wrap){
+	//处理菜单(flag:为是否注入)
+	public_tool.doSideMenu=function(data,$menu,$wrap,flag){
 		var self=this,
 			matchClass=function(map,str){
 				/*修正class*/
@@ -1052,22 +1070,25 @@
 			}
 		}
 
-
 		/*解析权限*/
 		self.resolvePower(data,true);
 
-		//放入菜单模块
-		self.setParams('menu_module',menustr);
-		//存入数据源
-		self.setParams('source_module',data);
+		if(!flag){
+			//放入菜单模块
+			self.setParams('menu_module',menustr);
+			//存入数据源
+			self.setParams('source_module',data);
 
-		//放入dom中
-		$(menustr).appendTo($menu.html(''));
+			//放入dom中
+			$(menustr).appendTo($menu.html(''));
 
-		//调用菜单渲染
-		self.initSideMenu($wrap);
-		/*导航高亮*/
-		self.highSideMenu($menu);
+			//调用菜单渲染
+			self.initSideMenu($wrap);
+			/*导航高亮*/
+			self.highSideMenu($menu);
+		}else{
+			return menustr;
+		}
 	};
 	//卸载左侧菜单条
 	public_tool.removeSideMenu=function($menu){
@@ -1223,6 +1244,34 @@
 
 			self.collapseSideMenu($_li, $_sub,$wrap);
 		});
+	};
+	//导航注入扩展
+	public_tool.injectSideMenu=function ($menu,$wrap,opt,flag) {
+		var self=this,
+			res='';
+		$.ajax({
+			url:opt.url,
+			async:opt.async,
+			type:opt.type,
+			data:opt.param,
+			dataType:opt.datatype
+		}).done(function(data){
+			if(parseInt(data.code,10)!==0){
+				//查询异常
+				res='';
+				return '';
+			}
+			if(flag){
+				res=self.doSideMenu(data,$menu,$wrap,true);
+			}else{
+				self.doSideMenu(data,$menu,$wrap,false);
+				res='';
+			}
+		}).fail(function(){
+			console.log('error');
+			res='';
+		});
+		return res;
 	};
 
 
