@@ -120,10 +120,27 @@
 
                             <div class="form-group">
                                 <label class="control-label">公司地址：</label>
+                                <div class="selectwrap">
+                                    <div class="select-item g-w-percent8" style="z-index:50">
+                                        <p>请选择省份</p>
+                                        <ul id="admin_province"></ul>
+                                    </div>
+                                    <div class="select-item g-w-percent8" style="z-index:50">
+                                        <p>请选择城市</p>
+                                        <ul id="admin_city"></ul>
+                                    </div>
+                                    <div class="select-item g-w-percent8" style="z-index:50">
+                                        <p>请选择地区</p>
+                                        <ul id="admin_area"></ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <br />
                                 <div class="input-group">
-                                    <select  class="form-control no-right-border g-w-percent10" id="admin_province"></select>
-                                    <select  class="form-control no-right-border g-w-percent10" id="admin_city"></select>
-                                    <select  class="form-control no-right-border g-w-percent10" id="admin_country"></select>
+                                    <input type="text"  class="form-control no-right-border g-w-percent10" value="" name="province" id="admin_province_value">
+                                    <input type="text" class="form-control no-right-border g-w-percent10" value="" name="city" id="admin_city_value">
+                                    <input type="text" class="form-control no-right-border g-w-percent10" value="" name="country" id="admin_area_value">
                                     <input type="text" class="form-control no-right-border  g-w-percent20" name="address" id="admin_address" placeholder="请输入公司地址详情" />
                                     <span class="input-group-btn">
                                         <button type="button"  id="admin_address_btn" class="btn btn-success">更改</button>
@@ -249,6 +266,7 @@
 <script src="../../js/common/base.js"></script>
 <script src="../../js/common/common.js"></script>
 <!--表单验证插件-->
+<script src="../../js/widgets/city_select.js"></script>
 <script src="../../js/plugins/plupload/plupload.full.min.js"></script>
 <script src="../../js/plugins/plupload/i18n/zh_CN.js"></script>
 <script src="../../js/plugins/qn/qiniu.min.js"></script>

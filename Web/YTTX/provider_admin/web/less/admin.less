@@ -780,13 +780,20 @@
 		border:1px solid @color-gray12;
 		.user-select-base;
 		li{
-			.layout-float-base(120px);
+			float:left;
+			.box-sizing-base;
+			min-width:120px;
+			max-width:240px;
 			text-align: center;
 			height:60px;
 			padding:10px 0;
 			line-height:40px;
 			color:@color-gray6;
+			border-right:1px solid @color-gray16;
+			border-bottom:1px solid @color-gray16;
 			font-size:@font-size-base;
+			.text-of;
+			text-overflow: ellipsis;
 			cursor: pointer;
 			&:hover{
 				background:@color-gray14;

@@ -815,8 +815,7 @@
 
 				if(etype==='keyup'){
 					if(name==="setinventory"){
-						result=value.replace(/[^0-9\.]/g,'');
-						result=result.replace(/\.{2,}/g,'.');
+						result=value.replace(/\D*/g,'');
 						$this.val(result);
 					}else if(name==="setwholesalePrice"){
 						/*错误状态下禁止输入*/
@@ -1909,20 +1908,20 @@
 					if(k===0){
 						if(initindex===0){
 							str+='<td>'+itemtwo[0]+'</td>' +
-								'<td><input class="admin-table-input" name="setinventory" maxlength="5" type="text"></td>' +
+								'<td><input class="admin-table-input" name="setinventory" maxlength="7" type="text"></td>' +
 								'<td><input class="admin-table-input" name="setwholesalePrice" maxlength="12" type="text"></td>' +
 								'<td><input class="admin-table-input" name="setretailPrice" maxlength="12" type="text"></td>' +
 								'<td><input name="setisDefault" checked type="radio" data-value="'+code+'"></td></tr>';
 						}else{
 							str+='<td>'+itemtwo[0]+'</td>' +
-								'<td><input class="admin-table-input" name="setinventory" maxlength="5" type="text"></td>' +
+								'<td><input class="admin-table-input" name="setinventory" maxlength="7" type="text"></td>' +
 								'<td><input class="admin-table-input" name="setwholesalePrice" maxlength="12" type="text"></td>' +
 								'<td><input class="admin-table-input" name="setretailPrice" maxlength="12" type="text"></td>' +
 								'<td><input name="setisDefault"  type="radio" data-value="'+code+'"></td></tr>';
 						}
 					}else{
 						str+='<tr><td>'+itemtwo[0]+'</td>' +
-							'<td><input class="admin-table-input" name="setinventory" maxlength="5" type="text"></td>' +
+							'<td><input class="admin-table-input" name="setinventory" maxlength="7" type="text"></td>' +
 							'<td><input class="admin-table-input" name="setwholesalePrice" maxlength="12" type="text"></td>' +
 							'<td><input class="admin-table-input" name="setretailPrice" maxlength="12" type="text"></td>' +
 							'<td><input name="setisDefault"  type="radio" data-value="'+code+'"></td></tr>';
