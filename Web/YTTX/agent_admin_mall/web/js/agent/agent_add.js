@@ -290,7 +290,7 @@
 		/*查询地址*/
 		function getAddress(id,sel,type,getflag) {
 			$.ajax({
-					url:"http://120.24.226.70:8081/yttx-public-api/address/get",
+					url:"http://120.24.226.70:8082/yttx-public-api/address/get",
 					dataType:'JSON',
 					method:'post',
 					data:{
