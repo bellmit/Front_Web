@@ -8,10 +8,6 @@
         "modId": 88,
         "modItem": [
           {
-            "modLink": "mall-store-manage",
-            "modName": "仓库管理"
-          },
-          {
             "modLink": "mall-store-provider",
             "modName": "供应商管理"
           },

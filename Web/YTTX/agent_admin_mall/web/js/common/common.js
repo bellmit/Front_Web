@@ -923,7 +923,7 @@
 		}
 	};
 	/*请求菜单*/
-	public_tool.requestSideMenu= function ($menu,$wrap,opt,injectobj) {
+	public_tool.requestSideMenu= function ($menu,$wrap,opt) {
 		var self=this,
 			cacheSource=self.getParams('source_module');
 
@@ -935,15 +935,19 @@
 		}else{
 			/*不存在资源则重新加载*/
 			/*静态注入*/
-			if(injectobj){
-				var menuinject=self.injectSideMenu($menu,$wrap,{
-					url:self.routeMap.isindex?'../json/menu.json':'../../json/menu.json',
-					async:false,
-					type:'post',
-					datatype:'json'
-				},{});
+			var injectdata=self.injectSideMenu({
+				url:self.routeMap.isindex?'../json/menu.json':'../../json/menu.json',
+				async:false,
+				type:'post',
+				datatype:'json'
+			}),
+			injectstr=self.doSideMenu(injectdata,$menu,$wrap,{
+				resolve:true
+			});
 
-			}
+
+
+
 			$.ajax({
 				url:opt.url,
 				async:opt.async,
@@ -955,15 +959,24 @@
 					//查询异常
 					return false;
 				}
-				self.doSideMenu(data,$menu,$wrap);
+				if(injectstr){
+					/*如果有注入*/
+					self.doSideMenu(data,$menu,$wrap,{
+						render:true,
+						result:injectstr,
+						data:injectdata
+					});
+				}else{
+					self.doSideMenu(data,$menu,$wrap);
+				}
 			}).fail(function(){
 				console.log('error');
 			});
 		}
 
 	};
-	//处理菜单(flag:为是否注入)
-	public_tool.doSideMenu=function(data,$menu,$wrap,flag){
+	//处理菜单(inject:为注入对象)
+	public_tool.doSideMenu=function(data,$menu,$wrap,inject){
 		var self=this,
 			matchClass=function(map,str){
 				/*修正class*/
@@ -1073,22 +1086,29 @@
 		/*解析权限*/
 		self.resolvePower(data,true);
 
-		if(!flag){
-			//放入菜单模块
-			self.setParams('menu_module',menustr);
-			//存入数据源
-			self.setParams('source_module',data);
+		if(inject&&inject.render){
+			menustr+=inject.result;
+			$.merge(data.result.menu,inject.data.result.menu);
+		}
 
-			//放入dom中
-			$(menustr).appendTo($menu.html(''));
 
-			//调用菜单渲染
-			self.initSideMenu($wrap);
-			/*导航高亮*/
-			self.highSideMenu($menu);
-		}else{
+		if(inject&&inject.resolve){
 			return menustr;
 		}
+
+		//放入菜单模块
+		self.setParams('menu_module',menustr);
+		//存入数据源
+		self.setParams('source_module',data);
+
+		//放入dom中
+		$(menustr).appendTo($menu.html(''));
+
+		//调用菜单渲染
+		self.initSideMenu($wrap);
+		/*导航高亮*/
+		self.highSideMenu($menu);
+
 	};
 	//卸载左侧菜单条
 	public_tool.removeSideMenu=function($menu){
@@ -1246,9 +1266,8 @@
 		});
 	};
 	//导航注入扩展
-	public_tool.injectSideMenu=function ($menu,$wrap,opt,flag) {
-		var self=this,
-			res='';
+	public_tool.injectSideMenu=function (opt) {
+		var res='';
 		$.ajax({
 			url:opt.url,
 			async:opt.async,
@@ -1258,18 +1277,13 @@
 		}).done(function(data){
 			if(parseInt(data.code,10)!==0){
 				//查询异常
-				res='';
-				return '';
+				return false;
 			}
-			if(flag){
-				res=self.doSideMenu(data,$menu,$wrap,true);
-			}else{
-				self.doSideMenu(data,$menu,$wrap,false);
-				res='';
+			if(data){
+				res=data;
 			}
 		}).fail(function(){
 			console.log('error');
-			res='';
 		});
 		return res;
 	};
