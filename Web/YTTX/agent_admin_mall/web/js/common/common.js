@@ -1014,7 +1014,9 @@
 
 				if(i===0&&item.modId!==0){
 					/*不匹配首页*/
-					menustr+='<li><a href=\"index'+suffix+'\"><i class=\"menu-ux-home\"></i><span>首页</span></a></li>';
+					if(!inject||(inject&&inject.render)){
+						menustr+='<li><a href=\"index'+suffix+'\"><i class=\"menu-ux-home\"></i><span>首页</span></a></li>';
+					}
 				}else if(i===0&&!issub){
 					//匹配首页且没有子菜单
 					menustr+='<li><a href=\"index'+item.modLink+suffix+'\"><i class=\"'+matchClass(link,item.modClass)+'\"></i><span>'+item.modName+'</span></a></li>';
@@ -1046,7 +1048,9 @@
 
 				if(i===0&&item.modId!==0){
 					/*不匹配首页*/
-					menustr+='<li><a href=\"../index'+suffix+'\"><i class=\"menu-ux-home\"></i><span>首页</span></a></li>';
+					if(!inject||(inject&&inject.render)){
+						menustr+='<li><a href=\"../index'+suffix+'\"><i class=\"menu-ux-home\"></i><span>首页</span></a></li>';
+					}
 				}else if(i===0&&!issub){
 					//匹配首页且没有子菜单
 					menustr+='<li><a href=\"../index'+item.modLink+suffix+'\"><i class=\"'+matchClass(link,item.modClass)+'\"></i><span>'+item.modName+'</span></a></li>';
