@@ -50,7 +50,7 @@
 					<th>规格</th>\
 					<th>库存</th>\
 					<th>批发价</th>\
-					<th>建议零售价</th>\
+					<th>出厂价</th>\
 					<th>价格显示在首页</th>\
 				</tr>',
 				$admin_wholesale_tips=$('#admin_wholesale_tips'),
@@ -586,58 +586,13 @@
 						if($this.hasClass('g-c-red1')){
 							return false;
 						}
-						var maxvalue=$this.parent().next().find('input[type="text"]').val();
-
-						result=public_tool.moneyCorrect(value,12,true);
-
-						if(maxvalue!==''&&result[0]!==''){
-							maxvalue=public_tool.trimSep(maxvalue,',') * 100;
-							var whole=public_tool.trimSep(result[0],',') * 100;
-							if(whole>maxvalue){
-								$this.addClass('g-c-red1');
-								$admin_wholesale_tips.html('"批发价"不能大于"建议零售价"');
-								whole=maxvalue / 100;
-								result=public_tool.moneyCorrect(whole,12,true);
-								$this.val(result[0]);
-								setTimeout(function(){
-									$this.removeClass('g-c-red1');
-									$admin_wholesale_tips.html('');
-								},3000);
-							}else{
-								$this.val(result[0]);
-							}
-						}else{
-							$this.val(result[0]);
-						}
-
+						$this.val(public_tool.moneyCorrect(value,12,true)[0]);
 					}else if(name==="setretailPrice"){
 						/*错误状态下禁止输入*/
 						if($this.hasClass('g-c-red1')){
 							return false;
 						}
-						var minvalue=$this.parent().prev().find('input[type="text"]').val();
-						result=public_tool.moneyCorrect(value,12,true);
-
-						if(minvalue!==''&&result[0]!==''){
-							minvalue=public_tool.trimSep(minvalue,',') * 100;
-							var retail=public_tool.trimSep(result[0],',') * 100;
-							if(retail<minvalue){
-								$this.addClass('g-c-red1');
-								$admin_wholesale_tips.html('"建议零售价"不能小于"批发价"');
-								retail=minvalue / 100;
-								result=public_tool.moneyCorrect(retail,12,true);
-								$this.val(result[0]);
-								setTimeout(function(){
-									$this.removeClass('g-c-red1');
-									$admin_wholesale_tips.html('');
-								},3000);
-							}else{
-								$this.val(result[0]);
-							}
-						}else{
-							$this.val(result[0]);
-						}
-
+						$this.val(public_tool.moneyCorrect(value,12,true)[0]);
 					}
 				}
 
@@ -765,7 +720,7 @@
 									}else{
 										setdata['attrIventoryPrices']='['+$admin_inventory.val()+'#'+public_tool.trimSep($admin_wholesale_price.val(),',')+'#'+public_tool.trimSep($admin_retail_price.val(),',')+']';
 									}
-									config['url']="http://120.76.237.100:8082/yttx-providerbms-api/goods/addupdate";
+									config['url']="http://120.24.226.70:8082/yttx-providerbms-api/goods/addupdate";
 									config['data']=setdata;
 								}
 
@@ -858,7 +813,7 @@
 		/*获取数据*/
 		function getEditData(config){
 			$.ajax({
-				url:"http://120.76.237.100:8082/yttx-providerbms-api/goods/details",
+				url:"http://120.24.226.70:8082/yttx-providerbms-api/goods/details",
 				dataType:'JSON',
 				async:false,
 				method:'post',
@@ -952,7 +907,7 @@
 					'checked':result['isRecommended']
 				});
 
-				/*解析库存，批发价，建议零售价*/
+				/*解析库存，批发价，出厂价*/
 				var attr=getGroupCondition(result['tagsAttrsList'],result['attrInventoryPrices']);
 				if(attr){
 					/*设置属性值*/
@@ -1306,7 +1261,7 @@
 			<th>'+attr_map[key2]['label']+'</th>\
 			<th>库存</th>\
 			<th>批发价</th>\
-			<th>建议零售价</th>\
+			<th>出厂价</th>\
 			<th>价格显示在首页</th>\
 			</tr>');
 			for(var j in dataone){
@@ -1373,7 +1328,7 @@
 		function getToken(){
 			var result=null;
 			$.ajax({
-				url:'http://120.76.237.100:8082/yttx-providerbms-api/qiniu/token/get',
+				url:'http://120.24.226.70:8082/yttx-providerbms-api/qiniu/token/get',
 				async:false,
 				type:'post',
 				datatype:'json',
@@ -1452,18 +1407,6 @@
 					console.log(resp);
 				});
 			}
-
-
-
-
-
-
-
-
-			/*console.log(li);
-			console.log(slideobj);
-			console.log(tips);*/
-
 
 		}
 
@@ -1731,7 +1674,7 @@
 					}
 				}
 			}
-			document.getElementById('admin_wholesale_price_thead_old').innerHTML='<tr><th>'+listone['label']+'</th><th>'+listtwo['label']+'</th><th>库存</th><th>批发价</th><th>建议零售价</th><th>价格显示在首页</th></tr>';
+			document.getElementById('admin_wholesale_price_thead_old').innerHTML='<tr><th>'+listone['label']+'</th><th>'+listtwo['label']+'</th><th>库存</th><th>批发价</th><th>出厂价</th><th>价格显示在首页</th></tr>';
 			document.getElementById('admin_wholesale_price_old').innerHTML=str;
 		}
 

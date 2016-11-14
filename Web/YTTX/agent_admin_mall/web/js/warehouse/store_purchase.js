@@ -41,7 +41,8 @@
 					},
 					cancel:false
 				})/*一般提示对象*/,
-				$admin_page_wrap=$('#admin_page_wrap');
+				$admin_page_wrap=$('#admin_page_wrap'),
+				$purchase_showall_btn=$('#purchase_showall_btn');
 
 
 
@@ -269,6 +270,14 @@
 					}());
 
 				}
+			});
+
+
+
+
+			/*全部展开*/
+			$purchase_showall_btn.on('click',function () {
+				$store_purchase_wrap.find('span[data-action="select"]').trigger('click');
 			});
 
 

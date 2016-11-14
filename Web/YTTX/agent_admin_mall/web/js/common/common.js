@@ -764,17 +764,19 @@
 			"name":"财务管理",
 			"code":"finance",
 			"match":"-finance-",
+			"matchlist":["-sales-","-order-"],
 			"class":"menu-ux-finance",
 			"module":"finance",
 			"modid":"83"
 		},
-		"88":{
+		"86":{
 			"name":"分仓管理",
-			"code":"store",
-			"match":"-store-",
+			"code":"warehouse",
+			"match":"-warehouse-",
+			"matchlist":["-warehouse-","-purchase-","-order-","-inventory-","-storage-","-outbound-","-check-","-store-","-logistics-","-provider-"],
 			"class":"menu-ux-distribution",
-			"module":"store",
-			"modid":"88"
+			"module":"warehouse",
+			"modid":"86"
 		}
 	};
 	/*路由映射*/
@@ -934,8 +936,9 @@
 			self.doSideMenu(cacheSource,$menu,$wrap);
 		}else{
 			/*不存在资源则重新加载*/
+
 			/*静态注入*/
-			var injectdata=self.injectSideMenu({
+			/*var injectdata=self.injectSideMenu({
 				url:self.routeMap.isindex?'../json/menu.json':'../../json/menu.json',
 				async:false,
 				type:'post',
@@ -943,7 +946,7 @@
 			}),
 			injectstr=self.doSideMenu(injectdata,$menu,$wrap,{
 				resolve:true
-			});
+			});*/
 
 
 
@@ -959,7 +962,7 @@
 					//查询异常
 					return false;
 				}
-				if(injectstr){
+				if(typeof injectstr!=='undefined'){
 					/*如果有注入*/
 					self.doSideMenu(data,$menu,$wrap,{
 						render:true,
@@ -984,6 +987,20 @@
 					return map['class'];
 				}
 				return str;
+			},
+			matchModule=function (map,str) {
+				var dlist=map['matchlist'];
+				if(dlist){
+					var d=0,
+						dlen=dlist.length;
+
+					for(d;d<dlen;d++){
+						if(str.indexOf(dlist[d])!==-1){
+							return '<li class="has-sub expanded"><a href=\"\"><i class=\"'+matchClass(link,item.modClass)+'\"></i><span>'+item.modName+'</span></a><ul style="display:block;">';
+						}
+					}
+				}
+				return '<li class="has-sub"><a href=\"\"><i class=\"'+matchClass(link,item.modClass)+'\"></i><span>'+item.modName+'</span></a><ul>';
 			},
 			menu=data.result.menu,
 			len=menu.length,
@@ -1028,8 +1045,7 @@
 						menustr+='<li class="has-sub expanded"><a href=\"\"><i class=\"'+matchClass(link,item.modClass)+'\"></i><span>'+item.modName+'</span></a>';
 						menustr+="<ul style='display:block;'>";
 					}else{
-						menustr+='<li class="has-sub"><a href=\"\"><i class=\"'+matchClass(link,item.modClass)+'\"></i><span>'+item.modName+'</span></a>';
-						menustr+="<ul>";
+						menustr+=matchModule(link,path);
 					}
 					sublen=subitem.length;
 					j=0;
@@ -1062,8 +1078,7 @@
 						menustr+='<li class="has-sub expanded"><a href=\"\"><i class=\"'+matchClass(link,item.modClass)+'\"></i><span>'+item.modName+'</span></a>';
 						menustr+="<ul style='display:block;'>";
 					}else{
-						menustr+='<li class="has-sub"><a href=\"\"><i class=\"'+matchClass(link,item.modClass)+'\"></i><span>'+item.modName+'</span></a>';
-						menustr+="<ul>";
+						menustr+=matchModule(link,path);
 					}
 					sublen=subitem.length;
 					j=0;
@@ -1097,6 +1112,9 @@
 
 
 		if(inject&&inject.resolve){
+			/*释放内存*/
+			matchClass=null;
+			matchModule=null;
 			return menustr;
 		}
 
@@ -1113,6 +1131,9 @@
 		/*导航高亮*/
 		self.highSideMenu($menu);
 
+		/*释放内存*/
+		matchClass=null;
+		matchModule=null;
 	};
 	//卸载左侧菜单条
 	public_tool.removeSideMenu=function($menu){
@@ -1159,7 +1180,7 @@
 	//当前高亮菜单
 	public_tool.highSideMenu=function($menu){
 		var self=this;
-		$menu.find("a[href='"+self.routeMap.path+".html']").parent().addClass('sub-menu-active');
+		$menu.find("a[href*='"+self.routeMap.path+".html']").parent().addClass('sub-menu-active');
 	};
 	//导航展开服务类
 	public_tool.expandSideMenu=function($li,$sub,$wrap){

@@ -72,7 +72,7 @@
 		/*获取数据*/
 		function getDetailData(config){
 			$.ajax({
-				url:"http://120.76.237.100:8082/yttx-providerbms-api/goods/details",
+				url:"http://120.24.226.70:8082/yttx-providerbms-api/goods/details",
 				dataType:'JSON',
 				async:false,
 				method:'post',
@@ -299,7 +299,7 @@
 							}());
 						}else{
 							document.getElementById('admin_wholesale_price_list').innerHTML='';
-							document.getElementById('admin_wholesale_price_thead').innerHTML='<tr><th>颜色</th><th>规格</th><th>库存</th><th>批发价</th><th>建议零售价</th><th>价格显示在首页</th></tr>';
+							document.getElementById('admin_wholesale_price_thead').innerHTML='<tr><th>颜色</th><th>规格</th><th>库存</th><th>批发价</th><th>出厂价</th><th>价格显示在首页</th></tr>';
 							return false;
 						}
 
@@ -335,7 +335,7 @@
 							}());
 						}else{
 							document.getElementById('admin_wholesale_price_list').innerHTML='';
-							document.getElementById('admin_wholesale_price_thead').innerHTML='<tr><th>颜色</th><th>规格</th><th>库存</th><th>批发价</th><th>建议零售价</th><th>价格显示在首页</th></tr>';
+							document.getElementById('admin_wholesale_price_thead').innerHTML='<tr><th>颜色</th><th>规格</th><th>库存</th><th>批发价</th><th>出厂价</th><th>价格显示在首页</th></tr>';
 							return false;
 						}
 
@@ -343,7 +343,7 @@
 						groupCondition(attrmap);
 					}else{
 						document.getElementById('admin_wholesale_price_list').innerHTML='';
-						document.getElementById('admin_wholesale_price_thead').innerHTML='<tr><th>颜色</th><th>规格</th><th>库存</th><th>批发价</th><th>建议零售价</th><th>价格显示在首页</th></tr>';
+						document.getElementById('admin_wholesale_price_thead').innerHTML='<tr><th>颜色</th><th>规格</th><th>库存</th><th>批发价</th><th>出厂价</th><th>价格显示在首页</th></tr>';
 						return false;
 					}
 				}
@@ -380,7 +380,7 @@
 					}
 				}
 			}
-			document.getElementById('admin_wholesale_price_thead').innerHTML='<tr><th>'+listone['label']+'</th><th>'+listtwo['label']+'</th><th>库存</th><th>批发价</th><th>建议零售价</th><th>价格显示在首页</th></tr>';
+			document.getElementById('admin_wholesale_price_thead').innerHTML='<tr><th>'+listone['label']+'</th><th>'+listtwo['label']+'</th><th>库存</th><th>批发价</th><th>出厂价</th><th>价格显示在首页</th></tr>';
 			document.getElementById('admin_wholesale_price_list').innerHTML=str;
 		}
 
