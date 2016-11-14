@@ -22,12 +22,11 @@
 
 			/*权限调用*/
 			var powermap=public_tool.getPower(),
-				storeedit_power=public_tool.getKeyPower('mall-store-update',powermap),
-				storeadd_power=public_tool.getKeyPower('mall-store-add',powermap);
+				warehouseadd_power=public_tool.getKeyPower('mall-store-add',powermap);
 
 
 			/*dom引用和相关变量定义*/
-			var module_id='mall-announcement-add'/*模块id，主要用于本地存储传值*/,
+			var module_id='mall-warehouse-add'/*模块id，主要用于本地存储传值*/,
 				dia=dialog({
 					zIndex:2000,
 					title:'温馨提示',
@@ -39,20 +38,27 @@
 					},
 					cancel:false
 				})/*一般提示对象*/,
-				admin_storeadd_form=document.getElementById('admin_storeadd_form'),
-				$admin_storeadd_form=$(admin_storeadd_form),
+				admin_warehouseadd_form=document.getElementById('admin_warehouseadd_form'),
+				$admin_warehouseadd_form=$(admin_warehouseadd_form),
 				$admin_id=$('#admin_id'),
-				$admin_title=$('#admin_title'),
-				$admin_type=$('#admin_type'),
-				$admin_sort=$('#admin_sort'),
+				$admin_username=$('#admin_username'),
+				$admin_name=$('#admin_name'),
+				$admin_pwd=$('#admin_pwd'),
+				$admin_fullName=$('#admin_fullName'),
+				$admin_shortName=$('#admin_shortName'),
+				$admin_whCode=$('#admin_whCode'),
+				$admin_area=$('#admin_area'),
+				$admin_adscriptionRegionCodeNames=$('#admin_adscriptionRegionCodeNames'),
 				$admin_status=$('#admin_status'),
-				$admin_content=$('#admin_content'),
-				$admin_isAllReceived=$('#admin_isAllReceived'),
+				$admin_remark=$('#admin_remark'),
 				$admin_action=$('#admin_action'),
 				$admin_province=$('#admin_province'),
 				$admin_city=$('#admin_city'),
 				$admin_country=$('#admin_country'),
 				$admin_address=$('#admin_address'),
+				$admin_linkman=$('#admin_linkman'),
+				$admin_cellphone=$('#admin_cellphone'),
+				$admin_telephone=$('#admin_telephone'),
 				resetform0=null;
 
 
@@ -85,19 +91,21 @@
 
 
 			/*获取编辑缓存*/
-			admin_storeadd_form.reset();
-			var edit_cache=public_tool.getParams('mall-store-add');
+			admin_warehouseadd_form.reset();
+			var edit_cache=public_tool.getParams('mall-warehouse-add');
 			if(edit_cache){
 				$admin_action.html('修改');
 				/*判断权限*/
-				if(storeedit_power){
+				if(warehouseadd_power){
 					$admin_action.removeClass('g-d-hidei');
 				}else{
 					$admin_action.addClass('g-d-hidei');
 				}
+				/*查询数据*/
+				setWarehouseData(edit_cache['id']);
 			}else{
 				/*判断权限*/
-				if(storeadd_power){
+				if(warehouseadd_power){
 					$admin_action.removeClass('g-d-hidei');
 				}else{
 					$admin_action.addClass('g-d-hidei');
@@ -129,14 +137,14 @@
 							method:'post'
 						};
 						if(index===0){
-							formtype='addannouncement';
+							formtype='addwarehouse';
 						}
 						$.extend(true,(function () {
-							if(formtype==='addannouncement'){
+							if(formtype==='addwarehouse'){
 								return form_opt0;
 							}
 						}()),(function () {
-							if(formtype==='addannouncement'){
+							if(formtype==='addwarehouse'){
 								return formcache.form_opt_0;
 							}
 						}()),{
@@ -145,7 +153,7 @@
 
 								$.extend(true,setdata,basedata);
 
-								if(formtype==='addannouncement'){
+								if(formtype==='addwarehouse'){
 
 									$.extend(true,setdata,{
 										title:$admin_title.val(),
@@ -168,25 +176,25 @@
 										delete setdata['attachmentUrl'];
 									}
 
+
                                     var id=$admin_id.val(),
 										actiontype='';
                                     if(id!==''){
 										/*修改操作*/
                                         setdata['id']=id;
 										actiontype='修改';
-										config['url']="http://120.76.237.100:8082/mall-agentbms-api/announcement/update";
                                     }else{
 										/*新增操作*/
-										config['url']="http://120.76.237.100:8082/mall-agentbms-api/announcement/add";
 										actiontype='新增';
                                         delete setdata['id'];
                                     }
+									config['url']="http://120.76.237.100:8082/mall-agentbms-api/warehouse/addupdate";
 									config['data']=setdata;
 								}
 
 								$.ajax(config).done(function(resp){
 									var code;
-									if(formtype==='addannouncement'){
+									if(formtype==='addwarehouse'){
 										code=parseInt(resp.code,10);
 										if(code!==0){
 											dia.content('<span class="g-c-bs-warning g-btips-warn">'+actiontype+'公告失败</span>').show();
@@ -199,9 +207,9 @@
 
 									setTimeout(function () {
 										dia.close();
-										if(formtype==='addannouncement'){
+										if(formtype==='addwarehouse'){
 											/*页面跳转*/
-											location.href='mall-announcement-list.html';
+											location.href='mall-warehouse-list.html';
 										}
 									},2000);
 								}).fail(function(resp){
@@ -217,7 +225,7 @@
 
 				/*提交验证*/
 				if(resetform0===null){
-					resetform0=$admin_storeadd_form.validate(form_opt0);
+					resetform0=$admin_warehouseadd_form.validate(form_opt0);
 				}
 			}
 
@@ -307,14 +315,14 @@
 
 
 		/*修改时设置值*/
-		function setAgentData(id) {
+		function setWarehouseData(id) {
 			if(!id){
 				return false;
 			}
 
 
 			$.ajax({
-					url:"http://120.76.237.100:8082/mall-agentbms-api/agent/detail",
+					url:"http://120.76.237.100:8082/mall-agentbms-api/warehouse/detail",
 					dataType:'JSON',
 					method:'post',
 					data:{
