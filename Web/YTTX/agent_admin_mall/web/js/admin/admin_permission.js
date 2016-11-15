@@ -79,6 +79,7 @@
 							return [];
 						}
 					}else{
+						$operate_colgroup.html('<col class="g-w-percent50">');
 						return [];
 					}
 				}())/*权限模块对应*/,

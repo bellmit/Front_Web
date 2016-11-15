@@ -21,15 +21,17 @@
 				datatype:'json'
 			});
 			/*权限调用*/
-			var powermap=public_tool.getPower(),
-				receive_power=public_tool.getKeyPower('mall-store-receive',powermap);
+			var powermap=public_tool.getPower(86),
+				stats_power=public_tool.getKeyPower('mall-purchase-stats',powermap),
+				receive_power=public_tool.getKeyPower('mall-purchase-receiving',powermap);
+			
 
 			/*清除收货缓存*/
-			public_tool.removeParams('mall-store-receive');
+			public_tool.removeParams('mall-purchase-receive');
 
 
 			/*dom引用和相关变量定义*/
-			var $store_purchase_wrap=$('#store_purchase_wrap')/*表格*/,
+			var $purchase_stats_wrap=$('#purchase_stats_wrap')/*表格*/,
 				module_id='mall-store-purchase'/*模块id，主要用于本地存储传值*/,
 				dia=dialog({
 					title:'温馨提示',
@@ -54,7 +56,7 @@
 					total:0
 				},
 				purchase_config={
-					$store_purchase_wrap:$store_purchase_wrap,
+					$purchase_stats_wrap:$purchase_stats_wrap,
 					$admin_page_wrap:$admin_page_wrap,
 					config:{
 						processing:true,/*大消耗操作时是否显示处理状态*/
@@ -62,7 +64,7 @@
 						autoWidth:true,/*是否*/
 						paging:false,
 						ajax:{
-							url:"http://120.76.237.100:8082/mall-agentbms-api/announcements/related",
+							url:"http://120.76.237.100:8082/mall-agentbms-api/purchase/stats/list",
 							dataType:'JSON',
 							method:'post',
 							dataSrc:function ( json ) {
@@ -113,16 +115,16 @@
 						ordering:true,
 						columns: [
 							{
-								"data":"title"
+								"data":"orderNumber"
 							},
 							{
-								"defalutContent":""
+								"data":"orderTime"
 							},
 							{
-								"defalutContent":""
+								"data":"providerName"
 							},
 							{
-								"data":"status",
+								"data":"orderState",
 								"render":function(data, type, full, meta ){
 									var stauts=parseInt(data,10),
 										statusmap={
@@ -154,12 +156,12 @@
 											<span>收货</span>\
 											</span>';
 									}
-									btns+='<span  data-subitem=""  data-action="select" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+									if(stats_power){
+										btns+='<span  data-subitem=""  data-action="select" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 										<i class="fa-angle-right"></i>\
 										<span>查看</span>\
 										</span>';
-
-
+									}
 									return btns;
 								}
 							}
@@ -176,7 +178,7 @@
 			/*事件绑定*/
 			/*绑定查看，修改操作*/
 			var operate_item;
-			$store_purchase_wrap.delegate('span','click',function(e){
+			$purchase_stats_wrap.delegate('span','click',function(e){
 				e.stopPropagation();
 				e.preventDefault();
 
@@ -198,8 +200,8 @@
 
 				/*修改,编辑操作*/
 				if(action==='receive'){
-					public_tool.setParams('mall-store-receive',id);
-					location.href='mall-store-receive.html';
+					public_tool.setParams('mall-purchase-receive',id);
+					location.href='mall-purchase-receive.html';
 				}else if(action==='select'){
 					/*查看收货详情*/
 					(function () {
@@ -220,48 +222,81 @@
 							operate_item=$tr.addClass('item-lighten');
 							/*展开*/
 							if(subitem===''){
-								var itemdata=parseInt(Math.random()*10,10),
-									code=itemdata%2;
-								if(code!==0||itemdata===0){
-									/*回滚状态*/
-									tabletr.child($('<tr><td colspan="5"><table class="table table-bordered table-striped table-hover admin-table" ><tbody class="middle-align"><tr><td class="g-t-c" colspan="5">("暂无数据")</td></tr></tbody></table></td></tr>')).show();
-									$this.attr({
-										'data-subitem':'true'
-									}).children('i').addClass('fa-angle-down');
-									console.log('no data');
-									return false;
-								}
+								$.ajax({
+										url:"http://120.76.237.100:8082/mall-agentbms-api/purchase/details",
+										dataType:'JSON',
+										method:'post',
+										data:{
+											id:id,
+											adminId:decodeURIComponent(logininfo.param.adminId),
+											token:decodeURIComponent(logininfo.param.token),
+											grade:decodeURIComponent(logininfo.param.grade)
+										}
+									})
+									.done(function(resp){
+										var code=parseInt(resp.code,10),
+											isok=false;
+										if(code!==0){
+											console.log(resp.message);
+											isok=false;
+										}
+										/*是否是正确的返回数据*/
+										var result=resp.result;
+										if(!result){
+											isok=false;
+										}else{
+											var list=result.list;
+											if(!list){
+												isok=false;
+											}
+										}
 
-								var i= 0,
-									newstr='<colgroup>\
-									<col class="g-w-percent20">\
-									<col class="g-w-percent10">\
-									<col class="g-w-percent10">\
-									<col class="g-w-percent10">\
-									</colgroup>\
-										<thead>\
-										<tr>\
-										<th>商品名称</th>\
-										<th>采购数量</th>\
-										<th>发货数量</th>\
-										<th>待发数量</th>\
-									</tr>\
-									</thead>',
-									res='';
-								if(itemdata!==0){
-									for(i;i<itemdata;i++){
-										res+='<tr><td>测试商品名称'+i+'</td><td>'+i+'</td><td>'+i+'</td><td>'+i+'</td></tr>';
+										if(!isok){
+											tabletr.child($('<tr><td colspan="5"><table class="table table-bordered table-striped table-hover admin-table" ><tbody class="middle-align"><tr><td class="g-t-c" colspan="5">("暂无数据")</td></tr></tbody></table></td></tr>')).show();
+											$this.attr({
+												'data-subitem':'true'
+											}).children('i').addClass('fa-angle-down');
+											return false;
+										}
 
-									}
-								}
-								res='<tbody class="middle-align">'+res+'</tbody>';
-								newstr='<tr><td colspan="5"><table class="table table-bordered table-striped table-hover admin-table" >'+newstr+res+'</table></td></tr>';
+										var i= 0,
+											newstr='<colgroup>\
+												<col class="g-w-percent10">\
+												<col class="g-w-percent10">\
+												<col class="g-w-percent10">\
+												<col class="g-w-percent10">\
+												<col class="g-w-percent10">\
+											</colgroup>\
+											<thead>\
+												<tr>\
+												<th>商品名称</th>\
+												<th>商品属性</th>\
+												<th>采购数量</th>\
+												<th>发货数量</th>\
+												<th>待发数量</th>\
+											</tr>\
+											</thead>',
+											res='',
+											len=list.length;
+										if(len!==0){
+											for(i;i<len;i++){
+												res+='<tr><td>'+list[i]["goodsName"]+'</td><td>'+list[i]["attributeName"]+'</td><td>'+list[i]["purchaseQuantlity"]+'</td><td>'+list[i]["deliveredQuantlity"]+'</td><td>'+list[i]["waitingQuantlity"]+'</td></tr>';
 
-								var $newtr=$(newstr);
-								tabletr.child($newtr).show();
-								$this.attr({
-									'data-subitem':'true'
-								}).children('i').addClass('fa-angle-down');
+											}
+										}
+										res='<tbody class="middle-align">'+res+'</tbody>';
+										newstr='<tr><td colspan="5"><table class="table table-bordered table-striped table-hover admin-table" >'+newstr+res+'</table></td></tr>';
+
+										var $newtr=$(newstr);
+										tabletr.child($newtr).show();
+										$this.attr({
+											'data-subitem':'true'
+										}).children('i').addClass('fa-angle-down');
+
+									})
+									.fail(function(resp){
+										console.log(resp.message);
+									});
 							}else{
 								tabletr.child().show();
 								$this.children('i').addClass('fa-angle-down');
@@ -277,8 +312,13 @@
 
 			/*全部展开*/
 			$purchase_showall_btn.on('click',function () {
-				$store_purchase_wrap.find('span[data-action="select"]').trigger('click');
+				$purchase_stats_wrap.find('span[data-action="select"]').trigger('click');
 			});
+			if(stats_power){
+				$purchase_showall_btn.removeClass('g-d-hidei');
+			}else{
+				$purchase_showall_btn.addClass('g-d-hidei');
+			}
 
 
 
@@ -289,7 +329,7 @@
 		/*获取数据*/
 		function getColumnData(page,opt){
 			if(table===null){
-				table=opt.$store_purchase_wrap.DataTable(opt.config);
+				table=opt.$purchase_stats_wrap.DataTable(opt.config);
 			}else{
 				table.ajax.config(opt.config.ajax).load();
 			}

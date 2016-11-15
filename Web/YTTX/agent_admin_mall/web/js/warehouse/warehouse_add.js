@@ -239,9 +239,11 @@
 											return false;
 										}else{
 											dia.content('<span class="g-c-bs-success g-btips-succ">'+actiontype+'分仓成功</span>').show();
+											if(actiontype==='修改'){
+												public_tool.removeParams('mall-warehouse-add');
+											}
 										}
 									}
-
 
 									setTimeout(function () {
 										dia.close();
