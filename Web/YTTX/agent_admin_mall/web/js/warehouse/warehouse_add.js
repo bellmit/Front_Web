@@ -22,9 +22,9 @@
 
 			/*权限调用*/
 			var powermap=public_tool.getPower(),
-				warehouseadd_power=public_tool.getKeyPower('mall-store-add',powermap);
+				warehouseadd_power=public_tool.getKeyPower('mall-warehouse-add',powermap);
 
-
+			
 			/*dom引用和相关变量定义*/
 			var module_id='mall-warehouse-add'/*模块id，主要用于本地存储传值*/,
 				dia=dialog({
@@ -89,6 +89,32 @@
 			});
 
 
+			/*绑定归属地高亮*/
+			$admin_adscriptionRegionCodeNames.on('click',function (e) {
+				var target=e.target,
+					nodename=target.nodeName.toLowerCase(),
+					$this,
+					$input,
+					chk=false;
+
+				if(nodename==='div'){
+					return false;
+				}else if(nodename==='label'){
+					$this=$(target);
+					$input=$this.find('input');
+				}else if(nodename==='input'){
+					$input=$(target);
+					$this=$input.parent();
+				}
+				chk=$input.is(':checked');
+				if(chk){
+					$this.addClass('checkbox-active');
+				}else{
+					$this.removeClass('checkbox-active');
+				}
+			});
+
+
 
 			/*获取编辑缓存*/
 			admin_warehouseadd_form.reset();
@@ -110,7 +136,10 @@
 				}else{
 					$admin_action.addClass('g-d-hidei');
 				}
+				/*地址*/
 				getAddress(86,'','province',true);
+				/*归属地*/
+				getRegion(86,$admin_adscriptionRegionCodeNames,'adscriptionRegionCodeNames');
 			}
 
 
@@ -156,25 +185,32 @@
 								if(formtype==='addwarehouse'){
 
 									$.extend(true,setdata,{
-										title:$admin_title.val(),
-										type:$admin_type.find(':selected').val(),
-										sort:$admin_sort.val(),
+										username:$admin_username.val(),
+										name:$admin_name.val(),
+										fullName:$admin_fullName.val(),
+										shortName:$admin_shortName.val(),
+										whCode:$admin_whCode.val(),
+										area:$admin_area.val(),
+										adscriptionRegionCodeNames:(function () {
+											var rlist=[];
+											$admin_adscriptionRegionCodeNames.find(':checked').each(function () {
+												var $this=$(this),
+													value=$this.val(),
+													name=$this.attr('data-name');
+												rlist.push(value+'#'+name);
+											});
+											return JSON.stringify(rlist);
+										}()),
+										remark:$admin_remark.val(),
 										status:$admin_status.find(':selected').val(),
-										content:$admin_content.val(),
-										isAllReceived:$admin_isAllReceived.is(':checked')?1:0
+										province:$admin_province.find(':selected').val(),
+										city:$admin_city.find(':selected').val(),
+										country:$admin_country.find(':selected').val(),
+										address:$admin_address.val(),
+										linkman:$admin_linkman.val(),
+										cellphone:public_tool.trims($admin_cellphone.val()),
+										telephone:$admin_telephone.val()
 									});
-
-									var attachment=$admin_attachmentUrl.val();
-									if(attachment!==''&&$admin_attachmentUrl.attr('data-value')!==''){
-                                        if(attachment.indexOf('#,#')!==-1){
-                                            attachment=attachment.split('#,#');
-                                            setdata['attachmentUrl']=JSON.stringify(attachment);
-                                        }else{
-                                            setdata['attachmentUrl']=attachment;
-                                        }
-									}else{
-										delete setdata['attachmentUrl'];
-									}
 
 
                                     var id=$admin_id.val(),
@@ -183,8 +219,10 @@
 										/*修改操作*/
                                         setdata['id']=id;
 										actiontype='修改';
+										delete setdata['password'];
                                     }else{
 										/*新增操作*/
+										setdata['password']=$admin_pwd.val();
 										actiontype='新增';
                                         delete setdata['id'];
                                     }
@@ -197,10 +235,10 @@
 									if(formtype==='addwarehouse'){
 										code=parseInt(resp.code,10);
 										if(code!==0){
-											dia.content('<span class="g-c-bs-warning g-btips-warn">'+actiontype+'公告失败</span>').show();
+											dia.content('<span class="g-c-bs-warning g-btips-warn">'+actiontype+'分仓失败</span>').show();
 											return false;
 										}else{
-											dia.content('<span class="g-c-bs-success g-btips-succ">'+actiontype+'公告成功</span>').show();
+											dia.content('<span class="g-c-bs-success g-btips-succ">'+actiontype+'分仓成功</span>').show();
 										}
 									}
 
@@ -235,7 +273,7 @@
 
 
 		/*查询地址*/
-		function getAddress(id,sel,type,getflag) {
+		function getAddress(id,sel,type,getflag,wraps) {
 			$.ajax({
 					url:"http://120.24.226.70:8082/yttx-public-api/address/get",
 					dataType:'JSON',
@@ -267,33 +305,58 @@
 					var len=list.length,
 						str='',
 						$wrap='',
-						i=0;
+						i=0,
+						mode='select',
+						name='';
 
-					if(type==='province'){
-						$wrap=$admin_province;
-					}else if(type==='city'){
-						$wrap=$admin_city;
-					}else if(type==='country'){
-						$wrap=$admin_country;
+					if(wraps){
+						$wrap=wraps.$wrap;
+						mode=wraps.mode;
+						name=wraps.name||'';
+					}else{
+						if(type==='province'){
+							$wrap=$admin_province;
+						}else if(type==='city'){
+							$wrap=$admin_city;
+						}else if(type==='country'){
+							$wrap=$admin_country;
+						}
 					}
+
 
 					if(len!==0){
 						if(sel!==''){
 							for(i;i<len;i++){
 								var codes=list[i]["code"];
 								if(codes===sel){
-									str+='<option selected value="'+codes+'">'+list[i]["name"]+'</option>';
+									if(mode==='select'){
+										str+='<option selected value="'+codes+'">'+list[i]["name"]+'</option>';
+									}else if(mode==='checkbox'){
+										str+='<label class="checkbox-active">'+list[i]["name"]+':<input data-name="'+list[i]["name"]+'" name="'+name+'" type="checkbox" checked value="'+codes+'" /></label>';
+									}
 								}else{
-									str+='<option value="'+codes+'">'+list[i]["name"]+'</option>';
+									if(mode==='select'){
+										str+='<option value="'+codes+'">'+list[i]["name"]+'</option>';
+									}else if(mode==='checkbox'){
+										str+='<label>'+list[i]["name"]+':<input data-name="'+list[i]["name"]+'" name="'+name+'" type="checkbox" value="'+codes+'" /></label>';
+									}
 								}
 							}
 						}else{
 							for(i;i<len;i++){
 								if(i===0){
 									sel=list[i]["code"];
-									str+='<option selected value="'+list[i]["code"]+'">'+list[i]["name"]+'</option>';
+									if(mode==='select'){
+										str+='<option selected value="'+list[i]["code"]+'">'+list[i]["name"]+'</option>';
+									}else if(mode==='checkbox'){
+										str+='<label class="checkbox-active">'+list[i]["name"]+':<input data-name="'+list[i]["name"]+'" name="'+name+'" type="checkbox" checked value="'+list[i]["code"]+'" /></label>';
+									}
 								}else{
-									str+='<option value="'+list[i]["code"]+'">'+list[i]["name"]+'</option>';
+									if(mode==='select'){
+										str+='<option value="'+list[i]["code"]+'">'+list[i]["name"]+'</option>';
+									}else if(mode==='checkbox'){
+										str+='<label>'+list[i]["name"]+':<input  data-name="'+list[i]["name"]+'" name="'+name+'" type="checkbox" value="'+list[i]["code"]+'" /></label>';
+									}
 								}
 							}
 						}
@@ -303,9 +366,56 @@
 							if(type==='province'){
 								getAddress(sel,'','city',true);
 							}else if(type==='city'){
-								getAddress(sel,'','country');
+								getAddress(sel,'','country',false);
 							}
 						}
+					}
+				})
+				.fail(function(resp){
+					console.log(resp.message);
+				});
+		}
+
+
+		/*查询归属地*/
+		function getRegion(id,wrap,name) {
+			$.ajax({
+					url:"http://120.76.237.100:8082/mall-agentbms-api/adscriptionregions/available",
+					dataType:'JSON',
+					method:'post',
+					data:{
+						parentCode:id===''?86:id,
+						adminId:decodeURIComponent(logininfo.param.adminId),
+						token:decodeURIComponent(logininfo.param.token),
+						grade:decodeURIComponent(logininfo.param.grade)
+					}
+				})
+				.done(function(resp){
+					var code=parseInt(resp.code,10);
+					if(code!==0){
+						console.log(resp.message);
+						return false;
+					}
+					/*是否是正确的返回数据*/
+					var res=resp.result;
+					if(!res){
+						return false;
+					}
+					var list=res.list;
+
+					if(!list){
+						return false;
+					}
+
+					var len=list.length,
+						str='',
+						i=0;
+
+					if(len!==0){
+						for(i;i<len;i++){
+							str+='<label>'+list[i]["name"]+'<input  data-name="'+list[i]["name"]+'" name="'+name+'" type="checkbox" value="'+list[i]["code"]+'" /></label>';
+						}
+						$(str).appendTo(wrap.html(''));
 					}
 				})
 				.fail(function(resp){
@@ -343,29 +453,17 @@
 
 					if(!$.isEmptyObject(list)){
 						$admin_id.val(id);
+						$admin_pwd.addClass('g-d-hidei');
 						for(var j in list){
 							switch(j){
 								case 'username':
 									$admin_username.val(list[j]);
 									break;
-								case 'password':
-									$admin_password.val(list[j]);
-									break;
 								case 'name':
 									$admin_name.val(list[j]);
 									break;
-								case 'grade':
-									var grade=list[j];
-									$admin_gradewrap.find('input').each(function () {
-										var $this=$(this),
-											value=parseInt($this.val(),10);
-										if(value===grade){
-											$this.prop({
-												'checked':true
-											});
-											return false;
-										}
-									});
+								case 'whCode':
+									$admin_whCode.val(list[j]);
 									break;
 								case 'fullName':
 									$admin_fullName.val(list[j]);
@@ -373,8 +471,8 @@
 								case 'shortName':
 									$admin_shortName.val(list[j]);
 									break;
-								case 'adscriptionRegion':
-									$admin_adscriptionRegion.val(list[j]);
+								case 'remark':
+									$admin_remark.val(list[j]);
 									break;
 								case 'linkman':
 									$admin_linkman.val(list[j]);
@@ -386,29 +484,16 @@
 									$admin_telephone.val(list[j]);
 									break;
 								case 'province':
-									getAddress('86',list[j],'province');
+									getAddress('86',list[j],'province',false);
 									break;
 								case 'city':
-									getAddress(list['province'],list[j],'city');
+									getAddress(list['province'],list[j],'city',false);
 									break;
 								case 'country':
-									getAddress(list['city'],list[j],'country');
+									getAddress(list['city'],list[j],'country',false);
 									break;
 								case 'address':
 									$admin_address.val(list[j]);
-									break;
-								case 'isAudited':
-									var audit=list[j];
-									$admin_isAudited.find('option').each(function () {
-										var $this=$(this),
-											value=parseInt($this.val(),10);
-										if(value===audit){
-											$this.prop({
-												'selected':true
-											});
-											return false;
-										}
-									});
 									break;
 								case 'status':
 									var status=list[j];
@@ -423,22 +508,31 @@
 										}
 									});
 									break;
-								case 'salesmanId':
-									var salesman=list[j];
-									$admin_salesmanId.find('option').each(function () {
-										var $this=$(this),
-											value=parseInt($this.val(),10);
-										if(value===salesman){
-											$this.prop({
-												'selected':true
+								case 'adscriptionRegionList':
+									/*归属地*/
+									getRegion(86,$admin_adscriptionRegionCodeNames,'adscriptionRegionCodeNames');
+									var regionList=list[j],
+										i=0,
+										len=regionList.length;
+									if(len!==0){
+										var $regionitem=$admin_adscriptionRegionCodeNames.find('input');
+										for(i;i<len;i++){
+											var key=regionList[i]["code"].toString();
+											$regionitem.each(function () {
+												var $this=$(this),
+													value=$this.val();
+
+												if(value===key){
+													$this.prop({
+														'checked':true
+													});
+													return false;
+												}
 											});
-											return false;
 										}
-									});
+									}
 									break;
-								case 'remark':
-									$admin_remark.val(list[j]);
-									break;
+
 							}
 						}
 

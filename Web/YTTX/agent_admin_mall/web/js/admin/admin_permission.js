@@ -42,6 +42,7 @@
 					cancel:false
 				})/*一般提示对象*/,
 				$operate_header=$('#operate_header'),
+				$operate_colgroup=$('#operate_colgroup'),
 				setting_header=(function () {
 					var poweritem=public_tool.getAllPower();
 					if(poweritem){
@@ -57,9 +58,24 @@
 						}
 						if(res.length!==0){
 							$(str).appendTo($operate_header.html(''));
+							/*解析分组*/
+							(function () {
+								var len=res.length,
+									colstr='',
+									j=0,
+									colitem=parseInt(50/len,10);
+								if(colitem * len<=(50 - len)){
+									colitem=len+1;
+								}
+								for(j;j<len;j++){
+									colstr+='<col class="g-w-percent'+colitem+'">';
+								}
+								$(colstr).appendTo($operate_colgroup.html(''));
+							}());
 							return res;
 						}else{
 							$operate_header.html('');
+							$operate_colgroup.html('<col class="g-w-percent50">');
 							return [];
 						}
 					}else{
@@ -261,13 +277,13 @@
 								/*关闭权限控制按钮区域*/
 								$operate_setting.attr({
 									'data-id':'-1'
-								}).html('<td colspan="7">&nbsp;</td>');
+								}).html('<td colspan="'+setting_header.length+'">&nbsp;</td>');
 							}
 						})
 						.fail(function(resp){
 							$operate_setting.attr({
 								'data-id':'-1'
-							}).html('<td colspan="7">&nbsp;</td>');
+							}).html('<td colspan="'+setting_header.length+'">&nbsp;</td>');
 						});
 				}
 

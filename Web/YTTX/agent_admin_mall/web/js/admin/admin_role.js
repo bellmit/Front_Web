@@ -100,6 +100,7 @@
 				$role_typewrap=$('#role_typewrap'),
 				$role_typeauto=$('#role_typeauto'),
 				$role_typeagent=$('#role_typeagent'),
+				$role_typestore=$('#role_typestore'),
 				$role_typetab=$('#role_typetab'),
 				$role_typeitem=$('#role_typeitem'),
 				$role_typeAAA=$('#role_typeAAA'),
@@ -110,6 +111,7 @@
 					wrap:$role_typewrap,
 					auto:$role_typeauto,
 					agent:$role_typeagent,
+					store:$role_typestore,
 					tab:$role_typetab,
 					item:$role_typeitem,
 					AAA:$role_typeAAA,
@@ -658,10 +660,11 @@
 					$.extend(true,form_opt_0,public_tool.cache.form_opt_0,{
 						submitHandler: function(form){
 							//判断是否存在id号
-							var id=$role_id.val();
+							var id=$role_id.val(),
+								config;
 							if(id!==''){
 								//修改角色
-								var config={
+								config={
 											url:"http://120.76.237.100:8082/mall-agentbms-api/role/update",
 											method: 'POST',
 											dataType: 'json',
@@ -675,7 +678,7 @@
 										};
 							}else{
 								//添加角色
-								var config={
+								config={
 									url:"http://120.76.237.100:8082/mall-agentbms-api/role/add",
 									method: 'POST',
 									dataType: 'json',
@@ -689,11 +692,7 @@
 								};
 
 								if(roletype==='-1'||roletype===undefined){
-									if($role_typeauto.is(':checked')){
-										config['data']['type']=0;
-									}else{
-										config['data']['type']=1;
-									}
+									config['data']['type']=$role_typetab.find(':checked').val();
 								}
 
 							}
@@ -746,10 +745,11 @@
 					$.extend(true,form_opt_1,public_tool.cache.form_opt_1,{
 						submitHandler: function(form){
 							//判断是否存在id号
-							var id=$member_id.val();
+							var id=$member_id.val(),
+								config;
 							if(id!==''){
 								//修改成员
-								var config={
+								config={
 									url:"http://120.76.237.100:8082/mall-agentbms-api/sysuser/update",
 									method: 'POST',
 									dataType: 'json',
@@ -764,7 +764,7 @@
 								};
 							}else{
 								//添加成员
-								var config={
+								config={
 									url:"http://120.76.237.100:8082/mall-agentbms-api/sysuser/add",
 									method: 'POST',
 									dataType: 'json',
@@ -944,7 +944,7 @@
 			}
 			if(code===-1){
 				/*绑定选中角色类型*/
-				$.each([obj.auto,obj.agent],function(){
+				$.each([obj.auto,obj.agent,obj.store],function(){
 					this.on('click',function(){
 						var $this=$(this),
 							ischeck=$this.is(':checked'),
@@ -957,6 +957,9 @@
 							}else if(value==='1'){
 								/*代理商*/
 								obj.item.removeClass('g-d-hidei');
+							}else if(value==='2'){
+								/*分仓*/
+								obj.item.addClass('g-d-hidei');
 							}
 						}
 					});
@@ -979,6 +982,7 @@
 				obj.tab.removeClass('g-d-hidei');
 				obj.auto.removeClass('g-d-hidei');
 				obj.agent.removeClass('g-d-hidei');
+				obj.store.removeClass('g-d-hidei');
 				obj.item.addClass('g-d-hidei');
 			}else{
 				/*代理商*/

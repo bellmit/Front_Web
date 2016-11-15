@@ -933,7 +933,7 @@
 
 /*主题系列*/
 /*普通*/
-.admin-gap-theme{
+.admin-gap-theme1{
 	.layout-base;
 	display: inline-block;
 	padding:5px 30px;
@@ -945,9 +945,68 @@
 	border-left:2px solid @color-info;
 	.user-select-base;
 }
-/*居中1*/
 
 
+/*多选框系列*/
+.admin-checkbox-panel1{
+	.layout-base;
+	border:1px solid #e4e4e4;
+	background:@color-white;
+	padding:10px;
+	&:empty{
+		min-height:80px;
+		line-height:80px;
+		text-align: center;
+		&:before{
+			display:inline-block;
+			width:100%;
+			height:100%;
+			content:'暂无数据';
+			color:@color-gray9;
+		}
+	}
+	label{
+		.layout-relative-base;
+		margin:5px 0 0 10px;
+		display:inline-block;
+		padding:10px 20px;
+		cursor: pointer;
+		line-height:16px;
+		.user-select-base;
+		border:1px solid @color-white;
+		input{
+			.layout-absolutel-base;
+			width:100%;
+			height:100%;
+			display: inline-block;
+			vertical-align: middle;
+			margin:0;
+			padding:0;
+			.opacity-base(0);
+			cursor: pointer;
+		}
+		&:hover{
+			background:@color-gray16;
+		}
+	}
+	.checkbox-active{
+		border:1px solid @btn-success-bg;
+		&:before{
+			.layout-absolutel-base;
+			.layout-base(16px);
+			height:16px;
+			display: block;
+			content:'\e601';
+			font-size:@font-size-base;
+			font-family:'ux_six';
+			background:@btn-success-bg;
+			color:@color-white;
+		}
+	}
+}
+
+
+/*用例：详情展现*/
 .grid-list-group1{
 	.layout-base;
 	padding:6px 5px 12px 5px;

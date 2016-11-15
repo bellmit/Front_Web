@@ -125,6 +125,8 @@
 									return $username.val()+'(默认)'||'匿名用户';
 								}else if(grade===-3){
 									return $username.val()+'(总代理)'||'匿名用户';
+								}else if(grade===-4){
+									return $username.val()+'(分仓管理员)'||'匿名用户';
 								}
 							}()),
 							'param':{
