@@ -77,7 +77,7 @@
 						"hideMethod": "fadeOut"
 					};
 
-					var basedomain='http://120.76.237.100:8082',
+					var basedomain='http://10.0.5.222:8080',
 						basepathname="/mall-agentbms-api/sysuser/login";
 					$.ajax({
 						url:basedomain+basepathname,

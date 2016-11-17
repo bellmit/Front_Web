@@ -9,7 +9,7 @@
 			/*菜单调用*/
 			var logininfo=public_tool.initMap.loginMap;
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
-				url:'http://120.76.237.100:8082/mall-agentbms-api/module/menu',
+				url:'http://10.0.5.222:8080/mall-agentbms-api/module/menu',
 				async:false,
 				type:'post',
 				param:{
@@ -23,6 +23,7 @@
 			/*权限调用*/
 			var powermap=public_tool.getPower(),
 				warehouseedit_power=public_tool.getKeyPower('mall-warehouse-add',powermap);
+			
 
 			/*清除编辑缓存*/
 			public_tool.removeParams('mall-warehouse-add');
@@ -51,7 +52,7 @@
 						autoWidth:true,/*是否*/
 						paging:false,
 						ajax:{
-							url:"http://120.76.237.100:8082/mall-agentbms-api/warehouse/related",
+							url:"http://10.0.5.222:8080/mall-agentbms-api/warehouse/related",
 							dataType:'JSON',
 							method:'post',
 							dataSrc:function ( json ) {

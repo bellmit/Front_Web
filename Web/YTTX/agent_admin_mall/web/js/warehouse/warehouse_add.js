@@ -7,7 +7,7 @@
 			/*菜单调用*/
 			var logininfo=public_tool.initMap.loginMap;
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
-				url:'http://120.76.237.100:8082/mall-agentbms-api/module/menu',
+				url:'http://10.0.5.222:8080/mall-agentbms-api/module/menu',
 				async:false,
 				type:'post',
 				param:{
@@ -23,6 +23,7 @@
 			/*权限调用*/
 			var powermap=public_tool.getPower(),
 				warehouseadd_power=public_tool.getKeyPower('mall-warehouse-add',powermap);
+
 
 			
 			/*dom引用和相关变量定义*/
@@ -128,7 +129,12 @@
 					$admin_action.addClass('g-d-hidei');
 				}
 				/*查询数据*/
-				setWarehouseData(edit_cache['id']);
+				if(typeof edit_cache==='object'){
+					setWarehouseData(edit_cache['id']);
+				}else{
+					setWarehouseData(edit_cache);
+				}
+
 			}else{
 				/*判断权限*/
 				if(warehouseadd_power){
@@ -139,7 +145,9 @@
 				/*地址*/
 				getAddress(86,'','province',true);
 				/*归属地*/
-				getRegion(86,$admin_adscriptionRegionCodeNames,'adscriptionRegionCodeNames');
+				getRegion({
+					id:86
+				},$admin_adscriptionRegionCodeNames,'adscriptionRegionCodeNames');
 			}
 
 
@@ -218,15 +226,14 @@
                                     if(id!==''){
 										/*修改操作*/
                                         setdata['id']=id;
+										setdata['password']='';
 										actiontype='修改';
-										delete setdata['password'];
                                     }else{
 										/*新增操作*/
 										setdata['password']=$admin_pwd.val();
 										actiontype='新增';
-                                        delete setdata['id'];
                                     }
-									config['url']="http://120.76.237.100:8082/mall-agentbms-api/warehouse/addupdate";
+									config['url']="http://10.0.5.222:8080/mall-agentbms-api/warehouse/addupdate";
 									config['data']=setdata;
 								}
 
@@ -380,17 +387,30 @@
 
 
 		/*查询归属地*/
-		function getRegion(id,wrap,name) {
+		function getRegion(idobj,wrap,name) {
+			var parentCode=idobj.id,
+				warehouseId=idobj.warehouseId,
+				isedit=false,
+				params={
+					adminId:decodeURIComponent(logininfo.param.adminId),
+					token:decodeURIComponent(logininfo.param.token),
+					grade:decodeURIComponent(logininfo.param.grade),
+					parentCode:parentCode===''?86:parentCode
+				};
+
+
+
+			if(warehouseId&&typeof warehouseId!=='undefined'){
+				isedit=true;
+				params['warehouseId']=warehouseId;
+			}
+
+
 			$.ajax({
-					url:"http://120.76.237.100:8082/mall-agentbms-api/adscriptionregions/available",
+					url:"http://10.0.5.222:8080/mall-agentbms-api/adscriptionregions/available",
 					dataType:'JSON',
 					method:'post',
-					data:{
-						parentCode:id===''?86:id,
-						adminId:decodeURIComponent(logininfo.param.adminId),
-						token:decodeURIComponent(logininfo.param.token),
-						grade:decodeURIComponent(logininfo.param.grade)
-					}
+					data:params
 				})
 				.done(function(resp){
 					var code=parseInt(resp.code,10);
@@ -411,11 +431,26 @@
 
 					var len=list.length,
 						str='',
-						i=0;
+						i=0,
+						isSelected=0;
 
 					if(len!==0){
-						for(i;i<len;i++){
-							str+='<label>'+list[i]["name"]+'<input  data-name="'+list[i]["name"]+'" name="'+name+'" type="checkbox" value="'+list[i]["code"]+'" /></label>';
+						if(isedit){
+							for(i;i<len;i++){
+								isSelected=parseInt(list[i]["isSelected"],10);
+								if(isSelected===0){
+									str+='<label>'+list[i]["name"]+'<input  data-name="'+list[i]["name"]+'" name="'+name+'" type="checkbox" value="'+list[i]["code"]+'" /></label>';
+								}else if(isSelected===1){
+									str+='<label class="checkbox-active">'+list[i]["name"]+'<input  data-name="'+list[i]["name"]+'" name="'+name+'" type="checkbox" checked value="'+list[i]["code"]+'" /></label>';
+								}
+							}
+						}else{
+							for(i;i<len;i++){
+								isSelected=parseInt(list[i]["isSelected"],10);
+								if(isSelected===0){
+									str+='<label>'+list[i]["name"]+'<input  data-name="'+list[i]["name"]+'" name="'+name+'" type="checkbox" value="'+list[i]["code"]+'" /></label>';
+								}
+							}
 						}
 						$(str).appendTo(wrap.html(''));
 					}
@@ -434,7 +469,7 @@
 
 
 			$.ajax({
-					url:"http://120.76.237.100:8082/mall-agentbms-api/warehouse/detail",
+					url:"http://10.0.5.222:8080/mall-agentbms-api/warehouse/detail",
 					dataType:'JSON',
 					method:'post',
 					data:{
@@ -448,14 +483,29 @@
 					var code=parseInt(resp.code,10);
 					if(code!==0){
 						console.log(resp.message);
+						if(code===999){
+							public_tool.loginTips(function () {
+								public_tool.clear();
+								public_tool.clearCacheData();
+							});
+						}
 						return false;
 					}
 					/*是否是正确的返回数据*/
 					var list=resp.result;
 
+					if(!list){
+						return false;
+					}else{
+						var list=list.view;
+						if(!list){
+							return false;
+						}
+					}
+
 					if(!$.isEmptyObject(list)){
 						$admin_id.val(id);
-						$admin_pwd.addClass('g-d-hidei');
+						$admin_pwd.parent().addClass('g-d-hidei');
 						for(var j in list){
 							switch(j){
 								case 'username':
@@ -466,6 +516,9 @@
 									break;
 								case 'whCode':
 									$admin_whCode.val(list[j]);
+									break;
+								case 'area':
+									$admin_area.val(list[j]);
 									break;
 								case 'fullName':
 									$admin_fullName.val(list[j]);
@@ -512,26 +565,15 @@
 									break;
 								case 'adscriptionRegionList':
 									/*归属地*/
-									getRegion(86,$admin_adscriptionRegionCodeNames,'adscriptionRegionCodeNames');
-									var regionList=list[j],
-										i=0,
-										len=regionList.length;
-									if(len!==0){
-										var $regionitem=$admin_adscriptionRegionCodeNames.find('input');
-										for(i;i<len;i++){
-											var key=regionList[i]["code"].toString();
-											$regionitem.each(function () {
-												var $this=$(this),
-													value=$this.val();
-
-												if(value===key){
-													$this.prop({
-														'checked':true
-													});
-													return false;
-												}
-											});
-										}
+									if(list[j]){
+										getRegion({
+											id:86,
+											warehouseId:id
+										},$admin_adscriptionRegionCodeNames,'adscriptionRegionCodeNames');
+									}else{
+										getRegion({
+											id:86
+										},$admin_adscriptionRegionCodeNames,'adscriptionRegionCodeNames');
 									}
 									break;
 

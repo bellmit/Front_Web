@@ -192,8 +192,98 @@
 
 
 
+    <!--新增入库单-->
+    <div class="modal fade custom-width" id="show_add_wrap">
+        <div class="modal-dialog g-w-percent46">
+            <div class="modal-content">
 
-    <!--详情展现-->
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">新增入库单</h4>
+                </div>
+                <div class="modal-body">
+                    <form role="form"  method="post" id="admin_storagestats_form" class="admin-form1 validate">
+                        <input value="" type="text" class="g-d-hidei" name="id"  id="admin_id" />
+                    <table class="table table-bordered table-striped table-hover admin-table">
+                        <colgroup>
+                            <col class="g-w-percent7"/>
+                            <col class="g-w-percent7"/>
+                            <col class="g-w-percent7"/>
+                            <col class="g-w-percent7"/>
+                            <col class="g-w-percent7"/>
+                            <col class="g-w-percent7"/>
+                            <col class="g-w-percent7"/>
+                        </colgroup>
+                        <thead>
+                        <tr>
+                            <th><span class="form-require-item g-c-red1">*</span>入库单号</th>
+                            <th><span class="form-require-item g-c-red1">*</span>入库时间</th>
+                            <th><span class="form-require-item g-c-red1">*</span>入库仓库</th>
+                            <th><span class="form-require-item g-c-red1">*</span>入库类型</th>
+                            <th><span class="form-require-item g-c-red1">*</span>供应商</th>
+                            <th><span class="form-require-item g-c-red1">*</span>经办人</th>
+                            <th>备注</th>
+                        </tr>
+                        <tr>
+                            <td class="form-group">
+                                <input type="text" class="form-control self-error-tips" name="number" placeholder="请输入入库单号" data-validate="required" data-message-required="入库单号不能为空"  id="admin_number" />
+                            </td>
+                            <td class="form-group">
+                                <input type="text" class="form-control self-error-tips" placeholder="请选择入库时间" data-validate="required" data-message-required="入库时间不能为空"  name="time" readonly  id="admin_time" />
+                            </td>
+                            <td class="form-group">
+                                <input type="text" class="form-control self-error-tips" name="store" placeholder="请输入入库仓库" data-validate="required" data-message-required="入库仓库不能为空"  id="admin_store" />
+                            </td>
+                            <td class="form-group">
+                                <input type="text" class="form-control self-error-tips" name="type" placeholder="请输入入库类型" data-validate="required" data-message-required="入库类型不能为空"  id="admin_type" />
+                            </td>
+                            <td class="form-group">
+                                <input type="text" class="form-control self-error-tips" name="provider" placeholder="请输入供应商" data-validate="required" data-message-required="供应商不能为空"  id="admin_provider" />
+                            </td>
+                            <td class="form-group">
+                                <input type="text" class="form-control self-error-tips" name="operator" placeholder="请输入经办人" data-validate="required" data-message-required="经办人不能为空"  id="admin_operator" />
+                            </td>
+                            <td class="form-group">
+                                <input type="text" class="form-control self-error-tips" name="remark"  id="admin_remark" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="7" class="form-group self-error-pos-tips"></td>
+                        </tr>
+                        </thead>
+                        <tbody id="show_add_list" data-number="1">
+                            <tr>
+                                <th>&nbsp;</th>
+                                <th colspan="2">商品名称</th>
+                                <th colspan="2">商品型号</th>
+                                <th colspan="2">数量</th>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="5">&nbsp;</td>
+                                <td colspan="2" id="storage_total">合计：</td>
+                            </tr>
+                            <tr>
+                                <td colspan="7">
+                                    <button type="submit" class="btn btn-success">确定入库</button>
+                                    <button type="button" id="storage_stats_additem" class="btn btn-info pull-right" >&nbsp;&nbsp;+&nbsp;&nbsp;</button>
+                                    <button type="button" id="storage_stats_removeitem" class="btn btn-info pull-right" >&nbsp;&nbsp;-&nbsp;&nbsp;</button>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                   </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-info" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!--查看入库统计-->
     <div class="modal fade custom-width" id="show_detail_wrap">
         <div class="modal-dialog g-w-percent46">
             <div class="modal-content">
@@ -228,8 +318,16 @@
                         <tbody id="show_detail_list"></tbody>
                         <tfoot>
                             <tr>
-                                <td colspan="7">
-                                    <button type="button" id="storage_surebtn" class="btn btn-success" >确定</button>
+                                <td colspan="4" id="show_detail_radio">
+                                    <label>
+                                       审核通过：<input type="radio" name="apply" value="0">
+                                    </label>
+                                    <label>
+                                        审核通过:<input type="radio" name="apply" value="1">
+                                    </label>
+                                </td>
+                                <td colspan="3">
+                                    <button type="button" id="storage_apply" class="btn btn-success" >确定</button>
                                 </td>
                             </tr>
                         </tfoot>
@@ -294,10 +392,12 @@
 
     <script src="../../js/common/base.js"></script>
     <script src="../../js/common/common.js"></script>
+    <script src="../../js/plugins/jquery-validate/jquery.validate.js"></script>
     <script src="../../js/plugins/datatables/js/jquery.dataTables.js"></script>
     <!--修饰分页，搜索等操作 -->
     <script src="../../js/plugins/datatables/dataTables.bootstrap.js"></script>
     <script src="../../js/plugins/pagination/pagination.js"></script>
+    <script src="../../js/plugins/datepicker/datepicker.js"></script>
     <script src="../../js/warehouse/storage_stats.js"></script>
 </body>
 </html>

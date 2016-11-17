@@ -10,7 +10,7 @@
 			/*菜单调用*/
 			var logininfo=public_tool.initMap.loginMap;
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
-				url:'http://120.76.237.100:8082/mall-agentbms-api/module/menu',
+				url:'http://10.0.5.222:8080/mall-agentbms-api/module/menu',
 				async:false,
 				type:'post',
 				param:{
@@ -44,12 +44,32 @@
 				})/*一般提示对象*/,
 				$admin_page_wrap=$('#admin_page_wrap'),
 				$storage_stats_add=$('#storage_stats_add'),
+				$show_add_wrap=$('#show_add_wrap'),
+				admin_storagestats_form=document.getElementById('admin_storagestats_form'),
+				$admin_storagestats_form=$(admin_storagestats_form),
+				$admin_id=$('#admin_id'),
+				$admin_number=$('#admin_number'),
+				$admin_time=$('#admin_time'),
+				$admin_store=$('#admin_store'),
+				$admin_type=$('#admin_type'),
+				$admin_provider=$('#admin_provider'),
+				$admin_operator=$('#admin_operator'),
+				$admin_remark=$('#admin_remark'),
+				$show_add_list=$('#show_add_list'),
+				$storage_stats_additem=$('#storage_stats_additem'),
+				$storage_stats_removeitem=$('#storage_stats_removeitem'),
+				$storage_total=$('#storage_total'),
 				$show_detail_wrap=$('#show_detail_wrap')/*详情容器*/,
 				$show_detail_content=$('#show_detail_content'),/*详情内容*/
 				$show_detail_list=$('#show_detail_list'),
-				$storage_surebtn=$('#storage_surebtn');
+				$show_detail_radio=$('#show_detail_radio'),
+				$storage_apply=$('#storage_apply'),
+				resetform0=null;
 
 
+
+			/*重置表单*/
+			admin_storagestats_form.reset();
 
 
 			/*列表请求配置*/
@@ -67,7 +87,7 @@
 						autoWidth:true,/*是否*/
 						paging:false,
 						ajax:{
-							url:"http://120.76.237.100:8082/mall-agentbms-api/announcements/related",
+							url:"http://10.0.5.222:8080/mall-agentbms-api/announcements/related",
 							dataType:'JSON',
 							method:'post',
 							dataSrc:function ( json ) {
@@ -185,6 +205,9 @@
 			/*绑定新增入库*/
 			if(storageadd_power){
 				$storage_stats_add.removeClass('g-d-hidei');
+				$storage_stats_add.on('click',function () {
+					$show_add_wrap.modal('show',{backdrop:'static'});
+				});
 			}else{
 				$storage_stats_add.addClass('g-d-hidei');
 			}
@@ -232,10 +255,129 @@
 			});
 
 
-			/*绑定确定收货单*/
-			$storage_surebtn.on('click',function () {
+			/*绑定确定收货单审核*/
+			$storage_apply.on('click',function () {
 				/*to do*/
 			});
+
+
+			/*绑定时间插件*/
+			$.each([$admin_time],function(){
+				this.val('').datepicker({
+					autoclose:true,
+					clearBtn:true,
+					format: 'yyyy-mm-dd',
+					todayBtn: true,
+					endDate:moment().format('YYYY-MM-DD')
+				})
+			});
+
+
+
+			/*绑定添加地址*/
+			/*表单验证*/
+			if($.isFunction($.fn.validate)) {
+				/*配置信息*/
+				var form_opt0={},
+					formcache=public_tool.cache,
+					basedata={
+						roleId:decodeURIComponent(logininfo.param.roleId),
+						token:decodeURIComponent(logininfo.param.token),
+						adminId:decodeURIComponent(logininfo.param.adminId),
+						grade:decodeURIComponent(logininfo.param.grade)
+					};
+
+
+				if(formcache.form_opt_0){
+					$.each([formcache.form_opt_0],function(index){
+						var formtype,
+							config={
+								dataType:'JSON',
+								method:'post'
+							};
+						if(index===0){
+							formtype='addstoragestats';
+						}
+						$.extend(true,(function () {
+							if(formtype==='addstoragestats'){
+								return form_opt0;
+							}
+						}()),(function () {
+							if(formtype==='addstoragestats'){
+								return formcache.form_opt_0;
+							}
+						}()),{
+							submitHandler: function(form){
+
+								var setdata={};
+
+								$.extend(true,setdata,basedata);
+
+								if(formtype==='addstoragestats'){
+
+									$.extend(true,setdata,{
+										number:$admin_number.val(),
+										time:$admin_time.val(),
+										store:$admin_store.val(),
+										type:$admin_type.val(),
+										provider:$admin_provider.val(),
+										operator:$admin_operator.val(),
+										remark:$admin_remark.val()
+									});
+
+
+									var id=$admin_id.val(),
+										actiontype='';
+									if(id!==''){
+										/*修改操作*/
+										setdata['id']=id;
+										actiontype='修改';
+									}else{
+										/*新增操作*/
+										actiontype='新增';
+									}
+									config['url']="http://10.0.5.222:8080/mall-agentbms-api/warehouse/addupdate";
+									config['data']=setdata;
+								}
+								return false;
+								$.ajax(config).done(function(resp){
+									var code;
+									if(formtype==='addstoragestats'){
+										code=parseInt(resp.code,10);
+										if(code!==0){
+											dia.content('<span class="g-c-bs-warning g-btips-warn">'+actiontype+'入库失败</span>').show();
+											return false;
+										}else{
+											dia.content('<span class="g-c-bs-success g-btips-succ">'+actiontype+'入库成功</span>').show();
+										}
+									}
+
+									setTimeout(function () {
+										dia.close();
+										if(formtype==='addstoragestats'){
+											/*关闭隐藏*/
+											setTimeout(function () {
+												$show_add_wrap.trigger('hide.bs.modal');
+											},1000);
+										}
+									},500);
+								}).fail(function(resp){
+									console.log('error');
+								});
+								return false;
+							}
+						});
+					});
+
+				}
+
+
+				/*提交验证*/
+				if(resetform0===null){
+					resetform0=$admin_storagestats_form.validate(form_opt0);
+				}
+			}
+
 
 
 		}
@@ -252,15 +394,22 @@
 
 
 		/*查看出库单*/
+		function addStorage() {
+			$show_add_wrap.modal('show',{backdrop:'static'});
+		}
+
+
+		/*查看出库单*/
 		function showStorage(id,$tr) {
 			if(!id){
 				return false;
 			}
-
+			$show_add_wrap.modal('show',{backdrop:'static'});
+			
 			return false;
 
 			$.ajax({
-					url:"http://120.76.237.100:8082/mall-agentbms-api/salesman/detail",
+					url:"http://10.0.5.222:8080/mall-agentbms-api/salesman/detail",
 					dataType:'JSON',
 					method:'post',
 					data:{
