@@ -9,7 +9,7 @@
 			/*菜单调用*/
 			var logininfo=public_tool.initMap.loginMap;
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
-				url:'http://120.24.226.70:8081/yttx-agentbms-api/module/menu',
+				url:'http://120.76.237.100:8082/yttx-agentbms-api/module/menu',
 				async:false,
 				type:'post',
 				param:{
@@ -141,7 +141,7 @@
 
 			/*数据加载*/
 			var station_config={
-				url:"http://120.24.226.70:8081/yttx-agentbms-api/servicestations/related",
+				url:"http://120.76.237.100:8082/yttx-agentbms-api/servicestations/related",
 				dataType:'JSON',
 				method:'post',
 				dataSrc:function ( json ) {
@@ -149,9 +149,10 @@
 					if(code!==0){
 						if(code===999){
 							/*清空缓存*/
-							public_tool.clear();
-							public_tool.clearCacheData();
-							public_tool.loginTips();
+							public_tool.loginTips(function(){
+										public_tool.clear();
+										public_tool.clearCacheData();
+								});
 							return [];
 						}
 						console.log(json.message);
@@ -452,7 +453,7 @@
 					//重置信息
 					$station_servicestationid.val(id);
 					$.ajax({
-						url:"http://120.24.226.70:8081/yttx-agentbms-api/servicestation/detail",
+						url:"http://120.76.237.100:8082/yttx-agentbms-api/servicestation/detail",
 						dataType:'JSON',
 						method:'post',
 						data:{
@@ -467,9 +468,10 @@
 						if(code!==0){
 							if(code===999){
 								/*清空缓存*/
-								public_tool.clear();
-								public_tool.clearCacheData();
-								public_tool.loginTips();
+								public_tool.loginTips(function(){
+										public_tool.clear();
+										public_tool.clearCacheData();
+								});
 								return [];
 							}
 							console.log(resp.message);
@@ -915,7 +917,7 @@
 
 							if(isadd){
 								/*添加*/
-								config['url']="http://120.24.226.70:8081/yttx-agentbms-api/servicestation/addupdate";
+								config['url']="http://120.76.237.100:8082/yttx-agentbms-api/servicestation/addupdate";
 								if(typeof config['data']['serviceStationId']!=='undefined'){
 									delete config['data']['serviceStationId'];
 								}
@@ -941,7 +943,7 @@
 
 							}else{
 								/*更新*/
-								config['url']="http://120.24.226.70:8081/yttx-agentbms-api/servicestation/addupdate";
+								config['url']="http://120.76.237.100:8082/yttx-agentbms-api/servicestation/addupdate";
 								config['data']['serviceStationId']=id;
 								if(typeof config['data']['username']!=='undefined'){
 									delete config['data']['username'];
@@ -1069,7 +1071,7 @@
 		function requestGrade(fn){
 			var self=this;
 			$.ajax({
-				url:"http://120.24.226.70:8081/yttx-agentbms-api/agent/role/check",
+				url:"http://120.76.237.100:8082/yttx-agentbms-api/agent/role/check",
 				dataType:'JSON',
 				method:'post',
 				data:{
@@ -1083,9 +1085,10 @@
 				if(code!==0){
 					if(code===999){
 						/*清空缓存*/
-						public_tool.clear();
-						public_tool.clearCacheData();
-						public_tool.loginTips();
+						public_tool.loginTips(function(){
+										public_tool.clear();
+										public_tool.clearCacheData();
+								});
 					}
 					console.log(resp.message);
 					$station_agentid.attr({

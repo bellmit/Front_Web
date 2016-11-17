@@ -3,6 +3,10 @@
 	$(function(){
 
 		if(public_tool.initMap.isrender){
+			/*如果存在缓存，则删除缓存*/
+			public_tool.clear();
+			public_tool.clearCacheData();
+
 			//dom节点引用或者其他变量定义
 			var $loginform=$('#login'),
 				$username=$('#username'),
@@ -20,13 +24,6 @@
 				$(".fade-in-effect").addClass('in');
 			},1);
 
-
-			var cacheLogin=public_tool.getParams('login_module');
-			if(cacheLogin){
-				/*如果存在缓存，则删除缓存*/
-				public_tool.clear();
-				public_tool.clearCacheData();
-			}
 
 
 
@@ -71,7 +68,7 @@
 						"hideMethod": "fadeOut"
 					};
 
-					var basedomain='http://120.24.226.70:8081',
+					var basedomain='http://120.76.237.100:8082',
 						basepathname="/yttx-agentbms-api/sysuser/login";
 					$.ajax({
 						url:basedomain+basepathname,
@@ -110,7 +107,26 @@
 							'datetime':moment().format('YYYY-MM-DD|HH:mm:ss'),
 							'reqdomain':basedomain,
 							'currentdomain':'',
-							'username':$username.val()||'匿名用户',
+							'username':(function () {
+								var grade=result.grade;
+								if(grade===3){
+									return $username.val()+'(省级代理)'||'匿名用户';
+								}else if(grade===2){
+									return $username.val()+'(市级代理)'||'匿名用户';
+								}else if(grade===1){
+									return $username.val()+'(县级代理)'||'匿名用户';
+								}else if(grade===4){
+									return $username.val()+'(店长)'||'匿名用户';
+								}else if(grade===-1){
+									return $username.val()+'(超级管理员)'||'匿名用户';
+								}else if(grade===-2){
+									return $username.val()+'(默认)'||'匿名用户';
+								}else if(grade===-3){
+									return $username.val()+'(总代理)'||'匿名用户';
+								}else if(grade===-4){
+									return $username.val()+'(分仓管理员)'||'匿名用户';
+								}
+							}()),
 							'param':{
 								'adminId':encodeURIComponent(result.adminId),
 								'token':encodeURIComponent(result.token),

@@ -163,6 +163,83 @@
 		}
 		return res;
 	};
+	//弹窗确认
+	public_tool.sureDialog=function(tips){
+		if(!this.supportDia){
+			return null;
+		}
+
+
+		/*内部提示信息*/
+		var innerdia;
+		if(tips&&typeof tips==='object'){
+			innerdia=tips;
+		}else{
+			innerdia=dialog({
+				title:'温馨提示',
+				okValue:'确定',
+				width:300,
+				ok:function(){
+					this.close();
+					return false;
+				},
+				cancel:false
+			});
+		}
+		/*关键匹配*/
+		var actionmap={
+			'delete':'删除',
+			'cancel':'取消',
+			'change':'改变',
+			'add':'添加',
+			'update':'更新'
+		};
+
+
+		/*确认框类*/
+		function sureDialogFun(){}
+
+		/*设置函数*/
+		sureDialogFun.prototype.sure=function (str,fn,tips) {
+			var tipstr='',
+				iskey=typeof actionmap[str]==='string',
+				key=iskey?actionmap[str]:str;
+
+			if(!tips){
+				tips='';
+			}
+
+			if(typeof actionmap[str]==='string'){
+				tipstr='<span class="g-c-bs-warning g-btips-warn">'+tips+'是否真需要 "'+actionmap[str]+'" 此项数据</span>';
+			}else{
+				tipstr='<span class="g-c-bs-warning g-btips-warn">'+tips+'是否真需要 "'+str+'" 此项数据</span>';
+			}
+
+			var tempdia=dialog({
+				title:'温馨提示',
+				content:tipstr,
+				width:300,
+				okValue: '确定',
+				ok: function () {
+					if(fn&&typeof fn==='function'){
+						//执行回调
+						fn.call(null,{
+							action:key,
+							dia:innerdia
+						});
+						this.close().remove();
+					}
+					return false;
+				},
+				cancelValue: '取消',
+				cancel: function(){
+					this.close().remove();
+				}
+			}).showModal();
+		};
+
+		return sureDialogFun;
+	};
 
 
 
@@ -473,6 +550,226 @@
 		}
 		return true;
 	};
+	/*是否是合法手机号*/
+	public_tool.isMobilePhone=function(str){
+		return /^(13[0-9]|15[012356789]|18[0-9]|14[57]|170)[0-9]{8}$/.test(this.trims(str))?true:false;
+	};
+	/**/
+	public_tool.isNum=function(str){
+		var self=this;
+		return /^[0-9]{0,}$/g.test(self.trims(str));
+	};
+	//自动补全纠错人民币(字符串,最大数位,是否可以返回为空)，返回一个数组['格式化后的数据',带小数点的未格式化数据]
+	public_tool.moneyCorrect=function(str,max,flag){
+		var self=this,
+			money=this.trimSep(str.toString(),','),
+			moneyarr,
+			len=0,
+			partz,
+			partx,
+			tempstr='';
+
+		money=this.trims(money);
+		if(money===''){
+			if(flag){
+				return ['',''];
+			}else{
+				return ['0.00','0.00'];
+			}
+		}
+		if(flag&&(parseInt(money * 100,10)===0)){
+			return ['',''];
+		}
+		if(money.lastIndexOf('.')!==-1){
+			moneyarr=money.split('.');
+			len=moneyarr.length;
+			if(len>2){
+				partz=moneyarr[len-2];
+				partx=moneyarr[len-1];
+			}else{
+				partz=moneyarr[0];
+				partx=moneyarr[1];
+			}
+			if(!self.isNum(partx)){
+				partx=partx.replace(/\D*/g,'');
+			}
+			if(partx.length==0){
+				partx='.00';
+			}else if(partx.length==1){
+				partx='.'+partx+'0';
+			}else if(partx.length>=2){
+				partx='.'+partx.slice(0,2);
+			}
+		}else{
+			partz=money;
+			partx='.00';
+		}
+		if(!self.isNum(partz)){
+			partz=partz.replace(/\D*/g,'');
+		}
+		tempstr=partz+partx;
+		var templen=partz.length;
+		if(templen>3){
+			var i=0,j=1;
+			partz=partz.split('').reverse();
+			for(i;i<templen;i++){
+				if(j%3==0&&j!=templen){
+					partz.splice(i,1,','+partz[i].toString());
+				}
+				j++;
+			}
+			partz=partz.reverse().join('');
+		}else if(templen==0){
+			partz='0';
+		}
+		if(partz.length>=2){
+			if(partz.charAt(0)=='0'||partz.charAt(0)==0){
+				partz=partz.slice(1);
+			}
+		}
+		if(max){
+			if(partz.indexOf(',')!==-1){
+				var filterlen=partz.length,
+					k= 0,
+					filtercount=0;
+				for(k;k<filterlen;k++){
+					if(partx[k]===','){
+						filtercount++;
+					}
+				}
+				partz=partz.slice(filtercount);
+			}
+		}
+		return [partz+partx,tempstr];
+	};
+	//光标定位至具体位置(需定位元素,[元素中字符],定位位置，[是否在特定位置的前或者后])
+	public_tool.cursorPos=function(elem,str,index,flag){
+		var vals='',
+			len=0;
+		if(!str){
+			vals=elem.value||$(elem).val()||elem.innerHTML||$(elem).html();
+			len=vals.length;
+		}else{
+			len = str.lengt
+		}
+		var pos=Number(index);
+
+		if(isNaN(pos)){
+			pos=str.indexOf(index);
+		}
+
+		//elem.focus();
+		setTimeout(function() {
+			if (elem.setSelectionRange) {
+				if(!flag){
+					elem.setSelectionRange(pos,pos);
+				}else{
+					elem.setSelectionRange(pos+1,pos+1);
+				}
+			} else {
+				var range = elem.createTextRange();
+				range.moveStart("character", -len);
+				range.moveEnd("character", -len);
+				if(!flag){
+					range.moveStart("character", pos);
+				}else{
+					range.moveStart("character", pos+1);
+				}
+				range.moveEnd("character", 0);
+				range.select();
+			}
+		},0);
+	};
+	///金额加法
+	public_tool.moneyAdd=function(str1,str2){
+		var r1,
+			r2,
+			m,
+			c,
+			txt1=str1.toString(),
+			txt2=str2.toString();
+		try {
+			r1 = txt1.split(".")[1].length;
+		} catch (e) {
+			r1 = 0;
+		}
+		try {
+			r2 = txt2.split(".")[1].length;
+		} catch (e) {
+			r2 = 0;
+		}
+		c = Math.abs(r1 - r2);
+		m = Math.pow(10, Math.max(r1, r2))
+		if (c > 0) {
+			var cm = Math.pow(10, c);
+			if (r1 > r2) {
+				txt1 = Number(txt1.replace(/\.*/g,''));
+				txt2 = Number(txt2.replace(/\.*/g,'')) * cm;
+			}else{
+				txt1 = Number(txt1.replace(/\.*/g,'')) * cm;
+				txt2 = Number(txt2.replace(/\.*/g,''));
+			}
+		}else{
+			txt1 = Number(txt1.replace(/\.*/g,''));
+			txt2 = Number(txt2.toString().replace(/\.*/g,''));
+		}
+		return (txt1 + txt2) / m;
+	};
+	///金额减法
+	public_tool.moneySub=function(str1,str2){
+		var r1,
+			r2,
+			m,
+			n;
+		try{
+			r1=str1.toString().split(".")[1].length;
+		}catch(e){
+			r1=0;
+		}
+		try{
+			r2=str2.toString().split(".")[1].length;
+		}catch(e){
+			r2=0;
+		}
+		m=Math.pow(10,Math.max(r1,r2));
+		n=(r1>=r2)?r1:r2;
+		return ((str1*m-str2*m)/m).toFixed(n);
+	};
+	///金额乘法
+	public_tool.moneyMul=function(str1,str2){
+		var m = 0,
+			s1 = str1.toString(),
+			s2 = str2.toString();
+		try {
+			m += s1.split(".")[1].length;
+		} catch (e) {
+			m+=0;
+		}
+		try {
+			m += s2.split(".")[1].length;
+		} catch (e) {
+			m+=0;
+		}
+		return Number(s1.replace(/\.*/g,'')) * Number(s2.replace(/\.*/g,'')) / Math.pow(10, m);
+	};
+	///金额除法
+	public_tool.moneyDiv=function(str1,str2){
+		var t1=0,
+			t2=0,
+			r1,
+			r2,
+			txt1=str1.toString(),
+			txt2=str2.toString();
+		try{
+			t1=txt1.split(".")[1].length;
+		}catch(e){}
+		try{
+			t2=txt2.split(".")[1].length;
+		}catch(e){}
+		r1=Number(txt1.replace(/\.*/g,''));
+		r2=Number(txt1.replace(/\.*/g,''));
+		return (r1/r2)*Math.pow(10,t2-t1);
+	};
 
 
 	/*左侧菜单导航*/
@@ -656,9 +953,10 @@
 
 		/*检测是否改变了地址，且登陆地址和请求地址不一致*/
 		if(!self.validLogin()){
-			self.clear();
-			self.clearCacheData();
-			self.loginTips();
+			self.loginTips(function () {
+				self.clear();
+				self.clearCacheData();
+			});
 			return false;
 		}
 
@@ -678,7 +976,7 @@
 				/*解析权限*/
 				var cacheSource=self.getParams('source_module');
 				self.resolvePower(cacheSource,true);
-				return;
+				return true;
 			}else{
 				/*不同模块则重新加载*/
 				self.requestSideMenu($menu,$wrap,opt);
@@ -699,6 +997,18 @@
 			self.doSideMenu(cacheSource,$menu,$wrap);
 		}else{
 			/*不存在资源则重新加载*/
+
+			/*静态注入*/
+			/*var injectdata=self.injectSideMenu({
+			 url:self.routeMap.isindex?'../json/menu.json':'../../json/menu.json',
+			 async:false,
+			 type:'post',
+			 datatype:'json'
+			 }),
+			 injectstr=self.doSideMenu(injectdata,$menu,$wrap,{
+			 resolve:true
+			 });*/
+
 			$.ajax({
 				url:opt.url,
 				async:opt.async,
@@ -710,7 +1020,16 @@
 					//查询异常
 					return false;
 				}
-				self.doSideMenu(data,$menu,$wrap);
+				if(typeof injectstr!=='undefined'){
+					/*如果有注入*/
+					self.doSideMenu(data,$menu,$wrap,{
+						render:true,
+						result:injectstr,
+						data:injectdata
+					});
+				}else{
+					self.doSideMenu(data,$menu,$wrap);
+				}
 			}).fail(function(){
 				console.log('error');
 			});
@@ -718,7 +1037,7 @@
 
 	};
 	//处理菜单
-	public_tool.doSideMenu=function(data,$menu,$wrap){
+	public_tool.doSideMenu=function(data,$menu,$wrap,inject){
 		var self=this,
 			matchClass=function(map,str){
 				/*修正class*/
@@ -726,6 +1045,20 @@
 					return map['class'];
 				}
 				return str;
+			},
+			matchModule=function (map,str) {
+				var dlist=map['matchlist'];
+				if(dlist){
+					var d=0,
+						dlen=dlist.length;
+
+					for(d;d<dlen;d++){
+						if(str.indexOf(dlist[d])!==-1){
+							return '<li class="has-sub expanded"><a href=\"\"><i class=\"'+matchClass(link,item.modClass)+'\"></i><span>'+item.modName+'</span></a><ul style="display:block;">';
+						}
+					}
+				}
+				return '<li class="has-sub"><a href=\"\"><i class=\"'+matchClass(link,item.modClass)+'\"></i><span>'+item.modName+'</span></a><ul>';
 			},
 			menu=data.result.menu,
 			len=menu.length,
@@ -756,7 +1089,9 @@
 
 				if(i===0&&item.modId!==0){
 					/*不匹配首页*/
-					menustr+='<li><a href=\"index'+suffix+'\"><i class=\"menu-ux-home\"></i><span>首页</span></a></li>';
+					if(!inject||(inject&&inject.render)){
+						menustr+='<li><a href=\"index'+suffix+'\"><i class=\"menu-ux-home\"></i><span>首页</span></a></li>';
+					}
 				}else if(i===0&&!issub){
 					//匹配首页且没有子菜单
 					menustr+='<li><a href=\"index'+item.modLink+suffix+'\"><i class=\"'+matchClass(link,item.modClass)+'\"></i><span>'+item.modName+'</span></a></li>';
@@ -768,8 +1103,7 @@
 						menustr+='<li class="has-sub expanded"><a href=\"\"><i class=\"'+matchClass(link,item.modClass)+'\"></i><span>'+item.modName+'</span></a>';
 						menustr+="<ul style='display:block;'>";
 					}else{
-						menustr+='<li class="has-sub"><a href=\"\"><i class=\"'+matchClass(link,item.modClass)+'\"></i><span>'+item.modName+'</span></a>';
-						menustr+="<ul>";
+						menustr+=matchModule(link,path);
 					}
 					sublen=subitem.length;
 					j=0;
@@ -788,7 +1122,9 @@
 
 				if(i===0&&item.modId!==0){
 					/*不匹配首页*/
-					menustr+='<li><a href=\"../index'+suffix+'\"><i class=\"menu-ux-home\"></i><span>首页</span></a></li>';
+					if(!inject||(inject&&inject.render)){
+						menustr+='<li><a href=\"../index'+suffix+'\"><i class=\"menu-ux-home\"></i><span>首页</span></a></li>';
+					}
 				}else if(i===0&&!issub){
 					//匹配首页且没有子菜单
 					menustr+='<li><a href=\"../index'+item.modLink+suffix+'\"><i class=\"'+matchClass(link,item.modClass)+'\"></i><span>'+item.modName+'</span></a></li>';
@@ -800,8 +1136,7 @@
 						menustr+='<li class="has-sub expanded"><a href=\"\"><i class=\"'+matchClass(link,item.modClass)+'\"></i><span>'+item.modName+'</span></a>';
 						menustr+="<ul style='display:block;'>";
 					}else{
-						menustr+='<li class="has-sub"><a href=\"\"><i class=\"'+matchClass(link,item.modClass)+'\"></i><span>'+item.modName+'</span></a>';
-						menustr+="<ul>";
+						menustr+=matchModule(link,path);
 					}
 					sublen=subitem.length;
 					j=0;
@@ -829,6 +1164,19 @@
 		/*解析权限*/
 		self.resolvePower(data,true);
 
+		if(inject&&inject.render){
+			menustr+=inject.result;
+			$.merge(data.result.menu,inject.data.result.menu);
+		}
+
+
+		if(inject&&inject.resolve){
+			/*释放内存*/
+			matchClass=null;
+			matchModule=null;
+			return menustr;
+		}
+
 		//放入菜单模块
 		self.setParams('menu_module',menustr);
 		//存入数据源
@@ -841,6 +1189,10 @@
 		self.initSideMenu($wrap);
 		/*导航高亮*/
 		self.highSideMenu($menu);
+
+		/*释放内存*/
+		matchClass=null;
+		matchModule=null;
 	};
 	//卸载左侧菜单条
 	public_tool.removeSideMenu=function($menu){
@@ -887,7 +1239,7 @@
 	//当前高亮菜单
 	public_tool.highSideMenu=function($menu){
 		var self=this;
-		$menu.find("a[href='"+self.routeMap.path+".html']").parent().addClass('sub-menu-active');
+		$menu.find("a[href*='"+self.routeMap.path+".html']").parent().addClass('sub-menu-active');
 	};
 	//导航展开服务类
 	public_tool.expandSideMenu=function($li,$sub,$wrap){
@@ -996,6 +1348,28 @@
 
 			self.collapseSideMenu($_li, $_sub,$wrap);
 		});
+	};
+	//导航注入扩展
+	public_tool.injectSideMenu=function (opt) {
+		var res='';
+		$.ajax({
+			url:opt.url,
+			async:opt.async,
+			type:opt.type,
+			data:opt.param,
+			dataType:opt.datatype
+		}).done(function(data){
+			if(parseInt(data.code,10)!==0){
+				//查询异常
+				return false;
+			}
+			if(data){
+				res=data;
+			}
+		}).fail(function(){
+			console.log('error');
+		});
+		return res;
 	};
 
 
@@ -1219,13 +1593,14 @@
 				return true;
 			}else{
 				/*清除缓存*/
-				self.clear();
-				self.clearCacheData();
-				self.loginTips();
+				self.loginTips(function () {
+					self.clear();
+					self.clearCacheData();
+				});
 				return false;
 			}
 		}else{
-			self.loginTips();
+			self.loginTips(function () {});
 			return false;
 		}
 		return false;
@@ -1293,14 +1668,19 @@
 			isindex=self.routeMap.isindex,
 			module=self.routeMap.module;
 
-		/*清除所有记录*/
-		self.clear();
-		self.clearCacheData();
+
 
 		/*根据路径跳转*/
 		if(istips){
-			self.loginTips();
+			self.loginTips(function () {
+				/*清除所有记录*/
+				self.clear();
+				self.clearCacheData();
+			});
 		}else {
+			/*清除所有记录*/
+			self.clear();
+			self.clearCacheData();
 			if(isindex){
 				location.href='account/login.html';
 			}else{
@@ -1334,33 +1714,44 @@
 		};
 	};
 	/*跳转提示*/
-	public_tool.loginTips=function(){
+	public_tool.loginTips=function(fn){
 		var self=this;
 
 		/*如果没有登陆则提示跳转至登陆页*/
 		public_vars.$page_support_wrap.removeClass('g-d-hidei');
 		public_vars.$page_support.eq(1).addClass('page-support-active');
 		var count= 2,
-				tipid=null;
+			tipid=null;
 
-
+		public_vars.$goto_login.html(count);
+		tipid=setInterval(function(){
+			count--;
 			public_vars.$goto_login.html(count);
-			tipid=setInterval(function(){
-				count--;
-				public_vars.$goto_login.html(count);
-				if(count<=0){
-					/*清除定时操作*/
-					clearInterval(tipid);
-					tipid=null;
-					count= 5;
-					/*跳转到登陆位置*/
-					if(self.routeMap.isindex){
-						location.href='account/login.html';
+			if(count<=0){
+				/*清除定时操作*/
+				clearInterval(tipid);
+				tipid=null;
+				count= 5;
+				/*跳转到登陆位置*/
+				if(self.routeMap.isindex){
+					if(typeof fn==='function'){
+						fn.call();
 					}else{
-						location.href='../account/login.html';
+						self.clear();
+						self.clearCacheData();
 					}
+					location.href='account/login.html';
+				}else{
+					if(typeof fn==='function'){
+						fn.call();
+					}else{
+						self.clear();
+						self.clearCacheData();
+					}
+					location.href='../account/login.html';
 				}
-			},1000);
+			}
+		},1000);
 
 	};
 

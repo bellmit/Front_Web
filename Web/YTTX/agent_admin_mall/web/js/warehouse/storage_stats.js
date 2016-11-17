@@ -43,6 +43,7 @@
 					cancel:false
 				})/*一般提示对象*/,
 				$admin_page_wrap=$('#admin_page_wrap'),
+				$storage_stats_add=$('#storage_stats_add'),
 				$show_detail_wrap=$('#show_detail_wrap')/*详情容器*/,
 				$show_detail_content=$('#show_detail_content'),/*详情内容*/
 				$show_detail_list=$('#show_detail_list'),
@@ -179,6 +180,14 @@
 
 			/*初始化请求*/
 			getColumnData(storage_page,storage_config);
+
+
+			/*绑定新增入库*/
+			if(storageadd_power){
+				$storage_stats_add.removeClass('g-d-hidei');
+			}else{
+				$storage_stats_add.addClass('g-d-hidei');
+			}
 			
 
 

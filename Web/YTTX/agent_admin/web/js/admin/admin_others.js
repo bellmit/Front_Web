@@ -7,7 +7,7 @@
 			/*菜单调用*/
 			var logininfo=public_tool.initMap.loginMap;
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
-				url:'http://120.24.226.70:8081/yttx-agentbms-api/module/menu',
+				url:'http://120.76.237.100:8082/yttx-agentbms-api/module/menu',
 				async:false,
 				type:'post',
 				param:{
@@ -81,7 +81,7 @@
 
 			/*查询代理商分润设置情况*/
 			$.ajax({
-				url:'http://120.24.226.70:8081/yttx-agentbms-api/agent/default/profits',
+				url:'http://120.76.237.100:8082/yttx-agentbms-api/agent/default/profits',
 				type:'post',
 				data:{
 					roleId:decodeURIComponent(logininfo.param.roleId),
@@ -95,9 +95,10 @@
 				if(code!==0){
 					if(code===999){
 						/*清空缓存*/
-						public_tool.clear();
-						public_tool.clearCacheData();
-						public_tool.loginTips();
+						public_tool.loginTips(function(){
+										public_tool.clear();
+										public_tool.clearCacheData();
+								});
 						return false;
 					}
 					console.log(resp.message);
@@ -234,7 +235,7 @@
 
 			/*查询三级分润设置情况*/
 			$.ajax({
-				url:'http://120.24.226.70:8081/yttx-agentbms-api/servicestation/default/profits',
+				url:'http://120.76.237.100:8082/yttx-agentbms-api/servicestation/default/profits',
 				type:'post',
 				data:{
 					roleId:decodeURIComponent(logininfo.param.roleId),
@@ -248,9 +249,10 @@
 				if(code!==0){
 					if(code===999){
 						/*清空缓存*/
-						public_tool.clear();
-						public_tool.clearCacheData();
-						public_tool.loginTips();
+						public_tool.loginTips(function(){
+										public_tool.clear();
+										public_tool.clearCacheData();
+								});
 						return false
 					}
 					console.log(resp.message);
@@ -443,7 +445,7 @@
 										ele_aa=$profit_aa0.val(),
 										ele_aaa=$profit_aaa0.val();
 									/*规则通过后校验*/
-									config1['url']="http://120.24.226.70:8081/yttx-agentbms-api/agent/profit/default";
+									config1['url']="http://120.76.237.100:8082/yttx-agentbms-api/agent/profit/default";
 									config1['data']= {
 										type:1,
 										agentProfit1: ele_a,
@@ -456,7 +458,7 @@
 									var ele_a=$profit_a1.val(),
 										ele_aa=$profit_aa1.val(),
 										ele_aaa=$profit_aaa1.val();
-									config1['url']="http://120.24.226.70:8081/yttx-agentbms-api/agent/profit/default";
+									config1['url']="http://120.76.237.100:8082/yttx-agentbms-api/agent/profit/default";
 									config1['data']= {
 										type:2,
 										agentProfit1: ele_a,
@@ -469,7 +471,7 @@
 									var ele_a=$profit_a2.val(),
 										ele_aa=$profit_aa2.val(),
 										ele_aaa=$profit_aaa2.val();
-									config2['url']="http://120.24.226.70:8081/yttx-agentbms-api/servicestation/profit/default";
+									config2['url']="http://120.76.237.100:8082/yttx-agentbms-api/servicestation/profit/default";
 									config2['data']= {
 										type:1,
 										distributorProfit1: ele_a,
@@ -481,7 +483,7 @@
 									var ele_a=$profit_a3.val(),
 										ele_aa=$profit_aa3.val(),
 										ele_aaa=$profit_aaa3.val();
-									config2['url']="http://120.24.226.70:8081/yttx-agentbms-api/servicestation/profit/default";
+									config2['url']="http://120.76.237.100:8082/yttx-agentbms-api/servicestation/profit/default";
 									config2['data']= {
 										type:2,
 										distributorProfit1: ele_a,

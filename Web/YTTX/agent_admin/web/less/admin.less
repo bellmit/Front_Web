@@ -126,6 +126,35 @@
 		}
 	}
 }
+.admin-notice-btn{
+	.layout-base(40px);
+	.layout-absoluter-base(0,180px);
+	.layout-fixedr-base(0,180px);
+	background:@color-white;
+	overflow: hidden;
+	height:40px;
+	padding:5px 0;
+	margin:0;
+	text-align: center;
+	.user-select-base;
+	cursor: pointer;
+	.transition-base(all .1s ease-in .01s);
+	color:@color-info;
+	.box-shadow-base(0 0 4px 0 @color-gray9);
+	&:hover{
+		background:@color-info;
+		color:@color-white;
+	}
+	&:after{
+		width:100%;
+		height:100%;
+		content:'\e61b';
+		font-family:'ux_six';
+		font-size:@font-size-base + 4;
+	}
+}
+
+
 
 /*首页欢迎页面*/
 .admin-welcome-wrap{
@@ -765,6 +794,356 @@
 }
 
 
+
+/*排版*/
+.admin-blockquote{
+	font-size:@font-size-base;
+	&:empty{
+		min-height: 300px;
+		padding:20px;
+	}
+	&:empty:before,
+	&:empty::before{
+		.layout-base;
+		display: block;
+		line-height: 270px;
+		content:'暂无数据';
+		color:@color-gray9;
+		font-size:@font-size-base;
+		text-align: center;
+		.user-select-base;
+	}
+}
+.admin-list-item{
+	.layout-base;
+	padding:20px 5px;
+	border-bottom: 1px solid @color-gray16;
+	.admin-pull-right{
+		padding:10px 0 10px 60px;
+	}
+	.admin-upload-detail{
+		.layout-absolutel-base(0,-50px,200);
+		width:100%;
+		height:50px;
+		overflow: hidden;
+		background:none;
+		text-align: right;
+		span{
+			display:inline-block;
+			padding:3px 10px;
+			margin:8px 20px 0 0;
+			color:@color-gray9;
+		}
+	}
+	.admin-upload-detail-active{
+		top:0;
+	}
+	.admin-upload-image{
+		background:@color-white;
+		.layout-relative-base;
+		.layout-base;
+		height:250px;
+		overflow: hidden;
+		text-align:center;
+		cursor: pointer;
+		padding:10px;
+		border:1px solid @color-gray14;
+		.border-radius-base(3px);
+		&:empty{
+			&:before{
+				content:"请上传图片";
+				display: block;
+				width:100%;
+				height:100%;
+				line-height:220px;
+				color:@color-gray9;
+				font-size:@font-size-base;
+			}
+		}
+		img{
+			max-width:100%;
+			max-height:100%;
+			padding:5px;
+			display: inline-block;
+		}
+	}
+	.admin-upload-image+p{
+		text-align: center;
+		margin:10px 0 0 0;
+		.text-ww;
+	}
+}
+
+/*主题系列*/
+/*普通*/
+.admin-gap-theme1{
+	.layout-base;
+	display: inline-block;
+	padding:5px 30px;
+	min-height:30px;
+	line-height:30px;
+	color:@color-gray8;
+	background:@color-gray16;
+	margin:20px 0 10px 0;
+	border-left:2px solid @color-info;
+	.user-select-base;
+}
+
+
+/*多选框系列*/
+.admin-checkbox-panel1{
+	.layout-base;
+	border:1px solid #e4e4e4;
+	background:@color-white;
+	padding:10px;
+	&:empty{
+		min-height:80px;
+		line-height:80px;
+		text-align: center;
+		&:before{
+			display:inline-block;
+			width:100%;
+			height:100%;
+			content:'暂无数据';
+			color:@color-gray9;
+		}
+	}
+	label{
+		.layout-relative-base;
+		margin:5px 0 0 10px;
+		display:inline-block;
+		padding:10px 20px;
+		cursor: pointer;
+		line-height:16px;
+		.user-select-base;
+		border:1px solid @color-white;
+		input{
+			.layout-absolutel-base;
+			width:100%;
+			height:100%;
+			display: inline-block;
+			vertical-align: middle;
+			margin:0;
+			padding:0;
+			.opacity-base(0);
+			cursor: pointer;
+		}
+		&:hover{
+			background:@color-gray16;
+		}
+	}
+	.checkbox-active{
+		border:1px solid @btn-success-bg;
+		&:before{
+			.layout-absolutel-base;
+			.layout-base(16px);
+			height:16px;
+			display: block;
+			content:'\e601';
+			font-size:@font-size-base;
+			font-family:'ux_six';
+			background:@btn-success-bg;
+			color:@color-white;
+		}
+	}
+}
+
+
+/*用例：详情展现*/
+.grid-list-group1{
+	.layout-base;
+	padding:6px 5px 12px 5px;
+	.text-ww;
+	color:@color-gray6;
+	font-size:@font-size-base;
+	line-height: 24px;
+	>p{
+		display: inline-block;
+		padding:0 5px;
+		color:@color-gray8;
+	}
+}
+
+/*用例：首页通知列表*/
+.grid-list-group2{
+	.layout-base;
+	min-height:200px;
+	li{
+		.layout-float-base;
+		padding:10px 3px;
+		font-size:@font-size-base;
+		color:@color-gray9;
+		border-bottom:1px solid @color-gray14;
+		line-height:@font-size-base + 10;
+		.text-ww;
+		cursor: pointer;
+		&:hover{
+			background:@color-gray16;
+		}
+		span{
+			padding:0 8px;
+			color:@color-white;
+			background:@color-info;
+			font-size:@font-size-base - 2;
+			margin:0 5px;
+		}
+		em{
+			padding:0 5px;
+			color:@color-gray11;
+		}
+	}
+	&:empty{
+		min-height:300px;
+		height:100%;
+		line-height:300px;
+		text-align: center;
+		color:@color-gray12;
+		font-size:@font-size-base;
+		&:after{
+			content:'暂无数据';
+			display:table;
+			width:100%;
+			height:100%;
+		}
+	}
+}
+
+
+/*用例：财务选项列表*/
+.grid-list-group3{
+	.layout-base(49.5%);
+	display:inline-block;
+	margin:0;
+	min-width:400px;
+	min-height:100px;
+	padding:20px 10px;
+	.grid-list-theme{
+		.layout-base;
+		height:50px;
+		line-height:30px;
+		text-align: left;
+	}
+	.grid-list-tab{
+		.layout-base;
+		height:36px;
+		text-align: left;
+		span{
+			.box-sizing-base;
+			border-top:1px solid @color-gray14;
+			border-bottom:1px solid @color-gray14;
+			border-right:1px solid @color-gray14;
+			cursor: pointer;
+			height:100%;
+			display:inline-block;
+			padding:0 20px;
+			line-height:36px;
+			color:@color-gray6;
+			font-size:@font-size-base;
+			background:@color-white;
+			&:hover{
+				text-decoration: underline;
+			}
+			&:first-child{
+				border-left:1px solid @color-gray14 ;
+			}
+		}
+		.grid-list-tabactive{
+			background:@color-gray16;
+			color:@color-info;
+		}
+	}
+	.grid-list-wrap{
+		.layout-base;
+		padding:20px 0 0 0;
+	}
+}
+
+
+/*排版详情*/
+.c-detail(){
+	*{
+		background:none !important;
+		font-size:@font-size-base !important;
+		line-height:@font-size-base + 10;
+		text-align:left;
+		color:@color-gray6;
+		.text-ww;
+		max-width:100% !important;
+		text-indent:0;
+	}
+	>table,
+	>div,
+	>section,
+	>p,
+	>ul,
+	>dl,
+	>dd,
+	>dt,
+	>li,
+	>form,
+	>h1,
+	>h2,
+	>h3,
+	>h4,
+	>h5,
+	>h6{
+		width:100% !important;
+		.box-sizing-base !important;
+		margin-left:0 !important;
+		margin-right:0 !important;
+		*{
+			height:auto !important;
+		}
+	}
+	img{
+		max-width:100% !important;
+		margin:10px 0;
+		text-indent:0 !important;
+	}
+	a{
+		.box-sizing-base;
+		display:inline-block;
+		text-decoration:underline;
+		text-align:left;
+		color:@color-blue1;
+		cursor:pointer;
+	}
+	>p,
+	p{
+		font-size:@font-size-base;
+		line-height:@font-size-base + 10;
+		.text-ww;
+		text-align:left;
+		padding:5px 0;
+		color:@color-gray6;
+		>a,
+		a{
+			font-size:@font-size-base;
+			padding:0 10px;
+			width:auto;
+		}
+		img{
+			max-width:100% !important;
+			margin:10px 0;
+		}
+	}
+	>a{
+		width:100%;
+		font-size:@font-size-base;
+		line-height:@font-size-base + 10;
+		padding:5px 0;
+		img{
+			max-width:100%;
+			margin:10px 0;
+		}
+	}
+}
+.admin-content-detail{
+	.layout-base;
+	padding:10px 20px;
+	border:1px solid @color-gray14;
+	.c-detail();
+}
 
 
 

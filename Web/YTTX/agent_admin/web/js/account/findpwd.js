@@ -2,6 +2,11 @@
 (function($){
 	$(function(){
 		if(public_tool.initMap.isrender){
+
+			/*如果存在缓存，则删除缓存*/
+			public_tool.clear();
+			public_tool.clearCacheData();
+
 			//dom节点引用或者其他变量定义
 			var $findpwdform=$('#findpwd'),
 				$username=$('#username'),
@@ -19,14 +24,7 @@
 				$(".fade-in-effect").addClass('in');
 			},1);
 
-
-			var cacheLogin=public_tool.getParams('login_module');
-			if(cacheLogin){
-				/*如果存在缓存，则删除缓存*/
-				public_tool.clear();
-				public_tool.clearCacheData();
-			}
-
+			
 
 			//异步校验
 			$findpwdform.validate({
@@ -77,7 +75,7 @@
 						"hideMethod": "fadeOut"
 					};
 
-					var basedomain='http://120.24.226.70:8081',
+					var basedomain='http://120.76.237.100:8082',
 						basepathname="/yttx-agentbms-api/sysuser/login";
 					$.ajax({
 						url:basedomain+basepathname,

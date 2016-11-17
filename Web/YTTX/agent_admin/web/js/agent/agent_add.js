@@ -7,7 +7,7 @@
 			/*菜单调用*/
 			var logininfo=public_tool.initMap.loginMap;
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
-				url:'http://120.24.226.70:8081/yttx-agentbms-api/module/menu',
+				url:'http://120.76.237.100:8082/yttx-agentbms-api/module/menu',
 				async:false,
 				type:'post',
 				param:{
@@ -106,7 +106,7 @@
 
 			/*数据加载*/
 			var agent_config={
-				url:"http://120.24.226.70:8081/yttx-agentbms-api/agents/related",
+				url:"http://120.76.237.100:8082/yttx-agentbms-api/agents/related",
 				dataType:'JSON',
 				method:'post',
 				dataSrc:function ( json ) {
@@ -114,9 +114,10 @@
 					if(code!==0){
 						if(code===999){
 							/*清空缓存*/
-							public_tool.clear();
-							public_tool.clearCacheData();
-							public_tool.loginTips();
+							public_tool.loginTips(function(){
+										public_tool.clear();
+										public_tool.clearCacheData();
+								});
 							return [];
 						}
 						console.log(json.message);
@@ -531,7 +532,7 @@
 
 							if(isadd){
 								var config={
-									url:"http://120.24.226.70:8081/yttx-agentbms-api/agent/add",
+									url:"http://120.76.237.100:8082/yttx-agentbms-api/agent/add",
 									dataType:'JSON',
 									method:'post',
 									data:{
@@ -563,7 +564,7 @@
 									return false;
 								}
 								var config={
-									url:"http://120.24.226.70:8081/yttx-agentbms-api/agent/update",
+									url:"http://120.76.237.100:8082/yttx-agentbms-api/agent/update",
 									dataType:'JSON',
 									method:'post',
 									data:{
@@ -710,7 +711,7 @@
 
 			/*查询上级代理商ID*/
 			$.ajax({
-				url:"http://120.24.226.70:8081/yttx-agentbms-api/agent/role/check",
+				url:"http://120.76.237.100:8082/yttx-agentbms-api/agent/role/check",
 				dataType:'JSON',
 				method:'post',
 				data:{
@@ -724,9 +725,10 @@
 				if(code!==0){
 					if(code===999){
 						/*清空缓存*/
-						public_tool.clear();
-						public_tool.clearCacheData();
-						public_tool.loginTips();
+						public_tool.loginTips(function(){
+										public_tool.clear();
+										public_tool.clearCacheData();
+								});
 						return false;
 					}
 					console.log(resp.message);

@@ -9,7 +9,7 @@
 			var logininfo=public_tool.initMap.loginMap,
 				roleid=decodeURIComponent(logininfo.param.roleId);
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
-				url:'http://120.24.226.70:8081/yttx-agentbms-api/module/menu',
+				url:'http://120.76.237.100:8082/yttx-agentbms-api/module/menu',
 				async:false,
 				type:'post',
 				param:{
@@ -46,7 +46,7 @@
 
 			/*权限请求配置*/
 			var permission_config={
-						url:"http://120.24.226.70:8081/yttx-agentbms-api/module/permissions",
+						url:"http://120.76.237.100:8082/yttx-agentbms-api/module/permissions",
 						dataType:'JSON',
 						method:'post',
 						data:{
@@ -73,7 +73,7 @@
 				stateSave:false,/*是否保存重新加载的状态*/
 				processing:true,/*大消耗操作时是否显示处理状态*/
 				ajax:{
-					url:"http://120.24.226.70:8081/yttx-agentbms-api/roles",
+					url:"http://120.76.237.100:8082/yttx-agentbms-api/roles",
 					dataType:'JSON',
 					method:'post',
 					dataSrc:function ( json ) {
@@ -81,9 +81,10 @@
 						if(code!==0){
 							if(code===999){
 								/*清空缓存*/
-								public_tool.clear();
-								public_tool.clearCacheData();
-								public_tool.loginTips();
+								public_tool.loginTips(function(){
+										public_tool.clear();
+										public_tool.clearCacheData();
+								});
 								return [];
 							}
 							console.log(json.message);
@@ -319,7 +320,7 @@
 
 				/*发送请求*/
 				$.ajax({
-						url:"http://120.24.226.70:8081/yttx-agentbms-api/permission/state/update",
+						url:"http://120.76.237.100:8082/yttx-agentbms-api/permission/state/update",
 						dataType:'JSON',
 						method:'post',
 						data:{
