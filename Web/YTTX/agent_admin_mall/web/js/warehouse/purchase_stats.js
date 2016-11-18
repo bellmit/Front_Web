@@ -64,7 +64,7 @@
 						autoWidth:true,/*是否*/
 						paging:false,
 						ajax:{
-							url:"http://120.76.237.100:8082/mall-agentbms-api/purchasing/order/list",
+							url:/*"http://120.76.237.100:8082/mall-agentbms-api/purchasing/order/list"*/"../../json/warehouse/mall_purchase_stats_list.json",
 							dataType:'JSON',
 							method:'post',
 							dataSrc:function ( json ) {
@@ -128,17 +128,17 @@
 								"render":function(data, type, full, meta ){
 									var stauts=parseInt(data,10),
 										statusmap={
-											0:"已收货",
-											1:"部分收货",
-											2:"未收货"
+											1:"未收货",
+											3:"部分收货",
+											5:"已收货"
 										},
 										str='';
 
-									if(stauts===0){
+									if(stauts===5){
 										str='<div class="g-c-info">'+statusmap[stauts]+'</div>';
-									}else if(stauts===1){
+									}else if(stauts===3){
 										str='<div class="g-c-gray6">'+statusmap[stauts]+'</div>';
-									}else if(stauts===2){
+									}else if(stauts===1){
 										str='<div class="g-c-red1">'+statusmap[stauts]+'</div>';
 									}
 									return str;
@@ -223,7 +223,7 @@
 							/*展开*/
 							if(subitem===''){
 								$.ajax({
-										url:"http://120.76.237.100:8082/mall-agentbms-api/purchasing/order/details",
+										url:/*"http://120.76.237.100:8082/mall-agentbms-api/purchasing/order/details"*/"../../json/warehouse/mall_purchase_stats_details.json",
 										dataType:'JSON',
 										method:'post',
 										data:{
@@ -260,6 +260,8 @@
 											}).children('i').addClass('fa-angle-down');
 											return false;
 										}
+
+										list=list.slice(0,parseInt(Math.random()*10,10));
 
 										var i= 0,
 											newstr='<colgroup>\

@@ -221,7 +221,7 @@
 
 
 			$.ajax({
-					url:"http://120.76.237.100:8082/mall-agentbms-api/purchasing/order/view",
+					url:/*"http://120.76.237.100:8082/mall-agentbms-api/purchasing/order/view"*/"../../json/warehouse/mall_purchase_stats_view.json",
 					dataType:'JSON',
 					method:'post',
 					data:{
@@ -249,6 +249,7 @@
 					if(!list){
 						return false;
 					}
+					list=list[id-1];
 
 					if(!$.isEmptyObject(list)){
 						$admin_id.val(id);
