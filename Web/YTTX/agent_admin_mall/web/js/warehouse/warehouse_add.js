@@ -7,7 +7,7 @@
 			/*菜单调用*/
 			var logininfo=public_tool.initMap.loginMap;
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
-				url:'http://10.0.5.222:8080/mall-agentbms-api/module/menu',
+				url:'http://120.76.237.100:8082/mall-agentbms-api/module/menu',
 				async:false,
 				type:'post',
 				param:{
@@ -20,10 +20,10 @@
 			});
 
 
+
 			/*权限调用*/
 			var powermap=public_tool.getPower(),
 				warehouseadd_power=public_tool.getKeyPower('mall-warehouse-add',powermap);
-
 
 			
 			/*dom引用和相关变量定义*/
@@ -40,6 +40,7 @@
 					cancel:false
 				})/*一般提示对象*/,
 				admin_warehouseadd_form=document.getElementById('admin_warehouseadd_form'),
+				$admin_theme=$('#admin_theme'),
 				$admin_warehouseadd_form=$(admin_warehouseadd_form),
 				$admin_id=$('#admin_id'),
 				$admin_username=$('#admin_username'),
@@ -61,6 +62,19 @@
 				$admin_cellphone=$('#admin_cellphone'),
 				$admin_telephone=$('#admin_telephone'),
 				resetform0=null;
+
+
+			/*格式化手机号码*/
+			$.each([$admin_cellphone],function(){
+				this.on('keyup',function(){
+					var phoneno=this.value.replace(/\D*/g,'');
+					if(phoneno==''){
+						this.value='';
+						return false;
+					}
+					this.value=public_tool.phoneFormat(this.value);
+				});
+			});
 
 
 
@@ -121,7 +135,6 @@
 			admin_warehouseadd_form.reset();
 			var edit_cache=public_tool.getParams('mall-warehouse-add');
 			if(edit_cache){
-				$admin_action.html('修改');
 				/*判断权限*/
 				if(warehouseadd_power){
 					$admin_action.removeClass('g-d-hidei');
@@ -134,7 +147,7 @@
 				}else{
 					setWarehouseData(edit_cache);
 				}
-
+				//public_tool.removeParams('mall-warehouse-add');
 			}else{
 				/*判断权限*/
 				if(warehouseadd_power){
@@ -209,6 +222,7 @@
 											});
 											return JSON.stringify(rlist);
 										}()),
+										password:$admin_pwd.val()||'',
 										remark:$admin_remark.val(),
 										status:$admin_status.find(':selected').val(),
 										province:$admin_province.find(':selected').val(),
@@ -226,14 +240,12 @@
                                     if(id!==''){
 										/*修改操作*/
                                         setdata['id']=id;
-										setdata['password']='';
 										actiontype='修改';
                                     }else{
 										/*新增操作*/
-										setdata['password']=$admin_pwd.val();
 										actiontype='新增';
                                     }
-									config['url']="http://10.0.5.222:8080/mall-agentbms-api/warehouse/addupdate";
+									config['url']="http://120.76.237.100:8082/mall-agentbms-api/warehouse/addupdate";
 									config['data']=setdata;
 								}
 
@@ -407,7 +419,7 @@
 
 
 			$.ajax({
-					url:"http://10.0.5.222:8080/mall-agentbms-api/adscriptionregions/available",
+					url:"http://120.76.237.100:8082/mall-agentbms-api/adscriptionregions/available",
 					dataType:'JSON',
 					method:'post',
 					data:params
@@ -469,7 +481,7 @@
 
 
 			$.ajax({
-					url:"http://10.0.5.222:8080/mall-agentbms-api/warehouse/detail",
+					url:"http://120.76.237.100:8082/mall-agentbms-api/warehouse/detail",
 					dataType:'JSON',
 					method:'post',
 					data:{
@@ -504,12 +516,15 @@
 					}
 
 					if(!$.isEmptyObject(list)){
+						$admin_action.html('修改');
+						$admin_theme.html('修改分仓');
 						$admin_id.val(id);
-						$admin_pwd.parent().addClass('g-d-hidei');
 						for(var j in list){
 							switch(j){
 								case 'username':
-									$admin_username.val(list[j]);
+									$admin_username.val(list[j]).prop({
+										'readonly':true
+									});
 									break;
 								case 'name':
 									$admin_name.val(list[j]);

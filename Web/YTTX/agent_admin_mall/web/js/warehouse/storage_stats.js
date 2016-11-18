@@ -10,7 +10,7 @@
 			/*菜单调用*/
 			var logininfo=public_tool.initMap.loginMap;
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
-				url:'http://10.0.5.222:8080/mall-agentbms-api/module/menu',
+				url:'http://120.76.237.100:8082/mall-agentbms-api/module/menu',
 				async:false,
 				type:'post',
 				param:{
@@ -87,7 +87,7 @@
 						autoWidth:true,/*是否*/
 						paging:false,
 						ajax:{
-							url:"http://10.0.5.222:8080/mall-agentbms-api/announcements/related",
+							url:"http://120.76.237.100:8082/mall-agentbms-api/announcements/related",
 							dataType:'JSON',
 							method:'post',
 							dataSrc:function ( json ) {
@@ -273,6 +273,10 @@
 			});
 
 
+			/*绑定添加商品*/
+			$storage_stats_additem.on('click',function () {
+				addStorageItem();
+			});
 
 			/*绑定添加地址*/
 			/*表单验证*/
@@ -336,7 +340,7 @@
 										/*新增操作*/
 										actiontype='新增';
 									}
-									config['url']="http://10.0.5.222:8080/mall-agentbms-api/warehouse/addupdate";
+									config['url']="http://120.76.237.100:8082/mall-agentbms-api/warehouse/addupdate";
 									config['data']=setdata;
 								}
 								return false;
@@ -393,11 +397,36 @@
 		}
 
 
-		/*查看出库单*/
-		function addStorage() {
-			$show_add_wrap.modal('show',{backdrop:'static'});
+		/*添加商品*/
+		function addStorageItem(){
+			var seqid=(Math.random()).toString().slice(2,15),
+				str='<tr><td><input type="checkbox" name="goodsid" value="'+seqid+'"/></td><td colspan="2"><input class="form-control" type="text" /></td><td colspan="2"><input class="form-control" type="text" /></td><td colspan="2"><input class="form-control" type="text" /></td></tr>';
+
+			$(str).appendTo($show_add_list);
 		}
 
+
+
+		/*删除商品*/
+		function removeStorageItem(){
+			var $checkbox=$show_add_list.find('input:checkbox'),
+				seqarr=[];
+
+			$checkbox.each(function () {
+				var $this=$(this),
+					ischeck=$this.is(':checked');
+				if(ischeck){
+					seqarr.push($this);
+				}
+			});
+
+			if(seqarr.length===0){
+
+				return false;
+			}else{
+				
+			}
+		}
 
 		/*查看出库单*/
 		function showStorage(id,$tr) {
@@ -409,7 +438,7 @@
 			return false;
 
 			$.ajax({
-					url:"http://10.0.5.222:8080/mall-agentbms-api/salesman/detail",
+					url:"http://120.76.237.100:8082/mall-agentbms-api/salesman/detail",
 					dataType:'JSON',
 					method:'post',
 					data:{

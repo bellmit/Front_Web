@@ -70,7 +70,7 @@
 						"hideMethod": "fadeOut"
 					};
 
-					var basedomain='http://10.0.5.222:8080',
+					var basedomain='http://120.76.237.100:8082',
 						basepathname="/mall-agentbms-api/sysuser/login";
 					$.ajax({
 						url:basedomain+basepathname,
@@ -93,7 +93,6 @@
 							$pwd.select();
 							return false;
 						}
-
 
 						$error_wrap.html(error_tpl.replace('$info',resp.message));
 						$error_wrap.find('.alert').hide().slideDown();
@@ -133,7 +132,8 @@
 								'adminId':encodeURIComponent(result.adminId),
 								'token':encodeURIComponent(result.token),
 								'roleId':encodeURIComponent(result.roleId),
-								'grade':encodeURIComponent(result.grade)
+								'grade':encodeURIComponent(result.grade),
+								'sourcesChannel':encodeURIComponent(result.sourcesChannel)
 							}
 						});
 

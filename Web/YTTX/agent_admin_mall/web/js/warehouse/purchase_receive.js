@@ -7,7 +7,7 @@
 			/*菜单调用*/
 			var logininfo=public_tool.initMap.loginMap;
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
-				url:'http://10.0.5.222:8080/mall-agentbms-api/module/menu',
+				url:'http://120.76.237.100:8082/mall-agentbms-api/module/menu',
 				async:false,
 				type:'post',
 				param:{
@@ -21,8 +21,9 @@
 
 
 			/*权限调用*/
-			var powermap=public_tool.getPower(),
-				receiveedit_power=public_tool.getKeyPower('mall-store-receive',powermap);
+			var powermap=public_tool.getPower(86),
+				receiveedit_power=public_tool.getKeyPower('mall-purchase-receiving',powermap);
+
 
 
 			/*dom引用和相关变量定义*/
@@ -41,9 +42,9 @@
 				admin_storereceive_form=document.getElementById('admin_storereceive_form'),
 				$admin_storereceive_form=$(admin_storereceive_form),
 				$admin_id=$('#admin_id'),
-				$admin_orderid=$('#admin_orderid'),
-				$admin_createtime=$('#admin_createtime'),
-				$admin_status=$('#admin_status'),
+				$admin_orderNumber=$('#admin_orderNumber'),
+				$admin_orderTime=$('#admin_orderTime'),
+				$admin_orderState=$('#admin_orderState'),
 				$admin_print_btn=$('#admin_print_btn'),
 				$admin_receive_list=$('#admin_receive_list'),
 				$admin_receiveaction=$('#admin_receiveaction'),
@@ -61,8 +62,7 @@
 
 			/*获取编辑缓存*/
 			(function () {
-				var edit_cache=public_tool.getParams('mall-store-receive');
-
+				var edit_cache=public_tool.getParams('mall-purchase-receive');
 				if(edit_cache){
 					/*判断权限*/
 					if(receiveedit_power){
@@ -72,40 +72,11 @@
 						$admin_receiveaction.parent().addClass('g-d-hidei');
 						$admin_allreceiveaction.parent().addClass('g-d-hidei');
 					}
-					for(var m in edit_cache){
-						switch(m){
-							case 'id':
-								$admin_id.val(edit_cache[m]);
-								break;
-							case 'orderid':
-								$admin_orderid.val('订单编号：'+edit_cache[m]);
-								break;
-							case 'createtime':
-								$admin_createtime.val('下单时间：'+edit_cache[m]);
-								break;
-							case 'status':
-								var statusmap={
-									0:'已收货',
-									1:'部分收货',
-									2:'未收货'
-								};
-								$admin_status.val(statusmap[edit_cache[m]]);
-								break;
-							case 'list':
-								var receivelist=edit_cache[m],
-									len=receivelist.length,
-									i=0,
-									str='';
-
-								for(i;i<len;i++){
-									str+='<tr><td>商品名称：'+i+'</td><td>商品型号：'+i+'</td><td>数量：'+i+'</td><td><input type="text" maxlength="8" name="receivenumber'+i+'" class="receivenumber" /></td><td>待发数量：'+i+'</td></tr>'
-								}
-
-								if(len!==0){
-									$(str).appendTo($admin_receive_list.html(''));
-								}
-								break;
-						}
+					/*查询数据*/
+					if(typeof edit_cache==='object'){
+						setReceiveData(edit_cache['id']);
+					}else{
+						setReceiveData(edit_cache);
 					}
 				}else{
 					$admin_receiveaction.parent().addClass('g-d-hidei');
@@ -182,12 +153,17 @@
 
 									/*同步编辑器*/
 									$.extend(true,setdata,{
-										id:$admin_id.val(),
-										orderid:$admin_orderid.val(),
-										createtime:$admin_createtime.val(),
-										status:$admin_status.val()
+										orderId:$admin_id.val(),
+										detailsIdQuantlitys:(function () {
+											var $receive=$admin_receive_list.find('tr'),
+												receivelist=[];
+											$receive.each(function () {
+
+											});
+											JSON.stringify(receivelist);
+										}())
 									});
-									config['url']="http://10.0.5.222:8080/mall-agentbms-api/announcement/update";
+									config['url']="http://120.76.237.100:8082/mall-agentbms-api/purchasing/order/delivered";
 									config['data']=setdata;
 								}
 
@@ -234,6 +210,85 @@
 			}
 
 
+
+		}
+
+		/*修改时设置值*/
+		function setReceiveData(id) {
+			if(!id){
+				return false;
+			}
+
+
+			$.ajax({
+					url:"http://120.76.237.100:8082/mall-agentbms-api/purchasing/order/view",
+					dataType:'JSON',
+					method:'post',
+					data:{
+						"id":id,
+						"adminId":decodeURIComponent(logininfo.param.adminId),
+						"token":decodeURIComponent(logininfo.param.token),
+						"grade":decodeURIComponent(logininfo.param.grade)
+					}
+				})
+				.done(function(resp){
+					var code=parseInt(resp.code,10);
+					if(code!==0){
+						console.log(resp.message);
+						if(code===999){
+							public_tool.loginTips(function () {
+								public_tool.clear();
+								public_tool.clearCacheData();
+							});
+						}
+						return false;
+					}
+					/*是否是正确的返回数据*/
+					var list=resp.result;
+
+					if(!list){
+						return false;
+					}
+
+					if(!$.isEmptyObject(list)){
+						$admin_id.val(id);
+						for(var m in list){
+							switch(m){
+								case 'orderNumber':
+									$admin_orderNumber.html('订单编号：'+list[m]);
+									break;
+								case 'orderTime':
+									$admin_orderTime.html('下单时间：'+list[m]);
+									break;
+								case 'orderState':
+									var statusmap={
+										1:'未收货',
+										3:'部分收货',
+										5:'已收货'
+									};
+									$admin_orderState.html('订单状态：'+statusmap[list[m]]);
+									break;
+								case 'detailsList':
+									var receivelist=list[m],
+										len=receivelist.length,
+										i=0,
+										str='';
+
+									for(i;i<len;i++){
+										str+='<tr><td>商品名称：'+receivelist[i]["goodsName"]+'</td><td>商品型号：'+receivelist[i]["attributeName"]+'</td><td>采购数量：'+receivelist[i]["purchasingQuantlity"]+'</td><td><input type="text" maxlength="8" class="form-control receivenumber" /></td><td>待发数量：'+receivelist[i]["waitingQuantlity"]+'</td></tr>'
+									}
+
+									if(len!==0){
+										$(str).appendTo($admin_receive_list.html(''));
+									}
+									break;
+							}
+						}
+					}
+				})
+				.fail(function(resp){
+					console.log(resp.message);
+				});
 
 		}
 
