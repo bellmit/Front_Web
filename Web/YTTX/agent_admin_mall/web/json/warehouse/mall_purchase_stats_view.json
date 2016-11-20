@@ -7,18 +7,21 @@
       "orderTime":"ewtrert",
       "orderState":1,
       "detailsList":[{
+        "id":1,
         "goodsName": "34636",
         "attributeName": "25674574",
         "purchasingQuantlity":20,
         "deliveredQuantlity":0,
         "waitingQuantlity":20
       },{
+        "id":2,
         "goodsName": "679567",
         "attributeName": "45726",
         "purchasingQuantlity":240,
         "deliveredQuantlity":10,
         "waitingQuantlity":230
       },{
+        "id":3,
         "goodsName": "6793563",
         "attributeName": "ghksfy575685",
         "purchasingQuantlity":60,
@@ -32,18 +35,21 @@
       "orderTime":"2457457",
       "orderState":3,
       "detailsList":[{
+        "id":1,
         "goodsName": "78069",
         "attributeName": "dfhfgfgj",
         "purchasingQuantlity":10,
         "deliveredQuantlity":5,
         "waitingQuantlity":5
       },{
+        "id":2,
         "goodsName": "6793563",
         "attributeName": "ghksfy575685",
         "purchasingQuantlity":60,
         "deliveredQuantlity":20,
         "waitingQuantlity":40
       },{
+        "id":3,
         "goodsName": "145683568",
         "attributeName": "56825668",
         "purchasingQuantlity":200,
@@ -56,18 +62,21 @@
       "orderTime":"56738gstrfy",
       "orderState":5,
       "detailsList":[{
+        "id":1,
         "goodsName": "6793563",
         "attributeName": "ghksfy575685",
         "purchasingQuantlity":60,
         "deliveredQuantlity":20,
         "waitingQuantlity":40
       },{
+        "id":2,
         "goodsName": "34636",
         "attributeName": "25674574",
         "purchasingQuantlity":20,
         "deliveredQuantlity":0,
         "waitingQuantlity":20
       },{
+        "id":3,
         "goodsName": "679567",
         "attributeName": "45726",
         "purchasingQuantlity":240,
@@ -80,18 +89,21 @@
       "orderTime":"rtusfgur",
       "orderState":3,
       "detailsList":[{
+        "id":1,
         "goodsName": "25883568",
         "attributeName": "yit853568568",
         "purchasingQuantlity":100,
         "deliveredQuantlity":50,
         "waitingQuantlity":50
       },{
+        "id":2,
         "goodsName": "6793563",
         "attributeName": "ghksfy575685",
         "purchasingQuantlity":60,
         "deliveredQuantlity":20,
         "waitingQuantlity":40
       },{
+        "id":3,
         "goodsName": "145683568",
         "attributeName": "56825668",
         "purchasingQuantlity":200,
@@ -104,18 +116,21 @@
       "orderTime":"rw745trfurty",
       "orderState":3,
       "detailsList":[{
+        "id":1,
         "goodsName": "4647248568",
         "attributeName": "35858fssartu4747",
         "purchasingQuantlity":50,
         "deliveredQuantlity":25,
         "waitingQuantlity":25
       },{
+        "id":2,
         "goodsName": "679567",
         "attributeName": "45726",
         "purchasingQuantlity":240,
         "deliveredQuantlity":10,
         "waitingQuantlity":230
       },{
+        "id":3,
         "goodsName": "6793563",
         "attributeName": "ghksfy575685",
         "purchasingQuantlity":60,
@@ -128,18 +143,21 @@
       "orderTime":"567rtsurtu",
       "orderState":5,
       "detailsList":[{
+        "id":1,
         "goodsName": "41456rth583568",
         "attributeName": "568256867",
         "purchasingQuantlity":30,
         "deliveredQuantlity":15,
         "waitingQuantlity":15
       },{
+        "id":2,
         "goodsName": "34636",
         "attributeName": "25674574",
         "purchasingQuantlity":20,
         "deliveredQuantlity":0,
         "waitingQuantlity":20
       },{
+        "id":3,
         "goodsName": "145683568",
         "attributeName": "56825668",
         "purchasingQuantlity":200,
@@ -152,12 +170,14 @@
       "orderTime":"fjtyry45645",
       "orderState":1,
       "detailsList":[{
+        "id":1,
         "goodsName": "93682745",
         "attributeName": "45638568",
         "purchasingQuantlity":60,
         "deliveredQuantlity":24,
         "waitingQuantlity":36
       },{
+        "id":2,
         "goodsName": "6793563",
         "attributeName": "ghksfy575685",
         "purchasingQuantlity":60,
@@ -170,18 +190,21 @@
       "orderTime":"3576jutyutyu",
       "orderState":5,
       "detailsList":[{
+        "id":1,
         "goodsName": "679567",
         "attributeName": "45726",
         "purchasingQuantlity":240,
         "deliveredQuantlity":10,
         "waitingQuantlity":230
       },{
+        "id":2,
         "goodsName": "6793563",
         "attributeName": "ghksfy575685",
         "purchasingQuantlity":60,
         "deliveredQuantlity":20,
         "waitingQuantlity":40
       },{
+        "id":3,
         "goodsName": "145683568",
         "attributeName": "56825668",
         "purchasingQuantlity":200,
@@ -194,12 +217,14 @@
       "orderTime":"2456rtsrt7427",
       "orderState":1,
       "detailsList":[{
+        "id":1,
         "goodsName": "145683568",
         "attributeName": "56825668",
         "purchasingQuantlity":200,
         "deliveredQuantlity":120,
         "waitingQuantlity":80
       },{
+        "id":2,
         "goodsName": "679567",
         "attributeName": "45726",
         "purchasingQuantlity":240,

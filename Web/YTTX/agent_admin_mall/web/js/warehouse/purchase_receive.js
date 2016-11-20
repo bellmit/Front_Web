@@ -49,15 +49,55 @@
 				$admin_receive_list=$('#admin_receive_list'),
 				$admin_receiveaction=$('#admin_receiveaction'),
 				$admin_allreceiveaction=$('#admin_allreceiveaction'),
-				resetform0=null,
-				submittype='';
-
+				resetform0=null;
 
 
 			/*重置表单*/
 			admin_storereceive_form.reset();
 
 
+			/*绑定发货数量控制*/
+			$admin_receive_list.on('keyup','input',function (e) {
+				receiveFilter($(this));
+			});
+
+
+			/*绑定全单收货*/
+			$admin_allreceiveaction.on('change',function () {
+				var $this=$(this),
+					isselect=$this.is(':checked'),
+					$input=$admin_receive_list.find('input');
+
+				if(isselect){
+					$input.each(function () {
+						var $own=$(this);
+						$own.attr({
+							'readonly':true
+						});
+						receiveFilter($own,true);
+					});
+
+					/*解除邦输入事件*/
+					$admin_receive_list.off('keyup','input');
+				}else {
+					$input.each(function () {
+						var $own=$(this),
+							tempvalue=$own.attr('data-value');
+
+
+						$own.attr({
+							'readonly':false
+						}).val(tempvalue);
+						receiveFilter($own);
+					});
+
+					/*绑定输入*/
+					$admin_receive_list.on('keyup','input',function (e) {
+						receiveFilter($(this));
+					});
+				}
+
+			});
 
 
 			/*获取编辑缓存*/
@@ -83,29 +123,6 @@
 					$admin_allreceiveaction.parent().addClass('g-d-hidei');
 				}
 			}());
-
-
-			/*绑定提交*/
-			$.each([$admin_receiveaction,$admin_allreceiveaction],function () {
-				var selector=this.selector;
-
-				this.on('click',function () {
-					if(selector.indexOf('all')!==-1){
-						submittype='sureall';
-					}else{
-						submittype='sure';
-					}
-					$admin_storereceive_form.trigger('submit');
-				});
-			});
-			
-			
-			/*绑定发货数量控制*/
-			$admin_receive_list.on('keyup','input',function (e) {
-				receiveFilter($(this));
-			});
-
-
 
 
 			/*绑定添加地址*/
@@ -161,19 +178,23 @@
 									$.extend(true,setdata,{
 										orderId:$admin_id.val(),
 										detailsIdQuantlitys:(function () {
-											var $receive=$admin_receive_list.find('tr'),
+											var $input=$admin_receive_list.find('input'),
 												receivelist=[];
-											$receive.each(function () {
+											$input.each(function () {
+												var $this=$(this),
+													tempid=$this.attr('data-id'),
+													value=$this.val();
 
+												receivelist.push(tempid+'#'+value);
 											});
-											JSON.stringify(receivelist);
+											return JSON.stringify(receivelist);
 										}())
 									});
 									config['url']="http://120.76.237.100:8082/mall-agentbms-api/purchasing/order/delivered";
 									config['data']=setdata;
 								}
 
-
+								console.log(setdata);
 								return false;
 								$.ajax(config).done(function(resp){
 									var code;
@@ -282,14 +303,12 @@
 										str='';
 
 									for(i;i<len;i++){
-										str+='<tr><td>商品名称：'+receivelist[i]["goodsName"]+'</td><td>'+receivelist[i]["attributeName"]+'</td><td>'+receivelist[i]["purchasingQuantlity"]+'</td><td><input type="text" maxlength="8" class="form-control" value="'+(function () {
-												return (receivelist[i]["purchasingQuantlity"]-receivelist[i]["waitingQuantlity"])||0;
-											}())+'" /></td><td>'+receivelist[i]["waitingQuantlity"]+'</td></tr>';
+										var tempdata=(receivelist[i]["purchasingQuantlity"]-receivelist[i]["waitingQuantlity"])||0;
+										str+='<tr><td>商品名称：'+receivelist[i]["goodsName"]+'</td><td>'+receivelist[i]["attributeName"]+'</td><td>'+receivelist[i]["purchasingQuantlity"]+'</td><td><input type="text" maxlength="8" class="form-control" data-value="'+tempdata+'" data-id="'+receivelist[i]["id"]+'" value="'+tempdata+'" /></td><td>'+receivelist[i]["waitingQuantlity"]+'</td></tr>';
 									}
 
 									if(len!==0){
 										$(str).appendTo($admin_receive_list.html(''));
-										i=0;
 									}
 									break;
 							}
@@ -305,25 +324,35 @@
 
 
 		/*数据过滤*/
-		function receiveFilter($input) {
+		function receiveFilter($input,flag) {
 			var $parent=$input.parent(),
 				$total=$parent.prev(),
 				$need=$parent.next(),
-				total=0,
+				filter=/\s*\D*/g,
+				total=$total.html().replace(filter,''),
 				text=0,
-				need=0,
-				filter=/\s*\D*/g;
+				need=0;
 
-			total=$total.html().replace(filter,'');
-			text=$input.val().replace(filter,'');
-			if(text===''){
-				text=0;
-			}else if(text>total){
-				text=total;
-			}else if(text<0){
-				text=0;
+			if(total===''||isNaN(total)){
+				total=0;
 			}
-			text=parseInt(text,10);
+			total=parseInt(total,10);
+
+			if(flag){
+				text=total;
+			}else{
+				text=$input.val().replace(filter,'');
+				if(text===''||isNaN(text)){
+					text=0;
+				}
+				text=parseInt(text,10);
+				if(text>=total){
+					text=total;
+				}else if(text<0){
+					text=0;
+				}
+
+			}
 			need=total - text;
 			$need.html(need);
 			$input.val(text);
