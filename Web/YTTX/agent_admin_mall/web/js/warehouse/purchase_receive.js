@@ -98,6 +98,12 @@
 					$admin_storereceive_form.trigger('submit');
 				});
 			});
+			
+			
+			/*绑定发货数量控制*/
+			$admin_receive_list.on('keyup','input',function (e) {
+				receiveFilter($(this));
+			});
 
 
 
@@ -276,11 +282,14 @@
 										str='';
 
 									for(i;i<len;i++){
-										str+='<tr><td>商品名称：'+receivelist[i]["goodsName"]+'</td><td>商品型号：'+receivelist[i]["attributeName"]+'</td><td>采购数量：'+receivelist[i]["purchasingQuantlity"]+'</td><td><input type="text" maxlength="8" class="form-control receivenumber" /></td><td>待发数量：'+receivelist[i]["waitingQuantlity"]+'</td></tr>'
+										str+='<tr><td>商品名称：'+receivelist[i]["goodsName"]+'</td><td>'+receivelist[i]["attributeName"]+'</td><td>'+receivelist[i]["purchasingQuantlity"]+'</td><td><input type="text" maxlength="8" class="form-control" value="'+(function () {
+												return (receivelist[i]["purchasingQuantlity"]-receivelist[i]["waitingQuantlity"])||0;
+											}())+'" /></td><td>'+receivelist[i]["waitingQuantlity"]+'</td></tr>';
 									}
 
 									if(len!==0){
 										$(str).appendTo($admin_receive_list.html(''));
+										i=0;
 									}
 									break;
 							}
@@ -292,6 +301,35 @@
 				});
 
 		}
+
+
+
+		/*数据过滤*/
+		function receiveFilter($input) {
+			var $parent=$input.parent(),
+				$total=$parent.prev(),
+				$need=$parent.next(),
+				total=0,
+				text=0,
+				need=0,
+				filter=/\s*\D*/g;
+
+			total=$total.html().replace(filter,'');
+			text=$input.val().replace(filter,'');
+			if(text===''){
+				text=0;
+			}else if(text>total){
+				text=total;
+			}else if(text<0){
+				text=0;
+			}
+			text=parseInt(text,10);
+			need=total - text;
+			$need.html(need);
+			$input.val(text);
+		}
+
+
 
 
 
