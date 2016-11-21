@@ -1,7 +1,7 @@
 
 ;module.exports = function(grunt){
 	
-	var configfile='package_agent.json';
+	var configfile='package_agent_mall.json';
 
 	/*//配置端口
 	var flushPort=35729;
@@ -145,7 +145,8 @@
 					//压缩后台js
 					/*names=['bootstrap','tweenmax','resizeable','joinable','api','toggles','toastr','dialog']*/
 					/*names=['html5shiv','respond']*/
-					var names=['bootstrap','tweenmax','resizeable','joinable','api','toggles','toastr','dialog'],result=[];
+					/*names=['bootstrap','dialog']*/
+					var names=['bootstrap','tweenmax','resizeable','joinable','api','toggles','toastr','dialog','moment'],result=[];
 					for(var i=0,len=names.length;i<len;i++){
 						result.push(web_url+'src/common/'+names[i]+'.js');
 					}
@@ -294,9 +295,11 @@
 	
 	/*grunt.registerTask('default',"合并js",function(){
 		grunt.task.run(['concat']);
+	});
+*/
+	/*grunt.registerTask('default',"合并压缩js",function(){
+		grunt.task.run(['concat','uglify']);
 	});*/
-	
-	
 	
 	/*grunt.registerTask('default',"拼合图片",function(){
 		grunt.task.run(['sprite',]);

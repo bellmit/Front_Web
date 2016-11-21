@@ -1,7 +1,7 @@
 {
   "web_path": "Web",
   "base_path": "htdocs",
-  "name": "credit_admin",
+  "name": "qht",
   "web_container":"mobile",
   "js_src":"src",
   "js_dest":"js",
@@ -12,7 +12,7 @@
   "project": "YTTX",
   "platform":"web",
   "build_name":"",
-  "source_name":"admin",
+  "source_name":"index",
   "author": "yipin",
   "version": "1.0.0",
   "description": "",
