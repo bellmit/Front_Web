@@ -135,21 +135,32 @@
                             <table class="table table-bordered table-striped table-hover admin-table">
                                 <colgroup>
                                     <col class="g-w-percent15">
-                                    <col class="g-w-percent15">
-                                    <col class="g-w-percent8">
+                                    <col class="g-w-percent10">
                                     <col class="g-w-percent6">
+                                    <col class="g-w-percent6">
+                                    <col class="g-w-percent7">
                                     <col class="g-w-percent6">
                                 </colgroup>
                                 <thead>
                                     <tr>
                                         <th>商品名称</th>
                                         <th>商品型号</th>
+                                        <th>已发货数量</th>
                                         <th>采购数量</th>
                                         <th>发货数量</th>
                                         <th>等发数量</th>
                                     </tr>
                                 </thead>
                                 <tbody class="middle-align" id="admin_receive_list"></tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="2" class="g-t-r" >合计：</td>
+                                        <td id="admin_already" class="g-c-info"></td>
+                                        <td class="g-c-gray3" id="admin_total"></td>
+                                        <td id="admin_text">0</td>
+                                        <td id="admin_need" class="g-c-succ"></td>
+                                    </tr>
+                                </tfoot>
                             </table>
 
                             <div class="form-group">

@@ -9,7 +9,7 @@
 			/*菜单调用*/
 			var logininfo=public_tool.initMap.loginMap;
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
-				url:'http://120.76.237.100:8082/mall-agentbms-api/module/menu',
+				url:'http://10.0.5.222:8080/mall-agentbms-api/module/menu',
 				async:false,
 				type:'post',
 				param:{
@@ -64,7 +64,7 @@
 						autoWidth:true,/*是否*/
 						paging:false,
 						ajax:{
-							url:/*"http://120.76.237.100:8082/mall-agentbms-api/purchasing/order/list"*/"../../json/warehouse/mall_purchase_stats_list.json",
+							url:"http://10.0.5.222:8080/mall-agentbms-api/purchasing/order/list"/*"../../json/warehouse/mall_purchase_stats_list.json"*/,
 							dataType:'JSON',
 							method:'post',
 							dataSrc:function ( json ) {
@@ -99,7 +99,7 @@
 										getColumnData(purchase_page,purchase_config);
 									}
 								});
-								return result.list;
+								return result.list||[];
 							},
 							data:{
 								roleId:decodeURIComponent(logininfo.param.roleId),
@@ -223,7 +223,7 @@
 							/*展开*/
 							if(subitem===''){
 								$.ajax({
-										url:/*"http://120.76.237.100:8082/mall-agentbms-api/purchasing/order/details"*/"../../json/warehouse/mall_purchase_stats_details.json",
+										url:"http://10.0.5.222:8080/mall-agentbms-api/purchasing/order/details"/*"../../json/warehouse/mall_purchase_stats_details.json"*/,
 										dataType:'JSON',
 										method:'post',
 										data:{
@@ -261,8 +261,6 @@
 											return false;
 										}
 
-										list=list.slice(0,parseInt(Math.random()*10,10));
-
 										var i= 0,
 											newstr='<colgroup>\
 												<col class="g-w-percent10">\
@@ -277,7 +275,7 @@
 												<th>商品属性</th>\
 												<th>采购数量</th>\
 												<th>发货数量</th>\
-												<th>待发数量</th>\
+												<th>等发数量</th>\
 											</tr>\
 											</thead>',
 											res='',
@@ -315,11 +313,17 @@
 
 
 			/*全部展开*/
-			$purchase_showall_btn.on('click',function () {
-				$purchase_stats_wrap.find('span[data-action="select"]').trigger('click');
-			});
 			if(stats_power){
-				$purchase_showall_btn.removeClass('g-d-hidei');
+				$purchase_showall_btn.removeClass('g-d-hidei').on('click',function () {
+					var isshow=$purchase_showall_btn.find('i').hasClass('fa-plus-square');
+
+					if(isshow){
+						$purchase_showall_btn.html('<i class="fa-minus-square"></i><span>全部收缩</span>');
+					}else{
+						$purchase_showall_btn.html('<i class="fa-plus-square"></i><span>全部展开</span>');
+					}
+					$purchase_stats_wrap.find('span[data-action="select"]').trigger('click');
+				});
 			}else{
 				$purchase_showall_btn.addClass('g-d-hidei');
 			}

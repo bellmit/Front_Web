@@ -7,7 +7,7 @@
 			/*菜单调用*/
 			var logininfo=public_tool.initMap.loginMap;
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
-				url:'http://120.76.237.100:8082/mall-agentbms-api/module/menu',
+				url:'http://10.0.5.222:8080/mall-agentbms-api/module/menu',
 				async:false,
 				type:'post',
 				param:{
@@ -49,6 +49,10 @@
 				$admin_receive_list=$('#admin_receive_list'),
 				$admin_receiveaction=$('#admin_receiveaction'),
 				$admin_allreceiveaction=$('#admin_allreceiveaction'),
+				$admin_already=$('#admin_already'),
+				$admin_total=$('#admin_total'),
+				$admin_text=$('#admin_text'),
+				$admin_need=$('#admin_need'),
 				resetform0=null;
 
 
@@ -71,9 +75,9 @@
 				if(isselect){
 					$input.each(function () {
 						var $own=$(this);
-						$own.attr({
-							'readonly':true
-						});
+						$own.prop({
+							'disabled':true
+						}).addClass('admin-form-readonly');
 						receiveFilter($own,true);
 					});
 
@@ -82,12 +86,13 @@
 				}else {
 					$input.each(function () {
 						var $own=$(this),
-							tempvalue=$own.attr('data-value');
+							$need=$own.parent().next();
 
+						$need.html($need.attr('data-value'));
 
-						$own.attr({
-							'readonly':false
-						}).val(tempvalue);
+						$own.prop({
+							'disabled':false
+						}).removeClass('admin-form-readonly').val(0);
 						receiveFilter($own);
 					});
 
@@ -190,12 +195,10 @@
 											return JSON.stringify(receivelist);
 										}())
 									});
-									config['url']="http://120.76.237.100:8082/mall-agentbms-api/purchasing/order/delivered";
+									config['url']="http://10.0.5.222:8080/mall-agentbms-api/purchasing/order/delivered";
 									config['data']=setdata;
 								}
 
-								console.log(setdata);
-								return false;
 								$.ajax(config).done(function(resp){
 									var code;
 									if(formtype==='storereceive'){
@@ -213,14 +216,12 @@
 										dia.close();
 										if(formtype==='storereceive'){
 											/*页面跳转*/
-											location.href='mall-store-purchase.html';
+											location.href='mall-purchase-stats.html';
 										}
 									},2000);
 								}).fail(function(resp){
 									console.log('error');
 								});
-
-
 
 								return false;
 							}
@@ -248,7 +249,7 @@
 
 
 			$.ajax({
-					url:/*"http://120.76.237.100:8082/mall-agentbms-api/purchasing/order/view"*/"../../json/warehouse/mall_purchase_stats_view.json",
+					url:"http://10.0.5.222:8080/mall-agentbms-api/purchasing/order/view"/*"../../json/warehouse/mall_purchase_stats_view.json"*/,
 					dataType:'JSON',
 					method:'post',
 					data:{
@@ -276,7 +277,6 @@
 					if(!list){
 						return false;
 					}
-					list=list[id-1];
 
 					if(!$.isEmptyObject(list)){
 						$admin_id.val(id);
@@ -300,14 +300,41 @@
 									var receivelist=list[m],
 										len=receivelist.length,
 										i=0,
-										str='';
+										str='',
+										total=0,
+										text=0,
+										need=0;
 
 									for(i;i<len;i++){
-										var tempdata=(receivelist[i]["purchasingQuantlity"]-receivelist[i]["waitingQuantlity"])||0;
-										str+='<tr><td>商品名称：'+receivelist[i]["goodsName"]+'</td><td>'+receivelist[i]["attributeName"]+'</td><td>'+receivelist[i]["purchasingQuantlity"]+'</td><td><input type="text" maxlength="8" class="form-control" data-value="'+tempdata+'" data-id="'+receivelist[i]["id"]+'" value="'+tempdata+'" /></td><td>'+receivelist[i]["waitingQuantlity"]+'</td></tr>';
+										var temptotal=receivelist[i]["purchasingQuantlity"]||0,
+											tempneed=receivelist[i]["waitingQuantlity"]||0,
+											temptext=receivelist[i]["deliveredQuantlity"]||0;
+
+										if(temptotal===''||isNaN(temptotal)||temptotal<0){
+											temptotal=0;
+										}
+										if(tempneed===''||isNaN(tempneed)||tempneed<0){
+											tempneed=0;
+										}
+										if(temptext===''||isNaN(temptext)||temptext<0){
+											temptext=0;
+										}
+										temptotal=parseInt(temptotal,10);
+										tempneed=parseInt(tempneed,10);
+										temptext=parseInt(temptext,10);
+
+										total+=temptotal;
+										need+=tempneed;
+
+										str+='<tr><td>商品名称：'+receivelist[i]["goodsName"]+'</td><td>'+receivelist[i]["attributeName"]+'</td><td class="g-c-info">'+temptext+'</td><td class="g-c-gray3">'+temptotal+'</td><td><input type="text" maxlength="8" class="form-control" data-id="'+receivelist[i]["id"]+'" data-value="'+temptext+'" value="0" /></td><td data-value="'+tempneed+'" class="g-c-succ">'+tempneed+'</td></tr>';
 									}
 
 									if(len!==0){
+										text=total - need;
+										$admin_already.html(text);
+										$admin_total.html(total);
+										$admin_text.html(0);
+										$admin_need.html(need);
 										$(str).appendTo($admin_receive_list.html(''));
 									}
 									break;
@@ -331,31 +358,39 @@
 				filter=/\s*\D*/g,
 				total=$total.html().replace(filter,''),
 				text=0,
-				need=0;
+				temptext=$input.attr('data-value'),
+				need=$need.attr('data-value').replace(filter,'');
 
 			if(total===''||isNaN(total)){
 				total=0;
 			}
 			total=parseInt(total,10);
+			if(need===''||isNaN(need)){
+				need=0;
+			}
+			need=parseInt(need,10);
+			if(temptext===''||isNaN(temptext)){
+				temptext=0;
+			}
+			temptext=parseInt(temptext,10);
 
 			if(flag){
-				text=total;
+				$need.html(0);
+				$input.val(need);
 			}else{
 				text=$input.val().replace(filter,'');
 				if(text===''||isNaN(text)){
 					text=0;
 				}
 				text=parseInt(text,10);
-				if(text>=total){
-					text=total;
+				if(text>need){
+					text=need;
 				}else if(text<0){
 					text=0;
 				}
-
+				$need.html(total - temptext - text);
+				$input.val(text);
 			}
-			need=total - text;
-			$need.html(need);
-			$input.val(text);
 		}
 
 

@@ -7,7 +7,7 @@
 			/*菜单调用*/
 			var logininfo=public_tool.initMap.loginMap;
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
-				url:'http://120.76.237.100:8082/mall-agentbms-api/module/menu',
+				url:'http://10.0.5.222:8080/mall-agentbms-api/module/menu',
 				async:false,
 				type:'post',
 				param:{
@@ -142,12 +142,12 @@
 										/*修改操作*/
                                         setdata['id']=id;
 										actiontype='修改';
-										config['url']="http://120.76.237.100:8082/mall-agentbms-api/salesman/update";
+										config['url']="http://10.0.5.222:8080/mall-agentbms-api/salesman/update";
                                     }else{
 										/*新增操作*/
 										actiontype='新增';
                                         delete setdata['id'];
-										config['url']="http://120.76.237.100:8082/mall-agentbms-api/salesman/add";
+										config['url']="http://10.0.5.222:8080/mall-agentbms-api/salesman/add";
                                     }
 									config['data']=setdata;
 								}
@@ -157,11 +157,11 @@
 									if(formtype==='addsalesman'){
 										code=parseInt(resp.code,10);
 										if(code!==0){
-											dia.content('<span class="g-c-bs-warning g-btips-warn">'+actiontype+'业务员失败</span>').show();
+											dia.content('<span class="g-c-bs-warning g-btips-warn">'+resp.message||actiontype+'业务员失败+</span>').show();
 											return false;
 										}else{
 											public_tool.removeParams('mall-salesman-add');
-											dia.content('<span class="g-c-bs-success g-btips-succ">'+actiontype+'业务员成功</span>').show();
+											dia.content('<span class="g-c-bs-success g-btips-succ">'+resp.message||actiontype+'业务员失败+</span>').show();
 										}
 									}
 
@@ -203,7 +203,7 @@
 
 
 			$.ajax({
-				url:"http://120.76.237.100:8082/mall-agentbms-api/salesman/detail",
+				url:"http://10.0.5.222:8080/mall-agentbms-api/salesman/detail",
 				dataType:'JSON',
 				method:'post',
 				data:{

@@ -8,7 +8,7 @@
 			var logininfo=public_tool.initMap.loginMap,
 			merchant_grade=parseInt(decodeURIComponent(logininfo.param.grade),10);
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
-				url:'http://120.76.237.100:8082/mall-agentbms-api/module/menu',
+				url:'http://10.0.5.222:8080/mall-agentbms-api/module/menu',
 				async:false,
 				type:'post',
 				param:{
@@ -24,11 +24,9 @@
 			/*权限调用*/
 			var powermap=public_tool.getPower(),
 				merchantedit_power=public_tool.getKeyPower('mall-merchant-update',powermap),
-				merchantadd_power=public_tool.getKeyPower('mall-merchant-add',powermap);
-
-
-			/*dom引用和相关变量定义*/
-			var module_id='mall-merchant-add'/*模块id，主要用于本地存储传值*/,
+				merchantadd_power=public_tool.getKeyPower('mall-merchant-add',powermap),
+				$admin_action=$('#admin_action'),
+				module_id='mall-merchant-add'/*模块id，主要用于本地存储传值*/,
 				dia=dialog({
 					zIndex:2000,
 					title:'温馨提示',
@@ -39,8 +37,20 @@
 						return false;
 					},
 					cancel:false
-				})/*一般提示对象*/,
-				admin_merchant_form=document.getElementById('admin_merchant_form'),
+				})/*一般提示对象*/;
+
+
+
+			if(merchantadd_power&&(merchant_grade===3||merchant_grade===2||merchant_grade===1)){
+				$admin_action.removeClass('g-d-hidei');
+			}else{
+				$admin_action.addClass('g-d-hidei');
+				dia.content('<span class="g-c-bs-warning g-btips-warn">您没有添加商户的权限</span>').show();
+				return false;
+			}
+
+			/*dom引用和相关变量定义*/
+			var admin_merchant_form=document.getElementById('admin_merchant_form'),
 				$admin_merchant_form=$(admin_merchant_form),
 				$admin_id=$('#admin_id'),
 				$admin_username=$('#admin_username'),
@@ -61,9 +71,7 @@
 				$admin_status=$('#admin_status'),
 				$admin_salesmanId=$('#admin_salesmanId'),
 				$admin_remark=$('#admin_remark'),
-				$admin_action=$('#admin_action'),
 				resetform0=null;
-
 
 
 			/*重置表单*/
@@ -121,20 +129,8 @@
 				$admin_username.prop({
 					'readonly':true
 				});
-				/*判断权限*/
-				if(merchantedit_power&&(merchant_grade===3||merchant_grade===2||merchant_grade===1)){
-					$admin_action.removeClass('g-d-hidei');
-				}else{
-					$admin_action.addClass('g-d-hidei');
-				}
 				setAgentData(edit_cache['id']);
 			}else{
-				/*判断权限*/
-				if(merchantadd_power&&(merchant_grade===3||merchant_grade===2||merchant_grade===1)){
-					$admin_action.removeClass('g-d-hidei');
-				}else{
-					$admin_action.addClass('g-d-hidei');
-				}
 				/*获取地址*/
 				getAddress(86,'','province',true);
 			}
@@ -213,7 +209,7 @@
 										actiontype='新增';
                                         delete setdata['id'];
                                     }
-									config['url']="http://120.76.237.100:8082/mall-agentbms-api/merchant/addupdate";
+									config['url']="http://10.0.5.222:8080/mall-agentbms-api/merchant/addupdate";
 									config['data']=setdata;
 								}
 
@@ -355,7 +351,7 @@
 
 
 			$.ajax({
-				url:"http://120.76.237.100:8082/mall-agentbms-api/merchant/detail",
+				url:"http://10.0.5.222:8080/mall-agentbms-api/merchant/detail",
 				dataType:'JSON',
 				method:'post',
 				data:{
@@ -486,7 +482,7 @@
 		/*查询业务员Id*/
 		function getSalesmanId() {
 			$.ajax({
-				url:"http://120.76.237.100:8082/mall-agentbms-api/salesmans/list",
+				url:"http://10.0.5.222:8080/mall-agentbms-api/salesmans/list",
 				dataType:'JSON',
 				method:'post',
 				data:{
