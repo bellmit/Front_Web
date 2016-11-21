@@ -60,10 +60,11 @@
 			admin_storereceive_form.reset();
 
 
+			/*打印*/
+
+			
 			/*绑定发货数量控制*/
-			$admin_receive_list.on('keyup','input',function (e) {
-				receiveFilter($(this));
-			});
+			doReceiveEvent();
 
 
 			/*绑定全单收货*/
@@ -73,6 +74,7 @@
 					$input=$admin_receive_list.find('input');
 
 				if(isselect){
+					/*设置单个值*/
 					$input.each(function () {
 						var $own=$(this);
 						$own.prop({
@@ -81,8 +83,12 @@
 						receiveFilter($own,true);
 					});
 
+					/*设置合计*/
+					$admin_text.html($admin_need.attr('data-value'));
+					$admin_need.html(0);
+
 					/*解除邦输入事件*/
-					$admin_receive_list.off('keyup','input');
+					$admin_receive_list.off('keyup focusout','input');
 				}else {
 					$input.each(function () {
 						var $own=$(this),
@@ -96,10 +102,12 @@
 						receiveFilter($own);
 					});
 
+					/*设置合计*/
+					$admin_text.html(0);
+					$admin_need.html($admin_need.attr('data-value'));
+
 					/*绑定输入*/
-					$admin_receive_list.on('keyup','input',function (e) {
-						receiveFilter($(this));
-					});
+					doReceiveEvent();
 				}
 
 			});
@@ -165,9 +173,12 @@
 						}()),{
 							submitHandler: function(form){
 								var setdata={},
-									id=$admin_id.val();
+									id=$admin_id.val(),
+									already=parseInt($admin_already.html(),10),
+									total=parseInt($admin_total.html(),10),
+									text=parseInt($admin_text.html(),10);
 
-								if(id===''){
+								if(id===''||text===0){
 									dia.content('<span class="g-c-bs-warning g-btips-warn">没有收货订单数据</span>').show();
 									setTimeout(function () {
 										dia.close();
@@ -195,9 +206,24 @@
 											return JSON.stringify(receivelist);
 										}())
 									});
+
+									/*判断状态*/
+									/*1 未收货 3 部分收货 5 已收货*/
+									if(already===0){
+										setdata['orderState']=1;
+									}else{
+										if((already+text)===total){
+											setdata['orderState']=5;
+										}else{
+											setdata['orderState']=3;
+										}
+									}
+
 									config['url']="http://10.0.5.222:8080/mall-agentbms-api/purchasing/order/delivered";
 									config['data']=setdata;
+
 								}
+
 
 								$.ajax(config).done(function(resp){
 									var code;
@@ -326,7 +352,7 @@
 										total+=temptotal;
 										need+=tempneed;
 
-										str+='<tr><td>商品名称：'+receivelist[i]["goodsName"]+'</td><td>'+receivelist[i]["attributeName"]+'</td><td class="g-c-info">'+temptext+'</td><td class="g-c-gray3">'+temptotal+'</td><td><input type="text" maxlength="8" class="form-control" data-id="'+receivelist[i]["id"]+'" data-value="'+temptext+'" value="0" /></td><td data-value="'+tempneed+'" class="g-c-succ">'+tempneed+'</td></tr>';
+										str+='<tr><td>'+receivelist[i]["goodsName"]+'</td><td>'+receivelist[i]["attributeName"]+'</td><td class="g-c-info">'+temptext+'</td><td class="g-c-gray3">'+temptotal+'</td><td><input type="text" maxlength="8" class="form-control" data-id="'+receivelist[i]["id"]+'" data-value="'+temptext+'" value="0" /></td><td data-value="'+tempneed+'" class="g-c-succ">'+tempneed+'</td></tr>';
 									}
 
 									if(len!==0){
@@ -334,7 +360,9 @@
 										$admin_already.html(text);
 										$admin_total.html(total);
 										$admin_text.html(0);
-										$admin_need.html(need);
+										$admin_need.html(need).attr({
+											'data-value':need
+										});
 										$(str).appendTo($admin_receive_list.html(''));
 									}
 									break;
@@ -394,6 +422,29 @@
 		}
 
 
+
+		/*事件绑定*/
+		function doReceiveEvent() {
+			$admin_receive_list.on('keyup focusout','input',function (e) {
+				var etype=e.type,
+					$input=$(this);
+
+				if(etype==='keyup'){
+					receiveFilter($input);
+				}else if(etype==='focusout'){
+					var $last=$admin_receive_list.find('tr'),
+						need=0;
+
+					$last.each(function (index) {
+						var $this=$last.eq(index).find('td:last-child');
+						need+=parseInt($this.html(),10);
+					});
+
+					$admin_need.html(need);
+					$admin_text.html(parseInt($admin_need.attr('data-value'),10) - need);
+				}
+			});
+		}
 
 
 

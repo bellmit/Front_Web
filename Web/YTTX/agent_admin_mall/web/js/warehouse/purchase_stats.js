@@ -148,9 +148,10 @@
 								"data":"id",
 								"render":function(data, type, full, meta ){
 									var id=parseInt(data,10),
-										btns='';
+										btns='',
+										state=parseInt(full.orderState,10);
 
-									if(receive_power){
+									if(receive_power&&state!==5){
 										btns+='<span data-action="receive" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 											<i class="fa-file-text-o"></i>\
 											<span>收货</span>\
@@ -315,12 +316,12 @@
 			/*全部展开*/
 			if(stats_power){
 				$purchase_showall_btn.removeClass('g-d-hidei').on('click',function () {
-					var isshow=$purchase_showall_btn.find('i').hasClass('fa-plus-square');
+					var isshow=$purchase_showall_btn.find('i').hasClass('fa-plus');
 
 					if(isshow){
-						$purchase_showall_btn.html('<i class="fa-minus-square"></i><span>全部收缩</span>');
+						$purchase_showall_btn.html('<i class="fa-minus"></i>&nbsp;&nbsp;<span>全部收缩</span>');
 					}else{
-						$purchase_showall_btn.html('<i class="fa-plus-square"></i><span>全部展开</span>');
+						$purchase_showall_btn.html('<i class="fa-plus"></i>&nbsp;&nbsp;<span>全部展开</span>');
 					}
 					$purchase_stats_wrap.find('span[data-action="select"]').trigger('click');
 				});

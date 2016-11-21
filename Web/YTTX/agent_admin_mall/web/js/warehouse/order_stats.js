@@ -23,7 +23,7 @@
 			/*权限调用*/
 			var powermap=public_tool.getPower(86),
 				stats_power=public_tool.getKeyPower('mall-order-stats',powermap);
-			
+
 
 
 			/*dom引用和相关变量定义*/
@@ -100,7 +100,7 @@
 								return result.list||[];
 							},
 							data:{
-								roleId:decodeURIComponent(logininfo.param.roleId),
+								userId:decodeURIComponent(logininfo.param.roleId),
 								adminId:decodeURIComponent(logininfo.param.adminId),
 								token:decodeURIComponent(logininfo.param.token),
 								grade:decodeURIComponent(logininfo.param.grade),
@@ -129,15 +129,27 @@
 								"render":function(data, type, full, meta ){
 									var stauts=parseInt(data,10),
 										statusmap={
-											6:"已付款",
-											9:"已发货"
+											0:"待付款",
+											1:"取消订单",
+											6:"待发货",
+											9:"待收货",
+											20:"待评价",
+											21:"已评价"
 										},
 										str='';
 
-									if(stauts===6){
-										str='<div class="g-c-info">'+statusmap[stauts]+'</div>';
-									}else if(stauts===9){
+									if(stauts===0){
+										str='<div class="g-c-red2">'+statusmap[stauts]+'</div>';
+									}else if(stauts===1){
+										str='<div class="g-c-gray10">'+statusmap[stauts]+'</div>';
+									}else if(stauts===6||stauts===9){
 										str='<div class="g-c-gray6">'+statusmap[stauts]+'</div>';
+									}else if(stauts===20){
+										str='<div class="g-c-info">'+statusmap[stauts]+'</div>';
+									}else if(stauts===21){
+										str='<div class="g-c-gray3">'+statusmap[stauts]+'</div>';
+									}else{
+
 									}
 									return str;
 								}
@@ -146,14 +158,18 @@
 								"data":"id",
 								"render":function(data, type, full, meta ){
 									var id=parseInt(data,10),
-										btns='';
+										btns='',
+										state=parseInt(full.orderState,10);
 
 									if(stats_power){
-										btns+='<span data-action="send" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+										if(state===6){
+											btns+='<span data-action="send" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 											<i class="fa-file-text-o"></i>\
 											<span>发货</span>\
-											</span>\
-										<span  data-subitem=""  data-action="select" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+											</span>';
+										}
+										
+										btns+='<span  data-subitem=""  data-action="select" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 										<i class="fa-angle-right"></i>\
 										<span>查看</span>\
 										</span>';
@@ -319,11 +335,17 @@
 
 
 			/*全部展开*/
-			$order_showall_btn.on('click',function () {
-				$order_stats_wrap.find('span[data-action="select"]').trigger('click');
-			});
 			if(stats_power){
-				$order_showall_btn.removeClass('g-d-hidei');
+				$order_showall_btn.removeClass('g-d-hidei').on('click',function () {
+					var isshow=$order_showall_btn.find('i').hasClass('fa-plus');
+
+					if(isshow){
+						$order_showall_btn.html('<i class="fa-minus"></i>&nbsp;&nbsp;<span>全部收缩</span>');
+					}else{
+						$order_showall_btn.html('<i class="fa-plus"></i>&nbsp;&nbsp;<span>全部展开</span>');
+					}
+					$order_showall_btn.find('span[data-action="select"]').trigger('click');
+				});
 			}else{
 				$order_showall_btn.addClass('g-d-hidei');
 			}
