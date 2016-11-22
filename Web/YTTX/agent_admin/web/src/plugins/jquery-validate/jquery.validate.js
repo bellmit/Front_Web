@@ -186,6 +186,14 @@ $.extend($.fn, {
 			data = $.extend( data, { remote: param });
 		}
 
+		if(data.selfremote){
+			param=data.selfremote;
+			delete data.selfremote;
+			data=$.extend(data,{
+				selfremote:param
+			});
+		}
+
 		return data;
 	}
 });
@@ -308,6 +316,7 @@ $.extend( $.validator, {
 	messages: {
 		required: "This field is required.",
 		remote: "Please fix this field.",
+		selfremote: "Please fix this field.",
 		email: "Please enter a valid email address.",
 		zh_phone:'Please enter a valid phone.',
 		poe:'Please enter a valid phone or email.',
@@ -914,7 +923,7 @@ $.extend( $.validator, {
 			return $.data( element, "previousValue" ) || $.data( element, "previousValue", {
 				old: null,
 				valid: true,
-				message: this.defaultMessage( element, "remote" )
+				message: this.defaultMessage( element, "remote"||"selfremote" )
 			});
 		}
 
@@ -1380,6 +1389,55 @@ $.extend( $.validator, {
 			}
 			var length = $.isArray( val ) ? val.length : this.getLength( val, element );
 			return this.optional( element ) || length >= param;
+		},
+
+		//自定义远程校验
+		selfremote: function( value, element, param ) {
+			if ( this.optional( element ) ) {
+				return "dependency-mismatch";
+			}
+
+			var previous = this.previousValue( element ),
+				validator;
+
+			if (!this.settings.messages[ element.name ] ) {
+				this.settings.messages[ element.name ] = {};
+			}
+			previous.originalMessage = this.settings.messages[ element.name ].selfremote;
+			this.settings.messages[ element.name ].selfremote = previous.message;
+
+			if ( previous.old === value ) {
+				return previous.valid;
+			}
+
+			previous.old = value;
+			validator = this;
+
+			if(typeof param==='function'){
+				var self=this;
+				param.call(self,function (response) {
+					var valid = response === true || response === "true",
+						errors, message, submitted;
+
+					validator.settings.messages[ element.name ].selfremote = previous.originalMessage;
+					if ( valid ) {
+						submitted = validator.formSubmitted;
+						validator.prepareElement( element );
+						validator.formSubmitted = submitted;
+						validator.successList.push( element );
+						delete validator.invalid[ element.name ];
+						validator.showErrors();
+					} else {
+						errors = {};
+						message = response || validator.defaultMessage( element, "selfremote" );
+						errors[ element.name ] = previous.message = $.isFunction( message ) ? message( value ) : message;
+						validator.invalid[ element.name ] = true;
+						validator.showErrors( errors );
+					}
+					previous.valid = valid;
+				});
+			}
+			return "pending";
 		}
 
 

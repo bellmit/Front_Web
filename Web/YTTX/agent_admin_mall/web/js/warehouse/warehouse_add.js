@@ -7,7 +7,7 @@
 			/*菜单调用*/
 			var logininfo=public_tool.initMap.loginMap;
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
-				url:'http://10.0.5.222:8080/mall-agentbms-api/module/menu',
+				url:'http://120.76.237.100:8082/mall-agentbms-api/module/menu',
 				async:false,
 				type:'post',
 				param:{
@@ -245,7 +245,7 @@
 										/*新增操作*/
 										actiontype='新增';
                                     }
-									config['url']="http://10.0.5.222:8080/mall-agentbms-api/warehouse/addupdate";
+									config['url']="http://120.76.237.100:8082/mall-agentbms-api/warehouse/addupdate";
 									config['data']=setdata;
 								}
 
@@ -266,7 +266,7 @@
 
 									setTimeout(function () {
 										dia.close();
-										if(formtype==='addwarehouse'){
+										if(formtype==='addwarehouse'&&code===0){
 											/*页面跳转*/
 											location.href='mall-warehouse-list.html';
 										}
@@ -419,7 +419,7 @@
 
 
 			$.ajax({
-					url:"http://10.0.5.222:8080/mall-agentbms-api/adscriptionregions/available",
+					url:"http://120.76.237.100:8082/mall-agentbms-api/adscriptionregions/available",
 					dataType:'JSON',
 					method:'post',
 					data:params
@@ -481,7 +481,7 @@
 
 
 			$.ajax({
-					url:"http://10.0.5.222:8080/mall-agentbms-api/warehouse/detail",
+					url:"http://120.76.237.100:8082/mall-agentbms-api/warehouse/detail",
 					dataType:'JSON',
 					method:'post',
 					data:{

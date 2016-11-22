@@ -215,6 +215,175 @@
 	.admin-ta-r{
 		text-align: right;
 	}
+
+
+	/*商品缩略图1*/
+	.admin-goods-thumbnail1{
+		background:@color-white;
+		.box-sizing-base;
+		min-width:40px;
+		min-height:40px;
+		max-width:80px;
+		max-height:80px;
+		overflow:hidden;
+		text-align: center;
+		border:1px solid @color-gray14;
+		padding:3px;
+		&:empty{
+			&:before,
+			&::before{
+				content:'暂无图片';
+				display: block;
+				width:100%;
+				height:100%;
+				line-height:70px;
+				color:@color-gray10;
+				font-size:@font-size-base;
+			}
+		}
+		img{
+			display:inline-block;
+			width:100%;
+			height:100%;
+		}
+	}
+
+
+	/*商品缩略图2*/
+	.admin-goods-thumbnail2{
+		.layout-base;
+		width:252px;
+		height:122px;
+		padding:5px;
+		border:1px solid @color-gray14;
+		.border-radius-base(3px);
+		background:@color-white;
+		margin:0 auto;
+		.goods-img,
+		.goods-remark,
+		.goods-theme{
+			.box-sizing-base;
+			display:block;
+			float:left;
+			.no-outline-base;
+		}
+		.goods-img{
+			width:80px;
+			height:80px;
+			overflow:hidden;
+			img{
+				display:block;
+				.layout-base;
+				padding:2px;
+				background:@color-white;
+				height:100%;
+				border:1px solid @color-gray14;
+			}
+		}
+		.goods-remark{
+			width:160px;
+			height:80px;
+			text-align:left;
+			font-size:@font-size-small;
+			font-style:normal;
+			line-height:20px;
+			padding:0 0 0 10px;
+			overflow:hidden;
+			color:@color-gray10;
+		}
+		.goods-theme{
+			width:100%;
+			text-align:left;
+			height:25px;
+			border-top:1px dashed @color-gray12;
+			line-height:25px;
+			margin:5px 0 0 0;
+			font-size:@font-size-small;
+			color:@color-gray6;
+			overflow:hidden;
+		}
+	}
+
+
+
+	/*商品子订单信息*/
+	.admin-order-subitem1,
+	.admin-order-subitem2{
+		.layout-base;
+		background:@color-white;
+		border:1px solid @color-gray14;
+		.text-ww;
+		li{
+			.layout-base;
+			display:inline-block;
+			min-height:24px;
+			color:@color-gray9;
+			line-height: 24px;
+		}
+	}
+
+	.admin-order-subitem1{
+		padding:5px 30px 15px 10px;
+		&:not(:empty){
+			.layout-relative-base;
+			&:after,
+			&::after{
+				@noempty:20px;
+				.layout-absoluterb-base;
+				width:@noempty;
+				height:@noempty;
+				display:block;
+				line-height:@noempty;
+				text-align:center;
+				overflow: hidden;
+				background:@color-gray16;
+				color:@color-gray10;
+				font-size:@font-size-base - 2;
+				content:attr(data-id);
+			}
+		}
+		&:hover{
+			.transition-base(border .3s ease-in .02s);
+			border:1px dashed @color-red1;
+		}
+		li{
+			div{
+				display:inline-block;
+				padding:0 0 0 5px;
+			}
+		}
+	}
+	.admin-order-subitem2{
+		padding:5px 10px;
+		li{
+			.admin-img{
+				.layout-base(120px);
+				height:80px;
+				padding:2px;
+				display: inline-block;
+				overflow: hidden;
+				img{
+					max-width:100%;
+					max-height:100%;
+				}
+			}
+		}
+	}
+
+
+	/*定制表单*/
+	.admin-table-input{
+		background-color:@color-white;
+		border:1px solid #e4e4e4;
+		height:30px;
+		padding:5px;
+		line-height:20px;
+		.transition-base(border-color .15s ease-in-out 0);
+		width:100%;
+		&:focus{
+			border-color:rgba(104,184,80,.5);
+		}
+	}
 }
 
 

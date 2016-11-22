@@ -7,7 +7,7 @@
 			/*菜单调用*/
 			var logininfo=public_tool.initMap.loginMap;
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
-				url:'http://10.0.5.222:8080/mall-agentbms-api/module/menu',
+				url:'http://120.76.237.100:8082/mall-agentbms-api/module/menu',
 				async:false,
 				type:'post',
 				param:{
@@ -39,6 +39,8 @@
 					},
 					cancel:false
 				})/*一般提示对象*/,
+				issamename=false,
+				admin_username_tips=document.getElementById('admin_username_tips'),
 				admin_agent_form=document.getElementById('admin_agent_form'),
 				$admin_agent_form=$(admin_agent_form),
 				$admin_id=$('#admin_id'),
@@ -89,6 +91,43 @@
 				/*初始化代理商级别*/
 				setGradeShow(gradeobj,resp.result);
 				grade_data=resp.result;
+			});
+
+
+			/*绑定验证是否代理商全称重复(to do)*/
+			$admin_username.on('focusout',function () {
+				var $this=$(this),
+					username=public_tool.trims($this.val());
+
+					issamename=false;
+					if(username!==''){
+						$.ajax({
+							url:"http://120.76.237.100:8082/mall-agentbms-api/sysuser/check",
+							dataType:'JSON',
+							method:'post',
+							data:{
+								username:username,
+								roleId:decodeURIComponent(logininfo.param.roleId),
+								token:decodeURIComponent(logininfo.param.token),
+								adminId:decodeURIComponent(logininfo.param.adminId),
+								loginGrade:decodeURIComponent(logininfo.param.grade)
+							}
+						}).done(function(resp){
+							var code;
+							code=parseInt(resp.code,10);
+							if(code!==0){
+								admin_username_tips.innerHTML='登陆账户名已经存在';
+								setTimeout(function () {
+									admin_username_tips.innerHTML='';
+								},3000);
+								issamename=true;
+							}
+						}).fail(function(resp){
+							console.log('error');
+						});
+					}
+
+
 			});
 
 
@@ -200,6 +239,16 @@
 
 								if(formtype==='addagent'){
 
+									/*判断代理商全称是否重复*/
+									if(issamename){
+										admin_username_tips.innerHTML='登陆账户名已经存在';
+										setTimeout(function () {
+											admin_username_tips.innerHTML='';
+										},3000);
+										$admin_username.select();
+										return false;
+									}
+
 									/*同步编辑器*/
 									$.extend(true,setdata,{
 										username:$admin_username.val(),
@@ -234,7 +283,7 @@
 										actiontype='新增';
                                         delete setdata['id'];
                                     }
-									config['url']="http://10.0.5.222:8080/mall-agentbms-api/agent/addupdate";
+									config['url']="http://120.76.237.100:8082/mall-agentbms-api/agent/addupdate";
 									config['data']=setdata;
 								}
 
@@ -255,7 +304,7 @@
 										dia.close();
 										if(formtype==='addagent'){
 											/*页面跳转*/
-											if(actiontype==='新增'){
+											if(actiontype==='新增'&&code===0){
 												location.href='mall-agent-list.html';
 											}
 										}
@@ -373,7 +422,7 @@
 
 			/*查询上级代理商ID*/
 			$.ajax({
-				url:"http://10.0.5.222:8080/mall-agentbms-api/agent/role/check",
+				url:"http://120.76.237.100:8082/mall-agentbms-api/agent/role/check",
 				dataType:'JSON',
 				method:'post',
 				data:{
@@ -515,7 +564,7 @@
 
 
 			$.ajax({
-				url:"http://10.0.5.222:8080/mall-agentbms-api/agent/detail",
+				url:"http://120.76.237.100:8082/mall-agentbms-api/agent/detail",
 				dataType:'JSON',
 				method:'post',
 				data:{
@@ -648,7 +697,7 @@
 		/*查询业务员Id*/
 		function getSalesmanId() {
 			$.ajax({
-				url:"http://10.0.5.222:8080/mall-agentbms-api/salesmans/notused",
+				url:"http://120.76.237.100:8082/mall-agentbms-api/salesmans/notused",
 				dataType:'JSON',
 				method:'post',
 				data:{

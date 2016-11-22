@@ -10,7 +10,7 @@
 			/*菜单调用*/
 			var logininfo=public_tool.initMap.loginMap;
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
-				url:'http://10.0.5.222:8080/mall-agentbms-api/module/menu',
+				url:'http://120.76.237.100:8082/mall-agentbms-api/module/menu',
 				async:false,
 				type:'post',
 				param:{
@@ -75,7 +75,7 @@
 						autoWidth:true,/*是否*/
 						paging:false,
 						ajax:{
-							url:"http://10.0.5.222:8080/mall-agentbms-api/salesmans/related",
+							url:"http://120.76.237.100:8082/mall-agentbms-api/salesmans/related",
 							dataType:'JSON',
 							method:'post',
 							dataSrc:function ( json ) {
@@ -110,7 +110,7 @@
 										getColumnData(salesman_page,salesman_config);
 									}
 								});
-								return result.list||[];
+								return result?result.list||[]:[];
 							},
 							data:{
 								roleId:decodeURIComponent(logininfo.param.roleId),
@@ -252,7 +252,7 @@
 			}
 
 			var detailconfig={
-					url:"http://10.0.5.222:8080/mall-agentbms-api/salesman/detail",
+					url:"http://120.76.237.100:8082/mall-agentbms-api/salesman/detail",
 					dataType:'JSON',
 					method:'post',
 					data:{
