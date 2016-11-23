@@ -737,7 +737,7 @@
 			"modid":"67"
 		},
 		"71":{
-			"name":"代理商管理",
+			"name":"运营商管理",
 			"code":"agent",
 			"match":"-agent-",
 			"class":"menu-ux-agent",
@@ -748,7 +748,7 @@
 			"name":"业务员管理",
 			"code":"salesman",
 			"match":"-salesman-",
-			"class":"menu-ux-logistics",
+			"class":"menu-ux-user",
 			"module":"salesman",
 			"modid":"75"
 		},
@@ -773,10 +773,36 @@
 			"name":"分仓管理",
 			"code":"warehouse",
 			"match":"-warehouse-",
-			"matchlist":["-warehouse-","-purchase-","-order-","-inventory-","-storage-","-outbound-","-check-","-store-","-logistics-","-provider-"],
-			"class":"menu-ux-distribution",
+			"class":"menu-ux-store",
 			"module":"warehouse",
 			"modid":"86"
+		},
+		"98":{
+			"name":"订单管理",
+			"code":"purchase",
+			"match":"-purchase-",
+			"matchlist":["-order-"],
+			"class":"menu-ux-purchase",
+			"module":"purchase",
+			"modid":"98"
+		},
+		"99":{
+			"name":"仓储管理",
+			"code":"inventory",
+			"match":"-inventory-",
+			"matchlist":["-storage-","-outbound-","-check-"],
+			"class":"menu-ux-inventory",
+			"module":"inventory",
+			"modid":"99"
+		},
+		"100":{
+			"name":"分仓其他",
+			"code":"logistics",
+			"match":"-logistics-",
+			"matchlist":["-provider-"],
+			"class":"menu-ux-logistics",
+			"module":"logistics",
+			"modid":"100"
 		}
 	};
 	/*路由映射*/

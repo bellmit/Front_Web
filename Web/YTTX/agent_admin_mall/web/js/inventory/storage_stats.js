@@ -22,7 +22,7 @@
 				datatype:'json'
 			});
 			/*权限调用*/
-			var powermap=public_tool.getPower(86),
+			var powermap=public_tool.getPower(99),
 				storageshow_power=public_tool.getKeyPower('mall-storage-stats',powermap),
 				storageadd_power=public_tool.getKeyPower('mall-storage-add',powermap);
 
@@ -33,6 +33,7 @@
 			var $storage_stats_wrap=$('#storage_stats_wrap')/*表格*/,
 				module_id='mall-storage-stats'/*模块id，主要用于本地存储传值*/,
 				dia=dialog({
+					zIndex:2000,
 					title:'温馨提示',
 					okValue:'确定',
 					width:300,
@@ -42,6 +43,7 @@
 					},
 					cancel:false
 				})/*一般提示对象*/,
+
 				$admin_page_wrap=$('#admin_page_wrap'),
 				$storage_stats_add=$('#storage_stats_add'),
 				$show_add_wrap=$('#show_add_wrap'),
@@ -64,7 +66,14 @@
 				$show_detail_list=$('#show_detail_list'),
 				$show_detail_radio=$('#show_detail_radio'),
 				$storage_apply=$('#storage_apply'),
-				resetform0=null;
+				resetform0=null,
+				goodsmap={
+					goodsseqid:[],
+					goodsactive:[],
+					goodsobj:[]
+				},
+				sureObj=public_tool.sureDialog(dia)/*回调提示对象*/,
+				setSure=new sureObj();
 
 
 
@@ -252,6 +261,7 @@
 						operate_item=null;
 					},1000);
 				}
+				admin_storagestats_form.reset();
 			});
 
 
@@ -277,6 +287,68 @@
 			$storage_stats_additem.on('click',function () {
 				addStorageItem();
 			});
+
+			/*绑定删除商品*/
+			$storage_stats_removeitem.on('click',function () {
+				removeStorageItem();
+			});
+
+
+			/*绑定商品选择*/
+			$show_add_list.on('change keyup focusout','input',function (e) {
+				var target= e.target,
+					etype=e.type,
+					$this,
+					text='',
+					index=0,
+					len=0,
+					i=0,
+					temparr='';
+
+				if(etype==='change'){
+					/*选中事件*/
+					if(target.className.indexOf('goodsid')!==-1){
+						$this=$(target);
+						text=$this.val();
+						if($this.is(':checked')){
+							goodsmap.goodsactive.push(text);
+							goodsmap.goodsobj.push($this);
+						}else{
+							temparr=goodsmap.goodsactive;
+							index=arrIndex(text,temparr);
+							goodsmap.goodsactive.splice(index,1);
+							goodsmap.goodsobj.splice(index,1);
+						}
+					}else{
+						return false;
+					}
+				}else if(etype==='keyup'){
+					/*键盘事件*/
+					if(target.className.indexOf('goodsnumber')!==-1){
+						$this=$(target);
+						text=$this.val();
+						text=text.replace(/\s*\D*/g,'');
+						if(text===''||isNaN(text)){
+							text=0;
+						}
+						$this.val(parseInt(text,10));
+					}else{
+						return false;
+					}
+				}else if(etype==='focusout'){
+					/*鼠标失去焦点事件*/
+					if(target.className.indexOf('goodscode')!==-1){
+						/*扫描 to do*/
+						/*$this=$(target);*/
+					}else if(target.className.indexOf('goodsnumber')!==-1){
+						totalShow();
+					}else{
+						return false;
+					}
+				}
+			});
+
+
 
 			/*绑定添加地址*/
 			/*表单验证*/
@@ -400,32 +472,46 @@
 		/*添加商品*/
 		function addStorageItem(){
 			var seqid=(Math.random()).toString().slice(2,15),
-				str='<tr><td><input type="checkbox" name="goodsid" value="'+seqid+'"/></td><td colspan="2"><input class="form-control" type="text" /></td><td colspan="2"><input class="form-control" type="text" /></td><td colspan="2"><input class="form-control" type="text" /></td></tr>';
+				str='<tr><td><input type="checkbox" class="goodsid" name="goodsId" data-id="'+seqid+'" value="'+seqid+'"/></td><td><input class="form-control goodscode" type="text" /></td><td><input class="form-control" type="text" /></td><td><input class="form-control" type="text" /></td><td><input class="form-control goodsnumber" maxlength="9" value="0" type="text" /></td></tr>';
 
 			$(str).appendTo($show_add_list);
+			goodsmap.goodsseqid.push(seqid);
 		}
-
-
 
 		/*删除商品*/
 		function removeStorageItem(){
-			var $checkbox=$show_add_list.find('input:checkbox'),
-				seqarr=[];
-
-			$checkbox.each(function () {
-				var $this=$(this),
-					ischeck=$this.is(':checked');
-				if(ischeck){
-					seqarr.push($this);
-				}
-			});
-
-			if(seqarr.length===0){
-
+			var len=goodsmap.goodsactive.length;
+			if(len===0){
+				dia.content('<span class="g-c-bs-warning g-btips-warn">您没有选择需要操作的数据</span>').showModal();
 				return false;
-			}else{
-				
 			}
+			/*确认是否删除*/
+			setSure.sure('delete',function(cf){
+				/*to do*/
+				var tip=cf.dia||dia,
+					i=len - 1;
+				for(i;i>=0;i--){
+					goodsmap.goodsseqid.splice(arrIndex(goodsmap.goodsactive[i],goodsmap.goodsseqid),1);
+					goodsmap.goodsobj[i].closest('tr').remove();
+				}
+				goodsmap.goodsactive.length=0;
+				goodsmap.goodsobj.length=0;
+				tip.content('<span class="g-c-bs-warning g-btips-warn">删除成功</span>').show();
+				totalShow();
+				setTimeout(function () {
+					tip.close();
+				},2000);
+			});
+		}
+
+
+		/*计算合计*/
+		function totalShow() {
+			var total=0;
+			$show_add_list.find('input.goodsnumber').each(function () {
+				total+=parseInt(this.value,10);
+			});
+			$storage_total.html(total);
 		}
 
 		/*查看出库单*/
@@ -513,8 +599,17 @@
 				});
 		}
 
-
-
+		/*数组索引*/
+		function arrIndex(val,arr) {
+			var i=0,
+				len=arr.length;
+			for(i;i<len;i++){
+				if(val===arr[i]){
+					return i;
+				}
+			}
+			return -1;
+		}
 	});
 
 

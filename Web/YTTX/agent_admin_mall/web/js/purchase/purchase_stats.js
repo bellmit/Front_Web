@@ -21,7 +21,7 @@
 				datatype:'json'
 			});
 			/*权限调用*/
-			var powermap=public_tool.getPower(86),
+			var powermap=public_tool.getPower(),
 				stats_power=public_tool.getKeyPower('mall-purchase-stats',powermap),
 				receive_power=public_tool.getKeyPower('mall-purchase-receiving',powermap);
 			
@@ -64,7 +64,7 @@
 						autoWidth:true,/*是否*/
 						paging:false,
 						ajax:{
-							url:"http://120.76.237.100:8082/mall-agentbms-api/purchasing/order/list"/*"../../json/warehouse/mall_purchase_stats_list.json"*/,
+							url:"http://120.76.237.100:8082/mall-agentbms-api/purchasing/order/list"/*"../../json/purchase/mall_purchase_stats_list.json"*/,
 							dataType:'JSON',
 							method:'post',
 							dataSrc:function ( json ) {
@@ -224,7 +224,7 @@
 							/*展开*/
 							if(subitem===''){
 								$.ajax({
-										url:"http://120.76.237.100:8082/mall-agentbms-api/purchasing/order/details"/*"../../json/warehouse/mall_purchase_stats_details.json"*/,
+										url:"http://120.76.237.100:8082/mall-agentbms-api/purchasing/order/details"/*"../../json/purchase/mall_purchase_stats_details.json"*/,
 										dataType:'JSON',
 										method:'post',
 										data:{

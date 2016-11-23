@@ -5,10 +5,10 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	
 	<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0,maximum-scale=1">
-	<meta name="description" content="布住网运营管理平台--分仓管理--入库统计" />
-	<meta name="keywords" content="布住网运营管理平台--分仓管理--入库统计">
+	<meta name="description" content="布住网运营管理平台--仓储管理--入库统计" />
+	<meta name="keywords" content="布住网运营管理平台--仓储管理--入库统计">
   <meta name="author" content="yp" />
-	<title>布住网运营管理平台--分仓管理--入库统计</title>
+	<title>布住网运营管理平台--仓储管理--入库统计</title>
 	<link rel="stylesheet" href="../../css/base.css">
   <link rel="stylesheet" href="../../js/plugins/datatables/dataTables.bootstrap.css">
 	<link rel="stylesheet" href="../../css/admin.css">
@@ -86,12 +86,12 @@
             <!--主题描述-->
             <div class="page-title">
                 <div class="title-env">
-                    <h1 class="title">分仓管理</h1>
+                    <h1 class="title">仓储管理</h1>
                     <p class="description">入库统计</p>
                 </div>
                 <div class="breadcrumb-env">
                     <ol class="breadcrumb bc-1">
-                        <li><a href=""><i class="fa-home"></i>分仓管理</a></li>
+                        <li><a href=""><i class="fa-home"></i>仓储管理</a></li>
                         <li class="active"><strong>入库统计</strong></li>
                     </ol>
                 </div>
@@ -204,75 +204,88 @@
                 <div class="modal-body">
                     <form role="form"  method="post" id="admin_storagestats_form" class="admin-form1 validate">
                         <input value="" type="text" class="g-d-hidei" name="id"  id="admin_id" />
-                    <table class="table table-bordered table-striped table-hover admin-table">
-                        <colgroup>
-                            <col class="g-w-percent7"/>
-                            <col class="g-w-percent7"/>
-                            <col class="g-w-percent7"/>
-                            <col class="g-w-percent7"/>
-                            <col class="g-w-percent7"/>
-                            <col class="g-w-percent7"/>
-                            <col class="g-w-percent7"/>
-                        </colgroup>
-                        <thead>
-                        <tr>
-                            <th><span class="form-require-item g-c-red1">*</span>入库单号</th>
-                            <th><span class="form-require-item g-c-red1">*</span>入库时间</th>
-                            <th><span class="form-require-item g-c-red1">*</span>入库仓库</th>
-                            <th><span class="form-require-item g-c-red1">*</span>入库类型</th>
-                            <th><span class="form-require-item g-c-red1">*</span>供应商</th>
-                            <th><span class="form-require-item g-c-red1">*</span>经办人</th>
-                            <th>备注</th>
-                        </tr>
-                        <tr>
-                            <td class="form-group">
-                                <input type="text" class="form-control self-error-tips" name="number" placeholder="请输入入库单号" data-validate="required" data-message-required="入库单号不能为空"  id="admin_number" />
-                            </td>
-                            <td class="form-group">
-                                <input type="text" class="form-control self-error-tips" placeholder="请选择入库时间" data-validate="required" data-message-required="入库时间不能为空"  name="time" readonly  id="admin_time" />
-                            </td>
-                            <td class="form-group">
-                                <input type="text" class="form-control self-error-tips" name="store" placeholder="请输入入库仓库" data-validate="required" data-message-required="入库仓库不能为空"  id="admin_store" />
-                            </td>
-                            <td class="form-group">
-                                <input type="text" class="form-control self-error-tips" name="type" placeholder="请输入入库类型" data-validate="required" data-message-required="入库类型不能为空"  id="admin_type" />
-                            </td>
-                            <td class="form-group">
-                                <input type="text" class="form-control self-error-tips" name="provider" placeholder="请输入供应商" data-validate="required" data-message-required="供应商不能为空"  id="admin_provider" />
-                            </td>
-                            <td class="form-group">
-                                <input type="text" class="form-control self-error-tips" name="operator" placeholder="请输入经办人" data-validate="required" data-message-required="经办人不能为空"  id="admin_operator" />
-                            </td>
-                            <td class="form-group">
-                                <input type="text" class="form-control self-error-tips" name="remark"  id="admin_remark" />
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="7" class="form-group self-error-pos-tips"></td>
-                        </tr>
-                        </thead>
-                        <tbody id="show_add_list">
-                            <tr>
-                                <th>&nbsp;</th>
-                                <th colspan="2">商品名称</th>
-                                <th colspan="2">商品型号</th>
-                                <th colspan="2">数量</th>
+                        <table class="table table-bordered table-striped table-hover admin-table">
+                            <colgroup>
+                                <col class="g-w-percent7"/>
+                                <col class="g-w-percent7"/>
+                                <col class="g-w-percent7"/>
+                                <col class="g-w-percent7"/>
+                                <col class="g-w-percent7"/>
+                                <col class="g-w-percent7"/>
+                                <col class="g-w-percent7"/>
+                            </colgroup>
+                            <thead>
+                                <tr>
+                                    <th><span class="form-require-item g-c-red1">*</span>入库单号</th>
+                                    <th><span class="form-require-item g-c-red1">*</span>入库时间</th>
+                                    <th><span class="form-require-item g-c-red1">*</span>入库仓库</th>
+                                    <th><span class="form-require-item g-c-red1">*</span>入库类型</th>
+                                    <th><span class="form-require-item g-c-red1">*</span>供应商</th>
+                                    <th><span class="form-require-item g-c-red1">*</span>经办人</th>
+                                    <th>备注</th>
                             </tr>
-                        </tbody>
-                        <tfoot>
-                            <tr>
-                                <td colspan="5">&nbsp;</td>
-                                <td colspan="2" id="storage_total">合计：</td>
-                            </tr>
-                            <tr>
-                                <td colspan="7">
-                                    <button type="submit" class="btn btn-success">确定入库</button>
-                                    <button type="button" id="storage_stats_additem" class="btn btn-info pull-right" >&nbsp;&nbsp;+&nbsp;&nbsp;</button>
-                                    <button type="button" id="storage_stats_removeitem" class="btn btn-info pull-right" >&nbsp;&nbsp;-&nbsp;&nbsp;</button>
-                                </td>
-                            </tr>
-                        </tfoot>
-                    </table>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="form-group">
+                                        <input type="text" class="form-control self-error-tips" name="number" placeholder="请输入入库单号" data-validate="required" data-message-required="入库单号不能为空"  id="admin_number" />
+                                    </td>
+                                    <td class="form-group">
+                                        <input type="text" class="form-control self-error-tips" placeholder="请选择入库时间" data-validate="required" data-message-required="入库时间不能为空"  name="time" readonly  id="admin_time" />
+                                    </td>
+                                    <td class="form-group">
+                                        <input type="text" class="form-control self-error-tips" name="store" placeholder="请输入入库仓库" data-validate="required" data-message-required="入库仓库不能为空"  id="admin_store" />
+                                    </td>
+                                    <td class="form-group">
+                                        <input type="text" class="form-control self-error-tips" name="type" placeholder="请输入入库类型" data-validate="required" data-message-required="入库类型不能为空"  id="admin_type" />
+                                    </td>
+                                    <td class="form-group">
+                                        <input type="text" class="form-control self-error-tips" name="provider" placeholder="请输入供应商" data-validate="required" data-message-required="供应商不能为空"  id="admin_provider" />
+                                    </td>
+                                    <td class="form-group">
+                                        <input type="text" class="form-control self-error-tips" name="operator" placeholder="请输入经办人" data-validate="required" data-message-required="经办人不能为空"  id="admin_operator" />
+                                    </td>
+                                    <td class="form-group">
+                                        <input type="text" class="form-control self-error-tips" name="remark"  id="admin_remark" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="7" class="form-group self-error-pos-tips"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <table class="table table-bordered table-striped table-hover admin-table">
+                            <colgroup>
+                                <col class="g-w-percent2" />
+                                <col class="g-w-percent10" />
+                                <col class="g-w-percent15" />
+                                <col class="g-w-percent15" />
+                                <col class="g-w-percent8" />
+                            </colgroup>
+                            <thead>
+                                <tr>
+                                    <th>&nbsp;</th>
+                                    <th>条码</th>
+                                    <th>商品名称</th>
+                                    <th>商品型号</th>
+                                    <th>数量</th>
+                                </tr>
+                            </thead>
+                            <tbody id="show_add_list"></tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="4" class="g-t-r">合计：</td>
+                                    <td id="storage_total">0</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="5">
+                                        <button type="submit" class="btn btn-success">确定入库</button>
+                                        <button type="button" id="storage_stats_additem" class="btn btn-info pull-right" >&nbsp;&nbsp;+&nbsp;&nbsp;</button>
+                                        <button type="button" id="storage_stats_removeitem" class="btn btn-info pull-right" >&nbsp;&nbsp;-&nbsp;&nbsp;</button>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
                    </form>
                 </div>
                 <div class="modal-footer">
@@ -398,6 +411,6 @@
     <script src="../../js/plugins/datatables/dataTables.bootstrap.js"></script>
     <script src="../../js/plugins/pagination/pagination.js"></script>
     <script src="../../js/plugins/datepicker/datepicker.js"></script>
-    <script src="../../js/warehouse/storage_stats.js"></script>
+    <script src="../../js/inventory/storage_stats.js"></script>
 </body>
 </html>

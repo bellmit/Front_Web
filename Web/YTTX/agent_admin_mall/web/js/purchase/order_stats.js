@@ -21,7 +21,7 @@
 				datatype:'json'
 			});
 			/*权限调用*/
-			var powermap=public_tool.getPower(86),
+			var powermap=public_tool.getPower(98),
 				stats_power=public_tool.getKeyPower('mall-order-stats',powermap);
 
 
@@ -72,7 +72,7 @@
 						autoWidth:true,/*是否*/
 						paging:false,
 						ajax:{
-							url:"http://120.76.237.100:8082/mall-agentbms-api/goodsorder/list"/*"../../json/warehouse/mall_order_stats_list.json"*/,
+							url:"http://120.76.237.100:8082/mall-agentbms-api/goodsorder/list"/*"../../json/purchase/mall_order_stats_list.json"*/,
 							dataType:'JSON',
 							method:'post',
 							dataSrc:function ( json ) {

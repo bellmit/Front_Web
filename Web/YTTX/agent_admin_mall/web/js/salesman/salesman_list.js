@@ -50,7 +50,7 @@
 				$show_detail_content=$('#show_detail_content')/*详情内容*/,
 				detail_map={
 					name:"业务员名称",
-					grade:"代理商级别",
+					grade:"运营商级别",
 					cellphone:"业务员手机号码",
 					regionName:"归属地区",
 					status:"状态",
@@ -286,9 +286,9 @@
 									$show_detail_title.html('"<span class="g-c-info">"'+list[j]+'" 业务员</span>"详情信息');
 								}else if(j==='grade'){
 									var grademap={
-										3:"代理商级别--省代",
-										2:"代理商级别--市代",
-										1:"代理商级别--县代"
+										3:"运营商级别--省代",
+										2:"运营商级别--市代",
+										1:"运营商级别--县代"
 									}
 									str+='<tr><th>'+detail_map[j]+':</th><td>'+grademap[list[j]]+'</td></tr>';
 								}else if(j==='cellphone'){
@@ -306,7 +306,7 @@
 
 						}
 						if(!istitle){
-							$show_detail_title.html('代理商详情信息');
+							$show_detail_title.html('运营商详情信息');
 						}
 						/*添加高亮状态*/
 						if(operate_item){

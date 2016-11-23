@@ -22,7 +22,7 @@
 				datatype:'json'
 			});
 			/*权限调用*/
-			var powermap=public_tool.getPower(86),
+			var powermap=public_tool.getPower(),
 				inventoryshow_power=public_tool.getKeyPower('mall-inventory-status',powermap);
 
 
@@ -45,7 +45,16 @@
 				$show_detail_wrap=$('#show_detail_wrap')/*详情容器*/,
 				$show_detail_content=$('#show_detail_content'),/*详情内容*/
 				$show_detail_title=$('#show_detail_title'),
-				detail_map={};
+				detail_map={
+					"goodsName":"商品名称",
+					"unit":"单位",
+					"type":"分类",
+					"orderTime":"订单时间",
+					"store":"仓库",
+					"orderState":"订单状态",
+					"physicalInventory":"实际库存",
+					"availableInventory":"可售库存"
+				};
 
 
 
@@ -65,7 +74,7 @@
 						autoWidth:true,/*是否*/
 						paging:false,
 						ajax:{
-							url:"http://120.76.237.100:8082/mall-agentbms-api/announcements/related",
+							url:/*"http://120.76.237.100:8082/mall-agentbms-api/announcements/related"*/"../../json/inventory/mall_inventory_status_list.json",
 							dataType:'JSON',
 							method:'post',
 							dataSrc:function ( json ) {
@@ -116,66 +125,37 @@
 						ordering:true,
 						columns: [
 							{
-								"data":"title"
+								"data":"goodsName"
+							},
+							{
+								"data":"unit"
 							},
 							{
 								"data":"type",
 								"render":function(data, type, full, meta ){
 									var types=parseInt(data,10),
 										typesmap={
-											1:"通知"
-										},
-										str='';
+											1:"北京",
+											2:"上海",
+											3:"广州",
+											4:"深圳",
+											5:"长沙",
+											6:"成都",
+											7:"重庆",
+											8:"武汉"
+										};
 
-									if(types===1){
-										str='<div class="g-c-bs-info">'+typesmap[types]+'</div>';
-									}
-									return str;
+									return '<div class="g-c-bs-info">'+typesmap[types]+'</div>';
 								}
 							},
 							{
-								"data":"sort"
+								"data":"store"
 							},
 							{
-								"data":"status",
-								"render":function(data, type, full, meta ){
-									var stauts=parseInt(data,10),
-										statusmap={
-											0:"默认",
-											1:"上架",
-											2:"下架"
-										},
-										str='';
-
-									if(stauts===0){
-										str='<div class="g-c-gray6">'+statusmap[stauts]+'</div>';
-									}else if(stauts===1){
-										str='<div class="g-c-info">'+statusmap[stauts]+'</div>';
-									}else if(stauts===2){
-										str='<div class="g-c-gray12">'+statusmap[stauts]+'</div>';
-									}
-									return str;
-								}
+								"data":"physicalInventory"
 							},
 							{
-								"data":"content",
-								"render":function(data, type, full, meta ){
-									return data.toString().slice(0,20)+'......';
-								}
-							},
-							{
-								"data":"attachmentUrl",
-								"render":function(data, type, full, meta ){
-									if(data&&data!==''){
-										if($.isArray(data)){
-											return '<a class="btn btn-white btn-xs g-c-gray8" target="_blank" href="'+data.join('">附件</a><a class="btn btn-white btn-xs g-c-gray8" target="_blank" href="')+'">附件</a>';
-										}else{
-											return '<a href="'+data+'" class="btn btn-white btn-xs g-c-gray8" target="_blank">附件</a>';
-										}
-									}else{
-										return '无附件';
-									}
-								}
+								"data":"availableInventory"
 							},
 							{
 								"data":"id",
@@ -229,7 +209,7 @@
 
 				/*修改,编辑操作*/
 				if(action==='select'){
-					//showDetail(id,$tr);
+					showDetail(id,$tr);
 				}
 			});
 
@@ -265,7 +245,7 @@
 			}
 
 			var detailconfig={
-				url:"http://120.76.237.100:8082/mall-agentbms-api/salesman/detail",
+				url:/*"http://120.76.237.100:8082/mall-agentbms-api/salesman/detail"*/"../../json/inventory/mall_inventory_status_list.json",
 				dataType:'JSON',
 				method:'post',
 				data:{
@@ -292,24 +272,32 @@
 						istitle=false;
 
 					if(!$.isEmptyObject(list)){
+						list=list["list"][id - 1];
 						for(var j in list){
 							if(typeof detail_map[j]!=='undefined'){
 								if(j==='name'||j==='Name'){
 									istitle=true;
-									$show_detail_title.html('"<span class="g-c-info">"'+list[j]+'" 业务员</span>"详情信息');
-								}else if(j==='grade'){
-									var grademap={
-										3:"代理商级别--省代",
-										2:"代理商级别--市代",
-										1:"代理商级别--县代"
+									$show_detail_title.html('"<span class="g-c-info">"'+list[j]+'" 库存状况</span>"详情信息');
+								}else if(j==='type'){
+									var typemap={
+										1:"北京",
+										2:"上海",
+										3:"广州",
+										4:"深圳",
+										5:"长沙",
+										6:"成都",
+										7:"重庆",
+										8:"武汉"
 									}
-									str+='<tr><th>'+detail_map[j]+':</th><td>'+grademap[list[j]]+'</td></tr>';
-								}else if(j==='cellphone'){
-									str+='<tr><th>'+detail_map[j]+':</th><td>'+public_tool.phoneFormat(list[j])+'</td></tr>';
-								}else if(j==='status'){
+									str+='<tr><th>'+detail_map[j]+':</th><td>'+typemap[list[j]]+'</td></tr>';
+								}else if(j==='orderState'){
 									var statusmap={
-										0:"正常",
-										1:"停用"
+										0:"待付款",
+										1:"取消订单",
+										6:"待发货",
+										9:"待收货",
+										20:"待评价",
+										21:"已评价"
 									};
 									str+='<tr><th>'+detail_map[j]+':</th><td>'+statusmap[list[j]]+'</td></tr>';
 								}else{
@@ -319,7 +307,7 @@
 
 						}
 						if(!istitle){
-							$show_detail_title.html('代理商详情信息');
+							$show_detail_title.html('库存状况详情信息');
 						}
 						/*添加高亮状态*/
 						if(operate_item){

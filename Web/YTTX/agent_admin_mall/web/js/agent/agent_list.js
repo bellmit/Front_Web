@@ -50,19 +50,19 @@
 				detail_map={
 					username:"登录账户名",
 					name:"登录账号昵称",
-					grade:"代理商级别",
-					fullName:"代理商全称",
-					shortName:"代理商简称",
+					grade:"运营商级别",
+					fullName:"运营商全称",
+					shortName:"运营商简称",
 					adscriptionRegion:"归属地区",
 					remark:"备注",
-					linkman:"代理商负责人",
-					cellphone:"代理商手机号码",
-					telephone:"代理商电话号码",
+					linkman:"运营商负责人",
+					cellphone:"运营商手机号码",
+					telephone:"运营商电话号码",
 					province:"省份",
 					city:"市区",
 					country:"县区",
 					address:"详细地址",
-					parentId:"上级代理商编号",
+					parentId:"上级运营商编号",
 					isAudited:"是否已审核",
 					status:"状态",
 					salesmanId:"业务员编号"
@@ -325,12 +325,12 @@
 							if(typeof detail_map[j]!=='undefined'){
 								if(j==='name'||j==='Name'){
 									istitle=true;
-									$show_detail_title.html('"<span class="g-c-info">"'+list[j]+'"代理商</span>"详情信息');
+									$show_detail_title.html('"<span class="g-c-info">"'+list[j]+'"运营商</span>"详情信息');
 								}else if(j==='grade'){
 									var grademap={
-										3:"代理商级别--省代",
-										2:"代理商级别--市代",
-										1:"代理商级别--县代"
+										3:"运营商级别--省代",
+										2:"运营商级别--市代",
+										1:"运营商级别--县代"
 									}
 									str+='<tr><th>'+detail_map[j]+':</th><td>'+grademap[list[j]]+'</td></tr>';
 								}else if(j==='isAudited'||j==='isaudited'){
@@ -346,7 +346,7 @@
 
 						}
 						if(!istitle){
-							$show_detail_title.html('代理商详情信息');
+							$show_detail_title.html('运营商详情信息');
 						}
 						/*添加高亮状态*/
 						if(operate_item){

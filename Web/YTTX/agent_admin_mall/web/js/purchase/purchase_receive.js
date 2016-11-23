@@ -21,7 +21,7 @@
 
 
 			/*权限调用*/
-			var powermap=public_tool.getPower(86),
+			var powermap=public_tool.getPower(),
 				receiveedit_power=public_tool.getKeyPower('mall-purchase-receiving',powermap);
 
 
@@ -275,7 +275,7 @@
 
 
 			$.ajax({
-					url:"http://120.76.237.100:8082/mall-agentbms-api/purchasing/order/view"/*"../../json/warehouse/mall_purchase_stats_view.json"*/,
+					url:"http://120.76.237.100:8082/mall-agentbms-api/purchasing/order/view"/*"../../json/purchase/mall_purchase_stats_view.json"*/,
 					dataType:'JSON',
 					method:'post',
 					data:{

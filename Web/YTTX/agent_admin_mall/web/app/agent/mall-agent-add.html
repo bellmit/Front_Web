@@ -4,10 +4,10 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0,maximum-scale=1">
-    <meta name="description" content="布住网运营管理平台--代理商管理--添加代理商" />
-    <meta name="keywords" content="布住网运营管理平台--代理商管理--添加代理商">
+    <meta name="description" content="布住网运营管理平台--运营商管理--添加运营商" />
+    <meta name="keywords" content="布住网运营管理平台--运营商管理--添加运营商">
     <meta name="author" content="yp" />
-    <title>布住网运营管理平台--代理商管理--添加代理商</title>
+    <title>布住网运营管理平台--运营商管理--添加运营商</title>
     <link href="../../images/logo_icon.ico" rel="icon">
     <link rel="stylesheet" href="../../css/base.css">
     <link rel="stylesheet" href="../../js/plugins/kindeditor/themes/default/default.css">
@@ -86,13 +86,13 @@
         <!--主题描述-->
         <div class="page-title">
             <div class="title-env">
-                <h1 class="title">代理商管理</h1>
-                <p class="description">添加代理商</p>
+                <h1 class="title">运营商管理</h1>
+                <p class="description">添加运营商</p>
             </div>
             <div class="breadcrumb-env">
                 <ol class="breadcrumb bc-1">
-                    <li><a href=""><i class="fa-home"></i>代理商管理</a></li>
-                    <li class="active"><strong>添加代理商</strong></li>
+                    <li><a href=""><i class="fa-home"></i>运营商管理</a></li>
+                    <li class="active"><strong>添加运营商</strong></li>
                 </ol>
             </div>
         </div>
@@ -105,7 +105,7 @@
 
                     <!--编辑表单标题-->
                     <div class="panel-heading">
-                        <h3 class="panel-title">添加代理商</h3>
+                        <h3 class="panel-title">添加运营商</h3>
                         <div class="panel-options">
                             <a href="#" data-toggle="panel">
                                 <span class="collapse-icon">&ndash;</span>
@@ -135,33 +135,33 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="control-label">代理商级别&nbsp;--上级代理商ID(<span id="admin_parentId" data-grade="" data-value="" data-name="" class="g-c-bs-info"></span>)：</label>
+                                <label class="control-label">运营商级别&nbsp;--上级运营商ID(<span id="admin_parentId" data-grade="" data-value="" data-name="" class="g-c-bs-info"></span>)：</label>
                                 <div class="admin-sub-items1 self-error-pos-wrap" id="admin_gradewrap">
                                     <label id="admin_gradeAAA">
-                                        &nbsp;&nbsp;省级代理商:&nbsp;<input class="self-error-pos" type="radio" value="3" name="grade" data-validate="required" data-message-required="请选择代理商级别"  />
+                                        &nbsp;&nbsp;省级运营商:&nbsp;<input class="self-error-pos" type="radio" value="3" name="grade" data-validate="required" data-message-required="请选择运营商级别"  />
                                     </label>
                                     <label id="admin_gradeAA">
-                                        &nbsp;&nbsp;市级代理商:&nbsp;<input class="self-error-pos" type="radio"  value="2" name="grade" data-validate="required" data-message-required="请选择代理商级别"  />
+                                        &nbsp;&nbsp;市级运营商:&nbsp;<input class="self-error-pos" type="radio"  value="2" name="grade" data-validate="required" data-message-required="请选择运营商级别"  />
                                     </label>
                                     <label id="admin_gradeA">
-                                        &nbsp;&nbsp;县级代理商:&nbsp;<input class="self-error-pos" type="radio"  value="1" name="grade" data-validate="required" data-message-required="请选择代理商级别"  />
+                                        &nbsp;&nbsp;县级运营商:&nbsp;<input class="self-error-pos" type="radio"  value="1" name="grade" data-validate="required" data-message-required="请选择运营商级别"  />
                                     </label>
                                     <label id="admin_gradeSS">
-                                        &nbsp;&nbsp;店长:&nbsp;<input class="self-error-pos" type="radio"  value="4" name="grade" data-validate="required" data-message-required="请选择代理商级别"  />
+                                        &nbsp;&nbsp;店长:&nbsp;<input class="self-error-pos" type="radio"  value="4" name="grade" data-validate="required" data-message-required="请选择运营商级别"  />
                                     </label>
                                 </div>
                             </div>
 
 
                             <div class="form-group">
-                                <label class="control-label"><span class="form-require-item g-c-red1">*</span>代理商全称：</label>
-                                <input type="text" class="form-control" name="fullName" placeholder="请输入代理商全称" data-validate="required" data-message-required="代理商全称不能为空"  id="admin_fullName" />
+                                <label class="control-label"><span class="form-require-item g-c-red1">*</span>运营商全称：</label>
+                                <input type="text" class="form-control" name="fullName" placeholder="请输入运营商全称" data-validate="required" data-message-required="运营商全称不能为空"  id="admin_fullName" />
                             </div>
 
 
                             <div class="form-group">
-                                <label class="control-label">代理商简称：</label>
-                                <input type="text" class="form-control" name="shortName" placeholder="请输入代理商简称" id="admin_shortName" />
+                                <label class="control-label">运营商简称：</label>
+                                <input type="text" class="form-control" name="shortName" placeholder="请输入运营商简称" id="admin_shortName" />
                             </div>
 
 
@@ -172,20 +172,20 @@
 
 
                             <div class="form-group">
-                                <label class="control-label"><span class="form-require-item g-c-red1">*</span>代理商负责人：</label>
-                                <input type="text" class="form-control" name="linkman" placeholder="请输入代理商负责人" data-validate="required" data-message-required="代理商负责人不能为空"  id="admin_linkman" />
+                                <label class="control-label"><span class="form-require-item g-c-red1">*</span>运营商负责人：</label>
+                                <input type="text" class="form-control" name="linkman" placeholder="请输入运营商负责人" data-validate="required" data-message-required="运营商负责人不能为空"  id="admin_linkman" />
                             </div>
 
 
                             <div class="form-group">
-                                <label class="control-label"><span class="form-require-item g-c-red1">*</span>代理商手机号码：</label>
-                                <input type="text" class="form-control" name="cellphone" placeholder="请输入代理商手机号码" data-validate="required,zh_phone" maxlength="13" data-message-zh_phone="代理商手机号码格式不正确"  data-message-required="代理商手机号码不能为空"  id="admin_cellphone" />
+                                <label class="control-label"><span class="form-require-item g-c-red1">*</span>运营商手机号码：</label>
+                                <input type="text" class="form-control" name="cellphone" placeholder="请输入运营商手机号码" data-validate="required,zh_phone" maxlength="13" data-message-zh_phone="运营商手机号码格式不正确"  data-message-required="运营商手机号码不能为空"  id="admin_cellphone" />
                             </div>
 
 
                             <div class="form-group">
-                                <label class="control-label">代理商电话号码：</label>
-                                <input type="text" class="form-control" name="telephone" placeholder="请输入代理商电话号码"  id="admin_telephone" />
+                                <label class="control-label">运营商电话号码：</label>
+                                <input type="text" class="form-control" name="telephone" placeholder="请输入运营商电话号码"  id="admin_telephone" />
                             </div>
 
 

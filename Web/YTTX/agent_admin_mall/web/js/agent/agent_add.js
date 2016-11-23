@@ -86,15 +86,15 @@
 			admin_agent_form.reset();
 
 
-			/*查询上级代理商ID*/
+			/*查询上级运营商ID*/
 			requestGrade(function(resp){
-				/*初始化代理商级别*/
+				/*初始化运营商级别*/
 				setGradeShow(gradeobj,resp.result);
 				grade_data=resp.result;
 			});
 
 
-			/*绑定验证是否代理商全称重复(to do)*/
+			/*绑定验证是否运营商全称重复(to do)*/
 			$admin_username.on('focusout',function () {
 				var $this=$(this),
 					username=public_tool.trims($this.val());
@@ -239,7 +239,7 @@
 
 								if(formtype==='addagent'){
 
-									/*判断代理商全称是否重复*/
+									/*判断运营商全称是否重复*/
 									if(issamename){
 										admin_username_tips.innerHTML='登陆账户名已经存在';
 										setTimeout(function () {
@@ -292,10 +292,10 @@
 									if(formtype==='addagent'){
 										code=parseInt(resp.code,10);
 										if(code!==0){
-											dia.content('<span class="g-c-bs-warning g-btips-warn">'+actiontype+'代理商失败</span>').show();
+											dia.content('<span class="g-c-bs-warning g-btips-warn">'+actiontype+'运营商失败</span>').show();
 										}else{
 											public_tool.removeParams('mall-agent-add');
-											dia.content('<span class="g-c-bs-success g-btips-succ">'+actiontype+'代理商成功</span>').show();
+											dia.content('<span class="g-c-bs-success g-btips-succ">'+actiontype+'运营商成功</span>').show();
 										}
 									}
 
@@ -416,11 +416,11 @@
 		}
 
 
-		/*请求代理商级别*/
+		/*请求运营商级别*/
 		function requestGrade(fn){
 			var self=this;
 
-			/*查询上级代理商ID*/
+			/*查询上级运营商ID*/
 			$.ajax({
 				url:"http://120.76.237.100:8082/mall-agentbms-api/agent/role/check",
 				dataType:'JSON',
@@ -464,18 +464,19 @@
 		}
 
 
-		/*代理商级别初始化*/
+		/*运营商级别初始化*/
 		function setGradeShow(obj,result){
 			var res=result||'',
 				grademap={
-					'3':'省级代理商',
-					'2':'市级代理商',
-					'1':'市级代理商',
+					'3':'省级运营商',
+					'2':'市级运营商',
+					'1':'县级运营商',
 					'4':'店长',
 					'-1':'超级管理员',
 					'-2':'默认',
 					'-3':'总代理',
-					'':'未知代理商'
+					'-4':'分仓',
+					'':'未知运营商'
 				},
 				grade=(res['grade']||'').toString();
 

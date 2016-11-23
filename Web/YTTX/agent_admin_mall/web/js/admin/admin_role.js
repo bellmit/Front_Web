@@ -955,7 +955,7 @@
 								/*默认*/
 								obj.item.addClass('g-d-hidei');
 							}else if(value==='1'){
-								/*代理商*/
+								/*运营商*/
 								obj.item.removeClass('g-d-hidei');
 							}else if(value==='2'){
 								/*分仓*/
@@ -985,7 +985,7 @@
 				obj.store.removeClass('g-d-hidei');
 				obj.item.addClass('g-d-hidei');
 			}else{
-				/*代理商*/
+				/*运营商*/
 				obj.wrap.addClass('g-d-hidei');
 				obj.tab.addClass('g-d-hidei');
 				obj.item.addClass('g-d-hidei');

@@ -52,14 +52,14 @@
 					username:"登录账户名",
 					name:"登录账号昵称",
 					type:"商户类型",
-					fullName:"代理商全称",
-					shortName:"代理商简称",
+					fullName:"运营商全称",
+					shortName:"运营商简称",
 					imeiCode:"IMEI码",
 					deviceType:"设备类型",
 					remark:"备注",
-					linkman:"代理商负责人",
-					cellphone:"代理商手机号码",
-					telephone:"代理商电话号码",
+					linkman:"运营商负责人",
+					cellphone:"运营商手机号码",
+					telephone:"运营商电话号码",
 					province:"省份",
 					city:"市区",
 					country:"县区",
@@ -308,7 +308,7 @@
 							if(typeof detail_map[j]!=='undefined'){
 								if(j==='name'||j==='Name'){
 									istitle=true;
-									$show_detail_title.html('"<span class="g-c-info">"'+list[j]+'"代理商</span>"详情信息');
+									$show_detail_title.html('"<span class="g-c-info">"'+list[j]+'"运营商</span>"详情信息');
 								}else if(j==='type'){
 									var typemap={
 										2:"白酒",
@@ -335,7 +335,7 @@
 
 						}
 						if(!istitle){
-							$show_detail_title.html('代理商详情信息');
+							$show_detail_title.html('运营商详情信息');
 						}
 						/*添加高亮状态*/
 						if(operate_item){

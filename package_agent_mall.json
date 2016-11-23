@@ -12,7 +12,7 @@
   "project": "YTTX",
   "platform":"web",
   "build_name":"",
-  "source_name":"admin",
+  "source_name":"base",
   "author": "yipin",
   "version": "1.0.0",
   "description": "",
