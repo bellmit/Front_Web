@@ -23,15 +23,15 @@
 			});
 			/*权限调用*/
 			var powermap=public_tool.getPower(99),
-				storageshow_power=public_tool.getKeyPower('mall-storage-stats',powermap),
-				storageadd_power=public_tool.getKeyPower('mall-storage-add',powermap);
+				outboundshow_power=public_tool.getKeyPower('mall-outbound-stats',powermap),
+				outboundadd_power=public_tool.getKeyPower('mall-outbound-add',powermap);
 
 
 
 			
 			/*dom引用和相关变量定义*/
-			var $storage_stats_wrap=$('#storage_stats_wrap')/*表格*/,
-				module_id='mall-storage-stats'/*模块id，主要用于本地存储传值*/,
+			var $outbound_stats_wrap=$('#outbound_stats_wrap')/*表格*/,
+				module_id='mall-outbound-stats'/*模块id，主要用于本地存储传值*/,
 				dia=dialog({
 					zIndex:2000,
 					title:'温馨提示',
@@ -45,11 +45,11 @@
 				})/*一般提示对象*/,
 
 				$admin_page_wrap=$('#admin_page_wrap'),
-				$storage_stats_add=$('#storage_stats_add'),
+				$outbound_stats_add=$('#outbound_stats_add'),
 				$show_add_wrap=$('#show_add_wrap'),
-				admin_storagestatsadd_form=document.getElementById('admin_storagestatsadd_form'),
-				$admin_storagestatsadd_form=$(admin_storagestatsadd_form),
-				admin_storagestatsapply_form=document.getElementById('admin_storagestatsapply_form'),
+				admin_outboundstatsadd_form=document.getElementById('admin_outboundstatsadd_form'),
+				$admin_outboundstatsadd_form=$(admin_outboundstatsadd_form),
+				admin_outboundstatsapply_form=document.getElementById('admin_outboundstatsapply_form'),
 				$admin_id=$('#admin_id'),
 				$admin_number=$('#admin_number'),
 				$admin_time=$('#admin_time'),
@@ -59,14 +59,14 @@
 				$admin_operator=$('#admin_operator'),
 				$admin_remark=$('#admin_remark'),
 				$show_add_list=$('#show_add_list'),
-				$storage_stats_additem=$('#storage_stats_additem'),
-				$storage_stats_removeitem=$('#storage_stats_removeitem'),
-				$storage_total=$('#storage_total'),
+				$outbound_stats_additem=$('#outbound_stats_additem'),
+				$outbound_stats_removeitem=$('#outbound_stats_removeitem'),
+				$outbound_total=$('#outbound_total'),
 				$show_detail_wrap=$('#show_detail_wrap')/*详情容器*/,
 				$show_detail_content=$('#show_detail_content'),/*详情内容*/
 				$show_detail_list=$('#show_detail_list'),
 				$admin_apply=$('#admin_apply'),
-				$storage_apply=$('#storage_apply'),
+				$outbound_apply=$('#outbound_apply'),
 				$show_detail_action=$('#show_detail_action'),
 				resetform0=null,
 				goodsmap={
@@ -80,17 +80,17 @@
 
 
 			/*重置表单*/
-			admin_storagestatsadd_form.reset();
+			admin_outboundstatsadd_form.reset();
 
 
 			/*列表请求配置*/
-			var storage_page={
+			var outbound_page={
 					page:1,
 					pageSize:10,
 					total:0
 				},
-				storage_config={
-					$storage_stats_wrap:$storage_stats_wrap,
+				outbound_config={
+					$outbound_stats_wrap:$outbound_stats_wrap,
 					$admin_page_wrap:$admin_page_wrap,
 					config:{
 						processing:true,/*大消耗操作时是否显示处理状态*/
@@ -116,21 +116,21 @@
 								}
 								var result=json.result;
 								/*设置分页*/
-								storage_page.page=result.page;
-								storage_page.pageSize=result.pageSize;
-								storage_page.total=result.count;
+								outbound_page.page=result.page;
+								outbound_page.pageSize=result.pageSize;
+								outbound_page.total=result.count;
 								/*分页调用*/
 								$admin_page_wrap.pagination({
-									pageSize:storage_page.pageSize,
-									total:storage_page.total,
-									pageNumber:storage_page.page,
+									pageSize:outbound_page.pageSize,
+									total:outbound_page.total,
+									pageNumber:outbound_page.page,
 									onSelectPage:function(pageNumber,pageSize){
 										/*再次查询*/
-										var param=storage_config.config.ajax.data;
+										var param=outbound_config.config.ajax.data;
 										param.page=pageNumber;
 										param.pageSize=pageSize;
-										storage_config.config.ajax.data=param;
-										getColumnData(storage_page,storage_config);
+										outbound_config.config.ajax.data=param;
+										getColumnData(outbound_page,outbound_config);
 									}
 								});
 								return result?result.list||[]:[];
@@ -152,6 +152,9 @@
 								"data":"number"
 							},
 							{
+								"data":"number"
+							},
+							{
 								"data":"time"
 							},
 							{
@@ -162,9 +165,6 @@
 							},
 							{
 								"data":"operator"
-							},
-							{
-								"data":"provider"
 							},
 							{
 								"data":"state",
@@ -190,7 +190,7 @@
 									var id=parseInt(data,10),
 										btns='';
 
-									if(storageshow_power){
+									if(outboundshow_power){
 										btns+='<span data-action="select" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 											<i class="fa-file-text-o"></i>\
 											<span>查看</span>\
@@ -206,17 +206,17 @@
 			
 
 			/*初始化请求*/
-			getColumnData(storage_page,storage_config);
+			getColumnData(outbound_page,outbound_config);
 
 
 			/*绑定新增入库*/
-			if(storageadd_power){
-				$storage_stats_add.removeClass('g-d-hidei');
-				$storage_stats_add.on('click',function () {
+			if(outboundadd_power){
+				$outbound_stats_add.removeClass('g-d-hidei');
+				$outbound_stats_add.on('click',function () {
 					$show_add_wrap.modal('show',{backdrop:'static'});
 				});
 			}else{
-				$storage_stats_add.addClass('g-d-hidei');
+				$outbound_stats_add.addClass('g-d-hidei');
 			}
 			
 
@@ -224,7 +224,7 @@
 			/*事件绑定*/
 			/*绑定查看，修改操作*/
 			var operate_item;
-			$storage_stats_wrap.delegate('span','click',function(e){
+			$outbound_stats_wrap.delegate('span','click',function(e){
 				e.stopPropagation();
 				e.preventDefault();
 
@@ -270,7 +270,7 @@
 
 
 			/*绑定确定收货单审核*/
-			$storage_apply.on('click',function () {
+			$outbound_apply.on('click',function () {
 				/*to do*/
 				var id=$admin_id.val();
 				if(id===''){
@@ -306,7 +306,7 @@
 						dia.content('<span class="g-c-bs-success g-btips-succ">审核成功</span>').show();
 						setTimeout(function () {
 							$show_detail_wrap.trigger('hide.bs.modal');
-							admin_storagestatsapply_form.reset();
+							admin_outboundstatsapply_form.reset();
 							dia.close();
 						},2000);
 					})
@@ -335,12 +335,12 @@
 
 
 			/*绑定添加商品*/
-			$storage_stats_additem.on('click',function () {
+			$outbound_stats_additem.on('click',function () {
 				addStorageItem();
 			});
 
 			/*绑定删除商品*/
-			$storage_stats_removeitem.on('click',function () {
+			$outbound_stats_removeitem.on('click',function () {
 				removeStorageItem();
 			});
 
@@ -423,14 +423,14 @@
 								method:'post'
 							};
 						if(index===0){
-							formtype='addstoragestats';
+							formtype='addoutboundstats';
 						}
 						$.extend(true,(function () {
-							if(formtype==='addstoragestats'){
+							if(formtype==='addoutboundstats'){
 								return form_opt0;
 							}
 						}()),(function () {
-							if(formtype==='addstoragestats'){
+							if(formtype==='addoutboundstats'){
 								return formcache.form_opt_0;
 							}
 						}()),{
@@ -440,8 +440,8 @@
 
 								$.extend(true,setdata,basedata);
 
-								if(formtype==='addstoragestats'){
-									var total=parseInt($storage_total.html(),10);
+								if(formtype==='addoutboundstats'){
+									var total=parseInt($outbound_total.html(),10);
 									if(total===''||isNaN(total)||total===0){
 										dia.content('<span class="g-c-bs-warning g-btips-warn">您没有输入任何数据</span>').show();
 										return false;
@@ -465,7 +465,7 @@
 								return false;
 								$.ajax(config).done(function(resp){
 									var code;
-									if(formtype==='addstoragestats'){
+									if(formtype==='addoutboundstats'){
 										code=parseInt(resp.code,10);
 										if(code!==0){
 											dia.content('<span class="g-c-bs-warning g-btips-warn">入库失败</span>').show();
@@ -477,10 +477,10 @@
 
 									setTimeout(function () {
 										dia.close();
-										if(formtype==='addstoragestats'&&code===0){
+										if(formtype==='addoutboundstats'&&code===0){
 											/*关闭隐藏*/
 											setTimeout(function () {
-												admin_storagestatsadd_form.reset();
+												admin_outboundstatsadd_form.reset();
 												$show_add_wrap.trigger('hide.bs.modal');
 											},1000);
 										}
@@ -498,7 +498,7 @@
 
 				/*提交验证*/
 				if(resetform0===null){
-					resetform0=$admin_storagestatsadd_form.validate(form_opt0);
+					resetform0=$admin_outboundstatsadd_form.validate(form_opt0);
 				}
 			}
 
@@ -510,7 +510,7 @@
 		/*获取数据*/
 		function getColumnData(page,opt){
 			if(table===null){
-				table=opt.$storage_stats_wrap.DataTable(opt.config);
+				table=opt.$outbound_stats_wrap.DataTable(opt.config);
 			}else{
 				table.ajax.config(opt.config.ajax).load();
 			}
@@ -573,7 +573,7 @@
 			$show_add_list.find('input.goodsnumber').each(function () {
 				total+=parseInt(this.value,10);
 			});
-			$storage_total.html(total);
+			$outbound_total.html(total);
 		}
 
 		/*查看出库单*/
@@ -643,13 +643,13 @@
 						var len=list.length;
 						if(len!==0){
 							for(i;i<len;i++){
-								var tempstorage=list[i];
+								var tempoutbound=list[i];
 								str+='<tr>\
 								<td>'+parseInt(i+1,10)+'</td>\
-								<td>'+tempstorage["goodscode"]+'</td>\
-								<td>'+tempstorage["goodsname"]+'</td>\
-								<td>'+tempstorage["goodstype"]+'</td>\
-								<td>'+tempstorage["goodsnumber"]+'</td>\
+								<td>'+tempoutbound["goodscode"]+'</td>\
+								<td>'+tempoutbound["goodsname"]+'</td>\
+								<td>'+tempoutbound["goodstype"]+'</td>\
+								<td>'+tempoutbound["goodsnumber"]+'</td>\
 								</tr>';
 							}
 							$(str).appendTo($show_detail_list.html(''));
