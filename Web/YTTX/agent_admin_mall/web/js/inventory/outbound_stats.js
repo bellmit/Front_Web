@@ -55,7 +55,7 @@
 				$admin_time=$('#admin_time'),
 				$admin_store=$('#admin_store'),
 				$admin_type=$('#admin_type'),
-				$admin_provider=$('#admin_provider'),
+				$admin_linknumber=$('#admin_linknumber'),
 				$admin_operator=$('#admin_operator'),
 				$admin_remark=$('#admin_remark'),
 				$show_add_list=$('#show_add_list'),
@@ -209,7 +209,7 @@
 			getColumnData(outbound_page,outbound_config);
 
 
-			/*绑定新增入库*/
+			/*绑定新增出库*/
 			if(outboundadd_power){
 				$outbound_stats_add.removeClass('g-d-hidei');
 				$outbound_stats_add.on('click',function () {
@@ -251,7 +251,7 @@
 						operate_item=null;
 					}
 					operate_item=$tr.addClass('item-lighten');
-					showStorage(id,$tr);
+					showOutbound(id,$tr);
 				}
 			});
 
@@ -336,12 +336,12 @@
 
 			/*绑定添加商品*/
 			$outbound_stats_additem.on('click',function () {
-				addStorageItem();
+				addOutboundItem();
 			});
 
 			/*绑定删除商品*/
 			$outbound_stats_removeitem.on('click',function () {
-				removeStorageItem();
+				removeOutboundItem();
 			});
 
 
@@ -352,8 +352,6 @@
 					$this,
 					text='',
 					index=0,
-					len=0,
-					i=0,
 					temparr='';
 
 				if(etype==='change'){
@@ -451,12 +449,12 @@
 										time:$admin_time.val(),
 										store:$admin_store.val(),
 										type:$admin_type.val(),
-										provider:$admin_provider.val(),
+										provider:$admin_linknumber.val(),
 										operator:$admin_operator.val(),
 										remark:$admin_remark.val()
 									});
 
-									setdata['list']=getStorageItem();
+									setdata['list']=getOutboundItem();
 
 									config['url']="http://120.76.237.100:8082/mall-agentbms-api/warehouse/addupdate";
 									config['data']=setdata;
@@ -468,10 +466,10 @@
 									if(formtype==='addoutboundstats'){
 										code=parseInt(resp.code,10);
 										if(code!==0){
-											dia.content('<span class="g-c-bs-warning g-btips-warn">入库失败</span>').show();
+											dia.content('<span class="g-c-bs-warning g-btips-warn">出库失败</span>').show();
 											return false;
 										}else{
-											dia.content('<span class="g-c-bs-success g-btips-succ">入库成功</span>').show();
+											dia.content('<span class="g-c-bs-success g-btips-succ">出库成功</span>').show();
 										}
 									}
 
@@ -518,7 +516,7 @@
 
 
 		/*添加商品*/
-		function addStorageItem(){
+		function addOutboundItem(){
 			var seqid=(Math.random()).toString().slice(2,15),
 				str='<tr><td><input type="checkbox" class="goodsid" name="goodsId" data-id="'+seqid+'" value="'+seqid+'"/></td><td><input class="form-control goodscode" type="text" /></td><td><input class="form-control" type="text" /></td><td><input class="form-control" type="text" /></td><td><input class="form-control goodsnumber" maxlength="9" value="0" type="text" /></td></tr>';
 			$(str).appendTo($show_add_list);
@@ -526,7 +524,7 @@
 		}
 
 		/*删除商品*/
-		function removeStorageItem(){
+		function removeOutboundItem(){
 			var len=goodsmap.goodsactive.length;
 			if(len===0){
 				dia.content('<span class="g-c-bs-warning g-btips-warn">您没有选择需要操作的数据</span>').showModal();
@@ -553,7 +551,7 @@
 
 
 		/*获取商品列表*/
-		function getStorageItem() {
+		function getOutboundItem() {
 			var result=[];
 			$show_add_list.find('tr').each(function () {
 				var $tr=$(this),
@@ -577,7 +575,7 @@
 		}
 
 		/*查看出库单*/
-		function showStorage(id,$tr) {
+		function showOutbound(id,$tr) {
 			$admin_id.val('');
 			if(!id){
 				return false;
@@ -632,7 +630,7 @@
 
 					/*设置值*/
 					$admin_id.val(id);
-					$('<tr><td>'+result["number"]+'</td><td>'+result["time"]+'</td><td>'+result["store"]+'</td><td>'+result["type"]+'</td><td>'+result["provider"]+'</td><td>'+result["operator"]+'</td><td>'+result["remark"]+'</td></tr>').appendTo($show_detail_content.html(''));
+					$('<tr><td>'+result["number"]+'</td><td>'+result["number"]+'</td><td>'+result["time"]+'</td><td>'+result["store"]+'</td><td>'+result["type"]+'</td><td>'+result["operator"]+'</td><td>'+result["remark"]+'</td></tr>').appendTo($show_detail_content.html(''));
 
 
 					var list=result.list,

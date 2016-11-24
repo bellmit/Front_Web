@@ -23,15 +23,15 @@
 			});
 			/*权限调用*/
 			var powermap=public_tool.getPower(99),
-				storageshow_power=public_tool.getKeyPower('mall-storage-stats',powermap),
-				storageadd_power=public_tool.getKeyPower('mall-storage-add',powermap);
+				checkshow_power=public_tool.getKeyPower('mall-check-list',powermap),
+				checkadd_power=public_tool.getKeyPower('mall-storage-add',powermap);
 
 
 
 			
 			/*dom引用和相关变量定义*/
-			var $storage_stats_wrap=$('#storage_stats_wrap')/*表格*/,
-				module_id='mall-storage-stats'/*模块id，主要用于本地存储传值*/,
+			var $check_list_wrap=$('#check_list_wrap')/*表格*/,
+				module_id='mall-check-list'/*模块id，主要用于本地存储传值*/,
 				dia=dialog({
 					zIndex:2000,
 					title:'温馨提示',
@@ -45,11 +45,11 @@
 				})/*一般提示对象*/,
 
 				$admin_page_wrap=$('#admin_page_wrap'),
-				$storage_stats_add=$('#storage_stats_add'),
+				$check_list_add=$('#check_list_add'),
 				$show_add_wrap=$('#show_add_wrap'),
-				admin_storagestatsadd_form=document.getElementById('admin_storagestatsadd_form'),
-				$admin_storagestatsadd_form=$(admin_storagestatsadd_form),
-				admin_storagestatsapply_form=document.getElementById('admin_storagestatsapply_form'),
+				admin_checklistadd_form=document.getElementById('admin_checklistadd_form'),
+				$admin_checklistadd_form=$(admin_checklistadd_form),
+				admin_checklistapply_form=document.getElementById('admin_checklistapply_form'),
 				$admin_id=$('#admin_id'),
 				$admin_number=$('#admin_number'),
 				$admin_time=$('#admin_time'),
@@ -59,14 +59,14 @@
 				$admin_operator=$('#admin_operator'),
 				$admin_remark=$('#admin_remark'),
 				$show_add_list=$('#show_add_list'),
-				$storage_stats_additem=$('#storage_stats_additem'),
-				$storage_stats_removeitem=$('#storage_stats_removeitem'),
-				$storage_total=$('#storage_total'),
+				$check_list_additem=$('#check_list_additem'),
+				$check_list_removeitem=$('#check_list_removeitem'),
+				$check_total=$('#check_total'),
 				$show_detail_wrap=$('#show_detail_wrap')/*详情容器*/,
 				$show_detail_content=$('#show_detail_content'),/*详情内容*/
 				$show_detail_list=$('#show_detail_list'),
 				$admin_apply=$('#admin_apply'),
-				$storage_apply=$('#storage_apply'),
+				$check_apply=$('#check_apply'),
 				$show_detail_action=$('#show_detail_action'),
 				resetform0=null,
 				goodsmap={
@@ -80,17 +80,17 @@
 
 
 			/*重置表单*/
-			admin_storagestatsadd_form.reset();
+			admin_checklistadd_form.reset();
 
 
 			/*列表请求配置*/
-			var storage_page={
+			var check_page={
 					page:1,
 					pageSize:10,
 					total:0
 				},
-				storage_config={
-					$storage_stats_wrap:$storage_stats_wrap,
+				check_config={
+					$check_list_wrap:$check_list_wrap,
 					$admin_page_wrap:$admin_page_wrap,
 					config:{
 						processing:true,/*大消耗操作时是否显示处理状态*/
@@ -116,21 +116,21 @@
 								}
 								var result=json.result;
 								/*设置分页*/
-								storage_page.page=result.page;
-								storage_page.pageSize=result.pageSize;
-								storage_page.total=result.count;
+								check_page.page=result.page;
+								check_page.pageSize=result.pageSize;
+								check_page.total=result.count;
 								/*分页调用*/
 								$admin_page_wrap.pagination({
-									pageSize:storage_page.pageSize,
-									total:storage_page.total,
-									pageNumber:storage_page.page,
+									pageSize:check_page.pageSize,
+									total:check_page.total,
+									pageNumber:check_page.page,
 									onSelectPage:function(pageNumber,pageSize){
 										/*再次查询*/
-										var param=storage_config.config.ajax.data;
+										var param=check_config.config.ajax.data;
 										param.page=pageNumber;
 										param.pageSize=pageSize;
-										storage_config.config.ajax.data=param;
-										getColumnData(storage_page,storage_config);
+										check_config.config.ajax.data=param;
+										getColumnData(check_page,check_config);
 									}
 								});
 								return result?result.list||[]:[];
@@ -190,7 +190,7 @@
 									var id=parseInt(data,10),
 										btns='';
 
-									if(storageshow_power){
+									if(checkshow_power){
 										btns+='<span data-action="select" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 											<i class="fa-file-text-o"></i>\
 											<span>查看</span>\
@@ -206,17 +206,17 @@
 			
 
 			/*初始化请求*/
-			getColumnData(storage_page,storage_config);
+			getColumnData(check_page,check_config);
 
 
-			/*绑定新增入库*/
-			if(storageadd_power){
-				$storage_stats_add.removeClass('g-d-hidei');
-				$storage_stats_add.on('click',function () {
+			/*绑定新增盘点*/
+			if(checkadd_power){
+				$check_list_add.removeClass('g-d-hidei');
+				$check_list_add.on('click',function () {
 					$show_add_wrap.modal('show',{backdrop:'static'});
 				});
 			}else{
-				$storage_stats_add.addClass('g-d-hidei');
+				$check_list_add.addClass('g-d-hidei');
 			}
 			
 
@@ -224,7 +224,7 @@
 			/*事件绑定*/
 			/*绑定查看，修改操作*/
 			var operate_item;
-			$storage_stats_wrap.delegate('span','click',function(e){
+			$check_list_wrap.delegate('span','click',function(e){
 				e.stopPropagation();
 				e.preventDefault();
 
@@ -251,7 +251,7 @@
 						operate_item=null;
 					}
 					operate_item=$tr.addClass('item-lighten');
-					showStorage(id,$tr);
+					showCheck(id,$tr);
 				}
 			});
 
@@ -270,7 +270,7 @@
 
 
 			/*绑定确定收货单审核*/
-			$storage_apply.on('click',function () {
+			$check_apply.on('click',function () {
 				/*to do*/
 				var id=$admin_id.val();
 				if(id===''){
@@ -306,7 +306,7 @@
 						dia.content('<span class="g-c-bs-success g-btips-succ">审核成功</span>').show();
 						setTimeout(function () {
 							$show_detail_wrap.trigger('hide.bs.modal');
-							admin_storagestatsapply_form.reset();
+							admin_checklistapply_form.reset();
 							dia.close();
 						},2000);
 					})
@@ -335,13 +335,13 @@
 
 
 			/*绑定添加商品*/
-			$storage_stats_additem.on('click',function () {
-				addStorageItem();
+			$check_list_additem.on('click',function () {
+				addCheckItem();
 			});
 
 			/*绑定删除商品*/
-			$storage_stats_removeitem.on('click',function () {
-				removeStorageItem();
+			$check_list_removeitem.on('click',function () {
+				removeCheckItem();
 			});
 
 
@@ -421,14 +421,14 @@
 								method:'post'
 							};
 						if(index===0){
-							formtype='addstoragestats';
+							formtype='addchecklist';
 						}
 						$.extend(true,(function () {
-							if(formtype==='addstoragestats'){
+							if(formtype==='addchecklist'){
 								return form_opt0;
 							}
 						}()),(function () {
-							if(formtype==='addstoragestats'){
+							if(formtype==='addchecklist'){
 								return formcache.form_opt_0;
 							}
 						}()),{
@@ -438,8 +438,8 @@
 
 								$.extend(true,setdata,basedata);
 
-								if(formtype==='addstoragestats'){
-									var total=parseInt($storage_total.html(),10);
+								if(formtype==='addchecklist'){
+									var total=parseInt($check_total.html(),10);
 									if(total===''||isNaN(total)||total===0){
 										dia.content('<span class="g-c-bs-warning g-btips-warn">您没有输入任何数据</span>').show();
 										return false;
@@ -454,7 +454,7 @@
 										remark:$admin_remark.val()
 									});
 
-									setdata['list']=getStorageItem();
+									setdata['list']=getCheckItem();
 
 									config['url']="http://120.76.237.100:8082/mall-agentbms-api/warehouse/addupdate";
 									config['data']=setdata;
@@ -463,22 +463,22 @@
 								return false;
 								$.ajax(config).done(function(resp){
 									var code;
-									if(formtype==='addstoragestats'){
+									if(formtype==='addchecklist'){
 										code=parseInt(resp.code,10);
 										if(code!==0){
-											dia.content('<span class="g-c-bs-warning g-btips-warn">入库失败</span>').show();
+											dia.content('<span class="g-c-bs-warning g-btips-warn">盘点失败</span>').show();
 											return false;
 										}else{
-											dia.content('<span class="g-c-bs-success g-btips-succ">入库成功</span>').show();
+											dia.content('<span class="g-c-bs-success g-btips-succ">盘点成功</span>').show();
 										}
 									}
 
 									setTimeout(function () {
 										dia.close();
-										if(formtype==='addstoragestats'&&code===0){
+										if(formtype==='addchecklist'&&code===0){
 											/*关闭隐藏*/
 											setTimeout(function () {
-												admin_storagestatsadd_form.reset();
+												admin_checklistadd_form.reset();
 												$show_add_wrap.trigger('hide.bs.modal');
 											},1000);
 										}
@@ -496,7 +496,7 @@
 
 				/*提交验证*/
 				if(resetform0===null){
-					resetform0=$admin_storagestatsadd_form.validate(form_opt0);
+					resetform0=$admin_checklistadd_form.validate(form_opt0);
 				}
 			}
 
@@ -508,7 +508,7 @@
 		/*获取数据*/
 		function getColumnData(page,opt){
 			if(table===null){
-				table=opt.$storage_stats_wrap.DataTable(opt.config);
+				table=opt.$check_list_wrap.DataTable(opt.config);
 			}else{
 				table.ajax.config(opt.config.ajax).load();
 			}
@@ -516,7 +516,7 @@
 
 
 		/*添加商品*/
-		function addStorageItem(){
+		function addCheckItem(){
 			var seqid=(Math.random()).toString().slice(2,15),
 				str='<tr><td><input type="checkbox" class="goodsid" name="goodsId" data-id="'+seqid+'" value="'+seqid+'"/></td><td><input class="form-control goodscode" type="text" /></td><td><input class="form-control" type="text" /></td><td><input class="form-control" type="text" /></td><td><input class="form-control goodsnumber" maxlength="9" value="0" type="text" /></td></tr>';
 			$(str).appendTo($show_add_list);
@@ -524,7 +524,7 @@
 		}
 
 		/*删除商品*/
-		function removeStorageItem(){
+		function removeCheckItem(){
 			var len=goodsmap.goodsactive.length;
 			if(len===0){
 				dia.content('<span class="g-c-bs-warning g-btips-warn">您没有选择需要操作的数据</span>').showModal();
@@ -551,7 +551,7 @@
 
 
 		/*获取商品列表*/
-		function getStorageItem() {
+		function getCheckItem() {
 			var result=[];
 			$show_add_list.find('tr').each(function () {
 				var $tr=$(this),
@@ -571,11 +571,11 @@
 			$show_add_list.find('input.goodsnumber').each(function () {
 				total+=parseInt(this.value,10);
 			});
-			$storage_total.html(total);
+			$check_total.html(total);
 		}
 
 		/*查看出库单*/
-		function showStorage(id,$tr) {
+		function showCheck(id,$tr) {
 			$admin_id.val('');
 			if(!id){
 				return false;
@@ -641,13 +641,13 @@
 						var len=list.length;
 						if(len!==0){
 							for(i;i<len;i++){
-								var tempstorage=list[i];
+								var tempcheck=list[i];
 								str+='<tr>\
 								<td>'+parseInt(i+1,10)+'</td>\
-								<td>'+tempstorage["goodscode"]+'</td>\
-								<td>'+tempstorage["goodsname"]+'</td>\
-								<td>'+tempstorage["goodstype"]+'</td>\
-								<td>'+tempstorage["goodsnumber"]+'</td>\
+								<td>'+tempcheck["goodscode"]+'</td>\
+								<td>'+tempcheck["goodsname"]+'</td>\
+								<td>'+tempcheck["goodstype"]+'</td>\
+								<td>'+tempcheck["goodsnumber"]+'</td>\
 								</tr>';
 							}
 							$(str).appendTo($show_detail_list.html(''));
