@@ -10,7 +10,7 @@
 			/*菜单调用*/
 			var logininfo=public_tool.initMap.loginMap;
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
-				url:'http://120.76.237.100:8082/mall-agentbms-api/module/menu',
+				url:'http://10.0.5.222:8080/mall-agentbms-api/module/menu',
 				async:false,
 				type:'post',
 				param:{
@@ -30,30 +30,24 @@
 			
 			/*dom引用和相关变量定义*/
 			var $inventory_status_wrap=$('#inventory_status_wrap')/*表格*/,
-				module_id='mall-announcement-list'/*模块id，主要用于本地存储传值*/,
-				dia=dialog({
-					title:'温馨提示',
-					okValue:'确定',
-					width:300,
-					ok:function(){
-						this.close();
-						return false;
-					},
-					cancel:false
-				})/*一般提示对象*/,
+				module_id='mall-inventory-status'/*模块id，主要用于本地存储传值*/,
 				$admin_page_wrap=$('#admin_page_wrap'),
 				$show_detail_wrap=$('#show_detail_wrap')/*详情容器*/,
 				$show_detail_content=$('#show_detail_content'),/*详情内容*/
 				$show_detail_title=$('#show_detail_title'),
 				detail_map={
 					"goodsName":"商品名称",
-					"unit":"单位",
-					"type":"分类",
-					"orderTime":"订单时间",
-					"store":"仓库",
-					"orderState":"订单状态",
+					"attributeName":"规格属性",
+					"Unit":"单位",
+					"warehouseName":"仓库名称",
+					"availableInventory":"可售库存",
 					"physicalInventory":"实际库存",
-					"availableInventory":"可售库存"
+					"safetyInventory":"安全库存",
+					"referenceReplenishment":"参考补货",
+					"inventoryToplimit":"库存上限",
+					"inventoryLowerlimit":"库存下限",
+					"availableStatus":"可售状态",
+					"physicalStatus":"实际状态"
 				};
 
 
@@ -74,7 +68,7 @@
 						autoWidth:true,/*是否*/
 						paging:false,
 						ajax:{
-							url:/*"http://120.76.237.100:8082/mall-agentbms-api/announcements/related"*/"../../json/inventory/mall_inventory_status_list.json",
+							url:"http://10.0.5.222:8080/mall-agentbms-api/inventorystatus/related",
 							dataType:'JSON',
 							method:'post',
 							dataSrc:function ( json ) {
@@ -128,34 +122,22 @@
 								"data":"goodsName"
 							},
 							{
-								"data":"unit"
+								"data":"attributeName"
 							},
 							{
-								"data":"type",
-								"render":function(data, type, full, meta ){
-									var types=parseInt(data,10),
-										typesmap={
-											1:"北京",
-											2:"上海",
-											3:"广州",
-											4:"深圳",
-											5:"长沙",
-											6:"成都",
-											7:"重庆",
-											8:"武汉"
-										};
-
-									return '<div class="g-c-bs-info">'+typesmap[types]+'</div>';
-								}
+								"data":"Unit"
 							},
 							{
-								"data":"store"
+								"data":"warehouseName"
 							},
 							{
 								"data":"physicalInventory"
 							},
 							{
 								"data":"availableInventory"
+							},
+							{
+								"data":"safetyInventory"
 							},
 							{
 								"data":"id",
@@ -209,7 +191,7 @@
 
 				/*修改,编辑操作*/
 				if(action==='select'){
-					showDetail(id,$tr);
+					showDetail($tr);
 				}
 			});
 
@@ -239,97 +221,54 @@
 
 
 		/*查看详情*/
-		function showDetail(id,$tr) {
-			if(!id){
+		function showDetail($tr) {
+			if(!$tr){
 				return false;
 			}
 
-			var detailconfig={
-				url:/*"http://120.76.237.100:8082/mall-agentbms-api/salesman/detail"*/"../../json/inventory/mall_inventory_status_list.json",
-				dataType:'JSON',
-				method:'post',
-				data:{
-					"id":id,
-					"adminId":decodeURIComponent(logininfo.param.adminId),
-					"token":decodeURIComponent(logininfo.param.token),
-					"grade":decodeURIComponent(logininfo.param.grade)
-				}
-			};
-			$.ajax(detailconfig)
-				.done(function(resp){
-					var code=parseInt(resp.code,10);
-					if(code!==0){
-						console.log(resp.message);
-						dia.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"操作失败")+'</span>').show();
-						setTimeout(function () {
-							dia.close();
-						},2000);
-						return false;
-					}
-					/*是否是正确的返回数据*/
-					var list=resp.result,
-						str='',
-						istitle=false;
+			var list=table.row($tr).data(),
+				str='',
+				istitle=false;
 
-					if(!$.isEmptyObject(list)){
-						list=list["list"][id - 1];
-						for(var j in list){
-							if(typeof detail_map[j]!=='undefined'){
-								if(j==='name'||j==='Name'){
-									istitle=true;
-									$show_detail_title.html('"<span class="g-c-info">"'+list[j]+'" 库存状况</span>"详情信息');
-								}else if(j==='type'){
-									var typemap={
-										1:"北京",
-										2:"上海",
-										3:"广州",
-										4:"深圳",
-										5:"长沙",
-										6:"成都",
-										7:"重庆",
-										8:"武汉"
-									}
-									str+='<tr><th>'+detail_map[j]+':</th><td>'+typemap[list[j]]+'</td></tr>';
-								}else if(j==='orderState'){
-									var statusmap={
-										0:"待付款",
-										1:"取消订单",
-										6:"待发货",
-										9:"待收货",
-										20:"待评价",
-										21:"已评价"
-									};
-									str+='<tr><th>'+detail_map[j]+':</th><td>'+statusmap[list[j]]+'</td></tr>';
-								}else{
-									str+='<tr><th>'+detail_map[j]+':</th><td>'+list[j]+'</td></tr>';
-								}
+			if(!$.isEmptyObject(list)){
+				for(var j in list){
+					if(typeof detail_map[j]!=='undefined'){
+						if(j==='name'||j==='Name'){
+							istitle=true;
+							$show_detail_title.html('"<span class="g-c-info">"'+list[j]+'" 库存状况</span>"详情信息');
+						}else if(j==='availableStatus'){
+							var typemap={
+								0:"正常",
+								1:"异常"
 							}
-
+							str+='<tr><th>'+detail_map[j]+':</th><td>'+typemap[list[j]]+'</td></tr>';
+						}else if(j==='physicalStatus'){
+							var statusmap={
+								0:"正常",
+								1:"异常"
+							};
+							str+='<tr><th>'+detail_map[j]+':</th><td>'+statusmap[list[j]]+'</td></tr>';
+						}else{
+							str+='<tr><th>'+detail_map[j]+':</th><td>'+list[j]+'</td></tr>';
 						}
-						if(!istitle){
-							$show_detail_title.html('库存状况详情信息');
-						}
-						/*添加高亮状态*/
-						if(operate_item){
-							operate_item.removeClass('item-lighten');
-							operate_item=null;
-						}
-						operate_item=$tr.addClass('item-lighten');
-						$show_detail_content.html(str);
-						$show_detail_wrap.modal('show',{backdrop:'static'});
-					}else{
-						$show_detail_content.html('');
-						$show_detail_title.html('');
 					}
-				})
-				.fail(function(resp){
-					console.log(resp.message);
-					dia.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"操作失败")+'</span>').show();
-					setTimeout(function () {
-						dia.close();
-					},2000);
-				});
 
+				}
+				if(!istitle){
+					$show_detail_title.html('库存状况详情信息');
+				}
+				/*添加高亮状态*/
+				if(operate_item){
+					operate_item.removeClass('item-lighten');
+					operate_item=null;
+				}
+				operate_item=$tr.addClass('item-lighten');
+				$show_detail_content.html(str);
+				$show_detail_wrap.modal('show',{backdrop:'static'});
+			}else{
+				$show_detail_content.html('');
+				$show_detail_title.html('');
+			}
 		}
 
 

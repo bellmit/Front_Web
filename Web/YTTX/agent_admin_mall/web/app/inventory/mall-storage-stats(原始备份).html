@@ -205,33 +205,44 @@
                     <form role="form"  method="post" id="admin_storagestatsadd_form" class="admin-form1 validate">
                         <table class="table table-bordered table-striped table-hover admin-table">
                             <colgroup>
+                                <col class="g-w-percent7"/>
+                                <col class="g-w-percent6"/>
+                                <col class="g-w-percent7"/>
+                                <col class="g-w-percent6"/>
+                                <col class="g-w-percent7"/>
+                                <col class="g-w-percent7"/>
                                 <col class="g-w-percent10"/>
-                                <col class="g-w-percent5"/>
-                                <col class="g-w-percent15"/>
-                                <col class="g-w-percent20"/>
                             </colgroup>
                             <thead>
                                 <tr>
                                     <th><span class="form-require-item g-c-red1">*</span>入库单号</th>
+                                    <th><span class="form-require-item g-c-red1">*</span>入库时间</th>
+                                    <th><span class="form-require-item g-c-red1">*</span>入库仓库</th>
                                     <th><span class="form-require-item g-c-red1">*</span>入库类型</th>
                                     <th><span class="form-require-item g-c-red1">*</span>供应商</th>
+                                    <th><span class="form-require-item g-c-red1">*</span>经办人</th>
                                     <th>备注</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
                                     <td class="form-group">
-                                        <input type="text" class="form-control self-error-tips" name="inboundNumber" placeholder="请输入入库单号" data-validate="required" data-message-required="入库单号不能为空"  id="admin_inboundNumber" />
+                                        <input type="text" class="form-control self-error-tips" name="number" placeholder="请输入入库单号" data-validate="required" data-message-required="入库单号不能为空"  id="admin_number" />
                                     </td>
                                     <td class="form-group">
-                                        <select name="inboundType" class="form-control" id="admin_inboundType">
-                                            <option value="1" selected>采购入库</option>
-                                            <option value="2">退货入库</option>
-                                            <option value="3">其它入库</option>
-                                        </select>
+                                        <input type="text" class="form-control self-error-tips" placeholder="请选择入库时间" data-validate="required" data-message-required="入库时间不能为空"  name="time" readonly  id="admin_time" />
                                     </td>
                                     <td class="form-group">
-                                        <select data-validate="required" data-message-required="供应商不能为空"  class="form-control" id="admin_providerId" name="providerId"></select>
+                                        <input type="text" class="form-control self-error-tips" name="store" placeholder="请输入入库仓库" data-validate="required" data-message-required="入库仓库不能为空"  id="admin_store" />
+                                    </td>
+                                    <td class="form-group">
+                                        <input type="text" class="form-control self-error-tips" name="type" placeholder="请输入入库类型" data-validate="required" data-message-required="入库类型不能为空"  id="admin_type" />
+                                    </td>
+                                    <td class="form-group">
+                                        <input type="text" class="form-control self-error-tips" name="provider" placeholder="请输入供应商" data-validate="required" data-message-required="供应商不能为空"  id="admin_provider" />
+                                    </td>
+                                    <td class="form-group">
+                                        <input type="text" class="form-control self-error-tips" name="operator" placeholder="请输入经办人" data-validate="required" data-message-required="经办人不能为空"  id="admin_operator" />
                                     </td>
                                     <td class="form-group">
                                         <input type="text" class="form-control" name="remark"  id="admin_remark" />
@@ -298,16 +309,22 @@
                         <input value="" type="text" class="g-d-hidei" name="id"  id="admin_id" />
                         <table class="table table-bordered table-striped table-hover admin-table">
                             <colgroup>
-                                <col class="g-w-percent10"/>
-                                <col class="g-w-percent5"/>
-                                <col class="g-w-percent15"/>
-                                <col class="g-w-percent20"/>
+                                <col class="g-w-percent7"/>
+                                <col class="g-w-percent7"/>
+                                <col class="g-w-percent7"/>
+                                <col class="g-w-percent7"/>
+                                <col class="g-w-percent7"/>
+                                <col class="g-w-percent7"/>
+                                <col class="g-w-percent7"/>
                             </colgroup>
                             <thead>
                                 <tr>
                                     <th>入库单号</th>
+                                    <th>入库时间</th>
+                                    <th>入库仓库</th>
                                     <th>入库类型</th>
                                     <th>供应商</th>
+                                    <th>经办人</th>
                                     <th>备注</th>
                                 </tr>
                             </thead>
@@ -413,6 +430,7 @@
     <!--修饰分页，搜索等操作 -->
     <script src="../../js/plugins/datatables/dataTables.bootstrap.js"></script>
     <script src="../../js/plugins/pagination/pagination.js"></script>
+    <script src="../../js/plugins/datepicker/datepicker.js"></script>
     <script src="../../js/inventory/storage_stats.js"></script>
 </body>
 </html>
