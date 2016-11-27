@@ -465,6 +465,8 @@
 									config['url']="http://120.76.237.100:8082/mall-agentbms-api/inboundstats/addupdate";
 									config['data']=setdata;
 								}
+								console.log(setdata);
+								return false;
 								$.ajax(config).done(function(resp){
 									var code;
 									if(formtype==='addstoragestats'){
@@ -645,7 +647,7 @@
 						<td>\
 							<input class="form-control goodscode" type="text" />\
 						</td>\
-						<td></td>\
+						<td data-id="" data-name=""></td>\
 						<td></td>\
 						<td>\
 							<input class="form-control goodsnumber" maxlength="9" value="0" type="text" />\
@@ -687,12 +689,20 @@
 			var result=[];
 			$show_add_list.find('tr').each(function () {
 				var $tr=$(this).children(),
-					id=$tr.eq(1).find('input').val(),
-					name=$tr.eq(2).html(),
-					type=$tr.eq(3).find('select:checked').val(),
+					id=$tr.eq(2).attr('data-id'),
+					name=$tr.eq(2).attr('data-name'),
+					type=(function () {
+						var $temptype=$tr.eq(3).find('span'),
+							tempstr=[];
+						$temptype.each(function () {
+							tempstr.push($(this).attr('data-name'));
+						});
+						console.log(tempstr);
+						return tempstr.join(' ');
+					}()),
 					number=$tr.eq(4).find('input').val();
 
-				if(name!==''&&type!==''&&number!==''){
+				if(id!==''&&name!==''&&type!==''&&number!==''){
 					result.push(id+'#'+name+'#'+type+'#'+number);
 				}
 			});

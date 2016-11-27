@@ -390,19 +390,25 @@
 	.admin-attrlabel-item1{
 		display:inline-block;
 		.box-sizing-base;
-		padding:0 10px 0 0;
+		padding:0;
 		margin:3px 5px;
 		font-size:@font-size-base - 2;
 		background:@color-white;
-		.border-radius-base(3px);
+		.border-radius-base(0 3px 3px 0);
 		span{
-			padding:3px 5px;
-			margin:0 5px;
+			display:inline-block;
+			.box-sizing-base;
+			padding:3px 10px;
+			margin:0;
 			background:@color-white;
 			color:@color-gray9;
 			cursor: pointer;
+			border-left:1px solid @color-gray14;
+			&:first-child{
+				border-left:none !important;
+			}
 			&:hover{
-				//border:1px solid @color-gray10;
+				background:lighten(@btn-success-bg,45%);
 			}
 		}
 		&:before{
