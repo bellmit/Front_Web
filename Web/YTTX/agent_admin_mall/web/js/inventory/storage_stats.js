@@ -10,7 +10,7 @@
 			/*菜单调用*/
 			var logininfo=public_tool.initMap.loginMap;
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
-				url:'http://10.0.5.222:8080/mall-agentbms-api/module/menu',
+				url:'http://120.76.237.100:8082/mall-agentbms-api/module/menu',
 				async:false,
 				type:'post',
 				param:{
@@ -95,7 +95,7 @@
 						autoWidth:true,/*是否*/
 						paging:false,
 						ajax:{
-							url:"http://10.0.5.222:8080/mall-agentbms-api/inboundstats/related",
+							url:"http://120.76.237.100:8082/mall-agentbms-api/inboundstats/related",
 							dataType:'JSON',
 							method:'post',
 							dataSrc:function ( json ) {
@@ -302,7 +302,7 @@
 
 				return false;
 				$.ajax({
-						url:"http://10.0.5.222:8080/mall-agentbms-api/salesman/detail",
+						url:"http://120.76.237.100:8082/mall-agentbms-api/salesman/detail",
 						dataType:'JSON',
 						method:'post',
 						data:{
@@ -462,7 +462,7 @@
 
 									setdata['goodsDetails']=getStorageItem();
 
-									config['url']="http://10.0.5.222:8080/mall-agentbms-api/inboundstats/addupdate";
+									config['url']="http://120.76.237.100:8082/mall-agentbms-api/inboundstats/addupdate";
 									config['data']=setdata;
 								}
 								$.ajax(config).done(function(resp){
@@ -515,7 +515,7 @@
 			}
 			var key=$code.val();
 			$.ajax({
-					url:"http://10.0.5.222:8080/mall-agentbms-api/goods/attributes",
+					url:"http://120.76.237.100:8082/mall-agentbms-api/goods/attributes",
 					dataType:'JSON',
 					method:'post',
 					data:{
@@ -542,10 +542,7 @@
 					var $tr=$code.closest('tr').children(),
 						list=result['list'],
 						i=0,
-						name='',
-						attr='',
-						subname='',
-						subattr='';
+						str='';
 
 					$tr.eq(2).attr({
 						'data-id':result['id'],
@@ -556,17 +553,18 @@
 						var len=list.length;
 						if(len!==0){
 							for(i;i<len;i++){
-								name+=list[i]["name"]+'_#_';
-								attr+=list[i]["id"]+'_#_';
+								var name=list[i]["name"];
+								str+='<div class="admin-attrlabel-item1" data-id="'+list[i]["id"]+'" data-name="'+name+'">';
 								var sublist=list[i]['list'],
 									sublen=sublist.length,
 									j=0;
 								for(j;j<sublen;j++){
-									subname+=sublist[j]["name"];
-									subattr+=sublist[j]["id"];
+									var subname=sublist[j]["name"];
+									str+='<span data-id="'+list[i]["id"]+'" data-name="'+subname+'">'+subname+'</span>';
 								}
+								str+='</div>';
 							}
-							$(str).appendTo($type.html(''));
+							$(str).appendTo($tr.eq(3).html(''));
 						}
 					}
 				})
@@ -580,7 +578,7 @@
 		/*获取代理商列表*/
 		function getProvider(){
 			$.ajax({
-				url:"http://10.0.5.222:8080/mall-agentbms-api/providers/list",
+				url:"http://120.76.237.100:8082/mall-agentbms-api/providers/list",
 				dataType:'JSON',
 				method:'post',
 				data:{
@@ -719,7 +717,7 @@
 			}
 
 			$.ajax({
-					url:/*"http://10.0.5.222:8080/mall-agentbms-api/salesman/detail"*/"../../json/inventory/mall_storage_stats_detail.json",
+					url:/*"http://120.76.237.100:8082/mall-agentbms-api/salesman/detail"*/"../../json/inventory/mall_storage_stats_detail.json",
 					dataType:'JSON',
 					method:'post',
 					data:{

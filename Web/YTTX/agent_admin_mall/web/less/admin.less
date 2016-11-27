@@ -384,6 +384,38 @@
 			border-color:rgba(104,184,80,.5);
 		}
 	}
+
+
+	/*商品标签*/
+	.admin-attrlabel-item1{
+		display:inline-block;
+		.box-sizing-base;
+		padding:0 10px 0 0;
+		margin:3px 5px;
+		font-size:@font-size-base - 2;
+		background:@color-white;
+		.border-radius-base(3px);
+		span{
+			padding:3px 5px;
+			margin:0 5px;
+			background:@color-white;
+			color:@color-gray9;
+			cursor: pointer;
+			&:hover{
+				//border:1px solid @color-gray10;
+			}
+		}
+		&:before{
+			display:inline-block;
+			height:100%;
+			.box-sizing-base;
+			padding:3px;
+			background:@color-red2;
+			content:attr(data-name)':';
+			color:@color-white;
+		}
+	}
+
 }
 
 
