@@ -62,7 +62,6 @@
 				$show_detail_wrap=$('#show_detail_wrap')/*详情容器*/,
 				$show_detail_content=$('#show_detail_content'),/*详情内容*/
 				$show_detail_list=$('#show_detail_list'),
-				$admin_status=$('#admin_status'),
 				$admin_apply=$('#admin_apply'),
 				$storage_apply=$('#storage_apply'),
 				$show_detail_action=$('#show_detail_action'),
@@ -759,7 +758,7 @@
 		/*查看出库单*/
 		function showStorage(id,$tr) {
 			$admin_id.val('');
-			if(!id){
+			if(typeof id==='undefined'){
 				return false;
 			}
 
@@ -792,25 +791,50 @@
 					}
 
 					/*判断是否是审核状态*/
-					var state=parseInt(result["state"],10);
-					if(state===0){
+					var state=parseInt(result["auditState"],10),
+						statemap={
+							0:'待审核',
+							1:'审核通过',
+							2:'审核未通过'
+						};
+					if(state===0||state===2){
 						$show_detail_action.removeClass('g-d-hidei');
 					}else{
 						$show_detail_action.addClass('g-d-hidei');
 					}
 
+
+					console.log(result);
 					/*设置值*/
 					$admin_id.val(id);
-					$('<tr><td>'+result["inboundNumber"]+'</td><td>'+result["inboundType"]+'</td><td>'+result["providerId"]+'</td><td>'+result["remark"]+'</td></tr>').appendTo($show_detail_content.html(''));
+					$('<tr>\
+						<td>'+result["inboundNumber"]+'</td>\
+						<td>'+result["inboundTime"]+'</td>\
+						<td>'+result["warehouseName"]+'</td>\
+						<td>'+result["providerName"]+'</td>\
+						<td>'+result["remark"]+'</td>\
+						'+(function () {
+							if(state===0){
+								return '<td data-id="'+state+'" class="g-c-bs-info">'+statemap[state]+'</td>';
+							}else if(state===1){
+								return '<td data-id="'+state+'" class="g-c-bs-success">'+statemap[state]+'</td>';
+							}else if(state===2){
+								return '<td class="g-c-gray10">'+statemap[state]+'</td>';
+							}else{
+								return '<td class="g-c-red2">异常</td>';
+							}
+						}())+'</tr>').appendTo($show_detail_content.html(''));
 
 
-					var list=result['goodsDetails'],
+
+					var list=result['detailsList'],
 						str='',
 						i=0;
 
 					if(list){
 						var len=list.length;
 						if(len!==0){
+							console.log(list);
 							for(i;i<len;i++){
 								var tempstorage=list[i];
 								str+='<tr>\

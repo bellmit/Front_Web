@@ -299,10 +299,11 @@
                         <table class="table table-bordered table-striped table-hover admin-table">
                             <colgroup>
                                 <col class="g-w-percent10"/>
-                                <col class="g-w-percent5"/>
-                                <col class="g-w-percent5"/>
-                                <col class="g-w-percent15"/>
-                                <col class="g-w-percent15"/>
+                                <col class="g-w-percent8"/>
+                                <col class="g-w-percent8"/>
+                                <col class="g-w-percent10"/>
+                                <col class="g-w-percent10"/>
+                                <col class="g-w-percent4"/>
                             </colgroup>
                             <thead>
                                 <tr>
@@ -311,6 +312,7 @@
                                     <th>仓库名称</th>
                                     <th>供应商</th>
                                     <th>备注</th>
+                                    <th>状态</th>
                                 </tr>
                             </thead>
                             <tbody id="show_detail_content"></tbody>
@@ -335,10 +337,7 @@
                             <tbody id="show_detail_list"></tbody>
                             <tfoot class="g-d-hidei" id="show_detail_action">
                                 <tr>
-                                    <td>
-                                        <div class="admin-attrlabel-item1" id="admin_status" data-value="状态："></div>
-                                    </td>
-                                    <td colspan="3" id="admin_apply">
+                                    <td colspan="4" id="admin_apply">
                                         <label>
                                            <input type="radio" value="1" name="admin_apply">审核通过&nbsp;&nbsp;&nbsp;&nbsp;
                                         </label>
