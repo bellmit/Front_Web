@@ -7,7 +7,7 @@
 			/*菜单调用*/
 			var logininfo=public_tool.initMap.loginMap;
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
-				url:'http://120.76.237.100:8082/mall-agentbms-api/module/menu',
+				url:'http://10.0.5.222:8080/mall-agentbms-api/module/menu',
 				async:false,
 				type:'post',
 				param:{
@@ -219,7 +219,7 @@
 										}
 									}
 
-									config['url']="http://120.76.237.100:8082/mall-agentbms-api/purchasing/order/delivered";
+									config['url']="http://10.0.5.222:8080/mall-agentbms-api/purchasing/order/delivered";
 									config['data']=setdata;
 
 								}
@@ -275,7 +275,7 @@
 
 
 			$.ajax({
-					url:"http://120.76.237.100:8082/mall-agentbms-api/purchasing/order/view"/*"../../json/purchase/mall_purchase_stats_view.json"*/,
+					url:"http://10.0.5.222:8080/mall-agentbms-api/purchasing/order/view"/*"../../json/purchase/mall_purchase_stats_view.json"*/,
 					dataType:'JSON',
 					method:'post',
 					data:{

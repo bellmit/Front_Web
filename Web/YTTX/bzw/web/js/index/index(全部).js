@@ -30,6 +30,7 @@ require(['jquery','jquery_mobile'],function($,$jm) {
 			$screen_productcontent=$screen_product.find('ul'),
 			$screen_scene=$('#screen_scene'),
 			$screen_3d=$('#screen_3d'),
+			$screen_app=$('#screen_app'),
 			$screen_contact=$('#screen_contact'),
 			$help_detail=$('#help_detail'),
 			$win=$(window),
@@ -41,6 +42,9 @@ require(['jquery','jquery_mobile'],function($,$jm) {
 				pos:0
 			},{
 				node:$screen_scene,
+				pos:0
+			},{
+				node:$screen_app,
 				pos:0
 			},{
 				node:$screen_contact,

@@ -134,7 +134,7 @@
 		function sureDialogFun(){}
 
 		/*设置函数*/
-		sureDialogFun.prototype.sure=function (str,fn,tips) {
+		sureDialogFun.prototype.sure=function (str,fn,tips,repalceflag) {
 			var tipstr='',
 				iskey=typeof actionmap[str]==='string',
 				key=iskey?actionmap[str]:str;
@@ -144,9 +144,17 @@
 			}
 
 			if(typeof actionmap[str]==='string'){
-				tipstr='<span class="g-c-bs-warning g-btips-warn">'+tips+'是否真需要 "'+actionmap[str]+'" 此项数据</span>';
+				if(repalceflag){
+					tipstr='<span class="g-c-bs-warning g-btips-warn">'+tips+'</span>';
+				}else{
+					tipstr='<span class="g-c-bs-warning g-btips-warn">'+tips+'是否真需要 "'+actionmap[str]+'" 此项数据</span>';
+				}
 			}else{
-				tipstr='<span class="g-c-bs-warning g-btips-warn">'+tips+'是否真需要 "'+str+'" 此项数据</span>';
+				if(repalceflag){
+					tipstr='<span class="g-c-bs-warning g-btips-warn">'+tips+'</span>';
+				}else{
+					tipstr='<span class="g-c-bs-warning g-btips-warn">'+tips+'是否真需要 "'+str+'" 此项数据</span>';
+				}
 			}
 
 			var tempdia=dialog({

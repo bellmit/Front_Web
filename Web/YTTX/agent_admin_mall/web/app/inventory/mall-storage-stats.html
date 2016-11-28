@@ -231,7 +231,7 @@
                                         </select>
                                     </td>
                                     <td class="form-group">
-                                        <select data-validate="required" data-message-required="供应商不能为空"  class="form-control" id="admin_providerId" name="providerId"></select>
+                                        <select class="form-control" id="admin_providerId" name="providerId"></select>
                                     </td>
                                     <td class="form-group">
                                         <input type="text" class="form-control" name="remark"  id="admin_remark" />
@@ -263,13 +263,13 @@
                             <tfoot>
                                 <tr>
                                     <td colspan="4" class="g-t-r">合计：</td>
-                                    <td id="storage_total">0</td>
+                                    <td class="g-c-bs-info" id="storage_total">0</td>
                                 </tr>
                                 <tr>
                                     <td colspan="5">
                                         <button type="submit" class="btn btn-success">确定入库</button>
-                                        <button type="button" id="storage_stats_additem" class="btn btn-info pull-right" >&nbsp;&nbsp;+&nbsp;&nbsp;</button>
-                                        <button type="button" id="storage_stats_removeitem" class="btn btn-info pull-right" >&nbsp;&nbsp;-&nbsp;&nbsp;</button>
+                                        <button type="button" id="storage_stats_additem" class="btn btn-info pull-right" title="添加商品列表" >&nbsp;&nbsp;+&nbsp;&nbsp;</button>
+                                        <button type="button" id="storage_stats_removeitem" class="btn btn-info pull-right" title="删除商品列表">&nbsp;&nbsp;-&nbsp;&nbsp;</button>
                                     </td>
                                 </tr>
                             </tfoot>
@@ -300,13 +300,15 @@
                             <colgroup>
                                 <col class="g-w-percent10"/>
                                 <col class="g-w-percent5"/>
+                                <col class="g-w-percent5"/>
                                 <col class="g-w-percent15"/>
-                                <col class="g-w-percent20"/>
+                                <col class="g-w-percent15"/>
                             </colgroup>
                             <thead>
                                 <tr>
                                     <th>入库单号</th>
-                                    <th>入库类型</th>
+                                    <th>入库时间</th>
+                                    <th>仓库名称</th>
                                     <th>供应商</th>
                                     <th>备注</th>
                                 </tr>
@@ -333,12 +335,15 @@
                             <tbody id="show_detail_list"></tbody>
                             <tfoot class="g-d-hidei" id="show_detail_action">
                                 <tr>
-                                    <td colspan="4" id="admin_apply">
+                                    <td>
+                                        <div class="admin-attrlabel-item1" id="admin_status" data-value="状态："></div>
+                                    </td>
+                                    <td colspan="3" id="admin_apply">
                                         <label>
                                            <input type="radio" value="1" name="admin_apply">审核通过&nbsp;&nbsp;&nbsp;&nbsp;
                                         </label>
                                         <label>
-                                            &nbsp;&nbsp;&nbsp;&nbsp;<input checked type="radio" value="0" name="admin_apply"> 审核未通过
+                                            &nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" value="2" name="admin_apply">审核未通过
                                         </label>
                                     </td>
                                     <td>
