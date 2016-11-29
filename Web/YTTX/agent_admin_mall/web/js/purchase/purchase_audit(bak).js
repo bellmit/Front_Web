@@ -22,8 +22,7 @@
 			});
 			/*权限调用*/
 			var powermap=public_tool.getPower(),
-				stats_power=public_tool.getKeyPower('mall-purchase-stats',powermap),
-				receive_power=public_tool.getKeyPower('mall-purchase-receiving',powermap);
+				audit_power=public_tool.getKeyPower('mall-purchase-audit',powermap);
 			
 
 			/*清除收货缓存*/
@@ -31,8 +30,8 @@
 
 
 			/*dom引用和相关变量定义*/
-			var $purchase_stats_wrap=$('#purchase_stats_wrap')/*表格*/,
-				module_id='mall-purchase-stats'/*模块id，主要用于本地存储传值*/,
+			var $purchase_audit_wrap=$('#purchase_audit_wrap')/*表格*/,
+				module_id='mall-purchase-audit'/*模块id，主要用于本地存储传值*/,
 				dia=dialog({
 					title:'温馨提示',
 					okValue:'确定',
@@ -44,19 +43,19 @@
 					cancel:false
 				})/*一般提示对象*/,
 				$admin_page_wrap=$('#admin_page_wrap'),
-				$purchase_showall_btn=$('#purchase_showall_btn');
+				$audit_batch_btn=$('#audit_batch_btn');
 
 
 
 
 			/*列表请求配置*/
-			var purchase_page={
+			var purchaseaudit_page={
 					page:1,
 					pageSize:10,
 					total:0
 				},
-				purchase_config={
-					$purchase_stats_wrap:$purchase_stats_wrap,
+				purchaseaudit_config={
+					$purchase_audit_wrap:$purchase_audit_wrap,
 					$admin_page_wrap:$admin_page_wrap,
 					config:{
 						processing:true,/*大消耗操作时是否显示处理状态*/
@@ -64,7 +63,7 @@
 						autoWidth:true,/*是否*/
 						paging:false,
 						ajax:{
-							url:"http://120.76.237.100:8082/mall-agentbms-api/purchasing/order/list"/*"../../json/purchase/mall_purchase_stats_list.json"*/,
+							url:"http://120.76.237.100:8082/mall-agentbms-api/purchasing/order/list",
 							dataType:'JSON',
 							method:'post',
 							dataSrc:function ( json ) {
@@ -82,21 +81,21 @@
 								}
 								var result=json.result;
 								/*设置分页*/
-								purchase_page.page=result.page;
-								purchase_page.pageSize=result.pageSize;
-								purchase_page.total=result.count;
+								purchaseaudit_page.page=result.page;
+								purchaseaudit_page.pageSize=result.pageSize;
+								purchaseaudit_page.total=result.count;
 								/*分页调用*/
 								$admin_page_wrap.pagination({
-									pageSize:purchase_page.pageSize,
-									total:purchase_page.total,
-									pageNumber:purchase_page.page,
+									pageSize:purchaseaudit_page.pageSize,
+									total:purchaseaudit_page.total,
+									pageNumber:purchaseaudit_page.page,
 									onSelectPage:function(pageNumber,pageSize){
 										/*再次查询*/
-										var param=purchase_config.config.ajax.data;
+										var param=purchaseaudit_config.config.ajax.data;
 										param.page=pageNumber;
 										param.pageSize=pageSize;
-										purchase_config.config.ajax.data=param;
-										getColumnData(purchase_page,purchase_config);
+										purchaseaudit_config.config.ajax.data=param;
+										getColumnData(purchaseaudit_page,purchaseaudit_config);
 									}
 								});
 								return result?result.list||[]:[];
@@ -124,20 +123,20 @@
 								"data":"providerName"
 							},
 							{
-								"data":"orderState",
+								"data":"auditState",
 								"render":function(data, type, full, meta ){
 									var stauts=parseInt(data,10),
 										statusmap={
-											1:"未收货",
-											3:"部分收货",
-											5:"已收货"
+											0:"待审核",
+											1:"审核通过",
+											2:"审核不通过"
 										},
 										str='';
 
-									if(stauts===5){
+									if(stauts===0){
 										str='<div class="g-c-info">'+statusmap[stauts]+'</div>';
-									}else if(stauts===3){
-										str='<div class="g-c-gray6">'+statusmap[stauts]+'</div>';
+									}else if(stauts===1){
+										str='<div class="g-c-success">'+statusmap[stauts]+'</div>';
 									}else if(stauts===1){
 										str='<div class="g-c-red2">'+statusmap[stauts]+'</div>';
 									}
@@ -149,18 +148,12 @@
 								"render":function(data, type, full, meta ){
 									var id=parseInt(data,10),
 										btns='',
-										state=parseInt(full.orderState,10);
+										state=parseInt(full.auditState,10);
 
-									if(receive_power&&state!==5){
-										btns+='<span data-action="receive" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
-											<i class="fa-file-text-o"></i>\
-											<span>收货</span>\
-											</span>';
-									}
-									if(stats_power){
-										btns+='<span  data-subitem=""  data-action="select" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
-										<i class="fa-angle-right"></i>\
-										<span>查看</span>\
+									if(audit_power&&(state===0||state===2)){
+										btns+='<span  data-subitem=""  data-action="audit" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+										<i class="fa-hand-o-up"></i>\
+										<span>审核</span>\
 										</span>';
 									}
 									return btns;
@@ -172,14 +165,14 @@
 			
 
 			/*初始化请求*/
-			getColumnData(purchase_page,purchase_config);
+			getColumnData(purchaseaudit_page,purchaseaudit_config);
 			
 
 
 			/*事件绑定*/
 			/*绑定查看，修改操作*/
 			var operate_item;
-			$purchase_stats_wrap.delegate('span','click',function(e){
+			$purchase_audit_wrap.delegate('span','click',function(e){
 				e.stopPropagation();
 				e.preventDefault();
 
@@ -314,19 +307,19 @@
 
 
 			/*全部展开*/
-			if(stats_power){
-				$purchase_showall_btn.removeClass('g-d-hidei').on('click',function () {
-					var isshow=$purchase_showall_btn.find('i').hasClass('fa-plus');
+			if(audit_power){
+				$audit_batch_btn.removeClass('g-d-hidei').on('click',function () {
+					var isshow=$audit_batch_btn.find('i').hasClass('fa-plus');
 
 					if(isshow){
-						$purchase_showall_btn.html('<i class="fa-minus"></i>&nbsp;&nbsp;<span>全部收缩</span>');
+						$audit_batch_btn.html('<i class="fa-minus"></i>&nbsp;&nbsp;<span>全部收缩</span>');
 					}else{
-						$purchase_showall_btn.html('<i class="fa-plus"></i>&nbsp;&nbsp;<span>全部展开</span>');
+						$audit_batch_btn.html('<i class="fa-plus"></i>&nbsp;&nbsp;<span>全部展开</span>');
 					}
-					$purchase_stats_wrap.find('span[data-action="select"]').trigger('click');
+					$purchase_audit_wrap.find('span[data-action="select"]').trigger('click');
 				});
 			}else{
-				$purchase_showall_btn.addClass('g-d-hidei');
+				$audit_batch_btn.addClass('g-d-hidei');
 			}
 
 
@@ -338,7 +331,7 @@
 		/*获取数据*/
 		function getColumnData(page,opt){
 			if(table===null){
-				table=opt.$purchase_stats_wrap.DataTable(opt.config);
+				table=opt.$purchase_audit_wrap.DataTable(opt.config);
 			}else{
 				table.ajax.config(opt.config.ajax).load();
 			}

@@ -38,56 +38,56 @@ var aaa={
                         "funcName": "角色添加",
                         "isPermit": 1,
                         "modId": 62,
-                        "prid": 6853
+                        "prid": 8220
                     },
                     {
                         "funcCode": "mall-role-update",
                         "funcName": "角色修改",
                         "isPermit": 1,
                         "modId": 62,
-                        "prid": 6854
+                        "prid": 8221
                     },
                     {
                         "funcCode": "mall-role-delete",
                         "funcName": "角色删除",
                         "isPermit": 1,
                         "modId": 62,
-                        "prid": 6855
+                        "prid": 8222
                     },
                     {
                         "funcCode": "mall-member-add",
                         "funcName": "成员添加",
                         "isPermit": 1,
                         "modId": 62,
-                        "prid": 6856
+                        "prid": 8223
                     },
                     {
                         "funcCode": "mall-member-update",
                         "funcName": "成员修改",
                         "isPermit": 1,
                         "modId": 62,
-                        "prid": 6857
+                        "prid": 8224
                     },
                     {
                         "funcCode": "mall-member-delete",
                         "funcName": "成员删除",
                         "isPermit": 1,
                         "modId": 62,
-                        "prid": 6858
+                        "prid": 8225
                     },
                     {
                         "funcCode": "mall-other-set",
                         "funcName": "其它设置",
                         "isPermit": 1,
                         "modId": 62,
-                        "prid": 6859
+                        "prid": 8226
                     },
                     {
                         "funcCode": "mall-permission-management",
                         "funcName": "权限管理",
                         "isPermit": 1,
                         "modId": 62,
-                        "prid": 6878
+                        "prid": 8245
                     }
                 ]
             },
@@ -119,28 +119,28 @@ var aaa={
                         "funcName": "公告新增",
                         "isPermit": 1,
                         "modId": 67,
-                        "prid": 6860
+                        "prid": 8227
                     },
                     {
                         "funcCode": "mall-announcement-update",
                         "funcName": "公告修改",
                         "isPermit": 1,
                         "modId": 67,
-                        "prid": 6861
+                        "prid": 8228
                     },
                     {
                         "funcCode": "mall-announcement-delete",
                         "funcName": "公告删除",
                         "isPermit": 1,
                         "modId": 67,
-                        "prid": 6862
+                        "prid": 8229
                     },
                     {
                         "funcCode": "mall-announcement-view",
                         "funcName": "公告查看",
                         "isPermit": 1,
                         "modId": 67,
-                        "prid": 6863
+                        "prid": 8230
                     }
                 ]
             },
@@ -172,28 +172,28 @@ var aaa={
                         "funcName": "代理商添加",
                         "isPermit": 1,
                         "modId": 71,
-                        "prid": 6864
+                        "prid": 8231
                     },
                     {
                         "funcCode": "mall-agent-update",
                         "funcName": "代理商修改",
                         "isPermit": 1,
                         "modId": 71,
-                        "prid": 6865
+                        "prid": 8232
                     },
                     {
                         "funcCode": "mall-agent-delete",
                         "funcName": "代理商删除",
                         "isPermit": 1,
                         "modId": 71,
-                        "prid": 6866
+                        "prid": 8233
                     },
                     {
                         "funcCode": "mall-agent-view",
                         "funcName": "代理商查看",
                         "isPermit": 1,
                         "modId": 71,
-                        "prid": 6867
+                        "prid": 8234
                     }
                 ]
             },
@@ -225,28 +225,28 @@ var aaa={
                         "funcName": "业务员添加",
                         "isPermit": 1,
                         "modId": 75,
-                        "prid": 6868
+                        "prid": 8235
                     },
                     {
                         "funcCode": "mall-salesman-update",
                         "funcName": "业务员修改",
                         "isPermit": 1,
                         "modId": 75,
-                        "prid": 6869
+                        "prid": 8236
                     },
                     {
                         "funcCode": "mall-salesman-delete",
                         "funcName": "业务员删除",
                         "isPermit": 1,
                         "modId": 75,
-                        "prid": 6870
+                        "prid": 8237
                     },
                     {
                         "funcCode": "mall-salesman-view",
                         "funcName": "业务员查看",
                         "isPermit": 1,
                         "modId": 75,
-                        "prid": 6871
+                        "prid": 8238
                     }
                 ]
             },
@@ -278,28 +278,28 @@ var aaa={
                         "funcName": "商户添加",
                         "isPermit": 1,
                         "modId": 79,
-                        "prid": 6872
+                        "prid": 8239
                     },
                     {
                         "funcCode": "mall-merchant-update",
                         "funcName": "商户修改",
                         "isPermit": 1,
                         "modId": 79,
-                        "prid": 6873
+                        "prid": 8240
                     },
                     {
                         "funcCode": "mall-merchant-delete",
                         "funcName": "商户删除",
                         "isPermit": 1,
                         "modId": 79,
-                        "prid": 6874
+                        "prid": 8241
                     },
                     {
                         "funcCode": "mall-merchant-view",
                         "funcName": "商户查看",
                         "isPermit": 1,
                         "modId": 79,
-                        "prid": 6875
+                        "prid": 8242
                     }
                 ]
             },
@@ -331,14 +331,14 @@ var aaa={
                         "funcName": "销售分润查看",
                         "isPermit": 1,
                         "modId": 83,
-                        "prid": 6876
+                        "prid": 8243
                     },
                     {
                         "funcCode": "mall-order-report-view",
                         "funcName": "订单报表",
                         "isPermit": 1,
                         "modId": 83,
-                        "prid": 6877
+                        "prid": 8244
                     }
                 ]
             },
@@ -370,7 +370,7 @@ var aaa={
                         "funcName": "添加分仓",
                         "isPermit": 1,
                         "modId": 86,
-                        "prid": 6879
+                        "prid": 8246
                     }
                 ]
             },
@@ -409,21 +409,28 @@ var aaa={
                         "funcName": "采购统计",
                         "isPermit": 1,
                         "modId": 98,
-                        "prid": 6880
+                        "prid": 8247
                     },
                     {
                         "funcCode": "mall-purchase-receiving",
                         "funcName": "收货",
                         "isPermit": 1,
                         "modId": 98,
-                        "prid": 6881
+                        "prid": 8248
                     },
                     {
                         "funcCode": "mall-order-stats",
                         "funcName": "订单统计",
                         "isPermit": 1,
                         "modId": 98,
-                        "prid": 6882
+                        "prid": 8249
+                    },
+                    {
+                        "funcCode": "mall-purchase-audit",
+                        "funcName": "采购审核",
+                        "isPermit": 1,
+                        "modId": 98,
+                        "prid": 8259
                     }
                 ]
             },
@@ -469,49 +476,49 @@ var aaa={
                         "funcName": "库存状况",
                         "isPermit": 1,
                         "modId": 99,
-                        "prid": 6883
+                        "prid": 8250
                     },
                     {
                         "funcCode": "mall-storage-stats",
                         "funcName": "入库统计",
                         "isPermit": 1,
                         "modId": 99,
-                        "prid": 6884
+                        "prid": 8251
                     },
                     {
                         "funcCode": "mall-storage-add",
                         "funcName": "添加入库单",
                         "isPermit": 1,
                         "modId": 99,
-                        "prid": 6885
+                        "prid": 8252
                     },
                     {
                         "funcCode": "mall-outbound-stats",
                         "funcName": "出库统计",
                         "isPermit": 1,
                         "modId": 99,
-                        "prid": 6886
+                        "prid": 8253
                     },
                     {
                         "funcCode": "mall-outbound-add",
                         "funcName": "添加出库单",
                         "isPermit": 1,
                         "modId": 99,
-                        "prid": 6887
+                        "prid": 8254
                     },
                     {
                         "funcCode": "mall-check-list",
                         "funcName": "盘点单",
                         "isPermit": 1,
                         "modId": 99,
-                        "prid": 6888
+                        "prid": 8255
                     },
                     {
                         "funcCode": "mall-store-manage",
                         "funcName": "分仓管理",
                         "isPermit": 1,
                         "modId": 99,
-                        "prid": 6889
+                        "prid": 8256
                     }
                 ]
             },
@@ -543,14 +550,14 @@ var aaa={
                         "funcName": "常用物流公司",
                         "isPermit": 1,
                         "modId": 100,
-                        "prid": 6890
+                        "prid": 8257
                     },
                     {
                         "funcCode": "mall-provider-manage",
                         "funcName": "供应商管理",
                         "isPermit": 1,
                         "modId": 100,
-                        "prid": 6891
+                        "prid": 8258
                     }
                 ]
             }
