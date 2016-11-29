@@ -10,7 +10,7 @@
 			/*菜单调用*/
 			var logininfo=public_tool.initMap.loginMap;
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
-				url:'http://10.0.5.222:8080/mall-agentbms-api/module/menu',
+				url:'http://120.76.237.100:8082/mall-agentbms-api/module/menu',
 				async:false,
 				type:'post',
 				param:{
@@ -48,31 +48,18 @@
 				$show_add_wrap=$('#show_add_wrap'),
 				admin_logisticsadd_form=document.getElementById('admin_logisticsadd_form'),
 				$admin_logisticsadd_form=$(admin_logisticsadd_form),
-				admin_logisticsapply_form=document.getElementById('admin_logisticsapply_form'),
 				$admin_id=$('#admin_id'),
-				$admin_number=$('#admin_number'),
-				$admin_time=$('#admin_time'),
-				$admin_store=$('#admin_store'),
-				$admin_type=$('#admin_type'),
-				$admin_provider=$('#admin_provider'),
-				$admin_operator=$('#admin_operator'),
-				$admin_remark=$('#admin_remark'),
-				$show_add_list=$('#show_add_list'),
-				$logistics_company_additem=$('#logistics_company_additem'),
-				$logistics_stats_removeitem=$('#logistics_stats_removeitem'),
-				$logistics_total=$('#logistics_total'),
-				$show_detail_wrap=$('#show_detail_wrap')/*详情容器*/,
-				$show_detail_content=$('#show_detail_content'),/*详情内容*/
-				$show_detail_list=$('#show_detail_list'),
-				$admin_apply=$('#admin_apply'),
-				$logistics_apply=$('#logistics_apply'),
-				$show_detail_action=$('#show_detail_action'),
+				$admin_companyName=$('#admin_companyName'),
+				$admin_seCode=$('#admin_seCode'),
+				$admin_linkman=$('#admin_linkman'),
+				$admin_cellphone=$('#admin_cellphone'),
+				$admin_province=$('#admin_province'),
+				$admin_city=$('#admin_city'),
+				$admin_country=$('#admin_country'),
+				$admin_address=$('#admin_address'),
+				$admin_sort=$('#admin_sort'),
+				$admin_action=$('#admin_action'),
 				resetform0=null,
-				goodsmap={
-					goodsseqid:[],
-					goodsactive:[],
-					goodsobj:[]
-				},
 				sureObj=public_tool.sureDialog(dia)/*回调提示对象*/,
 				setSure=new sureObj();
 
@@ -97,7 +84,7 @@
 						autoWidth:true,/*是否*/
 						paging:false,
 						ajax:{
-							url:"http://10.0.5.222:8080/mall-agentbms-api/logistics/list",
+							url:"http://120.76.237.100:8082/mall-agentbms-api/logistics/list",
 							dataType:'JSON',
 							method:'post',
 							dataSrc:function ( json ) {
@@ -196,7 +183,17 @@
 									if(logisticsshow_power&&isdelete===0){
 										if(stauts===0){
 											/*正常*/
-											btns+='<span data-action="disable" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+											btns+='<span data-action="edit" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+											<i class="fa-pencil"></i>\
+											<span>编辑</span>\
+											</span>';
+										}
+									}
+
+
+									/*if(stauts===0){
+										/!*正常*!/
+										btns+='<span data-action="disable" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 											<i class="fa-toggle-on"></i>\
 											<span>停用</span>\
 											</span>\
@@ -208,9 +205,9 @@
 											<i class="fa-pencil"></i>\
 											<span>编辑</span>\
 											</span>';
-										}else if(stauts===1){
-											/*停用*/
-											btns+='<span data-action="enable" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+									}else if(stauts===1){
+										/!*停用*!/
+										btns+='<span data-action="enable" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 											<i class="fa-toggle-off"></i>\
 											<span>启用</span>\
 											</span>\
@@ -222,9 +219,7 @@
 											<i class="fa-file-text-o"></i>\
 											<span>编辑</span>\
 											</span>';
-										}
-									}
-
+									}*/
 									return btns;
 								}
 							}
@@ -237,15 +232,60 @@
 			getColumnData(logistics_page,logistics_config);
 
 
+			/*获取地址*/
+			getAddress(86,'','province',true);
+
+
 			/*绑定新增入库*/
 			if(logisticsshow_power){
 				$logistics_company_add.removeClass('g-d-hidei');
 				$logistics_company_add.on('click',function () {
+					$admin_id.val('');
+					$admin_action.html('添加');
 					$show_add_wrap.modal('show',{backdrop:'static'});
 				});
 			}else{
 				$logistics_company_add.addClass('g-d-hidei');
 			}
+
+
+			/*格式化手机号码*/
+			$.each([$admin_cellphone],function(){
+				this.on('keyup',function(){
+					var phoneno=this.value.replace(/\D*/g,'');
+					if(phoneno==''){
+						this.value='';
+						return false;
+					}
+					this.value=public_tool.phoneFormat(this.value);
+				});
+			});
+
+
+			/*绑定切换地址*/
+			$.each([$admin_province,$admin_city,$admin_country],function () {
+				var self=this,
+					selector=this.selector,
+					type='';
+
+				if(selector.indexOf('province')!==-1){
+					type='province';
+				}else if(selector.indexOf('city')!==-1){
+					type='city';
+				}else if(selector.indexOf('country')!==-1){
+					type='country';
+				}
+
+				this.on('change',function () {
+					var $this=$(this),
+						value=$this.val();
+					if(type==='province'){
+						getAddress(value,'','city',true);
+					}else if(type==='city'){
+						getAddress(value,'','country',true);
+					}
+				});
+			});
 			
 
 
@@ -289,11 +329,7 @@
 					return false;
 				}else if(action==='edit'){
 					/*编辑*/
-					if(operate_item){
-						operate_item.removeClass('item-lighten');
-						operate_item=null;
-					}
-					operate_item=$tr.addClass('item-lighten');
+					logisticsEdit(id,$tr);
 				}else if(action==='enable'){
 					/*启用*/
 					dia.content('<span class="g-c-bs-warning g-btips-warn">功能正在开发中...</span>').show();
@@ -306,7 +342,7 @@
 
 
 			/*绑定关闭详情*/
-			$.each([$show_add_wrap,$show_detail_wrap],function () {
+			$.each([$show_add_wrap],function () {
 				this.on('hide.bs.modal',function(){
 					if(operate_item){
 						setTimeout(function(){
@@ -315,124 +351,6 @@
 						},1000);
 					}
 				});
-			});
-
-
-			/*绑定确定收货单审核*/
-			$logistics_apply.on('click',function () {
-				/*to do*/
-				var id=$admin_id.val();
-				if(id===''){
-					dia.content('<span class="g-c-bs-warning g-btips-warn">您没有选择需要操作的数据</span>').showModal();
-					return false;
-				}
-
-				return false;
-				$.ajax({
-						url:"http://10.0.5.222:8080/mall-agentbms-api/salesman/detail",
-						dataType:'JSON',
-						method:'post',
-						data:{
-							id:id,
-							roleId:decodeURIComponent(logininfo.param.roleId),
-							adminId:decodeURIComponent(logininfo.param.adminId),
-							token:decodeURIComponent(logininfo.param.token),
-							grade:decodeURIComponent(logininfo.param.grade),
-							isapply:$admin_apply.find(':checked').val()
-						}
-					})
-					.done(function(resp){
-						var code=parseInt(resp.code,10),
-							isok=false;
-						if(code!==0){
-							console.log(resp.message);
-							dia.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"审核失败")+'</span>').show();
-							setTimeout(function () {
-								dia.close();
-							},2000);
-							return false;
-						}
-						dia.content('<span class="g-c-bs-success g-btips-succ">审核成功</span>').show();
-						setTimeout(function () {
-							$show_detail_wrap.trigger('hide.bs.modal');
-							admin_logisticsapply_form.reset();
-							dia.close();
-						},2000);
-					})
-					.fail(function(resp){
-						console.log(resp.message);
-						dia.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"审核失败")+'</span>').show();
-						setTimeout(function () {
-							dia.close();
-						},2000);
-					});
-
-			});
-
-			
-
-
-			/*绑定添加商品*/
-			$logistics_company_additem.on('click',function () {
-				addStorageItem();
-			});
-
-			/*绑定删除商品*/
-			$logistics_stats_removeitem.on('click',function () {
-				removeStorageItem();
-			});
-
-
-			/*绑定商品选择*/
-			$show_add_list.on('change keyup focusout','input',function (e) {
-				var target= e.target,
-					etype=e.type,
-					$this,
-					text='',
-					index=0,
-					temparr='';
-
-				if(etype==='change'){
-					/*选中事件*/
-					if(target.className.indexOf('goodsid')!==-1){
-						$this=$(target);
-						text=$this.val();
-						if($this.is(':checked')){
-							goodsmap.goodsactive.push(text);
-							goodsmap.goodsobj.push($this);
-						}else{
-							temparr=goodsmap.goodsactive;
-							index=arrIndex(text,temparr);
-							goodsmap.goodsactive.splice(index,1);
-							goodsmap.goodsobj.splice(index,1);
-						}
-					}else{
-						return false;
-					}
-				}else if(etype==='keyup'){
-					/*键盘事件*/
-					if(target.className.indexOf('goodsnumber')!==-1){
-						$this=$(target);
-						text=$this.val();
-						text=text.replace(/\s*\D*/g,'');
-						if(text===''||isNaN(text)){
-							text=0;
-						}
-						$this.val(parseInt(text,10));
-					}else{
-						return false;
-					}
-				}else if(etype==='focusout'){
-					/*鼠标失去焦点事件*/
-					if(target.className.indexOf('goodscode')!==-1){
-						/*扫描 to do*/
-						/*$this=$(target);*/
-					}else if(target.className.indexOf('goodsnumber')!==-1){
-						totalShow();
-					}else{
-						return false;
-					}
-				}
 			});
 
 
@@ -477,50 +395,57 @@
 								$.extend(true,setdata,basedata);
 
 								if(formtype==='addlogistics'){
-									var total=parseInt($storage_total.html(),10);
-									if(total===''||isNaN(total)||total===0){
-										dia.content('<span class="g-c-bs-warning g-btips-warn">您没有输入任何数据</span>').show();
-										return false;
-									}
+									var id=$admin_id.val();
 									$.extend(true,setdata,{
-										number:$admin_number.val(),
-										time:$admin_time.val(),
-										store:$admin_store.val(),
-										type:$admin_type.val(),
-										provider:$admin_provider.val(),
-										operator:$admin_operator.val(),
-										remark:$admin_remark.val()
+										companyName:$admin_companyName.val(),
+										seCode:$admin_seCode.val(),
+										linkman:$admin_linkman.val(),
+										cellphone:public_tool.trims($admin_cellphone.val()),
+										address:$admin_province.find(':selected').val()+$admin_city.find(':selected').val()+$admin_country.find(':selected').val()+$admin_address.val(),
+										sort:$admin_sort.val()
 									});
 
-									setdata['list']=getStorageItem();
+									var actiontype='';
+									if(id!==''){
+										actiontype='修改';
+										setdata['id']=id;
+									}else{
+										actiontype='添加';
+									}
 
-									config['url']="http://10.0.5.222:8080/mall-agentbms-api/warehouse/addupdate";
+									config['url']="http://120.76.237.100:8082/mall-agentbms-api/logistics/addupdate";
 									config['data']=setdata;
 								}
-								console.log(setdata);
-								return false;
+
 								$.ajax(config).done(function(resp){
 									var code;
 									if(formtype==='addlogistics'){
 										code=parseInt(resp.code,10);
 										if(code!==0){
-											dia.content('<span class="g-c-bs-warning g-btips-warn">入库失败</span>').show();
+											dia.content('<span class="g-c-bs-warning g-btips-warn">'+actiontype+'失败</span>').show();
 											return false;
 										}else{
-											dia.content('<span class="g-c-bs-success g-btips-succ">入库成功</span>').show();
+											dia.content('<span class="g-c-bs-success g-btips-succ">'+actiontype+'成功</span>').show();
 										}
 									}
 
-									setTimeout(function () {
-										dia.close();
-										if(formtype==='addlogistics'&&code===0){
-											/*关闭隐藏*/
-											setTimeout(function () {
-												admin_logisticsadd_form.reset();
-												$show_add_wrap.trigger('hide.bs.modal');
-											},1000);
+									if(formtype==='addlogistics'&&code===0){
+										getColumnData(logistics_page,logistics_config);
+										admin_logisticsadd_form.reset();
+										if(actiontype==='修改'){
+											/*重新请求地址*/
+											getAddress(86,'','province',true);
 										}
-									},500);
+										setTimeout(function () {
+											/*关闭隐藏*/
+											dia.close();
+											setTimeout(function () {
+												$show_add_wrap.modal('hide');
+											},1000);
+										},500);
+									}
+
+
 								}).fail(function(resp){
 									console.log('error');
 								});
@@ -553,74 +478,15 @@
 		}
 
 
-		/*添加商品*/
-		function addStorageItem(){
-			var seqid=(Math.random()).toString().slice(2,15),
-				str='<tr><td><input type="checkbox" class="goodsid" name="goodsId" data-id="'+seqid+'" value="'+seqid+'"/></td><td><input class="form-control goodscode" type="text" /></td><td><input class="form-control" type="text" /></td><td><input class="form-control" type="text" /></td><td><input class="form-control goodsnumber" maxlength="9" value="0" type="text" /></td></tr>';
-			$(str).appendTo($show_add_list);
-			goodsmap.goodsseqid.push(seqid);
-		}
-
-		/*删除商品*/
-		function removeStorageItem(){
-			var len=goodsmap.goodsactive.length;
-			if(len===0){
-				dia.content('<span class="g-c-bs-warning g-btips-warn">您没有选择需要操作的数据</span>').showModal();
-				return false;
-			}
-			/*确认是否删除*/
-			setSure.sure('delete',function(cf){
-				/*to do*/
-				var tip=cf.dia||dia,
-					i=len - 1;
-				for(i;i>=0;i--){
-					goodsmap.goodsseqid.splice(arrIndex(goodsmap.goodsactive[i],goodsmap.goodsseqid),1);
-					goodsmap.goodsobj[i].closest('tr').remove();
-				}
-				goodsmap.goodsactive.length=0;
-				goodsmap.goodsobj.length=0;
-				tip.content('<span class="g-c-bs-warning g-btips-warn">删除成功</span>').show();
-				totalShow();
-				setTimeout(function () {
-					tip.close();
-				},2000);
-			});
-		}
-
-
-		/*获取商品列表*/
-		function getStorageItem() {
-			var result=[];
-			$show_add_list.find('tr').each(function () {
-				var $tr=$(this),
-					name=$tr.eq(2).find('input').val(),
-					type=$tr.eq(3).find('input').val();
-				if(name!==''&&type!==''){
-					result.push($tr.eq(1).find('input').val()+'#'+name+'#'+type+'#'+$tr.eq(4).find('input').val());
-				}
-			});
-			return JSON.stringify(result);
-		}
-
-
-		/*计算合计*/
-		function totalShow() {
-			var total=0;
-			$show_add_list.find('input.goodsnumber').each(function () {
-				total+=parseInt(this.value,10);
-			});
-			$logistics_total.html(total);
-		}
-
-		/*查看出库单*/
-		function showStorage(id,$tr) {
+		/*编辑*/
+		function logisticsEdit(id,$tr) {
 			$admin_id.val('');
-			if(!id){
+			if(typeof id==='undefined'){
 				return false;
 			}
 
 			$.ajax({
-					url:/*"http://10.0.5.222:8080/mall-agentbms-api/salesman/detail"*/"../../json/inventory/mall_storage_stats_detail.json",
+					url:"http://120.76.237.100:8082/mall-agentbms-api/logistics/details",
 					dataType:'JSON',
 					method:'post',
 					data:{
@@ -646,61 +512,85 @@
 					if(!result){
 						return false;
 					}
-
-					/*判断是否是审核状态*/
-					var state=parseInt(result["state"],10);
-					$admin_apply.find('input').each(function () {
-						var $this=$(this),
-							text=parseInt($this.val(),10);
-
-						if(text===state){
-							$this.prop({
-								"checked":true
-							});
-							return false;
-						}
-					});
-					if(state===0){
-						$show_detail_action.removeClass('g-d-hidei');
-					}else{
-						$show_detail_action.addClass('g-d-hidei');
-					}
-
 					/*设置值*/
 					$admin_id.val(id);
-					$('<tr><td>'+result["number"]+'</td><td>'+result["time"]+'</td><td>'+result["store"]+'</td><td>'+result["type"]+'</td><td>'+result["provider"]+'</td><td>'+result["operator"]+'</td><td>'+result["remark"]+'</td></tr>').appendTo($show_detail_content.html(''));
+					$admin_action.html('修改');
+					for(var i in result){
+						switch (i){
+							case 'seCode':
+								$admin_seCode.val(result[i]);
+								break;
+							case 'companyName':
+								$admin_companyName.val(result[i]);
+								break;
+							case 'linkman':
+								$admin_linkman.val(result[i]);
+								break;
+							case 'cellphone':
+								$admin_cellphone.val(public_tool.phoneFormat(result[i]));
+								break;
+							case 'address':
+								var tempaddress=result[i],
+									area=tempaddress.match(/^(\d{0,18})/g),
+									detail='';
 
+								if(area!==null){
+									/*解析省，市，区*/
+									area=area[0];
+									detail=tempaddress.replace(area,'');
+									if(area!==''){
+										(function () {
+											var j=0,
+												len=area.length,
+												arr=[],
+												str='';
 
-					var list=result.list,
-						str='',
-						i=0;
-
-					if(list){
-						var len=list.length;
-						if(len!==0){
-							for(i;i<len;i++){
-								var templogistics=list[i];
-								str+='<tr>\
-								<td>'+parseInt(i+1,10)+'</td>\
-								<td>'+templogistics["goodscode"]+'</td>\
-								<td>'+templogistics["goodsname"]+'</td>\
-								<td>'+templogistics["goodstype"]+'</td>\
-								<td>'+templogistics["goodsnumber"]+'</td>\
-								</tr>';
-							}
-							$(str).appendTo($show_detail_list.html(''));
+											for(j;j<len;j++){
+												var tempj=j+1;
+												str+=area[j];
+												if(tempj%6===0){
+													arr.push(str);
+													str='';
+												}
+											}
+											if(arr.length!==0){
+												if(arr[0]&&arr[0].length===6){
+													getAddress(86,arr[0],'province');
+													if(arr[1]&&arr[1].length===6){
+														getAddress(arr[0],arr[1],'city');
+														if(arr[2]&&arr[2].length===6){
+															getAddress(arr[1],arr[2],'country');
+														}
+													}
+												}else{
+													getAddress(86,'','province',true);
+												}
+											}else{
+												getAddress(86,'','province',true);
+											}
+										}());
+									}else{
+										getAddress(86,'','province',true);
+									}
+									$admin_address.val(detail);
+								}else{
+									getAddress(86,'','province',true);
+									$admin_address.val(tempaddress);
+								}
+								break;
+							case 'sort':
+								$admin_sort.val(result[i]);
+								break;
 						}
-					}else{
-						$show_detail_content.html('');
-						$show_detail_list.html('');
 					}
+					
 					/*添加高亮状态*/
 					if(operate_item){
 						operate_item.removeClass('item-lighten');
 						operate_item=null;
 					}
 					operate_item=$tr.addClass('item-lighten');
-					$show_detail_wrap.modal('show',{backdrop:'static'});
+					$show_add_wrap.modal('show',{backdrop:'static'});
 				})
 				.fail(function(resp){
 					console.log(resp.message);
@@ -711,16 +601,84 @@
 				});
 		}
 
-		/*数组索引*/
-		function arrIndex(val,arr) {
-			var i=0,
-				len=arr.length;
-			for(i;i<len;i++){
-				if(val===arr[i]){
-					return i;
-				}
-			}
-			return -1;
+
+		/*查询地址*/
+		function getAddress(id,sel,type,getflag) {
+			$.ajax({
+					url:"http://120.24.226.70:8082/yttx-public-api/address/get",
+					dataType:'JSON',
+					method:'post',
+					data:{
+						parentCode:id===''?86:id,
+						adminId:decodeURIComponent(logininfo.param.adminId),
+						token:decodeURIComponent(logininfo.param.token),
+						grade:decodeURIComponent(logininfo.param.grade)
+					}
+				})
+				.done(function(resp){
+					var code=parseInt(resp.code,10);
+					if(code!==0){
+						console.log(resp.message);
+						return false;
+					}
+					/*是否是正确的返回数据*/
+					var res=resp.result;
+					if(!res){
+						return false;
+					}
+					var list=res.list;
+
+					if(!list){
+						return false;
+					}
+
+					var len=list.length,
+						str='',
+						$wrap='',
+						i=0;
+
+					if(type==='province'){
+						$wrap=$admin_province;
+					}else if(type==='city'){
+						$wrap=$admin_city;
+					}else if(type==='country'){
+						$wrap=$admin_country;
+					}
+
+					if(len!==0){
+						if(sel!==''){
+							for(i;i<len;i++){
+								var codes=list[i]["code"];
+								if(codes===sel){
+									str+='<option selected value="'+codes+'">'+list[i]["name"]+'</option>';
+								}else{
+									str+='<option value="'+codes+'">'+list[i]["name"]+'</option>';
+								}
+							}
+						}else{
+							for(i;i<len;i++){
+								if(i===0){
+									sel=list[i]["code"];
+									str+='<option selected value="'+list[i]["code"]+'">'+list[i]["name"]+'</option>';
+								}else{
+									str+='<option value="'+list[i]["code"]+'">'+list[i]["name"]+'</option>';
+								}
+							}
+						}
+						$(str).appendTo($wrap.html(''));
+
+						if(sel!==''&&getflag){
+							if(type==='province'){
+								getAddress(sel,'','city',true);
+							}else if(type==='city'){
+								getAddress(sel,'','country');
+							}
+						}
+					}
+				})
+				.fail(function(resp){
+					console.log(resp.message);
+				});
 		}
 	});
 

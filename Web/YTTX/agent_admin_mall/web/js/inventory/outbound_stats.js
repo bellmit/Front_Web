@@ -10,7 +10,7 @@
 			/*菜单调用*/
 			var logininfo=public_tool.initMap.loginMap;
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
-				url:'http://10.0.5.222:8080/mall-agentbms-api/module/menu',
+				url:'http://120.76.237.100:8082/mall-agentbms-api/module/menu',
 				async:false,
 				type:'post',
 				param:{
@@ -98,7 +98,7 @@
 						autoWidth:true,/*是否*/
 						paging:false,
 						ajax:{
-							url:"http://10.0.5.222:8080/mall-agentbms-api/outboundstats/related",
+							url:"http://120.76.237.100:8082/mall-agentbms-api/outboundstats/related",
 							dataType:'JSON',
 							method:'post',
 							dataSrc:function ( json ) {
@@ -323,7 +323,7 @@
 				}
 
 				$.ajax({
-						url:"http://10.0.5.222:8080/mall-agentbms-api/outboundstats/audit/state",
+						url:"http://120.76.237.100:8082/mall-agentbms-api/outboundstats/audit/state",
 						dataType:'JSON',
 						method:'post',
 						data:{
@@ -497,7 +497,7 @@
 										setdata['goodsDetails']=goodslist;
 									}
 
-									config['url']="http://10.0.5.222:8080/mall-agentbms-api/outboundstats/addupdate";
+									config['url']="http://120.76.237.100:8082/mall-agentbms-api/outboundstats/addupdate";
 									config['data']=setdata;
 								}
 								$.ajax(config).done(function(resp){
@@ -567,7 +567,7 @@
 
 
 			$.ajax({
-					url:"http://10.0.5.222:8080/mall-agentbms-api/goods/attributes",
+					url:"http://120.76.237.100:8082/mall-agentbms-api/goods/attributes",
 					dataType:'JSON',
 					method:'post',
 					data:{
@@ -630,7 +630,7 @@
 		/*获取代理商列表*/
 		function getProvider(){
 			$.ajax({
-					url:"http://10.0.5.222:8080/mall-agentbms-api/providers/list",
+					url:"http://120.76.237.100:8082/mall-agentbms-api/providers/list",
 					dataType:'JSON',
 					method:'post',
 					data:{
@@ -789,7 +789,7 @@
 			}
 
 			$.ajax({
-					url:"http://10.0.5.222:8080/mall-agentbms-api/outboundstats/details",
+					url:"http://120.76.237.100:8082/mall-agentbms-api/outboundstats/details",
 					dataType:'JSON',
 					method:'post',
 					data:{
