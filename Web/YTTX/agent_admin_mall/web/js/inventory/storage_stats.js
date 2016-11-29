@@ -293,6 +293,11 @@
 
 			/*绑定确定收货单审核*/
 			$storage_apply.on('click',function () {
+				var applystate=parseInt($admin_apply.find(':checked').val(),10);
+				if(isNaN(applystate)){
+					dia.content('<span class="g-c-bs-warning g-btips-warn">您没有选择审核状态</span>').showModal();
+					return false;
+				}
 				/*to do*/
 				var id=$admin_id.val();
 				if(id===''){
@@ -300,9 +305,19 @@
 					return false;
 				}
 
-				return false;
+				var $state=$show_detail_content.find('tr td:last-child'),
+					state=parseInt($state.attr('data-id'),10);
+
+				if(state===-1||isNaN(state)){
+					dia.content('<span class="g-c-bs-warning g-btips-warn">状态异常，不能审核</span>').showModal();
+					return false;
+				}else if(state===1){
+					dia.content('<span class="g-c-bs-warning g-btips-warn">已经审核通过，不能再审核</span>').showModal();
+					return false;
+				}
+
 				$.ajax({
-						url:"http://10.0.5.222:8080/mall-agentbms-api/salesman/detail",
+						url:"http://10.0.5.222:8080/mall-agentbms-api/inboundstats/audit/state",
 						dataType:'JSON',
 						method:'post',
 						data:{
@@ -311,12 +326,11 @@
 							adminId:decodeURIComponent(logininfo.param.adminId),
 							token:decodeURIComponent(logininfo.param.token),
 							grade:decodeURIComponent(logininfo.param.grade),
-							isapply:$admin_apply.find(':checked').val()
+							auditState:applystate
 						}
 					})
 					.done(function(resp){
-						var code=parseInt(resp.code,10),
-							isok=false;
+						var code=parseInt(resp.code,10);
 						if(code!==0){
 							console.log(resp.message);
 							dia.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"审核失败")+'</span>').show();
@@ -326,9 +340,10 @@
 							return false;
 						}
 						dia.content('<span class="g-c-bs-success g-btips-succ">审核成功</span>').show();
+						getColumnData(storage_page,storage_config);
+						admin_storagestatsapply_form.reset();
 						setTimeout(function () {
-							$show_detail_wrap.trigger('hide.bs.modal');
-							admin_storagestatsapply_form.reset();
+							$show_detail_wrap.modal('hide');
 							dia.close();
 						},2000);
 					})
@@ -803,8 +818,6 @@
 						$show_detail_action.addClass('g-d-hidei');
 					}
 
-
-					console.log(result);
 					/*设置值*/
 					$admin_id.val(id);
 					$('<tr>\
@@ -819,9 +832,9 @@
 							}else if(state===1){
 								return '<td data-id="'+state+'" class="g-c-bs-success">'+statemap[state]+'</td>';
 							}else if(state===2){
-								return '<td class="g-c-gray10">'+statemap[state]+'</td>';
+								return '<td data-id="'+state+'" class="g-c-gray10">'+statemap[state]+'</td>';
 							}else{
-								return '<td class="g-c-red2">异常</td>';
+								return '<td data-id="-1" class="g-c-red2">异常</td>';
 							}
 						}())+'</tr>').appendTo($show_detail_content.html(''));
 
@@ -834,7 +847,6 @@
 					if(list){
 						var len=list.length;
 						if(len!==0){
-							console.log(list);
 							for(i;i<len;i++){
 								var tempstorage=list[i];
 								str+='<tr>\

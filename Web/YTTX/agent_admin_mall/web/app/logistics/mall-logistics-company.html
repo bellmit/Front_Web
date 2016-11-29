@@ -128,26 +128,24 @@
                             <table id="logistics_company_wrap" class="table table-bordered table-striped table-hover admin-table">
                                 <!--分组样式-->
                                 <colgroup>
+                                    <col class="g-w-percent5">
+                                    <col class="g-w-percent8">
+                                    <col class="g-w-percent6">
+                                    <col class="g-w-percent6">
                                     <col class="g-w-percent10">
                                     <col class="g-w-percent5">
-                                    <col class="g-w-percent8">
-                                    <col class="g-w-percent5">
-                                    <col class="g-w-percent5">
-                                    <col class="g-w-percent8">
-                                    <col class="g-w-percent4">
-                                    <col class="g-w-percent5">
+                                    <col class="g-w-percent10">
                                 </colgroup>
 
                                 <!--表头-->
                                 <thead>
                                 <tr>
-                                    <th>物流公司号</th>
-                                    <th>入库时间</th>
-                                    <th>入库仓库</th>
-                                    <th>入库类型</th>
-                                    <th>经办人</th>
-                                    <th>供应商</th>
-                                    <th>审核状态</th>
+                                    <th>物流公司</th>
+                                    <th>物流公司编号</th>
+                                    <th>联系人</th>
+                                    <th>联系电话</th>
+                                    <th>公司地址</th>
+                                    <th>状态</th>
                                     <th class="no-sorting">操作</th>
                                 </tr>
                                 </thead>
@@ -202,168 +200,45 @@
                     <h4 class="modal-title">新增物流公司</h4>
                 </div>
                 <div class="modal-body">
-                    <form role="form"  method="post" id="admin_storagestatsadd_form" class="admin-form1 validate">
-                        <table class="table table-bordered table-striped table-hover admin-table">
-                            <colgroup>
-                                <col class="g-w-percent7"/>
-                                <col class="g-w-percent6"/>
-                                <col class="g-w-percent7"/>
-                                <col class="g-w-percent6"/>
-                                <col class="g-w-percent7"/>
-                                <col class="g-w-percent7"/>
-                                <col class="g-w-percent10"/>
-                            </colgroup>
-                            <thead>
-                                <tr>
-                                    <th><span class="form-require-item g-c-red1">*</span>物流公司号</th>
-                                    <th><span class="form-require-item g-c-red1">*</span>入库时间</th>
-                                    <th><span class="form-require-item g-c-red1">*</span>入库仓库</th>
-                                    <th><span class="form-require-item g-c-red1">*</span>入库类型</th>
-                                    <th><span class="form-require-item g-c-red1">*</span>供应商</th>
-                                    <th><span class="form-require-item g-c-red1">*</span>经办人</th>
-                                    <th>备注</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td class="form-group">
-                                        <input type="text" class="form-control self-error-tips" name="number" placeholder="请输入物流公司号" data-validate="required" data-message-required="物流公司号不能为空"  id="admin_number" />
-                                    </td>
-                                    <td class="form-group">
-                                        <input type="text" class="form-control self-error-tips" placeholder="请选择入库时间" data-validate="required" data-message-required="入库时间不能为空"  name="time" readonly  id="admin_time" />
-                                    </td>
-                                    <td class="form-group">
-                                        <input type="text" class="form-control self-error-tips" name="store" placeholder="请输入入库仓库" data-validate="required" data-message-required="入库仓库不能为空"  id="admin_store" />
-                                    </td>
-                                    <td class="form-group">
-                                        <input type="text" class="form-control self-error-tips" name="type" placeholder="请输入入库类型" data-validate="required" data-message-required="入库类型不能为空"  id="admin_type" />
-                                    </td>
-                                    <td class="form-group">
-                                        <input type="text" class="form-control self-error-tips" name="provider" placeholder="请输入供应商" data-validate="required" data-message-required="供应商不能为空"  id="admin_provider" />
-                                    </td>
-                                    <td class="form-group">
-                                        <input type="text" class="form-control self-error-tips" name="operator" placeholder="请输入经办人" data-validate="required" data-message-required="经办人不能为空"  id="admin_operator" />
-                                    </td>
-                                    <td class="form-group">
-                                        <input type="text" class="form-control" name="remark"  id="admin_remark" />
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td colspan="7" class="form-group self-error-pos-tips"></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <table class="table table-bordered table-striped table-hover admin-table">
-                            <colgroup>
-                                <col class="g-w-percent2" />
-                                <col class="g-w-percent10" />
-                                <col class="g-w-percent15" />
-                                <col class="g-w-percent15" />
-                                <col class="g-w-percent8" />
-                            </colgroup>
-                            <thead>
-                                <tr>
-                                    <th>&nbsp;</th>
-                                    <th>条码</th>
-                                    <th>商品名称</th>
-                                    <th>商品型号</th>
-                                    <th>数量</th>
-                                </tr>
-                            </thead>
-                            <tbody id="show_add_list"></tbody>
-                            <tfoot>
-                                <tr>
-                                    <td colspan="4" class="g-t-r">合计：</td>
-                                    <td id="storage_total">0</td>
-                                </tr>
-                                <tr>
-                                    <td colspan="5">
-                                        <button type="submit" class="btn btn-success">确定入库</button>
-                                        <button type="button" id="logistics_company_additem" class="btn btn-info pull-right" >&nbsp;&nbsp;+&nbsp;&nbsp;</button>
-                                        <button type="button" id="logistics_company_removeitem" class="btn btn-info pull-right" >&nbsp;&nbsp;-&nbsp;&nbsp;</button>
-                                    </td>
-                                </tr>
-                            </tfoot>
-                        </table>
-                   </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-info" data-dismiss="modal">关闭</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-    <!--查看常用物流公司-->
-    <div class="modal fade custom-width" id="show_detail_wrap">
-        <div class="modal-dialog g-w-percent46">
-            <div class="modal-content">
-
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title">查看物流公司</h4>
-                </div>
-                <div class="modal-body">
-                    <form method="post" id="admin_storagestatsapply_form" class="admin-form1">
-                        <input value="" type="text" class="g-d-hidei" name="id"  id="admin_id" />
-                        <table class="table table-bordered table-striped table-hover admin-table">
-                            <colgroup>
-                                <col class="g-w-percent7"/>
-                                <col class="g-w-percent7"/>
-                                <col class="g-w-percent7"/>
-                                <col class="g-w-percent7"/>
-                                <col class="g-w-percent7"/>
-                                <col class="g-w-percent7"/>
-                                <col class="g-w-percent7"/>
-                            </colgroup>
-                            <thead>
-                                <tr>
-                                    <th>物流公司号</th>
-                                    <th>入库时间</th>
-                                    <th>入库仓库</th>
-                                    <th>入库类型</th>
-                                    <th>供应商</th>
-                                    <th>经办人</th>
-                                    <th>备注</th>
-                                </tr>
-                            </thead>
-                            <tbody id="show_detail_content"></tbody>
-                        </table>
-                        <table class="table table-bordered table-striped table-hover admin-table">
-                            <colgroup>
-                                <col class="g-w-percent2" />
-                                <col class="g-w-percent10" />
-                                <col class="g-w-percent15" />
-                                <col class="g-w-percent15" />
-                                <col class="g-w-percent8" />
-                            </colgroup>
-                            <thead>
-                                <tr>
-                                    <th>&nbsp;</th>
-                                    <th>条码</th>
-                                    <th>商品名称</th>
-                                    <th>商品型号</th>
-                                    <th>数量</th>
-                                </tr>
-                            </thead>
-                            <tbody id="show_detail_list"></tbody>
-                            <tfoot class="g-d-hidei" id="show_detail_action">
-                                <tr>
-                                    <td colspan="4" id="admin_apply">
-                                        <label>
-                                           <input type="radio" value="1" name="admin_apply">审核通过&nbsp;&nbsp;&nbsp;&nbsp;
-                                        </label>
-                                        <label>
-                                            &nbsp;&nbsp;&nbsp;&nbsp;<input checked type="radio" value="0" name="admin_apply"> 审核未通过
-                                        </label>
-                                    </td>
-                                    <td>
-                                        <button type="button" class="btn btn-success g-f-l" id="storage_apply" >确定</button>
-                                    </td>
-                                </tr>
-                            </tfoot>
-                        </table>
+                    <form role="form"  method="post" id="admin_logisticsadd_form" class="admin-form1 validate">
+                        <input type="text" class="g-d-hidei" value="" id="admin_id">
+                        <div class="form-group">
+                            <label class="control-label"><span class="form-require-item g-c-red1">*</span>物流公司：</label>
+                            <input type="text" class="form-control" name="companyName" placeholder="请输入物流公司" data-validate="required" data-message-required="物流公司不能为空"  id="admin_companyName" />
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">物流编号：</label>
+                            <input type="text" class="form-control" name="seCode"  id="admin_seCode" />
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label"><span class="form-require-item g-c-red1">*</span>联系人：</label>
+                            <input type="text" class="form-control" name="linkman" placeholder="请输入联系人" data-validate="required" data-message-required="联系人不能为空"  id="admin_linkman" />
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label"><span class="form-require-item g-c-red1">*</span>联系电话：</label>
+                            <input type="text" class="form-control" name="cellphone" placeholder="请输入联系电话"  data-validate="required,zh_phone" maxlength="13" data-message-zh_phone="联系电话格式不正确"  data-message-required="联系电话不能为空"    id="admin_cellphone" />
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label"><span class="form-require-item g-c-red1">*</span>公司地址：</label>
+                            <div class="row self-error-pos-wrap">
+                                <div class="col-md-3">
+                                    <select class="form-control self-error-pos" name="province" id="admin_province" ></select>
+                                </div>
+                                <div class="col-md-3">
+                                    <select class="form-control self-error-pos" name="city" id="admin_city" ></select>
+                                </div>
+                                <div class="col-md-3">
+                                    <select class="form-control self-error-pos" name="country" id="admin_country" ></select>
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="text" class="form-control" name="address" placeholder="请输入公司地址" data-validate="required" data-message-required="公司地址不能为空"  id="admin_address" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">排序：</label>
+                            <input type="text" class="form-control" name="sort"  id="admin_sort" />
+                        </div>
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -372,11 +247,11 @@
             </div>
         </div>
     </div>
-    
-    
+
+
+
     
 
-	
 	<!--加载遮罩层-->
 	<div id="page_loading_wrap" class="page-loading-overlay g-d-hidei">
 		<div class="loader-2"></div>
@@ -430,7 +305,6 @@
     <!--修饰分页，搜索等操作 -->
     <script src="../../js/plugins/datatables/dataTables.bootstrap.js"></script>
     <script src="../../js/plugins/pagination/pagination.js"></script>
-    <script src="../../js/plugins/datepicker/datepicker.js"></script>
     <script src="../../js/logistics/logistics_company.js"></script>
 </body>
 </html>

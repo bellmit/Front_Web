@@ -51,11 +51,11 @@
 				$admin_outboundstatsadd_form=$(admin_outboundstatsadd_form),
 				admin_outboundstatsapply_form=document.getElementById('admin_outboundstatsapply_form'),
 				$admin_id=$('#admin_id'),
-				$admin_number=$('#admin_number'),
+				$admin_outboundNumber=$('#admin_outboundNumber'),
 				$admin_time=$('#admin_time'),
-				$admin_store=$('#admin_store'),
-				$admin_type=$('#admin_type'),
-				$admin_linknumber=$('#admin_linknumber'),
+				$admin_providerId=$('#admin_providerId'),
+				$admin_outboundType=$('#admin_outboundType'),
+				$admin_relatedNumber=$('#admin_relatedNumber'),
 				$admin_operator=$('#admin_operator'),
 				$admin_remark=$('#admin_remark'),
 				$show_add_list=$('#show_add_list'),
@@ -98,7 +98,7 @@
 						autoWidth:true,/*是否*/
 						paging:false,
 						ajax:{
-							url:/*"http://10.0.5.222:8080/mall-agentbms-api/announcements/related"*/"../../json/inventory/mall_storage_stats_list.json",
+							url:"http://10.0.5.222:8080/mall-agentbms-api/outboundstats/related",
 							dataType:'JSON',
 							method:'post',
 							dataSrc:function ( json ) {
@@ -149,30 +149,52 @@
 						ordering:true,
 						columns: [
 							{
-								"data":"number"
+								"data":"outboundNumber"
 							},
 							{
-								"data":"number"
+								"data":"relatedNumber"
 							},
 							{
-								"data":"time"
+								"data":"outboundTime"
 							},
 							{
-								"data":"store"
+								"data":"warehouseName"
 							},
 							{
-								"data":"type"
+								"data":"outboundType",
+								"render":function(data, type, full, meta ){
+									var otype=parseInt(data,10),
+										otypemap={
+											1:"销售出库",
+											2:"退货出库",
+											3:"其他出库"
+										},
+										str='';
+
+									if(otype===1){
+										str='<div class="g-c-info">'+otypemap[otype]+'</div>';
+									}else if(otype===2){
+										str='<div class="g-c-red2">'+otypemap[otype]+'</div>';
+									}else if(otype===3){
+										str='<div class="g-c-gray9">'+otypemap[otype]+'</div>';
+									}
+									return str;
+								}
+							},
+							{
+								"data":"providerName"
 							},
 							{
 								"data":"operator"
 							},
 							{
-								"data":"state",
+								"data":"auditState",
 								"render":function(data, type, full, meta ){
 									var stauts=parseInt(data,10),
 										statusmap={
-											0:"未审核",
-											1:"审核"
+											0:"待审核",
+											1:"审核通过",
+											2:"审核未通过"
 										},
 										str='';
 
@@ -180,6 +202,8 @@
 										str='<div class="g-c-gray9">'+statusmap[stauts]+'</div>';
 									}else if(stauts===1){
 										str='<div class="g-c-info">'+statusmap[stauts]+'</div>';
+									}else if(stauts===2){
+										str='<div class="g-c-red2">'+statusmap[stauts]+'</div>';
 									}
 									return str;
 								}
@@ -207,6 +231,10 @@
 
 			/*初始化请求*/
 			getColumnData(outbound_page,outbound_config);
+
+
+			/*获取供应商列表*/
+			getProvider();
 
 
 			/*绑定新增出库*/
@@ -271,6 +299,11 @@
 
 			/*绑定确定收货单审核*/
 			$outbound_apply.on('click',function () {
+				var applystate=parseInt($admin_apply.find(':checked').val(),10);
+				if(isNaN(applystate)){
+					dia.content('<span class="g-c-bs-warning g-btips-warn">您没有选择审核状态</span>').showModal();
+					return false;
+				}
 				/*to do*/
 				var id=$admin_id.val();
 				if(id===''){
@@ -278,9 +311,19 @@
 					return false;
 				}
 
-				return false;
+				var $state=$show_detail_content.find('tr td:last-child'),
+					state=parseInt($state.attr('data-id'),10);
+
+				if(state===-1||isNaN(state)){
+					dia.content('<span class="g-c-bs-warning g-btips-warn">状态异常，不能审核</span>').showModal();
+					return false;
+				}else if(state===1){
+					dia.content('<span class="g-c-bs-warning g-btips-warn">已经审核通过，不能再审核</span>').showModal();
+					return false;
+				}
+
 				$.ajax({
-						url:"http://10.0.5.222:8080/mall-agentbms-api/salesman/detail",
+						url:"http://10.0.5.222:8080/mall-agentbms-api/outboundstats/audit/state",
 						dataType:'JSON',
 						method:'post',
 						data:{
@@ -289,12 +332,11 @@
 							adminId:decodeURIComponent(logininfo.param.adminId),
 							token:decodeURIComponent(logininfo.param.token),
 							grade:decodeURIComponent(logininfo.param.grade),
-							isapply:$admin_apply.find(':checked').val()
+							auditState:applystate
 						}
 					})
 					.done(function(resp){
-						var code=parseInt(resp.code,10),
-							isok=false;
+						var code=parseInt(resp.code,10);
 						if(code!==0){
 							console.log(resp.message);
 							dia.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"审核失败")+'</span>').show();
@@ -304,9 +346,10 @@
 							return false;
 						}
 						dia.content('<span class="g-c-bs-success g-btips-succ">审核成功</span>').show();
+						getColumnData(outbound_page,outbound_config);
+						admin_outboundstatsapply_form.reset();
 						setTimeout(function () {
-							$show_detail_wrap.trigger('hide.bs.modal');
-							admin_outboundstatsapply_form.reset();
+							$show_detail_wrap.modal('hide');
 							dia.close();
 						},2000);
 					})
@@ -318,19 +361,6 @@
 						},2000);
 					});
 
-			});
-
-
-
-			/*绑定时间插件*/
-			$.each([$admin_time],function(){
-				this.val('').datepicker({
-					autoclose:true,
-					clearBtn:true,
-					format: 'yyyy-mm-dd',
-					todayBtn: true,
-					endDate:moment().format('YYYY-MM-DD')
-				})
 			});
 
 
@@ -388,9 +418,9 @@
 					/*鼠标失去焦点事件*/
 					if(target.className.indexOf('goodscode')!==-1){
 						/*扫描 to do*/
-						/*$this=$(target);*/
+						getGoodsList($(target));
 					}else if(target.className.indexOf('goodsnumber')!==-1){
-						totalShow();
+						totalShow($(target));
 					}else{
 						return false;
 					}
@@ -439,28 +469,37 @@
 								$.extend(true,setdata,basedata);
 
 								if(formtype==='addoutboundstats'){
-									var total=parseInt($outbound_total.html(),10);
-									if(total===''||isNaN(total)||total===0){
-										dia.content('<span class="g-c-bs-warning g-btips-warn">您没有输入任何数据</span>').show();
-										return false;
-									}
 									$.extend(true,setdata,{
-										number:$admin_number.val(),
-										time:$admin_time.val(),
-										store:$admin_store.val(),
-										type:$admin_type.val(),
-										provider:$admin_linknumber.val(),
-										operator:$admin_operator.val(),
+										outboundNumber:$admin_outboundNumber.val(),
+										relatedNumber:$admin_relatedNumber.val(),
+										outboundType:$admin_outboundType.find(':selected').val(),
+										providerId:$admin_providerId.find(':selected').val(),
 										remark:$admin_remark.val()
 									});
 
-									setdata['list']=getOutboundItem();
+									var goodslist=getOutboundItem();
+									if(goodslist===null){
+										setSure.sure('',function(cf){
+											/*to do*/
+											var tip=cf.dia||dia;
+											tip.close();
+											setTimeout(function () {
+												var listitem=$show_add_list.find('tr');
+												if(listitem.size()===0){
+													$outbound_stats_additem.trigger('click');
+													listitem=$show_add_list.find('tr');
+												}
+												listitem.children().eq(1).find('input').select();
+											},500);
+										},'您没有输入任何商品数据,是否创建商品列表?',true);
+										return false;
+									}else{
+										setdata['goodsDetails']=goodslist;
+									}
 
-									config['url']="http://10.0.5.222:8080/mall-agentbms-api/warehouse/addupdate";
+									config['url']="http://10.0.5.222:8080/mall-agentbms-api/outboundstats/addupdate";
 									config['data']=setdata;
 								}
-								console.log(setdata);
-								return false;
 								$.ajax(config).done(function(resp){
 									var code;
 									if(formtype==='addoutboundstats'){
@@ -477,12 +516,13 @@
 										dia.close();
 										if(formtype==='addoutboundstats'&&code===0){
 											/*关闭隐藏*/
+											admin_outboundstatsadd_form.reset();
+											getColumnData(outbound_page,outbound_config);
 											setTimeout(function () {
-												admin_outboundstatsadd_form.reset();
-												$show_add_wrap.trigger('hide.bs.modal');
+												$show_add_wrap.modal('hide');
 											},1000);
 										}
-									},500);
+									},1500);
 								}).fail(function(resp){
 									console.log('error');
 								});
@@ -504,6 +544,139 @@
 
 		}
 
+		/*获取商品列表*/
+		function getGoodsList($code) {
+			if(!$code){
+				return false;
+			}
+			var key=$code.val(),
+				tempkey=$code.attr('data-value');
+
+			/*空数据过滤*/
+			if(key===''){
+				return false;
+			}
+			/*防止重复提交*/
+			if(tempkey!==''&&tempkey===key){
+				return false;
+			}
+			$code.attr({
+				'data-value':key
+			});
+
+
+
+			$.ajax({
+					url:"http://10.0.5.222:8080/mall-agentbms-api/goods/attributes",
+					dataType:'JSON',
+					method:'post',
+					data:{
+						gCode:key,
+						roleId:decodeURIComponent(logininfo.param.roleId),
+						adminId:decodeURIComponent(logininfo.param.adminId),
+						token:decodeURIComponent(logininfo.param.token),
+						grade:decodeURIComponent(logininfo.param.grade)
+					}
+				})
+				.done(function(resp){
+					var code=parseInt(resp.code,10);
+					if(code!==0){
+						console.log(resp.message);
+						return false;
+					}
+					/*是否是正确的返回数据*/
+					var result=resp.result;
+					if(!result){
+						return false;
+					}
+
+					/*设置值*/
+					var $tr=$code.closest('tr').children(),
+						list=result['list'],
+						i=0,
+						str='';
+
+					$tr.eq(2).attr({
+						'data-id':result['id'],
+						'data-name':result['name']
+					}).html(result['name']);
+
+					if(list){
+						var len=list.length;
+						if(len!==0){
+							for(i;i<len;i++){
+								var name=list[i]["name"];
+								str+='<div class="admin-attrlabel-item1" data-id="'+list[i]["id"]+'" data-name="'+name+'">';
+								var sublist=list[i]['list'],
+									sublen=sublist.length,
+									j=0;
+								for(j;j<sublen;j++){
+									var subname=sublist[j]["name"];
+									str+='<span data-id="'+list[i]["id"]+'" data-name="'+subname+'">'+subname+'</span>';
+								}
+								str+='</div>';
+							}
+							$(str).appendTo($tr.eq(3).html(''));
+						}
+					}
+				})
+				.fail(function(resp){
+					console.log(resp.message);
+				});
+
+		}
+
+
+		/*获取代理商列表*/
+		function getProvider(){
+			$.ajax({
+					url:"http://10.0.5.222:8080/mall-agentbms-api/providers/list",
+					dataType:'JSON',
+					method:'post',
+					data:{
+						roleId:decodeURIComponent(logininfo.param.roleId),
+						adminId:decodeURIComponent(logininfo.param.adminId),
+						token:decodeURIComponent(logininfo.param.token),
+						grade:decodeURIComponent(logininfo.param.grade)
+					}
+				})
+				.done(function(resp){
+					var code=parseInt(resp.code,10);
+					if(code!==0){
+						console.log(resp.message);
+						return false;
+					}
+					/*是否是正确的返回数据*/
+					var result=resp.result;
+					if(!result){
+						return false;
+					}
+
+					/*设置值*/
+					var list=result['list'],
+						i=0,
+						str='';
+
+					if(list){
+						var len=list.length;
+						if(len!==0){
+							for(i;i<len;i++){
+								if(i===0){
+									str+='<option value="'+list[i]["id"]+'" selected >'+list[i]["companyName"]+'</option>';
+								}else{
+									str+='<option value="'+list[i]["id"]+'">'+list[i]["companyName"]+'</option>';
+								}
+							}
+							$(str).appendTo($admin_providerId.html(''));
+						}
+					}
+				})
+				.fail(function(resp){
+					console.log(resp.message);
+				});
+		}
+
+
 
 		/*获取数据*/
 		function getColumnData(page,opt){
@@ -518,7 +691,19 @@
 		/*添加商品*/
 		function addOutboundItem(){
 			var seqid=(Math.random()).toString().slice(2,15),
-				str='<tr><td><input type="checkbox" class="goodsid" name="goodsId" data-id="'+seqid+'" value="'+seqid+'"/></td><td><input class="form-control goodscode" type="text" /></td><td><input class="form-control" type="text" /></td><td><input class="form-control" type="text" /></td><td><input class="form-control goodsnumber" maxlength="9" value="0" type="text" /></td></tr>';
+				str='<tr>\
+						<td>\
+							<input type="checkbox" class="goodsid" name="seqid" value="'+seqid+'"/>\
+						</td>\
+						<td>\
+							<input class="form-control goodscode" data-value="" type="text" />\
+						</td>\
+						<td data-id="" data-name=""></td>\
+						<td></td>\
+						<td>\
+							<input class="form-control goodsnumber" maxlength="9" value="0" type="text" data-value="" />\
+						</td>\
+					</tr>';
 			$(str).appendTo($show_add_list);
 			goodsmap.goodsseqid.push(seqid);
 		}
@@ -554,19 +739,41 @@
 		function getOutboundItem() {
 			var result=[];
 			$show_add_list.find('tr').each(function () {
-				var $tr=$(this),
-					name=$tr.eq(2).find('input').val(),
-					type=$tr.eq(3).find('input').val();
-				if(name!==''&&type!==''){
-					result.push($tr.eq(1).find('input').val()+'#'+name+'#'+type+'#'+$tr.eq(4).find('input').val());
+				var $tr=$(this).children(),
+					id=$tr.eq(2).attr('data-id'),
+					name=$tr.eq(2).attr('data-name'),
+					type=(function () {
+						var $temptype=$tr.eq(3).find('span'),
+							tempstr=[];
+						$temptype.each(function () {
+							tempstr.push($(this).attr('data-name'));
+						});
+						return tempstr.join(' ');
+					}()),
+					number=$tr.eq(4).find('input').val();
+
+				if(id!==''&&name!==''&&type!==''){
+					result.push(id+'#'+name+'#'+type+'#'+number);
 				}
 			});
-			return JSON.stringify(result);
+			return result.length===0?null:JSON.stringify(result);
 		}
 
 
 		/*计算合计*/
-		function totalShow() {
+		function totalShow($number) {
+			if($number){
+				var text=$number.val(),
+					temptext=$number.attr('data-value');
+
+				if(text===temptext){
+					/*过滤重复数据*/
+					return false;
+				}
+				$number.attr({
+					'data-value':text
+				});
+			}
 			var total=0;
 			$show_add_list.find('input.goodsnumber').each(function () {
 				total+=parseInt(this.value,10);
@@ -577,16 +784,16 @@
 		/*查看出库单*/
 		function showOutbound(id,$tr) {
 			$admin_id.val('');
-			if(!id){
+			if(typeof id==='undefined'){
 				return false;
 			}
 
 			$.ajax({
-					url:/*"http://10.0.5.222:8080/mall-agentbms-api/salesman/detail"*/"../../json/inventory/mall_storage_stats_detail.json",
+					url:"http://10.0.5.222:8080/mall-agentbms-api/outboundstats/details",
 					dataType:'JSON',
 					method:'post',
 					data:{
-						id:id,
+						outboundId:id,
 						roleId:decodeURIComponent(logininfo.param.roleId),
 						adminId:decodeURIComponent(logininfo.param.adminId),
 						token:decodeURIComponent(logininfo.param.token),
@@ -610,19 +817,13 @@
 					}
 
 					/*判断是否是审核状态*/
-					var state=parseInt(result["state"],10);
-					$admin_apply.find('input').each(function () {
-						var $this=$(this),
-							text=parseInt($this.val(),10);
-
-						if(text===state){
-							$this.prop({
-								"checked":true
-							});
-							return false;
-						}
-					});
-					if(state===0){
+					var state=parseInt(result["auditState"],10),
+						statemap={
+							0:'待审核',
+							1:'审核通过',
+							2:'审核未通过'
+						};
+					if(state===0||state===2){
 						$show_detail_action.removeClass('g-d-hidei');
 					}else{
 						$show_detail_action.addClass('g-d-hidei');
@@ -630,10 +831,27 @@
 
 					/*设置值*/
 					$admin_id.val(id);
-					$('<tr><td>'+result["number"]+'</td><td>'+result["number"]+'</td><td>'+result["time"]+'</td><td>'+result["store"]+'</td><td>'+result["type"]+'</td><td>'+result["operator"]+'</td><td>'+result["remark"]+'</td></tr>').appendTo($show_detail_content.html(''));
+					$('<tr>\
+						<td>'+result["outboundNumber"]+'</td>\
+						<td>'+result["relatedNumber"]+'</td>\
+						<td>'+result["outboundTime"]+'</td>\
+						<td>'+result["warehouseName"]+'</td>\
+						<td>'+result["providerName"]+'</td>\
+						<td>'+result["remark"]+'</td>\
+						'+(function () {
+							if(state===0){
+								return '<td data-id="'+state+'" class="g-c-bs-info">'+statemap[state]+'</td>';
+							}else if(state===1){
+								return '<td data-id="'+state+'" class="g-c-bs-success">'+statemap[state]+'</td>';
+							}else if(state===2){
+								return '<td data-id="'+state+'" class="g-c-gray10">'+statemap[state]+'</td>';
+							}else{
+								return '<td data-id="-1" class="g-c-red2">异常</td>';
+							}
+						}())+'</tr>').appendTo($show_detail_content.html(''));
 
 
-					var list=result.list,
+					var list=result.detailsList,
 						str='',
 						i=0;
 
@@ -644,10 +862,10 @@
 								var tempoutbound=list[i];
 								str+='<tr>\
 								<td>'+parseInt(i+1,10)+'</td>\
-								<td>'+tempoutbound["goodscode"]+'</td>\
-								<td>'+tempoutbound["goodsname"]+'</td>\
-								<td>'+tempoutbound["goodstype"]+'</td>\
-								<td>'+tempoutbound["goodsnumber"]+'</td>\
+								<td>'+tempoutbound["goodsId"]+'</td>\
+								<td>'+tempoutbound["goodsName"]+'</td>\
+								<td>'+tempoutbound["attributeName"]+'</td>\
+								<td>'+tempoutbound["quantity"]+'</td>\
 								</tr>';
 							}
 							$(str).appendTo($show_detail_list.html(''));

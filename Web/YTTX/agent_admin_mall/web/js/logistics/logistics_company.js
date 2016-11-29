@@ -22,16 +22,15 @@
 				datatype:'json'
 			});
 			/*权限调用*/
-			var powermap=public_tool.getPower(99),
-				storageshow_power=public_tool.getKeyPower('mall-storage-stats',powermap),
-				storageadd_power=public_tool.getKeyPower('mall-storage-add',powermap);
+			var powermap=public_tool.getPower(),
+				logisticsshow_power=public_tool.getKeyPower('mall-logistics-company',powermap);
 
 
 
 			
 			/*dom引用和相关变量定义*/
-			var $storage_stats_wrap=$('#storage_stats_wrap')/*表格*/,
-				module_id='mall-storage-stats'/*模块id，主要用于本地存储传值*/,
+			var $logistics_company_wrap=$('#logistics_company_wrap')/*表格*/,
+				module_id='mall-logistics-company'/*模块id，主要用于本地存储传值*/,
 				dia=dialog({
 					zIndex:2000,
 					title:'温馨提示',
@@ -45,11 +44,11 @@
 				})/*一般提示对象*/,
 
 				$admin_page_wrap=$('#admin_page_wrap'),
-				$storage_stats_add=$('#storage_stats_add'),
+				$logistics_company_add=$('#logistics_company_add'),
 				$show_add_wrap=$('#show_add_wrap'),
-				admin_storagestatsadd_form=document.getElementById('admin_storagestatsadd_form'),
-				$admin_storagestatsadd_form=$(admin_storagestatsadd_form),
-				admin_storagestatsapply_form=document.getElementById('admin_storagestatsapply_form'),
+				admin_logisticsadd_form=document.getElementById('admin_logisticsadd_form'),
+				$admin_logisticsadd_form=$(admin_logisticsadd_form),
+				admin_logisticsapply_form=document.getElementById('admin_logisticsapply_form'),
 				$admin_id=$('#admin_id'),
 				$admin_number=$('#admin_number'),
 				$admin_time=$('#admin_time'),
@@ -59,14 +58,14 @@
 				$admin_operator=$('#admin_operator'),
 				$admin_remark=$('#admin_remark'),
 				$show_add_list=$('#show_add_list'),
-				$storage_stats_additem=$('#storage_stats_additem'),
-				$storage_stats_removeitem=$('#storage_stats_removeitem'),
-				$storage_total=$('#storage_total'),
+				$logistics_company_additem=$('#logistics_company_additem'),
+				$logistics_stats_removeitem=$('#logistics_stats_removeitem'),
+				$logistics_total=$('#logistics_total'),
 				$show_detail_wrap=$('#show_detail_wrap')/*详情容器*/,
 				$show_detail_content=$('#show_detail_content'),/*详情内容*/
 				$show_detail_list=$('#show_detail_list'),
 				$admin_apply=$('#admin_apply'),
-				$storage_apply=$('#storage_apply'),
+				$logistics_apply=$('#logistics_apply'),
 				$show_detail_action=$('#show_detail_action'),
 				resetform0=null,
 				goodsmap={
@@ -80,17 +79,17 @@
 
 
 			/*重置表单*/
-			admin_storagestatsadd_form.reset();
+			admin_logisticsadd_form.reset();
 
 
 			/*列表请求配置*/
-			var storage_page={
+			var logistics_page={
 					page:1,
 					pageSize:10,
 					total:0
 				},
-				storage_config={
-					$storage_stats_wrap:$storage_stats_wrap,
+				logistics_config={
+					$logistics_company_wrap:$logistics_company_wrap,
 					$admin_page_wrap:$admin_page_wrap,
 					config:{
 						processing:true,/*大消耗操作时是否显示处理状态*/
@@ -98,7 +97,7 @@
 						autoWidth:true,/*是否*/
 						paging:false,
 						ajax:{
-							url:/*"http://10.0.5.222:8080/mall-agentbms-api/announcements/related"*/"../../json/inventory/mall_storage_stats_list.json",
+							url:"http://10.0.5.222:8080/mall-agentbms-api/logistics/list",
 							dataType:'JSON',
 							method:'post',
 							dataSrc:function ( json ) {
@@ -116,21 +115,21 @@
 								}
 								var result=json.result;
 								/*设置分页*/
-								storage_page.page=result.page;
-								storage_page.pageSize=result.pageSize;
-								storage_page.total=result.count;
+								logistics_page.page=result.page;
+								logistics_page.pageSize=result.pageSize;
+								logistics_page.total=result.count;
 								/*分页调用*/
 								$admin_page_wrap.pagination({
-									pageSize:storage_page.pageSize,
-									total:storage_page.total,
-									pageNumber:storage_page.page,
+									pageSize:logistics_page.pageSize,
+									total:logistics_page.total,
+									pageNumber:logistics_page.page,
 									onSelectPage:function(pageNumber,pageSize){
 										/*再次查询*/
-										var param=storage_config.config.ajax.data;
+										var param=logistics_config.config.ajax.data;
 										param.page=pageNumber;
 										param.pageSize=pageSize;
-										storage_config.config.ajax.data=param;
-										getColumnData(storage_page,storage_config);
+										logistics_config.config.ajax.data=param;
+										getColumnData(logistics_page,logistics_config);
 									}
 								});
 								return result?result.list||[]:[];
@@ -149,37 +148,39 @@
 						ordering:true,
 						columns: [
 							{
-								"data":"number"
+								"data":"companyName"
 							},
 							{
-								"data":"time"
+								"data":"seCode"
 							},
 							{
-								"data":"store"
+								"data":"linkman"
 							},
 							{
-								"data":"type"
+								"data":"cellphone",
+								"render":function(data, type, full, meta ){
+									return public_tool.phoneFormat(data);
+								}
 							},
 							{
-								"data":"operator"
+								"data":"address"
 							},
 							{
-								"data":"provider"
-							},
-							{
-								"data":"state",
+								"data":"status",
 								"render":function(data, type, full, meta ){
 									var stauts=parseInt(data,10),
 										statusmap={
-											0:"未审核",
-											1:"审核"
+											0:"正常",
+											1:"停用"
 										},
 										str='';
 
 									if(stauts===0){
-										str='<div class="g-c-gray9">'+statusmap[stauts]+'</div>';
+										str='<div class="g-c-gray6">'+statusmap[stauts]+'</div>';
 									}else if(stauts===1){
-										str='<div class="g-c-info">'+statusmap[stauts]+'</div>';
+										str='<div class="g-c-gray12">'+statusmap[stauts]+'</div>';
+									}else{
+										str='<div class="g-c-red2">删除</div>';
 									}
 									return str;
 								}
@@ -188,13 +189,40 @@
 								"data":"id",
 								"render":function(data, type, full, meta ){
 									var id=parseInt(data,10),
+										stauts=parseInt(full.status,10),
+										isdelete=parseInt(full.isDelete,10),
 										btns='';
 
-									if(storageshow_power){
-										btns+='<span data-action="select" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
-											<i class="fa-file-text-o"></i>\
-											<span>查看</span>\
+									if(logisticsshow_power&&isdelete===0){
+										if(stauts===0){
+											/*正常*/
+											btns+='<span data-action="disable" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+											<i class="fa-toggle-on"></i>\
+											<span>停用</span>\
+											</span>\
+											<span data-action="delete" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+											<i class="fa-trash"></i>\
+											<span>删除</span>\
+											</span>\
+											<span data-action="edit" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+											<i class="fa-pencil"></i>\
+											<span>编辑</span>\
 											</span>';
+										}else if(stauts===1){
+											/*停用*/
+											btns+='<span data-action="enable" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+											<i class="fa-toggle-off"></i>\
+											<span>启用</span>\
+											</span>\
+											<span data-action="delete" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+											<i class="fa-trash"></i>\
+											<span>删除</span>\
+											</span>\
+											<span data-action="edit" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+											<i class="fa-file-text-o"></i>\
+											<span>编辑</span>\
+											</span>';
+										}
 									}
 
 									return btns;
@@ -206,17 +234,17 @@
 			
 
 			/*初始化请求*/
-			getColumnData(storage_page,storage_config);
+			getColumnData(logistics_page,logistics_config);
 
 
 			/*绑定新增入库*/
-			if(storageadd_power){
-				$storage_stats_add.removeClass('g-d-hidei');
-				$storage_stats_add.on('click',function () {
+			if(logisticsshow_power){
+				$logistics_company_add.removeClass('g-d-hidei');
+				$logistics_company_add.on('click',function () {
 					$show_add_wrap.modal('show',{backdrop:'static'});
 				});
 			}else{
-				$storage_stats_add.addClass('g-d-hidei');
+				$logistics_company_add.addClass('g-d-hidei');
 			}
 			
 
@@ -224,7 +252,7 @@
 			/*事件绑定*/
 			/*绑定查看，修改操作*/
 			var operate_item;
-			$storage_stats_wrap.delegate('span','click',function(e){
+			$logistics_company_wrap.delegate('span','click',function(e){
 				e.stopPropagation();
 				e.preventDefault();
 
@@ -244,14 +272,35 @@
 				id=$this.attr('data-id');
 				action=$this.attr('data-action');
 
-				/*修改,编辑操作*/
-				if(action==='select'){
+
+				if(action==='disable'){
+					/*停用*/
+					dia.content('<span class="g-c-bs-warning g-btips-warn">功能正在开发中...</span>').show();
+					setTimeout(function () {
+						dia.close();
+					},2000);
+					return false;
+				}else if(action==='delete'){
+					/*删除*/
+					dia.content('<span class="g-c-bs-warning g-btips-warn">功能正在开发中...</span>').show();
+					setTimeout(function () {
+						dia.close();
+					},2000);
+					return false;
+				}else if(action==='edit'){
+					/*编辑*/
 					if(operate_item){
 						operate_item.removeClass('item-lighten');
 						operate_item=null;
 					}
 					operate_item=$tr.addClass('item-lighten');
-					showStorage(id,$tr);
+				}else if(action==='enable'){
+					/*启用*/
+					dia.content('<span class="g-c-bs-warning g-btips-warn">功能正在开发中...</span>').show();
+					setTimeout(function () {
+						dia.close();
+					},2000);
+					return false;
 				}
 			});
 
@@ -270,7 +319,7 @@
 
 
 			/*绑定确定收货单审核*/
-			$storage_apply.on('click',function () {
+			$logistics_apply.on('click',function () {
 				/*to do*/
 				var id=$admin_id.val();
 				if(id===''){
@@ -306,7 +355,7 @@
 						dia.content('<span class="g-c-bs-success g-btips-succ">审核成功</span>').show();
 						setTimeout(function () {
 							$show_detail_wrap.trigger('hide.bs.modal');
-							admin_storagestatsapply_form.reset();
+							admin_logisticsapply_form.reset();
 							dia.close();
 						},2000);
 					})
@@ -320,27 +369,16 @@
 
 			});
 
-
-
-			/*绑定时间插件*/
-			$.each([$admin_time],function(){
-				this.val('').datepicker({
-					autoclose:true,
-					clearBtn:true,
-					format: 'yyyy-mm-dd',
-					todayBtn: true,
-					endDate:moment().format('YYYY-MM-DD')
-				})
-			});
+			
 
 
 			/*绑定添加商品*/
-			$storage_stats_additem.on('click',function () {
+			$logistics_company_additem.on('click',function () {
 				addStorageItem();
 			});
 
 			/*绑定删除商品*/
-			$storage_stats_removeitem.on('click',function () {
+			$logistics_stats_removeitem.on('click',function () {
 				removeStorageItem();
 			});
 
@@ -421,14 +459,14 @@
 								method:'post'
 							};
 						if(index===0){
-							formtype='addstoragestats';
+							formtype='addlogistics';
 						}
 						$.extend(true,(function () {
-							if(formtype==='addstoragestats'){
+							if(formtype==='addlogistics'){
 								return form_opt0;
 							}
 						}()),(function () {
-							if(formtype==='addstoragestats'){
+							if(formtype==='addlogistics'){
 								return formcache.form_opt_0;
 							}
 						}()),{
@@ -438,7 +476,7 @@
 
 								$.extend(true,setdata,basedata);
 
-								if(formtype==='addstoragestats'){
+								if(formtype==='addlogistics'){
 									var total=parseInt($storage_total.html(),10);
 									if(total===''||isNaN(total)||total===0){
 										dia.content('<span class="g-c-bs-warning g-btips-warn">您没有输入任何数据</span>').show();
@@ -463,7 +501,7 @@
 								return false;
 								$.ajax(config).done(function(resp){
 									var code;
-									if(formtype==='addstoragestats'){
+									if(formtype==='addlogistics'){
 										code=parseInt(resp.code,10);
 										if(code!==0){
 											dia.content('<span class="g-c-bs-warning g-btips-warn">入库失败</span>').show();
@@ -475,10 +513,10 @@
 
 									setTimeout(function () {
 										dia.close();
-										if(formtype==='addstoragestats'&&code===0){
+										if(formtype==='addlogistics'&&code===0){
 											/*关闭隐藏*/
 											setTimeout(function () {
-												admin_storagestatsadd_form.reset();
+												admin_logisticsadd_form.reset();
 												$show_add_wrap.trigger('hide.bs.modal');
 											},1000);
 										}
@@ -496,7 +534,7 @@
 
 				/*提交验证*/
 				if(resetform0===null){
-					resetform0=$admin_storagestatsadd_form.validate(form_opt0);
+					resetform0=$admin_logisticsadd_form.validate(form_opt0);
 				}
 			}
 
@@ -508,7 +546,7 @@
 		/*获取数据*/
 		function getColumnData(page,opt){
 			if(table===null){
-				table=opt.$storage_stats_wrap.DataTable(opt.config);
+				table=opt.$logistics_company_wrap.DataTable(opt.config);
 			}else{
 				table.ajax.config(opt.config.ajax).load();
 			}
@@ -571,7 +609,7 @@
 			$show_add_list.find('input.goodsnumber').each(function () {
 				total+=parseInt(this.value,10);
 			});
-			$storage_total.html(total);
+			$logistics_total.html(total);
 		}
 
 		/*查看出库单*/
@@ -641,13 +679,13 @@
 						var len=list.length;
 						if(len!==0){
 							for(i;i<len;i++){
-								var tempstorage=list[i];
+								var templogistics=list[i];
 								str+='<tr>\
 								<td>'+parseInt(i+1,10)+'</td>\
-								<td>'+tempstorage["goodscode"]+'</td>\
-								<td>'+tempstorage["goodsname"]+'</td>\
-								<td>'+tempstorage["goodstype"]+'</td>\
-								<td>'+tempstorage["goodsnumber"]+'</td>\
+								<td>'+templogistics["goodscode"]+'</td>\
+								<td>'+templogistics["goodsname"]+'</td>\
+								<td>'+templogistics["goodstype"]+'</td>\
+								<td>'+templogistics["goodsnumber"]+'</td>\
 								</tr>';
 							}
 							$(str).appendTo($show_detail_list.html(''));
