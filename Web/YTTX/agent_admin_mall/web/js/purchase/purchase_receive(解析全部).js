@@ -185,6 +185,15 @@
 									},2000);
 									return false;
 								}
+								var goodslist=resolveReceiveList();
+
+								if(goodslist===null){
+									dia.content('<span class="g-c-bs-warning g-btips-warn">没有收货订单数据</span>').show();
+									setTimeout(function () {
+										dia.close();
+									},2000);
+									return false;
+								}
 
 								$.extend(true,setdata,basedata);
 
@@ -193,39 +202,26 @@
 									/*同步编辑器*/
 									$.extend(true,setdata,{
 										orderId:$admin_id.val(),
-										detailsIdQuantlitys:(function () {
-											var $input=$admin_receive_list.find('input'),
-												receivelist=[];
-											$input.each(function () {
-												var $this=$(this),
-													tempid=$this.attr('data-id'),
-													value=$this.val();
-
-												receivelist.push(tempid+'#'+value);
-											});
-											return JSON.stringify(receivelist);
-										}())
+										detailsIdQuantlitys:goodslist
 									});
 
 									/*判断状态*/
 									/*1 未收货 3 部分收货 5 已收货*/
-									if((already+text)===total){
-										setdata['orderState']=5;
+									if(already===0){
+										setdata['orderState']=1;
 									}else{
-										if(already+text===0){
-											setdata['orderState']=1;
+										if((already+text)===total){
+											setdata['orderState']=5;
 										}else{
 											setdata['orderState']=3;
 										}
 									}
 
-
 									config['url']="http://120.76.237.100:8082/mall-agentbms-api/purchasing/orderaudited/delivered";
 									config['data']=setdata;
 
 								}
-
-
+								
 								$.ajax(config).done(function(resp){
 									var code;
 									if(formtype==='storereceive'){
@@ -268,9 +264,11 @@
 
 		}
 
+
+
 		/*修改时设置值*/
 		function setReceiveData(id) {
-			if(!id){
+			if(typeof id==='undefined'){
 				return false;
 			}
 
@@ -353,7 +351,21 @@
 										total+=temptotal;
 										need+=tempneed;
 
-										str+='<tr><td>'+receivelist[i]["goodsName"]+'</td><td>'+receivelist[i]["attributeName"]+'</td><td class="g-c-info">'+temptext+'</td><td class="g-c-gray3">'+temptotal+'</td><td><input type="text" maxlength="8" class="form-control" data-id="'+receivelist[i]["id"]+'" data-value="'+temptext+'" value="0" /></td><td data-value="'+tempneed+'" class="g-c-succ">'+tempneed+'</td></tr>';
+										var tempname=receivelist[i]["goodsName"],
+											tempattr=receivelist[i]["attributeName"],
+											tempid=receivelist[i]["id"],
+											tempgoodsid=receivelist[i]["goodsId"];
+
+										str+='<tr>\
+											<td>'+tempname+'</td>\
+											<td>'+tempattr+'</td>\
+											<td class="g-c-info">'+temptext+'</td>\
+											<td class="g-c-gray3">'+temptotal+'</td>\
+											<td>\
+											<input type="text" maxlength="8" class="form-control" data-goodsname="'+tempname.replace(/'/g,'_dan_').replace(/"/g,'_shuang_')+'" data-goodsattr="'+tempattr.replace(/'/g,'_dan_').replace(/"/g,'_shuang_')+'"  data-goodsid="'+tempgoodsid+'"  data-id="'+tempid+'" data-value="'+temptext+'" value="0" />\
+											</td>\
+											<td data-value="'+tempneed+'" class="g-c-succ">'+tempneed+'</td>\
+											</tr>';
 									}
 
 									if(len!==0){
@@ -376,8 +388,6 @@
 				});
 
 		}
-
-
 
 		/*数据过滤*/
 		function receiveFilter($input,flag) {
@@ -422,8 +432,6 @@
 			}
 		}
 
-
-
 		/*事件绑定*/
 		function doReceiveEvent() {
 			$admin_receive_list.on('keyup focusout','input',function (e) {
@@ -447,11 +455,22 @@
 			});
 		}
 
+		/*解析商品列表*/
+		function resolveReceiveList() {
+			var $input=$admin_receive_list.find('input'),
+				receivelist=[];
+			$input.each(function () {
+				var $this=$(this),
+					tempname=$this.attr('data-goodsname'),
+					tempattr=$this.attr('data-goodsattr'),
+					tempgid=$this.attr('data-goodsid'),
+					tempid=$this.attr('data-id'),
+					value=$this.val();
 
-
+				receivelist.push(tempid+'#'+value+'#'+tempgid+'#'+tempname.replace(/_dan_/g,'\'').replace(/_shuang_/g,'\"')+'#'+tempattr.replace(/_dan_/g,'\'').replace(/_shuang_/g,'\"'));
+			});
+			return receivelist.length===0?null:JSON.stringify(receivelist);
+		}
 
 	});
-
-
-
 })(jQuery);

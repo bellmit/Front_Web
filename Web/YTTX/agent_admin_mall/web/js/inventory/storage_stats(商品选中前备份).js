@@ -193,13 +193,11 @@
 										str='';
 
 									if(stauts===0){
-										str='<div class="g-c-gray6">'+statusmap[stauts]+'</div>';
+										str='<div class="g-c-gray9">'+statusmap[stauts]+'</div>';
 									}else if(stauts===1){
-										str='<div class="g-c-bs-success">'+statusmap[stauts]+'</div>';
+										str='<div class="g-c-info">'+statusmap[stauts]+'</div>';
 									}else if(stauts===2){
 										str='<div class="g-c-red2">'+statusmap[stauts]+'</div>';
-									}else{
-										str='<div class="g-c-red2">状态异常</div>';
 									}
 									return str;
 								}

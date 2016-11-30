@@ -64,7 +64,7 @@
 						autoWidth:true,/*是否*/
 						paging:false,
 						ajax:{
-							url:"http://120.76.237.100:8082/mall-agentbms-api/purchasing/order/list"/*"../../json/purchase/mall_purchase_stats_list.json"*/,
+							url:"http://120.76.237.100:8082/mall-agentbms-api/purchasing/orderaudited/list",
 							dataType:'JSON',
 							method:'post',
 							dataSrc:function ( json ) {
@@ -224,7 +224,7 @@
 							/*展开*/
 							if(subitem===''){
 								$.ajax({
-										url:"http://120.76.237.100:8082/mall-agentbms-api/purchasing/order/details"/*"../../json/purchase/mall_purchase_stats_details.json"*/,
+										url:"http://120.76.237.100:8082/mall-agentbms-api/purchasing/orderaudited/details",
 										dataType:'JSON',
 										method:'post',
 										data:{
