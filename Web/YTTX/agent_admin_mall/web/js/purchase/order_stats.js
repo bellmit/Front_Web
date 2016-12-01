@@ -72,7 +72,7 @@
 						autoWidth:true,/*是否*/
 						paging:false,
 						ajax:{
-							url:"http://120.76.237.100:8082/mall-agentbms-api/goodsorder/list"/*"../../json/purchase/mall_order_stats_list.json"*/,
+							url:"http://120.76.237.100:8082/mall-agentbms-api/goodsorder/list",
 							dataType:'JSON',
 							method:'post',
 							dataSrc:function ( json ) {
@@ -442,6 +442,10 @@
 			/*全部展开*/
 			if(stats_power){
 				$order_showall_btn.removeClass('g-d-hidei').on('click',function () {
+					var len=$order_stats_list.find('tr').size();
+					if(len===0){
+						return false;
+					}
 					var isshow=$order_showall_btn.find('i').hasClass('fa-plus');
 
 					if(isshow){

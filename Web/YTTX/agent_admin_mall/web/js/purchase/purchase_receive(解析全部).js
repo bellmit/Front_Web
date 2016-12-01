@@ -467,7 +467,7 @@
 					tempid=$this.attr('data-id'),
 					value=$this.val();
 
-				receivelist.push(tempid+'#'+value+'#'+tempgid+'#'+tempname.replace(/_dan_/g,'\'').replace(/_shuang_/g,'\"')+'#'+tempattr.replace(/_dan_/g,'\'').replace(/_shuang_/g,'\"'));
+				receivelist.push(tempid+'#'+value+'#'+tempgid+'#'+tempname.replace(/_dan_/g,"'").replace(/_shuang_/g,'"')+'#'+tempattr.replace(/_dan_/g,"'").replace(/_shuang_/g,'"'));
 			});
 			return receivelist.length===0?null:JSON.stringify(receivelist);
 		}

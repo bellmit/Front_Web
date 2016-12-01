@@ -32,6 +32,7 @@
 
 			/*dom引用和相关变量定义*/
 			var $purchase_stats_wrap=$('#purchase_stats_wrap')/*表格*/,
+				$purchase_stats_list=$('#purchase_stats_list'),
 				module_id='mall-purchase-stats'/*模块id，主要用于本地存储传值*/,
 				dia=dialog({
 					title:'温馨提示',
@@ -316,6 +317,11 @@
 			/*全部展开*/
 			if(stats_power){
 				$purchase_showall_btn.removeClass('g-d-hidei').on('click',function () {
+					var len=$purchase_stats_list.find('tr').size();
+					if(len===0){
+						return false;
+					}
+
 					var isshow=$purchase_showall_btn.find('i').hasClass('fa-plus');
 
 					if(isshow){
@@ -323,7 +329,7 @@
 					}else{
 						$purchase_showall_btn.html('<i class="fa-plus"></i>&nbsp;&nbsp;<span>全部展开</span>');
 					}
-					$purchase_stats_wrap.find('span[data-action="select"]').trigger('click');
+					$purchase_stats_list.find('span[data-action="select"]').trigger('click');
 				});
 			}else{
 				$purchase_showall_btn.addClass('g-d-hidei');

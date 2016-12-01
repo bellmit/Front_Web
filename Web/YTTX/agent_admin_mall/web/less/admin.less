@@ -196,6 +196,27 @@
 		display:inline-block;
 		padding:0 5px;
 	}
+
+	/*垂直方向对齐*/
+	.admin-td-vat{
+		td{
+			vertical-align:top;
+		}
+	}
+	/*垂直方向对齐*/
+	.admin-td-vam{
+		td{
+			vertical-align: middle;
+		}
+	}
+	/*垂直方向对齐*/
+	.admin-td-vab{
+		td{
+			vertical-align:bottom;
+		}
+	}
+
+
 	/*表格标题*/
 	caption{
 		height:30px;
@@ -388,17 +409,20 @@
 
 	/*商品标签*/
 	.admin-attrlabel-item1{
+		font-size:0;
 		display:inline-block;
 		.box-sizing-base;
+		border:1px solid @color-gray14;
 		padding:0;
-		margin:3px 5px;
-		font-size:@font-size-base - 2;
+		margin:8px 5px 3px 5px;
 		background:@color-white;
 		.border-radius-base(0 3px 3px 0);
 		span{
+			.layout-relative-base;
+			font-size:@font-size-base - 2;
 			display:inline-block;
 			.box-sizing-base;
-			padding:3px 10px;
+			padding:5px 20px;
 			margin:0;
 			background:@color-white;
 			color:@color-gray9;
@@ -411,16 +435,33 @@
 				background:lighten(@btn-success-bg,45%);
 			}
 		}
+		.attrlabel-active{
+			&:before{
+				.layout-absolutel-base;
+				.layout-base;
+				height:100%;
+				border:1px solid @color-red2;
+				font-size:@font-size-base - 2;
+				line-height:8px;
+				text-align: left;
+				content:'\e601';
+				font-family:'ux_six';
+				color:@color-red2;
+			}
+		}
 		&:before{
+			font-size:@font-size-base - 2;
 			display:inline-block;
 			height:100%;
 			.box-sizing-base;
-			padding:3px;
+			padding:5px 3px;
 			background:@color-red2;
 			content:attr(data-name)':';
 			color:@color-white;
 		}
 	}
+
+
 
 }
 

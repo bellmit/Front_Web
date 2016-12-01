@@ -440,11 +440,18 @@
 
 		/*删除商品*/
 		function deleteAuditList($tr){
+			var len=$show_audit_list.find('tr').size();
+			if(len===1){
+				dia.content('<span class="g-c-bs-warning g-btips-warn">不能删除，至少需要一条商品</span>').showModal();
+				return false;
+			}
+
+
 			/*确认是否删除*/
 			setSure.sure('delete',function(cf){
 				/*to do*/
 				var tip=cf.dia||dia;
-				tip.content('<span class="g-c-bs-warning g-btips-warn">删除成功</span>').show();
+				tip.content('<span class="g-c-bs-success g-btips-succ">删除成功</span>').show();
 				$tr.remove();
 				totalShow();
 				setTimeout(function () {

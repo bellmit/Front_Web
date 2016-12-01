@@ -19,7 +19,7 @@
 				datatype:'json'
 			});
 
-
+https://www.hao123.com/?tn=96599076_hao_pg
 			/*dom节点变量*/
 			var $admin_mainwrap=$('#admin_mainwrap'),
 				$admin_sidewrap=$('#admin_sidewrap'),

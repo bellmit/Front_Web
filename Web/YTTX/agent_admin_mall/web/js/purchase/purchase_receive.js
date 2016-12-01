@@ -117,14 +117,6 @@
 			(function () {
 				var edit_cache=public_tool.getParams('mall-purchase-receive');
 				if(edit_cache){
-					/*判断权限*/
-					if(receiveedit_power){
-						$admin_receiveaction.parent().removeClass('g-d-hidei');
-						$admin_allreceiveaction.parent().removeClass('g-d-hidei');
-					}else{
-						$admin_receiveaction.parent().addClass('g-d-hidei');
-						$admin_allreceiveaction.parent().addClass('g-d-hidei');
-					}
 					/*查询数据*/
 					if(typeof edit_cache==='object'){
 						setReceiveData(edit_cache['id']);
@@ -353,7 +345,16 @@
 										total+=temptotal;
 										need+=tempneed;
 
-										str+='<tr><td>'+receivelist[i]["goodsName"]+'</td><td>'+receivelist[i]["attributeName"]+'</td><td class="g-c-info">'+temptext+'</td><td class="g-c-gray3">'+temptotal+'</td><td><input type="text" maxlength="8" class="form-control" data-id="'+receivelist[i]["id"]+'" data-value="'+temptext+'" value="0" /></td><td data-value="'+tempneed+'" class="g-c-succ">'+tempneed+'</td></tr>';
+										str+='<tr>\
+											<td>'+receivelist[i]["goodsName"]+'</td>\
+											<td>'+receivelist[i]["attributeName"]+'</td>\
+											<td class="g-c-info">'+temptext+'</td>\
+											<td class="g-c-gray3">'+temptotal+'</td>\
+											<td>\
+											<input type="text" maxlength="8" class="form-control" data-id="'+receivelist[i]["id"]+'" data-value="'+temptext+'" value="0" />\
+											</td>\
+											<td data-value="'+tempneed+'" class="g-c-succ">'+tempneed+'</td>\
+											</tr>';
 									}
 
 									if(len!==0){
@@ -365,6 +366,14 @@
 											'data-value':need
 										});
 										$(str).appendTo($admin_receive_list.html(''));
+										/*判断权限并查看是否已经是部分收货*/
+										if(text===total&&need===0){
+											$admin_receiveaction.parent().addClass('g-d-hidei');
+											$admin_allreceiveaction.parent().addClass('g-d-hidei');
+										}else{
+											$admin_receiveaction.parent().removeClass('g-d-hidei');
+											$admin_allreceiveaction.parent().removeClass('g-d-hidei');
+										}
 									}
 									break;
 							}
