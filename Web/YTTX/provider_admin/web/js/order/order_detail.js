@@ -191,14 +191,11 @@
 
 			for(i;i<len;i++){
 				var suborder=list[i];
-				str+='<tr><td>'+suborder["goodsName"]+'</td><td>'+suborder["attributeName"]+'</td><td>'+suborder["quantlity"]+'</td><td class="g-c-red1">￥:'+public_tool.moneyCorrect(suborder["goodsName"],12,true)[0]+'</td></tr>';
+				str+='<tr><td>'+suborder["goodsName"]+'</td><td>'+suborder["attributeName"]+'</td><td>'+suborder["quantlity"]+'</td><td class="g-c-red1">￥:'+public_tool.moneyCorrect(suborder["wholesalePrice"],12,true)[0]+'</td></tr>';
 			}
 			document.getElementById('admin_orderitem').innerHTML=str;
 		}
 
 
 	});
-
-
-
 })(jQuery);
