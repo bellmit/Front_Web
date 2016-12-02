@@ -582,7 +582,7 @@
 		/*获取*/
 		function getSettingData(){
 			$.ajax({
-				url:"http://120.24.226.70:8082/yttx-providerbms-api/provider/enterprise/certification",
+				url:"http://120.76.237.100:8082/yttx-providerbms-api/provider/enterprise/certification",
 				dataType:'JSON',
 				method:'post',
 				data:{
@@ -704,7 +704,7 @@
 		function getToken(){
 			var result=null;
 			$.ajax({
-				url:'http://120.24.226.70:8082/yttx-providerbms-api/qiniu/token/get',
+				url:'http://120.76.237.100:8082/yttx-providerbms-api/qiniu/token/get',
 				async:false,
 				type:'post',
 				datatype:'json',

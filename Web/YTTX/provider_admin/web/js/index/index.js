@@ -101,7 +101,7 @@
 						"hideMethod": "fadeOut"
 					};
 
-					var basedomain='http://120.24.226.70:8082',
+					var basedomain='http://120.76.237.100:8082',
 						basepathname="/yttx-providerbms-api/user/login";
 					$.ajax({
 						url:basedomain+basepathname,
@@ -193,7 +193,7 @@
 
 		function getValidCode(){
 			var xhr = new XMLHttpRequest();
-			xhr.open("post",'http://120.24.226.70:8082/yttx-providerbms-api/user/identifying/code', true);
+			xhr.open("post",'http://120.76.237.100:8082/yttx-providerbms-api/user/identifying/code', true);
 			xhr.responseType = "blob";
 			xhr.onreadystatechange = function() {
 				if (this.status == 200) {

@@ -4,10 +4,10 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0,maximum-scale=1">
-    <meta name="description" content="布住网供应商管理系统--商品管理--商品编辑" />
-    <meta name="keywords" content="布住网供应商管理系统--商品管理--商品编辑">
+    <meta name="description" content="布住网供应商管理系统--商品管理--商品添加" />
+    <meta name="keywords" content="布住网供应商管理系统--商品管理--商品添加">
     <meta name="author" content="yp" />
-    <title>布住网供应商管理系统--商品管理--商品编辑</title>
+    <title>布住网供应商管理系统--商品管理--商品添加</title>
     <link href="../../images/logo_icon.ico" rel="icon">
     <link rel="stylesheet" href="../../css/base.css">
     <link rel="stylesheet" href="../../js/plugins/kindeditor/themes/default/default.css">
@@ -86,13 +86,13 @@
         <!--主题描述-->
         <div class="page-title">
             <div class="title-env">
-                <h1 class="title">商品编辑</h1>
-                <p class="description">商品编辑</p>
+                <h1 class="title">商品添加</h1>
+                <p class="description">商品添加</p>
             </div>
             <div class="breadcrumb-env">
                 <ol class="breadcrumb bc-1">
                     <li><a href=""><i class="fa-home"></i>商品管理</a></li>
-                    <li class="active"><strong>商品编辑</strong></li>
+                    <li class="active"><strong>商品添加</strong></li>
                 </ol>
             </div>
         </div>
@@ -105,7 +105,7 @@
 
                     <!--编辑表单标题-->
                     <div class="panel-heading">
-                        <h3 class="panel-title">商品编辑</h3>
+                        <h3 class="panel-title">商品添加</h3>
                         <div class="panel-options">
                             <a href="#" data-toggle="panel">
                                 <span class="collapse-icon">&ndash;</span>
@@ -117,9 +117,26 @@
                     <!--添加-->
                     <div class="panel-body">
                         <form role="form"  method="post" id="admin_goodsadd_form" class="admin-form1 validate">
-                            <div id="admin_goodsTypeId" class="g-d-hidei "></div>
+                            <div class="form-group">
+                                <label class="control-label">商品分类：</label>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <select name="goodsTypeId1" id="admin_goodsTypeId_Level1" class="form-control "></select>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <select name="goodsTypeId2" id="admin_goodsTypeId_Level2" class="form-control "></select>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <select name="goodsTypeId3" id="admin_goodsTypeId_Level3" class="form-control "></select>
+                                    </div>
+                                    <div class="g-d-hidei">
+                                        <button type="button" title="添加分类"  id="admin_goodsTypeId_btn" class="btn btn-white">+</button>
+                                    </div>
+                                </div>
+                            </div>
 
                             <div class="form-group">
+                                <label class="control-label">商品基本信息：</label>
                                 <div class="row">
                                     <div class="col-md-5">
                                         <div class="admin-slide-wrap g-f-r">
@@ -146,7 +163,7 @@
                                         <div class="form-group">
                                             <label class="control-label">商品状态：</label>
                                             <select class="form-control" name="admin_status" id="admin_status">
-                                                <option value="0">仓库</option>
+                                                <option value="0" selected>仓库</option>
                                                 <option value="1" >上架</option>
                                                 <option value="2" >下架</option>
                                             </select>
@@ -166,12 +183,8 @@
                                                 <input type="text" data-value="" maxlength="12" data-validate="required" data-message-required="批发价不能为空"  class="form-control" name="wholesale_price" id="admin_wholesale_price" />
                                             </div>
                                             <div class="form-group">
-                                                <label class="control-label">建议零售价：</label>
-                                                <input type="text" data-value=""  maxlength="12" data-validate="required" data-message-required="建议零售价不能为空"  class="form-control" name="retail_price" id="admin_retail_price" />
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="control-label">供应商价：</label>
-                                                <input type="text" data-value=""  maxlength="12" data-validate="required" data-message-required="供应商价不能为空"  class="form-control" name="retail_price" id="admin_supplier_price" />
+                                                <label class="control-label">出厂价：</label>
+                                                <input type="text" data-value=""  maxlength="12" data-validate="required" data-message-required="出厂价不能为空"  class="form-control" name="retail_price" id="admin_retail_price" />
                                             </div>
                                             <div class="form-group">
                                                 <label class="control-label">库存：</label>
@@ -179,6 +192,9 @@
                                             </div>
                                         </div>
                                         <div id="admin_attrwrap"></div>
+                                        <div class="form-group">
+                                            <button id="admin_addlabel_btn" type="button" class="btn btn-white"><i>+</i>新增标签</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -189,13 +205,12 @@
                                 <table class="table table-bordered table-striped table-hover admin-table">
                                     <!--分组样式-->
                                     <colgroup>
-                                        <col class="g-w-percent7">
-                                        <col class="g-w-percent7">
-                                        <col class="g-w-percent7">
-                                        <col class="g-w-percent7">
-                                        <col class="g-w-percent7">
-                                        <col class="g-w-percent7">
-                                        <col class="g-w-percent7">
+                                        <col class="g-w-percent8">
+                                        <col class="g-w-percent8">
+                                        <col class="g-w-percent8">
+                                        <col class="g-w-percent8">
+                                        <col class="g-w-percent8">
+                                        <col class="g-w-percent8">
                                     </colgroup>
 
                                     <!--表头-->
@@ -205,8 +220,7 @@
                                         <th>规格</th>
                                         <th>库存</th>
                                         <th>批发价</th>
-                                        <th>建议零售价</th>
-                                        <th>供应商价</th>
+                                        <th>出厂价</th>
                                         <th>是否默认</th>
                                     </tr>
                                     </thead>
@@ -214,40 +228,6 @@
                                     <!--表主体-->
                                     <tbody class="middle-align" id="admin_wholesale_price_list"></tbody>
                                 </table>
-                            </div>
-
-                            <div class="form-group">
-                                <label id="admin_oldprice_btn" class="control-label btn btn-white g-br2">查看以前设置值</label>
-                                <div id="admin_oldprice_show" class="g-d-hidei">
-                                    <table class="table table-bordered table-striped table-hover admin-table">
-                                        <!--分组样式-->
-                                        <colgroup>
-                                            <col class="g-w-percent7">
-                                            <col class="g-w-percent7">
-                                            <col class="g-w-percent7">
-                                            <col class="g-w-percent7">
-                                            <col class="g-w-percent7">
-                                            <col class="g-w-percent7">
-                                            <col class="g-w-percent7">
-                                        </colgroup>
-
-                                        <!--表头-->
-                                        <thead id="admin_wholesale_price_thead_old">
-                                        <tr>
-                                            <th>颜色</th>
-                                            <th>规格</th>
-                                            <th>库存</th>
-                                            <th>批发价</th>
-                                            <th>建议零售价</th>
-                                            <th>供应商价</th>
-                                            <th>是否默认</th>
-                                        </tr>
-                                        </thead>
-
-                                        <!--表主体-->
-                                        <tbody class="middle-align" id="admin_wholesale_price_old"></tbody>
-                                    </table>
-                                </div>
                             </div>
 
                             <div class="form-group admin-rpos-wrap">
@@ -265,7 +245,7 @@
                             </div>
 
                             <div class="form-group">
-                                <button type="submit" class="btn btn-success">修改</button>
+                                <button type="submit" class="btn btn-success">添加</button>
                             </div>
 
                         </form>
@@ -300,6 +280,152 @@
         </footer>
 
 
+    </div>
+</div>
+
+
+<!--添加分类-->
+<div class="modal fade custom-width" id="show_addtype_wrap">
+    <div class="modal-dialog g-w-percent46">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">添加商品分类</h4>
+            </div>
+            <div class="modal-body">
+                <div class="blockquote admin-blockquote">
+                    <form role="form"  method="post" id="admin_addtype_form" class="admin-form1 validate" >
+                    <div class="form-group">
+                        <label class="control-label">上级商品分类：</label>
+                        <div class="row">
+                            <div class="col-md-5">
+                                <select name="parentId" id="admin_goodsTypeId_addone" class="form-control"></select>
+                            </div>
+                            <div class="col-md-5">
+                                <select name="parentId2" id="admin_goodsTypeId_addtwo" class="form-control"></select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">分类编码：</label>
+                        <input placeholder="请输入分类编码" data-validate="required" data-message-required="分类编码不能为空"  type="text" class="form-control" name="gtCode"   id="admin_gtCode" />
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">分类名称：</label>
+                        <input placeholder="请输入分类名称" data-validate="required" data-message-required="分类名称不能为空"  type="text" class="form-control" name="name"   id="admin_typename" />
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label">排序号(值越大越靠前)：</label>
+                        <input placeholder="请输入排序号" data-validate="required,number" data-message-required="排序号不能为空" data-message-number="排序号只能为数字"  type="text" class="form-control" name="sort"   id="admin_sort" />
+                    </div>
+
+
+                    <div class="form-group admin-rpos-wrap">
+                        <div class="img-url-wrap" id="image_url_wrap">
+                            <div class="toggle-edit-btn" id="toggle_edit_btn"></div>
+                            <div class="btn btn-info g-br2 img-url-item img-url-select" data-value="" id="image_url_file">选择图片</div>
+                            <div id="image_url_upload" class="btn btn-info g-br2 img-url-item img-url-upload">上传图片</div>
+                        </div>
+
+                        <label class="control-label">缩略图：</label>
+
+                        <input type="text" class="form-control" name="image" id="admin_image" readonly  placeholder="请选择缩略图"  />
+                    </div>
+
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-success">添加</button>
+                    </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!--添加属性-->
+<div class="modal fade custom-width" id="show_addattr_wrap">
+    <div class="modal-dialog g-w-percent46">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">添加商品属性</h4>
+            </div>
+            <div class="modal-body">
+                <div class="blockquote admin-blockquote">
+                    <form role="form"  method="post" id="admin_addattr_form" class="admin-form1 validate">
+                        <div class="form-group">
+                            <label class="control-label">属性名称：<span class="g-c-red1" id="admin_addattr_tips"></span></label>
+                            <div class="row self-error-pos-wrap">
+                                <div class="col-md-10">
+                                    <input placeholder="请输入属性名称" data-validate="required" data-message-required="属性名称不能为空"  type="text" class="form-control self-error-pos" name="newAttrs"   id="admin_newattr" />
+                                </div>
+                                <div class="col-md-2">
+<span class="input-group-btn admin-rpos-wrap" style="z-index:20;">
+                             <button type="button"  id="admin_addattr_already" class="btn btn-info">已存在的属性名称</button>
+                             <ul class="admin-list-widget addcode-list-widget g-d-hidei" id="admin_addattr_list"></ul>
+                            </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-success">添加</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!--添加标签-->
+<div class="modal fade custom-width" id="show_addlabel_wrap">
+    <div class="modal-dialog g-w-percent46">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">添加商品标签</h4>
+            </div>
+            <div class="modal-body">
+                <div class="blockquote admin-blockquote">
+                    <form role="form"  method="post" id="admin_addlabel_form" class="admin-form1 validate">
+                        <div class="form-group">
+                            <label class="control-label">标签：<span class="g-c-red1" id="admin_addlabel_tips"></span></label>
+                            <div class="row self-error-pos-wrap">
+                                <div class="col-md-10">
+                                    <input placeholder="请输入商品标签" data-validate="required" data-message-required="商品标签不能为空"  type="text" class="form-control self-error-pos" name="newAttrs"   id="admin_newlabel" />
+                                </div>
+                                <div class="col-md-2">
+<span class="input-group-btn admin-rpos-wrap" style="z-index:20;">
+                             <button type="button"  id="admin_addlabel_already" class="btn btn-info">已存在的标签</button>
+                             <ul class="admin-list-widget addcode-list-widget g-d-hidei" id="admin_addlabel_list"></ul>
+                            </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-success">添加</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -358,6 +484,6 @@
 <script src="../../js/plugins/plupload/i18n/zh_CN.js"></script>
 <script src="../../js/plugins/qn/qiniu.min.js"></script>
 <script src="../../js/goods/goods_slide.js"></script>
-<script src="../../js/goods/goods_edit.js"></script>
+<script src="../../js/goods/goods_add.js"></script>
 </body>
 </html>

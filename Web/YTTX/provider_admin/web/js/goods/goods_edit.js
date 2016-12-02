@@ -42,6 +42,7 @@
 				$admin_attrwrap=$('#admin_attrwrap'),
 				$admin_wholesale_price=$('#admin_wholesale_price'),
 				$admin_retail_price=$('#admin_retail_price'),
+				$admin_supplier_price=$('#admin_supplier_price'),
 				$admin_inventory=$('#admin_inventory'),
 				$admin_wholesale_price_thead=$('#admin_wholesale_price_thead'),
 				$admin_wholesale_price_list=$('#admin_wholesale_price_list'),
@@ -50,7 +51,7 @@
 					<th>规格</th>\
 					<th>库存</th>\
 					<th>批发价</th>\
-					<th>出厂价</th>\
+					<th>建议零售价</th>\
 					<th>价格显示在首页</th>\
 				</tr>',
 				$admin_wholesale_tips=$('#admin_wholesale_tips'),
@@ -317,21 +318,22 @@
 
 
 			/*绑定价格输入,属性*/
-			$.each([$admin_wholesale_price,$admin_retail_price,$admin_inventory],function(){
+			$.each([$admin_wholesale_price,$admin_retail_price,$admin_supplier_price,$admin_inventory],function(){
 				/*初始化*/
 				var selector=this.selector;
 
 				/*绑定价格格式化*/
-				if(selector.indexOf('price')!==-1){
-					this.on('keyup',function(e){
-						var tempval=this.value;
-
+				this.on('keyup',function(e){
+					var tempval=this.value;
+					if(selector.indexOf('price')!==-1){
 						tempval=tempval.replace(/[^0-9\.]/g,'');
 						tempval=tempval.replace(/[\.{2,}]/g,'');
 						this.value=public_tool.moneyCorrect(tempval,12,true)[0];
-					});
-
-				}
+					}else{
+						tempval=tempval.replace(/\s*\D*/g,'');
+						this.value=tempval;
+					}
+				});
 			});
 
 
@@ -579,6 +581,13 @@
 						result=value.replace(/[^0-9\.]/g,'');
 						result=result.replace(/\.{2,}/g,'.');
 						$this.val(result);
+					}else if(name==="setsupplierPrice"){
+						if($this.hasClass('g-c-red1')){
+							return false;
+						}
+						result=value.replace(/[^0-9\.]/g,'');
+						result=result.replace(/\.{2,}/g,'.');
+						$this.val(result);
 					}
 				}else if(etype==='focusout'){
 					if(name==="setwholesalePrice"){
@@ -588,6 +597,12 @@
 						}
 						$this.val(public_tool.moneyCorrect(value,12,true)[0]);
 					}else if(name==="setretailPrice"){
+						/*错误状态下禁止输入*/
+						if($this.hasClass('g-c-red1')){
+							return false;
+						}
+						$this.val(public_tool.moneyCorrect(value,12,true)[0]);
+					}else if(name==="setsupplierPrice"){
 						/*错误状态下禁止输入*/
 						if($this.hasClass('g-c-red1')){
 							return false;
@@ -718,12 +733,14 @@
 									if(isattr){
 										setdata['attrIventoryPrices']=getSetPrice();
 									}else{
-										setdata['attrIventoryPrices']='['+$admin_inventory.val()+'#'+public_tool.trimSep($admin_wholesale_price.val(),',')+'#'+public_tool.trimSep($admin_retail_price.val(),',')+']';
+										setdata['attrIventoryPrices']='['+$admin_inventory.val()+'#'+public_tool.trimSep($admin_wholesale_price.val(),',')+'#'+public_tool.trimSep($admin_retail_price.val(),',')+'#'+public_tool.trimSep($admin_supplier_price.val(),',')+']';
 									}
-									config['url']="http://120.24.226.70:8082/yttx-providerbms-api/goods/addupdate";
+									config['url']="http://120.76.237.100:8082/yttx-providerbms-api/goods/addupdate";
 									config['data']=setdata;
 								}
 
+								console.log(setdata);
+								return false;
 								$.ajax(config).done(function(resp){
 									var code;
 									if(formtype==='addgoods'){
@@ -813,7 +830,7 @@
 		/*获取数据*/
 		function getEditData(config){
 			$.ajax({
-				url:"http://120.24.226.70:8082/yttx-providerbms-api/goods/details",
+				url:"http://120.76.237.100:8082/yttx-providerbms-api/goods/details",
 				dataType:'JSON',
 				async:false,
 				method:'post',
@@ -907,7 +924,7 @@
 					'checked':result['isRecommended']
 				});
 
-				/*解析库存，批发价，出厂价*/
+				/*解析库存，批发价，建议零售价*/
 				var attr=getGroupCondition(result['tagsAttrsList'],result['attrInventoryPrices']);
 				if(attr){
 					/*设置属性值*/
@@ -984,6 +1001,7 @@
 				$admin_attrwrap.find('input').val('').attr({'data-value':''});
 				$admin_wholesale_price.val('');
 				$admin_retail_price.val('');
+				$admin_supplier_price.val('');
 				$admin_inventory.val('');
 				$admin_pricewrap.removeClass('g-d-hidei');
 				$admin_attrwrap.removeClass('g-d-hidei');
@@ -994,6 +1012,7 @@
 				price_data={};
 				$admin_wholesale_price.val('');
 				$admin_retail_price.val('');
+				$admin_supplier_price.val('');
 				$admin_inventory.val('');
 			}else if(type==='attr'){
 				attr_data={};
@@ -1009,6 +1028,7 @@
 				$admin_attrwrap.find('input').val('').attr({'data-value':''});
 				$admin_wholesale_price.val('');
 				$admin_retail_price.val('');
+				$admin_supplier_price.val('');
 				$admin_inventory.val('');
 				$admin_wholesale_price_list.html('');
 				$admin_wholesale_price_thead.html(wholesale_price_theadstr);
@@ -1016,6 +1036,7 @@
 			}else if(type==='pricetxt'){
 				$admin_wholesale_price.val('');
 				$admin_retail_price.val('');
+				$admin_supplier_price.val('');
 				$admin_inventory.val('');
 			}else if(type==='attrtxt'){
 				if(key){
@@ -1261,9 +1282,11 @@
 			<th>'+attr_map[key2]['label']+'</th>\
 			<th>库存</th>\
 			<th>批发价</th>\
-			<th>出厂价</th>\
+			<th>建议零售价</th>\
+			<th>供应商价</th>\
 			<th>价格显示在首页</th>\
 			</tr>');
+			var initindex=0;
 			for(var j in dataone){
 				var k= 0,
 					itemone=dataone[j];
@@ -1272,19 +1295,31 @@
 					var itemtwo=rule[k].split('_#_'),
 						code=itemone.split('_')[1]+'_'+itemtwo[1].split('_')[1];
 					if(k===0){
-						str+='<td>'+itemtwo[0]+'</td>' +
-							'<td><input class="admin-table-input" name="setinventory" maxlength="7" type="text"></td>' +
-							'<td><input class="admin-table-input" name="setwholesalePrice" maxlength="12" type="text"></td>' +
-							'<td><input class="admin-table-input" name="setretailPrice" maxlength="12" type="text"></td>' +
-							'<td><input name="setisDefault"  type="radio" data-value="'+code+'"></td></tr>';
+						if(initindex===0){
+							str+='<td>'+itemtwo[0]+'</td>' +
+								'<td><input class="admin-table-input" name="setinventory" maxlength="7" type="text"></td>' +
+								'<td><input class="admin-table-input" name="setwholesalePrice" maxlength="12" type="text"></td>' +
+								'<td><input class="admin-table-input" name="setretailPrice" maxlength="12" type="text"></td>' +
+								'<td><input class="admin-table-input" name="setsupplierPrice" maxlength="12" type="text"></td>' +
+								'<td><input name="setisDefault" checked type="radio" data-value="'+code+'"></td></tr>';
+						}else{
+							str+='<td>'+itemtwo[0]+'</td>' +
+								'<td><input class="admin-table-input" name="setinventory" maxlength="7" type="text"></td>' +
+								'<td><input class="admin-table-input" name="setwholesalePrice" maxlength="12" type="text"></td>' +
+								'<td><input class="admin-table-input" name="setretailPrice" maxlength="12" type="text"></td>' +
+								'<td><input class="admin-table-input" name="setsupplierPrice" maxlength="12" type="text"></td>' +
+								'<td><input name="setisDefault"  type="radio" data-value="'+code+'"></td></tr>';
+						}
 					}else{
 						str+='<tr><td>'+itemtwo[0]+'</td>' +
 							'<td><input class="admin-table-input" name="setinventory" maxlength="7" type="text"></td>' +
 							'<td><input class="admin-table-input" name="setwholesalePrice" maxlength="12" type="text"></td>' +
 							'<td><input class="admin-table-input" name="setretailPrice" maxlength="12" type="text"></td>' +
+							'<td><input class="admin-table-input" name="setsupplierPrice" maxlength="12" type="text"></td>' +
 							'<td><input name="setisDefault"  type="radio" data-value="'+code+'"></td></tr>';
 					}
 				}
+				initindex++;
 			}
 			$(str).appendTo($admin_wholesale_price_list.html(''));
 		}
@@ -1295,30 +1330,23 @@
 			var result=[],
 				$tr=$admin_wholesale_price_list.find('tr'),
 				len=$tr.size(),
-				j=0;
+				j=0,
+				trims=public_tool.trimSep;
 
 			for(j;j<len;j++){
 				var $input=$tr.eq(j).find('input'),
-					sublen=$input.size(),
-					m= 0,
-					str='';
-				for(m;m<sublen;m++){
-					var $this=$input.eq(m);
+					sublen=$input.size();
+				if(sublen!==0){
+					var $inventory=$input.eq(0),
+						$wholesale=$input.eq(1),
+						$retail=$input.eq(2),
+						$supplier=$input.eq(3),
+						$isdefault=$input.eq(4),
+						key=$isdefault.attr('data-value').split('_'),
+						value=$isdefault.is(':checked')?1:0;
+					result.push($inventory.val()+'#'+trims($wholesale.val(),',')+'#'+trims($retail.val(),',')+'#'+value+'#'+key[0]+'#'+key[1]+'#'+trims($supplier.val(),','));
 
-					if(m!==3){
-						var tempstr=$this.val();
-						if(tempstr.indexOf(',')!==-1){
-							tempstr=public_tool.trimSep(tempstr,',');
-						}
-						str+=tempstr+'#';
-					}else{
-						var key=$this.attr('data-value').split('_'),
-							value=$this.is(':checked')?1:0;
-
-						str+=value+'#'+key[0]+'#'+key[1];
-					}
 				}
-				result.push(str);
 			}
 			return JSON.stringify(result);
 		}
@@ -1328,7 +1356,7 @@
 		function getToken(){
 			var result=null;
 			$.ajax({
-				url:'http://120.24.226.70:8082/yttx-providerbms-api/qiniu/token/get',
+				url:'http://120.76.237.100:8082/yttx-providerbms-api/qiniu/token/get',
 				async:false,
 				type:'post',
 				datatype:'json',
@@ -1433,6 +1461,15 @@
 								$admin_inventory.val(priceobj[0]);
 								$admin_wholesale_price.val(public_tool.moneyCorrect(priceobj[1],12,true)[0]);
 								$admin_retail_price.val(public_tool.moneyCorrect(priceobj[2],12,true)[0]);
+								$admin_supplier_price.val((function(){
+									var supplier=priceobj[6];
+									if(supplier===''||isNaN(supplier)){
+										supplier=0;
+									}else{
+										supplier=public_tool.moneyCorrect(supplier,12,true)[0];
+									}
+									return supplier;
+								}()));
 							}
 						}
 					}
@@ -1535,7 +1572,6 @@
 										}
 									}
 								}
-								console.log(attrmap);
 							}());
 						}else{
 							document.getElementById('admin_wholesale_price_list').innerHTML='';
@@ -1618,31 +1654,62 @@
 		/*设置属性组合值*/
 		function setGroupCondition(list){
 			var $tr=$admin_wholesale_price_list.find('tr'),
-				k=0;
+				k=0,
+				checkid=0;
 			for(var j in list){
 				var i= 0,
 					dataitem=list[j],
 					len=dataitem.length;
 				for(i;i<len;i++){
 					var item=dataitem[i],
-						$td=$tr.eq(k).find('td');
+						$td=$tr.eq(k).find('td'),
+						ischeck=parseInt(item[3],10)===1?true:false;
+
 					if(i===0){
 						$td.eq(2).find('input').val(item[0]);
 						$td.eq(3).find('input').val(public_tool.moneyCorrect(item[1],12,true)[0]);
 						$td.eq(4).find('input').val(public_tool.moneyCorrect(item[2],12,true)[0]);
-						$td.eq(5).find('input').prop({
-							'checked':(parseInt(item[3],10)===1?true:false)
+						$td.eq(5).find('input').val((function(){
+							var supplier=item[6];
+							if(supplier===''||isNaN(supplier)){
+								supplier=0;
+							}else{
+								supplier=public_tool.moneyCorrect(supplier,12,true)[0];
+							}
+							return supplier;
+						}()));
+						$td.eq(6).find('input').prop({
+							'checked':ischeck
 						});
 					}else{
 						$td.eq(1).find('input').val(item[0]);
 						$td.eq(2).find('input').val(public_tool.moneyCorrect(item[1],12,true)[0]);
 						$td.eq(3).find('input').val(public_tool.moneyCorrect(item[2],12,true)[0]);
-						$td.eq(4).find('input').prop({
-							'checked':(parseInt(item[3],10)===1?true:false)
+						$td.eq(4).find('input').val((function(){
+							var supplier=item[6];
+							if(supplier===''||isNaN(supplier)){
+								supplier=0;
+							}else{
+								supplier=public_tool.moneyCorrect(supplier,12,true)[0];
+							}
+							return supplier;
+						}()));
+						$td.eq(5).find('input').prop({
+							'checked':ischeck
 						});
+					}
+					if(!ischeck){
+						/*判断是否选中,有则跳过无则计数*/
+						checkid++;
 					}
 					k++;
 				}
+			}
+			/*全部没选中则，默认第一个选中*/
+			if(checkid===k){
+				$tr.eq(0).find('td').eq(6).find('input').prop({
+					'checked':true
+				});
 			}
 		}
 
@@ -1664,17 +1731,35 @@
 							'<td>'+dataitem[0]+'</td>' +
 							'<td>'+public_tool.moneyCorrect(dataitem[1],12,true)[0]+'</td>' +
 							'<td>'+public_tool.moneyCorrect(dataitem[2],12,true)[0]+'</td>' +
+							'<td>'+(function(){
+								var supplier=dataitem[6];
+								if(supplier===''||isNaN(supplier)){
+									supplier=0;
+								}else{
+									supplier=public_tool.moneyCorrect(supplier,12,true)[0];
+								}
+								return supplier;
+							}())+'</td>' +
 							'<td>'+(parseInt(dataitem[3],10)===1?'是':'')+'</td></tr>';
 					}else{
 						str+='<tr><td>'+listtwo['res'][dataitem[5]]+'</td>' +
 							'<td>'+dataitem[0]+'</td>' +
 							'<td>'+public_tool.moneyCorrect(dataitem[1],12,true)[0]+'</td>' +
 							'<td>'+public_tool.moneyCorrect(dataitem[2],12,true)[0]+'</td>' +
+							'<td>'+(function(){
+								var supplier=dataitem[6];
+								if(supplier===''||isNaN(supplier)){
+									supplier=0;
+								}else{
+									supplier=public_tool.moneyCorrect(supplier,12,true)[0];
+								}
+								return supplier;
+							}())+'</td>' +
 							'<td>'+(parseInt(dataitem[3],10)===1?'是':'')+'</td></tr>';
 					}
 				}
 			}
-			document.getElementById('admin_wholesale_price_thead_old').innerHTML='<tr><th>'+listone['label']+'</th><th>'+listtwo['label']+'</th><th>库存</th><th>批发价</th><th>出厂价</th><th>价格显示在首页</th></tr>';
+			document.getElementById('admin_wholesale_price_thead_old').innerHTML='<tr><th>'+listone['label']+'</th><th>'+listtwo['label']+'</th><th>库存</th><th>批发价</th><th>建议零售价</th><th>供应商价</th><th>价格显示在首页</th></tr>';
 			document.getElementById('admin_wholesale_price_old').innerHTML=str;
 		}
 

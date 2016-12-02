@@ -48,7 +48,7 @@
 					<th>规格</th>\
 					<th>库存</th>\
 					<th>批发价</th>\
-					<th>建议零售价</th>\
+					<th>出厂价</th>\
 					<th>价格显示在首页</th>\
 				</tr>',
 				$admin_wholesale_tips=$('#admin_wholesale_tips'),
@@ -839,56 +839,14 @@
 						if($this.hasClass('g-c-red1')){
 							return false;
 						}
-						var maxvalue=$this.parent().next().find('input[type="text"]').val();
+						$this.val(public_tool.moneyCorrect(value,12,true)[0]);
 
-						result=public_tool.moneyCorrect(value,12,true);
-
-						if(maxvalue!==''&&result[0]!==''){
-							maxvalue=public_tool.trimSep(maxvalue,',') * 100;
-							var whole=public_tool.trimSep(result[0],',') * 100;
-							if(whole>maxvalue){
-								$this.addClass('g-c-red1');
-								$admin_wholesale_tips.html('"批发价"不能大于"建议零售价"');
-								whole=maxvalue / 100;
-								result=public_tool.moneyCorrect(whole,12,true);
-								$this.val(result[0]);
-								setTimeout(function(){
-									$this.removeClass('g-c-red1');
-									$admin_wholesale_tips.html('');
-								},3000);
-							}else{
-								$this.val(result[0]);
-							}
-						}else{
-							$this.val(result[0]);
-						}
 					}else if(name==="setretailPrice"){
 						/*错误状态下禁止输入*/
 						if($this.hasClass('g-c-red1')){
 							return false;
 						}
-						var minvalue=$this.parent().prev().find('input[type="text"]').val();
-						result=public_tool.moneyCorrect(value,12,true);
-
-						if(minvalue!==''&&result[0]!==''){
-							minvalue=public_tool.trimSep(minvalue,',') * 100;
-							var retail=public_tool.trimSep(result[0],',') * 100;
-							if(retail<minvalue){
-								$this.addClass('g-c-red1');
-								$admin_wholesale_tips.html('"建议零售价"不能小于"批发价"');
-								retail=minvalue / 100;
-								result=public_tool.moneyCorrect(retail,12,true);
-								$this.val(result[0]);
-								setTimeout(function(){
-									$this.removeClass('g-c-red1');
-									$admin_wholesale_tips.html('');
-								},3000);
-							}else{
-								$this.val(result[0]);
-							}
-						}else{
-							$this.val(result[0]);
-						}
+						$this.val(public_tool.moneyCorrect(value,12,true)[0]);
 					}
 				}
 
@@ -1894,7 +1852,7 @@
 			<th>'+attr_map[key2]['label']+'</th>\
 			<th>库存</th>\
 			<th>批发价</th>\
-			<th>建议零售价</th>\
+			<th>出厂价</th>\
 			<th>价格显示在首页</th>\
 			</tr>');
 			var initindex=0;
