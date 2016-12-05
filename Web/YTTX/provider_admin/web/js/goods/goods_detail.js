@@ -72,7 +72,7 @@
 		/*获取数据*/
 		function getDetailData(config){
 			$.ajax({
-				url:"http://120.76.237.100:8082/yttx-providerbms-api/goods/details",
+				url:"http://120.24.226.70:8082/yttx-providerbms-api/goods/details",
 				dataType:'JSON',
 				async:false,
 				method:'post',
@@ -197,6 +197,15 @@
 								document.getElementById('admin_inventory').innerHTML=priceobj[0];
 								document.getElementById('admin_wholesale_price').innerHTML=public_tool.moneyCorrect(priceobj[1],12,true)[0];
 								document.getElementById('admin_retail_price').innerHTML=public_tool.moneyCorrect(priceobj[2],12,true)[0];
+								document.getElementById('admin_supplier_price').innerHTML=(function () {
+									var supplier=dataitem[6];
+									if(supplier===''||isNaN(supplier)){
+										supplier='0.00';
+									}else{
+										supplier=public_tool.moneyCorrect(supplier,12,true)[0];
+									}
+									return supplier;
+								}());
 							}
 						}
 					}
@@ -300,7 +309,7 @@
 							}());
 						}else{
 							document.getElementById('admin_wholesale_price_list').innerHTML='';
-							document.getElementById('admin_wholesale_price_thead').innerHTML='<tr><th>颜色</th><th>规格</th><th>库存</th><th>批发价</th><th>出厂价</th><th>价格显示在首页</th></tr>';
+							document.getElementById('admin_wholesale_price_thead').innerHTML='<tr><th>颜色</th><th>规格</th><th>库存</th><th>批发价</th><th>建议零售价</th><th>供应商价</th><th>价格显示在首页</th></tr>';
 							return false;
 						}
 
@@ -336,7 +345,7 @@
 							}());
 						}else{
 							document.getElementById('admin_wholesale_price_list').innerHTML='';
-							document.getElementById('admin_wholesale_price_thead').innerHTML='<tr><th>颜色</th><th>规格</th><th>库存</th><th>批发价</th><th>出厂价</th><th>价格显示在首页</th></tr>';
+							document.getElementById('admin_wholesale_price_thead').innerHTML='<tr><th>颜色</th><th>规格</th><th>库存</th><th>批发价</th><th>建议零售价</th><th>价格显示在首页</th></tr>';
 							return false;
 						}
 
@@ -344,7 +353,7 @@
 						groupCondition(attrmap);
 					}else{
 						document.getElementById('admin_wholesale_price_list').innerHTML='';
-						document.getElementById('admin_wholesale_price_thead').innerHTML='<tr><th>颜色</th><th>规格</th><th>库存</th><th>批发价</th><th>出厂价</th><th>价格显示在首页</th></tr>';
+						document.getElementById('admin_wholesale_price_thead').innerHTML='<tr><th>颜色</th><th>规格</th><th>库存</th><th>批发价</th><th>建议零售价</th><th>供应商价</th><th>价格显示在首页</th></tr>';
 						return false;
 					}
 				}
@@ -356,7 +365,6 @@
 		/*组合颜色与尺寸*/
 		function groupCondition(resp){
 			var str='',
-				headstr='',
 				checkid=0,
 				x=0;
 
@@ -374,12 +382,30 @@
 							'<td>'+dataitem[0]+'</td>' +
 							'<td>'+public_tool.moneyCorrect(dataitem[1],12,true)[0]+'</td>' +
 							'<td>'+public_tool.moneyCorrect(dataitem[2],12,true)[0]+'</td>' +
+							'<td>'+(function(){
+								var supplier=dataitem[6];
+								if(supplier===''||isNaN(supplier)){
+									supplier='0.00';
+								}else{
+									supplier=public_tool.moneyCorrect(supplier,12,true)[0];
+								}
+								return supplier;
+							}())+'</td>' +
 							'<td>'+ischeck+'</td></tr>';
 					}else{
 						str+='<tr><td>'+listtwo['res'][dataitem[5]]+'</td>' +
 						'<td>'+dataitem[0]+'</td>' +
 						'<td>'+public_tool.moneyCorrect(dataitem[1],12,true)[0]+'</td>' +
 						'<td>'+public_tool.moneyCorrect(dataitem[2],12,true)[0]+'</td>' +
+						'<td>'+(function(){
+							var supplier=dataitem[6];
+							if(supplier===''||isNaN(supplier)){
+								supplier='0.00';
+							}else{
+								supplier=public_tool.moneyCorrect(supplier,12,true)[0];
+							}
+							return supplier;
+						}())+'</td>' +
 						'<td>'+ischeck+'</td></tr>';
 					}
 					if(ischeck===''){
@@ -389,12 +415,12 @@
 					x++;
 				}
 			}
-			document.getElementById('admin_wholesale_price_thead').innerHTML='<tr><th>'+listone['label']+'</th><th>'+listtwo['label']+'</th><th>库存</th><th>批发价</th><th>出厂价</th><th>价格显示在首页</th></tr>';
+			document.getElementById('admin_wholesale_price_thead').innerHTML='<tr><th>'+listone['label']+'</th><th>'+listtwo['label']+'</th><th>库存</th><th>批发价</th><th>建议零售价</th><th>供应商价</th><th>价格显示在首页</th></tr>';
 			var priclist=document.getElementById('admin_wholesale_price_list');
 			priclist.innerHTML=str;
 			/*全部没选中则，默认第一个选中*/
 			if(checkid===x){
-				$(priclist).find('tr').eq(0).find('td').eq(5).html('是');
+				$(priclist).find('tr:first-child').find('td').eq(6).html('是');
 			}
 		}
 

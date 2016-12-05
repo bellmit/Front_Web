@@ -10,7 +10,7 @@
 			/*菜单调用*/
 			var logininfo=public_tool.initMap.loginMap;
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
-				url:'http://120.76.237.100:8082/mall-agentbms-api/module/menu',
+				url:'http://120.24.226.70:8082/mall-agentbms-api/module/menu',
 				async:false,
 				type:'post',
 				param:{
@@ -78,7 +78,7 @@
 						autoWidth:true,/*是否*/
 						paging:false,
 						ajax:{
-							url:"http://120.76.237.100:8082/mall-agentbms-api/purchasing/order/list",
+							url:"http://120.24.226.70:8082/mall-agentbms-api/purchasing/order/list",
 							dataType:'JSON',
 							method:'post',
 							dataSrc:function ( json ) {
@@ -354,7 +354,7 @@
 
 
 				$.ajax({
-						url:"http://120.76.237.100:8082/mall-agentbms-api/purchasing/order/audit",
+						url:"http://120.24.226.70:8082/mall-agentbms-api/purchasing/order/audit",
 						dataType:'JSON',
 						method:'post',
 						data:{
@@ -425,6 +425,16 @@
 		}
 
 
+		/*特殊字符处理*/
+		function chartFilter(str,type) {
+			if(type==='on'){
+				return str.replace(/'/g,'_dan_').replace(/"/g,'_shuang_').replace(/</g,'_qian_').replace(/\/>/g,'_hou_');
+			}else if(type==='off'){
+				return str.replace(/_dan_/g,",").replace(/_shuang_/g,'"').replace(/_qian_/g,'<').replace(/_hou_/g,'/>');
+			}
+		}
+
+
 		/*获取数据*/
 		function getColumnData(page,opt){
 			$batch_all_btn.prop({
@@ -442,7 +452,7 @@
 		function deleteAuditList($tr){
 			var len=$show_audit_list.find('tr').size();
 			if(len===1){
-				dia.content('<span class="g-c-bs-warning g-btips-warn">不能删除，至少需要一条商品</span>').showModal();
+				dia.content('<span class="g-c-bs-warning g-btips-warn">不能删除，至少需要一条商品记录</span>').showModal();
 				return false;
 			}
 
@@ -474,7 +484,7 @@
 					tempattrid=$this.attr('data-goodsattrid'),
 					value=$this.val();
 
-				result.push(tempgid+'#'+tempname.replace(/_dan_/g,'\'').replace(/_shuang_/g,'\"')+'#'+tempattr.replace(/_dan_/g,'\'').replace(/_shuang_/g,'\"')+'#'+value+'#'+tempattrid);
+				result.push(tempgid+'#'+chartFilter(tempname,'off')+'#'+chartFilter(tempattr,'off')+'#'+value+'#'+tempattrid);
 			});
 
 			return result.length===0?null:JSON.stringify(result);
@@ -516,7 +526,7 @@
 			});
 			
 			$.ajax({
-					url:"http://120.76.237.100:8082/mall-agentbms-api/purchasing/order/details",
+					url:"http://120.24.226.70:8082/mall-agentbms-api/purchasing/order/details",
 					dataType:'JSON',
 					method:'post',
 					data:{
@@ -603,7 +613,7 @@
 								<td>'+tempname+'</td>\
 								<td>'+tempattr+'</td>\
 								<td class="form-group">\
-									<input type="text" maxlength="8" class="form-control" data-goodsname="'+tempname.replace(/'/g,'_dan_').replace(/"/g,'_shuang_')+'" data-goodsattr="'+tempattr.replace(/'/g,'_dan_').replace(/"/g,'_shuang_')+'" data-goodsattrid="'+tempattrid+'"  data-goodsid="'+tempgoodsid+'"  data-id="'+tempid+'" data-value="'+tempcg+'" value="0" />\
+									<input type="text" maxlength="8" class="form-control" data-goodsname="'+chartFilter(tempname,'on')+'" data-goodsattr="'+chartFilter(tempattr,'on')+'" data-goodsattrid="'+tempattrid+'"  data-goodsid="'+tempgoodsid+'"  data-id="'+tempid+'" data-value="'+tempcg+'" value="0" />\
 								</td>\
 								<td>'+tempkc+'</td>\
 								<td>\

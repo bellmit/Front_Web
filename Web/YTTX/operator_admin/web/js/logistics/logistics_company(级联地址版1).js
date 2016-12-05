@@ -53,6 +53,9 @@
 				$admin_seCode=$('#admin_seCode'),
 				$admin_linkman=$('#admin_linkman'),
 				$admin_cellphone=$('#admin_cellphone'),
+				$admin_province=$('#admin_province'),
+				$admin_city=$('#admin_city'),
+				$admin_country=$('#admin_country'),
 				$admin_address=$('#admin_address'),
 				$admin_sort=$('#admin_sort'),
 				$admin_action=$('#admin_action'),
@@ -229,6 +232,10 @@
 			getColumnData(logistics_page,logistics_config);
 
 
+			/*获取地址*/
+			getAddress(86,'','province',true);
+
+
 			/*绑定新增入库*/
 			if(logisticsshow_power){
 				$logistics_company_add.removeClass('g-d-hidei');
@@ -253,6 +260,33 @@
 					this.value=public_tool.phoneFormat(this.value);
 				});
 			});
+
+
+			/*绑定切换地址*/
+			$.each([$admin_province,$admin_city,$admin_country],function () {
+				var self=this,
+					selector=this.selector,
+					type='';
+
+				if(selector.indexOf('province')!==-1){
+					type='province';
+				}else if(selector.indexOf('city')!==-1){
+					type='city';
+				}else if(selector.indexOf('country')!==-1){
+					type='country';
+				}
+
+				this.on('change',function () {
+					var $this=$(this),
+						value=$this.val();
+					if(type==='province'){
+						getAddress(value,'','city',true);
+					}else if(type==='city'){
+						getAddress(value,'','country',true);
+					}
+				});
+			});
+			
 
 
 			/*事件绑定*/
@@ -367,7 +401,7 @@
 										seCode:$admin_seCode.val(),
 										linkman:$admin_linkman.val(),
 										cellphone:public_tool.trims($admin_cellphone.val()),
-										address:$admin_address.val(),
+										address:$admin_province.find(':selected').val()+$admin_city.find(':selected').val()+$admin_country.find(':selected').val()+$admin_address.val(),
 										sort:$admin_sort.val()
 									});
 
@@ -398,6 +432,10 @@
 									if(formtype==='addlogistics'&&code===0){
 										getColumnData(logistics_page,logistics_config);
 										admin_logisticsadd_form.reset();
+										if(actiontype==='修改'){
+											/*重新请求地址*/
+											getAddress(86,'','province',true);
+										}
 										setTimeout(function () {
 											/*关闭隐藏*/
 											dia.close();
@@ -492,7 +530,53 @@
 								$admin_cellphone.val(public_tool.phoneFormat(result[i]));
 								break;
 							case 'address':
-								$admin_address.val(result[i]);
+								var tempaddress=result[i],
+									area=tempaddress.match(/^(\d{0,18})/g),
+									detail='';
+
+								if(area!==null){
+									/*解析省，市，区*/
+									area=area[0];
+									detail=tempaddress.replace(area,'');
+									if(area!==''){
+										(function () {
+											var j=0,
+												len=area.length,
+												arr=[],
+												str='';
+
+											for(j;j<len;j++){
+												var tempj=j+1;
+												str+=area[j];
+												if(tempj%6===0){
+													arr.push(str);
+													str='';
+												}
+											}
+											if(arr.length!==0){
+												if(arr[0]&&arr[0].length===6){
+													getAddress(86,arr[0],'province');
+													if(arr[1]&&arr[1].length===6){
+														getAddress(arr[0],arr[1],'city');
+														if(arr[2]&&arr[2].length===6){
+															getAddress(arr[1],arr[2],'country');
+														}
+													}
+												}else{
+													getAddress(86,'','province',true);
+												}
+											}else{
+												getAddress(86,'','province',true);
+											}
+										}());
+									}else{
+										getAddress(86,'','province',true);
+									}
+									$admin_address.val(detail);
+								}else{
+									getAddress(86,'','province',true);
+									$admin_address.val(tempaddress);
+								}
 								break;
 							case 'sort':
 								$admin_sort.val(result[i]);
@@ -517,6 +601,89 @@
 				});
 		}
 
+
+		/*查询地址*/
+		function getAddress(id,sel,type,getflag) {
+			var tempurl1='120.',
+			tempurl2='24.',
+			tempurl3='226.',
+			tempurl4='70:8082';
+			$.ajax({
+					url:"http://"+tempurl1+tempurl2+tempurl3+tempurl4+"/yttx-public-api/address/get",
+					dataType:'JSON',
+					method:'post',
+					data:{
+						parentCode:id===''?86:id,
+						adminId:decodeURIComponent(logininfo.param.adminId),
+						token:decodeURIComponent(logininfo.param.token),
+						grade:decodeURIComponent(logininfo.param.grade)
+					}
+				})
+				.done(function(resp){
+					var code=parseInt(resp.code,10);
+					if(code!==0){
+						console.log(resp.message);
+						return false;
+					}
+					/*是否是正确的返回数据*/
+					var res=resp.result;
+					if(!res){
+						return false;
+					}
+					var list=res.list;
+
+					if(!list){
+						return false;
+					}
+
+					var len=list.length,
+						str='',
+						$wrap='',
+						i=0;
+
+					if(type==='province'){
+						$wrap=$admin_province;
+					}else if(type==='city'){
+						$wrap=$admin_city;
+					}else if(type==='country'){
+						$wrap=$admin_country;
+					}
+
+					if(len!==0){
+						if(sel!==''){
+							for(i;i<len;i++){
+								var codes=list[i]["code"];
+								if(codes===sel){
+									str+='<option selected value="'+codes+'">'+list[i]["name"]+'</option>';
+								}else{
+									str+='<option value="'+codes+'">'+list[i]["name"]+'</option>';
+								}
+							}
+						}else{
+							for(i;i<len;i++){
+								if(i===0){
+									sel=list[i]["code"];
+									str+='<option selected value="'+list[i]["code"]+'">'+list[i]["name"]+'</option>';
+								}else{
+									str+='<option value="'+list[i]["code"]+'">'+list[i]["name"]+'</option>';
+								}
+							}
+						}
+						$(str).appendTo($wrap.html(''));
+
+						if(sel!==''&&getflag){
+							if(type==='province'){
+								getAddress(sel,'','city',true);
+							}else if(type==='city'){
+								getAddress(sel,'','country');
+							}
+						}
+					}
+				})
+				.fail(function(resp){
+					console.log(resp.message);
+				});
+		}
 	});
 
 

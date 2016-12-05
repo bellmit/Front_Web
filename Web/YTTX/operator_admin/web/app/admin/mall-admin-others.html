@@ -175,6 +175,49 @@
                     </div>
                 </div>
 
+                <div class="col-md-12" id="rate_setting_wrap2">
+                    <div class="panel" >
+                        <div class="panel-heading">
+                            <h3 class="panel-title admin-panel-theme">利润率设置</h3>
+                        </div>
+                        <!--修改或添加主体-->
+                        <div class="panel-body">
+                            <form role="form" id="rate_edit_form2" method="post" data-setting=""  class="validate">
+
+                                <div class="form-group">
+                                    <label class="control-label">
+                                        <span class="form-require-item g-c-red1">*</span>&nbsp;&nbsp;<input type="radio" id="admin_levellabel1" name="admin_level">&nbsp;&nbsp;一段：
+                                    </label>
+
+                                    <input type="text" class="form-control" id="rate_a2" name="rate_A2" data-validate="required,number,dotmaxlength[7]" data-message-required="利润率不能为空" data-message-number="利润率必须是数值" data-message-dotmaxlength="平台分润需小于8位数值" maxlength="10" placeholder="请输入数字" />
+                                </div>
+
+                                <div class="form-group">
+                                    <label id="admin_levellabel2"  class="control-label">
+                                        <span class="form-require-item g-c-red1">*</span>&nbsp;&nbsp;<input type="radio" name="admin_level">&nbsp;&nbsp;二段：
+                                    </label>
+
+                                    <input type="text" class="form-control" id="rate_aa2" name="rate_AA2" data-validate="required,number,dotmaxlength[7]" data-message-required="代理分润不能为空" data-message-number="代理分润必须是数值" data-message-dotmaxlength="代理分润需小于8位数值" maxlength="10" placeholder="请输入数字" />
+                                </div>
+
+                                <div class="form-group">
+                                    <label id="admin_levellabel3"  class="control-label">
+                                        <span class="form-require-item g-c-red1">*</span>&nbsp;&nbsp;<input type="radio" name="admin_level">&nbsp;&nbsp;三段：
+                                    </label>
+
+                                    <input type="text" class="form-control" id="rate_aaa2" name="rate_AAA2" data-validate="required,number,dotmaxlength[7]" data-message-required="仓储分润不能为空" data-message-number="仓储分润必须是数值" data-message-dotmaxlength="仓储分润需小于8位数值" maxlength="10" placeholder="请输入数字" />
+                                </div>
+
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-success">设置</button>
+                                </div>
+
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+
             </div>
 
 

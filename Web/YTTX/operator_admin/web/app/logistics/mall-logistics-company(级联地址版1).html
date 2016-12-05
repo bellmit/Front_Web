@@ -220,7 +220,21 @@
                         </div>
                         <div class="form-group">
                             <label class="control-label"><span class="form-require-item g-c-red1">*</span>公司地址：</label>
-                            <input type="text" class="form-control" name="address" placeholder="请输入公司地址" data-validate="required" data-message-required="公司地址不能为空"  id="admin_address" />
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <select class="form-control self-error-pos" name="province" id="admin_province" ></select>
+                                </div>
+                                <div class="col-md-3">
+                                    <select class="form-control self-error-pos" name="city" id="admin_city" ></select>
+                                </div>
+                                <div class="col-md-3">
+                                    <select class="form-control self-error-pos" name="country" id="admin_country" ></select>
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="text" class="form-control self-error-tips" name="address" placeholder="请输入公司地址" data-validate="required" data-message-required="公司地址不能为空"  id="admin_address" />
+                                </div>
+                            </div>
+                            <div class="form-group self-error-pos-tips"></div>
                         </div>
                         <div class="form-group">
                             <label class="control-label">排序(<span class="g-c-info">值越大越靠前</span>)：</label>
