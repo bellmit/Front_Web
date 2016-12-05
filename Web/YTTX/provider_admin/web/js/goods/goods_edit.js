@@ -739,8 +739,7 @@
 									config['data']=setdata;
 								}
 
-								console.log(setdata);
-								return false;
+								
 								$.ajax(config).done(function(resp){
 									var code;
 									if(formtype==='addgoods'){
