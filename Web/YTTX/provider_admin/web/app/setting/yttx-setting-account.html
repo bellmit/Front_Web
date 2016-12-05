@@ -136,28 +136,19 @@
                                         <ul id="admin_address_list"></ul>
                                         <div id="admin_address_wrap" class="g-d-hidei">
                                             <div class="form-group">
-                                                <br />
-                                                <div class="selectwrap">
-                                                    <div class="select-item g-w-percent8" style="z-index:50">
-                                                        <p>请选择省份</p>
-                                                        <ul id="admin_province"></ul>
+                                                <div class="row">
+                                                    <div class="col-md3">
+                                                        <select  class="form-control" id="admin_province"></select>
                                                     </div>
-                                                    <div class="select-item g-w-percent8" style="z-index:50">
-                                                        <p>请选择城市</p>
-                                                        <ul id="admin_city"></ul>
+                                                    <div class="col-md3">
+                                                        <select  class="form-control" id="admin_city"></select>
                                                     </div>
-                                                    <div class="select-item g-w-percent8" style="z-index:50">
-                                                        <p>请选择地区</p>
-                                                        <ul id="admin_area"></ul>
+                                                    <div class="col-md3">
+                                                        <select  class="form-control" id="admin_country"></select>
                                                     </div>
-                                                </div>
-                                                <br />
-                                                <label class="control-label">收货人地址：</label>
-                                                <div class="input-group g-w-percent50 self-error-pos-wrap">
-                                                    <input type="text"  class="form-control no-right-border g-w-percent10 self-error-pos" data-validate="required" data-message-required="收货人省份不能为空"  value="" name="province" id="admin_province_value">
-                                                    <input type="text" class="form-control no-right-border g-w-percent10 self-error-pos" data-validate="required" data-message-required="收货人城市不能为空"  value="" name="city" id="admin_city_value">
-                                                    <input type="text" class="form-control no-right-border g-w-percent10 self-error-pos" data-validate="required" data-message-required="收货人县市不能为空"  value="" name="country" id="admin_area_value">
-                                                    <input type="text" class="form-control  g-w-percent20 self-error-pos" name="address" data-validate="required" data-message-required="收货人详细地址不能为空"  id="admin_address" placeholder="请输入收货人详细地址" />
+                                                    <div class="col-md3">
+                                                        <input type="text" class="form-control" name="address" data-validate="required" data-message-required="收货人详细地址不能为空"  id="admin_address" placeholder="请输入收货人详细地址" />
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="form-group">
@@ -266,7 +257,6 @@
 <script src="../../js/common/common.js"></script>
 <!--表单验证插件-->
 <script src="../../js/plugins/jquery-validate/jquery.validate.js"></script>
-<script src="../../js/widgets/city_select.js"></script>
 <script src="../../js/setting/setting_account.js"></script>
 </body>
 </html>

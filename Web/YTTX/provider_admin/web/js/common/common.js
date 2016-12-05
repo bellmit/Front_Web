@@ -1742,6 +1742,8 @@ var public_vars = public_vars || {};
 							{
 								if(element.hasClass('self-error-pos')){
 									error.insertAfter(element.closest('.self-error-pos-wrap'));
+								}else if(element.hasClass('self-error-tips')){
+									error.appendTo($errortip.html(''));
 								}else{
 									if(element.closest('.has-switch').length) {
 										error.insertAfter(element.closest('.has-switch'));
