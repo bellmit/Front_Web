@@ -328,7 +328,7 @@
 					if(selector.indexOf('price')!==-1){
 						tempval=tempval.replace(/[^0-9\.]/g,'');
 						tempval=tempval.replace(/[\.{2,}]/g,'');
-						this.value=public_tool.moneyCorrect(tempval,12,true)[0];
+						this.value=public_tool.moneyCorrect(tempval,12,false)[0];
 					}else{
 						tempval=tempval.replace(/\s*\D*/g,'');
 						this.value=tempval;
@@ -568,46 +568,32 @@
 						$this.val(result);
 					}else if(name==="setwholesalePrice"){
 						/*错误状态下禁止输入*/
-						if($this.hasClass('g-c-red1')){
-							return false;
-						}
 						result=value.replace(/[^0-9\.]/g,'');
 						result=result.replace(/\.{2,}/g,'.');
 						$this.val(result);
 					}else if(name==="setretailPrice"){
-						if($this.hasClass('g-c-red1')){
-							return false;
-						}
 						result=value.replace(/[^0-9\.]/g,'');
 						result=result.replace(/\.{2,}/g,'.');
 						$this.val(result);
 					}else if(name==="setsupplierPrice"){
-						if($this.hasClass('g-c-red1')){
-							return false;
-						}
 						result=value.replace(/[^0-9\.]/g,'');
 						result=result.replace(/\.{2,}/g,'.');
 						$this.val(result);
 					}
 				}else if(etype==='focusout'){
-					if(name==="setwholesalePrice"){
-						/*错误状态下禁止输入*/
-						if($this.hasClass('g-c-red1')){
-							return false;
+					if(name==="setinventory"){
+						if(value===''){
+							$this.val('0');
 						}
-						$this.val(public_tool.moneyCorrect(value,12,true)[0]);
+					}else if(name==="setwholesalePrice"){
+						/*错误状态下禁止输入*/
+						$this.val(public_tool.moneyCorrect(value,12,false)[0]);
 					}else if(name==="setretailPrice"){
 						/*错误状态下禁止输入*/
-						if($this.hasClass('g-c-red1')){
-							return false;
-						}
-						$this.val(public_tool.moneyCorrect(value,12,true)[0]);
+						$this.val(public_tool.moneyCorrect(value,12,false)[0]);
 					}else if(name==="setsupplierPrice"){
 						/*错误状态下禁止输入*/
-						if($this.hasClass('g-c-red1')){
-							return false;
-						}
-						$this.val(public_tool.moneyCorrect(value,12,true)[0]);
+						$this.val(public_tool.moneyCorrect(value,12,false)[0]);
 					}
 				}
 
@@ -676,6 +662,15 @@
 								$.extend(true,setdata,basedata);
 
 								if(formtype==='addgoods'){
+									if(isattr){
+										var tempprice=getSetPrice();
+										if(tempprice===null){
+											return false;
+										}
+										setdata['attrIventoryPrices']=tempprice;
+									}else{
+										setdata['attrIventoryPrices']='['+$admin_inventory.val()+'#'+public_tool.trimSep($admin_wholesale_price.val(),',')+'#'+public_tool.trimSep($admin_retail_price.val(),',')+'#'+public_tool.trimSep($admin_supplier_price.val(),',')+']';
+									}
 
 									if($admin_slide_tool.html()===''){
 										$admin_slide_image.html('<div class="g-c-red1">请上传商品组图</div>');
@@ -730,16 +725,10 @@
 										}())
 									});
 
-									if(isattr){
-										setdata['attrIventoryPrices']=getSetPrice();
-									}else{
-										setdata['attrIventoryPrices']='['+$admin_inventory.val()+'#'+public_tool.trimSep($admin_wholesale_price.val(),',')+'#'+public_tool.trimSep($admin_retail_price.val(),',')+'#'+public_tool.trimSep($admin_supplier_price.val(),',')+']';
-									}
 									config['url']="http://120.24.226.70:8082/yttx-providerbms-api/goods/addupdate";
 									config['data']=setdata;
 								}
 
-								
 								$.ajax(config).done(function(resp){
 									var code;
 									if(formtype==='addgoods'){
@@ -1330,22 +1319,59 @@
 				$tr=$admin_wholesale_price_list.find('tr'),
 				len=$tr.size(),
 				j=0,
-				trims=public_tool.trimSep;
+				count=0,
+				trims=public_tool.trimSep,
+				countitem=0;
 
 			for(j;j<len;j++){
 				var $input=$tr.eq(j).find('input'),
 					sublen=$input.size();
 				if(sublen!==0){
-					var $inventory=$input.eq(0),
-						$wholesale=$input.eq(1),
-						$retail=$input.eq(2),
-						$supplier=$input.eq(3),
+					var inventory=$input.eq(0).val(),
+						wholesale=trims($input.eq(1).val(),','),
+						retail=trims($input.eq(2).val(),','),
+						supplier=trims($input.eq(3).val(),','),
 						$isdefault=$input.eq(4),
 						key=$isdefault.attr('data-value').split('_'),
 						value=$isdefault.is(':checked')?1:0;
-					result.push($inventory.val()+'#'+trims($wholesale.val(),',')+'#'+trims($retail.val(),',')+'#'+value+'#'+key[0]+'#'+key[1]+'#'+trims($supplier.val(),','));
+
+					if(inventory===''){
+						count++;
+						countitem=0;
+						break;
+					}
+					if(wholesale===''){
+						count++;
+						countitem=1;
+						break;
+					}
+					if(retail===''){
+						count++;
+						countitem=2;
+						break;
+					}
+					if(supplier===''){
+						count++;
+						countitem=3;
+						break;
+					}
+
+					result.push(inventory+'#'+wholesale+'#'+retail+'#'+value+'#'+key[0]+'#'+key[1]+'#'+supplier);
 
 				}
+			}
+			if(result.length===0||(len!==0&&count!==0)){
+				$("html,body").animate({
+					scrollTop:$admin_wholesale_tips.offset().top - 200
+				},200);
+				$admin_wholesale_tips.html('填写商品信息');
+				if(count!==0){
+					$tr.eq(count - 1).find('input').eq(countitem).select();
+				}
+				setTimeout(function () {
+					$admin_wholesale_tips.html('');
+				},3000);
+				return null;
 			}
 			return JSON.stringify(result);
 		}
@@ -1458,14 +1484,14 @@
 							priceobj=priceobj.split("#");
 							if(priceobj.length!==0){
 								$admin_inventory.val(priceobj[0]);
-								$admin_wholesale_price.val(public_tool.moneyCorrect(priceobj[1],12,true)[0]);
-								$admin_retail_price.val(public_tool.moneyCorrect(priceobj[2],12,true)[0]);
+								$admin_wholesale_price.val(public_tool.moneyCorrect(priceobj[1],12,false)[0]);
+								$admin_retail_price.val(public_tool.moneyCorrect(priceobj[2],12,false)[0]);
 								$admin_supplier_price.val((function(){
 									var supplier=priceobj[6];
 									if(supplier===''||isNaN(supplier)){
 										supplier='0.00';
 									}else{
-										supplier=public_tool.moneyCorrect(supplier,12,true)[0];
+										supplier=public_tool.moneyCorrect(supplier,12,false)[0];
 									}
 									return supplier;
 								}()));
@@ -1666,14 +1692,14 @@
 
 					if(i===0){
 						$td.eq(2).find('input').val(item[0]);
-						$td.eq(3).find('input').val(public_tool.moneyCorrect(item[1],12,true)[0]);
-						$td.eq(4).find('input').val(public_tool.moneyCorrect(item[2],12,true)[0]);
+						$td.eq(3).find('input').val(public_tool.moneyCorrect(item[1],12,false)[0]);
+						$td.eq(4).find('input').val(public_tool.moneyCorrect(item[2],12,false)[0]);
 						$td.eq(5).find('input').val((function(){
 							var supplier=item[6];
 							if(supplier===''||isNaN(supplier)){
 								supplier='0.00';
 							}else{
-								supplier=public_tool.moneyCorrect(supplier,12,true)[0];
+								supplier=public_tool.moneyCorrect(supplier,12,false)[0];
 							}
 							return supplier;
 						}()));
@@ -1682,14 +1708,14 @@
 						});
 					}else{
 						$td.eq(1).find('input').val(item[0]);
-						$td.eq(2).find('input').val(public_tool.moneyCorrect(item[1],12,true)[0]);
-						$td.eq(3).find('input').val(public_tool.moneyCorrect(item[2],12,true)[0]);
+						$td.eq(2).find('input').val(public_tool.moneyCorrect(item[1],12,false)[0]);
+						$td.eq(3).find('input').val(public_tool.moneyCorrect(item[2],12,false)[0]);
 						$td.eq(4).find('input').val((function(){
 							var supplier=item[6];
 							if(supplier===''||isNaN(supplier)){
 								supplier='0.00';
 							}else{
-								supplier=public_tool.moneyCorrect(supplier,12,true)[0];
+								supplier=public_tool.moneyCorrect(supplier,12,false)[0];
 							}
 							return supplier;
 						}()));
@@ -1730,14 +1756,14 @@
 					if(k===0){
 						str+='<td>'+listtwo['res'][dataitem[5]]+'</td>' +
 							'<td>'+dataitem[0]+'</td>' +
-							'<td>'+public_tool.moneyCorrect(dataitem[1],12,true)[0]+'</td>' +
-							'<td>'+public_tool.moneyCorrect(dataitem[2],12,true)[0]+'</td>' +
+							'<td>'+public_tool.moneyCorrect(dataitem[1],12,false)[0]+'</td>' +
+							'<td>'+public_tool.moneyCorrect(dataitem[2],12,false)[0]+'</td>' +
 							'<td>'+(function(){
 								var supplier=dataitem[6];
 								if(supplier===''||isNaN(supplier)){
 									supplier='0.00';
 								}else{
-									supplier=public_tool.moneyCorrect(supplier,12,true)[0];
+									supplier=public_tool.moneyCorrect(supplier,12,false)[0];
 								}
 								return supplier;
 							}())+'</td>' +
@@ -1745,14 +1771,14 @@
 					}else{
 						str+='<tr><td>'+listtwo['res'][dataitem[5]]+'</td>' +
 							'<td>'+dataitem[0]+'</td>' +
-							'<td>'+public_tool.moneyCorrect(dataitem[1],12,true)[0]+'</td>' +
-							'<td>'+public_tool.moneyCorrect(dataitem[2],12,true)[0]+'</td>' +
+							'<td>'+public_tool.moneyCorrect(dataitem[1],12,false)[0]+'</td>' +
+							'<td>'+public_tool.moneyCorrect(dataitem[2],12,false)[0]+'</td>' +
 							'<td>'+(function(){
 								var supplier=dataitem[6];
 								if(supplier===''||isNaN(supplier)){
 									supplier='0.00';
 								}else{
-									supplier=public_tool.moneyCorrect(supplier,12,true)[0];
+									supplier=public_tool.moneyCorrect(supplier,12,false)[0];
 								}
 								return supplier;
 							}())+'</td>' +

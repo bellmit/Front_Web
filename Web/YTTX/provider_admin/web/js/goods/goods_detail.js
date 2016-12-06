@@ -195,14 +195,14 @@
 							priceobj=priceobj.split("#");
 							if(priceobj.length!==0){
 								document.getElementById('admin_inventory').innerHTML=priceobj[0];
-								document.getElementById('admin_wholesale_price').innerHTML=public_tool.moneyCorrect(priceobj[1],12,true)[0];
-								document.getElementById('admin_retail_price').innerHTML=public_tool.moneyCorrect(priceobj[2],12,true)[0];
+								document.getElementById('admin_wholesale_price').innerHTML='￥:'+public_tool.moneyCorrect(priceobj[1],12,false)[0];
+								document.getElementById('admin_retail_price').innerHTML='￥:'+public_tool.moneyCorrect(priceobj[2],12,false)[0];
 								document.getElementById('admin_supplier_price').innerHTML=(function () {
 									var supplier=dataitem[6];
 									if(supplier===''||isNaN(supplier)){
-										supplier='0.00';
+										supplier='￥:'+'0.00';
 									}else{
-										supplier=public_tool.moneyCorrect(supplier,12,true)[0];
+										supplier='￥:'+public_tool.moneyCorrect(supplier,12,false)[0];
 									}
 									return supplier;
 								}());
@@ -380,14 +380,14 @@
 					if(k===0){
 						str+='<td>'+listtwo['res'][dataitem[5]]+'</td>' +
 							'<td>'+dataitem[0]+'</td>' +
-							'<td>'+public_tool.moneyCorrect(dataitem[1],12,true)[0]+'</td>' +
-							'<td>'+public_tool.moneyCorrect(dataitem[2],12,true)[0]+'</td>' +
+							'<td>￥:'+public_tool.moneyCorrect(dataitem[1],12,false)[0]+'</td>' +
+							'<td>￥:'+public_tool.moneyCorrect(dataitem[2],12,false)[0]+'</td>' +
 							'<td>'+(function(){
 								var supplier=dataitem[6];
 								if(supplier===''||isNaN(supplier)){
-									supplier='0.00';
+									supplier='￥:'+'0.00';
 								}else{
-									supplier=public_tool.moneyCorrect(supplier,12,true)[0];
+									supplier='￥:'+public_tool.moneyCorrect(supplier,12,false)[0];
 								}
 								return supplier;
 							}())+'</td>' +
@@ -395,14 +395,14 @@
 					}else{
 						str+='<tr><td>'+listtwo['res'][dataitem[5]]+'</td>' +
 						'<td>'+dataitem[0]+'</td>' +
-						'<td>'+public_tool.moneyCorrect(dataitem[1],12,true)[0]+'</td>' +
-						'<td>'+public_tool.moneyCorrect(dataitem[2],12,true)[0]+'</td>' +
+						'<td>￥:'+public_tool.moneyCorrect(dataitem[1],12,false)[0]+'</td>' +
+						'<td>￥:'+public_tool.moneyCorrect(dataitem[2],12,false)[0]+'</td>' +
 						'<td>'+(function(){
 							var supplier=dataitem[6];
 							if(supplier===''||isNaN(supplier)){
-								supplier='0.00';
+								supplier='￥:'+'0.00';
 							}else{
-								supplier=public_tool.moneyCorrect(supplier,12,true)[0];
+								supplier='￥:'+public_tool.moneyCorrect(supplier,12,false)[0];
 							}
 							return supplier;
 						}())+'</td>' +

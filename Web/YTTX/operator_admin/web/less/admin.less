@@ -755,6 +755,218 @@
 	}
 
 
+	/*查看属性，颜色，尺寸*/
+	.admin-list-widget{
+		overflow: auto;
+		background:@color-white;
+		border:1px solid @color-gray12;
+		.user-select-base;
+		li{
+			float:left;
+			.box-sizing-base;
+			min-width:120px;
+			max-width:240px;
+			text-align: center;
+			height:60px;
+			padding:10px 0;
+			line-height:40px;
+			color:@color-gray6;
+			border-right:1px solid @color-gray16;
+			border-bottom:1px solid @color-gray16;
+			font-size:@font-size-base;
+			.text-of;
+			text-overflow: ellipsis;
+			cursor: pointer;
+			&:hover{
+				background:@color-gray14;
+			}
+		}
+		.admin-list-widget-active{
+			background:lighten(@btn-success-bg,40%);
+			&:hover{
+				background:lighten(@btn-success-bg,40%);
+			}
+		}
+	}
+
+	.color-list-widget,
+	.rule-list-widget{
+		.layout-absoluter-base(-70px,36px,100);
+		width:503px;
+		height:239px;
+	}
+	.addcode-list-widget{
+		.layout-absoluter-base(2px,36px,100);
+		min-width:743px;
+		max-width:1223px;
+		height:242px;
+	}
+
+
+	/*表单轮播图*/
+	.admin-slide-wrap{
+		@itemwidth:50px;
+		background:@color-white;
+		.layout-base;
+		min-height:480px;
+		min-width:300px;
+		padding:10px;
+		text-align: center;
+		.admin-slide-show{
+			.layout-relative-base;
+			.layout-base(300px);
+			overflow: hidden;
+			height:300px;
+			margin:0 auto;
+			border:1px solid @color-gray14;
+		}
+		.admin-slide-image{
+			.layout-absolutel-base(0,0,10);
+			width:100%;
+			height:100%;
+			display:table;
+			>div{
+				width:100%;
+				height:100%;
+				display:table-cell;
+				vertical-align: middle;
+				overflow: hidden;
+			}
+			img{
+				display: inline-block;
+				max-width:100%;
+				max-height:100%;
+			}
+		}
+		.admin-slide-btn{
+			cursor: pointer;
+			position:absolute;
+			top:0;
+			z-index:50;
+			width:49%;
+			height:100%;
+			&:before,
+			&&:before{
+				background:rgba(255,255,255,.5);
+				.border-radius-base(50%);
+				position: absolute;
+				font-family:'ux_eight';
+				width:@itemwidth;
+				height:@itemwidth;
+				line-height:@itemwidth;
+				margin-top:-@itemwidth/2;
+				font-size:@font-size-base + 8;
+				color:@color-gray3;
+				top:50%;
+				z-index:10;
+			}
+			&:hover{
+				&:before,
+				&&:before{
+					background:rgba(255,255,255,.7);
+				}
+			}
+		}
+		.admin-slide-btnl{
+			left:0;
+			&:before,
+			&&:before{
+				text-align:right;
+				left:-@itemwidth/2;
+				padding-right:@itemwidth/8;
+				content:'\e625';
+			}
+		}
+		.admin-slide-btnr{
+			right:0;
+			&:before,
+			&&:before{
+				right:-@itemwidth/2;
+				padding-left:@itemwidth/8;
+				text-align:left;
+				content:'\e63f';
+			}
+		}
+		.admin-slide-tool{
+			overflow: hidden;
+			.layout-base(300px);
+			height:60px;
+			margin:10px auto 0 auto;
+			/*&:empty{
+				&:before,
+				&::before{
+					content:'请上传图片';
+					display:block;
+					width:100%;
+					height:100%;
+					line-height:300px;
+					text-align: center;
+					color:@color-red1;
+				}
+			}*/
+			li{
+				.layout-relative-base;
+				.layout-float-base(50px);
+				height:50px;
+				margin:5px 5px 0 5px;
+				overflow: hidden;
+				cursor: pointer;
+				border:3px solid @color-white;
+				&:hover{
+					border:3px solid @color-gray12;
+				}
+				img{
+					width:100%;
+					height:100%;
+					display: inline-block;
+				}
+				span{
+					.layout-absoluter-base(-20px,-20px);
+					line-height: 20px;
+					text-align:center;
+					cursor: pointer;
+					.user-select-base;
+					width:20px;
+					height:20px;
+					background:rgba(0,0,0,.5);
+					color:@color-gray14;
+					&:hover{
+						background:rgba(0,0,0,.8);
+					}
+					&:before,
+					&::before{
+						width:100%;
+						height:100%;
+						content:'\e602';
+						font-family:'ux_six';
+						font-size: @font-size-base + 2;
+					}
+				}
+				.slide-delete-active{
+					top:0 !important;
+					right:0 !important;
+				}
+			}
+			.admin-slide-active{
+				border:3px solid @color-gray12;
+			}
+		}
+		.admin-slide-upload{
+			.layout-base(300px);
+			margin:10px auto 0 auto;
+			text-align:center;
+			.admin-rpos-wrap{
+				input[type="file"]{
+					.layout-absolutel-base;
+					.layout-base;
+					height:100%;
+					.opacity-base(0);
+				}
+			}
+		}
+	}
+
+
 	/*缩略图上传地址*/
 	.admin-rpos-wrap{
 		.layout-relative-base;
@@ -1007,7 +1219,7 @@
 	}
 
 
-	/*特殊状态*/
+	/*表单特殊状态*/
 	.admin-form-readonly{
 		background:lighten(@color-gray16,2%) !important;
 		color:@color-gray10  !important;
