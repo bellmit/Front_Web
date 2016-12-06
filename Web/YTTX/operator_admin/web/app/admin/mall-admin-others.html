@@ -175,7 +175,7 @@
                     </div>
                 </div>
 
-                <div class="col-md-12" id="rate_setting_wrap2">
+                <div class="col-md-12 g-d-hidei" id="rate_setting_wrap2">
                     <div class="panel" >
                         <div class="panel-heading">
                             <h3 class="panel-title admin-panel-theme">利润率设置</h3>
@@ -183,29 +183,57 @@
                         <!--修改或添加主体-->
                         <div class="panel-body">
                             <form role="form" id="rate_edit_form2" method="post" data-setting=""  class="validate">
+                                <input type="text" value="" class="g-d-hidei" id="rateid1">
+                                <input type="text" value="" class="g-d-hidei" id="rateid2">
+                                <input type="text" value="" class="g-d-hidei" id="rateid3">
+                                <div class="form-group">
+                                    <label class="control-label">
+                                        <span class="form-require-item g-c-red1">*</span>一段(最大区间)：</label>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            从&nbsp;<input type="text" class="form-control inline g-w-percent40" id="ratemax_a2" name="ratemax_A2" data-validate="required,number,dotmaxlength[3]" data-message-required="利润率不能为空" data-message-number="利润率必须是数值" data-message-dotmaxlength="利润率需小于4位数值" maxlength="6" placeholder="请输入数字" />
+                                        </div>
+                                        <div class="col-md-4">
+                                            到&nbsp;<input type="text" class="form-control inline g-w-percent40" id="ratemin_a2" name="ratemin_A2" data-validate="required,number,dotmaxlength[3]" data-message-required="利润率不能为空" data-message-number="利润率必须是数值" data-message-dotmaxlength="利润率需小于4位数值" maxlength="6" placeholder="请输入数字" />
+                                        </div>
+                                        <div class="col-md-4">
+                                            按&nbsp;<input type="text" class="form-control inline g-w-percent40" id="rate_a2" name="rate_A2" data-validate="required,number,dotmaxlength[3]" data-message-required="利润率不能为空" data-message-number="利润率必须是数值" data-message-dotmaxlength="利润率需小于4位数值" maxlength="6" placeholder="请输入数字" />&nbsp;算
+                                        </div>
+                                    </div>
+                                </div>
 
                                 <div class="form-group">
                                     <label class="control-label">
-                                        <span class="form-require-item g-c-red1">*</span>&nbsp;&nbsp;<input type="radio" id="admin_levellabel1" name="admin_level">&nbsp;&nbsp;一段：
-                                    </label>
+                                        <span class="form-require-item g-c-red1">*</span>二段(居中区间)：</label>
 
-                                    <input type="text" class="form-control" id="rate_a2" name="rate_A2" data-validate="required,number,dotmaxlength[7]" data-message-required="利润率不能为空" data-message-number="利润率必须是数值" data-message-dotmaxlength="平台分润需小于8位数值" maxlength="10" placeholder="请输入数字" />
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            从&nbsp;<input type="text" class="form-control inline g-w-percent40" id="ratemax_aa2" name="ratemax_AA2" data-validate="required,number,dotmaxlength[3]" data-message-required="利润率不能为空" data-message-number="利润率必须是数值" data-message-dotmaxlength="利润率需小于4位数值" maxlength="6" placeholder="请输入数字" />
+                                        </div>
+                                        <div class="col-md-4">
+                                            到&nbsp;<input type="text" class="form-control inline g-w-percent40" id="ratemin_aa2" name="ratemin_AA2" data-validate="required,number,dotmaxlength[3]" data-message-required="利润率不能为空" data-message-number="利润率必须是数值" data-message-dotmaxlength="利润率需小于4位数值" maxlength="6" placeholder="请输入数字" />
+                                        </div>
+                                        <div class="col-md-4">
+                                            按&nbsp;<input type="text" class="form-control inline g-w-percent40" id="rate_aa2" name="rate_AA2" data-validate="required,number,dotmaxlength[3]" data-message-required="利润率不能为空" data-message-number="利润率必须是数值" data-message-dotmaxlength="利润率需小于4位数值" maxlength="6" placeholder="请输入数字" />&nbsp;算
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <div class="form-group">
-                                    <label id="admin_levellabel2"  class="control-label">
-                                        <span class="form-require-item g-c-red1">*</span>&nbsp;&nbsp;<input type="radio" name="admin_level">&nbsp;&nbsp;二段：
-                                    </label>
+                                    <label  class="control-label">
+                                        <span class="form-require-item g-c-red1">*</span>三段(最小区间)：</label>
 
-                                    <input type="text" class="form-control" id="rate_aa2" name="rate_AA2" data-validate="required,number,dotmaxlength[7]" data-message-required="代理分润不能为空" data-message-number="代理分润必须是数值" data-message-dotmaxlength="代理分润需小于8位数值" maxlength="10" placeholder="请输入数字" />
-                                </div>
-
-                                <div class="form-group">
-                                    <label id="admin_levellabel3"  class="control-label">
-                                        <span class="form-require-item g-c-red1">*</span>&nbsp;&nbsp;<input type="radio" name="admin_level">&nbsp;&nbsp;三段：
-                                    </label>
-
-                                    <input type="text" class="form-control" id="rate_aaa2" name="rate_AAA2" data-validate="required,number,dotmaxlength[7]" data-message-required="仓储分润不能为空" data-message-number="仓储分润必须是数值" data-message-dotmaxlength="仓储分润需小于8位数值" maxlength="10" placeholder="请输入数字" />
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            从&nbsp;<input type="text" class="form-control inline g-w-percent40" id="ratemax_aaa2" name="ratemax_AAA2" data-validate="required,number,dotmaxlength[3]" data-message-required="利润率不能为空" data-message-number="利润率必须是数值" data-message-dotmaxlength="利润率需小于4位数值" maxlength="6" placeholder="请输入数字" />
+                                        </div>
+                                        <div class="col-md-4">
+                                            到&nbsp;<input type="text" class="form-control inline g-w-percent40" id="ratemin_aaa2" name="ratemin_AAA2" data-validate="required,number,dotmaxlength[3]" data-message-required="利润率不能为空" data-message-number="利润率必须是数值" data-message-dotmaxlength="利润率需小于4位数值" maxlength="6" placeholder="请输入数字" />
+                                        </div>
+                                        <div class="col-md-4">
+                                            按&nbsp;<input type="text" class="form-control inline g-w-percent40" id="rate_aaa2" name="rate_AAA2" data-validate="required,number,dotmaxlength[3]" data-message-required="利润率不能为空" data-message-number="利润率必须是数值" data-message-dotmaxlength="利润率需小于4位数值" maxlength="6" placeholder="请输入数字" />&nbsp;算
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <div class="form-group">
