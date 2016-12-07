@@ -5,12 +5,13 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	
 	<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0,maximum-scale=1">
-	<meta name="description" content="布住网运营管理平台--分仓管理--订单统计" />
-	<meta name="keywords" content="布住网运营管理平台--分仓管理--订单统计">
+	<meta name="description" content="布住网运营管理平台--财务管理--订单报表" />
+	<meta name="keywords" content="布住网运营管理平台--财务管理--订单报表">
   <meta name="author" content="yp" />
-	<title>布住网运营管理平台--分仓管理--订单统计</title>
+	<title>布住网运营管理平台--财务管理--订单报表</title>
+  <link href="../../images/logo_icon.ico" rel="icon">
 	<link rel="stylesheet" href="../../css/base.css">
-  <link rel="stylesheet" href="../../js/plugins/datatables/dataTables.bootstrap.css">
+  <link rel="stylesheet" type="text/css" href="../../js/plugins/daterangepicker/daterangepicker-bs3.css">
 	<link rel="stylesheet" href="../../css/admin.css">
   <script src="../../js/common/jquery-1.11.1.js"></script>
 	<!--[if lt IE 9]>
@@ -69,13 +70,13 @@
                     <li class="dropdown user-profile">
                         <a href="#" data-toggle="dropdown">
                             <img src="../../images/user-4.png" alt="user-image" class="img-circle img-inline userpic-32" width="28" />
-                            <span id="admin_show_wrap"></span>
+                                <span id="admin_show_wrap"></span>
                         </a>
 
                         <ul class="dropdown-menu user-profile-menu list-unstyled">
-
+                            
                             <li class="last">
-                                <a href="../index.html" id="logout_btn"><i class="fa-lock"></i>登出</a>
+                                <a href="../account/login.html" id="logout_btn"><i class="fa-lock"></i>登出</a>
                             </li>
                         </ul>
                     </li>
@@ -86,13 +87,13 @@
             <!--主题描述-->
             <div class="page-title">
                 <div class="title-env">
-                    <h1 class="title">分仓管理</h1>
-                    <p class="description">订单统计</p>
+                    <h1 class="title">订单报表</h1>
+                    <p class="description">订单报表</p>
                 </div>
                 <div class="breadcrumb-env">
                     <ol class="breadcrumb bc-1">
-                        <li><a href=""><i class="fa-home"></i>分仓管理</a></li>
-                        <li class="active"><strong>订单统计</strong></li>
+                        <li><a href=""><i class="fa-home"></i>财务管理</a></li>
+                        <li class="active"><strong>订单报表</strong></li>
                     </ol>
                 </div>
             </div>
@@ -102,69 +103,33 @@
             <div class="row row-main-wrap">
                 <div class="col-md-12">
                     <div class="panel">
-
                         <!--表格标题-->
                         <div class="panel-heading">
-                            <h3 class="panel-title">订单统计</h3>
-
-                            <div class="panel-options">
-                                <a href="#" data-toggle="panel">
-                                    <span class="collapse-icon">&ndash;</span>
-                                    <span class="expand-icon">+</span>
-                                </a>
+                            <h3 class="panel-title">订单报表</h3>
+                        </div>
+                        <div class="admin-search-wrap">
+                            <input id="search_Time" type="text" readonly class="btn btn-white g-w-percent12" />
+                            <div  class="inline g-w-percent35" id="admin_search_btn">
+                                <div class="btn btn-white" data-value="1">报表类型1</div>
+                                <div class="btn btn-white" data-value="2">报表类型2</div>
+                                <div class="btn btn-white" data-value="3">报表类型3</div>
+                                <div class="btn btn-white" data-value="4">报表类型4</div>
+                                <div class="btn btn-white" data-value="5">报表类型5</div>
+                                <div class="btn btn-white" data-value="6">报表类型6</div>
                             </div>
                         </div>
+                        <br /><br />
 
 
                         <!--表格主体-->
                         <div class="panel-body">
-                            <div>
-                                <span id="order_showall_btn" class="btn btn-info btn-icon btn-xs g-br2">
-                                    <i class="fa-plus"></i>
-                                    <span>全部展开</span>
-                                </span>
-                                <a target="_blank" href="http://www.kuaidi100.com" class="btn btn-info btn-icon btn-xs g-br2">
-                                    <i class="fa-chain"></i>
-                                    <span>查询快递单号</span>
-                                </a>
-                            </div>
-
-
-                            <table id="order_stats_wrap" class="table table-bordered table-striped table-hover admin-table">
-                                <!--分组样式-->
-                                <colgroup>
-                                    <col class="g-w-percent10">
-                                    <col class="g-w-percent10">
-                                    <col class="g-w-percent10">
-                                    <col class="g-w-percent5">
-                                    <col class="g-w-percent5">
-                                    <col class="g-w-percent10">
-                                </colgroup>
-
-                                <!--表头-->
-                                <thead>
-                                <tr>
-                                    <th>订单号</th>
-                                    <th>下单时间</th>
-                                    <th>买方</th>
-                                    <th>数量</th>
-                                    <th>订单状态</th>
-                                    <th class="no-sorting">操作</th>
-                                </tr>
-                                </thead>
-
-
-                                <!--表主体-->
-                                <tbody class="middle-align" id="order_stats_list"></tbody>
-                            </table>
-                            <div class="admin-page-wrap">
-                                <div class="easyui-pagination g-w-percent50" id="admin_page_wrap" data-options="links:5,layout:['manual','first','prev','links','next','last'],displayMsg:'显示{from}&nbsp;到&nbsp;{to}&nbsp;共&nbsp;{total}条记录'"></div>
-                            </div>
+                            <div  id="chart_wrap"></div>
                         </div>
 
 
                     </div>
                 </div>
+
             </div>
 
 
@@ -190,47 +155,9 @@
 
         </div>
     </div>
-
-
-    <!--发货-->
-    <div class="modal fade custom-width" id="show_send_wrap">
-        <div class="modal-dialog g-w-percent46">
-            <div class="modal-content">
-
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title">发货</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="blockquote admin-blockquote">
-                        <form role="form"  method="post" id="admin_send_form" class="admin-form1 validate">
-                            <input class="g-d-hidei" id="admin_goodsOrderId" value="">
-                            <div class="form-group">
-                                <label class="control-label">物流单号：</label>
-                                <input placeholder="请输入物流单号" data-validate="required" data-message-required="物流单号不能为空"  type="text" class="form-control" name="trackingNumber" id="admin_trackingNumber" />
-                            </div>
-                            <div class="form-group">
-                                <label class="control-label">物流公司:</label>
-                                <select class="form-control" name="shippingExpressId" id="admin_shippingExpressId" data-validate="required" data-message-required="物流公司不能为空" ></select>
-                            </div>
-                            <div class="form-group">
-                                <label class="control-label">卖家留言:</label>
-                                <textarea placeholder="请输入留言信息" name="remark" id="admin_remark"  class="form-control"></textarea>
-                            </div>
-                            <div class="form-group">
-                                <button type="submit" class="btn btn-success">发货</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-info" data-dismiss="modal">关闭</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
+    
+    
+    
 
 	
 	<!--加载遮罩层-->
@@ -279,13 +206,16 @@
   </div>
 
 
+
+
+
+
+
     <script src="../../js/common/base.js"></script>
     <script src="../../js/common/common.js"></script>
-    <script src="../../js/plugins/datatables/js/jquery.dataTables.js"></script>
-    <!--修饰分页，搜索等操作 -->
-    <script src="../../js/plugins/datatables/dataTables.bootstrap.js"></script>
-    <script src="../../js/plugins/pagination/pagination.js"></script>
-    <script src="../../js/plugins/jquery-validate/jquery.validate.js"></script>
-    <script src="../../js/purchase/order_stats.js"></script>
+    <!--表单验证插件-->
+    <script src="../../js/plugins/daterangepicker/daterangepicker.js"></script>
+    <script src="../../js/plugins/highcharts/highcharts.js"></script>
+    <script src="../../js/finance/order_report.js"></script>
 </body>
 </html>

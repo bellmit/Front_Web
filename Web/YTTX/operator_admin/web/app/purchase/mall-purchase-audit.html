@@ -219,9 +219,10 @@
                         <input type="text" value="" id="admin_id" class="g-d-hidei" />
                         <table class="table table-bordered table-striped table-hover admin-table">
                             <colgroup>
+                                <col class="g-w-percent2" />
+                                <col class="g-w-percent14" />
+                                <col class="g-w-percent14" />
                                 <col class="g-w-percent5" />
-                                <col class="g-w-percent15" />
-                                <col class="g-w-percent15" />
                                 <col class="g-w-percent5" />
                                 <col class="g-w-percent5" />
                                 <col class="g-w-percent5" />
@@ -231,6 +232,7 @@
                                     <th>序号</th>
                                     <th>商品名称</th>
                                     <th>商品属性</th>
+                                    <th>购买数量</th>
                                     <th>采购数量</th>
                                     <th>库存数量</th>
                                     <th>操作</th>
@@ -240,7 +242,7 @@
                             <tfoot>
                                 <tr>
                                     <td colspan="4" class="g-t-r">合计：</td>
-                                    <td colspan="2" class="g-c-bs-info" id="audit_total">0</td>
+                                    <td colspan="3" class="g-c-bs-info" id="audit_total">0</td>
                                 </tr>
                                 <tr>
                                     <td colspan="4" class="g-t-r" id="audit_radio_wrap">
@@ -251,7 +253,7 @@
                                             &nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" value="2" name="admin_apply">&nbsp;&nbsp;撤销采购&nbsp;&nbsp;&nbsp;&nbsp;
                                         </label>
                                     </td>
-                                    <td colspan="2">
+                                    <td colspan="3">
                                         <button type="button" class="btn btn-success g-f-l" id="audit_action" >确认</button>
                                     </td>
                                 </tr>

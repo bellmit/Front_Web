@@ -5,15 +5,16 @@
 
 		if(public_tool.initMap.isrender){
 			/*菜单调用*/
-			var logininfo=public_tool.initMap.loginMap;
+			var logininfo=public_tool.initMap.loginMap,
+				logingrade=decodeURIComponent(logininfo.param.grade);
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
-				url:'http://120.76.237.100:8082/mall-agentbms-api/module/menu',
+				url:'http://10.0.5.222:8080/mall-agentbms-api/module/menu',
 				async:false,
 				type:'post',
 				param:{
 					roleId:decodeURIComponent(logininfo.param.roleId),
 					adminId:decodeURIComponent(logininfo.param.adminId),
-					grade:decodeURIComponent(logininfo.param.grade),
+					grade:logingrade,
 					token:decodeURIComponent(logininfo.param.token)
 				},
 				datatype:'json'
@@ -51,7 +52,12 @@
 				$profit_aaa0=$('#profit_aaa0')/*AAA级*/,
 				$profit_a1=$('#profit_a1')/*A级*/,
 				$profit_aa1=$('#profit_aa1')/*AA级*/,
-				$profit_aaa1=$('#profit_aaa1')/*AAA级*/;
+				$profit_aaa1=$('#profit_aaa1')/*AAA级*/,
+				$profitid0=$('#profitid0'),
+				$profitid1=$('#profitid1'),
+				$profit0_action=$('#profit0_action'),
+				$profit1_action=$('#profit1_action'),
+				$profit2_action=$('#profit2_action');
 
 
 			/*分润率设置*/
@@ -77,15 +83,23 @@
 			}
 
 
+			/*只能超级管理员操作*/
+			if(parseInt(logingrade,10)===-1){
+				$profit0_action.removeClass('g-d-hidei');
+				$profit1_action.removeClass('g-d-hidei');
+				$profit2_action.removeClass('g-d-hidei');
+			}
+
+
 
 			/*查询分润设置情况*/
 			$.ajax({
-				url:'http://120.76.237.100:8082/mall-agentbms-api/profits',
+				url:'http://10.0.5.222:8080/mall-agentbms-api/profits',
 				type:'post',
 				data:{
 					roleId:decodeURIComponent(logininfo.param.roleId),
 					adminId:decodeURIComponent(logininfo.param.adminId),
-					grade:decodeURIComponent(logininfo.param.grade),
+					grade:logingrade,
 					token:decodeURIComponent(logininfo.param.token)
 				},
 				datatype:'json'
@@ -114,7 +128,7 @@
 						agent=result.agentProfitCfg;
 
 					if(platform){
-						
+						$profitid1.val(platform.id);
 						var i=0;
 						for(var k in platform){
 							switch(k){
@@ -161,6 +175,7 @@
 
 					}
 					if(agent){
+						$profitid0.val(agent.id);
 						var j=0;
 						for(var m in agent){
 							switch(m){
@@ -231,12 +246,12 @@
 
 			/*查询分润设置情况*/
 			$.ajax({
-				url:'http://120.76.237.100:8082/mall-agentbms-api/profits',
+				url:'http://10.0.5.222:8080/mall-agentbms-api/profit/ratecfg/list',
 				type:'post',
 				data:{
 					roleId:decodeURIComponent(logininfo.param.roleId),
 					adminId:decodeURIComponent(logininfo.param.adminId),
-					grade:decodeURIComponent(logininfo.param.grade),
+					grade:logingrade,
 					token:decodeURIComponent(logininfo.param.token)
 				},
 				datatype:'json'
@@ -261,116 +276,96 @@
 				var result=resp.result;
 
 				if(!$.isEmptyObject(result)){
-					var platform=result.platformProfitCfg,
-						agent=result.agentProfitCfg;
+					var list=result.list;
 
-					if(platform){
+					if(list){
+						var len=list.length,
+							i=0,
+							k=0;
 
-						var i=0;
-						for(var k in platform){
-							switch(k){
-								case 'platformProfit':
-									var platformProfit=platform.platformProfit;
-									if(platformProfit===''||parseInt(platformProfit * 1000,10)===0){
-										i=1;
-									}
-									$profit_a1.attr({
-										'data-value':platformProfit
-									}).val(platformProfit);
-									break;
-								case 'agentProfit':
-									var agentProfit=platform.agentProfit;
-									if(agentProfit===''||parseInt(agentProfit * 1000,10)===0){
-										i=2;
-									}
-									$profit_aa1.attr({
-										'data-value':agentProfit
-									}).val(agentProfit);
-									break;
-								case 'storageProfit':
-									var storageProfit=platform.storageProfit;
-									if(storageProfit===''||parseInt(storageProfit * 1000,10)===0){
-										i=3;
-									}
-									$profit_aaa1.attr({
-										'data-value':storageProfit
-									}).val(storageProfit);
-									break;
+						if(len!==0){
+							for(i;i<len;i++){
+								var ratedata=list[i],
+									id=ratedata['id'],
+									rateFrom=ratedata['rateFrom'],
+									rateUntil=ratedata['rateUntil'],
+									rateAccording=ratedata['rateAccording'],
+									level=parseInt(ratedata['level'],10);
+
+								if(rateFrom===''||rateUntil===''||rateAccording===''||isNaN(rateFrom)||isNaN(rateUntil)||isNaN(rateAccording)){
+									k++;
+									continue;
+								}
+								var tempFrom=parseInt(rateFrom * 100,10),
+									tempUntil=parseInt(rateUntil * 100,10),
+									tempAccording=parseInt(rateAccording * 100,10);
+
+								if(tempFrom>tempUntil||tempUntil<tempAccording||tempFrom>tempAccording||tempAccording===0||tempFrom===0||tempUntil===0){
+									k++;
+									continue;
+								}
+
+								if(level===1){
+									/*一段*/
+									$rateid1.val(id);
+									$ratemin_a2.attr({
+										'data-value':rateFrom
+									}).val(rateFrom);
+									$ratemax_a2.attr({
+										'data-value':rateUntil
+									}).val(rateUntil);
+									$rate_a2.attr({
+										'data-value':rateAccording
+									}).val(rateAccording);
+								}else if(level===2){
+									/*二段*/
+									$rateid2.val(id);
+									$ratemin_aa2.attr({
+										'data-value':rateFrom
+									}).val(rateFrom);
+									$ratemax_aa2.attr({
+										'data-value':rateUntil
+									}).val(rateUntil);
+									$rate_aa2.attr({
+										'data-value':rateAccording
+									}).val(rateAccording);
+								}else if(level===3){
+									/*三段*/
+									$rateid3.val(id);
+									$ratemin_aaa2.attr({
+										'data-value':rateFrom
+									}).val(rateFrom);
+									$ratemax_aaa2.attr({
+										'data-value':rateUntil
+									}).val(rateUntil);
+									$rate_aaa2.attr({
+										'data-value':rateAccording
+									}).val(rateAccording);
+								}
 							}
+
 						}
 
 						/*判断设置值是否符合实际*/
-						if(i===3){
-							$profit_edit_form1.attr({
+						if(k!==0){
+							$rate_edit_form2.attr({
 								'data-setting':''
 							});
 						}else{
-							$profit_edit_form1.attr({
+							$rate_edit_form2.attr({
 								'data-setting':'true'
 							});
 						}
 
 					}
-					if(agent){
-						var j=0;
-						for(var m in agent){
-							switch(m){
-								case 'agentProfit1':
-									var agentProfit1=agent.agentProfit1;
-									if(agentProfit1===''||parseInt(agentProfit1 * 1000,10)===0){
-										j=1;
-									}
-									$profit_a0.attr({
-										'data-value':agentProfit1
-									}).val(agentProfit1);
-									break;
-								case 'agentProfit2':
-									var agentProfit2=agent.agentProfit2;
-									if(agentProfit2===''||parseInt(agentProfit2 * 1000,10)===0){
-										j=2;
-									}
-									$profit_aa0.attr({
-										'data-value':agentProfit2
-									}).val(agentProfit2);
-									break;
-								case 'agentProfit3':
-									var agentProfit3=agent.agentProfit3;
-									if(agentProfit3===''||parseInt(agentProfit3 * 1000,10)===0){
-										j=3;
-									}
-									$profit_aaa0.attr({
-										'data-value':agentProfit3
-									}).val(agentProfit3);
-									break;
-							}
-						}
-
-						/*判断设置值是否符合实际*/
-						if(j===3){
-							$profit_edit_form0.attr({
-								'data-setting':''
-							});
-						}else{
-							$profit_edit_form0.attr({
-								'data-setting':'true'
-							});
-						}
-					}
-
 				}else {
-					$profit_edit_form0.attr({
-						'data-setting':''
-					});
-					$profit_edit_form1.attr({
+					$rate_edit_form2.attr({
 						'data-setting':''
 					});
 				}
 
 			}).fail(function(resp){
-				$profit_edit_form0.attr({
-					'data-setting':''
-				});
-				$profit_edit_form1.attr({
+				$rate_edit_form2.attr({
 					'data-setting':''
 				});
 				dia.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"操作失败")+'</span>').show();
@@ -392,9 +387,9 @@
 						method: 'POST',
 						dataType: 'json',
 						data:{
-							id:decodeURIComponent(logininfo.param.roleId),
+							roleId:decodeURIComponent(logininfo.param.roleId),
 							adminId:decodeURIComponent(logininfo.param.adminId),
-							grade:decodeURIComponent(logininfo.param.grade),
+							grade:logingrade,
 							token:decodeURIComponent(logininfo.param.token)
 						}
 					};
@@ -436,23 +431,24 @@
 									ele_aaa=$profit_aaa0.val();
 
 									/*规则通过后校验*/
-									config0['url']="http://120.76.237.100:8082/mall-agentbms-api/profit/agent/addupdate";
+									config0['url']="http://10.0.5.222:8080/mall-agentbms-api/profit/agent/addupdate";
 									$.extend(true,config0['data'],{
 										agentProfit1: ele_a,
 										agentProfit2: ele_aa,
-										agentProfit3: ele_aaa
+										agentProfit3: ele_aaa,
+										id:$profitid0.val()
 									});
 								}else if(index===1){
 									config1= $.extend(true,{},defconfig);
 									ele_a=$profit_a1.val();
 									ele_aa=$profit_aa1.val();
 									ele_aaa=$profit_aaa1.val();
-
-									config1['url']="http://120.76.237.100:8082/mall-agentbms-api/profit/platform/addupdate";
+									config1['url']="http://10.0.5.222:8080/mall-agentbms-api/profit/platform/addupdate";
 									$.extend(true,config1['data'],{
 										platformProfit: ele_a,
 										agentProfit: ele_aa,
-										storageProfit: ele_aaa
+										storageProfit: ele_aaa,
+										id:$profitid1.val()
 									});
 								}else if(index===2){
 									var ratedata=getRate();
@@ -461,7 +457,7 @@
 										return false;
 									}
 									config2= $.extend(true,{},defconfig);
-									config2['url']="http://120.76.237.100:8082/mall-agentbms-api/profit/ratecfg/list";
+									config2['url']="http://10.0.5.222:8080/mall-agentbms-api/profit/ratecfg/addupdate";
 									$.extend(true,config2['data'],{
 										profitRateCfgs:ratedata
 									});
@@ -483,7 +479,7 @@
 								if(index===0){
 									/*确认提示框*/
 									if($profit_edit_form0.attr('data-setting')==='true'){
-										setSure.sure('update',function(cf){
+										setSure.sure('设置',function(cf){
 											/*to do*/
 											setProfit(config0,cf);
 										},'您已经设置了分润');
@@ -494,7 +490,7 @@
 
 								if(index===1){
 									if($profit_edit_form1.attr('data-setting')==='true'){
-										setSure.sure('update',function(cf){
+										setSure.sure('设置',function(cf){
 											/*to do*/
 											setProfit(config1,cf);
 										},'您已经设置了分润');
@@ -504,8 +500,8 @@
 								}
 
 								if(index===2){
-									if($profit_edit_form1.attr('data-setting')==='true'){
-										setSure.sure('update',function(cf){
+									if($rate_edit_form2.attr('data-setting')==='true'){
+										setSure.sure('设置',function(cf){
 											/*to do*/
 											setProfit(config2,cf);
 										},'您已经设置了利润率');
@@ -528,7 +524,7 @@
 
 
 			/*绑定限制*/
-			$.each([$profit_a0,$profit_aa0,$profit_aaa0,$profit_a1,$profit_aa1,$profit_aaa1,$ratemin_a2,$ratemax_a2,$rate_a2,$ratemin_aa2,$ratemax_aa2,$rate_aa2,$ratemin_aaa2,$ratemax_aaa2,$rate_aaa2],function(){
+			$.each([$profit_a0,$profit_aa0,$profit_aaa0,$profit_a1,$profit_aa1,$profit_aaa1],function(){
 				this.on('keyup',function(){
 					var val=this.value.replace(/[^0-9*\-*^\.]/g,'');
 					if(val.indexOf('.')!==-1){
@@ -548,106 +544,135 @@
 			/*绑定利润率大小关系*/
 			$.each([$ratemin_a2,$ratemax_a2,$rate_a2,$ratemin_aa2,$ratemax_aa2,$rate_aa2,$ratemin_aaa2,$ratemax_aaa2,$rate_aaa2],function(){
 				var self=this;
-				this.on('focusout',function(){
-					var selector=self.selector,
-						val,
-						maxval,
-						minval,
-						tempmax,
-						tempmin,
-						key='';
-
-
-					/*一段*/
-					if(selector.indexOf('_a2')!==-1){
-						key='one';
-						tempmax=100;
-						tempmin=15;
-						if(selector.indexOf('max')!==-1){
-							maxval=this.value;
-							minval=$ratemin_a2.val();
-							val=$rate_a2.val();
-						}else if(selector.indexOf('min')!==-1){
-							minval=this.value;
-							maxval=$ratemax_a2.val();
-							val=$rate_a2.val();
-						}else{
-							minval=$ratemin_a2.val();
-							maxval=$ratemax_a2.val();
-							val=this.value;
+				this.on('focusout keyup',function(e){
+					var etype=e.type;
+					if(etype==='keyup'){
+						var text=this.value.replace(/[^0-9*\-*^\.]/g,'');
+						if(text.indexOf('.')!==-1){
+							text=text.split('.');
+							if(text.length>=3){
+								text.length=2;
+							}
+							if(text[1].length>2){
+								text=text[0]+'.'+text[1].slice(0,2);
+							}else{
+								text=text[0]+'.'+text[1];
+							}
 						}
-					}else if(selector.indexOf('_aa2')!==-1){
-						/*二段*/
-						key='two';
-						tempmax=15;
-						tempmin=10;
-						if(selector.indexOf('max')!==-1){
-							maxval=this.value;
-							minval=$ratemin_aa2.val();
-							val=$rate_aa2.val();
-						}else if(selector.indexOf('min')!==-1){
-							minval=this.value;
-							maxval=$ratemax_aa2.val();
-							val=$rate_aa2.val();
-						}else{
-							minval=$ratemin_aa2.val();
-							maxval=$ratemax_aa2.val();
-							val=this.value;
-						}
-					}else if(selector.indexOf('_aaa2')!==-1){
-						/*三段*/
-						key='three';
-						tempmax=10;
-						tempmin=5;
-						if(selector.indexOf('max')!==-1){
-							maxval=this.value;
-							minval=$ratemin_aaa2.val();
-							val=$rate_aaa2.val();
-						}else if(selector.indexOf('min')!==-1){
-							minval=this.value;
-							maxval=$ratemax_aaa2.val();
-							val=$rate_aaa2.val();
-						}else{
-							minval=$ratemin_aaa2.val();
-							maxval=$ratemax_aaa2.val();
-							val=this.value;
-						}
-					}
-					if(maxval===''||isNaN(maxval)){
-						maxval=tempmax;
-					}
-					if(minval===''||isNaN(minval)){
-						minval=tempmin;
-					}
-					if(minval<tempmin){
-						minval=tempmin;
-					}
-					if(maxval<=minval){
-						maxval=tempmax;
-					}
-					if(val===''||isNaN(val)){
-						val=minval;
-					}
-					if(val<minval){
-						val=minval;
-					}
-					if(val>maxval){
-						val=maxval;
-					}
+						this.value=text;
+					}else if(etype==='focusout'){
+						var selector=self.selector,
+							val,
+							maxval,
+							minval,
+							tempmax,
+							tempmin,
+							key='';
 
-					/*赋值*/
-					if(key==='one'){
-						$rate_a2.val(val);
-						$ratemax_a2.val(maxval);
-						$ratemin_a2.val(minval);
-					}else if(key==='two'){
-						$rate_aa2.val(val);
-						$ratemax_aa2.val(maxval);
-						$ratemin_aa2.val(minval);
-					}else if(key==='three'){
-						$rate_aaa2.val(val);
-						$ratemax_aaa2.val(maxval);
-						$ratemin_aaa2.val(minval);
+						/*一段*/
+						if(selector.indexOf('_a2')!==-1){
+							key='one';
+							tempmax=100 * 100;
+							tempmin=15 * 100;
+							if(selector.indexOf('max')!==-1){
+								maxval=this.value;
+								minval=$ratemin_a2.val();
+								val=$rate_a2.val();
+							}else if(selector.indexOf('min')!==-1){
+								maxval=$ratemax_a2.val();
+								minval=this.value;
+								val=$rate_a2.val();
+							}else{
+								maxval=$ratemax_a2.val();
+								minval=$ratemin_a2.val();
+								val=this.value;
+							}
+						}else if(selector.indexOf('_aa2')!==-1){
+							/*二段*/
+							key='two';
+							tempmax=15 * 100;
+							tempmin=10 * 100;
+							if(selector.indexOf('max')!==-1){
+								maxval=this.value;
+								minval=$ratemin_aa2.val();
+								val=$rate_aa2.val();
+							}else if(selector.indexOf('min')!==-1){
+								maxval=$ratemax_aa2.val();
+								minval=this.value;
+								val=$rate_aa2.val();
+							}else{
+								maxval=$ratemax_aa2.val();
+								minval=$ratemin_aa2.val();
+								val=this.value;
+							}
+						}else if(selector.indexOf('_aaa2')!==-1){
+							/*三段*/
+							key='three';
+							tempmax=10 * 100;
+							tempmin=5 * 100;
+							if(selector.indexOf('max')!==-1){
+								maxval=this.value;
+								minval=$ratemin_aaa2.val();
+								val=$rate_aaa2.val();
+							}else if(selector.indexOf('min')!==-1){
+								maxval=$ratemax_aaa2.val();
+								minval=this.value;
+								val=$rate_aaa2.val();
+							}else{
+								maxval=$ratemax_aaa2.val();
+								minval=$ratemin_aaa2.val();
+								val=this.value;
+							}
+						}
+						if(maxval===''||isNaN(maxval)){
+							maxval=tempmax;
+						}else{
+							maxval=parseInt(maxval * 100,10);
+						}
+						if(minval===''||isNaN(minval)){
+							minval=tempmin;
+						}else{
+							minval=parseInt(minval * 100,10);
+						}
+
+						if(minval<tempmin){
+							minval=tempmin;
+						}
+						if(minval>=tempmax){
+							minval=tempmin;
+						}
+						if(maxval<=minval){
+							maxval=tempmax;
+						}
+						if(maxval>tempmax){
+							maxval=tempmax;
+						}
+						if(val===''||isNaN(val)){
+							val=minval;
+						}else{
+							val=parseInt(val * 100,10);
+						}
+						if(val<minval){
+							val=minval;
+						}
+						if(val>maxval){
+							val=minval;
+						}
+
+						/*赋值*/
+						if(key==='one'){
+							$ratemax_a2.val(maxval/100);
+							$ratemin_a2.val(minval/100);
+							$rate_a2.val(val/100);
+						}else if(key==='two'){
+							$ratemax_aa2.val(maxval/100);
+							$ratemin_aa2.val(minval/100);
+							$rate_aa2.val(val/100);
+						}else if(key==='three'){
+							$ratemax_aaa2.val(maxval/100);
+							$ratemin_aaa2.val(minval/100);
+							$rate_aaa2.val(val/100);
+						}
 					}
 				});
 			});
@@ -693,17 +718,17 @@
 				id3=$rateid3.val();
 
 			if(id1!==''){
-				result.push(id1+'#'+$ratemax_a2.val()+'#'+$ratemin_a2.val()+'#'+$rate_a2.val()+'#1');
+				result.push(id1+'#'+$ratemin_a2.val()+'#'+$ratemax_a2.val()+'#'+$rate_a2.val()+'#1');
 			}else{
 				return null;
 			}
 			if(id2!==''){
-				result.push(id2+'#'+$ratemax_aa2.val()+'#'+$ratemin_aa2.val()+'#'+$rate_aa2.val()+'#2');
+				result.push(id2+'#'+$ratemin_aa2.val()+'#'+$ratemax_aa2.val()+'#'+$rate_aa2.val()+'#2');
 			}else{
 				return null;
 			}
 			if(id3!==''){
-				result.push(id3+'#'+$ratemax_aaa2.val()+'#'+$ratemin_aaa2.val()+'#'+$rate_aaa2.val()+'#3');
+				result.push(id3+'#'+$ratemin_aaa2.val()+'#'+$ratemax_aaa2.val()+'#'+$rate_aaa2.val()+'#3');
 			}else{
 				return null;
 			}
