@@ -11,6 +11,7 @@
 	<title>布住网运营管理平台--财务管理--销售分润</title>
   <link href="../../images/logo_icon.ico" rel="icon">
 	<link rel="stylesheet" href="../../css/base.css">
+    <link rel="stylesheet" type="text/css" href="../../js/plugins/daterangepicker/daterangepicker-bs3.css">
     <link rel="stylesheet" href="../../js/plugins/datatables/dataTables.bootstrap.css">
 	<link rel="stylesheet" href="../../css/admin.css">
   <script src="../../js/common/jquery-1.11.1.js"></script>
@@ -103,23 +104,16 @@
             <div class="row row-main-wrap">
                 <div class="col-md-12">
                     <div class="panel">
-                        <div class="admin-search-wrap">
-                            <div class="inline" id="admin_search_btn">
-                                <div class="btn btn-white" data-value="month">月报</div>
-                                <div class="btn btn-white" data-value="detail">明细</div>
-                                <div class="btn btn-white" data-value="child">下级销售分润</div>
-                            </div>
-                            &nbsp;&nbsp;&nbsp;&nbsp;
-                            <div class="admin-search-item inline">
-                                <label>下级代理商查询：</label>
-                                <select  id="search_child"></select>
-                            </div>
+                        <div class="admin-search-wrap" id="admin_search_btn">
+                            <div class="btn btn-white" data-value="month">月报</div>
+                            <div class="btn btn-white" data-value="detail">明细</div>
+                            <div class="btn btn-white" data-value="child">下级销售分润</div>
                         </div>
                         <div class="g-d-hidei" id="admin_finance_monthwrap">
                             <div class="panel-heading"><h3 class="panel-title">月报</h3></div>
 
                             <!--表格主体-->
-                            <div class="panel-body" id="admin_finance_monthdata">
+                            <div class="panel-body">
                                 <table class="table table-bordered table-striped table-hover admin-table">
                                     <colgroup>
                                         <col class="g-w-percent5" />
@@ -147,7 +141,7 @@
                                         <th>合计</th>
                                     </tr>
                                     </thead>
-                                    <tbody></tbody>
+                                    <tbody id="admin_finance_monthdata" data-value="false"></tbody>
                                 </table>
                             </div>
                         </div>
@@ -158,15 +152,19 @@
                                 <h3 class="panel-title">明细</h3>
                             </div>
 
+                            <div class="admin-search-wrap">
+                                时间段：<input id="search_Time" type="text" readonly class="btn btn-white g-w-number10" />
+                                &nbsp;&nbsp;&nbsp;&nbsp;
+                                <div class="admin-search-item inline">
+                                    <label>下级代理商查询：</label>
+                                    <select  id="search_child"></select>
+                                </div>
+                            </div>
+
                             <!--表格主体-->
-                            <div class="panel-body" id="admin_finance_detaildata">
+                            <div class="panel-body">
                                 <table class="table table-bordered table-striped table-hover admin-table">
                                     <colgroup>
-                                        <col class="g-w-percent5" />
-                                        <col class="g-w-percent5" />
-                                        <col class="g-w-percent5" />
-                                        <col class="g-w-percent5" />
-                                        <col class="g-w-percent5" />
                                         <col class="g-w-percent5" />
                                         <col class="g-w-percent5" />
                                         <col class="g-w-percent5" />
@@ -176,18 +174,13 @@
                                     <thead>
                                     <tr>
                                         <th>时间</th>
-                                        <th>一段</th>
-                                        <th>二段</th>
-                                        <th>三段</th>
-                                        <th>合计</th>
-                                        <th>时间</th>
-                                        <th>一段</th>
-                                        <th>二段</th>
-                                        <th>三段</th>
-                                        <th>合计</th>
+                                        <th>订单号</th>
+                                        <th>商家</th>
+                                        <th>订单金额</th>
+                                        <th>分润</th>
                                     </tr>
                                     </thead>
-                                    <tbody></tbody>
+                                    <tbody id="admin_finance_detaildata"></tbody>
                                 </table>
                             </div>
 
@@ -201,11 +194,10 @@
                             </div>
 
                             <!--表格主体-->
-                            <div class="panel-body" id="admin_finance_childdata">
+                            <div class="panel-body">
                                 <table class="table table-bordered table-striped table-hover admin-table">
                                     <colgroup>
-                                        <col class="g-w-percent5" />
-                                        <col class="g-w-percent5" />
+                                        <col class="g-w-percent10" />
                                         <col class="g-w-percent5" />
                                         <col class="g-w-percent5" />
                                         <col class="g-w-percent5" />
@@ -217,19 +209,22 @@
                                     </colgroup>
                                     <thead>
                                     <tr>
-                                        <th>时间</th>
+                                        <th colspan="5" class="g-t-c g-c-base">销售</th>
+                                        <th colspan="4" class="g-t-c g-c-base">分润</th>
+                                    </tr>
+                                    <tr>
+                                        <th>地区</th>
                                         <th>一段</th>
                                         <th>二段</th>
                                         <th>三段</th>
                                         <th>合计</th>
-                                        <th>时间</th>
                                         <th>一段</th>
                                         <th>二段</th>
                                         <th>三段</th>
                                         <th>合计</th>
                                     </tr>
                                     </thead>
-                                    <tbody></tbody>
+                                    <tbody id="admin_finance_childdata"></tbody>
                                 </table>
                             </div>
 
@@ -314,13 +309,9 @@
   </div>
 
 
-
-
-
-
-
     <script src="../../js/common/base.js"></script>
     <script src="../../js/common/common.js"></script>
+    <script src="../../js/plugins/daterangepicker/daterangepicker.js"></script>
     <script src="../../js/finance/sales_profit.js"></script>
 </body>
 </html>
