@@ -10,7 +10,7 @@
 			/*菜单调用*/
 			var logininfo=public_tool.initMap.loginMap;
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
-				url:'http://120.76.237.100:8082/mall-agentbms-api/module/menu',
+				url:'http://120.24.226.70:8082/mall-agentbms-api/module/menu',
 				async:false,
 				type:'post',
 				param:{
@@ -98,7 +98,7 @@
 						autoWidth:true,/*是否*/
 						paging:false,
 						ajax:{
-							url:/*"http://120.76.237.100:8082/mall-agentbms-api/announcements/related"*/"../../json/inventory/mall_storage_stats_list.json",
+							url:/*"http://120.24.226.70:8082/mall-agentbms-api/announcements/related"*/"../../json/inventory/mall_storage_stats_list.json",
 							dataType:'JSON',
 							method:'post',
 							dataSrc:function ( json ) {
@@ -115,6 +115,9 @@
 									return [];
 								}
 								var result=json.result;
+								if(typeof result==='undefined'){
+									return [];
+								}
 								/*设置分页*/
 								check_page.page=result.page;
 								check_page.pageSize=result.pageSize;
@@ -280,7 +283,7 @@
 
 				return false;
 				$.ajax({
-						url:"http://120.76.237.100:8082/mall-agentbms-api/salesman/detail",
+						url:"http://120.24.226.70:8082/mall-agentbms-api/salesman/detail",
 						dataType:'JSON',
 						method:'post',
 						data:{
@@ -456,7 +459,7 @@
 
 									setdata['list']=getCheckItem();
 
-									config['url']="http://120.76.237.100:8082/mall-agentbms-api/warehouse/addupdate";
+									config['url']="http://120.24.226.70:8082/mall-agentbms-api/warehouse/addupdate";
 									config['data']=setdata;
 								}
 								console.log(setdata);
@@ -582,7 +585,7 @@
 			}
 
 			$.ajax({
-					url:/*"http://120.76.237.100:8082/mall-agentbms-api/salesman/detail"*/"../../json/inventory/mall_storage_stats_detail.json",
+					url:/*"http://120.24.226.70:8082/mall-agentbms-api/salesman/detail"*/"../../json/inventory/mall_storage_stats_detail.json",
 					dataType:'JSON',
 					method:'post',
 					data:{

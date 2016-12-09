@@ -10,7 +10,7 @@
 			/*菜单调用*/
 			var logininfo=public_tool.initMap.loginMap;
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
-				url:'http://120.76.237.100:8082/mall-agentbms-api/module/menu',
+				url:'http://120.24.226.70:8082/mall-agentbms-api/module/menu',
 				async:false,
 				type:'post',
 				param:{
@@ -96,7 +96,7 @@
 						autoWidth:true,/*是否*/
 						paging:false,
 						ajax:{
-							url:"http://120.76.237.100:8082/mall-agentbms-api/inboundstats/related",
+							url:"http://120.24.226.70:8082/mall-agentbms-api/inboundstats/related",
 							dataType:'JSON',
 							method:'post',
 							dataSrc:function ( json ) {
@@ -113,6 +113,9 @@
 									return [];
 								}
 								var result=json.result;
+								if(typeof result==='undefined'){
+									return [];
+								}
 								/*设置分页*/
 								storage_page.page=result.page;
 								storage_page.pageSize=result.pageSize;
@@ -320,7 +323,7 @@
 				}
 
 				$.ajax({
-						url:"http://120.76.237.100:8082/mall-agentbms-api/inboundstats/audit/state",
+						url:"http://120.24.226.70:8082/mall-agentbms-api/inboundstats/audit/state",
 						dataType:'JSON',
 						method:'post',
 						data:{
@@ -492,7 +495,7 @@
 									}else{
 										setdata['goodsDetails']=goodslist;
 									}
-									config['url']="http://120.76.237.100:8082/mall-agentbms-api/inboundstats/addupdate";
+									config['url']="http://120.24.226.70:8082/mall-agentbms-api/inboundstats/addupdate";
 									config['data']=setdata;
 								}
 								
@@ -607,7 +610,7 @@
 
 
 			$.ajax({
-					url:"http://120.76.237.100:8082/mall-agentbms-api/goods/attributes",
+					url:"http://120.24.226.70:8082/mall-agentbms-api/goods/attributes",
 					dataType:'JSON',
 					method:'post',
 					data:{
@@ -675,7 +678,7 @@
 		/*获取代理商列表*/
 		function getProvider(){
 			$.ajax({
-				url:"http://120.76.237.100:8082/mall-agentbms-api/providers/list",
+				url:"http://120.24.226.70:8082/mall-agentbms-api/providers/list",
 				dataType:'JSON',
 				method:'post',
 				data:{
@@ -928,7 +931,7 @@
 			}
 
 			$.ajax({
-					url:"http://120.76.237.100:8082/mall-agentbms-api/inboundstats/details",
+					url:"http://120.24.226.70:8082/mall-agentbms-api/inboundstats/details",
 					dataType:'JSON',
 					method:'post',
 					data:{
