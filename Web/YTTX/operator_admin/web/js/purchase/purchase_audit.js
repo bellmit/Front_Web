@@ -10,7 +10,7 @@
 			/*菜单调用*/
 			var logininfo=public_tool.initMap.loginMap;
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
-				url:'http://120.76.237.100:8082/mall-agentbms-api/module/menu',
+				url:'http://120.24.226.70:8082/mall-agentbms-api/module/menu',
 				async:false,
 				type:'post',
 				param:{
@@ -78,7 +78,7 @@
 						autoWidth:true,/*是否*/
 						paging:false,
 						ajax:{
-							url:"http://120.76.237.100:8082/mall-agentbms-api/purchasing/order/list",
+							url:"http://120.24.226.70:8082/mall-agentbms-api/purchasing/order/list",
 							dataType:'JSON',
 							method:'post',
 							dataSrc:function ( json ) {
@@ -129,7 +129,7 @@
 						},
 						info:false,
 						searching:true,
-						ordering:false,
+						order:[[2, "desc" ]],
 						columns: [
 							{
 								"data":"id",
@@ -357,7 +357,7 @@
 
 
 				$.ajax({
-						url:"http://120.76.237.100:8082/mall-agentbms-api/purchasing/order/audit",
+						url:"http://120.24.226.70:8082/mall-agentbms-api/purchasing/order/audit",
 						dataType:'JSON',
 						method:'post',
 						data:{
@@ -495,19 +495,7 @@
 
 
 		/*计算合计*/
-		function totalShow($number) {
-			if($number){
-				var text=$number.val(),
-					temptext=$number.attr('data-value');
-
-				if(text===temptext){
-					/*过滤重复数据*/
-					return false;
-				}
-				$number.attr({
-					'data-value':text
-				});
-			}
+		function totalShow() {
 			var total=0;
 			$show_audit_list.find('input').each(function () {
 				total+=parseInt(this.value,10);
@@ -529,7 +517,7 @@
 			});
 			
 			$.ajax({
-					url:"http://120.76.237.100:8082/mall-agentbms-api/purchasing/order/details",
+					url:"http://120.24.226.70:8082/mall-agentbms-api/purchasing/order/details",
 					dataType:'JSON',
 					method:'post',
 					data:{
