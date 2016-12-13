@@ -118,12 +118,27 @@
 
                         <!--表格主体-->
                         <div class="panel-body">
-                            <div>
-                                <span id="outbound_stats_add" class="btn btn-info btn-icon btn-xs g-br2">
-                                    <i class="fa-plus"></i>
-                                    <span>新增出库单</span>
-                                </span>
+                            <div class="admin-search-wrap">
+                                <div class="admin-search-item">
+                                    <span id="outbound_stats_add" class="btn btn-info btn-icon btn-xs g-br2">
+                                        <i class="fa-plus"></i>
+                                        <span>新增出库单</span>
+                                    </span>
+                                </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <div class="admin-search-item">
+                                    <label>出库单号：</label>
+                                    <input type="text" id="search_outboundNumber">
+                                </div>
+                                <div class="admin-search-item">
+                                    <span id="admin_search_btn" class="btn btn-info btn-icon g-br2">
+                                        <i class="fa-search"></i>查询
+                                    </span>
+                                    <span id="admin_search_clear" class="btn btn-info btn-icon g-br2">
+                                        <i class="fa-spinner"></i>清空
+                                    </span>
+                                </div>
                             </div>
+
 
                             <table id="outbound_stats_wrap" class="table table-bordered table-striped table-hover admin-table">
                                 <!--分组样式-->

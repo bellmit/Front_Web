@@ -49,6 +49,7 @@
 				$show_audit_wrap=$('#show_audit_wrap'),
 				$show_audit_header=$('#show_audit_header'),
 				admin_audit_form=document.getElementById('admin_audit_form'),
+				$audit_radio_tip=$('#audit_radio_tip'),
 				$audit_radio_wrap=$('#audit_radio_wrap'),
 				$admin_id=$('#admin_id'),
 				$show_audit_list=$('#show_audit_list'),
@@ -56,6 +57,13 @@
 				$audit_action=$('#audit_action'),
 				sureObj=public_tool.sureDialog(dia)/*回调提示对象*/,
 				setSure=new sureObj();
+
+			/*查询对象*/
+			var $search_orderNumber=$('#search_orderNumber'),
+				$search_providerName=$('#search_providerName'),
+				$search_auditState=$('#search_auditState'),
+				$admin_search_btn=$('#admin_search_btn'),
+				$admin_search_clear=$('#admin_search_clear');
 
 
 
@@ -200,6 +208,47 @@
 			getColumnData(purchaseaudit_page,purchaseaudit_config);
 
 
+			/*清空查询条件*/
+			$admin_search_clear.on('click',function(){
+				$.each([$search_orderNumber,$search_providerName,$search_auditState],function(){
+					var selector=this.selector;
+					if(selector.indexOf('auditState')!==-1){
+						this.find(':selected').prop({
+							'selected':false
+						});
+					}else{
+						this.val('');
+					}
+				});
+			});
+			$admin_search_clear.trigger('click');
+
+
+
+			/*联合查询*/
+			$admin_search_btn.on('click',function(){
+				var data= $.extend(true,{},purchaseaudit_config.config.ajax.data);
+
+				$.each([$search_orderNumber,$search_providerName,$search_auditState],function(){
+					var text=this.val()||this.find(':selected').val(),
+						selector=this.selector.slice(1),
+						key=selector.split('_');
+
+					if(text===""){
+						if(typeof data[key[1]]!=='undefined'){
+							delete data[key[1]];
+						}
+					}else{
+						data[key[1]]=text;
+					}
+
+				});
+				purchaseaudit_config.config.ajax.data= $.extend(true,{},data);
+				getColumnData(purchaseaudit_page,purchaseaudit_config);
+			});
+
+
+
 			$batch_all_btn.on('change',function () {
 				var	$tr=$purchase_audit_list.find('tr'),
 					len=$tr.size();
@@ -309,7 +358,11 @@
 
 			/*绑定关闭详情*/
 			$.each([$show_audit_wrap],function () {
+				var selector=this.selector;
 				this.on('hide.bs.modal',function(){
+					if(selector.indexOf('show_audit')!==-1){
+						resetAuditList('audit');
+					}
 					if(operate_item){
 						setTimeout(function(){
 							operate_item.removeClass('item-lighten');
@@ -325,7 +378,13 @@
 				/*是否选择了状态*/
 				var applystate=parseInt($audit_radio_wrap.find(':checked').val(),10);
 				if(isNaN(applystate)){
-					dia.content('<span class="g-c-bs-warning g-btips-warn">您没有选择审核状态</span>').showModal();
+					$audit_radio_tip.html('您没有选择审核状态');
+					setTimeout(function () {
+						$audit_radio_tip.html('');
+						$audit_radio_wrap.find('input').eq(0).prop({
+							'checked':true
+						});
+					},2000);
 					return false;
 				}
 				/*是否有id*/
@@ -337,15 +396,19 @@
 
 				/*是否正常的采购数量*/
 				var total=$audit_total.html();
-				if(total===''||isNaN(total)){
-					dia.content('<span class="g-c-bs-warning g-btips-warn">请输入正确的采购数量</span>').showModal();
-					return false;
+				if(applystate===1){
+					/*审核通过*/
+					if(total===''||isNaN(total)){
+						dia.content('<span class="g-c-bs-warning g-btips-warn">采购数量不合法</span>').showModal();
+						return false;
+					}
+					total=parseInt(total,10);
+					if(total===0){
+						dia.content('<span class="g-c-bs-warning g-btips-warn">采购数量不能为0</span>').showModal();
+						return false;
+					}
 				}
-				total=parseInt(total,10);
-				if(total===0){
-					dia.content('<span class="g-c-bs-warning g-btips-warn">请输入正确的采购数量</span>').showModal();
-					return false;
-				}
+
 
 				/*是否有商品列表*/
 				var goodslist=getAuditList();
@@ -354,7 +417,6 @@
 					dia.content('<span class="g-c-bs-warning g-btips-warn">没有商品信息</span>').showModal();
 					return false;
 				}
-
 
 				$.ajax({
 						url:"http://120.76.237.100:8082/mall-agentbms-api/purchasing/order/audit",
@@ -383,6 +445,7 @@
 						dia.content('<span class="g-c-bs-success g-btips-succ">审核成功</span>').show();
 						getColumnData(purchaseaudit_page,purchaseaudit_config);
 						admin_audit_form.reset();
+						resetAuditList('audit');
 						setTimeout(function () {
 							$show_audit_wrap.modal('hide');
 							dia.close();
@@ -420,11 +483,32 @@
 					$this.val(parseInt(text,10));
 				}else if(etype==='focusout'){
 					/*鼠标失去焦点事件*/
-					totalShow($(target));
+					totalShow();
 				}
 			});
 
 
+		}
+
+		/*清除之前的数据*/
+		function resetAuditList(type) {
+			/*重置值*/
+			if(type==='audit'){
+				$admin_id.val('');
+				$audit_radio_wrap.find('input').each(function () {
+					$(this).prop({
+						'checked':false
+					});
+				});
+			 	$audit_radio_tip.html('');
+				$show_audit_header.html('');
+				$show_audit_list.html('');
+				$audit_total.html('0');
+			}else if(type==='detail'){
+
+			}else{
+
+			}
 		}
 
 
@@ -508,13 +592,7 @@
 			if(typeof id==='undefined'){
 				return false;
 			}
-			/*重置值*/
-			$admin_id.val('');
-			$audit_radio_wrap.find('input').each(function () {
-				$(this).prop({
-					'checked':false
-				});
-			});
+
 			
 			$.ajax({
 					url:"http://120.76.237.100:8082/mall-agentbms-api/purchasing/order/details",

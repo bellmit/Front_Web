@@ -76,6 +76,12 @@
 				setSure=new sureObj();
 
 
+			/*查询对象*/
+			var $search_inboundNumber=$('#search_inboundNumber'),
+				$admin_search_btn=$('#admin_search_btn'),
+				$admin_search_clear=$('#admin_search_clear');
+
+
 
 			/*重置表单*/
 			admin_storagestatsadd_form.reset();
@@ -231,6 +237,38 @@
 
 			/*初始化请求*/
 			getColumnData(storage_page,storage_config);
+
+
+			/*清空查询条件*/
+			$admin_search_clear.on('click',function(){
+				$.each([$search_inboundNumber],function(){
+					this.val('');
+				});
+			});
+			$admin_search_clear.trigger('click');
+
+
+			/*联合查询*/
+			$admin_search_btn.on('click',function(){
+				var data= $.extend(true,{},storage_config.config.ajax.data);
+
+				$.each([$search_inboundNumber],function(){
+					var text=this.val()||this.find(':selected').val(),
+						selector=this.selector.slice(1),
+						key=selector.split('_');
+
+					if(text===""){
+						if(typeof data[key[1]]!=='undefined'){
+							delete data[key[1]];
+						}
+					}else{
+						data[key[1]]=text;
+					}
+
+				});
+				storage_config.config.ajax.data= $.extend(true,{},data);
+				getColumnData(storage_page,storage_config);
+			});
 
 
 			/*获取供应商列表*/

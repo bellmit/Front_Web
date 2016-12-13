@@ -118,11 +118,33 @@
 
                         <!--表格主体-->
                         <div class="panel-body">
-                            <div>
-                                <span id="logistics_company_add" class="btn btn-info btn-icon btn-xs g-br2">
-                                    <i class="fa-plus"></i>
-                                    <span>新增物流公司</span>
-                                </span>
+                            <div class="admin-search-wrap">
+                                <div class="admin-search-item">
+                                    <span id="logistics_company_add" class="btn btn-info btn-icon btn-xs g-br2">
+                                        <i class="fa-plus"></i>
+                                        <span>新增物流公司</span>
+                                    </span>
+                                </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <div class="admin-search-item">
+                                    <label>关键字：</label>
+                                    <input type="text" id="search_searchWords">
+                                </div>
+                                <div class="admin-search-item">
+                                    <label>状态：</label>
+                                    <select id="search_status">
+                                        <option value="" selected>全部</option>
+                                        <option value="0">正常</option>
+                                        <option value="1">停用</option>
+                                    </select>
+                                </div>
+                                <div class="admin-search-item">
+                                    <span id="admin_search_btn" class="btn btn-info btn-icon g-br2">
+                                        <i class="fa-search"></i>查询
+                                    </span>
+                                    <span id="admin_search_clear" class="btn btn-info btn-icon g-br2">
+                                        <i class="fa-spinner"></i>清空
+                                    </span>
+                                </div>
                             </div>
 
                             <table id="logistics_company_wrap" class="table table-bordered table-striped table-hover admin-table">

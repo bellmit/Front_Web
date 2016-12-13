@@ -118,12 +118,41 @@
 
                         <!--表格主体-->
                         <div class="panel-body">
-                            <div>
-                                <span id="audit_batch_btn" class="btn btn-info btn-icon btn-xs g-br2">
+                            <div class="admin-search-wrap">
+                                <div class="admin-search-item">
+                                    <label>采购订单号：</label>
+                                    <input type="text" id="search_orderNumber">
+                                </div>
+                                <div class="admin-search-item">
+                                    <label>供应商名称：</label>
+                                    <input type="text" id="search_providerName">
+                                </div>
+                                <div class="admin-search-item">
+                                    <label>订单状态：</label>
+                                    <select id="search_auditState">
+                                        <option value="" selected>全部</option>
+                                        <option value="0">待审核</option>
+                                        <option value="1">审核通过</option>
+                                        <option value="2">审核不通过</option>
+                                    </select>
+                                </div>
+                                <div class="admin-search-item">
+                                    <span id="admin_search_btn" class="btn btn-info btn-icon g-br2">
+                                        <i class="fa-search"></i>查询
+                                    </span>
+                                    <span id="admin_search_clear" class="btn btn-info btn-icon g-br2">
+                                        <i class="fa-spinner"></i>清空
+                                    </span>
+                                </div>
+                                <br />
+                                <div class="admin-search-item">
+                                    <span id="audit_batch_btn" class="btn btn-info btn-icon btn-xs g-br2">
                                     <i class="fa-hand-o-up"></i>
                                     <span>批量审核</span>
                                 </span>
+                                </div>
                             </div>
+
 
                             <table id="purchase_audit_wrap" class="table table-bordered table-striped table-hover admin-table">
                                 <!--分组样式-->
@@ -245,13 +274,16 @@
                                     <td colspan="3" class="g-c-bs-info" id="audit_total">0</td>
                                 </tr>
                                 <tr>
-                                    <td colspan="4" class="g-t-r" id="audit_radio_wrap">
-                                        <label>
-                                            <input type="radio" value="1" name="admin_apply">&nbsp;&nbsp;提交采购&nbsp;&nbsp;&nbsp;&nbsp;
-                                        </label>
-                                        <label>
-                                            &nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" value="2" name="admin_apply">&nbsp;&nbsp;撤销采购&nbsp;&nbsp;&nbsp;&nbsp;
-                                        </label>
+                                    <td colspan="4" class="g-t-r">
+                                        <div class="g-c-red2 inline" id="audit_radio_tip"></div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <div class="inline" id="audit_radio_wrap">
+                                            <label>
+                                                <input type="radio" value="1" name="admin_apply">&nbsp;&nbsp;提交采购&nbsp;&nbsp;&nbsp;&nbsp;
+                                            </label>
+                                            <label>
+                                                &nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" value="2" name="admin_apply">&nbsp;&nbsp;撤销采购&nbsp;&nbsp;&nbsp;&nbsp;
+                                            </label>
+                                        </div>
                                     </td>
                                     <td colspan="3">
                                         <button type="button" class="btn btn-success g-f-l" id="audit_action" >确认</button>

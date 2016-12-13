@@ -118,16 +118,48 @@
 
                         <!--表格主体-->
                         <div class="panel-body">
-                            <div>
-                                <span id="order_showall_btn" class="btn btn-info btn-icon btn-xs g-br2">
-                                    <i class="fa-plus"></i>
-                                    <span>全部展开</span>
-                                </span>
-                                <a target="_blank" href="http://www.kuaidi100.com" class="btn btn-info btn-icon btn-xs g-br2">
-                                    <i class="fa-chain"></i>
-                                    <span>查询快递单号</span>
-                                </a>
+                            <div class="admin-search-wrap">
+                                <div class="admin-search-item">
+                                    <label>采购订单号：</label>
+                                    <input type="text" id="search_orderNumber">
+                                </div>
+                                <div class="admin-search-item">
+                                    <label>供应商名称：</label>
+                                    <input type="text" id="search_providerName">
+                                </div>
+                                <div class="admin-search-item">
+                                    <label>订单状态：</label>
+                                    <select id="search_orderState">
+                                        <option value="" selected>全部</option>
+                                        <option value="0">待付款</option>
+                                        <option value="1">取消订单</option>
+                                        <option value="6">待发货</option>
+                                        <option value="9">待收货</option>
+                                        <option value="20">待评价</option>
+                                        <option value="21">已评价</option>
+                                    </select>
+                                </div>
+                                <div class="admin-search-item">
+                                    <span id="admin_search_btn" class="btn btn-info btn-icon g-br2">
+                                        <i class="fa-search"></i>查询
+                                    </span>
+                                    <span id="admin_search_clear" class="btn btn-info btn-icon g-br2">
+                                        <i class="fa-spinner"></i>清空
+                                    </span>
+                                </div>
+                                <br />
+                                <div class="admin-search-item">
+                                    <span id="order_showall_btn" class="btn btn-info btn-icon btn-xs g-br2">
+                                        <i class="fa-plus"></i>
+                                        <span>全部展开</span>
+                                    </span>
+                                    <a target="_blank" href="http://www.kuaidi100.com" class="btn btn-info btn-icon btn-xs g-br2">
+                                        <i class="fa-chain"></i>
+                                        <span>查询快递单号</span>
+                                    </a>
+                                </div>
                             </div>
+
 
 
                             <table id="order_stats_wrap" class="table table-bordered table-striped table-hover admin-table">

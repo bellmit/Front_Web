@@ -61,6 +61,13 @@
 				setSure=new sureObj();
 
 
+			/*查询对象*/
+			var $search_searchWords=$('#search_searchWords'),
+				$search_status=$('#search_status'),
+				$admin_search_btn=$('#admin_search_btn'),
+				$admin_search_clear=$('#admin_search_clear');
+
+
 
 			/*重置表单*/
 			admin_logisticsadd_form.reset();
@@ -230,6 +237,46 @@
 
 			/*初始化请求*/
 			getColumnData(logistics_page,logistics_config);
+
+
+
+			/*清空查询条件*/
+			$admin_search_clear.on('click',function(){
+				$.each([$search_searchWords,$search_status],function(){
+					var selector=this.selector;
+					if(selector.indexOf('status')!==-1){
+						this.find(':selected').prop({
+							'selected':false
+						});
+					}else{
+						this.val('');
+					}
+				});
+			});
+			$admin_search_clear.trigger('click');
+
+
+			/*联合查询*/
+			$admin_search_btn.on('click',function(){
+				var data= $.extend(true,{},logistics_config.config.ajax.data);
+
+				$.each([$search_searchWords,$search_status],function(){
+					var text=this.val()||this.find(':selected').val(),
+						selector=this.selector.slice(1),
+						key=selector.split('_');
+
+					if(text===""){
+						if(typeof data[key[1]]!=='undefined'){
+							delete data[key[1]];
+						}
+					}else{
+						data[key[1]]=text;
+					}
+
+				});
+				logistics_config.config.ajax.data= $.extend(true,{},data);
+				getColumnData(logistics_page,logistics_config);
+			});
 
 
 			/*绑定新增入库*/

@@ -55,14 +55,6 @@
 				setSure=new sureObj();
 
 
-			/*查询对象*/
-			var $search_orderNumber=$('#search_orderNumber'),
-				$search_providerName=$('#search_providerName'),
-				$search_orderState=$('#search_orderState'),
-				$admin_search_btn=$('#admin_search_btn'),
-				$admin_search_clear=$('#admin_search_clear');
-
-
 
 
 			/*列表请求配置*/
@@ -206,54 +198,16 @@
 			/*初始化请求*/
 			getColumnData(order_page,order_config);
 
-			/*清空查询条件*/
-			$admin_search_clear.on('click',function(){
-				$.each([$search_orderNumber,$search_providerName,$search_orderState],function(){
-					var selector=this.selector;
-					if(selector.indexOf('orderState')!==-1){
-						this.find(':selected').prop({
-							'selected':false
-						});
-					}else{
-						this.val('');
-					}
-				});
-			});
-			$admin_search_clear.trigger('click');
-
-
-			/*联合查询*/
-			$admin_search_btn.on('click',function(){
-				var data= $.extend(true,{},order_config.config.ajax.data);
-
-				$.each([$search_orderNumber,$search_providerName,$search_orderState],function(){
-					var text=this.val()||this.find(':selected').val(),
-						selector=this.selector.slice(1),
-						key=selector.split('_');
-
-					if(text===""){
-						if(typeof data[key[1]]!=='undefined'){
-							delete data[key[1]];
-						}
-					}else{
-						data[key[1]]=text;
-					}
-
-				});
-				order_config.config.ajax.data= $.extend(true,{},data);
-				getColumnData(order_page,order_config);
-			});
-
-
 
 			/*查询物流公司*/
 			$.ajax({
-					url:"http://120.76.237.100:8082/mall-agentbms-api/logistics/list",
+					url:"http://120.76.237.100:8082/mall-agentbms-api/shipping/express/list",
 					method: 'POST',
 					dataType: 'json',
 					data:{
-						roleId:decodeURIComponent(logininfo.param.roleId),
+						shippingMethodId:1,
 						adminId:decodeURIComponent(logininfo.param.adminId),
+						userId:decodeURIComponent(logininfo.param.userId),
 						token:decodeURIComponent(logininfo.param.token),
 						grade:decodeURIComponent(logininfo.param.grade)
 					}
@@ -289,9 +243,9 @@
 					}
 					for(i;i<len;i++){
 						if(i===0){
-							str+='<option value="" selected>请选择物流公司</option><option value="'+list[i]['id']+'">'+list[i]['companyName']+'</option>';
+							str+='<option value="" selected>请选择物流公司</option><option value="'+list[i]['id']+'">'+list[i]['name']+'</option>';
 						}else{
-							str+='<option value="'+list[i]['id']+'">'+list[i]['companyName']+'</option>';
+							str+='<option value="'+list[i]['id']+'">'+list[i]['name']+'</option>';
 						}
 					}
 					$(str).appendTo($admin_shippingExpressId.html(''));
@@ -556,7 +510,7 @@
 										}
 										$.extend(true,setdata,{
 											trackingNumber:$admin_trackingNumber.val(),
-											logisticsId:$admin_shippingExpressId.find(':selected').val(),
+											shippingExpressId:$admin_shippingExpressId.find(':selected').val(),
 											remark:$admin_remark.val(),
 											goodsOrderId:id
 										});

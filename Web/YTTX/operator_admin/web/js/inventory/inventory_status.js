@@ -51,6 +51,12 @@
 				};
 
 
+			/*查询对象*/
+			var $search_goodsName=$('#search_goodsName'),
+				$admin_search_btn=$('#admin_search_btn'),
+				$admin_search_clear=$('#admin_search_clear');
+
+
 
 
 			/*列表请求配置*/
@@ -166,6 +172,38 @@
 
 			/*初始化请求*/
 			getColumnData(inventory_page,inventory_config);
+
+
+			/*清空查询条件*/
+			$admin_search_clear.on('click',function(){
+				$.each([$search_goodsName],function(){
+					this.val('');
+				});
+			});
+			$admin_search_clear.trigger('click');
+
+
+			/*联合查询*/
+			$admin_search_btn.on('click',function(){
+				var data= $.extend(true,{},inventory_config.config.ajax.data);
+
+				$.each([$search_goodsName],function(){
+					var text=this.val()||this.find(':selected').val(),
+						selector=this.selector.slice(1),
+						key=selector.split('_');
+
+					if(text===""){
+						if(typeof data[key[1]]!=='undefined'){
+							delete data[key[1]];
+						}
+					}else{
+						data[key[1]]=text;
+					}
+
+				});
+				inventory_config.config.ajax.data= $.extend(true,{},data);
+				getColumnData(inventory_page,inventory_config);
+			});
 			
 
 

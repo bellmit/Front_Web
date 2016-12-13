@@ -48,8 +48,15 @@
 				$purchase_showall_btn=$('#purchase_showall_btn');
 
 
+			/*查询对象*/
+			var $search_orderNumber=$('#search_orderNumber'),
+				$search_providerName=$('#search_providerName'),
+				$search_orderState=$('#search_orderState'),
+				$admin_search_btn=$('#admin_search_btn'),
+				$admin_search_clear=$('#admin_search_clear');
 
 
+			
 			/*列表请求配置*/
 			var purchase_page={
 					page:1,
@@ -177,7 +184,46 @@
 
 			/*初始化请求*/
 			getColumnData(purchase_page,purchase_config);
-			
+
+
+			/*清空查询条件*/
+			$admin_search_clear.on('click',function(){
+				$.each([$search_orderNumber,$search_providerName,$search_orderState],function(){
+					var selector=this.selector;
+					if(selector.indexOf('orderState')!==-1){
+						this.find(':selected').prop({
+							'selected':false
+						});
+					}else{
+						this.val('');
+					}
+				});
+			});
+			$admin_search_clear.trigger('click');
+
+
+			/*联合查询*/
+			$admin_search_btn.on('click',function(){
+				var data= $.extend(true,{},purchase_config.config.ajax.data);
+
+				$.each([$search_orderNumber,$search_providerName,$search_orderState],function(){
+					var text=this.val()||this.find(':selected').val(),
+						selector=this.selector.slice(1),
+						key=selector.split('_');
+
+					if(text===""){
+						if(typeof data[key[1]]!=='undefined'){
+							delete data[key[1]];
+						}
+					}else{
+						data[key[1]]=text;
+					}
+
+				});
+				purchase_config.config.ajax.data= $.extend(true,{},data);
+				getColumnData(purchase_page,purchase_config);
+			});
+
 
 
 			/*事件绑定*/
@@ -313,7 +359,6 @@
 
 				}
 			});
-
 
 
 
