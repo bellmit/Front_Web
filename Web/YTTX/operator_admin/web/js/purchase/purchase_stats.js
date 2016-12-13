@@ -9,7 +9,7 @@
 			/*菜单调用*/
 			var logininfo=public_tool.initMap.loginMap;
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
-				url:'http://120.24.226.70:8082/mall-agentbms-api/module/menu',
+				url:'http://120.76.237.100:8082/mall-agentbms-api/module/menu',
 				async:false,
 				type:'post',
 				param:{
@@ -65,7 +65,7 @@
 						autoWidth:true,/*是否*/
 						paging:false,
 						ajax:{
-							url:"http://120.24.226.70:8082/mall-agentbms-api/purchasing/orderaudited/list",
+							url:"http://120.76.237.100:8082/mall-agentbms-api/purchasing/orderaudited/list",
 							dataType:'JSON',
 							method:'post',
 							dataSrc:function ( json ) {
@@ -228,7 +228,7 @@
 							/*展开*/
 							if(subitem===''){
 								$.ajax({
-										url:"http://120.24.226.70:8082/mall-agentbms-api/purchasing/orderaudited/details",
+										url:"http://120.76.237.100:8082/mall-agentbms-api/purchasing/orderaudited/details",
 										dataType:'JSON',
 										method:'post',
 										data:{
@@ -280,7 +280,7 @@
 												<th>商品属性</th>\
 												<th>采购数量</th>\
 												<th>发货数量</th>\
-												<th>等发数量</th>\
+												<th>待发数量</th>\
 											</tr>\
 											</thead>',
 											res='',
