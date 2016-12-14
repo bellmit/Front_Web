@@ -4,129 +4,198 @@
   "result": {
     "menu": [
       {
-        "modCode": "mall-store-manage",
-        "modId": 88,
+        "modCode": "mall-admin",
+        "modId": 1,
+        "modClass": "menu-ux-admin",
         "modItem": [
           {
-            "modLink": "mall-store-provider",
-            "modName": "供应商管理"
+            "modLink": "mall-admin-role",
+            "modName": "角色"
           },
           {
-            "modLink": "mall-store-logistics",
-            "modName": "常用物流公司"
+            "modLink": "mall-admin-permission",
+            "modName": "权限"
           },
           {
-            "modLink": "mall-store-add",
-            "modName": "添加分仓"
+            "modLink": "mall-admin-setting",
+            "modName": "系统设置"
           },
           {
-            "modLink": "mall-store-purchase",
-            "modName": "采购统计"
+            "modLink": "mall-admin-user",
+            "modName": "用户管理"
           },
           {
-            "modLink": "mall-store-receive",
-            "modName": "收货"
+            "modLink": "mall-admin-adduser",
+            "modName": "新增用户"
           },
           {
-            "modLink": "mall-store-order",
-            "modName": "订单统计"
+            "modLink": "mall-admin-record",
+            "modName": "流水记录"
           },
           {
-            "modLink": "mall-store-stock",
-            "modName": "库存状况"
-          },
-          {
-            "modLink": "mall-store-outstock",
-            "modName": "出库单"
-          },
-          {
-            "modLink": "mall-store-instock",
-            "modName": "入库单"
-          },
-          {
-            "modLink": "mall-store-checkstock",
-            "modName": "盘点单"
+            "modLink": "mall-admin-notice",
+            "modName": "通知管理"
           }
         ],
-        "modLink": "mall-store-manage",
-        "modName": "分仓管理",
+        "modLink": "mall-admin-manage",
+        "modName": "系统管理",
         "permitItem": [
           {
-            "funcCode": "mall-store-add",
-            "funcName": "添加分仓",
+            "funcCode": "admin-message-management",
+            "funcName": "消息管理",
             "isPermit": 1,
-            "modId": 88,
-            "prid": 8801
+            "modId": 1,
+            "prid": 1
           },
           {
-            "funcCode": "mall-store-receive",
-            "funcName": "收货",
+            "funcCode": "admin-role-add",
+            "funcName": "角色增加",
             "isPermit": 1,
-            "modId": 88,
-            "prid": 8802
+            "modId": 1,
+            "prid": 2
           },
           {
-            "funcCode": "mall-store-detail",
-            "funcName": "查看详情",
+            "funcCode": "admin-role-update",
+            "funcName": "角色修改",
             "isPermit": 1,
-            "modId": 88,
-            "prid": 8803
+            "modId": 1,
+            "prid": 3
           },
           {
-            "funcCode": "mall-store-send",
-            "funcName": "发货",
+            "funcCode": "admin-role-delete",
+            "funcName": "角色删除",
             "isPermit": 1,
-            "modId": 88,
-            "prid": 8804
+            "modId": 1,
+            "prid": 4
           },
           {
-            "funcCode": "mall-store-instock",
-            "funcName": "新增入库",
+            "funcCode": "admin-setting",
+            "funcName": "系统设置",
             "isPermit": 1,
-            "modId": 88,
-            "prid": 8805
+            "modId": 1,
+            "prid": 5
           },
           {
-            "funcCode": "mall-store-outstock",
-            "funcName": "新增出库",
+            "funcCode": "admin-permission-management",
+            "funcName": "权限管理",
             "isPermit": 1,
-            "modId": 88,
-            "prid": 8806
+            "modId": 1,
+            "prid": 6
           },
           {
-            "funcCode": "mall-store-checkstock",
-            "funcName": "盘点库存",
+            "funcCode": "admin-member-add",
+            "funcName": "成员增加",
             "isPermit": 1,
-            "modId": 88,
-            "prid": 8807
+            "modId": 1,
+            "prid": 7
           },
           {
-            "funcCode": "mall-store-update",
-            "funcName": "修改分仓",
+            "funcCode": "admin-member-update",
+            "funcName": "成员修改",
             "isPermit": 1,
-            "modId": 88,
-            "prid": 8808
+            "modId": 1,
+            "prid": 8
           },
           {
-            "funcCode": "mall-store-delete",
-            "funcName": "删除分仓",
+            "funcCode": "admin-member-delete",
+            "funcName": "成员删除",
             "isPermit": 1,
-            "modId": 88,
-            "prid": 8809
+            "modId": 1,
+            "prid": 9
+          }
+        ]
+      },
+      {
+        "modCode": "mall-provider",
+        "modId": 2,
+        "modClass": "menu-ux-admin",
+        "modItem": [
+          {
+            "modLink": "mall-admin-role",
+            "modName": "角色"
           },
           {
-            "funcCode": "mall-store-logistics",
-            "funcName": "管理物流",
-            "isPermit": 1,
-            "modId": 88,
-            "prid": 8810
+            "modLink": "mall-admin-permission",
+            "modName": "权限"
           },
           {
-            "funcCode": "mall-store-provider",
-            "funcName": "管理供应商",
+            "modLink": "mall-admin-setting",
+            "modName": "系统设置"
+          },
+          {
+            "modLink": "mall-admin-user",
+            "modName": "用户管理"
+          },
+          {
+            "modLink": "mall-admin-adduser",
+            "modName": "新增用户"
+          }
+        ],
+        "modLink": "mall-provider-manage",
+        "modName": "供应商管理",
+        "permitItem": [
+          {
+            "funcCode": "admin-message-management",
+            "funcName": "消息管理",
             "isPermit": 1,
-            "modId": 88,
-            "prid": 8811
+            "modId": 1,
+            "prid": 1
+          },
+          {
+            "funcCode": "admin-role-add",
+            "funcName": "角色增加",
+            "isPermit": 1,
+            "modId": 1,
+            "prid": 2
+          },
+          {
+            "funcCode": "admin-role-update",
+            "funcName": "角色修改",
+            "isPermit": 1,
+            "modId": 1,
+            "prid": 3
+          },
+          {
+            "funcCode": "admin-role-delete",
+            "funcName": "角色删除",
+            "isPermit": 1,
+            "modId": 1,
+            "prid": 4
+          },
+          {
+            "funcCode": "admin-setting",
+            "funcName": "系统设置",
+            "isPermit": 1,
+            "modId": 1,
+            "prid": 5
+          },
+          {
+            "funcCode": "admin-permission-management",
+            "funcName": "权限管理",
+            "isPermit": 1,
+            "modId": 1,
+            "prid": 6
+          },
+          {
+            "funcCode": "admin-member-add",
+            "funcName": "成员增加",
+            "isPermit": 1,
+            "modId": 1,
+            "prid": 7
+          },
+          {
+            "funcCode": "admin-member-update",
+            "funcName": "成员修改",
+            "isPermit": 1,
+            "modId": 1,
+            "prid": 8
+          },
+          {
+            "funcCode": "admin-member-delete",
+            "funcName": "成员删除",
+            "isPermit": 1,
+            "modId": 1,
+            "prid": 9
           }
         ]
       }
