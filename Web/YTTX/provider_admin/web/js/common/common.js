@@ -888,7 +888,7 @@
 				/*解析权限*/
 				//var cacheSource=self.getParams('source_module');
 				//self.resolvePower(cacheSource,true);
-				return;
+				return true;
 			}else{
 				/*不同模块则重新加载*/
 				self.requestSideMenu($menu,$wrap,opt);

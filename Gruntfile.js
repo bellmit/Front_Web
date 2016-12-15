@@ -1,7 +1,7 @@
 
 ;module.exports = function(grunt){
 	
-	var configfile='package_operator.json';
+	var configfile='package_mall.json';
 
 	/*//配置端口
 	var flushPort=35729;

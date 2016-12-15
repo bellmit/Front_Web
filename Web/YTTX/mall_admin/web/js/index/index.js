@@ -7,13 +7,12 @@
 			/*菜单调用*/
 			var logininfo=public_tool.initMap.loginMap;
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
-				url:'http://120.76.237.100:8082/mall-agentbms-api/module/menu',
+				url:/*'http://120.76.237.100:8082/mall-agentbms-api/module/menu'*/"../json/menu.json",
 				async:false,
 				type:'post',
 				param:{
 					roleId:decodeURIComponent(logininfo.param.roleId),
 					adminId:decodeURIComponent(logininfo.param.adminId),
-					grade:decodeURIComponent(logininfo.param.grade),
 					token:decodeURIComponent(logininfo.param.token)
 				},
 				datatype:'json'
@@ -188,14 +187,13 @@
 
 			/*请求通知数据*/
 			$.ajax({
-				url:"http://120.76.237.100:8082/mall-agentbms-api/announcements/received",
+				url:"../json/account/login.json",
 				dataType:'JSON',
 				method:'post',
 				data:{
 					roleId:decodeURIComponent(logininfo.param.roleId),
 					adminId:decodeURIComponent(logininfo.param.adminId),
-					token:decodeURIComponent(logininfo.param.token),
-					grade:decodeURIComponent(logininfo.param.grade)
+					token:decodeURIComponent(logininfo.param.token)
 				}
 			}).done(function (resp) {
 				var code=parseInt(resp.code,10);

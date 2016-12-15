@@ -70,8 +70,8 @@
 						"hideMethod": "fadeOut"
 					};
 
-					var basedomain='http://120.76.237.100:8082',
-						basepathname="/mall-agentbms-api/sysuser/login";
+					var basedomain='../../json/account/login.json',
+						basepathname="";
 					$.ajax({
 						url:basedomain+basepathname,
 						method: 'POST',
@@ -108,32 +108,11 @@
 							'datetime':moment().format('YYYY-MM-DD|HH:mm:ss'),
 							'reqdomain':basedomain,
 							'currentdomain':'',
-							'username':(function () {
-								var grade=result.grade;
-								if(grade===3){
-									return $username.val()+'(省级代理)'||'匿名用户';
-								}else if(grade===2){
-									return $username.val()+'(市级代理)'||'匿名用户';
-								}else if(grade===1){
-									return $username.val()+'(县级代理)'||'匿名用户';
-								}else if(grade===4){
-									return $username.val()+'(店长)'||'匿名用户';
-								}else if(grade===-1){
-									return $username.val()+'(超级管理员)'||'匿名用户';
-								}else if(grade===-2){
-									return $username.val()+'(默认)'||'匿名用户';
-								}else if(grade===-3){
-									return $username.val()+'(总代理)'||'匿名用户';
-								}else if(grade===-4){
-									return $username.val()+'(分仓管理员)'||'匿名用户';
-								}
-							}()),
+							'username':$username.val()||'匿名用户',
 							'param':{
 								'adminId':encodeURIComponent(result.adminId),
 								'token':encodeURIComponent(result.token),
-								'roleId':encodeURIComponent(result.roleId),
-								'grade':encodeURIComponent(result.grade),
-								'sourcesChannel':encodeURIComponent(result.sourcesChannel)
+								'roleId':encodeURIComponent(result.roleId)
 							}
 						});
 

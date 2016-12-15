@@ -1,0 +1,57 @@
+{
+  "code": 0,
+  "message":"成功",
+  "result":{
+    "list":[{
+      "id":1,
+      "nickName": "572457fghf",
+      "Name":"心中有梦闯天下",
+      "createTime": "2016-09-08",
+      "lastLoginTime": "2016-09-08",
+      "loginCount":"5",
+      "userType":"0",
+      "isAdmin":"1",
+      "isEnabled":"1"
+    },{
+      "id":2,
+      "nickName": "53685685",
+      "Name":"好朋友的话要记在心里呀",
+      "createTime": "2016-09-08",
+      "lastLoginTime": "2016-09-08",
+      "loginCount":"24",
+      "userType":"1",
+      "isAdmin":"1",
+      "isEnabled":"1"
+    },{
+      "id":3,
+      "nickName": "时间追不上白马",
+      "Name":"时间都去哪二了",
+      "createTime": "2016-09-08",
+      "lastLoginTime": "2016-09-08",
+      "loginCount":"346",
+      "userType":"1",
+      "isAdmin":"1",
+      "isEnabled":"0"
+    },{
+      "id":4,
+      "nickName": "小雨它拍打着水花",
+      "Name":"有几滴眼泪在落下",
+      "createTime": "2016-09-08",
+      "lastLoginTime": "2016-09-08",
+      "loginCount":"825",
+      "userType":"0",
+      "isAdmin":"0",
+      "isEnabled":"0"
+    },{
+      "id":5,
+      "nickName": "在阳光灿烂日子开怀大笑",
+      "Name":"也许当时忙着微笑和哭泣",
+      "createTime": "2016-09-08",
+      "lastLoginTime": "2016-09-08",
+      "loginCount":"825",
+      "userType":"0",
+      "isAdmin":"0",
+      "isEnabled":"1"
+    }]
+  }
+}

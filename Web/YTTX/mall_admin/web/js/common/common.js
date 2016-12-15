@@ -728,89 +728,69 @@
 			"module":"",
 			"modid":"0"
 		},
-		"62":{
+		"1":{
+			"name":"用户管理",
+			"code":"user",
+			"match":"-user-",
+			"class":"menu-ux-user",
+			"module":"admin",
+			"modid":"1"
+		},
+		"2":{
 			"name":"系统管理",
 			"code":"admin",
 			"match":"-admin-",
 			"class":"menu-ux-admin",
 			"module":"admin",
-			"modid":"62"
+			"modid":"2"
 		},
-		"67":{
-			"name":"公告管理",
-			"code":"announcement",
-			"match":"-announcement-",
-			"class":"menu-ux-serve",
-			"module":"announcement",
-			"modid":"67"
+		"3":{
+			"name":"供应商管理",
+			"code":"provider",
+			"match":"-provider-",
+			"class":"menu-ux-distribution",
+			"module":"provider",
+			"modid":"3"
 		},
-		"71":{
-			"name":"运营商管理",
-			"code":"agent",
-			"match":"-agent-",
-			"class":"menu-ux-agent",
-			"module":"agent",
-			"modid":"71"
+		"4":{
+			"name":"交易管理",
+			"code":"trade",
+			"match":"-trade-",
+			"class":"menu-ux-record",
+			"module":"trade",
+			"modid":"4"
 		},
-		"75":{
-			"name":"业务员管理",
-			"code":"salesman",
-			"match":"-salesman-",
-			"class":"menu-ux-user",
-			"module":"salesman",
-			"modid":"75"
-		},
-		"79":{
-			"name":"商户管理",
-			"code":"merchant",
-			"match":"-merchant-",
+		"5":{
+			"name":"商品管理",
+			"code":"goods",
+			"match":"-goods-",
 			"class":"menu-ux-shop",
-			"module":"merchant",
-			"modid":"79"
+			"module":"goods",
+			"modid":"5"
 		},
-		"83":{
+		"6":{
 			"name":"财务管理",
-			"code":"finance",
-			"match":"-finance-",
-			"matchlist":["-sales-","-order-"],
-			"class":"menu-ux-finance",
-			"module":"finance",
-			"modid":"83"
+			"code":"statistics",
+			"match":"-statistics-",
+			"class":"menu-ux-chart",
+			"module":"statistics",
+			"modid":"6"
 		},
-		"86":{
-			"name":"分仓管理",
-			"code":"warehouse",
-			"match":"-warehouse-",
-			"class":"menu-ux-store",
-			"module":"warehouse",
-			"modid":"86"
+		"7":{
+			"name":"平台管理",
+			"code":"paltform",
+			"match":"-paltform-",
+			"class":"menu-ux-platform",
+			"module":"paltform",
+			"modid":"7"
 		},
-		"98":{
-			"name":"订单管理",
-			"code":"purchase",
-			"match":"-purchase-",
-			"matchlist":["-order-"],
-			"class":"menu-ux-purchase",
-			"module":"purchase",
-			"modid":"98"
-		},
-		"99":{
-			"name":"仓储管理",
-			"code":"inventory",
-			"match":"-inventory-",
-			"matchlist":["-storage-","-outbound-","-check-"],
-			"class":"menu-ux-inventory",
-			"module":"inventory",
-			"modid":"99"
-		},
-		"100":{
-			"name":"分仓其他",
-			"code":"logistics",
-			"match":"-logistics-",
-			"matchlist":["-provider-"],
-			"class":"menu-ux-logistics",
-			"module":"logistics",
-			"modid":"100"
+		"8":{
+			"name":"设置管理",
+			"code":"setting",
+			"match":"-setting-",
+			"class":"menu-ux-setting",
+			"module":"setting",
+			"modid":"8"
 		}
 	};
 	/*路由映射*/
@@ -907,10 +887,6 @@
 			},1000);
 		}
 	}
-
-
-
-
 	/*加载左侧菜单*/
 	public_tool.loadSideMenu=function($menu,$wrap,opt){
 
@@ -972,7 +948,7 @@
 			/*不存在资源则重新加载*/
 
 			/*静态注入*/
-			var injectdata=self.injectSideMenu({
+			/*var injectdata=self.injectSideMenu({
 				url:self.routeMap.isindex?'../json/menu.json':'../../json/menu.json',
 				async:false,
 				type:'post',
@@ -980,7 +956,7 @@
 			}),
 			injectstr=self.doSideMenu(injectdata,$menu,$wrap,{
 				resolve:true
-			});
+			});*/
 
 
 
@@ -1634,9 +1610,9 @@
 			}
 
 			/*请求域与登陆域不一致*/
-			if(currentdomain!==''&&reqdomain!==currentdomain){
+			/*if(currentdomain!==''&&reqdomain!==currentdomain){
 				return false;
-			}
+			}*/
 
 			return true;
 		}else{
