@@ -21,12 +21,13 @@
 			});
 			/*权限调用*/
 			var powermap=public_tool.getPower(),
-				stats_power=public_tool.getKeyPower('mall-order-stats',powermap);
+				enabled_power=public_tool.getKeyPower('user-enabled',powermap),
+				edit_power=public_tool.getKeyPower('user-update',powermap);
 
 
 
 			/*dom引用和相关变量定义*/
-			var $order_stats_wrap=$('#order_stats_wrap')/*表格*/,
+			var $admin_list_wrap=$('#admin_list_wrap')/*表格*/,
 				module_id='mall-user-list'/*模块id，主要用于本地存储传值*/,
 				dia=dialog({
 					zIndex:2000,
@@ -40,24 +41,16 @@
 					cancel:false
 				})/*一般提示对象*/,
 				$admin_page_wrap=$('#admin_page_wrap'),
-				$order_stats_list=$('#order_stats_list'),
-				$order_showall_btn=$('#order_showall_btn'),
-				admin_send_form=document.getElementById('admin_send_form'),
-				$admin_send_form=$(admin_send_form),
 				$admin_goodsOrderId=$('#admin_goodsOrderId'),
 				$show_send_wrap=$('#show_send_wrap'),
-				$admin_trackingNumber=$('#admin_trackingNumber'),
-				$admin_shippingExpressId=$('#admin_shippingExpressId'),
-				$admin_remark=$('#admin_remark'),
-				resetform0=null,
 				sureObj=public_tool.sureDialog(dia)/*回调提示对象*/,
 				setSure=new sureObj();
 
 
 			/*查询对象*/
-			var $search_orderNumber=$('#search_orderNumber'),
-				$search_providerName=$('#search_providerName'),
-				$search_orderState=$('#search_orderState'),
+			var $search_Name=$('#search_Name'),
+				$search_telePhone=$('#search_telePhone'),
+				$search_userType=$('#search_userType'),
 				$admin_search_btn=$('#admin_search_btn'),
 				$admin_search_clear=$('#admin_search_clear');
 
@@ -65,13 +58,13 @@
 
 
 			/*列表请求配置*/
-			var order_page={
+			var user_page={
 					page:1,
 					pageSize:10,
 					total:0
 				},
-				order_config={
-					$order_stats_wrap:$order_stats_wrap,
+				user_config={
+					$admin_list_wrap:$admin_list_wrap,
 					$admin_page_wrap:$admin_page_wrap,
 					config:{
 						processing:true,/*大消耗操作时是否显示处理状态*/
@@ -79,7 +72,7 @@
 						autoWidth:true,/*是否*/
 						paging:false,
 						ajax:{
-							url:"http://120.76.237.100:8082/mall-agentbms-api/goodsorder/list",
+							url:"../../json/user/mall_user_list.json",
 							dataType:'JSON',
 							method:'post',
 							dataSrc:function ( json ) {
@@ -100,21 +93,21 @@
 									return [];
 								}
 								/*设置分页*/
-								order_page.page=result.page;
-								order_page.pageSize=result.pageSize;
-								order_page.total=result.count;
+								user_page.page=result.page;
+								user_page.pageSize=result.pageSize;
+								user_page.total=result.count;
 								/*分页调用*/
 								$admin_page_wrap.pagination({
-									pageSize:order_page.pageSize,
-									total:order_page.total,
-									pageNumber:order_page.page,
+									pageSize:user_page.pageSize,
+									total:user_page.total,
+									pageNumber:user_page.page,
 									onSelectPage:function(pageNumber,pageSize){
 										/*再次查询*/
-										var param=order_config.config.ajax.data;
+										var param=user_config.config.ajax.data;
 										param.page=pageNumber;
 										param.pageSize=pageSize;
-										order_config.config.ajax.data=param;
-										getColumnData(order_page,order_config);
+										user_config.config.ajax.data=param;
+										getColumnData(user_page,user_config);
 									}
 								});
 								return result?result.list||[]:[];
@@ -123,53 +116,88 @@
 								userId:decodeURIComponent(logininfo.param.roleId),
 								adminId:decodeURIComponent(logininfo.param.adminId),
 								token:decodeURIComponent(logininfo.param.token),
-								grade:decodeURIComponent(logininfo.param.grade),
 								page:1,
 								pageSize:10
 							}
 						},
 						info:false,
 						searching:true,
-						order:[[1, "desc" ]],
+						order:[[3, "desc" ],[4, "desc" ]],
 						columns: [
 							{
-								"data":"orderNumber"
+								"data":"nickName"
 							},
 							{
-								"data":"orderTime"
+								"data":"Name"
 							},
 							{
-								"data":"customerName"
+								"data":"telePhone",
+								"render":function(data, type, full, meta ){
+									return public_tool.phoneFormat(data);
+								}
 							},
 							{
-								"data":"totalQuantity"
+								"data":"createTime"
 							},
 							{
-								"data":"orderState",
+								"data":"lastLoginTime"
+							},
+							{
+								"data":"loginCount"
+							},
+							{
+								"data":"userType",
 								"render":function(data, type, full, meta ){
 									var stauts=parseInt(data,10),
 										statusmap={
-											0:"待付款",
-											1:"取消订单",
-											6:"待发货",
-											9:"待收货",
-											20:"待评价",
-											21:"已评价"
+											0:"普通用户",
+											1:"供应商",
+											2:"其他"
 										},
 										str='';
 
 									if(stauts===0){
-										str='<div class="g-c-red2">'+statusmap[stauts]+'</div>';
-									}else if(stauts===1){
-										str='<div class="g-c-gray10">'+statusmap[stauts]+'</div>';
-									}else if(stauts===6){
-										str='<div class="g-c-gray9">'+statusmap[stauts]+'</div>';
-									}else if(stauts===9){
 										str='<div class="g-c-gray6">'+statusmap[stauts]+'</div>';
-									}else if(stauts===20){
+									}else if(stauts===1){
 										str='<div class="g-c-info">'+statusmap[stauts]+'</div>';
-									}else if(stauts===21){
-										str='<div class="g-c-gray3">'+statusmap[stauts]+'</div>';
+									}else{
+										str='<div class="g-c-gray9">'+statusmap[stauts]+'</div>';
+									}
+									return str;
+								}
+							},
+							{
+								"data":"isAdmin",
+								"render":function(data, type, full, meta ){
+									var stauts=parseInt(data,10),
+										statusmap={
+											0:"不是",
+											1:"是"
+										},
+										str='';
+
+									if(stauts===0){
+										str='<div class="g-c-gray9">'+statusmap[stauts]+'</div>';
+									}else if(stauts===1){
+										str='<div class="g-c-info">'+statusmap[stauts]+'</div>';
+									}
+									return str;
+								}
+							},
+							{
+								"data":"isEnabled",
+								"render":function(data, type, full, meta ){
+									var stauts=parseInt(data,10),
+										statusmap={
+											0:"禁用",
+											1:"启用"
+										},
+										str='';
+
+									if(stauts===0){
+										str='<div class="g-c-gray9">'+statusmap[stauts]+'</div>';
+									}else if(stauts===1){
+										str='<div class="g-c-info">'+statusmap[stauts]+'</div>';
 									}
 									return str;
 								}
@@ -179,20 +207,28 @@
 								"render":function(data, type, full, meta ){
 									var id=parseInt(data,10),
 										btns='',
-										state=parseInt(full.orderState,10);
+										state=parseInt(full.isEnabled,10);
 
-									if(stats_power){
-										if(state===6){
-											btns+='<span data-action="send" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
-											<i class="fa-file-text-o"></i>\
-											<span>发货</span>\
+									if(edit_power&&state===1){
+										btns+='<span data-action="edit" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+										<i class="fa-pencil"></i>\
+										<span>编辑</span>\
+										</span>';
+									}
+									if(enabled_power){
+										if(state===0){
+											/*禁用状态则启用*/
+											btns+='<span data-action="up" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+												<i class="fa-arrow-up"></i>\
+												<span>启用</span>\
+											</span>';
+										}else if(state===1){
+											/*启用状态则禁用*/
+											btns+='<span data-action="down" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+												<i class="fa-arrow-down"></i>\
+												<span>禁用</span>\
 											</span>';
 										}
-										
-										btns+='<span  data-subitem=""  data-action="select" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
-										<i class="fa-angle-right"></i>\
-										<span>查看</span>\
-										</span>';
 									}
 									return btns;
 								}
@@ -203,13 +239,14 @@
 			
 
 			/*初始化请求*/
-			getColumnData(order_page,order_config);
+			getColumnData(user_page,user_config);
+
 
 			/*清空查询条件*/
 			$admin_search_clear.on('click',function(){
-				$.each([$search_orderNumber,$search_providerName,$search_orderState],function(){
+				$.each([$search_Name,$search_telePhone,$search_userType],function(){
 					var selector=this.selector;
-					if(selector.indexOf('orderState')!==-1){
+					if(selector.indexOf('userType')!==-1){
 						this.find(':selected').prop({
 							'selected':false
 						});
@@ -223,9 +260,9 @@
 
 			/*联合查询*/
 			$admin_search_btn.on('click',function(){
-				var data= $.extend(true,{},order_config.config.ajax.data);
+				var data= $.extend(true,{},user_config.config.ajax.data);
 
-				$.each([$search_orderNumber,$search_providerName,$search_orderState],function(){
+				$.each([$search_Name,$search_telePhone,$search_userType],function(){
 					var text=this.val()||this.find(':selected').val(),
 						selector=this.selector.slice(1),
 						key=selector.split('_');
@@ -239,77 +276,40 @@
 					}
 
 				});
-				order_config.config.ajax.data= $.extend(true,{},data);
-				getColumnData(order_page,order_config);
+				user_config.config.ajax.data= $.extend(true,{},data);
+				getColumnData(user_page,user_config);
 			});
 
 
+			/*格式化手机号码*/
+			$.each([$search_telePhone],function(){
+				var isphone=public_tool.isMobilePhone,
+					phoneformat=public_tool.phoneFormat;
+				this.on('keyup focusout',function(e){
+					var etype=e.type;
+					if(etype==='keyup'){
 
-			/*查询物流公司*/
-			$.ajax({
-					url:"http://120.76.237.100:8082/mall-agentbms-api/logistics/list",
-					method: 'POST',
-					dataType: 'json',
-					data:{
-						roleId:decodeURIComponent(logininfo.param.roleId),
-						adminId:decodeURIComponent(logininfo.param.adminId),
-						token:decodeURIComponent(logininfo.param.token),
-						grade:decodeURIComponent(logininfo.param.grade)
-					}
-				})
-				.done(function(resp){
-					var code=parseInt(resp.code,10);
-					if(code!==0){
-						console.log(resp.message);
-						dia.content('<span class="g-c-bs-warning g-btips-warn">暂无合作物流公司</span>').show();
-						setTimeout(function () {
-							dia.close();
-						},2000);
-						$admin_shippingExpressId.html('<option value="" selected>请选择物流公司</option>');
-						return false;
-					}
-					var result=resp['result'];
-					if(!result){
-						$admin_shippingExpressId.html('<option value="" selected>请选择物流公司</option>');
-						return false;
-					}
-					var list=result['list'],
-						len= 0,
-						i= 0,
-						str='';
-					if(!list){
-						$admin_shippingExpressId.html('<option value="" selected>请选择物流公司</option>');
-						return false;
-					}
-					len=list.length;
-					if(len===0){
-						$admin_shippingExpressId.html('<option value="" selected>请选择物流公司</option>');
-						return false;
-					}
-					for(i;i<len;i++){
-						if(i===0){
-							str+='<option value="" selected>请选择物流公司</option><option value="'+list[i]['id']+'">'+list[i]['companyName']+'</option>';
-						}else{
-							str+='<option value="'+list[i]['id']+'">'+list[i]['companyName']+'</option>';
-						}
-					}
-					$(str).appendTo($admin_shippingExpressId.html(''));
+					}else if(etype==='keyup'){
 
-				})
-				.fail(function(resp){
-					console.log(resp.message);
-					dia.content('<span class="g-c-bs-warning g-btips-warn">暂无合作物流公司</span>').show();
-					setTimeout(function () {
-						dia.close();
-					},2000);
+					}
+					var phoneno=this.value.replace(/\D*/g,'');
+					if(phoneno==''){
+						this.value='';
+						return false;
+					}
+					if(isphone(phoneno)){
+
+					}
+					this.value=public_tool.phoneFormat(this.value);
 				});
-
+				this.on()
+			});
 
 
 			/*事件绑定*/
 			/*绑定查看，修改操作*/
 			var operate_item;
-			$order_stats_wrap.delegate('span','click',function(e){
+			$admin_list_wrap.delegate('span','click',function(e){
 				e.stopPropagation();
 				e.preventDefault();
 
@@ -473,140 +473,6 @@
 
 
 
-			/*关闭弹出框*/
-			$show_send_wrap.on('hide.bs.modal',function(){
-				if(operate_item){
-					setTimeout(function(){
-						operate_item.removeClass('item-lighten');
-						operate_item=null;
-					},1000);
-				}
-				admin_send_form.reset();
-			});
-
-
-
-
-			/*全部展开*/
-			if(stats_power){
-				$order_showall_btn.removeClass('g-d-hidei').on('click',function () {
-					var len=$order_stats_list.find('tr').size();
-					if(len===0){
-						return false;
-					}
-					var isshow=$order_showall_btn.find('i').hasClass('fa-plus');
-
-					if(isshow){
-						$order_showall_btn.html('<i class="fa-minus"></i>&nbsp;&nbsp;<span>全部收缩</span>');
-					}else{
-						$order_showall_btn.html('<i class="fa-plus"></i>&nbsp;&nbsp;<span>全部展开</span>');
-					}
-					$order_stats_list.find('span[data-action="select"]').trigger('click');
-				});
-			}else{
-				$order_showall_btn.addClass('g-d-hidei');
-			}
-
-
-			/*表单验证*/
-			if($.isFunction($.fn.validate)) {
-				/*配置信息*/
-				var form_opt0={},
-					formcache=public_tool.cache,
-					basedata={
-						roleId:decodeURIComponent(logininfo.param.roleId),
-						adminId:decodeURIComponent(logininfo.param.adminId),
-						token:decodeURIComponent(logininfo.param.token),
-						grade:decodeURIComponent(logininfo.param.grade)
-					};
-
-
-				if(formcache.form_opt_0){
-					$.each([formcache.form_opt_0],function(index){
-						var formtype,
-							config={
-								dataType:'JSON',
-								method:'post'
-							};
-						if(index===0){
-							formtype='ordersend';
-						}
-						$.extend(true,(function () {
-							if(formtype==='ordersend'){
-								return form_opt0;
-							}
-						}()),(function () {
-							if(formtype==='ordersend'){
-								return formcache.form_opt_0;
-							}
-						}()),{
-							submitHandler: function(form){
-								setSure.sure('发货',function(cf){
-									/*to do*/
-									var setdata={},
-										tip=cf.dia||dia;
-
-									$.extend(true,setdata,basedata);
-
-									if(formtype==='ordersend'){
-										var id=$admin_goodsOrderId.val();
-										if(id===''){
-											return false;
-										}
-										$.extend(true,setdata,{
-											trackingNumber:$admin_trackingNumber.val(),
-											logisticsId:$admin_shippingExpressId.find(':selected').val(),
-											remark:$admin_remark.val(),
-											goodsOrderId:id
-										});
-
-										config['url']="http://120.76.237.100:8082/mall-agentbms-api/order/tracking/add";
-										config['data']=setdata;
-									}
-									
-									$.ajax(config).done(function(resp){
-										var code;
-										if(formtype==='ordersend'){
-											code=parseInt(resp.code,10);
-											if(code!==0){
-												console.log(resp.message);
-												tip.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"发货失败")+'</span>').show();
-												setTimeout(function () {
-													tip.close();
-												},2000);
-												return false;
-											}
-											tip.content('<span class="g-c-bs-success g-btips-succ">发货成功</span>').show();
-											/*重新获取数据*/
-											getColumnData(order_page,order_config);
-											setTimeout(function () {
-												tip.close();
-												$show_send_wrap.modal('hide');
-											},2000);
-										}
-									}).fail(function(resp){
-										console.log(resp.message);
-										tip.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"发货失败")+'</span>').show();
-										setTimeout(function () {
-											tip.close();
-										},2000);
-									});
-								});
-								return false;
-							}
-						});
-					});
-				}
-
-
-				/*提交验证*/
-				if(resetform0===null){
-					resetform0=$admin_send_form.validate(form_opt0);
-				}
-			}
-
-
-
 
 
 		}
@@ -615,7 +481,7 @@
 		/*获取数据*/
 		function getColumnData(page,opt){
 			if(table===null){
-				table=opt.$order_stats_wrap.DataTable(opt.config);
+				table=opt.$admin_list_wrap.DataTable(opt.config);
 			}else{
 				table.ajax.config(opt.config.ajax).load();
 			}

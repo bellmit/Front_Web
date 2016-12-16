@@ -120,23 +120,19 @@
                         <div class="panel-body">
                             <div class="admin-search-wrap">
                                 <div class="admin-search-item">
-                                    <label>采购订单号：</label>
-                                    <input type="text" id="search_orderNumber">
+                                    <label>用户名：</label>
+                                    <input type="text" id="search_Name">
                                 </div>
                                 <div class="admin-search-item">
-                                    <label>供应商名称：</label>
-                                    <input type="text" id="search_providerName">
+                                    <label>电话号码：</label>
+                                    <input type="text" maxlength="13" id="search_telePhone">
                                 </div>
                                 <div class="admin-search-item">
-                                    <label>订单状态：</label>
-                                    <select id="search_orderState">
+                                    <label>用户类型：</label>
+                                    <select id="search_userType">
                                         <option value="" selected>全部</option>
-                                        <option value="0">待付款</option>
-                                        <option value="1">取消订单</option>
-                                        <option value="6">待发货</option>
-                                        <option value="9">待收货</option>
-                                        <option value="20">待评价</option>
-                                        <option value="21">已评价</option>
+                                        <option value="0">普通用户</option>
+                                        <option value="1">供应商</option>
                                     </select>
                                 </div>
                                 <div class="admin-search-item">
@@ -147,40 +143,37 @@
                                         <i class="fa-spinner"></i>清空
                                     </span>
                                 </div>
-                                <br />
-                                <div class="admin-search-item">
-                                    <span id="order_showall_btn" class="btn btn-info btn-icon btn-xs g-br2">
-                                        <i class="fa-plus"></i>
-                                        <span>全部展开</span>
-                                    </span>
-                                    <a target="_blank" href="http://www.kuaidi100.com" class="btn btn-info btn-icon btn-xs g-br2">
-                                        <i class="fa-chain"></i>
-                                        <span>查询快递单号</span>
-                                    </a>
-                                </div>
                             </div>
 
 
 
-                            <table id="order_stats_wrap" class="table table-bordered table-striped table-hover admin-table">
+                            <table id="admin_list_wrap" class="table table-bordered table-striped table-hover admin-table">
                                 <!--分组样式-->
                                 <colgroup>
-                                    <col class="g-w-percent10">
-                                    <col class="g-w-percent10">
-                                    <col class="g-w-percent10">
+                                    <col class="g-w-percent6">
+                                    <col class="g-w-percent6">
+                                    <col class="g-w-percent7">
                                     <col class="g-w-percent5">
                                     <col class="g-w-percent5">
-                                    <col class="g-w-percent10">
+                                    <col class="g-w-percent5">
+                                    <col class="g-w-percent5">
+                                    <col class="g-w-percent3">
+                                    <col class="g-w-percent3">
+                                    <col class="g-w-percent5">
                                 </colgroup>
 
                                 <!--表头-->
                                 <thead>
                                 <tr>
-                                    <th>订单号</th>
-                                    <th>下单时间</th>
-                                    <th>买方</th>
-                                    <th>数量</th>
-                                    <th>订单状态</th>
+                                    <th>昵称</th>
+                                    <th>姓名</th>
+                                    <th>手机号码</th>
+                                    <th>创建时间</th>
+                                    <th>最后登录时间</th>
+                                    <th>登录次数</th>
+                                    <th>用户类型</th>
+                                    <th>管理员</th>
+                                    <th>可用</th>
                                     <th class="no-sorting">操作</th>
                                 </tr>
                                 </thead>
@@ -220,45 +213,6 @@
             </footer>
 
 
-        </div>
-    </div>
-
-
-    <!--发货-->
-    <div class="modal fade custom-width" id="show_send_wrap">
-        <div class="modal-dialog g-w-percent46">
-            <div class="modal-content">
-
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title">发货</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="blockquote admin-blockquote">
-                        <form role="form"  method="post" id="admin_send_form" class="admin-form1 validate">
-                            <input class="g-d-hidei" id="admin_goodsOrderId" value="">
-                            <div class="form-group">
-                                <label class="control-label">物流单号：</label>
-                                <input placeholder="请输入物流单号" data-validate="required" data-message-required="物流单号不能为空"  type="text" class="form-control" name="trackingNumber" id="admin_trackingNumber" />
-                            </div>
-                            <div class="form-group">
-                                <label class="control-label">物流公司:</label>
-                                <select class="form-control" name="shippingExpressId" id="admin_shippingExpressId" data-validate="required" data-message-required="物流公司不能为空" ></select>
-                            </div>
-                            <div class="form-group">
-                                <label class="control-label">卖家留言:</label>
-                                <textarea placeholder="请输入留言信息" name="remark" id="admin_remark"  class="form-control"></textarea>
-                            </div>
-                            <div class="form-group">
-                                <button type="submit" class="btn btn-success">发货</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-info" data-dismiss="modal">关闭</button>
-                </div>
-            </div>
         </div>
     </div>
 
