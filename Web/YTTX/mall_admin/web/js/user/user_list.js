@@ -283,26 +283,14 @@
 
 			/*格式化手机号码*/
 			$.each([$search_telePhone],function(){
-				var isphone=public_tool.isMobilePhone,
-					phoneformat=public_tool.phoneFormat;
-				this.on('keyup focusout',function(e){
-					var etype=e.type;
-					if(etype==='keyup'){
-
-					}else if(etype==='keyup'){
-
-					}
+				this.on('keyup',function(){
 					var phoneno=this.value.replace(/\D*/g,'');
-					if(phoneno==''){
+					if(phoneno===''){
 						this.value='';
 						return false;
 					}
-					if(isphone(phoneno)){
-
-					}
 					this.value=public_tool.phoneFormat(this.value);
 				});
-				this.on()
 			});
 
 
@@ -330,144 +318,32 @@
 				action=$this.attr('data-action');
 
 				/*修改,编辑操作*/
-				if(action==='send'&&id!==''){
+				if(action==='edit'){
+					public_tool.setParams('mall-user-add',id);
+					window.location.href='mall-user-add.html';
+				}else if(action==='up'||action==='down'){
 					if(operate_item){
 						operate_item.removeClass('item-lighten');
 						operate_item=null;
 					}
 					operate_item=$tr.addClass('item-lighten');
-					$admin_goodsOrderId.val(id);
-					$show_send_wrap.modal('show',{
-						backdrop:'static'
+
+					var actionkey='';
+					if(action==='up'){
+						/*启用*/
+						actionkey='启用';
+					}else if(action==='down'){
+						/*禁用*/
+						actionkey='禁用';
+					}
+
+
+					/*确认是否启用或禁用*/
+					setSure.sure(actionkey,function(cf){
+						/*to do*/
+						var tip=cf.dia||dia;
+						setEnabled(id,action,tip);
 					});
-				}else if(action==='select'){
-					/*查看收货详情*/
-					(function () {
-						var subclass=$this.children('i').hasClass('fa-angle-down'),
-							tabletr=table.row($tr),
-							subitem=$this.attr('data-subitem');
-
-						if(subclass){
-							/*收缩*/
-							$this.children('i').removeClass('fa-angle-down');
-							tabletr.child().hide(200);
-						}else{
-							/*添加高亮状态*/
-							if(operate_item){
-								operate_item.removeClass('item-lighten');
-								operate_item=null;
-							}
-							operate_item=$tr.addClass('item-lighten');
-							/*展开*/
-							if(subitem===''){
-								$.ajax({
-										url:"http://120.76.237.100:8082/mall-agentbms-api/goodsorder/details",
-										dataType:'JSON',
-										method:'post',
-										data:{
-											id:id,
-											adminId:decodeURIComponent(logininfo.param.adminId),
-											token:decodeURIComponent(logininfo.param.token),
-											grade:decodeURIComponent(logininfo.param.grade)
-										}
-									})
-									.done(function(resp){
-										var code=parseInt(resp.code,10),
-											isok=false;
-										if(code!==0){
-											console.log(resp.message);
-											isok=false;
-										}
-										/*是否是正确的返回数据*/
-										var result=resp.result;
-										if(!result){
-											isok=false;
-										}else{
-											var list=result.list;
-											if(!list){
-												isok=false;
-											}else{
-												isok=true;
-											}
-										}
-
-										if(!isok){
-											tabletr.child($('<tr><td colspan="6"><table class="table table-bordered table-striped table-hover admin-table" ><tbody class="middle-align"><tr><td class="g-t-c" colspan="5">("暂无数据")</td></tr></tbody></table></td></tr>')).show();
-											$this.attr({
-												'data-subitem':'true'
-											}).children('i').addClass('fa-angle-down');
-											return false;
-										}
-
-										var i= 0,
-											newstr='<colgroup>\
-												<col class="g-w-percent5">\
-												<col class="g-w-percent5">\
-												<col class="g-w-percent5">\
-												<col class="g-w-percent5">\
-												<col class="g-w-percent5">\
-												<col class="g-w-percent5">\
-												<col class="g-w-percent5">\
-												<col class="g-w-percent15">\
-											</colgroup>\
-											<thead>\
-												<tr>\
-													<th>买家名称</th>\
-													<th>联系电话</th>\
-													<th>所在地址</th>\
-													<th>收货人姓名</th>\
-													<th>收货人电话</th>\
-													<th>物流费用</th>\
-													<th>总计(包含运费)</th>\
-													<th>买家留言</th>\
-												</tr>\
-												<tr>'+(function () {
-													var panelstr='<td>'+(result["customerName"]||"")+'</td>\
-														<td>'+(public_tool.phoneFormat(result["customerPhone"])||"")+'</td>\
-														<td>'+(result["customerAddress"]||"")+'</td>\
-														<td>'+(result["consigneeName"]||"")+'</td>\
-														<td>'+(result["consigneePhone"]||"")+'</td>\
-														<td>￥'+(public_tool.moneyCorrect(result["freight"],12,true)[0]||"0.00")+'</td>\
-														<td>￥'+(public_tool.moneyCorrect(result["totalMoney"],12,true)[0]||"0.00")+'</td>\
-														<td>'+(result["remark"]||"")+'</td>';
-													return panelstr;
-												}())+'</tr>\
-												<tr>\
-													<th colspan="4">商品名称</th>\
-													<th>批发价</th>\
-													<th>购买数量</th>\
-													<th colspan="2">商品属性</th>\
-												</tr>\
-											</thead>',
-											res='',
-											len=list.length;
-
-										if(len!==0){
-											for(i;i<len;i++){
-												res+='<tr><td colspan="4">'+(list[i]["goodsName"]||"")+'</td><td>￥'+(public_tool.moneyCorrect(list[i]["wholesalePrice"],12,true)[0]||"0.00")+'</td><td>'+(list[i]["quantlity"]||"0")+'</td><td colspan="2">'+(list[i]["attributeName"]||"")+'</td></tr>';
-
-											}
-										}
-										res='<tbody class="middle-align">'+res+'</tbody>';
-										newstr='<tr><td colspan="6"><table class="table table-bordered table-striped table-hover admin-table" >'+newstr+res+'</table></td></tr>';
-
-										var $newtr=$(newstr);
-										tabletr.child($newtr).show();
-										$this.attr({
-											'data-subitem':'true'
-										}).children('i').addClass('fa-angle-down');
-
-									})
-									.fail(function(resp){
-										console.log(resp.message);
-									});
-							}else{
-								tabletr.child().show();
-								$this.children('i').addClass('fa-angle-down');
-							}
-						}
-					}());
-
 				}
 			});
 
@@ -487,6 +363,117 @@
 			}
 		}
 
+
+		/*启用禁用*/
+		function setEnabled(id,type,tips){
+			if(typeof id==='undefined'){
+				return false;
+			}
+			tips.content('<span class="g-c-bs-success g-btips-succ">'+actionkey+'成功</span>').show();
+			setTimeout(function () {
+				tips.close();
+			},2000);
+			$.ajax({
+					url:"../../json/user/mall_user_list.json",
+					dataType:'JSON',
+					method:'post',
+					data:{
+						inboundId:id,
+						roleId:decodeURIComponent(logininfo.param.roleId),
+						adminId:decodeURIComponent(logininfo.param.adminId),
+						token:decodeURIComponent(logininfo.param.token)
+					}
+				})
+				.done(function(resp){
+					var code=parseInt(resp.code,10);
+					if(code!==0){
+						console.log(resp.message);
+						tips.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"操作失败")+'</span>').show();
+						setTimeout(function () {
+							tips.close();
+						},2000);
+						return false;
+					}
+					/*是否是正确的返回数据*/
+					var result=resp.result;
+					if(!result){
+						return false;
+					}
+
+					/*判断是否是审核状态*/
+					var state=parseInt(result["auditState"],10),
+						statemap={
+							0:'待审核',
+							1:'审核通过',
+							2:'审核未通过'
+						};
+					if(state===0||state===2){
+						$show_detail_action.removeClass('g-d-hidei');
+					}else{
+						$show_detail_action.addClass('g-d-hidei');
+					}
+
+					/*设置值*/
+					$admin_id.val(id);
+					$('<tr>\
+						<td>'+(result["inboundNumber"]||'')+'</td>\
+						<td>'+(result["inboundTime"]||'')+'</td>\
+						<td>'+(result["warehouseName"]||'')+'</td>\
+						<td>'+(result["providerName"]||'')+'</td>\
+						<td>'+(result["remark"]||'')+'</td>\
+						'+(function () {
+							if(state===0){
+								return '<td data-id="'+state+'" class="g-c-bs-info">'+statemap[state]+'</td>';
+							}else if(state===1){
+								return '<td data-id="'+state+'" class="g-c-bs-success">'+statemap[state]+'</td>';
+							}else if(state===2){
+								return '<td data-id="'+state+'" class="g-c-gray10">'+statemap[state]+'</td>';
+							}else{
+								return '<td data-id="-1" class="g-c-red2">异常</td>';
+							}
+						}())+'</tr>').appendTo($show_detail_content.html(''));
+
+
+
+					var list=result['detailsList'],
+						str='',
+						i=0;
+
+					if(list){
+						var len=list.length;
+						if(len!==0){
+							for(i;i<len;i++){
+								var tempstorage=list[i];
+								str+='<tr>\
+								<td>'+parseInt(i+1,10)+'</td>\
+								<td>'+tempstorage["goodsId"]+'</td>\
+								<td>'+tempstorage["goodsName"]+'</td>\
+								<td>'+tempstorage["attributeName"]+'</td>\
+								<td>'+tempstorage["quantity"]+'</td>\
+								</tr>';
+							}
+							$(str).appendTo($show_detail_list.html(''));
+						}
+					}else{
+						$show_detail_content.html('');
+						$show_detail_list.html('');
+					}
+					/*添加高亮状态*/
+					if(operate_item){
+						operate_item.removeClass('item-lighten');
+						operate_item=null;
+					}
+					operate_item=$tr.addClass('item-lighten');
+					$show_detail_wrap.modal('show',{backdrop:'static'});
+				})
+				.fail(function(resp){
+					console.log(resp.message);
+					dia.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"操作失败")+'</span>').show();
+					setTimeout(function () {
+						dia.close();
+					},2000);
+				});
+		}
 
 
 

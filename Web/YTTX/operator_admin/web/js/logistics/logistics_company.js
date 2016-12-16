@@ -10,7 +10,7 @@
 			/*菜单调用*/
 			var logininfo=public_tool.initMap.loginMap;
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
-				url:'http://120.76.237.100:8082/mall-agentbms-api/module/menu',
+				url:'http://112.74.207.132:8082/mall-agentbms-api/module/menu',
 				async:false,
 				type:'post',
 				param:{
@@ -88,7 +88,7 @@
 						autoWidth:true,/*是否*/
 						paging:false,
 						ajax:{
-							url:"http://120.76.237.100:8082/mall-agentbms-api/logistics/list",
+							url:"http://112.74.207.132:8082/mall-agentbms-api/logistics/list",
 							dataType:'JSON',
 							method:'post',
 							dataSrc:function ( json ) {
@@ -429,7 +429,7 @@
 										actiontype='添加';
 									}
 
-									config['url']="http://120.76.237.100:8082/mall-agentbms-api/logistics/addupdate";
+									config['url']="http://112.74.207.132:8082/mall-agentbms-api/logistics/addupdate";
 									config['data']=setdata;
 								}
 
@@ -498,7 +498,7 @@
 			}
 
 			$.ajax({
-					url:"http://120.76.237.100:8082/mall-agentbms-api/logistics/details",
+					url:"http://112.74.207.132:8082/mall-agentbms-api/logistics/details",
 					dataType:'JSON',
 					method:'post',
 					data:{

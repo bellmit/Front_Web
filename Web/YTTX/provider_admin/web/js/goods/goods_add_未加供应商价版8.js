@@ -1096,7 +1096,7 @@
 									}else{
 										setdata['attrIventoryPrices']='['+$admin_inventory.val()+'#'+public_tool.trimSep($admin_wholesale_price.val(),',')+'#'+public_tool.trimSep($admin_retail_price.val(),',')+']';
 									}
-									config['url']="http://120.24.226.70:8082/yttx-providerbms-api/goods/addupdate";
+									config['url']="http://112.74.207.132:8082/yttx-providerbms-api/goods/addupdate";
 									config['data']=setdata;
 								}else if(formtype==='addtype'){
 									$.extend(true,setdata,{
@@ -1123,7 +1123,7 @@
 											}
 										}
 									}
-									config['url']="http://120.24.226.70:8082/yttx-providerbms-api/goodstype/add";
+									config['url']="http://112.74.207.132:8082/yttx-providerbms-api/goodstype/add";
 									config['data']=setdata;
 								}else if(formtype==='addattr'){
 									$.extend(true,setdata,{
@@ -1131,14 +1131,14 @@
 										goodsTypeId:istypeid,
 										tagId:$admin_newattr.attr('data-id')
 									});
-									config['url']="http://120.24.226.70:8082/yttx-providerbms-api/goods/tag/attr/add";
+									config['url']="http://112.74.207.132:8082/yttx-providerbms-api/goods/tag/attr/add";
 									config['data']=setdata;
 								}else if(formtype==='addlabel'){
 									$.extend(true,setdata,{
 										newTagStr:$admin_newlabel.val(),
 										goodsTypeId:istypeid
 									});
-									config['url']="http://120.24.226.70:8082/yttx-providerbms-api/goods/tag/attr/add";
+									config['url']="http://112.74.207.132:8082/yttx-providerbms-api/goods/tag/attr/add";
 									config['data']=setdata;
 								}
 
@@ -1293,7 +1293,7 @@
 			},istype=false;
 
 			$.ajax({
-				url:"http://120.24.226.70:8082/yttx-providerbms-api/goodstypes",
+				url:"http://112.74.207.132:8082/yttx-providerbms-api/goodstypes",
 				dataType:'JSON',
 				async:false,
 				method:'post',
@@ -1416,7 +1416,7 @@
 			},istype=false;
 
 			$.ajax({
-				url:"http://120.24.226.70:8082/yttx-providerbms-api/goodstypes",
+				url:"http://112.74.207.132:8082/yttx-providerbms-api/goodstypes",
 				dataType:'JSON',
 				async:false,
 				method:'post',
@@ -1604,7 +1604,7 @@
 				return isresult;
 			}
 			$.ajax({
-				url:"http://120.24.226.70:8082/yttx-providerbms-api/goods/tags/attrs",
+				url:"http://112.74.207.132:8082/yttx-providerbms-api/goods/tags/attrs",
 				dataType:'JSON',
 				async:false,
 				method:'post',
@@ -1929,7 +1929,7 @@
 		function getToken(){
 			var result=null;
 			$.ajax({
-				url:'http://120.24.226.70:8082/yttx-providerbms-api/qiniu/token/get',
+				url:'http://112.74.207.132:8082/yttx-providerbms-api/qiniu/token/get',
 				async:false,
 				type:'post',
 				datatype:'json',

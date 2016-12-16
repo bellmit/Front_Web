@@ -56,7 +56,7 @@
 		/*获取数据*/
 		function getDetailData(config){
 			$.ajax({
-				url:"http://120.24.226.70:8082/yttx-providerbms-api/goodsorder/details",
+				url:"http://112.74.207.132:8082/yttx-providerbms-api/goodsorder/details",
 				dataType:'JSON',
 				async:false,
 				method:'post',
