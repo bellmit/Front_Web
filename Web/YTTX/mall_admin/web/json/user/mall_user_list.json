@@ -12,7 +12,8 @@
       "loginCount":"5",
       "userType":"0",
       "isAdmin":"1",
-      "isEnabled":"1"
+      "isEnabled":"1",
+      "password":"2514646"
     },{
       "id":2,
       "nickName": "53685685",
@@ -23,7 +24,8 @@
       "loginCount":"24",
       "userType":"1",
       "isAdmin":"1",
-      "isEnabled":"1"
+      "isEnabled":"1",
+      "password":"3gfjwt56"
     },{
       "id":3,
       "nickName": "时间追不上白马",
@@ -34,7 +36,8 @@
       "loginCount":"346",
       "userType":"1",
       "isAdmin":"1",
-      "isEnabled":"0"
+      "isEnabled":"0",
+      "password":"6254745"
     },{
       "id":4,
       "nickName": "小雨它拍打着水花",
@@ -45,7 +48,8 @@
       "loginCount":"825",
       "userType":"0",
       "isAdmin":"0",
-      "isEnabled":"0"
+      "isEnabled":"0",
+      "password":"1564566"
     },{
       "id":5,
       "nickName": "在阳光灿烂日子开怀大笑",
@@ -56,7 +60,8 @@
       "loginCount":"825",
       "userType":"0",
       "isAdmin":"0",
-      "isEnabled":"1"
+      "isEnabled":"1",
+      "password":"247vj4572"
     }]
   }
 }

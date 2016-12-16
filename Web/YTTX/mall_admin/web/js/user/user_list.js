@@ -19,6 +19,11 @@
 				},
 				datatype:'json'
 			});
+
+			/*清除编辑数据*/
+			public_tool.removeParams('mall-user-add');
+
+
 			/*权限调用*/
 			var powermap=public_tool.getPower(),
 				enabled_power=public_tool.getKeyPower('user-enabled',powermap),
@@ -41,8 +46,6 @@
 					cancel:false
 				})/*一般提示对象*/,
 				$admin_page_wrap=$('#admin_page_wrap'),
-				$admin_goodsOrderId=$('#admin_goodsOrderId'),
-				$show_send_wrap=$('#show_send_wrap'),
 				sureObj=public_tool.sureDialog(dia)/*回调提示对象*/,
 				setSure=new sureObj();
 
@@ -327,29 +330,18 @@
 						operate_item=null;
 					}
 					operate_item=$tr.addClass('item-lighten');
-
-					var actionkey='';
-					if(action==='up'){
-						/*启用*/
-						actionkey='启用';
-					}else if(action==='down'){
-						/*禁用*/
-						actionkey='禁用';
-					}
-
-
 					/*确认是否启用或禁用*/
-					setSure.sure(actionkey,function(cf){
+					setSure.sure(action==='up'?'启用':'禁用',function(cf){
 						/*to do*/
-						var tip=cf.dia||dia;
-						setEnabled(id,action,tip);
+						setEnabled({
+							id:id,
+							action:action,
+							tip:cf.dia||dia,
+							$tr:$tr
+						});
 					});
 				}
 			});
-
-
-
-
 
 		}
 
@@ -365,20 +357,23 @@
 
 
 		/*启用禁用*/
-		function setEnabled(id,type,tips){
+		function setEnabled(obj){
+			var id=obj.id;
+
 			if(typeof id==='undefined'){
 				return false;
 			}
-			tips.content('<span class="g-c-bs-success g-btips-succ">'+actionkey+'成功</span>').show();
-			setTimeout(function () {
-				tips.close();
-			},2000);
+			var tip=obj.tip,
+				$tr=obj.$tr,
+				action=obj.action;
+
 			$.ajax({
 					url:"../../json/user/mall_user_list.json",
 					dataType:'JSON',
 					method:'post',
 					data:{
 						inboundId:id,
+						type:action,
 						roleId:decodeURIComponent(logininfo.param.roleId),
 						adminId:decodeURIComponent(logininfo.param.adminId),
 						token:decodeURIComponent(logininfo.param.token)
@@ -388,89 +383,33 @@
 					var code=parseInt(resp.code,10);
 					if(code!==0){
 						console.log(resp.message);
-						tips.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"操作失败")+'</span>').show();
+						tip.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"操作失败")+'</span>').show();
 						setTimeout(function () {
-							tips.close();
+							tip.close();
 						},2000);
 						return false;
 					}
 					/*是否是正确的返回数据*/
-					var result=resp.result;
-					if(!result){
-						return false;
-					}
-
-					/*判断是否是审核状态*/
-					var state=parseInt(result["auditState"],10),
-						statemap={
-							0:'待审核',
-							1:'审核通过',
-							2:'审核未通过'
-						};
-					if(state===0||state===2){
-						$show_detail_action.removeClass('g-d-hidei');
-					}else{
-						$show_detail_action.addClass('g-d-hidei');
-					}
-
-					/*设置值*/
-					$admin_id.val(id);
-					$('<tr>\
-						<td>'+(result["inboundNumber"]||'')+'</td>\
-						<td>'+(result["inboundTime"]||'')+'</td>\
-						<td>'+(result["warehouseName"]||'')+'</td>\
-						<td>'+(result["providerName"]||'')+'</td>\
-						<td>'+(result["remark"]||'')+'</td>\
-						'+(function () {
-							if(state===0){
-								return '<td data-id="'+state+'" class="g-c-bs-info">'+statemap[state]+'</td>';
-							}else if(state===1){
-								return '<td data-id="'+state+'" class="g-c-bs-success">'+statemap[state]+'</td>';
-							}else if(state===2){
-								return '<td data-id="'+state+'" class="g-c-gray10">'+statemap[state]+'</td>';
-							}else{
-								return '<td data-id="-1" class="g-c-red2">异常</td>';
-							}
-						}())+'</tr>').appendTo($show_detail_content.html(''));
-
-
-
-					var list=result['detailsList'],
-						str='',
-						i=0;
-
-					if(list){
-						var len=list.length;
-						if(len!==0){
-							for(i;i<len;i++){
-								var tempstorage=list[i];
-								str+='<tr>\
-								<td>'+parseInt(i+1,10)+'</td>\
-								<td>'+tempstorage["goodsId"]+'</td>\
-								<td>'+tempstorage["goodsName"]+'</td>\
-								<td>'+tempstorage["attributeName"]+'</td>\
-								<td>'+tempstorage["quantity"]+'</td>\
-								</tr>';
-							}
-							$(str).appendTo($show_detail_list.html(''));
-						}
-					}else{
-						$show_detail_content.html('');
-						$show_detail_list.html('');
-					}
 					/*添加高亮状态*/
-					if(operate_item){
-						operate_item.removeClass('item-lighten');
-						operate_item=null;
-					}
-					operate_item=$tr.addClass('item-lighten');
-					$show_detail_wrap.modal('show',{backdrop:'static'});
-				})
+					tip.content('<span class="g-c-bs-success g-btips-succ">'+(action==="up"?'启用':'禁用')+'成功</span>').show();
+					setTimeout(function () {
+						tip.close();
+						setTimeout(function () {
+							if(operate_item){
+								operate_item.removeClass('item-lighten');
+								operate_item=null;
+							}
+							operate_item=$tr.addClass('item-lighten');
+							/*请求数据*/
+							getColumnData(user_page,user_config);
+						},1000);
+					},1000);
+									})
 				.fail(function(resp){
 					console.log(resp.message);
-					dia.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"操作失败")+'</span>').show();
+					tip.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"操作失败")+'</span>').show();
 					setTimeout(function () {
-						dia.close();
+						tip.close();
 					},2000);
 				});
 		}
