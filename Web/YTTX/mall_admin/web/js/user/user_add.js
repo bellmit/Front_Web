@@ -21,7 +21,8 @@
 
 			/*权限调用*/
 			var powermap=public_tool.getPower(),
-				receiveedit_power=public_tool.getKeyPower('mall-purchase-receiving',powermap);
+				useradd_power=public_tool.getKeyPower('user-add',powermap),
+				useredit_power=public_tool.getKeyPower('user-update',powermap);
 
 
 
@@ -41,90 +42,148 @@
 				admin_adduser_form=document.getElementById('admin_adduser_form'),
 				$admin_adduser_form=$(admin_adduser_form),
 				$admin_id=$('#admin_id'),
-				$admin_orderNumber=$('#admin_orderNumber'),
-				$admin_orderTime=$('#admin_orderTime'),
-				$admin_orderState=$('#admin_orderState'),
-				$admin_print_btn=$('#admin_print_btn'),
-				$admin_receive_list=$('#admin_receive_list'),
-				$admin_receiveaction=$('#admin_receiveaction'),
-				$admin_allreceiveaction=$('#admin_allreceiveaction'),
-				$admin_already=$('#admin_already'),
-				$admin_total=$('#admin_total'),
-				$admin_text=$('#admin_text'),
-				$admin_need=$('#admin_need'),
+				$admin_telePhone=$('#admin_telePhone'),
+				$admin_password=$('#admin_password'),
+				$admin_nickName=$('#admin_nickName'),
+				$admin_Name=$('#admin_Name'),
+				$admin_birthday=$('#admin_birthday'),
+				$admin_sex=$('#admin_sex'),
+				$admin_enabled=$('#admin_enabled'),
+				$admin_logoImage=$('#admin_logoImage'),
+				$admin_action=$('#admin_action'),
 				resetform0=null;
+
+
+			/*上传对象*/
+			var logo_QN_Upload=new QiniuJsSDK(),
+				ImageUpload_Token=getToken()||null,
+				upload_bars= [];
 
 
 			/*重置表单*/
 			admin_adduser_form.reset();
 
 
-			/*打印*/
+			/*绑定logo上传*/
+			if(ImageUpload_Token!==null){
+				var logo_image_upload = logo_QN_Upload.uploader({
+					runtimes: 'html5,html4,flash,silverlight',
+					browse_button: 'admin_logoImage_file',
+					uptoken :ImageUpload_Token.qiniuToken,// uptoken是上传凭证，由其他程序生成
+					multi_selection:false,
+					get_new_uptoken: false,// 设置上传文件的时候是否每次都重新获取新的uptoken
+					unique_names:false,// 默认false，key为文件名。若开启该选项，JS-SDK会为每个文件自动生成key（文件名）
+					save_key:false,//默认false。若在服务端生成uptoken的上传策略中指定了sava_key，则开启，SDK在前端将不对key进行任何处理
+					domain:ImageUpload_Token.qiniuDomain,//bucket域名，下载资源时用到，必需
+					flash_swf_url: '../../js/plugins/plupload/Moxie.swf',//引入flash，相对路径
+					silverlight_xap_url : '../../js/plugins/plupload/Moxie.xap',
+					max_retries: 3,// 上传失败最大重试次数
+					dragdrop:false,
+					chunk_size: '2mb',
+					auto_start:true,
+					max_file_size : '500kb',
+					filters:{
+						mime_types: [
+							{
+								title : "Image files",
+								extensions : "jpg,gif,png,jpeg"
+							}
+						]
+					},
+					init: {
+						'PostInit': function() {},
+						'FilesAdded': function(up, file) {
+							var temp_bars=this.files.length,
+								j=0;
+							upload_bars.length=0;
+							for(j;j<temp_bars;j++){
+								upload_bars.push(this.files[j]['id']);
+							}
+						},
+						'BeforeUpload': function(up, file) {
+							show_loading_bar(30);
+						},
+						'UploadProgress': function(up, file) {},
+						'FileUploaded': function(up, file, info) {
+							/*获取上传成功后的文件的Url*/
 
+							var domain=up.getOption('domain'),
+								name=JSON.parse(info);
+
+							$admin_logoImage.attr({
+								'data-image':domain+'/'+name.key}).html('<img src="'+domain+'/'+name.key+"?imageView2/1/w/160/h/160"+'" alt="图像">');
+						},
+						'Error': function(up, err, errTip) {
+							dia.content('<span class="g-c-bs-warning g-btips-warn">'+errTip+'</span>').show();
+							setTimeout(function(){
+								dia.close();
+							},3000);
+							console.log(errTip);
+						},
+						'UploadComplete': function(up, file) {
+							dia.content('<span class="g-c-bs-success g-btips-succ">上传成功</span>').show();
+							upload_bars.length=0;
+							setTimeout(function(){
+								dia.close();
+							},2000);
+						},
+						'Key': function(up, file) {
+							/*调用滚动条*/
+							uploadShowBars(file['id']);
+							var str="pic_"+moment().format("YYYYMMDDHHmmSSSS");
+							return str;
+						}
+					}
+				});
+			}
+
+
+			/*格式化手机号码*/
+			$.each([$admin_telePhone],function(){
+				this.on('keyup',function(){
+					var phoneno=this.value.replace(/\D*/g,'');
+					if(phoneno===''){
+						this.value='';
+						return false;
+					}
+					this.value=public_tool.phoneFormat(this.value);
+				});
+			});
 			
-			/*绑定发货数量控制*/
-			doReceiveEvent();
 
-
-			/*绑定全单收货*/
-			$admin_allreceiveaction.on('change',function () {
-				var $this=$(this),
-					isselect=$this.is(':checked'),
-					$input=$admin_receive_list.find('input');
-
-				if(isselect){
-					/*设置单个值*/
-					$input.each(function () {
-						var $own=$(this);
-						$own.prop({
-							'disabled':true
-						}).addClass('admin-form-readonly');
-						receiveFilter($own,true);
-					});
-
-					/*设置合计*/
-					$admin_text.html($admin_need.attr('data-value'));
-					$admin_need.html(0);
-
-					/*解除邦输入事件*/
-					$admin_receive_list.off('keyup focusout','input');
-				}else {
-					$input.each(function () {
-						var $own=$(this),
-							$need=$own.parent().next();
-
-						$need.html($need.attr('data-value'));
-
-						$own.prop({
-							'disabled':false
-						}).removeClass('admin-form-readonly').val(0);
-						receiveFilter($own);
-					});
-
-					/*设置合计*/
-					$admin_text.html(0);
-					$admin_need.html($admin_need.attr('data-value'));
-
-					/*绑定输入*/
-					doReceiveEvent();
-				}
-
+			/*日历调用*/
+			$.each([$admin_birthday],function(){
+				this.val('').datepicker({
+					autoclose:true,
+					format: 'yyyy-mm-dd',
+					todayBtn: true,
+					endDate:moment().format('yyyy-mm-dd')
+				})
 			});
 
+			
 
 			/*获取编辑缓存*/
 			(function () {
-				var edit_cache=public_tool.getParams('mall-purchase-receive');
+				var edit_cache=public_tool.getParams('mall-user-add');
 				if(edit_cache){
-					/*查询数据*/
-					if(typeof edit_cache==='object'){
-						setReceiveData(edit_cache['id']);
+					if(useredit_power){
+						$admin_action.removeClass('g-d-hidei');
+						/*查询数据*/
+						if(typeof edit_cache==='object'){
+							setUserData(edit_cache['id']);
+						}else{
+							setUserData(edit_cache);
+						}
 					}else{
-						setReceiveData(edit_cache);
+						$admin_action.addClass('g-d-hidei');
 					}
 				}else{
-					$admin_receiveaction.parent().addClass('g-d-hidei');
-					$admin_allreceiveaction.parent().addClass('g-d-hidei');
+					if(useradd_power){
+						$admin_action.removeClass('g-d-hidei');
+					}else{
+						$admin_action.addClass('g-d-hidei');
+					}
 				}
 			}());
 
@@ -138,8 +197,7 @@
 					basedata={
 						roleId:decodeURIComponent(logininfo.param.roleId),
 						token:decodeURIComponent(logininfo.param.token),
-						adminId:decodeURIComponent(logininfo.param.adminId),
-						grade:decodeURIComponent(logininfo.param.grade)
+						adminId:decodeURIComponent(logininfo.param.adminId)
 					};
 
 
@@ -151,67 +209,50 @@
 							method:'post'
 						};
 						if(index===0){
-							formtype='storereceive';
+							formtype='useradd';
 						}
 						$.extend(true,(function () {
-							if(formtype==='storereceive'){
+							if(formtype==='useradd'){
 								return form_opt0;
 							}
 						}()),(function () {
-							if(formtype==='storereceive'){
+							if(formtype==='useradd'){
 								return formcache.form_opt_0;
 							}
 						}()),{
 							submitHandler: function(form){
 								var setdata={},
 									id=$admin_id.val(),
-									already=parseInt($admin_already.html(),10),
-									total=parseInt($admin_total.html(),10),
-									text=parseInt($admin_text.html(),10);
+									tempimg=$admin_logoImage.attr('data-image');
 
-								if(id===''||text===0){
-									dia.content('<span class="g-c-bs-warning g-btips-warn">没有收货订单数据</span>').show();
+
+								if(tempimg===''){
+									dia.content('<span class="g-c-bs-warning g-btips-warn">请先上传图像</span>').show();
 									setTimeout(function () {
 										dia.close();
 									},2000);
 									return false;
 								}
 
+
 								$.extend(true,setdata,basedata);
 
-								if(formtype==='storereceive'){
+								if(formtype==='useradd'){
 
 									/*同步编辑器*/
 									$.extend(true,setdata,{
 										orderId:$admin_id.val(),
-										detailsIdQuantlitys:(function () {
-											var $input=$admin_receive_list.find('input'),
-												receivelist=[];
-											$input.each(function () {
-												var $this=$(this),
-													tempid=$this.attr('data-id'),
-													value=$this.val();
-
-												receivelist.push(tempid+'#'+value);
-											});
-											return JSON.stringify(receivelist);
-										}())
+										telePhone:public_tool.trims($admin_telePhone.val()),
+										password:$admin_password.val(),
+										nickName:$admin_nickName.val(),
+										name:$admin_Name.val(),
+										sex:$admin_sex.find(':checked').val(),
+										enabled:$admin_enabled.find(':checked').val(),
+										logoImage:tempimg
 									});
 
-									/*判断状态*/
-									/*1 未收货 3 部分收货 5 已收货*/
-									if((already+text)===total){
-										setdata['orderState']=5;
-									}else{
-										if(already+text===0){
-											setdata['orderState']=1;
-										}else{
-											setdata['orderState']=3;
-										}
-									}
-
-
-									config['url']="http://120.76.237.100:8082/mall-agentbms-api/purchasing/orderaudited/delivered";
+									
+									config['url']="../../json/user/mall_user_list.json";
 									config['data']=setdata;
 
 								}
@@ -219,22 +260,28 @@
 
 								$.ajax(config).done(function(resp){
 									var code;
-									if(formtype==='storereceive'){
+									if(formtype==='useradd'){
+										var formkey='';
+										if(id===''){
+											formkey='修改';
+										}else{
+											formkey='添加';
+										}
 										code=parseInt(resp.code,10);
 										if(code!==0){
-											dia.content('<span class="g-c-bs-warning g-btips-warn">收货失败</span>').show();
+											dia.content('<span class="g-c-bs-warning g-btips-warn">'+formkey+'用户失败</span>').show();
 											return false;
 										}else{
-											dia.content('<span class="g-c-bs-success g-btips-succ">收货成功</span>').show();
+											dia.content('<span class="g-c-bs-success g-btips-succ">'+formkey+'用户成功</span>').show();
 										}
 									}
 
 
 									setTimeout(function () {
 										dia.close();
-										if(formtype==='storereceive'&&code===0){
+										if(formtype==='useradd'&&code===0){
 											/*页面跳转*/
-											location.href='mall-purchase-stats.html';
+											location.href='mall-user-list.html';
 										}
 									},2000);
 								}).fail(function(resp){
@@ -260,21 +307,20 @@
 		}
 
 		/*修改时设置值*/
-		function setReceiveData(id) {
+		function setUserData(id) {
 			if(!id){
 				return false;
 			}
 
 
 			$.ajax({
-					url:"http://120.76.237.100:8082/mall-agentbms-api/purchasing/orderaudited/view",
+					url:"../../json/user/mall_user_list.json",
 					dataType:'JSON',
 					method:'post',
 					data:{
 						"id":id,
 						"adminId":decodeURIComponent(logininfo.param.adminId),
-						"token":decodeURIComponent(logininfo.param.token),
-						"grade":decodeURIComponent(logininfo.param.grade)
+						"token":decodeURIComponent(logininfo.param.token)
 					}
 				})
 				.done(function(resp){
@@ -296,84 +342,60 @@
 						return false;
 					}
 
+					/*测试代码,正式环境去掉*/
+					list=list['list'][id - 1];
+
 					if(!$.isEmptyObject(list)){
 						$admin_id.val(id);
 						for(var m in list){
 							switch(m){
-								case 'orderNumber':
-									$admin_orderNumber.html('订单编号：'+list[m]);
+								case 'telePhone':
+									$admin_telePhone.val(public_tool.phoneFormat(list[m]));
 									break;
-								case 'orderTime':
-									$admin_orderTime.html('下单时间：'+list[m]);
+								case 'password':
+									$admin_password.val(list[m]);
 									break;
-								case 'orderState':
-									var statusmap={
-										1:'未收货',
-										3:'部分收货',
-										5:'已收货'
-									};
-									$admin_orderState.html('订单状态：'+statusmap[list[m]]);
+								case 'nickName':
+									$admin_nickName.val(list[m]);
 									break;
-								case 'detailsList':
-									var receivelist=list[m],
-										len=receivelist.length,
-										i=0,
-										str='',
-										total=0,
-										text=0,
-										need=0;
+								case 'Name':
+									$admin_Name.val(list[m]);
+									break;
+								case 'birthday':
+									$admin_birthday.val(list[m]);
+									break;
+								case 'sex':
+									$admin_sex.find('input').each(function(){
+										var $this=$(this),
+											text=parseInt($this.val(),10),
+											curtext=parseInt(list[m],10);
 
-									for(i;i<len;i++){
-										var temptotal=receivelist[i]["purchasingQuantlity"]||0,
-											tempneed=receivelist[i]["waitingQuantlity"]||0,
-											temptext=receivelist[i]["deliveredQuantlity"]||0;
-
-										if(temptotal===''||isNaN(temptotal)||temptotal<0){
-											temptotal=0;
+										if(text===curtext){
+											$this.prop({
+												'checked':true
+											});
+											return false;
 										}
-										if(tempneed===''||isNaN(tempneed)||tempneed<0){
-											tempneed=0;
-										}
-										if(temptext===''||isNaN(temptext)||temptext<0){
-											temptext=0;
-										}
-										temptotal=parseInt(temptotal,10);
-										tempneed=parseInt(tempneed,10);
-										temptext=parseInt(temptext,10);
+									});
+									break;
+								case 'isEnabled':
+									$admin_enabled.find('input').each(function(){
+										var $this=$(this),
+											text=parseInt($this.val(),10),
+											curtext=parseInt(list[m],10);
 
-										total+=temptotal;
-										need+=tempneed;
-
-										str+='<tr>\
-											<td>'+receivelist[i]["goodsName"]+'</td>\
-											<td>'+receivelist[i]["attributeName"]+'</td>\
-											<td class="g-c-info">'+temptext+'</td>\
-											<td class="g-c-gray3">'+temptotal+'</td>\
-											<td>\
-											<input type="text" maxlength="8" class="form-control" data-id="'+receivelist[i]["id"]+'" data-value="'+temptext+'" value="0" />\
-											</td>\
-											<td data-value="'+tempneed+'" class="g-c-succ">'+tempneed+'</td>\
-											</tr>';
-									}
-
-									if(len!==0){
-										text=total - need;
-										$admin_already.html(text);
-										$admin_total.html(total);
-										$admin_text.html(0);
-										$admin_need.html(need).attr({
-											'data-value':need
-										});
-										$(str).appendTo($admin_receive_list.html(''));
-										/*判断权限并查看是否已经是部分收货*/
-										if(text===total&&need===0){
-											$admin_receiveaction.parent().addClass('g-d-hidei');
-											$admin_allreceiveaction.parent().addClass('g-d-hidei');
-										}else{
-											$admin_receiveaction.parent().removeClass('g-d-hidei');
-											$admin_allreceiveaction.parent().removeClass('g-d-hidei');
+										if(text===curtext){
+											$this.prop({
+												'checked':true
+											});
+											return false;
 										}
-									}
+									});
+									break;
+								case 'logoImage':
+									$('<img src="'+list[m]+"?imageView2/1/w/160/h/160"+'" alt="图像">').appendTo($admin_logoImage.attr({
+										'data-image':list[m]
+									}).html(''));
 									break;
 							}
 						}
@@ -386,75 +408,50 @@
 		}
 
 
-
-		/*数据过滤*/
-		function receiveFilter($input,flag) {
-			var $parent=$input.parent(),
-				$total=$parent.prev(),
-				$need=$parent.next(),
-				filter=/\s*\D*/g,
-				total=$total.html().replace(filter,''),
-				text=0,
-				temptext=$input.attr('data-value'),
-				need=$need.attr('data-value').replace(filter,'');
-
-			if(total===''||isNaN(total)){
-				total=0;
-			}
-			total=parseInt(total,10);
-			if(need===''||isNaN(need)){
-				need=0;
-			}
-			need=parseInt(need,10);
-			if(temptext===''||isNaN(temptext)){
-				temptext=0;
-			}
-			temptext=parseInt(temptext,10);
-
-			if(flag){
-				$need.html(0);
-				$input.val(need);
-			}else{
-				text=$input.val().replace(filter,'');
-				if(text===''||isNaN(text)){
-					text=0;
+		/*获取七牛token*/
+		function getToken(){
+			var result=null;
+			$.ajax({
+				url:'http://120.76.237.100:8082/yttx-providerbms-api/qiniu/token/get',
+				async:false,
+				type:'post',
+				datatype:'json',
+				data:{
+					bizType:2,
+					adminId:decodeURIComponent(logininfo.param.adminId),
+					userId:decodeURIComponent(logininfo.param.userId),
+					token:decodeURIComponent(logininfo.param.token)
 				}
-				text=parseInt(text,10);
-				if(text>need){
-					text=need;
-				}else if(text<0){
-					text=0;
+			}).done(function(resp){
+				var code=parseInt(resp.code,10);
+				if(code!==0){
+					console.log(resp.message);
+					return false;
 				}
-				$need.html(total - temptext - text);
-				$input.val(text);
-			}
-		}
-
-
-
-		/*事件绑定*/
-		function doReceiveEvent() {
-			$admin_receive_list.on('keyup focusout','input',function (e) {
-				var etype=e.type,
-					$input=$(this);
-
-				if(etype==='keyup'){
-					receiveFilter($input);
-				}else if(etype==='focusout'){
-					var $last=$admin_receive_list.find('tr'),
-						need=0;
-
-					$last.each(function (index) {
-						var $this=$last.eq(index).find('td:last-child');
-						need+=parseInt($this.html(),10);
-					});
-
-					$admin_need.html(need);
-					$admin_text.html(parseInt($admin_need.attr('data-value'),10) - need);
-				}
+				result=resp.result;
+			}).fail(function(resp){
+				console.log(resp.message);
 			});
+			return result;
 		}
 
+
+		/*上传进度条*/
+		function uploadShowBars(id){
+			var len=upload_bars.length;
+			if(len>0){
+				var j= 0;
+				for(j;j<len;j++){
+					if(upload_bars[j]===id){
+						var bars=parseInt(((j+1)/len) * 100,10);
+						setTimeout(function(){
+							show_loading_bar(bars);
+						},0);
+						break;
+					}
+				}
+			}
+		}
 
 
 

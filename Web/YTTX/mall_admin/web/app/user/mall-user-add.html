@@ -4,10 +4,10 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0,maximum-scale=1">
-    <meta name="description" content="布住网后台管理系统--订单管理--收货" />
-    <meta name="keywords" content="布住网后台管理系统--订单管理--收货">
+    <meta name="description" content="布住网后台管理系统--用户管理--新增(修改)用户" />
+    <meta name="keywords" content="布住网后台管理系统--用户管理--新增(修改)用户">
     <meta name="author" content="yp" />
-    <title>布住网后台管理系统--订单管理--收货</title>
+    <title>布住网后台管理系统--用户管理--新增(修改)用户</title>
     <link href="../../images/logo_icon.ico" rel="icon">
     <link rel="stylesheet" href="../../css/base.css">
     <link rel="stylesheet" href="../../css/admin.css">
@@ -85,13 +85,13 @@
         <!--主题描述-->
         <div class="page-title">
             <div class="title-env">
-                <h1 class="title">订单管理</h1>
-                <p class="description">收货</p>
+                <h1 class="title">用户管理</h1>
+                <p class="description">新增(修改)用户</p>
             </div>
             <div class="breadcrumb-env">
                 <ol class="breadcrumb bc-1">
-                    <li><a href=""><i class="fa-home"></i>订单管理</a></li>
-                    <li class="active"><strong>收货</strong></li>
+                    <li><a href=""><i class="fa-home"></i>用户管理</a></li>
+                    <li class="active"><strong>新增(修改)用户</strong></li>
                 </ol>
             </div>
         </div>
@@ -143,14 +143,20 @@
                             </div>
 
 
+                            <div class="form-group">
+                                <label class="control-label"><span class="form-require-item g-c-red1">*</span>出生日期：</label>
+                                <input type="text" class="form-control" name="birthday" placeholder="请选择出生日期" readonly data-validate="required" data-message-required="出生日期不能为空"  id="admin_birthday" />
+                            </div>
+
+
                             <div class="form-group" >
                                 <label class="control-label"><span class="form-require-item g-c-red1">*</span>性别：</label>
-                                <div class="form-control g-bl-none g-bt-none g-br-none self-error-pos-wrap" id="admin_sex">
-                                    <label>
-                                        男：&nbsp;<input class="self-error-pos" type="radio" checked value="0" name="sex" data-validate="required" data-message-required="请选择性别"  />
+                                <div class="self-error-pos-wrap" id="admin_sex">
+                                    <label class="btn btn-white g-br3">
+                                        男：&nbsp;<input class="self-error-pos" checked type="radio" value="0" name="sex" data-validate="required" data-message-required="请选择性别"  />
                                     </label>
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    <label>
+                                    <label class="btn btn-white g-br3">
                                         女：&nbsp;<input type="radio" class="self-error-pos" name="sex" data-validate="required" value="1" data-message-required="请选择性别"/>
                                     </label>
                                 </div>
@@ -158,12 +164,12 @@
 
                             <div class="form-group" >
                                 <label class="control-label"><span class="form-require-item g-c-red1">*</span>是否可用：</label>
-                                <div class="form-control  g-bl-none g-bt-none g-br-none self-error-pos-wrap" id="admin_enabled">
-                                    <label>
+                                <div class="self-error-pos-wrap" id="admin_enabled">
+                                    <label class="btn btn-white g-br3">
                                         是：&nbsp;<input type="radio" class="self-error-pos" checked value="1" name="enabled" data-validate="required" data-message-required="请选择是否可用"  />
                                     </label>
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    <label>
+                                    <label class="btn btn-white g-br3">
                                         否：&nbsp;<input type="radio" class="self-error-pos" name="enabled" data-validate="required" value="0" data-message-required="请选择是否可用"/>
                                     </label>
                                 </div>
@@ -172,10 +178,9 @@
 
                             <div class="form-group">
                                 <label class="control-label">图像：</label>
-                                <div class="admin-rpos-wrap g-w-number16">
-                                    <div class="form-control admin-image-view" data-image="" id="admin_logoImage"></div><input class="admin-input-file" type="file" />
-                                    <button type="button"  id="admin_logoImage_file" data-value="" class="btn btn-success" style="position:absolute;right:70px;bottom:-5px;">浏览</button>
-                                    <button type="button"  id="admin_logoImage_btn" class="btn btn-success"  style="position:absolute;right:5px;bottom:-5px;">更改</button>
+                                <div class="admin-rpos-wrap g-w-percent50">
+                                    <div class="form-control admin-image-view" data-image="" id="admin_logoImage"></div>
+                                    <button type="button"  id="admin_logoImage_file" data-value="" class="btn btn-white" style="position:absolute;right:5px;bottom:-5px;">浏览</button>
                                 </div>
                             </div>
 
@@ -268,6 +273,10 @@
 
 <script src="../../js/common/base.js"></script>
 <script src="../../js/common/common.js"></script>
+<script src="../../js/plugins/datepicker/datepicker.js"></script>
+<script src="../../js/plugins/plupload/plupload.full.min.js"></script>
+<script src="../../js/plugins/plupload/i18n/zh_CN.js"></script>
+<script src="../../js/plugins/qn/qiniu.min.js"></script>
 <!--表单验证插件-->
 <script src="../../js/plugins/jquery-validate/jquery.validate.js"></script>
 <script src="../../js/user/user_add.js"></script>

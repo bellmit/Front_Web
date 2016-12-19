@@ -408,6 +408,7 @@
 				warehouseId=idobj.warehouseId,
 				isedit=false,
 				params={
+					roleId:decodeURIComponent(logininfo.param.roleId),
 					adminId:decodeURIComponent(logininfo.param.adminId),
 					token:decodeURIComponent(logininfo.param.token),
 					grade:decodeURIComponent(logininfo.param.grade),
