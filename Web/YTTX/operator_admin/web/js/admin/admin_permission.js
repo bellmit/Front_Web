@@ -9,7 +9,7 @@
 			var logininfo=public_tool.initMap.loginMap,
 				roleid=decodeURIComponent(logininfo.param.roleId);
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
-				url:'http://112.74.207.132:8082/mall-agentbms-api/module/menu',
+				url:'http://120.76.237.100:8082/mall-agentbms-api/module/menu',
 				async:false,
 				type:'post',
 				param:{
@@ -87,7 +87,7 @@
 
 			/*权限请求配置*/
 			var permission_config={
-						url:"http://112.74.207.132:8082/mall-agentbms-api/module/permissions",
+						url:"http://120.76.237.100:8082/mall-agentbms-api/module/permissions",
 						dataType:'JSON',
 						method:'post',
 						data:{
@@ -114,7 +114,7 @@
 				stateSave:false,/*是否保存重新加载的状态*/
 				processing:true,/*大消耗操作时是否显示处理状态*/
 				ajax:{
-					url:"http://112.74.207.132:8082/mall-agentbms-api/roles",
+					url:"http://120.76.237.100:8082/mall-agentbms-api/roles",
 					dataType:'JSON',
 					method:'post',
 					dataSrc:function ( json ) {
@@ -361,7 +361,7 @@
 
 				/*发送请求*/
 				$.ajax({
-						url:"http://112.74.207.132:8082/mall-agentbms-api/permission/state/update",
+						url:"http://120.76.237.100:8082/mall-agentbms-api/permission/state/update",
 						dataType:'JSON',
 						method:'post',
 						data:{

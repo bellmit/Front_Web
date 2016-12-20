@@ -7,7 +7,7 @@
 			/*菜单调用*/
 			var logininfo=public_tool.initMap.loginMap;
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
-				url:'http://112.74.207.132:8082/mall-agentbms-api/module/menu',
+				url:'http://120.76.237.100:8082/mall-agentbms-api/module/menu',
 				async:false,
 				type:'post',
 				param:{
@@ -102,7 +102,7 @@
 					issamename=false;
 					if(username!==''){
 						$.ajax({
-							url:"http://112.74.207.132:8082/mall-agentbms-api/sysuser/check",
+							url:"http://120.76.237.100:8082/mall-agentbms-api/sysuser/check",
 							dataType:'JSON',
 							method:'post',
 							data:{
@@ -283,7 +283,7 @@
 										actiontype='新增';
                                         delete setdata['id'];
                                     }
-									config['url']="http://112.74.207.132:8082/mall-agentbms-api/agent/addupdate";
+									config['url']="http://120.76.237.100:8082/mall-agentbms-api/agent/addupdate";
 									config['data']=setdata;
 								}
 
@@ -426,7 +426,7 @@
 
 			/*查询上级运营商ID*/
 			$.ajax({
-				url:"http://112.74.207.132:8082/mall-agentbms-api/agent/role/check",
+				url:"http://120.76.237.100:8082/mall-agentbms-api/agent/role/check",
 				dataType:'JSON',
 				method:'post',
 				data:{
@@ -569,7 +569,7 @@
 
 
 			$.ajax({
-				url:"http://112.74.207.132:8082/mall-agentbms-api/agent/detail",
+				url:"http://120.76.237.100:8082/mall-agentbms-api/agent/detail",
 				dataType:'JSON',
 				method:'post',
 				data:{
@@ -702,7 +702,7 @@
 		/*查询业务员Id*/
 		function getSalesmanId() {
 			$.ajax({
-				url:"http://112.74.207.132:8082/mall-agentbms-api/salesmans/notused",
+				url:"http://120.76.237.100:8082/mall-agentbms-api/salesmans/notused",
 				dataType:'JSON',
 				method:'post',
 				data:{

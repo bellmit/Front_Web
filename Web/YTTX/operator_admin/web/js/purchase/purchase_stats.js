@@ -9,7 +9,7 @@
 			/*菜单调用*/
 			var logininfo=public_tool.initMap.loginMap;
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
-				url:'http://112.74.207.132:8082/mall-agentbms-api/module/menu',
+				url:'http://120.76.237.100:8082/mall-agentbms-api/module/menu',
 				async:false,
 				type:'post',
 				param:{
@@ -72,7 +72,7 @@
 						autoWidth:true,/*是否*/
 						paging:false,
 						ajax:{
-							url:"http://112.74.207.132:8082/mall-agentbms-api/purchasing/orderaudited/list",
+							url:"http://120.76.237.100:8082/mall-agentbms-api/purchasing/orderaudited/list",
 							dataType:'JSON',
 							method:'post',
 							dataSrc:function ( json ) {
@@ -139,6 +139,7 @@
 								"render":function(data, type, full, meta ){
 									var stauts=parseInt(data,10),
 										statusmap={
+											0:"待发货",
 											1:"未收货",
 											3:"部分收货",
 											5:"已收货"
@@ -151,6 +152,8 @@
 										str='<div class="g-c-gray6">'+statusmap[stauts]+'</div>';
 									}else if(stauts===1){
 										str='<div class="g-c-red2">'+statusmap[stauts]+'</div>';
+									}else if(stauts===0){
+										str='<div class="g-c-warn">'+statusmap[stauts]+'</div>';
 									}
 									return str;
 								}
@@ -162,7 +165,7 @@
 										btns='',
 										state=parseInt(full.orderState,10);
 
-									if(receive_power&&state!==5){
+									if(receive_power&&(state===1||state===3)){
 										btns+='<span data-action="receive" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 											<i class="fa-file-text-o"></i>\
 											<span>收货</span>\
@@ -274,7 +277,7 @@
 							/*展开*/
 							if(subitem===''){
 								$.ajax({
-										url:"http://112.74.207.132:8082/mall-agentbms-api/purchasing/orderaudited/details",
+										url:"http://120.76.237.100:8082/mall-agentbms-api/purchasing/orderaudited/details",
 										dataType:'JSON',
 										method:'post',
 										data:{

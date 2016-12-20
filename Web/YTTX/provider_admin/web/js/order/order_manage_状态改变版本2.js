@@ -6,9 +6,10 @@
 
 		var tableall=null,
 			tabledfk=null,
-			tablewsh=null,
-			tablebfsh=null,
-			tableysh=null/*数据展现*/;
+			tableyfk=null,
+			tabledsh=null,
+			tabledpj=null,
+			tableth=null/*数据展现*/;
 
 		/*初始化数据*/
 		if(public_tool.initMap.isrender){
@@ -29,15 +30,17 @@
 			/*dom引用和相关变量定义*/
 			var $admin_dataall=$('#admin_dataall'),
 				$admin_datadfk=$('#admin_datadfk'),
-				$admin_datawsh=$('#admin_datawsh'),
-				$admin_databfsh=$('#admin_databfsh'),
-				$admin_dataysh=$('#admin_dataysh'),
+				$admin_datayfk=$('#admin_datayfk'),
+				$admin_datadsh=$('#admin_datadsh'),
+				$admin_datadpj=$('#admin_datadpj'),
+				$admin_datath=$('#admin_datath'),
 				$search_orderState=$('#search_orderState'),
 				$goods_manage_wrapall=$('#goods_manage_wrapall'),
 				$goods_manage_wrapdfk=$('#goods_manage_wrapdfk'),
-				$goods_manage_wrapwsh=$('#goods_manage_wrapwsh'),
-				$goods_manage_wrapbfsh=$('#goods_manage_wrapbfsh'),
-				$goods_manage_wrapysh=$('#goods_manage_wrapysh'),
+				$goods_manage_wrapyfk=$('#goods_manage_wrapyfk'),
+				$goods_manage_wrapdsh=$('#goods_manage_wrapdsh'),
+				$goods_manage_wrapdpj=$('#goods_manage_wrapdpj'),
+				$goods_manage_wrapth=$('#goods_manage_wrapth'),
 				module_id='yttx-order-manage'/*模块id，主要用于本地存储传值*/,
 				dia=dialog({
 					zIndex:2000,
@@ -52,9 +55,10 @@
 				})/*一般提示对象*/,
 				$admin_page_wrapall=$('#admin_page_wrapall'),
 				$admin_page_wrapdfk=$('#admin_page_wrapdfk')/*分页数据*/,
-				$admin_page_wrapwsh=$('#admin_page_wrapwsh'),
-				$admin_page_wrapbfsh=$('#admin_page_wrapbfsh'),
-				$admin_page_wrapysh=$('#admin_page_wrapysh'),
+				$admin_page_wrapyfk=$('#admin_page_wrapyfk'),
+				$admin_page_wrapdsh=$('#admin_page_wrapdsh'),
+				$admin_page_wrapdpj=$('#admin_page_wrapdpj'),
+				$admin_page_wrapth=$('#admin_page_wrapth'),
 				admin_send_form=document.getElementById('admin_send_form'),
 				$admin_send_form=$(admin_send_form),
 				$admin_sendid=$('#admin_sendid'),
@@ -68,27 +72,32 @@
 			/*列表请求配置*/
 			var ordermanage_pageall={
 					page:1,
-					pageSize:5,
+					pageSize:10,
 					total:0
 				},
 				ordermanage_pagedfk={
 					page:1,
-					pageSize:5,
+					pageSize:10,
 					total:0
 				},
-				ordermanage_pagewsh={
+				ordermanage_pageyfk={
 					page:1,
-					pageSize:5,
+					pageSize:10,
 					total:0
 				},
-				ordermanage_pagebfsh={
+				ordermanage_pagedsh={
 					page:1,
-					pageSize:5,
+					pageSize:10,
 					total:0
 				},
-				ordermanage_pageysh={
+				ordermanage_pagedpj={
 					page:1,
-					pageSize:5,
+					pageSize:10,
+					total:0
+				},
+				ordermanage_pageth={
+					page:1,
+					pageSize:10,
 					total:0
 				},
 				ordermanage_configall={
@@ -100,7 +109,7 @@
 						autoWidth:true,/*是否*/
 						paging:false,
 						ajax:{
-							url:"http://112.74.207.132:8082/yttx-providerbms-api/goodsorder/list",
+							url:/*"../../json/goods/goods_list.json"*/"http://112.74.207.132:8082/yttx-providerbms-api/goodsorder/list",
 							dataType:'JSON',
 							method:'post',
 							dataSrc:function ( json ) {
@@ -117,9 +126,6 @@
 									return [];
 								}
 								var result=json.result;
-								if(typeof result==='undefined'){
-									return [];
-								}
 								/*设置分页*/
 								ordermanage_pageall.page=result.page;
 								ordermanage_pageall.pageSize=result.pageSize;
@@ -145,23 +151,13 @@
 								userId:userId,
 								token:token,
 								page:1,
-								pageSize:5
+								pageSize:10
 							}
-						},
-						fnDrawCallback:function(){
-							this.api().column(0).nodes().each(function(cell, i) {
-								cell.innerHTML =  i + 1;
-							});
 						},
 						info:false,
 						searching:true,
-						order: [[ 4, 'desc' ]],
+						ordering:true,
 						columns: [
-							{
-								"data":null,
-								"orderable" :false,
-								"searchable" :false
-							},
 							{
 								"data":"orderNumber"
 							},
@@ -260,8 +256,7 @@
 											<span>查看</span>\
 											</span>';
 									return btns;
-								},
-								"orderable" : false
+								}
 							}
 						]
 					}
@@ -275,7 +270,7 @@
 						autoWidth:true,/*是否*/
 						paging:false,
 						ajax:{
-							url:"http://112.74.207.132:8082/yttx-providerbms-api/goodsorder/list",
+							url:/*"../../json/goods/goods_list.json"*/"http://112.74.207.132:8082/yttx-providerbms-api/goodsorder/list",
 							dataType:'JSON',
 							method:'post',
 							dataSrc:function ( json ) {
@@ -292,9 +287,6 @@
 									return [];
 								}
 								var result=json.result;
-								if(typeof result==='undefined'){
-									return [];
-								}
 								/*设置分页*/
 								ordermanage_pagedfk.page=result.page;
 								ordermanage_pagedfk.pageSize=result.pageSize;
@@ -321,23 +313,13 @@
 								token:token,
 								orderState:0,
 								page:1,
-								pageSize:5
+								pageSize:10
 							}
-						},
-						fnDrawCallback:function(){
-							this.api().column(0).nodes().each(function(cell, i) {
-								cell.innerHTML =  i + 1;
-							});
 						},
 						info:false,
 						searching:true,
-						order: [[ 4, 'desc' ]],
+						ordering:true,
 						columns: [
-							{
-								"data":null,
-								"orderable" :false,
-								"searchable" :false
-							},
 							{
 								"data":"orderNumber"
 							},
@@ -405,22 +387,21 @@
 											<span>查看</span>\
 											</span>';
 									return btns;
-								},
-								"orderable" : false
+								}
 							}
 						]
 					}
 				},
-				ordermanage_configwsh={
-					$goods_manage_wrapwsh:$goods_manage_wrapwsh,
-					$admin_page_wrapwsh:$admin_page_wrapwsh,
+				ordermanage_configyfk={
+					$goods_manage_wrapyfk:$goods_manage_wrapyfk,
+					$admin_page_wrapyfk:$admin_page_wrapyfk,
 					config:{
 						processing:true,/*大消耗操作时是否显示处理状态*/
 						deferRender:true,/*是否延迟加载数据*/
 						autoWidth:true,/*是否*/
 						paging:false,
 						ajax:{
-							url:"http://112.74.207.132:8082/yttx-providerbms-api/goodsorder/list",
+							url:/*"../../json/goods/goods_list.json"*/"http://112.74.207.132:8082/yttx-providerbms-api/goodsorder/list",
 							dataType:'JSON',
 							method:'post',
 							dataSrc:function ( json ) {
@@ -437,25 +418,22 @@
 									return [];
 								}
 								var result=json.result;
-								if(typeof result==='undefined'){
-									return [];
-								}
 								/*设置分页*/
-								ordermanage_pagewsh.page=result.page;
-								ordermanage_pagewsh.pageSize=result.pageSize;
-								ordermanage_pagewsh.total=result.count;
+								ordermanage_pageyfk.page=result.page;
+								ordermanage_pageyfk.pageSize=result.pageSize;
+								ordermanage_pageyfk.total=result.count;
 								/*分页调用*/
-								$admin_page_wrapwsh.pagination({
-									pageSize:ordermanage_pagewsh.pageSize,
-									total:ordermanage_pagewsh.total,
-									pageNumber:ordermanage_pagewsh.page,
+								$admin_page_wrapyfk.pagination({
+									pageSize:ordermanage_pageyfk.pageSize,
+									total:ordermanage_pageyfk.total,
+									pageNumber:ordermanage_pageyfk.page,
 									onSelectPage:function(pageNumber,pageSize){
 										/*再次查询*/
-										var param=ordermanage_configwsh.config.ajax.data;
+										var param=ordermanage_configyfk.config.ajax.data;
 										param.page=pageNumber;
 										param.pageSize=pageSize;
-										ordermanage_configwsh.config.ajax.data=param;
-										getColumnDatawsh(ordermanage_pagewsh,ordermanage_configwsh);
+										ordermanage_configyfk.config.ajax.data=param;
+										getColumnDatayfk(ordermanage_pageyfk,ordermanage_configyfk);
 									}
 								});
 								return result.list;
@@ -464,25 +442,15 @@
 								providerId:providerId,
 								userId:userId,
 								token:token,
-								orderState:1,
+								orderState:6,
 								page:1,
-								pageSize:5
+								pageSize:10
 							}
-						},
-						fnDrawCallback:function(){
-							this.api().column(0).nodes().each(function(cell, i) {
-								cell.innerHTML =  i + 1;
-							});
 						},
 						info:false,
 						searching:true,
-						order: [[ 4, 'desc' ]],
+						ordering:true,
 						columns: [
-							{
-								"data":null,
-								"orderable" :false,
-								"searchable" :false
-							},
 							{
 								"data":"orderNumber"
 							},
@@ -550,22 +518,21 @@
 											<span>查看</span>\
 											</span>';
 									return btns;
-								},
-								"orderable" : false
+								}
 							}
 						]
 					}
 				},
-				ordermanage_configbfsh={
-					$goods_manage_wrapbfsh:$goods_manage_wrapbfsh,
-					$admin_page_wrapbfsh:$admin_page_wrapbfsh,
+				ordermanage_configdsh={
+					$goods_manage_wrapdsh:$goods_manage_wrapdsh,
+					$admin_page_wrapdsh:$admin_page_wrapdsh,
 					config:{
 						processing:true,/*大消耗操作时是否显示处理状态*/
 						deferRender:true,/*是否延迟加载数据*/
 						autoWidth:true,/*是否*/
 						paging:false,
 						ajax:{
-							url:"http://112.74.207.132:8082/yttx-providerbms-api/goodsorder/list",
+							url:/*"../../json/goods/goods_list.json"*/"http://112.74.207.132:8082/yttx-providerbms-api/goodsorder/list",
 							dataType:'JSON',
 							method:'post',
 							dataSrc:function ( json ) {
@@ -582,25 +549,22 @@
 									return [];
 								}
 								var result=json.result;
-								if(typeof result==='undefined'){
-									return [];
-								}
 								/*设置分页*/
-								ordermanage_pagebfsh.page=result.page;
-								ordermanage_pagebfsh.pageSize=result.pageSize;
-								ordermanage_pagebfsh.total=result.count;
+								ordermanage_pagedsh.page=result.page;
+								ordermanage_pagedsh.pageSize=result.pageSize;
+								ordermanage_pagedsh.total=result.count;
 								/*分页调用*/
-								$admin_page_wrapbfsh.pagination({
-									pageSize:ordermanage_pagebfsh.pageSize,
-									total:ordermanage_pagebfsh.total,
-									pageNumber:ordermanage_pagebfsh.page,
+								$admin_page_wrapdsh.pagination({
+									pageSize:ordermanage_pagedsh.pageSize,
+									total:ordermanage_pagedsh.total,
+									pageNumber:ordermanage_pagedsh.page,
 									onSelectPage:function(pageNumber,pageSize){
 										/*再次查询*/
-										var param=ordermanage_configbfsh.config.ajax.data;
+										var param=ordermanage_configdsh.config.ajax.data;
 										param.page=pageNumber;
 										param.pageSize=pageSize;
-										ordermanage_configbfsh.config.ajax.data=param;
-										getColumnDatabfsh(ordermanage_pagebfsh,ordermanage_configbfsh);
+										ordermanage_configdsh.config.ajax.data=param;
+										getColumnDatadsh(ordermanage_pagedsh,ordermanage_configdsh);
 									}
 								});
 								return result.list;
@@ -609,25 +573,15 @@
 								providerId:providerId,
 								userId:userId,
 								token:token,
-								orderState:3,
+								orderState:9,
 								page:1,
-								pageSize:5
+								pageSize:10
 							}
-						},
-						fnDrawCallback:function(){
-							this.api().column(0).nodes().each(function(cell, i) {
-								cell.innerHTML =  i + 1;
-							});
 						},
 						info:false,
 						searching:true,
-						order: [[ 4, 'desc' ]],
+						ordering:true,
 						columns: [
-							{
-								"data":null,
-								"orderable" :false,
-								"searchable" :false
-							},
 							{
 								"data":"orderNumber"
 							},
@@ -695,22 +649,21 @@
 											<span>查看</span>\
 											</span>';
 									return btns;
-								},
-								"orderable" : false
+								}
 							}
 						]
 					}
 				},
-				ordermanage_configysh={
-					$goods_manage_wrapysh:$goods_manage_wrapysh,
-					$admin_page_wrapysh:$admin_page_wrapysh,
+				ordermanage_configdpj={
+					$goods_manage_wrapdpj:$goods_manage_wrapdpj,
+					$admin_page_wrapdpj:$admin_page_wrapdpj,
 					config:{
 						processing:true,/*大消耗操作时是否显示处理状态*/
 						deferRender:true,/*是否延迟加载数据*/
 						autoWidth:true,/*是否*/
 						paging:false,
 						ajax:{
-							url:"http://112.74.207.132:8082/yttx-providerbms-api/goodsorder/list",
+							url:/*"../../json/goods/goods_list.json"*/"http://112.74.207.132:8082/yttx-providerbms-api/goodsorder/list",
 							dataType:'JSON',
 							method:'post',
 							dataSrc:function ( json ) {
@@ -727,25 +680,22 @@
 									return [];
 								}
 								var result=json.result;
-								if(typeof result==='undefined'){
-									return [];
-								}
 								/*设置分页*/
-								ordermanage_pageysh.page=result.page;
-								ordermanage_pageysh.pageSize=result.pageSize;
-								ordermanage_pageysh.total=result.count;
+								ordermanage_pagedpj.page=result.page;
+								ordermanage_pagedpj.pageSize=result.pageSize;
+								ordermanage_pagedpj.total=result.count;
 								/*分页调用*/
-								$admin_page_wrapysh.pagination({
-									pageSize:ordermanage_pageysh.pageSize,
-									total:ordermanage_pageysh.total,
-									pageNumber:ordermanage_pageysh.page,
+								$admin_page_wrapdpj.pagination({
+									pageSize:ordermanage_pagedpj.pageSize,
+									total:ordermanage_pagedpj.total,
+									pageNumber:ordermanage_pagedpj.page,
 									onSelectPage:function(pageNumber,pageSize){
 										/*再次查询*/
-										var param=ordermanage_configysh.config.ajax.data;
+										var param=ordermanage_configdpj.config.ajax.data;
 										param.page=pageNumber;
 										param.pageSize=pageSize;
-										ordermanage_configysh.config.ajax.data=param;
-										getColumnDataysh(ordermanage_pageysh,ordermanage_configysh);
+										ordermanage_configdpj.config.ajax.data=param;
+										getColumnDatadpj(ordermanage_pagedpj,ordermanage_configdpj);
 									}
 								});
 								return result.list;
@@ -754,25 +704,15 @@
 								providerId:providerId,
 								userId:userId,
 								token:token,
-								orderState:5,
+								orderState:20,
 								page:1,
-								pageSize:5
+								pageSize:10
 							}
-						},
-						fnDrawCallback:function(){
-							this.api().column(0).nodes().each(function(cell, i) {
-								cell.innerHTML =  i + 1;
-							});
 						},
 						info:false,
 						searching:true,
-						order: [[ 4, 'desc' ]],
+						ordering:true,
 						columns: [
-							{
-								"data":null,
-								"orderable" :false,
-								"searchable" :false
-							},
 							{
 								"data":"orderNumber"
 							},
@@ -840,8 +780,138 @@
 											<span>查看</span>\
 											</span>';
 									return btns;
-								},
-								"orderable" : false
+								}
+							}
+						]
+					}
+				},
+				ordermanage_configth={
+					$goods_manage_wrapth:$goods_manage_wrapth,
+					$admin_page_wrapth:$admin_page_wrapth,
+					config:{
+						processing:true,/*大消耗操作时是否显示处理状态*/
+						deferRender:true,/*是否延迟加载数据*/
+						autoWidth:true,/*是否*/
+						paging:false,
+						ajax:{
+							url:/*"../../json/goods/goods_list.json"*/"http://112.74.207.132:8082/yttx-providerbms-api/goodsorder/list",
+							dataType:'JSON',
+							method:'post',
+							dataSrc:function ( json ) {
+								var code=parseInt(json.code,10);
+								if(code!==0){
+									if(code===999){
+										/*清空缓存*/
+										public_tool.loginTips(function () {
+											public_tool.clear();
+											public_tool.clearCacheData();
+										});
+									}
+									console.log(json.message);
+									return [];
+								}
+								var result=json.result;
+								/*设置分页*/
+								ordermanage_pageth.page=result.page;
+								ordermanage_pageth.pageSize=result.pageSize;
+								ordermanage_pageth.total=result.count;
+								/*分页调用*/
+								$admin_page_wrapth.pagination({
+									pageSize:ordermanage_pageth.pageSize,
+									total:ordermanage_pageth.total,
+									pageNumber:ordermanage_pageth.page,
+									onSelectPage:function(pageNumber,pageSize){
+										/*再次查询*/
+										var param=ordermanage_configth.config.ajax.data;
+										param.page=pageNumber;
+										param.pageSize=pageSize;
+										ordermanage_configth.config.ajax.data=param;
+										getColumnDatath(ordermanage_pageth,ordermanage_configth);
+									}
+								});
+								return result.list;
+							},
+							data:{
+								providerId:providerId,
+								userId:userId,
+								token:token,
+								orderState:40,
+								page:1,
+								pageSize:10
+							}
+						},
+						info:false,
+						searching:true,
+						ordering:true,
+						columns: [
+							{
+								"data":"orderNumber"
+							},
+							{
+								"data":"list",
+								"render":function(data, type, full, meta ){
+									var goodsobj=data;
+									if(!goodsobj){
+										return '暂无商品信息';
+									}
+									var len=goodsobj.length;
+									if(len===0){
+										return '暂无商品信息';
+									}
+									var str='',
+										i=0;
+									for(i;i<len;i++){
+										var goodsitem=goodsobj[i];
+										str+='<ul data-id="'+parseInt(i + 1,10)+'" class="admin-order-subitem1">\
+											<li>商品名称:<div  class="g-c-gray6">'+goodsitem["goodsName"]+'</div></li>\
+											<li>'+goodsitem["attributeName"]+'</li>\
+											<li>批发价：<div class="g-c-red1">￥:'+public_tool.moneyCorrect(goodsitem["wholesalePrice"],12,true)[0]+'</div></li>\
+										</ul>';
+									}
+									return str;
+								}
+							},
+							{
+								"data":"totalQuantity"
+							},
+							{
+								"data":"orderTime"
+							},
+							{
+								"data":"customerName"
+							},
+							{
+								"data":"totalMoney",
+								"render":function(data, type, full, meta ){
+									return '<div class="g-c-red1">￥:'+public_tool.moneyCorrect(data,12,true)[0]+'</div>';
+								}
+							},
+							{
+								"data":"id",
+								"render":function(data, type, full, meta ){
+									var id=parseInt(data,10),
+										btns='';
+
+									var status=parseInt(full.orderState,10);
+									if(status===6){
+										/*需要发货状态*/
+										btns+='<span data-action="send" data-id="'+id+'" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+											<i class="fa-arrow-up"></i>\
+											<span>发货</span>\
+											</span>';
+									}else if(status===9){
+										/*需要查看物流*/
+										btns+='<span data-action="logistics" data-id="'+id+'" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+											<i class="fa-truck"></i>\
+											<span>查看物流</span>\
+											</span>';
+									}
+									btns+='<span data-action="select" data-id="'+id+'" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+											<i class="fa-file-text-o"></i>\
+											<span>查看</span>\
+											</span>';
+									return btns;
+								}
 							}
 						]
 					}
@@ -853,18 +923,18 @@
 			
 
 			/*初始化请求*/
-			/*请求全部*/
+			/*请求待付款*/
 			getColumnDataall(ordermanage_pageall,ordermanage_configall);
 			/*请求待付款*/
 			getColumnDatadfk(ordermanage_pagedfk,ordermanage_configdfk);
-			/*请求未收货*/
-			getColumnDatawsh(ordermanage_pagewsh,ordermanage_configwsh);
-			/*请求部分收货*/
-			getColumnDatabfsh(ordermanage_pagebfsh,ordermanage_configbfsh);
-			/*请求已收货*/
-			getColumnDataysh(ordermanage_pageysh,ordermanage_configysh);
-
-
+			/*请求已付款*/
+			getColumnDatayfk(ordermanage_pageyfk,ordermanage_configyfk);
+			/*请求待收货*/
+			getColumnDatadsh(ordermanage_pagedsh,ordermanage_configdsh);
+			/*请求待评价*/
+			getColumnDatadpj(ordermanage_pagedpj,ordermanage_configdpj);
+			/*请求退货*/
+			getColumnDatath(ordermanage_pageth,ordermanage_configth);
 
 
 			/*查询物流公司*/
@@ -931,7 +1001,7 @@
 			/*事件绑定*/
 			/*绑定查看，修改操作*/
 			var operate_item;
-			$.each([$goods_manage_wrapall,$goods_manage_wrapdfk,$goods_manage_wrapwsh,$goods_manage_wrapbfsh,$goods_manage_wrapysh],function () {
+			$.each([$goods_manage_wrapall,$goods_manage_wrapdfk,$goods_manage_wrapyfk,$goods_manage_wrapdsh,$goods_manage_wrapdpj,$goods_manage_wrapth],function () {
 				var own=this;
 				this.delegate('span','click',function(e){
 					e.stopPropagation();
@@ -989,48 +1059,56 @@
 					type=$this.attr('data-value');
 				$this.addClass('g-c-bs-info active').siblings().removeClass('g-c-bs-info active');
 				if(type===''){
-					/*全部*/
 					$admin_dataall.removeClass('g-d-hidei');
 					$admin_datadfk.addClass('g-d-hidei');
-					$admin_datawsh.addClass('g-d-hidei');
-					$admin_databfsh.addClass('g-d-hidei');
-					$admin_dataysh.addClass('g-d-hidei');
+					$admin_datayfk.addClass('g-d-hidei');
+					$admin_datadsh.addClass('g-d-hidei');
+					$admin_datadpj.addClass('g-d-hidei');
+					$admin_datath.addClass('g-d-hidei');
 					/*getColumnDataall(ordermanage_pageall,ordermanage_configall);*/
 					return false;
 				}else{
 					type=parseInt(type,10);
 					if(type===0){
-						/*待付款*/
 						$admin_dataall.addClass('g-d-hidei');
 						$admin_datadfk.removeClass('g-d-hidei');
-						$admin_datawsh.addClass('g-d-hidei');
-						$admin_databfsh.addClass('g-d-hidei');
-						$admin_dataysh.addClass('g-d-hidei');
+						$admin_datayfk.addClass('g-d-hidei');
+						$admin_datadsh.addClass('g-d-hidei');
+						$admin_datadpj.addClass('g-d-hidei');
+						$admin_datath.addClass('g-d-hidei');
 						/*getColumnDatadfk(ordermanage_pagedfk,ordermanage_configdfk);*/
-					}else if(type===1){
-						/*未收货*/
+					}else if(type===6){
 						$admin_dataall.addClass('g-d-hidei');
 						$admin_datadfk.addClass('g-d-hidei');
-						$admin_datawsh.removeClass('g-d-hidei');
-						$admin_databfsh.addClass('g-d-hidei');
-						$admin_dataysh.addClass('g-d-hidei');
-						/*getColumnDatawsh(ordermanage_pagewsh,ordermanage_configwsh);*/
-					}else if(type===3){
-						/*部分收货*/
+						$admin_datayfk.removeClass('g-d-hidei');
+						$admin_datadsh.addClass('g-d-hidei');
+						$admin_datadpj.addClass('g-d-hidei');
+						$admin_datath.addClass('g-d-hidei');
+						/*getColumnDatayfk(ordermanage_pageyfk,ordermanage_configyfk);*/
+					}else if(type===9){
 						$admin_dataall.addClass('g-d-hidei');
 						$admin_datadfk.addClass('g-d-hidei');
-						$admin_datawsh.addClass('g-d-hidei');
-						$admin_databfsh.removeClass('g-d-hidei');
-						$admin_dataysh.addClass('g-d-hidei');
-						/*getColumnDatabfsh(ordermanage_pagebfsh,ordermanage_configbfsh);*/
-					}else if(type===5){
-						/*已收货*/
+						$admin_datayfk.addClass('g-d-hidei');
+						$admin_datadsh.removeClass('g-d-hidei');
+						$admin_datadpj.addClass('g-d-hidei');
+						$admin_datath.addClass('g-d-hidei');
+						/*getColumnDatadsh(ordermanage_pagedsh,ordermanage_configdsh);*/
+					}else if(type===20){
 						$admin_dataall.addClass('g-d-hidei');
 						$admin_datadfk.addClass('g-d-hidei');
-						$admin_datawsh.addClass('g-d-hidei');
-						$admin_databfsh.addClass('g-d-hidei');
-						$admin_dataysh.removeClass('g-d-hidei');
-						/*getColumnDataysh(ordermanage_pageysh,ordermanage_configysh);*/
+						$admin_datayfk.addClass('g-d-hidei');
+						$admin_datadsh.addClass('g-d-hidei');
+						$admin_datadpj.removeClass('g-d-hidei');
+						$admin_datath.addClass('g-d-hidei');
+						/*getColumnDatadpj(ordermanage_pagedpj,ordermanage_configdpj);*/
+					}else if(type===40){
+						$admin_dataall.addClass('g-d-hidei');
+						$admin_datadfk.addClass('g-d-hidei');
+						$admin_datayfk.addClass('g-d-hidei');
+						$admin_datadsh.addClass('g-d-hidei');
+						$admin_datadpj.addClass('g-d-hidei');
+						$admin_datath.removeClass('g-d-hidei');
+						/*getColumnDatath(ordermanage_pageth,ordermanage_configth);*/
 					}
 				}
 			});
@@ -1124,11 +1202,13 @@
 											/*请求待付款*/
 											getColumnDatadfk(ordermanage_pagedfk,ordermanage_configdfk);
 											/*请求已付款*/
-											getColumnDatawsh(ordermanage_pagewsh,ordermanage_configwsh);
+											getColumnDatayfk(ordermanage_pageyfk,ordermanage_configyfk);
 											/*请求待收货*/
-											getColumnDatabfsh(ordermanage_pagebfsh,ordermanage_configbfsh);
+											getColumnDatadsh(ordermanage_pagedsh,ordermanage_configdsh);
 											/*请求待评价*/
-											getColumnDataysh(ordermanage_pageysh,ordermanage_configysh);
+											getColumnDatadpj(ordermanage_pagedpj,ordermanage_configdpj);
+											/*请求退货*/
+											getColumnDatath(ordermanage_pageth,ordermanage_configth);
 										}
 									},2000);
 								}).fail(function(resp){
@@ -1157,7 +1237,7 @@
 
 
 		/*获取数据*/
-		/*全部*/
+		/*待付款*/
 		function getColumnDataall(page,opt){
 			if(tableall===null){
 				tableall=opt.$goods_manage_wrapall.DataTable(opt.config);
@@ -1173,28 +1253,36 @@
 				tabledfk.ajax.config(opt.config.ajax).load();
 			}
 		}
-		/*未收货*/
-		function getColumnDatawsh(page,opt){
-			if(tablewsh===null){
-				tablewsh=opt.$goods_manage_wrapwsh.DataTable(opt.config);
+		/*已付款*/
+		function getColumnDatayfk(page,opt){
+			if(tableyfk===null){
+				tableyfk=opt.$goods_manage_wrapyfk.DataTable(opt.config);
 			}else{
-				tablewsh.ajax.config(opt.config.ajax).load();
+				tableyfk.ajax.config(opt.config.ajax).load();
 			}
 		}
-		/*部分收货*/
-		function getColumnDatabfsh(page,opt){
-			if(tablebfsh===null){
-				tablebfsh=opt.$goods_manage_wrapbfsh.DataTable(opt.config);
+		/*待收货*/
+		function getColumnDatadsh(page,opt){
+			if(tabledsh===null){
+				tabledsh=opt.$goods_manage_wrapdsh.DataTable(opt.config);
 			}else{
-				tablebfsh.ajax.config(opt.config.ajax).load();
+				tabledsh.ajax.config(opt.config.ajax).load();
 			}
 		}
-		/*已收货*/
-		function getColumnDataysh(page,opt){
-			if(tableysh===null){
-				tableysh=opt.$goods_manage_wrapysh.DataTable(opt.config);
+		/*待评价*/
+		function getColumnDatadpj(page,opt){
+			if(tabledpj===null){
+				tabledpj=opt.$goods_manage_wrapdpj.DataTable(opt.config);
 			}else{
-				tableysh.ajax.config(opt.config.ajax).load();
+				tabledpj.ajax.config(opt.config.ajax).load();
+			}
+		}
+		/*退货*/
+		function getColumnDatath(page,opt){
+			if(tableth===null){
+				tableth=opt.$goods_manage_wrapth.DataTable(opt.config);
+			}else{
+				tableth.ajax.config(opt.config.ajax).load();
 			}
 		}
 

@@ -1,5 +1,4 @@
-/*admin_member:成员设置*/
-/*admin_member:成员设置*/
+/*商品列表*/
 (function($){
 	'use strict';
 	$(function(){
@@ -49,7 +48,7 @@
 			/*列表请求配置*/
 			var goodsmanage_page={
 					page:1,
-					pageSize:30,
+					pageSize:10,
 					total:0
 				},
 				goodsmanage_config={
@@ -103,13 +102,23 @@
 								userId:decodeURIComponent(logininfo.param.userId),
 								token:decodeURIComponent(logininfo.param.token),
 								page:1,
-								pageSize:30
+								pageSize:10
 							}
+						},
+						fnDrawCallback:function(){
+						 　　this.api().column(0).nodes().each(function(cell, i) {
+						 　　　　cell.innerHTML =  i + 1;
+						 　　});
 						},
 						info:false,
 						searching:true,
-						ordering:true,
+						order: [[ 4, 'desc' ]],
 						columns: [
+							{
+								"data":null,
+								"orderable" :false,
+								"searchable" :false
+							},
 							{
 								"data":"imageUrl",
 								"render":function(data, type, full, meta ){
@@ -238,12 +247,13 @@
 											</span>';
 									}
 									return btns;
-								}
+								},
+								"orderable" : false
 							}
 						]
 					}
 				};
-			
+
 
 			/*初始化请求*/
 			getColumnData(goodsmanage_page,goodsmanage_config);
