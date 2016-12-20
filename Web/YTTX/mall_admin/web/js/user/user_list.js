@@ -27,7 +27,8 @@
 			/*权限调用*/
 			var powermap=public_tool.getPower(),
 				enabled_power=public_tool.getKeyPower('user-enabled',powermap),
-				edit_power=public_tool.getKeyPower('user-update',powermap);
+				edit_power=public_tool.getKeyPower('user-update',powermap),
+				addadmin_power=public_tool.getKeyPower('user-addadmin',powermap);
 
 
 
@@ -210,27 +211,34 @@
 								"render":function(data, type, full, meta ){
 									var id=parseInt(data,10),
 										btns='',
-										state=parseInt(full.isEnabled,10);
+										enabled=parseInt(full.isEnabled,10),
+										admin=parseInt(full.isAdmin,10);
 
-									if(edit_power&&state===1){
+									if(edit_power&&enabled===1){
 										btns+='<span data-action="edit" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 										<i class="fa-pencil"></i>\
 										<span>编辑</span>\
 										</span>';
 									}
 									if(enabled_power){
-										if(state===0){
+										if(enabled===0){
 											/*禁用状态则启用*/
 											btns+='<span data-action="up" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 												<i class="fa-arrow-up"></i>\
 												<span>启用</span>\
 											</span>';
-										}else if(state===1){
+										}else if(enabled===1){
 											/*启用状态则禁用*/
 											btns+='<span data-action="down" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 												<i class="fa-arrow-down"></i>\
 												<span>禁用</span>\
 											</span>';
+											if(admin===0&&addadmin_power){
+												btns+='<span data-action="addadmin" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+												<i class="fa-plus"></i>\
+												<span>新增管理员</span>\
+											</span>';
+											}
 										}
 									}
 									return btns;
@@ -336,8 +344,21 @@
 						setEnabled({
 							id:id,
 							action:action,
-							tip:cf.dia||dia,
-							$tr:$tr
+							tip:cf.dia||dia
+						});
+					});
+				}else if(action==='addadmin'){
+					if(operate_item){
+						operate_item.removeClass('item-lighten');
+						operate_item=null;
+					}
+					operate_item=$tr.addClass('item-lighten');
+					/*确认是否启用或禁用*/
+					setSure.sure('新增',function(cf){
+						/*to do*/
+						addPower({
+							id:id,
+							tip:cf.dia||dia
 						});
 					});
 				}
@@ -364,7 +385,6 @@
 				return false;
 			}
 			var tip=obj.tip,
-				$tr=obj.$tr,
 				action=obj.action;
 
 			$.ajax({
@@ -372,7 +392,7 @@
 					dataType:'JSON',
 					method:'post',
 					data:{
-						inboundId:id,
+						id:id,
 						type:action,
 						roleId:decodeURIComponent(logininfo.param.roleId),
 						adminId:decodeURIComponent(logininfo.param.adminId),
@@ -386,6 +406,10 @@
 						tip.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"操作失败")+'</span>').show();
 						setTimeout(function () {
 							tip.close();
+							if(operate_item){
+								operate_item.removeClass('item-lighten');
+								operate_item=null;
+							}
 						},2000);
 						return false;
 					}
@@ -395,21 +419,81 @@
 					setTimeout(function () {
 						tip.close();
 						setTimeout(function () {
-							if(operate_item){
-								operate_item.removeClass('item-lighten');
-								operate_item=null;
-							}
-							operate_item=$tr.addClass('item-lighten');
+							operate_item=null;
 							/*请求数据*/
 							getColumnData(user_page,user_config);
 						},1000);
 					},1000);
-									})
+				})
 				.fail(function(resp){
 					console.log(resp.message);
 					tip.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"操作失败")+'</span>').show();
 					setTimeout(function () {
 						tip.close();
+						if(operate_item){
+							operate_item.removeClass('item-lighten');
+							operate_item=null;
+						}
+					},2000);
+				});
+		}
+
+
+		/*设置管理员*/
+		function addPower(obj){
+			var id=obj.id;
+
+			if(typeof id==='undefined'){
+				return false;
+			}
+			var tip=obj.tip;
+
+			$.ajax({
+					url:"../../json/user/mall_user_list.json",
+					dataType:'JSON',
+					method:'post',
+					data:{
+						id:id,
+						roleId:decodeURIComponent(logininfo.param.roleId),
+						adminId:decodeURIComponent(logininfo.param.adminId),
+						token:decodeURIComponent(logininfo.param.token)
+					}
+				})
+				.done(function(resp){
+					var code=parseInt(resp.code,10);
+					if(code!==0){
+						console.log(resp.message);
+						tip.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"操作失败")+'</span>').show();
+						setTimeout(function () {
+							tip.close();
+							if(operate_item){
+								operate_item.removeClass('item-lighten');
+								operate_item=null;
+							}
+						},2000);
+						return false;
+					}
+					/*是否是正确的返回数据*/
+					/*添加高亮状态*/
+					tip.content('<span class="g-c-bs-success g-btips-succ">设置成功</span>').show();
+					setTimeout(function () {
+						tip.close();
+						setTimeout(function () {
+							operate_item=null;
+							/*请求数据*/
+							getColumnData(user_page,user_config);
+						},1000);
+					},1000);
+				})
+				.fail(function(resp){
+					console.log(resp.message);
+					tip.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"操作失败")+'</span>').show();
+					setTimeout(function () {
+						tip.close();
+						if(operate_item){
+							operate_item.removeClass('item-lighten');
+							operate_item=null;
+						}
 					},2000);
 				});
 		}

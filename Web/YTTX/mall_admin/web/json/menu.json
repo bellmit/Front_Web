@@ -24,10 +24,6 @@
             "modName": "管理员管理"
           },
           {
-            "modLink": "mall-user-addadmin",
-            "modName": "新增管理员"
-          },
-          {
             "modLink": "mall-user-notice",
             "modName": "通知管理"
           }

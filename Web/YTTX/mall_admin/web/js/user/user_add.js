@@ -168,7 +168,7 @@
 				var edit_cache=public_tool.getParams('mall-user-add');
 				if(edit_cache){
 					if(useredit_power){
-						$admin_action.removeClass('g-d-hidei');
+						$admin_action.removeClass('g-d-hidei').html('编辑');
 						/*查询数据*/
 						if(typeof edit_cache==='object'){
 							setUserData(edit_cache['id']);
@@ -180,7 +180,7 @@
 					}
 				}else{
 					if(useradd_power){
-						$admin_action.removeClass('g-d-hidei');
+						$admin_action.removeClass('g-d-hidei').html('添加');
 					}else{
 						$admin_action.addClass('g-d-hidei');
 					}
