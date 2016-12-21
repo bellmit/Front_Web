@@ -13,6 +13,7 @@
 				param:{
 					roleId:decodeURIComponent(logininfo.param.roleId),
 					adminId:decodeURIComponent(logininfo.param.adminId),
+					sourcesChannel:decodeURIComponent(logininfo.param.sourcesChannel),
 					grade:decodeURIComponent(logininfo.param.grade),
 					token:decodeURIComponent(logininfo.param.token)
 				},

@@ -124,8 +124,8 @@
                             <div class="admin-search-wrap">
                                 <div class="btn-group"  id="search_orderState">
                                     <span class="btn btn-white g-c-bs-info active g-w-number4" data-value="" >全部</span>
-                                    <span class="btn btn-white g-w-number4" data-value="0" >待付款</span>
-                                    <span class="btn btn-white g-w-number4" data-value="1" >未收货</span>
+                                    <span class="btn btn-white g-w-number4" data-value="0" >待发货</span>
+                                    <span class="btn btn-white g-w-number4" data-value="1" >待收货</span>
                                     <span class="btn btn-white g-w-number4" data-value="3" >部分收货</span>
                                     <span class="btn btn-white g-w-number4" data-value="5" >已收货</span>
                                 </div>
@@ -169,9 +169,9 @@
                                     <div class="easyui-pagination g-w-percent50" id="admin_page_wrapall" data-options="links:5,layout:['manual','first','prev','links','next','last'],displayMsg:'显示{from}&nbsp;到&nbsp;{to}&nbsp;共&nbsp;{total}条记录'"></div>
                                 </div>
                             </div>
-                            <!--待付款-->
-                            <div class="admin-datawrap g-d-hidei" id="admin_datadfk">
-                                <table id="goods_manage_wrapdfk" class="table table-bordered table-striped table-hover admin-table">
+                            <!--待发货-->
+                            <div class="admin-datawrap g-d-hidei" id="admin_datadfh">
+                                <table id="goods_manage_wrapdfh" class="table table-bordered table-striped table-hover admin-table">
                                     <!--分组样式-->
                                     <colgroup>
                                         <col class="g-w-percent2">
@@ -203,12 +203,12 @@
                                     <tbody class="middle-align"></tbody>
                                 </table>
                                 <div class="admin-page-wrap">
-                                    <div class="easyui-pagination g-w-percent50" id="admin_page_wrapdfk" data-options="links:5,layout:['manual','first','prev','links','next','last'],displayMsg:'显示{from}&nbsp;到&nbsp;{to}&nbsp;共&nbsp;{total}条记录'"></div>
+                                    <div class="easyui-pagination g-w-percent50" id="admin_page_wrapdfh" data-options="links:5,layout:['manual','first','prev','links','next','last'],displayMsg:'显示{from}&nbsp;到&nbsp;{to}&nbsp;共&nbsp;{total}条记录'"></div>
                                 </div>
                             </div>
-                            <!--未收货-->
-                            <div class="admin-datawrap g-d-hidei" id="admin_datawsh">
-                                <table id="goods_manage_wrapwsh" class="table table-bordered table-striped table-hover admin-table">
+                            <!--待收货-->
+                            <div class="admin-datawrap g-d-hidei" id="admin_datadsh">
+                                <table id="goods_manage_wrapdsh" class="table table-bordered table-striped table-hover admin-table">
                                     <!--分组样式-->
                                     <colgroup>
                                         <col class="g-w-percent2">
@@ -240,7 +240,7 @@
                                     <tbody class="middle-align"></tbody>
                                 </table>
                                 <div class="admin-page-wrap">
-                                    <div class="easyui-pagination g-w-percent50" id="admin_page_wrapwsh" data-options="links:5,layout:['manual','first','prev','links','next','last'],displayMsg:'显示{from}&nbsp;到&nbsp;{to}&nbsp;共&nbsp;{total}条记录'"></div>
+                                    <div class="easyui-pagination g-w-percent50" id="admin_page_wrapdsh" data-options="links:5,layout:['manual','first','prev','links','next','last'],displayMsg:'显示{from}&nbsp;到&nbsp;{to}&nbsp;共&nbsp;{total}条记录'"></div>
                                 </div>
                             </div>
                             <!--部分收货-->
@@ -369,7 +369,7 @@
                             </div>
                             <div class="form-group">
                                 <label class="control-label">物流公司:</label>
-                                <select name="shippingExpressId" id="admin_shippingExpressId" data-validate="required" data-message-required="物流公司不能为空" ></select>
+                                <select class="form-control" name="shippingExpressId" id="admin_shippingExpressId" data-validate="required" data-message-required="物流公司不能为空" ></select>
                             </div>
                             <div class="form-group">
                                 <label class="control-label">卖家留言:</label>

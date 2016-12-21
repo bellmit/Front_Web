@@ -799,6 +799,7 @@
 			"code":"inventory",
 			"match":"-inventory-",
 			"matchlist":["-storage-","-outbound-","-check-"],
+			"matchignore":["-check-"],
 			"class":"menu-ux-inventory",
 			"module":"inventory",
 			"modid":"99"
@@ -808,6 +809,7 @@
 			"code":"logistics",
 			"match":"-logistics-",
 			"matchlist":["-provider-"],
+			"matchignore":["-provider-"],
 			"class":"menu-ux-logistics",
 			"module":"logistics",
 			"modid":"100"
@@ -1023,6 +1025,7 @@
 				return str;
 			},
 			matchModule=function (map,str) {
+				/*匹配不正确的模块*/
 				var dlist=map['matchlist'];
 				if(dlist){
 					var d=0,
@@ -1036,6 +1039,22 @@
 				}
 				return '<li class="has-sub"><a href=\"\"><i class=\"'+matchClass(link,item.modClass)+'\"></i><span>'+item.modName+'</span></a><ul>';
 			},
+			matchIgnore=function (map,str) {
+				/*忽略解析指定模块*/
+				var iglist=map['matchignore'];
+				if(iglist){
+					var p=0,
+						plen=iglist.length;
+
+					for(p;p<plen;p++){
+						if(str.indexOf(iglist[p])!==-1){
+							return true;
+						}
+					}
+					return false;
+				}
+				return false;
+			},
 			menu=data.result.menu,
 			len=menu.length,
 			menustr='',
@@ -1045,6 +1064,7 @@
 			suffix='.html',
 			subactive="sub-menu-active",
 			link='',
+			ignore=null,
 			item=null,
 			sublen='',
 			subitem=null,
@@ -1058,11 +1078,15 @@
 			if(typeof link==='undefined'){
 				continue;
 			}
+			if("matchignore" in link){
+				ignore=true;
+			}else{
+				ignore=null;
+			}
 			//解析菜单
 			if(isindex){
 				//当前页为首页的情况
 				var issub=typeof (subitem=item[key])!=='undefined';
-
 				if(i===0&&item.modId!==0){
 					/*不匹配首页*/
 					if(!inject||(inject&&inject.render)){
@@ -1085,7 +1109,12 @@
 					j=0;
 					for(j;j<sublen;j++){
 						item=subitem[j];
-							menustr+='<li><a href=\"'+link.code+'/'+item.modLink+suffix+'\"><span>'+item.modName+'</span></a></li>';
+						/*判断是否存在忽略*/
+						if(ignore&&matchIgnore(link,item.modLink)){
+							/*存在忽略菜单即执行下一轮检查*/
+							continue;
+						}
+						menustr+='<li><a href=\"'+link.code+'/'+item.modLink+suffix+'\"><span>'+item.modName+'</span></a></li>';
 					}
 					menustr+="</li></ul>";
 				}else{
@@ -1119,6 +1148,11 @@
 					var ismodule=path.indexOf(link.match)!==-1;
 					for(j;j<sublen;j++){
 						item=subitem[j];
+						/*判断是否存在忽略*/
+						if(ignore&&matchIgnore(link,item.modLink)){
+							/*存在忽略菜单即执行下一轮检查*/
+							continue;
+						}
 						if(ismodule){
 								menustr+='<li><a href=\"'+item.modLink+suffix+'\"><span>'+item.modName+'</span></a></li>';
 						}else{
@@ -1168,6 +1202,7 @@
 		/*释放内存*/
 		matchClass=null;
 		matchModule=null;
+		matchIgnore=null;
 	};
 	//卸载左侧菜单条
 	public_tool.removeSideMenu=function($menu){

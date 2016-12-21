@@ -508,8 +508,11 @@
 
 		/*获取*/
 		function getSettingData(){
+			if(!public_tool.isSameDomain("http://120.76.237.100:8082")){
+				return false;
+			}
 			$.ajax({
-				url:"http://112.74.207.132:8082/yttx-providerbms-api/provider/enterprise/certification",
+				url:"http://120.76.237.100:8082/yttx-providerbms-api/provider/enterprise/certification",
 				dataType:'JSON',
 				method:'post',
 				data:{
@@ -632,7 +635,7 @@
 		function getToken(){
 			var result=null;
 			$.ajax({
-				url:'http://112.74.207.132:8082/yttx-providerbms-api/qiniu/token/get',
+				url:'http://120.76.237.100:8082/yttx-providerbms-api/qiniu/token/get',
 				async:false,
 				type:'post',
 				datatype:'json',

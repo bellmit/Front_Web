@@ -14,6 +14,7 @@
 				param:{
 					roleId:decodeURIComponent(logininfo.param.roleId),
 					adminId:decodeURIComponent(logininfo.param.adminId),
+					sourcesChannel:decodeURIComponent(logininfo.param.sourcesChannel),
 					grade:logingrade,
 					token:decodeURIComponent(logininfo.param.token)
 				},

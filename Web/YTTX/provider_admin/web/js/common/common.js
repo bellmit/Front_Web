@@ -1452,23 +1452,26 @@
 			if(login_rq!==now_rq){
 				//同一天有效
 				return false;
-			}/*else if(login_rq===now_rq){
+			}else if(login_rq===now_rq){
 				login_sj=login_sj.split(':');
 				now_sj=now_sj.split(':');
-				var login_hh=login_sj[0],
-					now_hh=now_sj[0],
-					login_mm=login_sj[1],
-					now_mm=now_sj[1];
+				var login_hh=parseInt(login_sj[0],10),
+					now_hh=parseInt(now_sj[0],10)/*,
+				 login_mm=parseInt(login_sj[1],10),
+				 now_mm=parseInt(now_sj[1],10)*/;
 
-				if(login_hh!==now_hh){
-					//同一小时有效
-					return false;
-				}else if(now_mm - login_mm >30){
-					//多少分钟内有效
+				if(now_hh-login_hh>2){
 					return false;
 				}
-				return true;
-			}*/
+
+				/*if(login_hh!==now_hh){
+				 //同一小时有效
+				 return false;
+				 }else if(now_mm - login_mm >1){
+				 //多少分钟内有效
+				 return false;
+				 }*/
+			}
 
 			/*请求域与登陆域不一致*/
 			if(currentdomain!==''&&reqdomain!==currentdomain){

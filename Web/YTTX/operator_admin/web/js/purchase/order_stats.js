@@ -15,6 +15,7 @@
 				param:{
 					roleId:decodeURIComponent(logininfo.param.roleId),
 					adminId:decodeURIComponent(logininfo.param.adminId),
+					sourcesChannel:decodeURIComponent(logininfo.param.sourcesChannel),
 					grade:decodeURIComponent(logininfo.param.grade),
 					token:decodeURIComponent(logininfo.param.token)
 				},
@@ -57,7 +58,6 @@
 
 			/*查询对象*/
 			var $search_orderNumber=$('#search_orderNumber'),
-				$search_providerName=$('#search_providerName'),
 				$search_orderState=$('#search_orderState'),
 				$admin_search_btn=$('#admin_search_btn'),
 				$admin_search_clear=$('#admin_search_clear');
@@ -208,7 +208,7 @@
 
 			/*清空查询条件*/
 			$admin_search_clear.on('click',function(){
-				$.each([$search_orderNumber,$search_providerName,$search_orderState],function(){
+				$.each([$search_orderNumber,$search_orderState],function(){
 					var selector=this.selector;
 					if(selector.indexOf('orderState')!==-1){
 						this.find(':selected').prop({
@@ -226,7 +226,7 @@
 			$admin_search_btn.on('click',function(){
 				var data= $.extend(true,{},order_config.config.ajax.data);
 
-				$.each([$search_orderNumber,$search_providerName,$search_orderState],function(){
+				$.each([$search_orderNumber,$search_orderState],function(){
 					var text=this.val()||this.find(':selected').val(),
 						selector=this.selector.slice(1),
 						key=selector.split('_');

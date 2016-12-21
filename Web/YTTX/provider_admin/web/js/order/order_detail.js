@@ -56,7 +56,7 @@
 		/*获取数据*/
 		function getDetailData(config){
 			$.ajax({
-				url:"http://112.74.207.132:8082/yttx-providerbms-api/goodsorder/details",
+				url:"http://120.76.237.100:8082/yttx-providerbms-api/goodsorder/details",
 				dataType:'JSON',
 				async:false,
 				method:'post',
@@ -128,14 +128,10 @@
 					remark:'买家留言'
 				},
 				statusmap={
-					0:"待付款",
-					1:"取消订单",
-					6:"待发货",
-					9:"待收货",
-					20:"待评价",
-					21:"已评价",
-					30:"返修",
-					40:"退货"
+					0:"待发货",
+					1:"待收货",
+					3:"部分收货",
+					5:"已收货"
 				};
 
 			for(var i in resp){
@@ -143,17 +139,15 @@
 					if(i==='orderState'){
 						var stauts=parseInt(resp[i],10);
 						if(stauts===0){
-							str='<div class="grid-list-group1">'+detailmap[i]+'：<p class="g-c-warn">'+statusmap[stauts]+'</p></div>';
-						}else if(stauts===1||stauts===30){
-							str='<div class="grid-list-group1">'+detailmap[i]+'：<p class="g-c-gray12">'+statusmap[stauts]+'</p></div>';
-						}else if(stauts===6){
-							str='<div class="grid-list-group1">'+detailmap[i]+'：<p class="g-c-gray10">'+statusmap[stauts]+'</p></div>';
-						}else if(stauts===9||stauts===20){
-							str='<div class="grid-list-group1">'+detailmap[i]+'：<p class="g-c-gray8">'+statusmap[stauts]+'</p></div>';
-						}else if(stauts===40){
-							str='<div class="grid-list-group1">'+detailmap[i]+'：<p class="g-c-red1">'+statusmap[stauts]+'</p></div>';
-						}else if(stauts===21){
-							str='<div class="grid-list-group1">'+detailmap[i]+'：<p class="g-c-info">'+statusmap[stauts]+'</p></div>';
+							str='<div class="grid-list-group1">状态：<p class="g-c-warn">'+statusmap[stauts]+'</p></div>';
+						}else if(stauts===1){
+							str='<div class="grid-list-group1">状态：<p class="g-c-info">'+statusmap[stauts]+'</p></div>';
+						}else if(stauts===3){
+							str='<div class="grid-list-group1">状态：<p class="g-c-gray6">'+statusmap[stauts]+'</p></div>';
+						}else if(stauts===5){
+							str='<div class="grid-list-group1">状态：<p class="g-c-succ">'+statusmap[stauts]+'</p></div>';
+						}else{
+							str='<div class="grid-list-group1">状态：<p class="g-c-red2">异常</p></div>';
 						}
 					}else if(i==='freight'||i==='totalMoney'){
 						str+='<div class="grid-list-group1">'+detailmap[i]+'：<p class="g-c-red1">￥：'+(public_tool.moneyCorrect(resp[i],12,true)[0]||'0.00')+'</p></div>';
@@ -190,8 +184,15 @@
 				str='';
 
 			for(i;i<len;i++){
-				var suborder=list[i];
-				str+='<tr><td>'+suborder["goodsName"]+'</td><td>'+suborder["attributeName"]+'</td><td>'+suborder["quantlity"]+'</td><td class="g-c-red1">￥:'+public_tool.moneyCorrect(suborder["wholesalePrice"],12,true)[0]+'</td></tr>';
+				var suborder=list[i],
+					price=suborder["wholesalePrice"];
+
+				if(typeof pirce==='undefined'||price===''||isNaN(price)){
+					price='0.00';
+				}
+
+
+				str+='<tr><td>'+suborder["goodsName"]+'</td><td>'+suborder["attributeName"]+'</td><td class="g-c-info">'+suborder["purchasingQuantlity"]+'</td><td class="g-c-red2">￥:'+public_tool.moneyCorrect(price,12,false)[0]+'</td></tr>';
 			}
 			document.getElementById('admin_orderitem').innerHTML=str;
 		}

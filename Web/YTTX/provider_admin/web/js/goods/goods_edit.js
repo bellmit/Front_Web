@@ -725,7 +725,7 @@
 										}())
 									});
 
-									config['url']="http://112.74.207.132:8082/yttx-providerbms-api/goods/addupdate";
+									config['url']="http://120.76.237.100:8082/yttx-providerbms-api/goods/addupdate";
 									config['data']=setdata;
 								}
 
@@ -817,8 +817,11 @@
 
 		/*获取数据*/
 		function getEditData(config){
+			if(!public_tool.isSameDomain("http://120.76.237.100:8082")){
+				return false;
+			}
 			$.ajax({
-				url:"http://112.74.207.132:8082/yttx-providerbms-api/goods/details",
+				url:"http://120.76.237.100:8082/yttx-providerbms-api/goods/details",
 				dataType:'JSON',
 				async:false,
 				method:'post',
@@ -1381,7 +1384,7 @@
 		function getToken(){
 			var result=null;
 			$.ajax({
-				url:'http://112.74.207.132:8082/yttx-providerbms-api/qiniu/token/get',
+				url:'http://120.76.237.100:8082/yttx-providerbms-api/qiniu/token/get',
 				async:false,
 				type:'post',
 				datatype:'json',

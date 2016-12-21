@@ -49,7 +49,7 @@
 						autoWidth:true,/*是否*/
 						paging:false,
 						ajax:{
-							url:/*"../../json/goods/goods_list.json"*/"http://112.74.207.132:8082/yttx-providerbms-api/goodscomment/mycomment/list",
+							url:"http://120.76.237.100:8082/yttx-providerbms-api/goodscomment/mycomment/list",
 							dataType:'JSON',
 							method:'post',
 							dataSrc:function ( json ) {
@@ -170,6 +170,9 @@
 		/*获取数据*/
 		function getColumnData(page,opt){
 			if(table===null){
+				if(!public_tool.isSameDomain("http://120.76.237.100:8082")){
+					return false;
+				}
 				table=opt.$order_manage_wrap.DataTable(opt.config);
 			}else{
 				table.ajax.config(opt.config.ajax).load();

@@ -68,7 +68,7 @@
 					}
 
 				$.ajax({
-					url:"http://112.74.207.132:8082/yttx-providerbms-api/user/account/update",
+					url:"http://120.76.237.100:8082/yttx-providerbms-api/user/account/update",
 					dataType:'JSON',
 					method:'post',
 					data:{
@@ -193,7 +193,7 @@
 					}else{
 						/*to do*/
 						$.ajax({
-							url:"http://112.74.207.132:8082/yttx-providerbms-api/receiptaddress/default/set",
+							url:"http://120.76.237.100:8082/yttx-providerbms-api/receiptaddress/default/set",
 							dataType:'JSON',
 							method:'post',
 							data:{
@@ -235,7 +235,7 @@
 					setSure.sure('delete',function(cf){
 						/*to do*/
 						$.ajax({
-							url:"http://112.74.207.132:8082/yttx-providerbms-api/receiptaddress/delete",
+							url:"http://120.76.237.100:8082/yttx-providerbms-api/receiptaddress/delete",
 							dataType:'JSON',
 							method:'post',
 							data:{
@@ -295,7 +295,7 @@
 								phone=public_tool.trims($admin_consigneePhone.val());
 
 							$.ajax({
-								url:"http://112.74.207.132:8082/yttx-providerbms-api/receiptaddress/add",
+								url:"http://120.76.237.100:8082/yttx-providerbms-api/receiptaddress/add",
 								dataType:'JSON',
 								method:'post',
 								data:{
@@ -365,8 +365,11 @@
 
 		/*获取*/
 		function getSettingData(){
+			if(!public_tool.isSameDomain("http://120.76.237.100:8082")){
+				return false;
+			}
 			$.ajax({
-				url:"http://112.74.207.132:8082/yttx-providerbms-api/user/account/info",
+				url:"http://120.76.237.100:8082/yttx-providerbms-api/user/account/info",
 				dataType:'JSON',
 				method:'post',
 				data:{
