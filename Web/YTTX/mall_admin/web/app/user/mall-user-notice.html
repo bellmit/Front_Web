@@ -5,10 +5,10 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	
 	<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0,maximum-scale=1">
-	<meta name="description" content="布住网后台管理系统--用户管理--管理员列表" />
-	<meta name="keywords" content="布住网后台管理系统--用户管理--管理员列表">
+	<meta name="description" content="布住网后台管理系统--用户管理--通知管理" />
+	<meta name="keywords" content="布住网后台管理系统--用户管理--通知管理">
   <meta name="author" content="yp" />
-	<title>布住网后台管理系统--用户管理--管理员列表</title>
+	<title>布住网后台管理系统--用户管理--通知管理</title>
 	<link rel="stylesheet" href="../../css/base.css">
   <link rel="stylesheet" href="../../js/plugins/datatables/dataTables.bootstrap.css">
 	<link rel="stylesheet" href="../../css/admin.css">
@@ -87,12 +87,12 @@
             <div class="page-title">
                 <div class="title-env">
                     <h1 class="title">用户管理</h1>
-                    <p class="description">管理员列表</p>
+                    <p class="description">通知管理</p>
                 </div>
                 <div class="breadcrumb-env">
                     <ol class="breadcrumb bc-1">
                         <li><a href=""><i class="fa-home"></i>用户管理</a></li>
-                        <li class="active"><strong>管理员列表</strong></li>
+                        <li class="active"><strong>通知管理</strong></li>
                     </ol>
                 </div>
             </div>
@@ -105,7 +105,7 @@
 
                         <!--表格标题-->
                         <div class="panel-heading">
-                            <h3 class="panel-title">管理员列表</h3>
+                            <h3 class="panel-title">通知管理</h3>
 
                             <div class="panel-options">
                                 <a href="#" data-toggle="panel">
@@ -118,55 +118,32 @@
 
                         <!--表格主体-->
                         <div class="panel-body">
-                            <div class="admin-search-wrap">
-                                <div class="admin-search-item">
-                                    <label>用户名：</label>
-                                    <input type="text" id="search_Name" />
-                                </div>
-                                <div class="admin-search-item">
-                                    <label>手机：</label>
-                                    <input type="text" maxlength="13" id="search_telePhone" />
-                                </div>
-                                <div class="admin-search-item">
-                                    <span id="admin_search_btn" class="btn btn-info btn-icon g-br2">
-                                        <i class="fa-search"></i>查询
-                                    </span>
-                                    <span id="admin_search_clear" class="btn btn-info btn-icon g-br2">
-                                        <i class="fa-spinner"></i>清空
-                                    </span>
-                                </div>
-                            </div>
-
-
-
                             <table id="admin_list_wrap" class="table table-bordered table-striped table-hover admin-table">
                                 <!--分组样式-->
                                 <colgroup>
-                                    <col class="g-w-percent7">
-                                    <col class="g-w-percent7">
-                                    <col class="g-w-percent7">
-                                    <col class="g-w-percent7">
                                     <col class="g-w-percent8">
-                                    <col class="g-w-percent4">
-                                    <col class="g-w-percent10">
+                                    <col class="g-w-percent5">
+                                    <col class="g-w-percent5">
+                                    <col class="g-w-percent16">
+                                    <col class="g-w-percent8">
+                                    <col class="g-w-percent8">
                                 </colgroup>
 
                                 <!--表头-->
                                 <thead>
                                 <tr>
-                                    <th>昵称</th>
-                                    <th>姓名</th>
-                                    <th>电子邮件</th>
-                                    <th>手机</th>
-                                    <th>最后登录时间</th>
-                                    <th>登录次数</th>
-                                    <th class="no-sorting">操作</th>
+                                    <th>编号</th>
+                                    <th>发送类型</th>
+                                    <th>发送会员</th>
+                                    <th>内容</th>
+                                    <th>发送时间</th>
+                                    <th>操作</th>
                                 </tr>
                                 </thead>
 
 
                                 <!--表主体-->
-                                <tbody class="middle-align" id="order_stats_list"></tbody>
+                                <tbody class="middle-align"></tbody>
                             </table>
                             <div class="admin-page-wrap">
                                 <div class="easyui-pagination g-w-percent50" id="admin_page_wrap" data-options="links:5,layout:['manual','first','prev','links','next','last'],displayMsg:'显示{from}&nbsp;到&nbsp;{to}&nbsp;共&nbsp;{total}条记录'"></div>
@@ -203,6 +180,35 @@
     </div>
 
 
+
+
+    <!--详情展现-->
+    <div class="modal fade custom-width" id="show_detail_wrap">
+        <div class="modal-dialog g-w-percent46">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">查看公告</h4>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-bordered table-striped table-hover admin-table">
+                        <colgroup>
+                            <col class="g-w-percent10"/>
+                            <col class="g-w-percent40"/>
+                        </colgroup>
+                        <tbody id="show_detail_content"></tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-info" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+    
 
 	
 	<!--加载遮罩层-->
@@ -257,6 +263,6 @@
     <!--修饰分页，搜索等操作 -->
     <script src="../../js/plugins/datatables/dataTables.bootstrap.js"></script>
     <script src="../../js/plugins/pagination/pagination.js"></script>
-    <script src="../../js/user/user_admin.js"></script>
+    <script src="../../js/user/user_notice.js"></script>
 </body>
 </html>

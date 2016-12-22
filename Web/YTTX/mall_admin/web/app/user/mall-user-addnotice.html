@@ -4,10 +4,10 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0,maximum-scale=1">
-    <meta name="description" content="布住网供应商管理系统--订单管理--订单详情" />
-    <meta name="keywords" content="布住网供应商管理系统--订单管理--订单详情">
+    <meta name="description" content="布住网后台管理系统--用户管理--添加通知" />
+    <meta name="keywords" content="布住网后台管理系统--用户管理--添加通知">
     <meta name="author" content="yp" />
-    <title>布住网供应商管理系统--订单管理--订单详情</title>
+    <title>布住网后台管理系统--用户管理--添加通知</title>
     <link href="../../images/logo_icon.ico" rel="icon">
     <link rel="stylesheet" href="../../css/base.css">
     <link rel="stylesheet" href="../../js/plugins/kindeditor/themes/default/default.css">
@@ -86,13 +86,13 @@
         <!--主题描述-->
         <div class="page-title">
             <div class="title-env">
-                <h1 class="title">订单详情</h1>
-                <p class="description">订单详情</p>
+                <h1 class="title">用户管理</h1>
+                <p class="description">添加通知</p>
             </div>
             <div class="breadcrumb-env">
                 <ol class="breadcrumb bc-1">
-                    <li><a href=""><i class="fa-home"></i>订单管理</a></li>
-                    <li class="active"><strong>订单详情</strong></li>
+                    <li><a href=""><i class="fa-home"></i>用户管理</a></li>
+                    <li class="active"><strong>添加通知</strong></li>
                 </ol>
             </div>
         </div>
@@ -105,7 +105,7 @@
 
                     <!--编辑表单标题-->
                     <div class="panel-heading">
-                        <h3 class="panel-title">订单详情</h3>
+                        <h3 class="panel-title">添加(编辑)通知</h3>
                         <div class="panel-options">
                             <a href="#" data-toggle="panel">
                                 <span class="collapse-icon">&ndash;</span>
@@ -116,45 +116,44 @@
 
                     <!--添加-->
                     <div class="panel-body">
-                        <div class="blockquote admin-blockquote">
-                            <div class="panel">
-                                <div class="panel-heading">订单基本信息</div>
-                                <div class="panel-body">
-                                    <div class="admin-form1" id="admin_orderbase"></div>
+                        <form role="form"  method="post" id="admin_addnotice_form" class="admin-form1 validate">
+                            <input type="text" value="" id="admin_id" name="id" class="g-d-hidei" />
+                            <div class="form-group">
+                                <label class="control-label"><span class="form-require-item g-c-red1">*</span>发送类型：</label>
+                                <div class="self-error-pos-wrap" id="admin_type">
+                                    <label class="btn btn-white g-br3">
+                                        部分用户&nbsp;:&nbsp;<input class="self-error-pos" type="radio" value="1" name="type" data-validate="required" data-message-required="请选择发送类型"  />
+                                    </label>
+                                    <label class="btn btn-white g-br3">
+                                        全部用户&nbsp;:&nbsp;<input class="self-error-pos" checked type="radio" value="2" name="type" data-validate="required" data-message-required="请选择发送类型"  />
+                                    </label>
+                                    <label class="btn btn-white g-br3">
+                                        全部店铺&nbsp;:&nbsp;<input class="self-error-pos" type="radio" value="3" name="type" data-validate="required" data-message-required="请选择发送类型"  />
+                                    </label>
                                 </div>
-                                <br />
-                                <br />
-                                <div class="panel-heading">子订单信息</div>
-                                <div class="panel-body">
-                                    <table class="table table-bordered table-striped table-hover admin-table">
-                                        <!--分组样式-->
-                                        <colgroup>
-                                            <col class="g-w-percent15">
-                                            <col class="g-w-percent15">
-                                            <col class="g-w-percent10">
-                                            <col class="g-w-percent10">
-                                        </colgroup>
-
-                                        <!--表头-->
-                                        <thead>
-                                        <tr>
-                                            <th>商品名称</th>
-                                            <th>商品属性</th>
-                                            <th>购买数量</th>
-                                            <th>供应商价</th>
-                                        </tr>
-                                        </thead>
-
-                                        <!--表主体-->
-                                        <tbody class="middle-align" id="admin_orderitem"></tbody>
-                                    </table>
-                                </div>
-                                <br />
-                                <br />
-                                <div class="grid-list-group1" id="admin_action"></div>
                             </div>
 
-                        </div>
+                            <div class="form-group g-d-hidei" id="member_wrap">
+                                <label class="control-label"><span class="form-require-item g-c-red1">*</span>发送会员列表：<span class="g-c-red1" id="member_tip"></span></label>
+                                <div id="admin_member"></div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label">指定发送时间：</label>
+
+                                <input type="text" class="form-control" name="time" id="admin_time" readonly  placeholder="请选择发送时间"  />
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label"><span class="form-require-item g-c-red1">*</span>通知内容：</label>
+                                <textarea class="form-control form-admin-editor" placeholder="请输入通知内容" data-validate="required" data-message-required="通知内容不能为空" name="content" id="admin_content"></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <button type="submit" id="admin_action" class="btn btn-success">发送</button>
+                            </div>
+
+                        </form>
                     </div>
 
 
@@ -185,8 +184,11 @@
             </div>
         </footer>
 
+
     </div>
 </div>
+
+
 
 <!--加载遮罩层-->
 <div id="page_loading_wrap" class="page-loading-overlay g-d-hidei">
@@ -235,6 +237,10 @@
 
 <script src="../../js/common/base.js"></script>
 <script src="../../js/common/common.js"></script>
-<script src="../../js/order/order_detail.js"></script>
+<script src="../../js/plugins/datepicker/datepicker.js"></script>
+<script src="../../js/plugins/kindeditor/kindeditor-all-min.js"></script>
+<!--表单验证插件-->
+<script src="../../js/plugins/jquery-validate/jquery.validate.js"></script>
+<script src="../../js/user/user_addnotice.js"></script>
 </body>
 </html>

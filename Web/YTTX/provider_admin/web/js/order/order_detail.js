@@ -150,7 +150,11 @@
 							str='<div class="grid-list-group1">状态：<p class="g-c-red2">异常</p></div>';
 						}
 					}else if(i==='freight'||i==='totalMoney'){
-						str+='<div class="grid-list-group1">'+detailmap[i]+'：<p class="g-c-red1">￥：'+(public_tool.moneyCorrect(resp[i],12,true)[0]||'0.00')+'</p></div>';
+						var price=resp[i];
+						if(price===''||isNaN(price)){
+							price="0.00";
+						}
+						str+='<div class="grid-list-group1">'+detailmap[i]+'：<p class="g-c-red1">￥：'+public_tool.moneyCorrect(price,12,false)[0]+'</p></div>';
 					}else if(i==='consigneePhone'||i==='customerPhone'){
 						str+='<div class="grid-list-group1">'+detailmap[i]+'：<p>'+public_tool.phoneFormat(resp[i])+'</p></div>';
 					}else{
@@ -185,7 +189,7 @@
 
 			for(i;i<len;i++){
 				var suborder=list[i],
-					price=suborder["wholesalePrice"];
+					price=suborder["supplierPrice"];
 
 				if(typeof pirce==='undefined'||price===''||isNaN(price)){
 					price='0.00';

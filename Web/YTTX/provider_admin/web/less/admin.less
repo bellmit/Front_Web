@@ -455,6 +455,44 @@
 		}
 	}
 
+	/*商品子订单缩略信息*/
+	.admin-order-mini-subitem1{
+		@noempty:20px;
+		display:inline-block;
+		min-width:@noempty * 2;
+		max-width:@noempty * 4;
+		line-height:@noempty;
+		height:@noempty;
+		overflow:hidden;
+		margin:5px 5px 0 0;
+		cursor: pointer;
+		&:not(:empty){
+			&:before,
+			&::before{
+				.layout-absolutel-base;
+				width:100% - @noempty;
+				height:100%;
+				display:block;
+				line-height:@noempty;
+				text-align:center;
+				overflow: hidden;
+				background:@color-white;
+				color:@color-info;
+				font-size:@font-size-base - 2;
+				content:attr(data-name);
+			}
+		}
+		&:hover{
+			.transition-base(none);
+			border:1px solid @color-gray10;
+		}
+		li{
+			div{
+				display:inline-block;
+				padding:0 0 0 5px;
+			}
+		}
+	}
 
 	/*定制表单*/
 	.admin-table-input{

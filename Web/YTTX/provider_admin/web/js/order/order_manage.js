@@ -811,51 +811,75 @@
 			var operate_item;
 			$.each([$goods_manage_wrapall,$goods_manage_wrapdfh,$goods_manage_wrapdsh,$goods_manage_wrapbfsh,$goods_manage_wrapysh],function () {
 				var own=this;
-				this.delegate('span','click',function(e){
+				this.on('click',function(e){
 					e.stopPropagation();
 					e.preventDefault();
 
 					var target= e.target,
-						$this,
+						nname=target.nodeName.toLowerCase();
+					if(nname==='td'||nname==='tr'||nname==='p'||nname==='tbody'||nname==='thead'||nname==='tfoot'){
+						return false;
+					}
+
+					var $this,
 						id,
 						action,
 						$tr;
 
-					//适配对象
-					if(target.className.indexOf('btn')!==-1){
-						$this=$(target);
-					}else{
-						$this=$(target).parent();
-					}
-					$tr=$this.closest('tr');
-					id=$this.attr('data-id');
-					action=$this.attr('data-action');
-
-					if(action==='logistics'){
-						/*查看物流*/
-						window.open("http://www.kuaidi100.com");
-					}else if(action==='select'){
-						/*查看详情*/
-						public_tool.setParams('yttx-order-detail',{
-							id:id
-						});
-						location.href='yttx-order-detail.html';
-					}else if(action==='send'){
-						if(operate_item){
-							operate_item.removeClass('item-lighten');
-							operate_item=null;
+					if(nname==='span'||nname==='i'){
+						//适配对象
+						if(target.className.indexOf('btn')!==-1){
+							$this=$(target);
+						}else{
+							$this=$(target).parent();
 						}
-						operate_item=$tr.addClass('item-lighten');
+						$tr=$this.closest('tr');
+						id=$this.attr('data-id');
+						action=$this.attr('data-action');
+
+						if(action==='logistics'){
+							/*查看物流*/
+							window.open("http://www.kuaidi100.com");
+						}else if(action==='select'){
+							/*查看详情*/
+							public_tool.setParams('yttx-order-detail',{
+								id:id
+							});
+							location.href='yttx-order-detail.html';
+						}else if(action==='send'){
+							if(operate_item){
+								operate_item.removeClass('item-lighten');
+								operate_item=null;
+							}
+							operate_item=$tr.addClass('item-lighten');
 
 
-						/*弹出框*/
-						$admin_sendid.val(id);
-						$show_send_wrap.modal('show',{
-							backdrop:'static'
-						});
+							/*弹出框*/
+							$admin_sendid.val(id);
+							$show_send_wrap.modal('show',{
+								backdrop:'static'
+							});
+						}
+					}else if(nname==='ul'||nname==='li'||nname==='div'){
+						if(nname==='ul'&&target.className.indexOf('admin-order-toggle')!==-1){
+							$this=$(target);
+						}else if(nname==='li'){
+							$this=$(target).parent();
+							if(!$this.hasClass('admin-order-toggle')){
+								return false;
+							}
+						}else if(nname==='div'){
+							$this=$(target).parent();
+							if(!$this.is('li')){
+								return false;
+							}
+							$this=$this.parent();
+							if(!$this.hasClass('admin-order-toggle')){
+								return false;
+							}
+						}
+						$this.toggleClass('admin-order-mini-subitem1');
 					}
-
-
 
 				});
 			});
@@ -1097,7 +1121,7 @@
 						cell.innerHTML='<div class="g-c-info">'+data[1]+'</div>';
 						money.each(function (subm,k) {
 							if(i===k){
-								subm.innerHTML='<div class="g-c-red2">￥:'+public_tool.moneyCorrect(data[0],12,false)[0]+'</div>';
+								subm.innerHTML='<div class="g-c-red1">￥:'+public_tool.moneyCorrect(data[0],12,false)[0]+'</div>';
 								return false;
 							}
 						});
@@ -1124,23 +1148,37 @@
 				count=0;
 			for(i;i<len;i++){
 				var goodsitem=goodsobj[i],
-					tempprice=goodsitem["wholesalePrice"],
+					tempprice=goodsitem["supplierPrice"],
+					temptotal=0,
 					tempcount=goodsitem["purchasingQuantlity"];
 
 				if(typeof tempprice==="undefined"||tempprice===''||isNaN(tempprice)){
 					tempprice='0.00';
+				}else{
+					tempprice=parseFloat(tempprice);
 				}
 				if(typeof tempcount==="undefined"||tempcount===''||isNaN(tempcount)){
 					tempcount=0;
+				}else{
+					tempcount=parseInt(tempcount,10);
 				}
-				price+=parseFloat(tempprice);
-				count+=parseInt(tempcount,10);
-				str+='<ul data-id="'+parseInt(i + 1,10)+'" class="admin-order-subitem1">\
-											<li>商品名称:<div  class="g-c-gray6">'+goodsitem["goodsName"]+'</div></li>\
-											<li>'+goodsitem["attributeName"]+'</li>\
-											<li>批发价：<div class="g-c-red1">￥:'+public_tool.moneyCorrect(tempprice,12,false)[0]+'</div></li>\
-											<li>购买数量：<div class="g-c-info">'+tempcount+'</div></li>\
-										</ul>';
+				temptotal=tempprice * tempcount;
+				price+=temptotal;
+				count+=tempcount;
+				if(len>=3){
+					if(i===0||i===1){
+						str+='<ul data-id="'+parseInt(i + 1,10)+'" class="admin-order-subitem1">';
+					}else{
+						str+='<ul data-name="查看订单" data-id="'+parseInt(i + 1,10)+'" class="admin-order-subitem1 admin-order-toggle admin-order-mini-subitem1">';
+					}
+				}else{
+					str+='<ul data-id="'+parseInt(i + 1,10)+'" class="admin-order-subitem1">';
+				}
+				str+='<li>商品名称：<div  class="g-c-gray6">'+goodsitem["goodsName"]+'</div></li>\
+					<li>商品属性：'+goodsitem["attributeName"]+'</li>\
+					<li>购买数量：<div class="g-c-info">'+tempcount+'</div></li>\
+					<li>供应商价：<div class="g-c-red1">￥:'+public_tool.moneyCorrect(tempprice,12,false)[0]+'</div>&nbsp;&nbsp;&nbsp;&nbsp;总价：<div class="g-c-red1">￥:'+public_tool.moneyCorrect(temptotal,12,false)[0]+'</div></li>\
+				</ul>';
 			}
 			return '<div class="g-d-hidei provider-dataitem">'+price+'|'+count+'</div>'+str;
 		}

@@ -26,6 +26,10 @@
           {
             "modLink": "mall-user-notice",
             "modName": "通知管理"
+          },
+          {
+            "modLink": "mall-user-addnotice",
+            "modName": "发送通知"
           }
         ],
         "modLink": "mall-user-manage",
