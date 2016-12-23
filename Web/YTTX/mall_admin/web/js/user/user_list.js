@@ -277,6 +277,10 @@
 					var text=this.val()||this.find(':selected').val(),
 						selector=this.selector.slice(1),
 						key=selector.split('_');
+					
+					if(selector.indexOf('telePhone')!==-1){
+						text=public_tool.trims(text);
+					}
 
 					if(text===""){
 						if(typeof data[key[1]]!=='undefined'){

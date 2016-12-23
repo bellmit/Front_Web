@@ -4,12 +4,13 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0,maximum-scale=1">
-    <meta name="description" content="布住网后台管理系统--订单管理--收货" />
-    <meta name="keywords" content="布住网后台管理系统--订单管理--收货">
+    <meta name="description" content="布住网后台管理系统--用户管理--添加通知" />
+    <meta name="keywords" content="布住网后台管理系统--用户管理--添加通知">
     <meta name="author" content="yp" />
-    <title>布住网后台管理系统--订单管理--收货</title>
+    <title>布住网后台管理系统--用户管理--添加通知</title>
     <link href="../../images/logo_icon.ico" rel="icon">
     <link rel="stylesheet" href="../../css/base.css">
+    <link rel="stylesheet" href="../../js/plugins/kindeditor/themes/default/default.css">
     <link rel="stylesheet" href="../../css/admin.css">
     <script src="../../js/common/jquery-1.11.1.js"></script>
     <!--[if lt IE 9]>
@@ -85,13 +86,13 @@
         <!--主题描述-->
         <div class="page-title">
             <div class="title-env">
-                <h1 class="title">订单管理</h1>
-                <p class="description">收货</p>
+                <h1 class="title">用户管理</h1>
+                <p class="description">添加通知</p>
             </div>
             <div class="breadcrumb-env">
                 <ol class="breadcrumb bc-1">
-                    <li><a href=""><i class="fa-home"></i>订单管理</a></li>
-                    <li class="active"><strong>收货</strong></li>
+                    <li><a href=""><i class="fa-home"></i>用户管理</a></li>
+                    <li class="active"><strong>添加通知</strong></li>
                 </ol>
             </div>
         </div>
@@ -104,74 +105,53 @@
 
                     <!--编辑表单标题-->
                     <div class="panel-heading">
-                        <h3 class="panel-title">收货</h3>
+                        <h3 class="panel-title">添加(编辑)通知</h3>
+                        <div class="panel-options">
+                            <a href="#" data-toggle="panel">
+                                <span class="collapse-icon">&ndash;</span>
+                                <span class="expand-icon">+</span>
+                            </a>
+                        </div>
                     </div>
 
                     <!--添加-->
                     <div class="panel-body">
-                        <form role="form"  method="post" id="admin_storereceive_form" class="admin-form1 validate">
+                        <form role="form"  method="post" id="admin_addnotice_form" class="admin-form1 validate">
                             <input type="text" value="" id="admin_id" name="id" class="g-d-hidei" />
-
-                            <div class="admin-gap-theme1 g-t-c">收货详情</div>
-
                             <div class="form-group">
-                                <label class="control-label" id="admin_orderNumber"></label>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="control-label" id="admin_orderTime"></label>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="control-label" id="admin_orderState"></label>
-                            </div>
-
-                            <div class="form-group clearfix">
-                                <a href="" class="btn btn-white btn-sm g-br2 pull-right" id="admin_print_btn">打印</a>
-                            </div>
-
-                            <div class="admin-gap-theme1">订单商品列表</div>
-
-                            <table class="table table-bordered table-striped table-hover admin-table">
-                                <colgroup>
-                                    <col class="g-w-percent15">
-                                    <col class="g-w-percent10">
-                                    <col class="g-w-percent6">
-                                    <col class="g-w-percent6">
-                                    <col class="g-w-percent7">
-                                    <col class="g-w-percent6">
-                                </colgroup>
-                                <thead>
-                                    <tr>
-                                        <th>商品名称</th>
-                                        <th>商品型号</th>
-                                        <th>已发货数量</th>
-                                        <th>采购数量</th>
-                                        <th>发货数量</th>
-                                        <th>待发数量</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="middle-align" id="admin_receive_list"></tbody>
-                                <tfoot>
-                                    <tr>
-                                        <td colspan="2" class="g-t-r" >合计：</td>
-                                        <td id="admin_already" class="g-c-info"></td>
-                                        <td class="g-c-gray3" id="admin_total"></td>
-                                        <td id="admin_text"></td>
-                                        <td id="admin_need" class="g-c-succ"></td>
-                                    </tr>
-                                </tfoot>
-                            </table>
-
-                            <div class="form-group">
-                                <div class="g-w-percent24 inline g-d-hidei">
-                                    <button type="submit" id="admin_receiveaction" class="btn btn-success">收货</button>&nbsp;&nbsp;(确认收货后系统会收货数量自动入库)
+                                <label class="control-label"><span class="form-require-item g-c-red1">*</span>发送类型：</label>
+                                <div class="self-error-pos-wrap" id="admin_type">
+                                    <label class="btn btn-white g-br3">
+                                        部分用户&nbsp;:&nbsp;<input class="self-error-pos" type="radio" value="1" name="type" data-validate="required" data-message-required="请选择发送类型"  />
+                                    </label>
+                                    <label class="btn btn-white g-br3">
+                                        全部用户&nbsp;:&nbsp;<input class="self-error-pos" checked type="radio" value="2" name="type" data-validate="required" data-message-required="请选择发送类型"  />
+                                    </label>
+                                    <label class="btn btn-white g-br3">
+                                        全部店铺&nbsp;:&nbsp;<input class="self-error-pos" type="radio" value="3" name="type" data-validate="required" data-message-required="请选择发送类型"  />
+                                    </label>
                                 </div>
-                                <label class="inline g-d-hidei">
-                                    <input type="checkbox" id="admin_allreceiveaction"  />&nbsp;&nbsp;全单收货&nbsp;&nbsp;(全单收货按订单数量自动入库)
-                                </label>
                             </div>
 
+                            <div class="form-group g-d-hidei" id="member_wrap">
+                                <label class="control-label"><span class="form-require-item g-c-red1">*</span>发送会员列表：<span class="g-c-red1" id="member_tip"></span></label>
+                                <div id="admin_member"></div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label">指定发送时间：</label>
+
+                                <input type="text" class="form-control" name="time" id="admin_time" readonly  placeholder="请选择发送时间"  />
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label"><span class="form-require-item g-c-red1">*</span>通知内容：</label>
+                                <textarea class="form-control form-admin-editor" placeholder="请输入通知内容" data-validate="required" data-message-required="通知内容不能为空" name="content" id="admin_content"></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <button type="submit" id="admin_action" class="btn btn-success">发送</button>
+                            </div>
 
                         </form>
                     </div>
@@ -257,8 +237,10 @@
 
 <script src="../../js/common/base.js"></script>
 <script src="../../js/common/common.js"></script>
+<script src="../../js/plugins/datepicker/datepicker.js"></script>
+<script src="../../js/plugins/kindeditor/kindeditor-all-min.js"></script>
 <!--表单验证插件-->
 <script src="../../js/plugins/jquery-validate/jquery.validate.js"></script>
-<script src="../../js/purchase/purchase_receive.js"></script>
+<script src="../../js/user/user_addnotice.js"></script>
 </body>
 </html>

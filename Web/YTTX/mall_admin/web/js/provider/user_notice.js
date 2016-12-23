@@ -21,19 +21,19 @@
 			});
 
 			/*清除编辑数据*/
-			public_tool.removeParams('mall-user-editadmin');
+			public_tool.removeParams('mall-user-addnotice');
 
 
 			/*权限调用*/
 			var powermap=public_tool.getPower(),
-				delete_power=public_tool.getKeyPower('user-deleteadmin',powermap),
-				edit_power=public_tool.getKeyPower('user-updateadmin',powermap);
+				delete_power=public_tool.getKeyPower('user-deletenotice',powermap),
+				edit_power=public_tool.getKeyPower('user-addnotice',powermap);
 
 
 
 			/*dom引用和相关变量定义*/
 			var $admin_list_wrap=$('#admin_list_wrap')/*表格*/,
-				module_id='mall-user-admin'/*模块id，主要用于本地存储传值*/,
+				module_id='mall-user-notice'/*模块id，主要用于本地存储传值*/,
 				dia=dialog({
 					zIndex:2000,
 					title:'温馨提示',
@@ -50,22 +50,15 @@
 				setSure=new sureObj();
 
 
-			/*查询对象*/
-			var $search_Name=$('#search_Name'),
-				$search_telePhone=$('#search_telePhone'),
-				$admin_search_btn=$('#admin_search_btn'),
-				$admin_search_clear=$('#admin_search_clear');
-
-
-
-
+			
+			
 			/*列表请求配置*/
-			var admin_page={
+			var notice_page={
 					page:1,
 					pageSize:10,
 					total:0
 				},
-				admin_config={
+				notice_config={
 					$admin_list_wrap:$admin_list_wrap,
 					$admin_page_wrap:$admin_page_wrap,
 					config:{
@@ -74,7 +67,7 @@
 						autoWidth:true,/*是否*/
 						paging:false,
 						ajax:{
-							url:"../../json/user/mall_user_admin.json",
+							url:"../../json/user/mall_user_record.json",
 							dataType:'JSON',
 							method:'post',
 							dataSrc:function ( json ) {
@@ -95,21 +88,21 @@
 									return [];
 								}
 								/*设置分页*/
-								admin_page.page=result.page;
-								admin_page.pageSize=result.pageSize;
-								admin_page.total=result.count;
+								notice_page.page=result.page;
+								notice_page.pageSize=result.pageSize;
+								notice_page.total=result.count;
 								/*分页调用*/
 								$admin_page_wrap.pagination({
-									pageSize:admin_page.pageSize,
-									total:admin_page.total,
-									pageNumber:admin_page.page,
+									pageSize:notice_page.pageSize,
+									total:notice_page.total,
+									pageNumber:notice_page.page,
 									onSelectPage:function(pageNumber,pageSize){
 										/*再次查询*/
-										var param=admin_config.config.ajax.data;
+										var param=notice_config.config.ajax.data;
 										param.page=pageNumber;
 										param.pageSize=pageSize;
-										admin_config.config.ajax.data=param;
-										getColumnData(admin_page,admin_config);
+										notice_config.config.ajax.data=param;
+										getColumnData(notice_page,notice_config);
 									}
 								});
 								return result?result.list||[]:[];
@@ -127,25 +120,19 @@
 						order:[[4, "desc" ]],
 						columns: [
 							{
-								"data":"nickName"
+								"data":"orderNumber"
+							},
+							{
+								"data":"type"
 							},
 							{
 								"data":"Name"
 							},
 							{
-								"data":"email"
+								"data":"content"
 							},
 							{
-								"data":"telePhone",
-								"render":function(data, type, full, meta ){
-									return public_tool.phoneFormat(data);
-								}
-							},
-							{
-								"data":"lastLoginTime"
-							},
-							{
-								"data":"loginCount"
+								"data":"birthday"
 							},
 							{
 								"data":"id",
@@ -156,13 +143,13 @@
 									if(edit_power){
 										btns+='<span data-action="edit" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 											<i class="fa-pencil"></i>\
-											<span>编辑权限</span>\
+											<span>查看</span>\
 										</span>';
 									}
 									if(delete_power){
 										btns+='<span data-action="delete" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 												<i class="fa-trash"></i>\
-												<span>删除权限</span>\
+												<span>删除</span>\
 											</span>';
 									}
 									return btns;
@@ -174,56 +161,7 @@
 			
 
 			/*初始化请求*/
-			getColumnData(admin_page,admin_config);
-
-
-			/*清空查询条件*/
-			$admin_search_clear.on('click',function(){
-				$.each([$search_Name,$search_telePhone],function(){
-					this.val('');
-				});
-			});
-			$admin_search_clear.trigger('click');
-
-
-			/*联合查询*/
-			$admin_search_btn.on('click',function(){
-				var data= $.extend(true,{},admin_config.config.ajax.data);
-
-				$.each([$search_Name,$search_telePhone],function(){
-					var text=this.val(),
-						selector=this.selector.slice(1),
-						key=selector.split('_');
-
-					if(selector.indexOf('telePhone')!==-1){
-						text=public_tool.trims(text);
-					}
-
-					if(text===""){
-						if(typeof data[key[1]]!=='undefined'){
-							delete data[key[1]];
-						}
-					}else{
-						data[key[1]]=text;
-					}
-
-				});
-				admin_config.config.ajax.data= $.extend(true,{},data);
-				getColumnData(admin_page,admin_config);
-			});
-
-
-			/*格式化手机号码*/
-			$.each([$search_telePhone],function(){
-				this.on('keyup',function(){
-					var phoneno=this.value.replace(/\D*/g,'');
-					if(phoneno===''){
-						this.value='';
-						return false;
-					}
-					this.value=public_tool.phoneFormat(this.value);
-				});
-			});
+			getColumnData(notice_page,notice_config);
 
 
 			/*事件绑定*/
@@ -251,8 +189,8 @@
 
 				/*修改,编辑操作*/
 				if(action==='edit'){
-					public_tool.setParams('mall-user-editadmin',id);
-					window.location.href='mall-user-editadmin.html';
+					public_tool.setParams('mall-user-addnotice',id);
+					window.location.href='mall-user-addnotice.html';
 				}else if(action==='delete'){
 					if(operate_item){
 						operate_item.removeClass('item-lighten');
@@ -262,7 +200,7 @@
 					/*确认是否启用或禁用*/
 					setSure.sure('delete',function(cf){
 						/*to do*/
-						deletePower({
+						deleteNotice({
 							id:id,
 							tip:cf.dia||dia,
 							$tr:$tr
@@ -285,7 +223,7 @@
 
 
 		/*删除权限*/
-		function deletePower(obj){
+		function deleteNotice(obj){
 			var id=obj.id;
 
 			if(typeof id==='undefined'){
@@ -328,7 +266,7 @@
 						$tr.remove();
 						setTimeout(function () {
 							/*请求数据*/
-							getColumnData(admin_page,admin_config);
+							getColumnData(notice_page,notice_config);
 						},1000);
 					},1000);
 									})

@@ -227,7 +227,7 @@
           },
           {
             "modLink": "mall-provider-goods",
-            "modName": "供应商商品列表"
+            "modName": "供应商商品管理"
           }
         ],
         "modLink": "mall-provider-manage",

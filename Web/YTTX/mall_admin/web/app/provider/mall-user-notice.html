@@ -5,10 +5,10 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	
 	<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0,maximum-scale=1">
-	<meta name="description" content="布住网后台管理系统--订单管理--采购审核" />
-	<meta name="keywords" content="布住网后台管理系统--订单管理--采购审核">
+	<meta name="description" content="布住网后台管理系统--用户管理--通知管理" />
+	<meta name="keywords" content="布住网后台管理系统--用户管理--通知管理">
   <meta name="author" content="yp" />
-	<title>布住网后台管理系统--订单管理--采购审核</title>
+	<title>布住网后台管理系统--用户管理--通知管理</title>
 	<link rel="stylesheet" href="../../css/base.css">
   <link rel="stylesheet" href="../../js/plugins/datatables/dataTables.bootstrap.css">
 	<link rel="stylesheet" href="../../css/admin.css">
@@ -86,13 +86,13 @@
             <!--主题描述-->
             <div class="page-title">
                 <div class="title-env">
-                    <h1 class="title">订单管理</h1>
-                    <p class="description">采购审核</p>
+                    <h1 class="title">用户管理</h1>
+                    <p class="description">通知管理</p>
                 </div>
                 <div class="breadcrumb-env">
                     <ol class="breadcrumb bc-1">
-                        <li><a href=""><i class="fa-home"></i>订单管理</a></li>
-                        <li class="active"><strong>采购审核</strong></li>
+                        <li><a href=""><i class="fa-home"></i>用户管理</a></li>
+                        <li class="active"><strong>通知管理</strong></li>
                     </ol>
                 </div>
             </div>
@@ -105,7 +105,7 @@
 
                         <!--表格标题-->
                         <div class="panel-heading">
-                            <h3 class="panel-title">采购审核</h3>
+                            <h3 class="panel-title">通知管理</h3>
 
                             <div class="panel-options">
                                 <a href="#" data-toggle="panel">
@@ -118,68 +118,32 @@
 
                         <!--表格主体-->
                         <div class="panel-body">
-                            <div class="admin-search-wrap">
-                                <div class="admin-search-item">
-                                    <label>采购订单号：</label>
-                                    <input type="text" id="search_orderNumber">
-                                </div>
-                                <div class="admin-search-item">
-                                    <label>供应商名称：</label>
-                                    <input type="text" id="search_providerName">
-                                </div>
-                                <div class="admin-search-item">
-                                    <label>订单状态：</label>
-                                    <select id="search_auditState">
-                                        <option value="" selected>全部</option>
-                                        <option value="0">待审核</option>
-                                        <option value="1">审核通过</option>
-                                        <option value="2">审核不通过</option>
-                                    </select>
-                                </div>
-                                <div class="admin-search-item">
-                                    <span id="admin_search_btn" class="btn btn-info btn-icon g-br2">
-                                        <i class="fa-search"></i>查询
-                                    </span>
-                                    <span id="admin_search_clear" class="btn btn-info btn-icon g-br2">
-                                        <i class="fa-spinner"></i>清空
-                                    </span>
-                                </div>
-                                <br />
-                                <div class="admin-search-item">
-                                    <span id="audit_batch_btn" class="btn btn-info btn-icon btn-xs g-br2">
-                                    <i class="fa-hand-o-up"></i>
-                                    <span>批量审核</span>
-                                </span>
-                                </div>
-                            </div>
-
-
-                            <table id="purchase_audit_wrap" class="table table-bordered table-striped table-hover admin-table">
+                            <table id="admin_list_wrap" class="table table-bordered table-striped table-hover admin-table">
                                 <!--分组样式-->
                                 <colgroup>
-                                    <col class="g-w-percent3">
-                                    <col class="g-w-percent12">
-                                    <col class="g-w-percent12">
-                                    <col class="g-w-percent12">
+                                    <col class="g-w-percent8">
                                     <col class="g-w-percent5">
-                                    <col class="g-w-percent6">
+                                    <col class="g-w-percent5">
+                                    <col class="g-w-percent16">
+                                    <col class="g-w-percent8">
+                                    <col class="g-w-percent8">
                                 </colgroup>
 
                                 <!--表头-->
                                 <thead>
                                 <tr>
-                                    <th class="no-sorting"><label>全选&nbsp;<input type="checkbox" name="batchall" id="batch_all_btn"></label></th>
-                                    <th>订单号</th>
-                                    <th>下单时间</th>
-                                    <th>供应商</th>
-                                    <th>审核状态</th>
-                                    <th class="no-sorting">操作</th>
+                                    <th>编号</th>
+                                    <th>发送类型</th>
+                                    <th>发送会员</th>
+                                    <th>内容</th>
+                                    <th>发送时间</th>
+                                    <th>操作</th>
                                 </tr>
                                 </thead>
 
 
                                 <!--表主体-->
-                                <tbody class="middle-align" id="purchase_audit_list"></tbody>
+                                <tbody class="middle-align"></tbody>
                             </table>
                             <div class="admin-page-wrap">
                                 <div class="easyui-pagination g-w-percent50" id="admin_page_wrap" data-options="links:5,layout:['manual','first','prev','links','next','last'],displayMsg:'显示{from}&nbsp;到&nbsp;{to}&nbsp;共&nbsp;{total}条记录'"></div>
@@ -217,81 +181,24 @@
 
 
 
-    <!--审核采购-->
-    <div class="modal fade custom-width" id="show_audit_wrap">
+
+    <!--详情展现-->
+    <div class="modal fade custom-width" id="show_detail_wrap">
         <div class="modal-dialog g-w-percent46">
             <div class="modal-content">
 
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title">审核采购单</h4>
+                    <h4 class="modal-title">查看公告</h4>
                 </div>
                 <div class="modal-body">
                     <table class="table table-bordered table-striped table-hover admin-table">
                         <colgroup>
-                            <col class="g-w-percent20"/>
-                            <col class="g-w-percent20"/>
                             <col class="g-w-percent10"/>
+                            <col class="g-w-percent40"/>
                         </colgroup>
-                        <thead>
-                        <tr>
-                            <th>订单号</th>
-                            <th>下单时间</th>
-                            <th>状态</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr id="show_audit_header"></tr>
-                        </tbody>
+                        <tbody id="show_detail_content"></tbody>
                     </table>
-                    <form role="form"  method="post" id="admin_audit_form" class="admin-form1">
-                        <input type="text" value="" id="admin_id" class="g-d-hidei" />
-                        <table class="table table-bordered table-striped table-hover admin-table">
-                            <colgroup>
-                                <col class="g-w-percent2" />
-                                <col class="g-w-percent14" />
-                                <col class="g-w-percent14" />
-                                <col class="g-w-percent5" />
-                                <col class="g-w-percent5" />
-                                <col class="g-w-percent5" />
-                                <col class="g-w-percent5" />
-                            </colgroup>
-                            <thead>
-                                <tr>
-                                    <th>序号</th>
-                                    <th>商品名称</th>
-                                    <th>商品属性</th>
-                                    <th>购买数量</th>
-                                    <th>采购数量</th>
-                                    <th>库存数量</th>
-                                    <th>操作</th>
-                                </tr>
-                            </thead>
-                            <tbody id="show_audit_list"  class="admin-td-vam"></tbody>
-                            <tfoot  class="admin-td-vam">
-                                <tr>
-                                    <td colspan="4" class="g-t-r">合计：</td>
-                                    <td colspan="3" class="g-c-bs-info" id="audit_total">0</td>
-                                </tr>
-                                <tr>
-                                    <td colspan="4" class="g-t-r">
-                                        <div class="g-c-red2 inline" id="audit_radio_tip"></div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                        <div class="inline" id="audit_radio_wrap">
-                                            <label>
-                                                <input type="radio" value="1" name="admin_apply">&nbsp;&nbsp;提交采购&nbsp;&nbsp;&nbsp;&nbsp;
-                                            </label>
-                                            <label>
-                                                &nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" value="2" name="admin_apply">&nbsp;&nbsp;撤销采购&nbsp;&nbsp;&nbsp;&nbsp;
-                                            </label>
-                                        </div>
-                                    </td>
-                                    <td colspan="3">
-                                        <button type="button" class="btn btn-success g-f-l" id="audit_action" >确认</button>
-                                    </td>
-                                </tr>
-                            </tfoot>
-                        </table>
-                   </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-info" data-dismiss="modal">关闭</button>
@@ -299,8 +206,9 @@
             </div>
         </div>
     </div>
-
-
+    
+    
+    
 
 	
 	<!--加载遮罩层-->
@@ -355,6 +263,6 @@
     <!--修饰分页，搜索等操作 -->
     <script src="../../js/plugins/datatables/dataTables.bootstrap.js"></script>
     <script src="../../js/plugins/pagination/pagination.js"></script>
-    <script src="../../js/purchase/purchase_audit.js"></script>
+    <script src="../../js/user/user_notice.js"></script>
 </body>
 </html>
