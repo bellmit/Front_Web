@@ -41,6 +41,15 @@
 					cancel:false
 				})/*一般提示对象*/,
 				$admin_page_wrap=$('#admin_page_wrap'),
+				$show_audit_wrap=$('#show_audit_wrap'),
+				$show_audit_header=$('#show_audit_header'),
+				admin_audit_form=document.getElementById('admin_audit_form'),
+				$audit_radio_tip=$('#audit_radio_tip'),
+				$audit_radio_wrap=$('#audit_radio_wrap'),
+				$admin_id=$('#admin_id'),
+				$show_audit_list=$('#show_audit_list'),
+				$audit_total=$('#audit_total'),
+				$audit_action=$('#audit_action'),
 				sureObj=public_tool.sureDialog(dia)/*回调提示对象*/,
 				setSure=new sureObj();
 
@@ -242,16 +251,34 @@
 						operate_item=null;
 					}
 					operate_item=$tr.addClass('item-lighten');
-					/*确认是否启用或禁用*/
-					setSure.sure('',function(cf){
-						/*to do*/
-						setAudit({
-							id:id,
-							tip:cf.dia||dia
-						});
-					},"是否审核此供应商?&nbsp;&nbsp;'审核通过后该用户可在平台建立店铺'",true);
+					showAudit(table.row($tr).data());
 				}
 			});
+
+
+
+			/*绑定关闭详情*/
+			$.each([$show_audit_wrap],function () {
+				this.on('hide.bs.modal',function(){
+					if(operate_item){
+						setTimeout(function(){
+							operate_item.removeClass('item-lighten');
+							operate_item=null;
+						},1000);
+					}
+				});
+			});
+
+
+
+			/*绑定确定收货单审核*/
+			$audit_action.on('click',function () {
+				executeAudit();
+			});
+
+
+
+
 
 		}
 
@@ -266,33 +293,103 @@
 		}
 
 
-		/*审核*/
-		function setAudit(obj){
-			var id=obj.id;
-
-			if(typeof id==='undefined'){
+		/*获取审核数据*/
+		function showAudit(data) {
+			if(typeof data==='undefined'){
 				return false;
 			}
-			var tip=obj.tip,
-				action=obj.action;
+			admin_audit_form.reset();
 
-			$.ajax({
-					url:"../../json/provider/mall_provider_list.json",
-					dataType:'JSON',
-					method:'post',
-					data:{
-						id:id,
-						type:action,
-						roleId:decodeURIComponent(logininfo.param.roleId),
-						adminId:decodeURIComponent(logininfo.param.adminId),
-						token:decodeURIComponent(logininfo.param.token)
+			if(!$.isEmptyObject(data)){
+				$admin_id.val(data["id"]);
+				var stauts=parseInt(data["state"],10),
+					statusmap={
+						0:"待审核",
+						1:"审核未通过",
+						2:"审核通过"
+					},
+					res='';
+					if(stauts===0){
+						res='<div class="g-c-info">'+statusmap[stauts]+'</div>';
+					}else if(stauts===1){
+						res='<div class="g-c-red1">'+statusmap[stauts]+'</div>';
+					}else if(stauts===2){
+						res='<div class="g-c-succ">'+statusmap[stauts]+'</div>';
+					}else{
+						res='<div class="g-c-red1">异常</div>';
 					}
-				})
-				.done(function(resp){
-					var code=parseInt(resp.code,10);
-					if(code!==0){
+
+				var str='<tr><td>'+data["provider"]+'</td><td>'+data["store"]+'</td><td>'+data["address"]+'</td><td>'+public_tool.phoneFormat(data["telePhone"])+'</td><td>'+res+'</td></tr>';
+				$(str).appendTo($show_audit_header.html(''));
+				$show_audit_wrap.modal('show',{backdrop:'static'});
+			}
+		}
+
+
+		/*审核*/
+		function executeAudit() {
+			setSure.sure('',function(cf){
+				/*是否选择了状态*/
+				var applystate=parseInt($audit_radio_wrap.find(':checked').val(),10);
+				if(isNaN(applystate)){
+					$audit_radio_tip.html('您没有选择审核状态');
+					setTimeout(function () {
+						$audit_radio_tip.html('');
+						$audit_radio_wrap.find('input').eq(0).prop({
+							'checked':true
+						});
+					},2000);
+					return false;
+				}
+				/*是否有id*/
+				var id=$admin_id.val();
+				if(id===''){
+					dia.content('<span class="g-c-bs-warning g-btips-warn">您没有选择需要操作的数据</span>').showModal();
+					return false;
+				}
+
+				var tip=cf.dia;
+
+				$.ajax({
+						url:"../../json/provider/mall_provider_list.json",
+						dataType:'JSON',
+						method:'post',
+						data:{
+							orderId:id,
+							roleId:decodeURIComponent(logininfo.param.roleId),
+							adminId:decodeURIComponent(logininfo.param.adminId),
+							token:decodeURIComponent(logininfo.param.token),
+							auditState:applystate
+						}
+					})
+					.done(function(resp){
+						var code=parseInt(resp.code,10);
+						if(code!==0){
+							console.log(resp.message);
+							tip.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"审核失败")+'</span>').show();
+							admin_audit_form.reset();
+							setTimeout(function () {
+								tip.close();
+								if(operate_item){
+									operate_item.removeClass('item-lighten');
+									operate_item=null;
+								}
+							},2000);
+							return false;
+						}
+						tip.content('<span class="g-c-bs-success g-btips-succ">审核成功</span>').show();
+						operate_item=null;
+						getColumnData(provider_page,provider_config);
+						setTimeout(function () {
+							$show_audit_wrap.modal('hide');
+							tip.close();
+							admin_audit_form.reset();
+						},2000);
+					})
+					.fail(function(resp){
 						console.log(resp.message);
-						tip.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"操作失败")+'</span>').show();
+						admin_audit_form.reset();
+						tip.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"审核失败")+'</span>').show();
 						setTimeout(function () {
 							tip.close();
 							if(operate_item){
@@ -300,38 +397,9 @@
 								operate_item=null;
 							}
 						},2000);
-						return false;
-					}
-					/*是否是正确的返回数据*/
-					/*添加高亮状态*/
-					tip.content('<span class="g-c-bs-success g-btips-succ">'+(action==="up"?'启用':'禁用')+'成功</span>').show();
-					setTimeout(function () {
-						tip.close();
-						setTimeout(function () {
-							operate_item=null;
-							/*请求数据*/
-							getColumnData(provider_page,provider_config);
-						},1000);
-					},1000);
-				})
-				.fail(function(resp){
-					console.log(resp.message);
-					tip.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"操作失败")+'</span>').show();
-					setTimeout(function () {
-						tip.close();
-						if(operate_item){
-							operate_item.removeClass('item-lighten');
-							operate_item=null;
-						}
-					},2000);
-				});
+					});
+			},"是否审核此供应商?&nbsp;&nbsp;'审核通过后该用户可在平台建立店铺'",true);
 		}
-
-
-
-
-
-
 	});
 
 
