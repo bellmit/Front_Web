@@ -20,15 +20,20 @@
 				datatype:'json'
 			});
 
+			/*清除编辑数据*/
+			public_tool.removeParams('mall-provider-goods');
+
+
 			/*权限调用*/
 			var powermap=public_tool.getPower(),
-				audit_power=public_tool.getKeyPower('provider-audit',powermap);
+				enabled_power=public_tool.getKeyPower('provider-goodsabled',powermap),
+				detail_power=public_tool.getKeyPower('provider-goods-detail',powermap);
 
 
 
 			/*dom引用和相关变量定义*/
 			var $admin_list_wrap=$('#admin_list_wrap')/*表格*/,
-				module_id='mall-provider-audit'/*模块id，主要用于本地存储传值*/,
+				module_id='mall-provider-goods'/*模块id，主要用于本地存储传值*/,
 				dia=dialog({
 					zIndex:2000,
 					title:'温馨提示',
@@ -41,13 +46,6 @@
 					cancel:false
 				})/*一般提示对象*/,
 				$admin_page_wrap=$('#admin_page_wrap'),
-				$show_audit_wrap=$('#show_audit_wrap'),
-				$show_audit_header=$('#show_audit_header'),
-				admin_audit_form=document.getElementById('admin_audit_form'),
-				$audit_radio_tip=$('#audit_radio_tip'),
-				$audit_radio_wrap=$('#audit_radio_wrap'),
-				$admin_id=$('#admin_id'),
-				$audit_action=$('#audit_action'),
 				sureObj=public_tool.sureDialog(dia)/*回调提示对象*/,
 				setSure=new sureObj();
 
@@ -55,6 +53,7 @@
 			/*查询对象*/
 			var $search_name=$('#search_name'),
 				$search_store=$('#search_store'),
+				$search_number=$('#search_number'),
 				$admin_search_btn=$('#admin_search_btn'),
 				$admin_search_clear=$('#admin_search_clear');
 
@@ -126,37 +125,37 @@
 						},
 						info:false,
 						searching:true,
-						order:[[0, "desc" ],[1, "desc" ]],
+						order:[[4, "desc" ]],
 						columns: [
 							{
 								"data":"provider"
 							},
 							{
+								"data":"company"
+							},
+							{
 								"data":"store"
 							},
 							{
-								"data":"address"
+								"data":"type"
 							},
 							{
-								"data":"createTime"
+								"data":"sort"
 							},
 							{
-								"data":"state",
+								"data":"isEnabled",
 								"render":function(data, type, full, meta ){
 									var stauts=parseInt(data,10),
 										statusmap={
-											0:"待审核",
-											1:"审核未通过",
-											2:"审核通过"
+											0:"下架",
+											1:"上架"
 										},
 										str='';
 
 									if(stauts===0){
-										str='<div class="g-c-info">'+statusmap[stauts]+'</div>';
+										str='<div class="g-c-gray9">'+statusmap[stauts]+'</div>';
 									}else if(stauts===1){
-										str='<div class="g-c-red1">'+statusmap[stauts]+'</div>';
-									}else if(stauts===2){
-										str='<div class="g-c-succ">'+statusmap[stauts]+'</div>';
+										str='<div class="g-c-info">'+statusmap[stauts]+'</div>';
 									}
 									return str;
 								}
@@ -166,12 +165,28 @@
 								"render":function(data, type, full, meta ){
 									var id=parseInt(data,10),
 										btns='',
-										state=parseInt(full.state,10);
+										enabled=parseInt(full.isEnabled,10);
 
-									if(audit_power&&(state===0||state===1)){
-										btns+='<span data-action="audit" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
-													<i class="fa-hand-o-up"></i>\
-													<span>审核</span>\
+									if(enabled_power){
+										if(enabled===0){
+											/*禁用状态则启用*/
+											btns+='<span data-action="up" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+													<i class="fa-arrow-up"></i>\
+													<span>上架</span>\
+												</span>';
+										}else if(enabled===1){
+											/*启用状态则禁用*/
+											btns+='<span data-action="down" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+													<i class="fa-arrow-down"></i>\
+													<span>下架</span>\
+												</span>';
+
+										}
+									}
+									if(detail_power){
+										btns+='<span data-action="goods" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+													<i class="fa-file-text-o"></i>\
+													<span>查看</span>\
 												</span>';
 									}
 									return btns;
@@ -188,7 +203,7 @@
 
 			/*清空查询条件*/
 			$admin_search_clear.on('click',function(){
-				$.each([$search_name,$search_store],function(){
+				$.each([$search_name,$search_store,$search_number],function(){
 					this.val('');
 				});
 			});
@@ -199,7 +214,7 @@
 			$admin_search_btn.on('click',function(){
 				var data= $.extend(true,{},provider_config.config.ajax.data);
 
-				$.each([$search_name,$search_store],function(){
+				$.each([$search_name,$search_store,$search_number],function(){
 					var text=this.val(),
 						selector=this.selector.slice(1),
 						key=selector.split('_');
@@ -243,40 +258,26 @@
 				action=$this.attr('data-action');
 
 				/*修改,编辑操作*/
-				if(action==='audit'){
+				if(action==='goods'){
+					public_tool.setParams('mall-provider-goods',id);
+					window.location.href='mall-provider-goods.html';
+				}else if(action==='up'||action==='down'){
 					if(operate_item){
 						operate_item.removeClass('item-lighten');
 						operate_item=null;
 					}
 					operate_item=$tr.addClass('item-lighten');
-					showAudit(table.row($tr).data());
+					/*确认是否启用或禁用*/
+					setSure.sure(action==='up'?'启用':'禁用',function(cf){
+						/*to do*/
+						setEnabled({
+							id:id,
+							action:action,
+							tip:cf.dia||dia
+						});
+					});
 				}
 			});
-
-
-
-			/*绑定关闭详情*/
-			$.each([$show_audit_wrap],function () {
-				this.on('hide.bs.modal',function(){
-					if(operate_item){
-						setTimeout(function(){
-							operate_item.removeClass('item-lighten');
-							operate_item=null;
-						},1000);
-					}
-				});
-			});
-
-
-
-			/*绑定确定收货单审核*/
-			$audit_action.on('click',function () {
-				executeAudit();
-			});
-
-
-
-
 
 		}
 
@@ -291,103 +292,33 @@
 		}
 
 
-		/*获取审核数据*/
-		function showAudit(data) {
-			if(typeof data==='undefined'){
+		/*启用禁用*/
+		function setEnabled(obj){
+			var id=obj.id;
+
+			if(typeof id==='undefined'){
 				return false;
 			}
-			admin_audit_form.reset();
+			var tip=obj.tip,
+				action=obj.action;
 
-			if(!$.isEmptyObject(data)){
-				$admin_id.val(data["id"]);
-				var stauts=parseInt(data["state"],10),
-					statusmap={
-						0:"待审核",
-						1:"审核未通过",
-						2:"审核通过"
-					},
-					res='';
-					if(stauts===0){
-						res='<div class="g-c-info">'+statusmap[stauts]+'</div>';
-					}else if(stauts===1){
-						res='<div class="g-c-red1">'+statusmap[stauts]+'</div>';
-					}else if(stauts===2){
-						res='<div class="g-c-succ">'+statusmap[stauts]+'</div>';
-					}else{
-						res='<div class="g-c-red1">异常</div>';
+			$.ajax({
+					url:"../../json/provider/mall_provider_list.json",
+					dataType:'JSON',
+					method:'post',
+					data:{
+						id:id,
+						type:action,
+						roleId:decodeURIComponent(logininfo.param.roleId),
+						adminId:decodeURIComponent(logininfo.param.adminId),
+						token:decodeURIComponent(logininfo.param.token)
 					}
-
-				var str='<tr><td>'+data["provider"]+'</td><td>'+data["store"]+'</td><td>'+data["address"]+'</td><td>'+public_tool.phoneFormat(data["telePhone"])+'</td><td>'+res+'</td></tr>';
-				$(str).appendTo($show_audit_header.html(''));
-				$show_audit_wrap.modal('show',{backdrop:'static'});
-			}
-		}
-
-
-		/*审核*/
-		function executeAudit() {
-			setSure.sure('',function(cf){
-				/*是否选择了状态*/
-				var applystate=parseInt($audit_radio_wrap.find(':checked').val(),10);
-				if(isNaN(applystate)){
-					$audit_radio_tip.html('您没有选择审核状态');
-					setTimeout(function () {
-						$audit_radio_tip.html('');
-						$audit_radio_wrap.find('input').eq(0).prop({
-							'checked':true
-						});
-					},2000);
-					return false;
-				}
-				/*是否有id*/
-				var id=$admin_id.val();
-				if(id===''){
-					dia.content('<span class="g-c-bs-warning g-btips-warn">您没有选择需要操作的数据</span>').showModal();
-					return false;
-				}
-
-				var tip=cf.dia;
-
-				$.ajax({
-						url:"../../json/provider/mall_provider_list.json",
-						dataType:'JSON',
-						method:'post',
-						data:{
-							orderId:id,
-							roleId:decodeURIComponent(logininfo.param.roleId),
-							adminId:decodeURIComponent(logininfo.param.adminId),
-							token:decodeURIComponent(logininfo.param.token),
-							auditState:applystate
-						}
-					})
-					.done(function(resp){
-						var code=parseInt(resp.code,10);
-						if(code!==0){
-							console.log(resp.message);
-							tip.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"审核失败")+'</span>').show();
-							admin_audit_form.reset();
-							setTimeout(function () {
-								tip.close();
-								if(operate_item){
-									operate_item.removeClass('item-lighten');
-									operate_item=null;
-								}
-							},2000);
-							return false;
-						}
-						tip.content('<span class="g-c-bs-success g-btips-succ">审核成功</span>').show();
-						operate_item=null;
-						getColumnData(provider_page,provider_config);
-						setTimeout(function () {
-							$show_audit_wrap.modal('hide');
-							tip.close();
-							admin_audit_form.reset();
-						},2000);
-					})
-					.fail(function(resp){
+				})
+				.done(function(resp){
+					var code=parseInt(resp.code,10);
+					if(code!==0){
 						console.log(resp.message);
-						admin_audit_form.reset();
-						tip.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"审核失败")+'</span>').show();
+						tip.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"操作失败")+'</span>').show();
 						setTimeout(function () {
 							tip.close();
 							if(operate_item){
@@ -395,9 +326,38 @@
 								operate_item=null;
 							}
 						},2000);
-					});
-			},"是否审核此供应商?&nbsp;&nbsp;'审核通过后该用户可在平台建立店铺'",true);
+						return false;
+					}
+					/*是否是正确的返回数据*/
+					/*添加高亮状态*/
+					tip.content('<span class="g-c-bs-success g-btips-succ">'+(action==="up"?'启用':'禁用')+'成功</span>').show();
+					setTimeout(function () {
+						tip.close();
+						setTimeout(function () {
+							operate_item=null;
+							/*请求数据*/
+							getColumnData(provider_page,provider_config);
+						},1000);
+					},1000);
+				})
+				.fail(function(resp){
+					console.log(resp.message);
+					tip.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"操作失败")+'</span>').show();
+					setTimeout(function () {
+						tip.close();
+						if(operate_item){
+							operate_item.removeClass('item-lighten');
+							operate_item=null;
+						}
+					},2000);
+				});
 		}
+
+
+
+
+
+
 	});
 
 
