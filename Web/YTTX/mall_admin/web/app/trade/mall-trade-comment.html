@@ -3,16 +3,16 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	
 	<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0,maximum-scale=1">
-	<meta name="description" content="布住网后台管理系统--用户管理--流水记录" />
-	<meta name="keywords" content="布住网后台管理系统--用户管理--流水记录">
-    <meta name="author" content="yp" />
-	<title>布住网后台管理系统--用户管理--流水记录</title>
+	<meta name="description" content="布住网后台管理系统--交易管理--评论管理" />
+	<meta name="keywords" content="布住网后台管理系统--交易管理--评论管理">
+  <meta name="author" content="yp" />
+	<title>布住网后台管理系统--交易管理--评论管理</title>
 	<link rel="stylesheet" href="../../css/base.css">
-    <link rel="stylesheet" href="../../js/plugins/datatables/dataTables.bootstrap.css">
-    <link rel="stylesheet" type="text/css" href="../../js/plugins/daterangepicker/daterangepicker-bs3.css">
+  <link rel="stylesheet" href="../../js/plugins/datatables/dataTables.bootstrap.css">
 	<link rel="stylesheet" href="../../css/admin.css">
-    <script src="../../js/common/jquery-1.11.1.js"></script>
+  <script src="../../js/common/jquery-1.11.1.js"></script>
 	<!--[if lt IE 9]>
 		<script src="../../js/common/h5support.js"></script>
 	<![endif]-->
@@ -86,13 +86,13 @@
             <!--主题描述-->
             <div class="page-title">
                 <div class="title-env">
-                    <h1 class="title">用户管理</h1>
-                    <p class="description">流水记录</p>
+                    <h1 class="title">交易管理</h1>
+                    <p class="description">评论管理</p>
                 </div>
                 <div class="breadcrumb-env">
                     <ol class="breadcrumb bc-1">
-                        <li><a href=""><i class="fa-home"></i>用户管理</a></li>
-                        <li class="active"><strong>流水记录</strong></li>
+                        <li><a href=""><i class="fa-home"></i>交易管理</a></li>
+                        <li class="active"><strong>评论管理</strong></li>
                     </ol>
                 </div>
             </div>
@@ -105,7 +105,7 @@
 
                         <!--表格标题-->
                         <div class="panel-heading">
-                            <h3 class="panel-title">流水记录</h3>
+                            <h3 class="panel-title">评论管理</h3>
 
                             <div class="panel-options">
                                 <a href="#" data-toggle="panel">
@@ -118,22 +118,27 @@
 
                         <!--表格主体-->
                         <div class="panel-body">
+                            <div class="btn-group" id="admin_search_theme">
+                                <button type="button" class="btn btn-white g-c-gray6 g-br2 " data-value="buy"><i class="fa-comments"></i>&nbsp;买家评论</button>
+                                <button type="button" class="btn btn-white g-c-gray6 g-br2" data-value="sell"><i class="fa-comments-o"></i>&nbsp;卖家评论</button>
+                            </div>
                             <div class="admin-search-wrap">
                                 <div class="admin-search-item">
-                                    <label>会员名称：</label>
-                                    <input type="text" id="search_Name" />
+                                    <label>评价人：</label>
+                                    <input type="text" id="search_name" />
                                 </div>
                                 <div class="admin-search-item">
-                                    <label>流水内容：</label>
-                                    <input type="text" id="search_content" />
+                                    <label>被评价人：</label>
+                                    <input type="text" id="search_time" placeholder="请选择下单时间" readonly />
                                 </div>
                                 <div class="admin-search-item">
-                                    <label>订单号：</label>
-                                    <input type="text" id="search_orderNumber" />
-                                </div>
-                                <div class="admin-search-item">
-                                    <label>时间：</label>
-                                    <input type="text" readonly id="search_time" />
+                                    <label>评论等级：</label>
+                                    <select id="search_payType">
+                                        <option value="" selected>全部</option>
+                                        <option value="0">好评</option>
+                                        <option value="1">中评</option>
+                                        <option value="2">差评</option>
+                                    </select>
                                 </div>
                                 <div class="admin-search-item">
                                     <span id="admin_search_btn" class="btn btn-info btn-icon g-br2">
@@ -147,39 +152,78 @@
 
 
 
-                            <table id="admin_list_wrap" class="table table-bordered table-striped table-hover admin-table">
-                                <!--分组样式-->
-                                <colgroup>
-                                    <col class="g-w-percent8">
-                                    <col class="g-w-percent16">
-                                    <col class="g-w-percent5">
-                                    <col class="g-w-percent5">
-                                    <col class="g-w-percent8">
-                                    <col class="g-w-percent8">
-                                </colgroup>
+                            <div id="admin_buy_wrap">
+                                <table id="admin_listbuy_wrap" class="table table-bordered table-striped table-hover admin-table">
+                                    <!--分组样式-->
+                                    <colgroup>
+                                        <col class="g-w-percent10">
+                                        <col class="g-w-percent10">
+                                        <col class="g-w-percent10">
+                                        <col class="g-w-percent5">
+                                        <col class="g-w-percent5">
+                                        <col class="g-w-percent5">
+                                        <col class="g-w-percent5">
+                                    </colgroup>
 
-                                <!--表头-->
-                                <thead>
-                                <tr>
-                                    <th>会员名称</th>
-                                    <th>流水内容</th>
-                                    <th>收入金额</th>
-                                    <th>支出金额</th>
-                                    <th>订单号</th>
-                                    <th>操作时间</th>
-                                </tr>
-                                </thead>
+                                    <!--表头-->
+                                    <thead>
+                                    <tr>
+                                        <th>订单号</th>
+                                        <th>下单时间</th>
+                                        <th>买家</th>
+                                        <th>订单总计</th>
+                                        <th>支付方式</th>
+                                        <th>订单状态</th>
+                                        <th class="no-sorting">操作</th>
+                                    </tr>
+                                    </thead>
 
 
-                                <!--表主体-->
-                                <tbody class="middle-align" id="order_stats_list"></tbody>
-                            </table>
-                            <div class="admin-page-wrap">
-                                <div class="easyui-pagination g-w-percent50" id="admin_page_wrap" data-options="links:5,layout:['manual','first','prev','links','next','last'],displayMsg:'显示{from}&nbsp;到&nbsp;{to}&nbsp;共&nbsp;{total}条记录'"></div>
+                                    <!--表主体-->
+                                    <tbody class="middle-align"></tbody>
+                                </table>
+                                <div class="admin-page-wrap">
+                                    <div class="easyui-pagination g-w-percent50" id="admin_pagebuy_wrap" data-options="links:5,layout:['manual','first','prev','links','next','last'],displayMsg:'显示{from}&nbsp;到&nbsp;{to}&nbsp;共&nbsp;{total}条记录'"></div>
+                                </div>
+                            </div>
+
+
+                            <div class="g-d-hidei" id="admin_sell_wrap">
+                                <table id="admin_listsell_wrap" class="table table-bordered table-striped table-hover admin-table">
+                                    <!--分组样式-->
+                                    <colgroup>
+                                        <col class="g-w-percent10">
+                                        <col class="g-w-percent10">
+                                        <col class="g-w-percent10">
+                                        <col class="g-w-percent5">
+                                        <col class="g-w-percent5">
+                                        <col class="g-w-percent5">
+                                        <col class="g-w-percent5">
+                                    </colgroup>
+
+                                    <!--表头-->
+                                    <thead>
+                                    <tr>
+                                        <th>订单号</th>
+                                        <th>下单时间</th>
+                                        <th>买家</th>
+                                        <th>订单总计</th>
+                                        <th>支付方式</th>
+                                        <th>订单状态</th>
+                                        <th class="no-sorting">操作</th>
+                                    </tr>
+                                    </thead>
+
+
+                                    <!--表主体-->
+                                    <tbody class="middle-align"></tbody>
+                                </table>
+                                <div class="admin-page-wrap">
+                                    <div class="easyui-pagination g-w-percent50" id="admin_pagesell_wrap" data-options="links:5,layout:['manual','first','prev','links','next','last'],displayMsg:'显示{from}&nbsp;到&nbsp;{to}&nbsp;共&nbsp;{total}条记录'"></div>
+                                </div>
+
                             </div>
                         </div>
-
-
                     </div>
                 </div>
             </div>
@@ -205,6 +249,34 @@
             </footer>
 
 
+        </div>
+    </div>
+
+
+
+
+    <!--查看订单详情-->
+    <div class="modal fade custom-width" id="show_detail_wrap">
+        <div class="modal-dialog g-w-percent46">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="show_detail_title"></h4>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-bordered table-striped table-hover admin-table">
+                        <colgroup>
+                            <col class="g-w-percent10"/>
+                            <col class="g-w-percent40"/>
+                        </colgroup>
+                        <tbody id="show_detail_content"></tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-info" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -263,7 +335,6 @@
     <!--修饰分页，搜索等操作 -->
     <script src="../../js/plugins/datatables/dataTables.bootstrap.js"></script>
     <script src="../../js/plugins/pagination/pagination.js"></script>
-    <script src="../../js/plugins/daterangepicker/daterangepicker.js"></script>
-    <script src="../../js/user/user_record.js"></script>
+    <script src="../../js/trade/trade_comment.js"></script>
 </body>
 </html>

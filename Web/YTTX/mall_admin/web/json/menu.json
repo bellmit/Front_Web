@@ -276,7 +276,7 @@
             "prid": 6
           },
           {
-            "funcCode": "provider-goodsabled",
+            "funcCode": "provider-goods-user",
             "funcName": "供应商商品上架/下架",
             "isPermit": 1,
             "modId": 3,
@@ -288,6 +288,13 @@
             "isPermit": 1,
             "modId": 3,
             "prid": 8
+          },
+          {
+            "funcCode": "provider-goods-disabled",
+            "funcName": "供应商商品禁售",
+            "isPermit": 1,
+            "modId": 3,
+            "prid": 9
           }
         ]
       },

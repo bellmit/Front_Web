@@ -26,7 +26,8 @@
 
 			/*权限调用*/
 			var powermap=public_tool.getPower(),
-				enabled_power=public_tool.getKeyPower('provider-goodsabled',powermap),
+				user_power=public_tool.getKeyPower('provider-goods-user',powermap),
+				enabled_power=public_tool.getKeyPower('provider-goods-disabled',powermap),
 				detail_power=public_tool.getKeyPower('provider-goods-detail',powermap);
 
 
@@ -161,30 +162,65 @@
 								}
 							},
 							{
+								"data":"user",
+								"render":function(data, type, full, meta ){
+									var stauts=parseInt(data,10),
+										statusmap={
+											0:"禁售",
+											1:"可售"
+										},
+										str='';
+
+									if(stauts===0){
+										str='<div class="g-c-red1">'+statusmap[stauts]+'</div>';
+									}else if(stauts===1){
+										str='<div class="g-c-gray6">'+statusmap[stauts]+'</div>';
+									}
+									return str;
+								}
+							},
+							{
 								"data":"id",
 								"render":function(data, type, full, meta ){
 									var id=parseInt(data,10),
 										btns='',
+										user=parseInt(full.user,10),
 										enabled=parseInt(full.isEnabled,10);
 
-									if(enabled_power){
-										if(enabled===0){
-											/*禁用状态则启用*/
-											btns+='<span data-action="up" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+									if(user===1){
+										if(enabled_power){
+											if(enabled===0){
+												/*禁用状态则启用*/
+												btns+='<span data-action="up" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 													<i class="fa-arrow-up"></i>\
 													<span>上架</span>\
 												</span>';
-										}else if(enabled===1){
-											/*启用状态则禁用*/
-											btns+='<span data-action="down" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+											}else if(enabled===1){
+												/*启用状态则禁用*/
+												btns+='<span data-action="down" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 													<i class="fa-arrow-down"></i>\
 													<span>下架</span>\
 												</span>';
-
+											}
+										}
+										if(user_power){
+											/*可售状态则禁售*/
+											btns+='<span data-action="disabled" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+													<i class="fa-toggle-on"></i>\
+													<span>禁售</span>\
+												</span>';
+										}
+									}else if(user===0){
+										if(user_power){
+											/*禁用状态则启用*/
+											btns+='<span data-action="usable" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+													<i class="fa-toggle-off"></i>\
+													<span>可售</span>\
+												</span>';
 										}
 									}
 									if(detail_power){
-										btns+='<span data-action="goods" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+										btns+='<span data-action="select" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 													<i class="fa-file-text-o"></i>\
 													<span>查看</span>\
 												</span>';
@@ -258,19 +294,30 @@
 				action=$this.attr('data-action');
 
 				/*修改,编辑操作*/
-				if(action==='goods'){
-					public_tool.setParams('mall-provider-goods',id);
-					window.location.href='mall-provider-goods.html';
+				if(action==='select'){
+					/*public_tool.setParams('mall-provider-goods',id);
+					window.location.href='mall-provider-goods.html';*/
 				}else if(action==='up'||action==='down'){
+					/*确认是否启用或禁用*/
+					if(operate_item){
+						operate_item.removeClass('item-lighten');
+						operate_item=null;
+					}
+					operate_item=$tr.addClass('item-lighten');
+					setEnabled({
+						id:id,
+						action:action
+					});
+				}else if(action==='disabled'||action==='usabled'){
 					if(operate_item){
 						operate_item.removeClass('item-lighten');
 						operate_item=null;
 					}
 					operate_item=$tr.addClass('item-lighten');
 					/*确认是否启用或禁用*/
-					setSure.sure(action==='up'?'启用':'禁用',function(cf){
+					setSure.sure(action==='disabled'?'禁售':'可售',function(cf){
 						/*to do*/
-						setEnabled({
+						setUser({
 							id:id,
 							action:action,
 							tip:cf.dia||dia
@@ -294,6 +341,66 @@
 
 		/*启用禁用*/
 		function setEnabled(obj){
+			var id=obj.id;
+
+			if(typeof id==='undefined'){
+				return false;
+			}
+			var action=obj.action;
+			$.ajax({
+					url:"../../json/provider/mall_provider_list.json",
+					dataType:'JSON',
+					method:'post',
+					data:{
+						id:id,
+						type:action,
+						roleId:decodeURIComponent(logininfo.param.roleId),
+						adminId:decodeURIComponent(logininfo.param.adminId),
+						token:decodeURIComponent(logininfo.param.token)
+					}
+				})
+				.done(function(resp){
+					var code=parseInt(resp.code,10);
+					if(code!==0){
+						console.log(resp.message);
+						dia.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"操作失败")+'</span>').show();
+						setTimeout(function () {
+							dia.close();
+							if(operate_item){
+								operate_item.removeClass('item-lighten');
+								operate_item=null;
+							}
+						},2000);
+						return false;
+					}
+					/*是否是正确的返回数据*/
+					/*添加高亮状态*/
+					dia.content('<span class="g-c-bs-success g-btips-succ">'+(action==="up"?'上架':'下架')+'成功</span>').show();
+					setTimeout(function () {
+						dia.close();
+						setTimeout(function () {
+							operate_item=null;
+							/*请求数据*/
+							getColumnData(provider_page,provider_config);
+						},1000);
+					},1000);
+				})
+				.fail(function(resp){
+					console.log(resp.message);
+					dia.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"操作失败")+'</span>').show();
+					setTimeout(function () {
+						dia.close();
+						if(operate_item){
+							operate_item.removeClass('item-lighten');
+							operate_item=null;
+						}
+					},2000);
+				});
+		}
+
+
+		/*禁售，可售*/
+		function setUser(obj){
 			var id=obj.id;
 
 			if(typeof id==='undefined'){
@@ -330,7 +437,7 @@
 					}
 					/*是否是正确的返回数据*/
 					/*添加高亮状态*/
-					tip.content('<span class="g-c-bs-success g-btips-succ">'+(action==="up"?'启用':'禁用')+'成功</span>').show();
+					tip.content('<span class="g-c-bs-success g-btips-succ">'+(action==="disabled"?'禁售':'可售')+'成功</span>').show();
 					setTimeout(function () {
 						tip.close();
 						setTimeout(function () {
