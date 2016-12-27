@@ -362,8 +362,7 @@
 						id:id,
 						roleId:decodeURIComponent(logininfo.param.roleId),
 						adminId:decodeURIComponent(logininfo.param.adminId),
-						token:decodeURIComponent(logininfo.param.token),
-						grade:decodeURIComponent(logininfo.param.grade)
+						token:decodeURIComponent(logininfo.param.token)
 					}
 				})
 				.done(function(resp){

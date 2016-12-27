@@ -10,6 +10,7 @@
   <meta name="author" content="yp" />
 	<title>布住网后台管理系统--交易管理--评论管理</title>
 	<link rel="stylesheet" href="../../css/base.css">
+    <link rel="stylesheet" href="../../js/plugins/kindeditor/themes/default/default.css">
   <link rel="stylesheet" href="../../js/plugins/datatables/dataTables.bootstrap.css">
 	<link rel="stylesheet" href="../../css/admin.css">
   <script src="../../js/common/jquery-1.11.1.js"></script>
@@ -118,27 +119,18 @@
 
                         <!--表格主体-->
                         <div class="panel-body">
-                            <div class="btn-group" id="admin_search_theme">
+                            <div class="btn-group" id="admin_search_theme" data-value="">
                                 <button type="button" class="btn btn-white g-c-gray6 g-br2 " data-value="buy"><i class="fa-comments"></i>&nbsp;买家评论</button>
                                 <button type="button" class="btn btn-white g-c-gray6 g-br2" data-value="sell"><i class="fa-comments-o"></i>&nbsp;卖家评论</button>
                             </div>
                             <div class="admin-search-wrap">
                                 <div class="admin-search-item">
                                     <label>评价人：</label>
-                                    <input type="text" id="search_name" />
+                                    <input type="text" id="search_commentFrom" />
                                 </div>
                                 <div class="admin-search-item">
                                     <label>被评价人：</label>
-                                    <input type="text" id="search_time" placeholder="请选择下单时间" readonly />
-                                </div>
-                                <div class="admin-search-item">
-                                    <label>评论等级：</label>
-                                    <select id="search_payType">
-                                        <option value="" selected>全部</option>
-                                        <option value="0">好评</option>
-                                        <option value="1">中评</option>
-                                        <option value="2">差评</option>
-                                    </select>
+                                    <input type="text" id="search_commentTo" />
                                 </div>
                                 <div class="admin-search-item">
                                     <span id="admin_search_btn" class="btn btn-info btn-icon g-br2">
@@ -156,24 +148,20 @@
                                 <table id="admin_listbuy_wrap" class="table table-bordered table-striped table-hover admin-table">
                                     <!--分组样式-->
                                     <colgroup>
+                                        <col class="g-w-percent8">
                                         <col class="g-w-percent10">
+                                        <col class="g-w-percent17">
                                         <col class="g-w-percent10">
-                                        <col class="g-w-percent10">
-                                        <col class="g-w-percent5">
-                                        <col class="g-w-percent5">
-                                        <col class="g-w-percent5">
                                         <col class="g-w-percent5">
                                     </colgroup>
 
                                     <!--表头-->
                                     <thead>
                                     <tr>
-                                        <th>订单号</th>
-                                        <th>下单时间</th>
-                                        <th>买家</th>
-                                        <th>订单总计</th>
-                                        <th>支付方式</th>
-                                        <th>订单状态</th>
+                                        <th>评价人</th>
+                                        <th>被评价店铺</th>
+                                        <th>评价内容</th>
+                                        <th>评价时间</th>
                                         <th class="no-sorting">操作</th>
                                     </tr>
                                     </thead>
@@ -193,23 +181,19 @@
                                     <!--分组样式-->
                                     <colgroup>
                                         <col class="g-w-percent10">
+                                        <col class="g-w-percent8">
+                                        <col class="g-w-percent17">
                                         <col class="g-w-percent10">
-                                        <col class="g-w-percent10">
-                                        <col class="g-w-percent5">
-                                        <col class="g-w-percent5">
-                                        <col class="g-w-percent5">
                                         <col class="g-w-percent5">
                                     </colgroup>
 
                                     <!--表头-->
                                     <thead>
                                     <tr>
-                                        <th>订单号</th>
-                                        <th>下单时间</th>
-                                        <th>买家</th>
-                                        <th>订单总计</th>
-                                        <th>支付方式</th>
-                                        <th>订单状态</th>
+                                        <th>评价店铺</th>
+                                        <th>被评价人</th>
+                                        <th>评价内容</th>
+                                        <th>评价时间</th>
                                         <th class="no-sorting">操作</th>
                                     </tr>
                                     </thead>
@@ -255,26 +239,38 @@
 
 
 
-    <!--查看订单详情-->
-    <div class="modal fade custom-width" id="show_detail_wrap">
+    <!--修改评论信息-->
+    <div class="modal fade custom-width" id="show_editcomment_wrap">
         <div class="modal-dialog g-w-percent46">
             <div class="modal-content">
-
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" id="show_detail_title"></h4>
-                </div>
                 <div class="modal-body">
-                    <table class="table table-bordered table-striped table-hover admin-table">
-                        <colgroup>
-                            <col class="g-w-percent10"/>
-                            <col class="g-w-percent40"/>
-                        </colgroup>
-                        <tbody id="show_detail_content"></tbody>
-                    </table>
+                    <form role="form"  method="post" id="admin_editcomment_form" class="admin-form1 validate">
+                        <input type="text" class="g-d-hidei" id="admin_id" value="" />
+                        <div class="admin-gap-theme1">评论信息</div>
+                        <div class="form-group">
+                            <label class="control-label">评论人：</label>
+                            <div class="g-w-percent50" id="admin_commentFrom"></div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">评论对象：</label>
+                            <div class="g-w-percent50" id="admin_commentTo"></div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">评论时间：</label>
+                            <div class="g-w-percent50" id="admin_commentTime"></div>
+                        </div>
+                        <div class="admin-gap-theme1">修改评论</div>
+                        <div class="form-group">
+                            <label class="control-label"><span class="form-require-item g-c-red1">*</span>评论内容：</label>
+                            <textarea class="form-control form-admin-editor" placeholder="请输入通知内容" data-validate="required" data-message-required="通知内容不能为空" name="content" id="admin_content"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-success">修改</button>
+                        </div>
+                    </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-info" data-dismiss="modal">关闭</button>
+                    <button type="submit" class="btn btn-info" data-dismiss="modal">关闭</button>
                 </div>
             </div>
         </div>
@@ -331,6 +327,8 @@
 
     <script src="../../js/common/base.js"></script>
     <script src="../../js/common/common.js"></script>
+    <script src="../../js/plugins/kindeditor/kindeditor-all-min.js"></script>
+    <script src="../../js/plugins/jquery-validate/jquery.validate.js"></script>
     <script src="../../js/plugins/datatables/js/jquery.dataTables.js"></script>
     <!--修饰分页，搜索等操作 -->
     <script src="../../js/plugins/datatables/dataTables.bootstrap.js"></script>
