@@ -54,9 +54,9 @@
 				$admin_pagesell_wrap=$('#admin_pagesell_wrap'),
 				$admin_buy_wrap=$('#admin_buy_wrap'),
 				$admin_sell_wrap=$('#admin_sell_wrap'),
-				$show_detail_wrap=$('#show_detail_wrap')/*详情容器*/,
+				$show_editcomment_wrap=$('#show_editcomment_wrap')/*详情容器*/,
 				$admin_search_theme=$('#admin_search_theme'),
-				$resetform0=null,
+				resetform0=null,
 				sureObj=public_tool.sureDialog(dia)/*回调提示对象*/,
 				setSure=new sureObj();
 
@@ -400,6 +400,20 @@
 
 
 
+			/*绑定关闭详情*/
+			$.each([$show_editcomment_wrap],function () {
+				this.on('hide.bs.modal',function(){
+					if(operate_item){
+						setTimeout(function(){
+							operate_item.removeClass('item-lighten');
+							operate_item=null;
+						},1000);
+					}
+				});
+			});
+
+
+
 			/*绑定修改评论*/
 			/*表单验证*/
 			if($.isFunction($.fn.validate)) {
@@ -437,7 +451,7 @@
 									id=$admin_id.val();
 
 								if(id===''){
-									dia.content('<span class="g-c-bs-warning g-btips-warn">没有数据</span>').show();
+									dia.content('<span class="g-c-bs-warning g-btips-warn">没有评论数据</span>').show();
 									setTimeout(function () {
 										dia.close();
 									},2000);
@@ -447,38 +461,16 @@
 								$.extend(true,setdata,basedata);
 
 								if(formtype==='editcomment'){
-
+									var type=$admin_search_theme.attr('data-value');
 									/*同步编辑器*/
 									$.extend(true,setdata,{
-										orderId:$admin_id.val(),
-										detailsIdQuantlitys:(function () {
-											var $input=$admin_receive_list.find('input'),
-												receivelist=[];
-											$input.each(function () {
-												var $this=$(this),
-													tempid=$this.attr('data-id'),
-													value=$this.val();
-
-												receivelist.push(tempid+'#'+value);
-											});
-											return JSON.stringify(receivelist);
-										}())
+										id:$admin_id.val(),
+										type:"",
+										content:$admin_content.val()
 									});
 
-									/*判断状态*/
-									/*0 待发货 ,1 未收货 ,3 部分收货 ,5 已收货*/
-									if((already+text)===total){
-										setdata['orderState']=5;
-									}else{
-										if(already+text===0){
-											setdata['orderState']=1;
-										}else{
-											setdata['orderState']=3;
-										}
-									}
 
-
-									config['url']="http://120.76.237.100:8082/mall-agentbms-api/purchasing/orderaudited/delivered";
+									config['url']="../../json/trade/mall_trade_list.json";
 									config['data']=setdata;
 
 								}
@@ -489,23 +481,37 @@
 									if(formtype==='editcomment'){
 										code=parseInt(resp.code,10);
 										if(code!==0){
-											dia.content('<span class="g-c-bs-warning g-btips-warn">收货失败</span>').show();
+											dia.content('<span class="g-c-bs-warning g-btips-warn">修改评论失败</span>').show();
 											return false;
 										}else{
-											dia.content('<span class="g-c-bs-success g-btips-succ">收货成功</span>').show();
+											dia.content('<span class="g-c-bs-success g-btips-succ">修改评论成功</span>').show();
 										}
 									}
 
-
+									operate_item=null;
 									setTimeout(function () {
+										$show_editcomment_wrap.modal('hide');
 										dia.close();
-										if(formtype==='editcomment'&&code===0){
-											/*页面跳转*/
-											location.href='mall-purchase-stats.html';
+										admin_editcomment_form.reset();
+										if(type==='buy'){
+											/*查询买家*/
+											getBuyColumnData(tradebuy_page,tradebuy_config);
+										}else if(type==='sell'){
+											/*查询卖家*/
+											getSellColumnData(tradesell_page,tradesell_config);
 										}
 									},2000);
 								}).fail(function(resp){
 									console.log('error');
+									dia.content('<span class="g-c-bs-warning g-btips-warn">修改评论失败</span>').show();
+									admin_editcomment_form.reset();
+									setTimeout(function () {
+										dia.close();
+										if(operate_item){
+											operate_item.removeClass('item-lighten');
+											operate_item=null;
+										}
+									},2000);
 								});
 
 								return false;
@@ -584,7 +590,7 @@
 					operate_item=null;
 				}
 				operate_item=$tr.addClass('item-lighten');
-				$show_detail_wrap.modal('show',{backdrop:'static'});
+				$show_editcomment_wrap.modal('show',{backdrop:'static'});
 			}
 		}
 

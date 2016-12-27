@@ -425,7 +425,7 @@
             "prid": 6
           },
           {
-            "funcCode": "goods-enabled",
+            "funcCode": "goods-disabled",
             "funcName": "上架/下架商品",
             "isPermit": 1,
             "modId": 5,
@@ -440,7 +440,7 @@
           },
           {
             "funcCode": "goods-detail",
-            "funcName": "禁售商品",
+            "funcName": "查看商品",
             "isPermit": 1,
             "modId": 5,
             "prid": 9
@@ -448,6 +448,13 @@
           {
             "funcCode": "goods-delete",
             "funcName": "删除商品",
+            "isPermit": 1,
+            "modId": 5,
+            "prid": 10
+          },
+          {
+            "funcCode": "goods-recommend",
+            "funcName": "推荐商品",
             "isPermit": 1,
             "modId": 5,
             "prid": 10

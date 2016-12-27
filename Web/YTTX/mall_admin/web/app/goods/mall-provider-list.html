@@ -5,10 +5,10 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	
 	<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0,maximum-scale=1">
-	<meta name="description" content="布住网后台管理系统--用户管理--通知管理" />
-	<meta name="keywords" content="布住网后台管理系统--用户管理--通知管理">
+	<meta name="description" content="布住网后台管理系统--供应商管理--供应商列表" />
+	<meta name="keywords" content="布住网后台管理系统--供应商管理--供应商列表">
   <meta name="author" content="yp" />
-	<title>布住网后台管理系统--用户管理--通知管理</title>
+	<title>布住网后台管理系统--供应商管理--供应商列表</title>
 	<link rel="stylesheet" href="../../css/base.css">
   <link rel="stylesheet" href="../../js/plugins/datatables/dataTables.bootstrap.css">
 	<link rel="stylesheet" href="../../css/admin.css">
@@ -86,13 +86,13 @@
             <!--主题描述-->
             <div class="page-title">
                 <div class="title-env">
-                    <h1 class="title">用户管理</h1>
-                    <p class="description">通知管理</p>
+                    <h1 class="title">供应商管理</h1>
+                    <p class="description">供应商列表</p>
                 </div>
                 <div class="breadcrumb-env">
                     <ol class="breadcrumb bc-1">
-                        <li><a href=""><i class="fa-home"></i>用户管理</a></li>
-                        <li class="active"><strong>通知管理</strong></li>
+                        <li><a href=""><i class="fa-home"></i>供应商管理</a></li>
+                        <li class="active"><strong>供应商列表</strong></li>
                     </ol>
                 </div>
             </div>
@@ -105,7 +105,7 @@
 
                         <!--表格标题-->
                         <div class="panel-heading">
-                            <h3 class="panel-title">通知管理</h3>
+                            <h3 class="panel-title">供应商列表</h3>
 
                             <div class="panel-options">
                                 <a href="#" data-toggle="panel">
@@ -118,25 +118,56 @@
 
                         <!--表格主体-->
                         <div class="panel-body">
+                            <div class="admin-search-wrap">
+                                <div class="admin-search-item">
+                                    <label>供应商名称：</label>
+                                    <input type="text" id="search_name" />
+                                </div>
+                                <div class="admin-search-item">
+                                    <label>店铺名称：</label>
+                                    <input type="text" id="search_store" />
+                                </div>
+                                <div class="admin-search-item">
+                                    <label>公司名称：</label>
+                                    <input type="text" id="search_company" />
+                                </div>
+                                <div class="admin-search-item">
+                                    <label>联系电话：</label>
+                                    <input type="text" maxlength="13" id="search_telePhone" />
+                                </div>
+                                <div class="admin-search-item">
+                                    <span id="admin_search_btn" class="btn btn-info btn-icon g-br2">
+                                        <i class="fa-search"></i>查询
+                                    </span>
+                                    <span id="admin_search_clear" class="btn btn-info btn-icon g-br2">
+                                        <i class="fa-spinner"></i>清空
+                                    </span>
+                                </div>
+                            </div>
+
+
+
                             <table id="admin_list_wrap" class="table table-bordered table-striped table-hover admin-table">
                                 <!--分组样式-->
                                 <colgroup>
+                                    <col class="g-w-percent10">
                                     <col class="g-w-percent8">
+                                    <col class="g-w-percent7">
                                     <col class="g-w-percent5">
-                                    <col class="g-w-percent5">
-                                    <col class="g-w-percent16">
-                                    <col class="g-w-percent8">
-                                    <col class="g-w-percent8">
+                                    <col class="g-w-percent7">
+                                    <col class="g-w-percent3">
+                                    <col class="g-w-percent10">
                                 </colgroup>
 
                                 <!--表头-->
                                 <thead>
                                 <tr>
-                                    <th>编号</th>
-                                    <th>发送类型</th>
-                                    <th>发送会员</th>
-                                    <th>内容</th>
-                                    <th>发送时间</th>
+                                    <th>供应商</th>
+                                    <th>店铺名称</th>
+                                    <th>公司名称</th>
+                                    <th>手机号</th>
+                                    <th>所在地</th>
+                                    <th>状态</th>
                                     <th>操作</th>
                                 </tr>
                                 </thead>
@@ -180,35 +211,6 @@
     </div>
 
 
-
-
-    <!--详情展现-->
-    <div class="modal fade custom-width" id="show_detail_wrap">
-        <div class="modal-dialog g-w-percent46">
-            <div class="modal-content">
-
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title">查看公告</h4>
-                </div>
-                <div class="modal-body">
-                    <table class="table table-bordered table-striped table-hover admin-table">
-                        <colgroup>
-                            <col class="g-w-percent10"/>
-                            <col class="g-w-percent40"/>
-                        </colgroup>
-                        <tbody id="show_detail_content"></tbody>
-                    </table>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-info" data-dismiss="modal">关闭</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    
-    
 
 	
 	<!--加载遮罩层-->
@@ -263,6 +265,6 @@
     <!--修饰分页，搜索等操作 -->
     <script src="../../js/plugins/datatables/dataTables.bootstrap.js"></script>
     <script src="../../js/plugins/pagination/pagination.js"></script>
-    <script src="../../js/user/user_notice.js"></script>
+    <script src="../../js/provider/provider_list.js"></script>
 </body>
 </html>

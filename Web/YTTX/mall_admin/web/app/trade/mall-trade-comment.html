@@ -244,25 +244,34 @@
         <div class="modal-dialog g-w-percent46">
             <div class="modal-content">
                 <div class="modal-body">
+                    <div class="admin-gap-theme1">评论信息</div>
+                    <table class="table table-bordered table-striped admin-table">
+                        <!--分组样式-->
+                        <colgroup>
+                            <col class="g-w-percent10">
+                            <col class="g-w-percent40">
+                        </colgroup>
+                        <!--表主体-->
+                        <tbody class="middle-align">
+                            <tr>
+                                <td class="g-t-r">评论人：</td>
+                                <td id="admin_commentFrom"></td>
+                            </tr>
+                            <tr>
+                                <td class="g-t-r">评论对象：</td>
+                                <td id="admin_commentTo"></td>
+                            </tr>
+                            <tr>
+                                <td class="g-t-r">评论时间：</td>
+                                <td id="admin_commentTime"></td>
+                            </tr>
+                        </tbody>
+                    </table>
                     <form role="form"  method="post" id="admin_editcomment_form" class="admin-form1 validate">
                         <input type="text" class="g-d-hidei" id="admin_id" value="" />
-                        <div class="admin-gap-theme1">评论信息</div>
+                        <div class="admin-gap-theme1"><span class="g-c-red1">*</span>&nbsp;评论内容：</div>
                         <div class="form-group">
-                            <label class="control-label">评论人：</label>
-                            <div class="g-w-percent50" id="admin_commentFrom"></div>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label">评论对象：</label>
-                            <div class="g-w-percent50" id="admin_commentTo"></div>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label">评论时间：</label>
-                            <div class="g-w-percent50" id="admin_commentTime"></div>
-                        </div>
-                        <div class="admin-gap-theme1">修改评论</div>
-                        <div class="form-group">
-                            <label class="control-label"><span class="form-require-item g-c-red1">*</span>评论内容：</label>
-                            <textarea class="form-control form-admin-editor" placeholder="请输入通知内容" data-validate="required" data-message-required="通知内容不能为空" name="content" id="admin_content"></textarea>
+                            <textarea class="form-control form-admin-editor" placeholder="请输入评论内容" data-validate="required" data-message-required="评论内容不能为空" name="content" id="admin_content"></textarea>
                         </div>
                         <div class="form-group">
                             <button type="submit" class="btn btn-success">修改</button>
