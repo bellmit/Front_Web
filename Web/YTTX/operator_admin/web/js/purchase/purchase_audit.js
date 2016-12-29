@@ -432,7 +432,6 @@
 					dia.content('<span class="g-c-bs-warning g-btips-warn">没有商品信息</span>').showModal();
 					return false;
 				}
-
 				$.ajax({
 						url:"http://120.76.237.100:8082/mall-agentbms-api/purchasing/order/audit",
 						dataType:'JSON',
@@ -582,11 +581,12 @@
 				var $this=$(this),
 					tempname=$this.attr('data-goodsname'),
 					tempattr=$this.attr('data-goodsattr'),
+					tempgysj=$this.attr('data-gysj'),
 					tempgid=$this.attr('data-goodsid'),
 					tempattrid=$this.attr('data-goodsattrid'),
 					value=$this.val();
 
-				result.push(tempgid+'#'+chartFilter(tempname,'off')+'#'+chartFilter(tempattr,'off')+'#'+value+'#'+tempattrid);
+				result.push(tempgid+'#'+chartFilter(tempname,'off')+'#'+chartFilter(tempattr,'off')+'#'+value+'#'+tempattrid+'#'+tempgysj);
 			});
 
 			return result.length===0?null:JSON.stringify(result);
@@ -672,15 +672,21 @@
 						var len=list.length;
 						if(len!==0){
 							for(i;i<len;i++){
+
 								var tempaudit=list[i],
 									tempid=tempaudit["id"],
 									tempgoodsid=tempaudit["goodsId"],
 									tempname=tempaudit["goodsName"],
 									tempattr=tempaudit["attributeName"],
+									tempgysj=typeof tempaudit["supplierPrice"]==='undefined'?'0.00':public_tool.moneyCorrect(tempaudit["supplierPrice"],12,false)[0],
 									tempattrid=tempaudit["attributeIds"],
 									tempkc=tempaudit["inventoryQuantity"]||0,/*库存数量*/
 									tempcg=tempaudit["purchasingQuantlity"]||0/*采购数量*/;
 
+
+								if(tempgysj===''||isNaN(tempgysj)){
+									tempgysj='0.00';
+								}
 								if(tempkc===''||isNaN(tempkc)){
 									tempkc=0;
 								}
@@ -696,9 +702,10 @@
 								<td>'+parseInt(i+1,10)+'</td>\
 								<td>'+tempname+'</td>\
 								<td>'+tempattr+'</td>\
+								<td class="g-c-red1">￥:'+tempgysj+'</td>\
 								<td>'+tempcg+'</td>\
 								<td class="form-group">\
-									<input type="text" maxlength="8" class="form-control" data-goodsname="'+chartFilter(tempname,'on')+'" data-goodsattr="'+chartFilter(tempattr,'on')+'" data-goodsattrid="'+tempattrid+'"  data-goodsid="'+tempgoodsid+'"  data-id="'+tempid+'" data-value="'+tempcg+'" value="0" />\
+									<input type="text" maxlength="8" class="form-control" data-goodsname="'+chartFilter(tempname,'on')+'" data-gysj="'+tempgysj+'" data-goodsattr="'+chartFilter(tempattr,'on')+'" data-goodsattrid="'+tempattrid+'"  data-goodsid="'+tempgoodsid+'"  data-id="'+tempid+'" data-value="'+tempcg+'" value="0" />\
 								</td>\
 								<td>'+tempkc+'</td>\
 								<td>\
@@ -839,9 +846,10 @@
 								total=0,
 								kctotal=0,
 								newstr='<colgroup>\
-									<col class="g-w-percent4" />\
-									<col class="g-w-percent18" />\
-									<col class="g-w-percent18" />\
+									<col class="g-w-percent3" />\
+									<col class="g-w-percent16" />\
+									<col class="g-w-percent15" />\
+									<col class="g-w-percent6" />\
 									<col class="g-w-percent5" />\
 									<col class="g-w-percent5" />\
 								</colgroup>\
@@ -850,6 +858,7 @@
 										<th>序号</th>\
 										<th>商品名称</th>\
 										<th>商品属性</th>\
+										<th>供应商价</th>\
 										<th>采购数量</th>\
 										<th>库存数量</th>\
 									</tr>\
@@ -861,9 +870,13 @@
 									var tempaudit=list[i],
 										tempname=tempaudit["goodsName"],
 										tempattr=tempaudit["attributeName"],
+										tempgysj=tempaudit["supplierPrice"],
 										tempkc=tempaudit["inventoryQuantity"]||0,/*库存数量*/
 										tempcg=tempaudit["purchasingQuantlity"]||0/*采购数量*/;
 
+									if(typeof tempgysj==="undefined"||tempgysj===''||isNaN(tempgysj)){
+										tempgysj='0.00';
+									}
 									if(tempkc===''||isNaN(tempkc)){
 										tempkc=0;
 									}
@@ -880,6 +893,7 @@
 									<td>'+parseInt(i+1,10)+'</td>\
 									<td>'+tempname+'</td>\
 									<td>'+tempattr+'</td>\
+									<td class="g-c-red1">￥：'+tempgysj+'</td>\
 									<td>'+tempcg+'</td>\
 									<td>'+tempkc+'</td>\
 									</tr>';
@@ -887,16 +901,16 @@
 								res='<tbody class="middle-align">'+res+'</tbody>\
 								<tfoot>\
 									<tr>\
-										<td colspan="3" class="g-t-r">合计：</td>\
+										<td colspan="4" class="g-t-r">合计：</td>\
 										<td class="g-c-bs-info" >'+total+'</td>\
 										<td class="g-c-gray9" >'+kctotal+'</td>\
 									</tr>\
 								</tfoot>';
 							}else{
-								res='<tbody class="middle-align"><tr><td colspan="5" class="g-t-c">("暂无数据")</td></tr></tbody>\
+								res='<tbody class="middle-align"><tr><td colspan="6" class="g-t-c">("暂无数据")</td></tr></tbody>\
 								<tfoot>\
 									<tr>\
-										<td colspan="3" class="g-t-r">合计：</td>\
+										<td colspan="4" class="g-t-r">合计：</td>\
 										<td class="g-c-bs-info" >0</td>\
 										<td class="g-c-gray9" >0</td>\
 									</tr>\

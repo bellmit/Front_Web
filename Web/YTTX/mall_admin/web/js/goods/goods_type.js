@@ -59,6 +59,52 @@
 			requestAttr();
 
 
+			/*绑定操作分类列表*/
+			$admin_list_wrap.on('click',function (e) {
+				e.stopPropagation();
+				e.preventDefault();
+
+				var target= e.target,
+					nodename=target.nodeName.toLowerCase(),
+					$this,
+					$li,
+					$wrap,
+					id,
+					parentid,
+					action;
+
+				if(nodename==='td'||nodename==='tr'||nodename==='ul'){
+					return false;
+				}
+
+				if(nodename==='span'){
+
+				}else if(nodename==='li'){
+					if(target.className.indexOf('admin-subtypeitem')===-1){
+						return false;
+					}
+					$li=$(target);
+					$li.toggleClass('g-d-hidei');
+				}else if(nodename==='div'){
+					if(target.className.indexOf('typeitem')===-1){
+						return false;
+					}
+					if(target.parentNode.className.indexOf('admin-subtypeitem')===-1){
+						return false;
+					}
+					$li=$(target.parentNode);
+					$wrap=$li.find('>ul');
+					$wrap.toggleClass('g-d-hidei');
+				}else if(nodename==='i'){
+
+				}else if(nodename==='tr'){
+
+				}
+
+
+			});
+
+
 
 
 
@@ -148,46 +194,73 @@
 				len=attrlist.length;
 
 			if(len!==0){
-				var keyedit='',
-					keyadd='',
-					keydelete='';
-				if(edittype_power){
-					keyedit='编辑';
-				}
-				if(addtype_power){
-					keyadd='添加下级分类';
-				}
-				if(deletetype_power){
-					keydelete='删除';
-				}
 				for(i;i<len;i++){
 					var curitem=attrlist[i],
-						subitem=typeof curitem["sublist"]==='undefined'?null:curitem["sublist"];
-
-					str+='<li data-parentid="'+curitem["parentId"]+'" data-id="'+curitem["id"]+'" data-isshow="'+curitem["isshow"]+'">\
-								<div class="g-w-percent20">'+curitem["labelname"]+'</div>\
-								<div class="g-w-percent5">'+curitem["sort"]+'</div>\
-								<div class="g-w-percent5">'+(parseInt(curitem["isshow"],10)===0?"隐藏":"显示")+'</div>\
-								<div class="g-w-percent20">'+keyedit+keyadd+keydelete+'</div>\
-						</li>';
+						subitem=typeof curitem["sublist"]==='undefined'?null:curitem["sublist"],
+						id=curitem["id"],
+						parentid=curitem["parentId"],
+						isshow=parseInt(curitem["isshow"],10);
 					if(subitem){
-						str+='</li><li><ul class="admin-typeitem-wrap admin-subtype-wrap">'+doAttr(subitem,{
-								keyedit:keyedit,
-								keyadd:keyadd,
-								keydelete:keydelete
-							})+'</ul></li>';
+						str+='<li class="admin-subtypeitem" data-parentid="'+parentid+'" data-id="'+id+'">\
+								<div class="typeitem g-w-percent15">'+curitem["labelname"]+'</div>\
+								<div class="typeitem g-w-percent5">'+curitem["sort"]+'</div>\
+								<div class="typeitem g-w-percent5">'+(isshow===0?'<div class="g-c-gray12">隐藏</div>':'<div class="g-c-gray8">显示</div>')+'</div>\
+								<div class="typeitem g-w-percent20">'+(function () {
+								var btn='';
+								if(edittype_power){
+									btn+='<span data-action="edit" data-parentid="'+parentid+'" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+									<i class="fa-pencil"></i>&nbsp;&nbsp;编辑\
+								</span>';
+								}
+								if(addtype_power){
+									btn+='<span data-action="add" data-parentid="'+parentid+'" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+									<i class="fa-plus"></i>&nbsp;&nbsp;新增下级分类\
+								</span>';
+								}
+								if(deletetype_power){
+									btn+='<span data-action="delete" data-parentid="'+parentid+'" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+									<i class="fa-trash"></i>&nbsp;&nbsp;删除\
+								</span>';
+								}
+								return btn;
+							}())+'</div>\
+							<ul class="admin-typeitem-wrap admin-subtype-wrap g-d-hidei">'+doAttr(subitem)+'</ul>\
+						</li>';
 					}else{
-						str+='</li>';
+						str+='<li data-parentid="'+parentid+'" data-id="'+id+'">\
+								<div class="typeitem g-w-percent15">'+curitem["labelname"]+'</div>\
+								<div class="typeitem g-w-percent5">'+curitem["sort"]+'</div>\
+								<div class="typeitem g-w-percent5">'+(isshow===0?'<div class="g-c-gray12">隐藏</div>':'<div class="g-c-gray8">显示</div>')+'</div>\
+								<div class="typeitem g-w-percent20">'+(function () {
+								var btn='';
+								if(edittype_power){
+									btn+='<span data-action="edit" data-parentid="'+parentid+'" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+									<i class="fa-pencil"></i>&nbsp;&nbsp;编辑\
+								</span>';
+								}
+								if(addtype_power){
+									btn+='<span data-action="add" data-parentid="'+parentid+'" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+									<i class="fa-plus"></i>&nbsp;&nbsp;新增下级分类\
+								</span>';
+								}
+								if(deletetype_power){
+									btn+='<span data-action="delete" data-parentid="'+parentid+'" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+									<i class="fa-trash"></i>&nbsp;&nbsp;删除\
+								</span>';
+								}
+								return btn;
+							}())+'</div>\
+						</li>';
 					}
 				}
-				return '<ul class="admin-typeitem-wrap admin-maintype-wrap">'+str+'</ul>';
+				return str;
 			}else{
 				return false;
 			}
 		}
 
 		/*解析标签*/
-		function doAttr(obj,config) {
+		function doAttr(obj) {
 			if(!obj||typeof obj==='undefined'){
 				return '';
 			}
@@ -199,16 +272,37 @@
 			if(len!==0){
 				for(i;i<len;i++){
 					var curitem=attrlist[i],
-						subitem=typeof curitem["sublist"]==='undefined'?null:curitem["sublist"];
+						subitem=typeof curitem["sublist"]==='undefined'?null:curitem["sublist"],
+						id=curitem["id"],
+						parentid=curitem["parentId"],
+						isshow=parseInt(curitem["isshow"],10);
 					if(subitem){
 						return resolveAttr(subitem);
 					}else{
-						str+='<li data-parentid="'+curitem["parentId"]+'" data-id="'+curitem["id"]+'" data-isshow="'+curitem["isshow"]+'">\
-									<div class="g-w-percent20">'+curitem["labelname"]+'</div>\
-									<div class="g-w-percent5">'+curitem["sort"]+'</div>\
-									<div class="g-w-percent5">'+(parseInt(curitem["isshow"],10)===0?"隐藏":"显示")+'</div>\
-									<div class="g-w-percent20">'+config.keyedit+config.keyadd+config.keydelete+'</div>\
-							</li>';
+						str+='<li data-parentid="'+parentid+'" data-id="'+id+'">\
+									<div class="typeitem g-w-percent15">'+curitem["labelname"]+'</div>\
+									<div class="typeitem g-w-percent5">'+curitem["sort"]+'</div>\
+									<div class="typeitem g-w-percent5">'+(isshow===0?'<div class="g-c-gray12">隐藏</div>':'<div class="g-c-gray8">显示</div>')+'</div>\
+									<div class="typeitem g-w-percent20">'+(function () {
+								var btn='';
+								if(edittype_power){
+									btn+='<span data-action="edit" data-parentid="'+parentid+'" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+									<i class="fa-pencil"></i>&nbsp;&nbsp;编辑\
+								</span>';
+								}
+								if(addtype_power){
+									btn+='<span data-action="add" data-parentid="'+parentid+'" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+									<i class="fa-plus"></i>&nbsp;&nbsp;添加下级分类\
+								</span>';
+								}
+								if(deletetype_power){
+									btn+='<span data-action="delete" data-parentid="'+parentid+'" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+									<i class="fa-trash"></i>&nbsp;&nbsp;删除\
+								</span>';
+								}
+								return btn;
+							}())+'</div>\
+						 </li>';
 					}
 				}
 				return str;
@@ -242,7 +336,7 @@
 					var result=resp.result;
 					if(result&&result.list){
 						/*解析属性*/
-						var result=resolveAttr(result.list);
+						var result='<ul class="admin-typeitem-wrap admin-maintype-wrap">'+resolveAttr(result.list)+'</ul>';
 						if(result){
 							$(result).appendTo($admin_list_wrap.html(''));
 						}else{

@@ -191,7 +191,7 @@
 				var suborder=list[i],
 					price=suborder["supplierPrice"];
 
-				if(typeof pirce==='undefined'||price===''||isNaN(price)){
+				if(typeof price==='undefined'||price===''||isNaN(price)){
 					price='0.00';
 				}
 
