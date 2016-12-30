@@ -142,6 +142,7 @@
 						columns: [
 							{
 								"data":"id",
+								"orderable" :false,
 								"render":function(data, type, full, meta ){
 									var id=parseInt(data,10),
 										state=parseInt(full.auditState,10);
