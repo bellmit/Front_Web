@@ -467,23 +467,16 @@
 
 
 /*----层级菜单----*/
-.admin-maintype-wrap{
-	/*border-left:1px solid @color-gray14;
-	border-top:1px solid @color-gray14;*/
-}
+/*全局设置*/
 .admin-typeitem-wrap{
 	.layout-base;
 	>li{
 		text-align: right;
 		.layout-float-base;
 		border-bottom:1px solid @color-gray14;
-		&:last-child{
-			border-bottom:none !important;
-		}
 		font-size:0;
 		min-height:40px;
 		cursor: pointer;
-		background:@color-white;
 		.typeitem{
 			font-size:@font-size-base;
 			.box-sizing-base;
@@ -493,21 +486,55 @@
 			display:inline-block;
 			height:100%;
 			padding:0 20px;
+			background:none;
 			border-right:1px solid lighten(@color-gray14,3%);
 			&:last-child{
 				border-right:none !important;
 			}
 		}
 	}
-	.admin-subtypeitem{
+	li{
+		background:@color-white;
+		/*&:hover{
+			background:@btn-success-color;
+		}*/
+		.typeitem{
+			&:last-child{
+				border-right:none !important;
+			}
+		}
 		.typeitem:nth-of-type(4){
 			border-right:none !important;
 		}
 	}
+	.admin-subtypeitem{
+		.admin-subtype-wrap{
+			border-top:1px solid @color-gray14;
+		}
+	}
 }
-.admin-subtype-wrap{}
+/*顶级容器*/
+.admin-maintype-wrap{
+	>li{
+		&:last-child{
+			border-bottom:none !important;
+		}
+	}
+}
+/*子容器*/
+.admin-subtype-wrap{
+	.layout-float-base;
+	>li{
+		background:@color-gray16;
+		&:last-child{
+			border-bottom:none !important;
+		}
+	}
+}
 
-/*分页*/
+
+
+/*----分页-----*/
 .admin-page-wrap{
 	.layout-base;
 	height:50px;
