@@ -78,7 +78,20 @@
 				}
 
 				if(nodename==='span'){
-
+					if(target.className.indexOf('btn')!==-1){
+						/*操作*/
+						$this=$(target);
+						
+						
+						
+					}else if(target.className.indexOf('main-typeicon')!==-1){
+						/*展开或收缩*/
+						$this=$(target);
+						$wrap=$this.parent().find('>ul');
+						$this.toggleClass('main-sub-typeicon');
+						$wrap.toggleClass('g-d-hidei');
+					}
+					return false;
 				}else if(nodename==='li'){
 					if(target.className.indexOf('admin-subtypeitem')===-1){
 						return false;
@@ -86,7 +99,7 @@
 					$li=$(target);
 					$li.toggleClass('g-d-hidei');
 				}else if(nodename==='div'){
-					if(target.className.indexOf('typeitem')===-1){
+					/*if(target.className.indexOf('typeitem')===-1){
 						return false;
 					}
 					if(target.parentNode.className.indexOf('admin-subtypeitem')===-1){
@@ -94,7 +107,7 @@
 					}
 					$li=$(target.parentNode);
 					$wrap=$li.find('>ul');
-					$wrap.toggleClass('g-d-hidei');
+					$wrap.toggleClass('g-d-hidei');*/
 				}else if(nodename==='i'){
 
 				}else if(nodename==='tr'){
@@ -108,6 +121,23 @@
 
 
 
+		}
+		
+		function doActionType(obj) {
+			var type=obj.type,
+				id=obj.id,
+				pid=obj.parentid;
+
+			if(type==='edit'){
+
+			}else if(type==='add'){
+
+			}else if(type==='delete'){
+
+			}else if(type==='attr'){
+
+			}
+			
 		}
 
 
@@ -184,17 +214,25 @@
 
 		
 		/*解析属性*/
-		function resolveAttr(obj) {
+		function resolveAttr(obj,limit) {
 			if(!obj||typeof obj==='undefined'){
 				return false;
+			}
+			if(limit<=0){
+				limit=1;
 			}
 			var attrlist=obj,
 				str='',
 				i=0,
-				len=attrlist.length;
+				len=attrlist.length,
+				layer=1;
 
 			if(typeof len==='undefined'){
-				str+=doItems(attrlist);
+				str+=doItems(attrlist,{
+					flag:false,
+					limit:limit,
+					layer:layer
+				});
 				attrlist=attrlist["sublist"];
 				len=attrlist.length;
 			}
@@ -204,10 +242,21 @@
 						var curitem=attrlist[i],
 						subitem=typeof curitem["sublist"]==='undefined'?null:curitem["sublist"];
 					if(subitem){
-						str+=doItems(curitem,true)+'<ul class="admin-typeitem-wrap admin-subtype-wrap g-d-hidei">'+doAttr(subitem)+'</ul>\
+						var tempchild=doAttr(subitem,{
+								limit:limit,
+								layer:layer
+							});
+
+						if(tempchild){
+							str+=doItems(curitem,{flag:true,limit:limit,layer:layer})+'<ul class="admin-typeitem-wrap admin-subtype-wrap g-d-hidei">'+tempchild+'</ul>\
 						</li>';
+						}
 					}else{
-						str+=doItems(curitem);
+						str+=doItems(curitem,{
+							flag:false,
+							limit:limit,
+							layer:layer
+						});
 					}
 				}
 				return str;
@@ -217,46 +266,86 @@
 		}
 
 		/*解析标签*/
-		function doAttr(obj) {
+		function doAttr(obj,config) {
 			if(!obj||typeof obj==='undefined'){
-				return '';
+				return false;
 			}
 			var attrlist=obj,
 				str='',
 				i=0,
 				len=attrlist.length;
 
+			var layer=config.layer,
+				limit=config.limit;
+			if(layer){
+				layer++;
+			}
 
+			if(limit>=1&&layer>limit){
+				return false;
+			}
 
 			if(len!==0){
 				for(i;i<len;i++){
 					var curitem=attrlist[i],
 						subitem=typeof curitem["sublist"]==='undefined'?null:curitem["sublist"];
 					if(subitem){
-						return resolveAttr(curitem);
+						var tempchild=doAttr(subitem,{
+							limit:limit,
+							layer:layer
+						});
+						if(tempchild){
+							str+=doItems(curitem,{
+									flag:true,
+									limit:limit,
+									layer:layer
+								})+'<ul class="admin-typeitem-wrap admin-subtype-wrap g-d-hidei">'+tempchild+'</ul>\
+							</li>';
+						}
 					}else{
-						str+=doItems(curitem);
+						str+=doItems(curitem,{
+							flag:false,
+							limit:limit,
+							layer:layer
+						});
 					}
 				}
 				return str;
 			}else{
-				return '';
+				return false;
 			}
 		}
 		
 		
 		/*解析单个值*/
-		function doItems(obj,flag) {
+		function doItems(obj,config){
 			var curitem=obj,
 				id=curitem["id"],
 				parentid=curitem["parentId"],
 				isshow=parseInt(curitem["isshow"],10),
-				str='';
+				str='',
+				flag=config.flag,
+				limit=config.limit,
+				layer=config.layer;
 
 			if(flag){
+				if(layer>1){
+
+				}else{
+
+				}
 				str='<li class="admin-subtypeitem" data-parentid="'+parentid+'" data-id="'+id+'">\
-								<div class="typeitem g-w-percent15">'+curitem["labelname"]+'</div>\
-								<div class="typeitem g-w-percent5">'+curitem["sort"]+'</div>\
+				'+(function(){
+						var btn='';
+						if(layer>1){
+							btn+='<span class="typeitem subtype-mgap'+(layer - 1)+' main-typeicon g-w-percent4"></span>\
+							<div class="typeitem subtype-pgap'+layer+' g-w-percent15">'+curitem["labelname"]+'</div>';
+						}else{
+							btn+='<span class="typeitem main-typeicon g-w-percent4"></span>\
+							<div class="typeitem g-w-percent15">'+curitem["labelname"]+'</div>';
+						}
+						return btn;
+				}())+'<div class="typeitem g-w-percent5">'+curitem["sort"]+'</div>\
 								<div class="typeitem g-w-percent5">'+(isshow===0?'<div class="g-c-gray12">隐藏</div>':'<div class="g-c-gray8">显示</div>')+'</div>\
 								<div class="typeitem g-w-percent20">'+(function () {
 						var btn='';
@@ -279,8 +368,15 @@
 					}())+'</div>';
 			}else{
 				str='<li data-parentid="'+parentid+'" data-id="'+id+'">\
-								<div class="typeitem g-w-percent15">'+curitem["labelname"]+'</div>\
-								<div class="typeitem g-w-percent5">'+curitem["sort"]+'</div>\
+					'+(function(){
+						var btn='';
+						if(layer>1){
+							btn+='<div class="typeitem subtype-pgap'+layer+' g-w-percent15">'+curitem["labelname"]+'</div>';
+						}else{
+							btn+='<div class="typeitem g-w-percent15">'+curitem["labelname"]+'</div>';
+						}
+						return btn;
+					}())+'<div class="typeitem g-w-percent5">'+curitem["sort"]+'</div>\
 								<div class="typeitem g-w-percent5">'+(isshow===0?'<div class="g-c-gray12">隐藏</div>':'<div class="g-c-gray8">显示</div>')+'</div>\
 								<div class="typeitem g-w-percent20">'+(function () {
 						var btn='';
@@ -289,7 +385,7 @@
 									<i class="fa-pencil"></i>&nbsp;&nbsp;编辑\
 								</span>';
 						}
-						if(addtype_power){
+						if(layer<limit&&addtype_power){
 							btn+='<span data-action="add" data-parentid="'+parentid+'" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 									<i class="fa-plus"></i>&nbsp;&nbsp;新增下级分类\
 								</span>';
@@ -307,9 +403,9 @@
 		}
 		
 		/*请求属性*/
-		function requestAttr() {
+		function requestAttr(){
 			$.ajax({
-					url:"../../json/goods/mall_goods_type.json",
+					url:"../../json/goods/mall_goods_type_all.json",
 					dataType:'JSON',
 					method:'post',
 					data:{
@@ -331,7 +427,7 @@
 					var result=resp.result;
 					if(result&&result.list){
 						/*解析属性*/
-						var result='<ul class="admin-typeitem-wrap admin-maintype-wrap">'+resolveAttr(result.list)+'</ul>';
+						var result='<ul class="admin-typeitem-wrap admin-maintype-wrap">'+resolveAttr(result.list,4)+'</ul>';
 						if(result){
 							$(result).appendTo($admin_list_wrap.html(''));
 						}else{

@@ -485,8 +485,10 @@
 			color:@color-gray9;
 			display:inline-block;
 			height:100%;
-			padding:0 20px;
 			background:none;
+		}
+		div.typeitem{
+			padding:0 10px;
 			border-right:1px solid lighten(@color-gray14,3%);
 			&:last-child{
 				border-right:none !important;
@@ -503,7 +505,7 @@
 				border-right:none !important;
 			}
 		}
-		.typeitem:nth-of-type(4){
+		div.typeitem:nth-of-type(4){
 			border-right:none !important;
 		}
 	}
@@ -515,9 +517,51 @@
 }
 /*顶级容器*/
 .admin-maintype-wrap{
+	.layout-float-base;
 	>li{
 		&:last-child{
 			border-bottom:none !important;
+		}
+	}
+	@subtype-gap:10px;
+	.subtype-pgap1{
+		padding-left:@subtype-gap*1 !important;
+	}
+	.subtype-pgap2{
+		padding-left:@subtype-gap*2 !important;
+	}
+	.subtype-pgap3{
+		padding-left:@subtype-gap*3 !important;
+	}
+	.subtype-pgap4{
+		padding-left:@subtype-gap*4 !important;
+	}
+	.subtype-pgap5{
+		padding-left:@subtype-gap*5 !important;
+	}
+	.subtype-mgap1{
+		&:before{
+			margin-right:-@subtype-gap*1 !important;
+		}
+	}
+	.subtype-mgap2{
+		&:before{
+			margin-right:-@subtype-gap*2 !important;
+		}
+	}
+	.subtype-mgap3{
+		&:before{
+			margin-right:-@subtype-gap*3 !important;
+		}
+	}
+	.subtype-mgap4{
+		&:before{
+			margin-right:-@subtype-gap*4 !important;
+		}
+	}
+	.subtype-mgap5{
+		&:before{
+			margin-right:-@subtype-gap*5 !important;
 		}
 	}
 }
@@ -525,9 +569,44 @@
 .admin-subtype-wrap{
 	.layout-float-base;
 	>li{
-		background:@color-gray16;
 		&:last-child{
 			border-bottom:none !important;
+		}
+	}
+}
+/*子菜单*/
+.admin-subtypeitem{
+	.main-typeicon{
+		.layout-relative-base;
+		&:hover{
+			&:before{
+				color:@color-info;
+				border:1px solid @color-info;
+			}
+		}
+		&:before{
+			.box-sizing-base;
+			.layout-absoluter-base(0,-13px);
+			content:'\e600';
+			font-family:'ux_eight';
+			.user-select-base;
+			width:16px;
+			height:16px;
+			line-height:14px;
+			overflow: hidden;
+			vertical-align: middle;
+			.border-radius-base(3px);
+			background:@color-white;
+			border:1px solid @color-gray12;
+			display:inline-block;
+			text-align:center;
+			font-size:@font-size-base;
+			color:@color-gray9;
+		}
+	}
+	.main-sub-typeicon{
+		&:before{
+			content:'\e62f' !important;
 		}
 	}
 }
