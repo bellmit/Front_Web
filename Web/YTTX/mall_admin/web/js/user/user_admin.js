@@ -288,7 +288,7 @@
 		function deletePower(obj){
 			var id=obj.id;
 
-			if(typeof id==='undefined'){
+			if(typeof id==='undefined'||id===''){
 				return false;
 			}
 			var tip=obj.tip,

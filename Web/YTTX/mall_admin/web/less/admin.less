@@ -497,9 +497,6 @@
 	}
 	li{
 		background:@color-white;
-		/*&:hover{
-			background:@btn-success-color;
-		}*/
 		.typeitem{
 			&:last-child{
 				border-right:none !important;
@@ -523,6 +520,7 @@
 			border-bottom:none !important;
 		}
 	}
+	/*偏移量*/
 	@subtype-gap:10px;
 	.subtype-pgap1{
 		padding-left:@subtype-gap*1 !important;
@@ -562,6 +560,16 @@
 	.subtype-mgap5{
 		&:before{
 			margin-right:-@subtype-gap*5 !important;
+		}
+	}
+	/*选中高亮*/
+	.item-lighten{
+		background:lighten(@btn-success-bg,45%);
+		>.typeitem{
+			background:lighten(@btn-success-bg,45%);
+		}
+		ul{
+			background:@color-white;
 		}
 	}
 }
@@ -610,7 +618,6 @@
 		}
 	}
 }
-
 
 
 /*----分页-----*/

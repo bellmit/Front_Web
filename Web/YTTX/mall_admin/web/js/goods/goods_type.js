@@ -60,6 +60,7 @@
 
 
 			/*绑定操作分类列表*/
+			var operate_item;
 			$admin_list_wrap.on('click',function (e) {
 				e.stopPropagation();
 				e.preventDefault();
@@ -70,6 +71,7 @@
 					$li,
 					$wrap,
 					id,
+					layer,
 					parentid,
 					action;
 
@@ -81,9 +83,34 @@
 					if(target.className.indexOf('btn')!==-1){
 						/*操作*/
 						$this=$(target);
-						
-						
-						
+						$li=$this.closest('li');
+						id=$li.attr('data-id');
+						action=$this.attr('data-action');
+						parentid=$li.attr('data-parendid');
+						layer=$li.attr('data-layer');
+						if(operate_item){
+							operate_item.removeClass('item-lighten');
+							operate_item=null;
+						}
+						operate_item=$li.addClass('item-lighten');
+						/*执行操作*/
+						if(action==='edit'){
+
+						}else if(action==='delete'){
+							/*确认是否启用或禁用*/
+							setSure.sure('delete',function(cf){
+								/*to do*/
+								goodsTypeDelete({
+									id:id,
+									parentid:parentid,
+									layer:layer,
+									tip:cf.dia||dia,
+									$li:$li
+								});
+							});
+						}else if(action==='add'){
+
+						}
 					}else if(target.className.indexOf('main-typeicon')!==-1){
 						/*展开或收缩*/
 						$this=$(target);
@@ -123,21 +150,61 @@
 
 		}
 		
-		function doActionType(obj) {
-			var type=obj.type,
-				id=obj.id,
-				pid=obj.parentid;
+		function goodsTypeDelete(obj) {
+			var id=obj.id;
 
-			if(type==='edit'){
-
-			}else if(type==='add'){
-
-			}else if(type==='delete'){
-
-			}else if(type==='attr'){
-
+			if(typeof id==='undefined'||id===''){
+				return false;
 			}
-			
+			var tip=obj.tip,
+				$li=obj.$li;
+
+			$.ajax({
+					url:"../../json/goods/mall_goods_type_all.json",
+					dataType:'JSON',
+					method:'post',
+					data:{
+						id:obj.id,
+						parentid:obj.parentid,
+						roleId:decodeURIComponent(logininfo.param.roleId),
+						adminId:decodeURIComponent(logininfo.param.adminId),
+						token:decodeURIComponent(logininfo.param.token)
+					}
+				})
+				.done(function(resp){
+					var code=parseInt(resp.code,10);
+					if(code!==0){
+						console.log(resp.message);
+						tip.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"操作失败")+'</span>').show();
+						setTimeout(function () {
+							tip.close();
+							if(operate_item){
+								operate_item.removeClass('item-lighten');
+								operate_item=null;
+							}
+						},2000);
+						return false;
+					}
+					tip.content('<span class="g-c-bs-success g-btips-succ">删除成功</span>').show();
+					setTimeout(function () {
+						tip.close();
+						setTimeout(function () {
+							operate_item=null;
+							$li.remove();
+						},1000);
+					},1000);
+				})
+				.fail(function(resp){
+					console.log(resp.message);
+					tip.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"操作失败")+'</span>').show();
+					setTimeout(function () {
+						tip.close();
+						if(operate_item){
+							operate_item.removeClass('item-lighten');
+							operate_item=null;
+						}
+					},2000);
+				});
 		}
 
 
@@ -213,12 +280,12 @@
 		}
 
 		
-		/*解析属性*/
+		/*解析属性--开始解析*/
 		function resolveAttr(obj,limit) {
 			if(!obj||typeof obj==='undefined'){
 				return false;
 			}
-			if(limit<=0){
+			if(typeof limit==='undefined'||limit<=0){
 				limit=1;
 			}
 			var attrlist=obj,
@@ -265,7 +332,7 @@
 			}
 		}
 
-		/*解析标签*/
+		/*解析属性--递归解析*/
 		function doAttr(obj,config) {
 			if(!obj||typeof obj==='undefined'){
 				return false;
@@ -317,7 +384,7 @@
 		}
 		
 		
-		/*解析单个值*/
+		/*解析属性--公共解析*/
 		function doItems(obj,config){
 			var curitem=obj,
 				id=curitem["id"],
@@ -329,12 +396,7 @@
 				layer=config.layer;
 
 			if(flag){
-				if(layer>1){
-
-				}else{
-
-				}
-				str='<li class="admin-subtypeitem" data-parentid="'+parentid+'" data-id="'+id+'">\
+				str='<li class="admin-subtypeitem" data-layer="'+layer+'" data-parentid="'+parentid+'" data-id="'+id+'">\
 				'+(function(){
 						var btn='';
 						if(layer>1){
@@ -367,17 +429,22 @@
 						return btn;
 					}())+'</div>';
 			}else{
-				str='<li data-parentid="'+parentid+'" data-id="'+id+'">\
+				str='<li data-layer="'+layer+'"  data-parentid="'+parentid+'" data-id="'+id+'">\
 					'+(function(){
 						var btn='';
 						if(layer>1){
-							btn+='<div class="typeitem subtype-pgap'+layer+' g-w-percent15">'+curitem["labelname"]+'</div>';
+							btn+='<div class="typeitem subtype-pgap'+layer+' g-w-percent15">'+curitem["labelname"]+'</div>\
+							<div class="typeitem-edit g-w-percent5"><input type="text" name="typename" data-value="'+curitem["labelname"]+'" value="" /></div>';
 						}else{
-							btn+='<div class="typeitem g-w-percent15">'+curitem["labelname"]+'</div>';
+							btn+='<div class="typeitem g-w-percent15">'+curitem["labelname"]+'</div>\
+								<div class="typeitem-edit g-w-percent5"><input type="text" name="typename" data-value="'+curitem["labelname"]+'" value="" /></div>';
 						}
 						return btn;
 					}())+'<div class="typeitem g-w-percent5">'+curitem["sort"]+'</div>\
+								<div class="typeitem-edit g-w-percent5"><input type="text" name="typesort" data-value="'+curitem["sort"]+'" value="" /></div>\
 								<div class="typeitem g-w-percent5">'+(isshow===0?'<div class="g-c-gray12">隐藏</div>':'<div class="g-c-gray8">显示</div>')+'</div>\
+								<label class="btn btn-white g-br2 g-c-gray6 typeitem-edit g-w-percent2">显示：<input type="radio" checked name="typeshow'+id+'" value="1" /></label>\
+								<label class="btn btn-white g-br2 g-c-gray6 typeitem-edit g-w-percent2">隐藏：<input type="radio" name="typeshow'+id+'" value="0" /></label>\
 								<div class="typeitem g-w-percent20">'+(function () {
 						var btn='';
 						if(edittype_power){
