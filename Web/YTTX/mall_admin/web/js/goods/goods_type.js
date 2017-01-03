@@ -44,6 +44,7 @@
 					},
 					cancel:false
 				})/*一般提示对象*/,
+				$admin_errortip_wrap=$('#admin_errortip_wrap'),
 				sureObj=public_tool.sureDialog(dia)/*回调提示对象*/,
 				setSure=new sureObj();
 
@@ -61,11 +62,9 @@
 
 			/*绑定操作分类列表*/
 			var operate_item;
-			$admin_list_wrap.on('click',function (e) {
-				e.stopPropagation();
-				e.preventDefault();
-
+			$admin_list_wrap.on('click keyup',function (e) {
 				var target= e.target,
+					etype=e.type,
 					nodename=target.nodeName.toLowerCase(),
 					$this,
 					$li,
@@ -75,89 +74,104 @@
 					parentid,
 					action;
 
-				if(nodename==='td'||nodename==='tr'||nodename==='ul'){
+				if(nodename==='td'||nodename==='tr'||nodename==='ul'||nodename==='div'){
 					return false;
 				}
 
-				if(nodename==='span'){
-					if(target.className.indexOf('btn')!==-1){
-						/*操作*/
-						$this=$(target);
-						$li=$this.closest('li');
-						id=$li.attr('data-id');
-						action=$this.attr('data-action');
-						parentid=$li.attr('data-parendid');
-						layer=$li.attr('data-layer');
-						if(operate_item){
-							operate_item.removeClass('item-lighten');
-							operate_item=null;
+				if(etype==='click'){
+					/*点击分支*/
+					if(nodename==='span'||nodename==='i'){
+						if(nodename==='i'){
+							target=target.parentNode;
 						}
-						operate_item=$li.addClass('item-lighten');
-						/*执行操作*/
-						if(action==='edit'){
-							/*进入编辑状态*/
-							$li.addClass('typeitem-editwrap');
-						}else if(action==='cance'){
-							/*取消编辑状态*/
-							$li.removeClass('typeitem-editwrap');
-						}else if(action==='confirm'){
-							/*提交编辑*/
-							setSure.sure('delete',function(cf){
-								/*to do*/
-								goodsTypeEdit({
-									id:id,
-									parentid:parentid,
-									layer:layer,
-									tip:cf.dia||dia,
-									$li:$li
+						if(target.className.indexOf('btn')!==-1){
+							/*操作*/
+							$this=$(target);
+							$li=$this.closest('li');
+							id=$li.attr('data-id');
+							action=$this.attr('data-action');
+							parentid=$li.attr('data-parendid');
+							layer=$li.attr('data-layer');
+							if(operate_item){
+								operate_item.removeClass('item-lighten');
+								operate_item=null;
+							}
+							operate_item=$li.addClass('item-lighten');
+							/*执行操作*/
+							if(action==='edit'){
+								/*进入编辑状态*/
+								$li.addClass('typeitem-editwrap');
+							}else if(action==='cance'){
+								/*取消编辑状态*/
+								$li.removeClass('typeitem-editwrap');
+							}else if(action==='confirm'){
+								var result=validGoodsTypeData($li);
+								if(result===null){
+									return false;
+								}
+								/*提交编辑*/
+								setSure.sure('编辑',function(cf){
+									/*to do*/
+									goodsTypeEdit({
+										id:id,
+										parentid:parentid,
+										layer:layer,
+										tip:cf.dia||dia,
+										$li:$li,
+										result:result
+									});
 								});
-							});
-						}else if(action==='delete'){
-							/*确认是否启用或禁用*/
-							setSure.sure('delete',function(cf){
-								/*to do*/
-								goodsTypeDelete({
-									id:id,
-									parentid:parentid,
-									layer:layer,
-									tip:cf.dia||dia,
-									$li:$li
+							}else if(action==='delete'){
+								/*确认是否启用或禁用*/
+								setSure.sure('delete',function(cf){
+									/*to do*/
+									goodsTypeDelete({
+										id:id,
+										parentid:parentid,
+										layer:layer,
+										tip:cf.dia||dia,
+										$li:$li
+									});
 								});
-							});
-						}else if(action==='add'){
+							}else if(action==='add'){
 
+							}else if(action==='preview'){
+								var value=$this.attr('data-value');
+								if(value===''){
+									dia.content('<span class="g-c-bs-warning g-btips-warn">暂无图片请上传图片</span>').show();
+									return false;
+								}
+								$this.next().toggleClass('typeitem-preview-active');
+							}
+						}else if(target.className.indexOf('main-typeicon')!==-1){
+							/*展开或收缩*/
+							$this=$(target);
+							$wrap=$this.closest('li').find('>ul');
+							$this.toggleClass('main-sub-typeicon');
+							$wrap.toggleClass('g-d-hidei');
 						}
-					}else if(target.className.indexOf('main-typeicon')!==-1){
-						/*展开或收缩*/
-						$this=$(target);
-						$wrap=$this.parent().find('>ul');
-						$this.toggleClass('main-sub-typeicon');
-						$wrap.toggleClass('g-d-hidei');
-					}
-					return false;
-				}else if(nodename==='li'){
-					if(target.className.indexOf('admin-subtypeitem')===-1){
 						return false;
+					}else if(nodename==='li'){
+						if(target.className.indexOf('admin-subtypeitem')===-1){
+							return false;
+						}
+						$li=$(target);
+						$li.toggleClass('g-d-hidei');
+					}else if(nodename==='input'){
+						if(target.type.indexOf('text')!==-1){
+							return false;
+						}
 					}
-					$li=$(target);
-					$li.toggleClass('g-d-hidei');
-				}else if(nodename==='div'){
-					/*if(target.className.indexOf('typeitem')===-1){
-						return false;
+				}else if(etype==='keyup'){
+					/*键盘分支*/
+					if(nodename==='input'){
+						/*限制排序输入*/
+						if(target.type.indexOf('radio')!==-1){
+							return false;
+						}
+						target.value=target.value.replace(/\D*/g,'');
 					}
-					if(target.parentNode.className.indexOf('admin-subtypeitem')===-1){
-						return false;
-					}
-					$li=$(target.parentNode);
-					$wrap=$li.find('>ul');
-					$wrap.toggleClass('g-d-hidei');*/
-				}else if(nodename==='i'){
-
-				}else if(nodename==='tr'){
-
 				}
-
-
 			});
 
 
@@ -262,12 +276,15 @@
 						},2000);
 						return false;
 					}
-					tip.content('<span class="g-c-bs-success g-btips-succ">删除成功</span>').show();
+					tip.content('<span class="g-c-bs-success g-btips-succ">编辑成功</span>').show();
 					setTimeout(function () {
 						tip.close();
 						setTimeout(function () {
-							operate_item=null;
-							$li.remove();
+							if(operate_item){
+								operate_item.removeClass('item-lighten');
+								operate_item=null;
+								$li.removeClass('typeitem-editwrap');
+							}
 						},1000);
 					},1000);
 				})
@@ -284,6 +301,70 @@
 				});
 		}
 
+
+		/*验证数据状态*/
+		function validGoodsTypeData($li) {
+			var $edit=$li.find('>.typeitem-edit'),
+				$edititem=$edit.find('.typeitem'),
+				i=0,
+				len=4,
+				result=[];
+
+			for(i;i<len;i++){
+				var $item=$edititem.eq(i),
+					value='';
+				if(i===0||i===2){
+					value=$item.find('input').val();
+				}else if(i===1){
+					value=$item.find('.typeitem-preview').attr('data-value');
+				}else if(i===3){
+					value=$item.find(':checked').val();
+				}
+				if(value===''||typeof value==='undefined'){
+					tipsGoodsTypeError($admin_errortip_wrap,i);
+					break;
+				}else{
+					result.push(value);
+				}
+			}
+			if(result.length!==len){
+				return null;
+			}else{
+				return JSON.stringify(result);
+			}
+		}
+
+
+		/*验证提示信息*/
+		function tipsGoodsTypeError($wrap,type) {
+			if(!$wrap){
+				$wrap=$admin_errortip_wrap;
+			}
+			var tips='';
+			if(type===0){
+				tips='分类名称没有填写';
+			}else if(type===1){
+				tips='没有上传分类图标图片';
+			}else if(type===2){
+				tips='排序不能为空';
+			}else if(type===3){
+				tips='没有选中显示状态';
+			}
+			$wrap.html(tips);
+			setTimeout(function () {
+				$wrap.html('');
+			},3000);
+		}
+
+		/*清空数据*/
+		function emptyGoodsTypeData() {
+			
+		}
+
+		/*恢复默认(原来)数据*/
+		function resetGoodsTypeData(){
+
+		}
 
 
 
@@ -470,148 +551,111 @@
 				id=curitem["id"],
 				parentid=curitem["parentId"],
 				isshow=parseInt(curitem["isshow"],10),
+				imgurl=curitem["url"],
 				str='',
+				stredit='',
 				flag=config.flag,
 				limit=config.limit,
 				layer=config.layer;
 
-			if(flag){
-				str='<li class="admin-subtypeitem" data-layer="'+layer+'" data-parentid="'+parentid+'" data-id="'+id+'">\
-				'+(function(){
-						var btn='';
-						if(layer>1){
-							btn+='<span class="typeitem subtype-mgap'+(layer - 1)+' main-typeicon g-w-percent4"></span>\
-							<div class="typeitem subtype-pgap'+layer+' g-w-percent15">'+curitem["labelname"]+'</div>\
-							<div class="typeitem-edit g-w-percent10"><input type="text" name="typename" data-value="'+curitem["labelname"]+'"  placeholder="请输入分类名称" value="'+curitem["labelname"]+'" /></div>\
-								<div class="typeitem-edit g-w-percent5">\
-									<span data-action="upload" class=" btn btn-white btn-icon btn-xs g-br2 g-c-gray8"> <i class="fa-image"></i>&nbsp;&nbsp;分类图标</span>\
-								</div>';
-						}else{
-							btn+='<span class="typeitem main-typeicon g-w-percent4"></span>\
-							<div class="typeitem g-w-percent15">'+curitem["labelname"]+'</div>\
-							<div class="typeitem-edit g-w-percent10"><input type="text" name="typename" data-value="'+curitem["labelname"]+'"  placeholder="请输入分类名称" value="'+curitem["labelname"]+'" /></div>\
-								<div class="typeitem-edit g-w-percent5">\
-									<span data-action="upload" class=" btn btn-white btn-icon btn-xs g-br2 g-c-gray8"> <i class="fa-image"></i>&nbsp;&nbsp;分类图标</span>\
-								</div>';
-						}
-						return btn;
-				}())+'<div class="typeitem g-w-percent3">'+curitem["sort"]+'</div>\
-								<div class="typeitem-edit g-w-percent3"><input type="text" name="typesort" data-value="'+curitem["sort"]+'" value="'+curitem["sort"]+'" /></div>\
-								<div class="typeitem g-w-percent8">'+(isshow===0?'<div class="g-c-gray12">隐藏</div>':'<div class="g-c-gray8">显示</div>')+'</div>\
-								'+(function () {
-									var btn='<div class="typeitem-edit g-w-percent8">';
-									if(isshow===0){
-										btn+='<label class="btn btn-white g-br2 g-c-gray6 g-w-percent23">显示：<input type="radio" name="typeshow'+id+'" value="1" /></label>\
-															<label class="btn btn-white g-br2 g-c-gray6 g-w-percent23">隐藏：<input type="radio"  checked name="typeshow'+id+'" value="0" /></label>';
-									}else if(isshow===1){
-										btn+='<label class="btn btn-white g-br2 g-c-gray6 g-w-percent23">显示：<input type="radio" checked name="typeshow'+id+'" value="1" /></label>\
-															<label class="btn btn-white g-br2 g-c-gray6 g-w-percent23">隐藏：<input type="radio" name="typeshow'+id+'" value="0" /></label>';
-									}else{
-										btn+='<label class="btn btn-white g-br2 g-c-gray6 g-w-percent23">显示：<input type="radio" checked name="typeshow'+id+'" value="1" /></label>\
-															<label class="btn btn-white g-br2 g-c-gray6 g-w-percent23">隐藏：<input type="radio" name="typeshow'+id+'" value="0" /></label>';
-									}
-								return btn+'</div>';
 
-					}())+'<div class="typeitem g-w-percent20">'+(function () {
-						var btn='';
-						if(edittype_power){
-							btn+='<span data-action="edit" data-parentid="'+parentid+'" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
-										<i class="fa-pencil"></i>&nbsp;&nbsp;编辑\
-									</span>';
-						}
-						if(addtype_power){
-							btn+='<span data-action="add" data-parentid="'+parentid+'" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
-										<i class="fa-plus"></i>&nbsp;&nbsp;新增下级分类\
-									</span>';
-						}
-						if(deletetype_power){
-							btn+='<span data-action="delete" data-parentid="'+parentid+'" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
-										<i class="fa-trash"></i>&nbsp;&nbsp;删除\
-									</span>';
-						}
-						return btn;
-					}())+'</div>\
-					<div class="typeitem-edit g-w-percent20">'+(function () {
-						var btn='';
-						if(edittype_power){
-							btn+='<span data-action="confirm" data-parentid="'+parentid+'" data-id="'+id+'"  class="btn btn-info btn-icon btn-xs g-br2">\
+			if(flag){
+				str='<li class="admin-subtypeitem" data-layer="'+layer+'" data-parentid="'+parentid+'" data-id="'+id+'">';
+
+				if(layer>1){
+					str+='<div class="typeitem-default"><span class="typeitem subtype-mgap'+(layer - 1)+' main-typeicon g-w-percent3"></span>\
+							<div class="typeitem subtype-pgap'+layer+' g-w-percent21">'+curitem["labelname"]+'</div>';
+				}else{
+					str+='<div class="typeitem-default"><span class="typeitem main-typeicon g-w-percent3"></span>\
+							<div class="typeitem g-w-percent21">'+curitem["labelname"]+'</div>';
+				}
+			}else{
+				str='<li data-layer="'+layer+'"  data-parentid="'+parentid+'" data-id="'+id+'">';
+
+				if(layer>1){
+					str+='<div class="typeitem-default"><div class="typeitem subtype-pgap'+layer+' g-w-percent21">'+curitem["labelname"]+'</div>';
+				}else{
+					str+='<div class="typeitem-default"><div class="typeitem g-w-percent21">'+curitem["labelname"]+'</div>';
+				}
+			}
+
+			str+='<div class="typeitem g-w-percent5">'+curitem["sort"]+'</div>';
+
+
+			/*编辑状态*/
+			stredit+='<div class="typeitem-edit"><div class="typeitem g-w-percent11"><input type="text" name="typename" data-value="'+curitem["labelname"]+'"  placeholder="请输入分类名称" value="'+curitem["labelname"]+'" /></div>\
+								<div class="typeitem g-w-percent10">\
+									<span data-action="upload" data-value="" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8"><i class="fa-upload"></i>&nbsp;&nbsp;上传</span>'
+									+(function (){
+										if(typeof imgurl==='undefined'||!imgurl||imgurl===''){
+											return '<span data-action="preview" data-value="" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8"><i class="fa-image"></i>&nbsp;&nbsp;查看分类图标</span><div class="typeitem-preview" data-value=""><div></div></div>';
+										}else{
+											return '<span data-action="preview" data-value="'+imgurl+'" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8"><i class="fa-image"></i>&nbsp;&nbsp;查看分类图标</span><div class="typeitem-preview"  data-value="'+imgurl+'"><div><img src="'+imgurl+'" alt="预览" /></div></div>';
+										}
+									}())+
+								'</div>\
+								<div class="typeitem g-w-percent5"><input type="text" name="typesort" data-value="'+curitem["sort"]+'" maxlength="6" value="'+curitem["sort"]+'" /></div>';
+
+
+
+
+			if(isshow===0){
+				str+='<div class="typeitem g-w-percent8"><div class="g-c-gray12">隐藏</div></div>';
+
+				stredit+='<div class="typeitem g-w-percent8"><label class="btn btn-white btn-xs g-br2 g-c-gray6">显示：<input type="radio" name="typeshow'+id+'" value="1" /></label>\
+				<label class="btn btn-white btn-xs g-br2 g-c-gray6">隐藏：<input checked type="radio"  name="typeshow'+id+'" value="0" /></label></div>';
+			}else if(isshow===1){
+				str+='<div class="typeitem g-w-percent8"><div class="g-c-gray8">显示</div></div>';
+
+				stredit+='<div class="typeitem g-w-percent8"><label class="btn btn-white btn-xs g-br2 g-c-gray6">显示：<input type="radio" checked name="typeshow'+id+'" value="1" /></label>\
+				<label class="btn btn-white btn-xs g-br2 g-c-gray6">隐藏：<input type="radio" name="typeshow'+id+'" value="0" /></label></div>';
+			}else{
+				stredit+='<div class="typeitem g-w-percent8"><label class="btn btn-white btn-xs g-br2 g-c-gray6">显示：<input type="radio" checked name="typeshow'+id+'" value="1" /></label>\
+				<label class="btn btn-white btn-xs g-br2 g-c-gray6">隐藏：<input type="radio" name="typeshow'+id+'" value="0" /></label></div>';
+			}
+
+
+			str+='<div class="typeitem g-w-percent12">';
+			stredit+='<div class="typeitem g-w-percent12">';
+
+
+			if(edittype_power){
+				str+='<span data-action="edit" data-parentid="'+parentid+'" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+							<i class="fa-pencil"></i>&nbsp;&nbsp;编辑\
+						</span>';
+
+				/*编辑状态*/
+				stredit+='<span data-action="confirm" data-parentid="'+parentid+'" data-id="'+id+'"  class="btn btn-info btn-icon btn-xs g-br2">\
 									<i class="fa-check"></i>&nbsp;&nbsp;确定\
 								</span>\
 								<span data-action="cance" data-parentid="'+parentid+'" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 									<i class="fa-close"></i>&nbsp;&nbsp;取消\
 								</span>';
-						}
-						return btn;
-					}())+'</div>';
-			}else{
-				str='<li data-layer="'+layer+'"  data-parentid="'+parentid+'" data-id="'+id+'">\
-					'+(function(){
-						var btn='';
-						if(layer>1){
-							btn+='<div class="typeitem subtype-pgap'+layer+' g-w-percent15">'+curitem["labelname"]+'</div>\
-							<div class="typeitem-edit g-w-percent10"><input type="text" name="typename" data-value="'+curitem["labelname"]+'" placeholder="请输入分类名称" value="'+curitem["labelname"]+'" /></div>\
-							<div class="typeitem-edit g-w-percent5">\
-								<span data-action="upload" class=" btn btn-white btn-icon btn-xs g-br2 g-c-gray8"> <i class="fa-image"></i>&nbsp;&nbsp;分类图标</span>\
-							</div>';
-						}else{
-							btn+='<div class="typeitem g-w-percent15">'+curitem["labelname"]+'</div>\
-							<div class="typeitem-edit g-w-percent10"><input type="text" name="typename" data-value="'+curitem["labelname"]+'"  placeholder="请输入分类名称" value="'+curitem["labelname"]+'" /></div>\
-							<div class="typeitem-edit g-w-percent5">\
-								<span data-action="upload" class=" btn btn-white btn-icon btn-xs g-br2 g-c-gray8"> <i class="fa-image"></i>&nbsp;&nbsp;分类图标</span>\
-							</div>';
-						}
-						return btn;
-					}())+'<div class="typeitem g-w-percent3">'+curitem["sort"]+'</div>\
-								<div class="typeitem-edit g-w-percent3"><input type="text" name="typesort" data-value="'+curitem["sort"]+'" value="'+curitem["sort"]+'" /></div>\
-								<div class="typeitem g-w-percent8">'+(isshow===0?'<div class="g-c-gray12">隐藏</div>':'<div class="g-c-gray8">显示</div>')+'</div>\
-								'+(function () {
-									var btn='<div class="typeitem-edit g-w-percent8">';
-									if(isshow===0){
-										btn+='<label class="btn btn-white g-br2 g-c-gray6 g-w-percent23">显示：<input type="radio" name="typeshow'+id+'" value="1" /></label>\
-										<label class="btn btn-white g-br2 g-c-gray6 g-w-percent23">隐藏：<input type="radio"  checked name="typeshow'+id+'" value="0" /></label>';
-									}else if(isshow===1){
-										btn+='<label class="btn btn-white g-br2 g-c-gray6 g-w-percent23">显示：<input type="radio" checked name="typeshow'+id+'" value="1" /></label>\
-										<label class="btn btn-white g-br2 g-c-gray6 g-w-percent23">隐藏：<input type="radio" name="typeshow'+id+'" value="0" /></label>';
-									}else{
-										btn+='<label class="btn btn-white g-br2 g-c-gray6 g-w-percent23">显示：<input type="radio" checked name="typeshow'+id+'" value="1" /></label>\
-										<label class="btn btn-white g-br2 g-c-gray6 g-w-percent23">隐藏：<input type="radio" name="typeshow'+id+'" value="0" /></label>';
-									}
-								return btn+'</div>';
-
-					}())+'<div class="typeitem g-w-percent20">'+(function () {
-						var btn='';
-						if(edittype_power){
-							btn+='<span data-action="edit" data-parentid="'+parentid+'" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
-									<i class="fa-pencil"></i>&nbsp;&nbsp;编辑\
-								</span>';
-						}
-						if(layer<limit&&addtype_power){
-							btn+='<span data-action="add" data-parentid="'+parentid+'" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+			}
+			if(addtype_power){
+				if(flag){
+					str+='<span data-action="add" data-parentid="'+parentid+'" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+							<i class="fa-plus"></i>&nbsp;&nbsp;新增下级分类\
+						</span>';
+				}else{
+					if(layer<limit){
+						str+='<span data-action="add" data-parentid="'+parentid+'" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 									<i class="fa-plus"></i>&nbsp;&nbsp;新增下级分类\
 								</span>';
-						}
-						if(deletetype_power){
-							btn+='<span data-action="delete" data-parentid="'+parentid+'" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
-									<i class="fa-trash"></i>&nbsp;&nbsp;删除\
-								</span>';
-						}
-						return btn;
-					}())+'</div>\
-					<div class="typeitem-edit g-w-percent20">'+(function () {
-						var btn='';
-						if(edittype_power){
-							btn+='<span data-action="confirm" data-parentid="'+parentid+'" data-id="'+id+'"  class="btn btn-info btn-icon btn-xs g-br2">\
-									<i class="fa-check"></i>&nbsp;&nbsp;确定\
-								</span>\
-								<span data-action="cance" data-parentid="'+parentid+'" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
-									<i class="fa-close"></i>&nbsp;&nbsp;取消\
-								</span>';
-						}
-						return btn;
-					}())+'</div>\
-				</li>';
+					}
+				}
 			}
-			return str;
+
+			if(deletetype_power){
+				str+='<span data-action="delete" data-parentid="'+parentid+'" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+							<i class="fa-trash"></i>&nbsp;&nbsp;删除\
+						</span>';
+			}
+
+			str+='</div></div>';
+			stredit+='</div></div>';
+
+			return flag?str+stredit:str+stredit+'</li>';
 		}
 		
 		/*请求属性*/

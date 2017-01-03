@@ -486,6 +486,15 @@
 			display:inline-block;
 			height:100%;
 			background:none;
+			input[type="text"]{
+				width:98%;
+				height:30px;
+				padding:5px 10px;
+				border:1px solid @color-gray14;
+			}
+			input,label{
+				background:@color-white;
+			}
 		}
 		div.typeitem{
 			padding:0 10px;
@@ -515,31 +524,57 @@
 			background:@color-white;
 		}
 	}
-	/*编辑状态*/
+	/*默认，编辑状态*/
+	.typeitem-default{
+		.layout-base;
+		display:inline-block;
+	}
 	.typeitem-edit{
+		.layout-base;
 		display:none;
-		font-size:@font-size-base;
-		.box-sizing-base;
-		line-height:40px;
-		text-align:left;
-		color:@color-gray9;
-		height:100%;
-		background:@color-white;
-		padding:0 10px;
-		border-right:1px solid lighten(@color-gray14,3%);
-		input[type="text"]{
-			width:90%;
-			height:30px;
-			padding:5px 10px;
-		}
 	}
 	.typeitem-editwrap{
-		>div.typeitem{
-			display:none;
+		>.typeitem-default{
+			display:none !important;
 		};
 		>.typeitem-edit{
-			display:inline-block;
+			display:inline-block !important;
 		}
+	}
+	.typeitem-preview{
+		display:none;
+		.layout-relative-base;
+		.layout-base(0);
+		height:0;
+		>div{
+			.box-sizing-base;
+			.layout-absolutel-base;
+			display:table-cell;
+			padding:10px;
+			max-width:400px;
+			max-height:400px;
+			text-align:center;
+			vertical-align:middle;
+			overflow:hidden;
+			background:@color-white;
+			&:empty{
+				content:"暂无图片";
+				display:inline;
+				font-size:@font-size-base;
+				color:@color-gray9;
+			}
+			img{
+				.box-sizing-base;
+				padding:5px;
+				display: inline-block;
+				max-width:370px;
+				max-height:370px;
+				border:1px solid @color-gray14;
+			}
+		}
+	}
+	.typeitem-preview-active{
+		display:table !important;
 	}
 	/*子菜单*/
 	.admin-subtypeitem{
