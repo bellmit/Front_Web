@@ -95,7 +95,23 @@
 						operate_item=$li.addClass('item-lighten');
 						/*执行操作*/
 						if(action==='edit'){
-
+							/*进入编辑状态*/
+							$li.addClass('typeitem-editwrap');
+						}else if(action==='cance'){
+							/*取消编辑状态*/
+							$li.removeClass('typeitem-editwrap');
+						}else if(action==='confirm'){
+							/*提交编辑*/
+							setSure.sure('delete',function(cf){
+								/*to do*/
+								goodsTypeEdit({
+									id:id,
+									parentid:parentid,
+									layer:layer,
+									tip:cf.dia||dia,
+									$li:$li
+								});
+							});
 						}else if(action==='delete'){
 							/*确认是否启用或禁用*/
 							setSure.sure('delete',function(cf){
@@ -149,7 +165,9 @@
 
 
 		}
-		
+
+
+		/*删除操作*/
 		function goodsTypeDelete(obj) {
 			var id=obj.id;
 
@@ -206,6 +224,68 @@
 					},2000);
 				});
 		}
+
+
+		/*编辑操作*/
+		function goodsTypeEdit(obj) {
+			var id=obj.id;
+
+			if(typeof id==='undefined'||id===''){
+				return false;
+			}
+			var tip=obj.tip,
+				$li=obj.$li;
+
+			$.ajax({
+					url:"../../json/goods/mall_goods_type_all.json",
+					dataType:'JSON',
+					method:'post',
+					data:{
+						id:obj.id,
+						parentid:obj.parentid,
+						roleId:decodeURIComponent(logininfo.param.roleId),
+						adminId:decodeURIComponent(logininfo.param.adminId),
+						token:decodeURIComponent(logininfo.param.token)
+					}
+				})
+				.done(function(resp){
+					var code=parseInt(resp.code,10);
+					if(code!==0){
+						console.log(resp.message);
+						tip.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"操作失败")+'</span>').show();
+						setTimeout(function () {
+							tip.close();
+							if(operate_item){
+								operate_item.removeClass('item-lighten');
+								operate_item=null;
+							}
+						},2000);
+						return false;
+					}
+					tip.content('<span class="g-c-bs-success g-btips-succ">删除成功</span>').show();
+					setTimeout(function () {
+						tip.close();
+						setTimeout(function () {
+							operate_item=null;
+							$li.remove();
+						},1000);
+					},1000);
+				})
+				.fail(function(resp){
+					console.log(resp.message);
+					tip.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"操作失败")+'</span>').show();
+					setTimeout(function () {
+						tip.close();
+						if(operate_item){
+							operate_item.removeClass('item-lighten');
+							operate_item=null;
+						}
+					},2000);
+				});
+		}
+
+
+
 
 
 		/*获取数据*/
@@ -401,15 +481,38 @@
 						var btn='';
 						if(layer>1){
 							btn+='<span class="typeitem subtype-mgap'+(layer - 1)+' main-typeicon g-w-percent4"></span>\
-							<div class="typeitem subtype-pgap'+layer+' g-w-percent15">'+curitem["labelname"]+'</div>';
+							<div class="typeitem subtype-pgap'+layer+' g-w-percent15">'+curitem["labelname"]+'</div>\
+							<div class="typeitem-edit g-w-percent10"><input type="text" name="typename" data-value="'+curitem["labelname"]+'"  placeholder="请输入分类名称" value="'+curitem["labelname"]+'" /></div>\
+								<div class="typeitem-edit g-w-percent5">\
+									<span data-action="upload" class=" btn btn-white btn-icon btn-xs g-br2 g-c-gray8"> <i class="fa-image"></i>&nbsp;&nbsp;分类图标</span>\
+								</div>';
 						}else{
 							btn+='<span class="typeitem main-typeicon g-w-percent4"></span>\
-							<div class="typeitem g-w-percent15">'+curitem["labelname"]+'</div>';
+							<div class="typeitem g-w-percent15">'+curitem["labelname"]+'</div>\
+							<div class="typeitem-edit g-w-percent10"><input type="text" name="typename" data-value="'+curitem["labelname"]+'"  placeholder="请输入分类名称" value="'+curitem["labelname"]+'" /></div>\
+								<div class="typeitem-edit g-w-percent5">\
+									<span data-action="upload" class=" btn btn-white btn-icon btn-xs g-br2 g-c-gray8"> <i class="fa-image"></i>&nbsp;&nbsp;分类图标</span>\
+								</div>';
 						}
 						return btn;
-				}())+'<div class="typeitem g-w-percent5">'+curitem["sort"]+'</div>\
-								<div class="typeitem g-w-percent5">'+(isshow===0?'<div class="g-c-gray12">隐藏</div>':'<div class="g-c-gray8">显示</div>')+'</div>\
-								<div class="typeitem g-w-percent20">'+(function () {
+				}())+'<div class="typeitem g-w-percent3">'+curitem["sort"]+'</div>\
+								<div class="typeitem-edit g-w-percent3"><input type="text" name="typesort" data-value="'+curitem["sort"]+'" value="'+curitem["sort"]+'" /></div>\
+								<div class="typeitem g-w-percent8">'+(isshow===0?'<div class="g-c-gray12">隐藏</div>':'<div class="g-c-gray8">显示</div>')+'</div>\
+								'+(function () {
+									var btn='<div class="typeitem-edit g-w-percent8">';
+									if(isshow===0){
+										btn+='<label class="btn btn-white g-br2 g-c-gray6 g-w-percent23">显示：<input type="radio" name="typeshow'+id+'" value="1" /></label>\
+															<label class="btn btn-white g-br2 g-c-gray6 g-w-percent23">隐藏：<input type="radio"  checked name="typeshow'+id+'" value="0" /></label>';
+									}else if(isshow===1){
+										btn+='<label class="btn btn-white g-br2 g-c-gray6 g-w-percent23">显示：<input type="radio" checked name="typeshow'+id+'" value="1" /></label>\
+															<label class="btn btn-white g-br2 g-c-gray6 g-w-percent23">隐藏：<input type="radio" name="typeshow'+id+'" value="0" /></label>';
+									}else{
+										btn+='<label class="btn btn-white g-br2 g-c-gray6 g-w-percent23">显示：<input type="radio" checked name="typeshow'+id+'" value="1" /></label>\
+															<label class="btn btn-white g-br2 g-c-gray6 g-w-percent23">隐藏：<input type="radio" name="typeshow'+id+'" value="0" /></label>';
+									}
+								return btn+'</div>';
+
+					}())+'<div class="typeitem g-w-percent20">'+(function () {
 						var btn='';
 						if(edittype_power){
 							btn+='<span data-action="edit" data-parentid="'+parentid+'" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
@@ -427,6 +530,18 @@
 									</span>';
 						}
 						return btn;
+					}())+'</div>\
+					<div class="typeitem-edit g-w-percent20">'+(function () {
+						var btn='';
+						if(edittype_power){
+							btn+='<span data-action="confirm" data-parentid="'+parentid+'" data-id="'+id+'"  class="btn btn-info btn-icon btn-xs g-br2">\
+									<i class="fa-check"></i>&nbsp;&nbsp;确定\
+								</span>\
+								<span data-action="cance" data-parentid="'+parentid+'" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+									<i class="fa-close"></i>&nbsp;&nbsp;取消\
+								</span>';
+						}
+						return btn;
 					}())+'</div>';
 			}else{
 				str='<li data-layer="'+layer+'"  data-parentid="'+parentid+'" data-id="'+id+'">\
@@ -434,18 +549,36 @@
 						var btn='';
 						if(layer>1){
 							btn+='<div class="typeitem subtype-pgap'+layer+' g-w-percent15">'+curitem["labelname"]+'</div>\
-							<div class="typeitem-edit g-w-percent5"><input type="text" name="typename" data-value="'+curitem["labelname"]+'" value="" /></div>';
+							<div class="typeitem-edit g-w-percent10"><input type="text" name="typename" data-value="'+curitem["labelname"]+'" placeholder="请输入分类名称" value="'+curitem["labelname"]+'" /></div>\
+							<div class="typeitem-edit g-w-percent5">\
+								<span data-action="upload" class=" btn btn-white btn-icon btn-xs g-br2 g-c-gray8"> <i class="fa-image"></i>&nbsp;&nbsp;分类图标</span>\
+							</div>';
 						}else{
 							btn+='<div class="typeitem g-w-percent15">'+curitem["labelname"]+'</div>\
-								<div class="typeitem-edit g-w-percent5"><input type="text" name="typename" data-value="'+curitem["labelname"]+'" value="" /></div>';
+							<div class="typeitem-edit g-w-percent10"><input type="text" name="typename" data-value="'+curitem["labelname"]+'"  placeholder="请输入分类名称" value="'+curitem["labelname"]+'" /></div>\
+							<div class="typeitem-edit g-w-percent5">\
+								<span data-action="upload" class=" btn btn-white btn-icon btn-xs g-br2 g-c-gray8"> <i class="fa-image"></i>&nbsp;&nbsp;分类图标</span>\
+							</div>';
 						}
 						return btn;
-					}())+'<div class="typeitem g-w-percent5">'+curitem["sort"]+'</div>\
-								<div class="typeitem-edit g-w-percent5"><input type="text" name="typesort" data-value="'+curitem["sort"]+'" value="" /></div>\
-								<div class="typeitem g-w-percent5">'+(isshow===0?'<div class="g-c-gray12">隐藏</div>':'<div class="g-c-gray8">显示</div>')+'</div>\
-								<label class="btn btn-white g-br2 g-c-gray6 typeitem-edit g-w-percent2">显示：<input type="radio" checked name="typeshow'+id+'" value="1" /></label>\
-								<label class="btn btn-white g-br2 g-c-gray6 typeitem-edit g-w-percent2">隐藏：<input type="radio" name="typeshow'+id+'" value="0" /></label>\
-								<div class="typeitem g-w-percent20">'+(function () {
+					}())+'<div class="typeitem g-w-percent3">'+curitem["sort"]+'</div>\
+								<div class="typeitem-edit g-w-percent3"><input type="text" name="typesort" data-value="'+curitem["sort"]+'" value="'+curitem["sort"]+'" /></div>\
+								<div class="typeitem g-w-percent8">'+(isshow===0?'<div class="g-c-gray12">隐藏</div>':'<div class="g-c-gray8">显示</div>')+'</div>\
+								'+(function () {
+									var btn='<div class="typeitem-edit g-w-percent8">';
+									if(isshow===0){
+										btn+='<label class="btn btn-white g-br2 g-c-gray6 g-w-percent23">显示：<input type="radio" name="typeshow'+id+'" value="1" /></label>\
+										<label class="btn btn-white g-br2 g-c-gray6 g-w-percent23">隐藏：<input type="radio"  checked name="typeshow'+id+'" value="0" /></label>';
+									}else if(isshow===1){
+										btn+='<label class="btn btn-white g-br2 g-c-gray6 g-w-percent23">显示：<input type="radio" checked name="typeshow'+id+'" value="1" /></label>\
+										<label class="btn btn-white g-br2 g-c-gray6 g-w-percent23">隐藏：<input type="radio" name="typeshow'+id+'" value="0" /></label>';
+									}else{
+										btn+='<label class="btn btn-white g-br2 g-c-gray6 g-w-percent23">显示：<input type="radio" checked name="typeshow'+id+'" value="1" /></label>\
+										<label class="btn btn-white g-br2 g-c-gray6 g-w-percent23">隐藏：<input type="radio" name="typeshow'+id+'" value="0" /></label>';
+									}
+								return btn+'</div>';
+
+					}())+'<div class="typeitem g-w-percent20">'+(function () {
 						var btn='';
 						if(edittype_power){
 							btn+='<span data-action="edit" data-parentid="'+parentid+'" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
@@ -460,6 +593,18 @@
 						if(deletetype_power){
 							btn+='<span data-action="delete" data-parentid="'+parentid+'" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 									<i class="fa-trash"></i>&nbsp;&nbsp;删除\
+								</span>';
+						}
+						return btn;
+					}())+'</div>\
+					<div class="typeitem-edit g-w-percent20">'+(function () {
+						var btn='';
+						if(edittype_power){
+							btn+='<span data-action="confirm" data-parentid="'+parentid+'" data-id="'+id+'"  class="btn btn-info btn-icon btn-xs g-br2">\
+									<i class="fa-check"></i>&nbsp;&nbsp;确定\
+								</span>\
+								<span data-action="cance" data-parentid="'+parentid+'" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+									<i class="fa-close"></i>&nbsp;&nbsp;取消\
 								</span>';
 						}
 						return btn;

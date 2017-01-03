@@ -506,6 +506,42 @@
 			border-right:none !important;
 		}
 	}
+	.item-lighten{
+		background:lighten(@btn-success-bg,45%);
+		>.typeitem{
+			background:lighten(@btn-success-bg,45%);
+		}
+		ul{
+			background:@color-white;
+		}
+	}
+	/*编辑状态*/
+	.typeitem-edit{
+		display:none;
+		font-size:@font-size-base;
+		.box-sizing-base;
+		line-height:40px;
+		text-align:left;
+		color:@color-gray9;
+		height:100%;
+		background:@color-white;
+		padding:0 10px;
+		border-right:1px solid lighten(@color-gray14,3%);
+		input[type="text"]{
+			width:90%;
+			height:30px;
+			padding:5px 10px;
+		}
+	}
+	.typeitem-editwrap{
+		>div.typeitem{
+			display:none;
+		};
+		>.typeitem-edit{
+			display:inline-block;
+		}
+	}
+	/*子菜单*/
 	.admin-subtypeitem{
 		.admin-subtype-wrap{
 			border-top:1px solid @color-gray14;
@@ -563,15 +599,6 @@
 		}
 	}
 	/*选中高亮*/
-	.item-lighten{
-		background:lighten(@btn-success-bg,45%);
-		>.typeitem{
-			background:lighten(@btn-success-bg,45%);
-		}
-		ul{
-			background:@color-white;
-		}
-	}
 }
 /*子容器*/
 .admin-subtype-wrap{
