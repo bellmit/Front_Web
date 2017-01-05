@@ -217,7 +217,7 @@
 					parentid,
 					action;
 
-				if(nodename==='td'||nodename==='tr'||nodename==='ul'||nodename==='div'){
+				if(nodename==='td'||nodename==='tr'||nodename==='ul'||nodename==='div'||nodename==='li'){
 					return false;
 				}
 
@@ -309,6 +309,7 @@
 								/*事件委托*/
 								$admin_logoImage_file.trigger('click');
 							}
+
 						}else if(target.className.indexOf('main-typeicon')!==-1){
 							/*展开或收缩*/
 							$this=$(target);
@@ -317,12 +318,6 @@
 							$wrap.toggleClass('g-d-hidei');
 						}
 						return false;
-					}else if(nodename==='li'){
-						if(target.className.indexOf('admin-subtypeitem')===-1){
-							return false;
-						}
-						$li=$(target);
-						$li.toggleClass('g-d-hidei');
 					}else if(nodename==='input'){
 						if(target.type.indexOf('text')!==-1){
 							return false;
@@ -335,7 +330,9 @@
 						if(target.type.indexOf('radio')!==-1){
 							return false;
 						}
-						target.value=target.value.replace(/\D*/g,'');
+						if(target.attributes.getNamedItem('name').value==='typesort'){
+							target.value=target.value.replace(/\D*/g,'');
+						}
 					}
 				}
 			});
@@ -980,7 +977,7 @@
 
 
 			/*编辑状态*/
-			stredit+='<div class="typeitem-edit"><div class="typeitem g-w-percent11"><input type="text" name="typename" data-value="'+label+'"  placeholder="请输入分类名称" value="'+curitem["labelname"]+'" /></div>\
+			stredit+='<div class="typeitem-edit"><div class="typeitem g-w-percent11"><input type="text" name="typename" data-value="'+label+'"  placeholder="请输入分类名称" value="'+label+'" /></div>\
 								<div class="typeitem g-w-percent10">\
 									<span data-action="upload" data-value="" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8"><i class="fa-upload"></i>&nbsp;&nbsp;上传</span>'
 									+(function (){

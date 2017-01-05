@@ -458,6 +458,27 @@
             "isPermit": 1,
             "modId": 5,
             "prid": 10
+          },
+          {
+            "funcCode": "goods-addattr",
+            "funcName": "添加标签(属性)",
+            "isPermit": 1,
+            "modId": 5,
+            "prid": 11
+          },
+          {
+            "funcCode": "goods-updateattr",
+            "funcName": "编辑标签(属性)",
+            "isPermit": 1,
+            "modId": 5,
+            "prid": 12
+          },
+          {
+            "funcCode": "goods-deleteattr",
+            "funcName": "删除标签(属性)",
+            "isPermit": 1,
+            "modId": 5,
+            "prid": 13
           }
         ]
       },
