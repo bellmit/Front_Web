@@ -728,45 +728,109 @@
 			"module":"",
 			"modid":"0"
 		},
-		"1":{
-			"name":"用户管理",
-			"code":"user",
-			"match":"-user-",
-			"class":"menu-ux-user",
-			"module":"admin",
-			"modid":"1"
-		},
-		"2":{
+		"200":{
 			"name":"系统管理",
 			"code":"admin",
 			"match":"-admin-",
 			"class":"menu-ux-admin",
 			"module":"admin",
-			"modid":"2"
+			"modid":"200"
 		},
-		"3":{
+		"210":{
+			"name":"用户管理",
+			"code":"user",
+			"match":"-user-",
+			"class":"menu-ux-user",
+			"module":"admin",
+			"modid":"210"
+		},
+		"220":{
+			"name":"公告管理",
+			"code":"provider",
+			"match":"-announcement-",
+			"class":"menu-ux-ad",
+			"module":"announcement",
+			"modid":"220"
+		},
+		"230":{
 			"name":"供应商管理",
 			"code":"provider",
 			"match":"-provider-",
 			"class":"menu-ux-distribution",
 			"module":"provider",
-			"modid":"3"
+			"modid":"230"
 		},
-		"4":{
+		"240":{
 			"name":"交易管理",
 			"code":"trade",
 			"match":"-trade-",
 			"class":"menu-ux-record",
 			"module":"trade",
-			"modid":"4"
+			"modid":"240"
 		},
-		"5":{
+		"250":{
 			"name":"商品管理",
 			"code":"goods",
 			"match":"-goods-",
 			"class":"menu-ux-shop",
 			"module":"goods",
-			"modid":"5"
+			"modid":"250"
+		},
+		"260":{
+			"name":"商品属性",
+			"code":"attribute",
+			"match":"-attribute-",
+			"class":"menu-ux-shop",
+			"module":"attribute",
+			"modid":"260"
+		},
+		"270":{
+			"name":"商品类型管理",
+			"code":"goodstype",
+			"match":"-goodstype-",
+			"class":"menu-ux-shop",
+			"module":"goodstype",
+			"modid":"270"
+		},
+		"280":{
+			"name":"用户统计",
+			"code":"userstats",
+			"match":"-userstats-",
+			"class":"menu-ux-chart",
+			"module":"userstats",
+			"modid":"280"
+		},
+		"290":{
+			"name":"供应商统计",
+			"code":"providerstats",
+			"match":"-providerstats-",
+			"class":"menu-ux-chart",
+			"module":"providerstats",
+			"modid":"290"
+		},
+		"300":{
+			"name":"商品统计",
+			"code":"goodsstats",
+			"match":"-goodsstats-",
+			"class":"menu-ux-chart",
+			"module":"goodsstats",
+			"modid":"300"
+		},
+		"310":{
+			"name":"订单统计",
+			"code":"orderstats",
+			"match":"-orderstats-",
+			"class":"menu-ux-chart",
+			"module":"orderstats",
+			"modid":"310"
+		},
+		"320":{
+			"name":"平台管理",
+			"code":"paltform",
+			"match":"-paltform-",
+			"class":"menu-ux-platform",
+			"module":"paltform",
+			"modid":"320"
 		},
 		"6":{
 			"name":"财务管理",
@@ -775,14 +839,6 @@
 			"class":"menu-ux-chart",
 			"module":"statistics",
 			"modid":"6"
-		},
-		"7":{
-			"name":"平台管理",
-			"code":"paltform",
-			"match":"-paltform-",
-			"class":"menu-ux-platform",
-			"module":"paltform",
-			"modid":"7"
 		},
 		"8":{
 			"name":"设置管理",

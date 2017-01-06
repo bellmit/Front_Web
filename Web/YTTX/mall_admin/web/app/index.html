@@ -93,26 +93,11 @@
 							<h3 class="panel-title">欢迎进入布住网后台管理系统</h3>
 						</div>
 						<div class="panel-body">
-							<div class="chart-search-wrap">
-								<input id="chart_search_time" placeholder="请选择日期" readonly class="form-control daterange" type="text" >
-								<button id="chart_search_btn" class="btn btn-success">查询</button>
-							</div>
-							<div class="admin-welcome-wrap"  id="chart_wrap">
-
-							</div>
+							<div class="chart-search-wrap"></div>
+							<div class="admin-welcome-wrap"  id="chart_wrap"></div>
 						</div>
 					</div>
 
-				</div>
-				<div class="g-d-hidei" id="admin_sidewrap">
-					<div class="panel">
-						<div class="panel-heading">
-							<h3 class="panel-title">官方通知</h3>
-						</div>
-						<div class="panel-body">
-							<ul class="grid-list-group2" id="admin_notice_wrap"></ul>
-						</div>
-					</div>
 				</div>
 			</div>
 			
@@ -137,37 +122,9 @@
 					</div>
 				</div>
 			</footer>
-
-			<!--查看通知-->
-			<div class="admin-notice-btn" id="admin_noticebtn" title="通知" data-toggle="hide"></div>
 		</div>
 	</div>
 
-
-
-	<!--详情展现-->
-	<div class="modal fade custom-width" id="show_detail_wrap">
-		<div class="modal-dialog g-w-percent46">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-					<h4 class="modal-title" id="show_detail_title"></h4>
-				</div>
-				<div class="modal-body">
-					<table class="table table-bordered table-striped table-hover admin-table">
-						<colgroup>
-							<col class="g-w-percent10"/>
-							<col class="g-w-percent40"/>
-						</colgroup>
-						<tbody id="show_detail_content"></tbody>
-					</table>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-info" data-dismiss="modal">关闭</button>
-				</div>
-			</div>
-		</div>
-	</div>
 
 	
 	<!--加载遮罩层-->
@@ -220,8 +177,6 @@
 
 	<script src="../js/common/base.js"></script>
 	<script src="../js/common/common.js"></script>
-    <script src="../js/plugins/daterangepicker/daterangepicker.js"></script>
-  <script src="../js/plugins/highcharts/highcharts.js"></script>
   <script src="../js/index/index.js"></script>
 </body>
 </html>

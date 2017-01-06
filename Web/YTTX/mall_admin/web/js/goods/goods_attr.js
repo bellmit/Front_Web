@@ -84,7 +84,9 @@
 			}
 
 			/*请求属性数据*/
-			requestAttr(true);
+			requestAttr({
+				type:'base'
+			});
 
 
 
@@ -203,13 +205,6 @@
 			});
 
 
-			/*绑定关闭弹出层*/
-			$.each([$addgoodsattr_wrap],function () {
-				this.on('hide.bs.modal',function(){
-					emptyGoodsAttrData();
-				});
-			});
-
 
 			/*绑定显示隐藏新增类型中的已存在编码和名称*/
 			$.each([$admin_addattr_already,$admin_addlabel_already],function(){
@@ -311,14 +306,14 @@
 								method:'post'
 							};
 						if(index===0){
-							formtype='addgoodstype';
+							formtype='addgoodsattr';
 						}
 						$.extend(true,(function () {
-							if(formtype==='addgoodstype'){
+							if(formtype==='addgoodsattr'){
 								return form_opt0;
 							}
 						}()),(function () {
-							if(formtype==='addgoodstype'){
+							if(formtype==='addgoodsattr'){
 								return formcache.form_opt_0;
 							}
 						}()),{
@@ -327,35 +322,18 @@
 
 								$.extend(true,setdata,basedata);
 
-								if(formtype==='addgoodstype'){
-									var type=$admin_actiontype.val(),
-										imgurl=$admin_typeimage.attr('data-image');
-									if(imgurl===''){
-										dia.content('<span class="g-c-bs-warning g-btips-warn">请先上传图像</span>').show();
-										setTimeout(function () {
-											dia.close();
-										},2000);
-										return false;
-									}
-
+								if(formtype==='addgoodsattr'){
+									var type=$admin_actiontype.val();
 									if(type==='item'){
 										$.extend(true,setdata,{
 											parentId:$admin_attrparentname.attr('data-value'),
-											code:$admin_typecode.val(),
-											name:$admin_typename.val(),
-											sort:$admin_attrsort.val(),
-											isshow:$admin_typeshow.find(':checked').val(),
-											url:imgurl
+											name:$admin_attrname.val(),
+											sort:$admin_attrsort.val()
 										});
 									}else if(type==='base'){
 										$.extend(true,setdata,{
-											parentId:$admin_typeid_addone.find('option:selected').val()||'',
-											parentId2:$admin_typeid_addtwo.find('option:selected').val()||'',
-											code:$admin_typecode.val(),
-											name:$admin_typename.val(),
+											name:$admin_labelname.val(),
 											sort:$admin_attrsort.val(),
-											isshow:$admin_typeshow.find(':checked').val(),
-											url:imgurl
 										});
 									}
 									config['url']="../../json/goods/mall_goods_type_all.json";
@@ -364,33 +342,36 @@
 
 								$.ajax(config).done(function(resp){
 									var code;
-									if(formtype==='addgoodstype'){
+									if(formtype==='addgoodsattr'){
 										code=parseInt(resp.code,10);
 										if(code!==0){
-											dia.content('<span class="g-c-bs-warning g-btips-warn">添加分类失败</span>').show();
+											dia.content('<span class="g-c-bs-warning g-btips-warn">添加'+(type==="base"?"标签":"属性")+'失败</span>').show();
 											return false;
 										}else{
-											dia.content('<span class="g-c-bs-success g-btips-succ">添加分类成功</span>').show();
-											/*请求数据*/
-											requestAttr();
+											dia.content('<span class="g-c-bs-success g-btips-succ">添加'+(type==="base"?"标签":"属性")+'成功</span>').show();
+											/*请求数据,更新列表*/
+											if(type==='base'){
+												requestAttr({
+													type:type
+												});
+											}else if(type==='item'){
+												requestAttr({
+													type:type,
+													id:$admin_attrparentname.attr('data-value')
+												});
+											}
 											setTimeout(function () {
 												dia.close();
 												$addgoodsattr_wrap.modal('hide');
-												/*重置数据*/
-												admin_addgoodsattr_form.reset();
-												emptyGoodsAttrData(type);
 											},2000);
 										}
 									}
 								}).fail(function(resp){
 									console.log('error');
-									dia.content('<span class="g-c-bs-warning g-btips-warn">添加分类失败</span>').show();
+									dia.content('<span class="g-c-bs-warning g-btips-warn">添加'+(type==="base"?"标签":"属性")+'失败</span>').show();
 									setTimeout(function () {
 										dia.close();
 										$addgoodsattr_wrap.modal('hide');
-										/*重置数据*/
-										admin_addgoodsattr_form.reset();
-										emptyGoodsAttrData(type);
 									},2000);
 								});
 								return false;
@@ -407,9 +388,6 @@
 				}
 				
 			}
-
-
-
 
 
 		}
@@ -509,7 +487,7 @@
 					}
 					tip.content('<span class="g-c-bs-success g-btips-succ">编辑成功</span>').show();
 					/*更新页面数据*/
-					updateGoodsAttrData($li);
+					updateGoodsAttrDataByEdit($li);
 					setTimeout(function () {
 						tip.close();
 						setTimeout(function () {
@@ -613,26 +591,6 @@
 			},3000);
 		}
 
-		/*清空表单数据*/
-		function emptyGoodsAttrData(type) {
-			$admin_attrparentname.attr({
-				'data-value':''
-			}).html('');
-			if(type==='base'){
-				$admin_itemattr_wrap.addClass('g-d-hidei');
-				$admin_baseattr_wrap.removeClass('g-d-hidei');
-				$admin_actiontype.val('base');
-			}else if(type==='item'){
-				$admin_itemattr_wrap.removeClass('g-d-hidei');
-				$admin_baseattr_wrap.addClass('g-d-hidei');
-				$admin_actiontype.val('item');
-			}else{
-				$admin_itemattr_wrap.addClass('g-d-hidei');
-				$admin_baseattr_wrap.removeClass('g-d-hidei');
-				$admin_actiontype.val('item');
-			}
-		}
-
 		/*恢复默认(原来)数据(编辑状态)*/
 		function resetGoodsAttrData($li){
 			var $edit=$li.find('>.typeitem-edit'),
@@ -653,7 +611,7 @@
 		}
 
 		/*更新原来值(编辑状态)*/
-		function updateGoodsAttrData($li){
+		function updateGoodsAttrDataByEdit($li){
 			var $showwrap=$li.find('>.typeitem-default'),
 				$editwrap=$li.find('>.typeitem-edit'),
 				$showitem=$showwrap.find('.typeitem'),
@@ -667,10 +625,11 @@
 
 			for(i;i<len;i++){
 				var $curitem=$edititem.eq(i),
-					newvalue=$curitem.find('input').val();
+					$this=$curitem.find('input'),
+					newvalue=$this.val();
 
 				/*更新值*/
-				$curitem.attr({
+				$this.attr({
 					'data-value':newvalue
 				});
 				if(issub){
@@ -871,7 +830,7 @@
 		}
 		
 		/*请求属性*/
-		function requestAttr(flag){
+		function requestAttr(config){
 			$.ajax({
 					url:"../../json/goods/mall_goods_attr.json",
 					dataType:'JSON',
@@ -897,11 +856,20 @@
 						/*解析属性*/
 						var result='<ul class="admin-typeitem-wrap admin-maintype-wrap">'+resolveAttr(result.list,2)+'</ul>';
 						/*初始化标签*/
-						if(flag){
-							searchAttr({
-								type:'base',
-								dataitem:result.list
-							});
+						if(config){
+							var type=config.type;
+							if(type==='base'){
+								searchAttr({
+									type:type,
+									dataitem:result.list
+								});
+							}else if(type==='item'){
+								searchAttr({
+									type:type,
+									id:config.id,
+									dataitem:result.list
+								});
+							}
 						}
 						if(result){
 							$(result).appendTo($admin_list_wrap.html(''));
@@ -919,7 +887,6 @@
 				});
 			
 		}
-
 
 		/*查询标签或属性解析*/
 		function doAttrItem(config){
@@ -954,6 +921,7 @@
 				return str;
 			}
 		}
+
 		/*查询标签或属性*/
 		function searchAttr(config) {
 			var type=config.type;

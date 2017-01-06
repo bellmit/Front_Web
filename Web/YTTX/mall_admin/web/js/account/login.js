@@ -12,7 +12,9 @@
 			var $loginform=$('#login'),
 				$username=$('#username'),
 				$pwd=$('#passwd'),
-			$error_wrap=$('#error_wrap'),
+				$validcode=$('#validcode'),
+				$validcode_btn=$('#validcode_btn'),
+				$error_wrap=$('#error_wrap'),
 				error_tpl='<div class="alert alert-danger">\
 								<button type="button" class="close" data-dismiss="alert">\
 									<span aria-hidden="true">&times;</span>\
@@ -25,7 +27,19 @@
 				$(".fade-in-effect").addClass('in');
 			},1);
 
+			/*获取验证码*/
+			getValidCode();
 
+
+			/*格式化手机号*/
+			/*$username.on('keyup',function(){
+				var phoneno=this.value.replace(/\D*!/g,'');
+				if(phoneno==''){
+					this.value='';
+					return false;
+				}
+				this.value=public_tool.phoneFormat(this.value);
+			});*/
 
 
 
@@ -38,6 +52,9 @@
 					passwd: {
 						required: true,
 						minlength:6
+					},
+					validcode:{
+						required: true
 					}
 				},
 
@@ -48,6 +65,9 @@
 					passwd: {
 						required: '请输入密码',
 						minlength:'密码必须超过6位字符'
+					},
+					validcode:{
+						required: '请输入验证码'
 					}
 				},
 
@@ -70,7 +90,7 @@
 						"hideMethod": "fadeOut"
 					};
 
-					var basedomain='../../json/account/login.json',
+					var basedomain='http://120.76.237.100:8082/mall-buzhubms-api/sysuser/login',
 						basepathname="";
 					$.ajax({
 						url:basedomain+basepathname,
@@ -79,7 +99,8 @@
 						async:false,
 						data: {
 							username:$username.val(),
-							password:$pwd.val()
+							password:$pwd.val(),
+							identifyingCode:$validcode.val()
 						}
 					}).done(function(resp){
 						var code=parseInt(resp.code,10),
@@ -108,10 +129,18 @@
 							'datetime':moment().format('YYYY-MM-DD|HH:mm:ss'),
 							'reqdomain':basedomain,
 							'currentdomain':'',
-							'username':$username.val()||'匿名用户',
+							'username':(function () {
+								var grade=result.grade;
+								if(grade===-1){
+									return $username.val()+'(超级管理员)'||'匿名用户';
+								}else{
+									return $username.val()||'匿名用户';
+								}
+							}()),
 							'param':{
 								'adminId':encodeURIComponent(result.adminId),
 								'token':encodeURIComponent(result.token),
+								'grade':encodeURIComponent(result.grade),
 								'roleId':encodeURIComponent(result.roleId)
 							}
 						});
@@ -147,8 +176,39 @@
 			//设置获取焦点
 			$loginform.find(".form-group:has(.form-control):first .form-control").focus();
 
+			/*重新生成验证码*/
+			$validcode_btn.on('click',function(){
+				getValidCode();
+			});
 
 
 		}
+
+		/*获取验证码*/
+		function getValidCode(){
+			var xhr = new XMLHttpRequest();
+			xhr.open("post",'http://120.76.237.100:8082/mall-buzhubms-api/sysuser/identifying/code', true);
+			xhr.responseType = "blob";
+			xhr.onreadystatechange = function() {
+				if (this.status == 200) {
+					var blob = this.response,
+						img = document.createElement("img");
+
+					img.alt='验证码';
+					try{
+						img.onload = function(e) {
+							window.URL.revokeObjectURL(img.src);
+						};
+						img.src = window.URL.createObjectURL(blob);
+					}catch (e){
+						console.log('不支持URL.createObjectURL');
+					}
+					$validcode_btn.html(img);
+				}
+			};
+			xhr.send();
+		}
+
+
 	});
 })(jQuery);

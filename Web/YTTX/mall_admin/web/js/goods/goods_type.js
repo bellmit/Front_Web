@@ -575,6 +575,8 @@
 						return false;
 					}
 					tip.content('<span class="g-c-bs-success g-btips-succ">编辑成功</span>').show();
+					/*更新数据*/
+					updateGoodsTypeDataByEdit($li);
 					setTimeout(function () {
 						tip.close();
 						setTimeout(function () {
@@ -765,26 +767,9 @@
 
 		/*清空表单数据*/
 		function emptyGoodsTypeData(type) {
-			$admin_typeparentname.attr({
-				'data-value':''
-			}).html('');
-			$admin_typeparentlayer.html('');
 			$admin_typeimage.attr({
 				'data-image':''
 			}).html('');
-			if(type==='base'){
-				$admin_itemtype_wrap.addClass('g-d-hidei');
-				$admin_basetype_wrap.removeClass('g-d-hidei');
-				$admin_actiontype.val('base');
-			}else if(type==='item'){
-				$admin_itemtype_wrap.removeClass('g-d-hidei');
-				$admin_basetype_wrap.addClass('g-d-hidei');
-				$admin_actiontype.val('item');
-			}else{
-				$admin_itemtype_wrap.addClass('g-d-hidei');
-				$admin_basetype_wrap.removeClass('g-d-hidei');
-				$admin_actiontype.val('item');
-			}
 		}
 
 		/*恢复默认(原来)数据(编辑状态)*/
@@ -831,6 +816,69 @@
 							return false;
 						}
 					});
+				}
+			}
+		}
+
+		/*更新原来值(编辑状态)*/
+		function updateGoodsTypeDataByEdit($li){
+			var $showwrap=$li.find('>.typeitem-default'),
+				$editwrap=$li.find('>.typeitem-edit'),
+				$showitem=$showwrap.find('.typeitem'),
+				$edititem=$editwrap.find('.typeitem'),
+				i=0,
+				len=4,
+				issub=$li.hasClass('admin-subtypeitem');
+
+
+
+
+			for(i;i<len;i++){
+				var $curitem=$edititem.eq(i),
+					newvalue,
+					$this;
+
+				if(i===0){
+					$this=$curitem.find('input');
+					newvalue=$this.val();
+					$this.attr({
+						'data-value':newvalue
+					});
+					if(issub){
+						$showitem.eq(1).html(newvalue);
+					}else{
+						$showitem.eq(0).html(newvalue);
+					}
+				}else if(i===2){
+					$this=$curitem.find('input');
+					newvalue=$this.val();
+					$this.attr({
+						'data-value':newvalue
+					});
+					if(issub){
+						$showitem.eq(2).html(newvalue);
+					}else{
+						$showitem.eq(1).html(newvalue);
+					}
+				}else if(i===3){
+					$this=$curitem.find(':checked');
+					newvalue=parseInt($this.val(),10);
+					$curitem.attr({
+						'data-value':newvalue
+					});
+					if(issub){
+						if(newvalue===0){
+							$showitem.eq(3).html('<div class="g-c-gray12">隐藏</div>');
+						}else if(newvalue===1){
+							$showitem.eq(3).html('<div class="g-c-gray8">显示</div>');
+						}
+					}else{
+						if(newvalue===0){
+							$showitem.eq(2).html('<div class="g-c-gray12">隐藏</div>');
+						}else if(newvalue===1){
+							$showitem.eq(2).html('<div class="g-c-gray8">显示</div>');
+						}
+					}
 				}
 			}
 		}

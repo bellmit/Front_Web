@@ -150,7 +150,19 @@
 					this.value=public_tool.phoneFormat(this.value);
 				});
 			});
+			
 
+			/*日历调用*/
+			$.each([$admin_birthday],function(){
+				this.val('').datepicker({
+					autoclose:true,
+					format: 'yyyy-mm-dd',
+					todayBtn: true,
+					endDate:moment().format('yyyy-mm-dd')
+				})
+			});
+
+			
 
 			/*获取编辑缓存*/
 			(function () {
@@ -185,9 +197,8 @@
 					formcache=public_tool.cache,
 					basedata={
 						roleId:decodeURIComponent(logininfo.param.roleId),
-						adminId:decodeURIComponent(logininfo.param.adminId),
-						grade:decodeURIComponent(logininfo.param.grade),
-						token:decodeURIComponent(logininfo.param.token)
+						token:decodeURIComponent(logininfo.param.token),
+						adminId:decodeURIComponent(logininfo.param.adminId)
 					};
 
 
@@ -231,21 +242,20 @@
 
 									/*同步编辑器*/
 									$.extend(true,setdata,{
-										phone:public_tool.trims($admin_telePhone.val()),
+										orderId:$admin_id.val(),
+										telePhone:public_tool.trims($admin_telePhone.val()),
 										password:$admin_password.val(),
 										nickName:$admin_nickName.val(),
 										name:$admin_Name.val(),
-										gender:$admin_sex.find(':checked').val(),
-										isEnabled:parseInt($admin_enabled.find(':checked').val(),10)===1?true:false,
-										icon:tempimg
+										sex:$admin_sex.find(':checked').val(),
+										enabled:$admin_enabled.find(':checked').val(),
+										logoImage:tempimg
 									});
 
-									if(id!==''){
-										setdata['id']=id;
-									}
-
-									config['url']="http://120.76.237.100:8082/mall-buzhubms-api/user/update";
+									
+									config['url']="../../json/user/mall_user_list.json";
 									config['data']=setdata;
+
 								}
 
 
@@ -334,13 +344,13 @@
 					if(!list){
 						return false;
 					}
-
+					
 
 					if(!$.isEmptyObject(list)){
 						$admin_id.val(id);
 						for(var m in list){
 							switch(m){
-								case 'phone':
+								case 'telePhone':
 									$admin_telePhone.val(public_tool.phoneFormat(list[m]));
 									break;
 								case 'password':
@@ -349,10 +359,13 @@
 								case 'nickName':
 									$admin_nickName.val(list[m]);
 									break;
-								case 'name':
+								case 'Name':
 									$admin_Name.val(list[m]);
 									break;
-								case 'gender':
+								case 'birthday':
+									$admin_birthday.val(list[m]);
+									break;
+								case 'sex':
 									$admin_sex.find('input').each(function(){
 										var $this=$(this),
 											text=parseInt($this.val(),10),
@@ -370,7 +383,7 @@
 									$admin_enabled.find('input').each(function(){
 										var $this=$(this),
 											text=parseInt($this.val(),10),
-											curtext=list[m]?1:0;
+											curtext=parseInt(list[m],10);
 
 										if(text===curtext){
 											$this.prop({
@@ -380,7 +393,7 @@
 										}
 									});
 									break;
-								case 'icon':
+								case 'logoImage':
 									$('<img src="'+list[m]+"?imageView2/1/w/160/h/160"+'" alt="图像">').appendTo($admin_logoImage.attr({
 										'data-image':list[m]
 									}).html(''));

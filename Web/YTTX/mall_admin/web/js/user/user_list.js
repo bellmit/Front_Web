@@ -9,32 +9,33 @@
 			/*菜单调用*/
 			var logininfo=public_tool.initMap.loginMap;
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
-				url:'../../json/menu.json',
+				url:'http://120.76.237.100:8082/mall-buzhubms-api/module/menu',
 				async:false,
 				type:'post',
 				param:{
 					roleId:decodeURIComponent(logininfo.param.roleId),
 					adminId:decodeURIComponent(logininfo.param.adminId),
+					grade:decodeURIComponent(logininfo.param.grade),
 					token:decodeURIComponent(logininfo.param.token)
 				},
 				datatype:'json'
 			});
 
 			/*清除编辑数据*/
-			public_tool.removeParams('mall-user-add');
+			public_tool.removeParams('bzw-user-add');
 
 
 			/*权限调用*/
 			var powermap=public_tool.getPower(),
-				enabled_power=public_tool.getKeyPower('user-enabled',powermap),
-				edit_power=public_tool.getKeyPower('user-update',powermap),
-				addadmin_power=public_tool.getKeyPower('user-addadmin',powermap);
+				enabled_power=public_tool.getKeyPower('bzw-user-manager',powermap),
+				edit_power=public_tool.getKeyPower('bzw-user-edit',powermap),
+				addadmin_power=public_tool.getKeyPower('bzw-user-add',powermap);
 
 
 
 			/*dom引用和相关变量定义*/
 			var $admin_list_wrap=$('#admin_list_wrap')/*表格*/,
-				module_id='mall-user-list'/*模块id，主要用于本地存储传值*/,
+				module_id='bzw-user-list'/*模块id，主要用于本地存储传值*/,
 				dia=dialog({
 					zIndex:2000,
 					title:'温馨提示',
@@ -52,9 +53,8 @@
 
 
 			/*查询对象*/
-			var $search_Name=$('#search_Name'),
-				$search_telePhone=$('#search_telePhone'),
-				$search_userType=$('#search_userType'),
+			var $search_nickName=$('#search_nickName'),
+				$search_phone=$('#search_phone'),
 				$admin_search_btn=$('#admin_search_btn'),
 				$admin_search_clear=$('#admin_search_clear');
 
@@ -76,7 +76,7 @@
 						autoWidth:true,/*是否*/
 						paging:false,
 						ajax:{
-							url:"../../json/user/mall_user_list.json",
+							url:"http://120.76.237.100:8082/mall-buzhubms-api/user/list",
 							dataType:'JSON',
 							method:'post',
 							dataSrc:function ( json ) {
@@ -126,16 +126,13 @@
 						},
 						info:false,
 						searching:true,
-						order:[[3, "desc" ],[4, "desc" ]],
+						order:[[2, "desc" ],[3, "desc" ],[4, "desc" ]],
 						columns: [
 							{
 								"data":"nickName"
 							},
 							{
-								"data":"Name"
-							},
-							{
-								"data":"telePhone",
+								"data":"phone",
 								"render":function(data, type, full, meta ){
 									return public_tool.phoneFormat(data);
 								}
@@ -147,22 +144,21 @@
 								"data":"lastLoginTime"
 							},
 							{
-								"data":"loginCount"
+								"data":"loginTimes"
 							},
 							{
 								"data":"userType",
 								"render":function(data, type, full, meta ){
 									var stauts=parseInt(data,10),
 										statusmap={
-											0:"普通用户",
-											1:"供应商",
-											2:"其他"
+											1:"普通用户",
+											2:"供应商"
 										},
 										str='';
 
-									if(stauts===0){
+									if(stauts===1){
 										str='<div class="g-c-gray6">'+statusmap[stauts]+'</div>';
-									}else if(stauts===1){
+									}else if(stauts===2){
 										str='<div class="g-c-info">'+statusmap[stauts]+'</div>';
 									}else{
 										str='<div class="g-c-gray9">'+statusmap[stauts]+'</div>';
@@ -171,39 +167,13 @@
 								}
 							},
 							{
-								"data":"isAdmin",
-								"render":function(data, type, full, meta ){
-									var stauts=parseInt(data,10),
-										statusmap={
-											0:"不是",
-											1:"是"
-										},
-										str='';
-
-									if(stauts===0){
-										str='<div class="g-c-gray9">'+statusmap[stauts]+'</div>';
-									}else if(stauts===1){
-										str='<div class="g-c-info">'+statusmap[stauts]+'</div>';
-									}
-									return str;
-								}
-							},
-							{
 								"data":"isEnabled",
 								"render":function(data, type, full, meta ){
-									var stauts=parseInt(data,10),
-										statusmap={
-											0:"禁用",
-											1:"启用"
-										},
-										str='';
-
-									if(stauts===0){
-										str='<div class="g-c-gray9">'+statusmap[stauts]+'</div>';
-									}else if(stauts===1){
-										str='<div class="g-c-info">'+statusmap[stauts]+'</div>';
+									if(data){
+										return '<div class="g-c-info">启用</div>';
+									}else{
+										return '<div class="g-c-gray9">禁用</div>';
 									}
-									return str;
 								}
 							},
 							{
@@ -211,34 +181,33 @@
 								"render":function(data, type, full, meta ){
 									var id=parseInt(data,10),
 										btns='',
-										enabled=parseInt(full.isEnabled,10),
-										admin=parseInt(full.isAdmin,10);
+										enabled=full.isEnabled;
 
-									if(edit_power&&enabled===1){
+									if(edit_power&&enabled){
 										btns+='<span data-action="edit" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 										<i class="fa-pencil"></i>\
 										<span>编辑</span>\
 										</span>';
 									}
 									if(enabled_power){
-										if(enabled===0){
-											/*禁用状态则启用*/
-											btns+='<span data-action="up" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
-												<i class="fa-arrow-up"></i>\
-												<span>启用</span>\
-											</span>';
-										}else if(enabled===1){
+										if(enabled){
 											/*启用状态则禁用*/
 											btns+='<span data-action="down" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 												<i class="fa-arrow-down"></i>\
 												<span>禁用</span>\
 											</span>';
-											if(admin===0&&addadmin_power){
-												btns+='<span data-action="addadmin" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
-												<i class="fa-plus"></i>\
-												<span>新增管理员</span>\
+											/*if(admin===0&&addadmin_power){
+											 btns+='<span data-action="addadmin" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+											 <i class="fa-plus"></i>\
+											 <span>新增管理员</span>\
+											 </span>';
+											 }*/
+										}else{
+											/*禁用状态则启用*/
+											btns+='<span data-action="up" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+												<i class="fa-arrow-up"></i>\
+												<span>启用</span>\
 											</span>';
-											}
 										}
 									}
 									return btns;
@@ -255,15 +224,8 @@
 
 			/*清空查询条件*/
 			$admin_search_clear.on('click',function(){
-				$.each([$search_Name,$search_telePhone,$search_userType],function(){
-					var selector=this.selector;
-					if(selector.indexOf('userType')!==-1){
-						this.find(':selected').prop({
-							'selected':false
-						});
-					}else{
-						this.val('');
-					}
+				$.each([$search_nickName,$search_phone],function(){
+					this.val('');
 				});
 			});
 			$admin_search_clear.trigger('click');
@@ -273,12 +235,12 @@
 			$admin_search_btn.on('click',function(){
 				var data= $.extend(true,{},user_config.config.ajax.data);
 
-				$.each([$search_Name,$search_telePhone,$search_userType],function(){
-					var text=this.val()||this.find(':selected').val(),
+				$.each([$search_nickName,$search_phone],function(){
+					var text=this.val(),
 						selector=this.selector.slice(1),
 						key=selector.split('_');
 					
-					if(selector.indexOf('telePhone')!==-1){
+					if(selector.indexOf('phone')!==-1){
 						text=public_tool.trims(text);
 					}
 
@@ -297,7 +259,7 @@
 
 
 			/*格式化手机号码*/
-			$.each([$search_telePhone],function(){
+			$.each([$search_phone],function(){
 				this.on('keyup',function(){
 					var phoneno=this.value.replace(/\D*/g,'');
 					if(phoneno===''){
@@ -334,8 +296,8 @@
 
 				/*修改,编辑操作*/
 				if(action==='edit'){
-					public_tool.setParams('mall-user-add',id);
-					window.location.href='mall-user-add.html';
+					public_tool.setParams('bzw-user-add',id);
+					window.location.href='bzw-user-add.html';
 				}else if(action==='up'||action==='down'){
 					if(operate_item){
 						operate_item.removeClass('item-lighten');
