@@ -10,13 +10,13 @@
 				roleid=decodeURIComponent(logininfo.param.roleId),
 				roletype=decodeURIComponent(logininfo.param.grade);
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
-				url:'http://120.76.237.100:8082/mall-agentbms-api/module/menu',
+				url:'http://120.76.237.100:8082/mall-buzhubms-api/module/menu',
 				async:false,
 				type:'post',
 				param:{
-					roleId:roleid,
+					roleId:decodeURIComponent(logininfo.param.roleId),
 					adminId:decodeURIComponent(logininfo.param.adminId),
-					grade:roletype,
+					grade:decodeURIComponent(logininfo.param.grade),
 					token:decodeURIComponent(logininfo.param.token)
 				},
 				datatype:'json'
@@ -25,17 +25,17 @@
 
 			/*权限调用*/
 			var powermap=public_tool.getPower(),
-				roleedit_power=public_tool.getKeyPower('mall-role-update',powermap),
-				roledelete_power=public_tool.getKeyPower('mall-role-delete',powermap),
-				roleadd_power=public_tool.getKeyPower('mall-role-add',powermap),
-				memberadd_power=public_tool.getKeyPower('mall-member-add',powermap),
-				memberupdate_power=public_tool.getKeyPower('mall-member-update',powermap),
-				memberdelete_power=public_tool.getKeyPower('mall-member-delete',powermap);
+				roleedit_power=public_tool.getKeyPower('bzw-role-update',powermap),
+				roledelete_power=public_tool.getKeyPower('bzw-role-delete',powermap),
+				roleadd_power=public_tool.getKeyPower('bzw-role-add',powermap),
+				memberadd_power=public_tool.getKeyPower('bzw-member-add',powermap),
+				memberupdate_power=public_tool.getKeyPower('bzw-member-update',powermap),
+				memberdelete_power=public_tool.getKeyPower('bzw-member-delete',powermap);
 
 			/*dom引用和相关变量定义*/
 			var $admin_role_wrap=$('#admin_role_wrap')/*角色表格*/,
 				$admin_member_wrap=$('#admin_member_wrap')/*成员表格*/,
-				module_id='admin_role'/*模块id，主要用于本地存储传值*/,
+				module_id='bzw_admin_role'/*模块id，主要用于本地存储传值*/,
 				table=null/*datatable 角色解析后的对象*/,
 				table_member=null/*datatable 成员解析后的对象*/,
 				$member_wrap=$('#member_wrap')/*成员操作区域*/,
@@ -170,7 +170,7 @@
 				stateSave:false,/*是否保存重新加载的状态*/
 				processing:true,/*大消耗操作时是否显示处理状态*/
 				ajax:{
-					url:"http://120.76.237.100:8082/mall-agentbms-api/roles",
+					url:"http://120.76.237.100:8082/mall-buzhubms-api/roles",
 					dataType:'JSON',
 					method:'post',
 					dataSrc:function ( json ) {
@@ -205,26 +205,12 @@
 						}
 						return [];
 					},
-					data:(function(){
-						/*查询本地,如果有则带参数查询，如果没有则初始化查询*/
-						var param=public_tool.getParams(module_id);
-						//获取参数后清除参数
-						public_tool.removeParams(module_id);
-						if(param){
-							return {
-								roleId:param.roleId,
-								adminId:decodeURIComponent(logininfo.param.adminId),
-								grade:roletype,
-								token:decodeURIComponent(logininfo.param.token)
-							};
-						}
-						return {
-							roleId:decodeURIComponent(logininfo.param.roleId),
-							adminId:decodeURIComponent(logininfo.param.adminId),
-							grade:decodeURIComponent(logininfo.param.grade),
-							token:decodeURIComponent(logininfo.param.token)
-						};
-					}())
+					data:{
+						roleId:decodeURIComponent(logininfo.param.roleId),
+						adminId:decodeURIComponent(logininfo.param.adminId),
+						grade:decodeURIComponent(logininfo.param.grade),
+						token:decodeURIComponent(logininfo.param.token)
+					}
 				},/*异步请求地址及相关配置*/
 				columns: [
 					{"data":"name"},
@@ -271,8 +257,8 @@
 					}
 				],/*控制分页数*/
 				aLengthMenu: [
-					[5,10,15],
-					[5,10,15]
+					[5,10,20,30,40,50],
+					[5,10,20,30,40,50]
 				],
 				lengthChange:true/*是否可改变长度*/
 			});
@@ -402,7 +388,7 @@
 								if(isrole){
 									//删除角色
 									config={
-										url:"http://120.76.237.100:8082/mall-agentbms-api/role/delete",
+										url:"http://120.76.237.100:8082/mall-buzhubms-api/role/delete",
 										method: 'POST',
 										dataType: 'json',
 										data:{
@@ -414,7 +400,7 @@
 								}else{
 									//删除成员
 									config={
-										url:"http://120.76.237.100:8082/mall-agentbms-api/sysuser/delete",
+										url:"http://120.76.237.100:8082/mall-buzhubms-api/sysuser/delete",
 										method: 'POST',
 										dataType: 'json',
 										data:{
@@ -531,7 +517,7 @@
 								if(action==='select'){
 									$member_wrap.attr({'data-id':id});
 									if(member_config.url===''){
-										member_config.url='http://120.76.237.100:8082/mall-agentbms-api/sysusers';
+										member_config.url='http://120.76.237.100:8082/mall-buzhubms-api/sysusers';
 									}
 									member_config.data.roleId=decodeURIComponent(logininfo.param.roleId);
 									member_config.data.selectedId=id;
@@ -665,7 +651,7 @@
 							if(id!==''){
 								//修改角色
 								config={
-											url:"http://120.76.237.100:8082/mall-agentbms-api/role/update",
+											url:"http://120.76.237.100:8082/mall-buzhubms-api/role/update",
 											method: 'POST',
 											dataType: 'json',
 											data:{
@@ -679,7 +665,7 @@
 							}else{
 								//添加角色
 								config={
-									url:"http://120.76.237.100:8082/mall-agentbms-api/role/add",
+									url:"http://120.76.237.100:8082/mall-buzhubms-api/role/add",
 									method: 'POST',
 									dataType: 'json',
 									data:{
@@ -750,7 +736,7 @@
 							if(id!==''){
 								//修改成员
 								config={
-									url:"http://120.76.237.100:8082/mall-agentbms-api/sysuser/update",
+									url:"http://120.76.237.100:8082/mall-buzhubms-api/sysuser/update",
 									method: 'POST',
 									dataType: 'json',
 									data:{
@@ -765,7 +751,7 @@
 							}else{
 								//添加成员
 								config={
-									url:"http://120.76.237.100:8082/mall-agentbms-api/sysuser/add",
+									url:"http://120.76.237.100:8082/mall-buzhubms-api/sysuser/add",
 									method: 'POST',
 									dataType: 'json',
 									data:{
@@ -839,7 +825,7 @@
 			var detailconfig;
 			if(type==='select'){
 				detailconfig={
-					url:"http://120.76.237.100:8082/mall-agentbms-api/sysuser/info",
+					url:"http://120.76.237.100:8082/mall-buzhubms-api/sysuser/info",
 					dataType:'JSON',
 					method:'post',
 					data:{
@@ -851,7 +837,7 @@
 				};
 			}else if(type==='detail'){
 				detailconfig={
-					url:"http://120.76.237.100:8082/mall-agentbms-api/role/info",
+					url:"http://120.76.237.100:8082/mall-buzhubms-api/role/info",
 					dataType:'JSON',
 					method:'post',
 					data:{

@@ -9,7 +9,7 @@
 			var logininfo=public_tool.initMap.loginMap,
 				roleid=decodeURIComponent(logininfo.param.roleId);
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
-				url:'http://120.76.237.100:8082/mall-agentbms-api/module/menu',
+				url:'http://120.76.237.100:8082/mall-buzhubms-api/module/menu',
 				async:false,
 				type:'post',
 				param:{
@@ -24,12 +24,12 @@
 
 			/*权限调用*/
 			var powermap=public_tool.getPower(),
-				permission_power=public_tool.getKeyPower('mall-permission-management',powermap);
+				permission_power=public_tool.getKeyPower('bzw-other-set',powermap);
 
 
 			/*dom引用和相关变量定义*/
 			var $admin_role_wrap=$('#admin_role_wrap')/*角色表格*/,
-				module_id='admin_permission'/*模块id，主要用于本地存储传值*/,
+				module_id='bzw_admin_permission'/*模块id，主要用于本地存储传值*/,
 				table=null/*datatable 角色解析后的对象*/,
 				dia=dialog({
 					title:'温馨提示',
@@ -87,7 +87,7 @@
 
 			/*权限请求配置*/
 			var permission_config={
-						url:"http://120.76.237.100:8082/mall-agentbms-api/module/permissions",
+						url:"http://120.76.237.100:8082/mall-buzhubms-api/module/permissions",
 						dataType:'JSON',
 						method:'post',
 						data:{
@@ -114,7 +114,7 @@
 				stateSave:false,/*是否保存重新加载的状态*/
 				processing:true,/*大消耗操作时是否显示处理状态*/
 				ajax:{
-					url:"http://120.76.237.100:8082/mall-agentbms-api/roles",
+					url:"http://120.76.237.100:8082/mall-buzhubms-api/roles",
 					dataType:'JSON',
 					method:'post',
 					dataSrc:function ( json ) {
@@ -246,7 +246,14 @@
 							/*处理权限*/
 							var powerlist=public_tool.handlePower(resp,false);
 
+
 							if(!$.isEmptyObject(powerlist)){
+								/*判断对象是否正确对象*/
+								var isrealpower=public_tool.isRealPower(powerlist,public_tool.powerMap);
+								if(!isrealpower){
+									powerlist=public_tool.powerMap;
+								}
+								/*设置值*/
 								$operate_setting.attr({
 									'data-id':id
 								});
@@ -361,7 +368,7 @@
 
 				/*发送请求*/
 				$.ajax({
-						url:"http://120.76.237.100:8082/mall-agentbms-api/permission/state/update",
+						url:"http://120.76.237.100:8082/mall-buzhubms-api/permission/state/update",
 						dataType:'JSON',
 						method:'post',
 						data:{

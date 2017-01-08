@@ -1535,6 +1535,40 @@
 		}
 		return null;
 	};
+	/*判断权限是否获取正确*/
+	public_tool.isRealPower=function(o1,o2) {
+		if ( o1=== o2) {
+			return true;
+		}
+		if ( ! ( o1 instanceof Object ) || ! ( o2 instanceof Object ) ) {
+			return false;
+		}
+		if ( o1.constructor !== o2.constructor ) {
+			return false;
+		}
+		for ( var p in o1 ) {
+			if ( o1.hasOwnProperty( p ) ) {
+				if ( ! o2.hasOwnProperty( p ) ) {
+					return false;
+				}
+				if ( o1[ p ] === o2[ p ] ) {
+					continue;
+				}
+				if ( typeof( o1[ p ] ) !== "object" ) {
+					return false;
+				}
+				if ( ! Object.equals( o1[ p ], o2[ p ] ) ) {
+					return false;
+				}
+			}
+		}
+		for (var  m in o2 ) {
+			if ( o2.hasOwnProperty( m ) && ! o1.hasOwnProperty( m ) ) {
+				return false;
+			}
+		}
+		return true;
+	};
 
 
 	//模拟滚动条更新
