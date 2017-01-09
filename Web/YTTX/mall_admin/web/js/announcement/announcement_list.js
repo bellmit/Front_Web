@@ -23,16 +23,15 @@
 			});
 			/*权限调用*/
 			var powermap=public_tool.getPower(),
-				announcementedit_power=public_tool.getKeyPower('mall-announcement-update',powermap),
-				announcementshow_power=public_tool.getKeyPower('mall-announcement-view',powermap);
+				announcementedit_power=public_tool.getKeyPower('bzw-announcement-add',powermap);
 
 			/*清除编辑缓存*/
-			public_tool.removeParams('mall-announcement-add');
+			public_tool.removeParams('bzw-announcement-add');
 
 
 			/*dom引用和相关变量定义*/
-			var $announcement_manage_wrap=$('#announcement_manage_wrap')/*表格*/,
-				module_id='mall-announcement-list'/*模块id，主要用于本地存储传值*/,
+			var $admin_list_wrap=$('#admin_list_wrap')/*表格*/,
+				module_id='bzw-announcement-list'/*模块id，主要用于本地存储传值*/,
 				dia=dialog({
 					title:'温馨提示',
 					okValue:'确定',
@@ -57,7 +56,7 @@
 					total:0
 				},
 				announcement_config={
-					$announcement_manage_wrap:$announcement_manage_wrap,
+					$admin_list_wrap:$admin_list_wrap,
 					$admin_page_wrap:$admin_page_wrap,
 					config:{
 						processing:true,/*大消耗操作时是否显示处理状态*/
@@ -65,7 +64,7 @@
 						autoWidth:true,/*是否*/
 						paging:false,
 						ajax:{
-							url:"http://120.76.237.100:8082/mall-agentbms-api/announcements/related",
+							url:"http://120.76.237.100:8082/mall-buzhubms-api/announcements/related",
 							dataType:'JSON',
 							method:'post',
 							dataSrc:function ( json ) {
@@ -181,6 +180,24 @@
 								}
 							},
 							{
+								"data":"isAllReceived",
+								"render":function(data, type, full, meta ){
+									var stauts=parseInt(data,10),
+										statusmap={
+											0:"接收部分",
+											1:"接收所有"
+										},
+										str='';
+
+									if(stauts===0){
+										str='<div class="g-c-gray9">'+statusmap[stauts]+'</div>';
+									}else if(stauts===1){
+										str='<div class="g-c-gray6">'+statusmap[stauts]+'</div>';
+									}
+									return str;
+								}
+							},
+							{
 								"data":"id",
 								"render":function(data, type, full, meta ){
 									var id=parseInt(data,10),
@@ -192,13 +209,10 @@
 											<span>编辑</span>\
 											</span>';
 									}
-
-									if(announcementshow_power){
-										btns+='<span data-action="select" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+									btns+='<span data-action="select" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 											<i class="fa-file-text-o"></i>\
 											<span>查看</span>\
 											</span>';
-									}
 
 									return btns;
 								}
@@ -216,7 +230,7 @@
 			/*事件绑定*/
 			/*绑定查看，修改操作*/
 			var operate_item;
-			$announcement_manage_wrap.delegate('span','click',function(e){
+			$admin_list_wrap.delegate('span','click',function(e){
 				e.stopPropagation();
 				e.preventDefault();
 
@@ -238,8 +252,8 @@
 
 				/*修改,编辑操作*/
 				if(action==='update'){
-					public_tool.setParams('mall-announcement-add',table.row($tr).data());
-					location.href='mall-announcement-add.html';
+					public_tool.setParams('bzw-announcement-add',table.row($tr).data());
+					location.href='bzw-announcement-add.html';
 				}else if(action==='select'){
 					/*添加高亮状态*/
 					if(operate_item){
@@ -248,7 +262,7 @@
 					}
 					operate_item=$tr.addClass('item-lighten');
 					var datas=table.row($tr).data();
-					$show_detail_content.html('<tr><th style="vertical-align: middle">公告内容:</th><td style="vertical-align: middle">'+datas['content']+'</td></tr>');
+					$show_detail_content.html('<tr class="admin-td-vam"><td>公告标题:</td><td>'+datas['title']+'</td></tr><tr class="admin-td-vam"><td>公告内容:</td><td>'+datas['content']+'</td></tr>');
 					$show_detail_wrap.modal('show',{backdrop:'static'});
 				}
 			});
@@ -271,7 +285,7 @@
 		/*获取数据*/
 		function getColumnData(page,opt){
 			if(table===null){
-				table=opt.$announcement_manage_wrap.DataTable(opt.config);
+				table=opt.$admin_list_wrap.DataTable(opt.config);
 			}else{
 				table.ajax.config(opt.config.ajax).load();
 			}

@@ -90,8 +90,8 @@
 						"hideMethod": "fadeOut"
 					};
 
-					var basedomain='http://120.76.237.100:8082/mall-buzhubms-api/sysuser/login',
-						basepathname="";
+					var basedomain='http://120.76.237.100:8082',
+						basepathname="/mall-buzhubms-api/sysuser/login";
 					$.ajax({
 						url:basedomain+basepathname,
 						method: 'POST',

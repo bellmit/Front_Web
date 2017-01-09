@@ -248,11 +248,6 @@
 
 
 							if(!$.isEmptyObject(powerlist)){
-								/*判断对象是否正确对象*/
-								var isrealpower=public_tool.isRealPower(powerlist,public_tool.powerMap);
-								if(!isrealpower){
-									powerlist=public_tool.powerMap;
-								}
 								/*设置值*/
 								$operate_setting.attr({
 									'data-id':id

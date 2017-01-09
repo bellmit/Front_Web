@@ -746,7 +746,7 @@
 		},
 		"220":{
 			"name":"公告管理",
-			"code":"provider",
+			"code":"announcement",
 			"match":"-announcement-",
 			"class":"menu-ux-ad",
 			"module":"announcement",
@@ -1554,17 +1554,22 @@
 				if ( o1[ p ] === o2[ p ] ) {
 					continue;
 				}
-				if ( typeof( o1[ p ] ) !== "object" ) {
-					return false;
-				}
-				if ( ! Object.equals( o1[ p ], o2[ p ] ) ) {
+				if ( typeof( o1[ p ] ) !== "undefined" ) {
 					return false;
 				}
 			}
 		}
 		for (var  m in o2 ) {
-			if ( o2.hasOwnProperty( m ) && ! o1.hasOwnProperty( m ) ) {
-				return false;
+			if ( o2.hasOwnProperty( m ) ) {
+				if ( ! o1.hasOwnProperty( m ) ) {
+					return false;
+				}
+				if ( o1[ m ] === o2[ m ] ) {
+					continue;
+				}
+				if ( typeof( o2[ m ] ) !== "undefined" ) {
+					return false;
+				}
 			}
 		}
 		return true;
@@ -1699,10 +1704,12 @@
 				}*/
 			}
 
+
+
 			/*请求域与登陆域不一致*/
-			/*if(currentdomain!==''&&reqdomain!==currentdomain){
+			if(currentdomain!==''&&reqdomain!==currentdomain){
 				return false;
-			}*/
+			}
 
 			return true;
 		}else{

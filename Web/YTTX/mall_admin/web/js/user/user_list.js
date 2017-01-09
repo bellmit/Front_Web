@@ -27,9 +27,7 @@
 
 			/*权限调用*/
 			var powermap=public_tool.getPower(),
-				enabled_power=public_tool.getKeyPower('bzw-user-manager',powermap),
-				edit_power=public_tool.getKeyPower('bzw-user-edit',powermap),
-				addadmin_power=public_tool.getKeyPower('bzw-user-add',powermap);
+				edit_power=public_tool.getKeyPower('bzw-user-edit',powermap);
 
 
 
@@ -180,36 +178,37 @@
 								"data":"id",
 								"render":function(data, type, full, meta ){
 									var id=parseInt(data,10),
-										btns='',
-										enabled=full.isEnabled;
+										btns='';
 
-									if(edit_power&&enabled){
+
+
+									if(edit_power){
 										btns+='<span data-action="edit" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 										<i class="fa-pencil"></i>\
 										<span>编辑</span>\
 										</span>';
 									}
-									if(enabled_power){
+									/*if(enabled_power){
 										if(enabled){
-											/*启用状态则禁用*/
+											/!*启用状态则禁用*!/
 											btns+='<span data-action="down" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 												<i class="fa-arrow-down"></i>\
 												<span>禁用</span>\
 											</span>';
-											/*if(admin===0&&addadmin_power){
+											if(admin===0&&addadmin_power){
 											 btns+='<span data-action="addadmin" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
-											 <i class="fa-plus"></i>\
-											 <span>新增管理员</span>\
+												 <i class="fa-plus"></i>\
+												 <span>新增管理员</span>\
 											 </span>';
-											 }*/
+											 }
 										}else{
-											/*禁用状态则启用*/
+											/!*禁用状态则启用*!/
 											btns+='<span data-action="up" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 												<i class="fa-arrow-up"></i>\
 												<span>启用</span>\
 											</span>';
 										}
-									}
+									}*/
 									return btns;
 								}
 							}

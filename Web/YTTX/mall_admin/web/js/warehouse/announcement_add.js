@@ -452,7 +452,7 @@
 		function getToken(){
 			var result=null;
 			$.ajax({
-				url:'http://120.76.237.100:8082/mall-agentbms-api/qiniu/token/get',
+				url:'http://112.74.207.132:8088/yttx-public-api/qiniu/token/get',
 				async:false,
 				type:'post',
 				datatype:'json',

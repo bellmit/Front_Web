@@ -47,7 +47,6 @@
 				$admin_password=$('#admin_password'),
 				$admin_nickName=$('#admin_nickName'),
 				$admin_Name=$('#admin_Name'),
-				$admin_birthday=$('#admin_birthday'),
 				$admin_sex=$('#admin_sex'),
 				$admin_enabled=$('#admin_enabled'),
 				$admin_logoImage=$('#admin_logoImage'),
@@ -216,14 +215,6 @@
 									tempimg=$admin_logoImage.attr('data-image');
 
 
-								if(tempimg===''){
-									dia.content('<span class="g-c-bs-warning g-btips-warn">请先上传图像</span>').show();
-									setTimeout(function () {
-										dia.close();
-									},2000);
-									return false;
-								}
-
 
 								$.extend(true,setdata,basedata);
 
@@ -250,10 +241,9 @@
 
 
 								$.ajax(config).done(function(resp){
-									var code;
+									var code,formkey='';
 									if(formtype==='useradd'){
-										var formkey='';
-										if(id===''){
+										if(id!==''){
 											formkey='修改';
 										}else{
 											formkey='添加';
@@ -270,9 +260,9 @@
 
 									setTimeout(function () {
 										dia.close();
-										if(formtype==='useradd'&&code===0){
+										if(formtype==='useradd'&&code===0&&id!==''){
 											/*页面跳转*/
-											location.href='mall-user-list.html';
+											location.href='bzw-user-list.html';
 										}
 									},2000);
 								}).fail(function(resp){
@@ -400,14 +390,15 @@
 		function getToken(){
 			var result=null;
 			$.ajax({
-				url:'http://120.76.237.100:8082/yttx-providerbms-api/qiniu/token/get',
+				url:'http://112.74.207.132:8088/yttx-public-api/qiniu/token/get',
 				async:false,
 				type:'post',
 				datatype:'json',
 				data:{
 					bizType:2,
+					roleId:decodeURIComponent(logininfo.param.roleId),
 					adminId:decodeURIComponent(logininfo.param.adminId),
-					userId:decodeURIComponent(logininfo.param.userId),
+					grade:decodeURIComponent(logininfo.param.grade),
 					token:decodeURIComponent(logininfo.param.token)
 				}
 			}).done(function(resp){

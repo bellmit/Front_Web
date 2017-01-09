@@ -14,9 +14,9 @@
 				async:false,
 				type:'post',
 				param:{
-					roleId:decodeURIComponent(logininfo.param.roleId),
+					roleId:roleid,
 					adminId:decodeURIComponent(logininfo.param.adminId),
-					grade:decodeURIComponent(logininfo.param.grade),
+					grade:roletype,
 					token:decodeURIComponent(logininfo.param.token)
 				},
 				datatype:'json'
@@ -107,18 +107,6 @@
 				$role_typeAA=$('#role_typeAA'),
 				$role_typeA=$('#role_typeA'),
 				$role_typeSS=$('#role_typeSS'),
-				roleobj={
-					wrap:$role_typewrap,
-					auto:$role_typeauto,
-					agent:$role_typeagent,
-					store:$role_typestore,
-					tab:$role_typetab,
-					item:$role_typeitem,
-					AAA:$role_typeAAA,
-					AA:$role_typeAA,
-					A:$role_typeA,
-					SS:$role_typeSS
-				},
 				$editmember_cance_btn=$('#editmember_cance_btn')/*编辑取消按钮*/,
 				editmember_form=document.getElementById('member_edit_form'),
 				$member_edit_form=$('#member_edit_form')/*编辑表单*/,
@@ -206,9 +194,9 @@
 						return [];
 					},
 					data:{
-						roleId:decodeURIComponent(logininfo.param.roleId),
+						roleId:roleid,
 						adminId:decodeURIComponent(logininfo.param.adminId),
-						grade:decodeURIComponent(logininfo.param.grade),
+						grade:roletype,
 						token:decodeURIComponent(logininfo.param.token)
 					}
 				},/*异步请求地址及相关配置*/
@@ -328,10 +316,6 @@
 			});
 
 
-			/*角色类型初始化*/
-			resetAddState(roleobj,roletype);
-
-
 
 			/*事件绑定*/
 			/*绑定查看，修改，删除操作*/
@@ -444,9 +428,6 @@
 											cf.dia.close();
 										},2000);
 									});
-
-
-
 							});
 						}else if(action==='update'){
 							/*添加高亮状态*/
@@ -462,8 +443,6 @@
 								//重置信息
 								$edit_close_btn.prev().html('修改角色');
 								$edit_cance_btn.prev().html('修改角色');
-								/*隐藏角色类型*/
-								resetUpdateState(roleobj,roletype);
 								var datas=table.row($tr).data();
 							}else{
 								/*修改操作*/
@@ -560,7 +539,6 @@
 						//成员
 						$table_member_wrap.removeClass('col-md-9');
 						$edit_member_wrap.removeClass('g-d-showi');
-						resetAddState(roleobj,roletype);
 					}else{
 						//角色
 						$table_wrap.removeClass('col-md-9');
@@ -589,9 +567,6 @@
 						//显示表单
 						$table_wrap.addClass('col-md-9');
 						$edit_wrap.addClass('g-d-showi');
-
-						/*角色类型初始化*/
-						resetAddState(roleobj,roletype);
 
 						//第一行获取焦点
 						$role_name.focus();
@@ -669,18 +644,14 @@
 									method: 'POST',
 									dataType: 'json',
 									data:{
-										"roleId":decodeURIComponent(logininfo.param.roleId),
+										"roleId":roleid,
 										"adminId":decodeURIComponent(logininfo.param.adminId),
 										"token":decodeURIComponent(logininfo.param.token),
+										"type":0,
 										"name":$role_name.val(),
 										"description":$role_remark.val()
 									}
 								};
-
-								if(roletype==='-1'||roletype===undefined){
-									config['data']['type']=$role_typetab.find(':checked').val();
-								}
-
 							}
 
 							$.ajax(config)
@@ -824,6 +795,7 @@
 
 			var detailconfig;
 			if(type==='select'){
+				/*成员信息*/
 				detailconfig={
 					url:"http://120.76.237.100:8082/mall-buzhubms-api/sysuser/info",
 					dataType:'JSON',
@@ -836,6 +808,7 @@
 					}
 				};
 			}else if(type==='detail'){
+				/*角色信息*/
 				detailconfig={
 					url:"http://120.76.237.100:8082/mall-buzhubms-api/role/info",
 					dataType:'JSON',
@@ -885,11 +858,31 @@
 									istitle=true;
 									$show_detail_title.html('"<span class="g-c-info">'+list[j]+'</span>"详情信息');
 								}else{
-									str+='<tr><th>'+detail_map[j]+':</th><td>'+list[j]+'</td></tr>';
+									if(type==='detail'){
+										/*角色查看*/
+										if(j==='isDelete'){
+											if(parseInt(list[j],10)===0){
+												str+='<tr><th>'+detail_map[j]+':</th><td class="g-c-info">正常</td></tr>';
+											}else{
+												str+='<tr><th>'+detail_map[j]+':</th><td class="g-c-red1">已删除</td></tr>';
+											}
+										}else if(j==='isDisplay'){
+											if(parseInt(list[j],10)===0){
+												str+='<tr><th>'+detail_map[j]+':</th><td class="g-c-gray9">隐藏</td></tr>';
+											}else{
+												str+='<tr><th>'+detail_map[j]+':</th><td class="g-c-info">显示</td></tr>';
+											}
+										}else{
+											str+='<tr><th>'+detail_map[j]+':</th><td>'+list[j]+'</td></tr>';
+										}
+									}else if(type==='select'){
+										/*成员查看*/
+										str+='<tr><th>'+detail_map[j]+':</th><td>'+list[j]+'</td></tr>';
+									}
 								}
 							}
 
-						};
+						}
 						if(!istitle){
 							if(type==='detail'){
 								$show_detail_title.html('角色详情信息');
@@ -918,69 +911,6 @@
 					},2000);
 				});
 
-		}
-
-
-		/*绑定状态切换事件*/
-		function changeState(obj,code){
-			if(typeof code==='undefined'){
-				code=-1;
-			}else{
-				code=parseInt(code,10);
-			}
-			if(code===-1){
-				/*绑定选中角色类型*/
-				$.each([obj.auto,obj.agent,obj.store],function(){
-					this.on('click',function(){
-						var $this=$(this),
-							ischeck=$this.is(':checked'),
-							value=$this.val();
-
-						if(ischeck){
-							if(value==='0'){
-								/*默认*/
-								obj.item.addClass('g-d-hidei');
-							}else if(value==='1'){
-								/*运营商*/
-								obj.item.removeClass('g-d-hidei');
-							}else if(value==='2'){
-								/*分仓*/
-								obj.item.addClass('g-d-hidei');
-							}
-						}
-					});
-				});
-			}
-		}
-
-
-		/*重置至添加状态*/
-		function resetAddState(obj,code){
-			if(typeof code==='undefined'){
-				code=-1;
-			}else{
-				code=parseInt(code,10);
-			}
-
-			if(code===-1){
-				/*全部*/
-				obj.wrap.removeClass('g-d-hidei');
-				obj.tab.removeClass('g-d-hidei');
-				obj.auto.removeClass('g-d-hidei');
-				obj.agent.removeClass('g-d-hidei');
-				obj.store.removeClass('g-d-hidei');
-				obj.item.addClass('g-d-hidei');
-			}else{
-				/*运营商*/
-				obj.wrap.addClass('g-d-hidei');
-				obj.tab.addClass('g-d-hidei');
-				obj.item.addClass('g-d-hidei');
-			}
-		}
-
-		/*重置至更新状态*/
-		function resetUpdateState(obj,code){
-			obj.wrap.addClass('g-d-hidei');
 		}
 
 

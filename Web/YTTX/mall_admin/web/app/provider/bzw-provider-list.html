@@ -120,20 +120,19 @@
                         <div class="panel-body">
                             <div class="admin-search-wrap">
                                 <div class="admin-search-item">
-                                    <label>供应商名称：</label>
-                                    <input type="text" id="search_name" />
+                                    <label>店主姓名(供应商)：</label>
+                                    <input type="text" id="search_legalName" />
                                 </div>
                                 <div class="admin-search-item">
                                     <label>店铺名称：</label>
-                                    <input type="text" id="search_store" />
+                                    <input type="text" id="search_storeName" />
                                 </div>
                                 <div class="admin-search-item">
-                                    <label>公司名称：</label>
-                                    <input type="text" id="search_company" />
-                                </div>
-                                <div class="admin-search-item">
-                                    <label>联系电话：</label>
-                                    <input type="text" maxlength="13" id="search_telePhone" />
+                                    <label>审核状态：</label>
+                                    <select id="search_auditStatus" >
+                                        <option selected value="0">待审核</option>
+                                        <option value="1">审核成功</option>
+                                    </select>
                                 </div>
                                 <div class="admin-search-item">
                                     <span id="admin_search_btn" class="btn btn-info btn-icon g-br2">
@@ -150,24 +149,26 @@
                             <table id="admin_list_wrap" class="table table-bordered table-striped table-hover admin-table">
                                 <!--分组样式-->
                                 <colgroup>
-                                    <col class="g-w-percent10">
                                     <col class="g-w-percent8">
-                                    <col class="g-w-percent7">
+                                    <col class="g-w-percent8">
+                                    <col class="g-w-percent5">
                                     <col class="g-w-percent5">
                                     <col class="g-w-percent7">
                                     <col class="g-w-percent3">
-                                    <col class="g-w-percent10">
+                                    <col class="g-w-percent6">
+                                    <col class="g-w-percent8">
                                 </colgroup>
 
                                 <!--表头-->
                                 <thead>
                                 <tr>
-                                    <th>供应商</th>
+                                    <th>店主姓名(供应商)</th>
                                     <th>店铺名称</th>
                                     <th>公司名称</th>
                                     <th>手机号</th>
                                     <th>所在地</th>
                                     <th>状态</th>
+                                    <th>创建时间</th>
                                     <th>操作</th>
                                 </tr>
                                 </thead>

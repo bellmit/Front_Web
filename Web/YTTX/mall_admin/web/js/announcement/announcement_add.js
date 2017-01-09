@@ -22,12 +22,11 @@
 
 			/*权限调用*/
 			var powermap=public_tool.getPower(),
-				announcementedit_power=public_tool.getKeyPower('mall-announcement-update',powermap),
-				announcementadd_power=public_tool.getKeyPower('mall-announcement-add',powermap);
+				announcementadd_power=public_tool.getKeyPower('bzw-announcement-add',powermap);
 
 
 			/*dom引用和相关变量定义*/
-			var module_id='mall-announcement-add'/*模块id，主要用于本地存储传值*/,
+			var module_id='bzw-announcement-add'/*模块id，主要用于本地存储传值*/,
 				dia=dialog({
 					zIndex:2000,
 					title:'温馨提示',
@@ -232,11 +231,11 @@
 			$admin_attachmentUrl.attr({
 				'data-value':''
 			});
-			var edit_cache=public_tool.getParams('mall-announcement-add');
+			var edit_cache=public_tool.getParams('bzw-announcement-add');
 			if(edit_cache){
 				$admin_action.html('修改');
 				/*判断权限*/
-				if(announcementedit_power){
+				if(announcementadd_power){
 					$admin_action.removeClass('g-d-hidei');
 				}else{
 					$admin_action.addClass('g-d-hidei');
@@ -390,10 +389,10 @@
 										/*修改操作*/
                                         setdata['id']=id;
 										actiontype='修改';
-										config['url']="http://120.76.237.100:8082/mall-agentbms-api/announcement/update";
+										config['url']="http://120.76.237.100:8082/mall-buzhubms-api/announcement/update";
                                     }else{
 										/*新增操作*/
-										config['url']="http://120.76.237.100:8082/mall-agentbms-api/announcement/add";
+										config['url']="http://120.76.237.100:8082/mall-buzhubms-api/announcement/add";
 										actiontype='新增';
                                         delete setdata['id'];
                                     }
@@ -417,7 +416,7 @@
 										dia.close();
 										if(formtype==='addannouncement'&&code===0){
 											/*页面跳转*/
-											location.href='mall-announcement-list.html';
+											location.href='bzw-announcement-list.html';
 										}
 									},2000);
 								}).fail(function(resp){
@@ -452,7 +451,7 @@
 		function getToken(){
 			var result=null;
 			$.ajax({
-				url:'http://120.76.237.100:8082/mall-agentbms-api/qiniu/token/get',
+				url:'http://112.74.207.132:8088/yttx-public-api/qiniu/token/get',
 				async:false,
 				type:'post',
 				datatype:'json',
