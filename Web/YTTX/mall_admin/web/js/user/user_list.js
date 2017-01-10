@@ -184,8 +184,8 @@
 
 									if(edit_power){
 										btns+='<span data-action="edit" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
-										<i class="fa-pencil"></i>\
-										<span>编辑</span>\
+											<i class="fa-pencil"></i>\
+											<span>编辑</span>\
 										</span>';
 									}
 									/*if(enabled_power){

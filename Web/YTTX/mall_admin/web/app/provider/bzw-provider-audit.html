@@ -5,13 +5,12 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	
 	<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0,maximum-scale=1">
-	<meta name="description" content="布住网后台管理系统--交易管理--订单管理" />
-	<meta name="keywords" content="布住网后台管理系统--交易管理--订单管理">
+	<meta name="description" content="布住网后台管理系统--供应商管理--供应商审核" />
+	<meta name="keywords" content="布住网后台管理系统--供应商管理--供应商审核">
   <meta name="author" content="yp" />
-	<title>布住网后台管理系统--交易管理--订单管理</title>
+	<title>布住网后台管理系统--供应商管理--供应商审核</title>
 	<link rel="stylesheet" href="../../css/base.css">
   <link rel="stylesheet" href="../../js/plugins/datatables/dataTables.bootstrap.css">
-    <link rel="stylesheet" type="text/css" href="../../js/plugins/daterangepicker/daterangepicker-bs3.css">
 	<link rel="stylesheet" href="../../css/admin.css">
   <script src="../../js/common/jquery-1.11.1.js"></script>
 	<!--[if lt IE 9]>
@@ -87,13 +86,13 @@
             <!--主题描述-->
             <div class="page-title">
                 <div class="title-env">
-                    <h1 class="title">交易管理</h1>
-                    <p class="description">订单管理</p>
+                    <h1 class="title">供应商管理</h1>
+                    <p class="description">供应商审核</p>
                 </div>
                 <div class="breadcrumb-env">
                     <ol class="breadcrumb bc-1">
-                        <li><a href=""><i class="fa-home"></i>交易管理</a></li>
-                        <li class="active"><strong>订单管理</strong></li>
+                        <li><a href=""><i class="fa-home"></i>供应商管理</a></li>
+                        <li class="active"><strong>供应商审核</strong></li>
                     </ol>
                 </div>
             </div>
@@ -106,7 +105,7 @@
 
                         <!--表格标题-->
                         <div class="panel-heading">
-                            <h3 class="panel-title">订单管理</h3>
+                            <h3 class="panel-title">供应商审核</h3>
 
                             <div class="panel-options">
                                 <a href="#" data-toggle="panel">
@@ -119,39 +118,14 @@
 
                         <!--表格主体-->
                         <div class="panel-body">
-                            <div class="admin-search-wrap">
+                            <div class="admin-search-wrap g-d-hidei" id="admin_searchwrap">
                                 <div class="admin-search-item">
-                                    <label>订单号：</label>
-                                    <input type="text" id="search_name" />
+                                    <label>店主姓名(供应商)：</label>
+                                    <input type="text" id="search_legalName" />
                                 </div>
                                 <div class="admin-search-item">
-                                    <label>下单时间(最多3年时间)：</label>
-                                    <input type="text" id="search_time" placeholder="请选择下单时间" readonly />
-                                </div>
-                                <div class="admin-search-item">
-                                    <label>金额：</label>
-                                    <input type="text" maxlength="12" id="search_money" />
-                                </div>
-                                <div class="admin-search-item">
-                                    <label>支付方式：</label>
-                                    <select id="search_payType">
-                                        <option value="" selected>全部</option>
-                                        <option value="0">微信支付</option>
-                                        <option value="1">网银支付</option>
-                                        <option value="2">支付宝支付</option>
-                                    </select>
-                                </div>
-                                <div class="admin-search-item">
-                                    <label>订单状态：</label>
-                                    <select id="search_state">
-                                        <option value="" selected>全部</option>
-                                        <option value="0">待付款</option>
-                                        <option value="1">待发货</option>
-                                        <option value="2">待收货</option>
-                                        <option value="3">已完成</option>
-                                        <option value="4">已取消</option>
-                                        <option value="5">待评价</option>
-                                    </select>
+                                    <label>店铺名称：</label>
+                                    <input type="text" id="search_storeName" />
                                 </div>
                                 <div class="admin-search-item">
                                     <span id="admin_search_btn" class="btn btn-info btn-icon g-br2">
@@ -168,25 +142,27 @@
                             <table id="admin_list_wrap" class="table table-bordered table-striped table-hover admin-table">
                                 <!--分组样式-->
                                 <colgroup>
-                                    <col class="g-w-percent10">
-                                    <col class="g-w-percent10">
-                                    <col class="g-w-percent10">
+                                    <col class="g-w-percent8">
+                                    <col class="g-w-percent8">
                                     <col class="g-w-percent5">
                                     <col class="g-w-percent5">
-                                    <col class="g-w-percent5">
-                                    <col class="g-w-percent5">
+                                    <col class="g-w-percent7">
+                                    <col class="g-w-percent3">
+                                    <col class="g-w-percent6">
+                                    <col class="g-w-percent8">
                                 </colgroup>
 
                                 <!--表头-->
                                 <thead>
                                 <tr>
-                                    <th>订单号</th>
-                                    <th>下单时间</th>
-                                    <th>买家</th>
-                                    <th>订单总计</th>
-                                    <th>支付方式</th>
-                                    <th>订单状态</th>
-                                    <th class="no-sorting">操作</th>
+                                    <th>店主姓名(供应商)</th>
+                                    <th>店铺名称</th>
+                                    <th>公司名称</th>
+                                    <th>手机号</th>
+                                    <th>所在地</th>
+                                    <th>状态</th>
+                                    <th>创建时间</th>
+                                    <th>操作</th>
                                 </tr>
                                 </thead>
 
@@ -229,25 +205,56 @@
     </div>
 
 
-
-
-    <!--查看订单详情-->
-    <div class="modal fade custom-width" id="show_detail_wrap">
+    <!--审核供应商-->
+    <div class="modal fade custom-width" id="show_audit_wrap">
         <div class="modal-dialog g-w-percent46">
             <div class="modal-content">
 
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" id="show_detail_title"></h4>
+                    <h4 class="modal-title">审核供应商</h4>
                 </div>
                 <div class="modal-body">
-                    <table class="table table-bordered table-striped table-hover admin-table">
-                        <colgroup>
-                            <col class="g-w-percent10"/>
-                            <col class="g-w-percent40"/>
-                        </colgroup>
-                        <tbody id="show_detail_content"></tbody>
-                    </table>
+                    <form role="form"  method="post" id="admin_audit_form" class="admin-form1">
+                        <input type="text" value="" id="admin_id" class="g-d-hidei" />
+                        <table class="table table-bordered table-striped table-hover admin-table">
+                            <colgroup>
+                                <col class="g-w-percent15"/>
+                                <col class="g-w-percent10"/>
+                                <col class="g-w-percent10"/>
+                                <col class="g-w-percent10"/>
+                                <col class="g-w-percent5"/>
+                            </colgroup>
+                            <thead>
+                            <tr>
+                                <th>店主姓名(供应商)</th>
+                                <th>店铺名称</th>
+                                <th>所在地</th>
+                                <th>电话</th>
+                                <th>状态</th>
+                            </tr>
+                            </thead>
+                            <tbody id="show_audit_header"></tbody>
+                            <tfoot  class="admin-td-vam">
+                            <tr>
+                                <td colspan="3" class="g-t-r">
+                                    <div class="g-c-red2 inline" id="audit_radio_tip"></div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <div class="inline" id="audit_radio_wrap">
+                                        <label class="btn btn-white g-br3">
+                                            通过&nbsp;:&nbsp;<input type="radio" value="3" name="state" />
+                                        </label>
+                                        <label class="btn btn-white g-br3">
+                                            不通过&nbsp;:&nbsp;<input type="radio" value="4" name="state" />
+                                        </label>
+                                    </div>
+                                </td>
+                                <td colspan="2">
+                                    <button type="button" class="btn btn-success g-f-l" id="audit_action" >审核</button>
+                                </td>
+                            </tr>
+                            </tfoot>
+                        </table>
+                    </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-info" data-dismiss="modal">关闭</button>
@@ -255,8 +262,6 @@
             </div>
         </div>
     </div>
-
-
 
 	
 	<!--加载遮罩层-->
@@ -307,11 +312,10 @@
 
     <script src="../../js/common/base.js"></script>
     <script src="../../js/common/common.js"></script>
-    <script src="../../js/plugins/daterangepicker/daterangepicker.js"></script>
     <script src="../../js/plugins/datatables/js/jquery.dataTables.js"></script>
     <!--修饰分页，搜索等操作 -->
     <script src="../../js/plugins/datatables/dataTables.bootstrap.js"></script>
     <script src="../../js/plugins/pagination/pagination.js"></script>
-    <script src="../../js/trade/trade_order.js"></script>
+    <script src="../../js/provider/provider_audit.js"></script>
 </body>
 </html>

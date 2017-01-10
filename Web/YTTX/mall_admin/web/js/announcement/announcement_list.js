@@ -23,7 +23,7 @@
 			});
 			/*权限调用*/
 			var powermap=public_tool.getPower(),
-				announcementedit_power=public_tool.getKeyPower('bzw-announcement-add',powermap);
+				announcementedit_power=public_tool.getKeyPower('bzw-announcement-edit',powermap);
 
 			/*清除编辑缓存*/
 			public_tool.removeParams('bzw-announcement-add');
@@ -170,9 +170,9 @@
 								"render":function(data, type, full, meta ){
 									if(data&&data!==''){
 										if($.isArray(data)){
-											return '<a class="btn btn-white btn-xs g-c-gray8" target="_blank" href="'+data.join('">附件</a><a class="btn btn-white btn-xs g-c-gray8" target="_blank" href="')+'">附件</a>';
+											return '<a class="btn btn-white btn-xs g-c-gray8" target="_blank" href="'+data.join('">查看附件</a><a class="btn btn-white btn-xs g-c-gray8" target="_blank" href="')+'">查看附件</a>';
 										}else{
-											return '<a href="'+data+'" class="btn btn-white btn-xs g-c-gray8" target="_blank">附件</a>';
+											return '<a href="'+data+'" class="btn btn-white btn-xs g-c-gray8" target="_blank">查看附件</a>';
 										}
 									}else{
 										return '无附件';

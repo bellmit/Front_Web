@@ -10,12 +10,13 @@
 			/*菜单调用*/
 			var logininfo=public_tool.initMap.loginMap;
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
-				url:'../../json/menu.json',
+				url:'http://120.76.237.100:8082/mall-buzhubms-api/module/menu',
 				async:false,
 				type:'post',
 				param:{
 					roleId:decodeURIComponent(logininfo.param.roleId),
 					adminId:decodeURIComponent(logininfo.param.adminId),
+					grade:decodeURIComponent(logininfo.param.grade),
 					token:decodeURIComponent(logininfo.param.token)
 				},
 				datatype:'json'
@@ -24,14 +25,14 @@
 
 			/*权限调用*/
 			var powermap=public_tool.getPower(),
-				update_power=public_tool.getKeyPower('comment-update',powermap);
+				update_power=public_tool.getKeyPower('bzw-buyer-commentedit',powermap);
 
 
 
 			/*dom引用和相关变量定义*/
 			var $admin_listbuy_wrap=$('#admin_listbuy_wrap'),
 				$admin_listsell_wrap=$('#admin_listsell_wrap')/*表格*/,
-				module_id='mall-trade-comment'/*模块id，主要用于本地存储传值*/,
+				module_id='bzw-comment-buyer'/*模块id，主要用于本地存储传值*/,
 				dia=dialog({
 					zIndex:2000,
 					title:'温馨提示',
@@ -51,9 +52,6 @@
 				$admin_commentTime=$('#admin_commentTime'),
 				$admin_content=$('#admin_content'),
 				$admin_pagebuy_wrap=$('#admin_pagebuy_wrap'),
-				$admin_pagesell_wrap=$('#admin_pagesell_wrap'),
-				$admin_buy_wrap=$('#admin_buy_wrap'),
-				$admin_sell_wrap=$('#admin_sell_wrap'),
 				$show_editcomment_wrap=$('#show_editcomment_wrap')/*详情容器*/,
 				$admin_search_theme=$('#admin_search_theme'),
 				resetform0=null,
@@ -166,131 +164,12 @@
 							}
 						]
 					}
-				},
-				tradesell_page={
-					page:1,
-					pageSize:10,
-					total:0
-				},
-				tradesell_config={
-					$admin_listsell_wrap:$admin_listsell_wrap,
-					$admin_pagesell_wrap:$admin_pagesell_wrap,
-					config:{
-						processing:true,/*大消耗操作时是否显示处理状态*/
-						deferRender:true,/*是否延迟加载数据*/
-						autoWidth:true,/*是否*/
-						paging:false,
-						ajax:{
-							url:"../../json/trade/mall_trade_list.json",
-							dataType:'JSON',
-							method:'post',
-							dataSrc:function ( json ) {
-								var code=parseInt(json.code,10);
-								if(code!==0){
-									if(code===999){
-										/*清空缓存*/
-										public_tool.loginTips(function () {
-											public_tool.clear();
-											public_tool.clearCacheData();
-										});
-									}
-									console.log(json.message);
-									return [];
-								}
-								var result=json.result;
-								if(typeof result==='undefined'){
-									return [];
-								}
-								/*设置分页*/
-								tradesell_page.page=result.page;
-								tradesell_page.pageSize=result.pageSize;
-								tradesell_page.total=result.count;
-								/*分页调用*/
-								$admin_pagesell_wrap.pagination({
-									pageSize:tradesell_page.pageSize,
-									total:tradesell_page.total,
-									pageNumber:tradesell_page.page,
-									onSelectPage:function(pageNumber,pageSize){
-										/*再次查询*/
-										var param=tradesell_config.config.ajax.data;
-										param.page=pageNumber;
-										param.pageSize=pageSize;
-										tradesell_config.config.ajax.data=param;
-										getBuyColumnData(tradesell_page,tradesell_config);
-									}
-								});
-								return result?result.list||[]:[];
-							},
-							data:{
-								userId:decodeURIComponent(logininfo.param.roleId),
-								adminId:decodeURIComponent(logininfo.param.adminId),
-								token:decodeURIComponent(logininfo.param.token),
-								page:1,
-								pageSize:10
-							}
-						},
-						info:false,
-						searching:true,
-						order:[[3, "desc" ]],
-						columns: [
-							{
-								"data":"store"
-							},
-							{
-								"data":"provider"
-							},
-							{
-								"data":"company"
-							},
-							{
-								"data":"createTime"
-							},
-							{
-								"data":"id",
-								"render":function(data, type, full, meta ){
-									var id=parseInt(data,10),
-										btns='';
-
-									if(update_power){
-										btns+='<span data-type="sell" data-action="edit" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
-										<i class="fa-pencil"></i>\
-										<span>修改</span>\
-										</span>';
-									}
-									return btns;
-								}
-							}
-						]
-					}
 				};
-
-
-
-			/*绑定条件查询*/
-			$admin_search_theme.on('click','button',function(){
-				var $this=$(this),
-					condition=$this.attr('data-value');
-
-				$admin_search_theme.attr({
-					'data-value':condition
-				});
-				$this.removeClass('btn-white g-c-gray6').addClass('btn-info').siblings().removeClass('btn-info').addClass('g-c-gray6 btn-white');
-				if(condition==='buy'){
-					$admin_buy_wrap.removeClass('g-d-hidei');
-					$admin_sell_wrap.addClass('g-d-hidei');
-				}else if(condition==='sell'){
-					$admin_buy_wrap.addClass('g-d-hidei');
-					$admin_sell_wrap.removeClass('g-d-hidei');
-				}
-			}).find('button').eq(0).trigger('click');
 
 
 
 			/*查询买家*/
 			getBuyColumnData(tradebuy_page,tradebuy_config);
-			/*查询卖家*/
-			getSellColumnData(tradesell_page,tradesell_config);
-
 
 
 			/*编辑器调用并重置表单*/
@@ -331,14 +210,7 @@
 
 			/*联合查询*/
 			$admin_search_btn.on('click',function(){
-				var condition=$admin_search_theme.attr('data-value'),
-					data={};
-
-				if(condition==='buy'||condition===''){
-					data= $.extend(true,{},tradebuy_config.config.ajax.data);
-				}else if(condition==='sell'){
-					data= $.extend(true,{},tradesell_config.config.ajax.data);
-				}
+				var data= $.extend(true,{},tradebuy_config.config.ajax.data);
 
 				$.each([$search_commentFrom,$search_commentTo],function(){
 					var text=this.val(),
@@ -355,13 +227,8 @@
 
 				});
 
-				if(condition==='buy'||condition===''){
-					tradebuy_config.config.ajax.data= $.extend(true,{},data);
-					getBuyColumnData(tradebuy_page,tradebuy_config);
-				}else if(condition==='sell'){
-					tradesell_config.config.ajax.data= $.extend(true,{},data);
-					getSellColumnData(tradesell_page,tradesell_config);
-				}
+				tradebuy_config.config.ajax.data= $.extend(true,{},data);
+				getBuyColumnData(tradebuy_page,tradebuy_config);
 			});
 
 
@@ -369,33 +236,31 @@
 			/*事件绑定*/
 			/*绑定查看，修改操作*/
 			var operate_item;
-			$.each([$admin_listbuy_wrap,$admin_listsell_wrap],function (){
-				this.delegate('span','click',function(e){
-					e.stopPropagation();
-					e.preventDefault();
+			$admin_listbuy_wrap.delegate('span','click',function(e){
+				e.stopPropagation();
+				e.preventDefault();
 
-					var target= e.target,
-						$this,
-						id,
-						action,
-						$tr;
+				var target= e.target,
+					$this,
+					id,
+					action,
+					$tr;
 
-					//适配对象
-					if(target.className.indexOf('btn')!==-1){
-						$this=$(target);
-					}else{
-						$this=$(target).parent();
-					}
-					$tr=$this.closest('tr');
-					id=$this.attr('data-id');
-					action=$this.attr('data-action');
+				//适配对象
+				if(target.className.indexOf('btn')!==-1){
+					$this=$(target);
+				}else{
+					$this=$(target).parent();
+				}
+				$tr=$this.closest('tr');
+				id=$this.attr('data-id');
+				action=$this.attr('data-action');
 
-					/*修改,编辑操作*/
-					if(action==='edit'&&update_power){
-						var type=$this.attr('data-type');
-						showComment(id,$tr,type);
-					}
-				});
+				/*修改,编辑操作*/
+				if(action==='edit'&&update_power){
+					var type=$this.attr('data-type');
+					showComment(id,$tr);
+				}
 			});
 
 
@@ -542,37 +407,18 @@
 				tablebuy.ajax.config(opt.config.ajax).load();
 			}
 		}
-		/*获取数据*/
-		function getSellColumnData(page,opt){
-			if(tablesell===null){
-				tablesell=opt.$admin_listsell_wrap.DataTable(opt.config);
-			}else{
-				tablesell.ajax.config(opt.config.ajax).load();
-			}
-		}
-
 
 
 		/*查看出库单*/
-		function showComment(id,$tr,type) {
+		function showComment(id,$tr) {
 			if(typeof id==='undefined'){
 				return false;
 			}
 			var list={};
-			if(type==='buy'){
-				list=tablebuy.row($tr).data();
-			}else if(type==='sell'){
-				list=tablesell.row($tr).data();
-			}
 			if(!$.isEmptyObject(list)){
 				/*添加高亮状态*/
-				if(type==='buy'){
-					$admin_commentFrom.html(list["provider"]);
-					$admin_commentTo.html(list["store"]);
-				}else if(type==='sell'){
-					$admin_commentFrom.html(list["store"]);
-					$admin_commentTo.html(list["provider"]);
-				}
+				$admin_commentFrom.html(list["provider"]);
+				$admin_commentTo.html(list["store"]);
 				$admin_id.val(id);
 				for(var j in list){
 					switch (j){

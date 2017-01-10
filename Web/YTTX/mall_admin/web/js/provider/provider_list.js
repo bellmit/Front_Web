@@ -20,17 +20,13 @@
 				},
 				datatype:'json'
 			});
-
-			/*清除编辑数据*/
-			public_tool.removeParams('mall-provider-goods');
+			
 
 
 			/*权限调用*/
 			var powermap=public_tool.getPower(),
-				enabled_power=public_tool.getKeyPower('bzw-provider-list',powermap),
-				auditgoods_power=public_tool.getKeyPower('bzw-provider-audit',powermap);
-
-			console.log(enabled_power);
+				providerforbid_power=public_tool.getKeyPower('bzw-provider-forbid',powermap),
+				providersearch_power=public_tool.getKeyPower('bzw-provider-query',powermap);
 
 
 
@@ -58,7 +54,15 @@
 				$search_storeName=$('#search_storeName'),
 				$search_auditStatus=$('#search_auditStatus'),
 				$admin_search_btn=$('#admin_search_btn'),
-				$admin_search_clear=$('#admin_search_clear');
+				$admin_search_clear=$('#admin_search_clear'),
+				$admin_searchwrap=$('#admin_searchwrap'),
+				auditflag=parseInt($search_auditStatus.find(':selected').val(),10);
+
+
+			/*初始化查询*/
+			if(providersearch_power){
+				$admin_searchwrap.removeClass('g-d-hidei');
+			}
 
 
 
@@ -173,22 +177,16 @@
 										btns='',
 										enabled=full.isEnabled;
 
-									if(enabled_power){
+									if(providerforbid_power&&auditflag===1){
 										if(enabled){
 											/*启用状态则禁用*/
-											btns+='<span data-action="down" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+											btns+='<span data-action="takeoff" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 													<i class="fa-arrow-down"></i>\
 													<span>禁用</span>\
 												</span>';
-											if(auditgoods_power){
-												btns+='<span data-action="goods" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
-													<i class="fa-file-text-o"></i>\
-													<span>商品管理</span>\
-												</span>';
-											}
 										}else if(!enabled){
 											/*禁用状态则启用*/
-											btns+='<span data-action="up" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+											btns+='<span data-action="takeon" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 													<i class="fa-arrow-up"></i>\
 													<span>启用</span>\
 												</span>';
@@ -215,6 +213,12 @@
 			$admin_search_clear.trigger('click');
 
 
+			/*绑定切换状态*/
+			$search_auditStatus.on('change',function () {
+				auditflag=parseInt(this.value,10);
+			});
+
+
 			/*联合查询*/
 			$admin_search_btn.on('click',function(){
 				var data= $.extend(true,{},provider_config.config.ajax.data);
@@ -231,7 +235,6 @@
 					}else{
 						data[key[1]]=text;
 					}
-
 				});
 				provider_config.config.ajax.data= $.extend(true,{},data);
 				getColumnData(provider_page,provider_config);
@@ -264,17 +267,14 @@
 				action=$this.attr('data-action');
 
 				/*修改,编辑操作*/
-				if(action==='goods'){
-					public_tool.setParams('mall-provider-goods',id);
-					window.location.href='mall-provider-goods.html';
-				}else if(action==='up'||action==='down'){
+				if(action==='takeon'||action==='takeoff'){
 					if(operate_item){
 						operate_item.removeClass('item-lighten');
 						operate_item=null;
 					}
 					operate_item=$tr.addClass('item-lighten');
 					/*确认是否启用或禁用*/
-					setSure.sure(action==='up'?'启用':'禁用',function(cf){
+					setSure.sure(action==='takeon'?'启用':'禁用',function(cf){
 						/*to do*/
 						setEnabled({
 							id:id,
@@ -309,14 +309,15 @@
 				action=obj.action;
 
 			$.ajax({
-					url:"../../json/provider/mall_provider_list.json",
+					url:"http://120.76.237.100:8082/mall-buzhubms-api/provider/operate",
 					dataType:'JSON',
 					method:'post',
 					data:{
-						id:id,
-						type:action,
+						ids:id,
+						operate:action==='takeon'?"2":"1",
 						roleId:decodeURIComponent(logininfo.param.roleId),
 						adminId:decodeURIComponent(logininfo.param.adminId),
+						grade:decodeURIComponent(logininfo.param.grade),
 						token:decodeURIComponent(logininfo.param.token)
 					}
 				})
@@ -336,7 +337,7 @@
 					}
 					/*是否是正确的返回数据*/
 					/*添加高亮状态*/
-					tip.content('<span class="g-c-bs-success g-btips-succ">'+(action==="up"?'启用':'禁用')+'成功</span>').show();
+					tip.content('<span class="g-c-bs-success g-btips-succ">'+(action==="takeon"?'启用':'禁用')+'成功</span>').show();
 					setTimeout(function () {
 						tip.close();
 						setTimeout(function () {

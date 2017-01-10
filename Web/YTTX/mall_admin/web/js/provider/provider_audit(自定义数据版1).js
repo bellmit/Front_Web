@@ -9,29 +9,26 @@
 			/*菜单调用*/
 			var logininfo=public_tool.initMap.loginMap;
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
-				url:'http://120.76.237.100:8082/mall-buzhubms-api/module/menu',
+				url:'../../json/menu.json',
 				async:false,
 				type:'post',
 				param:{
 					roleId:decodeURIComponent(logininfo.param.roleId),
 					adminId:decodeURIComponent(logininfo.param.adminId),
-					grade:decodeURIComponent(logininfo.param.grade),
 					token:decodeURIComponent(logininfo.param.token)
 				},
 				datatype:'json'
 			});
-			
 
 			/*权限调用*/
 			var powermap=public_tool.getPower(),
-				provideraudit_power=public_tool.getKeyPower('bzw-provider-audit',powermap),
-				providersearch_power=public_tool.getKeyPower('bzw-provider-query',powermap);
+				audit_power=public_tool.getKeyPower('provider-audit',powermap);
 
 
 
 			/*dom引用和相关变量定义*/
 			var $admin_list_wrap=$('#admin_list_wrap')/*表格*/,
-				module_id='bzw-provider-audit'/*模块id，主要用于本地存储传值*/,
+				module_id='mall-provider-audit'/*模块id，主要用于本地存储传值*/,
 				dia=dialog({
 					zIndex:2000,
 					title:'温馨提示',
@@ -56,17 +53,10 @@
 
 
 			/*查询对象*/
-			var $search_legalName=$('#search_legalName'),
-				$search_storeName=$('#search_storeName'),
+			var $search_name=$('#search_name'),
+				$search_store=$('#search_store'),
 				$admin_search_btn=$('#admin_search_btn'),
-				$admin_search_clear=$('#admin_search_clear'),
-				$admin_searchwrap=$('#admin_searchwrap');
-
-
-			/*初始化查询*/
-			if(providersearch_power){
-				$admin_searchwrap.removeClass('g-d-hidei');
-			}
+				$admin_search_clear=$('#admin_search_clear');
 
 
 
@@ -86,7 +76,7 @@
 						autoWidth:true,/*是否*/
 						paging:false,
 						ajax:{
-							url:"http://120.76.237.100:8082/mall-buzhubms-api/provider/list",
+							url:"../../json/provider/mall_provider_list.json",
 							dataType:'JSON',
 							method:'post',
 							dataSrc:function ( json ) {
@@ -127,60 +117,58 @@
 								return result?result.list||[]:[];
 							},
 							data:{
-								roleId:decodeURIComponent(logininfo.param.roleId),
+								userId:decodeURIComponent(logininfo.param.roleId),
 								adminId:decodeURIComponent(logininfo.param.adminId),
-								grade:decodeURIComponent(logininfo.param.grade),
 								token:decodeURIComponent(logininfo.param.token),
-								auditStatus:0,
 								page:1,
 								pageSize:10
 							}
 						},
 						info:false,
 						searching:true,
-						order:[[6, "desc" ],[0, "desc" ]],
+						order:[[0, "desc" ],[1, "desc" ]],
 						columns: [
 							{
-								"data":"legalName"
+								"data":"provider"
 							},
 							{
-								"data":"storeName"
-							},
-							{
-								"data":"companyName"
-							},
-							{
-								"data":"telephone",
-								"render":function(data, type, full, meta ){
-									return public_tool.phoneFormat(data);
-								}
+								"data":"store"
 							},
 							{
 								"data":"address"
 							},
 							{
-								"data":"isEnabled",
+								"data":"createTime"
+							},
+							{
+								"data":"state",
 								"render":function(data, type, full, meta ){
-									var str='';
+									var stauts=parseInt(data,10),
+										statusmap={
+											0:"待审核",
+											1:"审核未通过",
+											2:"审核通过"
+										},
+										str='';
 
-									if(!data){
-										str='<div class="g-c-gray9">禁用</div>';
-									}else if(data){
-										str='<div class="g-c-info">启用</div>';
+									if(stauts===0){
+										str='<div class="g-c-info">'+statusmap[stauts]+'</div>';
+									}else if(stauts===1){
+										str='<div class="g-c-red1">'+statusmap[stauts]+'</div>';
+									}else if(stauts===2){
+										str='<div class="g-c-succ">'+statusmap[stauts]+'</div>';
 									}
 									return str;
 								}
 							},
 							{
-								"data":"createTime"
-							},
-							{
 								"data":"id",
 								"render":function(data, type, full, meta ){
 									var id=parseInt(data,10),
-										btns='';
+										btns='',
+										state=parseInt(full.state,10);
 
-									if(provideraudit_power){
+									if(audit_power&&(state===0||state===1)){
 										btns+='<span data-action="audit" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 													<i class="fa-hand-o-up"></i>\
 													<span>审核</span>\
@@ -200,7 +188,7 @@
 
 			/*清空查询条件*/
 			$admin_search_clear.on('click',function(){
-				$.each([$search_legalName,$search_storeName],function(){
+				$.each([$search_name,$search_store],function(){
 					this.val('');
 				});
 			});
@@ -211,8 +199,8 @@
 			$admin_search_btn.on('click',function(){
 				var data= $.extend(true,{},provider_config.config.ajax.data);
 
-				$.each([$search_legalName,$search_storeName],function(){
-					var text=this.val()||this.find(':selected').val(),
+				$.each([$search_name,$search_store],function(){
+					var text=this.val(),
 						selector=this.selector.slice(1),
 						key=selector.split('_');
 
@@ -223,10 +211,12 @@
 					}else{
 						data[key[1]]=text;
 					}
+
 				});
 				provider_config.config.ajax.data= $.extend(true,{},data);
 				getColumnData(provider_page,provider_config);
 			});
+
 
 
 			/*事件绑定*/
@@ -278,10 +268,14 @@
 			});
 
 
+
 			/*绑定确定收货单审核*/
 			$audit_action.on('click',function () {
 				executeAudit();
 			});
+
+
+
 
 
 		}
@@ -303,11 +297,27 @@
 				return false;
 			}
 			admin_audit_form.reset();
+
 			if(!$.isEmptyObject(data)){
 				$admin_id.val(data["id"]);
+				var stauts=parseInt(data["state"],10),
+					statusmap={
+						0:"待审核",
+						1:"审核未通过",
+						2:"审核通过"
+					},
+					res='';
+					if(stauts===0){
+						res='<div class="g-c-info">'+statusmap[stauts]+'</div>';
+					}else if(stauts===1){
+						res='<div class="g-c-red1">'+statusmap[stauts]+'</div>';
+					}else if(stauts===2){
+						res='<div class="g-c-succ">'+statusmap[stauts]+'</div>';
+					}else{
+						res='<div class="g-c-red1">异常</div>';
+					}
 
-
-				var str='<tr><td>'+data["legalName"]+'</td><td>'+data["storeName"]+'</td><td>'+data["address"]+'</td><td>'+public_tool.phoneFormat(data["telephone"])+'</td><td><div class="g-c-info">待审核</div></td></tr>';
+				var str='<tr><td>'+data["provider"]+'</td><td>'+data["store"]+'</td><td>'+data["address"]+'</td><td>'+public_tool.phoneFormat(data["telePhone"])+'</td><td>'+res+'</td></tr>';
 				$(str).appendTo($show_audit_header.html(''));
 				$show_audit_wrap.modal('show',{backdrop:'static'});
 			}
@@ -339,16 +349,15 @@
 				var tip=cf.dia;
 
 				$.ajax({
-						url:"http://120.76.237.100:8082/mall-buzhubms-api/provider/operate",
+						url:"../../json/provider/mall_provider_list.json",
 						dataType:'JSON',
 						method:'post',
 						data:{
-							ids:id,
+							orderId:id,
 							roleId:decodeURIComponent(logininfo.param.roleId),
 							adminId:decodeURIComponent(logininfo.param.adminId),
-							grade:decodeURIComponent(logininfo.param.grade),
 							token:decodeURIComponent(logininfo.param.token),
-							operate:applystate
+							auditState:applystate
 						}
 					})
 					.done(function(resp){
@@ -389,12 +398,6 @@
 					});
 			},"是否审核此供应商?&nbsp;&nbsp;'审核通过后该用户可在平台建立店铺'",true);
 		}
-
-
-
-
-
-
 	});
 
 

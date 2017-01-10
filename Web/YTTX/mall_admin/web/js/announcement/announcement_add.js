@@ -22,7 +22,8 @@
 
 			/*权限调用*/
 			var powermap=public_tool.getPower(),
-				announcementadd_power=public_tool.getKeyPower('bzw-announcement-add',powermap);
+				announcementadd_power=public_tool.getKeyPower('bzw-announcement-add',powermap),
+				announcementedit_power=public_tool.getKeyPower('bzw-announcement-edit',powermap);
 
 
 			/*dom引用和相关变量定义*/
@@ -235,80 +236,12 @@
 			if(edit_cache){
 				$admin_action.html('修改');
 				/*判断权限*/
-				if(announcementadd_power){
+				if(announcementedit_power){
 					$admin_action.removeClass('g-d-hidei');
 				}else{
 					$admin_action.addClass('g-d-hidei');
 				}
-				for(var m in edit_cache){
-					switch(m){
-						case 'id':
-							$admin_id.val(edit_cache[m]);
-							break;
-						case 'title':
-							$admin_title.val(edit_cache[m]);
-							break;
-						case 'type':
-							var types=edit_cache[m];
-							$admin_type.find('option').each(function () {
-								var $this=$(this),
-									value=$this.val();
-								if(value===types){
-									$this.prop({
-										'selected':true
-									});
-									return false;
-								}
-							});
-							break;
-						case 'sort':
-							$admin_sort.val(edit_cache[m]);
-							break;
-						case 'status':
-							var status=edit_cache[m];
-							$admin_status.find('option').each(function () {
-								var $this=$(this),
-									value=$this.val();
-								if(value===types){
-									$this.prop({
-										'selected':true
-									});
-									return false;
-								}
-							});
-							break;
-						case 'content':
-							editor.html(edit_cache[m]);
-							editor.sync();
-							break;
-						case 'attachmentUrl':
-							var attach=edit_cache[m];
-                            if(attach){
-                                if($.isArray(attach)){
-                                    $admin_attachmentUrl.val(attach.join('#,#')).attr({
-										'data-value':attach.join('#,#')
-									});
-                                }else{
-                                    $admin_attachmentUrl.val(attach).attr({
-										'data-value':attach
-									});
-                                }
-                            }
-							break;
-						case 'isAllReceived':
-                            var receive=parseInt(edit_cache[m],10);
-                            $admin_isAllReceived.prop({
-                                'checked':(function () {
-                                    if(receive===1){
-                                        return true;
-                                    }else if(receive===0){
-                                        return false;
-                                    }
-                                }())
-                            });
-							break;
-					}
-				}
+				setAnnouncementData(edit_cache);
 			}else{
 				/*判断权限*/
 				if(announcementadd_power){
@@ -491,6 +424,81 @@
 						},0);
 						break;
 					}
+				}
+			}
+		}
+
+
+		/*设置值*/
+		function setAnnouncementData(obj) {
+			var edit_cache=obj;
+			for(var m in edit_cache){
+				switch(m){
+					case 'id':
+						$admin_id.val(edit_cache[m]);
+						break;
+					case 'title':
+						$admin_title.val(edit_cache[m]);
+						break;
+					case 'type':
+						var types=edit_cache[m];
+						$admin_type.find('option').each(function () {
+							var $this=$(this),
+								value=$this.val();
+							if(value===types){
+								$this.prop({
+									'selected':true
+								});
+								return false;
+							}
+						});
+						break;
+					case 'sort':
+						$admin_sort.val(edit_cache[m]);
+						break;
+					case 'status':
+						var status=edit_cache[m];
+						$admin_status.find('option').each(function () {
+							var $this=$(this),
+								value=$this.val();
+							if(value===types){
+								$this.prop({
+									'selected':true
+								});
+								return false;
+							}
+						});
+						break;
+					case 'content':
+						editor.html(edit_cache[m]);
+						editor.sync();
+						break;
+					case 'attachmentUrl':
+						var attach=edit_cache[m];
+						if(attach){
+							if($.isArray(attach)){
+								$admin_attachmentUrl.val(attach.join('#,#')).attr({
+									'data-value':attach.join('#,#')
+								});
+							}else{
+								$admin_attachmentUrl.val(attach).attr({
+									'data-value':attach
+								});
+							}
+						}
+						break;
+					case 'isAllReceived':
+						var receive=parseInt(edit_cache[m],10);
+						$admin_isAllReceived.prop({
+							'checked':(function () {
+								if(receive===1){
+									return true;
+								}else if(receive===0){
+									return false;
+								}
+							}())
+						});
+						break;
 				}
 			}
 		}
