@@ -5,12 +5,11 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	
 	<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0,maximum-scale=1">
-	<meta name="description" content="布住网后台管理系统--交易管理--卖家评论" />
-	<meta name="keywords" content="布住网后台管理系统--交易管理--卖家评论">
+	<meta name="description" content="布住网后台管理系统--商品管理--商品列表" />
+	<meta name="keywords" content="布住网后台管理系统--商品管理--商品列表">
   <meta name="author" content="yp" />
-	<title>布住网后台管理系统--交易管理--卖家评论</title>
+	<title>布住网后台管理系统--商品管理--商品列表</title>
 	<link rel="stylesheet" href="../../css/base.css">
-    <link rel="stylesheet" href="../../js/plugins/kindeditor/themes/default/default.css">
   <link rel="stylesheet" href="../../js/plugins/datatables/dataTables.bootstrap.css">
 	<link rel="stylesheet" href="../../css/admin.css">
   <script src="../../js/common/jquery-1.11.1.js"></script>
@@ -87,16 +86,17 @@
             <!--主题描述-->
             <div class="page-title">
                 <div class="title-env">
-                    <h1 class="title">交易管理</h1>
-                    <p class="description">卖家评论</p>
+                    <h1 class="title">商品管理</h1>
+                    <p class="description">商品列表</p>
                 </div>
                 <div class="breadcrumb-env">
                     <ol class="breadcrumb bc-1">
-                        <li><a href=""><i class="fa-home"></i>交易管理</a></li>
-                        <li class="active"><strong>卖家评论</strong></li>
+                        <li><a href=""><i class="fa-home"></i>商品管理</a></li>
+                        <li class="active"><strong>商品列表</strong></li>
                     </ol>
                 </div>
             </div>
+
 
             <!--主内容-->
             <div class="row row-main-wrap">
@@ -105,7 +105,7 @@
 
                         <!--表格标题-->
                         <div class="panel-heading">
-                            <h3 class="panel-title">卖家评论</h3>
+                            <h3 class="panel-title">商品列表</h3>
 
                             <div class="panel-options">
                                 <a href="#" data-toggle="panel">
@@ -118,14 +118,26 @@
 
                         <!--表格主体-->
                         <div class="panel-body">
-                            <div class="admin-search-wrap g-d-hidei" id="admin_search_wrap">
+                            <div class="admin-search-wrap">
                                 <div class="admin-search-item">
-                                    <label>评价人：</label>
-                                    <input type="text" id="search_commentFrom" />
+                                    <label>商品编号：</label>
+                                    <input type="text" id="search_number" />
                                 </div>
                                 <div class="admin-search-item">
-                                    <label>被评价人：</label>
-                                    <input type="text" id="search_commentTo" />
+                                    <label>店铺名称：</label>
+                                    <input type="text" id="search_store" />
+                                </div>
+                                <div class="admin-search-item">
+                                    <label>商品名称：</label>
+                                    <input type="text" id="search_name" />
+                                </div>
+                                <div class="admin-search-item">
+                                    <label>禁售/可售：</label>
+                                    <select id="search_forbid" >
+                                        <option value="">全部</option>
+                                        <option value="0">可售</option>
+                                        <option value="1">禁售</option>
+                                    </select>
                                 </div>
                                 <div class="admin-search-item">
                                     <span id="admin_search_btn" class="btn btn-info btn-icon g-br2">
@@ -139,24 +151,30 @@
 
 
 
-                            <table id="admin_listsell_wrap" class="table table-bordered table-striped table-hover admin-table">
+                            <table id="admin_list_wrap" class="table table-bordered table-striped table-hover admin-table">
                                 <!--分组样式-->
                                 <colgroup>
-                                    <col class="g-w-percent10">
                                     <col class="g-w-percent8">
-                                    <col class="g-w-percent17">
-                                    <col class="g-w-percent10">
-                                    <col class="g-w-percent5">
+                                    <col class="g-w-percent7">
+                                    <col class="g-w-percent6">
+                                    <col class="g-w-percent6">
+                                    <col class="g-w-percent3">
+                                    <col class="g-w-percent4">
+                                    <col class="g-w-percent4">
+                                    <col class="g-w-percent12">
                                 </colgroup>
 
                                 <!--表头-->
                                 <thead>
                                 <tr>
-                                    <th>评价店铺</th>
-                                    <th>被评价人</th>
-                                    <th>评价内容</th>
-                                    <th>评价时间</th>
-                                    <th class="no-sorting">操作</th>
+                                    <th>商品编号</th>
+                                    <th>商品名称</th>
+                                    <th>店铺名称</th>
+                                    <th>分类</th>
+                                    <th>排序</th>
+                                    <th>状态</th>
+                                    <th>禁售/可售</th>
+                                    <th>操作</th>
                                 </tr>
                                 </thead>
 
@@ -165,9 +183,11 @@
                                 <tbody class="middle-align"></tbody>
                             </table>
                             <div class="admin-page-wrap">
-                                <div class="easyui-pagination g-w-percent50" id="admin_pagesell_wrap" data-options="links:5,layout:['manual','first','prev','links','next','last'],displayMsg:'显示{from}&nbsp;到&nbsp;{to}&nbsp;共&nbsp;{total}条记录'"></div>
+                                <div class="easyui-pagination g-w-percent50" id="admin_page_wrap" data-options="links:5,layout:['manual','first','prev','links','next','last'],displayMsg:'显示{from}&nbsp;到&nbsp;{to}&nbsp;共&nbsp;{total}条记录'"></div>
                             </div>
                         </div>
+
+
                     </div>
                 </div>
             </div>
@@ -193,55 +213,6 @@
             </footer>
 
 
-        </div>
-    </div>
-
-
-
-
-    <!--修改评论信息-->
-    <div class="modal fade custom-width" id="show_editcomment_wrap">
-        <div class="modal-dialog g-w-percent46">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <div class="admin-gap-theme1">评论信息</div>
-                    <table class="table table-bordered table-striped admin-table">
-                        <!--分组样式-->
-                        <colgroup>
-                            <col class="g-w-percent10">
-                            <col class="g-w-percent40">
-                        </colgroup>
-                        <!--表主体-->
-                        <tbody class="middle-align">
-                            <tr>
-                                <td class="g-t-r">评论人：</td>
-                                <td id="admin_commentFrom"></td>
-                            </tr>
-                            <tr>
-                                <td class="g-t-r">评论对象：</td>
-                                <td id="admin_commentTo"></td>
-                            </tr>
-                            <tr>
-                                <td class="g-t-r">评论时间：</td>
-                                <td id="admin_commentTime"></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <form role="form"  method="post" id="admin_editcomment_form" class="admin-form1 validate">
-                        <input type="text" class="g-d-hidei" id="admin_id" value="" />
-                        <div class="admin-gap-theme1"><span class="g-c-red1">*</span>&nbsp;评论内容：</div>
-                        <div class="form-group">
-                            <textarea class="form-control form-admin-editor" placeholder="请输入评论内容" data-validate="required" data-message-required="评论内容不能为空" name="content" id="admin_content"></textarea>
-                        </div>
-                        <div class="form-group">
-                            <button type="submit" class="btn btn-success">修改</button>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-info" data-dismiss="modal">关闭</button>
-                </div>
-            </div>
         </div>
     </div>
 
@@ -296,12 +267,10 @@
 
     <script src="../../js/common/base.js"></script>
     <script src="../../js/common/common.js"></script>
-    <script src="../../js/plugins/kindeditor/kindeditor-all-min.js"></script>
-    <script src="../../js/plugins/jquery-validate/jquery.validate.js"></script>
     <script src="../../js/plugins/datatables/js/jquery.dataTables.js"></script>
     <!--修饰分页，搜索等操作 -->
     <script src="../../js/plugins/datatables/dataTables.bootstrap.js"></script>
     <script src="../../js/plugins/pagination/pagination.js"></script>
-    <script src="../../js/trade/comment_saler.js"></script>
+    <script src="../../js/goods/goods_list.js"></script>
 </body>
 </html>

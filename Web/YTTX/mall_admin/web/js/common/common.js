@@ -764,6 +764,7 @@
 			"name":"交易管理",
 			"code":"trade",
 			"match":"-trade-",
+			"matchlist":['order-manager','comment-buyer','comment-saler'],
 			"class":"menu-ux-record",
 			"module":"trade",
 			"modid":"240"

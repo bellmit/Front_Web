@@ -2,8 +2,7 @@
 	'use strict';
 	$(function(){
 
-		var tablebuy=null,
-			tablesell=null/*数据展现*/;
+		var table=null;
 
 		/*初始化数据*/
 		if(public_tool.initMap.isrender){
@@ -24,14 +23,15 @@
 
 
 			/*权限调用*/
-			var powermap=public_tool.getPower(),
-				update_power=public_tool.getKeyPower('bzw-buyer-commentedit',powermap);
+			var powermap=public_tool.getPower(240),
+				buyeredit_power=public_tool.getKeyPower('bzw-buyer-commentedit',powermap),
+				buyerdelete_power=public_tool.getKeyPower('bzw-buyer-commentdelete',powermap),
+				buyersearch_power=public_tool.getKeyPower('bzw-buyer-commentquery',powermap);
 
 
 
 			/*dom引用和相关变量定义*/
 			var $admin_listbuy_wrap=$('#admin_listbuy_wrap'),
-				$admin_listsell_wrap=$('#admin_listsell_wrap')/*表格*/,
 				module_id='bzw-comment-buyer'/*模块id，主要用于本地存储传值*/,
 				dia=dialog({
 					zIndex:2000,
@@ -60,10 +60,17 @@
 
 
 			/*查询对象*/
-			var $search_commentFrom=$('#search_commentFrom'),
-				$search_commentTo=$('#search_commentTo'),
+			var $admin_search_wrap=$('#admin_search_wrap'),
+				$search_customerName=$('#search_customerName'),
+				$search_providerName=$('#search_providerName'),
 				$admin_search_btn=$('#admin_search_btn'),
 				$admin_search_clear=$('#admin_search_clear');
+
+
+			/*初始化查询*/
+			if(buyersearch_power){
+				$admin_search_wrap.removeClass('g-d-hidei');
+			}
 
 
 
@@ -83,7 +90,7 @@
 						autoWidth:true,/*是否*/
 						paging:false,
 						ajax:{
-							url:"../../json/trade/mall_trade_list.json",
+							url:"http://120.76.237.100:8082/mall-buzhubms-api/goodscomment/customer/list",
 							dataType:'JSON',
 							method:'post',
 							dataSrc:function ( json ) {
@@ -124,8 +131,9 @@
 								return result?result.list||[]:[];
 							},
 							data:{
-								userId:decodeURIComponent(logininfo.param.roleId),
+								roleId:decodeURIComponent(logininfo.param.roleId),
 								adminId:decodeURIComponent(logininfo.param.adminId),
+								grade:decodeURIComponent(logininfo.param.grade),
 								token:decodeURIComponent(logininfo.param.token),
 								page:1,
 								pageSize:10
@@ -153,8 +161,8 @@
 									var id=parseInt(data,10),
 										btns='';
 
-									if(update_power){
-										btns+='<span data-type="buy" data-action="edit" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+									if(buyeredit_power){
+										btns+='<span data-action="edit" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 										<i class="fa-pencil"></i>\
 										<span>修改</span>\
 										</span>';
@@ -202,7 +210,7 @@
 
 			/*清空查询条件*/
 			$admin_search_clear.on('click',function(){
-				$.each([$search_commentFrom,$search_commentTo],function(){
+				$.each([$search_customerName,$search_providerName],function(){
 					this.val('');
 				});
 			}).trigger('click');
@@ -212,7 +220,7 @@
 			$admin_search_btn.on('click',function(){
 				var data= $.extend(true,{},tradebuy_config.config.ajax.data);
 
-				$.each([$search_commentFrom,$search_commentTo],function(){
+				$.each([$search_customerName,$search_providerName],function(){
 					var text=this.val(),
 						selector=this.selector.slice(1),
 						key=selector.split('_');
@@ -257,8 +265,7 @@
 				action=$this.attr('data-action');
 
 				/*修改,编辑操作*/
-				if(action==='edit'&&update_power){
-					var type=$this.attr('data-type');
+				if(action==='edit'){
 					showComment(id,$tr);
 				}
 			});
@@ -287,8 +294,9 @@
 					formcache=public_tool.cache,
 					basedata={
 						roleId:decodeURIComponent(logininfo.param.roleId),
-						token:decodeURIComponent(logininfo.param.token),
-						adminId:decodeURIComponent(logininfo.param.adminId)
+						adminId:decodeURIComponent(logininfo.param.adminId),
+						grade:decodeURIComponent(logininfo.param.grade),
+						token:decodeURIComponent(logininfo.param.token)
 					};
 
 
@@ -326,16 +334,14 @@
 								$.extend(true,setdata,basedata);
 
 								if(formtype==='editcomment'){
-									var type=$admin_search_theme.attr('data-value');
 									/*同步编辑器*/
 									$.extend(true,setdata,{
 										id:$admin_id.val(),
-										type:"",
 										content:$admin_content.val()
 									});
 
 
-									config['url']="../../json/trade/mall_trade_list.json";
+									config['url']="http://120.76.237.100:8082/mall-buzhubms-api/goodscomment/customer/update";
 									config['data']=setdata;
 
 								}
@@ -358,13 +364,8 @@
 										$show_editcomment_wrap.modal('hide');
 										dia.close();
 										admin_editcomment_form.reset();
-										if(type==='buy'){
-											/*查询买家*/
-											getBuyColumnData(tradebuy_page,tradebuy_config);
-										}else if(type==='sell'){
-											/*查询卖家*/
-											getSellColumnData(tradesell_page,tradesell_config);
-										}
+										/*查询买家*/
+										getBuyColumnData(tradebuy_page,tradebuy_config);
 									},2000);
 								}).fail(function(resp){
 									console.log('error');
@@ -401,10 +402,10 @@
 
 		/*获取数据*/
 		function getBuyColumnData(page,opt){
-			if(tablebuy===null){
-				tablebuy=opt.$admin_listbuy_wrap.DataTable(opt.config);
+			if(table===null){
+				table=opt.$admin_listbuy_wrap.DataTable(opt.config);
 			}else{
-				tablebuy.ajax.config(opt.config.ajax).load();
+				table.ajax.config(opt.config.ajax).load();
 			}
 		}
 
@@ -414,11 +415,11 @@
 			if(typeof id==='undefined'){
 				return false;
 			}
-			var list={};
+			var list=table.row($tr).data()||{};
 			if(!$.isEmptyObject(list)){
 				/*添加高亮状态*/
-				$admin_commentFrom.html(list["provider"]);
-				$admin_commentTo.html(list["store"]);
+				$admin_commentFrom.html(list["customerName"]);
+				$admin_commentTo.html(list["providerName"]);
 				$admin_id.val(id);
 				for(var j in list){
 					switch (j){
