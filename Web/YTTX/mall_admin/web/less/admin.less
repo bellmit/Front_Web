@@ -635,6 +635,7 @@
 			}
 		}
 	}
+	/*鼠标高亮*/
 	li{
 		background:@color-white;
 		.typeitem{
@@ -645,14 +646,23 @@
 		div.typeitem:nth-of-type(4){
 			border-right:none !important;
 		}
+		&:hover{
+			background:@color-gray16;
+			>.typeitem{
+				background:@color-gray14;
+			}
+			ul{
+				background:@color-white;
+			}
+		}
 	}
 	.item-lighten{
-		background:lighten(@btn-success-bg,45%);
+		background:lighten(@btn-success-bg,45%) !important;
 		>.typeitem{
-			background:lighten(@btn-success-bg,45%);
+			background:lighten(@btn-success-bg,45%) !important;
 		}
 		ul{
-			background:@color-white;
+			background:@color-white !important;
 		}
 	}
 	/*默认，编辑状态*/
@@ -682,11 +692,13 @@
 			.layout-absolutel-base;
 			display:table-cell;
 			padding:10px;
-			max-width:400px;
-			max-height:400px;
+			max-width:600px;
+			max-height:600px;
 			text-align:center;
 			vertical-align:middle;
 			overflow:hidden;
+			.box-shadow-base(0 0 8px @color-gray9);
+			.border-radius-base(5px);
 			background:@color-white;
 			&:empty{
 				content:"暂无图片";
@@ -698,8 +710,8 @@
 				.box-sizing-base;
 				padding:5px;
 				display: inline-block;
-				max-width:370px;
-				max-height:370px;
+				max-width:570px;
+				max-height:570px;
 				border:1px solid @color-gray14;
 			}
 		}

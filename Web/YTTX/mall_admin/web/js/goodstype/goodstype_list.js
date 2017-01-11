@@ -34,6 +34,17 @@
 			var module_id='bzw-goodstype-list'/*模块id，主要用于本地存储传值*/,
 				$admin_addtype_btn=$('#admin_addtype_btn'),
 				$admin_list_wrap=$('#admin_list_wrap'),
+				$admin_page_wrap=$('#admin_page_wrap'),
+				page_config={
+					page:1,
+					pageSize:20,
+					total:0
+				},
+				subconfig={
+					adminId:decodeURIComponent(logininfo.param.adminId),
+					token:decodeURIComponent(logininfo.param.token),
+					pageSize:10000
+				}/*子菜单配置对象*/,
 				dia=dialog({
 					zIndex:2000,
 					title:'温馨提示',
@@ -66,9 +77,11 @@
 				$admin_typecode=$('#admin_typecode'),
 				$admin_typename=$('#admin_typename'),
 				$admin_typesort=$('#admin_typesort'),
+				$admin_typeremark=$('#admin_typeremark'),
 				$admin_typeshow=$('#admin_typeshow'),
 				$admin_typeimage=$('#admin_typeimage'),
-				$admin_logoImage_file=$('#admin_logoImage_file');
+				$admin_logoImage_file=$('#admin_logoImage_file'),
+				operate_current=null;
 
 
 			/*上传对象*/
@@ -88,8 +101,9 @@
 				$admin_addtype_btn.addClass('g-d-hidei');
 			}
 
+
 			/*请求属性数据*/
-			requestAttr();
+			requestAttr(page_config);
 
 
 			/*绑定图片上传上传*/
@@ -203,8 +217,7 @@
 
 
 			/*绑定操作分类列表*/
-			var operate_item,
-				operate_current=null;
+			var operate_item;
 			$admin_list_wrap.on('click keyup',function (e) {
 				var target= e.target,
 					etype=e.type,
@@ -214,8 +227,9 @@
 					$wrap,
 					label,
 					id,
-					layer,
 					parentid,
+					layer,
+					gtcode,
 					action;
 
 				if(nodename==='td'||nodename==='tr'||nodename==='ul'||nodename==='div'||nodename==='li'){
@@ -234,7 +248,8 @@
 							$li=$this.closest('li');
 							id=$li.attr('data-id');
 							action=$this.attr('data-action');
-							parentid=$li.attr('data-parendid');
+							parentid=$this.attr('data-parentid');
+							gtcode=$li.attr('data-gtcode');
 							layer=$li.attr('data-layer');
 
 							if(operate_item){
@@ -261,7 +276,7 @@
 									/*to do*/
 									goodsTypeEdit({
 										id:id,
-										parentid:parentid,
+										gtcode:gtcode,
 										layer:layer,
 										tip:cf.dia||dia,
 										$li:$li,
@@ -274,7 +289,7 @@
 									/*to do*/
 									goodsTypeDelete({
 										id:id,
-										parentid:parentid,
+										gtcode:gtcode,
 										layer:layer,
 										tip:cf.dia||dia,
 										$li:$li
@@ -288,7 +303,8 @@
 									'data-type':'item'
 								});
 								goodsTypeAdd({
-									parentid:parentid,
+									parentid:id,
+									gtcode:gtcode,
 									layer:layer,
 									label:label,
 									$li:$li,
@@ -314,7 +330,31 @@
 						}else if(target.className.indexOf('main-typeicon')!==-1){
 							/*展开或收缩*/
 							$this=$(target);
+							$li=$this.closest('li');
+							id=$li.attr('data-id');
+							layer=$li.attr('data-layer');
 							$wrap=$this.closest('li').find('>ul');
+
+							var isload=parseInt($this.attr('data-loadsub'),10);
+							if(isload===0){
+								/*加载子分类*/
+								var subitem=doSubAttr(id);
+								if(subitem!==null){
+									var subtype=doAttr(subitem,{
+										limit:3,
+										layer:layer,
+										parentid:id
+									});
+									if(subtype){
+										$(subtype).appendTo($wrap);
+										/*设置已经加载*/
+										$this.attr({
+											'data-loadsub':1
+										});
+										subtype=null;
+									}
+								}
+							}
 							$this.toggleClass('main-sub-typeicon');
 							$wrap.toggleClass('g-d-hidei');
 						}
@@ -365,6 +405,7 @@
 					basedata={
 						roleId:decodeURIComponent(logininfo.param.roleId),
 						adminId:decodeURIComponent(logininfo.param.adminId),
+						grade:decodeURIComponent(logininfo.param.grade),
 						token:decodeURIComponent(logininfo.param.token)
 					};
 
@@ -396,35 +437,30 @@
 								if(formtype==='addgoodstype'){
 									var type=$admin_actiontype.val(),
 										imgurl=$admin_typeimage.attr('data-image');
-									if(imgurl===''){
-										dia.content('<span class="g-c-bs-warning g-btips-warn">请先上传图像</span>').show();
-										setTimeout(function () {
-											dia.close();
-										},2000);
-										return false;
-									}
 
 									if(type==='item'){
 										$.extend(true,setdata,{
-											parentId:$admin_typeparentname.attr('data-value'),
-											code:$admin_typecode.val(),
 											name:$admin_typename.val(),
+											parentId:$admin_typeparentname.attr('data-value'),
+											gtCode:$admin_typecode.val(),
+
 											sort:$admin_typesort.val(),
-											isshow:$admin_typeshow.find(':checked').val(),
-											url:imgurl
+											isVisible:parseInt($admin_typeshow.find(':checked').val(),10)===1?true:false,
+											imageUrl:imgurl,
+											remark:$admin_typeremark.val()
 										});
 									}else if(type==='base'){
 										$.extend(true,setdata,{
-											parentId:$admin_typeid_addone.find('option:selected').val()||'',
-											parentId2:$admin_typeid_addtwo.find('option:selected').val()||'',
-											code:$admin_typecode.val(),
 											name:$admin_typename.val(),
+											parentId:$admin_typeid_addone.find('option:selected').val()||'',
+											gtCode:$admin_typecode.val(),
 											sort:$admin_typesort.val(),
-											isshow:$admin_typeshow.find(':checked').val(),
-											url:imgurl
+											isVisible:parseInt($admin_typeshow.find(':checked').val(),10)===1?true:false,
+											imageUrl:imgurl,
+											remark:$admin_typeremark.val()
 										});
 									}
-									config['url']="../../json/goods/mall_goods_type_all.json";
+									config['url']="http://120.76.237.100:8082/mall-buzhubms-api/goodstype/add";
 									config['data']=setdata;
 								}
 
@@ -438,7 +474,7 @@
 										}else{
 											dia.content('<span class="g-c-bs-success g-btips-succ">添加分类成功</span>').show();
 											/*请求数据*/
-											requestAttr();
+											requestAttr(page_config);
 											setTimeout(function () {
 												dia.close();
 												$addgoodstype_wrap.modal('hide');
@@ -547,17 +583,21 @@
 				return false;
 			}
 			var tip=obj.tip,
-				$li=obj.$li;
+				$li=obj.$li,
+				result=obj.result;
 
 			$.ajax({
-					url:"../../json/goods/mall_goods_type_all.json",
+					url:"http://120.76.237.100:8082/mall-buzhubms-api/goodstype/update",
 					dataType:'JSON',
 					method:'post',
 					data:{
 						id:obj.id,
-						parentid:obj.parentid,
+						name:result[0],
+						sort:result[2],
+						isVisible:parseInt(result[3],10)===1?true:false,
 						roleId:decodeURIComponent(logininfo.param.roleId),
 						adminId:decodeURIComponent(logininfo.param.adminId),
+						grade:decodeURIComponent(logininfo.param.grade),
 						token:decodeURIComponent(logininfo.param.token)
 					}
 				})
@@ -741,7 +781,7 @@
 			if(result.length!==len){
 				return null;
 			}else{
-				return JSON.stringify(result);
+				return result;
 			}
 		}
 
@@ -898,35 +938,23 @@
 				len=attrlist.length,
 				layer=1;
 
-			if(typeof len==='undefined'){
-				str+=doItems(attrlist,{
-					flag:false,
-					limit:limit,
-					layer:layer
-				});
-				attrlist=attrlist["sublist"];
-				len=attrlist.length;
-			}
-
 			if(len!==0){
 				for(i;i<len;i++){
 						var curitem=attrlist[i],
-						subitem=typeof curitem["sublist"]==='undefined'?null:curitem["sublist"];
-					if(subitem){
-						var tempchild=doAttr(subitem,{
+							hassub=curitem["hasSub"];
+					if(hassub){
+						str+=doItems(curitem,{
+								flag:true,
 								limit:limit,
-								layer:layer
-							});
-
-						if(tempchild){
-							str+=doItems(curitem,{flag:true,limit:limit,layer:layer})+'<ul class="admin-typeitem-wrap admin-subtype-wrap g-d-hidei">'+tempchild+'</ul>\
-						</li>';
-						}
+								layer:layer,
+								parentid:''
+							})+'<ul class="admin-typeitem-wrap admin-subtype-wrap g-d-hidei"></ul></li>';
 					}else{
 						str+=doItems(curitem,{
 							flag:false,
 							limit:limit,
-							layer:layer
+							layer:layer,
+							parentid:''
 						});
 					}
 				}
@@ -947,7 +975,8 @@
 				len=attrlist.length;
 
 			var layer=config.layer,
-				limit=config.limit;
+				limit=config.limit,
+				parentid=config.parentid;
 			if(layer){
 				layer++;
 			}
@@ -959,25 +988,20 @@
 			if(len!==0){
 				for(i;i<len;i++){
 					var curitem=attrlist[i],
-						subitem=typeof curitem["sublist"]==='undefined'?null:curitem["sublist"];
-					if(subitem){
-						var tempchild=doAttr(subitem,{
-							limit:limit,
-							layer:layer
-						});
-						if(tempchild){
-							str+=doItems(curitem,{
-									flag:true,
-									limit:limit,
-									layer:layer
-								})+'<ul class="admin-typeitem-wrap admin-subtype-wrap g-d-hidei">'+tempchild+'</ul>\
-							</li>';
-						}
+						hassub=curitem["hasSub"];
+					if(hassub){
+						str+=doItems(curitem,{
+								flag:true,
+								limit:limit,
+								layer:layer,
+								parentid:parentid
+							})+'<ul class="admin-typeitem-wrap admin-subtype-wrap g-d-hidei"></ul></li>';
 					}else{
 						str+=doItems(curitem,{
 							flag:false,
 							limit:limit,
-							layer:layer
+							layer:layer,
+							parentid:parentid
 						});
 					}
 				}
@@ -991,29 +1015,30 @@
 		function doItems(obj,config){
 			var curitem=obj,
 				id=curitem["id"],
-				parentid=curitem["parentId"],
-				isshow=parseInt(curitem["isshow"],10),
-				imgurl=curitem["url"],
-				label=curitem["labelname"],
+				isshow=curitem["isVisible"],
+				sort=curitem["sort"],
+				gtCode=curitem["gtCode"],
+				imgurl=curitem["imageUrl"],
+				label=curitem["name"],
 				str='',
 				stredit='',
 				flag=config.flag,
 				limit=config.limit,
-				layer=config.layer;
+				layer=config.layer,
+				parentid=config.parentid;
 
 
 			if(flag){
-				str='<li class="admin-subtypeitem" data-label="'+label+'" data-layer="'+layer+'" data-parentid="'+parentid+'" data-id="'+id+'">';
-
+				str='<li class="admin-subtypeitem" data-parentid="'+parentid+'" data-label="'+label+'" data-layer="'+layer+'" data-id="'+id+'" data-gtcode="'+gtCode+'">';
 				if(layer>1){
-					str+='<div class="typeitem-default"><span class="typeitem subtype-mgap'+(layer - 1)+' main-typeicon g-w-percent3"></span>\
+					str+='<div class="typeitem-default"><span data-loadsub="0" class="typeitem subtype-mgap'+(layer - 1)+' main-typeicon g-w-percent3"></span>\
 							<div class="typeitem subtype-pgap'+layer+' g-w-percent21">'+label+'</div>';
 				}else{
-					str+='<div class="typeitem-default"><span class="typeitem main-typeicon g-w-percent3"></span>\
+					str+='<div class="typeitem-default"><span data-loadsub="0" class="typeitem main-typeicon g-w-percent3"></span>\
 							<div class="typeitem g-w-percent21">'+label+'</div>';
 				}
 			}else{
-				str='<li data-label="'+label+'" data-layer="'+layer+'"  data-parentid="'+parentid+'" data-id="'+id+'">';
+				str='<li data-label="'+label+'" data-parentid="'+parentid+'"  data-layer="'+layer+'" data-id="'+id+'" data-gtcode="'+gtCode+'">';
 
 				if(layer>1){
 					str+='<div class="typeitem-default"><div class="typeitem subtype-pgap'+layer+' g-w-percent21">'+label+'</div>';
@@ -1022,7 +1047,7 @@
 				}
 			}
 
-			str+='<div class="typeitem g-w-percent5">'+curitem["sort"]+'</div>';
+			str+='<div class="typeitem g-w-percent5">'+sort+'</div>';
 
 
 			/*编辑状态*/
@@ -1037,23 +1062,23 @@
 										}
 									}())+
 								'</div>\
-								<div class="typeitem g-w-percent5"><input type="text" name="typesort" data-value="'+curitem["sort"]+'" maxlength="6" value="'+curitem["sort"]+'" /></div>';
+								<div class="typeitem g-w-percent5"><input type="text" name="typesort" data-value="'+sort+'" maxlength="6" value="'+sort+'" /></div>';
 
 
 
 
-			if(isshow===0){
-				str+='<div class="typeitem g-w-percent8"><div class="g-c-gray12">隐藏</div></div>';
-
-				stredit+='<div class="typeitem g-w-percent8" data-value="'+isshow+'"><label class="btn btn-white btn-xs g-br2 g-c-gray6">显示：<input type="radio" name="typeshow'+id+'" value="1" /></label>\
-				<label class="btn btn-white btn-xs g-br2 g-c-gray6">隐藏：<input checked type="radio"  name="typeshow'+id+'" value="0" /></label></div>';
-			}else if(isshow===1){
+			if(isshow){
 				str+='<div class="typeitem g-w-percent8"><div class="g-c-gray8">显示</div></div>';
 
-				stredit+='<div class="typeitem g-w-percent8" data-value="'+isshow+'"><label class="btn btn-white btn-xs g-br2 g-c-gray6">显示：<input type="radio" checked name="typeshow'+id+'" value="1" /></label>\
+				stredit+='<div class="typeitem g-w-percent8" data-value="1"><label class="btn btn-white btn-xs g-br2 g-c-gray6">显示：<input type="radio" checked name="typeshow'+id+'" value="1" /></label>\
 				<label class="btn btn-white btn-xs g-br2 g-c-gray6">隐藏：<input type="radio" name="typeshow'+id+'" value="0" /></label></div>';
+			}else if(!isshow){
+				str+='<div class="typeitem g-w-percent8"><div class="g-c-gray12">隐藏</div></div>';
+
+				stredit+='<div class="typeitem g-w-percent8" data-value="0"><label class="btn btn-white btn-xs g-br2 g-c-gray6">显示：<input type="radio" name="typeshow'+id+'" value="1" /></label>\
+				<label class="btn btn-white btn-xs g-br2 g-c-gray6">隐藏：<input checked type="radio"  name="typeshow'+id+'" value="0" /></label></div>';
 			}else{
-				stredit+='<div class="typeitem g-w-percent8" data-value="'+isshow+'"><label class="btn btn-white btn-xs g-br2 g-c-gray6">显示：<input type="radio" checked name="typeshow'+id+'" value="1" /></label>\
+				stredit+='<div class="typeitem g-w-percent8" data-value="1"><label class="btn btn-white btn-xs g-br2 g-c-gray6">显示：<input type="radio" checked name="typeshow'+id+'" value="1" /></label>\
 				<label class="btn btn-white btn-xs g-br2 g-c-gray6">隐藏：<input type="radio" name="typeshow'+id+'" value="0" /></label></div>';
 			}
 
@@ -1063,26 +1088,26 @@
 
 
 			if(edittype_power){
-				str+='<span data-action="edit" data-parentid="'+parentid+'" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+				str+='<span data-parentid="'+parentid+'"  data-action="edit" data-gtcode="'+gtCode+'" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 							<i class="fa-pencil"></i>&nbsp;&nbsp;编辑\
 						</span>';
 
 				/*编辑状态*/
-				stredit+='<span data-action="confirm" data-parentid="'+parentid+'" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-bs-success">\
+				stredit+='<span data-parentid="'+parentid+'"  data-action="confirm"  data-gtcode="'+gtCode+'" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-bs-success">\
 									<i class="fa-check"></i>&nbsp;&nbsp;确定\
 								</span>\
-								<span data-action="cance" data-parentid="'+parentid+'" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray10">\
+								<span data-action="cance"  data-gtcode="'+gtCode+'" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray10">\
 									<i class="fa-close"></i>&nbsp;&nbsp;取消\
 								</span>';
 			}
 			if(addtype_power){
 				if(flag){
-					str+='<span data-action="add" data-parentid="'+parentid+'" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+					str+='<span data-parentid="'+parentid+'"  data-action="add"  data-gtcode="'+gtCode+'" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 							<i class="fa-plus"></i>&nbsp;&nbsp;新增下级分类\
 						</span>';
 				}else{
 					if(layer<limit){
-						str+='<span data-action="add" data-parentid="'+parentid+'" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+						str+='<span data-parentid="'+parentid+'"  data-action="add"  data-gtcode="'+gtCode+'" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 									<i class="fa-plus"></i>&nbsp;&nbsp;新增下级分类\
 								</span>';
 					}
@@ -1090,7 +1115,7 @@
 			}
 
 			if(deletetype_power){
-				str+='<span data-action="delete" data-parentid="'+parentid+'" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+				str+='<span data-parentid="'+parentid+'"  data-action="delete"  data-gtcode="'+gtCode+'" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 							<i class="fa-trash"></i>&nbsp;&nbsp;删除\
 						</span>';
 			}
@@ -1100,17 +1125,55 @@
 
 			return flag?str+stredit:str+stredit+'</li>';
 		}
+
+		/*请求并判断是否存在子菜单*/
+		function doSubAttr(id) {
+			var list=null;
+			if(typeof id==='undefined'){
+				return null;
+			}
+			subconfig['parentId']=id;
+			$.ajax({
+					url:"http://120.76.237.100:8082/mall-buzhubms-api/goodstype/list",
+					dataType:'JSON',
+					async:false,
+					method:'post',
+					data:subconfig
+				})
+				.done(function(resp){
+					var code=parseInt(resp.code,10);
+					if(code!==0){
+						console.log(resp.message);
+						return null;
+					}
+					var result=resp.result;
+					if(result){
+						list=result.list;
+						return null;
+					}
+				})
+				.fail(function(resp){
+					console.log(resp.message);
+					return null;
+				});
+			return list.length===0?null:list;
+		}
 		
 		/*请求属性*/
-		function requestAttr(){
+		function requestAttr(config){
 			$.ajax({
-					url:"../../json/goods/mall_goods_type_all.json",
+					url:"http://120.76.237.100:8082/mall-buzhubms-api/goodstype/list",
 					dataType:'JSON',
+					async:false,
 					method:'post',
 					data:{
+						parentId:'',
 						roleId:decodeURIComponent(logininfo.param.roleId),
 						adminId:decodeURIComponent(logininfo.param.adminId),
-						token:decodeURIComponent(logininfo.param.token)
+						grade:decodeURIComponent(logininfo.param.grade),
+						token:decodeURIComponent(logininfo.param.token),
+						page:config.page,
+						pageSize:config.pageSize
 					}
 				})
 				.done(function(resp){
@@ -1124,13 +1187,34 @@
 						return false;
 					}
 					var result=resp.result;
-					if(result&&result.list){
-						/*解析属性*/
-						var result='<ul class="admin-typeitem-wrap admin-maintype-wrap">'+resolveAttr(result.list,4)+'</ul>';
-						if(result){
-							$(result).appendTo($admin_list_wrap.html(''));
+					if(result){
+						/*分页调用*/
+						if(result.count!==0){
+							config.total=result.count;
+							$admin_page_wrap.pagination({
+								pageSize:config.pageSize,
+								total:config.total,
+								pageNumber:config.page,
+								onSelectPage:function(pageNumber,pageSize){
+									/*再次查询*/
+									requestAttr({
+										pageSize:pageSize,
+										page:pageNumber,
+										total:config.total
+									});
+								}
+							});
 						}else{
-							$admin_list_wrap.addClass('g-t-c').html('暂无数据，请&nbsp;<span class="g-c-info">添加分类</span>');
+							config.total=0;
+						}
+						if(result.list){
+							/*解析属性*/
+							var str='<ul class="admin-typeitem-wrap admin-maintype-wrap">'+resolveAttr(result.list,3)+'</ul>';
+							if(str){
+								$(str).appendTo($admin_list_wrap.html(''));
+							}else{
+								$admin_list_wrap.addClass('g-t-c').html('暂无数据，请&nbsp;<span class="g-c-info">添加分类</span>');
+							}
 						}
 					}
 				})
@@ -1170,6 +1254,10 @@
 					$wrap.attr({
 						'data-value':url
 					}).find('div').html('<img src="'+url+suffix+'" alt="缩略图">');
+					/*视觉查看*/
+					$admin_typeimage.attr({
+						'data-image':url
+					}).html('<img src="'+url+suffix+'" alt="缩略图">');
 					/*释放内存*/
 					operate_current=null;
 				}
