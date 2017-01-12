@@ -9,12 +9,13 @@
 			/*菜单调用*/
 			var logininfo=public_tool.initMap.loginMap;
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
-				url:'../../json/menu.json',
+				url:'http://120.76.237.100:8082/mall-buzhubms-api/module/menu',
 				async:false,
 				type:'post',
 				param:{
 					roleId:decodeURIComponent(logininfo.param.roleId),
 					adminId:decodeURIComponent(logininfo.param.adminId),
+					grade:decodeURIComponent(logininfo.param.grade),
 					token:decodeURIComponent(logininfo.param.token)
 				},
 				datatype:'json'
@@ -23,14 +24,14 @@
 
 			/*权限调用*/
 			var powermap=public_tool.getPower(),
-				addattr_power=public_tool.getKeyPower('goods-addattr',powermap),
-				editattr_power=public_tool.getKeyPower('goods-updateattr',powermap),
-				deleteattr_power=public_tool.getKeyPower('goods-deleteattr',powermap);
+				attradd_power=public_tool.getKeyPower('bzw-attribute-addval',powermap),
+				attredit_power=public_tool.getKeyPower('bzw-attribute-edit',powermap),
+				attrdelete_power=public_tool.getKeyPower('bzw-goods-attributedelete',powermap);
 
 
 
 			/*dom引用和相关变量定义*/
-			var module_id='mall-goods-type'/*模块id，主要用于本地存储传值*/,
+			var module_id='bzw-attribute-addval'/*模块id，主要用于本地存储传值*/,
 				$admin_addattr_btn=$('#admin_addattr_btn'),
 				$admin_list_wrap=$('#admin_list_wrap'),
 				dia=dialog({
@@ -77,7 +78,7 @@
 
 
 			/*根据权限判断显示添加属性按钮*/
-			if(addattr_power){
+			if(attradd_power){
 				$admin_addattr_btn.removeClass('g-d-hidei');
 			}else{
 				$admin_addattr_btn.addClass('g-d-hidei');
@@ -790,7 +791,7 @@
 			stredit+='<div class="typeitem g-w-percent10">';
 
 
-			if(editattr_power){
+			if(attredit_power){
 				str+='<span data-action="edit" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 							<i class="fa-pencil"></i>&nbsp;&nbsp;编辑\
 						</span>';
@@ -803,7 +804,7 @@
 									<i class="fa-close"></i>&nbsp;&nbsp;取消\
 								</span>';
 			}
-			if(addattr_power){
+			if(attradd_power){
 				if(flag){
 					str+='<span data-action="add" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 							<i class="fa-plus"></i>&nbsp;&nbsp;新增属性\
@@ -817,7 +818,7 @@
 				}
 			}
 
-			if(deleteattr_power){
+			if(attrdelete_power){
 				str+='<span data-action="delete" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 							<i class="fa-trash"></i>&nbsp;&nbsp;删除\
 						</span>';

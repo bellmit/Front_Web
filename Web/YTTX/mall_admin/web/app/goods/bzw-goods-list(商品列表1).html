@@ -5,10 +5,10 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	
 	<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0,maximum-scale=1">
-	<meta name="description" content="布住网后台管理系统--商品管理--商品标签属性管理" />
-	<meta name="keywords" content="布住网后台管理系统--商品管理--商品标签属性管理">
+	<meta name="description" content="布住网后台管理系统--商品管理--商品列表" />
+	<meta name="keywords" content="布住网后台管理系统--商品管理--商品列表">
   <meta name="author" content="yp" />
-	<title>布住网后台管理系统--商品管理--商品标签属性管理</title>
+	<title>布住网后台管理系统--商品管理--商品列表</title>
 	<link rel="stylesheet" href="../../css/base.css">
   <link rel="stylesheet" href="../../js/plugins/datatables/dataTables.bootstrap.css">
 	<link rel="stylesheet" href="../../css/admin.css">
@@ -87,12 +87,12 @@
             <div class="page-title">
                 <div class="title-env">
                     <h1 class="title">商品管理</h1>
-                    <p class="description">商品标签属性管理</p>
+                    <p class="description">商品列表</p>
                 </div>
                 <div class="breadcrumb-env">
                     <ol class="breadcrumb bc-1">
                         <li><a href=""><i class="fa-home"></i>商品管理</a></li>
-                        <li class="active"><strong>商品标签属性管理</strong></li>
+                        <li class="active"><strong>商品列表</strong></li>
                     </ol>
                 </div>
             </div>
@@ -105,7 +105,7 @@
 
                         <!--表格标题-->
                         <div class="panel-heading">
-                            <h3 class="panel-title">商品标签属性管理</h3>
+                            <h3 class="panel-title">商品列表</h3>
 
                             <div class="panel-options">
                                 <a href="#" data-toggle="panel">
@@ -118,41 +118,73 @@
 
                         <!--表格主体-->
                         <div class="panel-body">
+                            <div class="admin-search-wrap">
+                                <div class="admin-search-item">
+                                    <label>商品编号：</label>
+                                    <input type="text" id="search_number" />
+                                </div>
+                                <div class="admin-search-item">
+                                    <label>店铺名称：</label>
+                                    <input type="text" id="search_store" />
+                                </div>
+                                <div class="admin-search-item">
+                                    <label>商品名称：</label>
+                                    <input type="text" id="search_name" />
+                                </div>
+                                <div class="admin-search-item">
+                                    <label>禁售/可售：</label>
+                                    <select id="search_forbid" >
+                                        <option value="">全部</option>
+                                        <option value="0">可售</option>
+                                        <option value="1">禁售</option>
+                                    </select>
+                                </div>
+                                <div class="admin-search-item">
+                                    <span id="admin_search_btn" class="btn btn-info btn-icon g-br2">
+                                        <i class="fa-search"></i>查询
+                                    </span>
+                                    <span id="admin_search_clear" class="btn btn-info btn-icon g-br2">
+                                        <i class="fa-spinner"></i>清空
+                                    </span>
+                                </div>
+                            </div>
 
-                            <table class="table table-bordered table-striped admin-table">
+
+
+                            <table id="admin_list_wrap" class="table table-bordered table-striped table-hover admin-table">
                                 <!--分组样式-->
                                 <colgroup>
-                                    <col class="g-w-percent35" />
-                                    <col class="g-w-percent5" />
-                                    <col class="g-w-percent10" />
+                                    <col class="g-w-percent8">
+                                    <col class="g-w-percent7">
+                                    <col class="g-w-percent6">
+                                    <col class="g-w-percent6">
+                                    <col class="g-w-percent3">
+                                    <col class="g-w-percent4">
+                                    <col class="g-w-percent4">
+                                    <col class="g-w-percent12">
                                 </colgroup>
 
                                 <!--表头-->
                                 <thead>
                                 <tr>
-                                    <th>标签(属性)名称</th>
+                                    <th>商品编号</th>
+                                    <th>商品名称</th>
+                                    <th>店铺名称</th>
+                                    <th>分类</th>
                                     <th>排序</th>
+                                    <th>状态</th>
+                                    <th>禁售/可售</th>
                                     <th>操作</th>
                                 </tr>
                                 </thead>
 
 
                                 <!--表主体-->
-                                <tbody>
-                                <tr>
-                                    <td colspan="3">
-                                        <div class="g-c-red1 inline" id="admin_errortip_wrap"></div>
-                                        <div id="admin_addattr_btn" class="btn btn-white btn- g-c-gray6 btn-sm g-br3 pull-right g-d-hidei">
-                                            <i class="fa-plus"></i>&nbsp;&nbsp;新增标签
-                                        </div>
-
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td colspan="3" id="admin_list_wrap"></td>
-                                </tr>
-                                </tbody>
+                                <tbody class="middle-align"></tbody>
                             </table>
+                            <div class="admin-page-wrap">
+                                <div class="easyui-pagination g-w-percent50" id="admin_page_wrap" data-options="links:5,layout:['manual','first','prev','links','next','last'],displayMsg:'显示{from}&nbsp;到&nbsp;{to}&nbsp;共&nbsp;{total}条记录'"></div>
+                            </div>
                         </div>
 
 
@@ -181,80 +213,6 @@
             </footer>
 
 
-        </div>
-    </div>
-
-
-
-    <!--添加标签或属性-->
-    <div class="modal fade custom-width" id="addgoodsattr_wrap">
-        <div class="modal-dialog g-w-percent30">
-            <div class="modal-content">
-
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title">添加标签(属性)</h4>
-                </div>
-                <div class="modal-body">
-                    <form role="form"  method="post" id="admin_addgoodsattr_form" class="admin-form1 validate" >
-
-                        <input id="admin_actiontype" class="g-d-hidei" value="item">
-
-                        <!--单独分类-->
-                        <div id="admin_itemattr_wrap">
-                            <div class="admin-gap-theme1">标签信息</div>
-                            <div class="grid-list-group1">
-                                上级标签名称：<p data-value="" id="admin_attrparentname"></p>
-                            </div>
-                            <div class="form-group">
-                                <label class="control-label">属性名称：<span class="g-c-red1" id="admin_addattr_tips"></span></label>
-                                <div class="row self-error-pos-wrap">
-                                    <div class="col-md-10">
-                                        <input placeholder="请输入属性名称" data-validate="required" data-message-required="属性名称不能为空" value=""  type="text" class="form-control" name="attrname"   id="admin_attrname" />
-                                    </div>
-                                    <div class="col-md-2">
-                                        <span class="input-group-btn admin-rpos-wrap" style="z-index:20;">
-                                             <button type="button"  id="admin_addattr_already" class="btn btn-info">已存在的属性名称</button>
-                                             <ul class="admin-list-widget addcode-list-widget g-d-hidei" id="admin_addattr_list"></ul>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!--基本分类-->
-                        <div class="g-d-hidei" id="admin_baseattr_wrap">
-                            <div class="admin-gap-theme1">标签信息</div>
-                            <div class="form-group">
-                                <label class="control-label">标签名称：<span class="g-c-red1" id="admin_addlabel_tips"></span></label>
-                                <div class="row self-error-pos-wrap">
-                                    <div class="col-md-10">
-                                        <input placeholder="请输入标签名称" data-validate="required" data-message-required="标签名称不能为空"  type="text" class="form-control self-error-pos" name="labelname"   id="admin_labelname" />
-                                    </div>
-                                    <div class="col-md-2">
-                                        <span class="input-group-btn admin-rpos-wrap" style="z-index:20;">
-                                            <button type="button"  id="admin_addlabel_already" class="btn btn-info">已存在的标签名称</button>
-                                            <ul class="admin-list-widget addcode-list-widget g-d-hidei" id="admin_addlabel_list"></ul>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="control-label">排序号(值越大越靠前)：</label>
-                            <input placeholder="请输入排序号" data-validate="required,number" data-message-required="排序号不能为空" data-message-number="排序号只能为数字" value=""  type="text" class="form-control" name="attrsort"   id="admin_attrsort" />
-                        </div>
-
-                        <div class="form-group">
-                            <button type="submit" class="btn btn-success">添加</button>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-info" data-dismiss="modal">关闭</button>
-                </div>
-            </div>
         </div>
     </div>
 
@@ -309,7 +267,10 @@
 
     <script src="../../js/common/base.js"></script>
     <script src="../../js/common/common.js"></script>
-    <script src="../../js/plugins/jquery-validate/jquery.validate.js"></script>
-    <script src="../../js/goods/goods_attr.js"></script>
+    <script src="../../js/plugins/datatables/js/jquery.dataTables.js"></script>
+    <!--修饰分页，搜索等操作 -->
+    <script src="../../js/plugins/datatables/dataTables.bootstrap.js"></script>
+    <script src="../../js/plugins/pagination/pagination.js"></script>
+    <script src="../../js/goods/goods_audit.js"></script>
 </body>
 </html>

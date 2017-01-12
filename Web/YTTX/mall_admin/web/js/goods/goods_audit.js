@@ -9,19 +9,17 @@
 			/*菜单调用*/
 			var logininfo=public_tool.initMap.loginMap;
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
-				url:'../../json/menu.json',
+				url:'http://120.76.237.100:8082/mall-buzhubms-api/module/menu',
 				async:false,
 				type:'post',
 				param:{
 					roleId:decodeURIComponent(logininfo.param.roleId),
 					adminId:decodeURIComponent(logininfo.param.adminId),
+					grade:decodeURIComponent(logininfo.param.grade),
 					token:decodeURIComponent(logininfo.param.token)
 				},
 				datatype:'json'
 			});
-
-			/*清除编辑数据*/
-			public_tool.removeParams('mall-provider-goods');
 
 
 			/*权限调用*/
@@ -35,7 +33,7 @@
 
 			/*dom引用和相关变量定义*/
 			var $admin_list_wrap=$('#admin_list_wrap')/*表格*/,
-				module_id='mall-provider-goods'/*模块id，主要用于本地存储传值*/,
+				module_id='bzw-goods-audit'/*模块id，主要用于本地存储传值*/,
 				dia=dialog({
 					zIndex:2000,
 					title:'温馨提示',
@@ -48,15 +46,25 @@
 					cancel:false
 				})/*一般提示对象*/,
 				$admin_page_wrap=$('#admin_page_wrap'),
+				goodstype_config={
+					roleId:decodeURIComponent(logininfo.param.roleId),
+					adminId:decodeURIComponent(logininfo.param.adminId),
+					grade:decodeURIComponent(logininfo.param.grade),
+					token:decodeURIComponent(logininfo.param.token)
+				},
 				sureObj=public_tool.sureDialog(dia)/*回调提示对象*/,
-				setSure=new sureObj();
-
+				setSure=new sureObj(),
+				goodstypeid='';
 
 			/*查询对象*/
-			var $search_number=$('#search_number'),
-				$search_name=$('#search_name'),
-				$search_store=$('#search_store'),
-				$search_forbid=$('#search_forbid'),
+			var $search_name=$('#search_name'),
+				$search_goodsTypeId=$('#search_goodsTypeId'),
+				$search_auditStatus=$('#search_auditStatus'),
+				$search_providerName=$('#search_providerName'),
+				$search_isForbidden=$('#search_isForbidden'),
+				$search_gtione=$('#search_gtione'),
+				$search_gtitwo=$('#search_gtitwo'),
+				$search_gtithree=$('#search_gtithree'),
 				$admin_search_btn=$('#admin_search_btn'),
 				$admin_search_clear=$('#admin_search_clear');
 
@@ -78,7 +86,7 @@
 						autoWidth:true,/*是否*/
 						paging:false,
 						ajax:{
-							url:"../../json/goods/mall_goods_list.json",
+							url:"http://120.76.237.100:8082/mall-buzhubms-api/goods/list",
 							dataType:'JSON',
 							method:'post',
 							dataSrc:function ( json ) {
@@ -119,9 +127,11 @@
 								return result?result.list||[]:[];
 							},
 							data:{
-								userId:decodeURIComponent(logininfo.param.roleId),
+								roleId:decodeURIComponent(logininfo.param.roleId),
 								adminId:decodeURIComponent(logininfo.param.adminId),
+								grade:decodeURIComponent(logininfo.param.grade),
 								token:decodeURIComponent(logininfo.param.token),
+								auditStatus:0,
 								page:1,
 								pageSize:10
 							}
@@ -131,52 +141,60 @@
 						order:[[4, "desc" ]],
 						columns: [
 							{
-								"data":"provider"
+								"data":"gcode"
 							},
 							{
-								"data":"company"
+								"data":"name"
 							},
 							{
-								"data":"store"
+								"data":"providerName"
 							},
 							{
-								"data":"type"
+								"data":"goodsTypeName"
 							},
 							{
 								"data":"sort"
 							},
 							{
-								"data":"isEnabled",
+								"data":"status",
 								"render":function(data, type, full, meta ){
 									var stauts=parseInt(data,10),
 										statusmap={
-											0:"下架",
-											1:"上架"
+											0:"仓库",
+											1:"上架",
+											2:"下架",
+											3:"删除",
+											4:"待审核"
 										},
 										str='';
 
-									if(stauts===0){
-										str='<div class="g-c-gray9">'+statusmap[stauts]+'</div>';
+									if(stauts===3){
+										str='<div class="g-c-red1">'+statusmap[stauts]+'</div>';
+									}else if(stauts===0){
+										str='<div class="g-c-warn">'+statusmap[stauts]+'</div>';
 									}else if(stauts===1){
+										str='<div class="g-c-gray6">'+statusmap[stauts]+'</div>';
+									}else if(stauts===2){
+										str='<div class="g-c-gray9">'+statusmap[stauts]+'</div>';
+									}else if(stauts===4){
 										str='<div class="g-c-info">'+statusmap[stauts]+'</div>';
 									}
 									return str;
 								}
 							},
 							{
-								"data":"user",
+								"data":"isForbidden",
 								"render":function(data, type, full, meta ){
-									var stauts=parseInt(data,10),
-										statusmap={
-											0:"禁售",
-											1:"可售"
+									var statusmap={
+											true:"禁售",
+											false:"可售"
 										},
 										str='';
 
-									if(stauts===0){
-										str='<div class="g-c-red1">'+statusmap[stauts]+'</div>';
-									}else if(stauts===1){
-										str='<div class="g-c-gray6">'+statusmap[stauts]+'</div>';
+									if(data){
+										str='<div class="g-c-gray9">'+statusmap[data]+'</div>';
+									}else{
+										str='<div class="g-c-info">'+statusmap[data]+'</div>';
 									}
 									return str;
 								}
@@ -249,6 +267,55 @@
 						]
 					}
 				};
+
+
+			/*查询分类并绑定分类查询*/
+			$.each([$search_gtione,$search_gtitwo,$search_gtithree],function(){
+				var self=this,
+					selector=this.selector,
+					hastype=false;
+
+				/*初始化查询一级分类*/
+				if(selector.indexOf('one')!==-1){
+					getGoodsTypes('','one',true);
+				}
+
+				this.on('change',function(){
+					var $option=$(this).find(':selected'),
+						value=this.value,
+						hasub=false;
+					if(selector.indexOf('one')!==-1){
+						if(value===''){
+							$search_gtitwo.html('');
+							$search_gtithree.html('');
+							goodstypeid='';
+							return false;
+						}
+						hasub=$option.attr('data-hassub');
+						goodstypeid=value;
+						if(hasub==='true'){
+							getGoodsTypes(value,'two');
+						}
+					}else if(selector.indexOf('two')!==-1){
+						if(value===''){
+							$search_gtithree.html('');
+							goodstypeid=$search_gtione.find(':selected').val();
+							return false;
+						}
+						hasub=$option.attr('data-hassub');
+						goodstypeid=value;
+						if(hasub==='true'){
+							getGoodsTypes(value,'three');
+						}
+					}else if(selector.indexOf('three')!==-1){
+						if(value===''){
+							goodstypeid=$search_gtitwo.find(':selected').val();
+							return false;
+						}
+						goodstypeid=value;
+					}
+				});
+			});
 			
 
 			/*初始化请求*/
@@ -257,9 +324,9 @@
 
 			/*清空查询条件*/
 			$admin_search_clear.on('click',function(){
-				$.each([$search_number,$search_name,$search_store,$search_forbid],function(){
+				$.each([$search_name,$search_providerName,$search_isForbidden,$search_gtione,$search_gtitwo,$search_gtithree],function(){
 					var selector=this.selector;
-					if(selector.indexOf('forbid')!==-1){
+					if(selector.indexOf('isForbidden')!==-1||selector.indexOf('_gti')!==-1){
 						this.find(':selected').prop({
 							"selected":false
 						});
@@ -267,6 +334,8 @@
 						this.val('');
 					}
 				});
+				/*清空分类值*/
+				goodstypeid='';
 			});
 			$admin_search_clear.trigger('click');
 
@@ -275,8 +344,8 @@
 			$admin_search_btn.on('click',function(){
 				var data= $.extend(true,{},goods_config.config.ajax.data);
 
-				$.each([$search_number,$search_name,$search_store,$search_forbid],function(){
-					var text=this.val()||this.find(':selected').val(),
+				$.each([$search_name,$search_providerName,$search_isForbidden,$search_auditStatus],function(){
+					var text=this.val(),
 						selector=this.selector.slice(1),
 						key=selector.split('_');
 
@@ -287,8 +356,13 @@
 					}else{
 						data[key[1]]=text;
 					}
-
 				});
+				/*分类处理*/
+				if(goodstypeid===''){
+					delete data['goodsTypeId'];
+				}else{
+					data['goodsTypeId']=goodstypeid;
+				}
 				goods_config.config.ajax.data= $.extend(true,{},data);
 				getColumnData(goods_page,goods_config);
 			});
@@ -554,6 +628,102 @@
 						}
 					},2000);
 				});
+		}
+
+
+
+		/*级联类型查询*/
+		function getGoodsTypes(value,type,flag){
+			var typemap={
+					'one':'一级',
+					'two':'二级',
+					'three':'三级'
+				};
+
+			goodstype_config['parentId']=value;
+			$.ajax({
+				url:"http://120.76.237.100:8082/mall-buzhubms-api/goodstype/list",
+				dataType:'JSON',
+				async:false,
+				method:'post',
+				data:goodstype_config
+			}).done(function(resp){
+				var code=parseInt(resp.code,10);
+				if(code!==0){
+					if(code===999){
+						/*清空缓存*/
+						public_tool.loginTips(function () {
+							public_tool.clear();
+							public_tool.clearCacheData();
+						});
+					}
+					console.log(resp.message);
+					return false;
+				}
+
+
+
+				var result=resp.result;
+
+				if(result){
+					var list=result.list;
+					if(!list){
+						return false;
+					}
+				}else{
+					return false;
+				}
+
+				var len=list.length,
+					i= 0,
+					str='';
+
+				if(len!==0){
+					for(i;i<len;i++){
+						var item=list[i];
+						if(i===0){
+							str+='<option value="" selected >请选择'+typemap[type]+'分类</option><option  data-hasSub="'+item["hasSub"]+'" value="'+item["id"]+'" >'+item["name"]+'</option>';
+						}else{
+							str+='<option data-hasSub="'+item["hasSub"]+'" value="'+item["id"]+'" >'+item["name"]+'</option>';
+						}
+					}
+					if(type==='one'){
+						$(str).appendTo($search_gtione.html(''));
+						if(flag){
+							$search_gtitwo.html('<option value="" selected >请选择二级分类</option>');
+							$search_gtithree.html('<option value="" selected >请选择三级分类</option>');
+						}
+					}else if(type==='two'){
+						$(str).appendTo($search_gtitwo.html(''));
+					}else if(type==='three'){
+						$(str).appendTo($search_gtithree.html(''));
+					}
+				}else{
+					console.log(resp.message||'error');
+					if(type==='one'){
+						$search_gtione.html('<option value="" selected >请选择一级分类</option>');
+						$search_gtitwo.html('<option value="" selected >请选择二级分类</option>');
+						$search_gtithree.html('<option value="" selected >请选择三级分类</option>');
+					}else if(type==='two'){
+						$search_gtitwo.html('<option value="" selected >请选择二级分类</option>');
+						$search_gtithree.html('<option value="" selected >请选择三级分类</option>');
+					}else if(type==='three'){
+						$search_gtithree.html('<option value="" selected >请选择三级分类</option>');
+					}
+				}
+			}).fail(function(resp){
+				console.log(resp.message||'error');
+				if(type==='one'){
+					$search_gtione.html('<option value="" selected >请选择一级分类</option>');
+					$search_gtitwo.html('<option value="" selected >请选择二级分类</option>');
+					$search_gtithree.html('<option value="" selected >请选择三级分类</option>');
+				}else if(type==='two'){
+					$search_gtitwo.html('<option value="" selected >请选择二级分类</option>');
+					$search_gtithree.html('<option value="" selected >请选择三级分类</option>');
+				}else if(type==='three'){
+					$search_gtithree.html('<option value="" selected >请选择三级分类</option>');
+				}
+			});
 		}
 
 

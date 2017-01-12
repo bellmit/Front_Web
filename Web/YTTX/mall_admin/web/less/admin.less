@@ -825,6 +825,89 @@
 }
 
 
+/*批量处理*/
+.admin-batchitem-wrap{
+	.layout-fixedr-base;
+	.layout-base(0);
+	height:100%;
+	padding:120px 0 70px 0;
+	background:none;
+	.admin-batchitem-btn{
+		.layout-relative-base;
+		width:0;
+		height:0;
+		div{
+			.layout-absoluter-base(0,-60px);
+			.layout-base(50px);
+			background:@color-white;
+			line-height: 50px;
+			text-align: center;
+			.box-shadow-base(0 0 3px @color-gray14);
+			border:1px solid @color-gray14;
+			height:50px;
+			color:@color-gray6;
+			font-size:@font-size-base - 2;
+			.user-select-base;
+			cursor: pointer;
+			.transition-base(all .1s ease-in .01s);
+			.border-radius-base(3px);
+			&:hover{
+				color:@btn-info-bg;
+			}
+		}
+	}
+	.admin-batchitem-inner{
+		.layout-relative-base;
+		width:0;
+		height:100%;
+	}
+	.admin-batchitem-show{
+		.layout-absoluter-base();
+		.layout-base(74px);
+		height:100%;
+		background:none;
+		.transition-base(all .2s ease-in .1s);
+		overflow:auto;
+		text-align:right;
+		font-size: 0;
+		>div{
+			display: inline-block;
+			margin:0 0 5px 0;
+			.layout-base(50px);
+			background:@color-white;
+			line-height:50px;
+			text-align: center;
+			border:1px solid @color-gray14;
+			height:50px;
+			color:@color-gray6;
+			font-size:@font-size-base - 2;
+			.user-select-base;
+			cursor: pointer;
+			.transition-base(all .05s ease-in .01s);
+			.border-radius-base(2px);
+			&:hover{
+				color:@btn-info-bg;
+			}
+		}
+		.admin-batchitem-select{
+			&:before{
+				font-size:@font-size-base;
+				font-family:'ux_six';
+				content:'\e662';
+			}
+			&:after{
+				content:'全选';
+			}
+		}
+		.admin-batchitem-active{
+			&:before{
+				content:'\e663';
+			}
+		}
+	}
+}
+
+
 /*----分页-----*/
 .admin-page-wrap{
 	.layout-base;

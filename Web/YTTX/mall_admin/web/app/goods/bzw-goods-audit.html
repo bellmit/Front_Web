@@ -5,11 +5,12 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	
 	<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0,maximum-scale=1">
-	<meta name="description" content="布住网后台管理系统--商品管理--商品分类管理" />
-	<meta name="keywords" content="布住网后台管理系统--商品管理--商品分类管理">
+	<meta name="description" content="布住网后台管理系统--商品管理--待审核商品" />
+	<meta name="keywords" content="布住网后台管理系统--商品管理--待审核商品">
   <meta name="author" content="yp" />
-	<title>布住网后台管理系统--商品管理--商品分类管理</title>
+	<title>布住网后台管理系统--商品管理--待审核商品</title>
 	<link rel="stylesheet" href="../../css/base.css">
+  <link rel="stylesheet" href="../../js/plugins/datatables/dataTables.bootstrap.css">
 	<link rel="stylesheet" href="../../css/admin.css">
   <script src="../../js/common/jquery-1.11.1.js"></script>
 	<!--[if lt IE 9]>
@@ -86,12 +87,12 @@
             <div class="page-title">
                 <div class="title-env">
                     <h1 class="title">商品管理</h1>
-                    <p class="description">商品分类管理</p>
+                    <p class="description">待审核商品</p>
                 </div>
                 <div class="breadcrumb-env">
                     <ol class="breadcrumb bc-1">
                         <li><a href=""><i class="fa-home"></i>商品管理</a></li>
-                        <li class="active"><strong>商品分类管理</strong></li>
+                        <li class="active"><strong>待审核商品</strong></li>
                     </ol>
                 </div>
             </div>
@@ -104,7 +105,7 @@
 
                         <!--表格标题-->
                         <div class="panel-heading">
-                            <h3 class="panel-title">商品分类管理</h3>
+                            <h3 class="panel-title">待审核商品</h3>
 
                             <div class="panel-options">
                                 <a href="#" data-toggle="panel">
@@ -117,46 +118,88 @@
 
                         <!--表格主体-->
                         <div class="panel-body">
-                            <table class="table table-bordered table-striped admin-table">
+                            <div class="admin-search-wrap">
+                                <div class="admin-search-item">
+                                    <label>商品名称：</label>
+                                    <input type="text" id="search_name" />
+                                </div>
+                                <div class="admin-search-item">
+                                    <label>店铺名称：</label>
+                                    <input type="text" id="search_providerName" />
+                                </div>
+                                <div class="admin-search-item">
+                                    <label>禁售/可售：</label>
+                                    <select id="search_isForbidden" >
+                                        <option selected value="">全部</option>
+                                        <option value="false">可售</option>
+                                        <option value="true">禁售</option>
+                                    </select>
+                                </div>
+                                <div class="admin-search-item">
+                                    <label>审核状态：</label>
+                                    <select id="search_auditStatus" >
+                                        <option selected value="0">待审核</option>
+                                        <option value="1">审核成功</option>
+                                        <option value="2">审核失败</option>
+                                    </select>
+                                </div>
+                                <div class="admin-search-item" id="search_goodsTypeId">
+                                    <label>商品分类：</label>
+                                    <select class="g-w-number8" id="search_gtione" ></select>
+                                    <select class="g-w-number8" id="search_gtitwo" ></select>
+                                    <select class="g-w-number8" id="search_gtithree" ></select>
+                                </div>
+                                <div class="admin-search-item">
+                                    <span id="admin_search_btn" class="btn btn-info btn-icon g-br2">
+                                        <i class="fa-search"></i>查询
+                                    </span>
+                                    <span id="admin_search_clear" class="btn btn-info btn-icon g-br2">
+                                        <i class="fa-spinner"></i>清空
+                                    </span>
+                                </div>
+                            </div>
+
+
+
+                            <table id="admin_list_wrap" class="table table-bordered table-striped table-hover admin-table">
                                 <!--分组样式-->
                                 <colgroup>
-                                    <col class="g-w-percent25" />
-                                    <col class="g-w-percent5" />
-                                    <col class="g-w-percent8" />
-                                    <col class="g-w-percent12" />
+                                    <col class="g-w-percent8">
+                                    <col class="g-w-percent7">
+                                    <col class="g-w-percent6">
+                                    <col class="g-w-percent6">
+                                    <col class="g-w-percent3">
+                                    <col class="g-w-percent4">
+                                    <col class="g-w-percent4">
+                                    <col class="g-w-percent12">
                                 </colgroup>
 
                                 <!--表头-->
                                 <thead>
                                 <tr>
-                                    <th>分类名称</th>
+                                    <th>商品编号</th>
+                                    <th>商品名称</th>
+                                    <th>店铺名称</th>
+                                    <th>分类</th>
                                     <th>排序</th>
-                                    <th>是否显示</th>
+                                    <th>状态</th>
+                                    <th>禁售/可售</th>
                                     <th>操作</th>
                                 </tr>
                                 </thead>
 
 
                                 <!--表主体-->
-                                <tbody>
-                                <tr>
-                                    <td class="g-c-red1" id="admin_errortip_wrap" colspan="4"></td>
-                                </tr>
-                                <tr>
-                                    <td colspan="4" data-type="edit" id="admin_list_wrap"></td>
-                                </tr>
-                                </tbody>
+                                <tbody class="middle-align"></tbody>
                             </table>
-
                             <div class="admin-page-wrap">
                                 <div class="easyui-pagination g-w-percent50" id="admin_page_wrap" data-options="links:5,layout:['manual','first','prev','links','next','last'],displayMsg:'显示{from}&nbsp;到&nbsp;{to}&nbsp;共&nbsp;{total}条记录'"></div>
                             </div>
                         </div>
-
-
                     </div>
                 </div>
             </div>
+
 
 
             <!--底部信息-->
@@ -183,78 +226,25 @@
     </div>
 
 
-
-    <!--添加分类-->
-    <div class="modal fade custom-width" id="addgoodstype_wrap">
-        <div class="modal-dialog g-w-percent30">
-            <div class="modal-content">
-
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title">添加分类</h4>
-                </div>
-                <div class="modal-body">
-                    <form role="form"  method="post" id="admin_addgoodstype_form" class="admin-form1 validate" >
-                        <div class="admin-gap-theme1">分类信息</div>
-                        <div class="grid-list-group1">
-                            上级分类名称：<p data-value="" id="admin_typeparentname"></p>
-                        </div>
-                        <div class="grid-list-group1">
-                            上级分类级别：<p id="admin_typeparentlayer"></p>
-                        </div>
-                        <div class="admin-gap-theme1">填写分类信息</div>
-                        <div class="form-group">
-                            <label class="control-label">分类编码：</label>
-                            <input placeholder="请输入分类编码" data-validate="required" data-message-required="分类编码不能为空" value=""  type="text" class="form-control" name="typecode"   id="admin_typecode" />
-                        </div>
-
-                        <div class="form-group">
-                            <label class="control-label">分类名称：</label>
-                            <input placeholder="请输入分类名称" data-validate="required" data-message-required="分类名称不能为空" value=""  type="text" class="form-control" name="typename"   id="admin_typename" />
-                        </div>
-
-                        <div class="form-group">
-                            <label class="control-label">排序号(值越大越靠前)：</label>
-                            <input placeholder="请输入排序号" data-validate="required,number" data-message-required="排序号不能为空" data-message-number="排序号只能为数字" value=""  type="text" class="form-control" name="typesort"   id="admin_typesort" />
-                        </div>
-
-                        <div class="form-group" id="admin_typeshow">
-                            <label class="control-label">显示：</label>
-                            <label class="btn btn-white g-br2 g-c-gray6">显示：<input checked="" name="typeshow" value="1" type="radio">
-                            </label>
-                            <label class="btn btn-white g-br2 g-c-gray6">隐藏：<input name="typeshow" value="0" type="radio">
-                            </label>
-                        </div>
-
-                        <div class="form-group admin-rpos-wrap">
-                            <div class="img-url-wrap">
-                                <div class="btn btn-info g-br2 img-url-item img-url-upload" data-value="" id="image_url_file">浏览图片</div>
-                            </div>
-
-                            <label class="control-label">缩略图：</label>
-                            <div class="form-control admin-image-view" data-image="" id="admin_typeimage"></div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="control-label">备注：</label>
-                            <textarea placeholder="请输入备注" value=""  class="form-control" name="typeremark"   id="admin_typeremark" ></textarea>
-                        </div>
-
-                        <div class="form-group">
-                            <button type="submit" class="btn btn-success">添加</button>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-info" data-dismiss="modal">关闭</button>
-                </div>
+    <div class="admin-batchitem-wrap">
+        <div class="admin-batchitem-btn">
+            <div id="admin_batchitem_btn">批量</div>
+        </div>
+        <div class="admin-batchitem-inner">
+            <div class="admin-batchitem-show" id="admin_batchitem_show">
+                <div data-state="0" class="admin-batchitem-select" data-action="selectall" id="admin_batchitem_select"></div>
+                <div data-action="up">上架</div>
+                <div data-action="down">下架</div>
+                <div data-action="audit">审核</div>
+                <div data-action="forbid">禁用</div>
+                <div data-action="usable">可用</div>
+                <div data-action="delete">删除</div>
+                <div data-action="recommend">推荐</div>
             </div>
         </div>
     </div>
 
 
-
-	
 	<!--加载遮罩层-->
 	<div id="page_loading_wrap" class="page-loading-overlay g-d-hidei">
 		<div class="loader-2"></div>
@@ -303,12 +293,10 @@
 
     <script src="../../js/common/base.js"></script>
     <script src="../../js/common/common.js"></script>
-
-    <script src="../../js/plugins/jquery-validate/jquery.validate.js"></script>
-    <script src="../../js/plugins/plupload/plupload.full.min.js"></script>
-    <script src="../../js/plugins/plupload/i18n/zh_CN.js"></script>
-    <script src="../../js/plugins/qn/qiniu.min.js"></script>
+    <script src="../../js/plugins/datatables/js/jquery.dataTables.js"></script>
+    <!--修饰分页，搜索等操作 -->
+    <script src="../../js/plugins/datatables/dataTables.bootstrap.js"></script>
     <script src="../../js/plugins/pagination/pagination.js"></script>
-    <script src="../../js/goodstype/goodstype_list.js"></script>
+    <script src="../../js/goods/goods_audit.js"></script>
 </body>
 </html>
