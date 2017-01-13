@@ -164,7 +164,8 @@
                             <table id="admin_list_wrap" class="table table-bordered table-striped table-hover admin-table">
                                 <!--分组样式-->
                                 <colgroup>
-                                    <col class="g-w-percent8">
+                                    <col class="g-w-percent2">
+                                    <col class="g-w-percent6">
                                     <col class="g-w-percent7">
                                     <col class="g-w-percent6">
                                     <col class="g-w-percent6">
@@ -177,6 +178,7 @@
                                 <!--表头-->
                                 <thead>
                                 <tr>
+                                    <th class="no-sorting">&nbsp;</th>
                                     <th>商品编号</th>
                                     <th>商品名称</th>
                                     <th>店铺名称</th>
@@ -190,7 +192,7 @@
 
 
                                 <!--表主体-->
-                                <tbody class="middle-align"></tbody>
+                                <tbody id="admin_batchlist_wrap" class="middle-align"></tbody>
                             </table>
                             <div class="admin-page-wrap">
                                 <div class="easyui-pagination g-w-percent50" id="admin_page_wrap" data-options="links:5,layout:['manual','first','prev','links','next','last'],displayMsg:'显示{from}&nbsp;到&nbsp;{to}&nbsp;共&nbsp;{total}条记录'"></div>
@@ -230,16 +232,20 @@
         <div class="admin-batchitem-btn">
             <div id="admin_batchitem_btn">批量</div>
         </div>
-        <div class="admin-batchitem-inner">
+        <div class="admin-batchitem-outer">
             <div class="admin-batchitem-show" id="admin_batchitem_show">
-                <div data-state="0" class="admin-batchitem-select" data-action="selectall" id="admin_batchitem_select"></div>
-                <div data-action="up">上架</div>
-                <div data-action="down">下架</div>
-                <div data-action="audit">审核</div>
-                <div data-action="forbid">禁用</div>
-                <div data-action="usable">可用</div>
-                <div data-action="delete">删除</div>
-                <div data-action="recommend">推荐</div>
+                <div class="admin-batchitem-inner">
+                    <div data-state="1" id="admin_batchitem_check" class="admin-batchitem-check" data-check="0" data-action="checkall"></div>
+                </div>
+                <div class="admin-batchitem-inner" id="admin_batchitem_action">
+                    <div data-action="up">上架</div>
+                    <div data-action="down">下架</div>
+                    <div data-action="audit">审核</div>
+                    <div data-action="forbid">禁用</div>
+                    <div data-action="enable">启用</div>
+                    <div data-action="delete">删除</div>
+                    <div data-action="recommend">推荐</div>
+                </div>
             </div>
         </div>
     </div>
@@ -297,6 +303,7 @@
     <!--修饰分页，搜索等操作 -->
     <script src="../../js/plugins/datatables/dataTables.bootstrap.js"></script>
     <script src="../../js/plugins/pagination/pagination.js"></script>
+    <script src="../../js/widgets/batch_item.js"></script>
     <script src="../../js/goods/goods_audit.js"></script>
 </body>
 </html>

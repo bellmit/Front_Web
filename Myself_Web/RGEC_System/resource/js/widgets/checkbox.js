@@ -181,13 +181,13 @@ define(function () {
 								}
             }
         },
-				/*返回选中的数据*/
-				getCheckBox:function(){
-					return this.checkid;
-				},
-				/*返回选中的node对象*/
-				getCheckBoxItem:function(){
-					return this.checkitem;
-				}
+		/*返回选中的数据*/
+		getCheckBox:function(){
+			return this.checkid;
+		},
+		/*返回选中的node对象*/
+		getCheckBoxItem:function(){
+			return this.checkitem;
+		}
     }
 });

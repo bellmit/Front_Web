@@ -33,6 +33,7 @@
 
 			/*dom引用和相关变量定义*/
 			var $admin_list_wrap=$('#admin_list_wrap')/*表格*/,
+				$admin_batchlist_wrap=$('#admin_batchlist_wrap'),
 				module_id='bzw-goods-audit'/*模块id，主要用于本地存储传值*/,
 				dia=dialog({
 					zIndex:2000,
@@ -69,6 +70,25 @@
 				$admin_search_clear=$('#admin_search_clear');
 
 
+			/*批量配置参数*/
+			var $admin_batchitem_btn=$('#admin_batchitem_btn'),
+				$admin_batchitem_show=$('#admin_batchitem_show'),
+				$admin_batchitem_check=$('#admin_batchitem_check'),
+				$admin_batchitem_action=$('#admin_batchitem_action'),
+				batchItem=new public_tool.BatchItem();
+
+			/*批量初始化*/
+			batchItem.init({
+				$batchtoggle:$admin_batchitem_btn,
+				$batchshow:$admin_batchitem_show,
+				$checkall:$admin_batchitem_check,
+				$action:$admin_batchitem_action,
+				$listwrap:$admin_batchlist_wrap,
+				setSure:setSure,
+				fn:function (type) {
+					console.log(type);
+				}
+			});
 
 
 			/*列表请求配置*/
@@ -140,6 +160,14 @@
 						searching:true,
 						order:[[4, "desc" ]],
 						columns: [
+							{
+								"data":"id",
+								"orderable" :false,
+								"searchable" :false,
+								"render":function(data, type, full, meta ){
+									return '<input value="'+data+'" name="goodsID" type="checkbox" />';
+								}
+							},
 							{
 								"data":"gcode"
 							},
@@ -271,15 +299,11 @@
 
 			/*查询分类并绑定分类查询*/
 			$.each([$search_gtione,$search_gtitwo,$search_gtithree],function(){
-				var self=this,
-					selector=this.selector,
-					hastype=false;
-
+				var selector=this.selector;
 				/*初始化查询一级分类*/
 				if(selector.indexOf('one')!==-1){
 					getGoodsTypes('','one',true);
 				}
-
 				this.on('change',function(){
 					var $option=$(this).find(':selected'),
 						value=this.value,

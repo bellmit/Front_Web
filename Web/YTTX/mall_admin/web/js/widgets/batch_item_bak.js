@@ -1,17 +1,23 @@
 /*批量组件*/
 ;(function ($) {
-    var checkid=[],
-        checkitem=[],
-        state=1,
-        check=0,
-        stateobj={
-            1:'激活',
-            0:'禁止'
-        };
     /*构造函数*/
     function BatchItem(){}
     /*子类*/
-    function SubBatchItem() {}
+    function SubBatchItem() {
+        /*保存已选中的列表值*/
+        this.checkid=[];
+        /*保存已选中的对象*/
+        this.checkitem=[];
+        /*保存已选中的类型的当前状态：比如：激活状态：1，禁止状态：0*/
+        this.state=1;
+        /*保存是否有选中*/
+        this.check=0;
+        /*类型映射状态*/
+        this.stateobj={
+            1:'激活',
+            0:'禁止'
+        };
+    }
     /*空函数*/
     function nofn(){}
 
@@ -30,7 +36,6 @@
             $action:null,
             istable:false,
             isstate:false,
-            fn:null,
             $listwrap:null
         },opt);
 
@@ -45,6 +50,7 @@
         var self=this;
         /*确认组件*/
         if(!self['setSure']){
+            console.log('aaa');
             var sureObj=public_tool.sureDialog(self.dia)/*回调提示对象*/;
             self.setSure=new sureObj();
         }
@@ -64,18 +70,18 @@
                     if(self.$checkall){
                         self.$checkall.on('click',function (){
                             var $this=$(this),
-                                tempstate=parseInt($this.attr('data-check'),10);
-                            if(tempstate===0){
+                                state=parseInt($this.attr('data-check'),10);
+                            if(state===0){
                                 /*选中*/
-                                check=1;
+                                self.check=1;
                                 $this.attr({
                                     'data-check':1
                                 }).addClass(self.checkactive);
                                 /*执行全选*/
                                 self.toggleCheckAll(1);
-                            }else if(tempstate===1){
+                            }else if(state===1){
                                 /*取消选中*/
-                                check=0;
+                                self.check=0;
                                 $this.attr({
                                     'data-state':0
                                 }).removeClass(self.checkactive);
@@ -84,7 +90,6 @@
                             }
                         });
                     }
-                    /*绑定单项选择*/
                     if(self.istable){
                         self.$listwrap.find('tbody').on('change','input[type="checkbox"]',function () {
                             self.toggleCheckItem($(this));
@@ -94,41 +99,8 @@
                             self.toggleCheckItem($(this));
                         });
                     }
-                    /*绑定回调执行*/
-                    if(self.$action&&self.fn){
-                       self.$action.on('click','div',function () {
-                           var $this=$(this),
-                               type=$this.attr('data-action');
-                           self.fn.call(null,type);
-                           /*上架*/
-                           /*if(type==='up'){
-                               /!*上架*!/
-                               self.fn.call(self,{
-                                   type:type
-                               });
-                           }else if(type==='down'){
-                               /!*下架*!/
 
-                           }else if(type==='audit'){
-                               /!*审核*!/
-
-                           }else if(type==='forbid'){
-                               /!*禁用*!/
-
-                           }else if(type==='enable'){
-                               /!*启用*!/
-
-                           }else if(type==='delete'){
-                               /!*删除*!/
-
-                           }else if(type==='recommend'){
-                               /!*推荐*!/
-
-                           }*/
-                       });
-                    }
                 }
-
             }
         }
     };
@@ -153,58 +125,33 @@
         this.$checkall.attr({
             'data-state':1
         });
-        state=1;
+        this.state=1;
     };
 
     /*清空数据(清除已经选中的数据)*/
     BatchItem.prototype.clear=function () {
-        checkid.length=0;
-        check=0;
+        this.checkid.length=0;
+        this.check=0;
         this.$checkall.attr({
             'data-check':0
         }).removeClass(this.checkactive);
 
         /*清除选中*/
-        var len=checkitem.length;
+        var len=this.checkitem.length;
         if(len!==0){
             var i=0;
             for(i;i<len;i++){
-                checkitem[i].prop('checked', false);
+                this.checkitem[i].prop('checked', false);
             }
-            checkitem.length=0;
-        }
-    };
-
-    /*过滤数据(清除并过滤已经选中的数据)*/
-    BatchItem.prototype.filterData=function (key) {
-        /*清除选中*/
-        var self=this,
-            len=checkitem.length;
-        if(len!==0&&typeof key!=='undefined'){
-            var i=len - 1;
-            for(i;i>=0;i--){
-                if(key===i){
-                    checkitem[i].prop('checked', false);
-                    checkitem.splice(i,1);
-                    checkid.splice(i,1);
-                    break;
-                }
-            }
-            if(checkid.length===0){
-               self.clear();
-            }
-            return {
-                checkid:checkid,
-                checkitem:checkitem
-            }
+            this.checkitem.length=0;
         }
     };
 
     /*全选和取消全选*/
-    BatchItem.prototype.toggleCheckAll=function (chk) {
+    BatchItem.prototype.toggleCheckAll=function (check) {
         var self=this,
             $wrap;
-        if(chk===1){
+        if(check===1){
             /*选中*/
             if(self.istable){
                 $wrap=self.$listwrap.find('tbody');
@@ -221,15 +168,15 @@
                             return false;
                         }
                         if(!$input.is(':checked')){
-                            checkid.push($input.prop('checked',true).val());
-                            checkitem.push($input);
+                            self.checkid.push($input.prop('checked',true).val());
+                            self.checkitem.push($input);
                         }
-                        state=parseInt($input.attr('data-state'),10);
+                        self.state=parseInt($input.attr('data-state'),10);
                     }else{
                         var tempstate=parseInt($input.attr('data-state'),10);
-                        if(state===tempstate&&!$input.is(':checked')){
-                            checkid.push($input.prop('checked',true).val());
-                            checkitem.push($input);
+                        if(self.state===tempstate&&!$input.is(':checked')){
+                            self.checkid.push($input.prop('checked',true).val());
+                            self.checkitem.push($input);
                         }
                     }
                 });
@@ -244,12 +191,12 @@
                         }
                     }
                     if(!$input.is(':checked')){
-                        checkid.push($input.prop('checked',true).val());
-                        checkitem.push($input);
+                        self.checkid.push($input.prop('checked',true).val());
+                        self.checkitem.push($input);
                     }
                 });
             }
-        }else if(chk===0){
+        }else if(check===0){
             /*取消选中*/
             self.clear();
         }
@@ -258,7 +205,7 @@
     /*绑定选中某个单独多选框*/
     BatchItem.prototype.toggleCheckItem=function ($input) {
         var self=this,
-            len=checkid.length,
+            len=self.checkid.length,
             ishave=-1,
             text=$input.val();
 
@@ -267,10 +214,10 @@
                 self.$batchshow.addClass(self.showactive);
             }
             if (len === 0) {
-                checkid.push(text);
-                checkitem.push($input);
+                self.checkid.push(text);
+                self.checkitem.push($input);
                 if(self.isstate){
-                    state=parseInt($input.attr('data-state'),10);
+                    self.state=parseInt($input.attr('data-state'),10);
                 }
                 self.$checkall.attr({
                     'data-check':1
@@ -278,36 +225,36 @@
             } else {
                 if(self.isstate){
                     var tempstate=parseInt($input.attr('data-state'),10);
-                    if(state===tempstate){
-                        ishave=$.inArray(text,checkid);
+                    if(self.state===tempstate){
+                        ishave=$.inArray(text,self.checkid);
                         if(ishave!==-1){
-                            checkid.splice(ishave,1,text);
-                            checkitem.splice(ishave,1,$input);
+                            self.checkid.splice(ishave,1,text);
+                            self.checkitem.splice(ishave,1,$input);
                         }else{
-                            checkid.push(text);
-                            checkitem.push($input);
+                            self.checkid.push(text);
+                            self.checkitem.push($input);
                         }
                     }else{
                         $input.prop('checked',false);
                     }
                 }else{
-                    ishave=$.inArray(text,checkid);
+                    ishave=$.inArray(text,self.checkid);
                     if(ishave!==-1){
-                        checkid.splice(ishave,1,text);
-                        checkitem.splice(ishave,1,$input);
+                        self.checkid.splice(ishave,1,text);
+                        self.checkitem.splice(ishave,1,$input);
                     }else{
-                        checkid.push(text);
-                        checkitem.push($input);
+                        self.checkid.push(text);
+                        self.checkitem.push($input);
                     }
                 }
             }
 
         }else{
-            ishave=$.inArray(text,checkid);
+            ishave=$.inArray(text,self.checkid);
             if(ishave!==-1){
-                checkid.splice(ishave,1);
-                checkitem.splice(ishave,1);
-                if(checkid.length===0){
+                self.checkid.splice(ishave,1);
+                self.checkitem.splice(ishave,1);
+                if(self.checkid.length===0){
                     self.clear();
                 }
             }
@@ -316,14 +263,20 @@
 
     /*获取选中的数据*/
     BatchItem.prototype.getBatchData=function () {
-        return checkid;
+        return this.checkid;
     };
 
     /*获取选中的文档节点*/
     BatchItem.prototype.getBatchNode=function () {
-        return checkitem;
+        return this.checkitem;
     };
-    
+
+    /*批量操作*/
+    BatchItem.prototype.batchAction=function (fn) {
+        
+    };
+
+
 
 
     /*设置继承*/
