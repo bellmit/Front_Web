@@ -143,7 +143,7 @@
                                         <option value="2">审核失败</option>
                                     </select>
                                 </div>
-                                <div class="admin-search-item" id="search_goodsTypeId">
+                                <div class="admin-search-item">
                                     <label>商品分类：</label>
                                     <select class="g-w-number8" id="search_gtione" ></select>
                                     <select class="g-w-number8" id="search_gtitwo" ></select>
@@ -168,11 +168,11 @@
                                     <col class="g-w-percent6">
                                     <col class="g-w-percent7">
                                     <col class="g-w-percent6">
-                                    <col class="g-w-percent6">
+                                    <col class="g-w-percent5">
                                     <col class="g-w-percent3">
                                     <col class="g-w-percent4">
                                     <col class="g-w-percent4">
-                                    <col class="g-w-percent12">
+                                    <col class="g-w-percent13">
                                 </colgroup>
 
                                 <!--表头-->
@@ -228,6 +228,7 @@
     </div>
 
 
+    <!--批量处理-->
     <div class="admin-batchitem-wrap">
         <div class="admin-batchitem-btn">
             <div id="admin_batchitem_btn">批量</div>
@@ -241,9 +242,8 @@
                     <div data-action="up">上架</div>
                     <div data-action="down">下架</div>
                     <div data-action="audit">审核</div>
-                    <div data-action="forbid">禁用</div>
-                    <div data-action="enable">启用</div>
-                    <div data-action="delete">删除</div>
+                    <div data-action="forbid">禁售</div>
+                    <div data-action="enable">可售</div>
                     <div data-action="recommend">推荐</div>
                 </div>
             </div>
@@ -251,7 +251,68 @@
     </div>
 
 
-	<!--加载遮罩层-->
+
+    <!--审核商品-->
+    <div class="modal fade custom-width" id="show_audit_wrap">
+        <div class="modal-dialog g-w-percent46">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">商品审核</h4>
+                </div>
+                <div class="modal-body">
+                    <form role="form"  method="post" id="admin_audit_form" class="admin-form1">
+                        <input type="text" value="" id="admin_id" class="g-d-hidei" />
+                        <table class="table table-bordered table-striped table-hover admin-table">
+                            <colgroup>
+                                <col class="g-w-percent15"/>
+                                <col class="g-w-percent10"/>
+                                <col class="g-w-percent10"/>
+                                <col class="g-w-percent10"/>
+                                <col class="g-w-percent5"/>
+                            </colgroup>
+                            <thead>
+                            <tr>
+                                <th>商品编号</th>
+                                <th>商品名称</th>
+                                <th>店铺名称</th>
+                                <th>分类</th>
+                                <th>状态</th>
+                            </tr>
+                            </thead>
+                            <tbody id="show_audit_header"></tbody>
+                            <tfoot  class="admin-td-vam">
+                            <tr>
+                                <td colspan="3" class="g-t-r">
+                                    <div class="g-c-red2 inline" id="audit_radio_tip"></div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <div class="inline" id="audit_radio_wrap">
+                                        <label class="btn btn-white g-br3">
+                                            通过&nbsp;:&nbsp;<input type="radio" value="5" name="state" />
+                                        </label>
+                                        <label class="btn btn-white g-br3">
+                                            不通过&nbsp;:&nbsp;<input type="radio" value="6" name="state" />
+                                        </label>
+                                    </div>
+                                </td>
+                                <td colspan="2">
+                                    <button type="button" class="btn btn-success g-f-l" id="audit_action" >审核</button>
+                                </td>
+                            </tr>
+                            </tfoot>
+                        </table>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-info" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!--加载遮罩层-->
 	<div id="page_loading_wrap" class="page-loading-overlay g-d-hidei">
 		<div class="loader-2"></div>
 	</div>

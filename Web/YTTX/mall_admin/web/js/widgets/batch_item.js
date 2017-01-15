@@ -1,5 +1,6 @@
 /*批量组件*/
 ;(function ($) {
+    'use strict';
     var checkid=[],
         checkitem=[],
         state=1,
@@ -31,6 +32,7 @@
             istable:false,
             isstate:false,
             fn:null,
+            powerobj:null,
             $listwrap:null
         },opt);
 
@@ -96,35 +98,22 @@
                     }
                     /*绑定回调执行*/
                     if(self.$action&&self.fn){
+                       /*初始化按钮显示*/
+                        if(self.powerobj){
+                            var temppower=self.powerobj;
+                            self.$action.find('div').each(function () {
+                                var $this=$(this),
+                                    type=$this.attr('data-action');
+                                if(typeof temppower[type]!=='undefined'&&!temppower[type]){
+                                    $this.addClass('g-d-hidei');
+                                }
+                            });
+                        }
+                       /*绑定操作按钮*/
                        self.$action.on('click','div',function () {
                            var $this=$(this),
                                type=$this.attr('data-action');
                            self.fn.call(null,type);
-                           /*上架*/
-                           /*if(type==='up'){
-                               /!*上架*!/
-                               self.fn.call(self,{
-                                   type:type
-                               });
-                           }else if(type==='down'){
-                               /!*下架*!/
-
-                           }else if(type==='audit'){
-                               /!*审核*!/
-
-                           }else if(type==='forbid'){
-                               /!*禁用*!/
-
-                           }else if(type==='enable'){
-                               /!*启用*!/
-
-                           }else if(type==='delete'){
-                               /!*删除*!/
-
-                           }else if(type==='recommend'){
-                               /!*推荐*!/
-
-                           }*/
                        });
                     }
                 }
@@ -143,6 +132,7 @@
         }else{
             self.$listwrap.off('change','input[type="checkbox"]');
         }
+        self.$action.off('click','div');
     };
 
 

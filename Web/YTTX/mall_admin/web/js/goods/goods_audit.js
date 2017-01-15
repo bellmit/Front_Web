@@ -24,10 +24,10 @@
 
 			/*权限调用*/
 			var powermap=public_tool.getPower(),
-				user_power=public_tool.getKeyPower('goods-forbid',powermap),
-				enabled_power=public_tool.getKeyPower('goods-disabled',powermap),
-				detail_power=public_tool.getKeyPower('goods-detail',powermap),
-				recommend_power=public_tool.getKeyPower('goods-recommend',powermap);
+				forbid_power=public_tool.getKeyPower('bzw-forbid-goods',powermap),
+				updown_power=public_tool.getKeyPower('bzw-goods-updown',powermap),
+				detail_power=public_tool.getKeyPower('bzw-goods-details',powermap),
+				audit_power=public_tool.getKeyPower('bzw-audit-goods',powermap);
 
 
 
@@ -47,19 +47,24 @@
 					cancel:false
 				})/*一般提示对象*/,
 				$admin_page_wrap=$('#admin_page_wrap'),
-				goodstype_config={
+				goods_params={
 					roleId:decodeURIComponent(logininfo.param.roleId),
 					adminId:decodeURIComponent(logininfo.param.adminId),
 					grade:decodeURIComponent(logininfo.param.grade),
 					token:decodeURIComponent(logininfo.param.token)
 				},
+				$show_audit_wrap=$('#show_audit_wrap'),
+				$show_audit_header=$('#show_audit_header'),
+				admin_audit_form=document.getElementById('admin_audit_form'),
+				$audit_radio_tip=$('#audit_radio_tip'),
+				$audit_radio_wrap=$('#audit_radio_wrap'),
+				$admin_id=$('#admin_id'),
+				$audit_action=$('#audit_action'),
 				sureObj=public_tool.sureDialog(dia)/*回调提示对象*/,
-				setSure=new sureObj(),
-				goodstypeid='';
+				setSure=new sureObj();
 
 			/*查询对象*/
 			var $search_name=$('#search_name'),
-				$search_goodsTypeId=$('#search_goodsTypeId'),
 				$search_auditStatus=$('#search_auditStatus'),
 				$search_providerName=$('#search_providerName'),
 				$search_isForbidden=$('#search_isForbidden'),
@@ -67,7 +72,9 @@
 				$search_gtitwo=$('#search_gtitwo'),
 				$search_gtithree=$('#search_gtithree'),
 				$admin_search_btn=$('#admin_search_btn'),
-				$admin_search_clear=$('#admin_search_clear');
+				$admin_search_clear=$('#admin_search_clear'),
+				goodstypeid='',
+				a_state=parseInt($search_auditStatus.val(),10);
 
 
 			/*批量配置参数*/
@@ -85,8 +92,18 @@
 				$action:$admin_batchitem_action,
 				$listwrap:$admin_batchlist_wrap,
 				setSure:setSure,
+				powerobj:{
+					'forbid':forbid_power,
+					'up':updown_power,
+					'down':updown_power,
+					'audit':audit_power,
+					'enable':forbid_power
+				},
 				fn:function (type) {
-					console.log(type);
+					/*批量操作*/
+					batchGoods({
+						action:type
+					});
 				}
 			});
 
@@ -151,7 +168,7 @@
 								adminId:decodeURIComponent(logininfo.param.adminId),
 								grade:decodeURIComponent(logininfo.param.grade),
 								token:decodeURIComponent(logininfo.param.token),
-								auditStatus:0,
+								auditStatus:a_state,
 								page:1,
 								pageSize:10
 							}
@@ -232,56 +249,52 @@
 								"render":function(data, type, full, meta ){
 									var id=parseInt(data,10),
 										btns='',
-										user=parseInt(full.user,10),
-										enabled=parseInt(full.isEnabled,10),
-										recommend=parseInt(full.recommend,10);
+										temp_forbid=Boolean(full.isForbidden),
+										temp_status=parseInt(full.status,10);
 
-									if(user===1){
-										if(enabled_power){
-											if(enabled===0){
-												/*禁用状态则启用*/
-												btns+='<span data-action="up" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
-													<i class="fa-arrow-up"></i>\
-													<span>上架</span>\
-												</span>';
-											}else if(enabled===1){
-												/*启用状态则禁用*/
-												btns+='<span data-action="down" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+									if(a_state===0||a_state===2){
+										/*待审核，审核失败*/
+										if(audit_power){
+											btns+='<span  data-action="audit" data-id="'+id+'" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+												<i class="fa-hand-o-up"></i>\
+												<span>审核</span>\
+											</span>';
+										}
+									}else if(a_state===1){
+										/*审核成功*/
+										/*上架，下架*/
+										if(temp_status===1){
+											/*上架状态则下架*/
+											btns+='<span data-action="down" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 													<i class="fa-arrow-down"></i>\
 													<span>下架</span>\
 												</span>';
-											}
+										}else if(temp_status===2){
+											/*下架状态则上架*/
+											btns+='<span data-action="up" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+													<i class="fa-arrow-up"></i>\
+													<span>上架</span>\
+												</span>';
 										}
-										if(user_power){
+										/*可售，禁售*/
+										if(temp_forbid){
+											/*禁售状态则可售*/
+											btns+='<span data-action="enable" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+													<i class="fa-toggle-off"></i>\
+													<span>可售</span>\
+												</span>';
+										}else{
 											/*可售状态则禁售*/
-											btns+='<span data-action="disabled" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+											btns+='<span data-action="forbid" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 													<i class="fa-toggle-on"></i>\
 													<span>禁售</span>\
 												</span>';
 										}
-										if(recommend_power){
-											/*推荐*/
-											if(recommend===0){
-												btns+='<span data-action="recommend" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+										/*推荐*/
+										btns+='<span data-action="recommend" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 													<i class="fa-heart"></i>\
 													<span>推荐</span>\
 												</span>';
-											}else if(recommend===1){
-												btns+='<span data-action="deprecate" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
-													<i class="fa-heart-o"></i>\
-													<span>取消推荐</span>\
-												</span>';
-											}
-
-										}
-									}else if(user===0){
-										if(user_power){
-											/*禁用状态则启用*/
-											btns+='<span data-action="usable" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
-													<i class="fa-toggle-off"></i>\
-													<span>可售</span>\
-												</span>';
-										}
 									}
 									if(detail_power){
 										btns+='<span data-action="select" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
@@ -364,6 +377,14 @@
 			$admin_search_clear.trigger('click');
 
 
+			/*绑定切换不同的状态*/
+			$.each([$search_auditStatus],function () {
+				this.on('change',function () {
+					a_state=parseInt(this.value,0);
+				});
+			});
+
+
 			/*联合查询*/
 			$admin_search_btn.on('click',function(){
 				var data= $.extend(true,{},goods_config.config.ajax.data);
@@ -404,7 +425,37 @@
 					$this,
 					id,
 					action,
-					$tr;
+					$tr,
+					actionmap={
+						"up":1,
+						"down":2,
+						"forbid":3,
+						"enable":4,
+						"recommend":8,
+						"audit_yes":5,
+						"audit_no":6
+					},
+					actiontip={
+						"up":'上架',
+						"down":'下架',
+						"forbid":'禁售',
+						"enable":'可售',
+						"recommend":'推荐',
+						"select":'查看',
+						"audit":'审核',
+						"audit_yes":'审核',
+						"audit_no":'审核'
+					};
+				/*
+				 1：上架，
+				 2：下架，
+				 3：禁售，
+				 4：取消禁售，
+				 5：审核通过，
+				 6：审核不通过，
+				 7：删除，
+				 8：推荐到
+				 * */
 
 				//适配对象
 				if(target.className.indexOf('btn')!==-1){
@@ -418,46 +469,69 @@
 
 				/*修改,编辑操作*/
 				if(action==='select'){
+					/*查看*/
 					/*public_tool.setParams('mall-provider-goods',id);
 					window.location.href='mall-provider-goods.html';*/
-				}else if(action==='up'||action==='down'){
-					/*确认是否启用或禁用*/
+				}else if(action==='audit'){
 					if(operate_item){
 						operate_item.removeClass('item-lighten');
 						operate_item=null;
 					}
 					operate_item=$tr.addClass('item-lighten');
-					setEnabled({
-						id:id,
-						action:action
-					});
-				}else if(action==='disabled'||action==='usable'){
+					showAudit(id,$tr);
+				}else if(action==='forbid'||action==='enable'){
 					if(operate_item){
 						operate_item.removeClass('item-lighten');
 						operate_item=null;
 					}
 					operate_item=$tr.addClass('item-lighten');
 					/*确认是否启用或禁用*/
-					setSure.sure(action==='disabled'?'禁售':'可售',function(cf){
+					setSure.sure(actiontip[action],function(cf){
 						/*to do*/
-						setUser({
+						goodsAction({
 							id:id,
 							action:action,
-							tip:cf.dia||dia
-						});
+							tip:cf.dia||dia,
+							actiontip:actiontip,
+							actionmap:actionmap
+						},action==='forbid'?"禁售后，商品将不再显示在前端，是否禁售？":"可售后，商品将显示在前端，是否可售？",true);
 					});
-				}else if(action==='recommend'||action==="deprecate"){
-					/*推荐或取消推荐*/
+				}else if(action==='up'||action==='down'||action==='recommend'){
 					if(operate_item){
 						operate_item.removeClass('item-lighten');
 						operate_item=null;
 					}
 					operate_item=$tr.addClass('item-lighten');
-					setRecommond({
+
+					/*确认是否启用或禁用*/
+					/*to do*/
+					goodsAction({
 						id:id,
-						action:action
+						action:action,
+						actiontip:actiontip,
+						actionmap:actionmap
 					});
 				}
+			});
+
+
+			/*绑定关闭详情*/
+			$.each([$show_audit_wrap],function () {
+				this.on('hide.bs.modal',function(){
+					if(operate_item){
+						setTimeout(function(){
+							operate_item.removeClass('item-lighten');
+							operate_item=null;
+						},1000);
+					}
+				});
+			});
+
+
+
+			/*绑定确定收货单审核*/
+			$audit_action.on('click',function () {
+				executeAudit();
 			});
 
 		}
@@ -469,151 +543,72 @@
 				table=opt.$admin_list_wrap.DataTable(opt.config);
 			}else{
 				table.ajax.config(opt.config.ajax).load();
+				/*清除批量数据*/
+				batchItem.clear();
 			}
 		}
 
 
-		/*启用禁用*/
-		function setEnabled(obj){
-			var id=obj.id;
-
+		/*获取审核数据*/
+		function showAudit(id,$tr) {
 			if(typeof id==='undefined'){
 				return false;
 			}
-			var action=obj.action;
-			$.ajax({
-					url:"../../json/goods/mall_goods_list.json",
-					dataType:'JSON',
-					method:'post',
-					data:{
-						id:id,
-						type:action,
-						roleId:decodeURIComponent(logininfo.param.roleId),
-						adminId:decodeURIComponent(logininfo.param.adminId),
-						token:decodeURIComponent(logininfo.param.token)
-					}
-				})
-				.done(function(resp){
-					var code=parseInt(resp.code,10);
-					if(code!==0){
-						console.log(resp.message);
-						dia.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"操作失败")+'</span>').show();
-						setTimeout(function () {
-							dia.close();
-							if(operate_item){
-								operate_item.removeClass('item-lighten');
-								operate_item=null;
-							}
-						},2000);
-						return false;
-					}
-					/*是否是正确的返回数据*/
-					/*添加高亮状态*/
-					dia.content('<span class="g-c-bs-success g-btips-succ">'+(action==="up"?'上架':'下架')+'成功</span>').show();
-					setTimeout(function () {
-						dia.close();
-						setTimeout(function () {
-							operate_item=null;
-							/*请求数据*/
-							getColumnData(goods_page,goods_config);
-						},1000);
-					},1000);
-				})
-				.fail(function(resp){
-					console.log(resp.message);
-					dia.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"操作失败")+'</span>').show();
-					setTimeout(function () {
-						dia.close();
-						if(operate_item){
-							operate_item.removeClass('item-lighten');
-							operate_item=null;
+			admin_audit_form.reset();
+			var state='',
+				str='',
+				data;
+
+			/*设置值*/
+			$admin_id.val(id);
+			if(id.indexOf(',')!==-1){
+				/*批量*/
+				var $nodes=data['$tr'],
+					len=$nodes.length,
+					i=0;
+
+				if(len!==0){
+					for(i;i<len;i++){
+						data=table.row($tr[i].closest("tr")).data();
+						if(!$.isEmptyObject(data)){
+							state=parseInt(data['status'],10);
+							str+='<tr><td>'+data["gcode"]+'</td><td>'+data["name"]+'</td><td>'+data["providerName"]+'</td><td>'+data["goodsTypeName"]+'</td><td>'+(state===4?'<div class="g-c-info">待审核</div>':'<div class="g-c-red1">状态异常</div>')+'</div></td></tr>';
 						}
-					},2000);
-				});
+					}
+					$(str).appendTo($show_audit_header.html(''));
+					$show_audit_wrap.modal('show',{backdrop:'static'});
+				}
+			}else{
+				/*单个*/
+				data=table.row($tr).data();
+				if(!$.isEmptyObject(data)){
+					state=parseInt(data['status'],10);
+					str='<tr><td>'+data["gcode"]+'</td><td>'+data["name"]+'</td><td>'+data["providerName"]+'</td><td>'+data["goodsTypeName"]+'</td><td>'+(state===4?'<div class="g-c-info">待审核</div>':'<div class="g-c-red1">状态异常</div>')+'</div></td></tr>';
+					$(str).appendTo($show_audit_header.html(''));
+					$show_audit_wrap.modal('show',{backdrop:'static'});
+				}
+			}
 		}
 
-		/*推荐取消推荐*/
-		function setRecommond(obj){
+
+		/*各种操作*/
+		function goodsAction(obj){
 			var id=obj.id;
 
 			if(typeof id==='undefined'){
 				return false;
 			}
-			var action=obj.action;
-			$.ajax({
-					url:"../../json/goods/mall_goods_list.json",
-					dataType:'JSON',
-					method:'post',
-					data:{
-						id:id,
-						type:action,
-						roleId:decodeURIComponent(logininfo.param.roleId),
-						adminId:decodeURIComponent(logininfo.param.adminId),
-						token:decodeURIComponent(logininfo.param.token)
-					}
-				})
-				.done(function(resp){
-					var code=parseInt(resp.code,10);
-					if(code!==0){
-						console.log(resp.message);
-						dia.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"操作失败")+'</span>').show();
-						setTimeout(function () {
-							dia.close();
-							if(operate_item){
-								operate_item.removeClass('item-lighten');
-								operate_item=null;
-							}
-						},2000);
-						return false;
-					}
-					/*是否是正确的返回数据*/
-					/*添加高亮状态*/
-					dia.content('<span class="g-c-bs-success g-btips-succ">'+(action==="recommend"?'推荐':'取消推荐')+'成功</span>').show();
-					setTimeout(function () {
-						dia.close();
-						setTimeout(function () {
-							operate_item=null;
-							/*请求数据*/
-							getColumnData(goods_page,goods_config);
-						},1000);
-					},1000);
-				})
-				.fail(function(resp){
-					console.log(resp.message);
-					dia.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"操作失败")+'</span>').show();
-					setTimeout(function () {
-						dia.close();
-						if(operate_item){
-							operate_item.removeClass('item-lighten');
-							operate_item=null;
-						}
-					},2000);
-				});
-		}
-
-
-
-		/*禁售，可售*/
-		function setUser(obj){
-			var id=obj.id;
-
-			if(typeof id==='undefined'){
-				return false;
-			}
-			var tip=obj.tip,
+			var tip=obj.tip||dia,
 				action=obj.action;
 
+			var temp_config=$.extend(true,{},goods_params);
+			temp_config['operate']=obj.actionmap[action];
+			temp_config['ids']=id;
 			$.ajax({
-					url:"../../json/goods/mall_goods_list.json",
+					url:"http://120.76.237.100:8082/mall-buzhubms-api/goods/operate",
 					dataType:'JSON',
 					method:'post',
-					data:{
-						id:id,
-						type:action,
-						roleId:decodeURIComponent(logininfo.param.roleId),
-						adminId:decodeURIComponent(logininfo.param.adminId),
-						token:decodeURIComponent(logininfo.param.token)
-					}
+					data:temp_config
 				})
 				.done(function(resp){
 					var code=parseInt(resp.code,10);
@@ -631,7 +626,7 @@
 					}
 					/*是否是正确的返回数据*/
 					/*添加高亮状态*/
-					tip.content('<span class="g-c-bs-success g-btips-succ">'+(action==="disabled"?'禁售':'可售')+'成功</span>').show();
+					tip.content('<span class="g-c-bs-success g-btips-succ">'+obj.actiontip[action]+'成功</span>').show();
 					setTimeout(function () {
 						tip.close();
 						setTimeout(function () {
@@ -663,14 +658,14 @@
 					'two':'二级',
 					'three':'三级'
 				};
-
-			goodstype_config['parentId']=value;
+			var temp_config=$.extend(true,{},goods_params);
+			temp_config['parentId']=value;
 			$.ajax({
 				url:"http://120.76.237.100:8082/mall-buzhubms-api/goodstype/list",
 				dataType:'JSON',
 				async:false,
 				method:'post',
-				data:goodstype_config
+				data:temp_config
 			}).done(function(resp){
 				var code=parseInt(resp.code,10);
 				if(code!==0){
@@ -748,6 +743,88 @@
 					$search_gtithree.html('<option value="" selected >请选择三级分类</option>');
 				}
 			});
+		}
+
+
+		/*审核*/
+		function executeAudit() {
+			setSure.sure('',function(cf){
+				/*是否选择了状态*/
+				var applystate=parseInt($audit_radio_wrap.find(':checked').val(),10);
+				if(isNaN(applystate)){
+					$audit_radio_tip.html('您没有选择审核状态');
+					setTimeout(function () {
+						$audit_radio_tip.html('');
+						$audit_radio_wrap.find('input').eq(0).prop({
+							'checked':true
+						});
+					},2000);
+					return false;
+				}
+				/*是否有id*/
+				var id=$admin_id.val();
+				if(id===''){
+					dia.content('<span class="g-c-bs-warning g-btips-warn">您没有选择需要操作的数据</span>').showModal();
+					return false;
+				}
+
+				var tip=cf.dia,
+					temp_config=$.extend(true,{},goods_params);
+					temp_config['operate']=applystate;
+					temp_config['ids']=id;
+
+
+				$.ajax({
+						url:"http://120.76.237.100:8082/mall-buzhubms-api/goods/operate",
+						dataType:'JSON',
+						method:'post',
+						data:temp_config
+					})
+					.done(function(resp){
+						var code=parseInt(resp.code,10);
+						if(code!==0){
+							console.log(resp.message);
+							tip.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"审核失败")+'</span>').show();
+							admin_audit_form.reset();
+							setTimeout(function () {
+								tip.close();
+								if(operate_item){
+									operate_item.removeClass('item-lighten');
+									operate_item=null;
+								}
+							},2000);
+							return false;
+						}
+						/*是否是正确的返回数据*/
+						tip.content('<span class="g-c-bs-success g-btips-succ">审核成功</span>').show();
+						operate_item=null;
+						getColumnData(goods_page,goods_config);
+						setTimeout(function () {
+							$show_audit_wrap.modal('hide');
+							tip.close();
+							admin_audit_form.reset();
+						},2000);
+					})
+					.fail(function(resp){
+						console.log(resp.message);
+						admin_audit_form.reset();
+						tip.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"审核失败")+'</span>').show();
+						setTimeout(function () {
+							tip.close();
+							if(operate_item){
+								operate_item.removeClass('item-lighten');
+								operate_item=null;
+							}
+						},2000);
+					});
+
+			},"是否通过该商品的审核?",true);
+		}
+
+
+		/*批量操作*/
+		function batchGoods() {
+			
 		}
 
 
