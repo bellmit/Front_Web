@@ -104,6 +104,7 @@
                             self.$action.find('div').each(function () {
                                 var $this=$(this),
                                     type=$this.attr('data-action');
+                                /*根据权限设置显示隐藏*/
                                 if(typeof temppower[type]!=='undefined'&&!temppower[type]){
                                     $this.addClass('g-d-hidei');
                                 }
@@ -169,23 +170,42 @@
     BatchItem.prototype.filterData=function (key) {
         /*清除选中*/
         var self=this,
-            len=checkitem.length;
+            len=checkid.length;
         if(len!==0&&typeof key!=='undefined'){
-            var i=len - 1;
-            for(i;i>=0;i--){
-                if(key===i){
-                    checkitem[i].prop('checked', false);
-                    checkitem.splice(i,1);
-                    checkid.splice(i,1);
-                    break;
+            if(typeof key.length!=='undefined'){
+                var j=0,
+                    jlen=key.length,
+                    k=0,
+                    klen=checkitem.length;
+
+                outer:for(j;j<jlen;j++){
+                    for(k;k<klen;k++){
+                        if(checkid[k]===key[j]){
+                            checkitem[k].prop('checked', false);
+                            checkitem.splice(k,1);
+                            checkid.splice(k,1);
+                            k=0;
+                            klen=checkid.length;
+                            continue outer;
+                        }
+                    }
                 }
-            }
-            if(checkid.length===0){
-               self.clear();
-            }
-            return {
-                checkid:checkid,
-                checkitem:checkitem
+                if(checkid.length===0){
+                    self.clear();
+                }
+            }else{
+                var i=len - 1;
+                for(i;i>=0;i--){
+                    if(key===i){
+                        checkitem[i].prop('checked', false);
+                        checkitem.splice(i,1);
+                        checkid.splice(i,1);
+                        break;
+                    }
+                }
+                if(checkid.length===0){
+                    self.clear();
+                }
             }
         }
     };

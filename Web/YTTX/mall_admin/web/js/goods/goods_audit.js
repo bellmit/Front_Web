@@ -182,7 +182,7 @@
 								"orderable" :false,
 								"searchable" :false,
 								"render":function(data, type, full, meta ){
-									return '<input value="'+data+'" name="goodsID" type="checkbox" />';
+									return '<input data-forbid="'+full.isForbidden+'" value="'+data+'" data-status="'+full.status+'" name="goodsID" type="checkbox" />';
 								}
 							},
 							{
@@ -249,7 +249,7 @@
 								"render":function(data, type, full, meta ){
 									var id=parseInt(data,10),
 										btns='',
-										temp_forbid=Boolean(full.isForbidden),
+										temp_forbid=full.isForbidden,
 										temp_status=parseInt(full.status,10);
 
 									if(a_state===0||a_state===2){
@@ -277,13 +277,13 @@
 												</span>';
 										}
 										/*可售，禁售*/
-										if(temp_forbid){
+										if(temp_forbid==='true'){
 											/*禁售状态则可售*/
 											btns+='<span data-action="enable" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 													<i class="fa-toggle-off"></i>\
 													<span>可售</span>\
 												</span>';
-										}else{
+										}else if(temp_forbid==='false'){
 											/*可售状态则禁售*/
 											btns+='<span data-action="forbid" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 													<i class="fa-toggle-on"></i>\
@@ -381,6 +381,8 @@
 			$.each([$search_auditStatus],function () {
 				this.on('change',function () {
 					a_state=parseInt(this.value,0);
+					/*清除批量数据*/
+					batchItem.clear();
 				});
 			});
 
@@ -556,15 +558,24 @@
 			}
 			admin_audit_form.reset();
 			var state='',
+				statekey='',
 				str='',
-				data;
+				data,
+				statusmap={
+					0:"仓库",
+					1:"上架",
+					2:"下架",
+					3:"删除",
+					4:"待审核"
+				};
+
+
 
 			/*设置值*/
 			$admin_id.val(id);
 			if(id.indexOf(',')!==-1){
 				/*批量*/
-				var $nodes=data['$tr'],
-					len=$nodes.length,
+				var len=$tr.length,
 					i=0;
 
 				if(len!==0){
@@ -572,7 +583,20 @@
 						data=table.row($tr[i].closest("tr")).data();
 						if(!$.isEmptyObject(data)){
 							state=parseInt(data['status'],10);
-							str+='<tr><td>'+data["gcode"]+'</td><td>'+data["name"]+'</td><td>'+data["providerName"]+'</td><td>'+data["goodsTypeName"]+'</td><td>'+(state===4?'<div class="g-c-info">待审核</div>':'<div class="g-c-red1">状态异常</div>')+'</div></td></tr>';
+							if(state===3){
+								statekey='<div class="g-c-red1">'+statusmap[state]+'</div>';
+							}else if(state===0){
+								statekey='<div class="g-c-warn">'+statusmap[state]+'</div>';
+							}else if(state===1){
+								statekey='<div class="g-c-gray6">'+statusmap[state]+'</div>';
+							}else if(state===2){
+								statekey='<div class="g-c-gray9">'+statusmap[state]+'</div>';
+							}else if(state===4){
+								statekey='<div class="g-c-info">'+statusmap[state]+'</div>';
+							}else{
+								statekey='<div class="g-c-red1">状态异常</div>';
+							}
+							str+='<tr><td>'+data["gcode"]+'</td><td>'+data["name"]+'</td><td>'+data["providerName"]+'</td><td>'+data["goodsTypeName"]+'</td><td>'+statekey+'</td></tr>';
 						}
 					}
 					$(str).appendTo($show_audit_header.html(''));
@@ -583,7 +607,20 @@
 				data=table.row($tr).data();
 				if(!$.isEmptyObject(data)){
 					state=parseInt(data['status'],10);
-					str='<tr><td>'+data["gcode"]+'</td><td>'+data["name"]+'</td><td>'+data["providerName"]+'</td><td>'+data["goodsTypeName"]+'</td><td>'+(state===4?'<div class="g-c-info">待审核</div>':'<div class="g-c-red1">状态异常</div>')+'</div></td></tr>';
+					if(state===3){
+						statekey='<div class="g-c-red1">'+statusmap[state]+'</div>';
+					}else if(state===0){
+						statekey='<div class="g-c-warn">'+statusmap[state]+'</div>';
+					}else if(state===1){
+						statekey='<div class="g-c-gray6">'+statusmap[state]+'</div>';
+					}else if(state===2){
+						statekey='<div class="g-c-gray9">'+statusmap[state]+'</div>';
+					}else if(state===4){
+						statekey='<div class="g-c-info">'+statusmap[state]+'</div>';
+					}else{
+						statekey='<div class="g-c-red1">状态异常</div>';
+					}
+					str='<tr><td>'+data["gcode"]+'</td><td>'+data["name"]+'</td><td>'+data["providerName"]+'</td><td>'+data["goodsTypeName"]+'</td><td>'+statekey+'</td></tr>';
 					$(str).appendTo($show_audit_header.html(''));
 					$show_audit_wrap.modal('show',{backdrop:'static'});
 				}
@@ -770,6 +807,8 @@
 
 				var tip=cf.dia,
 					temp_config=$.extend(true,{},goods_params);
+
+
 					temp_config['operate']=applystate;
 					temp_config['ids']=id;
 
@@ -823,8 +862,140 @@
 
 
 		/*批量操作*/
-		function batchGoods() {
-			
+		function batchGoods(config) {
+
+			var action=config.action;
+
+			if(action===''||typeof action==='undefined'){
+				return false;
+			}
+			var inputitems=batchItem.getBatchNode(),
+				len=inputitems.length,
+				i=0;
+
+			if(len===0){
+				dia.content('<span class="g-c-bs-warning g-btips-warn">请选中操作数据</span>').show();
+				setTimeout(function () {
+					dia.close();
+				},2000);
+				return false;
+			}
+			var tempid=batchItem.getBatchData(),
+				filter=[],
+				actionmap={
+					"up":1,
+					"down":2,
+					"forbid":3,
+					"enable":4,
+					"recommend":8,
+					"audit_yes":5,
+					"audit_no":6
+				},
+				actiontip={
+					"up":'上架',
+					"down":'下架',
+					"forbid":'禁售',
+					"enable":'可售',
+					"recommend":'推荐',
+					"select":'查看',
+					"audit":'审核',
+					"audit_yes":'审核',
+					"audit_no":'审核'
+				};
+
+			for(i;i<len;i++){
+				var tempinput=inputitems[i],
+					temp_forbid=tempinput.attr('data-forbid'),
+					temp_status=parseInt(tempinput.attr('data-status'));
+
+				if(a_state===0||a_state===2){
+					/*待审核，审核失败*/
+					if(action!=='audit'){
+						dia.content('<span class="g-c-bs-warning g-btips-warn">待审核状态不能做 "'+actiontip[action]+'" 操作</span>').show();
+						setTimeout(function () {
+							dia.close();
+							batchItem.clear();
+						},2000);
+						return false;
+					}
+				}else if(a_state===1){
+					if(action==='audit'){
+						dia.content('<span class="g-c-bs-warning g-btips-warn">审核成功不能做 "'+actiontip[action]+'" 操作</span>').show();
+						setTimeout(function () {
+							dia.close();
+							batchItem.clear();
+						},2000);
+						return false;
+					}
+					/*审核成功*/
+					/*上架，下架*/
+					if(temp_status===1){
+						/*上架状态则下架*/
+						if(action==='up'){
+							filter.push(tempid[i]);
+							continue;
+						}
+					}else if(temp_status===2){
+						/*下架状态则上架*/
+						if(action==='down'){
+							filter.push(tempid[i]);
+							continue;
+						}
+					}
+					/*可售，禁售*/
+					if(temp_forbid==='true'){
+						/*禁售状态则可售*/
+						if(action==='forbid'){
+							filter.push(tempid[i]);
+							continue;
+						}
+					}else if(temp_forbid==='false'){
+						/*可售状态则禁售*/
+						if(action==='enable'){
+							filter.push(tempid[i]);
+							continue;
+						}
+					}
+				}
+
+			}
+
+
+			if(filter.length!==0){
+				dia.content('<span class="g-c-bs-warning g-btips-warn">操作状态和选中状态不匹配,系统将过滤不匹配数据</span>').show();
+				batchItem.filterData(filter);
+				filter.length=0;
+				setTimeout(function () {
+					dia.close();
+				},2000);
+			}
+			/*批量操作*/
+			tempid=batchItem.getBatchData();
+			if(tempid.length!==0){
+				if(action==='audit'){
+					inputitems=batchItem.getBatchNode();
+					showAudit(tempid.join(','),inputitems);
+				}else if(action==='forbid'||action==='enable'){
+					/*确认是否启用或禁用*/
+					setSure.sure(actiontip[action],function(cf){
+						/*to do*/
+						goodsAction({
+							id:tempid.join(','),
+							action:action,
+							tip:cf.dia||dia,
+							actiontip:actiontip,
+							actionmap:actionmap
+						},action==='forbid'?"禁售后，商品将不再显示在前端，是否禁售？":"可售后，商品将显示在前端，是否可售？",true);
+					});
+				}else if(action==='up'||action==='down'||action==='recommend'){
+					goodsAction({
+						id:tempid.join(','),
+						action:action,
+						actiontip:actiontip,
+						actionmap:actionmap
+					});
+				}
+			}
 		}
 
 
