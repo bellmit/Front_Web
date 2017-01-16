@@ -77,7 +77,7 @@
 				return false;
 			}
 			self.front=self.index;
-			self.index--
+			self.index--;
 			self.play(self.index);
 		});
 		this.$btnr.on('click',function(){
