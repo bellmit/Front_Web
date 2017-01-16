@@ -5,10 +5,10 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	
 	<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0,maximum-scale=1">
-	<meta name="description" content="布住网后台管理系统--商品管理--待审核商品" />
-	<meta name="keywords" content="布住网后台管理系统--商品管理--待审核商品">
+	<meta name="description" content="布住网后台管理系统--商品管理--禁售商品" />
+	<meta name="keywords" content="布住网后台管理系统--商品管理--禁售商品">
   <meta name="author" content="yp" />
-	<title>布住网后台管理系统--商品管理--待审核商品</title>
+	<title>布住网后台管理系统--商品管理--禁售商品</title>
 	<link rel="stylesheet" href="../../css/base.css">
   <link rel="stylesheet" href="../../js/plugins/datatables/dataTables.bootstrap.css">
 	<link rel="stylesheet" href="../../css/admin.css">
@@ -87,12 +87,12 @@
             <div class="page-title">
                 <div class="title-env">
                     <h1 class="title">商品管理</h1>
-                    <p class="description">待审核商品</p>
+                    <p class="description">禁售商品</p>
                 </div>
                 <div class="breadcrumb-env">
                     <ol class="breadcrumb bc-1">
                         <li><a href=""><i class="fa-home"></i>商品管理</a></li>
-                        <li class="active"><strong>待审核商品</strong></li>
+                        <li class="active"><strong>禁售商品</strong></li>
                     </ol>
                 </div>
             </div>
@@ -105,7 +105,7 @@
 
                         <!--表格标题-->
                         <div class="panel-heading">
-                            <h3 class="panel-title">待审核商品</h3>
+                            <h3 class="panel-title">禁售商品</h3>
 
                             <div class="panel-options">
                                 <a href="#" data-toggle="panel">
@@ -239,74 +239,14 @@
                     <div data-state="1" id="admin_batchitem_check" class="admin-batchitem-check" data-check="0" data-action="checkall"></div>
                 </div>
                 <div class="admin-batchitem-inner" id="admin_batchitem_action">
-                    <div data-action="up">上架</div>
-                    <div data-action="down">下架</div>
-                    <div data-action="audit">审核</div>
-                    <div data-action="recommend">推荐</div>
+                    <div data-action="forbid">禁售</div>
+                    <div data-action="enable">可售</div>
+                    <div data-action="delete">删除</div>
                 </div>
             </div>
         </div>
     </div>
 
-
-
-    <!--审核商品-->
-    <div class="modal fade custom-width" id="show_audit_wrap">
-        <div class="modal-dialog g-w-percent46">
-            <div class="modal-content">
-
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title">商品审核</h4>
-                </div>
-                <div class="modal-body">
-                    <form role="form"  method="post" id="admin_audit_form" class="admin-form1">
-                        <input type="text" value="" id="admin_id" class="g-d-hidei" />
-                        <table class="table table-bordered table-striped table-hover admin-table">
-                            <colgroup>
-                                <col class="g-w-percent15"/>
-                                <col class="g-w-percent10"/>
-                                <col class="g-w-percent10"/>
-                                <col class="g-w-percent10"/>
-                                <col class="g-w-percent5"/>
-                            </colgroup>
-                            <thead>
-                            <tr>
-                                <th>商品编号</th>
-                                <th>商品名称</th>
-                                <th>店铺名称</th>
-                                <th>分类</th>
-                                <th>状态</th>
-                            </tr>
-                            </thead>
-                            <tbody id="show_audit_header"></tbody>
-                            <tfoot  class="admin-td-vam">
-                            <tr>
-                                <td colspan="3" class="g-t-r">
-                                    <div class="g-c-red2 inline" id="audit_radio_tip"></div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    <div class="inline" id="audit_radio_wrap">
-                                        <label class="btn btn-white g-br3">
-                                            通过&nbsp;:&nbsp;<input type="radio" value="5" name="state" />
-                                        </label>
-                                        <label class="btn btn-white g-br3">
-                                            不通过&nbsp;:&nbsp;<input type="radio" value="6" name="state" />
-                                        </label>
-                                    </div>
-                                </td>
-                                <td colspan="2">
-                                    <button type="button" class="btn btn-success g-f-l" id="audit_action" >审核</button>
-                                </td>
-                            </tr>
-                            </tfoot>
-                        </table>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-info" data-dismiss="modal">关闭</button>
-                </div>
-            </div>
-        </div>
-    </div>
 
 
     <!--查看商品详情-->
@@ -493,6 +433,6 @@
     <script src="../../js/plugins/pagination/pagination.js"></script>
     <script src="../../js/goods/goods_slide.js"></script>
     <script src="../../js/widgets/batch_item.js"></script>
-    <script src="../../js/goods/goods_audit.js"></script>
+    <script src="../../js/goods/goods_forbid.js"></script>
 </body>
 </html>

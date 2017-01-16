@@ -23,7 +23,7 @@
 
 
 			/*权限调用*/
-			var powermap=public_tool.getPower(),
+			var powermap=public_tool.getPower(240),
 				detail_power=public_tool.getKeyPower('bzw-order-details',powermap);
 
 
@@ -140,7 +140,7 @@
 							{
 								"data":"totalMoney",
 								"render":function(data, type, full, meta ){
-									return public_tool.moneyCorrect(data,12,false);
+									return '￥:'+public_tool.moneyCorrect(data,12,false)[0];
 								}
 							},
 							{
@@ -149,7 +149,7 @@
 									var stauts=parseInt(data,10),
 										statusmap={
 											1:"微信支付",
-											2:"网银支付",
+											2:"支付宝支付",
 											3:"其他"
 										};
 
@@ -415,16 +415,13 @@
 						return false;
 					}
 					/*是否是正确的返回数据*/
-					var result=resp.result;
-					if(!result){
+					var list=resp.result;
+					if(!list){
 						return false;
 					}
 
 					var str='',
 						istitle=false;
-
-					/*测试代码*/
-					var list=result.list[id - 1];
 
 					if(!$.isEmptyObject(list)){
 						/*添加高亮状态*/
@@ -443,6 +440,13 @@
 										21:"已评价"
 									};
 									str+='<tr><th>'+detail_map[j]+':</th><td>'+statemap[parseInt(list[j],10)]+'</td></tr>';
+								}else if(j==='goods'){
+									var tempsub=list[j],
+										k=0,
+										sublen=tempsub.length;
+									for(k;k<sublen;k++){
+										str+='<tr><th>商品名称:</th><td>'+tempsub[k]["goodsName"]+'</td></tr>';
+									}
 								}else{
 									str+='<tr><th>'+detail_map[j]+':</th><td>'+list[j]+'</td></tr>';
 								}

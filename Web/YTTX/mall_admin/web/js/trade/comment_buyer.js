@@ -144,16 +144,16 @@
 						order:[[3, "desc" ]],
 						columns: [
 							{
-								"data":"provider"
+								"data":"customerName"
 							},
 							{
-								"data":"store"
+								"data":"providerName"
 							},
 							{
-								"data":"company"
+								"data":"content"
 							},
 							{
-								"data":"createTime"
+								"data":"addTime"
 							},
 							{
 								"data":"id",
@@ -335,6 +335,7 @@
 
 								if(formtype==='editcomment'){
 									/*同步编辑器*/
+									editor.sync();
 									$.extend(true,setdata,{
 										id:$admin_id.val(),
 										content:$admin_content.val()
@@ -424,10 +425,10 @@
 				for(var j in list){
 					switch (j){
 						case "content":
-							$admin_content.val(list[j]);
+							editor.html(list[j]);
 							editor.sync();
 							break;
-						case "createTime":
+						case "addTime":
 							$admin_commentTime.html(list[j]);
 							break;
 					}

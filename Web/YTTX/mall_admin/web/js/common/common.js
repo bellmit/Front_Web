@@ -741,6 +741,7 @@
 			"code":"user",
 			"match":"-user-",
 			"class":"menu-ux-user",
+			"matchignore":["bzw-user-add","bzw-user-flow","bzw-user-notice"],
 			"module":"admin",
 			"modid":"210"
 		},
@@ -765,6 +766,7 @@
 			"code":"trade",
 			"match":"-trade-",
 			"matchlist":['order-manager','comment-buyer','comment-saler'],
+			"matchignore":["comment-saler"],
 			"class":"menu-ux-record",
 			"module":"trade",
 			"modid":"240"
@@ -781,6 +783,7 @@
 			"name":"商品属性",
 			"code":"attribute",
 			"match":"-attribute-",
+			"ignoremodule":true,
 			"class":"menu-ux-shop",
 			"module":"attribute",
 			"modid":"260"
@@ -797,6 +800,7 @@
 			"name":"用户统计",
 			"code":"userstats",
 			"match":"-userstats-",
+			"ignoremodule":true,
 			"class":"menu-ux-chart",
 			"module":"userstats",
 			"modid":"280"
@@ -805,6 +809,7 @@
 			"name":"供应商统计",
 			"code":"providerstats",
 			"match":"-providerstats-",
+			"ignoremodule":true,
 			"class":"menu-ux-chart",
 			"module":"providerstats",
 			"modid":"290"
@@ -813,6 +818,7 @@
 			"name":"商品统计",
 			"code":"goodsstats",
 			"match":"-goodsstats-",
+			"ignoremodule":true,
 			"class":"menu-ux-chart",
 			"module":"goodsstats",
 			"modid":"300"
@@ -820,6 +826,7 @@
 		"310":{
 			"name":"订单统计",
 			"code":"orderstats",
+			"ignoremodule":true,
 			"match":"-orderstats-",
 			"class":"menu-ux-chart",
 			"module":"orderstats",
@@ -829,6 +836,7 @@
 			"name":"平台管理",
 			"code":"paltform",
 			"match":"-paltform-",
+			"ignoremodule":true,
 			"class":"menu-ux-platform",
 			"module":"paltform",
 			"modid":"320"
@@ -837,6 +845,7 @@
 			"name":"财务管理",
 			"code":"statistics",
 			"match":"-statistics-",
+			"ignoremodule":true,
 			"class":"menu-ux-chart",
 			"module":"statistics",
 			"modid":"6"
@@ -845,6 +854,7 @@
 			"name":"设置管理",
 			"code":"setting",
 			"match":"-setting-",
+			"ignoremodule":true,
 			"class":"menu-ux-setting",
 			"module":"setting",
 			"modid":"8"
@@ -1069,6 +1079,22 @@
 				}
 				return '<li class="has-sub"><a href=\"\"><i class=\"'+matchClass(link,item.modClass)+'\"></i><span>'+item.modName+'</span></a><ul>';
 			},
+			matchIgnore=function (map,str) {
+				/*忽略解析指定模块*/
+				var iglist=map['matchignore'];
+				if(iglist){
+					var p=0,
+						plen=iglist.length;
+
+					for(p;p<plen;p++){
+						if(str.indexOf(iglist[p])!==-1){
+							return true;
+						}
+					}
+					return false;
+				}
+				return false;
+			},
 			menu=data.result.menu,
 			len=menu.length,
 			menustr='',
@@ -1078,6 +1104,7 @@
 			suffix='.html',
 			subactive="sub-menu-active",
 			link='',
+			ignore=null,
 			item=null,
 			sublen='',
 			subitem=null,
@@ -1090,6 +1117,17 @@
 			link=self.menuMap[item.modId];
 			if(typeof link==='undefined'){
 				continue;
+			}
+			if(typeof link['ignoremodule']!=='undefined'){
+				if(link['ignoremodule']){
+					/*忽略模块*/
+					continue;
+				}
+			}
+			if("matchignore" in link){
+				ignore=true;
+			}else{
+				ignore=null;
 			}
 			//解析菜单
 			if(isindex){
@@ -1118,7 +1156,12 @@
 					j=0;
 					for(j;j<sublen;j++){
 						item=subitem[j];
-							menustr+='<li><a href=\"'+link.code+'/'+item.modLink+suffix+'\"><span>'+item.modName+'</span></a></li>';
+						/*判断是否存在忽略*/
+						if(ignore&&matchIgnore(link,item.modLink)){
+							/*存在忽略菜单即执行下一轮检查*/
+							continue;
+						}
+						menustr+='<li><a href=\"'+link.code+'/'+item.modLink+suffix+'\"><span>'+item.modName+'</span></a></li>';
 					}
 					menustr+="</li></ul>";
 				}else{
@@ -1152,6 +1195,11 @@
 					var ismodule=path.indexOf(link.match)!==-1;
 					for(j;j<sublen;j++){
 						item=subitem[j];
+						/*判断是否存在忽略*/
+						if(ignore&&matchIgnore(link,item.modLink)){
+							/*存在忽略菜单即执行下一轮检查*/
+							continue;
+						}
 						if(ismodule){
 								menustr+='<li><a href=\"'+item.modLink+suffix+'\"><span>'+item.modName+'</span></a></li>';
 						}else{

@@ -25,6 +25,7 @@
         $.extend(true,this,{
             showactive:'admin-batchitem-showactive',
             checkactive:'admin-batchitem-checkactive',
+            highactive:'item-lightenbatch',
             $batchtoggle:null,
             $batchshow:null,
             $checkall:null,
@@ -149,9 +150,10 @@
 
     /*清空数据(清除已经选中的数据)*/
     BatchItem.prototype.clear=function () {
+        var self=this;
         checkid.length=0;
         check=0;
-        this.$checkall.attr({
+        self.$checkall.attr({
             'data-check':0
         }).removeClass(this.checkactive);
 
@@ -160,6 +162,7 @@
         if(len!==0){
             var i=0;
             for(i;i<len;i++){
+                checkitem[i].closest('tr').removeClass(self.highactive);
                 checkitem[i].prop('checked', false);
             }
             checkitem.length=0;
@@ -172,7 +175,7 @@
         var self=this,
             len=checkid.length;
         if(len!==0&&typeof key!=='undefined'){
-            if(typeof key.length!=='undefined'){
+            if($.isArray(key)){
                 var j=0,
                     jlen=key.length,
                     k=0,
@@ -181,6 +184,7 @@
                 outer:for(j;j<jlen;j++){
                     for(k;k<klen;k++){
                         if(checkid[k]===key[j]){
+                            checkitem[k].closest('tr').removeClass(self.highactive);
                             checkitem[k].prop('checked', false);
                             checkitem.splice(k,1);
                             checkid.splice(k,1);
@@ -196,7 +200,8 @@
             }else{
                 var i=len - 1;
                 for(i;i>=0;i--){
-                    if(key===i){
+                    if(checkid[i]===key){
+                        checkitem[i].closest('tr').removeClass(self.highactive);
                         checkitem[i].prop('checked', false);
                         checkitem.splice(i,1);
                         checkid.splice(i,1);
@@ -233,6 +238,7 @@
                         if(!$input.is(':checked')){
                             checkid.push($input.prop('checked',true).val());
                             checkitem.push($input);
+                            $input.closest('tr').addClass(self.highactive);
                         }
                         state=parseInt($input.attr('data-state'),10);
                     }else{
@@ -240,6 +246,7 @@
                         if(state===tempstate&&!$input.is(':checked')){
                             checkid.push($input.prop('checked',true).val());
                             checkitem.push($input);
+                            $input.closest('tr').addClass(self.highactive);
                         }
                     }
                 });
@@ -256,6 +263,7 @@
                     if(!$input.is(':checked')){
                         checkid.push($input.prop('checked',true).val());
                         checkitem.push($input);
+                        $input.closest('tr').addClass(self.highactive);
                     }
                 });
             }
@@ -279,6 +287,7 @@
             if (len === 0) {
                 checkid.push(text);
                 checkitem.push($input);
+                $input.closest('tr').addClass(self.highactive);
                 if(self.isstate){
                     state=parseInt($input.attr('data-state'),10);
                 }
@@ -290,6 +299,7 @@
                     var tempstate=parseInt($input.attr('data-state'),10);
                     if(state===tempstate){
                         ishave=$.inArray(text,checkid);
+                        $input.closest('tr').addClass(self.highactive);
                         if(ishave!==-1){
                             checkid.splice(ishave,1,text);
                             checkitem.splice(ishave,1,$input);
@@ -299,9 +309,11 @@
                         }
                     }else{
                         $input.prop('checked',false);
+                        $input.closest('tr').removeClass(self.highactive);
                     }
                 }else{
                     ishave=$.inArray(text,checkid);
+                    $input.closest('tr').addClass(self.highactive);
                     if(ishave!==-1){
                         checkid.splice(ishave,1,text);
                         checkitem.splice(ishave,1,$input);
@@ -316,6 +328,7 @@
             ishave=$.inArray(text,checkid);
             if(ishave!==-1){
                 checkid.splice(ishave,1);
+                checkitem[ishave].closest('tr').removeClass(self.highactive);
                 checkitem.splice(ishave,1);
                 if(checkid.length===0){
                     self.clear();

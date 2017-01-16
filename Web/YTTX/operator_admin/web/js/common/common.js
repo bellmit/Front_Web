@@ -1078,6 +1078,12 @@
 			if(typeof link==='undefined'){
 				continue;
 			}
+			if(typeof link['ignoremodule']!=='undefined'){
+				if(link['ignoremodule']){
+					/*忽略模块*/
+					continue;
+				}
+			}
 			if("matchignore" in link){
 				ignore=true;
 			}else{
