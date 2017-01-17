@@ -540,9 +540,9 @@
 			if(table===null){
 				table=opt.$admin_list_wrap.DataTable(opt.config);
 			}else{
-				table.ajax.config(opt.config.ajax).load();
 				/*清除批量数据*/
 				batchItem.clear();
+				table.ajax.config(opt.config.ajax).load();
 			}
 		}
 
@@ -979,31 +979,28 @@
 			}
 
 
-
-
 			if(filter.length!==0){
 				dia.content('<span class="g-c-bs-warning g-btips-warn">操作状态和选中状态不匹配,系统将过滤不匹配数据</span>').show();
 				batchItem.filterData(filter);
 				filter.length=0;
 				setTimeout(function () {
 					dia.close();
+					/*批量操作*/
+					tempid=batchItem.getBatchData();
+					if(tempid.length!==0){
+						if(action==='audit'){
+							inputitems=batchItem.getBatchNode();
+							showAudit(tempid,inputitems);
+						}else if(action==='up'||action==='down'||action==='recommend'){
+							goodsAction({
+								id:tempid,
+								action:action,
+								actiontip:actiontip,
+								actionmap:actionmap
+							});
+						}
+					}
 				},2000);
-			}
-			
-			/*批量操作*/
-			tempid=batchItem.getBatchData();
-			if(tempid.length!==0){
-				if(action==='audit'){
-					inputitems=batchItem.getBatchNode();
-					showAudit(tempid,inputitems);
-				}else if(action==='up'||action==='down'||action==='recommend'){
-					goodsAction({
-						id:tempid,
-						action:action,
-						actiontip:actiontip,
-						actionmap:actionmap
-					});
-				}
 			}
 		}
 

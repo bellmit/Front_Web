@@ -801,34 +801,34 @@
 				filter.length=0;
 				setTimeout(function () {
 					dia.close();
+					/*批量操作*/
+					tempid=batchItem.getBatchData();
+					if(tempid.length!==0){
+						if(action==='forbid'||action==='enable'){
+							/*确认是否启用或禁用*/
+							setSure.sure(actiontip[action],function(cf){
+								/*to do*/
+								goodsAction({
+									id:tempid,
+									action:action,
+									tip:cf.dia||dia,
+									actiontip:actiontip,
+									actionmap:actionmap
+								},action==='forbid'?"禁售后，商品将不再显示在前端，是否禁售？":"可售后，商品将显示在前端，是否可售？",true);
+							});
+						}else if(action==='delete'){
+							setSure.sure(actiontip[action],function(cf){
+								goodsAction({
+									id:tempid,
+									action:action,
+									tip:cf.dia||dia,
+									actiontip:actiontip,
+									actionmap:actionmap
+								},"是否真需要删除这些数据？",true);
+							});
+						}
+					}
 				},2000);
-			}
-			/*批量操作*/
-			tempid=batchItem.getBatchData();
-			if(tempid.length!==0){
-				if(action==='forbid'||action==='enable'){
-					/*确认是否启用或禁用*/
-					setSure.sure(actiontip[action],function(cf){
-						/*to do*/
-						goodsAction({
-							id:tempid,
-							action:action,
-							tip:cf.dia||dia,
-							actiontip:actiontip,
-							actionmap:actionmap
-						},action==='forbid'?"禁售后，商品将不再显示在前端，是否禁售？":"可售后，商品将显示在前端，是否可售？",true);
-					});
-				}else if(action==='delete'){
-					setSure.sure(actiontip[action],function(cf){
-						goodsAction({
-							id:tempid,
-							action:action,
-							tip:cf.dia||dia,
-							actiontip:actiontip,
-							actionmap:actionmap
-						},"是否真需要删除这些数据？",true);
-					});
-				}
 			}
 		}
 

@@ -810,6 +810,98 @@
             "prid": 9677
           }
         ]
+      },
+      {
+        "modClass": "bzw-advert-manager",
+        "modCode": "bzw-advert-manager",
+        "modId": 330,
+        "modItem": [
+          {
+            "modClass": "bzw-advert-list",
+            "modCode": "bzw-advert-list",
+            "modId": 330,
+            "modLink": "bzw-advert-list",
+            "modName": "广告列表"
+          },
+          {
+            "modClass": "bzw-advert-add",
+            "modCode": "bzw-advert-add",
+            "modId": 330,
+            "modLink": "bzw-advert-add",
+            "modName": "新增广告"
+          }
+        ],
+        "modLink": "bzw-advert-manager",
+        "modName": "广告管理",
+        "permitItem": [
+          {
+            "funcCode": "bzw-advert-list",
+            "funcName": "广告管理",
+            "isPermit": 1,
+            "modId": 330,
+            "prid": 10598
+          },
+          {
+            "funcCode": "bzw-advert-add",
+            "funcName": "新增广告",
+            "isPermit": 1,
+            "modId": 330,
+            "prid": 10599
+          }
+        ]
+      },
+      {
+        "modClass": "bzw-activity-settings",
+        "modCode": "bzw-activity-settings",
+        "modId": 340,
+        "modItem": [
+          {
+            "modClass": "bzw-activity-list",
+            "modCode": "bzw-activity-list",
+            "modId": 340,
+            "modLink": "bzw-activity-list",
+            "modName": "活动列表"
+          },
+          {
+            "modClass": "bzw-module-set",
+            "modCode": "bzw-module-set",
+            "modId": 340,
+            "modLink": "bzw-module-set",
+            "modName": "设置模块集合"
+          },
+          {
+            "modClass": "bzw-activity-add",
+            "modCode": "bzw-activity-add",
+            "modId": 340,
+            "modLink": "bzw-activity-add",
+            "modName": "添加活动"
+          }
+        ],
+        "modLink": "bzw-activity-settings",
+        "modName": "活动设置",
+        "permitItem": [
+          {
+            "funcCode": "bzw-activity-list",
+            "funcName": "活动列表",
+            "isPermit": 1,
+            "modId": 340,
+            "prid": 10600
+          },
+          {
+            "funcCode": "bzw-module-set",
+            "funcName": "设置模块集合",
+            "isPermit": 1,
+            "modId": 340,
+            "prid": 10601
+          },
+          {
+            "funcCode": "bzw-activity-add",
+            "funcName": "添加活动",
+            "isPermit": 1,
+            "modId": 340,
+            "prid": 10602
+          }
+        ]
       }
     ]
   }

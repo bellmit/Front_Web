@@ -31,14 +31,11 @@
 
 
 			/*查询对象*/
-			var $search_Name=$('#search_Name'),
-				$search_content=$('#search_content'),
-				$search_orderNumber=$('#search_orderNumber'),
+			var $search_condition=$('#search_condition'),
+				$search_conditionContent=$('#search_conditionContent'),
 				$search_time=$('#search_time'),
 				$admin_search_btn=$('#admin_search_btn'),
 				$admin_search_clear=$('#admin_search_clear');
-
-
 
 
 			/*列表请求配置*/
@@ -56,7 +53,7 @@
 						autoWidth:true,/*是否*/
 						paging:false,
 						ajax:{
-							url:"../../json/user/mall_user_record.json",
+							url:"http://120.76.237.100:8082/mall-buzhubms-api/capitalflowlog/list",
 							dataType:'JSON',
 							method:'post',
 							dataSrc:function ( json ) {
@@ -97,8 +94,9 @@
 								return result?result.list||[]:[];
 							},
 							data:{
-								userId:decodeURIComponent(logininfo.param.roleId),
+								roleId:decodeURIComponent(logininfo.param.roleId),
 								adminId:decodeURIComponent(logininfo.param.adminId),
+								grade:decodeURIComponent(logininfo.param.grade),
 								token:decodeURIComponent(logininfo.param.token),
 								page:1,
 								pageSize:10
@@ -106,10 +104,10 @@
 						},
 						info:false,
 						searching:true,
-						order:[[5, "desc" ]],
+						order:[[4, "desc" ]],
 						columns: [
 							{
-								"data":"Name"
+								"data":"userName"
 							},
 							{
 								"data":"content",
@@ -119,16 +117,20 @@
 								}
 							},
 							{
-								"data":"income"
-							},
-							{
-								"data":"spend"
+								"data":"amount",
+								"render":function(data, type, full, meta ){
+									if(data===''||isNaN(data)){
+										return '<div class="g-c-red1">￥：0.00</div>';
+									}else{
+										return '<div class="g-c-red1">￥：'+public_tool.moneyCorrect(data,12,false)[0]+'</div>';
+									}
+								}
 							},
 							{
 								"data":"orderNumber"
 							},
 							{
-								"data":"lastLoginTime"
+								"data":"createTime"
 							}
 						]
 					}
@@ -154,7 +156,7 @@
 
 			/*清空查询条件*/
 			$admin_search_clear.on('click',function(){
-				$.each([$search_Name,$search_content,$search_orderNumber,$search_time],function(){
+				$.each([$search_condition,$search_conditionContent,$search_time],function(){
 					this.val('');
 				});
 			});
@@ -165,7 +167,7 @@
 			$admin_search_btn.on('click',function(){
 				var data= $.extend(true,{},record_config.config.ajax.data);
 
-				$.each([$search_Name,$search_content,$search_orderNumber,$search_time],function(){
+				$.each([$search_condition,$search_conditionContent,$search_time],function(){
 					var text=this.val(),
 						selector=this.selector.slice(1),
 						istime=selector.indexOf('time')!==-1?true:false,
@@ -173,22 +175,16 @@
 
 					if(text===""){
 						if(istime){
-							if(typeof data['startTime']!=='undefined'){
-								delete data['startTime'];
-							}
-							if(typeof data['endTime']!=='undefined'){
-								delete data['endTime'];
-							}
+							delete data['timeStart'];
+							delete data['timeEnd'];
 						}else{
-							if(typeof data[key[1]]!=='undefined'){
-								delete data[key[1]];
-							}
+							delete data[key[1]];
 						}
 					}else{
 						if(istime){
 							var temptime=text.split(',');
-							data['startTime']=temptime[0];
-							data['endTime']=temptime[1];
+							data['timeStart']=temptime[0];
+							data['timeEnd']=temptime[1];
 						}else{
 							data[key[1]]=text;
 						}

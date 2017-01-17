@@ -120,16 +120,17 @@
                         <div class="panel-body">
                             <div class="admin-search-wrap">
                                 <div class="admin-search-item">
-                                    <label>会员名称：</label>
-                                    <input type="text" id="search_Name" />
+                                    <label>搜索条件：</label>
+                                    <select id="search_condition">
+                                        <option selected value="">请选择搜索条件</option>
+                                        <option value="1">会员名称</option>
+                                        <option value="2">流水内容</option>
+                                        <option value="3">订单号</option>
+                                    </select>
                                 </div>
                                 <div class="admin-search-item">
                                     <label>流水内容：</label>
-                                    <input type="text" id="search_content" />
-                                </div>
-                                <div class="admin-search-item">
-                                    <label>订单号：</label>
-                                    <input type="text" id="search_orderNumber" />
+                                    <input type="text" id="search_conditionContent" />
                                 </div>
                                 <div class="admin-search-item">
                                     <label>时间：</label>
@@ -152,8 +153,7 @@
                                 <colgroup>
                                     <col class="g-w-percent8">
                                     <col class="g-w-percent16">
-                                    <col class="g-w-percent5">
-                                    <col class="g-w-percent5">
+                                    <col class="g-w-percent10">
                                     <col class="g-w-percent8">
                                     <col class="g-w-percent8">
                                 </colgroup>
@@ -163,8 +163,7 @@
                                 <tr>
                                     <th>会员名称</th>
                                     <th>流水内容</th>
-                                    <th>收入金额</th>
-                                    <th>支出金额</th>
+                                    <th>金额</th>
                                     <th>订单号</th>
                                     <th>操作时间</th>
                                 </tr>

@@ -42,6 +42,15 @@
 					},
 					cancel:false
 				})/*一般提示对象*/,
+				goods_params={
+					roleId:decodeURIComponent(logininfo.param.roleId),
+					adminId:decodeURIComponent(logininfo.param.adminId),
+					grade:decodeURIComponent(logininfo.param.grade),
+					token:decodeURIComponent(logininfo.param.token)
+				},
+				goodstypeid='',
+				$search_gtione=$('#search_gtione'),
+				$search_gtitwo=$('#search_gtitwo'),
 				resetform0=null;
 
 
@@ -56,6 +65,40 @@
 				$admin_typeremark=$('#admin_typeremark'),
 				$admin_typeshow=$('#admin_typeshow'),
 				$admin_typeimage=$('#admin_typeimage');
+
+
+			/*查询分类并绑定分类查询*/
+			$.each([$search_gtione,$search_gtitwo],function(){
+				var selector=this.selector;
+				/*初始化查询一级分类*/
+				if(selector.indexOf('one')!==-1){
+					getGoodsTypes(goodstypeid,'one',true);
+				}
+				this.on('change',function(){
+					var $option=$(this).find(':selected'),
+						value=this.value,
+						hasub=false;
+					if(selector.indexOf('one')!==-1){
+						if(value===''){
+							$search_gtitwo.html('');
+							goodstypeid='';
+							return false;
+						}
+						hasub=$option.attr('data-hassub');
+						goodstypeid=value;
+						if(hasub==='true'){
+							getGoodsTypes(value,'two');
+						}
+					}else if(selector.indexOf('two')!==-1){
+						if(value===''){
+							goodstypeid=$search_gtione.find(':selected').val();
+							return false;
+						}
+						hasub=$option.attr('data-hassub');
+						goodstypeid=value;
+					}
+				});
+			});
 			
 
 			/*初始化表单*/
@@ -202,7 +245,7 @@
 
 									$.extend(true,setdata,{
 										name:$admin_typename.val(),
-										parentId:'',
+										parentId:goodstypeid,
 										gtCode:$admin_typecode.val(),
 										sort:$admin_typesort.val(),
 										isVisible:parseInt($admin_typeshow.find(':checked').val(),10)===1?true:false,
@@ -254,12 +297,99 @@
 
 		}
 
+		/*级联类型查询*/
+		function getGoodsTypes(value,type,flag){
+			var typemap={
+				'one':'一级',
+				'two':'二级'
+			};
+			var temp_config=$.extend(true,{},goods_params);
+			temp_config['parentId']=value;
+			$.ajax({
+				url:"http://120.76.237.100:8082/mall-buzhubms-api/goodstype/list",
+				dataType:'JSON',
+				async:false,
+				method:'post',
+				data:temp_config
+			}).done(function(resp){
+				var code=parseInt(resp.code,10);
+				if(code!==0){
+					if(code===999){
+						/*清空缓存*/
+						public_tool.loginTips(function () {
+							public_tool.clear();
+							public_tool.clearCacheData();
+						});
+					}
+					console.log(resp.message);
+					return false;
+				}
+
+
+
+				var result=resp.result;
+
+				if(result){
+					var list=result.list;
+					if(!list){
+						return false;
+					}
+				}else{
+					return false;
+				}
+
+				var len=list.length,
+					i= 0,
+					str='';
+
+				if(len!==0){
+					for(i;i<len;i++){
+						var item=list[i];
+						if(i===0){
+							str+='<option value="" selected >请选择'+typemap[type]+'分类</option><option  data-hasSub="'+item["hasSub"]+'" value="'+item["id"]+'" >'+item["name"]+'</option>';
+						}else{
+							str+='<option data-hasSub="'+item["hasSub"]+'" value="'+item["id"]+'" >'+item["name"]+'</option>';
+						}
+					}
+					if(type==='one'){
+						$(str).appendTo($search_gtione.html(''));
+						if(flag){
+							$search_gtitwo.html('<option value="" selected >请选择二级分类</option>');
+						}
+					}else if(type==='two'){
+						$(str).appendTo($search_gtitwo.html(''));
+					}
+				}else{
+					console.log(resp.message||'error');
+					if(type==='one'){
+						$search_gtione.html('<option value="" selected >请选择一级分类</option>');
+						$search_gtitwo.html('<option value="" selected >请选择二级分类</option>');
+					}else if(type==='two'){
+						$search_gtitwo.html('<option value="" selected >请选择二级分类</option>');
+					}
+				}
+			}).fail(function(resp){
+				console.log(resp.message||'error');
+				if(type==='one'){
+					$search_gtione.html('<option value="" selected >请选择一级分类</option>');
+					$search_gtitwo.html('<option value="" selected >请选择二级分类</option>');
+				}else if(type==='two'){
+					$search_gtitwo.html('<option value="" selected >请选择二级分类</option>');
+				}
+			});
+		}
+
+
 
 		/*清空表单数据*/
 		function emptyGoodsTypeData() {
+			/*清除上传图片数据*/
 			$admin_typeimage.attr({
 				'data-image':''
 			}).html('');
+			/*重新查询分类数据*/
+			goodstypeid='';
+			getGoodsTypes(goodstypeid,'one',true);
 		}
 
 

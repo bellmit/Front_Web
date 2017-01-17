@@ -741,7 +741,7 @@
 			"code":"user",
 			"match":"-user-",
 			"class":"menu-ux-user",
-			"matchignore":["bzw-user-add","bzw-user-flow","bzw-user-notice"],
+			"matchignore":["bzw-user-add"],
 			"module":"admin",
 			"modid":"210"
 		},
@@ -840,6 +840,24 @@
 			"class":"menu-ux-platform",
 			"module":"paltform",
 			"modid":"320"
+		},
+		"330":{
+			"name":"广告管理",
+			"code":"paltform",
+			"match":"-advert-",
+			"ignoremodule":true,
+			"class":"menu-ux-ad",
+			"module":"advert",
+			"modid":"330"
+		},
+		"340":{
+			"name":"活动设置",
+			"code":"activity",
+			"match":"-activity-",
+			"ignoremodule":true,
+			"class":"menu-ux-serve",
+			"module":"activity",
+			"modid":"340"
 		},
 		"6":{
 			"name":"财务管理",

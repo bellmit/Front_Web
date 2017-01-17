@@ -105,7 +105,7 @@
 
                     <!--编辑表单标题-->
                     <div class="panel-heading">
-                        <h3 class="panel-title">添加(编辑)通知</h3>
+                        <h3 class="panel-title">发送通知</h3>
                         <div class="panel-options">
                             <a href="#" data-toggle="panel">
                                 <span class="collapse-icon">&ndash;</span>
@@ -127,21 +127,12 @@
                                     <label class="btn btn-white g-br3">
                                         全部用户&nbsp;:&nbsp;<input class="self-error-pos" checked type="radio" value="2" name="type" data-validate="required" data-message-required="请选择发送类型"  />
                                     </label>
-                                    <label class="btn btn-white g-br3">
-                                        全部店铺&nbsp;:&nbsp;<input class="self-error-pos" type="radio" value="3" name="type" data-validate="required" data-message-required="请选择发送类型"  />
-                                    </label>
                                 </div>
                             </div>
 
                             <div class="form-group g-d-hidei" id="member_wrap">
                                 <label class="control-label"><span class="form-require-item g-c-red1">*</span>发送会员列表：<span class="g-c-red1" id="member_tip"></span></label>
-                                <div id="admin_member"></div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="control-label">指定发送时间：</label>
-
-                                <input type="text" class="form-control" name="time" id="admin_time" readonly  placeholder="请选择发送时间"  />
+                                <div class="admin-data-panel1" id="admin_member"></div>
                             </div>
 
                             <div class="form-group">
@@ -237,7 +228,6 @@
 
 <script src="../../js/common/base.js"></script>
 <script src="../../js/common/common.js"></script>
-<script src="../../js/plugins/datepicker/datepicker.js"></script>
 <script src="../../js/plugins/kindeditor/kindeditor-all-min.js"></script>
 <!--表单验证插件-->
 <script src="../../js/plugins/jquery-validate/jquery.validate.js"></script>

@@ -178,6 +178,7 @@
 								"data":"id",
 								"render":function(data, type, full, meta ){
 									var id=parseInt(data,10),
+										enabled=full.isEnabled,
 										btns='';
 
 
@@ -188,27 +189,21 @@
 											<span>编辑</span>\
 										</span>';
 									}
-									/*if(enabled_power){
+									if(edit_power){
 										if(enabled){
-											/!*启用状态则禁用*!/
+											/*启用状态则禁用*/
 											btns+='<span data-action="down" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 												<i class="fa-arrow-down"></i>\
 												<span>禁用</span>\
 											</span>';
-											if(admin===0&&addadmin_power){
-											 btns+='<span data-action="addadmin" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
-												 <i class="fa-plus"></i>\
-												 <span>新增管理员</span>\
-											 </span>';
-											 }
 										}else{
-											/!*禁用状态则启用*!/
+											/*禁用状态则启用*/
 											btns+='<span data-action="up" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 												<i class="fa-arrow-up"></i>\
 												<span>启用</span>\
 											</span>';
 										}
-									}*/
+									}
 									return btns;
 								}
 							}
@@ -304,28 +299,14 @@
 					}
 					operate_item=$tr.addClass('item-lighten');
 					/*确认是否启用或禁用*/
-					setSure.sure(action==='up'?'启用':'禁用',function(cf){
+					setSure.sure('',function(cf){
 						/*to do*/
 						setEnabled({
 							id:id,
 							action:action,
 							tip:cf.dia||dia
 						});
-					});
-				}else if(action==='addadmin'){
-					if(operate_item){
-						operate_item.removeClass('item-lighten');
-						operate_item=null;
-					}
-					operate_item=$tr.addClass('item-lighten');
-					/*确认是否启用或禁用*/
-					setSure.sure('新增',function(cf){
-						/*to do*/
-						addPower({
-							id:id,
-							tip:cf.dia||dia
-						});
-					});
+					},action==='up'?'是否真要启用？启用后该用户将能使用该账号':'是否真要禁用？禁用后该用户将不再能使用该账号',true);
 				}
 			});
 
@@ -353,14 +334,15 @@
 				action=obj.action;
 
 			$.ajax({
-					url:"../../json/user/mall_user_list.json",
+					url:"http://120.76.237.100:8082/mall-buzhubms-api/user/update",
 					dataType:'JSON',
 					method:'post',
 					data:{
 						id:id,
-						type:action,
+						isEnabled:action==='up'?true:false,
 						roleId:decodeURIComponent(logininfo.param.roleId),
 						adminId:decodeURIComponent(logininfo.param.adminId),
+						grade:decodeURIComponent(logininfo.param.grade),
 						token:decodeURIComponent(logininfo.param.token)
 					}
 				})
@@ -402,69 +384,6 @@
 					},2000);
 				});
 		}
-
-
-		/*设置管理员*/
-		function addPower(obj){
-			var id=obj.id;
-
-			if(typeof id==='undefined'){
-				return false;
-			}
-			var tip=obj.tip;
-
-			$.ajax({
-					url:"../../json/user/mall_user_list.json",
-					dataType:'JSON',
-					method:'post',
-					data:{
-						id:id,
-						roleId:decodeURIComponent(logininfo.param.roleId),
-						adminId:decodeURIComponent(logininfo.param.adminId),
-						token:decodeURIComponent(logininfo.param.token)
-					}
-				})
-				.done(function(resp){
-					var code=parseInt(resp.code,10);
-					if(code!==0){
-						console.log(resp.message);
-						tip.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"操作失败")+'</span>').show();
-						setTimeout(function () {
-							tip.close();
-							if(operate_item){
-								operate_item.removeClass('item-lighten');
-								operate_item=null;
-							}
-						},2000);
-						return false;
-					}
-					/*是否是正确的返回数据*/
-					/*添加高亮状态*/
-					tip.content('<span class="g-c-bs-success g-btips-succ">设置成功</span>').show();
-					setTimeout(function () {
-						tip.close();
-						setTimeout(function () {
-							operate_item=null;
-							/*请求数据*/
-							getColumnData(user_page,user_config);
-						},1000);
-					},1000);
-				})
-				.fail(function(resp){
-					console.log(resp.message);
-					tip.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"操作失败")+'</span>').show();
-					setTimeout(function () {
-						tip.close();
-						if(operate_item){
-							operate_item.removeClass('item-lighten');
-							operate_item=null;
-						}
-					},2000);
-				});
-		}
-
-
-
 
 
 	});

@@ -222,7 +222,7 @@
 
 									/*同步编辑器*/
 									$.extend(true,setdata,{
-										phone:public_tool.trims($admin_telePhone.val()),
+										phone:public_tool.trims($admin_telePhone.html()),
 										password:$admin_password.val(),
 										nickName:$admin_nickName.val(),
 										name:$admin_Name.val(),
@@ -257,13 +257,8 @@
 										}
 									}
 
-
 									setTimeout(function () {
 										dia.close();
-										if(formtype==='useradd'&&code===0&&id!==''){
-											/*页面跳转*/
-											location.href='bzw-user-list.html';
-										}
 									},2000);
 								}).fail(function(resp){
 									console.log('error');
@@ -331,7 +326,7 @@
 						for(var m in list){
 							switch(m){
 								case 'phone':
-									$admin_telePhone.val(public_tool.phoneFormat(list[m]));
+									$admin_telePhone.html(public_tool.phoneFormat(list[m]));
 									break;
 								case 'password':
 									$admin_password.val(list[m]);

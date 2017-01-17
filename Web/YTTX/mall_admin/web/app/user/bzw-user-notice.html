@@ -118,25 +118,33 @@
 
                         <!--表格主体-->
                         <div class="panel-body">
+                            <!--添加通知-->
+                            <div>
+                                <a href="mall-user-addnotice.html" class="btn btn-info btn-icon btn-xs g-br2">
+                                    <i class="fa-plus"></i>
+                                    <span>添加通知</span>
+                                </a>
+                            </div>
+                            <!--通知列表-->
                             <table id="admin_list_wrap" class="table table-bordered table-striped table-hover admin-table">
                                 <!--分组样式-->
                                 <colgroup>
+                                    <col class="g-w-percent2">
                                     <col class="g-w-percent8">
+                                    <col class="g-w-percent15">
+                                    <col class="g-w-percent10">
+                                    <col class="g-w-percent10">
                                     <col class="g-w-percent5">
-                                    <col class="g-w-percent5">
-                                    <col class="g-w-percent16">
-                                    <col class="g-w-percent8">
-                                    <col class="g-w-percent8">
                                 </colgroup>
 
                                 <!--表头-->
                                 <thead>
                                 <tr>
+                                    <th>&nbsp;</th>
                                     <th>编号</th>
-                                    <th>发送类型</th>
-                                    <th>发送会员</th>
                                     <th>内容</th>
                                     <th>发送时间</th>
+                                    <th>用户列表</th>
                                     <th>操作</th>
                                 </tr>
                                 </thead>
@@ -182,32 +190,22 @@
 
 
 
-    <!--详情展现-->
-    <div class="modal fade custom-width" id="show_detail_wrap">
-        <div class="modal-dialog g-w-percent46">
-            <div class="modal-content">
-
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title">查看公告</h4>
+    <!--批量处理-->
+    <div class="admin-batchitem-wrap">
+        <div class="admin-batchitem-btn">
+            <div id="admin_batchitem_btn">批量</div>
+        </div>
+        <div class="admin-batchitem-outer">
+            <div class="admin-batchitem-show" id="admin_batchitem_show">
+                <div class="admin-batchitem-inner">
+                    <div data-state="1" id="admin_batchitem_check" class="admin-batchitem-check" data-check="0" data-action="checkall"></div>
                 </div>
-                <div class="modal-body">
-                    <table class="table table-bordered table-striped table-hover admin-table">
-                        <colgroup>
-                            <col class="g-w-percent10"/>
-                            <col class="g-w-percent40"/>
-                        </colgroup>
-                        <tbody id="show_detail_content"></tbody>
-                    </table>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-info" data-dismiss="modal">关闭</button>
+                <div class="admin-batchitem-inner" id="admin_batchitem_action">
+                    <div data-action="delete">删除</div>
                 </div>
             </div>
         </div>
     </div>
-    
-    
     
 
 	
@@ -263,6 +261,7 @@
     <!--修饰分页，搜索等操作 -->
     <script src="../../js/plugins/datatables/dataTables.bootstrap.js"></script>
     <script src="../../js/plugins/pagination/pagination.js"></script>
+    <script src="../../js/widgets/batch_item.js"></script>
     <script src="../../js/user/user_notice.js"></script>
 </body>
 </html>
