@@ -9,6 +9,7 @@
 	<meta name="keywords" content="布住网后台管理系统--商品管理--商品标签属性管理">
   <meta name="author" content="yp" />
 	<title>布住网后台管理系统--商品管理--商品标签属性管理</title>
+    <link href="../../images/logo_icon.ico" rel="icon">
 	<link rel="stylesheet" href="../../css/base.css">
   <link rel="stylesheet" href="../../js/plugins/datatables/dataTables.bootstrap.css">
 	<link rel="stylesheet" href="../../css/admin.css">
@@ -196,7 +197,7 @@
                             上级标签名称：<p data-value="" id="admin_attrparentname"></p>
                         </div>
                         <div class="form-group">
-                            <label class="control-label">属性名称：<span class="g-c-red1" id="admin_addattr_tips"></span></label>
+                            <label class="control-label"><span class="form-require-item g-c-red1">*</span>属性名称：<span class="g-c-red1" id="admin_addattr_tips"></span></label>
                             <div class="row self-error-pos-wrap">
                                 <div class="col-md-10">
                                     <input placeholder="请输入属性名称" data-validate="required" data-message-required="属性名称不能为空" value=""  type="text" class="form-control" name="attrname"   id="admin_attrname" />
@@ -211,7 +212,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label class="control-label">排序号(值越大越靠前)：</label>
+                            <label class="control-label"><span class="form-require-item g-c-red1">*</span>排序号(值越大越靠前)：</label>
                             <input placeholder="请输入排序号" data-validate="required,number" data-message-required="排序号不能为空" data-message-number="排序号只能为数字" value=""  type="text" class="form-control" name="attrsort"   id="admin_attrsort" />
                         </div>
 

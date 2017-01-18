@@ -160,18 +160,16 @@
 										return '';
 									}
 									var i= 0,
-										res=[],
+										res='',
 										len=list.length;
 
 									if(len!==0){
+										var dataitem=list[i];
 										for(i;i<len;i++){
-											var dataitem=list[i];
-											res.push('<i>'+(dataitem["userNickName"]||"")+'</i>');
+											res+='<div>'+(dataitem["userNickName"]||"")+'</div>';
 										}
-										return res.join(',');
-									}else{
-										return '<i>全部用户</i>';
 									}
+									return res;
 								}
 							},
 							{

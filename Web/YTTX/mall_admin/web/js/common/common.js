@@ -783,7 +783,7 @@
 			"name":"商品属性",
 			"code":"attribute",
 			"match":"-attribute-",
-			"ignoremodule":true,
+			/*"ignoremodule":true,*/
 			"class":"menu-ux-shop",
 			"module":"attribute",
 			"modid":"260"
@@ -836,8 +836,9 @@
 			"name":"平台管理",
 			"code":"paltform",
 			"match":"-paltform-",
-			"ignoremodule":true,
+			/*"ignoremodule":true,*/
 			"class":"menu-ux-platform",
+			"matchlist":['bzw-imei-list'],
 			"module":"paltform",
 			"modid":"320"
 		},
@@ -845,7 +846,7 @@
 			"name":"广告管理",
 			"code":"paltform",
 			"match":"-advert-",
-			"ignoremodule":true,
+			/*"ignoremodule":true,*/
 			"class":"menu-ux-ad",
 			"module":"advert",
 			"modid":"330"
@@ -854,7 +855,7 @@
 			"name":"活动设置",
 			"code":"activity",
 			"match":"-activity-",
-			"ignoremodule":true,
+			/*"ignoremodule":true,*/
 			"class":"menu-ux-serve",
 			"module":"activity",
 			"modid":"340"
