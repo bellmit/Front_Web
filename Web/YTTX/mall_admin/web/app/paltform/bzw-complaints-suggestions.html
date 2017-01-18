@@ -4,10 +4,10 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0,maximum-scale=1">
-	<meta name="description" content="布住网后台管理系统--平台内容数据管理--IMEI码管理" />
-	<meta name="keywords" content="布住网后台管理系统--平台内容数据管理--IMEI码管理">
+	<meta name="description" content="布住网后台管理系统--平台内容数据管理--投诉与建议" />
+	<meta name="keywords" content="布住网后台管理系统--平台内容数据管理--投诉与建议">
   <meta name="author" content="yp" />
-	<title>布住网后台管理系统--平台内容数据管理--IMEI码管理</title>
+	<title>布住网后台管理系统--平台内容数据管理--投诉与建议</title>
     <link href="../../images/logo_icon.ico" rel="icon">
 	<link rel="stylesheet" href="../../css/base.css">
   <link rel="stylesheet" href="../../js/plugins/datatables/dataTables.bootstrap.css">
@@ -87,12 +87,12 @@
             <div class="page-title">
                 <div class="title-env">
                     <h1 class="title">平台内容数据管理</h1>
-                    <p class="description">IMEI码管理</p>
+                    <p class="description">投诉与建议</p>
                 </div>
                 <div class="breadcrumb-env">
                     <ol class="breadcrumb bc-1">
                         <li><a href=""><i class="fa-home"></i>平台内容数据管理</a></li>
-                        <li class="active"><strong>IMEI码管理</strong></li>
+                        <li class="active"><strong>投诉与建议</strong></li>
                     </ol>
                 </div>
             </div>
@@ -105,7 +105,7 @@
 
                         <!--表格标题-->
                         <div class="panel-heading">
-                            <h3 class="panel-title">IMEI码管理</h3>
+                            <h3 class="panel-title">投诉与建议</h3>
 
                             <div class="panel-options">
                                 <a href="#" data-toggle="panel">
@@ -118,17 +118,15 @@
 
                         <!--表格主体-->
                         <div class="panel-body">
-                            <!--添加IMEI码-->
-                            <div>
-                                <span id="admin_addimei" class="btn btn-info btn-icon btn-xs g-br2 g-d-hidei">
-                                    <i class="fa-plus"></i>
-                                    <span>添加IMEI码</span>
-                                </span>
-                            </div>
                             <div class="admin-search-wrap">
                                 <div class="admin-search-item">
-                                    <label>IMEI码：</label>
-                                    <input type="text" id="search_imeiCode" />
+                                    <label>手机号：</label>
+                                    <input type="text" id="search_phone" />
+                                </div>
+
+                                <div class="admin-search-item">
+                                    <label>用户名(昵称)：</label>
+                                    <input type="text" id="search_nickName" />
                                 </div>
 
                                 <div class="admin-search-item">
@@ -146,18 +144,24 @@
                             <table id="admin_list_wrap" class="table table-bordered table-striped table-hover admin-table">
                                 <!--分组样式-->
                                 <colgroup>
-                                    <col class="g-w-percent2">
-                                    <col class="g-w-percent8">
-                                    <col class="g-w-percent30">
                                     <col class="g-w-percent10">
+                                    <col class="g-w-percent8">
+                                    <col class="g-w-percent7">
+                                    <col class="g-w-percent10">
+                                    <col class="g-w-percent5">
+                                    <col class="g-w-percent5">
+                                    <col class="g-w-percent5">
                                 </colgroup>
 
                                 <!--表头-->
                                 <thead>
                                 <tr>
-                                    <th>&nbsp;</th>
-                                    <th>编号</th>
-                                    <th>IMEI码</th>
+                                    <th>用户名</th>
+                                    <th>手机号</th>
+                                    <th>联系方式</th>
+                                    <th>内容</th>
+                                    <th>提交时间</th>
+                                    <th>处理状态</th>
                                     <th>操作</th>
                                 </tr>
                                 </thead>
@@ -201,56 +205,24 @@
     </div>
 
 
-    <!--批量处理-->
-    <div class="admin-batchitem-wrap">
-        <div class="admin-batchitem-btn">
-            <div id="admin_batchitem_btn">批量</div>
-        </div>
-        <div class="admin-batchitem-outer">
-            <div class="admin-batchitem-show" id="admin_batchitem_show">
-                <div class="admin-batchitem-inner">
-                    <div data-state="1" id="admin_batchitem_check" class="admin-batchitem-check" data-check="0" data-action="checkall"></div>
-                </div>
-                <div class="admin-batchitem-inner" id="admin_batchitem_action">
-                    <div data-action="delete">删除</div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-
-    <!--添加IMEI码-->
-    <div class="modal fade custom-width" id="show_add_wrap">
+    <!--处理投诉与建议-->
+    <div class="modal fade custom-width" id="show_comsug_wrap">
         <div class="modal-dialog g-w-percent20">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title">添加IMEI码</h4>
+                    <h4 class="modal-title">处理投诉与建议</h4>
                 </div>
                 <div class="modal-body">
-                    <form role="form"  method="post" id="admin_add_form" class="admin-form1 validate">
+                    <form role="form"  method="post" id="admin_comsug_form" class="admin-form1 validate">
+                        <input type="text" value="" class="g-d-hidei" id="admin_id">
                         <div class="form-group">
-                            <label class="control-label"><span class="form-require-item g-c-red1">*</span>设备类型：</label>
-                            <select class="form-control" data-validate="required" data-message-required="请选择需要添加的代理商" name="agent"  id="admin_agent" ></select>
+                            <label class="control-label">备注：</label>
+                            <textarea class="form-control"  id="admin_dealRemark" name="dealRemark" placeholder="请输入处理备注" ></textarea>
                         </div>
 
                         <div class="form-group">
-                            <label class="control-label"><span class="form-require-item g-c-red1">*</span>设备类型：</label>
-                            <select class="form-control" data-validate="required" data-message-required="请选择设备类型" name="type"  id="admin_type" >
-                                <option selected value="1">S67</option>
-                                <option value="2">T6</option>
-                                <option value="3">其他</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="control-label"><span class="form-require-item g-c-red1">*</span>imeiCode码：</label>
-                            <input placeholder="请输入imeiCode码" data-validate="required" data-message-required="imeiCode码不能为空" value=""  type="text" class="form-control" name="imeiCode"   id="admin_imeiCode" />
-                        </div>
-
-                        <div class="form-group">
-                            <button type="submit" class="btn btn-success">添加</button>
+                            <button type="submit" class="btn btn-success">处理</button>
                         </div>
                     </form>
                 </div>
@@ -260,7 +232,6 @@
             </div>
         </div>
     </div>
-
 
 
 	
@@ -317,7 +288,6 @@
     <script src="../../js/plugins/pagination/pagination.js"></script>
     <!--表单验证插件-->
     <script src="../../js/plugins/jquery-validate/jquery.validate.js"></script>
-    <script src="../../js/widgets/batch_item.js"></script>
-    <script src="../../js/paltform/imei_list.js"></script>
+    <script src="../../js/paltform/complaints_suggestions.js"></script>
 </body>
 </html>

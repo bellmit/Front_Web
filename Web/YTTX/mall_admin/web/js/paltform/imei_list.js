@@ -20,9 +20,7 @@
 				},
 				datatype:'json'
 			});
-
-			/*清除编辑数据*/
-			public_tool.removeParams('bzw-user-add');
+			
 
 
 			/*权限调用*/
@@ -56,6 +54,30 @@
 				resetform0=null,
 				sureObj=public_tool.sureDialog(dia)/*回调提示对象*/,
 				setSure=new sureObj();
+
+
+			/*批量配置参数*/
+			var $admin_batchitem_btn=$('#admin_batchitem_btn'),
+				$admin_batchitem_show=$('#admin_batchitem_show'),
+				$admin_batchitem_check=$('#admin_batchitem_check'),
+				$admin_batchitem_action=$('#admin_batchitem_action'),
+				batchItem=new public_tool.BatchItem();
+
+			/*批量初始化*/
+			batchItem.init({
+				$batchtoggle:$admin_batchitem_btn,
+				$batchshow:$admin_batchitem_show,
+				$checkall:$admin_batchitem_check,
+				$action:$admin_batchitem_action,
+				$listwrap:$admin_list_wrap,
+				setSure:setSure,
+				fn:function (type) {
+					/*批量操作*/
+					batchIMEI({
+						action:type
+					});
+				}
+			});
 
 
 			/*查询对象*/
@@ -142,8 +164,16 @@
 						},
 						info:false,
 						searching:true,
-						order:[[0, "desc" ]],
+						order:[[1, "desc" ]],
 						columns: [
+							{
+								"data":"id",
+								"orderable" :false,
+								"searchable" :false,
+								"render":function(data, type, full, meta ){
+									return '<input value="'+parseInt(data,10)+'" name="imeiid" type="checkbox" />';
+								}
+							},
 							{
 								"data":"id"
 							},
@@ -152,6 +182,8 @@
 							},
 							{
 								"data":"id",
+								"orderable" :false,
+								"searchable" :false,
 								"render":function(data, type, full, meta ){
 									var id=parseInt(data,10),
 										btns='';
@@ -231,6 +263,7 @@
 
 				/*修改,编辑操作*/
 				if(action==='delete'){
+					batchItem.filterData(id);
 					if(operate_item){
 						operate_item.removeClass('item-lighten');
 						operate_item=null;
@@ -239,10 +272,11 @@
 					/*确认是否删除*/
 					setSure.sure('delete',function(cf){
 						/*to do*/
-						/*deleteIMEI({
+						deleteIMEI({
 							id:id,
-							tip:cf.dia||dia
-						});*/
+							tip:cf.dia||dia,
+							type:'base'
+						});
 					});
 				}
 			});
@@ -356,15 +390,19 @@
 			if(typeof id==='undefined'){
 				return false;
 			}
-			var tip=obj.tip;
+			var tip=obj.tip,
+				type=obj.type;
 
-			return false;
+			if(type==='batch'){
+				id=id.join(',');
+			}
+
 			$.ajax({
-					url:"http://120.76.237.100:8082/mall-buzhubms-api/user/update",
+					url:"http://120.76.237.100:8082/mall-buzhubms-api/subscriber/delete/bzwbms",
 					dataType:'JSON',
 					method:'post',
 					data:{
-						id:id,
+						ids:id,
 						roleId:decodeURIComponent(logininfo.param.roleId),
 						adminId:decodeURIComponent(logininfo.param.adminId),
 						grade:decodeURIComponent(logininfo.param.grade),
@@ -376,22 +414,33 @@
 					if(code!==0){
 						console.log(resp.message);
 						tip.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"操作失败")+'</span>').show();
-						setTimeout(function () {
-							tip.close();
+						if(type==='base'){
 							if(operate_item){
 								operate_item.removeClass('item-lighten');
 								operate_item=null;
 							}
+						}else if(type==='batch'){
+							batchItem.clear();
+						}
+						setTimeout(function () {
+							tip.close();
 						},2000);
 						return false;
 					}
 					/*是否是正确的返回数据*/
 					/*添加高亮状态*/
-					tip.content('<span class="g-c-bs-success g-btips-succ">'+(action==="up"?'启用':'禁用')+'成功</span>').show();
+					tip.content('<span class="g-c-bs-success g-btips-succ">删除成功</span>').show();
 					setTimeout(function () {
 						tip.close();
+						if(type==='base'){
+							if(operate_item){
+								operate_item.removeClass('item-lighten');
+								operate_item=null;
+							}
+						}else if(type==='batch'){
+							batchItem.clear();
+						}
 						setTimeout(function () {
-							operate_item=null;
 							/*请求数据*/
 							getColumnData(user_page,user_config);
 						},1000);
@@ -400,12 +449,16 @@
 				.fail(function(resp){
 					console.log(resp.message);
 					tip.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"操作失败")+'</span>').show();
-					setTimeout(function () {
-						tip.close();
+					if(type==='base'){
 						if(operate_item){
 							operate_item.removeClass('item-lighten');
 							operate_item=null;
 						}
+					}else if(type==='batch'){
+						batchItem.clear();
+					}
+					setTimeout(function () {
+						tip.close();
 					},2000);
 				});
 		}
@@ -467,6 +520,42 @@
 						dia.close();
 					},2000);
 				});
+		}
+
+
+		/*批量操作*/
+		function batchIMEI(config) {
+
+			var action=config.action;
+
+			if(action===''||typeof action==='undefined'){
+				return false;
+			}
+			var inputitems=batchItem.getBatchNode(),
+				len=inputitems.length,
+				i=0;
+
+			if(len===0){
+				dia.content('<span class="g-c-bs-warning g-btips-warn">请选中操作数据</span>').show();
+				setTimeout(function () {
+					dia.close();
+				},2000);
+				return false;
+			}
+			var tempid=batchItem.getBatchData();
+			if(tempid.length!==0){
+				if(action==='delete'){
+					/*确认是否启用或禁用*/
+					setSure.sure('delete',function(cf){
+						/*to do*/
+						deleteIMEI({
+							id:tempid,
+							tip:cf.dia||dia,
+							type:'batch'
+						});
+					});
+				}
+			}
 		}
 
 

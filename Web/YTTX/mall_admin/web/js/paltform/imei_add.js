@@ -21,14 +21,13 @@
 
 
 			/*权限调用*/
-			var powermap=public_tool.getPower(),
-				useradd_power=public_tool.getKeyPower('bzw-user-add',powermap),
-				useredit_power=public_tool.getKeyPower('bzw-user-edit',powermap);
+			var powermap=public_tool.getPower(320),
+				imeiadd_power=public_tool.getKeyPower('bzw-imei-add',powermap);
 
 
 
 			/*dom引用和相关变量定义*/
-			var module_id='bzw-user-add'/*模块id，主要用于本地存储传值*/,
+			var module_id='bzw-imei-add'/*模块id，主要用于本地存储传值*/,
 				dia=dialog({
 					zIndex:2000,
 					title:'温馨提示',
@@ -40,18 +39,12 @@
 					},
 					cancel:false
 				})/*一般提示对象*/,
-				admin_adduser_form=document.getElementById('admin_adduser_form'),
-				$admin_adduser_form=$(admin_adduser_form),
-				$admin_id=$('#admin_id'),
-				$admin_telePhone=$('#admin_telePhone'),
-				$admin_password=$('#admin_password'),
-				$admin_nickName=$('#admin_nickName'),
-				$admin_Name=$('#admin_Name'),
-				$admin_birthday=$('#admin_birthday'),
-				$admin_sex=$('#admin_sex'),
-				$admin_enabled=$('#admin_enabled'),
-				$admin_logoImage=$('#admin_logoImage'),
 				$admin_action=$('#admin_action'),
+				admin_add_form=document.getElementById('admin_add_form'),
+				$admin_add_form=$(admin_add_form),
+				$admin_agent=$('#admin_agent'),
+				$admin_type=$('#admin_type'),
+				$admin_excelFile=$('#admin_excelFile'),
 				resetform0=null;
 
 
@@ -61,15 +54,25 @@
 				upload_bars= [];
 
 
-			/*重置表单*/
-			admin_adduser_form.reset();
+			/*初始化*/
+			if(imeiadd_power){
+				/*绑定显示添加*/
+				$admin_action.removeClass('g-d-hidei');
+			}
+			resetIMEIData();
+
+
+			/*查询代理商*/
+			getAgentData();
+
+
 
 
 			/*绑定logo上传*/
 			if(ImageUpload_Token!==null){
 				logo_QN_Upload.uploader({
 					runtimes: 'html5,html4,flash,silverlight',
-					browse_button: 'admin_logoImage_file',
+					browse_button: 'admin_excelFile_file',
 					uptoken :ImageUpload_Token.qiniuToken,// uptoken是上传凭证，由其他程序生成
 					multi_selection:false,
 					get_new_uptoken: false,// 设置上传文件的时候是否每次都重新获取新的uptoken
@@ -80,14 +83,14 @@
 					silverlight_xap_url : '../../js/plugins/plupload/Moxie.xap',
 					max_retries: 3,// 上传失败最大重试次数
 					dragdrop:false,
-					chunk_size: '2mb',
+					chunk_size: '4mb',
 					auto_start:true,
-					max_file_size : '500kb',
+					max_file_size : '4mb',
 					filters:{
 						mime_types: [
 							{
 								title : "Image files",
-								extensions : "jpg,gif,png,jpeg"
+								extensions : "xls"
 							}
 						]
 					},
@@ -109,10 +112,12 @@
 							/*获取上传成功后的文件的Url*/
 
 							var domain=up.getOption('domain'),
-								name=JSON.parse(info);
+								name=JSON.parse(info),
+								filelink=domain+'/'+name.key;
 
-							$admin_logoImage.attr({
-								'data-image':domain+'/'+name.key}).html('<img src="'+domain+'/'+name.key+"?imageView2/1/w/160/h/160"+'" alt="图像">');
+							$admin_excelFile.attr({
+								'data-excel':filelink
+							}).html('成功上传文件：<a target="_blank" href="'+filelink+'" title="'+filelink+'">'+filelink+'</a>');
 						},
 						'Error': function(up, err, errTip) {
 							dia.content('<span class="g-c-bs-warning g-btips-warn">'+errTip+'</span>').show();
@@ -131,65 +136,16 @@
 						'Key': function(up, file) {
 							/*调用滚动条*/
 							uploadShowBars(file['id']);
-							var str="pic_"+moment().format("YYYYMMDDHHmmSSSS");
-							return str;
+							return "imeicode_xlsfile";
 						}
 					}
 				});
 			}
 
 
-			/*格式化手机号码*/
-			$.each([$admin_telePhone],function(){
-				this.on('keyup',function(){
-					var phoneno=this.value.replace(/\D*/g,'');
-					if(phoneno===''){
-						this.value='';
-						return false;
-					}
-					this.value=public_tool.phoneFormat(this.value);
-				});
-			});
-			
-
-			/*日历调用*/
-			$.each([$admin_birthday],function(){
-				this.val('').datepicker({
-					autoclose:true,
-					format: 'yyyy-mm-dd',
-					todayBtn: true,
-					endDate:moment().format('yyyy-mm-dd')
-				})
-			});
-
-			
-
-			/*获取编辑缓存*/
-			(function () {
-				var edit_cache=public_tool.getParams('bzw-user-add');
-				if(edit_cache){
-					if(useredit_power){
-						$admin_action.removeClass('g-d-hidei').html('编辑');
-						/*查询数据*/
-						if(typeof edit_cache==='object'){
-							setUserData(edit_cache['id']);
-						}else{
-							setUserData(edit_cache);
-						}
-					}else{
-						$admin_action.addClass('g-d-hidei');
-					}
-				}else{
-					if(useradd_power){
-						$admin_action.removeClass('g-d-hidei').html('添加');
-					}else{
-						$admin_action.addClass('g-d-hidei');
-					}
-				}
-			}());
 
 
-			/*绑定添加地址*/
+			/*绑定添加IMEI码*/
 			/*表单验证*/
 			if($.isFunction($.fn.validate)) {
 				/*配置信息*/
@@ -197,98 +153,74 @@
 					formcache=public_tool.cache,
 					basedata={
 						roleId:decodeURIComponent(logininfo.param.roleId),
-						token:decodeURIComponent(logininfo.param.token),
-						adminId:decodeURIComponent(logininfo.param.adminId)
+						adminId:decodeURIComponent(logininfo.param.adminId),
+						grade:decodeURIComponent(logininfo.param.grade),
+						token:decodeURIComponent(logininfo.param.token)
 					};
 
 
 				if(formcache.form_opt_0){
 					$.each([formcache.form_opt_0],function(index){
 						var formtype,
-						config={
-							dataType:'JSON',
-							method:'post'
-						};
+							config={
+								dataType:'JSON',
+								method:'post'
+							};
 						if(index===0){
-							formtype='useradd';
+							formtype='addimei';
 						}
 						$.extend(true,(function () {
-							if(formtype==='useradd'){
+							if(formtype==='addimei'){
 								return form_opt0;
 							}
 						}()),(function () {
-							if(formtype==='useradd'){
+							if(formtype==='addimei'){
 								return formcache.form_opt_0;
 							}
 						}()),{
 							submitHandler: function(form){
 								var setdata={},
-									id=$admin_id.val(),
-									tempimg=$admin_logoImage.attr('data-image');
+									excelfile=$admin_excelFile.attr('data-excel');
 
-
-								if(tempimg===''){
-									dia.content('<span class="g-c-bs-warning g-btips-warn">请先上传图像</span>').show();
-									setTimeout(function () {
-										dia.close();
-									},2000);
+								if(excelfile===''){
+									dia.content('<span class="g-c-bs-warning g-btips-warn">请上传添加IMEI码Excel文件</span>').show();
 									return false;
 								}
 
-
 								$.extend(true,setdata,basedata);
-
-								if(formtype==='useradd'){
-
-									/*同步编辑器*/
+								if(formtype==='addimei'){
 									$.extend(true,setdata,{
-										orderId:$admin_id.val(),
-										telePhone:public_tool.trims($admin_telePhone.val()),
-										password:$admin_password.val(),
-										nickName:$admin_nickName.val(),
-										name:$admin_Name.val(),
-										sex:$admin_sex.find(':checked').val(),
-										enabled:$admin_enabled.find(':checked').val(),
-										logoImage:tempimg
+										agentId:$admin_agent.val(),
+										type:$admin_type.val(),
+										excelFile:excelfile
 									});
-
-									
-									config['url']="../../json/user/mall_user_list.json";
+									config['url']="http://120.76.237.100:8082/mall-buzhubms-api/subscriber/add/bzwbms";
 									config['data']=setdata;
-
 								}
-
 
 								$.ajax(config).done(function(resp){
 									var code;
-									if(formtype==='useradd'){
-										var formkey='';
-										if(id===''){
-											formkey='修改';
-										}else{
-											formkey='添加';
-										}
+									if(formtype==='addimei'){
 										code=parseInt(resp.code,10);
 										if(code!==0){
-											dia.content('<span class="g-c-bs-warning g-btips-warn">'+formkey+'用户失败</span>').show();
+											dia.content('<span class="g-c-bs-warning g-btips-warn">添加IMEI码失败</span>').show();
 											return false;
 										}else{
-											dia.content('<span class="g-c-bs-success g-btips-succ">'+formkey+'用户成功</span>').show();
+											dia.content('<span class="g-c-bs-success g-btips-succ">添加IMEI码成功</span>').show();
+											resetIMEIData();
+											setTimeout(function () {
+												dia.close();
+											},2000);
 										}
 									}
-
-
-									setTimeout(function () {
-										dia.close();
-										if(formtype==='useradd'&&code===0){
-											/*页面跳转*/
-											location.href='mall-user-list.html';
-										}
-									},2000);
 								}).fail(function(resp){
 									console.log('error');
+									dia.content('<span class="g-c-bs-warning g-btips-warn">添加IMEI码失败</span>').show();
+									resetIMEIData();
+									setTimeout(function () {
+										dia.close();
+									},2000);
 								});
-
 								return false;
 							}
 						});
@@ -299,113 +231,78 @@
 
 				/*提交验证*/
 				if(resetform0===null){
-					resetform0=$admin_adduser_form.validate(form_opt0);
+					resetform0=$admin_add_form.validate(form_opt0);
 				}
-			}
 
+			}
 
 
 		}
 
-		/*修改时设置值*/
-		function setUserData(id) {
-			if(!id){
-				return false;
-			}
+		/*清除表单数据*/
+		function resetIMEIData() {
+			admin_add_form.reset();
+			$admin_excelFile.attr({
+				'data-excel':''
+			}).html('');
+		}
 
-
+		/*查询代理商*/
+		function getAgentData() {
 			$.ajax({
-					url:"http://120.76.237.100:8082/mall-buzhubms-api/user/detail",
+					url:"http://120.76.237.100:8082/mall-buzhubms-api/agent/listprov",
 					dataType:'JSON',
 					method:'post',
 					data:{
-						id:id,
 						roleId:decodeURIComponent(logininfo.param.roleId),
 						adminId:decodeURIComponent(logininfo.param.adminId),
 						grade:decodeURIComponent(logininfo.param.grade),
 						token:decodeURIComponent(logininfo.param.token)
 					}
 				})
-				.done(function(resp){
-					var code=parseInt(resp.code,10);
-					if(code!==0){
+				.done(function(resp) {
+					var code = parseInt(resp.code, 10);
+					if (code !== 0) {
 						console.log(resp.message);
-						if(code===999){
-							public_tool.loginTips(function () {
-								public_tool.clear();
-								public_tool.clearCacheData();
-							});
-						}
+						dia.content('<span class="g-c-bs-warning g-btips-warn">' + (resp.message || "操作失败") + '</span>').show();
+						setTimeout(function () {
+							dia.close();
+						}, 2000);
 						return false;
 					}
 					/*是否是正确的返回数据*/
-					var list=resp.result;
-
+					var result = resp.result;
+					if (!result) {
+						return false;
+					}
+					var list=result.list;
 					if(!list){
 						return false;
 					}
-					
-
-					if(!$.isEmptyObject(list)){
-						$admin_id.val(id);
-						for(var m in list){
-							switch(m){
-								case 'telePhone':
-									$admin_telePhone.val(public_tool.phoneFormat(list[m]));
-									break;
-								case 'password':
-									$admin_password.val(list[m]);
-									break;
-								case 'nickName':
-									$admin_nickName.val(list[m]);
-									break;
-								case 'Name':
-									$admin_Name.val(list[m]);
-									break;
-								case 'birthday':
-									$admin_birthday.val(list[m]);
-									break;
-								case 'sex':
-									$admin_sex.find('input').each(function(){
-										var $this=$(this),
-											text=parseInt($this.val(),10),
-											curtext=parseInt(list[m],10);
-
-										if(text===curtext){
-											$this.prop({
-												'checked':true
-											});
-											return false;
-										}
-									});
-									break;
-								case 'isEnabled':
-									$admin_enabled.find('input').each(function(){
-										var $this=$(this),
-											text=parseInt($this.val(),10),
-											curtext=parseInt(list[m],10);
-
-										if(text===curtext){
-											$this.prop({
-												'checked':true
-											});
-											return false;
-										}
-									});
-									break;
-								case 'logoImage':
-									$('<img src="'+list[m]+"?imageView2/1/w/160/h/160"+'" alt="图像">').appendTo($admin_logoImage.attr({
-										'data-image':list[m]
-									}).html(''));
-									break;
+					var len=list.length,
+						i=0,
+						str='';
+					if(len!==0){
+						for(i;i<len;i++){
+							var item=list[i];
+							if(i===0){
+								str+='<option selected value="">请选择代理商</option><option value="'+item["id"]+'">'+item["fullName"]+'</option>';
+							}else{
+								str+='<option value="'+item["id"]+'">'+item["fullName"]+'</option>';
 							}
 						}
+						$(str).appendTo($admin_agent.html(''));
+					}else{
+						$admin_agent.html('<option selected value="">请选择代理商</option>');
 					}
 				})
 				.fail(function(resp){
 					console.log(resp.message);
+					dia.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"操作失败")+'</span>').show();
+					setTimeout(function () {
+						dia.close();
+					},2000);
 				});
-
 		}
 
 
