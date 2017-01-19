@@ -131,8 +131,9 @@
                                 <div class="admin-search-item">
                                     <label>审核状态：</label>
                                     <select id="search_auditStatus" >
-                                        <option selected value="0">待审核</option>
-                                        <option value="1">审核成功</option>
+                                        <option value="0">待审核</option>
+                                        <option selected value="1">审核成功</option>
+                                        <option value="2">审核失败</option>
                                     </select>
                                 </div>
                                 <div class="admin-search-item">
@@ -150,7 +151,8 @@
                             <table id="admin_list_wrap" class="table table-bordered table-striped table-hover admin-table">
                                 <!--分组样式-->
                                 <colgroup>
-                                    <col class="g-w-percent8">
+                                    <col class="g-w-percent2">
+                                    <col class="g-w-percent6">
                                     <col class="g-w-percent8">
                                     <col class="g-w-percent5">
                                     <col class="g-w-percent5">
@@ -163,6 +165,7 @@
                                 <!--表头-->
                                 <thead>
                                 <tr>
+                                    <th>&nbsp;</th>
                                     <th>店主姓名(供应商)</th>
                                     <th>店铺名称</th>
                                     <th>公司名称</th>
@@ -176,7 +179,7 @@
 
 
                                 <!--表主体-->
-                                <tbody class="middle-align"></tbody>
+                                <tbody class="middle-align" id="admin_provider_list"></tbody>
                             </table>
                             <div class="admin-page-wrap">
                                 <div class="easyui-pagination g-w-percent50" id="admin_page_wrap" data-options="links:5,layout:['manual','first','prev','links','next','last'],displayMsg:'显示{from}&nbsp;到&nbsp;{to}&nbsp;共&nbsp;{total}条记录'"></div>
@@ -209,6 +212,25 @@
             </footer>
 
 
+        </div>
+    </div>
+
+
+    <!--批量处理-->
+    <div class="admin-batchitem-wrap">
+        <div class="admin-batchitem-btn">
+            <div id="admin_batchitem_btn">批量</div>
+        </div>
+        <div class="admin-batchitem-outer">
+            <div class="admin-batchitem-show" id="admin_batchitem_show">
+                <div class="admin-batchitem-inner">
+                    <div data-state="1" id="admin_batchitem_check" class="admin-batchitem-check" data-check="0" data-action="checkall"></div>
+                </div>
+                <div class="admin-batchitem-inner" id="admin_batchitem_action">
+                    <div data-action="forbid">禁用</div>
+                    <div data-action="enable">启用</div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -267,6 +289,7 @@
     <!--修饰分页，搜索等操作 -->
     <script src="../../js/plugins/datatables/dataTables.bootstrap.js"></script>
     <script src="../../js/plugins/pagination/pagination.js"></script>
+    <script src="../../js/widgets/batch_item.js"></script>
     <script src="../../js/provider/provider_list.js"></script>
 </body>
 </html>

@@ -55,14 +55,42 @@
 				$search_auditStatus=$('#search_auditStatus'),
 				$admin_search_btn=$('#admin_search_btn'),
 				$admin_search_clear=$('#admin_search_clear'),
-				$admin_searchwrap=$('#admin_searchwrap'),
-				auditflag=parseInt($search_auditStatus.find(':selected').val(),10);
+				$admin_searchwrap=$('#admin_searchwrap');
 
 
 			/*初始化查询*/
 			if(providersearch_power){
 				$admin_searchwrap.removeClass('g-d-hidei');
 			}
+
+
+			/*批量配置参数*/
+			var $admin_batchitem_btn=$('#admin_batchitem_btn'),
+				$admin_batchitem_show=$('#admin_batchitem_show'),
+				$admin_batchitem_check=$('#admin_batchitem_check'),
+				$admin_batchitem_action=$('#admin_batchitem_action'),
+				$admin_provider_list=$('#admin_provider_list'),
+				batchItem=new public_tool.BatchItem();
+
+			/*批量初始化*/
+			batchItem.init({
+				$batchtoggle:$admin_batchitem_btn,
+				$batchshow:$admin_batchitem_show,
+				$checkall:$admin_batchitem_check,
+				$action:$admin_batchitem_action,
+				$listwrap:$admin_provider_list,
+				setSure:setSure,
+				powerobj:{
+					'forbid':providerforbid_power,
+					'enable':providerforbid_power
+				},
+				fn:function (type) {
+					/*批量操作*/
+					batchProvider({
+						action:type
+					});
+				}
+			});
 
 
 
@@ -127,7 +155,7 @@
 								adminId:decodeURIComponent(logininfo.param.adminId),
 								grade:decodeURIComponent(logininfo.param.grade),
 								token:decodeURIComponent(logininfo.param.token),
-								auditStatus:0,
+								auditStatus:1,
 								page:1,
 								pageSize:10
 							}
@@ -136,6 +164,14 @@
 						searching:true,
 						order:[[6, "desc" ],[0, "desc" ]],
 						columns: [
+							{
+								"data":"id",
+								"orderable" :false,
+								"searchable" :false,
+								"render":function(data, type, full, meta ){
+									return '<input data-forbid="'+full.isEnabled+'" value="'+data+'" data-auditstate="'+full.status+'" name="providerID" type="checkbox" />';
+								}
+							},
 							{
 								"data":"legalName"
 							},
@@ -159,10 +195,10 @@
 								"render":function(data, type, full, meta ){
 									var str='';
 
-									if(!data){
-										str='<div class="g-c-gray9">禁用</div>';
-									}else if(data){
+									if(data){
 										str='<div class="g-c-info">启用</div>';
+									}else{
+										str='<div class="g-c-gray9">禁用</div>';
 									}
 									return str;
 								}
@@ -175,21 +211,24 @@
 								"render":function(data, type, full, meta ){
 									var id=parseInt(data,10),
 										btns='',
-										enabled=full.isEnabled;
+										enabled=full.isEnabled,
+										auditstate=parseInt(full.auditStatus,10);
 
-									if(providerforbid_power&&auditflag===1){
-										if(enabled){
-											/*启用状态则禁用*/
-											btns+='<span data-action="takeoff" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+									if(providerforbid_power){
+										if(auditstate===1){
+											if(enabled){
+												/*启用状态则禁用*/
+												btns+='<span data-action="forbid" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 													<i class="fa-arrow-down"></i>\
 													<span>禁用</span>\
 												</span>';
-										}else if(!enabled){
-											/*禁用状态则启用*/
-											btns+='<span data-action="takeon" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+											}else if(!enabled){
+												/*禁用状态则启用*/
+												btns+='<span data-action="enable" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 													<i class="fa-arrow-up"></i>\
 													<span>启用</span>\
 												</span>';
+											}
 										}
 									}
 									return btns;
@@ -213,18 +252,12 @@
 			$admin_search_clear.trigger('click');
 
 
-			/*绑定切换状态*/
-			$search_auditStatus.on('change',function () {
-				auditflag=parseInt(this.value,10);
-			});
-
-
 			/*联合查询*/
 			$admin_search_btn.on('click',function(){
 				var data= $.extend(true,{},provider_config.config.ajax.data);
 
 				$.each([$search_legalName,$search_storeName,$search_auditStatus],function(){
-					var text=this.val()||this.find(':selected').val(),
+					var text=this.val(),
 						selector=this.selector.slice(1),
 						key=selector.split('_');
 
@@ -254,7 +287,15 @@
 					$this,
 					id,
 					action,
-					$tr;
+					$tr,
+					actionmap={
+						"forbid":1,
+						"enable":2
+					},
+					actiontip={
+						"forbid":'禁用',
+						"enable":'启用'
+					};
 
 				//适配对象
 				if(target.className.indexOf('btn')!==-1){
@@ -267,20 +308,23 @@
 				action=$this.attr('data-action');
 
 				/*修改,编辑操作*/
-				if(action==='takeon'||action==='takeoff'){
+				if(action==='forbid'||action==='enable'){
 					if(operate_item){
 						operate_item.removeClass('item-lighten');
 						operate_item=null;
 					}
 					operate_item=$tr.addClass('item-lighten');
 					/*确认是否启用或禁用*/
-					setSure.sure(action==='takeon'?'启用':'禁用',function(cf){
+					setSure.sure(actiontip[action],function(cf){
 						/*to do*/
 						setEnabled({
 							id:id,
 							action:action,
-							tip:cf.dia||dia
-						});
+							tip:cf.dia||dia,
+							type:'base',
+							actiontip:actiontip,
+							actionmap:actionmap
+						},action==='forbid'?"禁用后，该供应商将禁止使用，在APP中查看不到该供应商，商品也归纳至禁售商品中，是否禁用？":"启用后，该供应商将可以使用，在APP中能查看该供应商，商品也归纳至可售商品中，是否启用？",true);
 					});
 				}
 			});
@@ -305,8 +349,12 @@
 			if(typeof id==='undefined'){
 				return false;
 			}
-			var tip=obj.tip,
+			var type=obj.type,
+				tip=obj.tip,
 				action=obj.action;
+			if(type==='batch'){
+				id=id.join(',');
+			}
 
 			$.ajax({
 					url:"http://120.76.237.100:8082/mall-buzhubms-api/provider/operate",
@@ -314,7 +362,7 @@
 					method:'post',
 					data:{
 						ids:id,
-						operate:action==='takeon'?"2":"1",
+						operate:obj.actionmap[action],
 						roleId:decodeURIComponent(logininfo.param.roleId),
 						adminId:decodeURIComponent(logininfo.param.adminId),
 						grade:decodeURIComponent(logininfo.param.grade),
@@ -326,23 +374,33 @@
 					if(code!==0){
 						console.log(resp.message);
 						tip.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"操作失败")+'</span>').show();
-						setTimeout(function () {
-							tip.close();
+						if(type==='base'){
 							if(operate_item){
 								operate_item.removeClass('item-lighten');
 								operate_item=null;
 							}
+						}else if(type==='batch'){
+							batchItem.clear();
+						}
+						setTimeout(function () {
+							tip.close();
 						},2000);
 						return false;
 					}
 					/*是否是正确的返回数据*/
 					/*添加高亮状态*/
-					tip.content('<span class="g-c-bs-success g-btips-succ">'+(action==="takeon"?'启用':'禁用')+'成功</span>').show();
+					tip.content('<span class="g-c-bs-success g-btips-succ">'+obj.actiontip[action]+'成功</span>').show();
 					setTimeout(function () {
 						tip.close();
+						if(type==='base'){
+							if(operate_item){
+								operate_item.removeClass('item-lighten');
+								operate_item=null;
+							}
+						}else if(type==='batch'){
+							batchItem.clear();
+						}
 						setTimeout(function () {
-							operate_item=null;
-							/*请求数据*/
 							getColumnData(provider_page,provider_config);
 						},1000);
 					},1000);
@@ -350,19 +408,113 @@
 				.fail(function(resp){
 					console.log(resp.message);
 					tip.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"操作失败")+'</span>').show();
-					setTimeout(function () {
-						tip.close();
+					if(type==='base'){
 						if(operate_item){
 							operate_item.removeClass('item-lighten');
 							operate_item=null;
 						}
+					}else if(type==='batch'){
+						batchItem.clear();
+					}
+					setTimeout(function () {
+						tip.close();
 					},2000);
 				});
 		}
 
 
+		/*批量操作*/
+		function batchProvider(config) {
 
+			var action=config.action;
 
+			if(action===''||typeof action==='undefined'){
+				return false;
+			}
+			var inputitems=batchItem.getBatchNode(),
+				len=inputitems.length,
+				i=0;
+
+			if(len===0){
+				dia.content('<span class="g-c-bs-warning g-btips-warn">请选中操作数据</span>').show();
+				setTimeout(function () {
+					dia.close();
+				},2000);
+				return false;
+			}
+			var tempid=batchItem.getBatchData(),
+				filter=[],
+				actionmap={
+					"forbid":1,
+					"enable":2
+				},
+				actiontip={
+					"forbid":'禁用',
+					"enable":'启用'
+				};
+
+			for(i;i<len;i++){
+				var tempinput=inputitems[i],
+					temp_forbid=tempinput.attr('data-forbid'),
+					temp_status=parseInt(tempinput.attr('data-status'));
+
+				if(temp_status===1){
+					/*审核成功*/
+					/*可售，禁售*/
+					if(temp_forbid==='true'){
+						/*启用状态则禁用*/
+						if(action==='enable'){
+							filter.push(tempid[i]);
+							continue;
+						}
+					}else if(temp_forbid==='false'){
+						/*禁用状态则启用*/
+						if(action==='forbid'){
+							filter.push(tempid[i]);
+							continue;
+						}
+					}
+				}else{
+					/*待审核，审核失败*/
+					if(action==='forbid'||action==='enable'){
+						dia.content('<span class="g-c-bs-warning g-btips-warn">待审核状态不能做 "'+actiontip[action]+'" 操作</span>').show();
+						setTimeout(function () {
+							dia.close();
+							batchItem.clear();
+						},2000);
+						return false;
+					}
+				}
+
+			}
+
+			if(filter.length!==0){
+				dia.content('<span class="g-c-bs-warning g-btips-warn">操作状态和选中状态不匹配,系统将过滤不匹配数据</span>').show();
+				batchItem.filterData(filter);
+				filter.length=0;
+				setTimeout(function () {
+					dia.close();
+					/*批量操作*/
+					tempid=batchItem.getBatchData();
+					if(tempid.length!==0){
+						if(action==='forbid'||action==='enable'){
+							/*确认是否启用或禁用*/
+							setSure.sure(actiontip[action],function(cf){
+								/*to do*/
+								setEnabled({
+									id:tempid,
+									action:action,
+									tip:cf.dia||dia,
+									type:'batch',
+									actiontip:actiontip,
+									actionmap:actionmap
+								},action==='forbid'?"禁用后，该供应商将禁止使用，在APP中查看不到该供应商，商品也归纳至禁售商品中，是否禁用？":"启用后，该供应商将可以使用，在APP中能查看该供应商，商品也归纳至可售商品中，是否启用？",true);
+							});
+						}
+					}
+				},2000);
+			}
+		}
 
 
 	});
