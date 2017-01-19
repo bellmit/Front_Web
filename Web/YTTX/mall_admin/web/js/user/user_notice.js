@@ -45,6 +45,7 @@
 			var $admin_batchitem_btn=$('#admin_batchitem_btn'),
 				$admin_batchitem_show=$('#admin_batchitem_show'),
 				$admin_batchitem_check=$('#admin_batchitem_check'),
+				$admin_usernotice_list=$('#admin_usernotice_list'),
 				$admin_batchitem_action=$('#admin_batchitem_action'),
 				batchItem=new public_tool.BatchItem();
 
@@ -54,7 +55,7 @@
 				$batchshow:$admin_batchitem_show,
 				$checkall:$admin_batchitem_check,
 				$action:$admin_batchitem_action,
-				$listwrap:$admin_list_wrap,
+				$listwrap:$admin_usernotice_list,
 				setSure:setSure,
 				fn:function (type) {
 					/*批量操作*/

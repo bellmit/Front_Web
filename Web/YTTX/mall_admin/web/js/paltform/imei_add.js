@@ -90,7 +90,7 @@
 						mime_types: [
 							{
 								title : "Image files",
-								extensions : "xls"
+								extensions : "xls,xlsx"
 							}
 						]
 					},
@@ -117,7 +117,7 @@
 
 							$admin_excelFile.attr({
 								'data-excel':filelink
-							}).html('成功上传文件：<a target="_blank" href="'+filelink+'" title="'+filelink+'">'+filelink+'</a>');
+							}).html('成功上传文件：<a class="g-c-info" target="_blank" href="'+filelink+'" title="'+filelink+'">'+filelink+'</a>');
 						},
 						'Error': function(up, err, errTip) {
 							dia.content('<span class="g-c-bs-warning g-btips-warn">'+errTip+'</span>').show();
@@ -136,7 +136,8 @@
 						'Key': function(up, file) {
 							/*调用滚动条*/
 							uploadShowBars(file['id']);
-							return "imeicode_xlsfile";
+							var prefix=file.name.split('.');
+							return "imeicode_uploadfile"+moment().format("YYYYMMDDHHmmSSSS")+'.'+prefix[prefix.length - 1];
 						}
 					}
 				});
@@ -310,14 +311,15 @@
 		function getToken(){
 			var result=null;
 			$.ajax({
-				url:'http://120.76.237.100:8082/yttx-providerbms-api/qiniu/token/get',
+				url:'http://112.74.207.132:8088/yttx-public-api/qiniu/token/get',
 				async:false,
 				type:'post',
 				datatype:'json',
 				data:{
 					bizType:2,
+					roleId:decodeURIComponent(logininfo.param.roleId),
 					adminId:decodeURIComponent(logininfo.param.adminId),
-					userId:decodeURIComponent(logininfo.param.userId),
+					grade:decodeURIComponent(logininfo.param.grade),
 					token:decodeURIComponent(logininfo.param.token)
 				}
 			}).done(function(resp){

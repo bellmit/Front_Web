@@ -61,6 +61,7 @@
 				$admin_batchitem_show=$('#admin_batchitem_show'),
 				$admin_batchitem_check=$('#admin_batchitem_check'),
 				$admin_batchitem_action=$('#admin_batchitem_action'),
+				$admin_imeilist=$('#admin_imeilist'),
 				batchItem=new public_tool.BatchItem();
 
 			/*批量初始化*/
@@ -69,7 +70,7 @@
 				$batchshow:$admin_batchitem_show,
 				$checkall:$admin_batchitem_check,
 				$action:$admin_batchitem_action,
-				$listwrap:$admin_list_wrap,
+				$listwrap:$admin_imeilist,
 				setSure:setSure,
 				fn:function (type) {
 					/*批量操作*/

@@ -72,7 +72,7 @@
 						autoWidth:true,/*是否*/
 						paging:false,
 						ajax:{
-							url:"http://120.76.237.100:8082/mall-buzhubms-api/subscriber/feedback/list",
+							url:"http://120.76.237.100:8082/mall-buzhubms-api/feedback/list",
 							dataType:'JSON',
 							method:'post',
 							dataSrc:function ( json ) {
@@ -162,7 +162,7 @@
 								"data":"id",
 								"render":function(data, type, full, meta ){
 									var id=parseInt(data,10),
-										status=parseInt(data,10),
+										status=parseInt(full.dealStatus,10),
 										btns='';
 
 									if(status===0){
@@ -232,6 +232,14 @@
 			});
 
 
+			/*绑定关闭详情*/
+			$.each([$show_comsug_wrap],function () {
+				this.on('hide.bs.modal',function(){
+					admin_comsug_form.reset();
+				});
+			});
+
+
 			/*事件绑定*/
 			/*绑定查看，修改操作*/
 			var operate_item;
@@ -263,6 +271,7 @@
 					}
 					operate_item=$tr.addClass('item-lighten');
 					$admin_id.val(id);
+					$show_comsug_wrap.modal('show',{backdrop:'static'});
 				}
 			});
 
@@ -308,7 +317,7 @@
 										id:$admin_id.val(),
 										dealRemark:$admin_dealRemark.val()
 									});
-									config['url']="http://120.76.237.100:8082/mall-buzhubms-api/subscriber/feedback/deal";
+									config['url']="http://120.76.237.100:8082/mall-buzhubms-api/feedback/deal";
 									config['data']=setdata;
 								}
 
@@ -378,6 +387,8 @@
 				table.ajax.config(opt.config.ajax).load();
 			}
 		}
+
+
 
 
 	});
