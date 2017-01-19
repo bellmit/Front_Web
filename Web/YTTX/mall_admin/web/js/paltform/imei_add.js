@@ -195,7 +195,7 @@
 										type:$admin_type.val(),
 										excelFile:excelfile
 									});
-									config['url']="http://120.76.237.100:8082/mall-buzhubms-api/subscriber/add/bzwbms";
+									config['url']="http://120.76.237.100:8082/mall-buzhubms-api/subscriber/import/bzwbms";
 									config['data']=setdata;
 								}
 

@@ -104,7 +104,7 @@
 
                     <!--编辑表单标题-->
                     <div class="panel-heading">
-                        <h3 class="panel-title">添加(编辑)用户</h3>
+                        <h3 class="panel-title">编辑用户</h3>
                         <div class="panel-options">
                             <a href="#" data-toggle="panel">
                                 <span class="collapse-icon">&ndash;</span>
@@ -117,29 +117,28 @@
                     <div class="panel-body">
                         <form role="form"  method="post" id="admin_adduser_form" class="admin-form1 validate">
                             <input type="text" value="" id="admin_id" name="id" class="g-d-hidei" />
+                            <div class="admin-gap-theme2">用户信息</div>
+
+                            <div class="form-group">
+                                <label class="control-label">手机号码：</label>
+                                <div class="form-control g-bl-none g-br-none g-bt-none" id="admin_telePhone"></div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label">昵称：</label>
+                                <div class="form-control g-bl-none g-br-none g-bt-none" id="admin_nickName"></div>
+                            </div>
 
 
                             <div class="form-group">
-                                <label class="control-label"><span class="form-require-item g-c-red1">*</span>手机号码：</label>
-                                <div class="form-control g-bl-none g-br-none g-bt-none" id="admin_telePhone"></div>
+                                <label class="control-label">姓名：</label>
+                                <div class="form-control g-bl-none g-br-none g-bt-none" id="admin_Name"></div>
                             </div>
 
 
                             <div class="form-group">
                                 <label class="control-label"><span class="form-require-item g-c-red1">*</span>密码：</label>
                                 <input type="password" class="form-control" name="password" placeholder="请输入用户密码" data-validate="required,minlength[6]" data-message-required="用户密码不能为空"  data-message-minlength="用户密码长度不能少于6位"  id="admin_password" />
-                            </div>
-
-
-                            <div class="form-group">
-                                <label class="control-label"><span class="form-require-item g-c-red1">*</span>昵称：</label>
-                                <input type="text" class="form-control" name="nickName" placeholder="请输入昵称" data-validate="required" data-message-required="昵称不能为空"  id="admin_nickName" />
-                            </div>
-
-
-                            <div class="form-group">
-                                <label class="control-label"><span class="form-require-item g-c-red1">*</span>姓名：</label>
-                                <input type="text" class="form-control" name="Name" placeholder="请输入姓名" data-validate="required" data-message-required="姓名不能为空"  id="admin_Name" />
                             </div>
 
 

@@ -844,9 +844,9 @@
 		},
 		"330":{
 			"name":"广告管理",
-			"code":"paltform",
+			"code":"advert",
 			"match":"-advert-",
-			"ignoremodule":true,
+			/*"ignoremodule":true,*/
 			"class":"menu-ux-ad",
 			"module":"advert",
 			"modid":"330"
@@ -855,7 +855,7 @@
 			"name":"活动设置",
 			"code":"activity",
 			"match":"-activity-",
-			"ignoremodule":true,
+			/*"ignoremodule":true,*/
 			"class":"menu-ux-serve",
 			"module":"activity",
 			"modid":"340"

@@ -138,18 +138,6 @@
 			}
 
 
-			/*格式化手机号码*/
-			$.each([$admin_telePhone],function(){
-				this.on('keyup',function(){
-					var phoneno=this.value.replace(/\D*/g,'');
-					if(phoneno===''){
-						this.value='';
-						return false;
-					}
-					this.value=public_tool.phoneFormat(this.value);
-				});
-			});
-
 
 			/*获取编辑缓存*/
 			(function () {
@@ -223,9 +211,9 @@
 									/*同步编辑器*/
 									$.extend(true,setdata,{
 										phone:public_tool.trims($admin_telePhone.html()),
+										nickName:$admin_nickName.html(),
+										name:$admin_Name.html(),
 										password:$admin_password.val(),
-										nickName:$admin_nickName.val(),
-										name:$admin_Name.val(),
 										gender:$admin_sex.find(':checked').val(),
 										isEnabled:parseInt($admin_enabled.find(':checked').val(),10)===1?true:false,
 										icon:tempimg
@@ -332,10 +320,10 @@
 									$admin_password.val(list[m]);
 									break;
 								case 'nickName':
-									$admin_nickName.val(list[m]);
+									$admin_nickName.html(list[m]);
 									break;
 								case 'name':
-									$admin_Name.val(list[m]);
+									$admin_Name.html(list[m]);
 									break;
 								case 'gender':
 									$admin_sex.find('input').each(function(){
