@@ -169,7 +169,7 @@
 								"orderable" :false,
 								"searchable" :false,
 								"render":function(data, type, full, meta ){
-									return '<input data-forbid="'+full.isEnabled+'" value="'+data+'" data-auditstate="'+full.status+'" name="providerID" type="checkbox" />';
+									return '<input data-forbid="'+full.isEnabled+'" value="'+data+'" data-auditstate="'+full.auditStatus+'" name="providerID" type="checkbox" />';
 								}
 							},
 							{
