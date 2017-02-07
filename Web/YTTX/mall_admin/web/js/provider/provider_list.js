@@ -155,7 +155,6 @@
 								adminId:decodeURIComponent(logininfo.param.adminId),
 								grade:decodeURIComponent(logininfo.param.grade),
 								token:decodeURIComponent(logininfo.param.token),
-								auditStatus:1,
 								page:1,
 								pageSize:10
 							}
@@ -169,7 +168,15 @@
 								"orderable" :false,
 								"searchable" :false,
 								"render":function(data, type, full, meta ){
-									return '<input data-forbid="'+full.isEnabled+'" value="'+data+'" data-auditstate="'+full.auditStatus+'" name="providerID" type="checkbox" />';
+									if(providerforbid_power){
+										var audit=parseInt(full.auditStatus,10);
+										if(isNaN(audit)||audit!==1){
+											return '';
+										}else{
+											return '<input data-forbid="'+full.isEnabled+'" value="'+data+'" data-auditstate="'+audit+'" name="providerID" type="checkbox" />';
+										}
+									}
+									return '';
 								}
 							},
 							{
@@ -231,6 +238,13 @@
 											}
 										}
 									}
+									/*商品列*/
+									if(providersearch_power){
+										btns+='<span data-action="select" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+													<i class="fa-send"></i>\
+													<span>商品列</span>\
+												</span>';
+									}
 									return btns;
 								}
 							}
@@ -245,11 +259,10 @@
 
 			/*清空查询条件*/
 			$admin_search_clear.on('click',function(){
-				$.each([$search_legalName,$search_storeName],function(){
+				$.each([$search_legalName,$search_storeName,$search_auditStatus],function(){
 					this.val('');
 				});
-			});
-			$admin_search_clear.trigger('click');
+			}).trigger('click');
 
 
 			/*联合查询*/
@@ -307,7 +320,7 @@
 				id=$this.attr('data-id');
 				action=$this.attr('data-action');
 
-				/*修改,编辑操作*/
+				/*启用，禁用操作*/
 				if(action==='forbid'||action==='enable'){
 					if(operate_item){
 						operate_item.removeClass('item-lighten');
@@ -453,21 +466,22 @@
 					"enable":'启用'
 				};
 
+
 			for(i;i<len;i++){
 				var tempinput=inputitems[i],
-					temp_forbid=tempinput.attr('data-forbid'),
-					temp_status=parseInt(tempinput.attr('data-status'));
+					temp_state=tempinput.attr('data-forbid'),
+					temp_audit=parseInt(tempinput.attr('data-auditstate'));
 
-				if(temp_status===1){
+
+				if(temp_audit===1){
 					/*审核成功*/
-					/*可售，禁售*/
-					if(temp_forbid==='true'){
+					if(temp_state==='true'){
 						/*启用状态则禁用*/
 						if(action==='enable'){
 							filter.push(tempid[i]);
 							continue;
 						}
-					}else if(temp_forbid==='false'){
+					}else if(temp_state==='false'){
 						/*禁用状态则启用*/
 						if(action==='forbid'){
 							filter.push(tempid[i]);
@@ -513,6 +527,24 @@
 						}
 					}
 				},2000);
+			}else{
+				tempid=batchItem.getBatchData();
+				if(tempid.length!==0){
+					if(action==='forbid'||action==='enable'){
+						/*确认是否启用或禁用*/
+						setSure.sure(actiontip[action],function(cf){
+						 /*to do*/
+						 setEnabled({
+						 id:tempid,
+						 action:action,
+						 tip:cf.dia||dia,
+						 type:'batch',
+						 actiontip:actiontip,
+						 actionmap:actionmap
+						 },action==='forbid'?"禁用后，该供应商将禁止使用，在APP中查看不到该供应商，商品也归纳至禁售商品中，是否禁用？":"启用后，该供应商将可以使用，在APP中能查看该供应商，商品也归纳至可售商品中，是否启用？",true);
+						 });
+					}
+				}
 			}
 		}
 
