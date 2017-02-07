@@ -20,7 +20,11 @@
 				},
 				datatype:'json'
 			});
-			
+
+
+			/*清除商品列数据*/
+			public_tool.removeParams('bzw-provider-goods');
+
 
 
 			/*权限调用*/
@@ -239,8 +243,8 @@
 										}
 									}
 									/*商品列*/
-									if(providersearch_power){
-										btns+='<span data-action="select" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+									if(providersearch_power&&auditstate===1){
+										btns+='<span data-action="goods" data-id="'+id+'" data-legalname="'+full.legalName+'" data-storename="'+full.storeName+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 													<i class="fa-send"></i>\
 													<span>商品列</span>\
 												</span>';
@@ -339,6 +343,13 @@
 							actionmap:actionmap
 						},action==='forbid'?"禁用后，该供应商将禁止使用，在APP中查看不到该供应商，商品也归纳至禁售商品中，是否禁用？":"启用后，该供应商将可以使用，在APP中能查看该供应商，商品也归纳至可售商品中，是否启用？",true);
 					});
+				}else if(action==='goods'){
+					public_tool.setParams('bzw-provider-goods',{
+						providerid:id,
+						legalname:$this.attr('data-legalname'),
+						storename:$this.attr('data-storename')
+					});
+					window.location.href='bzw-provider-goods.html';
 				}
 			});
 
@@ -350,6 +361,8 @@
 			if(table===null){
 				table=opt.$admin_list_wrap.DataTable(opt.config);
 			}else{
+				/*清除批量数据*/
+				batchItem.clear();
 				table.ajax.config(opt.config.ajax).load();
 			}
 		}

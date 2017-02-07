@@ -531,9 +531,9 @@
 			if(table===null){
 				table=opt.$admin_list_wrap.DataTable(opt.config);
 			}else{
-				table.ajax.config(opt.config.ajax).load();
 				/*清除批量数据*/
 				batchItem.clear();
+				table.ajax.config(opt.config.ajax).load();
 			}
 		}
 
