@@ -24,7 +24,6 @@
 
 			/*权限调用*/
 			var powermap=public_tool.getPower(),
-				updown_power=public_tool.getKeyPower('bzw-goods-updown',powermap),
 				detail_power=public_tool.getKeyPower('bzw-goods-details',powermap),
 				audit_power=public_tool.getKeyPower('bzw-audit-goods',powermap);
 
@@ -66,7 +65,6 @@
 			var $search_name=$('#search_name'),
 				$search_auditStatus=$('#search_auditStatus'),
 				$search_providerName=$('#search_providerName'),
-				$search_isForbidden=$('#search_isForbidden'),
 				$search_gtione=$('#search_gtione'),
 				$search_gtitwo=$('#search_gtitwo'),
 				$search_gtithree=$('#search_gtithree'),
@@ -111,8 +109,6 @@
 				$listwrap:$admin_batchlist_wrap,
 				setSure:setSure,
 				powerobj:{
-					'up':updown_power,
-					'down':updown_power,
 					'audit':audit_power
 				},
 				fn:function (type) {
@@ -184,7 +180,7 @@
 								adminId:decodeURIComponent(logininfo.param.adminId),
 								grade:decodeURIComponent(logininfo.param.grade),
 								token:decodeURIComponent(logininfo.param.token),
-								auditStatus:a_state,
+								auditStatus:$search_auditStatus.val(),
 								page:1,
 								pageSize:10
 							}
@@ -198,7 +194,12 @@
 								"orderable" :false,
 								"searchable" :false,
 								"render":function(data, type, full, meta ){
-									return '<input data-recommended="'+full.isRecommended+'" data-forbid="'+full.isForbidden+'" value="'+data+'" data-status="'+full.status+'" name="goodsID" type="checkbox" />';
+									var temp_audit=parseInt(full.auditStatus,10);
+									if(temp_audit===0||temp_audit===2){
+										return '<input value="'+data+'" data-audit="'+full.auditStatus+'" data-status="'+full.status+'" name="goodsID" type="checkbox" />';
+									}else{
+										return '';
+									}
 								}
 							},
 							{
@@ -244,31 +245,13 @@
 								}
 							},
 							{
-								"data":"isForbidden",
-								"render":function(data, type, full, meta ){
-									var statusmap={
-											true:"禁售",
-											false:"可售"
-										},
-										str='';
-
-									if(data){
-										str='<div class="g-c-gray9">'+statusmap[data]+'</div>';
-									}else{
-										str='<div class="g-c-info">'+statusmap[data]+'</div>';
-									}
-									return str;
-								}
-							},
-							{
 								"data":"id",
 								"render":function(data, type, full, meta ){
 									var id=parseInt(data,10),
 										btns='',
-										temp_status=parseInt(full.status,10),
-										temp_recommend=full.isRecommended;
+										temp_audit=parseInt(full.auditStatus,10);
 
-									if(a_state===0||a_state===2){
+									if(temp_audit===0||temp_audit===2){
 										/*待审核，审核失败*/
 										if(audit_power){
 											btns+='<span  data-action="audit" data-id="'+id+'" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
@@ -276,41 +259,19 @@
 												<span>审核</span>\
 											</span>';
 										}
-									}else if(a_state===1){
-										/*审核成功*/
-										/*上架，下架*/
-										if(temp_status===1){
-											/*上架状态则下架*/
-											btns+='<span data-action="down" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
-													<i class="fa-arrow-down"></i>\
-													<span>下架</span>\
-												</span>';
-										}else if(temp_status===2){
-											/*下架状态则上架*/
-											btns+='<span data-action="up" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
-													<i class="fa-arrow-up"></i>\
-													<span>上架</span>\
-												</span>';
-										}else if(temp_status===0){
-											/*仓库状态则上架*/
-											btns+='<span data-action="up" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
-													<i class="fa-arrow-up"></i>\
-													<span>上架</span>\
+										if(detail_power){
+											btns+='<span data-action="edit" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+													<i class="fa-edit"></i>\
+													<span>编辑</span>\
 												</span>';
 										}
-										/*推荐*/
-										if(temp_status!==3&&!temp_recommend){
-											btns+='<span data-action="recommend" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
-													<i class="fa-heart"></i>\
-													<span>推荐</span>\
-												</span>';
-										}
-									}
-									if(detail_power){
-										btns+='<span data-action="select" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+									}else{
+										if(detail_power){
+											btns+='<span data-action="select" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 													<i class="fa-file-text-o"></i>\
 													<span>查看</span>\
 												</span>';
+										}
 									}
 									return btns;
 								}
@@ -371,11 +332,12 @@
 
 			/*清空查询条件*/
 			$admin_search_clear.on('click',function(){
-				$.each([$search_name,$search_providerName,$search_isForbidden,$search_gtione,$search_gtitwo,$search_gtithree],function(){
+				$.each([$search_name,$search_providerName,$search_auditStatus,$search_gtione,$search_gtitwo,$search_gtithree],function(){
 					var selector=this.selector;
-					if(selector.indexOf('isForbidden')!==-1||selector.indexOf('_gti')!==-1){
-						this.find(':selected').prop({
-							"selected":false
+					if(selector.indexOf('auditStatus')!==-1){
+						/*状态非空*/
+						this.find('option:first').prop({
+							"selected":true
 						});
 					}else{
 						this.val('');
@@ -387,21 +349,12 @@
 			$admin_search_clear.trigger('click');
 
 
-			/*绑定切换不同的状态*/
-			$.each([$search_auditStatus],function () {
-				this.on('change',function () {
-					a_state=parseInt(this.value,0);
-					/*清除批量数据*/
-					batchItem.clear();
-				});
-			});
-
 
 			/*联合查询*/
 			$admin_search_btn.on('click',function(){
 				var data= $.extend(true,{},goods_config.config.ajax.data);
 
-				$.each([$search_name,$search_providerName,$search_isForbidden,$search_auditStatus],function(){
+				$.each([$search_name,$search_providerName,$search_auditStatus],function(){
 					var text=this.val(),
 						selector=this.selector.slice(1),
 						key=selector.split('_');
@@ -482,7 +435,7 @@
 				/*修改,编辑操作*/
 				if(action==='select'){
 					/*查看*/
-					showDetail(id,$tr);
+					showDetail(id,$tr,'detail');
 				}else if(action==='audit'){
 					/*清除批量选中*/
 					batchItem.filterData(id);
@@ -492,23 +445,9 @@
 					}
 					operate_item=$tr.addClass('item-lighten');
 					showAudit(id,$tr);
-				}else if(action==='up'||action==='down'||action==='recommend'){
-					/*清除批量选中*/
-					batchItem.filterData(id);
-					if(operate_item){
-						operate_item.removeClass('item-lighten');
-						operate_item=null;
-					}
-					operate_item=$tr.addClass('item-lighten');
-
-					/*确认是否启用或禁用*/
-					/*to do*/
-					goodsAction({
-						id:id,
-						action:action,
-						actiontip:actiontip,
-						actionmap:actionmap
-					});
+				}else if(action==='edit'){
+					/*查看并编辑*/
+					showDetail(id,$tr,'edit');
 				}
 			});
 

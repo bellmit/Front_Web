@@ -25,15 +25,14 @@
 			/*权限调用*/
 			var powermap=public_tool.getPower(),
 				updown_power=public_tool.getKeyPower('bzw-goods-updown',powermap),
-				detail_power=public_tool.getKeyPower('bzw-goods-details',powermap),
-				audit_power=public_tool.getKeyPower('bzw-audit-goods',powermap);
+				detail_power=public_tool.getKeyPower('bzw-goods-details',powermap);
 
 
 
 			/*dom引用和相关变量定义*/
 			var $admin_list_wrap=$('#admin_list_wrap')/*表格*/,
 				$admin_batchlist_wrap=$('#admin_batchlist_wrap'),
-				module_id='bzw-goods-audit'/*模块id，主要用于本地存储传值*/,
+				module_id='bzw-goods-manager'/*模块id，主要用于本地存储传值*/,
 				dia=dialog({
 					zIndex:2000,
 					title:'温馨提示',
@@ -190,7 +189,13 @@
 								"orderable" :false,
 								"searchable" :false,
 								"render":function(data, type, full, meta ){
-									return '<input data-recommended="'+full.isRecommended+'" value="'+data+'" data-status="'+full.status+'"  data-audit="'+full.auditStatus+'" name="goodsID" type="checkbox" />';
+									var temp_audit=parseInt(full.auditStatus,10);
+									/*必须审核成功*/
+									if(temp_audit===1){
+										return '<input data-recommended="'+full.isRecommended+'" value="'+data+'" data-status="'+full.status+'" name="goodsID" type="checkbox" />';
+									}else{
+										return '';
+									}
 								}
 							},
 							{

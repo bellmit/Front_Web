@@ -129,14 +129,6 @@
                                     <input type="text" id="search_providerName" />
                                 </div>
                                 <div class="admin-search-item">
-                                    <label>禁售/可售：</label>
-                                    <select id="search_isForbidden" >
-                                        <option selected value="">全部</option>
-                                        <option value="false">可售</option>
-                                        <option value="true">禁售</option>
-                                    </select>
-                                </div>
-                                <div class="admin-search-item">
                                     <label>审核状态：</label>
                                     <select id="search_auditStatus" >
                                         <option selected value="0">待审核</option>
@@ -166,12 +158,11 @@
                                 <!--分组样式-->
                                 <colgroup>
                                     <col class="g-w-percent2">
-                                    <col class="g-w-percent6">
+                                    <col class="g-w-percent8">
                                     <col class="g-w-percent10">
-                                    <col class="g-w-percent6">
+                                    <col class="g-w-percent8">
                                     <col class="g-w-percent5">
                                     <col class="g-w-percent3">
-                                    <col class="g-w-percent4">
                                     <col class="g-w-percent4">
                                     <col class="g-w-percent10">
                                 </colgroup>
@@ -186,7 +177,6 @@
                                     <th>分类</th>
                                     <th>排序</th>
                                     <th>状态</th>
-                                    <th>禁售/可售</th>
                                     <th>操作</th>
                                 </tr>
                                 </thead>
@@ -240,10 +230,7 @@
                     <div data-state="1" id="admin_batchitem_check" class="admin-batchitem-check" data-check="0" data-action="checkall"></div>
                 </div>
                 <div class="admin-batchitem-inner" id="admin_batchitem_action">
-                    <div data-action="up">上架</div>
-                    <div data-action="down">下架</div>
                     <div data-action="audit">审核</div>
-                    <div data-action="recommend">推荐</div>
                 </div>
             </div>
         </div>
