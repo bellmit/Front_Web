@@ -58,6 +58,7 @@
 			/*查询对象*/
 			var $search_name=$('#search_name'),
 				$search_auditStatus=$('#search_auditStatus'),
+				$search_status=$('#search_status'),
 				$search_providerName=$('#search_providerName'),
 				$search_isForbidden=$('#search_isForbidden'),
 				$search_gtione=$('#search_gtione'),
@@ -189,7 +190,7 @@
 								"orderable" :false,
 								"searchable" :false,
 								"render":function(data, type, full, meta ){
-									return '<input data-recommended="'+full.isRecommended+'" value="'+data+'" data-status="'+full.status+'" name="goodsID" type="checkbox" />';
+									return '<input data-recommended="'+full.isRecommended+'" value="'+data+'" data-status="'+full.status+'"  data-audit="'+full.auditStatus+'" name="goodsID" type="checkbox" />';
 								}
 							},
 							{
@@ -257,11 +258,12 @@
 									var id=parseInt(data,10),
 										btns='',
 										temp_status=parseInt(full.status,10),
+										temp_audit=parseInt(full.auditStatus,10),
 										temp_recommend=full.isRecommended;
 
 									/*审核成功*/
 									/*上架，下架*/
-									if(updown_power){
+									if(updown_power&&temp_audit===1){
 										if(temp_status===1){
 											/*上架状态则下架*/
 											btns+='<span data-action="down" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
@@ -283,7 +285,7 @@
 										}
 									}
 									/*推荐*/
-									if(temp_status!==3&&!temp_recommend){
+									if(temp_status!==3&&!temp_recommend&&temp_audit===1){
 										btns+='<span data-action="recommend" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 													<i class="fa-heart"></i>\
 													<span>推荐</span>\
@@ -354,13 +356,9 @@
 
 			/*清空查询条件*/
 			$admin_search_clear.on('click',function(){
-				$.each([$search_name,$search_providerName,$search_isForbidden,$search_auditStatus,$search_gtione,$search_gtitwo,$search_gtithree],function(){
+				$.each([$search_name,$search_providerName,$search_isForbidden,$search_status,$search_auditStatus,$search_gtione,$search_gtitwo,$search_gtithree],function(){
 					var selector=this.selector;
-					if(selector.indexOf('isForbidden')!==-1||selector.indexOf('_gti')!==-1){
-						this.find(':selected').prop({
-							"selected":false
-						});
-					}else if(selector.indexOf('auditStatus')!==-1){
+					if(selector.indexOf('auditStatus')!==-1){
 						/*状态非空*/
 						this.find('option:first').prop({
 							"selected":true
@@ -380,7 +378,7 @@
 			$admin_search_btn.on('click',function(){
 				var data= $.extend(true,{},goods_config.config.ajax.data);
 
-				$.each([$search_name,$search_providerName,$search_isForbidden,$search_auditStatus],function(){
+				$.each([$search_name,$search_providerName,$search_isForbidden,$search_status,$search_auditStatus],function(){
 					var text=this.val(),
 						selector=this.selector.slice(1),
 						key=selector.split('_');
