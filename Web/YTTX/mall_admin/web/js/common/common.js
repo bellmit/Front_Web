@@ -775,6 +775,13 @@
 			"name":"商品管理",
 			"code":"goods",
 			"match":"-goods-",
+			"extendmenu":{
+				"position":"before",
+				"list":[{
+					"modLink":"bzw-goods-manager",
+					"modName": "商品管理"
+				}]
+			},
 			"class":"menu-ux-shop",
 			"module":"goods",
 			"modid":"250"
@@ -1035,7 +1042,7 @@
 
 			/*静态注入*/
 			/*var injectdata=self.injectSideMenu({
-				url:self.routeMap.isindex?'../json/menu.json':'../../json/menu.json',
+				url:self.routeMap.isindex?'../json/inject_menu.json':'../../json/inject_menu.json',
 				async:false,
 				type:'post',
 				datatype:'json'
@@ -1114,6 +1121,33 @@
 				}
 				return false;
 			},
+			extendMenu=function (map,config) {
+				var elist=map['extendmenu'];
+				if(elist){
+					var e=0,
+						estr='',
+						eitem=elist['list'],
+						elen=eitem.length;
+
+					if(config.isindex){
+						for(e;e<elen;e++){
+							estr+='<li><a href=\"'+map.code+'/'+eitem[e].modLink+config.suffix+'\"><span>'+eitem[e].modName+'</span></a></li>';
+						}
+					}else if(!config.isindex){
+						if(config.ismodule){
+							for(e;e<elen;e++){
+								estr+='<li><a href=\"'+eitem[e].modLink+config.suffix+'\"><span>'+eitem[e].modName+'</span></a></li>';
+							}
+						}else{
+							for(e;e<elen;e++){
+								estr+='<li><a href=\"../'+map.code+'/'+eitem[e].modLink+config.suffix+'\"><span>'+eitem[e].modName+'</span></a></li>';
+							}
+						}
+					}
+					return config.menustr+estr;
+				}
+				return '';
+			},
 			menu=data.result.menu,
 			len=menu.length,
 			menustr='',
@@ -1173,6 +1207,16 @@
 					}
 					sublen=subitem.length;
 					j=0;
+					/*扩展菜单*/
+					if('extendmenu' in link){
+						if(link['extendmenu']['position']==='before'){
+							menustr=extendMenu(link,{
+								menustr:menustr,
+								suffix:suffix,
+								isindex:true
+							});
+						}
+					}
 					for(j;j<sublen;j++){
 						item=subitem[j];
 						/*判断是否存在忽略*/
@@ -1181,6 +1225,16 @@
 							continue;
 						}
 						menustr+='<li><a href=\"'+link.code+'/'+item.modLink+suffix+'\"><span>'+item.modName+'</span></a></li>';
+					}
+					/*扩展菜单*/
+					if('extendmenu' in link){
+						if(link['extendmenu']['position']==='after'){
+							menustr=extendMenu(link,{
+								menustr:menustr,
+								suffix:suffix,
+								isindex:true
+							});
+						}
 					}
 					menustr+="</li></ul>";
 				}else{
@@ -1212,6 +1266,17 @@
 					sublen=subitem.length;
 					j=0;
 					var ismodule=path.indexOf(link.match)!==-1;
+					/*扩展菜单*/
+					if('extendmenu' in link){
+						if(link['extendmenu']['position']==='before'){
+							menustr=extendMenu(link,{
+								menustr:menustr,
+								suffix:suffix,
+								isindex:false,
+								ismodule:ismodule
+							});
+						}
+					}
 					for(j;j<sublen;j++){
 						item=subitem[j];
 						/*判断是否存在忽略*/
@@ -1223,6 +1288,17 @@
 								menustr+='<li><a href=\"'+item.modLink+suffix+'\"><span>'+item.modName+'</span></a></li>';
 						}else{
 								menustr+='<li><a href=\"../'+link.code+'/'+item.modLink+suffix+'\"><span>'+item.modName+'</span></a></li>';
+						}
+					}
+					/*扩展菜单*/
+					if('extendmenu' in link){
+						if(link['extendmenu']['position']==='after'){
+							menustr=extendMenu(link,{
+								menustr:menustr,
+								suffix:suffix,
+								isindex:false,
+								ismodule:ismodule
+							});
 						}
 					}
 					menustr+="</li></ul>";
@@ -1249,6 +1325,8 @@
 			/*释放内存*/
 			matchClass=null;
 			matchModule=null;
+			matchIgnore=null;
+			extendMenu=null;
 			return menustr;
 		}
 
@@ -1268,6 +1346,8 @@
 		/*释放内存*/
 		matchClass=null;
 		matchModule=null;
+		matchIgnore=null;
+		extendMenu=null;
 	};
 	//卸载左侧菜单条
 	public_tool.removeSideMenu=function($menu){
