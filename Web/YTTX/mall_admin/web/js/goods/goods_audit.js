@@ -75,9 +75,9 @@
 
 			/*查看详情*/
 			var $goods_detail_wrap=$('#goods_detail_wrap'),
-				$admin_editid=$('#admin_editid'),
 				$admin_wholesale_price_thead=$('#admin_wholesale_price_thead'),
 				$admin_wholesale_price_list=$('#admin_wholesale_price_list'),
+				$admin_wholesale_price_tip=$('#admin_wholesale_price_tip'),
 				wholesale_price_theadstr='<tr>\
 					<th>颜色</th>\
 					<th>规格</th>\
@@ -85,22 +85,14 @@
 					<th>批发价</th>\
 					<th>建议零售价</th>\
 					<th>价格显示在首页</th>\
+					<th>操作</th>\
 				</tr>',
-				price_data={},
-				attr_data={},
 				attr_map={},
 				history_data={},
 				listone={},
 				listtwo={},
-				admin_goodsadd_form=document.getElementById('admin_goodsadd_form'),
 				$admin_oldprice_btn=$('#admin_oldprice_btn'),
-				$admin_oldprice_show=$('#admin_oldprice_show'),
-				basedata={
-					roleId:decodeURIComponent(logininfo.param.roleId),
-					adminId:decodeURIComponent(logininfo.param.adminId),
-					grade:decodeURIComponent(logininfo.param.grade),
-					token:decodeURIComponent(logininfo.param.token)
-				};
+				$admin_oldprice_show=$('#admin_oldprice_show');
 
 
 			/*轮播图引用*/
@@ -437,12 +429,19 @@
 
 			/*绑定关闭详情*/
 			$.each([$show_audit_wrap,$goods_detail_wrap],function () {
+				var selector=this.selector,
+					isaudit=selector.indexOf('audit')!==-1?true:false;
 				this.on('hide.bs.modal',function(){
 					if(operate_item){
 						setTimeout(function(){
 							operate_item.removeClass('item-lighten');
 							operate_item=null;
 						},1000);
+					}
+					if(isaudit){
+						resetShowData('audit');
+					}else{
+						resetShowData('edit');
 					}
 				});
 			});
@@ -489,7 +488,10 @@
 
 			/*绑定表格修改*/
 			$admin_wholesale_price_list.delegate('span','click',function () {
-				updatePrice();
+				var $this=$(this),
+					id=$this.attr('data-id'),
+					$tr=$this.closest('tr');
+				updatePrice(id,$tr);
 			});
 
 
@@ -596,12 +598,18 @@
 
 
 		/*重置数据项*/
-		function resetAuditData() {
-			admin_audit_form.reset();
-			$show_audit_header.html('');
-			$admin_id.attr({
-				'data-type':''
-			});
+		function resetShowData(type) {
+			if(type==='audit'){
+				admin_audit_form.reset();
+				$show_audit_header.html('');
+				$admin_id.attr({
+					'data-type':''
+				});
+			}else if(type==='edit'){
+				$admin_wholesale_price_list.attr({
+					'data-id':''
+				});
+			}
 		}
 
 
@@ -752,7 +760,7 @@
 							}
 							setTimeout(function () {
 								tip.close();
-								resetAuditData();
+								resetShowData('audit');
 							},2000);
 							return false;
 						}
@@ -771,7 +779,7 @@
 							getColumnData(goods_page,goods_config);
 							setTimeout(function () {
 								$show_audit_wrap.modal('hide');
-								resetAuditData();
+								resetShowData('audit');
 							},1000);
 						},1000);
 					})
@@ -788,7 +796,7 @@
 						}
 						setTimeout(function () {
 							tip.close();
-							resetAuditData();
+							resetShowData('audit');
 							$show_audit_wrap.modal('hide');
 						},2000);
 					});
@@ -862,10 +870,12 @@
 			}
 		}
 
-
 		/*查看详情*/
 		function showDetail(id,$tr) {
 			if(typeof id==='undefined'){
+				return false;
+			}
+			if(id===''){
 				return false;
 			}
 
@@ -886,37 +896,54 @@
 						setTimeout(function () {
 							dia.close();
 						},2000);
+						$admin_wholesale_price_list.attr({
+							'data-id':''
+						});
 						return false;
 					}
 					/*是否是正确的返回数据*/
 					var result=resp.result;
 
 					if(!result){
+						$admin_wholesale_price_list.attr({
+							'data-id':''
+						});
 						return false;
 					}
 					if($.isEmptyObject(result)){
+						$admin_wholesale_price_list.attr({
+							'data-id':''
+						});
 						return false;
 					}
+					$admin_wholesale_price_list.attr({
+						'data-id':id
+					});
+
 					/*解析轮播图*/
 					var banner=result['bannerList'];
 					if(banner&&banner.length!==0){
 						getSlideData(banner,slide_config);
 					}
+
 					/*解析详情*/
 					var detail=result['details'];
 					if(detail!==''){
 						getDetailHtml(detail);
 					}
+
 					/*解析类型*/
 					var type=result['goodsTypeId'];
 					if(typeof type!=='undefined'){
 						document.getElementById('admin_goodstype').innerHTML=type;
 					}
+
 					/*解析名称*/
 					var name=result['name'];
 					if(typeof name!=='undefined'){
 						document.getElementById('admin_name').innerHTML=name;
 					}
+
 					/*解析状态*/
 					var status=result['status'],
 						statemap={
@@ -927,28 +954,38 @@
 						'4':"待审核"
 					};
 					if(typeof status !=='undefined'&&status!==''){
-
 						document.getElementById('admin_status').innerHTML=statemap[status];
 					}else{
 						document.getElementById('admin_status').innerHTML=statemap[0];
 					}
+
 					/*解析编码*/
 					var gcode=result['gcode'];
 					if(typeof gcode !=='undefined'){
 						document.getElementById('admin_code').innerHTML=gcode;
 					}
+
 					/*解析排序*/
 					var sort=result['sort'];
 					if(typeof sort !=='undefined'){
 						document.getElementById('admin_sort').innerHTML=sort;
 					}
+
 					/*解析是否被推荐*/
 					var isrec=result['isRecommended'];
 					if(typeof isrec!=='undefined'){
 						document.getElementById('admin_isRecommended').innerHTML=(isrec?'是':'否');
 					}
+
 					/*解析库存，批发价，建议零售价*/
-					getAttrData(result['tagsAttrsList'],result['attrInventoryPrices']);
+					var attr=getGroupCondition(result['tagsAttrsList'],result['attrInventoryPrices']);
+					if(attr){
+						/*设置属性组合值*/
+						setGroupCondition(history_data);
+						/*设置原始属性组合值*/
+						setOldGroupCondition(history_data);
+					}
+
 
 					/*添加高亮状态*/
 					if(operate_item){
@@ -961,6 +998,9 @@
 				.fail(function(resp){
 					console.log(resp.message);
 					dia.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"操作失败")+'</span>').show();
+					$admin_wholesale_price_list.attr({
+						'data-id':''
+					});
 					setTimeout(function () {
 						dia.close();
 					},2000);
@@ -970,29 +1010,34 @@
 
 
 		/*编辑提交价格数据*/
-		function updatePrice(){
-			var setdata={},
-				id=$admin_editid.val();
+		function updatePrice(id,$tr){
+			var setdata={};
 
 			if(id===''){
 				dia.content('<span class="g-c-bs-warning g-btips-warn">您没有选择需要操作的数据</span>').showModal();
 				return false;
 			}
 
-			$.extend(true,setdata,basedata);
-
-			var tempprice=getSetPrice();
-			if(tempprice===null){
+			var goodsid=$admin_wholesale_price_list.attr('data-id');
+			if(goodsid===''){
+				dia.content('<span class="g-c-bs-warning g-btips-warn">您没有选择需要操作的数据</span>').showModal();
 				return false;
 			}
 
+			$.extend(true,setdata,goods_params);
+
+			var priceobj=getSetPrice($tr);
+			if(priceobj===null){
+				return false;
+			}
+			var tempprice=priceobj['value'].split('#'),
+				tempinput=priceobj['$input'];
 
 			$.extend(true,setdata,{
-				goodsId:id,
-				goodsInventoryPricesId:,
-				wholesalePrice:,
-				retailPrice:,
-				supplierPrice:
+				goodsId:goodsid,
+				goodsInventoryPricesId:id,
+				wholesalePrice:tempprice[0],
+				retailPrice:tempprice[1]
 			});
 
 
@@ -1004,13 +1049,18 @@
 			}).done(function(resp){
 				var code=parseInt(resp.code,10);
 				if(code!==0){
-					dia.content('<span class="g-c-bs-warning g-btips-warn">修改商品失败</span>').show();
+					dia.content('<span class="g-c-bs-warning g-btips-warn">修改商品价格失败</span>').show();
 					return false;
 				}else{
-					dia.content('<span class="g-c-bs-success g-btips-succ">修改商品成功</span>').show();
+					dia.content('<span class="g-c-bs-success g-btips-succ">修改商品价格成功</span>').show();
+					/*成功后设置新值*/
+					tempinput.eq(0).attr({
+						'data-value':tempprice[0]
+					});
+					tempinput.eq(1).attr({
+						'data-value':tempprice[1]
+					});
 				}
-
-
 				setTimeout(function () {
 					dia.close();
 				},2000);
@@ -1020,8 +1070,48 @@
 		}
 
 
-		/*查询标签与属性*/
-		function getAttrData(attr,price){
+		/*获取设置的价格数据*/
+		function getSetPrice($tr){
+			var trims=public_tool.trimSep,
+				$input=$tr.find('input'),
+				sublen=$input.size();
+
+			if(sublen!==0){
+				var wholesale=trims($input.eq(0).val(),','),
+					retail=trims($input.eq(1).val(),','),
+					oldwholesale=$input.eq(0).attr('data-value'),
+					oldretail=$input.eq(1).attr('data-value'),
+					flag=true;
+
+				if(wholesale===''&&retail===''){
+					$admin_wholesale_price_tip.html('批发价或建议零售价不能为空');
+					flag=false;
+				}
+				if(wholesale===oldwholesale&&retail===oldretail){
+					$admin_wholesale_price_tip.html('批发价或建议零售价没有改变');
+					flag=false;
+				}else{
+					flag=true;
+				}
+				if(flag){
+					return {
+						value:wholesale+'#'+retail,
+						$input:$input
+					}
+				}else{
+					setTimeout(function () {
+						$admin_wholesale_price_tip.html('');
+					},3000);
+					return null;
+				}
+			}else{
+				return null;
+			}
+		}
+
+
+		/*通过价格反向解析标签与属性*/
+		function getGroupCondition(attr,price){
 			var attrlen= 0,
 				pricelen= 0,
 				priceobj;
@@ -1054,6 +1144,7 @@
 							}
 						}
 					}
+					return false;
 				}
 			}else {
 				/*存储对象*/
@@ -1096,11 +1187,13 @@
 				}());
 
 				/*解析结果集*/
+				/*有颜色和规格时*/
 				if(price){
 					priceobj=price;
 					pricelen=price.length;
 					if(pricelen!==0){
 						var	attrmap={};
+
 
 						/*解析第一属性*/
 						(function(){
@@ -1118,6 +1211,7 @@
 												listone['label']=mapdata['label'];
 												listone['res']=submap;
 												listone['id']=mapdata['id'];
+												listone['key']=mapdata['key'];
 												listone['map']=mapdata['map'];
 											}
 											break loopout;
@@ -1126,6 +1220,7 @@
 								}
 							}
 						}());
+
 
 						/*解析第二属性*/
 						if(!$.isEmptyObject(listone)){
@@ -1144,6 +1239,7 @@
 													listtwo['label']=mapdata['label'];
 													listtwo['res']=submap;
 													listtwo['id']=mapdata['id'];
+													listtwo['key']=mapdata['key'];
 													listtwo['map']=mapdata['map'];
 												}
 												break loopout;
@@ -1153,8 +1249,8 @@
 								}
 							}());
 						}else{
-							document.getElementById('admin_wholesale_price_list').innerHTML='';
-							document.getElementById('admin_wholesale_price_thead').innerHTML='<tr><th>颜色</th><th>规格</th><th>库存</th><th>批发价</th><th>建议零售价</th><th>供应商价</th><th>价格显示在首页</th></tr>';
+							$admin_wholesale_price_list.html('');
+							$admin_wholesale_price_thead.html(wholesale_price_theadstr);
 							return false;
 						}
 
@@ -1189,16 +1285,22 @@
 								}
 							}());
 						}else{
-							document.getElementById('admin_wholesale_price_list').innerHTML='';
-							document.getElementById('admin_wholesale_price_thead').innerHTML='<tr><th>颜色</th><th>规格</th><th>库存</th><th>批发价</th><th>建议零售价</th><th>价格显示在首页</th></tr>';
+							$admin_wholesale_price_list.html('');
+							$admin_wholesale_price_thead.html(wholesale_price_theadstr);
 							return false;
 						}
 
-						/*生成html文档*/
-						groupCondition(attrmap);
+						if(!$.isEmptyObject(attrmap)){
+							$.extend(true,history_data,attrmap);
+							return true;
+						}else{
+							$admin_wholesale_price_list.html('');
+							$admin_wholesale_price_thead.html(wholesale_price_theadstr);
+							return false;
+						}
 					}else{
-						document.getElementById('admin_wholesale_price_list').innerHTML='';
-						document.getElementById('admin_wholesale_price_thead').innerHTML='<tr><th>颜色</th><th>规格</th><th>库存</th><th>批发价</th><th>建议零售价</th><th>供应商价</th><th>价格显示在首页</th></tr>';
+						$admin_wholesale_price_list.html('');
+						$admin_wholesale_price_thead.html(wholesale_price_theadstr);
 						return false;
 					}
 				}
@@ -1207,8 +1309,8 @@
 
 
 
-		/*组合颜色与尺寸*/
-		function groupCondition(resp){
+		/*设置属性组合值*/
+		function setGroupCondition(resp){
 			var str='',
 				checkid=0,
 				x=0;
@@ -1223,10 +1325,12 @@
 					var dataitem=datavalue[k],
 						ischeck=parseInt(dataitem[3],10)===1?'是':'';
 					if(k===0){
+						var tempwholesaleprice=public_tool.moneyCorrect(dataitem[1],12,false),
+							tempretailprice=public_tool.moneyCorrect(dataitem[2],12,false);
 						str+='<td>'+listtwo['res'][dataitem[5]]+'</td>' +
 							'<td>'+dataitem[0]+'</td>' +
-							'<td>￥:'+public_tool.moneyCorrect(dataitem[1],12,false)[0]+'</td>' +
-							'<td>￥:'+public_tool.moneyCorrect(dataitem[2],12,false)[0]+'</td>' +
+							'<td><input class="admin-table-input" name="setwholesalePrice" maxlength="12" data-value="'+tempwholesaleprice[1]+'" value="'+tempwholesaleprice[0]+'" type="text"></td>' +
+							'<td><input class="admin-table-input" data-value="'+tempretailprice[1]+'" value="'+tempretailprice[0]+'" name="setretailPrice" maxlength="12" type="text"></td>' +
 							'<td>'+(function(){
 								var supplier=dataitem[6];
 								if(supplier===''||isNaN(supplier)){
@@ -1236,7 +1340,16 @@
 								}
 								return supplier;
 							}())+'</td>' +
-							'<td>'+ischeck+'</td></tr>';
+							'<td>'+ischeck+'</td>' +
+							'<td>'+(function(){
+								var inventid=dataitem[7];
+								if(typeof inventid==='undefined'||inventid===''||isNaN(inventid)){
+
+									return '';
+								}else{
+									return '<span class="btn btn-white btn-sm g-br3 g-c-gray6" data-id="'+inventid+'">修改</span>';
+								}
+							}())+'</td></tr>';
 					}else{
 						str+='<tr><td>'+listtwo['res'][dataitem[5]]+'</td>' +
 							'<td>'+dataitem[0]+'</td>' +
@@ -1251,6 +1364,76 @@
 								}
 								return supplier;
 							}())+'</td>' +
+							'<td>'+ischeck+'</td>' +
+							'<td>'+(function(){
+								var inventid=dataitem[7];
+								if(typeof inventid==='undefined'||inventid===''||isNaN(inventid)){
+
+									return '';
+								}else{
+									return '<span class="btn btn-white btn-sm g-br3 g-c-gray6" data-id="'+inventid+'">修改</span>';
+								}
+							}())+'</td></tr>';
+					}
+					if(ischeck===''){
+						/*判断是否选中,有则跳过无则计数*/
+						checkid++;
+					}
+					x++;
+				}
+			}
+			$admin_wholesale_price_thead.html('<tr><th>'+listone['label']+'</th><th>'+listtwo['label']+'</th><th>库存</th><th>批发价</th><th>建议零售价</th><th>供应商价</th><th>价格显示在首页</th><th>操作</th></tr>');
+			$admin_wholesale_price_list.html(str);
+			/*全部没选中则，默认第一个选中*/
+			if(checkid===x){
+				$admin_wholesale_price_list.find('tr:first-child').find('td').eq(6).html('是');
+			}
+		}
+
+
+		/*设置原始数据查看*/
+		function setOldGroupCondition(list){
+			var str='',
+				x=0,
+				checkid=0;
+			for(var j in list){
+				var k= 0,
+					item=list[j],
+					len=item.length;
+
+				str+='<tr><td rowspan="'+len+'">'+listone['res'][j]+'</td>';
+				for(k;k<len;k++){
+					var dataitem=item[k],
+						ischeck=parseInt(dataitem[3],10)===1?'是':'';
+					if(k===0){
+						str+='<td>'+listtwo['res'][dataitem[5]]+'</td>' +
+							'<td>'+dataitem[0]+'</td>' +
+							'<td>￥:'+public_tool.moneyCorrect(dataitem[1],12,false)[0]+'</td>' +
+							'<td>￥:'+public_tool.moneyCorrect(dataitem[2],12,false)[0]+'</td>' +
+							'<td>￥:'+(function(){
+								var supplier=dataitem[6];
+								if(supplier===''||isNaN(supplier)){
+									supplier='0.00';
+								}else{
+									supplier=public_tool.moneyCorrect(supplier,12,false)[0];
+								}
+								return supplier;
+							}())+'</td>' +
+							'<td>'+ischeck+'</td></tr>';
+					}else{
+						str+='<tr><td>'+listtwo['res'][dataitem[5]]+'</td>' +
+							'<td>'+dataitem[0]+'</td>' +
+							'<td>￥:'+public_tool.moneyCorrect(dataitem[1],12,false)[0]+'</td>' +
+							'<td>￥:'+public_tool.moneyCorrect(dataitem[2],12,false)[0]+'</td>' +
+							'<td>￥:'+(function(){
+								var supplier=dataitem[6];
+								if(supplier===''||isNaN(supplier)){
+									supplier='0.00';
+								}else{
+									supplier=public_tool.moneyCorrect(supplier,12,false)[0];
+								}
+								return supplier;
+							}())+'</td>' +
 							'<td>'+ischeck+'</td></tr>';
 					}
 					if(ischeck===''){
@@ -1260,12 +1443,12 @@
 					x++;
 				}
 			}
-			document.getElementById('admin_wholesale_price_thead').innerHTML='<tr><th>'+listone['label']+'</th><th>'+listtwo['label']+'</th><th>库存</th><th>批发价</th><th>建议零售价</th><th>供应商价</th><th>价格显示在首页</th></tr>';
-			var priclist=document.getElementById('admin_wholesale_price_list');
-			priclist.innerHTML=str;
+			document.getElementById('admin_wholesale_price_thead_old').innerHTML='<tr><th>'+listone['label']+'</th><th>'+listtwo['label']+'</th><th>库存</th><th>批发价</th><th>建议零售价</th><th>供应商价</th><th>价格显示在首页</th></tr>';
+			var pricelist=document.getElementById('admin_wholesale_price_old');
+			pricelist.innerHTML=str;
 			/*全部没选中则，默认第一个选中*/
-			if(checkid===x){
-				$(priclist).find('tr:first-child').find('td').eq(6).html('是');
+			if(checkid===k){
+				$(pricelist).find('tr:first-child').find('td').eq(6).html('是');
 			}
 		}
 
