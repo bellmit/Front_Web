@@ -132,7 +132,6 @@
                                     <label>审核状态：</label>
                                     <select id="search_auditStatus" >
                                         <option selected value="0">待审核</option>
-                                        <option value="1">审核成功</option>
                                         <option value="2">审核失败</option>
                                     </select>
                                 </div>
@@ -151,8 +150,6 @@
                                     </span>
                                 </div>
                             </div>
-
-
 
                             <table id="admin_list_wrap" class="table table-bordered table-striped table-hover admin-table">
                                 <!--分组样式-->
@@ -249,17 +246,19 @@
                 </div>
                 <div class="modal-body">
                     <form role="form"  method="post" id="admin_audit_form" class="admin-form1">
-                        <input type="text" value="" id="admin_id" class="g-d-hidei" />
+                        <input type="text" value="" data-type="" id="admin_id" class="g-d-hidei" />
                         <table class="table table-bordered table-striped table-hover admin-table">
                             <colgroup>
-                                <col class="g-w-percent15"/>
-                                <col class="g-w-percent10"/>
-                                <col class="g-w-percent10"/>
-                                <col class="g-w-percent10"/>
-                                <col class="g-w-percent5"/>
+                                <col class="g-w-percent2"/>
+                                <col class="g-w-percent8"/>
+                                <col class="g-w-percent22"/>
+                                <col class="g-w-percent6"/>
+                                <col class="g-w-percent8"/>
+                                <col class="g-w-percent4"/>
                             </colgroup>
                             <thead>
                             <tr>
+                                <th>序号</th>
                                 <th>商品编号</th>
                                 <th>商品名称</th>
                                 <th>店铺名称</th>
@@ -270,7 +269,7 @@
                             <tbody id="show_audit_header"></tbody>
                             <tfoot  class="admin-td-vam">
                             <tr>
-                                <td colspan="3" class="g-t-r">
+                                <td colspan="4" class="g-t-r">
                                     <div class="g-c-red2 inline" id="audit_radio_tip"></div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                     <div class="inline" id="audit_radio_wrap">
                                         <label class="btn btn-white g-br3">
@@ -307,6 +306,7 @@
                     <h4 class="modal-title" id="admin_name"></h4>
                 </div>
                 <div class="modal-body">
+
                     <!--轮播图-->
                     <div class="row">
                         <div class="col-md-6">
@@ -377,36 +377,75 @@
                         </div>
                     </div>
 
+
                     <!--价格-->
                     <div class="admin-gap-theme2">商品价格</div>
-                    <table class="table table-bordered table-striped table-hover admin-table">
-                        <!--分组样式-->
-                        <colgroup>
-                            <col class="g-w-percent7">
-                            <col class="g-w-percent7">
-                            <col class="g-w-percent7">
-                            <col class="g-w-percent7">
-                            <col class="g-w-percent7">
-                            <col class="g-w-percent7">
-                            <col class="g-w-percent7">
-                        </colgroup>
+                    <form role="form"  method="post" id="admin_goodsadd_form" class="admin-form1">
+                        <input type="text" value="" id="admin_editid" class="g-d-hidei">
+                        <table class="table table-bordered table-striped table-hover admin-table">
+                            <!--分组样式-->
+                            <colgroup>
+                                <col class="g-w-percent7">
+                                <col class="g-w-percent7">
+                                <col class="g-w-percent7">
+                                <col class="g-w-percent7">
+                                <col class="g-w-percent7">
+                                <col class="g-w-percent7">
+                                <col class="g-w-percent7">
+                            </colgroup>
 
-                        <!--表头-->
-                        <thead id="admin_wholesale_price_thead">
-                        <tr>
-                            <th>颜色</th>
-                            <th>规格</th>
-                            <th>库存</th>
-                            <th>批发价</th>
-                            <th>建议零售价</th>
-                            <th>供应商价</th>
-                            <th>是否默认</th>
-                        </tr>
-                        </thead>
+                            <!--表头-->
+                            <thead id="admin_wholesale_price_thead">
+                            <tr>
+                                <th>颜色</th>
+                                <th>规格</th>
+                                <th>库存</th>
+                                <th>批发价</th>
+                                <th>建议零售价</th>
+                                <th>供应商价</th>
+                                <th>是否默认</th>
+                            </tr>
+                            </thead>
 
-                        <!--表主体-->
-                        <tbody class="middle-align" id="admin_wholesale_price_list"></tbody>
-                    </table>
+                            <!--表主体-->
+                            <tbody class="middle-align" id="admin_wholesale_price_list"></tbody>
+                        </table>
+                    </form>
+
+
+                    <!--以前的价格-->
+                    <div class="btn admin-gap-theme2 g-c-bs-info" id="admin_oldprice_btn">查看修改之前的商品价格</div>
+                    <div id="admin_oldprice_show" class="g-d-hidei">
+                        <table class="table table-bordered table-striped table-hover admin-table">
+                            <!--分组样式-->
+                            <colgroup>
+                                <col class="g-w-percent7">
+                                <col class="g-w-percent7">
+                                <col class="g-w-percent7">
+                                <col class="g-w-percent7">
+                                <col class="g-w-percent7">
+                                <col class="g-w-percent7">
+                                <col class="g-w-percent7">
+                            </colgroup>
+
+                            <!--表头-->
+                            <thead id="admin_wholesale_price_thead_old">
+                            <tr>
+                                <th>颜色</th>
+                                <th>规格</th>
+                                <th>库存</th>
+                                <th>批发价</th>
+                                <th>建议零售价</th>
+                                <th>供应商价</th>
+                                <th>是否默认</th>
+                            </tr>
+                            </thead>
+
+                            <!--表主体-->
+                            <tbody class="middle-align" id="admin_wholesale_price_old"></tbody>
+                        </table>
+                    </div>
+
 
                     <!--详情信息-->
                     <div class="admin-gap-theme2">商品详情</div>

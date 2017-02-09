@@ -91,7 +91,7 @@
 			var $editor_image_toggle=$('#editor_image_toggle'),
 				$editor_image_list=$('#editor_image_list'),
 				$editor_image_show=$('#editor_image_show'),
-				$editor_image_select=$('#editor_image_select');;
+				$editor_image_select=$('#editor_image_select');
 
 			/*上传对象*/
 			var slide_QN_Upload=new QiniuJsSDK(),

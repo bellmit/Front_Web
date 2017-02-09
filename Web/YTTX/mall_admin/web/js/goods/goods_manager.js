@@ -189,13 +189,7 @@
 								"orderable" :false,
 								"searchable" :false,
 								"render":function(data, type, full, meta ){
-									var temp_audit=parseInt(full.auditStatus,10);
-									/*必须审核成功*/
-									if(temp_audit===1){
-										return '<input data-recommended="'+full.isRecommended+'" value="'+data+'" data-status="'+full.status+'" name="goodsID" type="checkbox" />';
-									}else{
-										return '';
-									}
+									return '<input data-recommended="'+full.isRecommended+'" value="'+data+'" data-status="'+full.status+'" data-auditstatus="'+full.auditStatus+'" name="goodsID" type="checkbox" />';
 								}
 							},
 							{
@@ -735,46 +729,55 @@
 
 			for(i;i<len;i++){
 				var tempinput=inputitems[i],
-					temp_status=parseInt(tempinput.attr('data-status')),
+					temp_status=parseInt(tempinput.attr('data-status'),10),
+					temp_audit=parseInt(tempinput.attr('data-auditstatus'),10),
 					temp_recommended=tempinput.attr('data-recommended');
 
-				/*审核成功*/
-				/*上架，下架*/
-				if(temp_status===1){
-					/*上架状态则下架*/
-					if(action==='up'){
-						filter.push(tempid[i]);
-						continue;
-					}
-				}else if(temp_status===2){
-					/*下架状态则上架*/
-					if(action==='down'){
-						filter.push(tempid[i]);
-						continue;
-					}
-				}else if(temp_status===0){
-					/*仓库状态则上架*/
-					if(action==='down'){
-						filter.push(tempid[i]);
-						continue;
-					}
-				}else if(temp_status===3){
-					/*删除状态则不做任何操作*/
-					dia.content('<span class="g-c-bs-warning g-btips-warn">删除状态不能做 "'+actiontip[action]+'" 操作</span>').show();
-					setTimeout(function () {
-						dia.close();
-						batchItem.clear();
-					},2000);
-					return false;
-				}
-				/*推荐*/
-				if(temp_recommended==='true'){
-					if(action==='recommend'){
-						filter.push(tempid[i]);
-						continue;
-					}
-				}
 
+				if(temp_audit===0||temp_audit===2){
+					/*待审核，审核失败：则不参与操作*/
+					if(action==='up'||action==='down'||action==='recommend'){
+						filter.push(tempid[i]);
+						continue;
+					}
+				}else{
+					/*审核成功:则可上架，下架，推荐等操作*/
+					/*上架，下架*/
+					if(temp_status===1){
+						/*上架状态则下架*/
+						if(action==='up'){
+							filter.push(tempid[i]);
+							continue;
+						}
+					}else if(temp_status===2){
+						/*下架状态则上架*/
+						if(action==='down'){
+							filter.push(tempid[i]);
+							continue;
+						}
+					}else if(temp_status===0){
+						/*仓库状态则上架*/
+						if(action==='down'){
+							filter.push(tempid[i]);
+							continue;
+						}
+					}else if(temp_status===3){
+						/*删除状态则不做任何操作*/
+						dia.content('<span class="g-c-bs-warning g-btips-warn">删除状态不能做 "'+actiontip[action]+'" 操作</span>').show();
+						setTimeout(function () {
+							dia.close();
+							batchItem.clear();
+						},2000);
+						return false;
+					}
+					/*推荐*/
+					if(temp_recommended==='true'){
+						if(action==='recommend'){
+							filter.push(tempid[i]);
+							continue;
+						}
+					}
+				}
 			}
 
 
