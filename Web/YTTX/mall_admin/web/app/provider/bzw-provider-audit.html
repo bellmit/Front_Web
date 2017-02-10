@@ -129,6 +129,13 @@
                                     <input type="text" id="search_storeName" />
                                 </div>
                                 <div class="admin-search-item">
+                                    <label>审核状态：</label>
+                                    <select id="search_auditStatus" >
+                                        <option selected value="0">待审核</option>
+                                        <option value="2">审核失败</option>
+                                    </select>
+                                </div>
+                                <div class="admin-search-item">
                                     <span id="admin_search_btn" class="btn btn-info btn-icon g-br2">
                                         <i class="fa-search"></i>查询
                                     </span>
@@ -143,7 +150,8 @@
                             <table id="admin_list_wrap" class="table table-bordered table-striped table-hover admin-table">
                                 <!--分组样式-->
                                 <colgroup>
-                                    <col class="g-w-percent8">
+                                    <col class="g-w-percent2">
+                                    <col class="g-w-percent6">
                                     <col class="g-w-percent8">
                                     <col class="g-w-percent5">
                                     <col class="g-w-percent5">
@@ -156,6 +164,7 @@
                                 <!--表头-->
                                 <thead>
                                 <tr>
+                                    <th class="no-sorting">&nbsp;</th>
                                     <th>店主姓名(供应商)</th>
                                     <th>店铺名称</th>
                                     <th>公司名称</th>
@@ -169,7 +178,7 @@
 
 
                                 <!--表主体-->
-                                <tbody class="middle-align"></tbody>
+                                <tbody id="admin_batchlist_wrap" class="middle-align"></tbody>
                             </table>
                             <div class="admin-page-wrap">
                                 <div class="easyui-pagination g-w-percent50" id="admin_page_wrap" data-options="links:5,layout:['manual','first','prev','links','next','last'],displayMsg:'显示{from}&nbsp;到&nbsp;{to}&nbsp;共&nbsp;{total}条记录'"></div>
@@ -220,14 +229,16 @@
                         <input type="text" value="" id="admin_id" class="g-d-hidei" />
                         <table class="table table-bordered table-striped table-hover admin-table">
                             <colgroup>
-                                <col class="g-w-percent15"/>
+                                <col class="g-w-percent2"/>
                                 <col class="g-w-percent10"/>
+                                <col class="g-w-percent13"/>
                                 <col class="g-w-percent10"/>
                                 <col class="g-w-percent10"/>
                                 <col class="g-w-percent5"/>
                             </colgroup>
                             <thead>
                             <tr>
+                                <th>序号</th>
                                 <th>店主姓名(供应商)</th>
                                 <th>店铺名称</th>
                                 <th>所在地</th>
@@ -238,7 +249,7 @@
                             <tbody id="show_audit_header"></tbody>
                             <tfoot  class="admin-td-vam">
                             <tr>
-                                <td colspan="3" class="g-t-r">
+                                <td colspan="4" class="g-t-r">
                                     <div class="g-c-red2 inline" id="audit_radio_tip"></div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                     <div class="inline" id="audit_radio_wrap">
                                         <label class="btn btn-white g-br3">
@@ -259,6 +270,24 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-info" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!--批量处理-->
+    <div class="admin-batchitem-wrap">
+        <div class="admin-batchitem-btn">
+            <div id="admin_batchitem_btn">批量</div>
+        </div>
+        <div class="admin-batchitem-outer">
+            <div class="admin-batchitem-show" id="admin_batchitem_show">
+                <div class="admin-batchitem-inner">
+                    <div data-state="1" id="admin_batchitem_check" class="admin-batchitem-check" data-check="0" data-action="checkall"></div>
+                </div>
+                <div class="admin-batchitem-inner" id="admin_batchitem_action">
+                    <div data-action="audit">审核</div>
                 </div>
             </div>
         </div>
@@ -317,6 +346,7 @@
     <!--修饰分页，搜索等操作 -->
     <script src="../../js/plugins/datatables/dataTables.bootstrap.js"></script>
     <script src="../../js/plugins/pagination/pagination.js"></script>
+    <script src="../../js/widgets/batch_item.js"></script>
     <script src="../../js/provider/provider_audit.js"></script>
 </body>
 </html>

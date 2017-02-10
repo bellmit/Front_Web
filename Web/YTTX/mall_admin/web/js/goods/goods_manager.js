@@ -182,7 +182,7 @@
 						},
 						info:false,
 						searching:true,
-						order:[[4, "desc" ]],
+						order:[[5, "desc" ]],
 						columns: [
 							{
 								"data":"id",
@@ -269,14 +269,8 @@
 													<i class="fa-arrow-down"></i>\
 													<span>下架</span>\
 												</span>';
-										}else if(temp_status===2){
-											/*下架状态则上架*/
-											btns+='<span data-action="up" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
-													<i class="fa-arrow-up"></i>\
-													<span>上架</span>\
-												</span>';
-										}else if(temp_status===0){
-											/*仓库状态则上架*/
+										}else if(temp_status===2||temp_status===0||temp_status===3){
+											/*下架状态，仓库状态，删除状态则上架*/
 											btns+='<span data-action="up" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 													<i class="fa-arrow-up"></i>\
 													<span>上架</span>\
@@ -490,6 +484,9 @@
 							operate_item=null;
 						},1000);
 					}
+					listone={};
+					listtwo={};
+					attr_map={};
 				});
 			});
 
@@ -762,13 +759,11 @@
 							continue;
 						}
 					}else if(temp_status===3){
-						/*删除状态则不做任何操作*/
-						dia.content('<span class="g-c-bs-warning g-btips-warn">删除状态不能做 "'+actiontip[action]+'" 操作</span>').show();
-						setTimeout(function () {
-							dia.close();
-							batchItem.clear();
-						},2000);
-						return false;
+						/*删除状态则不做推荐操作*/
+						if(action==='recommend'){
+							filter.push(tempid[i]);
+							continue;
+						}
 					}
 					/*推荐*/
 					if(temp_recommended==='true'){

@@ -129,11 +129,18 @@
                                     <input type="text" id="search_providerName" />
                                 </div>
                                 <div class="admin-search-item">
-                                    <label>禁售/可售：</label>
+                                    <label>禁售/取消禁售：</label>
                                     <select id="search_isForbidden" >
                                         <option selected value="">全部</option>
-                                        <option value="false">可售</option>
+                                        <option value="false">取消禁售</option>
                                         <option value="true">禁售</option>
+                                    </select>
+                                </div>
+                                <div class="admin-search-item">
+                                    <label>状态：</label>
+                                    <select id="search_status" >
+                                        <option selected value="">全部</option>
+                                        <option value="3">删除</option>
                                     </select>
                                 </div>
                                 <div class="admin-search-item">
@@ -172,8 +179,8 @@
                                     <col class="g-w-percent5">
                                     <col class="g-w-percent3">
                                     <col class="g-w-percent4">
-                                    <col class="g-w-percent4">
-                                    <col class="g-w-percent10">
+                                    <col class="g-w-percent6">
+                                    <col class="g-w-percent8">
                                 </colgroup>
 
                                 <!--表头-->
@@ -186,7 +193,7 @@
                                     <th>分类</th>
                                     <th>排序</th>
                                     <th>状态</th>
-                                    <th>禁售/可售</th>
+                                    <th>禁售/取消禁售</th>
                                     <th>操作</th>
                                 </tr>
                                 </thead>

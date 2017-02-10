@@ -84,6 +84,7 @@
 					<th>库存</th>\
 					<th>批发价</th>\
 					<th>建议零售价</th>\
+					<th>供应商价</th>\
 					<th>价格显示在首页</th>\
 					<th>操作</th>\
 				</tr>',
@@ -609,6 +610,10 @@
 				$admin_wholesale_price_list.attr({
 					'data-id':''
 				});
+				attr_map={};
+				history_data={};
+				listone={};
+				listtwo={};
 			}
 		}
 
@@ -1084,11 +1089,11 @@
 					flag=true;
 
 				if(wholesale===''&&retail===''){
-					$admin_wholesale_price_tip.html('批发价或建议零售价不能为空');
+					$admin_wholesale_price_tip.html('"批发价" 或 "建议零售价"不能为空');
 					flag=false;
 				}
 				if(wholesale===oldwholesale&&retail===oldretail){
-					$admin_wholesale_price_tip.html('批发价或建议零售价没有改变');
+					$admin_wholesale_price_tip.html('"批发价" 或 "建议零售价"无变化');
 					flag=false;
 				}else{
 					flag=true;
@@ -1323,20 +1328,20 @@
 				str+='<tr><td rowspan="'+len+'">'+listone['res'][j]+'</td>';
 				for(k;k<len;k++){
 					var dataitem=datavalue[k],
-						ischeck=parseInt(dataitem[3],10)===1?'是':'';
+						ischeck=parseInt(dataitem[3],10)===1?'是':'',
+						tempwholesaleprice=public_tool.moneyCorrect(dataitem[1],12,false),
+						tempretailprice=public_tool.moneyCorrect(dataitem[2],12,false);
 					if(k===0){
-						var tempwholesaleprice=public_tool.moneyCorrect(dataitem[1],12,false),
-							tempretailprice=public_tool.moneyCorrect(dataitem[2],12,false);
 						str+='<td>'+listtwo['res'][dataitem[5]]+'</td>' +
 							'<td>'+dataitem[0]+'</td>' +
 							'<td><input class="admin-table-input" name="setwholesalePrice" maxlength="12" data-value="'+tempwholesaleprice[1]+'" value="'+tempwholesaleprice[0]+'" type="text"></td>' +
 							'<td><input class="admin-table-input" data-value="'+tempretailprice[1]+'" value="'+tempretailprice[0]+'" name="setretailPrice" maxlength="12" type="text"></td>' +
-							'<td>'+(function(){
+							'<td>￥:'+(function(){
 								var supplier=dataitem[6];
 								if(supplier===''||isNaN(supplier)){
-									supplier='￥:'+'0.00';
+									supplier='0.00';
 								}else{
-									supplier='￥:'+public_tool.moneyCorrect(supplier,12,false)[0];
+									supplier=public_tool.moneyCorrect(supplier,12,false)[0];
 								}
 								return supplier;
 							}())+'</td>' +
@@ -1353,14 +1358,14 @@
 					}else{
 						str+='<tr><td>'+listtwo['res'][dataitem[5]]+'</td>' +
 							'<td>'+dataitem[0]+'</td>' +
-							'<td>￥:'+public_tool.moneyCorrect(dataitem[1],12,false)[0]+'</td>' +
-							'<td>￥:'+public_tool.moneyCorrect(dataitem[2],12,false)[0]+'</td>' +
-							'<td>'+(function(){
+							'<td><input class="admin-table-input" name="setwholesalePrice" maxlength="12" data-value="'+tempwholesaleprice[1]+'" value="'+tempwholesaleprice[0]+'" type="text"></td>' +
+							'<td><input class="admin-table-input" data-value="'+tempretailprice[1]+'" value="'+tempretailprice[0]+'" name="setretailPrice" maxlength="12" type="text"></td>' +
+							'<td>￥:'+(function(){
 								var supplier=dataitem[6];
 								if(supplier===''||isNaN(supplier)){
-									supplier='￥:'+'0.00';
+									supplier='0.00';
 								}else{
-									supplier='￥:'+public_tool.moneyCorrect(supplier,12,false)[0];
+									supplier=public_tool.moneyCorrect(supplier,12,false)[0];
 								}
 								return supplier;
 							}())+'</td>' +
@@ -1396,6 +1401,7 @@
 			var str='',
 				x=0,
 				checkid=0;
+
 			for(var j in list){
 				var k= 0,
 					item=list[j],
@@ -1447,7 +1453,7 @@
 			var pricelist=document.getElementById('admin_wholesale_price_old');
 			pricelist.innerHTML=str;
 			/*全部没选中则，默认第一个选中*/
-			if(checkid===k){
+			if(checkid===x){
 				$(pricelist).find('tr:first-child').find('td').eq(6).html('是');
 			}
 		}

@@ -59,11 +59,19 @@
 				 }*/
 				if(typeof provider_cache.providerid!=='undefined'){
 					/*显示查询条件*/
-					$search_providerName.html('<div class="inline g-f-l">供应商名称：<span class="g-c-info">'+provider_cache.storename+'</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div><div class="inline g-f-l">店主姓名：<span class="g-c-info">'+provider_cache.legalname+'</span></div>');
+					var p_auditmap={
+							0:'待审核',
+							1:'审核成功',
+							2:'审核失败'
+						},
+						p_auditstatus=parseInt(provider_cache.auditstatus,10);
+
+					$search_providerName.html('<div class="inline g-f-l">供应商名称：<span class="g-c-info">'+provider_cache.storename+'</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div><div class="inline g-f-l">店主姓名：<span class="g-c-info">'+provider_cache.legalname+'</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div><div class="inline g-f-l">供应商审核状态：<span class="g-c-info">'+p_auditmap[p_auditstatus]+'</span></div>');
 					/*权限调用*/
 					var powermap=public_tool.getPower(250),
 						forbid_power=public_tool.getKeyPower('bzw-forbid-goods',powermap),
-						detail_power=public_tool.getKeyPower('bzw-goods-details',powermap);
+						detail_power=public_tool.getKeyPower('bzw-goods-details',powermap),
+						updown_power=public_tool.getKeyPower('bzw-goods-updown',powermap);
 
 
 					/*查看详情*/
@@ -84,33 +92,38 @@
 							len:5
 						};
 
+					/*判断供应商审核状态*/
+					if(p_auditstatus===1){
+						/*审核通过:即可执行商品操作*/
+						/*批量配置参数*/
+						var $admin_batchitem_btn=$('#admin_batchitem_btn'),
+							$admin_batchitem_show=$('#admin_batchitem_show'),
+							$admin_batchitem_check=$('#admin_batchitem_check'),
+							$admin_batchitem_action=$('#admin_batchitem_action'),
+							batchItem=new public_tool.BatchItem();
 
-					/*批量配置参数*/
-					var $admin_batchitem_btn=$('#admin_batchitem_btn'),
-						$admin_batchitem_show=$('#admin_batchitem_show'),
-						$admin_batchitem_check=$('#admin_batchitem_check'),
-						$admin_batchitem_action=$('#admin_batchitem_action'),
-						batchItem=new public_tool.BatchItem();
-
-					/*批量初始化*/
-					batchItem.init({
-						$batchtoggle:$admin_batchitem_btn,
-						$batchshow:$admin_batchitem_show,
-						$checkall:$admin_batchitem_check,
-						$action:$admin_batchitem_action,
-						$listwrap:$admin_batchlist_wrap,
-						setSure:setSure,
-						powerobj:{
-							'forbid':forbid_power,
-							'enable':forbid_power
-						},
-						fn:function (type) {
-							/*批量操作*/
-							batchGoods({
-								action:type
-							});
-						}
-					});
+						/*批量初始化*/
+						batchItem.init({
+							$batchtoggle:$admin_batchitem_btn,
+							$batchshow:$admin_batchitem_show,
+							$checkall:$admin_batchitem_check,
+							$action:$admin_batchitem_action,
+							$listwrap:$admin_batchlist_wrap,
+							setSure:setSure,
+							powerobj:{
+								'forbid':forbid_power,
+								'enable':forbid_power,
+								'up':updown_power,
+								'down':updown_power
+							},
+							fn:function (type) {
+								/*批量操作*/
+								batchGoods({
+									action:type
+								});
+							}
+						});
+					}
 
 
 					/*列表请求配置*/
@@ -173,7 +186,6 @@
 										adminId:decodeURIComponent(logininfo.param.adminId),
 										grade:decodeURIComponent(logininfo.param.grade),
 										token:decodeURIComponent(logininfo.param.token),
-										auditStatus:1,
 										providerName:provider_cache.storename,
 										page:1,
 										pageSize:10
@@ -181,14 +193,14 @@
 								},
 								info:false,
 								searching:true,
-								order:[[4, "desc" ]],
+								order:[[5, "desc" ]],
 								columns: [
 									{
 										"data":"id",
 										"orderable" :false,
 										"searchable" :false,
 										"render":function(data, type, full, meta ){
-											return '<input data-forbid="'+full.isForbidden+'" value="'+data+'" name="goodsID" type="checkbox" />';
+											return '<input data-forbid="'+full.isForbidden+'" data-status="'+full.status+'" value="'+data+'" data-auditstatus="'+full.auditStatus+'" name="goodsID" type="checkbox" />';
 										}
 									},
 									{
@@ -198,7 +210,25 @@
 										"data":"name"
 									},
 									{
-										"data":"providerName"
+										"data":"auditStatus",
+										"render":function(data, type, full, meta ){
+											var stauts=parseInt(data,10),
+												statusmap={
+													0:'待审核',
+													1:'审核成功',
+													2:'审核失败'
+												},
+												str='';
+
+											if(stauts===0){
+												str='<div class="g-c-warn">'+statusmap[stauts]+'</div>';
+											}else if(stauts===1){
+												str='<div class="g-c-gray6">'+statusmap[stauts]+'</div>';
+											}else if(stauts===2){
+												str='<div class="g-c-gray9">'+statusmap[stauts]+'</div>';
+											}
+											return str;
+										}
 									},
 									{
 										"data":"goodsTypeName"
@@ -255,22 +285,45 @@
 										"render":function(data, type, full, meta ){
 											var id=parseInt(data,10),
 												btns='',
-												temp_forbid=full.isForbidden;
+												temp_forbid=full.isForbidden,
+												temp_status=parseInt(full.status,10),
+												temp_audit=parseInt(full.auditStatus,10);
 
+											if(p_auditstatus===1){
+												/*上架，下架*/
+												if(updown_power&&temp_audit===1){
+													/*审核成功状态才可上架，下架*/
+													if(temp_status===1){
+														/*上架状态则下架*/
+														btns+='<span data-action="down" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+															<i class="fa-arrow-down"></i>\
+															<span>下架</span>\
+														</span>';
+													}else if(temp_status===2||temp_status===0||temp_status===3){
+														/*下架状态，仓库状态，删除状态则上架*/
+														btns+='<span data-action="up" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+															<i class="fa-arrow-up"></i>\
+															<span>上架</span>\
+														</span>';
+													}
 
-											/*可售，禁售*/
-											if(temp_forbid===true){
-												/*禁售状态则可售*/
-												btns+='<span data-action="enable" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
-													<i class="fa-toggle-off"></i>\
-													<span>取消禁售</span>\
-												</span>';
-											}else if(temp_forbid===false){
-												/*可售状态则禁售*/
-												btns+='<span data-action="forbid" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
-													<i class="fa-toggle-on"></i>\
-													<span>禁售</span>\
-												</span>';
+												}
+												if(forbid_power){
+													/*可售，禁售*/
+													if(temp_forbid===true){
+														/*禁售状态则可售*/
+														btns+='<span data-action="enable" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+															<i class="fa-toggle-off"></i>\
+															<span>取消禁售</span>\
+														</span>';
+													}else if(temp_forbid===false){
+														/*可售状态则禁售*/
+														btns+='<span data-action="forbid" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+															<i class="fa-toggle-on"></i>\
+															<span>禁售</span>\
+														</span>';
+													}
+												}
 											}
 											if(detail_power){
 												btns+='<span data-action="select" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
@@ -367,7 +420,7 @@
 									actionmap:actionmap
 								},action==='forbid'?"禁售后，商品将不再显示在前端，是否禁售？":"取消禁售后，商品将显示在前端，是否取消禁售？",true);
 							});
-						}else if(action==='delete'){
+						}else if(action==='up'||action==='down'){
 							/*清除批量选中*/
 							batchItem.filterData(id);
 							if(operate_item){
@@ -378,16 +431,12 @@
 
 							/*确认是否启用或禁用*/
 							/*to do*/
-							setSure.sure(actiontip[action],function(cf){
-								/*to do*/
-								goodsAction({
-									id:id,
-									action:action,
-									tip:cf.dia||dia,
-									type:'base',
-									actiontip:actiontip,
-									actionmap:actionmap
-								},"是否真需要删除此商品？",true);
+							goodsAction({
+								id:id,
+								action:action,
+								type:'base',
+								actiontip:actiontip,
+								actionmap:actionmap
 							});
 						}
 					});
@@ -402,8 +451,13 @@
 									operate_item=null;
 								},1000);
 							}
+							listone={};
+							listtwo={};
+							attr_map={};
 						});
 					});
+
+
 				}
 			}else{
 				$admin_batchlist_wrap.html('<tr><td style="height:200px;" colspan="9" class="g-t-c">没有相关供应商商品列&nbsp;&nbsp;<a href="bzw-provider-list.html" class="btn btn-white btn-xs g-br2 g-c-info">&nbsp;&nbsp;<span>返回</span>&nbsp;&nbsp;</a></td></tr>');
@@ -550,7 +604,45 @@
 
 			for(i;i<len;i++){
 				var tempinput=inputitems[i],
-					temp_forbid=tempinput.attr('data-forbid');
+					temp_forbid=tempinput.attr('data-forbid'),
+					temp_status=parseInt(tempinput.attr('data-status'),10),
+					temp_audit=parseInt(tempinput.attr('data-auditstatus'),10);
+
+				if(temp_audit!==1){
+					/*待审核，审核失败：则不参与操作*/
+					if(action==='up'||action==='down'){
+						filter.push(tempid[i]);
+						continue;
+					}
+				}else{
+					/*审核成功:则可上架，下架，推荐等操作*/
+					/*上架，下架*/
+					if(temp_status===1){
+						/*上架状态则下架*/
+						if(action==='up'){
+							filter.push(tempid[i]);
+							continue;
+						}
+					}else if(temp_status===2){
+						/*下架状态则上架*/
+						if(action==='down'){
+							filter.push(tempid[i]);
+							continue;
+						}
+					}else if(temp_status===0){
+						/*仓库状态则上架*/
+						if(action==='down'){
+							filter.push(tempid[i]);
+							continue;
+						}
+					}else if(temp_status===3){
+						/*删除状态则不做推荐操作*/
+						if(action==='recommend'){
+							filter.push(tempid[i]);
+							continue;
+						}
+					}
+				}
 
 				/*可售，禁售*/
 				if(temp_forbid==='true'){
@@ -592,6 +684,14 @@
 									actionmap:actionmap
 								},action==='forbid'?"禁售后，商品将不再显示在前端，是否禁售？":"取消禁售后，商品将显示在前端，是否取消禁售？",true);
 							});
+						}else if(action==='up'||action==='down'){
+							goodsAction({
+								id:tempid,
+								type:'batch',
+								action:action,
+								actiontip:actiontip,
+								actionmap:actionmap
+							});
 						}
 					}
 				},2000);
@@ -611,6 +711,14 @@
 								actiontip:actiontip,
 								actionmap:actionmap
 							},action==='forbid'?"禁售后，商品将不再显示在前端，是否禁售？":"取消禁售后，商品将显示在前端，是否取消禁售？",true);
+						});
+					}else if(action==='up'||action==='down'){
+						goodsAction({
+							id:tempid,
+							type:'batch',
+							action:action,
+							actiontip:actiontip,
+							actionmap:actionmap
 						});
 					}
 				}

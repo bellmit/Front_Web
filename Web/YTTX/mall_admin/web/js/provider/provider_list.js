@@ -165,22 +165,14 @@
 						},
 						info:false,
 						searching:true,
-						order:[[6, "desc" ],[0, "desc" ]],
+						order:[[7, "desc" ],[1, "desc" ]],
 						columns: [
 							{
 								"data":"id",
 								"orderable" :false,
 								"searchable" :false,
 								"render":function(data, type, full, meta ){
-									if(providerforbid_power){
-										var audit=parseInt(full.auditStatus,10);
-										if(isNaN(audit)||audit!==1){
-											return '';
-										}else{
-											return '<input data-forbid="'+full.isEnabled+'" value="'+data+'" data-auditstate="'+audit+'" name="providerID" type="checkbox" />';
-										}
-									}
-									return '';
+									return '<input data-forbid="'+full.isEnabled+'" value="'+data+'" name="providerID" type="checkbox" />';
 								}
 							},
 							{
@@ -226,25 +218,23 @@
 										auditstate=parseInt(full.auditStatus,10);
 
 									if(providerforbid_power){
-										if(auditstate===1){
-											if(enabled){
-												/*启用状态则禁用*/
-												btns+='<span data-action="forbid" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+										if(enabled){
+											/*启用状态则禁用*/
+											btns+='<span data-action="forbid" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 													<i class="fa-arrow-down"></i>\
 													<span>禁用</span>\
 												</span>';
-											}else if(!enabled){
-												/*禁用状态则启用*/
-												btns+='<span data-action="enable" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+										}else if(!enabled){
+											/*禁用状态则启用*/
+											btns+='<span data-action="enable" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 													<i class="fa-arrow-up"></i>\
 													<span>启用</span>\
 												</span>';
-											}
 										}
 									}
 									/*商品列*/
-									if(providersearch_power&&auditstate===1){
-										btns+='<span data-action="goods" data-id="'+id+'" data-legalname="'+full.legalName+'" data-storename="'+full.storeName+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+									if(providersearch_power){
+										btns+='<span data-action="goods" data-id="'+id+'" data-legalname="'+full.legalName+'" data-storename="'+full.storeName+'" data-auditstatus="'+full.auditStatus+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 													<i class="fa-send"></i>\
 													<span>商品列</span>\
 												</span>';
@@ -347,7 +337,8 @@
 					public_tool.setParams('bzw-provider-goods',{
 						providerid:id,
 						legalname:$this.attr('data-legalname'),
-						storename:$this.attr('data-storename')
+						storename:$this.attr('data-storename'),
+						auditstatus:$this.attr('data-auditstatus')
 					});
 					window.location.href='bzw-provider-goods.html';
 				}
@@ -482,37 +473,23 @@
 
 			for(i;i<len;i++){
 				var tempinput=inputitems[i],
-					temp_state=tempinput.attr('data-forbid'),
-					temp_audit=parseInt(tempinput.attr('data-auditstate'));
+					temp_state=tempinput.attr('data-forbid');
 
 
-				if(temp_audit===1){
-					/*审核成功*/
-					if(temp_state==='true'){
-						/*启用状态则禁用*/
-						if(action==='enable'){
-							filter.push(tempid[i]);
-							continue;
-						}
-					}else if(temp_state==='false'){
-						/*禁用状态则启用*/
-						if(action==='forbid'){
-							filter.push(tempid[i]);
-							continue;
-						}
+				/*审核成功*/
+				if(temp_state==='true'){
+					/*启用状态则禁用*/
+					if(action==='enable'){
+						filter.push(tempid[i]);
+						continue;
 					}
-				}else{
-					/*待审核，审核失败*/
-					if(action==='forbid'||action==='enable'){
-						dia.content('<span class="g-c-bs-warning g-btips-warn">待审核状态不能做 "'+actiontip[action]+'" 操作</span>').show();
-						setTimeout(function () {
-							dia.close();
-							batchItem.clear();
-						},2000);
-						return false;
+				}else if(temp_state==='false'){
+					/*禁用状态则启用*/
+					if(action==='forbid'){
+						filter.push(tempid[i]);
+						continue;
 					}
 				}
-
 			}
 
 			if(filter.length!==0){
