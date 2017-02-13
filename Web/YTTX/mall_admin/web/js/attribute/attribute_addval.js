@@ -2,8 +2,6 @@
 	'use strict';
 	$(function(){
 
-		var table=null/*数据展现*/;
-
 		/*初始化数据*/
 		if(public_tool.initMap.isrender){
 			/*菜单调用*/
@@ -32,6 +30,12 @@
 
 			/*dom引用和相关变量定义*/
 			var module_id='bzw-attribute-addval'/*模块id，主要用于本地存储传值*/,
+				goods_params={
+					roleId:decodeURIComponent(logininfo.param.roleId),
+					adminId:decodeURIComponent(logininfo.param.adminId),
+					grade:decodeURIComponent(logininfo.param.grade),
+					token:decodeURIComponent(logininfo.param.token)
+				},
 				$admin_addattr_btn=$('#admin_addattr_btn'),
 				$admin_list_wrap=$('#admin_list_wrap'),
 				dia=dialog({
@@ -48,7 +52,44 @@
 				$admin_errortip_wrap=$('#admin_errortip_wrap'),
 				resetform0=null,
 				sureObj=public_tool.sureDialog(dia)/*回调提示对象*/,
-				setSure=new sureObj();
+				setSure=new sureObj(),
+				label_config={
+					url:"http://120.76.237.100:8082/mall-buzhubms-api/goodstag/list",
+					dataType:'JSON',
+					method:'post',
+					data:{
+						roleId:decodeURIComponent(logininfo.param.roleId),
+						adminId:decodeURIComponent(logininfo.param.adminId),
+						grade:decodeURIComponent(logininfo.param.grade),
+						token:decodeURIComponent(logininfo.param.token),
+						page:1,
+						pageSize:10,
+						total:0
+					}
+				},
+				attr_config={
+					url:"http://120.76.237.100:8082/mall-buzhubms-api/goodsattributes/list",
+					dataType:'JSON',
+					method:'post',
+					data:{
+						roleId:decodeURIComponent(logininfo.param.roleId),
+						adminId:decodeURIComponent(logininfo.param.adminId),
+						grade:decodeURIComponent(logininfo.param.grade),
+						token:decodeURIComponent(logininfo.param.token),
+						pageSize:10000
+					}
+				};
+
+
+			/*查询条件*/
+			var $search_name=$('#search_name'),
+				$search_sort=$('#search_sort'),
+				$search_gtione=$('#search_gtione'),
+				$search_gtitwo=$('#search_gtitwo'),
+				$search_gtithree=$('#search_gtithree'),
+				$admin_search_btn=$('#admin_search_btn'),
+				$admin_search_clear=$('#admin_search_clear'),
+				goodstypeid='';
 
 
 
@@ -58,7 +99,6 @@
 				$admin_addgoodsattr_form=$(admin_addgoodsattr_form),
 				$admin_itemattr_wrap=$('#admin_itemattr_wrap'),
 				$admin_baseattr_wrap=$('#admin_baseattr_wrap'),
-				$admin_actiontype=$('#admin_actiontype'),
 				$admin_attrparentname=$('#admin_attrparentname'),
 				$admin_addattr_tips=$('#admin_addattr_tips'),
 				$admin_attrname=$('#admin_attrname'),
@@ -84,9 +124,92 @@
 				$admin_addattr_btn.addClass('g-d-hidei');
 			}
 
+			/*查询分类并绑定分类查询*/
+			$.each([$search_gtione,$search_gtitwo,$search_gtithree],function(){
+				var selector=this.selector;
+				/*初始化查询一级分类*/
+				if(selector.indexOf('one')!==-1){
+					getGoodsTypes('','one',true);
+				}
+				this.on('change',function(){
+					var $option=$(this).find(':selected'),
+						value=this.value,
+						hasub=false;
+					if(selector.indexOf('one')!==-1){
+						if(value===''){
+							$search_gtitwo.html('');
+							$search_gtithree.html('');
+							goodstypeid='';
+							return false;
+						}
+						hasub=$option.attr('data-hassub');
+						goodstypeid=value;
+						if(hasub==='true'){
+							getGoodsTypes(value,'two');
+						}
+					}else if(selector.indexOf('two')!==-1){
+						if(value===''){
+							$search_gtithree.html('');
+							goodstypeid=$search_gtione.find(':selected').val();
+							return false;
+						}
+						hasub=$option.attr('data-hassub');
+						goodstypeid=value;
+						if(hasub==='true'){
+							getGoodsTypes(value,'three');
+						}
+					}else if(selector.indexOf('three')!==-1){
+						if(value===''){
+							goodstypeid=$search_gtitwo.find(':selected').val();
+							return false;
+						}
+						goodstypeid=value;
+					}
+				});
+			});
+
+
+
 			/*请求属性数据*/
-			requestAttr({
-				type:'base'
+			requestAttr(label_config,'base');
+
+
+
+			/*清空查询条件*/
+			$admin_search_clear.on('click',function(){
+				$.each([$search_name,$search_sort,$search_gtione,$search_gtitwo,$search_gtithree],function(){
+					this.val('');
+				});
+				/*清空分类值*/
+				goodstypeid='';
+			}).trigger('click');
+
+
+			/*联合查询*/
+			$admin_search_btn.on('click',function(){
+				var data= $.extend(true,{},label_config.data);
+
+				$.each([$search_name,$search_sort],function(){
+					var text=this.val(),
+						selector=this.selector.slice(1),
+						key=selector.split('_');
+
+					if(text===""){
+						if(typeof data[key[1]]!=='undefined'){
+							delete data[key[1]];
+						}
+					}else{
+						data[key[1]]=text;
+					}
+				});
+				/*分类处理*/
+				if(goodstypeid===''){
+					delete data['goodsTypeId'];
+				}else{
+					data['goodsTypeId']=goodstypeid;
+				}
+				label_config.data= $.extend(true,{},data);
+				requestAttr(label_config,'base');
 			});
 
 
@@ -279,7 +402,7 @@
 
 
 			/*绑定非数字输入*/
-			$.each([$admin_attrsort],function () {
+			$.each([$search_sort,$admin_attrsort],function () {
 				this.on('keyup',function () {
 					this.value=this.value.replace(/\D*/g,'');
 				});
@@ -291,12 +414,7 @@
 			if($.isFunction($.fn.validate)) {
 				/*配置信息*/
 				var form_opt0={},
-					formcache=public_tool.cache,
-					basedata={
-						roleId:decodeURIComponent(logininfo.param.roleId),
-						adminId:decodeURIComponent(logininfo.param.adminId),
-						token:decodeURIComponent(logininfo.param.token)
-					};
+					formcache=public_tool.cache;
 
 
 				if(formcache.form_opt_0){
@@ -321,23 +439,15 @@
 							submitHandler: function(form){
 								var setdata={};
 
-								$.extend(true,setdata,basedata);
+								$.extend(true,setdata,goods_params);
 
 								if(formtype==='addgoodsattr'){
-									var type=$admin_actiontype.val();
-									if(type==='item'){
-										$.extend(true,setdata,{
-											parentId:$admin_attrparentname.attr('data-value'),
-											name:$admin_attrname.val(),
-											sort:$admin_attrsort.val()
-										});
-									}else if(type==='base'){
-										$.extend(true,setdata,{
-											name:$admin_labelname.val(),
-											sort:$admin_attrsort.val(),
-										});
-									}
-									config['url']="../../json/goods/mall_goods_type_all.json";
+									$.extend(true,setdata,{
+										parentId:$admin_attrparentname.attr('data-value'),
+										name:$admin_attrname.val(),
+										sort:$admin_attrsort.val()
+									});
+									config['url']="http://120.76.237.100:8082/mall-buzhubms-api/goodsattributes/add";
 									config['data']=setdata;
 								}
 
@@ -346,21 +456,20 @@
 									if(formtype==='addgoodsattr'){
 										code=parseInt(resp.code,10);
 										if(code!==0){
-											dia.content('<span class="g-c-bs-warning g-btips-warn">添加'+(type==="base"?"标签":"属性")+'失败</span>').show();
+											dia.content('<span class="g-c-bs-warning g-btips-warn">添加属性失败</span>').show();
 											return false;
 										}else{
-											dia.content('<span class="g-c-bs-success g-btips-succ">添加'+(type==="base"?"标签":"属性")+'成功</span>').show();
+											dia.content('<span class="g-c-bs-success g-btips-succ">添加属性成功</span>').show();
+											requestAttr(label_config,'base');
 											/*请求数据,更新列表*/
+											/*
 											if(type==='base'){
-												requestAttr({
-													type:type
-												});
+												requestAttr(label_config,type);
 											}else if(type==='item'){
-												requestAttr({
-													type:type,
-													id:$admin_attrparentname.attr('data-value')
-												});
+												attr_config.data['goodsTagId']=$admin_attrparentname.attr('data-value');
+												requestAttr(attr_config,type);
 											}
+											*/
 											setTimeout(function () {
 												dia.close();
 												$addgoodsattr_wrap.modal('hide');
@@ -369,7 +478,7 @@
 									}
 								}).fail(function(resp){
 									console.log('error');
-									dia.content('<span class="g-c-bs-warning g-btips-warn">添加'+(type==="base"?"标签":"属性")+'失败</span>').show();
+									dia.content('<span class="g-c-bs-warning g-btips-warn">添加属性失败</span>').show();
 									setTimeout(function () {
 										dia.close();
 										$addgoodsattr_wrap.modal('hide');
@@ -394,6 +503,101 @@
 		}
 
 
+		/*级联类型查询*/
+		function getGoodsTypes(value,type,flag){
+			var typemap={
+				'one':'一级',
+				'two':'二级',
+				'three':'三级'
+			};
+			var temp_config=$.extend(true,{},goods_params);
+			temp_config['parentId']=value;
+			$.ajax({
+				url:"http://120.76.237.100:8082/mall-buzhubms-api/goodstype/list",
+				dataType:'JSON',
+				async:false,
+				method:'post',
+				data:temp_config
+			}).done(function(resp){
+				var code=parseInt(resp.code,10);
+				if(code!==0){
+					if(code===999){
+						/*清空缓存*/
+						public_tool.loginTips(function () {
+							public_tool.clear();
+							public_tool.clearCacheData();
+						});
+					}
+					console.log(resp.message);
+					return false;
+				}
+
+
+
+				var result=resp.result;
+
+				if(result){
+					var list=result.list;
+					if(!list){
+						return false;
+					}
+				}else{
+					return false;
+				}
+
+				var len=list.length,
+					i= 0,
+					str='';
+
+				if(len!==0){
+					for(i;i<len;i++){
+						var item=list[i];
+						if(i===0){
+							str+='<option value="" selected >请选择'+typemap[type]+'分类</option><option  data-hasSub="'+item["hasSub"]+'" value="'+item["id"]+'" >'+item["name"]+'</option>';
+						}else{
+							str+='<option data-hasSub="'+item["hasSub"]+'" value="'+item["id"]+'" >'+item["name"]+'</option>';
+						}
+					}
+					if(type==='one'){
+						$(str).appendTo($search_gtione.html(''));
+						if(flag){
+							$search_gtitwo.html('<option value="" selected >请选择二级分类</option>');
+							$search_gtithree.html('<option value="" selected >请选择三级分类</option>');
+						}
+					}else if(type==='two'){
+						$(str).appendTo($search_gtitwo.html(''));
+					}else if(type==='three'){
+						$(str).appendTo($search_gtithree.html(''));
+					}
+				}else{
+					console.log(resp.message||'error');
+					if(type==='one'){
+						$search_gtione.html('<option value="" selected >请选择一级分类</option>');
+						$search_gtitwo.html('<option value="" selected >请选择二级分类</option>');
+						$search_gtithree.html('<option value="" selected >请选择三级分类</option>');
+					}else if(type==='two'){
+						$search_gtitwo.html('<option value="" selected >请选择二级分类</option>');
+						$search_gtithree.html('<option value="" selected >请选择三级分类</option>');
+					}else if(type==='three'){
+						$search_gtithree.html('<option value="" selected >请选择三级分类</option>');
+					}
+				}
+			}).fail(function(resp){
+				console.log(resp.message||'error');
+				if(type==='one'){
+					$search_gtione.html('<option value="" selected >请选择一级分类</option>');
+					$search_gtitwo.html('<option value="" selected >请选择二级分类</option>');
+					$search_gtithree.html('<option value="" selected >请选择三级分类</option>');
+				}else if(type==='two'){
+					$search_gtitwo.html('<option value="" selected >请选择二级分类</option>');
+					$search_gtithree.html('<option value="" selected >请选择三级分类</option>');
+				}else if(type==='three'){
+					$search_gtithree.html('<option value="" selected >请选择三级分类</option>');
+				}
+			});
+		}
+
+
 		/*删除操作*/
 		function goodsAttrDelete(obj) {
 			var id=obj.id;
@@ -402,19 +606,34 @@
 				return false;
 			}
 			var tip=obj.tip,
-				$li=obj.$li;
+				$li=obj.$li,
+				layer=$li.attr('data-layer');
 
-			$.ajax({
-					url:"../../json/goods/mall_goods_attr.json",
-					dataType:'JSON',
-					method:'post',
-					data:{
-						id:obj.id,
-						roleId:decodeURIComponent(logininfo.param.roleId),
-						adminId:decodeURIComponent(logininfo.param.adminId),
-						token:decodeURIComponent(logininfo.param.token)
-					}
-				})
+			if(layer===''||isNaN(layer)){
+				return false;
+			}else{
+				layer=parseInt(layer,10);
+			}
+
+			var delete_config={
+				dataType:'JSON',
+				method:'post',
+				data:{
+					id:id
+				}
+			};
+
+			$.extend(true,delete_config['data'],goods_params);
+
+			if(layer===1){
+				/*标签类*/
+				delete_config['url']='http://120.76.237.100:8082/mall-buzhubms-api/goodstag/delete';
+			}else{
+				/*属性类*/
+				delete_config['url']='http://120.76.237.100:8082/mall-buzhubms-api/goodsattributes/delete';
+			}
+
+			$.ajax(delete_config)
 				.done(function(resp){
 					var code=parseInt(resp.code,10);
 					if(code!==0){
@@ -459,19 +678,39 @@
 				return false;
 			}
 			var tip=obj.tip,
-				$li=obj.$li;
+				$li=obj.$li,
+				layer=$li.attr('data-layer');
 
-			$.ajax({
-					url:"../../json/goods/mall_goods_type_all.json",
+			if(layer===''||isNaN(layer)){
+				return false;
+			}else{
+				layer=parseInt(layer,10);
+			}
+
+			var editdata=obj.result,
+				edit_config={
 					dataType:'JSON',
 					method:'post',
 					data:{
-						id:obj.id,
-						roleId:decodeURIComponent(logininfo.param.roleId),
-						adminId:decodeURIComponent(logininfo.param.adminId),
-						token:decodeURIComponent(logininfo.param.token)
+						id:id,
+						name:editdata[0],
+						sort:editdata[1]
 					}
-				})
+				};
+
+			$.extend(true,edit_config['data'],goods_params);
+
+			if(layer===1){
+				/*标签类*/
+				edit_config['url']='http://120.76.237.100:8082/mall-buzhubms-api/goodstag/update';
+			}else{
+				/*属性类*/
+				edit_config['url']='http://120.76.237.100:8082/mall-buzhubms-api/goodsattributes/update';
+			}
+
+
+
+			$.ajax(edit_config)
 				.done(function(resp){
 					var code=parseInt(resp.code,10);
 					if(code!==0){
@@ -523,7 +762,6 @@
 				/*项目新增*/
 				$admin_itemattr_wrap.removeClass('g-d-hidei');
 				$admin_baseattr_wrap.addClass('g-d-hidei');
-				$admin_actiontype.val('item');
 				/*设置数据*/
 				$admin_attrparentname.attr({
 					'data-value':config.id
@@ -536,11 +774,9 @@
 				/*基本新增*/
 				$admin_itemattr_wrap.addClass('g-d-hidei');
 				$admin_baseattr_wrap.removeClass('g-d-hidei');
-				$admin_actiontype.val('base');
 			}else{
 				$admin_itemattr_wrap.removeClass('g-d-hidei');
 				$admin_baseattr_wrap.addClass('g-d-hidei');
-				$admin_actiontype.val('item');
 			}
 			$addgoodsattr_wrap.modal('show',{
 				backdrop:'static'
@@ -571,7 +807,7 @@
 			if(result.length!==len){
 				return null;
 			}else{
-				return JSON.stringify(result);
+				return result;
 			}
 		}
 
@@ -831,17 +1067,8 @@
 		}
 		
 		/*请求属性*/
-		function requestAttr(config){
-			$.ajax({
-					url:"../../json/goods/mall_goods_attr.json",
-					dataType:'JSON',
-					method:'post',
-					data:{
-						roleId:decodeURIComponent(logininfo.param.roleId),
-						adminId:decodeURIComponent(logininfo.param.adminId),
-						token:decodeURIComponent(logininfo.param.token)
-					}
-				})
+		function requestAttr(config,type){
+			$.ajax(config)
 				.done(function(resp){
 					var code=parseInt(resp.code,10);
 					if(code!==0){
@@ -858,16 +1085,19 @@
 						var result='<ul class="admin-typeitem-wrap admin-maintype-wrap">'+resolveAttr(result.list,2)+'</ul>';
 						/*初始化标签*/
 						if(config){
-							var type=config.type;
 							if(type==='base'){
 								searchAttr({
 									type:type,
 									dataitem:result.list
 								});
 							}else if(type==='item'){
+								var id=config.data['goodsTagId'];
+								if(id===''||typeof id==='undefined'){
+									return false;
+								}
 								searchAttr({
 									type:type,
-									id:config.id,
+									id:id,
 									dataitem:result.list
 								});
 							}

@@ -790,7 +790,7 @@
 			"name":"商品属性",
 			"code":"attribute",
 			"match":"-attribute-",
-			"ignoremodule":true,
+			/*"ignoremodule":true,*/
 			"class":"menu-ux-shop",
 			"module":"attribute",
 			"modid":"260"
@@ -866,24 +866,6 @@
 			"class":"menu-ux-serve",
 			"module":"activity",
 			"modid":"340"
-		},
-		"6":{
-			"name":"财务管理",
-			"code":"statistics",
-			"match":"-statistics-",
-			"ignoremodule":true,
-			"class":"menu-ux-chart",
-			"module":"statistics",
-			"modid":"6"
-		},
-		"8":{
-			"name":"设置管理",
-			"code":"setting",
-			"match":"-setting-",
-			"ignoremodule":true,
-			"class":"menu-ux-setting",
-			"module":"setting",
-			"modid":"8"
 		}
 	};
 	/*路由映射*/

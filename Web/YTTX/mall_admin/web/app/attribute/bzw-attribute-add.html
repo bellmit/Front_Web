@@ -118,6 +118,22 @@
 
                         <!--表格主体-->
                         <div class="panel-body">
+                            <!--分类选择-->
+                            <div class="admin-search-wrap">
+                                <div class="admin-search-item">
+                                    <label>商品分类：</label>
+                                    <select class="g-w-number8" id="search_gtione" ></select>
+                                    <select class="g-w-number8" id="search_gtitwo" ></select>
+                                    <select class="g-w-number8" id="search_gtithree" ></select>
+                                </div>
+                                <div class="admin-search-item">
+                                    <span id="admin_search_clear" class="btn btn-info btn-icon g-br2">
+                                        <i class="fa-spinner"></i>清空
+                                    </span>
+                                    <span class="g-c-bs-info">&nbsp;&nbsp;(注：没有选中分类代表可共用)</span>
+                                </div>
+                            </div>
+
                             <form role="form"  method="post" id="admin_addgoodsattr_form" class="admin-form1 validate" >
                                 <div class="form-group">
                                     <label class="control-label">标签名称：<span class="g-c-red1" id="admin_addlabel_tips"></span></label>
