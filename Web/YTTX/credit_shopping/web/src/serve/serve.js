@@ -2,21 +2,15 @@
 require.config({
 	baseUrl:'../../',
 	paths:{
-		'jquery':'../js/lib/jquery/jquery',
-		'jquery_mobile':'../js/lib/jquery/jquery-mobile',
+		'zepto':'../js/lib/zepto/zepto',
 		'slide':'js/widgets/slide',
 		'grid':'js/widgets/grid'
-	},
-	shim:{
-		'jquery_mobile':{
-			deps:['jquery']
-		}
 	}
 });
 
 
 /*程序入口*/
-require(['jquery','jquery_mobile','slide','grid'],function($,$jm,Slide,Grid) {
+require(['zepto','slide','grid'],function($,Slide,Grid) {
 	'use strict';
 	$(function(){
 		

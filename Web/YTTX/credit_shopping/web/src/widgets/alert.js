@@ -4,10 +4,10 @@
 *
 * */
 
-define(['zepto'],function($){
+define(['jquery'],function($){
 	  /*适配弹出框*/
-		return {
-			modal:function(d,t,flag){
+		$.extend($,{
+				modal:function(d,t,flag){
 					var $wrap=$('<div class="alert-mask"></div>'),
 							$html=$('<div class="alert-modal"></div>'),
 							$action='',
@@ -34,7 +34,7 @@ define(['zepto'],function($){
 					};
 					w.resize();
 					$(w).on('resize',w.resize);
-					if(t===1||t===2){
+					if(t==1||t==2){
 						//存在按钮时，执行点击按钮
 						$action.on($.EventName.click, function () {
 								if ($(this).hasClass('modal-sure') && d.okfn){
@@ -48,7 +48,7 @@ define(['zepto'],function($){
 								}
 								$wrap.remove();
 						});
-					}else if(t===0){
+					}else if(t==0){
 						//没有按钮时，返回一个对象引用
 						return $wrap;
 					}
@@ -57,5 +57,5 @@ define(['zepto'],function($){
 						return $wrap;
 					}
 				}
-		}
+		});
 });
