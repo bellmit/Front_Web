@@ -20,15 +20,6 @@
 		.text-ww;
 		font-weight:bold;
 	}
-	>h2{
-		font-size:1.8rem;
-		line-height:2.8rem;
-		color:@color-gray6;
-		.text-ww;
-		padding:10px 0;
-		border-bottom:1px solid @color-gray15;
-		margin-bottom:20px;
-	}
 	>span{
 		display:inline-block;
 		font-size:1.2rem;
@@ -423,26 +414,23 @@
 .c-comment(){
 	.layout-base;
 	margin:0;
-	font-size:0;
-	padding:0;
 	>h3{
 		background:@color-white;
-		//border-bottom:1px solid @color-gray16;
+		border-bottom:1px solid @color-gray16;
 		height:40px;
 		line-height:40px;
-		margin:0;
 		padding:0 16px;
 		font-size:1.6rem;
 	}
 	dl{
 		.layout-base;
 		background:@color-white;
-		padding:0 0 10px 16px;
+		padding:0 0 0 16px;
 		dd{
 			.layout-base;
 			.layout-relative-base;
 			margin:2px 0 0 0;
-			padding:20px 0 10px 0;
+			padding:20px 0 10px 50px;
 			border-bottom:1px solid @color-gray12;
 			.box-shadow-base(0 1px 0 @color-white);
 			h4,
@@ -483,6 +471,11 @@
 				font-size:1.2rem;
 				line-height:16px;
 				vertical-align:middle;
+				&:before{
+					content:'\e729';
+					font-family:'ux_one';
+					padding:0 3px 0 0;
+				}
 			}
 			span{
 				.layout-base;
