@@ -848,7 +848,8 @@
 			var layer=config.layer,
 				limit=config.limit,
 				parentid=config.parentid;
-			if(layer){
+			if(typeof layer!=='undefined'){
+				layer=parseInt(layer,10);
 				layer++;
 			}
 

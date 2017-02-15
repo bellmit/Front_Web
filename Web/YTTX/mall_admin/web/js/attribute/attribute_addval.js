@@ -38,6 +38,7 @@
 				},
 				$admin_addattr_btn=$('#admin_addattr_btn'),
 				$admin_list_wrap=$('#admin_list_wrap'),
+				$admin_page_wrap=$('#admin_page_wrap'),
 				dia=dialog({
 					zIndex:2000,
 					title:'温馨提示',
@@ -885,37 +886,23 @@
 			if(typeof limit==='undefined'||limit<=0){
 				limit=1;
 			}
-			var list=obj,
+			var attrlist=obj,
 				str='',
 				i=0,
-				len=list.length,
+				len=attrlist.length,
 				layer=1;
 
 
-			if(typeof len==='undefined'){
-				str+=doItems(list,{
-					flag:false,
-					limit:limit,
-					layer:layer
-				});
-				list=list["attrlist"];
-				len=list.length;
-			}
-
 			if(len!==0){
 				for(i;i<len;i++){
-						var curitem=list[i],
-						subitem=typeof curitem["attrlist"]==='undefined'?null:curitem["attrlist"];
-					if(subitem){
-						var tempchild=doAttr(subitem,{
+					var curitem=attrlist[i],
+						hassub=curitem["hasSub"];
+					if(hassub){
+						str+=doItems(curitem,{
+								flag:true,
 								limit:limit,
 								layer:layer
-							});
-
-						if(tempchild){
-							str+=doItems(curitem,{flag:true,limit:limit,layer:layer})+'<ul class="admin-typeitem-wrap admin-subtype-wrap g-d-hidei">'+tempchild+'</ul>\
-						</li>';
-						}
+							})+'<ul class="admin-typeitem-wrap admin-subtype-wrap g-d-hidei"></ul></li>';
 					}else{
 						str+=doItems(curitem,{
 							flag:false,
@@ -942,7 +929,8 @@
 
 			var layer=config.layer,
 				limit=config.limit;
-			if(layer){
+			if(typeof layer!=='undefined'){
+				layer=parseInt(layer,10);
 				layer++;
 			}
 
@@ -953,25 +941,20 @@
 			if(len!==0){
 				for(i;i<len;i++){
 					var curitem=attrlist[i],
-						subitem=typeof curitem["sublist"]==='undefined'?null:curitem["sublist"];
-					if(subitem){
-						var tempchild=doAttr(subitem,{
-							limit:limit,
-							layer:layer
-						});
-						if(tempchild){
-							str+=doItems(curitem,{
-									flag:true,
-									limit:limit,
-									layer:layer
-								})+'<ul class="admin-typeitem-wrap admin-subtype-wrap g-d-hidei">'+tempchild+'</ul>\
-							</li>';
-						}
+						hassub=curitem["hasSub"];
+					if(hassub){
+						str+=doItems(curitem,{
+								flag:true,
+								limit:limit,
+								layer:layer,
+								parentid:parentid
+							})+'<ul class="admin-typeitem-wrap admin-subtype-wrap g-d-hidei"></ul></li>';
 					}else{
 						str+=doItems(curitem,{
 							flag:false,
 							limit:limit,
-							layer:layer
+							layer:layer,
+							parentid:parentid
 						});
 					}
 				}
@@ -991,35 +974,66 @@
 				stredit='',
 				flag=config.flag,
 				limit=config.limit,
-				layer=config.layer;
+				layer=config.layer,
+				goodstype=null;
+
+			if(layer===1&&typeof curitem["goodsTypeId"]!=='undefined'){
+				goodstype=curitem["goodsTypeId"];
+			}
 
 
 			if(flag){
 				str='<li class="admin-subtypeitem" data-label="'+label+'" data-layer="'+layer+'" data-id="'+id+'">';
 
 				if(layer>1){
+					/*属性类*/
 					str+='<div class="typeitem-default"><span class="typeitem subtype-mgap'+(layer - 1)+' main-typeicon g-w-percent3"></span>\
-							<div class="typeitem subtype-pgap'+layer+' g-w-percent32">'+label+'</div>';
+							<div class="typeitem subtype-pgap'+layer+' g-w-percent27">'+label+'</div><div class="typeitem g-w-percent5"></div>';
 				}else{
-					str+='<div class="typeitem-default"><span class="typeitem main-typeicon g-w-percent3"></span>\
-							<div class="typeitem g-w-percent32">'+label+'</div>';
+					/*标签类*/
+					if(goodstype!==null){
+						str+='<div class="typeitem-default"><span class="typeitem main-typeicon g-w-percent3"></span>\
+							<div class="typeitem g-w-percent27" >'+label+'</div><div class="typeitem g-w-percent5">有</div>';
+					}else{
+						str+='<div class="typeitem-default"><span class="typeitem main-typeicon g-w-percent3"></span>\
+							<div class="typeitem g-w-percent27" >'+label+'</div><div class="typeitem g-w-percent5">可共用(无)</div>';
+					}
 				}
 			}else{
 				str='<li data-label="'+label+'" data-layer="'+layer+'" data-id="'+id+'">';
-
 				if(layer>1){
-					str+='<div class="typeitem-default"><div class="typeitem subtype-pgap'+layer+' g-w-percent32">'+label+'</div>';
+					/*属性类*/
+					str+='<div class="typeitem-default"><div class="typeitem subtype-pgap'+layer+' g-w-percent27">'+label+'</div><div class="typeitem g-w-percent5"></div>';
 				}else{
-					str+='<div class="typeitem-default"><div class="typeitem g-w-percent32">'+label+'</div>';
+					/*标签类*/
+					if(goodstype!==null){
+						str+='<div class="typeitem-default"><div class="typeitem g-w-percent27">'+label+'</div><div class="typeitem g-w-percent5">有</div>';
+					}else{
+						str+='<div class="typeitem-default"><div class="typeitem g-w-percent27">'+label+'</div><div class="typeitem g-w-percent5">可共用(无)</div>';
+					}
 				}
 			}
-
 			str+='<div class="typeitem g-w-percent5">'+curitem["sort"]+'</div>';
 
 
 			/*编辑状态*/
-			stredit+='<div class="typeitem-edit"><div class="typeitem g-w-percent32"><input type="text" name="attrname" data-value="'+label+'"  placeholder="请输入属性名称" value="'+label+'" /></div>\
+			if(layer>1){
+				/*标签类*/
+				if(goodstype!==null){
+					stredit+='<div class="typeitem-edit"><div class="typeitem g-w-percent27"><input type="text" name="attrname" data-value="'+label+'"  placeholder="请输入属性名称" value="'+label+'" /></div>\
+								<div class="typeitem g-w-percent5" data-type="'+goodstype+'">有</div>\
 								<div class="typeitem g-w-percent5"><input type="text" name="attrsort" data-value="'+curitem["sort"]+'" maxlength="6" value="'+curitem["sort"]+'" /></div>';
+				}else{
+					stredit+='<div class="typeitem-edit"><div class="typeitem g-w-percent27"><input type="text" name="attrname" data-value="'+label+'"  placeholder="请输入属性名称" value="'+label+'" /></div>\
+								<div class="typeitem g-w-percent5" data-type="">可共用(无)</div>\
+								<div class="typeitem g-w-percent5"><input type="text" name="attrsort" data-value="'+curitem["sort"]+'" maxlength="6" value="'+curitem["sort"]+'" /></div>';
+				}
+			}else{
+				/*属性类*/
+				stredit+='<div class="typeitem-edit"><div class="typeitem g-w-percent27"><input type="text" name="attrname" data-value="'+label+'"  placeholder="请输入属性名称" value="'+label+'" /></div>\
+								<div class="typeitem g-w-percent5"></div>\
+								<div class="typeitem g-w-percent5"><input type="text" name="attrsort" data-value="'+curitem["sort"]+'" maxlength="6" value="'+curitem["sort"]+'" /></div>';
+			}
 
 			
 
@@ -1080,11 +1094,32 @@
 						return false;
 					}
 					var result=resp.result;
-					if(result&&result.list){
-						/*解析属性*/
-						var result='<ul class="admin-typeitem-wrap admin-maintype-wrap">'+resolveAttr(result.list,2)+'</ul>';
-						/*初始化标签*/
-						if(config){
+					if(result){
+						/*分页调用*/
+						if(type==='base'){
+							if(result.count!==0){
+								config.data.total=result.count;
+								$admin_page_wrap.pagination({
+									pageSize:config.data.pageSize,
+									total:config.data.total,
+									pageNumber:config.data.page,
+									onSelectPage:function(pageNumber,pageSize){
+										/*再次查询*/
+										requestAttr({
+											pageSize:pageSize,
+											page:pageNumber,
+											total:config.data.total
+										});
+									}
+								});
+							}else{
+								config.data.total=0;
+							}
+						}
+						if(result.list){
+							/*解析属性*/
+							var str='<ul class="admin-typeitem-wrap admin-maintype-wrap">'+resolveAttr(result.list,2)+'</ul>';
+							/*初始化标签*/
 							if(type==='base'){
 								searchAttr({
 									type:type,
