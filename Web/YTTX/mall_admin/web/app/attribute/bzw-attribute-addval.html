@@ -147,8 +147,8 @@
                             <table class="table table-bordered table-striped admin-table">
                                 <!--分组样式-->
                                 <colgroup>
-                                    <col class="g-w-percent30" />
-                                    <col class="g-w-percent5" />
+                                    <col class="g-w-percent25" />
+                                    <col class="g-w-percent10" />
                                     <col class="g-w-percent5" />
                                     <col class="g-w-percent10" />
                                 </colgroup>
@@ -157,7 +157,7 @@
                                 <thead>
                                 <tr>
                                     <th>标签(属性)名称</th>
-                                    <th>分类</th>
+                                    <th>商品分类</th>
                                     <th>排序</th>
                                     <th>操作</th>
                                 </tr>
@@ -167,7 +167,13 @@
                                 <!--表主体-->
                                 <tbody>
                                 <tr>
-                                    <td class="g-c-red1" id="admin_errortip_wrap" colspan="4"></td>
+                                    <td class="g-c-red1" id="admin_errortip_wrap"  colspan="2"></td>
+                                    <td class="admin-form1" colspan="2">
+                                        <span class="admin-rpos-wrap">
+                                             <button type="button"  id="admin_addlabel_already" class="btn btn-white g-c-gray9 g-br3">已存在的标签名称</button>
+                                             <ul data-select="false" class="admin-list-widget addcode-list-widget g-d-hidei" id="admin_addlabel_list"></ul>
+                                        </span>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td colspan="4" id="admin_list_wrap"></td>

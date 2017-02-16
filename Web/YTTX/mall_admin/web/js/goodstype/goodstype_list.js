@@ -849,7 +849,6 @@
 				limit=config.limit,
 				parentid=config.parentid;
 			if(typeof layer!=='undefined'){
-				layer=parseInt(layer,10);
 				layer++;
 			}
 
