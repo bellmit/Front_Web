@@ -220,14 +220,6 @@
 
 
 
-			/*绑定新增基本分类*/
-			$admin_addattr_btn.on('click',function () {
-				goodsAttrAdd({
-					type:'base'
-				});
-			});
-
-
 			/*绑定操作分类列表*/
 			var operate_item;
 			$admin_list_wrap.on('click keyup',function (e) {
@@ -238,6 +230,8 @@
 					$li,
 					$wrap,
 					label,
+					index,
+					layer,
 					id,
 					action;
 
@@ -256,7 +250,8 @@
 							$this=$(target);
 							$li=$this.closest('li');
 							id=$li.attr('data-id');
-							action=$this.attr('data-action');
+							action=$this.attr('data-action'),
+							layer=$this.attr('data-layer');
 
 							if(operate_item){
 								operate_item.removeClass('item-lighten');
@@ -267,6 +262,14 @@
 							if(action==='edit'){
 								/*进入编辑状态*/
 								$li.addClass('typeitem-editwrap');
+								if(layer===1){
+									/*标签层:赋值操作索引*/
+									index=$li.attr('data-index');
+									goodslabelindex=index;
+								}else{
+									/*属性层：取消操作索引*/
+									goodslabelindex=null;
+								}
 							}else if(action==='cance'){
 								/*取消编辑状态*/
 								$li.removeClass('typeitem-editwrap');
@@ -839,7 +842,13 @@
 			var $edit=$li.find('>.typeitem-edit'),
 				$edititem=$edit.find('.typeitem'),
 				i=0,
-				len=2;
+				len=2,
+				layer=$li.attr('data-layer');
+
+			if(layer===1){
+				/*标签层:取消操作索引*/
+				goodslabelindex=null;
+			}
 
 			for(i;i<len;i++){
 				var $item=$edititem.eq(i),
