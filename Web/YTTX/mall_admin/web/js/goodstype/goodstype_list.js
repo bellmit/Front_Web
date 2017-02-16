@@ -297,7 +297,7 @@
 							$li=$this.closest('li');
 							id=$li.attr('data-id');
 							layer=$li.attr('data-layer');
-							$wrap=$this.closest('li').find('>ul');
+							$wrap=$li.find('>ul');
 
 							var isload=parseInt($this.attr('data-loadsub'),10);
 							if(isload===0){
