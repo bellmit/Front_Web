@@ -42,7 +42,7 @@
                 $admin_telephone_btn=$('#admin_telephone_btn'),
                 $admin_address_btn=$('#admin_address_btn'),
                 update_config={
-                    url:"http://120.76.237.100:8082/yttx-providerbms-api/provider/basicset/update",
+                    url:"http://10.0.5.226:8082/yttx-providerbms-api/provider/basicset/update",
                     dataType:'JSON',
                     method:'post',
                     data:{
@@ -54,7 +54,7 @@
                     }
                 },
                 logo_config={
-                    url:"http://120.76.237.100:8082/yttx-providerbms-api/provider/logo/update",
+                    url:"http://10.0.5.226:8082/yttx-providerbms-api/provider/logo/update",
                     dataType:'JSON',
                     method:'post',
                     data:{
@@ -291,11 +291,11 @@
 
         /*获取*/
         function getSettingData(){
-            if(!public_tool.isSameDomain("http://120.76.237.100:8082")){
+            if(!public_tool.isSameDomain("http://10.0.5.226:8082")){
                 return false;
             }
             $.ajax({
-                url:"http://120.76.237.100:8082/yttx-providerbms-api/provider/basicset/info",
+                url:"http://10.0.5.226:8082/yttx-providerbms-api/provider/basicset/info",
                 dataType:'JSON',
                 method:'post',
                 data:{
@@ -415,9 +415,13 @@
 
         /*获取七牛token*/
         function getToken(){
-            var result=null;
-            $.ajax({
-                url:'http://120.76.237.100:8082/yttx-providerbms-api/qiniu/token/get',
+            var result=null,
+								tempurl1='112.',
+								tempurl2='74.',
+								tempurl3='207.',
+								tempurl4='132:8088';
+						$.ajax({
+							url:'http://'+tempurl1+tempurl2+tempurl3+tempurl4+'/yttx-public-api/qiniu/token/get',
                 async:false,
                 type:'post',
                 datatype:'json',
@@ -461,10 +465,10 @@
 
         /*查询地址(上级id，选中值，查询的地域等级，是否级联查询)*/
         function getAddress(id,sel,type,getflag) {
-						var tempurl1='120.',
-								tempurl2='24.',
-								tempurl3='226.',
-								tempurl4='70:8082';
+						var tempurl1='112.',
+								tempurl2='74.',
+								tempurl3='207.',
+								tempurl4='132:8088';
 								$.ajax({
 										url:"http://"+tempurl1+tempurl2+tempurl3+tempurl4+"/yttx-public-api/address/get",
                     dataType:'JSON',

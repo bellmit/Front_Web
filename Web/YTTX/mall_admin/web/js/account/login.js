@@ -134,7 +134,7 @@
 						"hideMethod": "fadeOut"
 					};
 
-					var basedomain='http://120.76.237.100:8082',
+					var basedomain='http://10.0.5.226:8082',
 						basepathname="/yttx-providerbms-api/user/login";
 					$.ajax({
 						url:basedomain+basepathname,
@@ -251,7 +251,7 @@
 						"hideMethod": "fadeOut"
 					};
 
-					var basedomain='http://120.76.237.100:8082',
+					var basedomain='http://10.0.5.226:8082',
 						basepathname="/mall-agentbms-api/sysuser/login";
 					$.ajax({
 						url:basedomain+basepathname,
@@ -391,7 +391,7 @@
 						"hideMethod": "fadeOut"
 					};
 
-					var basedomain='http://120.76.237.100:8082',
+					var basedomain='http://10.0.5.226:8082',
 						basepathname="/mall-buzhubms-api/sysuser/login";
 					$.ajax({
 						url:basedomain+basepathname,
@@ -499,13 +499,13 @@
 
 			if(type==='provider'){
 				/*供应商入口*/
-				xhr.open("post",'http://120.76.237.100:8082/yttx-providerbms-api/user/identifying/code', true);
+				xhr.open("post",'http://10.0.5.226:8082/yttx-providerbms-api/user/identifying/code', true);
 			}else if(type==='mall'){
 				/*布住网*/
-				xhr.open("post",'http://120.76.237.100:8082/mall-buzhubms-api/sysuser/identifying/code', true);
+				xhr.open("post",'http://10.0.5.226:8082/mall-buzhubms-api/sysuser/identifying/code', true);
 			}else{
 				/*其他*/
-				xhr.open("post",'http://120.76.237.100:8082/mall-buzhubms-api/sysuser/identifying/code', true);
+				xhr.open("post",'http://10.0.5.226:8082/mall-buzhubms-api/sysuser/identifying/code', true);
 			}
 
 			xhr.responseType = "blob";

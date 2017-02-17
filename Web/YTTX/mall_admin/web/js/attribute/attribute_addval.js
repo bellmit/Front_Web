@@ -7,7 +7,7 @@
 			/*菜单调用*/
 			var logininfo=public_tool.initMap.loginMap;
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
-				url:'http://120.76.237.100:8082/mall-buzhubms-api/module/menu',
+				url:'http://10.0.5.226:8082/mall-buzhubms-api/module/menu',
 				async:false,
 				type:'post',
 				param:{
@@ -55,7 +55,7 @@
 				sureObj=public_tool.sureDialog(dia)/*回调提示对象*/,
 				setSure=new sureObj(),
 				label_config={
-					url:"http://120.76.237.100:8082/mall-buzhubms-api/goodstag/list",
+					url:"http://10.0.5.226:8082/mall-buzhubms-api/goodstag/list",
 					dataType:'JSON',
 					method:'post',
 					data:{
@@ -65,7 +65,7 @@
 					}
 				},
 				labelalready_config={
-					url:"http://120.76.237.100:8082/mall-buzhubms-api/goodstag/list",
+					url:"http://10.0.5.226:8082/mall-buzhubms-api/goodstag/list",
 					dataType:'JSON',
 					method:'post',
 					data:{
@@ -73,9 +73,8 @@
 					}
 				},
 				attr_config={
-					url:"http://120.76.237.100:8082/mall-buzhubms-api/goodsattributes/list",
+					url:"http://10.0.5.226:8082/mall-buzhubms-api/goodsattributes/list",
 					dataType:'JSON',
-					async:false,
 					method:'post',
 					data:{
 						pageSize:10000
@@ -249,7 +248,7 @@
 							$li=$this.closest('li');
 							id=$li.attr('data-id');
 							action=$this.attr('data-action'),
-							layer=$this.attr('data-layer');
+							layer=parseInt($this.attr('data-layer'),10);
 
 							if(operate_item){
 								operate_item.removeClass('item-lighten');
@@ -317,22 +316,23 @@
 							var isload=parseInt($this.attr('data-loadsub'),10);
 							if(isload===0){
 								/*加载子分类*/
-								var subitem=doSubAttr(id);
-								if(subitem!==null){
-									var subtype=doAttr(subitem,{
-										limit:2,
-										layer:layer,
-										parentid:id
-									});
-									if(subtype){
-										$(subtype).appendTo($wrap);
-										/*设置已经加载*/
-										$this.attr({
-											'data-loadsub':1
+								doSubAttr(id,function (subitem) {
+									if(subitem!==null){
+										var subtype=doAttr(subitem,{
+											limit:2,
+											layer:layer,
+											parentid:id
 										});
-										subtype=null;
+										if(subtype){
+											$(subtype).appendTo($wrap);
+											/*设置已经加载*/
+											$this.attr({
+												'data-loadsub':1
+											});
+											subtype=null;
+										}
 									}
-								}
+								});
 							}
 							$this.toggleClass('main-sub-typeicon');
 							$wrap.toggleClass('g-d-hidei');
@@ -346,8 +346,9 @@
 				}else if(etype==='keyup'){
 					/*键盘分支*/
 					if(nodename==='input'){
-						/*限制排序输入*/
-						target.value=target.value.replace(/\D*/g,'');
+						if(target.attributes.getNamedItem('name').value==='typesort'){
+							target.value=target.value.replace(/\D*/g,'');
+						}
 					}
 				}
 			});
@@ -471,7 +472,7 @@
 										name:$admin_attrname.val(),
 										sort:$admin_attrsort.val()
 									});
-									config['url']="http://120.76.237.100:8082/mall-buzhubms-api/goodsattributes/add";
+									config['url']="http://10.0.5.226:8082/mall-buzhubms-api/goodsattributes/add";
 									config['data']=setdata;
 								}
 
@@ -529,7 +530,7 @@
 			var temp_config=$.extend(true,{},goods_params);
 			temp_config['parentId']=value;
 			$.ajax({
-				url:"http://120.76.237.100:8082/mall-buzhubms-api/goodstype/list",
+				url:"http://10.0.5.226:8082/mall-buzhubms-api/goodstype/list",
 				dataType:'JSON',
 				async:false,
 				method:'post',
@@ -623,7 +624,7 @@
 			}
 			var tip=obj.tip,
 				$li=obj.$li,
-				layer=$li.attr('data-layer');
+				layer=parseInt($li.attr('data-layer'),10);
 
 			if(layer===''||isNaN(layer)){
 				return false;
@@ -641,10 +642,10 @@
 
 			if(layer===1){
 				/*标签类*/
-				delete_config['url']='http://120.76.237.100:8082/mall-buzhubms-api/goodstag/delete';
+				delete_config['url']='http://10.0.5.226:8082/mall-buzhubms-api/goodstag/delete';
 			}else{
 				/*属性类*/
-				delete_config['url']='http://120.76.237.100:8082/mall-buzhubms-api/goodsattributes/delete';
+				delete_config['url']='http://10.0.5.226:8082/mall-buzhubms-api/goodsattributes/delete';
 			}
 
 			$.ajax(delete_config)
@@ -693,9 +694,9 @@
 			}
 			var tip=obj.tip,
 				$li=obj.$li,
-				layer=$li.attr('data-layer');
+				layer=parseInt($li.attr('data-layer'),10);
 
-			if(layer===''||isNaN(layer)){
+			if(layer===''){
 				return false;
 			}
 
@@ -710,7 +711,7 @@
 
 			if(layer===1){
 				/*标签类*/
-				edit_config['url']='http://120.76.237.100:8082/mall-buzhubms-api/goodstag/update';
+				edit_config['url']='http://10.0.5.226:8082/mall-buzhubms-api/goodstag/update';
 				edit_config['data']['id']=id;
 				edit_config['data']['name']=editdata[0];
 				if(editdata[1]===null){
@@ -723,7 +724,7 @@
 				edit_config['data']['sort']=editdata[2];
 			}else{
 				/*属性类*/
-				edit_config['url']='http://120.76.237.100:8082/mall-buzhubms-api/goodsattributes/update';
+				edit_config['url']='http://10.0.5.226:8082/mall-buzhubms-api/goodsattributes/update';
 				edit_config['data']['id']=id;
 				edit_config['data']['name']=editdata[0];
 				edit_config['data']['sort']=editdata[1];
@@ -797,8 +798,9 @@
 				$edititem=$edit.find('.typeitem'),
 				i=0,
 				len=3,
-				layer=$li.attr('data-layer'),
+				layer=parseInt($li.attr('data-layer'),10),
 				result=[];
+
 
 			for(i;i<len;i++){
 				var $item=$edititem.eq(i),
@@ -854,7 +856,7 @@
 				$edititem=$edit.find('.typeitem'),
 				i=0,
 				len=3,
-				layer=$li.attr('data-layer');
+				layer=parseInt($li.attr('data-layer'),10);
 
 			for(i;i<len;i++){
 				var $item=$edititem.eq(i),
@@ -885,7 +887,7 @@
 				$edititem=$editwrap.find('.typeitem'),
 				i=0,
 				issub=$li.hasClass('admin-subtypeitem'),
-				layer=$li.attr('data-layer'),
+				layer=parseInt($li.attr('data-layer'),10),
 				$curitem,
 				$this,
 				newvalue;
@@ -1172,7 +1174,7 @@
 		}
 
 		/*请求并判断是否存在子菜单*/
-		function doSubAttr(id) {
+		function doSubAttr(id,fn) {
 			var list=null;
 			if(typeof id==='undefined'){
 				return null;
@@ -1188,13 +1190,14 @@
 					var result=resp.result;
 					if(result){
 						list=result.list;
-						console.log(list);
+						if(list.length!==0){
+							fn.call(null,list);
+						}
 					}
 				})
 				.fail(function(resp){
 					console.log(resp.message);
 				});
-			return list===null?null:list.length===0?null:list;
 		}
 		
 		/*请求属性*/

@@ -71,11 +71,11 @@
 
 		/*获取数据*/
 		function getDetailData(config){
-			if(!public_tool.isSameDomain("http://120.76.237.100:8082")){
+			if(!public_tool.isSameDomain("http://10.0.5.226:8082")){
 				return false;
 			}
 			$.ajax({
-				url:"http://120.76.237.100:8082/yttx-providerbms-api/goods/details",
+				url:"http://10.0.5.226:8082/yttx-providerbms-api/goods/details",
 				dataType:'JSON',
 				async:false,
 				method:'post',

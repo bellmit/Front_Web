@@ -68,7 +68,7 @@
 					}
 
 				$.ajax({
-					url:"http://120.76.237.100:8082/yttx-providerbms-api/user/account/update",
+					url:"http://10.0.5.226:8082/yttx-providerbms-api/user/account/update",
 					dataType:'JSON',
 					method:'post',
 					data:{
@@ -193,7 +193,7 @@
 					}else{
 						/*to do*/
 						$.ajax({
-							url:"http://120.76.237.100:8082/yttx-providerbms-api/receiptaddress/default/set",
+							url:"http://10.0.5.226:8082/yttx-providerbms-api/receiptaddress/default/set",
 							dataType:'JSON',
 							method:'post',
 							data:{
@@ -235,7 +235,7 @@
 					setSure.sure('delete',function(cf){
 						/*to do*/
 						$.ajax({
-							url:"http://120.76.237.100:8082/yttx-providerbms-api/receiptaddress/delete",
+							url:"http://10.0.5.226:8082/yttx-providerbms-api/receiptaddress/delete",
 							dataType:'JSON',
 							method:'post',
 							data:{
@@ -295,7 +295,7 @@
 								phone=public_tool.trims($admin_consigneePhone.val());
 
 							$.ajax({
-								url:"http://120.76.237.100:8082/yttx-providerbms-api/receiptaddress/add",
+								url:"http://10.0.5.226:8082/yttx-providerbms-api/receiptaddress/add",
 								dataType:'JSON',
 								method:'post',
 								data:{
@@ -365,11 +365,11 @@
 
 		/*获取*/
 		function getSettingData(){
-			if(!public_tool.isSameDomain("http://120.76.237.100:8082")){
+			if(!public_tool.isSameDomain("http://10.0.5.226:8082")){
 				return false;
 			}
 			$.ajax({
-				url:"http://120.76.237.100:8082/yttx-providerbms-api/user/account/info",
+				url:"http://10.0.5.226:8082/yttx-providerbms-api/user/account/info",
 				dataType:'JSON',
 				method:'post',
 				data:{
@@ -496,10 +496,10 @@
 
 		/*查询地址(上级id，选中值，查询的地域等级，是否级联查询)*/
 		function getAddress(id,sel,type,getflag) {
-			var tempurl1='120.',
-				tempurl2='24.',
-				tempurl3='226.',
-				tempurl4='70:8082';
+			var tempurl1='112.',
+				tempurl2='74.',
+				tempurl3='207.',
+				tempurl4='132:8088';
 			$.ajax({
 					url:"http://"+tempurl1+tempurl2+tempurl3+tempurl4+"/yttx-public-api/address/get",
 					dataType:'JSON',

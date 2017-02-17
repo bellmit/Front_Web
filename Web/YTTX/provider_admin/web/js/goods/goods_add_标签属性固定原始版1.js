@@ -82,7 +82,7 @@
 						"id":2
 					},/*自定义其他参数*/
 					container: document.getElementById('admin_slide_tool'),
-					url : "http://120.76.237.100:8082/yttx-providerbms-api/goods/pictures/update",
+					url : "http://10.0.5.226:8082/yttx-providerbms-api/goods/pictures/update",
 					chunk_size: '2mb',
 					filters : {
 						max_file_size : '2mb',
@@ -599,7 +599,7 @@
 					$.extend(true,form_opt,formcache.form_opt_0,{
 						submitHandler: function(form){
 							$.ajax({
-								url:"http://120.76.237.100:8082/yttx-providerbms-api/user/password/update",
+								url:"http://10.0.5.226:8082/yttx-providerbms-api/user/password/update",
 								dataType:'JSON',
 								method:'post',
 								data:{
@@ -654,7 +654,7 @@
 			},istype=false;
 
 			$.ajax({
-				url:"http://120.76.237.100:8082/yttx-providerbms-api/goodstypes",
+				url:"http://10.0.5.226:8082/yttx-providerbms-api/goodstypes",
 				dataType:'JSON',
 				async:false,
 				method:'post',
@@ -814,7 +814,7 @@
 				return isresult;
 			}
 			$.ajax({
-				url:"http://120.76.237.100:8082/yttx-providerbms-api/goods/tags/attrs",
+				url:"http://10.0.5.226:8082/yttx-providerbms-api/goods/tags/attrs",
 				dataType:'JSON',
 				async:false,
 				method:'post',

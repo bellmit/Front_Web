@@ -7,7 +7,7 @@
 			/*菜单调用*/
 			var logininfo=public_tool.initMap.loginMap;
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
-				url:'http://120.76.237.100:8082/mall-agentbms-api/module/menu',
+				url:'http://10.0.5.226:8082/mall-agentbms-api/module/menu',
 				async:false,
 				type:'post',
 				param:{
@@ -246,7 +246,7 @@
 										/*新增操作*/
 										actiontype='新增';
                                     }
-									config['url']="http://120.76.237.100:8082/mall-agentbms-api/warehouse/addupdate";
+									config['url']="http://10.0.5.226:8082/mall-agentbms-api/warehouse/addupdate";
 									config['data']=setdata;
 								}
 
@@ -296,10 +296,10 @@
 
 		/*查询地址*/
 		function getAddress(id,sel,type,getflag,wraps) {
-			var tempurl1='120.',
-			tempurl2='24.',
-			tempurl3='226.',
-			tempurl4='70:8082';
+			var tempurl1='112.',
+				tempurl2='74.',
+				tempurl3='207.',
+				tempurl4='132:8088';
 			$.ajax({
 					url:"http://"+tempurl1+tempurl2+tempurl3+tempurl4+"/yttx-public-api/address/get",
 					dataType:'JSON',
@@ -425,7 +425,7 @@
 
 
 			$.ajax({
-					url:"http://120.76.237.100:8082/mall-agentbms-api/adscriptionregions/available",
+					url:"http://10.0.5.226:8082/mall-agentbms-api/adscriptionregions/available",
 					dataType:'JSON',
 					method:'post',
 					data:params
@@ -487,7 +487,7 @@
 
 
 			$.ajax({
-					url:"http://120.76.237.100:8082/mall-agentbms-api/warehouse/detail",
+					url:"http://10.0.5.226:8082/mall-agentbms-api/warehouse/detail",
 					dataType:'JSON',
 					method:'post',
 					data:{

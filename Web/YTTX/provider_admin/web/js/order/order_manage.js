@@ -99,7 +99,7 @@
 						autoWidth:true,/*是否*/
 						paging:false,
 						ajax:{
-							url:"http://120.76.237.100:8082/yttx-providerbms-api/goodsorder/list",
+							url:"http://10.0.5.226:8082/yttx-providerbms-api/goodsorder/list",
 							dataType:'JSON',
 							method:'post',
 							dataSrc:function ( json ) {
@@ -245,7 +245,7 @@
 						autoWidth:true,/*是否*/
 						paging:false,
 						ajax:{
-							url:"http://120.76.237.100:8082/yttx-providerbms-api/goodsorder/list",
+							url:"http://10.0.5.226:8082/yttx-providerbms-api/goodsorder/list",
 							dataType:'JSON',
 							method:'post',
 							dataSrc:function ( json ) {
@@ -367,7 +367,7 @@
 						autoWidth:true,/*是否*/
 						paging:false,
 						ajax:{
-							url:"http://120.76.237.100:8082/yttx-providerbms-api/goodsorder/list",
+							url:"http://10.0.5.226:8082/yttx-providerbms-api/goodsorder/list",
 							dataType:'JSON',
 							method:'post',
 							dataSrc:function ( json ) {
@@ -489,7 +489,7 @@
 						autoWidth:true,/*是否*/
 						paging:false,
 						ajax:{
-							url:"http://120.76.237.100:8082/yttx-providerbms-api/goodsorder/list",
+							url:"http://10.0.5.226:8082/yttx-providerbms-api/goodsorder/list",
 							dataType:'JSON',
 							method:'post',
 							dataSrc:function ( json ) {
@@ -611,7 +611,7 @@
 						autoWidth:true,/*是否*/
 						paging:false,
 						ajax:{
-							url:"http://120.76.237.100:8082/yttx-providerbms-api/goodsorder/list",
+							url:"http://10.0.5.226:8082/yttx-providerbms-api/goodsorder/list",
 							dataType:'JSON',
 							method:'post',
 							dataSrc:function ( json ) {
@@ -747,7 +747,7 @@
 
 			/*查询物流公司*/
 			$.ajax({
-					url:"http://120.76.237.100:8082/yttx-providerbms-api/shipping/express/list",
+					url:"http://10.0.5.226:8082/yttx-providerbms-api/shipping/express/list",
 					method: 'POST',
 					dataType: 'json',
 					data:{
@@ -1000,7 +1000,7 @@
 										remark:$admin_remark.val()
 									});
 
-									config['url']="http://120.76.237.100:8082/yttx-providerbms-api/order/tracking/add";
+									config['url']="http://10.0.5.226:8082/yttx-providerbms-api/order/tracking/add";
 									config['data']=setdata;
 								}
 
@@ -1062,7 +1062,7 @@
 		/*全部*/
 		function getColumnDataall(page,opt){
 			if(tableall===null){
-				if(!public_tool.isSameDomain("http://120.76.237.100:8082")){
+				if(!public_tool.isSameDomain("http://10.0.5.226:8082")){
 					return false;
 				}
 				tableall=opt.$goods_manage_wrapall.DataTable(opt.config);

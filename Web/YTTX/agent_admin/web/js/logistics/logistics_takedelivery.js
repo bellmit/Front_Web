@@ -9,7 +9,7 @@
 			/*菜单调用*/
 			var logininfo=public_tool.initMap.loginMap;
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
-				url:'http://120.76.237.100:8082/yttx-agentbms-api/module/menu',
+				url:'http://10.0.5.226:8082/yttx-agentbms-api/module/menu',
 				async:false,
 				type:'post',
 				param:{
@@ -76,7 +76,7 @@
 
 			/*数据加载*/
 			var agent_config={
-				url:"http://120.76.237.100:8082/yttx-agentbms-api/logistics/receivings",
+				url:"http://10.0.5.226:8082/yttx-agentbms-api/logistics/receivings",
 				dataType:'JSON',
 				method:'post',
 				dataSrc:function ( json ) {
@@ -108,7 +108,7 @@
 					receiptType:searchtype
 				}
 			},list_config={
-				url:"http://120.76.237.100:8082/yttx-agentbms-api/logistics/receiving/view",
+				url:"http://10.0.5.226:8082/yttx-agentbms-api/logistics/receiving/view",
 				dataType:'JSON',
 				method:'post',
 				dataSrc:function ( json ) {
@@ -564,7 +564,7 @@
 				}
 
 				$.ajax({
-						url:"http://120.76.237.100:8082/yttx-agentbms-api/logistics/confirmreceipt",
+						url:"http://10.0.5.226:8082/yttx-agentbms-api/logistics/confirmreceipt",
 						dataType:'JSON',
 						method:'post',
 						data:{
@@ -631,7 +631,7 @@
 
 							/*更新*/
 							var config={
-								url:"http://120.76.237.100:8082/yttx-agentbms-api/logistics/confirmexception",
+								url:"http://10.0.5.226:8082/yttx-agentbms-api/logistics/confirmexception",
 								dataType:'JSON',
 								method:'post',
 								data:{

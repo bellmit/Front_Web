@@ -9,7 +9,7 @@
 			/*菜单调用*/
 			var logininfo=public_tool.initMap.loginMap;
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
-				url:'http://120.76.237.100:8082/mall-agentbms-api/module/menu',
+				url:'http://10.0.5.226:8082/mall-agentbms-api/module/menu',
 				async:false,
 				type:'post',
 				param:{
@@ -73,7 +73,7 @@
 						autoWidth:true,/*是否*/
 						paging:false,
 						ajax:{
-							url:"http://120.76.237.100:8082/mall-agentbms-api/goodsorder/list",
+							url:"http://10.0.5.226:8082/mall-agentbms-api/goodsorder/list",
 							dataType:'JSON',
 							method:'post',
 							dataSrc:function ( json ) {
@@ -202,7 +202,7 @@
 
 			/*查询物流公司*/
 			$.ajax({
-					url:"http://120.76.237.100:8082/mall-agentbms-api/shipping/express/list",
+					url:"http://10.0.5.226:8082/mall-agentbms-api/shipping/express/list",
 					method: 'POST',
 					dataType: 'json',
 					data:{
@@ -317,7 +317,7 @@
 							/*展开*/
 							if(subitem===''){
 								$.ajax({
-										url:"http://120.76.237.100:8082/mall-agentbms-api/goodsorder/details",
+										url:"http://10.0.5.226:8082/mall-agentbms-api/goodsorder/details",
 										dataType:'JSON',
 										method:'post',
 										data:{
@@ -516,7 +516,7 @@
 											goodsOrderId:id
 										});
 
-										config['url']="http://120.76.237.100:8082/mall-agentbms-api/order/tracking/add";
+										config['url']="http://10.0.5.226:8082/mall-agentbms-api/order/tracking/add";
 										config['data']=setdata;
 									}
 									

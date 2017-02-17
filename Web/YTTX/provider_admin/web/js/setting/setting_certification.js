@@ -508,11 +508,11 @@
 
 		/*获取*/
 		function getSettingData(){
-			if(!public_tool.isSameDomain("http://120.76.237.100:8082")){
+			if(!public_tool.isSameDomain("http://10.0.5.226:8082")){
 				return false;
 			}
 			$.ajax({
-				url:"http://120.76.237.100:8082/yttx-providerbms-api/provider/enterprise/certification",
+				url:"http://10.0.5.226:8082/yttx-providerbms-api/provider/enterprise/certification",
 				dataType:'JSON',
 				method:'post',
 				data:{
@@ -633,10 +633,13 @@
 
 		/*获取七牛token*/
 		function getToken(){
-			var result=null;
+			var result=null,
+					tempurl1='112.',
+					tempurl2='74.',
+					tempurl3='207.',
+					tempurl4='132:8088';
 			$.ajax({
-				url:'http://120.76.237.100:8082/yttx-providerbms-api/qiniu/token/get',
-				async:false,
+				url:'http://'+tempurl1+tempurl2+tempurl3+tempurl4+'/yttx-public-api/qiniu/token/get',
 				type:'post',
 				datatype:'json',
 				data:{

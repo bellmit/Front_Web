@@ -8,7 +8,7 @@
 			var logininfo=public_tool.initMap.loginMap,
 				logingrade=decodeURIComponent(logininfo.param.grade);
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
-				url:'http://120.76.237.100:8082/mall-agentbms-api/module/menu',
+				url:'http://10.0.5.226:8082/mall-agentbms-api/module/menu',
 				async:false,
 				type:'post',
 				param:{
@@ -95,7 +95,7 @@
 
 			/*查询分润设置情况*/
 			$.ajax({
-				url:'http://120.76.237.100:8082/mall-agentbms-api/profits',
+				url:'http://10.0.5.226:8082/mall-agentbms-api/profits',
 				type:'post',
 				data:{
 					roleId:decodeURIComponent(logininfo.param.roleId),
@@ -247,7 +247,7 @@
 
 			/*查询分润设置情况*/
 			$.ajax({
-				url:'http://120.76.237.100:8082/mall-agentbms-api/profit/ratecfg/list',
+				url:'http://10.0.5.226:8082/mall-agentbms-api/profit/ratecfg/list',
 				type:'post',
 				data:{
 					roleId:decodeURIComponent(logininfo.param.roleId),
@@ -432,7 +432,7 @@
 									ele_aaa=$profit_aaa0.val();
 
 									/*规则通过后校验*/
-									config0['url']="http://120.76.237.100:8082/mall-agentbms-api/profit/agent/addupdate";
+									config0['url']="http://10.0.5.226:8082/mall-agentbms-api/profit/agent/addupdate";
 									$.extend(true,config0['data'],{
 										agentProfit1: ele_a,
 										agentProfit2: ele_aa,
@@ -444,7 +444,7 @@
 									ele_a=$profit_a1.val();
 									ele_aa=$profit_aa1.val();
 									ele_aaa=$profit_aaa1.val();
-									config1['url']="http://120.76.237.100:8082/mall-agentbms-api/profit/platform/addupdate";
+									config1['url']="http://10.0.5.226:8082/mall-agentbms-api/profit/platform/addupdate";
 									$.extend(true,config1['data'],{
 										platformProfit: ele_a,
 										agentProfit: ele_aa,
@@ -458,7 +458,7 @@
 										return false;
 									}
 									config2= $.extend(true,{},defconfig);
-									config2['url']="http://120.76.237.100:8082/mall-agentbms-api/profit/ratecfg/addupdate";
+									config2['url']="http://10.0.5.226:8082/mall-agentbms-api/profit/ratecfg/addupdate";
 									$.extend(true,config2['data'],{
 										profitRateCfgs:ratedata
 									});

@@ -45,7 +45,7 @@
 				$admin_telephone_btn=$('#admin_telephone_btn'),
 				$admin_address_btn=$('#admin_address_btn'),
 				update_config={
-					url:"http://120.76.237.100:8082/yttx-providerbms-api/provider/basicset/update",
+					url:"http://10.0.5.226:8082/yttx-providerbms-api/provider/basicset/update",
 					dataType:'JSON',
 					method:'post',
 					data:{
@@ -57,7 +57,7 @@
 					}
 				},
 				logo_config={
-					url:"http://120.76.237.100:8082/yttx-providerbms-api/provider/logo/update",
+					url:"http://10.0.5.226:8082/yttx-providerbms-api/provider/logo/update",
 					dataType:'JSON',
 					method:'post',
 					data:{
@@ -281,7 +281,7 @@
 		/*获取*/
 		function getSettingData(){
 			$.ajax({
-				url:"http://120.76.237.100:8082/yttx-providerbms-api/provider/basicset/info",
+				url:"http://10.0.5.226:8082/yttx-providerbms-api/provider/basicset/info",
 				dataType:'JSON',
 				method:'post',
 				data:{
@@ -352,9 +352,13 @@
 
 		/*获取七牛token*/
 		function getToken(){
-			var result=null;
+			var result=null,
+					tempurl1='112.',
+					tempurl2='74.',
+					tempurl3='207.',
+					tempurl4='132:8088';
 			$.ajax({
-				url:'http://120.76.237.100:8082/yttx-providerbms-api/qiniu/token/get',
+				url:'http://'+tempurl1+tempurl2+tempurl3+tempurl4+'/yttx-public-api/qiniu/token/get',
 				async:false,
 				type:'post',
 				datatype:'json',

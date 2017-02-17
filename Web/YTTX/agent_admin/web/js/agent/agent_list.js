@@ -9,7 +9,7 @@
 			/*菜单调用*/
 			var logininfo=public_tool.initMap.loginMap;
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
-				url:'http://120.76.237.100:8082/yttx-agentbms-api/module/menu',
+				url:'http://10.0.5.226:8082/yttx-agentbms-api/module/menu',
 				async:false,
 				type:'post',
 				param:{
@@ -85,7 +85,7 @@
 
 			/*数据加载*/
 			var agent_config={
-				url:"http://120.76.237.100:8082/yttx-agentbms-api/agents/related",
+				url:"http://10.0.5.226:8082/yttx-agentbms-api/agents/related",
 				dataType:'JSON',
 				method:'post',
 				dataSrc:function ( json ) {
@@ -286,7 +286,7 @@
 				}else if(action==='select'){
 					/*查看*/
 					$.ajax({
-							url:"http://120.76.237.100:8082/yttx-agentbms-api/agent/view",
+							url:"http://10.0.5.226:8082/yttx-agentbms-api/agent/view",
 							method: 'POST',
 							dataType: 'json',
 							data:{
@@ -411,7 +411,7 @@
 				}else if(action==='bind'){
 					/*绑定代理商请求数据*/
 					$.when($.ajax({
-						url:"http://120.76.237.100:8082/yttx-agentbms-api/servicestation/notbound/list",
+						url:"http://10.0.5.226:8082/yttx-agentbms-api/servicestation/notbound/list",
 						method: 'POST',
 						dataType: 'json',
 						data:{
@@ -420,7 +420,7 @@
 							"token":decodeURIComponent(logininfo.param.token)
 						}
 					}),$.ajax({
-						url:"http://120.76.237.100:8082/yttx-agentbms-api/servicestation/bound/list",
+						url:"http://10.0.5.226:8082/yttx-agentbms-api/servicestation/bound/list",
 						method: 'POST',
 						dataType: 'json',
 						data:{
@@ -531,7 +531,7 @@
 						hasitem,
 						isbind=type==='1'?true:false,
 						config={
-							url:"http://120.76.237.100:8082/yttx-agentbms-api/servicestation/binding/operation",
+							url:"http://10.0.5.226:8082/yttx-agentbms-api/servicestation/binding/operation",
 							dataType:'JSON',
 							method:'post',
 							data:{

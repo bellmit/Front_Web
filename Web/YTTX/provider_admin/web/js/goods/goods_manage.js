@@ -60,7 +60,7 @@
 						autoWidth:true,/*是否*/
 						paging:false,
 						ajax:{
-							url:"http://120.76.237.100:8082/yttx-providerbms-api/goods/list",
+							url:"http://10.0.5.226:8082/yttx-providerbms-api/goods/list",
 							dataType:'JSON',
 							method:'post',
 							dataSrc:function ( json ) {
@@ -338,7 +338,7 @@
 					setSure.sure('delete',function(cf){
 						/*to do*/
 						$.ajax({
-								url:"http://120.76.237.100:8082/yttx-providerbms-api/goods/delete",
+								url:"http://10.0.5.226:8082/yttx-providerbms-api/goods/delete",
 								method: 'POST',
 								dataType: 'json',
 								data:{
@@ -400,7 +400,7 @@
 
 					/*上架和下架*/
 					$.ajax({
-							url:"http://120.76.237.100:8082/yttx-providerbms-api/goods/status/update",
+							url:"http://10.0.5.226:8082/yttx-providerbms-api/goods/status/update",
 							method: 'POST',
 							dataType: 'json',
 							data:{
@@ -456,7 +456,7 @@
 		/*获取数据*/
 		function getColumnData(page,opt){
 			if(table===null){
-				if(!public_tool.isSameDomain("http://120.76.237.100:8082")){
+				if(!public_tool.isSameDomain("http://10.0.5.226:8082")){
 					return false;
 				}
 				table=opt.$goods_manage_wrap.DataTable(opt.config);

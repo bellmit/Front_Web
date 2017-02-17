@@ -7,7 +7,7 @@
 			/*菜单调用*/
 			var logininfo=public_tool.initMap.loginMap;
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
-				url:'http://120.76.237.100:8082/mall-buzhubms-api/module/menu',
+				url:'http://10.0.5.226:8082/mall-buzhubms-api/module/menu',
 				async:false,
 				type:'post',
 				param:{
@@ -315,7 +315,7 @@
 
 
 			$.ajax({
-					url:"http://120.76.237.100:8082/mall-buzhubms-api/user/detail",
+					url:"http://10.0.5.226:8082/mall-buzhubms-api/user/detail",
 					dataType:'JSON',
 					method:'post',
 					data:{
@@ -411,9 +411,13 @@
 
 		/*获取七牛token*/
 		function getToken(){
-			var result=null;
+			var result=null,
+					tempurl1='112.',
+					tempurl2='74.',
+					tempurl3='207.',
+					tempurl4='132:8088';
 			$.ajax({
-				url:'http://120.76.237.100:8082/yttx-providerbms-api/qiniu/token/get',
+				url:'http://'+tempurl1+tempurl2+tempurl3+tempurl4+'/yttx-public-api/qiniu/token/get',
 				async:false,
 				type:'post',
 				datatype:'json',

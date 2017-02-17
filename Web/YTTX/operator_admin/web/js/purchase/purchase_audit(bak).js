@@ -9,7 +9,7 @@
 			/*菜单调用*/
 			var logininfo=public_tool.initMap.loginMap;
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
-				url:'http://120.76.237.100:8082/mall-agentbms-api/module/menu',
+				url:'http://10.0.5.226:8082/mall-agentbms-api/module/menu',
 				async:false,
 				type:'post',
 				param:{
@@ -64,7 +64,7 @@
 						autoWidth:true,/*是否*/
 						paging:false,
 						ajax:{
-							url:"http://120.76.237.100:8082/mall-agentbms-api/purchasing/order/list",
+							url:"http://10.0.5.226:8082/mall-agentbms-api/purchasing/order/list",
 							dataType:'JSON',
 							method:'post',
 							dataSrc:function ( json ) {
@@ -218,7 +218,7 @@
 							/*展开*/
 							if(subitem===''){
 								$.ajax({
-										url:"http://120.76.237.100:8082/mall-agentbms-api/purchasing/order/details"/*"../../json/purchase/mall_purchase_stats_details.json"*/,
+										url:"http://10.0.5.226:8082/mall-agentbms-api/purchasing/order/details"/*"../../json/purchase/mall_purchase_stats_details.json"*/,
 										dataType:'JSON',
 										method:'post',
 										data:{

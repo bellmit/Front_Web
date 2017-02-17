@@ -453,7 +453,7 @@
 
 			/*$admin_color_extendbtn*/
 			/*$.ajax({
-					url:"http://120.76.237.100:8082/yttx-agentbms-api/agent/view",
+					url:"http://10.0.5.226:8082/yttx-agentbms-api/agent/view",
 					method: 'POST',
 					dataType: 'json',
 					data:{
@@ -805,7 +805,7 @@
 							}
 
 							$.ajax({
-								url:"http://120.76.237.100:8082/yttx-providerbms-api/goods/addupdate",
+								url:"http://10.0.5.226:8082/yttx-providerbms-api/goods/addupdate",
 								dataType:'JSON',
 								method:'post',
 								data:setdata
@@ -854,7 +854,7 @@
 			},istype=false;
 
 			$.ajax({
-				url:"http://120.76.237.100:8082/yttx-providerbms-api/goodstypes",
+				url:"http://10.0.5.226:8082/yttx-providerbms-api/goodstypes",
 				dataType:'JSON',
 				async:false,
 				method:'post',
@@ -1052,7 +1052,7 @@
 				return isresult;
 			}
 			$.ajax({
-				url:"http://120.76.237.100:8082/yttx-providerbms-api/goods/tags/attrs",
+				url:"http://10.0.5.226:8082/yttx-providerbms-api/goods/tags/attrs",
 				dataType:'JSON',
 				async:false,
 				method:'post',

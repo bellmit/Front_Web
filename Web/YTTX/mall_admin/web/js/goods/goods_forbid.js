@@ -9,7 +9,7 @@
 			/*菜单调用*/
 			var logininfo=public_tool.initMap.loginMap;
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
-				url:'http://120.76.237.100:8082/mall-buzhubms-api/module/menu',
+				url:'http://10.0.5.226:8082/mall-buzhubms-api/module/menu',
 				async:false,
 				type:'post',
 				param:{
@@ -133,7 +133,7 @@
 						autoWidth:true,/*是否*/
 						paging:false,
 						ajax:{
-							url:"http://120.76.237.100:8082/mall-buzhubms-api/goods/list",
+							url:"http://10.0.5.226:8082/mall-buzhubms-api/goods/list",
 							dataType:'JSON',
 							method:'post',
 							dataSrc:function ( json ) {
@@ -559,7 +559,7 @@
 			}
 
 			$.ajax({
-					url:"http://120.76.237.100:8082/mall-buzhubms-api/goods/operate",
+					url:"http://10.0.5.226:8082/mall-buzhubms-api/goods/operate",
 					dataType:'JSON',
 					method:'post',
 					data:temp_config
@@ -630,7 +630,7 @@
 			var temp_config=$.extend(true,{},goods_params);
 			temp_config['parentId']=value;
 			$.ajax({
-				url:"http://120.76.237.100:8082/mall-buzhubms-api/goodstype/list",
+				url:"http://10.0.5.226:8082/mall-buzhubms-api/goodstype/list",
 				dataType:'JSON',
 				async:false,
 				method:'post',
@@ -881,7 +881,7 @@
 
 			temp_config['id']=id;
 			$.ajax({
-					url:"http://120.76.237.100:8082/mall-buzhubms-api/goods/detail",
+					url:"http://10.0.5.226:8082/mall-buzhubms-api/goods/detail",
 					dataType:'JSON',
 					method:'post',
 					data:temp_config

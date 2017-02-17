@@ -9,7 +9,7 @@
 			/*菜单调用*/
 			var logininfo=public_tool.initMap.loginMap;
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
-				url:'http://120.76.237.100:8082/mall-agentbms-api/module/menu',
+				url:'http://10.0.5.226:8082/mall-agentbms-api/module/menu',
 				async:false,
 				type:'post',
 				param:{
@@ -188,7 +188,7 @@
 				return false;
 			}
 			$.ajax({
-				url:'http://120.76.237.100:8082/mall-agentbms-api/agent/profit/stats/list',
+				url:'http://10.0.5.226:8082/mall-agentbms-api/agent/profit/stats/list',
 				method:'post',
 				dataType:'JSON',
 				data:{
@@ -388,7 +388,7 @@
 			timetext=timetext.split(',');
 
 			$.ajax({
-				url:'http://120.76.237.100:8082/mall-agentbms-api/transactionrecords/list',
+				url:'http://10.0.5.226:8082/mall-agentbms-api/transactionrecords/list',
 				method:'post',
 				dataType:'JSON',
 				data:{
@@ -476,7 +476,7 @@
 				return false;
 			}
 			$.ajax({
-				url:'http://120.76.237.100:8082/mall-agentbms-api/agent/profit/stats/list',
+				url:'http://10.0.5.226:8082/mall-agentbms-api/agent/profit/stats/list',
 				method:'post',
 				dataType:'JSON',
 				data:{
@@ -638,7 +638,7 @@
 		/*查询下级代理商*/
 		function searchChildAgent(fn) {
 			$.ajax({
-				url:'http://120.76.237.100:8082/mall-agentbms-api/agent/lower/list',
+				url:'http://10.0.5.226:8082/mall-agentbms-api/agent/lower/list',
 				method:'post',
 				dataType:'JSON',
 				data:{

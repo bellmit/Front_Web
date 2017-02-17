@@ -71,7 +71,7 @@
 					$.extend(true,form_opt,formcache.form_opt_0,{
 						submitHandler: function(form){
 							$.ajax({
-								url:"http://120.76.237.100:8082/yttx-providerbms-api/user/password/update",
+								url:"http://10.0.5.226:8082/yttx-providerbms-api/user/password/update",
 								dataType:'JSON',
 								method:'post',
 								data:{
@@ -119,11 +119,11 @@
 
 		/*获取*/
 		function getSettingData(){
-			if(!public_tool.isSameDomain("http://120.76.237.100:8082")){
+			if(!public_tool.isSameDomain("http://10.0.5.226:8082")){
 				return false;
 			}
 			$.ajax({
-				url:"http://120.76.237.100:8082/yttx-providerbms-api/user/password/info",
+				url:"http://10.0.5.226:8082/yttx-providerbms-api/user/password/info",
 				dataType:'JSON',
 				method:'post',
 				data:{
