@@ -80,7 +80,7 @@
 						pageSize:10000
 					}
 				},
-				goodslabelid=null/*当前操作的标签索引*/,
+				goodslabel_record={}/*当前操作的标签索引记录*/,
 				goodslabelindex=null/*当前操作的标签序列*/;
 
 
@@ -137,36 +137,45 @@
 				this.on('change',function(){
 					var $option=$(this).find(':selected'),
 						value=this.value,
-						hasub=false;
+						hasub=false,
+						$tempoption;
 					if(selector.indexOf('one')!==-1){
 						if(value===''){
 							$search_gtitwo.html('');
 							$search_gtithree.html('');
 							goodstypeid='';
+							goodsWithLabel('');
 							return false;
 						}
 						hasub=$option.attr('data-hassub');
 						goodstypeid=value;
+						goodsWithLabel(value,$option.html());
 						if(hasub==='true'){
 							getGoodsTypes(value,'two');
 						}
 					}else if(selector.indexOf('two')!==-1){
 						if(value===''){
 							$search_gtithree.html('');
-							goodstypeid=$search_gtione.find(':selected').val();
+							$tempoption=$search_gtione.find(':selected');
+							goodstypeid=$tempoption.val();
+							goodsWithLabel(goodstypeid,$tempoption.html());
 							return false;
 						}
 						hasub=$option.attr('data-hassub');
 						goodstypeid=value;
+						goodsWithLabel(value,$option.html());
 						if(hasub==='true'){
 							getGoodsTypes(value,'three');
 						}
 					}else if(selector.indexOf('three')!==-1){
 						if(value===''){
-							goodstypeid=$search_gtitwo.find(':selected').val();
+							$tempoption=$search_gtitwo.find(':selected');
+							goodstypeid=$tempoption.val();
+							goodsWithLabel(goodstypeid,$tempoption.html());
 							return false;
 						}
 						goodstypeid=value;
+						goodsWithLabel(value,$option.html());
 					}
 				});
 			});
@@ -185,6 +194,7 @@
 				});
 				/*清空分类值*/
 				goodstypeid='';
+				goodsWithLabel('');
 			}).trigger('click');
 
 
@@ -219,7 +229,7 @@
 
 			/*绑定操作分类列表*/
 			var operate_item;
-			$admin_list_wrap.on('click keyup',function (e) {
+			$admin_list_wrap.on('click keyup focusout',function (e) {
 				var target= e.target,
 					etype=e.type,
 					nodename=target.nodeName.toLowerCase(),
@@ -230,7 +240,9 @@
 					index,
 					layer,
 					id,
-					action;
+					action,
+					inputtype,
+					inputtxt;
 
 				if(nodename==='td'||nodename==='tr'||nodename==='ul'||nodename==='div'||nodename==='li'){
 					return false;
@@ -261,41 +273,69 @@
 								$li.addClass('typeitem-editwrap');
 								if(layer===1){
 									/*标签层:赋值操作索引*/
-									index=$li.attr('data-index');
-									goodslabelindex=index;
-								}else{
-									/*属性层：取消操作索引*/
-									goodslabelindex=null;
+									goodslabelindex=$this.attr('data-index');
+									goodslabel_record[goodslabelindex]=$li.find('>.typeitem-edit');
 								}
 							}else if(action==='cance'){
 								/*取消编辑状态*/
 								$li.removeClass('typeitem-editwrap');
 								/*恢复被修改的数据至没修改之前状态*/
-								resetGoodsAttrData($li);
+								if(layer===1){
+									goodslabelindex=$this.attr('data-index');
+									resetGoodsAttrData(goodslabelindex,'label');
+								}else{
+									resetGoodsAttrData($li,'attr');
+								}
 							}else if(action==='confirm'){
-								var result=validGoodsAttrData($li);
+								goodslabelindex=$this.attr('data-index');
+								var result;
+								if(layer===1){
+									result=validGoodsAttrData($li,'label');
+								}else{
+									result=validGoodsAttrData($li,'attr');
+								}
 								if(result===null){
 									return false;
 								}
 								/*提交编辑*/
 								setSure.sure('编辑',function(cf){
 									/*to do*/
-									goodsAttrEdit({
-										id:id,
-										tip:cf.dia||dia,
-										$li:$li,
-										result:result
-									});
+									if(layer===1){
+										goodsAttrEdit({
+											id:id,
+											tip:cf.dia||dia,
+											$li:$li,
+											result:result,
+											type:'label'
+										});
+									}else{
+										goodsAttrEdit({
+											id:id,
+											tip:cf.dia||dia,
+											$li:$li,
+											result:result,
+											type:'attr'
+										});
+									}
 								});
 							}else if(action==='delete'){
 								/*确认是否启用或禁用*/
 								setSure.sure('delete',function(cf){
 									/*to do*/
-									goodsAttrDelete({
-										id:id,
-										tip:cf.dia||dia,
-										$li:$li
-									});
+									if(layer===1){
+										goodsAttrDelete({
+											id:id,
+											tip:cf.dia||dia,
+											$li:$li
+										},'label');
+									}else{
+										goodsAttrDelete({
+											id:id,
+											tip:cf.dia||dia,
+											$li:$li
+										},'attr');
+									}
+
 								});
 							}else if(action==='add'){
 								/*新增分类*/
@@ -318,12 +358,19 @@
 								/*加载子分类*/
 								doSubAttr(id,function (subitem) {
 									if(subitem!==null){
+										/*加载子类*/
 										var subtype=doAttr(subitem,{
 											limit:2,
 											layer:layer,
 											parentid:id
 										});
 										if(subtype){
+											/*查询子分类属性*/
+											searchAttr({
+												type:'attr',
+												dataitem:subitem
+											});
+											/*设置已经查询到数据标识*/
 											$(subtype).appendTo($wrap);
 											/*设置已经加载*/
 											$this.attr({
@@ -346,8 +393,30 @@
 				}else if(etype==='keyup'){
 					/*键盘分支*/
 					if(nodename==='input'){
-						if(target.attributes.getNamedItem('name').value==='typesort'){
-							target.value=target.value.replace(/\D*/g,'');
+						$this=$(target);
+						inputtype=$this.attr('name');
+						if(inputtype==='typesort'){
+							inputtxt=$this.val().replace(/\D*/g,'');
+							$this.val(inputtxt);
+						}
+					}
+				}else if(etype==='focusout'){
+					if(nodename==='input'){
+						$this=$(target);
+						inputtype=$this.attr('name'),
+						inputtxt=$this.attr('data-value');
+						if(inputtxt!==$this.val()){
+							if(inputtype==='attrname'){
+								validSameName({
+									$input:$this,
+									type:'itemattr'
+								});
+							}else if(inputtype==='labelname'){
+								validSameName({
+									$input:$this,
+									type:'label'
+								});
+							}
 						}
 					}
 				}
@@ -381,47 +450,13 @@
 
 
 			/*绑定验证是否已经编写存在的分类编码*/
-			$.each([$admin_attrname,$admin_labelname],function(){
+			$.each([$admin_attrname],function(){
 				var selector=this.selector;
 				this.on('focusout',function(){
-					var self=this,
-						txt=this.value,
-						value=public_tool.trims(txt),
-						$ul,
-						$tip,
-						type='';
-
-					if(value!==''){
-						if(selector.indexOf('attr')!==-1){
-							$ul=$admin_addattr_list;
-							$tip=$admin_addattr_tips;
-							type='属性';
-						}else if(selector.indexOf('label')!==-1){
-							$ul=$admin_addlabel_list;
-							$tip=$admin_errortip_wrap;
-							type='标签';
-						}
-
-						if(type!==''){
-							$ul.find('li').each(function(){
-								var $own=$(this),
-									litxt=$own.html();
-								if(litxt===value){
-									$tip.html('"'+value+'" 已经存在，请填写其他"'+type+'"');
-									self.value='';
-									$own.addClass('admin-list-widget-active');
-									if($ul.hasClass('g-d-hidei')){
-										$ul.removeClass('g-d-hidei')
-									}
-									setTimeout(function () {
-										$tip.html('');
-										$own.removeClass('admin-list-widget-active');
-									},3000);
-									return false;
-								}
-							});
-						}
-					}
+					validSameName({
+						$input:$(this),
+						type:'attr'
+					});
 				});
 			});
 
@@ -615,20 +650,42 @@
 		}
 
 
+
+		/*类型查询与标签选中关联*/
+		function goodsWithLabel(id,value) {
+			if(typeof id==='undefined'){
+				return false;
+			}
+			if(goodslabelindex!==null){
+				/*编辑状态下：关联状态*/
+				var $edititem=goodslabel_record[goodslabelindex].find('.typeitem').eq(1);
+				if(id===''){
+					$edititem.attr({
+						'data-type':''
+					}).html('无(可共用)');
+				}else{
+					if(typeof value==='undefined'){
+						$edititem.attr({
+							'data-type':id
+						}).html('有');
+					}else{
+						$edititem.attr({
+							'data-type':id
+						}).html(value);
+					}
+				}
+			}
+		}
+
 		/*删除操作*/
-		function goodsAttrDelete(obj) {
+		function goodsAttrDelete(obj,type) {
 			var id=obj.id;
 
 			if(typeof id==='undefined'||id===''){
 				return false;
 			}
 			var tip=obj.tip,
-				$li=obj.$li,
-				layer=parseInt($li.attr('data-layer'),10);
-
-			if(layer===''||isNaN(layer)){
-				return false;
-			}
+				$li=obj.$li;
 
 			var delete_config={
 				dataType:'JSON',
@@ -640,10 +697,10 @@
 
 			$.extend(true,delete_config['data'],goods_params);
 
-			if(layer===1){
+			if(type==='label'){
 				/*标签类*/
 				delete_config['url']='http://10.0.5.226:8082/mall-buzhubms-api/goodstag/delete';
-			}else{
+			}else if(type==='attr'){
 				/*属性类*/
 				delete_config['url']='http://10.0.5.226:8082/mall-buzhubms-api/goodsattributes/delete';
 			}
@@ -668,7 +725,14 @@
 						tip.close();
 						setTimeout(function () {
 							operate_item=null;
-							$li.remove();
+							if(type==='label'){
+								/*设置标签需要重新加载*/
+								$admin_addlabel_list.attr({
+									'data-select':'false'
+								});
+							}
+							/*重新加载数据*/
+							requestAttr(label_config,'label');
 						},1000);
 					},1000);
 				})
@@ -694,11 +758,7 @@
 			}
 			var tip=obj.tip,
 				$li=obj.$li,
-				layer=parseInt($li.attr('data-layer'),10);
-
-			if(layer===''){
-				return false;
-			}
+				type=obj.type;
 
 			var editdata=obj.result,
 				edit_config={
@@ -709,7 +769,7 @@
 
 			$.extend(true,edit_config['data'],goods_params);
 
-			if(layer===1){
+			if(type==='label'){
 				/*标签类*/
 				edit_config['url']='http://10.0.5.226:8082/mall-buzhubms-api/goodstag/update';
 				edit_config['data']['id']=id;
@@ -722,7 +782,7 @@
 					edit_config['data']['goodsTypeId']=editdata[1];
 				}
 				edit_config['data']['sort']=editdata[2];
-			}else{
+			}else if(type==='attr'){
 				/*属性类*/
 				edit_config['url']='http://10.0.5.226:8082/mall-buzhubms-api/goodsattributes/update';
 				edit_config['data']['id']=id;
@@ -750,7 +810,7 @@
 					}
 					tip.content('<span class="g-c-bs-success g-btips-succ">编辑成功</span>').show();
 					/*更新页面数据*/
-					updateGoodsAttrDataByEdit($li);
+					updateGoodsAttrDataByEdit($li,type);
 					setTimeout(function () {
 						tip.close();
 						setTimeout(function () {
@@ -758,6 +818,11 @@
 								operate_item.removeClass('item-lighten');
 								operate_item=null;
 								$li.removeClass('typeitem-editwrap');
+								/*清除操作记录*/
+								if(type==='label'){
+									delete  goodslabel_record[goodslabelindex];
+									goodslabelindex=null;
+								}
 							}
 						},1000);
 					},1000);
@@ -793,28 +858,26 @@
 		}
 
 		/*验证数据状态(编辑状态)*/
-		function validGoodsAttrData($li) {
+		function validGoodsAttrData($li,type) {
 			var $edit=$li.find('>.typeitem-edit'),
 				$edititem=$edit.find('.typeitem'),
 				i=0,
-				len=3,
-				layer=parseInt($li.attr('data-layer'),10),
-				result=[];
+				result=[],
+			 	$item=$edititem,
+				value='';
 
-
-			for(i;i<len;i++){
-				var $item=$edititem.eq(i),
-					value='';
-				if(i===0||i===2){
-					value=$item.find('input').val();
-					if(value===''||typeof value==='undefined'){
-						tipsGoodsAttrError($admin_errortip_wrap,i);
-						break;
-					}else{
-						result.push(value);
-					}
-				}else if(i===1){
-					if(layer===1){
+			if(type==='label'){
+				for(i;i<3;i++){
+					$item=$edititem.eq(i);
+					if(i===0||i===2){
+						value=$item.find('input').val();
+						if(value===''){
+							tipsGoodsAttrError($admin_errortip_wrap,i,type);
+							break;
+						}else{
+							result.push(value);
+						}
+					}else if(i===1){
 						if($item.attr('data-type')===$item.attr('data-value')){
 							/*未作改变*/
 							result.push(null);
@@ -824,25 +887,49 @@
 						}
 					}
 				}
+				if(result.length<3){
+					return null;
+				}else{
+					return result;
+				}
+			}else if(type==='attr'){
+				for(i;i<2;i++){
+					$item=$edititem.eq(i);
+					value=$item.find('input').val();
+					if(value===''||typeof value==='undefined'){
+						tipsGoodsAttrError($admin_errortip_wrap,i,type);
+						break;
+					}else{
+						result.push(value);
+					}
+				}
+				if(result.length<2){
+					return null;
+				}else{
+					return result;
+				}
 			}
-
-			if(result.length<len - 1){
-				return null;
-			}else{
-				return result;
-			}
+			return null;
 		}
 
 		/*验证提示信息(编辑状态)*/
-		function tipsGoodsAttrError($wrap,type) {
+		function tipsGoodsAttrError($wrap,index,type) {
 			if(!$wrap){
 				$wrap=$admin_errortip_wrap;
 			}
 			var tips='';
-			if(type===0){
-				tips='标签(属性)名称没有填写';
-			}else if(type===1){
-				tips='排序不能为空';
+			if(type==='label'){
+				if(index===0){
+					tips='标签名称没有填写';
+				}else if(index===2){
+					tips='排序不能为空';
+				}
+			}else if(type==='attr'){
+				if(index===0){
+					tips='属性名称没有填写';
+				}else if(index===1){
+					tips='排序不能为空';
+				}
 			}
 			$wrap.html(tips);
 			setTimeout(function () {
@@ -851,49 +938,60 @@
 		}
 
 		/*恢复默认(原来)数据(编辑状态)*/
-		function resetGoodsAttrData($li){
-			var $edit=$li.find('>.typeitem-edit'),
-				$edititem=$edit.find('.typeitem'),
-				i=0,
-				len=3,
-				layer=parseInt($li.attr('data-layer'),10);
-
-			for(i;i<len;i++){
-				var $item=$edititem.eq(i),
-					oldvalue='',
-					$this;
-				if(i===0||i===2){
-					$this=$item.find('input');
-					oldvalue=$this.attr('data-value');
-					$this.val(oldvalue);
-				}else if(i===1){
-					/*取消操作索引*/
-					goodslabelindex=null;
-					if(layer===1){
-						/*标签层:取消操作索引*/
+		function resetGoodsAttrData($li,type){
+			var $edit,
+				$edititem,
+				i=0;
+			if(type==='label'){
+				$edititem=goodslabel_record[$li].find('.typeitem')
+			}else if(type==='attr'){
+				$edit=$li.find('>.typeitem-edit');
+				$edititem=$edit.find('.typeitem');
+			}
+			var $item,
+				oldvalue,
+				$this;
+			if(type==='label'){
+				for(i;i<3;i++){
+						$item=$edititem.eq(i);
+					if(i===0||i===2){
+						$this=$item.find('input');
+						oldvalue=$this.attr('data-value');
+						$this.val(oldvalue);
+					}else if(i===1){
+						/*取消操作索引*/
 						$item.attr({
 							'data-type':$item.attr('data-value')
 						});
 					}
 				}
+				/*清除操作记录*/
+				delete goodslabel_record[$li];
+				goodslabelindex=null;
+			}else if(type==='attr'){
+				for(i;i<2;i++){
+					$item=$edititem.eq(i);
+					$this=$item.find('input');
+					oldvalue=$this.attr('data-value');
+					$this.val(oldvalue);
+				}
 			}
 		}
 
 		/*更新原来值(编辑状态)*/
-		function updateGoodsAttrDataByEdit($li){
+		function updateGoodsAttrDataByEdit($li,type){
 			var $showwrap=$li.find('>.typeitem-default'),
 				$editwrap=$li.find('>.typeitem-edit'),
 				$showitem=$showwrap.find('.typeitem'),
 				$edititem=$editwrap.find('.typeitem'),
 				i=0,
 				issub=$li.hasClass('admin-subtypeitem'),
-				layer=parseInt($li.attr('data-layer'),10),
 				$curitem,
 				$this,
 				newvalue;
 
 
-			if(layer===1){
+			if(type==='label'){
 				/*标签层*/
 				for(i;i<3;i++){
 					/*更新值*/
@@ -923,7 +1021,7 @@
 						}
 					}
 				}
-			}else{
+			}else if(type==='attr'){
 				/*属性层*/
 				for(i;i<2;i++){
 					$curitem=$edititem.eq(i);
@@ -1072,7 +1170,7 @@
 							<div class="typeitem g-w-percent22" >'+label+'</div><div class="typeitem g-w-percent10">有</div>';
 					}else{
 						str+='<div class="typeitem-default"><span data-loadsub="0" class="typeitem main-typeicon g-w-percent3"></span>\
-							<div class="typeitem g-w-percent22" >'+label+'</div><div class="typeitem g-w-percent10">可共用(无)</div>';
+							<div class="typeitem g-w-percent22" >'+label+'</div><div class="typeitem g-w-percent10">无(可共用)</div>';
 					}
 				}
 			}else{
@@ -1101,11 +1199,11 @@
 			}else{
 				/*标签类*/
 				if(goodstype!==null){
-					stredit+='<div class="typeitem-edit"><div class="typeitem g-w-percent22"><input type="text" name="attrname" data-value="'+label+'"  placeholder="请输入标签名称" value="'+label+'" /></div>\
+					stredit+='<div class="typeitem-edit"><div class="typeitem g-w-percent22"><input type="text" name="labelname" data-value="'+label+'"  placeholder="请输入标签名称" value="'+label+'" /></div>\
 							<div class="typeitem g-w-percent10" data-type="'+goodstype+'"  data-value="'+goodstype+'">有</div>\
 								<div class="typeitem g-w-percent5"><input type="text" name="attrsort" data-value="'+curitem["sort"]+'" maxlength="6" value="'+curitem["sort"]+'" /></div>';
 				}else{
-					stredit+='<div class="typeitem-edit"><div class="typeitem g-w-percent22"><input type="text" name="attrname" data-value="'+label+'"  placeholder="请输入标签名称" value="'+label+'" /></div>\
+					stredit+='<div class="typeitem-edit"><div class="typeitem g-w-percent22"><input type="text" name="labelname" data-value="'+label+'"  placeholder="请输入标签名称" value="'+label+'" /></div>\
 							<div class="typeitem g-w-percent10" data-type="" data-value="">无(可共用)</div>\
 								<div class="typeitem g-w-percent5"><input type="text" name="attrsort" data-value="'+curitem["sort"]+'" maxlength="6" value="'+curitem["sort"]+'" /></div>';
 				}
@@ -1202,6 +1300,10 @@
 		
 		/*请求属性*/
 		function requestAttr(config,type){
+			/*清除操作记录*/
+			goodslabel_record={};
+			goodslabelindex=null;
+			/*请求数据*/
 			$.ajax(config)
 				.done(function(resp){
 					var code=parseInt(resp.code,10);
@@ -1386,6 +1488,57 @@
 					.fail(function(resp){
 						console.log(resp.message);
 					});
+			}
+		}
+
+		/*验证名称是否重复*/
+		function validSameName(config){
+			var input=config.$input,
+				txt=input.val(),
+				value=public_tool.trims(txt),
+				$ul,
+				$tip,
+				type=config.type,
+				theme='';
+
+			if(value!==''){
+				if(type==='attr'){
+					$ul=$admin_addattr_list;
+					$tip=$admin_addattr_tips;
+					theme='属性';
+				}else if(type==='label'){
+					$ul=$admin_addlabel_list;
+					$tip=$admin_errortip_wrap;
+					theme='标签';
+				}else if(type==='itemattr'){
+					$tip=$admin_errortip_wrap;
+					$ul=$admin_addattr_list;
+					theme='属性';
+				}
+
+				if(theme!==''){
+					$ul.find('li').each(function(){
+						var $own=$(this),
+							litxt=$own.html();
+						if(litxt===value){
+							$tip.html('"'+value+'" 已经存在，请填写其他"'+theme+'"');
+							input.val('');
+							if(type==='attr'||type==='label'){
+								$own.addClass('admin-list-widget-active');
+								if($ul.hasClass('g-d-hidei')){
+									$ul.removeClass('g-d-hidei')
+								}
+							}
+							setTimeout(function () {
+								$tip.html('');
+								if(type==='attr'||type==='label'){
+									$own.removeClass('admin-list-widget-active');
+								}
+							},3000);
+							return false;
+						}
+					});
+				}
 			}
 		}
 
