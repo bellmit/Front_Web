@@ -34,7 +34,7 @@
 				$login_panel_show3=$('#login_panel_show3'),
 				error_tpl='<div class="alert alert-danger">\
 								<button type="button" class="close" data-dismiss="alert">\
-									<span aria-hidden="true">&times;</span>\
+									<span aria-hidden="true">×</span>\
 									<span class="sr-only">Close</span>\
 								</button>\$info\
 							</div>';

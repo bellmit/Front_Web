@@ -62,4 +62,15 @@
 		$scope.formdata=dataarr2;
 	});
 
+	/*模块应用4*/
+	app.controller('myCtrl5',function ($scope,$interval) {
+		$scope.addcount=0;
+		var countid=$interval(function () {
+			$scope.addcount++;
+			if($scope.addcount===1000){
+				$interval.cancel(countid);
+			}
+		},1000);
+	});
+
 })();

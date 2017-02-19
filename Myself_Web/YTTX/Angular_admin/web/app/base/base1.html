@@ -139,6 +139,11 @@
                             <div class="form-group" ng-controller="myCtrl4">
                                 <label class="btn btn-white g-br3 g-c-gray6" ng-repeat="x in formdata">{{x.label | uppercase}}：<input type="radio" name="appFilter" value="{{x.name}}"></label>
                             </div>
+
+                            <div class="form-group"  ng-controller="myCtrl5">
+                                <label class="control-label">累加服务：</label>
+                                <div class="form-control">{{addcount}}</div>
+                            </div>
                         </form>
 
 
