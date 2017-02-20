@@ -288,6 +288,16 @@
 				endDate:end_date,
 				startDate:start_date,
 				separator:','
+			}).on('apply.daterangepicker',function(ev, picker){
+				var end=moment(picker.endDate).format('YYYY-MM-DD'),
+					start=moment(picker.startDate).format('YYYY-MM-DD'),
+					limitstart=moment(end).subtract(36, 'month').format('YYYY-MM-DD'),
+					isstart=moment(start).isBetween(limitstart,end);
+
+				/*校验时间区间合法性*/
+				if(!isstart){
+					picker.setStartDate(limitstart);
+				}
 			});
 
 

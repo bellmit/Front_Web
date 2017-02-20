@@ -14,6 +14,8 @@
 				form_mall=document.getElementById('login_mall'),
 				$loginform_provider=$(form_provider),
 				$loginform_operator=$(form_operator),
+				$findpwd_provider=$('#findpwd_provider'),
+				$findpwd_operator=$('#findpwd_operator'),
 				$loginform_mall=$(form_mall),
 				$username_provider=$('#username_provider'),
 				$username_operator=$('#username_operator'),
@@ -73,6 +75,18 @@
 			/*获取验证码*/
 			getValidCode('provider');
 			getValidCode('mall');
+
+			/*生成找回密码的链接*/
+			initLinkAddress([{
+				$node:$findpwd_provider,
+				'project_name':'/provider_admin',
+				'module_name':'/account/findpwd.html'
+			},
+			{
+				$node:$findpwd_operator,
+				'project_name':'/operator_admin',
+				'module_name':'/account/findpwd.html'
+			}],location.href);
 
 
 			/*格式化手机号*/
@@ -553,7 +567,21 @@
 				$username_mall.select();
 			}
 		}
-
+		
+		
+		/*初始化链接地址*/
+		function initLinkAddress(arr,str) {
+			if(!arr||arr.length===0){
+				return false;
+			}
+			$.each(arr,function (index) {
+				var item=arr[index],
+					tempstr=str.replace('/mall_admin',item['project_name']).replace('/account/login.html',item['module_name']);
+				item['$node'].attr({
+					'href':tempstr
+				});
+			});
+		}
 
 	});
 })(jQuery);

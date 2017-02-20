@@ -175,6 +175,7 @@
 										editor.sync();
 										admin_addnotice_form.reset();
 										$member_wrap.addClass('g-d-hidei');
+										location.href='bzw-user-notice.html';
 									},2000);
 								}).fail(function(resp){
 									console.log('error');

@@ -247,6 +247,7 @@
 
 									setTimeout(function () {
 										dia.close();
+										location.href='bzw-user-list.html';
 									},2000);
 								}).fail(function(resp){
 									console.log('error');

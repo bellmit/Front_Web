@@ -33,6 +33,8 @@
 			/*查询对象*/
 			var $search_condition=$('#search_condition'),
 				$search_conditionContent=$('#search_conditionContent'),
+				$conditionContent_wrap=$('#conditionContent_wrap'),
+				$conditionContent_tips=$('#conditionContent_tips'),
 				$search_time=$('#search_time'),
 				$admin_search_btn=$('#admin_search_btn'),
 				$admin_search_clear=$('#admin_search_clear');
@@ -163,8 +165,34 @@
 			$admin_search_clear.trigger('click');
 
 
+			/*绑定切换搜索条件*/
+			$search_condition.on('change',function () {
+				if(this.value===''){
+					$conditionContent_wrap.addClass('g-d-hidei').val('');
+				}else{
+					$conditionContent_wrap.removeClass('g-d-hidei');
+				}
+			});
+
+			/*绑定检查数据是否必须*/
+			$search_conditionContent.on('focusout',function () {
+				if(this.value===''){
+					$conditionContent_tips.html('请输入搜索条件');
+				}else{
+					$conditionContent_tips.html('');
+				}
+			});
+
+
 			/*联合查询*/
 			$admin_search_btn.on('click',function(){
+				var typevalue=$search_condition.val();
+				if(typevalue!==''&&$search_conditionContent.val()===''){
+					$conditionContent_tips.html('请输入搜索条件');
+					$search_conditionContent.select();
+					return false;
+				}
+
 				var data= $.extend(true,{},record_config.config.ajax.data);
 
 				$.each([$search_condition,$search_conditionContent,$search_time],function(){

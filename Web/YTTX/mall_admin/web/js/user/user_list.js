@@ -124,7 +124,7 @@
 						},
 						info:false,
 						searching:true,
-						order:[[2, "desc" ],[3, "desc" ],[4, "desc" ]],
+						order:[[3, "desc" ],[2, "desc" ],[4, "desc" ]],
 						columns: [
 							{
 								"data":"nickName"
