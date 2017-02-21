@@ -104,7 +104,7 @@
 
                     <!--编辑表单标题-->
                     <div class="panel-heading">
-                        <h3 class="panel-title">编辑用户</h3>
+                        <h3 class="panel-title">添加(编辑)用户</h3>
                         <div class="panel-options">
                             <a href="#" data-toggle="panel">
                                 <span class="collapse-icon">&ndash;</span>
@@ -115,53 +115,53 @@
 
                     <!--添加-->
                     <div class="panel-body">
-                        <form role="form"  method="post" id="admin_addadvert_form" class="admin-form1 validate">
-                            <input type="text" value="" id="admin_id" name="id" class="g-d-hidei" />
-                            <div class="admin-gap-theme2">用户信息</div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <form role="form"  method="post" id="admin_addadvert_form" class="admin-form1 validate">
+                                    <input type="text" value="" id="admin_id" name="id" class="g-d-hidei" />
+                                    <div class="form-group">
+                                        <label class="control-label"><span class="form-require-item g-c-red1">*</span>标题：</label>
+                                        <input type="text" class="form-control" name="title" placeholder="请输入广告标题" data-validate="required" data-message-required="广告标题不能为空"    id="admin_title" />
+                                    </div>
 
-                            <div class="form-group">
-                                <label class="control-label"><span class="form-require-item g-c-red1">*</span>标题：</label>
-                                <input type="text" class="form-control" name="title" placeholder="请输入广告标题" data-validate="required" data-message-required="广告标题不能为空"    id="admin_title" />
+                                    <div class="form-group">
+                                        <label class="control-label"><span class="form-require-item g-c-red1">*</span>图片URL：<span class="g-c-red1" id="admin_urlImage_tips"></span></label>
+                                        <div class="admin-rpos-wrap g-w-percent50">
+                                            <div class="form-control admin-image-view" data-image="" id="admin_urlImage"></div>
+                                            <button type="button"  id="admin_urlImage_file" data-value="" class="btn btn-white" style="position:absolute;right:5px;bottom:-5px;">浏览</button>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="control-label"><span class="form-require-item g-c-red1">*</span>广告位置ID：</label>
+                                        <input type="text" class="form-control" name="moduleLocationId" placeholder="请输入广告位置ID" data-validate="required" data-message-required="广告位置ID不能为空"    id="admin_moduleLocationId" />
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="control-label"><span class="form-require-item g-c-red1">*</span>跳转类型：</label>
+                                        <select class="form-control" name="forwardType" id="admin_forwardType" >
+                                            <option selected value="0">商品</option>
+                                            <option value="1">类目分类</option>
+                                            <option value="2">链接</option>
+                                        </select>
+                                    </div>
+                                    <input type="text" class="form-control g-d-hidei" name="forwardId" id="admin_forwardId" />
+                                    <div class="form-group g-d-hidei"  id="forwardUrl_wrap">
+                                        <label class="control-label">跳转URL：</label>
+                                        <input type="text" class="form-control" name="forwardUrl" id="admin_forwardUrl" />
+                                    </div>
+
+                                    <div class="form-group">
+                                        <button type="submit" id="admin_action" class="btn btn-success">添加</button>
+                                    </div>
+
+                                </form>
                             </div>
-
-                            <div class="form-group">
-                                <label class="control-label"><span class="form-require-item g-c-red1">*</span>图片URL：</label>
-                                <div class="admin-rpos-wrap g-w-percent50">
-                                    <div class="form-control admin-image-view" data-image="" id="admin_urlImage"></div>
-                                    <button type="button"  id="admin_urlImage_file" data-value="" class="btn btn-white" style="position:absolute;right:5px;bottom:-5px;">浏览</button>
-                                </div>
+                            <div class="col-md-8">
+                                <div id="forwardId_wrap"></div>
+                                <div class="g-d-hidei"></div>
                             </div>
-
-                            <div class="form-group">
-                                <label class="control-label"><span class="form-require-item g-c-red1">*</span>广告位置ID：</label>
-                                <input type="text" class="form-control" name="moduleLocationId" placeholder="请输入广告位置ID" data-validate="required" data-message-required="广告位置ID不能为空"    id="admin_moduleLocationId" />
-                            </div>
-
-                            <div class="form-group">
-                                <label class="control-label"><span class="form-require-item g-c-red1">*</span>跳转类型：</label>
-                                <select class="form-control" name="forwardType"    id="admin_forwardType" >
-                                    <option selected value="0">商品</option>
-                                    <option value="1">类目分类</option>
-                                    <option value="2">链接</option>
-                                </select>
-                            </div>
-
-                            <div class="form-group" id="forwardId_wrap">
-                                <label class="control-label">跳转ID：</label>
-                                <input type="text" class="form-control" name="forwardId" id="admin_forwardId" />
-                            </div>
-
-
-                            <div class="form-group g-d-hidei" id="forwardUrl_wrap">
-                                <label class="control-label">跳转URL：</label>
-                                <input type="text" class="form-control" name="forwardUrl" id="admin_forwardUrl" />
-                            </div>
-                            
-                            <div class="form-group">
-                                <button type="submit" id="admin_action" class="btn btn-success">添加</button>
-                            </div>
-
-                        </form>
+                        </div>
                     </div>
 
 

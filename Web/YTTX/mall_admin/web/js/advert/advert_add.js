@@ -42,13 +42,16 @@
 				admin_addadvert_form=document.getElementById('admin_addadvert_form'),
 				$admin_addadvert_form=$(admin_addadvert_form),
 				$admin_id=$('#admin_id'),
-				$admin_telePhone=$('#admin_telePhone'),
-				$admin_password=$('#admin_password'),
-				$admin_nickName=$('#admin_nickName'),
-				$admin_Name=$('#admin_Name'),
-				$admin_sex=$('#admin_sex'),
-				$admin_enabled=$('#admin_enabled'),
-				$admin_logoImage=$('#admin_logoImage'),
+				$admin_title=$('#admin_title'),
+				$admin_moduleLocationId=$('#admin_moduleLocationId'),
+				$admin_forwardType=$('#admin_forwardType'),
+				$admin_forwardId=$('#admin_forwardId'),
+				$admin_forwardUrl=$('#admin_forwardUrl'),
+				$forwardId_wrap=$('#forwardId_wrap'),
+				$forwardUrl_wrap=$('#forwardUrl_wrap'),
+				$admin_urlImage_tips=$('#admin_urlImage_tips'),
+				$admin_urlImage=$('#admin_urlImage'),
+				$admin_urlImage_file=$('#admin_urlImage_file'),
 				$admin_action=$('#admin_action'),
 				resetform0=null;
 
@@ -67,7 +70,7 @@
 			if(ImageUpload_Token!==null){
 				logo_QN_Upload.uploader({
 					runtimes: 'html5,html4,flash,silverlight',
-					browse_button: 'admin_logoImage_file',
+					browse_button: 'admin_urlImage_file',
 					uptoken :ImageUpload_Token.qiniuToken,// uptoken是上传凭证，由其他程序生成
 					multi_selection:false,
 					get_new_uptoken: false,// 设置上传文件的时候是否每次都重新获取新的uptoken
@@ -109,8 +112,12 @@
 							var domain=up.getOption('domain'),
 								name=JSON.parse(info);
 
-							$admin_logoImage.attr({
+							$admin_urlImage.attr({
 								'data-image':domain+'/'+name.key}).html('<img src="'+domain+'/'+name.key+"?imageView2/1/w/160/h/160"+'" alt="图像">');
+
+							/*$admin_urlImage.attr({
+								'data-image':domain+'/'+name.key}).html('<img src="'+domain+'/'+name.key+"?imageView2/1/w/160/h/160"+'" alt="图像">');*/
+
 						},
 						'Error': function(up, err, errTip) {
 							dia.content('<span class="g-c-bs-warning g-btips-warn">'+errTip+'</span>').show();
@@ -129,7 +136,7 @@
 						'Key': function(up, file) {
 							/*调用滚动条*/
 							uploadShowBars(file['id']);
-							var str="pic_"+moment().format("YYYYMMDDHHmmSSSS");
+							var str="banner_"+moment().format("YYYYMMDDHHmmSSSS");
 							return str;
 						}
 					}
@@ -159,6 +166,17 @@
 			}());
 
 
+			/*绑定选择跳转类型*/
+			$admin_forwardType.on('change',function () {
+				var value=parseInt(this.value,10);
+				if(value===2){
+					$forwardUrl_wrap.removeClass('g-d-hidei');
+				}else{
+					$forwardUrl_wrap.addClass('g-d-hidei');
+				}
+			});
+
+
 			/*绑定添加地址*/
 			/*表单验证*/
 			if($.isFunction($.fn.validate)) {
@@ -181,51 +199,63 @@
 							method:'post'
 						};
 						if(index===0){
-							formtype='useradd';
+							formtype='advertadd';
 						}
 						$.extend(true,(function () {
-							if(formtype==='useradd'){
+							if(formtype==='advertadd'){
 								return form_opt0;
 							}
 						}()),(function () {
-							if(formtype==='useradd'){
+							if(formtype==='advertadd'){
 								return formcache.form_opt_0;
 							}
 						}()),{
 							submitHandler: function(form){
+								var tempimg=$admin_urlImage.attr('data-image');
+
+								if(tempimg===''){
+									$admin_urlImage_tips.html('请上传广告图片');
+									setTimeout(function () {
+										$admin_urlImage_tips.html('');
+									},3000);
+									return false;
+								}
+
 								var setdata={},
-									id=$admin_id.val(),
-									tempimg=$admin_logoImage.attr('data-image');
-
-
+									id=$admin_id.val();
 
 								$.extend(true,setdata,basedata);
 
-								if(formtype==='useradd'){
-
+								if(formtype==='advertadd'){
+									var ftype=parseInt($admin_forwardType.val(),10);
 									/*同步编辑器*/
 									$.extend(true,setdata,{
-										phone:public_tool.trims($admin_telePhone.html()),
-										nickName:$admin_nickName.html(),
-										name:$admin_Name.html(),
-										password:$admin_password.val(),
-										gender:$admin_sex.find(':checked').val(),
-										isEnabled:parseInt($admin_enabled.find(':checked').val(),10)===1?true:false,
-										icon:tempimg
+										title:$admin_title.val(),
+										moduleLocationId:$admin_moduleLocationId.val(),
+										forwardType:ftype,
+										imageUrl:tempimg
 									});
 
-									if(id!==''){
-										setdata['id']=id;
+									if(ftype===0||ftype===1){
+										setdata['forwardId']=$admin_forwardId.val();
+									}else if(ftype===2){
+										setdata['forwardUrl']=$admin_forwardUrl.val();
 									}
 
-									config['url']="http://10.0.5.226:8082/mall-buzhubms-api/user/update";
 									config['data']=setdata;
+									if(id!==''){
+										setdata['id']=id;
+										config['url']="http://10.0.5.226:8082/mall-buzhubms-api/banners/update";
+									}else {
+										config['url']="http://10.0.5.226:8082/mall-buzhubms-api/banners/add";
+									}
 								}
 
 
 								$.ajax(config).done(function(resp){
-									var code,formkey='';
-									if(formtype==='useradd'){
+									var code,
+										formkey='';
+									if(formtype==='advertadd'){
 										if(id!==''){
 											formkey='修改';
 										}else{
@@ -233,16 +263,16 @@
 										}
 										code=parseInt(resp.code,10);
 										if(code!==0){
-											dia.content('<span class="g-c-bs-warning g-btips-warn">'+formkey+'用户失败</span>').show();
+											dia.content('<span class="g-c-bs-warning g-btips-warn">'+formkey+'广告失败</span>').show();
 											return false;
 										}else{
-											dia.content('<span class="g-c-bs-success g-btips-succ">'+formkey+'用户成功</span>').show();
+											dia.content('<span class="g-c-bs-success g-btips-succ">'+formkey+'广告成功</span>').show();
 										}
 									}
 
 									setTimeout(function () {
 										dia.close();
-										location.href='bzw-user-list.html';
+										location.href='bzw-advert-list.html';
 									},2000);
 								}).fail(function(resp){
 									console.log('error');
@@ -350,7 +380,7 @@
 									});
 									break;
 								case 'icon':
-									$('<img src="'+list[m]+"?imageView2/1/w/160/h/160"+'" alt="图像">').appendTo($admin_logoImage.attr({
+									$('<img src="'+list[m]+"?imageView2/1/w/160/h/160"+'" alt="图像">').appendTo($admin_urlImage.attr({
 										'data-image':list[m]
 									}).html(''));
 									break;
