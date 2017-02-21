@@ -54,8 +54,89 @@
 				resetform0=null;
 
 
+			/*上传对象*/
+			var logo_QN_Upload=new QiniuJsSDK(),
+				ImageUpload_Token=getToken()||null,
+				upload_bars= [];
+
+
 			/*重置表单*/
 			admin_adduser_form.reset();
+
+
+			/*绑定logo上传*/
+			if(ImageUpload_Token!==null){
+				logo_QN_Upload.uploader({
+					runtimes: 'html5,html4,flash,silverlight',
+					browse_button: 'admin_logoImage_file',
+					uptoken :ImageUpload_Token.qiniuToken,// uptoken是上传凭证，由其他程序生成
+					multi_selection:false,
+					get_new_uptoken: false,// 设置上传文件的时候是否每次都重新获取新的uptoken
+					unique_names:false,// 默认false，key为文件名。若开启该选项，JS-SDK会为每个文件自动生成key（文件名）
+					save_key:false,//默认false。若在服务端生成uptoken的上传策略中指定了sava_key，则开启，SDK在前端将不对key进行任何处理
+					domain:ImageUpload_Token.qiniuDomain,//bucket域名，下载资源时用到，必需
+					flash_swf_url: '../../js/plugins/plupload/Moxie.swf',//引入flash，相对路径
+					silverlight_xap_url : '../../js/plugins/plupload/Moxie.xap',
+					max_retries: 3,// 上传失败最大重试次数
+					dragdrop:false,
+					chunk_size: '2mb',
+					auto_start:true,
+					max_file_size : '500kb',
+					filters:{
+						mime_types: [
+							{
+								title : "Image files",
+								extensions : "jpg,gif,png,jpeg"
+							}
+						]
+					},
+					init: {
+						'PostInit': function() {},
+						'FilesAdded': function(up, file) {
+							var temp_bars=this.files.length,
+								j=0;
+							upload_bars.length=0;
+							for(j;j<temp_bars;j++){
+								upload_bars.push(this.files[j]['id']);
+							}
+						},
+						'BeforeUpload': function(up, file) {
+							show_loading_bar(30);
+						},
+						'UploadProgress': function(up, file) {},
+						'FileUploaded': function(up, file, info) {
+							/*获取上传成功后的文件的Url*/
+
+							var domain=up.getOption('domain'),
+								name=JSON.parse(info);
+
+							$admin_logoImage.attr({
+								'data-image':domain+'/'+name.key}).html('<img src="'+domain+'/'+name.key+"?imageView2/1/w/160/h/160"+'" alt="图像">');
+						},
+						'Error': function(up, err, errTip) {
+							dia.content('<span class="g-c-bs-warning g-btips-warn">'+errTip+'</span>').show();
+							setTimeout(function(){
+								dia.close();
+							},3000);
+							console.log(errTip);
+						},
+						'UploadComplete': function(up, file) {
+							dia.content('<span class="g-c-bs-success g-btips-succ">上传成功</span>').show();
+							upload_bars.length=0;
+							setTimeout(function(){
+								dia.close();
+							},2000);
+						},
+						'Key': function(up, file) {
+							/*调用滚动条*/
+							uploadShowBars(file['id']);
+							var str="pic_"+moment().format("YYYYMMDDHHmmSSSS");
+							return str;
+						}
+					}
+				});
+			}
+
 
 
 			/*获取编辑缓存*/
@@ -129,14 +210,19 @@
 
 									/*同步编辑器*/
 									$.extend(true,setdata,{
+										phone:public_tool.trims($admin_telePhone.html()),
+										nickName:$admin_nickName.html(),
+										name:$admin_Name.html(),
 										password:$admin_password.val(),
 										gender:$admin_sex.find(':checked').val(),
-										isEnabled:parseInt($admin_enabled.find(':checked').val(),10)===1?true:false
+										isEnabled:parseInt($admin_enabled.find(':checked').val(),10)===1?true:false,
+										icon:tempimg
 									});
 
 									if(id!==''){
 										setdata['id']=id;
 									}
+
 									config['url']="http://10.0.5.226:8082/mall-buzhubms-api/user/update";
 									config['data']=setdata;
 								}
@@ -282,6 +368,59 @@
 				});
 
 		}
+
+
+		/*获取七牛token*/
+		function getToken(){
+			var result=null,
+					tempurl1='112.',
+					tempurl2='74.',
+					tempurl3='207.',
+					tempurl4='132:8088';
+			$.ajax({
+				url:'http://'+tempurl1+tempurl2+tempurl3+tempurl4+'/yttx-public-api/qiniu/token/get',
+				async:false,
+				type:'post',
+				datatype:'json',
+				data:{
+					bizType:2,
+					roleId:decodeURIComponent(logininfo.param.roleId),
+					adminId:decodeURIComponent(logininfo.param.adminId),
+					grade:decodeURIComponent(logininfo.param.grade),
+					token:decodeURIComponent(logininfo.param.token)
+				}
+			}).done(function(resp){
+				var code=parseInt(resp.code,10);
+				if(code!==0){
+					console.log(resp.message);
+					return false;
+				}
+				result=resp.result;
+			}).fail(function(resp){
+				console.log(resp.message);
+			});
+			return result;
+		}
+
+
+		/*上传进度条*/
+		function uploadShowBars(id){
+			var len=upload_bars.length;
+			if(len>0){
+				var j= 0;
+				for(j;j<len;j++){
+					if(upload_bars[j]===id){
+						var bars=parseInt(((j+1)/len) * 100,10);
+						setTimeout(function(){
+							show_loading_bar(bars);
+						},0);
+						break;
+					}
+				}
+			}
+		}
+
+
 
 	});
 
