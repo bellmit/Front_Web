@@ -88,6 +88,8 @@
 						goodstypeid=value;
 						if(hasub==='true'){
 							getGoodsTypes(value,'two');
+						}else{
+							$search_gtitwo.html('');
 						}
 					}else if(selector.indexOf('two')!==-1){
 						if(value===''){

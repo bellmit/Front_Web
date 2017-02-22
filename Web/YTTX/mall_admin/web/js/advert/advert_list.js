@@ -220,7 +220,8 @@
 
 				/*修改,编辑操作*/
 				if(action==='edit'){
-					public_tool.setParams('bzw-advert-add',id);
+					var tempdata=table.row($tr).data();
+					public_tool.setParams('bzw-advert-add',tempdata);
 					location.href='bzw-advert-add.html';
 				}else if(action==='up'||action==='down'){
 					if(operate_item){

@@ -303,6 +303,10 @@
 						goodstypeid=value;
 						if(hasub==='true'){
 							getGoodsTypes(value,'two');
+							$search_gtithree.html('');
+						}else{
+							$search_gtitwo.html('');
+							$search_gtithree.html('');
 						}
 					}else if(selector.indexOf('two')!==-1){
 						if(value===''){
@@ -314,6 +318,9 @@
 						goodstypeid=value;
 						if(hasub==='true'){
 							getGoodsTypes(value,'three');
+							$search_gtithree.html('<option value="" selected >请选择三级分类</option>');
+						}else{
+							$search_gtithree.html('');
 						}
 					}else if(selector.indexOf('three')!==-1){
 						if(value===''){

@@ -324,6 +324,10 @@
 						goodstypeid=value;
 						if(hasub==='true'){
 							getGoodsTypes(value,'two');
+							$search_gtithree.html('');
+						}else{
+							$search_gtitwo.html('');
+							$search_gtithree.html('');
 						}
 					}else if(selector.indexOf('two')!==-1){
 						if(value===''){
@@ -335,6 +339,8 @@
 						goodstypeid=value;
 						if(hasub==='true'){
 							getGoodsTypes(value,'three');
+						}else{
+							$search_gtithree.html('');
 						}
 					}else if(selector.indexOf('three')!==-1){
 						if(value===''){
