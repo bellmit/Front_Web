@@ -427,9 +427,7 @@
 						key=selector.split('_');
 
 					if(text===""){
-						if(typeof data[key[1]]!=='undefined'){
-							delete data[key[1]];
-						}
+						delete data[key[1]];
 					}else{
 						data[key[1]]=text;
 					}
@@ -985,6 +983,12 @@
 							'selected':true
 						});
 						advertpos=pos;
+						if(advertpos===''){
+							$admin_urlImage_file.addClass('g-d-hidei');
+						}else{
+							advertpos=parseInt(advertpos,10);
+							$admin_urlImage_file.removeClass('g-d-hidei');
+						}
 						return false;
 					}
 				});

@@ -852,7 +852,6 @@
 			"name":"广告管理",
 			"code":"advert",
 			"match":"-advert-",
-			/*"ignoremodule":true,*/
 			"class":"menu-ux-ad",
 			"module":"advert",
 			"modid":"330"
@@ -861,7 +860,7 @@
 			"name":"活动设置",
 			"code":"activity",
 			"match":"-activity-",
-			/*"ignoremodule":true,*/
+			"matchlist":['module-set'],
 			"class":"menu-ux-serve",
 			"module":"activity",
 			"modid":"340"

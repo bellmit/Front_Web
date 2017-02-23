@@ -45,9 +45,7 @@
 					},
 					cancel:false
 				})/*一般提示对象*/,
-				$admin_page_wrap=$('#admin_page_wrap'),
-				sureObj=public_tool.sureDialog(dia)/*回调提示对象*/,
-				setSure=new sureObj();
+				$admin_page_wrap=$('#admin_page_wrap');
 
 
 			/*列表请求配置*/

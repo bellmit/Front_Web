@@ -5,10 +5,10 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	
 	<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0,maximum-scale=1">
-	<meta name="description" content="布住网后台管理系统--订单管理--采购统计" />
-	<meta name="keywords" content="布住网后台管理系统--订单管理--采购统计">
+	<meta name="description" content="布住网后台管理系统--活动设置--活动列表" />
+	<meta name="keywords" content="布住网后台管理系统--活动设置--活动列表">
   <meta name="author" content="yp" />
-	<title>布住网后台管理系统--订单管理--采购统计</title>
+	<title>布住网后台管理系统--活动设置--活动列表</title>
     <link href="../../images/logo_icon.ico" rel="icon">
 	<link rel="stylesheet" href="../../css/base.css">
   <link rel="stylesheet" href="../../js/plugins/datatables/dataTables.bootstrap.css">
@@ -87,13 +87,13 @@
             <!--主题描述-->
             <div class="page-title">
                 <div class="title-env">
-                    <h1 class="title">订单管理</h1>
-                    <p class="description">采购统计</p>
+                    <h1 class="title">活动设置</h1>
+                    <p class="description">活动列表</p>
                 </div>
                 <div class="breadcrumb-env">
                     <ol class="breadcrumb bc-1">
-                        <li><a href=""><i class="fa-home"></i>订单管理</a></li>
-                        <li class="active"><strong>采购统计</strong></li>
+                        <li><a href=""><i class="fa-home"></i>活动设置</a></li>
+                        <li class="active"><strong>活动列表</strong></li>
                     </ol>
                 </div>
             </div>
@@ -106,7 +106,7 @@
 
                         <!--表格标题-->
                         <div class="panel-heading">
-                            <h3 class="panel-title">采购统计</h3>
+                            <h3 class="panel-title">活动列表</h3>
 
                             <div class="panel-options">
                                 <a href="#" data-toggle="panel">
@@ -119,68 +119,60 @@
 
                         <!--表格主体-->
                         <div class="panel-body">
-
                             <div class="admin-search-wrap">
                                 <div class="admin-search-item">
-                                    <label>采购订单号：</label>
-                                    <input type="text" id="search_orderNumber">
-                                </div>
-                                <div class="admin-search-item">
-                                    <label>供应商名称：</label>
-                                    <input type="text" id="search_providerName">
-                                </div>
-                                <div class="admin-search-item">
-                                    <label>订单状态：</label>
-                                    <select id="search_orderState">
-                                        <option value="" selected>全部</option>
-                                        <option value="1">未收货</option>
-                                        <option value="3">部分收货</option>
-                                        <option value="5">已收货</option>
+                                    <label>状态：</label>
+                                    <select id="search_forwardType" >
+                                        <option selected value="">全部</option>
+                                        <option value="0">分类页面</option>
+                                        <option value="1">活动页面</option>
+                                        <option value="2">搜索页面</option>
                                     </select>
                                 </div>
                                 <div class="admin-search-item">
-                                    <span id="admin_search_btn" class="btn btn-info btn-icon g-br2">
-                                        <i class="fa-search"></i>查询
-                                    </span>
-                                    <span id="admin_search_clear" class="btn btn-info btn-icon g-br2">
-                                        <i class="fa-spinner"></i>清空
-                                    </span>
+                                    <label>状态：</label>
+                                    <select id="search_status" >
+                                        <option selected value="">全部</option>
+                                        <option value="0">上架</option>
+                                        <option value="1">下架</option>
+                                    </select>
                                 </div>
-                                <br />
                                 <div class="admin-search-item">
-                                    <span id="purchase_showall_btn" class="btn btn-info btn-icon btn-xs g-br2">
-                                        <i class="fa-plus"></i>
-                                        <span>全部展开</span>
-                                    </span>
+                                            <span id="admin_search_btn" class="btn btn-info btn-icon g-br2">
+                                                <i class="fa-search"></i>查询
+                                            </span>
+                                            <span id="admin_search_clear" class="btn btn-info btn-icon g-br2">
+                                                <i class="fa-spinner"></i>清空
+                                            </span>
                                 </div>
                             </div>
 
-
-
-                            <table id="purchase_stats_wrap" class="table table-bordered table-striped table-hover admin-table">
+                            <table id="admin_list_wrap" class="table table-bordered table-striped table-hover admin-table">
                                 <!--分组样式-->
                                 <colgroup>
                                     <col class="g-w-percent10">
-                                    <col class="g-w-percent10">
-                                    <col class="g-w-percent15">
                                     <col class="g-w-percent5">
+                                    <col class="g-w-percent5">
+                                    <col class="g-w-percent5">
+                                    <col class="g-w-percent15">
                                     <col class="g-w-percent10">
                                 </colgroup>
 
                                 <!--表头-->
                                 <thead>
                                 <tr>
-                                    <th>订单号</th>
-                                    <th>下单时间</th>
-                                    <th>供应商</th>
-                                    <th>订单状态</th>
+                                    <th>导图</th>
+                                    <th>商品类型ID</th>
+                                    <th>跳转类型</th>
+                                    <th>状态</th>
+                                    <th>备注说明</th>
                                     <th class="no-sorting">操作</th>
                                 </tr>
                                 </thead>
 
 
                                 <!--表主体-->
-                                <tbody class="middle-align" id="purchase_stats_list"></tbody>
+                                <tbody class="middle-align"></tbody>
                             </table>
                             <div class="admin-page-wrap">
                                 <div class="easyui-pagination g-w-percent50" id="admin_page_wrap" data-options="links:5,layout:['manual','first','prev','links','next','last'],displayMsg:'显示{from}&nbsp;到&nbsp;{to}&nbsp;共&nbsp;{total}条记录'"></div>
@@ -271,6 +263,6 @@
     <!--修饰分页，搜索等操作 -->
     <script src="../../js/plugins/datatables/dataTables.bootstrap.js"></script>
     <script src="../../js/plugins/pagination/pagination.js"></script>
-    <script src="../../js/purchase/purchase_stats.js"></script>
+    <script src="../../js/activity/activity_list.js"></script>
 </body>
 </html>
