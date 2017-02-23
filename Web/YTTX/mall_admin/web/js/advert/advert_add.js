@@ -396,23 +396,6 @@
 				});
 			}
 
-
-			/*获取编辑缓存*/
-			(function () {
-				var edit_cache=public_tool.getParams('bzw-advert-add');
-				if(edit_cache){
-					$admin_action.removeClass('g-d-hidei').html('编辑');
-					/*查询数据*/
-					setAdvertData(edit_cache);
-				}else{
-					if(advertadd_power){
-						$admin_action.removeClass('g-d-hidei').html('添加');
-					}else{
-						$admin_action.addClass('g-d-hidei');
-					}
-				}
-			}());
-
 			/*清空查询条件*/
 			$admin_search_clear.on('click',function(){
 				$.each([$search_name,$search_providerName,$search_status],function(){
@@ -529,6 +512,21 @@
 				}
 			});
 
+			/*获取编辑缓存*/
+			(function () {
+				var edit_cache=public_tool.getParams('bzw-advert-add');
+				if(edit_cache){
+					$admin_action.removeClass('g-d-hidei').html('编辑');
+					/*查询数据*/
+					setAdvertData(edit_cache);
+				}else{
+					if(advertadd_power){
+						$admin_action.removeClass('g-d-hidei').html('添加');
+					}else{
+						$admin_action.addClass('g-d-hidei');
+					}
+				}
+			}());
 
 			/*绑定添加地址*/
 			/*表单验证*/
@@ -748,7 +746,6 @@
 				return false;
 			}
 			if(!$.isEmptyObject(list)){
-
 				for(var m in list){
 					switch(m){
 						case 'id':
@@ -777,10 +774,10 @@
 						case 'remark':
 							$admin_remark.val(list[m]);
 							break;
-						case 'moduleLocationId':
+						case 'imageUrl':
 							advertDataByPos({
-								pos:list[m],
-								url:list['imageUrl']
+								pos:list['moduleLocationId'],
+								url:list[m]
 							});
 							break;
 					}
@@ -978,18 +975,21 @@
 				url=config.url;
 
 			/*设置值*/
-			$admin_moduleLocationId.find('option').each(function () {
-				var $this=$(this),
-					value=parseInt($this.val(),10);
+			if(typeof pos!=='undefined'&&pos!==''){
+				$admin_moduleLocationId.find('option').each(function () {
+					var $this=$(this),
+						value=parseInt($this.val(),10);
 
-				if(value===pos){
-					$this.prop({
-						'selected':true
-					});
-					advertpos=pos;
-					return false;
-				}
-			});
+					if(value===pos){
+						$this.prop({
+							'selected':true
+						});
+						advertpos=pos;
+						return false;
+					}
+				});
+			}
+
 
 			if(pos===1){
 				/*左上*/

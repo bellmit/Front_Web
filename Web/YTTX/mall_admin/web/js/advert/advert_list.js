@@ -145,10 +145,9 @@
 								"render":function(data, type, full, meta ){
 									var stype=parseInt(data,10),
 										smap={
-											0:'上架',
-											1:'下架'
+											0:'<div class="g-c-gray3">上架</div>',
+											1:'<div class="g-c-warn">下架</div>'
 										};
-
 									return smap[stype];
 								}
 							},
@@ -229,14 +228,10 @@
 						operate_item=null;
 					}
 					operate_item=$tr.addClass('item-lighten');
-					/*确认是否启用或禁用*/
-					setSure.sure(action==='up'?'上架':'下架',function(cf){
-						/*to do*/
-						setEnabled({
-							id:id,
-							action:action,
-							tip:cf.dia||dia
-						});
+					/*to do*/
+					setEnabled({
+						id:id,
+						action:action
 					});
 				}
 			});
@@ -261,8 +256,7 @@
 			if(typeof id==='undefined'){
 				return false;
 			}
-			var tip=obj.tip,
-				action=obj.action;
+			var action=obj.action;
 
 			$.ajax({
 					url:"http://10.0.5.226:8082/mall-buzhubms-api/banners/updown",
@@ -281,9 +275,9 @@
 					var code=parseInt(resp.code,10);
 					if(code!==0){
 						console.log(resp.message);
-						tip.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"操作失败")+'</span>').show();
+						dia.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"操作失败")+'</span>').show();
 						setTimeout(function () {
-							tip.close();
+							dia.close();
 							if(operate_item){
 								operate_item.removeClass('item-lighten');
 								operate_item=null;
@@ -293,9 +287,9 @@
 					}
 					/*是否是正确的返回数据*/
 					/*添加高亮状态*/
-					tip.content('<span class="g-c-bs-success g-btips-succ">'+(action==="up"?'上架':'下架')+'成功</span>').show();
+					dia.content('<span class="g-c-bs-success g-btips-succ">'+(action==="up"?'上架':'下架')+'成功</span>').show();
 					setTimeout(function () {
-						tip.close();
+						dia.close();
 						setTimeout(function () {
 							operate_item=null;
 							/*请求数据*/
@@ -305,9 +299,9 @@
 				})
 				.fail(function(resp){
 					console.log(resp.message);
-					tip.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"操作失败")+'</span>').show();
+					dia.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"操作失败")+'</span>').show();
 					setTimeout(function () {
-						tip.close();
+						dia.close();
 						if(operate_item){
 							operate_item.removeClass('item-lighten');
 							operate_item=null;
