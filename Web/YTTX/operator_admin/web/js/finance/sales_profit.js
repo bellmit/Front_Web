@@ -464,7 +464,6 @@
 		/*查询下级销售分润*/
 		function getByChildFinance() {
 			$admin_finance_childdata.html('<tr><td colspan="9" class="g-t-c">暂无数据</td></tr>');
-			return false;
 
 			var isdata=$admin_finance_childdata.attr('data-value');
 			if(isdata==='true'){
@@ -477,7 +476,7 @@
 				return false;
 			}
 			$.ajax({
-				url:'http://10.0.5.226:8082/mall-agentbms-api/agent/profit/stats/list',
+				url:'http://10.0.5.226:8082/mall-agentbms-api/agent/profit/stats/history',
 				method:'post',
 				dataType:'JSON',
 				data:{
@@ -520,32 +519,33 @@
 
 						for(i;i<len;i++){
 							var dataitem=list[i],
-								area=dataitem['area'];
+								area=dataitem['area']||'地区'+parseInt(i+1,10);
 
 							if(!(area in result_map)){
 								result_map[area]={
-									1:'',
-									2:'',
-									3:'',
-									4:'',
-									5:'',
-									6:''
+									'p_1':'',
+									'p_2':'',
+									'p_3':'',
+									's_1':'',
+									's_2':'',
+									's_3':''
 								};
 							}
 							for(var key in dataitem){
 								var macthlist,
 									level=0;
-								if((macthlist=key.match(/ProfitsLevel(\d{1})/))!==null){
+								if((macthlist=key.match(/m\d{1,}ProfitsLevel(\d{1})/))!==null){
 									/*匹配分润*/
-									level=parseInt(macthlist[1],10);
+									level='p_'+parseInt(macthlist[1],10);
 									result_map[area][level]=dataitem[key];
-								}else if((macthlist=key.match(/SalesLevel(\d{1})/))!==null){
+								}else if((macthlist=key.match(/m\d{1,}SalesLevel(\d{1})/))!==null){
 									/*匹配销售*/
-									level=parseInt(macthlist[1],10) + 3;
+									level='s_'+parseInt(macthlist[1],10);
 									result_map[area][level]=dataitem[key];
 								}
 							}
 						}
+
 						var result_list=[],
 							pl_total1=0,
 							pl_total2=0,
@@ -557,55 +557,57 @@
 							sl_sum=0;
 
 						for(var x in result_map) {
-							var profitstr='<td class="g-b-gray16">' + x + '</td>',
+							var profitstr='',
 								salesstr='',
-								y=1,
 								dataobj = result_map[x],
 								profit_total = 0,
 								sales_total = 0;
-							for (y; y <= 6; y++) {
-								var temp_data=dataobj[y];
+							for (var y in dataobj) {
+								var temp_data=dataobj[y],
+									temptype='',
+									tempkey=y.split('_');
+								if(tempkey[0]==='s'){
+									temptype='sale';
+								}else if(tempkey[0]==='p'){
+									temptype='profit';
+								}
 								if (temp_data==='') {
-									if(y<=3){
+									if(temptype==='sale'){
 										salesstr+= '<td>&nbsp;</td>';
-									}else{
+									}else if(temptype==='profit'){
 										profitstr+= '<td>&nbsp;</td>';
 									}
 								} else {
 									var temp_fdata = parseFloat(temp_data);
 									/*合计*/
 									/*汇总*/
-									if (y === 1) {
+									if(temptype==='sale'){
 										salesstr+= '<td>'+ temp_data +'</td>';
 										sales_total += temp_fdata;
-										sl_total1 += temp_fdata;
-									} else if (y === 2) {
-										salesstr+= '<td>'+ temp_data +'</td>';
-										sales_total += temp_fdata;
-										sl_total2 += temp_fdata;
-									} else if (y === 3) {
-										salesstr+= '<td>'+ temp_data +'</td>';
-										sales_total += temp_fdata;
-										sl_total3 += temp_fdata;
-									}else if (y === 4) {
+										if (tempkey[1] === '1') {
+											sl_total1 += temp_fdata;
+										} else if (tempkey[1] === '2') {
+											sl_total2 += temp_fdata;
+										} else if (tempkey[1] === '3') {
+											sl_total3 += temp_fdata;
+										}
+									}else if(temptype==='profit'){
 										profitstr+= '<td>'+ temp_data +'</td>';
 										profit_total += temp_fdata;
-										pl_total1 += temp_fdata;
-									} else if (y === 5) {
-										profitstr+= '<td>'+ temp_data +'</td>';
-										profit_total += temp_fdata;
-										pl_total2 += temp_fdata;
-									}else if (y === 6) {
-										profitstr+= '<td>'+ temp_data +'</td>';
-										profit_total += temp_fdata;
-										pl_total3 += temp_fdata;
+										if (tempkey[1] === '1') {
+											pl_total1 += temp_fdata;
+										} else if (tempkey[1] === '2') {
+											pl_total2 += temp_fdata;
+										}else if (tempkey[1] === '3') {
+											pl_total3 += temp_fdata;
+										}
 									}
 								}
 							}
 							/*汇总*/
 							pl_sum += profit_total;
 							sl_sum += sales_total;
-							result_list.push('<tr>' + salesstr + '<td class="g-c-bs-success">' + public_tool.moneyCorrect(sales_total, 12, true)[0] + '</td>'+ profitstr + '<td class="g-c-bs-success">' + public_tool.moneyCorrect(profit_total, 12, true)[0] + '</td></tr>');
+							result_list.push('<tr><td class="g-b-gray16">' + x + '</td>'+ salesstr + '<td class="g-c-bs-success">' + public_tool.moneyCorrect(sales_total, 12, true)[0] + '</td>'+ profitstr + '<td class="g-c-bs-success">' + public_tool.moneyCorrect(profit_total, 12, true)[0] + '</td></tr>');
 						}
 						$admin_finance_childdata.attr({
 							'data-value':'true'
