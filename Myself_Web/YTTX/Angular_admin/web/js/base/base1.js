@@ -67,7 +67,7 @@
 		$scope.addcount=0;
 		var countid=$interval(function () {
 			$scope.addcount++;
-			if($scope.addcount===1000){
+			if($scope.addcount===60){
 				$interval.cancel(countid);
 			}
 		},1000);
