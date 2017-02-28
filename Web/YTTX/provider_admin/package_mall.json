@@ -1,7 +1,7 @@
 {
   "web_path": "Web",
   "base_path": "htdocs",
-  "name": "agent_admin",
+  "name": "mall_admin",
   "web_container":"mobile",
   "js_src":"src",
   "js_dest":"js",
