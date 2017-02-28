@@ -356,3 +356,75 @@
 	.g-w-numberfor(@n,(@i+1));
 }
 .g-w-numberfor(50);
+
+
+///*----间距--padding----*/
+.g-gap-ptfor(@n,@i:1) when (@i =< @n) {
+	.g-gap-pt@{i}{
+		padding-top:@i * 5px !important;
+	}
+	.g-gap-ptfor(@n,(@i+1));
+}
+.g-gap-ptfor(20);
+
+.g-gap-prfor(@n,@i:1) when (@i =< @n) {
+	.g-gap-pr@{i}{
+		padding-right:@i * 5px !important;
+	}
+	.g-gap-prfor(@n,(@i+1));
+}
+.g-gap-prfor(20);
+
+.g-gap-pbfor(@n,@i:1) when (@i =< @n) {
+	.g-gap-pb@{i}{
+		padding-bottom:@i * 5px !important;
+	}
+	.g-gap-pbfor(@n,(@i+1));
+}
+.g-gap-pbfor(20);
+
+.g-gap-plfor(@n,@i:1) when (@i =< @n) {
+	.g-gap-pl@{i}{
+		padding-left:@i * 5px !important;
+	}
+	.g-gap-plfor(@n,(@i+1));
+}
+.g-gap-plfor(20);
+
+///*----间距--margin----*/
+.g-gap-mtfor(@n,@i:1) when (@i =< @n) {
+	.g-gap-mt@{i}{
+		margin-top:@i * 5px !important;
+	}
+	.g-gap-mtfor(@n,(@i+1));
+}
+.g-gap-mtfor(20);
+
+.g-gap-mrfor(@n,@i:1) when (@i =< @n) {
+	.g-gap-mr@{i}{
+		margin-right:@i * 5px !important;
+	}
+	.g-gap-mrfor(@n,(@i+1));
+}
+.g-gap-mrfor(20);
+
+.g-gap-mbfor(@n,@i:1) when (@i =< @n) {
+	.g-gap-mb@{i}{
+		margin-bottom:@i * 5px !important;
+	}
+	.g-gap-mbfor(@n,(@i+1));
+}
+.g-gap-mbfor(20);
+
+.g-gap-mlfor(@n,@i:1) when (@i =< @n) {
+	.g-gap-ml@{i}{
+		margin-left:@i * 5px !important;
+	}
+	.g-gap-mlfor(@n,(@i+1));
+}
+.g-gap-mlfor(20);
+
+
+
+
+

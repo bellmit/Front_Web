@@ -3,28 +3,34 @@
 @import "bootstrap/mixins.less";
 
 // Variables
-@import "credit/variables.less";
-@import "credit/mixins.less";
-
-// Global Classes
-@import "global.less";
+@import "admincore/variables.less";
+@import "admincore/mixins.less";
 
 // LessHat
-@import "other/lesshat.less";
+@import "admincore/other/lesshat.less";
+
+// Global Classes
+.transall {
+  .transition(~"all 220ms ease-in-out");
+}
+
+.clearfix {
+  .clearfix();
+}
 
 // Forms
-@import "credit/forms-datepicker.less";
-@import "credit/forms-daterangepicker.less";
-@import "credit/forms-timepicker.less";
-@import "credit/forms-colorpicker.less";
-@import "credit/forms-select2.less";
-@import "credit/forms-selectboxit.less";
-@import "credit/forms-tagsinput.less";
-@import "credit/forms-typeahead.less";
-@import "credit/forms-multiselect.less";
-@import "credit/forms-icheck.less";
-@import "credit/forms-wizard.less";
-@import "credit/forms-sliders.less";
-@import "credit/forms-wysihtml5.less";
-@import "credit/forms-dropzone.less";
-@import "credit/forms-iswitch.less";
+@import "admincore/forms-datepicker.less";
+@import "admincore/forms-daterangepicker.less";
+@import "admincore/forms-timepicker.less";
+@import "admincore/forms-colorpicker.less";
+@import "admincore/forms-select2.less";
+@import "admincore/forms-selectboxit.less";
+@import "admincore/forms-tagsinput.less";
+@import "admincore/forms-typeahead.less";
+@import "admincore/forms-multiselect.less";
+@import "admincore/forms-icheck.less";
+@import "admincore/forms-wizard.less";
+@import "admincore/forms-sliders.less";
+@import "admincore/forms-wysihtml5.less";
+@import "admincore/forms-dropzone.less";
+@import "admincore/forms-iswitch.less";

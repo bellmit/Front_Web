@@ -3,43 +3,49 @@
 @import "bootstrap/mixins.less";
 
 // Variables
-@import "credit/variables.less";
-@import "credit/mixins.less";
+@import "admincore/variables.less";
+@import "admincore/mixins.less";
 
 // LessHat
-@import "other/lesshat.less";
+@import "admincore/other/lesshat.less";
 
 
 // Other components
-@import "other/perfect-scrollbar.less";
-@import "other/cbp-timeline.less";
-@import "other/rwd-table.less";
+@import "admincore/other/perfect-scrollbar.less";
+@import "admincore/other/cbp-timeline.less";
+@import "admincore/other/rwd-table.less";
 
 // Xenon Basic UI
-@import "global.less";
+.transall {
+  .transition(~"all 220ms ease-in-out");
+}
 
-@import "credit/main.less";
-@import "credit/sidebar.less";
-@import "credit/horizontal-menu.less";
-@import "credit/footer.less";
-@import "credit/user-info-navbar.less";
-@import "credit/badges.less";
-@import "credit/chat.less";
-@import "credit/header-mobile.less";
-@import "credit/panels.less";
-@import "credit/breadcrumbs.less";
-@import "credit/settings-pane.less";
-@import "credit/checkbox-radio-replacement.less";
-@import "credit/buttons.less";
-@import "credit/dropdowns.less";
-@import "credit/tabs-accordions.less";
-@import "credit/labels.less";
-@import "credit/popovers-tooltips.less";
-@import "credit/blockquotes.less";
-@import "credit/modals.less";
-@import "credit/tables.less";
-@import "credit/forms.less";
-@import "credit/navbars.less";
-@import "credit/print.less";
-@import "credit/miscellaneous.less";
-@import "credit/bootstrap-overwrite.less";
+.clearfix {
+  .clearfix();
+}
+
+@import "admincore/main.less";
+@import "admincore/sidebar.less";
+@import "admincore/horizontal-menu.less";
+@import "admincore/footer.less";
+@import "admincore/user-info-navbar.less";
+@import "admincore/badges.less";
+@import "admincore/chat.less";
+@import "admincore/header-mobile.less";
+@import "admincore/panels.less";
+@import "admincore/breadcrumbs.less";
+@import "admincore/settings-pane.less";
+@import "admincore/checkbox-radio-replacement.less";
+@import "admincore/buttons.less";
+@import "admincore/dropdowns.less";
+@import "admincore/tabs-accordions.less";
+@import "admincore/labels.less";
+@import "admincore/popovers-tooltips.less";
+@import "admincore/blockquotes.less";
+@import "admincore/modals.less";
+@import "admincore/tables.less";
+@import "admincore/forms.less";
+@import "admincore/navbars.less";
+@import "admincore/print.less";
+@import "admincore/miscellaneous.less";
+@import "admincore/bootstrap-overwrite.less";
