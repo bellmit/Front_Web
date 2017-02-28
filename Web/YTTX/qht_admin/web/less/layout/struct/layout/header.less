@@ -1,0 +1,43 @@
+/*头部*/
+.struct-layout-header{
+  .layout-absolutel-base;
+  width:100%;
+  .layout-base(@layout-width-header);
+  height:@layout-height-header + @layout-shadow-header;
+  min-width:@layout-width-container;
+  background:none;
+  .header-bg{
+    .layout-absolutel-base;
+    width:100%;
+    .layout-base(@layout-width-header);
+    min-width:@layout-width-container;
+    height:@layout-height-header;
+    background:@color-red1;
+    .box-shadow-base(0 0 4px 2px @color-gray8);
+  }
+  .header-content{
+    margin:0 auto;
+    height:@layout-height-header;
+    .layout-base(@layout-width-container);
+  }
+  .header-logo{
+    .layout-float-base(@layout-side-width);
+    height:100%;
+  }
+  .header-menu{
+    height:100%;
+    .layout-float-base(@layout-width-container - @layout-side-width);
+    padding:0 50px 0 0;
+    font-size:0;
+    >li{
+      .box-sizing-base;
+      height:100%;
+      display:inline-block;
+      padding:0 20px;
+      a{
+        font-size:@font-size-base + 6;
+        color:@color-white;
+      }
+    }
+  }
+}
