@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="zh" data-ng-app="app">
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	
 	<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0,maximum-scale=1">
-	<meta name="description" content="布住网后台管理系统" />
-	<meta name="keywords" content="布住网后台管理系统">
+	<meta name="description" content="乾汇通运营管理平台" />
+	<meta name="keywords" content="乾汇通运营管理平台">
   <meta name="author" content="yp" />
-	<title>布住网后台管理系统</title>
+	<title>乾汇通运营管理平台</title>
   <link href="../images/logo_icon.ico" rel="icon">
 <link rel="stylesheet" href="../css/base.css">
 <link rel="stylesheet" href="../css/admin.css">
@@ -25,179 +25,147 @@
 		<div class="header-content">
 			<div class="header-logo"></div>
 			<ul class="header-menu">
-				<li><a href="#" title="">首页</a></li>
+				<li><a class="menuactive" href="#" title="">首页</a></li>
 				<li><a href="#" title="">机构</a></li>
 				<li><a href="#" title="">订单管理</a></li>
 				<li><a href="#" title="">财务管理</a></li>
 				<li><a href="#" title="">设备管理</a></li>
 				<li><a href="#" title="">设置</a></li>
 			</ul>
+			<div class="g-br3 header-outwrap">退出</div>
 		</div>
 	</div>
 
 	<!--主体-->
-	<div class="struct-layout-container struct-layout-default"></div>
+	<div class="struct-layout-container struct-layout-default">
+		<div class="struct-layout-main"></div>
+		<div class="struct-layout-side">
+
+			<!--logo组件-->
+			<div class="sub-logo-wrap">
+				<div class="logo-img-wrap">
+					<img src="../images/index_logo.png" alt="logo" />
+				</div>
+				<h1>深圳银通移动支付有限公司</h1>
+			</div>
+
+			<!--信息组件-->
+			<ul class="sub-info-wrap">
+				<li>身份：<span>省级代理商</span></li>
+				<li>姓名：<span>王二麻子</span></li>
+				<li>手机号码：<span>152 3521 5696</span></li>
+				<li>地址：<span>广东省深圳市龙华新区龙华汽车站摩天大厦88层88号</span></li>
+			</ul>
+
+
+			<!--列表组件-->
+			<ul class="sub-list-wrap">
+				<li class="menuactive"><a href="#" title="">列表1</a></li>
+				<li><a href="#" title="">列表列表列表2</a></li>
+				<li><a href="#" title="">列表3</a></li>
+			</ul>
+
+			<!--搜索组件-->
+			<div class="sub-search-wrap">
+				<label class="search-content">
+					<input type="text" placeholder="搜索" value="" name="search_name" class="g-br3" />
+				</label>
+			</div>
+
+			<!--选项卡组件-->
+			<ul class="sub-tab-wrap sub-item-group2 sub-itembr-group2">
+				<li class="tabactive">tab1</li>
+				<li>tab2</li>
+			</ul>
+
+
+			<!--子菜单组件-->
+			<ul class="sub-menu-wrap">
+				<li>
+					<a class="sub-menu-title" href="#" title="">菜单列表1</a>
+					<ul>
+						<li><a href="#" title="">菜单列表1</a></li>
+						<li><a href="#" title="">菜单列表1</a></li>
+					</ul>
+				</li>
+				<li>
+					<a class="sub-menu-title" href="#" title="">菜单列表1</a>
+					<ul>
+						<li>
+							<a class="sub-menu-title" href="#" title="">菜单列表1</a>
+							<ul>
+								<li><a href="#" title="">菜单列表1</a></li>
+								<li><a href="#" title="">菜单列表1</a></li>
+								<li><a href="#" title="">菜单列表1</a></li>
+							</ul>
+						</li>
+						<li>
+							<a class="sub-menu-title" href="#" title="">菜单列表1</a>
+							<ul>
+								<li><a href="#" title="">菜单列表1</a></li>
+								<li><a href="#" title="">菜单列表1</a></li>
+							</ul>
+						</li>
+					</ul>
+				</li>
+				<li>
+					<a class="sub-menu-title" href="#" title="">菜单列表1</a>
+					<ul>
+						<li><a href="#" title="">菜单列表1</a></li>
+						<li><a href="#" title="">菜单列表1</a></li>
+					</ul>
+				</li>
+				<li>
+					<a class="sub-menu-title" href="#" title="">菜单列表1</a>
+					<ul>
+						<li><a href="#" title="">菜单列表1</a></li>
+						<li><a href="#" title="">菜单列表1</a></li>
+					</ul>
+				</li>
+			</ul>
+
+			<!--按钮组件-->
+			<ul class="sub-btn-wrap sub-item-group2">
+				<li>
+					<span><i class="fa-plus"></i>添加按钮</span>
+				</li>
+				<li>
+					<span><i class="fa-plus"></i>添加按钮</span>
+				</li>
+			</ul>
+		</div>
+	</div>
+
+	<!--底部-->
 	<div class="struct-layout-footer"></div>
 
+	<script src="../js/base/jquery-1.11.1.js"></script>
+
+	<!--angular-->
+	<script src="../js/angular/angular/angular.min.js"></script>
+	<script src="../js/angular/angular/angular-animate.min.js"></script>
+	<script src="../js/angular/angular/angular-cookies.min.js"></script>
+	<script src="../js/angular/angular/angular-resource.min.js"></script>
+	<script src="../js/angular/angular/angular-sanitize.min.js"></script>
+	<script src="../js/angular/angular/angular-touch.min.js"></script>
+	<!--vendor-->
+	<script src="../js/angular/angular/angular-route.min.js"></script>
+	<script src="../js/angular/ngstorage/ngStorage.js"></script>
+	<!--bootstrap-->
+	<script src="../js/angular/bootstrap/ui-bootstrap-tpls.js"></script>
+	<!--lazyload-->
+	<script src="../js/angular/oclazyload/ocLazyLoad.js"></script>
+	<!--translate-->
+	<script src="../js/angular/angular-translate/angular-translate.js"></script>
+	<script src="../js/angular/angular-translate/loader-static-files.js"></script>
+	<script src="../js/angular/angular-translate/storage-cookie.js"></script>
+	<script src="../js/angular/angular-translate/storage-local.js"></script>
 
 
+	<!--app-->
+	<script src="../js/app/app.js"></script>
+	<script src="../js/app/config.js"></script>
+	<script src="../js/app/config.lazyload.js"></script>
 
-	<!--<div class="page-container">
-  
-  	&lt;!&ndash;测边栏&#45;&#45;菜单导航模块&ndash;&gt;
-		<div id="main_menu_wrap" class="sidebar-menu toggle-others fixed">
-			<div class="sidebar-menu-inner">
-      	&lt;!&ndash;菜单头部按钮&ndash;&gt;
-				<header class="logo-env">
-					&lt;!&ndash; logo &ndash;&gt;
-					<div class="logo">
-						<a href="dashboard-1.html" class="logo-expanded">
-							<img src="../images/logo@2x.png" width="130" alt="" />
-						</a>
-						
-						<a href="dashboard-1.html" class="logo-collapsed">
-							<img src="../images/logo-collapsed@2x.png" width="40" alt="" />
-						</a>
-					</div>
-					
-					&lt;!&ndash;小屏模式下按钮&ndash;&gt;
-					<div class="mobile-menu-toggle visible-xs">
-						<a href="#" data-toggle="mobile-menu">
-							<i class="fa-bars"></i>
-						</a>
-					</div>		
-				</header>
-				&lt;!&ndash;菜单条&ndash;&gt;
-        <ul id="main_menu" class="main-menu"></ul>
-			</div>
-		</div>
-		
-    &lt;!&ndash;主模块&ndash;&gt;
-		<div id="main_content" class="main-content">
-					
-			&lt;!&ndash;顶部按钮区域&ndash;&gt;
-			<nav class="navbar user-info-navbar" role="navigation">
-      	&lt;!&ndash; 顶部左侧部分 &ndash;&gt;
-				<ul class="user-info-menu left-links list-inline list-unstyled">
-        	&lt;!&ndash;切换菜单为全部模式或者缩略模式&ndash;&gt;
-					<li class="hidden-sm hidden-xs">
-						<a href="#" data-toggle="sidebar">
-							<i class="fa-bars"></i>
-						</a>
-					</li>
-				</ul>
-				&lt;!&ndash; 顶部右侧部分 &ndash;&gt;
-				<ul class="user-info-menu right-links list-inline list-unstyled">
-
-					<li class="dropdown user-profile">
-						<a href="#" data-toggle="dropdown">
-							<img src="../images/user-4.png" alt="user-image" class="img-circle img-inline userpic-32" width="28" />
-							<span id="admin_show_wrap"></span>
-						</a>
-						
-						<ul class="dropdown-menu user-profile-menu list-unstyled">
-							
-							<li class="last">
-								<a href="account/login.html" id="logout_btn"><i class="fa-lock"></i>登出</a>
-							</li>
-						</ul>
-					</li>
-					
-				</ul>
-			</nav>
-      
-      		&lt;!&ndash;首页欢迎&ndash;&gt;
-			<div class="row">
-				<div class="col-md-12" id="admin_mainwrap">
-					<div class="panel">
-						<div class="panel-heading">
-							<h3 class="panel-title">欢迎进入布住网后台管理系统</h3>
-						</div>
-						<div class="panel-body">
-							<div class="chart-search-wrap"></div>
-							<div class="admin-welcome-wrap"  id="chart_wrap"></div>
-						</div>
-					</div>
-
-				</div>
-			</div>
-			
-			
-      
-
-			&lt;!&ndash;底部信息&ndash;&gt;
-			<footer class="main-footer sticky footer-type-1">
-				<div class="footer-inner">
-					&lt;!&ndash; 版权所有 &ndash;&gt;
-					<div class="footer-text">
-						&copy; 2016
-						<strong>银通天下</strong> 
-						 <a href="#" target="_blank" title="">****</a>
-					</div>
-					
-					&lt;!&ndash;回到顶部&ndash;&gt;
-					<div class="go-up">
-						<a href="#" rel="go-top">
-							<i class="fa-angle-up"></i>
-						</a>
-					</div>
-				</div>
-			</footer>
-		</div>
-	</div>-->
-
-
-	
-	<!--加载遮罩层-->
-	<!--<div id="page_loading_wrap" class="page-loading-overlay g-d-hidei">
-		<div class="loader-2"></div>
-	</div>-->
-
-
-
-	<!--提示信息-->
-  <!--<div id="page_support_wrap" class="page-support-wrap g-d-hidei">
-      <div class="page-support-browser">
-          <h1 class="browser-theme">您的浏览器版本太低，请升级您的浏览器</h1>
-          <div class="browser-icon">
-              <a href="http://www.firefox.com.cn/" target="_blank">
-                  <p>火狐浏览器</p>
-                  <span>Firefox</span>
-                  <div class="browser-icon-firefox"></div>
-              </a>
-              <a href="http://www.googlechromer.cn/" target="_blank">
-                  <p>谷歌浏览器</p>
-                  <span>Chrome</span>
-                  <div class="browser-icon-chrome"></div>
-              </a>
-              <a href="https://support.microsoft.com/zh-cn/help/17621/internet-explorer-downloads" target="_blank">
-                  <p>IE浏览器</p>
-                  <span>Internet&nbsp;Explorer</span>
-                  <div class="browser-icon-ie"></div>
-              </a>
-              <a href="https://liulanqi.baidu.com/70/?sid=11100016" target="_blank">
-                  <p>百度浏览器</p>
-                  <span>Baidu</span>
-                  <div class="browser-icon-baidu"></div>
-              </a>
-              <a href="http://browser.qq.com/?adtag=SEM1" target="_blank">
-                  <p>QQ浏览器</p>
-                  <span>Tencent</span>
-                  <div class="browser-icon-qq"></div>
-              </a>
-          </div>
-      </div>
-      <div class="page-support-login">
-          <div></div>
-          <p>您还未登录<span id="goto_login"></span>秒后跳入登陆页面</p>
-      </div>
-  </div>-->
-
-
-
-
-	<script src="../js/base/base.js"></script>
-	<script src="../js/base/common.js"></script>
-  <script src="../js/asset/index/index.js"></script>
 </body>
 </html>
