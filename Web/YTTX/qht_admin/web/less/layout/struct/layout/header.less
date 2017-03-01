@@ -7,7 +7,7 @@
   min-width:@layout-width-container;
   background:none;
   .header-bg{
-    .layout-absolutel-base;
+    .layout-absolutel-base(0,0,-1);
     width:100%;
     .layout-base(@layout-width-header);
     min-width:@layout-width-container;
@@ -27,16 +27,34 @@
   .header-menu{
     height:100%;
     .layout-float-base(@layout-width-container - @layout-side-width);
-    padding:0 50px 0 0;
     font-size:0;
+    padding:0 50px 0 0;
     >li{
       .box-sizing-base;
       height:100%;
       display:inline-block;
-      padding:0 20px;
       a{
-        font-size:@font-size-base + 6;
+        font-size:@font-size-base + 4;
         color:@color-white;
+        display:inline-block;
+        height:100%;
+        padding:0 30px;
+        line-height:@layout-height-header;
+        border-bottom:4px solid @color-red1;
+        overflow: hidden;
+        .transition(all ease-in .2s .01s);
+        &:hover{
+          background:darken(@color-red1,5%);
+          border-bottom:4px solid darken(@color-red1,5%);
+        }
+      }
+    }
+    .menuactive{
+      border-bottom:4px solid @color-white;
+      font-size:@font-size-base + 6;
+      line-height:@layout-height-header + 1;
+      &:hover{
+        border-bottom:4px solid @color-white;
       }
     }
   }
