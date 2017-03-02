@@ -1,8 +1,8 @@
 'use strict';
 
-/* Controllers */
+/*控制器设置基本配置*/
 
-angular.module('app')
+/*angular.module('app')
   .controller('AppCtrl', ['$scope', '$translate', '$localStorage', '$window', 
     function(              $scope,   $translate,   $localStorage,   $window ) {
       // add 'ie' classes to html
@@ -36,7 +36,7 @@ angular.module('app')
           asideDock: false,
           container: false
         }
-      }
+      };
 
       // save settings to local storage
       if ( angular.isDefined($localStorage.settings) ) {
@@ -73,4 +73,4 @@ angular.module('app')
           return (/iPhone|iPod|iPad|Silk|Android|BlackBerry|Opera Mini|IEMobile/).test(ua);
       }
 
-  }]);
+  }]);*/
