@@ -1,7 +1,6 @@
-// config
-
+/*应用程序初始化配置*/
 var app = angular.module('app')
-  .config(
+  /*.config(
     ['$controllerProvider', '$compileProvider', '$filterProvider', '$provide',
     function ($controllerProvider,   $compileProvider,   $filterProvider,   $provide) {
         
@@ -14,7 +13,7 @@ var app = angular.module('app')
         app.constant   = $provide.constant;
         app.value      = $provide.value;
     }
-  ])
+  ])*/
   /*.config(['$translateProvider', function($translateProvider){
     /!*注册加载静态模块，根据地址价值不同的模块*!/
     $translateProvider.useStaticFilesLoader({
