@@ -1,7 +1,7 @@
 /*自定义扩展*/
 (function($){
 	'use strict';
-	angular.module('toolApp',[]).factory('commonTool',function () {
+	angular.module('tool.util').factory('toolUtil',function () {
 		var system_unique_key='qht_admin_unique_key',
 			tools={};
 		/*本地存储*/
@@ -162,91 +162,6 @@
 		tools.supportDia=(function(){
 			return (typeof dialog==='function'&&dialog)?true:false;
 		}());
-		//弹窗确认
-		tools.sureDialog=function(tips){
-			if(!this.supportDia){
-				return null;
-			}
-
-
-			/*内部提示信息*/
-			var innerdia;
-			if(tips&&typeof tips==='object'){
-				innerdia=tips;
-			}else{
-				innerdia=dialog({
-					title:'温馨提示',
-					okValue:'确定',
-					width:300,
-					ok:function(){
-						this.close();
-						return false;
-					},
-					cancel:false
-				});
-			}
-			/*关键匹配*/
-			var actionmap={
-				'delete':'删除',
-				'cancel':'取消',
-				'change':'改变',
-				'add':'添加',
-				'update':'更新'
-			};
-
-
-			/*确认框类*/
-			function sureDialogFun(){}
-
-			/*设置函数*/
-			sureDialogFun.prototype.sure=function (str,fn,tips,repalceflag) {
-				var tipstr='',
-					iskey=typeof actionmap[str]==='string',
-					key=iskey?actionmap[str]:str;
-
-				if(!tips){
-					tips='';
-				}
-
-				if(typeof actionmap[str]==='string'){
-					if(repalceflag){
-						tipstr='<span class="g-c-bs-warning g-btips-warn">'+tips+'</span>';
-					}else{
-						tipstr='<span class="g-c-bs-warning g-btips-warn">'+tips+'是否真需要 "'+actionmap[str]+'" 此项数据</span>';
-					}
-				}else{
-					if(repalceflag){
-						tipstr='<span class="g-c-bs-warning g-btips-warn">'+tips+'</span>';
-					}else{
-						tipstr='<span class="g-c-bs-warning g-btips-warn">'+tips+'是否真需要 "'+str+'" 此项数据</span>';
-					}
-				}
-
-				var tempdia=dialog({
-					title:'温馨提示',
-					content:tipstr,
-					width:300,
-					okValue: '确定',
-					ok: function () {
-						if(fn&&typeof fn==='function'){
-							//执行回调
-							fn.call(null,{
-								action:key,
-								dia:innerdia
-							});
-							this.close().remove();
-						}
-						return false;
-					},
-					cancelValue: '取消',
-					cancel: function(){
-						this.close().remove();
-					}
-				}).showModal();
-			};
-
-			return sureDialogFun;
-		};
 
 
 
@@ -283,7 +198,6 @@
 				integral,
 				decimal,
 				outputCharacters,
-				parts,
 				digits,
 				radices,
 				bigRadices,
@@ -777,10 +691,6 @@
 			r2=Number(txt1.replace(/\.*/g,''));
 			return (r1/r2)*Math.pow(10,t2-t1);
 		};
-
-
-
-
 
 		/*左侧菜单导航*/
 		/*菜单id映射*/
@@ -2046,6 +1956,7 @@
 				public_vars.$page_loading_wrap.addClass('loaded');
 			};
 		};
+
+		return tools;
 	});
-	window.tools=tools;
 })(jQuery);
