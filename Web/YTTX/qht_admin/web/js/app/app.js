@@ -1,6 +1,6 @@
 'use strict';
 /*定义app模块，并指明其相关依赖*/
-angular.module('app', ['tool.dialog'
+angular.module('app', ['tool.dialog','tool.util','ui.sideitem'
     /*,'ngAnimate',
     'ngCookies',
     'ngResource',

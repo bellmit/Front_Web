@@ -4,7 +4,22 @@
 (function () {
        angular.module('app')
            .controller('AppCtrl', ['$scope','toolDialog',function($scope,toolDialog){
-     }]);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+       }]);
 
     /*$scope.testHaha=function(){
         toolDialog.show({

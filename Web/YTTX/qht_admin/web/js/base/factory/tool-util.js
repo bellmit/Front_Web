@@ -1,7 +1,7 @@
 /*自定义扩展*/
 (function($){
 	'use strict';
-	angular.module('tool.util').factory('toolUtil',function () {
+	angular.module('tool.util',[]).factory('toolUtil',function () {
 		var system_unique_key='qht_admin_unique_key',
 			tools={};
 		/*本地存储*/
@@ -1956,7 +1956,6 @@
 				public_vars.$page_loading_wrap.addClass('loaded');
 			};
 		};
-
 		return tools;
 	});
 })(jQuery);
