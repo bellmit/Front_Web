@@ -13,9 +13,60 @@ angular.module('ui.sideitem',[])
         return {
             replace:false,
             restrict: 'EC',
-            template:'<li>身份：<span>省级代理商</span></li>\
-                      <li>姓名：<span>王二麻子</span></li>\
-                      <li>手机号码：<span>152 3521 5696</span></li>\
-                      <li>地址：<span>广东省深圳市龙华新区龙华汽车站摩天大厦88层88号</span></li>'
+            template:'<li>身份：<span>省级代理商</span></li>'
+        };
+    })
+    .directive('uiSubList',function() {
+        return {
+            replace:false,
+            restrict: 'EC',
+            template:'<li class="menuactive"><a href="#" title="">列表1</a></li>\
+                          <li><a href="#" title="">列表2</a></li>'
+        };
+    })
+    .directive('uiSubSearch',function() {
+        return {
+            replace:false,
+            restrict: 'EC',
+            template:'<label class="search-content">\
+                <input type="text" placeholder="搜索" value="" name="search_name" class="g-br3" />\
+            </label>'
+        };
+    })
+    .directive('uiSubTab',function() {
+        return {
+            replace:false,
+            restrict: 'EC',
+            template:'<li class="tabactive">选项1</li>\
+            <li>选项2</li>'
+        };
+    })
+    .directive('uiSubMenu',function() {
+        return {
+            replace:false,
+            restrict: 'EC',
+            template:'<li>\
+                <a class="sub-menu-title" href="#" title="">菜单列表1</a>\
+                <ul>\
+                    <li>\
+                        <a class="sub-menu-title" href="#" title="">菜单列表1</a>\
+                        <ul>\
+                            <li><a href="#" title="">菜单列表1</a></li>\
+                        </ul>\
+                    </li>\
+                </ul>\
+            </li>'
+        };
+    })
+    .directive('uiSubBtn',function() {
+        return {
+            replace:false,
+            restrict: 'EC',
+            template:'<li>\
+                <span><i class="fa-plus"></i>添加按钮</span>\
+            </li>\
+            <li>\
+                <span><i class="fa-plus"></i>添加按钮</span>\
+            </li>'
         };
     });
