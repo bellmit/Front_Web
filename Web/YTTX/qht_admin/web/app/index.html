@@ -41,97 +41,27 @@
 		<div class="struct-layout-side">
 
 			<!--logo组件-->
-			<div class="sub-logo-wrap">
-				<div class="logo-img-wrap">
-					<img src="../images/index_logo.png" alt="logo" />
-				</div>
-				<h1>深圳银通移动支付有限公司</h1>
-			</div>
+			<div class="sub-logo-wrap ui-sub-logo"></div>
 
 			<!--信息组件-->
-			<ul class="sub-info-wrap">
-				<li>身份：<span>省级代理商</span></li>
-				<li>姓名：<span>王二麻子</span></li>
-				<li>手机号码：<span>152 3521 5696</span></li>
-				<li>地址：<span>广东省深圳市龙华新区龙华汽车站摩天大厦88层88号</span></li>
-			</ul>
+			<ul class="sub-info-wrap ui-sub-info"></ul>
 
 
 			<!--列表组件-->
-			<ul class="sub-list-wrap">
-				<li class="menuactive"><a href="#" title="">列表1</a></li>
-				<li><a href="#" title="">列表列表列表2</a></li>
-				<li><a href="#" title="">列表3</a></li>
-			</ul>
+			<ul class="sub-list-wrap ui-sub-list"></ul>
 
 			<!--搜索组件-->
-			<div class="sub-search-wrap">
-				<label class="search-content">
-					<input type="text" placeholder="搜索" value="" name="search_name" class="g-br3" />
-				</label>
-			</div>
+			<div class="sub-search-wrap ui-sub-search"></div>
 
 			<!--选项卡组件-->
-			<ul class="sub-tab-wrap sub-item-group2 sub-itembr-group2">
-				<li class="tabactive">tab1</li>
-				<li>tab2</li>
-			</ul>
+			<ul class="sub-tab-wrap sub-item-group2 sub-itembr-group2 ui-sub-tab"></ul>
 
 
 			<!--子菜单组件-->
-			<ul class="sub-menu-wrap">
-				<li>
-					<a class="sub-menu-title" href="#" title="">菜单列表1</a>
-					<ul>
-						<li><a href="#" title="">菜单列表1</a></li>
-						<li><a href="#" title="">菜单列表1</a></li>
-					</ul>
-				</li>
-				<li>
-					<a class="sub-menu-title" href="#" title="">菜单列表1</a>
-					<ul>
-						<li>
-							<a class="sub-menu-title" href="#" title="">菜单列表1</a>
-							<ul>
-								<li><a href="#" title="">菜单列表1</a></li>
-								<li><a href="#" title="">菜单列表1</a></li>
-								<li><a href="#" title="">菜单列表1</a></li>
-							</ul>
-						</li>
-						<li>
-							<a class="sub-menu-title" href="#" title="">菜单列表1</a>
-							<ul>
-								<li><a href="#" title="">菜单列表1</a></li>
-								<li><a href="#" title="">菜单列表1</a></li>
-							</ul>
-						</li>
-					</ul>
-				</li>
-				<li>
-					<a class="sub-menu-title" href="#" title="">菜单列表1</a>
-					<ul>
-						<li><a href="#" title="">菜单列表1</a></li>
-						<li><a href="#" title="">菜单列表1</a></li>
-					</ul>
-				</li>
-				<li>
-					<a class="sub-menu-title" href="#" title="">菜单列表1</a>
-					<ul>
-						<li><a href="#" title="">菜单列表1</a></li>
-						<li><a href="#" title="">菜单列表1</a></li>
-					</ul>
-				</li>
-			</ul>
+			<ul class="sub-menu-wrap ui-sub-menu"></ul>
 
 			<!--按钮组件-->
-			<ul class="sub-btn-wrap sub-item-group2">
-				<li>
-					<span><i class="fa-plus"></i>添加按钮</span>
-				</li>
-				<li>
-					<span><i class="fa-plus"></i>添加按钮</span>
-				</li>
-			</ul>
+			<ul class="sub-btn-wrap sub-item-group2 ui-sub-btn"></ul>
 		</div>
 	</div>
 
@@ -143,10 +73,6 @@
 
 	<!--base-->
 	<script src="../js/base/base.js"></script>
-
-
-	<!--common-->
-	<script src="../js/base/common.js"></script>
 
 
 	<!--angular-->
@@ -176,8 +102,7 @@
 
 	<!--app-->
 	<!--引入angular模块功能，指明其相关依赖-->
-	<!--<script src="../js/app/app.js"></script>-->
-	<script src="../js/app/test_app.js"></script>
+	<script src="../js/app/app.js"></script>
 
 	<!--应用程序初始化配置-->
 	<!--<script src="../js/app/config.js"></script>-->
@@ -210,6 +135,14 @@
 	<script src="../js/app/directives/ui-toggleclass.js"></script>
 	<script src="../js/app/directives/ui-validate.js"></script>
 	<script src="../js/app/controllers/bootstrap.js"></script>-->
+
+	<!--自定义组件-->
+	<!--公共组件-->
+	<script src="../js/base/services/tool-dialog.js"></script>
+	<script src="../js/base/factory/tool-util.js"></script>
+
+	<!--侧边栏指令集-->
+	<script src="../js/app/directives/ui-sideitem.js"></script>
 
 </body>
 </html>

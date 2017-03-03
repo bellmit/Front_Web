@@ -26,14 +26,14 @@ angular.module('ui.load', [])
 			if(!promise){
 				promise = deferred.promise;
 			}
-      angular.forEach(srcs, function(src) {
-      	promise = promise.then( function(){
-      		return src.indexOf('.css') >=0 ? self.loadCSS(src) : self.loadScript(src);
-      	} );
-      });
-      deferred.resolve();
-      return promise;
-		}
+			  angular.forEach(srcs, function(src) {
+				promise = promise.then( function(){
+					return src.indexOf('.css') >=0 ? self.loadCSS(src) : self.loadScript(src);
+				} );
+			  });
+			  deferred.resolve();
+			  return promise;
+		};
 
 		/**
 		 * Dynamically loads the given script
