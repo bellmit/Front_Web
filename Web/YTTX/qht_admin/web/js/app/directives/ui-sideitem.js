@@ -33,14 +33,50 @@ angular.module('ui.sideitem',[])
             </label>'
         };
     })
-    .directive('uiSubTab',function() {
+    .directive('uiSubTab',['$http',function($http) {
         return {
             replace:false,
             restrict: 'EC',
             template:'<li class="tabactive">选项1</li>\
-            <li>选项2</li>'
+            <li>选项2</li>',
+            link:function (scope, element, attrs) {
+               /*绑定事件*/
+                element.on('click','li',function (e) {
+                    $(this).addClass('tabactive').siblings().removeClass('tabactive');
+                });
+
+                /*初始化请求数据*/
+                $http({
+                    url:'http://www.baidu.com',
+                    method:'post',
+                    data:''
+                })
+                    .success(function (resp) {
+                        var code=parseInt(json.code,10);
+                        if(code!==0){
+                            if(code===999){
+                                /*清空缓存*/
+                                /*public_tool.loginTips(function () {
+                                    public_tool.clear();
+                                    public_tool.clearCacheData();
+                                });*/
+                            }
+                            console.log(resp.message);
+                            return false;
+                        }
+                        var result=resp.result;
+                        if(typeof result==='undefined'){
+                            return false;
+                        }
+                        
+                    })
+                    .error(function(resp){
+                        console.log(resp.message);
+                        return false;
+                    });
+            }
         };
-    })
+    }])
     .directive('uiSubMenu',function() {
         return {
             replace:false,
