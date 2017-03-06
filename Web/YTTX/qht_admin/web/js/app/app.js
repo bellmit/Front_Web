@@ -1,8 +1,8 @@
 'use strict';
 /*定义app模块，并指明其相关依赖*/
-angular.module('app', ['tool.dialog','tool.util','ui.sideitem',''
-    /*,'ngAnimate',
-    'ngCookies',
+angular.module('app', [/*'ngAnimate','ngCookies','ngResource','ngSanitize','ngTouch','ngCookies','ngStorage','ngRoute','ngMock',*/'tool.dialog','tool.util','ui.sideitem'
+     /*'ngAnimate',
+     'ngCookies',
     'ngResource',
     'ngSanitize',
     'ngTouch',
@@ -15,3 +15,12 @@ angular.module('app', ['tool.dialog','tool.util','ui.sideitem',''
     'oc.lazyLoad',
     'pascalprecht.translate'*/
 ]);
+
+
+/*
+var angular = require('angular');
+angular.module('myMod', [
+    require('angular-animate'),
+    require('angular-mocks/ngMock'),
+    require('angular-mocks/ngAnimateMock')
+]);*/

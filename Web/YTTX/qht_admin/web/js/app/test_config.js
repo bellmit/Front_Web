@@ -1,5 +1,5 @@
 /*应用程序初始化配置*/
-var app = angular.module('app')
+/*var app = angular.module('app')*/
   /*.config(
     ['$controllerProvider', '$compileProvider', '$filterProvider', '$provide',
     function ($controllerProvider,   $compileProvider,   $filterProvider,   $provide) {

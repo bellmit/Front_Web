@@ -1,4 +1,4 @@
-angular.module('ui.sideitem',[])
+angular.module('ui.sideitem',['tool.util'])
     .directive('uiSubLogo',function() {
         return {
           replace:false,
@@ -24,56 +24,91 @@ angular.module('ui.sideitem',[])
                           <li><a href="#" title="">列表2</a></li>'
         };
     })
-    .directive('uiSubSearch',function() {
+    .directive('uiSubSearch',['toolUtil',function(toolUtil) {
         return {
             replace:false,
             restrict: 'EC',
             template:'<label class="search-content">\
-                <input type="text" placeholder="搜索" value="" name="search_name" class="g-br3" />\
-            </label>'
+                <input type="text" ng-click="subSearchAction()" placeholder="搜索" value="" name="search_name" class="g-br3" />\
+            <span class="search-clear"></span></label>',
+            link:function (scope, element, attrs) {
+                /*绑定事件*/
+                element.on('keyup','input',function (e){
+                    var $this=$(this),
+                        value=toolUtil.trims(this.value),
+                        $label=$this.parent(),
+                        kcode='';
+
+                    if(value===''){
+                        /*输入为空时*/
+                        $label.removeClass('search-content-active');
+                    }else{
+                        /*输入非空*/
+                        $label.addClass('search-content-active');
+                        kcode=e.keyCode;
+                        /*提交*/
+                        if(kcode===13){
+                            scope.$apply(attrs.subsearchaction);
+                        }
+                    }
+                });
+                element.on('click','span',function (e) {
+                    var $input=element.find('input');
+
+                    $input.val('');
+                    $input.trigger('keyup');
+                });
+            }
         };
-    })
+    }])
     .directive('uiSubTab',['$http',function($http) {
         return {
             replace:false,
             restrict: 'EC',
-            template:'<li class="tabactive">选项1</li>\
-            <li>选项2</li>',
+            template:'<li class="tabactive">tab1</li><li>tab2</li>',
             link:function (scope, element, attrs) {
                /*绑定事件*/
                 element.on('click','li',function (e) {
                     $(this).addClass('tabactive').siblings().removeClass('tabactive');
                 });
-
-                /*初始化请求数据*/
-                $http({
-                    url:'http://www.baidu.com',
+                /*初始化请求侧边栏数据tab数据*/
+                /*$http({
+                    url:'../json/test.json',
                     method:'post',
                     data:''
                 })
-                    .success(function (resp) {
-                        var code=parseInt(json.code,10);
+                    .then(function (resp) {
+                        var datares=resp.data,
+                            code=parseInt(datares.code,10);
                         if(code!==0){
                             if(code===999){
-                                /*清空缓存*/
-                                /*public_tool.loginTips(function () {
-                                    public_tool.clear();
-                                    public_tool.clearCacheData();
-                                });*/
+                                /!*清空缓存*!/
+                                /!*public_tool.loginTips(function () {
+                                 public_tool.clear();
+                                 public_tool.clearCacheData();
+                                 });*!/
                             }
-                            console.log(resp.message);
+                            console.log(datares.message);
+                            $scope.subtablist=null;
                             return false;
                         }
-                        var result=resp.result;
+                        var result=Mock.mock({
+                            'list|2':[{
+                                "name":'tab',
+                                "url|+1":1
+                            }]
+                        });
                         if(typeof result==='undefined'){
+                            $scope.subtablist=null;
                             return false;
                         }
-                        
+                        $scope.subtablist=result.list;
                     })
-                    .error(function(resp){
+                    .catch(function(resp){
                         console.log(resp.message);
+                        $scope.subtablist=null;
                         return false;
-                    });
+                    });*/
             }
         };
     }])
@@ -91,7 +126,30 @@ angular.module('ui.sideitem',[])
                         </ul>\
                     </li>\
                 </ul>\
-            </li>'
+            </li>',
+            link:function (scope, element, attrs) {
+                /*绑定事件*/
+                element.on('click','a',function (e) {
+                    var $this=$(this),
+                        haschild=$this.hasClass('sub-menu-title'),
+                        $child;
+
+                    if(haschild){
+                        e.preventDefault();
+                        $child=$this.next();
+                        $li=$this.parent();
+                        if($child.hasClass('g-d-showi')){
+                            /*隐藏*/
+                            $child.removeClass('g-d-showi');
+                            $this.removeClass('sub-menu-titleactive');
+                        }else{
+                            /*显示*/
+                            $child.addClass('g-d-showi');
+                            $this.addClass('sub-menu-titleactive');
+                        }
+                    }
+                });
+            }
         };
     })
     .directive('uiSubBtn',function() {

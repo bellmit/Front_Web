@@ -27,7 +27,7 @@ angular.module('tool.dialog',[])
 		};
 		/*提示类型*/
 		this.show=function (config) {
-			var tempdia=config.dia||config.tip,
+			var tempdia=config.tip||config.dia,
 				type=config.type,
 				value=config.value;
 
