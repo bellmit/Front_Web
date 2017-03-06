@@ -48,7 +48,7 @@ angular.module('ui.sideitem',['tool.util'])
                         kcode=e.keyCode;
                         /*提交*/
                         if(kcode===13){
-                            scope.$apply(attrs.datasearch);
+                            scope.$apply(attrs.dataSearch);
                         }
                     }
                 });
@@ -65,50 +65,12 @@ angular.module('ui.sideitem',['tool.util'])
         return {
             replace:false,
             restrict: 'EC',
-            template:'<li class="tabactive">tab1</li><li>tab2</li>',
+            template:'<li data-type="{{i.type}}" ng-repeat="i in tabitem">{{i.name}}</li>',
             link:function (scope, element, attrs) {
                /*绑定事件*/
                 element.on('click','li',function (e) {
                     $(this).addClass('tabactive').siblings().removeClass('tabactive');
                 });
-                /*初始化请求侧边栏数据tab数据*/
-                /*$http({
-                    url:'../json/test.json',
-                    method:'post',
-                    data:''
-                })
-                    .then(function (resp) {
-                        var datares=resp.data,
-                            code=parseInt(datares.code,10);
-                        if(code!==0){
-                            if(code===999){
-                                /!*清空缓存*!/
-                                /!*public_tool.loginTips(function () {
-                                 public_tool.clear();
-                                 public_tool.clearCacheData();
-                                 });*!/
-                            }
-                            console.log(datares.message);
-                            $scope.subtablist=null;
-                            return false;
-                        }
-                        var result=Mock.mock({
-                            'list|2':[{
-                                "name":'tab',
-                                "url|+1":1
-                            }]
-                        });
-                        if(typeof result==='undefined'){
-                            $scope.subtablist=null;
-                            return false;
-                        }
-                        $scope.subtablist=result.list;
-                    })
-                    .catch(function(resp){
-                        console.log(resp.message);
-                        $scope.subtablist=null;
-                        return false;
-                    });*/
             }
         };
     }])
@@ -137,7 +99,6 @@ angular.module('ui.sideitem',['tool.util'])
                     if(haschild){
                         e.preventDefault();
                         $child=$this.next();
-                        $li=$this.parent();
                         if($child.hasClass('g-d-showi')){
                             /*隐藏*/
                             $child.removeClass('g-d-showi');
