@@ -29,7 +29,7 @@ angular.module('ui.sideitem',['tool.util'])
             replace:false,
             restrict: 'EC',
             template:'<label class="search-content">\
-                <input type="text" ng-click="subSearchAction()" placeholder="搜索" value="" name="search_name" class="g-br3" />\
+                <input type="text" data-search="subSearchAction" placeholder="搜索" value="" name="search_name" class="g-br3" />\
             <span class="search-clear"></span></label>',
             link:function (scope, element, attrs) {
                 /*绑定事件*/
@@ -48,7 +48,7 @@ angular.module('ui.sideitem',['tool.util'])
                         kcode=e.keyCode;
                         /*提交*/
                         if(kcode===13){
-                            scope.$apply(attrs.subsearchaction);
+                            scope.$apply(attrs.datasearch);
                         }
                     }
                 });

@@ -12,7 +12,7 @@
               var dia=toolDialog.dia();
               $scope.subSearchAction=function () {
                      toolDialog.show({
-                            dia:dia,
+                            tip:dia,
                             type:'succ',
                             value:'searching...'
                      });
