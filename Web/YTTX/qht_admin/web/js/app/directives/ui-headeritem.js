@@ -4,7 +4,7 @@ angular.module('ui.headeritem',[])
             replace:false,
             restrict: 'EC',
             /*scope:{},*/
-            template:'<li ng-repeat="i in headerdata.menuitem"><a href="#{{i.href}}" title="">{{i.name}}</a></li>',
+            template:'<li ng-repeat="i in headerdata.menuitem"><a ui-sref="{{i.href}}" title="">{{i.name}}</a></li>',
             link:function (scope, element, attrs) {
                 /*绑定事件menuactive*/
                 element.on('click','a',function (e) {

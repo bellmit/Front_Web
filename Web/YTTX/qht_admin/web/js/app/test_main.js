@@ -37,19 +37,19 @@
                            'href':'app'
                        },{
                            'name':'机构',
-                           'href':'app.struct'
+                           'href':'struct'
                        },{
                            'name':'订单管理',
-                           'href':'app.order'
+                           'href':'order'
                        },{
                            'name':'财务管理',
-                           'href':'app.finance'
+                           'href':'finance'
                        },{
                            'name':'设备管理',
-                           'href':'app.equipment'
+                           'href':'equipment'
                        },{
                            'name':'设置',
-                           'href':'app.setting'
+                           'href':'setting'
                        }]
                    };
                    if(typeof result==='undefined'){

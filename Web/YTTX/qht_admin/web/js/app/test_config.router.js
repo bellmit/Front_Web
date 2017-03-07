@@ -4,79 +4,118 @@
  * 路由跳转
  */
 angular.module('app')
-    /*.run(
-     ['$rootScope','$state','$stateParams',
-     function ($rootScope,$state,$stateParams) {
-     $rootScope.$state = $state;
-     $rootScope.$stateParams = $stateParams;
-     }
-     ]
-     )*/
-    .config(
+    .run(['$rootScope','$state','$stateParams',function ($rootScope,$state,$stateParams) {
+         $rootScope.$state = $state;
+         $rootScope.$stateParams = $stateParams;
+     }]).config(
+    ['$stateProvider', '$urlRouterProvider',
+        function ($stateProvider, $urlRouterProvider) {
+
+            $urlRouterProvider
+                .otherwise('/app');
+
+
+            $stateProvider
+                .state('app', {
+                    abstract: true,
+                    url: '/app',
+                    templateUrl: 'tpl/index.html'
+                })
+                //机构
+                .state('struct', {
+                    url: '/struct',
+                    /*template: '<div ui-view></div>'*/
+                    templateUrl: 'tpl/index.html'
+                })
+                //订单管理
+                .state('order', {
+                    url: '/order',
+                    /*template: '<div ui-view class="fade-in"></div>'*/
+                    templateUrl: 'tpl/index.html'
+                })
+                //财务管理
+                .state('finance', {
+                    url: '/finance',
+                    /*template: '<div ui-view class="fade-in-down"></div>'*/
+                    templateUrl: 'tpl/index.html'
+                })
+                //设备管理
+                .state('equipment', {
+                    abstract: true,
+                    url: '/equipment',
+                    templateUrl: 'tpl/index.html'
+                })
+                //设置
+                .state('setting', {
+                    abstract: true,
+                    url: '/setting',
+                    templateUrl: 'tpl/index.html'
+                })
+        }
+    ]
+);
+    /*.config(
+
+    // 路由机制
+    function($routeProvider) {
+        $routeProvider
+        .when('app', {
+            templateUrl: 'tpl/index.html',
+            controller: ''
+        })
+        .when('struct', {
+            templateUrl: 'tpl/index.html',
+            constoller: ''
+        })
+        .otherwise({
+            redirectTo: 'app'
+        });
+    }
+);*/
+/*.config(
         ['$stateProvider', '$urlRouterProvider',
             function ($stateProvider, $urlRouterProvider) {
+
                 $urlRouterProvider
                     .otherwise('/app/dashboard-v1');
+
+
                 $stateProvider
                     .state('app', {
                         abstract: true,
                         url: '/app',
-                        templateUrl: 'app/index.html'
+                        templateUrl: 'tpl/index.html'
                     })
                     //机构
                     .state('app.struct', {
-                        url: '/table',
+                        url: '/struct',
                         template: '<div ui-view></div>'
                     })
                     //订单管理
                     .state('app.order', {
-                        url: '/form',
-                        template: '<div ui-view class="fade-in"></div>',
-                        resolve: {
-                            deps: ['uiLoad',
-                                function (uiLoad) {
-                                    return uiLoad.load('js/controllers/form.js');
-                                }]
-                        }
+                        url: '/order',
+                        template: '<div ui-view class="fade-in"></div>'
                     })
                     //财务管理
                     .state('app.finance', {
-                        url: '/page',
+                        url: '/finance',
                         template: '<div ui-view class="fade-in-down"></div>'
                     })
                     //设备管理
                     .state('app.equipment', {
                         abstract: true,
-                        url: '/mail',
+                        url: '/equipment',
                         templateUrl: 'tpl/mail.html',
-                        // use resolve to load other dependences
-                        resolve: {
-                            deps: ['uiLoad',
-                                function (uiLoad) {
-                                    return uiLoad.load(['js/app/mail/mail.js',
-                                        'js/app/mail/mail-service.js',
-                                        'vendor/libs/moment.min.js']);
-                                }]
-                        }
                     })
                     //设置
                     .state('app.setting', {
                         abstract: true,
-                        url: '/mail',
-                        templateUrl: 'tpl/mail.html',
-                        // use resolve to load other dependences
-                        resolve: {
-                            deps: ['uiLoad',
-                                function (uiLoad) {
-                                    return uiLoad.load(['js/app/mail/mail.js',
-                                        'js/app/mail/mail-service.js',
-                                        'vendor/libs/moment.min.js']);
-                                }]
-                        }
+                        url: '/setting',
+                        templateUrl: 'tpl/mail.html'
                     })
             }
         ]
-    );
+    );*/
 
 
 /*
