@@ -20,8 +20,7 @@ angular.module('ui.sideitem',['tool.util'])
         return {
             replace:false,
             restrict: 'EC',
-            template:'<li class="menuactive"><a href="#" title="">列表1</a></li>\
-                          <li><a href="#" title="">列表2</a></li>'
+            template:'<li ng-repeat="i in subdata.listitem"><a href="#{{i.href}}" title="">{{i.name}}</a></li>'
         };
     })
     .directive('uiSubSearch',['toolUtil',function(toolUtil) {
@@ -29,7 +28,7 @@ angular.module('ui.sideitem',['tool.util'])
             replace:false,
             restrict: 'EC',
             template:'<label class="search-content">\
-                <input type="text" data-search="subSearchAction" placeholder="搜索" value="" name="search_name" class="g-br3" />\
+                <input type="text" placeholder="搜索" value="" name="search_name" class="g-br3" />\
             <span class="search-clear"></span></label>',
             link:function (scope, element, attrs) {
                 /*绑定事件*/
@@ -48,7 +47,9 @@ angular.module('ui.sideitem',['tool.util'])
                         kcode=e.keyCode;
                         /*提交*/
                         if(kcode===13){
-                            scope.$apply(attrs.dataSearch);
+                            scope.$apply(function () {
+                                console.log('search:'+value);
+                            });
                         }
                     }
                 });
@@ -65,7 +66,7 @@ angular.module('ui.sideitem',['tool.util'])
         return {
             replace:false,
             restrict: 'EC',
-            template:'<li data-type="{{i.type}}" ng-repeat="i in tabitem">{{i.name}}</li>',
+            template:'<li data-type="{{i.type}}" ng-repeat="i in subdata.tabitem">{{i.name}}</li>',
             link:function (scope, element, attrs) {
                /*绑定事件*/
                 element.on('click','li',function (e) {

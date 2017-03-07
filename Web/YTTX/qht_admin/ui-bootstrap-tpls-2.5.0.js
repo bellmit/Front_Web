@@ -7460,9 +7460,7 @@ angular.module("uib/template/carousel/carousel.html", []).run(["$templateCache",
 }]);
 
 angular.module("uib/template/carousel/slide.html", []).run(["$templateCache", function($templateCache) {
-  $templateCache.put("uib/template/carousel/slide.html",
-    "<div class=\"text-center\" ng-transclude></div>\n" +
-    "");
+  $templateCache.put("uib/template/carousel/slide.html","<div class=\"text-center\" ng-transclude></div>\n" + "");
 }]);
 
 angular.module("uib/template/datepicker/datepicker.html", []).run(["$templateCache", function($templateCache) {
