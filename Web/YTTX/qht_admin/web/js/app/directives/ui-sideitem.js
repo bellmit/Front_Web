@@ -4,7 +4,7 @@ angular.module('ui.sideitem',['tool.util'])
           replace:false,
           restrict: 'EC',
           template:'<div class="logo-img-wrap">\
-                        <img src="../images/index_logo.png" alt="logo" />\
+                        <img src="images/index_logo.png" alt="logo" />\
                     </div>\
                     <h1>深圳银通移动支付有限公司</h1>'
         };

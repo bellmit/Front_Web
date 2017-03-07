@@ -19,43 +19,12 @@
 <body class="struct-layout-wrap" ng-controller="AppCtrl">
 
 	<!--头部-->
-	<div class="struct-layout-header">
-		<div class="header-bg"></div>
-		<div class="header-content" ng-controller="HeaderCtrl">
-			<div class="header-logo"></div>
-			<ul class="header-menu ui-header-menu"></ul>
-			<div class="ui-header-logout"></div>
-		</div>
-	</div>
+	<div class="struct-layout-header" data-ng-include="'tpl/commom/header.html'" id="struct_layout_header"></div>
 
 	<!--主体-->
 	<div class="struct-layout-container struct-layout-default">
 		<div class="struct-layout-main"></div>
-		<div class="struct-layout-side" ng-controller="SubCtrl">
-
-			<!--logo组件-->
-			<div class="sub-logo-wrap ui-sub-logo"></div>
-
-			<!--信息组件-->
-			<ul class="sub-info-wrap ui-sub-info"></ul>
-
-
-			<!--列表组件-->
-			<ul class="sub-list-wrap ui-sub-list"></ul>
-
-			<!--搜索组件-->
-			<div class="sub-search-wrap ui-sub-search"></div>
-
-			<!--选项卡组件-->
-			<ul class="sub-tab-wrap sub-item-group2 sub-itembr-group2 ui-sub-tab"></ul>
-
-
-			<!--子菜单组件-->
-			<ul class="sub-menu-wrap ui-sub-menu"></ul>
-
-			<!--按钮组件-->
-			<ul class="sub-btn-wrap sub-item-group2 ui-sub-btn"></ul>
-		</div>
+		<div class="struct-layout-side" data-ng-include="'tpl/common/side.html'" id="struct_layout_side"></div>
 	</div>
 
 	<!--底部-->
