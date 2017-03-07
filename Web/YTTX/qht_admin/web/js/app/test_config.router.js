@@ -25,7 +25,7 @@ angular.module('app')
                 .state('struct', {
                     url: '/struct',
                     /*template: '<div ui-view></div>'*/
-                    templateUrl: 'tpl/index.html'
+                    templateUrl: 'tpl/bzw-user-list.html'
                 })
                 //订单管理
                 .state('order', {
