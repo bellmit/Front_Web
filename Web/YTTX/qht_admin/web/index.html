@@ -16,19 +16,23 @@
 	<script src="js/base/h5support.js"></script>
 	<![endif]-->
 </head>
-<body class="struct-layout-wrap" ng-controller="AppCtrl">
+<body class="struct-layout-wrap" ng-controller="AppController">
 
 <!--头部-->
 <div class="struct-layout-header" data-ng-include="'tpl/common/header.html'" id="struct_layout_header"></div>
 
+
 <!--主体-->
 <div class="struct-layout-container struct-layout-default">
-	<div class="struct-layout-main"></div>
+	<div class="struct-layout-main" ui-view=""></div>
 	<div class="struct-layout-side" data-ng-include="'tpl/common/side.html'" id="struct_layout_side"></div>
 </div>
 
+
 <!--底部-->
-<div class="struct-layout-footer"></div>
+<div class="struct-layout-footer">
+	<div class="footer-content-wrap"></div>
+</div>
 
 <!--jquery-->
 <script src="js/base/jquery-1.11.1.js"></script>
@@ -40,18 +44,18 @@
 <!--angular-->
 <script src="js/angular/angular/angular.min.js"></script>
 <script src="js/angular/angular/angular-animate.min.js"></script>
-!--<script src="js/angular/angular/angular-cookies.min.js"></script>
+<!--<script src="js/angular/angular/angular-cookies.min.js"></script>
 <script src="js/angular/angular/angular-resource.min.js"></script>
 <script src="js/angular/angular/angular-sanitize.min.js"></script>
 <script src="js/angular/angular/angular-touch.min.js"></script>
-<script src="js/angular/angular/angular-route.min.js"></script><-->
+<script src="js/angular/angular/angular-route.min.js"></script>-->
 
 <!--vendor-->
 <script src="js/angular/angular/angular-ui-router.min.js"></script>
 <!--<script src="../js/angular/ngstorage/ngStorage.js"></script>-->
 
 <!--bootstrap-->
-<!--<script src="../js/angular/bootstrap/ui-bootstrap-tpls.js"></script>-->
+<!--<script src="js/angular/bootstrap/ui-bootstrap-tpls-2.5.0.js"></script>-->
 
 <!--lazyload:延迟加载-->
 <!--<script src="../js/angular/oclazyload/ocLazyLoad.js"></script>-->

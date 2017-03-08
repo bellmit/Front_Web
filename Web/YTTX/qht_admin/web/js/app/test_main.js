@@ -3,7 +3,7 @@
 /*控制器设置基本配置*/
 (function () {
        angular.module('app')
-       .controller('AppCtrl', ['$scope','toolDialog','$http',function($scope,toolDialog,$http){
+       .controller('AppController', ['$scope','toolDialog','$http',function($scope,toolDialog,$http){
            $scope.headerdata={};
            $scope.subdata={};
 

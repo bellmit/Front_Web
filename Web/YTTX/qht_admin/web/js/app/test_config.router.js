@@ -10,46 +10,44 @@ angular.module('app')
      }]).config(
     ['$stateProvider', '$urlRouterProvider',
         function ($stateProvider, $urlRouterProvider) {
+            /*异常路径路由到主页*/
+            $urlRouterProvider.otherwise('app');
 
-            $urlRouterProvider
-                .otherwise('/app');
-
-
+            /*路由*/
             $stateProvider
                 .state('app', {
-                    abstract: true,
                     url: '/app',
-                    templateUrl: 'tpl/index.html'
+                    templateUrl: 'tpl/app.html'
                 })
                 //机构
                 .state('struct', {
                     url: '/struct',
                     /*template: '<div ui-view></div>'*/
-                    templateUrl: 'tpl/bzw-user-list.html'
+                    templateUrl: 'tpl/struct_list.html'
                 })
                 //订单管理
                 .state('order', {
                     url: '/order',
                     /*template: '<div ui-view class="fade-in"></div>'*/
-                    templateUrl: 'tpl/index.html'
+                    templateUrl: 'tpl/order_list.html'
                 })
                 //财务管理
                 .state('finance', {
                     url: '/finance',
                     /*template: '<div ui-view class="fade-in-down"></div>'*/
-                    templateUrl: 'tpl/index.html'
+                    templateUrl: 'tpl/finance_list.html'
                 })
                 //设备管理
                 .state('equipment', {
-                    abstract: true,
+                    /*abstract: true,*/
                     url: '/equipment',
-                    templateUrl: 'tpl/index.html'
+                    templateUrl: 'tpl/equipment_list.html'
                 })
                 //设置
                 .state('setting', {
-                    abstract: true,
+                    /*abstract: true,*/
                     url: '/setting',
-                    templateUrl: 'tpl/index.html'
+                    templateUrl: 'tpl/setting_list.html'
                 })
         }
     ]
