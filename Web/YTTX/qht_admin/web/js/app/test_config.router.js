@@ -20,10 +20,15 @@ angular.module('app')
                     templateUrl: 'tpl/app.html'
                 })
                 //机构
-                .state('struct', {
-                    url: '/struct',
+                .state('struct_operate', {
+                    url: '/struct_operate',
                     /*template: '<div ui-view></div>'*/
-                    templateUrl: 'tpl/struct_list.html'
+                    templateUrl: 'tpl/struct_operate.html'
+                })
+                .state('struct_role', {
+                    url: '/struct_role',
+                    /*template: '<div ui-view></div>'*/
+                    templateUrl: 'tpl/struct_role.html'
                 })
                 //订单管理
                 .state('order', {

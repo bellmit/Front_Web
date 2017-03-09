@@ -33,7 +33,7 @@
                            'href':'app'
                        },{
                            'name':'机构',
-                           'href':'struct'
+                           'href':'struct_operate'
                        },{
                            'name':'订单管理',
                            'href':'order'
