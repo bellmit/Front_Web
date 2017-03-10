@@ -14,7 +14,7 @@
 }
 
 /*主题*/
-.admin-layout-theme1,.admin-layout-theme2,.admin-layout-theme3{
+.admin-layout-theme1,.admin-layout-theme2,.admin-layout-theme3,.admin-layout-theme4{
   .layout-base;
   display: inline-block;
   min-height:30px;
@@ -47,9 +47,23 @@
   padding:20px 0;
   font-size:@font-size-base + 4;
 }
+.admin-layout-theme4{
+  color:@color-gray3;
+  padding:5px 0;
+  font-size:@font-size-base;
+}
+.admin-theme-close{
+  .layout-relative-base;
+  .admin-mini-icon1{
+    .layout-absoluter-base(8px,50%);
+    margin-top:-8px;
+    cursor: pointer;
+  }
+}
 
 
-/*按钮系列*/
+/*按钮,图标系列*/
+
 /*编辑操作按钮*/
 .btn-action{
   width:16px;
@@ -117,6 +131,34 @@
 .admin-theme-icon4 {
   background-image: url(../images/theme_icon.png);
   background-position: -20px -20px;
+}
+
+
+/*迷你图标*/
+.mini-icon{
+  vertical-align: middle;
+  padding:0;
+  overflow: hidden;
+  display:inline-block;
+  width: 16px;
+  height: 16px;
+}
+.admin-mini-icon1 {
+  background-image: url(../images/mini_icon.png);
+  background-position: 0px 0px;
+  cursor: pointer;
+}
+.admin-mini-icon2 {
+  background-image: url(../images/mini_icon.png);
+  background-position: -16px 0px;
+}
+.admin-mini-icon3 {
+  background-image: url(../images/mini_icon.png);
+  background-position: 0px -16px;
+}
+.admin-mini-icon4 {
+  background-image: url(../images/mini_icon.png);
+  background-position: -16px -16px;
 }
 
 
