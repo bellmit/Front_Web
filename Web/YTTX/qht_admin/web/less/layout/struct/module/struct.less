@@ -5,18 +5,47 @@
   .layout-base;
   padding:5px 10px;
   margin:5px 0;
-  height:40px;
+  min-height:40px;
   background:@color-gray17;
   span{
     display:inline-block;
     padding:0 10px;
+    vertical-align: middle;
     height:100%;
     line-height:30px;
     cursor: pointer;
     color:@color-gray3;
     font-size:@font-size-base;
+    white-space: nowrap;
     &:hover{
       color:@color-blue1;
+    }
+  }
+  .action-item-btn,
+  .action-item-search{
+    display: inline-block;
+    height:100%;
+  }
+  .action-item-search{
+    label{
+      .layout-base;
+      padding:0 0 0 2em;
+      line-height: 30px;
+      vertical-align: middle;
+      height:100%;
+      white-space: nowrap;
+      display:inline-block;
+      text-indent:-2em;
+      color:@color-gray6;
+      font-size:@font-size-base;
+      font-weight:normal;
+      input{
+        display: inline-block;
+        width:95%;
+        margin-left:3px;
+        max-width:200px;
+        min-width:60px;
+      }
     }
   }
   .btn-action{
@@ -26,7 +55,7 @@
 
 
 /*机构列表*/
-.admin-list-toggleselect{
+.admin-list-tsitem{
   .layout-base;
   li{
     .layout-base;
@@ -37,12 +66,6 @@
     color:@color-gray6;
     background:@color-white;
     border-bottom:1px solid @color-gray14;
-    &:hover{
-      background:@color-gray17;
-      span{
-        border:1px solid @color-gray13;
-      }
-    }
     span{
       .layout-absoluter-base(5px,5px);
       height:30px;
@@ -62,17 +85,27 @@
         line-height:28px;
         font-size:@font-size-base + 8;
       }
+      &:hover{
+        .transition(all ease-in .1s .02s);
+        color:@color-red1 !important;
+      }
     }
     ul{
       .layout-base;
       display:none;
+    }
+    &:hover{
+      background:@color-gray17;
+      span{
+        border:1px solid @color-gray13;
+      }
     }
   }
   >li{
     .layout-relative-base;
     padding:0 40px 0 30px;
   }
-  .list-child{
+  .ts-active{
     span{
       &:after,
       &::after{

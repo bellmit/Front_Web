@@ -1,93 +1,69 @@
 <!--主内容-->
-<div class="admin-layout-container">
-    <h1 class="admin-layout-theme3"></h1>
-    <div class="admin-search-wrap">
-        <div class="admin-search-item">
-            <label>商品名称：</label>
-            <input type="text" id="search_name" />
-        </div>
-        <div class="admin-search-item">
-            <label>店铺名称：</label>
-            <input type="text" id="search_providerName" />
-        </div>
-        <div class="admin-search-item">
-            <label>禁售/取消禁售：</label>
-            <select id="search_isForbidden" >
-                <option selected value="">全部</option>
-                <option value="false">取消禁售</option>
-                <option value="true">禁售</option>
-            </select>
-        </div>
-        <div class="admin-search-item">
-            <label>状态：</label>
-            <select id="search_status" >
-                <option selected value="">全部</option>
-                <option value="0">仓库</option>
-                <option value="1">上架</option>
-                <option value="2">下架</option>
-                <option value="3">删除</option>
-            </select>
-        </div>
-        <div class="admin-search-item">
-            <label>审核状态：</label>
-            <select id="search_auditStatus" >
-                <option selected value="0">待审核</option>
-                <option value="1">审核成功</option>
-                <option value="2">审核失败</option>
-            </select>
-        </div>
-        <div class="admin-search-item">
-            <label>商品分类：</label>
-            <select class="g-w-number8" id="search_gtione" ></select>
-            <select class="g-w-number8" id="search_gtitwo" ></select>
-            <select class="g-w-number8" id="search_gtithree" ></select>
-        </div>
-        <div class="admin-search-item">
-                            <span id="admin_search_btn" class="btn btn-info btn-icon g-br2">
-                                <i class="fa-search"></i>查询
-                            </span>
-                            <span id="admin_search_clear" class="btn btn-info btn-icon g-br2">
-                                <i class="fa-spinner"></i>清空
-                            </span>
-        </div>
-    </div>
+<h1 class="admin-layout-theme3">省级运营商&nbsp;&nbsp;&nbsp;&nbsp;<span class="btn btn-default g-c-blue3"><i class="btn-action admin-btn-action7"></i>&nbsp;编辑</span></h1>
+
+<!--操作条-->
+<div class="admin-action-item">
+    <span><i class="btn-action admin-btn-action1"></i>添加用户</span>
+    <span><i class="btn-action admin-btn-action8"></i>移除成员</span>
+</div>
+
+<!--表格-->
+<table id="admin_list_wrap" class="table table-bordered table-striped table-hover admin-layout-table">
+    <!--分组样式-->
+    <colgroup>
+        <col class="g-w-percent10">
+        <col class="g-w-percent10">
+        <col class="g-w-percent10">
+        <col class="g-w-percent10">
+        <col class="g-w-percent10">
+    </colgroup>
+
+    <!--表头-->
+    <thead>
+    <tr>
+        <th>商品编号</th>
+        <th>商品名称</th>
+        <th>店铺名称</th>
+        <th>分类</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+
+    <!--表主体-->
+    <tbody id="admin_batchlist_wrap" class="middle-align">
+    <tr>
+        <td>aksdg</td>
+        <td>0467996</td>
+        <td>937msghfjsk</td>
+        <td>3599679</td>
+        <td><span class="btn-operate">查看</span><span class="btn-operate">订单</span><span class="btn-operate">修改</span></td>
+    </tr>
+    <tr>
+        <td>aksdg</td>
+        <td>0467996</td>
+        <td>937msghfjsk</td>
+        <td>3599679</td>
+        <td><span class="btn-operate">查看</span><span class="btn-operate">订单</span><span class="btn-operate">修改</span></td>
+    </tr>
+    <tr>
+        <td>aksdg</td>
+        <td>0467996</td>
+        <td>937msghfjsk</td>
+        <td>3599679</td>
+        <td><span class="btn-operate">查看</span><span class="btn-operate">订单</span><span class="btn-operate">修改</span></td>
+    </tr>
+    <tr>
+        <td>aksdg</td>
+        <td>0467996</td>
+        <td>937msghfjsk</td>
+        <td>3599679</td>
+        <td><span class="btn-operate">查看</span><span class="btn-operate">订单</span><span class="btn-operate">修改</span></td>
+    </tr>
+    </tbody>
+</table>
 
 
-
-    <table id="admin_list_wrap" class="table table-bordered table-striped table-hover admin-table">
-        <!--分组样式-->
-        <colgroup>
-            <col class="g-w-percent2">
-            <col class="g-w-percent6">
-            <col class="g-w-percent10">
-            <col class="g-w-percent6">
-            <col class="g-w-percent5">
-            <col class="g-w-percent3">
-            <col class="g-w-percent4">
-            <col class="g-w-percent6">
-            <col class="g-w-percent8">
-        </colgroup>
-
-        <!--表头-->
-        <thead>
-        <tr>
-            <th class="no-sorting">&nbsp;</th>
-            <th>商品编号</th>
-            <th>商品名称</th>
-            <th>店铺名称</th>
-            <th>分类</th>
-            <th>排序</th>
-            <th>状态</th>
-            <th>禁售/取消禁售</th>
-            <th>操作</th>
-        </tr>
-        </thead>
-
-
-        <!--表主体-->
-        <tbody id="admin_batchlist_wrap" class="middle-align"></tbody>
-    </table>
-    <div class="admin-page-wrap">
-        <div class="easyui-pagination g-w-percent50" id="admin_page_wrap" data-options="links:5,layout:['manual','first','prev','links','next','last'],displayMsg:'显示{from}&nbsp;到&nbsp;{to}&nbsp;共&nbsp;{total}条记录'"></div>
-    </div>
+<!--分页-->
+<div class="admin-page-wrap">
+    <div class="easyui-pagination g-w-percent50" id="admin_page_wrap" data-options="links:5,layout:['manual','first','prev','links','next','last'],displayMsg:'显示{from}&nbsp;到&nbsp;{to}&nbsp;共&nbsp;{total}条记录'"></div>
 </div>

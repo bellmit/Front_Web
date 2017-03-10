@@ -3,9 +3,9 @@
   .layout-relative-base;
   .box-sizing-base;
   height:100%;
-/*height:@layout-height-container;*/
-  padding:@layout-height-header + @layout-shadow-header + @layout-gap-header 0 @layout-containergap-bottom 0;
-  min-height:800px;
+/*height:@layout-container-height;*/
+  padding:@layout-containergap-top 0 @layout-containergap-bottom 0;
+  min-height:600px;
   margin:0 auto;
   display:block;
   &:after,
@@ -20,11 +20,11 @@
 }
 /*适配扩展*/
 .struct-layout-default{
-  width:@layout-width-container !important;
+  width:@layout-container-width !important;
 }
 .struct-layout-auto{
   width:100%;
-  min-width:@layout-width-container !important;
+  min-width:@layout-container-width !important;
 }
 .struct-layout-mini{
   width:100%;
