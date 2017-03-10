@@ -451,6 +451,7 @@
     font-size:@font-size-base;
     color:@color-gray6;
     padding:5px 10px;
+    line-height:@font-size-base + 10;
     font-weight: normal;
   }
   .form-require-item{
@@ -468,7 +469,7 @@
     background:@color-white;
   }
   textarea{
-    min-height:200px;
+    min-height:120px;
   }
   .form-admin-editor{
     border:none !important;
@@ -576,6 +577,35 @@
           display: inline-block;
         }
       }
+    }
+  }
+
+  /*间隙*/
+  .form-gap{
+    .layout-base;
+    display:inline-block;
+  }
+  .form-gap1{
+    height:5px;
+  }
+  .form-gap2{
+    height:10px;
+  }
+  .form-gap3{
+    height:15px;
+  }
+  .form-gap4{
+    height:20px;
+  }
+  .form-clearfix{
+    &:after,
+    &::after{
+      content:'';
+      clear: both;
+      display:table;
+      width:100%;
+      height:0;
+      line-height: 0;
     }
   }
 

@@ -136,8 +136,9 @@
                 <h4 class="modal-title">机构设置</h4>
             </div>
             <div class="modal-body">
-                <div class="g-f-l g-w-percent36 g-d-hidei">
-                    <div class="admin-layout-theme4 admin-theme-close g-t-c g-b-gray16">选择权限
+
+                <div class="g-f-l g-w-percent34 g-d-hidei">
+                    <div class="admin-layout-theme4 admin-theme-close g-t-c g-b-gray17">选择权限
                         <span class="mini-icon admin-mini-icon1"></span>
                     </div>
                     <table class="table table-bordered table-striped table-hover admin-layout-table">
@@ -203,46 +204,73 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="g-f-r g-w-percent12">
-                    <div class="admin-layout-theme4 admin-theme-close g-t-c g-b-gray16">机构设置
+
+                <div class="g-f-r g-w-percent14">
+                    <div class="admin-layout-theme4 admin-theme-close g-t-c g-b-gray17">机构设置
                         <span class="mini-icon admin-mini-icon1"></span>
                     </div>
                     <form role="form"  method="post" id="admin_audit_form" class="admin-layout-form">
                         <div class="admin-layout-theme4"><span class="mini-icon admin-mini-icon2"></span>&nbsp;&nbsp;基本信息</div>
+
                         <div class="form-group">
-                            <label class="control-label"><span class="form-require-item g-c-red1">*</span>机构名称：</label>
-                            <input type="text" class="form-control" name="jgmc" placeholder="请输入机构名称" data-validate="required" data-message-required="机构名称不能为空"  id="admin_jgmc" />
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label"><span class="form-require-item g-c-red1">*</span>上级机构：</label>
-                            <input type="text" class="form-control" name="sjjg" placeholder="请输入上级机构" data-validate="required" data-message-required="上级机构不能为空"  id="admin_sjjg" />
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label"><span class="form-require-item g-c-red1">*</span>负责人：</label>
-                            <input type="text" class="form-control" name="fzr" placeholder="请输入负责人" data-validate="required" data-message-required="负责人不能为空"  id="admin_frz" />
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label"><span class="form-require-item g-c-red1">*</span>负责人手机：</label>
-                            <input type="text" class="form-control" name="fzrsj" placeholder="请输入负责人手机" data-validate="required" data-message-required="负责人手机不能为空"  id="admin_frzsj" />
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label"><span class="form-require-item g-c-red1">*</span>联系地址：</label>
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <select class="form-control" name="sheng" data-validate="required" data-message-required="联系地址省不能为空"  id="admin_sheng"></select>
-                                </div>
-                                <div class="col-md-4">
-                                    <select class="form-control" name="shi" data-validate="required" data-message-required="联系地址市不能为空"  id="admin_shi"></select>
-                                </div>
-                                <div class="col-md-4">
-                                    <select class="form-control" name="xian" data-validate="required" data-message-required="联系地址县不能为空"  id="admin_xian"></select>
-                                </div>
+                            <label class="col-sm-4 control-label g-t-r"><span class="form-require-item g-c-red1">*</span>机构名称：</label>
+
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control g-clear-br" name="jgmc" placeholder="请输入机构名称" data-validate="required" data-message-required="机构名称不能为空"  id="admin_jgmc" />
                             </div>
                         </div>
+                        <div class="form-gap form-gap1"></div>
+
                         <div class="form-group">
-                            <label class="control-label">备注：</label>
-                            <textarea class="form-control" name="fzrsj" id="admin_bz"></textarea>
+                            <label class="col-sm-4 control-label g-t-r"><span class="form-require-item g-c-red1">*</span>上级机构：</label>
+
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control g-clear-br" name="sjjg" placeholder="请输入上级机构" data-validate="required" data-message-required="上级机构不能为空"  id="admin_sjjg" />
+                            </div>
                         </div>
+                        <div class="form-gap form-gap1"></div>
+
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label g-t-r"><span class="form-require-item g-c-red1">*</span>负责人：</label>
+
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control g-clear-br" name="fzr" placeholder="请输入负责人" data-validate="required" data-message-required="负责人不能为空"  id="admin_frz" />
+                            </div>
+                        </div>
+                        <div class="form-gap form-gap1"></div>
+
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label g-t-r"><span class="form-require-item g-c-red1">*</span>负责人手机：</label>
+
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control g-clear-br" name="fzrsj" placeholder="请输入负责人手机" data-validate="required" data-message-required="负责人手机不能为空"  id="admin_frzsj" />
+                            </div>
+                        </div>
+                        <div class="form-gap form-gap1"></div>
+
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label g-t-r"><span class="form-require-item g-c-red1">*</span>联系地址：</label>
+                            <div class="col-sm-3">
+                                <select class="form-control g-clear-br" name="sheng" data-validate="required" data-message-required="联系地址省不能为空"  id="admin_sheng"></select>
+                            </div>
+                            <div class="col-sm-2">
+                                <select class="form-control g-clear-br" name="shi" data-validate="required" data-message-required="联系地址市不能为空"  id="admin_shi"></select>
+                            </div>
+                            <div class="col-sm-3">
+                                <select class="form-control g-clear-br" name="xian" data-validate="required" data-message-required="联系地址县不能为空"  id="admin_xian"></select>
+                            </div>
+                        </div>
+                        <div class="form-gap form-gap1"></div>
+
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label g-t-r">备注：</label>
+
+                            <div class="col-sm-8">
+                                <textarea class="form-control g-clear-br" name="fzrsj" id="admin_bz"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-gap form-gap1"></div>
+
                         <div class="admin-layout-theme4"><span class="mini-icon admin-mini-icon3"></span>&nbsp;&nbsp;登陆信息</div>
 
                         <div class="form-group">
@@ -250,14 +278,22 @@
                         </div>
 
                         <div class="form-group">
-                            <label class="control-label"><span class="form-require-item g-c-red1">*</span>登陆用户名：</label>
-                            <input type="text" class="form-control" name="yhm" placeholder="请输入登陆用户名" data-validate="required" data-message-required="登陆用户名不能为空"  id="admin_yhm" />
+                            <label class="col-sm-4 control-label g-t-r"><span class="form-require-item g-c-red1">*</span>登陆用户名：</label>
+
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control g-clear-br" name="yhm" placeholder="请输入登陆用户名" data-validate="required" data-message-required="登陆用户名不能为空"  id="admin_yhm" />
+                            </div>
                         </div>
+                        <div class="form-gap form-gap1"></div>
 
                         <div class="form-group">
-                            <label class="control-label"><span class="form-require-item g-c-red1">*</span>登陆密码：</label>
-                            <input type="password" class="form-control" name="mm" placeholder="请输入登陆密码" data-validate="required" data-message-required="登陆密码不能为空"  id="admin_mm" />
+                            <label class="col-sm-4 control-label g-t-r"><span class="form-require-item g-c-red1">*</span>登陆密码：</label>
+
+                            <div class="col-sm-8">
+                                <input type="password" class="form-control g-clear-br" name="mm" placeholder="请输入登陆密码" data-validate="required" data-message-required="登陆密码不能为空"  id="admin_mm" />
+                            </div>
                         </div>
+                        <div class="form-gap form-gap1"></div>
 
                         <div class="admin-layout-theme4"><span class="mini-icon admin-mini-icon4"></span>&nbsp;&nbsp;权限设定</div>
 
@@ -265,9 +301,11 @@
                             <label class="control-label"><input type="checkbox" id="admin_qbqx" name="qx">&nbsp;&nbsp;全部权限</label>
                             <label class="control-label"><input type="checkbox" id="admin_zdqx" name="qx">&nbsp;&nbsp;指定权限</label>
                         </div>
+
                         <div class="form-group">
-                            <input type="text" class="form-control" name="yxqx" id="admin_yxqx" />
+                            <input type="text" class="form-control g-clear-br" name="yxqx" id="admin_yxqx" />
                         </div>
+
                         <div class="form-group">
                             <button type="submit" class="btn btn-red" name="yxqx">保存</button>
                         </div>
