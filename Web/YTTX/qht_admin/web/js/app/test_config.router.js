@@ -20,13 +20,18 @@ angular.module('app')
                     templateUrl: 'tpl/app.html'
                 })
                 //机构
-                .state('struct_operate', {
-                    url: '/struct_operate',
+                .state('struct', {
+                    url: '/struct',
                     /*template: '<div ui-view></div>'*/
                     templateUrl: 'tpl/struct_operate.html'
                 })
-                .state('struct_role', {
-                    url: '/struct_role',
+                .state('struct.operate', {
+                    url: '/struct.operate',
+                    /*template: '<div ui-view></div>'*/
+                    templateUrl: 'tpl/struct_operate.html'
+                })
+                .state('struct.role', {
+                    url: '/struct.role',
                     /*template: '<div ui-view></div>'*/
                     templateUrl: 'tpl/struct_role.html'
                 })

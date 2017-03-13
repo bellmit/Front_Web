@@ -353,6 +353,35 @@
 	border-left:0 !important;
 }
 
+/*定位*/
+.g-pos-r{
+	.layout-relative-base;
+}
+.g-pos-al{
+	.layout-absolutel-base;
+}
+.g-pos-alb{
+	.layout-absolutelb-base;
+}
+.g-pos-ar{
+	.layout-absoluter-base;
+}
+.g-pos-arb{
+	.layout-absoluterb-base;
+}
+.g-pos-fl{
+	.layout-fixedl-base;
+}
+.g-pos-flb{
+	.layout-fixedlb-base;
+}
+.g-pos-fr{
+	.layout-fixedr-base;
+}
+.g-pos-frb{
+	.layout-fixedrb-base;
+}
+
 
 
 
@@ -382,6 +411,15 @@
 	.g-w-numberfor(@n,(@i+1));
 }
 .g-w-numberfor(50);
+
+///*----百分比高度----*/
+.g-h-percentfor(@n,@i:1) when (@i =< @n) {
+	.g-h-percent@{i}{
+		height:@i * 1% !important;
+	}
+	.g-h-percentfor(@n,(@i+1));
+}
+.g-h-percentfor(100);
 
 
 ///*----间距--padding----*/

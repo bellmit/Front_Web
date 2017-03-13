@@ -2,7 +2,6 @@
 .struct-layout-wrap{
   .layout-base;
   height:100%;
-  .layout-relative-base;
   background:@color-gray16;
 }
 
@@ -61,8 +60,6 @@
   }
 }
 
-
-/*按钮,图标系列*/
 
 /*编辑操作按钮*/
 .btn-action{
@@ -606,6 +603,64 @@
       width:100%;
       height:0;
       line-height: 0;
+    }
+  }
+
+
+  /*自定义表单1*/
+  .form-group-self1{
+    .layout-base;
+    min-height:38px;
+    padding:5px 10px;
+    font-size:0;
+    .self-label,
+    .self-input{
+      .box-sizing-base;
+      display: inline-block;
+      height:100%;
+    }
+    .self-label{
+      line-height:28px;
+      padding:0 10px;
+      font-weight: normal;
+      font-size:@font-size-base;
+      color:@color-gray6;
+      .self-require{
+        display:inline-block;
+        padding:0 3px;
+        height:100%;
+        vertical-align: middle;
+        line-height:30px;
+      }
+    }
+    .self-input{
+      width:100%;
+      input[type="text"],
+      input[type="password"],
+      textarea,
+      select{
+        .layout-base;
+        border:1px solid @color-gray12;
+        font-size:@font-size-base;
+        color:@color-gray6;
+        &:focus{
+          border:1px solid @color-gray10;
+        }
+      }
+      input[type="text"],
+      input[type="password"]{
+        height:100%;
+        line-height:@font-size-base + 2;
+        padding:6px 5px;
+      }
+      select{
+        height:28px;
+      }
+      textarea{
+        min-height:100px;
+        padding:4px 5px;
+        line-height:@font-size-base + 10;
+      }
     }
   }
 

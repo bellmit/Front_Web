@@ -20,7 +20,7 @@ angular.module('ui.sideitem',['tool.util'])
         return {
             replace:false,
             restrict: 'EC',
-            template:'<li ng-repeat="i in subdata.listitem"><a href="#{{i.href}}" title="">{{i.name}}</a></li>'
+            template:'<li ng-repeat="i in subdata.listitem"><a data-type="{{i.href}}" title="">{{i.name}}</a></li>'
         };
     })
     .directive('uiSubSearch',['toolUtil',function(toolUtil) {
@@ -66,7 +66,7 @@ angular.module('ui.sideitem',['tool.util'])
         return {
             replace:false,
             restrict: 'EC',
-            template:'<li data-type="{{i.type}}" ng-repeat="i in subdata.tabitem">{{i.name}}</li>',
+            template:'<li ui-sref="{{i.href}}" ng-repeat="i in subdata.tabitem">{{i.name}}</li>',
             link:function (scope, element, attrs) {
                /*绑定事件*/
                 element.on('click','li',function (e) {

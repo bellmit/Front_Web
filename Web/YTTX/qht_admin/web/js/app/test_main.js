@@ -33,7 +33,7 @@
                            'href':'app'
                        },{
                            'name':'机构',
-                           'href':'struct_operate'
+                           'href':'struct'
                        },{
                            'name':'订单管理',
                            'href':'order'
@@ -122,12 +122,15 @@
                        console.log(datares.message);
                        return false;
                    }
-                   var result=Mock.mock({
-                       'list|2':[{
-                           "name":'tab',
-                           "type|+1":1
+                   var result={
+                       'list':[{
+                           'name':'运营架构',
+                           'href':'struct.operate'
+                       },{
+                           'name':'角色',
+                           'href':'struct.role'
                        }]
-                   });
+                   };
                    if(typeof result==='undefined'){
                        return false;
                    }
