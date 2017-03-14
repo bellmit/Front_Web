@@ -17,47 +17,111 @@ angular.module('app')
             $stateProvider
                 .state('app', {
                     url: '/app',
-                    templateUrl: 'tpl/app.html'
+                    views:{
+                        'header':{
+                            templateUrl: 'tpl/common/header.html'
+                        },
+                        'main':{
+                            templateUrl: 'tpl/app.html'
+                        },
+                        'sidemenu':{
+                            templateUrl: 'tpl/common/side.html'
+                        }
+                    }
                 })
                 //机构
                 .state('struct', {
                     url: '/struct',
-                    /*template: '<div ui-view></div>'*/
-                    templateUrl: 'tpl/struct_operate.html'
-                })
-                .state('struct.operate', {
-                    url: '/struct.operate',
-                    /*template: '<div ui-view></div>'*/
-                    templateUrl: 'tpl/struct_operate.html'
+                    views:{
+                        'header':{
+                            templateUrl: 'tpl/common/header.html'
+                        },
+                        'main':{
+                            templateUrl: 'tpl/struct_operate.html'
+                        },
+                        'sidemenu':{
+                            templateUrl: 'tpl/common/side_struct_operate.html'
+                        },
+                        'dialog':{
+                            templateUrl: 'tpl/struct_operate_setting.html'
+                        }
+                    }
                 })
                 .state('struct.role', {
-                    url: '/struct.role',
-                    /*template: '<div ui-view></div>'*/
-                    templateUrl: 'tpl/struct_role.html'
+                    url: '/struct_role',
+                    views:{
+                        'header':{
+                            templateUrl: 'tpl/common/header.html'
+                        },
+                        'main':{
+                            templateUrl: 'tpl/struct_role.html'
+                        },
+                        'sidemenu':{
+                            templateUrl: 'tpl/common/side_struct_role.html'
+                        }
+                    }
                 })
                 //订单管理
                 .state('order', {
                     url: '/order',
-                    /*template: '<div ui-view class="fade-in"></div>'*/
-                    templateUrl: 'tpl/order_list.html'
+                    views:{
+                        'header':{
+                            templateUrl: 'tpl/common/header.html'
+                        },
+                        'main':{
+                            templateUrl: 'tpl/app.html'
+                        },
+                        'sidemenu':{
+                            templateUrl: 'tpl/common/side.html'
+                        }
+                    }
                 })
                 //财务管理
                 .state('finance', {
                     url: '/finance',
-                    /*template: '<div ui-view class="fade-in-down"></div>'*/
-                    templateUrl: 'tpl/finance_list.html'
+                    views:{
+                        'header':{
+                            templateUrl: 'tpl/common/header.html'
+                        },
+                        'main':{
+                            templateUrl: 'tpl/app.html'
+                        },
+                        'sidemenu':{
+                            templateUrl: 'tpl/common/side.html'
+                        }
+                    }
                 })
                 //设备管理
                 .state('equipment', {
                     /*abstract: true,*/
                     url: '/equipment',
-                    templateUrl: 'tpl/equipment_list.html'
+                    views:{
+                        'header':{
+                            templateUrl: 'tpl/common/header.html'
+                        },
+                        'main':{
+                            templateUrl: 'tpl/app.html'
+                        },
+                        'sidemenu':{
+                            templateUrl: 'tpl/common/side.html'
+                        }
+                    }
                 })
                 //设置
                 .state('setting', {
                     /*abstract: true,*/
                     url: '/setting',
-                    templateUrl: 'tpl/setting_list.html'
+                    views:{
+                        'header':{
+                            templateUrl: 'tpl/common/header.html'
+                        },
+                        'main':{
+                            templateUrl: 'tpl/app.html'
+                        },
+                        'sidemenu':{
+                            templateUrl: 'tpl/common/side.html'
+                        }
+                    }
                 })
         }
     ]

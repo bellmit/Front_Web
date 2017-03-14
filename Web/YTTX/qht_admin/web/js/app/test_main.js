@@ -125,7 +125,7 @@
                    var result={
                        'list':[{
                            'name':'运营架构',
-                           'href':'struct.operate'
+                           'href':'struct'
                        },{
                            'name':'角色',
                            'href':'struct.role'
