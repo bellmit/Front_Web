@@ -18,9 +18,9 @@ angular.module('app')
                 .state('app', {
                     url: '/app',
                     views:{
-                        'header':{
+                        /*'header':{
                             templateUrl: 'tpl/common/header.html'
-                        },
+                        },*/
                         'main':{
                             templateUrl: 'tpl/app.html'
                         },
@@ -33,9 +33,9 @@ angular.module('app')
                 .state('struct', {
                     url: '/struct',
                     views:{
-                        'header':{
+                        /*'header':{
                             templateUrl: 'tpl/common/header.html'
-                        },
+                        },*/
                         'main':{
                             templateUrl: 'tpl/struct_operate.html'
                         },
@@ -47,12 +47,13 @@ angular.module('app')
                         }
                     }
                 })
-                .state('struct.role', {
-                    url: '/struct_role',
+                //机构下面的角色
+                .state('role', {
+                    url: '/struct.role',
                     views:{
-                        'header':{
+                        /*'header':{
                             templateUrl: 'tpl/common/header.html'
-                        },
+                        },*/
                         'main':{
                             templateUrl: 'tpl/struct_role.html'
                         },
@@ -65,14 +66,14 @@ angular.module('app')
                 .state('order', {
                     url: '/order',
                     views:{
-                        'header':{
+                        /*'header':{
                             templateUrl: 'tpl/common/header.html'
-                        },
+                        },*/
                         'main':{
-                            templateUrl: 'tpl/app.html'
+                            templateUrl: 'tpl/order_list.html'
                         },
                         'sidemenu':{
-                            templateUrl: 'tpl/common/side.html'
+                            templateUrl: 'tpl/common/side_order.html'
                         }
                     }
                 })
@@ -80,14 +81,14 @@ angular.module('app')
                 .state('finance', {
                     url: '/finance',
                     views:{
-                        'header':{
+                        /*'header':{
                             templateUrl: 'tpl/common/header.html'
-                        },
+                        },*/
                         'main':{
-                            templateUrl: 'tpl/app.html'
+                            templateUrl: 'tpl/finance_list.html'
                         },
                         'sidemenu':{
-                            templateUrl: 'tpl/common/side.html'
+                            templateUrl: 'tpl/common/side_finance.html'
                         }
                     }
                 })
@@ -96,14 +97,14 @@ angular.module('app')
                     /*abstract: true,*/
                     url: '/equipment',
                     views:{
-                        'header':{
+                        /*'header':{
                             templateUrl: 'tpl/common/header.html'
-                        },
+                        },*/
                         'main':{
-                            templateUrl: 'tpl/app.html'
+                            templateUrl: 'tpl/equipment_list.html'
                         },
                         'sidemenu':{
-                            templateUrl: 'tpl/common/side.html'
+                            templateUrl: 'tpl/common/side_equipment.html'
                         }
                     }
                 })
@@ -112,14 +113,14 @@ angular.module('app')
                     /*abstract: true,*/
                     url: '/setting',
                     views:{
-                        'header':{
+                        /*'header':{
                             templateUrl: 'tpl/common/header.html'
-                        },
+                        },*/
                         'main':{
-                            templateUrl: 'tpl/app.html'
+                            templateUrl: 'tpl/setting_info.html'
                         },
                         'sidemenu':{
-                            templateUrl: 'tpl/common/side.html'
+                            templateUrl: 'tpl/common/side_setting.html'
                         }
                     }
                 })

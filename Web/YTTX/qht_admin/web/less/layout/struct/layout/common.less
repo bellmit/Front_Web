@@ -362,6 +362,151 @@
 }
 
 
+/*菜单操作条*/
+.admin-action-item{
+  /*公共函数*/
+  /*图标*/
+  .dt-icon(){
+    background:@color-white;
+    display:inline-block;
+    border:1px solid @color-gray12;
+    text-align: center;
+    font-size:@font-size-base + 8;
+    overflow: hidden;
+    max-width:36px;
+    min-width:28px;
+    height:100%;
+    content:'\e723';
+    text-indent: 0;
+    padding:0;
+    margin:0;
+    font-family:'ux_two';
+  }
+
+
+  .layout-base;
+  padding:5px 10px;
+  margin:5px 0;
+  min-height:40px;
+  background:@color-gray17;
+  span{
+    display:inline-block;
+    padding:0 10px;
+    vertical-align: middle;
+    height:30px;
+    line-height:30px;
+    cursor: pointer;
+    color:@color-gray3;
+    font-size:@font-size-base;
+    white-space: nowrap;
+    &:hover{
+      color:@color-blue3;
+    }
+  }
+  .action-item-btn{
+    display: inline-block;
+    height:30px;
+  }
+  .action-item-export{
+    .btn-export{
+      border:1px solid @color-gray12;
+    }
+  }
+
+  /*偏移量*/
+  .action-indent-b1{
+    padding:0 0 0 1em;
+    text-indent:-1em;
+  }
+  .action-indent-b2{
+    padding:0 0 0 2em;
+    text-indent:-2em;
+  }
+  .action-indent-b3{
+    padding:0 0 0 3em;
+    text-indent:-3em;
+  }
+  .action-indent-b4{
+    padding:0 0 0 4em;
+    text-indent:-4em;
+  }
+  .action-indent-b5{
+    padding:0 0 0 5em;
+    text-indent:-5em;
+  }
+  .action-indent-b6{
+    padding:0 0 0 6em;
+    text-indent:-6em;
+  }
+
+  /*输入框*/
+  .action-item-input{
+    display: inline-block;
+    height:30px;
+    label{
+      .layout-base;
+      line-height: 30px;
+      vertical-align: middle;
+      height:100%;
+      white-space: nowrap;
+      display:inline-block;
+      color:@color-gray6;
+      font-size:@font-size-base;
+      font-weight:normal;
+      input[type='search'],
+      input[type='text'],
+      select{
+        display:inline-block;
+        height:100%;
+        background:@color-white;
+        color:@color-gray6;
+        &:focus{
+          .box-shadow-base(none);
+        }
+      }
+    }
+  }
+
+  .action-item-input{
+    label{
+      input{
+        width:95%;
+        margin-left:3px;
+        max-width:150px;
+        min-width:60px;
+      }
+    }
+  }
+  /*图标*/
+  .dt-icon-before,
+  .dt-icon-after{
+    .layout-relative-base;
+  }
+  .dt-icon-after{
+    padding-right:2em;
+    &:after,
+    &::after{
+      .layout-absoluter-base;
+      .border-radius-base(0 3px 3px 0);
+      .dt-icon;
+    }
+  }
+  .dt-icon-before{
+    padding-left:2em;
+    &:before,
+    &::before{
+      .layout-absolutel-base;
+      .border-radius-base(3px 0 0 3px);
+      .dt-icon;
+    }
+  }
+
+  .btn-action{
+    margin-right:5px;
+  }
+}
+
+
 /*表格*/
 .admin-layout-table{
   /*表格全局设置*/

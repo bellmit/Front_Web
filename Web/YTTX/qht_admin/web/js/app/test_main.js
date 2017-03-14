@@ -128,7 +128,7 @@
                            'href':'struct'
                        },{
                            'name':'角色',
-                           'href':'struct.role'
+                           'href':'role'
                        }]
                    };
                    if(typeof result==='undefined'){
