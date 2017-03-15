@@ -8,7 +8,7 @@
         this.isSupport=toolUtil.isSupport();
     }])
       .controller('LoginController',[function () {
-            this.isLogin=false;
+            this.isLogin=true;
       }])
       /*.controller('AppController', ['$scope','toolUtil','toolDialog','$http',function($scope,toolUtil,toolDialog,$http){
             $scope.headerdata={};

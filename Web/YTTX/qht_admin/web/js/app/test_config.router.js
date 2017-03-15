@@ -130,6 +130,11 @@ angular.module('app')
                         }
                     }
                 })
+                //退出
+                .state('login', {
+                    /*abstract: true,*/
+                    url: '/app'
+                })
         }
     ]
 );

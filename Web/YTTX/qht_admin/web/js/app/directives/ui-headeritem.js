@@ -17,6 +17,6 @@ angular.module('ui.headeritem',[])
         return {
             replace:true,
             restrict: 'EC',
-            template:'<div class="g-br3 header-outwrap" ng-click="headerdata.systemLogout()">退出</div>'
+            template:'<div class="g-br3 header-outwrap" ui-sref="login" ng-click="headerdata.systemLogout()">退出</div>'
         };
     });

@@ -808,6 +808,82 @@
       }
     }
   }
+  /*自定义表单2*/
+  .form-group-self2{
+    @label-height:40px;
+    .layout-base;
+    min-height:@label-height + 30px;
+    padding:15px 0;
+    font-size:0;
+    .self-label,
+    .self-input,
+    .self-valid{
+      .box-sizing-base;
+      display: inline-block;
+      height:100%;
+    }
+    .self-label{
+      padding-left:@label-height;
+    }
+    .self-valid{
+      overflow: hidden;
+      img{
+        display: inline-block;
+        .box-sizing-base;
+        border:1px solid @color-gray12;
+        height:@label-height;
+        width:@label-height * 2;
+        cursor: pointer;
+      }
+    }
+
+    .label-icon{
+      &:before,
+      &::before{
+        cursor: pointer;
+        padding:0;
+        margin:0;
+        content:'';
+        display:inline-block;
+        .layout-absolutel-base;
+        width:@label-height + 2;
+        height:@label-height + 2;
+      }
+    }
+    .label-unicon{
+      &:before,
+      &::before{
+        background:@color-gray12 url('../images/login-username-icon.png') no-repeat center center;
+      }
+    }
+    .label-pwdicon{
+      &:before,
+      &::before{
+        background:@color-gray12 url('../images/login-pwd-icon.png') no-repeat center center;
+      }
+    }
+    .label-vcicon{
+      &:before,
+      &::before{
+        background:@color-gray12 url('../images/login-validcode-icon.png') no-repeat center center;
+      }
+    }
+
+    .self-input{
+      .layout-base;
+      border-top:1px solid @color-gray12;
+      border-right:1px solid @color-gray12;
+      border-bottom:1px solid @color-gray12;
+      font-size:@font-size-base;
+      color:@color-gray6;
+      height:100%;
+      line-height:@font-size-base + 2;
+      padding:12px 10px;
+      &:focus{
+        border-color:@color-gray10;
+      }
+    }
+  }
 
 
   /*查看属性，颜色，尺寸*/
