@@ -26,6 +26,12 @@ angular.module('app')
                         },
                         'sidemenu':{
                             templateUrl: 'tpl/common/side.html'
+                        },
+                        'support':{
+                            templateUrl: 'tpl/common/support_tip.html'
+                        },
+                        'login':{
+                            templateUrl: 'tpl/login.html'
                         }
                     }
                 })

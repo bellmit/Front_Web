@@ -1,28 +1,27 @@
-// Import Bootstrap Variables & Mixins
-@import "../bootstrap/variables.less";
-@import "../bootstrap/mixins.less";
-
-// Variables
-@import "../variable/base_variable_support.less";
-
-
 /*提示信息*/
-.page-support-wrap{
-  .layout-fixedl-base(0,0,999999);
+.struct-layout-support{
+  .layout-relative-base;
+  .layout-base;
+  background:@color-base;
+  background:rgba(0,0,0,1);
+  height:100%;
+  height:100vh;
+  width:100vm;
+  min-height:600px;
+  min-width:1080px;
+}
+.page-support-inner{
+  .layout-absolutel-base;
   .layout-base;
   height:100%;
-  background:rgba(0,0,0,1);
   padding:20px;
   display:table;
-  .page-support-active{
-    display:table-cell !important;
-  }
 }
 .page-support-browser,
 .page-support-login{
   .layout-base;
   height:100%;
-  display:none;
+  display:table-cell;
   vertical-align:middle;
   text-align:center;
   overflow: hidden;

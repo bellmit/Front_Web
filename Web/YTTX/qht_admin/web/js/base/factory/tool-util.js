@@ -1915,31 +1915,14 @@
 
 
 		/*初始化判定*/
-		tools.isRender=function(){
+		tools.isSupport=function(){
 			var self=this;
 			/*判定兼容性*/
-			if(self.supportStorage){
-				/*调用路由*/
-				self.getRoute();
-				/*判断是否登陆*/
-				if(self.routeMap.module.indexOf('account')!==-1){
-					/*登陆模块不做判断*/
-					self.initMap.isrender=true;
-					return true;
-				}else{
-					var templogin=self.isLogin();
-					templogin?self.initMap.isrender=true:self.initMap.isrender=false;
-					return templogin;
-				}
+			if(self.supportStorage&&self.supportImage&&self.supportBox){
+				return true;
 			}else{
-				/*如果不支持本地存储则弹出升级浏览器提示*/
-				public_vars.$page_support_wrap.removeClass('g-d-hidei');
-				public_vars.$page_support.eq(0).addClass('page-support-active');
-				self.initMap.isrender=false;
 				return false;
 			}
-			self.initMap.isrender=false;
-			return false;
 		};
 		/*加载进度条*/
 		tools.initLoading=function(){
