@@ -7,11 +7,50 @@
       .controller('SupportController', ['toolUtil',function(toolUtil) {
         this.isSupport=toolUtil.isSupport();
     }])
-      .controller('LoginController',[function () {
-            this.isLogin=true;
+      .controller('LoginController',['loginService',function (loginService) {
+          var self=this,
+          login=loginService.isLogin(),
+          requrl="/sysuser/login";
+
+          /*模型*/
+          this.isLogin=login;
+
+          this.login={
+              username:'',
+              password:'',
+              identifyingCode:''
+          };
+          /*绑定提交*/
+          this.submitLogin=function (isValid) {
+              if(isValid){
+                  /*校验成功*/
+                  loginService.reqLogin({
+                      url:requrl,
+                      method: 'POST',
+                      dataType: 'json',
+                      async:false,
+                      data:self.login
+                  }).then(function(resp){
+                     self.isLogin=loginService.reqAction(resp,self.login);
+                  },
+                  function(resp){
+                      self.isLogin=false;
+                      toastr.warning(resp.message);
+                  });
+              }else{
+                  toastr.warning('信息填写不规范');
+              }
+              return false;
+          };
+          this.getValidCode=function (wrap) {
+              loginService.getValidCode({
+                  wrap:wrap,
+                  url:"/sysuser/identifying/code"
+              });
+          };
       }])
       /*.controller('AppController', ['$scope','toolUtil','toolDialog','$http',function($scope,toolUtil,toolDialog,$http){
-            $scope.headerdata={};
+            /!*$scope.headerdata={};
             $scope.subdata={};
 
             /!*初始化请求主导航menu菜单数据*!/
@@ -147,28 +186,27 @@
                     console.log(resp.message);
                     return false;
                 });
-
+*!/
         }])*/;
-
-    /*var dia=toolDialog.dia();
-    $scope.testHaha=function(){
-        toolDialog.show({
-            dia:dia,
-            type:'warn',
-            value:'你妹，还是你妹'
-        });
-    };
-    $scope.testHehe=function(){
-        var suredia=toolDialog.sureDialog(dia);
-        suredia.sure('',function(cf){
-            var tip=cf.dia;
-            toolDialog.show({
-                dia:dia,
-                type:'warn',
-                value:'你妹，还是你妹'
-            });
-        },"是否审核该商品?",true);
-    };*/
-
-
 }());
+
+
+/*var dia=toolDialog.dia();
+ $scope.testHaha=function(){
+ toolDialog.show({
+ dia:dia,
+ type:'warn',
+ value:'你妹，还是你妹'
+ });
+ };
+ $scope.testHehe=function(){
+ var suredia=toolDialog.sureDialog(dia);
+ suredia.sure('',function(cf){
+ var tip=cf.dia;
+ toolDialog.show({
+ dia:dia,
+ type:'warn',
+ value:'你妹，还是你妹'
+ });
+ },"是否审核该商品?",true);
+ };*/

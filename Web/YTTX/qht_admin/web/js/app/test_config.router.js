@@ -7,6 +7,41 @@ angular.module('app')
     .run(['$rootScope','$state','$stateParams',function ($rootScope,$state,$stateParams) {
          $rootScope.$state = $state;
          $rootScope.$stateParams = $stateParams;
+        /*// config
+        var cache=toolUtil.getParams(unique_key),
+            config,
+            islogin=false,
+            logininfo;
+        if(cache){
+            /!*存在缓存则更新缓存*!/
+            this.isLogin=cache.loginMap.isLogin;
+        }else{
+            /!*不存在缓存则创建缓存*!/
+            config={
+                cache:{},
+                routeMap:{
+                    prev:'',
+                    current:''
+                },
+                menuMap:{},
+                powerMap:{},
+                loginMap:{},
+                settingMap:{}
+            };
+            islogin=loginService.isLogin();
+            logininfo=loginService.getLoginInfo();
+            this.isLogin=islogin;
+            if(islogin){
+                config['loginMap']={
+                    'isLogin':true,
+                    'datetime':moment().format('YYYY-MM-DD|HH:mm:ss'),
+                    'reqdomain':logininfo.basedomain,
+                    'currentdomain':'',
+                    'username':logininfo.username,
+                    'param':logininfo.param
+                }
+            }
+        }*/
      }]).config(
     ['$stateProvider', '$urlRouterProvider',
         function ($stateProvider, $urlRouterProvider) {

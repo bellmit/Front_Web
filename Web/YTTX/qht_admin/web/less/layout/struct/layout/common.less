@@ -811,6 +811,7 @@
   /*自定义表单2*/
   .form-group-self2{
     @label-height:40px;
+    @tip-height:20px;
     .layout-base;
     min-height:@label-height + 30px;
     padding:15px 0;
@@ -822,9 +823,11 @@
       display: inline-block;
       height:100%;
     }
+    /*标签*/
     .self-label{
       padding-left:@label-height;
     }
+    /*验证码*/
     .self-valid{
       overflow: hidden;
       img{
@@ -836,7 +839,7 @@
         cursor: pointer;
       }
     }
-
+    /*登陆图标*/
     .label-icon{
       &:before,
       &::before{
@@ -868,7 +871,7 @@
         background:@color-gray12 url('../images/login-validcode-icon.png') no-repeat center center;
       }
     }
-
+    /*表单*/
     .self-input{
       .layout-base;
       border-top:1px solid @color-gray12;
@@ -878,9 +881,30 @@
       color:@color-gray6;
       height:100%;
       line-height:@font-size-base + 2;
-      padding:12px 10px;
+      padding:12px 10px + @tip-height 12px 10px;
       &:focus{
         border-color:@color-gray10;
+      }
+    }
+    /*错误提示*/
+    .self-tips{
+      .layout-base(@tip-height);
+      height:@tip-height;
+      .layout-absoluterb-base(5px,10px);
+      .user-select-base;
+      font-weight: normal;
+      text-align:center;
+      line-height: @tip-height;
+      overflow: hidden;
+      &:after,
+      &::after{
+        content:'\e624';
+        font-family:'ux_seven';
+        font-size:@font-size-base + 6;
+        width:100%;
+        height:100%;
+        display: inline-block;
+        color:@color-gray12;
       }
     }
   }

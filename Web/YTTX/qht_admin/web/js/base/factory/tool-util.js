@@ -7,6 +7,10 @@
 		/*本地存储*/
 		//缓存对象
 		tools.cache={};
+		/*返回系统唯一标识符*/
+		tools.getSystemUniqueKey=function () {
+			return system_unique_key;
+		};
 		//判断是否支持本地存储
 		tools.supportBox=(function(){
 			var elem = document.getElementsByTagName('body')[0],

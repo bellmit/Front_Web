@@ -20,7 +20,7 @@ angular.module('app')
           /*上传插件*/
           plUpload:['../js/plugins/plupload/plupload.full.min.js','../js/plugins/plupload/i18n/zh_CN.js'],
           /*七牛上传服务插件*/
-          qnUploadServer:['../jjs/plugins/qn/qiniu.min.js']
+          qnUploadServer:['../js/plugins/qn/qiniu.min.js']
       }
   )
   //延迟加载
