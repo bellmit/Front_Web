@@ -68,7 +68,9 @@ angular.module('app')
                         'login':{
                             templateUrl: 'tpl/login.html'
                         }
-                    }
+                    },
+                    controller:'AppContrller',
+                    controllerAs:'app_ctrl'
                 })
                 //机构
                 .state('struct', {

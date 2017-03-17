@@ -888,13 +888,20 @@
     }
     /*错误提示*/
     .self-tips{
-      .layout-base(@tip-height);
+      .box-sizing-base;
       height:@tip-height;
-      .layout-absoluterb-base(5px,10px);
+      position: absolute;
+      z-index: 10;
       .user-select-base;
       font-weight: normal;
-      text-align:center;
       line-height: @tip-height;
+      overflow: hidden;
+    }
+    .self-tips-yes{
+      width:@tip-height;
+      bottom:10px;
+      right:5px;
+      text-align:center;
       overflow: hidden;
       &:after,
       &::after{
@@ -906,6 +913,14 @@
         display: inline-block;
         color:@color-gray12;
       }
+    }
+    .self-tips-no{
+      width:100%;
+      bottom:-@tip-height;
+      right:0;
+      font-size:@font-size-base;
+      padding-left:@label-height;
+      text-align:left;
     }
   }
 

@@ -1,5 +1,5 @@
 angular.module('login.service',[])
-    .service('loginService',['$http','$q','toolUtil','BASE_CONFIG',function($http,$q,toolUtil,BASE_CONFIG){
+    .service('loginService',['$http','$httpParamSerializerJQLike','$q','toolUtil','BASE_CONFIG',function($http,$httpParamSerializerJQLike,$q,toolUtil,BASE_CONFIG){
         var login_cache={},
             cache=toolUtil.getParams(BASE_CONFIG.unique_key);
         return {
@@ -18,45 +18,60 @@ angular.module('login.service',[])
             /*登陆请求*/
             reqLogin:function (config) {
                 var req=config;
+
+                /*适配配置*/
                 req.url=BASE_CONFIG.basedomain + BASE_CONFIG.baseproject + req.url;
+                req.data=$httpParamSerializerJQLike(req.data);
+                req['headers']={ "Content-Type": "application/x-www-form-urlencoded" };
 
                 var deferred=$q.defer(),
                     promise=$http(req);
 
                 promise.then(function (resp) {
-                    resp.status=true;
                     deferred.resolve(resp);
                 },function (resp) {
-                    resp.status=false;
                     deferred.reject(resp);
                 });
                 return deferred.promise;
             },
             /*处理登陆请求*/
-            reqAction:function (resp,data) {
-                var code=parseInt(resp.code,10),
-                    result=resp.result;
+            reqAction:function (resp) {
+                var data=resp.data,
+                    config=resp.config,
+                    status=parseInt(resp.status,10);
 
-                if(code!==0){
-                    toastr.warning(resp.message);
-                    return false;
-                }else{
-                    toastr.success("登陆成功");
-                    /*设置缓存*/
-                    this.setCache({
-                        'isLogin':true,
-                        'datetime':moment().format('YYYY-MM-DD|HH:mm:ss'),
-                        'reqdomain':BASE_CONFIG.basedomain,
-                        'currentdomain':'',
-                        'username':data.username,
-                        'param':{
-                            'adminId':encodeURIComponent(result.adminId),
-                            'token':encodeURIComponent(result.token),
-                            'roleId':encodeURIComponent(result.roleId)
+
+                if(status===200){
+                    var code=parseInt(data.code,10),
+                        result=data.result,
+                        message=data.message;
+                    if(code!==0){
+                        if(typeof message !=='undefined'&&message!==''){
+                            toastr.info(message);
+                        }else{
+                            toastr.info('登录失败');
                         }
-                    });
-                    /*路由跳转*/
-                    return true;
+                        return false;
+                    }else{
+                        toastr.success("登陆成功");
+                        /*设置缓存*/
+                        this.setCache({
+                            'isLogin':true,
+                            'datetime':moment().format('YYYY-MM-DD|HH:mm:ss'),
+                            'reqdomain':BASE_CONFIG.basedomain,
+                            'currentdomain':'',
+                            'username':config.username,
+                            'param':{
+                                'adminId':encodeURIComponent(result.adminId),
+                                'token':encodeURIComponent(result.token),
+                                'organizationId':encodeURIComponent(result.organizationId)
+                            }
+                        });
+                        /*路由跳转*/
+                        return true;
+                    }
+                }else{
+                    return false;
                 }
             },
             /*获取验证码*/
@@ -82,7 +97,7 @@ angular.module('login.service',[])
                         }
 
                         if(config.wrap){
-                            config.wrap.innerHTML=img||config.wrap.html(img);
+                            angular.element('#'+config.wrap).html(img)||$('#'+config.wrap).html(img);
                         }else if(config.fn&&typeof config.fn==='function'){
                             config.fn.call(null,img);
                         }
@@ -116,6 +131,13 @@ angular.module('login.service',[])
                 if(cache){
                     toolUtil.clear(BASE_CONFIG.unique_key);
                 }
+            },
+            /*退出*/
+            loginOut:function () {
+                /*清除缓存*/
+                this.clearCache();
+                /*执行退出动画*/
+                
             }
         };
     }]);
