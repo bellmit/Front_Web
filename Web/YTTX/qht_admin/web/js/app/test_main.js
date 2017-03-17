@@ -7,7 +7,7 @@
       .controller('SupportController', ['toolUtil',function(toolUtil) {
         this.isSupport=toolUtil.isSupport();
     }])
-      .controller('LoginController',['loginService',function (loginService) {
+      .controller('LoginController',['loginService','$state',function (loginService,$state) {
           var self=this;
 
           /*模型*/
@@ -33,6 +33,9 @@
                   data:self.login
               }).then(function(resp){
                   self.isLogin=loginService.reqAction(resp);
+                  if(self.isLogin){
+                      $state.go('app');
+                  }
               },
               function(resp){
                   self.isLogin=false;
@@ -51,6 +54,17 @@
                   url:"/sysuser/identifying/code"
               });
           };
+          this.loginOut=function () {
+              self.isLogin=loginService.loginOut();
+              if(!self.isLogin){
+                  self.login={
+                      username:'',
+                      password:'',
+                      identifyingCode:''
+                  };
+                  $state.go('login');
+              }
+          }
       }]);
 }());
 

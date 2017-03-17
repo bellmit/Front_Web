@@ -53,9 +53,6 @@ angular.module('app')
                 .state('app', {
                     url: '/app',
                     views:{
-                        /*'header':{
-                            templateUrl: 'tpl/common/header.html'
-                        },*/
                         'main':{
                             templateUrl: 'tpl/app.html'
                         },
@@ -76,9 +73,6 @@ angular.module('app')
                 .state('struct', {
                     url: '/struct',
                     views:{
-                        /*'header':{
-                            templateUrl: 'tpl/common/header.html'
-                        },*/
                         'main':{
                             templateUrl: 'tpl/struct_operate.html'
                         },
@@ -94,9 +88,6 @@ angular.module('app')
                 .state('role', {
                     url: '/struct.role',
                     views:{
-                        /*'header':{
-                            templateUrl: 'tpl/common/header.html'
-                        },*/
                         'main':{
                             templateUrl: 'tpl/struct_role.html'
                         },
@@ -109,9 +100,6 @@ angular.module('app')
                 .state('order', {
                     url: '/order',
                     views:{
-                        /*'header':{
-                            templateUrl: 'tpl/common/header.html'
-                        },*/
                         'main':{
                             templateUrl: 'tpl/order_list.html'
                         },
@@ -124,9 +112,6 @@ angular.module('app')
                 .state('finance', {
                     url: '/finance',
                     views:{
-                        /*'header':{
-                            templateUrl: 'tpl/common/header.html'
-                        },*/
                         'main':{
                             templateUrl: 'tpl/finance_list.html'
                         },
@@ -140,9 +125,6 @@ angular.module('app')
                     /*abstract: true,*/
                     url: '/equipment',
                     views:{
-                        /*'header':{
-                            templateUrl: 'tpl/common/header.html'
-                        },*/
                         'main':{
                             templateUrl: 'tpl/equipment_list.html'
                         },
@@ -156,9 +138,6 @@ angular.module('app')
                     /*abstract: true,*/
                     url: '/setting',
                     views:{
-                        /*'header':{
-                            templateUrl: 'tpl/common/header.html'
-                        },*/
                         'main':{
                             templateUrl: 'tpl/setting_info.html'
                         },
@@ -170,7 +149,15 @@ angular.module('app')
                 //退出
                 .state('login', {
                     /*abstract: true,*/
-                    url: '/app'
+                    url: '/app',
+                    views:{
+                        'main':{},
+                        'sidemenu':{},
+                        'support':{},
+                        'login':{
+                            templateUrl: 'tpl/login.html'
+                        }
+                    }
                 })
         }
     ]

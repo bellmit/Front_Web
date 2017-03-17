@@ -130,14 +130,20 @@ angular.module('login.service',[])
                 login_cache={};
                 if(cache){
                     toolUtil.clear(BASE_CONFIG.unique_key);
+                    return true;
+                }else{
+                    return false;
                 }
             },
             /*退出*/
             loginOut:function () {
                 /*清除缓存*/
-                this.clearCache();
+                var isout=this.clearCache();
                 /*执行退出动画*/
-                
+                if(isout){
+                    return false;
+                }
+                return true;
             }
         };
     }]);
