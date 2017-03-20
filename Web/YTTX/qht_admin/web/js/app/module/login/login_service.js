@@ -98,7 +98,10 @@ angular.module('login.service',[])
                     cache.loginMap=data;
                 }else{
                     cache={
-                        cache:{},
+                        cache:{
+                            menuload:false,
+                            powerload:false
+                        },
                         routeMap:{
                             prev:'',
                             current:'',

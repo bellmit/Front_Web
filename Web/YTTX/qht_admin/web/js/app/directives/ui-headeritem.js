@@ -7,9 +7,10 @@ angular.module('ui.headeritem',[])
             controller:function () {
                 var cache=toolUtil.getParams(),
                     login;
+                console.log(cache);
 
                 /*如果缓存存在则请求菜单数据*/
-                if(cache){
+                if(cache&&!cache.cache.menuload){
                     login=cache.loginMap;
                     toolUtil.requestHttp({
                         url:'/module/menu',
