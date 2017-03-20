@@ -5,9 +5,15 @@ angular.module('login.service',[])
         return {
             /*获取登陆信息*/
             getLoginInfo:function () {
-                var logininfo=toolUtil.isLogin(cache);
+                var logininfo=toolUtil.isLogin(cache),
+                    islogin=false;
                 if(logininfo){
-                    return toolUtil.validLogin(cache.loginMap);
+                    islogin=toolUtil.validLogin(cache.loginMap);
+                    if(!islogin){
+                        /*不合格缓存信息，需要清除缓存*/
+                        this.loginOut();
+                    }
+                    return islogin;
                 }else{
                     return false;
                 }
