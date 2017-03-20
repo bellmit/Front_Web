@@ -36,11 +36,14 @@
 
 				<!--弹出层--提示操作界面-->
 				<div id="struct_layout_dialog" ui-view="dialog"></div>
-
-				<!--弹出层--退出系统动画-->
-				<div id="struct_layout_outanimate" ui-view="outanimate"></div>
 			</div>
 			<div ng-if="!login_ctrl.isLogin" ui-view="login"></div>
+
+			<!--弹出层--退出系统动画-->
+			<div id="struct_layout_nologin" class="g-d-hidei" ui-view="nologin"></div>
+
+			<!--弹出层--加载动画-->
+			<div id="struct_layout_loading" class="g-d-hidei" ui-view="loading"></div>
 		</div>
 		<div ng-if="!support_ctrl.isSupport" ui-view="support"></div>
 <!--jquery-->
@@ -135,6 +138,9 @@
 
 <!--侧边栏指令集-->
 <script src="js/app/directives/ui-sideitem.js"></script>
+
+<!--表单指令集-->
+<script src="js/app/directives/ui-from.js"></script>
 
 
 

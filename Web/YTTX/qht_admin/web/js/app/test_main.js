@@ -7,11 +7,11 @@
       .controller('SupportController', ['toolUtil',function(toolUtil) {
         this.isSupport=toolUtil.isSupport();
     }])
-      .controller('LoginController',['loginService','$state',function (loginService,$state) {
+      .controller('LoginController',['toolUtil','loginService',function (toolUtil,loginService) {
           var self=this;
 
           /*模型*/
-          this.isLogin=loginService.isLogin();
+          this.isLogin=loginService.getLoginInfo()/*是否存在*/;
 
           this.login={
               username:'',
@@ -23,19 +23,17 @@
           $.extend(true,toastr.options,{
               positionClass: "toast-top-center"
           });
+
           /*绑定提交*/
           this.submitLogin=function () {
               /*校验成功*/
-              loginService.reqLogin({
+              toolUtil.requestHttp({
                   url:'/sysuser/login',
                   method:'post',
                   set:true,
                   data:self.login
               }).then(function(resp){
-                  self.isLogin=loginService.reqAction(resp);
-                  if(self.isLogin){
-                      $state.go('app');
-                  }
+                  self.isLogin=loginService.reqAction(resp,self.login.username);
               },
               function(resp){
                   self.isLogin=false;
@@ -48,22 +46,22 @@
               });
               return false;
           };
+          /*获取验证码*/
           this.getValidCode=function () {
               loginService.getValidCode({
                   wrap:'validcode_wrap',
                   url:"/sysuser/identifying/code"
               });
           };
+          /*退出*/
           this.loginOut=function () {
-              self.isLogin=loginService.loginOut();
-              if(!self.isLogin){
-                  self.login={
-                      username:'',
-                      password:'',
-                      identifyingCode:''
-                  };
-                  $state.go('login');
-              }
+              loginService.loginOut();
+              self.isLogin=false;
+              self.login={
+                  username:'',
+                  password:'',
+                  identifyingCode:''
+              };
           }
       }]);
 }());

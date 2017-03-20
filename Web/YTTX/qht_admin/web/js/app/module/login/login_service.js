@@ -1,43 +1,20 @@
 angular.module('login.service',[])
-    .service('loginService',['$http','$httpParamSerializerJQLike','$q','toolUtil','BASE_CONFIG',function($http,$httpParamSerializerJQLike,$q,toolUtil,BASE_CONFIG){
+    .service('loginService',['toolUtil','BASE_CONFIG','$state',function(toolUtil,BASE_CONFIG,$state){
         var login_cache={},
             cache=toolUtil.getParams(BASE_CONFIG.unique_key);
         return {
-            /*是否登陆*/
-            isLogin:function () {
-                if(cache){
-                    return cache.loginMap.isLogin||true;
+            /*获取登陆信息*/
+            getLoginInfo:function () {
+                var logininfo=toolUtil.isLogin(cache);
+                if(logininfo){
+                    return toolUtil.validLogin(cache.loginMap);
                 }else{
                     return false;
                 }
             },
-            /*获取登陆信息*/
-            getLoginInfo:function () {
-                return login_cache;
-            },
-            /*登陆请求*/
-            reqLogin:function (config) {
-                var req=config;
-
-                /*适配配置*/
-                req.url=BASE_CONFIG.basedomain + BASE_CONFIG.baseproject + req.url;
-                req.data=$httpParamSerializerJQLike(req.data);
-                req['headers']={ "Content-Type": "application/x-www-form-urlencoded" };
-
-                var deferred=$q.defer(),
-                    promise=$http(req);
-
-                promise.then(function (resp) {
-                    deferred.resolve(resp);
-                },function (resp) {
-                    deferred.reject(resp);
-                });
-                return deferred.promise;
-            },
             /*处理登陆请求*/
-            reqAction:function (resp) {
+            reqAction:function (resp,param) {
                 var data=resp.data,
-                    config=resp.config,
                     status=parseInt(resp.status,10);
 
 
@@ -48,19 +25,16 @@ angular.module('login.service',[])
                     if(code!==0){
                         if(typeof message !=='undefined'&&message!==''){
                             toastr.info(message);
-                        }else{
-                            toastr.info('登录失败');
                         }
                         return false;
                     }else{
-                        toastr.success("登陆成功");
                         /*设置缓存*/
                         this.setCache({
                             'isLogin':true,
                             'datetime':moment().format('YYYY-MM-DD|HH:mm:ss'),
                             'reqdomain':BASE_CONFIG.basedomain,
                             'currentdomain':'',
-                            'username':config.username,
+                            'username':param,
                             'param':{
                                 'adminId':encodeURIComponent(result.adminId),
                                 'token':encodeURIComponent(result.token),
@@ -68,6 +42,12 @@ angular.module('login.service',[])
                             }
                         });
                         /*路由跳转*/
+                        $state.go('app');
+                        /*加载动画*/
+                        toolUtil.loading('show');
+                        var loadingid=setTimeout(function () {
+                                toolUtil.loading('hide',loadingid);
+                        },1000);
                         return true;
                     }
                 }else{
@@ -115,7 +95,8 @@ angular.module('login.service',[])
                         cache:{},
                         routeMap:{
                             prev:'',
-                            current:''
+                            current:'',
+                            setting:false
                         },
                         menuMap:{},
                         powerMap:{},
@@ -125,25 +106,12 @@ angular.module('login.service',[])
                 }
                 toolUtil.setParams(BASE_CONFIG.unique_key,cache);
             },
-            /*清除缓存*/
-            clearCache:function () {
-                login_cache={};
-                if(cache){
-                    toolUtil.clear(BASE_CONFIG.unique_key);
-                    return true;
-                }else{
-                    return false;
-                }
-            },
             /*退出*/
             loginOut:function () {
                 /*清除缓存*/
-                var isout=this.clearCache();
-                /*执行退出动画*/
-                if(isout){
-                    return false;
-                }
-                return true;
+                login_cache={};
+                toolUtil.clear();
+                toolUtil.loginTips(true);
             }
         };
     }]);

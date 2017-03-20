@@ -1,4 +1,4 @@
-angular.module('ui.sideitem',['tool.util'])
+angular.module('ui.sideitem',[])
     .directive('uiSubLogo',function() {
         return {
           replace:false,

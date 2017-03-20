@@ -64,6 +64,12 @@ angular.module('app')
                         },
                         'login':{
                             templateUrl: 'tpl/login.html'
+                        },
+                        'loading':{
+                            templateUrl: 'tpl/common/load.html'
+                        },
+                        'nologin':{
+                            templateUrl: 'tpl/common/support_login.html'
                         }
                     },
                     controller:'AppContrller',
@@ -156,6 +162,12 @@ angular.module('app')
                         'support':{},
                         'login':{
                             templateUrl: 'tpl/login.html'
+                        },
+                        'loading':{
+                            templateUrl: 'tpl/common/load.html'
+                        },
+                        'nologin':{
+                            templateUrl: 'tpl/common/support_login.html'
                         }
                     }
                 })

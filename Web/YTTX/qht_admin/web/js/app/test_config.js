@@ -1,8 +1,11 @@
 /*应用程序初始化配置*/
 angular.module('app').constant('BASE_CONFIG',{
-    unique:'qht_admin_unique_key',
+    unique_key:'qht_admin_unique_key',
     basedomain:'http://10.0.5.226:8080',
-    baseproject:'/qht-bms-api'
+    baseproject:'/qht-bms-api',
+    loadingdom:'struct_layout_loading',
+    nologindom:'struct_layout_nologin',
+    nologintipdom:'struct_goto_login'
 }).factory('httpInterceptor',['BASE_CONFIG','$httpParamSerializerJQLike',function (BASE_CONFIG,$httpParamSerializerJQLike) {
     var http_config={};
 

@@ -1,8 +1,8 @@
 /*自定义扩展*/
 (function($){
 	'use strict';
-	angular.module('tool.util',[]).factory('toolUtil',function () {
-		var system_unique_key='qht_admin_unique_key',
+	angular.module('tool.util',[]).factory('toolUtil',['$http','$q','$httpParamSerializerJQLike','BASE_CONFIG','$state',function ($http,$q,$httpParamSerializerJQLike,BASE_CONFIG,$state) {
+		var system_unique_key=BASE_CONFIG.unique_key||'qht_admin_unique_key',
 			tools={};
 		/*本地存储*/
 		//缓存对象
@@ -166,6 +166,43 @@
 		tools.supportDia=(function(){
 			return (typeof dialog==='function'&&dialog)?true:false;
 		}());
+		
+		
+		/*返回请求信息*/
+		tools.requestHttp=function (config) {
+			var req=config;
+
+			/*适配配置*/
+			req.url=BASE_CONFIG.basedomain + BASE_CONFIG.baseproject + req.url;
+			req.data=$httpParamSerializerJQLike(req.data);
+			req['headers']={ "Content-Type": "application/x-www-form-urlencoded" };
+
+			var deferred=$q.defer(),
+				promise=$http(req);
+
+			promise.then(function (resp) {
+				deferred.resolve(resp);
+			},function (resp) {
+				deferred.reject(resp);
+			});
+			return deferred.promise;
+		};
+
+
+		/*加载动画*/
+		tools.loading=function (type,delay) {
+			var load=document.getElementById(BASE_CONFIG.loadingdom);
+			if(type==='show'){
+				load.className='g-d-showi';
+			}else if(type==='hide'){
+				load.className='g-d-hidei';
+			}
+			/*清除延时指针*/
+			if(delay){
+				clearTimeout(delay);
+				delay=null;
+			}
+		};
 
 
 
@@ -845,100 +882,44 @@
 				"modid":"340"
 			}
 		};
-		/*路由映射*/
-		tools.routeMap={
-			issetting:false,
-			path:'',
-			module:'',
-			isindex:false,
-			issamemodule:false
+		/*获取路由信息*/
+		tools.getRoute=function(cache){
+			/*处理路径*/
+			var self=this;
+
+			if(!cache){
+				cache=self.getParams('routeMap');
+			}
+			if(cache){
+				return cache;
+			}
+			return null;
 		};
 		/*获取路由信息*/
-		tools.getRoute=function(){
+		tools.setRoute=function(path,setting){
 			/*处理路径*/
 			var self=this,
-				currentfile=location.pathname,
-				carr=currentfile.split('/'),
-				clen=carr.length,
-				cp_suffix=carr[clen - 1].lastIndexOf('.'),
-				path=carr[clen - 1].slice(0,cp_suffix),
-				isindex=path===''?true:path.indexOf('index')!==-1,
-				module=isindex?'':carr[clen - 2];
+				route=self.getRoute();
 
-
-
-			/*调用路由记录*/
-			var history_path={
-					issetting:false,
-					/*当前文件*/
-					current:{
-						isindex:isindex,
-						path:path,
-						module:module
-					},
-					/*上一次文件路径*/
-					prev:{
-						isindex:false,
-						path:'',
-						module:''
+			if(route){
+				if(route.setting){
+					/*重新设置权限*/
+					self.isPermission();
+				}else{
+					route.prev=route.current;
+					route.current=path;
+					if(setting){
+						route.setting=true;
 					}
-				},
-				route=self.getParams('route_module')/*查找上一次记录*/;
-
-
-			/*重新赋值*/
-			if(route){
-				history_path.prev=route.current;
-				self.routeMap.issamemodule=module===route.current.module;
-				self.routeMap.issetting=history_path.issetting=route.issetting;
-			}else{
-				self.routeMap.issamemodule=false;
-			}
-			/*放入本地存储*/
-			self.setParams('route_module',history_path);
-
-			/*存入临时目录*/
-			self.routeMap.isindex=isindex;
-			self.routeMap.path=path;
-			self.routeMap.module=module;
-
-			if(route){
-				/*判断是否设置权限*/
-				self.isPermission(route.issetting);
+					self.setParams('routeMap',route);
+				}
 			}
 		};
 		/*判断是否修改了权限*/
-		tools.isPermission=function(flag){
-			var self=this,
-				flag=flag||self.routeMap.issetting;
-
-			if(flag){
-				var count= 3,
-					tips=dialog({
-						title:'温馨提示',
-						width:300,
-						ok:false,
-						cancel:false,
-						content:'<span class="g-c-bs-warning g-btips-warn">您已设置了新的系统权限，&nbsp;<span class="g-c-bs-info" id="permission_tips"></span>&nbsp;秒后将自动退出系统</span>'
-					}).show(),
-					pertip=null,
-					tipsdom=document.getElementById('permission_tips');
-
-
-				tipsdom.innerHTML=count;
-				pertip=setInterval(function(){
-					count--;
-					tipsdom.innerHTML=count;
-					if(count<0){
-						clearInterval(pertip);
-						pertip=null;
-						tips.close().remove();
-						tipsdom=null;
-						self.loginOut();
-					}
-				},1000);
-			}
-		}
+		tools.isPermission=function(){
+			this.clear();
+			toastr.success('您已设置了新的系统权限,即将退出系统');
+		};
 		/*加载左侧菜单*/
 		tools.loadSideMenu=function($menu,$wrap,opt){
 
@@ -1727,38 +1708,14 @@
 			}
 		};
 
-
-
-		/*登陆缓存*/
-		tools.initMap={
-			isrender:false,
-			loginMap:{}
-		};
 		/*登陆接口*/
-		tools.isLogin=function(){
-			var self=this,
-				cacheLogin=self.getParams('login_module');
-
-			self.initMap.loginMap={};
-			if(cacheLogin){
-				/*如果已经存在登陆信息同时判断登陆信息是否有效*/
-				var tempvalid=self.validLogin(cacheLogin);
-				if(tempvalid){
-					self.initMap.loginMap= $.extend(true,{},cacheLogin);
-					var name=self.initMap.loginMap.username;
-					public_vars.$admin_show_wrap.html('您好：<span class="g-c-info">&nbsp;'+name+'&nbsp;&nbsp;</span><i class="fa-angle-down"></i>');
-					return true;
-				}else{
-					/*清除缓存*/
-					self.loginTips(function () {
-						self.clear();
-						self.clearCacheData();
-					});
-					return false;
-				}
-			}else{
-				self.loginTips(function () {});
-				return false;
+		tools.isLogin=function(cache){
+			var self=this;
+			if(cache===null){
+				cache=self.getParams(BASE_CONFIG.unique_key);
+			}
+			if(cache && cache.loginMap && cache.loginMap.isLogin){
+				return true;
 			}
 			return false;
 		};
@@ -1766,7 +1723,7 @@
 		tools.validLogin=function(obj){
 			/*必须有缓存*/
 			var self=this,
-				cacheLogin=typeof obj!=='undefined'?obj:self.getParams('login_module');
+				cacheLogin=typeof obj!=='undefined'?obj:self.getParams('loginMap');
 
 			if(cacheLogin){
 				/*如果已经存在登陆信息则获取登录时间*/
@@ -1811,110 +1768,39 @@
 					 }*/
 				}
 
-
-
 				/*请求域与登陆域不一致*/
 				if(currentdomain!==''&&reqdomain!==currentdomain){
 					return false;
 				}
-
 				return true;
-			}else{
-				return false;
 			}
 			return false;
 		};
-		/*退出系统*/
-		tools.loginOut=function(istips){
-			var self=this,
-				isindex=self.routeMap.isindex,
-				module=self.routeMap.module;
-
-
-
-			/*根据路径跳转*/
-			if(istips){
-				self.loginTips(function () {
-					/*清除所有记录*/
-					self.clear();
-					self.clearCacheData();
-				});
-			}else {
-				/*清除所有记录*/
-				self.clear();
-				self.clearCacheData();
-				if(isindex){
-					location.href='account/login.html';
-				}else{
-					if(module.indexOf('account')!==-1){
-						location.href='login.html';
-					}else{
-						location.href='../account/login.html';
-					}
-				}
-			}
-		};
-		/*清除内存数据*/
-		tools.clearCacheData=function(){
-			var self=this;
-			/*清除菜单权限映射*/
-			if(!$.isEmptyObject(self.powerMap)){
-				self.powerMap={};
-			}
-			/*初始化登陆缓存*/
-			self.initMap={
-				isrender:false,
-				loginMap:{}
-			};
-			/*路由映射*/
-			self.routeMap={
-				issetting:false,
-				path:'',
-				module:'',
-				isindex:false,
-				issamemodule:false
-			};
-		};
 		/*跳转提示*/
-		tools.loginTips=function(fn){
-			var self=this;
-
+		tools.loginTips=function(flag){
 			/*如果没有登陆则提示跳转至登陆页*/
-			public_vars.$page_support_wrap.removeClass('g-d-hidei');
-			public_vars.$page_support.eq(1).addClass('page-support-active');
 			var count= 2,
-				tipid=null;
+				tipid=null,
+				outwrap=document.getElementById(BASE_CONFIG.nologindom),
+				outtip=document.getElementById(BASE_CONFIG.nologintipdom);
 
-			public_vars.$goto_login.html(count);
+			outwrap.className='g-d-showi';
+			outtip.innerHTML=count;
 			tipid=setInterval(function(){
 				count--;
-				public_vars.$goto_login.html(count);
+				outtip.innerHTML=count;
 				if(count<=0){
 					/*清除定时操作*/
 					clearInterval(tipid);
 					tipid=null;
-					count= 5;
-					/*跳转到登陆位置*/
-					if(self.routeMap.isindex){
-						if(typeof fn==='function'){
-							fn.call();
-						}else{
-							self.clear();
-							self.clearCacheData();
-						}
-						location.href='account/login.html';
-					}else{
-						if(typeof fn==='function'){
-							fn.call();
-						}else{
-							self.clear();
-							self.clearCacheData();
-						}
-						location.href='../account/login.html';
+					count= 2;
+					outtip.innerHTML='';
+					outwrap.className='g-d-hidei';
+					if(flag){
+						$state.go('login');
 					}
 				}
 			},1000);
-
 		};
 
 
@@ -1928,21 +1814,6 @@
 				return false;
 			}
 		};
-		/*加载进度条*/
-		tools.initLoading=function(){
-			/*首先加载动画*/
-			public_vars.$page_loading_wrap.removeClass('g-d-hidei');
-			//加载成功隐藏动画
-			if (public_vars.$page_loading_wrap.length) {
-				$(window).load(function() {
-					public_vars.$page_loading_wrap.addClass('loaded');
-				});
-			}
-			//加载失败
-			window.onerror = function() {
-				public_vars.$page_loading_wrap.addClass('loaded');
-			};
-		};
 		return tools;
-	});
+	}]);
 })(jQuery);
