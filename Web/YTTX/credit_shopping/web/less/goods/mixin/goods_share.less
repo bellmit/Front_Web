@@ -10,22 +10,7 @@ body{
 	padding:10px 0 0 0;
 	background:@color-gray16;
 	>pre:only-child:empty{
-		.layout-base;
-		.text-ww;
-		.calc-base(height,'100vh - 24px');
-		&:before{
-			content:'暂无数据';
-			vertical-align: middle;
-			display:inline-block;
-			width:100%;
-			height:100%;
-			.calc-base(line-height,'100vh - 24px');
-			text-align: center;
-			font-size:@font-size-base + 6;
-			font-size:2rem;
-			color:@color-gray6;
-			.user-select-base;
-		}
+		.c-empty-show;
 	}
 }
 
@@ -87,20 +72,5 @@ body{
 
 //为空数据
 .share-null-wrap{
-	.layout-base;
-	.text-ww;
-	.calc-base(height,'100vh - 24px');
-	&:before{
-		content:'暂无数据';
-		vertical-align: middle;
-		display:inline-block;
-		width:100%;
-		height:100%;
-		.calc-base(line-height,'100vh - 24px');
-		text-align: center;
-		font-size:@font-size-base + 6;
-		font-size:2rem;
-		color:@color-gray6;
-		.user-select-base;
-	}
+	.c-empty-show;
 }

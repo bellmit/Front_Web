@@ -135,8 +135,12 @@
 	.c-detail;
 	margin:10px 0 0 0;
 	text-align:center;
-	img,p img,>p img,>a img{
-		margin:0 !important;
+	img,
+	p img,
+	>p img,
+	>a img{
+		display: block;
+		margin:0 auto;
 	}
 }
 
@@ -497,6 +501,27 @@
 			}
 		}
 		
+	}
+}
+
+
+//详情为空或者404
+.c-empty-show(){
+	.layout-base;
+	.text-ww;
+	.calc-base(height,'100vh - 24px');
+	&:before{
+		content:'暂无数据';
+		vertical-align: middle;
+		display:inline-block;
+		width:100%;
+		height:100%;
+		.calc-base(line-height,'100vh - 24px');
+		text-align: center;
+		font-size:@font-size-base + 6;
+		font-size:2rem;
+		color:@color-gray6;
+		.user-select-base;
 	}
 }
 
