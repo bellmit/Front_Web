@@ -17,6 +17,7 @@
 	<![endif]-->
 </head>
 <body class="struct-layout-wrap" ng-controller="SupportController as support_ctrl">
+
 		<!--弹出层--是否支持相关浏览器-->
 		<div ng-if="support_ctrl.isSupport" ng-controller="LoginController as login_ctrl">
 			<div ng-if="login_ctrl.isLogin" ng-controller="AppController as app_ctrl">
@@ -46,6 +47,8 @@
 			<div id="struct_layout_loading" class="g-d-hidei" ui-view="loading"></div>
 		</div>
 		<div ng-if="!support_ctrl.isSupport" ui-view="support"></div>
+
+
 <!--jquery-->
 <script src="js/base/jquery-1.11.1.js"></script>
 
@@ -133,16 +136,8 @@
 <script src="js/base/services/tool-dialog.js"></script>
 <script src="js/base/factory/tool-util.js"></script>
 
-<!--主导航指令集-->
-<script src="js/app/directives/ui-headeritem.js"></script>
-
-<!--侧边栏指令集-->
-<script src="js/app/directives/ui-sideitem.js"></script>
-
-<!--表单指令集-->
-<script src="js/app/directives/ui-from.js"></script>
-
-
+<!--公共指令集-->
+<script src="js/app/directives/ui-commonitem.js"></script>
 
 <!--登录-->
 <script src="js/app/module/login/login_service.js"></script>

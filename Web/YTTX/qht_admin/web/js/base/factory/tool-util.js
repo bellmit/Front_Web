@@ -846,7 +846,7 @@
 			toastr.success('您已设置了新的系统权限,即将退出系统');
 		};
 		/*解析主菜单*/
-		tools.resolveMainMenu=function (data) {
+		tools.resolveMainMenu=function (data,flag) {
 			if(!data){
 				return null;
 			}else{
@@ -866,6 +866,34 @@
 					menu={},
 					power={},
 					i=0;
+
+				/*设置首页*/
+				if(flag){
+					var index={
+						id:0,
+						code:'app',
+						name:'首页',
+						href:'app',
+						module:'app'
+					};
+					list.push(index);
+					menu[0]=index;
+
+					/*创建权限缓存*/
+					power[0]={
+						id:0,
+						code:'app',
+						power:0
+					};
+
+					/*创建模块缓存*/
+					module[0]={
+						id:0,
+						code:'app',
+						module:'app'
+					};
+				}
+
 				for(i;i<len;i++){
 					var mitem=data[i],
 						mid=mitem['modId'],
@@ -873,22 +901,20 @@
 						msub=mitem['modItem'],
 						mpower=mitem['permitItem'],
 						mname=mitem['modName'],
-						mcode=mitem['modCode'];
+						mcode=mitem['modCode'],
+						tempobj={
+							id:mid,
+							code:mcode,
+							name:mname,
+							href:menu_map[mlink]||mlink,
+							module:menu_map[mlink]||mlink,
+							sub:msub
+						};
 
-					list.push({
-						id:mid,
-						code:mcode,
-						name:mname,
-						href:menu_map[mlink]||mlink
-					});
+					list.push(tempobj);
 
 					/*创建菜单缓存*/
-					menu[mid]={
-						id:mid,
-						code:mcode,
-						name:mname,
-						href:menu_map[mlink]||mlink
-					};
+					menu[mid]=tempobj;
 
 					/*创建权限缓存*/
 					power[mid]={
@@ -901,9 +927,8 @@
 					module[mid]={
 						id:mid,
 						code:mcode,
-						module:menu_map[mlink]
+						module:menu_map[mlink]||mlink
 					};
-
 				}
 				return {
 					menu:menu,

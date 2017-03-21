@@ -54,7 +54,7 @@ angular.module('app')
                     url: '/app',
                     views:{
                         'main':{
-                            templateUrl: 'tpl/app.html'
+                            template: '<div class="ui-main-app"></div>'
                         },
                         'sidemenu':{
                             templateUrl: 'tpl/common/side.html'
@@ -71,9 +71,7 @@ angular.module('app')
                         'nologin':{
                             templateUrl: 'tpl/common/support_login.html'
                         }
-                    },
-                    controller:'AppContrller',
-                    controllerAs:'app_ctrl'
+                    }
                 })
                 //机构
                 .state('struct', {
