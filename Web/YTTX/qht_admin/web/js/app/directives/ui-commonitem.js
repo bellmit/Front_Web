@@ -1,45 +1,144 @@
 angular.module('ui.commonitem',[])
     /*数据服务类*/
-    .service('')
-    /*头部导航栏指令*/
-    .directive('uiHeaderMenu',['toolUtil','BASE_CONFIG',function(toolUtil,BASE_CONFIG) {
-        return {
-            replace:false,
-            restrict: 'EC',
-            template:'<li ng-repeat="i in uiheadermenu_ctrl.menuitem"><a data-id="{{i.id}}" data-code="{{i.code}}" href="" ui-sref="{{i.href}}" title="">{{i.name}}</a></li>',
-            controller:function () {
-                var self=this,
-                    cache=toolUtil.getParams();
+    .service('uiCommonService',['toolUtil','BASE_CONFIG',function (toolUtil,BASE_CONFIG) {
+        var cache=toolUtil.getParams(BASE_CONFIG.unique_key),
+            menuitem=null,
+            logininfo=null;
 
-                if(cache===null){
-                    self.menuitem=[];
-                    toolUtil.loginOut(true);
-                }else if(cache){
-                    /*判断登陆缓存是否有效*/
-                    var islogin=toolUtil.validLogin(cache.loginMap,BASE_CONFIG.basedomain),
-                        list=null;
+
+        return {
+            getCache:function () {
+                return cache;
+            },
+            isLogin:function () {
+                var logininfo=toolUtil.isLogin(cache),
+                    islogin=false;
+                if(logininfo){
+                    islogin=toolUtil.validLogin(cache.loginMap,BASE_CONFIG.basedomain);
                     if(!islogin){
-                        /*缓存失效，退出登录*/
-                        self.menuitem=[];
+                        /*不合格缓存信息，需要清除缓存*/
                         toolUtil.loginOut(true);
-                        return false;
                     }
+                    return islogin;
+                }else{
+                    return false;
+                }
+            },
+            getHeaderData:function () {
+                if(menuitem!==null){
+                    return menuitem;
+                }
+                /*判断登陆缓存是否有效*/
+                var self=this,
+                    islogin=self.isLogin(),
+                    list=null;
+                if(islogin){
                     if(cache.cacheMap.menuload){
                         /*直接加载缓存*/
                         list=toolUtil.loadMainMenu(cache.menuMap);
                         if(list!==null){
-                            self.menuitem=list;
-                        }else{
-                            self.menuitem=[];
+                            menuitem=list;
+                            return menuitem;
                         }
                     }else{
                         /*如果缓存存在且缓存未加载相关数据则请求菜单数据*/
-                        toolUtil.requestHttp({
-                            url:'/module/menu',
+                        toolUtil
+                            .requestHttp({
+                                url:'/module/menu',
+                                method:'post',
+                                set:true,
+                                data:cache.loginMap.param
+                            })
+                            .then(function(resp){
+                                    var data=resp.data,
+                                        status=parseInt(resp.status,10);
+
+                                    if(status===200){
+                                        var code=parseInt(data.code,10),
+                                            message=data.message;
+                                        if(code!==0){
+                                            if(typeof message !=='undefined'&&message!==''){
+                                                console.log('message');
+                                            }
+                                            if(code===999){
+                                                /*退出系统*/
+                                                toolUtil.loginOut(true);
+                                            }
+                                            return null;
+                                        }else{
+                                            /*加载数据*/
+                                            var result=data.result;
+                                            if(typeof result!=='undefined'){
+                                                /*flag:是否设置首页*/
+                                                list=toolUtil.resolveMainMenu(result.menu,true);
+                                                if(list===null){
+                                                    return null;
+                                                }else{
+                                                    /*设置缓存*/
+                                                    cache['cacheMap']={
+                                                        menuload:true,
+                                                        powerload:true
+                                                    };
+                                                    cache['moduleMap']=list['module'];
+                                                    cache['menuMap']=list['menu'];
+                                                    cache['powerMap']=list['power'];
+                                                    /*更新缓存*/
+                                                    toolUtil.setParams(BASE_CONFIG.unique_key,cache);
+                                                    /*设置模型*/
+                                                    menuitem=list['list'];
+                                                    return menuitem;
+                                                }
+                                            }else{
+                                                return null;
+                                            }
+                                        }
+                                    }
+                                    return null;
+                                },
+                                function(resp){
+                                    var message=resp.data.message;
+                                    if(typeof message !=='undefined'&&message!==''){
+                                        console.log(message);
+                                    }else{
+                                        console.log('请求菜单失败');
+                                    }
+                                    return null;
+                                });
+                    }
+                }else{
+                    toolUtil.loginOut(true);
+                    return null;
+                }
+            },
+            getUserInfo:function () {
+                if(logininfo!==null){
+                    return logininfo;
+                }
+                /*判断登陆缓存是否有效*/
+                var self=this,
+                    islogin=self.isLogin();
+                if(islogin){
+                    logininfo=Mock.mock({
+                        'list|2-10':[{
+                            "name":/[a-z]{2,5}/,
+                            "value":/[0-9a-zA-Z]{2,10}/
+                        }]
+                    });
+                    return logininfo;
+                    /*如果缓存存在且缓存未加载相关数据则请求菜单数据*/
+                    /*var param={
+                        username:cache.loginMap.username
+                    };
+                    angular.extend(param,cache.loginMap.param);
+
+                    toolUtil
+                        .requestHttp({
+                            url:'/sysuser/check',
                             method:'post',
                             set:true,
-                            data:cache.loginMap.param
-                        }).then(function(resp){
+                            data:param
+                        })
+                        .then(function(resp){
                                 var data=resp.data,
                                     status=parseInt(resp.status,10);
 
@@ -51,50 +150,56 @@ angular.module('ui.commonitem',[])
                                             console.log('message');
                                         }
                                         if(code===999){
-                                            /*退出系统*/
+                                            /!*退出系统*!/
                                             toolUtil.loginOut(true);
                                         }
-                                        self.menuitem=[];
-                                        return false;
+                                        return null;
                                     }else{
-                                        /*加载数据*/
                                         var result=data.result;
                                         if(typeof result!=='undefined'){
-                                            /*flag:是否设置首页*/
-                                            list=toolUtil.resolveMainMenu(result.menu,true);
-                                            if(list===null){
-                                                self.menuitem=[];
-                                            }else{
-                                                /*设置缓存*/
-                                                cache['cacheMap']={
-                                                    menuload:true,
-                                                    powerload:true
-                                                };
-                                                cache['moduleMap']=list['module'];
-                                                cache['menuMap']=list['menu'];
-                                                cache['powerMap']=list['power'];
-                                                /*更新缓存*/
-                                                toolUtil.setParams(BASE_CONFIG.unique_key,cache);
-                                                /*设置模型*/
-                                                self.menuitem=list['list'];
-                                            }
+                                            console.log(result);
+                                            logininfo=list['list'];
+                                            return logininfo;
                                         }else{
-                                            self.menuitem=[];
+                                            return Mock.mock({
+                                                'list|2-10':[{
+                                                    "name":/[a-z][A-Z]{2-5}/,
+                                                    "value":/[a-z][A-Z]{2-10}/
+                                                }]
+                                            });
                                         }
                                     }
                                 }
+                                return null;
                             },
                             function(resp){
-                                self.menuitem=[];
                                 var message=resp.data.message;
                                 if(typeof message !=='undefined'&&message!==''){
                                     console.log(message);
                                 }else{
-                                    console.log('请求菜单失败');
+                                    console.log('请求用户信息失败');
                                 }
-                            });
-                    }
-
+                                return null;
+                            });*/
+                }else{
+                    toolUtil.loginOut(true);
+                    return null;
+                }
+            }
+        };
+    }])
+    /*头部导航栏指令*/
+    .directive('uiHeaderMenu',['uiCommonService',function(uiCommonService) {
+        return {
+            replace:false,
+            restrict: 'EC',
+            template:'<li ng-repeat="i in uiheadermenu_ctrl.menuitem"><a data-id="{{i.id}}" data-code="{{i.code}}" href="" ui-sref="{{i.href}}" title="">{{i.name}}</a></li>',
+            controller:function () {
+                var data=uiCommonService.getHeaderData();
+                if(data!==null){
+                    this.menuitem=data;
+                }else{
+                    this.menuitem=[];
                 }
             },
             controllerAs:'uiheadermenu_ctrl',
@@ -125,18 +230,22 @@ angular.module('ui.commonitem',[])
                     <h1>深圳银通移动支付有限公司</h1>'
         };
     })
-    .directive('uiSubInfo',function() {
+    .directive('uiSubInfo',['uiCommonService',function(uiCommonService) {
         return {
             replace:false,
             restrict: 'EC',
-            /* template:'<li ng-repeat="i in uiheadermenu_ctrl.menuitem"><a data-id="{{i.id}}" data-code="{{i.code}}" href="" ui-sref="{{i.href}}" title="">{{i.name}}</a></li>',*/
-            template:'<li>身份：<span>省级代理商</span></li>',
+            template:'<li ng-repeat="i in uisubinfo_ctrl.menuitem">{{i.name}}：<span>{{i.value}}</span></li>',
             controller:function (){
-
+                var data=uiCommonService.getUserInfo();
+                if(data!==null){
+                    this.menuitem=data.list;
+                }else{
+                    this.menuitem=[];
+                }
             },
             controllerAs:'uisubinfo_ctrl'
         };
-    })
+    }])
     .directive('uiSubList',function() {
         return {
             replace:false,
@@ -248,38 +357,29 @@ angular.module('ui.commonitem',[])
         };
     })
     /*首页指令*/
-    .directive('uiMainApp',['toolUtil',function(toolUtil) {
-    return {
-        replace:false,
-        restrict: 'EC',
-        template:'<div class="admin-welcome-banner"><img src="images/index_banner.jpg" alt="" /></div>\
-                    <h3 class="admin-layout-theme3">快捷入口</h3>\
-                    <ul class="admin-quick-icon">\
-                      <li ng-repeat="i in uimainapp_ctrl.menuitem">\
-                        <div class="g-br5" data-id="{{i.id}}" data-code="{{i.code}}" href="" ui-sref="{{i.href}}">\
-                            <img alt="" src="images/quick_{{$index + 1}}.png" />\
-                            <span>{{i.name}}</span>\
-                        </div>\
-                      </li>\
-                    </ul>',
-        controller:function () {
-            var cache=toolUtil.getParams('menuMap'),
-                list=null;
-
-            if(cache){
-                /*直接加载缓存*/
-                list=toolUtil.loadMainMenu(cache);
-                if(list!==null){
-                    /*清除首页*/
-                    list.shift();
-                    this.menuitem=list;
+    .directive('uiMainApp',['uiCommonService',function(uiCommonService) {
+        return {
+            replace:false,
+            restrict: 'EC',
+            template:'<div class="admin-welcome-banner"><img src="images/index_banner.jpg" alt="" /></div>\
+                        <h3 class="admin-layout-theme3">快捷入口</h3>\
+                        <ul class="admin-quick-icon">\
+                          <li ng-repeat="i in uimainapp_ctrl.menuitem">\
+                            <div class="g-br5" data-id="{{i.id}}" data-code="{{i.code}}" href="" ui-sref="{{i.href}}">\
+                                <img alt="" src="images/quick_{{$index + 1}}.png" />\
+                                <span>{{i.name}}</span>\
+                            </div>\
+                          </li>\
+                        </ul>',
+            controller:function () {
+                var data=uiCommonService.getHeaderData();
+                if(data!==null){
+                    this.menuitem=data.slice(1);
                 }else{
                     this.menuitem=[];
                 }
-            }else{
-                this.menuitem=[];
-            }
-        },
-        controllerAs:'uimainapp_ctrl'
-    };
-}]);
+
+            },
+            controllerAs:'uimainapp_ctrl'
+        };
+    }]);
