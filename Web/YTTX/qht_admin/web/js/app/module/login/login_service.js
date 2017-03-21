@@ -8,7 +8,7 @@ angular.module('login.service',[])
                 var logininfo=toolUtil.isLogin(cache),
                     islogin=false;
                 if(logininfo){
-                    islogin=toolUtil.validLogin(cache.loginMap);
+                    islogin=toolUtil.validLogin(cache.loginMap,BASE_CONFIG.basedomain);
                     if(!islogin){
                         /*不合格缓存信息，需要清除缓存*/
                         this.loginOut();
@@ -39,7 +39,6 @@ angular.module('login.service',[])
                             'isLogin':true,
                             'datetime':moment().format('YYYY-MM-DD|HH:mm:ss'),
                             'reqdomain':BASE_CONFIG.basedomain,
-                            'currentdomain':'',
                             'username':param,
                             'param':{
                                 'adminId':encodeURIComponent(result.adminId),
@@ -98,7 +97,7 @@ angular.module('login.service',[])
                     cache.loginMap=data;
                 }else{
                     cache={
-                        cache:{
+                        cacheMap:{
                             menuload:false,
                             powerload:false
                         },
@@ -107,6 +106,7 @@ angular.module('login.service',[])
                             current:'',
                             setting:false
                         },
+                        moduleMap:{},
                         menuMap:{},
                         powerMap:{},
                         loginMap:data,
@@ -119,8 +119,8 @@ angular.module('login.service',[])
             loginOut:function () {
                 /*清除缓存*/
                 login_cache={};
-                toolUtil.clear();
-                toolUtil.loginTips(true);
+                toolUtil.loginOut(true);
+                cache=null;
             }
         };
     }]);
