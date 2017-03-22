@@ -1,17 +1,20 @@
 angular.module('login.service',[])
     .service('loginService',['toolUtil','BASE_CONFIG','$state',function(toolUtil,BASE_CONFIG,$state){
-        var login_cache={},
-            cache=toolUtil.getParams(BASE_CONFIG.unique_key);
+        var cache=toolUtil.getParams(BASE_CONFIG.unique_key),
+            menudata=null;
+        
         return {
             /*获取登陆信息*/
-            getLoginInfo:function () {
+            isLogin:function () {
                 var logininfo=toolUtil.isLogin(cache),
                     islogin=false;
                 if(logininfo){
                     islogin=toolUtil.validLogin(cache.loginMap,BASE_CONFIG.basedomain);
                     if(!islogin){
                         /*不合格缓存信息，需要清除缓存*/
-                        this.loginOut();
+                        toolUtil.loginOut({
+                            router:'login'
+                        });
                     }
                     return islogin;
                 }else{
@@ -22,7 +25,6 @@ angular.module('login.service',[])
             reqAction:function (resp,param) {
                 var data=resp.data,
                     status=parseInt(resp.status,10);
-
 
                 if(status===200){
                     var code=parseInt(data.code,10),
@@ -46,11 +48,18 @@ angular.module('login.service',[])
                                 'organizationId':encodeURIComponent(result.organizationId)
                             }
                         });
-                        /*路由跳转*/
-                        $state.go('app');
+                        /*加载菜单*/
+                        this.loadMenuData(function () {
+                            /*重新刷新页面*/
+                            window.location.reload();
+                        });
                         /*加载动画*/
                         toolUtil.loading('show');
                         var loadingid=setTimeout(function () {
+                                /*更新缓存*/
+                                cache=toolUtil.getParams(BASE_CONFIG.unique_key);
+                                /*路由跳转*/
+                                $state.go('app');
                                 toolUtil.loading('hide',loadingid);
                         },1000);
                         return true;
@@ -59,6 +68,104 @@ angular.module('login.service',[])
                     return false;
                 }
             },
+            /*加载菜单数据*/
+            loadMenuData:function (fn) {
+                /*判断登陆缓存是否有效*/
+                var self=this,
+                    islogin=self.isLogin();
+                if(islogin){
+                    if(!cache.cacheMap.menuload){
+                        toolUtil
+                            .requestHttp({
+                                url:'/module/menu',
+                                method:'post',
+                                set:true,
+                                data:cache.loginMap.param
+                            })
+                            .then(function(resp){
+                                    var data=resp.data,
+                                        status=parseInt(resp.status,10);
+
+                                    if(status===200){
+                                        var code=parseInt(data.code,10),
+                                            message=data.message;
+                                        if(code!==0){
+                                            if(typeof message !=='undefined'&&message!==''){
+                                                console.log('message');
+                                            }
+                                            if(code===999){
+                                                /*退出系统*/
+                                                toolUtil.loginOut({
+                                                    router:'login'
+                                                });
+                                            }
+                                        }else{
+                                            /*加载数据*/
+                                            var result=data.result;
+                                            if(typeof result!=='undefined'){
+                                                /*flag:是否设置首页*/
+                                                var list=toolUtil.resolveMainMenu(result.menu,true);
+                                                if(list!==null){
+                                                    /*设置缓存*/
+                                                    cache['cacheMap']={
+                                                        menuload:true,
+                                                        powerload:true
+                                                    };
+                                                    cache['moduleMap']=list['module'];
+                                                    cache['menuMap']=list['menu'];
+                                                    cache['powerMap']=list['power'];
+                                                    /*更新缓存*/
+                                                    toolUtil.setParams(BASE_CONFIG.unique_key,cache);
+                                                    /*执行回掉*/
+                                                    if(typeof fn==='function'){
+                                                        fn();
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                function(resp){
+                                    var message=resp.data.message;
+                                    if(typeof message !=='undefined'&&message!==''){
+                                        console.log(message);
+                                    }else{
+                                        console.log('请求菜单失败');
+                                    }
+                                });
+                    }
+                }else{
+                    toolUtil.loginOut({
+                        router:'login'
+                    });
+                }
+            },
+            /*获取菜单数据*/
+            getMenuData:function () {
+                if(menudata===null){
+                    var self=this,
+                        islogin=self.isLogin();
+
+                    if(islogin){
+                        if(cache.cacheMap.menuload){
+                            /*直接加载缓存*/
+                            var list=toolUtil.loadMainMenu(cache.menuMap);
+                            if(list!==null){
+                                menudata=list;
+                                return menudata;
+                            }
+                        }
+                    }else{
+                        toolUtil.loginOut({
+                            router:'login'
+                        });
+                    }
+                    return null;
+                }else{
+                    return menudata;
+                }
+            },
+            /**/
             /*获取验证码*/
             getValidCode:function (config) {
                 var xhr = new XMLHttpRequest();
@@ -92,7 +199,6 @@ angular.module('login.service',[])
             },
             /*设置缓存*/
             setCache:function (data) {
-                login_cache=data;
                 if(cache){
                     cache.loginMap=data;
                 }else{
@@ -114,13 +220,6 @@ angular.module('login.service',[])
                     };
                 }
                 toolUtil.setParams(BASE_CONFIG.unique_key,cache);
-            },
-            /*退出*/
-            loginOut:function () {
-                /*清除缓存*/
-                login_cache={};
-                toolUtil.loginOut(true);
-                cache=null;
             }
         };
     }]);

@@ -11,7 +11,7 @@
           var self=this;
 
           /*模型*/
-          this.isLogin=loginService.getLoginInfo()/*是否存在*/;
+          this.isLogin=loginService.isLogin()/*是否存在*/;
 
           this.login={
               username:'',
@@ -55,13 +55,13 @@
           };
           /*退出*/
           this.loginOut=function () {
-              loginService.loginOut();
               self.isLogin=false;
               self.login={
                   username:'',
                   password:'',
                   identifyingCode:''
               };
+              toolUtil.loginOut();
           }
       }]);
 }());

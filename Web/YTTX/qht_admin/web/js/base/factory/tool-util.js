@@ -1541,9 +1541,10 @@
 			return false;
 		};
 		/*跳转提示*/
-		tools.loginTips=function(flag){
+		tools.loginTips=function(config){
 			/*如果没有登陆则提示跳转至登陆页*/
-			var count= 2,
+			var self=this,
+				count= 2,
 				tipid=null,
 				outwrap=document.getElementById(BASE_CONFIG.nologindom),
 				outtip=document.getElementById(BASE_CONFIG.nologintipdom);
@@ -1560,20 +1561,32 @@
 					count= 2;
 					outtip.innerHTML='';
 					outwrap.className='g-d-hidei';
-					if(flag){
-						$state.go('login');
+					if(config){
+						self.clear();
+						if(typeof config.delay==='function'){
+							/*延时回调*/
+							config.delay();
+							if(typeof config.router!=='undefined'){
+								/*路由跳转*/
+								$state.go(config.router);
+							}
+						}else{
+							if(typeof config.router!=='undefined'){
+								/*路由跳转*/
+								$state.go(config.router);
+							}
+						}
 					}
 				}
 			},1000);
 		};
 		/*退出*/
-		tools.loginOut=function (flag) {
+		tools.loginOut=function (config) {
 			var self=this;
-			self.clear();
-			if(flag){
-				self.loginTips(true);
+			if(config){
+				self.loginTips(config);
 			}else{
-				self.loginTips();
+				self.clear();
 			}
 		};
 
