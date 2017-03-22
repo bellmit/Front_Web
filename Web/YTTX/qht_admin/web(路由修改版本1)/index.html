@@ -17,32 +17,39 @@
 	<![endif]-->
 </head>
 <body class="struct-layout-wrap" ng-controller="SupportController as support_ctrl">
+
 		<!--弹出层--是否支持相关浏览器-->
 		<div ng-if="support_ctrl.isSupport" ng-controller="LoginController as login_ctrl">
-			<!--<div ng-if="login_ctrl.isLogin" ng-controller="AppController as app_ctrl">
-				&lt;!&ndash;头部&ndash;&gt;
+			<div ng-if="login_ctrl.isLogin" ng-controller="AppController as app_ctrl">
+				<!--头部-->
 				<div class="struct-layout-header" data-ng-include="'tpl/common/header.html'" id="struct_layout_header"></div>
 
-				&lt;!&ndash;主体&ndash;&gt;
+				<!--主体-->
+				<!--<div ui-view="container"></div>-->
 				<div class="struct-layout-container struct-layout-default">
 					<div class="struct-layout-main" ui-view="main"></div>
 					<div class="struct-layout-side" ui-view="sidemenu" id="struct_layout_side"></div>
 				</div>
 
-				&lt;!&ndash;底部&ndash;&gt;
+				<!--底部-->
 				<div class="struct-layout-footer">
 					<div class="footer-content-wrap"></div>
 				</div>
 
-				&lt;!&ndash;弹出层&#45;&#45;提示操作界面&ndash;&gt;
+				<!--弹出层--提示操作界面-->
 				<div id="struct_layout_dialog" ui-view="dialog"></div>
-
-				&lt;!&ndash;弹出层&#45;&#45;退出系统动画&ndash;&gt;
-				<div id="struct_layout_outanimate" ui-view="outanimate"></div>
-			</div>-->
+			</div>
 			<div ng-if="!login_ctrl.isLogin" ui-view="login"></div>
+
+			<!--弹出层--退出系统动画-->
+			<div id="struct_layout_nologin" class="g-d-hidei" ui-view="nologin"></div>
+
+			<!--弹出层--加载动画-->
+			<div id="struct_layout_loading" class="g-d-hidei" ui-view="loading"></div>
 		</div>
 		<div ng-if="!support_ctrl.isSupport" ui-view="support"></div>
+
+
 <!--jquery-->
 <script src="js/base/jquery-1.11.1.js"></script>
 
@@ -67,7 +74,7 @@
 <!--<script src="js/angular/bootstrap/ui-bootstrap-tpls-2.5.0.js"></script>-->
 
 <!--lazyload:延迟加载-->
-<!--<script src="../js/angular/oclazyload/ocLazyLoad.js"></script>-->
+<script src="js/angular/oclazyload/ocLazyLoad.js"></script>
 
 <!--translate：国际化-->
 <!--<script src="../js/angular/angular-translate/angular-translate.js"></script>
@@ -123,20 +130,21 @@
 <script src="js/app/controllers/bootstrap.js"></script>-->
 
 <!--自定义组件-->
+<!--http拦截器-->
+<!--<script src="js/base/factory/http-interceptor.js"></script>-->
+
 <!--公共组件-->
 <script src="js/base/services/tool-dialog.js"></script>
 <script src="js/base/factory/tool-util.js"></script>
 
-<!--主导航指令集-->
-<script src="js/app/directives/ui-headeritem.js"></script>
-
-<!--侧边栏指令集-->
-<script src="js/app/directives/ui-sideitem.js"></script>
-
-
+<!--公共指令集-->
+<script src="js/app/directives/ui-commonitem.js"></script>
 
 <!--登录-->
-<script src="js/app/app/login/login_service.js"></script>
+<script src="js/app/module/login/login_service.js"></script>
+
+<!--首页控制器-->
+<script src="js/app/module/app/app_controller.js"></script>
 
 </body>
 </html>

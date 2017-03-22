@@ -1584,7 +1584,24 @@
 		tools.loginOut=function (config) {
 			var self=this;
 			if(config){
-				self.loginTips(config);
+				if(config.tips){
+					self.loginTips(config);
+				}else{
+					self.clear();
+					if(typeof config.delay==='function'){
+						/*延时回调*/
+						config.delay();
+						if(typeof config.router!=='undefined'){
+							/*路由跳转*/
+							$state.go(config.router);
+						}
+					}else{
+						if(typeof config.router!=='undefined'){
+							/*路由跳转*/
+							$state.go(config.router);
+						}
+					}
+				}
 			}else{
 				self.clear();
 			}

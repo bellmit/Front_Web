@@ -8,9 +8,9 @@ angular.module('tool.dialog',[])
 		this.dia=function(config){
 			if(flag){
 				if(config){
-					return dialog(config);
+					return typeof single_dia==='function'?single_dia(config):dialog(config);
 				}else{
-					return dialog({
+					return typeof single_dia==='function'?single_dia:dialog({
 						zIndex:2000,
 						title:'温馨提示',
 						okValue:'确定',
@@ -27,19 +27,18 @@ angular.module('tool.dialog',[])
 		};
 		/*提示类型*/
 		this.show=function (config) {
-			var tempdia=config.tip||config.dia,
-				type=config.type,
+			var type=config.type,
 				value=config.value;
 
-			if(tempdia){
+			if(single_dia){
 				if(type==='succ'){
-					tempdia.content('<span class="g-c-succ g-btips-succ">'+value+'</span>').show();
+					single_dia.content('<span class="g-c-succ g-btips-succ">'+value+'</span>').show();
 				}else if(type==='warn'){
-					tempdia.content('<span class="g-c-warn g-btips-warn">'+value+'</span>').show();
+					single_dia.content('<span class="g-c-warn g-btips-warn">'+value+'</span>').show();
 				}else if(type==='error'){
-					tempdia.content('<span class="g-c-err g-btips-error">'+value+'</span>').show();
+					single_dia.content('<span class="g-c-err g-btips-error">'+value+'</span>').show();
 				}else{
-					tempdia.content('<span class="g-c-succ g-btips-succ">'+value+'</span>').show();
+					single_dia.content('<span class="g-c-succ g-btips-succ">'+value+'</span>').show();
 				}
 			}
 		};
@@ -48,24 +47,6 @@ angular.module('tool.dialog',[])
 			//是否支持弹窗
 			if(!flag){
 				return null;
-			}
-
-
-			/*内部提示信息*/
-			var innerdia;
-			if(tips&&typeof tips==='object'){
-				innerdia=tips;
-			}else{
-				innerdia=dialog({
-					title:'温馨提示',
-					okValue:'确定',
-					width:300,
-					ok:function(){
-						this.close();
-						return false;
-					},
-					cancel:false
-				});
 			}
 			/*关键匹配*/
 			var actionmap={
@@ -118,7 +99,7 @@ angular.module('tool.dialog',[])
 							//执行回调
 							fn.call(null,{
 								action:key,
-								dia:innerdia
+								dia:single_dia
 							});
 							this.close().remove();
 						}
@@ -133,4 +114,7 @@ angular.module('tool.dialog',[])
 
 			return new sureDialogFun();
 		};
+
+		/*内部对象*/
+		var single_dia=this.dia();
 	});

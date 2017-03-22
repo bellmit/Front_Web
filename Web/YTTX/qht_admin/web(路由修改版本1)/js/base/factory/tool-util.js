@@ -1,8 +1,8 @@
 /*自定义扩展*/
 (function($){
 	'use strict';
-	angular.module('tool.util',[]).factory('toolUtil',function () {
-		var system_unique_key='qht_admin_unique_key',
+	angular.module('tool.util',[]).factory('toolUtil',['$http','$q','$httpParamSerializerJQLike','BASE_CONFIG','$state',function ($http,$q,$httpParamSerializerJQLike,BASE_CONFIG,$state) {
+		var system_unique_key=BASE_CONFIG.unique_key||'qht_admin_unique_key',
 			tools={};
 		/*本地存储*/
 		//缓存对象
@@ -30,6 +30,64 @@
 				return false;
 			}
 		}());
+		//递归查找缓存对象
+		tools.paramsItem=function (config,type,action) {
+			var self=this,
+				key=config.key,
+				cache=config.cache,
+				value='';
+
+			//console.log(cache);
+
+			if(type==='set'){
+				value=config.value;
+				for(var i in cache){
+					if(i===key){
+						cache[i]=value;
+						return true;
+					}else{
+						if(typeof cache[i]==='object'){
+							self.paramsItem({
+								key:key,
+								value:value,
+								cache:cache[i]
+							},type);
+						}
+					}
+				}
+			}else if(type==='get'){
+				for(var j in cache){
+					if(j===key){
+						return cache[j];
+					}else{
+						if(typeof cache[j]==='object'){
+							self.paramsItem({
+								key:key,
+								cache:cache[j]
+							},type);
+						}
+					}
+				}
+			}else if(type==='find'){
+				for(var k in cache){
+					if(k===key){
+						if(action==='delete'){
+							delete cache[k];
+						}else if(action==='other'){
+							/*to do*/
+						}
+						return true;
+					}else{
+						if(typeof cache[k]==='object'){
+							self.paramsItem({
+								key:key,
+								cache:cache[k]
+							},type);
+						}
+					}
+				}
+			}
+		};
 		//设置本地存储
 		tools.setParams=function(key,value,flag){
 			if(this.supportStorage){
@@ -42,14 +100,21 @@
 						localStorage.setItem(key,JSON.stringify(value));
 					}
 				}else{
-					var cache=null;
+					var cache=null,
+						self=this;
 					if(flag){
 						cache=JSON.parse(sessionStorage.getItem(system_unique_key));
 					}else{
 						cache=JSON.parse(localStorage.getItem(system_unique_key));
 					}
 					if(cache!==null){
-						cache[key]=value;
+						if(typeof key!=='undefined'){
+							self.paramsItem({
+								key:key,
+								value:value,
+								cache:cache
+							},'set');
+						}
 					}else{
 						cache={};
 						cache[key]=value;
@@ -74,15 +139,21 @@
 						return JSON.parse(localStorage.getItem(system_unique_key))||null;
 					}
 				}else{
-					var cache=null;
+					var cache=null,
+						self=this;
 					if(flag){
 						cache=sessionStorage.getItem(system_unique_key);
 					}else{
 						cache=localStorage.getItem(system_unique_key);
 					}
 					if(cache!==null){
-						cache=JSON.parse(cache);
-						return cache[key]||null;
+						if(typeof key!=='undefined'){
+							return self.paramsItem({
+								key:key,
+								cache:JSON.parse(cache)
+							},'get');
+						}
+						return JSON.parse(cache);
 					}else{
 						return null;
 					}
@@ -100,23 +171,26 @@
 						localStorage.removeItem(key);
 					}
 				}else{
-					var cache=null;
+					var cache=null,
+						self=this;
 					if(flag){
 						cache=sessionStorage.getItem(system_unique_key);
 					}else{
 						cache=localStorage.getItem(system_unique_key);
 					}
 					if(cache!==null){
-						cache=JSON.parse(cache);
-						if(typeof cache[key]!=='undefined'){
-							delete cache[key];
-						}
-						if(flag){
-							/*为localstorage*/
-							sessionStorage.setItem(system_unique_key,JSON.stringify(cache));
-						}else{
-							/*默认为localstorage*/
-							localStorage.setItem(system_unique_key,JSON.stringify(cache));
+						if(typeof key!=='undefined'){
+							self.paramsItem({
+								key:key,
+								cache:JSON.parse(cache)
+							},'find','delete');
+							if(flag){
+								/*为localstorage*/
+								sessionStorage.setItem(system_unique_key,JSON.stringify(cache));
+							}else{
+								/*默认为localstorage*/
+								localStorage.setItem(system_unique_key,JSON.stringify(cache));
+							}
 						}
 					}
 				}
@@ -166,6 +240,43 @@
 		tools.supportDia=(function(){
 			return (typeof dialog==='function'&&dialog)?true:false;
 		}());
+		
+		
+		/*返回请求信息*/
+		tools.requestHttp=function (config) {
+			var req=config;
+
+			/*适配配置*/
+			req.url=BASE_CONFIG.basedomain + BASE_CONFIG.baseproject + req.url;
+			req.data=$httpParamSerializerJQLike(req.data);
+			req['headers']={ "Content-Type": "application/x-www-form-urlencoded" };
+
+			var deferred=$q.defer(),
+				promise=$http(req);
+
+			promise.then(function (resp) {
+				deferred.resolve(resp);
+			},function (resp) {
+				deferred.reject(resp);
+			});
+			return deferred.promise;
+		};
+
+
+		/*加载动画*/
+		tools.loading=function (type,delay) {
+			var load=document.getElementById(BASE_CONFIG.loadingdom);
+			if(type==='show'){
+				load.className='g-d-showi';
+			}else if(type==='hide'){
+				load.className='g-d-hidei';
+			}
+			/*清除延时指针*/
+			if(delay){
+				clearTimeout(delay);
+				delay=null;
+			}
+		};
 
 
 
@@ -696,349 +807,148 @@
 			return (r1/r2)*Math.pow(10,t2-t1);
 		};
 
-		/*左侧菜单导航*/
-		/*菜单id映射*/
-		tools.menuMap={
-			"0":{
-				"name":"主页",
-				"code":"index",
-				"match":"index",
-				"class":"menu-ux-home",
-				"module":"",
-				"modid":"0"
-			},
-			"200":{
-				"name":"系统管理",
-				"code":"admin",
-				"match":"-admin-",
-				"class":"menu-ux-admin",
-				"module":"admin",
-				"modid":"200"
-			},
-			"210":{
-				"name":"用户管理",
-				"code":"user",
-				"match":"-user-",
-				"class":"menu-ux-user",
-				"matchignore":["bzw-user-add"],
-				"module":"admin",
-				"modid":"210"
-			},
-			"220":{
-				"name":"公告管理",
-				"code":"announcement",
-				"match":"-announcement-",
-				"class":"menu-ux-ad",
-				"module":"announcement",
-				"modid":"220"
-			},
-			"230":{
-				"name":"供应商管理",
-				"code":"provider",
-				"match":"-provider-",
-				"class":"menu-ux-distribution",
-				"module":"provider",
-				"modid":"230"
-			},
-			"240":{
-				"name":"交易管理",
-				"code":"trade",
-				"match":"-trade-",
-				"matchlist":['order-manager','comment-buyer','comment-saler'],
-				"matchignore":["comment-saler"],
-				"class":"menu-ux-record",
-				"module":"trade",
-				"modid":"240"
-			},
-			"250":{
-				"name":"商品管理",
-				"code":"goods",
-				"match":"-goods-",
-				"extendmenu":{
-					"position":"before",
-					"list":[{
-						"modLink":"bzw-goods-manager",
-						"modName": "商品管理"
-					}]
-				},
-				"class":"menu-ux-shop",
-				"module":"goods",
-				"modid":"250"
-			},
-			"260":{
-				"name":"商品属性",
-				"code":"attribute",
-				"match":"-attribute-",
-				"class":"menu-ux-shop",
-				"module":"attribute",
-				"modid":"260"
-			},
-			"270":{
-				"name":"商品类型管理",
-				"code":"goodstype",
-				"match":"-goodstype-",
-				"class":"menu-ux-shop",
-				"module":"goodstype",
-				"modid":"270"
-			},
-			"280":{
-				"name":"用户统计",
-				"code":"userstats",
-				"match":"-userstats-",
-				"ignoremodule":true,
-				"class":"menu-ux-chart",
-				"module":"userstats",
-				"modid":"280"
-			},
-			"290":{
-				"name":"供应商统计",
-				"code":"providerstats",
-				"match":"-providerstats-",
-				"ignoremodule":true,
-				"class":"menu-ux-chart",
-				"module":"providerstats",
-				"modid":"290"
-			},
-			"300":{
-				"name":"商品统计",
-				"code":"goodsstats",
-				"match":"-goodsstats-",
-				"ignoremodule":true,
-				"class":"menu-ux-chart",
-				"module":"goodsstats",
-				"modid":"300"
-			},
-			"310":{
-				"name":"订单统计",
-				"code":"orderstats",
-				"ignoremodule":true,
-				"match":"-orderstats-",
-				"class":"menu-ux-chart",
-				"module":"orderstats",
-				"modid":"310"
-			},
-			"320":{
-				"name":"平台管理",
-				"code":"paltform",
-				"match":"-paltform-",
-				/*"ignoremodule":true,*/
-				"class":"menu-ux-platform",
-				"matchlist":['bzw-imei-list','bzw-imei-add','bzw-complaints-suggestions'],
-				"module":"paltform",
-				"modid":"320"
-			},
-			"330":{
-				"name":"广告管理",
-				"code":"advert",
-				"match":"-advert-",
-				"class":"menu-ux-ad",
-				"module":"advert",
-				"modid":"330"
-			},
-			"340":{
-				"name":"活动设置",
-				"code":"activity",
-				"match":"-activity-",
-				"matchlist":['module-set'],
-				"class":"menu-ux-serve",
-				"module":"activity",
-				"modid":"340"
+		/*获取路由信息*/
+		tools.getRoute=function(cache){
+			/*处理路径*/
+			var self=this;
+
+			if(!cache){
+				cache=self.getParams('routeMap');
 			}
-		};
-		/*路由映射*/
-		tools.routeMap={
-			issetting:false,
-			path:'',
-			module:'',
-			isindex:false,
-			issamemodule:false
+			if(cache){
+				return cache;
+			}
+			return null;
 		};
 		/*获取路由信息*/
-		tools.getRoute=function(){
+		tools.setRoute=function(path,setting){
 			/*处理路径*/
 			var self=this,
-				currentfile=location.pathname,
-				carr=currentfile.split('/'),
-				clen=carr.length,
-				cp_suffix=carr[clen - 1].lastIndexOf('.'),
-				path=carr[clen - 1].slice(0,cp_suffix),
-				isindex=path===''?true:path.indexOf('index')!==-1,
-				module=isindex?'':carr[clen - 2];
+				route=self.getRoute();
 
-
-
-			/*调用路由记录*/
-			var history_path={
-					issetting:false,
-					/*当前文件*/
-					current:{
-						isindex:isindex,
-						path:path,
-						module:module
-					},
-					/*上一次文件路径*/
-					prev:{
-						isindex:false,
-						path:'',
-						module:''
+			if(route){
+				if(route.setting){
+					/*重新设置权限*/
+					self.isPermission();
+				}else{
+					route.prev=route.current;
+					route.current=path;
+					if(setting){
+						route.setting=true;
 					}
-				},
-				route=self.getParams('route_module')/*查找上一次记录*/;
-
-
-			/*重新赋值*/
-			if(route){
-				history_path.prev=route.current;
-				self.routeMap.issamemodule=module===route.current.module;
-				self.routeMap.issetting=history_path.issetting=route.issetting;
-			}else{
-				self.routeMap.issamemodule=false;
-			}
-			/*放入本地存储*/
-			self.setParams('route_module',history_path);
-
-			/*存入临时目录*/
-			self.routeMap.isindex=isindex;
-			self.routeMap.path=path;
-			self.routeMap.module=module;
-
-			if(route){
-				/*判断是否设置权限*/
-				self.isPermission(route.issetting);
+					self.setParams('routeMap',route);
+				}
 			}
 		};
 		/*判断是否修改了权限*/
-		tools.isPermission=function(flag){
-			var self=this,
-				flag=flag||self.routeMap.issetting;
-
-			if(flag){
-				var count= 3,
-					tips=dialog({
-						title:'温馨提示',
-						width:300,
-						ok:false,
-						cancel:false,
-						content:'<span class="g-c-bs-warning g-btips-warn">您已设置了新的系统权限，&nbsp;<span class="g-c-bs-info" id="permission_tips"></span>&nbsp;秒后将自动退出系统</span>'
-					}).show(),
-					pertip=null,
-					tipsdom=document.getElementById('permission_tips');
-
-
-				tipsdom.innerHTML=count;
-				pertip=setInterval(function(){
-					count--;
-					tipsdom.innerHTML=count;
-					if(count<0){
-						clearInterval(pertip);
-						pertip=null;
-						tips.close().remove();
-						tipsdom=null;
-						self.loginOut();
-					}
-				},1000);
-			}
-		}
-		/*加载左侧菜单*/
-		tools.loadSideMenu=function($menu,$wrap,opt){
-
-			var self=this,
-				cacheMenu=self.getParams('menu_module')/*调用缓存*/,
-				cacheLogin=self.getParams('login_module'),
-				currentdomain=cacheLogin.currentdomain,
-				baseurl=opt.url.split('/',3);
-
-			cacheLogin.currentdomain=baseurl[0]+'//'+baseurl[2];
-			self.removeParams('login_module');
-			self.setParams('login_module',cacheLogin);
-
-			/*检测是否改变了地址，且登陆地址和请求地址不一致*/
-			if(!self.validLogin()){
-				self.loginTips(function () {
-					self.clear();
-					self.clearCacheData();
-				});
-				return false;
-			}
-
-
-
-			/*判断路由模块*/
-			if(tools.routeMap.issamemodule){
-				if(cacheMenu){
-					/*如果是同一模块侧直接获取缓存*/
-					/*如果存在缓存，则读取缓存*/
-					//放入dom中
-					$(cacheMenu).appendTo($menu.html(''));
-					//初始化
-					self.initSideMenu($wrap);
-					/*导航高亮*/
-					self.highSideMenu($menu);
-					/*解析权限*/
-					var cacheSource=self.getParams('source_module');
-					self.resolvePower(cacheSource,true);
-					return true;
-				}else{
-					/*不同模块则重新加载*/
-					self.requestSideMenu($menu,$wrap,opt);
-				}
+		tools.isPermission=function(){
+			this.clear();
+			toastr.success('您已设置了新的系统权限,即将退出系统');
+		};
+		/*解析主菜单*/
+		tools.resolveMainMenu=function (data,flag) {
+			if(!data){
+				return null;
 			}else{
-				self.requestSideMenu($menu,$wrap,opt);
+				var len=data.length;
+				if(len===0){
+					return null;
+				}
+				var menu_map={
+						'yttx-oragnization':'struct',
+						'yttx-order-manager':'order',
+						'yttx-finance-manager':'finance',
+						'yttx-device-manager':'equipment',
+						'yttx-setting':'setting'
+					},
+					list=[],
+					module={},
+					menu={},
+					power={},
+					i=0;
+
+				/*设置首页*/
+				if(flag){
+					var index={
+						id:0,
+						code:'app',
+						name:'首页',
+						href:'app',
+						module:'app'
+					};
+					list.push(index);
+					menu[0]=index;
+
+					/*创建权限缓存*/
+					power[0]={
+						id:0,
+						code:'app',
+						power:0
+					};
+
+					/*创建模块缓存*/
+					module[0]={
+						id:0,
+						code:'app',
+						module:'app'
+					};
+				}
+
+				for(i;i<len;i++){
+					var mitem=data[i],
+						mid=mitem['modId'],
+						mlink=mitem['modLink'],
+						msub=mitem['modItem'],
+						mpower=mitem['permitItem'],
+						mname=mitem['modName'],
+						mcode=mitem['modCode'],
+						tempobj={
+							id:mid,
+							code:mcode,
+							name:mname,
+							href:menu_map[mlink]||mlink,
+							module:menu_map[mlink]||mlink,
+							sub:msub
+						};
+
+					list.push(tempobj);
+
+					/*创建菜单缓存*/
+					menu[mid]=tempobj;
+
+					/*创建权限缓存*/
+					power[mid]={
+						id:mid,
+						code:mcode,
+						power:mpower
+					};
+
+					/*创建模块缓存*/
+					module[mid]={
+						id:mid,
+						code:mcode,
+						module:menu_map[mlink]||mlink
+					};
+				}
+				return {
+					menu:menu,
+					power:menu,
+					module:module,
+					list:list
+				}
 			}
 		};
-		/*请求菜单*/
-		tools.requestSideMenu= function ($menu,$wrap,opt) {
-			var self=this,
-				cacheSource=self.getParams('source_module');
-
-
-			if(cacheSource){
-				//存在数据源
-				/*解析菜单*/
-				self.doSideMenu(cacheSource,$menu,$wrap);
+		/*加载主菜单*/
+		tools.loadMainMenu=function (data) {
+			if(!data){
+				return null;
 			}else{
-				/*不存在资源则重新加载*/
-
-				/*静态注入*/
-				/*var injectdata=self.injectSideMenu({
-				 url:self.routeMap.isindex?'../json/inject_menu.json':'../../json/inject_menu.json',
-				 async:false,
-				 type:'post',
-				 datatype:'json'
-				 }),
-				 injectstr=self.doSideMenu(injectdata,$menu,$wrap,{
-				 resolve:true
-				 });*/
-
-
-
-
-				$.ajax({
-					url:opt.url,
-					async:opt.async,
-					type:opt.type,
-					data:opt.param,
-					dataType:opt.datatype
-				}).done(function(data){
-					if(parseInt(data.code,10)!==0){
-						//查询异常
-						return false;
-					}
-					if(typeof injectstr!=='undefined'){
-						/*如果有注入*/
-						self.doSideMenu(data,$menu,$wrap,{
-							render:true,
-							result:injectstr,
-							data:injectdata
-						});
-					}else{
-						self.doSideMenu(data,$menu,$wrap);
-					}
-				}).fail(function(){
-					console.log('error');
-				});
+				var list=[];
+				for(var i in data){
+					list.push(data[i]);
+				}
 			}
-
+			return list.length===0?null:list;
 		};
 		//处理菜单(inject:为注入对象)
 		tools.doSideMenu=function(data,$menu,$wrap,inject){
@@ -1289,179 +1199,15 @@
 				return menustr;
 			}
 
-			//放入菜单模块
-			self.setParams('menu_module',menustr);
-			//存入数据源
-			self.setParams('source_module',data);
 
 			//放入dom中
 			$(menustr).appendTo($menu.html(''));
-
-			//调用菜单渲染
-			self.initSideMenu($wrap);
-			/*导航高亮*/
-			self.highSideMenu($menu);
 
 			/*释放内存*/
 			matchClass=null;
 			matchModule=null;
 			matchIgnore=null;
 			extendMenu=null;
-		};
-		//卸载左侧菜单条
-		tools.removeSideMenu=function($menu){
-			//清除dom节点
-			$menu.html('');
-			//清除本地存储缓存
-			this.removeParams('menu_module');
-			this.removeParams('source_module');
-		};
-		//初始化左侧导航
-		tools.initSideMenu=function($wrap){
-			var self=this;
-			if($wrap.length){
-				var $items_with_subs = $wrap.find('li:has(> ul)'),
-					toggle_others = $wrap.hasClass('toggle-others');
-
-				$items_with_subs.filter('.active').addClass('expanded');
-
-				$items_with_subs.each(function(i, el){
-					var $li = $(el),
-						$a = $li.children('a'),
-						$sub = $li.children('ul');
-					$li.addClass('has-sub');
-					$a.on('click', function(ev){
-						ev.preventDefault();
-
-						if(toggle_others){
-							/*其他节点操作*/
-							self.siblingsSideMenu($li,$wrap);
-						}
-
-						if($li.hasClass('expanded') || $li.hasClass('opened')){
-							/*收缩*/
-							self.collapseSideMenu($li, $sub,$wrap);
-						}else{
-							/*展开*/
-							self.expandSideMenu($li, $sub,$wrap);
-						}
-
-					});
-				});
-			}
-		};
-		//当前高亮菜单
-		tools.highSideMenu=function($menu){
-			var self=this;
-			$menu.find("a[href*='"+self.routeMap.path+".html']").parent().addClass('sub-menu-active');
-		};
-		//导航展开服务类
-		tools.expandSideMenu=function($li,$sub,$wrap){
-			var self=this;
-			if($li.data('is-busy') || ($li.parent('.main-menu').length && $wrap.hasClass('collapsed'))){
-				return;
-			}
-
-			$li.addClass('expanded').data('is-busy', true);
-			$sub.show();
-
-			var $sub_items 	  = $sub.children(),
-				sub_height	= $sub.outerHeight(),
-
-				win_y			 = $(window).height(),
-				total_height	  = $li.outerHeight(),
-				current_y		 = $wrap.scrollTop(),
-				item_max_y		= $li.position().top + current_y,
-				fit_to_viewpport  = $wrap.hasClass('fit-in-viewport');
-
-			$sub_items.addClass('is-hidden');
-			$sub.height(0);
-
-
-			TweenMax.to($sub,0.2, {
-				css: {
-					height: sub_height
-				},
-				onUpdate:self.scrollUpdate.call(self,true,$wrap),
-				onComplete: function(){
-					$sub.height('');
-				}
-			});
-
-			var interval_1 = $li.data('sub_i_1'),
-				interval_2 = $li.data('sub_i_2');
-
-			window.clearTimeout(interval_1);
-
-			interval_1 = setTimeout(function(){
-				$sub_items.each(function(i, el){
-					var $sub_item = $(el);
-					$sub_item.addClass('is-shown');
-				});
-
-				var finish_on = 150 * $sub_items.length,
-					t_duration = parseFloat($sub_items.eq(0).css('transition-duration')),
-					t_delay = parseFloat($sub_items.last().css('transition-delay'));
-
-				if(t_duration && t_delay){
-					finish_on = (t_duration + t_delay) * 1000;
-				}
-
-				window.clearTimeout(interval_2);
-
-				interval_2 = setTimeout(function(){
-					$sub_items.removeClass('is-hidden is-shown');
-
-				}, finish_on);
-
-
-				$li.data('is-busy', false);
-
-			}, 0);
-
-			$li.data('sub_i_1', interval_1);
-			$li.data('sub_i_2', interval_2);
-
-		};
-		//导航收缩服务类
-		tools.collapseSideMenu=function($li, $sub,$wrap){
-			var self=this;
-			if($li.data('is-busy')){
-				return;
-			}
-
-			var $sub_items = $sub.children();
-
-			$li.removeClass('expanded').data('is-busy', true);
-			$sub_items.addClass('hidden-item');
-
-			TweenMax.to($sub, 0.2, {
-				css: {
-					height: 0
-				},
-				onUpdate:self.scrollUpdate.call(self,true,$wrap),
-				onComplete: function() {
-					$li.data('is-busy', false).removeClass('opened');
-
-					$sub.attr('style', '').hide();
-					$sub_items.removeClass('hidden-item');
-
-					$li.find('li.expanded ul').attr('style', '').hide().parent().removeClass('expanded');
-
-					self.scrollUpdate(true,$wrap);
-				}
-			});
-
-		};
-		//导航切换服务类
-		tools.siblingsSideMenu=function($li,$wrap){
-			var self=this;
-			$li.siblings().not($li).filter('.expanded, .opened').each(function(i, el){
-				var $_li = $(el),
-					$_sub = $_li.children('ul');
-
-				self.collapseSideMenu($_li, $_sub,$wrap);
-			});
 		};
 		//导航注入扩展
 		tools.injectSideMenu=function (opt) {
@@ -1727,46 +1473,22 @@
 			}
 		};
 
-
-
-		/*登陆缓存*/
-		tools.initMap={
-			isrender:false,
-			loginMap:{}
-		};
 		/*登陆接口*/
-		tools.isLogin=function(){
-			var self=this,
-				cacheLogin=self.getParams('login_module');
-
-			self.initMap.loginMap={};
-			if(cacheLogin){
-				/*如果已经存在登陆信息同时判断登陆信息是否有效*/
-				var tempvalid=self.validLogin(cacheLogin);
-				if(tempvalid){
-					self.initMap.loginMap= $.extend(true,{},cacheLogin);
-					var name=self.initMap.loginMap.username;
-					public_vars.$admin_show_wrap.html('您好：<span class="g-c-info">&nbsp;'+name+'&nbsp;&nbsp;</span><i class="fa-angle-down"></i>');
-					return true;
-				}else{
-					/*清除缓存*/
-					self.loginTips(function () {
-						self.clear();
-						self.clearCacheData();
-					});
-					return false;
-				}
-			}else{
-				self.loginTips(function () {});
-				return false;
+		tools.isLogin=function(cache){
+			var self=this;
+			if(cache===null){
+				cache=self.getParams(BASE_CONFIG.unique_key);
+			}
+			if(cache && cache.loginMap && cache.loginMap.isLogin){
+				return true;
 			}
 			return false;
 		};
 		/*判断缓存是否有效*/
-		tools.validLogin=function(obj){
+		tools.validLogin=function(obj,str){
 			/*必须有缓存*/
 			var self=this,
-				cacheLogin=typeof obj!=='undefined'?obj:self.getParams('login_module');
+				cacheLogin=typeof obj!=='undefined'?obj:self.getParams('loginMap');
 
 			if(cacheLogin){
 				/*如果已经存在登陆信息则获取登录时间*/
@@ -1782,8 +1504,7 @@
 					now=moment().format('YYYY-MM-DD|HH:mm:ss').split('|'),
 					now_rq=now[0],
 					now_sj=now[1],
-					reqdomain=cacheLogin.reqdomain,
-					currentdomain=cacheLogin.currentdomain;
+					reqdomain=cacheLogin.reqdomain;
 
 
 				/*判断日期*/
@@ -1811,112 +1532,80 @@
 					 }*/
 				}
 
-
-
 				/*请求域与登陆域不一致*/
-				if(currentdomain!==''&&reqdomain!==currentdomain){
+				if(str!==''&&reqdomain!==str){
 					return false;
 				}
-
 				return true;
-			}else{
-				return false;
 			}
 			return false;
 		};
-		/*退出系统*/
-		tools.loginOut=function(istips){
-			var self=this,
-				isindex=self.routeMap.isindex,
-				module=self.routeMap.module;
-
-
-
-			/*根据路径跳转*/
-			if(istips){
-				self.loginTips(function () {
-					/*清除所有记录*/
-					self.clear();
-					self.clearCacheData();
-				});
-			}else {
-				/*清除所有记录*/
-				self.clear();
-				self.clearCacheData();
-				if(isindex){
-					location.href='account/login.html';
-				}else{
-					if(module.indexOf('account')!==-1){
-						location.href='login.html';
-					}else{
-						location.href='../account/login.html';
-					}
-				}
-			}
-		};
-		/*清除内存数据*/
-		tools.clearCacheData=function(){
-			var self=this;
-			/*清除菜单权限映射*/
-			if(!$.isEmptyObject(self.powerMap)){
-				self.powerMap={};
-			}
-			/*初始化登陆缓存*/
-			self.initMap={
-				isrender:false,
-				loginMap:{}
-			};
-			/*路由映射*/
-			self.routeMap={
-				issetting:false,
-				path:'',
-				module:'',
-				isindex:false,
-				issamemodule:false
-			};
-		};
 		/*跳转提示*/
-		tools.loginTips=function(fn){
-			var self=this;
-
+		tools.loginTips=function(config){
 			/*如果没有登陆则提示跳转至登陆页*/
-			public_vars.$page_support_wrap.removeClass('g-d-hidei');
-			public_vars.$page_support.eq(1).addClass('page-support-active');
-			var count= 2,
-				tipid=null;
+			var self=this,
+				count= 2,
+				tipid=null,
+				outwrap=document.getElementById(BASE_CONFIG.nologindom),
+				outtip=document.getElementById(BASE_CONFIG.nologintipdom);
 
-			public_vars.$goto_login.html(count);
+			outwrap.className='g-d-showi';
+			outtip.innerHTML=count;
 			tipid=setInterval(function(){
 				count--;
-				public_vars.$goto_login.html(count);
+				outtip.innerHTML=count;
 				if(count<=0){
 					/*清除定时操作*/
 					clearInterval(tipid);
 					tipid=null;
-					count= 5;
-					/*跳转到登陆位置*/
-					if(self.routeMap.isindex){
-						if(typeof fn==='function'){
-							fn.call();
+					count= 2;
+					outtip.innerHTML='';
+					outwrap.className='g-d-hidei';
+					if(config){
+						self.clear();
+						if(typeof config.delay==='function'){
+							/*延时回调*/
+							config.delay();
+							if(typeof config.router!=='undefined'){
+								/*路由跳转*/
+								$state.go(config.router);
+							}
 						}else{
-							self.clear();
-							self.clearCacheData();
+							if(typeof config.router!=='undefined'){
+								/*路由跳转*/
+								$state.go(config.router);
+							}
 						}
-						location.href='account/login.html';
-					}else{
-						if(typeof fn==='function'){
-							fn.call();
-						}else{
-							self.clear();
-							self.clearCacheData();
-						}
-						location.href='../account/login.html';
 					}
 				}
 			},1000);
-
 		};
-
+		/*退出*/
+		tools.loginOut=function (config) {
+			var self=this;
+			if(config){
+				if(config.tips){
+					self.loginTips(config);
+				}else{
+					self.clear();
+					if(typeof config.delay==='function'){
+						/*延时回调*/
+						config.delay();
+						if(typeof config.router!=='undefined'){
+							/*路由跳转*/
+							$state.go(config.router);
+						}
+					}else{
+						if(typeof config.router!=='undefined'){
+							/*路由跳转*/
+							$state.go(config.router);
+						}
+					}
+				}
+			}else{
+				self.clear();
+			}
+		};
 
 		/*初始化判定*/
 		tools.isSupport=function(){
@@ -1928,21 +1617,6 @@
 				return false;
 			}
 		};
-		/*加载进度条*/
-		tools.initLoading=function(){
-			/*首先加载动画*/
-			public_vars.$page_loading_wrap.removeClass('g-d-hidei');
-			//加载成功隐藏动画
-			if (public_vars.$page_loading_wrap.length) {
-				$(window).load(function() {
-					public_vars.$page_loading_wrap.addClass('loaded');
-				});
-			}
-			//加载失败
-			window.onerror = function() {
-				public_vars.$page_loading_wrap.addClass('loaded');
-			};
-		};
 		return tools;
-	});
+	}]);
 })(jQuery);

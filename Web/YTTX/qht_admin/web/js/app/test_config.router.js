@@ -53,6 +53,12 @@ angular.module('app')
                 .state('app', {
                     url: '/app',
                     views:{
+                        /*'container':{
+                            template:'<div class="struct-layout-container struct-layout-default" >\
+                                        <div class="struct-layout-main ui-main-app"></div>\
+                                        <div class="struct-layout-side" data-ng-include="\'tpl/common/side.html\'"></div>\
+                                      </div>'
+                        },*/
                         'main':{
                             template: '<div class="ui-main-app"></div>'
                         },
@@ -77,6 +83,12 @@ angular.module('app')
                 .state('struct', {
                     url: '/struct',
                     views:{
+                        /*'container':{
+                            template:'<div class="struct-layout-container struct-layout-default" ng-controller="StructController as struct_ctrl">\
+                                        <div class="struct-layout-main" data-ng-include="\'tpl/struct_operate.html\'"></div>\
+                                        <div class="struct-layout-side" data-ng-include="\'tpl/common/side_struct_operate.html\'"></div>\
+                                      </div>'
+                        },*/
                         'main':{
                             templateUrl: 'tpl/struct_operate.html'
                         },
@@ -86,7 +98,17 @@ angular.module('app')
                         'dialog':{
                             templateUrl: 'tpl/struct_operate_setting.html'
                         }
-                    }
+                    },
+                    resolve: {
+                            /*延迟加载，依赖相关组件*/
+                            deps: ['$ocLazyLoad',
+                                function ($ocLazyLoad) {
+                                    return $ocLazyLoad.load(['js/plugins/datatables/dataTables.bootstrap.css',
+                                        'js/plugins/datatables/js/jquery.dataTables.js',
+                                        'js/plugins/pagination/pagination.js',
+                                        'js/app/module/struct/struct_controller.js']);
+                            }]
+                     }
                 })
                 //机构下面的角色
                 .state('role', {
