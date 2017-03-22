@@ -1,0 +1,94 @@
+/*架构*/
+/*机构列表*/
+.admin-list-tsitem{
+  .layout-base;
+  li{
+    .layout-base;
+    height:40px;
+    line-height:40px;
+    .text-of;
+    text-overflow: ellipsis;
+    color:@color-gray6;
+    background:@color-white;
+    border-bottom:1px solid @color-gray14;
+    span{
+      .layout-absoluter-base(5px,5px);
+      height:30px;
+      width:30px;
+      cursor: pointer;
+      display:inline-block;
+      overflow: hidden;
+      border:1px solid @color-white;
+      .border-radius-base(3px);
+      background:@color-white;
+      &:after,
+      &::after{
+        content:'\e63f';
+        font-family:'ux_eight';
+        display:block;
+        text-align:center;
+        line-height:28px;
+        font-size:@font-size-base + 8;
+      }
+      &:hover{
+        .transition(all ease-in .1s .02s);
+        color:@color-red1 !important;
+      }
+    }
+    ul{
+      .layout-base;
+      display:none;
+    }
+    &:hover{
+      background:@color-gray17;
+      span{
+        border:1px solid @color-gray13;
+      }
+    }
+  }
+  >li{
+    .layout-relative-base;
+    padding:0 40px 0 30px;
+  }
+  .ts-active{
+    span{
+      &:after,
+      &::after{
+        content:'\e651';
+      }
+    }
+    ul{
+      display:block;
+    }
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
