@@ -51,10 +51,19 @@ angular.module('app')
             /*路由*/
             $stateProvider
                 .state('app', {
-                    url: '/index',
+                    url: '/app',
                     views:{
-                        'container':{
-                            template:'tpl/index.html'
+                        /*'container':{
+                            template:'<div class="struct-layout-container struct-layout-default" >\
+                                        <div class="struct-layout-main ui-main-app"></div>\
+                                        <div class="struct-layout-side" data-ng-include="\'tpl/common/side.html\'"></div>\
+                                      </div>'
+                        },*/
+                        'main':{
+                            template: '<div class="ui-main-app"></div>'
+                        },
+                        'sidemenu':{
+                            templateUrl: 'tpl/common/side.html'
                         },
                         'support':{
                             templateUrl: 'tpl/common/support_tip.html'
@@ -71,15 +80,15 @@ angular.module('app')
                     }
                 })
                 //机构
-                /*.state('struct', {
+                .state('struct', {
                     url: '/struct',
                     views:{
-                        /!*'container':{
+                        /*'container':{
                             template:'<div class="struct-layout-container struct-layout-default" ng-controller="StructController as struct_ctrl">\
                                         <div class="struct-layout-main" data-ng-include="\'tpl/struct_operate.html\'"></div>\
                                         <div class="struct-layout-side" data-ng-include="\'tpl/common/side_struct_operate.html\'"></div>\
                                       </div>'
-                        },*!/
+                        },*/
                         'main':{
                             templateUrl: 'tpl/struct_operate.html'
                         },
@@ -91,7 +100,7 @@ angular.module('app')
                         }
                     },
                     resolve: {
-                            /!*延迟加载，依赖相关组件*!/
+                            /*延迟加载，依赖相关组件*/
                             deps: ['$ocLazyLoad',
                                 function ($ocLazyLoad) {
                                     return $ocLazyLoad.load(['js/plugins/datatables/dataTables.bootstrap.css',
@@ -100,9 +109,9 @@ angular.module('app')
                                         'js/app/module/struct/struct_controller.js']);
                             }]
                      }
-                })*/
+                })
                 //机构下面的角色
-                /*.state('role', {
+                .state('role', {
                     url: '/struct.role',
                     views:{
                         'main':{
@@ -112,9 +121,9 @@ angular.module('app')
                             templateUrl: 'tpl/common/side_struct_role.html'
                         }
                     }
-                })*/
+                })
                 //订单管理
-                /*.state('order', {
+                .state('order', {
                     url: '/order',
                     views:{
                         'main':{
@@ -124,9 +133,9 @@ angular.module('app')
                             templateUrl: 'tpl/common/side_order.html'
                         }
                     }
-                })*/
+                })
                 //财务管理
-                /*.state('finance', {
+                .state('finance', {
                     url: '/finance',
                     views:{
                         'main':{
@@ -136,10 +145,10 @@ angular.module('app')
                             templateUrl: 'tpl/common/side_finance.html'
                         }
                     }
-                })*/
+                })
                 //设备管理
-                /*.state('equipment', {
-                    /!*abstract: true,*!/
+                .state('equipment', {
+                    /*abstract: true,*/
                     url: '/equipment',
                     views:{
                         'main':{
@@ -149,10 +158,10 @@ angular.module('app')
                             templateUrl: 'tpl/common/side_equipment.html'
                         }
                     }
-                })*/
+                })
                 //设置
-                /*.state('setting', {
-                    /!*abstract: true,*!/
+                .state('setting', {
+                    /*abstract: true,*/
                     url: '/setting',
                     views:{
                         'main':{
@@ -162,7 +171,7 @@ angular.module('app')
                             templateUrl: 'tpl/common/side_setting.html'
                         }
                     }
-                })*/
+                })
                 //退出
                 .state('login', {
                     /*abstract: true,*/

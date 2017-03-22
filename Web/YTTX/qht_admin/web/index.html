@@ -16,34 +16,30 @@
 	<script src="js/base/h5support.js"></script>
 	<![endif]-->
 </head>
-<body class="struct-layout-wrap" ng-controller="AppController as app_ctrl">
+<body class="struct-layout-wrap" ng-controller="SupportController as support_ctrl">
+
 		<!--弹出层--是否支持相关浏览器-->
-		<div ng-if="app_ctrl.isSupport">
-			<!--登陆成功-->
-			<div ng-if="app_ctrl.isLogin">
+		<div ng-if="support_ctrl.isSupport" ng-controller="LoginController as login_ctrl">
+			<div ng-if="login_ctrl.isLogin" ng-controller="AppController as app_ctrl">
 				<!--头部-->
 				<div class="struct-layout-header" data-ng-include="'tpl/common/header.html'" id="struct_layout_header"></div>
 
-				<div ui-view="container"></div>
-
-
 				<!--主体-->
 				<!--<div ui-view="container"></div>-->
-				<!--<div class="struct-layout-container struct-layout-default">
+				<div class="struct-layout-container struct-layout-default">
 					<div class="struct-layout-main" ui-view="main"></div>
 					<div class="struct-layout-side" ui-view="sidemenu" id="struct_layout_side"></div>
-				</div>-->
+				</div>
 
 				<!--底部-->
 				<div class="struct-layout-footer">
 					<div class="footer-content-wrap"></div>
 				</div>
+
+				<!--弹出层--提示操作界面-->
+				<div id="struct_layout_dialog" ui-view="dialog"></div>
 			</div>
-
-			<!--登陆失败-->
-			<div ng-if="!app_ctrl.isLogin" ui-view="login"></div>
-
-
+			<div ng-if="!login_ctrl.isLogin" ui-view="login"></div>
 
 			<!--弹出层--退出系统动画-->
 			<div id="struct_layout_nologin" class="g-d-hidei" ui-view="nologin"></div>
@@ -51,8 +47,7 @@
 			<!--弹出层--加载动画-->
 			<div id="struct_layout_loading" class="g-d-hidei" ui-view="loading"></div>
 		</div>
-		<!--兼容性不支持-->
-		<div ng-if="!app_ctrl.isSupport" ui-view="support"></div>
+		<div ng-if="!support_ctrl.isSupport" ui-view="support"></div>
 
 
 <!--jquery-->
@@ -112,7 +107,7 @@
 
 <!--主程序，控制器设置基本配置-->
 <!--<script src="../js/app/main.js"></script>-->
-<script src="js/app/module/app/app_controller.js"></script>
+<script src="js/app/test_main.js"></script>
 
 
 
@@ -149,7 +144,7 @@
 <script src="js/app/module/login/login_service.js"></script>
 
 <!--首页控制器-->
-<script src="js/app/module/index/index_controller.js"></script>
+<script src="js/app/module/app/app_controller.js"></script>
 
 </body>
 </html>
