@@ -54,39 +54,9 @@ angular.module('ui.commonitem',[])
         return {
             replace:false,
             restrict: 'EC',
-            template:'<label class="search-content">\
-                <input type="text" placeholder="搜索" value="" name="search_name" class="g-br3" />\
-            <span class="search-clear"></span></label>',
-            link:function (scope, element, attrs) {
-                /*绑定事件*/
-                element.on('keyup','input',function (e){
-                    var $this=$(this),
-                        value=toolUtil.trims(this.value),
-                        $label=$this.parent(),
-                        kcode='';
-
-                    if(value===''){
-                        /*输入为空时*/
-                        $label.removeClass('search-content-active');
-                    }else{
-                        /*输入非空*/
-                        $label.addClass('search-content-active');
-                        kcode=e.keyCode;
-                        /*提交*/
-                        if(kcode===13){
-                            scope.$apply(function () {
-                                console.log('search:'+value);
-                            });
-                        }
-                    }
-                });
-                element.on('click','span',function (e) {
-                    var $input=element.find('input');
-
-                    $input.val('');
-                    $input.trigger('keyup');
-                });
-            }
+            template:'<label class="search-content {{struct_ctrl.searchactive}}">\
+                <input type="text" ng-keyup="struct_ctrl.searchAction($event)" placeholder="搜索" ng-model="struct_ctrl.orgname" name="search_name" class="g-br3" />\
+            <span class="search-clear" ng-click="struct_ctrl.searchClear()"></span></label>'
         };
     }])
     /*侧边栏tab选项卡指令*/
@@ -108,39 +78,7 @@ angular.module('ui.commonitem',[])
         return {
             replace:false,
             restrict: 'EC',
-            template:'<li>\
-                <a class="sub-menu-title" href="#" title="">菜单列表1</a>\
-                <ul>\
-                    <li>\
-                        <a class="sub-menu-title" href="#" title="">菜单列表1</a>\
-                        <ul>\
-                            <li><a href="#" title="">菜单列表1</a></li>\
-                        </ul>\
-                    </li>\
-                </ul>\
-            </li>',
-            link:function (scope, element, attrs) {
-                /*绑定事件*/
-                element.on('click','a',function (e) {
-                    var $this=$(this),
-                        haschild=$this.hasClass('sub-menu-title'),
-                        $child;
-
-                    if(haschild){
-                        e.preventDefault();
-                        $child=$this.next();
-                        if($child.hasClass('g-d-showi')){
-                            /*隐藏*/
-                            $child.removeClass('g-d-showi');
-                            $this.removeClass('sub-menu-titleactive');
-                        }else{
-                            /*显示*/
-                            $child.addClass('g-d-showi');
-                            $this.addClass('sub-menu-titleactive');
-                        }
-                    }
-                });
-            }
+            template:''
         };
     })
     /*侧边栏按钮指令*/

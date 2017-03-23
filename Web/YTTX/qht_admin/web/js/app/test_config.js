@@ -1,12 +1,25 @@
 /*应用程序初始化配置*/
-angular.module('app').constant('BASE_CONFIG',{
-    unique_key:'qht_admin_unique_key',
-    basedomain:'http://10.0.5.226:8080',
-    baseproject:'/qht-bms-api',
-    loadingdom:'struct_layout_loading',
-    nologindom:'struct_layout_nologin',
-    nologintipdom:'struct_goto_login'
-}).factory('httpInterceptor',['BASE_CONFIG','$httpParamSerializerJQLike',function (BASE_CONFIG,$httpParamSerializerJQLike) {
+var qht_app=angular.module('app')
+        .constant('BASE_CONFIG',{
+        unique_key:'qht_admin_unique_key',
+        basedomain:'http://10.0.5.226:8080',
+        baseproject:'/qht-bms-api',
+        loadingdom:'struct_layout_loading',
+        nologindom:'struct_layout_nologin',
+        nologintipdom:'struct_goto_login'
+    })
+    .config(['$controllerProvider', '$compileProvider', '$filterProvider', '$provide',
+        function ($controllerProvider,   $compileProvider,   $filterProvider,   $provide) {
+            qht_app.controller = $controllerProvider.register;
+            qht_app.directive  = $compileProvider.directive;
+            qht_app.filter     = $filterProvider.register;
+            qht_app.factory    = $provide.factory;
+            qht_app.service    = $provide.service;
+            qht_app.constant   = $provide.constant;
+            qht_app.value      = $provide.value;
+        }
+    ])
+    .factory('httpInterceptor',['BASE_CONFIG','$httpParamSerializerJQLike',function (BASE_CONFIG,$httpParamSerializerJQLike) {
     /*var http_config={};
 
     /!*请求配置*!/

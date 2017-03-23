@@ -69,26 +69,21 @@ angular.module('app')
                             templateUrl: 'tpl/common/support_login.html'
                         }
                     },
-                    /*controller:'IndexController',
-                    controllerAs:'index_ctrl',*/
                     resolve: {
                         /*延迟加载，依赖相关组件*/
-                        deps: ['$ocLazyLoad',
+                        loadMyCtrl: ['$ocLazyLoad',
                             function ($ocLazyLoad) {
                                 return $ocLazyLoad.load(['js/app/module/index/index_controller.js']);
                             }]
                     }
                 })
                 //机构
-                /*.state('struct', {
+                .state('struct', {
                     url: '/struct',
                     views:{
                         'container':{
-                            template:'<div class="struct-layout-container struct-layout-default" ng-controller="StructController as struct_ctrl">\
-                                        <div class="struct-layout-main" data-ng-include="\'tpl/struct_operate.html\'"></div>\
-                                        <div class="struct-layout-side" data-ng-include="\'tpl/common/side_struct_operate.html\'"></div>\
-                                      </div>'
-                        },
+                            templateUrl:'tpl/struct.html'
+                        }/*,
                         'main':{
                             templateUrl: 'tpl/struct_operate.html'
                         },
@@ -97,19 +92,20 @@ angular.module('app')
                         },
                         'dialog':{
                             templateUrl: 'tpl/struct_operate_setting.html'
-                        }
+                        }*/
                     },
                     resolve: {
-                            /!*延迟加载，依赖相关组件*!/
+                            /*延迟加载，依赖相关组件*/
                             deps: ['$ocLazyLoad',
                                 function ($ocLazyLoad) {
                                     return $ocLazyLoad.load(['js/plugins/datatables/dataTables.bootstrap.css',
                                         'js/plugins/datatables/js/jquery.dataTables.js',
                                         'js/plugins/pagination/pagination.js',
+                                        'js/app/module/struct/struct_service.js',
                                         'js/app/module/struct/struct_controller.js']);
                             }]
                      }
-                })*/
+                })
                 //机构下面的角色
                 /*.state('role', {
                     url: '/struct.role',

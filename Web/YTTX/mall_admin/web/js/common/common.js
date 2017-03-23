@@ -862,6 +862,7 @@
 			"match":"-activity-",
 			"matchlist":['module-set'],
 			"class":"menu-ux-serve",
+			"ignoremodule":true,
 			"module":"activity",
 			"modid":"340"
 		}

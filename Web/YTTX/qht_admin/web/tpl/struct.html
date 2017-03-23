@@ -1,19 +1,19 @@
 <div class="struct-layout-container struct-layout-default" ng-controller="StructController as struct_ctrl">
     <div class="struct-layout-main">
         <!--主内容-->
-        <h1 class="admin-layout-theme3">深圳银通支付有限公司&nbsp;&nbsp;&nbsp;&nbsp;<span class="btn btn-default g-c-blue3"><i class="btn-action admin-btn-action7"></i>&nbsp;编辑</span></h1>
+        <h1 class="admin-layout-theme3"><span ng-show="struct_ctrl.editstate">{{struct_ctrl.rootOrgname}}</span><input maxlength="15" ng-show="!struct_ctrl.editstate" type="text" ng-model="struct_ctrl.rootOrgname" />&nbsp;&nbsp;&nbsp;&nbsp;<span class="btn btn-default g-c-blue3" ng-click="struct_ctrl.editRootOrgname()"><i class="btn-action admin-btn-action7"></i>&nbsp;编辑</span></h1>
 
         <!--下属机构-->
         <h2 class="admin-layout-theme3"><span class="theme-icon admin-theme-icon1"></span>&nbsp;&nbsp;下属机构</h2>
 
         <!--添加菜单条-->
         <div class="admin-action-item">
-            <span><i class="btn-action admin-btn-action1"></i>添加子机构</span>
-            <span><i class="btn-action admin-btn-action2"></i>调整位置</span>
+            <span ng-click="struct_ctrl.addSubStruct()" ng-show="struct_ctrl.add_substruct_state"><i class="btn-action admin-btn-action1"></i>添加子机构</span>
+            <span ng-show="struct_ctrl.adjust_pos_state"><i class="btn-action admin-btn-action2"></i>调整位置</span>
         </div>
 
         <!--机构列表-->
-        <ul class="admin-list-tsitem">
+        <ul class="admin-list-tsitem" id="admin_struct_list" ng-click="struct_ctrl.toggleStructList($event)">
             <li>
                 内蒙古省代<span></span>
                 <ul>
@@ -128,6 +128,7 @@
             <div class="easyui-pagination g-w-percent50" id="admin_page_wrap" data-options="links:5,layout:['manual','first','prev','links','next','last'],displayMsg:'显示{from}&nbsp;到&nbsp;{to}&nbsp;共&nbsp;{total}条记录'"></div>
         </div>
     </div>
+
     <div class="struct-layout-side">
         <!--搜索组件-->
         <div class="sub-search-wrap ui-sub-search"></div>
@@ -136,7 +137,12 @@
         <ul class="sub-tab-wrap sub-item-group2 sub-itembr-group2 ui-sub-tab"></ul>
 
         <!--子菜单组件-->
-        <ul class="sub-menu-wrap ui-sub-menu"></ul>
+        <ul class="sub-menu-wrap" ng-click="struct_ctrl.toggleSubMenu($event)">
+            <li>
+                <a class="sub-menu-title">{{struct_ctrl.rootOrgname}}</a>
+                <ul class="ui-sub-menu"></ul>
+            </li>
+        </ul>
     </div>
 </div>
 
