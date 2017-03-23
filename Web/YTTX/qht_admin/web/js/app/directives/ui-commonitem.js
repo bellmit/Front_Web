@@ -14,14 +14,15 @@ angular.module('ui.commonitem',[])
             }
         };
     })
+    /*头部退出*/
     .directive('uiHeaderLogout',function() {
         return {
             replace:true,
             restrict: 'EC',
-            template:'<div class="g-br3 header-outwrap" ui-sref="login" ng-click="login_ctrl.loginOut()">退出</div>'
+            template:'<div class="g-br3 header-outwrap" ui-sref="login" ng-click="app_ctrl.loginOut()">退出</div>'
         };
     })
-    /*侧边栏指令*/
+    /*首页logo指令*/
     .directive('uiSubLogo',function() {
         return {
           replace:false,
@@ -32,22 +33,15 @@ angular.module('ui.commonitem',[])
                     <h1>深圳银通移动支付有限公司</h1>'
         };
     })
+    /*首页用户信息指令*/
     .directive('uiSubInfo',function() {
         return {
             replace:false,
             restrict: 'EC',
-            template:'<li ng-repeat="i in uisubinfo_ctrl.menuitem">{{i.name}}：<span>{{i.value}}</span></li>',
-            controller:function (){
-                this.menuitem=Mock.mock({
-                    'list|2-10':[{
-                        "name":/[a-z]{2,5}/,
-                        "value":/[0-9a-zA-Z]{2,10}/
-                    }]
-                }).list;
-            },
-            controllerAs:'uisubinfo_ctrl'
+            template:'<li ng-repeat="i in index_ctrl.menuitem">{{i.name}}：<span>{{i.value}}</span></li>'
         };
     })
+    /*列表指令*/
     .directive('uiSubList',function() {
         return {
             replace:false,
@@ -55,6 +49,7 @@ angular.module('ui.commonitem',[])
             template:'<li ng-repeat="i in subdata.listitem"><a data-type="{{i.href}}" title="">{{i.name}}</a></li>'
         };
     })
+    /*侧边栏搜索指令*/
     .directive('uiSubSearch',['toolUtil',function(toolUtil) {
         return {
             replace:false,
@@ -94,6 +89,7 @@ angular.module('ui.commonitem',[])
             }
         };
     }])
+    /*侧边栏tab选项卡指令*/
     .directive('uiSubTab',function() {
         return {
             replace:false,
@@ -107,6 +103,7 @@ angular.module('ui.commonitem',[])
             }
         };
     })
+    /*侧边栏级联菜单指令*/
     .directive('uiSubMenu',function() {
         return {
             replace:false,
@@ -146,6 +143,7 @@ angular.module('ui.commonitem',[])
             }
         };
     })
+    /*侧边栏按钮指令*/
     .directive('uiSubBtn',function() {
         return {
             replace:false,
@@ -158,7 +156,7 @@ angular.module('ui.commonitem',[])
             </li>'
         };
     })
-    /*首页指令*/
+    /*首页快捷方式指令*/
     .directive('uiMainApp',function() {
         return {
             replace:false,
@@ -166,7 +164,7 @@ angular.module('ui.commonitem',[])
             template:'<div class="admin-welcome-banner"><img src="images/index_banner.jpg" alt="" /></div>\
                         <h3 class="admin-layout-theme3">快捷入口</h3>\
                         <ul class="admin-quick-icon">\
-                          <li ng-repeat="i in app_ctrl.quickitem">\
+                          <li ng-repeat="i in index_ctrl.quickitem">\
                             <div class="g-br5" data-id="{{i.id}}" data-code="{{i.code}}" href="" ui-sref="{{i.href}}">\
                                 <img alt="" src="images/quick_{{$index + 1}}.png" />\
                                 <span>{{i.name}}</span>\
