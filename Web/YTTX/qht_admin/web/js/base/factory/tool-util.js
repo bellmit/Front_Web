@@ -1544,28 +1544,28 @@
 		tools.loginTips=function(config){
 			/*如果没有登陆则提示跳转至登陆页*/
 			var self=this,
-				count= 2,
+				count= 10,
 				tipid=null,
-				outwrap=document.getElementById(BASE_CONFIG.nologindom),
-				outtip=document.getElementById(BASE_CONFIG.nologintipdom);
+				$outwrap=$('#'+BASE_CONFIG.nologindom),
+				$outtip=$('#'+BASE_CONFIG.nologintipdom);
 
-			outwrap.className='g-d-showi';
-			outtip.innerHTML=count;
+			$outwrap.removeClass().addClass('g-d-showi');
+			$outtip.html(count);
 			tipid=setInterval(function(){
 				count--;
-				outtip.innerHTML=count;
+				$outtip.html(count);
 				if(count<=0){
 					/*清除定时操作*/
 					clearInterval(tipid);
 					tipid=null;
-					count= 2;
-					outtip.innerHTML='';
-					outwrap.className='g-d-hidei';
+					count= 10;
+					$outtip.html('');
+					$outwrap.removeClass().addClass('g-d-hidei');
 					if(config){
 						self.clear();
 						if(typeof config.delay==='function'){
 							/*延时回调*/
-							config.delay();
+							config.delay.call(null);
 							if(typeof config.router!=='undefined'){
 								/*路由跳转*/
 								$state.go(config.router);

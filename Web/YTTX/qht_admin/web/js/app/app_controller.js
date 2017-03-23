@@ -66,23 +66,20 @@ angular.module('app')
         };
         /*退出*/
         this.loginOut=function () {
-            toolUtil.loginOut();
-            self.isLogin=false;
-            self.login={
-                username:'',
-                password:'',
-                identifyingCode:''
-            };
+            toolUtil.loginOut({
+                tips:true,
+                router:'app',
+                delay:function () {
+                    self.isLogin=false;
+                    self.login={
+                        username:'',
+                        password:'',
+                        identifyingCode:''
+                    };
+                }
+            });
+
         };
-
-
-        /*导航栏*/
-        /*var menudata=loginService.getMenuData();
-         if(menudata!==null){
-         this.headeritem=menudata;
-         }else{
-         this.headeritem=[];
-         }*/
     }]);
 
 

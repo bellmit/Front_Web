@@ -180,7 +180,6 @@ angular.module('login.service',[])
                 return menudata;
             }
         };
-        /**/
         /*获取验证码*/
         this.getValidCode=function (config) {
             var xhr = new XMLHttpRequest();
