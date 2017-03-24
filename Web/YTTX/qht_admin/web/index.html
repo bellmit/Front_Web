@@ -17,7 +17,6 @@
 	<![endif]-->
 </head>
 <body class="struct-layout-wrap" ng-controller="AppController as app_ctrl">
-
 		<!--弹出层--是否支持相关浏览器-->
 		<div ng-if="app_ctrl.isSupport">
 			<div ng-if="app_ctrl.isLogin">
@@ -43,8 +42,18 @@
 		</div>
 		<div ng-if="!app_ctrl.isSupport" ng-cloak ui-view="support"></div>
 
+
 		<!--弹出层--退出系统动画-->
-		<div ng-cloak id="struct_layout_nologin" class="g-d-hidei" ui-view="nologin"></div>
+		<div ng-cloak id="struct_layout_nologin" class="g-d-hidei">
+			<div class="struct-layout-support">
+				<div class="page-support-inner">
+					<div class="page-support-login">
+						<div></div>
+						<p>您还未登录<span id="struct_goto_login"></span>秒后跳入登陆页面</p>
+					</div>
+				</div>
+			</div>
+		</div>
 
 		<!--弹出层--加载动画-->
 		<div ng-cloak id="struct_layout_loading" class="g-d-hidei" ui-view="loading"></div>

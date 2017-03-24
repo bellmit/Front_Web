@@ -5,22 +5,6 @@ angular.module('app')
     .controller('AppController', ['toolUtil','loginService',function(toolUtil,loginService) {
         var self=this;
 
-        /*兼容性控制*/
-        this.isSupport=toolUtil.isSupport();
-
-        /*登陆控制*/
-        this.isLogin=loginService.isLogin()/*是否存在*/;
-        this.login={
-            username:'',
-            password:'',
-            identifyingCode:''
-        };
-        /*导航栏*/
-        if(this.isLogin){
-            this.headeritem=loginService.getMenuData();
-        }else{
-            this.headeritem=[];
-        }
         /*设置提示*/
         $.extend(true,toastr.options,{
             positionClass: "toast-top-center"
@@ -66,20 +50,48 @@ angular.module('app')
         };
         /*退出*/
         this.loginOut=function () {
-            toolUtil.loginOut({
-                tips:true,
-                router:'app',
-                delay:function () {
-                    self.isLogin=false;
-                    self.login={
-                        username:'',
-                        password:'',
-                        identifyingCode:''
-                    };
-                }
-            });
-
+            /*不合格缓存信息，需要清除缓存*/
+            var isout=loginService.loginOut();
+            /*更新模型*/
+            if(isout){
+                self.isLogin=false;
+                self.login={
+                    username:'',
+                    password:'',
+                    identifyingCode:''
+                };
+            }
+            /*提示退出信息*/
+            toolUtil.loginTips();
         };
+
+
+
+        /*初始化加载*/
+        /*兼容性控制*/
+        this.isSupport=toolUtil.isSupport();
+
+        if(this.isSupport){
+            /*登陆控制*/
+            this.isLogin=loginService.isLogin()/*是否存在*/;
+            this.login={
+                username:'',
+                password:'',
+                identifyingCode:''
+            };
+            /*导航栏*/
+            if(this.isLogin){
+                this.headeritem=loginService.getMenuData();
+            }else{
+                this.headeritem=[];
+                this.login={
+                    username:'',
+                    password:'',
+                    identifyingCode:''
+                };
+            }
+        }
+
     }]);
 
 

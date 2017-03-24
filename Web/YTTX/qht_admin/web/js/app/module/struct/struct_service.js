@@ -1,12 +1,14 @@
 angular.module('app')
-    .service('structService',['toolUtil','BASE_CONFIG','loginService',function(toolUtil,BASE_CONFIG,loginService){
+    .service('structService',['toolUtil','toolDialog','BASE_CONFIG','loginService',function(toolUtil,toolDialog,BASE_CONFIG,loginService){
 
         /*获取缓存数据*/
         var cache=toolUtil.getParams(BASE_CONFIG.unique_key),
             struct_submenu_dom=document.getElementById('admin_struct_submenu'),
             struct_list_dom=document.getElementById('admin_struct_list');
 
-        /*获取导航*/
+        /*
+        导航服务类
+        获取导航*/
         this.getMenuList=function (condition) {
 
             /*
@@ -29,19 +31,22 @@ angular.module('app')
             var islogin=loginService.isLogin(cache);
             if(islogin){
                 var param=$.extend(true,{},cache.loginMap.param);
+
+                param['isShowSelf']=0;
                 if(condition!==''){
                     param['orgname']=condition;
                 }
                 toolUtil
                     .requestHttp({
-                        url:'/organization/lowers/search',
+                        url:'json/goods/mall_goods_attr.json',
                         method:'post',
-                        set:true,
+                        set:false,
                         data:param
                     })
                     .then(function(resp){
                             var data=resp.data,
                                 status=parseInt(resp.status,10);
+
 
                             if(status===200){
                                 var code=parseInt(data.code,10),
@@ -50,12 +55,10 @@ angular.module('app')
                                     if(typeof message !=='undefined'&&message!==''){
                                         console.log('message');
                                     }
+
                                     if(code===999){
                                         /*退出系统*/
-                                        toolUtil.loginOut({
-                                            router:'login',
-                                            tips:true
-                                        });
+                                        loginService.loginOut();
                                     }
                                 }else{
                                     /*加载数据*/
@@ -92,16 +95,41 @@ angular.module('app')
                             }else{
                                 console.log('请求菜单失败');
                             }
-                            //struct_submenu_dom.innerHTML='<li><a>暂无数据</a></li>';
+                            struct_submenu_dom.innerHTML='<li><a>暂无数据</a></li>';
                             //struct_list_dom.innerHTML='';
                         });
             }
         };
-
+        /*解析导航--开始解析*/
+        this.resolveMenuList=function (obj,limit) {
+            
+        };
+        /*解析导航--递归解析*/
+        this.doMenuList=function (obj,config) {
+            
+        };
+        /*解析导航--公共解析*/
+        this.doItemMenuList=function (obj,config) {
+            
+        };
 
         /*获取机构列表*/
         this.getStructList=function () {
             
+        };
+
+        /*提交编辑数据*/
+        this.updateRootOrgname=function(edit) {
+            if(edit.rootorgname===''){
+              return false;
+            }else{
+                /*to do*/
+                toolDialog.show({
+                    type:'succ',
+                    value:'编辑成功'
+                });
+                edit.editstate=true;
+            }
         };
 
 

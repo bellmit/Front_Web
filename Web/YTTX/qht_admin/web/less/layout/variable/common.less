@@ -386,6 +386,15 @@
 	.layout-fixedrb-base;
 }
 
+///*----字体大小----*/
+@font-size-begin:10px;
+.g-fsfor(@n,@i:1) when (@i =< @n) {
+	.g-fs@{i}{
+		font-size:@font-size-begin + @i !important;
+	}
+	.g-fsfor(@n,(@i+1));
+}
+.g-fsfor(40);
 
 
 

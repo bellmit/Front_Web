@@ -13,10 +13,10 @@
     border-bottom:1px solid @color-gray14;
     span{
       .layout-absoluter-base(5px,5px);
-      height:30px;
-      width:30px;
+      height:0;
+      width:0;
+      display:none;
       cursor: pointer;
-      display:inline-block;
       overflow: hidden;
       border:1px solid @color-white;
       .border-radius-base(3px);
@@ -36,11 +36,22 @@
       }
     }
     ul{
-      .layout-base;
+      .layout-float-base;
       display:none;
+      >li{
+        padding-left:20px;
+        &:hover{
+          background:@color-gray17;
+        }
+        &:first-child{
+          border-top:1px solid @color-gray14;
+        }
+        &:last-child{
+          border-bottom:none !important;
+        }
+      }
     }
     &:hover{
-      background:@color-gray17;
       span{
         border:1px solid @color-gray13;
       }
@@ -48,17 +59,26 @@
   }
   >li{
     .layout-relative-base;
-    padding:0 40px 0 30px;
+    padding:0 0 0 30px;
+  }
+  .ts-child{
+    span{
+      height:30px;
+      width:30px;
+      display:inline-block;
+    }
   }
   .ts-active{
+    height:auto !important;
     span{
+      border:1px solid @color-gray13;
       &:after,
       &::after{
         content:'\e651';
       }
     }
     ul{
-      display:block;
+      display:inline-block !important;
     }
   }
 }

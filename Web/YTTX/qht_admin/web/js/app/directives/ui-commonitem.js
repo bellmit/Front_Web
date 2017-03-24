@@ -19,7 +19,7 @@ angular.module('ui.commonitem',[])
         return {
             replace:true,
             restrict: 'EC',
-            template:'<div class="g-br3 header-outwrap" ui-sref="login" ng-click="app_ctrl.loginOut()">退出</div>'
+            template:'<div class="g-br3 header-outwrap" ui-sref="app" ng-click="app_ctrl.loginOut()">退出</div>'
         };
     })
     /*首页logo指令*/
@@ -50,15 +50,15 @@ angular.module('ui.commonitem',[])
         };
     })
     /*侧边栏搜索指令*/
-    .directive('uiSubSearch',['toolUtil',function(toolUtil) {
+    .directive('uiSubSearch',function() {
         return {
             replace:false,
             restrict: 'EC',
-            template:'<label class="search-content {{struct_ctrl.searchactive}}">\
-                <input type="text" ng-keyup="struct_ctrl.searchAction($event)" placeholder="搜索" ng-model="struct_ctrl.orgname" name="search_name" class="g-br3" />\
+            template:'<label class="search-content {{struct_ctrl.search.searchactive}}">\
+                <input type="text" ng-keyup="struct_ctrl.searchAction($event)" placeholder="搜索" ng-model="struct_ctrl.search.orgname" name="search_name" class="g-br3" />\
             <span class="search-clear" ng-click="struct_ctrl.searchClear()"></span></label>'
         };
-    }])
+    })
     /*侧边栏tab选项卡指令*/
     .directive('uiSubTab',function() {
         return {

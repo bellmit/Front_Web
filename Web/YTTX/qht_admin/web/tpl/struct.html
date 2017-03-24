@@ -1,15 +1,20 @@
 <div class="struct-layout-container struct-layout-default" ng-controller="StructController as struct_ctrl">
     <div class="struct-layout-main">
         <!--主内容-->
-        <h1 class="admin-layout-theme3"><span ng-show="struct_ctrl.editstate">{{struct_ctrl.rootOrgname}}</span><input maxlength="15" ng-show="!struct_ctrl.editstate" type="text" ng-model="struct_ctrl.rootOrgname" />&nbsp;&nbsp;&nbsp;&nbsp;<span class="btn btn-default g-c-blue3" ng-click="struct_ctrl.editRootOrgname()"><i class="btn-action admin-btn-action7"></i>&nbsp;编辑</span></h1>
+        <h1 class="admin-layout-theme3">
+            <span ng-show="struct_ctrl.setting.editstate">{{struct_ctrl.setting.rootorgname}}</span>
+            <input maxlength="15" class="admin-form-default g-br3 g-c-gray6" ng-show="!struct_ctrl.setting.editstate" ng-keyup="struct_ctrl.submitRootOrgname($event)" type="text" ng-model="struct_ctrl.setting.rootorgname" />
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <span class="btn btn-default g-c-blue3" ng-click="struct_ctrl.toggleRootOrgname()"><i class="btn-action admin-btn-action7"></i>&nbsp;编辑</span>
+        </h1>
 
         <!--下属机构-->
         <h2 class="admin-layout-theme3"><span class="theme-icon admin-theme-icon1"></span>&nbsp;&nbsp;下属机构</h2>
 
         <!--添加菜单条-->
         <div class="admin-action-item">
-            <span ng-click="struct_ctrl.addSubStruct()" ng-show="struct_ctrl.add_substruct_state"><i class="btn-action admin-btn-action1"></i>添加子机构</span>
-            <span ng-show="struct_ctrl.adjust_pos_state"><i class="btn-action admin-btn-action2"></i>调整位置</span>
+            <span ng-click="struct_ctrl.addSubStruct()" ng-show="struct_ctrl.setting.add_substruct_state"><i class="btn-action admin-btn-action1"></i>添加子机构</span>
+            <span ng-show="struct_ctrl.setting.adjust_pos_state"><i class="btn-action admin-btn-action2"></i>调整位置</span>
         </div>
 
         <!--机构列表-->
@@ -139,7 +144,7 @@
         <!--子菜单组件-->
         <ul class="sub-menu-wrap" ng-click="struct_ctrl.toggleSubMenu($event)">
             <li>
-                <a class="sub-menu-title">{{struct_ctrl.rootOrgname}}</a>
+                <a class="sub-menu-title">{{struct_ctrl.setting.rootorgname}}</a>
                 <ul class="ui-sub-menu"></ul>
             </li>
         </ul>

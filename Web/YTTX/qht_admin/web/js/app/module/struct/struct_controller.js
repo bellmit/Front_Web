@@ -15,35 +15,38 @@ angular.module('app')
         }];
 
         /*搜索*/
-        this.searchactive='';
-        this.orgname='';
+        this.search={
+            searchactive:'',
+            orgname:''
+        };
 
         /*机构设置*/
-        this.editstate=true;
-        this.rootOrgname='深圳银通支付有限公司';
-        this.add_substruct_state=false;
-        this.adjuct_pos_state=false;
-
-
+        this.setting={
+            editstate:true,
+            rootorgname:'深圳银通支付有限公司',
+            add_substruct_state:false,
+            adjuct_pos_state:false
+        };
 
         /*搜索过滤*/
         this.searchAction=function (e) {
             var kcode=window.event?e.keyCode:e.which;
 
-            if(self.orgname===''){
-                self.searchactive='';
+            if(self.search.orgname===''){
+                self.search.searchactive='';
             }else{
-                self.searchactive='search-content-active';
+                self.search.searchactive='search-content-active';
             }
             if(kcode===13){
-                structService.getMenuList(self.orgname);
+                structService.getMenuList(self.search.orgname);
             }
         };
         /*清空过滤条件*/
         this.searchClear=function () {
-            self.orgname='';
-            self.searchactive='';
+            self.search.orgname='';
+            self.search.searchactive='';
         };
+
         /*子菜单展开*/
         this.toggleSubMenu=function (e) {
             e.preventDefault();
@@ -74,38 +77,44 @@ angular.module('app')
 
 
         };
+
         /*机构列表展开*/
         this.toggleStructList=function (e) {
             e.preventDefault();
 
             var target=e.target,
                 node=target.nodeName.toLowerCase();
-            if(node==='ul'){
+            if(node!=='span'){
                 return false;
             }
-            var $this=$(node),
-                haschild=$this.hasClass('ts-child');
+            var $span=$(target),
+                $item=$span.parent(),
+                haschild=$item.hasClass('ts-child');
 
             if(haschild){
-                if($this.hasClass('ts-active')){
+                if($item.hasClass('ts-active')){
                     /*隐藏*/
-                    $this.removeClass('ts-active');
+                    $item.removeClass('ts-active');
                 }else{
                     /*显示*/
-                    $this.addClass('ts-active');
+                    $item.addClass('ts-active');
                 }
             }
         };
 
-
         /*切换编辑状态*/
-        this.editRootOrgname=function () {
-           self.editstate=!self.editstate;
+        this.toggleRootOrgname=function () {
+           self.setting.editstate=!self.setting.editstate;
+        };
+        /*提交编辑*/
+        this.submitRootOrgname=function (e) {
+            var kcode=window.event?e.keyCode:e.which;
+            if(kcode===13){
+                structService.updateRootOrgname(self.setting);
+            }
         };
 
-
-
         /*初始化查询菜单*/
-        structService.getMenuList(this.orgname);
+        structService.getMenuList(self.search.orgname);
 
     }]);

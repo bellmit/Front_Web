@@ -1,7 +1,10 @@
 angular.module('login.service',[])
     .service('loginService',['toolUtil','BASE_CONFIG','$state',function(toolUtil,BASE_CONFIG,$state){
-        var cache=toolUtil.getParams(BASE_CONFIG.unique_key),
+        var self=this,
+            cache=toolUtil.getParams(BASE_CONFIG.unique_key),
             menudata=null;
+
+
 
         /*获取登陆信息*/
         this.isLogin=function (hc) {
@@ -20,13 +23,6 @@ angular.module('login.service',[])
                     islogin=toolUtil.validLogin(hc.loginMap,BASE_CONFIG.basedomain);
                 }else{
                     islogin=toolUtil.validLogin(cache.loginMap,BASE_CONFIG.basedomain);
-                }
-                if(!islogin){
-                    /*不合格缓存信息，需要清除缓存*/
-                    toolUtil.loginOut({
-                        router:'login',
-                        tips:true
-                    });
                 }
                 return islogin;
             }else{
@@ -108,7 +104,7 @@ angular.module('login.service',[])
                                         if(code===999){
                                             /*退出系统*/
                                             toolUtil.loginOut({
-                                                router:'login',
+                                                router:'app',
                                                 tips:true
                                             });
                                         }
@@ -149,7 +145,7 @@ angular.module('login.service',[])
                 }
             }else{
                 toolUtil.loginOut({
-                    router:'login',
+                    router:'app',
                     tips:true
                 });
             }
@@ -171,7 +167,7 @@ angular.module('login.service',[])
                     }
                 }else{
                     toolUtil.loginOut({
-                        router:'login',
+                        router:'app',
                         tips:true
                     });
                 }
@@ -234,5 +230,22 @@ angular.module('login.service',[])
                 };
             }
             toolUtil.setParams(BASE_CONFIG.unique_key,cache);
+        };
+        /*退出系统*/
+        this.loginOut=function (fn) {
+            this.clearCache();
+            toolUtil.loginOut();
+            /*路由*/
+            $state.go('app');
+            if(typeof fn==='function'){
+                /*如果退出时存在回调*/
+                fn.call(null);
+            }
+            return true;
+        };
+        /*清除缓存*/
+        this.clearCache=function () {
+            cache=null;
+            menudata=null;
         };
     }]);

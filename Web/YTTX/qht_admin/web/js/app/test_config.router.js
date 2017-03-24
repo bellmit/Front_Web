@@ -83,6 +83,18 @@ angular.module('app')
                     views:{
                         'container':{
                             templateUrl:'tpl/struct.html'
+                        },
+                        'support':{
+                            templateUrl: 'tpl/common/support_tip.html'
+                        },
+                        'login':{
+                            templateUrl: 'tpl/login.html'
+                        },
+                        'loading':{
+                            templateUrl: 'tpl/common/load.html'
+                        },
+                        'nologin':{
+                            templateUrl: 'tpl/common/support_login.html'
                         }/*,
                         'main':{
                             templateUrl: 'tpl/struct_operate.html'
@@ -168,25 +180,6 @@ angular.module('app')
                         }
                     }
                 })*/
-                //退出
-                .state('login', {
-                    url: '/app',
-                    views:{
-                        'container':{},
-                        'support':{
-                            templateUrl: 'tpl/common/support_tip.html'
-                        },
-                        'login':{
-                            templateUrl: 'tpl/login.html'
-                        },
-                        'loading':{
-                            templateUrl: 'tpl/common/load.html'
-                        },
-                        'nologin':{
-                            templateUrl: 'tpl/common/support_login.html'
-                        }
-                    }
-                })
         }
     ]
 );

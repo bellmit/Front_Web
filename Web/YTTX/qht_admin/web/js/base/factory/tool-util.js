@@ -247,7 +247,9 @@
 			var req=config;
 
 			/*适配配置*/
-			req.url=BASE_CONFIG.basedomain + BASE_CONFIG.baseproject + req.url;
+			if(config.set){
+				req.url=BASE_CONFIG.basedomain + BASE_CONFIG.baseproject + req.url;
+			}
 			req.data=$httpParamSerializerJQLike(req.data);
 			req['headers']={ "Content-Type": "application/x-www-form-urlencoded" };
 
@@ -1543,26 +1545,30 @@
 		/*跳转提示*/
 		tools.loginTips=function(config){
 			/*如果没有登陆则提示跳转至登陆页*/
-			var self=this,
-				count= 10,
-				tipid=null,
-				$outwrap=$('#'+BASE_CONFIG.nologindom),
-				$outtip=$('#'+BASE_CONFIG.nologintipdom);
 
-			$outwrap.removeClass().addClass('g-d-showi');
-			$outtip.html(count);
+			var self=this,
+				count= 2,
+				tipid=null,
+				outwrap=document.getElementById(BASE_CONFIG.nologindom),
+				outtip=document.getElementById(BASE_CONFIG.nologintipdom);
+
+			if(config){
+				self.clear();
+			}
+
+			outwrap.className='g-d-showi';
+			outtip.innerHTML=count;
 			tipid=setInterval(function(){
 				count--;
-				$outtip.html(count);
+				outtip.innerHTML=count;
 				if(count<=0){
 					/*清除定时操作*/
 					clearInterval(tipid);
 					tipid=null;
-					count= 10;
-					$outtip.html('');
-					$outwrap.removeClass().addClass('g-d-hidei');
+					count= 2;
+					outtip.innerHTML='';
+					outwrap.className='g-d-hidei';
 					if(config){
-						self.clear();
 						if(typeof config.delay==='function'){
 							/*延时回调*/
 							config.delay.call(null);
