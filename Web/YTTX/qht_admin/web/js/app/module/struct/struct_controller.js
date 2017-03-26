@@ -1,6 +1,6 @@
 /*首页控制器*/
 angular.module('app')
-    .controller('StructController', ['structService',function(structService){
+    .controller('StructController', ['structService','$rootScope',function(structService,$rootScope){
         var self=this;
 
         /*tab选项卡*/
@@ -47,16 +47,19 @@ angular.module('app')
             self.search.searchactive='';
         };
 
+        console.log($rootScope);
+
         /*子菜单展开*/
         this.toggleSubMenu=function (e) {
             e.preventDefault();
+            e.stopPropagation();
 
             var target=e.target,
                 node=target.nodeName.toLowerCase();
             if(node==='ul'||node==='li'){
                 return false;
             }
-            var $this=$(node),
+            var $this=$(target),
                 haschild=$this.hasClass('sub-menu-title'),
                 $child;
 

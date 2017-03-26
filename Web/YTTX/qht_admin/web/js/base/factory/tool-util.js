@@ -1524,14 +1524,10 @@
 					if(now_hh-login_hh>2){
 						return false;
 					}
-
-					/*if(login_hh!==now_hh){
-					 //同一小时有效
-					 return false;
-					 }else if(now_mm - login_mm >1){
-					 //多少分钟内有效
-					 return false;
-					 }*/
+					/*if(now_mm - login_mm >1){
+						//同一分钟有效
+						return false;
+					}*/
 				}
 
 				/*请求域与登陆域不一致*/
@@ -1552,7 +1548,7 @@
 				outwrap=document.getElementById(BASE_CONFIG.nologindom),
 				outtip=document.getElementById(BASE_CONFIG.nologintipdom);
 
-			if(config){
+			if(config.clear){
 				self.clear();
 			}
 
@@ -1576,11 +1572,11 @@
 								/*路由跳转*/
 								$state.go(config.router);
 							}
-						}else{
-							if(typeof config.router!=='undefined'){
+						}else if(typeof config.router!=='undefined'){
 								/*路由跳转*/
 								$state.go(config.router);
-							}
+						}else if(typeof config.reload!=='undefined'){
+							window.location.reload();
 						}
 					}
 				}
@@ -1591,6 +1587,9 @@
 			var self=this;
 			if(config){
 				if(config.tips){
+					if(!config.clear){
+						self.clear();
+					}
 					self.loginTips(config);
 				}else{
 					self.clear();

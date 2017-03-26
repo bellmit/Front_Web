@@ -24,6 +24,11 @@ angular.module('login.service',[])
                 }else{
                     islogin=toolUtil.validLogin(cache.loginMap,BASE_CONFIG.basedomain);
                 }
+                /*如果缓存失效则清除缓存*/
+                if(!islogin){
+                    this.clearCache();
+                    toolUtil.clear();
+                }
                 return islogin;
             }else{
                 return false;
@@ -99,14 +104,11 @@ angular.module('login.service',[])
                                         message=data.message;
                                     if(code!==0){
                                         if(typeof message !=='undefined'&&message!==''){
-                                            console.log('message');
+                                            console.log(message);
                                         }
                                         if(code===999){
                                             /*退出系统*/
-                                            toolUtil.loginOut({
-                                                router:'app',
-                                                tips:true
-                                            });
+                                            self.loginOut();
                                         }
                                     }else{
                                         /*加载数据*/
@@ -166,10 +168,7 @@ angular.module('login.service',[])
                         }
                     }
                 }else{
-                    toolUtil.loginOut({
-                        router:'app',
-                        tips:true
-                    });
+                    this.loginOut();
                 }
                 return null;
             }else{
@@ -232,15 +231,11 @@ angular.module('login.service',[])
             toolUtil.setParams(BASE_CONFIG.unique_key,cache);
         };
         /*退出系统*/
-        this.loginOut=function (fn) {
+        this.loginOut=function () {
             this.clearCache();
             toolUtil.loginOut();
             /*路由*/
             $state.go('app');
-            if(typeof fn==='function'){
-                /*如果退出时存在回调*/
-                fn.call(null);
-            }
             return true;
         };
         /*清除缓存*/

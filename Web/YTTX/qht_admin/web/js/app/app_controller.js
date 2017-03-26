@@ -49,7 +49,7 @@ angular.module('app')
             });
         };
         /*退出*/
-        this.loginOut=function () {
+        this.loginOut=function (flag) {
             /*不合格缓存信息，需要清除缓存*/
             var isout=loginService.loginOut();
             /*更新模型*/
@@ -62,7 +62,13 @@ angular.module('app')
                 };
             }
             /*提示退出信息*/
-            toolUtil.loginTips();
+            if(typeof flag!=='undefined'&&flag){
+                toolUtil.loginTips({
+                    reload:true
+                });
+            }else{
+                toolUtil.loginTips();
+            }
         };
 
 

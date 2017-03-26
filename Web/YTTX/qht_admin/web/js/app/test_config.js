@@ -6,7 +6,8 @@ var qht_app=angular.module('app')
         baseproject:'/qht-bms-api',
         loadingdom:'struct_layout_loading',
         nologindom:'struct_layout_nologin',
-        nologintipdom:'struct_goto_login'
+        nologintipdom:'struct_goto_login',
+        loginoutdom:'struct_layout_loginout'
     })
     .config(['$controllerProvider', '$compileProvider', '$filterProvider', '$provide',
         function ($controllerProvider,   $compileProvider,   $filterProvider,   $provide) {

@@ -4,7 +4,8 @@ angular.module('app')
         /*获取缓存数据*/
         var cache=toolUtil.getParams(BASE_CONFIG.unique_key),
             struct_submenu_dom=document.getElementById('admin_struct_submenu'),
-            struct_list_dom=document.getElementById('admin_struct_list');
+            struct_list_dom=document.getElementById('admin_struct_list'),
+            self=this;
 
         /*
         导航服务类
@@ -53,37 +54,36 @@ angular.module('app')
                                     message=data.message;
                                 if(code!==0){
                                     if(typeof message !=='undefined'&&message!==''){
-                                        console.log('message');
+                                        console.log(message);
                                     }
 
                                     if(code===999){
                                         /*退出系统*/
-                                        loginService.loginOut();
+                                        toolUtil.loginTips({
+                                            clear:true,
+                                            reload:true
+                                        });
                                     }
                                 }else{
                                     /*加载数据*/
+                                    struct_list_dom.innerHTML='';
                                     var result=data.result;
                                     if(typeof result!=='undefined'){
                                         /*flag:是否设置首页*/
                                         var list=result.list,
                                             str='';
                                         if(list){
-                                            var i=0,
-                                                len=list.length;
+                                            var len=list.length;
                                             if(len===0){
-                                                //struct_submenu_dom.innerHTML='<li><a>暂无数据</a></li>';
-                                                //struct_list_dom.innerHTML='';
+                                                struct_submenu_dom.innerHTML='<li><a>暂无数据</a></li>';
                                             }else{
-                                                for(i;i<len;i++){
-                                                    var tempitem=list[i];
-                                                    str+='<li><a data-id="'+tempitem['id']+'" href="#" title="">'+tempitem['orgname']+'</a></li>';
-                                                }
-                                                //struct_submenu_dom.innerHTML=str;
+                                                /*数据集合，最多嵌套层次*/
+                                                str=''+self.resolveMenuList(list,6)+'';
+                                                struct_submenu_dom.innerHTML=str;
                                             }
                                         }
                                     }else{
-                                        //struct_submenu_dom.innerHTML='<li><a>暂无数据</a></li>';
-                                        //struct_list_dom.innerHTML='';
+                                        struct_submenu_dom.innerHTML='<li><a>暂无数据</a></li>';
                                     }
                                 }
                             }
@@ -96,21 +96,98 @@ angular.module('app')
                                 console.log('请求菜单失败');
                             }
                             struct_submenu_dom.innerHTML='<li><a>暂无数据</a></li>';
-                            //struct_list_dom.innerHTML='';
+                            struct_list_dom.innerHTML='';
                         });
+            }else{
+                loginService.loginOut();
             }
         };
+
         /*解析导航--开始解析*/
         this.resolveMenuList=function (obj,limit) {
-            
+            if(!obj||typeof obj==='undefined'){
+                return false;
+            }
+            if(typeof limit==='undefined'||limit<=0){
+                limit=1;
+            }
+            var menulist=obj,
+                str='',
+                i=0,
+                len=menulist.length,
+                layer=1;
+
+
+
+            if(len!==0){
+                for(i;i<len;i++){
+                    var curitem=menulist[i],
+                        hassub=/*curitem["hasSub"]*/typeof curitem['list']!=='undefined';
+                    if(hassub){
+                        str+=self.doItemMenuList(curitem,{
+                                flag:true,
+                                limit:limit,
+                                layer:layer,
+                                parentid:''
+                            })+'<ul></ul></li>';
+                    }else{
+                        str+=self.doItemMenuList(curitem,{
+                            flag:false,
+                            limit:limit,
+                            layer:layer,
+                            parentid:''
+                        });
+                    }
+                }
+                return str;
+            }else{
+                return false;
+            }
         };
+
         /*解析导航--递归解析*/
         this.doMenuList=function (obj,config) {
             
         };
+
         /*解析导航--公共解析*/
         this.doItemMenuList=function (obj,config) {
-            
+            var curitem=obj,
+                id=curitem["id"],
+                label=curitem["name"],
+                str='',
+                flag=config.flag,
+                limit=config.limit,
+                layer=config.layer,
+                parentid=config.parentid;
+
+
+            if(flag){
+                str='<li data-parentid="'+parentid+'" data-label="'+label+'" data-layer="'+layer+'" data-id="'+id+'"><a href="#" title="">'+label+'</a></li>';
+            }else{
+                str='<li data-parentid="'+parentid+'" data-label="'+label+'"  data-layer="'+layer+'" data-id="'+id+'"><a href="#" title="">'+label+'</a></li>';
+            }
+
+            /*
+            to do
+
+            可能需要判断权限操作
+            */
+            /*if(goodstypeedit_power){
+                str+='<span data-parentid="'+parentid+'"  data-action="edit" data-gtcode="'+gtCode+'" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+							<i class="fa-pencil"></i>&nbsp;&nbsp;编辑\
+						</span>';
+
+                /!*编辑状态*!/
+                stredit+='<span data-parentid="'+parentid+'"  data-action="confirm"  data-gtcode="'+gtCode+'" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-bs-success">\
+									<i class="fa-check"></i>&nbsp;&nbsp;确定\
+								</span>\
+								<span data-action="cance"  data-gtcode="'+gtCode+'" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray10">\
+									<i class="fa-close"></i>&nbsp;&nbsp;取消\
+								</span>';
+            }*/
+
+            return str;
         };
 
         /*获取机构列表*/
