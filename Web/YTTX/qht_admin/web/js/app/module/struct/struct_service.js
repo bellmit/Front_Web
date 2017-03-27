@@ -5,6 +5,7 @@ angular.module('app')
         var cache=toolUtil.getParams(BASE_CONFIG.unique_key),
             $admin_struct_submenu=$('#admin_struct_submenu'),
             $admin_struct_list=$('#admin_struct_list'),
+            $struct_layout_dialog=$('#struct_layout_dialog'),
             self=this;
 
         /*
@@ -425,6 +426,23 @@ angular.module('app')
                 loginService.loginOut();
             }
         };
+
+
+
+        /*编辑操作*/
+        this.toggleEdit=function (type,fn) {
+            if(type==='show'){
+                $struct_layout_dialog.modal('show',{backdrop:'static'});
+                if(fn&&typeof fn==='function'){
+                    fn.call(null);
+                }
+            }else if(type==='hide'){
+                $struct_layout_dialog.on('hide.bs.modal',fn);
+            }
+        };
+
+
+
 
 
 

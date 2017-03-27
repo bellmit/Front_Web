@@ -20,12 +20,16 @@ angular.module('app')
             orgname:''
         };
 
-        /*机构设置*/
+        /*编辑*/
         this.edit={
-            editstate:true,
-            rootorgname:'深圳银通支付有限公司'
+            editstate:false,
+            powerstate:false,
+            rootorgname:'深圳银通支付有限公司',
+            id:'',
+            layer:'',
+            orgname:''
         };
-
+        /*机构设置*/
         this.setting={
             add_substruct_state:false,
             adjust_pos_state:false
@@ -165,6 +169,15 @@ angular.module('app')
             }
 
 
+            /*切换编辑信息*/
+            if(isroot){
+                /*根目录*/
+                
+            }else{
+                /*非根目录*/
+
+            }
+
 
         };
 
@@ -218,8 +231,8 @@ angular.module('app')
         };
 
         /*切换编辑状态*/
-        this.toggleRootOrgname=function () {
-           self.edit.editstate=!self.edit.editstate;
+        this.toggleEdit=function () {
+           structService.toggleEdit('show');
         };
         /*提交编辑*/
         this.submitRootOrgname=function (e) {
