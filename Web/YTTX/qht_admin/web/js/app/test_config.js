@@ -7,7 +7,8 @@ var qht_app=angular.module('app')
         loadingdom:'struct_layout_loading',
         nologindom:'struct_layout_nologin',
         nologintipdom:'struct_goto_login',
-        loginoutdom:'struct_layout_loginout'
+        loginoutdom:'struct_layout_loginout',
+        submenulimit:6
     })
     .config(['$controllerProvider', '$compileProvider', '$filterProvider', '$provide',
         function ($controllerProvider,   $compileProvider,   $filterProvider,   $provide) {

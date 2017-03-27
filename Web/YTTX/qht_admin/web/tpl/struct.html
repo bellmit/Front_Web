@@ -2,8 +2,8 @@
     <div class="struct-layout-main">
         <!--主内容-->
         <h1 class="admin-layout-theme3">
-            <span ng-show="struct_ctrl.setting.editstate">{{struct_ctrl.setting.rootorgname}}</span>
-            <input maxlength="15" class="admin-form-default g-br3 g-c-gray6" ng-show="!struct_ctrl.setting.editstate" ng-keyup="struct_ctrl.submitRootOrgname($event)" type="text" ng-model="struct_ctrl.setting.rootorgname" />
+            <span ng-show="struct_ctrl.edit.editstate">{{struct_ctrl.edit.rootorgname}}</span>
+            <input maxlength="15" class="admin-form-default g-br3 g-c-gray6" ng-show="!struct_ctrl.edit.editstate" ng-keyup="struct_ctrl.submitRootOrgname($event)" type="text" ng-model="struct_ctrl.edit.rootorgname" />
             &nbsp;&nbsp;&nbsp;&nbsp;
             <span class="btn btn-default g-c-blue3" ng-click="struct_ctrl.toggleRootOrgname()"><i class="btn-action admin-btn-action7"></i>&nbsp;编辑</span>
         </h1>
@@ -18,41 +18,15 @@
         </div>
 
         <!--机构列表-->
-        <ul class="admin-list-tsitem" id="admin_struct_list" ng-click="struct_ctrl.toggleStructList($event)">
-            <li>
-                内蒙古省代<span></span>
-                <ul>
-                    <li>fshtwrtjrtjwrt</li>
-                    <li>2485936799979</li>
-                    <li>uryetiety5668268687</li>
-                    <li>2278298747247</li>
-                </ul>
-            </li>
-            <li class="ts-child ts-active">
+        <ul class="admin-list-tsitem" id="admin_struct_list" ng-click="struct_ctrl.toggleStructList($event)"></ul>
+
+        <!--template-->
+        <!--<li class="ts-reload ts-child ts-active">
                 新疆省代<span></span>
                 <ul>
-                    <li>fshtwrtjrtjwrt</li>
-                    <li>2485936799979</li>
-                    <li>uryetiety5668268687</li>
                     <li>2278298747247</li>
                 </ul>
-            </li>
-            <li>
-                西藏省代<span></span>
-                <ul>
-                    <li>fshtwrtjrtjwrt</li>
-                    <li>2485936799979</li>
-                    <li>uryetiety5668268687</li>
-                    <li>2278298747247</li>
-                </ul>
-            </li>
-            <li>
-                四川省代<span></span>
-            </li>
-            <li>
-                黑龙江省代<span></span>
-            </li>
-        </ul>
+            </li>-->
 
 
 
@@ -144,8 +118,8 @@
         <!--子菜单组件-->
         <ul class="sub-menu-wrap" ng-click="struct_ctrl.toggleSubMenu($event)">
             <li>
-                <a class="sub-menu-title">{{struct_ctrl.setting.rootorgname}}</a>
-                <ul class="ui-sub-menu" id="admin_struct_submenu"></ul>
+                <a data-isrequest="false" class="sub-menu-root sub-menu-title">{{struct_ctrl.edit.rootorgname}}</a>
+                <ul class="ui-sub-menu g-d-showi" id="admin_struct_submenu"></ul>
             </li>
         </ul>
     </div>
