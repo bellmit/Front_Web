@@ -90,23 +90,27 @@ angular.module('app')
             var $this=$(target),
                 haschild=$this.hasClass('sub-menu-title'),
                 $child,
-                isrequest=false;
+                isrequest=false,
+                temp_layer,
+                temp_id,
+                islayer;
 
             /*激活高亮*/
-            if(self.current===null){
-                self.current=$this;
+            if(self.menuitem.current===null){
+                self.menuitem.current=$this;
             }else{
-                self.prev=self.current;
-                self.current=$this;
-                self.prev.removeClass('sub-menuactive');
+                self.menuitem.prev=self.menuitem.current;
+                self.menuitem.current=$this;
+                self.menuitem.prev.removeClass('sub-menuactive');
             }
-            self.current.addClass('sub-menuactive');
+            self.menuitem.current.addClass('sub-menuactive');
 
             /*变更模型*/
-            self.edit.layer=$this.attr('data-layer');
-            self.edit.id=$this.attr('data-id');
+            temp_layer=$this.attr('data-layer');
+            temp_id=$this.attr('data-id');
+            self.edit.layer=temp_layer;
+            self.edit.id=temp_id;
             self.edit.orgname=$this.attr('data-label');
-
 
             /*查询子集*/
             if(haschild){
@@ -120,7 +124,7 @@ angular.module('app')
                     if(isrequest){
                         /*清空隐藏节点数据*/
                         structService.initOperate({
-                            data:null,
+                            data:'',
                             setting:self.setting
                         });
                     }
@@ -142,6 +146,7 @@ angular.module('app')
                                 list=[],
                                 len=data.size();
                             if(len!==0){
+                                /*有数据节点*/
                                 data.each(function () {
                                     var citem=$(this),
                                         orgname=citem.attr('data-label'),
@@ -153,9 +158,27 @@ angular.module('app')
                                 });
                                  structService.initOperate({
                                      data:list,
-                                     layer:$this.attr('data-layer'),
+                                     layer:temp_layer,
                                      setting:self.setting
                                  });
+                            }else{
+                                /*无数据节点*/
+                                temp_layer=$this.attr('layer');
+                                islayer=structService.validSubMenuLayer(temp_layer);
+                                if(islayer){
+                                    /*其他节点*/
+                                    structService.initOperate({
+                                        data:'',
+                                        id:temp_id,
+                                        setting:self.setting
+                                    });
+                                }else{
+                                    /*错误节点*/
+                                    structService.initOperate({
+                                        data:null,
+                                        setting:self.setting
+                                    });
+                                }
                             }
                         }
                     }
@@ -163,13 +186,51 @@ angular.module('app')
                     $this.addClass('sub-menu-titleactive');
                 }
             }else{
+                /*没有子节点，同时节点层次未达到极限值*/
+                    temp_layer=$this.attr('data-layer');
+                    islayer=structService.validSubMenuLayer(temp_layer);
+                if(islayer){
+                    /*其他节点*/
+                    structService.initOperate({
+                        data:'',
+                        id:temp_id,
+                        setting:self.setting
+                    });
+                }else{
                     /*错误节点*/
                     structService.initOperate({
                         data:null,
                         setting:self.setting
                     });
+                }
             }
 
+        };
+
+        /*跳转到根节点*/
+        this.rootSubMenu=function (e) {
+            var $this=$(e.target),
+                $child=$this.next();
+
+            var data=$child.find('>li >a'),
+                list=[],
+                len=data.size();
+            if(len!==0){
+                data.each(function () {
+                    var citem=$(this),
+                        orgname=citem.attr('data-label'),
+                        id=citem.attr('data-id');
+                    list.push({
+                        orgname:orgname,
+                        id:id
+                    });
+                });
+                structService.initOperate({
+                    data:list,
+                    layer:1,
+                    setting:self.setting
+                });
+            }
         };
 
             

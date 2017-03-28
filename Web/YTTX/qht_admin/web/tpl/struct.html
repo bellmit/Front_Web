@@ -116,7 +116,12 @@
             <ul class="sub-tab-wrap sub-item-group2 sub-itembr-group2 ui-sub-tab"></ul>
 
             <!--子菜单组件-->
-            <ul ng-init="struct_ctrl.initSubMenu()" id="admin_struct_submenu" class="sub-menu-wrap ui-sub-menu" ng-click="struct_ctrl.toggleSubMenu($event)"></ul>
+            <ul class="sub-menu-wrap">
+                <li>
+                    <a class="sub-menu-title sub-menu-titleactive" ng-click="struct_ctrl.rootSubMenu($event)">机构节点</a>
+                    <ul ng-init="struct_ctrl.initSubMenu()" ng-click="struct_ctrl.toggleSubMenu($event)" id="admin_struct_submenu" class="g-d-showi ui-sub-menu"></ul>
+                </li>
+            </ul>
         </div>
     </div>
 

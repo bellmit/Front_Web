@@ -275,6 +275,20 @@ angular.module('app')
 
             return str;
         };
+        /*导航服务--校验导航--校验导航服务的正确性*/
+        this.validSubMenuLayer=function (layer) {
+            if(typeof layer==='undefined'){
+                return false;
+            }
+            var layer=parseInt(layer,10);
+            if(layer<1){
+              return false;
+            }
+            if(layer>BASE_CONFIG.submenulimit){
+                return false;
+            }
+            return true;
+        };
 
 
         /*机构设置--初始化操作区域*/
