@@ -5,7 +5,7 @@
             <h1 class="admin-layout-theme3">
                 <span>{{struct_ctrl.edit.orgname}}</span>
                 &nbsp;&nbsp;&nbsp;&nbsp;
-                <button type="button" class="btn btn-default g-c-blue3" ng-disabled="struct_ctrl.edit.id==''" ng-click="struct_ctrl.toggleEdit('show','setting')"><i class="btn-action admin-btn-action7"></i>&nbsp;编辑</button>
+                <button type="button" class="btn btn-default g-c-blue3" ng-disabled="struct_ctrl.edit.id==''&&!struct_ctrl.edit.editstate" ng-click="struct_ctrl.toggleEdit('show','setting')"><i class="btn-action admin-btn-action7"></i>&nbsp;编辑</button>
             </h1>
 
             <!--下属机构-->
@@ -118,7 +118,7 @@
             <!--子菜单组件-->
             <ul class="sub-menu-wrap">
                 <li>
-                    <a class="sub-menu-title sub-menu-titleactive" ng-click="struct_ctrl.rootSubMenu($event)">机构节点</a>
+                    <a class="sub-menu-title sub-menu-titleactive" data-parentid="" data-id=""  ng-click="struct_ctrl.rootSubMenu($event)">机构挂载点</a>
                     <ul ng-init="struct_ctrl.initSubMenu()" ng-click="struct_ctrl.toggleSubMenu($event)" id="admin_struct_submenu" class="g-d-showi ui-sub-menu"></ul>
                 </li>
             </ul>

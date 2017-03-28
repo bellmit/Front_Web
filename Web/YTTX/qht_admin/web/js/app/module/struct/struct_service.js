@@ -38,6 +38,10 @@ angular.module('app')
                     /*根目录则获取新配置参数*/
                     id=param['organizationId'];
                     $wrap=$admin_struct_submenu;
+                    /*设置虚拟挂载点相关数据*/
+                    $wrap.prev().attr({
+                        'data-id':id
+                    });
                 }else{
                     /*非根目录则获取新请求参数*/
                     layer=config.$reqstate.attr('data-layer');
@@ -281,7 +285,7 @@ angular.module('app')
                 return false;
             }
             var layer=parseInt(layer,10);
-            if(layer<1){
+            if(layer<0){
               return false;
             }
             if(layer>BASE_CONFIG.submenulimit){
@@ -325,9 +329,14 @@ angular.module('app')
                     /*清空内容*/
                     $wrap.html('');
                 }else{
+                    if(config.layer===0){
+                        /*虚拟挂载点*/
+                        config.setting.id=config.id;
+                    }else{
+                        config.setting.id='';
+                    }
                     config.setting.add_substruct_state=true;
                     config.setting.adjust_pos_state=true;
-                    config.setting.id='';
                     config.setting.orgname='';
                     config.setting.a_id='';
                     config.setting.a_orgname='';

@@ -207,10 +207,11 @@ angular.module('app')
 
         };
 
-        /*跳转到根节点*/
+        /*跳转到虚拟挂载点*/
         this.rootSubMenu=function (e) {
             var $this=$(e.target),
-                $child=$this.next();
+                $child=$this.next(),
+                tempid=$this.attr('data-id');
 
             var data=$child.find('>li >a'),
                 list=[],
@@ -227,10 +228,29 @@ angular.module('app')
                 });
                 structService.initOperate({
                     data:list,
-                    layer:1,
+                    layer:0,
+                    id:tempid,
                     setting:self.setting
                 });
             }
+
+            /*清除高亮模型*/
+            if(this.menuitem.prev!==null){
+                this.menuitem.prev.removeClass('sub-menuactive');
+                this.menuitem.prev=null;
+            }
+            if(this.menuitem.current!==null){
+                this.menuitem.current.removeClass('sub-menuactive');
+                this.menuitem.current=null;
+            }
+
+            /*更新编辑模型*/
+            this.edit.orgname='';
+            this.edit.editstate=false;
+            this.edit.powerstate=false;
+            this.edit.id='';
+            this.edit.layer=0;
+            this.edit.orgname='';
         };
 
             
