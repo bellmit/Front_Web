@@ -5,14 +5,22 @@ angular.module('app')
         var cache=toolUtil.getParams(BASE_CONFIG.unique_key),
             $admin_struct_submenu=$('#admin_struct_submenu'),
             $admin_struct_list=$('#admin_struct_list'),
-            $struct_setting_dialog=$('#struct_setting_dialog'),
-            $struct_pos_dialog=$('#struct_pos_dialog'),
+            $struct_layout_dialog=$('#struct_layout_dialog'),
             self=this;
 
-        
-        
-        /*导航服务--获取导航*/
+        /*
+        导航服务类
+        获取导航*/
         this.getMenuList=function (config) {
+            /*判断是否是合法的节点*/
+            if(!config.root&&config.layer>=BASE_CONFIG.submenulimit){
+                self.initOperate({
+                    data:null,
+                    $wrap:$admin_struct_list,
+                    config:config
+                });
+                return false;
+            }
             var islogin=loginService.isLogin(cache);
             if(islogin){
                 var param=$.extend(true,{},cache.loginMap.param);
@@ -22,47 +30,20 @@ angular.module('app')
                     param['orgname']=config.search;
                 }
 
-                if(typeof config.type!=='undefined'&&config.type==='search'){
-                    /*检索则清空查询内容*/
-                    $admin_struct_submenu.html('');
-                    $admin_struct_list.html('');
-                }
 
-                var layer,
-                    id,
-                    $wrap;
-
-                /*初始化加载*/
-                if(typeof config.$reqstate==='undefined'){
-                    layer=0;
+                if(config.root){
                     /*根目录则获取新配置参数*/
-                    id=param['organizationId'];
-                    $wrap=$admin_struct_submenu;
+                    config['id']=param['organizationId'];
                 }else{
                     /*非根目录则获取新请求参数*/
-                    layer=config.$reqstate.attr('data-layer');
-                    $wrap=config.$reqstate.next();
-                    id=config.$reqstate.attr('data-id');
-
-                    /*判断是否是合法的节点*/
-                    if(layer>=BASE_CONFIG.submenulimit){
-                        /*遇到极限节点，不查询数据*/
-                        self.initOperate({
-                            data:null,
-                            $wrap:$admin_struct_list,
-                            setting:config.setting
-                        });
-                        return false;
-                    }
-                    param['organizationId']=id;
+                    param['organizationId']=config.id;
                 }
-
 
                 toolUtil
                     .requestHttp({
-                        url:'/organization/lowers/search'/*'json/goods/mall_goods_attr.json'*/,
+                        url:'json/goods/mall_goods_attr.json',
                         method:'post',
-                        set:true,
+                        set:false,
                         data:param
                     })
                     .then(function(resp){
@@ -93,49 +74,40 @@ angular.module('app')
                                         if(list){
                                             var len=list.length;
                                             if(len===0){
-                                                if(layer===0){
-                                                    $wrap.html('<li><a>暂无数据</a></li>');
-                                                    /*填充子数据到操作区域,同时显示相关操作按钮*/
-                                                    self.initOperate({
-                                                        data:'',
-                                                        id:id,
-                                                        $wrap:$admin_struct_list,
-                                                        setting:config.setting
-                                                    });
+                                                if(config.root){
+                                                    $admin_struct_submenu.html('<li><a>暂无数据</a></li>');
                                                 }else{
-                                                    $wrap.html('');
-                                                    /*清除显示下级菜单导航图标*/
-                                                    config.$reqstate.attr({
-                                                        'data-isrequest':true
-                                                    }).removeClass('sub-menu-title sub-menu-titleactive');
-                                                    /*填充子数据到操作区域,同时显示相关操作按钮*/
-                                                    self.initOperate({
-                                                        data:'',
-                                                        id:id,
-                                                        orgname:config.$reqstate.attr('data-label'),
-                                                        $wrap:$admin_struct_list,
-                                                        setting:config.setting
-                                                    });
+                                                    config.$wrap.html('');
                                                 }
+                                                /*清除显示下级菜单导航图标*/
+                                                config.$reqstate.attr({
+                                                    'data-isrequest':true
+                                                }).removeClass('sub-menu-title sub-menu-titleactive');
+                                                /*填充子数据到操作区域,同时显示相关操作按钮*/
+                                                self.initOperate({
+                                                    data:'',
+                                                    $wrap:$admin_struct_list,
+                                                    config:config
+                                                });
                                             }else{
                                                 /*数据集合，最多嵌套层次*/
-                                                str=self.resolveMenuList(list,BASE_CONFIG.submenulimit,{
-                                                    layer:layer,
-                                                    id:id
-                                                });
-                                                $wrap.html(str);
-                                                if(layer!==0){
-                                                    config.$reqstate.attr({
-                                                        'data-isrequest':true
-                                                    });
+                                                if(config.root){
+                                                    /*根目录则插入菜单操作目录*/
+                                                    str=self.resolveMenuList(list,BASE_CONFIG.submenulimit,config);
+                                                    $admin_struct_submenu.html(str);
+                                                }else{
+                                                    /*非根目录则直接插入$wrap目录中*/
+                                                    str=self.resolveMenuList(list,BASE_CONFIG.submenulimit,config);
+                                                    config.$wrap.html(str);
                                                 }
-
+                                                config.$reqstate.attr({
+                                                    'data-isrequest':true
+                                                });
                                                 /*填充子数据到操作区域,同时显示相关操作按钮*/
                                                 self.initOperate({
                                                     data:list,
                                                     $wrap:$admin_struct_list,
-                                                    layer:layer,
-                                                    setting:config.setting
+                                                    config:config
                                                 });
                                             }
                                         }else{
@@ -143,18 +115,16 @@ angular.module('app')
                                             self.initOperate({
                                                 data:null,
                                                 $wrap:$admin_struct_list,
-                                                setting:config.setting
+                                                config:config
                                             });
                                         }
                                     }else{
-                                        if(layer===0){
-                                            $wrap.html('<li><a>暂无数据</a></li>');
-                                        }
+                                        $admin_struct_submenu.html('<li><a>暂无数据</a></li>');
                                         /*填充子数据到操作区域,同时显示相关操作按钮*/
                                         self.initOperate({
                                             data:null,
                                             $wrap:$admin_struct_list,
-                                            setting:config.setting
+                                            config:config
                                         });
                                     }
                                 }
@@ -167,25 +137,20 @@ angular.module('app')
                             }else{
                                 console.log('请求菜单失败');
                             }
-                            if(layer===0){
-                                $wrap.html('<li><a>暂无数据</a></li>');
-                            }
+                            $admin_struct_submenu.html('<li><a>暂无数据</a></li>');
                             /*填充子数据到操作区域,同时显示相关操作按钮*/
                             self.initOperate({
                                 data:null,
                                 $wrap:$admin_struct_list,
-                                setting:config.setting
+                                config:config
                             });
                         });
             }else{
-                /*退出系统*/
-                toolUtil.loginTips({
-                    clear:true,
-                    reload:true
-                });
+                loginService.loginOut();
             }
         };
-        /*导航服务--解析导航--开始解析*/
+
+        /*解析导航--开始解析*/
         this.resolveMenuList=function (obj,limit,config) {
             if(!obj||typeof obj==='undefined'){
                 return false;
@@ -199,7 +164,11 @@ angular.module('app')
                 len=menulist.length,
                 layer=config.layer;
 
-            layer++;
+            if(config.root){
+                layer=1;
+            }else{
+                layer++;
+            }
 
             if(limit>=1&&layer>limit){
                 /*如果层级达到设置的极限清除相关*/
@@ -233,17 +202,20 @@ angular.module('app')
                 return false;
             }
         };
-        /*导航服务--解析导航--递归解析*/
+
+        /*解析导航--递归解析*/
         this.doMenuList=function (obj,config) {
             
         };
-        /*导航服务--解析导航--公共解析*/
+
+        /*解析导航--公共解析*/
         this.doItemMenuList=function (obj,config) {
             var curitem=obj,
                 id=curitem["id"],
                 label=curitem["orgname"],
                 str='',
                 flag=config.flag,
+                limit=config.limit,
                 layer=config.layer,
                 parentid=config.parentid;
 
@@ -277,10 +249,11 @@ angular.module('app')
         };
 
 
-        /*机构设置--初始化操作区域*/
+        /*初始化操作区域*/
         this.initOperate=function (config) {
             var data=config.data,
-                $wrap;
+                $wrap,
+                param=config.config;
 
             if(typeof config.$wrap==='undefined'){
                 $wrap=$admin_struct_list;
@@ -293,60 +266,57 @@ angular.module('app')
                 /*清空内容*/
                 $wrap.html('');
                 /*设置操作状态*/
-                config.setting.add_substruct_state=false;
-                config.setting.adjust_pos_state=false;
-                config.setting.id='';
-                config.setting.orgname='';
-                config.setting.a_id='';
-                config.setting.a_orgname='';
+                param.setting.add_substruct_state=false;
+                param.setting.adjust_pos_state=false;
             }else{
                 /*设置操作状态*/
                 if(data===''){
-                    config.setting.add_substruct_state=true;
-                    config.setting.adjust_pos_state=false;
-                    config.setting.id=config.id;
-                    config.setting.orgname=config.orgname?config.orgname:'';
-                    config.setting.a_id='';
-                    config.setting.a_orgname='';
+                    param.setting.add_substruct_state=true;
+                    param.setting.adjust_pos_state=false;
                     /*清空内容*/
                     $wrap.html('');
                 }else{
-                    config.setting.add_substruct_state=true;
-                    config.setting.adjust_pos_state=true;
-                    config.setting.id='';
-                    config.setting.orgname='';
-                    config.setting.a_id='';
-                    config.setting.a_orgname='';
+                    param.setting.add_substruct_state=true;
+                    param.setting.adjust_pos_state=true;
                     self.renderOperate(config);
                 }
             }
         };
-        /*机构设置--填充数据至操作区域*/
+        /*填充数据至操作区域*/
         this.renderOperate=function (config) {
             var i=0,
                 list=config.data,
                 len=list.length,
+                param=config.config,
                 str='',
-                layer=config.layer;
+                layer=1;
 
+
+            if(param.root){
+                layer=1;
+            }else{
+                layer=param.layer++;
+            }
             var curitem,
                 id,
                 orgname;
 
             if(layer>=BASE_CONFIG.submenulimit){
-                config.$wrap.html('');
+                curitem=list[i];
+                id=curitem['id'];
+                orgname=curitem['orgname'];
+            str+='<li data-label="'+orgname+'" data-id="'+param.id+'" data-layer="'+layer+'">'+orgname+'</li>';
             }else{
-                layer++;
                 for(i;i<len;i++){
                         curitem=list[i];
                         id=curitem['id'];
                         orgname=curitem['orgname'];
                     str+='<li class="ts-reload" data-label="'+orgname+'" data-id="'+id+'" data-layer="'+layer+'">'+orgname+'<span title="加载数据" data-isrequest="false" data-id="'+id+'"></span><ul></ul></li>';
                 }
-                $(str).appendTo(config.$wrap.html(''));
             }
+            $(str).appendTo( config.$wrap.html(''));
         };
-        /*机构设置--获取机构列表*/
+        /*获取机构列表*/
         this.getOperateList=function (config) {
             var islogin=loginService.isLogin(cache);
             if(islogin){
@@ -357,14 +327,19 @@ angular.module('app')
                     param['orgname']=config.search;
                 }
 
-                /*非根目录则获取新请求参数*/
-                param['organizationId']=config.id;
+                if(config.root){
+                    /*根目录则获取新配置参数*/
+                    config['id']=param['organizationId'];
+                }else{
+                    /*非根目录则获取新请求参数*/
+                    param['organizationId']=config.id;
+                }
 
                 toolUtil
                     .requestHttp({
-                        url:'/organization/lowers/search'/*'json/goods/mall_goods_attr.json'*/,
+                        url:'json/goods/mall_goods_attr.json',
                         method:'post',
-                        set:true,
+                        set:false,
                         data:param
                     })
                     .then(function(resp){
@@ -411,7 +386,7 @@ angular.module('app')
                                                 var i=0;
                                                 for(i;i<len;i++){
                                                     var curitem=list[i];
-                                                    str+='<li data-label="'+curitem['orgname']+'" data-id="'+curitem['id']+'">'+curitem["orgname"]+'</li>';
+                                                    str+='<li data-label="'+curitem['orgname']+'" data-id="'+curitem['id']+'">'+curitem['orgname']+'</li>';
                                                 }
                                                 $(str).appendTo(config.$wrap.html(''));
                                             }
@@ -451,41 +426,26 @@ angular.module('app')
                 loginService.loginOut();
             }
         };
-        /*添加子机构*/
-        this.addSubStruct=function (config) {
-            console.log(config);
-            /*if(config.id===''||config.orgname===''){
-                toolDialog.show({
-                    type:'warn',
-                    value:'没有父机构或父机构不存在'
-                });
-            }*/
-        };
+
 
 
         /*编辑操作*/
-        this.toggleModal=function (config,fn) {
-            if(config.type==='show'){
-                if(config.module==='setting'){
-                    $struct_setting_dialog.modal('show',{backdrop:'static'});
-                }else if(config.module==='pos'){
-                    $struct_pos_dialog.modal('show',{backdrop:'static'});
-                }
+        this.toggleEdit=function (type,fn) {
+            if(type==='show'){
+                $struct_layout_dialog.modal('show',{backdrop:'static'});
                 if(fn&&typeof fn==='function'){
                     fn.call(null);
                 }
-            }else if(config.type==='hide'){
-                if(config.module==='setting'){
-                    $struct_setting_dialog.modal('hide');
-                    /*$struct_setting_dialog.on('hide.bs.modal',fn);*/
-                }else if(config.module==='pos'){
-                    $struct_pos_dialog.modal('hide');
-                    /*$struct_pos_dialog.on('hide.bs.modal',fn);*/
-                }
+            }else if(type==='hide'){
+                $struct_layout_dialog.on('hide.bs.modal',fn);
             }
         };
 
-        
+
+
+
+
+
         /*提交编辑数据*/
         this.updateRootOrgname=function(edit) {
             if(edit.rootorgname===''){

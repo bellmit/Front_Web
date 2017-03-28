@@ -1,6 +1,6 @@
 /*首页控制器*/
 angular.module('app')
-    .controller('StructController', ['structService','$rootScope',function(structService,$rootScope){
+    .controller('StructController', ['structService','toolDialog',function(structService,toolDialog){
         var self=this;
 
         /*tab选项卡*/
@@ -24,7 +24,6 @@ angular.module('app')
         this.edit={
             editstate:false,
             powerstate:false,
-            rootorgname:'深圳银通支付有限公司',
             id:'',
             layer:'',
             orgname:''
@@ -32,13 +31,21 @@ angular.module('app')
         /*机构设置*/
         this.setting={
             add_substruct_state:false,
-            adjust_pos_state:false
+            adjust_pos_state:false,
+            id:'',/*父级id*/
+            orgname:'',/*父级orgname*/
+            a_id:'',/*当前id*/
+            a_orgname:''/*当前orgname*/
         };
 
 
         /*菜单加载*/
         this.menuitem={
+            prev:null,
+            current:null
         };
+
+
 
         /*搜索过滤*/
         this.searchAction=function (e) {
@@ -50,7 +57,11 @@ angular.module('app')
                 self.search.searchactive='search-content-active';
             }
             if(kcode===13){
-                structService.getMenuList(self.search.orgname);
+                structService.getMenuList({
+                    search:self.search.orgname,
+                    setting:self.setting,
+                    type:'search'
+                });
             }
         };
         /*清空过滤条件*/
@@ -59,6 +70,13 @@ angular.module('app')
             self.search.searchactive='';
         };
 
+        /*初始化子菜单加载*/
+        this.initSubMenu=function () {
+            structService.getMenuList({
+                search:self.search.orgname,
+                setting:self.setting
+            });
+        };
         /*子菜单展开*/
         this.toggleSubMenu=function (e) {
             e.preventDefault();
@@ -72,9 +90,25 @@ angular.module('app')
             var $this=$(target),
                 haschild=$this.hasClass('sub-menu-title'),
                 $child,
-                isrequest=false,
-                isroot=false;
+                isrequest=false;
 
+            /*激活高亮*/
+            if(self.current===null){
+                self.current=$this;
+            }else{
+                self.prev=self.current;
+                self.current=$this;
+                self.prev.removeClass('sub-menuactive');
+            }
+            self.current.addClass('sub-menuactive');
+
+            /*变更模型*/
+            self.edit.layer=$this.attr('data-layer');
+            self.edit.id=$this.attr('data-id');
+            self.edit.orgname=$this.attr('data-label');
+
+
+            /*查询子集*/
             if(haschild){
                 $child=$this.next();
                 if($child.hasClass('g-d-showi')){
@@ -87,37 +121,20 @@ angular.module('app')
                         /*清空隐藏节点数据*/
                         structService.initOperate({
                             data:null,
-                            config:{
-                                setting:self.setting
-                            }
+                            setting:self.setting
                         });
                     }
                 }else{
                     /*显示*/
                     isrequest=$this.attr('data-isrequest');
-                    isroot=$this.hasClass('sub-menu-root');
                     if(isrequest==='false'){
                         /*重新加载*/
-                        if(isroot){
-                            /*获取根目录数据*/
-                            structService.getMenuList({
-                                search:self.search.orgname,
-                                $reqstate:$this,
-                                root:true,
-                                setting:self.setting
-                            });
-                        }else{
-                            /*获取非根目录数据*/
-                            structService.getMenuList({
-                                search:self.search.orgname,
-                                $reqstate:$this,
-                                id:$this.attr('data-id'),
-                                layer:$this.attr('data-layer'),
-                                $wrap:$child,
-                                root:false,
-                                setting:self.setting
-                            });
-                        }
+                        /*获取非根目录数据*/
+                        structService.getMenuList({
+                            search:self.search.orgname,
+                            $reqstate:$this,
+                            setting:self.setting
+                        });
                     }else if(isrequest==='true'){
                         /*已加载的直接遍历存入操作区域*/
                         if(haschild){
@@ -129,29 +146,16 @@ angular.module('app')
                                     var citem=$(this),
                                         orgname=citem.attr('data-label'),
                                         id=citem.attr('data-id');
-                                    list.push({
-                                        orgname:orgname,
-                                        id:id
-                                    });
+                                        list.push({
+                                            orgname:orgname,
+                                            id:id
+                                        });
                                 });
-                                if(isroot){
-                                    structService.initOperate({
-                                        data:list,
-                                        config:{
-                                            root:true,
-                                            setting:self.setting
-                                        }
-                                    });
-                                }else{
-                                    structService.initOperate({
-                                        data:list,
-                                        config:{
-                                            root:false,
-                                            layer:$this.attr('data-layer'),
-                                            setting:self.setting
-                                        }
-                                    });
-                                }
+                                 structService.initOperate({
+                                     data:list,
+                                     layer:$this.attr('data-layer'),
+                                     setting:self.setting
+                                 });
                             }
                         }
                     }
@@ -162,78 +166,94 @@ angular.module('app')
                     /*错误节点*/
                     structService.initOperate({
                         data:null,
-                        config:{
-                            setting:self.setting
-                        }
+                        setting:self.setting
                     });
             }
 
-
-            /*切换编辑信息*/
-            if(isroot){
-                /*根目录*/
-                
-            }else{
-                /*非根目录*/
-
-            }
-
-
         };
 
-        /*机构列表展开*/
+            
+        /*机构列表--展开*/
         this.toggleStructList=function (e) {
             e.preventDefault();
 
             var target=e.target,
-                node=target.nodeName.toLowerCase();
-            if(node!=='span'){
-                return false;
-            }
-            var $span=$(target),
-                $item=$span.parent(),
-                $ul,
-                isreload=$item.hasClass('ts-reload'),
-                haschild='',
-                isrequest=false;
+                node=target.nodeName.toLowerCase(),
+                isreload=true;
+            if(node==='span'){
+                var $span=$(target),
+                    $item=$span.parent(),
+                    $ul,
+                    haschild='',
+                    isrequest=false;
 
-            if(isreload){
-                var id=$span.attr('data-id');
-                /*显示*/
-                isrequest=$span.attr('data-isrequest');
-                if(isrequest==='false'){
-                    /*重新加载*/
-                    $ul=$item.find('ul');
-                    /*获取非根目录数据*/
-                    structService.getOperateList({
-                        search:self.search.orgname,
-                        $reqstate:$span,
-                        $li:$item,
-                        id:id,
-                        $wrap:$ul,
-                        root:false
-                    });
-                }
-            }else{
-                haschild=$item.hasClass('ts-child');
-                if(haschild){
-                    if($item.hasClass('ts-active')){
-                        /*隐藏*/
-                        $item.removeClass('ts-active');
-                    }else{
-                        /*显示*/
-                        $item.addClass('ts-active');
+                /*数据状态*/
+                isreload=$item.hasClass('ts-reload');
+                if(isreload){
+                    var id=$span.attr('data-id');
+                    /*显示*/
+                    isrequest=$span.attr('data-isrequest');
+                    if(isrequest==='false'){
+                        /*重新加载*/
+                        $ul=$item.find('ul');
+                        /*获取非根目录数据*/
+                        structService.getOperateList({
+                            search:self.search.orgname,
+                            $reqstate:$span,
+                            $li:$item,
+                            id:id,
+                            $wrap:$ul
+                        });
+                    }
+                }else{
+                    haschild=$item.hasClass('ts-child');
+                    if(haschild){
+                        if($item.hasClass('ts-active')){
+                            /*隐藏*/
+                            $item.removeClass('ts-active');
+                        }else{
+                            /*显示*/
+                            $item.addClass('ts-active');
+                        }
                     }
                 }
+                return false;
+            }else if(node==='li'){
+                var $li=$(target);
+                if($li.hasClass('ts-adjustpos')){
+                    $li.removeClass('ts-adjustpos');
+                    /*同步模型*/
+                    this.setting.a_id='';
+                    this.setting.a_orgname='';
+                }else{
+                    $li.addClass('ts-adjustpos').siblings().removeClass('ts-adjustpos');
+                    if(typeof $li.attr('data-layer')==='undefined'){
+                        var $pli=$li.parent().parent();
+                        $pli.removeClass('ts-adjustpos').siblings().removeClass('ts-adjustpos');
+                    }else{
+                        $li.find('li').each(function () {
+                            this.className='';
+                        });
+                    }
+                    /*同步模型*/
+                    this.setting.a_id=$li.attr('data-id');
+                    this.setting.a_orgname=$li.attr('data-label');
+                }
             }
-
-
+        };
+        /*机构列表--添加子机构*/
+        this.addSubStruct=function () {
+            structService.addSubStruct(this.setting);
         };
 
         /*切换编辑状态*/
-        this.toggleEdit=function () {
-           structService.toggleEdit('show');
+        this.toggleEdit=function (type,module) {
+           structService.toggleModal({
+               type:type,
+               module:module
+           });
         };
+
         /*提交编辑*/
         this.submitRootOrgname=function (e) {
             var kcode=window.event?e.keyCode:e.which;
