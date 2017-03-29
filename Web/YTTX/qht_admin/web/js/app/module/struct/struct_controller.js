@@ -358,7 +358,11 @@ angular.module('app')
             };
 
             /*表单重置*/
-            this.structReset=function (){};
+            this.structReset=function (){
+                for(var i in this.struct){
+                    this.struct[i]='';
+                }
+            };
             /*提交表单*/
             this.structSubmit=function () {
                 

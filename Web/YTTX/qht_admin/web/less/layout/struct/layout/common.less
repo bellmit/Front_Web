@@ -754,9 +754,11 @@
 
   /*自定义表单1*/
   .form-group-self1{
+    @tip-height:20px;
+    @input-height:48px;
     .layout-base;
-    min-height:38px;
-    padding:5px 10px;
+    min-height:@input-height;
+    padding:10px 10px;
     font-size:0;
     .self-label,
     .self-input{
@@ -796,7 +798,7 @@
       input[type="password"]{
         height:100%;
         line-height:@font-size-base + 2;
-        padding:6px 5px;
+        padding:6px 30px 6px 5px;
       }
       select{
         height:28px;
@@ -805,6 +807,36 @@
         min-height:100px;
         padding:4px 5px;
         line-height:@font-size-base + 10;
+      }
+    }
+
+    .self-tips{
+      .box-sizing-base;
+      position: absolute;
+      z-index: 10;
+      .user-select-base;
+      display: inline-block;
+      height:@tip-height;
+      line-height:@tip-height;
+      overflow: hidden;
+    }
+    .self-tips-no{
+      left:0;
+      bottom:-@tip-height;
+    }
+    .self-tips-yes{
+      width:@tip-height;
+      right:5px;
+      top:6px;
+      &:after,
+      &::after{
+        content:'\e624';
+        font-family:'ux_seven';
+        font-size:@font-size-base + 6;
+        width:100%;
+        height:100%;
+        display: inline-block;
+        color:@color-gray12;
       }
     }
   }
