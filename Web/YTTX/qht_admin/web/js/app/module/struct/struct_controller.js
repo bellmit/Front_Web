@@ -44,6 +44,7 @@ angular.module('app')
 
         /*模型--机构数据*/
         this.struct={
+            orgname:''/*机构名称*/,
             comname:''/*公司名称*/,
             linkman:''/*负责人*/,
             cellphone:''/*手机号码*/,
@@ -359,14 +360,27 @@ angular.module('app')
 
             /*表单重置*/
             this.structReset=function (){
-                for(var i in this.struct){
-                    this.struct[i]='';
+                /*重置机构数据模型*/
+                var tempstruct=self.struct;
+                for(var i in tempstruct){
+                    if(i==='isSettingLogin'){
+                        /*是否设置登录名*/
+                        tempstruct[i]=1;
+                    }else if(i==='isDesignatedPermit'){
+                        /*是否指定权限*/
+                        tempstruct[i]=1;
+                    }else{
+                        tempstruct[i]='';
+                    }
                 }
             };
+            
             /*提交表单*/
             this.structSubmit=function () {
-                
+
             };
+            
+            
         }
 
 

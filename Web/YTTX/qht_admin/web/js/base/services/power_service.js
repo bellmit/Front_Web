@@ -8,6 +8,17 @@ angular.module('app')
 
 
 
+		/*生成头*/
+		this.createHeader=function (wrap) {
+			var header/*头*/,
+				colgroup/*分组*/;
+
+			var poweritem=toolUtil.getAllPower();
+
+			
+		};
+
+
 
 
 		/*导航服务--获取虚拟挂载点*/
