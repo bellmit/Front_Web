@@ -9,8 +9,29 @@ angular.module('app')
             $struct_pos_dialog=$('#struct_pos_dialog'),
             self=this;
 
-        
-        
+
+
+
+
+        /*导航服务--获取虚拟挂载点*/
+        this.getRoot=function () {
+            var islogin=loginService.isLogin(cache);
+            if(islogin){
+                var logininfo=cache.loginMap;
+                return {
+                    'orgname':logininfo.username,
+                    'id':logininfo.param.organizationId
+                };
+            }else{
+                /*退出系统*/
+                cache=null;
+                toolUtil.loginTips({
+                    clear:true,
+                    reload:true
+                });
+                return null;
+            }
+        };
         /*导航服务--获取导航*/
         this.getMenuList=function (config) {
             var islogin=loginService.isLogin(cache);
@@ -38,10 +59,6 @@ angular.module('app')
                     /*根目录则获取新配置参数*/
                     id=param['organizationId'];
                     $wrap=$admin_struct_submenu;
-                    /*设置虚拟挂载点相关数据*/
-                    $wrap.prev().attr({
-                        'data-id':id
-                    });
                 }else{
                     /*非根目录则获取新请求参数*/
                     layer=config.$reqstate.attr('data-layer');
@@ -83,6 +100,8 @@ angular.module('app')
 
                                     if(code===999){
                                         /*退出系统*/
+                                        cache=null;
+                                        islogin=false;
                                         toolUtil.loginTips({
                                             clear:true,
                                             reload:true
@@ -183,6 +202,7 @@ angular.module('app')
                         });
             }else{
                 /*退出系统*/
+                cache=null;
                 toolUtil.loginTips({
                     clear:true,
                     reload:true
@@ -285,7 +305,7 @@ angular.module('app')
                 return false;
             }
             var layer=parseInt(layer,10);
-            if(layer<0){
+            if(layer<1){
               return false;
             }
             if(layer>BASE_CONFIG.submenulimit){
@@ -315,8 +335,8 @@ angular.module('app')
                 config.setting.adjust_pos_state=false;
                 config.setting.id='';
                 config.setting.orgname='';
-                config.setting.a_id='';
-                config.setting.a_orgname='';
+                config.setting.c_id='';
+                config.setting.c_orgname='';
             }else{
                 /*设置操作状态*/
                 if(data===''){
@@ -324,22 +344,23 @@ angular.module('app')
                     config.setting.adjust_pos_state=false;
                     config.setting.id=config.id;
                     config.setting.orgname=config.orgname?config.orgname:'';
-                    config.setting.a_id='';
-                    config.setting.a_orgname='';
+                    config.setting.c_id='';
+                    config.setting.c_orgname='';
                     /*清空内容*/
                     $wrap.html('');
                 }else{
                     if(config.layer===0){
                         /*虚拟挂载点*/
                         config.setting.id=config.id;
+                        config.setting.orgname=config.orgname;
                     }else{
                         config.setting.id='';
+                        config.setting.orgname='';
                     }
                     config.setting.add_substruct_state=true;
                     config.setting.adjust_pos_state=true;
-                    config.setting.orgname='';
-                    config.setting.a_id='';
-                    config.setting.a_orgname='';
+                    config.setting.c_id='';
+                    config.setting.c_orgname='';
                     self.renderOperate(config);
                 }
             }
@@ -404,6 +425,8 @@ angular.module('app')
 
                                     if(code===999){
                                         /*退出系统*/
+                                        cache=null;
+                                        islogin=null;
                                         toolUtil.loginTips({
                                             clear:true,
                                             reload:true
@@ -476,13 +499,15 @@ angular.module('app')
         };
         /*添加子机构*/
         this.addSubStruct=function (config) {
-            console.log(config);
-            /*if(config.id===''||config.orgname===''){
+            //console.log(config);
+            if(config.id===''&&config.orgname===''){
                 toolDialog.show({
                     type:'warn',
                     value:'没有父机构或父机构不存在'
                 });
-            }*/
+                return false;
+            }
+            
         };
 
 
@@ -507,6 +532,16 @@ angular.module('app')
                 }
             }
         };
+        
+        /*表单类服务--重置表单数据*/
+        this.structReset=function () {
+            
+        };
+        /*表单类服务--提交表单数据*/
+        this.structSubmit=function () {
+
+        };
+
 
         
         /*提交编辑数据*/

@@ -1548,7 +1548,7 @@
 				outwrap=document.getElementById(BASE_CONFIG.nologindom),
 				outtip=document.getElementById(BASE_CONFIG.nologintipdom);
 
-			if(config.clear){
+			if(config&&config.clear){
 				self.clear();
 			}
 

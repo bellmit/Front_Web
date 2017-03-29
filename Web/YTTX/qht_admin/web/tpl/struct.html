@@ -5,7 +5,7 @@
             <h1 class="admin-layout-theme3">
                 <span>{{struct_ctrl.edit.orgname}}</span>
                 &nbsp;&nbsp;&nbsp;&nbsp;
-                <button type="button" class="btn btn-default g-c-blue3" ng-disabled="struct_ctrl.edit.id==''&&!struct_ctrl.edit.editstate" ng-click="struct_ctrl.toggleEdit('show','setting')"><i class="btn-action admin-btn-action7"></i>&nbsp;编辑</button>
+                <button type="button" class="btn btn-default g-c-blue3" ng-disabled="!struct_ctrl.edit.editstate" ng-click="struct_ctrl.toggleEdit('show','setting')"><i class="btn-action admin-btn-action7"></i>&nbsp;编辑</button>
             </h1>
 
             <!--下属机构-->
@@ -118,7 +118,7 @@
             <!--子菜单组件-->
             <ul class="sub-menu-wrap">
                 <li>
-                    <a class="sub-menu-title sub-menu-titleactive" data-parentid="" data-id=""  ng-click="struct_ctrl.rootSubMenu($event)">机构挂载点</a>
+                    <a class="sub-menu-title sub-menu-titleactive" data-parentid="" data-id="struct_ctrl.root.id" data-layer="0" data-label="struct_ctrl.root.orgname"  ng-click="struct_ctrl.rootSubMenu($event)">{{struct_ctrl.root.orgname}}</a>
                     <ul ng-init="struct_ctrl.initSubMenu()" ng-click="struct_ctrl.toggleSubMenu($event)" id="admin_struct_submenu" class="g-d-showi ui-sub-menu"></ul>
                 </li>
             </ul>
@@ -129,14 +129,13 @@
     <!--弹出层--提示操作界面-->
     <div>
         <!--机构设置-->
-        <div class="modal fade custom-width" id="struct_setting_dialog">
+        <!-- fade-->
+        <div class="modal custom-width g-d-showi" id="struct_setting_dialog">
             <div class="modal-dialog g-w-percent46">
                 <div class="modal-content">
                     <div class="modal-body">
-                        <div class="g-f-l g-w-percent34" ng-show="struct_ctrl.edit.powerstate" id="admin_struct_power">
-                            <div class="admin-layout-theme4 admin-theme-close g-t-c g-b-gray17 g-pos-r">选择权限
-                                <span class="mini-icon admin-mini-icon1"></span>
-                            </div>
+                        <div class="g-f-l g-w-percent34" ng-show="struct_ctrl.struct.isDesignatedPermit===1" id="admin_struct_power">
+                            <div class="admin-layout-theme4 admin-theme-close g-t-c g-b-gray17 g-pos-r">选择权限</div>
                             <table class="table table-bordered table-striped table-hover admin-layout-table">
                                 <colgroup>
                                     <col class="g-w-percent10"/>
@@ -215,7 +214,7 @@
                                 <span class="mini-icon admin-mini-icon1" ng-click="struct_ctrl.toggleEdit('hide','setting')"></span>
                             </div>
 
-                            <form role="form" novalidate method="post" id="admin_audit_form" class="admin-layout-form">
+                            <form ng-submit="struct_ctrl.structSubmit()" role="form" novalidate method="post" id="admin_struct_form" class="admin-layout-form">
                                 <div class="admin-layout-theme4"><span class="mini-icon admin-mini-icon2"></span>&nbsp;基本信息</div>
 
 
@@ -224,15 +223,15 @@
                                     <label class="self-label g-w-percent15 g-t-r"><span class="self-require g-c-red1">*</span>机构名称</label>
 
                                     <div class="self-input g-w-percent35">
-                                        <input type="text" name="jgmc" placeholder="请输入机构名称" data-validate="required" data-message-required="机构名称不能为空"  id="admin_jgmc" />
+                                        <input type="text" name="orgname" placeholder="请输入机构名称" required ng-model="struct_ctrl.setting.c_orgname"  />
                                     </div>
                                 </div>
 
                                 <div class="form-group-self1">
-                                    <label class="self-label g-w-percent15 g-t-r"><span class="self-require g-c-red1">*</span>上级机构</label>
+                                    <label class="self-label g-w-percent15 g-t-r">公司名称</label>
 
                                     <div class="self-input g-w-percent35">
-                                        <input type="text" name="sjjg" placeholder="请输入上级机构" data-validate="required" data-message-required="上级机构不能为空"  id="admin_sjjg" />
+                                        <input type="text" name="comname" placeholder="请输入公司名称" ng-model="struct_ctrl.struct.comname"  />
                                     </div>
                                 </div>
 
@@ -240,24 +239,29 @@
                                     <label class="self-label g-w-percent15 g-t-r"><span class="self-require g-c-red1">*</span>负责人</label>
 
                                     <div class="self-input g-w-percent35">
-                                        <input type="text" name="fzr" placeholder="请输入负责人" data-validate="required" data-message-required="负责人不能为空"  id="admin_frz" />
+                                        <input type="text" name="linkman" placeholder="请输入负责人" required  ng-model="struct_ctrl.struct.linkman"  />
                                     </div>
                                 </div>
 
                                 <div class="form-group-self1">
-                                    <label class="self-label g-w-percent15 g-t-r"><span class="self-require g-c-red1">*</span>负责人手机</label>
+                                    <label class="self-label g-w-percent15 g-t-r"><span class="self-require g-c-red1">*</span>手机号码</label>
 
                                     <div class="self-input g-w-percent35">
-                                        <input type="text" name="fzrsj" placeholder="请输入负责人手机" data-validate="required" data-message-required="负责人手机不能为空"  id="admin_frzsj" />
+                                        <input type="text" name="cellphone" required  placeholder="请输入手机号码" maxlength="13"  ng-model="struct_ctrl.struct.cellphone" class="ui-mobile-phone"  />
                                     </div>
                                 </div>
 
                                 <div class="form-group-self1">
                                     <label class="self-label g-w-percent15 g-t-r"><span class="self-require g-c-red1">*</span>联系地址</label>
                                     <div class="self-input g-w-percent35">
-                                        <select class="g-w-percent15 g-gap-mr1" name="sheng" data-validate="required" data-message-required="联系地址省不能为空"  id="admin_sheng"></select>
-                                        <select class="g-w-percent15 g-gap-mr1" name="shi" data-validate="required" data-message-required="联系地址市不能为空"  id="admin_shi"></select>
-                                        <select class="g-w-percent15" name="xian" data-validate="required" data-message-required="联系地址县不能为空"  id="admin_xian"></select>
+                                        <input type="text" name="address" required  placeholder="请输入联系地址" ng-model="struct_ctrl.struct.address" />
+                                    </div>
+                                </div>
+
+                                <div class="form-group-self1">
+                                    <label class="self-label g-w-percent15 g-t-r">运营地区</label>
+                                    <div class="self-input g-w-percent35">
+                                        <input type="text" name="operationArea" placeholder="请输入运营地区" ng-model="struct_ctrl.struct.operationArea" />
                                     </div>
                                 </div>
 
@@ -265,47 +269,53 @@
                                     <label class="self-label g-w-percent15 g-v-t g-t-r">备注</label>
 
                                     <div class="self-input g-w-percent35">
-                                        <textarea name="fzrsj" id="admin_bz"></textarea>
+                                        <textarea ng-model="struct_ctrl.struct.remark" name="remark" ></textarea>
                                     </div>
                                 </div>
 
                                 <div class="admin-layout-theme4"><span class="mini-icon admin-mini-icon3"></span>&nbsp;登陆信息</div>
 
                                 <div class="form-group-self1">
-                                    <label class="self-label g-w-percent50"><input type="checkbox" id="admin_szmm" name="szmm">&nbsp;设置登录名与密码</label>
+                                    <label class="self-label g-w-percent50"><input type="checkbox"  ng-model="struct_ctrl.struct.isSettingLogin" ng-init="struct_ctrl.struct.isSettingLogin=1" ng-checked="struct_ctrl.struct.isSettingLogin" ng-true-value="1" ng-false-value="0" name="isSettingLogin">&nbsp;设置登录名与密码</label>
                                 </div>
 
-                                <div class="form-group-self1">
-                                    <label class="self-label g-w-percent15 g-t-r"><span class="self-require g-c-red1">*</span>登陆用户名</label>
+                                <div ng-show="struct_ctrl.struct.isSettingLogin===1">
+                                    <div class="form-group-self1">
+                                        <label class="self-label g-w-percent15 g-t-r"><span class="self-require g-c-red1">*</span>登陆用户名</label>
 
-                                    <div class="self-input g-w-percent35">
-                                        <input type="text" name="yhm" placeholder="请输入登陆用户名" data-validate="required" data-message-required="登陆用户名不能为空"  id="admin_yhm" />
+                                        <div class="self-input g-w-percent35">
+                                            <input type="text" ng-required="struct_ctrl.struct.isSettingLogin===1" ng-model="struct_ctrl.struct.username"  name="username"  placeholder="请输入登陆用户名" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group-self1">
+                                        <label class="self-label g-w-percent15 g-t-r"><span class="self-require g-c-red1">*</span>登陆密码</label>
+
+                                        <div class="self-input g-w-percent35">
+                                            <input type="password" ng-required="struct_ctrl.struct.isSettingLogin===1" ng-minlength="6" minlength="6" ng-model="struct_ctrl.struct.password"  name="password" placeholder="请输入登陆密码"   />
+                                        </div>
                                     </div>
                                 </div>
 
-                                <div class="form-group-self1">
-                                    <label class="self-label g-w-percent15 g-t-r"><span class="self-require g-c-red1">*</span>登陆密码</label>
 
-                                    <div class="self-input g-w-percent35">
-                                        <input type="password" name="mm" placeholder="请输入登陆密码" data-validate="required" data-message-required="登陆密码不能为空"  id="admin_mm" />
-                                    </div>
-                                </div>
 
                                 <div class="admin-layout-theme4"><span class="mini-icon admin-mini-icon4"></span>&nbsp;权限设定</div>
 
                                 <div class="form-group-self1">
-                                    <label class="self-label"><input type="checkbox" id="admin_qbqx" name="qx">&nbsp;全部权限</label>
-                                    <label class="self-label"><input type="checkbox" id="admin_zdqx" name="qx">&nbsp;指定权限</label>
+                                    <label class="self-label"><input type="checkbox" ng-model="struct_ctrl.struct.isDesignatedPermit" ng-init="struct_ctrl.struct.isDesignatedPermit=1" ng-true-value="1" ng-false-value="0" name="isDesignatedPermit">&nbsp;指定权限</label>
                                 </div>
 
-                                <div class="form-group-self1 g-t-r">
-                                    <div class="self-input g-w-percent45">
-                                        <input type="text" name="yxqx" id="admin_yxqx" />
+                                <div ng-show="struct_ctrl.struct.isDesignatedPermit===1">
+                                    <div class="form-group-self1 g-t-r">
+                                        <div class="self-input g-w-percent45">
+                                            <input type="text" ng-model="struct_ctrl.struct.checkedFunctionIds" ng-required="struct_ctrl.struct.isDesignatedPermit===1"  name="checkedFunctionIds" readonly />
+                                        </div>
                                     </div>
                                 </div>
 
+
                                 <div class="form-group-self1">
                                     <button type="submit" class="btn btn-red g-br3 g-w-percent50">保存</button>
+                                    <button type="reset" class="g-d-hidei" ng-click="struct_ctrl.structReset()"></button>
                                 </div>
                             </form>
                         </div>
