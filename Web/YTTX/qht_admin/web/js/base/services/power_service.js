@@ -1,21 +1,32 @@
 /*权限列表服务*/
 'use strict';
 angular.module('app')
-	.service('powerService',['toolUtil','toolDialog','BASE_CONFIG',function (toolUtil,toolDialog,BASE_CONFIG) {
+	.service('powerService',['toolUtil','toolDialog','BASE_CONFIG','loginService',function (toolUtil,toolDialog,BASE_CONFIG,loginService) {
 		/*获取缓存数据*/
-		var cache=toolUtil.getParams(BASE_CONFIG.unique_key),
+		var cache=loginService.getCache(),
+			powerCache=$.extend(true,{},cache['powerMap']),
 			self=this;
 
 
 
 		/*生成头*/
-		this.createHeader=function (wrap) {
+		this.createHeader=function () {
 			var header/*头*/,
 				colgroup/*分组*/;
 
+
 			var poweritem=toolUtil.getAllPower();
 
-			
+			if(poweritem){
+				var powermap,
+					str='',
+					res=[];
+
+
+
+			}else{
+				colgroup='<col class="g-w-percent50" />';
+			}
 		};
 
 

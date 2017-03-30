@@ -2,7 +2,7 @@ angular.module('app')
     .service('structService',['toolUtil','toolDialog','BASE_CONFIG','loginService',function(toolUtil,toolDialog,BASE_CONFIG,loginService){
 
         /*获取缓存数据*/
-        var cache=toolUtil.getParams(BASE_CONFIG.unique_key),
+        var cache=loginService.getCache(),
             $admin_struct_submenu=$('#admin_struct_submenu'),
             $admin_struct_list=$('#admin_struct_list'),
             $struct_setting_dialog=$('#struct_setting_dialog'),

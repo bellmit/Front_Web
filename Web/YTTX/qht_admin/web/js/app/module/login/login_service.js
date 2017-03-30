@@ -243,4 +243,8 @@ angular.module('login.service',[])
             cache=null;
             menudata=null;
         };
+        /*获取已经存在的缓存*/
+        this.getCache=function () {
+          return cache;
+        };
     }]);

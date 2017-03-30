@@ -922,6 +922,7 @@
 					power[mid]={
 						id:mid,
 						code:mcode,
+						module:menu_map[mlink]||mlink,
 						power:mpower
 					};
 
@@ -934,7 +935,7 @@
 				}
 				return {
 					menu:menu,
-					power:menu,
+					power:power,
 					module:module,
 					list:list
 				}
@@ -952,6 +953,8 @@
 			}
 			return list.length===0?null:list;
 		};
+
+
 		//处理菜单(inject:为注入对象)
 		tools.doSideMenu=function(data,$menu,$wrap,inject){
 			var self=this,
@@ -1260,7 +1263,7 @@
 			}
 		};
 		/*处理权限*/
-		tools.handlePower=function(data,flag){
+		tools.handlePower=function(data){
 			var self=this;
 			/*
 			 * data:数据源
@@ -1298,136 +1301,134 @@
 				result=$.extend(true,{},modid_map);
 			}
 			/*然后存入缓存*/
-			if(flag){
-				self.powerMap=$.extend(true,{},result);
-				self.setParams('power_module',result);
-			}else{
-				return result;
-			}
+			return result;
 		};
-		//根据模块判断拥有的权限
-		tools.getPower=function(key){
-			var self=this,
-				havepower=$.isEmptyObject(self.powerMap);
 
-			if(havepower){
-				/*没有获取到权限*/
+
+		//根据模块判断拥有的权限(拥有的权限)
+		tools.getPowerListByModule=function(key,cache){
+			if(typeof key==='undefined'||!cache){
+				/*没有缓存数据或者索引不存在*/
 				return null;
 			}else{
-				var path,
-					module,
-					currentpower,
-					menumap=self.menuMap,
-					modid;
-				if(typeof key!=='undefined'){
-					modid=key;
-				}else{
-					path=self.routeMap.path;
-					module=self.routeMap.module;
-					if(module==''&&module=='account'){
-						return null;
-					}
-					for(var i in menumap){
-						if(path.indexOf(menumap[i].match)!==-1){
-							modid=i;
+				/*查找权限*/
+				var currentpower=null;
+				for(var i in cache){
+					/*过滤首页*/
+					if(i!==0){
+						if(key===cache[i]['module']){
+							/*匹配模块关键字,返回匹配到的权限数组*/
+							currentpower=cache[i]['power'];
 							break;
 						}
 					}
 				}
 
-				currentpower= $.extend(true,{},self.powerMap[modid]);
-				for(var j in currentpower){
-					if(currentpower[j].isPermit===0){
-						delete currentpower[j];
+				if(currentpower!==null){
+					var len=currentpower.length;
+					if(len===0){
+						/*权限为空*/
+						return null;
+					}else{
+						var result=[],
+							j=0;
+						for(j;j<len;j++){
+							var temppower=currentpower[j];
+							if(temppower['isPermit']===1){
+								/*过滤没有的权限*/
+								result.push(temppower);
+							}
+						}
+						currentpower=null;
+						if(result.length===0){
+							result=null;
+						}
+						return result;
 					}
 				}
-				return currentpower;
 			}
-			return null;
 		};
 		//根据关键词判断权限
-		tools.getKeyPower=function(key,list){
+		tools.isPower=function(key,list){
 			if(!key||!list){
 				return false;
 			}
-			var ispower=false;
-			for(var i in list){
-				if(list[i]['funcCode']===key||list[i]['funcCode'].indexOf(key)!==-1){
-					ispower=true;
-					break;
-				}else if(list[i]['funcName']===key||list[i]['funcName'].indexOf(key)!==-1){
-					ispower=true;
-					break;
-				}
+			var ispower=false,
+				i=0,
+				len=list.length;
 
+			if(len===0){
+				ispower=false;
+			}else{
+				for(i;i<len;i++){
+					if(list[i]['funcCode']===key||list[i]['funcCode'].indexOf(key)!==-1){
+						ispower=true;
+						break;
+					}else if(list[i]['funcName']===key||list[i]['funcName'].indexOf(key)!==-1){
+						ispower=true;
+						break;
+					}
+				}
 			}
 			return ispower;
 		};
-		//根据模块判断拥有的权限
-		tools.getAllPower=function(){
-			var self=this,
-				havepower=$.isEmptyObject(self.powerMap);
-
-			if(havepower){
-				/*没有获取到权限*/
+		/*获取所以权限列表(拥有的和不拥有的)*/
+		tools.getAllPowerList=function (cache) {
+			if(!cache){
+				/*没有缓存数据或者索引不存在*/
 				return null;
 			}else{
-				var module=self.routeMap.module;
+				/*查找权限*/
+				var currentpower={};
+				for(var i in cache){
+					/*过滤首页*/
+					if(i!==0){
+						/*匹配模块关键字,返回匹配到的权限数组*/
+						currentpower=cache[i]['power'];
+						break;
+					}
+				}
 
-				if(module==''&&module=='account'){
-					return null;
-				}
-				var currentpower= $.extend(true,{},self.powerMap);
-				for(var i in currentpower){
-					var temppower=currentpower[i];
-					for(var j in temppower){
-						if(temppower[j].isPermit===0){
-							delete temppower[j];
+				if(currentpower!==null){
+					var len=currentpower.length;
+					if(len===0){
+						/*权限为空*/
+						return null;
+					}else{
+						var result=[],
+							j=0;
+						for(j;j<len;j++){
+							var temppower=currentpower[j];
+							if(temppower['isPermit']===1){
+								/*过滤没有的权限*/
+								result.push(temppower);
+							}
 						}
+						currentpower=null;
+						if(result.length===0){
+							result=null;
+						}
+						return result;
 					}
 				}
-				return currentpower;
 			}
-			return null;
 		};
-		/*判断权限是否获取正确*/
-		tools.isRealPower=function(o1,o2) {
-			if ( o1=== o2) {
-				return true;
+		//根据模块判断拥有的权限
+		tools.getAllPower=function(cache){
+			if(!cache){
+				return null;
 			}
-			if ( ! ( o1 instanceof Object ) || ! ( o2 instanceof Object ) ) {
-				return false;
-			}
-			if ( o1.constructor !== o2.constructor ) {
-				return false;
-			}
-			for ( var p in o1 ) {
-				if ( o1.hasOwnProperty( p ) ) {
-					if ( ! o2.hasOwnProperty( p ) ) {
-						return false;
-					}
-					if ( o1[ p ] === o2[ p ] ) {
-						continue;
-					}
-					if ( typeof( o1[ p ] ) !== "undefined" ) {
-						return false;
+
+			var currentpower= $.extend(true,{},self.powerMap);
+			for(var i in currentpower){
+				var temppower=currentpower[i];
+				for(var j in temppower){
+					if(temppower[j].isPermit===0){
+						delete temppower[j];
 					}
 				}
 			}
-			for (var  m in o2 ) {
-				if ( o2.hasOwnProperty( m ) ) {
-					if ( ! o1.hasOwnProperty( m ) ) {
-						return false;
-					}
-					if ( o1[ m ] === o2[ m ] ) {
-						continue;
-					}
-					if ( typeof( o2[ m ] ) !== "undefined" ) {
-						return false;
-					}
-				}
-			}
-			return true;
+			return currentpower;
 		};
 
 
