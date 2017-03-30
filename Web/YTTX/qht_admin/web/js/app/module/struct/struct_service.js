@@ -541,6 +541,7 @@ angular.module('app')
         this.structSubmit=function () {
 
         };
+        
 
 
         

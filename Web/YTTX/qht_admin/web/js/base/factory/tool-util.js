@@ -885,6 +885,8 @@
 					power[0]={
 						id:0,
 						code:'app',
+						name:'首页',
+						module:'app',
 						power:0
 					};
 
@@ -892,6 +894,7 @@
 					module[0]={
 						id:0,
 						code:'app',
+						name:'首页',
 						module:'app'
 					};
 				}
@@ -922,6 +925,7 @@
 					power[mid]={
 						id:mid,
 						code:mcode,
+						name:mname,
 						module:menu_map[mlink]||mlink,
 						power:mpower
 					};
@@ -930,6 +934,7 @@
 					module[mid]={
 						id:mid,
 						code:mcode,
+						name:mname,
 						module:menu_map[mlink]||mlink
 					};
 				}
@@ -1315,6 +1320,7 @@
 				var currentpower=null;
 				for(var i in cache){
 					/*过滤首页*/
+					i=parseInt(i,10);
 					if(i!==0){
 						if(key===cache[i]['module']){
 							/*匹配模块关键字,返回匹配到的权限数组*/
@@ -1382,35 +1388,16 @@
 				var currentpower={};
 				for(var i in cache){
 					/*过滤首页*/
+					i=parseInt(i,10);
 					if(i!==0){
 						/*匹配模块关键字,返回匹配到的权限数组*/
-						currentpower=cache[i]['power'];
-						break;
+						currentpower[i]=cache[i];
 					}
 				}
-
-				if(currentpower!==null){
-					var len=currentpower.length;
-					if(len===0){
-						/*权限为空*/
-						return null;
-					}else{
-						var result=[],
-							j=0;
-						for(j;j<len;j++){
-							var temppower=currentpower[j];
-							if(temppower['isPermit']===1){
-								/*过滤没有的权限*/
-								result.push(temppower);
-							}
-						}
-						currentpower=null;
-						if(result.length===0){
-							result=null;
-						}
-						return result;
-					}
+				if($.isEmptyObject(currentpower)){
+					return null;
 				}
+				return currentpower;
 			}
 		};
 		//根据模块判断拥有的权限

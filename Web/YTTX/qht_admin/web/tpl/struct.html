@@ -137,65 +137,18 @@
                         <div class="g-f-l g-w-percent34" ng-show="struct_ctrl.struct.isDesignatedPermit===1" id="admin_struct_power">
                             <div class="admin-layout-theme4 admin-theme-close g-t-c g-b-gray17 g-pos-r">选择权限</div>
                             <table class="table table-bordered table-striped table-hover admin-layout-table">
-                                <colgroup>
-                                    <col class="g-w-percent10"/>
-                                    <col class="g-w-percent10"/>
-                                    <col class="g-w-percent10"/>
-                                    <col class="g-w-percent10"/>
-                                    <col class="g-w-percent10"/>
-                                </colgroup>
-                                <thead>
-                                <tr>
-                                    <th><label><input type="checkbox" name="qx1" />权限1</label></th>
-                                    <th><label><input type="checkbox" name="qx2" />权限2</label></th>
-                                    <th><label><input type="checkbox" name="qx3" />权限3</label></th>
-                                    <th><label><input type="checkbox" name="qx4" />权限4</label></th>
-                                    <th><label><input type="checkbox" name="qx5" />权限5</label></th>
-                                </tr>
-                                </thead>
+                                <colgroup ng-bind-html="struct_ctrl.power.colgroup"></colgroup>
+                                <thead ng-bind-html="struct_ctrl.power.thead"></thead>
+
+
                                 <tbody>
-                                <tr>
+                                <!--<tr>
                                     <td><label><input type="checkbox" name="qx1" />权限设置1</label></td>
                                     <td><label><input type="checkbox" name="qx2" />权限设置2</label></td>
                                     <td><label><input type="checkbox" name="qx3" />权限设置3</label></td>
                                     <td><label><input type="checkbox" name="qx4" />权限设置4</label></td>
                                     <td><label><input type="checkbox" name="qx5" />权限设置5</label></td>
-                                </tr>
-                                <tr>
-                                    <td><label><input type="checkbox" name="qx1" />权限设置1</label></td>
-                                    <td><label><input type="checkbox" name="qx2" />权限设置2</label></td>
-                                    <td><label><input type="checkbox" name="qx3" />权限设置3</label></td>
-                                    <td><label><input type="checkbox" name="qx4" />权限设置4</label></td>
-                                    <td><label><input type="checkbox" name="qx5" />权限设置5</label></td>
-                                </tr>
-                                <tr>
-                                    <td><label><input type="checkbox" name="qx1" />权限设置1</label></td>
-                                    <td><label><input type="checkbox" name="qx2" />权限设置2</label></td>
-                                    <td><label><input type="checkbox" name="qx3" />权限设置3</label></td>
-                                    <td><label><input type="checkbox" name="qx4" />权限设置4</label></td>
-                                    <td><label><input type="checkbox" name="qx5" />权限设置5</label></td>
-                                </tr>
-                                <tr>
-                                    <td><label><input type="checkbox" name="qx1" />权限设置1</label></td>
-                                    <td><label><input type="checkbox" name="qx2" />权限设置2</label></td>
-                                    <td><label><input type="checkbox" name="qx3" />权限设置3</label></td>
-                                    <td><label><input type="checkbox" name="qx4" />权限设置4</label></td>
-                                    <td><label><input type="checkbox" name="qx5" />权限设置5</label></td>
-                                </tr>
-                                <tr>
-                                    <td><label><input type="checkbox" name="qx1" />权限设置1</label></td>
-                                    <td><label><input type="checkbox" name="qx2" />权限设置2</label></td>
-                                    <td><label><input type="checkbox" name="qx3" />权限设置3</label></td>
-                                    <td><label><input type="checkbox" name="qx4" />权限设置4</label></td>
-                                    <td><label><input type="checkbox" name="qx5" />权限设置5</label></td>
-                                </tr>
-                                <tr>
-                                    <td><label><input type="checkbox" name="qx1" />权限设置1</label></td>
-                                    <td><label><input type="checkbox" name="qx2" />权限设置2</label></td>
-                                    <td><label><input type="checkbox" name="qx3" />权限设置3</label></td>
-                                    <td><label><input type="checkbox" name="qx4" />权限设置4</label></td>
-                                    <td><label><input type="checkbox" name="qx5" />权限设置5</label></td>
-                                </tr>
+                                </tr>-->
                                 </tbody>
                             </table>
                             <div class="row">

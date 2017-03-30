@@ -1,6 +1,6 @@
 /*首页控制器*/
 angular.module('app')
-    .controller('StructController', ['structService','toolDialog',function(structService,toolDialog){
+    .controller('StructController', ['structService','powerService','toolDialog','$sce',function(structService,powerService,toolDialog,$sce){
         var self=this;
 
         /*模型--tab选项卡*/
@@ -17,6 +17,15 @@ angular.module('app')
 
         /*模型--虚拟挂载点*/
         this.root=structService.getRoot();
+
+        /*模型--权限头部*/
+        var p_thead=powerService.createThead({
+            flag:true
+        });
+        this.power={
+            colgroup:$sce.trustAsHtml(p_thead.colgroup),
+            thead:$sce.trustAsHtml(p_thead.thead)
+        };
 
         /*模型--搜索*/
         this.search={
