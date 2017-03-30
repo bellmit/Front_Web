@@ -21,10 +21,14 @@ angular.module('app')
         /*模型--权限头部*/
         var p_thead=powerService.createThead({
             flag:true
-        });
+        }),
+            p_tbody=powerService.createTbody({
+                flag:true
+            });
         this.power={
             colgroup:$sce.trustAsHtml(p_thead.colgroup),
-            thead:$sce.trustAsHtml(p_thead.thead)
+            thead:$sce.trustAsHtml(p_thead.thead),
+            tbody:$sce.trustAsHtml(p_tbody.tbody)
         };
 
         /*模型--搜索*/
