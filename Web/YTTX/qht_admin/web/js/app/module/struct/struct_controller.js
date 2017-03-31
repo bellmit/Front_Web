@@ -21,14 +21,13 @@ angular.module('app')
         /*模型--权限头部*/
         var p_thead=powerService.createThead({
             flag:true
-        }),
-            p_tbody=powerService.createTbody({
-                flag:true
-            });
+        });
         this.power={
             colgroup:$sce.trustAsHtml(p_thead.colgroup),
             thead:$sce.trustAsHtml(p_thead.thead),
-            tbody:$sce.trustAsHtml(p_tbody.tbody)
+            tbody:$sce.trustAsHtml(powerService.resolvePowerList({
+                clear:true
+            }))
         };
 
         /*模型--搜索*/
@@ -84,6 +83,7 @@ angular.module('app')
             this.setting.id=this.root.id;
             this.setting.orgname=this.root.orgname;
 
+
             /*搜索过滤*/
             this.searchAction=function (e) {
                 var kcode=window.event?e.keyCode:e.which;
@@ -106,6 +106,7 @@ angular.module('app')
                 self.search.orgname='';
                 self.search.searchactive='';
             };
+
 
             /*初始化子菜单加载*/
             this.initSubMenu=function () {
@@ -245,6 +246,7 @@ angular.module('app')
 
             };
 
+
             /*跳转到虚拟挂载点*/
             this.rootSubMenu=function (e) {
                 var $this=$(e.target),
@@ -363,6 +365,7 @@ angular.module('app')
                 structService.addSubStruct(this.setting);
             };
 
+
             /*切换编辑状态*/
             this.toggleEdit=function (type,module) {
                 structService.toggleModal({
@@ -370,27 +373,74 @@ angular.module('app')
                     module:module
                 });
             };
-
             /*表单重置*/
-            this.structReset=function (){
+            this.aaa=function () {
+                var forms=angular.element('#admin_struct_form');
+                this.structReset(forms);
+            };
+            this.structReset=function (forms){
                 /*重置机构数据模型*/
-                var tempstruct=self.struct;
+                /*var tempstruct=self.struct;
                 for(var i in tempstruct){
                     if(i==='isSettingLogin'){
-                        /*是否设置登录名*/
+                        /!*是否设置登录名*!/
                         tempstruct[i]=1;
                     }else if(i==='isDesignatedPermit'){
-                        /*是否指定权限*/
+                        /!*是否指定权限*!/
                         tempstruct[i]=1;
                     }else{
                         tempstruct[i]='';
                     }
-                }
+                }*/
+
+                /*重置验证提示信息*/
+
+                if(forms){
+                     var temp_cont=forms.$$controls;
+                    if(temp_cont){
+                        var len=temp_cont.length,
+                            i=0;
+                        forms.$dirty=false;
+                        forms.$invalid=true;
+                        forms.$pristine=true;
+                        forms.valid=false;
+
+                        if(len!==0){
+                            for(i;i<len;i++){
+                                var temp_item=temp_cont[i];
+                                temp_item['$dirty']=false;
+                                temp_item['$invalid']=true;
+                                temp_item['$pristine']=true;
+                                temp_item['$valid']=false;
+                            }
+                        }
+                    }
+                 }
+                /*重置权限信息*/
+                /*this.clearSelectPower();*/
             };
-            
             /*提交表单*/
             this.structSubmit=function () {
 
+            };
+
+
+            /*全选权限*/
+            this.selectAllPower=function (e) {
+                powerService.selectAllPower(e);
+            };
+            /*确定所选权限*/
+            this.getSelectPower=function () {
+                var temppower=powerService.getSelectPower();
+                if(temppower){
+                    this.struct.checkedFunctionIds=JSON.stringify(temppower);
+                }else{
+                   this.struct.checkedFunctionIds='';
+                }
+            };
+            /*取消所选权限*/
+            this.clearSelectPower=function () {
+                powerService.clearSelectPower();
             };
             
             

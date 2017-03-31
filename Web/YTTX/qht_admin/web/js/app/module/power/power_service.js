@@ -10,7 +10,8 @@ angular.module('power.service',[])
 			h_items=[],
 			colgroup=''/*分组*/,
 			thead=''/*普通的头*/,
-			all_thead=''/*拥有全选的头*/;
+			all_thead=''/*拥有全选的头*/,
+			$admin_struct_allpower=$('#admin_struct_allpower');
 
 		/*初始化执行*/
 		(function () {
@@ -21,12 +22,14 @@ angular.module('power.service',[])
 
 			if(allpower){
 				var str='',
-					strall='';
+					strall='',
+					index=0;
 
 				for(var i in allpower){
 					h_items.push(i);
-					strall+='<th><label><input data-ispermit="0" data-type="select_all" data-modid="'+allpower[i]["id"]+'" type="checkbox" name="'+allpower[i]["module"]+'" />&nbsp;'+allpower[i]["name"]+'</label></th>';
-					str+='<th>'+allpower[i]["name"]+'</th>';
+					strall+='<th class="g-t-c"><label><input data-index="'+index+'" data-modid="'+allpower[i]["id"]+'" type="checkbox" name="'+allpower[i]["module"]+'" />&nbsp;'+allpower[i]["name"]+'</label></th>';
+					str+='<th data-index="'+index+'" class="g-t-c">'+allpower[i]["name"]+'</th>';
+					index++;
 				}
 
 				if(h_items.length!==0){
@@ -82,7 +85,7 @@ angular.module('power.service',[])
 			}
 		};
 
-		/*请求权限列表*/
+		/*请求权限列表(主要是根据不同对象查询相关权限)*/
 		this.reqPowerList=function (config) {
 			/**/
 			/*请求权限*/
@@ -128,7 +131,7 @@ angular.module('power.service',[])
 											var len=menu.length;
 											if(len===0){
 												if(config.modul){
-													modul['body']='<tr><td class="g-c-gray9 g-fs4 g-t-c">没有查询到权限信息</td></tr>';
+													modul['body']='<tr><td class="g-c-gray9 g-fs4 g-t-c g-b-white">没有查询到权限信息</td></tr>';
 												}
 											}else{
 												/*数据集合，最多嵌套层次*/
@@ -139,23 +142,13 @@ angular.module('power.service',[])
 											}
 										}else{
 											/*填充子数据到操作区域,同时显示相关操作按钮*/
-											body='<tr><td class="g-c-gray9 g-fs4 g-t-c">没有查询到权限信息</td></tr>';
 											if(config.modul){
-												if(config.flag){
-													modul['body']=all_body;
-												}else{
-													modul['body']=body;
-												}
+												modul['body']='<tr><td class="g-c-gray9 g-fs4 g-t-c g-b-white">没有查询到权限信息</td></tr>';
 											}
 										}
 									}else{
-										body='<tr><td class="g-c-gray9 g-fs4 g-t-c">没有查询到权限信息</td></tr>';
 										if(config.modul){
-											if(config.flag){
-												modul['body']=all_body;
-											}else{
-												modul['body']=body;
-											}
+											modul['body']='<tr><td class="g-c-gray9 g-fs4 g-t-c g-b-white">没有查询到权限信息</td></tr>';
 										}
 									}
 								}
@@ -168,13 +161,8 @@ angular.module('power.service',[])
 							}else{
 								console.log('请求权限失败');
 							}
-							body='<tr><td class="g-c-gray9 g-fs4 g-t-c">没有查询到权限信息</td></tr>';
 							if(config.modul){
-								if(config.flag){
-									modul['body']=all_body;
-								}else{
-									modul['body']=body;
-								}
+								modul['body']='<tr><td class="g-c-gray9 g-fs4 g-t-c g-b-white">没有查询到权限信息</td></tr>';
 							}
 						});
 			}else{
@@ -185,75 +173,164 @@ angular.module('power.service',[])
 					reload:true
 				});
 			}
-			if(config){
-
-			}else{
-				body='<tr><td class="g-c-gray9 g-fs4 g-t-c">没有查询到权限信息</td></tr>';
-			}
 		};
+
 		/*解析权限列表*/
-		this.resolvePower=function (config) {
+		this.resolvePowerList=function (config) {
 			/*解析数据*/
 			var len=h_items.length,
 				i= 0,
 				str='',
-				allstr='',
-				type=(config&&config.menu)?true:false;
+				ispermit,
+				request=(config&&config.menu)?true:false;
 
 			if(len===0){
-				str='<tr><td class="g-c-gray9 g-fs4 g-t-c">没有查询到权限信息</td></tr>';
-				allstr='<tr><td class="g-c-gray9 g-fs4 g-t-c">没有查询到权限信息</td></tr>';
+				str='<tr><td class="g-c-gray9 g-fs4 g-t-c g-b-white">没有查询到权限信息</td></tr>';
 			}else{
+				if(request){
+					var menuitem=config.menu;
+				}
 				for(i;i<len;i++){
 					var index=parseInt(h_items[i],10);
-					str+="<td>";
-					allstr+="<td>";
-					var item=type?config.menu:allpower[index],
+					str+='<td class="g-b-white">';
+					var item=request?menuitem[index]:allpower[index],
 						power=item['power'],
 						j=0,
 						sublen=power.length;
 
 					for(j;j<sublen;j++){
-						var subitem=power[j],
-							ispermit=parseInt(subitem["isPermit"],10);
-						if(type){
-							if(config.clear){
+						var subitem=power[j];
 
+						if(request){
+							/*如果是请求*/
+							if(config.clear){
+								/*全不选*/
+								str+='<label class="btn btn-default g-gap-mb2 g-gap-mr2"><input data-roleid="'+config.id+'" data-prid="'+subitem["prid"]+'" data-modid="'+subitem["modId"]+'" type="checkbox" name="'+item["module"]+'" />&nbsp;'+subitem["funcName"]+'</label>';
 							}else{
+								/*根据设置或者配置结果来*/
+								ispermit=parseInt(subitem["isPermit"],10);
 								if(ispermit===0){
 									/*没有权限*/
-									str+='<span data-roleid="'+config.id+'" data-prid="'+subitem["prid"]+'" data-modid="'+subitem["modId"]+'" data-ispermit="0" class="">'+subitem["funcName"]+'</span>';
-									allstr+='<label class="btn btn-white g-w-percent48"><input data-roleid="'+config.id+'" data-prid="'+subitem["prid"]+'" data-modid="'+subitem["modId"]+'" data-ispermit="0" type="checkbox" name="'+item["module"]+'" />&nbsp;'+subitem["funcName"]+'</label>';
+									str+='<label class="btn btn-default g-gap-mb2 g-gap-mr2"><input data-roleid="'+config.id+'" data-prid="'+subitem["prid"]+'" data-modid="'+subitem["modId"]+'" type="checkbox" name="'+item["module"]+'" />&nbsp;'+subitem["funcName"]+'</label>';
 								}else if(ispermit===1){
 									/*有权限*/
-									str+='<span data-roleid="'+config.id+'" data-prid="'+subitem["prid"]+'" data-modid="'+subitem["modId"]+'" data-ispermit="1" class="setting_active">'+subitem["funcName"]+'</span>';
-									allstr+='<label class="btn btn-white g-w-percent48"><input data-roleid="'+config.id+'" data-prid="'+subitem["prid"]+'" data-modid="'+subitem["modId"]+'" data-ispermit="1" checked type="checkbox" name="'+item["module"]+'" />&nbsp;'+subitem["funcName"]+'</label>';
+									str+='<label class="btn btn-default g-gap-mb2 g-gap-mr2"><input data-roleid="'+config.id+'" data-prid="'+subitem["prid"]+'" data-modid="'+subitem["modId"]+'" checked type="checkbox" name="'+item["module"]+'" />&nbsp;'+subitem["funcName"]+'</label>';
 								}
 							}
 						}else{
+							/*非请求*/
 							if(config.clear){
-								str+='<span data-prid="'+subitem["prid"]+'" data-modid="'+subitem["modId"]+'" data-ispermit="0" class="">'+subitem["funcName"]+'</span>';
-								allstr+='<label class="btn btn-white g-w-percent48"><input data-prid="'+subitem["prid"]+'" data-modid="'+subitem["modId"]+'" data-ispermit="0" type="checkbox" name="'+item["module"]+'" />&nbsp;'+subitem["funcName"]+'</label>';
+								/*全不选*/
+								str+='<label class="btn btn-default g-gap-mb2 g-gap-mr2"><input data-prid="'+subitem["prid"]+'" data-modid="'+subitem["modId"]+'" type="checkbox" name="'+item["module"]+'" />&nbsp;'+subitem["funcName"]+'</label>';
 							}else{
+								/*根据设置或者配置结果来*/
+								ispermit=parseInt(subitem["isPermit"],10);
 								if(ispermit===0){
 									/*没有权限*/
-									str+='<span data-prid="'+subitem["prid"]+'" data-modid="'+subitem["modId"]+'" data-ispermit="0" class="">'+subitem["funcName"]+'</span>';
-									allstr+='<label class="btn btn-white g-w-percent48"><input data-prid="'+subitem["prid"]+'" data-modid="'+subitem["modId"]+'" data-ispermit="0" type="checkbox" name="'+item["module"]+'" />&nbsp;'+subitem["funcName"]+'</label>';
+									str+='<label class="btn btn-default g-gap-mb2 g-gap-mr2"><input data-prid="'+subitem["prid"]+'" data-modid="'+subitem["modId"]+'" type="checkbox" name="'+item["module"]+'" />&nbsp;'+subitem["funcName"]+'</label>';
 								}else if(ispermit===1){
 									/*有权限*/
-									str+='<span data-prid="'+subitem["prid"]+'" data-modid="'+subitem["modId"]+'" data-ispermit="1" class="setting_active">'+subitem["funcName"]+'</span>';
-									allstr+='<label class="btn btn-white g-w-percent48"><input data-prid="'+subitem["prid"]+'" data-modid="'+subitem["modId"]+'" data-ispermit="1" checked type="checkbox" name="'+item["module"]+'" />&nbsp;'+subitem["funcName"]+'</label>';
+									str+='<label class="btn btn-default g-gap-mb2 g-gap-mr2"><input data-prid="'+subitem["prid"]+'" data-modid="'+subitem["modId"]+'" checked type="checkbox" name="'+item["module"]+'" />&nbsp;'+subitem["funcName"]+'</label>';
 								}
 							}
 						}
 
 					}
 					str+="</td>";
-					allstr+="</td>";
 				}
-				return {
-					body:'<tr>'+str+'</tr>',
-				}
+			}
+			return '<tr>'+str+'</tr>';
+		};
+
+		/*权限服务--全选权限*/
+		this.selectAllPower=function (e) {
+			e.stopPropagation();
+
+			var target=e.target,
+				nodename=target.nodeName.toLowerCase();
+
+			/*过滤*/
+			if(nodename==='tr'){
+				return null;
+			}
+
+			/*标签*/
+			var $selectall,
+				index,
+				$operate,
+				check,
+				selectarr=[];
+
+			if(nodename==='label'||nodename==='th'||nodename==='td'){
+				$selectall=$(target).find('input');
+			}else if(nodename==='input'){
+				$selectall=$(target);
+			}
+
+			check=$selectall.is(':checked');
+			index=$selectall.attr('data-index');
+			$operate=$admin_struct_allpower.find('td').eq(index).find('input');
+
+			if(check){
+				$operate.each(function () {
+					var $this=$(this),
+						prid=$this.attr('data-prid');
+					$this.prop({
+						"checked":true
+					});
+					selectarr.push(prid);
+				});
+			}else{
+				$operate.each(function () {
+					$(this).prop({
+						"checked":false
+					});
+				});
+				selectarr=null;
+			}
+			return selectarr;
+		};
+
+		/*权限服务--获取选中选择权限*/
+		this.getSelectPower=function (dom) {
+			var $input=typeof dom!=='undefined'?$(dom):$admin_struct_allpower.find('input:checked');
+
+			/*标签*/
+			var prid,
+				selectarr=[];
+
+			$input.each(function () {
+				var $this=$(this);
+
+				prid=$this.attr('data-prid');
+				selectarr.push(prid);
+			});
+			return selectarr.length===0?null:selectarr;
+		};
+
+		/*权限服务--清除选中选择权限*/
+		this.clearSelectPower=function (dom) {
+			var $input,
+				$head;
+			if(typeof dom!=='undefined'){
+				$input=$(dom);
+			}else{
+				$input=$admin_struct_allpower.find('input:checked');
+			}
+			$head=$admin_struct_allpower.prev('thead').find('input:checked');
+
+			$input.each(function () {
+				$(this).prop({
+					'checked':false
+				});
+			});
+
+			if($head){
+				$head.each(function () {
+					$(this).prop({
+						'checked':false
+					});
+				});
 			}
 		}
 
