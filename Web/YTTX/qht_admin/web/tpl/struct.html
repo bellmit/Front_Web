@@ -118,7 +118,7 @@
             <!--子菜单组件-->
             <ul class="sub-menu-wrap">
                 <li>
-                    <a class="sub-menu-title sub-menu-titleactive" data-parentid="" data-id="struct_ctrl.root.id" data-layer="0" data-label="struct_ctrl.root.orgname"  ng-click="struct_ctrl.rootSubMenu($event)">{{struct_ctrl.root.orgname}}</a>
+                    <a class="sub-menu-title sub-menu-titleactive" data-parentid="" data-id="struct_ctrl.root.id" data-layer="0" data-label="struct_ctrl.root.orgname"  ng-click="struct_ctrl.rootSubMenu($event)">{{::struct_ctrl.root.orgname}}</a>
                     <ul ng-init="struct_ctrl.initSubMenu()" ng-click="struct_ctrl.toggleSubMenu($event)" id="admin_struct_submenu" class="g-d-showi ui-sub-menu"></ul>
                 </li>
             </ul>
