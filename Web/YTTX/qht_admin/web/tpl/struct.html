@@ -13,7 +13,7 @@
 
             <!--添加菜单条-->
             <div class="admin-action-item">
-                <span ng-click="struct_ctrl.addSubStruct()" ng-show="struct_ctrl.setting.add_substruct_state"><i class="btn-action admin-btn-action1"></i>添加子机构</span>
+                <span ng-click="struct_ctrl.addSubStruct('show','setting')" ng-show="struct_ctrl.setting.add_substruct_state"><i class="btn-action admin-btn-action1"></i>添加子机构</span>
                 <span ng-show="struct_ctrl.setting.adjust_pos_state"><i class="btn-action admin-btn-action2" ng-click="struct_ctrl.adjustPos()"></i>调整位置</span>
             </div>
 
@@ -160,7 +160,7 @@
                                 <span class="mini-icon admin-mini-icon1" ng-click="struct_ctrl.toggleEdit('hide','setting')"></span>
                             </div>
 
-                            <form ng-submit="struct_ctrl.structSubmit()" name="structFrom" role="form" novalidate method="post" id="admin_struct_form" class="admin-layout-form">
+                            <form ng-submit="struct_ctrl.structSubmit()" name="structFrom" role="form" novalidate method="post" class="admin-layout-form">
                                 <div class="admin-layout-theme4"><span class="mini-icon admin-mini-icon2"></span>&nbsp;基本信息</div>
 
 
@@ -282,8 +282,8 @@
 
 
                                 <div class="form-group-self1">
-                                    <button type="submit" class="btn btn-red g-br3 g-w-percent50">保存</button>
-                                    <button type="button" class="btn btn-red g-br3 g-w-percent50"  ng-click="struct_ctrl.aaa()">adsdfs</button>
+                                    <button type="submit" ng-disabled="!(structFrom.username.$dirty && structFrom.username.$valid&&structFrom.password.$dirty && structFrom.password.$valid&&structFrom.identifyingCode.$dirty && structFrom.identifyingCode.$valid)"  class="btn btn-red g-br3 g-w-percent50">保存</button>
+                                    <button type="button" class="btn btn-red g-br3 g-w-percent50 g-gap-mt2" ng-click="struct_ctrl.structReset(structFrom)">重置</button>
                                 </div>
                             </form>
                         </div>

@@ -361,40 +361,42 @@ angular.module('app')
                 }
             };
             /*机构列表--添加子机构*/
-            this.addSubStruct=function () {
+            this.addSubStruct=function (type,mod) {
+                /*显示弹窗*/
+                structService.toggleModal({
+                    type:type,
+                    module:mod
+                });
                 structService.addSubStruct(this.setting);
             };
 
 
             /*切换编辑状态*/
-            this.toggleEdit=function (type,module) {
+            this.toggleEdit=function (type,mod) {
                 structService.toggleModal({
                     type:type,
-                    module:module
+                    module:mod
                 });
             };
             /*表单重置*/
-            this.aaa=function () {
-                var forms=angular.element('#admin_struct_form');
-                this.structReset(forms);
-            };
             this.structReset=function (forms){
                 /*重置机构数据模型*/
-                /*var tempstruct=self.struct;
+                var tempstruct=self.struct;
                 for(var i in tempstruct){
                     if(i==='isSettingLogin'){
-                        /!*是否设置登录名*!/
+                        /*是否设置登录名*/
                         tempstruct[i]=1;
                     }else if(i==='isDesignatedPermit'){
-                        /!*是否指定权限*!/
+                        /*是否指定权限*/
                         tempstruct[i]=1;
                     }else{
                         tempstruct[i]='';
                     }
-                }*/
+                }
+                /*重置权限信息*/
+                this.clearSelectPower();
 
                 /*重置验证提示信息*/
-
                 if(forms){
                      var temp_cont=forms.$$controls;
                     if(temp_cont){
@@ -416,8 +418,6 @@ angular.module('app')
                         }
                     }
                  }
-                /*重置权限信息*/
-                /*this.clearSelectPower();*/
             };
             /*提交表单*/
             this.structSubmit=function () {
@@ -440,6 +440,7 @@ angular.module('app')
             };
             /*取消所选权限*/
             this.clearSelectPower=function () {
+                this.struct.checkedFunctionIds='';
                 powerService.clearSelectPower();
             };
             

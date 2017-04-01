@@ -499,14 +499,13 @@ angular.module('app')
         };
         /*添加子机构*/
         this.addSubStruct=function (config) {
-            //console.log(config);
-            if(config.id===''&&config.orgname===''){
+            /*if(config.id===''&&config.orgname===''){
                 toolDialog.show({
                     type:'warn',
                     value:'没有父机构或父机构不存在'
                 });
                 return false;
-            }
+            }*/
             
         };
 
