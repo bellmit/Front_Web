@@ -378,6 +378,12 @@ angular.module('app')
                     module:mod
                 });
             };
+            /*选择登录用户名和密码*/
+            this.changeLogin=function () {
+                /*设置登录名和密码*/
+                self.struct.username='';
+                self.struct.password='';
+            };
             /*表单重置*/
             this.structReset=function (forms){
                 /*重置机构数据模型*/
@@ -424,7 +430,7 @@ angular.module('app')
 
             };
 
-
+            
             /*全选权限*/
             this.selectAllPower=function (e) {
                 powerService.selectAllPower(e);
@@ -433,18 +439,16 @@ angular.module('app')
             this.getSelectPower=function () {
                 var temppower=powerService.getSelectPower();
                 if(temppower){
-                    this.struct.checkedFunctionIds=JSON.stringify(temppower);
+                    this.struct.checkedFunctionIds=temppower.join();
                 }else{
                    this.struct.checkedFunctionIds='';
                 }
             };
             /*取消所选权限*/
             this.clearSelectPower=function () {
-                this.struct.checkedFunctionIds='';
+                self.struct.checkedFunctionIds='';
                 powerService.clearSelectPower();
             };
-            
-            
         }
 
 

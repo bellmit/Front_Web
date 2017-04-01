@@ -231,7 +231,7 @@
                                 <div class="admin-layout-theme4"><span class="mini-icon admin-mini-icon3"></span>&nbsp;登陆信息</div>
 
                                 <div class="form-group-self1">
-                                    <label class="self-label g-w-percent50"><input type="checkbox"  ng-model="struct_ctrl.struct.isSettingLogin" ng-init="struct_ctrl.struct.isSettingLogin=1" ng-checked="struct_ctrl.struct.isSettingLogin" ng-true-value="1" ng-false-value="0" name="isSettingLogin">&nbsp;设置登录名与密码</label>
+                                    <label class="self-label g-w-percent50"><input type="checkbox"  ng-model="struct_ctrl.struct.isSettingLogin" ng-init="struct_ctrl.struct.isSettingLogin=1" ng-change="struct_ctrl.changeLogin()" ng-checked="struct_ctrl.struct.isSettingLogin" ng-true-value="1" ng-false-value="0" name="isSettingLogin">&nbsp;设置登录名与密码</label>
                                 </div>
 
                                 <div ng-show="struct_ctrl.struct.isSettingLogin===1">
@@ -261,11 +261,11 @@
 
                                 <div class="form-group-self1">
                                     <label class="self-label" ng-init="struct_ctrl.struct.isDesignatedPermit=1">
-                                        <input type="radio" ng-model="struct_ctrl.struct.isDesignatedPermit" ng-value="0" name="isDesignatedPermit">
+                                        <input type="radio" ng-model="struct_ctrl.struct.isDesignatedPermit" ng-value="0" ng-change="struct_ctrl.clearSelectPower()" name="isDesignatedPermit">
                                         &nbsp;全部权限
                                     </label>
                                     <label class="self-label">
-                                        <input type="radio" ng-model="struct_ctrl.struct.isDesignatedPermit" ng-value="1"  name="isDesignatedPermit">
+                                        <input type="radio" ng-model="struct_ctrl.struct.isDesignatedPermit" ng-value="1" ng-change="struct_ctrl.clearSelectPower()"  name="isDesignatedPermit">
                                         &nbsp;指定权限
                                     </label>
                                 </div>
@@ -282,7 +282,7 @@
 
 
                                 <div class="form-group-self1">
-                                    <button type="submit" ng-disabled="!(structFrom.username.$dirty && structFrom.username.$valid&&structFrom.password.$dirty && structFrom.password.$valid&&structFrom.identifyingCode.$dirty && structFrom.identifyingCode.$valid)"  class="btn btn-red g-br3 g-w-percent50">保存</button>
+                                    <button type="submit" ng-disabled="!(structFrom.orgname.$dirty && structFrom.orgname.$valid && structFrom.linkman.$dirty && structFrom.linkman.$valid && structFrom.cellphone.$dirty && structFrom.cellphone.$valid && structFrom.address.$dirty && structFrom.address.$valid && ((struct_ctrl.struct.isSettingLogin===1 && struct_ctrl.struct.username!=='' && struct_ctrl.struct.password!=='')||(struct_ctrl.struct.isSettingLogin===0 && struct_ctrl.struct.username==='' && struct_ctrl.struct.password==='')) && ((struct_ctrl.struct.isDesignatedPermit===1 && struct_ctrl.struct.checkedFunctionIds!=='')||(struct_ctrl.struct.isDesignatedPermit===0 && struct_ctrl.struct.checkedFunctionIds==='')))"  class="btn btn-red g-br3 g-w-percent50">保存</button>
                                     <button type="button" class="btn btn-red g-br3 g-w-percent50 g-gap-mt2" ng-click="struct_ctrl.structReset(structFrom)">重置</button>
                                 </div>
                             </form>
