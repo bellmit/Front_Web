@@ -161,7 +161,7 @@
                                     <label class="self-label g-w-percent15 g-t-r"><span class="self-require g-c-red1">*</span>机构名称</label>
 
                                     <div class="self-input g-pos-r g-w-percent35">
-                                        <input type="text" name="orgname" placeholder="请输入机构名称" required ng-model="struct_ctrl.setting.c_orgname"  />
+                                        <input type="text" name="orgname" placeholder="请输入机构名称" required ng-model="struct_ctrl.struct.orgname"  />
                                         <span  ng-show="structFrom.orgname.$dirty&&structFrom.orgname.$error.required" class="self-tips self-tips-no g-c-red1 g-fs4 g-w-percent50">机构名称不能为空</span>
                                         <span ng-show="structFrom.orgname.$dirty&&structFrom.orgname.$valid" class="self-tips self-tips-yes"></span>
                                     </div>
@@ -275,7 +275,7 @@
 
                                 <div class="form-group-self1">
                                     <button type="submit" ng-disabled="!(structFrom.orgname.$dirty && structFrom.orgname.$valid && structFrom.linkman.$dirty && structFrom.linkman.$valid && structFrom.cellphone.$dirty && structFrom.cellphone.$valid && structFrom.address.$dirty && structFrom.address.$valid && ((struct_ctrl.struct.isSettingLogin===1 && structFrom.username.$dirty && structFrom.username.$valid && structFrom.password.$dirty && structFrom.password.$valid ) || struct_ctrl.struct.isSettingLogin===0) && ((struct_ctrl.struct.isDesignatedPermit===1 && structFrom.checkedFunctionIds.$valid)||struct_ctrl.struct.isDesignatedPermit===0))"  class="btn btn-red g-br3 g-w-percent50">保存</button>
-                                    <button type="button" class="btn btn-red g-br3 g-w-percent50 g-gap-mt2" ng-click="struct_ctrl.structReset(structFrom)">重置</button>
+                                    <button type="button" class="btn btn-red g-br3 g-w-percent50 g-gap-mt2" id="admin_struct_reset" ng-click="struct_ctrl.structReset(structFrom)">重置</button>
                                 </div>
                             </form>
                         </div>

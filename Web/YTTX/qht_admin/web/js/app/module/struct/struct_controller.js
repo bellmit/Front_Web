@@ -1,6 +1,6 @@
 /*首页控制器*/
 angular.module('app')
-    .controller('StructController', ['structService','powerService','toolDialog','$sce',function(structService,powerService,toolDialog,$sce){
+    .controller('StructController', ['structService','powerService','toolDialog','$sce','$timeout',function(structService,powerService,toolDialog,$sce,$timeout){
         var self=this;
 
         /*模型--tab选项卡*/
@@ -56,6 +56,7 @@ angular.module('app')
 
         /*模型--机构数据*/
         this.struct={
+            type:'add'/*表单类型：新增，编辑；默认为新增*/,
             orgname:''/*机构名称*/,
             comname:''/*公司名称*/,
             linkman:''/*负责人*/,
@@ -368,8 +369,14 @@ angular.module('app')
                     display:config.display,
                     area:config.area
                 });
-                /**/
-                //structService.addSubStruct(this.setting);
+
+                /*新增子机构*/
+                if(type&&type==='add'){
+                    /*设置模型类型*/
+                    self.struct.type='add';
+                    /*调用添加子机构服务类*/
+                    structService.addSubStruct(this.setting);
+                }
             };
 
 
@@ -389,48 +396,26 @@ angular.module('app')
             };
             /*表单重置*/
             this.structReset=function (forms){
-                /*重置机构数据模型*/
-                var tempstruct=self.struct;
-                for(var i in tempstruct){
-                    if(i==='isSettingLogin'){
-                        /*是否设置登录名*/
-                        tempstruct[i]=1;
-                    }else if(i==='isDesignatedPermit'){
-                        /*是否指定权限*/
-                        tempstruct[i]=1;
-                    }else{
-                        tempstruct[i]='';
-                    }
-                }
+                /*重置表单模型*/
+                structService.clearFormData(self.struct);
                 /*重置权限信息*/
                 this.clearSelectPower();
-
                 /*重置验证提示信息*/
-                if(forms){
-                     var temp_cont=forms.$$controls;
-                    if(temp_cont){
-                        var len=temp_cont.length,
-                            i=0;
-                        forms.$dirty=false;
-                        forms.$invalid=true;
-                        forms.$pristine=true;
-                        forms.valid=false;
-
-                        if(len!==0){
-                            for(i;i<len;i++){
-                                var temp_item=temp_cont[i];
-                                temp_item['$dirty']=false;
-                                temp_item['$invalid']=true;
-                                temp_item['$pristine']=true;
-                                temp_item['$valid']=false;
-                            }
-                        }
-                    }
-                 }
+                structService.clearFormValid(forms);
             };
             /*提交表单*/
             this.structSubmit=function () {
-
+                /*判断表单类型*/
+                if(self.struct.type===''||typeof self.struct.type==='undefined'){
+                    /*非法表单类型*/
+                    return false;
+                }
+                if(self.struct.type==='add'){
+                    /*新增机构或子机构*/
+                    
+                }else if(self.struct.type==='edit'){
+                    /*编辑机构或子机构*/
+                }
             };
 
             

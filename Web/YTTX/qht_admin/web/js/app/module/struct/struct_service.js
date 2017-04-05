@@ -1,5 +1,5 @@
 angular.module('app')
-    .service('structService',['toolUtil','toolDialog','BASE_CONFIG','loginService',function(toolUtil,toolDialog,BASE_CONFIG,loginService){
+    .service('structService',['toolUtil','toolDialog','BASE_CONFIG','loginService','$timeout',function(toolUtil,toolDialog,BASE_CONFIG,loginService,$timeout){
 
         /*获取缓存数据*/
         var cache=loginService.getCache(),
@@ -7,7 +7,13 @@ angular.module('app')
             $admin_struct_list=$('#admin_struct_list'),
             $struct_setting_dialog=$('#struct_setting_dialog'),
             $struct_pos_dialog=$('#struct_pos_dialog'),
-            self=this;
+            $admin_struct_reset=$('#admin_struct_reset'),
+            self=this,
+            form_reset_timer=null;
+
+        /*清除定时器*/
+        /*$timeout.cancel(form_reset_timer);
+         form_reset_timer=null;*/
 
 
 
@@ -499,18 +505,26 @@ angular.module('app')
         };
         /*添加子机构*/
         this.addSubStruct=function (config) {
-            /*if(config.id===''&&config.orgname===''){
+            /*判断是否是合法的节点，即是否有父机构*/
+            if(config.id===''&&config.orgname===''){
                 toolDialog.show({
                     type:'warn',
                     value:'没有父机构或父机构不存在'
                 });
                 return false;
-            }*/
+            }
+            /*如果存在延迟任务则清除延迟任务*/
+            this.clearFormDelay();
+            /*通过延迟任务清空表单数据*/
+            form_reset_timer=$timeout(function(){
+                /*触发重置表单*/
+                $admin_struct_reset.trigger('click');
+            },0);
             
         };
 
 
-        /*编辑操作*/
+        /*弹出层服务*/
         this.toggleModal=function (config,fn) {
             if(config.display==='show'){
                 if(config.area==='setting'){
@@ -524,17 +538,78 @@ angular.module('app')
             }else if(config.display==='hide'){
                 if(config.area==='setting'){
                     $struct_setting_dialog.modal('hide');
+                    /*清除定时器*/
                     /*$struct_setting_dialog.on('hide.bs.modal',fn);*/
                 }else if(config.area==='pos'){
                     $struct_pos_dialog.modal('hide');
                     /*$struct_pos_dialog.on('hide.bs.modal',fn);*/
                 }
+                /*清楚延时任务序列*/
+                this.clearFormDelay();
             }
         };
-        
+        /*清除延时任务序列*/
+        this.clearFormDelay=function (did) {
+            if(did  &&  did!==null){
+                $timeout.cancel(did);
+                did=null;
+            }else{
+                /*如果存在延迟任务则清除延迟任务*/
+                if(form_reset_timer!==null){
+                    $timeout.cancel(form_reset_timer);
+                    form_reset_timer=null;
+                }
+            }
+        };
+
+
+
+
+        /*表单类服务--清空表单模型数据*/
+        this.clearFormData=function (data) {
+            if(!data){
+                return false;
+            }
+            /*重置机构数据模型*/
+            var tempstruct=data;
+            for(var i in tempstruct){
+                if(i==='isSettingLogin'){
+                    /*是否设置登录名*/
+                    tempstruct[i]=1;
+                }else if(i==='isDesignatedPermit'){
+                    /*是否指定权限*/
+                    tempstruct[i]=1;
+                }else if(i==='type'){
+                    /*操作类型为新增*/
+                    tempstruct[i]='add';
+                }else{
+                    tempstruct[i]='';
+                }
+            }
+        };
         /*表单类服务--重置表单数据*/
-        this.structReset=function () {
-            
+        this.clearFormValid=function (forms) {
+            if(forms){
+                var temp_cont=forms.$$controls;
+                if(temp_cont){
+                    var len=temp_cont.length,
+                        i=0;
+                    forms.$dirty=false;
+                    forms.$invalid=true;
+                    forms.$pristine=true;
+                    forms.valid=false;
+
+                    if(len!==0){
+                        for(i;i<len;i++){
+                            var temp_item=temp_cont[i];
+                            temp_item['$dirty']=false;
+                            temp_item['$invalid']=true;
+                            temp_item['$pristine']=true;
+                            temp_item['$valid']=false;
+                        }
+                    }
+                }
+            }
         };
         /*表单类服务--提交表单数据*/
         this.structSubmit=function () {
