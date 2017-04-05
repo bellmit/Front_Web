@@ -361,21 +361,24 @@ angular.module('app')
                 }
             };
             /*机构列表--添加子机构*/
-            this.addSubStruct=function (type,mod) {
+            this.addSubStruct=function (config) {
+                var type=config.type;
                 /*显示弹窗*/
                 structService.toggleModal({
-                    type:type,
-                    module:mod
+                    display:config.display,
+                    area:config.area
                 });
-                structService.addSubStruct(this.setting);
+                /**/
+                //structService.addSubStruct(this.setting);
             };
 
 
             /*切换编辑状态*/
-            this.toggleEdit=function (type,mod) {
+            this.toggleEdit=function (config) {
+                var type=config.type;
                 structService.toggleModal({
-                    type:type,
-                    module:mod
+                    display:config.display,
+                    area:config.area
                 });
             };
             /*选择登录用户名和密码*/

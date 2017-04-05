@@ -5,7 +5,7 @@
             <h1 class="admin-layout-theme3">
                 <span>{{struct_ctrl.edit.orgname}}</span>
                 &nbsp;&nbsp;&nbsp;&nbsp;
-                <button type="button" class="btn btn-default g-c-blue3" ng-disabled="!struct_ctrl.edit.editstate" ng-click="struct_ctrl.toggleEdit('show','setting')"><i class="btn-action admin-btn-action7"></i>&nbsp;编辑</button>
+                <button type="button" class="btn btn-default g-c-blue3" ng-disabled="!struct_ctrl.edit.editstate" ng-click="struct_ctrl.toggleEdit({display:'show',area:'setting',type:'edit'})"><i class="btn-action admin-btn-action7"></i>&nbsp;编辑</button>
             </h1>
 
             <!--下属机构-->
@@ -13,20 +13,12 @@
 
             <!--添加菜单条-->
             <div class="admin-action-item">
-                <span ng-click="struct_ctrl.addSubStruct('show','setting')" ng-show="struct_ctrl.setting.add_substruct_state"><i class="btn-action admin-btn-action1"></i>添加子机构</span>
+                <span ng-click="struct_ctrl.addSubStruct({display:'show',area:'setting',type:'add'})" ng-show="struct_ctrl.setting.add_substruct_state"><i class="btn-action admin-btn-action1"></i>添加子机构</span>
                 <span ng-show="struct_ctrl.setting.adjust_pos_state"><i class="btn-action admin-btn-action2" ng-click="struct_ctrl.adjustPos()"></i>调整位置</span>
             </div>
 
             <!--机构列表-->
             <ul class="admin-list-tsitem" id="admin_struct_list" ng-click="struct_ctrl.toggleStructList($event)"></ul>
-
-            <!--template-->
-            <!--<li class="ts-reload ts-child ts-active">
-                    新疆省代<span></span>
-                    <ul>
-                        <li>2278298747247</li>
-                    </ul>
-                </li>-->
 
 
 
@@ -157,7 +149,7 @@
                         <!--表单-->
                         <div class="g-f-r g-w-percent14">
                             <div class="admin-layout-theme4 admin-theme-close g-t-c g-b-gray17 g-pos-r">机构设置
-                                <span class="mini-icon admin-mini-icon1" ng-click="struct_ctrl.toggleEdit('hide','setting')"></span>
+                                <span class="mini-icon admin-mini-icon1" ng-click="struct_ctrl.toggleEdit({display:'hide',area:'setting'})"></span>
                             </div>
 
                             <form ng-submit="struct_ctrl.structSubmit()" name="structFrom" role="form" novalidate method="post" class="admin-layout-form">
@@ -282,7 +274,7 @@
 
 
                                 <div class="form-group-self1">
-                                    <button type="submit" ng-disabled="!(structFrom.orgname.$dirty && structFrom.orgname.$valid && structFrom.linkman.$dirty && structFrom.linkman.$valid && structFrom.cellphone.$dirty && structFrom.cellphone.$valid && structFrom.address.$dirty && structFrom.address.$valid && ((struct_ctrl.struct.isSettingLogin===1 && struct_ctrl.struct.username!=='' && struct_ctrl.struct.password!=='')||(struct_ctrl.struct.isSettingLogin===0 && struct_ctrl.struct.username==='' && struct_ctrl.struct.password==='')) && ((struct_ctrl.struct.isDesignatedPermit===1 && struct_ctrl.struct.checkedFunctionIds!=='')||(struct_ctrl.struct.isDesignatedPermit===0 && struct_ctrl.struct.checkedFunctionIds==='')))"  class="btn btn-red g-br3 g-w-percent50">保存</button>
+                                    <button type="submit" ng-disabled="!(structFrom.orgname.$dirty && structFrom.orgname.$valid && structFrom.linkman.$dirty && structFrom.linkman.$valid && structFrom.cellphone.$dirty && structFrom.cellphone.$valid && structFrom.address.$dirty && structFrom.address.$valid && ((struct_ctrl.struct.isSettingLogin===1 && structFrom.username.$dirty && structFrom.username.$valid && structFrom.password.$dirty && structFrom.password.$valid ) || struct_ctrl.struct.isSettingLogin===0) && ((struct_ctrl.struct.isDesignatedPermit===1 && structFrom.checkedFunctionIds.$valid)||struct_ctrl.struct.isDesignatedPermit===0))"  class="btn btn-red g-br3 g-w-percent50">保存</button>
                                     <button type="button" class="btn btn-red g-br3 g-w-percent50 g-gap-mt2" ng-click="struct_ctrl.structReset(structFrom)">重置</button>
                                 </div>
                             </form>

@@ -512,20 +512,20 @@ angular.module('app')
 
         /*编辑操作*/
         this.toggleModal=function (config,fn) {
-            if(config.type==='show'){
-                if(config.module==='setting'){
+            if(config.display==='show'){
+                if(config.area==='setting'){
                     $struct_setting_dialog.modal('show',{backdrop:'static'});
-                }else if(config.module==='pos'){
+                }else if(config.area==='pos'){
                     $struct_pos_dialog.modal('show',{backdrop:'static'});
                 }
                 if(fn&&typeof fn==='function'){
                     fn.call(null);
                 }
-            }else if(config.type==='hide'){
-                if(config.module==='setting'){
+            }else if(config.display==='hide'){
+                if(config.area==='setting'){
                     $struct_setting_dialog.modal('hide');
                     /*$struct_setting_dialog.on('hide.bs.modal',fn);*/
-                }else if(config.module==='pos'){
+                }else if(config.area==='pos'){
                     $struct_pos_dialog.modal('hide');
                     /*$struct_pos_dialog.on('hide.bs.modal',fn);*/
                 }
