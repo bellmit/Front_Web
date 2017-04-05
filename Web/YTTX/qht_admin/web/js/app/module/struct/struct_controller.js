@@ -62,7 +62,7 @@ angular.module('app')
             linkman:''/*负责人*/,
             cellphone:''/*手机号码*/,
             address:''/*联系地址*/,
-            operationArea:''/*运营地区*/,
+            operatingArea:''/*运营地区*/,
             remark:''/*备注*/,
             isSettingLogin:''/*是否设置登陆名及密码1 :是*/,
             username:''/*设置登录名*/,
@@ -244,6 +244,9 @@ angular.module('app')
                         });
                     }
                 }
+                setTimeout(function () {
+                    console.log(self.setting);
+                },50);
 
             };
 
@@ -364,18 +367,18 @@ angular.module('app')
             /*机构列表--添加子机构*/
             this.addSubStruct=function (config) {
                 var type=config.type;
-                /*显示弹窗*/
-                structService.toggleModal({
-                    display:config.display,
-                    area:config.area
-                });
-
                 /*新增子机构*/
                 if(type&&type==='add'){
                     /*设置模型类型*/
                     self.struct.type='add';
                     /*调用添加子机构服务类*/
-                    structService.addSubStruct(this.setting);
+                    structService.addSubStruct(self.setting,function () {
+                        /*显示弹窗*/
+                        structService.toggleModal({
+                            display:config.display,
+                            area:config.area
+                        });
+                    });
                 }
             };
 
@@ -405,17 +408,8 @@ angular.module('app')
             };
             /*提交表单*/
             this.structSubmit=function () {
-                /*判断表单类型*/
-                if(self.struct.type===''||typeof self.struct.type==='undefined'){
-                    /*非法表单类型*/
-                    return false;
-                }
-                if(self.struct.type==='add'){
-                    /*新增机构或子机构*/
-                    
-                }else if(self.struct.type==='edit'){
-                    /*编辑机构或子机构*/
-                }
+                /*提交服务*/
+                structService.structSubmit(self.struct,self.setting,self.search);
             };
 
             

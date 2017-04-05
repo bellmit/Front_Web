@@ -504,14 +504,25 @@ angular.module('app')
             }
         };
         /*添加子机构*/
-        this.addSubStruct=function (config) {
+        this.addSubStruct=function (setting,fn) {
             /*判断是否是合法的节点，即是否有父机构*/
-            if(config.id===''&&config.orgname===''){
+            if(!setting.id||!setting.orgname){
                 toolDialog.show({
                     type:'warn',
                     value:'没有父机构或父机构不存在'
                 });
                 return false;
+            }else if(setting.id===''  || setting.orgname===''){
+                toolDialog.show({
+                    type:'warn',
+                    value:'没有父机构或父机构不存在'
+                });
+                return false;
+            }
+
+            /*回调弹窗*/
+            if(fn&&typeof fn==='function'){
+                fn.call(null);
             }
             /*如果存在延迟任务则清除延迟任务*/
             this.clearFormDelay();
@@ -526,23 +537,58 @@ angular.module('app')
 
         /*弹出层服务*/
         this.toggleModal=function (config,fn) {
+            var temp_timer=null;
             if(config.display==='show'){
-                if(config.area==='setting'){
-                    $struct_setting_dialog.modal('show',{backdrop:'static'});
-                }else if(config.area==='pos'){
-                    $struct_pos_dialog.modal('show',{backdrop:'static'});
-                }
-                if(fn&&typeof fn==='function'){
-                    fn.call(null);
+                if(typeof config.delay!=='undefined'){
+                    if(config.area==='setting'){
+                        temp_timer=setTimeout(function () {
+                            $struct_setting_dialog.modal('show',{backdrop:'static'});
+                            clearTimeout(temp_timer);
+                            temp_timer=null;
+                        },config.delay);
+
+                    }else if(config.area==='pos'){
+                        temp_timer=setTimeout(function () {
+                            $struct_pos_dialog.modal('show',{backdrop:'static'});
+                            clearTimeout(temp_timer);
+                            temp_timer=null;
+                        },config.delay);
+                    }
+                    if(fn&&typeof fn==='function'){
+                        fn.call(null);
+                    }
+                }else{
+                    if(config.area==='setting'){
+                        $struct_setting_dialog.modal('show',{backdrop:'static'});
+                    }else if(config.area==='pos'){
+                        $struct_pos_dialog.modal('show',{backdrop:'static'});
+                    }
+                    if(fn&&typeof fn==='function'){
+                        fn.call(null);
+                    }
                 }
             }else if(config.display==='hide'){
-                if(config.area==='setting'){
-                    $struct_setting_dialog.modal('hide');
-                    /*清除定时器*/
-                    /*$struct_setting_dialog.on('hide.bs.modal',fn);*/
-                }else if(config.area==='pos'){
-                    $struct_pos_dialog.modal('hide');
-                    /*$struct_pos_dialog.on('hide.bs.modal',fn);*/
+                if(typeof config.delay!=='undefined'){
+                    if(config.area==='setting'){
+                        temp_timer=setTimeout(function () {
+                            $struct_setting_dialog.modal('hide');
+                            clearTimeout(temp_timer);
+                            temp_timer=null;
+                        },config.delay);
+                    }else if(config.area==='pos'){
+                        temp_timer=setTimeout(function () {
+                            $struct_pos_dialog.modal('hide');
+                            clearTimeout(temp_timer);
+                            temp_timer=null;
+                        },config.delay);
+                    }
+                }else{
+                    if(config.area==='setting'){
+                        $struct_setting_dialog.modal('hide');
+                    }else if(config.area==='pos'){
+                        $struct_pos_dialog.modal('hide');
+                        /*$struct_pos_dialog.on('hide.bs.modal',fn);*/
+                    }
                 }
                 /*清楚延时任务序列*/
                 this.clearFormDelay();
@@ -612,8 +658,118 @@ angular.module('app')
             }
         };
         /*表单类服务--提交表单数据*/
-        this.structSubmit=function () {
+        this.structSubmit=function (struct,setting,search) {
+            /*判断表单类型*/
+            if(struct.type===''||typeof struct.type==='undefined'){
+                /*非法表单类型*/
+                return false;
+            }
 
+            /*登陆缓存*/
+            if(cache){
+                var param=$.extend(true,{},cache.loginMap.param);
+                /*数据适配*/
+                if(struct.type==='add'){
+                    /*新增机构或子机构*/
+                    param['orgname']=struct.orgname;
+                    param['comname']=struct.comname;
+                    param['parentId']=setting.id;
+                    param['linkman']=struct.linkman;
+                    param['cellphone']=toolUtil.trims(struct.cellphone);
+                    param['address']=struct.address;
+                    param['operatingArea']=struct.operatingArea;
+                    param['remark']=struct.remark;
+
+                    /*判断设置登录名*/
+                    var isSettingLogin=parseInt(struct.isSettingLogin,10);
+                    param['isSettingLogin']=isSettingLogin;
+                    if(isSettingLogin===1){
+                        /*选中设置登录名*/
+                        param['username']=struct.username;
+                        param['password']=struct.password;
+                    }
+
+                    /*判断是否指定权限*/
+                    var isDesignatedPermit=parseInt(struct.isDesignatedPermit,10);
+                    param['isDesignatedPermit']=struct.isDesignatedPermit;
+                    if(isDesignatedPermit===1){
+                        param['checkedFunctionIds']=struct.checkedFunctionIds;
+                    }
+                }else if(struct.type==='edit'){
+                    /*编辑机构或子机构*/
+                }
+                toolUtil
+                    .requestHttp({
+                        url:struct.type==='add'?'/organization/add':'/organization/update',
+                        method:'post',
+                        set:true,
+                        data:param
+                    })
+                    .then(function(resp){
+                            var data=resp.data,
+                                status=parseInt(resp.status,10);
+
+                            if(status===200){
+                                var code=parseInt(data.code,10),
+                                    message=data.message;
+                                if(code!==0){
+                                    if(typeof message !=='undefined'&&message!==''){
+                                        toolDialog.show({
+                                            type:'warn',
+                                            value:message
+                                        });
+                                    }else{
+                                        toolDialog.show({
+                                            type:'warn',
+                                            value:struct.type==='add'?'新增机构失败':'编辑机构失败'
+                                        });
+                                    }
+                                    if(code===999){
+                                        /*退出系统*/
+                                        cache=null;
+                                        toolUtil.loginTips({
+                                            clear:true,
+                                            reload:true
+                                        });
+                                    }
+                                    return false;
+                                }else{
+                                    /*操作成功即加载数据*/
+                                    /*重新加载侧边栏数据*/
+                                    self.getMenuList({
+                                        search:search.orgname,
+                                        setting:setting
+                                    });
+                                    /*重置表单*/
+                                    form_reset_timer=$timeout(function(){
+                                        /*触发重置表单*/
+                                        $admin_struct_reset.trigger('click');
+                                    },0);
+                                    /*弹出框隐藏*/
+                                    toolDialog.show({
+                                        type:'succ',
+                                        value:struct.type==='add'?'新增机构成功':'编辑机构成功'
+                                    });
+                                    self.toggleMoal({
+                                        display:'hide',
+                                        area:'setting',
+                                        delay:1000
+                                    });
+                                }
+                            }
+                        },
+                        function(resp){
+                            var message=resp.data.message;
+                            if(typeof message !=='undefined'&&message!==''){
+                                console.log(message);
+                            }else{
+                                console.log('新增机构或编辑机构失败');
+                            }
+                        });
+            }else{
+                /*缓存不存在*/
+                return false
+            }
         };
         
 
