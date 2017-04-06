@@ -602,6 +602,9 @@ angular.module('app')
                                         /*更新模型*/
                                         for(var i in list){
                                             switch (i){
+                                                case 'id':
+                                                    struct[i]=list[i];
+                                                    break;
                                                 case 'orgname':
                                                     struct[i]=list[i];
                                                     break;
@@ -823,6 +826,10 @@ angular.module('app')
             /*判断表单类型*/
             if(struct.type===''||typeof struct.type==='undefined'){
                 /*非法表单类型*/
+                toolDialog.show({
+                    type:'warn',
+                    value:'非法表单类型'
+                });
                 return false;
             }
 
@@ -838,6 +845,7 @@ angular.module('app')
                 param['address']=struct.address;
                 param['operatingArea']=struct.operatingArea;
                 param['remark']=struct.remark;
+                param['parentId']=setting.id;
                 /*判断设置登录名*/
                 var isSettingLogin=parseInt(struct.isSettingLogin,10);
                 param['isSettingLogin']=isSettingLogin;
@@ -857,9 +865,18 @@ angular.module('app')
 
                 if(struct.type==='add'){
                     /*新增机构或子机构*/
-                    param['parentId']=setting.id;
+
                 }else if(struct.type==='edit'){
                     /*编辑机构或子机构*/
+                    if(struct.id===''){
+                        toolDialog.show({
+                            type:'warn',
+                            value:'非法的编辑数据'
+                        });
+                        return false;
+                    }
+                    param['id']=struct.id;
+                    param['sysUserId']=struct.sysUserId
                 }
                 toolUtil
                     .requestHttp({

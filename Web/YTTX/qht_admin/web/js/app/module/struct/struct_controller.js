@@ -69,7 +69,8 @@ angular.module('app')
             password:''/*设置登录密码*/,
             isDesignatedPermit:''/*是否指定权限,1:指定*/,
             checkedFunctionIds:''/*选中权限Ids*/,
-            sysUserId:''/*编辑是相关参数*/
+            sysUserId:''/*编辑时相关参数*/,
+            id:''/*编辑时相关参数*/
         };
 
 
