@@ -163,6 +163,7 @@ angular.module('app')
                                                 self.initOperate({
                                                     data:list,
                                                     $wrap:$admin_struct_list,
+                                                    id:id,
                                                     layer:layer,
                                                     setting:config.setting
                                                 });
@@ -360,7 +361,11 @@ angular.module('app')
                         config.setting.id=config.id;
                         config.setting.orgname=config.orgname;
                     }else{
-                        config.setting.id='';
+                        if(typeof config.id!=='undefined'){
+                            config.setting.id=config.id;
+                        }else{
+                            config.setting.id='';
+                        }
                         config.setting.orgname='';
                     }
                     config.setting.add_substruct_state=true;
@@ -506,13 +511,13 @@ angular.module('app')
         /*添加子机构*/
         this.addSubStruct=function (setting,fn) {
             /*判断是否是合法的节点，即是否有父机构*/
-            if(!setting.id||!setting.orgname){
+            if(!setting.id  &&  typeof setting.id ==='undefined'){
                 toolDialog.show({
                     type:'warn',
                     value:'没有父机构或父机构不存在'
                 });
                 return false;
-            }else if(setting.id===''  || setting.orgname===''){
+            }else if(setting.id===''){
                 toolDialog.show({
                     type:'warn',
                     value:'没有父机构或父机构不存在'
@@ -750,7 +755,7 @@ angular.module('app')
                                         type:'succ',
                                         value:struct.type==='add'?'新增机构成功':'编辑机构成功'
                                     });
-                                    self.toggleMoal({
+                                    self.toggleModal({
                                         display:'hide',
                                         area:'setting',
                                         delay:1000

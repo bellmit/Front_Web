@@ -200,6 +200,7 @@ angular.module('app')
                                     structService.initOperate({
                                         data:list,
                                         layer:temp_layer,
+                                        id:temp_id,
                                         setting:self.setting
                                     });
                                 }else{
@@ -245,10 +246,6 @@ angular.module('app')
                         });
                     }
                 }
-                setTimeout(function () {
-                    console.log(self.setting);
-                },500);
-
             };
 
 
