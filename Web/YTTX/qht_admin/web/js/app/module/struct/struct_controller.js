@@ -165,6 +165,7 @@ angular.module('app')
                             /*清空隐藏节点数据*/
                             structService.initOperate({
                                 data:'',
+                                id:temp_id,
                                 setting:self.setting
                             });
                         }
@@ -246,7 +247,7 @@ angular.module('app')
                 }
                 setTimeout(function () {
                     console.log(self.setting);
-                },50);
+                },500);
 
             };
 
