@@ -1,5 +1,5 @@
 angular.module('app')
-    .service('structService',['toolUtil','toolDialog','BASE_CONFIG','loginService','$timeout',function(toolUtil,toolDialog,BASE_CONFIG,loginService,$timeout){
+    .service('structService',['toolUtil','toolDialog','BASE_CONFIG','loginService','powerService','$timeout',function(toolUtil,toolDialog,BASE_CONFIG,loginService,powerService,$timeout){
 
         /*获取缓存数据*/
         var cache=loginService.getCache(),
@@ -264,10 +264,6 @@ angular.module('app')
                 return false;
             }
         };
-        /*导航服务--解析导航--递归解析*/
-        this.doMenuList=function (obj,config) {
-            
-        };
         /*导航服务--解析导航--公共解析*/
         this.doItemMenuList=function (obj,config) {
             var curitem=obj,
@@ -508,8 +504,13 @@ angular.module('app')
                 loginService.loginOut();
             }
         };
-        /*添加子机构*/
-        this.addSubStruct=function (setting,fn) {
+        /*机构设置--操作机构*/
+        this.actionStruct=function (config) {
+            var modal=config.modal,
+                setting=config.setting,
+                struct=config.struct,
+                type=modal.type;
+
             /*判断是否是合法的节点，即是否有父机构*/
             if(!setting.id  &&  typeof setting.id ==='undefined'){
                 toolDialog.show({
@@ -525,18 +526,173 @@ angular.module('app')
                 return false;
             }
 
-            /*回调弹窗*/
-            if(fn&&typeof fn==='function'){
-                fn.call(null);
-            }
+            /*设置模型*/
+            struct.type=type;
+
             /*如果存在延迟任务则清除延迟任务*/
-            this.clearFormDelay();
+            self.clearFormDelay();
             /*通过延迟任务清空表单数据*/
             form_reset_timer=$timeout(function(){
                 /*触发重置表单*/
                 $admin_struct_reset.trigger('click');
             },0);
+            /*根据类型跳转相应逻辑*/
+            if(type==='edit'){
+                /*查询相关存在的数据*/
+                self.queryOperateInfo(config);
+            }else if(type==='add'){
+                /*to do*/
+                /*显示弹窗*/
+                self.toggleModal({
+                    display:modal.display,
+                    area:modal.area
+                });
+            }
             
+        };
+        /*机构设置--查询机构数据*/
+        this.queryOperateInfo=function (config) {
+            var setting=config.setting,
+                struct=config.struct,
+                modal=config.modal,
+                param=$.extend(true,{},cache.loginMap.param);
+
+            /*判断参数*/
+            if(setting.c_id!==''){
+                param['id']=setting.c_id;
+            }else if(setting.c_id===''){
+                param['id']=setting.id;
+            }
+
+            toolUtil
+                .requestHttp({
+                    url:'/organization/info',
+                    method:'post',
+                    set:true,
+                    data:param
+                })
+                .then(function(resp){
+                        var data=resp.data,
+                            status=parseInt(resp.status,10);
+
+                        if(status===200){
+                            var code=parseInt(data.code,10),
+                                message=data.message;
+                            if(code!==0){
+                                if(typeof message !=='undefined'&&message!==''){
+                                    console.log(message);
+                                }else{
+                                    console.log('请求数据失败');
+                                }
+
+                                if(code===999){
+                                    /*退出系统*/
+                                    cache=null;
+                                    toolUtil.loginTips({
+                                        clear:true,
+                                        reload:true
+                                    });
+                                }
+                            }else{
+                                /*加载数据*/
+                                var result=data.result;
+                                if(typeof result!=='undefined'){
+                                    var list=result.organization;
+                                    if(angular.isObject(list)){
+                                        /*更新模型*/
+                                        for(var i in list){
+                                            switch (i){
+                                                case 'orgname':
+                                                    struct[i]=list[i];
+                                                    break;
+                                                case 'comname':
+                                                    struct[i]=list[i];
+                                                    break;
+                                                case 'linkman':
+                                                    struct[i]=list[i];
+                                                    break;
+                                                case 'cellphone':
+                                                    struct[i]=toolUtil.phoneFormat(list[i]);
+                                                    break;
+                                                case 'address':
+                                                    struct[i]=list[i];
+                                                    break;
+                                                case 'operatingArea':
+                                                    struct[i]=list[i];
+                                                    break;
+                                                case 'remark':
+                                                    struct[i]=list[i];
+                                                    break;
+                                                case 'isSettingLogin':
+                                                    /*是否登录*/
+                                                    var temp_login=parseInt(list[i],10);
+                                                    struct[i]=temp_login;
+                                                    struct['password']='';
+                                                    if(temp_login===1){
+                                                        /*设置*/
+                                                        struct['username']=list['username'];
+                                                    }else if(temp_login===0){
+                                                        /*未设置*/
+                                                        struct['username']='';
+                                                    }
+                                                    break;
+                                                case 'isDesignatedPermit':
+                                                    /*是否指定权限*/
+                                                    var temp_power=parseInt(list[i],10);
+                                                    struct[i]=temp_power;
+                                                    if(temp_power===1){
+                                                        /*指定权限*/
+                                                        /*to do
+                                                        需要查询选中的权限
+                                                        * */
+                                                        var temp_powerlist={};
+                                                        powerService.queryPowerById({
+                                                            id:list['id'],
+                                                            url:'/organization/permission/select',
+                                                            result:temp_powerlist
+                                                        });
+                                                        /*延迟处理权限结果*/
+                                                        setTimeout(function () {
+                                                            if(temp_powerlist!==null && angular.isObject(temp_powerlist)){
+                                                                powerService.selectPowerByItem({
+                                                                    data:temp_powerlist
+                                                                });
+                                                            }
+                                                        },500);
+                                                    }else if(temp_power===0){
+                                                        /*全部权限*/
+                                                        struct['checkedFunctionIds']='';
+                                                    }
+                                                    break;
+                                                case 'sysUserId':
+                                                    struct[i]=list[i];
+                                                    break;
+                                            }
+                                        }
+                                        /*显示弹窗*/
+                                        self.toggleModal({
+                                            display:modal.display,
+                                            area:modal.area
+                                        });
+                                    }else{
+                                        /*提示信息*/
+                                        toolDialog.show({
+                                            type:'warn',
+                                            value:'获取编辑数据失败'
+                                        });
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    function(resp){
+                        var message=resp.data.message;
+                        if(typeof message !=='undefined'&&message!==''){
+                            console.log(message);
+                        }else{
+                            console.log('请求菜单失败');
+                        }
+                    });
         };
 
 
@@ -674,32 +830,34 @@ angular.module('app')
             if(cache){
                 var param=$.extend(true,{},cache.loginMap.param);
                 /*数据适配*/
+                /*公共配置*/
+                param['orgname']=struct.orgname;
+                param['comname']=struct.comname;
+                param['linkman']=struct.linkman;
+                param['cellphone']=toolUtil.trims(struct.cellphone);
+                param['address']=struct.address;
+                param['operatingArea']=struct.operatingArea;
+                param['remark']=struct.remark;
+                /*判断设置登录名*/
+                var isSettingLogin=parseInt(struct.isSettingLogin,10);
+                param['isSettingLogin']=isSettingLogin;
+                if(isSettingLogin===1){
+                    /*选中设置登录名*/
+                    param['username']=struct.username;
+                    param['password']=struct.password;
+                }
+
+                /*判断是否指定权限*/
+                var isDesignatedPermit=parseInt(struct.isDesignatedPermit,10);
+                param['isDesignatedPermit']=struct.isDesignatedPermit;
+                if(isDesignatedPermit===1){
+                    param['checkedFunctionIds']=struct.checkedFunctionIds;
+                }
+
+
                 if(struct.type==='add'){
                     /*新增机构或子机构*/
-                    param['orgname']=struct.orgname;
-                    param['comname']=struct.comname;
                     param['parentId']=setting.id;
-                    param['linkman']=struct.linkman;
-                    param['cellphone']=toolUtil.trims(struct.cellphone);
-                    param['address']=struct.address;
-                    param['operatingArea']=struct.operatingArea;
-                    param['remark']=struct.remark;
-
-                    /*判断设置登录名*/
-                    var isSettingLogin=parseInt(struct.isSettingLogin,10);
-                    param['isSettingLogin']=isSettingLogin;
-                    if(isSettingLogin===1){
-                        /*选中设置登录名*/
-                        param['username']=struct.username;
-                        param['password']=struct.password;
-                    }
-
-                    /*判断是否指定权限*/
-                    var isDesignatedPermit=parseInt(struct.isDesignatedPermit,10);
-                    param['isDesignatedPermit']=struct.isDesignatedPermit;
-                    if(isDesignatedPermit===1){
-                        param['checkedFunctionIds']=struct.checkedFunctionIds;
-                    }
                 }else if(struct.type==='edit'){
                     /*编辑机构或子机构*/
                 }

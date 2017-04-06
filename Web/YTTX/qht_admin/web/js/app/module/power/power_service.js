@@ -291,6 +291,126 @@ angular.module('power.service',[])
 			return selectarr;
 		};
 
+		/*权限服务--查询选中的权限*/
+		this.queryPowerById=function (config) {
+			if(typeof config.id==='undefined'){
+				return false;
+			}
+			var param=$.extend(true,{},cache.loginMap.param);
+			/*合并参数*/
+			param['organizationId']=config.id;
+
+			toolUtil
+				.requestHttp({
+					url:typeof config.url!=='undefined'?config.url:'/organization/permission/select',
+					method:'post',
+					set:true,
+					data:param
+				})
+				.then(function(resp){
+						var data=resp.data,
+							status=parseInt(resp.status,10);
+
+						if(status===200){
+							var code=parseInt(data.code,10),
+								message=data.message;
+							if(code!==0){
+								if(typeof message !=='undefined'&&message!==''){
+									console.log(message);
+								}
+								if(code===999){
+									/*退出系统*/
+									cache=null;
+									toolUtil.loginTips({
+										clear:true,
+										reload:true
+									});
+								}
+							}else{
+								/*加载数据*/
+								var result=data.result;
+								if(typeof result!=='undefined'){
+									var menu=result.menu;
+									if(menu){
+										var len=menu.length;
+										if(len===0){
+											if(config.result){
+												config.result=null;
+											}
+										}else{
+											/*数据集合，最多嵌套层次*/
+											if(config.result){
+												config.result=menu;
+											}
+										}
+									}else{
+										/*填充子数据到操作区域,同时显示相关操作按钮*/
+
+									}
+								}else{
+
+								}
+							}
+						}
+					},
+					function(resp){
+						var message=resp.data.message;
+						if(typeof message !=='undefined'&&message!==''){
+							console.log(message);
+						}else{
+							console.log('请求权限失败');
+						}
+					});
+		};
+
+		/*权限服务--全选权限--根据已有权限反射选中权限*/
+		this.selectPowerByItem=function (config) {
+			if(!config.data){
+				return false;
+			}
+			if(typeof config.data!=='string'){
+				return false;
+			}
+			/*序列化数据*/
+			var temp_data=config.data.split(','),
+				power_map={},
+				len=temp_data.length,
+				i=0;
+
+			if(typeof len==='undefined'||len===0){
+				/*清空权限*/
+				this.clearSelectPower();
+				return false;
+			}else{
+				for(i;i<len;i++){
+					var temp_item=temp_data[i];
+					power_map[temp_item]=parseInt(temp_item,10);
+				}
+			}
+
+			var $input;
+			if(typeof config.dom!=='undefined'){
+				$input=$(dom);
+			}else{
+				$input=$admin_struct_allpower.find('input');
+			}
+
+			$input.each(function () {
+				var $this=$(this),
+					prid=parseInt($this.attr('data-prid'),10);
+
+				if(prid===power_map[prid]){
+					$this.prop({
+						'checked':true
+					});
+				}else{
+					$this.prop({
+						'checked':false
+					});
+				}
+			});
+		};
+
 		/*权限服务--获取选中选择权限*/
 		this.getSelectPower=function (dom) {
 			var $input=typeof dom!=='undefined'?$(dom):$admin_struct_allpower.find('input:checked');
@@ -332,6 +452,6 @@ angular.module('power.service',[])
 					});
 				});
 			}
-		}
+		};
 
 	}]);

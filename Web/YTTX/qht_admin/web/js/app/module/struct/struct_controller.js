@@ -68,7 +68,8 @@ angular.module('app')
             username:''/*设置登录名*/,
             password:''/*设置登录密码*/,
             isDesignatedPermit:''/*是否指定权限,1:指定*/,
-            checkedFunctionIds:''/*选中权限Ids*/
+            checkedFunctionIds:''/*选中权限Ids*/,
+            sysUserId:''/*编辑是相关参数*/
         };
 
 
@@ -246,6 +247,11 @@ angular.module('app')
                         });
                     }
                 }
+
+
+                setTimeout(function () {
+                    console.log(self.setting);
+                },100);
             };
 
 
@@ -361,33 +367,21 @@ angular.module('app')
                         this.setting.c_orgname=$li.attr('data-label');
                     }
                 }
+
+                setTimeout(function () {
+                    console.log(self.setting);
+                },100);
             };
-            /*机构列表--添加子机构*/
-            this.addSubStruct=function (config) {
-                var type=config.type;
-                /*新增子机构*/
-                if(type&&type==='add'){
-                    /*设置模型类型*/
-                    self.struct.type='add';
-                    /*调用添加子机构服务类*/
-                    structService.addSubStruct(self.setting,function () {
-                        /*显示弹窗*/
-                        structService.toggleModal({
-                            display:config.display,
-                            area:config.area
-                        });
+            /*操作机构表单*/
+            this.actionStruct=function (config) {
+                if(config.type){
+                    /*调用编辑机构服务类*/
+                    structService.actionStruct({
+                        modal:config,
+                        setting:self.setting,
+                        struct:self.struct
                     });
                 }
-            };
-
-
-            /*切换编辑状态*/
-            this.toggleEdit=function (config) {
-                var type=config.type;
-                structService.toggleModal({
-                    display:config.display,
-                    area:config.area
-                });
             };
             /*选择登录用户名和密码*/
             this.changeLogin=function () {
@@ -408,6 +402,15 @@ angular.module('app')
             this.structSubmit=function () {
                 /*提交服务*/
                 structService.structSubmit(self.struct,self.setting,self.search);
+            };
+
+
+            /*弹出层显示隐藏*/
+            this.toggleModal=function (config) {
+                structService.toggleModal({
+                    display:config.display,
+                    area:config.area
+                });
             };
 
             
