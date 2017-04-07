@@ -130,7 +130,7 @@ angular.module('power.service',[])
 										var len=menu.length;
 										if(len===0){
 											if(mode){
-												mode['body']='<tr><td colspan="'+h_len+'" class="g-c-gray9 g-fs4 g-t-c g-b-white">没有查询到权限信息</td></tr>';
+												mode['tbody']=$sce.trustAsHtml('<tr><td colspan="'+h_len+'" class="g-c-gray9 g-fs4 g-t-c g-b-white">没有查询到权限信息</td></tr>');
 											}
 										}else{
 											/*解析数据*/
@@ -150,25 +150,25 @@ angular.module('power.service',[])
 														menu:temp_power
 													});
 												}
-												$sce.trustAsHtml(temp_html);
+												console.log(temp_html);
 												if(mode){
-													mode['body']=$sce.trustAsHtml(temp_html);
+													mode['tbody']=$sce.trustAsHtml(temp_html);
 												}
 											}else{
 												if(mode){
-													mode['body']='<tr><td colspan="'+h_len+'" class="g-c-gray9 g-fs4 g-t-c g-b-white">没有查询到权限信息</td></tr>';
+													mode['tbody']=$sce.trustAsHtml('<tr><td colspan="'+h_len+'" class="g-c-gray9 g-fs4 g-t-c g-b-white">没有查询到权限信息</td></tr>');
 												}
 											}
 										}
 									}else{
 										/*填充子数据到操作区域,同时显示相关操作按钮*/
 										if(mode){
-											mode['body']='<tr><td colspan="'+h_len+'" class="g-c-gray9 g-fs4 g-t-c g-b-white">没有查询到权限信息</td></tr>';
+											mode['tbody']=$sce.trustAsHtml('<tr><td colspan="'+h_len+'" class="g-c-gray9 g-fs4 g-t-c g-b-white">没有查询到权限信息</td></tr>');
 										}
 									}
 								}else{
 									if(mode){
-										mode['body']='<tr><td colspan="'+h_len+'" class="g-c-gray9 g-fs4 g-t-c g-b-white">没有查询到权限信息</td></tr>';
+										mode['tbody']=$sce.trustAsHtml('<tr><td colspan="'+h_len+'" class="g-c-gray9 g-fs4 g-t-c g-b-white">没有查询到权限信息</td></tr>');
 									}
 								}
 							}
@@ -182,7 +182,7 @@ angular.module('power.service',[])
 							console.log('请求权限失败');
 						}
 						if(mode){
-							mode['body']='<tr><td colspan="'+h_len+'" class="g-c-gray9 g-fs4 g-t-c g-b-white">没有查询到权限信息</td></tr>';
+							mode['tbody']=$sce.trustAsHtml('<tr><td colspan="'+h_len+'" class="g-c-gray9 g-fs4 g-t-c g-b-white">没有查询到权限信息</td></tr>');
 						}
 					});
 		};
@@ -200,7 +200,8 @@ angular.module('power.service',[])
 				str='<tr><td class="g-c-gray9 g-fs4 g-t-c g-b-white">没有查询到权限信息</td></tr>';
 			}else{
 				if(request){
-					var menuitem=config.menu;
+					var menuitem=config.menu,
+						temp_id=typeof config.id!=='undefined'?config.id:'';
 				}
 				for(i;i<len;i++){
 					var index=parseInt(h_items[i],10);
@@ -217,16 +218,16 @@ angular.module('power.service',[])
 							/*如果是请求*/
 							if(config.clear){
 								/*全不选*/
-								str+='<label class="btn btn-default g-gap-mb2 g-gap-mr2"><input data-roleid="'+config.id+'" data-prid="'+subitem["prid"]+'" data-modid="'+subitem["modId"]+'" type="checkbox" name="'+item["module"]+'" />&nbsp;'+subitem["funcName"]+'</label>';
+								str+='<label class="btn btn-default g-gap-mb2 g-gap-mr2"><input data-roleid="'+temp_id+'" data-prid="'+subitem["prid"]+'" data-modid="'+subitem["modId"]+'" type="checkbox" name="'+item["module"]+'" />&nbsp;'+subitem["funcName"]+'</label>';
 							}else{
 								/*根据设置或者配置结果来*/
 								ispermit=parseInt(subitem["isPermit"],10);
 								if(ispermit===0){
 									/*没有权限*/
-									str+='<label class="btn btn-default g-gap-mb2 g-gap-mr2"><input data-roleid="'+config.id+'" data-prid="'+subitem["prid"]+'" data-modid="'+subitem["modId"]+'" type="checkbox" name="'+item["module"]+'" />&nbsp;'+subitem["funcName"]+'</label>';
+									str+='<label class="btn btn-default g-gap-mb2 g-gap-mr2"><input data-roleid="'+temp_id+'" data-prid="'+subitem["prid"]+'" data-modid="'+subitem["modId"]+'" type="checkbox" name="'+item["module"]+'" />&nbsp;'+subitem["funcName"]+'</label>';
 								}else if(ispermit===1){
 									/*有权限*/
-									str+='<label class="btn btn-default g-gap-mb2 g-gap-mr2"><input data-roleid="'+config.id+'" data-prid="'+subitem["prid"]+'" data-modid="'+subitem["modId"]+'" checked type="checkbox" name="'+item["module"]+'" />&nbsp;'+subitem["funcName"]+'</label>';
+									str+='<label class="btn btn-default g-gap-mb2 g-gap-mr2"><input data-roleid="'+temp_id+'" data-prid="'+subitem["prid"]+'" data-modid="'+subitem["modId"]+'" checked="checked" type="checkbox" name="'+item["module"]+'" />&nbsp;'+subitem["funcName"]+'</label>';
 								}
 							}
 						}else{
@@ -242,7 +243,7 @@ angular.module('power.service',[])
 									str+='<label class="btn btn-default g-gap-mb2 g-gap-mr2"><input data-prid="'+subitem["prid"]+'" data-modid="'+subitem["modId"]+'" type="checkbox" name="'+item["module"]+'" />&nbsp;'+subitem["funcName"]+'</label>';
 								}else if(ispermit===1){
 									/*有权限*/
-									str+='<label class="btn btn-default g-gap-mb2 g-gap-mr2"><input data-prid="'+subitem["prid"]+'" data-modid="'+subitem["modId"]+'" checked type="checkbox" name="'+item["module"]+'" />&nbsp;'+subitem["funcName"]+'</label>';
+									str+='<label class="btn btn-default g-gap-mb2 g-gap-mr2"><input data-prid="'+subitem["prid"]+'" data-modid="'+subitem["modId"]+'"  checked="checked" type="checkbox" name="'+item["module"]+'" />&nbsp;'+subitem["funcName"]+'</label>';
 								}
 							}
 						}
@@ -302,7 +303,6 @@ angular.module('power.service',[])
 			}
 			return selectarr;
 		};
-
 
 		/*权限服务--全选权限--根据已有权限反射选中权限*/
 		this.selectPowerByItem=function (config) {

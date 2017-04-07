@@ -751,7 +751,7 @@ angular.module('app')
                         /*$struct_pos_dialog.on('hide.bs.modal',fn);*/
                     }
                 }
-                /*清楚延时任务序列*/
+                /*清除延时任务序列*/
                 this.clearFormDelay();
             }
         };
