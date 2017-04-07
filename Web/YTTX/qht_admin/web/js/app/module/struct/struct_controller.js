@@ -65,7 +65,8 @@ angular.module('app')
             isDesignatedPermit:''/*是否指定权限,1:指定*/,
             checkedFunctionIds:''/*选中权限Ids*/,
             sysUserId:''/*编辑时相关参数*/,
-            id:''/*编辑时相关参数*/
+            id:''/*编辑时相关参数*/,
+            parentId:''/*编辑时相关参数*/
         };
 
 
@@ -403,6 +404,7 @@ angular.module('app')
             this.structSubmit=function () {
                 /*提交服务*/
                 structService.structSubmit(self.struct,self.setting,self.search);
+
             };
 
 

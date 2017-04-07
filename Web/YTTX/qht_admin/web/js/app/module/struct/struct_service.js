@@ -527,16 +527,16 @@ angular.module('app')
                 return false;
             }
 
-            /*设置模型*/
-            struct.type=type;
-
             /*如果存在延迟任务则清除延迟任务*/
             self.clearFormDelay();
             /*通过延迟任务清空表单数据*/
             form_reset_timer=$timeout(function(){
                 /*触发重置表单*/
                 $admin_struct_reset.trigger('click');
+                /*设置模型*/
+                struct.type=type;
             },0);
+
             /*根据类型跳转相应逻辑*/
             if(type==='edit'){
                 /*查询相关存在的数据*/
@@ -665,6 +665,9 @@ angular.module('app')
                                                     }
                                                     break;
                                                 case 'sysUserId':
+                                                    struct[i]=list[i];
+                                                    break;
+                                                case 'parentId':
                                                     struct[i]=list[i];
                                                     break;
                                             }
@@ -842,7 +845,6 @@ angular.module('app')
                 param['address']=struct.address;
                 param['operatingArea']=struct.operatingArea;
                 param['remark']=struct.remark;
-                param['parentId']=setting.id;
                 /*判断设置登录名*/
                 var isSettingLogin=parseInt(struct.isSettingLogin,10);
                 param['isSettingLogin']=isSettingLogin;
@@ -862,7 +864,7 @@ angular.module('app')
 
                 if(struct.type==='add'){
                     /*新增机构或子机构*/
-
+                    param['parentId']=setting.id;
                 }else if(struct.type==='edit'){
                     /*编辑机构或子机构*/
                     if(struct.id===''){
@@ -873,8 +875,11 @@ angular.module('app')
                         return false;
                     }
                     param['id']=struct.id;
-                    param['sysUserId']=struct.sysUserId
+                    param['sysUserId']=struct.sysUserId;
+                    param['parentId']=struct.parentId;
                 }
+                console.log(struct);
+                console.log(struct.type);
                 toolUtil
                     .requestHttp({
                         url:struct.type==='add'?'/organization/add':'/organization/update',

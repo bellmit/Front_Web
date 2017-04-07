@@ -150,7 +150,6 @@ angular.module('power.service',[])
 														menu:temp_power
 													});
 												}
-												console.log(temp_html);
 												if(mode){
 													mode['tbody']=$sce.trustAsHtml(temp_html);
 												}
@@ -227,7 +226,7 @@ angular.module('power.service',[])
 									str+='<label class="btn btn-default g-gap-mb2 g-gap-mr2"><input data-roleid="'+temp_id+'" data-prid="'+subitem["prid"]+'" data-modid="'+subitem["modId"]+'" type="checkbox" name="'+item["module"]+'" />&nbsp;'+subitem["funcName"]+'</label>';
 								}else if(ispermit===1){
 									/*有权限*/
-									str+='<label class="btn btn-default g-gap-mb2 g-gap-mr2"><input data-roleid="'+temp_id+'" data-prid="'+subitem["prid"]+'" data-modid="'+subitem["modId"]+'" checked="checked" type="checkbox" name="'+item["module"]+'" />&nbsp;'+subitem["funcName"]+'</label>';
+									str+='<label class="btn btn-default g-gap-mb2 g-gap-mr2"><input data-roleid="'+temp_id+'" data-prid="'+subitem["prid"]+'" data-modid="'+subitem["modId"]+'" checked="true" type="checkbox" name="'+item["module"]+'" />&nbsp;'+subitem["funcName"]+'</label>';
 								}
 							}
 						}else{
@@ -243,7 +242,7 @@ angular.module('power.service',[])
 									str+='<label class="btn btn-default g-gap-mb2 g-gap-mr2"><input data-prid="'+subitem["prid"]+'" data-modid="'+subitem["modId"]+'" type="checkbox" name="'+item["module"]+'" />&nbsp;'+subitem["funcName"]+'</label>';
 								}else if(ispermit===1){
 									/*有权限*/
-									str+='<label class="btn btn-default g-gap-mb2 g-gap-mr2"><input data-prid="'+subitem["prid"]+'" data-modid="'+subitem["modId"]+'"  checked="checked" type="checkbox" name="'+item["module"]+'" />&nbsp;'+subitem["funcName"]+'</label>';
+									str+='<label class="btn btn-default g-gap-mb2 g-gap-mr2"><input data-prid="'+subitem["prid"]+'" data-modid="'+subitem["modId"]+'"  checked="true" type="checkbox" name="'+item["module"]+'" />&nbsp;'+subitem["funcName"]+'</label>';
 								}
 							}
 						}
@@ -252,7 +251,7 @@ angular.module('power.service',[])
 					str+="</td>";
 				}
 			}
-			return '<tr>'+str+'</tr>';
+			return '<tr data-random="'+Math.floor(Math.random() * 1000000)+'">'+str+'</tr>';
 		};
 
 		/*权限服务--全选权限*/
