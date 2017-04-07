@@ -1191,8 +1191,6 @@
 				}
 			}
 
-			/*解析权限*/
-			self.resolvePower(data,true);
 
 			if(inject&&inject.render){
 				menustr+=inject.result;
@@ -1240,73 +1238,6 @@
 				console.log('error');
 			});
 			return res;
-		};
-
-
-		/*权限分配*/
-		/*菜单权限映射*/
-		tools.powerMap={};
-		/*解析权限*/
-		tools.resolvePower=function(data,flag){
-			/*
-			 * data:数据源
-			 * flag:是否存入缓存
-			 * */
-			var self=this,
-				cachePower;
-
-			if(flag){
-				cachePower=self.getParams('power_module')/*调用缓存*/
-				if(cachePower){
-					/*如果存在缓存，则读取缓存*/
-					self.powerMap=cachePower;
-				}else{
-					self.handlePower(data,flag);
-				}
-			}else{
-				return self.handlePower(data,flag);
-			}
-		};
-		/*处理权限*/
-		tools.handlePower=function(data){
-			var self=this;
-			/*
-			 * data:数据源
-			 * flag:是否存入缓存
-			 * */
-			/*解析权限*/
-			var menu=data.result.menu,
-				len=menu.length,
-				i=0,
-				prkey='permitItem',
-				item=null,
-				pritem=null,
-				modid_map={},
-				result={};
-
-			for(i;i<len;i++){
-				item=menu[i];
-				/*解析权限*/
-				var ispr=typeof (pritem=item[prkey])!=='undefined';
-				if(ispr){
-					var k= 0,
-						prlen=pritem.length,
-						poweritem={};
-					for(k;k<prlen;k++){
-						var temppt=pritem[k],
-							prid=temppt.prid;
-						poweritem[prid]=temppt;
-					}
-					if(typeof modid_map[item.modId]==='undefined'){
-						modid_map[item.modId]=poweritem;
-					}else{
-						modid_map[item.modId]=$.extend(true,{},poweritem);
-					}
-				}
-				result=$.extend(true,{},modid_map);
-			}
-			/*然后存入缓存*/
-			return result;
 		};
 
 

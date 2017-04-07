@@ -1,6 +1,6 @@
 /*首页控制器*/
 angular.module('app')
-    .controller('StructController', ['structService','powerService',function(structService,powerService){
+    .controller('StructController', ['structService','powerService','toolDialog','$sce','$timeout',function(structService,powerService,toolDialog,$sce,$timeout){
         var self=this;
 
         /*模型--tab选项卡*/
@@ -18,11 +18,16 @@ angular.module('app')
         /*模型--虚拟挂载点*/
         this.root=structService.getRoot();
 
-        /*模型--权限*/
+        /*模型--权限头部*/
+        var p_thead=powerService.createThead({
+            flag:true
+        });
         this.power={
-            colgroup:'',
-            thead:'',
-            tbody:''
+            colgroup:$sce.trustAsHtml(p_thead.colgroup),
+            thead:$sce.trustAsHtml(p_thead.thead),
+            tbody:$sce.trustAsHtml(powerService.resolvePowerList({
+                clear:true
+            }))
         };
 
         /*模型--搜索*/
@@ -78,10 +83,6 @@ angular.module('app')
         /*初始化加载，事件绑定*/
         if(this.root){
             /*初始化模型*/
-            powerService.createThead({
-                flag:true
-            },this.power);
-
             this.setting.id=this.root.id;
             this.setting.orgname=this.root.orgname;
 
@@ -379,8 +380,7 @@ angular.module('app')
                     structService.actionStruct({
                         modal:config,
                         setting:self.setting,
-                        struct:self.struct,
-                        power:self.power
+                        struct:self.struct
                     });
                 }
             };

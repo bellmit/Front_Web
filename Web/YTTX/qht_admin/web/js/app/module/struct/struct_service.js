@@ -509,6 +509,7 @@ angular.module('app')
             var modal=config.modal,
                 setting=config.setting,
                 struct=config.struct,
+                power=config.power,
                 type=modal.type;
 
             /*判断是否是合法的节点，即是否有父机构*/
@@ -542,6 +543,13 @@ angular.module('app')
                 self.queryOperateInfo(config);
             }else if(type==='add'){
                 /*to do*/
+                /*查询权限*/
+                powerService.reqPowerList({
+                    url:'/organization/permission/select',
+                    param:{
+                        organizationId:setting.id
+                    }
+                },power);
                 /*显示弹窗*/
                 self.toggleModal({
                     display:modal.display,
@@ -554,6 +562,7 @@ angular.module('app')
         this.queryOperateInfo=function (config) {
             var setting=config.setting,
                 struct=config.struct,
+                power=config.power,
                 modal=config.modal,
                 param=$.extend(true,{},cache.loginMap.param);
 
@@ -643,26 +652,14 @@ angular.module('app')
                                                     /*是否指定权限*/
                                                     var temp_power=parseInt(list[i],10);
                                                     struct[i]=temp_power;
-                                                    if(temp_power===1){
-                                                        /*指定权限*/
-                                                        /*to do
-                                                        需要查询选中的权限
-                                                        * */
-                                                        var temp_powerlist={};
-                                                        powerService.queryPowerById({
+                                                    powerService.reqPowerList({
+                                                        url:'/organization/permission/select',
+                                                        param:{
                                                             id:list['id'],
-                                                            url:'/organization/permission/select',
-                                                            result:temp_powerlist
-                                                        });
-                                                        /*延迟处理权限结果*/
-                                                        setTimeout(function () {
-                                                            if(temp_powerlist!==null && angular.isObject(temp_powerlist)){
-                                                                powerService.selectPowerByItem({
-                                                                    data:temp_powerlist
-                                                                });
-                                                            }
-                                                        },500);
-                                                    }else if(temp_power===0){
+                                                            parentId:list['parentId']
+                                                        }
+                                                    },power);
+                                                    if(temp_power===0){
                                                         /*全部权限*/
                                                         struct['checkedFunctionIds']='';
                                                     }
