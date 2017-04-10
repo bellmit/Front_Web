@@ -114,8 +114,10 @@
       display:inline-block !important;
     }
   }
-  .ts-adjustpos{
-    cursor:move;
+
+  .ts-posup,
+  .ts-posdown{
+    cursor:pointer;
     >ul{
       cursor: default;
       li{
@@ -144,6 +146,21 @@
         content:'' !important;
         font-family:'' !important;
       }
+    }
+  }
+
+  .ts-posup{
+    &:before,
+    &::before{
+      content:'\e63d';
+      font-family: 'ux_six';
+    }
+  }
+  .ts-posdown{
+    &:before,
+    &::before{
+      content:'\down';
+      font-family: 'ux_six';
     }
   }
 }

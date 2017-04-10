@@ -129,45 +129,84 @@ angular.module('power.service',[])
 									if(menu){
 										var len=menu.length;
 										if(len===0){
-											if(mode){
-												mode['tbody']=$sce.trustAsHtml('<tr><td colspan="'+h_len+'" class="g-c-gray9 g-fs4 g-t-c g-b-white">没有查询到权限信息</td></tr>');
-											}
-										}else{
-											/*解析数据*/
-											/*将查询数据按照模块解析出来*/
-											var templist=toolUtil.resolveMainMenu(menu);
-											if(templist!==null){
-												var temp_power=templist['power'],
-													temp_html='';
-												/*将模块数据解析转换成html数据*/
-												if(config.clear){
-													temp_html=self.resolvePowerList({
-														menu:temp_power,
-														clear:true
-													});
-												}else{
-													temp_html=self.resolvePowerList({
-														menu:temp_power
-													});
+											/*直接获取原始数据*/
+											if(config.source){
+												if(config.sourcefn && typeof config.sourcefn==='function'){
+													config.sourcefn.call(null,null);
 												}
-												if(mode){
-													mode['tbody']=$sce.trustAsHtml(temp_html);
-												}
+												return true;
 											}else{
 												if(mode){
 													mode['tbody']=$sce.trustAsHtml('<tr><td colspan="'+h_len+'" class="g-c-gray9 g-fs4 g-t-c g-b-white">没有查询到权限信息</td></tr>');
 												}
 											}
+										}else{
+											var templist=toolUtil.resolveMainMenu(menu);
+											/*直接获取原始数据*/
+											if(config.source){
+												if(templist!==null){
+													if(config.sourcefn && typeof config.sourcefn==='function'){
+														config.sourcefn.call(null,templist['power']);
+													}
+												}else{
+													if(config.sourcefn && typeof config.sourcefn==='function'){
+														config.sourcefn.call(null,null);
+													}
+												}
+												return true;
+											}else{
+												/*解析数据*/
+												/*将查询数据按照模块解析出来*/
+												if(templist!==null){
+													var temp_power=templist['power'],
+														temp_html='';
+													/*将模块数据解析转换成html数据*/
+													if(config.clear){
+														temp_html=self.resolvePowerList({
+															menu:temp_power,
+															clear:true
+														});
+													}else{
+														temp_html=self.resolvePowerList({
+															menu:temp_power
+														});
+													}
+													if(mode){
+														mode['tbody']=$sce.trustAsHtml(temp_html);
+													}
+												}else{
+													if(mode){
+														mode['tbody']=$sce.trustAsHtml('<tr><td colspan="'+h_len+'" class="g-c-gray9 g-fs4 g-t-c g-b-white">没有查询到权限信息</td></tr>');
+													}
+												}
+											}
+
 										}
 									}else{
-										/*填充子数据到操作区域,同时显示相关操作按钮*/
-										if(mode){
-											mode['tbody']=$sce.trustAsHtml('<tr><td colspan="'+h_len+'" class="g-c-gray9 g-fs4 g-t-c g-b-white">没有查询到权限信息</td></tr>');
+										/*直接获取原始数据*/
+										if(config.source){
+											if(config.sourcefn && typeof config.sourcefn==='function'){
+												config.sourcefn.call(null,null);
+											}
+											return true;
+										}else{
+											/*填充子数据到操作区域,同时显示相关操作按钮*/
+											if(mode){
+												mode['tbody']=$sce.trustAsHtml('<tr><td colspan="'+h_len+'" class="g-c-gray9 g-fs4 g-t-c g-b-white">没有查询到权限信息</td></tr>');
+											}
 										}
 									}
 								}else{
-									if(mode){
-										mode['tbody']=$sce.trustAsHtml('<tr><td colspan="'+h_len+'" class="g-c-gray9 g-fs4 g-t-c g-b-white">没有查询到权限信息</td></tr>');
+									/*直接获取原始数据*/
+									if(config.source){
+										if(config.sourcefn && typeof config.sourcefn==='function'){
+											config.sourcefn.call(null,null);
+										}
+										return true;
+									}else{
+										if(mode){
+											mode['tbody']=$sce.trustAsHtml('<tr><td colspan="'+h_len+'" class="g-c-gray9 g-fs4 g-t-c g-b-white">没有查询到权限信息</td></tr>');
+										}
 									}
 								}
 							}
@@ -180,8 +219,16 @@ angular.module('power.service',[])
 						}else{
 							console.log('请求权限失败');
 						}
-						if(mode){
-							mode['tbody']=$sce.trustAsHtml('<tr><td colspan="'+h_len+'" class="g-c-gray9 g-fs4 g-t-c g-b-white">没有查询到权限信息</td></tr>');
+						/*直接获取原始数据*/
+						if(config.source){
+							if(config.sourcefn && typeof config.sourcefn==='function'){
+								config.sourcefn.call(null,null);
+							}
+							return true;
+						}else{
+							if(mode){
+								mode['tbody']=$sce.trustAsHtml('<tr><td colspan="'+h_len+'" class="g-c-gray9 g-fs4 g-t-c g-b-white">没有查询到权限信息</td></tr>');
+							}
 						}
 					});
 		};
@@ -203,12 +250,13 @@ angular.module('power.service',[])
 						temp_id=typeof config.id!=='undefined'?config.id:'';
 				}
 				for(i;i<len;i++){
-					var index=parseInt(h_items[i],10);
-					str+='<td class="g-b-white">';
-					var item=request?menuitem[index]:powerCache[index],
+					var index=parseInt(h_items[i],10),
+						item=request?menuitem[index]:powerCache[index],
 						power=item['power'],
 						j=0,
 						sublen=power.length;
+
+					str+='<td class="g-b-white">';
 
 					for(j;j<sublen;j++){
 						var subitem=power[j];
@@ -303,14 +351,63 @@ angular.module('power.service',[])
 			return selectarr;
 		};
 
-		/*权限服务--全选权限--根据已有权限反射选中权限*/
-		this.selectPowerByItem=function (config) {
-			if(!config.data){
+
+		/*权限服务--过滤权限--(主要为父级和子级之间的关系)*/
+		this.filterPower=function (odata,ndata) {
+			if(!odata){
 				return false;
 			}
-			if(typeof config.data!=='string'){
+			if(!ndata){
 				return false;
 			}
+			if(h_len===0){
+				return false;
+			}
+			var i=0,
+				source=$.extend(true,{},ndata);
+
+			for(i;i<h_len;i++){
+				var index=parseInt(h_items[i],10),
+					item=odata[index],
+					child_item=source[index],
+					power=item['power']/*array*/,
+					child_power=child_item['power']/*array*/,
+					sublen=power.length,
+					child_sublen=child_power.length,
+					j=0,
+					ispermit,
+					count=0;
+
+				for(j;j<sublen;j++){
+					var subitem=power[j],
+						prid=parseInt(subitem["prid"],10);
+
+					/*根据设置或者配置结果来*/
+					ispermit=parseInt(subitem["isPermit"],10);
+
+					/*开始过滤子权限*/
+					if(ispermit===0){
+						/*没有权限*/
+						/*查找子权限*/
+						var k=0;
+						for(k;k<child_sublen;k++){
+							var child_subitem=child_power[k],
+								child_prid=parseInt(child_subitem["prid"],10);
+
+							/*是否是同一个权限值*/
+							if(prid===child_prid){
+								/*如果存在相同的权限，且父权限没有权限，那么需要清除此子权限*/
+							}
+						}
+						str+='<label class="btn btn-default g-gap-mb2 g-gap-mr2"><input data-roleid="'+temp_id+'" data-prid="'+subitem["prid"]+'" data-modid="'+subitem["modId"]+'" type="checkbox" name="'+item["module"]+'" />&nbsp;'+subitem["funcName"]+'</label>';
+					}else if(ispermit===1){
+						/*有权限则查找下面的权限*/
+						continue;
+					}
+
+				}
+			}
+
 			/*序列化数据*/
 			var temp_data=config.data.split(','),
 				power_map={},

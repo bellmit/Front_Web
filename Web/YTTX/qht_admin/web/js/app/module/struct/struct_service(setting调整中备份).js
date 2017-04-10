@@ -20,14 +20,19 @@ angular.module('app')
 
 
         /*导航服务--获取虚拟挂载点*/
-        this.getRoot=function () {
+        this.getRoot=function (setting) {
             var islogin=loginService.isLogin(cache);
             if(islogin){
                 var logininfo=cache.loginMap;
-                return {
-                    'orgname':logininfo.username,
-                    'id':logininfo.param.organizationId
-                };
+                if(setting){
+                    setting.root_id=logininfo.param.organizationId;
+                    setting.root_orgname=logininfo.username;
+                    setting.current_id=logininfo.param.organizationId;
+                    setting.current_orgname=logininfo.username;
+                    setting.root_layer=0;
+                    setting.current_layer=0;
+                }
+                return true;
             }else{
                 /*退出系统*/
                 cache=null;
@@ -35,55 +40,61 @@ angular.module('app')
                     clear:true,
                     reload:true
                 });
-                return null;
+                return false;
             }
         };
         /*导航服务--获取导航*/
         this.getMenuList=function (config) {
-            var islogin=loginService.isLogin(cache);
-            if(islogin){
-                var param=$.extend(true,{},cache.loginMap.param);
+            if(cache){
+                var param=$.extend(true,{},cache.loginMap.param),
+                    search=config.search,
+                    setting=config.setting,
+                    type=config.type/*load:加载数据，action:操作数据*/,
+                    $actiondom,
+                    layer,
+                    parent_id,
+                    $menuwrap;
 
+                /*组合参数*/
                 param['isShowSelf']=0;
-                if(config.search!==''){
-                    param['orgname']=config.search;
+                if(search.orgname!==''){
+                    param['orgname']=search.orgname;
                 }
 
-                if(typeof config.type!=='undefined'&&config.type==='search'){
-                    /*检索则清空查询内容*/
+                /*加载，查询数据*/
+                if(type==='load'){
+                    /*检索或加载数据则清空查询内容*/
                     $admin_struct_submenu.html('');
                     $admin_struct_list.html('');
-                }
 
-                var layer,
-                    id,
-                    $wrap;
-
-                /*初始化加载*/
-                if(typeof config.$reqstate==='undefined'){
                     layer=0;
-                    /*根目录则获取新配置参数*/
-                    id=param['organizationId'];
-                    $wrap=$admin_struct_submenu;
-                }else{
-                    /*非根目录则获取新请求参数*/
-                    layer=config.$reqstate.attr('data-layer');
-                    $wrap=config.$reqstate.next();
-                    id=config.$reqstate.attr('data-id');
+                    parent_id=param['organizationId'];
+                    $menuwrap=$admin_struct_submenu;
+
+                    /*变更模型*/
+                    setting.parent_id='';
+                    setting.parent_orgname='';
+                    setting.current_id=
+                }else if(type==='action'){
+                    /*操作数据*/
+                    $actiondom=config.$actiondom;
+
+                    layer=$actiondom.attr('data-layer');
+                    $menuwrap=$actiondom.next();
+                    parent_id=$actiondom.attr('data-id');
 
                     /*判断是否是合法的节点*/
                     if(layer>=BASE_CONFIG.submenulimit){
                         /*遇到极限节点，不查询数据*/
                         self.initOperate({
                             data:null,
-                            $wrap:$admin_struct_list,
-                            setting:config.setting
+                            $menuwrap:$admin_struct_list,
+                            setting:setting
                         });
                         return false;
                     }
-                    param['organizationId']=id;
+                    param['organizationId']=parent_id;
                 }
-
 
                 toolUtil
                     .requestHttp({
@@ -107,7 +118,6 @@ angular.module('app')
                                     if(code===999){
                                         /*退出系统*/
                                         cache=null;
-                                        islogin=false;
                                         toolUtil.loginTips({
                                             clear:true,
                                             reload:true
@@ -123,16 +133,16 @@ angular.module('app')
                                             var len=list.length;
                                             if(len===0){
                                                 if(layer===0){
-                                                    $wrap.html('<li><a>暂无数据</a></li>');
+                                                    $menuwrap.html('<li><a>暂无数据</a></li>');
                                                     /*填充子数据到操作区域,同时显示相关操作按钮*/
                                                     self.initOperate({
                                                         data:'',
                                                         id:id,
-                                                        $wrap:$admin_struct_list,
+                                                        $menuwrap:$admin_struct_list,
                                                         setting:config.setting
                                                     });
                                                 }else{
-                                                    $wrap.html('');
+                                                    $menuwrap.html('');
                                                     /*清除显示下级菜单导航图标*/
                                                     config.$reqstate.attr({
                                                         'data-isrequest':true
@@ -142,7 +152,7 @@ angular.module('app')
                                                         data:'',
                                                         id:id,
                                                         orgname:config.$reqstate.attr('data-label'),
-                                                        $wrap:$admin_struct_list,
+                                                        $menuwrap:$admin_struct_list,
                                                         setting:config.setting
                                                     });
                                                 }
@@ -152,7 +162,7 @@ angular.module('app')
                                                     layer:layer,
                                                     id:id
                                                 });
-                                                $wrap.html(str);
+                                                $menuwrap.html(str);
                                                 if(layer!==0){
                                                     config.$reqstate.attr({
                                                         'data-isrequest':true
@@ -162,7 +172,7 @@ angular.module('app')
                                                 /*填充子数据到操作区域,同时显示相关操作按钮*/
                                                 self.initOperate({
                                                     data:list,
-                                                    $wrap:$admin_struct_list,
+                                                    $menuwrap:$admin_struct_list,
                                                     id:id,
                                                     layer:layer,
                                                     setting:config.setting
@@ -172,18 +182,18 @@ angular.module('app')
                                             /*填充子数据到操作区域,同时显示相关操作按钮*/
                                             self.initOperate({
                                                 data:null,
-                                                $wrap:$admin_struct_list,
+                                                $menuwrap:$admin_struct_list,
                                                 setting:config.setting
                                             });
                                         }
                                     }else{
                                         if(layer===0){
-                                            $wrap.html('<li><a>暂无数据</a></li>');
+                                            $menuwrap.html('<li><a>暂无数据</a></li>');
                                         }
                                         /*填充子数据到操作区域,同时显示相关操作按钮*/
                                         self.initOperate({
                                             data:null,
-                                            $wrap:$admin_struct_list,
+                                            $menuwrap:$admin_struct_list,
                                             setting:config.setting
                                         });
                                     }
@@ -198,12 +208,12 @@ angular.module('app')
                                 console.log('请求菜单失败');
                             }
                             if(layer===0){
-                                $wrap.html('<li><a>暂无数据</a></li>');
+                                $menuwrap.html('<li><a>暂无数据</a></li>');
                             }
                             /*填充子数据到操作区域,同时显示相关操作按钮*/
                             self.initOperate({
                                 data:null,
-                                $wrap:$admin_struct_list,
+                                $menuwrap:$admin_struct_list,
                                 setting:config.setting
                             });
                         });
@@ -321,53 +331,53 @@ angular.module('app')
         /*机构设置--初始化操作区域*/
         this.initOperate=function (config) {
             var data=config.data,
-                $wrap;
+                $menuwrap;
 
-            if(typeof config.$wrap==='undefined'){
-                $wrap=$admin_struct_list;
-                config['$wrap']=$wrap;
+            if(typeof config.$menuwrap==='undefined'){
+                $menuwrap=$admin_struct_list;
+                config['$menuwrap']=$menuwrap;
             }else{
-                $wrap=config.$wrap;
+                $menuwrap=config.$menuwrap;
             }
 
             if(data===null){
                 /*清空内容*/
-                $wrap.html('');
+                $menuwrap.html('');
                 /*设置操作状态*/
                 config.setting.add_substruct_state=false;
                 config.setting.adjust_pos_state=false;
-                config.setting.id='';
-                config.setting.orgname='';
-                config.setting.c_id='';
-                config.setting.c_orgname='';
+                config.setting.parent_id='';
+                config.setting.parent_orgname='';
+                config.setting.current_id='';
+                config.setting.current_orgname='';
             }else{
                 /*设置操作状态*/
                 if(data===''){
                     config.setting.add_substruct_state=true;
                     config.setting.adjust_pos_state=false;
-                    config.setting.id=config.id;
-                    config.setting.orgname=config.orgname?config.orgname:'';
-                    config.setting.c_id='';
-                    config.setting.c_orgname='';
+                    config.setting.parent_id=config.id;
+                    config.setting.parent_orgname=config.orgname?config.orgname:'';
+                    config.setting.current_id='';
+                    config.setting.current_orgname='';
                     /*清空内容*/
-                    $wrap.html('');
+                    $menuwrap.html('');
                 }else{
                     if(config.layer===0){
                         /*虚拟挂载点*/
-                        config.setting.id=config.id;
-                        config.setting.orgname=config.orgname;
+                        config.setting.parent_id=config.id;
+                        config.setting.parent_orgname=config.orgname;
                     }else{
                         if(typeof config.id!=='undefined'){
-                            config.setting.id=config.id;
+                            config.setting.parent_id=config.id;
                         }else{
-                            config.setting.id='';
+                            config.setting.parent_id='';
                         }
-                        config.setting.orgname='';
+                        config.setting.parent_orgname='';
                     }
                     config.setting.add_substruct_state=true;
                     config.setting.adjust_pos_state=true;
-                    config.setting.c_id='';
-                    config.setting.c_orgname='';
+                    config.setting.current_id='';
+                    config.setting.current_orgname='';
                     self.renderOperate(config);
                 }
             }
@@ -385,7 +395,7 @@ angular.module('app')
                 orgname;
 
             if(layer>=BASE_CONFIG.submenulimit){
-                config.$wrap.html('');
+                config.$menuwrap.html('');
             }else{
                 layer++;
                 for(i;i<len;i++){
@@ -394,7 +404,7 @@ angular.module('app')
                         orgname=curitem['orgname'];
                     str+='<li class="ts-reload" data-label="'+orgname+'" data-id="'+id+'" data-layer="'+layer+'">'+orgname+'<span title="加载数据" data-isrequest="false" data-id="'+id+'"></span><ul></ul></li>';
                 }
-                $(str).appendTo(config.$wrap.html(''));
+                $(str).appendTo(config.$menuwrap.html(''));
             }
         };
         /*机构设置--获取机构列表*/
@@ -448,7 +458,7 @@ angular.module('app')
                                         if(list){
                                             var len=list.length;
                                             if(len===0){
-                                                config.$wrap.html('');
+                                                config.$menuwrap.html('');
                                                 /*清除显示下级菜单导航图标*/
                                                 config.$reqstate.attr({
                                                     'data-isrequest':true
@@ -466,7 +476,7 @@ angular.module('app')
                                                     var curitem=list[i];
                                                     str+='<li data-label="'+curitem['orgname']+'" data-id="'+curitem['id']+'">'+curitem["orgname"]+'</li>';
                                                 }
-                                                $(str).appendTo(config.$wrap.html(''));
+                                                $(str).appendTo(config.$menuwrap.html(''));
                                             }
                                         }else{
                                             config.$reqstate.attr({
@@ -513,13 +523,13 @@ angular.module('app')
                 type=modal.type;
 
             /*判断是否是合法的节点，即是否有父机构*/
-            if(!setting.id  &&  typeof setting.id ==='undefined'){
+            if(!setting.parent_id  &&  typeof setting.parent_id ==='undefined'){
                 toolDialog.show({
                     type:'warn',
                     value:'没有父机构或父机构不存在'
                 });
                 return false;
-            }else if(setting.id===''){
+            }else if(setting.parent_id===''){
                 toolDialog.show({
                     type:'warn',
                     value:'没有父机构或父机构不存在'
@@ -547,7 +557,7 @@ angular.module('app')
                 powerService.reqPowerList({
                     url:'/organization/permission/select',
                     param:{
-                        organizationId:setting.id
+                        organizationId:setting.parent_id
                     }
                 },power);
                 /*显示弹窗*/
@@ -567,10 +577,10 @@ angular.module('app')
                 param=$.extend(true,{},cache.loginMap.param);
 
             /*判断参数*/
-            if(setting.c_id!==''){
-                param['id']=setting.c_id;
-            }else if(setting.c_id===''){
-                param['id']=setting.id;
+            if(setting.current_id!==''){
+                param['id']=setting.current_id;
+            }else if(setting.current_id===''){
+                param['id']=setting.parent_id;
             }
 
             toolUtil
@@ -699,76 +709,6 @@ angular.module('app')
         };
 
 
-        /*机构设置--调整机构位置*/
-        this.adjustStructPos=function (config) {
-            var data=config.data,
-                $wrap;
-
-            if(typeof config.$wrap==='undefined'){
-                $wrap=$admin_struct_list;
-                config['$wrap']=$wrap;
-            }else{
-                $wrap=config.$wrap;
-            }
-
-            if(data===null){
-                /*清空内容*/
-                $wrap.html('');
-                /*设置操作状态*/
-                config.setting.add_substruct_state=false;
-                config.setting.adjust_pos_state=false;
-                config.setting.id='';
-                config.setting.orgname='';
-                config.setting.c_id='';
-                config.setting.c_orgname='';
-            }else{
-                /*设置操作状态*/
-                if(data===''){
-                    config.setting.add_substruct_state=true;
-                    config.setting.adjust_pos_state=false;
-                    config.setting.id=config.id;
-                    config.setting.orgname=config.orgname?config.orgname:'';
-                    config.setting.c_id='';
-                    config.setting.c_orgname='';
-                    /*清空内容*/
-                    $wrap.html('');
-                }else{
-                    if(config.layer===0){
-                        /*虚拟挂载点*/
-                        config.setting.id=config.id;
-                        config.setting.orgname=config.orgname;
-                    }else{
-                        if(typeof config.id!=='undefined'){
-                            config.setting.id=config.id;
-                        }else{
-                            config.setting.id='';
-                        }
-                        config.setting.orgname='';
-                    }
-                    config.setting.add_substruct_state=true;
-                    config.setting.adjust_pos_state=true;
-                    config.setting.c_id='';
-                    config.setting.c_orgname='';
-                    self.renderOperate(config);
-                }
-            }
-        };
-        /*机构设置--校验机构数据*/
-        this.validStructPos=function (structpos) {
-            if(!structpos){
-               return false;
-            }
-            if(!angular.isObject(structpos)){
-                return false;
-            }
-            var count=0;
-            for(var i in structpos){
-                var positem=structpos[i];
-                
-            }
-        };
-
-
         /*弹出层服务*/
         this.toggleModal=function (config,fn) {
             var temp_timer=null;
@@ -841,6 +781,8 @@ angular.module('app')
                 }
             }
         };
+
+
 
 
         /*表单类服务--清空表单模型数据*/
@@ -932,7 +874,7 @@ angular.module('app')
 
                 if(struct.type==='add'){
                     /*新增机构或子机构*/
-                    param['parentId']=setting.id;
+                    param['parentId']=setting.parent_id;
                 }else if(struct.type==='edit'){
                     /*编辑机构或子机构*/
                     if(struct.id===''){
@@ -1023,6 +965,22 @@ angular.module('app')
         };
         
 
+
+        
+        /*提交编辑数据*/
+        this.updateRootOrgname=function(edit) {
+            if(edit.rootorgname===''){
+              return false;
+            }else{
+                /*to do*/
+                toolDialog.show({
+                    type:'succ',
+                    value:'编辑成功'
+                });
+                edit.editstate=true;
+            }
+        };
+        
 
 
         /*var cache=toolUtil.getParams(BASE_CONFIG.unique_key),
