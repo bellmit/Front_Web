@@ -43,12 +43,12 @@ angular.module('app')
         this.structpos={
             up:{
                 id:'',
-                node:'',
+                $node:'',
                 active:''
             },
             down:{
                 id:'',
-                node:'',
+                $node:'',
                 active:''
             }
         };
@@ -382,10 +382,6 @@ angular.module('app')
                         this.setting.c_orgname=$li.attr('data-label');
                     }
                 }
-
-                setTimeout(function () {
-                    console.log(self.setting);
-                },100);
             };
             /*操作机构表单*/
             this.actionStruct=function (config) {

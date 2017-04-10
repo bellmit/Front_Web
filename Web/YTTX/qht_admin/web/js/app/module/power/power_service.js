@@ -352,7 +352,7 @@ angular.module('power.service',[])
 		};
 
 
-		/*权限服务--过滤权限--(主要为父级和子级之间的关系)*/
+		/*权限服务--过滤权限--(主要为父级和子级之间的关系):odata:原数据(父级),ndata:过滤数据(子级)*/
 		this.filterPower=function (odata,ndata) {
 			if(!odata){
 				return false;
@@ -373,13 +373,12 @@ angular.module('power.service',[])
 					power=item['power']/*array*/,
 					child_power=child_item['power']/*array*/,
 					sublen=power.length,
-					child_sublen=child_power.length,
 					j=0,
-					ispermit,
-					count=0;
+					ispermit;
 
 				for(j;j<sublen;j++){
-					var subitem=power[j],
+					var child_sublen=child_power.length,
+						subitem=power[j],
 						prid=parseInt(subitem["prid"],10);
 
 					/*根据设置或者配置结果来*/
@@ -389,63 +388,26 @@ angular.module('power.service',[])
 					if(ispermit===0){
 						/*没有权限*/
 						/*查找子权限*/
-						var k=0;
-						for(k;k<child_sublen;k++){
-							var child_subitem=child_power[k],
-								child_prid=parseInt(child_subitem["prid"],10);
+						var k=child_sublen - 1,
+							child_subitem,
+							child_prid;
+						for(k;k>=0;k--){
+							child_subitem=child_power[k];
+							child_prid=parseInt(child_subitem["prid"],10);
 
 							/*是否是同一个权限值*/
 							if(prid===child_prid){
 								/*如果存在相同的权限，且父权限没有权限，那么需要清除此子权限*/
+								child_power.splice(k,1);
 							}
 						}
-						str+='<label class="btn btn-default g-gap-mb2 g-gap-mr2"><input data-roleid="'+temp_id+'" data-prid="'+subitem["prid"]+'" data-modid="'+subitem["modId"]+'" type="checkbox" name="'+item["module"]+'" />&nbsp;'+subitem["funcName"]+'</label>';
 					}else if(ispermit===1){
 						/*有权限则查找下面的权限*/
 						continue;
 					}
-
 				}
 			}
-
-			/*序列化数据*/
-			var temp_data=config.data.split(','),
-				power_map={},
-				len=temp_data.length,
-				i=0;
-
-			if(typeof len==='undefined'||len===0){
-				/*清空权限*/
-				this.clearSelectPower();
-				return false;
-			}else{
-				for(i;i<len;i++){
-					var temp_item=temp_data[i];
-					power_map[temp_item]=parseInt(temp_item,10);
-				}
-			}
-
-			var $input;
-			if(typeof config.dom!=='undefined'){
-				$input=$(dom);
-			}else{
-				$input=$admin_struct_allpower.find('input');
-			}
-
-			$input.each(function () {
-				var $this=$(this),
-					prid=parseInt($this.attr('data-prid'),10);
-
-				if(prid===power_map[prid]){
-					$this.prop({
-						'checked':true
-					});
-				}else{
-					$this.prop({
-						'checked':false
-					});
-				}
-			});
+			return source;
 		};
 
 		/*权限服务--获取选中选择权限*/

@@ -1,5 +1,5 @@
 angular.module('app')
-    .service('structService',['toolUtil','toolDialog','BASE_CONFIG','loginService','powerService','$timeout',function(toolUtil,toolDialog,BASE_CONFIG,loginService,powerService,$timeout){
+    .service('structService',['toolUtil','toolDialog','BASE_CONFIG','loginService','powerService','$timeout','$sce',function(toolUtil,toolDialog,BASE_CONFIG,loginService,powerService,$timeout,$sce){
 
         /*获取缓存数据*/
         var cache=loginService.getCache(),
@@ -543,7 +543,7 @@ angular.module('app')
                 self.queryOperateInfo(config);
             }else if(type==='add'){
                 /*to do*/
-                /*查询权限*/
+                /*查询权限--先查询当前权限*/
                 powerService.reqPowerList({
                     url:'/organization/permission/select',
                     param:{
@@ -651,18 +651,77 @@ angular.module('app')
                                                 case 'isDesignatedPermit':
                                                     /*是否指定权限*/
                                                     var temp_power=parseInt(list[i],10);
+
                                                     struct[i]=temp_power;
-                                                    powerService.reqPowerList({
-                                                        url:'/organization/permission/select',
-                                                        param:{
-                                                            id:list['id'],
-                                                            parentId:list['parentId']
-                                                        }
-                                                    },power);
                                                     if(temp_power===0){
                                                         /*全部权限*/
                                                         struct['checkedFunctionIds']='';
                                                     }
+
+                                                    /*查询权限--先查询当前权限(子级权限) --> 再查父级权限  --> 存在父子级权限，过滤子级权限*/
+                                                    powerService.reqPowerList({
+                                                        url:'/organization/permission/select',
+                                                        source:true,/*是否获取数据源*/
+                                                        sourcefn:function (cs) {
+                                                            /*数据源*/
+                                                            var child_data=cs,
+                                                                parent_data;
+                                                            console.log(child_data);
+                                                            if(child_data!==null){
+                                                                /*存在数据源*/
+                                                                powerService.reqPowerList({
+                                                                    url:'/organization/permission/select',
+                                                                    source:true,/*是否获取数据源*/
+                                                                    sourcefn:function (ps) {
+                                                                        /*数据源*/
+                                                                        parent_data=ps;
+                                                                        console.log(parent_data);
+                                                                        if(parent_data!==null){
+                                                                            /*存在数据源，开始过滤权限数据*/
+                                                                            var filter_data=powerService.filterPower(parent_data,child_data);
+                                                                            console.log(filter_data);
+                                                                            if(filter_data){
+                                                                                /*过滤后的数据即映射到视图*/
+                                                                                var power_html=powerService.resolvePowerList({
+                                                                                    menu:filter_data
+                                                                                });
+                                                                                /*更新模型*/
+                                                                                if(power_html && power){
+                                                                                    power['tbody']=$sce.trustAsHtml(power_html);
+                                                                                }
+                                                                            }else{
+                                                                                toolDialog.show({
+                                                                                    type:'warn',
+                                                                                    value:'过滤后的权限数据不正确'
+                                                                                });
+                                                                                return false;
+                                                                            }
+                                                                        }else{
+                                                                            /*提示信息*/
+                                                                            toolDialog.show({
+                                                                                type:'warn',
+                                                                                value:'没有父级权限数据'
+                                                                            });
+                                                                            return false;
+                                                                        }
+                                                                    },
+                                                                    param:{
+                                                                        organizationId:list['parentId']
+                                                                    }
+                                                                },power);
+                                                            }else{
+                                                                /*提示信息*/
+                                                                toolDialog.show({
+                                                                    type:'warn',
+                                                                    value:'没有子级权限数据'
+                                                                });
+                                                                return false;
+                                                            }
+                                                        },
+                                                        param:{
+                                                            organizationId:list['id']
+                                                        }
+                                                    },power);
                                                     break;
                                                 case 'sysUserId':
                                                     struct[i]=list[i];
@@ -753,18 +812,111 @@ angular.module('app')
                 }
             }
         };
+        /*机构设置--设置机构数据*/
+        this.setStructPos=function (config,data) {
+            if(!config){
+                return false;
+            }
+            var structpos=config.structpos,
+                key=config.key,
+                type=config.type,
+                result=this.validStructPos(structpos),
+                positem,
+                id;
+
+            if(result.flag){
+                if(type==='add'){
+                    var temppos=structpos[key];
+                    temppos['id']=data.id;
+                    temppos['$node']=data.$node;
+                    
+                }else if(type==='remove'){
+                    this.clearStructPos();
+                }
+            }else{
+
+            }
+
+            for(var i in structpos){
+                positem=structpos[i];
+                id=positem['id'];
+
+                if(id===''){
+                    result['key']=i;
+                    result['flag']=false;
+                    return result;
+                }
+            }
+            return result['flag']=true;
+        };
         /*机构设置--校验机构数据*/
         this.validStructPos=function (structpos) {
             if(!structpos){
                return false;
             }
-            if(!angular.isObject(structpos)){
-                return false;
-            }
-            var count=0;
+            var result={},
+                positem,
+                id,
+                count=0;
+
             for(var i in structpos){
-                var positem=structpos[i];
-                
+                positem=structpos[i];
+                id=positem['id'];
+
+                if(id===''){
+                    result['key']=i;
+                    result['flag']=false;
+                    return result;
+                }else{
+                    count++;
+                }
+            }
+            if(count===1){
+                result['key']='down';
+                result['flag']=false;
+                return result;
+            }else if(count===2){
+                result['key']='';
+                result['flag']=true;
+                return result;
+            }
+        };
+        /*机构设置--重置位置模型*/
+        this.clearStructPos=function (structpos,key) {
+            if(!structpos){
+               return false;
+            }
+
+            var positem,
+                id;
+            if(key && typeof structpos[key]!=='undefined'){
+                /*根据key值清除位置模型*/
+                positem=structpos[key];
+                id=positem['id'];
+
+                if(id!==''){
+                    /*有数据则清空数据*/
+                    positem['$node'].removeClass(positem['active']);
+                }
+                structpos[key]={
+                    id:'',
+                    $node:'',
+                    active:''
+                };
+            }else{
+                for(var i in structpos){
+                    positem=structpos[i];
+                    id=positem['id'];
+                    if(id!==''){
+                        /*有数据则清空数据*/
+                        positem['$node'].removeClass(positem['active']);
+                    }
+                    positem={
+                        id:'',
+                        $node:'',
+                        active:''
+                    };
+                }
             }
         };
 
@@ -946,8 +1098,6 @@ angular.module('app')
                     param['sysUserId']=struct.sysUserId;
                     param['parentId']=struct.parentId;
                 }
-                console.log(struct);
-                console.log(struct.type);
                 toolUtil
                     .requestHttp({
                         url:struct.type==='add'?'/organization/add':'/organization/update',
