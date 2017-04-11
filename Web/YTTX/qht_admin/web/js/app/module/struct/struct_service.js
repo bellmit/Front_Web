@@ -40,8 +40,7 @@ angular.module('app')
         };
         /*导航服务--获取导航*/
         this.getMenuList=function (config) {
-            var islogin=loginService.isLogin(cache);
-            if(islogin){
+            if(cache){
                 var param=$.extend(true,{},cache.loginMap.param);
 
                 param['isShowSelf']=0;
@@ -107,7 +106,6 @@ angular.module('app')
                                     if(code===999){
                                         /*退出系统*/
                                         cache=null;
-                                        islogin=false;
                                         toolUtil.loginTips({
                                             clear:true,
                                             reload:true
@@ -378,6 +376,7 @@ angular.module('app')
                 list=config.data,
                 len=list.length,
                 str='',
+                parentid=config.id,
                 layer=config.layer;
 
             var curitem,
@@ -392,16 +391,17 @@ angular.module('app')
                         curitem=list[i];
                         id=curitem['id'];
                         orgname=curitem['orgname'];
-                    str+='<li class="ts-reload" data-label="'+orgname+'" data-id="'+id+'" data-layer="'+layer+'">'+orgname+'<span title="加载数据" data-isrequest="false" data-id="'+id+'"></span><ul></ul></li>';
+                    str+='<li class="ts-reload" data-parentid="'+parentid+'" data-label="'+orgname+'" data-id="'+id+'" data-layer="'+layer+'">'+orgname+'<span title="加载数据" data-isrequest="false" data-id="'+id+'"></span><ul></ul></li>';
                 }
                 $(str).appendTo(config.$wrap.html(''));
             }
         };
         /*机构设置--获取机构列表*/
         this.getOperateList=function (config) {
-            var islogin=loginService.isLogin(cache);
-            if(islogin){
-                var param=$.extend(true,{},cache.loginMap.param);
+            if(cache){
+                var param=$.extend(true,{},cache.loginMap.param),
+                    layer=parseInt(config.layer,10) + 1,
+                    parentid=config.id;
 
                 param['isShowSelf']=0;
                 if(config.search!==''){
@@ -409,7 +409,9 @@ angular.module('app')
                 }
 
                 /*非根目录则获取新请求参数*/
-                param['organizationId']=config.id;
+                param['organizationId']=parentid;
+
+
 
                 toolUtil
                     .requestHttp({
@@ -428,12 +430,13 @@ angular.module('app')
                                 if(code!==0){
                                     if(typeof message !=='undefined'&&message!==''){
                                         console.log(message);
+                                    }else{
+                                        console.log('获取子机构失败');
                                     }
 
                                     if(code===999){
                                         /*退出系统*/
                                         cache=null;
-                                        islogin=null;
                                         toolUtil.loginTips({
                                             clear:true,
                                             reload:true
@@ -464,7 +467,7 @@ angular.module('app')
                                                 var i=0;
                                                 for(i;i<len;i++){
                                                     var curitem=list[i];
-                                                    str+='<li data-label="'+curitem['orgname']+'" data-id="'+curitem['id']+'">'+curitem["orgname"]+'</li>';
+                                                    str+='<li data-layer="'+layer+'" data-parentid="'+parentid+'" data-label="'+curitem['orgname']+'" data-id="'+curitem['id']+'">'+curitem["orgname"]+'</li>';
                                                 }
                                                 $(str).appendTo(config.$wrap.html(''));
                                             }
@@ -758,71 +761,110 @@ angular.module('app')
         };
 
 
+
         /*机构设置--调整机构位置*/
-        this.adjustStructPos=function (config) {
-            var data=config.data,
-                $wrap;
-
-            if(typeof config.$wrap==='undefined'){
-                $wrap=$admin_struct_list;
-                config['$wrap']=$wrap;
+        this.adjustStructPos=function (structpos,fn) {
+            var ispos=this.getStructPos(structpos);
+            if(!ispos){
+                toolDialog.show({
+                    type:'warn',
+                    value:'请选择所要调整的位置的2个对象'
+                });
+                return false;
             }else{
-                $wrap=config.$wrap;
-            }
+                /*to do request*/
+                if(cache){
+                    var param=$.extend(true,{},cache.loginMap.param);
 
-            if(data===null){
-                /*清空内容*/
-                $wrap.html('');
-                /*设置操作状态*/
-                config.setting.add_substruct_state=false;
-                config.setting.adjust_pos_state=false;
-                config.setting.id='';
-                config.setting.orgname='';
-                config.setting.c_id='';
-                config.setting.c_orgname='';
-            }else{
-                /*设置操作状态*/
-                if(data===''){
-                    config.setting.add_substruct_state=true;
-                    config.setting.adjust_pos_state=false;
-                    config.setting.id=config.id;
-                    config.setting.orgname=config.orgname?config.orgname:'';
-                    config.setting.c_id='';
-                    config.setting.c_orgname='';
-                    /*清空内容*/
-                    $wrap.html('');
+                    param['organizationIdUp']=ispos['up'];
+                    param['organizationIdDown']=ispos['down'];
+                    toolUtil
+                        .requestHttp({
+                            url:'/organization/position/setting',
+                            method:'post',
+                            set:true,
+                            data:param
+                        })
+                        .then(function(resp){
+                                var data=resp.data,
+                                    status=parseInt(resp.status,10);
+
+                                if(status===200){
+                                    var code=parseInt(data.code,10),
+                                        message=data.message;
+                                    if(code!==0){
+                                        if(typeof message !=='undefined'&&message!==''){
+                                            console.log(message);
+                                        }
+
+                                        if(code===999){
+                                            /*退出系统*/
+                                            cache=null;
+                                            toolUtil.loginTips({
+                                                clear:true,
+                                                reload:true
+                                            });
+                                        }else{
+                                            toolDialog.show({
+                                                type:'warn',
+                                                value:'位置调整失败'
+                                            });
+                                            /*更新模型*/
+                                            self.clearStructPos(structpos);
+                                        }
+                                    }else{
+                                        toolDialog.show({
+                                            type:'succ',
+                                            value:'位置调整成功'
+                                        });
+                                        /*更新模型*/
+                                        self.clearStructPos(structpos);
+                                        /*回调fn*/
+                                        if(fn && typeof fn==='function'){
+                                            fn.call(null);
+                                        }
+                                    }
+                                }
+                            },
+                            function(resp){
+                                var message=resp.data.message;
+                                if(typeof message !=='undefined'&&message!==''){
+                                    console.log(message);
+                                }else{
+                                    console.log('位置调整失败');
+                                }
+                            });
+
                 }else{
-                    if(config.layer===0){
-                        /*虚拟挂载点*/
-                        config.setting.id=config.id;
-                        config.setting.orgname=config.orgname;
-                    }else{
-                        if(typeof config.id!=='undefined'){
-                            config.setting.id=config.id;
-                        }else{
-                            config.setting.id='';
-                        }
-                        config.setting.orgname='';
-                    }
-                    config.setting.add_substruct_state=true;
-                    config.setting.adjust_pos_state=true;
-                    config.setting.c_id='';
-                    config.setting.c_orgname='';
-                    self.renderOperate(config);
+                    /*退出系统*/
+                    cache=null;
+                    toolUtil.loginTips({
+                        clear:true,
+                        reload:true
+                    });
                 }
             }
         };
         /*机构设置--设置机构数据,$node:node节点，structpos:位置模型*/
-        this.setStructPos=function ($node,structpos) {
+        this.setStructPos=function ($node,structpos,setting) {
+            if(!structpos){
+               return false;
+            }else if(!setting){
+                return false;
+            }
+
+
+
             var type='',
                 pos='',
-                active='',
-                valid,
+                active,
+                valid=this.validStructPos(structpos),
                 activemap={
                     up:'ts-posup',
                     down:'ts-posdown'
                 };
 
+            /*适配位置参数*/
             if($node.hasClass(activemap['up'])){
                 pos='up';
                 type='delete';
@@ -832,53 +874,111 @@ angular.module('app')
                     type='delete';
                 }else{
                     /*都不存在的情况需要判断之前是否已经选中了相关*/
-                    valid=this.validStructPos(structpos);
                     if(valid.flag){
                         /*已经有值：表示操作最后项*/
-
+                        pos='down';
+                        type='add';
                     }else{
                         /*没有值则根据相关值操作*/
+                        pos=valid.pos;
+                        type='add';
                     }
                 }
             }
+            active=activemap[pos];
 
-
-
-
-
-            var structpos=config.structpos,
-                pos=config.pos,
-                type=config.type,
-                valid=this.validStructPos(structpos),
-                positem,
-                id;
-
-            if(valid.flag){
-                /*有值，直接根据类型进行操作*/
-                if(type==='add'){
-                    var temppos=structpos[pos];
-                    temppos['id']=data.id;
-                    temppos['$node']=data.$node;
-                    
-                }else if(type==='remove'){
-                    this.clearStructPos(structpos,pos);
-                }
-            }else{
-                /*全无值或部分无值，需综合类型和位置进行判断*/
-
+            /*处理异常*/
+            if(pos===''){
+                pos='up';
+                type='add';
+                active=activemap[pos];
             }
 
-            for(var i in structpos){
-                positem=structpos[i];
-                id=positem['id'];
+            var temppos=structpos[pos],
+                id=temppos['id'],
+                label;
+
+            /*操作*/
+            if(type==='add'){
+                /*添加*/
+                var parentid=$node.attr('data-parentid'),
+                    layer=$node.attr('data-layer'),
+                    sibling,
+                    siblingitem,
+                    siblingid;
+
+                /*过滤层级和父标识*/
+                if(pos==='up'){
+                    sibling='down';
+                }else if(pos==='down'){
+                    sibling='up';
+                }
+                siblingitem=structpos[sibling];
+                siblingid=siblingitem['id'];
 
                 if(id===''){
-                    result['pos']=i;
-                    result['flag']=false;
-                    return result;
+                    /*过滤层级关系不一致的情况*/
+                    if(siblingid!=='' && siblingitem['layer']!==layer && siblingitem['parentid']!==parentid){
+                        toolDialog.show({
+                            type:'warn',
+                            value:'只能操作同一父级且同级别下的机构'
+                        });
+                        return false;
+                    }
+                    /*直接新增*/
+                    /*修改样式*/
+                    $node.addClass(active);
+                    /*赋值*/
+                    id=$node.attr('data-id');
+                    label=$node.attr('data-label');
+
+                    temppos['$node']=$node;
+                    temppos['active']=active;
+                    temppos['layer']=layer;
+                    temppos['parentid']=parentid;
+                }else{
+                    /*过滤层级关系不一致的情况*/
+                    if(siblingitem['layer']!==layer && siblingitem['parentid']!==parentid){
+                        toolDialog.show({
+                            type:'warn',
+                            value:'只能操作同一父级且同级别下的机构'
+                        });
+                        return false;
+                    }
+                    /*更新新增*/
+                    /*修改样式*/
+                    temppos['$node'].removeClass(temppos['active']);
+                    $node.addClass(active);
+                    /*清空,释放内存*/
+                    temppos['$node']=null;
+                    /*赋值*/
+                    temppos['id']=$node.attr('data-id');
+                    temppos['$node']=$node;
+                    temppos['active']=active;
+                    temppos['layer']=layer;
+                    temppos['parentid']=parentid;
                 }
+                /*赋值*/
+                temppos['id']=id;
+
+                /*模型变更*/
+                setting.c_id=id;
+                setting.c_orgname=label;
+            }else if(type==='delete'){
+                /*删除*/
+                /*修改样式*/
+                temppos['$node'].removeClass(temppos['active']);
+                /*清空,释放内存*/
+                temppos['$node']=null;
+                temppos['id']='';
+                temppos['active']='';
+                temppos['layer']='';
+                temppos['parentid']='';
+
+                /*模型变更*/
+                setting.c_id='';
+                setting.c_orgname='';
             }
-            return result['flag']=true;
         };
         /*机构设置--校验机构数据*/
         this.validStructPos=function (structpos) {
@@ -893,7 +993,6 @@ angular.module('app')
             for(var i in structpos){
                 positem=structpos[i];
                 id=positem['id'];
-
                 if(id===''){
                     result['pos']=i;
                     result['flag']=false;
@@ -904,51 +1003,64 @@ angular.module('app')
                         result['pos']=i;
                         result['flag']=false;
                     }else if(count===2){
-                        result['pos']='';
                         result['flag']=true;
                     }
                 }
             }
             return result;
         };
-        /*机构设置--重置位置模型*/
-        this.clearStructPos=function (structpos,pos) {
+        /*机构设置--获取机构数据*/
+        this.getStructPos=function (structpos) {
             if(!structpos){
-               return false;
+                return false;
             }
+            var result={},
+                positem,
+                id,
+                count=0;
 
-            var positem,
-                id;
-            if(pos && typeof structpos[pos]!=='undefined'){
-                /*根据pos值清除位置模型*/
-                positem=structpos[pos];
+            for(var i in structpos){
+                positem=structpos[i];
                 id=positem['id'];
 
-                if(id!==''){
-                    /*有数据则清空数据*/
-                    positem['$node'].removeClass(positem['active']);
+                if(id===''){
+                    return false;
+                }else{
+                    count++;
+                    result[i]=id;
                 }
+            }
+            if(count!==2){
+                return false;
+            }
+            return result;
+        };
+        /*清除机构数据*/
+        this.clearStructPos=function (structpos,pos) {
+            if(!structpos){
+                return false;
+            }
+            if(typeof pos!=='undefined'){
                 structpos[pos]={
                     id:'',
-                    $node:'',
-                    active:''
+                    $node:null,
+                    active:'',
+                    layer:'',
+                    parentid:''
                 };
             }else{
                 for(var i in structpos){
-                    positem=structpos[i];
-                    id=positem['id'];
-                    if(id!==''){
-                        /*有数据则清空数据*/
-                        positem['$node'].removeClass(positem['active']);
-                    }
-                    positem={
+                    structpos[i]={
                         id:'',
-                        $node:'',
-                        active:''
+                        $node:null,
+                        active:'',
+                        layer:'',
+                        parentid:''
                     };
                 }
             }
         };
+        
 
 
         /*弹出层服务*/
@@ -1201,232 +1313,5 @@ angular.module('app')
                 return false
             }
         };
-        
 
-
-
-        /*var cache=toolUtil.getParams(BASE_CONFIG.unique_key),
-            menudata=null;
-
-        /!*获取登陆信息*!/
-        this.isLogin=function () {
-            var logininfo=toolUtil.isLogin(cache),
-                islogin=false;
-            if(logininfo){
-                islogin=toolUtil.validLogin(cache.loginMap,BASE_CONFIG.basedomain);
-                if(!islogin){
-                    /!*不合格缓存信息，需要清除缓存*!/
-                    toolUtil.loginOut({
-                        router:'login',
-                        tips:true
-                    });
-                }
-                return islogin;
-            }else{
-                return false;
-            }
-        };
-        /!*处理登陆请求*!/
-        this.reqAction=function (resp,param) {
-            var data=resp.data,
-                status=parseInt(resp.status,10);
-
-            if(status===200){
-                var code=parseInt(data.code,10),
-                    result=data.result,
-                    message=data.message;
-                if(code!==0){
-                    if(typeof message !=='undefined'&&message!==''){
-                        toastr.info(message);
-                    }
-                    return false;
-                }else{
-                    /!*设置缓存*!/
-                    this.setCache({
-                        'isLogin':true,
-                        'datetime':moment().format('YYYY-MM-DD|HH:mm:ss'),
-                        'reqdomain':BASE_CONFIG.basedomain,
-                        'username':param,
-                        'param':{
-                            'adminId':encodeURIComponent(result.adminId),
-                            'token':encodeURIComponent(result.token),
-                            'organizationId':encodeURIComponent(result.organizationId)
-                        }
-                    });
-                    /!*加载菜单*!/
-                    this.loadMenuData(function () {
-                        /!*重新刷新页面*!/
-                        window.location.reload();
-                    });
-                    /!*加载动画*!/
-                    toolUtil.loading('show');
-                    var loadingid=setTimeout(function () {
-                        /!*更新缓存*!/
-                        cache=toolUtil.getParams(BASE_CONFIG.unique_key);
-                        /!*路由跳转*!/
-                        $state.go('app');
-                        toolUtil.loading('hide',loadingid);
-                    },1000);
-                    return true;
-                }
-            }else{
-                return false;
-            }
-        };
-        /!*加载菜单数据*!/
-        this.loadMenuData=function (fn) {
-            /!*判断登陆缓存是否有效*!/
-            var self=this,
-                islogin=self.isLogin();
-            if(islogin){
-                if(!cache.cacheMap.menuload){
-                    toolUtil
-                        .requestHttp({
-                            url:'/module/menu',
-                            method:'post',
-                            set:true,
-                            data:cache.loginMap.param
-                        })
-                        .then(function(resp){
-                                var data=resp.data,
-                                    status=parseInt(resp.status,10);
-
-                                if(status===200){
-                                    var code=parseInt(data.code,10),
-                                        message=data.message;
-                                    if(code!==0){
-                                        if(typeof message !=='undefined'&&message!==''){
-                                            console.log('message');
-                                        }
-                                        if(code===999){
-                                            /!*退出系统*!/
-                                            toolUtil.loginOut({
-                                                router:'login',
-                                                tips:true
-                                            });
-                                        }
-                                    }else{
-                                        /!*加载数据*!/
-                                        var result=data.result;
-                                        if(typeof result!=='undefined'){
-                                            /!*flag:是否设置首页*!/
-                                            var list=toolUtil.resolveMainMenu(result.menu,true);
-                                            if(list!==null){
-                                                /!*设置缓存*!/
-                                                cache['cacheMap']={
-                                                    menuload:true,
-                                                    powerload:true
-                                                };
-                                                cache['moduleMap']=list['module'];
-                                                cache['menuMap']=list['menu'];
-                                                cache['powerMap']=list['power'];
-                                                /!*更新缓存*!/
-                                                toolUtil.setParams(BASE_CONFIG.unique_key,cache);
-                                                /!*执行回掉*!/
-                                                if(typeof fn==='function'){
-                                                    fn();
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            },
-                            function(resp){
-                                var message=resp.data.message;
-                                if(typeof message !=='undefined'&&message!==''){
-                                    console.log(message);
-                                }else{
-                                    console.log('请求菜单失败');
-                                }
-                            });
-                }
-            }else{
-                toolUtil.loginOut({
-                    router:'login',
-                    tips:true
-                });
-            }
-        };
-        /!*获取菜单数据*!/
-        this.getMenuData=function () {
-            if(menudata===null){
-                var self=this,
-                    islogin=self.isLogin();
-
-                if(islogin){
-                    if(cache.cacheMap.menuload){
-                        /!*直接加载缓存*!/
-                        var list=toolUtil.loadMainMenu(cache.menuMap);
-                        if(list!==null){
-                            menudata=list;
-                            return menudata;
-                        }
-                    }
-                }else{
-                    toolUtil.loginOut({
-                        router:'login',
-                        tips:true
-                    });
-                }
-                return null;
-            }else{
-                return menudata;
-            }
-        };
-        /!**!/
-        /!*获取验证码*!/
-        this.getValidCode=function (config) {
-            var xhr = new XMLHttpRequest();
-
-            xhr.open("post",BASE_CONFIG.basedomain + BASE_CONFIG.baseproject + config.url, true);
-
-            xhr.responseType = "blob";
-            xhr.onreadystatechange = function() {
-                if (this.status == 200) {
-                    var blob = this.response,
-                        img = document.createElement("img");
-
-                    img.alt='验证码';
-                    try{
-                        img.onload = function(e) {
-                            window.URL.revokeObjectURL(img.src);
-                        };
-                        img.src = window.URL.createObjectURL(blob);
-                    }catch (e){
-                        console.log('不支持URL.createObjectURL');
-                    }
-
-                    if(config.wrap){
-                        angular.element('#'+config.wrap).html(img)||$('#'+config.wrap).html(img);
-                    }else if(config.fn&&typeof config.fn==='function'){
-                        config.fn.call(null,img);
-                    }
-                }
-            };
-            xhr.send();
-        };
-        /!*设置缓存*!/
-        this.setCache=function (data) {
-            if(cache){
-                cache.loginMap=data;
-            }else{
-                cache={
-                    cacheMap:{
-                        menuload:false,
-                        powerload:false
-                    },
-                    routeMap:{
-                        prev:'',
-                        current:'',
-                        setting:false
-                    },
-                    moduleMap:{},
-                    menuMap:{},
-                    powerMap:{},
-                    loginMap:data,
-                    settingMap:{}
-                };
-            }
-            toolUtil.setParams(BASE_CONFIG.unique_key,cache);
-        };*/
     }]);

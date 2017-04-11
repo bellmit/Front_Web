@@ -247,10 +247,17 @@
                                     </td>
                                     <td class="form-group">
                                         <select name="outboundType" class="form-control" id="admin_outboundType">
+                                            <option value="1" selected>销售出库</option>
+                                            <option value="2">退货出库</option>
+                                            <option value="3">其他出库</option>
+                                        </select>
+                                        <!--原来的数据
+                                        <select name="outboundType" class="form-control" id="admin_outboundType">
                                             <option value="1" selected>采购入库</option>
                                             <option value="2">退货入库</option>
                                             <option value="3">其它入库</option>
                                         </select>
+                                        -->
                                     </td>
                                     <td class="form-group">
                                         <select class="form-control self-error-tips" id="admin_providerId" name="providerId" data-validate="required" data-message-required="供应商不能为空" ></select>

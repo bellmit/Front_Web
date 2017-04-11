@@ -43,13 +43,17 @@ angular.module('app')
         this.structpos={
             up:{
                 id:'',
-                $node:'',
-                active:''
+                $node:null,
+                active:'',
+                layer:'',
+                parentid:''
             },
             down:{
                 id:'',
-                $node:'',
-                active:''
+                $node:null,
+                active:'',
+                layer:'',
+                parentid:''
             }
         };
 
@@ -332,7 +336,8 @@ angular.module('app')
                     /*数据状态*/
                     isreload=$item.hasClass('ts-reload');
                     if(isreload){
-                        var id=$span.attr('data-id');
+                        var id=$span.attr('data-id'),
+                            layer=$item.attr('data-layer');
                         /*显示*/
                         isrequest=$span.attr('data-isrequest');
                         if(isrequest==='false'){
@@ -343,6 +348,7 @@ angular.module('app')
                                 search:self.search.orgname,
                                 $reqstate:$span,
                                 $li:$item,
+                                layer:layer,
                                 id:id,
                                 $wrap:$ul
                             });
@@ -362,25 +368,7 @@ angular.module('app')
                     return false;
                 }else if(node==='li'){
                     var $li=$(target);
-                    if($li.hasClass('ts-adjustpos')){
-                        $li.removeClass('ts-adjustpos');
-                        /*同步模型*/
-                        this.setting.c_id='';
-                        this.setting.c_orgname='';
-                    }else{
-                        $li.addClass('ts-adjustpos').siblings().removeClass('ts-adjustpos');
-                        if(typeof $li.attr('data-layer')==='undefined'){
-                            var $pli=$li.parent().parent();
-                            $pli.removeClass('ts-adjustpos').siblings().removeClass('ts-adjustpos');
-                        }else{
-                            $li.find('li').each(function () {
-                                this.className='';
-                            });
-                        }
-                        /*同步模型*/
-                        this.setting.c_id=$li.attr('data-id');
-                        this.setting.c_orgname=$li.attr('data-label');
-                    }
+                    structService.setStructPos($li,self.structpos,self.setting);
                 }
             };
             /*操作机构表单*/
@@ -394,6 +382,13 @@ angular.module('app')
                         power:self.power
                     });
                 }
+            };
+            /*调整位置*/
+            this.adjustStructPos=function () {
+                structService.adjustStructPos(self.structpos,function () {
+                    /*成功后，重新加载数据*/
+                    self.initSubMenu();
+                });
             };
             /*选择登录用户名和密码*/
             this.changeLogin=function () {
@@ -445,6 +440,15 @@ angular.module('app')
                 self.struct.checkedFunctionIds='';
                 powerService.clearSelectPower();
             };
+
+
+
+            /*
+            * $('#example').dataTable( {
+                "dom": '<"top"i>rt<"bottom"flp><"clear">'
+             } );
+            * */
+
         }
 
 
