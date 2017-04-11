@@ -812,28 +812,59 @@ angular.module('app')
                 }
             }
         };
-        /*机构设置--设置机构数据*/
-        this.setStructPos=function (config,data) {
-            if(!config){
-                return false;
+        /*机构设置--设置机构数据,$node:node节点，structpos:位置模型*/
+        this.setStructPos=function ($node,structpos) {
+            var type='',
+                pos='',
+                active='',
+                valid,
+                activemap={
+                    up:'ts-posup',
+                    down:'ts-posdown'
+                };
+
+            if($node.hasClass(activemap['up'])){
+                pos='up';
+                type='delete';
+            }else{
+                if($node.hasClass(activemap['down'])){
+                    pos='down';
+                    type='delete';
+                }else{
+                    /*都不存在的情况需要判断之前是否已经选中了相关*/
+                    valid=this.validStructPos(structpos);
+                    if(valid.flag){
+                        /*已经有值：表示操作最后项*/
+
+                    }else{
+                        /*没有值则根据相关值操作*/
+                    }
+                }
             }
+
+
+
+
+
             var structpos=config.structpos,
-                key=config.key,
+                pos=config.pos,
                 type=config.type,
-                result=this.validStructPos(structpos),
+                valid=this.validStructPos(structpos),
                 positem,
                 id;
 
-            if(result.flag){
+            if(valid.flag){
+                /*有值，直接根据类型进行操作*/
                 if(type==='add'){
-                    var temppos=structpos[key];
+                    var temppos=structpos[pos];
                     temppos['id']=data.id;
                     temppos['$node']=data.$node;
                     
                 }else if(type==='remove'){
-                    this.clearStructPos();
+                    this.clearStructPos(structpos,pos);
                 }
             }else{
+                /*全无值或部分无值，需综合类型和位置进行判断*/
 
             }
 
@@ -842,7 +873,7 @@ angular.module('app')
                 id=positem['id'];
 
                 if(id===''){
-                    result['key']=i;
+                    result['pos']=i;
                     result['flag']=false;
                     return result;
                 }
@@ -864,41 +895,40 @@ angular.module('app')
                 id=positem['id'];
 
                 if(id===''){
-                    result['key']=i;
+                    result['pos']=i;
                     result['flag']=false;
                     return result;
                 }else{
                     count++;
+                    if(count===1){
+                        result['pos']=i;
+                        result['flag']=false;
+                    }else if(count===2){
+                        result['pos']='';
+                        result['flag']=true;
+                    }
                 }
             }
-            if(count===1){
-                result['key']='down';
-                result['flag']=false;
-                return result;
-            }else if(count===2){
-                result['key']='';
-                result['flag']=true;
-                return result;
-            }
+            return result;
         };
         /*机构设置--重置位置模型*/
-        this.clearStructPos=function (structpos,key) {
+        this.clearStructPos=function (structpos,pos) {
             if(!structpos){
                return false;
             }
 
             var positem,
                 id;
-            if(key && typeof structpos[key]!=='undefined'){
-                /*根据key值清除位置模型*/
-                positem=structpos[key];
+            if(pos && typeof structpos[pos]!=='undefined'){
+                /*根据pos值清除位置模型*/
+                positem=structpos[pos];
                 id=positem['id'];
 
                 if(id!==''){
                     /*有数据则清空数据*/
                     positem['$node'].removeClass(positem['active']);
                 }
-                structpos[key]={
+                structpos[pos]={
                     id:'',
                     $node:'',
                     active:''
