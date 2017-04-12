@@ -1031,7 +1031,7 @@
 								var tempstorage=list[i];
 								str+='<tr>\
 								<td>'+parseInt(i+1,10)+'</td>\
-								<td>'+tempstorage["goodsId"]+'</td>\
+								<td>'+tempstorage["goodsCode"]+'</td>\
 								<td>'+tempstorage["goodsName"]+'</td>\
 								<td>'+tempstorage["attributeName"]+'</td>\
 								<td>'+tempstorage["quantity"]+'</td>\

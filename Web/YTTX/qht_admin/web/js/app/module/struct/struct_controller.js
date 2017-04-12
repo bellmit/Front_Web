@@ -3,6 +3,7 @@ angular.module('app')
     .controller('StructController', ['structService','powerService',function(structService,powerService){
         var self=this;
 
+
         /*模型--tab选项卡*/
         this.tabitem=[{
             name:'运营架构',
@@ -103,6 +104,7 @@ angular.module('app')
 
             this.setting.id=this.root.id;
             this.setting.orgname=this.root.orgname;
+
 
 
             /*搜索过滤*/
@@ -413,6 +415,14 @@ angular.module('app')
             };
 
 
+            /*用户服务--查询用户数据*/
+            /*this.getColumnData=function () {
+                structService.getColumnData();
+            };*/
+
+
+
+
             /*弹出层显示隐藏*/
             this.toggleModal=function (config) {
                 structService.toggleModal({
@@ -443,11 +453,6 @@ angular.module('app')
 
 
 
-            /*
-            * $('#example').dataTable( {
-                "dom": '<"top"i>rt<"bottom"flp><"clear">'
-             } );
-            * */
 
         }
 

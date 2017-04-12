@@ -9,7 +9,121 @@ angular.module('app')
             $struct_pos_dialog=$('#struct_pos_dialog'),
             $admin_struct_reset=$('#admin_struct_reset'),
             self=this,
-            form_reset_timer=null;
+            form_reset_timer=null,
+            list_table=null;
+
+        /*dom引用和相关变量定义*/
+        var $admin_list_wrap=$('#admin_list_wrap')/*表格*/,
+            $admin_batchlist_wrap=$('#admin_batchlist_wrap'),
+            $admin_page_wrap=$('#admin_page_wrap');
+
+
+
+        /*列表请求配置*/
+        var list1_page={
+                page:1,
+                pageSize:10,
+                total:0
+            },
+            list1_config={
+                $admin_list_wrap:$admin_list_wrap,
+                $admin_page_wrap:$admin_page_wrap,
+                config:{
+                    processing:true,/*大消耗操作时是否显示处理状态*/
+                    deferRender:true,/*是否延迟加载数据*/
+                    autoWidth:true,/*是否*/
+                    paging:false,
+                    ajax:{
+                        url:toolUtil.adaptReqUrl('/organization/users'),
+                        dataType:'JSON',
+                        method:'post',
+                        dataSrc:function ( json ) {
+                            console.log(json);
+
+                            var code=parseInt(json.code,10),
+                                message=json.message;
+
+                            if(code!==0){
+                                if(typeof message !=='undefined'&&message!==''){
+                                    console.log(message);
+                                }else{
+                                    console.log('获取用户失败');
+                                }
+                                if(code===999){
+                                    /*退出系统*/
+                                    /*cache=null;
+                                    toolUtil.loginTips({
+                                        clear:true,
+                                        reload:true
+                                    });*/
+                                }
+                                return [];
+                            }
+                            var result=json.result;
+                            if(typeof result==='undefined'){
+                                return [];
+                            }
+                            /*设置分页*/
+                            list1_page.page=result.page;
+                            list1_page.pageSize=result.pageSize;
+                            list1_page.total=result.count;
+                            /*分页调用*/
+                            $admin_page_wrap.pagination({
+                                pageSize:list1_page.pageSize,
+                                total:list1_page.total,
+                                pageNumber:list1_page.page,
+                                onSelectPage:function(pageNumber,pageSize){
+                                    /*再次查询*/
+                                    var temp_param=list1_config.config.ajax.data;
+                                    temp_param.page=pageNumber;
+                                    temp_param.pageSize=pageSize;
+                                    list1_config.config.ajax.data=temp_param;
+                                    self.getColumnData();
+                                }
+                            });
+                            return result?result.list||[]:[];
+                        },
+                        data:{
+                            page:1,
+                            pageSize:10
+                        }
+                    },
+                    info:false,
+                    searching:true,
+                    order:[[1, "desc" ]],
+                    columns: [
+                        {
+                            "data":"id",
+                            "orderable" :false,
+                            "searchable" :false
+                        },
+                        {
+                            "data":"phone"
+                        },
+                        {
+                            "data":"address"
+                        },
+                        {
+                            "data":"mainFee"
+                        },
+                        {
+                            "data":"machineCode"
+                        },
+                        {
+                            "data":"identityState"
+                        },
+                        {
+                            "data":"salesTime"
+                        },
+                        {
+                            "data":"roleName"
+                        },
+                        {
+                            "data":"remark"
+                        }
+                    ]
+                }
+            };
 
         /*清除定时器*/
         /*$timeout.cancel(form_reset_timer);
@@ -349,14 +463,20 @@ angular.module('app')
                     config.setting.c_orgname='';
                     /*清空内容*/
                     $wrap.html('');
+                    /*查询用户信息*/
+                    self.getColumnData(config.id);
                 }else{
                     if(config.layer===0){
                         /*虚拟挂载点*/
                         config.setting.id=config.id;
                         config.setting.orgname=config.orgname;
+                        /*查询用户信息*/
+                        self.getColumnData(config.id);
                     }else{
                         if(typeof config.id!=='undefined'){
                             config.setting.id=config.id;
+                            /*查询用户信息*/
+                            self.getColumnData(config.id);
                         }else{
                             config.setting.id='';
                         }
@@ -366,6 +486,7 @@ angular.module('app')
                     config.setting.adjust_pos_state=true;
                     config.setting.c_id='';
                     config.setting.c_orgname='';
+                    /*渲染机构*/
                     self.renderOperate(config);
                 }
             }
@@ -411,7 +532,8 @@ angular.module('app')
                 /*非根目录则获取新请求参数*/
                 param['organizationId']=parentid;
 
-
+                /*查询用户信息*/
+                self.getColumnData(parentid);
 
                 toolUtil
                     .requestHttp({
@@ -470,6 +592,9 @@ angular.module('app')
                                                     str+='<li data-layer="'+layer+'" data-parentid="'+parentid+'" data-label="'+curitem['orgname']+'" data-id="'+curitem['id']+'">'+curitem["orgname"]+'</li>';
                                                 }
                                                 $(str).appendTo(config.$wrap.html(''));
+
+                                                /*查询用户列表*/
+                                                self.getColumnData();
                                             }
                                         }else{
                                             config.$reqstate.attr({
@@ -1312,6 +1437,41 @@ angular.module('app')
                 /*缓存不存在*/
                 return false
             }
+        };
+
+
+
+        /*用户服务--请求数据--获取表格数据*/
+        this.getColumnData=function (id){
+            if(!cache){
+                return false;
+            }
+            /*如果存在模型*/
+            if(typeof id!=='undefined'){
+                var data= $.extend(true,{},list1_config.config.ajax.data);
+                /*设置值*/
+                data['organizationId']=id;
+                /*参数赋值*/
+                list1_config.config.ajax.data=data;
+                if(list_table===null){
+                    /*初始请求*/
+                    var temp_param=cache.loginMap.param;
+                    list1_config.config.ajax.data['adminId']=temp_param.adminId;
+                    list1_config.config.ajax.data['token']=temp_param.token;
+                    list_table=list1_config.$admin_list_wrap.DataTable(list1_config.config);
+                }else {
+                    /*清除批量数据*/
+                    //batchItem.clear();
+                    list_table.ajax.config(list1_config.config.ajax).load();
+                }
+            }
+
+
+        };
+
+        /*用户服务--新增用户*/
+        this.addUser=function () {
+            
         };
 
     }]);

@@ -248,7 +248,7 @@
 
 			/*适配配置*/
 			if(config.set){
-				req.url=BASE_CONFIG.basedomain + BASE_CONFIG.baseproject + req.url;
+				req.url=this.adaptReqUrl(req.url);
 			}
 			req.data=$httpParamSerializerJQLike(req.data);
 			req['headers']={ "Content-Type": "application/x-www-form-urlencoded" };
@@ -262,6 +262,10 @@
 				deferred.reject(resp);
 			});
 			return deferred.promise;
+		};
+		/*适配请求信息*/
+		tools.adaptReqUrl=function (url) {
+			return BASE_CONFIG.basedomain + BASE_CONFIG.baseproject + url;
 		};
 
 

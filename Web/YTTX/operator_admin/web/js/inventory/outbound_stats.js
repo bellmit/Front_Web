@@ -1037,7 +1037,7 @@
 								var tempoutbound=list[i];
 								str+='<tr>\
 								<td>'+parseInt(i+1,10)+'</td>\
-								<td>'+tempoutbound["goodsId"]+'</td>\
+								<td>'+tempoutbound["goodsCode"]+'</td>\
 								<td>'+tempoutbound["goodsName"]+'</td>\
 								<td>'+tempoutbound["attributeName"]+'</td>\
 								<td>'+tempoutbound["quantity"]+'</td>\
