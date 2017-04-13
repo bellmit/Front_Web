@@ -1,6 +1,6 @@
 /*首页控制器*/
 angular.module('app')
-    .controller('StructController', ['structService','powerService',function(structService,powerService){
+    .controller('StructController', ['structService','powerService','toolUtil',function(structService,powerService,toolUtil){
         var self=this;
 
 
@@ -25,6 +25,9 @@ angular.module('app')
             thead:'',
             tbody:''
         };
+
+        /*模型--操作权限列表*/
+        this.powerlist=structService.getCurrentPower();
 
         /*模型--搜索*/
         this.search={

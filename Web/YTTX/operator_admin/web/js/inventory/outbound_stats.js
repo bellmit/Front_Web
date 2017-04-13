@@ -855,16 +855,16 @@
 
 				if(len===1){
 					if(id===''){
-						OutboundItem('id');
+						validOutboundItem('id');
 						return false;
 					}else if(name===''){
-						OutboundItem('name');
+						validOutboundItem('name');
 						return false;
 					}else if(attrname===''){
-						OutboundItem('attrname',$tr);
+						validOutboundItem('attrname',$tr);
 						return false;
 					}else if(attrid===''){
-						OutboundItem('attrid',$tr);
+						validOutboundItem('attrid',$tr);
 						return false;
 					}
 				}

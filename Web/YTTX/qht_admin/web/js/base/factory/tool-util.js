@@ -1245,7 +1245,7 @@
 		};
 
 
-		//根据模块判断拥有的权限(拥有的权限)
+		//根据模块判断拥有的权限(拥有的权限),key:(索引，模块名称),cache:模块；此方法结果一般与isPower配合使用
 		tools.getPowerListByModule=function(key,cache){
 			if(typeof key==='undefined'||!cache){
 				/*没有缓存数据或者索引不存在*/
@@ -1254,14 +1254,14 @@
 				/*查找权限*/
 				var currentpower=null;
 				for(var i in cache){
-					/*过滤首页*/
-					i=parseInt(i,10);
-					if(i!==0){
-						if(key===cache[i]['module']){
-							/*匹配模块关键字,返回匹配到的权限数组*/
-							currentpower=cache[i]['power'];
-							break;
-						}
+					if(key===cache[i]['module']){
+						/*匹配模块关键字,返回匹配到的权限数组*/
+						currentpower=cache[i]['power'];
+						break;
+					}else if(key===cache[i]['id']){
+						/*匹配模块关键字,返回匹配到的权限数组*/
+						currentpower=cache[i]['power'];
+						break;
 					}
 				}
 
@@ -1271,26 +1271,13 @@
 						/*权限为空*/
 						return null;
 					}else{
-						var result=[],
-							j=0;
-						for(j;j<len;j++){
-							var temppower=currentpower[j];
-							if(temppower['isPermit']===1){
-								/*过滤没有的权限*/
-								result.push(temppower);
-							}
-						}
-						currentpower=null;
-						if(result.length===0){
-							result=null;
-						}
-						return result;
+						return currentpower;
 					}
 				}
 			}
 		};
-		//根据关键词判断权限
-		tools.isPower=function(key,list){
+		//根据关键词判断权限flag:是否过滤没有的权限
+		tools.isPower=function(key,list,flag){
 			if(!key||!list){
 				return false;
 			}
@@ -1298,104 +1285,35 @@
 				i=0,
 				len=list.length;
 
+
 			if(len===0){
 				ispower=false;
 			}else{
-				for(i;i<len;i++){
-					if(list[i]['funcCode']===key||list[i]['funcCode'].indexOf(key)!==-1){
-						ispower=true;
-						break;
-					}else if(list[i]['funcName']===key||list[i]['funcName'].indexOf(key)!==-1){
-						ispower=true;
-						break;
+				if(flag){
+					var ispermit;
+					for(i;i<len;i++){
+						ispermit=parseInt(list[i]['isPermit'],10);
+						if((list[i]['funcCode']===key||list[i]['funcCode'].indexOf(key)!==-1) && ispermit===1){
+							ispower=true;
+							break;
+						}else if((list[i]['funcName']===key||list[i]['funcName'].indexOf(key)!==-1) && ispermit===1){
+							ispower=true;
+							break;
+						}
+					}
+				}else{
+					for(i;i<len;i++){
+						if(list[i]['funcCode']===key||list[i]['funcCode'].indexOf(key)!==-1){
+							ispower=true;
+							break;
+						}else if(list[i]['funcName']===key||list[i]['funcName'].indexOf(key)!==-1){
+							ispower=true;
+							break;
+						}
 					}
 				}
 			}
 			return ispower;
-		};
-		/*获取所以权限列表(拥有的和不拥有的)*/
-		tools.getAllPowerList=function (cache) {
-			if(!cache){
-				/*没有缓存数据或者索引不存在*/
-				return null;
-			}else{
-				/*查找权限*/
-				var currentpower={};
-				for(var i in cache){
-					/*过滤首页*/
-					i=parseInt(i,10);
-					if(i!==0){
-						/*匹配模块关键字,返回匹配到的权限数组*/
-						currentpower[i]=cache[i];
-					}
-				}
-				if($.isEmptyObject(currentpower)){
-					return null;
-				}
-				return currentpower;
-			}
-		};
-		//根据模块判断拥有的权限
-		tools.getAllPower=function(cache){
-			if(!cache){
-				return null;
-			}
-
-			var currentpower= $.extend(true,{},self.powerMap);
-			for(var i in currentpower){
-				var temppower=currentpower[i];
-				for(var j in temppower){
-					if(temppower[j].isPermit===0){
-						delete temppower[j];
-					}
-				}
-			}
-			return currentpower;
-		};
-
-
-		//模拟滚动条更新
-		tools.scrollUpdate=function(flag,$wrap){
-			var self=this;
-			if(isxs()){
-				return;
-			}
-			if($.isFunction($.fn.perfectScrollbar)){
-				if($wrap.hasClass('collapsed')){
-					return;
-				}
-
-				$wrap.find('.sidebar-menu-inner').perfectScrollbar('update');
-
-				if(flag){
-					this.scrollDestroy($wrap);
-					this.scrollInit($wrap);
-				}
-			}
-		};
-		//模拟滚动条初始化
-		tools.scrollInit=function($wrap){
-			if(isxs()){
-				return;
-			}
-
-
-			if($.isFunction($.fn.perfectScrollbar)){
-				if($wrap.hasClass('collapsed') || ! $wrap.hasClass('fixed')){
-					return;
-				}
-
-				$wrap.find('.sidebar-menu-inner').perfectScrollbar({
-					wheelSpeed: 2,
-					wheelPropagation:true
-				});
-			}
-		};
-		//模拟滚动条摧毁
-		tools.scrollDestroy=function($wrap){
-			if($.isFunction($.fn.perfectScrollbar)){
-				$wrap.find('.sidebar-menu-inner').perfectScrollbar('destroy');
-			}
 		};
 
 		/*登陆接口*/

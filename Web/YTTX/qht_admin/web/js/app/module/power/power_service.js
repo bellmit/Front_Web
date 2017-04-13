@@ -5,7 +5,6 @@ angular.module('power.service',[])
 		/*获取缓存数据*/
 		var cache=loginService.getCache(),
 			powerCache=$.extend(true,{},cache['powerMap']),
-			//allpower=toolUtil.getAllPowerList(powerCache),
 			self=this,
 			h_items=[],
 			h_len=0,
@@ -453,4 +452,14 @@ angular.module('power.service',[])
 			}
 		};
 
+		/*权限服务--获取当前用户的权限缓存,key(id，模块名称)*/
+		this.getCurrentPower=function (key) {
+			if(cache){
+				if(typeof key!=='undefined'){
+					return toolUtil.getPowerListByModule(key,powerCache);
+				}
+				return powerCache;
+			}
+			return null;
+		};
 	}]);

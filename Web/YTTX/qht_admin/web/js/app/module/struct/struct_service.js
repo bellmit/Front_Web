@@ -10,7 +10,23 @@ angular.module('app')
             $admin_struct_reset=$('#admin_struct_reset'),
             self=this,
             form_reset_timer=null,
-            list_table=null;
+            list_table=null,
+            module_id=10/*模块id*/,
+            powermap=powerService.getCurrentPower(module_id);
+
+
+
+        /*初始化权限*/
+        var init_power={
+            structadd:toolUtil.isPower('organization-add',powermap,true)/*添加机构*/,
+            structedit:toolUtil.isPower('organization-edit',powermap,true)/*编辑机构*/,
+            useradd:toolUtil.isPower('user-add',powermap,true)/*添加用户*/,
+            userdetail:toolUtil.isPower('user-view',powermap,true)/*查看用户*/,
+            userupdate:toolUtil.isPower('user-update',powermap,true)/*编辑用户*/,
+            userdelete:toolUtil.isPower('batch-delete',powermap,true)/*删除用户*/,
+            operateadjust:toolUtil.isPower('operator-adjustment',powermap,true)/*调整运营商*/
+        };
+
 
         /*dom引用和相关变量定义*/
         var $admin_list_wrap=$('#admin_list_wrap')/*表格*/,
@@ -89,28 +105,60 @@ angular.module('app')
                         }
                     },
                     info:false,
-                    searching:true,
+                    searching:false,
                     order:[[1, "desc" ]],
                     columns: [
                         {
                             "data":"id",
                             "orderable" :false,
-                            "searchable" :false
+                            "searchable" :false,
+                            "render":function(data, type, full, meta ){
+                                return '<input  value="'+data+'" name="check_userid" type="checkbox" />';
+                            }
                         },
                         {
-                            "data":"phone"
+                            "data":"phone",
+                            "render":function(data, type, full, meta ){
+                                return toolUtil.phoneFormat(data);
+                            }
                         },
                         {
                             "data":"address"
                         },
                         {
-                            "data":"mainFee"
+                            "data":"mainFee",
+                            "render":function(data, type, full, meta ){
+                                return toolUtil.moneyCorrect(data,12,true)[0];
+                            }
                         },
                         {
                             "data":"machineCode"
                         },
                         {
-                            "data":"identityState"
+                            "data":"identityState",
+                            "render":function(data, type, full, meta ){
+                                var stauts=parseInt(data,10),
+                                    statusmap={
+                                        0:"未验证",
+                                        1:"正在验证",
+                                        2:"验证通过",
+                                        3:"验证不通过"
+                                    },
+                                    str='';
+
+                                if(stauts===0){
+                                    str='<div class="g-c-warn">'+statusmap[stauts]+'</div>';
+                                }else if(stauts===1){
+                                    str='<div class="g-c-gray9">'+statusmap[stauts]+'</div>';
+                                }else if(stauts===2){
+                                    str='<div class="g-c-blue1">'+statusmap[stauts]+'</div>';
+                                }else if(stauts===3){
+                                    str='<div class="g-c-red1">'+statusmap[stauts]+'</div>';
+                                }else{
+                                    str='<div class="g-c-gray6">其他</div>';
+                                }
+                                return str;
+                            }
                         },
                         {
                             "data":"salesTime"
@@ -120,6 +168,29 @@ angular.module('app')
                         },
                         {
                             "data":"remark"
+                        },
+                        {
+                            "data":"id",
+                            "render":function(data, type, full, meta ){
+                                var id=parseInt(data,10),
+                                    btns='';
+
+                                /*查看用户*/
+                                if(init_power.userdetail){
+                                    btns+='<span data-action="select" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+													<i class="fa-file-text-o"></i>\
+													<span>查看</span>\
+												</span>';
+                                }
+                                /*编辑用户*/
+                                if(init_power.userupdate){
+                                    btns+='<span data-action="edit" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+													<i class="fa-pencil"></i>\
+													<span>编辑</span>\
+												</span>';
+                                }
+                                return btns;
+                            }
                         }
                     ]
                 }
@@ -129,6 +200,11 @@ angular.module('app')
         /*$timeout.cancel(form_reset_timer);
          form_reset_timer=null;*/
 
+
+        /*查询操作权限*/
+        this.getCurrentPower=function () {
+            return init_power;
+        };
 
 
 
