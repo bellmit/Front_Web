@@ -424,6 +424,12 @@ angular.module('app')
             };*/
 
 
+            this.checkAllUser=function (chk) {
+                var ischeck=$(chk).find('input').is(':checked');
+                console.log(ischeck);
+            };
+
+
 
 
             /*弹出层显示隐藏*/
