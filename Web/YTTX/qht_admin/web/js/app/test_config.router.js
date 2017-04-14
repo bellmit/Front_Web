@@ -113,6 +113,7 @@ angular.module('app')
                                     return $ocLazyLoad.load(['js/plugins/datatables/dataTables.bootstrap.css',
                                         'js/plugins/datatables/js/jquery.dataTables.js',
                                         'js/plugins/pagination/pagination.js',
+                                        'js/app/module/datatable/datatable_service.js',
                                         'js/app/module/struct/struct_service.js',
                                         'js/app/module/struct/struct_controller.js']);
                             }]

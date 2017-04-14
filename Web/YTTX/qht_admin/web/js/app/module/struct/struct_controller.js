@@ -1,6 +1,6 @@
 /*首页控制器*/
 angular.module('app')
-    .controller('StructController', ['structService','powerService','toolUtil',function(structService,powerService,toolUtil){
+    .controller('StructController', ['structService','powerService','dataTableColumn','toolUtil',function(structService,powerService,dataTableColumn,toolUtil){
         var self=this;
 
 
@@ -28,6 +28,62 @@ angular.module('app')
 
         /*模型--操作权限列表*/
         this.powerlist=structService.getCurrentPower();
+
+        /*模型--列表数据*/
+        this.table={
+            init_colgroup:{
+                0:'<col class="g-w-percent5" />',
+                1:'<col class="g-w-percent5" />',
+                2:'<col class="g-w-percent5" />',
+                3:'<col class="g-w-percent5" />',
+                4:'<col class="g-w-percent5" />',
+                5:'<col class="g-w-percent5" />',
+                6:'<col class="g-w-percent5" />',
+                7:'<col class="g-w-percent5" />',
+                8:'<col class="g-w-percent5" />',
+                9:'<col class="g-w-percent5" />'
+            },
+            init_thead:{
+                0:'<th><label ng-show="struct_ctrl.powerlist.userdelete">全选：<input type="checkbox" ng-model="struct_ctrl.user.checkall" ng-init="struct_ctrl.user.checkall=0" ng-checked="struct_ctrl.user.checkall"  ng-change="struct_ctrl.checkAllUser()"  ng-true-value="1" ng-false-value="0"  name="check_userid" /></label></th>',
+                1:'<th>手机号码</th>',
+                2:'<th>联系地址</th>',
+                3:'<th>费率</th>',
+                4:'<th>机器码</th>',
+                5:'<th>身份证验证状态</th>',
+                6:'<th>销售时间</th>',
+                7:'<th>角色</th>',
+                8:'<th>备注</th>',
+                9:'<th>操作</th>'
+            },
+            init_len:10,
+            selectshow:true,
+            selectwrap:'#admin_checkcolumn',
+            hide_len:4,
+            hide_list:{
+                3:{
+                    id:3,
+                    hide:true
+                },
+                4:{
+                    id:4,
+                    hide:true
+                },
+                6:{
+                    id:6,
+                    hide:true
+                },
+                8:{
+                    id:8,
+                    hide:true
+                }
+            },
+            fn:function () {
+                return structService.getListTable();
+            },
+            colgroup:'',
+            thead:''
+        };
+        dataTableColumn.initColumn(self.table);
 
         /*模型--搜索*/
         this.search={
@@ -89,6 +145,14 @@ angular.module('app')
             sysUserId:''/*编辑时相关参数*/,
             id:''/*编辑时相关参数*/,
             parentId:''/*编辑时相关参数*/
+        };
+
+
+        /*模型--用户*/
+        this.user={
+            id:'',
+            checkall:0,
+            checklist:[]
         };
 
 
@@ -417,16 +481,12 @@ angular.module('app')
 
             };
 
+            /*用户服务--初始化表头*/
+
 
             /*用户服务--查询用户数据*/
-            /*this.getColumnData=function () {
-                structService.getColumnData();
-            };*/
-
-
-            this.checkAllUser=function (chk) {
-                var ischeck=$(chk).find('input').is(':checked');
-                console.log(ischeck);
+            this.checkAllUser=function () {
+                structService.checkAllUser(self.user);
             };
 
 

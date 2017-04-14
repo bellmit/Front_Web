@@ -1544,7 +1544,25 @@ angular.module('app')
 
 
         };
+        /*用户服务--获取list_table引用*/
+        this.getListTable=function () {
+            if(list_table===null){
+               return null;
+            }
+            return list_table;
+        };
+        /*用户服务--全选和取消全选*/
+        this.checkAllUser=function (user) {
+            var ischeck=parseInt(user.checkall,10);
 
+            if(ischeck===1){
+                /*选中*/
+
+            }else if(ischeck===0){
+                /*未选中*/
+
+            }
+        };
         /*用户服务--新增用户*/
         this.addUser=function () {
             
