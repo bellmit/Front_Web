@@ -23,6 +23,7 @@ angular.module('app')
 			}
 			/*清除缓存数据*/
 			self.clear();
+			self.unbind();
 			/*复制数据*/
 			self.initExtend(table);
 
@@ -67,7 +68,9 @@ angular.module('app')
 			/*复制数据*/
 			init_colgroup=$.extend(true,{},table.init_colgroup);
 			init_thead=$.extend(true,{},table.init_thead);
-			init_hidelist=table.hide_list.slice(0);
+			init_hidelist=table.hide_list.slice(0).sort(function (a,b) {
+				return a - b;
+			});
 			init_len=table.init_len;
 			hide_len=init_hidelist.length;
 			selectwrap=$(table.selectwrap);
@@ -84,56 +87,27 @@ angular.module('app')
 
 			for(i;i<hide_len;i++){
 				tempid=init_hidelist[i];
-
+				str+='<option value="'+tempid+'">第'+(tempid + 1)+'列</option>';
 				tablecache.column(tempid).visible(false);
 			}
-
-			/*设置分组和表头模型*/
-			var	temp_colgroup='',
-				temp_thead='';
-
-			/*如果存在需要隐藏的对象*/
-			var hide_item,
-				ishide,
-				id,
-				count=0,
-				selectlist=[];
-
-			for(var o in hide_list){
-				hide_item=hide_list[o];
-				ishide=hide_item['hide'];
-				id=hide_item['id'];
-
-				if(ishide){
-					str+='<option value="'+id+'">第'+(id + 1)+'列</option>';
-				}else{
-					count++;
-					selectlist.push(id);
-					str+='<option selected value="'+id+'">第'+(id + 1)+'列</option>';
-				}
+			if(str!==''){
+				/*赋值控制下拉选项*/
+				$(str).appendTo(selectwrap.html(''));
 			}
 			/*更新模型*/
-			table.colgroup=$sce.trustAsHtml(self.createColgroup({
-				count:count,
-				checklist:selectlist
-			}));
-			table.thead=$sce.trustAsHtml(self.createThead({
-				count:count,
-				checklist:selectlist
-			}));
-
-			/*赋值控制下拉选项*/
-			$(str).appendTo(selectwrap.html(''));
+			table.colgroup=$sce.trustAsHtml(self.createColgroup(init_hidelist));
+			table.thead=$sce.trustAsHtml(self.createThead(init_hidelist));
 		};
 		
 		/*绑定相关事件*/
 		this.bind=function (table) {
 			selectwrap.on('change',function () {
-				console.log('aaa');
-				//没有列表引用则不进行监听
-				if(tablecache===null){
-					return false;
-				}
+
+
+				/*
+				切换显示相关列
+				tablecache.column(index).visible(flag);
+				*/
 
 				var $this=$(this),
 					isselect=$this.is(':selected'),
@@ -141,25 +115,34 @@ angular.module('app')
 					index=$this.val(),
 					count=selectitem.size();
 
+
+				/*切换显示相关列*/
+				tablecache.column(index).visible(isselect);
+
+				/*更新模型*/
 				if(count!==0){
 					/*有勾选数据*/
-					var selectlist=[];
+					var selectlist=init_hidelist.slice(0);
 					selectitem.each(function () {
-						selectlist.push($(this).val());
+						var value=$(this).val(),
+							len=selectlist.length,
+							i=0;
+
+						for(i;i<len;i++){
+							if(selectlist[i]===value){
+								selectitem.splice(i,1);
+								break;
+							}
+						}
+
 					});
-					self.toggleColumn(table,{
-						index:index,
-						flag:isselect,
-						count:count,
-						checklist:selectlist
-					});
+					/*无勾选数据*/
+					table.colgroup=$sce.trustAsHtml(self.createColgroup(selectlist.length));
+					table.thead=$sce.trustAsHtml(self.createThead(selectlist));
 				}else{
 					/*无勾选数据*/
-					self.toggleColumn(table,{
-						index:index,
-						flag:isselect,
-						count:count
-					});
+					table.colgroup=$sce.trustAsHtml(self.createColgroup());
+					table.thead=$sce.trustAsHtml(self.createThead());
 				}
 			});
 		};
@@ -183,22 +166,22 @@ angular.module('app')
 		};
 
 		/*重新生成分组*/
-		this.createColgroup=function (config) {
-			var count=config.count,
-				str='';
-
-			if(count===hide_len){
+		this.createColgroup=function (arr) {
+			var str='';
+			if(typeof arr==='undefined'){
+				/*全隐藏*/
 				for(var i in init_colgroup){
 					str+=init_colgroup[i];
 				}
 			}else{
+				/*部分隐藏*/
 				var j=0,
-					len=init_len - count,
+					len=init_len - arr.length,
 					colitem=parseInt(50/len,10);
 
 				/*解析分组*/
 				if(colitem * len<=(50 - len)){
-					colitem=len+1;
+					colitem=len + 1;
 				}
 				for(j;j<len;j++){
 					str+='<col class="g-w-percent'+colitem+'" />';
@@ -208,42 +191,30 @@ angular.module('app')
 		};
 
 		/*重新生成头信息*/
-		this.createThead=function (config) {
-			var count=config.count,
-				str='';
-
-			if(count===hide_len){
+		this.createThead=function (arr) {
+			var str='';
+			if(typeof arr==='undefined'){
+				/*全隐藏*/
 				for(var i in init_thead){
 					str+=init_thead[i];
 				}
 			}else{
 				var head=$.extend(true,{},init_thead),
-					checklist=config.checklist,
+					hidelist=arr.sort(function (a,b) {
+						return a - b;
+					}),
+					len=hidelist.length,
 					j=0;
 
 				/*解析头部*/
-				for(j;j<count;j++){
-					delete head[checklist[j]];
+				for(j;j<len;j++){
+					delete head[hidelist[j]];
 				}
 				for(var o in head){
 					str+=head[o];
 				}
 			}
 			return '<tr>'+str+'</tr>';
-		};
-
-
-		/*显示隐藏数据*/
-		this.toggleColumn=function (table,config) {
-			var index=config.index,
-				flag=config.flag;
-
-			/*更新模型*/
-			table.colgroup=$sce.trustAsHtml(self.createColgroup(config));
-			table.thead=$sce.trustAsHtml(self.createThead(config));
-
-			/*切换显示相关列*/
-			tablecache.column(index).visible(flag);
 		};
 
 	}]);
