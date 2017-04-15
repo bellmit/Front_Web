@@ -56,27 +56,8 @@ angular.module('app')
                 9:'<th>操作</th>'
             },
             init_len:10,
-            selectshow:true,
             selectwrap:'#admin_checkcolumn',
-            hide_len:4,
-            hide_list:{
-                3:{
-                    id:3,
-                    hide:true
-                },
-                4:{
-                    id:4,
-                    hide:true
-                },
-                6:{
-                    id:6,
-                    hide:true
-                },
-                8:{
-                    id:8,
-                    hide:true
-                }
-            },
+            hide_list:[3,4,6,8],
             fn:function () {
                 return structService.getListTable();
             },
