@@ -1,7 +1,7 @@
 /*表格服务*/
 'use strict';
 angular.module('app')
-	.service('dataTableColumn',['toolUtil','toolDialog','$sce',function (toolUtil,toolDialog,$sce) {
+	.service('dataTableColumn',['toolUtil','toolDialog','$sce','$timeout',function (toolUtil,toolDialog,$sce,$timeout) {
 
 		/*初始化配置*/
 		var self=this,
@@ -12,7 +12,8 @@ angular.module('app')
 			hide_len=0,
 			fn=null,
 			selectwrap=null,
-			tablecache=null;
+			tablecache=null,
+			module_time=null;
 
 
 		/*初始化*/
@@ -22,8 +23,8 @@ angular.module('app')
 				return
 			}
 			/*清除缓存数据*/
-			self.clear();
 			self.unbind();
+			self.clear();
 			/*复制数据*/
 			self.initExtend(table);
 
@@ -95,15 +96,33 @@ angular.module('app')
 				$(str).appendTo(selectwrap.html(''));
 			}
 			/*更新模型*/
-			table.colgroup=$sce.trustAsHtml(self.createColgroup(init_hidelist));
-			table.thead=$sce.trustAsHtml(self.createThead(init_hidelist));
+			/*table.colgroup=$sce.trustAsHtml(self.createColgroup(hide_len));
+			table.thead=$sce.trustAsHtml(self.createThead(init_hidelist));*/
+
+
+			module_time=$timeout(function(){
+				/*更新模型*/
+				table.colgroup=$sce.trustAsHtml(self.createColgroup(hide_len));
+				table.thead=$sce.trustAsHtml(self.createThead(init_hidelist));
+				/*清除延时任务*/
+				setTimeout(function () {
+					if(module_time){
+						$timeout.cancel(module_time);
+						module_time=null;
+					}
+				},500);
+			},0);
+
+
+			/*setTimeout(function () {
+				table.colgroup=$sce.trustAsHtml(self.createColgroup(hide_len));
+				table.thead=$sce.trustAsHtml(self.createThead(init_hidelist));
+			},3000);*/
 		};
 		
 		/*绑定相关事件*/
 		this.bind=function (table) {
 			selectwrap.on('change',function () {
-
-
 				/*
 				切换显示相关列
 				tablecache.column(index).visible(flag);
@@ -150,11 +169,14 @@ angular.module('app')
 		/*解绑事件*/
 		this.unbind=function () {
 			/*解绑事件*/
-			selectwrap.off('change');
+			if(selectwrap){
+				selectwrap.off('change');
+			}
 		};
 
 		/*重置数据*/
 		this.clear=function () {
+			/*重置缓存数据*/
 			init_colgroup=null;
 			init_thead=null;
 			init_hidelist=null;
@@ -163,6 +185,12 @@ angular.module('app')
 			selectwrap=null;
 			fn=null;
 			tablecache=null;
+
+			/*重置延时任务*/
+			if(module_time){
+				$timeout.cancel(module_time);
+				module_time=null;
+			}
 		};
 
 		/*重新生成分组*/

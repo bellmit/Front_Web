@@ -61,6 +61,7 @@ angular.module('app')
             fn:function () {
                 return structService.getListTable();
             },
+            tablecache:structService.getListTable(),
             colgroup:'',
             thead:''
         };
