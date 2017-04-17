@@ -31,40 +31,16 @@ angular.module('app')
 
         /*模型--列表数据*/
         this.table={
-            init_colgroup:{
-                0:'<col class="g-w-percent5" />',
-                1:'<col class="g-w-percent5" />',
-                2:'<col class="g-w-percent5" />',
-                3:'<col class="g-w-percent5" />',
-                4:'<col class="g-w-percent5" />',
-                5:'<col class="g-w-percent5" />',
-                6:'<col class="g-w-percent5" />',
-                7:'<col class="g-w-percent5" />',
-                8:'<col class="g-w-percent5" />',
-                9:'<col class="g-w-percent5" />'
-            },
-            init_thead:{
-                0:'<th><label ng-show="struct_ctrl.powerlist.userdelete">全选：<input type="checkbox" ng-model="struct_ctrl.user.checkall" ng-init="struct_ctrl.user.checkall=0" ng-checked="struct_ctrl.user.checkall"  ng-change="struct_ctrl.checkAllUser()"  ng-true-value="1" ng-false-value="0"  name="check_userid" /></label></th>',
-                1:'<th>手机号码</th>',
-                2:'<th>联系地址</th>',
-                3:'<th>费率</th>',
-                4:'<th>机器码</th>',
-                5:'<th>身份证验证状态</th>',
-                6:'<th>销售时间</th>',
-                7:'<th>角色</th>',
-                8:'<th>备注</th>',
-                9:'<th>操作</th>'
-            },
             init_len:10,
+            ischeck:true,
             selectwrap:'#admin_checkcolumn',
             hide_list:[3,4,6,8],
             fn:function () {
                 return structService.getListTable();
             },
-            colgroup:'',
-            thead:''
+            colgroup:''
         };
-        //dataTableColumn.initColumn(self.table,$scope);
+        dataTableColumn.initColumn(self.table,$scope);
 
         /*模型--搜索*/
         this.search={

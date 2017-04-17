@@ -5,14 +5,15 @@ angular.module('app')
 
 		/*初始化配置*/
 		var self=this,
-			init_colgroup=null,
-			init_thead=null,
 			init_hidelist=null,
 			init_len=0,
 			hide_len=0,
+			ischeck=false,
 			fn=null,
 			selectwrap=null,
-			tablecache=null;
+			tablecache=null,
+			$btn=null,
+			$ul=null;
 
 
 		/*初始化*/
@@ -69,20 +70,20 @@ angular.module('app')
 		/*初始化数据复制*/
 		this.initExtend=function (table) {
 			/*复制数据*/
-			init_colgroup=$.extend(true,{},table.init_colgroup);
-			init_thead=$.extend(true,{},table.init_thead);
 			init_hidelist=table.hide_list.slice(0).sort(function (a,b) {
 				return a - b;
 			});
+			ischeck=table.ischeck;
 			init_len=table.init_len;
 			hide_len=init_hidelist.length;
-			selectwrap=$(table.selectwrap);
 			fn=table.fn;
+			selectwrap=$(table.selectwrap);
+			$btn=selectwrap.prev();
+			$ul=selectwrap.find('ul');
 		};
 
 		/*初始化组件*/
 		this.initWidget=function (table,$scope) {
-			/*设置分组和表头模型*/
 			/*隐藏*/
 			var tempid,
 				str='',
@@ -90,126 +91,109 @@ angular.module('app')
 
 			for(i;i<hide_len;i++){
 				tempid=init_hidelist[i];
-				str+='<option>第'+(tempid + 1)+'列<input type="checkbox" /></option>';
-				/*str+='<option value="'+tempid+'">第'+(tempid + 1)+'列</option>';*/
-				/*str+='<option><input type="checkbox" name="colgroup" value="'+tempid+'" />第'+(tempid + 1)+'列</option>';*/
+				str+='<li data-value="'+tempid+'">第'+(tempid + 1)+'列</li>';
 				tablecache.column(tempid).visible(false);
 			}
 			if(str!==''){
 				/*赋值控制下拉选项*/
-				$(str).appendTo(selectwrap.html(''));
+				$(str).appendTo($ul.html(''));
 			}
+			/*设置分组和表头模型*/
 			/*更新模型*/
 			$scope.$apply(function () {
 				table.colgroup=$sce.trustAsHtml(self.createColgroup(hide_len));
-				table.thead=$sce.trustAsHtml(self.createThead(init_hidelist));
 			});
 		};
 		
 		/*绑定相关事件*/
 		this.bind=function (table,$scope) {
-			/*selectwrap.on('change',function () {
-				/!*
-				切换显示相关列
-				tablecache.column(index).visible(flag);
-				*!/
-
+			$btn.on('click',function () {
+				selectwrap.toggleClass('g-d-hidei');
+			});
+			$ul.on('click','li',function () {
+				/*切换显示相关列*/
 				var $this=$(this),
-					isselect=$this.is(':selected'),
-					selectitem=selectwrap.find(':selected'),
-					index=$this.val(),
-					count=selectitem.size();
+					active=$this.hasClass('action-list-active'),
+					index=$this.attr('data-value');
 
-				console.log(isselect);
-				console.log(this.value);
-
-
-				/!*切换显示相关列*!/
-				tablecache.column(index).visible(isselect);
-
-				/!*更新模型*!/
-				if(count!==0){
-					/!*有勾选数据*!/
-					var selectlist=init_hidelist.slice(0);
-					selectitem.each(function () {
-						var value=$(this).val(),
-							len=selectlist.length,
-							i=0;
-
-						for(i;i<len;i++){
-							if(selectlist[i]===value){
-								selectitem.splice(i,1);
-								break;
-							}
-						}
-
-					});
-					/!*无勾选数据*!/
-					/!*更新模型*!/
-					$scope.$apply(function () {
-						table.colgroup=$sce.trustAsHtml(self.createColgroup(selectlist.length));
-						table.thead=$sce.trustAsHtml(self.createThead(selectlist));
-					});
+				if(active){
+					$this.removeClass('action-list-active');
+					tablecache.column(index).visible(false);
 				}else{
-					/!*无勾选数据*!/
-					$scope.$apply(function () {
-						table.colgroup=$sce.trustAsHtml(self.createColgroup());
-						table.thead=$sce.trustAsHtml(self.createThead());
-					});
+					$this.addClass('action-list-active');
+					tablecache.column(index).visible(true);
 				}
-			});*/
+
+				var count=$ul.find('.action-list-active').size();
+
+				/*更新模型*/
+				$scope.$apply(function () {
+					table.colgroup=$sce.trustAsHtml(self.createColgroup(hide_len - count));
+				});
+			});
 		};
 
 		/*解绑事件*/
 		this.unbind=function () {
 			/*解绑事件*/
 			if(selectwrap){
-				selectwrap.off('change');
+				$btn.off('click');
+				$ul.off('click');
 			}
 		};
 
 		/*重置数据*/
 		this.clear=function () {
 			/*重置缓存数据*/
-			init_colgroup=null;
-			init_thead=null;
 			init_hidelist=null;
 			init_len=0;
 			hide_len=0;
+			ischeck=false;
 			selectwrap=null;
 			fn=null;
 			tablecache=null;
-
-			/*重置延时任务*/
-			/*if(module_time){
-				$timeout.cancel(module_time);
-				module_time=null;
-			}*/
+			$btn=null;
+			$ul=null;
 		};
 
 		/*重新生成分组*/
-		this.createColgroup=function (arr) {
+		this.createColgroup=function (glen) {
 			var str='';
-			if(typeof arr==='undefined'){
-				/*全隐藏*/
-				for(var i in init_colgroup){
-					str+=init_colgroup[i];
+			/*部分隐藏*/
+			var j=0,
+				len,
+				colitem,
+				tempcol=0;
+
+			if(ischeck){
+				len=init_len - glen - 1;
+				tempcol=45 % len;
+				if(tempcol!==0){
+					colitem=parseInt((45 - tempcol)/len,10);
+				}else{
+					colitem=parseInt(45/len,10);
+				}
+				/*解析分组*/
+				if(colitem * len<=(45 - len)){
+					colitem=len + 1;
 				}
 			}else{
-				/*部分隐藏*/
-				var j=0,
-					len=init_len - arr.length,
+				len=init_len - glen;
+				tempcol=50 % len;
+				if(tempcol!==0){
+					colitem=parseInt((50 - tempcol)/len,10);
+				}else{
 					colitem=parseInt(50/len,10);
-
+				}
 				/*解析分组*/
 				if(colitem * len<=(50 - len)){
 					colitem=len + 1;
 				}
-				for(j;j<len;j++){
-					str+='<col class="g-w-percent'+colitem+'" />';
-				}
 			}
-			return str;
+			for(j;j<len;j++){
+				str+='<col class="g-w-percent'+colitem+'" />';
+			}
+			return ischeck?'<col class="g-w-percent5" />'+str:str;
 		};
 
 		/*重新生成头信息*/
