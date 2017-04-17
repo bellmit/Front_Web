@@ -1,6 +1,6 @@
 /*首页控制器*/
 angular.module('app')
-    .controller('StructController', ['structService','powerService','dataTableColumn','toolUtil',function(structService,powerService,dataTableColumn,toolUtil){
+    .controller('StructController', ['structService','powerService','dataTableColumn','toolUtil','$scope',function(structService,powerService,dataTableColumn,toolUtil,$scope){
         var self=this;
 
 
@@ -61,11 +61,10 @@ angular.module('app')
             fn:function () {
                 return structService.getListTable();
             },
-            tablecache:structService.getListTable(),
             colgroup:'',
             thead:''
         };
-        dataTableColumn.initColumn(self.table);
+        //dataTableColumn.initColumn(self.table,$scope);
 
         /*模型--搜索*/
         this.search={

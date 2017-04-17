@@ -477,6 +477,72 @@
       }
     }
   }
+
+  /*ul列表*/
+  .action-item-ul{
+    display: inline-block;
+    min-height:30px;
+    .action-theme{
+      .layout-base;
+      line-height: 30px;
+      vertical-align: middle;
+      height:100%;
+      white-space: nowrap;
+      display:inline-block;
+      color:@color-gray6;
+      font-size:@font-size-base;
+    }
+    .action-theme-btn{
+      cursor: pointer;
+      background:@color-white;
+      border:1px solid @color-gray12;
+      &:hover{
+        border:1px solid lighten(@color-blue3,10%);
+      }
+    }
+    .action-ul{
+      .box-sizing-base;
+      width:0;
+      height:0;
+    }
+    .action-list-wrap{
+      .box-sizing-base;
+      .layout-absoluter-base(0,32px,100);
+      width:482px;
+      height:242px;
+      overflow: auto;
+      background:@color-white;
+      border:1px solid @color-gray12;
+      .user-select-base;
+      li{
+        float:left;
+        .box-sizing-base;
+        min-width:120px;
+        max-width:240px;
+        text-align: center;
+        height:60px;
+        padding:10px;
+        line-height:40px;
+        color:@color-gray6;
+        border-right:1px solid @color-gray16;
+        border-bottom:1px solid @color-gray16;
+        font-size:@font-size-base;
+        .text-of;
+        text-overflow: ellipsis;
+        cursor: pointer;
+        &:hover{
+          background:@color-gray14;
+        }
+      }
+      .action-list-active{
+        background:lighten(@color-blue3,36%);
+        &:hover{
+          background:lighten(@color-blue3,36%);
+        }
+      }
+    }
+  }
+
   /*图标*/
   .dt-icon-before,
   .dt-icon-after{
@@ -1450,6 +1516,7 @@
   border:1px solid @color-gray12;
   display: inline-block;
 }
+
 
 /*弹出层*/
 

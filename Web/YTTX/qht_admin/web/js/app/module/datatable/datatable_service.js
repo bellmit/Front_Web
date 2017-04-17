@@ -12,15 +12,17 @@ angular.module('app')
 			hide_len=0,
 			fn=null,
 			selectwrap=null,
-			tablecache=null,
-			module_time=null;
+			tablecache=null;
 
 
 		/*初始化*/
-		this.initColumn=function (table) {
+		this.initColumn=function (table,$scope) {
 			/*检验数据合法性*/
 			if(!table){
-				return
+				return;
+			}
+			if(!$scope){
+				return;
 			}
 			/*清除缓存数据*/
 			self.unbind();
@@ -50,9 +52,9 @@ angular.module('app')
 						time_id=null;
 
 						/*初始化组件*/
-						self.initWidget(table);
+						self.initWidget(table,$scope);
 						/*绑定相关事件*/
-						self.bind(table);
+						self.bind(table,$scope);
 					}
 					/*计时器，防止请求超时，不断的监听相关数据:6s时间界限*/
 					if(count>=600){
@@ -79,7 +81,7 @@ angular.module('app')
 		};
 
 		/*初始化组件*/
-		this.initWidget=function (table) {
+		this.initWidget=function (table,$scope) {
 			/*设置分组和表头模型*/
 			/*隐藏*/
 			var tempid,
@@ -88,7 +90,9 @@ angular.module('app')
 
 			for(i;i<hide_len;i++){
 				tempid=init_hidelist[i];
-				str+='<option value="'+tempid+'">第'+(tempid + 1)+'列</option>';
+				str+='<option>第'+(tempid + 1)+'列<input type="checkbox" /></option>';
+				/*str+='<option value="'+tempid+'">第'+(tempid + 1)+'列</option>';*/
+				/*str+='<option><input type="checkbox" name="colgroup" value="'+tempid+'" />第'+(tempid + 1)+'列</option>';*/
 				tablecache.column(tempid).visible(false);
 			}
 			if(str!==''){
@@ -96,37 +100,19 @@ angular.module('app')
 				$(str).appendTo(selectwrap.html(''));
 			}
 			/*更新模型*/
-			/*table.colgroup=$sce.trustAsHtml(self.createColgroup(hide_len));
-			table.thead=$sce.trustAsHtml(self.createThead(init_hidelist));*/
-
-
-			module_time=$timeout(function(){
-				/*更新模型*/
+			$scope.$apply(function () {
 				table.colgroup=$sce.trustAsHtml(self.createColgroup(hide_len));
 				table.thead=$sce.trustAsHtml(self.createThead(init_hidelist));
-				/*清除延时任务*/
-				setTimeout(function () {
-					if(module_time){
-						$timeout.cancel(module_time);
-						module_time=null;
-					}
-				},500);
-			},0);
-
-
-			/*setTimeout(function () {
-				table.colgroup=$sce.trustAsHtml(self.createColgroup(hide_len));
-				table.thead=$sce.trustAsHtml(self.createThead(init_hidelist));
-			},3000);*/
+			});
 		};
 		
 		/*绑定相关事件*/
-		this.bind=function (table) {
-			selectwrap.on('change',function () {
-				/*
+		this.bind=function (table,$scope) {
+			/*selectwrap.on('change',function () {
+				/!*
 				切换显示相关列
 				tablecache.column(index).visible(flag);
-				*/
+				*!/
 
 				var $this=$(this),
 					isselect=$this.is(':selected'),
@@ -134,13 +120,16 @@ angular.module('app')
 					index=$this.val(),
 					count=selectitem.size();
 
+				console.log(isselect);
+				console.log(this.value);
 
-				/*切换显示相关列*/
+
+				/!*切换显示相关列*!/
 				tablecache.column(index).visible(isselect);
 
-				/*更新模型*/
+				/!*更新模型*!/
 				if(count!==0){
-					/*有勾选数据*/
+					/!*有勾选数据*!/
 					var selectlist=init_hidelist.slice(0);
 					selectitem.each(function () {
 						var value=$(this).val(),
@@ -155,15 +144,20 @@ angular.module('app')
 						}
 
 					});
-					/*无勾选数据*/
-					table.colgroup=$sce.trustAsHtml(self.createColgroup(selectlist.length));
-					table.thead=$sce.trustAsHtml(self.createThead(selectlist));
+					/!*无勾选数据*!/
+					/!*更新模型*!/
+					$scope.$apply(function () {
+						table.colgroup=$sce.trustAsHtml(self.createColgroup(selectlist.length));
+						table.thead=$sce.trustAsHtml(self.createThead(selectlist));
+					});
 				}else{
-					/*无勾选数据*/
-					table.colgroup=$sce.trustAsHtml(self.createColgroup());
-					table.thead=$sce.trustAsHtml(self.createThead());
+					/!*无勾选数据*!/
+					$scope.$apply(function () {
+						table.colgroup=$sce.trustAsHtml(self.createColgroup());
+						table.thead=$sce.trustAsHtml(self.createThead());
+					});
 				}
-			});
+			});*/
 		};
 
 		/*解绑事件*/
@@ -187,10 +181,10 @@ angular.module('app')
 			tablecache=null;
 
 			/*重置延时任务*/
-			if(module_time){
+			/*if(module_time){
 				$timeout.cancel(module_time);
 				module_time=null;
-			}
+			}*/
 		};
 
 		/*重新生成分组*/

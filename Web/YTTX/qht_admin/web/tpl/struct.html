@@ -26,18 +26,29 @@
             <h2 class="admin-layout-theme3"><span class="theme-icon admin-theme-icon2"></span>&nbsp;&nbsp;机构用户</h2>
 
             <div class="admin-action-item">
-                <div class="action-item-btn g-f-l g-w-percent25">
+                <div class="action-item-btn g-f-l g-w-percent28">
                     <span ng-show="struct_ctrl.powerlist.useradd" ng-click="struct_ctrl.addUser()"><i class="btn-action admin-btn-action1"></i>添加用户</span>
                     <span ng-show="struct_ctrl.powerlist.operateadjust"><i class="btn-action admin-btn-action5"></i>调整运营商</span>
                     <span ng-show="struct_ctrl.powerlist.userdelete" ng-click="struct_ctrl.batchDeleteUser()"><i class="btn-action admin-btn-action6"></i>批量删除</span>
                 </div>
-                <div class="action-item-input g-w-percent13" ng-show="::struct_ctrl.table.selectshow">
-                    <label class="action-indent-b4">列控制:
-                        <select style="height:60px;" multiple id="admin_checkcolumn" class="form-control"></select>
-                    </label>
-                    <!--ng-change="struct_ctrl.changeTableColumn()"-->
+                <!-- ng-show="::struct_ctrl.table.selectshow"-->
+                <div class="action-item-ul g-w-percent6 g-pos-r">
+                    <div class="action-theme action-theme-btn g-br3 g-t-c">显示隐藏列</div>
+                    <div class="action-ul">
+                        <ul class="action-list-wrap" id="admin_checkcolumn">
+                            <li>第1列</li>
+                            <li class="action-list-active">第2列</li>
+                            <li>第3列</li>
+                            <li>第4列</li>
+                            <li class="action-list-active">第5列</li>
+                            <li class="action-list-active">第6列</li>
+                            <li>第7列</li>
+                            <li>第8列</li>
+                        </ul>
+                    </div>
+
                 </div>
-                <div class="action-item-input g-f-r g-w-percent10">
+                <div class="action-item-input g-f-r g-w-percent14">
                     <label class="action-indent-b2">过滤:
                         <input class="form-control input-sm" placeholder="" type="search">
                     </label>

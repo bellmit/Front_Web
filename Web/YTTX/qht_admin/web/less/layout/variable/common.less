@@ -434,6 +434,15 @@
 }
 .g-h-percentfor(100);
 
+///*----百分比高度----*/
+.g-h-numberfor(@n,@i:1) when (@i =< @n) {
+	.g-h-number@{i}{
+		height:@i * 20px !important;
+	}
+	.g-h-numberfor(@n,(@i+1));
+}
+.g-h-numberfor(50);
+
 
 ///*----间距--padding----*/
 .g-gap-ptfor(@n,@i:1) when (@i =< @n) {
