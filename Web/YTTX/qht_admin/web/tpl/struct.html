@@ -41,7 +41,7 @@
                 </div>
                 <div class="action-item-input g-f-r g-w-percent14">
                     <label class="action-indent-b2">过滤:
-                        <input class="form-control input-sm" placeholder="" type="search">
+                        <input class="form-control input-sm" ng-model="struct_ctrl.user.filter" ng-keyup="struct_ctrl.filterDataTable()" placeholder="" type="search">
                     </label>
                 </div>
             </div>

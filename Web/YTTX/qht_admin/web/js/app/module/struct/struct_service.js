@@ -44,6 +44,7 @@ angular.module('app')
             list1_config={
                 $admin_list_wrap:$admin_list_wrap,
                 $admin_page_wrap:$admin_page_wrap,
+                hasdata:false,
                 config:{
                     processing:true,/*大消耗操作时是否显示处理状态*/
                     deferRender:true,/*是否延迟加载数据*/
@@ -54,8 +55,6 @@ angular.module('app')
                         dataType:'JSON',
                         method:'post',
                         dataSrc:function ( json ) {
-                            console.log(json);
-
                             var code=parseInt(json.code,10),
                                 message=json.message;
 
@@ -67,16 +66,18 @@ angular.module('app')
                                 }
                                 if(code===999){
                                     /*退出系统*/
-                                    /*cache=null;
+                                    cache=null;
                                     toolUtil.loginTips({
                                         clear:true,
                                         reload:true
-                                    });*/
+                                    });
                                 }
+                                list1_config.hasdata=false;
                                 return [];
                             }
                             var result=json.result;
                             if(typeof result==='undefined'){
+                                list1_config.hasdata=false;
                                 return [];
                             }
                             /*设置分页*/
@@ -97,7 +98,18 @@ angular.module('app')
                                     self.getColumnData();
                                 }
                             });
-                            return result?result.list||[]:[];
+                            if(result){
+                                if(result.list){
+                                    list1_config.hasdata=true;
+                                    return result.list;
+                                }else{
+                                    list1_config.hasdata=false;
+                                    return [];
+                                }
+                            }else{
+                                list1_config.hasdata=false;
+                                return [];
+                            }
                         },
                         data:{
                             page:1,
@@ -105,7 +117,8 @@ angular.module('app')
                         }
                     },
                     info:false,
-                    searching:false,
+                    dom:'<"g-d-hidei" s>',
+                    searching:true,
                     order:[[1, "desc" ]],
                     columns: [
                         {
@@ -1551,6 +1564,13 @@ angular.module('app')
             }
             return list_table;
         };
+        /*用户服务--获取list_table引用*/
+        this.dataIsEmpty=function () {
+            if(list_table===null){
+                return false;
+            }
+            return list1_config.hasdata;
+        };
         /*用户服务--全选和取消全选*/
         this.checkAllUser=function (user) {
             var ischeck=parseInt(user.checkall,10);
@@ -1566,6 +1586,11 @@ angular.module('app')
         /*用户服务--新增用户*/
         this.addUser=function () {
             
+        };
+        /*用户服务--过滤表格数据*/
+        this.filterDataTable=function (user) {
+            var filter=user.filter;
+            list_table.search(filter);
         };
 
     }]);

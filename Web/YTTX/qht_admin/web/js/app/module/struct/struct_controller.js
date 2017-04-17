@@ -34,9 +34,13 @@ angular.module('app')
             init_len:10,
             ischeck:true,
             selectwrap:'#admin_checkcolumn',
+            bodywrap:'#admin_batchlist_wrap',
             hide_list:[3,4,6,8],
-            fn:function () {
-                return structService.getListTable();
+            api:function () {
+                return {
+                    getTable:structService.getListTable,
+                    isEmpty:structService.dataIsEmpty
+                }
             },
             colgroup:''
         };
@@ -107,6 +111,7 @@ angular.module('app')
 
         /*模型--用户*/
         this.user={
+            filter:'',
             id:'',
             checkall:0,
             checklist:[]
@@ -445,7 +450,10 @@ angular.module('app')
             this.checkAllUser=function () {
                 structService.checkAllUser(self.user);
             };
-
+            /*用户服务--过滤表格数据*/
+            this.filterDataTable=function () {
+              structService.filterDataTable(self.user);
+            };
 
 
 

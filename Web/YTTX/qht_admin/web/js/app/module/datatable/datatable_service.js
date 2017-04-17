@@ -1,7 +1,7 @@
 /*表格服务*/
 'use strict';
 angular.module('app')
-	.service('dataTableColumn',['toolUtil','toolDialog','$sce','$timeout',function (toolUtil,toolDialog,$sce,$timeout) {
+	.service('dataTableColumn',['toolUtil','toolDialog','$sce',function (toolUtil,toolDialog,$sce) {
 
 		/*初始化配置*/
 		var self=this,
@@ -9,8 +9,9 @@ angular.module('app')
 			init_len=0,
 			hide_len=0,
 			ischeck=false,
-			fn=null,
+			fn_list=null,
 			selectwrap=null,
+			bodywrap=null,
 			tablecache=null,
 			$btn=null,
 			$ul=null;
@@ -46,22 +47,25 @@ angular.module('app')
 
 				/*启动监听*/
 				time_id=setInterval(function () {
-					count++;
-					tablecache=fn.call(null);
-					if(tablecache!==null){
-						clearInterval(time_id);
-						time_id=null;
+					if(fn_list){
+						count++;
+						tablecache=fn_list.getTable.call(null);
+						if(tablecache!==null){
+							clearInterval(time_id);
+							time_id=null;
 
-						/*初始化组件*/
-						self.initWidget(table,$scope);
-						/*绑定相关事件*/
-						self.bind(table,$scope);
-					}
-					/*计时器，防止请求超时，不断的监听相关数据:6s时间界限*/
-					if(count>=600){
-						clearInterval(time_id);
-						time_id=null;
-						count=null;
+							/*初始化组件*/
+							self.initWidget(table,$scope);
+							/*绑定相关事件*/
+							self.bind(table,$scope);
+						}
+						/*计时器，防止请求超时，不断的监听相关数据:6s时间界限*/
+						if(count>=600){
+							clearInterval(time_id);
+							time_id=null;
+							count=null;
+							clearInterval(time_id);
+						}
 					}
 				},1000/60);
 			}
@@ -76,8 +80,9 @@ angular.module('app')
 			ischeck=table.ischeck;
 			init_len=table.init_len;
 			hide_len=init_hidelist.length;
-			fn=table.fn;
+			fn_list=table.api;
 			selectwrap=$(table.selectwrap);
+			bodywrap=$(table.bodywrap);
 			$btn=selectwrap.prev();
 			$ul=selectwrap.find('ul');
 		};
@@ -150,7 +155,8 @@ angular.module('app')
 			hide_len=0;
 			ischeck=false;
 			selectwrap=null;
-			fn=null;
+			bodywrap=null;
+			fn_list=null;
 			tablecache=null;
 			$btn=null;
 			$ul=null;
@@ -177,6 +183,8 @@ angular.module('app')
 				if(colitem * len<=(45 - len)){
 					colitem=len + 1;
 				}
+				/*设置主体值*/
+				self.emptyColSpan(len + 1);
 			}else{
 				len=init_len - glen;
 				tempcol=50 % len;
@@ -189,6 +197,8 @@ angular.module('app')
 				if(colitem * len<=(50 - len)){
 					colitem=len + 1;
 				}
+				/*设置主体值*/
+				self.emptyColSpan(len);
 			}
 			for(j;j<len;j++){
 				str+='<col class="g-w-percent'+colitem+'" />';
@@ -222,5 +232,13 @@ angular.module('app')
 			}
 			return '<tr>'+str+'</tr>';
 		};
-
+		/*数据为空时判断主体合并值*/
+		this.emptyColSpan=function (len) {
+			var isdata=fn_list.isEmpty();
+			if(!isdata){
+				bodywrap.attr({
+					'colspan':len
+				});
+			}
+		};
 	}]);
