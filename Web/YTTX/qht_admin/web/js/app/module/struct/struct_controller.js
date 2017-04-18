@@ -1,7 +1,8 @@
 /*首页控制器*/
 angular.module('app')
-    .controller('StructController', ['structService','powerService','dataTableColumn','toolUtil','$scope',function(structService,powerService,dataTableColumn,toolUtil,$scope){
-        var self=this;
+    .controller('StructController', ['structService','powerService','dataTableColumn','dataTableCheckAll','toolUtil','$scope',function(structService,powerService,dataTableColumn,dataTableCheckAll,toolUtil,$scope){
+        var self=this,
+            module_id=10;
 
 
         /*模型--tab选项卡*/
@@ -31,6 +32,7 @@ angular.module('app')
 
         /*模型--列表数据*/
         this.table={
+            module_id:module_id,
             init_len:10/*数据有多少列*/,
             ischeck:true,/*是否有全选*/
             selectwrap:'#admin_checkcolumn'/*控制列显示隐藏的容器*/,
@@ -45,6 +47,10 @@ angular.module('app')
         };
         /*初始化数据表格显示隐藏*/
         dataTableColumn.initColumn(self.table,$scope);
+        /*初始化数据表格全选与取消全选*/
+        /*dataTableCheckAll.initCheckAll({
+            
+        });*/
 
         /*模型--搜索*/
         this.search={

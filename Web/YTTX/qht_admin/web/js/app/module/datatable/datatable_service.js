@@ -1,11 +1,52 @@
 /*表格服务*/
 'use strict';
 angular.module('app')
-	.service('dataTableColumn',['toolUtil','toolDialog','$sce',function (toolUtil,toolDialog,$sce) {
+	.service('dataTableUtil',[function () {
+		var self=this;
+
+		/*table缓存*/
+		this.tableCache={};
+
+		/*设置缓存*/
+		this.setCache=function (key,cache) {
+			if(!key && !cache){
+				return false;
+			}
+			if(typeof self.tableCache[key]==='undefined'){
+				var tempcache={
+					init_hidelist:null,
+					init_len:0,
+					hide_len:0,
+					ischeck:false,
+					fn_list:null,
+					selectwrap:null,
+					bodywrap:null,
+					tablecache:cache,
+					$btn:null,
+					$ul:null
+				};
+				self.tableCache[key]=$.extend(true,{},tempcache);
+				tempcache=null;
+			}
+		};
+		/*获取缓存*/
+		this.getCache=function (key) {
+			if(!key){
+				return false;
+			}
+			if(typeof self.tableCache[key]==='undefined'){
+				return null;
+			}else{
+				return self.tableCache[key];
+			}
+		};
+	}])
+	.service('dataTableColumn',['$sce',function ($sce) {
 
 		/*初始化配置*/
 		var self=this,
-			init_hidelist=null,
+			cache=null;
+			var init_hidelist=null,
 			init_len=0,
 			hide_len=0,
 			ischeck=false,
@@ -230,6 +271,7 @@ angular.module('app')
 			}
 			return '<tr>'+str+'</tr>';
 		};
+
 		/*数据为空时判断主体合并值*/
 		this.emptyColSpan=function (len) {
 			var isdata=fn_list.isEmpty();
@@ -239,4 +281,61 @@ angular.module('app')
 				});
 			}
 		};
+	}])
+	.service('dataTableCheckAll',[function () {
+		/*全选服务*/
+
+
+		/*初始化*/
+		this.initCheckAll=function (table,$scope) {
+			/*检验数据合法性*/
+			if(!table){
+				return;
+			}
+			if(!$scope){
+				return;
+			}
+			/*清除缓存数据*/
+			self.unbind();
+			self.clear();
+			/*复制数据*/
+			self.initExtend(table);
+
+			/*初始化数据*/
+			if(hide_len===0){
+				/*设置下拉模型*/
+				table['selectshow']=false;
+				/*设置分组和表头模型*/
+				self.createGroup();
+				self.createThead();
+			}else{
+				/*设置下拉模型*/
+				table['selectshow']=true;
+				var time_id=null,
+					count=0;
+
+				/*启动监听*/
+				time_id=setInterval(function () {
+					count++;
+					if(fn_list){
+						tablecache=fn_list.getTable.call(null);
+						if(tablecache!==null){
+							clearInterval(time_id);
+							time_id=null;
+
+							/*初始化组件*/
+							self.initWidget(table,$scope);
+							/*绑定相关事件*/
+							self.bind(table,$scope);
+							count=null
+						}else if(count>=600){
+							/*计时器，防止请求超时，不断的监听相关数据:6s时间界限*/
+							clearInterval(time_id);
+							time_id=null;
+						}
+					}
+				},1000/60);
+			}
+		};
+
 	}]);
