@@ -1,38 +1,24 @@
 /*表格服务*/
 'use strict';
 angular.module('app')
-	.service('dataTableUtil',[function () {
+	.service('dataTableCache',[function () {
 		var self=this;
 
 		/*table缓存*/
 		this.tableCache={};
 
-		/*设置缓存*/
 		this.setCache=function (key,cache) {
 			if(!key && !cache){
 				return false;
 			}
-			if(typeof self.tableCache[key]==='undefined'){
-				var tempcache={
-					init_hidelist:null,
-					init_len:0,
-					hide_len:0,
-					ischeck:false,
-					fn_list:null,
-					selectwrap:null,
-					bodywrap:null,
-					tablecache:cache,
-					$btn:null,
-					$ul:null
-				};
-				self.tableCache[key]=$.extend(true,{},tempcache);
-				tempcache=null;
+			if(!self.isCache(key)){
+				self.tableCache[key]=$.extend(true,{},cache);
 			}
 		};
 		/*获取缓存*/
 		this.getCache=function (key) {
 			if(!key){
-				return false;
+				return null;
 			}
 			if(typeof self.tableCache[key]==='undefined'){
 				return null;
@@ -40,8 +26,52 @@ angular.module('app')
 				return self.tableCache[key];
 			}
 		};
+		/*设置表格*/
+		this.setTable=function (key,table) {
+			if(!key && !table){
+				return false;
+			}
+			if(typeof self.tableCache[key]==='undefined'){
+				self.tableCache[key]={};
+				self.tableCache[key]['tablecache']=table;
+			}else{
+				self.tableCache[key]['tablecache']=table;
+			}
+		};
+		/*获取表格*/
+		this.getTable=function (key) {
+			if(!key){
+				return null;
+			}
+			if(typeof self.tableCache[key]==='undefined'){
+				return null;
+			}else{
+				return self.tableCache[key]['tablecache'];
+			}
+		};
+		/*判断是否存在缓存*/
+		this.isCache=function (key) {
+			if(typeof self.tableCache[key]==='undefined'){
+				return false;
+			}else{
+				return true;
+			}
+		}
 	}])
-	.service('dataTableColumn',['$sce',function ($sce) {
+	.service('dataTableColumn',['dataTableCache','$sce',function (dataTableCache,$sce) {
+
+		var template={
+			init_hidelist:null,
+			init_len:0,
+			hide_len:0,
+			ischeck:false,
+			fn_list:null,
+			selectwrap:null,
+			bodywrap:null,
+			tablecache:null,
+			$btn:null,
+			$ul:null
+		};
 
 		/*初始化配置*/
 		var self=this,
@@ -59,7 +89,7 @@ angular.module('app')
 
 
 		/*初始化*/
-		this.initColumn=function (table,$scope) {
+		this.initColumn=function (key,table,$scope) {
 			/*检验数据合法性*/
 			if(!table){
 				return;
@@ -68,8 +98,6 @@ angular.module('app')
 				return;
 			}
 			/*清除缓存数据*/
-			self.unbind();
-			self.clear();
 			/*复制数据*/
 			self.initExtend(table);
 
@@ -111,8 +139,9 @@ angular.module('app')
 		};
 		
 		/*初始化数据复制*/
-		this.initExtend=function (table) {
+		this.initExtend=function (key,table) {
 			/*复制数据*/
+			var temp_cache={};
 			init_hidelist=table.hide_list.slice(0).sort(function (a,b) {
 				return a - b;
 			});
@@ -175,30 +204,6 @@ angular.module('app')
 					table.colgroup=$sce.trustAsHtml(self.createColgroup(hide_len - count));
 				});
 			});
-		};
-
-		/*解绑事件*/
-		this.unbind=function () {
-			/*解绑事件*/
-			if(selectwrap){
-				$btn.off('click');
-				$ul.off('click');
-			}
-		};
-
-		/*重置数据*/
-		this.clear=function () {
-			/*重置缓存数据*/
-			init_hidelist=null;
-			init_len=0;
-			hide_len=0;
-			ischeck=false;
-			selectwrap=null;
-			bodywrap=null;
-			fn_list=null;
-			tablecache=null;
-			$btn=null;
-			$ul=null;
 		};
 
 		/*重新生成分组*/
@@ -288,54 +293,7 @@ angular.module('app')
 
 		/*初始化*/
 		this.initCheckAll=function (table,$scope) {
-			/*检验数据合法性*/
-			if(!table){
-				return;
-			}
-			if(!$scope){
-				return;
-			}
-			/*清除缓存数据*/
-			self.unbind();
-			self.clear();
-			/*复制数据*/
-			self.initExtend(table);
 
-			/*初始化数据*/
-			if(hide_len===0){
-				/*设置下拉模型*/
-				table['selectshow']=false;
-				/*设置分组和表头模型*/
-				self.createGroup();
-				self.createThead();
-			}else{
-				/*设置下拉模型*/
-				table['selectshow']=true;
-				var time_id=null,
-					count=0;
-
-				/*启动监听*/
-				time_id=setInterval(function () {
-					count++;
-					if(fn_list){
-						tablecache=fn_list.getTable.call(null);
-						if(tablecache!==null){
-							clearInterval(time_id);
-							time_id=null;
-
-							/*初始化组件*/
-							self.initWidget(table,$scope);
-							/*绑定相关事件*/
-							self.bind(table,$scope);
-							count=null
-						}else if(count>=600){
-							/*计时器，防止请求超时，不断的监听相关数据:6s时间界限*/
-							clearInterval(time_id);
-							time_id=null;
-						}
-					}
-				},1000/60);
-			}
 		};
 
 	}]);
