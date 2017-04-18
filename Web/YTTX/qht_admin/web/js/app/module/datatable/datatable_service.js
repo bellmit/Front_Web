@@ -47,8 +47,8 @@ angular.module('app')
 
 				/*启动监听*/
 				time_id=setInterval(function () {
+					count++;
 					if(fn_list){
-						count++;
 						tablecache=fn_list.getTable.call(null);
 						if(tablecache!==null){
 							clearInterval(time_id);
@@ -58,13 +58,11 @@ angular.module('app')
 							self.initWidget(table,$scope);
 							/*绑定相关事件*/
 							self.bind(table,$scope);
-						}
-						/*计时器，防止请求超时，不断的监听相关数据:6s时间界限*/
-						if(count>=600){
+							count=null
+						}else if(count>=600){
+							/*计时器，防止请求超时，不断的监听相关数据:6s时间界限*/
 							clearInterval(time_id);
 							time_id=null;
-							count=null;
-							clearInterval(time_id);
 						}
 					}
 				},1000/60);
@@ -236,7 +234,7 @@ angular.module('app')
 		this.emptyColSpan=function (len) {
 			var isdata=fn_list.isEmpty();
 			if(!isdata){
-				bodywrap.attr({
+				bodywrap.find('td').attr({
 					'colspan':len
 				});
 			}

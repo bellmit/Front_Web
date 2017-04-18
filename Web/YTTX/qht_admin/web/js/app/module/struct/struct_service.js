@@ -6,10 +6,12 @@ angular.module('app')
             $admin_struct_submenu=$('#admin_struct_submenu'),
             $admin_struct_list=$('#admin_struct_list'),
             $struct_setting_dialog=$('#struct_setting_dialog'),
-            $struct_pos_dialog=$('#struct_pos_dialog'),
+            $struct_user_dialog=$('#struct_user_dialog'),
             $admin_struct_reset=$('#admin_struct_reset'),
+            $admin_user_reset=$('#admin_struct_reset'),
             self=this,
-            form_reset_timer=null,
+            structform_reset_timer=null,
+            userform_reset_timer=null,
             list_table=null,
             module_id=10/*模块id*/,
             powermap=powerService.getCurrentPower(module_id);
@@ -38,7 +40,7 @@ angular.module('app')
         /*列表请求配置*/
         var list1_page={
                 page:1,
-                pageSize:10,
+                pageSize:2,
                 total:0
             },
             list1_config={
@@ -99,9 +101,10 @@ angular.module('app')
                                 }
                             });
                             if(result){
-                                if(result.list){
-                                    list1_config.hasdata=true;
-                                    return result.list;
+                                var list=result.list;
+                                if(list){
+                                    list.length===0?list1_config.hasdata=false:list1_config.hasdata=true;
+                                    return list;
                                 }else{
                                     list1_config.hasdata=false;
                                     return [];
@@ -113,7 +116,7 @@ angular.module('app')
                         },
                         data:{
                             page:1,
-                            pageSize:10
+                            pageSize:2
                         }
                     },
                     info:false,
@@ -126,7 +129,7 @@ angular.module('app')
                             "orderable" :false,
                             "searchable" :false,
                             "render":function(data, type, full, meta ){
-                                return '<input  value="'+data+'" name="check_userid" type="checkbox" />';
+                                return '<input value="'+data+'" name="check_userid" type="checkbox" />';
                             }
                         },
                         {
@@ -139,10 +142,7 @@ angular.module('app')
                             "data":"address"
                         },
                         {
-                            "data":"mainFee",
-                            "render":function(data, type, full, meta ){
-                                return toolUtil.moneyCorrect(data,12,true)[0];
-                            }
+                            "data":"nickName"
                         },
                         {
                             "data":"machineCode"
@@ -174,10 +174,10 @@ angular.module('app')
                             }
                         },
                         {
-                            "data":"salesTime"
+                            "data":"createTime"
                         },
                         {
-                            "data":"roleName"
+                            "data":"status"
                         },
                         {
                             "data":"remark"
@@ -185,19 +185,20 @@ angular.module('app')
                         {
                             "data":"id",
                             "render":function(data, type, full, meta ){
-                                var id=parseInt(data,10),
-                                    btns='';
+                                var btns='',
+                                    addUserId=full.addUserId,
+                                    organizationId=full.organizationId;
 
                                 /*查看用户*/
                                 if(init_power.userdetail){
-                                    btns+='<span data-action="select" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+                                    btns+='<span data data-action="detail" data-addUserId="'+addUserId+'" data-id="'+data+'"  data-organizationId="'+organizationId+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 													<i class="fa-file-text-o"></i>\
 													<span>查看</span>\
 												</span>';
                                 }
                                 /*编辑用户*/
                                 if(init_power.userupdate){
-                                    btns+='<span data-action="edit" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+                                    btns+='<span data-addUserId="'+addUserId+'"  data-action="edit" data-id="'+data+'" data-organizationId="'+organizationId+'" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 													<i class="fa-pencil"></i>\
 													<span>编辑</span>\
 												</span>';
@@ -209,16 +210,10 @@ angular.module('app')
                 }
             };
 
-        /*清除定时器*/
-        /*$timeout.cancel(form_reset_timer);
-         form_reset_timer=null;*/
-
-
         /*查询操作权限*/
         this.getCurrentPower=function () {
             return init_power;
         };
-
 
 
 
@@ -519,6 +514,7 @@ angular.module('app')
         };
 
 
+
         /*机构设置--初始化操作区域*/
         this.initOperate=function (config) {
             var data=config.data,
@@ -747,12 +743,11 @@ angular.module('app')
             /*如果存在延迟任务则清除延迟任务*/
             self.clearFormDelay();
             /*通过延迟任务清空表单数据*/
-            form_reset_timer=$timeout(function(){
-                /*触发重置表单*/
-                $admin_struct_reset.trigger('click');
-                /*设置模型*/
-                struct.type=type;
-            },0);
+            self.addFormDelay({
+                type:'struct',
+                value:type,
+                mode:struct
+            });
 
             /*根据类型跳转相应逻辑*/
             if(type==='edit'){
@@ -969,7 +964,7 @@ angular.module('app')
                         if(typeof message !=='undefined'&&message!==''){
                             console.log(message);
                         }else{
-                            console.log('请求菜单失败');
+                            console.log('请求机构失败');
                         }
                     });
         };
@@ -1279,62 +1274,66 @@ angular.module('app')
 
         /*弹出层服务*/
         this.toggleModal=function (config,fn) {
-            var temp_timer=null;
+            var temp_timer=null,
+                type_map={
+                    'setting':$struct_setting_dialog,
+                    'user':$struct_user_dialog
+                };
             if(config.display==='show'){
                 if(typeof config.delay!=='undefined'){
-                    if(config.area==='setting'){
-                        temp_timer=setTimeout(function () {
-                            $struct_setting_dialog.modal('show',{backdrop:'static'});
-                            clearTimeout(temp_timer);
-                            temp_timer=null;
-                        },config.delay);
-
-                    }else if(config.area==='pos'){
-                        temp_timer=setTimeout(function () {
-                            $struct_pos_dialog.modal('show',{backdrop:'static'});
-                            clearTimeout(temp_timer);
-                            temp_timer=null;
-                        },config.delay);
-                    }
+                    temp_timer=setTimeout(function () {
+                        type_map[config.area].modal('show',{backdrop:'static'});
+                        clearTimeout(temp_timer);
+                        temp_timer=null;
+                    },config.delay);
                     if(fn&&typeof fn==='function'){
                         fn.call(null);
                     }
                 }else{
-                    if(config.area==='setting'){
-                        $struct_setting_dialog.modal('show',{backdrop:'static'});
-                    }else if(config.area==='pos'){
-                        $struct_pos_dialog.modal('show',{backdrop:'static'});
-                    }
+                    type_map[config.area].modal('show',{backdrop:'static'});
                     if(fn&&typeof fn==='function'){
                         fn.call(null);
                     }
                 }
             }else if(config.display==='hide'){
                 if(typeof config.delay!=='undefined'){
-                    if(config.area==='setting'){
-                        temp_timer=setTimeout(function () {
-                            $struct_setting_dialog.modal('hide');
-                            clearTimeout(temp_timer);
-                            temp_timer=null;
-                        },config.delay);
-                    }else if(config.area==='pos'){
-                        temp_timer=setTimeout(function () {
-                            $struct_pos_dialog.modal('hide');
-                            clearTimeout(temp_timer);
-                            temp_timer=null;
-                        },config.delay);
-                    }
+                    temp_timer=setTimeout(function () {
+                        type_map[config.area].modal('hide');
+                        clearTimeout(temp_timer);
+                        temp_timer=null;
+                    },config.delay);
                 }else{
-                    if(config.area==='setting'){
-                        $struct_setting_dialog.modal('hide');
-                    }else if(config.area==='pos'){
-                        $struct_pos_dialog.modal('hide');
-                        /*$struct_pos_dialog.on('hide.bs.modal',fn);*/
-                    }
+                    type_map[config.area].modal('hide');
                 }
                 /*清除延时任务序列*/
                 this.clearFormDelay();
             }
+        };
+        /*执行延时任务序列*/
+        this.addFormDelay=function (config) {
+            /*映射对象*/
+            var type=config.type,
+                value=config.value,
+                mode=config.mode,
+                type_map={
+                'struct':{
+                    'timeid':structform_reset_timer,
+                    'dom':$admin_struct_reset
+                },
+                'user':{
+                    'timeid':userform_reset_timer,
+                    'dom':$admin_user_reset
+                }
+            };
+            /*执行延时操作*/
+            type_map[type]['timeid']=$timeout(function(){
+                /*触发重置表单*/
+                type_map[type]['dom'].trigger('click');
+                /*设置模型*/
+                if(typeof mode!=='undefined' && typeof value!=='undefined'){
+                    mode.type=value;
+                }
+            },0);
         };
         /*清除延时任务序列*/
         this.clearFormDelay=function (did) {
@@ -1343,35 +1342,54 @@ angular.module('app')
                 did=null;
             }else{
                 /*如果存在延迟任务则清除延迟任务*/
-                if(form_reset_timer!==null){
-                    $timeout.cancel(form_reset_timer);
-                    form_reset_timer=null;
+                if(structform_reset_timer!==null){
+                    $timeout.cancel(structform_reset_timer);
+                    structform_reset_timer=null;
+                }
+                if(userform_reset_timer!==null){
+                    $timeout.cancel(userform_reset_timer);
+                    userform_reset_timer=null;
                 }
             }
         };
 
 
+
         /*表单类服务--清空表单模型数据*/
-        this.clearFormData=function (data) {
+        this.clearFormData=function (data,type) {
             if(!data){
                 return false;
             }
-            /*重置机构数据模型*/
-            var tempstruct=data;
-            for(var i in tempstruct){
-                if(i==='isSettingLogin'){
-                    /*是否设置登录名*/
-                    tempstruct[i]=1;
-                }else if(i==='isDesignatedPermit'){
-                    /*是否指定权限*/
-                    tempstruct[i]=1;
-                }else if(i==='type'){
-                    /*操作类型为新增*/
-                    tempstruct[i]='add';
-                }else{
-                    tempstruct[i]='';
+            if(type==='struct'){
+                /*重置机构数据模型*/
+                for(var i in data){
+                    if(i==='isSettingLogin'){
+                        /*是否设置登录名*/
+                        data[i]=1;
+                    }else if(i==='isDesignatedPermit'){
+                        /*是否指定权限*/
+                        data[i]=1;
+                    }else if(i==='type'){
+                        /*操作类型为新增*/
+                        data[i]='add';
+                    }else{
+                        data[i]='';
+                    }
+                }
+            }else if(type==='user'){
+                /*重置用户数据模型*/
+                for(var j in data){
+                    if(j==='checkall' || j==='checklist'){
+                        /*过滤不需要重置部分*/
+                    }else if(j==='type'){
+                        /*操作类型为新增*/
+                        data[j]='add';
+                    }else{
+                        data[j]='';
+                    }
                 }
             }
+
         };
         /*表单类服务--重置表单数据*/
         this.clearFormValid=function (forms) {
@@ -1397,6 +1415,7 @@ angular.module('app')
                 }
             }
         };
+        
         /*表单类服务--提交表单数据*/
         this.structSubmit=function (struct,setting,search) {
             /*判断表单类型*/
@@ -1497,10 +1516,9 @@ angular.module('app')
                                         setting:setting
                                     });
                                     /*重置表单*/
-                                    form_reset_timer=$timeout(function(){
-                                        /*触发重置表单*/
-                                        $admin_struct_reset.trigger('click');
-                                    },0);
+                                    self.addFormDelay({
+                                        type:'struct'
+                                    });
                                     /*弹出框隐藏*/
                                     toolDialog.show({
                                         type:'succ',
@@ -1536,8 +1554,8 @@ angular.module('app')
                 return false;
             }
             /*如果存在模型*/
+            var data= $.extend(true,{},list1_config.config.ajax.data);
             if(typeof id!=='undefined'){
-                var data= $.extend(true,{},list1_config.config.ajax.data);
                 /*设置值*/
                 data['organizationId']=id;
                 /*参数赋值*/
@@ -1553,9 +1571,9 @@ angular.module('app')
                     //batchItem.clear();
                     list_table.ajax.config(list1_config.config.ajax).load();
                 }
+            }else if(typeof id==='undefined' && list_table!==null && typeof data['organizationId']!=='undefined'){
+                list_table.ajax.config(list1_config.config.ajax).load();
             }
-
-
         };
         /*用户服务--获取list_table引用*/
         this.getListTable=function () {
@@ -1583,14 +1601,275 @@ angular.module('app')
 
             }
         };
-        /*用户服务--新增用户*/
-        this.addUser=function () {
-            
+        /*用户服务--操作用户*/
+        this.actionUser=function (config) {
+            var modal=config.modal,
+                setting=config.setting,
+                user=config.user,
+                type=modal.type;
+
+            /*判断是否是合法的节点，即是否有父机构*/
+            if(!setting.id  &&  typeof setting.id ==='undefined'){
+                toolDialog.show({
+                    type:'warn',
+                    value:'没有父机构或父机构不存在'
+                });
+                return false;
+            }else if(setting.id===''){
+                toolDialog.show({
+                    type:'warn',
+                    value:'没有父机构或父机构不存在'
+                });
+                return false;
+            }
+
+            /*如果存在延迟任务则清除延迟任务*/
+            self.clearFormDelay();
+            /*通过延迟任务清空表单数据*/
+            self.addFormDelay({
+                type:'user',
+                value:type,
+                mode:user
+            });
+
+            /*根据类型跳转相应逻辑*/
+            if(type==='edit'){
+                /*查询相关存在的数据*/
+                self.queryUserInfo(config);
+            }else if(type==='add'){
+                /*显示弹窗*/
+                self.toggleModal({
+                    display:modal.display,
+                    area:modal.area
+                });
+            }
+
+        };
+        /*用户服务--查询用户数据*/
+        this.queryUserInfo=function (config) {
+            var setting=config.setting,
+                user=config.user,
+                modal=config.modal,
+                param=$.extend(true,{},cache.loginMap.param);
+
+            /*判断参数*/
+            if(setting.c_id!==''){
+                param['id']=setting.c_id;
+            }else if(setting.c_id===''){
+                param['id']=setting.id;
+            }
+
+            toolUtil
+                .requestHttp({
+                    url:'/organization/user/info',
+                    method:'post',
+                    set:true,
+                    data:param
+                })
+                .then(function(resp){
+                        var data=resp.data,
+                            status=parseInt(resp.status,10);
+
+                        if(status===200){
+                            var code=parseInt(data.code,10),
+                                message=data.message;
+                            if(code!==0){
+                                if(typeof message !=='undefined'&&message!==''){
+                                    console.log(message);
+                                }else{
+                                    console.log('请求数据失败');
+                                }
+
+                                if(code===999){
+                                    /*退出系统*/
+                                    cache=null;
+                                    toolUtil.loginTips({
+                                        clear:true,
+                                        reload:true
+                                    });
+                                }
+                            }else{
+                                /*加载数据*/
+                                var result=data.result;
+                                if(typeof result!=='undefined'){
+                                    var list=result.user;
+                                    if(angular.isObject(list)){
+                                        /*更新模型*/
+                                        for(var i in list){
+                                            switch (i){
+                                                case 'id':
+                                                    user[i]=list[i];
+                                                    break;
+                                                case 'nickName':
+                                                    user[i]=list[i];
+                                                    break;
+                                                case 'phone':
+                                                    user[i]=toolUtil.phoneFormat(list[i]);
+                                                    break;
+                                                case 'address':
+                                                    user[i]=list[i];
+                                                    break;
+                                                case 'mainFee':
+                                                    user[i]=list[i];
+                                                    break;
+                                                case 'machineCode':
+                                                    user[i]=list[i];
+                                                    break;
+                                                case 'identityState':
+                                                    user[i]=list[i];
+                                                    break;
+                                                case 'salesTime':
+                                                    user[i]=list[i];
+                                                    break;
+                                                case 'remark':
+                                                    user[i]=list[i];
+                                                    break;
+                                            }
+                                        }
+                                        /*显示弹窗*/
+                                        self.toggleModal({
+                                            display:modal.display,
+                                            area:modal.area
+                                        });
+                                    }else{
+                                        /*提示信息*/
+                                        toolDialog.show({
+                                            type:'warn',
+                                            value:'获取编辑数据失败'
+                                        });
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    function(resp){
+                        var message=resp.data.message;
+                        if(typeof message !=='undefined'&&message!==''){
+                            console.log(message);
+                        }else{
+                            console.log('请求用户失败');
+                        }
+                    });
         };
         /*用户服务--过滤表格数据*/
         this.filterDataTable=function (user) {
             var filter=user.filter;
-            list_table.search(filter);
+            list_table.search(filter).columns().draw();
         };
+        /*用户服务--提交表单数据*/
+        this.userSubmit=function (user,setting) {
+            /*判断表单类型*/
+            if(user.type===''||typeof user.type==='undefined'){
+                /*非法表单类型*/
+                toolDialog.show({
+                    type:'warn',
+                    value:'非法表单类型'
+                });
+                return false;
+            }
+
+            /*登陆缓存*/
+            if(cache){
+                var param=$.extend(true,{},cache.loginMap.param);
+                /*数据适配*/
+                /*公共配置*/
+                param['nickName']=user.nickName;
+                param['phone']=toolUtil.trims(user.phone);
+                param['address']=user.address;
+                param['mainFee']=user.mainFee;
+                param['machineCode']=user.machineCode;
+                param['remark']=user.remark;
+
+                if(user.type==='add'){
+                    /*新增机构或子机构*/
+                    /*判断参数*/
+                    if(setting.c_id!==''){
+                        param['organizationId']=setting.c_id;
+                    }else if(setting.c_id===''){
+                        param['organizationId']=setting.id;
+                    }
+                }else if(user.type==='edit'){
+                    /*编辑机构或子机构*/
+                    delete param['organizationId'];
+                    if(user.id===''){
+                        toolDialog.show({
+                            type:'warn',
+                            value:'非法的编辑数据'
+                        });
+                        return false;
+                    }
+                    param['id']=user.id;
+                }
+                toolUtil
+                    .requestHttp({
+                        url:user.type==='add'?'/organization/user/add':'/organization/user/update',
+                        method:'post',
+                        set:true,
+                        data:param
+                    })
+                    .then(function(resp){
+                            var data=resp.data,
+                                status=parseInt(resp.status,10);
+
+                            if(status===200){
+                                var code=parseInt(data.code,10),
+                                    message=data.message;
+                                if(code!==0){
+                                    if(typeof message !=='undefined'&&message!==''){
+                                        toolDialog.show({
+                                            type:'warn',
+                                            value:message
+                                        });
+                                    }else{
+                                        toolDialog.show({
+                                            type:'warn',
+                                            value:user.type==='add'?'新增用户失败':'编辑用户失败'
+                                        });
+                                    }
+                                    if(code===999){
+                                        /*退出系统*/
+                                        cache=null;
+                                        toolUtil.loginTips({
+                                            clear:true,
+                                            reload:true
+                                        });
+                                    }
+                                    return false;
+                                }else{
+                                    /*操作成功即加载数据*/
+                                    /*重新加载表格数据*/
+                                    self.getColumnData();
+                                    /*重置表单*/
+                                    self.addFormDelay({
+                                        type:'user'
+                                    });
+                                    /*弹出框隐藏*/
+                                    toolDialog.show({
+                                        type:'succ',
+                                        value:user.type==='add'?'新增用户成功':'编辑用户成功'
+                                    });
+                                    self.toggleModal({
+                                        display:'hide',
+                                        area:'user',
+                                        delay:1000
+                                    });
+                                }
+                            }
+                        },
+                        function(resp){
+                            var message=resp.data.message;
+                            if(typeof message !=='undefined'&&message!==''){
+                                console.log(message);
+                            }else{
+                                console.log('新增机构或编辑机构失败');
+                            }
+                        });
+            }else{
+                /*缓存不存在*/
+                return false
+            }
+        };
+
+
 
     }]);

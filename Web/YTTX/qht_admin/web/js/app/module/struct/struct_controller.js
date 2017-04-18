@@ -31,19 +31,19 @@ angular.module('app')
 
         /*模型--列表数据*/
         this.table={
-            init_len:10,
-            ischeck:true,
-            selectwrap:'#admin_checkcolumn',
-            bodywrap:'#admin_batchlist_wrap',
-            hide_list:[3,4,6,8],
-            api:function () {
-                return {
-                    getTable:structService.getListTable,
-                    isEmpty:structService.dataIsEmpty
-                }
+            init_len:10/*数据有多少列*/,
+            ischeck:true,/*是否有全选*/
+            selectwrap:'#admin_checkcolumn'/*控制列显示隐藏的容器*/,
+            bodywrap:'#admin_batchlist_wrap'/*数据展现容器*/,
+            hide_list:[4,5,6,7,8]/*需要隐藏的的列序号*/,
+            api:{
+                /*相关table需要的api*/
+                getTable:structService.getListTable,
+                isEmpty:structService.dataIsEmpty
             },
-            colgroup:''
+            colgroup:''/*分组模型*/
         };
+        /*初始化数据表格显示隐藏*/
         dataTableColumn.initColumn(self.table,$scope);
 
         /*模型--搜索*/
@@ -111,10 +111,18 @@ angular.module('app')
 
         /*模型--用户*/
         this.user={
-            filter:'',
-            id:'',
-            checkall:0,
-            checklist:[]
+            type:'add'/*表单类型：新增，编辑；默认为新增*/,
+            filter:''/*表格过滤关键词*/,
+            id:''/*用户ID*/,
+            nickName:''/*姓名*/,
+            phone:''/*手机号码*/,
+            address:''/*地址*/,
+            mainFee:''/*费率*/,
+            machineCode:''/*机器码*/,
+            remark:''/*备注*/,
+            roleId:''/*角色id*/,
+            checkall:0/*是否全选*/,
+            checklist:[]/*全选数据*/
         };
 
 
@@ -430,7 +438,7 @@ angular.module('app')
             /*表单重置*/
             this.structReset=function (forms){
                 /*重置表单模型*/
-                structService.clearFormData(self.struct);
+                structService.clearFormData(self.struct,'struct');
                 /*重置权限信息*/
                 this.clearSelectPower();
                 /*重置验证提示信息*/
@@ -443,9 +451,19 @@ angular.module('app')
 
             };
 
-            /*用户服务--初始化表头*/
 
 
+            /*用户服务--操作用户表单*/
+            this.actionUser=function (config) {
+                if(config.type){
+                    /*调用编辑机构服务类*/
+                    structService.actionUser({
+                        modal:config,
+                        setting:self.setting,
+                        user:self.user
+                    });
+                }
+            };
             /*用户服务--查询用户数据*/
             this.checkAllUser=function () {
                 structService.checkAllUser(self.user);
@@ -454,8 +472,19 @@ angular.module('app')
             this.filterDataTable=function () {
               structService.filterDataTable(self.user);
             };
+            /*用户服务--提交表单*/
+            this.userSubmit=function () {
+                /*提交服务*/
+                structService.userSubmit(self.user,self.setting);
 
-
+            };
+            /*用户服务--重置表单*/
+            this.userReset=function (forms){
+                /*重置表单模型*/
+                structService.clearFormData(self.user,'user');
+                /*重置验证提示信息*/
+                structService.clearFormValid(forms);
+            };
 
             /*弹出层显示隐藏*/
             this.toggleModal=function (config) {
