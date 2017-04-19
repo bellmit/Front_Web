@@ -82,28 +82,28 @@ angular.module('app')
                                 list1_config.hasdata=false;
                                 return [];
                             }
-                            /*设置分页*/
-                            list1_page.page=result.page;
-                            list1_page.pageSize=result.pageCount;
-                            list1_page.total=result.count;
-                            /*分页调用*/
-                            $admin_page_wrap.pagination({
-                                pageSize:list1_page.pageSize,
-                                total:list1_page.total,
-                                pageNumber:list1_page.page,
-                                onSelectPage:function(pageNumber,pageSize){
-                                    /*再次查询*/
-                                    console.log(pageSize);
-                                    var temp_param=list1_config.config.ajax.data;
-                                    temp_param.page=pageNumber;
-                                    temp_param.pageCount=pageSize;
-                                    list1_config.config.ajax.data=temp_param;
-                                    self.getColumnData();
-                                }
-                            });
                             if(result){
                                 var list=result.list;
                                 if(list){
+                                    /*设置分页*/
+                                    list1_page.total=result.count;
+                                    list1_page.page=result.pageCount;
+                                    /*分页调用*/
+                                    $admin_page_wrap.pagination({
+                                        pageNumber:list1_page.page,
+                                        pageSize:list1_page.pageSize,
+                                        total:list1_page.total,
+                                        onSelectPage:function(pageNumber,pageSize){
+                                             /*再次查询*/
+                                             var temp_param=list1_config.config.ajax.data;
+                                             list1_page.page=pageNumber;
+                                             list1_page.pageSize=pageSize;
+                                             temp_param['page']=list1_page.page;
+                                             temp_param['pageCount']=list1_page.pageSize;
+                                             list1_config.config.ajax.data=temp_param;
+                                             self.getColumnData();
+                                         }
+                                    });
                                     list.length===0?list1_config.hasdata=false:list1_config.hasdata=true;
                                     return list;
                                 }else{
@@ -116,8 +116,10 @@ angular.module('app')
                             }
                         },
                         data:{
-                            page:1,
-                            pageCount:2
+                            /*page:1,
+                            pageCount:2*/
+                             page:list1_page.page,
+                             pageCount:list1_page.pageSize
                         }
                     },
                     info:false,
