@@ -4940,14 +4940,14 @@
 			var type = ext.sErrMode || ext.errMode;
 
 			if ( type == 'alert' ) {
-				console.log( msg );
+
 			}
 			else {
 				throw new Error(msg);
 			}
 		}
 		else if ( window.console && console.log ) {
-			console.log( msg );
+
 		}
 	}
 
@@ -5107,7 +5107,7 @@
 			$(settings.nTable).trigger( e+'.dt', args );
 		}
 
-		console.log( e );
+
 
 		return ret;
 	}

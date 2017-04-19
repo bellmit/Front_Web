@@ -32,9 +32,9 @@
                     <span ng-show="struct_ctrl.powerlist.userdelete" ng-click="struct_ctrl.batchDeleteUser()"><i class="btn-action admin-btn-action6"></i>批量删除</span>
                 </div>
                 <!---->
-                <div class="action-item-ul g-w-percent6 g-pos-r" ng-show="::struct_ctrl.table.selectshow">
+                <div class="action-item-ul g-w-percent6 g-pos-r" ng-show="::struct_ctrl.tablecolumn.columnshow">
                     <div class="action-theme action-theme-btn g-br3 g-t-c">显示隐藏列</div>
-                    <div class="action-ul g-d-hidei" id="admin_checkcolumn">
+                    <div class="action-ul g-d-hidei" id="admin_struct_checkcolumn">
                         <ul class="action-list-wrap" ></ul>
                     </div>
 
@@ -55,7 +55,7 @@
                 <!--头部-->
                 <thead>
                     <tr>
-                        <th class="g-clear-pl g-clear-pr g-t-c"><label ng-show="struct_ctrl.powerlist.userdelete">全选：<input type="checkbox" ng-model="struct_ctrl.user.checkall" ng-init="struct_ctrl.user.checkall=0" ng-checked="struct_ctrl.user.checkall"  ng-change="struct_ctrl.checkAllUser()"  ng-true-value="1" ng-false-value="0"  name="check_userid" /></label></th>
+                        <th class="g-clear-pl g-clear-pr g-t-c"><label ng-show="struct_ctrl.powerlist.userdelete" id="admin_struct_checkall">全选：<input type="checkbox" name="check_userid" /></label></th>
                         <th>手机号码</th>
                         <th>地址</th>
                         <th>姓名</th>
@@ -69,7 +69,7 @@
                 </thead>
 
                 <!--表主体-->
-                <tbody id="admin_batchlist_wrap" class="middle-align"></tbody>
+                <tbody id="admin_struct_batchlist" class="middle-align"></tbody>
             </table>
 
             <!--分页-->

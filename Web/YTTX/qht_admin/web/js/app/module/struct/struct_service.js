@@ -1,8 +1,9 @@
 angular.module('app')
-    .service('structService',['toolUtil','toolDialog','BASE_CONFIG','loginService','powerService','$timeout','$sce',function(toolUtil,toolDialog,BASE_CONFIG,loginService,powerService,$timeout,$sce){
+    .service('structService',['toolUtil','toolDialog','BASE_CONFIG','loginService','powerService','dataTableCacheService','dataTableColumnService','$timeout','$sce',function(toolUtil,toolDialog,BASE_CONFIG,loginService,powerService,dataTableCacheService,dataTableColumnService,$timeout,$sce){
 
         /*获取缓存数据*/
-        var cache=loginService.getCache(),
+        var module_id=10/*模块id*/,
+            cache=loginService.getCache(),
             $admin_struct_submenu=$('#admin_struct_submenu'),
             $admin_struct_list=$('#admin_struct_list'),
             $struct_setting_dialog=$('#struct_setting_dialog'),
@@ -12,9 +13,8 @@ angular.module('app')
             self=this,
             structform_reset_timer=null,
             userform_reset_timer=null,
-            list_table=null,
-            module_id=10/*模块id*/,
-            powermap=powerService.getCurrentPower(module_id);
+            powermap=powerService.getCurrentPower(module_id),
+            list_table=dataTableCacheService.getTable(module_id);
 
 
 
@@ -84,7 +84,7 @@ angular.module('app')
                             }
                             /*设置分页*/
                             list1_page.page=result.page;
-                            list1_page.pageSize=result.pageSize;
+                            list1_page.pageSize=result.pageCount;
                             list1_page.total=result.count;
                             /*分页调用*/
                             $admin_page_wrap.pagination({
@@ -93,9 +93,10 @@ angular.module('app')
                                 pageNumber:list1_page.page,
                                 onSelectPage:function(pageNumber,pageSize){
                                     /*再次查询*/
+                                    console.log(pageSize);
                                     var temp_param=list1_config.config.ajax.data;
                                     temp_param.page=pageNumber;
-                                    temp_param.pageSize=pageSize;
+                                    temp_param.pageCount=pageSize;
                                     list1_config.config.ajax.data=temp_param;
                                     self.getColumnData();
                                 }
@@ -116,7 +117,7 @@ angular.module('app')
                         },
                         data:{
                             page:1,
-                            pageSize:2
+                            pageCount:2
                         }
                     },
                     info:false,
@@ -1379,9 +1380,7 @@ angular.module('app')
             }else if(type==='user'){
                 /*重置用户数据模型*/
                 for(var j in data){
-                    if(j==='checkall' || j==='checklist'){
-                        /*过滤不需要重置部分*/
-                    }else if(j==='type'){
+                    if(j==='type'){
                         /*操作类型为新增*/
                         data[j]='add';
                     }else{
@@ -1415,7 +1414,6 @@ angular.module('app')
                 }
             }
         };
-        
         /*表单类服务--提交表单数据*/
         this.structSubmit=function (struct,setting,search) {
             /*判断表单类型*/
@@ -1548,7 +1546,7 @@ angular.module('app')
 
 
 
-        /*用户服务--请求数据--获取表格数据*/
+        /*数据服务--请求数据--获取表格数据*/
         this.getColumnData=function (id){
             if(!cache){
                 return false;
@@ -1560,12 +1558,15 @@ angular.module('app')
                 data['organizationId']=id;
                 /*参数赋值*/
                 list1_config.config.ajax.data=data;
+
                 if(list_table===null){
                     /*初始请求*/
                     var temp_param=cache.loginMap.param;
                     list1_config.config.ajax.data['adminId']=temp_param.adminId;
                     list1_config.config.ajax.data['token']=temp_param.token;
                     list_table=list1_config.$admin_list_wrap.DataTable(list1_config.config);
+                    /*设置表格缓存*/
+                    dataTableCacheService.setTable(module_id,list_table);
                 }else {
                     /*清除批量数据*/
                     //batchItem.clear();
@@ -1575,21 +1576,11 @@ angular.module('app')
                 list_table.ajax.config(list1_config.config.ajax).load();
             }
         };
-        /*用户服务--获取list_table引用*/
-        this.getListTable=function () {
-            if(list_table===null){
-               return null;
-            }
-            return list_table;
-        };
-        /*用户服务--获取list_table引用*/
+        /*数据服务--判断表格是否为空数据*/
         this.dataIsEmpty=function () {
-            if(list_table===null){
-                return false;
-            }
             return list1_config.hasdata;
         };
-        /*用户服务--全选和取消全选*/
+        /*数据服务--全选和取消全选*/
         this.checkAllUser=function (user) {
             var ischeck=parseInt(user.checkall,10);
 
@@ -1601,6 +1592,20 @@ angular.module('app')
 
             }
         };
+        /*数据服务--过滤表格数据*/
+        this.filterDataTable=function (user) {
+            if(list_table===null){
+                return false;
+            }
+            var filter=user.filter;
+            list_table.search(filter).columns().draw();
+        };
+        /*数据服务--表格列数量控制*/
+        this.initColumn=function (table,$scope) {
+            dataTableColumnService.initColumn(module_id,table,$scope);
+        };
+
+
         /*用户服务--操作用户*/
         this.actionUser=function (config) {
             var modal=config.modal,
@@ -1751,11 +1756,6 @@ angular.module('app')
                         }
                     });
         };
-        /*用户服务--过滤表格数据*/
-        this.filterDataTable=function (user) {
-            var filter=user.filter;
-            list_table.search(filter).columns().draw();
-        };
         /*用户服务--提交表单数据*/
         this.userSubmit=function (user,setting) {
             /*判断表单类型*/
@@ -1869,6 +1869,9 @@ angular.module('app')
                 return false
             }
         };
+
+
+
 
 
 

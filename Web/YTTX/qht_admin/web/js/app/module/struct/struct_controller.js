@@ -1,8 +1,7 @@
 /*首页控制器*/
 angular.module('app')
-    .controller('StructController', ['structService','powerService','dataTableColumn','dataTableCheckAll','toolUtil','$scope',function(structService,powerService,dataTableColumn,dataTableCheckAll,toolUtil,$scope){
-        var self=this,
-            module_id=10;
+    .controller('StructController', ['structService','powerService','toolUtil','$scope',function(structService,powerService,toolUtil,$scope){
+        var self=this;
 
 
         /*模型--tab选项卡*/
@@ -31,22 +30,32 @@ angular.module('app')
         this.powerlist=structService.getCurrentPower();
 
         /*模型--列表数据*/
-        this.table={
-            module_id:module_id,
+        this.tablecolumn={
             init_len:10/*数据有多少列*/,
             ischeck:true,/*是否有全选*/
-            selectwrap:'#admin_checkcolumn'/*控制列显示隐藏的容器*/,
+            columnshow:true,
+            column_wrap:'#admin_struct_checkcolumn'/*控制列显示隐藏的容器*/,
             bodywrap:'#admin_batchlist_wrap'/*数据展现容器*/,
             hide_list:[4,5,6,7,8]/*需要隐藏的的列序号*/,
             api:{
-                /*相关table需要的api*/
-                getTable:structService.getListTable,
                 isEmpty:structService.dataIsEmpty
             },
             colgroup:''/*分组模型*/
         };
-        /*初始化数据表格显示隐藏*/
-        dataTableColumn.initColumn(self.table,$scope);
+
+        /*模型--全选*/
+        this.tablecheckall={
+            bodywrap:'#admin_struct_batchlist',
+            checkbtn:'#admin_struct_checkall'
+        };
+
+        /*初始化数据表格列控制*/
+        structService.initColumn(self.tablecolumn,$scope);
+        /*初始化数据表格全选与取消全选*/
+
+
+
+        //dataTableColumn.initColumn($scope);
         /*初始化数据表格全选与取消全选*/
         /*dataTableCheckAll.initCheckAll({
             
@@ -126,11 +135,9 @@ angular.module('app')
             mainFee:''/*费率*/,
             machineCode:''/*机器码*/,
             remark:''/*备注*/,
-            roleId:''/*角色id*/,
-            checkall:0/*是否全选*/,
-            checklist:[]/*全选数据*/
+            roleId:''/*角色id*/
         };
-
+        
 
         /*模型--菜单加载*/
         this.menuitem={
@@ -469,10 +476,6 @@ angular.module('app')
                         user:self.user
                     });
                 }
-            };
-            /*用户服务--查询用户数据*/
-            this.checkAllUser=function () {
-                structService.checkAllUser(self.user);
             };
             /*用户服务--过滤表格数据*/
             this.filterDataTable=function () {
