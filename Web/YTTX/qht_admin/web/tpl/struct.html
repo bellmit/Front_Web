@@ -51,11 +51,15 @@
 
                 <!--分组样式-->
 
-                <colgroup ng-bind-html="struct_ctrl.table.colgroup"></colgroup>
+                <colgroup id="admin_struct_colgroup"></colgroup>
                 <!--头部-->
                 <thead>
                     <tr>
-                        <th class="g-clear-pl g-clear-pr g-t-c"><label ng-show="struct_ctrl.powerlist.userdelete" id="admin_struct_checkall">全选：<input type="checkbox" name="check_userid" /></label></th>
+                        <th class="g-clear-pl g-clear-pr g-t-c">
+                            <div class="admin-batchitem-wrap" ng-show="struct_ctrl.powerlist.userdelete" >
+                                <label data-check="0" class="admin-batchitem-check" id="admin_struct_checkall"></label>
+                            </div>
+                        </th>
                         <th>手机号码</th>
                         <th>地址</th>
                         <th>姓名</th>

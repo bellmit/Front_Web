@@ -35,31 +35,20 @@ angular.module('app')
             ischeck:true,/*是否有全选*/
             columnshow:true,
             column_wrap:'#admin_struct_checkcolumn'/*控制列显示隐藏的容器*/,
-            bodywrap:'#admin_batchlist_wrap'/*数据展现容器*/,
+            bodywrap:'#admin_struct_batchlist'/*数据展现容器*/,
             hide_list:[4,5,6,7,8]/*需要隐藏的的列序号*/,
             api:{
                 isEmpty:structService.dataIsEmpty
             },
-            colgroup:''/*分组模型*/
+            colgroup:'#admin_struct_colgroup'/*分组模型*/
         };
 
         /*模型--全选*/
         this.tablecheckall={
             bodywrap:'#admin_struct_batchlist',
-            checkbtn:'#admin_struct_checkall'
+            checkall:'#admin_struct_checkall'
         };
 
-        /*初始化数据表格列控制*/
-        structService.initColumn(self.tablecolumn,$scope);
-        /*初始化数据表格全选与取消全选*/
-
-
-
-        //dataTableColumn.initColumn($scope);
-        /*初始化数据表格全选与取消全选*/
-        /*dataTableCheckAll.initCheckAll({
-            
-        });*/
 
         /*模型--搜索*/
         this.search={
@@ -154,6 +143,12 @@ angular.module('app')
 
             this.setting.id=this.root.id;
             this.setting.orgname=this.root.orgname;
+
+            /*初始化数据表格列控制*/
+            structService.initColumn(self.tablecolumn);
+
+            /*初始化数据表格全选与取消全选*/
+            structService.initCheckAll(self.tablecheckall);
 
 
 
@@ -494,6 +489,16 @@ angular.module('app')
                 /*重置验证提示信息*/
                 structService.clearFormValid(forms);
             };
+            /*用户服务--批量删除*/
+            this.batchDeleteUser=function () {
+                structService.batchDeleteUser(self.setting);
+            };
+            /*用户服务--操作单项数据*/
+            this.userItemAction=function (own) {
+                structService.userItemAction(own);
+            };
+
+
 
             /*弹出层显示隐藏*/
             this.toggleModal=function (config) {

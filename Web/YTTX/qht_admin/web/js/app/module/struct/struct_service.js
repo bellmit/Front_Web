@@ -1,5 +1,5 @@
 angular.module('app')
-    .service('structService',['toolUtil','toolDialog','BASE_CONFIG','loginService','powerService','dataTableCacheService','dataTableColumnService','$timeout','$sce',function(toolUtil,toolDialog,BASE_CONFIG,loginService,powerService,dataTableCacheService,dataTableColumnService,$timeout,$sce){
+    .service('structService',['toolUtil','toolDialog','BASE_CONFIG','loginService','powerService','dataTableCacheService','dataTableColumnService','dataTableCheckAllService','$timeout','$sce',function(toolUtil,toolDialog,BASE_CONFIG,loginService,powerService,dataTableCacheService,dataTableColumnService,dataTableCheckAllService,$timeout,$sce){
 
         /*获取缓存数据*/
         var module_id=10/*模块id*/,
@@ -40,7 +40,7 @@ angular.module('app')
         /*列表请求配置*/
         var list1_page={
                 page:1,
-                pageSize:2,
+                pageSize:10,
                 total:0
             },
             list1_config={
@@ -80,30 +80,39 @@ angular.module('app')
                             var result=json.result;
                             if(typeof result==='undefined'){
                                 list1_config.hasdata=false;
+                                /*重置分页*/
+                                list1_page.total=0;
+                                list1_page.page=1;
+                                $admin_page_wrap.pagination({
+                                    pageNumber:list1_page.page,
+                                    pageSize:list1_page.pageSize,
+                                    total:list1_page.total
+                                });
                                 return [];
                             }
+
                             if(result){
+                                /*设置分页*/
+                                list1_page.total=result.count;
+                                /*分页调用*/
+                                $admin_page_wrap.pagination({
+                                    pageNumber:list1_page.page,
+                                    pageSize:list1_page.pageSize,
+                                    total:list1_page.total,
+                                    onSelectPage:function(pageNumber,pageSize){
+                                        /*再次查询*/
+                                        var temp_param=list1_config.config.ajax.data;
+                                        list1_page.page=pageNumber;
+                                        list1_page.pageSize=pageSize;
+                                        temp_param['page']=list1_page.page;
+                                        temp_param['pageSize']=list1_page.pageSize;
+                                        list1_config.config.ajax.data=temp_param;
+                                        self.getColumnData();
+                                    }
+                                });
+
                                 var list=result.list;
                                 if(list){
-                                    /*设置分页*/
-                                    list1_page.total=result.count;
-                                    list1_page.page=result.pageCount;
-                                    /*分页调用*/
-                                    $admin_page_wrap.pagination({
-                                        pageNumber:list1_page.page,
-                                        pageSize:list1_page.pageSize,
-                                        total:list1_page.total,
-                                        onSelectPage:function(pageNumber,pageSize){
-                                             /*再次查询*/
-                                             var temp_param=list1_config.config.ajax.data;
-                                             list1_page.page=pageNumber;
-                                             list1_page.pageSize=pageSize;
-                                             temp_param['page']=list1_page.page;
-                                             temp_param['pageCount']=list1_page.pageSize;
-                                             list1_config.config.ajax.data=temp_param;
-                                             self.getColumnData();
-                                         }
-                                    });
                                     list.length===0?list1_config.hasdata=false:list1_config.hasdata=true;
                                     return list;
                                 }else{
@@ -112,14 +121,20 @@ angular.module('app')
                                 }
                             }else{
                                 list1_config.hasdata=false;
+                                /*重置分页*/
+                                list1_page.total=0;
+                                list1_page.page=1;
+                                $admin_page_wrap.pagination({
+                                    pageNumber:list1_page.page,
+                                    pageSize:list1_page.pageSize,
+                                    total:list1_page.total
+                                });
                                 return [];
                             }
                         },
                         data:{
-                            /*page:1,
-                            pageCount:2*/
                              page:list1_page.page,
-                             pageCount:list1_page.pageSize
+                             pageSize:list1_page.pageSize
                         }
                     },
                     info:false,
@@ -194,17 +209,11 @@ angular.module('app')
 
                                 /*查看用户*/
                                 if(init_power.userdetail){
-                                    btns+='<span data data-action="detail" data-addUserId="'+addUserId+'" data-id="'+data+'"  data-organizationId="'+organizationId+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
-													<i class="fa-file-text-o"></i>\
-													<span>查看</span>\
-												</span>';
+                                    btns+='<span ng-click="struct_ctrl.userItemAction(this)" data-action="detail" data-addUserId="'+addUserId+'" data-id="'+data+'"  data-organizationId="'+organizationId+'"  class="btn-operate">查看</span>';
                                 }
                                 /*编辑用户*/
                                 if(init_power.userupdate){
-                                    btns+='<span data-addUserId="'+addUserId+'"  data-action="edit" data-id="'+data+'" data-organizationId="'+organizationId+'" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
-													<i class="fa-pencil"></i>\
-													<span>编辑</span>\
-												</span>';
+                                    btns+='<span ng-click="struct_ctrl.userItemAction(this)" data-addUserId="'+addUserId+'"  data-action="edit" data-id="'+data+'" data-organizationId="'+organizationId+'" class="btn-operate">编辑</span>';
                                 }
                                 return btns;
                             }
@@ -222,6 +231,13 @@ angular.module('app')
 
         /*导航服务--获取虚拟挂载点*/
         this.getRoot=function () {
+            if(cache===null){
+                toolUtil.loginTips({
+                    clear:true,
+                    reload:true
+                });
+                return null;
+            }
             var islogin=loginService.isLogin(cache);
             if(islogin){
                 var logininfo=cache.loginMap;
@@ -775,6 +791,9 @@ angular.module('app')
         };
         /*机构设置--查询机构数据*/
         this.queryOperateInfo=function (config) {
+            if(cache===null){
+               return false;
+            }
             var setting=config.setting,
                 struct=config.struct,
                 power=config.power,
@@ -1550,7 +1569,7 @@ angular.module('app')
 
         /*数据服务--请求数据--获取表格数据*/
         this.getColumnData=function (id){
-            if(!cache){
+            if(cache===null){
                 return false;
             }
             /*如果存在模型*/
@@ -1603,8 +1622,12 @@ angular.module('app')
             list_table.search(filter).columns().draw();
         };
         /*数据服务--表格列数量控制*/
-        this.initColumn=function (table,$scope) {
-            dataTableColumnService.initColumn(module_id,table,$scope);
+        this.initColumn=function (tablecolumn) {
+            dataTableColumnService.initColumn(module_id,tablecolumn);
+        };
+        /*数据服务--表格全选与取消全选*/
+        this.initCheckAll=function (tablecheckall) {
+            dataTableCheckAllService.initCheckAll(module_id,tablecheckall);
         };
 
 
@@ -1654,6 +1677,10 @@ angular.module('app')
         };
         /*用户服务--查询用户数据*/
         this.queryUserInfo=function (config) {
+            if(cache===null){
+               return false;
+            }
+
             var setting=config.setting,
                 user=config.user,
                 modal=config.modal,
@@ -1870,6 +1897,102 @@ angular.module('app')
                 /*缓存不存在*/
                 return false
             }
+        };
+        /*用户服务--批量删除*/
+        this.batchDeleteUser=function (setting) {
+            if(cache===null){
+                toolUtil.loginTips({
+                    clear:true,
+                    reload:true
+                });
+                return false;
+            }
+            var batchdata=dataTableCheckAllService.getBatchData(),
+                len=batchdata.length;
+
+            if(len===0){
+                toolDialog.show({
+                    type:'warn',
+                    value:'请选中相关数据'
+                });
+                return false;
+            }
+            var param=$.extend(true,{},cache.loginMap.param);
+            /*判断参数*/
+            if(setting.c_id!==''){
+                param['organizationId']=setting.c_id;
+            }else if(setting.c_id===''){
+                param['organizationId']=setting.id;
+            }
+            param['userIds']=batchdata.join(',');
+
+            /*确认是否删除*/
+            toolDialog.sureDialog('',function () {
+                /*执行删除操作*/
+                toolUtil
+                    .requestHttp({
+                        url:'/organization/users/delete',
+                        method:'post',
+                        set:true,
+                        data:param
+                    })
+                    .then(function(resp){
+                            var data=resp.data,
+                                status=parseInt(resp.status,10);
+
+                            if(status===200){
+                                var code=parseInt(data.code,10),
+                                    message=data.message;
+                                if(code!==0){
+                                    if(typeof message !=='undefined'&&message!==''){
+                                        /*提示信息*/
+                                        toolDialog.show({
+                                            type:'warn',
+                                            value:message
+                                        });
+                                    }else{
+                                        /*提示信息*/
+                                        toolDialog.show({
+                                            type:'warn',
+                                            value:'删除用户失败'
+                                        });
+                                    }
+
+                                    if(code===999){
+                                        /*退出系统*/
+                                        cache=null;
+                                        toolUtil.loginTips({
+                                            clear:true,
+                                            reload:true
+                                        });
+                                    }
+                                }else{
+                                    /*提示信息*/
+                                    toolDialog.show({
+                                        type:'succ',
+                                        value:'删除用户成功'
+                                    });
+
+                                    /*清空全选*/
+                                    dataTableCheckAllService.clear();
+                                    /*重新加载数据*/
+                                    self.getColumnData();
+                                }
+                            }
+                        },
+                        function(resp){
+                            var message=resp.data.message;
+                            if(typeof message !=='undefined'&&message!==''){
+                                console.log(message);
+                            }else{
+                                console.log('删除用户失败');
+                            }
+                        });
+            },'是否真要批量删除用户数据',true);
+        };
+        /*用户服务--操作表格单项数据*/
+        this.userItemAction=function (own) {
+            console.log(own);
         };
 
 

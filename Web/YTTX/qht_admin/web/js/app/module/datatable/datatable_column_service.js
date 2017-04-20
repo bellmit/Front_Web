@@ -9,12 +9,9 @@ angular.module('app')
 			temp_count=0;
 
 		/*初始化*/
-		this.initColumn=function (key,table,$scope) {
+		this.initColumn=function (key,tablecolumn) {
 			/*检验数据合法性*/
-			if(!table){
-				return;
-			}
-			if(!$scope){
+			if(!key && !tablecolumn){
 				return;
 			}
 			/*判断是否存在缓存*/
@@ -22,11 +19,18 @@ angular.module('app')
 				
 				/*重置临时数据*/
 				temp_cache=null;
+				temp_init=null;
+				temp_count=0;
 
 				/*如果不存在缓存则创建缓存*/
-				if(!dataTableCacheService.isColumn(key)){
+				if(!dataTableCacheService.isAttr(key,'column_flag')){
 					/*初始化数据*/
-					self.init(key,table,$scope);
+					if(dataTableCacheService.isAttr(key,'$bodywrap')){
+						/*判断是否已经初始化了含有重复节点的其他组件，如果存在此节点，忽略相关配置选项，同时绑定相关事件*/
+						self.init(key,tablecolumn,true);
+					}else{
+						self.init(key,tablecolumn,false);
+					}
 				}
 			}else{
 				/*重新启动初始化,启动监听*/
@@ -36,47 +40,73 @@ angular.module('app')
 					temp_init=null;
 					/*设置时间限制，超过这个限制则停止初始化:6s*/
 					if(temp_count<=120){
-						self.initColumn(key,table,$scope);
+						self.initColumn(key,tablecolumn);
 					}
 				},50);
 			}
 		};
 
 		/*初始化配置*/
-		this.init=function (key,table,$scope) {
+		this.init=function (key,tablecolumn,flag) {
 			/*创建缓存*/
-			var $column_wrap=$(table.column_wrap);
+			var $column_wrap=$(tablecolumn.column_wrap),
+				temptable=dataTableCacheService.getTable(key);
 
-			/*复制临时缓存*/
-			temp_cache={
-				init_hidelist:table.hide_list.slice(0).sort(function (a,b) {
-					return a - b;
-				}),
-				ischeck:table.ischeck,
-				init_len:table.init_len,
-				hide_len:table.hide_list.length,
-				api:table.api,
-				$column_wrap:$column_wrap,
-				$bodywrap:$(table.bodywrap),
-				$column_btn:$column_wrap.prev(),
-				$column_ul:$column_wrap.find('ul')
-			};
+			if(flag){
+				/*存在含有共同节点的其他组件初始化*/
+				/*复制数据,并设置缓存*/
+				dataTableCacheService.setCache(key,{
+					column_flag:true,
+					init_hidelist:tablecolumn.hide_list.slice(0).sort(function (a,b) {
+						return a - b;
+					}),
+					tablecache:temptable,
+					ischeck:tablecolumn.ischeck,
+					init_len:tablecolumn.init_len,
+					hide_len:tablecolumn.hide_list.length,
+					api:tablecolumn.api,
+					$colgroup:$(tablecolumn.colgroup),
+					$column_wrap:$column_wrap,
+					$column_btn:$column_wrap.prev(),
+					$column_ul:$column_wrap.find('ul')
+				},true);
+			}else{
+				dataTableCacheService.setCache(key,{
+					column_flag:true,
+					init_hidelist:tablecolumn.hide_list.slice(0).sort(function (a,b) {
+						return a - b;
+					}),
+					tablecache:temptable,
+					$bodywrap:$(tablecolumn.bodywrap),
+					ischeck:tablecolumn.ischeck,
+					init_len:tablecolumn.init_len,
+					hide_len:tablecolumn.hide_list.length,
+					api:tablecolumn.api,
+					$colgroup:$(tablecolumn.colgroup),
+					$column_wrap:$column_wrap,
+					$column_btn:$column_wrap.prev(),
+					$column_ul:$column_wrap.find('ul')
+				},true);
+			}
+			$column_wrap=null;
+			temptable=null;
+
+			/*设置完缓存，然后获取缓存，并操作缓存*/
+			temp_cache=dataTableCacheService.getCache(key);
 
 			/*初始化组件*/
-			self.initWidget(key,table,$scope);
+			self.initWidget(key,tablecolumn);
 			/*绑定相关事件*/
-			self.bind(key,table,$scope);
+			self.bind(key,tablecolumn);
 		};
 		
 
 		/*初始化组件*/
-		this.initWidget=function (key,table,$scope) {
+		this.initWidget=function () {
 			/*隐藏*/
 			var tempid,
 				str='',
 				i=0;
-
-			temp_cache['tablecache']=dataTableCacheService.getTable(key);
 
 			for(i;i<temp_cache.hide_len;i++){
 				tempid=temp_cache.init_hidelist[i];
@@ -87,15 +117,12 @@ angular.module('app')
 				/*赋值控制下拉选项*/
 				$(str).appendTo(temp_cache.$column_ul.html(''));
 			}
-			/*设置分组和表头模型*/
-			/*更新模型*/
-			$scope.$apply(function () {
-				table.colgroup=$sce.trustAsHtml(self.createColgroup(temp_cache.hide_len));
-			});
+			/*设置分组*/
+			temp_cache.$colgroup.html(self.createColgroup(temp_cache.hide_len));
 		};
 		
 		/*绑定相关事件*/
-		this.bind=function (key,table,$scope) {
+		this.bind=function () {
 			/*绑定切换列控制按钮*/
 			temp_cache.$column_btn.on('click',function () {
 				temp_cache.$column_wrap.toggleClass('g-d-hidei');
@@ -117,13 +144,9 @@ angular.module('app')
 
 				var count=temp_cache.$column_ul.find('.action-list-active').size();
 
-				/*更新模型*/
-				$scope.$apply(function () {
-					table.colgroup=$sce.trustAsHtml(self.createColgroup(temp_cache.hide_len - count));
-				});
+				/*设置分组*/
+				temp_cache.$colgroup.html(self.createColgroup(temp_cache.hide_len - count));
 			});
-			/*复制数据,并设置缓存*/
-			dataTableCacheService.setKey(key,temp_cache,true);
 		};
 
 		/*重新生成分组*/

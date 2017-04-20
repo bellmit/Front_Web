@@ -6,12 +6,21 @@ angular.module('app')
 
 		/*table缓存*/
 		this.tableCache={};
-		/*设置缓存*/
-		this.setCache=function (key,cache) {
-			if(!key && !cache){
+		/*更新缓存*/
+		this.setCache=function (key,cache,flag) {
+			if(!cache){
 				return false;
 			}
-			self.tableCache[key]=$.extend(true,{},cache);
+			var tempcache=self.getCache(key);
+			if(tempcache!==null){
+				self.tableCache[key]=$.extend({},tempcache,cache);
+			}else{
+				self.tableCache[key]=$.extend({},cache);
+			}
+			if(flag){
+				/*是否销毁缓存*/
+				cache=null;
+			}
 		};
 		/*获取缓存*/
 		this.getCache=function (key) {
@@ -57,7 +66,7 @@ angular.module('app')
 				return null;
 			}
 			if(self.isKey(key)){
-				if(self.isColumn(key,str)){
+				if(self.isAttr(key,str)){
 					return self.tableCache[key][str];
 				}
 				return null;
@@ -79,7 +88,7 @@ angular.module('app')
 			if(!key && !cache){
 				return false;
 			}
-			self.tableCache[key]=$.extend(true,{},cache);
+			self.tableCache[key]=$.extend({},cache);
 			if(flag){
 				/*是否销毁缓存*/
 				cache=null;
@@ -93,23 +102,20 @@ angular.module('app')
 				return true;
 			}
 		};
-		/*是否存在列缓存,一般是搭配是否存在索引一起使用*/
-		this.isColumn=function (key,str) {
+		/*是否存在缓存标识,一般是搭配是否存在索引一起使用*/
+		this.isAttr=function (key,str) {
 			if(typeof str!=='undefined'){
 				if(typeof self.tableCache[key][str]==='undefined'){
 					return false;
 				}else{
-					if(self.tableCache[key][str]===null){
+					if(self.tableCache[key][str]===true){
+						return true;
+					}else if(self.tableCache[key][str]===false || self.tableCache[key][str]===null){
 						return false;
 					}
 					return true;
 				}
-			}else{
-				if(typeof self.tableCache[key]['hide_len']==='undefined'){
-					return false;
-				}else{
-					return true;
-				}
 			}
+			return false;
 		};
 	});
