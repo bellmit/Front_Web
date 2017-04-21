@@ -1,7 +1,7 @@
 /*表格服务*/
 'use strict';
 angular.module('app')
-	.service('dataTableColumnService',['dataTableCacheService','$sce',function (dataTableCacheService,$sce) {
+	.service('dataTableColumnService',['dataTableCacheService',function (dataTableCacheService) {
 		/*初始化配置*/
 		var self=this,
 			temp_cache=null,
