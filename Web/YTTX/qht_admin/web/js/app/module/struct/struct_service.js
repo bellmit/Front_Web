@@ -1,5 +1,5 @@
 angular.module('app')
-    .service('structService',['toolUtil','toolDialog','BASE_CONFIG','loginService','powerService','dataTableCacheService','dataTableColumnService','dataTableCheckAllService','$timeout','$sce',function(toolUtil,toolDialog,BASE_CONFIG,loginService,powerService,dataTableCacheService,dataTableColumnService,dataTableCheckAllService,$timeout,$sce){
+    .service('structService',['toolUtil','toolDialog','BASE_CONFIG','loginService','powerService','dataTableCacheService','dataTableColumnService','dataTableCheckAllService','dataTableItemActionService','$timeout','$sce',function(toolUtil,toolDialog,BASE_CONFIG,loginService,powerService,dataTableCacheService,dataTableColumnService,dataTableCheckAllService,dataTableItemActionService,$timeout,$sce){
 
         /*获取缓存数据*/
         var module_id=10/*模块id*/,
@@ -15,6 +15,29 @@ angular.module('app')
             userform_reset_timer=null,
             powermap=powerService.getCurrentPower(module_id),
             list_table=dataTableCacheService.getTable(module_id);
+
+
+        /*初始化表格配置*/
+        /*列控制配置*/
+        var tablecolumn={
+            init_len:10/*数据有多少列*/,
+            ischeck:true,/*是否有全选*/
+            columnshow:true,
+            column_wrap:'#admin_struct_checkcolumn'/*控制列显示隐藏的容器*/,
+            bodywrap:'#admin_struct_batchlist'/*数据展现容器*/,
+            hide_list:[4,5,6,7,8]/*需要隐藏的的列序号*/,
+            column_api:{
+                isEmpty:self.dataIsEmpty
+            },
+            colgroup:'#admin_struct_colgroup'/*分组模型*/
+        },/*全选*/
+        tablecheckall={
+            bodywrap:'#admin_struct_batchlist',
+            checkall:'#admin_struct_checkall'
+        },
+        tableitemaction={
+            bodywrap:'#admin_struct_batchlist'
+        };
 
 
 
@@ -209,11 +232,11 @@ angular.module('app')
 
                                 /*查看用户*/
                                 if(init_power.userdetail){
-                                    btns+='<span ng-click="struct_ctrl.userItemAction(this)" data-action="detail" data-addUserId="'+addUserId+'" data-id="'+data+'"  data-organizationId="'+organizationId+'"  class="btn-operate">查看</span>';
+                                    btns+='<span data-action="detail" data-addUserId="'+addUserId+'" data-id="'+data+'"  data-organizationId="'+organizationId+'"  class="btn-operate">查看</span>';
                                 }
                                 /*编辑用户*/
                                 if(init_power.userupdate){
-                                    btns+='<span ng-click="struct_ctrl.userItemAction(this)" data-addUserId="'+addUserId+'"  data-action="edit" data-id="'+data+'" data-organizationId="'+organizationId+'" class="btn-operate">编辑</span>';
+                                    btns+='<span data-addUserId="'+addUserId+'"  data-action="edit" data-id="'+data+'" data-organizationId="'+organizationId+'" class="btn-operate">编辑</span>';
                                 }
                                 return btns;
                             }
@@ -1622,12 +1645,16 @@ angular.module('app')
             list_table.search(filter).columns().draw();
         };
         /*数据服务--表格列数量控制*/
-        this.initColumn=function (tablecolumn) {
+        this.initColumn=function () {
             dataTableColumnService.initColumn(module_id,tablecolumn);
         };
         /*数据服务--表格全选与取消全选*/
-        this.initCheckAll=function (tablecheckall) {
+        this.initCheckAll=function () {
             dataTableCheckAllService.initCheckAll(module_id,tablecheckall);
+        };
+        /*数据服务--表格单项操作*/
+        this.initItemAction=function () {
+            dataTableItemActionService.initItemAction(module_id,tableitemaction);
         };
 
 
@@ -1989,10 +2016,6 @@ angular.module('app')
                             }
                         });
             },'是否真要批量删除用户数据',true);
-        };
-        /*用户服务--操作表格单项数据*/
-        this.userItemAction=function (own) {
-            console.log(own);
         };
 
 

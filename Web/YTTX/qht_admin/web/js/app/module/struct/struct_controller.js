@@ -28,28 +28,7 @@ angular.module('app')
 
         /*模型--操作权限列表*/
         this.powerlist=structService.getCurrentPower();
-
-        /*模型--列表数据*/
-        this.tablecolumn={
-            init_len:10/*数据有多少列*/,
-            ischeck:true,/*是否有全选*/
-            columnshow:true,
-            column_wrap:'#admin_struct_checkcolumn'/*控制列显示隐藏的容器*/,
-            bodywrap:'#admin_struct_batchlist'/*数据展现容器*/,
-            hide_list:[4,5,6,7,8]/*需要隐藏的的列序号*/,
-            api:{
-                isEmpty:structService.dataIsEmpty
-            },
-            colgroup:'#admin_struct_colgroup'/*分组模型*/
-        };
-
-        /*模型--全选*/
-        this.tablecheckall={
-            bodywrap:'#admin_struct_batchlist',
-            checkall:'#admin_struct_checkall'
-        };
-
-
+        
         /*模型--搜索*/
         this.search={
             searchactive:'',
@@ -145,10 +124,13 @@ angular.module('app')
             this.setting.orgname=this.root.orgname;
 
             /*初始化数据表格列控制*/
-            structService.initColumn(self.tablecolumn);
+            structService.initColumn();
 
             /*初始化数据表格全选与取消全选*/
-            structService.initCheckAll(self.tablecheckall);
+            structService.initCheckAll();
+
+            /*初始化数据表格单项操作*/
+            structService.initItemAction();
 
 
 
@@ -492,10 +474,6 @@ angular.module('app')
             /*用户服务--批量删除*/
             this.batchDeleteUser=function () {
                 structService.batchDeleteUser(self.setting);
-            };
-            /*用户服务--操作单项数据*/
-            this.userItemAction=function (own) {
-                structService.userItemAction(own);
             };
 
 

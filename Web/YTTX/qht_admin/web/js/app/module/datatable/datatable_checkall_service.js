@@ -20,8 +20,11 @@ angular.module('app')
 			if(dataTableCacheService.isKey(key)){
 
 				/*重置临时数据*/
+				if(temp_init!==null){
+					clearTimeout(temp_init);
+					temp_init=null;
+				}
 				temp_cache=null;
-				temp_init=null;
 				temp_count=0;
 
 				/*如果不存在缓存则创建缓存*/
@@ -81,11 +84,11 @@ angular.module('app')
 			/*设置完缓存，然后获取缓存，并操作缓存*/
 			temp_cache=dataTableCacheService.getCache(key);
 			/*绑定相关事件*/
-			self.bind(key);
+			self.bind();
 		};
 
 		/*事件注册*/
-		this.bind=function (key) {
+		this.bind=function () {
 			/*有全选项和子选项*/
 			if(temp_cache.$checkall && temp_cache.$bodywrap){
 				/*绑定全选与取消全选*/

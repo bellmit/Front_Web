@@ -16,10 +16,13 @@ angular.module('app')
 			}
 			/*判断是否存在缓存*/
 			if(dataTableCacheService.isKey(key)){
-				
+
 				/*重置临时数据*/
+				if(temp_init!==null){
+					clearTimeout(temp_init);
+					temp_init=null;
+				}
 				temp_cache=null;
-				temp_init=null;
 				temp_count=0;
 
 				/*如果不存在缓存则创建缓存*/
@@ -64,7 +67,7 @@ angular.module('app')
 					ischeck:tablecolumn.ischeck,
 					init_len:tablecolumn.init_len,
 					hide_len:tablecolumn.hide_list.length,
-					api:tablecolumn.api,
+					column_api:tablecolumn.column_api,
 					$colgroup:$(tablecolumn.colgroup),
 					$column_wrap:$column_wrap,
 					$column_btn:$column_wrap.prev(),
@@ -81,7 +84,7 @@ angular.module('app')
 					ischeck:tablecolumn.ischeck,
 					init_len:tablecolumn.init_len,
 					hide_len:tablecolumn.hide_list.length,
-					api:tablecolumn.api,
+					column_api:tablecolumn.column_api,
 					$colgroup:$(tablecolumn.colgroup),
 					$column_wrap:$column_wrap,
 					$column_btn:$column_wrap.prev(),
@@ -195,7 +198,7 @@ angular.module('app')
 
 		/*数据为空时判断主体合并值*/
 		this.emptyColSpan=function (len) {
-			var isdata=temp_cache.api.isEmpty();
+			var isdata=temp_cache.column_api.isEmpty();
 			if(!isdata){
 				temp_cache.$bodywrap.find('td').attr({
 					'colspan':len
