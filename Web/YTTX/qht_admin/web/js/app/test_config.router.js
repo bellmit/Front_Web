@@ -116,6 +116,7 @@ angular.module('app')
                                         'js/app/module/datatable/datatable_cache_service.js',
                                         'js/app/module/datatable/datatable_column_service.js',
                                         'js/app/module/datatable/datatable_checkall_service.js',
+                                        'js/app/module/datatable/datatable_itemaction_service.js',
                                         'js/app/module/struct/struct_service.js',
                                         'js/app/module/struct/struct_controller.js']);
                             }]

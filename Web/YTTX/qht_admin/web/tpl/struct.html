@@ -341,12 +341,48 @@
 
                             <div class="form-group-self1">
                                 <button type="submit" ng-show="struct_ctrl.user.id===''" ng-disabled="!(struct_ctrl.user.id==='' && userFrom.nickName.$dirty && userFrom.nickName.$valid && userFrom.machineCode.$dirty && userFrom.machineCode.$valid && userFrom.phone.$dirty && userFrom.phone.$valid)"  class="btn btn-red g-br3 g-w-percent50">新增</button>
-                                <button type="submit" ng-show="struct_ctrl.user.id!==''" ng-disabled="!(struct_ctrl.user.id!=='' && userFrom.nickName.$dirty && userFrom.nickName.$valid && userFrom.machineCode.$dirty && userFrom.machineCode.$valid && userFrom.phone.$dirty && userFrom.phone.$valid)"  class="btn btn-red g-br3 g-w-percent50">编辑</button>
+                                <button type="submit" ng-show="struct_ctrl.user.id!==''" ng-disabled="!(struct_ctrl.user.id!=='' && userFrom.nickName.$valid && userFrom.machineCode.$valid && userFrom.phone.$valid)"  class="btn btn-red g-br3 g-w-percent50">编辑</button>
                                 <button type="button" class="btn btn-red g-br3 g-w-percent50 g-gap-mt2" id="admin_user_reset" ng-click="struct_ctrl.userReset(userFrom)">重置</button>
                             </div>
                         </form>
 
                     </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-info" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!--查看用户-->
+    <div class="modal fade custom-width" id="struct_userdetail_dialog">
+        <div class="modal-dialog g-w-percent40">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <!--表单-->
+                    <div class="g-w-percent50">
+
+                    </div>
+                    <table class="table table-bordered table-striped table-hover admin-layout-table">
+
+                        <!--分组样式-->
+                        <colgroup>
+                            <col class="g-w-percent10">
+                            <col class="g-w-percent40">
+                        </colgroup>
+                        <!--头部-->
+                        <thead>
+                        <tr>
+                            <th class="g-t-c" colspan="2">用户详情</th>
+                        </tr>
+                        </thead>
+
+                        <!--表主体-->
+                        <tbody id="admin_userdetail_show" class="middle-align"></tbody>
+                    </table>
                     <div class="clearfix"></div>
                 </div>
                 <div class="modal-footer">

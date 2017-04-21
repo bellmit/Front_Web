@@ -130,7 +130,7 @@ angular.module('app')
             structService.initCheckAll();
 
             /*初始化数据表格单项操作*/
-            structService.initItemAction();
+            structService.initItemAction(self);
 
 
 

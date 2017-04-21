@@ -8,37 +8,15 @@ angular.module('app')
             $admin_struct_list=$('#admin_struct_list'),
             $struct_setting_dialog=$('#struct_setting_dialog'),
             $struct_user_dialog=$('#struct_user_dialog'),
+            $struct_userdetail_dialog=$('#struct_userdetail_dialog'),
             $admin_struct_reset=$('#admin_struct_reset'),
-            $admin_user_reset=$('#admin_struct_reset'),
+            $admin_user_reset=$('#admin_user_reset'),
+            $admin_userdetail_show=$('#admin_userdetail_show'),
             self=this,
             structform_reset_timer=null,
             userform_reset_timer=null,
             powermap=powerService.getCurrentPower(module_id),
             list_table=dataTableCacheService.getTable(module_id);
-
-
-        /*初始化表格配置*/
-        /*列控制配置*/
-        var tablecolumn={
-            init_len:10/*数据有多少列*/,
-            ischeck:true,/*是否有全选*/
-            columnshow:true,
-            column_wrap:'#admin_struct_checkcolumn'/*控制列显示隐藏的容器*/,
-            bodywrap:'#admin_struct_batchlist'/*数据展现容器*/,
-            hide_list:[4,5,6,7,8]/*需要隐藏的的列序号*/,
-            column_api:{
-                isEmpty:self.dataIsEmpty
-            },
-            colgroup:'#admin_struct_colgroup'/*分组模型*/
-        },/*全选*/
-        tablecheckall={
-            bodywrap:'#admin_struct_batchlist',
-            checkall:'#admin_struct_checkall'
-        },
-        tableitemaction={
-            bodywrap:'#admin_struct_batchlist'
-        };
-
 
 
         /*初始化权限*/
@@ -236,7 +214,11 @@ angular.module('app')
                                 }
                                 /*编辑用户*/
                                 if(init_power.userupdate){
-                                    btns+='<span data-addUserId="'+addUserId+'"  data-action="edit" data-id="'+data+'" data-organizationId="'+organizationId+'" class="btn-operate">编辑</span>';
+                                    btns+='<span data-addUserId="'+addUserId+'"  data-action="update" data-id="'+data+'" data-organizationId="'+organizationId+'" class="btn-operate">编辑</span>';
+                                }
+                                /*删除用户*/
+                                if(init_power.userdelete){
+                                    btns+='<span data-addUserId="'+addUserId+'"  data-action="delete" data-id="'+data+'" data-organizationId="'+organizationId+'" class="btn-operate">删除</span>';
                                 }
                                 return btns;
                             }
@@ -245,12 +227,13 @@ angular.module('app')
                 }
             };
 
+
+
+
         /*查询操作权限*/
         this.getCurrentPower=function () {
             return init_power;
         };
-
-
 
         /*导航服务--获取虚拟挂载点*/
         this.getRoot=function () {
@@ -1322,7 +1305,8 @@ angular.module('app')
             var temp_timer=null,
                 type_map={
                     'setting':$struct_setting_dialog,
-                    'user':$struct_user_dialog
+                    'user':$struct_user_dialog,
+                    'userdetail':$struct_userdetail_dialog
                 };
             if(config.display==='show'){
                 if(typeof config.delay!=='undefined'){
@@ -1351,16 +1335,18 @@ angular.module('app')
                     type_map[config.area].modal('hide');
                 }
                 /*清除延时任务序列*/
-                this.clearFormDelay();
+                if(config.area==='setting' || config.area==='user'){
+                    self.clearFormDelay();
+                }
             }
         };
         /*执行延时任务序列*/
         this.addFormDelay=function (config) {
             /*映射对象*/
             var type=config.type,
-                value=config.value,
-                mode=config.mode,
-                type_map={
+            value=config.value,
+            mode=config.mode,
+            type_map={
                 'struct':{
                     'timeid':structform_reset_timer,
                     'dom':$admin_struct_reset
@@ -1620,10 +1606,6 @@ angular.module('app')
                 list_table.ajax.config(list1_config.config.ajax).load();
             }
         };
-        /*数据服务--判断表格是否为空数据*/
-        this.dataIsEmpty=function () {
-            return list1_config.hasdata;
-        };
         /*数据服务--全选和取消全选*/
         this.checkAllUser=function (user) {
             var ischeck=parseInt(user.checkall,10);
@@ -1653,72 +1635,97 @@ angular.module('app')
             dataTableCheckAllService.initCheckAll(module_id,tablecheckall);
         };
         /*数据服务--表格单项操作*/
-        this.initItemAction=function () {
-            dataTableItemActionService.initItemAction(module_id,tableitemaction);
+        this.initItemAction=function ($scope) {
+            dataTableItemActionService.initItemAction(module_id,tableitemaction,$scope);
+        };
+        /*用户服务--表格单项操作回调*/
+        this.doItemAction=function (config,mode) {
+            var id=config.id,
+                action=config.action;
+
+            if(action==='update'){
+                self.actionUser({
+                    modal:{
+                        display:'show',
+                        area:'user',
+                        type:'edit'
+                    },
+                    setting:mode.setting,
+                    user:mode.user
+                },id,action);
+            }else if(action==='detail'){
+                self.queryUserInfo(null,id,action);
+            }
         };
 
 
         /*用户服务--操作用户*/
-        this.actionUser=function (config) {
+        this.actionUser=function (config,id,action) {
             var modal=config.modal,
-                setting=config.setting,
-                user=config.user,
                 type=modal.type;
 
-            /*判断是否是合法的节点，即是否有父机构*/
-            if(!setting.id  &&  typeof setting.id ==='undefined'){
-                toolDialog.show({
-                    type:'warn',
-                    value:'没有父机构或父机构不存在'
+
+
+            if(typeof type!=='undefined'){
+                var setting=config.setting,
+                    user=config.user;
+
+                if(type==='add'){
+                    /*判断是否是合法的节点，即是否有父机构*/
+                    if(!setting.id  &&  typeof setting.id ==='undefined'){
+                        toolDialog.show({
+                            type:'warn',
+                            value:'没有父机构或父机构不存在'
+                        });
+                        return false;
+                    }else if(setting.id===''){
+                        toolDialog.show({
+                            type:'warn',
+                            value:'没有父机构或父机构不存在'
+                        });
+                        return false;
+                    }
+                }
+                /*如果存在延迟任务则清除延迟任务*/
+                self.clearFormDelay();
+                /*通过延迟任务清空表单数据*/
+                self.addFormDelay({
+                    type:'user',
+                    value:type,
+                    mode:user
                 });
-                return false;
-            }else if(setting.id===''){
-                toolDialog.show({
-                    type:'warn',
-                    value:'没有父机构或父机构不存在'
-                });
-                return false;
+
+                /*根据类型跳转相应逻辑*/
+                if(type==='edit'){
+                    /*查询相关存在的数据*/
+                    self.queryUserInfo(config,id,action);
+                }else if(type==='add'){
+                    /*显示弹窗*/
+                    self.toggleModal({
+                        display:modal.display,
+                        area:modal.area
+                    });
+                }
+            }else{
+
             }
-
-            /*如果存在延迟任务则清除延迟任务*/
-            self.clearFormDelay();
-            /*通过延迟任务清空表单数据*/
-            self.addFormDelay({
-                type:'user',
-                value:type,
-                mode:user
-            });
-
-            /*根据类型跳转相应逻辑*/
-            if(type==='edit'){
-                /*查询相关存在的数据*/
-                self.queryUserInfo(config);
-            }else if(type==='add'){
-                /*显示弹窗*/
-                self.toggleModal({
-                    display:modal.display,
-                    area:modal.area
-                });
-            }
-
         };
         /*用户服务--查询用户数据*/
-        this.queryUserInfo=function (config) {
+        this.queryUserInfo=function (config,id,action) {
             if(cache===null){
                return false;
             }
 
-            var setting=config.setting,
-                user=config.user,
-                modal=config.modal,
-                param=$.extend(true,{},cache.loginMap.param);
 
+            var  param=$.extend(true,{},cache.loginMap.param);
             /*判断参数*/
-            if(setting.c_id!==''){
-                param['id']=setting.c_id;
-            }else if(setting.c_id===''){
-                param['id']=setting.id;
+            param['id']=id;
+
+            if(action==='update'){
+                var user=config.user,
+                    modal=config.modal;
             }
+
 
             toolUtil
                 .requestHttp({
@@ -1755,43 +1762,84 @@ angular.module('app')
                                 if(typeof result!=='undefined'){
                                     var list=result.user;
                                     if(angular.isObject(list)){
-                                        /*更新模型*/
-                                        for(var i in list){
-                                            switch (i){
-                                                case 'id':
-                                                    user[i]=list[i];
-                                                    break;
-                                                case 'nickName':
-                                                    user[i]=list[i];
-                                                    break;
-                                                case 'phone':
-                                                    user[i]=toolUtil.phoneFormat(list[i]);
-                                                    break;
-                                                case 'address':
-                                                    user[i]=list[i];
-                                                    break;
-                                                case 'mainFee':
-                                                    user[i]=list[i];
-                                                    break;
-                                                case 'machineCode':
-                                                    user[i]=list[i];
-                                                    break;
-                                                case 'identityState':
-                                                    user[i]=list[i];
-                                                    break;
-                                                case 'salesTime':
-                                                    user[i]=list[i];
-                                                    break;
-                                                case 'remark':
-                                                    user[i]=list[i];
-                                                    break;
+                                        if(action==='update'){
+                                            /*修改：更新模型*/
+                                            for(var i in list){
+                                                switch (i){
+                                                    case 'id':
+                                                        user[i]=list[i];
+                                                        break;
+                                                    case 'nickName':
+                                                        user[i]=list[i];
+                                                        break;
+                                                    case 'phone':
+                                                        user[i]=toolUtil.phoneFormat(list[i]);
+                                                        break;
+                                                    case 'address':
+                                                        user[i]=list[i];
+                                                        break;
+                                                    case 'mainFee':
+                                                        user[i]=list[i];
+                                                        break;
+                                                    case 'machineCode':
+                                                        user[i]=list[i];
+                                                        break;
+                                                    case 'remark':
+                                                        user[i]=list[i];
+                                                        break;
+                                                }
+                                            }
+                                            /*显示弹窗*/
+                                            self.toggleModal({
+                                                display:modal.display,
+                                                area:modal.area
+                                            });
+                                        }else if(action==='detail'){
+                                            /*查看*/
+                                            var str='',
+                                                detail_map={
+                                                    'nickName':'用户名称',
+                                                    'phone':'手机号码',
+                                                    'address':'联系地址',
+                                                    'mainFee':'费率',
+                                                    'machineCode':'机器码(IMEI)',
+                                                    'identityState':'身份证验证状态',
+                                                    'remark':'备注',
+                                                    'createTime':'创建时间',
+                                                    'grade':'用户级别',
+                                                    'gender':'',
+                                                    'strategyNotice':'',
+                                                    'status':'状态'
+                                                };
+                                            for(var j in list){
+                                                if(typeof detail_map[j]!=='undefined'){
+                                                    if(j==='identityState'){
+                                                        var tempstate=parseInt(list[j],10);
+                                                        if(tempstate===0){
+                                                            str+='<tr><td class="g-t-r">身份证验证状态:</td><td class="g-t-l g-c-warn">未验证</td></tr>';
+                                                        }else if(tempstate===1){
+                                                            str+='<tr><td class="g-t-r">身份证验证状态:</td><td class="g-t-l g-c-gray9">正在验证</td></tr>';
+                                                        }else if(tempstate===2){
+                                                            str+='<tr><td class="g-t-r">身份证验证状态:</td><td class="g-t-l g-c-blue1">验证通过</td></tr>';
+                                                        }else if(tempstate===3){
+                                                            str+='<tr><td class="g-t-r">身份证验证状态:</td><td class="g-t-l g-c-red1">验证不通过</td></tr>';
+                                                        }else{
+                                                            str+='<tr><td class="g-t-r">身份证验证状态:</td><td class="g-t-l g-c-gray6">其他</td></tr>';
+                                                        }
+                                                    }else{
+str+='<tr><td class="g-t-r">'+detail_map[j]+':</td><td class="g-t-l">'+list[j]+'</td></tr>';
+                                                    }
+                                                }
+                                            }
+                                            if(str!==''){
+                                                $(str).appendTo($admin_userdetail_show.html(''));
+                                                /*显示弹窗*/
+                                                self.toggleModal({
+                                                    display:'show',
+                                                    area:'userdetail'
+                                                });
                                             }
                                         }
-                                        /*显示弹窗*/
-                                        self.toggleModal({
-                                            display:modal.display,
-                                            area:modal.area
-                                        });
                                     }else{
                                         /*提示信息*/
                                         toolDialog.show({
@@ -2020,7 +2068,32 @@ angular.module('app')
 
 
 
-
+        /*初始化表格配置*/
+        /*列控制配置*/
+        var tablecolumn={
+                init_len:10/*数据有多少列*/,
+                ischeck:true,/*是否有全选*/
+                columnshow:true,
+                column_wrap:'#admin_struct_checkcolumn'/*控制列显示隐藏的容器*/,
+                bodywrap:'#admin_struct_batchlist'/*数据展现容器*/,
+                hide_list:[4,5,6,7,8]/*需要隐藏的的列序号*/,
+                column_api:{
+                    isEmpty:function () {
+                        return list1_config.hasdata;
+                    }
+                },
+                colgroup:'#admin_struct_colgroup'/*分组模型*/
+            },/*全选*/
+            tablecheckall={
+                bodywrap:'#admin_struct_batchlist',
+                checkall:'#admin_struct_checkall'
+            },/*单项操作*/
+            tableitemaction={
+                bodywrap:'#admin_struct_batchlist',
+                itemaction_api:{
+                    doItemAction:self.doItemAction
+                }
+            };
 
 
     }]);
