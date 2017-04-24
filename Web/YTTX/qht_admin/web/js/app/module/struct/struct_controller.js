@@ -24,6 +24,17 @@ angular.module('app')
         structService.initJQDom(jq_dom);
 
 
+        /*模型--权限*/
+        this.power={
+            colgroup:'',
+            thead:'',
+            tbody:''
+        };
+
+        /*模型--操作权限列表*/
+        this.powerlist=structService.getCurrentPower();
+
+
         /*模型--表格缓存*/
         this.table={
             list1_page:{
@@ -56,73 +67,72 @@ angular.module('app')
                                 }
                                 if(code===999){
                                     /*退出系统*/
-                                    cache=null;
                                     toolUtil.loginTips({
                                         clear:true,
                                         reload:true
                                     });
                                 }
-                                list1_config.hasdata=false;
+                                self.table.list1_config.hasdata=false;
                                 return [];
                             }
                             var result=json.result;
                             if(typeof result==='undefined'){
-                                list1_config.hasdata=false;
+                                self.table.list1_config.hasdata=false;
                                 /*重置分页*/
-                                list1_page.total=0;
-                                list1_page.page=1;
+                                self.table.list1_page.total=0;
+                                self.table.list1_page.page=1;
                                 self.$admin_page_wrap.pagination({
-                                    pageNumber:list1_page.page,
-                                    pageSize:list1_page.pageSize,
-                                    total:list1_page.total
+                                    pageNumber:self.table.list1_page.page,
+                                    pageSize:self.table.list1_page.pageSize,
+                                    total:self.table.list1_page.total
                                 });
                                 return [];
                             }
 
                             if(result){
                                 /*设置分页*/
-                                list1_page.total=result.count;
+                                self.table.list1_page.total=result.count;
                                 /*分页调用*/
                                 self.$admin_page_wrap.pagination({
-                                    pageNumber:list1_page.page,
-                                    pageSize:list1_page.pageSize,
-                                    total:list1_page.total,
+                                    pageNumber:self.table.list1_page.page,
+                                    pageSize:self.table.list1_page.pageSize,
+                                    total:self.table.list1_page.total,
                                     onSelectPage:function(pageNumber,pageSize){
                                         /*再次查询*/
-                                        var temp_param=list1_config.config.ajax.data;
-                                        list1_page.page=pageNumber;
-                                        list1_page.pageSize=pageSize;
-                                        temp_param['page']=list1_page.page;
-                                        temp_param['pageSize']=list1_page.pageSize;
-                                        list1_config.config.ajax.data=temp_param;
-                                        self.getColumnData();
+                                        var temp_param=self.table.list1_config.config.ajax.data;
+                                        self.table.list1_page.page=pageNumber;
+                                        self.table.list1_page.pageSize=pageSize;
+                                        temp_param['page']=self.table.list1_page.page;
+                                        temp_param['pageSize']=self.table.list1_page.pageSize;
+                                        self.table.list1_config.config.ajax.data=temp_param;
+                                        self.getColumnData(self.table);
                                     }
                                 });
 
                                 var list=result.list;
                                 if(list){
-                                    list.length===0?list1_config.hasdata=false:list1_config.hasdata=true;
+                                    list.length===0?self.table.list1_config.hasdata=false:self.table.list1_config.hasdata=true;
                                     return list;
                                 }else{
-                                    list1_config.hasdata=false;
+                                    self.table.list1_config.hasdata=false;
                                     return [];
                                 }
                             }else{
-                                list1_config.hasdata=false;
+                                self.table.list1_config.hasdata=false;
                                 /*重置分页*/
-                                list1_page.total=0;
-                                list1_page.page=1;
+                                self.table.list1_page.total=0;
+                                self.table.list1_page.page=1;
                                 self.$admin_page_wrap.pagination({
-                                    pageNumber:list1_page.page,
-                                    pageSize:list1_page.pageSize,
-                                    total:list1_page.total
+                                    pageNumber:self.table.list1_page.page,
+                                    pageSize:self.table.list1_page.pageSize,
+                                    total:self.table.list1_page.total
                                 });
                                 return [];
                             }
                         },
                         data:{
-                            page:list1_page.page,
-                            pageSize:list1_page.pageSize
+                            page:self.table.list1_page.page,
+                            pageSize:self.table.list1_page.pageSize
                         }
                     },
                     info:false,
@@ -196,15 +206,15 @@ angular.module('app')
                                     organizationId=full.organizationId;
 
                                 /*查看用户*/
-                                if(init_power.userdetail){
+                                if(self.powerlist.userdetail){
                                     btns+='<span data-action="detail" data-addUserId="'+addUserId+'" data-id="'+data+'"  data-organizationId="'+organizationId+'"  class="btn-operate">查看</span>';
                                 }
                                 /*编辑用户*/
-                                if(init_power.userupdate){
+                                if(self.powerlist.userupdate){
                                     btns+='<span data-addUserId="'+addUserId+'"  data-action="update" data-id="'+data+'" data-organizationId="'+organizationId+'" class="btn-operate">编辑</span>';
                                 }
                                 /*删除用户*/
-                                if(init_power.userdelete){
+                                if(self.powerlist.userdelete){
                                     btns+='<span data-addUserId="'+addUserId+'"  data-action="delete" data-id="'+data+'" data-organizationId="'+organizationId+'" class="btn-operate">删除</span>';
                                 }
                                 return btns;
@@ -264,15 +274,6 @@ angular.module('app')
         /*模型--虚拟挂载点*/
         this.root=structService.getRoot();
 
-        /*模型--权限*/
-        this.power={
-            colgroup:'',
-            thead:'',
-            tbody:''
-        };
-
-        /*模型--操作权限列表*/
-        this.powerlist=structService.getCurrentPower();
         
         /*模型--搜索*/
         this.search={
