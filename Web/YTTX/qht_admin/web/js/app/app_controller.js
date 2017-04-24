@@ -99,24 +99,3 @@ angular.module('app')
         }
 
     }]);
-
-
-/*var dia=toolDialog.dia();
- $scope.testHaha=function(){
- toolDialog.show({
- dia:dia,
- type:'warn',
- value:'你妹，还是你妹'
- });
- };
- $scope.testHehe=function(){
- var suredia=toolDialog.sureDialog(dia);
- suredia.sure('',function(cf){
- var tip=cf.dia;
- toolDialog.show({
- dia:dia,
- type:'warn',
- value:'你妹，还是你妹'
- });
- },"是否审核该商品?",true);
- };*/

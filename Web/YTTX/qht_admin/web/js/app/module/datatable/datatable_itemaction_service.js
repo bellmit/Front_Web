@@ -73,17 +73,8 @@ angular.module('app')
 				temp_cache=null;
 				temp_count=0;
 
-				/*如果不存在缓存则创建缓存*/
-				if(!dataTableCacheService.isAttr(key,'itemaction_flag')){
-					if(dataTableCacheService.isAttr(key,'$bodywrap')){
-						/*判断是否已经初始化了含有重复节点的其他组件，如果存在此节点，忽略相关配置选项，同时绑定相关事件*/
-						/*初始化数据*/
-						self.init(key,itemaction,mode,true);
-					}else{
-						/*初始化数据*/
-						self.init(key,itemaction,mode,false);
-					}
-				}
+				/*初始化数据*/
+				self.init(key,itemaction,mode);
 			}else{
 				/*重新启动初始化,启动监听*/
 				temp_init=setTimeout(function () {
@@ -101,22 +92,19 @@ angular.module('app')
 		};
 
 		/*初始化配置*/
-		this.init=function (key,itemaction,mode,flag) {
-			/*复制临时缓存*/
-			if(flag){
-				/*复制数据,并设置缓存*/
-				dataTableCacheService.setCache(key,{
-					itemaction_flag:true,
-					itemaction_api:itemaction.itemaction_api
-				},true);
-			}else{
-				/*复制数据,并设置缓存*/
-				dataTableCacheService.setCache(key,{
-					itemaction_flag:true,
-					itemaction_api:itemaction.itemaction_api,
-					$bodywrap:$(itemaction.bodywrap)
-				},true);
+		this.init=function (key,itemaction,mode) {
+			/*是否已经调用过*/
+			if(dataTableCacheService.isAttr(key,'itemaction_flag')){
+				self.unbind(dataTableCacheService.getCache(key));
 			}
+
+			/*复制临时缓存*/
+			/*复制数据,并设置缓存*/
+			dataTableCacheService.setCache(key,{
+				itemaction_flag:true,
+				itemaction_api:itemaction.itemaction_api,
+				$bodywrap:itemaction.$bodywrap
+			});
 			/*设置完缓存，然后获取缓存，并操作缓存*/
 			temp_cache=dataTableCacheService.getCache(key);
 			/*绑定相关事件*/
@@ -161,6 +149,14 @@ angular.module('app')
 				});
 			}
 		};
+
+
+		/*取消绑定*/
+		this.unbind=function (cache) {
+			/*绑定操作选项*/
+			cache.$bodywrap.off('click');
+		};
+		
 		
 		/*分支适配*/
 		this.adaptCase=function (config,mode) {
@@ -173,4 +169,57 @@ angular.module('app')
 				temp_cache.itemaction_api.doItemAction.call(null,config,mode);
 			}
 		};
+
+
+		/*
+
+		 <li>
+			 <a data-isrequest="false" data-parentid="1" data-label="JMAG2" data-layer="1" data-id="2" class="sub-menu-title" href="#" title="">JMAG2</a>
+			 <ul></ul>
+		 </li>
+		 <li>
+			 <a data-isrequest="false" data-parentid="1" data-label="test666" data-layer="1" data-id="6" class="sub-menu-title" href="#" title="">test666</a>
+			 <ul></ul>
+		 </li>
+		 <li>
+			 <a data-isrequest="false" data-parentid="1" data-label="深圳欢迎你" data-layer="1" data-id="7" class="sub-menu-title" href="#" title="">深圳欢迎你</a>
+			 <ul></ul>
+		 </li>
+
+		* */
+
+
+		/*
+
+		 <li>
+			 <a data-isrequest="false" data-parentid="1" data-label="JMAG2" data-layer="1" data-id="2" class="sub-menu-title" href="#" title="">JMAG2</a>
+			 <ul></ul>
+		 </li>
+		 <li>
+			 <a data-isrequest="false" data-parentid="1" data-label="test666" data-layer="1" data-id="6" class="sub-menu-title" href="#" title="">test666</a>
+			 <ul></ul>
+		 </li>
+		 <li>
+			 <a data-isrequest="false" data-parentid="1" data-label="深圳欢迎你" data-layer="1" data-id="7" class="sub-menu-title" href="#" title="">深圳欢迎你</a>
+			 <ul></ul>
+		 </li>
+
+
+
+		* */
+
+
+		/*
+		 <ul ng-init="struct_ctrl.initSubMenu()" ng-click="struct_ctrl.toggleSubMenu($event)" id="admin_struct_submenu" class="g-d-showi ui-sub-menu"></ul>
+
+
+		 <ul ng-init="struct_ctrl.initSubMenu()" ng-click="struct_ctrl.toggleSubMenu($event)" id="admin_struct_submenu" class="g-d-showi ui-sub-menu"></ul>
+
+
+
+
+		* */
+
+
+
 	}]);

@@ -27,17 +27,8 @@ angular.module('app')
 				temp_cache=null;
 				temp_count=0;
 
-				/*如果不存在缓存则创建缓存*/
-				if(!dataTableCacheService.isAttr(key,'checkall_flag')){
-					if(dataTableCacheService.isAttr(key,'$bodywrap')){
-						/*判断是否已经初始化了含有重复节点的其他组件，如果存在此节点，忽略相关配置选项，同时绑定相关事件*/
-						/*初始化数据*/
-						self.init(key,tablecheckall,true);
-					}else{
-						/*初始化数据*/
-						self.init(key,tablecheckall,false);
-					}
-				}
+				/*初始化数据*/
+				self.init(key,tablecheckall);
 			}else{
 				/*重新启动初始化,启动监听*/
 				temp_init=setTimeout(function () {
@@ -55,32 +46,23 @@ angular.module('app')
 		};
 
 		/*初始化配置*/
-		this.init=function (key,tablecheckall,flag) {
-			/*复制临时缓存*/
-			if(flag){
-				/*复制数据,并设置缓存*/
-				dataTableCacheService.setCache(key,{
-					checkall_flag:true,
-					$checkall:$(tablecheckall.checkall),
-					checkvalue:0/*默认未选中*/,
-					checkid:[]/*默认索引数据为空*/,
-					checkitem:[]/*默认node数据为空*/,
-					highactive:'item-lightenbatch',
-					checkactive:'admin-batchitem-checkactive'
-				},true);
-			}else{
-				/*复制数据,并设置缓存*/
-				dataTableCacheService.setCache(key,{
-					checkall_flag:true,
-					$checkall:$(tablecheckall.checkall),
-					checkvalue:0/*默认未选中*/,
-					checkid:[]/*默认索引数据为空*/,
-					checkitem:[]/*默认node数据为空*/,
-					$bodywrap:$(tablecheckall.bodywrap),
-					highactive:'item-lightenbatch',
-					checkactive:'admin-batchitem-checkactive'
-				},true);
+		this.init=function (key,tablecheckall) {
+			/*是否已经调用过*/
+			if(dataTableCacheService.isAttr(key,'checkall_flag')){
+				self.unbind(dataTableCacheService.getCache(key));
 			}
+			/*复制临时缓存*/
+			/*复制数据,并设置缓存*/
+			dataTableCacheService.setCache(key,{
+				checkall_flag:true,
+				$checkall:tablecheckall.$checkall,
+				checkvalue:0/*默认未选中*/,
+				checkid:[]/*默认索引数据为空*/,
+				checkitem:[]/*默认node数据为空*/,
+				$bodywrap:tablecheckall.$bodywrap,
+				highactive:'item-lightenbatch',
+				checkactive:'admin-batchitem-checkactive'
+			});
 			/*设置完缓存，然后获取缓存，并操作缓存*/
 			temp_cache=dataTableCacheService.getCache(key);
 			/*绑定相关事件*/
@@ -121,6 +103,15 @@ angular.module('app')
 
 
 			}
+		};
+		
+		/*取消绑定*/
+		this.unbind=function (cache) {
+			/*绑定全选与取消全选*/
+			cache.$checkall.off('click');
+
+			/*绑定单项选择*/
+			cache.$bodywrap.off('change','input[type="checkbox"]');
 		};
 
 		/*清除数据*/

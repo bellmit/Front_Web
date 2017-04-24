@@ -24,17 +24,9 @@ angular.module('app')
 				}
 				temp_cache=null;
 				temp_count=0;
-
-				/*如果不存在缓存则创建缓存*/
-				if(!dataTableCacheService.isAttr(key,'column_flag')){
-					/*初始化数据*/
-					if(dataTableCacheService.isAttr(key,'$bodywrap')){
-						/*判断是否已经初始化了含有重复节点的其他组件，如果存在此节点，忽略相关配置选项，同时绑定相关事件*/
-						self.init(key,tablecolumn,true);
-					}else{
-						self.init(key,tablecolumn,false);
-					}
-				}
+				
+				/*初始化数据*/
+				self.init(key,tablecolumn);
 			}else{
 				/*重新启动初始化,启动监听*/
 				temp_init=setTimeout(function () {
@@ -50,49 +42,24 @@ angular.module('app')
 		};
 
 		/*初始化配置*/
-		this.init=function (key,tablecolumn,flag) {
-			/*创建缓存*/
-			var $column_wrap=$(tablecolumn.column_wrap),
-				temptable=dataTableCacheService.getTable(key);
-
-			if(flag){
-				/*存在含有共同节点的其他组件初始化*/
-				/*复制数据,并设置缓存*/
-				dataTableCacheService.setCache(key,{
-					column_flag:true,
-					init_hidelist:tablecolumn.hide_list.slice(0).sort(function (a,b) {
-						return a - b;
-					}),
-					tablecache:temptable,
-					ischeck:tablecolumn.ischeck,
-					init_len:tablecolumn.init_len,
-					hide_len:tablecolumn.hide_list.length,
-					column_api:tablecolumn.column_api,
-					$colgroup:$(tablecolumn.colgroup),
-					$column_wrap:$column_wrap,
-					$column_btn:$column_wrap.prev(),
-					$column_ul:$column_wrap.find('ul')
-				},true);
-			}else{
-				dataTableCacheService.setCache(key,{
-					column_flag:true,
-					init_hidelist:tablecolumn.hide_list.slice(0).sort(function (a,b) {
-						return a - b;
-					}),
-					tablecache:temptable,
-					$bodywrap:$(tablecolumn.bodywrap),
-					ischeck:tablecolumn.ischeck,
-					init_len:tablecolumn.init_len,
-					hide_len:tablecolumn.hide_list.length,
-					column_api:tablecolumn.column_api,
-					$colgroup:$(tablecolumn.colgroup),
-					$column_wrap:$column_wrap,
-					$column_btn:$column_wrap.prev(),
-					$column_ul:$column_wrap.find('ul')
-				},true);
+		this.init=function (key,tablecolumn) {
+			/*是否已经调用过*/
+			if(dataTableCacheService.isAttr(key,'column_flag')){
+				self.unbind(dataTableCacheService.getCache(key));
 			}
-			$column_wrap=null;
-			temptable=null;
+
+			dataTableCacheService.setCache(key,{
+				column_flag:true,
+				$bodywrap:$(tablecolumn.$bodywrap),
+				ischeck:tablecolumn.ischeck,
+				init_len:tablecolumn.init_len,
+				hide_len:tablecolumn.hide_list.length,
+				column_api:tablecolumn.column_api,
+				$colgroup:tablecolumn.$colgroup,
+				$column_wrap:tablecolumn.$column_wrap,
+				$column_btn:tablecolumn.$column_wrap.prev(),
+				$column_ul:tablecolumn.$column_wrap.find('ul')
+			});
 
 			/*设置完缓存，然后获取缓存，并操作缓存*/
 			temp_cache=dataTableCacheService.getCache(key);
@@ -150,6 +117,12 @@ angular.module('app')
 				/*设置分组*/
 				temp_cache.$colgroup.html(self.createColgroup(temp_cache.hide_len - count));
 			});
+		};
+		
+		/*取消绑定*/
+		this.unbind=function (cache) {
+			cache.$column_btn.off('click');
+			cache.$column_ul.off('click','li');
 		};
 
 		/*重新生成分组*/

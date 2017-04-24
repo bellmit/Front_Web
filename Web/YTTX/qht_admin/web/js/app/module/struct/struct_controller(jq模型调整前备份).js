@@ -3,8 +3,9 @@ angular.module('app')
     .controller('StructController', ['structService','powerService','toolUtil','$scope',function(structService,powerService,toolUtil,$scope){
         var self=this;
 
-        /*jquery dom缓存:主要是切换路由时，创建的dom缓存引用与现有的dom引用不一致，需要加载视图更新现有dom引用*/
-        var jq_dom={
+
+        /*模型--dom缓存*/
+        this.dom={
             $admin_struct_submenu:$('#admin_struct_submenu'),
             $admin_struct_list:$('#admin_struct_list'),
             $struct_setting_dialog:$('#struct_setting_dialog'),
@@ -12,241 +13,8 @@ angular.module('app')
             $struct_userdetail_dialog:$('#struct_userdetail_dialog'),
             $admin_struct_reset:$('#admin_struct_reset'),
             $admin_user_reset:$('#admin_user_reset'),
-            $admin_userdetail_show:$('#admin_userdetail_show'),
-            $admin_page_wrap:$('#admin_page_wrap'),
-            $admin_list_wrap:$('#admin_list_wrap'),
-            $admin_batchlist_wrap:$('#admin_batchlist_wrap'),
-            $admin_struct_checkcolumn:$('#admin_struct_checkcolumn'),
-            $admin_struct_colgroup:$('#admin_struct_colgroup'),
-            $admin_struct_checkall:$('#admin_struct_checkall')
+            $admin_userdetail_show:$('#admin_userdetail_show')
         };
-        /*切换路由时更新dom缓存*/
-        structService.initJQDom(jq_dom);
-
-
-        /*模型--表格缓存*/
-        this.table={
-            list1_page:{
-            page:1,
-            pageSize:10,
-            total:0
-        },
-            list1_config:{
-                $admin_list_wrap:self.$admin_list_wrap,
-                $admin_page_wrap:self.$admin_page_wrap,
-                hasdata:false,
-                config:{
-                    processing:true,/*大消耗操作时是否显示处理状态*/
-                    deferRender:true,/*是否延迟加载数据*/
-                    autoWidth:true,/*是否*/
-                    paging:false,
-                    ajax:{
-                        url:toolUtil.adaptReqUrl('/organization/users'),
-                        dataType:'JSON',
-                        method:'post',
-                        dataSrc:function ( json ) {
-                            var code=parseInt(json.code,10),
-                                message=json.message;
-
-                            if(code!==0){
-                                if(typeof message !=='undefined'&&message!==''){
-                                    console.log(message);
-                                }else{
-                                    console.log('获取用户失败');
-                                }
-                                if(code===999){
-                                    /*退出系统*/
-                                    cache=null;
-                                    toolUtil.loginTips({
-                                        clear:true,
-                                        reload:true
-                                    });
-                                }
-                                list1_config.hasdata=false;
-                                return [];
-                            }
-                            var result=json.result;
-                            if(typeof result==='undefined'){
-                                list1_config.hasdata=false;
-                                /*重置分页*/
-                                list1_page.total=0;
-                                list1_page.page=1;
-                                self.$admin_page_wrap.pagination({
-                                    pageNumber:list1_page.page,
-                                    pageSize:list1_page.pageSize,
-                                    total:list1_page.total
-                                });
-                                return [];
-                            }
-
-                            if(result){
-                                /*设置分页*/
-                                list1_page.total=result.count;
-                                /*分页调用*/
-                                self.$admin_page_wrap.pagination({
-                                    pageNumber:list1_page.page,
-                                    pageSize:list1_page.pageSize,
-                                    total:list1_page.total,
-                                    onSelectPage:function(pageNumber,pageSize){
-                                        /*再次查询*/
-                                        var temp_param=list1_config.config.ajax.data;
-                                        list1_page.page=pageNumber;
-                                        list1_page.pageSize=pageSize;
-                                        temp_param['page']=list1_page.page;
-                                        temp_param['pageSize']=list1_page.pageSize;
-                                        list1_config.config.ajax.data=temp_param;
-                                        self.getColumnData();
-                                    }
-                                });
-
-                                var list=result.list;
-                                if(list){
-                                    list.length===0?list1_config.hasdata=false:list1_config.hasdata=true;
-                                    return list;
-                                }else{
-                                    list1_config.hasdata=false;
-                                    return [];
-                                }
-                            }else{
-                                list1_config.hasdata=false;
-                                /*重置分页*/
-                                list1_page.total=0;
-                                list1_page.page=1;
-                                self.$admin_page_wrap.pagination({
-                                    pageNumber:list1_page.page,
-                                    pageSize:list1_page.pageSize,
-                                    total:list1_page.total
-                                });
-                                return [];
-                            }
-                        },
-                        data:{
-                            page:list1_page.page,
-                            pageSize:list1_page.pageSize
-                        }
-                    },
-                    info:false,
-                    dom:'<"g-d-hidei" s>',
-                    searching:true,
-                    order:[[1, "desc" ]],
-                    columns: [
-                        {
-                            "data":"id",
-                            "orderable" :false,
-                            "searchable" :false,
-                            "render":function(data, type, full, meta ){
-                                return '<input value="'+data+'" name="check_userid" type="checkbox" />';
-                            }
-                        },
-                        {
-                            "data":"phone",
-                            "render":function(data, type, full, meta ){
-                                return toolUtil.phoneFormat(data);
-                            }
-                        },
-                        {
-                            "data":"address"
-                        },
-                        {
-                            "data":"nickName"
-                        },
-                        {
-                            "data":"machineCode"
-                        },
-                        {
-                            "data":"identityState",
-                            "render":function(data, type, full, meta ){
-                                var stauts=parseInt(data,10),
-                                    statusmap={
-                                        0:"未验证",
-                                        1:"正在验证",
-                                        2:"验证通过",
-                                        3:"验证不通过"
-                                    },
-                                    str='';
-
-                                if(stauts===0){
-                                    str='<div class="g-c-warn">'+statusmap[stauts]+'</div>';
-                                }else if(stauts===1){
-                                    str='<div class="g-c-gray9">'+statusmap[stauts]+'</div>';
-                                }else if(stauts===2){
-                                    str='<div class="g-c-blue1">'+statusmap[stauts]+'</div>';
-                                }else if(stauts===3){
-                                    str='<div class="g-c-red1">'+statusmap[stauts]+'</div>';
-                                }else{
-                                    str='<div class="g-c-gray6">其他</div>';
-                                }
-                                return str;
-                            }
-                        },
-                        {
-                            "data":"createTime"
-                        },
-                        {
-                            "data":"status"
-                        },
-                        {
-                            "data":"remark"
-                        },
-                        {
-                            "data":"id",
-                            "render":function(data, type, full, meta ){
-                                var btns='',
-                                    addUserId=full.addUserId,
-                                    organizationId=full.organizationId;
-
-                                /*查看用户*/
-                                if(init_power.userdetail){
-                                    btns+='<span data-action="detail" data-addUserId="'+addUserId+'" data-id="'+data+'"  data-organizationId="'+organizationId+'"  class="btn-operate">查看</span>';
-                                }
-                                /*编辑用户*/
-                                if(init_power.userupdate){
-                                    btns+='<span data-addUserId="'+addUserId+'"  data-action="update" data-id="'+data+'" data-organizationId="'+organizationId+'" class="btn-operate">编辑</span>';
-                                }
-                                /*删除用户*/
-                                if(init_power.userdelete){
-                                    btns+='<span data-addUserId="'+addUserId+'"  data-action="delete" data-id="'+data+'" data-organizationId="'+organizationId+'" class="btn-operate">删除</span>';
-                                }
-                                return btns;
-                            }
-                        }
-                    ]
-                }
-            },
-            list_table:null
-        };
-
-
-        /*配置文件*/
-        var tablecolumn={
-                init_len:10/*数据有多少列*/,
-                ischeck:true,/*是否有全选*/
-                columnshow:true,
-                $column_wrap:jq_dom.$admin_struct_checkcolumn/*控制列显示隐藏的容器*/,
-                $bodywrap:jq_dom.$admin_batchlist_wrap/*数据展现容器*/,
-                hide_list:[4,5,6,7,8]/*需要隐藏的的列序号*/,
-                column_api:{
-                    isEmpty:function () {
-                        return self.table.list1_config.hasdata;
-                    }
-                },
-                $colgroup:jq_dom.$admin_struct_colgroup/*分组模型*/
-            },/*全选*/
-            tablecheckall={
-                $bodywrap:jq_dom.$admin_batchlist_wrap,
-                $checkall:jq_dom.$admin_struct_checkall
-            },/*单项操作*/
-            tableitemaction={
-                $bodywrap:jq_dom.$admin_batchlist_wrap,
-                itemaction_api:{
-                    doItemAction:structService.doItemAction
-                }
-            };
-
-
-
-
-
 
 
         /*模型--tab选项卡*/
@@ -369,6 +137,17 @@ angular.module('app')
             this.setting.id=this.root.id;
             this.setting.orgname=this.root.orgname;
 
+            /*初始化数据表格列控制*/
+            structService.initColumn();
+
+            /*初始化数据表格全选与取消全选*/
+            structService.initCheckAll();
+
+            /*初始化数据表格单项操作*/
+            structService.initItemAction(self);
+
+
+
             /*搜索过滤*/
             this.searchAction=function (e) {
                 var kcode=window.event?e.keyCode:e.which;
@@ -400,17 +179,6 @@ angular.module('app')
                     setting:self.setting
                 });
             };
-
-            /*初始化数据表格列控制*/
-            structService.initColumn(tablecolumn);
-
-            /*初始化数据表格全选与取消全选*/
-            structService.initCheckAll(tablecheckall);
-
-            /*初始化数据表格单项操作*/
-            structService.initItemAction(tableitemaction,self);
-
-
             /*子菜单展开*/
             this.toggleSubMenu=function (e) {
                 e.preventDefault();
@@ -461,8 +229,7 @@ angular.module('app')
                             structService.initOperate({
                                 data:'',
                                 id:temp_id,
-                                setting:self.setting,
-                                table:self.table
+                                setting:self.setting
                             });
                         }
                     }else{
@@ -497,8 +264,7 @@ angular.module('app')
                                         data:list,
                                         layer:temp_layer,
                                         id:temp_id,
-                                        setting:self.setting,
-                                        table:self.table
+                                        setting:self.setting
                                     });
                                 }else{
                                     /*无数据节点*/
@@ -509,15 +275,13 @@ angular.module('app')
                                         structService.initOperate({
                                             data:'',
                                             id:temp_id,
-                                            setting:self.setting,
-                                            table:self.table
+                                            setting:self.setting
                                         });
                                     }else{
                                         /*错误节点*/
                                         structService.initOperate({
                                             data:null,
-                                            setting:self.setting,
-                                            table:self.table
+                                            setting:self.setting
                                         });
                                     }
                                 }
@@ -535,15 +299,13 @@ angular.module('app')
                         structService.initOperate({
                             data:'',
                             id:temp_id,
-                            setting:self.setting,
-                            table:self.table
+                            setting:self.setting
                         });
                     }else{
                         /*错误节点*/
                         structService.initOperate({
                             data:null,
-                            setting:self.setting,
-                            table:self.table
+                            setting:self.setting
                         });
                     }
                 }
@@ -578,8 +340,7 @@ angular.module('app')
                         layer:0,
                         id:self.root.id,
                         orgname:self.root.orgname,
-                        setting:self.setting,
-                        table:self.table
+                        setting:self.setting
                     });
                 }
 
@@ -632,8 +393,7 @@ angular.module('app')
                                 $li:$item,
                                 layer:layer,
                                 id:id,
-                                $wrap:$ul,
-                                table:self.table
+                                $wrap:$ul
                             });
                         }
                     }else{
@@ -715,7 +475,7 @@ angular.module('app')
             /*用户服务--提交表单*/
             this.userSubmit=function () {
                 /*提交服务*/
-                structService.userSubmit(self.user,self.setting,self.table);
+                structService.userSubmit(self.user,self.setting);
 
             };
             /*用户服务--重置表单*/

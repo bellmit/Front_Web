@@ -7,11 +7,29 @@ angular.module('app')
             cache=loginService.getCache();
 
 
+
+            /*$admin_struct_submenu=$('#admin_struct_submenu'),
+            $admin_struct_list=$('#admin_struct_list'),
+            $struct_setting_dialog=$('#struct_setting_dialog'),
+            $struct_user_dialog=$('#struct_user_dialog'),
+            $struct_userdetail_dialog=$('#struct_userdetail_dialog'),
+            $admin_struct_reset=$('#admin_struct_reset'),
+            $admin_user_reset=$('#admin_user_reset'),
+            $admin_userdetail_show=$('#admin_userdetail_show'),*/
+
+
+
+
+
         var structform_reset_timer=null,
             userform_reset_timer=null,
             powermap=powerService.getCurrentPower(module_id),
             list_table=dataTableCacheService.getTable(module_id);
         
+        
+        
+
+
         /*初始化权限*/
         var init_power={
             structadd:toolUtil.isPower('organization-add',powermap,true)/*添加机构*/,
@@ -24,17 +42,205 @@ angular.module('app')
         };
 
 
-        /*扩展服务--初始化jquery dom节点*/
-        this.initJQDom=function (dom) {
-            if(dom){
-                /*复制dom引用*/
-                for(var i in dom){
-                    self[i]=dom[i];
-                }
-            }
-        };
+        /*dom引用和相关变量定义*/
+        var $admin_list_wrap=$('#admin_list_wrap')/*表格*/,
+            $admin_batchlist_wrap=$('#admin_batchlist_wrap'),
+            $admin_page_wrap=$('#admin_page_wrap');
 
-        
+
+
+        /*列表请求配置*/
+        var list1_page={
+                page:1,
+                pageSize:10,
+                total:0
+            },
+            list1_config={
+                $admin_list_wrap:$admin_list_wrap,
+                $admin_page_wrap:$admin_page_wrap,
+                hasdata:false,
+                config:{
+                    processing:true,/*大消耗操作时是否显示处理状态*/
+                    deferRender:true,/*是否延迟加载数据*/
+                    autoWidth:true,/*是否*/
+                    paging:false,
+                    ajax:{
+                        url:toolUtil.adaptReqUrl('/organization/users'),
+                        dataType:'JSON',
+                        method:'post',
+                        dataSrc:function ( json ) {
+                            var code=parseInt(json.code,10),
+                                message=json.message;
+
+                            if(code!==0){
+                                if(typeof message !=='undefined'&&message!==''){
+                                    console.log(message);
+                                }else{
+                                    console.log('获取用户失败');
+                                }
+                                if(code===999){
+                                    /*退出系统*/
+                                    cache=null;
+                                    toolUtil.loginTips({
+                                        clear:true,
+                                        reload:true
+                                    });
+                                }
+                                list1_config.hasdata=false;
+                                return [];
+                            }
+                            var result=json.result;
+                            if(typeof result==='undefined'){
+                                list1_config.hasdata=false;
+                                /*重置分页*/
+                                list1_page.total=0;
+                                list1_page.page=1;
+                                $admin_page_wrap.pagination({
+                                    pageNumber:list1_page.page,
+                                    pageSize:list1_page.pageSize,
+                                    total:list1_page.total
+                                });
+                                return [];
+                            }
+
+                            if(result){
+                                /*设置分页*/
+                                list1_page.total=result.count;
+                                /*分页调用*/
+                                $admin_page_wrap.pagination({
+                                    pageNumber:list1_page.page,
+                                    pageSize:list1_page.pageSize,
+                                    total:list1_page.total,
+                                    onSelectPage:function(pageNumber,pageSize){
+                                        /*再次查询*/
+                                        var temp_param=list1_config.config.ajax.data;
+                                        list1_page.page=pageNumber;
+                                        list1_page.pageSize=pageSize;
+                                        temp_param['page']=list1_page.page;
+                                        temp_param['pageSize']=list1_page.pageSize;
+                                        list1_config.config.ajax.data=temp_param;
+                                        self.getColumnData();
+                                    }
+                                });
+
+                                var list=result.list;
+                                if(list){
+                                    list.length===0?list1_config.hasdata=false:list1_config.hasdata=true;
+                                    return list;
+                                }else{
+                                    list1_config.hasdata=false;
+                                    return [];
+                                }
+                            }else{
+                                list1_config.hasdata=false;
+                                /*重置分页*/
+                                list1_page.total=0;
+                                list1_page.page=1;
+                                $admin_page_wrap.pagination({
+                                    pageNumber:list1_page.page,
+                                    pageSize:list1_page.pageSize,
+                                    total:list1_page.total
+                                });
+                                return [];
+                            }
+                        },
+                        data:{
+                             page:list1_page.page,
+                             pageSize:list1_page.pageSize
+                        }
+                    },
+                    info:false,
+                    dom:'<"g-d-hidei" s>',
+                    searching:true,
+                    order:[[1, "desc" ]],
+                    columns: [
+                        {
+                            "data":"id",
+                            "orderable" :false,
+                            "searchable" :false,
+                            "render":function(data, type, full, meta ){
+                                return '<input value="'+data+'" name="check_userid" type="checkbox" />';
+                            }
+                        },
+                        {
+                            "data":"phone",
+                            "render":function(data, type, full, meta ){
+                                return toolUtil.phoneFormat(data);
+                            }
+                        },
+                        {
+                            "data":"address"
+                        },
+                        {
+                            "data":"nickName"
+                        },
+                        {
+                            "data":"machineCode"
+                        },
+                        {
+                            "data":"identityState",
+                            "render":function(data, type, full, meta ){
+                                var stauts=parseInt(data,10),
+                                    statusmap={
+                                        0:"未验证",
+                                        1:"正在验证",
+                                        2:"验证通过",
+                                        3:"验证不通过"
+                                    },
+                                    str='';
+
+                                if(stauts===0){
+                                    str='<div class="g-c-warn">'+statusmap[stauts]+'</div>';
+                                }else if(stauts===1){
+                                    str='<div class="g-c-gray9">'+statusmap[stauts]+'</div>';
+                                }else if(stauts===2){
+                                    str='<div class="g-c-blue1">'+statusmap[stauts]+'</div>';
+                                }else if(stauts===3){
+                                    str='<div class="g-c-red1">'+statusmap[stauts]+'</div>';
+                                }else{
+                                    str='<div class="g-c-gray6">其他</div>';
+                                }
+                                return str;
+                            }
+                        },
+                        {
+                            "data":"createTime"
+                        },
+                        {
+                            "data":"status"
+                        },
+                        {
+                            "data":"remark"
+                        },
+                        {
+                            "data":"id",
+                            "render":function(data, type, full, meta ){
+                                var btns='',
+                                    addUserId=full.addUserId,
+                                    organizationId=full.organizationId;
+
+                                /*查看用户*/
+                                if(init_power.userdetail){
+                                    btns+='<span data-action="detail" data-addUserId="'+addUserId+'" data-id="'+data+'"  data-organizationId="'+organizationId+'"  class="btn-operate">查看</span>';
+                                }
+                                /*编辑用户*/
+                                if(init_power.userupdate){
+                                    btns+='<span data-addUserId="'+addUserId+'"  data-action="update" data-id="'+data+'" data-organizationId="'+organizationId+'" class="btn-operate">编辑</span>';
+                                }
+                                /*删除用户*/
+                                if(init_power.userdelete){
+                                    btns+='<span data-addUserId="'+addUserId+'"  data-action="delete" data-id="'+data+'" data-organizationId="'+organizationId+'" class="btn-operate">删除</span>';
+                                }
+                                return btns;
+                            }
+                        }
+                    ]
+                }
+            };
+
+
+
+
         /*查询操作权限*/
         this.getCurrentPower=function () {
             return init_power;
@@ -78,8 +284,8 @@ angular.module('app')
 
                 if(typeof config.type!=='undefined' && config.type==='search'){
                     /*检索则清空查询内容*/
-                    self.$admin_struct_submenu.html('');
-                    self.self.$admin_struct_list.html('');
+                    $admin_struct_submenu.html('');
+                    $admin_struct_list.html('');
                 }
 
                 var layer,
@@ -91,7 +297,7 @@ angular.module('app')
                     layer=0;
                     /*根目录则获取新配置参数*/
                     id=param['organizationId'];
-                    $wrap=self.$admin_struct_submenu;
+                    $wrap=$admin_struct_submenu;
                 }else{
                     /*非根目录则获取新请求参数*/
                     layer=config.$reqstate.attr('data-layer');
@@ -103,9 +309,8 @@ angular.module('app')
                         /*遇到极限节点，不查询数据*/
                         self.initOperate({
                             data:null,
-                            $wrap:self.$admin_struct_list,
-                            setting:config.setting,
-                            table:config.table
+                            $wrap:$admin_struct_list,
+                            setting:config.setting
                         });
                         return false;
                     }
@@ -155,9 +360,8 @@ angular.module('app')
                                                     self.initOperate({
                                                         data:'',
                                                         id:id,
-                                                        $wrap:self.$admin_struct_list,
-                                                        setting:config.setting,
-                                                        table:config.table
+                                                        $wrap:$admin_struct_list,
+                                                        setting:config.setting
                                                     });
                                                 }else{
                                                     $wrap.html('');
@@ -170,9 +374,8 @@ angular.module('app')
                                                         data:'',
                                                         id:id,
                                                         orgname:config.$reqstate.attr('data-label'),
-                                                        $wrap:self.$admin_struct_list,
-                                                        setting:config.setting,
-                                                        table:config.table
+                                                        $wrap:$admin_struct_list,
+                                                        setting:config.setting
                                                     });
                                                 }
                                             }else{
@@ -193,20 +396,18 @@ angular.module('app')
                                                 /*填充子数据到操作区域,同时显示相关操作按钮*/
                                                 self.initOperate({
                                                     data:list,
-                                                    $wrap:self.$admin_struct_list,
+                                                    $wrap:$admin_struct_list,
                                                     id:id,
                                                     layer:layer,
-                                                    setting:config.setting,
-                                                    table:config.table
+                                                    setting:config.setting
                                                 });
                                             }
                                         }else{
                                             /*填充子数据到操作区域,同时显示相关操作按钮*/
                                             self.initOperate({
                                                 data:null,
-                                                $wrap:self.$admin_struct_list,
-                                                setting:config.setting,
-                                                table:config.table
+                                                $wrap:$admin_struct_list,
+                                                setting:config.setting
                                             });
                                         }
                                     }else{
@@ -216,9 +417,8 @@ angular.module('app')
                                         /*填充子数据到操作区域,同时显示相关操作按钮*/
                                         self.initOperate({
                                             data:null,
-                                            $wrap:self.$admin_struct_list,
-                                            setting:config.setting,
-                                            table:config.table
+                                            $wrap:$admin_struct_list,
+                                            setting:config.setting
                                         });
                                     }
                                 }
@@ -237,9 +437,8 @@ angular.module('app')
                             /*填充子数据到操作区域,同时显示相关操作按钮*/
                             self.initOperate({
                                 data:null,
-                                $wrap:self.$admin_struct_list,
-                                setting:config.setting,
-                                table:config.table
+                                $wrap:$admin_struct_list,
+                                setting:config.setting
                             });
                         });
             }else{
@@ -360,7 +559,7 @@ angular.module('app')
                 $wrap;
 
             if(typeof config.$wrap==='undefined'){
-                $wrap=self.$admin_struct_list;
+                $wrap=$admin_struct_list;
                 config['$wrap']=$wrap;
             }else{
                 $wrap=config.$wrap;
@@ -388,19 +587,19 @@ angular.module('app')
                     /*清空内容*/
                     $wrap.html('');
                     /*查询用户信息*/
-                    self.getColumnData(config.table,config.id);
+                    self.getColumnData(config.id);
                 }else{
                     if(config.layer===0){
                         /*虚拟挂载点*/
                         config.setting.id=config.id;
                         config.setting.orgname=config.orgname;
                         /*查询用户信息*/
-                        self.getColumnData(config.table,config.id);
+                        self.getColumnData(config.id);
                     }else{
                         if(typeof config.id!=='undefined'){
                             config.setting.id=config.id;
                             /*查询用户信息*/
-                            self.getColumnData(config.table,config.id);
+                            self.getColumnData(config.id);
                         }else{
                             config.setting.id='';
                         }
@@ -457,7 +656,7 @@ angular.module('app')
                 param['organizationId']=parentid;
 
                 /*查询用户信息*/
-                self.getColumnData(config.table,parentid);
+                self.getColumnData(parentid);
 
                 toolUtil
                     .requestHttp({
@@ -516,6 +715,9 @@ angular.module('app')
                                                     str+='<li data-layer="'+layer+'" data-parentid="'+parentid+'" data-label="'+curitem['orgname']+'" data-id="'+curitem['id']+'">'+curitem["orgname"]+'</li>';
                                                 }
                                                 $(str).appendTo(config.$wrap.html(''));
+
+                                                /*查询用户列表*/
+                                                self.getColumnData();
                                             }
                                         }else{
                                             config.$reqstate.attr({
@@ -1115,9 +1317,9 @@ angular.module('app')
         this.toggleModal=function (config,fn) {
             var temp_timer=null,
                 type_map={
-                    'setting':self.$struct_setting_dialog,
-                    'user':self.$struct_user_dialog,
-                    'userdetail':self.$struct_userdetail_dialog
+                    'setting':$struct_setting_dialog,
+                    'user':$struct_user_dialog,
+                    'userdetail':$struct_userdetail_dialog
                 };
             if(config.display==='show'){
                 if(typeof config.delay!=='undefined'){
@@ -1160,11 +1362,11 @@ angular.module('app')
             type_map={
                 'struct':{
                     'timeid':structform_reset_timer,
-                    'dom':self.$admin_struct_reset
+                    'dom':$admin_struct_reset
                 },
                 'user':{
                     'timeid':userform_reset_timer,
-                    'dom':self.$admin_user_reset
+                    'dom':$admin_user_reset
                 }
             };
             /*执行延时操作*/
@@ -1388,35 +1590,33 @@ angular.module('app')
 
 
         /*数据服务--请求数据--获取表格数据*/
-        this.getColumnData=function (table,id){
+        this.getColumnData=function (id){
             if(cache===null){
-                return false;
-            }else if(!table){
                 return false;
             }
             /*如果存在模型*/
-            var data= $.extend(true,{},table.list1_config.config.ajax.data);
+            var data= $.extend(true,{},list1_config.config.ajax.data);
             if(typeof id!=='undefined'){
                 /*设置值*/
                 data['organizationId']=id;
                 /*参数赋值*/
-                table.list1_config.config.ajax.data=data;
+                list1_config.config.ajax.data=data;
 
-                if(table.list_table===null){
+                if(list_table===null){
                     /*初始请求*/
                     var temp_param=cache.loginMap.param;
-                    table.list1_config.config.ajax.data['adminId']=temp_param.adminId;
-                    table.list1_config.config.ajax.data['token']=temp_param.token;
-                    table.list_table=table.list1_config.self.$admin_list_wrap.DataTable(table.list1_config.config);
+                    list1_config.config.ajax.data['adminId']=temp_param.adminId;
+                    list1_config.config.ajax.data['token']=temp_param.token;
+                    list_table=list1_config.$admin_list_wrap.DataTable(list1_config.config);
                     /*设置表格缓存*/
-                    dataTableCacheService.setTable(module_id,table.list_table);
+                    dataTableCacheService.setTable(module_id,list_table);
                 }else {
                     /*清除批量数据*/
                     //batchItem.clear();
-                    table.list_table.ajax.config(table.list1_config.config.ajax).load();
+                    list_table.ajax.config(list1_config.config.ajax).load();
                 }
-            }else if(typeof id==='undefined' && table.list_table!==null && typeof data['organizationId']!=='undefined'){
-                table.list_table.ajax.config(table.list1_config.config.ajax).load();
+            }else if(typeof id==='undefined' && list_table!==null && typeof data['organizationId']!=='undefined'){
+                list_table.ajax.config(list1_config.config.ajax).load();
             }
         };
         /*数据服务--全选和取消全选*/
@@ -1440,15 +1640,15 @@ angular.module('app')
             list_table.search(filter).columns().draw();
         };
         /*数据服务--表格列数量控制*/
-        this.initColumn=function (tablecolumn) {
+        this.initColumn=function () {
             dataTableColumnService.initColumn(module_id,tablecolumn);
         };
         /*数据服务--表格全选与取消全选*/
-        this.initCheckAll=function (tablecheckall) {
+        this.initCheckAll=function () {
             dataTableCheckAllService.initCheckAll(module_id,tablecheckall);
         };
         /*数据服务--表格单项操作*/
-        this.initItemAction=function (tableitemaction,$scope) {
+        this.initItemAction=function ($scope) {
             dataTableItemActionService.initItemAction(module_id,tableitemaction,$scope);
         };
         /*用户服务--表格单项操作回调*/
@@ -1645,7 +1845,7 @@ str+='<tr><td class="g-t-r">'+detail_map[j]+':</td><td class="g-t-l">'+list[j]+'
                                                 }
                                             }
                                             if(str!==''){
-                                                $(str).appendTo(self.$admin_userdetail_show.html(''));
+                                                $(str).appendTo($admin_userdetail_show.html(''));
                                                 /*显示弹窗*/
                                                 self.toggleModal({
                                                     display:'show',
@@ -1674,7 +1874,7 @@ str+='<tr><td class="g-t-r">'+detail_map[j]+':</td><td class="g-t-l">'+list[j]+'
                     });
         };
         /*用户服务--提交表单数据*/
-        this.userSubmit=function (user,setting,table) {
+        this.userSubmit=function (user,setting) {
             /*判断表单类型*/
             if(user.type===''||typeof user.type==='undefined'){
                 /*非法表单类型*/
@@ -1787,7 +1987,7 @@ str+='<tr><td class="g-t-r">'+detail_map[j]+':</td><td class="g-t-l">'+list[j]+'
             }
         };
         /*用户服务--批量删除*/
-        this.batchDeleteUser=function (setting,table) {
+        this.batchDeleteUser=function (setting) {
             if(cache===null){
                 toolUtil.loginTips({
                     clear:true,
@@ -1864,7 +2064,7 @@ str+='<tr><td class="g-t-r">'+detail_map[j]+':</td><td class="g-t-l">'+list[j]+'
                                     /*清空全选*/
                                     dataTableCheckAllService.clear();
                                     /*重新加载数据*/
-                                    self.getColumnData(table);
+                                    self.getColumnData();
                                 }
                             }
                         },
@@ -1879,6 +2079,34 @@ str+='<tr><td class="g-t-r">'+detail_map[j]+':</td><td class="g-t-l">'+list[j]+'
             },'是否真要批量删除用户数据',true);
         };
 
+
+
+        /*初始化表格配置*/
+        /*列控制配置*/
+        var tablecolumn={
+                init_len:10/*数据有多少列*/,
+                ischeck:true,/*是否有全选*/
+                columnshow:true,
+                column_wrap:'#admin_struct_checkcolumn'/*控制列显示隐藏的容器*/,
+                bodywrap:'#admin_struct_batchlist'/*数据展现容器*/,
+                hide_list:[4,5,6,7,8]/*需要隐藏的的列序号*/,
+                column_api:{
+                    isEmpty:function () {
+                        return list1_config.hasdata;
+                    }
+                },
+                colgroup:'#admin_struct_colgroup'/*分组模型*/
+            },/*全选*/
+            tablecheckall={
+                bodywrap:'#admin_struct_batchlist',
+                checkall:'#admin_struct_checkall'
+            },/*单项操作*/
+            tableitemaction={
+                bodywrap:'#admin_struct_batchlist',
+                itemaction_api:{
+                    doItemAction:self.doItemAction
+                }
+            };
 
 
     }]);
