@@ -50,13 +50,23 @@ angular.module('ui.commonitem',[])
         };
     })
     /*侧边栏搜索指令*/
-    .directive('uiSubSearch',function() {
+    .directive('uiSubSearchStruct',function() {
         return {
             replace:false,
             restrict: 'EC',
             template:'<label class="search-content {{struct_ctrl.search.searchactive}}">\
                 <input type="text" ng-keyup="struct_ctrl.searchAction($event)" placeholder="搜索" ng-model="struct_ctrl.search.orgname" name="search_name" class="g-br3" />\
             <span class="search-clear" ng-click="struct_ctrl.searchClear()"></span></label>'
+        };
+    })
+    /*侧边栏搜索指令*/
+    .directive('uiSubSearchStructRole',function() {
+        return {
+            replace:false,
+            restrict: 'EC',
+            template:'<label class="search-content {{structrole_ctrl.search.searchactive}}">\
+                <input type="text" ng-keyup="structrole_ctrl.searchAction($event)" placeholder="搜索" ng-model="structrole_ctrl.search.name" name="search_name" class="g-br3" />\
+            <span class="search-clear" ng-click="structrole_ctrl.searchClear()"></span></label>'
         };
     })
     /*侧边栏tab选项卡指令*/

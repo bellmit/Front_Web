@@ -78,7 +78,7 @@ angular.module('app')
                 if(typeof config.type!=='undefined' && config.type==='search'){
                     /*检索则清空查询内容*/
                     self.$admin_struct_submenu.html('');
-                    self.self.$admin_struct_list.html('');
+                    self.$admin_struct_list.html('');
                 }
 
                 var layer,
@@ -1435,7 +1435,7 @@ angular.module('app')
             }
         };
         /*数据服务--过滤表格数据*/
-        this.filterDataTable=function (user) {
+        this.filterDataTable=function (list_table,user) {
             if(list_table===null){
                 return false;
             }

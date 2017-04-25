@@ -122,17 +122,43 @@ angular.module('app')
                      }
                 })
                 //机构下面的角色
-                /*.state('role', {
+                .state('role', {
                     url: '/struct.role',
                     views:{
-                        'main':{
-                            templateUrl: 'tpl/struct_role.html'
+                        'container':{
+                            templateUrl:'tpl/struct_role.html'
+                        },
+                        'support':{
+                            templateUrl: 'tpl/common/support_tip.html'
+                        },
+                        'login':{
+                            templateUrl: 'tpl/login.html'
+                        },
+                        'loading':{
+                            templateUrl: 'tpl/common/load.html'
+                        },
+                        'nologin':{
+                            templateUrl: 'tpl/common/support_login.html'
                         },
                         'sidemenu':{
                             templateUrl: 'tpl/common/side_struct_role.html'
                         }
+                    },
+                    resolve: {
+                        /*延迟加载，依赖相关组件*/
+                        deps: ['$ocLazyLoad',
+                            function ($ocLazyLoad) {
+                                return $ocLazyLoad.load(['js/plugins/datatables/dataTables.bootstrap.css',
+                                    'js/plugins/datatables/js/jquery.dataTables.js',
+                                    'js/plugins/pagination/pagination.js',
+                                    'js/app/module/datatable/datatable_column_service.js',
+                                    'js/app/module/datatable/datatable_checkall_service.js',
+                                    'js/app/module/datatable/datatable_itemaction_service.js',
+                                    'js/app/module/struct_role/struct_role_service.js',
+                                    'js/app/module/struct_role/struct_role_controller.js']);
+                            }]
                     }
-                })*/
+                })
                 //订单管理
                 /*.state('order', {
                     url: '/order',

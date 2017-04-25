@@ -383,7 +383,7 @@ angular.module('app')
 
             /*搜索过滤*/
             this.searchAction=function (e) {
-                var kcode=window.event?e.keyCode:e.which;
+                var kcode=e.keyCode;
 
                 if(self.search.orgname===''){
                     self.search.searchactive='';
@@ -716,7 +716,7 @@ angular.module('app')
             };
             /*用户服务--过滤表格数据*/
             this.filterDataTable=function () {
-              structService.filterDataTable(self.user);
+              structService.filterDataTable(self.table.list_table,self.user);
             };
             /*用户服务--提交表单*/
             this.userSubmit=function () {
