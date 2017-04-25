@@ -1,104 +1,60 @@
 /*表格服务*/
 'use strict';
 angular.module('app')
-	.service('dataTableCheckAllService',['dataTableCacheService',function (dataTableCacheService) {
+	.service('dataTableCheckAllService',function () {
 		/*全选服务*/
 		var self=this,
-			temp_cache=null,
 			temp_init=null,
 			temp_count=0;
 
 
 		/*初始化*/
-		this.initCheckAll=function (key,tablecheckall) {
+		this.initCheckAll=function (tablecheckall) {
 			/*检验数据合法性*/
-			if(!key && !tablecheckall){
+			if(!tablecheckall){
 				return;
 			}
 
-			/*判断是否存在缓存*/
-			if(dataTableCacheService.isKey(key)){
-
-				/*重置临时数据*/
-				if(temp_init!==null){
-					clearTimeout(temp_init);
-					temp_init=null;
-				}
-				temp_cache=null;
-				temp_count=0;
-
-				/*初始化数据*/
-				self.init(key,tablecheckall);
-			}else{
-				/*重新启动初始化,启动监听*/
-				temp_init=setTimeout(function () {
-					temp_count++;
-					clearTimeout(temp_init);
-					temp_init=null;
-					/*设置时间限制，超过这个限制则停止初始化:6s*/
-					if(temp_count<=120){
-						self.initCheckAll(key,tablecheckall);
-					}
-				},50);
-			}
-
-
+			/*初始化数据*/
+			self.init(tablecheckall);
 		};
 
 		/*初始化配置*/
-		this.init=function (key,tablecheckall) {
-			/*是否已经调用过*/
-			if(dataTableCacheService.isAttr(key,'checkall_flag')){
-				self.unbind(dataTableCacheService.getCache(key));
-			}
-			/*复制临时缓存*/
-			/*复制数据,并设置缓存*/
-			dataTableCacheService.setCache(key,{
-				checkall_flag:true,
-				$checkall:tablecheckall.$checkall,
-				checkvalue:0/*默认未选中*/,
-				checkid:[]/*默认索引数据为空*/,
-				checkitem:[]/*默认node数据为空*/,
-				$bodywrap:tablecheckall.$bodywrap,
-				highactive:'item-lightenbatch',
-				checkactive:'admin-batchitem-checkactive'
-			});
-			/*设置完缓存，然后获取缓存，并操作缓存*/
-			temp_cache=dataTableCacheService.getCache(key);
+		this.init=function (tablecheckall) {
 			/*绑定相关事件*/
-			self.bind();
+			self.bind(tablecheckall);
 		};
 
 		/*事件注册*/
-		this.bind=function () {
+		this.bind=function (tablecheckall) {
 			/*有全选项和子选项*/
-			if(temp_cache.$checkall && temp_cache.$bodywrap){
+			if(tablecheckall.$checkall && tablecheckall.$bodywrap){
 				/*绑定全选与取消全选*/
-				temp_cache.$checkall.on('click',function (){
+				tablecheckall.$checkall.on('click',function (){
 					var $this=$(this),
 						tempstate=parseInt($this.attr('data-check'),10);
 					if(tempstate===0){
 						/*选中*/
-						temp_cache.checkvalue=1;
+						tablecheckall.checkvalue=1;
 						$this.attr({
 							'data-check':1
-						}).addClass(temp_cache.checkactive);
+						}).addClass(tablecheckall.checkactive);
 						/*执行全选*/
-						self.toggleCheckAll(1);
+						self.toggleCheckAll(tablecheckall,1);
 					}else if(tempstate===1){
 						/*取消选中*/
-						temp_cache.checkvalue=0;
+						tablecheckall.checkvalue=0;
 						$this.attr({
 							'data-check':0
-						}).removeClass(temp_cache.checkactive);
+						}).removeClass(tablecheckall.checkactive);
 						/*执行取消全选*/
-						self.toggleCheckAll(0);
+						self.toggleCheckAll(tablecheckall,0);
 					}
 				});
 
 				/*绑定单项选择*/
-				temp_cache.$bodywrap.on('change','input[type="checkbox"]',function () {
-					self.toggleCheckItem($(this));
+				tablecheckall.$bodywrap.on('change','input[type="checkbox"]',function () {
+					self.toggleCheckItem(tablecheckall,$(this));
 				});
 
 
@@ -115,33 +71,33 @@ angular.module('app')
 		};
 
 		/*清除数据*/
-		this.clear=function () {
-			temp_cache.checkid.length=0;
-			temp_cache.checkvalue=0;
-			temp_cache.$checkall.attr({
+		this.clear=function (tablecheckall) {
+			tablecheckall.checkid.length=0;
+			tablecheckall.checkvalue=0;
+			tablecheckall.$checkall.attr({
 				'data-check':0
-			}).removeClass(temp_cache.checkactive);
+			}).removeClass(tablecheckall.checkactive);
 
 			/*清除选中*/
-			var len=temp_cache.checkitem.length;
+			var len=tablecheckall.checkitem.length;
 			if(len!==0){
 				var i=0;
 				for(i;i<len;i++){
-					temp_cache.checkitem[i].closest('tr').removeClass(temp_cache.highactive);
-					temp_cache.checkitem[i].prop('checked', false);
+					tablecheckall.checkitem[i].closest('tr').removeClass(tablecheckall.highactive);
+					tablecheckall.checkitem[i].prop('checked', false);
 				}
-				temp_cache.checkitem.length=0;
+				tablecheckall.checkitem.length=0;
 			}
 		};
 
 
 		/*过滤数据(清除并过滤已经选中的数据)*/
-		this.filterData=function (key) {
+		this.filterData=function (tablecheckall,key) {
 			/*清除选中*/
-			var checkid=temp_cache.checkid,
+			var checkid=tablecheckall.checkid,
 				len=checkid.length;
 			if(len!==0 && typeof key!=='undefined'){
-				var checkitem=temp_cache.checkitem;
+				var checkitem=tablecheckall.checkitem;
 				if($.isArray(key)){
 					var j=0,
 						jlen=key.length,
@@ -151,7 +107,7 @@ angular.module('app')
 					outer:for(j;j<jlen;j++){
 						for(k;k<klen;k++){
 							if(checkid[k]===key[j]){
-								checkitem[k].closest('tr').removeClass(temp_cache.highactive);
+								checkitem[k].closest('tr').removeClass(tablecheckall.highactive);
 								checkitem[k].prop('checked', false);
 								checkitem.splice(k,1);
 								checkid.splice(k,1);
@@ -161,14 +117,14 @@ angular.module('app')
 							}
 						}
 					}
-					if(temp_cache.checkid.length===0){
-						self.clear();
+					if(tablecheckall.checkid.length===0){
+						self.clear(tablecheckall);
 					}
 				}else{
 					var i=len - 1;
 					for(i;i>=0;i--){
 						if(checkid[i]===key){
-							checkitem[i].closest('tr').removeClass(temp_cache.highactive);
+							checkitem[i].closest('tr').removeClass(tablecheckall.highactive);
 							checkitem[i].prop('checked', false);
 							checkitem.splice(i,1);
 							checkid.splice(i,1);
@@ -176,7 +132,7 @@ angular.module('app')
 						}
 					}
 					if(checkid.length===0){
-						self.clear();
+						self.clear(tablecheckall);
 					}
 				}
 			}
@@ -184,35 +140,36 @@ angular.module('app')
 
 
 		/*全选和取消全选*/
-		this.toggleCheckAll=function (chk) {
+		this.toggleCheckAll=function (tablecheckall,chk) {
 			if(chk===1){
 				/*选中*/
 				/*不依赖于状态*/
-				temp_cache.$bodywrap.find('tr').each(function (index, element) {
+				tablecheckall.$bodywrap.find('tr').each(function (index, element) {
+					console.log(element);
 					var $input=$(element).find('td:first input:checkbox');
 					if(index===0){
-						if($input.length==0){
-							self.clear();
+						if($input.size()===0){
+							self.clear(tablecheckall);
 							return false;
 						}
 					}
 					if(!$input.is(':checked')){
-						temp_cache.checkid.push($input.prop('checked',true).val());
-						temp_cache.checkitem.push($input);
-						$input.closest('tr').addClass(temp_cache.highactive);
+						tablecheckall.checkid.push($input.prop('checked',true).val());
+						tablecheckall.checkitem.push($input);
+						$input.closest('tr').addClass(tablecheckall.highactive);
 					}
 				});
 			}else if(chk===0){
 				/*取消选中*/
-				self.clear();
+				self.clear(tablecheckall);
 			}
 		};
 
 
 		/*绑定选中某个单独多选框*/
-		this.toggleCheckItem=function ($input) {
-			var checkid=temp_cache.checkid,
-				checkitem=temp_cache.checkitem,
+		this.toggleCheckItem=function (tablecheckall,$input) {
+			var checkid=tablecheckall.checkid,
+				checkitem=tablecheckall.checkitem,
 				len=checkid.length,
 				ishave=-1,
 				text=$input.val();
@@ -221,13 +178,13 @@ angular.module('app')
 				if (len === 0) {
 					checkid.push(text);
 					checkitem.push($input);
-					$input.closest('tr').addClass(temp_cache.highactive);
-					temp_cache.$checkall.attr({
+					$input.closest('tr').addClass(tablecheckall.highactive);
+					tablecheckall.$checkall.attr({
 						'data-check':1
-					}).addClass(temp_cache.checkactive);
+					}).addClass(tablecheckall.checkactive);
 				} else {
 					ishave=$.inArray(text,checkid);
-					$input.closest('tr').addClass(temp_cache.highactive);
+					$input.closest('tr').addClass(tablecheckall.highactive);
 					if(ishave!==-1){
 						checkid.splice(ishave,1,text);
 						checkitem.splice(ishave,1,$input);
@@ -241,10 +198,10 @@ angular.module('app')
 				ishave=$.inArray(text,checkid);
 				if(ishave!==-1){
 					checkid.splice(ishave,1);
-					checkitem[ishave].closest('tr').removeClass(temp_cache.highactive);
+					checkitem[ishave].closest('tr').removeClass(tablecheckall.highactive);
 					checkitem.splice(ishave,1);
 					if(checkid.length===0){
-						self.clear();
+						self.clear(tablecheckall);
 					}
 				}
 			}
@@ -252,14 +209,14 @@ angular.module('app')
 
 
 		/*获取选中的数据*/
-		this.getBatchData=function () {
-			return temp_cache.checkid;
+		this.getBatchData=function (tablecheckall) {
+			return tablecheckall.checkid;
 		};
 
 
 		/*获取选中的文档节点*/
-		this.getBatchNode=function () {
-			return temp_cache.checkitem;
+		this.getBatchNode=function (tablecheckall) {
+			return tablecheckall.checkitem;
 		};
 
-	}]);
+	});

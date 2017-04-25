@@ -1,8 +1,9 @@
 /*首页控制器*/
 angular.module('app')
-    .controller('StructController', ['structService','powerService','toolUtil','$scope',function(structService,powerService,toolUtil,$scope){
+    .controller('StructController', ['structService','powerService','toolUtil',function(structService,powerService,toolUtil){
         var self=this;
 
+        
         /*jquery dom缓存:主要是切换路由时，创建的dom缓存引用与现有的dom引用不一致，需要加载视图更新现有dom引用*/
         var jq_dom={
             $admin_struct_submenu:$('#admin_struct_submenu'),
@@ -15,7 +16,7 @@ angular.module('app')
             $admin_userdetail_show:$('#admin_userdetail_show'),
             $admin_page_wrap:$('#admin_page_wrap'),
             $admin_list_wrap:$('#admin_list_wrap'),
-            $admin_batchlist_wrap:$('#admin_batchlist_wrap'),
+            $admin_struct_batchlist:$('#admin_struct_batchlist'),
             $admin_struct_checkcolumn:$('#admin_struct_checkcolumn'),
             $admin_struct_colgroup:$('#admin_struct_colgroup'),
             $admin_struct_checkall:$('#admin_struct_checkall')
@@ -38,13 +39,11 @@ angular.module('app')
         /*模型--表格缓存*/
         this.table={
             list1_page:{
-            page:1,
-            pageSize:10,
-            total:0
-        },
+                page:1,
+                pageSize:10,
+                total:0
+            },
             list1_config:{
-                $admin_list_wrap:self.$admin_list_wrap,
-                $admin_page_wrap:self.$admin_page_wrap,
                 hasdata:false,
                 config:{
                     processing:true,/*大消耗操作时是否显示处理状态*/
@@ -81,7 +80,7 @@ angular.module('app')
                                 /*重置分页*/
                                 self.table.list1_page.total=0;
                                 self.table.list1_page.page=1;
-                                self.$admin_page_wrap.pagination({
+                                jq_dom.$admin_page_wrap.pagination({
                                     pageNumber:self.table.list1_page.page,
                                     pageSize:self.table.list1_page.pageSize,
                                     total:self.table.list1_page.total
@@ -93,7 +92,7 @@ angular.module('app')
                                 /*设置分页*/
                                 self.table.list1_page.total=result.count;
                                 /*分页调用*/
-                                self.$admin_page_wrap.pagination({
+                                jq_dom.$admin_page_wrap.pagination({
                                     pageNumber:self.table.list1_page.page,
                                     pageSize:self.table.list1_page.pageSize,
                                     total:self.table.list1_page.total,
@@ -122,7 +121,7 @@ angular.module('app')
                                 /*重置分页*/
                                 self.table.list1_page.total=0;
                                 self.table.list1_page.page=1;
-                                self.$admin_page_wrap.pagination({
+                                jq_dom.$admin_page_wrap.pagination({
                                     pageNumber:self.table.list1_page.page,
                                     pageSize:self.table.list1_page.pageSize,
                                     total:self.table.list1_page.total
@@ -131,8 +130,8 @@ angular.module('app')
                             }
                         },
                         data:{
-                            page:self.table.list1_page.page,
-                            pageSize:self.table.list1_page.pageSize
+                            page:1,
+                            pageSize:10
                         }
                     },
                     info:false,
@@ -207,7 +206,7 @@ angular.module('app')
 
                                 /*查看用户*/
                                 if(self.powerlist.userdetail){
-                                    btns+='<span data-action="detail" data-addUserId="'+addUserId+'" data-id="'+data+'"  data-organizationId="'+organizationId+'"  class="btn-operate">查看</span>';
+                                    btns+='<span data-action="detail" data-addUserId="'+addUserId+'" data-id="'+data+'"  data-organizationId="'+organizationId+'" ng-click="struct."  class="btn-operate">查看</span>';
                                 }
                                 /*编辑用户*/
                                 if(self.powerlist.userupdate){
@@ -223,41 +222,53 @@ angular.module('app')
                     ]
                 }
             },
-            list_table:null
-        };
-
-
-        /*配置文件*/
-        var tablecolumn={
-                init_len:10/*数据有多少列*/,
-                ischeck:true,/*是否有全选*/
-                columnshow:true,
-                $column_wrap:jq_dom.$admin_struct_checkcolumn/*控制列显示隐藏的容器*/,
-                $bodywrap:jq_dom.$admin_batchlist_wrap/*数据展现容器*/,
-                hide_list:[4,5,6,7,8]/*需要隐藏的的列序号*/,
-                column_api:{
-                    isEmpty:function () {
-                        return self.table.list1_config.hasdata;
-                    }
-                },
-                $colgroup:jq_dom.$admin_struct_colgroup/*分组模型*/
-            },/*全选*/
-            tablecheckall={
-                $bodywrap:jq_dom.$admin_batchlist_wrap,
-                $checkall:jq_dom.$admin_struct_checkall
-            },/*单项操作*/
-            tableitemaction={
-                $bodywrap:jq_dom.$admin_batchlist_wrap,
-                itemaction_api:{
-                    doItemAction:structService.doItemAction
+            list_table:null,
+            /*列控制*/
+            tablecolumn:{
+            init_len:10/*数据有多少列*/,
+            column_flag:true,
+            ischeck:true,/*是否有全选*/
+            columnshow:true,
+            $column_wrap:jq_dom.$admin_struct_checkcolumn/*控制列显示隐藏的容器*/,
+            $bodywrap:jq_dom.$admin_struct_batchlist/*数据展现容器*/,
+            hide_list:[4,5,6,7,8]/*需要隐藏的的列序号*/,
+            hide_len:5,
+            column_api:{
+                isEmpty:function () {
+                    return self.table.list1_config.hasdata;
                 }
-            };
-
-
-
-
-
-
+            },
+            $colgroup:jq_dom.$admin_struct_colgroup/*分组模型*/,
+            $column_btn:jq_dom.$admin_struct_checkcolumn.prev(),
+            $column_ul:jq_dom.$admin_struct_checkcolumn.find('ul')
+        },
+            /*全选*/
+            tablecheckall:{
+                checkall_flag:true,
+                $bodywrap:jq_dom.$admin_struct_batchlist,
+                $checkall:jq_dom.$admin_struct_checkall,
+                checkvalue:0/*默认未选中*/,
+                checkid:[]/*默认索引数据为空*/,
+                checkitem:[]/*默认node数据为空*/,
+                highactive:'item-lightenbatch',
+                checkactive:'admin-batchitem-checkactive'
+            },
+            /*按钮*/
+            tableitemaction:{
+                $bodywrap:jq_dom.$admin_struct_batchlist,
+                itemaction_api:{
+                    doItemAction:function(config){
+                        structService.doItemAction({
+                            setting:self.setting,
+                            user:self.user,
+                            table:self.table
+                        },config);
+                    }
+                }
+            }
+        };
+        
+        
 
         /*模型--tab选项卡*/
         this.tabitem=[{
@@ -383,7 +394,8 @@ angular.module('app')
                     structService.getMenuList({
                         search:self.search.orgname,
                         setting:self.setting,
-                        type:'search'
+                        type:'search',
+                        table:self.table
                     });
                 }
             };
@@ -398,18 +410,10 @@ angular.module('app')
             this.initSubMenu=function () {
                 structService.getMenuList({
                     search:self.search.orgname,
-                    setting:self.setting
+                    setting:self.setting,
+                    table:self.table
                 });
             };
-
-            /*初始化数据表格列控制*/
-            structService.initColumn(tablecolumn);
-
-            /*初始化数据表格全选与取消全选*/
-            structService.initCheckAll(tablecheckall);
-
-            /*初始化数据表格单项操作*/
-            structService.initItemAction(tableitemaction,self);
 
 
             /*子菜单展开*/
@@ -475,7 +479,8 @@ angular.module('app')
                             structService.getMenuList({
                                 search:self.search.orgname,
                                 $reqstate:$this,
-                                setting:self.setting
+                                setting:self.setting,
+                                table:self.table
                             });
                         }else if(isrequest==='true'){
                             /*已加载的直接遍历存入操作区域*/
@@ -692,7 +697,7 @@ angular.module('app')
             /*提交表单*/
             this.structSubmit=function () {
                 /*提交服务*/
-                structService.structSubmit(self.struct,self.setting,self.search);
+                structService.structSubmit(self.struct,self.setting,self.search,self.table);
 
             };
 
@@ -728,9 +733,12 @@ angular.module('app')
             };
             /*用户服务--批量删除*/
             this.batchDeleteUser=function () {
-                structService.batchDeleteUser(self.setting);
+                structService.batchDeleteUser(self.setting,self.table);
             };
-
+            /*用户服务--调整运营商*/
+            this.adjustOperate=function () {
+               console.log('to do');
+            };
 
 
             /*弹出层显示隐藏*/

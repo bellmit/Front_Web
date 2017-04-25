@@ -1,5 +1,5 @@
 angular.module('app')
-    .service('structService',['toolUtil','toolDialog','BASE_CONFIG','loginService','powerService','dataTableCacheService','dataTableColumnService','dataTableCheckAllService','dataTableItemActionService','$timeout','$sce',function(toolUtil,toolDialog,BASE_CONFIG,loginService,powerService,dataTableCacheService,dataTableColumnService,dataTableCheckAllService,dataTableItemActionService,$timeout,$sce){
+    .service('structService',['toolUtil','toolDialog','BASE_CONFIG','loginService','powerService','dataTableColumnService','dataTableCheckAllService','dataTableItemActionService','$timeout','$sce',function(toolUtil,toolDialog,BASE_CONFIG,loginService,powerService,dataTableColumnService,dataTableCheckAllService,dataTableItemActionService,$timeout,$sce){
 
         /*获取缓存数据*/
         var self=this,
@@ -9,8 +9,7 @@ angular.module('app')
 
         var structform_reset_timer=null,
             userform_reset_timer=null,
-            powermap=powerService.getCurrentPower(module_id),
-            list_table=dataTableCacheService.getTable(module_id);
+            powermap=powerService.getCurrentPower(module_id);
         
         /*初始化权限*/
         var init_power={
@@ -1407,9 +1406,13 @@ angular.module('app')
                     var temp_param=cache.loginMap.param;
                     table.list1_config.config.ajax.data['adminId']=temp_param.adminId;
                     table.list1_config.config.ajax.data['token']=temp_param.token;
-                    table.list_table=table.list1_config.self.$admin_list_wrap.DataTable(table.list1_config.config);
-                    /*设置表格缓存*/
-                    dataTableCacheService.setTable(module_id,table.list_table);
+                    table.list_table=self.$admin_list_wrap.DataTable(table.list1_config.config);
+                    /*调用列控制*/
+                    dataTableColumnService.initColumn(table.tablecolumn,table.list_table);
+                    /*调用全选与取消全选*/
+                    dataTableCheckAllService.initCheckAll(table.tablecheckall);
+                    /*调用按钮操作*/
+                    dataTableItemActionService.initItemAction(table.tableitemaction);
                 }else {
                     /*清除批量数据*/
                     //batchItem.clear();
@@ -1439,20 +1442,17 @@ angular.module('app')
             var filter=user.filter;
             list_table.search(filter).columns().draw();
         };
-        /*数据服务--表格列数量控制*/
-        this.initColumn=function (tablecolumn) {
-            dataTableColumnService.initColumn(module_id,tablecolumn);
-        };
         /*数据服务--表格全选与取消全选*/
         this.initCheckAll=function (tablecheckall) {
-            dataTableCheckAllService.initCheckAll(module_id,tablecheckall);
+
+            dataTableCheckAllService.initCheckAll(tablecheckall);
         };
         /*数据服务--表格单项操作*/
         this.initItemAction=function (tableitemaction,$scope) {
             dataTableItemActionService.initItemAction(module_id,tableitemaction,$scope);
         };
-        /*用户服务--表格单项操作回调*/
-        this.doItemAction=function (config,mode) {
+        /*数据服务--操作按钮*/
+        this.doItemAction=function (mode,config) {
             var id=config.id,
                 action=config.action;
 
@@ -1468,6 +1468,8 @@ angular.module('app')
                 },id,action);
             }else if(action==='detail'){
                 self.queryUserInfo(null,id,action);
+            }else if(action==='delete'){
+                self.batchDeleteUser(mode.setting,mode.table,id);
             }
         };
 
@@ -1755,7 +1757,7 @@ str+='<tr><td class="g-t-r">'+detail_map[j]+':</td><td class="g-t-l">'+list[j]+'
                                 }else{
                                     /*操作成功即加载数据*/
                                     /*重新加载表格数据*/
-                                    self.getColumnData();
+                                    self.getColumnData(table);
                                     /*重置表单*/
                                     self.addFormDelay({
                                         type:'user'
@@ -1787,7 +1789,7 @@ str+='<tr><td class="g-t-r">'+detail_map[j]+':</td><td class="g-t-l">'+list[j]+'
             }
         };
         /*用户服务--批量删除*/
-        this.batchDeleteUser=function (setting,table) {
+        this.batchDeleteUser=function (setting,table,id) {
             if(cache===null){
                 toolUtil.loginTips({
                     clear:true,
@@ -1795,24 +1797,42 @@ str+='<tr><td class="g-t-r">'+detail_map[j]+':</td><td class="g-t-l">'+list[j]+'
                 });
                 return false;
             }
-            var batchdata=dataTableCheckAllService.getBatchData(),
-                len=batchdata.length;
-
-            if(len===0){
-                toolDialog.show({
-                    type:'warn',
-                    value:'请选中相关数据'
-                });
-                return false;
+            var type;
+            if(typeof id==='undefined'){
+                var batchdata=dataTableCheckAllService.getBatchData(table.tablecheckall),
+                    len=batchdata.length;
+                if(len===0){
+                    toolDialog.show({
+                        type:'warn',
+                        value:'请选中相关数据'
+                    });
+                    return false;
+                }
+                type='batch';
+            }else{
+                if(isNaN(id)){
+                    toolDialog.show({
+                        type:'warn',
+                        value:'请选中相关数据'
+                    });
+                    return false;
+                }
+                type='base';
             }
             var param=$.extend(true,{},cache.loginMap.param);
+
             /*判断参数*/
             if(setting.c_id!==''){
                 param['organizationId']=setting.c_id;
             }else if(setting.c_id===''){
                 param['organizationId']=setting.id;
             }
-            param['userIds']=batchdata.join(',');
+
+            if(type==='batch'){
+                param['userIds']=batchdata.join(',');
+            }else if(type==='base'){
+                param['userIds']=id;
+            }
 
             /*确认是否删除*/
             toolDialog.sureDialog('',function () {
@@ -1862,7 +1882,7 @@ str+='<tr><td class="g-t-r">'+detail_map[j]+':</td><td class="g-t-l">'+list[j]+'
                                     });
 
                                     /*清空全选*/
-                                    dataTableCheckAllService.clear();
+                                    dataTableCheckAllService.clear(table.tablecheckall);
                                     /*重新加载数据*/
                                     self.getColumnData(table);
                                 }
@@ -1870,13 +1890,13 @@ str+='<tr><td class="g-t-r">'+detail_map[j]+':</td><td class="g-t-l">'+list[j]+'
                         },
                         function(resp){
                             var message=resp.data.message;
-                            if(typeof message !=='undefined'&&message!==''){
+                            if(typeof message !=='undefined' && message!==''){
                                 console.log(message);
                             }else{
                                 console.log('删除用户失败');
                             }
                         });
-            },'是否真要批量删除用户数据',true);
+            },type==='base'?'是否真要删除用户数据':'是否真要批量删除用户数据',true);
         };
 
 

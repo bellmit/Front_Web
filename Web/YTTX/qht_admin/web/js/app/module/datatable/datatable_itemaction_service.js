@@ -1,12 +1,9 @@
 /*表格服务*/
 'use strict';
 angular.module('app')
-	.service('dataTableItemActionService',['dataTableCacheService',function (dataTableCacheService) {
+	.service('dataTableItemActionService',function () {
 		/*单项服务*/
-		var self=this,
-			temp_cache=null,
-			temp_init=null,
-			temp_count=0;
+		var self=this;
 
 		this.action_map={
 			'add':{
@@ -50,81 +47,38 @@ angular.module('app')
 			}
 		};
 
-		/*操作映射*/
-		this.actionMap=function () {
-			return self.action_map;
-		};
-
 		/*初始化*/
-		this.initItemAction=function (key,itemaction,mode) {
+		this.initItemAction=function (itemaction) {
 			/*检验数据合法性*/
-			if(!key && !itemaction && !mode){
+			if(!itemaction){
 				return;
 			}
 
-			/*判断是否存在缓存*/
-			if(dataTableCacheService.isKey(key)){
-
-				/*重置临时数据*/
-				if(temp_init!==null){
-					clearTimeout(temp_init);
-					temp_init=null;
-				}
-				temp_cache=null;
-				temp_count=0;
-
-				/*初始化数据*/
-				self.init(key,itemaction,mode);
-			}else{
-				/*重新启动初始化,启动监听*/
-				temp_init=setTimeout(function () {
-					temp_count++;
-					clearTimeout(temp_init);
-					temp_init=null;
-					/*设置时间限制，超过这个限制则停止初始化:6s*/
-					if(temp_count<=120){
-						self.initItemAction(key,itemaction,mode);
-					}
-				},50);
-			}
+			/*初始化数据*/
+			self.init(itemaction);
 
 
 		};
 
 		/*初始化配置*/
-		this.init=function (key,itemaction,mode) {
-			/*是否已经调用过*/
-			if(dataTableCacheService.isAttr(key,'itemaction_flag')){
-				self.unbind(dataTableCacheService.getCache(key));
-			}
-
-			/*复制临时缓存*/
-			/*复制数据,并设置缓存*/
-			dataTableCacheService.setCache(key,{
-				itemaction_flag:true,
-				itemaction_api:itemaction.itemaction_api,
-				$bodywrap:itemaction.$bodywrap
-			});
-			/*设置完缓存，然后获取缓存，并操作缓存*/
-			temp_cache=dataTableCacheService.getCache(key);
+		this.init=function (itemaction) {
 			/*绑定相关事件*/
-			self.bind(mode);
+			self.bind(itemaction);
 		};
 
 		/*事件注册*/
-		this.bind=function (mode) {
+		this.bind=function (itemaction) {
 			/*有容器存在*/
-			if(temp_cache.$bodywrap){
+			if(itemaction.$bodywrap){
 				/*绑定操作选项*/
-				temp_cache.$bodywrap.on('click',function (e){
+				itemaction.$bodywrap.on('click','span',function (e){
 					e.stopPropagation();
 					e.preventDefault();
 
 					var target= e.target,
 						$this,
 						id,
-						action,
-						$tr;
+						action;
 
 					//适配对象
 					if(target.className.indexOf('btn-operate')===-1){
@@ -133,93 +87,32 @@ angular.module('app')
 					}else{
 						$this=$(target);
 					}
+
 					id=$this.attr('data-id');
 					action=$this.attr('data-action');
 					/*过滤非id,action按钮*/
 					if(!id && !action){
 						return false;
 					}
-
 					/*操作分支*/
-					self.adaptCase({
+					self.adaptCase(itemaction,{
 						$btn:$this,
 						id:id,
 						action:action
-					},mode);
+					});
 				});
 			}
 		};
-
-
-		/*取消绑定*/
-		this.unbind=function (cache) {
-			/*绑定操作选项*/
-			cache.$bodywrap.off('click');
-		};
-		
 		
 		/*分支适配*/
-		this.adaptCase=function (config,mode) {
+		this.adaptCase=function (itemaction,config) {
 			/*特殊操作*/
 			/*to do*/
-
-
 			/*回调*/
-			if(temp_cache.itemaction_api){
-				temp_cache.itemaction_api.doItemAction.call(null,config,mode);
+			if(itemaction.itemaction_api){
+				itemaction.itemaction_api.doItemAction.call(null,config);
 			}
 		};
 
 
-		/*
-
-		 <li>
-			 <a data-isrequest="false" data-parentid="1" data-label="JMAG2" data-layer="1" data-id="2" class="sub-menu-title" href="#" title="">JMAG2</a>
-			 <ul></ul>
-		 </li>
-		 <li>
-			 <a data-isrequest="false" data-parentid="1" data-label="test666" data-layer="1" data-id="6" class="sub-menu-title" href="#" title="">test666</a>
-			 <ul></ul>
-		 </li>
-		 <li>
-			 <a data-isrequest="false" data-parentid="1" data-label="深圳欢迎你" data-layer="1" data-id="7" class="sub-menu-title" href="#" title="">深圳欢迎你</a>
-			 <ul></ul>
-		 </li>
-
-		* */
-
-
-		/*
-
-		 <li>
-			 <a data-isrequest="false" data-parentid="1" data-label="JMAG2" data-layer="1" data-id="2" class="sub-menu-title" href="#" title="">JMAG2</a>
-			 <ul></ul>
-		 </li>
-		 <li>
-			 <a data-isrequest="false" data-parentid="1" data-label="test666" data-layer="1" data-id="6" class="sub-menu-title" href="#" title="">test666</a>
-			 <ul></ul>
-		 </li>
-		 <li>
-			 <a data-isrequest="false" data-parentid="1" data-label="深圳欢迎你" data-layer="1" data-id="7" class="sub-menu-title" href="#" title="">深圳欢迎你</a>
-			 <ul></ul>
-		 </li>
-
-
-
-		* */
-
-
-		/*
-		 <ul ng-init="struct_ctrl.initSubMenu()" ng-click="struct_ctrl.toggleSubMenu($event)" id="admin_struct_submenu" class="g-d-showi ui-sub-menu"></ul>
-
-
-		 <ul ng-init="struct_ctrl.initSubMenu()" ng-click="struct_ctrl.toggleSubMenu($event)" id="admin_struct_submenu" class="g-d-showi ui-sub-menu"></ul>
-
-
-
-
-		* */
-
-
-
-	}]);
+	});
