@@ -4,12 +4,13 @@ angular.module('app')
         /*获取缓存数据*/
         var self=this,
             module_id=10/*模块id*/,
-            cache=loginService.getCache();
+            cache=loginService.getCache(),
+            structform_reset_timer=null,
+            userform_reset_timer=null;
 
 
-        var structform_reset_timer=null,
-            userform_reset_timer=null,
-            powermap=powerService.getCurrentPower(module_id);
+        /*权限*/
+        var powermap=powerService.getCurrentPower(module_id);
         
         /*初始化权限*/
         var init_power={
@@ -33,9 +34,7 @@ angular.module('app')
                 }
             }
         };
-
-        
-        /*查询操作权限*/
+        /*扩展服务--查询操作权限*/
         this.getCurrentPower=function () {
             return init_power;
         };
@@ -1151,22 +1150,25 @@ angular.module('app')
                 }
             }
         };
-        /*执行延时任务序列*/
+
+
+
+        /*表单类服务--执行延时任务序列*/
         this.addFormDelay=function (config) {
             /*映射对象*/
             var type=config.type,
-            value=config.value,
-            mode=config.mode,
-            type_map={
-                'struct':{
-                    'timeid':structform_reset_timer,
-                    'dom':self.$admin_struct_reset
-                },
-                'user':{
-                    'timeid':userform_reset_timer,
-                    'dom':self.$admin_user_reset
-                }
-            };
+                value=config.value,
+                mode=config.mode,
+                type_map={
+                    'struct':{
+                        'timeid':structform_reset_timer,
+                        'dom':self.$admin_struct_reset
+                    },
+                    'user':{
+                        'timeid':userform_reset_timer,
+                        'dom':self.$admin_user_reset
+                    }
+                };
             /*执行延时操作*/
             type_map[type]['timeid']=$timeout(function(){
                 /*触发重置表单*/
@@ -1177,7 +1179,7 @@ angular.module('app')
                 }
             },0);
         };
-        /*清除延时任务序列*/
+        /*表单类服务--清除延时任务序列*/
         this.clearFormDelay=function (did) {
             if(did  &&  did!==null){
                 $timeout.cancel(did);
@@ -1194,9 +1196,6 @@ angular.module('app')
                 }
             }
         };
-
-
-
         /*表单类服务--清空表单模型数据*/
         this.clearFormData=function (data,type) {
             if(!data){
@@ -1421,18 +1420,6 @@ angular.module('app')
                 }
             }else if(typeof id==='undefined' && table.list_table!==null && typeof data['organizationId']!=='undefined'){
                 table.list_table.ajax.config(table.list1_config.config.ajax).load();
-            }
-        };
-        /*数据服务--全选和取消全选*/
-        this.checkAllUser=function (user) {
-            var ischeck=parseInt(user.checkall,10);
-
-            if(ischeck===1){
-                /*选中*/
-
-            }else if(ischeck===0){
-                /*未选中*/
-
             }
         };
         /*数据服务--过滤表格数据*/

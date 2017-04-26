@@ -4,7 +4,10 @@ angular.module('app')
         /*获取缓存数据*/
         var self=this,
             module_id=10/*模块id*/,
-            cache=loginService.getCache();
+            cache=loginService.getCache(),
+            rolegroupform_reset_timer=null,
+            roleform_reset_timer=null,
+            memberform_reset_timer=null;
 
         var powermap=powerService.getCurrentPower(module_id);
 
@@ -205,6 +208,160 @@ angular.module('app')
         };
 
 
+        /*弹出层服务*/
+        this.toggleModal=function (config,fn) {
+            var temp_timer=null,
+                type_map={
+                    'setting':self.$struct_setting_dialog,
+                    'user':self.$struct_user_dialog,
+                    'userdetail':self.$struct_userdetail_dialog
+                };
+            if(config.display==='show'){
+                if(typeof config.delay!=='undefined'){
+                    temp_timer=setTimeout(function () {
+                        type_map[config.area].modal('show',{backdrop:'static'});
+                        clearTimeout(temp_timer);
+                        temp_timer=null;
+                    },config.delay);
+                    if(fn&&typeof fn==='function'){
+                        fn.call(null);
+                    }
+                }else{
+                    type_map[config.area].modal('show',{backdrop:'static'});
+                    if(fn&&typeof fn==='function'){
+                        fn.call(null);
+                    }
+                }
+            }else if(config.display==='hide'){
+                if(typeof config.delay!=='undefined'){
+                    temp_timer=setTimeout(function () {
+                        type_map[config.area].modal('hide');
+                        clearTimeout(temp_timer);
+                        temp_timer=null;
+                    },config.delay);
+                }else{
+                    type_map[config.area].modal('hide');
+                }
+                /*清除延时任务序列*/
+                if(config.area==='setting' || config.area==='user'){
+                    self.clearFormDelay();
+                }
+            }
+        };
+
+
+
+        /*表单类服务--执行延时任务序列*/
+        this.addFormDelay=function (config) {
+            /*映射对象*/
+            var type=config.type,
+                value=config.value,
+                mode=config.mode,
+                type_map={
+                    'rolegroup':{
+                        'timeid':rolegroupform_reset_timer,
+                        'dom':self.$admin_rolegroup_reset
+                    },
+                    'role':{
+                        'timeid':roleform_reset_timer,
+                        'dom':self.$admin_role_reset
+                    },
+                    'member':{
+                        'timeid':memberform_reset_timer,
+                        'dom':self.$admin_member_reset
+                    }
+                };
+            /*执行延时操作*/
+            type_map[type]['timeid']=$timeout(function(){
+                /*触发重置表单*/
+                type_map[type]['dom'].trigger('click');
+                /*设置模型*/
+                if(typeof mode!=='undefined' && typeof value!=='undefined'){
+                    mode.type=value;
+                }
+            },0);
+        };
+        /*表单类服务--清除延时任务序列*/
+        this.clearFormDelay=function (did) {
+            if(did  &&  did!==null){
+                $timeout.cancel(did);
+                did=null;
+            }else{
+                /*如果存在延迟任务则清除延迟任务*/
+                if(structform_reset_timer!==null){
+                    $timeout.cancel(structform_reset_timer);
+                    structform_reset_timer=null;
+                }
+                if(userform_reset_timer!==null){
+                    $timeout.cancel(userform_reset_timer);
+                    userform_reset_timer=null;
+                }
+            }
+        };
+        /*表单类服务--清空表单模型数据*/
+        this.clearFormData=function (data,type) {
+            if(!data){
+                return false;
+            }
+            if(type==='rolegroup'){
+                /*重置机构数据模型*/
+                for(var i in data){
+                    if(i==='type'){
+                        /*操作类型为新增*/
+                        data[i]='add';
+                    }else{
+                        data[i]='';
+                    }
+                }
+            }else if(type==='role'){
+                /*重置用户数据模型*/
+                for(var j in data){
+                    if(j==='type'){
+                        /*操作类型为新增*/
+                        data[j]='add';
+                    }else{
+                        data[j]='';
+                    }
+                }
+            }else if(type==='member'){
+                /*重置用户数据模型*/
+                for(var k in data){
+                    if(k==='type'){
+                        /*操作类型为新增*/
+                        data[k]='add';
+                    }else{
+                        data[k]='';
+                    }
+                }
+            }
+
+        };
+        /*表单类服务--重置表单数据*/
+        this.clearFormValid=function (forms) {
+            if(forms){
+                var temp_cont=forms.$$controls;
+                if(temp_cont){
+                    var len=temp_cont.length,
+                        i=0;
+                    forms.$dirty=false;
+                    forms.$invalid=true;
+                    forms.$pristine=true;
+                    forms.valid=false;
+
+                    if(len!==0){
+                        for(i;i<len;i++){
+                            var temp_item=temp_cont[i];
+                            temp_item['$dirty']=false;
+                            temp_item['$invalid']=true;
+                            temp_item['$pristine']=true;
+                            temp_item['$valid']=false;
+                        }
+                    }
+                }
+            }
+        };
+
+
 
         /*角色服务--添加角色*/
         this.addRole=function (config) {
@@ -319,7 +476,7 @@ angular.module('app')
                 });
             }
 
-        }
+        };
 
 
     }]);

@@ -106,78 +106,32 @@
     </div>
 
 
-    <!--新增用户-->
-    <div class="modal fade custom-width" id="struct_rolegroup_dialog">
+    <!--新增角色组-->
+    <div class="modal fade custom-width" id="admin_rolegroup_dialog">
         <div class="modal-dialog g-w-percent25">
             <div class="modal-content">
                 <div class="modal-body">
                     <!--表单-->
                     <div class="g-w-percent50">
-                        <div class="admin-layout-theme4 admin-theme-close g-t-c g-b-gray17 g-pos-r">{{structrole_ctrl.user.id===''?'新增用户':'编辑用户'}}
-                            <span class="mini-icon admin-mini-icon1" ng-click="structrole_ctrl.toggleModal({display:'hide',area:'user'})"></span>
+                        <div class="admin-layout-theme4 admin-theme-close g-t-c g-b-gray17 g-pos-r">{{structrole_ctrl.rolegroup.id===''?'新增角色组':'编辑角色组'}}
+                            <span class="mini-icon admin-mini-icon1" ng-click="structrole_ctrl.toggleModal({display:'hide',area:'rolegroup'})"></span>
                         </div>
 
-                        <form ng-submit="structrole_ctrl.userSubmit()" name="userFrom" role="form" novalidate method="post" class="admin-layout-form">
+                        <form ng-submit="structrole_ctrl.rolegroupSubmit()" name="rolegroupFrom" role="form" novalidate method="post" class="admin-layout-form">
                             <div class="form-group-self1">
-                                <label class="self-label g-w-percent10 g-t-r"><span class="self-require g-c-red1">*</span>名称</label>
+                                <label class="self-label g-w-percent10 g-t-r"><span class="self-require g-c-red1">*</span>角色组名称</label>
 
                                 <div class="self-input g-pos-r g-w-percent40">
-                                    <input type="text" name="nickName" placeholder="请输入用户名称" required ng-model="structrole_ctrl.user.nickName" />
-                                    <span  ng-show="userFrom.nickName.$dirty && userFrom.nickName.$error.required" class="self-tips self-tips-no g-c-red1 g-fs4 g-w-percent50">用户名称不能为空</span>
-                                    <span ng-show="userFrom.nickName.$dirty && userFrom.nickName.$valid" class="self-tips self-tips-yes"></span>
-                                </div>
-                            </div>
-
-
-                            <div class="form-group-self1">
-                                <label class="self-label g-w-percent10 g-t-r"><span class="self-require g-c-red1">*</span>手机号码</label>
-
-                                <div class="self-input g-pos-r g-w-percent40">
-                                    <input type="text" name="phone" required  placeholder="请输入手机号码" maxlength="13"  ng-model="structrole_ctrl.user.phone" class="ui-mobile-phone"  />
-                                    <span ng-show="userFrom.phone.$dirty && userFrom.phone.$error.required" class="self-tips self-tips-no g-c-red1 g-fs4 g-w-percent50">手机号码不能为空</span>
-                                    <span ng-show="userFrom.phone.$dirty && userFrom.phone.$invalid && !userFrom.phone.$error.required" class="self-tips self-tips-no g-c-red1 g-fs4 g-w-percent50">手机号码格式不合法</span>
-                                    <span ng-show="userFrom.phone.$dirty&&userFrom.phone.$valid" class="self-tips self-tips-yes"></span>
-                                </div>
-                            </div>
-
-
-                            <div class="form-group-self1">
-                                <label class="self-label g-w-percent10 g-t-r"><span class="self-require g-c-red1"></span>地址</label>
-                                <div class="self-input g-pos-r g-w-percent40">
-                                    <input type="text" name="address"  placeholder="请输入地址" ng-model="structrole_ctrl.user.address" />
+                                    <input type="text" name="groupName" placeholder="请输入角色组名称" required ng-model="structrole_ctrl.rolegroup.groupName" />
+                                    <span  ng-show="rolegroupFrom.groupName.$dirty && rolegroupFrom.groupName.$error.required" class="self-tips self-tips-no g-c-red1 g-fs4 g-w-percent50">角色组名称不能为空</span>
+                                    <span ng-show="rolegroupFrom.groupName.$dirty && rolegroupFrom.groupName.$valid" class="self-tips self-tips-yes"></span>
                                 </div>
                             </div>
 
                             <div class="form-group-self1">
-                                <label class="self-label g-w-percent10 g-t-r">费率</label>
-
-                                <div class="self-input g-w-percent40">
-                                    <input type="text" name="mainFee" placeholder="请输入费率" ng-model="structrole_ctrl.user.mainFee"  />
-                                </div>
-                            </div>
-
-                            <div class="form-group-self1">
-                                <label class="self-label g-w-percent10 g-t-r"><span class="self-require g-c-red1">*</span>机器码</label>
-
-                                <div class="self-input g-pos-r g-w-percent40">
-                                    <input type="text" name="machineCode" placeholder="请输入机器码" required  ng-model="structrole_ctrl.user.machineCode"  />
-                                    <span ng-show="userFrom.machineCode.$dirty && userFrom.machineCode.$error.required" class="self-tips self-tips-no g-c-red1 g-fs4 g-w-percent50">机器码不能为空</span>
-                                    <span ng-show="userFrom.machineCode.$dirty && userFrom.machineCode.$valid" class="self-tips self-tips-yes"></span>
-                                </div>
-                            </div>
-
-                            <div class="form-group-self1">
-                                <label class="self-label g-w-percent10 g-v-t g-t-r">备注</label>
-
-                                <div class="self-input g-w-percent40">
-                                    <textarea ng-model="structrole_ctrl.user.remark" name="remark" ></textarea>
-                                </div>
-                            </div>
-
-                            <div class="form-group-self1">
-                                <button type="submit" ng-show="structrole_ctrl.user.id===''" ng-disabled="!(structrole_ctrl.user.id==='' && userFrom.nickName.$dirty && userFrom.nickName.$valid && userFrom.machineCode.$dirty && userFrom.machineCode.$valid && userFrom.phone.$dirty && userFrom.phone.$valid)"  class="btn btn-red g-br3 g-w-percent50">新增</button>
-                                <button type="submit" ng-show="structrole_ctrl.user.id!==''" ng-disabled="!(structrole_ctrl.user.id!=='' && userFrom.nickName.$valid && userFrom.machineCode.$valid && userFrom.phone.$valid)"  class="btn btn-red g-br3 g-w-percent50">编辑</button>
-                                <button type="button" class="btn btn-red g-br3 g-w-percent50 g-gap-mt2" id="admin_user_reset" ng-click="structrole_ctrl.userReset(userFrom)">重置</button>
+                                <button type="submit" ng-show="structrole_ctrl.rolegroup.id===''" ng-disabled="!(structrole_ctrl.rolegroup.id==='' && rolegroupFrom.groupName.$dirty && rolegroupFrom.groupName.$valid)"  class="btn btn-red g-br3 g-w-percent50">新增</button>
+                                <button type="submit" ng-show="structrole_ctrl.rolegroup.id!==''" ng-disabled="!(structrole_ctrl.rolegroup.id!=='' && rolegroupFrom.groupName.$valid)"  class="btn btn-red g-br3 g-w-percent50">编辑</button>
+                                <button type="button" class="btn btn-red g-br3 g-w-percent50 g-gap-mt2" id="admin_rolegroup_reset" ng-click="structrole_ctrl.rolegroupReset(rolegroupFrom)">重置</button>
                             </div>
                         </form>
 

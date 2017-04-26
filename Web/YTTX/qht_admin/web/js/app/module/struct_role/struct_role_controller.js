@@ -9,13 +9,18 @@ angular.module('app')
 
         /*jquery dom缓存:主要是切换路由时，创建的dom缓存引用与现有的dom引用不一致，需要加载视图更新现有dom引用*/
         var jq_dom={
-            $admin_struct_submenu:$('#admin_struct_submenu')
+            $admin_struct_submenu:$('#admin_struct_submenu'),
+            $admin_rolegroup_dialog:$('#admin_rolegroup_dialog'),
+
+            $admin_rolegroup_reset:$('#admin_rolegroup_reset'),
+            $admin_role_reset:$('#admin_role_reset'),
+            $admin_member_reset:$('#admin_member_reset')
+
+
             /*$admin_struct_list:$('#admin_struct_list'),
             $struct_setting_dialog:$('#struct_setting_dialog'),
-            $struct_user_dialog:$('#struct_user_dialog'),
             $struct_userdetail_dialog:$('#struct_userdetail_dialog'),
             $admin_struct_reset:$('#admin_struct_reset'),
-            $admin_user_reset:$('#admin_user_reset'),
             $admin_userdetail_show:$('#admin_userdetail_show'),
             $admin_page_wrap:$('#admin_page_wrap'),
             $admin_list_wrap:$('#admin_list_wrap'),
@@ -269,7 +274,18 @@ angular.module('app')
         };
 
         /*角色组*/
+        this.rolegroup={
+            id:'',
+            type:'add',
+            groupName:''
+        };
 
+        /*角色*/
+        this.role={
+            id:'',
+            type:'add',
+            roleName:''
+        };
 
 
 
@@ -307,12 +323,33 @@ angular.module('app')
         }];
 
 
-        /*初始化*/
+        /*菜单服务--初始化*/
         this.initSubMenu=function () {
             structroleService.queryRoleGroup();
         };
+        /*菜单服务--查询角色组*/
+        this.queryRoleGroup=function () {
+            structroleService.queryRoleGroup();
+        };
+        /*菜单服务--添加角色(角色组)*/
+        this.addRole=function (type) {
+            structroleService.addRole({
+                type:type,
+                table:self.table,
+                member:self.member
+            });
+        };
+        
+        
+        
 
-
+        /*弹出层显示隐藏*/
+        this.toggleModal=function (config) {
+            structroleService.toggleModal({
+                display:config.display,
+                area:config.area
+            });
+        };
 
 
         /*搜索过滤*/
@@ -324,19 +361,7 @@ angular.module('app')
             self.search.name='';
             self.search.searchactive='';
         };
-        /*查询角色组*/
-        this.queryRoleGroup=function () {
-            structroleService.queryRoleGroup();
-        };
-
-        /*添加角色(角色组)*/
-        this.addRole=function (type) {
-            structroleService.addRole({
-                type:type,
-                table:self.table,
-                member:self.member
-            });
-        };
+        
 
 
 
