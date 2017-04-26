@@ -15,6 +15,7 @@ angular.module('app')
         var init_power={
             structadd:toolUtil.isPower('organization-add',powermap,true)/*添加机构*/,
             structedit:toolUtil.isPower('organization-edit',powermap,true)/*编辑机构*/,
+            roleadd:toolUtil.isPower('role-add',powermap,true),/*添加*/
             useradd:toolUtil.isPower('user-add',powermap,true)/*添加用户*/,
             userdetail:toolUtil.isPower('user-view',powermap,true)/*查看用户*/,
             userupdate:toolUtil.isPower('user-update',powermap,true)/*编辑用户*/,

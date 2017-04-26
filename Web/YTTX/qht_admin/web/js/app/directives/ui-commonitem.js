@@ -50,23 +50,33 @@ angular.module('ui.commonitem',[])
         };
     })
     /*侧边栏搜索指令*/
-    .directive('uiSubSearchStruct',function() {
+    .directive('uiSubSearch',function() {
         return {
             replace:false,
             restrict: 'EC',
-            template:'<label class="search-content {{struct_ctrl.search.searchactive}}">\
-                <input type="text" ng-keyup="struct_ctrl.searchAction($event)" placeholder="搜索" ng-model="struct_ctrl.search.orgname" name="search_name" class="g-br3" />\
-            <span class="search-clear" ng-click="struct_ctrl.searchClear()"></span></label>'
-        };
-    })
-    /*侧边栏搜索指令*/
-    .directive('uiSubSearchStructRole',function() {
-        return {
-            replace:false,
-            restrict: 'EC',
-            template:'<label class="search-content {{structrole_ctrl.search.searchactive}}">\
-                <input type="text" ng-keyup="structrole_ctrl.searchAction($event)" placeholder="搜索" ng-model="structrole_ctrl.search.name" name="search_name" class="g-br3" />\
-            <span class="search-clear" ng-click="structrole_ctrl.searchClear()"></span></label>'
+            scope:{
+                sactive:'=active',
+                svalue:'=value',
+                saction:'&action',
+                sclear:'&clear'
+            },
+            link:function (scope, element, attrs) {
+                element.find('input').on('keyup',function (e) {
+                    var kcode=e.keyCode;
+                    
+                    if(scope.svalue===''){
+                        scope.sactive='';
+                    }else{
+                        scope.sactive='search-content-active';
+                    }
+                    if(kcode===13){
+                        scope.saction();
+                    }
+                });
+            },
+            template:'<label class="search-content {{sactive}}">\
+                <input type="text" placeholder="搜索" ng-model="svalue" name="search_name" class="g-br3" />\
+            <span class="search-clear" ng-click="sclear()"></span></label>'
         };
     })
     /*侧边栏tab选项卡指令*/
@@ -74,9 +84,12 @@ angular.module('ui.commonitem',[])
         return {
             replace:false,
             restrict: 'EC',
-            template:'<li ui-sref="{{i.href}}" class="{{i.active}}" ng-repeat="i in struct_ctrl.tabitem">{{i.name}}</li>',
+            scope:{
+                tabitem:'=tabitem'
+            },
+            template:'<li ng-show="{{i.power}}" ui-sref="{{i.href}}" class="{{i.active}}" ng-repeat="i in tabitem">{{i.name}}</li>',
             link:function (scope, element, attrs) {
-               /*绑定事件*/
+                /*绑定事件*/
                 element.on('click','li',function (e) {
                     $(this).addClass('tabactive').siblings().removeClass('tabactive');
                 });
@@ -96,11 +109,17 @@ angular.module('ui.commonitem',[])
         return {
             replace:false,
             restrict: 'EC',
-            template:'<li>\
-                <span><i class="fa-plus"></i>添加按钮</span>\
-            </li>\
-            <li>\
-                <span><i class="fa-plus"></i>添加按钮</span>\
+            scope:{
+                btnitem:'=btnitem'
+            },
+            link:function (scope, element, attrs) {
+                element.on('click','li',function () {
+                    var type=$(this).attr('data-type');
+                    scope.$parent[attrs.ctrlname].addRole(type);
+                });
+            },
+            template:'<li ng-show="{{i.power}}" data-type="{{i.type}}" ng-repeat="i in btnitem">\
+                <span><i class="{{i.icon}}"></i>{{i.name}}</span>\
             </li>'
         };
     })

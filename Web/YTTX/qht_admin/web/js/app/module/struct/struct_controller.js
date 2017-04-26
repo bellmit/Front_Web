@@ -3,6 +3,9 @@ angular.module('app')
     .controller('StructController', ['structService','powerService','toolUtil',function(structService,powerService,toolUtil){
         var self=this;
 
+        /*模型--操作权限列表*/
+        this.powerlist=structService.getCurrentPower();
+
         
         /*jquery dom缓存:主要是切换路由时，创建的dom缓存引用与现有的dom引用不一致，需要加载视图更新现有dom引用*/
         var jq_dom={
@@ -31,9 +34,6 @@ angular.module('app')
             thead:'',
             tbody:''
         };
-
-        /*模型--操作权限列表*/
-        this.powerlist=structService.getCurrentPower();
 
 
         /*模型--表格缓存*/
@@ -274,10 +274,12 @@ angular.module('app')
         this.tabitem=[{
             name:'运营架构',
             href:'struct',
+            power:self.powerlist.structadd,
             active:'tabactive'
         },{
             name:'角色',
             href:'role',
+            power:self.powerlist.roleadd,
             active:''
         }];
 
@@ -382,22 +384,13 @@ angular.module('app')
             this.setting.orgname=this.root.orgname;
 
             /*搜索过滤*/
-            this.searchAction=function (e) {
-                var kcode=e.keyCode;
-
-                if(self.search.orgname===''){
-                    self.search.searchactive='';
-                }else{
-                    self.search.searchactive='search-content-active';
-                }
-                if(kcode===13){
-                    structService.getMenuList({
-                        search:self.search.orgname,
-                        setting:self.setting,
-                        type:'search',
-                        table:self.table
-                    });
-                }
+            this.searchAction=function () {
+                structService.getMenuList({
+                    search:self.search.orgname,
+                    setting:self.setting,
+                    type:'search',
+                    table:self.table
+                });
             };
             /*清空过滤条件*/
             this.searchClear=function () {
