@@ -38,10 +38,12 @@ angular.module('app')
 
 
         /*导航服务--查询角色组*/
-        this.queryRoleGroup=function () {
+        this.queryRoleGroup=function (config) {
             if(cache){
                 var param=$.extend(true,{},cache.loginMap.param);
-
+                /*更新操作记录模型*/
+                self.resetRecordMode(config.record,'rolegroup');
+                /*请求数据*/
                 toolUtil
                     .requestHttp({
                         url:'/rolegroup/list',
@@ -83,7 +85,6 @@ angular.module('app')
                                                 /*数据集合，最多嵌套层次*/
                                                 str=self.resolveMenuList(list,BASE_CONFIG.submenulimit - 4,{
                                                     layer:0,
-                                                    rolegroup:'',
                                                     type:'rolegroup'
                                                 });
                                                 if(str!==''){
@@ -107,16 +108,108 @@ angular.module('app')
                             }else{
                                 console.log('请求菜单失败');
                             }
-                            if(layer===0){
-                                $wrap.html('<li><a>暂无数据</a></li>');
+                            self.$admin_struct_submenu.html('<li><a data-layer="1" data-isrequest="true" data-role="" data-rolegroup="">暂无数据</a></li>');
+                        });
+            }else{
+                /*退出系统*/
+                cache=null;
+                toolUtil.loginTips({
+                    clear:true,
+                    reload:true
+                });
+            }
+        };
+        /*导航服务--查询角色组*/
+        this.queryRole=function (config,dom) {
+            if(cache){
+                /*模型缓存*/
+                var record=config.record;
+
+                /*组合参数*/
+                var param=$.extend(true,{},cache.loginMap.param);
+                param['groupId']=record['rolegroup'];
+
+                toolUtil
+                    .requestHttp({
+                        url:'/role/list',
+                        method:'post',
+                        set:true,
+                        data:param
+                    })
+                    .then(function(resp){
+                            var data=resp.data,
+                                status=parseInt(resp.status,10);
+
+                            if(status===200){
+                                var code=parseInt(data.code,10),
+                                    message=data.message;
+                                if(code!==0){
+                                    if(typeof message !=='undefined'&&message!==''){
+                                        console.log(message);
+                                    }
+
+                                    if(code===999){
+                                        /*退出系统*/
+                                        cache=null;
+                                        toolUtil.loginTips({
+                                            clear:true,
+                                            reload:true
+                                        });
+                                    }
+                                }else{
+                                    /*加载数据*/
+                                    var result=data.result;
+                                    if(typeof result!=='undefined'){
+                                        var list=result.list,
+                                            str='';
+                                        if(list){
+                                            var len=list.length;
+                                            if(len===0){
+                                                /*设置父元素状态*/
+                                                dom.$a.attr({
+                                                    'data-isrequest':true
+                                                }).removeClass('sub-menu-title sub-menu-titleactive');
+                                            }else{
+                                                /*数据集合，最多嵌套层次*/
+                                                str=self.resolveMenuList(list,BASE_CONFIG.submenulimit - 4,{
+                                                    layer:1,
+                                                    type:'role'
+                                                });
+                                                if(str!==''){
+                                                    /*设置子元素*/
+                                                    $(str).appendTo(dom.$ul.html(''));
+                                                }
+                                                /*设置父元素状态*/
+                                                dom.$a.attr({
+                                                    'data-isrequest':true
+                                                });
+                                            }
+                                        }else{
+                                            /*设置父元素状态*/
+                                            dom.$a.attr({
+                                                'data-isrequest':true
+                                            }).removeClass('sub-menu-title sub-menu-titleactive');
+                                        }
+                                    }else{
+                                        /*设置父元素状态*/
+                                        dom.$a.attr({
+                                            'data-isrequest':true
+                                        }).removeClass('sub-menu-title sub-menu-titleactive');
+                                    }
+                                }
                             }
-                            /*填充子数据到操作区域,同时显示相关操作按钮*/
-                            self.initOperate({
-                                data:null,
-                                $wrap:self.$admin_struct_list,
-                                setting:config.setting,
-                                table:config.table
-                            });
+                        },
+                        function(resp){
+                            var message=resp.data.message;
+                            if(typeof message !=='undefined'&&message!==''){
+                                console.log(message);
+                            }else{
+                                console.log('请求菜单失败');
+                            }
+                            /*设置父元素状态*/
+                            dom.$a.attr({
+                                'data-isrequest':true
+                            }).removeClass('sub-menu-title sub-menu-titleactive');
                         });
             }else{
                 /*退出系统*/
@@ -159,16 +252,14 @@ angular.module('app')
                                 flag:false,
                                 limit:limit,
                                 layer:layer,
-                                type:config.type,
-                                rolegroup:config.rolegroup
+                                type:config.type
                             })+'</li>';
                     }else{
                         str+=self.doItemMenuList(curitem,{
                                 flag:true,
                                 limit:limit,
                                 layer:layer,
-                                type:config.type,
-                                rolegroup:config.rolegroup
+                                type:config.type
                             })+'<ul></ul></li>';
                     }
                 }
@@ -190,21 +281,155 @@ angular.module('app')
 
             if(type==='role'){
                 label=curitem["roleName"];
+                role=curitem['id'];
             }else if(type==='rolegroup'){
                 label=curitem["groupName"];
                 rolegroup=curitem['id'];
             }
 
-
-
-
             if(flag){
-                str='<li><a data-isrequest="false" data-role="'+role+'" data-label="'+label+'" data-layer="'+layer+'" data-rolegroud="'+rolegroup+'" class="sub-menu-title" href="#" title="">'+label+'</a>';
+                str='<li><a data-isrequest="false" data-role="'+role+'" data-layer="'+layer+'" data-rolegroup="'+rolegroup+'" class="sub-menu-title" href="#" title="">'+label+'</a>';
             }else{
-                str='<li><a  data-role="'+role+'" data-label="'+label+'" data-layer="'+layer+'" data-rolegroud="'+rolegroup+'" href="#" title="">'+label+'</a></li>';
+                str='<li><a data-role="'+role+'" data-layer="'+layer+'" data-rolegroup="'+rolegroup+'" href="#" title="">'+label+'</a></li>';
             }
 
             return str;
+        };
+        /*导航服务--显示隐藏菜单*/
+        this.toggleSubMenu=function (e,config) {
+            /*阻止冒泡和默认行为*/
+            e.preventDefault();
+            e.stopPropagation();
+
+            /*过滤对象*/
+            var target=e.target,
+                node=target.nodeName.toLowerCase();
+            if(node==='ul'||node==='li'){
+                return false;
+            }
+            var $this=$(target),
+                haschild,
+                $child,
+                isrequest=false,
+                temp_layer,
+                temp_role,
+                temp_rolegroup,
+                temp_label;
+
+
+            /*模型缓存*/
+            var record=config.record;
+
+            /*变更操作记录模型--激活高亮*/
+            if(record.current===null){
+                record.current=$this;
+            }else{
+                record.prev=record.current;
+                record.current=$this;
+                record.prev.removeClass('sub-menuactive');
+            }
+            record.current.addClass('sub-menuactive');
+            
+            
+            temp_layer=parseInt($this.attr('data-layer'),10);
+            temp_label=$this.html();
+            
+
+            record.layer=temp_layer;
+            if(temp_layer===1){
+                /*操作角色组层*/
+                temp_rolegroup=$this.attr('data-rolegroup');
+                /*变更操作记录模型--设置角色组*/
+                record.role='';
+                record.rolename='';
+                record.member='';
+                record.membername='';
+                record.rolegroup=temp_rolegroup;
+                record.rolegroupname=temp_label;
+
+                /*查询子集*/
+                haschild=$this.hasClass('sub-menu-title');
+                if(haschild){
+                    $child=$this.next();
+                    /*切换显示隐藏*/
+                    $child.toggleClass('g-d-showi');
+                    $this.toggleClass('sub-menu-titleactive');
+                    /*是否已经加载过数据*/
+                    isrequest=$this.attr('data-isrequest');
+                    if(isrequest==='false'){
+                        /*重新加载*/
+                        self.queryRole(config,{
+                            $ul:$child,
+                            $a:$this
+                        });
+                    }
+                }
+            }else if(temp_layer===2){
+                /*操作角色层*/
+                temp_role=$this.attr('data-role');
+                /*变更操作记录模型--设置角色*/
+                record.member='';
+                record.membername='';
+                record.role=temp_role;
+                record.rolename=temp_label;
+            }
+            /*渲染右侧*/
+            self.renderOperate(config);
+
+
+
+        };
+        /*导航服务--渲染右侧展现*/
+        this.renderOperate=function (config) {
+            
+        };
+
+
+        /*模型服务--重置操作记录模型*/
+        this.resetRecordMode=function (record,type) {
+            if(!record && typeof type!=='undefined'){
+                return false;
+            }
+
+            if(type==='all'){
+                /*重置所有*/
+                record={
+                    layer:0,
+                    prev:null,
+                    current:null,
+                    searchactive:'',
+                    searchname:'',
+                    role:'',
+                    rolename:'',
+                    rolegroup:'',
+                    rolegroupname:'',
+                    member:'',
+                    membername:''
+                };
+            }else if(type==='rolegroup'){
+                record['rolegroup']='';
+                record['rolegroupname']='';
+                record['role']='';
+                record['rolename']='';
+                record['layer']=0;
+                record['member']='';
+                record['membername']='';
+                if(record['prev']!==null){
+                    record['prev']=null;
+                }
+                if(record['current']!==null){
+                    record['current']=null;
+                }
+            }else if(type==='role'){
+                record['role']='';
+                record['rolename']='';
+                record['member']='';
+                record['membername']='';
+                record['layer']=1;
+            }else if(type==='member'){
+                record['member']='';
+                record['membername']='';
+            }
         };
 
 
@@ -212,9 +437,9 @@ angular.module('app')
         this.toggleModal=function (config,fn) {
             var temp_timer=null,
                 type_map={
-                    'setting':self.$struct_setting_dialog,
-                    'user':self.$struct_user_dialog,
-                    'userdetail':self.$struct_userdetail_dialog
+                    'member':self.$admin_member_dialog,
+                    'role':self.$admin_role_dialog,
+                    'rolegroup':self.$admin_rolegroup_dialog
                 };
             if(config.display==='show'){
                 if(typeof config.delay!=='undefined'){
@@ -243,7 +468,7 @@ angular.module('app')
                     type_map[config.area].modal('hide');
                 }
                 /*清除延时任务序列*/
-                if(config.area==='setting' || config.area==='user'){
+                if(config.area==='role' || config.area==='rolegroup' || config.area==='member'){
                     self.clearFormDelay();
                 }
             }
@@ -255,8 +480,8 @@ angular.module('app')
         this.addFormDelay=function (config) {
             /*映射对象*/
             var type=config.type,
-                value=config.value,
-                mode=config.mode,
+                /*value=config.value,
+                mode=config.mode,*/
                 type_map={
                     'rolegroup':{
                         'timeid':rolegroupform_reset_timer,
@@ -276,9 +501,9 @@ angular.module('app')
                 /*触发重置表单*/
                 type_map[type]['dom'].trigger('click');
                 /*设置模型*/
-                if(typeof mode!=='undefined' && typeof value!=='undefined'){
+                /*if(typeof mode!=='undefined' && typeof value!=='undefined'){
                     mode.type=value;
-                }
+                }*/
             },0);
         };
         /*表单类服务--清除延时任务序列*/
@@ -288,13 +513,17 @@ angular.module('app')
                 did=null;
             }else{
                 /*如果存在延迟任务则清除延迟任务*/
-                if(structform_reset_timer!==null){
-                    $timeout.cancel(structform_reset_timer);
-                    structform_reset_timer=null;
+                if(roleform_reset_timer!==null){
+                    $timeout.cancel(roleform_reset_timer);
+                    roleform_reset_timer=null;
                 }
-                if(userform_reset_timer!==null){
-                    $timeout.cancel(userform_reset_timer);
-                    userform_reset_timer=null;
+                if(rolegroupform_reset_timer!==null){
+                    $timeout.cancel(rolegroupform_reset_timer);
+                    rolegroupform_reset_timer=null;
+                }
+                if(memberform_reset_timer!==null){
+                    $timeout.cancel(memberform_reset_timer);
+                    memberform_reset_timer=null;
                 }
             }
         };
@@ -303,7 +532,10 @@ angular.module('app')
             if(!data){
                 return false;
             }
-            if(type==='rolegroup'){
+            if(typeof type!=='undefined' && type!==''){
+                /*特殊情况*/
+                /*to do*/
+            }else {
                 /*重置机构数据模型*/
                 for(var i in data){
                     if(i==='type'){
@@ -313,28 +545,7 @@ angular.module('app')
                         data[i]='';
                     }
                 }
-            }else if(type==='role'){
-                /*重置用户数据模型*/
-                for(var j in data){
-                    if(j==='type'){
-                        /*操作类型为新增*/
-                        data[j]='add';
-                    }else{
-                        data[j]='';
-                    }
-                }
-            }else if(type==='member'){
-                /*重置用户数据模型*/
-                for(var k in data){
-                    if(k==='type'){
-                        /*操作类型为新增*/
-                        data[k]='add';
-                    }else{
-                        data[k]='';
-                    }
-                }
             }
-
         };
         /*表单类服务--重置表单数据*/
         this.clearFormValid=function (forms) {
@@ -360,44 +571,91 @@ angular.module('app')
                 }
             }
         };
-
-
-
-        /*角色服务--添加角色*/
-        this.addRole=function (config) {
+        /*表单服务类--重置表单*/
+        this.formReset=function (config,type) {
+            if(type ==='role' || type ==='rolegroup' || type ==='member'){
+                /*重置模型*/
+                self.clearFormData(config[type]);
+                /*重置提示信息*/
+                self.clearFormValid(config.forms);
+            }else{
+                /*特殊情况*/
+                /*to do*/
+            }
+        };
+        /*表单服务类--提交表单*/
+        this.formSubmit=function (config,type) {
             if(cache){
-                var type=config.type,
-                    member=config.member,
+                var action='',
                     param=$.extend(true,{},cache.loginMap.param),
-                    url='';
+                    req_config={
+                        method:'post',
+                        set:true
+                    },
+                    tip_map={
+                        'add':'新增',
+                        'edit':'编辑',
+                        'role':'角色',
+                        'rolegroup':'角色组',
+                        'member':'成员'
+                    },
+                    temp_value='';
 
-
+                /*适配参数*/
                 if(type==='role'){
-                    /*添加角色*/
-                    if(member.rolegroup===''){
-                        toolDialog.show({
-                            type:'warn',
-                            value:'不存在角色组，请先添加角色组'
-                        });
+                    delete param['organizationId'];
+                    /*判断是新增还是修改*/
+                    if(config[type]['id']===''){
+                        action='add';
+                        param['roleName']=config[type]['roleName'];
+                        param['groupId']=config['record']['rolegroup'];
+
+                        req_config['url']='/role/add';
+                    }else{
+                        action='edit';
+                        temp_value=config[type]['roleName'];
+
+                        param['roleName']=temp_value;
+                        param['id']=config[type]['id'];
+
+                        req_config['url']='/role/update';
+                    }
+                }else if(type==='rolegroup'){
+                    /*判断是新增还是修改*/
+                    if(config[type]['id']===''){
+                        action='add';
+                        param['groupName']=config[type]['groupName'];
+
+                        req_config['url']='/rolegroup/add';
+                    }else{
+                        action='edit';
+                        temp_value=config[type]['groupName'];
+
+                        param['groupName']=temp_value;
+                        param['id']=config[type]['id'];
+
+                        req_config['url']='/rolegroup/update';
+                    }
+
+                }else if(type==='member'){
+                    delete param['organizationId'];
+                    if(config[type]['id']===''){
+                        action='add';
+                        param['userIds']=config[type]['id'];
+                        param['roleId']=config['rocord']['role'];
+
+                        req_config['url']='/role/users/add';
+                    }else{
+                        action='edit';
+                        /*to do*/
+                        console.log('to do');
                         return false;
                     }
-                    /*适配参数*/
-                    param['groupId']=member.rolegroup;
-                    delete param['organizationId'];
-                }else if(type==='rolegroup'){
-                    /*添加角色组*/
-                    /*适配参数*/
                 }
-
-
+                req_config['data']=param;
 
                 toolUtil
-                    .requestHttp({
-                        url:'/rolegroup/list',
-                        method:'post',
-                        set:true,
-                        data:param
-                    })
+                    .requestHttp(req_config)
                     .then(function(resp){
                             var data=resp.data,
                                 status=parseInt(resp.status,10);
@@ -406,10 +664,17 @@ angular.module('app')
                                 var code=parseInt(data.code,10),
                                     message=data.message;
                                 if(code!==0){
-                                    if(typeof message !=='undefined'&&message!==''){
-                                        console.log(message);
+                                    if(typeof message !=='undefined' && message!==''){
+                                        toolDialog.show({
+                                            type:'warn',
+                                            value:message
+                                        });
+                                    }else{
+                                        toolDialog.show({
+                                            type:'warn',
+                                            value:tip_map[action]+tip_map[type]+'失败'
+                                        });
                                     }
-
                                     if(code===999){
                                         /*退出系统*/
                                         cache=null;
@@ -418,55 +683,137 @@ angular.module('app')
                                             reload:true
                                         });
                                     }
+                                    return false;
                                 }else{
-                                    /*加载数据*/
-                                    var result=data.result;
-                                    if(typeof result!=='undefined'){
-                                        var list=result.list,
-                                            str='';
-                                        if(list){
-                                            var len=list.length;
-                                            if(len===0){
-                                                self.$admin_struct_submenu.html('<li><a data-layer="1" data-isrequest="true" data-role="" data-rolegroup="">暂无数据</a></li>');
-                                            }else{
-                                                /*数据集合，最多嵌套层次*/
-                                                str=self.resolveMenuList(list,BASE_CONFIG.submenulimit - 4,{
-                                                    layer:0,
-                                                    rolegroup:'',
-                                                    type:'rolegroup'
-                                                });
-                                                if(str!==''){
-                                                    $(str).appendTo(self.$admin_struct_submenu.html(''));
-                                                }
-                                            }
-                                        }else{
-                                            /*填充子数据到操作区域,同时显示相关操作按钮*/
-                                            self.$admin_struct_submenu.html('<li><a data-layer="1" data-isrequest="true" data-role="" data-rolegroup="">暂无数据</a></li>');
+                                    /*操作成功即加载数据*/
+                                    /*to do*/
+                                    if(action==='add'){
+                                        /*重新加载侧边栏数据*/
+                                        self.queryRoleGroup(config);
+                                    }else if(action==='edit'){
+                                        /*更新侧边栏数据*/
+                                        if(config.record.current!==null){
+                                            config.record.current.html(temp_value);
                                         }
-                                    }else{
-                                        self.$admin_struct_submenu.html('<li><a data-layer="1" data-isrequest="true" data-role="" data-rolegroup="">暂无数据</a></li>');
+                                        config.record[type+'name']=temp_value;
                                     }
+                                    /*重置表单*/
+                                    self.addFormDelay({
+                                        type:type
+                                    });
+                                    /*提示操作结果*/
+                                    toolDialog.show({
+                                        type:'succ',
+                                        value:tip_map[action]+tip_map[type]+'成功'
+                                    });
+                                    /*弹出框隐藏*/
+                                    self.toggleModal({
+                                        display:'hide',
+                                        area:type,
+                                        delay:1000
+                                    });
                                 }
                             }
                         },
                         function(resp){
                             var message=resp.data.message;
                             if(typeof message !=='undefined'&&message!==''){
-                                console.log(message);
+                                toolDialog.show({
+                                    type:'warn',
+                                    value:message
+                                });
                             }else{
-                                console.log('请求菜单失败');
+                                toolDialog.show({
+                                    type:'warn',
+                                    value:tip_map[action]+tip_map[type]+'失败'
+                                });
                             }
-                            if(layer===0){
-                                $wrap.html('<li><a>暂无数据</a></li>');
-                            }
-                            /*填充子数据到操作区域,同时显示相关操作按钮*/
-                            self.initOperate({
-                                data:null,
-                                $wrap:self.$admin_struct_list,
-                                setting:config.setting,
-                                table:config.table
-                            });
                         });
+            }else{
+                /*退出系统*/
+                cache=null;
+                toolUtil.loginTips({
+                    clear:true,
+                    reload:true
+                });
+            }
+        };
+
+
+
+        /*角色服务--添加角色或角色组*/
+        this.addRole=function (config,type) {
+            if(cache){
+                if(type==='role'){
+                    /*添加角色*/
+                    if(config.record.rolegroup===''){
+                        toolDialog.show({
+                            type:'warn',
+                            value:'不存在角色组，请先添加角色组'
+                        });
+                        return false;
+                    }
+                    /*显示角色弹窗*/
+                    self.toggleModal({
+                        display:'show',
+                        area:type
+                    });
+                }else if(type==='rolegroup'){
+                    /*添加角色组*/
+                    /*显示角色组弹窗*/
+                    self.toggleModal({
+                        display:'show',
+                        area:type
+                    });
+                }
+            }else{
+                /*退出系统*/
+                cache=null;
+                toolUtil.loginTips({
+                    clear:true,
+                    reload:true
+                });
+            }
+
+        };
+        /*角色服务--编辑角色或角色组*/
+        this.editRole=function (config) {
+            if(cache){
+                /*模型缓存*/
+                var record=config.record,
+                    type='rolegroup',
+                    role,
+                    rolegroup;
+
+                if(record.role==='' && record.rolegroup!==''){
+                    type='rolegroup';
+                    rolegroup=config.rolegroup;
+
+                    /*设置角色组模型*/
+                    rolegroup['id']=record.rolegroup;
+                    rolegroup['groupName']=record.rolegroupname;
+                    rolegroup['type']='edit';
+                }else if(record.role!=='' && record.rolegroup!==''){
+                    type='role';
+                    role=config.role;
+
+                    /*设置角色模型*/
+                    role['id']=record.role;
+                    role['roleName']=record.rolename;
+                    role['type']='edit';
+                }else{
+                    toolDialog.show({
+                        type:'warn',
+                        value:'不存在角色组或角色'
+                    });
+                    return false;
+                }
+
+                /*显示角色弹窗*/
+                self.toggleModal({
+                    display:'show',
+                    area:type
+                });
             }else{
                 /*退出系统*/
                 cache=null;

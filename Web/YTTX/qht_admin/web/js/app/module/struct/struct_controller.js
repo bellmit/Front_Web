@@ -454,7 +454,7 @@ angular.module('app')
                         $this.removeClass('sub-menu-titleactive');
                         /*是否已经加载过数据*/
                         isrequest=$this.attr('data-isrequest');
-                        if(isrequest){
+                        if(isrequest==='true'){
                             /*清空隐藏节点数据*/
                             structService.initOperate({
                                 data:'',
@@ -546,11 +546,6 @@ angular.module('app')
                         });
                     }
                 }
-
-
-                setTimeout(function () {
-                    console.log(self.setting);
-                },100);
             };
 
 

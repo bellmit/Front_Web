@@ -11,6 +11,8 @@ angular.module('app')
         var jq_dom={
             $admin_struct_submenu:$('#admin_struct_submenu'),
             $admin_rolegroup_dialog:$('#admin_rolegroup_dialog'),
+            $admin_role_dialog:$('#admin_role_dialog'),
+            $admin_member_dialog:$('#admin_member_dialog'),
 
             $admin_rolegroup_reset:$('#admin_rolegroup_reset'),
             $admin_role_reset:$('#admin_role_reset'),
@@ -265,12 +267,27 @@ angular.module('app')
         };
 
 
+        /*模型--操作记录*/
+        this.record={
+            layer:0/*当前菜单操作层级*/,
+            prev:null/*菜单操作:上一次操作菜单*/,
+            current:null/*菜单操作:当前操作菜单*/,
+            searchactive:''/*搜索激活状态,激活态为：search-content-active，未激活为空，默认为空*/,
+            searchname:''/*搜索关键词*/,
+            role:''/*角色id*/,
+            rolename:''/*角色名称*/,
+            rolegroup:''/*角色组id*/,
+            rolegroupname:''/*角色组名称*/,
+            member:''/*成员id*/,
+            membername:''/*成员名称*/
+        };
+
+
         /*模型--成员设置*/
         this.member={
-            role:'',/*角色*/
-            rolegroup:''/*角色组*/,
-            type:'add'/*表单类型：新增，编辑；默认为新增*/,
-            filter:''/*表格过滤关键词*/
+            id:'',
+            type:'add',
+            groupName:''
         };
 
         /*角色组*/
@@ -287,13 +304,6 @@ angular.module('app')
             roleName:''
         };
 
-
-
-        /*模型--搜索*/
-        this.search={
-            searchactive:'',
-            name:''
-        };
 
         /*模型--tab选项卡*/
         this.tabitem=[{
@@ -314,8 +324,7 @@ angular.module('app')
             type:'rolegroup',
             power:self.powerlist.rolegroupadd,
             icon:'fa-plus'
-        },
-        {
+        },{
             name:'添加角色',
             type:'role',
             power:self.powerlist.roleadd,
@@ -325,18 +334,44 @@ angular.module('app')
 
         /*菜单服务--初始化*/
         this.initSubMenu=function () {
-            structroleService.queryRoleGroup();
+            structroleService.queryRoleGroup({
+                record:self.record
+            });
         };
         /*菜单服务--查询角色组*/
         this.queryRoleGroup=function () {
-            structroleService.queryRoleGroup();
+            structroleService.queryRoleGroup({
+                record:self.record
+            });
         };
-        /*菜单服务--添加角色(角色组)*/
+        /*菜单服务--显示隐藏菜单*/
+        this.toggleSubMenu=function (e) {
+            structroleService.toggleSubMenu(e,{
+                member:self.member,
+                table:self.table,
+                record:self.record
+            });
+        };
+
+
+        /*角色服务--添加角色或角色组*/
         this.addRole=function (type) {
             structroleService.addRole({
-                type:type,
                 table:self.table,
-                member:self.member
+                member:self.member,
+                record:self.record,
+                rolegroup:self.rolegroup,
+                role:self.role
+            },type);
+        };
+        /*角色服务--编辑角色或角色组*/
+        this.editRole=function () {
+            structroleService.editRole({
+                table:self.table,
+                member:self.member,
+                record:self.record,
+                rolegroup:self.rolegroup,
+                role:self.role
             });
         };
         
@@ -345,21 +380,41 @@ angular.module('app')
 
         /*弹出层显示隐藏*/
         this.toggleModal=function (config) {
-            structroleService.toggleModal({
-                display:config.display,
-                area:config.area
-            });
+            structroleService.toggleModal(config);
         };
 
 
-        /*搜索过滤*/
+        /*表单服务--提交表单*/
+        this.formSubmit=function (type) {
+            structroleService.formSubmit({
+                role:self.role,
+                rolegroup:self.rolegroup,
+                member:self.member,
+                table:self.table,
+                record:self.record
+            },type);
+        };
+        /*表单服务--重置表单*/
+        this.formReset=function (forms,type) {
+            /*重置表单模型*/
+            structroleService.formReset({
+                forms:forms,
+                member:self.member,
+                role:self.role,
+                rolegroup:self.rolegroup
+            },type);
+        };
+
+
+
+        /*搜索服务--搜索过滤*/
         this.searchAction=function () {
             console.log('search');
         };
-        /*清空过滤条件*/
+        /*搜索服务--清空过滤条件*/
         this.searchClear=function () {
-            self.search.name='';
-            self.search.searchactive='';
+            self.record.searchname='';
+            self.record.searchactive='';
         };
         
 
