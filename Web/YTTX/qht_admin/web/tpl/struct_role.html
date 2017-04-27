@@ -13,8 +13,24 @@
 
             <!--操作条-->
             <div class="admin-action-item">
-                <span><i class="btn-action admin-btn-action1"></i>添加用户</span>
-                <span><i class="btn-action admin-btn-action8"></i>移除成员</span>
+                <!--操作按钮-->
+                <div class="action-item-btn g-f-l g-w-percent28">
+                    <span ng-show="structrole_ctrl.record.role!=='' && structrole_ctrl.powerlist.memberadd"  ng-click="structrole_ctrl.actionMember('add')"  ><i class="btn-action admin-btn-action1"></i>添加成员</span>
+                    <span ng-show="tructrole_ctrl.record.role!=='' && structrole_ctrl.powerlist.memberdelete" ng-click="structrole_ctrl.actionMember('delete')"><i class="btn-action admin-btn-action8"></i>移除成员</span>
+                </div>
+                <!--列控制-->
+                <div class="action-item-ul g-w-percent6 g-pos-r" ng-show="::structrole_ctrl.table.tablecolumn.columnshow">
+                    <div class="action-theme action-theme-btn g-br3 g-t-c">显示隐藏列</div>
+                    <div class="action-ul g-d-hidei" id="admin_table_checkcolumn">
+                        <ul class="action-list-wrap" ></ul>
+                    </div>
+                </div>
+                <!--过滤-->
+                <div class="action-item-input g-f-r g-w-percent14">
+                    <label class="action-indent-b2">过滤:
+                        <input class="form-control input-sm" ng-model="structrole_ctrl.user.filter" ng-keyup="structrole_ctrl.filterDataTable()" placeholder="" type="search">
+                    </label>
+                </div>
             </div>
 
             <!--表格-->
@@ -96,19 +112,6 @@
             <ul class="sub-menu-wrap" ng-init="structrole_ctrl.initSubMenu()" ng-click="structrole_ctrl.toggleSubMenu($event)" id="admin_struct_submenu" ></ul>
 
 
-            <!--<li>
-                    <a class="sub-menu-title sub-menu-titleactive" data-parentid="" data-id="struct_ctrl.root.id" data-layer="0" data-label="struct_ctrl.root.orgname"  ng-click="struct_ctrl.rootSubMenu($event)">{{struct_ctrl.root.orgname}}</a>
-                    <ul ng-init="struct_ctrl.initSubMenu()" ng-click="struct_ctrl.toggleSubMenu($event)" class="g-d-showi ui-sub-menu"></ul>
-                </li>-->
-
-
-            <!--子菜单组件-->
-            <!--<ul class="sub-menu-wrap">
-                <li>
-                    <a class="sub-menu-title sub-menu-titleactive" data-label="" ></a>
-                    <ul id="admin_struct_submenu" class="g-d-showi ui-sub-menu"></ul>
-                </li>
-            </ul>-->
         </div>
     </div>
 
