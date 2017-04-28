@@ -369,16 +369,9 @@ angular.module('app')
                 /*变更操作记录模型--设置角色*/
                 record.role=temp_role;
                 record.rolename=temp_label;
+                /*查询成员信息--调用表格数据*/
+                self.getColumnData(config.table,config.record.role);
             }
-            /*渲染右侧*/
-            self.renderOperate(config);
-
-
-
-        };
-        /*导航服务--渲染右侧展现*/
-        this.renderOperate=function (config) {
-            
         };
 
 
@@ -470,19 +463,20 @@ angular.module('app')
             }else if(!table){
                 return false;
             }
+
             /*如果存在模型*/
             var data= $.extend(true,{},table.list1_config.config.ajax.data);
-            if(typeof id!=='undefined'){
+            if(id!==''){
                 /*设置值*/
-                data['organizationId']=id;
+                data['roleId']=id;
                 /*参数赋值*/
                 table.list1_config.config.ajax.data=data;
 
                 if(table.list_table===null){
-                    /*初始请求*/
                     var temp_param=cache.loginMap.param;
                     table.list1_config.config.ajax.data['adminId']=temp_param.adminId;
                     table.list1_config.config.ajax.data['token']=temp_param.token;
+                    /*初始请求*/
                     table.list_table=self.$admin_list_wrap.DataTable(table.list1_config.config);
                     /*调用列控制*/
                     dataTableColumnService.initColumn(table.tablecolumn,table.list_table);
@@ -493,10 +487,8 @@ angular.module('app')
                     dataTableCheckAllService.clear(table.tablecheckall);
                     table.list_table.ajax.config(table.list1_config.config.ajax).load();
                 }
-            }else if(typeof id==='undefined' && table.list_table!==null && typeof data['organizationId']!=='undefined'){
-                /*清除批量数据*/
-                dataTableCheckAllService.clear(table.tablecheckall);
-                table.list_table.ajax.config(table.list1_config.config.ajax).load();
+            }else if(id===''){
+                table.list1_config.hasdata=false;
             }
         };
         /*成员服务--过滤表格数据*/

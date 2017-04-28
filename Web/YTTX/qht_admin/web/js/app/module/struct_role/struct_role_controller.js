@@ -1,6 +1,6 @@
 /*首页控制器*/
 angular.module('app')
-    .controller('StructroleController', ['structroleService','powerService','toolUtil',function(structroleService,powerService,toolUtil){
+    .controller('StructroleController', ['structroleService','toolUtil',function(structroleService,toolUtil){
         var self=this;
 
         /*模型--操作权限列表*/
@@ -57,10 +57,10 @@ angular.module('app')
                                 }
                                 if(code===999){
                                     /*退出系统*/
-                                    toolUtil.loginTips({
+                                    /*toolUtil.loginTips({
                                         clear:true,
                                         reload:true
-                                    });
+                                    });*/
                                 }
                                 self.table.list1_config.hasdata=false;
                                 return [];

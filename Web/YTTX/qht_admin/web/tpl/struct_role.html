@@ -39,25 +39,33 @@
             <!--表格-->
             <table id="admin_list_wrap" class="table table-bordered table-striped table-hover admin-layout-table">
                 <!--分组样式-->
-                <colgroup id="admin_list_colgroup"></colgroup>
+                <colgroup id="admin_list_colgroup">
+                    <col class="g-w-percent5"/>
+                    <col class="g-w-percent5"/>
+                    <col class="g-w-percent5"/>
+                    <col class="g-w-percent5"/>
+                    <col class="g-w-percent5"/>
+                    <col class="g-w-percent15"/>
+                    <col class="g-w-percent5"/>
+                    <col class="g-w-percent5"/>
+                </colgroup>
 
                 <!--表头-->
                 <thead>
-                    <tr>
-                        <th class="g-clear-pl g-clear-pr g-t-c">
-                            <div class="admin-batchitem-wrap" ng-show="structrole_ctrl.powerlist.memberdelete" >
-                                <label data-check="0" class="admin-batchitem-check" id="admin_member_checkall"></label>
-                            </div>
-                        </th>
-                        <th>手机号码</th>
-                        <th>地址</th>
-                        <th>姓名</th>
-                        <th>机器码</th>
-                        <th>身份证验证状态</th>
-                        <th>创建时间</th>
-                        <th>状态</th>
-                        <th>备注</th>
-                    </tr>
+                <tr>
+                    <th class="g-clear-pl g-clear-pr g-t-c">
+                        <div class="admin-batchitem-wrap" ng-show="structrole_ctrl.powerlist.memberdelete" >
+                            <label data-check="0" class="admin-batchitem-check" id="admin_member_checkall"></label>
+                        </div>
+                    </th>
+                    <th>手机号码</th>
+                    <th>地址</th>
+                    <th>费率</th>
+                    <th>机器码</th>
+                    <th>身份证验证状态</th>
+                    <th>创建时间</th>
+                    <th>备注</th>
+                </tr>
                 </thead>
 
                 <!--表主体-->
