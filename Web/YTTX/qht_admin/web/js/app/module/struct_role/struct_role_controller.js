@@ -13,43 +13,36 @@ angular.module('app')
             $admin_rolegroup_dialog:$('#admin_rolegroup_dialog'),
             $admin_role_dialog:$('#admin_role_dialog'),
             $admin_member_dialog:$('#admin_member_dialog'),
-
             $admin_rolegroup_reset:$('#admin_rolegroup_reset'),
             $admin_role_reset:$('#admin_role_reset'),
-            $admin_member_reset:$('#admin_member_reset')
-
-
-            /*$admin_struct_list:$('#admin_struct_list'),
-            $struct_setting_dialog:$('#struct_setting_dialog'),
-            $struct_userdetail_dialog:$('#struct_userdetail_dialog'),
-            $admin_struct_reset:$('#admin_struct_reset'),
-            $admin_userdetail_show:$('#admin_userdetail_show'),
+            $admin_member_reset:$('#admin_member_reset'),
+            $admin_table_checkcolumn:$('#admin_table_checkcolumn'),
             $admin_page_wrap:$('#admin_page_wrap'),
             $admin_list_wrap:$('#admin_list_wrap'),
-            $admin_struct_batchlist:$('#admin_struct_batchlist'),
-            $admin_struct_checkcolumn:$('#admin_struct_checkcolumn'),
-            $admin_struct_colgroup:$('#admin_struct_colgroup'),
-            $admin_struct_checkall:$('#admin_struct_checkall')*/
+            $admin_list_colgroup:$('#admin_list_colgroup'),
+            $admin_batchlist_wrap:$('#admin_batchlist_wrap'),
+            $admin_member_checkall:$('#admin_member_checkall'),
+            $admin_member_menu:$('#admin_member_menu')
         };
         /*切换路由时更新dom缓存*/
         structroleService.initJQDom(jq_dom);
 
         /*模型--表格缓存*/
         this.table={
-            /*list1_page:{
+            list1_page:{
                 page:1,
-                pageSize:10,
+                pageSize:1,
                 total:0
             },
             list1_config:{
                 hasdata:false,
                 config:{
-                    processing:true,/!*大消耗操作时是否显示处理状态*!/
-                    deferRender:true,/!*是否延迟加载数据*!/
-                    autoWidth:true,/!*是否*!/
+                    processing:true,/*大消耗操作时是否显示处理状态*/
+                    deferRender:true,/*是否延迟加载数据*/
+                    autoWidth:true,/*是否*/
                     paging:false,
                     ajax:{
-                        url:toolUtil.adaptReqUrl('/organization/users'),
+                        url:toolUtil.adaptReqUrl('/role/users'),
                         dataType:'JSON',
                         method:'post',
                         dataSrc:function ( json ) {
@@ -63,7 +56,7 @@ angular.module('app')
                                     console.log('获取用户失败');
                                 }
                                 if(code===999){
-                                    /!*退出系统*!/
+                                    /*退出系统*/
                                     toolUtil.loginTips({
                                         clear:true,
                                         reload:true
@@ -75,7 +68,7 @@ angular.module('app')
                             var result=json.result;
                             if(typeof result==='undefined'){
                                 self.table.list1_config.hasdata=false;
-                                /!*重置分页*!/
+                                /*重置分页*/
                                 self.table.list1_page.total=0;
                                 self.table.list1_page.page=1;
                                 jq_dom.$admin_page_wrap.pagination({
@@ -87,22 +80,22 @@ angular.module('app')
                             }
 
                             if(result){
-                                /!*设置分页*!/
+                                /*设置分页*/
                                 self.table.list1_page.total=result.count;
-                                /!*分页调用*!/
+                                /*分页调用*/
                                 jq_dom.$admin_page_wrap.pagination({
                                     pageNumber:self.table.list1_page.page,
                                     pageSize:self.table.list1_page.pageSize,
                                     total:self.table.list1_page.total,
                                     onSelectPage:function(pageNumber,pageSize){
-                                        /!*再次查询*!/
+                                        /*再次查询*/
                                         var temp_param=self.table.list1_config.config.ajax.data;
                                         self.table.list1_page.page=pageNumber;
                                         self.table.list1_page.pageSize=pageSize;
                                         temp_param['page']=self.table.list1_page.page;
                                         temp_param['pageSize']=self.table.list1_page.pageSize;
                                         self.table.list1_config.config.ajax.data=temp_param;
-                                        self.getColumnData(self.table);
+                                        structroleService.getColumnData(self.table);
                                     }
                                 });
 
@@ -116,7 +109,7 @@ angular.module('app')
                                 }
                             }else{
                                 self.table.list1_config.hasdata=false;
-                                /!*重置分页*!/
+                                /*重置分页*/
                                 self.table.list1_page.total=0;
                                 self.table.list1_page.page=1;
                                 jq_dom.$admin_page_wrap.pagination({
@@ -129,7 +122,7 @@ angular.module('app')
                         },
                         data:{
                             page:1,
-                            pageSize:10
+                            pageSize:1
                         }
                     },
                     info:false,
@@ -142,7 +135,7 @@ angular.module('app')
                             "orderable" :false,
                             "searchable" :false,
                             "render":function(data, type, full, meta ){
-                                return '<input value="'+data+'" name="check_userid" type="checkbox" />';
+                                return '<input value="'+data+'" name="check_memberid" type="checkbox" />';
                             }
                         },
                         {
@@ -155,7 +148,7 @@ angular.module('app')
                             "data":"address"
                         },
                         {
-                            "data":"nickName"
+                            "data":"mainFee"
                         },
                         {
                             "data":"machineCode"
@@ -190,80 +183,42 @@ angular.module('app')
                             "data":"createTime"
                         },
                         {
-                            "data":"status"
-                        },
-                        {
                             "data":"remark"
-                        },
-                        {
-                            "data":"id",
-                            "render":function(data, type, full, meta ){
-                                var btns='',
-                                    addUserId=full.addUserId,
-                                    organizationId=full.organizationId;
-
-                                /!*查看用户*!/
-                                if(self.powerlist.userdetail){
-                                    btns+='<span data-action="detail" data-addUserId="'+addUserId+'" data-id="'+data+'"  data-organizationId="'+organizationId+'" ng-click="struct."  class="btn-operate">查看</span>';
-                                }
-                                /!*编辑用户*!/
-                                if(self.powerlist.userupdate){
-                                    btns+='<span data-addUserId="'+addUserId+'"  data-action="update" data-id="'+data+'" data-organizationId="'+organizationId+'" class="btn-operate">编辑</span>';
-                                }
-                                /!*删除用户*!/
-                                if(self.powerlist.userdelete){
-                                    btns+='<span data-addUserId="'+addUserId+'"  data-action="delete" data-id="'+data+'" data-organizationId="'+organizationId+'" class="btn-operate">删除</span>';
-                                }
-                                return btns;
-                            }
                         }
                     ]
                 }
             },
-            list_table:null,*/
+            list_table:null,
             /*列控制*/
-            /*tablecolumn:{
-                init_len:10/!*数据有多少列*!/,
+            tablecolumn:{
+                init_len:8/*数据有多少列*/,
                 column_flag:true,
-                ischeck:true,/!*是否有全选*!/
+                ischeck:true,/*是否有全选*/
                 columnshow:true,
-                $column_wrap:jq_dom.$admin_struct_checkcolumn/!*控制列显示隐藏的容器*!/,
-                $bodywrap:jq_dom.$admin_struct_batchlist/!*数据展现容器*!/,
-                hide_list:[4,5,6,7,8]/!*需要隐藏的的列序号*!/,
-                hide_len:5,
+                $column_wrap:jq_dom.$admin_table_checkcolumn/*控制列显示隐藏的容器*/,
+                $bodywrap:jq_dom.$admin_batchlist_wrap/*数据展现容器*/,
+                hide_list:[2,3,4,7]/*需要隐藏的的列序号*/,
+                hide_len:4,
                 column_api:{
                     isEmpty:function () {
                         return self.table.list1_config.hasdata;
                     }
                 },
-                $colgroup:jq_dom.$admin_struct_colgroup/!*分组模型*!/,
-                $column_btn:jq_dom.$admin_struct_checkcolumn.prev(),
-                $column_ul:jq_dom.$admin_struct_checkcolumn.find('ul')
-            },*/
+                $colgroup:jq_dom.$admin_list_colgroup/*分组模型*/,
+                $column_btn:jq_dom.$admin_table_checkcolumn.prev(),
+                $column_ul:jq_dom.$admin_table_checkcolumn.find('ul')
+            },
             /*全选*/
-            /*tablecheckall:{
+            tablecheckall:{
                 checkall_flag:true,
-                $bodywrap:jq_dom.$admin_struct_batchlist,
-                $checkall:jq_dom.$admin_struct_checkall,
-                checkvalue:0/!*默认未选中*!/,
-                checkid:[]/!*默认索引数据为空*!/,
-                checkitem:[]/!*默认node数据为空*!/,
+                $bodywrap:jq_dom.$admin_batchlist_wrap,
+                $checkall:jq_dom.$admin_member_checkall,
+                checkvalue:0/*默认未选中*/,
+                checkid:[]/*默认索引数据为空*/,
+                checkitem:[]/*默认node数据为空*/,
                 highactive:'item-lightenbatch',
                 checkactive:'admin-batchitem-checkactive'
-            },*/
-            /*按钮*/
-            /*tableitemaction:{
-                $bodywrap:jq_dom.$admin_struct_batchlist,
-                itemaction_api:{
-                    doItemAction:function(config){
-                        structService.doItemAction({
-                            setting:self.setting,
-                            user:self.user,
-                            table:self.table
-                        },config);
-                    }
-                }
-            }*/
+            }
         };
 
 
@@ -277,18 +232,9 @@ angular.module('app')
             role:''/*角色id*/,
             rolename:''/*角色名称*/,
             rolegroup:''/*角色组id*/,
-            rolegroupname:''/*角色组名称*/,
-            member:''/*成员id*/,
-            membername:''/*成员名称*/
+            rolegroupname:''/*角色组名称*/
         };
 
-
-        /*模型--成员设置*/
-        this.member={
-            id:'',
-            type:'add',
-            groupName:''
-        };
 
         /*角色组*/
         this.rolegroup={
@@ -301,6 +247,7 @@ angular.module('app')
         this.role={
             id:'',
             type:'add',
+            filter:''/*过滤数据*/,
             roleName:''
         };
 
@@ -347,7 +294,6 @@ angular.module('app')
         /*菜单服务--显示隐藏菜单*/
         this.toggleSubMenu=function (e) {
             structroleService.toggleSubMenu(e,{
-                member:self.member,
                 table:self.table,
                 record:self.record
             });
@@ -358,7 +304,6 @@ angular.module('app')
         this.addRole=function (type) {
             structroleService.addRole({
                 table:self.table,
-                member:self.member,
                 record:self.record,
                 rolegroup:self.rolegroup,
                 role:self.role
@@ -368,7 +313,6 @@ angular.module('app')
         this.editRole=function () {
             structroleService.editRole({
                 table:self.table,
-                member:self.member,
                 record:self.record,
                 rolegroup:self.rolegroup,
                 role:self.role
@@ -389,7 +333,6 @@ angular.module('app')
             structroleService.formSubmit({
                 role:self.role,
                 rolegroup:self.rolegroup,
-                member:self.member,
                 table:self.table,
                 record:self.record
             },type);
@@ -399,7 +342,6 @@ angular.module('app')
             /*重置表单模型*/
             structroleService.formReset({
                 forms:forms,
-                member:self.member,
                 role:self.role,
                 rolegroup:self.rolegroup
             },type);

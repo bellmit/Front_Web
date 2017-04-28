@@ -104,7 +104,7 @@ angular.module('app')
                                         temp_param['page']=self.table.list1_page.page;
                                         temp_param['pageSize']=self.table.list1_page.pageSize;
                                         self.table.list1_config.config.ajax.data=temp_param;
-                                        self.getColumnData(self.table);
+                                        structService.getColumnData(self.table);
                                     }
                                 });
 

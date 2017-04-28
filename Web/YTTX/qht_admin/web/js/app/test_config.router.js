@@ -153,7 +153,6 @@ angular.module('app')
                                     'js/plugins/pagination/pagination.js',
                                     'js/app/module/datatable/datatable_column_service.js',
                                     'js/app/module/datatable/datatable_checkall_service.js',
-                                    'js/app/module/datatable/datatable_itemaction_service.js',
                                     'js/app/module/struct_role/struct_role_service.js',
                                     'js/app/module/struct_role/struct_role_controller.js']);
                             }]

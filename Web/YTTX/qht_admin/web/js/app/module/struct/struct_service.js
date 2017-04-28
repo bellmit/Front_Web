@@ -1415,10 +1415,12 @@ angular.module('app')
                     dataTableItemActionService.initItemAction(table.tableitemaction);
                 }else {
                     /*清除批量数据*/
-                    //batchItem.clear();
+                    dataTableCheckAllService.clear(table.tablecheckall);
                     table.list_table.ajax.config(table.list1_config.config.ajax).load();
                 }
             }else if(typeof id==='undefined' && table.list_table!==null && typeof data['organizationId']!=='undefined'){
+                /*清除批量数据*/
+                dataTableCheckAllService.clear(table.tablecheckall);
                 table.list_table.ajax.config(table.list1_config.config.ajax).load();
             }
         };

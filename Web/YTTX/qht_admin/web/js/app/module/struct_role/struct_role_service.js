@@ -1,13 +1,12 @@
 angular.module('app')
-    .service('structroleService',['toolUtil','toolDialog','BASE_CONFIG','loginService','powerService','dataTableColumnService','dataTableCheckAllService','dataTableItemActionService','$timeout','$sce',function(toolUtil,toolDialog,BASE_CONFIG,loginService,powerService,dataTableColumnService,dataTableCheckAllService,dataTableItemActionService,$timeout,$sce){
+    .service('structroleService',['toolUtil','toolDialog','BASE_CONFIG','loginService','powerService','dataTableColumnService','dataTableCheckAllService','$timeout',function(toolUtil,toolDialog,BASE_CONFIG,loginService,powerService,dataTableColumnService,dataTableCheckAllService,$timeout){
 
         /*获取缓存数据*/
         var self=this,
             module_id=10/*模块id*/,
             cache=loginService.getCache(),
             rolegroupform_reset_timer=null,
-            roleform_reset_timer=null,
-            memberform_reset_timer=null;
+            roleform_reset_timer=null;
 
         var powermap=powerService.getCurrentPower(module_id);
 
@@ -16,7 +15,9 @@ angular.module('app')
             structadd:toolUtil.isPower('organization-add',powermap,true)/*添加机构*/,
             roleadd:toolUtil.isPower('role-add',powermap,true)/*添加角色*/,
             roleedit:toolUtil.isPower('role-edit',powermap,true)/*编辑角色*/,
-            rolegroupadd:toolUtil.isPower('rolegroup-add',powermap,true)/*添加角色组*/
+            rolegroupadd:toolUtil.isPower('rolegroup-add',powermap,true)/*添加角色组*/,
+            memberadd:toolUtil.isPower('member-add',powermap,true)/*添加成员*/,
+            memberdelete:toolUtil.isPower('member-delete',powermap,true)/*移除成员*/
         };
 
 
@@ -342,8 +343,6 @@ angular.module('app')
                 /*变更操作记录模型--设置角色组*/
                 record.role='';
                 record.rolename='';
-                record.member='';
-                record.membername='';
                 record.rolegroup=temp_rolegroup;
                 record.rolegroupname=temp_label;
 
@@ -368,8 +367,6 @@ angular.module('app')
                 /*操作角色层*/
                 temp_role=$this.attr('data-role');
                 /*变更操作记录模型--设置角色*/
-                record.member='';
-                record.membername='';
                 record.role=temp_role;
                 record.rolename=temp_label;
             }
@@ -402,9 +399,7 @@ angular.module('app')
                     role:'',
                     rolename:'',
                     rolegroup:'',
-                    rolegroupname:'',
-                    member:'',
-                    membername:''
+                    rolegroupname:''
                 };
             }else if(type==='rolegroup'){
                 record['rolegroup']='';
@@ -412,8 +407,6 @@ angular.module('app')
                 record['role']='';
                 record['rolename']='';
                 record['layer']=0;
-                record['member']='';
-                record['membername']='';
                 if(record['prev']!==null){
                     record['prev']=null;
                 }
@@ -423,12 +416,7 @@ angular.module('app')
             }else if(type==='role'){
                 record['role']='';
                 record['rolename']='';
-                record['member']='';
-                record['membername']='';
                 record['layer']=1;
-            }else if(type==='member'){
-                record['member']='';
-                record['membername']='';
             }
         };
 
@@ -468,10 +456,344 @@ angular.module('app')
                     type_map[config.area].modal('hide');
                 }
                 /*清除延时任务序列*/
-                if(config.area==='role' || config.area==='rolegroup' || config.area==='member'){
+                if(config.area==='role' || config.area==='rolegroup'){
                     self.clearFormDelay();
                 }
             }
+        };
+
+
+        /*成员服务--请求数据--获取表格数据*/
+        this.getColumnData=function (table,id){
+            if(cache===null){
+                return false;
+            }else if(!table){
+                return false;
+            }
+            /*如果存在模型*/
+            var data= $.extend(true,{},table.list1_config.config.ajax.data);
+            if(typeof id!=='undefined'){
+                /*设置值*/
+                data['organizationId']=id;
+                /*参数赋值*/
+                table.list1_config.config.ajax.data=data;
+
+                if(table.list_table===null){
+                    /*初始请求*/
+                    var temp_param=cache.loginMap.param;
+                    table.list1_config.config.ajax.data['adminId']=temp_param.adminId;
+                    table.list1_config.config.ajax.data['token']=temp_param.token;
+                    table.list_table=self.$admin_list_wrap.DataTable(table.list1_config.config);
+                    /*调用列控制*/
+                    dataTableColumnService.initColumn(table.tablecolumn,table.list_table);
+                    /*调用全选与取消全选*/
+                    dataTableCheckAllService.initCheckAll(table.tablecheckall);
+                }else {
+                    /*清除批量数据*/
+                    dataTableCheckAllService.clear(table.tablecheckall);
+                    table.list_table.ajax.config(table.list1_config.config.ajax).load();
+                }
+            }else if(typeof id==='undefined' && table.list_table!==null && typeof data['organizationId']!=='undefined'){
+                /*清除批量数据*/
+                dataTableCheckAllService.clear(table.tablecheckall);
+                table.list_table.ajax.config(table.list1_config.config.ajax).load();
+            }
+        };
+        /*成员服务--过滤表格数据*/
+        this.filterDataTable=function (list_table,role) {
+            if(list_table===null){
+                return false;
+            }
+            var filter=role.filter;
+            list_table.search(filter).columns().draw();
+        };
+
+
+
+        /*机构服务--获取导航*/
+        this.getMemberList=function (config) {
+            if(cache){
+                var param=$.extend(true,{},cache.loginMap.param);
+
+                param['isShowSelf']=0;
+                if(config.search!==''){
+                    param['orgname']=config.search;
+                }
+
+                if(typeof config.type!=='undefined' && config.type==='search'){
+                    /*检索则清空查询内容*/
+                    self.$admin_struct_submenu.html('');
+                    self.$admin_struct_list.html('');
+                }
+
+                var layer,
+                    id,
+                    $wrap;
+
+                /*初始化加载*/
+                if(typeof config.$reqstate==='undefined'){
+                    layer=0;
+                    /*根目录则获取新配置参数*/
+                    id=param['organizationId'];
+                    $wrap=self.$admin_struct_submenu;
+                }else{
+                    /*非根目录则获取新请求参数*/
+                    layer=config.$reqstate.attr('data-layer');
+                    $wrap=config.$reqstate.next();
+                    id=config.$reqstate.attr('data-id');
+
+                    /*判断是否是合法的节点*/
+                    if(layer>=BASE_CONFIG.submenulimit){
+                        /*遇到极限节点，不查询数据*/
+                        self.initOperate({
+                            data:null,
+                            $wrap:self.$admin_struct_list,
+                            setting:config.setting,
+                            table:config.table
+                        });
+                        return false;
+                    }
+                    param['organizationId']=id;
+                }
+
+
+                toolUtil
+                    .requestHttp({
+                        url:'/organization/lowers/search',
+                        method:'post',
+                        set:true,
+                        data:param
+                    })
+                    .then(function(resp){
+                            var data=resp.data,
+                                status=parseInt(resp.status,10);
+
+                            if(status===200){
+                                var code=parseInt(data.code,10),
+                                    message=data.message;
+                                if(code!==0){
+                                    if(typeof message !=='undefined'&&message!==''){
+                                        console.log(message);
+                                    }
+
+                                    if(code===999){
+                                        /*退出系统*/
+                                        cache=null;
+                                        toolUtil.loginTips({
+                                            clear:true,
+                                            reload:true
+                                        });
+                                    }
+                                }else{
+                                    /*加载数据*/
+                                    var result=data.result;
+                                    if(typeof result!=='undefined'){
+                                        var list=result.list,
+                                            str='';
+                                        if(list){
+                                            var len=list.length;
+                                            if(len===0){
+                                                if(layer===0){
+                                                    $wrap.html('<li><a>暂无数据</a></li>');
+                                                    /*填充子数据到操作区域,同时显示相关操作按钮*/
+                                                    self.initOperate({
+                                                        data:'',
+                                                        id:id,
+                                                        $wrap:self.$admin_struct_list,
+                                                        setting:config.setting,
+                                                        table:config.table
+                                                    });
+                                                }else{
+                                                    $wrap.html('');
+                                                    /*清除显示下级菜单导航图标*/
+                                                    config.$reqstate.attr({
+                                                        'data-isrequest':true
+                                                    }).removeClass('sub-menu-title sub-menu-titleactive');
+                                                    /*填充子数据到操作区域,同时显示相关操作按钮*/
+                                                    self.initOperate({
+                                                        data:'',
+                                                        id:id,
+                                                        orgname:config.$reqstate.attr('data-label'),
+                                                        $wrap:self.$admin_struct_list,
+                                                        setting:config.setting,
+                                                        table:config.table
+                                                    });
+                                                }
+                                            }else{
+                                                /*数据集合，最多嵌套层次*/
+                                                str=self.resolveMenuList(list,BASE_CONFIG.submenulimit,{
+                                                    layer:layer,
+                                                    id:id
+                                                });
+                                                if(str!==''){
+                                                    $(str).appendTo($wrap.html(''));
+                                                }
+                                                if(layer!==0){
+                                                    config.$reqstate.attr({
+                                                        'data-isrequest':true
+                                                    });
+                                                }
+
+                                                /*填充子数据到操作区域,同时显示相关操作按钮*/
+                                                self.initOperate({
+                                                    data:list,
+                                                    $wrap:self.$admin_struct_list,
+                                                    id:id,
+                                                    layer:layer,
+                                                    setting:config.setting,
+                                                    table:config.table
+                                                });
+                                            }
+                                        }else{
+                                            /*填充子数据到操作区域,同时显示相关操作按钮*/
+                                            self.initOperate({
+                                                data:null,
+                                                $wrap:self.$admin_struct_list,
+                                                setting:config.setting,
+                                                table:config.table
+                                            });
+                                        }
+                                    }else{
+                                        if(layer===0){
+                                            $wrap.html('<li><a>暂无数据</a></li>');
+                                        }
+                                        /*填充子数据到操作区域,同时显示相关操作按钮*/
+                                        self.initOperate({
+                                            data:null,
+                                            $wrap:self.$admin_struct_list,
+                                            setting:config.setting,
+                                            table:config.table
+                                        });
+                                    }
+                                }
+                            }
+                        },
+                        function(resp){
+                            var message=resp.data.message;
+                            if(typeof message !=='undefined'&&message!==''){
+                                console.log(message);
+                            }else{
+                                console.log('请求菜单失败');
+                            }
+                            if(layer===0){
+                                $wrap.html('<li><a>暂无数据</a></li>');
+                            }
+                            /*填充子数据到操作区域,同时显示相关操作按钮*/
+                            self.initOperate({
+                                data:null,
+                                $wrap:self.$admin_struct_list,
+                                setting:config.setting,
+                                table:config.table
+                            });
+                        });
+            }else{
+                /*退出系统*/
+                cache=null;
+                toolUtil.loginTips({
+                    clear:true,
+                    reload:true
+                });
+            }
+        };
+        /*机构服务--解析导航--开始解析*/
+        this.resolveMemberList=function (obj,limit,config) {
+            if(!obj||typeof obj==='undefined'){
+                return false;
+            }
+            if(typeof limit==='undefined'||limit<=0){
+                limit=1;
+            }
+            var menulist=obj,
+                str='',
+                i=0,
+                len=menulist.length,
+                layer=config.layer;
+
+            layer++;
+
+            if(limit>=1&&layer>limit){
+                /*如果层级达到设置的极限清除相关*/
+                return false;
+            }
+
+
+
+            if(len!==0){
+                for(i;i<len;i++){
+                    var curitem=menulist[i];
+                    /*到达极限的前一项则不创建子菜单容器*/
+                    if(limit>=1&&layer>=limit){
+                        str+=self.doItemMenuList(curitem,{
+                                flag:false,
+                                limit:limit,
+                                layer:layer,
+                                parentid:config.id
+                            })+'</li>';
+                    }else{
+                        str+=self.doItemMenuList(curitem,{
+                                flag:true,
+                                limit:limit,
+                                layer:layer,
+                                parentid:config.id
+                            })+'<ul></ul></li>';
+                    }
+                }
+                return str;
+            }else{
+                return false;
+            }
+        };
+        /*机构服务--解析导航--公共解析*/
+        this.doItemMemberList=function (obj,config) {
+            var curitem=obj,
+                id=curitem["id"],
+                label=curitem["orgname"],
+                str='',
+                flag=config.flag,
+                layer=config.layer,
+                parentid=config.parentid;
+
+
+            if(flag){
+                str='<li><a data-isrequest="false" data-parentid="'+parentid+'" data-label="'+label+'" data-layer="'+layer+'" data-id="'+id+'" class="sub-menu-title" href="#" title="">'+label+'</a>';
+            }else{
+                str='<li><a data-parentid="'+parentid+'"  data-label="'+label+'"  data-layer="'+layer+'" data-id="'+id+'" href="#" title="">'+label+'</a></li>';
+            }
+
+            /*
+             to do
+
+             可能需要判断权限操作
+             */
+            /*if(goodstypeedit_power){
+             str+='<span data-parentid="'+parentid+'"  data-action="edit" data-gtcode="'+gtCode+'" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+             <i class="fa-pencil"></i>&nbsp;&nbsp;编辑\
+             </span>';
+
+             /!*编辑状态*!/
+             stredit+='<span data-parentid="'+parentid+'"  data-action="confirm"  data-gtcode="'+gtCode+'" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-bs-success">\
+             <i class="fa-check"></i>&nbsp;&nbsp;确定\
+             </span>\
+             <span data-action="cance"  data-gtcode="'+gtCode+'" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray10">\
+             <i class="fa-close"></i>&nbsp;&nbsp;取消\
+             </span>';
+             }*/
+
+            return str;
+        };
+        /*机构服务--校验导航--校验导航服务的正确性*/
+        this.validSubMenuLayer=function (layer) {
+            if(typeof layer==='undefined'){
+                return false;
+            }
+            var layer=parseInt(layer,10);
+            if(layer<1){
+                return false;
+            }
+            if(layer>BASE_CONFIG.submenulimit){
+                return false;
+            }
+            return true;
         };
 
 
@@ -480,8 +802,6 @@ angular.module('app')
         this.addFormDelay=function (config) {
             /*映射对象*/
             var type=config.type,
-                /*value=config.value,
-                mode=config.mode,*/
                 type_map={
                     'rolegroup':{
                         'timeid':rolegroupform_reset_timer,
@@ -490,20 +810,12 @@ angular.module('app')
                     'role':{
                         'timeid':roleform_reset_timer,
                         'dom':self.$admin_role_reset
-                    },
-                    'member':{
-                        'timeid':memberform_reset_timer,
-                        'dom':self.$admin_member_reset
                     }
                 };
             /*执行延时操作*/
             type_map[type]['timeid']=$timeout(function(){
                 /*触发重置表单*/
                 type_map[type]['dom'].trigger('click');
-                /*设置模型*/
-                /*if(typeof mode!=='undefined' && typeof value!=='undefined'){
-                    mode.type=value;
-                }*/
             },0);
         };
         /*表单类服务--清除延时任务序列*/
@@ -521,10 +833,6 @@ angular.module('app')
                     $timeout.cancel(rolegroupform_reset_timer);
                     rolegroupform_reset_timer=null;
                 }
-                if(memberform_reset_timer!==null){
-                    $timeout.cancel(memberform_reset_timer);
-                    memberform_reset_timer=null;
-                }
             }
         };
         /*表单类服务--清空表单模型数据*/
@@ -534,7 +842,9 @@ angular.module('app')
             }
             if(typeof type!=='undefined' && type!==''){
                 /*特殊情况*/
-                /*to do*/
+                if(type==='member'){
+                    /*清除成员数据*/
+                }
             }else {
                 /*重置机构数据模型*/
                 for(var i in data){
@@ -573,14 +883,14 @@ angular.module('app')
         };
         /*表单服务类--重置表单*/
         this.formReset=function (config,type) {
-            if(type ==='role' || type ==='rolegroup' || type ==='member'){
+            if(type ==='role' || type ==='rolegroup'){
                 /*重置模型*/
                 self.clearFormData(config[type]);
                 /*重置提示信息*/
                 self.clearFormValid(config.forms);
-            }else{
-                /*特殊情况*/
-                /*to do*/
+            }else if(type ==='member'){
+                /*特殊情况--成员*/
+                self.clearFormData(true,type);
             }
         };
         /*表单服务类--提交表单*/
@@ -639,18 +949,9 @@ angular.module('app')
 
                 }else if(type==='member'){
                     delete param['organizationId'];
-                    if(config[type]['id']===''){
-                        action='add';
-                        param['userIds']=config[type]['id'];
-                        param['roleId']=config['rocord']['role'];
-
-                        req_config['url']='/role/users/add';
-                    }else{
-                        action='edit';
-                        /*to do*/
-                        console.log('to do');
-                        return false;
-                    }
+                    action='add';
+                    console.log('to do');
+                    return false;
                 }
                 req_config['data']=param;
 

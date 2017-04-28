@@ -13,11 +13,13 @@
 
             <!--操作条-->
             <div class="admin-action-item">
+
                 <!--操作按钮-->
                 <div class="action-item-btn g-f-l g-w-percent28">
-                    <span ng-show="structrole_ctrl.record.role!=='' && structrole_ctrl.powerlist.memberadd"  ng-click="structrole_ctrl.actionMember('add')"  ><i class="btn-action admin-btn-action1"></i>添加成员</span>
-                    <span ng-show="tructrole_ctrl.record.role!=='' && structrole_ctrl.powerlist.memberdelete" ng-click="structrole_ctrl.actionMember('delete')"><i class="btn-action admin-btn-action8"></i>移除成员</span>
+                    <span ng-show="structrole_ctrl.record.role!=='' && structrole_ctrl.powerlist.memberadd" ng-click="structrole_ctrl.toggleModal({display:'show',area:'member'})" ><i class="btn-action admin-btn-action1"></i>添加成员</span>
+                    <span ng-show="structrole_ctrl.record.role!=='' && structrole_ctrl.powerlist.memberdelete" ng-click="structrole_ctrl.actionMember('delete')"><i class="btn-action admin-btn-action8"></i>移除成员</span>
                 </div>
+
                 <!--列控制-->
                 <div class="action-item-ul g-w-percent6 g-pos-r" ng-show="::structrole_ctrl.table.tablecolumn.columnshow">
                     <div class="action-theme action-theme-btn g-br3 g-t-c">显示隐藏列</div>
@@ -25,10 +27,11 @@
                         <ul class="action-list-wrap" ></ul>
                     </div>
                 </div>
+
                 <!--过滤-->
                 <div class="action-item-input g-f-r g-w-percent14">
                     <label class="action-indent-b2">过滤:
-                        <input class="form-control input-sm" ng-model="structrole_ctrl.user.filter" ng-keyup="structrole_ctrl.filterDataTable()" placeholder="" type="search">
+                        <input class="form-control input-sm" ng-model="structrole_ctrl.role.filter" ng-keyup="structrole_ctrl.filterDataTable()" placeholder="" type="search">
                     </label>
                 </div>
             </div>
@@ -36,56 +39,29 @@
             <!--表格-->
             <table id="admin_list_wrap" class="table table-bordered table-striped table-hover admin-layout-table">
                 <!--分组样式-->
-                <colgroup>
-                    <col class="g-w-percent10">
-                    <col class="g-w-percent10">
-                    <col class="g-w-percent10">
-                    <col class="g-w-percent10">
-                    <col class="g-w-percent10">
-                </colgroup>
+                <colgroup id="admin_list_colgroup"></colgroup>
 
                 <!--表头-->
                 <thead>
-                <tr>
-                    <th>商品编号</th>
-                    <th>商品名称</th>
-                    <th>店铺名称</th>
-                    <th>分类</th>
-                    <th>操作</th>
-                </tr>
+                    <tr>
+                        <th class="g-clear-pl g-clear-pr g-t-c">
+                            <div class="admin-batchitem-wrap" ng-show="structrole_ctrl.powerlist.memberdelete" >
+                                <label data-check="0" class="admin-batchitem-check" id="admin_member_checkall"></label>
+                            </div>
+                        </th>
+                        <th>手机号码</th>
+                        <th>地址</th>
+                        <th>姓名</th>
+                        <th>机器码</th>
+                        <th>身份证验证状态</th>
+                        <th>创建时间</th>
+                        <th>状态</th>
+                        <th>备注</th>
+                    </tr>
                 </thead>
 
                 <!--表主体-->
-                <tbody id="admin_batchlist_wrap" class="middle-align">
-                <tr>
-                    <td>aksdg</td>
-                    <td>0467996</td>
-                    <td>937msghfjsk</td>
-                    <td>3599679</td>
-                    <td><span class="btn-operate">查看</span><span class="btn-operate">订单</span><span class="btn-operate">修改</span></td>
-                </tr>
-                <tr>
-                    <td>aksdg</td>
-                    <td>0467996</td>
-                    <td>937msghfjsk</td>
-                    <td>3599679</td>
-                    <td><span class="btn-operate">查看</span><span class="btn-operate">订单</span><span class="btn-operate">修改</span></td>
-                </tr>
-                <tr>
-                    <td>aksdg</td>
-                    <td>0467996</td>
-                    <td>937msghfjsk</td>
-                    <td>3599679</td>
-                    <td><span class="btn-operate">查看</span><span class="btn-operate">订单</span><span class="btn-operate">修改</span></td>
-                </tr>
-                <tr>
-                    <td>aksdg</td>
-                    <td>0467996</td>
-                    <td>937msghfjsk</td>
-                    <td>3599679</td>
-                    <td><span class="btn-operate">查看</span><span class="btn-operate">订单</span><span class="btn-operate">修改</span></td>
-                </tr>
-                </tbody>
+                <tbody id="admin_batchlist_wrap" class="middle-align"></tbody>
             </table>
 
 
@@ -192,6 +168,57 @@
                             </div>
                         </form>
 
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-info" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!--新增成员-->
+    <div class="modal fade custom-width" id="admin_member_dialog">
+        <div class="modal-dialog g-w-percent40">
+            <div class="modal-content">
+                <div class="modal-body">
+
+                    <!--头部信息-->
+                    <div class="admin-layout-theme4 admin-theme-close g-t-c g-b-gray17 g-pos-r">添加成员(用户)
+                        <span class="mini-icon admin-mini-icon1" ng-click="structrole_ctrl.toggleModal({display:'hide',area:'member'})"></span>
+                    </div>
+
+                    <!--左侧操作区域-->
+                    <div class="g-f-l g-gap-mt8 g-gap-mb6 g-w-percent28">
+                        <!--子菜单组件-->
+                        <ul class="sub-menu-wrap" ng-click="structrole_ctrl.toggleMemberMenu($event)" id="admin_member_menu" ></ul>
+                    </div>
+
+                    <!--右侧被选区域-->
+                    <div class="g-f-r g-gap-mt8 g-gap-mb6 g-w-percent18">
+                        <ul class="action-list-wrap">
+                            <li>特别的爱给特别的你</li>
+                            <li>特别的爱给特别的你</li>
+                            <li>特别的爱给特别的你</li>
+                            <li>特别的爱给特别的你</li>
+                            <li>特别的爱给特别的你</li>
+                            <li>特别的爱给特别的你</li>
+                            <li>特别的爱给特别的你</li>
+                        </ul>
+                    </div>
+                    <div class="clearfix"></div>
+
+                    <!--提交按钮-->
+                    <div class="row">
+                        <div class="col-sm-5 g-t-r">
+                            <span ng-click="structrole_ctrl.formSubmit('member')" class="btn btn-red g-br3 g-w-percent15">确定</span>
+                        </div>
+                        <div class="col-sm-2"></div>
+                        <div class="col-sm-5 g-t-l">
+                            <span ng-click="structrole_ctrl.formReset(true,'member')" class="btn btn-red g-br3 g-w-percent15">取消</span>
+                        </div>
                     </div>
                     <div class="clearfix"></div>
                 </div>
