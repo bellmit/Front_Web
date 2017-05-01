@@ -179,7 +179,7 @@ angular.module('login.service',[])
         this.getValidCode=function (config) {
             var xhr = new XMLHttpRequest();
 
-            xhr.open("post",BASE_CONFIG.basedomain + BASE_CONFIG.baseproject + config.url, true);
+            xhr.open("post",toolUtil.adaptReqUrl(config.url), true);
 
             xhr.responseType = "blob";
             xhr.onreadystatechange = function() {

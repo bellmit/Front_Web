@@ -249,6 +249,11 @@
 			/*适配配置*/
 			if(config.set){
 				req.url=this.adaptReqUrl(req.url);
+			}else{
+				/*debug模式则调用自定义json模式*/
+				if(BASE_CONFIG.debug && req.url.indexOf('.json')===-1){
+					req.url='json' + req.url + '.json';
+				}
 			}
 			req.data=$httpParamSerializerJQLike(req.data);
 			req['headers']={ "Content-Type": "application/x-www-form-urlencoded" };
@@ -265,7 +270,12 @@
 		};
 		/*适配请求信息*/
 		tools.adaptReqUrl=function (url) {
-			return BASE_CONFIG.basedomain + BASE_CONFIG.baseproject + url;
+			/*debug模式则调用自定义json模式*/
+			if(BASE_CONFIG.debug && url.indexOf('.json')===-1){
+				return 'json' + url + '.json';
+			}else{
+				return BASE_CONFIG.basedomain + BASE_CONFIG.baseproject + url;
+			}
 		};
 
 

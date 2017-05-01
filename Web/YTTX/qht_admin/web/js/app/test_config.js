@@ -7,6 +7,7 @@ var qht_app=angular.module('app')
             test:http://10.0.5.226:8080
             debug:http://10.0.5.222:8080
         */,
+        debug:true,
         baseproject:'/qht-bms-api',
         loadingdom:'struct_layout_loading',
         nologindom:'struct_layout_nologin',
