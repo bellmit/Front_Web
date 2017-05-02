@@ -17,7 +17,7 @@
                 <!--操作按钮-->
                 <div class="action-item-btn g-f-l g-w-percent28">
                     <span ng-show="structrole_ctrl.record.role!=='' && structrole_ctrl.powerlist.memberadd" ng-click="structrole_ctrl.toggleModal({display:'show',area:'member'})" ><i class="btn-action admin-btn-action1"></i>添加成员</span>
-                    <span ng-show="structrole_ctrl.record.role!=='' && structrole_ctrl.powerlist.memberdelete" ng-click="structrole_ctrl.actionMember('delete')"><i class="btn-action admin-btn-action8"></i>移除成员</span>
+                    <span ng-show="structrole_ctrl.record.role!=='' && structrole_ctrl.powerlist.memberdelete" ng-click="structrole_ctrl.deleteMemberList('batch')"><i class="btn-action admin-btn-action8"></i>移除成员</span>
                 </div>
 
                 <!--列控制-->
@@ -189,7 +189,7 @@
 
     <!--新增成员-->
     <div class="modal fade custom-width" id="admin_member_dialog">
-        <div class="modal-dialog g-w-percent40">
+        <div class="modal-dialog g-w-percent30">
             <div class="modal-content">
                 <div class="modal-body">
 
@@ -199,22 +199,18 @@
                     </div>
 
                     <!--左侧操作区域-->
-                    <div class="g-f-l g-gap-mt8 g-gap-mb6 g-w-percent28">
+                    <div class="struct-search-menu g-f-l g-gap-mt8 g-gap-mb6 g-w-percent18">
+                        <div class="admin-layout-theme4"><span class="mini-icon admin-mini-icon2"></span>&nbsp;机构信息</div>
                         <!--子菜单组件-->
-                        <ul class="sub-menu-wrap" ng-click="structrole_ctrl.toggleMemberMenu($event)" id="admin_member_menu" ></ul>
+                        <ul class="sub-menu-wrap" ng-click="structrole_ctrl.toggleMemberList($event)" id="admin_member_menu" ng-init="structrole_ctrl.getMemberList()"></ul>
                     </div>
 
                     <!--右侧被选区域-->
-                    <div class="g-f-r g-gap-mt8 g-gap-mb6 g-w-percent18">
-                        <ul class="action-list-wrap">
-                            <li>特别的爱给特别的你</li>
-                            <li>特别的爱给特别的你</li>
-                            <li>特别的爱给特别的你</li>
-                            <li>特别的爱给特别的你</li>
-                            <li>特别的爱给特别的你</li>
-                            <li>特别的爱给特别的你</li>
-                            <li>特别的爱给特别的你</li>
-                        </ul>
+                    <div class="g-f-r g-gap-mt8 g-gap-mb6 g-w-percent28">
+                        <div class="admin-layout-theme4"><span class="mini-icon admin-mini-icon2"></span>&nbsp;用户信息</div>
+                        <ul id="admin_user_wrap" ng-click="structrole_ctrl.checkMemberList($event)" class="admin-grid-widget admin-grid-widget1"></ul>
+                        <div class="admin-layout-theme4"><span class="mini-icon admin-mini-icon3"></span>&nbsp;成员信息</div>
+                        <ul id="admin_member_checked" class="admin-grid-widget admin-grid-widget1"></ul>
                     </div>
                     <div class="clearfix"></div>
 
@@ -225,7 +221,7 @@
                         </div>
                         <div class="col-sm-2"></div>
                         <div class="col-sm-5 g-t-l">
-                            <span ng-click="structrole_ctrl.formReset(true,'member')" class="btn btn-red g-br3 g-w-percent15">取消</span>
+                            <span ng-click="structrole_ctrl.formReset(true,'member')" id="admin_member_reset"  class="btn btn-red g-br3 g-w-percent15">取消</span>
                         </div>
                     </div>
                     <div class="clearfix"></div>

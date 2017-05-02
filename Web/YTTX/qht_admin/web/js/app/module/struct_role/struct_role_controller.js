@@ -22,7 +22,9 @@ angular.module('app')
             $admin_list_colgroup:$('#admin_list_colgroup'),
             $admin_batchlist_wrap:$('#admin_batchlist_wrap'),
             $admin_member_checkall:$('#admin_member_checkall'),
-            $admin_member_menu:$('#admin_member_menu')
+            $admin_member_menu:$('#admin_member_menu'),
+            $admin_member_checked:$('#admin_member_checked'),
+            $admin_user_wrap:$('#admin_user_wrap')
         };
         /*切换路由时更新dom缓存*/
         structroleService.initJQDom(jq_dom);
@@ -31,7 +33,7 @@ angular.module('app')
         this.table={
             list1_page:{
                 page:1,
-                pageSize:1,
+                pageSize:20,
                 total:0
             },
             list1_config:{
@@ -57,10 +59,10 @@ angular.module('app')
                                 }
                                 if(code===999){
                                     /*退出系统*/
-                                    /*toolUtil.loginTips({
+                                    toolUtil.loginTips({
                                         clear:true,
                                         reload:true
-                                    });*/
+                                    });
                                 }
                                 self.table.list1_config.hasdata=false;
                                 return [];
@@ -95,7 +97,7 @@ angular.module('app')
                                         temp_param['page']=self.table.list1_page.page;
                                         temp_param['pageSize']=self.table.list1_page.pageSize;
                                         self.table.list1_config.config.ajax.data=temp_param;
-                                        structroleService.getColumnData(self.table);
+                                        structroleService.getColumnData(self.table,self.record.role);
                                     }
                                 });
 
@@ -122,7 +124,7 @@ angular.module('app')
                         },
                         data:{
                             page:1,
-                            pageSize:1
+                            pageSize:20
                         }
                     },
                     info:false,
@@ -236,6 +238,11 @@ angular.module('app')
         };
 
 
+
+        /*模型--选中的机构信息*/
+        this.member={};
+
+
         /*角色组*/
         this.rolegroup={
             id:'',
@@ -318,8 +325,32 @@ angular.module('app')
                 role:self.role
             });
         };
-        
-        
+
+
+        /*成员服务--移除成员*/
+        this.deleteMemberList=function () {
+            structroleService.deleteMemberList(self.record,self.table);
+        };
+        /*成员服务--查询用户*/
+        this.checkMemberList=function (e) {
+          structroleService.checkMemberList(e,self.member);
+        };
+        /*成员服务--过滤数据*/
+        this.filterDataTable=function () {
+            structroleService.filterDataTable(self.table,self.role);
+        };
+
+
+        /*机构服务--加载机构角色*/
+        this.getMemberList=function () {
+          structroleService.getMemberList();
+        };
+        /*机构服务--显示隐藏*/
+        this.toggleMemberList=function (e) {
+            structroleService.toggleMemberList(e,{
+                member:self.member
+            });
+        };
         
 
         /*弹出层显示隐藏*/
@@ -334,7 +365,8 @@ angular.module('app')
                 role:self.role,
                 rolegroup:self.rolegroup,
                 table:self.table,
-                record:self.record
+                record:self.record,
+                member:self.member
             },type);
         };
         /*表单服务--重置表单*/
@@ -343,7 +375,8 @@ angular.module('app')
             structroleService.formReset({
                 forms:forms,
                 role:self.role,
-                rolegroup:self.rolegroup
+                rolegroup:self.rolegroup,
+                member:self.member
             },type);
         };
 

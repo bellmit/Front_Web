@@ -4,6 +4,15 @@
   background:@color-gray3;
   height:100%;
   min-height:@layout-content-minheight;
+}
+.struct-search-menu{
+  .layout-base;
+  height:100%;
+  min-height:300px;
+}
+
+.struct-layout-side,
+.struct-search-menu{
 
   /*公用组件*/
   .sub-item-group1{
@@ -128,8 +137,6 @@
     }
   }
 
-
-
   /*搜索组件*/
   .sub-search-wrap{
     @search-height:36px;
@@ -211,7 +218,6 @@
     }
   }
 
-
   /*选项卡组件*/
   .sub-tab-wrap{
     .layout-base;
@@ -238,7 +244,6 @@
       color:@color-white;
     }
   }
-
 
   /*子菜单*/
   .sub-menu-wrap{
@@ -292,7 +297,6 @@
     }
   }
 
-
   /*按钮组*/
   .sub-btn-wrap{
     .layout-base;
@@ -330,4 +334,14 @@
 
 }
 
+.struct-search-menu{
+  /*子菜单*/
+  .sub-menu-wrap{
+    li{
+      a{
+        color:@color-gray3;
+      }
+    }
+  }
+}
 

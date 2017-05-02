@@ -307,6 +307,60 @@
   }
 }
 
+
+/*ul列表组件*/
+.admin-grid-widget{
+  .box-sizing-base;
+  overflow: auto;
+  li{
+    float:left;
+    .box-sizing-base;
+    text-align: center;
+    font-size:@font-size-base;
+    .text-of;
+    text-overflow: ellipsis;
+    cursor: pointer;
+  }
+}
+.admin-grid-widget1{
+  background:@color-white;
+  border:1px solid @color-gray12;
+  .user-select-base;
+  &:empty{
+    min-height:120px;
+    &:before,
+    &::before{
+      content:'暂无数据';
+      display: inline-block;
+      text-align: center;
+      line-height: 120px;
+      color:@color-gray9;
+      font-size:@font-size-base;
+      width:100%;
+      height:100%;
+    }
+  }
+  li{
+    text-align: center;
+    height:40px;
+    padding:10px;
+    line-height:20px;
+    color:@color-gray6;
+    border-right:1px solid @color-gray16;
+    border-bottom:1px solid @color-gray16;
+    &:hover{
+      background:@color-gray14;
+    }
+  }
+  .action-list-active{
+    background:lighten(@color-blue3,36%);
+    &:hover{
+      background:lighten(@color-blue3,36%);
+    }
+  }
+}
+
+
 /*商品标签*/
 .admin-attrlabel-widget1{
   font-size:0;
