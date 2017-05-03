@@ -64,12 +64,10 @@ angular.module('app')
                                         reload:true
                                     });
                                 }
-                                self.table.list1_config.hasdata=false;
                                 return [];
                             }
                             var result=json.result;
                             if(typeof result==='undefined'){
-                                self.table.list1_config.hasdata=false;
                                 /*重置分页*/
                                 self.table.list1_page.total=0;
                                 self.table.list1_page.page=1;
@@ -103,14 +101,18 @@ angular.module('app')
 
                                 var list=result.list;
                                 if(list){
-                                    list.length===0?self.table.list1_config.hasdata=false:self.table.list1_config.hasdata=true;
+                                    var vi=0,
+                                        vlen=list.length;
+                                    for(vi;vi<vlen;vi++){
+                                        if(!list[vi] || list[vi]===null){
+                                            return [];
+                                        }
+                                    }
                                     return list;
                                 }else{
-                                    self.table.list1_config.hasdata=false;
                                     return [];
                                 }
                             }else{
-                                self.table.list1_config.hasdata=false;
                                 /*重置分页*/
                                 self.table.list1_page.total=0;
                                 self.table.list1_page.page=1;
@@ -203,7 +205,10 @@ angular.module('app')
                 hide_len:4,
                 column_api:{
                     isEmpty:function () {
-                        return self.table.list1_config.hasdata;
+                        if(self.table.list_table===null){
+                            return false;
+                        }
+                        return self.table.list_table.data().length===0;
                     }
                 },
                 $colgroup:jq_dom.$admin_list_colgroup/*分组模型*/,
@@ -291,6 +296,7 @@ angular.module('app')
             structroleService.queryRoleGroup({
                 record:self.record
             });
+            structroleService.getColumnData(self.table,self.record.role);
         };
         /*菜单服务--查询角色组*/
         this.queryRoleGroup=function () {

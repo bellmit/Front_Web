@@ -44,7 +44,6 @@ angular.module('app')
                 total:0
             },
             list1_config:{
-                hasdata:false,
                 config:{
                     processing:true,/*大消耗操作时是否显示处理状态*/
                     deferRender:true,/*是否延迟加载数据*/
@@ -71,12 +70,10 @@ angular.module('app')
                                         reload:true
                                     });
                                 }
-                                self.table.list1_config.hasdata=false;
                                 return [];
                             }
                             var result=json.result;
                             if(typeof result==='undefined'){
-                                self.table.list1_config.hasdata=false;
                                 /*重置分页*/
                                 self.table.list1_page.total=0;
                                 self.table.list1_page.page=1;
@@ -110,14 +107,18 @@ angular.module('app')
 
                                 var list=result.list;
                                 if(list){
-                                    list.length===0?self.table.list1_config.hasdata=false:self.table.list1_config.hasdata=true;
+                                    var vi=0,
+                                        vlen=list.length;
+                                    for(vi;vi<vlen;vi++){
+                                        if(!list[vi] || list[vi]===null){
+                                            return [];
+                                        }
+                                    }
                                     return list;
                                 }else{
-                                    self.table.list1_config.hasdata=false;
                                     return [];
                                 }
                             }else{
-                                self.table.list1_config.hasdata=false;
                                 /*重置分页*/
                                 self.table.list1_page.total=0;
                                 self.table.list1_page.page=1;
@@ -225,23 +226,26 @@ angular.module('app')
             list_table:null,
             /*列控制*/
             tablecolumn:{
-            init_len:10/*数据有多少列*/,
-            column_flag:true,
-            ischeck:true,/*是否有全选*/
-            columnshow:true,
-            $column_wrap:jq_dom.$admin_struct_checkcolumn/*控制列显示隐藏的容器*/,
-            $bodywrap:jq_dom.$admin_struct_batchlist/*数据展现容器*/,
-            hide_list:[4,5,6,7,8]/*需要隐藏的的列序号*/,
-            hide_len:5,
-            column_api:{
-                isEmpty:function () {
-                    return self.table.list1_config.hasdata;
-                }
+                init_len:10/*数据有多少列*/,
+                column_flag:true,
+                ischeck:true,/*是否有全选*/
+                columnshow:true,
+                $column_wrap:jq_dom.$admin_struct_checkcolumn/*控制列显示隐藏的容器*/,
+                $bodywrap:jq_dom.$admin_struct_batchlist/*数据展现容器*/,
+                hide_list:[4,5,6,7,8]/*需要隐藏的的列序号*/,
+                hide_len:5,
+                column_api:{
+                    isEmpty:function () {
+                        if(self.table.list_table===null){
+                            return false;
+                        }
+                        return self.table.list_table.data().length===0;
+                    }
+                },
+                $colgroup:jq_dom.$admin_struct_colgroup/*分组模型*/,
+                $column_btn:jq_dom.$admin_struct_checkcolumn.prev(),
+                $column_ul:jq_dom.$admin_struct_checkcolumn.find('ul')
             },
-            $colgroup:jq_dom.$admin_struct_colgroup/*分组模型*/,
-            $column_btn:jq_dom.$admin_struct_checkcolumn.prev(),
-            $column_ul:jq_dom.$admin_struct_checkcolumn.find('ul')
-        },
             /*全选*/
             tablecheckall:{
                 checkall_flag:true,

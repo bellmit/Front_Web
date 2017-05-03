@@ -466,30 +466,35 @@ angular.module('app')
             }
 
             /*如果存在模型*/
-            var data= $.extend(true,{},table.list1_config.config.ajax.data);
+            var data= $.extend(true,{},table.list1_config.config.ajax.data),
+                temp_param;
+
             if(id!==''){
                 /*设置值*/
                 data['roleId']=id;
-                /*参数赋值*/
-                table.list1_config.config.ajax.data=data;
-
-                if(table.list_table===null){
-                    var temp_param=cache.loginMap.param;
-                    table.list1_config.config.ajax.data['adminId']=temp_param.adminId;
-                    table.list1_config.config.ajax.data['token']=temp_param.token;
-                    /*初始请求*/
-                    table.list_table=self.$admin_list_wrap.DataTable(table.list1_config.config);
-                    /*调用列控制*/
-                    dataTableColumnService.initColumn(table.tablecolumn,table.list_table);
-                    /*调用全选与取消全选*/
-                    dataTableCheckAllService.initCheckAll(table.tablecheckall);
-                }else {
-                    /*清除批量数据*/
-                    dataTableCheckAllService.clear(table.tablecheckall);
-                    table.list_table.ajax.config(table.list1_config.config.ajax).load();
-                }
             }else if(id===''){
-                table.list1_config.hasdata=false;
+                data['roleId']='';
+            }
+            /*参数赋值*/
+            table.list1_config.config.ajax.data=data;
+            if(table.list_table===null){
+                temp_param=cache.loginMap.param;
+                table.list1_config.config.ajax.data['adminId']=temp_param.adminId;
+                table.list1_config.config.ajax.data['token']=temp_param.token;
+                /*初始请求*/
+                table.list_table=self.$admin_list_wrap.DataTable(table.list1_config.config);
+                /*调用列控制*/
+                dataTableColumnService.initColumn(table.tablecolumn,table.list_table);
+                /*调用全选与取消全选*/
+                dataTableCheckAllService.initCheckAll(table.tablecheckall);
+            }else {
+                /*清除批量数据*/
+                dataTableCheckAllService.clear(table.tablecheckall);
+                if(id!==''){
+                    table.list_table.ajax.config(table.list1_config.config.ajax).load();
+                }else{
+                    table.list_table.clear();
+                }
             }
         };
         /*成员服务--过滤表格数据*/
