@@ -95,16 +95,7 @@ angular.module('app')
                         },
                         'nologin':{
                             templateUrl: 'tpl/common/support_login.html'
-                        }/*,
-                        'main':{
-                            templateUrl: 'tpl/struct_operate.html'
-                        },
-                        'sidemenu':{
-                            templateUrl: 'tpl/common/side_struct_operate.html'
-                        },
-                        'dialog':{
-                            templateUrl: 'tpl/struct_operate_setting.html'
-                        }*/
+                        }
                     },
                     resolve: {
                             /*延迟加载，依赖相关组件*/
@@ -159,17 +150,41 @@ angular.module('app')
                     }
                 })
                 //订单管理
-                /*.state('order', {
+                .state('order', {
                     url: '/order',
                     views:{
-                        'main':{
-                            templateUrl: 'tpl/order_list.html'
+                        'container':{
+                            templateUrl:'tpl/order.html'
+                        },
+                        'support':{
+                            templateUrl: 'tpl/common/support_tip.html'
+                        },
+                        'login':{
+                            templateUrl: 'tpl/login.html'
+                        },
+                        'loading':{
+                            templateUrl: 'tpl/common/load.html'
+                        },
+                        'nologin':{
+                            templateUrl: 'tpl/common/support_login.html'
                         },
                         'sidemenu':{
                             templateUrl: 'tpl/common/side_order.html'
                         }
+                    },
+                    resolve: {
+                        /*延迟加载，依赖相关组件*/
+                        deps: ['$ocLazyLoad',
+                            function ($ocLazyLoad) {
+                                return $ocLazyLoad.load(['js/plugins/datatables/dataTables.bootstrap.css',
+                                    'js/plugins/datatables/js/jquery.dataTables.js',
+                                    'js/plugins/pagination/pagination.js',
+                                    'js/app/module/datatable/datatable_column_service.js',
+                                    'js/app/module/order/order_service.js',
+                                    'js/app/module/order/order_controller.js']);
+                            }]
                     }
-                })*/
+                })
                 //财务管理
                 /*.state('finance', {
                     url: '/finance',

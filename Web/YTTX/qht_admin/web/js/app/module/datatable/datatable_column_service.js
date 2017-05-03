@@ -31,6 +31,7 @@ angular.module('app')
 				str='',
 				i=0;
 
+
 			for(i;i<tablecolumn.hide_len;i++){
 				tempid=tablecolumn.hide_list[i];
 				str+='<li data-value="'+tempid+'">第'+(tempid + 1)+'列</li>';

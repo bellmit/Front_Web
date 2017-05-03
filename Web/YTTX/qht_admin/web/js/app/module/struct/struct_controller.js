@@ -207,7 +207,7 @@ angular.module('app')
 
                                 /*查看用户*/
                                 if(self.powerlist.userdetail){
-                                    btns+='<span data-action="detail" data-addUserId="'+addUserId+'" data-id="'+data+'"  data-organizationId="'+organizationId+'" ng-click="struct."  class="btn-operate">查看</span>';
+                                    btns+='<span data-action="detail" data-addUserId="'+addUserId+'" data-id="'+data+'"  data-organizationId="'+organizationId+'"  class="btn-operate">查看</span>';
                                 }
                                 /*编辑用户*/
                                 if(self.powerlist.userupdate){
