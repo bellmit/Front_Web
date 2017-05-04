@@ -130,9 +130,6 @@ angular.module('app')
                         },
                         'nologin':{
                             templateUrl: 'tpl/common/support_login.html'
-                        },
-                        'sidemenu':{
-                            templateUrl: 'tpl/common/side_struct_role.html'
                         }
                     },
                     resolve: {
@@ -167,9 +164,6 @@ angular.module('app')
                         },
                         'nologin':{
                             templateUrl: 'tpl/common/support_login.html'
-                        },
-                        'sidemenu':{
-                            templateUrl: 'tpl/common/side_order.html'
                         }
                     },
                     resolve: {
@@ -200,18 +194,41 @@ angular.module('app')
                     }
                 })*/
                 //设备管理
-                /*.state('equipment', {
-                    /!*abstract: true,*!/
+                .state('equipment', {
+                    /*abstract: true,*/
                     url: '/equipment',
                     views:{
-                        'main':{
-                            templateUrl: 'tpl/equipment_list.html'
+                        'container':{
+                            templateUrl:'tpl/equipment.html'
                         },
-                        'sidemenu':{
-                            templateUrl: 'tpl/common/side_equipment.html'
+                        'support':{
+                            templateUrl: 'tpl/common/support_tip.html'
+                        },
+                        'login':{
+                            templateUrl: 'tpl/login.html'
+                        },
+                        'loading':{
+                            templateUrl: 'tpl/common/load.html'
+                        },
+                        'nologin':{
+                            templateUrl: 'tpl/common/support_login.html'
                         }
+                    },
+                    resolve: {
+                        /*延迟加载，依赖相关组件*/
+                        deps: ['$ocLazyLoad',
+                            function ($ocLazyLoad) {
+                                return $ocLazyLoad.load(['js/plugins/datatables/dataTables.bootstrap.css',
+                                    'js/plugins/datatables/js/jquery.dataTables.js',
+                                    'js/plugins/pagination/pagination.js',
+                                    'js/plugins/My97DatePicker/WdatePicker.js',
+                                    'js/app/module/datatable/datatable_column_service.js',
+                                    'js/app/module/datepick97/datepicker97_service.js',
+                                    'js/app/module/equipment/equipment_service.js',
+                                    'js/app/module/equipment/equipment_controller.js']);
+                            }]
                     }
-                })*/
+                })
                 //设置
                 /*.state('setting', {
                     /!*abstract: true,*!/
