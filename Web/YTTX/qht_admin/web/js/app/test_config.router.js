@@ -179,7 +179,9 @@ angular.module('app')
                                 return $ocLazyLoad.load(['js/plugins/datatables/dataTables.bootstrap.css',
                                     'js/plugins/datatables/js/jquery.dataTables.js',
                                     'js/plugins/pagination/pagination.js',
+                                    'js/plugins/My97DatePicker/WdatePicker.js',
                                     'js/app/module/datatable/datatable_column_service.js',
+                                    'js/app/module/datepick97/datepicker97_service.js',
                                     'js/app/module/order/order_service.js',
                                     'js/app/module/order/order_controller.js']);
                             }]

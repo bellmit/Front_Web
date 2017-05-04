@@ -14,7 +14,9 @@ angular.module('app')
             $admin_page_wrap:$('#admin_page_wrap'),
             $admin_list_wrap:$('#admin_list_wrap'),
             $admin_list_colgroup:$('#admin_list_colgroup'),
-            $admin_batchlist_wrap:$('#admin_batchlist_wrap')
+            $admin_batchlist_wrap:$('#admin_batchlist_wrap'),
+            $search_startTime:$('#search_startTime'),
+            $search_endTime:$('#search_endTime')
         };
         /*切换路由时更新dom缓存*/
         orderService.initJQDom(jq_dom);
@@ -160,18 +162,17 @@ angular.module('app')
                             "data":"payTime"
                         },
                         {
-                            "data":"id",
+                            /*to do*/
+                            "data":"id"/*,
                             "render":function(data, type, full, meta ){
-                                var btns='',
-                                    addUserId=full.addUserId,
-                                    organizationId=full.organizationId;
+                                var btns='';
 
-                                /*查看用户*/
-                                if(self.powerlist.userdetail){
+                                /!*查看订单*!/
+                                if(self.powerlist.orderdetails){
                                     btns+='<span data-action="detail" data-id="'+data+'"  class="btn-operate">查看</span>';
                                 }
                                 return btns;
-                            }
+                            }*/
                         }
                     ]
                 }
@@ -233,5 +234,15 @@ angular.module('app')
         this.filterDataTable=function () {
             orderService.filterDataTable(self.table,self.record);
         };
-        
+
+
+        /*日历查询*/
+        orderService.datePicker(this.record);
+
+        /*查询订单*/
+        this.queryOrder=function () {
+            orderService.getColumnData(self.table,self.record);
+        };
+
+
     }]);

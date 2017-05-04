@@ -11,12 +11,12 @@
 
                 <!--开始时间-->
                 <div class="action-item-input g-w-percent15">
-                    <label class="action-indent-b2 dt-icon-after">开始时间:<input class="form-control" placeholder="请选择开始时间" readonly type="text"></label>
+                    <label class="action-indent-b2 dt-icon-after">开始时间:<input ng-model="order_ctrl.record.startTime"  class="form-control" id="search_startTime" placeholder="请选择开始时间" readonly type="text"></label>
                 </div>
 
                 <!--结束时间-->
                 <div class="action-item-input g-w-percent15">
-                    <label class="action-indent-b2 dt-icon-after">结束时间:<input class="form-control" placeholder="请选择结束时间" readonly type="text"></label>
+                    <label class="action-indent-b2 dt-icon-after">结束时间:<input class="form-control" placeholder="请选择结束时间" id="search_endTime" ng-model="order_ctrl.record.endTime" readonly type="text"></label>
                 </div>
 
                 <!--打印，导出-->
@@ -28,12 +28,15 @@
 
                 <!--列控制-->
                 <div class="clearfix"></div>
-                <br />
-                <div class="action-item-ul g-w-percent5 g-pos-r" ng-show="::order_ctrl.table.tablecolumn.columnshow">
+                <div class="action-item-ul g-w-percent5 g-pos-r g-gap-mt4" ng-show="::order_ctrl.table.tablecolumn.columnshow">
                     <div class="action-theme action-theme-btn g-br3 g-t-c">显示列</div>
                     <div class="action-ul g-d-hidei" id="admin_table_checkcolumn">
                         <ul class="action-list-wrap" ></ul>
                     </div>
+                </div>
+
+                <div class="action-item-btn action-item-export g-gap-mt4 g-w-percent6">
+                    <span ng-click="order_ctrl.queryOrder()" class="btn btn-export g-br3 g-w-percent50 g-c-blue3">查询</span>
                 </div>
 
             </div>

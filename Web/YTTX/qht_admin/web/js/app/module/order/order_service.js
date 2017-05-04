@@ -1,5 +1,5 @@
 angular.module('app')
-    .service('orderService',['toolUtil','toolDialog','BASE_CONFIG','loginService','powerService','dataTableColumnService','$timeout',function(toolUtil,toolDialog,BASE_CONFIG,loginService,powerService,dataTableColumnService,$timeout){
+    .service('orderService',['toolUtil','toolDialog','BASE_CONFIG','loginService','powerService','dataTableColumnService','datePicker97Service',function(toolUtil,toolDialog,BASE_CONFIG,loginService,powerService,dataTableColumnService,datePicker97Service){
 
         /*获取缓存数据*/
         var self=this,
@@ -28,48 +28,6 @@ angular.module('app')
         /*扩展服务--查询操作权限*/
         this.getCurrentPower=function () {
             return init_power;
-        };
-
-
-        /*弹出层服务*/
-        this.toggleModal=function (config,fn) {
-            var temp_timer=null,
-                type_map={
-                    'member':self.$admin_member_dialog,
-                    'role':self.$admin_role_dialog,
-                    'rolegroup':self.$admin_rolegroup_dialog
-                };
-            if(config.display==='show'){
-                if(typeof config.delay!=='undefined'){
-                    temp_timer=setTimeout(function () {
-                        type_map[config.area].modal('show',{backdrop:'static'});
-                        clearTimeout(temp_timer);
-                        temp_timer=null;
-                    },config.delay);
-                    if(fn&&typeof fn==='function'){
-                        fn.call(null);
-                    }
-                }else{
-                    type_map[config.area].modal('show',{backdrop:'static'});
-                    if(fn&&typeof fn==='function'){
-                        fn.call(null);
-                    }
-                }
-            }else if(config.display==='hide'){
-                if(typeof config.delay!=='undefined'){
-                    temp_timer=setTimeout(function () {
-                        type_map[config.area].modal('hide');
-                        clearTimeout(temp_timer);
-                        temp_timer=null;
-                    },config.delay);
-                }else{
-                    type_map[config.area].modal('hide');
-                }
-                /*清除延时任务序列*/
-                if(config.area==='role' || config.area==='rolegroup' || config.area==='member'){
-                    self.clearFormDelay();
-                }
-            }
         };
 
 
@@ -124,6 +82,18 @@ angular.module('app')
                 return false;
             }
             table.list_table.search(record.filter).columns().draw();
+        };
+        /*订单查询服务--时间查询*/
+        this.datePicker=function (record) {
+            datePicker97Service.datePickerRange(record,{
+                $node1:self.$search_startTime,
+                $node2:self.$search_endTime,
+                format:'%y-%M-%d',
+                position:{
+                    left:0,
+                    top:2
+                }
+            });
         };
 
 
@@ -376,86 +346,4 @@ angular.module('app')
                 }
             }
         };
-        /*菜单服务--查询用户*/
-        this.queryUserList=function (id) {
-            if(cache===null){
-                return false;
-            }else if(typeof id==='undefined'){
-
-                return false;
-            }
-            
-            var  param=$.extend(true,{},cache.loginMap.param);
-            /*判断参数*/
-            param['organizationId']=id;
-
-
-            toolUtil
-                .requestHttp({
-                    url:'/organization/users',
-                    method:'post',
-                    set:true,
-                    data:param
-                })
-                .then(function(resp){
-                        var data=resp.data,
-                            status=parseInt(resp.status,10);
-
-                        if(status===200){
-                            var code=parseInt(data.code,10),
-                                message=data.message;
-                            if(code!==0){
-                                if(typeof message !=='undefined'&&message!==''){
-                                    console.log(message);
-                                }else{
-                                    console.log('请求数据失败');
-                                }
-
-                                if(code===999){
-                                    /*退出系统*/
-                                    cache=null;
-                                    toolUtil.loginTips({
-                                        clear:true,
-                                        reload:true
-                                    });
-                                }
-                                self.$admin_user_wrap.html('');
-                                return false;
-                            }else{
-                                /*加载数据*/
-                                var result=data.result;
-                                if(typeof result!=='undefined'){
-                                    var list=result.list,
-                                        str='';
-                                    if(angular.isObject(list)){
-                                        /*修改：更新模型*/
-                                        for(var i in list){
-                                            str+='<li data-id="'+list[i]["id"]+'">'+list[i]["nickName"]+'</li>';
-                                        }
-                                        if(str!==''){
-                                            $(str).appendTo(self.$admin_user_wrap.html(''));
-                                        }else {
-                                            self.$admin_user_wrap.html('');
-                                        }
-                                    }else{
-                                        self.$admin_user_wrap.html('');
-                                    }
-                                }else{
-                                    self.$admin_user_wrap.html('');
-                                }
-                            }
-                        }
-                    },
-                    function(resp){
-                        var message=resp.data.message;
-                        self.$admin_user_wrap.html('');
-                        if(typeof message !=='undefined'&&message!==''){
-                            console.log(message);
-                        }else{
-                            console.log('请求用户失败');
-                        }
-                    });
-        };
-
-
     }]);
