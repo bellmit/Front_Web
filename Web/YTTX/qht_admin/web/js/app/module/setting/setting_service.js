@@ -119,7 +119,7 @@ angular.module('app')
             if(typeof id==='undefined'){
                 return false;
             }
-
+            
             var param=$.extend(true,{},cache.loginMap.param);
             /*判断参数*/
             param['id']=id;
@@ -552,8 +552,7 @@ angular.module('app')
                     data:param
                 })
                 .then(function(resp){
-                    /*测试代码*/
-                    /*var resp={
+                    var resp={
                             status:200,
                             data:{
                                 message:'ok',
@@ -565,7 +564,7 @@ angular.module('app')
                                     }]
                                 })
                             }
-                    };*/
+                    };
 
                         var data=resp.data,
                             status=parseInt(resp.status,10);
@@ -591,6 +590,7 @@ angular.module('app')
                                 if(typeof result!=='undefined'){
                                     var list=result.list,
                                         str='';
+                                    
                                     if(list){
                                         var len=list.length,
                                             i=0,

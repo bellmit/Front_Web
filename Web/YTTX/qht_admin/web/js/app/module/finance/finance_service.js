@@ -1,9 +1,9 @@
 angular.module('app')
-    .service('equipmentService',['toolUtil','toolDialog','BASE_CONFIG','loginService','powerService','dataTableColumnService','dataTableItemActionService','datePicker97Service','$timeout',function(toolUtil,toolDialog,BASE_CONFIG,loginService,powerService,dataTableColumnService,dataTableItemActionService,datePicker97Service,$timeout){
+    .service('financeService',['toolUtil','toolDialog','BASE_CONFIG','loginService','powerService','dataTableColumnService','dataTableItemActionService','datePicker97Service','$timeout',function(toolUtil,toolDialog,BASE_CONFIG,loginService,powerService,dataTableColumnService,dataTableItemActionService,datePicker97Service,$timeout){
 
         /*获取缓存数据*/
         var self=this,
-            module_id=70/*模块id*/,
+            module_id=50/*模块id*/,
             cache=loginService.getCache(),
             sendform_reset_timer=null;
 
@@ -11,9 +11,8 @@ angular.module('app')
 
         /*初始化权限*/
         var init_power={
-            deviceadd:toolUtil.isPower('device-add',powermap,true)/*添加发货信息*/,
-            iemiadd:toolUtil.isPower('iemi-add',powermap,true)/*添加iemi码*/,
-            deliveryadd:toolUtil.isPower('delivery-add',powermap,true)/*详情*/
+            profitdetails:toolUtil.isPower('profit-details',powermap,true)/*分润明细*/,
+            profitclear:toolUtil.isPower('profit-clear',powermap,true)/*分润清算*/
         };
 
 
@@ -286,7 +285,7 @@ angular.module('app')
                     layer=0;
                     /*根目录则获取新配置参数*/
                     id=param['organizationId'];
-                    $wrap=self.$admin_equipment_submenu;
+                    $wrap=self.$admin_finance_submenu;
                     config.record.organizationId=id;
                     config.record.organizationName=cache.loginMap.username;
                     config.record.currentId=id;

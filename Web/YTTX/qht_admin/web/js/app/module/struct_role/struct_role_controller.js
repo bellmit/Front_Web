@@ -144,7 +144,7 @@ angular.module('app')
                         {
                             "data":"phone",
                             "render":function(data, type, full, meta ){
-                                return toolUtil.phoneFormat(data);
+                                return data!==''?toolUtil.phoneFormat(data):'';
                             }
                         },
                         {
