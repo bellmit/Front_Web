@@ -75,7 +75,11 @@
             </div>
         </div>
 
-        <div class="struct-layout-side" ui-view="side"></div>
+        <div class="struct-layout-side" >
+            <!--列表组件-->
+            <!--子菜单组件-->
+            <ul class="sub-menu-wrap" ng-click="finance_ctrl.toggleSubMenu($event)" id="admin_finance_submenu" ng-init="finance_ctrl.initSubMenu()"></ul>
+        </div>
     </div>
 </div>
 

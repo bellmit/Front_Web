@@ -154,9 +154,6 @@ angular.module('app')
                     views:{
                         'container':{
                             templateUrl:'tpl/finance.html'
-                        },
-                        'side':{
-                            templateUrl: 'tpl/common/side_finance.html'
                         }
                     },
                     resolve: {
