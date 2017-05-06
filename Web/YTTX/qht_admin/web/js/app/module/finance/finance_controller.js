@@ -242,6 +242,20 @@ angular.module('app')
             deviceImeis:'',
             imei:false/*是否从进货库选择*/
         };
+
+
+        /*模型--tab选项卡*/
+        this.tabitem=[{
+            name:'分润统计',
+            href:'struct',
+            power:self.powerlist.structadd,
+            active:''
+        },{
+            name:'角色',
+            href:'role',
+            power:self.powerlist.roleadd,
+            active:'tabactive'
+        }];
         
 
 
