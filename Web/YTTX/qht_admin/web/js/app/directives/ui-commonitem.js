@@ -60,10 +60,13 @@ angular.module('ui.commonitem',[])
                 saction:'&action',
                 sclear:'&clear'
             },
+            template:'<label class="search-content {{sactive}}">\
+                <input type="text" placeholder="搜索" ng-model="svalue" name="search_name" class="g-br3" />\
+            <span class="search-clear" ng-click="sclear()"></span></label>',
             link:function (scope, element, attrs) {
-                element.find('input').on('keyup',function (e) {
-                    var kcode=e.keyCode;
-                    
+                angular.element(element).find('input').bind('keyup',function ($event) {
+                    var kcode=$event.keyCode;
+
                     if(scope.svalue===''){
                         scope.sactive='';
                     }else{
@@ -73,10 +76,7 @@ angular.module('ui.commonitem',[])
                         scope.saction();
                     }
                 });
-            },
-            template:'<label class="search-content {{sactive}}">\
-                <input type="text" placeholder="搜索" ng-model="svalue" name="search_name" class="g-br3" />\
-            <span class="search-clear" ng-click="sclear()"></span></label>'
+            }
         };
     })
     /*侧边栏tab选项卡指令*/
@@ -98,16 +98,25 @@ angular.module('ui.commonitem',[])
             scope:{
                 tabitem:'=tabitem'
             },
-            template:'<li ng-show="{{i.power}}" class="{{i.active}}" ng-repeat="i in tabitem">{{i.name}}</li>',
+            template:'<li ng-show="{{i.power}}" data-type="{{i.type}}" class="{{i.active}}" ng-repeat="i in tabitem">{{i.name}}</li>',
             link:function (scope, element, attrs) {
                 /*绑定事件*/
-                element.on('click','li',function (e) {
-                    var $this=$(this),
-                        type=$this.attr('data-type');
+                element.bind('click',function ($event) {
+                    var target=$event.target,
+                        node=target.nodeName.toLowerCase();
 
-                    $this.addClass('tabactive').siblings().removeClass('tabactive');
+                    if(node!=='li'){
+                        return false;
+                    }
+
+                    var $li=angular.element(target),
+                        type=$li.attr('data-type');
+
+                    $li.addClass('tabactive').siblings().removeClass('tabactive');
                     if(type && type!==''){
-                        scope.$parent[attrs.ctrlname][attrs.action](type);
+                        scope.$apply(function () {
+                            scope.$parent[attrs.ctrlname][attrs.action](type);
+                        })
                     }
                 });
             }
@@ -129,15 +138,31 @@ angular.module('ui.commonitem',[])
             scope:{
                 btnitem:'=btnitem'
             },
-            link:function (scope, element, attrs) {
-                element.on('click','li',function () {
-                    var type=$(this).attr('data-type');
-                    scope.$parent[attrs.ctrlname][attrs.action](type);
-                });
-            },
             template:'<li ng-show="{{i.power}}" data-type="{{i.type}}" ng-repeat="i in btnitem">\
                 <span><i class="{{i.icon}}"></i>{{i.name}}</span>\
-            </li>'
+            </li>',
+            link:function (scope, element, attrs) {
+                element.bind('click',function ($event) {
+                    var target=$event.target,
+                        node=target.nodeName.toLowerCase(),
+                        $li;
+
+                    if(node==='ul'){
+                        return false;
+                    }else if(node==='span' || node==='i'){
+                        $li=angular.element(target).closest('li');
+                    }else if(node==='li'){
+                        $li=angular.element(target);
+                    }
+
+                    var  type=$li.attr('data-type');
+                    if(type && type!==''){
+                        scope.$apply(function () {
+                            scope.$parent[attrs.ctrlname][attrs.action](type);
+                        })
+                    }
+                });
+            }
         };
     })
     /*首页快捷方式指令*/
