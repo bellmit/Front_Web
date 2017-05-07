@@ -222,6 +222,7 @@ angular.module('app')
 
         /*模型--操作记录*/
         this.record={
+            type:'profit',
             filter:'',
             startTime:'',
             endTime:'',
@@ -247,15 +248,18 @@ angular.module('app')
         /*模型--tab选项卡*/
         this.tabitem=[{
             name:'分润统计',
-            href:'struct',
-            power:self.powerlist.structadd,
-            active:''
-        },{
-            name:'角色',
-            href:'role',
-            power:self.powerlist.roleadd,
+            power:self.powerlist.profitdetails,
+            type:'profit',
             active:'tabactive'
+        },{
+            name:'清算统计',
+            power:self.powerlist.profitclear,
+            type:'clear',
+            active:''
         }];
+
+
+
         
 
 
@@ -272,6 +276,10 @@ angular.module('app')
                 table:self.table,
                 record:self.record
             });
+        };
+        /*菜单服务--切换菜单*/
+        this.toggleTab=function (type) {
+            self.record.type=type;
         };
 
 

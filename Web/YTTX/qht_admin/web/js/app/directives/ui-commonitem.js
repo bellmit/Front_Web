@@ -80,6 +80,17 @@ angular.module('ui.commonitem',[])
         };
     })
     /*侧边栏tab选项卡指令*/
+    .directive('uiSubTabHref',function() {
+        return {
+            replace:false,
+            restrict: 'EC',
+            scope:{
+                tabitem:'=tabitem'
+            },
+            template:'<li ng-show="{{i.power}}" ui-sref="{{i.href}}" class="{{i.active}}" ng-repeat="i in tabitem">{{i.name}}</li>'
+        };
+    })
+    /*侧边栏tab选项卡指令*/
     .directive('uiSubTab',function() {
         return {
             replace:false,
@@ -87,11 +98,17 @@ angular.module('ui.commonitem',[])
             scope:{
                 tabitem:'=tabitem'
             },
-            template:'<li ng-show="{{i.power}}" ui-sref="{{i.href}}" class="{{i.active}}" ng-repeat="i in tabitem">{{i.name}}</li>',
+            template:'<li ng-show="{{i.power}}" class="{{i.active}}" ng-repeat="i in tabitem">{{i.name}}</li>',
             link:function (scope, element, attrs) {
                 /*绑定事件*/
                 element.on('click','li',function (e) {
-                    $(this).addClass('tabactive').siblings().removeClass('tabactive');
+                    var $this=$(this),
+                        type=$this.attr('data-type');
+
+                    $this.addClass('tabactive').siblings().removeClass('tabactive');
+                    if(type && type!==''){
+                        scope.$parent[attrs.ctrlname][attrs.action](type);
+                    }
                 });
             }
         };
@@ -115,7 +132,7 @@ angular.module('ui.commonitem',[])
             link:function (scope, element, attrs) {
                 element.on('click','li',function () {
                     var type=$(this).attr('data-type');
-                    scope.$parent[attrs.ctrlname].addRole(type);
+                    scope.$parent[attrs.ctrlname][attrs.action](type);
                 });
             },
             template:'<li ng-show="{{i.power}}" data-type="{{i.type}}" ng-repeat="i in btnitem">\
@@ -139,5 +156,5 @@ angular.module('ui.commonitem',[])
                           </li>\
                         </ul>'
         };
-    })
+    });
    

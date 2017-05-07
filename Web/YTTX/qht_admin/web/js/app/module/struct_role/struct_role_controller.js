@@ -267,11 +267,13 @@ angular.module('app')
         this.tabitem=[{
             name:'运营架构',
             href:'struct',
+            type:'',
             power:self.powerlist.structadd,
             active:''
         },{
             name:'角色',
             href:'role',
+            type:'',
             power:self.powerlist.roleadd,
             active:'tabactive'
         }];

@@ -42,8 +42,7 @@ angular.module('app')
                 }
             }
         }*/
-     }]).config(
-    ['$stateProvider', '$urlRouterProvider',
+     }]).config(['$stateProvider', '$urlRouterProvider',
         function ($stateProvider, $urlRouterProvider) {
             /*异常路径路由到主页*/
             $urlRouterProvider.otherwise('app');
@@ -83,6 +82,18 @@ angular.module('app')
                     views:{
                         'container':{
                             templateUrl:'tpl/struct.html'
+                        },
+                        'support':{
+                            templateUrl: 'tpl/common/support_tip.html'
+                        },
+                        'login':{
+                            templateUrl: 'tpl/login.html'
+                        },
+                        'loading':{
+                            templateUrl: 'tpl/common/load.html'
+                        },
+                        'nologin':{
+                            templateUrl: 'tpl/common/support_login.html'
                         }
                     },
                     resolve: {
@@ -106,6 +117,18 @@ angular.module('app')
                     views:{
                         'container':{
                             templateUrl:'tpl/struct_role.html'
+                        },
+                        'support':{
+                            templateUrl: 'tpl/common/support_tip.html'
+                        },
+                        'login':{
+                            templateUrl: 'tpl/login.html'
+                        },
+                        'loading':{
+                            templateUrl: 'tpl/common/load.html'
+                        },
+                        'nologin':{
+                            templateUrl: 'tpl/common/support_login.html'
                         }
                     },
                     resolve: {
@@ -128,8 +151,8 @@ angular.module('app')
                     views:{
                         'container':{
                             templateUrl:'tpl/order.html'
-                        }
-                        /*'support':{
+                        },
+                        'support':{
                             templateUrl: 'tpl/common/support_tip.html'
                         },
                         'login':{
@@ -140,7 +163,7 @@ angular.module('app')
                         },
                         'nologin':{
                             templateUrl: 'tpl/common/support_login.html'
-                        }*/
+                        }
                     },
                     resolve: {
                         /*延迟加载，依赖相关组件*/
@@ -165,6 +188,18 @@ angular.module('app')
                     views:{
                         'container':{
                             templateUrl:'tpl/finance.html'
+                        },
+                        'support':{
+                            templateUrl: 'tpl/common/support_tip.html'
+                        },
+                        'login':{
+                            templateUrl: 'tpl/login.html'
+                        },
+                        'loading':{
+                            templateUrl: 'tpl/common/load.html'
+                        },
+                        'nologin':{
+                            templateUrl: 'tpl/common/support_login.html'
                         }
                     },
                     resolve: {
@@ -190,6 +225,18 @@ angular.module('app')
                     views:{
                         'container':{
                             templateUrl:'tpl/equipment.html'
+                        },
+                        'support':{
+                            templateUrl: 'tpl/common/support_tip.html'
+                        },
+                        'login':{
+                            templateUrl: 'tpl/login.html'
+                        },
+                        'loading':{
+                            templateUrl: 'tpl/common/load.html'
+                        },
+                        'nologin':{
+                            templateUrl: 'tpl/common/support_login.html'
                         }
                     },
                     resolve: {
@@ -215,6 +262,18 @@ angular.module('app')
                     views:{
                         'container':{
                             templateUrl:'tpl/setting.html'
+                        },
+                        'support':{
+                            templateUrl: 'tpl/common/support_tip.html'
+                        },
+                        'login':{
+                            templateUrl: 'tpl/login.html'
+                        },
+                        'loading':{
+                            templateUrl: 'tpl/common/load.html'
+                        },
+                        'nologin':{
+                            templateUrl: 'tpl/common/support_login.html'
                         }
                     },
                     resolve: {
