@@ -43,6 +43,8 @@ angular.module('app')
         /*模型--操作记录*/
         this.record={
             theme:'profit',
+            area:'count',
+            type:'1',
             filter1:'',
             filter2:'',
             filter3:'',
@@ -134,7 +136,7 @@ angular.module('app')
                                         temp_param['page']=self.table.list1_page.page;
                                         temp_param['pageSize']=self.table.list1_page.pageSize;
                                         self.table.list1_config.config.ajax.data=temp_param;
-                                        financeService.getColumnData(self.table,self.record);
+                                        financeService.getColumnData(self.table,self.record,'one');
                                     }
                                 });
 
@@ -266,7 +268,7 @@ angular.module('app')
                                         temp_param['page']=self.table.list2_page.page;
                                         temp_param['pageSize']=self.table.list2_page.pageSize;
                                         self.table.list2_config.config.ajax.data=temp_param;
-                                        financeService.getColumnData(self.table,self.record);
+                                        financeService.getColumnData(self.table,self.record,'two');
                                     }
                                 });
 
@@ -398,7 +400,7 @@ angular.module('app')
                                         temp_param['page']=self.table.list3_page.page;
                                         temp_param['pageSize']=self.table.list3_page.pageSize;
                                         self.table.list3_config.config.ajax.data=temp_param;
-                                        financeService.getColumnData(self.table,self.record);
+                                        financeService.getColumnData(self.table,self.record,'three');
                                     }
                                 });
 
@@ -479,7 +481,7 @@ angular.module('app')
                     autoWidth:true,/*是否*/
                     paging:false,
                     ajax:{
-                        url:toolUtil.adaptReqUrl('/finance/profit/stats/list'),
+                        url:toolUtil.adaptReqUrl('/finance/profit/clear/history'),
                         dataType:'JSON',
                         method:'post',
                         dataSrc:function ( json ) {
@@ -530,7 +532,7 @@ angular.module('app')
                                         temp_param['page']=self.table.list4_page.page;
                                         temp_param['pageSize']=self.table.list4_page.pageSize;
                                         self.table.list4_config.config.ajax.data=temp_param;
-                                        financeService.getColumnData(self.table,self.record);
+                                        financeService.getColumnData(self.table,self.record,'four');
                                     }
                                 });
 
@@ -786,6 +788,12 @@ angular.module('app')
         /*查询列表*/
         this.queryFinance=function (type) {
             financeService.getColumnData(self.table,self.record,type);
+        };
+        
+        
+        /*查询服务--切换类型*/
+        this.changeType=function () {
+          console.log(self.record.type);
         };
 
 

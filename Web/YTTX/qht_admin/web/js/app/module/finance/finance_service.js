@@ -270,7 +270,7 @@ angular.module('app')
                     config.record.currentId=id;
                     config.record.currentName=cache.loginMap.username;
                     /*查询货物*/
-                    self.queryIMEI(id);
+                    //self.queryIMEI(id);
                     if(config.table && config.table.list_table===null && config.record){
                         self.getColumnData(config.table,config.record);
                     }
