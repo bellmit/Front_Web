@@ -1,27 +1,28 @@
 /*应用程序初始化配置*/
-var app = angular.module('app')
-  /*.config(
-    ['$controllerProvider', '$compileProvider', '$filterProvider', '$provide',
-    function ($controllerProvider,   $compileProvider,   $filterProvider,   $provide) {
-        
-        // lazy controller, directive and service
-        app.controller = $controllerProvider.register;
-        app.directive  = $compileProvider.directive;
-        app.filter     = $filterProvider.register;
-        app.factory    = $provide.factory;
-        app.service    = $provide.service;
-        app.constant   = $provide.constant;
-        app.value      = $provide.value;
-    }
-  ])*/
-  /*.config(['$translateProvider', function($translateProvider){
-    /!*注册加载静态模块，根据地址价值不同的模块*!/
-    $translateProvider.useStaticFilesLoader({
-      prefix: 'l10n/',
-      suffix: '.js'
-    });
-    //设置模块默认语言
-    $translateProvider.preferredLanguage('en');
-    //设置模块语言本地化
-    $translateProvider.useLocalStorage();
-  }])*/;
+var yy_app=angular.module('app')
+        .constant('BASE_CONFIG',{
+        unique_key:'yy_admin_unique_key',
+        basedomain:'http://10.0.5.226:8080'
+        /*
+            test:http://10.0.5.226:8080
+            debug:http://10.0.5.222:8080
+        */,
+        debug:false,
+        baseproject:'/bms-bzwyys-api',
+        loadingdom:'struct_layout_loading',
+        nologindom:'struct_layout_nologin',
+        nologintipdom:'struct_goto_login',
+        loginoutdom:'struct_layout_loginout',
+        submenulimit:6
+    })
+    .config(['$controllerProvider', '$compileProvider', '$filterProvider', '$provide',
+        function ($controllerProvider,   $compileProvider,   $filterProvider,   $provide) {
+            yy_app.controller = $controllerProvider.register;
+            yy_app.directive  = $compileProvider.directive;
+            yy_app.filter     = $filterProvider.register;
+            yy_app.factory    = $provide.factory;
+            yy_app.service    = $provide.service;
+            yy_app.constant   = $provide.constant;
+            yy_app.value      = $provide.value;
+        }
+    ]);
