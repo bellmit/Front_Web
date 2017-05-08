@@ -3,15 +3,14 @@
 angular.module('power.service',[])
 	.service('powerService',['toolUtil','toolDialog','BASE_CONFIG','loginService','$sce',function (toolUtil,toolDialog,BASE_CONFIG,loginService,$sce) {
 		/*获取缓存数据*/
-		var cache=loginService.getCache(),
+		var self=this,
+			cache=loginService.getCache(),
 			powerCache=$.extend(true,{},cache['powerMap']),
-			self=this,
 			h_items=[],
 			h_len=0,
 			colgroup=''/*分组*/,
 			thead=''/*普通的头*/,
-			all_thead=''/*拥有全选的头*/,
-			$admin_struct_allpower=$('#admin_struct_allpower');
+			all_thead=''/*拥有全选的头*/;
 
 		/*初始化执行*/
 		(function () {
@@ -59,6 +58,16 @@ angular.module('power.service',[])
 				colgroup='<col class="g-w-percent50" />';
 			}
 		}());
+
+		/*扩展服务--初始化jquery dom节点*/
+		this.initJQDom=function (dom) {
+			if(dom){
+				/*复制dom引用*/
+				for(var i in dom){
+					self[i]=dom[i];
+				}
+			}
+		};
 
 		/*生成头部和分组*/
 		this.createThead=function (config,mode) {
@@ -328,7 +337,7 @@ angular.module('power.service',[])
 
 			check=$selectall.is(':checked');
 			index=$selectall.attr('data-index');
-			$operate=$admin_struct_allpower.find('td').eq(index).find('input');
+			$operate=self.$admin_struct_allpower.find('td').eq(index).find('input');
 
 			if(check){
 				$operate.each(function () {
@@ -411,7 +420,7 @@ angular.module('power.service',[])
 
 		/*权限服务--获取选中选择权限*/
 		this.getSelectPower=function (dom) {
-			var $input=typeof dom!=='undefined'?$(dom):$admin_struct_allpower.find('input:checked');
+			var $input=typeof dom!=='undefined'?$(dom):self.$admin_struct_allpower.find('input:checked');
 
 			/*标签*/
 			var prid,
@@ -433,9 +442,9 @@ angular.module('power.service',[])
 			if(typeof dom!=='undefined'){
 				$input=$(dom);
 			}else{
-				$input=$admin_struct_allpower.find('input:checked');
+				$input=self.$admin_struct_allpower.find('input:checked');
 			}
-			$head=$admin_struct_allpower.prev('thead').find('input:checked');
+			$head=self.$admin_struct_allpower.prev('thead').find('input:checked');
 
 			$input.each(function () {
 				$(this).prop({

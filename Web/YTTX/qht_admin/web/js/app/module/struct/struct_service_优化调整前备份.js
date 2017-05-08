@@ -72,7 +72,7 @@ angular.module('app')
 
                 param['isShowSelf']=0;
                 if(config.search!==''){
-                    param['fullName']=config.search;
+                    param['orgname']=config.search;
                 }
 
                 if(typeof config.type!=='undefined' && config.type==='search'){

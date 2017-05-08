@@ -24,12 +24,8 @@ angular.module('app')
             $admin_struct_colgroup:$('#admin_struct_colgroup'),
             $admin_struct_checkall:$('#admin_struct_checkall')
         };
-        var jq_dom_power={
-            $admin_struct_allpower:$('#admin_struct_allpower')
-        };
         /*切换路由时更新dom缓存*/
         structService.initJQDom(jq_dom);
-        powerService.initJQDom(jq_dom_power);
 
 
         /*模型--权限*/
@@ -54,7 +50,7 @@ angular.module('app')
                     autoWidth:true,/*是否*/
                     paging:false,
                     ajax:{
-                        url:toolUtil.adaptReqUrl('/organization/shops'),
+                        url:toolUtil.adaptReqUrl('/organization/users'),
                         dataType:'JSON',
                         method:'post',
                         dataSrc:function ( json ) {
@@ -371,14 +367,6 @@ angular.module('app')
             machineCode:''/*机器码*/,
             remark:''/*备注*/,
             roleId:''/*角色id*/
-        };
-
-        /*模型--操作记录*/
-        this.record={
-            searchactive:''/*搜索激活状态,激活态为：search-content-active，未激活为空，默认为空*/,
-            searchname:''/*搜索关键词*/,
-            prev:null,
-            current:null
         };
         
 
