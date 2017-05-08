@@ -60,6 +60,16 @@ angular.module('power.service',[])
 			}
 		}());
 
+		/*扩展服务--初始化jquery dom节点*/
+		this.initJQDom=function (dom) {
+			if(dom){
+				/*复制dom引用*/
+				for(var i in dom){
+					self[i]=dom[i];
+				}
+			}
+		};
+
 		/*生成头部和分组*/
 		this.createThead=function (config,mode) {
 			/*flag:是否有全选*/

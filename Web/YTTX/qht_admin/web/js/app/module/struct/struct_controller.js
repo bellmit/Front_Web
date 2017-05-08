@@ -24,8 +24,12 @@ angular.module('app')
             $admin_struct_colgroup:$('#admin_struct_colgroup'),
             $admin_struct_checkall:$('#admin_struct_checkall')
         };
+        var jq_dom_power={
+            $admin_struct_allpower:$('#admin_struct_allpower')
+        };
         /*切换路由时更新dom缓存*/
         structService.initJQDom(jq_dom);
+        powerService.initJQDom(jq_dom_power);
 
 
         /*模型--权限*/
