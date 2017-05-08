@@ -72,7 +72,7 @@ angular.module('app')
 
                 param['isShowSelf']=0;
                 if(config.search!==''){
-                    param['fullName']=config.search;
+                    param['orgname']=config.search;
                 }
 
                 if(typeof config.type!=='undefined' && config.type==='search'){
@@ -168,7 +168,7 @@ angular.module('app')
                                                     self.initOperate({
                                                         data:'',
                                                         id:id,
-                                                        orgname:config.$reqstate.attr('data-label'),
+                                                        orgname:config.$reqstate.html(),
                                                         $wrap:self.$admin_struct_list,
                                                         setting:config.setting,
                                                         table:config.table
@@ -310,30 +310,10 @@ angular.module('app')
 
 
             if(flag){
-                str='<li><a data-isrequest="false" data-parentid="'+parentid+'" data-label="'+label+'" data-layer="'+layer+'" data-id="'+id+'" class="sub-menu-title" href="#" title="">'+label+'</a>';
+                str='<li><a data-isrequest="false" data-parentid="'+parentid+'" data-layer="'+layer+'" data-id="'+id+'" class="sub-menu-title" href="#" title="">'+label+'</a>';
             }else{
-                str='<li><a data-parentid="'+parentid+'"  data-label="'+label+'"  data-layer="'+layer+'" data-id="'+id+'" href="#" title="">'+label+'</a></li>';
+                str='<li><a data-parentid="'+parentid+'"  data-layer="'+layer+'" data-id="'+id+'" href="#" title="">'+label+'</a></li>';
             }
-
-            /*
-            to do
-
-            可能需要判断权限操作
-            */
-            /*if(goodstypeedit_power){
-                str+='<span data-parentid="'+parentid+'"  data-action="edit" data-gtcode="'+gtCode+'" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
-							<i class="fa-pencil"></i>&nbsp;&nbsp;编辑\
-						</span>';
-
-                /!*编辑状态*!/
-                stredit+='<span data-parentid="'+parentid+'"  data-action="confirm"  data-gtcode="'+gtCode+'" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-bs-success">\
-									<i class="fa-check"></i>&nbsp;&nbsp;确定\
-								</span>\
-								<span data-action="cance"  data-gtcode="'+gtCode+'" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray10">\
-									<i class="fa-close"></i>&nbsp;&nbsp;取消\
-								</span>';
-            }*/
-
             return str;
         };
         /*导航服务--校验导航--校验导航服务的正确性*/
@@ -349,6 +329,201 @@ angular.module('app')
                 return false;
             }
             return true;
+        };
+        /*导航服务--显示隐藏菜单*/
+        this.toggleSubMenu=function (e,config) {
+            /*阻止冒泡和默认行为*/
+            e.preventDefault();
+            e.stopPropagation();
+
+            /*过滤对象*/
+            var target=e.target,
+                node=target.nodeName.toLowerCase();
+            if(node==='ul'||node==='li'){
+                return false;
+            }
+
+            var $this=$(target),
+                haschild=$this.hasClass('sub-menu-title'),
+                $child,
+                isrequest=false,
+                temp_layer,
+                temp_id,
+                islayer;
+
+
+            temp_layer=$this.attr('data-layer');
+            temp_id=$this.attr('data-id');
+
+
+            /*模型缓存*/
+            var record=config.record,
+                edit=config.edit,
+                setting=config.setting,
+                table=config.table;
+
+            /*变更操作记录模型--激活高亮*/
+            if(record.current===null){
+                record.current=$this;
+            }else{
+                record.prev=record.current;
+                record.current=$this;
+                record.prev.removeClass('sub-menuactive');
+            }
+            record.current.addClass('sub-menuactive');
+            /*变更模型*/
+            record.layer=temp_layer;
+
+            edit.layer=temp_layer;
+            edit.id=temp_id;
+            edit.editstate=true;
+            edit.orgname=$this.html();
+
+            /*查询子集*/
+            if(haschild){
+                $child=$this.next();
+                if($child.hasClass('g-d-showi')){
+                    /*隐藏*/
+                    $child.removeClass('g-d-showi');
+                    $this.removeClass('sub-menu-titleactive');
+                    /*是否已经加载过数据*/
+                    isrequest=$this.attr('data-isrequest');
+                    if(isrequest==='true'){
+                        /*清空隐藏节点数据*/
+                        self.initOperate({
+                            data:'',
+                            id:temp_id,
+                            setting:setting,
+                            table:table
+                        });
+                    }
+                }else{
+                    /*显示*/
+                    isrequest=$this.attr('data-isrequest');
+                    if(isrequest==='false'){
+                        /*重新加载*/
+                        /*获取非根目录数据*/
+                        self.getMenuList({
+                            search:record.searchname,
+                            $reqstate:$this,
+                            setting:setting,
+                            table:table
+                        });
+                    }else if(isrequest==='true'){
+                        /*已加载的直接遍历存入操作区域*/
+                        if(haschild){
+                            var data=$child.find('>li >a'),
+                                list=[],
+                                len=data.size();
+                            if(len!==0){
+                                /*有数据节点*/
+                                data.each(function () {
+                                    var citem=$(this),
+                                        orgname=citem.html(),
+                                        id=citem.attr('data-id');
+                                    list.push({
+                                        orgname:orgname,
+                                        id:id
+                                    });
+                                });
+                                self.initOperate({
+                                    data:list,
+                                    layer:temp_layer,
+                                    id:temp_id,
+                                    setting:setting,
+                                    table:table
+                                });
+                            }else{
+                                /*无数据节点*/
+                                temp_layer=$this.attr('layer');
+                                islayer=self.validSubMenuLayer(temp_layer);
+                                if(islayer){
+                                    /*其他节点*/
+                                    self.initOperate({
+                                        data:'',
+                                        id:temp_id,
+                                        setting:setting,
+                                        table:table
+                                    });
+                                }else{
+                                    /*错误节点*/
+                                    self.initOperate({
+                                        data:null,
+                                        setting:setting,
+                                        table:table
+                                    });
+                                }
+                            }
+                        }
+                    }
+                    $child.addClass('g-d-showi');
+                    $this.addClass('sub-menu-titleactive');
+                }
+            }else{
+                /*没有子节点，同时节点层次未达到极限值*/
+                temp_layer=$this.attr('data-layer');
+                islayer=self.validSubMenuLayer(temp_layer);
+                if(islayer){
+                    /*其他节点*/
+                    self.initOperate({
+                        data:'',
+                        id:temp_id,
+                        setting:setting,
+                        table:table
+                    });
+                }else{
+                    /*错误节点*/
+                    self.initOperate({
+                        data:null,
+                        setting:setting,
+                        table:table
+                    });
+                }
+            }
+        };
+        /*导航服务--跳转虚拟挂载点*/
+        this.rootSubMenu=function (e,config) {
+            var $this=$(e.target),
+                $child=$this.next();
+
+            var data=$child.find('>li >a'),
+                list=[],
+                len=data.size();
+            if(len!==0){
+                data.each(function () {
+                    var citem=$(this),
+                        orgname=citem.html(),
+                        id=citem.attr('data-id');
+                    list.push({
+                        orgname:orgname,
+                        id:id
+                    });
+                });
+                self.initOperate({
+                    data:list,
+                    layer:0,
+                    id:config.root.id,
+                    orgname:config.root.orgname,
+                    setting:config.setting,
+                    table:config.table
+                });
+            }
+
+            /*清除高亮模型*/
+            if(config.record.prev!==null){
+                config.record.prev.removeClass('sub-menuactive');
+                config.record.prev=null;
+            }
+            if(config.record.current!==null){
+                config.record.current.removeClass('sub-menuactive');
+                config.record.current=null;
+            }
+
+            /*更新编辑模型*/
+            config.edit.editstate=false;
+            config.edit.id=config.root.id;
+            config.edit.layer=0;
+            config.edit.orgname=config.root.orgname;
         };
 
 
@@ -805,6 +980,59 @@ angular.module('app')
                             console.log('请求机构失败');
                         }
                     });
+        };
+        /*机构设置--查询机构数据*/
+        this.toggleStructList=function (e,config) {
+            e.preventDefault();
+
+            var target=e.target,
+                node=target.nodeName.toLowerCase(),
+                isreload=true;
+            if(node==='span'){
+                var $span=$(target),
+                    $item=$span.parent(),
+                    $ul,
+                    haschild='',
+                    isrequest=false;
+
+                /*数据状态*/
+                isreload=$item.hasClass('ts-reload');
+                if(isreload){
+                    var id=$span.attr('data-id'),
+                        layer=$item.attr('data-layer');
+                    /*显示*/
+                    isrequest=$span.attr('data-isrequest');
+                    if(isrequest==='false'){
+                        /*重新加载*/
+                        $ul=$item.find('ul');
+                        /*获取非根目录数据*/
+                        self.getOperateList({
+                            search:config.record.searchname,
+                            $reqstate:$span,
+                            $li:$item,
+                            layer:layer,
+                            id:id,
+                            $wrap:$ul,
+                            table:config.table
+                        });
+                    }
+                }else{
+                    haschild=$item.hasClass('ts-child');
+                    if(haschild){
+                        if($item.hasClass('ts-active')){
+                            /*隐藏*/
+                            $item.removeClass('ts-active');
+                        }else{
+                            /*显示*/
+                            $item.addClass('ts-active');
+                        }
+                    }
+                }
+                return false;
+            }else if(node==='li'){
+                var $li=$(target);
+                self.setStructPos($li,config.structpos,config.setting);
+            }
         };
 
 
@@ -1350,7 +1578,7 @@ angular.module('app')
                                     /*操作成功即加载数据*/
                                     /*重新加载侧边栏数据*/
                                     self.getMenuList({
-                                        search:search.orgname,
+                                        search:search.searchname,
                                         setting:setting
                                     });
                                     /*重置表单*/
