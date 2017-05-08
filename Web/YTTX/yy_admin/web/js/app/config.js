@@ -2,10 +2,10 @@
 var yy_app=angular.module('app')
         .constant('BASE_CONFIG',{
         unique_key:'yy_admin_unique_key',
-        basedomain:'http://10.0.5.226:8080'
+        basedomain:'http://10.0.5.226:8082'
         /*
-            test:http://10.0.5.226:8080
-            debug:http://10.0.5.222:8080
+            test:http://10.0.5.226:8082
+            debug:http://10.0.5.222:8082
         */,
         debug:false,
         baseproject:'/bms-bzwyys-api',

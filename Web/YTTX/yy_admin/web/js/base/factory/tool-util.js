@@ -2,7 +2,7 @@
 (function($){
 	'use strict';
 	angular.module('tool.util',[]).factory('toolUtil',['$http','$q','$httpParamSerializerJQLike','BASE_CONFIG','$state',function ($http,$q,$httpParamSerializerJQLike,BASE_CONFIG,$state) {
-		var system_unique_key=BASE_CONFIG.unique_key||'qht_admin_unique_key',
+		var system_unique_key=BASE_CONFIG.unique_key||'yy_admin_unique_key',
 			tools={};
 		/*本地存储*/
 		//缓存对象
@@ -36,8 +36,6 @@
 				key=config.key,
 				cache=config.cache,
 				value='';
-
-			//console.log(cache);
 
 			if(type==='set'){
 				value=config.value;
