@@ -477,6 +477,7 @@ angular.module('app')
             record.layer=0;
             record.organizationId=record.currentId;
             record.organizationName=record.currentName;
+            record.settingId='';
             if(record.prev!==null){
                 record.prev.removeClass('sub-menuactive');
                 record.current.removeClass('sub-menuactive');

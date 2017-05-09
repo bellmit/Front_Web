@@ -19,13 +19,13 @@ angular.module('app')
             $admin_userdetail_show:$('#admin_userdetail_show'),
             $admin_page_wrap:$('#admin_page_wrap'),
             $admin_list_wrap:$('#admin_list_wrap'),
-            $admin_struct_batchlist:$('#admin_struct_batchlist'),
-            $admin_struct_checkcolumn:$('#admin_struct_checkcolumn'),
-            $admin_struct_colgroup:$('#admin_struct_colgroup'),
+            $admin_batchlist_wrap:$('#admin_batchlist_wrap'),
+            $admin_table_checkcolumn:$('#admin_table_checkcolumn'),
+            $admin_table_colgroup:$('#admin_table_colgroup'),
             $admin_struct_checkall:$('#admin_struct_checkall')
         };
         jq_dom['$admin_submenu_wrap']=jq_dom.$admin_struct_submenu.prev();
-        
+
         var jq_dom_power={
             $admin_struct_allpower:$('#admin_struct_allpower')
         };
@@ -66,11 +66,64 @@ angular.module('app')
             currentName:''/*虚拟挂载点*/,
             organizationId:''/*操作id*/,
             organizationName:''/*操作名称*/,
+            settingId:''/*机构设置Id*/,
             layer:0/*操作层*/
         };
 
 
+        /*模型--机构数据*/
+        this.struct={
+            type:'add'/*表单类型：新增，编辑；默认为新增*/,
+            orgname:''/*机构名称*/,
+            comname:''/*公司名称*/,
+            linkman:''/*负责人*/,
+            cellphone:''/*手机号码*/,
+            address:''/*联系地址*/,
+            operatingArea:''/*运营地区*/,
+            remark:''/*备注*/,
+            isSettingLogin:''/*是否设置登陆名及密码1 :是*/,
+            username:''/*设置登录名*/,
+            password:''/*设置登录密码*/,
+            isDesignatedPermit:''/*是否指定权限,1:指定*/,
+            checkedFunctionIds:''/*选中权限Ids*/,
+            sysUserId:''/*编辑时相关参数*/,
+            id:''/*编辑时相关参数*/,
+            parentId:''/*编辑时相关参数*/
+        };
 
+
+        /*模型--用户*/
+        this.user={
+            type:'add'/*表单类型：新增，编辑；默认为新增*/,
+            filter:''/*表格过滤关键词*/,
+            id:''/*用户ID*/,
+            nickName:''/*姓名*/,
+            phone:''/*手机号码*/,
+            address:''/*地址*/,
+            mainFee:''/*费率*/,
+            machineCode:''/*机器码*/,
+            remark:''/*备注*/,
+            roleId:''/*角色id*/
+        };
+
+
+        /*模型--调整位置*/
+        this.structpos={
+            up:{
+                id:'',
+                $node:null,
+                active:'',
+                layer:'',
+                parentid:''
+            },
+            down:{
+                id:'',
+                $node:null,
+                active:'',
+                layer:'',
+                parentid:''
+            }
+        };
 
 
         /*模型--表格缓存*/
