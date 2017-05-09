@@ -124,7 +124,17 @@
                             <div class="admin-search-wrap">
                                 <div class="admin-search-item">
                                     <label>商品名称：</label>
-                                    <input type="text" id="search_keyword">
+                                    <input type="text" id="search_name">
+                                </div>
+                                <div class="admin-search-item">
+                                    <label>状态：</label>
+                                    <select id="search_status">
+                                        <option selected value="">全部</option>
+                                        <option value="0">仓库</option>
+                                        <option value="1">上架</option>
+                                        <option value="2">下架</option>
+                                        <option value="3">删除</option>
+                                    </select>
                                 </div>
                                 <div class="admin-search-item">
                                     <span id="admin_search_btn" class="btn btn-info btn-icon g-br2">

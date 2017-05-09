@@ -59,10 +59,12 @@ angular.module('app')
             searchname:''/*搜索关键词*/,
             prev:null/*上一次操作记录*/,
             current:null/*当前操作记录*/,
+            hasdata:false/*下级是否有数据,或者是否查询到数据*/,
             currentId:''/*虚拟挂载点*/,
             currentName:''/*虚拟挂载点*/,
             organizationId:''/*操作id*/,
-            organizationName:''/*操作名称*/
+            organizationName:''/*操作名称*/,
+            layer:0/*操作层*/
         };
 
 
@@ -314,6 +316,46 @@ angular.module('app')
         powerService.createThead({
             flag:true
         },self.power);
+
+        /*菜单服务--初始化请求菜单*/
+        this.initSubMenu=function () {
+          structService.getMenuList({
+              record:self.record,
+              table:self.table
+          });
+        };
+        /*菜单服务--子菜单展开*/
+        this.toggleSubMenu=function (e) {
+            structService.toggleSubMenu(e,{
+                record:self.record,
+                table:self.table
+            });
+        };
+        /*菜单服务--跳转至虚拟挂载点*/
+        this.rootSubMenu=function (e) {
+           structService.rootSubMenu(e,{
+               record:self.record,
+               table:self.table
+           });
+        };
+
+
+
+
+
+        /*搜索服务--搜索过滤*/
+        this.searchAction=function () {
+            structService.getMenuList({
+                record:self.record,
+                table:self.table
+            });
+        };
+        /*搜索服务--清空过滤条件*/
+        this.searchClear=function () {
+            self.record.searchname='';
+            self.record.searchactive='';
+        };
+
         
 
     }]);

@@ -75,47 +75,45 @@ angular.module('app')
         /*导航服务--获取导航*/
         this.getMenuList=function (config) {
             if(cache){
-                var param=$.extend(true,{},cache.loginMap.param);
-
-                param['isShowSelf']=0;
-                if(config.search!==''){
-                    param['orgname']=config.search;
+                if(config.record.organizationId==='' || typeof config.record.organizationId==='undefined'){
+                    return false;
                 }
 
-                if(typeof config.type!=='undefined' && config.type==='search'){
-                    /*检索则清空查询内容*/
-                    self.$admin_struct_submenu.html('');
-                    self.$admin_struct_list.html('');
+                var record=config.record,
+                    param=$.extend(true,{},cache.loginMap.param);
+
+                /*判断是否为搜索模式*/
+                if(config.record.searchname!==''){
+                    self.initRecord(config.record);
+                    param['fullName']=record.searchname;
                 }
 
-                var layer,
-                    id,
+                var layer=record.layer,
+                    id=record.organizationId,
                     $wrap;
 
+                param['isShowSelf']=0;
+                param['organizationId']=id;
+
+
                 /*初始化加载*/
-                if(typeof config.$reqstate==='undefined'){
-                    layer=0;
+                if(record.current===null){
                     /*根目录则获取新配置参数*/
-                    id=param['organizationId'];
                     $wrap=self.$admin_struct_submenu;
                 }else{
                     /*非根目录则获取新请求参数*/
-                    layer=config.$reqstate.attr('data-layer');
-                    $wrap=config.$reqstate.next();
-                    id=config.$reqstate.attr('data-id');
-
+                    $wrap=record.current.next();
                     /*判断是否是合法的节点*/
                     if(layer>=BASE_CONFIG.submenulimit){
                         /*遇到极限节点，不查询数据*/
-                        self.initOperate({
+                        /*self.initOperate({
                             data:null,
                             $wrap:self.$admin_struct_list,
                             setting:config.setting,
                             table:config.table
-                        });
+                        });*/
                         return false;
                     }
-                    param['organizationId']=id;
                 }
 
 
@@ -134,7 +132,7 @@ angular.module('app')
                                 var code=parseInt(data.code,10),
                                     message=data.message;
                                 if(code!==0){
-                                    if(typeof message !=='undefined'&&message!==''){
+                                    if(typeof message !=='undefined' && message!==''){
                                         console.log(message);
                                     }
 
@@ -155,31 +153,15 @@ angular.module('app')
                                         if(list){
                                             var len=list.length;
                                             if(len===0){
+                                                record.hasdata=false;
                                                 if(layer===0){
                                                     $wrap.html('<li><a>暂无数据</a></li>');
-                                                    /*填充子数据到操作区域,同时显示相关操作按钮*/
-                                                    self.initOperate({
-                                                        data:'',
-                                                        id:id,
-                                                        $wrap:self.$admin_struct_list,
-                                                        setting:config.setting,
-                                                        table:config.table
-                                                    });
                                                 }else{
                                                     $wrap.html('');
                                                     /*清除显示下级菜单导航图标*/
-                                                    config.$reqstate.attr({
+                                                    record.current.attr({
                                                         'data-isrequest':true
                                                     }).removeClass('sub-menu-title sub-menu-titleactive');
-                                                    /*填充子数据到操作区域,同时显示相关操作按钮*/
-                                                    self.initOperate({
-                                                        data:'',
-                                                        id:id,
-                                                        orgname:config.$reqstate.html(),
-                                                        $wrap:self.$admin_struct_list,
-                                                        setting:config.setting,
-                                                        table:config.table
-                                                    });
                                                 }
                                             }else{
                                                 /*数据集合，最多嵌套层次*/
@@ -188,44 +170,25 @@ angular.module('app')
                                                     id:id
                                                 });
                                                 if(str!==''){
+                                                    record.hasdata=true;
                                                     $(str).appendTo($wrap.html(''));
+                                                }else{
+                                                    record.hasdata=false;
                                                 }
                                                 if(layer!==0){
-                                                    config.$reqstate.attr({
+                                                    record.current.attr({
                                                         'data-isrequest':true
                                                     });
                                                 }
-
-                                                /*填充子数据到操作区域,同时显示相关操作按钮*/
-                                                self.initOperate({
-                                                    data:list,
-                                                    $wrap:self.$admin_struct_list,
-                                                    id:id,
-                                                    layer:layer,
-                                                    setting:config.setting,
-                                                    table:config.table
-                                                });
                                             }
                                         }else{
-                                            /*填充子数据到操作区域,同时显示相关操作按钮*/
-                                            self.initOperate({
-                                                data:null,
-                                                $wrap:self.$admin_struct_list,
-                                                setting:config.setting,
-                                                table:config.table
-                                            });
+                                            record.hasdata=false;
                                         }
                                     }else{
                                         if(layer===0){
                                             $wrap.html('<li><a>暂无数据</a></li>');
                                         }
-                                        /*填充子数据到操作区域,同时显示相关操作按钮*/
-                                        self.initOperate({
-                                            data:null,
-                                            $wrap:self.$admin_struct_list,
-                                            setting:config.setting,
-                                            table:config.table
-                                        });
+                                        record.hasdata=false;
                                     }
                                 }
                             }
@@ -238,15 +201,9 @@ angular.module('app')
                                 console.log('请求菜单失败');
                             }
                             if(layer===0){
+                                record.hasdata=false;
                                 $wrap.html('<li><a>暂无数据</a></li>');
                             }
-                            /*填充子数据到操作区域,同时显示相关操作按钮*/
-                            self.initOperate({
-                                data:null,
-                                $wrap:self.$admin_struct_list,
-                                setting:config.setting,
-                                table:config.table
-                            });
                         });
             }else{
                 /*退出系统*/
@@ -273,12 +230,6 @@ angular.module('app')
 
             layer++;
 
-            if(limit>=1&&layer>limit){
-                /*如果层级达到设置的极限清除相关*/
-                return false;
-            }
-
-
 
             if(len!==0){
                 for(i;i<len;i++){
@@ -289,31 +240,31 @@ angular.module('app')
                                 flag:false,
                                 limit:limit,
                                 layer:layer,
-                                parentid:config.id
+                                id:config.id
                             })+'</li>';
                     }else{
                         str+=self.doItemMenuList(curitem,{
                                 flag:true,
                                 limit:limit,
                                 layer:layer,
-                                parentid:config.id
+                                id:config.id
                             })+'<ul></ul></li>';
                     }
                 }
                 return str;
             }else{
-                return false;
+                return '';
             }
         };
         /*导航服务--解析导航--公共解析*/
         this.doItemMenuList=function (obj,config) {
             var curitem=obj,
                 id=curitem["id"],
-                label=curitem["orgname"],
+                label=curitem["fullName"]||'',
                 str='',
                 flag=config.flag,
                 layer=config.layer,
-                parentid=config.parentid;
+                parentid=config.id;
 
 
             if(flag){
@@ -356,18 +307,16 @@ angular.module('app')
                 isrequest=false,
                 temp_layer,
                 temp_id,
-                islayer;
+                temp_label;
 
 
             temp_layer=$this.attr('data-layer');
             temp_id=$this.attr('data-id');
+            temp_label=$this.html();
 
 
             /*模型缓存*/
-            var record=config.record,
-                edit=config.edit,
-                setting=config.setting,
-                table=config.table;
+            var record=config.record;
 
             /*变更操作记录模型--激活高亮*/
             if(record.current===null){
@@ -378,13 +327,11 @@ angular.module('app')
                 record.prev.removeClass('sub-menuactive');
             }
             record.current.addClass('sub-menuactive');
+
             /*变更模型*/
             record.layer=temp_layer;
-
-            edit.layer=temp_layer;
-            edit.id=temp_id;
-            edit.editstate=true;
-            edit.orgname=$this.html();
+            record.organizationId=temp_id;
+            record.organizationName=temp_label;
 
             /*查询子集*/
             if(haschild){
@@ -393,110 +340,72 @@ angular.module('app')
                     /*隐藏*/
                     $child.removeClass('g-d-showi');
                     $this.removeClass('sub-menu-titleactive');
-                    /*是否已经加载过数据*/
-                    isrequest=$this.attr('data-isrequest');
-                    if(isrequest==='true'){
-                        /*清空隐藏节点数据*/
-                        self.initOperate({
-                            data:'',
-                            id:temp_id,
-                            setting:setting,
-                            table:table
-                        });
-                    }
                 }else{
                     /*显示*/
+                    $child.addClass('g-d-showi');
+                    $this.addClass('sub-menu-titleactive');
                     isrequest=$this.attr('data-isrequest');
                     if(isrequest==='false'){
                         /*重新加载*/
                         /*获取非根目录数据*/
-                        self.getMenuList({
-                            search:record.searchname,
-                            $reqstate:$this,
-                            setting:setting,
-                            table:table
-                        });
+                        self.getMenuList(config);
                     }else if(isrequest==='true'){
                         /*已加载的直接遍历存入操作区域*/
                         if(haschild){
-                            var data=$child.find('>li >a'),
-                                list=[],
-                                len=data.size();
-                            if(len!==0){
-                                /*有数据节点*/
-                                data.each(function () {
-                                    var citem=$(this),
-                                        orgname=citem.html(),
-                                        id=citem.attr('data-id');
-                                    list.push({
-                                        orgname:orgname,
-                                        id:id
-                                    });
-                                });
-                                self.initOperate({
-                                    data:list,
-                                    layer:temp_layer,
-                                    id:temp_id,
-                                    setting:setting,
-                                    table:table
-                                });
-                            }else{
-                                /*无数据节点*/
-                                temp_layer=$this.attr('layer');
-                                islayer=self.validSubMenuLayer(temp_layer);
-                                if(islayer){
-                                    /*其他节点*/
-                                    self.initOperate({
-                                        data:'',
-                                        id:temp_id,
-                                        setting:setting,
-                                        table:table
-                                    });
-                                }else{
-                                    /*错误节点*/
-                                    self.initOperate({
-                                        data:null,
-                                        setting:setting,
-                                        table:table
-                                    });
-                                }
-                            }
+                            //self.copySubMenu($child);
                         }
                     }
-                    $child.addClass('g-d-showi');
-                    $this.addClass('sub-menu-titleactive');
+
                 }
             }else{
                 /*没有子节点，同时节点层次未达到极限值*/
-                temp_layer=$this.attr('data-layer');
-                islayer=self.validSubMenuLayer(temp_layer);
-                if(islayer){
-                    /*其他节点*/
-                    self.initOperate({
-                        data:'',
-                        id:temp_id,
-                        setting:setting,
-                        table:table
-                    });
-                }else{
-                    /*错误节点*/
-                    self.initOperate({
-                        data:null,
-                        setting:setting,
-                        table:table
-                    });
-                }
+                /*temp_layer=$this.attr('data-layer');
+                islayer=self.validSubMenuLayer(temp_layer);*/
             }
         };
-        /*导航服务--跳转虚拟挂载点*/
+        /*导航服务--跳转至虚拟挂载点*/
         this.rootSubMenu=function (e,config) {
             var $this=$(e.target),
                 $child=$this.next();
 
-            var data=$child.find('>li >a'),
+            /*切换显示隐藏*/
+            $this.toggleClass('sub-menu-titleactive');
+            $child.toggleClass('g-d-showi');
+
+            //self.copySubMenu($child);
+
+            /*更新操作模型*/
+            self.initRecord(config.record);
+        };
+        /*导航服务--拷贝本级数据(to do)*/
+        this.copySubMenu=function ($wrap) {
+            var data=$wrap.find('>li >a'),
+                len=data.size();
+
+            if(len!==0){
+                /*有数据节点*/
+                var list=[];
+                data.each(function () {
+                    var citem=$(this),
+                        label=citem.html(),
+                        id=citem.attr('data-id');
+                    list.push({
+                        label:label,
+                        id:id
+                    });
+                });
+                return list;
+            }else{
+                return null;
+            }
+
+
+
+            /*var data=$child.find('>li >a'),
                 list=[],
                 len=data.size();
             if(len!==0){
+                /!*有数据节点*!/
                 data.each(function () {
                     var citem=$(this),
                         orgname=citem.html(),
@@ -506,33 +415,46 @@ angular.module('app')
                         id:id
                     });
                 });
-                self.initOperate({
-                    data:list,
-                    layer:0,
-                    id:config.root.id,
-                    orgname:config.root.orgname,
-                    setting:config.setting,
-                    table:config.table
-                });
-            }
-
-            /*清除高亮模型*/
-            if(config.record.prev!==null){
-                config.record.prev.removeClass('sub-menuactive');
-                config.record.prev=null;
-            }
-            if(config.record.current!==null){
-                config.record.current.removeClass('sub-menuactive');
-                config.record.current=null;
-            }
-
-            /*更新编辑模型*/
-            config.edit.editstate=false;
-            config.edit.id=config.root.id;
-            config.edit.layer=0;
-            config.edit.orgname=config.root.orgname;
+            }else{
+                /!*无数据节点*!/
+                temp_layer=$this.attr('layer');
+                islayer=self.validSubMenuLayer(temp_layer);
+                if(islayer){
+                    /!*其他节点*!/
+                    self.initOperate({
+                        data:'',
+                        id:temp_id,
+                        setting:setting,
+                        table:table
+                    });
+                }else{
+                    /!*错误节点*!/
+                    self.initOperate({
+                        data:null,
+                        setting:setting,
+                        table:table
+                    });
+                }
+            }*/
         };
 
+
+
+        /*操作记录服务--初始化操作参数(搜索模式或者重置操作参数模式)*/
+        this.initRecord=function (record) {
+            record.layer=0;
+            record.organizationId=record.currentId;
+            record.organizationName=record.currentName;
+            record.hasdata=false;
+            if(record.prev!==null){
+                record.prev.removeClass('sub-menuactive');
+                record.current.removeClass('sub-menuactive');
+                record.prev=null;
+            }else if(record.current!==null){
+                record.current.removeClass('sub-menuactive');
+            }
+            record.current=null;
+        };
 
 
     }]);
