@@ -24,6 +24,8 @@ angular.module('app')
             $admin_struct_colgroup:$('#admin_struct_colgroup'),
             $admin_struct_checkall:$('#admin_struct_checkall')
         };
+        jq_dom['$admin_submenu_wrap']=jq_dom.$admin_struct_submenu.prev();
+        
         var jq_dom_power={
             $admin_struct_allpower:$('#admin_struct_allpower')
         };

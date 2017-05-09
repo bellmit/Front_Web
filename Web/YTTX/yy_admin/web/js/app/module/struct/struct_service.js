@@ -14,15 +14,16 @@ angular.module('app')
         
         /*初始化权限*/
         var init_power={
-            structadd:toolUtil.isPower('organization-add',powermap,true)/*添加机构*/,
-            structedit:toolUtil.isPower('organization-edit',powermap,true)/*编辑机构*/,
-            roleadd:toolUtil.isPower('role-add',powermap,true),/*添加*/
-            useradd:toolUtil.isPower('user-add',powermap,true)/*添加用户*/,
-            userdetail:toolUtil.isPower('user-view',powermap,true)/*查看用户*/,
-            userupdate:toolUtil.isPower('user-update',powermap,true)/*编辑用户*/,
-            userdelete:toolUtil.isPower('batch-delete',powermap,true)/*删除用户*/,
-            operateadjust:toolUtil.isPower('operator-adjustment',powermap,true)/*调整运营商*/
+            organization_add:toolUtil.isPower('organization-add',powermap,true)/*添加机构*/,
+            organization_edit:toolUtil.isPower('organization-edit',powermap,true)/*编辑机构*/,
+            role_add:toolUtil.isPower('role-add',powermap,true),/*添加*/
+            user_add:toolUtil.isPower('user-add',powermap,true)/*添加用户*/,
+            user_view:toolUtil.isPower('user-view',powermap,true)/*查看用户*/,
+            user_update:toolUtil.isPower('user-update',powermap,true)/*编辑用户*/,
+            batch_delete:toolUtil.isPower('batch-delete',powermap,true)/*删除用户*/,
+            operator_adjustment:toolUtil.isPower('operator-adjustment',powermap,true)/*调整运营商*/
         };
+        
 
 
         /*扩展服务--初始化jquery dom节点*/
@@ -84,7 +85,7 @@ angular.module('app')
 
                 /*判断是否为搜索模式*/
                 if(config.record.searchname!==''){
-                    self.initRecord(config.record);
+                    self.initRecord(config.record,true);
                     param['fullName']=record.searchname;
                 }
 
@@ -105,13 +106,6 @@ angular.module('app')
                     $wrap=record.current.next();
                     /*判断是否是合法的节点*/
                     if(layer>=BASE_CONFIG.submenulimit){
-                        /*遇到极限节点，不查询数据*/
-                        /*self.initOperate({
-                            data:null,
-                            $wrap:self.$admin_struct_list,
-                            setting:config.setting,
-                            table:config.table
-                        });*/
                         return false;
                     }
                 }
@@ -156,6 +150,9 @@ angular.module('app')
                                                 record.hasdata=false;
                                                 if(layer===0){
                                                     $wrap.html('<li><a>暂无数据</a></li>');
+                                                    self.$admin_submenu_wrap.attr({
+                                                        'data-list':false
+                                                    });
                                                 }else{
                                                     $wrap.html('');
                                                     /*清除显示下级菜单导航图标*/
@@ -170,10 +167,22 @@ angular.module('app')
                                                     id:id
                                                 });
                                                 if(str!==''){
+                                                    if(layer===0){
+                                                        /*搜索模式*/
+                                                        self.$admin_submenu_wrap.attr({
+                                                            'data-list':true
+                                                        });
+                                                    }
                                                     record.hasdata=true;
                                                     $(str).appendTo($wrap.html(''));
                                                 }else{
                                                     record.hasdata=false;
+                                                    if(layer===0){
+                                                        /*搜索模式*/
+                                                        self.$admin_submenu_wrap.attr({
+                                                            'data-list':false
+                                                        });
+                                                    }
                                                 }
                                                 if(layer!==0){
                                                     record.current.attr({
@@ -182,11 +191,20 @@ angular.module('app')
                                                 }
                                             }
                                         }else{
+                                            if(layer===0){
+                                                $wrap.html('<li><a>暂无数据</a></li>');
+                                                self.$admin_submenu_wrap.attr({
+                                                    'data-list':false
+                                                });
+                                            }
                                             record.hasdata=false;
                                         }
                                     }else{
                                         if(layer===0){
                                             $wrap.html('<li><a>暂无数据</a></li>');
+                                            self.$admin_submenu_wrap.attr({
+                                                'data-list':false
+                                            });
                                         }
                                         record.hasdata=false;
                                     }
@@ -340,6 +358,7 @@ angular.module('app')
                     /*隐藏*/
                     $child.removeClass('g-d-showi');
                     $this.removeClass('sub-menu-titleactive');
+                    record.hasdata=true;
                 }else{
                     /*显示*/
                     $child.addClass('g-d-showi');
@@ -352,12 +371,16 @@ angular.module('app')
                     }else if(isrequest==='true'){
                         /*已加载的直接遍历存入操作区域*/
                         if(haschild){
+                            record.hasdata=true;
                             //self.copySubMenu($child);
+                        }else{
+                            record.hasdata=false;
                         }
                     }
 
                 }
             }else{
+                record.hasdata=false;
                 /*没有子节点，同时节点层次未达到极限值*/
                 /*temp_layer=$this.attr('data-layer');
                 islayer=self.validSubMenuLayer(temp_layer);*/
@@ -366,16 +389,21 @@ angular.module('app')
         /*导航服务--跳转至虚拟挂载点*/
         this.rootSubMenu=function (e,config) {
             var $this=$(e.target),
-                $child=$this.next();
+                islist=$this.attr('data-list'),
+                record=config.record;
 
             /*切换显示隐藏*/
             $this.toggleClass('sub-menu-titleactive');
-            $child.toggleClass('g-d-showi');
+            self.$admin_struct_submenu.toggleClass('g-d-showi');
 
-            //self.copySubMenu($child);
-
+            if(islist==='true'){
+                record.hasdata=true;
+                //self.copySubMenu($child);
+            }else if(islist==='false'){
+                record.hasdata=false;
+            }
             /*更新操作模型*/
-            self.initRecord(config.record);
+            self.initRecord(record);
         };
         /*导航服务--拷贝本级数据(to do)*/
         this.copySubMenu=function ($wrap) {
@@ -441,11 +469,14 @@ angular.module('app')
 
 
         /*操作记录服务--初始化操作参数(搜索模式或者重置操作参数模式)*/
-        this.initRecord=function (record) {
+        this.initRecord=function (record,flag) {
+            /*是否重置数据*/
+            if(flag){
+                record.hasdata=false;
+            }
             record.layer=0;
             record.organizationId=record.currentId;
             record.organizationName=record.currentName;
-            record.hasdata=false;
             if(record.prev!==null){
                 record.prev.removeClass('sub-menuactive');
                 record.current.removeClass('sub-menuactive');
