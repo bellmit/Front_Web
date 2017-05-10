@@ -853,6 +853,7 @@
 			"code":"advert",
 			"match":"-advert-",
 			"class":"menu-ux-ad",
+			/*"ignoremodule":true,*/
 			"module":"advert",
 			"modid":"330"
 		},
@@ -862,7 +863,7 @@
 			"match":"-activity-",
 			"matchlist":['module-set'],
 			"class":"menu-ux-serve",
-			"ignoremodule":true,
+			/*"ignoremodule":true,*/
 			"module":"activity",
 			"modid":"340"
 		}

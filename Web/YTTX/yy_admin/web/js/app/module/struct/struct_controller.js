@@ -11,7 +11,7 @@ angular.module('app')
         var jq_dom={
             $admin_struct_submenu:$('#admin_struct_submenu'),
             $admin_struct_list:$('#admin_struct_list'),
-            $struct_setting_dialog:$('#struct_setting_dialog'),
+            $struct_struct_dialog:$('#struct_struct_dialog'),
             $struct_user_dialog:$('#struct_user_dialog'),
             $struct_userdetail_dialog:$('#struct_userdetail_dialog'),
             $admin_struct_reset:$('#admin_struct_reset'),
@@ -54,6 +54,16 @@ angular.module('app')
             active:''
         }];
 
+        /*模型--地址*/
+        this.address={
+            province:[],
+            city:[],
+            country:[],
+            province_value:'',
+            city_value:'',
+            country_value:''
+        };
+
 
         /*模型--操作记录*/
         this.record={
@@ -66,7 +76,8 @@ angular.module('app')
             currentName:''/*虚拟挂载点*/,
             organizationId:''/*操作id*/,
             organizationName:''/*操作名称*/,
-            settingId:''/*机构设置Id*/,
+            structId:''/*机构设置Id*/,
+            structName:''/*机构设置名称*/,
             layer:0/*操作层*/
         };
 
@@ -74,21 +85,27 @@ angular.module('app')
         /*模型--机构数据*/
         this.struct={
             type:'add'/*表单类型：新增，编辑；默认为新增*/,
-            orgname:''/*机构名称*/,
-            comname:''/*公司名称*/,
+            fullName:''/*运营商全称*/,
+            shortName:''/*运营商简称*/,
+            adscriptionRegion:''/*归属地区*/,
             linkman:''/*负责人*/,
             cellphone:''/*手机号码*/,
-            address:''/*联系地址*/,
-            operatingArea:''/*运营地区*/,
+            telephone:''/*电话号码*/,
+            province:''/*省份*/,
+            city:''/*市区*/,
+            country:''/*县区*/,
+            address:''/*详细地址*/,
+            isAudited:0/*是否已审核：0：默认，1：已审核*/,
+            status:0/*状态：0：正常，1：停用*/,
             remark:''/*备注*/,
-            isSettingLogin:''/*是否设置登陆名及密码1 :是*/,
+            isSettingLogin:1/*是否设置登陆名及密码：1 :是*/,
             username:''/*设置登录名*/,
             password:''/*设置登录密码*/,
-            isDesignatedPermit:''/*是否指定权限,1:指定*/,
+            isDesignatedPermit:''/*是否指定权限,0:全部权限 1:指定权限*/,
             checkedFunctionIds:''/*选中权限Ids*/,
-            sysUserId:''/*编辑时相关参数*/,
-            id:''/*编辑时相关参数*/,
-            parentId:''/*编辑时相关参数*/
+            sysUserId:''/*运营商用户ID，编辑时相关参数*/,
+            id:''/*运营商ID，编辑时相关参数*/,
+            parentId:''/*上级运营商ID，编辑时相关参数*/
         };
 
 
@@ -320,8 +337,8 @@ angular.module('app')
                 column_flag:true,
                 ischeck:true,/*是否有全选*/
                 columnshow:true,
-                $column_wrap:jq_dom.$admin_struct_checkcolumn/*控制列显示隐藏的容器*/,
-                $bodywrap:jq_dom.$admin_struct_batchlist/*数据展现容器*/,
+                $column_wrap:jq_dom.$admin_table_checkcolumn/*控制列显示隐藏的容器*/,
+                $bodywrap:jq_dom.$admin_batchlist_wrap/*数据展现容器*/,
                 hide_list:[4,5,6,7,8]/*需要隐藏的的列序号*/,
                 hide_len:5,
                 column_api:{
@@ -332,14 +349,14 @@ angular.module('app')
                         return self.table.list_table.data().length===0;
                     }
                 },
-                $colgroup:jq_dom.$admin_struct_colgroup/*分组模型*/,
-                $column_btn:jq_dom.$admin_struct_checkcolumn.prev(),
-                $column_ul:jq_dom.$admin_struct_checkcolumn.find('ul')
+                $colgroup:jq_dom.$admin_table_colgroup/*分组模型*/,
+                $column_btn:jq_dom.$admin_table_checkcolumn.prev(),
+                $column_ul:jq_dom.$admin_table_checkcolumn.find('ul')
             },
             /*全选*/
             tablecheckall:{
                 checkall_flag:true,
-                $bodywrap:jq_dom.$admin_struct_batchlist,
+                $bodywrap:jq_dom.$admin_batchlist_wrap,
                 $checkall:jq_dom.$admin_struct_checkall,
                 checkvalue:0/*默认未选中*/,
                 checkid:[]/*默认索引数据为空*/,
@@ -349,11 +366,11 @@ angular.module('app')
             },
             /*按钮*/
             tableitemaction:{
-                $bodywrap:jq_dom.$admin_struct_batchlist,
+                $bodywrap:jq_dom.$admin_batchlist_wrap,
                 itemaction_api:{
                     doItemAction:function(config){
                         structService.doItemAction({
-                            setting:self.setting,
+                            record:self.record,
                             user:self.user,
                             table:self.table
                         },config);
@@ -392,6 +409,49 @@ angular.module('app')
                record:self.record,
                table:self.table
            });
+        };
+
+
+        /*机构服务--展开*/
+        this.toggleStructList=function (e) {
+            structService.toggleStructList(e,{
+                record:self.record,
+                table:self.table,
+                structpos:self.structpos
+            });
+        };
+        /*机构服务--操作机构表单*/
+        this.actionStruct=function (config) {
+            if(config.type){
+                /*调用编辑机构服务类*/
+                structService.actionStruct({
+                    modal:config,
+                    record:self.record,
+                    struct:self.struct,
+                    power:self.power
+                });
+            }
+        };
+
+
+        /*弹出层显示隐藏*/
+        this.toggleModal=function (config) {
+            structService.toggleModal({
+                display:config.display,
+                area:config.area
+            });
+        };
+
+
+        /*表单服务--提交表单*/
+        this.formSubmit=function (type) {
+            /*structService.formSubmit({
+                struct:self.struct,
+                user:self.user,
+                table:self.table,
+                record:self.record
+            },type);*/
+            return false;
         };
 
 
