@@ -5,15 +5,37 @@ angular.module('app')
 		/*初始化配置*/
 		var self=this;
 
+		/*
 
-		/*初始化配置*/
+		type:类型：负责判断查询，省，市，区
+		model:模型：负责更新数据
+
+
+
+
+		* */
+
+
+		/*初始化关联*/
+		this.initRelation=function (type,model) {
+			if(type==='province'){
+
+			}else if(type==='city'){
+
+			}else if(type==='country'){
+
+			}
+		};
+
+
+		/*单独查询*/
 		this.addressRelation=function (type,model) {
 			toolUtil
 				.requestHttp({
-					url:BASE_CONFIG.commondomain+BASE_CONFIG.commonproject+'/organization/lowers/search',
+					url:BASE_CONFIG.commondomain+BASE_CONFIG.commonproject+'/address/get',
 					method:'post',
 					data:{
-						parentCode:model[type+'_value']
+						parentCode:model[type]
 					}
 				})
 				.then(function(resp){
@@ -137,56 +159,6 @@ angular.module('app')
 							console.log('请求菜单失败');
 						}
 					});
-		};
-		
-
-		/*初始化组件*/
-		this.initWidget=function (tablecolumn,tablecache) {
-			/*隐藏*/
-			var tempid,
-				str='',
-				i=0;
-
-
-			for(i;i<tablecolumn.hide_len;i++){
-				tempid=tablecolumn.hide_list[i];
-				str+='<li data-value="'+tempid+'">第'+(tempid + 1)+'列</li>';
-				tablecache.column(tempid).visible(false);
-			}
-			if(str!==''){
-				/*赋值控制下拉选项*/
-				$(str).appendTo(tablecolumn.$column_ul.html(''));
-			}
-			/*设置分组*/
-			tablecolumn.$colgroup.html(self.createColgroup(tablecolumn,tablecolumn.hide_len));
-		};
-		
-		/*绑定相关事件*/
-		this.bind=function (tablecolumn,tablecache) {
-			/*绑定切换列控制按钮*/
-			tablecolumn.$column_btn.on('click',function () {
-				tablecolumn.$column_wrap.toggleClass('g-d-hidei');
-			});
-			/*绑定操作列数据*/
-			tablecolumn.$column_ul.on('click','li',function () {
-				/*切换显示相关列*/
-				var $this=$(this),
-					active=$this.hasClass('action-list-active'),
-					index=$this.attr('data-value');
-
-				if(active){
-					$this.removeClass('action-list-active');
-					tablecache.column(index).visible(false);
-				}else{
-					$this.addClass('action-list-active');
-					tablecache.column(index).visible(true);
-				}
-
-				var count=tablecolumn.$column_ul.find('.action-list-active').size();
-
-				/*设置分组*/
-				tablecolumn.$colgroup.html(self.createColgroup(tablecolumn,tablecolumn.hide_len - count));
-			});
 		};
 
 	}]);
