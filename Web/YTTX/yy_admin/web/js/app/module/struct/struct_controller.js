@@ -56,12 +56,9 @@ angular.module('app')
 
         /*模型--地址*/
         this.address={
-            province:[],
-            city:[],
-            country:[],
-            province_value:'',
-            city_value:'',
-            country_value:''
+            province:{},
+            city:{},
+            country:{}
         };
 
 
@@ -91,7 +88,7 @@ angular.module('app')
             linkman:''/*负责人*/,
             cellphone:''/*手机号码*/,
             telephone:''/*电话号码*/,
-            province:''/*省份*/,
+            province:'86'/*省份*/,
             city:''/*市区*/,
             country:''/*县区*/,
             address:''/*详细地址*/,

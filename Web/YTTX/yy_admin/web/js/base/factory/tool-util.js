@@ -272,6 +272,9 @@
 			if(BASE_CONFIG.debug && url.indexOf('.json')===-1){
 				return 'json' + url + '.json';
 			}else{
+				if(type){
+
+				}
 				return BASE_CONFIG.basedomain + BASE_CONFIG.baseproject + url;
 			}
 		};
