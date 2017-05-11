@@ -1,6 +1,6 @@
 /*首页控制器*/
 angular.module('app')
-    .controller('StructController', ['structService','powerService','toolUtil',function(structService,powerService,toolUtil){
+    .controller('StructController', ['structService','toolUtil',function(structService,toolUtil){
         var self=this;
 
         /*模型--操作权限列表*/
@@ -31,7 +31,7 @@ angular.module('app')
         };
         /*切换路由时更新dom缓存*/
         structService.initJQDom(jq_dom);
-        powerService.initJQDom(jq_dom_power);
+        structService.initJQDomForPower(jq_dom_power);
 
 
         /*模型--权限*/
@@ -54,13 +54,6 @@ angular.module('app')
             active:''
         }];
 
-        /*模型--地址*/
-        this.address={
-            province:{},
-            city:{},
-            country:{}
-        };
-
 
         /*模型--操作记录*/
         this.record={
@@ -80,6 +73,12 @@ angular.module('app')
 
 
         /*模型--机构数据*/
+        /*模型--地址*/
+        this.address={
+            province:{},
+            city:{},
+            country:{}
+        };
         this.struct={
             type:'add'/*表单类型：新增，编辑；默认为新增*/,
             fullName:''/*运营商全称*/,
@@ -88,7 +87,7 @@ angular.module('app')
             linkman:''/*负责人*/,
             cellphone:''/*手机号码*/,
             telephone:''/*电话号码*/,
-            province:'86'/*省份*/,
+            province:''/*省份*/,
             city:''/*市区*/,
             country:''/*县区*/,
             address:''/*详细地址*/,
@@ -377,14 +376,27 @@ angular.module('app')
         };
 
 
-        /*虚拟挂载点，或者初始化参数*/
+        /*初始化服务--虚拟挂载点，或者初始化参数*/
         structService.getRoot(self.record);
+        /*初始化服务--初始化权限模型头部*/
+        structService.createThead({flag:true},self.power);
+        /*初始化服务--初始化地址信息*/
+        structService.queryAddress({
+            type:'province',
+            address:self.address,
+            model:self.struct
+        });
+        
 
+        /*地址服务--选中地址*/
+        this.changeAddress=function (value,type) {
+            structService.queryAddress({
+                model:self.struct,
+                address:self.address,
+                type:type
+            });
+        };
 
-        /*初始化权限模型头部*/
-        powerService.createThead({
-            flag:true
-        },self.power);
 
         /*菜单服务--初始化请求菜单*/
         this.initSubMenu=function () {

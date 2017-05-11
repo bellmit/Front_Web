@@ -1,5 +1,5 @@
 angular.module('app')
-    .service('structService',['toolUtil','toolDialog','BASE_CONFIG','loginService','powerService','dataTableColumnService','dataTableCheckAllService','dataTableItemActionService','$timeout','$sce',function(toolUtil,toolDialog,BASE_CONFIG,loginService,powerService,dataTableColumnService,dataTableCheckAllService,dataTableItemActionService,$timeout,$sce){
+    .service('structService',['toolUtil','toolDialog','BASE_CONFIG','loginService','powerService','addressService','dataTableColumnService','dataTableCheckAllService','dataTableItemActionService','$timeout','$sce',function(toolUtil,toolDialog,BASE_CONFIG,loginService,powerService,addressService,dataTableColumnService,dataTableCheckAllService,dataTableItemActionService,$timeout,$sce){
 
         /*获取缓存数据*/
         var self=this,
@@ -9,8 +9,10 @@ angular.module('app')
             userform_reset_timer=null;
 
 
-        /*权限*/
+        /*权限服务--查询列表*/
         var powermap=powerService.getCurrentPower(module_id);
+
+
         
         /*初始化权限*/
         var init_power={
@@ -34,6 +36,10 @@ angular.module('app')
                     self[i]=dom[i];
                 }
             }
+        };
+        /*扩展服务--初始化jquery dom节点(power)*/
+        this.initJQDomForPower=function (dom) {
+            powerService.initJQDom(dom);
         };
         /*扩展服务--查询操作权限*/
         this.getCurrentPower=function () {
@@ -79,7 +85,11 @@ angular.module('app')
                 }
             }
         };
-
+        /*扩展服务--初始化权限模型头部*/
+        this.createThead=function (config,power) {
+            powerService.createThead(config,power);
+        };
+        
 
         /*导航服务--获取虚拟挂载点*/
         this.getRoot=function (record) {
@@ -1619,6 +1629,12 @@ angular.module('app')
             }else if(action==='delete'){
                 self.batchDeleteUser(model.record,model.table,id);
             }
+        };
+
+
+        /*地址服务--地址查询*/
+        this.queryAddress=function (config) {
+            addressService.queryRelation(config);
         };
 
 

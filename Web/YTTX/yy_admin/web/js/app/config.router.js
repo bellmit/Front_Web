@@ -71,6 +71,7 @@ angular.module('app')
                                         'js/app/services/datatable/datatable_column_service.js',
                                         'js/app/services/datatable/datatable_checkall_service.js',
                                         'js/app/services/datatable/datatable_itemaction_service.js',
+                                        'js/app/services/address/address_service.js',
                                         'js/app/module/struct/struct_service.js',
                                         'js/app/module/struct/struct_controller.js']);
                             }]
