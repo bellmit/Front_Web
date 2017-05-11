@@ -5,17 +5,39 @@ angular.module('app')
 		/*初始化配置*/
 		var self=this;
 
+		/*
 
-		/*初始化配置*/
+		type:类型：负责判断查询，省，市，区
+		model:模型：负责更新数据
+
+
+
+
+		* */
+
+
+		/*初始化关联*/
+		this.initRelation=function (type,model) {
+			if(type==='province'){
+
+			}else if(type==='city'){
+
+			}else if(type==='country'){
+
+			}
+		};
+
+
+		/*单独查询*/
 		this.addressRelation=function (type,model) {
 
 
 			toolUtil
 				.requestHttp({
-					url:BASE_CONFIG.commondomain+BASE_CONFIG.commonproject+'/organization/lowers/search',
+					url:BASE_CONFIG.commondomain+BASE_CONFIG.commonproject+'/address/get',
 					method:'post',
 					data:{
-						parentCode:model[type+'_value']
+						parentCode:model[type]
 					}
 				})
 				.then(function(resp){
