@@ -80,7 +80,7 @@ angular.module('app')
                     type_map[config.area].modal('hide');
                 }
                 /*清除延时任务序列*/
-                if(config.area==='setting' || config.area==='user'){
+                if(config.area==='struct' || config.area==='user'){
                     self.clearFormDelay();
                 }
             }
@@ -1059,7 +1059,7 @@ angular.module('app')
                                                     self.queryAddress({
                                                         type:'province',
                                                         address:config.address,
-                                                        model:self.user
+                                                        model:struct
                                                     });
                                                     break;
                                                 case 'address':
@@ -1744,19 +1744,39 @@ angular.module('app')
                                                     case 'id':
                                                         user[i]=list[i];
                                                         break;
-                                                    case 'nickName':
+                                                    case 'fullName':
                                                         user[i]=list[i];
                                                         break;
-                                                    case 'phone':
+                                                    case 'shortName':
+                                                        user[i]=list[i];
+                                                        break;
+                                                    case 'name':
+                                                        user[i]=list[i];
+                                                        break;
+                                                    case 'type':
+                                                        user['shoptype']=list[i];
+                                                        break;
+                                                    case 'cellphone':
                                                         user[i]=toolUtil.phoneFormat(list[i]);
+                                                        break;
+                                                    case 'telephone':
+                                                        user[i]=toolUtil.telePhoneFormat(list[i]);
+                                                        break;
+                                                    case 'province':
+                                                        user['province']=list['province'];
+                                                        user['city']=list['city'];
+                                                        user['country']=list['country'];
+                                                        /*更新地址查询模型*/
+                                                        self.queryAddress({
+                                                            type:'province',
+                                                            address:config.address,
+                                                            model:user
+                                                        });
                                                         break;
                                                     case 'address':
                                                         user[i]=list[i];
                                                         break;
-                                                    case 'mainFee':
-                                                        user[i]=list[i];
-                                                        break;
-                                                    case 'machineCode':
+                                                    case 'status':
                                                         user[i]=list[i];
                                                         break;
                                                     case 'remark':
@@ -1773,34 +1793,29 @@ angular.module('app')
                                             /*查看*/
                                             var str='',
                                                 detail_map={
-                                                    'nickName':'用户名称',
-                                                    'phone':'手机号码',
+                                                    'fullName':'店铺全称',
+                                                    'shortName':'店铺简称',
                                                     'address':'联系地址',
-                                                    'mainFee':'费率',
-                                                    'machineCode':'机器码(IMEI)',
-                                                    'identityState':'身份证验证状态',
+                                                    'name':'姓名',
+                                                    'type':'店铺类型',
+                                                    'cellphone':'店铺手机号码',
+                                                    'telephone':'店铺电话号码',
+                                                    'province':'省份',
+                                                    'city':'市区',
+                                                    'country':'县区',
                                                     'remark':'备注',
-                                                    'createTime':'创建时间',
-                                                    'grade':'用户级别',
-                                                    'gender':'',
-                                                    'strategyNotice':'',
                                                     'status':'状态'
                                                 };
                                             for(var j in list){
                                                 if(typeof detail_map[j]!=='undefined'){
-                                                    if(j==='identityState'){
-                                                        var tempstate=parseInt(list[j],10);
-                                                        if(tempstate===0){
-                                                            str+='<tr><td class="g-t-r">身份证验证状态:</td><td class="g-t-l g-c-warn">未验证</td></tr>';
-                                                        }else if(tempstate===1){
-                                                            str+='<tr><td class="g-t-r">身份证验证状态:</td><td class="g-t-l g-c-gray9">正在验证</td></tr>';
-                                                        }else if(tempstate===2){
-                                                            str+='<tr><td class="g-t-r">身份证验证状态:</td><td class="g-t-l g-c-blue1">验证通过</td></tr>';
-                                                        }else if(tempstate===3){
-                                                            str+='<tr><td class="g-t-r">身份证验证状态:</td><td class="g-t-l g-c-red1">验证不通过</td></tr>';
-                                                        }else{
-                                                            str+='<tr><td class="g-t-r">身份证验证状态:</td><td class="g-t-l g-c-gray6">其他</td></tr>';
-                                                        }
+                                                    if(j==='type'){
+                                                        var temptype=parseInt(list[j],10),
+                                                            typemap={
+                                                                1:'旗舰店',
+                                                                2:'体验店',
+                                                                3:'加盟店'
+                                                            };
+                                                        str+='<tr><td class="g-t-r">'+detail_map[j]+':</td><td class="g-t-l">'+typemap[temptype]+'</td></tr>';
                                                     }else{
                                                         str+='<tr><td class="g-t-r">'+detail_map[j]+':</td><td class="g-t-l">'+list[j]+'</td></tr>';
                                                     }
@@ -1835,129 +1850,14 @@ angular.module('app')
                         }
                     });
         };
-        /*用户服务--提交表单数据*/
-        this.userSubmit=function (user,setting,table) {
-            /*判断表单类型*/
-            if(user.type===''||typeof user.type==='undefined'){
-                /*非法表单类型*/
-                toolDialog.show({
-                    type:'warn',
-                    value:'非法表单类型'
-                });
-                return false;
-            }
-
-            /*登陆缓存*/
-            if(cache){
-                var param=$.extend(true,{},cache.loginMap.param);
-                /*数据适配*/
-                /*公共配置*/
-                param['nickName']=user.nickName;
-                param['phone']=toolUtil.trims(user.phone);
-                param['address']=user.address;
-                param['mainFee']=user.mainFee;
-                param['machineCode']=user.machineCode;
-                param['remark']=user.remark;
-
-                if(user.type==='add'){
-                    /*新增机构或子机构*/
-                    /*判断参数*/
-                    if(setting.c_id!==''){
-                        param['organizationId']=setting.c_id;
-                    }else if(setting.c_id===''){
-                        param['organizationId']=setting.id;
-                    }
-                }else if(user.type==='edit'){
-                    /*编辑机构或子机构*/
-                    delete param['organizationId'];
-                    if(user.id===''){
-                        toolDialog.show({
-                            type:'warn',
-                            value:'非法的编辑数据'
-                        });
-                        return false;
-                    }
-                    param['id']=user.id;
-                }
-                toolUtil
-                    .requestHttp({
-                        url:user.type==='add'?'/organization/user/add':'/organization/user/update',
-                        method:'post',
-                        set:true,
-                        data:param
-                    })
-                    .then(function(resp){
-                            var data=resp.data,
-                                status=parseInt(resp.status,10);
-
-                            if(status===200){
-                                var code=parseInt(data.code,10),
-                                    message=data.message;
-                                if(code!==0){
-                                    if(typeof message !=='undefined'&&message!==''){
-                                        toolDialog.show({
-                                            type:'warn',
-                                            value:message
-                                        });
-                                    }else{
-                                        toolDialog.show({
-                                            type:'warn',
-                                            value:user.type==='add'?'新增用户失败':'编辑用户失败'
-                                        });
-                                    }
-                                    if(code===999){
-                                        /*退出系统*/
-                                        cache=null;
-                                        toolUtil.loginTips({
-                                            clear:true,
-                                            reload:true
-                                        });
-                                    }
-                                    return false;
-                                }else{
-                                    /*操作成功即加载数据*/
-                                    /*重新加载表格数据*/
-                                    self.getColumnData(table);
-                                    /*重置表单*/
-                                    self.addFormDelay({
-                                        type:'user'
-                                    });
-                                    /*弹出框隐藏*/
-                                    toolDialog.show({
-                                        type:'succ',
-                                        value:user.type==='add'?'新增用户成功':'编辑用户成功'
-                                    });
-                                    self.toggleModal({
-                                        display:'hide',
-                                        area:'user',
-                                        delay:1000
-                                    });
-                                }
-                            }
-                        },
-                        function(resp){
-                            var message=resp.data.message;
-                            if(typeof message !=='undefined'&&message!==''){
-                                console.log(message);
-                            }else{
-                                console.log('新增机构或编辑机构失败');
-                            }
-                        });
-            }else{
-                /*缓存不存在*/
-                return false
-            }
-        };
         /*用户服务--批量删除*/
-        this.batchDeleteUser=function (setting,table,id) {
+        this.batchDeleteUser=function (config,id) {
             if(cache===null){
-                toolUtil.loginTips({
-                    clear:true,
-                    reload:true
-                });
                 return false;
             }
-            var type;
+            var record=config.record,
+                table=config.table,
+                type;
             if(typeof id==='undefined'){
                 var batchdata=dataTableCheckAllService.getBatchData(table.tablecheckall),
                     len=batchdata.length;
@@ -1982,16 +1882,16 @@ angular.module('app')
             var param=$.extend(true,{},cache.loginMap.param);
 
             /*判断参数*/
-            if(setting.c_id!==''){
-                param['organizationId']=setting.c_id;
-            }else if(setting.c_id===''){
-                param['organizationId']=setting.id;
+            if(record.structId!==''){
+                param['organizationId']=record.structId;
+            }else if(record.structId===''){
+                param['organizationId']=record.organizationId;
             }
 
             if(type==='batch'){
-                param['userIds']=batchdata.join(',');
+                param['shopIds']=batchdata.join(',');
             }else if(type==='base'){
-                param['userIds']=id;
+                param['shopIds']=id;
             }
 
             /*确认是否删除*/
@@ -1999,7 +1899,7 @@ angular.module('app')
                 /*执行删除操作*/
                 toolUtil
                     .requestHttp({
-                        url:'/organization/users/delete',
+                        url:'/organization/shop/delete',
                         method:'post',
                         set:true,
                         data:param
@@ -2022,7 +1922,7 @@ angular.module('app')
                                         /*提示信息*/
                                         toolDialog.show({
                                             type:'warn',
-                                            value:'删除用户失败'
+                                            value:'删除店铺失败'
                                         });
                                     }
 
@@ -2038,13 +1938,18 @@ angular.module('app')
                                     /*提示信息*/
                                     toolDialog.show({
                                         type:'succ',
-                                        value:'删除用户成功'
+                                        value:'删除店铺成功'
                                     });
 
                                     /*清空全选*/
                                     dataTableCheckAllService.clear(table.tablecheckall);
                                     /*重新加载数据*/
-                                    self.getColumnData(table);
+                                    /*查询店铺信息*/
+                                    if(record.structId===''){
+                                        self.getColumnData(table,record.organizationId);
+                                    }else{
+                                        self.getColumnData(table,record.structId);
+                                    }
                                 }
                             }
                         },
@@ -2053,10 +1958,10 @@ angular.module('app')
                             if(typeof message !=='undefined' && message!==''){
                                 console.log(message);
                             }else{
-                                console.log('删除用户失败');
+                                console.log('删除店铺失败');
                             }
                         });
-            },type==='base'?'是否真要删除用户数据':'是否真要批量删除用户数据',true);
+            },type==='base'?'是否真要删除店铺数据':'是否真要批量删除店铺数据',true);
         };
 
 
@@ -2108,7 +2013,6 @@ angular.module('app')
         };
         /*数据服务--表格全选与取消全选*/
         this.initCheckAll=function (tablecheckall) {
-
             dataTableCheckAllService.initCheckAll(tablecheckall);
         };
         /*数据服务--表格单项操作*/
@@ -2120,20 +2024,10 @@ angular.module('app')
             var id=config.id,
                 action=config.action;
 
-            if(action==='update'){
-                self.actionUser({
-                    modal:{
-                        display:'show',
-                        area:'user',
-                        type:'edit'
-                    },
-                    record:model.record,
-                    user:model.user
-                },id,action);
-            }else if(action==='detail'){
+            if(action==='detail'){
                 self.queryUserInfo(null,id,action);
             }else if(action==='delete'){
-                self.batchDeleteUser(model.record,model.table,id);
+                self.batchDeleteUser(model,id);
             }
         };
 

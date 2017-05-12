@@ -50,7 +50,20 @@
             <table id="admin_list_wrap" class="table table-bordered table-striped table-hover admin-layout-table">
 
                 <!--分组样式-->
-                <colgroup id="admin_table_colgroup"></colgroup>
+                <colgroup id="admin_table_colgroup">
+                    <col class="g-w-percent3"/>
+                    <col class="g-w-percent4"/>
+                    <col class="g-w-percent4"/>
+                    <col class="g-w-percent4"/>
+                    <col class="g-w-percent4"/>
+                    <col class="g-w-percent4"/>
+                    <col class="g-w-percent4"/>
+                    <col class="g-w-percent4"/>
+                    <col class="g-w-percent4"/>
+                    <col class="g-w-percent4"/>
+                    <col class="g-w-percent4"/>
+                    <col class="g-w-percent7"/>
+                </colgroup>
                 <!--头部-->
                 <thead>
                     <tr>
@@ -59,12 +72,14 @@
                                 <label data-check="0" class="admin-batchitem-check" id="admin_struct_checkall"></label>
                             </div>
                         </th>
-                        <th>手机号码</th>
-                        <th>地址</th>
+                        <th>店铺全称</th>
+                        <th>店铺简称</th>
                         <th>姓名</th>
-                        <th>机器码</th>
-                        <th>身份证验证状态</th>
-                        <th>创建时间</th>
+                        <th>店铺简称类型</th>
+                        <th>店铺手机号码</th>
+                        <th>店铺电话号码</th>
+                        <th>省市区</th>
+                        <th>详细地址</th>
                         <th>状态</th>
                         <th>备注</th>
                         <th>操作</th>
@@ -202,7 +217,7 @@
                             <div class="form-group-self1">
                                 <label class="self-label g-w-percent15 g-t-r"><span class="self-require g-c-red1">*</span>省</label>
                                 <div class="self-input g-pos-r g-w-percent35">
-                                    <select name="province" required ng-model="struct_ctrl.struct.province" ng-change="struct_ctrl.changeAddress(struct_ctrl.struct.province,'city')">
+                                    <select name="province" required ng-model="struct_ctrl.struct.province" ng-change="struct_ctrl.changeAddress('struct','address','city')">
                                         <option ng-repeat="item in struct_ctrl.address.province" value="{{item.value}}" >{{item.key}}</option>
                                     </select>
 
@@ -214,7 +229,7 @@
                             <div class="form-group-self1">
                                 <label class="self-label g-w-percent15 g-t-r"><span class="self-require g-c-red1">*</span>市</label>
                                 <div class="self-input g-pos-r g-w-percent35">
-                                    <select ng-change="struct_ctrl.changeAddress(struct_ctrl.struct.city,'country')" name="city" required ng-model="struct_ctrl.struct.city">
+                                    <select ng-change="struct_ctrl.changeAddress('struct','address','country')" name="city" required ng-model="struct_ctrl.struct.city">
                                         <option ng-repeat="item in struct_ctrl.address.city" value="{{item.value}}" >{{item.key}}</option>
                                     </select>
                                     <span ng-show="structFrom.city.$dirty && structFrom.city.$error.required" class="self-tips self-tips-no g-c-red1 g-fs4 g-w-percent50">市区不能为空</span>
@@ -447,7 +462,7 @@
                             <div class="form-group-self1">
                                 <label class="self-label g-w-percent10 g-t-r"><span class="self-require g-c-red1">*</span>省</label>
                                 <div class="self-input g-pos-r g-w-percent40">
-                                    <select name="province" required ng-model="struct_ctrl.user.province" ng-change="struct_ctrl.changeAddress(struct_ctrl.user.province,'city')">
+                                    <select name="province" required ng-model="struct_ctrl.user.province" ng-change="struct_ctrl.changeAddress('user','user_address','city')">
                                         <option ng-repeat="item in struct_ctrl.user_address.province" value="{{item.value}}" >{{item.key}}</option>
                                     </select>
 
@@ -459,7 +474,7 @@
                             <div class="form-group-self1">
                                 <label class="self-label g-w-percent10 g-t-r"><span class="self-require g-c-red1">*</span>市</label>
                                 <div class="self-input g-pos-r g-w-percent40">
-                                    <select ng-change="struct_ctrl.changeAddress(struct_ctrl.user.city,'country')" name="city" required ng-model="struct_ctrl.user.city">
+                                    <select ng-change="struct_ctrl.changeAddress('user','user_address','country')" name="city" required ng-model="struct_ctrl.user.city">
                                         <option ng-repeat="item in struct_ctrl.user_address.city" value="{{item.value}}" >{{item.key}}</option>
                                     </select>
                                     <span ng-show="userFrom.city.$dirty && userFrom.city.$error.required" class="self-tips self-tips-no g-c-red1 g-fs4 g-w-percent50">市区不能为空</span>
@@ -543,7 +558,7 @@
                         <!--头部-->
                         <thead>
                         <tr>
-                            <th class="g-t-c" colspan="2">用户详情</th>
+                            <th class="g-t-c" colspan="2">店铺详情</th>
                         </tr>
                         </thead>
 

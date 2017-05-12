@@ -400,6 +400,9 @@
 		};
 		//银行卡格式化
 		tools.cardFormat=function(str){
+			if(typeof str==='undefined' || str===null){
+				return '';
+			}
 			var cardno=str.toString().replace(/\s*/g,'');
 			if(cardno==''){
 				return '';
@@ -418,6 +421,9 @@
 		};
 		//手机格式化
 		tools.phoneFormat=function(str){
+			if(typeof str==='undefined' || str===null){
+				return '';
+			}
 			var phoneno=str.toString().replace(/\s*\D*/g,'');
 			if(phoneno==''){
 				return '';
@@ -440,6 +446,9 @@
 		};
 		//电话格式化
 		tools.telePhoneFormat=function(str){
+			if(typeof str==='undefined' || str===null){
+				return '';
+			}
 			var phoneno=str.toString().replace(/\s*\D*/g,'');
 			if(phoneno==''){
 				return '';
