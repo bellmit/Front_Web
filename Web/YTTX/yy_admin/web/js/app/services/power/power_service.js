@@ -257,6 +257,7 @@ angular.module('power.service',[])
 					var menuitem=config.menu,
 						temp_id=typeof config.id!=='undefined'?config.id:'';
 				}
+
 				for(i;i<len;i++){
 					var index=parseInt(h_items[i],10),
 						item=request?menuitem[index]:powerCache[index],
@@ -265,10 +266,8 @@ angular.module('power.service',[])
 						sublen=power.length;
 
 					str+='<td class="g-b-white">';
-
 					for(j;j<sublen;j++){
 						var subitem=power[j];
-
 						if(request){
 							/*如果是请求*/
 							if(config.clear){
@@ -284,6 +283,7 @@ angular.module('power.service',[])
 									/*有权限*/
 									str+='<label class="btn btn-default g-gap-mb2 g-gap-mr2"><input data-roleid="'+temp_id+'" data-prid="'+subitem["prid"]+'" data-modid="'+subitem["modId"]+'" checked="true" type="checkbox" name="'+item["module"]+'" />&nbsp;'+subitem["funcName"]+'</label>';
 								}
+
 							}
 						}else{
 							/*非请求*/

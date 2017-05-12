@@ -929,8 +929,6 @@ angular.module('app')
             }
             return result;
         };
-
-
         /*机构服务--操作机构*/
         this.actionStruct=function (config) {
             var modal=config.modal,
@@ -1179,12 +1177,10 @@ angular.module('app')
                         }
                     });
         };
-
-
-
         /*机构服务--调整机构位置*/
-        this.adjustStructPos=function (structpos,fn) {
-            var ispos=self.getStructPos(structpos);
+        this.adjustStructPos=function (config) {
+            var structpos=config.structpos,
+                ispos=self.getStructPos(structpos);
 
             if(!ispos){
                 toolDialog.show({
@@ -1214,7 +1210,7 @@ angular.module('app')
                                     var code=parseInt(data.code,10),
                                         message=data.message;
                                     if(code!==0){
-                                        if(typeof message !=='undefined'&&message!==''){
+                                        if(typeof message !=='undefined' && message!==''){
                                             console.log(message);
                                         }
 
@@ -1230,7 +1226,7 @@ angular.module('app')
                                                 type:'warn',
                                                 value:'位置调整失败'
                                             });
-                                            /*更新模型*/
+                                            /*清除模型数据*/
                                             self.clearStructPos(structpos);
                                         }
                                     }else{
@@ -1238,12 +1234,13 @@ angular.module('app')
                                             type:'succ',
                                             value:'位置调整成功'
                                         });
-                                        /*更新模型*/
+                                        /*清除模型数据*/
                                         self.clearStructPos(structpos);
-                                        /*回调fn*/
-                                        if(fn && typeof fn==='function'){
-                                            fn.call(null);
-                                        }
+                                        /*重新加载数据*/
+                                        self.getMenuList({
+                                            record:config.record,
+                                            table:config.table
+                                        });
                                     }
                                 }
                             },
@@ -1266,8 +1263,6 @@ angular.module('app')
                 }
             }
         };
-
-
         /*机构服务--获取机构数据*/
         this.getStructPos=function (structpos) {
             if(!structpos){
@@ -1635,6 +1630,27 @@ angular.module('app')
         /*地址服务--地址查询*/
         this.queryAddress=function (config) {
             addressService.queryRelation(config);
+        };
+
+
+
+        /*权限服务--全选权限*/
+        this.selectAllPower=function (e) {
+            powerService.selectAllPower(e);
+        };
+        /*权限服务--确定所选权限*/
+        this.getSelectPower=function (struct) {
+            var temppower=powerService.getSelectPower();
+            if(temppower){
+                struct.checkedFunctionIds=temppower.join();
+            }else{
+                struct.checkedFunctionIds='';
+            }
+        };
+        /*权限服务--取消所选权限*/
+        this.clearSelectPower=function (struct) {
+            struct.checkedFunctionIds='';
+            powerService.clearSelectPower();
         };
 
 

@@ -45,12 +45,12 @@ angular.module('app')
         this.tabitem=[{
             name:'运营架构',
             href:'struct',
-            power:self.powerlist.structadd,
+            power:self.powerlist.organization_add,
             active:'tabactive'
         },{
             name:'角色',
             href:'role',
-            power:self.powerlist.roleadd,
+            power:self.powerlist.role_add,
             active:''
         }];
 
@@ -441,6 +441,14 @@ angular.module('app')
                 });
             }
         };
+        /*机构服务--调整位置*/
+        this.adjustStructPos=function () {
+            structService.adjustStructPos({
+                structpos:self.structpos,
+                record:self.record,
+                table:self.table
+            });
+        };
 
 
         /*弹出层显示隐藏*/
@@ -464,6 +472,19 @@ angular.module('app')
         };
 
 
+
+        /*权限服务--全选权限*/
+        this.selectAllPower=function (e) {
+            structService.selectAllPower(e);
+        };
+        /*权限服务--确定所选权限*/
+        this.getSelectPower=function () {
+            structService.getSelectPower(self.struct);
+        };
+        /*权限服务--取消所选权限*/
+        this.clearSelectPower=function () {
+            structService.clearSelectPower(self.struct);
+        };
 
 
 
