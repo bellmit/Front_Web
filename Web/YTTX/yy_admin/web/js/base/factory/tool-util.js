@@ -438,6 +438,16 @@
 			}
 			return phoneno.join('');
 		};
+		//电话格式化
+		tools.telePhoneFormat=function(str){
+			var phoneno=str.toString().replace(/\s*\D*/g,'');
+			if(phoneno==''){
+				return '';
+			}
+			phoneno=phoneno.split('');
+			phoneno.splice(3,1,phoneno[3]+"-");
+			return phoneno.join('');
+		};
 		//密码强度(当前密码，提示信息，密码起始范围(数组))
 		tools.pwdStrong=function(str,tip,scope){
 			var score=0,

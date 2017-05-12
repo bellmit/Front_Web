@@ -950,9 +950,7 @@ angular.module('app')
             self.clearFormDelay();
             /*通过延迟任务清空表单数据*/
             self.addFormDelay({
-                type:'struct',
-                value:type,
-                model:struct
+                type:'struct'
             });
 
             /*根据类型跳转相应逻辑*/
@@ -1038,7 +1036,10 @@ angular.module('app')
                                                 case 'fullName':
                                                     struct[i]=list[i];
                                                     break;
-                                                case 'comname':
+                                                case 'shortName':
+                                                    struct[i]=list[i];
+                                                    break;
+                                                case 'adscriptionRegion':
                                                     struct[i]=list[i];
                                                     break;
                                                 case 'linkman':
@@ -1047,10 +1048,27 @@ angular.module('app')
                                                 case 'cellphone':
                                                     struct[i]=toolUtil.phoneFormat(list[i]);
                                                     break;
+                                                case 'telephone':
+                                                    struct[i]=toolUtil.telePhoneFormat(list[i]);
+                                                    break;
+                                                case 'province':
+                                                    struct['province']=list['province'];
+                                                    struct['city']=list['city'];
+                                                    struct['country']=list['country'];
+                                                    /*更新地址查询模型*/
+                                                    self.queryAddress({
+                                                        type:'province',
+                                                        address:config.address,
+                                                        model:self.user
+                                                    });
+                                                    break;
                                                 case 'address':
                                                     struct[i]=list[i];
                                                     break;
-                                                case 'operatingArea':
+                                                case 'isAudited':
+                                                    struct[i]=list[i];
+                                                    break;
+                                                case 'status':
                                                     struct[i]=list[i];
                                                     break;
                                                 case 'remark':
@@ -1087,7 +1105,6 @@ angular.module('app')
                                                             /*数据源*/
                                                             var child_data=cs,
                                                                 parent_data;
-                                                            console.log(child_data);
                                                             if(child_data!==null){
                                                                 /*存在数据源*/
                                                                 powerService.reqPowerList({
@@ -1096,11 +1113,9 @@ angular.module('app')
                                                                     sourcefn:function (ps) {
                                                                         /*数据源*/
                                                                         parent_data=ps;
-                                                                        console.log(parent_data);
                                                                         if(parent_data!==null){
                                                                             /*存在数据源，开始过滤权限数据*/
                                                                             var filter_data=powerService.filterPower(parent_data,child_data);
-                                                                            console.log(filter_data);
                                                                             if(filter_data){
                                                                                 /*过滤后的数据即映射到视图*/
                                                                                 var power_html=powerService.resolvePowerList({
@@ -1320,8 +1335,6 @@ angular.module('app')
         this.addFormDelay=function (config) {
             /*映射对象*/
             var type=config.type,
-                value=config.value,
-                model=config.model,
                 type_map={
                     'struct':{
                         'timeid':structform_reset_timer,
@@ -1336,10 +1349,7 @@ angular.module('app')
             type_map[type]['timeid']=$timeout(function(){
                 /*触发重置表单*/
                 type_map[type]['dom'].trigger('click');
-                /*设置模型*/
-                if(typeof model!=='undefined' && typeof value!=='undefined'){
-                    model.type=value;
-                }
+
             },0);
         };
         /*表单类服务--清除延时任务序列*/
@@ -1364,34 +1374,37 @@ angular.module('app')
             if(!data){
                 return false;
             }
-            if(type==='struct'){
-                /*重置机构数据模型*/
+
+            if(typeof type!=='undefined' && type!==''){
+                /*特殊重置*/
+                if(type==='struct'){
+                    /*重置机构数据模型*/
+                    for(var i in data){
+                        if(i==='isSettingLogin'){
+                            /*是否设置登录名*/
+                            data[i]=1;
+                        }else if(i==='isDesignatedPermit'){
+                            /*是否指定权限*/
+                            data[i]=1;
+                        }else if(i==='type'){
+                            /*操作类型为新增*/
+                            data[i]='add';
+                        }else{
+                            data[i]='';
+                        }
+                    }
+                }
+            }else {
+                /*通用重置*/
                 for(var i in data){
-                    if(i==='isSettingLogin'){
-                        /*是否设置登录名*/
-                        data[i]=1;
-                    }else if(i==='isDesignatedPermit'){
-                        /*是否指定权限*/
-                        data[i]=1;
-                    }else if(i==='type'){
+                    if(i==='type'){
                         /*操作类型为新增*/
                         data[i]='add';
                     }else{
                         data[i]='';
                     }
                 }
-            }else if(type==='user'){
-                /*重置用户数据模型*/
-                for(var j in data){
-                    if(j==='type'){
-                        /*操作类型为新增*/
-                        data[j]='add';
-                    }else{
-                        data[j]='';
-                    }
-                }
             }
-
         };
         /*表单类服务--重置表单数据*/
         this.clearFormValid=function (forms) {
@@ -1418,9 +1431,414 @@ angular.module('app')
             }
         };
         /*表单类服务--提交表单数据*/
-        this.structSubmit=function (struct,setting,search) {
+        this.formSubmit=function (config,type) {
+            if(cache){
+                var action='',
+                    param=$.extend(true,{},cache.loginMap.param),
+                    req_config={
+                        method:'post',
+                        set:true
+                    },
+                    tip_map={
+                        'add':'新增',
+                        'edit':'编辑',
+                        'user':'店铺',
+                        'struct':'组织机构'
+                    },
+                    temp_value='';
+
+                /*适配参数*/
+                if(type==='struct'){
+                    /*公共配置*/
+                    param['fullName']=config[type]['fullName'];
+                    param['shortName']=config[type]['shortName'];
+                    param['adscriptionRegion']=config[type]['adscriptionRegion'];
+                    param['linkman']=config[type]['linkman'];
+                    param['cellphone']=toolUtil.trims(config[type]['cellphone']);
+                    param['telephone']=toolUtil.trimSep(config[type]['telephone'],'-');
+                    param['province']=config[type]['province'];
+                    param['city']=config[type]['city'];
+                    param['country']=config[type]['country'];
+                    param['address']=config[type]['address'];
+                    param['isAudited']=config[type]['isAudited'];
+                    param['status']=config[type]['status'];
+                    param['remark']=config[type]['remark'];
+
+                    /*处理特殊值*/
+                    var isSettingLogin=parseInt(config[type]['isSettingLogin'],10);
+                    param['isSettingLogin']=isSettingLogin;
+
+                    /*判断是否指定权限*/
+                    var isDesignatedPermit=parseInt(config[type]['isDesignatedPermit'],10);
+                    param['isDesignatedPermit']=isDesignatedPermit;
+                    if(isDesignatedPermit===1){
+                        param['checkedFunctionIds']=config[type]['checkedFunctionIds'];
+                    }
+
+
+                    /*判断是新增还是修改*/
+                    if(config[type]['id']===''){
+                        action='add';
+                        if(isSettingLogin===1){
+                            /*选中设置登录名*/
+                            param['username']=config[type]['username'];
+                            param['password']=config[type]['password'];
+                        }
+
+                        req_config['url']='/organization/add';
+                    }else{
+                        action='edit';
+                        if(isSettingLogin===1){
+                            /*选中设置登录名*/
+                            var temp_username=config[type]['username'];
+                            if(temp_username===''){
+                                param['username']=config[type]['username'];
+                                param['password']=config[type]['password'];
+                            }
+                        }
+                        param['id']=config[type]['id'];
+                        req_config['url']='/organization/update';
+                    }
+                }else if(type==='user'){
+                    /*公共配置*/
+                    param['fullName']=config[type]['fullName'];
+                    param['shortName']=config[type]['shortName'];
+                    param['name']=config[type]['name'];
+                    param['shoptype']=config[type]['shoptype'];
+                    param['cellphone']=toolUtil.trims(config[type]['cellphone']);
+                    param['telephone']=toolUtil.trimSep(config[type]['telephone'],'-');
+                    param['province']=config[type]['province'];
+                    param['city']=config[type]['city'];
+                    param['country']=config[type]['country'];
+                    param['address']=config[type]['address'];
+                    param['status']=config[type]['status'];
+                    param['remark']=config[type]['remark'];
+
+                    /*判断是新增还是修改*/
+                    if(config[type]['id']===''){
+                        action='add';
+                        req_config['url']='/organization/shop/add';
+                    }else{
+                        action='edit';
+                        param['id']=config[type]['id'];
+                        req_config['url']='/organization/shop/update';
+                    }
+
+                }
+                req_config['data']=param;
+
+                toolUtil
+                    .requestHttp(req_config)
+                    .then(function(resp){
+                            var data=resp.data,
+                                status=parseInt(resp.status,10);
+
+                            if(status===200){
+                                var code=parseInt(data.code,10),
+                                    message=data.message;
+                                if(code!==0){
+                                    if(typeof message !=='undefined' && message!==''){
+                                        toolDialog.show({
+                                            type:'warn',
+                                            value:message
+                                        });
+                                    }else{
+                                        toolDialog.show({
+                                            type:'warn',
+                                            value:tip_map[action]+tip_map[type]+'失败'
+                                        });
+                                    }
+                                    if(code===999){
+                                        /*退出系统*/
+                                        cache=null;
+                                        toolUtil.loginTips({
+                                            clear:true,
+                                            reload:true
+                                        });
+                                    }
+                                    return false;
+                                }else{
+                                    /*操作成功即加载数据*/
+                                    /*to do*/
+                                    if(type==='struct'){
+                                        self.getMenuList({
+                                            record:config.record,
+                                            table:config.table
+                                        });
+                                    }else if(type==='user'){
+                                        /*重新加载表格数据*/
+                                        /*查询店铺信息*/
+                                        if(config.record.structId===''){
+                                            self.getColumnData(config.table,config.record.organizationId);
+                                        }else{
+                                            self.getColumnData(config.table,config.record.structId);
+                                        }
+                                    }
+                                    /*重置表单*/
+                                    self.addFormDelay({
+                                        type:type
+                                    });
+                                    /*提示操作结果*/
+                                    toolDialog.show({
+                                        type:'succ',
+                                        value:tip_map[action]+tip_map[type]+'成功'
+                                    });
+                                    /*弹出框隐藏*/
+                                    self.toggleModal({
+                                        display:'hide',
+                                        area:type,
+                                        delay:1000
+                                    });
+                                }
+                            }
+                        },
+                        function(resp){
+                            var message=resp.data.message;
+                            if(typeof message !=='undefined'&&message!==''){
+                                toolDialog.show({
+                                    type:'warn',
+                                    value:message
+                                });
+                            }else{
+                                toolDialog.show({
+                                    type:'warn',
+                                    value:tip_map[action]+tip_map[type]+'失败'
+                                });
+                            }
+                        });
+            }else{
+                /*退出系统*/
+                cache=null;
+                toolUtil.loginTips({
+                    clear:true,
+                    reload:true
+                });
+            }
+        };
+        /*表单服务类--重置表单*/
+        this.formReset=function (config,type) {
+            if(type ==='struct'){
+
+                /*重置表单模型,如果是2参数则为特殊重置，1个参数为通用重置*/
+                self.clearFormData(config[type],type);
+                /*重置权限信息*/
+                self.clearSelectPower(config[type]);
+            }else if(type ==='user'){
+                /*特殊情况--成员*/
+                self.clearFormData(config);
+            }
+            /*重置验证提示信息*/
+            self.clearFormValid(config.forms);
+        };
+        /*表单服务类--权限服务--全选权限*/
+        this.selectAllPower=function (e) {
+            powerService.selectAllPower(e);
+        };
+        /*表单服务类--权限服务--确定所选权限*/
+        this.getSelectPower=function (struct) {
+            var temppower=powerService.getSelectPower();
+            if(temppower){
+                struct.checkedFunctionIds=temppower.join();
+            }else{
+                struct.checkedFunctionIds='';
+            }
+        };
+        /*表单服务类--权限服务--取消所选权限*/
+        this.clearSelectPower=function (struct) {
+            struct.checkedFunctionIds='';
+            powerService.clearSelectPower();
+        };
+
+
+        /*用户服务--操作用户*/
+        this.actionUser=function (config) {
+            var modal=config.modal,
+                type=modal.type,
+                record=config.record,
+                user=config.user;
+
+            if(type==='add'){
+                /*判断是否是合法的节点，即是否有父机构*/
+                if(record.structId==='' && record.organizationId===''){
+                    toolDialog.show({
+                        type:'warn',
+                        value:'没有父机构或父机构不存在'
+                    });
+                    return false;
+                }
+            }
+            /*如果存在延迟任务则清除延迟任务*/
+            self.clearFormDelay();
+            /*通过延迟任务清空表单数据*/
+            self.addFormDelay({
+                type:'user'
+            });
+            /*显示弹窗*/
+            self.toggleModal({
+                display:modal.display,
+                area:modal.area
+            });
+        };
+        /*用户服务--查询用户数据*/
+        this.queryUserInfo=function (config,id,action) {
+            if(cache===null){
+                return false;
+            }
+
+            if(typeof id==='undefined'){
+                toolDialog.show({
+                    type:'warn',
+                    value:'没有店铺信息'
+                });
+                return false;
+            }
+
+            var param=$.extend(true,{},cache.loginMap.param);
+            /*判断参数*/
+            param['id']=id;
+            if(action==='update'){
+                var user=config.user,
+                    modal=config.modal;
+            }
+
+
+            toolUtil
+                .requestHttp({
+                    url:'/organization/shop/info',
+                    method:'post',
+                    set:true,
+                    data:param
+                })
+                .then(function(resp){
+                        var data=resp.data,
+                            status=parseInt(resp.status,10);
+
+                        if(status===200){
+                            var code=parseInt(data.code,10),
+                                message=data.message;
+                            if(code!==0){
+                                if(typeof message !=='undefined'&&message!==''){
+                                    console.log(message);
+                                }else{
+                                    console.log('请求数据失败');
+                                }
+
+                                if(code===999){
+                                    /*退出系统*/
+                                    cache=null;
+                                    toolUtil.loginTips({
+                                        clear:true,
+                                        reload:true
+                                    });
+                                }
+                            }else{
+                                /*加载数据*/
+                                var result=data.result;
+                                if(typeof result!=='undefined'){
+                                    var list=result.shop;
+                                    if(list){
+                                        if(action==='update'){
+                                            /*修改：更新模型*/
+                                            for(var i in list){
+                                                switch (i){
+                                                    case 'id':
+                                                        user[i]=list[i];
+                                                        break;
+                                                    case 'nickName':
+                                                        user[i]=list[i];
+                                                        break;
+                                                    case 'phone':
+                                                        user[i]=toolUtil.phoneFormat(list[i]);
+                                                        break;
+                                                    case 'address':
+                                                        user[i]=list[i];
+                                                        break;
+                                                    case 'mainFee':
+                                                        user[i]=list[i];
+                                                        break;
+                                                    case 'machineCode':
+                                                        user[i]=list[i];
+                                                        break;
+                                                    case 'remark':
+                                                        user[i]=list[i];
+                                                        break;
+                                                }
+                                            }
+                                            /*显示弹窗*/
+                                            self.toggleModal({
+                                                display:modal.display,
+                                                area:modal.area
+                                            });
+                                        }else if(action==='detail'){
+                                            /*查看*/
+                                            var str='',
+                                                detail_map={
+                                                    'nickName':'用户名称',
+                                                    'phone':'手机号码',
+                                                    'address':'联系地址',
+                                                    'mainFee':'费率',
+                                                    'machineCode':'机器码(IMEI)',
+                                                    'identityState':'身份证验证状态',
+                                                    'remark':'备注',
+                                                    'createTime':'创建时间',
+                                                    'grade':'用户级别',
+                                                    'gender':'',
+                                                    'strategyNotice':'',
+                                                    'status':'状态'
+                                                };
+                                            for(var j in list){
+                                                if(typeof detail_map[j]!=='undefined'){
+                                                    if(j==='identityState'){
+                                                        var tempstate=parseInt(list[j],10);
+                                                        if(tempstate===0){
+                                                            str+='<tr><td class="g-t-r">身份证验证状态:</td><td class="g-t-l g-c-warn">未验证</td></tr>';
+                                                        }else if(tempstate===1){
+                                                            str+='<tr><td class="g-t-r">身份证验证状态:</td><td class="g-t-l g-c-gray9">正在验证</td></tr>';
+                                                        }else if(tempstate===2){
+                                                            str+='<tr><td class="g-t-r">身份证验证状态:</td><td class="g-t-l g-c-blue1">验证通过</td></tr>';
+                                                        }else if(tempstate===3){
+                                                            str+='<tr><td class="g-t-r">身份证验证状态:</td><td class="g-t-l g-c-red1">验证不通过</td></tr>';
+                                                        }else{
+                                                            str+='<tr><td class="g-t-r">身份证验证状态:</td><td class="g-t-l g-c-gray6">其他</td></tr>';
+                                                        }
+                                                    }else{
+                                                        str+='<tr><td class="g-t-r">'+detail_map[j]+':</td><td class="g-t-l">'+list[j]+'</td></tr>';
+                                                    }
+                                                }
+                                            }
+                                            if(str!==''){
+                                                $(str).appendTo(self.$admin_userdetail_show.html(''));
+                                                /*显示弹窗*/
+                                                self.toggleModal({
+                                                    display:'show',
+                                                    area:'userdetail'
+                                                });
+                                            }
+                                        }
+                                    }else{
+                                        /*提示信息*/
+                                        toolDialog.show({
+                                            type:'warn',
+                                            value:'获取编辑数据失败'
+                                        });
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    function(resp){
+                        var message=resp.data.message;
+                        if(typeof message !=='undefined'&&message!==''){
+                            console.log(message);
+                        }else{
+                            console.log('请求用户失败');
+                        }
+                    });
+        };
+        /*用户服务--提交表单数据*/
+        this.userSubmit=function (user,setting,table) {
             /*判断表单类型*/
-            if(struct.type===''||typeof struct.type==='undefined'){
+            if(user.type===''||typeof user.type==='undefined'){
                 /*非法表单类型*/
                 toolDialog.show({
                     type:'warn',
@@ -1434,49 +1852,36 @@ angular.module('app')
                 var param=$.extend(true,{},cache.loginMap.param);
                 /*数据适配*/
                 /*公共配置*/
-                param['orgname']=struct.orgname;
-                param['comname']=struct.comname;
-                param['linkman']=struct.linkman;
-                param['cellphone']=toolUtil.trims(struct.cellphone);
-                param['address']=struct.address;
-                param['operatingArea']=struct.operatingArea;
-                param['remark']=struct.remark;
-                /*判断设置登录名*/
-                var isSettingLogin=parseInt(struct.isSettingLogin,10);
-                param['isSettingLogin']=isSettingLogin;
-                if(isSettingLogin===1){
-                    /*选中设置登录名*/
-                    param['username']=struct.username;
-                    param['password']=struct.password;
-                }
+                param['nickName']=user.nickName;
+                param['phone']=toolUtil.trims(user.phone);
+                param['address']=user.address;
+                param['mainFee']=user.mainFee;
+                param['machineCode']=user.machineCode;
+                param['remark']=user.remark;
 
-                /*判断是否指定权限*/
-                var isDesignatedPermit=parseInt(struct.isDesignatedPermit,10);
-                param['isDesignatedPermit']=struct.isDesignatedPermit;
-                if(isDesignatedPermit===1){
-                    param['checkedFunctionIds']=struct.checkedFunctionIds;
-                }
-
-
-                if(struct.type==='add'){
+                if(user.type==='add'){
                     /*新增机构或子机构*/
-                    param['parentId']=setting.id;
-                }else if(struct.type==='edit'){
+                    /*判断参数*/
+                    if(setting.c_id!==''){
+                        param['organizationId']=setting.c_id;
+                    }else if(setting.c_id===''){
+                        param['organizationId']=setting.id;
+                    }
+                }else if(user.type==='edit'){
                     /*编辑机构或子机构*/
-                    if(struct.id===''){
+                    delete param['organizationId'];
+                    if(user.id===''){
                         toolDialog.show({
                             type:'warn',
                             value:'非法的编辑数据'
                         });
                         return false;
                     }
-                    param['id']=struct.id;
-                    param['sysUserId']=struct.sysUserId;
-                    param['parentId']=struct.parentId;
+                    param['id']=user.id;
                 }
                 toolUtil
                     .requestHttp({
-                        url:struct.type==='add'?'/organization/add':'/organization/update',
+                        url:user.type==='add'?'/organization/user/add':'/organization/user/update',
                         method:'post',
                         set:true,
                         data:param
@@ -1497,7 +1902,7 @@ angular.module('app')
                                     }else{
                                         toolDialog.show({
                                             type:'warn',
-                                            value:struct.type==='add'?'新增机构失败':'编辑机构失败'
+                                            value:user.type==='add'?'新增用户失败':'编辑用户失败'
                                         });
                                     }
                                     if(code===999){
@@ -1511,23 +1916,20 @@ angular.module('app')
                                     return false;
                                 }else{
                                     /*操作成功即加载数据*/
-                                    /*重新加载侧边栏数据*/
-                                    self.getMenuList({
-                                        search:search.searchname,
-                                        setting:setting
-                                    });
+                                    /*重新加载表格数据*/
+                                    self.getColumnData(table);
                                     /*重置表单*/
                                     self.addFormDelay({
-                                        type:'struct'
+                                        type:'user'
                                     });
                                     /*弹出框隐藏*/
                                     toolDialog.show({
                                         type:'succ',
-                                        value:struct.type==='add'?'新增机构成功':'编辑机构成功'
+                                        value:user.type==='add'?'新增用户成功':'编辑用户成功'
                                     });
                                     self.toggleModal({
                                         display:'hide',
-                                        area:'setting',
+                                        area:'user',
                                         delay:1000
                                     });
                                 }
@@ -1546,7 +1948,116 @@ angular.module('app')
                 return false
             }
         };
+        /*用户服务--批量删除*/
+        this.batchDeleteUser=function (setting,table,id) {
+            if(cache===null){
+                toolUtil.loginTips({
+                    clear:true,
+                    reload:true
+                });
+                return false;
+            }
+            var type;
+            if(typeof id==='undefined'){
+                var batchdata=dataTableCheckAllService.getBatchData(table.tablecheckall),
+                    len=batchdata.length;
+                if(len===0){
+                    toolDialog.show({
+                        type:'warn',
+                        value:'请选中相关数据'
+                    });
+                    return false;
+                }
+                type='batch';
+            }else{
+                if(isNaN(id)){
+                    toolDialog.show({
+                        type:'warn',
+                        value:'请选中相关数据'
+                    });
+                    return false;
+                }
+                type='base';
+            }
+            var param=$.extend(true,{},cache.loginMap.param);
 
+            /*判断参数*/
+            if(setting.c_id!==''){
+                param['organizationId']=setting.c_id;
+            }else if(setting.c_id===''){
+                param['organizationId']=setting.id;
+            }
+
+            if(type==='batch'){
+                param['userIds']=batchdata.join(',');
+            }else if(type==='base'){
+                param['userIds']=id;
+            }
+
+            /*确认是否删除*/
+            toolDialog.sureDialog('',function () {
+                /*执行删除操作*/
+                toolUtil
+                    .requestHttp({
+                        url:'/organization/users/delete',
+                        method:'post',
+                        set:true,
+                        data:param
+                    })
+                    .then(function(resp){
+                            var data=resp.data,
+                                status=parseInt(resp.status,10);
+
+                            if(status===200){
+                                var code=parseInt(data.code,10),
+                                    message=data.message;
+                                if(code!==0){
+                                    if(typeof message !=='undefined'&&message!==''){
+                                        /*提示信息*/
+                                        toolDialog.show({
+                                            type:'warn',
+                                            value:message
+                                        });
+                                    }else{
+                                        /*提示信息*/
+                                        toolDialog.show({
+                                            type:'warn',
+                                            value:'删除用户失败'
+                                        });
+                                    }
+
+                                    if(code===999){
+                                        /*退出系统*/
+                                        cache=null;
+                                        toolUtil.loginTips({
+                                            clear:true,
+                                            reload:true
+                                        });
+                                    }
+                                }else{
+                                    /*提示信息*/
+                                    toolDialog.show({
+                                        type:'succ',
+                                        value:'删除用户成功'
+                                    });
+
+                                    /*清空全选*/
+                                    dataTableCheckAllService.clear(table.tablecheckall);
+                                    /*重新加载数据*/
+                                    self.getColumnData(table);
+                                }
+                            }
+                        },
+                        function(resp){
+                            var message=resp.data.message;
+                            if(typeof message !=='undefined' && message!==''){
+                                console.log(message);
+                            }else{
+                                console.log('删除用户失败');
+                            }
+                        });
+            },type==='base'?'是否真要删除用户数据':'是否真要批量删除用户数据',true);
+        };
 
 
         /*数据服务--请求数据--获取表格数据*/
@@ -1626,7 +2137,7 @@ angular.module('app')
             }
         };
 
-
+        
         /*地址服务--地址查询*/
         this.queryAddress=function (config) {
             addressService.queryRelation(config);
@@ -1634,24 +2145,7 @@ angular.module('app')
 
 
 
-        /*权限服务--全选权限*/
-        this.selectAllPower=function (e) {
-            powerService.selectAllPower(e);
-        };
-        /*权限服务--确定所选权限*/
-        this.getSelectPower=function (struct) {
-            var temppower=powerService.getSelectPower();
-            if(temppower){
-                struct.checkedFunctionIds=temppower.join();
-            }else{
-                struct.checkedFunctionIds='';
-            }
-        };
-        /*权限服务--取消所选权限*/
-        this.clearSelectPower=function (struct) {
-            struct.checkedFunctionIds='';
-            powerService.clearSelectPower();
-        };
+
 
 
     }]);

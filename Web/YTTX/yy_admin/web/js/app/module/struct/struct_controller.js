@@ -54,6 +54,19 @@ angular.module('app')
             active:''
         }];
 
+        /*模型--机构地址*/
+        this.address={
+            province:{},
+            city:{},
+            country:{}
+        };
+        /*模型--店铺地址*/
+        this.user_address={
+            province:{},
+            city:{},
+            country:{}
+        };
+
 
         /*模型--操作记录*/
         this.record={
@@ -73,14 +86,11 @@ angular.module('app')
 
 
         /*模型--机构数据*/
-        /*模型--地址*/
-        this.address={
-            province:{},
-            city:{},
-            country:{}
-        };
         this.struct={
             type:'add'/*表单类型：新增，编辑；默认为新增*/,
+            id:''/*运营商ID，编辑时相关参数*/,
+            sysUserId:''/*运营商用户ID，编辑时相关参数*/,
+            parentId:''/*上级运营商ID，编辑时相关参数*/,
             fullName:''/*运营商全称*/,
             shortName:''/*运营商简称*/,
             adscriptionRegion:''/*归属地区*/,
@@ -98,25 +108,27 @@ angular.module('app')
             username:''/*设置登录名*/,
             password:''/*设置登录密码*/,
             isDesignatedPermit:''/*是否指定权限,0:全部权限 1:指定权限*/,
-            checkedFunctionIds:''/*选中权限Ids*/,
-            sysUserId:''/*运营商用户ID，编辑时相关参数*/,
-            id:''/*运营商ID，编辑时相关参数*/,
-            parentId:''/*上级运营商ID，编辑时相关参数*/
+            checkedFunctionIds:''/*选中权限Ids*/
         };
 
 
-        /*模型--用户*/
+        /*模型--用户(店铺)*/
         this.user={
             type:'add'/*表单类型：新增，编辑；默认为新增*/,
             filter:''/*表格过滤关键词*/,
-            id:''/*用户ID*/,
-            nickName:''/*姓名*/,
-            phone:''/*手机号码*/,
-            address:''/*地址*/,
-            mainFee:''/*费率*/,
-            machineCode:''/*机器码*/,
-            remark:''/*备注*/,
-            roleId:''/*角色id*/
+            id:''/*用户ID，用于编辑状态*/,
+            fullName:''/*店铺全称*/,
+            shortName:''/*店铺简称*/,
+            name:''/*姓名*/,
+            shoptype:'1'/*店铺类型（原为type,因为user模型已经存在type,所以以shoptype代替type字段）：1 旗舰店：2 体验店：3 加盟店*/,
+            cellphone:''/*店铺手机号码*/,
+            telephone:''/*店铺电话号码*/,
+            province:''/*省份*/,
+            city:''/*市区*/,
+            country:''/*县区*/,
+            address:''/*详细地址*/,
+            status:0/*状态：0：正常，1：停用*/,
+            remark:''/*备注*/
         };
 
 
@@ -386,6 +398,12 @@ angular.module('app')
             address:self.address,
             model:self.struct
         });
+        /*初始化服务--初始化地址信息*/
+        structService.queryAddress({
+            type:'province',
+            address:self.user_address,
+            model:self.user
+        });
         
 
         /*地址服务--选中地址*/
@@ -431,15 +449,14 @@ angular.module('app')
         };
         /*机构服务--操作机构表单*/
         this.actionStruct=function (config) {
-            if(config.type){
-                /*调用编辑机构服务类*/
-                structService.actionStruct({
-                    modal:config,
-                    record:self.record,
-                    struct:self.struct,
-                    power:self.power
-                });
-            }
+            /*调用编辑机构服务类*/
+            structService.actionStruct({
+                modal:config,
+                record:self.record,
+                struct:self.struct,
+                address:self.address,
+                power:self.power
+            });
         };
         /*机构服务--调整位置*/
         this.adjustStructPos=function () {
@@ -462,28 +479,77 @@ angular.module('app')
 
         /*表单服务--提交表单*/
         this.formSubmit=function (type) {
-            /*structService.formSubmit({
+            structService.formSubmit({
                 struct:self.struct,
                 user:self.user,
                 table:self.table,
                 record:self.record
-            },type);*/
-            return false;
+            },type);
         };
-
-
-
-        /*权限服务--全选权限*/
+        /*表单服务--重置表单*/
+        this.formReset=function (forms,type) {
+            /*重置表单模型*/
+            structService.formReset({
+                forms:forms,
+                struct:self.struct,
+                user:self.user,
+                record:self.record
+            },type);
+        };
+        /*表单服务--选择登录用户名和密码*/
+        this.clearLoginInfo=function () {
+            /*设置登录名和密码*/
+            self.struct.username='';
+            self.struct.password='';
+        };
+        /*表单服务--权限服务--全选权限*/
         this.selectAllPower=function (e) {
             structService.selectAllPower(e);
         };
-        /*权限服务--确定所选权限*/
+        /*表单服务--权限服务--确定所选权限*/
         this.getSelectPower=function () {
             structService.getSelectPower(self.struct);
         };
-        /*权限服务--取消所选权限*/
+        /*表单服务--权限服务--取消所选权限*/
         this.clearSelectPower=function () {
             structService.clearSelectPower(self.struct);
+        };
+
+
+        /*用户服务--操作用户表单*/
+        this.actionUser=function (config) {
+            /*调用编辑机构服务类*/
+            structService.actionUser({
+                modal:config,
+                record:self.record,
+                address:self.user_address,
+                user:self.user
+            });
+        };
+        /*用户服务--过滤表格数据*/
+        this.filterDataTable=function () {
+            structService.filterDataTable(self.table.list_table,self.user);
+        };
+        /*用户服务--提交表单*/
+        this.userSubmit=function () {
+            /*提交服务*/
+            structService.userSubmit(self.user,self.setting,self.table);
+
+        };
+        /*用户服务--重置表单*/
+        this.userReset=function (forms){
+            /*重置表单模型*/
+            structService.clearFormData(self.user,'user');
+            /*重置验证提示信息*/
+            structService.clearFormValid(forms);
+        };
+        /*用户服务--批量删除*/
+        this.batchDeleteUser=function () {
+            structService.batchDeleteUser(self.setting,self.table);
+        };
+        /*用户服务--调整运营商*/
+        this.adjustOperate=function () {
+            console.log('to do');
         };
 
 
