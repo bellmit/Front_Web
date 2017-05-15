@@ -5,7 +5,7 @@ var yy_app=angular.module('app')
         basedomain:'http://10.0.5.226:8882'/*请求域名*/
         /*
             test:http://10.0.5.226:8882
-            debug:http://10.0.5.222:8082
+            debug:http://10.0.5.222:8080
         */,
         debug:false/*调试模式开关*/,
         baseproject:'/bms-bzwyys-api'/*请求工程地址*/,

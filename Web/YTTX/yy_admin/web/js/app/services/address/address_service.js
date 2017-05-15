@@ -17,14 +17,12 @@ angular.module('app')
 			顶级分类，数据模型为空，业务模型为空
 			*/
 			if(type==='province' && angular.equals({},address[type]) && model[type]===''){
-				/*初始化查询**/
+				/*初始化查询*/
 				id=86;
-			}else{
-				if(type==='city'){
-					id=model['province'];
-				}else if(type==='country'){
-					id=model['city'];
-				}
+			}else if(type==='city'){
+				id=model['province'];
+			}else if(type==='country'){
+				id=model['city'];
 			}
 			
 			/*组合请求参数*/
@@ -73,16 +71,6 @@ angular.module('app')
 
 													address_item['key']=list_item['name'];
 													address_item['value']=list_item['code'];
-													/*判断选中值*/
-													if(i===0){
-														/*继续判断类型情况*/
-														if(type==='city'){
-															model['city']=list_item['code'];
-															model['country']='';
-														}else if(type==='country'){
-															model['country']=list_item['code'];
-														}
-													}
 													/*判断临时缓存是否存在*/
 													if(!tempaddress[list_item['code']]){
 														tempaddress[list_item['code']]=address_item;
@@ -250,6 +238,50 @@ angular.module('app')
 							console.log('请求失败');
 						}
 					});
+		};
+
+		/*判断是否需要查询
+		主要用于性能优化，减少地址查询消耗，
+		初始化查询中不会用到此服务，
+		返回是否需要重新请求数据的标识符和对应的类型*/
+		this.isReqAddress=function (config,flag) {
+			var type=config.type/*类型：负责判断查询，省，市，区*/,
+				address=config.address/*模型：负责更新数据*/,
+				model=config.model;
+
+			/*模型为空，需重新请求数据*/
+			if(model[type]===''){
+				if(flag){
+					self.queryRelation(config);
+					return false;
+				}else{
+					return {
+						isreq:true,
+						type:type
+					};
+				}
+			}
+			/*数据源没有匹配的模型数据需重新请求数据*/
+			if(address[type][model[type]]){
+				if(flag){
+					return false;
+				}else{
+					return {
+						isreq:false,
+						type:type
+					};
+				}
+			}else{
+				if(flag){
+					self.queryRelation(config);
+					return false;
+				}else{
+					return {
+						isreq:true,
+						type:type
+					};
+				}
+			}
 		};
 
 	}]);

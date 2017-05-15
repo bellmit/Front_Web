@@ -445,7 +445,7 @@
 			return phoneno.join('');
 		};
 		//电话格式化
-		tools.telePhoneFormat=function(str){
+		tools.telePhoneFormat=function(str,type){
 			if(typeof str==='undefined' || str===null){
 				return '';
 			}
@@ -454,7 +454,25 @@
 				return '';
 			}
 			phoneno=phoneno.split('');
-			phoneno.splice(3,1,phoneno[3]+"-");
+			if(type){
+				if(type===3){
+					if(phoneno.length>=3){
+						phoneno.splice(2,1,phoneno[2]+"-");
+					}
+				}else if(type===4){
+					if(phoneno.length>=4){
+						phoneno.splice(3,1,phoneno[3]+"-");
+					}
+				}else {
+					if(phoneno.length>=4){
+						phoneno.splice(3,1,phoneno[3]+"-");
+					}
+				}
+			}else{
+				if(phoneno.length>=4){
+					phoneno.splice(3,1,phoneno[3]+"-");
+				}
+			}
 			return phoneno.join('');
 		};
 		//密码强度(当前密码，提示信息，密码起始范围(数组))
@@ -622,6 +640,25 @@
 		/*是否是合法手机号*/
 		tools.isMobilePhone=function(str){
 			return /^(13[0-9]|15[012356789]|18[0-9]|14[57]|170)[0-9]{8}$/.test(this.trims(str))?true:false;
+		};
+		/*是否是合法手机号*/
+		tools.isTelePhone=function(str,type){
+			/*/(\d{4})(\d{8})/*/
+			/*^(0[0-9]{2,3})?([2-9][0-9]{6,7})+([0-9]{1,4})?$*/
+			var value=this.trims(str);
+
+			value=this.trimSep(value,'-');
+			if(type){
+				if(type===3){
+					return /(\d{3})(\d{8})/.test(value)?true:false;
+				}else if(type===4){
+					return /(\d{4})(\d{8})/.test(value)?true:false;
+				}else{
+					return /(\d{4})(\d{8})/.test(value)?true:false;
+				}
+			}else{
+				return /(\d{4})(\d{8})/.test(value)?true:false;
+			}
 		};
 		/**/
 		tools.isNum=function(str){

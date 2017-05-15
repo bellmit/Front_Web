@@ -114,10 +114,10 @@ angular.module('app')
             isAudited:0/*是否已审核：0：默认，1：已审核*/,
             status:0/*状态：0：正常，1：停用*/,
             remark:''/*备注*/,
-            isSettingLogin:1/*是否设置登陆名及密码：1 :是*/,
+            isSettingLogin:0/*是否设置登陆名及密码：1 :是*/,
             username:''/*设置登录名*/,
             password:''/*设置登录密码*/,
-            isDesignatedPermit:''/*是否指定权限,0:全部权限 1:指定权限*/,
+            isDesignatedPermit:1/*是否指定权限,0:全部权限 1:指定权限*/,
             checkedFunctionIds:''/*选中权限Ids*/
         };
 
@@ -130,7 +130,7 @@ angular.module('app')
             fullName:''/*店铺全称*/,
             shortName:''/*店铺简称*/,
             name:''/*姓名*/,
-            shoptype:'1'/*店铺类型（原为type,因为user模型已经存在type,所以以shoptype代替type字段）：1 旗舰店：2 体验店：3 加盟店*/,
+            shoptype:1/*店铺类型（原为type,因为user模型已经存在type,所以以shoptype代替type字段）：1 旗舰店：2 体验店：3 加盟店*/,
             cellphone:''/*店铺手机号码*/,
             telephone:''/*店铺电话号码*/,
             province:''/*省份*/,
@@ -324,11 +324,11 @@ angular.module('app')
                                     self.list_addressdata.country=country;
                                     str+='<div class="inline g-c-gray3">省：</div><div class="inline g-c-gray9">'+self.list_address["province"][province]["key"]+'</div>';
                                     /*查询新值*/
-                                    structService.queryAddress({
+                                    structService.isReqAddress({
                                         model:self.list_addressdata,
                                         address:self.list_address,
                                         type:'city'
-                                    });
+                                    },true);
                                     if(city){
                                         str+='<div class="inline g-c-gray3">市：</div><div class="inline g-c-gray9">'+self.list_address["city"][city]["key"]+'</div>';
                                     }

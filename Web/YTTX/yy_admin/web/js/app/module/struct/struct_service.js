@@ -1049,18 +1049,18 @@ angular.module('app')
                                                     struct[i]=toolUtil.phoneFormat(list[i]);
                                                     break;
                                                 case 'telephone':
-                                                    struct[i]=toolUtil.telePhoneFormat(list[i]);
+                                                    struct[i]=toolUtil.telePhoneFormat(list[i],4);
                                                     break;
                                                 case 'province':
                                                     struct['province']=list['province'];
                                                     struct['city']=list['city'];
                                                     struct['country']=list['country'];
-                                                    /*更新地址查询模型*/
-                                                    self.queryAddress({
-                                                        type:'province',
+                                                    /*判断是否需要重新数据，并依此更新相关地址模型*/
+                                                    self.isReqAddress({
+                                                        type:'city',
                                                         address:config.address,
                                                         model:struct
-                                                    });
+                                                    },true);
                                                     break;
                                                 case 'address':
                                                     struct[i]=list[i];
@@ -1379,31 +1379,72 @@ angular.module('app')
                 /*特殊重置*/
                 if(type==='struct'){
                     /*重置机构数据模型*/
+                    (function () {
+                        for(var i in data){
+                            if(i==='isSettingLogin'){
+                                /*是否设置登录名*/
+                                data[i]=0;
+                            }else if(i==='isDesignatedPermit'){
+                                /*是否指定权限*/
+                                data[i]=1;
+                            }else if(i==='isAudited'){
+                                /*是否已审核*/
+                                data[i]=0;
+                            }else if(i==='status'){
+                                /*状态*/
+                                data[i]=0;
+                            }else if(i==='type'){
+                                /*操作类型为新增*/
+                                data[i]='add';
+                            }else if(i==='province' || i==='city' || i==='country'){
+                                /*操作类型为新增*/
+                                continue;
+                            }else{
+                                data[i]='';
+                            }
+                        }
+                    })(data);
+
+                }else if(type==='user'){
+                    /*重置机构数据模型*/
+                    (function () {
+                        for(var i in data){
+                            if(i==='isSettingLogin'){
+                                /*是否设置登录名*/
+                                data[i]=1;
+                            }else if(i==='isDesignatedPermit'){
+                                /*是否指定权限*/
+                                data[i]=1;
+                            }else if(i==='status'){
+                                /*状态*/
+                                data[i]=0;
+                            }else if(i==='type'){
+                                /*操作类型为新增*/
+                                data[i]='add';
+                            }else if(i==='shoptype'){
+                                /*店铺类型*/
+                                data[i]=1;
+                            }else if(i==='province' || i==='city' || i==='country' || i==='filter'){
+                                /*操作类型为新增*/
+                                continue;
+                            }else{
+                                data[i]='';
+                            }
+                        }
+                    })(data);
+                }
+            }else {
+                /*通用重置*/
+                (function () {
                     for(var i in data){
-                        if(i==='isSettingLogin'){
-                            /*是否设置登录名*/
-                            data[i]=1;
-                        }else if(i==='isDesignatedPermit'){
-                            /*是否指定权限*/
-                            data[i]=1;
-                        }else if(i==='type'){
+                        if(i==='type'){
                             /*操作类型为新增*/
                             data[i]='add';
                         }else{
                             data[i]='';
                         }
                     }
-                }
-            }else {
-                /*通用重置*/
-                for(var i in data){
-                    if(i==='type'){
-                        /*操作类型为新增*/
-                        data[i]='add';
-                    }else{
-                        data[i]='';
-                    }
-                }
+                })(data);
             }
         };
         /*表单类服务--重置表单数据*/
@@ -1439,13 +1480,13 @@ angular.module('app')
                         method:'post',
                         set:true
                     },
+                    record=config.record,
                     tip_map={
                         'add':'新增',
                         'edit':'编辑',
                         'user':'店铺',
                         'struct':'组织机构'
-                    },
-                    temp_value='';
+                    };
 
                 /*适配参数*/
                 if(type==='struct'){
@@ -1476,6 +1517,7 @@ angular.module('app')
                     }
 
 
+
                     /*判断是新增还是修改*/
                     if(config[type]['id']===''){
                         action='add';
@@ -1484,7 +1526,11 @@ angular.module('app')
                             param['username']=config[type]['username'];
                             param['password']=config[type]['password'];
                         }
-
+                        if(record.structId===''){
+                            param['parentId']=record.organizationId;
+                        }else{
+                            param['parentId']=record.structId;
+                        }
                         req_config['url']='/organization/add';
                     }else{
                         action='edit';
@@ -1497,6 +1543,8 @@ angular.module('app')
                             }
                         }
                         param['id']=config[type]['id'];
+                        param['sysUserId']=config[type]['sysUserId'];
+                        param['parentId']=config[type]['parentId'];
                         req_config['url']='/organization/update';
                     }
                 }else if(type==='user'){
@@ -1618,14 +1666,13 @@ angular.module('app')
         /*表单服务类--重置表单*/
         this.formReset=function (config,type) {
             if(type ==='struct'){
-
                 /*重置表单模型,如果是2参数则为特殊重置，1个参数为通用重置*/
                 self.clearFormData(config[type],type);
                 /*重置权限信息*/
                 self.clearSelectPower(config[type]);
             }else if(type ==='user'){
                 /*特殊情况--成员*/
-                self.clearFormData(config[type]);
+                self.clearFormData(config[type],type);
             }
             /*重置验证提示信息*/
             self.clearFormValid(config.forms);
@@ -1766,12 +1813,12 @@ angular.module('app')
                                                         user['province']=list['province'];
                                                         user['city']=list['city'];
                                                         user['country']=list['country'];
-                                                        /*更新地址查询模型*/
-                                                        self.queryAddress({
-                                                            type:'province',
+                                                        /*判断是否需要重新数据，并依此更新相关地址模型*/
+                                                        self.isReqAddress({
+                                                            type:'city',
                                                             address:config.address,
                                                             model:user
-                                                        });
+                                                        },true);
                                                         break;
                                                     case 'address':
                                                         user[i]=list[i];
@@ -2036,10 +2083,10 @@ angular.module('app')
         this.queryAddress=function (config) {
             addressService.queryRelation(config);
         };
-
-
-
-
+        /*地址服务--判断是否需要查询新地址*/
+        this.isReqAddress=function (config,flag) {
+            addressService.isReqAddress(config,flag);
+        };
 
 
     }]);
