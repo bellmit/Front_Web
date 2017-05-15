@@ -1625,7 +1625,7 @@ angular.module('app')
                 self.clearSelectPower(config[type]);
             }else if(type ==='user'){
                 /*特殊情况--成员*/
-                self.clearFormData(config);
+                self.clearFormData(config[type]);
             }
             /*重置验证提示信息*/
             self.clearFormValid(config.forms);

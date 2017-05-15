@@ -28,7 +28,7 @@
             <div class="admin-action-item">
                 <div class="action-item-btn g-f-l g-w-percent28">
                     <span ng-show="::struct_ctrl.powerlist.user_add && (struct_ctrl.record.structId!=='' || struct_ctrl.record.organizationId!=='')"  ng-click="struct_ctrl.actionUser({display:'show',area:'user',type:'add'})" ><i class="btn-action admin-btn-action1"></i>添加店铺</span>
-                    <span ng-show="::struct_ctrl.powerlist.operator_adjustment" ng-click="struct_ctrl.adjustOperate()"><i class="btn-action admin-btn-action5"></i>调整运营商</span>
+                    <span ng-show="::struct_ctrl.powerlist.operator_adjustment && 1===2" ng-click="struct_ctrl.adjustOperate()"><i class="btn-action admin-btn-action5"></i>调整运营商</span>
                     <span ng-show="::struct_ctrl.powerlist.batch_delete" ng-click="struct_ctrl.batchDeleteUser()"><i class="btn-action admin-btn-action6"></i>批量删除</span>
                 </div>
                 <!--->
