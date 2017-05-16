@@ -122,7 +122,7 @@
             <div class="modal-content">
                 <div class="modal-body">
                     <!--权限-->
-                    <div class="g-f-l g-w-percent34" ng-show="struct_ctrl.struct.isDesignatedPermit===1">
+                    <div class="g-f-l g-w-percent34" ng-show="struct_ctrl.struct.isDesignatedPermit===1 && struct_ctrl.struct.isSettingLogin===1">
                         <div class="admin-layout-theme4 admin-theme-close g-t-c g-b-gray17 g-pos-r">选择权限</div>
                         <table class="table table-bordered table-striped table-hover admin-layout-table">
                             <colgroup ng-bind-html="struct_ctrl.power.colgroup"></colgroup>
@@ -217,7 +217,7 @@
                             <div class="form-group-self1">
                                 <label class="self-label g-w-percent15 g-t-r"><span class="self-require g-c-red1">*</span>省</label>
                                 <div class="self-input g-pos-r g-w-percent35">
-                                    <select name="province" required ng-model="struct_ctrl.struct.province" ng-change="struct_ctrl.changeAddress('struct','address','city')">
+                                    <select name="province" ng-required="struct_ctrl.struct.province===''" ng-model="struct_ctrl.struct.province" ng-change="struct_ctrl.changeAddress('struct','address','city')">
                                         <option ng-repeat="item in struct_ctrl.address.province" value="{{item.value}}" >{{item.key}}</option>
                                     </select>
 
@@ -229,7 +229,7 @@
                             <div class="form-group-self1">
                                 <label class="self-label g-w-percent15 g-t-r"><span class="self-require g-c-red1">*</span>市</label>
                                 <div class="self-input g-pos-r g-w-percent35">
-                                    <select ng-change="struct_ctrl.changeAddress('struct','address','country')" name="city" required ng-model="struct_ctrl.struct.city">
+                                    <select ng-change="struct_ctrl.changeAddress('struct','address','country')" name="city"  ng-required="struct_ctrl.struct.city===''" ng-model="struct_ctrl.struct.city">
                                         <option ng-repeat="item in struct_ctrl.address.city" value="{{item.value}}" >{{item.key}}</option>
                                     </select>
                                     <span ng-show="structFrom.city.$dirty && structFrom.city.$error.required" class="self-tips self-tips-no g-c-red1 g-fs4 g-w-percent50">市区不能为空</span>
@@ -240,7 +240,7 @@
                             <div class="form-group-self1">
                                 <label class="self-label g-w-percent15 g-t-r"><span class="self-require g-c-red1">*</span>县</label>
                                 <div class="self-input g-pos-r g-w-percent35">
-                                    <select name="country" required ng-model="struct_ctrl.struct.country">
+                                    <select name="country"  ng-required="struct_ctrl.struct.country===''" ng-model="struct_ctrl.struct.country">
                                         <option ng-repeat="item in struct_ctrl.address.country" value="{{item.value}}" >{{item.key}}</option>
                                     </select>
                                     <span ng-show="structFrom.country.$dirty && structFrom.country.$error.required" class="self-tips self-tips-no g-c-red1 g-fs4 g-w-percent50">县区不能为空</span>
@@ -254,6 +254,14 @@
                                     <input type="text" name="address" required  placeholder="请输入联系地址" ng-model="struct_ctrl.struct.address" />
                                     <span ng-show="structFrom.address.$dirty && structFrom.address.$error.required" class="self-tips self-tips-no g-c-red1 g-fs4 g-w-percent50">联系地址不能为空</span>
                                     <span ng-show="structFrom.address.$dirty && structFrom.address.$valid" class="self-tips self-tips-yes"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group-self1">
+                                <label class="self-label g-w-percent15 g-v-t g-t-r">备注</label>
+
+                                <div class="self-input g-w-percent35">
+                                    <textarea ng-model="struct_ctrl.struct.remark" name="remark"></textarea>
                                 </div>
                             </div>
 
@@ -282,14 +290,6 @@
                                     <input type="radio" ng-model="struct_ctrl.struct.status" ng-value="1"  name="status">
                                     &nbsp;停用
                                 </label>
-                            </div>
-
-                            <div class="form-group-self1">
-                                <label class="self-label g-w-percent15 g-v-t g-t-r">备注</label>
-
-                                <div class="self-input g-w-percent35">
-                                    <textarea ng-model="struct_ctrl.struct.remark" name="remark"></textarea>
-                                </div>
                             </div>
 
                             <div class="admin-layout-theme4"><span class="mini-icon admin-mini-icon4"></span>&nbsp;登陆信息</div>
@@ -324,9 +324,9 @@
                                 </div>
                             </div>-->
 
-                            <div ng-show="struct_ctrl.struct.isSettingLogin===1">
+                            <div ng-show="struct_ctrl.struct.isSettingLogin===1" ng-if="struct_ctrl.struct.isSettingLogin===1">
                                 <!--新增，编辑--有用户但无值-->
-                                <div ng-if="struct_ctrl.struct.isSettingLogin===1 && (struct_ctrl.struct.id==='' || (struct_ctrl.struct.id!=='' && struct_ctrl.struct.username===''))">
+                                <div ng-if="struct_ctrl.struct.id==='' || (struct_ctrl.struct.id!=='' && struct_ctrl.struct.username==='')">
                                     <!--用户名-->
                                     <div class="form-group-self1">
                                         <label class="self-label g-w-percent15 g-t-r"><span class="self-require g-c-red1">*</span>登陆用户名</label>
@@ -351,43 +351,54 @@
                                 </div>
 
                                 <!--编辑--有值-->
-                                <div ng-if="struct_ctrl.struct.isSettingLogin===1 && struct_ctrl.struct.id!=='' && struct_ctrl.struct.username!==''" >
+                                <div ng-if="struct_ctrl.struct.id!=='' && struct_ctrl.struct.username!==''" >
+                                    <!--不可设置用户名-->
                                     <div class="form-group-self1">
                                         <label class="self-label g-w-percent15 g-t-r"><span class="self-require g-c-red1">*</span>登陆用户名</label>
                                         <div class="self-input g-pos-r g-w-percent35">
                                             <input type="text" readonly ng-model="struct_ctrl.struct.username"  name="username"  placeholder="请输入登陆用户名" />
                                         </div>
                                     </div>
+                                    <!--可设置密码-->
+                                    <div class="form-group-self1">
+                                        <label class="self-label g-w-percent15 g-t-r"><span ng-show="struct_ctrl.struct.ispwd===true" class="self-require g-c-red1">*</span>登陆密码<span class="g-c-gray6" ng-init="struct_ctrl.struct.ispwd=false" ng-click="struct_ctrl.isPwd()">&nbsp;&nbsp;修改&nbsp;</span></label>
+
+                                        <div ng-if="struct_ctrl.struct.ispwd===true" class="self-input g-pos-r g-w-percent35">
+                                            <input type="password" required ng-minlength="6" minlength="6" ng-model="struct_ctrl.struct.password"  name="password" placeholder="需要修改密码输入" />
+                                            <span ng-show="structFrom.password.$dirty && structFrom.password.$error.required" class="self-tips self-tips-no g-c-red1 g-fs4 g-w-percent50">登陆密码不能为空</span>
+                                            <span ng-show="structFrom.password.$dirty && structFrom.password.$invalid && !structFrom.password.$error.required" class="self-tips self-tips-no g-c-red1 g-fs4 g-w-percent50">登陆密码不能少于6位</span>
+                                            <span ng-show="structFrom.password.$dirty && structFrom.password.$valid" class="self-tips self-tips-yes"></span>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
 
-                            <div class="admin-layout-theme4"><span class="mini-icon admin-mini-icon4"></span>&nbsp;权限设定</div>
-
-                            <div class="form-group-self1">
-                                <label class="self-label" ng-init="struct_ctrl.struct.isDesignatedPermit=1">
-                                    <input type="radio" ng-model="struct_ctrl.struct.isDesignatedPermit" ng-value="0" ng-change="struct_ctrl.clearSelectPower()" name="isDesignatedPermit">
-                                    &nbsp;全部权限
-                                </label>
-                                <label class="self-label">
-                                    <input type="radio" ng-model="struct_ctrl.struct.isDesignatedPermit" ng-value="1" ng-change="struct_ctrl.clearSelectPower()"  name="isDesignatedPermit">
-                                    &nbsp;指定权限
-                                </label>
-                            </div>
-
-                            <div class="form-group-self1" ng-if="struct_ctrl.struct.isDesignatedPermit===1">
-                                <label class="self-label g-w-percent15 g-t-r"><span class="self-require g-c-red1">*</span>选择权限</label>
-
-                                <div class="self-input g-pos-r g-w-percent35">
-                                    <input type="text" ng-model="struct_ctrl.struct.checkedFunctionIds" required  name="checkedFunctionIds" readonly />
-                                    <span ng-show="structFrom.checkedFunctionIds.$dirty && structFrom.checkedFunctionIds.$error.required" class="self-tips self-tips-no g-c-red1 g-fs4 g-w-percent50">指定权限不能为空</span>
-                                    <span ng-show="structFrom.checkedFunctionIds.$dirty && structFrom.checkedFunctionIds.$valid" class="self-tips self-tips-yes"></span>
+                                <div class="admin-layout-theme4"><span class="mini-icon admin-mini-icon4"></span>&nbsp;权限设定</div>
+                                <div class="form-group-self1">
+                                    <label class="self-label" ng-init="struct_ctrl.struct.isDesignatedPermit=1">
+                                        <input type="radio" ng-model="struct_ctrl.struct.isDesignatedPermit" ng-value="0" ng-change="struct_ctrl.clearSelectPower()" name="isDesignatedPermit">
+                                        &nbsp;全部权限
+                                    </label>
+                                    <label class="self-label">
+                                        <input type="radio" ng-model="struct_ctrl.struct.isDesignatedPermit" ng-value="1" ng-change="struct_ctrl.clearSelectPower()"  name="isDesignatedPermit">
+                                        &nbsp;指定权限
+                                    </label>
                                 </div>
+
+                                <div class="form-group-self1" ng-if="struct_ctrl.struct.isDesignatedPermit===1">
+                                    <label class="self-label g-w-percent15 g-t-r"><span class="self-require g-c-red1">*</span>选择权限</label>
+
+                                    <div class="self-input g-pos-r g-w-percent35">
+                                        <input type="text" ng-model="struct_ctrl.struct.checkedFunctionIds" required  name="checkedFunctionIds" readonly />
+                                        <span ng-show="structFrom.checkedFunctionIds.$dirty && structFrom.checkedFunctionIds.$error.required" class="self-tips self-tips-no g-c-red1 g-fs4 g-w-percent50">指定权限不能为空</span>
+                                        <span ng-show="structFrom.checkedFunctionIds.$dirty && structFrom.checkedFunctionIds.$valid" class="self-tips self-tips-yes"></span>
+                                    </div>
+                                </div>
+
+
                             </div>
-
-
                             <!--
 
-!(struct_ctrl.struct.id==='' && structFrom.fullName.$dirty && structFrom.fullName.$valid  && structFrom.adscriptionRegion.$dirty && structFrom.adscriptionRegion.$valid && structFrom.linkman.$dirty && structFrom.linkman.$valid && structFrom.cellphone.$dirty && structFrom.cellphone.$valid  && structFrom.telephone.$dirty && structFrom.telephone.$valid && structFrom.province.$valid && structFrom.city.$valid && structFrom.country.$valid && structFrom.address.$dirty && structFrom.address.$valid && ((struct_ctrl.struct.isSettingLogin===1 && structFrom.username.$dirty && structFrom.username.$valid && structFrom.password.$dirty && structFrom.password.$valid) || struct_ctrl.struct.isSettingLogin===0) && ((struct_ctrl.struct.isDesignatedPermit===1 && structFrom.checkedFunctionIds.$valid) || struct_ctrl.struct.isDesignatedPermit===0))
+!(struct_ctrl.struct.id==='' && structFrom.fullName.$dirty && structFrom.fullName.$valid  && structFrom.adscriptionRegion.$dirty && structFrom.adscriptionRegion.$valid && structFrom.linkman.$dirty && structFrom.linkman.$valid && structFrom.cellphone.$dirty && structFrom.cellphone.$valid  && structFrom.telephone.$dirty && structFrom.telephone.$valid && structFrom.province.$valid && structFrom.city.$valid && structFrom.country.$valid && structFrom.address.$dirty && structFrom.address.$valid && ((struct_ctrl.struct.isSettingLogin===1 && structFrom.username.$dirty && structFrom.username.$valid && structFrom.password.$dirty && structFrom.password.$valid  && ((struct_ctrl.struct.isDesignatedPermit===1 && structFrom.checkedFunctionIds.$valid) || struct_ctrl.struct.isDesignatedPermit===0)) || struct_ctrl.struct.isSettingLogin===0))
 
 
                             -->
@@ -396,16 +407,16 @@
 
 
                             <div class="form-group-self1">
-                                <button type="submit" ng-show="struct_ctrl.struct.id===''" ng-disabled="!(struct_ctrl.struct.id==='' && structFrom.fullName.$dirty && structFrom.fullName.$valid  && structFrom.adscriptionRegion.$dirty && structFrom.adscriptionRegion.$valid && structFrom.linkman.$dirty && structFrom.linkman.$valid && structFrom.cellphone.$dirty && structFrom.cellphone.$valid  && structFrom.telephone.$dirty && structFrom.telephone.$valid && structFrom.province.$valid && structFrom.city.$valid && structFrom.country.$valid && structFrom.address.$dirty && structFrom.address.$valid && ((struct_ctrl.struct.isSettingLogin===1 && structFrom.username.$dirty && structFrom.username.$valid && structFrom.password.$dirty && structFrom.password.$valid) || struct_ctrl.struct.isSettingLogin===0) && ((struct_ctrl.struct.isDesignatedPermit===1 && structFrom.checkedFunctionIds.$valid) || struct_ctrl.struct.isDesignatedPermit===0))"  class="btn btn-red g-br3 g-w-percent50">添加</button>
+                                <button type="submit" ng-show="struct_ctrl.struct.id===''" ng-disabled="!(struct_ctrl.struct.id==='' && structFrom.fullName.$dirty && structFrom.fullName.$valid  && structFrom.adscriptionRegion.$dirty && structFrom.adscriptionRegion.$valid && structFrom.linkman.$dirty && structFrom.linkman.$valid && structFrom.cellphone.$dirty && structFrom.cellphone.$valid && (struct_ctrl.struct.telephone==='' || (structFrom.telephone.$valid && structFrom.telephone.$valid)) && (struct_ctrl.struct.province!=='' && struct_ctrl.struct.city!=='' && struct_ctrl.struct.country!=='') && structFrom.address.$dirty && structFrom.address.$valid && ((struct_ctrl.struct.isSettingLogin===1 && structFrom.username.$dirty && structFrom.username.$valid && structFrom.password.$dirty && structFrom.password.$valid && ((struct_ctrl.struct.isDesignatedPermit===1 && structFrom.checkedFunctionIds.$valid) || struct_ctrl.struct.isDesignatedPermit===0)) || struct_ctrl.struct.isSettingLogin===0))"  class="btn btn-red g-br3 g-w-percent50">添加</button>
 
                                 <!--
 
-                                !(struct_ctrl.struct.id!=='' && structFrom.fullName.$valid && structFrom.adscriptionRegion.$valid && structFrom.linkman.$valid && structFrom.cellphone.$valid && structFrom.telephone.$valid && structFrom.province.$valid && structFrom.city.$valid && structFrom.country.$valid && structFrom.address.$valid && ((struct_ctrl.struct.isSettingLogin===1 && structFrom.username.$valid) || struct_ctrl.struct.isSettingLogin===0) && ((struct_ctrl.struct.isDesignatedPermit===1 && structFrom.checkedFunctionIds.$valid) || struct_ctrl.struct.isDesignatedPermit===0))
+                                !(struct_ctrl.struct.id!=='' && structFrom.fullName.$valid && structFrom.adscriptionRegion.$valid && structFrom.linkman.$valid && structFrom.cellphone.$valid && structFrom.telephone.$valid && structFrom.province.$valid && structFrom.city.$valid && structFrom.country.$valid && structFrom.address.$valid && ((struct_ctrl.struct.isSettingLogin===1 && structFrom.username.$valid  && ((struct_ctrl.struct.isDesignatedPermit===1 && structFrom.checkedFunctionIds.$valid) || struct_ctrl.struct.isDesignatedPermit===0)) || struct_ctrl.struct.isSettingLogin===0))
 
                                 -->
 
 
-                                <button type="submit" ng-show="struct_ctrl.struct.id!==''" ng-disabled="!(struct_ctrl.struct.id!=='' && structFrom.fullName.$valid && structFrom.adscriptionRegion.$valid && structFrom.linkman.$valid && structFrom.cellphone.$valid && structFrom.telephone.$valid && structFrom.province.$valid && structFrom.city.$valid && structFrom.country.$valid && structFrom.address.$valid && ((struct_ctrl.struct.isSettingLogin===1 && structFrom.username.$valid) || struct_ctrl.struct.isSettingLogin===0) && ((struct_ctrl.struct.isDesignatedPermit===1 && structFrom.checkedFunctionIds.$valid) || struct_ctrl.struct.isDesignatedPermit===0))"  class="btn btn-red g-br3 g-w-percent50">编辑</button>
+                                <button type="submit" ng-show="struct_ctrl.struct.id!==''" ng-disabled="!(struct_ctrl.struct.id!=='' && structFrom.fullName.$valid && structFrom.adscriptionRegion.$valid && structFrom.linkman.$valid && structFrom.cellphone.$valid && structFrom.telephone.$valid && structFrom.province.$valid && structFrom.city.$valid && structFrom.country.$valid && structFrom.address.$valid && ((struct_ctrl.struct.isSettingLogin===1 && structFrom.username.$valid && ((struct_ctrl.struct.ispwd===true && structFrom.password.$valid) || struct_ctrl.struct.ispwd===false) && ((struct_ctrl.struct.isDesignatedPermit===1 && structFrom.checkedFunctionIds.$valid) || struct_ctrl.struct.isDesignatedPermit===0)) || struct_ctrl.struct.isSettingLogin===0))"  class="btn btn-red g-br3 g-w-percent50">编辑</button>
                                 <button type="button" class="btn btn-red g-br3 g-w-percent50 g-gap-mt2" id="admin_struct_reset" ng-click="struct_ctrl.formReset(structFrom,'struct')">重置</button>
                             </div>
                         </form>
@@ -507,7 +518,7 @@
                             <div class="form-group-self1">
                                 <label class="self-label g-w-percent10 g-t-r"><span class="self-require g-c-red1">*</span>省</label>
                                 <div class="self-input g-pos-r g-w-percent40">
-                                    <select name="province" required ng-model="struct_ctrl.user.province" ng-change="struct_ctrl.changeAddress('user','user_address','city')">
+                                    <select name="province"  ng-required="struct_ctrl.user.province===''" ng-model="struct_ctrl.user.province" ng-change="struct_ctrl.changeAddress('user','user_address','city')">
                                         <option ng-repeat="item in struct_ctrl.user_address.province" value="{{item.value}}" >{{item.key}}</option>
                                     </select>
 
@@ -519,7 +530,7 @@
                             <div class="form-group-self1">
                                 <label class="self-label g-w-percent10 g-t-r"><span class="self-require g-c-red1">*</span>市</label>
                                 <div class="self-input g-pos-r g-w-percent40">
-                                    <select ng-change="struct_ctrl.changeAddress('user','user_address','country')" name="city" required ng-model="struct_ctrl.user.city">
+                                    <select ng-change="struct_ctrl.changeAddress('user','user_address','country')" name="city" ng-required="struct_ctrl.user.city===''"  ng-model="struct_ctrl.user.city">
                                         <option ng-repeat="item in struct_ctrl.user_address.city" value="{{item.value}}" >{{item.key}}</option>
                                     </select>
                                     <span ng-show="userFrom.city.$dirty && userFrom.city.$error.required" class="self-tips self-tips-no g-c-red1 g-fs4 g-w-percent50">市区不能为空</span>
@@ -530,7 +541,7 @@
                             <div class="form-group-self1">
                                 <label class="self-label g-w-percent10 g-t-r"><span class="self-require g-c-red1">*</span>县</label>
                                 <div class="self-input g-pos-r g-w-percent40">
-                                    <select name="country" required ng-model="struct_ctrl.user.country">
+                                    <select name="country" ng-required="struct_ctrl.user.country===''" ng-model="struct_ctrl.user.country">
                                         <option ng-repeat="item in struct_ctrl.user_address.country" value="{{item.value}}" >{{item.key}}</option>
                                     </select>
                                     <span ng-show="userFrom.country.$dirty && userFrom.country.$error.required" class="self-tips self-tips-no g-c-red1 g-fs4 g-w-percent50">县区不能为空</span>

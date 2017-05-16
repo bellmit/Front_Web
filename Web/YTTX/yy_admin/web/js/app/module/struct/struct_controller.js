@@ -117,6 +117,7 @@ angular.module('app')
             isSettingLogin:0/*是否设置登陆名及密码：1 :是*/,
             username:''/*设置登录名*/,
             password:''/*设置登录密码*/,
+            ispwd:false/*是否设置修改密码*/,
             isDesignatedPermit:1/*是否指定权限,0:全部权限 1:指定权限*/,
             checkedFunctionIds:''/*选中权限Ids*/
         };
@@ -553,6 +554,10 @@ angular.module('app')
             /*设置登录名和密码*/
             self.struct.username='';
             self.struct.password='';
+            /*调用清除权限方法*/
+            structService.clearSelectPower(self.struct);
+            /*恢复默认值*/
+            self.struct.isDesignatedPermit=1;
         };
         /*表单服务--权限服务--全选权限*/
         this.selectAllPower=function (e) {
@@ -566,7 +571,10 @@ angular.module('app')
         this.clearSelectPower=function () {
             structService.clearSelectPower(self.struct);
         };
-
+        /*表单服务--控制修改密码*/
+        this.isPwd=function () {
+            self.struct.ispwd=!self.struct.ispwd;
+        };
 
         /*用户服务--操作用户表单*/
         this.actionUser=function (config) {

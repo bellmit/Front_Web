@@ -639,7 +639,11 @@
 		};
 		/*是否是合法手机号*/
 		tools.isMobilePhone=function(str){
-			return /^(13[0-9]|15[012356789]|18[0-9]|14[57]|170)[0-9]{8}$/.test(this.trims(str))?true:false;
+			var value=this.trims(str);
+			if(value===''){
+				return true;
+			}
+			return /^(13[0-9]|15[012356789]|18[0-9]|14[57]|170)[0-9]{8}$/.test(value)?true:false;
 		};
 		/*是否是合法手机号*/
 		tools.isTelePhone=function(str,type){
@@ -648,6 +652,9 @@
 			var value=this.trims(str);
 
 			value=this.trimSep(value,'-');
+			if(value===''){
+				return true;
+			}
 			if(type){
 				if(type===3){
 					return /(\d{3})(\d{8})/.test(value)?true:false;

@@ -1078,86 +1078,88 @@ angular.module('app')
                                                     /*是否登录*/
                                                     var temp_login=parseInt(list[i],10);
                                                     struct[i]=temp_login;
-                                                    struct['password']='';
                                                     if(temp_login===1){
                                                         /*设置*/
                                                         struct['username']=list['username'];
-                                                    }else if(temp_login===0){
-                                                        /*未设置*/
-                                                        struct['username']='';
-                                                    }
-                                                    break;
-                                                case 'isDesignatedPermit':
-                                                    /*是否指定权限*/
-                                                    var temp_power=parseInt(list[i],10);
+                                                        /*修改时不设置密码*/
+                                                        struct['password']='';
+                                                        /*设置权限*/
+                                                        /*是否指定权限*/
+                                                        var temp_power=parseInt(list['isDesignatedPermit'],10);
 
-                                                    struct[i]=temp_power;
-                                                    if(temp_power===0){
-                                                        /*全部权限*/
-                                                        struct['checkedFunctionIds']='';
-                                                    }
+                                                        struct[i]=temp_power;
+                                                        if(temp_power===0){
+                                                            /*全部权限*/
+                                                            struct['checkedFunctionIds']='';
+                                                        }
 
-                                                    /*查询权限--先查询当前权限(子级权限) --> 再查父级权限  --> 存在父子级权限，过滤子级权限*/
-                                                    powerService.reqPowerList({
-                                                        url:'/organization/permission/select',
-                                                        source:true,/*是否获取数据源*/
-                                                        sourcefn:function (cs) {
-                                                            /*数据源*/
-                                                            var child_data=cs,
-                                                                parent_data;
-                                                            if(child_data!==null){
-                                                                /*存在数据源*/
-                                                                powerService.reqPowerList({
-                                                                    url:'/organization/permission/select',
-                                                                    source:true,/*是否获取数据源*/
-                                                                    sourcefn:function (ps) {
-                                                                        /*数据源*/
-                                                                        parent_data=ps;
-                                                                        if(parent_data!==null){
-                                                                            /*存在数据源，开始过滤权限数据*/
-                                                                            var filter_data=powerService.filterPower(parent_data,child_data);
-                                                                            if(filter_data){
-                                                                                /*过滤后的数据即映射到视图*/
-                                                                                var power_html=powerService.resolvePowerList({
-                                                                                    menu:filter_data
-                                                                                });
-                                                                                /*更新模型*/
-                                                                                if(power_html && power){
-                                                                                    power['tbody']=$sce.trustAsHtml(power_html);
+                                                        /*查询权限--先查询当前权限(子级权限) --> 再查父级权限  --> 存在父子级权限，过滤子级权限*/
+                                                        powerService.reqPowerList({
+                                                            url:'/organization/permission/select',
+                                                            source:true,/*是否获取数据源*/
+                                                            sourcefn:function (cs) {
+                                                                /*数据源*/
+                                                                var child_data=cs,
+                                                                    parent_data;
+                                                                if(child_data!==null){
+                                                                    /*存在数据源*/
+                                                                    powerService.reqPowerList({
+                                                                        url:'/organization/permission/select',
+                                                                        source:true,/*是否获取数据源*/
+                                                                        sourcefn:function (ps) {
+                                                                            /*数据源*/
+                                                                            parent_data=ps;
+                                                                            if(parent_data!==null){
+                                                                                /*存在数据源，开始过滤权限数据*/
+                                                                                var filter_data=powerService.filterPower(parent_data,child_data);
+                                                                                if(filter_data){
+                                                                                    /*过滤后的数据即映射到视图*/
+                                                                                    var power_html=powerService.resolvePowerList({
+                                                                                        menu:filter_data
+                                                                                    });
+                                                                                    /*更新模型*/
+                                                                                    if(power_html && power){
+                                                                                        power['tbody']=$sce.trustAsHtml(power_html);
+                                                                                    }
+                                                                                }else{
+                                                                                    toolDialog.show({
+                                                                                        type:'warn',
+                                                                                        value:'过滤后的权限数据不正确'
+                                                                                    });
+                                                                                    return false;
                                                                                 }
                                                                             }else{
+                                                                                /*提示信息*/
                                                                                 toolDialog.show({
                                                                                     type:'warn',
-                                                                                    value:'过滤后的权限数据不正确'
+                                                                                    value:'没有父级权限数据'
                                                                                 });
                                                                                 return false;
                                                                             }
-                                                                        }else{
-                                                                            /*提示信息*/
-                                                                            toolDialog.show({
-                                                                                type:'warn',
-                                                                                value:'没有父级权限数据'
-                                                                            });
-                                                                            return false;
+                                                                        },
+                                                                        param:{
+                                                                            organizationId:list['parentId']
                                                                         }
-                                                                    },
-                                                                    param:{
-                                                                        organizationId:list['parentId']
-                                                                    }
-                                                                },power);
-                                                            }else{
-                                                                /*提示信息*/
-                                                                toolDialog.show({
-                                                                    type:'warn',
-                                                                    value:'没有子级权限数据'
-                                                                });
-                                                                return false;
+                                                                    },power);
+                                                                }else{
+                                                                    /*提示信息*/
+                                                                    toolDialog.show({
+                                                                        type:'warn',
+                                                                        value:'没有子级权限数据'
+                                                                    });
+                                                                    return false;
+                                                                }
+                                                            },
+                                                            param:{
+                                                                organizationId:list['id']
                                                             }
-                                                        },
-                                                        param:{
-                                                            organizationId:list['id']
-                                                        }
-                                                    },power);
+                                                        },power);
+                                                    }else if(temp_login===0){
+                                                        /*未设置*/
+                                                        struct['username']='';
+                                                        /*置空*/
+                                                        struct['password']='';
+                                                    }
                                                     break;
                                                 case 'sysUserId':
                                                     struct[i]=list[i];
@@ -1396,6 +1398,9 @@ angular.module('app')
                             }else if(i==='type'){
                                 /*操作类型为新增*/
                                 data[i]='add';
+                            }else if(i==='ispwd'){
+                                /*是否修改密码*/
+                                data[i]=false;
                             }else if(i==='province' || i==='city' || i==='country'){
                                 /*操作类型为新增*/
                                 continue;
@@ -1509,13 +1514,6 @@ angular.module('app')
                     var isSettingLogin=parseInt(config[type]['isSettingLogin'],10);
                     param['isSettingLogin']=isSettingLogin;
 
-                    /*判断是否指定权限*/
-                    var isDesignatedPermit=parseInt(config[type]['isDesignatedPermit'],10);
-                    param['isDesignatedPermit']=isDesignatedPermit;
-                    if(isDesignatedPermit===1){
-                        param['checkedFunctionIds']=config[type]['checkedFunctionIds'];
-                    }
-
 
 
                     /*判断是新增还是修改*/
@@ -1540,6 +1538,17 @@ angular.module('app')
                             if(temp_username===''){
                                 param['username']=config[type]['username'];
                                 param['password']=config[type]['password'];
+                            }else{
+                                /*修改密码*/
+                                if(config[type]['ispwd']){
+                                    param['password']=config[type]['password'];
+                                }
+                            }
+                            /*判断是否指定权限*/
+                            var isDesignatedPermit=parseInt(config[type]['isDesignatedPermit'],10);
+                            param['isDesignatedPermit']=isDesignatedPermit;
+                            if(isDesignatedPermit===1){
+                                param['checkedFunctionIds']=config[type]['checkedFunctionIds'];
                             }
                         }
                         param['id']=config[type]['id'];
