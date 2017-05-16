@@ -600,6 +600,7 @@ angular.module('app')
                 isreload=true,
                 id,
                 label,
+                layer,
                 record=config.record;
 
             if(node==='span'){
@@ -609,10 +610,12 @@ angular.module('app')
 
                 id=$span.attr('data-id');
                 label=$span.attr('data-label');
+                layer=$span.attr('data-layer');
 
                 /*变更模型*/
                 record.structId=id;
                 record.structName=label;
+                record.layer=layer;
 
                 /*数据状态*/
                 isreload=$item.hasClass('ts-reload');
@@ -884,6 +887,7 @@ angular.module('app')
                 /*模型变更*/
                 record.structId=id;
                 record.structName=label;
+                record.layer=layer;
             }else if(type==='delete'){
                 /*删除*/
                 /*修改样式*/
@@ -898,6 +902,7 @@ angular.module('app')
                 /*模型变更*/
                 record.structId='';
                 record.structName='';
+                record.layer=0;
             }
         };
         /*机构服务--校验机构数据*/
@@ -1076,7 +1081,12 @@ angular.module('app')
                                                     break;
                                                 case 'isSettingLogin':
                                                     /*是否登录*/
-                                                    var temp_login=parseInt(list[i],10);
+                                                    var temp_login=list[i];
+                                                    if(temp_login==='' || isNaN(temp_login) || typeof temp_login==='undefined'){
+                                                        temp_login=0;
+                                                    }else{
+                                                        temp_login=parseInt(temp_login,10);
+                                                    }
                                                     struct[i]=temp_login;
                                                     if(temp_login===1){
                                                         /*设置*/
@@ -1085,11 +1095,16 @@ angular.module('app')
                                                         struct['password']='';
                                                         /*设置权限*/
                                                         /*是否指定权限*/
-                                                        var temp_power=parseInt(list['isDesignatedPermit'],10);
-
-                                                        struct[i]=temp_power;
+                                                        var temp_power=list['isDesignatedPermit'];
+                                                        if(temp_power==='' || isNaN(temp_power) || typeof temp_power==='undefined'){
+                                                            /*默认为：全部权限*/
+                                                            temp_power=0;
+                                                        }else{
+                                                            temp_power=parseInt(list['isDesignatedPermit'],10);
+                                                        }
+                                                        struct['isDesignatedPermit']=temp_power;
+                                                        /*全部权限时，清空权限ids缓存*/
                                                         if(temp_power===0){
-                                                            /*全部权限*/
                                                             struct['checkedFunctionIds']='';
                                                         }
 
@@ -1168,6 +1183,7 @@ angular.module('app')
                                                     struct[i]=list[i];
                                                     break;
                                             }
+
                                         }
                                         /*显示弹窗*/
                                         self.toggleModal({
@@ -1388,7 +1404,7 @@ angular.module('app')
                                 data[i]=0;
                             }else if(i==='isDesignatedPermit'){
                                 /*是否指定权限*/
-                                data[i]=1;
+                                data[i]=0;
                             }else if(i==='isAudited'){
                                 /*是否已审核*/
                                 data[i]=0;
@@ -1398,9 +1414,6 @@ angular.module('app')
                             }else if(i==='type'){
                                 /*操作类型为新增*/
                                 data[i]='add';
-                            }else if(i==='ispwd'){
-                                /*是否修改密码*/
-                                data[i]=false;
                             }else if(i==='province' || i==='city' || i==='country'){
                                 /*操作类型为新增*/
                                 continue;
@@ -1414,13 +1427,7 @@ angular.module('app')
                     /*重置机构数据模型*/
                     (function () {
                         for(var i in data){
-                            if(i==='isSettingLogin'){
-                                /*是否设置登录名*/
-                                data[i]=1;
-                            }else if(i==='isDesignatedPermit'){
-                                /*是否指定权限*/
-                                data[i]=1;
-                            }else if(i==='status'){
+                            if(i==='status'){
                                 /*状态*/
                                 data[i]=0;
                             }else if(i==='type'){
@@ -1534,16 +1541,8 @@ angular.module('app')
                         action='edit';
                         if(isSettingLogin===1){
                             /*选中设置登录名*/
-                            var temp_username=config[type]['username'];
-                            if(temp_username===''){
-                                param['username']=config[type]['username'];
-                                param['password']=config[type]['password'];
-                            }else{
-                                /*修改密码*/
-                                if(config[type]['ispwd']){
-                                    param['password']=config[type]['password'];
-                                }
-                            }
+                            param['username']=config[type]['username'];
+                            param['password']=config[type]['password'];
                             /*判断是否指定权限*/
                             var isDesignatedPermit=parseInt(config[type]['isDesignatedPermit'],10);
                             param['isDesignatedPermit']=isDesignatedPermit;
@@ -1561,7 +1560,7 @@ angular.module('app')
                     param['fullName']=config[type]['fullName'];
                     param['shortName']=config[type]['shortName'];
                     param['name']=config[type]['name'];
-                    param['shoptype']=config[type]['shoptype'];
+                    param['type']=config[type]['shoptype'];
                     param['cellphone']=toolUtil.trims(config[type]['cellphone']);
                     param['telephone']=toolUtil.trimSep(config[type]['telephone'],'-');
                     param['province']=config[type]['province'];
@@ -1795,6 +1794,8 @@ angular.module('app')
                                     if(list){
                                         if(action==='update'){
                                             /*修改：更新模型*/
+                                            user['type']='edit';
+                                            
                                             for(var i in list){
                                                 switch (i){
                                                     case 'id':
@@ -1816,7 +1817,7 @@ angular.module('app')
                                                         user[i]=toolUtil.phoneFormat(list[i]);
                                                         break;
                                                     case 'telephone':
-                                                        user[i]=toolUtil.telePhoneFormat(list[i]);
+                                                        user[i]=toolUtil.telePhoneFormat(list[i],4);
                                                         break;
                                                     case 'province':
                                                         user['province']=list['province'];
@@ -1860,6 +1861,10 @@ angular.module('app')
                                                     'city':'市区',
                                                     'country':'县区',
                                                     'remark':'备注',
+                                                    'addUserId':'添加的用户Id',
+                                                    'id':'序列号',
+                                                    'organizationId':'组织机构序列',
+                                                    'addTime':'添加时间',
                                                     'status':'状态'
                                                 };
                                             for(var j in list){
@@ -1935,6 +1940,11 @@ angular.module('app')
                 }
                 type='base';
             }
+            toolDialog.show({
+                type:'warn',
+                value:'功能正在开发中...'
+            });
+            return false;
             var param=$.extend(true,{},cache.loginMap.param);
 
             /*判断参数*/
@@ -2084,6 +2094,8 @@ angular.module('app')
                 self.queryUserInfo(null,id,action);
             }else if(action==='delete'){
                 self.batchDeleteUser(model,id);
+            }else if(action==='update'){
+                self.queryUserInfo(model,id,action);
             }
         };
 

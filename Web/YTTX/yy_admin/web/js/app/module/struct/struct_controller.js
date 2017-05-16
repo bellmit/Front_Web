@@ -117,8 +117,7 @@ angular.module('app')
             isSettingLogin:0/*是否设置登陆名及密码：1 :是*/,
             username:''/*设置登录名*/,
             password:''/*设置登录密码*/,
-            ispwd:false/*是否设置修改密码*/,
-            isDesignatedPermit:1/*是否指定权限,0:全部权限 1:指定权限*/,
+            isDesignatedPermit:0/*是否指定权限,0:全部权限 1:指定权限*/,
             checkedFunctionIds:''/*选中权限Ids*/
         };
 
@@ -139,7 +138,9 @@ angular.module('app')
             country:''/*县区*/,
             address:''/*详细地址*/,
             status:0/*状态：0：正常，1：停用*/,
-            remark:''/*备注*/
+            remark:''/*备注*/,
+            addTime:''/*添加时间,编辑时用到*/,
+            organizationId:''/*组织机构id,编辑时用到*/
         };
 
 
@@ -308,12 +309,15 @@ angular.module('app')
                         {
                             "data":"telephone",
                             "render":function(data, type, full, meta ){
-                                return toolUtil.telePhoneFormat(data);
+                                return toolUtil.telePhoneFormat(data,4);
                             }
                         },
                         {
                             "data":"province",
                             "render":function(data, type, full, meta ){
+                                if(!data){
+                                    return '';
+                                }
                                 var str='',
                                     province=data||'',
                                     city=full.city||'',
@@ -334,14 +338,21 @@ angular.module('app')
                                         str+='<div class="inline g-c-gray3">市：</div><div class="inline g-c-gray9">'+self.list_address["city"][city]["key"]+'</div>';
                                     }
                                     if(country){
-                                        str+='<div class="inline g-c-gray3">市：</div><div class="inline g-c-gray9">'+self.list_address["country"][country]["key"]+'</div>';
+                                        str+='<div class="inline g-c-gray3">区：</div><div class="inline g-c-gray9">'+self.list_address["country"][country]["key"]+'</div>';
                                     }
                                 }
                                 return str;
                             }
                         },
                         {
-                            "data":"address"
+                            "data":"address",
+                            "render":function(data, type, full, meta ){
+                                if(!data){
+                                   return '';
+                                }
+                                var str=data.toString();
+                                return str.slice(0,10)+'...';
+                            }
                         },
                         {
                             "data":"status",
@@ -360,7 +371,7 @@ angular.module('app')
                             }
                         },
                         {
-                            "data":"remark"
+                            "data":"addTime"
                         },
                         {
                             "data":"id",
@@ -369,15 +380,15 @@ angular.module('app')
 
                                 /*查看用户*/
                                 if(self.powerlist.user_view){
-                                    btns+='<span data-action="detail" data-id="'+data+'"  class="btn-operate">查看</span>';
+                                    btns+='<span data-action="detail" data-organizationId="'+full.organizationId+'" data-id="'+data+'"  class="btn-operate">查看</span>';
                                 }
                                 /*编辑用户*/
                                 if(self.powerlist.user_update){
-                                    btns+='<span data-action="update" data-id="'+data+'" class="btn-operate">编辑</span>';
+                                    btns+='<span data-action="update" data-organizationId="'+full.organizationId+'" data-id="'+data+'" class="btn-operate">编辑</span>';
                                 }
                                 /*删除用户*/
                                 if(self.powerlist.batch_delete){
-                                    btns+='<span  data-action="delete" data-id="'+data+'"  class="btn-operate">删除</span>';
+                                    btns+='<span  data-action="delete" data-organizationId="'+full.organizationId+'" data-id="'+data+'"  class="btn-operate">删除</span>';
                                 }
                                 return btns;
                             }
@@ -557,7 +568,7 @@ angular.module('app')
             /*调用清除权限方法*/
             structService.clearSelectPower(self.struct);
             /*恢复默认值*/
-            self.struct.isDesignatedPermit=1;
+            self.struct.isDesignatedPermit=0;
         };
         /*表单服务--权限服务--全选权限*/
         this.selectAllPower=function (e) {
@@ -570,10 +581,6 @@ angular.module('app')
         /*表单服务--权限服务--取消所选权限*/
         this.clearSelectPower=function () {
             structService.clearSelectPower(self.struct);
-        };
-        /*表单服务--控制修改密码*/
-        this.isPwd=function () {
-            self.struct.ispwd=!self.struct.ispwd;
         };
 
         /*用户服务--操作用户表单*/
