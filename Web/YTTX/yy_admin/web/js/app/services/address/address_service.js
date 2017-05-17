@@ -6,7 +6,7 @@ angular.module('app')
 		var self=this;
 		
 		/*关联查询*/
-		this.queryRelation=function (config) {
+		this.queryRelation=function (config,fn) {
 			var type=config.type/*类型：负责判断查询，省，市，区*/,
 				address=config.address/*模型：负责更新数据*/,
 				model=config.model,
@@ -96,22 +96,42 @@ angular.module('app')
 												}
 												/*更新模型*/
 												address[type]=tempaddress;
+												/*判断是否有回调*/
+												if(type==='country' && fn && typeof fn==='function'){
+													fn.call(null);
+												}
 											}
 											/*循环完毕根据类型判断是否开启下级查询*/
 											if(type==='province'){
 												/*查询市级*/
-												self.queryRelation({
-													model:config.model,
-													address:config.address,
-													type:'city'
-												});
+												if(fn){
+													self.queryRelation({
+														model:config.model,
+														address:config.address,
+														type:'city'
+													},fn);
+												}else{
+													self.queryRelation({
+														model:config.model,
+														address:config.address,
+														type:'city'
+													});
+												}
 											}else if(type==='city'){
 												/*查询区级*/
-												self.queryRelation({
-													model:config.model,
-													address:config.address,
-													type:'country'
-												});
+												if(fn){
+													self.queryRelation({
+														model:config.model,
+														address:config.address,
+														type:'country'
+													},fn);
+												}else{
+													self.queryRelation({
+														model:config.model,
+														address:config.address,
+														type:'country'
+													});
+												}
 											}
 										}
 									}else{
@@ -244,7 +264,8 @@ angular.module('app')
 		主要用于性能优化，减少地址查询消耗，
 		初始化查询中不会用到此服务，
 		返回是否需要重新请求数据的标识符和对应的类型*/
-		this.isReqAddress=function (config,flag) {
+		this.isReqAddress=function (config,flag,fn) {
+
 			var type=config.type/*类型：负责判断查询，省，市，区*/,
 				address=config.address/*模型：负责更新数据*/,
 				model=config.model;
@@ -252,7 +273,11 @@ angular.module('app')
 			/*模型为空，需重新请求数据*/
 			if(model[type]===''){
 				if(flag){
-					self.queryRelation(config);
+					if(fn){
+						self.queryRelation(config,fn);
+					}else{
+						self.queryRelation(config);
+					}
 					return false;
 				}else{
 					return {
@@ -264,6 +289,11 @@ angular.module('app')
 			/*数据源没有匹配的模型数据需重新请求数据*/
 			if(address[type][model[type]]){
 				if(flag){
+					if(fn){
+						self.queryRelation(config,fn);
+					}else{
+						self.queryRelation(config);
+					}
 					return false;
 				}else{
 					return {
@@ -273,7 +303,11 @@ angular.module('app')
 				}
 			}else{
 				if(flag){
-					self.queryRelation(config);
+					if(fn){
+						self.queryRelation(config,fn);
+					}else{
+						self.queryRelation(config);
+					}
 					return false;
 				}else{
 					return {

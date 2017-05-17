@@ -8,7 +8,7 @@
                 &nbsp;&nbsp;&nbsp;&nbsp;
 
 
-                <button type="button" class="btn btn-default g-c-blue3" ng-disabled="structrole_ctrl.record.rolename==='' && structrole_ctrl.record.rolegroupname===''" ng-show="structrole_ctrl.powerlist.roleedit" ng-click="structrole_ctrl.editRole()"><i class="btn-action admin-btn-action7"></i>&nbsp;编辑</button>
+                <button type="button" class="btn btn-default g-c-blue3" ng-disabled="structrole_ctrl.record.rolename==='' && structrole_ctrl.record.rolegroupname===''" ng-show="structrole_ctrl.powerlist.role_edit" ng-click="structrole_ctrl.editRole()"><i class="btn-action admin-btn-action7"></i>&nbsp;编辑</button>
             </h1>
 
             <!--操作条-->
@@ -16,8 +16,8 @@
 
                 <!--操作按钮-->
                 <div class="action-item-btn g-f-l g-w-percent28">
-                    <span ng-show="structrole_ctrl.record.role!=='' && structrole_ctrl.powerlist.memberadd" ng-click="structrole_ctrl.toggleModal({display:'show',area:'member'})" ><i class="btn-action admin-btn-action1"></i>添加成员</span>
-                    <span ng-show="structrole_ctrl.record.role!=='' && structrole_ctrl.powerlist.memberdelete" ng-click="structrole_ctrl.deleteMemberList('batch')"><i class="btn-action admin-btn-action8"></i>移除成员</span>
+                    <span ng-show="structrole_ctrl.record.role!=='' && structrole_ctrl.powerlist.member_add" ng-click="structrole_ctrl.toggleModal({display:'show',area:'member'})" ><i class="btn-action admin-btn-action1"></i>添加成员</span>
+                    <span ng-show="structrole_ctrl.record.role!=='' && structrole_ctrl.powerlist.member_delete" ng-click="structrole_ctrl.deleteMemberList('batch')"><i class="btn-action admin-btn-action8"></i>移除成员</span>
                 </div>
 
                 <!--列控制-->
@@ -40,31 +40,37 @@
             <table id="admin_list_wrap" class="table table-bordered table-striped table-hover admin-layout-table">
                 <!--分组样式-->
                 <colgroup id="admin_list_colgroup">
-                    <col class="g-w-percent5"/>
-                    <col class="g-w-percent5"/>
-                    <col class="g-w-percent5"/>
-                    <col class="g-w-percent5"/>
-                    <col class="g-w-percent5"/>
-                    <col class="g-w-percent15"/>
-                    <col class="g-w-percent5"/>
-                    <col class="g-w-percent5"/>
+                    <col class="g-w-percent3"/>
+                    <col class="g-w-percent7"/>
+                    <col class="g-w-percent4"/>
+                    <col class="g-w-percent4"/>
+                    <col class="g-w-percent4"/>
+                    <col class="g-w-percent4"/>
+                    <col class="g-w-percent4"/>
+                    <col class="g-w-percent4"/>
+                    <col class="g-w-percent4"/>
+                    <col class="g-w-percent4"/>
+                    <col class="g-w-percent4"/>
                 </colgroup>
 
                 <!--表头-->
                 <thead>
                 <tr>
                     <th class="g-clear-pl g-clear-pr g-t-c">
-                        <div class="admin-batchitem-wrap" ng-show="structrole_ctrl.powerlist.memberdelete" >
+                        <div class="admin-batchitem-wrap" ng-show="structrole_ctrl.powerlist.member_delete" >
                             <label data-check="0" class="admin-batchitem-check" id="admin_member_checkall"></label>
                         </div>
                     </th>
-                    <th>手机号码</th>
-                    <th>地址</th>
-                    <th>费率</th>
-                    <th>机器码</th>
-                    <th>身份证验证状态</th>
-                    <th>创建时间</th>
-                    <th>备注</th>
+                    <th>店铺全称</th>
+                    <th>店铺简称</th>
+                    <th>姓名</th>
+                    <th>店铺类型</th>
+                    <th>店铺手机号码</th>
+                    <th>店铺电话号码</th>
+                    <th>省市区</th>
+                    <th>详细地址</th>
+                    <th>状态</th>
+                    <th>添加时间</th>
                 </tr>
                 </thead>
 
@@ -202,7 +208,12 @@
                     <div class="struct-search-menu g-f-l g-gap-mt8 g-gap-mb6 g-w-percent18">
                         <div class="admin-layout-theme4"><span class="mini-icon admin-mini-icon2"></span>&nbsp;机构信息</div>
                         <!--子菜单组件-->
-                        <ul class="sub-menu-wrap" ng-click="structrole_ctrl.toggleMemberList($event)" id="admin_member_menu" ng-init="structrole_ctrl.getMemberList()"></ul>
+                        <ul class="sub-menu-wrap">
+                            <li>
+                                <a data-parentid="" data-id="struct_ctrl.record.currentId" data-layer="0" class="sub-menu-title sub-menu-titleactive"  ng-click="structrole_ctrl.getMemberList()">{{structrole_ctrl.record.currentName}}</a>
+                                <ul class="sub-menu-wrap g-d-showi" ng-click="structrole_ctrl.toggleMemberList($event)" id="admin_member_menu" ng-init="structrole_ctrl.getMemberList()"></ul>
+                            </li>
+                        </ul>
                     </div>
 
                     <!--右侧被选区域-->

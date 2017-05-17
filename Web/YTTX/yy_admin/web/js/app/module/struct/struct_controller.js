@@ -316,30 +316,27 @@ angular.module('app')
                             "data":"province",
                             "render":function(data, type, full, meta ){
                                 if(!data){
-                                    return '';
+                                    return '无省市区';
                                 }
                                 var str='',
-                                    province=data||'',
-                                    city=full.city||'',
-                                    country=full.country||'';
+                                    province=data||'';
 
                                 if(province){
                                     self.list_addressdata.province=province;
-                                    self.list_addressdata.city=city;
-                                    self.list_addressdata.country=country;
-                                    str+='<div class="inline g-c-gray3">省：</div><div class="inline g-c-gray9">'+self.list_address["province"][province]["key"]+'</div>';
+                                    str+='<em class="g-c-gray3">省：</em><em class="g-c-gray9">'+self.list_address["province"][province]["key"]+'</em>';
                                     /*查询新值*/
-                                    structService.isReqAddress({
+                                    /*structService.isReqAddress({
                                         model:self.list_addressdata,
                                         address:self.list_address,
                                         type:'city'
-                                    },true);
-                                    if(city){
-                                        str+='<div class="inline g-c-gray3">市：</div><div class="inline g-c-gray9">'+self.list_address["city"][city]["key"]+'</div>';
-                                    }
-                                    if(country){
-                                        str+='<div class="inline g-c-gray3">区：</div><div class="inline g-c-gray9">'+self.list_address["country"][country]["key"]+'</div>';
-                                    }
+                                    },true,function () {
+                                        if(city){
+                                            str+='<div class="inline g-c-gray3">市：</div><div class="inline g-c-gray9">'+self.list_address["city"][city]["key"]+'</div>';
+                                        }
+                                        if(country){
+                                            str+='<div class="inline g-c-gray3">区：</div><div class="inline g-c-gray9">'+self.list_address["country"][country]["key"]+'</div>';
+                                        }
+                                    });*/
                                 }
                                 return str;
                             }
@@ -410,7 +407,7 @@ angular.module('app')
                 column_api:{
                     isEmpty:function () {
                         if(self.table.list_table===null){
-                            return false;
+                            return true;
                         }
                         return self.table.list_table.data().length===0;
                     }

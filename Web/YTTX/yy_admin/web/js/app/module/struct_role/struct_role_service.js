@@ -1,5 +1,5 @@
 angular.module('app')
-    .service('structroleService',['toolUtil','toolDialog','BASE_CONFIG','loginService','powerService','dataTableColumnService','dataTableCheckAllService','$timeout',function(toolUtil,toolDialog,BASE_CONFIG,loginService,powerService,dataTableColumnService,dataTableCheckAllService,$timeout){
+    .service('structroleService',['toolUtil','toolDialog','BASE_CONFIG','loginService','powerService','addressService','dataTableColumnService','dataTableCheckAllService','$timeout',function(toolUtil,toolDialog,BASE_CONFIG,loginService,powerService,addressService,dataTableColumnService,dataTableCheckAllService,$timeout){
 
         /*获取缓存数据*/
         var self=this,
@@ -13,12 +13,12 @@ angular.module('app')
 
         /*初始化权限*/
         var init_power={
-            structadd:toolUtil.isPower('organization-add',powermap,true)/*添加机构*/,
-            roleadd:toolUtil.isPower('role-add',powermap,true)/*添加角色*/,
-            roleedit:toolUtil.isPower('role-edit',powermap,true)/*编辑角色*/,
-            rolegroupadd:toolUtil.isPower('rolegroup-add',powermap,true)/*添加角色组*/,
-            memberadd:toolUtil.isPower('member-add',powermap,true)/*添加成员*/,
-            memberdelete:toolUtil.isPower('member-delete',powermap,true)/*移除成员*/
+            organization_add:toolUtil.isPower('organization-add',powermap,true)/*添加机构*/,
+            role_add:toolUtil.isPower('role-add',powermap,true)/*添加角色*/,
+            role_edit:toolUtil.isPower('role-edit',powermap,true)/*编辑角色*/,
+            rolegroup_add:toolUtil.isPower('rolegroup-add',powermap,true)/*添加角色组*/,
+            member_add:toolUtil.isPower('member-add',powermap,true)/*添加成员*/,
+            member_delete:toolUtil.isPower('member-delete',powermap,true)/*移除成员*/
         };
 
 
@@ -384,17 +384,26 @@ angular.module('app')
 
             if(type==='all'){
                 /*重置所有*/
-                record={
-                    layer:0,
-                    prev:null,
-                    current:null,
-                    searchactive:'',
-                    searchname:'',
-                    role:'',
-                    rolename:'',
-                    rolegroup:'',
-                    rolegroupname:''
-                };
+                record['layer']=0;
+                record['prev']=null;
+                record['current']=null;
+                record['searchactive']='';
+                record['searchname']='';
+                record['role']='';
+                record['rolename']='';
+                record['rolegroup']='';
+                record['rolegroupname']='';
+                record['currentId']='';
+                record['currentName']='';
+
+                /*if(record['prev']!==null){
+                    record['prev'].removeClass('sub-menuactive');
+                    record['current'].removeClass('sub-menuactive');
+                    record['prev']=null;
+                }else if(record['current']!==null){
+                    record['current'].removeClass('sub-menuactive');
+                }
+                record['current']=null;*/
             }else if(type==='rolegroup'){
                 record['rolegroup']='';
                 record['rolegroupname']='';
@@ -649,6 +658,33 @@ angular.module('app')
         };
 
 
+        /*机构服务--获取虚拟挂载点*/
+        this.getMemberRoot=function (record) {
+            if(cache===null){
+                toolUtil.loginTips({
+                    clear:true,
+                    reload:true
+                });
+                record['currentId']='';
+                record['currentName']='';
+                return false;
+            }
+            var islogin=loginService.isLogin(cache);
+            if(islogin){
+                var logininfo=cache.loginMap;
+                record['currentId']=logininfo.param.organizationId;
+                record['currentName']=logininfo.username;
+            }else{
+                /*退出系统*/
+                cache=null;
+                toolUtil.loginTips({
+                    clear:true,
+                    reload:true
+                });
+                record['currentId']='';
+                record['currentName']='';
+            }
+        };
         /*机构服务--获取导航*/
         this.getMemberList=function (config) {
             if(cache){
@@ -814,7 +850,7 @@ angular.module('app')
         this.doItemMemberList=function (obj,config) {
             var curitem=obj,
                 id=curitem["id"],
-                label=curitem["orgname"],
+                label=curitem["fullName"],
                 str='',
                 flag=config.flag,
                 layer=config.layer,
@@ -896,7 +932,7 @@ angular.module('app')
 
             toolUtil
                 .requestHttp({
-                    url:'/organization/users',
+                    url:'/organization/shops',
                     method:'post',
                     set:true,
                     data:param
@@ -934,7 +970,7 @@ angular.module('app')
                                     if(angular.isObject(list)){
                                         /*修改：更新模型*/
                                         for(var i in list){
-                                            str+='<li data-id="'+list[i]["id"]+'">'+list[i]["nickName"]+'</li>';
+                                            str+='<li data-id="'+list[i]["id"]+'">'+list[i]["fullName"]+'</li>';
                                         }
                                         if(str!==''){
                                             $(str).appendTo(self.$admin_user_wrap.html(''));
@@ -1138,9 +1174,9 @@ angular.module('app')
                         return false;
                     }
                     action='add';
-                    param['userIds']=temp_value;
+                    param['shopIds']=temp_value;
                     param['roleId']=config.record.role;
-                    req_config['url']='/role/users/add';
+                    req_config['url']='/role/shops/add';
                 }
                 req_config['data']=param;
 
@@ -1317,6 +1353,20 @@ angular.module('app')
                 });
             }
 
+        };
+
+
+        /*地址服务--地址查询*/
+        this.queryAddress=function (config) {
+            addressService.queryRelation(config);
+        };
+        /*地址服务--判断是否需要查询新地址*/
+        this.isReqAddress=function (config,flag,fn) {
+            if(flag){
+                addressService.isReqAddress(config,flag,fn);
+            }else{
+                return addressService.isReqAddress(config);
+            }
         };
 
 

@@ -126,7 +126,7 @@ angular.module('app')
 		/*数据为空时判断主体合并值*/
 		this.emptyColSpan=function (tablecolumn,len) {
 			var isdata=tablecolumn.column_api.isEmpty();
-			if(!isdata){
+			if(isdata){
 				tablecolumn.$bodywrap.find('td').attr({
 					'colspan':len
 				});

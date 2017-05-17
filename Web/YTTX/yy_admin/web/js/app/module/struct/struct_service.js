@@ -2105,8 +2105,12 @@ angular.module('app')
             addressService.queryRelation(config);
         };
         /*地址服务--判断是否需要查询新地址*/
-        this.isReqAddress=function (config,flag) {
-            addressService.isReqAddress(config,flag);
+        this.isReqAddress=function (config,flag,fn) {
+            if(flag){
+                addressService.isReqAddress(config,flag,fn);
+            }else{
+                return addressService.isReqAddress(config);
+            }
         };
 
 

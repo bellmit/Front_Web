@@ -29,6 +29,81 @@ angular.module('app')
         /*切换路由时更新dom缓存*/
         structroleService.initJQDom(jq_dom);
 
+        /*模型--列表地址*/
+        this.list_address={
+            province:{},
+            city:{},
+            country:{}
+        };
+        this.list_addressdata={
+            province:'',
+            city:'',
+            country:''
+        };
+
+        /*模型--操作记录*/
+        this.record={
+            layer:0/*当前菜单操作层级*/,
+            prev:null/*菜单操作:上一次操作菜单*/,
+            current:null/*菜单操作:当前操作菜单*/,
+            searchactive:''/*搜索激活状态,激活态为：search-content-active，未激活为空，默认为空*/,
+            searchname:''/*搜索关键词*/,
+            role:''/*角色id*/,
+            rolename:''/*角色名称*/,
+            rolegroup:''/*角色组id*/,
+            rolegroupname:''/*角色组名称*/,
+            currentId:''/*虚拟挂载点*/,
+            currentName:''/*虚拟挂载点*/
+        };
+
+
+        /*模型--选中的机构信息*/
+        this.member={};
+
+
+        /*表单模型--角色组*/
+        this.rolegroup={
+            id:'',
+            type:'add',
+            groupName:''
+        };
+
+        /*表单模型--角色*/
+        this.role={
+            id:'',
+            type:'add',
+            filter:''/*过滤数据*/,
+            roleName:''
+        };
+
+
+        /*模型--tab选项卡*/
+        this.tabitem=[{
+            name:'运营架构',
+            href:'struct',
+            power:self.powerlist.organization_add,
+            active:''
+        },{
+            name:'角色',
+            href:'role',
+            power:self.powerlist.role_add,
+            active:'tabactive'
+        }];
+
+        /*模型--btn按钮组*/
+        this.btnitem=[{
+            name:'添加角色组',
+            type:'rolegroup',
+            power:self.powerlist.rolegroup_add,
+            icon:'fa-plus'
+        },{
+            name:'添加角色',
+            type:'role',
+            power:self.powerlist.role_add,
+            icon:'fa-plus'
+        }];
+
+
         /*模型--表格缓存*/
         this.table={
             list1_page:{
@@ -43,7 +118,7 @@ angular.module('app')
                     autoWidth:true,/*是否*/
                     paging:false,
                     ajax:{
-                        url:toolUtil.adaptReqUrl('/role/users'),
+                        url:toolUtil.adaptReqUrl('/role/shops'),
                         dataType:'JSON',
                         method:'post',
                         dataSrc:function ( json ) {
@@ -138,44 +213,91 @@ angular.module('app')
                             "orderable" :false,
                             "searchable" :false,
                             "render":function(data, type, full, meta ){
-                                return '<input value="'+data+'" name="check_memberid" type="checkbox" />';
+                                return '<input value="'+data+'" name="check_shopid" type="checkbox" />';
                             }
                         },
                         {
-                            "data":"phone",
+                            "data":"fullName"
+                        },
+                        {
+                            "data":"shortName"
+                        },
+                        {
+                            "data":"name"
+                        },
+                        {
+                            "data":"type",
                             "render":function(data, type, full, meta ){
-                                return data!==''?toolUtil.phoneFormat(data):'';
+                                var temptype=parseInt(data,10),
+                                    typemap={
+                                        1:'旗舰店',
+                                        2:'体验店',
+                                        3:'加盟店'
+                                    };
+                                return typemap[temptype];
                             }
                         },
                         {
-                            "data":"address"
+                            "data":"cellphone",
+                            "render":function(data, type, full, meta ){
+                                return toolUtil.phoneFormat(data);
+                            }
                         },
                         {
-                            "data":"mainFee"
+                            "data":"telephone",
+                            "render":function(data, type, full, meta ){
+                                return toolUtil.telePhoneFormat(data,4);
+                            }
                         },
                         {
-                            "data":"machineCode"
+                            "data":"province",
+                            "render":function(data, type, full, meta ){
+                                if(!data){
+                                    return '无省市区';
+                                }
+                                var str='',
+                                    province=data||'';
+
+                                if(province){
+                                    self.list_addressdata.province=province;
+                                    str+='<em class="g-c-gray3">省：</em><em class="g-c-gray9">'+self.list_address["province"][province]["key"]+'</em>';
+                                    /*查询新值*/
+                                    /*structService.isReqAddress({
+                                     model:self.list_addressdata,
+                                     address:self.list_address,
+                                     type:'city'
+                                     },true,function () {
+                                     if(city){
+                                     str+='<div class="inline g-c-gray3">市：</div><div class="inline g-c-gray9">'+self.list_address["city"][city]["key"]+'</div>';
+                                     }
+                                     if(country){
+                                     str+='<div class="inline g-c-gray3">区：</div><div class="inline g-c-gray9">'+self.list_address["country"][country]["key"]+'</div>';
+                                     }
+                                     });*/
+                                }
+                                return str;
+                            }
                         },
                         {
-                            "data":"identityState",
+                            "data":"address",
+                            "render":function(data, type, full, meta ){
+                                if(!data){
+                                    return '';
+                                }
+                                var str=data.toString();
+                                return str.slice(0,10)+'...';
+                            }
+                        },
+                        {
+                            "data":"status",
                             "render":function(data, type, full, meta ){
                                 var stauts=parseInt(data,10),
-                                    statusmap={
-                                        0:"未验证",
-                                        1:"正在验证",
-                                        2:"验证通过",
-                                        3:"验证不通过"
-                                    },
                                     str='';
 
                                 if(stauts===0){
-                                    str='<div class="g-c-warn">'+statusmap[stauts]+'</div>';
+                                    str='<div class="g-c-blue3">正常</div>';
                                 }else if(stauts===1){
-                                    str='<div class="g-c-gray9">'+statusmap[stauts]+'</div>';
-                                }else if(stauts===2){
-                                    str='<div class="g-c-blue1">'+statusmap[stauts]+'</div>';
-                                }else if(stauts===3){
-                                    str='<div class="g-c-red1">'+statusmap[stauts]+'</div>';
+                                    str='<div class="g-c-warn">停用</div>';
                                 }else{
                                     str='<div class="g-c-gray6">其他</div>';
                                 }
@@ -183,10 +305,7 @@ angular.module('app')
                             }
                         },
                         {
-                            "data":"createTime"
-                        },
-                        {
-                            "data":"remark"
+                            "data":"addTime"
                         }
                     ]
                 }
@@ -194,18 +313,18 @@ angular.module('app')
             list_table:null,
             /*列控制*/
             tablecolumn:{
-                init_len:8/*数据有多少列*/,
+                init_len:11/*数据有多少列*/,
                 column_flag:true,
                 ischeck:true,/*是否有全选*/
                 columnshow:true,
                 $column_wrap:jq_dom.$admin_table_checkcolumn/*控制列显示隐藏的容器*/,
                 $bodywrap:jq_dom.$admin_batchlist_wrap/*数据展现容器*/,
-                hide_list:[2,3,4,7]/*需要隐藏的的列序号*/,
-                hide_len:4,
+                hide_list:[1,5,6,7,8,10]/*需要隐藏的的列序号*/,
+                hide_len:6,
                 column_api:{
                     isEmpty:function () {
                         if(self.table.list_table===null){
-                            return false;
+                            return true;
                         }
                         return self.table.list_table.data().length===0;
                     }
@@ -228,68 +347,14 @@ angular.module('app')
         };
 
 
-        /*模型--操作记录*/
-        this.record={
-            layer:0/*当前菜单操作层级*/,
-            prev:null/*菜单操作:上一次操作菜单*/,
-            current:null/*菜单操作:当前操作菜单*/,
-            searchactive:''/*搜索激活状态,激活态为：search-content-active，未激活为空，默认为空*/,
-            searchname:''/*搜索关键词*/,
-            role:''/*角色id*/,
-            rolename:''/*角色名称*/,
-            rolegroup:''/*角色组id*/,
-            rolegroupname:''/*角色组名称*/
-        };
-
-
-
-        /*模型--选中的机构信息*/
-        this.member={};
-
-
-        /*角色组*/
-        this.rolegroup={
-            id:'',
-            type:'add',
-            groupName:''
-        };
-
-        /*角色*/
-        this.role={
-            id:'',
-            type:'add',
-            filter:''/*过滤数据*/,
-            roleName:''
-        };
-
-
-        /*模型--tab选项卡*/
-        this.tabitem=[{
-            name:'运营架构',
-            href:'struct',
-            type:'',
-            power:self.powerlist.structadd,
-            active:''
-        },{
-            name:'角色',
-            href:'role',
-            type:'',
-            power:self.powerlist.roleadd,
-            active:'tabactive'
-        }];
-
-        /*模型--btn按钮组*/
-        this.btnitem=[{
-            name:'添加角色组',
-            type:'rolegroup',
-            power:self.powerlist.rolegroupadd,
-            icon:'fa-plus'
-        },{
-            name:'添加角色',
-            type:'role',
-            power:self.powerlist.roleadd,
-            icon:'fa-plus'
-        }];
+        /*初始化服务--虚拟挂载点，或者初始化参数*/
+        structroleService.getMemberRoot(self.record);
+        /*初始化服务--初始化地址信息*/
+        structroleService.queryAddress({
+            type:'province',
+            address:self.list_address,
+            model:self.list_addressdata
+        });
 
 
         /*菜单服务--初始化*/
