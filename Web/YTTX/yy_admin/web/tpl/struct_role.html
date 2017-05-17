@@ -8,7 +8,7 @@
                 &nbsp;&nbsp;&nbsp;&nbsp;
 
 
-                <button type="button" class="btn btn-default g-c-blue3" ng-disabled="structrole_ctrl.record.rolename==='' && structrole_ctrl.record.rolegroupname===''" ng-show="structrole_ctrl.powerlist.role_edit" ng-click="structrole_ctrl.editRole()"><i class="btn-action admin-btn-action7"></i>&nbsp;编辑</button>
+                <button type="button" class="btn btn-default g-c-blue3" ng-disabled="structrole_ctrl.record.role==='' && structrole_ctrl.record.rolegroup===''" ng-show="structrole_ctrl.powerlist.role_edit" ng-click="structrole_ctrl.editRole()"><i class="btn-action admin-btn-action7"></i>&nbsp;编辑</button>
             </h1>
 
             <!--操作条-->
@@ -210,7 +210,7 @@
                         <!--子菜单组件-->
                         <ul class="sub-menu-wrap">
                             <li>
-                                <a data-parentid="" data-id="struct_ctrl.record.currentId" data-layer="0" class="sub-menu-title sub-menu-titleactive"  ng-click="structrole_ctrl.getMemberList()">{{structrole_ctrl.record.currentName}}</a>
+                                <a data-parentid="" data-id="structrole_ctrl.record.currentId" data-layer="0" class="sub-menu-title sub-menu-titleactive"  ng-click="structrole_ctrl.getMemberList()">{{structrole_ctrl.record.currentName}}</a>
                                 <ul class="sub-menu-wrap g-d-showi" ng-click="structrole_ctrl.toggleMemberList($event)" id="admin_member_menu" ng-init="structrole_ctrl.getMemberList()"></ul>
                             </li>
                         </ul>

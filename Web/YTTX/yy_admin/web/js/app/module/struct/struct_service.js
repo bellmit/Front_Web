@@ -1861,7 +1861,7 @@ angular.module('app')
                                                     'city':'市区',
                                                     'country':'县区',
                                                     'remark':'备注',
-                                                    'addUserId':'添加的用户Id',
+                                                    'addUserId':'添加的用户序列',
                                                     'id':'序列号',
                                                     'organizationId':'组织机构序列',
                                                     'addTime':'添加时间',

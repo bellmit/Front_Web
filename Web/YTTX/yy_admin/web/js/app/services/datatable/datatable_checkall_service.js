@@ -145,7 +145,6 @@ angular.module('app')
 				/*选中*/
 				/*不依赖于状态*/
 				tablecheckall.$bodywrap.find('tr').each(function (index, element) {
-					console.log(element);
 					var $input=$(element).find('td:first input:checkbox');
 					if(index===0){
 						if($input.size()===0){

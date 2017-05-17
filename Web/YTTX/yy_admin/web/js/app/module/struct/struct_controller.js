@@ -594,19 +594,6 @@ angular.module('app')
         this.filterDataTable=function () {
             structService.filterDataTable(self.table.list_table,self.user);
         };
-        /*用户服务--提交表单*/
-        this.userSubmit=function () {
-            /*提交服务*/
-            structService.userSubmit(self.user,self.setting,self.table);
-
-        };
-        /*用户服务--重置表单*/
-        this.userReset=function (forms){
-            /*重置表单模型*/
-            structService.clearFormData(self.user,'user');
-            /*重置验证提示信息*/
-            structService.clearFormValid(forms);
-        };
         /*用户服务--批量删除*/
         this.batchDeleteUser=function () {
             structService.batchDeleteUser({

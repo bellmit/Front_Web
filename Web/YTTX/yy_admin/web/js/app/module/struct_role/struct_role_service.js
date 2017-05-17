@@ -549,9 +549,9 @@ angular.module('app')
             param['roleId']=record.role;
 
             if(type==='batch'){
-                param['userIds']=batchdata.join(',');
+                param['shopIds']=batchdata.join(',');
             }else if(type==='base'){
-                param['userIds']=id;
+                param['shopIds']=id;
             }
 
             /*确认是否删除*/
@@ -559,7 +559,7 @@ angular.module('app')
                 /*执行删除操作*/
                 toolUtil
                     .requestHttp({
-                        url:'/role/users/delete',
+                        url:'/role/shops/delete',
                         method:'post',
                         set:true,
                         data:param

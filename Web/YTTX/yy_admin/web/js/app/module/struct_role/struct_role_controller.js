@@ -260,9 +260,9 @@ angular.module('app')
 
                                 if(province){
                                     self.list_addressdata.province=province;
-                                    str+='<em class="g-c-gray3">省：</em><em class="g-c-gray9">'+self.list_address["province"][province]["key"]+'</em>';
+                                    str+='<div class="inline g-c-gray3">省：</div><div class="inline g-c-gray9">'+self.list_address["province"][province]["key"]+'</div>';
                                     /*查询新值*/
-                                    /*structService.isReqAddress({
+                                    /*structroleService.isReqAddress({
                                      model:self.list_addressdata,
                                      address:self.list_address,
                                      type:'city'
@@ -319,6 +319,7 @@ angular.module('app')
                 columnshow:true,
                 $column_wrap:jq_dom.$admin_table_checkcolumn/*控制列显示隐藏的容器*/,
                 $bodywrap:jq_dom.$admin_batchlist_wrap/*数据展现容器*/,
+                header:['全选','店铺全称','店铺简称','姓名','店铺类型','店铺手机号','店铺电话号码','省市区','详细地址','状态','添加时间'],
                 hide_list:[1,5,6,7,8,10]/*需要隐藏的的列序号*/,
                 hide_len:6,
                 column_api:{
