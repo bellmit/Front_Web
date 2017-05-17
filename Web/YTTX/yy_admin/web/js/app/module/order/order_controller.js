@@ -16,7 +16,9 @@ angular.module('app')
             $admin_list_colgroup:$('#admin_list_colgroup'),
             $admin_batchlist_wrap:$('#admin_batchlist_wrap'),
             $search_startTime:$('#search_startTime'),
-            $search_endTime:$('#search_endTime')
+            $search_endTime:$('#search_endTime'),
+            $admin_orderdetail_dialog:$('#admin_orderdetail_dialog'),
+            $admin_orderdetail_show:$('#admin_orderdetail_show')
         };
         /*切换路由时更新dom缓存*/
         orderService.initJQDom(jq_dom);
@@ -255,16 +257,18 @@ angular.module('app')
 
         /*初始化服务--虚拟挂载点，或者初始化参数*/
         orderService.getRoot(self.record);
-        /*初始化服务--初始化菜单*/
+        /*初始化服务--日历查询*/
+        orderService.datePicker(this.record);
+
+
+
+        /*菜单服务--初始化菜单*/
         this.initSubMenu=function () {
             orderService.getSubMenu({
                 table:self.table,
                 record:self.record
             });
         };
-
-
-
         /*菜单服务--显示隐藏菜单*/
         this.toggleSubMenu=function (e) {
             orderService.toggleSubMenu(e,{
@@ -280,12 +284,15 @@ angular.module('app')
         };
 
 
-        /*日历查询*/
-        orderService.datePicker(this.record);
-
         /*查询订单*/
         this.queryOrder=function () {
             orderService.getColumnData(self.table,self.record);
+        };
+
+
+        /*弹出层显示隐藏*/
+        this.toggleModal=function (config) {
+            orderService.toggleModal(config);
         };
 
 

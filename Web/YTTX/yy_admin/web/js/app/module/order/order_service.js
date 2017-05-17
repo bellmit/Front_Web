@@ -104,11 +104,11 @@ angular.module('app')
                 action=config.action;
 
             if(action==='detail'){
-                self.queryOrder(null,id,action);
+                self.queryDetail(null,id,action);
             }
         };
         /*订单查询服务--查询订单详情*/
-        this.queryOrder=function (config,id,action) {
+        this.queryDetail=function (config,id,action) {
             if(cache===null){
                 return false;
             }
@@ -178,7 +178,7 @@ angular.module('app')
                                         var str='';
                                         if(order){
                                             /*查看*/
-                                            for(var j in order{
+                                            for(var j in order){
                                                 if(typeof detail_map[j]!=='undefined'){
                                                     if(j==='orderState'){
                                                         var temptype=parseInt(order[j],10),
@@ -190,13 +190,35 @@ angular.module('app')
                                                                 20:'待评价',
                                                                 21:'已评价'
                                                             };
-                                                        str+='<tr><td colspan="2" class="g-t-r">'+detail_map[j]+':</td><td colspan="2" class="g-t-l">'+typemap[temptype]+'</td></tr>';
+                                                        str+='<tr><td colspan="2" class="g-t-r">'+detail_map[j]+':</td><td colspan="2" class="g-t-l">'+(function () {
+                                                                var tempstr;
+
+                                                                if(temptype===0){
+                                                                    tempstr='<div class="g-c-blue3">'+typemap[temptype]+'</div>';
+                                                                }else if(temptype===1){
+                                                                    tempstr='<div class="g-c-red3">'+typemap[temptype]+'</div>';
+                                                                }else if(temptype===6 || temptype===9 || temptype===20){
+                                                                    tempstr='<div class="g-c-warn">'+typemap[temptype]+'</div>';
+                                                                }else if(temptype===21){
+                                                                    tempstr='<div class="g-c-green2">'+typemap[temptype]+'</div>';
+                                                                }else{
+                                                                    tempstr='<div class="g-c-gray6">其他</div>';
+                                                                }
+                                                                return tempstr;
+                                                            })()+'</td></tr>';
+                                                    }else if(j==='paymentType'){
+                                                        var temppay=parseInt(order[j],10),
+                                                            paymap={
+                                                                1:"微信",
+                                                                2:"支付宝",
+                                                                3:"其它"
+                                                            };
+                                                        str+='<tr><td colspan="2" class="g-t-r">'+detail_map[j]+':</td><td colspan="2" class="g-t-l">'+paymap[temppay]+'</td></tr>';
                                                     }else{
                                                         str+='<tr><td  colspan="2" class="g-t-r">'+detail_map[j]+':</td><td colspan="2" class="g-t-l">'+order[j]+'</td></tr>';
                                                     }
                                                 }
                                             }
-
                                         }
                                         if(details){
                                             var i=0,
@@ -211,11 +233,11 @@ angular.module('app')
                                             }
                                         }
                                         if(str!==''){
-                                            $(str).appendTo(self.$admin_userdetail_show.html(''));
+                                            $(str).appendTo(self.$admin_orderdetail_show.html(''));
                                             /*显示弹窗*/
                                             self.toggleModal({
                                                 display:'show',
-                                                area:'userdetail'
+                                                area:'orderdetail'
                                             });
                                         }
                                     }else{
@@ -234,10 +256,47 @@ angular.module('app')
                         if(typeof message !=='undefined'&&message!==''){
                             console.log(message);
                         }else{
-                            console.log('请求用户失败');
+                            console.log('请求订单失败');
                         }
                     });
         };
+
+
+        /*弹出层服务*/
+        this.toggleModal=function (config,fn) {
+            var temp_timer=null,
+                type_map={
+                    'orderdetail':self.$admin_orderdetail_dialog
+                };
+            if(config.display==='show'){
+                if(typeof config.delay!=='undefined'){
+                    temp_timer=setTimeout(function () {
+                        type_map[config.area].modal('show',{backdrop:'static'});
+                        clearTimeout(temp_timer);
+                        temp_timer=null;
+                    },config.delay);
+                    if(fn&&typeof fn==='function'){
+                        fn.call(null);
+                    }
+                }else{
+                    type_map[config.area].modal('show',{backdrop:'static'});
+                    if(fn&&typeof fn==='function'){
+                        fn.call(null);
+                    }
+                }
+            }else if(config.display==='hide'){
+                if(typeof config.delay!=='undefined'){
+                    temp_timer=setTimeout(function () {
+                        type_map[config.area].modal('hide');
+                        clearTimeout(temp_timer);
+                        temp_timer=null;
+                    },config.delay);
+                }else{
+                    type_map[config.area].modal('hide');
+                }
+            }
+        };
+
 
         /*导航服务--获取虚拟挂载点*/
         this.getRoot=function (record) {

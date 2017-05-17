@@ -280,13 +280,7 @@ angular.module('app')
         this.queryEquipment=function () {
             equipmentService.getColumnData(self.table,self.record);
         };
-
-
-        /*弹出层显示隐藏*/
-        this.toggleModal=function (config) {
-            equipmentService.toggleModal(config);
-        };
-
+        
 
         /*IMEI服务--获取IMEI*/
         this.getIMEI=function () {
