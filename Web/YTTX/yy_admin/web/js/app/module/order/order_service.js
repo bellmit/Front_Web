@@ -1,5 +1,5 @@
 angular.module('app')
-    .service('orderService',['toolUtil','toolDialog','BASE_CONFIG','loginService','powerService','dataTableColumnService','datePicker97Service',function(toolUtil,toolDialog,BASE_CONFIG,loginService,powerService,dataTableColumnService,datePicker97Service){
+    .service('orderService',['toolUtil','toolDialog','BASE_CONFIG','loginService','powerService','dataTableColumnService','dataTableItemActionService','datePicker97Service',function(toolUtil,toolDialog,BASE_CONFIG,loginService,powerService,dataTableColumnService,dataTableItemActionService,datePicker97Service){
 
         /*获取缓存数据*/
         var self=this,
@@ -10,9 +10,9 @@ angular.module('app')
 
         /*初始化权限*/
         var init_power={
-            orderprint:toolUtil.isPower('order-print',powermap,true)/*订单打印*/,
-            orderexport:toolUtil.isPower('order-export',powermap,true)/*订单导出*/,
-            orderdetails:toolUtil.isPower('order-details',powermap,true)/*订单详情*/
+            order_print:toolUtil.isPower('order-print',powermap,true)/*订单打印*/,
+            order_export:toolUtil.isPower('order-export',powermap,true)/*订单导出*/,
+            order_details:toolUtil.isPower('order-details',powermap,true)/*订单详情*/
         };
 
 
@@ -45,14 +45,15 @@ angular.module('app')
 
             /*适配参数*/
             for(var i in record){
-                if(i==='startTime' || i==='endTime'){
+                /*时间条件,搜索条件*/
+                if(i==='startTime' || i==='endTime' || i==='searchWord'){
                     if(record[i]===''){
                         delete data[i];
                     }else{
                         data[i]=record[i];
-
                     }
                 }else if(i==='organizationId'){
+                    /*过滤没有菜单节点查询*/
                     if(record[i]===''){
                         data[i]='';
                         return false;
@@ -72,6 +73,8 @@ angular.module('app')
                 table.list_table=self.$admin_list_wrap.DataTable(table.list1_config.config);
                 /*调用列控制*/
                 dataTableColumnService.initColumn(table.tablecolumn,table.list_table);
+                /*调用按钮操作*/
+                dataTableItemActionService.initItemAction(table.tableitemaction);
             }else {
                 table.list_table.ajax.config(table.list1_config.config.ajax).load();
             }
@@ -95,9 +98,175 @@ angular.module('app')
                 }
             });
         };
+        /*订单查询服务--操作按钮*/
+        this.doItemAction=function (model,config) {
+            var id=config.id,
+                action=config.action;
+
+            if(action==='detail'){
+                self.queryOrder(null,id,action);
+            }
+        };
+        /*订单查询服务--查询订单详情*/
+        this.queryOrder=function (config,id,action) {
+            if(cache===null){
+                return false;
+            }
+
+            if(typeof id==='undefined'){
+                toolDialog.show({
+                    type:'warn',
+                    value:'没有订单信息'
+                });
+                return false;
+            }
+
+            var param=$.extend(true,{},cache.loginMap.param);
+            /*判断参数*/
+            param['id']=id;
 
 
-        /*菜单服务--获取导航*/
+            toolUtil
+                .requestHttp({
+                    url:'/organization/goodsorder/details',
+                    method:'post',
+                    set:true,
+                    data:param
+                })
+                .then(function(resp){
+                        var data=resp.data,
+                            status=parseInt(resp.status,10);
+
+                        if(status===200){
+                            var code=parseInt(data.code,10),
+                                message=data.message;
+                            if(code!==0){
+                                if(typeof message !=='undefined'&&message!==''){
+                                    console.log(message);
+                                }else{
+                                    console.log('请求数据失败');
+                                }
+
+                                if(code===999){
+                                    /*退出系统*/
+                                    cache=null;
+                                    toolUtil.loginTips({
+                                        clear:true,
+                                        reload:true
+                                    });
+                                }
+                            }else{
+                                /*加载数据*/
+                                var result=data.result;
+                                if(typeof result!=='undefined'){
+                                    var order=result.order,
+                                        details=result.details,
+                                        detail_map={
+                                            'merchantName':'商户名称',
+                                            'merchantPhon':'手机号码',
+                                            'orderTime':'订单时间',
+                                            'orderNumber':'订单号',
+                                            'orderState':'订单状态',
+                                            'totalMoney':'订单总价',
+                                            'paymentType':'支付类型',
+                                            'goodsName':'商品名称',
+                                            'goodsPrice':'商品价格',
+                                            'quantlity':'购买数量',
+                                            'id':'序列'
+                                        };
+                                    if(action==='detail'){
+                                        var str='';
+                                        if(order){
+                                            /*查看*/
+                                            for(var j in order{
+                                                if(typeof detail_map[j]!=='undefined'){
+                                                    if(j==='orderState'){
+                                                        var temptype=parseInt(order[j],10),
+                                                            typemap={
+                                                                1:'待付款',
+                                                                2:'取消订单',
+                                                                6:'待发货',
+                                                                9:'待收货',
+                                                                20:'待评价',
+                                                                21:'已评价'
+                                                            };
+                                                        str+='<tr><td colspan="2" class="g-t-r">'+detail_map[j]+':</td><td colspan="2" class="g-t-l">'+typemap[temptype]+'</td></tr>';
+                                                    }else{
+                                                        str+='<tr><td  colspan="2" class="g-t-r">'+detail_map[j]+':</td><td colspan="2" class="g-t-l">'+order[j]+'</td></tr>';
+                                                    }
+                                                }
+                                            }
+
+                                        }
+                                        if(details){
+                                            var i=0,
+                                                len=details.length;
+                                            str+='<tr><th class="g-t-c">序号</th><th class="g-t-c">商品名称</th><th class="g-t-c">商品价格</th><th class="g-t-c">购买数量</th></tr>';
+                                            if(len!==0){
+                                                var detailitem;
+                                                for(i;i<len;i++){
+                                                    detailitem=details[i];
+                                                    str+='<tr><td>'+(i + 1)+'</td><td class="g-t-c">'+detailitem["goodsName"]+':</td><td class="g-t-c">'+detailitem["goodsPrice"]+':</td><td class="g-t-c">'+detailitem["quantlity"]+'</td></tr>';
+                                                }
+                                            }
+                                        }
+                                        if(str!==''){
+                                            $(str).appendTo(self.$admin_userdetail_show.html(''));
+                                            /*显示弹窗*/
+                                            self.toggleModal({
+                                                display:'show',
+                                                area:'userdetail'
+                                            });
+                                        }
+                                    }else{
+                                        /*提示信息*/
+                                        toolDialog.show({
+                                            type:'warn',
+                                            value:'获取数据失败'
+                                        });
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    function(resp){
+                        var message=resp.data.message;
+                        if(typeof message !=='undefined'&&message!==''){
+                            console.log(message);
+                        }else{
+                            console.log('请求用户失败');
+                        }
+                    });
+        };
+
+        /*导航服务--获取虚拟挂载点*/
+        this.getRoot=function (record) {
+            if(cache===null){
+                toolUtil.loginTips({
+                    clear:true,
+                    reload:true
+                });
+                record['currentId']='';
+                record['currentName']='';
+                return false;
+            }
+            var islogin=loginService.isLogin(cache);
+            if(islogin){
+                var logininfo=cache.loginMap;
+                record['currentId']=logininfo.param.organizationId;
+                record['currentName']=logininfo.username;
+            }else{
+                /*退出系统*/
+                cache=null;
+                toolUtil.loginTips({
+                    clear:true,
+                    reload:true
+                });
+                record['currentId']='';
+                record['currentName']='';
+            }
+        };
+        /*导航服务--获取导航*/
         this.getSubMenu=function (config) {
             if(cache){
                 var param=$.extend(true,{},cache.loginMap.param);
@@ -216,7 +385,7 @@ angular.module('app')
                 });
             }
         };
-        /*菜单服务--解析导航--开始解析*/
+        /*导航服务--解析导航--开始解析*/
         this.resolveSubMenu=function (obj,limit,config) {
             if(!obj||typeof obj==='undefined'){
                 return false;
@@ -262,11 +431,11 @@ angular.module('app')
                 return false;
             }
         };
-        /*菜单服务--解析导航--公共解析*/
+        /*导航服务--解析导航--公共解析*/
         this.doItemSubMenu=function (obj,config) {
             var curitem=obj,
                 id=curitem["id"],
-                label=curitem["orgname"],
+                label=curitem["fullName"],
                 str='',
                 flag=config.flag,
                 layer=config.layer,
@@ -279,7 +448,7 @@ angular.module('app')
             }
             return str;
         };
-        /*菜单服务--显示隐藏机构*/
+        /*导航服务--显示隐藏机构*/
         this.toggleSubMenu=function (e,config) {
             /*阻止冒泡和默认行为*/
             e.preventDefault();

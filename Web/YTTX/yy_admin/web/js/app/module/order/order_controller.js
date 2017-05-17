@@ -22,6 +22,21 @@ angular.module('app')
         orderService.initJQDom(jq_dom);
 
 
+
+        /*模型--操作记录*/
+        this.record={
+            filter:'',
+            startTime:'',
+            endTime:'',
+            searchWord:'',
+            organizationId:'',
+            prev:null/*菜单操作:上一次操作菜单*/,
+            current:null/*菜单操作:当前操作菜单*/,
+            currentId:'',
+            currentName:''
+        };
+
+
         /*模型--表格缓存*/
         this.table={
             list1_page:{
@@ -36,7 +51,7 @@ angular.module('app')
                     autoWidth:true,/*是否*/
                     paging:false,
                     ajax:{
-                        url:toolUtil.adaptReqUrl('/organization/cardorder/list'),
+                        url:toolUtil.adaptReqUrl('/organization/goodsorder/list'),
                         dataType:'JSON',
                         method:'post',
                         dataSrc:function ( json ) {
@@ -127,10 +142,10 @@ angular.module('app')
                     order:[[1, "desc" ]],
                     columns: [
                         {
-                            "data":"nickName"
+                            "data":"merchantName"
                         },
                         {
-                            "data":"phone",
+                            "data":"merchantPhone",
                             "render":function(data, type, full, meta ){
                                 return toolUtil.phoneFormat(data);
                             }
@@ -139,40 +154,63 @@ angular.module('app')
                             "data":"orderNumber"
                         },
                         {
-                            "data":"orderSum"
+                            "data":"totalMoney"
                         },
                         {
-                            "data":"payerName"
-                        },
-                        {
-                            "data":"payMethod",
+                            "data":"orderState",
                             "render":function(data, type, full, meta ){
                                 var stauts=parseInt(data,10),
                                     statusmap={
-                                        0:"nfc支付",
-                                        1:"芯片卡支付"
+                                        0:"待付款",
+                                        1:"取消订单",
+                                        6:"待发货",
+                                        9:"待收货",
+                                        20:"待评价",
+                                        21:"已评价"
+                                    },
+                                    str;
+
+                                if(stauts===0){
+                                    str='<div class="g-c-blue3">'+statusmap[stauts]+'</div>';
+                                }else if(stauts===1){
+                                    str='<div class="g-c-red3">'+statusmap[stauts]+'</div>';
+                                }else if(stauts===6 || stauts===9 || stauts===20){
+                                    str='<div class="g-c-warn">'+statusmap[stauts]+'</div>';
+                                }else if(stauts===21){
+                                    str='<div class="g-c-green2">'+statusmap[stauts]+'</div>';
+                                }else{
+                                    str='<div class="g-c-gray6">其他</div>';
+                                }
+                                return str;
+                            }
+                        },
+                        {
+                            "data":"paymentType",
+                            "render":function(data, type, full, meta ){
+                                var stauts=parseInt(data,10),
+                                    statusmap={
+                                        1:"微信",
+                                        2:"支付宝",
+                                        3:"其它"
                                     };
                                 return '<div class="g-c-blue3">'+statusmap[stauts]+'</div>';
                             }
                         },
                         {
-                            "data":"createTime"
-                        },
-                        {
-                            "data":"payTime"
+                            "data":"orderTime"
                         },
                         {
                             /*to do*/
-                            "data":"id"/*,
+                            "data":"id",
                             "render":function(data, type, full, meta ){
-                                var btns='';
+                                 var btns='';
 
-                                /!*查看订单*!/
-                                if(self.powerlist.orderdetails){
+                                 /*查看订单*/
+                                 if(self.powerlist.order_details){
                                     btns+='<span data-action="detail" data-id="'+data+'"  class="btn-operate">查看</span>';
-                                }
-                                return btns;
-                            }*/
+                                 }
+                                 return btns;
+                            }
                         }
                     ]
                 }
@@ -180,18 +218,18 @@ angular.module('app')
             list_table:null,
             /*列控制*/
             tablecolumn:{
-                init_len:9/*数据有多少列*/,
+                init_len:8/*数据有多少列*/,
                 column_flag:true,
                 ischeck:false,/*是否有全选*/
                 columnshow:true,
                 $column_wrap:jq_dom.$admin_table_checkcolumn/*控制列显示隐藏的容器*/,
                 $bodywrap:jq_dom.$admin_batchlist_wrap/*数据展现容器*/,
-                hide_list:[5,6,7,8]/*需要隐藏的的列序号*/,
-                hide_len:4,
+                hide_list:[5,6]/*需要隐藏的的列序号*/,
+                hide_len:2,
                 column_api:{
                     isEmpty:function () {
                         if(self.table.list_table===null){
-                            return false;
+                            return true;
                         }
                         return self.table.list_table.data().length===0;
                     }
@@ -199,28 +237,34 @@ angular.module('app')
                 $colgroup:jq_dom.$admin_list_colgroup/*分组模型*/,
                 $column_btn:jq_dom.$admin_table_checkcolumn.prev(),
                 $column_ul:jq_dom.$admin_table_checkcolumn.find('ul')
+            },
+            /*按钮*/
+            tableitemaction:{
+                $bodywrap:jq_dom.$admin_batchlist_wrap,
+                itemaction_api:{
+                    doItemAction:function(config){
+                        orderService.doItemAction({
+                            record:self.record,
+                            table:self.table
+                        },config);
+                    }
+                }
             }
         };
 
 
-        /*模型--操作记录*/
-        this.record={
-            filter:'',
-            startTime:'',
-            endTime:'',
-            organizationId:'',
-            prev:null/*菜单操作:上一次操作菜单*/,
-            current:null/*菜单操作:当前操作菜单*/
-        };
-
-
-        /*菜单服务--初始化*/
+        /*初始化服务--虚拟挂载点，或者初始化参数*/
+        orderService.getRoot(self.record);
+        /*初始化服务--初始化菜单*/
         this.initSubMenu=function () {
             orderService.getSubMenu({
                 table:self.table,
                 record:self.record
             });
         };
+
+
+
         /*菜单服务--显示隐藏菜单*/
         this.toggleSubMenu=function (e) {
             orderService.toggleSubMenu(e,{

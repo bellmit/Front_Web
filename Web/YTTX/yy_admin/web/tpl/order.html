@@ -21,13 +21,17 @@
 
                 <!--打印，导出-->
                 <div ng-show="false" class="action-item-btn action-item-export g-w-percent8">
-                    <span ng-show="order_ctrl.powerlist.orderprint" class="btn btn-export g-br3 g-c-blue3">打印</span>
-                    <span ng-show="order_ctrl.powerlist.orderexport" class="btn btn-export g-br3 g-c-blue3">导出</span>
+                    <span ng-show="order_ctrl.powerlist.order_print" class="btn btn-export g-br3 g-c-blue3">打印</span>
+                    <span ng-show="order_ctrl.powerlist.order_export" class="btn btn-export g-br3 g-c-blue3">导出</span>
                 </div>
 
 
-                <!--列控制-->
+
                 <div class="clearfix"></div>
+                <div class="action-item-input g-w-percent25">
+                    <label class="action-indent-b4">搜索条件:<input class="form-control input-sm g-w-percent48" placeholder="请输入查询条件" ng-model="order_ctrl.record.searchWord"  type="text"></label>
+                </div>
+                <!--列控制-->
                 <div class="action-item-ul g-w-percent5 g-pos-r g-gap-mt4" ng-show="::order_ctrl.table.tablecolumn.columnshow">
                     <div class="action-theme action-theme-btn g-br3 g-t-c">显示列</div>
                     <div class="action-ul g-d-hidei" id="admin_table_checkcolumn">
@@ -35,7 +39,7 @@
                     </div>
                 </div>
 
-                <div class="action-item-btn action-item-export g-gap-mt4 g-w-percent6">
+                <div ng-show="order_ctrl.record.organizationId!==''" class="action-item-btn action-item-export g-gap-mt4 g-w-percent6">
                     <span ng-click="order_ctrl.queryOrder()" class="btn btn-export g-br3 g-w-percent50 g-c-blue3">查询</span>
                 </div>
 
@@ -45,28 +49,26 @@
             <table id="admin_list_wrap" class="table table-bordered table-striped table-hover admin-layout-table">
                 <!--分组样式-->
                 <colgroup id="admin_list_colgroup">
-                    <col class="g-w-percent5">
-                    <col class="g-w-percent5">
-                    <col class="g-w-percent5">
-                    <col class="g-w-percent5">
-                    <col class="g-w-percent5">
-                    <col class="g-w-percent5">
-                    <col class="g-w-percent5">
-                    <col class="g-w-percent5">
                     <col class="g-w-percent10">
+                    <col class="g-w-percent5">
+                    <col class="g-w-percent12">
+                    <col class="g-w-percent5">
+                    <col class="g-w-percent5">
+                    <col class="g-w-percent5">
+                    <col class="g-w-percent5">
+                    <col class="g-w-percent5">
                 </colgroup>
 
                 <!--表头-->
                 <thead>
                 <tr>
-                    <th>用户名称</th>
+                    <th>商户名称</th>
                     <th>手机号码</th>
                     <th>订单号</th>
-                    <th>成交金额</th>
-                    <th>付款人姓名</th>
-                    <th>刷卡方式</th>
-                    <th>创建时间</th>
-                    <th>支付时间</th>
+                    <th>订单总价</th>
+                    <th>订单状态</th>
+                    <th>支付类型</th>
+                    <th>订单时间</th>
                     <th>操作</th>
                 </tr>
                 </thead>
@@ -84,7 +86,45 @@
 
         <div class="struct-layout-side">
             <!--子菜单组件-->
-            <ul class="sub-menu-wrap" ng-click="order_ctrl.toggleSubMenu($event)" id="admin_order_submenu" ng-init="order_ctrl.initSubMenu()"></ul>
+            <ul class="sub-menu-wrap">
+                <li>
+                    <a class="sub-menu-title sub-menu-titleactive" data-parentid="" data-id="order_ctrl.record.currentId" data-layer="0" ng-click="order_ctrl.initSubMenu()">{{order_ctrl.record.currentName}}</a>
+                    <ul class="g-d-showi ui-sub-menu" ng-click="order_ctrl.toggleSubMenu($event)" id="admin_order_submenu" ng-init="order_ctrl.initSubMenu()"></ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!--查看订单详情-->
+    <div class="modal fade custom-width" id="admin_orderdetail_dialog">
+        <div class="modal-dialog g-w-percent40">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <table class="table table-bordered table-striped table-hover admin-layout-table">
+
+                        <!--分组样式-->
+                        <colgroup>
+                            <col class="g-w-percent12">
+                            <col class="g-w-percent13">
+                            <col class="g-w-percent12">
+                            <col class="g-w-percent13">
+                        </colgroup>
+                        <!--头部-->
+                        <thead>
+                        <tr>
+                            <th class="g-t-c" colspan="4">订单详情</th>
+                        </tr>
+                        </thead>
+
+                        <!--表主体-->
+                        <tbody id="admin_orderdetail_show" class="middle-align"></tbody>
+                    </table>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-info" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
         </div>
     </div>
 </div>
