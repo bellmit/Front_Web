@@ -53,10 +53,14 @@ angular.module('app')
                     autoWidth:true,/*是否*/
                     paging:false,
                     ajax:{
-                        url:toolUtil.adaptReqUrl('/organization/goodsorder/list'),
+                        url:/*toolUtil.adaptReqUrl('/organization/goodsorder/list')*/'json/test.json',
                         dataType:'JSON',
                         method:'post',
                         dataSrc:function ( json ) {
+                            /*测试代码*/
+                            var json=orderService.testGetOrderList();
+
+
                             var code=parseInt(json.code,10),
                                 message=json.message;
 
@@ -156,7 +160,10 @@ angular.module('app')
                             "data":"orderNumber"
                         },
                         {
-                            "data":"totalMoney"
+                            "data":"totalMoney",
+                            "render":function(data, type, full, meta ){
+                                return toolUtil.moneyCorrect(data,12)[0];
+                            }
                         },
                         {
                             "data":"orderState",
@@ -175,11 +182,11 @@ angular.module('app')
                                 if(stauts===0){
                                     str='<div class="g-c-blue3">'+statusmap[stauts]+'</div>';
                                 }else if(stauts===1){
-                                    str='<div class="g-c-red3">'+statusmap[stauts]+'</div>';
+                                    str='<div class="g-c-red1">'+statusmap[stauts]+'</div>';
                                 }else if(stauts===6 || stauts===9 || stauts===20){
                                     str='<div class="g-c-warn">'+statusmap[stauts]+'</div>';
                                 }else if(stauts===21){
-                                    str='<div class="g-c-green2">'+statusmap[stauts]+'</div>';
+                                    str='<div class="g-c-green1">'+statusmap[stauts]+'</div>';
                                 }else{
                                     str='<div class="g-c-gray6">其他</div>';
                                 }

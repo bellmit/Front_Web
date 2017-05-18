@@ -128,12 +128,16 @@ angular.module('app')
 
             toolUtil
                 .requestHttp({
-                    url:'/organization/goodsorder/details',
+                    url:/*'/organization/goodsorder/details'*/'json/test.json',
                     method:'post',
                     set:true,
+                    debug:true,
                     data:param
                 })
                 .then(function(resp){
+                        /*测试代码*/
+                        var resp=self.testGetOrderDetail();
+
                         var data=resp.data,
                             status=parseInt(resp.status,10);
 
@@ -183,8 +187,8 @@ angular.module('app')
                                                     if(j==='orderState'){
                                                         var temptype=parseInt(order[j],10),
                                                             typemap={
-                                                                1:'待付款',
-                                                                2:'取消订单',
+                                                                0:'待付款',
+                                                                1:'取消订单',
                                                                 6:'待发货',
                                                                 9:'待收货',
                                                                 20:'待评价',
@@ -196,11 +200,11 @@ angular.module('app')
                                                                 if(temptype===0){
                                                                     tempstr='<div class="g-c-blue3">'+typemap[temptype]+'</div>';
                                                                 }else if(temptype===1){
-                                                                    tempstr='<div class="g-c-red3">'+typemap[temptype]+'</div>';
+                                                                    tempstr='<div class="g-c-red1">'+typemap[temptype]+'</div>';
                                                                 }else if(temptype===6 || temptype===9 || temptype===20){
                                                                     tempstr='<div class="g-c-warn">'+typemap[temptype]+'</div>';
                                                                 }else if(temptype===21){
-                                                                    tempstr='<div class="g-c-green2">'+typemap[temptype]+'</div>';
+                                                                    tempstr='<div class="g-c-green1">'+typemap[temptype]+'</div>';
                                                                 }else{
                                                                     tempstr='<div class="g-c-gray6">其他</div>';
                                                                 }
@@ -214,6 +218,8 @@ angular.module('app')
                                                                 3:"其它"
                                                             };
                                                         str+='<tr><td colspan="2" class="g-t-r">'+detail_map[j]+':</td><td colspan="2" class="g-t-l">'+paymap[temppay]+'</td></tr>';
+                                                    }else if(j==='totalMoney'){
+                                                        str+='<tr><td colspan="2" class="g-t-r">'+detail_map[j]+':</td><td colspan="2" class="g-t-l">'+toolUtil.moneyCorrect(order[j],12)[0]+'</td></tr>';
                                                     }else{
                                                         str+='<tr><td  colspan="2" class="g-t-r">'+detail_map[j]+':</td><td colspan="2" class="g-t-l">'+order[j]+'</td></tr>';
                                                     }
@@ -228,7 +234,7 @@ angular.module('app')
                                                 var detailitem;
                                                 for(i;i<len;i++){
                                                     detailitem=details[i];
-                                                    str+='<tr><td>'+(i + 1)+'</td><td class="g-t-c">'+detailitem["goodsName"]+':</td><td class="g-t-c">'+detailitem["goodsPrice"]+':</td><td class="g-t-c">'+detailitem["quantlity"]+'</td></tr>';
+                                                    str+='<tr><td>'+(i + 1)+'</td><td class="g-t-c">'+detailitem["goodsName"]+'</td><td class="g-t-c">'+toolUtil.moneyCorrect(detailitem["goodsPrice"],12)[0]+'</td><td class="g-t-c">'+detailitem["quantlity"]+'</td></tr>';
                                                 }
                                             }
                                         }
@@ -573,5 +579,74 @@ angular.module('app')
                     }
                 }
             }
+        };
+
+
+
+        /*测试服务--获取订单列表*/
+        this.testGetOrderList=function () {
+            return {
+                message:'ok',
+                code:0,
+                result:Mock.mock({
+                    'list|5-20':[{
+                        "id":/[0-9]{1,2}/,
+                        "merchantName":/(周一|杨二|张三|李四|王五|赵六|马七|朱八|陈九){1}/,
+                        "merchantPhone":/(^(13[0-9]|15[012356789]|18[0-9]|14[57]|170)[0-9]{8}$){1}/,
+                        "orderTime":moment().format('YYYY-MM-DD HH:mm:ss'),
+                        "orderNumber":/[0-9a-zA-Z]{18}/,
+                        "orderState":/(0|1|6|9|20|21|[2-5]){1}/,
+                        "totalMoney":/(^(([1-9]{1}\d{0,8})|0)((\.{0}(\d){0})|(\.{1}(\d){2}))$){1}/,
+                        "paymentType":/[1-3]{1}/
+                    }]
+                })
+            };
+            /*return {
+                status:200,
+                data:{
+                    message:'ok',
+                    code:0,
+                    result:Mock.mock({
+                        'list|5-50':[{
+                            "id":/[0-9]{1,2}/,
+                            "merchantName":/[0-9a-zA-Z]{2,10}/,
+                            "merchantPhone":/(^(13[0-9]|15[012356789]|18[0-9]|14[57]|170)[0-9]{8}$){1}/,
+                            "orderTime":moment().format('YYYY-MM-DD HH:mm:ss'),
+                            "orderNumber":/[0-9a-zA-Z]{18}/,
+                            "orderState":/[0|1|6|9|20|21|2-5]{1}/,
+                            "totalMoney":/(^(([1-9]{1}\d{0,8})|0)((\.{0}(\d){0})|(\.{1}(\d){2}))$){1}/,
+                            "paymentType":/[1-3]{1}/
+                        }]
+                    })
+                }
+            };*/
+        };
+        /*测试服务--获取订单列表*/
+        this.testGetOrderDetail=function () {
+            return {
+                 status:200,
+                     data:{
+                     message:'ok',
+                     code:0,
+                     result:Mock.mock({
+                         'order|1':[{
+                             "id":/[0-9]{1,2}/,
+                             "merchantName":/[0-9a-zA-Z]{2,10}/,
+                             "merchantPhone":/(^(13[0-9]|15[012356789]|18[0-9]|14[57]|170)[0-9]{8}$){1}/,
+                             "orderTime":moment().format('YYYY-MM-DD HH:mm:ss'),
+                             "orderNumber":/[0-9a-zA-Z]{18}/,
+                             "orderState":/(0|1|6|9|20|21|[2-5]){1}/,
+                             "totalMoney":/(^(([1-9]{1}\d{0,8})|0)((\.{0}(\d){0})|(\.{1}(\d){2}))$){1}/,
+                             "paymentType":/[1-3]{1}/
+                         }],
+                         'details|1-10':[{
+                             "id":/[0-9]{1,2}/,
+                             "goodsName":/[0-9a-zA-Z]{2,10}/,
+                             "goodsPrice":/(^(([1-9]{1}\d{0,8})|0)((\.{0}(\d){0})|(\.{1}(\d){2}))$){1}/,
+                             "quantlity":/[0-9]{1,2}/
+                         }]
+                     })
+                 }
+             };
         };
     }]);

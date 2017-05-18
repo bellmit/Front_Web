@@ -1185,6 +1185,8 @@ angular.module('app')
                                             }
 
                                         }
+                                        /*修正错误*/
+                                        self.formCorrect(config,'struct');
                                         /*显示弹窗*/
                                         self.toggleModal({
                                             display:modal.display,
@@ -1671,7 +1673,7 @@ angular.module('app')
                 });
             }
         };
-        /*表单服务类--重置表单*/
+        /*表单类服务--重置表单*/
         this.formReset=function (config,type) {
             if(type ==='struct'){
                 /*重置表单模型,如果是2参数则为特殊重置，1个参数为通用重置*/
@@ -1685,11 +1687,42 @@ angular.module('app')
             /*重置验证提示信息*/
             self.clearFormValid(config.forms);
         };
-        /*表单服务类--权限服务--全选权限*/
+        /*表单类服务--补全或修正不存在的默认信息*/
+        this.formCorrect=function (config,type) {
+            if(!config && !type){
+                return false;
+            }
+            var model=config[type];
+            if(!model){
+                return false;
+            }
+            if(type==='user'){
+                if(model['shoptype']==='' || typeof model['shoptype']==='undefined' || model['shoptype']===null){
+                    model['shoptype']=1;
+                }
+                if(model['status']==='' || typeof model['status']==='undefined' || model['status']===null){
+                    model['status']=0;
+                }
+            }else if(type==='struct'){
+                if(model['isAudited']==='' || typeof model['isAudited']==='undefined' || model['isAudited']===null){
+                    model['isAudited']=0;
+                }
+                if(model['status']==='' || typeof model['status']==='undefined' || model['status']===null){
+                    model['status']=0;
+                }
+                if(model['isSettingLogin']==='' || typeof model['isSettingLogin']==='undefined' || model['isSettingLogin']===null){
+                    model['isSettingLogin']=0;
+                }
+                if(model['isDesignatedPermit']==='' || typeof model['isDesignatedPermit']==='undefined' || model['isDesignatedPermit']===null){
+                    model['isDesignatedPermit']=0;
+                }
+            }
+        };
+        /*表单类服务--权限服务--全选权限*/
         this.selectAllPower=function (e) {
             powerService.selectAllPower(e);
         };
-        /*表单服务类--权限服务--确定所选权限*/
+        /*表单类服务--权限服务--确定所选权限*/
         this.getSelectPower=function (struct) {
             var temppower=powerService.getSelectPower();
             if(temppower){
@@ -1698,7 +1731,7 @@ angular.module('app')
                 struct.checkedFunctionIds='';
             }
         };
-        /*表单服务类--权限服务--取消所选权限*/
+        /*表单类服务--权限服务--取消所选权限*/
         this.clearSelectPower=function (struct) {
             struct.checkedFunctionIds='';
             powerService.clearSelectPower();
@@ -1751,11 +1784,6 @@ angular.module('app')
             var param=$.extend(true,{},cache.loginMap.param);
             /*判断参数*/
             param['id']=id;
-            if(action==='update'){
-                var user=config.user,
-                    modal=config.modal;
-            }
-
 
             toolUtil
                 .requestHttp({
@@ -1794,6 +1822,7 @@ angular.module('app')
                                     if(list){
                                         if(action==='update'){
                                             /*修改：更新模型*/
+                                            var user=config.user;
                                             user['type']='edit';
                                             
                                             for(var i in list){
@@ -1841,10 +1870,12 @@ angular.module('app')
                                                         break;
                                                 }
                                             }
+                                            /*修正错误*/
+                                            self.formCorrect(config,'user');
                                             /*显示弹窗*/
                                             self.toggleModal({
-                                                display:modal.display,
-                                                area:modal.area
+                                                display:'show',
+                                                area:'user'
                                             });
                                         }else if(action==='detail'){
                                             /*查看*/
@@ -2112,6 +2143,7 @@ angular.module('app')
                 return addressService.isReqAddress(config);
             }
         };
+        
 
 
     }]);

@@ -246,7 +246,9 @@
 
 			/*适配配置*/
 			if(config.set){
-				req.url=this.adaptReqUrl(req.url);
+				if(!config.debug){
+					req.url=this.adaptReqUrl(req.url);
+				}
 			}else{
 				/*debug模式则调用自定义json模式*/
 				if(BASE_CONFIG.debug && req.url.indexOf('.json')===-1){

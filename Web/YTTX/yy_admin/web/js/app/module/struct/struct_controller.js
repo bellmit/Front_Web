@@ -434,6 +434,7 @@ angular.module('app')
                     doItemAction:function(config){
                         structService.doItemAction({
                             record:self.record,
+                            address:self.user_address,
                             user:self.user,
                             table:self.table
                         },config);
