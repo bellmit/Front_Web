@@ -105,27 +105,32 @@
 								}
 								var result=json.result;
 								if(typeof result==='undefined'){
+									merchant_page.page=1;
+									merchant_page.total=0;
 									return [];
 								}
-								/*设置分页*/
-								merchant_page.page=result.page;
-								merchant_page.pageSize=result.pageSize;
-								merchant_page.total=result.count;
-								/*分页调用*/
-								$admin_page_wrap.pagination({
-									pageSize:merchant_page.pageSize,
-									total:merchant_page.total,
-									pageNumber:merchant_page.page,
-									onSelectPage:function(pageNumber,pageSize){
-										/*再次查询*/
-										var param=merchant_config.config.ajax.data;
-										param.page=pageNumber;
-										param.pageSize=pageSize;
-										merchant_config.config.ajax.data=param;
-										getColumnData(merchant_page,merchant_config);
-									}
-								});
-								return result?result.list||[]:[];
+								if(result){
+									/*设置分页*/
+									merchant_page.page=result.page;
+									merchant_page.pageSize=result.pageSize;
+									merchant_page.total=result.count;
+									/*分页调用*/
+									$admin_page_wrap.pagination({
+										pageSize:merchant_page.pageSize,
+										total:merchant_page.total,
+										pageNumber:merchant_page.page,
+										onSelectPage:function(pageNumber,pageSize){
+											/*再次查询*/
+											var param=merchant_config.config.ajax.data;
+											param.page=pageNumber;
+											param.pageSize=pageSize;
+											merchant_config.config.ajax.data=param;
+											getColumnData(merchant_page,merchant_config);
+										}
+									});
+									return result.list?result.list:[];
+								}
+
 							},
 							data:{
 								adminId:decodeURIComponent(logininfo.param.adminId),
@@ -317,20 +322,20 @@
 									var typemap={
 										2:"白酒",
 										1:"3C数码"
-									}
+									};
 									str+='<tr><th>'+detail_map[j]+':</th><td>'+typemap[list[j]]+'</td></tr>';
 								}else if(j==='deviceType'||j==='devicetype'){
 									var devicemap={
 										1:"S67",
 										2:"T6",
 										3:"其它"
-									}
-									str+='<tr><th>'+detail_map[j]+':</th><td>'+devicemap[list[j]]+'</td></tr>';
+									};
+									str+='<tr><th>'+detail_map[j]+':</th><td>'+(devicemap[list[j]]||"")+'</td></tr>';
 								}else if(j==='status'){
 									var statusmap={
 										0:"正常",
 										1:"停用"
-									}
+									};
 									str+='<tr><th>'+detail_map[j]+':</th><td>'+statusmap[list[j]]+'</td></tr>';
 								}else{
 									str+='<tr><th>'+detail_map[j]+':</th><td>'+list[j]+'</td></tr>';

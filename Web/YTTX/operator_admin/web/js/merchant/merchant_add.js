@@ -414,7 +414,8 @@
 								var device=list[j];
 								$admin_deviceType.find('option').each(function () {
 									var $this=$(this),
-										value=parseInt($this.val(),10);
+										dtype=$this.val(),
+										value=dtype===''?dtype:parseInt(dtype,10);
 									if(value===device){
 										$this.prop({
 											'selected':true

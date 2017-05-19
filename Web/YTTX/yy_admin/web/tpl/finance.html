@@ -1,222 +1,293 @@
 <div ng-controller="FinanceController as finance_ctrl">
     <div class="struct-layout-container struct-layout-default">
         <div class="struct-layout-main">
+
+            <!--分润模块-->
             <div ng-show="finance_ctrl.record.theme==='profit'">
-                <!--财务管理-->
-                <div class="admin-action-item">
 
-                    <!--过滤-->
-                    <div class="action-item-input g-w-percent10">
-                        <label class="action-indent-b2">过滤:<input class="form-control input-sm" placeholder="" ng-model="finance_ctrl.record.filter1" ng-keyup="finance_ctrl.filterDataTable('one')"  type="search"></label>
-                    </div>
+                <!--分润模块--统计-->
+                <div>
+                    <div class="admin-action-item">
 
-                    <!--条件查询-->
-                    <div class="action-item-input g-w-percent15">
-                        <label class="action-indent-b4">分润类型:
-                            <select class="form-control" ng-model="finance_ctrl.record.type" ng-change="finance_ctrl.changeType()">
-                                <option value="1">收单分润</option>
-                                <option value="2">分润业务</option>
-                            </select>
-                        </label>
-                    </div>
-
-                    <!--列控制-->
-                    <div class="action-item-ul g-w-percent8 g-pos-r" ng-show="::finance_ctrl.table.tablecolumn1.columnshow">
-                        <div class="action-theme action-theme-btn g-br3 g-t-c">显示列</div>
-                        <div class="action-ul g-d-hidei" id="admin_table1_checkcolumn">
-                            <ul class="action-list-wrap" ></ul>
+                        <!--过滤-->
+                        <div class="action-item-input g-w-percent10">
+                            <label class="action-indent-b2">过滤:<input class="form-control input-sm" placeholder="" ng-model="finance_ctrl.record.filter" ng-keyup="finance_ctrl.filterDataTable()"  type="search"></label>
                         </div>
+
+                        <!--条件查询-->
+                        <div class="action-item-input g-w-percent12 g-gap-mr2">
+                            <label class="action-indent-b4">分润类型:
+                                <select class="form-control g-clear-pt g-clear-pb" ng-model="finance_ctrl.record.type" ng-change="finance_ctrl.changeType()">
+                                    <option value="1">收单分润</option>
+                                    <option value="2">分润业务</option>
+                                </select>
+                            </label>
+                        </div>
+
+                        <!--列控制-->
+                        <div class="action-item-ul g-w-percent6 g-pos-r" ng-show="::finance_ctrl.table.tablecolumn1.columnshow">
+                            <div class="action-theme action-theme-btn g-br3 g-t-c">显示列</div>
+                            <div class="action-ul g-d-hidei" id="admin_table_checkcolumn1">
+                                <ul class="action-list-wrap" ></ul>
+                            </div>
+                        </div>
+
+                        <!--查询-->
+                        <div class="action-item-btn action-item-export g-gap-mt4 g-w-percent5">
+                            <span ng-click="finance_ctrl.queryFinance()" class="btn btn-export g-br3 g-w-percent50 g-c-blue3">查询</span>
+                        </div>
+
                     </div>
 
-                    <!--查询-->
-                    <div class="action-item-btn action-item-export g-gap-mt4 g-w-percent5">
-                        <span ng-click="finance_ctrl.queryFinance('one')" class="btn btn-export g-br3 g-w-percent50 g-c-blue3">查询</span>
+                    <div class="admin-layout-theme4 g-t-c g-b-gray17">分润统计</div>
+                    <!--表格-->
+                    <table id="admin_list_wrap1" class="table table-bordered table-striped table-hover admin-layout-table">
+                        <!--分组样式-->
+                        <colgroup id="admin_list_colgroup1">
+                            <col class="g-w-percent13">
+                            <col class="g-w-percent5">
+                            <col class="g-w-percent5">
+                            <col class="g-w-percent5">
+                            <col class="g-w-percent12">
+                            <col class="g-w-percent5">
+                            <col class="g-w-percent5">
+                        </colgroup>
+
+                        <!--表头-->
+                        <thead>
+                        <tr>
+                            <th>收货人名称</th>
+                            <th>物流</th>
+                            <th>发货数量</th>
+                            <th>状态</th>
+                            <th>订单时间</th>
+                            <th>设备类型</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+
+                        <!--表主体-->
+                        <tbody id="admin_batchlist_wrap1" class="middle-align"></tbody>
+                    </table>
+
+                    <!--分页-->
+                    <div class="admin-page-wrap">
+                        <div class="easyui-pagination g-w-percent50" id="admin_page_wrap1" data-options="links:5,layout:['manual','first','prev','links','next','last'],displayMsg:'显示{from}&nbsp;到&nbsp;{to}&nbsp;共&nbsp;{total}条记录'"></div>
+                    </div>
+                </div>
+
+
+                <!--分润模块--历史-->
+                <div>
+                    <div class="admin-action-item">
+
+                        <!--过滤-->
+                        <div class="action-item-input g-w-percent10">
+                            <label class="action-indent-b2">过滤:<input class="form-control input-sm" placeholder="" ng-model="finance_ctrl.record.filter" ng-keyup="finance_ctrl.filterDataTable()"  type="search"></label>
+                        </div>
+
+                        <!--条件查询-->
+                        <div class="action-item-input g-w-percent12 g-gap-mr2">
+                            <label class="action-indent-b4">分润类型:
+                                <select class="form-control g-clear-pt g-clear-pb" ng-model="finance_ctrl.record.type" ng-change="finance_ctrl.changeType()">
+                                    <option value="1">收单分润</option>
+                                    <option value="2">分润业务</option>
+                                </select>
+                            </label>
+                        </div>
+
+                        <!--列控制-->
+                        <div class="action-item-ul g-w-percent6 g-pos-r" ng-show="::finance_ctrl.table.tablecolumn2.columnshow">
+                            <div class="action-theme action-theme-btn g-br3 g-t-c">显示列</div>
+                            <div class="action-ul g-d-hidei" id="admin_table_checkcolumn2">
+                                <ul class="action-list-wrap" ></ul>
+                            </div>
+                        </div>
+
+                        <!--查询-->
+                        <div class="action-item-btn action-item-export g-gap-mt4 g-w-percent5">
+                            <span ng-click="finance_ctrl.queryFinance()" class="btn btn-export g-br3 g-w-percent50 g-c-blue3">查询</span>
+                        </div>
+
                     </div>
 
+                    <div class="admin-layout-theme4 g-t-c g-b-gray17">分润历史</div>
+                    <!--表格-->
+                    <table id="admin_list_wrap2" class="table table-bordered table-striped table-hover admin-layout-table">
+                        <!--分组样式-->
+                        <colgroup id="admin_list_colgroup2">
+                            <col class="g-w-percent13">
+                            <col class="g-w-percent5">
+                            <col class="g-w-percent5">
+                            <col class="g-w-percent5">
+                            <col class="g-w-percent12">
+                            <col class="g-w-percent5">
+                            <col class="g-w-percent5">
+                        </colgroup>
+
+                        <!--表头-->
+                        <thead>
+                        <tr>
+                            <th>收货人名称</th>
+                            <th>物流</th>
+                            <th>发货数量</th>
+                            <th>状态</th>
+                            <th>订单时间</th>
+                            <th>设备类型</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+
+                        <!--表主体-->
+                        <tbody id="admin_batchlist_wrap2" class="middle-align"></tbody>
+                    </table>
+
+                    <!--分页-->
+                    <div class="admin-page-wrap">
+                        <div class="easyui-pagination g-w-percent50" id="admin_page_wrap2" data-options="links:5,layout:['manual','first','prev','links','next','last'],displayMsg:'显示{from}&nbsp;到&nbsp;{to}&nbsp;共&nbsp;{total}条记录'"></div>
+                    </div>
                 </div>
-
-                <div class="admin-layout-theme4 g-t-c g-b-gray17">分润统计</div>
-                <!--表格-->
-                <table id="admin_list1_wrap" class="table table-bordered table-striped table-hover admin-layout-table">
-                    <!--分组样式-->
-                    <colgroup id="admin_list1_colgroup">
-                        <col class="g-w-percent13">
-                        <col class="g-w-percent5">
-                        <col class="g-w-percent5">
-                        <col class="g-w-percent5">
-                        <col class="g-w-percent12">
-                        <col class="g-w-percent5">
-                        <col class="g-w-percent5">
-                    </colgroup>
-
-                    <!--表头-->
-                    <thead>
-                    <tr>
-                        <th>收货人名称</th>
-                        <th>物流</th>
-                        <th>发货数量</th>
-                        <th>状态</th>
-                        <th>订单时间</th>
-                        <th>设备类型</th>
-                        <th>操作</th>
-                    </tr>
-                    </thead>
-
-                    <!--表主体-->
-                    <tbody id="admin_batchlist1_wrap" class="middle-align"></tbody>
-                </table>
-
-                <!--分页-->
-                <div class="admin-page-wrap">
-                    <div class="easyui-pagination g-w-percent50" id="admin_page1_wrap" data-options="links:5,layout:['manual','first','prev','links','next','last'],displayMsg:'显示{from}&nbsp;到&nbsp;{to}&nbsp;共&nbsp;{total}条记录'"></div>
-                </div>
-
-
-
-                <div class="admin-layout-theme4 g-t-c g-b-gray17">分润历史</div>
-                <!--表格-->
-                <table id="admin_list2_wrap" class="table table-bordered table-striped table-hover admin-layout-table">
-                    <!--分组样式-->
-                    <colgroup id="admin_list2_colgroup">
-                        <col class="g-w-percent13">
-                        <col class="g-w-percent5">
-                        <col class="g-w-percent5">
-                        <col class="g-w-percent5">
-                        <col class="g-w-percent12">
-                        <col class="g-w-percent5">
-                        <col class="g-w-percent5">
-                    </colgroup>
-
-                    <!--表头-->
-                    <thead>
-                    <tr>
-                        <th>收货人名称</th>
-                        <th>物流</th>
-                        <th>发货数量</th>
-                        <th>状态</th>
-                        <th>订单时间</th>
-                        <th>设备类型</th>
-                        <th>操作</th>
-                    </tr>
-                    </thead>
-
-                    <!--表主体-->
-                    <tbody id="admin_batchlist2_wrap" class="middle-align"></tbody>
-                </table>
-
-                <!--分页-->
-                <div class="admin-page-wrap">
-                    <div class="easyui-pagination g-w-percent50" id="admin_page2_wrap" data-options="links:5,layout:['manual','first','prev','links','next','last'],displayMsg:'显示{from}&nbsp;到&nbsp;{to}&nbsp;共&nbsp;{total}条记录'"></div>
-                </div>
-
             </div>
 
-
+            <!--清算模块-->
             <div ng-show="finance_ctrl.record.theme==='clear'">
-                <!--财务管理-->
-                <div class="admin-action-item">
+                <!--清算模块--统计-->
+                <div>
+                    <div class="admin-action-item">
+                        <!--过滤-->
+                        <div class="action-item-input g-w-percent10">
+                            <label class="action-indent-b2">过滤:<input class="form-control input-sm" placeholder="" ng-model="finance_ctrl.record.filter" ng-keyup="finance_ctrl.filterDataTable()"  type="search"></label>
+                        </div>
 
-                    <!--过滤-->
-                    <div class="action-item-input g-w-percent10">
-                        <label class="action-indent-b2">过滤:<input class="form-control input-sm" placeholder="" ng-model="finance_ctrl.record.filter1" ng-keyup="finance_ctrl.filterDataTable('one')"  type="search"></label>
-                    </div>
+                        <!--条件查询-->
+                        <div class="action-item-input g-w-percent12 g-gap-mr2">
+                            <label class="action-indent-b4">分润类型:
+                                <select class="form-control g-clear-pt g-clear-pb" ng-model="finance_ctrl.record.type" ng-change="finance_ctrl.changeType()">
+                                    <option value="1">收单分润</option>
+                                    <option value="2">分润业务</option>
+                                </select>
+                            </label>
+                        </div>
 
-                    <!--条件查询-->
-                    <div class="action-item-input g-w-percent15">
-                        <label class="action-indent-b4">分润类型:
-                            <select class="form-control" ng-model="finance_ctrl.record.type" ng-change="finance_ctrl.changeType()">
-                                <option value="1">收单分润</option>
-                                <option value="2">分润业务</option>
-                            </select>
-                        </label>
-                    </div>
+                        <!--列控制-->
+                        <div class="action-item-ul g-w-percent6 g-pos-r" ng-show="::finance_ctrl.table.tablecolumn3.columnshow">
+                            <div class="action-theme action-theme-btn g-br3 g-t-c">显示列</div>
+                            <div class="action-ul g-d-hidei" id="admin_table_checkcolumn3">
+                                <ul class="action-list-wrap" ></ul>
+                            </div>
+                        </div>
 
-                    <!--列控制-->
-                    <div class="action-item-ul g-w-percent8 g-pos-r" ng-show="::finance_ctrl.table.tablecolumn1.columnshow">
-                        <div class="action-theme action-theme-btn g-br3 g-t-c">显示列</div>
-                        <div class="action-ul g-d-hidei" id="admin_table1_checkcolumn">
-                            <ul class="action-list-wrap" ></ul>
+                        <!--查询-->
+                        <div class="action-item-btn action-item-export g-gap-mt4 g-w-percent5">
+                            <span ng-click="finance_ctrl.queryFinance()" class="btn btn-export g-br3 g-w-percent50 g-c-blue3">查询</span>
                         </div>
                     </div>
 
-                    <!--查询-->
-                    <div class="action-item-btn action-item-export g-gap-mt4 g-w-percent5">
-                        <span ng-click="finance_ctrl.queryFinance('one')" class="btn btn-export g-br3 g-w-percent50 g-c-blue3">查询</span>
+                    <div class="admin-layout-theme4 g-t-c g-b-gray17">清算统计</div>
+                    <!--表格-->
+                    <table id="admin_list_wrap3" class="table table-bordered table-striped table-hover admin-layout-table">
+                        <!--分组样式-->
+                        <colgroup id="admin_list_colgroup3">
+                            <col class="g-w-percent13">
+                            <col class="g-w-percent5">
+                            <col class="g-w-percent5">
+                            <col class="g-w-percent5">
+                            <col class="g-w-percent12">
+                            <col class="g-w-percent5">
+                            <col class="g-w-percent5">
+                        </colgroup>
+
+                        <!--表头-->
+                        <thead>
+                        <tr>
+                            <th>收货人名称</th>
+                            <th>物流</th>
+                            <th>发货数量</th>
+                            <th>状态</th>
+                            <th>订单时间</th>
+                            <th>设备类型</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+
+                        <!--表主体-->
+                        <tbody id="admin_batchlist_wrap3" class="middle-align"></tbody>
+                    </table>
+
+                    <!--分页-->
+                    <div class="admin-page-wrap">
+                        <div class="easyui-pagination g-w-percent50" id="admin_page_wrap3" data-options="links:5,layout:['manual','first','prev','links','next','last'],displayMsg:'显示{from}&nbsp;到&nbsp;{to}&nbsp;共&nbsp;{total}条记录'"></div>
+                    </div>
+                </div>
+
+
+                <!--清算模块--历史-->
+                <div>
+                    <div class="admin-action-item">
+                        <!--过滤-->
+                        <div class="action-item-input g-w-percent10">
+                            <label class="action-indent-b2">过滤:<input class="form-control input-sm" placeholder="" ng-model="finance_ctrl.record.filter" ng-keyup="finance_ctrl.filterDataTable()"  type="search"></label>
+                        </div>
+
+                        <!--条件查询-->
+                        <div class="action-item-input g-w-percent12 g-gap-mr2">
+                            <label class="action-indent-b4">分润类型:
+                                <select class="form-control g-clear-pt g-clear-pb" ng-model="finance_ctrl.record.type" ng-change="finance_ctrl.changeType()">
+                                    <option value="1">收单分润</option>
+                                    <option value="2">分润业务</option>
+                                </select>
+                            </label>
+                        </div>
+
+                        <!--列控制-->
+                        <div class="action-item-ul g-w-percent6 g-pos-r" ng-show="::finance_ctrl.table.tablecolumn4.columnshow">
+                            <div class="action-theme action-theme-btn g-br3 g-t-c">显示列</div>
+                            <div class="action-ul g-d-hidei" id="admin_table_checkcolumn4">
+                                <ul class="action-list-wrap" ></ul>
+                            </div>
+                        </div>
+
+                        <!--查询-->
+                        <div class="action-item-btn action-item-export g-gap-mt4 g-w-percent5">
+                            <span ng-click="finance_ctrl.queryFinance()" class="btn btn-export g-br3 g-w-percent50 g-c-blue3">查询</span>
+                        </div>
                     </div>
 
-                </div>
+                    <div class="admin-layout-theme4 g-t-c g-b-gray17">清算历史</div>
+                    <!--表格-->
+                    <table id="admin_list_wrap4" class="table table-bordered table-striped table-hover admin-layout-table">
+                        <!--分组样式-->
+                        <colgroup id="admin_list_colgroup4">
+                            <col class="g-w-percent13">
+                            <col class="g-w-percent5">
+                            <col class="g-w-percent5">
+                            <col class="g-w-percent5">
+                            <col class="g-w-percent12">
+                            <col class="g-w-percent5">
+                            <col class="g-w-percent5">
+                        </colgroup>
 
+                        <!--表头-->
+                        <thead>
+                        <tr>
+                            <th>收货人名称</th>
+                            <th>物流</th>
+                            <th>发货数量</th>
+                            <th>状态</th>
+                            <th>订单时间</th>
+                            <th>设备类型</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
 
-                <div class="admin-layout-theme4 g-t-c g-b-gray17">清算统计</div>
-                <!--表格-->
-                <table id="admin_list3_wrap" class="table table-bordered table-striped table-hover admin-layout-table">
-                    <!--分组样式-->
-                    <colgroup id="admin_list3_colgroup">
-                        <col class="g-w-percent13">
-                        <col class="g-w-percent5">
-                        <col class="g-w-percent5">
-                        <col class="g-w-percent5">
-                        <col class="g-w-percent12">
-                        <col class="g-w-percent5">
-                        <col class="g-w-percent5">
-                    </colgroup>
+                        <!--表主体-->
+                        <tbody id="admin_batchlist_wrap4" class="middle-align"></tbody>
+                    </table>
 
-                    <!--表头-->
-                    <thead>
-                    <tr>
-                        <th>收货人名称</th>
-                        <th>物流</th>
-                        <th>发货数量</th>
-                        <th>状态</th>
-                        <th>订单时间</th>
-                        <th>设备类型</th>
-                        <th>操作</th>
-                    </tr>
-                    </thead>
-
-                    <!--表主体-->
-                    <tbody id="admin_batchlist3_wrap" class="middle-align"></tbody>
-                </table>
-
-                <!--分页-->
-                <div class="admin-page-wrap">
-                    <div class="easyui-pagination g-w-percent50" id="admin_page3_wrap" data-options="links:5,layout:['manual','first','prev','links','next','last'],displayMsg:'显示{from}&nbsp;到&nbsp;{to}&nbsp;共&nbsp;{total}条记录'"></div>
-                </div>
-
-                <div class="admin-layout-theme4 g-t-c g-b-gray17">清算历史</div>
-                <!--表格-->
-                <table id="admin_list4_wrap" class="table table-bordered table-striped table-hover admin-layout-table">
-                    <!--分组样式-->
-                    <colgroup id="admin_list4_colgroup">
-                        <col class="g-w-percent13">
-                        <col class="g-w-percent5">
-                        <col class="g-w-percent5">
-                        <col class="g-w-percent5">
-                        <col class="g-w-percent12">
-                        <col class="g-w-percent5">
-                        <col class="g-w-percent5">
-                    </colgroup>
-
-                    <!--表头-->
-                    <thead>
-                    <tr>
-                        <th>收货人名称</th>
-                        <th>物流</th>
-                        <th>发货数量</th>
-                        <th>状态</th>
-                        <th>订单时间</th>
-                        <th>设备类型</th>
-                        <th>操作</th>
-                    </tr>
-                    </thead>
-
-                    <!--表主体-->
-                    <tbody id="admin_batchlist4_wrap" class="middle-align"></tbody>
-                </table>
-
-                <!--分页-->
-                <div class="admin-page-wrap">
-                    <div class="easyui-pagination g-w-percent50" id="admin_page4_wrap" data-options="links:5,layout:['manual','first','prev','links','next','last'],displayMsg:'显示{from}&nbsp;到&nbsp;{to}&nbsp;共&nbsp;{total}条记录'"></div>
+                    <!--分页-->
+                    <div class="admin-page-wrap">
+                        <div class="easyui-pagination g-w-percent50" id="admin_page_wrap4" data-options="links:5,layout:['manual','first','prev','links','next','last'],displayMsg:'显示{from}&nbsp;到&nbsp;{to}&nbsp;共&nbsp;{total}条记录'"></div>
+                    </div>
                 </div>
 
             </div>

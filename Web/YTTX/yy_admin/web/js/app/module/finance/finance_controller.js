@@ -11,30 +11,30 @@ angular.module('app')
         var jq_dom={
             $admin_finance_submenu:$('#admin_finance_submenu'),
 
-            $admin_table1_checkcolumn:$('#admin_table1_checkcolumn'),
-            $admin_table2_checkcolumn:$('#admin_table2_checkcolumn'),
-            $admin_table3_checkcolumn:$('#admin_table3_checkcolumn'),
-            $admin_table4_checkcolumn:$('#admin_table4_checkcolumn'),
+            $admin_table_checkcolumn1:$('#admin_table_checkcolumn1'),
+            $admin_table_checkcolumn2:$('#admin_table_checkcolumn2'),
+            $admin_table_checkcolumn3:$('#admin_table_checkcolumn3'),
+            $admin_table_checkcolumn4:$('#admin_table_checkcolumn4'),
 
-            $admin_page1_wrap:$('#admin_page1_wrap'),
-            $admin_page2_wrap:$('#admin_page2_wrap'),
-            $admin_page3_wrap:$('#admin_page3_wrap'),
-            $admin_page4_wrap:$('#admin_page4_wrap'),
+            $admin_page_wrap1:$('#admin_page_wrap1'),
+            $admin_page_wrap2:$('#admin_page_wrap2'),
+            $admin_page_wrap3:$('#admin_page_wrap3'),
+            $admin_page_wrap4:$('#admin_page_wrap4'),
 
-            $admin_list1_wrap:$('#admin_list1_wrap'),
-            $admin_list2_wrap:$('#admin_list2_wrap'),
-            $admin_list3_wrap:$('#admin_list3_wrap'),
-            $admin_list4_wrap:$('#admin_list4_wrap'),
+            $admin_list_wrap1:$('#admin_list_wrap1'),
+            $admin_list_wrap2:$('#admin_list_wrap2'),
+            $admin_list_wrap3:$('#admin_list_wrap3'),
+            $admin_list_wrap4:$('#admin_list_wrap4'),
 
-            $admin_list1_colgroup:$('#admin_list1_colgroup'),
-            $admin_list2_colgroup:$('#admin_list2_colgroup'),
-            $admin_list3_colgroup:$('#admin_list3_colgroup'),
-            $admin_list4_colgroup:$('#admin_list4_colgroup'),
+            $admin_list_colgroup1:$('#admin_list_colgroup1'),
+            $admin_list_colgroup2:$('#admin_list_colgroup2'),
+            $admin_list_colgroup3:$('#admin_list_colgroup3'),
+            $admin_list_colgroup4:$('#admin_list_colgroup4'),
 
-            $admin_batchlist1_wrap:$('#admin_batchlist1_wrap'),
-            $admin_batchlist2_wrap:$('#admin_batchlist2_wrap'),
-            $admin_batchlist3_wrap:$('#admin_batchlist3_wrap'),
-            $admin_batchlist4_wrap:$('#admin_batchlist4_wrap')
+            $admin_batchlist_wrap1:$('#admin_batchlist_wrap1'),
+            $admin_batchlist_wrap2:$('#admin_batchlist_wrap2'),
+            $admin_batchlist_wrap3:$('#admin_batchlist_wrap3'),
+            $admin_batchlist_wrap4:$('#admin_batchlist_wrap4')
         };
         /*切换路由时更新dom缓存*/
         financeService.initJQDom(jq_dom);
@@ -42,13 +42,10 @@ angular.module('app')
 
         /*模型--操作记录*/
         this.record={
-            theme:'profit',
-            area:'count',
-            type:'1',
-            filter1:'',
-            filter2:'',
-            filter3:'',
-            filter4:'',
+            theme:'profit'/*查询的模块(分润，清算)：profit,clear*/,
+            type:'stats'/*查询的业务类型(统计，历史)：stats,history*/,
+            searchWord:''/*搜索字段*/,
+            filter:''/*过滤字段*/,
             organizationId:'',
             organizationName:'',
             prev:null/*菜单操作:上一次操作菜单*/,
@@ -58,27 +55,29 @@ angular.module('app')
 
         /*模型--表格缓存*/
         this.table={
-            list1_page:{
+            /*分页配置*/
+            list_page1:{
                 page:1,
                 pageSize:20,
                 total:0
             },
-            list2_page:{
+            list_page2:{
                 page:1,
                 pageSize:20,
                 total:0
             },
-            list3_page:{
+            list_page3:{
                 page:1,
                 pageSize:20,
                 total:0
             },
-            list4_page:{
+            list_page4:{
                 page:1,
                 pageSize:20,
                 total:0
             },
-            list1_config:{
+            /*表格配置*/
+            list_config1:{
                 config:{
                     processing:true,/*大消耗操作时是否显示处理状态*/
                     deferRender:true,/*是否延迟加载数据*/
@@ -110,33 +109,33 @@ angular.module('app')
                             var result=json.result;
                             if(typeof result==='undefined'){
                                 /*重置分页*/
-                                self.table.list1_page.total=0;
-                                self.table.list1_page.page=1;
-                                jq_dom.$admin_page1_wrap.pagination({
-                                    pageNumber:self.table.list1_page.page,
-                                    pageSize:self.table.list1_page.pageSize,
-                                    total:self.table.list1_page.total
+                                self.table.list_page1.total=0;
+                                self.table.list_page1.page=1;
+                                jq_dom.$admin_page_wrap1.pagination({
+                                    pageNumber:self.table.list_page1.page,
+                                    pageSize:self.table.list_page1.pageSize,
+                                    total:self.table.list_page1.total
                                 });
                                 return [];
                             }
 
                             if(result){
                                 /*设置分页*/
-                                self.table.list1_page.total=result.count;
+                                self.table.list_page1.total=result.count;
                                 /*分页调用*/
-                                jq_dom.$admin_page1_wrap.pagination({
-                                    pageNumber:self.table.list1_page.page,
-                                    pageSize:self.table.list1_page.pageSize,
-                                    total:self.table.list1_page.total,
+                                jq_dom.$admin_page_wrap1.pagination({
+                                    pageNumber:self.table.list_page1.page,
+                                    pageSize:self.table.list_page1.pageSize,
+                                    total:self.table.list_page1.total,
                                     onSelectPage:function(pageNumber,pageSize){
                                         /*再次查询*/
-                                        var temp_param=self.table.list1_config.config.ajax.data;
-                                        self.table.list1_page.page=pageNumber;
-                                        self.table.list1_page.pageSize=pageSize;
-                                        temp_param['page']=self.table.list1_page.page;
-                                        temp_param['pageSize']=self.table.list1_page.pageSize;
-                                        self.table.list1_config.config.ajax.data=temp_param;
-                                        financeService.getColumnData(self.table,self.record,'one');
+                                        var temp_param=self.table.list_config1.config.ajax.data;
+                                        self.table.list_page1.page=pageNumber;
+                                        self.table.list_page1.pageSize=pageSize;
+                                        temp_param['page']=self.table.list_page1.page;
+                                        temp_param['pageSize']=self.table.list_page1.pageSize;
+                                        self.table.list_config1.config.ajax.data=temp_param;
+                                        financeService.getColumnData(self.table,self.record);
                                     }
                                 });
 
@@ -155,12 +154,12 @@ angular.module('app')
                                 }
                             }else{
                                 /*重置分页*/
-                                self.table.list1_page.total=0;
-                                self.table.list1_page.page=1;
-                                jq_dom.$admin_page1_wrap.pagination({
-                                    pageNumber:self.table.list1_page.page,
-                                    pageSize:self.table.list1_page.pageSize,
-                                    total:self.table.list1_page.total
+                                self.table.list_page1.total=0;
+                                self.table.list_page1.page=1;
+                                jq_dom.$admin_page_wrap1.pagination({
+                                    pageNumber:self.table.list_page1.page,
+                                    pageSize:self.table.list_page1.pageSize,
+                                    total:self.table.list_page1.total
                                 });
                                 return [];
                             }
@@ -210,7 +209,7 @@ angular.module('app')
                     ]
                 }
             },
-            list2_config:{
+            list_config2:{
                 config:{
                     processing:true,/*大消耗操作时是否显示处理状态*/
                     deferRender:true,/*是否延迟加载数据*/
@@ -242,33 +241,33 @@ angular.module('app')
                             var result=json.result;
                             if(typeof result==='undefined'){
                                 /*重置分页*/
-                                self.table.list2_page.total=0;
-                                self.table.list2_page.page=1;
-                                jq_dom.$admin_page2_wrap.pagination({
-                                    pageNumber:self.table.list2_page.page,
-                                    pageSize:self.table.list2_page.pageSize,
-                                    total:self.table.list2_page.total
+                                self.table.list_page2.total=0;
+                                self.table.list_page2.page=1;
+                                jq_dom.$admin_page_wrap2.pagination({
+                                    pageNumber:self.table.list_page2.page,
+                                    pageSize:self.table.list_page2.pageSize,
+                                    total:self.table.list_page2.total
                                 });
                                 return [];
                             }
 
                             if(result){
                                 /*设置分页*/
-                                self.table.list2_page.total=result.count;
+                                self.table.list_page2.total=result.count;
                                 /*分页调用*/
-                                jq_dom.$admin_page2_wrap.pagination({
-                                    pageNumber:self.table.list2_page.page,
-                                    pageSize:self.table.list2_page.pageSize,
-                                    total:self.table.list2_page.total,
+                                jq_dom.$admin_page_wrap2.pagination({
+                                    pageNumber:self.table.list_page2.page,
+                                    pageSize:self.table.list_page2.pageSize,
+                                    total:self.table.list_page2.total,
                                     onSelectPage:function(pageNumber,pageSize){
                                         /*再次查询*/
-                                        var temp_param=self.table.list2_config.config.ajax.data;
-                                        self.table.list2_page.page=pageNumber;
-                                        self.table.list2_page.pageSize=pageSize;
-                                        temp_param['page']=self.table.list2_page.page;
-                                        temp_param['pageSize']=self.table.list2_page.pageSize;
-                                        self.table.list2_config.config.ajax.data=temp_param;
-                                        financeService.getColumnData(self.table,self.record,'two');
+                                        var temp_param=self.table.list_config2.config.ajax.data;
+                                        self.table.list_page2.page=pageNumber;
+                                        self.table.list_page2.pageSize=pageSize;
+                                        temp_param['page']=self.table.list_page2.page;
+                                        temp_param['pageSize']=self.table.list_page2.pageSize;
+                                        self.table.list_config2.config.ajax.data=temp_param;
+                                        financeService.getColumnData(self.table,self.record);
                                     }
                                 });
 
@@ -287,12 +286,12 @@ angular.module('app')
                                 }
                             }else{
                                 /*重置分页*/
-                                self.table.list2_page.total=0;
-                                self.table.list2_page.page=1;
-                                jq_dom.$admin_page2_wrap.pagination({
-                                    pageNumber:self.table.list2_page.page,
-                                    pageSize:self.table.list2_page.pageSize,
-                                    total:self.table.list2_page.total
+                                self.table.list_page2.total=0;
+                                self.table.list_page2.page=1;
+                                jq_dom.$admin_page_wrap2.pagination({
+                                    pageNumber:self.table.list_page2.page,
+                                    pageSize:self.table.list_page2.pageSize,
+                                    total:self.table.list_page2.total
                                 });
                                 return [];
                             }
@@ -342,7 +341,7 @@ angular.module('app')
                     ]
                 }
             },
-            list3_config:{
+            list_config3:{
                 config:{
                     processing:true,/*大消耗操作时是否显示处理状态*/
                     deferRender:true,/*是否延迟加载数据*/
@@ -374,33 +373,33 @@ angular.module('app')
                             var result=json.result;
                             if(typeof result==='undefined'){
                                 /*重置分页*/
-                                self.table.list3_page.total=0;
-                                self.table.list3_page.page=1;
-                                jq_dom.$admin_page3_wrap.pagination({
-                                    pageNumber:self.table.list3_page.page,
-                                    pageSize:self.table.list3_page.pageSize,
-                                    total:self.table.list3_page.total
+                                self.table.list_page3.total=0;
+                                self.table.list_page3.page=1;
+                                jq_dom.$admin_page_wrap3.pagination({
+                                    pageNumber:self.table.list_page3.page,
+                                    pageSize:self.table.list_page3.pageSize,
+                                    total:self.table.list_page3.total
                                 });
                                 return [];
                             }
 
                             if(result){
                                 /*设置分页*/
-                                self.table.list3_page.total=result.count;
+                                self.table.list_page3.total=result.count;
                                 /*分页调用*/
-                                jq_dom.$admin_page3_wrap.pagination({
-                                    pageNumber:self.table.list3_page.page,
-                                    pageSize:self.table.list3_page.pageSize,
-                                    total:self.table.list3_page.total,
+                                jq_dom.$admin_page_wrap3.pagination({
+                                    pageNumber:self.table.list_page3.page,
+                                    pageSize:self.table.list_page3.pageSize,
+                                    total:self.table.list_page3.total,
                                     onSelectPage:function(pageNumber,pageSize){
                                         /*再次查询*/
-                                        var temp_param=self.table.list3_config.config.ajax.data;
-                                        self.table.list3_page.page=pageNumber;
-                                        self.table.list3_page.pageSize=pageSize;
-                                        temp_param['page']=self.table.list3_page.page;
-                                        temp_param['pageSize']=self.table.list3_page.pageSize;
-                                        self.table.list3_config.config.ajax.data=temp_param;
-                                        financeService.getColumnData(self.table,self.record,'three');
+                                        var temp_param=self.table.list_config3.config.ajax.data;
+                                        self.table.list_page3.page=pageNumber;
+                                        self.table.list_page3.pageSize=pageSize;
+                                        temp_param['page']=self.table.list_page3.page;
+                                        temp_param['pageSize']=self.table.list_page3.pageSize;
+                                        self.table.list_config3.config.ajax.data=temp_param;
+                                        financeService.getColumnData(self.table,self.record);
                                     }
                                 });
 
@@ -419,12 +418,12 @@ angular.module('app')
                                 }
                             }else{
                                 /*重置分页*/
-                                self.table.list3_page.total=0;
-                                self.table.list3_page.page=1;
-                                jq_dom.$admin_page3_wrap.pagination({
-                                    pageNumber:self.table.list3_page.page,
-                                    pageSize:self.table.list3_page.pageSize,
-                                    total:self.table.list3_page.total
+                                self.table.list_page3.total=0;
+                                self.table.list_page3.page=1;
+                                jq_dom.$admin_page_wrap3.pagination({
+                                    pageNumber:self.table.list_page3.page,
+                                    pageSize:self.table.list_page3.pageSize,
+                                    total:self.table.list_page3.total
                                 });
                                 return [];
                             }
@@ -474,7 +473,7 @@ angular.module('app')
                     ]
                 }
             },
-            list4_config:{
+            list_config4:{
                 config:{
                     processing:true,/*大消耗操作时是否显示处理状态*/
                     deferRender:true,/*是否延迟加载数据*/
@@ -506,33 +505,33 @@ angular.module('app')
                             var result=json.result;
                             if(typeof result==='undefined'){
                                 /*重置分页*/
-                                self.table.list4_page.total=0;
-                                self.table.list4_page.page=1;
-                                jq_dom.$admin_page4_wrap.pagination({
-                                    pageNumber:self.table.list4_page.page,
-                                    pageSize:self.table.list4_page.pageSize,
-                                    total:self.table.list4_page.total
+                                self.table.list_page4.total=0;
+                                self.table.list_page4.page=1;
+                                jq_dom.$admin_page_wrap4.pagination({
+                                    pageNumber:self.table.list_page4.page,
+                                    pageSize:self.table.list_page4.pageSize,
+                                    total:self.table.list_page4.total
                                 });
                                 return [];
                             }
 
                             if(result){
                                 /*设置分页*/
-                                self.table.list4_page.total=result.count;
+                                self.table.list_page4.total=result.count;
                                 /*分页调用*/
-                                jq_dom.$admin_page4_wrap.pagination({
-                                    pageNumber:self.table.list4_page.page,
-                                    pageSize:self.table.list4_page.pageSize,
-                                    total:self.table.list4_page.total,
+                                jq_dom.$admin_page_wrap4.pagination({
+                                    pageNumber:self.table.list_page4.page,
+                                    pageSize:self.table.list_page4.pageSize,
+                                    total:self.table.list_page4.total,
                                     onSelectPage:function(pageNumber,pageSize){
                                         /*再次查询*/
-                                        var temp_param=self.table.list4_config.config.ajax.data;
-                                        self.table.list4_page.page=pageNumber;
-                                        self.table.list4_page.pageSize=pageSize;
-                                        temp_param['page']=self.table.list4_page.page;
-                                        temp_param['pageSize']=self.table.list4_page.pageSize;
-                                        self.table.list4_config.config.ajax.data=temp_param;
-                                        financeService.getColumnData(self.table,self.record,'four');
+                                        var temp_param=self.table.list_config4.config.ajax.data;
+                                        self.table.list_page4.page=pageNumber;
+                                        self.table.list_page4.pageSize=pageSize;
+                                        temp_param['page']=self.table.list_page4.page;
+                                        temp_param['pageSize']=self.table.list_page4.pageSize;
+                                        self.table.list_config4.config.ajax.data=temp_param;
+                                        financeService.getColumnData(self.table,self.record);
                                     }
                                 });
 
@@ -551,12 +550,12 @@ angular.module('app')
                                 }
                             }else{
                                 /*重置分页*/
-                                self.table.list4_page.total=0;
-                                self.table.list4_page.page=1;
-                                jq_dom.$admin_page4_wrap.pagination({
-                                    pageNumber:self.table.list4_page.page,
-                                    pageSize:self.table.list4_page.pageSize,
-                                    total:self.table.list4_page.total
+                                self.table.list_page4.total=0;
+                                self.table.list_page4.page=1;
+                                jq_dom.$admin_page_wrap4.pagination({
+                                    pageNumber:self.table.list_page4.page,
+                                    pageSize:self.table.list_page4.pageSize,
+                                    total:self.table.list_page4.total
                                 });
                                 return [];
                             }
@@ -606,98 +605,99 @@ angular.module('app')
                     ]
                 }
             },
-            list1_table:null,
-            list2_table:null,
-            list3_table:null,
-            list4_table:null,
+            /*表格缓存*/
+            list_table1:null,
+            list_table2:null,
+            list_table3:null,
+            list_table4:null,
             /*列控制*/
-            table1column:{
+            tablecolumn1:{
                 init_len:7/*数据有多少列*/,
                 column_flag:true,
                 ischeck:false,/*是否有全选*/
                 columnshow:true,
-                $column_wrap:jq_dom.$admin_table1_checkcolumn/*控制列显示隐藏的容器*/,
-                $bodywrap:jq_dom.$admin_batchlist1_wrap/*数据展现容器*/,
+                $column_wrap:jq_dom.$admin_table_checkcolumn1/*控制列显示隐藏的容器*/,
+                $bodywrap:jq_dom.$admin_batchlist_wrap1/*数据展现容器*/,
                 hide_list:[4,5]/*需要隐藏的的列序号*/,
                 hide_len:2,
                 column_api:{
                     isEmpty:function () {
-                        if(self.table.list1_table===null){
+                        if(self.table.list_table1===null){
                             return false;
                         }
-                        return self.table.list1_table.data().length===0;
+                        return self.table.list_table1.data().length===0;
                     }
                 },
-                $colgroup:jq_dom.$admin_list1_colgroup/*分组模型*/,
-                $column_btn:jq_dom.$admin_table1_checkcolumn.prev(),
-                $column_ul:jq_dom.$admin_table1_checkcolumn.find('ul')
+                $colgroup:jq_dom.$admin_list_colgroup1/*分组模型*/,
+                $column_btn:jq_dom.$admin_table_checkcolumn1.prev(),
+                $column_ul:jq_dom.$admin_table_checkcolumn1.find('ul')
             },
-            table2column:{
+            tablecolumn2:{
                 init_len:7/*数据有多少列*/,
                 column_flag:true,
                 ischeck:false,/*是否有全选*/
                 columnshow:true,
-                $column_wrap:jq_dom.$admin_table1_checkcolumn/*控制列显示隐藏的容器*/,
-                $bodywrap:jq_dom.$admin_batchlist1_wrap/*数据展现容器*/,
+                $column_wrap:jq_dom.$admin_table_checkcolumn2/*控制列显示隐藏的容器*/,
+                $bodywrap:jq_dom.$admin_batchlist_wrap2/*数据展现容器*/,
                 hide_list:[4,5]/*需要隐藏的的列序号*/,
                 hide_len:2,
                 column_api:{
                     isEmpty:function () {
-                        if(self.table.list1_table===null){
+                        if(self.table.list_table2===null){
                             return false;
                         }
-                        return self.table.list1_table.data().length===0;
+                        return self.table.list_table2.data().length===0;
                     }
                 },
-                $colgroup:jq_dom.$admin_list1_colgroup/*分组模型*/,
-                $column_btn:jq_dom.$admin_table1_checkcolumn.prev(),
-                $column_ul:jq_dom.$admin_table1_checkcolumn.find('ul')
+                $colgroup:jq_dom.$admin_list_colgroup2/*分组模型*/,
+                $column_btn:jq_dom.$admin_table_checkcolumn2.prev(),
+                $column_ul:jq_dom.$admin_table_checkcolumn2.find('ul')
             },
-            table3column:{
+            tablecolumn3:{
                 init_len:7/*数据有多少列*/,
                 column_flag:true,
                 ischeck:false,/*是否有全选*/
                 columnshow:true,
-                $column_wrap:jq_dom.$admin_table1_checkcolumn/*控制列显示隐藏的容器*/,
-                $bodywrap:jq_dom.$admin_batchlist1_wrap/*数据展现容器*/,
+                $column_wrap:jq_dom.$admin_table_checkcolumn3/*控制列显示隐藏的容器*/,
+                $bodywrap:jq_dom.$admin_batchlist_wrap3/*数据展现容器*/,
                 hide_list:[4,5]/*需要隐藏的的列序号*/,
                 hide_len:2,
                 column_api:{
                     isEmpty:function () {
-                        if(self.table.list1_table===null){
+                        if(self.table.list_table3===null){
                             return false;
                         }
-                        return self.table.list1_table.data().length===0;
+                        return self.table.list_table3.data().length===0;
                     }
                 },
-                $colgroup:jq_dom.$admin_list1_colgroup/*分组模型*/,
-                $column_btn:jq_dom.$admin_table1_checkcolumn.prev(),
-                $column_ul:jq_dom.$admin_table1_checkcolumn.find('ul')
+                $colgroup:jq_dom.$admin_list_colgroup3/*分组模型*/,
+                $column_btn:jq_dom.$admin_table_checkcolumn3.prev(),
+                $column_ul:jq_dom.$admin_table_checkcolumn3.find('ul')
             },
-            table4column:{
+            tablecolumn4:{
                 init_len:7/*数据有多少列*/,
                 column_flag:true,
                 ischeck:false,/*是否有全选*/
                 columnshow:true,
-                $column_wrap:jq_dom.$admin_table1_checkcolumn/*控制列显示隐藏的容器*/,
-                $bodywrap:jq_dom.$admin_batchlist1_wrap/*数据展现容器*/,
+                $column_wrap:jq_dom.$admin_table_checkcolumn4/*控制列显示隐藏的容器*/,
+                $bodywrap:jq_dom.$admin_batchlist_wrap4/*数据展现容器*/,
                 hide_list:[4,5]/*需要隐藏的的列序号*/,
                 hide_len:2,
                 column_api:{
                     isEmpty:function () {
-                        if(self.table.list1_table===null){
+                        if(self.table.list_table4===null){
                             return false;
                         }
-                        return self.table.list1_table.data().length===0;
+                        return self.table.list_table4.data().length===0;
                     }
                 },
-                $colgroup:jq_dom.$admin_list1_colgroup/*分组模型*/,
-                $column_btn:jq_dom.$admin_table1_checkcolumn.prev(),
-                $column_ul:jq_dom.$admin_table1_checkcolumn.find('ul')
+                $colgroup:jq_dom.$admin_list_colgroup4/*分组模型*/,
+                $column_btn:jq_dom.$admin_table_checkcolumn4.prev(),
+                $column_ul:jq_dom.$admin_table_checkcolumn4.find('ul')
             },
             /*按钮*/
-            table1itemaction:{
-                $bodywrap:jq_dom.$admin_batchlist1_wrap,
+            tableitemaction1:{
+                $bodywrap:jq_dom.$admin_batchlist_wrap1,
                 itemaction_api:{
                     doItemAction:function(config){
                         financeService.doItemAction({
@@ -707,8 +707,8 @@ angular.module('app')
                     }
                 }
             },
-            table2itemaction:{
-                $bodywrap:jq_dom.$admin_batchlist1_wrap,
+            tableitemaction2:{
+                $bodywrap:jq_dom.$admin_batchlist_wrap2,
                 itemaction_api:{
                     doItemAction:function(config){
                         financeService.doItemAction({
@@ -718,8 +718,8 @@ angular.module('app')
                     }
                 }
             },
-            table3itemaction:{
-                $bodywrap:jq_dom.$admin_batchlist1_wrap,
+            tableitemaction3:{
+                $bodywrap:jq_dom.$admin_batchlist_wrap3,
                 itemaction_api:{
                     doItemAction:function(config){
                         financeService.doItemAction({
@@ -729,8 +729,8 @@ angular.module('app')
                     }
                 }
             },
-            table4itemaction:{
-                $bodywrap:jq_dom.$admin_batchlist1_wrap,
+            tableitemaction4:{
+                $bodywrap:jq_dom.$admin_batchlist_wrap4,
                 itemaction_api:{
                     doItemAction:function(config){
                         financeService.doItemAction({

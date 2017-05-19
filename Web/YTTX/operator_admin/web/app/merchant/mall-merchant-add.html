@@ -157,15 +157,17 @@
 
 
                             <div class="form-group">
-                                <label class="control-label"><span class="form-require-item g-c-red1">*</span>IMEI码：</label>
-                                <input type="text" class="form-control" name="imeiCode" placeholder="请输入IMEI码" data-validate="required" data-message-required="IMEI码不能为空"  id="admin_imeiCode" />
+                                <label class="control-label"><span class="form-require-item g-c-red1"></span>IMEI码：</label>
+                                <input type="text" class="form-control" name="imeiCode" placeholder=""  id="admin_imeiCode" />
                             </div>
 
                             <div class="form-group">
                                 <label class="control-label">设备类型</label>
                                 <select class="form-control" id="admin_deviceType" name="deviceType">
-                                    <option value="1" selected>S67</option>
+                                    <option value="" selected></option>
+                                    <option value="1">S67</option>
                                     <option value="2">T6</option>
+                                    <option value="3">其他</option>
                                 </select>
                             </div>
 
