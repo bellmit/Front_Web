@@ -9,32 +9,38 @@ angular.module('app')
 
         /*jquery dom缓存:主要是切换路由时，创建的dom缓存引用与现有的dom引用不一致，需要加载视图更新现有dom引用*/
         var jq_dom={
+            /*菜单*/
             $admin_finance_submenu:$('#admin_finance_submenu'),
-
+            /*分组控制*/
             $admin_table_checkcolumn1:$('#admin_table_checkcolumn1'),
             $admin_table_checkcolumn2:$('#admin_table_checkcolumn2'),
             $admin_table_checkcolumn3:$('#admin_table_checkcolumn3'),
             $admin_table_checkcolumn4:$('#admin_table_checkcolumn4'),
-
+            /*分页*/
             $admin_page_wrap1:$('#admin_page_wrap1'),
             $admin_page_wrap2:$('#admin_page_wrap2'),
             $admin_page_wrap3:$('#admin_page_wrap3'),
             $admin_page_wrap4:$('#admin_page_wrap4'),
-
+            /*列表*/
             $admin_list_wrap1:$('#admin_list_wrap1'),
             $admin_list_wrap2:$('#admin_list_wrap2'),
             $admin_list_wrap3:$('#admin_list_wrap3'),
             $admin_list_wrap4:$('#admin_list_wrap4'),
-
+            /*分组*/
             $admin_list_colgroup1:$('#admin_list_colgroup1'),
             $admin_list_colgroup2:$('#admin_list_colgroup2'),
             $admin_list_colgroup3:$('#admin_list_colgroup3'),
             $admin_list_colgroup4:$('#admin_list_colgroup4'),
-
+            /*表主体操作区*/
             $admin_batchlist_wrap1:$('#admin_batchlist_wrap1'),
             $admin_batchlist_wrap2:$('#admin_batchlist_wrap2'),
             $admin_batchlist_wrap3:$('#admin_batchlist_wrap3'),
-            $admin_batchlist_wrap4:$('#admin_batchlist_wrap4')
+            $admin_batchlist_wrap4:$('#admin_batchlist_wrap4'),
+            /*全选操作*/
+            $admin_finance_checkall1:$('#admin_finance_checkall1'),
+            $admin_finance_checkall2:$('#admin_finance_checkall2'),
+            $admin_finance_checkall3:$('#admin_finance_checkall3'),
+            $admin_finance_checkall4:$('#admin_finance_checkall4')
         };
         /*切换路由时更新dom缓存*/
         financeService.initJQDom(jq_dom);
@@ -42,12 +48,16 @@ angular.module('app')
 
         /*模型--操作记录*/
         this.record={
-            theme:'profit'/*查询的模块(分润，清算)：profit,clear*/,
-            type:'stats'/*查询的业务类型(统计，历史)：stats,history*/,
+            theme:'profit'/*查询的模块或主题(分润，清算)：profit,clear*/,
+            tab:'stats'/*查询的选项类型(统计，历史)：stats,history*/,
+            type:1/*查询的业务类型(收单分润，分润业务)*/,
+            action:1/*查询的视图区域，最终根据主题theme,选项tab，两者叠加产生*/,
             searchWord:''/*搜索字段*/,
             filter:''/*过滤字段*/,
             organizationId:'',
             organizationName:'',
+            currentId:'',
+            currentName:'',
             prev:null/*菜单操作:上一次操作菜单*/,
             current:null/*菜单操作:当前操作菜单*/
         };
@@ -175,22 +185,44 @@ angular.module('app')
                     order:[[0, "desc" ],[1, "desc" ]],
                     columns: [
                         {
-                            "data":"consigneeName"
+                            "data":"id",
+                            "orderable" :false,
+                            "searchable" :false,
+                            "render":function(data, type, full, meta ){
+                                return '<input value="'+data+'" name="check_finance1" type="checkbox" />';
+                            }
                         },
                         {
-                            "data":"logistics"
+                            "data":"sales"
                         },
                         {
-                            "data":"deliveryQuantity"
+                            "data":"profits1"
                         },
                         {
-                            "data":"status"
+                            "data":"profits2"
                         },
                         {
-                            "data":"addTime"
+                            "data":"profits3"
                         },
                         {
-                            "data":"deviceType"
+                            "data":"state",
+                            "render":function(data, type, full, meta ){
+                                if(data==='' || isNaN(data)){
+                                    return '<div class="g-c-gray9">异常</div>';
+                                }
+                                var str='',
+                                    state=parseInt(data,10);
+                                if(state===0){
+                                    str='<div class="g-c-warn">未清算</div>';
+                                }else if(state===1){
+                                    str='<div class="g-c-gray3">部分清算</div>';
+                                }else if(state===2){
+                                    str='<div class="g-c-blue3">已清算</div>';
+                                }else{
+                                    str='<div class="g-c-gray9">异常</div>';
+                                }
+                                return str;
+                            }
                         },
                         {
                             /*to do*/
@@ -739,24 +771,91 @@ angular.module('app')
                         },config);
                     }
                 }
+            },
+            /*全选*/
+            tablecheckall1:{
+                checkall_flag:true,
+                $bodywrap:jq_dom.$admin_batchlist_wrap1,
+                $checkall:jq_dom.$admin_finance_checkall1,
+                checkvalue:0/*默认未选中*/,
+                checkid:[]/*默认索引数据为空*/,
+                checkitem:[]/*默认node数据为空*/,
+                highactive:'item-lightenbatch',
+                checkactive:'admin-batchitem-checkactive'
+            },
+            tablecheckall2:{
+                checkall_flag:true,
+                $bodywrap:jq_dom.$admin_batchlist_wrap2,
+                $checkall:jq_dom.$admin_finance_checkall2,
+                checkvalue:0/*默认未选中*/,
+                checkid:[]/*默认索引数据为空*/,
+                checkitem:[]/*默认node数据为空*/,
+                highactive:'item-lightenbatch',
+                checkactive:'admin-batchitem-checkactive'
+            },
+            tablecheckall3:{
+                checkall_flag:true,
+                $bodywrap:jq_dom.$admin_batchlist_wrap3,
+                $checkall:jq_dom.$admin_finance_checkall3,
+                checkvalue:0/*默认未选中*/,
+                checkid:[]/*默认索引数据为空*/,
+                checkitem:[]/*默认node数据为空*/,
+                highactive:'item-lightenbatch',
+                checkactive:'admin-batchitem-checkactive'
+            },
+            tablecheckall4:{
+                checkall_flag:true,
+                $bodywrap:jq_dom.$admin_batchlist_wrap4,
+                $checkall:jq_dom.$admin_finance_checkall4,
+                checkvalue:0/*默认未选中*/,
+                checkid:[]/*默认索引数据为空*/,
+                checkitem:[]/*默认node数据为空*/,
+                highactive:'item-lightenbatch',
+                checkactive:'admin-batchitem-checkactive'
             }
         };
 
 
 
-        /*模型--tab选项卡*/
-        this.tabitem=[{
+        /*模型--tab选项卡--主题*/
+        this.themeitem=[{
             name:'分润统计',
-            power:self.powerlist.profitdetails,
+            power:self.powerlist.profit_details,
             type:'profit',
             active:'tabactive'
         },{
             name:'清算统计',
-            power:self.powerlist.profitclear,
+            power:self.powerlist.profit_clear,
             type:'clear',
             active:''
         }];
 
+        /*模型--tab选项卡--选项*/
+        this.tabitem=[{
+            name:'统计',
+            power:self.powerlist.profit_details,
+            type:'stats',
+            active:'tabactive'
+        },{
+            name:'历史',
+            power:self.powerlist.profit_clear,
+            type:'history',
+            active:''
+        }];
+
+        /*模型--下拉条件--业务类型*/
+        this.typeitem=[{
+            key:'收单分润',
+            value:1
+        },{
+            key:'分润业务',
+            value:2
+        }];
+
+
+
+        /*初始化服务--虚拟挂载点，或者初始化参数*/
+        financeService.getRoot(self.record);
 
 
         /*菜单服务--初始化*/
@@ -773,29 +872,34 @@ angular.module('app')
                 record:self.record
             });
         };
-        /*菜单服务--切换菜单主题*/
-        this.toggleTab=function (type) {
+
+
+        /*条件服务--切换条件主题*/
+        this.toggleTheme=function (type) {
             self.record.theme=type;
+            /*计算区域*/
+            financeService.changeView(self.record);
+            /*查询列表数据*/
+            financeService.getColumnData(self.table,self.record);
+        };
+        /*条件服务--切换条件主题*/
+        this.toggleTab=function (type) {
+            self.record.tab=type;
+            /*计算区域*/
+            financeService.changeView(self.record);
+            /*查询列表数据*/
+            financeService.getColumnData(self.table,self.record);
         };
 
 
-        /*成员服务--过滤数据*/
-        this.filterDataTable=function (type) {
-            financeService.filterDataTable(self.table,self.record,type);
+        /*查询服务--查询列表*/
+        this.queryFinance=function () {
+            financeService.getColumnData(self.table,self.record);
         };
-
-
-        /*查询列表*/
-        this.queryFinance=function (type) {
-            financeService.getColumnData(self.table,self.record,type);
+        /*查询服务--过滤数据*/
+        this.filterDataTable=function () {
+            financeService.filterDataTable(self.table,self.record);
         };
-        
-        
-        /*查询服务--切换类型*/
-        this.changeType=function () {
-          console.log(self.record.type);
-        };
-
 
 
     }]);

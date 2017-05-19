@@ -45,6 +45,7 @@
 					},
 					cancel:false
 				})/*一般提示对象*/,
+				$admin_page_wrap=$('#admin_page_wrap'),
 				$show_detail_wrap=$('#show_detail_wrap')/*详情容器*/,
 				$show_detail_title=$('#show_detail_title')/*详情容器*/,
 				$show_detail_content=$('#show_detail_content')/*详情内容*/,
@@ -68,121 +69,154 @@
 					salesmanId:"业务员编号"
 				};
 
-			
+
+
+
 			/*列表请求配置*/
-			var merchant_config={
-					processing:true,/*大消耗操作时是否显示处理状态*/
-					deferRender:true,/*是否延迟加载数据*/
-					autoWidth:true,/*是否*/
-					paging:true,
-					pagingType:'simple_numbers',/*分页按钮排列*/
-					aLengthMenu: [
-						[5,10,15],
-						[5,10,15]
-					],
-					lengthChange:true,/*是否可改变长度*/
-					ajax:{
-						url:"http://10.0.5.226:8082/mall-agentbms-api/merchant/related",
-						dataType:'JSON',
-						method:'post',
-						dataSrc:function ( json ) {
-							var code=parseInt(json.code,10);
-							if(code!==0){
-								if(code===999){
-									/*清空缓存*/
-									public_tool.loginTips(function () {
-										public_tool.clear();
-										public_tool.clearCacheData();
+			var merchant_page={
+					page:1,
+					pageSize:20,
+					total:0
+				},
+				merchant_config={
+					$merchant_manage_wrap:$merchant_manage_wrap,
+					$admin_page_wrap:$admin_page_wrap,
+					config:{
+						processing:true,/*大消耗操作时是否显示处理状态*/
+						deferRender:true,/*是否延迟加载数据*/
+						autoWidth:true,/*是否*/
+						paging:false,
+						ajax:{
+							url:"http://10.0.5.226:8082/mall-agentbms-api/merchant/related",
+							dataType:'JSON',
+							method:'post',
+							dataSrc:function ( json ) {
+								var code=parseInt(json.code,10);
+								if(code!==0){
+									if(code===999){
+										/*清空缓存*/
+										public_tool.loginTips(function () {
+											public_tool.clear();
+											public_tool.clearCacheData();
+										});
+									}
+									console.log(json.message);
+									return [];
+								}
+								var result=json.result;
+								if(typeof result==='undefined'){
+									merchant_page.page=1;
+									merchant_page.total=0;
+									return [];
+								}
+								if(result){
+									/*设置分页*/
+									merchant_page.page=result.page;
+									merchant_page.pageSize=result.pageSize;
+									merchant_page.total=result.count;
+									/*分页调用*/
+									$admin_page_wrap.pagination({
+										pageSize:merchant_page.pageSize,
+										total:merchant_page.total,
+										pageNumber:merchant_page.page,
+										onSelectPage:function(pageNumber,pageSize){
+											/*再次查询*/
+											var param=merchant_config.config.ajax.data;
+											param.page=pageNumber;
+											param.pageSize=pageSize;
+											merchant_config.config.ajax.data=param;
+											getColumnData(merchant_page,merchant_config);
+										}
 									});
+									return result.list?result.list:[];
 								}
-								console.log(json.message);
-								return [];
-							}
-							var result=json.result;
-							return result?result.list?result.list:[]:[];
-						},
-						data:{
-							adminId:decodeURIComponent(logininfo.param.adminId),
-							token:decodeURIComponent(logininfo.param.token),
-							grade:decodeURIComponent(logininfo.param.grade)
-						}
-					},
-					info:true,
-					searching:true,
-					order:[[4, "desc" ]],
-					columns: [
-						{
-							"data":"fullName"
-						},
-						{
-							"data":"linkman"
-						},
-						{
-							"data":"cellphone",
-							"render":function(data, type, full, meta ){
-								return public_tool.phoneFormat(data);
-							}
-						},
-						{
-							"data":"type",
-							"render":function(data, type, full, meta ){
-								var typemap={
-									1:"3C数码",
-									2:"白酒"
-								};
-								return typemap[parseInt(data,10)];
-							}
-						},
-						{
-							"data":"addTime"
-						},
-						{
-							"data":"status",
-							"render":function(data, type, full, meta ){
-								var stauts=parseInt(data,10),
-									statusmap={
-										0:"正常",
-										1:"停用"
-									},
-									str='';
 
-								if(stauts===0){
-									str='<div class="g-c-info">'+statusmap[stauts]+'</div>';
-								}else if(stauts===1){
-									str='<div class="g-c-gray12">'+statusmap[stauts]+'</div>';
+							},
+							data:{
+								adminId:decodeURIComponent(logininfo.param.adminId),
+								token:decodeURIComponent(logininfo.param.token),
+								grade:decodeURIComponent(logininfo.param.grade),
+								page:1,
+								pageSize:20
+							}
+						},
+						info:false,
+						searching:true,
+						order:[[4, "desc" ]],
+						columns: [
+							{
+								"data":"fullName"
+							},
+							{
+								"data":"linkman"
+							},
+							{
+								"data":"cellphone",
+								"render":function(data, type, full, meta ){
+									return public_tool.phoneFormat(data);
 								}
-								return str;
-							}
-						},
-						{
-							"data":"id",
-							"render":function(data, type, full, meta ){
-								var id=parseInt(data,10),
-									btns='';
+							},
+							{
+								"data":"type",
+								"render":function(data, type, full, meta ){
+									var typemap={
+										1:"3C数码",
+										2:"白酒"
+									};
+									return typemap[parseInt(data,10)];
+								}
+							},
+							{
+								"data":"addTime"
+							},
+							{
+								"data":"status",
+								"render":function(data, type, full, meta ){
+									var stauts=parseInt(data,10),
+										statusmap={
+											0:"正常",
+											1:"停用"
+										},
+										str='';
 
-								if(merchantedit_power&&(merchant_grade===3||merchant_grade===2||merchant_grade===1)){
-									btns+='<span data-action="update" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+									if(stauts===0){
+										str='<div class="g-c-info">'+statusmap[stauts]+'</div>';
+									}else if(stauts===1){
+										str='<div class="g-c-gray12">'+statusmap[stauts]+'</div>';
+									}
+									return str;
+								}
+							},
+							{
+								"data":"id",
+								"render":function(data, type, full, meta ){
+									var id=parseInt(data,10),
+										btns='';
+
+									if(merchantedit_power&&(merchant_grade===3||merchant_grade===2||merchant_grade===1)){
+										btns+='<span data-action="update" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 											<i class="fa-pencil"></i>\
 											<span>编辑</span>\
 											</span>';
-								}
+									}
 
-								if(merchantshow_power){
-									btns+='<span data-action="select" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+									if(merchantshow_power){
+										btns+='<span data-action="select" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 											<i class="fa-file-text-o"></i>\
 											<span>查看</span>\
 											</span>';
-								}
+									}
 
-								return btns;
+									return btns;
+								}
 							}
-						}
-					]
+						]
+					}
 				};
 			
 
 			/*初始化请求*/
-			getColumnData(merchant_config);
+			getColumnData(merchant_page,merchant_config);
 			
 
 
@@ -236,9 +270,11 @@
 
 
 		/*获取数据*/
-		function getColumnData(opt){
+		function getColumnData(page,opt){
 			if(table===null){
-				table=$merchant_manage_wrap.DataTable(opt);
+				table=opt.$merchant_manage_wrap.DataTable(opt.config);
+			}else{
+				table.ajax.config(opt.config.ajax).load();
 			}
 		}
 

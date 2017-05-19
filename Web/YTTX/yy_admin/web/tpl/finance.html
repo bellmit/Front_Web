@@ -2,41 +2,45 @@
     <div class="struct-layout-container struct-layout-default">
         <div class="struct-layout-main">
 
+            <!--查询区域-->
+            <div class="admin-action-item">
+                <!--过滤-->
+                <div class="action-item-input g-w-percent10">
+                    <label class="action-indent-b2">过滤:<input class="form-control input-sm" placeholder="" ng-model="finance_ctrl.record.filter" ng-keyup="finance_ctrl.filterDataTable()"  type="search"></label>
+                </div>
+
+                <!--条件查询-->
+                <div class="action-item-input g-w-percent12 g-gap-mr2">
+                    <label class="action-indent-b4">分润类型:
+                        <select class="form-control g-clear-pt g-clear-pb" ng-init="finance_ctrl.record.type=1" ng-model="finance_ctrl.record.type" ng-options="item.value as item.key for item in finance_ctrl.typeitem"></select>
+                    </label>
+                </div>
+
+                <!--过滤-->
+                <div class="action-item-input g-w-percent15">
+                    <label class="action-indent-b5">查询关键字:<input class="form-control input-sm" placeholder="" ng-model="finance_ctrl.record.searchWord" type="text">
+                    </label>
+                </div>
+
+                <!--查询-->
+                <div class="action-item-btn action-item-export g-gap-mt4 g-w-percent5">
+                    <span ng-click="finance_ctrl.queryFinance()" class="btn btn-export g-br3 g-w-percent50 g-c-blue3">查询</span>
+                </div>
+            </div>
+
             <!--分润模块-->
             <div ng-show="finance_ctrl.record.theme==='profit'">
 
                 <!--分润模块--统计-->
-                <div>
+                <div ng-show="finance_ctrl.record.tab==='stats'">
                     <div class="admin-action-item">
-
-                        <!--过滤-->
-                        <div class="action-item-input g-w-percent10">
-                            <label class="action-indent-b2">过滤:<input class="form-control input-sm" placeholder="" ng-model="finance_ctrl.record.filter" ng-keyup="finance_ctrl.filterDataTable()"  type="search"></label>
-                        </div>
-
-                        <!--条件查询-->
-                        <div class="action-item-input g-w-percent12 g-gap-mr2">
-                            <label class="action-indent-b4">分润类型:
-                                <select class="form-control g-clear-pt g-clear-pb" ng-model="finance_ctrl.record.type" ng-change="finance_ctrl.changeType()">
-                                    <option value="1">收单分润</option>
-                                    <option value="2">分润业务</option>
-                                </select>
-                            </label>
-                        </div>
-
                         <!--列控制-->
-                        <div class="action-item-ul g-w-percent6 g-pos-r" ng-show="::finance_ctrl.table.tablecolumn1.columnshow">
+                        <div class="action-item-ul g-w-percent8 g-f-r g-pos-r" ng-show="::finance_ctrl.table.tablecolumn1.columnshow">
                             <div class="action-theme action-theme-btn g-br3 g-t-c">显示列</div>
                             <div class="action-ul g-d-hidei" id="admin_table_checkcolumn1">
                                 <ul class="action-list-wrap" ></ul>
                             </div>
                         </div>
-
-                        <!--查询-->
-                        <div class="action-item-btn action-item-export g-gap-mt4 g-w-percent5">
-                            <span ng-click="finance_ctrl.queryFinance()" class="btn btn-export g-br3 g-w-percent50 g-c-blue3">查询</span>
-                        </div>
-
                     </div>
 
                     <div class="admin-layout-theme4 g-t-c g-b-gray17">分润统计</div>
@@ -44,24 +48,28 @@
                     <table id="admin_list_wrap1" class="table table-bordered table-striped table-hover admin-layout-table">
                         <!--分组样式-->
                         <colgroup id="admin_list_colgroup1">
-                            <col class="g-w-percent13">
+                            <col class="g-w-percent3">
                             <col class="g-w-percent5">
+                            <col class="g-w-percent9">
+                            <col class="g-w-percent9">
+                            <col class="g-w-percent9">
                             <col class="g-w-percent5">
-                            <col class="g-w-percent5">
-                            <col class="g-w-percent12">
-                            <col class="g-w-percent5">
-                            <col class="g-w-percent5">
+                            <col class="g-w-percent10">
                         </colgroup>
 
                         <!--表头-->
                         <thead>
                         <tr>
-                            <th>收货人名称</th>
-                            <th>物流</th>
-                            <th>发货数量</th>
+                            <th class="g-clear-pl g-clear-pr g-t-c">
+                                <div class="admin-batchitem-wrap" ng-show="::finance_ctrl.powerlist.profit_clear" >
+                                    <label data-check="0" class="admin-batchitem-check" id="admin_finance_checkall1"></label>
+                                </div>
+                            </th>
+                            <th>销售金额</th>
+                            <th>一级分润金额</th>
+                            <th>二级分润金额</th>
+                            <th>三级分润金额</th>
                             <th>状态</th>
-                            <th>订单时间</th>
-                            <th>设备类型</th>
                             <th>操作</th>
                         </tr>
                         </thead>
@@ -78,37 +86,15 @@
 
 
                 <!--分润模块--历史-->
-                <div>
+                <div ng-show="finance_ctrl.record.tab==='history'">
                     <div class="admin-action-item">
-
-                        <!--过滤-->
-                        <div class="action-item-input g-w-percent10">
-                            <label class="action-indent-b2">过滤:<input class="form-control input-sm" placeholder="" ng-model="finance_ctrl.record.filter" ng-keyup="finance_ctrl.filterDataTable()"  type="search"></label>
-                        </div>
-
-                        <!--条件查询-->
-                        <div class="action-item-input g-w-percent12 g-gap-mr2">
-                            <label class="action-indent-b4">分润类型:
-                                <select class="form-control g-clear-pt g-clear-pb" ng-model="finance_ctrl.record.type" ng-change="finance_ctrl.changeType()">
-                                    <option value="1">收单分润</option>
-                                    <option value="2">分润业务</option>
-                                </select>
-                            </label>
-                        </div>
-
                         <!--列控制-->
-                        <div class="action-item-ul g-w-percent6 g-pos-r" ng-show="::finance_ctrl.table.tablecolumn2.columnshow">
+                        <div class="action-item-ul g-w-percent8 g-pos-r" ng-show="::finance_ctrl.table.tablecolumn2.columnshow">
                             <div class="action-theme action-theme-btn g-br3 g-t-c">显示列</div>
                             <div class="action-ul g-d-hidei" id="admin_table_checkcolumn2">
                                 <ul class="action-list-wrap" ></ul>
                             </div>
                         </div>
-
-                        <!--查询-->
-                        <div class="action-item-btn action-item-export g-gap-mt4 g-w-percent5">
-                            <span ng-click="finance_ctrl.queryFinance()" class="btn btn-export g-br3 g-w-percent50 g-c-blue3">查询</span>
-                        </div>
-
                     </div>
 
                     <div class="admin-layout-theme4 g-t-c g-b-gray17">分润历史</div>
@@ -116,24 +102,32 @@
                     <table id="admin_list_wrap2" class="table table-bordered table-striped table-hover admin-layout-table">
                         <!--分组样式-->
                         <colgroup id="admin_list_colgroup2">
-                            <col class="g-w-percent13">
+                            <col class="g-w-percent3">
+                            <col class="g-w-percent5">
+                            <col class="g-w-percent5">
+                            <col class="g-w-percent9">
                             <col class="g-w-percent5">
                             <col class="g-w-percent5">
                             <col class="g-w-percent5">
-                            <col class="g-w-percent12">
                             <col class="g-w-percent5">
-                            <col class="g-w-percent5">
+                            <col class="g-w-percent8">
                         </colgroup>
 
                         <!--表头-->
                         <thead>
                         <tr>
-                            <th>收货人名称</th>
-                            <th>物流</th>
-                            <th>发货数量</th>
+                            <th class="g-clear-pl g-clear-pr g-t-c">
+                                <div class="admin-batchitem-wrap" ng-show="::finance_ctrl.powerlist.profit_clear" >
+                                    <label data-check="0" class="admin-batchitem-check" id="admin_finance_checkall2"></label>
+                                </div>
+                            </th>
+                            <th>年份</th>
+                            <th>月份</th>
+                            <th>销售金额</th>
+                            <th>一级分润金额</th>
+                            <th>二级分润金额</th>
+                            <th>三级分润金</th>
                             <th>状态</th>
-                            <th>订单时间</th>
-                            <th>设备类型</th>
                             <th>操作</th>
                         </tr>
                         </thead>
@@ -152,34 +146,14 @@
             <!--清算模块-->
             <div ng-show="finance_ctrl.record.theme==='clear'">
                 <!--清算模块--统计-->
-                <div>
+                <div  ng-show="finance_ctrl.record.tab==='stats'">
                     <div class="admin-action-item">
-                        <!--过滤-->
-                        <div class="action-item-input g-w-percent10">
-                            <label class="action-indent-b2">过滤:<input class="form-control input-sm" placeholder="" ng-model="finance_ctrl.record.filter" ng-keyup="finance_ctrl.filterDataTable()"  type="search"></label>
-                        </div>
-
-                        <!--条件查询-->
-                        <div class="action-item-input g-w-percent12 g-gap-mr2">
-                            <label class="action-indent-b4">分润类型:
-                                <select class="form-control g-clear-pt g-clear-pb" ng-model="finance_ctrl.record.type" ng-change="finance_ctrl.changeType()">
-                                    <option value="1">收单分润</option>
-                                    <option value="2">分润业务</option>
-                                </select>
-                            </label>
-                        </div>
-
                         <!--列控制-->
-                        <div class="action-item-ul g-w-percent6 g-pos-r" ng-show="::finance_ctrl.table.tablecolumn3.columnshow">
+                        <div class="action-item-ul g-w-percent8 g-pos-r" ng-show="::finance_ctrl.table.tablecolumn3.columnshow">
                             <div class="action-theme action-theme-btn g-br3 g-t-c">显示列</div>
                             <div class="action-ul g-d-hidei" id="admin_table_checkcolumn3">
                                 <ul class="action-list-wrap" ></ul>
                             </div>
-                        </div>
-
-                        <!--查询-->
-                        <div class="action-item-btn action-item-export g-gap-mt4 g-w-percent5">
-                            <span ng-click="finance_ctrl.queryFinance()" class="btn btn-export g-br3 g-w-percent50 g-c-blue3">查询</span>
                         </div>
                     </div>
 
@@ -188,24 +162,28 @@
                     <table id="admin_list_wrap3" class="table table-bordered table-striped table-hover admin-layout-table">
                         <!--分组样式-->
                         <colgroup id="admin_list_colgroup3">
-                            <col class="g-w-percent13">
+                            <col class="g-w-percent3">
+                            <col class="g-w-percent8">
+                            <col class="g-w-percent6">
+                            <col class="g-w-percent10">
+                            <col class="g-w-percent10">
                             <col class="g-w-percent5">
-                            <col class="g-w-percent5">
-                            <col class="g-w-percent5">
-                            <col class="g-w-percent12">
-                            <col class="g-w-percent5">
-                            <col class="g-w-percent5">
+                            <col class="g-w-percent8">
                         </colgroup>
 
                         <!--表头-->
                         <thead>
                         <tr>
-                            <th>收货人名称</th>
-                            <th>物流</th>
-                            <th>发货数量</th>
+                            <th class="g-clear-pl g-clear-pr g-t-c">
+                                <div class="admin-batchitem-wrap" ng-show="::finance_ctrl.powerlist.profit_clear" >
+                                    <label data-check="0" class="admin-batchitem-check" id="admin_finance_checkall3"></label>
+                                </div>
+                            </th>
+                            <th>销售金额</th>
+                            <th>分润金额</th>
+                            <th>已清算金额</th>
+                            <th>未清算金额</th>
                             <th>状态</th>
-                            <th>订单时间</th>
-                            <th>设备类型</th>
                             <th>操作</th>
                         </tr>
                         </thead>
@@ -222,34 +200,14 @@
 
 
                 <!--清算模块--历史-->
-                <div>
+                <div  ng-show="finance_ctrl.record.tab==='history'">
                     <div class="admin-action-item">
-                        <!--过滤-->
-                        <div class="action-item-input g-w-percent10">
-                            <label class="action-indent-b2">过滤:<input class="form-control input-sm" placeholder="" ng-model="finance_ctrl.record.filter" ng-keyup="finance_ctrl.filterDataTable()"  type="search"></label>
-                        </div>
-
-                        <!--条件查询-->
-                        <div class="action-item-input g-w-percent12 g-gap-mr2">
-                            <label class="action-indent-b4">分润类型:
-                                <select class="form-control g-clear-pt g-clear-pb" ng-model="finance_ctrl.record.type" ng-change="finance_ctrl.changeType()">
-                                    <option value="1">收单分润</option>
-                                    <option value="2">分润业务</option>
-                                </select>
-                            </label>
-                        </div>
-
                         <!--列控制-->
-                        <div class="action-item-ul g-w-percent6 g-pos-r" ng-show="::finance_ctrl.table.tablecolumn4.columnshow">
+                        <div class="action-item-ul g-w-percent8 g-pos-r" ng-show="::finance_ctrl.table.tablecolumn4.columnshow">
                             <div class="action-theme action-theme-btn g-br3 g-t-c">显示列</div>
                             <div class="action-ul g-d-hidei" id="admin_table_checkcolumn4">
                                 <ul class="action-list-wrap" ></ul>
                             </div>
-                        </div>
-
-                        <!--查询-->
-                        <div class="action-item-btn action-item-export g-gap-mt4 g-w-percent5">
-                            <span ng-click="finance_ctrl.queryFinance()" class="btn btn-export g-br3 g-w-percent50 g-c-blue3">查询</span>
                         </div>
                     </div>
 
@@ -270,12 +228,18 @@
                         <!--表头-->
                         <thead>
                         <tr>
-                            <th>收货人名称</th>
-                            <th>物流</th>
-                            <th>发货数量</th>
+                            <th class="g-clear-pl g-clear-pr g-t-c">
+                                <div class="admin-batchitem-wrap" ng-show="::finance_ctrl.powerlist.profit_clear" >
+                                    <label data-check="0" class="admin-batchitem-check" id="admin_finance_checkall4"></label>
+                                </div>
+                            </th>
+                            <th>年份</th>
+                            <th>月份</th>
+                            <th>销售金额</th>
+                            <th>一级分润金额</th>
+                            <th>二级分润金额</th>
+                            <th>三级分润金</th>
                             <th>状态</th>
-                            <th>订单时间</th>
-                            <th>设备类型</th>
                             <th>操作</th>
                         </tr>
                         </thead>
@@ -296,10 +260,21 @@
 
 
         <div class="struct-layout-side" >
+
+            <!--选项卡组件-->
+            <ul class="sub-tab-wrap sub-item-group2 sub-itembr-group2 ui-sub-tab" data-action="toggleTheme" data-ctrlname="finance_ctrl"  data-tabitem="finance_ctrl.themeitem"></ul>
+
+
             <!--选项卡组件-->
             <ul class="sub-tab-wrap sub-item-group2 sub-itembr-group2 ui-sub-tab" data-action="toggleTab" data-ctrlname="finance_ctrl"  data-tabitem="finance_ctrl.tabitem"></ul>
+
             <!--子菜单组件-->
-            <ul class="sub-menu-wrap" ng-click="finance_ctrl.toggleSubMenu($event)" id="admin_finance_submenu" ng-init="finance_ctrl.initSubMenu()"></ul>
+            <ul class="sub-menu-wrap">
+                <li>
+                    <a class="sub-menu-title sub-menu-titleactive" data-parentid="" data-id="finance_ctrl.record.currentId" data-layer="0" ng-click="finance_ctrl.initSubMenu()">{{finance_ctrl.record.currentName}}</a>
+                    <ul class="g-d-showi ui-sub-menu" ng-click="finance_ctrl.toggleSubMenu($event)" id="admin_finance_submenu" ng-init="finance_ctrl.initSubMenu()"></ul>
+                </li>
+            </ul>
         </div>
     </div>
 </div>
