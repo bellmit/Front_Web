@@ -583,42 +583,79 @@ angular.module('app')
 
 
         /*测试服务--获取订单列表*/
-        this.testGetOrderList=function () {
-            return {
-                message:'ok',
-                code:0,
-                result:Mock.mock({
-                    'list|5-20':[{
-                        "id":/[0-9]{1,2}/,
-                        "merchantName":/(周一|杨二|张三|李四|王五|赵六|马七|朱八|陈九){1}/,
-                        "merchantPhone":/(^(13[0-9]|15[012356789]|18[0-9]|14[57]|170)[0-9]{8}$){1}/,
-                        "orderTime":moment().format('YYYY-MM-DD HH:mm:ss'),
-                        "orderNumber":/[0-9a-zA-Z]{18}/,
-                        "orderState":/(0|1|6|9|20|21|[2-5]){1}/,
-                        "totalMoney":/(^(([1-9]{1}\d{0,8})|0)((\.{0}(\d){0})|(\.{1}(\d){2}))$){1}/,
-                        "paymentType":/[1-3]{1}/
-                    }]
-                })
-            };
-            /*return {
-             status:200,
-             data:{
-             message:'ok',
-             code:0,
-             result:Mock.mock({
-             'list|5-50':[{
-             "id":/[0-9]{1,2}/,
-             "merchantName":/[0-9a-zA-Z]{2,10}/,
-             "merchantPhone":/(^(13[0-9]|15[012356789]|18[0-9]|14[57]|170)[0-9]{8}$){1}/,
-             "orderTime":moment().format('YYYY-MM-DD HH:mm:ss'),
-             "orderNumber":/[0-9a-zA-Z]{18}/,
-             "orderState":/[0|1|6|9|20|21|2-5]{1}/,
-             "totalMoney":/(^(([1-9]{1}\d{0,8})|0)((\.{0}(\d){0})|(\.{1}(\d){2}))$){1}/,
-             "paymentType":/[1-3]{1}/
-             }]
-             })
-             }
-             };*/
+        this.testGetFinanceList=function (type) {
+            var moneyrule=/(^(([1-9]{1}\d{0,8})|0)((\.{0}(\d){0})|(\.{1}(\d){2}))$){1}/,
+                res;
+            if(type===1){
+                res={
+                    message:'ok',
+                    code:0,
+                    result:Mock.mock({
+                        'list|10-50':[{
+                            "id":/[0-9]{1,2}/,
+                            "sales":moneyrule,
+                            "profits1":moneyrule,
+                            "profits2":moneyrule,
+                            "profits3":moneyrule,
+                            "state":/[0-3]{1}/
+                        }]
+                    })
+                };
+            }else if(type===2){
+                res={
+                    message:'ok',
+                    code:0,
+                    result:Mock.mock({
+                        'list|10-50':[{
+                            "id":/[0-9]{1,2}/,
+                            "year":/((2)(0)(1)([0-7])){1}/,
+                            "month":/([1-9]|11|12){1}/,
+                            "sales":moneyrule,
+                            "profits1":moneyrule,
+                            "profits2":moneyrule,
+                            "profits3":moneyrule,
+                            "state":/[0-3]{1}/
+                        }]
+                    })
+                };
+            }else if(type===3){
+                res={
+                    message:'ok',
+                    code:0,
+                    result:Mock.mock({
+                        'list|10-50':[{
+                            "id":/[0-9]{1,2}/,
+                            "sales":moneyrule,
+                            "profits":moneyrule,
+                            "cleared":moneyrule,
+                            "clearing":moneyrule,
+                            "state":/[0-3]{1}/
+                        }]
+                    })
+                };
+            }else if(type===4){
+                res={
+                    message:'ok',
+                    code:0,
+                    result:Mock.mock({
+                        'list|10-50':[{
+                            "id":/[0-9]{1,2}/,
+                            "year":/((2)(0)(1)([0-7])){1}/,
+                            "month":/([1-9]|11|12){1}/,
+                            "sales":moneyrule,
+                            "profits1":moneyrule,
+                            "profits2":moneyrule,
+                            "profits3":moneyrule,
+                            "state":/[0-3]{1}/
+                        }]
+                    })
+                };
+            }
+            res['result']['count']=res.result.list.length;
+            if(res.result.list.length>10){
+                res.result.list.length=10;
+            }
+            return res;
         };
         /*测试服务--获取订单列表*/
         this.testGetOrderDetail=function () {
