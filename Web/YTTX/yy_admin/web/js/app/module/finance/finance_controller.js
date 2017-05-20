@@ -1018,12 +1018,12 @@ angular.module('app')
 
         /*模型--tab选项卡--主题*/
         this.themeitem=[{
-            name:'分润统计',
+            name:'分润',
             power:self.powerlist.profit_details,
             type:'profit',
             active:'tabactive'
         },{
-            name:'清算统计',
+            name:'清算',
             power:self.powerlist.profit_clear,
             type:'clear',
             active:''
@@ -1080,7 +1080,6 @@ angular.module('app')
             financeService.changeView(self.record);
             /*查询列表数据*/
             financeService.getColumnData(self.table,self.record);
-            console.log(self.record.action);
         };
         /*条件服务--切换条件主题*/
         this.toggleTab=function (type) {
@@ -1099,6 +1098,17 @@ angular.module('app')
         /*查询服务--过滤数据*/
         this.filterDataTable=function () {
             financeService.filterDataTable(self.table,self.record);
+        };
+
+
+        /*清算*/
+        this.actionClear=function () {
+             financeService.actionClear({
+                 record:self.record,
+                 table:self.table
+             },{
+                 type:'batch'
+             });
         };
 
 

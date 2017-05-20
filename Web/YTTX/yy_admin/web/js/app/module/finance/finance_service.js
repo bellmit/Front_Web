@@ -141,10 +141,16 @@ angular.module('app')
                 /*清算订单*/
                 var $btn=config.$btn,
                     state=parseInt($btn.attr('data-state'),10);
+
+                self.actionClear(model,{
+                    type:'base',
+                    id:id,
+                    state:state
+                });
             }
         };
         /*数据查询服务--查询详情*/
-        this.queryDetail=function (config,id,action) {
+        this.queryDetail=function (model,id,action) {
             if(cache===null){
                 return false;
             }
@@ -302,9 +308,126 @@ angular.module('app')
                         }
                     });
         };
-        /*数据查询服务--处理清算*/
+        /*数据查询服务--处理清算（注意状态）
+        to do :此处批量处理，状态还待定，开发是注意
+        * */
+        this.actionClear=function (model,config) {
+            if(cache===null){
+                return false;
+            }
 
+            var type=config.type,
+                record=model.record,
+                table=model.table,
+                state,
+                temp_check='tablecheckall'+record.action;
 
+            if(type==='batch'){
+                /*批量*/
+                var batchdata=dataTableCheckAllService.getBatchData(table[temp_check]),
+                    len=batchdata.length;
+                if(len===0){
+                    toolDialog.show({
+                        type:'warn',
+                        value:'请选中相关数据'
+                    });
+                    return false;
+                }
+                /*注意：
+                * to do
+                * 状态待定
+                * */
+                state=0;
+            }else if(type==='base'){
+                /*单个处理*/
+                var id=config.id;
+                if(isNaN(id)){
+                    toolDialog.show({
+                        type:'warn',
+                        value:'请选中相关数据'
+                    });
+                    return false;
+                }
+                state=config.state;
+            }
+
+            /*确认是否清算*/
+            toolDialog.sureDialog('',function () {
+                /*适配参数*/
+                var param=$.extend(true,{},cache.loginMap.param);
+                if(type==='batch'){
+                    param['checkedOrderIds']=batchdata.join(',');
+                }else if(type==='base'){
+                    param['checkedOrderIds']=id;
+                }
+                param['state']=state;
+
+                /*执行清算操作*/
+                toolUtil
+                    .requestHttp({
+                        url:/*'/finance/profit/clear/state'*/'json/test.json',
+                        method:'post',
+                        set:true,
+                        debug:true,/*测试开关*/
+                        data:param
+                    })
+                    .then(function(resp){
+                            /*测试代码*/
+                            var resp=self.testClear();
+
+                            var data=resp.data,
+                                status=parseInt(resp.status,10);
+
+                            if(status===200){
+                                var code=parseInt(data.code,10),
+                                    message=data.message;
+                                if(code!==0){
+                                    if(typeof message !=='undefined'&&message!==''){
+                                        /*提示信息*/
+                                        toolDialog.show({
+                                            type:'warn',
+                                            value:message
+                                        });
+                                    }else{
+                                        /*提示信息*/
+                                        toolDialog.show({
+                                            type:'warn',
+                                            value:'清算订单失败'
+                                        });
+                                    }
+
+                                    if(code===999){
+                                        /*退出系统*/
+                                        cache=null;
+                                        toolUtil.loginTips({
+                                            clear:true,
+                                            reload:true
+                                        });
+                                    }
+                                }else{
+                                    /*提示信息*/
+                                    toolDialog.show({
+                                        type:'succ',
+                                        value:'清算订单成功'
+                                    });
+                                    /*清空全选*/
+                                    dataTableCheckAllService.clear(table[temp_check]);
+                                    /*重新加载数据*/
+                                    self.getColumnData(table,record);
+                                }
+                            }
+                        },
+                        function(resp){
+                            var message=resp.data.message;
+                            if(typeof message !=='undefined' && message!==''){
+                                console.log(message);
+                            }else{
+                                console.log('清算订单失败');
+                            }
+                        });
+            },type==='base'?'是否真要清算数据':'是否真要批量清算数据',true);
+
+        };
 
         /*弹出层服务*/
         this.toggleModal=function (config,fn) {
@@ -634,7 +757,7 @@ angular.module('app')
                     message:'ok',
                     code:0,
                     result:Mock.mock({
-                        'list|15':[{
+                        'list|5-15':[{
                             "id":/[0-9]{1,2}/,
                             "sales":moneyrule,
                             "profits1":moneyrule,
@@ -649,7 +772,7 @@ angular.module('app')
                     message:'ok',
                     code:0,
                     result:Mock.mock({
-                        'list|15':[{
+                        'list|5-15':[{
                             "id":/[0-9]{1,2}/,
                             "year":/((2)(0)(1)([0-7])){1}/,
                             "month":/([1-9]|11|12){1}/,
@@ -666,7 +789,7 @@ angular.module('app')
                     message:'ok',
                     code:0,
                     result:Mock.mock({
-                        'list|15':[{
+                        'list|5-15':[{
                             "id":/[0-9]{1,2}/,
                             "sales":moneyrule,
                             "profits":moneyrule,
@@ -681,7 +804,7 @@ angular.module('app')
                     message:'ok',
                     code:0,
                     result:Mock.mock({
-                        'list|15':[{
+                        'list|5-15':[{
                             "id":/[0-9]{1,2}/,
                             "year":/((2)(0)(1)([0-7])){1}/,
                             "month":/([1-9]|11|12){1}/,
@@ -694,10 +817,7 @@ angular.module('app')
                     })
                 };
             }
-            res['result']['count']=res.result.list.length;
-            if(res.result.list.length>10){
-                res.result.list.length=10;
-            }
+            res['result']['count']=30;
             return res;
         };
         /*测试服务--获取订单列表*/
@@ -725,6 +845,16 @@ angular.module('app')
                             "quantlity":/[0-9]{1,2}/
                         }]
                     })
+                }
+            };
+        };
+        /*测试服务--获取订单列表*/
+        this.testClear=function () {
+            return {
+                status:200,
+                data:{
+                    message:'ok',
+                    code:0
                 }
             };
         };

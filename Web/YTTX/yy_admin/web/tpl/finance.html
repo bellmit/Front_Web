@@ -34,8 +34,12 @@
                 <!--分润模块--统计-->
                 <div ng-show="finance_ctrl.record.tab==='stats'">
                     <div class="admin-action-item">
+                        <!--批量清算-->
+                        <div class="action-item-btn g-f-l g-w-percent20">
+                            <span ng-show="::finance_ctrl.powerlist.profit_clear && (finance_ctrl.record.organizationId!=='' || finance_ctrl.record.currentId!=='')"  ng-click="finance_ctrl.actionClear()" ><i class="btn-action admin-btn-action8"></i>批量清算</span>
+                        </div>
                         <!--列控制-->
-                        <div class="action-item-ul g-w-percent8 g-f-r g-pos-r" ng-show="::finance_ctrl.table.tablecolumn1.columnshow">
+                        <div class="action-item-ul g-w-percent6 g-f-r g-pos-r" ng-show="::finance_ctrl.table.tablecolumn1.columnshow">
                             <div class="action-theme action-theme-btn g-br3 g-t-c">显示列</div>
                             <div class="action-ul g-d-hidei" id="admin_table_checkcolumn1">
                                 <ul class="action-list-wrap" ></ul>
@@ -88,8 +92,12 @@
                 <!--分润模块--历史-->
                 <div ng-show="finance_ctrl.record.tab==='history'">
                     <div class="admin-action-item">
+                        <!--批量清算-->
+                        <div class="action-item-btn g-f-l g-w-percent20">
+                            <span ng-show="::finance_ctrl.powerlist.profit_clear && (finance_ctrl.record.organizationId!=='' || finance_ctrl.record.currentId!=='')"  ng-click="finance_ctrl.actionClear()" ><i class="btn-action admin-btn-action8"></i>批量清算</span>
+                        </div>
                         <!--列控制-->
-                        <div class="action-item-ul g-w-percent8 g-f-r g-pos-r" ng-show="::finance_ctrl.table.tablecolumn2.columnshow">
+                        <div class="action-item-ul g-w-percent6 g-f-r g-pos-r" ng-show="::finance_ctrl.table.tablecolumn2.columnshow">
                             <div class="action-theme action-theme-btn g-br3 g-t-c">显示列</div>
                             <div class="action-ul g-d-hidei" id="admin_table_checkcolumn2">
                                 <ul class="action-list-wrap" ></ul>
@@ -148,8 +156,12 @@
                 <!--清算模块--统计-->
                 <div  ng-show="finance_ctrl.record.tab==='stats'">
                     <div class="admin-action-item">
+                        <!--批量清算-->
+                        <div class="action-item-btn g-f-l g-w-percent20">
+                            <span ng-show="::finance_ctrl.powerlist.profit_clear && (finance_ctrl.record.organizationId!=='' || finance_ctrl.record.currentId!=='')"  ng-click="finance_ctrl.actionClear()" ><i class="btn-action admin-btn-action8"></i>批量清算</span>
+                        </div>
                         <!--列控制-->
-                        <div class="action-item-ul g-w-percent8 g-f-r g-pos-r" ng-show="::finance_ctrl.table.tablecolumn3.columnshow">
+                        <div class="action-item-ul g-w-percent6 g-f-r g-pos-r" ng-show="::finance_ctrl.table.tablecolumn3.columnshow">
                             <div class="action-theme action-theme-btn g-br3 g-t-c">显示列</div>
                             <div class="action-ul g-d-hidei" id="admin_table_checkcolumn3">
                                 <ul class="action-list-wrap" ></ul>
@@ -202,13 +214,12 @@
                 <!--清算模块--历史-->
                 <div  ng-show="finance_ctrl.record.tab==='history'">
                     <div class="admin-action-item">
-                        <div class="action-item-btn g-f-l g-w-percent28">
-                            <span ng-show="::finance_ctrl.powerlist.profit_clear && (finance_ctrl.record.organizationId!=='' || finance_ctrl.record.currentId!=='')"  ng-click="finance_ctrl.actionClear()" ><i class="btn-action admin-btn-action1"></i>清算</span>
-                            <span ng-show="::struct_ctrl.powerlist.operator_adjustment && 1===2" ng-click="struct_ctrl.adjustOperate()"><i class="btn-action admin-btn-action5"></i>调整运营商</span>
-                            <span ng-show="::struct_ctrl.powerlist.batch_delete" ng-click="struct_ctrl.batchDeleteUser()"><i class="btn-action admin-btn-action6"></i>批量删除</span>
+                        <!--批量清算-->
+                        <div class="action-item-btn g-f-l g-w-percent20">
+                            <span ng-show="::finance_ctrl.powerlist.profit_clear && (finance_ctrl.record.organizationId!=='' || finance_ctrl.record.currentId!=='')"  ng-click="finance_ctrl.actionClear()" ><i class="btn-action admin-btn-action8"></i>批量清算</span>
                         </div>
                         <!--列控制-->
-                        <div class="action-item-ul g-w-percent8 g-pos-r" ng-show="::finance_ctrl.table.tablecolumn4.columnshow">
+                        <div class="action-item-ul g-w-percent6 g-f-r g-pos-r" ng-show="::finance_ctrl.table.tablecolumn4.columnshow">
                             <div class="action-theme action-theme-btn g-br3 g-t-c">显示列</div>
                             <div class="action-ul g-d-hidei" id="admin_table_checkcolumn4">
                                 <ul class="action-list-wrap" ></ul>
