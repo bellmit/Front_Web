@@ -9,6 +9,8 @@ angular.module('app')
 
         /*jquery dom缓存:主要是切换路由时，创建的dom缓存引用与现有的dom引用不一致，需要加载视图更新现有dom引用*/
         var jq_dom={
+            $admin_orderdetail_dialog:$('#admin_orderdetail_dialog'),
+            $admin_orderdetail_show:$('#admin_orderdetail_show'),
             /*菜单*/
             $admin_finance_submenu:$('#admin_finance_submenu'),
             /*分组控制*/
@@ -203,16 +205,28 @@ angular.module('app')
                             }
                         },
                         {
-                            "data":"sales"
+                            "data":"sales",
+                            "render":function(data, type, full, meta ){
+                                return toolUtil.moneyCorrect(data,12,false)[0];
+                            }
                         },
                         {
-                            "data":"profits1"
+                            "data":"profits1",
+                            "render":function(data, type, full, meta ){
+                                return toolUtil.moneyCorrect(data,12,false)[0];
+                            }
                         },
                         {
-                            "data":"profits2"
+                            "data":"profits2",
+                            "render":function(data, type, full, meta ){
+                                return toolUtil.moneyCorrect(data,12,false)[0];
+                            }
                         },
                         {
-                            "data":"profits3"
+                            "data":"profits3",
+                            "render":function(data, type, full, meta ){
+                                return toolUtil.moneyCorrect(data,12,false)[0];
+                            }
                         },
                         {
                             "data":"state",
@@ -243,10 +257,10 @@ angular.module('app')
                                 if(self.powerlist.profit_details){
                                     btns+='<span data-action="detail" data-id="'+data+'"  class="btn-operate">查看</span>';
                                 }
-                                if(!full.state==='' && !isNaN(full.state)){
+                                if(full.state!=='' && !isNaN(full.state)){
                                     var state=parseInt(full.state,10);
                                     if(self.powerlist.profit_clear && (state===0 || state===1)){
-                                        btns+='<span data-action="clear" data-id="'+data+'"  class="btn-operate">清算</span>';
+                                        btns+='<span data-action="clear" data-state="'+state+'"  data-id="'+data+'"  class="btn-operate">清算</span>';
                                     }
                                 }
                                 return btns;
@@ -383,16 +397,28 @@ angular.module('app')
                             }
                         },
                         {
-                            "data":"sales"
+                            "data":"sales",
+                            "render":function(data, type, full, meta ){
+                                return toolUtil.moneyCorrect(data,12,false)[0];
+                            }
                         },
                         {
-                            "data":"profits1"
+                            "data":"profits1",
+                            "render":function(data, type, full, meta ){
+                                return toolUtil.moneyCorrect(data,12,false)[0];
+                            }
                         },
                         {
-                            "data":"profits2"
+                            "data":"profits2",
+                            "render":function(data, type, full, meta ){
+                                return toolUtil.moneyCorrect(data,12,false)[0];
+                            }
                         },
                         {
-                            "data":"profits3"
+                            "data":"profits3",
+                            "render":function(data, type, full, meta ){
+                                return toolUtil.moneyCorrect(data,12,false)[0];
+                            }
                         },
                         {
                             "data":"state",
@@ -424,10 +450,10 @@ angular.module('app')
                                 if(self.powerlist.profit_details){
                                     btns+='<span data-action="detail" data-id="'+data+'"  class="btn-operate">查看</span>';
                                 }
-                                if(!full.state==='' && !isNaN(full.state)){
+                                if(full.state!=='' && !isNaN(full.state)){
                                     var state=parseInt(full.state,10);
                                     if(self.powerlist.profit_clear && (state===0 || state===1)){
-                                        btns+='<span data-action="clear" data-id="'+data+'"  class="btn-operate">清算</span>';
+                                        btns+='<span data-action="clear" data-state="'+state+'"  data-id="'+data+'"  class="btn-operate">清算</span>';
                                     }
                                 }
                                 return btns;
@@ -553,16 +579,28 @@ angular.module('app')
                             }
                         },
                         {
-                            "data":"sales"
+                            "data":"sales",
+                            "render":function(data, type, full, meta ){
+                                return toolUtil.moneyCorrect(data,12,false)[0];
+                            }
                         },
                         {
-                            "data":"profits"
+                            "data":"profits",
+                            "render":function(data, type, full, meta ){
+                                return toolUtil.moneyCorrect(data,12,false)[0];
+                            }
                         },
                         {
-                            "data":"cleared"
+                            "data":"cleared",
+                            "render":function(data, type, full, meta ){
+                                return toolUtil.moneyCorrect(data,12,false)[0];
+                            }
                         },
                         {
-                            "data":"clearing"
+                            "data":"clearing",
+                            "render":function(data, type, full, meta ){
+                                return toolUtil.moneyCorrect(data,12,false)[0];
+                            }
                         },
                         {
                             "data":"state",
@@ -593,10 +631,10 @@ angular.module('app')
                                 if(self.powerlist.profit_details){
                                     btns+='<span data-action="detail" data-id="'+data+'"  class="btn-operate">查看</span>';
                                 }
-                                if(!full.state==='' && !isNaN(full.state)){
+                                if(full.state!=='' && !isNaN(full.state)){
                                     var state=parseInt(full.state,10);
                                     if(self.powerlist.profit_clear && (state===0 || state===1)){
-                                        btns+='<span data-action="clear" data-id="'+data+'"  class="btn-operate">清算</span>';
+                                        btns+='<span data-action="clear" data-state="'+state+'"  data-id="'+data+'"  class="btn-operate">清算</span>';
                                     }
                                 }
                                 return btns;
@@ -733,16 +771,28 @@ angular.module('app')
                             }
                         },
                         {
-                            "data":"sales"
+                            "data":"sales",
+                            "render":function(data, type, full, meta ){
+                                return toolUtil.moneyCorrect(data,12,false)[0];
+                            }
                         },
                         {
-                            "data":"profits1"
+                            "data":"profits1",
+                            "render":function(data, type, full, meta ){
+                                return toolUtil.moneyCorrect(data,12,false)[0];
+                            }
                         },
                         {
-                            "data":"profits2"
+                            "data":"profits2",
+                            "render":function(data, type, full, meta ){
+                                return toolUtil.moneyCorrect(data,12,false)[0];
+                            }
                         },
                         {
-                            "data":"profits3"
+                            "data":"profits3",
+                            "render":function(data, type, full, meta ){
+                                return toolUtil.moneyCorrect(data,12,false)[0];
+                            }
                         },
                         {
                             "data":"state",
@@ -774,10 +824,10 @@ angular.module('app')
                                 if(self.powerlist.profit_details){
                                     btns+='<span data-action="detail" data-id="'+data+'"  class="btn-operate">查看</span>';
                                 }
-                                if(!full.state==='' && !isNaN(full.state)){
+                                if(full.state!=='' && !isNaN(full.state)){
                                     var state=parseInt(full.state,10);
                                     if(self.powerlist.profit_clear && (state===0 || state===1)){
-                                        btns+='<span data-action="clear" data-id="'+data+'"  class="btn-operate">清算</span>';
+                                        btns+='<span data-action="clear" data-state="'+state+'" data-id="'+data+'"  class="btn-operate">清算</span>';
                                     }
                                 }
                                 return btns;
@@ -1030,6 +1080,7 @@ angular.module('app')
             financeService.changeView(self.record);
             /*查询列表数据*/
             financeService.getColumnData(self.table,self.record);
+            console.log(self.record.action);
         };
         /*条件服务--切换条件主题*/
         this.toggleTab=function (type) {

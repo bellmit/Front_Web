@@ -31,7 +31,7 @@ angular.module('app')
         };
 
 
-        /*订单查询服务--请求数据--获取表格数据*/
+        /*数据查询服务--请求数据--获取表格数据*/
         this.getColumnData=function (table,record){
             if(cache===null){
                 return false;
@@ -79,14 +79,14 @@ angular.module('app')
                 table.list_table.ajax.config(table.list1_config.config.ajax).load();
             }
         };
-        /*订单查询服务--过滤表格数据*/
+        /*数据查询服务--过滤表格数据*/
         this.filterDataTable=function (table,record) {
             if(table.list_table===null){
                 return false;
             }
             table.list_table.search(record.filter).columns().draw();
         };
-        /*订单查询服务--时间查询*/
+        /*数据查询服务--时间查询*/
         this.datePicker=function (record) {
             datePicker97Service.datePickerRange(record,{
                 $node1:self.$search_startTime,
@@ -98,7 +98,7 @@ angular.module('app')
                 }
             });
         };
-        /*订单查询服务--操作按钮*/
+        /*数据查询服务--操作按钮*/
         this.doItemAction=function (model,config) {
             var id=config.id,
                 action=config.action;
@@ -107,7 +107,7 @@ angular.module('app')
                 self.queryDetail(null,id,action);
             }
         };
-        /*订单查询服务--查询订单详情*/
+        /*数据查询服务--查询订单详情*/
         this.queryDetail=function (config,id,action) {
             if(cache===null){
                 return false;
@@ -234,7 +234,7 @@ angular.module('app')
                                                 var detailitem;
                                                 for(i;i<len;i++){
                                                     detailitem=details[i];
-                                                    str+='<tr><td>'+(i + 1)+'</td><td class="g-t-c">'+detailitem["goodsName"]+'</td><td class="g-t-c">'+toolUtil.moneyCorrect(detailitem["goodsPrice"],12)[0]+'</td><td class="g-t-c">'+detailitem["quantlity"]+'</td></tr>';
+                                                    str+='<tr><td class="g-t-c">'+(i + 1)+'</td><td class="g-t-c">'+detailitem["goodsName"]+'</td><td class="g-t-c">'+toolUtil.moneyCorrect(detailitem["goodsPrice"],12)[0]+'</td><td class="g-t-c">'+detailitem["quantlity"]+'</td></tr>';
                                                 }
                                             }
                                         }

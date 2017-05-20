@@ -1,5 +1,5 @@
 angular.module('app')
-    .service('financeService',['toolUtil','toolDialog','BASE_CONFIG','loginService','powerService','dataTableColumnService','dataTableItemActionService','$timeout',function(toolUtil,toolDialog,BASE_CONFIG,loginService,powerService,dataTableColumnService,dataTableItemActionService,$timeout){
+    .service('financeService',['toolUtil','toolDialog','BASE_CONFIG','loginService','powerService','dataTableColumnService','dataTableCheckAllService','dataTableItemActionService','$timeout',function(toolUtil,toolDialog,BASE_CONFIG,loginService,powerService,dataTableColumnService,dataTableCheckAllService,dataTableItemActionService,$timeout){
 
         /*获取缓存数据*/
         var self=this,
@@ -28,7 +28,9 @@ angular.module('app')
         this.getCurrentPower=function () {
             return init_power;
         };
-        /*扩展服务--根据条件判断视图状态:返回一个代表类型，数字或者字符*/
+
+
+        /*视图切换服务--根据条件判断视图状态:返回一个代表类型，数字或者字符*/
         this.changeView=function (record) {
             /*1-4种状态
             1:分润统计(默认为1)
@@ -59,8 +61,7 @@ angular.module('app')
             return 1;
         };
 
-
-        /*发货查询服务--请求数据--获取表格数据*/
+        /*数据查询服务--请求数据--获取表格数据*/
         this.getColumnData=function (table,record){
             if(cache===null){
                 return false;
@@ -94,7 +95,8 @@ angular.module('app')
 
             var temp_table='list_table'+record.action,
                 temp_column='tablecolumn'+record.action,
-                temp_action='tableitemaction'+record.action;
+                temp_action='tableitemaction'+record.action,
+                temp_checkall='tablecheckall'+record.action;
 
             /*参数赋值*/
             table[temp_config].config.ajax.data=data;
@@ -106,13 +108,17 @@ angular.module('app')
                 table[temp_table]=self['$admin_list_wrap'+record.action].DataTable(table[temp_config].config);
                 /*调用列控制*/
                 dataTableColumnService.initColumn(table[temp_column],table[temp_table]);
+                /*调用全选与取消全选*/
+                dataTableCheckAllService.initCheckAll(table[temp_checkall]);
                 /*调用按钮操作*/
                 dataTableItemActionService.initItemAction(table[temp_action]);
             }else {
+                /*清除批量数据*/
+                dataTableCheckAllService.clear(table[temp_checkall]);
                 table[temp_table].ajax.config(table[temp_config].config.ajax).load();
             }
         };
-        /*发货查询服务--过滤表格数据*/
+        /*数据查询服务--过滤表格数据*/
         this.filterDataTable=function (table,record) {
             if(!table && !record){
                return false;
@@ -123,33 +129,31 @@ angular.module('app')
             }
             table[temp_table].search(record.filter).columns().draw();
         };
-        /*发货查询服务--时间查询*/
-        this.datePicker=function (record) {
-            datePicker97Service.datePickerRange(record,{
-                $node1:self.$search_startTime,
-                $node2:self.$search_endTime,
-                format:'%y-%M-%d',
-                position:{
-                    left:0,
-                    top:2
-                }
-            });
-        };
-        /*发货查询服务--操作按钮*/
-        this.doItemAction=function (mode,config) {
+        /*数据查询服务--操作按钮*/
+        this.doItemAction=function (model,config) {
             var id=config.id,
                 action=config.action;
 
             if(action==='detail'){
-                self.queryDetail(id);
+                /*查看订单*/
+                self.queryDetail(null,id,action);
+            }else if(action==='clear'){
+                /*清算订单*/
+                var $btn=config.$btn,
+                    state=parseInt($btn.attr('data-state'),10);
             }
         };
-        /*发货查询服务--查询详情*/
-        this.queryDetail=function (id) {
+        /*数据查询服务--查询详情*/
+        this.queryDetail=function (config,id,action) {
             if(cache===null){
                 return false;
             }
+
             if(typeof id==='undefined'){
+                toolDialog.show({
+                    type:'warn',
+                    value:'没有订单信息'
+                });
                 return false;
             }
 
@@ -160,12 +164,16 @@ angular.module('app')
 
             toolUtil
                 .requestHttp({
-                    url:'/device/delivery/view',
+                    url:/*'/organization/goodsorder/details'*/'json/test.json',
                     method:'post',
                     set:true,
+                    debug:true,
                     data:param
                 })
                 .then(function(resp){
+                        /*测试代码*/
+                        var resp=self.testGetOrderDetail();
+
                         var data=resp.data,
                             status=parseInt(resp.status,10);
 
@@ -191,62 +199,94 @@ angular.module('app')
                                 /*加载数据*/
                                 var result=data.result;
                                 if(typeof result!=='undefined'){
-                                    var delivery=result.delivery,
-                                        deviceImeis=result.deviceImeis,
-                                        str='',
+                                    var order=result.order,
+                                        details=result.details,
                                         detail_map={
-                                            'deviceType':'设备类型',
-                                            'deliveryQuantity':'发货数量',
-                                            'logistics':'物流',
-                                            'consigneeName':'收货人',
-                                            'deviceImeis':'设置机器码列表',
-                                            'remark':'备注',
-                                            'deviceImei':'机器码',
-                                            'status':'状态'
-                                        },
-                                        statusmap={
-                                            0:"<span class='g-c-gray6'>正常</span>",
-                                            1:"<span class='g-c-gray12'>已用</span>"
-                                        },
-                                        typemap={
-                                            1:"S67",
-                                            2:"T6",
-                                            3:"其他"
+                                            'merchantName':'商户名称',
+                                            'merchantPhon':'手机号码',
+                                            'orderTime':'订单时间',
+                                            'orderNumber':'订单号',
+                                            'orderState':'订单状态',
+                                            'totalMoney':'订单总价',
+                                            'paymentType':'支付类型',
+                                            'goodsName':'商品名称',
+                                            'goodsPrice':'商品价格',
+                                            'quantlity':'购买数量',
+                                            'id':'序列'
                                         };
-                                    if(delivery){
-                                        /*查看*/
-                                        for(var j in delivery){
-                                            if(typeof detail_map[j]!=='undefined'){
-                                                if(j==='deviceType'){
-                                                    var temptype=parseInt(delivery[j],10);
-                                                    str+='<tr><td colspan="2" class="g-t-r">'+detail_map[j]+':</td><td colspan="3" class="g-t-l g-c-blue3">'+typemap[temptype]+'</td></tr>';
-                                                }else if(j==='status'){
-                                                    var tempstatus=parseInt(delivery[j],10);
-                                                    str+='<tr><td colspan="2" class="g-t-r">'+detail_map[j]+':</td><td colspan="3" class="g-t-l">'+statusmap[tempstatus]+'</td></tr>';
-                                                }else{
-                                                    str+='<tr><td colspan="2" class="g-t-r">'+detail_map[j]+':</td><td colspan="3" class="g-t-l">'+delivery[j]+'</td></tr>';
+                                    if(action==='detail'){
+                                        var str='';
+                                        if(order){
+                                            /*查看*/
+                                            for(var j in order){
+                                                if(typeof detail_map[j]!=='undefined'){
+                                                    if(j==='orderState'){
+                                                        var temptype=parseInt(order[j],10),
+                                                            typemap={
+                                                                0:'待付款',
+                                                                1:'取消订单',
+                                                                6:'待发货',
+                                                                9:'待收货',
+                                                                20:'待评价',
+                                                                21:'已评价'
+                                                            };
+                                                        str+='<tr><td colspan="2" class="g-t-r">'+detail_map[j]+':</td><td colspan="2" class="g-t-l">'+(function () {
+                                                                var tempstr;
+
+                                                                if(temptype===0){
+                                                                    tempstr='<div class="g-c-blue3">'+typemap[temptype]+'</div>';
+                                                                }else if(temptype===1){
+                                                                    tempstr='<div class="g-c-red1">'+typemap[temptype]+'</div>';
+                                                                }else if(temptype===6 || temptype===9 || temptype===20){
+                                                                    tempstr='<div class="g-c-warn">'+typemap[temptype]+'</div>';
+                                                                }else if(temptype===21){
+                                                                    tempstr='<div class="g-c-green1">'+typemap[temptype]+'</div>';
+                                                                }else{
+                                                                    tempstr='<div class="g-c-gray6">其他</div>';
+                                                                }
+                                                                return tempstr;
+                                                            })()+'</td></tr>';
+                                                    }else if(j==='paymentType'){
+                                                        var temppay=parseInt(order[j],10),
+                                                            paymap={
+                                                                1:"微信",
+                                                                2:"支付宝",
+                                                                3:"其它"
+                                                            };
+                                                        str+='<tr><td colspan="2" class="g-t-r">'+detail_map[j]+':</td><td colspan="2" class="g-t-l">'+paymap[temppay]+'</td></tr>';
+                                                    }else if(j==='totalMoney'){
+                                                        str+='<tr><td colspan="2" class="g-t-r">'+detail_map[j]+':</td><td colspan="2" class="g-t-l">'+toolUtil.moneyCorrect(order[j],12)[0]+'</td></tr>';
+                                                    }else{
+                                                        str+='<tr><td  colspan="2" class="g-t-r">'+detail_map[j]+':</td><td colspan="2" class="g-t-l">'+order[j]+'</td></tr>';
+                                                    }
                                                 }
                                             }
                                         }
-                                    }
-                                    if(deviceImeis){
-                                        var len=deviceImeis.length;
-                                        if(len!==0){
+                                        if(details){
                                             var i=0,
-                                                tempimei;
-                                            str+='<tr><th colspan="5" class="g-t-c">'+detail_map["deviceImeis"]+'</th></tr>';
-                                            for(i;i<len;i++){
-                                                tempimei=deviceImeis[i];
-                                                str+='<tr><td class="g-t-r">'+(i + 1)+'</td><td class="g-t-r">'+detail_map["deviceImei"]+':</td><td class="g-t-l">'+tempimei["deviceImei"]+'</td><td class="g-t-r">'+detail_map["status"]+':</td><td class="g-t-l">'+statusmap[tempimei["status"]]+'</td></tr>';
+                                                len=details.length;
+                                            str+='<tr><th class="g-t-c">序号</th><th class="g-t-c">商品名称</th><th class="g-t-c">商品价格</th><th class="g-t-c">购买数量</th></tr>';
+                                            if(len!==0){
+                                                var detailitem;
+                                                for(i;i<len;i++){
+                                                    detailitem=details[i];
+                                                    str+='<tr><td class="g-t-c">'+(i + 1)+'</td><td class="g-t-c">'+detailitem["goodsName"]+'</td><td class="g-t-c">'+toolUtil.moneyCorrect(detailitem["goodsPrice"],12)[0]+'</td><td class="g-t-c">'+detailitem["quantlity"]+'</td></tr>';
+                                                }
                                             }
                                         }
-                                    }
-                                    if(str!==''){
-                                        $(str).appendTo(self.$admin_senddetail_show.html(''));
-                                        /*显示弹窗*/
-                                        self.toggleModal({
-                                            display:'show',
-                                            area:'senddetail'
+                                        if(str!==''){
+                                            $(str).appendTo(self.$admin_orderdetail_show.html(''));
+                                            /*显示弹窗*/
+                                            self.toggleModal({
+                                                display:'show',
+                                                area:'orderdetail'
+                                            });
+                                        }
+                                    }else{
+                                        /*提示信息*/
+                                        toolDialog.show({
+                                            type:'warn',
+                                            value:'获取数据失败'
                                         });
                                     }
                                 }
@@ -258,10 +298,13 @@ angular.module('app')
                         if(typeof message !=='undefined'&&message!==''){
                             console.log(message);
                         }else{
-                            console.log('查看发货失败');
+                            console.log('请求订单失败');
                         }
                     });
         };
+        /*数据查询服务--处理清算*/
+
+
 
         /*弹出层服务*/
         this.toggleModal=function (config,fn) {
@@ -591,7 +634,7 @@ angular.module('app')
                     message:'ok',
                     code:0,
                     result:Mock.mock({
-                        'list|10-50':[{
+                        'list|15':[{
                             "id":/[0-9]{1,2}/,
                             "sales":moneyrule,
                             "profits1":moneyrule,
@@ -606,7 +649,7 @@ angular.module('app')
                     message:'ok',
                     code:0,
                     result:Mock.mock({
-                        'list|10-50':[{
+                        'list|15':[{
                             "id":/[0-9]{1,2}/,
                             "year":/((2)(0)(1)([0-7])){1}/,
                             "month":/([1-9]|11|12){1}/,
@@ -623,7 +666,7 @@ angular.module('app')
                     message:'ok',
                     code:0,
                     result:Mock.mock({
-                        'list|10-50':[{
+                        'list|15':[{
                             "id":/[0-9]{1,2}/,
                             "sales":moneyrule,
                             "profits":moneyrule,
@@ -638,7 +681,7 @@ angular.module('app')
                     message:'ok',
                     code:0,
                     result:Mock.mock({
-                        'list|10-50':[{
+                        'list|15':[{
                             "id":/[0-9]{1,2}/,
                             "year":/((2)(0)(1)([0-7])){1}/,
                             "month":/([1-9]|11|12){1}/,

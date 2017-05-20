@@ -285,7 +285,7 @@ angular.module('app')
         };
 
 
-        /*成员服务--过滤数据*/
+        /*数据服务--过滤数据*/
         this.filterDataTable=function () {
             orderService.filterDataTable(self.table,self.record);
         };

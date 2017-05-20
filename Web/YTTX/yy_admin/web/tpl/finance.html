@@ -202,8 +202,13 @@
                 <!--清算模块--历史-->
                 <div  ng-show="finance_ctrl.record.tab==='history'">
                     <div class="admin-action-item">
+                        <div class="action-item-btn g-f-l g-w-percent28">
+                            <span ng-show="::finance_ctrl.powerlist.profit_clear && (finance_ctrl.record.organizationId!=='' || finance_ctrl.record.currentId!=='')"  ng-click="finance_ctrl.actionClear()" ><i class="btn-action admin-btn-action1"></i>清算</span>
+                            <span ng-show="::struct_ctrl.powerlist.operator_adjustment && 1===2" ng-click="struct_ctrl.adjustOperate()"><i class="btn-action admin-btn-action5"></i>调整运营商</span>
+                            <span ng-show="::struct_ctrl.powerlist.batch_delete" ng-click="struct_ctrl.batchDeleteUser()"><i class="btn-action admin-btn-action6"></i>批量删除</span>
+                        </div>
                         <!--列控制-->
-                        <div class="action-item-ul g-w-percent8 g-f-r g-pos-r" ng-show="::finance_ctrl.table.tablecolumn4.columnshow">
+                        <div class="action-item-ul g-w-percent8 g-pos-r" ng-show="::finance_ctrl.table.tablecolumn4.columnshow">
                             <div class="action-theme action-theme-btn g-br3 g-t-c">显示列</div>
                             <div class="action-ul g-d-hidei" id="admin_table_checkcolumn4">
                                 <ul class="action-list-wrap" ></ul>
@@ -277,6 +282,39 @@
                     <ul class="g-d-showi ui-sub-menu" ng-click="finance_ctrl.toggleSubMenu($event)" id="admin_finance_submenu" ng-init="finance_ctrl.initSubMenu()"></ul>
                 </li>
             </ul>
+        </div>
+    </div>
+
+    <!--查看订单详情-->
+    <div class="modal fade custom-width" id="admin_orderdetail_dialog">
+        <div class="modal-dialog g-w-percent40">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <table class="table table-bordered table-striped table-hover admin-layout-table">
+
+                        <!--分组样式-->
+                        <colgroup>
+                            <col class="g-w-percent2">
+                            <col class="g-w-percent14">
+                            <col class="g-w-percent17">
+                            <col class="g-w-percent17">
+                        </colgroup>
+                        <!--头部-->
+                        <thead>
+                        <tr>
+                            <th class="g-t-c" colspan="4">订单详情</th>
+                        </tr>
+                        </thead>
+
+                        <!--表主体-->
+                        <tbody id="admin_orderdetail_show" class="middle-align"></tbody>
+                    </table>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-info" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
         </div>
     </div>
 </div>

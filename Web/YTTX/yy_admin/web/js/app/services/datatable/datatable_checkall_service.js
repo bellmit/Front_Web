@@ -71,7 +71,7 @@ angular.module('app')
 		};
 
 		/*清除数据*/
-		this.clear=function (tablecheckall) {
+		this.clear=function (tablecheckall,fn) {
 			tablecheckall.checkid.length=0;
 			tablecheckall.checkvalue=0;
 			tablecheckall.$checkall.attr({
@@ -88,8 +88,23 @@ angular.module('app')
 				}
 				tablecheckall.checkitem.length=0;
 			}
+			if(fn && typeof fn==='function'){
+				fn.call();
+			}
 		};
 
+		/*摧毁数据:适应直接清除数据，不做文档操作*/
+		this.destroy=function (tablecheckall,fn) {
+			tablecheckall.checkid.length=0;
+			tablecheckall.checkvalue=0;
+			tablecheckall.$checkall.attr({
+				'data-check':0
+			}).removeClass(tablecheckall.checkactive);
+			tablecheckall.checkitem.length=0;
+			if(fn && typeof fn==='function'){
+				fn.call();
+			}
+		};
 
 		/*过滤数据(清除并过滤已经选中的数据)*/
 		this.filterData=function (tablecheckall,key) {
@@ -138,7 +153,6 @@ angular.module('app')
 			}
 		};
 
-
 		/*全选和取消全选*/
 		this.toggleCheckAll=function (tablecheckall,chk) {
 			if(chk===1){
@@ -146,13 +160,7 @@ angular.module('app')
 				/*不依赖于状态*/
 				tablecheckall.$bodywrap.find('tr').each(function (index, element) {
 					var $input=$(element).find('td:first input:checkbox');
-					if(index===0){
-						if($input.size()===0){
-							self.clear(tablecheckall);
-							return false;
-						}
-					}
-					if(!$input.is(':checked')){
+					if($input.size()!==0){
 						tablecheckall.checkid.push($input.prop('checked',true).val());
 						tablecheckall.checkitem.push($input);
 						$input.closest('tr').addClass(tablecheckall.highactive);
@@ -163,7 +171,6 @@ angular.module('app')
 				self.clear(tablecheckall);
 			}
 		};
-
 
 		/*绑定选中某个单独多选框*/
 		this.toggleCheckItem=function (tablecheckall,$input) {
@@ -206,12 +213,10 @@ angular.module('app')
 			}
 		};
 
-
 		/*获取选中的数据*/
 		this.getBatchData=function (tablecheckall) {
 			return tablecheckall.checkid;
 		};
-
 
 		/*获取选中的文档节点*/
 		this.getBatchNode=function (tablecheckall) {
