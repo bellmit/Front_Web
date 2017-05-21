@@ -2,10 +2,10 @@
     <div class="struct-layout-container struct-layout-default">
         <div class="struct-layout-main">
             <!--设备管理-->
-            <h1 class="admin-layout-theme3">
-                <span ng-show="equipment_ctrl.record.organizationId!==''">设备管理：&nbsp;{{equipment_ctrl.record.organizationName}}</span>
+            <h1 class="admin-layout-theme3 g-clear-pt">
+                <span>设备管理：&nbsp;{{equipment_ctrl.record.organizationName===''?equipment_ctrl.record.structName:equipment_ctrl.record.organizationName}}</span>
                 &nbsp;&nbsp;&nbsp;&nbsp;
-                <button type="button" class="btn btn-default g-c-blue3" ng-disabled="equipment_ctrl.record.organizationId==='' && equipment_ctrl.record.currentId===''" ng-show="equipment_ctrl.powerlist.deviceadd" ng-click="equipment_ctrl.toggleModal({display:'show',area:'send'})"><i class="btn-action admin-btn-action1"></i>&nbsp;添加发货信息</button>
+                <button type="button" class="btn btn-default g-c-blue3" ng-disabled="equipment_ctrl.record.organizationId==='' && equipment_ctrl.record.currentId===''" ng-show="equipment_ctrl.powerlist.device_add" ng-click="equipment_ctrl.toggleModal({display:'show',area:'send'})"><i class="btn-action admin-btn-action1"></i>&nbsp;添加发货信息</button>
             </h1>
 
 
@@ -18,13 +18,13 @@
                 </div>
 
                 <!--开始时间-->
-                <div class="action-item-input g-w-percent15">
-                    <label class="action-indent-b2 dt-icon-after">开始时间:<input ng-model="equipment_ctrl.record.startTime"  class="form-control" id="search_startTime" placeholder="请选择开始时间" readonly type="text"></label>
+                <div class="action-item-input g-w-percent12">
+                    <label class="action-indent-b2 dt-icon-after">开始时间:<input ng-model="equipment_ctrl.record.startTime"  class="form-control" id="search_startTime" placeholder="开始时间" readonly type="text"></label>
                 </div>
 
                 <!--结束时间-->
-                <div class="action-item-input g-w-percent15">
-                    <label class="action-indent-b2 dt-icon-after">结束时间:<input class="form-control" placeholder="请选择结束时间" id="search_endTime" ng-model="equipment_ctrl.record.endTime" readonly type="text"></label>
+                <div class="action-item-input g-w-percent12">
+                    <label class="action-indent-b2 dt-icon-after">结束时间:<input class="form-control" placeholder="结束时间" id="search_endTime" ng-model="equipment_ctrl.record.endTime" readonly type="text"></label>
                 </div>
 
                 <!--打印，导出-->
@@ -33,19 +33,18 @@
                     <span ng-show="equipment_ctrl.powerlist.deviceexport" class="btn btn-export g-br3 g-c-blue3">导出</span>
                 </div>
 
+                <div class="action-item-btn action-item-export g-gap-mr4 g-w-percent5">
+                    <span ng-click="equipment_ctrl.queryEquipment()" class="btn btn-export g-br3 g-w-percent50 g-c-blue3">查询</span>
+                </div>
+
 
                 <!--列控制-->
-                <div class="action-item-ul g-w-percent8 g-pos-r" ng-show="::equipment_ctrl.table.tablecolumn.columnshow">
+                <div class="action-item-ul g-w-percent6 g-pos-r" ng-show="::equipment_ctrl.table.tablecolumn.columnshow">
                     <div class="action-theme action-theme-btn g-br3 g-t-c">显示列</div>
                     <div class="action-ul g-d-hidei" id="admin_table_checkcolumn">
                         <ul class="action-list-wrap" ></ul>
                     </div>
                 </div>
-
-                <div class="action-item-btn action-item-export g-gap-mt4 g-w-percent5">
-                    <span ng-click="equipment_ctrl.queryEquipment()" class="btn btn-export g-br3 g-w-percent50 g-c-blue3">查询</span>
-                </div>
-
             </div>
 
             <!--表格-->
@@ -87,7 +86,12 @@
 
         <div class="struct-layout-side">
             <!--子菜单组件-->
-            <ul class="sub-menu-wrap" ng-click="equipment_ctrl.toggleSubMenu($event)" id="admin_equipment_submenu" ng-init="equipment_ctrl.initSubMenu()"></ul>
+            <ul class="sub-menu-wrap">
+                <li>
+                    <a class="sub-menu-title sub-menu-titleactive" data-parentid="" data-id="equipment_ctrl.record.currentId" data-layer="0" ng-click="equipment_ctrl.initSubMenu()">{{equipment_ctrl.record.currentName}}</a>
+                    <ul class="g-d-showi ui-sub-menu" ng-click="equipment_ctrl.toggleSubMenu($event)" id="admin_equipment_submenu" ng-init="equipment_ctrl.initSubMenu()"></ul>
+                </li>
+            </ul>
         </div>
     </div>
 
@@ -239,16 +243,14 @@
 
                         <!--分组样式-->
                         <colgroup>
-                            <col class="g-w-percent4">
-                            <col class="g-w-percent8">
-                            <col class="g-w-percent15">
-                            <col class="g-w-percent8">
-                            <col class="g-w-percent15">
+                            <col class="g-w-percent2">
+                            <col class="g-w-percent14">
+                            <col class="g-w-percent34">
                         </colgroup>
                         <!--头部-->
                         <thead>
                         <tr>
-                            <th class="g-t-c" colspan="5">发货详情</th>
+                            <th class="g-t-c" colspan="3">发货详情</th>
                         </tr>
                         </thead>
 

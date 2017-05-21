@@ -61,6 +61,8 @@ angular.module('app')
             return 1;
         };
 
+        
+
         /*数据查询服务--请求数据--获取表格数据*/
         this.getColumnData=function (table,record){
             if(cache===null){

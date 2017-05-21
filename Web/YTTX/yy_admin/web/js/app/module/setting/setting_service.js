@@ -1,19 +1,18 @@
 angular.module('app')
-    .service('equipmentService',['toolUtil','toolDialog','BASE_CONFIG','loginService','powerService','dataTableColumnService','dataTableItemActionService','datePicker97Service','$timeout',function(toolUtil,toolDialog,BASE_CONFIG,loginService,powerService,dataTableColumnService,dataTableItemActionService,datePicker97Service,$timeout){
+    .service('settingService',['toolUtil','toolDialog','BASE_CONFIG','loginService','powerService','dataTableColumnService','dataTableItemActionService','datePicker97Service',function(toolUtil,toolDialog,BASE_CONFIG,loginService,powerService,dataTableColumnService,dataTableItemActionService,datePicker97Service){
 
         /*获取缓存数据*/
         var self=this,
-            module_id=70/*模块id*/,
-            cache=loginService.getCache(),
-            sendform_reset_timer=null;
+            module_id=90/*模块id*/,
+            cache=loginService.getCache();
 
         var powermap=powerService.getCurrentPower(module_id);
 
         /*初始化权限*/
         var init_power={
-            deviceadd:toolUtil.isPower('device-add',powermap,true)/*添加发货信息*/,
-            iemiadd:toolUtil.isPower('iemi-add',powermap,true)/*添加iemi码*/,
-            deliveryadd:toolUtil.isPower('delivery-add',powermap,true)/*详情*/
+            order_print:toolUtil.isPower('order-print',powermap,true)/*订单打印*/,
+            order_export:toolUtil.isPower('order-export',powermap,true)/*订单导出*/,
+            order_details:toolUtil.isPower('order-details',powermap,true)/*订单详情*/
         };
 
 
@@ -32,7 +31,7 @@ angular.module('app')
         };
 
 
-        /*发货查询服务--请求数据--获取表格数据*/
+        /*数据查询服务--请求数据--获取表格数据*/
         this.getColumnData=function (table,record){
             if(cache===null){
                 return false;
@@ -46,23 +45,20 @@ angular.module('app')
 
             /*适配参数*/
             for(var i in record){
-                if(i==='startTime' || i==='endTime'){
+                /*时间条件,搜索条件*/
+                if(i==='startTime' || i==='endTime' || i==='searchWord'){
                     if(record[i]===''){
                         delete data[i];
                     }else{
                         data[i]=record[i];
                     }
-                }else if(i==='organizationId' || i==='currentId'){
+                }else if(i==='organizationId'){
+                    /*过滤没有菜单节点查询*/
                     if(record[i]===''){
-                        data['organizationIdReceiver']='';
-                        data['organizationIdSender']='';
+                        data[i]='';
                         return false;
                     }else{
-                        if(i==='organizationId'){
-                            data['organizationIdReceiver']=record[i];
-                        }else if(i==='currentId'){
-                            data['organizationIdSender']=record[i];
-                        }
+                        data[i]=record[i];
                     }
                 }
             }
@@ -83,14 +79,14 @@ angular.module('app')
                 table.list_table.ajax.config(table.list1_config.config.ajax).load();
             }
         };
-        /*发货查询服务--过滤表格数据*/
+        /*数据查询服务--过滤表格数据*/
         this.filterDataTable=function (table,record) {
             if(table.list_table===null){
                 return false;
             }
             table.list_table.search(record.filter).columns().draw();
         };
-        /*发货查询服务--时间查询*/
+        /*数据查询服务--时间查询*/
         this.datePicker=function (record) {
             datePicker97Service.datePickerRange(record,{
                 $node1:self.$search_startTime,
@@ -102,24 +98,29 @@ angular.module('app')
                 }
             });
         };
-        /*发货查询服务--操作按钮*/
-        this.doItemAction=function (mode,config) {
+        /*数据查询服务--操作按钮*/
+        this.doItemAction=function (model,config) {
             var id=config.id,
                 action=config.action;
 
             if(action==='detail'){
-                self.queryDetail(id);
+                self.queryDetail(null,id,action);
             }
         };
-        /*发货查询服务--查询详情*/
-        this.queryDetail=function (id) {
+        /*数据查询服务--查询订单详情*/
+        this.queryDetail=function (config,id,action) {
             if(cache===null){
                 return false;
             }
+
             if(typeof id==='undefined'){
+                toolDialog.show({
+                    type:'warn',
+                    value:'没有订单信息'
+                });
                 return false;
             }
-            
+
             var param=$.extend(true,{},cache.loginMap.param);
             /*判断参数*/
             param['id']=id;
@@ -127,12 +128,16 @@ angular.module('app')
 
             toolUtil
                 .requestHttp({
-                    url:'/device/delivery/view',
+                    url:/*'/organization/goodsorder/details'*/'json/test.json',
                     method:'post',
                     set:true,
+                    debug:true,
                     data:param
                 })
                 .then(function(resp){
+                        /*测试代码*/
+                        var resp=self.testGetOrderDetail();
+
                         var data=resp.data,
                             status=parseInt(resp.status,10);
 
@@ -158,62 +163,94 @@ angular.module('app')
                                 /*加载数据*/
                                 var result=data.result;
                                 if(typeof result!=='undefined'){
-                                    var delivery=result.delivery,
-                                        deviceImeis=result.deviceImeis,
-                                        str='',
+                                    var order=result.order,
+                                        details=result.details,
                                         detail_map={
-                                            'deviceType':'设备类型',
-                                            'deliveryQuantity':'发货数量',
-                                            'logistics':'物流',
-                                            'consigneeName':'收货人',
-                                            'deviceImeis':'设置机器码列表',
-                                            'remark':'备注',
-                                            'deviceImei':'机器码',
-                                            'status':'状态'
-                                        },
-                                        statusmap={
-                                            0:"<span class='g-c-gray6'>正常</span>",
-                                            1:"<span class='g-c-gray12'>已用</span>"
-                                        },
-                                        typemap={
-                                            1:"S67",
-                                            2:"T6",
-                                            3:"其他"
+                                            'merchantName':'商户名称',
+                                            'merchantPhon':'手机号码',
+                                            'orderTime':'订单时间',
+                                            'orderNumber':'订单号',
+                                            'orderState':'订单状态',
+                                            'totalMoney':'订单总价',
+                                            'paymentType':'支付类型',
+                                            'goodsName':'商品名称',
+                                            'goodsPrice':'商品价格',
+                                            'quantlity':'购买数量',
+                                            'id':'序列'
                                         };
-                                    if(delivery){
-                                        /*查看*/
-                                        for(var j in delivery){
-                                            if(typeof detail_map[j]!=='undefined'){
-                                                if(j==='deviceType'){
-                                                    var temptype=parseInt(delivery[j],10);
-                                                    str+='<tr><td colspan="2" class="g-t-r">'+detail_map[j]+':</td><td colspan="3" class="g-t-l g-c-blue3">'+typemap[temptype]+'</td></tr>';
-                                                }else if(j==='status'){
-                                                    var tempstatus=parseInt(delivery[j],10);
-                                                    str+='<tr><td colspan="2" class="g-t-r">'+detail_map[j]+':</td><td colspan="3" class="g-t-l">'+statusmap[tempstatus]+'</td></tr>';
-                                                }else{
-                                                    str+='<tr><td colspan="2" class="g-t-r">'+detail_map[j]+':</td><td colspan="3" class="g-t-l">'+delivery[j]+'</td></tr>';
+                                    if(action==='detail'){
+                                        var str='';
+                                        if(order){
+                                            /*查看*/
+                                            for(var j in order){
+                                                if(typeof detail_map[j]!=='undefined'){
+                                                    if(j==='orderState'){
+                                                        var temptype=parseInt(order[j],10),
+                                                            typemap={
+                                                                0:'待付款',
+                                                                1:'取消订单',
+                                                                6:'待发货',
+                                                                9:'待收货',
+                                                                20:'待评价',
+                                                                21:'已评价'
+                                                            };
+                                                        str+='<tr><td colspan="2" class="g-t-r">'+detail_map[j]+':</td><td colspan="2" class="g-t-l">'+(function () {
+                                                                var tempstr;
+
+                                                                if(temptype===0){
+                                                                    tempstr='<div class="g-c-blue3">'+typemap[temptype]+'</div>';
+                                                                }else if(temptype===1){
+                                                                    tempstr='<div class="g-c-red1">'+typemap[temptype]+'</div>';
+                                                                }else if(temptype===6 || temptype===9 || temptype===20){
+                                                                    tempstr='<div class="g-c-warn">'+typemap[temptype]+'</div>';
+                                                                }else if(temptype===21){
+                                                                    tempstr='<div class="g-c-green1">'+typemap[temptype]+'</div>';
+                                                                }else{
+                                                                    tempstr='<div class="g-c-gray6">其他</div>';
+                                                                }
+                                                                return tempstr;
+                                                            })()+'</td></tr>';
+                                                    }else if(j==='paymentType'){
+                                                        var temppay=parseInt(order[j],10),
+                                                            paymap={
+                                                                1:"微信",
+                                                                2:"支付宝",
+                                                                3:"其它"
+                                                            };
+                                                        str+='<tr><td colspan="2" class="g-t-r">'+detail_map[j]+':</td><td colspan="2" class="g-t-l">'+paymap[temppay]+'</td></tr>';
+                                                    }else if(j==='totalMoney'){
+                                                        str+='<tr><td colspan="2" class="g-t-r">'+detail_map[j]+':</td><td colspan="2" class="g-t-l">'+toolUtil.moneyCorrect(order[j],12)[0]+'</td></tr>';
+                                                    }else{
+                                                        str+='<tr><td  colspan="2" class="g-t-r">'+detail_map[j]+':</td><td colspan="2" class="g-t-l">'+order[j]+'</td></tr>';
+                                                    }
                                                 }
                                             }
                                         }
-                                    }
-                                    if(deviceImeis){
-                                        var len=deviceImeis.length;
-                                        if(len!==0){
+                                        if(details){
                                             var i=0,
-                                                tempimei;
-                                            str+='<tr><th colspan="5" class="g-t-c">'+detail_map["deviceImeis"]+'</th></tr>';
-                                            for(i;i<len;i++){
-                                                tempimei=deviceImeis[i];
-                                                str+='<tr><td class="g-t-r">'+(i + 1)+'</td><td class="g-t-r">'+detail_map["deviceImei"]+':</td><td class="g-t-l">'+tempimei["deviceImei"]+'</td><td class="g-t-r">'+detail_map["status"]+':</td><td class="g-t-l">'+statusmap[tempimei["status"]]+'</td></tr>';
+                                                len=details.length;
+                                            str+='<tr><th class="g-t-c">序号</th><th class="g-t-c">商品名称</th><th class="g-t-c">商品价格</th><th class="g-t-c">购买数量</th></tr>';
+                                            if(len!==0){
+                                                var detailitem;
+                                                for(i;i<len;i++){
+                                                    detailitem=details[i];
+                                                    str+='<tr><td class="g-t-c">'+(i + 1)+'</td><td class="g-t-c">'+detailitem["goodsName"]+'</td><td class="g-t-c">'+toolUtil.moneyCorrect(detailitem["goodsPrice"],12)[0]+'</td><td class="g-t-c">'+detailitem["quantlity"]+'</td></tr>';
+                                                }
                                             }
                                         }
-                                    }
-                                    if(str!==''){
-                                        $(str).appendTo(self.$admin_senddetail_show.html(''));
-                                        /*显示弹窗*/
-                                        self.toggleModal({
-                                            display:'show',
-                                            area:'senddetail'
+                                        if(str!==''){
+                                            $(str).appendTo(self.$admin_orderdetail_show.html(''));
+                                            /*显示弹窗*/
+                                            self.toggleModal({
+                                                display:'show',
+                                                area:'orderdetail'
+                                            });
+                                        }
+                                    }else{
+                                        /*提示信息*/
+                                        toolDialog.show({
+                                            type:'warn',
+                                            value:'获取数据失败'
                                         });
                                     }
                                 }
@@ -225,7 +262,7 @@ angular.module('app')
                         if(typeof message !=='undefined'&&message!==''){
                             console.log(message);
                         }else{
-                            console.log('查看发货失败');
+                            console.log('请求订单失败');
                         }
                     });
         };
@@ -235,8 +272,7 @@ angular.module('app')
         this.toggleModal=function (config,fn) {
             var temp_timer=null,
                 type_map={
-                    'send':self.$admin_send_dialog,
-                    'senddetail':self.$admin_senddetail_dialog
+                    'orderdetail':self.$admin_orderdetail_dialog
                 };
             if(config.display==='show'){
                 if(typeof config.delay!=='undefined'){
@@ -264,15 +300,38 @@ angular.module('app')
                 }else{
                     type_map[config.area].modal('hide');
                 }
-                /*清除延时任务序列*/
-                if(config.area==='send'){
-                    self.clearFormDelay();
-                }
             }
         };
 
 
-        /*菜单服务--获取导航*/
+        /*导航服务--获取虚拟挂载点*/
+        this.getRoot=function (record) {
+            if(cache===null){
+                toolUtil.loginTips({
+                    clear:true,
+                    reload:true
+                });
+                record['currentId']='';
+                record['currentName']='';
+                return false;
+            }
+            var islogin=loginService.isLogin(cache);
+            if(islogin){
+                var logininfo=cache.loginMap;
+                record['currentId']=logininfo.param.organizationId;
+                record['currentName']=logininfo.username;
+            }else{
+                /*退出系统*/
+                cache=null;
+                toolUtil.loginTips({
+                    clear:true,
+                    reload:true
+                });
+                record['currentId']='';
+                record['currentName']='';
+            }
+        };
+        /*导航服务--获取导航*/
         this.getSubMenu=function (config) {
             if(cache){
                 var param=$.extend(true,{},cache.loginMap.param);
@@ -286,14 +345,9 @@ angular.module('app')
                     layer=0;
                     /*根目录则获取新配置参数*/
                     id=param['organizationId'];
-                    $wrap=self.$admin_equipment_submenu;
-                    config.record.organizationId=id;
-                    config.record.organizationName=cache.loginMap.username;
-                    config.record.currentId=id;
-                    config.record.currentName=cache.loginMap.username;
-                    /*查询货物*/
-                    self.queryIMEI(id);
+                    $wrap=self.$admin_order_submenu;
                     if(config.table && config.table.list_table===null && config.record){
+                        config.record.organizationId=id;
                         self.getColumnData(config.table,config.record);
                     }
                 }else{
@@ -396,7 +450,7 @@ angular.module('app')
                 });
             }
         };
-        /*菜单服务--解析导航--开始解析*/
+        /*导航服务--解析导航--开始解析*/
         this.resolveSubMenu=function (obj,limit,config) {
             if(!obj||typeof obj==='undefined'){
                 return false;
@@ -442,11 +496,11 @@ angular.module('app')
                 return false;
             }
         };
-        /*菜单服务--解析导航--公共解析*/
+        /*导航服务--解析导航--公共解析*/
         this.doItemSubMenu=function (obj,config) {
             var curitem=obj,
                 id=curitem["id"],
-                label=curitem["orgname"],
+                label=curitem["fullName"],
                 str='',
                 flag=config.flag,
                 layer=config.layer,
@@ -459,7 +513,7 @@ angular.module('app')
             }
             return str;
         };
-        /*菜单服务--显示隐藏机构*/
+        /*导航服务--显示隐藏机构*/
         this.toggleSubMenu=function (e,config) {
             /*阻止冒泡和默认行为*/
             e.preventDefault();
@@ -475,8 +529,7 @@ angular.module('app')
                 haschild,
                 $child,
                 isrequest=false,
-                temp_id=$this.attr('data-id'),
-                temp_label=$this.html();
+                temp_id=$this.attr('data-id');
 
 
             /*模型缓存*/
@@ -484,9 +537,6 @@ angular.module('app')
 
             /*变更操作记录模型--激活高亮*/
             record.organizationId=temp_id;
-            record.organizationName=temp_label;
-            /*查询货物*/
-            self.queryIMEI(temp_id);
 
             /*变更操作记录模型--激活高亮*/
             if(record.current===null){
@@ -533,370 +583,52 @@ angular.module('app')
 
 
 
-        /*IMEI服务--进货库获取货物*/
-        this.queryIMEI=function (id) {
-            if(!cache){
-                return false;
-            }
-            if(typeof id==='undefined'){
-                return false;
-            }
-            var param=$.extend(true,{},cache.loginMap.param);
-
-            param['organizationId']=id;
-            toolUtil
-                .requestHttp({
-                    url:'/device/stock/list',
-                    method:'post',
-                    set:true,
-                    data:param
+        /*测试服务--获取订单列表*/
+        this.testGetOrderList=function () {
+            return {
+                message:'ok',
+                code:0,
+                result:Mock.mock({
+                    'count':50,
+                    'list|5-15':[{
+                        "id":/[0-9]{1,2}/,
+                        "merchantName":/(周一|杨二|张三|李四|王五|赵六|马七|朱八|陈九){1}/,
+                        "merchantPhone":/(^(13[0-9]|15[012356789]|18[0-9]|14[57]|170)[0-9]{8}$){1}/,
+                        "orderTime":moment().format('YYYY-MM-DD HH:mm:ss'),
+                        "orderNumber":/[0-9a-zA-Z]{18}/,
+                        "orderState":/(0|1|6|9|20|21|[2-5]){1}/,
+                        "totalMoney":/(^(([1-9]{1}\d{0,8})|0)((\.{0}(\d){0})|(\.{1}(\d){2}))$){1}/,
+                        "paymentType":/[1-3]{1}/
+                    }]
                 })
-                .then(function(resp){
-                    var resp={
-                            status:200,
-                            data:{
-                                message:'ok',
-                                code:0,
-                                result:Mock.mock({
-                                    'list|5-50':[{
-                                        "id":/[0-9]{1,2}/,
-                                        "deviceImei":/[0-9a-zA-Z]{5,10}/
-                                    }]
-                                })
-                            }
-                    };
-
-                        var data=resp.data,
-                            status=parseInt(resp.status,10);
-                        if(status===200){
-                            var code=parseInt(data.code,10),
-                                message=data.message;
-                            if(code!==0){
-                                if(typeof message !=='undefined' && message!==''){
-                                    console.log(message);
-                                }
-
-                                if(code===999){
-                                    /*退出系统*/
-                                    cache=null;
-                                    toolUtil.loginTips({
-                                        clear:true,
-                                        reload:true
-                                    });
-                                }
-                            }else{
-                                /*加载数据*/
-                                var result=data.result;
-                                if(typeof result!=='undefined'){
-                                    var list=result.list,
-                                        str='';
-                                    
-                                    if(list){
-                                        var len=list.length,
-                                            i=0,
-                                            j=1,
-                                            item=5,
-                                            count=len%item;
-
-                                        if(count!==0){
-                                            count=(item - count) + 1;
-                                        }
-
-                                        if(len===0){
-                                            self.$admin_imei_list.html('');
-                                        }else{
-                                            /*数据集合，最多嵌套层次*/
-                                            for(i;i<len;i++){
-                                                if(j===1 && i===0){
-                                                    str+='<tr><td><label data-id="'+list[i]["id"]+'" data-deviceImei="'+list[i]["deviceImei"]+'"><input name="imei_list"  data-id="'+list[i]["id"]+'" data-deviceImei="'+list[i]["deviceImei"]+'" type="checkbox" />'+list[i]["deviceImei"]+'</label></td>';
-                                                }else if(j%item===0){
-                                                    str+='<td><label data-id="'+list[i]["id"]+'" data-deviceImei="'+list[i]["deviceImei"]+'"><input name="imei_list"  data-id="'+list[i]["id"]+'" data-deviceImei="'+list[i]["deviceImei"]+'" type="checkbox" />'+list[i]["deviceImei"]+'</label></td></tr><tr>';
-                                                }else{
-                                                    if(i===len - 1){
-                                                        if(count!==0){
-                                                            str+='<td colspan="'+count+'"><label data-id="'+list[i]["id"]+'" data-deviceImei="'+list[i]["deviceImei"]+'"><input name="imei_list"  data-id="'+list[i]["id"]+'" data-deviceImei="'+list[i]["deviceImei"]+'" type="checkbox" />'+list[i]["deviceImei"]+'</label></td>';
-                                                        }else{
-                                                            str+='<td><label data-id="'+list[i]["id"]+'" data-deviceImei="'+list[i]["deviceImei"]+'"><input name="imei_list"  data-id="'+list[i]["id"]+'" data-deviceImei="'+list[i]["deviceImei"]+'" type="checkbox" />'+list[i]["deviceImei"]+'</label></td>';
-                                                        }
-                                                    }else{
-                                                        str+='<td><label data-id="'+list[i]["id"]+'" data-deviceImei="'+list[i]["deviceImei"]+'"><input name="imei_list"  data-id="'+list[i]["id"]+'" data-deviceImei="'+list[i]["deviceImei"]+'" type="checkbox" />'+list[i]["deviceImei"]+'</label></td>';
-                                                    }
-                                                }
-                                                j++;
-                                            }
-                                            if(str!==''){
-                                                str+='</tr>';
-                                                $(str).appendTo(self.$admin_imei_list.html(''));
-                                            }
-                                        }
-                                    }else{
-                                        self.$admin_imei_list.html('');
-                                    }
-                                }else{
-                                    self.$admin_imei_list.html('');
-                                }
-                            }
-                        }
-                    },
-                    function(resp){
-                        var message=resp.data.message;
-                        if(typeof message !=='undefined'&&message!==''){
-                            console.log(message);
-                        }else{
-                            console.log('请货物失败');
-                        }
-                        self.$admin_imei_list.html('');
-                    });
+            };
         };
-        /*IMEI服务--清除IMEI数据*/
-        this.clearIMEI=function (send) {
-            if(!send){
-                return false;
-            }
-            /*存在数据模型则清除模型*/
-            if(send.deviceImeis!==''){
-                self.$admin_imei_list.find('input:checked').each(function () {
-                    $(this).prop({
-                        'checked':false
-                    });
-                });
-                /*清除模型*/
-                send.deviceImeis='';
-            }
-        };
-        /*IMEI服务--获取IMEI数据*/
-        this.getIMEI=function (send) {
-            if(!send){
-                return false;
-            }
-            /*清除选中*/
-            var res=[];
-            self.$admin_imei_list.find('input:checked').each(function () {
-                res.push($(this).attr('data-deviceImei'));
-            });
-            /*清除模型*/
-            if(res.length!==0){
-                send.deviceImeis=res.join(',');
-            }else{
-                send.deviceImeis='';
-            }
-        };
-
-
-
-
-        /*表单类服务--执行延时任务序列*/
-        this.addFormDelay=function (config) {
-            /*映射对象*/
-            var type=config.type,
-                type_map={
-                    'send':{
-                        'timeid':sendform_reset_timer,
-                        'dom':self.$admin_send_reset
-                    }
-                };
-            /*执行延时操作*/
-            type_map[type]['timeid']=$timeout(function(){
-                /*触发重置表单*/
-                type_map[type]['dom'].trigger('click');
-            },0);
-        };
-        /*表单类服务--清除延时任务序列*/
-        this.clearFormDelay=function (did) {
-            if(did  &&  did!==null){
-                $timeout.cancel(did);
-                did=null;
-            }else{
-                /*如果存在延迟任务则清除延迟任务*/
-                if(sendform_reset_timer!==null){
-                    $timeout.cancel(sendform_reset_timer);
-                    sendform_reset_timer=null;
+        /*测试服务--获取订单列表*/
+        this.testGetOrderDetail=function () {
+            return {
+                status:200,
+                data:{
+                    message:'ok',
+                    code:0,
+                    result:Mock.mock({
+                        'order|1':[{
+                            "id":/[0-9]{1,2}/,
+                            "merchantName":/[0-9a-zA-Z]{2,10}/,
+                            "merchantPhone":/(^(13[0-9]|15[012356789]|18[0-9]|14[57]|170)[0-9]{8}$){1}/,
+                            "orderTime":moment().format('YYYY-MM-DD HH:mm:ss'),
+                            "orderNumber":/[0-9a-zA-Z]{18}/,
+                            "orderState":/(0|1|6|9|20|21|[2-5]){1}/,
+                            "totalMoney":/(^(([1-9]{1}\d{0,8})|0)((\.{0}(\d){0})|(\.{1}(\d){2}))$){1}/,
+                            "paymentType":/[1-3]{1}/
+                        }],
+                        'details|1-10':[{
+                            "id":/[0-9]{1,2}/,
+                            "goodsName":/[0-9a-zA-Z]{2,10}/,
+                            "goodsPrice":/(^(([1-9]{1}\d{0,8})|0)((\.{0}(\d){0})|(\.{1}(\d){2}))$){1}/,
+                            "quantlity":/[0-9]{1,2}/
+                        }]
+                    })
                 }
-            }
+            };
         };
-        /*表单类服务--清空表单模型数据*/
-        this.clearFormData=function (data,type) {
-            if(!data){
-                return false;
-            }
-            if(typeof type!=='undefined' && type!==''){
-                /*特殊情况*/
-                if(type==='send'){
-                    /*清除成员数据*/
-                    var send=data[type];
-                    for(var j in send){
-                        if(j==='deviceType'){
-                            send[j]=1;
-                        }else if(j==='imei'){
-                            send[j]=false;
-                        }else{
-                            send[j]='';
-                        }
-                    }
-                    self.clearIMEI(send);
-                }
-            }else {
-                /*重置机构数据模型*/
-                for(var i in data){
-                    if(i==='type'){
-                        /*操作类型为新增*/
-                        data[i]='add';
-                    }else{
-                        data[i]='';
-                    }
-                }
-            }
-        };
-        /*表单类服务--重置表单数据*/
-        this.clearFormValid=function (forms) {
-            if(forms){
-                var temp_cont=forms.$$controls;
-                if(temp_cont){
-                    var len=temp_cont.length,
-                        i=0;
-                    forms.$dirty=false;
-                    forms.$invalid=true;
-                    forms.$pristine=true;
-                    forms.valid=false;
-
-                    if(len!==0){
-                        for(i;i<len;i++){
-                            var temp_item=temp_cont[i];
-                            temp_item['$dirty']=false;
-                            temp_item['$invalid']=true;
-                            temp_item['$pristine']=true;
-                            temp_item['$valid']=false;
-                        }
-                    }
-                }
-            }
-        };
-        /*表单服务类--重置表单*/
-        this.formReset=function (config,type) {
-            if(type ==='role' || type ==='rolegroup'){
-                /*重置模型*/
-                self.clearFormData(config[type]);
-                /*重置提示信息*/
-                self.clearFormValid(config.forms);
-            }else if(type ==='send'){
-                /*特殊情况--发货*/
-                self.clearFormData(config,type);
-                /*重置提示信息*/
-                self.clearFormValid(config.forms);
-            }
-        };
-        /*表单服务类--提交表单*/
-        this.formSubmit=function (config,type) {
-            if(cache){
-                var action='',
-                    param=$.extend(true,{},cache.loginMap.param),
-                    req_config={
-                        method:'post',
-                        set:true
-                    },
-                    tip_map={
-                        'add':'新增',
-                        'edit':'编辑',
-                        'send':'发货'
-                    };
-
-                /*适配参数*/
-                if(type==='send'){
-                    action='add';
-                    var send=config['send'];
-                    for(var i in send){
-                        if(i!=='imei'){
-                            param[i]=send[i];
-                        }
-                    }
-
-                    param['organizationIdSender']=config.record.currentId;
-                    param['organizationIdReceiver']=config.record.organizationId;
-                    param['status']=0;
-                    req_config['url']='/device/delivery/add';
-                }
-                req_config['data']=param;
-
-                toolUtil
-                    .requestHttp(req_config)
-                    .then(function(resp){
-                            var data=resp.data,
-                                status=parseInt(resp.status,10);
-
-                            if(status===200){
-                                var code=parseInt(data.code,10),
-                                    message=data.message;
-                                if(code!==0){
-                                    if(typeof message !=='undefined' && message!==''){
-                                        toolDialog.show({
-                                            type:'warn',
-                                            value:message
-                                        });
-                                    }else{
-                                        toolDialog.show({
-                                            type:'warn',
-                                            value:tip_map[action]+tip_map[type]+'失败'
-                                        });
-                                    }
-                                    if(code===999){
-                                        /*退出系统*/
-                                        cache=null;
-                                        toolUtil.loginTips({
-                                            clear:true,
-                                            reload:true
-                                        });
-                                    }
-                                    return false;
-                                }else{
-                                    /*操作成功即加载数据*/
-                                    /*to do*/
-                                    if(action==='add'){
-                                        /*重新加载侧边栏数据*/
-                                        if(type==='send'){
-                                            self.getColumnData(config.table,config.record);
-                                        }
-                                    }
-                                    /*重置表单*/
-                                    self.addFormDelay({
-                                        type:type
-                                    });
-                                    /*提示操作结果*/
-                                    toolDialog.show({
-                                        type:'succ',
-                                        value:tip_map[action]+tip_map[type]+'成功'
-                                    });
-                                    /*弹出框隐藏*/
-                                    self.toggleModal({
-                                        display:'hide',
-                                        area:type,
-                                        delay:1000
-                                    });
-                                }
-                            }
-                        },
-                        function(resp){
-                            var message=resp.data.message;
-                            if(typeof message !=='undefined'&&message!==''){
-                                toolDialog.show({
-                                    type:'warn',
-                                    value:message
-                                });
-                            }else{
-                                toolDialog.show({
-                                    type:'warn',
-                                    value:tip_map[action]+tip_map[type]+'失败'
-                                });
-                            }
-                        });
-            }else{
-                /*退出系统*/
-                cache=null;
-                toolUtil.loginTips({
-                    clear:true,
-                    reload:true
-                });
-            }
-        };
-
-
     }]);

@@ -27,6 +27,20 @@ angular.module('app')
         equipmentService.initJQDom(jq_dom);
 
 
+        /*模型--操作记录*/
+        this.record={
+            filter:'',
+            startTime:'',
+            endTime:'',
+            currentId:'',
+            currentName:'',
+            organizationId:'',
+            organizationName:'',
+            prev:null/*菜单操作:上一次操作菜单*/,
+            current:null/*菜单操作:当前操作菜单*/
+        };
+
+
         /*模型--表格缓存*/
         this.table={
             list1_page:{
@@ -41,10 +55,13 @@ angular.module('app')
                     autoWidth:true,/*是否*/
                     paging:false,
                     ajax:{
-                        url:toolUtil.adaptReqUrl('/device/delivery/list'),
+                        url:/*toolUtil.adaptReqUrl('/device/delivery/list')*/'json/test.json',
                         dataType:'JSON',
                         method:'post',
                         dataSrc:function ( json ) {
+                            /*测试代码*/
+                            var json=equipmentService.testGetEquipmentList();
+
                             var code=parseInt(json.code,10),
                                 message=json.message;
 
@@ -173,7 +190,7 @@ angular.module('app')
                                 var btns='';
 
                                 /*查看发货详情*/
-                                if(self.powerlist.deliveryadd){
+                                if(self.powerlist.delivery_add){
                                     btns+='<span data-action="detail" data-id="'+data+'"  class="btn-operate">查看</span>';
                                 }
                                 return btns;
@@ -196,7 +213,7 @@ angular.module('app')
                 column_api:{
                     isEmpty:function () {
                         if(self.table.list_table===null){
-                            return false;
+                            return true;
                         }
                         return self.table.list_table.data().length===0;
                     }
@@ -220,19 +237,6 @@ angular.module('app')
         };
 
 
-        /*模型--操作记录*/
-        this.record={
-            filter:'',
-            startTime:'',
-            endTime:'',
-            currentId:'',
-            currentName:'',
-            organizationId:'',
-            organizationName:'',
-            prev:null/*菜单操作:上一次操作菜单*/,
-            current:null/*菜单操作:当前操作菜单*/
-        };
-
         /*模型--添加发货*/
         this.send={
             deviceType:'1',
@@ -242,6 +246,12 @@ angular.module('app')
             deviceImeis:'',
             imei:false/*是否从进货库选择*/
         };
+
+
+        /*初始化服务--虚拟挂载点，或者初始化参数*/
+        equipmentService.getRoot(self.record);
+        /*初始化服务--日历查询*/
+        equipmentService.datePicker(self.record);
         
 
 
@@ -272,9 +282,6 @@ angular.module('app')
             equipmentService.filterDataTable(self.table,self.record);
         };
 
-
-        /*日历查询*/
-        equipmentService.datePicker(this.record);
 
         /*查询发货*/
         this.queryEquipment=function () {

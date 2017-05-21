@@ -11,9 +11,9 @@ angular.module('app')
 
         /*初始化权限*/
         var init_power={
-            deviceadd:toolUtil.isPower('device-add',powermap,true)/*添加发货信息*/,
-            iemiadd:toolUtil.isPower('iemi-add',powermap,true)/*添加iemi码*/,
-            deliveryadd:toolUtil.isPower('delivery-add',powermap,true)/*详情*/
+            device_add:toolUtil.isPower('device-add',powermap,true)/*添加发货信息*/,
+            iemi_add:toolUtil.isPower('iemi-add',powermap,true)/*添加iemi码*/,
+            delivery_add:toolUtil.isPower('delivery-add',powermap,true)/*详情*/
         };
 
 
@@ -127,12 +127,17 @@ angular.module('app')
 
             toolUtil
                 .requestHttp({
-                    url:'/device/delivery/view',
+                    url:/*'/device/delivery/view'*/'json/test.json',
                     method:'post',
                     set:true,
+                    debug:true/*测试模式*/,
                     data:param
                 })
                 .then(function(resp){
+                        /*测试代码*/
+                        var resp=self.testGetEquipmentDetail();
+
+
                         var data=resp.data,
                             status=parseInt(resp.status,10);
 
@@ -186,12 +191,12 @@ angular.module('app')
                                             if(typeof detail_map[j]!=='undefined'){
                                                 if(j==='deviceType'){
                                                     var temptype=parseInt(delivery[j],10);
-                                                    str+='<tr><td colspan="2" class="g-t-r">'+detail_map[j]+':</td><td colspan="3" class="g-t-l g-c-blue3">'+typemap[temptype]+'</td></tr>';
+                                                    str+='<tr><td colspan="2" class="g-t-r">'+detail_map[j]+':</td><td class="g-t-l g-c-blue3">'+typemap[temptype]+'</td></tr>';
                                                 }else if(j==='status'){
                                                     var tempstatus=parseInt(delivery[j],10);
-                                                    str+='<tr><td colspan="2" class="g-t-r">'+detail_map[j]+':</td><td colspan="3" class="g-t-l">'+statusmap[tempstatus]+'</td></tr>';
+                                                    str+='<tr><td colspan="2" class="g-t-r">'+detail_map[j]+':</td><td class="g-t-l">'+statusmap[tempstatus]+'</td></tr>';
                                                 }else{
-                                                    str+='<tr><td colspan="2" class="g-t-r">'+detail_map[j]+':</td><td colspan="3" class="g-t-l">'+delivery[j]+'</td></tr>';
+                                                    str+='<tr><td colspan="2" class="g-t-r">'+detail_map[j]+':</td><td  class="g-t-l">'+delivery[j]+'</td></tr>';
                                                 }
                                             }
                                         }
@@ -201,10 +206,10 @@ angular.module('app')
                                         if(len!==0){
                                             var i=0,
                                                 tempimei;
-                                            str+='<tr><th colspan="5" class="g-t-c">'+detail_map["deviceImeis"]+'</th></tr>';
+                                            str+='<tr><th colspan="3" class="g-t-c">'+detail_map["deviceImeis"]+'</th></tr><tr><th class="g-t-c">序号</th><th class="g-t-c">机器码</th><th class="g-t-c">状态</th></tr>';
                                             for(i;i<len;i++){
                                                 tempimei=deviceImeis[i];
-                                                str+='<tr><td class="g-t-r">'+(i + 1)+'</td><td class="g-t-r">'+detail_map["deviceImei"]+':</td><td class="g-t-l">'+tempimei["deviceImei"]+'</td><td class="g-t-r">'+detail_map["status"]+':</td><td class="g-t-l">'+statusmap[tempimei["status"]]+'</td></tr>';
+                                                str+='<tr><td class="g-t-c">'+(i + 1)+'</td><td class="g-t-l">'+tempimei["deviceImei"]+'</td><td class="g-t-l">'+statusmap[tempimei["status"]]+'</td></tr>';
                                             }
                                         }
                                     }
@@ -272,7 +277,35 @@ angular.module('app')
         };
 
 
-        /*菜单服务--获取导航*/
+
+        /*导航服务--获取虚拟挂载点*/
+        this.getRoot=function (record) {
+            if(cache===null){
+                toolUtil.loginTips({
+                    clear:true,
+                    reload:true
+                });
+                record['currentId']='';
+                record['currentName']='';
+                return false;
+            }
+            var islogin=loginService.isLogin(cache);
+            if(islogin){
+                var logininfo=cache.loginMap;
+                record['currentId']=logininfo.param.organizationId;
+                record['currentName']=logininfo.username;
+            }else{
+                /*退出系统*/
+                cache=null;
+                toolUtil.loginTips({
+                    clear:true,
+                    reload:true
+                });
+                record['currentId']='';
+                record['currentName']='';
+            }
+        };
+        /*导航服务--获取导航*/
         this.getSubMenu=function (config) {
             if(cache){
                 var param=$.extend(true,{},cache.loginMap.param);
@@ -289,8 +322,6 @@ angular.module('app')
                     $wrap=self.$admin_equipment_submenu;
                     config.record.organizationId=id;
                     config.record.organizationName=cache.loginMap.username;
-                    config.record.currentId=id;
-                    config.record.currentName=cache.loginMap.username;
                     /*查询货物*/
                     self.queryIMEI(id);
                     if(config.table && config.table.list_table===null && config.record){
@@ -396,7 +427,7 @@ angular.module('app')
                 });
             }
         };
-        /*菜单服务--解析导航--开始解析*/
+        /*导航服务--解析导航--开始解析*/
         this.resolveSubMenu=function (obj,limit,config) {
             if(!obj||typeof obj==='undefined'){
                 return false;
@@ -442,11 +473,11 @@ angular.module('app')
                 return false;
             }
         };
-        /*菜单服务--解析导航--公共解析*/
+        /*导航服务--解析导航--公共解析*/
         this.doItemSubMenu=function (obj,config) {
             var curitem=obj,
                 id=curitem["id"],
-                label=curitem["orgname"],
+                label=curitem["fullName"],
                 str='',
                 flag=config.flag,
                 layer=config.layer,
@@ -459,7 +490,7 @@ angular.module('app')
             }
             return str;
         };
-        /*菜单服务--显示隐藏机构*/
+        /*导航服务--显示隐藏机构*/
         this.toggleSubMenu=function (e,config) {
             /*阻止冒泡和默认行为*/
             e.preventDefault();
@@ -546,26 +577,15 @@ angular.module('app')
             param['organizationId']=id;
             toolUtil
                 .requestHttp({
-                    url:'/device/stock/list',
+                    url:/*'/device/stock/list'*/'json/test.json',
                     method:'post',
                     set:true,
+                    debug:true,/*测试模式*/
                     data:param
                 })
                 .then(function(resp){
-                    /*测试代码*/
-                    /*var resp={
-                            status:200,
-                            data:{
-                                message:'ok',
-                                code:0,
-                                result:Mock.mock({
-                                    'list|5-50':[{
-                                        "id":/[0-9]{1,2}/,
-                                        "deviceImei":/[0-9a-zA-Z]{5,10}/
-                                    }]
-                                })
-                            }
-                    };*/
+                        /*测试代码*/
+                        var resp=self.testGetIMEI();
 
                         var data=resp.data,
                             status=parseInt(resp.status,10);
@@ -898,5 +918,69 @@ angular.module('app')
             }
         };
 
+
+
+        /*测试服务--获取设备列表*/
+        this.testGetEquipmentList=function () {
+            return {
+                message:'ok',
+                code:0,
+                result:Mock.mock({
+                    'count':80,
+                    'list|5-12':[{
+                        "id":/[0-9]{1,2}/,
+                        "consigneeName":/(周一|杨二|张三|李四|王五|赵六|马七|朱八|陈九){1}/,
+                        "logistics":/[0-9a-zA-Z]{5,10}/,
+                        "deliveryQuantity":/[0-9]{1,5}/,
+                        "status":/[0-1]{1}/,
+                        "addTime":moment().format('YYYY-MM-DD HH:mm:ss'),
+                        "deviceType":/[1-3]{1}/
+                    }]
+                })
+            };
+        };
+        /*测试服务--获取IMEI码*/
+        this.testGetIMEI=function () {
+            return {
+                 status:200,
+                 data:{
+                     message:'ok',
+                     code:0,
+                     result:Mock.mock({
+                         'list|10-50':[{
+                             "id":/[0-9]{1,2}/,
+                             "deviceImei":/[0-9a-zA-Z]{5,10}/
+                         }]
+                     })
+                 }
+            };
+        };
+        /*测试服务--获取IMEI码*/
+        this.testGetEquipmentDetail=function () {
+            var remark_info=/('最近太忙了，确认晚了，东西是很好的，呵呵，谢了。'|'物流公司的态度比较差,建议换一家！不过掌柜人还不错！'|'呵，货真不错，老公很喜欢！'|'很好的卖家，谢谢喽。我的同事们都很喜欢呢。下次再来哦 ！'|'掌柜人不错，质量还行，服务很算不错的。'|'没想到这么快就到了，尺寸正好，老板态度很好。'|'还不错，质量挺好的，速度也快！'|'终于找到家好店，服务好，质量不错，下次有机会再来买。'|'卖家人很好 这个还没用 看包装应该不错'|'店已经收藏了很久，不过是第一次下手。应该说还不错。'|'第二次来买了，货比我想像中要好！！老板人表扬下。'|'包装看起来很好，包得很用心，相信货一定很好，谢谢了！'|'货超值，呵，下次再来。帮你做个广告，朋友们：这家店的货值。'|'一个字！！值！！！'|'掌柜的服务态度真好，发货很快。商品质量也相当不错。太喜欢了，谢谢！'|'好卖家，真有耐心，我终于买到想要的东西了。谢谢卖家。'|'掌柜太善良了，真是干一行懂一行呀。在掌柜的指导下我都快变内行人士了！'|'卖家服务真周到。以后带同事一起来。'|'货到了，比图片上看到的好多了3Q！'|'忠心地感谢你，让我买到了梦寐以求的宝贝，太感谢了！'|'价格大众化，YY质量很好呀,款式、面料我都挺满意的．如果有需要我还会继续光顾你的店铺！'){1}/;
+
+            return {
+                status:200,
+                data:{
+                    message:'ok',
+                    code:0,
+                    result:Mock.mock({
+                        'delivery|1':[{
+                            "id":/[0-9]{1,2}/,
+                            "consigneeName":/(周一|杨二|张三|李四|王五|赵六|马七|朱八|陈九){1}/,
+                            "logistics":/[0-9a-zA-Z]{5,10}/,
+                            "deliveryQuantity":/[0-9]{1,5}/,
+                            "remark":remark_info,
+                            "addTime":moment().format('YYYY-MM-DD HH:mm:ss'),
+                            "deviceType":/[1-3]{1}/
+                        }],
+                        'deviceImeis|1-10':[{
+                            "status":/[0-1]{1}/,
+                            "deviceImei":/[0-9a-zA-Z]{5,10}/
+                        }]
+                    })
+                }
+            };
+        };
 
     }]);

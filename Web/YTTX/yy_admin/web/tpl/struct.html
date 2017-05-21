@@ -2,7 +2,7 @@
     <div class="struct-layout-container struct-layout-default">
         <div class="struct-layout-main">
             <!--主内容-->
-            <h1 class="admin-layout-theme3">
+            <h1 class="admin-layout-theme3  g-clear-pt">
                 <span>{{struct_ctrl.record.structName!==''?struct_ctrl.record.structName:struct_ctrl.record.organizationName}}</span>
                 &nbsp;&nbsp;&nbsp;&nbsp;
                 <button type="button" class="btn btn-default g-c-blue3" ng-disabled="struct_ctrl.record.layer===0" ng-show="::struct_ctrl.powerlist.organization_edit" ng-click="struct_ctrl.actionStruct({display:'show',area:'struct',type:'edit'})"><i class="btn-action admin-btn-action7"></i>&nbsp;编辑</button>

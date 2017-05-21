@@ -244,7 +244,14 @@ angular.module('app')
                         /*延迟加载，依赖相关组件*/
                         deps: ['$ocLazyLoad',
                             function ($ocLazyLoad) {
-                                return $ocLazyLoad.load(['js/app/module/setting/setting_service.js',
+                                return $ocLazyLoad.load(['js/plugins/datatables/dataTables.bootstrap.css',
+                                    'js/plugins/datatables/js/jquery.dataTables.js',
+                                    'js/plugins/pagination/pagination.js',
+                                    'js/app/services/datatable/datatable_column_service.js',
+                                    'js/app/services/datatable/datatable_itemaction_service.js',
+                                    'js/plugins/My97DatePicker/WdatePicker.js',
+                                    'js/app/services/datepick97/datepicker97_service.js',
+                                    'js/app/module/setting/setting_service.js',
                                     'js/app/module/setting/setting_controller.js']);
                             }]
                     }
