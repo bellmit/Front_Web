@@ -1,96 +1,10 @@
 <div ng-controller="SettingController as setting_ctrl">
     <div class="struct-layout-container struct-layout-default">
-        <div class="struct-layout-main">
-            <!--订单管理-->
-            <div class="admin-action-item">
-
-                <!--过滤-->
-                <div class="action-item-input g-w-percent13">
-                    <label class="action-indent-b2">过滤:<input class="form-control input-sm" placeholder="" ng-model="setting_ctrl.record.filter" ng-keyup="setting_ctrl.filterDataTable()"  type="search"></label>
-                </div>
-
-                <!--开始时间-->
-                <div class="action-item-input g-w-percent15">
-                    <label class="action-indent-b2 dt-icon-after">开始时间:<input ng-model="setting_ctrl.record.startTime"  class="form-control" id="search_startTime" placeholder="请选择开始时间" readonly type="text"></label>
-                </div>
-
-                <!--结束时间-->
-                <div class="action-item-input g-w-percent15">
-                    <label class="action-indent-b2 dt-icon-after">结束时间:<input class="form-control" placeholder="请选择结束时间" id="search_endTime" ng-model="setting_ctrl.record.endTime" readonly type="text"></label>
-                </div>
-
-                <!--打印，导出-->
-                <div ng-show="false" class="action-item-btn action-item-export g-w-percent8">
-                    <span ng-show="setting_ctrl.powerlist.order_print" class="btn btn-export g-br3 g-c-blue3">打印</span>
-                    <span ng-show="setting_ctrl.powerlist.order_export" class="btn btn-export g-br3 g-c-blue3">导出</span>
-                </div>
-
-                <div class="clearfix"></div>
-                <div class="action-item-input g-w-percent15">
-                    <label class="action-indent-b4">搜索条件:<input class="form-control input-sm g-w-percent48" placeholder="请输入查询条件" ng-model="setting_ctrl.record.searchWord"  type="text"></label>
-                </div>
-
-                <div ng-show="setting_ctrl.record.organizationId!==''" class="action-item-btn action-item-export g-gap-mt4 g-w-percent6">
-                    <span ng-click="setting_ctrl.queryOrder()" class="btn btn-export g-br3 g-w-percent50 g-c-blue3">查询</span>
-                </div>
-
-                <!--列控制-->
-                <div class="action-item-ul g-w-percent6 g-pos-r g-gap-mt4" ng-show="::setting_ctrl.table.tablecolumn.columnshow">
-                    <div class="action-theme action-theme-btn g-br3 g-t-c">显示列</div>
-                    <div class="action-ul g-d-hidei" id="admin_table_checkcolumn">
-                        <ul class="action-list-wrap" ></ul>
-                    </div>
-                </div>
-
-            </div>
-
-            <!--表格-->
-            <table id="admin_list_wrap" class="table table-bordered table-striped table-hover admin-layout-table">
-                <!--分组样式-->
-                <colgroup id="admin_list_colgroup">
-                    <col class="g-w-percent10">
-                    <col class="g-w-percent5">
-                    <col class="g-w-percent12">
-                    <col class="g-w-percent5">
-                    <col class="g-w-percent5">
-                    <col class="g-w-percent5">
-                    <col class="g-w-percent5">
-                    <col class="g-w-percent5">
-                </colgroup>
-
-                <!--表头-->
-                <thead>
-                <tr>
-                    <th>商户名称</th>
-                    <th>手机号码</th>
-                    <th>订单号</th>
-                    <th>订单总价</th>
-                    <th>订单状态</th>
-                    <th>支付类型</th>
-                    <th>订单时间</th>
-                    <th>操作</th>
-                </tr>
-                </thead>
-
-                <!--表主体-->
-                <tbody id="admin_batchlist_wrap" class="middle-align"></tbody>
-            </table>
-
-
-            <!--分页-->
-            <div class="admin-page-wrap">
-                <div class="easyui-pagination g-w-percent50" id="admin_page_wrap" data-options="links:5,layout:['manual','first','prev','links','next','last'],displayMsg:'显示{from}&nbsp;到&nbsp;{to}&nbsp;共&nbsp;{total}条记录'"></div>
-            </div>
-        </div>
+        <div class="struct-layout-main"  ng-cloak ui-view="setting"></div>
 
         <div class="struct-layout-side">
-            <!--子菜单组件-->
-            <ul class="sub-menu-wrap">
-                <li>
-                    <a class="sub-menu-title sub-menu-titleactive" data-parentid="" data-id="setting_ctrl.record.currentId" data-layer="0" ng-click="setting_ctrl.initSubMenu()">{{setting_ctrl.record.currentName}}</a>
-                    <ul class="g-d-showi ui-sub-menu" ng-click="setting_ctrl.toggleSubMenu($event)" id="admin_order_submenu" ng-init="setting_ctrl.initSubMenu()"></ul>
-                </li>
-            </ul>
+            <!--菜单列表-->
+            <ul class="sub-list-wrap ui-sub-list" data-listitem="setting_ctrl.listitem"></ul>
         </div>
     </div>
 

@@ -10,9 +10,12 @@ angular.module('app')
 
         /*初始化权限*/
         var init_power={
-            order_print:toolUtil.isPower('order-print',powermap,true)/*订单打印*/,
-            order_export:toolUtil.isPower('order-export',powermap,true)/*订单导出*/,
-            order_details:toolUtil.isPower('order-details',powermap,true)/*订单详情*/
+            organization_info:toolUtil.isPower('organization-info',powermap,true)/*机构信息*/,
+            pwd_update:toolUtil.isPower('pwd-update',powermap,true)/*更改密码*/,
+            child_add:toolUtil.isPower('child-add',powermap,true)/*添加子管理*/,
+            child_edit:toolUtil.isPower('child-edit',powermap,true)/*编辑子管理*/,
+            child_delete:toolUtil.isPower('child-delete',powermap,true)/*删除子管理*/,
+            setting_profit:toolUtil.isPower('setting-profit',powermap,true)/*分润设置*/
         };
 
 

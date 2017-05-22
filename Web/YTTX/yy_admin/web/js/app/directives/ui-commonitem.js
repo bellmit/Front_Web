@@ -46,7 +46,10 @@ angular.module('ui.commonitem',[])
         return {
             replace:false,
             restrict: 'EC',
-            template:'<li ng-repeat="i in subdata.listitem"><a data-type="{{i.href}}" title="">{{i.name}}</a></li>'
+            scope:{
+                listitem:'=listitem'
+            },
+            template:'<li ng-show="{{i.power}}" class="{{i.active}}" ng-repeat="i in listitem"><a data-type="{{i.type}}" title=""  ui-sref="{{i.href}}">{{i.name}}</a></li>'
         };
     })
     /*侧边栏搜索指令*/

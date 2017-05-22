@@ -59,23 +59,7 @@
       "code": "yttx-oragnization",
       "name": "机构",
       "href": "struct",
-      "module": "struct",
-      "sub": [
-        {
-          "modClass": "yttx-oragnization-operator",
-          "modCode": "yttx-oragnization-operator",
-          "modId": 10,
-          "modLink": "yttx-oragnization-operator",
-          "modName": "运营架构"
-        },
-        {
-          "modClass": "yttx-oragnization-role",
-          "modCode": "yttx-oragnization-role",
-          "modId": 10,
-          "modLink": "yttx-oragnization-role",
-          "modName": "角色"
-        }
-      ]
+      "module": "struct"
     },
     "30": {
       "id": 30,
@@ -89,23 +73,7 @@
       "code": "yttx-finance-manager",
       "name": "财务管理",
       "href": "finance",
-      "module": "finance",
-      "sub": [
-        {
-          "modClass": "yttx-clear-stats",
-          "modCode": "yttx-clear-stats",
-          "modId": 50,
-          "modLink": "yttx-clear-stats",
-          "modName": "清算统计"
-        },
-        {
-          "modClass": "yttx-profit-stats",
-          "modCode": "yttx-profit-stats",
-          "modId": 50,
-          "modLink": "yttx-profit-stats",
-          "modName": "分润统计"
-        }
-      ]
+      "module": "finance"
     },
     "70": {
       "id": 70,
@@ -122,25 +90,11 @@
       "module": "setting",
       "sub": [
         {
-          "modClass": "yttx-improve-info",
-          "modCode": "yttx-improve-info",
-          "modId": 90,
-          "modLink": "yttx-improve-info",
-          "modName": "完善信息"
-        },
-        {
           "modClass": "yttx-pwd-update",
           "modCode": "yttx-pwd-update",
           "modId": 90,
           "modLink": "yttx-pwd-update",
           "modName": "更改密码"
-        },
-        {
-          "modClass": "yttx-setting-child",
-          "modCode": "yttx-setting-child",
-          "modId": 90,
-          "modLink": "yttx-setting-child",
-          "modName": "设置子管理"
         },
         {
           "modClass": "yttx-setting-profit",
@@ -399,13 +353,13 @@
   },
   "loginMap": {
     "isLogin": true,
-    "datetime": "2017-04-28|09:34:19",
-    "reqdomain": "http://10.0.5.226:8080",
+    "datetime": "2017-05-22|09:06:03",
+    "reqdomain": "http://10.0.5.226:8882",
     "username": "admin",
     "param": {
       "adminId": "1",
-      "token": "c1c2409c-c722-4400-a8f2-acae4841f912",
-      "organizationId": "1"
+      "token": "f356ae86-771f-491a-92f5-ce04c5c47535",
+      "organizationId": "8"
     }
   },
   "settingMap": {}
