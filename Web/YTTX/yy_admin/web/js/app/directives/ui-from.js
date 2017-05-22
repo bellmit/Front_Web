@@ -27,6 +27,33 @@ angular.module('ui.form',[])
             }
         }
     }])
+    /*银行卡指令，银行卡格式化指令*/
+    .directive('uiBankCard',['toolUtil',function(toolUtil) {
+        return {
+            replace:false,
+            restrict: 'EC',
+            require: 'ngModel',
+            link:function (scope, elem, attrs,ctrl) {
+                /*绑定事件*/
+                angular.element(elem).bind('keyup focusout',function ($event){
+                    var etype=$event.type;
+                    if(etype==='keyup'){
+                        var phoneno=this.value.replace(/\D*/g,'');
+                        if(phoneno===''){
+                            this.value='';
+                            return false;
+                        }
+                        this.value=toolUtil.cardFormat(this.value);
+                    }else if(etype==='focusout'){
+                        /*手动执行脏检查*/
+                        scope.$apply(function(){
+                            ctrl.$setValidity("bcformaterror",toolUtil.isBankCard(elem.val()));
+                        });
+                    }
+                });
+            }
+        }
+    }])
     /*格式化两位小数*/
     .directive('uiDoublePoint',['toolUtil',function(toolUtil) {
         return {

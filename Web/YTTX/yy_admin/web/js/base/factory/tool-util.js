@@ -405,7 +405,7 @@
 			if(typeof str==='undefined' || str===null){
 				return '';
 			}
-			var cardno=str.toString().replace(/\s*/g,'');
+			var cardno=str.toString().replace(/\s*\D*/g,'');
 			if(cardno==''){
 				return '';
 			}
@@ -669,7 +669,14 @@
 				return /(\d{4})(\d{8})/.test(value)?true:false;
 			}
 		};
-		/**/
+		/*是否是合法银行卡号*/
+		tools.isBankCard=function(str){
+			var value=this.trims(str);
+			if(value===''){
+				return true;
+			}
+			return /^(\d{16}|\d{19})$/.test(value)?true:false;
+		};
 		tools.isNum=function(str){
 			var self=this;
 			return /^[0-9]{0,}$/g.test(self.trims(str));

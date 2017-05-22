@@ -1,43 +1,17 @@
 <div ng-controller="SettingController as setting_ctrl">
     <div class="struct-layout-container struct-layout-default">
-        <div class="struct-layout-main"  ng-cloak ui-view="setting"></div>
-
+        <div class="struct-layout-main"  ng-cloak ui-view="">
+            <div class="admin-layout-theme4 g-t-c g-b-gray17">设置</div>
+            <div class="admin-layout-theme4 g-t-l">
+                机构名称：<span class="g-c-gray6">{{setting_ctrl.struct.organizationName}}</span>
+            </div>
+            <div class="admin-layout-theme4 g-t-l">
+                机构序列：<span class="g-c-gray6">{{setting_ctrl.struct.organizationId}}</span>
+            </div>
+        </div>
         <div class="struct-layout-side">
             <!--菜单列表-->
-            <ul class="sub-list-wrap ui-sub-list" data-listitem="setting_ctrl.listitem"></ul>
-        </div>
-    </div>
-
-    <!--查看订单详情-->
-    <div class="modal fade custom-width" id="admin_orderdetail_dialog">
-        <div class="modal-dialog g-w-percent40">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <table class="table table-bordered table-striped table-hover admin-layout-table">
-
-                        <!--分组样式-->
-                        <colgroup>
-                            <col class="g-w-percent2">
-                            <col class="g-w-percent14">
-                            <col class="g-w-percent17">
-                            <col class="g-w-percent17">
-                        </colgroup>
-                        <!--头部-->
-                        <thead>
-                        <tr>
-                            <th class="g-t-c" colspan="4">订单详情</th>
-                        </tr>
-                        </thead>
-
-                        <!--表主体-->
-                        <tbody id="admin_orderdetail_show" class="middle-align"></tbody>
-                    </table>
-                    <div class="clearfix"></div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-info" data-dismiss="modal">关闭</button>
-                </div>
-            </div>
+            <ul class="sub-list-wrap g-clear-pt ui-sub-list" data-listitem="setting_ctrl.listitem"></ul>
         </div>
     </div>
 </div>
