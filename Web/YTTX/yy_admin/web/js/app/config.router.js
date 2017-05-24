@@ -247,7 +247,6 @@ angular.module('app')
                                 return $ocLazyLoad.load(['js/plugins/datatables/dataTables.bootstrap.css',
                                     'js/plugins/datatables/js/jquery.dataTables.js',
                                     'js/plugins/pagination/pagination.js',
-                                    'js/app/services/datatable/datatable_column_service.js',
                                     'js/app/services/datatable/datatable_itemaction_service.js',
                                     'js/app/module/setting/setting_service.js',
                                     'js/app/module/setting/setting_controller.js']);
@@ -264,7 +263,6 @@ angular.module('app')
                             function ($ocLazyLoad) {
                                 return $ocLazyLoad.load([
                                     'js/app/module/setting/setting_service.js',
-                                    'js/app/module/setting/setting_controller.js','js/app/module/setting/info/setting_info_service.js',
                                     'js/app/module/setting/info/setting_info_controller.js']);
                             }]
                     }
@@ -279,7 +277,7 @@ angular.module('app')
                             function ($ocLazyLoad) {
                                 return $ocLazyLoad.load([
                                     'js/app/module/setting/setting_service.js',
-                                    'js/app/module/setting/setting_controller.js']);
+                                    'js/app/module/setting/pwd/setting_pwd_controller.js']);
                             }]
                     }
                 })
@@ -293,7 +291,8 @@ angular.module('app')
                             function ($ocLazyLoad) {
                                 return $ocLazyLoad.load([
                                     'js/app/module/setting/setting_service.js',
-                                    'js/app/module/setting/setting_controller.js']);
+                                    'js/app/module/setting/manage/setting_manage_service.js',
+                                    'js/app/module/setting/manage/setting_manage_controller.js']);
                             }]
                     }
                 })

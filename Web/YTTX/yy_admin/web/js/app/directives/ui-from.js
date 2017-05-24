@@ -38,8 +38,8 @@ angular.module('ui.form',[])
                 angular.element(elem).bind('keyup focusout',function ($event){
                     var etype=$event.type;
                     if(etype==='keyup'){
-                        var phoneno=this.value.replace(/\D*/g,'');
-                        if(phoneno===''){
+                        var bankno=this.value.replace(/\D*/g,'');
+                        if(bankno===''){
                             this.value='';
                             return false;
                         }
@@ -49,6 +49,65 @@ angular.module('ui.form',[])
                         scope.$apply(function(){
                             ctrl.$setValidity("bcformaterror",toolUtil.isBankCard(elem.val()));
                         });
+                    }
+                });
+            }
+        }
+    }])
+    /*比较指令，比较是否相等)*/
+    .directive('uiCompareEqual',['toolUtil',function(toolUtil) {
+        return {
+            replace:false,
+            restrict: 'EC',
+            require: 'ngModel',
+            link:function (scope, elem, attrs,ctrl) {
+                /*绑定事件*/
+                var equaldom=document.getElementById(attrs.equaldom);
+                angular.element(elem).bind('keyup',function ($event){
+                    var etype=$event.type;
+                    if(etype==='keyup'){
+                        var str1=toolUtil.trims(equaldom.value),
+                            str2=toolUtil.trims(this.value);
+                        if(str2!==''){
+                            /*手动执行脏检查*/
+                            scope.$apply(function(){
+                                ctrl.$setValidity("equalerror",str1===str2);
+                            });
+                        }else{
+                            /*手动执行脏检查*/
+                            scope.$apply(function(){
+                                ctrl.$setValidity("equalerror",true);
+                            });
+                        }
+                    }
+                });
+            }
+        }
+    }])
+    /*比较指令，比较是否不相等)*/
+    .directive('uiCompareUnequal',['toolUtil',function(toolUtil) {
+        return {
+            replace:false,
+            restrict: 'EC',
+            require: 'ngModel',
+            link:function (scope, elem, attrs,ctrl) {
+                /*绑定事件*/
+                var equaldom=document.getElementById(attrs.equaldom);
+                angular.element(elem).bind('keyup',function ($event){
+                    var etype=$event.type;
+                    if(etype==='keyup'){
+                        var str1=toolUtil.trims(equaldom.value),
+                            str2=toolUtil.trims(this.value);
+                        /*手动执行脏检查*/
+                        if(str2!==''){
+                            scope.$apply(function(){
+                                ctrl.$setValidity("unequalerror",str1!==str2);
+                            });
+                        }else{
+                            scope.$apply(function(){
+                                ctrl.$setValidity("unequalerror",true);
+                            });
+                        }
                     }
                 });
             }

@@ -1,96 +1,192 @@
+<div ng-controller="SettingManageController as settingmanage_ctrl">
+    <div class="admin-layout-theme4 g-gap-pl8 g-t-l g-b-gray17">子管理</div>
 
-<!--主题描述-->
-<div class="page-title">
-    <div class="title-env">
-        <h1 class="title">用户管理</h1>
-        <p class="description">用户列表</p>
+    <h1 class="admin-layout-theme3">
+        <span>{{settingmanage_ctrl.record.organizationName}}</span>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <button type="button" class="btn btn-default g-c-blue3" ng-disabled="settingmanage_ctrl.record.organizationId===''" ng-show="::setting_ctrl.powerlist.child_add" ng-click="settingmanage_ctrl.actionManage({display:'show',area:'manage',type:'edit'})"><i class="btn-action admin-btn-action7"></i>&nbsp;添加子管理</button>
+    </h1>
+
+
+    <!--表格-->
+    <table id="admin_list_wrap" class="table table-bordered table-striped table-hover admin-layout-table">
+        <!--分组样式-->
+        <colgroup>
+            <col class="g-w-percent15">
+            <col class="g-w-percent10">
+            <col class="g-w-percent10">
+            <col class="g-w-percent15">
+        </colgroup>
+
+        <!--表头-->
+        <thead>
+        <tr>
+            <th>姓名</th>
+            <th>是否指定运营商</th>
+            <th>是否指定权限</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+
+        <!--表主体-->
+        <tbody id="admin_batchlist_wrap" class="middle-align"></tbody>
+    </table>
+
+
+    <!--分页-->
+    <div class="admin-page-wrap">
+        <div class="easyui-pagination g-w-percent50" id="admin_page_wrap" data-options="links:5,layout:['manual','first','prev','links','next','last'],displayMsg:'显示{from}&nbsp;到&nbsp;{to}&nbsp;共&nbsp;{total}条记录'"></div>
     </div>
-    <div class="breadcrumb-env">
-        <ol class="breadcrumb bc-1">
-            <li><a href=""><i class="fa-home"></i>用户管理</a></li>
-            <li class="active"><strong>用户列表</strong></li>
-        </ol>
-    </div>
-</div>
 
-<!--主内容-->
-<div class="row row-main-wrap">
-    <div class="col-md-12">
-        <div class="panel">
 
-            <!--表格标题-->
-            <div class="panel-heading">
-                <h3 class="panel-title">用户列表</h3>
+    <!--弹出层--提示操作界面-->
+    <!--子管理订单-->
+    <div class="modal fade custom-width" id="setting_manage_dialog">
+        <div class="modal-dialog g-w-percent46">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <!--权限-->
+                    <div class="g-f-l g-w-percent34" ng-show="settingmanage_ctrl.manage.isDesignatedPermit===1">
+                        <div class="admin-layout-theme4 admin-theme-close g-t-c g-b-gray17 g-pos-r">选择权限</div>
+                        <table class="table table-bordered table-striped table-hover admin-layout-table">
+                            <colgroup ng-bind-html="settingmanage_ctrl.power.colgroup"></colgroup>
+                            <thead ng-click="settingmanage_ctrl.selectAllPower($event)" ng-bind-html="settingmanage_ctrl.power.thead"></thead>
 
-                <div class="panel-options">
-                    <a href="#" data-toggle="panel">
-                        <span class="collapse-icon">&ndash;</span>
-                        <span class="expand-icon">+</span>
-                    </a>
+
+                            <tbody id="admin_struct_allpower" ng-bind-html="settingmanage_ctrl.power.tbody"></tbody>
+                        </table>
+                        <div class="row">
+                            <div class="col-sm-5 g-t-r">
+                                <span ng-click="settingmanage_ctrl.getSelectPower()" class="btn btn-red g-br3 g-w-percent15">确定</span>
+                            </div>
+                            <div class="col-sm-2"></div>
+                            <div class="col-sm-5 g-t-l">
+                                <span ng-click="settingmanage_ctrl.clearSelectPower()" class="btn btn-red g-br3 g-w-percent15">取消</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--表单-->
+                    <div class="g-f-r g-w-percent14">
+                        <div class="admin-layout-theme4 admin-theme-close g-t-c g-b-gray17 g-pos-r">子管理{{settingmanage_ctrl.manage.id===''?'(新增)':'(编辑)'}}
+                            <span class="mini-icon admin-mini-icon1" ng-click="settingmanage_ctrl.toggleModal({display:'hide',area:'manage'})"></span>
+                        </div>
+
+                        <form ng-submit="settingmanage_ctrl.formSubmit('manage')" name="manageFrom" role="form" novalidate method="post" class="admin-layout-form">
+                            <div class="admin-layout-theme4"><span class="mini-icon admin-mini-icon2"></span>&nbsp;基本信息</div>
+
+                            <div class="form-group-self1">
+                                <label class="self-label g-w-percent15 g-t-r"><span class="self-require g-c-red1">*</span>子管理全称</label>
+
+                                <div class="self-input g-pos-r g-w-percent35">
+                                    <input type="text" name="fullName" placeholder="请输入子管理全称" required ng-model="settingmanage_ctrl.manage.fullName"  />
+                                    <span  ng-show="manageFrom.fullName.$dirty && manageFrom.fullName.$error.required" class="self-tips self-tips-no g-c-red1 g-fs4 g-w-percent50">子管理全称不能为空</span>
+                                    <span ng-show="manageFrom.fullName.$dirty && manageFrom.fullName.$valid" class="self-tips self-tips-yes"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group-self1">
+                                <label class="self-label g-w-percent15 g-t-r"><span class="self-require g-c-red1">*</span>手机号码</label>
+
+                                <div class="self-input g-pos-r g-w-percent35">
+                                    <input type="text" name="cellphone" required  placeholder="请输入手机号码" maxlength="13"  ng-model="settingmanage_ctrl.manage.cellphone" class="ui-mobile-phone"  />
+                                    <span ng-show="manageFrom.cellphone.$dirty && manageFrom.cellphone.$error.required" class="self-tips self-tips-no g-c-red1 g-fs4 g-w-percent50">手机号码不能为空</span>
+                                    <span ng-show="manageFrom.cellphone.$dirty && manageFrom.cellphone.$invalid && !manageFrom.cellphone.$error.required" class="self-tips self-tips-no g-c-red1 g-fs4 g-w-percent50">手机号码格式不合法</span>
+                                    <span ng-show="manageFrom.cellphone.$dirty && manageFrom.cellphone.$valid" class="self-tips self-tips-yes"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group-self1">
+                                <label class="self-label g-w-percent15 g-t-r"><span class="self-require g-c-red1">*</span>登陆用户名</label>
+
+                                <div class="self-input g-pos-r g-w-percent35">
+                                    <input type="text" required ng-model="settingmanage_ctrl.manage.username"  name="username"  placeholder="请输入登陆用户名" />
+                                    <span ng-show="manageFrom.username.$dirty && manageFrom.username.$error.required" class="self-tips self-tips-no g-c-red1 g-fs4 g-w-percent50">登陆用户名不能为空</span>
+                                    <span ng-show="manageFrom.username.$dirty && manageFrom.username.$valid" class="self-tips self-tips-yes"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group-self1">
+                                <label class="self-label g-w-percent15 g-t-r"><span class="self-require g-c-red1">*</span>登陆密码</label>
+
+                                <div class="self-input g-pos-r g-w-percent35">
+                                    <input type="password" required ng-minlength="6" minlength="6" ng-model="settingmanage_ctrl.manage.password"  name="password" placeholder="请输入登陆密码"   />
+                                    <span ng-show="manageFrom.password.$dirty && manageFrom.password.$invalid && !manageFrom.password.$error.required" class="self-tips self-tips-no g-c-red1 g-fs4 g-w-percent50">登陆密码不能少于6位</span>
+                                    <span ng-show="manageFrom.password.$dirty && manageFrom.password.$valid" class="self-tips self-tips-yes"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group-self1">
+                                <label class="self-label g-w-percent15 g-v-t g-t-r">备注</label>
+
+                                <div class="self-input g-w-percent35">
+                                    <textarea ng-model="settingmanage_ctrl.manage.remark" name="remark"></textarea>
+                                </div>
+                            </div>
+
+
+                            <div class="admin-layout-theme4"><span class="mini-icon admin-mini-icon3"></span>&nbsp;管理范围</div>
+
+                            <div class="form-group-self1">
+                                <label class="self-label" ng-init="settingmanage_ctrl.manage.isDesignatedOrg=0">
+                                    <input type="radio" ng-model="settingmanage_ctrl.manage.isDesignatedOrg" ng-value="0" ng-change="settingmanage_ctrl.changeStruct()" name="isDesignatedOrg">
+                                    &nbsp;本机构及下属机构
+                                </label>
+                                <label class="self-label">
+                                    <input type="radio" ng-model="settingmanage_ctrl.manage.isDesignatedOrg" ng-value="1" ng-change="settingmanage_ctrl.changeStruct()"  name="isDesignatedOrg">
+                                    &nbsp;指定机构
+                                </label>
+                            </div>
+
+                            <div class="form-group-self1" ng-if="settingmanage_ctrl.manage.isDesignatedOrg===1">
+                                <label class="self-label g-w-percent15 g-t-r"><span class="self-require g-c-red1">*</span>指定机构</label>
+
+                                <div class="self-input g-pos-r g-w-percent35">
+                                    <input type="text" ng-model="settingmanage_ctrl.manage.designatedOrgIds" required  name="designatedOrgIds" readonly />
+                                    <span ng-show="manageFrom.designatedOrgIds.$dirty && manageFrom.designatedOrgIds.$error.required" class="self-tips self-tips-no g-c-red1 g-fs4 g-w-percent50">指定机构不能为空</span>
+                                    <span ng-show="manageFrom.designatedOrgIds.$dirty && manageFrom.designatedOrgIds.$valid" class="self-tips self-tips-yes"></span>
+                                </div>
+                            </div>
+
+                            <div class="admin-layout-theme4"><span class="mini-icon admin-mini-icon4"></span>&nbsp;权限设定</div>
+
+                            <div class="form-group-self1">
+                                <label class="self-label" ng-init="settingmanage_ctrl.manage.isDesignatedPermit=0">
+                                    <input type="radio" ng-model="settingmanage_ctrl.manage.isDesignatedPermit" ng-value="0" ng-change="settingmanage_ctrl.clearSelectPower()" name="isDesignatedPermit">
+                                    &nbsp;全部权限
+                                </label>
+                                <label class="self-label">
+                                    <input type="radio" ng-model="settingmanage_ctrl.manage.isDesignatedPermit" ng-value="1" ng-change="settingmanage_ctrl.clearSelectPower()"  name="isDesignatedPermit">
+                                    &nbsp;指定权限
+                                </label>
+                            </div>
+
+                            <div class="form-group-self1" ng-if="settingmanage_ctrl.manage.isDesignatedPermit===1">
+                                <label class="self-label g-w-percent15 g-t-r"><span class="self-require g-c-red1">*</span>选择权限</label>
+
+                                <div class="self-input g-pos-r g-w-percent35">
+                                    <input type="text" ng-model="settingmanage_ctrl.manage.checkedFunctionIds" required  name="checkedFunctionIds" readonly />
+                                    <span ng-show="manageFrom.checkedFunctionIds.$dirty && manageFrom.checkedFunctionIds.$error.required" class="self-tips self-tips-no g-c-red1 g-fs4 g-w-percent50">指定权限不能为空</span>
+                                    <span ng-show="manageFrom.checkedFunctionIds.$dirty && manageFrom.checkedFunctionIds.$valid" class="self-tips self-tips-yes"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group-self1">
+                                <button type="submit" ng-show="settingmanage_ctrl.manage.id===''" ng-disabled="!(settingmanage_ctrl.manage.id==='' && manageFrom.fullName.$dirty && manageFrom.fullName.$valid && manageFrom.cellphone.$dirty && manageFrom.cellphone.$valid && manageFrom.username.$dirty && manageFrom.username.$valid && manageFrom.password.$dirty && manageFrom.password.$valid && (settingmanage_ctrl.manage.isDesignatedOrg===0 || (settingmanage_ctrl.manage.isDesignatedOrg===1 && manageFrom.designatedOrgIds.$valid )) && (settingmanage_ctrl.manage.isDesignatedPermit===0 || (settingmanage_ctrl.manage.isDesignatedPermit===1 && manageFrom.checkedFunctionIds.$valid)))"  class="btn btn-red g-br3 g-w-percent50">添加</button>
+
+                                <button type="submit" ng-show="settingmanage_ctrl.manage.id!==''" ng-disabled="!(settingmanage_ctrl.manage.id!=='' && manageFrom.fullName.$valid && manageFrom.cellphone.$valid && manageFrom.username.$valid && manageFrom.password.$valid && (settingmanage_ctrl.manage.isDesignatedOrg===0 || (settingmanage_ctrl.manage.isDesignatedOrg===1 && manageFrom.designatedOrgIds.$valid)) && (settingmanage_ctrl.manage.isDesignatedPermit===0 || (settingmanage_ctrl.manage.isDesignatedPermit===1 && manageFrom.checkedFunctionIds.$valid)))"  class="btn btn-red g-br3 g-w-percent50">编辑</button>
+                                <button type="button" class="btn btn-red g-br3 g-w-percent50 g-gap-mt2" id="admin_manage_reset" ng-click="settingmanage_ctrl.formReset(manageFrom,'manage')">重置</button>
+                            </div>
+                        </form>
+
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-info" data-dismiss="modal">关闭</button>
                 </div>
             </div>
-
-
-            <!--表格主体-->
-            <div class="panel-body">
-                <div class="admin-search-wrap">
-                    <div class="admin-search-item">
-                        <label>用户名：</label>
-                        <input type="text" id="search_nickName" />
-                    </div>
-                    <div class="admin-search-item">
-                        <label>电话号码：</label>
-                        <input type="text" maxlength="13" id="search_phone" />
-                    </div>
-                    <div class="admin-search-item">
-                                    <span id="admin_search_btn" class="btn btn-info btn-icon g-br2">
-                                        <i class="fa-search"></i>查询
-                                    </span>
-                                    <span id="admin_search_clear" class="btn btn-info btn-icon g-br2">
-                                        <i class="fa-spinner"></i>清空
-                                    </span>
-                    </div>
-                </div>
-
-
-
-                <table id="admin_list_wrap" class="table table-bordered table-striped table-hover admin-table">
-                    <!--分组样式-->
-                    <colgroup>
-                        <col class="g-w-percent9">
-                        <col class="g-w-percent5">
-                        <col class="g-w-percent7">
-                        <col class="g-w-percent7">
-                        <col class="g-w-percent5">
-                        <col class="g-w-percent4">
-                        <col class="g-w-percent4">
-                        <col class="g-w-percent9">
-                    </colgroup>
-
-                    <!--表头-->
-                    <thead>
-                    <tr>
-                        <th>用户名(昵称)</th>
-                        <th>手机号</th>
-                        <th>创建时间</th>
-                        <th>最后登录时间</th>
-                        <th>登录次数</th>
-                        <th>用户属性</th>
-                        <th>是否可用</th>
-                        <th class="no-sorting">操作</th>
-                    </tr>
-                    </thead>
-
-
-                    <!--表主体-->
-                    <tbody class="middle-align"></tbody>
-                </table>
-                <div class="admin-page-wrap">
-                    <div class="easyui-pagination g-w-percent50" id="admin_page_wrap" data-options="links:5,layout:['manual','first','prev','links','next','last'],displayMsg:'显示{from}&nbsp;到&nbsp;{to}&nbsp;共&nbsp;{total}条记录'"></div>
-                </div>
-            </div>
-
-
         </div>
     </div>
+
 </div>

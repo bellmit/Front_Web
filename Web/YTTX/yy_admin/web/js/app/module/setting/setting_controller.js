@@ -8,11 +8,6 @@ angular.module('app')
 
         /*模型--菜单列表*/
         this.listitem=[{
-            name:'设置',
-            power:self.powerlist.organization_info,
-            href:'setting',
-            active:'menuactive'
-        },{
             name:'完善信息',
             power:self.powerlist.organization_info,
             href:'setting.info',
@@ -33,16 +28,8 @@ angular.module('app')
             href:'setting.profit',
             active:''
         }];
+        
+        
 
-        /*模型--机构简略信息*/
-        this.struct={
-            organizationId:'',
-            organizationName:'',
-            adminId:'',
-            token:''
-        };
-
-        /*获取简略信息*/
-        settingService.getStruct(self.struct);
 
     }]);
