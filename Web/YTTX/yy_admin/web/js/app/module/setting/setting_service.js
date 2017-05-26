@@ -1,5 +1,5 @@
 angular.module('app')
-    .service('settingService',['toolUtil','toolDialog','loginService','powerService','dataTableItemActionService','$timeout','$sce',function(toolUtil,toolDialog,loginService,powerService,dataTableItemActionService,$timeout,$sce){
+    .service('settingService',['toolUtil','toolDialog','BASE_CONFIG','loginService','powerService','dataTableItemActionService','$timeout','$sce',function(toolUtil,toolDialog,BASE_CONFIG,loginService,powerService,dataTableItemActionService,$timeout,$sce){
 
         /*获取缓存数据*/
         var self=this,
@@ -675,7 +675,6 @@ angular.module('app')
                 table.list1_config.config.ajax.data['organizationId']=record.organizationId;
                 /*初始请求*/
                 table.list_table=self.$admin_list_wrap.DataTable(table.list1_config.config);
-                console.log('ccc');
                 /*调用按钮操作*/
                 dataTableItemActionService.initItemAction(table.tableitemaction);
             }else {
@@ -820,59 +819,39 @@ angular.module('app')
         };
 
 
-        /*机构服务--获取虚拟挂载点*/
-        this.getMemberRoot=function (record) {
-            if(cache===null){
-                toolUtil.loginTips({
-                    clear:true,
-                    reload:true
-                });
-                record['currentId']='';
-                record['currentName']='';
-                return false;
-            }
-            var islogin=loginService.isLogin(cache);
-            if(islogin){
-                var logininfo=cache.loginMap;
-                record['currentId']=logininfo.param.organizationId;
-                record['currentName']=logininfo.username;
-            }else{
-                /*退出系统*/
-                cache=null;
-                toolUtil.loginTips({
-                    clear:true,
-                    reload:true
-                });
-                record['currentId']='';
-                record['currentName']='';
-            }
-        };
         /*机构服务--获取导航*/
-        this.getMemberList=function (config) {
+        this.getStructList=function (config) {
             if(cache){
-                var param=$.extend(true,{},cache.loginMap.param);
-                param['isShowSelf']=0;
-                var layer,
+                var record=config.record;
+                if(record.organizationId===''){
+                    return false;
+                }
+                var param={
+                      isShowSelf:0,
+                      token:record.token,
+                      adminId:record.adminId
+                    },
+                    layer,
                     id,
                     $wrap;
 
+                /*判断是否为搜索模式*/
+                if(config.record.searchname!==''){
+                    self.initRecord(config.record);
+                    param['fullName']=record.searchname;
+                }
+
+                layer=record.layer;
+                id=record.currentId===''?record.organizationId:record.currentId;
+                param['organizationId']=id;
+
                 /*初始化加载*/
-                if(!config){
-                    layer=0;
+                if(record.current===null){
                     /*根目录则获取新配置参数*/
-                    id=param['organizationId'];
-                    $wrap=self.$admin_member_menu;
+                    $wrap=self.$admin_struct_menu;
                 }else{
                     /*非根目录则获取新请求参数*/
-                    layer=config.$reqstate.attr('data-layer');
-                    $wrap=config.$reqstate.next();
-                    id=config.$reqstate.attr('data-id');
-
-                    /*判断是否是合法的节点*/
-                    if(layer>=BASE_CONFIG.submenulimit){
-                        return false;
-                    }
-                    param['organizationId']=id;
+                    $wrap=record.current.next();
                 }
 
 
@@ -914,25 +893,28 @@ angular.module('app')
                                             if(len===0){
                                                 $wrap.html('');
                                                 /*清除显示下级菜单导航图标*/
-                                                config.$reqstate.attr({
-                                                    'data-isrequest':true
-                                                }).removeClass('sub-menu-title sub-menu-titleactive');
+                                                if(record.current){
+                                                    record.current.attr({
+                                                        'data-isrequest':true
+                                                    }).removeClass('sub-menu-title sub-menu-titleactive');
+                                                }
                                             }else{
                                                 /*数据集合，最多嵌套层次*/
-                                                str=self.resolveMemberList(list,BASE_CONFIG.submenulimit,{
+                                                str=self.resolveStructList(list,BASE_CONFIG.submenulimit,{
                                                     layer:layer,
                                                     id:id
                                                 });
                                                 if(str!==''){
                                                     $(str).appendTo($wrap.html(''));
+                                                }else{
+                                                    $wrap.html('');
                                                 }
-                                                if(layer!==0){
-                                                    config.$reqstate.attr({
+                                                if(layer!==0 && record.current){
+                                                    record.current.attr({
                                                         'data-isrequest':true
                                                     });
                                                 }
                                             }
-                                            self.queryUserList(id);
                                         }else{
                                             $wrap.html('');
                                         }
@@ -963,7 +945,7 @@ angular.module('app')
             }
         };
         /*机构服务--解析导航--开始解析*/
-        this.resolveMemberList=function (obj,limit,config) {
+        this.resolveStructList=function (obj,limit,config) {
             if(!obj||typeof obj==='undefined'){
                 return false;
             }
@@ -988,14 +970,14 @@ angular.module('app')
                     var curitem=menulist[i];
                     /*到达极限的前一项则不创建子菜单容器*/
                     if(limit>=1&&layer>=limit){
-                        str+=self.doItemMemberList(curitem,{
+                        str+=self.doItemStructList(curitem,{
                                 flag:false,
                                 limit:limit,
                                 layer:layer,
                                 parentid:config.id
                             })+'</li>';
                     }else{
-                        str+=self.doItemMemberList(curitem,{
+                        str+=self.doItemStructList(curitem,{
                                 flag:true,
                                 limit:limit,
                                 layer:layer,
@@ -1009,7 +991,7 @@ angular.module('app')
             }
         };
         /*机构服务--解析导航--公共解析*/
-        this.doItemMemberList=function (obj,config) {
+        this.doItemStructList=function (obj,config) {
             var curitem=obj,
                 id=curitem["id"],
                 label=curitem["fullName"],
@@ -1019,14 +1001,14 @@ angular.module('app')
                 parentid=config.parentid;
 
             if(flag){
-                str='<li><a data-isrequest="false" data-parentid="'+parentid+'" data-layer="'+layer+'" data-id="'+id+'" class="sub-menu-title" href="#" title="">'+label+'</a>';
+                str='<li><a data-isrequest="false" data-parentid="'+parentid+'" data-layer="'+layer+'" data-id="'+id+'" class="sub-menu-title" href="#" title=""><label class="sub-menu-checkbox" data-id="'+id+'"></label>'+label+'</a>';
             }else{
-                str='<li><a data-parentid="'+parentid+'" data-layer="'+layer+'" data-id="'+id+'" href="#" title="">'+label+'</a></li>';
+                str='<li><a data-parentid="'+parentid+'" data-layer="'+layer+'" data-id="'+id+'" href="#" title=""><label class="sub-menu-checkbox" data-id="'+id+'"></label>'+label+'</a></li>';
             }
             return str;
         };
         /*机构服务--显示隐藏机构*/
-        this.toggleMemberList=function (e,config) {
+        this.toggleStructList=function (e,config) {
             /*阻止冒泡和默认行为*/
             e.preventDefault();
             e.stopPropagation();
@@ -1037,126 +1019,129 @@ angular.module('app')
             if(node==='ul'||node==='li'){
                 return false;
             }
-            var $this=$(target),
-                haschild,
-                $child,
-                isrequest=false,
+            if(node==='a'){
+                var $this=$(target),
+                    haschild=$this.hasClass('sub-menu-title'),
+                    $child,
+                    isrequest=false,
+                    temp_layer,
+                    temp_id,
+                    temp_label;
+
+
+                temp_layer=$this.attr('data-layer');
                 temp_id=$this.attr('data-id');
+                temp_label=$this.html();
 
 
-            /*查询子集*/
-            haschild=$this.hasClass('sub-menu-title');
-            if(haschild){
-                $child=$this.next();
-                /*是否已经加载过数据*/
-                isrequest=$this.attr('data-isrequest');
-                if(isrequest==='false'){
-                    /*重新加载*/
-                    self.getMemberList({
-                        $reqstate:$this
-                    });
-                    /*切换显示隐藏*/
-                    if($child.hasClass('g-d-showi')){
-                        $child.removeClass('g-d-showi');
-                        $this.removeClass('sub-menu-titleactive');
-                    }else{
-                        $child.addClass('g-d-showi');
-                        $this.addClass('sub-menu-titleactive');
-                    }
+                /*模型缓存*/
+                var record=config.record;
+
+                /*变更操作记录模型--激活高亮*/
+                if(record.current===null){
+                    record.current=$this;
                 }else{
-                    /*切换显示隐藏*/
+                    record.prev=record.current;
+                    record.current=$this;
+                    record.prev.removeClass('sub-menuactive');
+                }
+                record.current.addClass('sub-menuactive');
+
+                /*变更模型*/
+                record.layer=temp_layer;
+                record.currentId=temp_id;
+                record.currentName=temp_label;
+
+                /*查询子集*/
+                if(haschild){
+                    $child=$this.next();
                     if($child.hasClass('g-d-showi')){
+                        /*隐藏*/
                         $child.removeClass('g-d-showi');
                         $this.removeClass('sub-menu-titleactive');
                     }else{
+                        /*显示*/
                         $child.addClass('g-d-showi');
                         $this.addClass('sub-menu-titleactive');
-                        self.queryUserList(temp_id);
+                        isrequest=$this.attr('data-isrequest');
+                        if(isrequest==='false'){
+                            /*重新加载*/
+                            /*获取非根目录数据*/
+                            self.getStructList(config);
+                        }
                     }
                 }
-            }else{
-                self.queryUserList(temp_id);
             }
         };
-        /*机构服务--查询用户*/
-        this.queryUserList=function (id) {
-            if(cache===null){
-                return false;
-            }else if(typeof id==='undefined'){
+        /*机构服务--初始化机构查询*/
+        this.initStructList=function (e,config) {
+            /*阻止冒泡和默认行为*/
+            e.preventDefault();
+            e.stopPropagation();
 
-                return false;
+            /*过滤对象*/
+            var target=e.target,
+                node=target.nodeName.toLowerCase();
+            if(node==='a'){
+                /*重置记录*/
+                self.initRecord(config.record);
+                /*初始化加载数据*/
+                self.getStructList(config);
+            }else if(node==='label'){
+                self.structCheck({
+                    target:target,
+                    type:'all',
+                    record:config.record
+                });
             }
+        };
+        /*机构服务--初始化操作参数(搜索模式或者重置操作参数模式)*/
+        this.initRecord=function (record) {
+            /*是否重置数据*/
+            record.layer=0;
+            record.currentId='';
+            record.currentName='';
+            if(record.prev!==null){
+                record.prev.removeClass('sub-menuactive');
+                record.current.removeClass('sub-menuactive');
+                record.prev=null;
+            }else if(record.current!==null){
+                record.current.removeClass('sub-menuactive');
+            }
+            record.current=null;
+        };
+        /*机构服务--选中机构服务*/
+        this.structCheck=function (config) {
+            var target=config.target,
+                $label=$(target),
+                type=config.type,
+                record=config.record,
+                ischeck=$label.hasClass('sub-menu-checkboxactive');
 
-            var  param=$.extend(true,{},cache.loginMap.param);
-            /*判断参数*/
-            param['organizationId']=id;
-
-
-            toolUtil
-                .requestHttp({
-                    url:'/organization/shops',
-                    method:'post',
-                    set:true,
-                    data:param
-                })
-                .then(function(resp){
-                        var data=resp.data,
-                            status=parseInt(resp.status,10);
-
-                        if(status===200){
-                            var code=parseInt(data.code,10),
-                                message=data.message;
-                            if(code!==0){
-                                if(typeof message !=='undefined'&&message!==''){
-                                    console.log(message);
-                                }else{
-                                    console.log('请求数据失败');
-                                }
-
-                                if(code===999){
-                                    /*退出系统*/
-                                    cache=null;
-                                    toolUtil.loginTips({
-                                        clear:true,
-                                        reload:true
-                                    });
-                                }
-                                self.$admin_user_wrap.html('');
-                                return false;
-                            }else{
-                                /*加载数据*/
-                                var result=data.result;
-                                if(typeof result!=='undefined'){
-                                    var list=result.list,
-                                        str='';
-                                    if(angular.isObject(list)){
-                                        /*修改：更新模型*/
-                                        for(var i in list){
-                                            str+='<li data-id="'+list[i]["id"]+'">'+list[i]["fullName"]+'</li>';
-                                        }
-                                        if(str!==''){
-                                            $(str).appendTo(self.$admin_user_wrap.html(''));
-                                        }else {
-                                            self.$admin_user_wrap.html('');
-                                        }
-                                    }else{
-                                        self.$admin_user_wrap.html('');
-                                    }
-                                }else{
-                                    self.$admin_user_wrap.html('');
-                                }
-                            }
-                        }
-                    },
-                    function(resp){
-                        var message=resp.data.message;
-                        self.$admin_user_wrap.html('');
-                        if(typeof message !=='undefined'&&message!==''){
-                            console.log(message);
-                        }else{
-                            console.log('请求用户失败');
-                        }
+            /*全选*/
+            if(ischeck){
+                /*取消全选*/
+                $label.removeClass('sub-menu-checkboxactive');
+                if(type==='all'){
+                    /*全选*/
+                    self.$admin_struct_menu.find('label').each(function () {
+                        $(this).removeClass('sub-menu-checkboxactive');
                     });
+                }else if(type==='item'){
+                    /*to do*/
+                }
+            }else{
+                /*全选*/
+                $label.addClass('sub-menu-checkboxactive');
+                if(type==='all'){
+                    /*全选*/
+                    self.$admin_struct_menu.find('label').each(function () {
+                        $(this).addClass('sub-menu-checkboxactive');
+                    });
+                }else if(type==='item'){
+                    /*to do*/
+                }
+            }
         };
 
 

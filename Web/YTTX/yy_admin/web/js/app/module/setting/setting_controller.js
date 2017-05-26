@@ -42,6 +42,7 @@ angular.module('app')
             jq_dom_power={
                 $allpower:$('#admin_setting_allpower')
             };
+        jq_dom['$allstruct']=jq_dom.$admin_struct_menu.prev().find('label');
 
         /*切换路由时更新dom缓存*/
         settingService.initJQDom(jq_dom);
@@ -63,9 +64,12 @@ angular.module('app')
             organizationName:''/*操作名称*/,
             token:''/*凭证*/,
             adminId:'',
+            prev:null/*上一次操作记录*/,
+            current:null/*当前操作记录*/,
             layer:0,
             currentId:'',
-            currentName:''
+            currentName:'',
+            managestruct:{}/*子管理--选中的机构信息*/
         };
 
 
@@ -330,16 +334,23 @@ angular.module('app')
         };
 
 
-
+        /*机构服务--初始化加载机构*/
+        this.initStructList=function (e) {
+            settingService.initStructList(e,{
+                record:self.record,
+                manage:self.manage
+            });
+        };
         /*机构服务--加载机构角色*/
         this.getStructList=function () {
-            settingService.getStructList();
+            settingService.getStructList({
+                record:self.record
+            });
         };
         /*机构服务--显示隐藏*/
         this.toggleStructList=function (e) {
             settingService.toggleStructList(e,{
-                record:self.record,
-                manage:self.manage
+                record:self.record
             });
         };
 
@@ -374,9 +385,13 @@ angular.module('app')
 
         /*搜索服务--搜索过滤*/
         this.searchAction=function () {
-            structService.getMenuList({
-                record:self.record,
-                table:self.table
+            /*清除全选*/
+            jq_dom.$allstruct.remove();
+            /*重置记录*/
+            settingService.initRecord(self.record);
+            /*初始化加载数据*/
+            settingService.getStructList({
+                record:self.record
             });
         };
         /*搜索服务--清空过滤条件*/

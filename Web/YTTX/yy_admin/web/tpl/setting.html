@@ -25,10 +25,10 @@
                                 <!--左侧操作区域-->
                                 <div class="admin-layout-theme4"><span class="mini-icon admin-mini-icon2"></span>&nbsp;机构信息</div>
                                 <!--子菜单组件-->
-                                <ul class="sub-menu-wrap sub-menu-checkbox">
+                                <ul class="sub-menu-wrap g-gap-pb4">
                                     <li>
-                                        <a data-parentid="" data-id="setting_ctrl.record.organizationId" data-layer="0" class="sub-menu-title sub-menu-titleactive"  ng-click="setting_ctrl.getStructList()"><label><input type="checkbox" data-type="all" name="struct_menu" /></label>{{setting_ctrl.record.organizationName}}</a>
-                                        <ul class="sub-menu-wrap g-d-showi" ng-click="setting_ctrl.toggleStructList($event)" id="admin_struct_menu" ng-init="setting_ctrl.getStructList()"></ul>
+                                        <a data-parentid="" data-id="{{setting_ctrl.record.organizationId}}" data-layer="0" class="sub-menu-title sub-menu-titleactive" ng-click="setting_ctrl.initStructList($event)"><label class="sub-menu-checkbox" data-id="{{setting_ctrl.record.organizationId}}">全选:</label>{{setting_ctrl.record.organizationName}}</a>
+                                        <ul class="g-d-showi" ng-click="setting_ctrl.toggleStructList($event)" id="admin_struct_menu" ng-init="setting_ctrl.getStructList()"></ul>
                                     </li>
                                 </ul>
                             </div>
