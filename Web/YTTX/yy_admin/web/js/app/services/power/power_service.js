@@ -337,7 +337,7 @@ angular.module('power.service',[])
 
 			check=$selectall.is(':checked');
 			index=$selectall.attr('data-index');
-			$operate=self.$admin_struct_allpower.find('td').eq(index).find('input');
+			$operate=self.$allpower.find('td').eq(index).find('input');
 
 			if(check){
 				$operate.each(function () {
@@ -420,7 +420,7 @@ angular.module('power.service',[])
 
 		/*权限服务--获取选中选择权限*/
 		this.getSelectPower=function (dom) {
-			var $input=typeof dom!=='undefined'?$(dom):self.$admin_struct_allpower.find('input:checked');
+			var $input=typeof dom!=='undefined'?$(dom):self.$allpower.find('input:checked');
 
 			/*标签*/
 			var prid,
@@ -442,9 +442,9 @@ angular.module('power.service',[])
 			if(typeof dom!=='undefined'){
 				$input=$(dom);
 			}else{
-				$input=self.$admin_struct_allpower.find('input:checked');
+				$input=self.$allpower.find('input:checked');
 			}
-			$head=self.$admin_struct_allpower.prev('thead').find('input:checked');
+			$head=self.$allpower.prev('thead').find('input:checked');
 
 			$input.each(function () {
 				$(this).prop({

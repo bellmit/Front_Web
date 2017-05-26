@@ -263,7 +263,7 @@ angular.module('app')
                             function ($ocLazyLoad) {
                                 return $ocLazyLoad.load([
                                     'js/app/module/setting/setting_service.js',
-                                    'js/app/module/setting/info/setting_info_controller.js']);
+                                    'js/app/module/setting/setting_controller.js']);
                             }]
                     }
                 })
@@ -277,7 +277,7 @@ angular.module('app')
                             function ($ocLazyLoad) {
                                 return $ocLazyLoad.load([
                                     'js/app/module/setting/setting_service.js',
-                                    'js/app/module/setting/pwd/setting_pwd_controller.js']);
+                                    'js/app/module/setting/setting_controller.js']);
                             }]
                     }
                 })
@@ -291,8 +291,7 @@ angular.module('app')
                             function ($ocLazyLoad) {
                                 return $ocLazyLoad.load([
                                     'js/app/module/setting/setting_service.js',
-                                    'js/app/module/setting/manage/setting_manage_service.js',
-                                    'js/app/module/setting/manage/setting_manage_controller.js']);
+                                    'js/app/module/setting/setting_controller.js']);
                             }]
                     }
                 })

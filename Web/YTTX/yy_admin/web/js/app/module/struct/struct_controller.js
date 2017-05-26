@@ -27,7 +27,7 @@ angular.module('app')
         jq_dom['$admin_submenu_wrap']=jq_dom.$admin_struct_submenu.prev();
 
         var jq_dom_power={
-            $admin_struct_allpower:$('#admin_struct_allpower')
+            $allpower:$('#admin_struct_allpower')
         };
         /*切换路由时更新dom缓存*/
         structService.initJQDom(jq_dom);
