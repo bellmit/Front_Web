@@ -386,7 +386,9 @@ angular.module('app')
         /*搜索服务--搜索过滤*/
         this.searchAction=function () {
             /*清除全选*/
-            jq_dom.$allstruct.remove();
+            jq_dom.$allstruct.removeClass('sub-menu-checkboxactive');
+            /*清除机构模型*/
+            self.record.managestruct={};
             /*重置记录*/
             settingService.initRecord(self.record);
             /*初始化加载数据*/
