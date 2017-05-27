@@ -283,13 +283,16 @@ angular.module('app')
                 })
                 //设置子路由--设置子管理
                 .state('setting.manage', {
-                    url: '/sub_manage',
+                    url: '/manage',
                     templateUrl:'tpl/setting/setting_manage.html',
                     resolve: {
                         /*延迟加载，依赖相关组件*/
                         deps: ['$ocLazyLoad',
                             function ($ocLazyLoad) {
-                                return $ocLazyLoad.load([
+                                return $ocLazyLoad.load([/*'js/plugins/datatables/dataTables.bootstrap.css',
+                                    'js/plugins/datatables/js/jquery.dataTables.js',
+                                    'js/plugins/pagination/pagination.js',
+                                    'js/app/services/datatable/datatable_itemaction_service.js',*/
                                     'js/app/module/setting/setting_service.js',
                                     'js/app/module/setting/setting_controller.js']);
                             }]

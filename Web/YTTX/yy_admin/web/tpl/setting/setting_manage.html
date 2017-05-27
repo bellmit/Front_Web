@@ -6,7 +6,6 @@
     <button type="button" class="btn btn-default g-c-blue3" ng-disabled="setting_ctrl.record.organizationId===''" ng-show="::setting_ctrl.powerlist.child_add" ng-click="setting_ctrl.actionManage({display:'show',area:'manage',type:'add'})"><i class="btn-action admin-btn-action7"></i>&nbsp;添加子管理</button>
 </h1>
 
-
 <!--查询管理-->
 <div class="admin-action-item">
 
@@ -18,7 +17,7 @@
 
 
 <!--表格-->
-<table id="admin_list_wrap" class="table table-bordered table-striped table-hover admin-layout-table">
+<table ng-init="setting_ctrl.getColumnData()" id="admin_list_wrap" class="table table-bordered table-striped table-hover admin-layout-table">
     <!--分组样式-->
     <colgroup>
         <col class="g-w-percent15">
@@ -40,7 +39,6 @@
     <!--表主体-->
     <tbody id="admin_batchlist_wrap" class="middle-align"></tbody>
 </table>
-
 
 <!--分页-->
 <div class="admin-page-wrap">

@@ -131,7 +131,7 @@ angular.module('app')
                     url:/*'/organization/goodsorder/details'*/'json/test.json',
                     method:'post',
                     set:true,
-                    debug:true,
+                    debug:true,/*测试开关*/
                     data:param
                 })
                 .then(function(resp){

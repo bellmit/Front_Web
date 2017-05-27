@@ -217,7 +217,7 @@ angular.module('app')
                                 /*加载数据*/
                                 var result=data.result;
                                 if(typeof result!=='undefined'){
-                                    var list=result.child;
+                                    var list=result.sysuser;
                                     if(list){
                                         /*更新模型*/
                                         for(var i in list){
@@ -225,7 +225,7 @@ angular.module('app')
                                                 case 'id':
                                                     manage[i]=list[i];
                                                     break;
-                                                case 'fullName':
+                                                case 'fullname':
                                                     manage[i]=list[i];
                                                     break;
                                                 case 'cellphone':
@@ -360,6 +360,8 @@ angular.module('app')
                     });
         };
 
+
+
         /*表单类服务--执行延时任务序列*/
         this.addFormDelay=function (config) {
             /*映射对象*/
@@ -392,9 +394,16 @@ angular.module('app')
         };
         /*表单类服务--重置表单*/
         this.formReset=function (config,type) {
-            if(type ==='struct'){
+            if(type==='struct'){
                 /*重置表单模型,如果是2参数则为特殊重置，1个参数为通用重置*/
                 self.clearFormData(config[type],type);
+            }else if(type==='manage'){
+                /*重置表单模型,如果是2参数则为特殊重置，1个参数为通用重置*/
+                self.clearFormData(config[type],type);
+                /*清除权限*/
+                self.clearSelectPower(config[type]);
+                /*清除机构*/
+                self.clearSelectStruct(config);
             }
             /*重置验证提示信息*/
             self.clearFormValid(config.forms);
@@ -450,7 +459,7 @@ angular.module('app')
                     req_config['url']='/sysuser/pwd/update';
                 }else if(type==='manage'){
                     /*公共配置*/
-                    param['fullName']=config[type]['fullName'];
+                    param['fullname']=config[type]['fullname'];
                     param['cellphone']=toolUtil.trims(config[type]['cellphone']);
                     param['username']=config[type]['username'];
                     param['password']=config[type]['password'];
@@ -482,6 +491,7 @@ angular.module('app')
                     /*判断是新增还是修改*/
                     if(config[type]['id']!==''){
                         action='edit';
+                        param['id']=config[type]['id'];
                         req_config['url']='/sysuser/child/update';
                     }else{
                         action='add';
@@ -529,13 +539,15 @@ angular.module('app')
                                             type:type
                                         });
                                         /*加载列表数据*/
-                                        //self.getColumnData(config.table,config.record);
+                                        self.getColumnData(config.table,config.record);
                                         /*弹出框隐藏*/
                                         self.toggleModal({
                                             display:'hide',
                                             area:type,
                                             delay:1000
                                         });
+                                    }else if(type==='pwd'){
+                                        /*to do*/
                                     }
                                     /*提示操作结果*/
                                     toolDialog.show({
@@ -581,6 +593,19 @@ angular.module('app')
                     (function () {
                         for(var i in mode){
                             mode[i]='';
+                        }
+                    })(mode);
+                }else if(type==='manage'){
+                    /*重置机构数据模型*/
+                    (function () {
+                        for(var i in mode){
+                            if(i==='type'){
+                                mode[i]='add';
+                            }else if(i==='isDesignatedOrg' || i==='isDesignatedPermit'){
+                                continue;
+                            }else{
+                                mode[i]='';
+                            }
                         }
                     })(mode);
                 }
@@ -653,11 +678,36 @@ angular.module('app')
                 model.checkedFunctionIds='';
             }
         };
-        /*表单类服务--权限服务--取消所选权限*/
+        /*表单类服务--权限服务--取消(清空)所选权限*/
         this.clearSelectPower=function (model) {
             model.checkedFunctionIds='';
             powerService.clearSelectPower();
         };
+        /*表单服务--机构服务--确定所选机构*/
+        this.getSelectStruct=function (model) {
+            if(model){
+                var source=model.record.managestruct,
+                    res=[];
+                for(var i in source){
+                    res.push(source[i]);
+                }
+                if(res.length!==0){
+                    model.manage.designatedOrgIds=res.join();
+                }else{
+                    model.manage.designatedOrgIds='';
+                }
+            }
+        };
+        /*表单类服务--机构服务--取消(清空)所选机构*/
+        this.clearSelectStruct=function (model) {
+            model.manage.designatedOrgIds='';
+            self.structCheck({
+                type:'all',
+                record:model.record,
+                target:self.$allstruct
+            },'no');
+        };
+
 
 
         /*数据服务--请求数据--获取表格数据*/
@@ -668,19 +718,35 @@ angular.module('app')
                 return false;
             }
             /*参数赋值*/
-            table.list1_config.config.ajax.data=$.extend(true,{},table.list1_config.config.ajax.data);
+            table.list1_config.config.ajax.data['adminId']=record.adminId;
+            table.list1_config.config.ajax.data['token']=record.token;
+            /*初始请求*/
+            if(table.list_table!==null){
+                table.list_table.destroy();
+            }
+            table.list_table=/*$('#admin_list_wrap')*/self.$admin_list_wrap.DataTable(table.list1_config.config);
+            /*调用按钮操作*/
+            dataTableItemActionService.initItemAction(table.tableitemaction);
+        };
+        /*数据服务--请求数据--获取表格数据(备份)*/
+        /*this.getColumnData=function (table,record){
+            if(cache===null){
+                return false;
+            }else if(!table && !record){
+                return false;
+            }
+            /!*参数赋值*!/
             if(table.list_table===null){
                 table.list1_config.config.ajax.data['adminId']=record.adminId;
                 table.list1_config.config.ajax.data['token']=record.token;
-                table.list1_config.config.ajax.data['organizationId']=record.organizationId;
-                /*初始请求*/
+                /!*初始请求*!/
                 table.list_table=self.$admin_list_wrap.DataTable(table.list1_config.config);
-                /*调用按钮操作*/
+                /!*调用按钮操作*!/
                 dataTableItemActionService.initItemAction(table.tableitemaction);
             }else {
                 table.list_table.ajax.config(table.list1_config.config.ajax).load();
             }
-        };
+        };*/
         /*数据服务--过滤表格数据*/
         this.filterDataTable=function (list_table,manage) {
             if(list_table===null){
@@ -711,7 +777,7 @@ angular.module('app')
                     type:model.type
                 });
                 model[model.type].id=id;
-                self.queryManageInfo(config);
+                self.queryManageInfo(model);
             }else if(action==='delete'){
                 /*清算订单*/
                 self.deleteManage(model,{
@@ -750,6 +816,7 @@ angular.module('app')
                 /*适配参数*/
                 var param={};
                 param['adminId']=record.adminId;
+                param['token']=record.token;
                 if(type==='batch'){
                     /*to do*/
                 }else if(type==='base'){
@@ -765,7 +832,6 @@ angular.module('app')
                         data:param
                     })
                     .then(function(resp){
-
                             var data=resp.data,
                                 status=parseInt(resp.status,10);
 
@@ -789,11 +855,12 @@ angular.module('app')
 
                                     if(code===999){
                                         /*退出系统*/
-                                        cache=null;
+                                        console.log('ni mei');
+                                        /*cache=null;
                                         toolUtil.loginTips({
                                             clear:true,
                                             reload:true
-                                        });
+                                        });*/
                                     }
                                 }else{
                                     /*提示信息*/
@@ -818,6 +885,7 @@ angular.module('app')
 
         };
 
+        
 
         /*机构服务--获取导航*/
         this.getStructList=function (config) {
@@ -1020,6 +1088,7 @@ angular.module('app')
                 return false;
             }
             if(node==='a'){
+                /*加载子集*/
                 var $this=$(target),
                     haschild=$this.hasClass('sub-menu-title'),
                     $child,
@@ -1071,6 +1140,12 @@ angular.module('app')
                         }
                     }
                 }
+            }else if(node==='label'){
+                self.structCheck({
+                    type:'item',
+                    target:target,
+                    record:config.record
+                });
             }
         };
         /*机构服务--初始化机构查询*/
@@ -1111,35 +1186,63 @@ angular.module('app')
             record.current=null;
         };
         /*机构服务--选中机构服务*/
-        this.structCheck=function (config) {
-            var target=config.target,
-                $label=$(target),
+        this.structCheck=function (config,flag) {
+            var target,
+                $label,
                 type=config.type,
                 record=config.record,
-                ischeck=$label.hasClass('sub-menu-checkboxactive');
+                ischeck,
+                id;
 
-            /*全选*/
+            if(flag){
+                $label=config.target;
+                if(flag==='yes'){
+                    ischeck=false;
+                }else if(flag==='no'){
+                    ischeck=true;
+                }
+            }else{
+                target=config.target;
+                $label=$(target);
+                ischeck=$label.hasClass('sub-menu-checkboxactive');
+            }
+
             if(ischeck){
-                /*取消全选*/
+                /*取消选中*/
                 $label.removeClass('sub-menu-checkboxactive');
                 if(type==='all'){
-                    /*全选*/
+                    /*取消全选*/
                     self.$admin_struct_menu.find('label').each(function () {
                         $(this).removeClass('sub-menu-checkboxactive');
                     });
+                    /*清除模型*/
+                    record['managestruct']={};
                 }else if(type==='item'){
-                    /*to do*/
+                    /*取消单个*/
+                    id=$label.attr('data-id');
+                    /*变更模型*/
+                    delete record['managestruct'][id];
                 }
             }else{
-                /*全选*/
+                /*选中*/
                 $label.addClass('sub-menu-checkboxactive');
                 if(type==='all'){
                     /*全选*/
                     self.$admin_struct_menu.find('label').each(function () {
-                        $(this).addClass('sub-menu-checkboxactive');
+                        var $this=$(this);
+                        $this.addClass('sub-menu-checkboxactive');
+                        id=$this.attr('data-id');
+                        /*变更模型*/
+                        record['managestruct'][id]=id;
                     });
+                    /*添加全选本身值*/
+                    id=$label.attr('data-id');
+                    record['managestruct'][id]=id;
                 }else if(type==='item'){
-                    /*to do*/
+                    /*选中单个*/
+                    id=$label.attr('data-id');
+                    /*变更模型*/
+                    record['managestruct'][id]=id;
                 }
             }
         };

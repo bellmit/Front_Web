@@ -76,9 +76,9 @@
                                 <label class="self-label g-w-percent15 g-t-r"><span class="self-require g-c-red1">*</span>子管理全称</label>
 
                                 <div class="self-input g-pos-r g-w-percent35">
-                                    <input type="text" name="fullName" placeholder="请输入子管理全称" required ng-model="setting_ctrl.manage.fullName"  />
-                                    <span  ng-show="manageFrom.fullName.$dirty && manageFrom.fullName.$error.required" class="self-tips self-tips-no g-c-red1 g-fs4 g-w-percent50">子管理全称不能为空</span>
-                                    <span ng-show="manageFrom.fullName.$dirty && manageFrom.fullName.$valid" class="self-tips self-tips-yes"></span>
+                                    <input type="text" name="fullname" placeholder="请输入子管理全称" required ng-model="setting_ctrl.manage.fullname"  />
+                                    <span  ng-show="manageFrom.fullname.$dirty && manageFrom.fullname.$error.required" class="self-tips self-tips-no g-c-red1 g-fs4 g-w-percent50">子管理全称不能为空</span>
+                                    <span ng-show="manageFrom.fullname.$dirty && manageFrom.fullname.$valid" class="self-tips self-tips-yes"></span>
                                 </div>
                             </div>
 
@@ -137,11 +137,11 @@
 
                             <div class="form-group-self1">
                                 <label class="self-label" ng-init="setting_ctrl.manage.isDesignatedOrg=0">
-                                    <input type="radio" ng-model="setting_ctrl.manage.isDesignatedOrg" ng-value="0" ng-change="setting_ctrl.changeStruct()" name="isDesignatedOrg">
+                                    <input type="radio" ng-model="setting_ctrl.manage.isDesignatedOrg" ng-value="0" ng-change="setting_ctrl.clearSelectStruct()" name="isDesignatedOrg">
                                     &nbsp;本机构及下属机构
                                 </label>
                                 <label class="self-label">
-                                    <input type="radio" ng-model="setting_ctrl.manage.isDesignatedOrg" ng-value="1" ng-change="setting_ctrl.changeStruct()"  name="isDesignatedOrg">
+                                    <input type="radio" ng-model="setting_ctrl.manage.isDesignatedOrg" ng-value="1" ng-change="setting_ctrl.clearSelectStruct()"  name="isDesignatedOrg">
                                     &nbsp;指定机构
                                 </label>
                             </div>
@@ -180,9 +180,9 @@
                             </div>
 
                             <div class="form-group-self1">
-                                <button type="submit" ng-show="setting_ctrl.manage.id===''" ng-disabled="!(setting_ctrl.manage.id==='' && manageFrom.fullName.$dirty && manageFrom.fullName.$valid && manageFrom.cellphone.$dirty && manageFrom.cellphone.$valid && manageFrom.username.$dirty && manageFrom.username.$valid && manageFrom.password.$dirty && manageFrom.password.$valid && (setting_ctrl.manage.isDesignatedOrg===0 || (setting_ctrl.manage.isDesignatedOrg===1 && manageFrom.designatedOrgIds.$valid )) && (setting_ctrl.manage.isDesignatedPermit===0 || (setting_ctrl.manage.isDesignatedPermit===1 && manageFrom.checkedFunctionIds.$valid)))"  class="btn btn-red g-br3 g-w-percent50">添加</button>
+                                <button type="submit" ng-show="setting_ctrl.manage.id===''" ng-disabled="!(setting_ctrl.manage.id==='' && manageFrom.fullname.$dirty && manageFrom.fullname.$valid && manageFrom.cellphone.$dirty && manageFrom.cellphone.$valid && manageFrom.username.$dirty && manageFrom.username.$valid && manageFrom.password.$dirty && manageFrom.password.$valid && (setting_ctrl.manage.isDesignatedOrg===0 || (setting_ctrl.manage.isDesignatedOrg===1 && manageFrom.designatedOrgIds.$valid )) && (setting_ctrl.manage.isDesignatedPermit===0 || (setting_ctrl.manage.isDesignatedPermit===1 && manageFrom.checkedFunctionIds.$valid)))"  class="btn btn-red g-br3 g-w-percent50">添加</button>
 
-                                <button type="submit" ng-show="setting_ctrl.manage.id!==''" ng-disabled="!(setting_ctrl.manage.id!=='' && manageFrom.fullName.$valid && manageFrom.cellphone.$valid && manageFrom.username.$valid && (setting_ctrl.manage.password==='' || (setting_ctrl.manage.password!=='' && manageFrom.password.$valid)) && (setting_ctrl.manage.isDesignatedOrg===0 || (setting_ctrl.manage.isDesignatedOrg===1 && manageFrom.designatedOrgIds.$valid)) && (setting_ctrl.manage.isDesignatedPermit===0 || (setting_ctrl.manage.isDesignatedPermit===1 && manageFrom.checkedFunctionIds.$valid)))"  class="btn btn-red g-br3 g-w-percent50">编辑</button>
+                                <button type="submit" ng-show="setting_ctrl.manage.id!==''" ng-disabled="!(setting_ctrl.manage.id!=='' && manageFrom.fullname.$valid && manageFrom.cellphone.$valid && manageFrom.username.$valid && (setting_ctrl.manage.password==='' || (setting_ctrl.manage.password!=='' && manageFrom.password.$valid)) && (setting_ctrl.manage.isDesignatedOrg===0 || (setting_ctrl.manage.isDesignatedOrg===1 && manageFrom.designatedOrgIds.$valid)) && (setting_ctrl.manage.isDesignatedPermit===0 || (setting_ctrl.manage.isDesignatedPermit===1 && manageFrom.checkedFunctionIds.$valid)))"  class="btn btn-red g-br3 g-w-percent50">编辑</button>
                                 <button type="button" class="btn btn-red g-br3 g-w-percent50 g-gap-mt2" id="admin_manage_reset" ng-click="setting_ctrl.formReset(manageFrom,'manage')">重置</button>
                             </div>
                         </form>

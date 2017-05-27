@@ -32,9 +32,6 @@ angular.module('app')
 
         /*jquery dom缓存:主要是切换路由时，创建的dom缓存引用与现有的dom引用不一致，需要加载视图更新现有dom引用*/
         var jq_dom={
-                $admin_page_wrap:$('#admin_page_wrap'),
-                $admin_list_wrap:$('#admin_list_wrap'),
-                $admin_batchlist_wrap:$('#admin_batchlist_wrap'),
                 $admin_manage_reset:$('#admin_manage_reset'),
                 $setting_manage_dialog:$('#setting_manage_dialog'),
                 $admin_struct_menu:$('#admin_struct_menu')
@@ -73,6 +70,14 @@ angular.module('app')
         };
 
 
+        /*模型--密码修改*/
+        this.pwd={
+            password:''/*旧密码*/,
+            newPassword:''/*新密码*/,
+            confirm_newPassword:''/*确认密码*/
+        };
+
+
         /*模型--机构信息*/
         this.struct={
             linkman:''/*负责人*/,
@@ -89,7 +94,7 @@ angular.module('app')
         this.manage={
             type:'add'/*表单类型：新增，编辑；默认为新增*/,
             id:''/*子管理ID，编辑时相关参数*/,
-            fullName:''/*子管理全称*/,
+            fullname:''/*子管理全称*/,
             cellphone:''/*手机号码*/,
             username:''/*设置登录名*/,
             password:''/*设置登录密码*/,
@@ -101,15 +106,309 @@ angular.module('app')
             filter:''/*管理列表过滤*/
         };
 
-
         /*模型--表格缓存*/
-        this.table={
+        this.table={};
+        /*模型--表格缓存(备份)*/
+        /*this.table={
             list1_page:{
                 page:1,
-                pageSize:20,
+                pageSize:1,
                 total:0
             },
             list1_config:{
+                config:{
+                    processing:true,/!*大消耗操作时是否显示处理状态*!/
+                    deferRender:true,/!*是否延迟加载数据*!/
+                    autoWidth:true,/!*是否*!/
+                    paging:false,
+                    ajax:{
+                        url:toolUtil.adaptReqUrl('/sysuser/child/list'),
+                        dataType:'JSON',
+                        method:'post',
+                        dataSrc:function ( json ) {
+                            var code=parseInt(json.code,10),
+                                message=json.message;
+
+                            if(code!==0){
+                                if(typeof message !=='undefined' && message!==''){
+                                    console.log(message);
+                                }else{
+                                    console.log('获取子管理失败');
+                                }
+                                if(code===999){
+                                    /!*退出系统*!/
+                                    toolUtil.loginTips({
+                                        clear:true,
+                                        reload:true
+                                    });
+                                }
+                                return [];
+                            }
+                            var result=json.result;
+                            if(typeof result==='undefined'){
+                                /!*重置分页*!/
+                                self.table.list1_page.total=0;
+                                self.table.list1_page.page=1;
+                                $('#admin_page_wrap')/!*jq_dom.$admin_page_wrap*!/.pagination({
+                                    pageNumber:self.table.list1_page.page,
+                                    pageSize:self.table.list1_page.pageSize,
+                                    total:self.table.list1_page.total
+                                });
+                                return [];
+                            }
+
+                            if(result){
+                                /!*设置分页*!/
+                                self.table.list1_page.total=result.count;
+                                /!*分页调用*!/
+                                $('#admin_page_wrap')/!*jq_dom.$admin_page_wrap*!/.pagination({
+                                    pageNumber:self.table.list1_page.page,
+                                    pageSize:self.table.list1_page.pageSize,
+                                    total:self.table.list1_page.total,
+                                    onSelectPage:function(pageNumber,pageSize){
+                                        /!*再次查询*!/
+                                        var temp_param=self.table.list1_config.config.ajax.data;
+                                        self.table.list1_page.page=pageNumber;
+                                        self.table.list1_page.pageSize=pageSize;
+                                        temp_param['page']=self.table.list1_page.page;
+                                        temp_param['pageSize']=self.table.list1_page.pageSize;
+                                        self.table.list1_config.config.ajax.data=temp_param;
+                                        settingService.getColumnData(self.table,self.record);
+                                    }
+                                });
+
+                                var list=result.list;
+                                if(list){
+                                    var vi=0,
+                                        vlen=list.length;
+                                    for(vi;vi<vlen;vi++){
+                                        if(!list[vi] || list[vi]===null){
+                                            return [];
+                                        }
+                                    }
+                                    return list;
+                                }else{
+                                    return [];
+                                }
+                            }else{
+                                /!*重置分页*!/
+                                self.table.list1_page.total=0;
+                                self.table.list1_page.page=1;
+                                $('#admin_page_wrap')/!*jq_dom.$admin_page_wrap*!/.pagination({
+                                    pageNumber:self.table.list1_page.page,
+                                    pageSize:self.table.list1_page.pageSize,
+                                    total:self.table.list1_page.total
+                                });
+                                return [];
+                            }
+                        },
+                        data:{
+                            page:1,
+                            pageSize:1
+                        }
+                    },
+                    info:false,
+                    dom:'<"g-d-hidei" s>',
+                    searching:true,
+                    order:[[1, "desc" ]],
+                    columns: [
+                        {
+                            "data":"fullname"
+                        },
+                        {
+                            "data":"isDesignatedOrg",
+                            "render":function(data, type, full, meta ){
+                                var designatedOrg=parseInt(data,10);
+                                if(designatedOrg===0){
+                                    return '<div class="g-c-blue3">本机构级下属机构</div>';
+                                }else if(designatedOrg===1){
+                                    return '<div class="g-c-blue3">指定机构</div>';
+                                }else{
+                                    return '<div class="g-c-warn">其他</div>';
+                                }
+                            }
+                        },
+                        {
+                            "data":"isDesignatedPermit",
+                            "render":function(data, type, full, meta ){
+                                var designatedPermit=parseInt(data,10);
+                                if(designatedPermit===0){
+                                    return '<div class="g-c-blue3">全部权限</div>';
+                                }else if(designatedPermit===1){
+                                    return '<div class="g-c-blue3">指定权限</div>';
+                                }else{
+                                    return '<div class="g-c-warn">其他</div>';
+                                }
+                            }
+                        },
+                        {
+                            /!*to do*!/
+                            "data":"id",
+                            "render":function(data, type, full, meta ){
+                                var btns='';
+
+                                /!*查看订单*!/
+                                if(self.powerlist.child_edit){
+                                    btns+='<span data-action="update" data-id="'+data+'"  class="btn-operate">编辑</span>';
+                                }
+                                if(self.powerlist.child_delete){
+                                    btns+='<span data-action="delete" data-id="'+data+'"  class="btn-operate">删除</span>';
+                                }
+                                return btns;
+                            }
+                        }
+                    ]
+                }
+            },
+            list_table:null,
+            /!*按钮*!/
+            tableitemaction:{
+                $bodywrap:$('#admin_batchlist_wrap')/!*jq_dom.$admin_batchlist_wrap*!/,
+                itemaction_api:{
+                    doItemAction:function(config){
+                        settingService.doItemAction({
+                            modal:{
+                                type:'edit',
+                                area:'manage',
+                                display:'show'
+                            },
+                            record:self.record,
+                            manage:self.manage,
+                            table:self.table,
+                            power:self.power,
+                            type:'manage'
+                        },config);
+                    }
+                }
+            }
+        };*/
+
+
+
+
+        /*初始化服务--初始化参数*/
+        settingService.getRoot(self.record);
+        /*初始化服务--初始化权限模型头部*/
+        settingService.createThead({flag:true},self.power);
+
+
+
+        /*表单服务--提交表单*/
+        this.formSubmit=function (type) {
+            settingService.formSubmit({
+                record:self.record,
+                manage:self.manage,
+                pwd:self.pwd,
+                table:self.table,
+                struct:self.struct
+            },type);
+        };
+        /*表单服务--重置表单*/
+        this.formReset=function (forms,type) {
+            settingService.formReset({
+                record:self.record,
+                struct:self.struct,
+                manage:self.manage,
+                forms:forms
+            },type);
+        };
+        /*表单服务--权限服务--全选权限*/
+        this.selectAllPower=function (e) {
+            settingService.selectAllPower(e);
+        };
+        /*表单服务--权限服务--确定所选权限*/
+        this.getSelectPower=function () {
+            settingService.getSelectPower(self.manage);
+        };
+        /*表单服务--权限服务--取消所选权限*/
+        this.clearSelectPower=function () {
+            settingService.clearSelectPower(self.manage);
+        };
+        /*表单服务--机构服务--全选机构*/
+        this.selectAllStruct=function (e) {
+            settingService.selectAllStruct(e);
+        };
+        /*表单服务--机构服务--确定所选机构*/
+        this.getSelectStruct=function () {
+            settingService.getSelectStruct({
+                record:self.record,
+                manage:self.manage
+            });
+        };
+        /*表单服务--机构服务--取消所选机构*/
+        this.clearSelectStruct=function () {
+            settingService.clearSelectStruct({
+                record:self.record,
+                manage:self.manage
+            });
+        };
+
+
+        /*机构服务--初始化加载机构*/
+        this.initStructList=function (e) {
+            settingService.initStructList(e,{
+                record:self.record,
+                manage:self.manage
+            });
+        };
+        /*机构服务--加载机构角色*/
+        this.getStructList=function () {
+            settingService.getStructList({
+                record:self.record
+            });
+        };
+        /*机构服务--显示隐藏*/
+        this.toggleStructList=function (e) {
+            settingService.toggleStructList(e,{
+                record:self.record
+            });
+        };
+
+
+
+        /*弹出层显示隐藏*/
+        this.toggleModal=function (config) {
+            settingService.toggleModal({
+                display:config.display,
+                area:config.area
+            });
+        };
+
+
+        /*子管理--添加子管理*/
+        this.actionManage=function (config) {
+            settingService.actionManage({
+                modal:config,
+                record:self.record,
+                manage:self.manage,
+                power:self.power
+            });
+        };
+
+
+        /*数据列表服务--过滤数据*/
+        this.filterDataTable=function () {
+          settingService.filterDataTable(self.table.list_table,self.manage);
+        };
+        /*数据列表服务--查询子管理列表*/
+        this.getColumnData=function () {
+            /*更新节点*/
+            var temp_dom={
+                $admin_page_wrap:$('#admin_page_wrap'),
+                $admin_list_wrap:$('#admin_list_wrap'),
+                $admin_batchlist_wrap:$('#admin_batchlist_wrap')
+            };
+            /*更新节点*/
+            jq_dom['$admin_page_wrap']=temp_dom.$admin_page_wrap;
+            jq_dom['$admin_list_wrap']=temp_dom.$admin_list_wrap;
+            jq_dom['$admin_batchlist_wrap']=temp_dom.$admin_batchlist_wrap;
+            /*创建table模型*/
+            self.table['list1_page']={
+                page:1,
+                pageSize:1,
+                total:0
+            };
+            self.table['list1_config']={
                 config:{
                     processing:true,/*大消耗操作时是否显示处理状态*/
                     deferRender:true,/*是否延迟加载数据*/
@@ -198,7 +497,7 @@ angular.module('app')
                         },
                         data:{
                             page:1,
-                            pageSize:20
+                            pageSize:1
                         }
                     },
                     info:false,
@@ -253,10 +552,9 @@ angular.module('app')
                         }
                     ]
                 }
-            },
-            list_table:null,
-            /*按钮*/
-            tableitemaction:{
+            };
+            self.table['list_table']=null;
+            self.table['tableitemaction']={
                 $bodywrap:jq_dom.$admin_batchlist_wrap,
                 itemaction_api:{
                     doItemAction:function(config){
@@ -274,113 +572,15 @@ angular.module('app')
                         },config);
                     }
                 }
-            }
+            };
+            /*更新服务节点*/
+            settingService.initJQDom(temp_dom);
+            /*请求数据*/
+            settingService.getColumnData(self.table,self.record);
         };
-
-
-
-        /*初始化服务--初始化参数*/
-        settingService.getRoot(self.record);
-        /*初始化服务--初始化权限模型头部*/
-        settingService.createThead({flag:true},self.power);
-        /*初始化服务--查询子管理列表*/
-        settingService.getColumnData(self.table,self.record);
-
-
-
-
-        /*表单服务--提交表单*/
-        this.formSubmit=function (type) {
-            settingService.formSubmit({
-                record:self.record,
-                manage:self.manage,
-                pwd:self.pwd,
-                table:self.table,
-                struct:self.struct
-            },type);
+        this.testdata=function () {
+            settingService.getColumnData(self.table,self.record);
         };
-        /*表单服务--重置表单*/
-        this.formReset=function (forms,type) {
-            settingService.formReset({
-                record:self.record,
-                struct:self.struct,
-                manage:self.manage,
-                forms:forms
-            },type);
-        };
-        /*表单服务--权限服务--全选权限*/
-        this.selectAllPower=function (e) {
-            settingService.selectAllPower(e);
-        };
-        /*表单服务--权限服务--确定所选权限*/
-        this.getSelectPower=function () {
-            settingService.getSelectPower(self.manage);
-        };
-        /*表单服务--权限服务--取消所选权限*/
-        this.clearSelectPower=function () {
-            settingService.clearSelectPower(self.manage);
-        };
-        /*表单服务--机构服务--全选机构*/
-        this.selectAllStruct=function (e) {
-            settingService.selectAllStruct(e);
-        };
-        /*表单服务--机构服务--确定所选机构*/
-        this.getSelectStruct=function () {
-            settingService.getSelectStruct(self.manage);
-        };
-        /*表单服务--机构服务--取消所选机构*/
-        this.clearSelectStruct=function () {
-            settingService.clearSelectStruct(self.manage);
-        };
-
-
-        /*机构服务--初始化加载机构*/
-        this.initStructList=function (e) {
-            settingService.initStructList(e,{
-                record:self.record,
-                manage:self.manage
-            });
-        };
-        /*机构服务--加载机构角色*/
-        this.getStructList=function () {
-            settingService.getStructList({
-                record:self.record
-            });
-        };
-        /*机构服务--显示隐藏*/
-        this.toggleStructList=function (e) {
-            settingService.toggleStructList(e,{
-                record:self.record
-            });
-        };
-
-
-
-        /*弹出层显示隐藏*/
-        this.toggleModal=function (config) {
-            settingService.toggleModal({
-                display:config.display,
-                area:config.area
-            });
-        };
-
-
-        /*子管理--添加子管理*/
-        this.actionManage=function (config) {
-            settingService.actionManage({
-                modal:config,
-                record:self.record,
-                manage:self.manage,
-                power:self.power
-            });
-        };
-
-
-        /*数据列表--过滤数据*/
-        this.filterDataTable=function () {
-          settingService.filterDataTable(self.table.list_table,self.manage);
-        };
-
 
 
         /*搜索服务--搜索过滤*/
@@ -389,6 +589,8 @@ angular.module('app')
             jq_dom.$allstruct.removeClass('sub-menu-checkboxactive');
             /*清除机构模型*/
             self.record.managestruct={};
+            /*清除表单机构关联*/
+            self.manage.designatedOrgIds='';
             /*重置记录*/
             settingService.initRecord(self.record);
             /*初始化加载数据*/
