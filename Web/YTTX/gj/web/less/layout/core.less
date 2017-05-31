@@ -1,24 +1,13 @@
-//bootstrap 变量引用
-@import "bootstrap/variables.less";
-@import "bootstrap/mixins.less";
-
-//自定义变量引用
-@import "variable/base_variable_support.less";
+/*核心*/
 
 
-/*---浏览器兼容支持---*/
-@import "core/support_container.less";
 
-/*---加载动画---*/
-@import "core/module/load.less";
-
-
-/*---布局---*/
-
-/*布局变量定义*/
+/*变量定义*/
 @import "core/variable.less";
-/*布局公共容器*/
-@import "core/layout/common.less";
+/*重置*/
+@import "core/reset.less";
+
+
 /*布局模块*/
 @import "core/layout/container.less";
 @import "core/layout/header.less";
@@ -27,18 +16,15 @@
 @import "core/layout/mainbox.less";
 
 
-/*---首页---*/
+/*布局公共容器*/
+@import "core/layout/common.less";
+
+
+
+/*首页*/
 @import "core/module/index.less";
 
-/*---机构---*/
-@import "core/module/struct.less";
 
-/*---登陆---*/
-@import "core/module/login.less";
-
-
-/*---提示插件---*/
-@import "core/module/toastr.less";
 
 
 
