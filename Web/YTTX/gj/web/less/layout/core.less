@@ -1,51 +1,72 @@
-// Import Bootstrap Variables & Mixins
+//bootstrap 变量引用
 @import "bootstrap/variables.less";
 @import "bootstrap/mixins.less";
 
-// Variables
-@import "admincore/variables.less";
-@import "admincore/mixins.less";
-
-// LessHat
-@import "admincore/other/lesshat.less";
+//自定义变量引用
+@import "variable/base_variable_support.less";
 
 
-// Other components
-@import "admincore/other/perfect-scrollbar.less";
-@import "admincore/other/cbp-timeline.less";
-@import "admincore/other/rwd-table.less";
+/*---浏览器兼容支持---*/
+@import "core/support_container.less";
 
-// Xenon Basic UI
-.transall {
-  .transition(~"all 220ms ease-in-out");
-}
+/*---加载动画---*/
+@import "core/module/load.less";
 
-.clearfix {
-  .clearfix();
-}
 
-@import "admincore/main.less";
-@import "admincore/sidebar.less";
-@import "admincore/horizontal-menu.less";
-@import "admincore/footer.less";
-@import "admincore/user-info-navbar.less";
-@import "admincore/badges.less";
-@import "admincore/chat.less";
-@import "admincore/header-mobile.less";
-@import "admincore/panels.less";
-@import "admincore/breadcrumbs.less";
-@import "admincore/settings-pane.less";
-@import "admincore/checkbox-radio-replacement.less";
-@import "admincore/buttons.less";
-@import "admincore/dropdowns.less";
-@import "admincore/tabs-accordions.less";
-@import "admincore/labels.less";
-@import "admincore/popovers-tooltips.less";
-@import "admincore/blockquotes.less";
-@import "admincore/modals.less";
-@import "admincore/tables.less";
-@import "admincore/forms.less";
-@import "admincore/navbars.less";
-@import "admincore/print.less";
-@import "admincore/miscellaneous.less";
-@import "admincore/bootstrap-overwrite.less";
+/*---布局---*/
+
+/*布局变量定义*/
+@import "core/variable.less";
+/*布局公共容器*/
+@import "core/layout/common.less";
+/*布局模块*/
+@import "core/layout/container.less";
+@import "core/layout/header.less";
+@import "core/layout/footer.less";
+@import "core/layout/sidebox.less";
+@import "core/layout/mainbox.less";
+
+
+/*---首页---*/
+@import "core/module/index.less";
+
+/*---机构---*/
+@import "core/module/struct.less";
+
+/*---登陆---*/
+@import "core/module/login.less";
+
+
+/*---提示插件---*/
+@import "core/module/toastr.less";
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

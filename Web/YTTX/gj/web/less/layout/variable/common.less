@@ -1,8 +1,8 @@
 ///*公共部分*/
 .g-fill{
 	.color-bg-base(@color-white);
-	.layout-relative-base;
-	.box-sizing-base;
+	.layout-relative-base();
+	.box-sizing-base();
 }
 ///*显示隐藏*/
 .g-d-show{
@@ -92,9 +92,9 @@
 }
 /*垂直方向对齐--居中*/
 .g-v-m{
-	vertical-align: middle;
+	vertical-align:middle;
 	td,th{
-		vertical-align: middle;
+		vertical-align:middle;
 	}
 }
 /*垂直方向对齐--居底*/
@@ -259,7 +259,7 @@
 	}
 	.g-c-orangefor(@n,(@i+1));
 }
-.g-c-orangefor(1);
+.g-c-orangefor(2);
 
 ///gray
 .g-c-grayfor(@n,@i:1) when (@i =< @n) {
@@ -268,7 +268,7 @@
 	}
 	.g-c-grayfor(@n,(@i+1));
 }
-.g-c-grayfor(17);
+.g-c-grayfor(15);
 
 
 
@@ -317,7 +317,7 @@
 	}
 	.g-b-orangefor(@n,(@i+1));
 }
-.g-b-orangefor(1);
+.g-b-orangefor(2);
 
 ///gray
 .g-b-grayfor(@n,@i:1) when (@i =< @n) {
@@ -326,22 +326,28 @@
 	}
 	.g-b-grayfor(@n,(@i+1));
 }
-.g-b-grayfor(17);
+.g-b-grayfor(15);
 
 
 ///*----文本----*/
 .g-t-offix{
-	.text-of;
+	.text-of();
 	text-overflow:ellipsis;
 }
-.g-t-ofhide{.text-of;}
-.g-t-ofww{.text-ww;}
-.g-t-unselect{.user-select-base;}
+.g-t-ofhide{
+	.text-of();
+}
+.g-t-ofww{
+	.text-ww();
+}
+.g-t-unselect{
+	.user-select-base();
+}
 .g-t-l{
-	text-align: left;
+	text-align:left;
 }
 .g-t-c{
-	text-align: center;
+	text-align:center;
 }
 .g-t-r{
 	text-align:right;
@@ -384,31 +390,31 @@
 
 /*定位*/
 .g-pos-r{
-	.layout-relative-base;
+	.layout-relative-base();
 }
 .g-pos-al{
-	.layout-absolutel-base;
+	.layout-absolutel-base();
 }
 .g-pos-alb{
-	.layout-absolutelb-base;
+	.layout-absolutelb-base();
 }
 .g-pos-ar{
-	.layout-absoluter-base;
+	.layout-absoluter-base();
 }
 .g-pos-arb{
-	.layout-absoluterb-base;
+	.layout-absoluterb-base();
 }
 .g-pos-fl{
-	.layout-fixedl-base;
+	.layout-fixedl-base();
 }
 .g-pos-flb{
-	.layout-fixedlb-base;
+	.layout-fixedlb-base();
 }
 .g-pos-fr{
-	.layout-fixedr-base;
+	.layout-fixedr-base();
 }
 .g-pos-frb{
-	.layout-fixedrb-base;
+	.layout-fixedrb-base();
 }
 
 ///*----字体大小----*/
@@ -534,8 +540,3 @@
 	.g-gap-mlfor(@n,(@i+1));
 }
 .g-gap-mlfor(20);
-
-
-
-
-

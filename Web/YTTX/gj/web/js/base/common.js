@@ -3,18 +3,27 @@
 (function($){
 	'use strict';
 	/*工具函数类*/
-	var public_tool=window.public_tool||{};
-
-
+	var system_unique_key=BASE_CONFIG.unique_key||'yy_admin_unique_key',
+		tools={};
 	/*本地存储*/
 	//缓存对象
-	public_tool.cache={};
+	tools.cache={};
+	/*返回系统唯一标识符*/
+	tools.getSystemUniqueKey=function () {
+		return system_unique_key;
+	};
 	//判断是否支持本地存储
-	public_tool.supportStorage=(function(){
+	tools.supportBox=(function(){
+		var elem = document.getElementsByTagName('body')[0],
+			bs = window.getComputedStyle(elem,null).getPropertyValue("box-sizing")||document.defaultView.getComputedStyle(elem,null)||$(elem).css('boxSizing');
+		return bs&&bs==='border-box'?true:false;
+	}());
+	//判断是否支持本地存储
+	tools.supportStorage=(function(){
 		return localStorage&&sessionStorage?true:false;
 	}());
 	//判断是否支持图片
-	public_tool.supportImage=(function(){
+	tools.supportImage=(function(){
 		var wURL=window.URL;
 		if(wURL){
 			return typeof wURL.createObjectURL==='function'?true:false;
@@ -22,41 +31,182 @@
 			return false;
 		}
 	}());
+	//递归查找缓存对象
+	tools.paramsItem=function (config,type,action) {
+		var self=this,
+			key=config.key,
+			cache=config.cache,
+			value='';
+
+		if(type==='set'){
+			value=config.value;
+			for(var i in cache){
+				if(i===key){
+					cache[i]=value;
+					return true;
+				}else{
+					if(typeof cache[i]==='object'){
+						self.paramsItem({
+							key:key,
+							value:value,
+							cache:cache[i]
+						},type);
+					}
+				}
+			}
+		}else if(type==='get'){
+			for(var j in cache){
+				if(j===key){
+					return cache[j];
+				}else{
+					if(typeof cache[j]==='object'){
+						self.paramsItem({
+							key:key,
+							cache:cache[j]
+						},type);
+					}
+				}
+			}
+		}else if(type==='find'){
+			for(var k in cache){
+				if(k===key){
+					if(action==='delete'){
+						delete cache[k];
+					}else if(action==='other'){
+						/*to do*/
+					}
+					return true;
+				}else{
+					if(typeof cache[k]==='object'){
+						self.paramsItem({
+							key:key,
+							cache:cache[k]
+						},type);
+					}
+				}
+			}
+		}
+	};
 	//设置本地存储
-	public_tool.setParams=function(key,value,flag){
+	tools.setParams=function(key,value,flag){
 		if(this.supportStorage){
-			if(flag){
-				/*为localstorage*/
-				sessionStorage.setItem(key,JSON.stringify(value));
+			if(key===system_unique_key){
+				if(flag){
+					/*为localstorage*/
+					sessionStorage.setItem(key,JSON.stringify(value));
+				}else{
+					/*默认为localstorage*/
+					localStorage.setItem(key,JSON.stringify(value));
+				}
 			}else{
-				/*默认为localstorage*/
-				localStorage.setItem(key,JSON.stringify(value));
+				var cache=null,
+					self=this;
+				if(flag){
+					cache=JSON.parse(sessionStorage.getItem(system_unique_key));
+				}else{
+					cache=JSON.parse(localStorage.getItem(system_unique_key));
+				}
+				if(cache!==null){
+					if(typeof key!=='undefined'){
+						self.paramsItem({
+							key:key,
+							value:value,
+							cache:cache
+						},'set');
+					}
+				}else{
+					cache={};
+					cache[key]=value;
+				}
+				if(flag){
+					/*为localstorage*/
+					sessionStorage.setItem(system_unique_key,JSON.stringify(cache));
+				}else{
+					/*默认为localstorage*/
+					localStorage.setItem(system_unique_key,JSON.stringify(cache));
+				}
 			}
 		}
 	};
 	//获取本地存储
-	public_tool.getParams=function(key,flag){
+	tools.getParams=function(key,flag){
 		if(this.supportStorage){
-			if(flag){
-				return JSON.parse(sessionStorage.getItem(key))||null;
+			if(key===system_unique_key){
+				if(flag){
+					return JSON.parse(sessionStorage.getItem(system_unique_key))||null;
+				}else{
+					return JSON.parse(localStorage.getItem(system_unique_key))||null;
+				}
 			}else{
-				return JSON.parse(localStorage.getItem(key))||null;
+				var cache=null,
+					self=this;
+				if(flag){
+					cache=sessionStorage.getItem(system_unique_key);
+				}else{
+					cache=localStorage.getItem(system_unique_key);
+				}
+				if(cache!==null){
+					if(typeof key!=='undefined'){
+						return self.paramsItem({
+							key:key,
+							cache:JSON.parse(cache)
+						},'get');
+					}
+					return JSON.parse(cache);
+				}else{
+					return null;
+				}
 			}
 		}
 		return null;
 	};
 	//删除本地存储
-	public_tool.removeParams=function(key,flag){
+	tools.removeParams=function(key,flag){
 		if(this.supportStorage){
-			if(flag){
-				sessionStorage.removeItem(key);
+			if(key===system_unique_key){
+				if(flag){
+					sessionStorage.removeItem(key);
+				}else{
+					localStorage.removeItem(key);
+				}
 			}else{
-				localStorage.removeItem(key);
+				var cache=null,
+					self=this;
+				if(flag){
+					cache=sessionStorage.getItem(system_unique_key);
+				}else{
+					cache=localStorage.getItem(system_unique_key);
+				}
+				if(cache!==null){
+					if(typeof key!=='undefined'){
+						self.paramsItem({
+							key:key,
+							cache:JSON.parse(cache)
+						},'find','delete');
+						if(flag){
+							/*为localstorage*/
+							sessionStorage.setItem(system_unique_key,JSON.stringify(cache));
+						}else{
+							/*默认为localstorage*/
+							localStorage.setItem(system_unique_key,JSON.stringify(cache));
+						}
+					}
+				}
 			}
 		}
 	};
 	//清除本地存储
-	public_tool.clear=function(flag){
+	tools.clear=function(flag){
+		if(this.supportStorage){
+			if(flag){
+				sessionStorage.removeItem(system_unique_key);
+			}else{
+				localStorage.removeItem(system_unique_key);
+			}
+		}
+	};
+	//清除本地存储
+	tools.clearAll=function(flag){
 		if(this.supportStorage){
 			if(flag){
 				sessionStorage.clear();
@@ -66,22 +216,14 @@
 		}
 	};
 	//遍历本地存储
-	public_tool.getEachParams=function(flag){
+	tools.getEachParams=function(flag){
 		if(this.supportStorage){
-			var len=sessionStorage.length,
-				i= 0,
-				res=[],
-				key,
-				value;
-			if(len!==0){
-				for(i;i<len;i++){
-					key=sessionStorage.key(i);
-					if(flag){
-						value=JSON.parse(sessionStorage.getItem(key));
-					}else{
-						value=JSON.parse(localStorage.getItem(key));
-					}
-					res.push(value);
+			var cache=this.getParams(system_unique_key,flag);
+			if(cache!==null){
+				cache=JSON.parse(cache);
+				var res=[];
+				for(var i in cache){
+					res.push(cache[i]);
 				}
 				return res;
 			}else{
@@ -94,11 +236,11 @@
 
 	/*弹窗*/
 	//是否支持弹窗
-	public_tool.supportDia=(function(){
+	tools.supportDia=(function(){
 		return (typeof dialog==='function'&&dialog)?true:false;
 	}());
 	//弹窗确认
-	public_tool.sureDialog=function(tips){
+	tools.sureDialog=function(tips){
 		if(!this.supportDia){
 			return null;
 		}
@@ -187,14 +329,14 @@
 
 	/*工具类*/
 	//判断闰年
-	public_tool.isLeapYear=function(y, m) {
+	tools.isLeapYear=function(y, m) {
 		var m_arr = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 		var isly = (y % 4 == 0 && y % 100 != 0 )? true : y % 400 == 0 ? true : false;
 		isly ? m_arr.splice(1, 1, 29) : m_arr.splice(1, 1, 28);
 		return m?{isly: isly,months: m_arr,m: m_arr[parseInt(m, 10) - 1]}:{isly: isly,months: m_arr}
 	};
 	//将人民币转换成大写
-	public_tool.toUpMoney=function(str,wraps){
+	tools.toUpMoney=function(str,wraps){
 		var cn_zero = "零",
 			cn_one = "壹",
 			cn_two = "贰",
@@ -291,7 +433,7 @@
 		}
 	};
 	//银行卡格式化
-	public_tool.cardFormat=function(str){
+	tools.cardFormat=function(str){
 		var cardno=str.toString().replace(/\s*/g,'');
 		if(cardno==''){
 			return '';
@@ -309,7 +451,7 @@
 		return cardno.join('');
 	};
 	//手机格式化
-	public_tool.phoneFormat=function(str){
+	tools.phoneFormat=function(str){
 		var phoneno=str.toString().replace(/\s*\D*/g,'');
 		if(phoneno==''){
 			return '';
@@ -331,7 +473,7 @@
 		return phoneno.join('');
 	};
 	//密码强度(当前密码，提示信息，密码起始范围(数组))
-	public_tool.pwdStrong=function(str,tip,scope){
+	tools.pwdStrong=function(str,tip,scope){
 		var score=0,
 			txt=this.trims(str),
 			len=txt==''?0:txt.length,
@@ -368,7 +510,7 @@
 		}
 	};
 	//读秒（定时函数引用，秒数，读秒按钮,可用状态下文字信息，切换的class名称）
-	public_tool.getCount=function(tid,times,nodes,text,classname){
+	tools.getCount=function(tid,times,nodes,text,classname){
 		var count=0,
 			id=tid,
 			t=times,
@@ -395,26 +537,26 @@
 		},1000);
 	};
 	//去除所有空格（字符串,需去除字符)：返回字符串
-	public_tool.trimSep=function(str,sep){
+	tools.trimSep=function(str,sep){
 		return str.replace(new RegExp('\\'+sep,'g'),'');
 	};
 	//去除所有空格（字符串）：返回字符串
-	public_tool.trims=function(str){
+	tools.trims=function(str){
 		return str.replace(/\s*/g,'');
 	};
 	//去除前后空格(字符串)：返回字符串
-	public_tool.trim=function(str){
+	tools.trim=function(str){
 		return str.replace(/^\s*\s*$/,'');
 	};
 	//计时器：返回整数
-	public_tool.getTimer=function(){
+	tools.getTimer=function(){
 		var i=0;
 		return function(){
 			return ++i;
 		};
 	};
 	/*是否为正确身份证(身份证字符串)：返回布尔值*/
-	public_tool.isIDCard=function(str){
+	tools.isIDCard=function(str){
 		var area={
 				'11':"北京",'12':"天津",'13':"河北",'14':"山西",'15':"内蒙古",'21':"辽宁",'22':"吉林",'23':"黑龙江",'31':"上海",'32':"江苏",'33':"浙江",'34':"安徽",'35':"福建",'36':"江西",'37':"山东",'41':"河南",'42':"湖北",'43':"湖南",'44':"广东",'45':"广西",'46':"海南",'50':"重庆",'51':"四川",'52':"贵州",'53':"云南",'54':"西藏",'61':"陕西",'62':"甘肃",'63':"青海",'64':"宁夏",'65':"新疆",'71':"台湾",'81':"香港",'82':"澳门",'91':"国外"
 			},
@@ -493,16 +635,16 @@
 		return true;
 	};
 	/*是否是合法手机号*/
-	public_tool.isMobilePhone=function(str){
+	tools.isMobilePhone=function(str){
 		return /^(13[0-9]|15[012356789]|18[0-9]|14[57]|170)[0-9]{8}$/.test(this.trims(str))?true:false;
 	};
 	/**/
-	public_tool.isNum=function(str){
+	tools.isNum=function(str){
 		var self=this;
 		return /^[0-9]{0,}$/g.test(self.trims(str));
 	};
 	//自动补全纠错人民币(字符串,最大数位,是否可以返回为空)，返回一个数组['格式化后的数据',带小数点的未格式化数据]
-	public_tool.moneyCorrect=function(str,max,flag){
+	tools.moneyCorrect=function(str,max,flag){
 		var self=this,
 			money=this.trimSep(str.toString(),','),
 			moneyarr,
@@ -585,7 +727,7 @@
 		return [partz+partx,tempstr];
 	};
 	//光标定位至具体位置(需定位元素,[元素中字符],定位位置，[是否在特定位置的前或者后])
-	public_tool.cursorPos=function(elem,str,index,flag){
+	tools.cursorPos=function(elem,str,index,flag){
 		var vals='',
 			len=0;
 		if(!str){
@@ -623,7 +765,7 @@
 		},0);
 	};
 	///金额加法
-	public_tool.moneyAdd=function(str1,str2){
+	tools.moneyAdd=function(str1,str2){
 		var r1,
 			r2,
 			m,
@@ -658,7 +800,7 @@
 		return (txt1 + txt2) / m;
 	};
 	///金额减法
-	public_tool.moneySub=function(str1,str2){
+	tools.moneySub=function(str1,str2){
 		var r1,
 			r2,
 			m,
@@ -678,7 +820,7 @@
 		return ((str1*m-str2*m)/m).toFixed(n);
 	};
 	///金额乘法
-	public_tool.moneyMul=function(str1,str2){
+	tools.moneyMul=function(str1,str2){
 		var m = 0,
 			s1 = str1.toString(),
 			s2 = str2.toString();
@@ -695,7 +837,7 @@
 		return Number(s1.replace(/\.*/g,'')) * Number(s2.replace(/\.*/g,'')) / Math.pow(10, m);
 	};
 	///金额除法
-	public_tool.moneyDiv=function(str1,str2){
+	tools.moneyDiv=function(str1,str2){
 		var t1=0,
 			t2=0,
 			r1,
@@ -717,997 +859,8 @@
 
 
 
-	/*左侧菜单导航*/
-	/*菜单id映射*/
-	public_tool.menuMap={
-		"0":{
-			"name":"主页",
-			"code":"index",
-			"match":"index",
-			"class":"menu-ux-home",
-			"module":"",
-			"modid":"0"
-		},
-		"200":{
-			"name":"系统管理",
-			"code":"admin",
-			"match":"-admin-",
-			"class":"menu-ux-admin",
-			"module":"admin",
-			"modid":"200"
-		},
-		"210":{
-			"name":"用户管理",
-			"code":"user",
-			"match":"-user-",
-			"class":"menu-ux-user",
-			"matchignore":["bzw-user-add"],
-			"module":"admin",
-			"modid":"210"
-		},
-		"220":{
-			"name":"公告管理",
-			"code":"announcement",
-			"match":"-announcement-",
-			"class":"menu-ux-ad",
-			"module":"announcement",
-			"modid":"220"
-		},
-		"230":{
-			"name":"供应商管理",
-			"code":"provider",
-			"match":"-provider-",
-			"class":"menu-ux-distribution",
-			"module":"provider",
-			"modid":"230"
-		},
-		"240":{
-			"name":"交易管理",
-			"code":"trade",
-			"match":"-trade-",
-			"matchlist":['order-manager','comment-buyer','comment-saler'],
-			"matchignore":["comment-saler"],
-			"class":"menu-ux-record",
-			"module":"trade",
-			"modid":"240"
-		},
-		"250":{
-			"name":"商品管理",
-			"code":"goods",
-			"match":"-goods-",
-			"extendmenu":{
-				"position":"before",
-				"list":[{
-					"modLink":"bzw-goods-manager",
-					"modName": "商品管理"
-				}]
-			},
-			"class":"menu-ux-shop",
-			"module":"goods",
-			"modid":"250"
-		},
-		"260":{
-			"name":"商品属性",
-			"code":"attribute",
-			"match":"-attribute-",
-			"class":"menu-ux-shop",
-			"module":"attribute",
-			"modid":"260"
-		},
-		"270":{
-			"name":"商品类型管理",
-			"code":"goodstype",
-			"match":"-goodstype-",
-			"class":"menu-ux-shop",
-			"module":"goodstype",
-			"modid":"270"
-		},
-		"280":{
-			"name":"用户统计",
-			"code":"userstats",
-			"match":"-userstats-",
-			"ignoremodule":true,
-			"class":"menu-ux-chart",
-			"module":"userstats",
-			"modid":"280"
-		},
-		"290":{
-			"name":"供应商统计",
-			"code":"providerstats",
-			"match":"-providerstats-",
-			"ignoremodule":true,
-			"class":"menu-ux-chart",
-			"module":"providerstats",
-			"modid":"290"
-		},
-		"300":{
-			"name":"商品统计",
-			"code":"goodsstats",
-			"match":"-goodsstats-",
-			"ignoremodule":true,
-			"class":"menu-ux-chart",
-			"module":"goodsstats",
-			"modid":"300"
-		},
-		"310":{
-			"name":"订单统计",
-			"code":"orderstats",
-			"ignoremodule":true,
-			"match":"-orderstats-",
-			"class":"menu-ux-chart",
-			"module":"orderstats",
-			"modid":"310"
-		},
-		"320":{
-			"name":"平台管理",
-			"code":"paltform",
-			"match":"-paltform-",
-			/*"ignoremodule":true,*/
-			"class":"menu-ux-platform",
-			"matchlist":['bzw-imei-list','bzw-imei-add','bzw-complaints-suggestions'],
-			"module":"paltform",
-			"modid":"320"
-		},
-		"330":{
-			"name":"广告管理",
-			"code":"advert",
-			"match":"-advert-",
-			"class":"menu-ux-ad",
-			/*"ignoremodule":true,*/
-			"module":"advert",
-			"modid":"330"
-		},
-		"340":{
-			"name":"活动设置",
-			"code":"activity",
-			"match":"-activity-",
-			"matchlist":['module-set'],
-			"class":"menu-ux-serve",
-			/*"ignoremodule":true,*/
-			"module":"activity",
-			"modid":"340"
-		}
-	};
-	/*路由映射*/
-	public_tool.routeMap={
-			issetting:false,
-			path:'',
-			module:'',
-			isindex:false,
-			issamemodule:false
-	};
-	/*获取路由信息*/
-	public_tool.getRoute=function(){
-		/*处理路径*/
-		var self=this,
-			currentfile=location.pathname,
-			carr=currentfile.split('/'),
-			clen=carr.length,
-			cp_suffix=carr[clen - 1].lastIndexOf('.'),
-			path=carr[clen - 1].slice(0,cp_suffix),
-			isindex=path===''?true:path.indexOf('index')!==-1,
-			module=isindex?'':carr[clen - 2];
-
-
-
-		/*调用路由记录*/
-		var history_path={
-			issetting:false,
-			/*当前文件*/
-			current:{
-				isindex:isindex,
-				path:path,
-				module:module
-			},
-			/*上一次文件路径*/
-			prev:{
-				isindex:false,
-				path:'',
-				module:''
-			}
-		},
-		route=self.getParams('route_module')/*查找上一次记录*/;
-
-
-		/*重新赋值*/
-		if(route){
-			history_path.prev=route.current;
-			self.routeMap.issamemodule=module===route.current.module;
-			self.routeMap.issetting=history_path.issetting=route.issetting;
-		}else{
-			self.routeMap.issamemodule=false;
-		}
-		/*放入本地存储*/
-		self.setParams('route_module',history_path);
-
-		/*存入临时目录*/
-		self.routeMap.isindex=isindex;
-		self.routeMap.path=path;
-		self.routeMap.module=module;
-
-		if(route){
-			/*判断是否设置权限*/
-			self.isPermission(route.issetting);
-		}
-	};
-	/*判断是否修改了权限*/
-	public_tool.isPermission=function(flag){
-		var self=this,
-			flag=flag||self.routeMap.issetting;
-
-		if(flag){
-			var count= 3,
-			tips=dialog({
-				title:'温馨提示',
-				width:300,
-				ok:false,
-				cancel:false,
-				content:'<span class="g-c-bs-warning g-btips-warn">您已设置了新的系统权限，&nbsp;<span class="g-c-bs-info" id="permission_tips"></span>&nbsp;秒后将自动退出系统</span>'
-			}).show(),
-			pertip=null,
-			tipsdom=document.getElementById('permission_tips');
-
-
-			tipsdom.innerHTML=count;
-			pertip=setInterval(function(){
-				count--;
-				tipsdom.innerHTML=count;
-				if(count<0){
-					clearInterval(pertip);
-					pertip=null;
-					tips.close().remove();
-					tipsdom=null;
-					self.loginOut();
-				}
-			},1000);
-		}
-	}
-	/*加载左侧菜单*/
-	public_tool.loadSideMenu=function($menu,$wrap,opt){
-
-		var self=this,
-			cacheMenu=self.getParams('menu_module')/*调用缓存*/,
-			cacheLogin=self.getParams('login_module'),
-			currentdomain=cacheLogin.currentdomain,
-			baseurl=opt.url.split('/',3);
-
-		cacheLogin.currentdomain=baseurl[0]+'//'+baseurl[2];
-		self.removeParams('login_module');
-		self.setParams('login_module',cacheLogin);
-
-		/*检测是否改变了地址，且登陆地址和请求地址不一致*/
-		if(!self.validLogin()){
-			self.loginTips(function () {
-				self.clear();
-				self.clearCacheData();
-			});
-			return false;
-		}
-
-
-
-		/*判断路由模块*/
-		if(public_tool.routeMap.issamemodule){
-			if(cacheMenu){
-				/*如果是同一模块侧直接获取缓存*/
-				/*如果存在缓存，则读取缓存*/
-				//放入dom中
-				$(cacheMenu).appendTo($menu.html(''));
-				//初始化
-				self.initSideMenu($wrap);
-				/*导航高亮*/
-				self.highSideMenu($menu);
-				/*解析权限*/
-				var cacheSource=self.getParams('source_module');
-				self.resolvePower(cacheSource,true);
-				return true;
-			}else{
-				/*不同模块则重新加载*/
-				self.requestSideMenu($menu,$wrap,opt);
-			}
-		}else{
-			self.requestSideMenu($menu,$wrap,opt);
-		}
-	};
-	/*请求菜单*/
-	public_tool.requestSideMenu= function ($menu,$wrap,opt) {
-		var self=this,
-			cacheSource=self.getParams('source_module');
-
-
-		if(cacheSource){
-			//存在数据源
-			/*解析菜单*/
-			self.doSideMenu(cacheSource,$menu,$wrap);
-		}else{
-			/*不存在资源则重新加载*/
-
-			/*静态注入*/
-			/*var injectdata=self.injectSideMenu({
-				url:self.routeMap.isindex?'../json/inject_menu.json':'../../json/inject_menu.json',
-				async:false,
-				type:'post',
-				datatype:'json'
-			}),
-			injectstr=self.doSideMenu(injectdata,$menu,$wrap,{
-				resolve:true
-			});*/
-
-
-
-
-			$.ajax({
-				url:opt.url,
-				async:opt.async,
-				type:opt.type,
-				data:opt.param,
-				dataType:opt.datatype
-			}).done(function(data){
-				if(parseInt(data.code,10)!==0){
-					//查询异常
-					return false;
-				}
-				if(typeof injectstr!=='undefined'){
-					/*如果有注入*/
-					self.doSideMenu(data,$menu,$wrap,{
-						render:true,
-						result:injectstr,
-						data:injectdata
-					});
-				}else{
-					self.doSideMenu(data,$menu,$wrap);
-				}
-			}).fail(function(){
-				console.log('error');
-			});
-		}
-
-	};
-	//处理菜单(inject:为注入对象)
-	public_tool.doSideMenu=function(data,$menu,$wrap,inject){
-		var self=this,
-			matchClass=function(map,str){
-				/*修正class*/
-				if(typeof map!=='undefined'&&str!==map['class']){
-					return map['class'];
-				}
-				return str;
-			},
-			matchModule=function (map,str) {
-				var dlist=map['matchlist'];
-				if(dlist){
-					var d=0,
-						dlen=dlist.length;
-
-					for(d;d<dlen;d++){
-						if(str.indexOf(dlist[d])!==-1){
-							return '<li class="has-sub expanded"><a href=\"\"><i class=\"'+matchClass(link,item.modClass)+'\"></i><span>'+item.modName+'</span></a><ul style="display:block;">';
-						}
-					}
-				}
-				return '<li class="has-sub"><a href=\"\"><i class=\"'+matchClass(link,item.modClass)+'\"></i><span>'+item.modName+'</span></a><ul>';
-			},
-			matchIgnore=function (map,str) {
-				/*忽略解析指定模块*/
-				var iglist=map['matchignore'];
-				if(iglist){
-					var p=0,
-						plen=iglist.length;
-
-					for(p;p<plen;p++){
-						if(str.indexOf(iglist[p])!==-1){
-							return true;
-						}
-					}
-					return false;
-				}
-				return false;
-			},
-			extendMenu=function (map,config) {
-				var elist=map['extendmenu'];
-				if(elist){
-					var e=0,
-						estr='',
-						eitem=elist['list'],
-						elen=eitem.length;
-
-					if(config.isindex){
-						for(e;e<elen;e++){
-							estr+='<li><a href=\"'+map.code+'/'+eitem[e].modLink+config.suffix+'\"><span>'+eitem[e].modName+'</span></a></li>';
-						}
-					}else if(!config.isindex){
-						if(config.ismodule){
-							for(e;e<elen;e++){
-								estr+='<li><a href=\"'+eitem[e].modLink+config.suffix+'\"><span>'+eitem[e].modName+'</span></a></li>';
-							}
-						}else{
-							for(e;e<elen;e++){
-								estr+='<li><a href=\"../'+map.code+'/'+eitem[e].modLink+config.suffix+'\"><span>'+eitem[e].modName+'</span></a></li>';
-							}
-						}
-					}
-					return config.menustr+estr;
-				}
-				return '';
-			},
-			menu=data.result.menu,
-			len=menu.length,
-			menustr='',
-			i=0,
-			j=0,
-			key='modItem',
-			suffix='.html',
-			subactive="sub-menu-active",
-			link='',
-			ignore=null,
-			item=null,
-			sublen='',
-			subitem=null,
-			isindex=self.routeMap.isindex,
-			module=self.routeMap.module,
-			path=self.routeMap.path;
-
-		for(i;i<len;i++){
-			item=menu[i];
-			link=self.menuMap[item.modId];
-			if(typeof link==='undefined'){
-				continue;
-			}
-			if(typeof link['ignoremodule']!=='undefined'){
-				if(link['ignoremodule']){
-					/*忽略模块*/
-					continue;
-				}
-			}
-			if("matchignore" in link){
-				ignore=true;
-			}else{
-				ignore=null;
-			}
-			//解析菜单
-			if(isindex){
-				//当前页为首页的情况
-				var issub=typeof (subitem=item[key])!=='undefined';
-
-				if(i===0&&item.modId!==0){
-					/*不匹配首页*/
-					if(!inject||(inject&&inject.render)){
-						menustr+='<li><a href=\"index'+suffix+'\"><i class=\"menu-ux-home\"></i><span>首页</span></a></li>';
-					}
-				}else if(i===0&&!issub){
-					//匹配首页且没有子菜单
-					menustr+='<li><a href=\"index'+item.modLink+suffix+'\"><i class=\"'+matchClass(link,item.modClass)+'\"></i><span>'+item.modName+'</span></a></li>';
-				}
-
-				if(issub){
-					//子菜单循环
-					if(path.indexOf(link.match)!==-1){
-						menustr+='<li class="has-sub expanded"><a href=\"\"><i class=\"'+matchClass(link,item.modClass)+'\"></i><span>'+item.modName+'</span></a>';
-						menustr+="<ul style='display:block;'>";
-					}else{
-						menustr+=matchModule(link,path);
-					}
-					sublen=subitem.length;
-					j=0;
-					/*扩展菜单*/
-					if('extendmenu' in link){
-						if(link['extendmenu']['position']==='before'){
-							menustr=extendMenu(link,{
-								menustr:menustr,
-								suffix:suffix,
-								isindex:true
-							});
-						}
-					}
-					for(j;j<sublen;j++){
-						item=subitem[j];
-						/*判断是否存在忽略*/
-						if(ignore&&matchIgnore(link,item.modLink)){
-							/*存在忽略菜单即执行下一轮检查*/
-							continue;
-						}
-						menustr+='<li><a href=\"'+link.code+'/'+item.modLink+suffix+'\"><span>'+item.modName+'</span></a></li>';
-					}
-					/*扩展菜单*/
-					if('extendmenu' in link){
-						if(link['extendmenu']['position']==='after'){
-							menustr=extendMenu(link,{
-								menustr:menustr,
-								suffix:suffix,
-								isindex:true
-							});
-						}
-					}
-					menustr+="</li></ul>";
-				}else{
-					menustr+='<li><a href=\"'+link.code+'/'+item.modLink+suffix+'\"><i class=\"'+matchClass(link,item.modClass)+'\"></i><span>'+item.modName+'</span></a>';
-				}
-			}else{
-				//当前页为其他页的情况
-				var issub=typeof (subitem=item[key])!=='undefined';
-
-
-				if(i===0&&item.modId!==0){
-					/*不匹配首页*/
-					if(!inject||(inject&&inject.render)){
-						menustr+='<li><a href=\"../index'+suffix+'\"><i class=\"menu-ux-home\"></i><span>首页</span></a></li>';
-					}
-				}else if(i===0&&!issub){
-					//匹配首页且没有子菜单
-					menustr+='<li><a href=\"../index'+item.modLink+suffix+'\"><i class=\"'+matchClass(link,item.modClass)+'\"></i><span>'+item.modName+'</span></a></li>';
-				}
-
-				if(issub){
-					//子菜单循环
-					if(path.indexOf(link.match)!==-1){
-						menustr+='<li class="has-sub expanded"><a href=\"\"><i class=\"'+matchClass(link,item.modClass)+'\"></i><span>'+item.modName+'</span></a>';
-						menustr+="<ul style='display:block;'>";
-					}else{
-						menustr+=matchModule(link,path);
-					}
-					sublen=subitem.length;
-					j=0;
-					var ismodule=path.indexOf(link.match)!==-1;
-					/*扩展菜单*/
-					if('extendmenu' in link){
-						if(link['extendmenu']['position']==='before'){
-							menustr=extendMenu(link,{
-								menustr:menustr,
-								suffix:suffix,
-								isindex:false,
-								ismodule:ismodule
-							});
-						}
-					}
-					for(j;j<sublen;j++){
-						item=subitem[j];
-						/*判断是否存在忽略*/
-						if(ignore&&matchIgnore(link,item.modLink)){
-							/*存在忽略菜单即执行下一轮检查*/
-							continue;
-						}
-						if(ismodule){
-								menustr+='<li><a href=\"'+item.modLink+suffix+'\"><span>'+item.modName+'</span></a></li>';
-						}else{
-								menustr+='<li><a href=\"../'+link.code+'/'+item.modLink+suffix+'\"><span>'+item.modName+'</span></a></li>';
-						}
-					}
-					/*扩展菜单*/
-					if('extendmenu' in link){
-						if(link['extendmenu']['position']==='after'){
-							menustr=extendMenu(link,{
-								menustr:menustr,
-								suffix:suffix,
-								isindex:false,
-								ismodule:ismodule
-							});
-						}
-					}
-					menustr+="</li></ul>";
-				}else{
-					if(path.indexOf(link.match)!==-1){
-						menustr+='<li><a href=\"'+item.modLink+suffix+'\"><i class=\"'+matchClass(link,item.modClass)+'\"></i><span>'+item.modName+'</span></a>';
-					}else{
-						menustr+='<li><a href=\"../'+link.code+'/'+item.modLink+suffix+'\"><i class=\"'+matchClass(link,item.modClass)+'\"></i><span>'+item.modName+'</span></a>';
-					}
-				}
-			}
-		}
-
-		/*解析权限*/
-		self.resolvePower(data,true);
-
-		if(inject&&inject.render){
-			menustr+=inject.result;
-			$.merge(data.result.menu,inject.data.result.menu);
-		}
-
-
-		if(inject&&inject.resolve){
-			/*释放内存*/
-			matchClass=null;
-			matchModule=null;
-			matchIgnore=null;
-			extendMenu=null;
-			return menustr;
-		}
-
-		//放入菜单模块
-		self.setParams('menu_module',menustr);
-		//存入数据源
-		self.setParams('source_module',data);
-
-		//放入dom中
-		$(menustr).appendTo($menu.html(''));
-
-		//调用菜单渲染
-		self.initSideMenu($wrap);
-		/*导航高亮*/
-		self.highSideMenu($menu);
-
-		/*释放内存*/
-		matchClass=null;
-		matchModule=null;
-		matchIgnore=null;
-		extendMenu=null;
-	};
-	//卸载左侧菜单条
-	public_tool.removeSideMenu=function($menu){
-		//清除dom节点
-		$menu.html('');
-		//清除本地存储缓存
-		this.removeParams('menu_module');
-		this.removeParams('source_module');
-	};
-	//初始化左侧导航
-	public_tool.initSideMenu=function($wrap){
-		var self=this;
-		if($wrap.length){
-			var $items_with_subs = $wrap.find('li:has(> ul)'),
-				toggle_others = $wrap.hasClass('toggle-others');
-
-			$items_with_subs.filter('.active').addClass('expanded');
-
-			$items_with_subs.each(function(i, el){
-				var $li = $(el),
-					$a = $li.children('a'),
-					$sub = $li.children('ul');
-				$li.addClass('has-sub');
-				$a.on('click', function(ev){
-					ev.preventDefault();
-
-					if(toggle_others){
-						/*其他节点操作*/
-						self.siblingsSideMenu($li,$wrap);
-					}
-
-					if($li.hasClass('expanded') || $li.hasClass('opened')){
-						/*收缩*/
-						self.collapseSideMenu($li, $sub,$wrap);
-					}else{
-						/*展开*/
-						self.expandSideMenu($li, $sub,$wrap);
-					}
-
-				});
-			});
-		}
-	};
-	//当前高亮菜单
-	public_tool.highSideMenu=function($menu){
-		var self=this;
-		$menu.find("a[href*='"+self.routeMap.path+".html']").parent().addClass('sub-menu-active');
-	};
-	//导航展开服务类
-	public_tool.expandSideMenu=function($li,$sub,$wrap){
-		var self=this;
-		if($li.data('is-busy') || ($li.parent('.main-menu').length && $wrap.hasClass('collapsed'))){
-			return;
-		}
-
-		$li.addClass('expanded').data('is-busy', true);
-		$sub.show();
-
-		var $sub_items 	  = $sub.children(),
-			sub_height	= $sub.outerHeight(),
-
-			win_y			 = $(window).height(),
-			total_height	  = $li.outerHeight(),
-			current_y		 = $wrap.scrollTop(),
-			item_max_y		= $li.position().top + current_y,
-			fit_to_viewpport  = $wrap.hasClass('fit-in-viewport');
-
-		$sub_items.addClass('is-hidden');
-		$sub.height(0);
-
-
-		TweenMax.to($sub,0.2, {
-			css: {
-				height: sub_height
-			},
-			onUpdate:self.scrollUpdate.call(self,true,$wrap),
-			onComplete: function(){
-				$sub.height('');
-			}
-		});
-
-		var interval_1 = $li.data('sub_i_1'),
-			interval_2 = $li.data('sub_i_2');
-
-		window.clearTimeout(interval_1);
-
-		interval_1 = setTimeout(function(){
-			$sub_items.each(function(i, el){
-				var $sub_item = $(el);
-				$sub_item.addClass('is-shown');
-			});
-
-			var finish_on = 150 * $sub_items.length,
-				t_duration = parseFloat($sub_items.eq(0).css('transition-duration')),
-				t_delay = parseFloat($sub_items.last().css('transition-delay'));
-
-			if(t_duration && t_delay){
-				finish_on = (t_duration + t_delay) * 1000;
-			}
-
-			window.clearTimeout(interval_2);
-
-			interval_2 = setTimeout(function(){
-				$sub_items.removeClass('is-hidden is-shown');
-
-			}, finish_on);
-
-
-			$li.data('is-busy', false);
-
-		}, 0);
-
-		$li.data('sub_i_1', interval_1);
-		$li.data('sub_i_2', interval_2);
-
-	};
-	//导航收缩服务类
-	public_tool.collapseSideMenu=function($li, $sub,$wrap){
-		var self=this;
-		if($li.data('is-busy')){
-			return;
-		}
-
-		var $sub_items = $sub.children();
-
-		$li.removeClass('expanded').data('is-busy', true);
-		$sub_items.addClass('hidden-item');
-
-		TweenMax.to($sub, 0.2, {
-			css: {
-				height: 0
-			},
-			onUpdate:self.scrollUpdate.call(self,true,$wrap),
-			onComplete: function() {
-				$li.data('is-busy', false).removeClass('opened');
-
-				$sub.attr('style', '').hide();
-				$sub_items.removeClass('hidden-item');
-
-				$li.find('li.expanded ul').attr('style', '').hide().parent().removeClass('expanded');
-
-				self.scrollUpdate(true,$wrap);
-			}
-		});
-
-	};
-	//导航切换服务类
-	public_tool.siblingsSideMenu=function($li,$wrap){
-		var self=this;
-		$li.siblings().not($li).filter('.expanded, .opened').each(function(i, el){
-			var $_li = $(el),
-				$_sub = $_li.children('ul');
-
-			self.collapseSideMenu($_li, $_sub,$wrap);
-		});
-	};
-	//导航注入扩展
-	public_tool.injectSideMenu=function (opt) {
-		var res='';
-		$.ajax({
-			url:opt.url,
-			async:opt.async,
-			type:opt.type,
-			data:opt.param,
-			dataType:opt.datatype
-		}).done(function(data){
-			if(parseInt(data.code,10)!==0){
-				//查询异常
-				return false;
-			}
-			if(data){
-				res=data;
-			}
-		}).fail(function(){
-			console.log('error');
-		});
-		return res;
-	};
-
-
-	/*权限分配*/
-	/*菜单权限映射*/
-	public_tool.powerMap={};
-	/*解析权限*/
-	public_tool.resolvePower=function(data,flag){
-		/*
-		 * data:数据源
-		 * flag:是否存入缓存
-		 * */
-		var self=this,
-			cachePower;
-
-		if(flag){
-			cachePower=self.getParams('power_module')/*调用缓存*/
-			if(cachePower){
-				/*如果存在缓存，则读取缓存*/
-				self.powerMap=cachePower;
-			}else{
-				self.handlePower(data,flag);
-			}
-		}else{
-			return self.handlePower(data,flag);
-		}
-	};
-	/*处理权限*/
-	public_tool.handlePower=function(data,flag){
-		var self=this;
-		/*
-		* data:数据源
-		* flag:是否存入缓存
-		* */
-		/*解析权限*/
-		var menu=data.result.menu,
-			len=menu.length,
-			i=0,
-			prkey='permitItem',
-			item=null,
-			pritem=null,
-			modid_map={},
-			result={};
-
-		for(i;i<len;i++){
-			item=menu[i];
-			/*解析权限*/
-			var ispr=typeof (pritem=item[prkey])!=='undefined';
-			if(ispr){
-				var k= 0,
-					prlen=pritem.length,
-					poweritem={};
-				for(k;k<prlen;k++){
-					var temppt=pritem[k],
-						prid=temppt.prid;
-					poweritem[prid]=temppt;
-				}
-				if(typeof modid_map[item.modId]==='undefined'){
-					modid_map[item.modId]=poweritem;
-				}else{
-					modid_map[item.modId]=$.extend(true,{},poweritem);
-				}
-			}
-			result=$.extend(true,{},modid_map);
-		}
-		/*然后存入缓存*/
-		if(flag){
-			self.powerMap=$.extend(true,{},result);
-			self.setParams('power_module',result);
-		}else{
-			return result;
-		}
-	};
-	//根据模块判断拥有的权限
-	public_tool.getPower=function(key){
-		var self=this,
-			havepower=$.isEmptyObject(self.powerMap);
-
-		if(havepower){
-			/*没有获取到权限*/
-			return null;
-		}else{
-			var path,
-				module,
-				currentpower,
-				menumap=self.menuMap,
-				modid;
-			if(typeof key!=='undefined'){
-				modid=key;
-			}else{
-				path=self.routeMap.path;
-				module=self.routeMap.module;
-				if(module==''&&module=='account'){
-					return null;
-				}
-				for(var i in menumap){
-					if(path.indexOf(menumap[i].match)!==-1){
-						modid=i;
-						break;
-					}
-				}
-			}
-
-			currentpower= $.extend(true,{},self.powerMap[modid]);
-			for(var j in currentpower){
-				if(currentpower[j].isPermit===0){
-					delete currentpower[j];
-				}
-			}
-			return currentpower;
-		}
-		return null;
-	};
-	//根据关键词判断权限
-	public_tool.getKeyPower=function(key,list){
-		if(!key||!list){
-			return false;
-		}
-		var ispower=false;
-		for(var i in list){
-			if(list[i]['funcCode']===key||list[i]['funcCode'].indexOf(key)!==-1){
-				ispower=true;
-				break;
-			}else if(list[i]['funcName']===key||list[i]['funcName'].indexOf(key)!==-1){
-				ispower=true;
-				break;
-			}
-
-		}
-		return ispower;
-	};
-	//根据模块判断拥有的权限
-	public_tool.getAllPower=function(){
-		var self=this,
-			havepower=$.isEmptyObject(self.powerMap);
-
-		if(havepower){
-			/*没有获取到权限*/
-			return null;
-		}else{
-			var module=self.routeMap.module;
-
-				if(module==''&&module=='account'){
-					return null;
-				}
-			var currentpower= $.extend(true,{},self.powerMap);
-			for(var i in currentpower){
-				var temppower=currentpower[i];
-				for(var j in temppower){
-					if(temppower[j].isPermit===0){
-						delete temppower[j];
-					}
-				}
-			}
-			return currentpower;
-		}
-		return null;
-	};
-	/*判断权限是否获取正确*/
-	public_tool.isRealPower=function(o1,o2) {
-		if ( o1=== o2) {
-			return true;
-		}
-		if ( ! ( o1 instanceof Object ) || ! ( o2 instanceof Object ) ) {
-			return false;
-		}
-		if ( o1.constructor !== o2.constructor ) {
-			return false;
-		}
-		for ( var p in o1 ) {
-			if ( o1.hasOwnProperty( p ) ) {
-				if ( ! o2.hasOwnProperty( p ) ) {
-					return false;
-				}
-				if ( o1[ p ] === o2[ p ] ) {
-					continue;
-				}
-				if ( typeof( o1[ p ] ) !== "undefined" ) {
-					return false;
-				}
-			}
-		}
-		for (var  m in o2 ) {
-			if ( o2.hasOwnProperty( m ) ) {
-				if ( ! o1.hasOwnProperty( m ) ) {
-					return false;
-				}
-				if ( o1[ m ] === o2[ m ] ) {
-					continue;
-				}
-				if ( typeof( o2[ m ] ) !== "undefined" ) {
-					return false;
-				}
-			}
-		}
-		return true;
-	};
-
-
 	//模拟滚动条更新
-	public_tool.scrollUpdate=function(flag,$wrap){
+	tools.scrollUpdate=function(flag,$wrap){
 		var self=this;
 		if(isxs()){
 			return;
@@ -1726,7 +879,7 @@
 		}
 	};
 	//模拟滚动条初始化
-	public_tool.scrollInit=function($wrap){
+	tools.scrollInit=function($wrap){
 		if(isxs()){
 			return;
 		}
@@ -1744,7 +897,7 @@
 		}
 	};
 	//模拟滚动条摧毁
-	public_tool.scrollDestroy=function($wrap){
+	tools.scrollDestroy=function($wrap){
 		if($.isFunction($.fn.perfectScrollbar)){
 			$wrap.find('.sidebar-menu-inner').perfectScrollbar('destroy');
 		}
@@ -1753,12 +906,12 @@
 
 
 	/*登陆缓存*/
-	public_tool.initMap={
+	tools.initMap={
 		isrender:false,
 		loginMap:{}
 	};
 	/*登陆接口*/
-	public_tool.isLogin=function(){
+	tools.isLogin=function(){
 		var self=this,
 			cacheLogin=self.getParams('login_module');
 
@@ -1786,7 +939,7 @@
 		return false;
 	};
 	/*判断缓存是否有效*/
-	public_tool.validLogin=function(obj){
+	tools.validLogin=function(obj){
 		/*必须有缓存*/
 		var self=this,
 			cacheLogin=typeof obj!=='undefined'?obj:self.getParams('login_module');
@@ -1848,7 +1001,7 @@
 		return false;
 	};
 	/*退出系统*/
-	public_tool.loginOut=function(istips){
+	tools.loginOut=function(istips){
 		var self=this,
 			isindex=self.routeMap.isindex,
 			module=self.routeMap.module;
@@ -1878,7 +1031,7 @@
 		}
 	};
 	/*清除内存数据*/
-	public_tool.clearCacheData=function(){
+	tools.clearCacheData=function(){
 		var self=this;
 		/*清除菜单权限映射*/
 		if(!$.isEmptyObject(self.powerMap)){
@@ -1899,7 +1052,7 @@
 		};
 	};
 	/*跳转提示*/
-	public_tool.loginTips=function(fn){
+	tools.loginTips=function(fn){
 		var self=this;
 
 		/*如果没有登陆则提示跳转至登陆页*/
@@ -1942,7 +1095,7 @@
 
 
 	/*初始化判定*/
-	public_tool.isRender=function(){
+	tools.isRender=function(){
 		var self=this;
 		/*判定兼容性*/
 		if(self.supportStorage){
@@ -1969,7 +1122,7 @@
 		return false;
 	};
 	/*加载进度条*/
-	public_tool.initLoading=function(){
+	tools.initLoading=function(){
 		/*首先加载动画*/
 		public_vars.$page_loading_wrap.removeClass('g-d-hidei');
 		//加载成功隐藏动画
@@ -1985,290 +1138,10 @@
 	};
 
 
-	window.public_tool=public_tool;
+	window.tools=tools;
 })(jQuery);
 
 
 
-var public_vars = public_vars || {};
 
-;(function($, window, undefined){
-	
-	"use strict";
-	//初始化加载
-	$(function(){
-		//自定义扩展变量
-		public_vars.$mainmenu=$('#main_menu');
-		public_vars.$main_menu_wrap=$('#main_menu_wrap');
-		public_vars.$page_loading_wrap=$('#page_loading_wrap');
-		public_vars.$main_content=$('#main_content');
-		public_vars.$logout_btn=$('#logout_btn');
-		public_vars.$page_support_wrap=$('#page_support_wrap');
-		public_vars.$page_support=public_vars.$page_support_wrap.children();
-		public_vars.$goto_login=$('#goto_login'),
-		public_vars.$admin_show_wrap=$('#admin_show_wrap');
-
-
-		/*初始化判定*/
-		public_tool.isRender();
-		/*首先加载动画*/
-		if(public_tool.initMap.isrender){
-			/*加载动画*/
-			public_tool.initLoading();
-
-			/*其他加载*/
-			public_vars.$body                 = $("body");
-			public_vars.$pageContainer        = public_vars.$body.find(".page-container");
-			public_vars.$horizontalNavbar     = public_vars.$body.find('.navbar.horizontal-menu');
-			public_vars.$horizontalMenu       = public_vars.$horizontalNavbar.find('.navbar-nav');
-
-			public_vars.$mainFooter           = public_vars.$body.find('footer.main-footer');
-
-			public_vars.$userInfoMenuHor      = public_vars.$body.find('.navbar.horizontal-menu');
-			public_vars.$userInfoMenu         = public_vars.$body.find('nav.navbar.user-info-navbar');
-
-			/*登出操作*/
-			if(public_vars.$logout_btn){
-				public_vars.$logout_btn.on('click',function(){
-					public_tool.loginOut();
-				});
-			}
-
-
-
-
-			//计算左侧菜单滚动条
-			if (public_vars.$mainFooter.hasClass('sticky')) {
-				stickFooterToBottom(public_vars.$main_content,public_vars.$main_menu_wrap);
-				$(window).on('xenon.resized',{
-					$content:public_vars.$main_content,
-					$wrap:public_vars.$main_menu_wrap
-				},stickFooterToBottom);
-			}
-
-
-			//模拟滚动条
-			if($.isFunction($.fn.perfectScrollbar)) {
-				if (public_vars.$main_menu_wrap.hasClass('fixed')){
-					public_tool.scrollInit(public_vars.$main_menu_wrap);
-				}
-
-				// Scrollable
-				$("div.scrollable").each(function(i, el) {
-					var $this = $(el),
-						max_height = parseInt(attrDefault($this, 'max-height', 200), 10);
-
-					max_height = max_height < 0 ? 200 : max_height;
-
-					$this.css({
-						maxHeight: max_height
-					}).perfectScrollbar({
-						wheelPropagation: true
-					});
-				});
-			}
-
-
-			//计算左侧菜单滚动条
-			if (public_vars.$mainFooter.hasClass('fixed')) {
-				public_vars.$main_content.css({
-					paddingBottom: public_vars.$mainFooter.outerHeight(true)
-				});
-			}
-
-
-
-			//返回顶部
-			$('body').on('click', 'a[rel="go-top"]', function(ev) {
-				ev.preventDefault();
-
-				var obj = {
-					pos: $(window).scrollTop()
-				};
-
-				TweenLite.to(obj, 0.3, {
-					pos: 0,
-					ease: Power4.easeOut,
-					onUpdate: function() {
-						$(window).scrollTop(obj.pos);
-					}
-				});
-			});
-
-
-
-
-			//用户信息下拉列表
-			if(public_vars.$userInfoMenu.length){
-				public_vars.$userInfoMenu.find('.user-info-menu > li').css({
-					minHeight: public_vars.$userInfoMenu.outerHeight() - 1
-				});
-			}
-
-
-			//表单验证
-			if($.isFunction($.fn.validate)) {
-				$("form.validate").each(function(i, el) {
-					var $this = $(el),
-						$errortip=$('.self-error-pos-tips',$this),
-						opts = {
-							rules: {},
-							messages: {},
-							errorElement: 'span',
-							errorClass: 'validate-has-error',
-							highlight: function (element) {
-								$(element).closest('.form-group').addClass('validate-has-error');
-							},
-							unhighlight: function (element) {
-								$(element).closest('.form-group').removeClass('validate-has-error');
-							},
-							errorPlacement: function (error, element)
-							{
-								if(element.hasClass('self-error-pos')){
-									error.insertAfter(element.closest('.self-error-pos-wrap'));
-								}else if(element.hasClass('self-error-tips')){
-									error.appendTo($errortip.html(''));
-								}else{
-									if(element.closest('.has-switch').length) {
-										error.insertAfter(element.closest('.has-switch'));
-									}
-									else if(element.parent('.checkbox, .radio').length || element.parent('.input-group').length) {
-										error.insertAfter(element.parent());
-									} else {
-										error.insertAfter(element);
-									}
-								}
-							}
-						},
-						$fields = $this.find('[data-validate]');
-
-					$fields.each(function(j, el2) {
-						var $field = $(el2),
-							name = $field.attr('name'),
-							validate = attrDefault($field, 'validate', '').toString(),
-							_validate = validate.split(',');
-
-
-						for(var k in _validate){
-							var rule = _validate[k],
-								params,
-								message;
-
-							if(typeof opts['rules'][name] == 'undefined'){
-								opts['rules'][name] = {};
-								opts['messages'][name] = {};
-							}
-
-
-
-							if($.inArray(rule, ['required', 'url', 'email', 'number', 'date','zh_phone','poe','money','num']) != -1){
-								opts['rules'][name][rule] = true;
-
-								message = $field.data('message-' + rule);
-
-								if(message){
-									opts['messages'][name][rule] = message;
-								}
-							} else if(params = rule.match(/(\w+)\[(.*?)\]/i)) {
-								if($.inArray(params[1], ['min', 'max', 'minlength', 'maxlength', 'dotminlength', 'dotmaxlength', 'equalTo']) != -1) {
-									opts['rules'][name][params[1]] = params[2];
-
-
-									message = $field.data('message-' + params[1])||$field.attr('data-message-'+ params[1]);
-
-									if(message) {
-										opts['messages'][name][params[1]] = message;
-									}
-								}
-							}
-						}
-					});
-
-
-
-					if(public_tool.cache){
-						public_tool.cache['form_opt_'+i]=opts;
-					}else{
-						$this.validate(opts);
-					}
-
-				});
-			}
-
-
-			//登陆获取焦点隐藏默认文字
-			$(".login-form .form-group:has(label)").each(function(i, el){
-				var $this = $(el),
-					$label = $this.find('label'),
-					$input = $this.find('.form-control');
-
-				$input.on('focus', function() {
-					$this.addClass('is-focused');
-				});
-
-				$input.on('keydown', function(){
-					$this.addClass('is-focused');
-				});
-
-				$input.on('blur', function() {
-					$this.removeClass('is-focused');
-
-					if($input.val().trim().length > 0)
-					{
-						$this.addClass('is-focused');
-					}
-				});
-
-				$label.on('click', function(){
-					$input.focus();
-				});
-
-				if($input.val().trim().length > 0) {
-					$this.addClass('is-focused');
-				}
-			});
-
-
-		}
-
-	});
-	
-	
-
-	function stickFooterToBottom($content,$wrap){
-		public_vars.$mainFooter.add($content).add( $wrap).attr('style', '');
-
-		if(isxs()){
-			return false;
-		}
-
-		if(public_vars.$mainFooter.hasClass('sticky')){
-			var win_height				 = jQuery(window).height(),
-				footer_height			= public_vars.$mainFooter.outerHeight(true),
-				main_content_height	  = public_vars.$mainFooter.position().top + footer_height,
-				main_content_height_only = main_content_height - footer_height,
-				extra_height			 = public_vars.$horizontalNavbar.outerHeight();
-
-
-			if(win_height > main_content_height - parseInt(public_vars.$mainFooter.css('marginTop'), 10))
-			{
-				public_vars.$mainFooter.css({
-					marginTop: win_height - main_content_height - extra_height
-				});
-			}
-		}
-	}
-
-
-
-	
-})(jQuery, window);
-
-	//设置属性
-	function attrDefault($el, data_var, default_val){
-		if(typeof $el.data(data_var) !=='undefined'){
-			return $el.data(data_var);
-		}
-		return default_val;
-	}
 
