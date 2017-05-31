@@ -4,8 +4,6 @@
 }
 
 .layout-header-wrap {
-  .layout-base();
-  width: @layout-header-width;
   height: @layout-header-height;
   background-color: rgba(4, 13, 20, .9);
 }
@@ -16,7 +14,7 @@
   height: 100%;
   width: @body-min-width;
   margin: 0 auto;
-  /*logo*/
+  /*图标*/
   .header-logo {
     width: 100px;
     height: 100%;
@@ -25,13 +23,13 @@
     background-size: auto 40px;
     overflow: hidden;
   }
-  /*menu*/
+  /*菜单容器*/
   .header-menu {
     .layout-float-base(@body-min-width - @header-logo-width - 2, border-box, right);
     height: 100%;
     text-align: right;
   }
-;
+  /*导航通用*/
   .header-nav,
   .header-center,
   .header-action {
@@ -46,23 +44,41 @@
     height: 100%;
     display: inline-block;
   }
+  .header-center >div,
+  .header-account >div{
+    width:100%;
+    height:100%;
+    display: inline-block;
+  }
   .header-nav li a,
   .header-center a,
   .header-account a {
+    .transition-base(all .2s ease-in .01s);
     display: inline-block;
     padding: 20px 30px;
     line-height: 20px;
-    margin:0;
     height: 100%;
     font-size: @font-size-base;
     text-align: center;
     color: @color-white;
     &:hover {
       background: @color-gray15;
+      color: @color-orange1;
     }
   }
   .header-active {
     background: @color-orange1;
+    font-weight: bold;
+  }
+
+  /*菜单图标*/
+  .menu-icon-center {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    vertical-align: middle;
+    background: url('../images/menu_icon_center.png') no-repeat left center;
+    overflow: hidden;
   }
 }
 
