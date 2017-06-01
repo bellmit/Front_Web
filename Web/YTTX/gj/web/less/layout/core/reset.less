@@ -1,9 +1,9 @@
 /*主体*/
 body{
   .layout-base();
-  width:100vm;
   height:100%;
   background:@color-white;
+  max-width:@body-max-width;
   min-width:@body-min-width;
 }
 
@@ -11,8 +11,14 @@ body{
   padding-top:@layout-header-height;
 }
 
-.layout-def-wrap{
+/*默认外部容器*/
+.layout-default-wrap{
   .layout-base();
-  width:@body-width;
   min-width:@body-min-width;
+}
+/*默认内部容器*/
+.content-default-wrap{
+  display: block;
+  width: @body-min-width;
+  margin: 0 auto;
 }
