@@ -1,61 +1,134 @@
 /*轮播图*/
-.layout-slide-wrap{
-  height:816px;
-  margin-top:-@layout-header-height;
+.layout-slide-wrap {
+  height: 816px;
+  margin-top: -@layout-header-height;
 }
 
 /*牌照*/
-.layout-license-wrap{
-  min-height:420px;
-  max-height:620px;
-  .license-wrap{
-    @img-height:153px;
+.layout-license-wrap {
+  min-height: 420px;
+  max-height: 620px;
+  .license-wrap {
+    @img-height: 153px;
 
-    height:100%;
+    height: 100%;
     text-align: center;
-    padding:80px 0;
-    font-size:0;
-    >li{
+    padding: 80px 0;
+    font-size: 0;
+    > li {
       .layout-base(33%);
-      display:inline-block;
-      h3,p{
-        &::-moz-selection{
-          color:@color-orange1;
-          background:@color-gray13;
+      display: inline-block;
+      div {
+        height: @img-height;
+        width: 100%;
+        margin: 0 0 30px 0;
+      }
+      h3, p {
+        &::-moz-selection {
+          color: @color-orange1;
+          background: @color-gray13;
         }
-        &::selection{
-          color:@color-orange1;
-          background:@color-gray13;
+        &::selection {
+          color: @color-orange1;
+          background: @color-gray13;
         }
       }
-      h3{
-        font-size:@font-size-base + 2;
-        color:@color-gray3;
-        margin:0 0 5px 0;
+      h3 {
+        font-size: @font-size-base + 2;
+        color: @color-gray3;
+        margin: 0 0 5px 0;
         .text-of();
         text-align: center;
         line-height: @font-size-base + 6;
       }
-      p{
-        font-size:@font-size-base;
-        color:@color-gray9;
+      p {
+        font-size: @font-size-base;
+        color: @color-gray9;
         text-align: left;
-        text-indent: 2em;
         .text-ww();
         line-height: @font-size-base + 4;
       }
     }
-    .license-item-l{
-      padding:@img-height + 30 40px 0 0;
-      background:transparent url("../images/zcdl.png") no-repeat center top;
+    .license-item-l {
+      padding: 0 40px 0 0;
+      div {
+        background: transparent url("../images/zcdl.png") no-repeat center top;
+      }
     }
-    .license-item-c{
-      padding:@img-height + 30 40px 0 40px;
-      background:transparent url("../images/zjh.png") no-repeat center top;
+    .license-item-c {
+      padding: 0 40px 0 40px;
+      div {
+        background: transparent url("../images/zjh.png") no-repeat center top;
+      }
     }
-    .license-item-r{
-      padding:@img-height + 30 0 0 40px;
-      background:transparent url("../images/zcbh.png") no-repeat center top;
+    .license-item-r {
+      padding: 0 0 0 40px;
+      div {
+        background: transparent url("../images/zcbh.png") no-repeat center top;
+      }
+    }
+  }
+}
+
+/*下载*/
+.layout-download-wrap {
+  @download-height:760px;
+  @download-img: 490px;
+
+  min-height: @download-height;
+  max-height: @download-height + 100;
+  background: @color-orange1 url('../images/download.png') no-repeat center bottom;
+  .download-wrap {
+    min-height:@download-height;
+    padding:80px 0 @download-img + 60 0;
+    .download-theme,
+    .download-btn{
+      text-align: center;
+      .user-select-base();
+      color:@color-white;
+    }
+    .download-theme{
+      width:100%;
+      height:40px;
+      font-size:@font-size-base + 16;
+      line-height:40px;
+      .text-of();
+      margin:0 0 40px 0;
+    }
+    .download-btn{
+
+      @btn-circle-width:34px;
+      @btn-height:52px;
+
+      margin:0 auto;
+      .layout-base(230px);
+      height:@btn-height;
+      .border-radius-base(5px);
+      border:1px solid @color-white;
+      background:@color-orange1;
+      cursor: pointer;
+      line-height:@btn-height;
+      font-size:@font-size-base + 10;
+      //overflow: hidden;
+      &:before{
+        content:'\e64c';
+        font-family: 'ux_eight';
+        line-height: @btn-circle-width;
+        font-weight: bold;
+        .layout-base(@btn-circle-width);
+        height:@btn-circle-width;
+        display:inline-block;
+        .border-radius-base(50%);
+        border:1px solid @color-white;
+        vertical-align: middle;
+        margin:-(@btn-height - @btn-circle-width - 2) / 2 18px 0 0;
+      }
+      &:hover{
+        background:darken(@color-orange1,2%);
+      }
+      &:active{
+        background:darken(@color-orange1,4%);
+      }
     }
   }
 }
