@@ -1,9 +1,109 @@
 /*底部*/
-.layout-footer-wrap{
+.layout-footer-wrap {
   min-height: 280px;
   background: @color-gray15;
   .footer-wrap {
     height: 100%;
     padding: 60px 0 20px 0;
+  }
+
+  @foot-main-width: 780px;
+  .footer-info-main {
+    @foot-main-gapl: 20px;
+    @foot-main-gapr: 40px;
+
+    .layout-float-base(@foot-main-width);
+    min-height: 180px;
+    padding: 0 @foot-main-gapr 0 @foot-main-gapl;
+    border-right: 1px dashed @color-gray9;
+    /*申明*/
+    .info-statement {
+      .layout-base();
+      padding: 10px 0;
+      font-size: 0;
+      li {
+        display: inline-block;
+        padding: 0 20px;
+        border-left: 1px dotted @color-gray9;
+        &:first-child {
+          padding-left: 0;
+          border-left: none;
+        }
+        a {
+          display: inline-block;
+          font-size: @font-size-base + 2;
+          color: darken(@color-gray10, 2.2%);
+          &:hover {
+            color: @color-gray8;
+          }
+        }
+      }
+    }
+    /*提示*/
+    .info-tips {
+      .layout-base();
+      padding: 10px 0;
+      line-height: @font-size-base + 4;
+      font-size: @font-size-base - 2;
+      color: darken(@color-gray10, 2.2%);
+      .text-ww();
+    }
+    /*公司商标，广告*/
+    .info-banner {
+      @banner-width: 205px;
+
+      .layout-base();
+      padding: 10px 0;
+      margin: 20px 0 10px 0;
+      section {
+        width: @banner-width;
+        height: 34px;
+        overflow: hidden;
+        float: left;
+        background: url('../images/footer_banner.png') no-repeat 0 0;
+        &:hover {
+          background: url('../images/footer_banner.png') no-repeat 0 -34px;
+        }
+      }
+      p {
+        .layout-base(@foot-main-width - (@foot-main-gapl + @foot-main-gapr) - @banner-width - 20);
+        float: right;
+        line-height: @font-size-base + 4;
+        font-size: @font-size-base - 2;
+        color: darken(@color-gray10, 2.2%);
+        .text-ww();
+      }
+    }
+  }
+  .footer-info-side {
+    .layout-float-base(@body-min-width - @foot-main-width);
+    min-height: 180px;
+    padding: 0 20px;
+    .info-show{
+      .layout-base();
+      display:inline-block;
+      text-align: center;
+      padding:3px 0;
+    }
+    .info-title {
+      font-size: @font-size-base - 2;
+      color: darken(@color-gray10, 2.2%);
+      line-height: @font-size-base + 4;
+      .text-ww();
+    }
+    .info-telephone{
+      font-size: @font-size-base + 12;
+      color:@color-orange1;
+      font-weight: bold;
+      .text-of();
+    }
+    .info-plugin{
+      font-size:0;
+      text-align: center;
+      li{
+        display:inline-block;
+        .layout-base(33%);
+      }
+    }
   }
 }
