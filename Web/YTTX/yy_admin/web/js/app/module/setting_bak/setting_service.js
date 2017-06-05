@@ -5,9 +5,7 @@ angular.module('app')
         var self=this,
             module_id=90/*模块id*/,
             cache=loginService.getCache(),
-            manageform_reset_timer=null,
-            temptable=null/*上一次table缓存*/;
-
+            manageform_reset_timer=null;
 
         var powermap=powerService.getCurrentPower(module_id);
 
@@ -713,32 +711,22 @@ angular.module('app')
 
 
         /*数据服务--请求数据--获取表格数据*/
-        this.getColumnData=function (table,record,flag){
+        this.getColumnData=function (table,record){
             if(cache===null){
                 return false;
             }else if(!table && !record){
                 return false;
             }
-
             /*参数赋值*/
             table.list1_config.config.ajax.data['adminId']=record.adminId;
             table.list1_config.config.ajax.data['token']=record.token;
             /*初始请求*/
-            if(flag){
-                /*存在上一次列表缓存*/
-                if(temptable!==null){
-                    /*摧毁之前数据*/
-                    temptable.destroy();
-                    table.list_table=null;
-                    temptable=null;
-                }
-                table.list_table=self.$admin_list_wrap.DataTable(table.list1_config.config);
-                temptable=table.list_table;
-                /*调用按钮操作*/
-                dataTableItemActionService.initItemAction(table.tableitemaction);
-            }else{
-                table.list_table.ajax.config(table.list1_config.config.ajax).load();
+            if(table.list_table!==null){
+                table.list_table.destroy();
             }
+            table.list_table=/*$('#admin_list_wrap')*/self.$admin_list_wrap.DataTable(table.list1_config.config);
+            /*调用按钮操作*/
+            dataTableItemActionService.initItemAction(table.tableitemaction);
         };
         /*数据服务--请求数据--获取表格数据(备份)*/
         /*this.getColumnData=function (table,record){

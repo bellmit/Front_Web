@@ -191,9 +191,5 @@ angular.module('app')
         /*切换路由时更新dom缓存*/
         settingService.initJQDom(jq_dom);
 
-
-        /**/
-
-
         settingService.getColumnData(self.table,self.record);
     }]);

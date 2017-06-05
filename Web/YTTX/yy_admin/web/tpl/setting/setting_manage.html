@@ -9,38 +9,44 @@
 <!--查询管理-->
 <div class="admin-action-item">
 
+
+
+    <div class="action-item-input g-w-percent12">
+        <label class="action-indent-b4">每页显示:
+            <select class="form-control g-clear-pt g-clear-pb" ng-init="setting_ctrl.record.pageSize=1" ng-model="setting_ctrl.record.pageSize" ng-options="item in setting_ctrl.pageSizeItem"></select>
+            条数据
+        </label>
+    </div>
+
     <!--过滤-->
-    <div class="action-item-input g-w-percent15">
+    <div class="action-item-input g-f-r g-w-percent15">
         <label class="action-indent-b2">过滤:<input class="form-control input-sm" placeholder="" ng-model="setting_ctrl.manage.filter" ng-keyup="setting_ctrl.filterDataTable()"  type="search"></label>
     </div>
 </div>
 
 
 <!--表格-->
-<table ng-init="setting_ctrl.getColumnData()" id="admin_list_wrap" class="table table-bordered table-striped table-hover admin-layout-table">
-    <!--分组样式-->
-    <colgroup>
-        <col class="g-w-percent15">
-        <col class="g-w-percent10">
-        <col class="g-w-percent10">
-        <col class="g-w-percent15">
-    </colgroup>
+<div ng-init="setting_ctrl.getColumnData('init')">
+    <table id="admin_list_wrap" class="table table-bordered table-striped table-hover admin-layout-table">
+        <!--分组样式-->
+        <colgroup>
+            <col class="g-w-percent15">
+            <col class="g-w-percent10">
+            <col class="g-w-percent10">
+            <col class="g-w-percent15">
+        </colgroup>
 
-    <!--表头-->
-    <thead>
-    <tr>
-        <th>姓名</th>
-        <th>是否指定运营商</th>
-        <th>是否指定权限</th>
-        <th>操作</th>
-    </tr>
-    </thead>
+        <!--表头-->
+        <thead>
+        <tr>
+            <th>姓名</th>
+            <th>是否指定运营商</th>
+            <th>是否指定权限</th>
+            <th>操作</th>
+        </tr>
+        </thead>
 
-    <!--表主体-->
-    <tbody id="admin_batchlist_wrap" class="middle-align"></tbody>
-</table>
-
-<!--分页-->
-<div class="admin-page-wrap">
-    <div class="easyui-pagination g-w-percent50" id="admin_page_wrap" data-options="links:5,layout:['manual','first','prev','links','next','last'],displayMsg:'显示{from}&nbsp;到&nbsp;{to}&nbsp;共&nbsp;{total}条记录'"></div>
+        <!--表主体-->
+        <tbody id="admin_batchlist_wrap" class="middle-align"></tbody>
+    </table>
 </div>

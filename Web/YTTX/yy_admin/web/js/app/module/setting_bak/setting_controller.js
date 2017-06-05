@@ -41,15 +41,6 @@ angular.module('app')
             };
         jq_dom['$allstruct']=jq_dom.$admin_struct_menu.prev().find('label');
 
-        /*模型--分页显示条数*/
-        this.pageSizeItem=[
-            {1:1},
-            {10:10},
-            {15:15},
-            {20:20}
-        ];
-
-
         /*切换路由时更新dom缓存*/
         settingService.initJQDom(jq_dom);
         settingService.initJQDomForPower(jq_dom_power);
@@ -64,7 +55,6 @@ angular.module('app')
 
         /*模型--操作记录*/
         this.record={
-            pageSize:1,
             searchactive:''/*搜索激活状态*/,
             searchname:''/*搜索关键词*/,
             organizationId:''/*操作id*/,
@@ -395,164 +385,201 @@ angular.module('app')
             });
         };
 
-        /*数据列表服务--切换每页数据*/
-        this.changeDTTL=function (value) {
-            settingService.filterDataTable(self.table.list_table,self.manage);
-        };
+
         /*数据列表服务--过滤数据*/
         this.filterDataTable=function () {
           settingService.filterDataTable(self.table.list_table,self.manage);
         };
         /*数据列表服务--查询子管理列表*/
-        this.getColumnData=function (type) {
-            if(typeof type!=='undefined' && type==='init'){
-                /*判断是否是初始化加载*/
-                /*更新节点*/
-                var temp_dom={
-                    $admin_list_wrap:$('#admin_list_wrap'),
-                    $admin_batchlist_wrap:$('#admin_batchlist_wrap')
-                };
-                /*更新节点*/
-                jq_dom['$admin_list_wrap']=temp_dom.$admin_list_wrap;
-                jq_dom['$admin_batchlist_wrap']=temp_dom.$admin_batchlist_wrap;
-                /*更新服务节点*/
-                settingService.initJQDom(temp_dom);
-                /*创建table模型*/
-                self.table['list1_config']={
-                    config:{
-                        processing:true,/*大消耗操作时是否显示处理状态*/
-                        deferRender:true,/*是否延迟加载数据*/
-                        autoWidth:true,/*是否*/
-                        paging:true,
-                        pagingType:'simple_numbers',/*分页按钮排列*/
-                        aLengthMenu: [
-                            [1,10,15],
-                            [1,10,15]
-                        ],
-                        lengthChange:true,/*是否可改变长度*/
-                        ajax:{
-                            url:toolUtil.adaptReqUrl('/sysuser/child/list'),
-                            dataType:'JSON',
-                            method:'post',
-                            dataSrc:function ( json ) {
-                                var code=parseInt(json.code,10),
-                                    message=json.message;
+        this.getColumnData=function () {
+            /*更新节点*/
+            var temp_dom={
+                $admin_page_wrap:$('#admin_page_wrap'),
+                $admin_list_wrap:$('#admin_list_wrap'),
+                $admin_batchlist_wrap:$('#admin_batchlist_wrap')
+            };
+            /*更新节点*/
+            jq_dom['$admin_page_wrap']=temp_dom.$admin_page_wrap;
+            jq_dom['$admin_list_wrap']=temp_dom.$admin_list_wrap;
+            jq_dom['$admin_batchlist_wrap']=temp_dom.$admin_batchlist_wrap;
+            /*创建table模型*/
+            self.table['list1_page']={
+                page:1,
+                pageSize:1,
+                total:0
+            };
+            self.table['list1_config']={
+                config:{
+                    processing:true,/*大消耗操作时是否显示处理状态*/
+                    deferRender:true,/*是否延迟加载数据*/
+                    autoWidth:true,/*是否*/
+                    paging:false,
+                    ajax:{
+                        url:toolUtil.adaptReqUrl('/sysuser/child/list'),
+                        dataType:'JSON',
+                        method:'post',
+                        dataSrc:function ( json ) {
+                            var code=parseInt(json.code,10),
+                                message=json.message;
 
-                                if(code!==0){
-                                    if(typeof message !=='undefined' && message!==''){
-                                        console.log(message);
-                                    }else{
-                                        console.log('获取子管理失败');
-                                    }
-                                    if(code===999){
-                                        /*退出系统*/
-                                        toolUtil.loginTips({
-                                            clear:true,
-                                            reload:true
-                                        });
-                                    }
-                                    return [];
-                                }
-                                var result=json.result;
-                                if(typeof result==='undefined'){
-                                    return [];
-                                }
-
-                                if(result){
-                                    var list=result.list;
-                                    if(!list){
-                                        return [];
-                                    }
-                                    return list.length===0?[]:list;
+                            if(code!==0){
+                                if(typeof message !=='undefined' && message!==''){
+                                    console.log(message);
                                 }else{
-                                    /*重置分页*/
+                                    console.log('获取子管理失败');
+                                }
+                                if(code===999){
+                                    /*退出系统*/
+                                    toolUtil.loginTips({
+                                        clear:true,
+                                        reload:true
+                                    });
+                                }
+                                return [];
+                            }
+                            var result=json.result;
+                            if(typeof result==='undefined'){
+                                /*重置分页*/
+                                self.table.list1_page.total=0;
+                                self.table.list1_page.page=1;
+                                jq_dom.$admin_page_wrap.pagination({
+                                    pageNumber:self.table.list1_page.page,
+                                    pageSize:self.table.list1_page.pageSize,
+                                    total:self.table.list1_page.total
+                                });
+                                return [];
+                            }
+
+                            if(result){
+                                /*设置分页*/
+                                self.table.list1_page.total=result.count;
+                                /*分页调用*/
+                                jq_dom.$admin_page_wrap.pagination({
+                                    pageNumber:self.table.list1_page.page,
+                                    pageSize:self.table.list1_page.pageSize,
+                                    total:self.table.list1_page.total,
+                                    onSelectPage:function(pageNumber,pageSize){
+                                        /*再次查询*/
+                                        var temp_param=self.table.list1_config.config.ajax.data;
+                                        self.table.list1_page.page=pageNumber;
+                                        self.table.list1_page.pageSize=pageSize;
+                                        temp_param['page']=self.table.list1_page.page;
+                                        temp_param['pageSize']=self.table.list1_page.pageSize;
+                                        self.table.list1_config.config.ajax.data=temp_param;
+                                        settingService.getColumnData(self.table,self.record);
+                                    }
+                                });
+
+                                var list=result.list;
+                                if(list){
+                                    var vi=0,
+                                        vlen=list.length;
+                                    for(vi;vi<vlen;vi++){
+                                        if(!list[vi] || list[vi]===null){
+                                            return [];
+                                        }
+                                    }
+                                    return list;
+                                }else{
                                     return [];
                                 }
-                            },
-                            data:{}
+                            }else{
+                                /*重置分页*/
+                                self.table.list1_page.total=0;
+                                self.table.list1_page.page=1;
+                                jq_dom.$admin_page_wrap.pagination({
+                                    pageNumber:self.table.list1_page.page,
+                                    pageSize:self.table.list1_page.pageSize,
+                                    total:self.table.list1_page.total
+                                });
+                                return [];
+                            }
                         },
-                        info:true,
-                        dom:'<"g-d-hidei" s>tp',
-                        searching:true,
-                        order:[[1, "desc" ]],
-                        columns: [
-                            {
-                                "data":"fullname"
-                            },
-                            {
-                                "data":"isDesignatedOrg",
-                                "render":function(data, type, full, meta ){
-                                    var designatedOrg=parseInt(data,10);
-                                    if(designatedOrg===0){
-                                        return '<div class="g-c-blue3">本机构级下属机构</div>';
-                                    }else if(designatedOrg===1){
-                                        return '<div class="g-c-blue3">指定机构</div>';
-                                    }else{
-                                        return '<div class="g-c-warn">其他</div>';
-                                    }
-                                }
-                            },
-                            {
-                                "data":"isDesignatedPermit",
-                                "render":function(data, type, full, meta ){
-                                    var designatedPermit=parseInt(data,10);
-                                    if(designatedPermit===0){
-                                        return '<div class="g-c-blue3">全部权限</div>';
-                                    }else if(designatedPermit===1){
-                                        return '<div class="g-c-blue3">指定权限</div>';
-                                    }else{
-                                        return '<div class="g-c-warn">其他</div>';
-                                    }
-                                }
-                            },
-                            {
-                                /*to do*/
-                                "data":"id",
-                                "render":function(data, type, full, meta ){
-                                    var btns='';
-
-                                    /*查看订单*/
-                                    if(self.powerlist.child_edit){
-                                        btns+='<span data-action="update" data-id="'+data+'"  class="btn-operate">编辑</span>';
-                                    }
-                                    if(self.powerlist.child_delete){
-                                        btns+='<span data-action="delete" data-id="'+data+'"  class="btn-operate">删除</span>';
-                                    }
-                                    return btns;
+                        data:{
+                            page:1,
+                            pageSize:1
+                        }
+                    },
+                    info:false,
+                    dom:'<"g-d-hidei" s>',
+                    searching:true,
+                    order:[[1, "desc" ]],
+                    columns: [
+                        {
+                            "data":"fullname"
+                        },
+                        {
+                            "data":"isDesignatedOrg",
+                            "render":function(data, type, full, meta ){
+                                var designatedOrg=parseInt(data,10);
+                                if(designatedOrg===0){
+                                    return '<div class="g-c-blue3">本机构级下属机构</div>';
+                                }else if(designatedOrg===1){
+                                    return '<div class="g-c-blue3">指定机构</div>';
+                                }else{
+                                    return '<div class="g-c-warn">其他</div>';
                                 }
                             }
-                        ]
-                    }
-                };
-                self.table['list_table']=null;
-                self.table['tableitemaction']={
-                    $bodywrap:jq_dom.$admin_batchlist_wrap,
-                    itemaction_api:{
-                        doItemAction:function(config){
-                            settingService.doItemAction({
-                                modal:{
-                                    type:'edit',
-                                    area:'manage',
-                                    display:'show'
-                                },
-                                record:self.record,
-                                manage:self.manage,
-                                table:self.table,
-                                power:self.power,
-                                type:'manage'
-                            },config);
+                        },
+                        {
+                            "data":"isDesignatedPermit",
+                            "render":function(data, type, full, meta ){
+                                var designatedPermit=parseInt(data,10);
+                                if(designatedPermit===0){
+                                    return '<div class="g-c-blue3">全部权限</div>';
+                                }else if(designatedPermit===1){
+                                    return '<div class="g-c-blue3">指定权限</div>';
+                                }else{
+                                    return '<div class="g-c-warn">其他</div>';
+                                }
+                            }
+                        },
+                        {
+                            /*to do*/
+                            "data":"id",
+                            "render":function(data, type, full, meta ){
+                                var btns='';
+
+                                /*查看订单*/
+                                if(self.powerlist.child_edit){
+                                    btns+='<span data-action="update" data-id="'+data+'"  class="btn-operate">编辑</span>';
+                                }
+                                if(self.powerlist.child_delete){
+                                    btns+='<span data-action="delete" data-id="'+data+'"  class="btn-operate">删除</span>';
+                                }
+                                return btns;
+                            }
                         }
+                    ]
+                }
+            };
+            self.table['list_table']=null;
+            self.table['tableitemaction']={
+                $bodywrap:jq_dom.$admin_batchlist_wrap,
+                itemaction_api:{
+                    doItemAction:function(config){
+                        settingService.doItemAction({
+                            modal:{
+                                type:'edit',
+                                area:'manage',
+                                display:'show'
+                            },
+                            record:self.record,
+                            manage:self.manage,
+                            table:self.table,
+                            power:self.power,
+                            type:'manage'
+                        },config);
                     }
-                };
-                /*请求数据*/
-                settingService.getColumnData(self.table,self.record,true);
-            }else{
-                /*请求数据*/
-                settingService.getColumnData(self.table,self.record,false);
-            }
+                }
+            };
+            /*更新服务节点*/
+            settingService.initJQDom(temp_dom);
+            /*请求数据*/
+            settingService.getColumnData(self.table,self.record);
         };
         this.testdata=function () {
-            this.getColumnData();
+            settingService.getColumnData(self.table,self.record);
         };
 
 

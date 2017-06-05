@@ -752,9 +752,11 @@ angular.module('app')
                                             if(len===0){
                                                 $wrap.html('');
                                                 /*清除显示下级菜单导航图标*/
-                                                config.$reqstate.attr({
-                                                    'data-isrequest':true
-                                                }).removeClass('sub-menu-title sub-menu-titleactive');
+                                                if(config.$reqstate){
+                                                    config.$reqstate.attr({
+                                                        'data-isrequest':true
+                                                    }).removeClass('sub-menu-title sub-menu-titleactive');
+                                                }
                                             }else{
                                                 /*数据集合，最多嵌套层次*/
                                                 str=self.resolveMemberList(list,BASE_CONFIG.submenulimit,{
