@@ -759,6 +759,13 @@ angular.module('app')
                 table.list_table.ajax.config(table.list1_config.config.ajax).load();
             }
         };*/
+        /*数据服务--切换每页数据*/
+        this.changeDTTL=function (list_table,pageSize) {
+            if(list_table===null){
+                return false;
+            }
+            list_table.page.len( pageSize ).draw();
+        };
         /*数据服务--过滤表格数据*/
         this.filterDataTable=function (list_table,manage) {
             if(list_table===null){

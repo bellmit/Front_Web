@@ -42,12 +42,19 @@ angular.module('app')
         jq_dom['$allstruct']=jq_dom.$admin_struct_menu.prev().find('label');
 
         /*模型--分页显示条数*/
-        this.pageSizeItem=[
-            {1:1},
-            {10:10},
-            {15:15},
-            {20:20}
-        ];
+        this.pageSizeItem=[{
+            'value':1,
+            'name':'1条记录'
+        },{
+            'value':15,
+            'name':'15条记录'
+        },{
+            'value':20,
+            'name':'20条记录'
+        },{
+            'value':30,
+            'name':'30条记录'
+        }];
 
 
         /*切换路由时更新dom缓存*/
@@ -396,8 +403,8 @@ angular.module('app')
         };
 
         /*数据列表服务--切换每页数据*/
-        this.changeDTTL=function (value) {
-            settingService.filterDataTable(self.table.list_table,self.manage);
+        this.changeDTTL=function () {
+            settingService.changeDTTL(self.table.list_table,self.record.pageSize);
         };
         /*数据列表服务--过滤数据*/
         this.filterDataTable=function () {
@@ -425,10 +432,7 @@ angular.module('app')
                         autoWidth:true,/*是否*/
                         paging:true,
                         pagingType:'simple_numbers',/*分页按钮排列*/
-                        aLengthMenu: [
-                            [1,10,15],
-                            [1,10,15]
-                        ],
+                        aLengthMenu:[self.record.pageSize],
                         lengthChange:true,/*是否可改变长度*/
                         ajax:{
                             url:toolUtil.adaptReqUrl('/sysuser/child/list'),
@@ -550,9 +554,6 @@ angular.module('app')
                 /*请求数据*/
                 settingService.getColumnData(self.table,self.record,false);
             }
-        };
-        this.testdata=function () {
-            this.getColumnData();
         };
 
 
