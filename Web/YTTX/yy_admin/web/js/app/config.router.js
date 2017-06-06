@@ -289,10 +289,9 @@ angular.module('app')
                         /*延迟加载，依赖相关组件*/
                         deps: ['$ocLazyLoad',
                             function ($ocLazyLoad) {
-                                return $ocLazyLoad.load([/*'js/plugins/datatables/dataTables.bootstrap.css',
+                                return $ocLazyLoad.load(['js/plugins/datatables/dataTables.bootstrap.css',
                                     'js/plugins/datatables/js/jquery.dataTables.js',
-                                    'js/plugins/pagination/pagination.js',
-                                    'js/app/services/datatable/datatable_itemaction_service.js',*/
+         'js/plugins/datatables/dataTables.bootstrap.js',                           'js/app/services/datatable/datatable_itemaction_service.js',
                                     'js/app/module/setting/setting_service.js',
                                     'js/app/module/setting/setting_controller.js']);
                             }]
@@ -307,6 +306,7 @@ angular.module('app')
                         deps: ['$ocLazyLoad',
                             function ($ocLazyLoad) {
                                 return $ocLazyLoad.load([
+                                    'js/app/directives/setting-profit.js',
                                     'js/app/module/setting/setting_service.js',
                                     'js/app/module/setting/setting_controller.js']);
                             }]

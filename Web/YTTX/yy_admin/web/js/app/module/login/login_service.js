@@ -84,8 +84,7 @@ angular.module('login.service',[])
         /*加载菜单数据*/
         this.loadMenuData=function (fn) {
             /*判断登陆缓存是否有效*/
-            var self=this,
-                islogin=self.isLogin();
+            var islogin=self.isLogin();
             if(islogin){
                 if(!cache.cacheMap.menuload){
                     toolUtil
@@ -155,8 +154,7 @@ angular.module('login.service',[])
         /*获取菜单数据*/
         this.getMenuData=function () {
             if(menudata===null){
-                var self=this,
-                    islogin=self.isLogin();
+                var islogin=self.isLogin();
 
                 if(islogin){
                     if(cache.cacheMap.menuload){

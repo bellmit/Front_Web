@@ -23,7 +23,6 @@
 .admin-quick-icon{
   @quick-item-width:@layout-content-width / 4;
   @quick-item-padding:@quick-item-width - @index-icon-wrap-width;
-
   font-size:0;
   >li{
     .layout-base(@quick-item-width);
@@ -33,7 +32,8 @@
       @quick-img-gap:20px;
       @quick-text-height:@index-icon-wrap-height - (@quick-img-gap * 2) - @index-icon-width;
 
-      .layout-float-base(@index-icon-wrap-width);
+      .layout-base(@index-icon-wrap-width);
+      margin:0 auto;
       display:block;
       cursor: pointer;
       text-align: center;
@@ -43,16 +43,8 @@
       &:hover{
         background:darken(@color-gray17,2%);
         span{
-          color:@color-red1;
+          color:@color-gray3;
         }
-      }
-      &:after,
-      &::after{
-        content:'';
-        clear: both;
-        display: table;
-        width:100%;
-        height:0;
       }
       img{
         width:@index-icon-width;
@@ -70,13 +62,5 @@
         .user-select-base;
       }
     }
-  }
-  >li:nth-child(4n){
-    >div{
-      float:right;
-    }
-  }
-  .quick-pull-left{
-    padding-left:@quick-item-padding / 4 !important;
   }
 }
