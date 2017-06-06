@@ -10,10 +10,25 @@
     <div class="g-w-percent38 g-f-r g-gap-pl1">
         <div class="setting-profit-item">
             <h3>分润配置</h3>
-            <form ng-submit="setting_ctrl.formSubmit('struct')" name="structFrom" role="form" novalidate method="post" class="admin-layout-form">
+            <form ng-submit="setting_ctrl.formSubmit('profit')" name="profitFrom" role="form" novalidate method="post" class="admin-layout-form">
                 <ul class="profit-main">
                     <li>
                        <h5>{{setting_ctrl.profitconfig.base.title}}</h5>
+                        <div class="g-w-percent25 form-group-self4">
+                            <input type="radio" ng-model="setting_ctrl.profitconfig.base.type" ng-value="1" name="basetype">:按全额为基数分润
+                        </div>
+                        <div class="g-w-percent25 form-group-self4">
+                            <input type="radio" ng-model="setting_ctrl.profitconfig.base.type" ng-value="2" name="basetype">:按全额的<input name="basepercent" type="text" ng-model="setting_ctrl.profitconfig.base.percent" maxlength="6">%为基数分
+                        </div>
+                        <div class="g-w-percent25  form-group-self4">
+                            <input type="radio" ng-model="setting_ctrl.profitconfig.base.type" ng-value="3" name="basetype">:按每用户<input name="basemoney" type="text" ng-model="setting_ctrl.profitconfig.base.money" maxlength="13">元进行提成
+                        </div>
+                        <div class="g-w-percent25 form-group-self4">
+                            <input type="radio" ng-model="setting_ctrl.profitconfig.base.type" ng-value="4" name="basetype">:按所得的<input name="basehave" type="text" ng-model="setting_ctrl.profitconfig.base.have" maxlength="6">%为基数
+                        </div>
+                        <div class="g-w-percent25  form-group-self4">
+                            <input type="radio" ng-model="setting_ctrl.profitconfig.base.type" ng-value="5" name="basetype">:按<input name="baseprice" type="text" ng-model="setting_ctrl.profitconfig.base.price" maxlength="13">元进行
+                        </div>
                     </li>
                     <li>
                         <h5>{{setting_ctrl.profitconfig.standard.title}}</h5>
