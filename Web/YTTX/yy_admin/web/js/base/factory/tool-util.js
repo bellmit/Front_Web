@@ -749,17 +749,14 @@
 					partz=partz.slice(1);
 				}
 			}
-			if(max){
-				if(partz.indexOf(',')!==-1){
-					var filterlen=partz.length,
-						k= 0,
-						filtercount=0;
-					for(k;k<filterlen;k++){
-						if(partx[k]===','){
-							filtercount++;
-						}
+			if(typeof max !=='undefined' && max > 3){
+				var filterlen=partz.length;
+				if((filterlen + 3) > max){
+					partz=partz.slice(0,max - 3);
+					filterlen=partz.length;
+					if(partz.charAt(filterlen - 1)===','){
+						partz=partz.slice(0,filterlen - 1);
 					}
-					partz=partz.slice(filtercount);
 				}
 			}
 			return [partz+partx,tempstr];

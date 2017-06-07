@@ -238,8 +238,8 @@
 		tools.supportDia=(function(){
 			return (typeof dialog==='function'&&dialog)?true:false;
 		}());
-		
-		
+
+
 		/*返回请求信息*/
 		tools.requestHttp=function (config) {
 			var req=config;
@@ -749,17 +749,27 @@
 					partz=partz.slice(1);
 				}
 			}
-			if(max){
-				if(partz.indexOf(',')!==-1){
-					var filterlen=partz.length,
-						k= 0,
-						filtercount=0;
-					for(k;k<filterlen;k++){
-						if(partx[k]===','){
-							filtercount++;
-						}
-					}
-					partz=partz.slice(filtercount);
+            console.log(max);
+			if(typeof max !=='undefined' && max > 3){
+                console.log('aaaa');
+				var filterlen=partz.length;
+                console.log(filterlen);
+                console.log(filterlen + 3 ,max);
+				if((filterlen + 3) > max){
+                        var k= 0,
+                        filtercount=0;
+                    for(k;k<filterlen;k++){
+                        if(partz[k]===','){
+                            filtercount++;
+                        }
+                    }
+                    console.log(filtercount);
+                    partz=partz.slice(0,filterlen - filtercount - 3);
+                    filterlen=partz.length;
+                    console.log(filterlen);
+                    if(partz.charAt(filterlen - 1)===','){
+                        partz.length=filterlen - 1;
+                    }
 				}
 			}
 			return [partz+partx,tempstr];
