@@ -1218,6 +1218,72 @@
       }
     }
   }
+  /*自定义表单4*/
+  .form-group-self4{
+    @tip-height:20px;
+    @input-height:42px;
+    .box-sizing-base();
+    min-height:@input-height;
+    display: inline-block;
+    padding:5px 10px;
+    font-size:0;
+
+    .self-label,
+    .self-input{
+      .box-sizing-base;
+      display: inline-block;
+      height:100%;
+    }
+    .self-label{
+      line-height:32px;
+      padding:0 10px;
+      font-weight: normal;
+      font-size:@font-size-base + 2;
+      color:@color-gray3;
+      .self-require{
+        display:inline-block;
+        padding:0 3px;
+        height:100%;
+        vertical-align: middle;
+        line-height:35px;
+      }
+    }
+
+
+    .self-input{
+      line-height:@input-height - 10;
+      font-size:@font-size-base;
+      color:@color-gray3;
+      input[type="text"],
+      input[type="password"],
+      textarea,
+      select{
+        .box-sizing-base();
+        display:inline-block;
+        border:1px solid @color-gray13;
+        font-size:@font-size-base;
+        color:@color-gray6;
+        &:focus{
+          border:1px solid @color-gray10;
+        }
+      }
+
+      input[type="text"],
+      input[type="password"]{
+        height:100%;
+        line-height:@font-size-base + 4;
+        padding:7px 2px;
+      }
+      select{
+        height:32px;
+      }
+      textarea{
+        min-height:100px;
+        padding:4px 5px;
+        line-height:@font-size-base + 10;
+      }
+    }
+  }
 
 
   /*查看属性，颜色，尺寸*/

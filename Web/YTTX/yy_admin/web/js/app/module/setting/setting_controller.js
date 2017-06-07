@@ -412,12 +412,12 @@ angular.module('app')
             },
             {
                 active: '',
-                id: 2,
+                id: 1,
                 name: '分润业务2'
             },
             {
                 active: '',
-                id: 3,
+                id: 2,
                 name: '分润业务3'
             }];
 
