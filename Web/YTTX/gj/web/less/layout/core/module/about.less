@@ -49,24 +49,59 @@
   }
 }
 
-.about_icon{
-  background-image: url(../images/about_icon.png);
-  width: 20px;
-  height: 20px
-}
-
-.about_icon1 {
-  background-position: 0 0
-}
-
-.about_icon2 {
-  background-position: -20px 0
-}
-
-.about_icon3 {
-  background-position: 0 -20px
-}
-
-.about_icon4 {
-  background-position: -20px -20px
+/*关于我们*/
+.layout-aboutus-wrap{
+  padding:90px 0;
+  background: lighten(@color-gray14, 2%);
+  .aboutus-wrap {
+    > li {
+      .layout-base();
+      p {
+         padding:2px 0;
+         font-size: @font-size-base;
+         color: @color-gray6;
+         line-height: @font-size-base + 10;
+         text-indent:2em;
+        &::-moz-selection {
+          color: @color-orange1;
+          background: @color-gray13;
+        }
+        &::selection {
+          color: @color-orange1;
+          background: @color-gray13;
+        }
+      }
+    }
+    .aboutus-info{
+      padding:0 0 60px 0;
+      p{
+        .text-ww();
+      }
+    }
+    .aboutus-contact{
+      border-top:1px dashed darken(@color-gray13,4.4%);
+      padding:60px 0 0 0;
+    }
+    .about_icon{
+      background-image: url(../images/about_icon.png);
+      width: 20px;
+      height: 20px;
+      display:inline-block;
+      overflow: hidden;
+      vertical-align: middle;
+      margin:0 15px 0 0;
+    }
+    .about_icon1 {
+      background-position: 0 0
+    }
+    .about_icon2 {
+      background-position: -20px 0
+    }
+    .about_icon3 {
+      background-position: 0 -20px
+    }
+    .about_icon4 {
+      background-position: -20px -20px
+    }
+  }
 }
