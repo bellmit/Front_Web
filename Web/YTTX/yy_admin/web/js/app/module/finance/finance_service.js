@@ -172,15 +172,15 @@ angular.module('app')
 
             toolUtil
                 .requestHttp({
-                    url:/*'/organization/goodsorder/details'*/'json/test.json',
+                    url:'/organization/goodsorder/details'/*'json/test.json'*/,
                     method:'post',
                     set:true,
-                    debug:true,/*测试开关*/
+                    debug:false,/*测试开关*/
                     data:param
                 })
                 .then(function(resp){
                         /*测试代码*/
-                        var resp=self.testGetOrderDetail();
+                        /*var resp=self.testGetOrderDetail();*/
 
                         var data=resp.data,
                             status=parseInt(resp.status,10);
@@ -335,11 +335,7 @@ angular.module('app')
                     });
                     return false;
                 }
-                /*注意：
-                * to do
-                * 状态待定
-                * */
-                state=0;
+                state=2;
             }else if(type==='base'){
                 /*单个处理*/
                 var id=config.id;
@@ -358,24 +354,24 @@ angular.module('app')
                 /*适配参数*/
                 var param=$.extend(true,{},cache.loginMap.param);
                 if(type==='batch'){
-                    param['checkedOrderIds']=batchdata.join(',');
+                    param['psids']=batchdata.join(',');
                 }else if(type==='base'){
-                    param['checkedOrderIds']=id;
+                    param['psids']=id;
                 }
-                param['state']=state;
+                param['state']=2;
 
                 /*执行清算操作*/
                 toolUtil
                     .requestHttp({
-                        url:/*'/finance/profit/clear/state'*/'json/test.json',
+                        url:'/finance/profit/clear/state'/*'json/test.json'*/,
                         method:'post',
                         set:true,
-                        debug:true,/*测试开关*/
+                        debug:false,/*测试开关*/
                         data:param
                     })
                     .then(function(resp){
                             /*测试代码*/
-                            var resp=self.testClear();
+                            /*var resp=self.testClear();*/
 
                             var data=resp.data,
                                 status=parseInt(resp.status,10);

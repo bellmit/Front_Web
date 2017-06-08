@@ -128,15 +128,15 @@ angular.module('app')
 
             toolUtil
                 .requestHttp({
-                    url:/*'/organization/goodsorder/details'*/'json/test.json',
+                    url:'/organization/goodsorder/details'/*'json/test.json'*/,
                     method:'post',
                     set:true,
-                    debug:true,/*测试开关*/
+                    debug:false,/*测试开关*/
                     data:param
                 })
                 .then(function(resp){
                         /*测试代码*/
-                        var resp=self.testGetOrderDetail();
+                        /*var resp=self.testGetOrderDetail();*/
 
                         var data=resp.data,
                             status=parseInt(resp.status,10);

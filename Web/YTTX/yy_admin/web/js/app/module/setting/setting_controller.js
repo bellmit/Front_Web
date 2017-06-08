@@ -164,7 +164,6 @@ angular.module('app')
                 manage: self.manage,
                 pwd: self.pwd,
                 table: self.table,
-                profit:self.profit,
                 struct: self.struct
             }, type);
         };
@@ -409,17 +408,7 @@ angular.module('app')
             self.profitlist = [{
                 active: 'profitactive',
                 id: 1,
-                name: '分润业务1'
-            },
-            {
-                active: '',
-                id: 1,
-                name: '分润业务2'
-            },
-            {
-                active: '',
-                id: 1,
-                name: '分润业务3'
+                name: '默认分润业务'
             }];
 
             if (self.profitlist.length === 0) {
@@ -446,7 +435,13 @@ angular.module('app')
                 profit:self.profit
             });
         };
-
+        /*分润设置服务--设置分润配置*/
+        this.settingProfit=function (type) {
+            settingService.settingProfit({
+                record: self.record,
+                profit:self.profit
+            },type);
+        };
 
         /*搜索服务--搜索过滤*/
         this.searchAction = function () {

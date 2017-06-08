@@ -96,12 +96,12 @@ angular.module('app')
                     autoWidth:true,/*是否*/
                     paging:false,
                     ajax:{
-                        url:/*toolUtil.adaptReqUrl('/finance/profit/stats/list')*/'json/test.json',
+                        url:toolUtil.adaptReqUrl('/finance/profit/stats/list')/*'json/test.json'*/,
                         dataType:'JSON',
                         method:'post',
                         dataSrc:function ( json ) {
                             /*测试类*/
-                            var json=financeService.testGetFinanceList(1);
+                            /*var json=financeService.testGetFinanceList(1);*/
 
                             var code=parseInt(json.code,10),
                                 message=json.message;
@@ -259,7 +259,7 @@ angular.module('app')
                                 }
                                 if(full.state!=='' && !isNaN(full.state)){
                                     var state=parseInt(full.state,10);
-                                    if(self.powerlist.profit_clear && (state===0 || state===1)){
+                                    if(self.powerlist.profit_clear && state===2){
                                         btns+='<span data-action="clear" data-state="'+state+'"  data-id="'+data+'"  class="btn-operate">清算</span>';
                                     }
                                 }
@@ -276,12 +276,12 @@ angular.module('app')
                     autoWidth:true,/*是否*/
                     paging:false,
                     ajax:{
-                        url:/*toolUtil.adaptReqUrl('/finance/profit/stats/history')*/'json/test.json',
+                        url:toolUtil.adaptReqUrl('/finance/profit/stats/history')/*'json/test.json'*/,
                         dataType:'JSON',
                         method:'post',
                         dataSrc:function ( json ) {
                             /*测试类*/
-                            var json=financeService.testGetFinanceList(2);
+                            /*var json=financeService.testGetFinanceList(2);*/
 
                             var code=parseInt(json.code,10),
                                 message=json.message;
@@ -452,7 +452,7 @@ angular.module('app')
                                 }
                                 if(full.state!=='' && !isNaN(full.state)){
                                     var state=parseInt(full.state,10);
-                                    if(self.powerlist.profit_clear && (state===0 || state===1)){
+                                    if(self.powerlist.profit_clear && state===2){
                                         btns+='<span data-action="clear" data-state="'+state+'"  data-id="'+data+'"  class="btn-operate">清算</span>';
                                     }
                                 }
@@ -469,12 +469,12 @@ angular.module('app')
                     autoWidth:true,/*是否*/
                     paging:false,
                     ajax:{
-                        url:/*toolUtil.adaptReqUrl('/finance/profit/clear/list')*/'json/test.json',
+                        url:toolUtil.adaptReqUrl('/finance/profit/clear/list')/*'json/test.json'*/,
                         dataType:'JSON',
                         method:'post',
                         dataSrc:function ( json ) {
                             /*测试类*/
-                            var json=financeService.testGetFinanceList(3);
+                            /*var json=financeService.testGetFinanceList(3);*/
 
 
                             var code=parseInt(json.code,10),
@@ -633,7 +633,7 @@ angular.module('app')
                                 }
                                 if(full.state!=='' && !isNaN(full.state)){
                                     var state=parseInt(full.state,10);
-                                    if(self.powerlist.profit_clear && (state===0 || state===1)){
+                                    if(self.powerlist.profit_clear && state===2){
                                         btns+='<span data-action="clear" data-state="'+state+'"  data-id="'+data+'"  class="btn-operate">清算</span>';
                                     }
                                 }
@@ -650,12 +650,12 @@ angular.module('app')
                     autoWidth:true,/*是否*/
                     paging:false,
                     ajax:{
-                        url:/*toolUtil.adaptReqUrl('/finance/profit/clear/history')*/'json/test.json',
+                        url:toolUtil.adaptReqUrl('/finance/profit/clear/history')/*'json/test.json'*/,
                         dataType:'JSON',
                         method:'post',
                         dataSrc:function ( json ) {
                             /*测试类*/
-                            var json=financeService.testGetFinanceList(4);
+                            /*var json=financeService.testGetFinanceList(4);*/
 
                             var code=parseInt(json.code,10),
                                 message=json.message;
@@ -826,7 +826,7 @@ angular.module('app')
                                 }
                                 if(full.state!=='' && !isNaN(full.state)){
                                     var state=parseInt(full.state,10);
-                                    if(self.powerlist.profit_clear && (state===0 || state===1)){
+                                    if(self.powerlist.profit_clear && state===2){
                                         btns+='<span data-action="clear" data-state="'+state+'" data-id="'+data+'"  class="btn-operate">清算</span>';
                                     }
                                 }
