@@ -889,6 +889,29 @@
 			r2=Number(txt1.replace(/\.*/g,''));
 			return (r1/r2)*Math.pow(10,t2-t1);
 		};
+		///返回数组索引
+		tools.arrIndex=function (str,arr) {
+			if(typeof str==='undefined'){
+				return -1;
+			}
+			if(!arr){
+				return -1;
+			}
+			var len=arr.length,
+				i=0;
+			if(len===0){
+				return -1;
+			}else{
+				for(i;i<len;i++){
+					if(str===arr[i]){
+						return i;
+					}
+				}
+				return -1;
+			}
+		};
+
+
 
 		/*获取路由信息*/
 		tools.getRoute=function(cache){

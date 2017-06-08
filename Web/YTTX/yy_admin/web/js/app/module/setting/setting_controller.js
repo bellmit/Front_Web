@@ -131,7 +131,7 @@ angular.module('app')
         this.profitlist = [];
 
         /*模型--分润配置*/
-        this.profitconfig={
+        this.profit={
             /*基数设置*/
             base:{
                 title:'分润基数设置',
@@ -164,6 +164,7 @@ angular.module('app')
                 manage: self.manage,
                 pwd: self.pwd,
                 table: self.table,
+                profit:self.profit,
                 struct: self.struct
             }, type);
         };
@@ -417,7 +418,7 @@ angular.module('app')
             },
             {
                 active: '',
-                id: 2,
+                id: 1,
                 name: '分润业务3'
             }];
 
@@ -428,17 +429,23 @@ angular.module('app')
             }
             settingService.queryProfitConfig({
                 record:self.record,
-                config:self.profitconfig
+                profit:self.profit
             });
         };
         /*分润设置服务--分润配置*/
         this.queryProfitConfig=function () {
             settingService.queryProfitConfig({
                 record:self.record,
-                config:self.profitconfig
+                profit:self.profit
             });
         };
-
+        /*分润设置服务--切换不同分润配置*/
+        this.changeProfit=function (type) {
+            settingService.changeProfit({
+                type:type,
+                profit:self.profit
+            });
+        };
 
 
         /*搜索服务--搜索过滤*/

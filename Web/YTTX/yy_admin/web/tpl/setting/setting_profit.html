@@ -10,78 +10,78 @@
     <div class="g-w-percent38 g-f-r g-gap-pl1">
         <div class="setting-profit-item">
             <h3>分润配置</h3>
-            <form ng-submit="setting_ctrl.formSubmit('profit')" name="profitFrom" role="form" novalidate method="post" class="admin-layout-form">
+            <form name="profitFrom" role="form" novalidate method="post" class="admin-layout-form">
                 <ul class="profit-main">
                     <li>
-                        <h5>{{setting_ctrl.profitconfig.base.title}}</h5>
+                        <h5>{{setting_ctrl.profit.base.title}}</h5>
                         <div class="g-w-percent24 form-group-self4">
                             <div class="self-input g-pos-r g-w-percent50">
-                                <input type="radio" ng-change="setting_ctrl.changeProfit('base')" ng-model="setting_ctrl.profitconfig.base.type" ng-value="1" name="basetype">&nbsp;:按全额为基数分润
+                                <input type="radio" ng-change="setting_ctrl.changeProfit('base')" ng-model="setting_ctrl.profit.base.type" ng-value="1" name="basetype">&nbsp;:按全额为基数分润
                             </div>
                         </div>
                         <div class="g-w-percent24 form-group-self4">
                             <div class="self-input g-pos-r g-w-percent50">
-                                <input type="radio" ng-change="setting_ctrl.changeProfit('base')"  ng-model="setting_ctrl.profitconfig.base.type" ng-value="2" name="basetype">&nbsp;:按全额的&nbsp;<input ng-if="setting_ctrl.profitconfig.base.type===2" name="baseprofit" ng-required class="g-w-number3 ui-single-percent" type="text" ng-model="setting_ctrl.profitconfig.base.profit" maxlength="6">&nbsp;%为基数分
+                                <input type="radio" ng-change="setting_ctrl.changeProfit('base')"  ng-model="setting_ctrl.profit.base.type" ng-value="2" name="basetype">&nbsp;:按全额的&nbsp;<input ng-if="setting_ctrl.profit.base.type===2" name="baseprofit" class="g-w-number3 ui-single-percent" type="text" ng-model="setting_ctrl.profit.base.profit" maxlength="6">&nbsp;%为基数分
                             </div>
                         </div>
                         <div class="g-w-percent50 form-group-self4">
                             <div class="self-input g-pos-r g-w-percent50">
-                                <input type="radio" ng-change="setting_ctrl.changeProfit('base')"  ng-model="setting_ctrl.profitconfig.base.type" ng-value="3" name="basetype">&nbsp;:按每用户&nbsp;<input ng-if="setting_ctrl.profitconfig.base.type===3" name="baseprofit" ng-required class="g-w-number10 ui-double-point" type="text" ng-model="setting_ctrl.profitconfig.base.profit" maxlength="12">&nbsp;元进行提成
+                                <input type="radio" ng-change="setting_ctrl.changeProfit('base')"  ng-model="setting_ctrl.profit.base.type" ng-value="3" name="basetype">&nbsp;:按每用户&nbsp;<input ng-if="setting_ctrl.profit.base.type===3" name="baseprofit" class="g-w-number8 ui-double-point" data-limit="15" type="text" ng-model="setting_ctrl.profit.base.profit" maxlength="15">&nbsp;元进行提成
                             </div>
                         </div>
                         <div class="g-w-percent24 form-group-self4">
                             <div class="self-input g-pos-r g-w-percent50">
-                                <input type="radio" ng-change="setting_ctrl.changeProfit('base')"  ng-model="setting_ctrl.profitconfig.base.type" ng-value="4" name="basetype">&nbsp;:按所得的&nbsp;<input ng-if="setting_ctrl.profitconfig.base.type===4" name="baseprofit" ng-required class="g-w-number2" type="text" ng-model="setting_ctrl.profitconfig.base.profit" maxlength="6">&nbsp;%为基数
-                            </div>
-                        </div>
-                        <div class="g-w-percent24 form-group-self4">
-                            <div class="self-input g-pos-r g-w-percent50">
-                                <input type="radio" ng-change="setting_ctrl.changeProfit('base')"  ng-model="setting_ctrl.profitconfig.base.type" ng-value="5" name="basetype">&nbsp;:按&nbsp;<input ng-if="setting_ctrl.profitconfig.base.type===5" name="baseprofit" ng-required class="g-w-number3" type="text" ng-model="setting_ctrl.profitconfig.base.profit" maxlength="12">&nbsp;元进行
+                                <input type="radio" ng-change="setting_ctrl.changeProfit('base')"  ng-model="setting_ctrl.profit.base.type" ng-value="4" name="basetype">&nbsp;:按所得的&nbsp;<input ng-if="setting_ctrl.profit.base.type===4" name="baseprofit" class="g-w-number2 ui-single-percent" type="text" ng-model="setting_ctrl.profit.base.profit" maxlength="6">&nbsp;%为基数
                             </div>
                         </div>
                         <div class="g-w-percent50 form-group-self4">
-                            <button type="submit" ng-disabled="!(setting_ctrl.profitconfig.base.type===1 || (setting_ctrl.profitconfig.base.type!==1 && profitFrom.baseprofit.$dirty && profitFrom.baseprofit.$valid))"  class="btn btn-red g-br3 g-f-r">设置</button>
+                            <div class="self-input g-pos-r g-w-percent50">
+                                <input type="radio" ng-change="setting_ctrl.changeProfit('base')"  ng-model="setting_ctrl.profit.base.type" ng-value="5" name="basetype">&nbsp;:按&nbsp;<input ng-if="setting_ctrl.profit.base.type===5" name="baseprofit" data-limit="15" class="g-w-number8 ui-double-point" type="text" ng-model="setting_ctrl.profit.base.profit" maxlength="15">&nbsp;元进行
+                            </div>
+                        </div>
+                        <div class="g-w-percent50 form-group-self4">
+                            <button type="button" ng-disabled="setting_ctrl.record.profitid===''" ng-click="setting_ctrl.submitForm('base')"  class="btn btn-red g-br3 g-f-r">设置</button>
                             <div class="clearfix"></div>
                         </div>
                     </li>
                     <li>
-                        <h5>{{setting_ctrl.profitconfig.standard.title}}</h5>
+                        <h5>{{setting_ctrl.profit.standard.title}}</h5>
                         <div class="g-w-percent50  form-group-self4">
                             <div class="self-input g-pos-r g-w-percent50">
-                                <input type="radio" ng-change="setting_ctrl.changeProfit('standard')"  ng-model="setting_ctrl.profitconfig.standard.type" ng-value="1" name="standardtype">&nbsp;:按百分比分润
+                                <input type="radio" ng-change="setting_ctrl.changeProfit('standard')"  ng-model="setting_ctrl.profit.standard.type" ng-value="1" name="standardtype">&nbsp;:按百分比分润
                             </div>
                         </div>
                         <div class="g-w-percent50  form-group-self4">
                             <div class="self-input g-pos-r g-w-percent50">
-                                <input type="radio" ng-change="setting_ctrl.changeProfit('standard')"  ng-model="setting_ctrl.profitconfig.standard.type" ng-value="2" name="standardtype">&nbsp;:按数值分润
+                                <input type="radio" ng-change="setting_ctrl.changeProfit('standard')"  ng-model="setting_ctrl.profit.standard.type" ng-value="2" name="standardtype">&nbsp;:按数值分润
                             </div>
                         </div>
 
-                        <div ng-if="setting_ctrl.profitconfig.standard.type===1" class="g-w-percent50 form-group-self4">
+                        <div ng-if="setting_ctrl.profit.standard.type===1" class="g-w-percent50 form-group-self4">
                             <div class="self-input g-pos-r g-w-percent16">
-                                运营:&nbsp;<input ng-required name="standardprofit1" class="g-w-number3" type="text" ng-model="setting_ctrl.profitconfig.standard.profit1" maxlength="6">&nbsp;%
+                                运营:&nbsp;<input name="standardprofit1" data-relation="standard_profit1,standard_profit2,standard_profit3" data-current="standard_profit1" id="standard_profit1" class="g-w-number3 ui-relation-percent" type="text" ng-model="setting_ctrl.profit.standard.profit1" maxlength="6">&nbsp;%
                             </div>
                             <div class="self-input g-pos-r g-w-percent16">
-                                5S:&nbsp;<input ng-required name="standardprofit2" class="g-w-number3" type="text" ng-model="setting_ctrl.profitconfig.standard.profit2" maxlength="6">&nbsp;%
+                                5S:&nbsp;<input  name="standardprofit2"  data-relation="standard_profit1,standard_profit2,standard_profit3" data-current="standard_profit2"  id="standard_profit2" class="g-w-number3 ui-relation-percent" type="text" ng-model="setting_ctrl.profit.standard.profit2" maxlength="6">&nbsp;%
                             </div>
                             <div class="self-input g-pos-r g-w-percent16">
-                                平台:&nbsp;<input ng-required name="standardprofit3" class="g-w-number3" type="text" ng-model="setting_ctrl.profitconfig.standard.profit3" maxlength="6">&nbsp;%
+                                平台:&nbsp;<input name="standardprofit3" data-relation="standard_profit1,standard_profit2,standard_profit3" data-current="standard_profit3"  id="standard_profit3" class="g-w-number3 ui-relation-percent" type="text" ng-model="setting_ctrl.profit.standard.profit3" maxlength="6">&nbsp;%
                             </div>
                         </div>
 
-                        <div ng-if="setting_ctrl.profitconfig.standard.type===2" class="g-w-percent50 form-group-self4">
+                        <div ng-if="setting_ctrl.profit.standard.type===2" class="g-w-percent50 form-group-self4">
                             <div class="self-input g-pos-r g-w-percent16">
-                                运营:&nbsp;<input ng-required name="standardprofit1" class="g-w-number5" type="text" ng-model="setting_ctrl.profitconfig.standard.profit1" maxlength="13">
+                                运营:&nbsp;<input name="standardprofit1" data-limit="15" class="g-w-number5 ui-double-point" type="text" ng-model="setting_ctrl.profit.standard.profit1" maxlength="15">
                             </div>
                             <div class="self-input g-pos-r g-w-percent16">
-                                5S:&nbsp;<input ng-required name="standardprofit2" class="g-w-number5" type="text" ng-model="setting_ctrl.profitconfig.standard.profit2" maxlength="13">
+                                5S:&nbsp;<input name="standardprofit2" data-limit="15" class="g-w-number5 ui-double-point" type="text" ng-model="setting_ctrl.profit.standard.profit2" maxlength="15">
                             </div>
                             <div class="self-input g-pos-r g-w-percent16">
-                                平台:&nbsp;<input ng-required name="standardprofit3" class="g-w-number5" type="text" ng-model="setting_ctrl.profitconfig.standard.profit3" maxlength="13">
+                                平台:&nbsp;<input name="standardprofit3" data-limit="15" class="g-w-number5 ui-double-point" type="text" ng-model="setting_ctrl.profit.standard.profit3" maxlength="15">
                             </div>
                         </div>
                         <div class="g-w-percent50 form-group-self4">
-                            <button type="submit" ng-disabled="!(profitFrom.standardprofit1.$dirty && profitFrom.standardprofit1.$valid && profitFrom.standardprofit2.$dirty &&  profitFrom.standardprofit2.$valid && profitFrom.standardprofit3.$dirty && profitFrom.standardprofit3.$valid)"  class="btn btn-red g-br3 g-f-r">设置</button>
+                            <button type="button" ng-disabled="setting_ctrl.record.profitid===''"  class="btn btn-red g-br3 g-f-r" ng-click="setting_ctrl.submitForm('standard')">设置</button>
                             <div class="clearfix"></div>
                         </div>
                     </li>

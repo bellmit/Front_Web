@@ -420,8 +420,10 @@ angular.module('app')
                         'add': '新增',
                         'edit': '编辑',
                         'update': '修改',
+                        'setting':'设置',
                         'struct': '组织机构',
                         'manage': '子管理',
+                        'profit':'分润配置',
                         'pwd': '密码'
                     };
 
@@ -495,6 +497,20 @@ angular.module('app')
                         action = 'add';
                         req_config['url'] = '/sysuser/child/add';
                     }
+                } else if (type === 'base' || type === 'standard') {
+                    action='setting';
+                    param['modelId']=record.profitid;
+                    param['type']=config['profit'][type]['type'];
+                    param['id']=config['profit'][type]['id'];
+                    if(type === 'base'){
+                        param['profit']=config['profit'][type]["profit"];
+                        req_config['url'] = '/profit/base/setting';
+                    }else if(type === 'standard'){
+                        param['profit1']=config['profit'][type]["profit1"];
+                        param['profit2']=config['profit'][type]["profit2"];
+                        param['profit3']=config['profit'][type]["profit3"];
+                        req_config['url'] = '/profit/standard/setting';
+                    }
                 }
                 req_config['data'] = param;
 
@@ -514,10 +530,17 @@ angular.module('app')
                                             value: message
                                         });
                                     } else {
-                                        toolDialog.show({
-                                            type: 'warn',
-                                            value: tip_map[action] + tip_map[type] + '失败'
-                                        });
+                                        if(type==='base' || type==='standard'){
+                                            toolDialog.show({
+                                                type: 'warn',
+                                                value: tip_map[action] + tip_map['profit'] + '失败'
+                                            });
+                                        }else{
+                                            toolDialog.show({
+                                                type: 'warn',
+                                                value: tip_map[action] + tip_map[type] + '失败'
+                                            });
+                                        }
                                     }
                                     if (code === 999) {
                                         /*退出系统*/
@@ -544,14 +567,19 @@ angular.module('app')
                                             area: type,
                                             delay: 1000
                                         });
-                                    } else if (type === 'pwd') {
-                                        /*to do*/
                                     }
                                     /*提示操作结果*/
-                                    toolDialog.show({
-                                        type: 'succ',
-                                        value: tip_map[action] + tip_map[type] + '成功'
-                                    });
+                                    if(type==='base' || type==='standard'){
+                                        toolDialog.show({
+                                            type: 'succ',
+                                            value: tip_map[action] + tip_map['profit'] + '成功'
+                                        });
+                                    }else{
+                                        toolDialog.show({
+                                            type: 'succ',
+                                            value: tip_map[action] + tip_map[type] + '成功'
+                                        });
+                                    }
                                 }
                             }
                         },
@@ -1244,19 +1272,19 @@ angular.module('app')
 
         /*分润设置服务--查询分润配置*/
         this.queryProfitConfig = function (config) {
-            if(!config){
+            if (!config) {
                 return false;
             }
-            var record=config.record;
+            var record = config.record;
             toolUtil
                 .requestHttp({
                     url: '/profit/model/settings',
                     method: 'post',
                     set: true,
                     data: {
-                        adminId:record.adminId,
-                        token:record.token,
-                        modelId:record.profitid
+                        adminId: record.adminId,
+                        token: record.token,
+                        modelId: record.profitid
                     }
                 })
                 .then(function (resp) {
@@ -1283,16 +1311,23 @@ angular.module('app')
                                 }
                             } else {
                                 /*加载数据*/
-                                var result = data.result;
+                                var result = data.result,
+                                    profit=config.profit;
                                 if (typeof result !== 'undefined') {
                                     var base = result.base,
                                         standard = result.standard;
 
-                                    if (!base && !standard) {
+                                    if (base) {
                                         /*更新模型*/
-
-                                    } else {
-
+                                        for(var i in base){
+                                            profit['base'][i]=base[i];
+                                        }
+                                    }
+                                    if (standard) {
+                                        /*更新模型*/
+                                        for(var j in standard){
+                                            profit['standard'][j]=base[j];
+                                        }
                                     }
                                 }
                             }
@@ -1307,7 +1342,17 @@ angular.module('app')
                         }
                     });
         };
-
+        /*分润设置服务--清除分润配置*/
+        this.changeProfit = function (config) {
+            var type = config.type;
+            if (type === 'base') {
+                config.profit[type]['profit'] = '';
+            } else if (type === 'standard') {
+                config.profit[type]['profit1'] = '';
+                config.profit[type]['profit2'] = '';
+                config.profit[type]['profit3'] = '';
+            }
+        };
 
         /*测试服务--获取订单列表*/
         this.testGetOrderList = function () {
