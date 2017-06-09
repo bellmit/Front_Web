@@ -1,0 +1,80 @@
+/*搜索*/
+.layout-search-wrap {
+  @wrap-height: 224px;
+  @wrap-gaptb: 80px;
+  @gap-pl: 50px;
+  @gap-pr: 60px;
+
+  height: @wrap-height;
+  padding: @wrap-gaptb 0;
+  .search-wrap {
+    height: 100%;
+  }
+  .search-default {
+    .layout-relative-base();
+    .layout-base();
+    height: 100%;
+    display: inline-block;
+    &:before{
+      .layout-absolutel-base();
+      content:'\e699';
+      font-family:'ux_four';
+      width:@gap-pl;
+      height:100%;
+      display: inline-block;
+      text-align: center;
+      line-height: @wrap-height - @wrap-gaptb * 2;
+      font-size:@font-size-base + 8;
+      color:@color-gray11;
+      text-indent:20px;
+    }
+    input {
+      display: inline-block;
+      .layout-base();
+      height: 100%;
+      border: 1px solid darken(@color-gray13, 0.4%);
+      padding: 20px @gap-pr 20px @gap-pl;
+      font-size: @font-size-base + 4;
+      color: @color-gray9;
+      line-height: 24px;
+      &:focus {
+        border: 1px solid @color-orange1;
+      }
+    }
+    .search-clear {
+      .layout-absoluter-base();
+      width: 0;
+      height: 0;
+      cursor: pointer;
+      display: inline-block;
+      &:after {
+        .transition-base(font-size 0.2s ease-in .02s);
+        width: 100%;
+        height: 100%;
+        display: inline-block;
+        text-align: center;
+        line-height: @wrap-height - @wrap-gaptb * 2;
+        font-size:@font-size-base + 12;
+        color:@color-gray13;
+        font-family: 'ux_two';
+      }
+      &:hover{
+        &:after {
+          font-size:@font-size-base + 24;
+          color:@color-gray12;
+        }
+      }
+    }
+  }
+  .search-active {
+    .search-clear{
+      width: @gap-pr;
+      height: 100%;
+      &:after {
+        content: '\e615';
+      }
+    }
+  }
+}
+
+
