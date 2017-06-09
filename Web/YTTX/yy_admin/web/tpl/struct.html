@@ -100,12 +100,16 @@
             <!--搜索组件-->
             <div class="sub-search-wrap ui-sub-search" data-active="struct_ctrl.record.searchactive" data-value="struct_ctrl.record.searchname"  data-action="struct_ctrl.searchAction()" data-clear="struct_ctrl.searchClear()" ></div>
 
-            <!--选项卡组件-->
+            <!--选项卡组件（切换机构和角色）-->
             <ul class="sub-tab-wrap sub-item-group2 sub-itembr-group2 ui-sub-tab-href" data-tabitem="struct_ctrl.tabitem"></ul>
 
 
+            <!--选项卡组件(切换不用的机构类型)-->
+            <ul class="sub-tab-wrap sub-item-group3 sub-itembr-group3 ui-sub-tab" data-action="toggleStructType" data-ctrlname="struct_ctrl"  data-tabitem="struct_ctrl.structtype"></ul>
+
+
             <!--子菜单组件-->
-            <ul class="sub-menu-wrap">
+            <ul class="sub-menu-wrap sub-menu-flag sub-menu-flag{{struct_ctrl.record.structtype}}">
                 <li>
                     <a class="sub-menu-title sub-menu-titleactive" data-parentid="" data-id="struct_ctrl.record.currentId" data-layer="0" data-list="false" data-label="struct_ctrl.record.currentName"  ng-click="struct_ctrl.rootSubMenu($event)">{{struct_ctrl.record.currentName}}</a>
                     <ul ng-init="struct_ctrl.initSubMenu()" ng-click="struct_ctrl.toggleSubMenu($event)" id="admin_struct_submenu" class="g-d-showi ui-sub-menu"></ul>

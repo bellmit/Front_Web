@@ -131,6 +131,9 @@
       &:hover{
         background:darken(@color-red1,5%);
       }
+      &:active{
+        background:darken(@color-red1,12%);
+      }
     }
     .menuactive{
       background:@color-red1;
@@ -238,6 +241,9 @@
         background:darken(@color-red1,5%);
         color:@color-white;
       }
+      &:active{
+        background:darken(@color-red1,12%);
+      }
     }
     .tabactive{
       background:@color-red1;
@@ -296,6 +302,39 @@
       background:@color-red1;
     }
   }
+  .sub-menu-flag{
+    li a{
+      &:after,
+      &::after{
+        margin:0 0 0 5px;
+        height:16px;
+        line-height:16px;
+        background:@color-white;
+        color:@color-gray6;
+        font-size:@font-size-base - 2;
+        .border-radius-base(2px);
+        display:inline-block;
+        vertical-align:top;
+      }
+    }
+  }
+  .sub-menu-flag5S{
+    li a{
+      &:after,
+      &::after{
+        content:attr(data-5S);
+      }
+    }
+  }
+  .sub-menu-flagcommon{
+    li a{
+      &:after,
+      &::after{
+        content:attr(data-common);
+      }
+    }
+  }
+
   /*带选中组件的子菜单*/
   .sub-menu-checkbox{
     float:left;

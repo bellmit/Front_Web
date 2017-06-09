@@ -341,16 +341,25 @@ angular.module('app')
             var curitem=obj,
                 id=curitem["id"],
                 label=curitem["fullName"]||'',
+                type=curitem["type"]||'',
                 str='',
                 flag=config.flag,
                 layer=config.layer,
                 parentid=config.id;
 
-
+            /*全部类型*/
             if(flag){
-                str='<li><a data-isrequest="false" data-parentid="'+parentid+'" data-layer="'+layer+'" data-id="'+id+'" class="sub-menu-title" href="#" title="">'+label+'</a>';
+                if(type===1){
+                    str='<li><a data-isrequest="false" data-parentid="'+parentid+'" data-layer="'+layer+'" data-id="'+id+'" data-5S="5S" class="sub-menu-title" href="#" title="">'+label+'</a>';
+                }else{
+                    str='<li><a data-isrequest="false" data-parentid="'+parentid+'" data-layer="'+layer+'" data-id="'+id+'" data-common="普通" class="sub-menu-title" href="#" title="">'+label+'</a>';
+                }
             }else{
-                str='<li><a data-parentid="'+parentid+'"  data-layer="'+layer+'" data-id="'+id+'" href="#" title="">'+label+'</a></li>';
+                if(type===1){
+                    str='<li><a data-parentid="'+parentid+'"  data-layer="'+layer+'" data-id="'+id+'" data-5S="5S" href="#" title="">'+label+'</a></li>';
+                }else{
+                    str='<li><a data-parentid="'+parentid+'" data-commom="普通"  data-layer="'+layer+'" data-id="'+id+'" href="#" title="">'+label+'</a></li>';
+                }
             }
             return str;
         };
