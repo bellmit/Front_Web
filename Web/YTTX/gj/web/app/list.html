@@ -41,27 +41,17 @@
 </header>
 
 
-<!--搜索-->
-<section class="layout-default-wrap layout-search-wrap">
-    <div class="content-default-wrap search-wrap">
-        <label class="search-default" id="search_wrap">
-            <input type="text" placeholder="搜索" id="search_input">
-            <span class="search-clear" id="search_clear"></span>
-        </label>
-    </div>
+<!--<li><a href="detail.html" title=""><span>2017-05-01</span>sdkfjskdjfsjfksdjf</a></li>-->
+<!--列表-->
+<section class="layout-default-wrap layout-list-wrap">
+    <ul class="content-default-wrap list-wrap" id="list_wrap"></ul>
 </section>
 
-
-<!--搜索结果列表-->
-<section class="layout-default-wrap layout-helplist-wrap">
-    <ul class="content-default-wrap helplist-wrap">
-        <li data-theme="交易" id="deposit_wrap"></li>
-        <li data-theme="保证金" id="trade_wrap"></li>
-        <li data-theme="开户" id="account_wrap"></li>
-        <li data-theme="资金" id="capital_wrap"></li>
-        <li data-theme="您的账户" id="center_wrap"></li>
-        <li data-theme="客户端" id="client_wrap"></li>
-    </ul>
+<!--分页-->
+<section  class="layout-default-wrap layout-page-wrap">
+    <div class="content-default-wrap page-wrap">
+        <div class="easyui-pagination g-w-percent50" id="list_page_wrap" data-options="links:5,layout:['manual','first','prev','links','next','last'],displayMsg:'显示{from}&nbsp;到&nbsp;{to}&nbsp;共&nbsp;{total}条记录'"></div>
+    </div>
 </section>
 
 <!--底部-->
@@ -101,24 +91,6 @@
 </footer>
 
 
-<!--审核采购-->
-<div class="modal fade custom-width" id="show_detail_wrap">
-    <div class="modal-dialog g-w-percent46">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="show_detail_title"></h4>
-            </div>
-            <div class="modal-body">
-                <div class="show-detail-wrap" id="show_detail_content"></div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-info" data-dismiss="modal">关闭</button>
-            </div>
-        </div>
-    </div>
-</div>
-
 
 <!--jquery-->
 <script src="../js/base/jquery-1.11.1.js"></script>
@@ -126,6 +98,7 @@
 <script src="../js/base/base.js"></script>
 <script src="../js/base/mock-min.js"></script>
 <!--app-->
-<script src="../js/app/help.js"></script>
+<script src="../js/plugins/pagination/pagination.js"></script>
+<script src="../js/app/list.js"></script>
 </body>
 </html>

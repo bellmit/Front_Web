@@ -24,10 +24,10 @@
         <!--menu-->
         <section class="header-menu">
             <ul class="header-nav">
-                <li><a href="../index.html" title="">首页</a></li>
+                <li><a class="header-active" href="../index.html" title="">首页</a></li>
                 <li><a href="about.html" title="">关于</a></li>
                 <li><a href="download.html" title="">下载</a></li>
-                <li><a class="header-active" href="help.html" title="">帮助</a></li>
+                <li><a href="help.html" title="">帮助</a></li>
                 <li><a href="struct.html" title="">机构客户</a></li>
             </ul>
             <section class="header-center">
@@ -41,27 +41,14 @@
 </header>
 
 
-<!--搜索-->
-<section class="layout-default-wrap layout-search-wrap">
-    <div class="content-default-wrap search-wrap">
-        <label class="search-default" id="search_wrap">
-            <input type="text" placeholder="搜索" id="search_input">
-            <span class="search-clear" id="search_clear"></span>
-        </label>
-    </div>
-</section>
 
 
 <!--搜索结果列表-->
-<section class="layout-default-wrap layout-helplist-wrap">
-    <ul class="content-default-wrap helplist-wrap">
-        <li data-theme="交易" id="deposit_wrap"></li>
-        <li data-theme="保证金" id="trade_wrap"></li>
-        <li data-theme="开户" id="account_wrap"></li>
-        <li data-theme="资金" id="capital_wrap"></li>
-        <li data-theme="您的账户" id="center_wrap"></li>
-        <li data-theme="客户端" id="client_wrap"></li>
-    </ul>
+<section class="layout-default-wrap layout-detail-wrap">
+    <div class="content-default-wrap">
+        <h1 class="detail-title" id="show_detail_title"></h1>
+        <div class="detail-show" id="show_detail_content"></div>
+    </div>
 </section>
 
 <!--底部-->
@@ -101,24 +88,6 @@
 </footer>
 
 
-<!--审核采购-->
-<div class="modal fade custom-width" id="show_detail_wrap">
-    <div class="modal-dialog g-w-percent46">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="show_detail_title"></h4>
-            </div>
-            <div class="modal-body">
-                <div class="show-detail-wrap" id="show_detail_content"></div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-info" data-dismiss="modal">关闭</button>
-            </div>
-        </div>
-    </div>
-</div>
-
 
 <!--jquery-->
 <script src="../js/base/jquery-1.11.1.js"></script>
@@ -126,6 +95,6 @@
 <script src="../js/base/base.js"></script>
 <script src="../js/base/mock-min.js"></script>
 <!--app-->
-<script src="../js/app/help.js"></script>
+<script src="../js/app/detail.js"></script>
 </body>
 </html>
