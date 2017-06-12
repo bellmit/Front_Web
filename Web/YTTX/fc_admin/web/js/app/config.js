@@ -1,5 +1,5 @@
 /*应用程序初始化配置*/
-var yy_app=angular.module('app')
+var system_app=angular.module('app')
         .constant('BASE_CONFIG',{
         unique_key:'fc_admin_unique_key'/*系统缓存key键*/,
         basedomain:'http://10.0.5.226:8883'/*请求域名*/
@@ -19,12 +19,12 @@ var yy_app=angular.module('app')
     })
     .config(['$controllerProvider', '$compileProvider', '$filterProvider', '$provide',
         function ($controllerProvider,   $compileProvider,   $filterProvider,   $provide) {
-            yy_app.controller = $controllerProvider.register;
-            yy_app.directive  = $compileProvider.directive;
-            yy_app.filter     = $filterProvider.register;
-            yy_app.factory    = $provide.factory;
-            yy_app.service    = $provide.service;
-            yy_app.constant   = $provide.constant;
-            yy_app.value      = $provide.value;
+            system_app.controller = $controllerProvider.register;
+            system_app.directive  = $compileProvider.directive;
+            system_app.filter     = $filterProvider.register;
+            system_app.factory    = $provide.factory;
+            system_app.service    = $provide.service;
+            system_app.constant   = $provide.constant;
+            system_app.value      = $provide.value;
         }
     ]);
