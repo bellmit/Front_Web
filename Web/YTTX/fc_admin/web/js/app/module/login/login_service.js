@@ -30,53 +30,71 @@ angular.module('login.service', [])
                     toolUtil.clear();
                 }
                 return islogin;
-            } else {
-                return false;
             }
+            return islogin;
         };
         /*处理登陆请求*/
-        this.reqAction = function (resp,config) {
-            var data = resp.data,
-                status = parseInt(resp.status, 10);
+        this.reqAction = function (config) {
+            console.log(config.isLogin);
+            toolUtil.requestHttp({
+                url:'/sysuser/login',
+                method:'post',
+                set:true,
+                data:config.login
+            }).then(function(resp){
+                    var data = resp.data,
+                        status = parseInt(resp.status, 10);
 
-            if (status === 200) {
-                var code = parseInt(data.code, 10),
-                    result = data.result,
-                    message = data.message;
-                if (code !== 0) {
-                    if (typeof message !== 'undefined' && message !== '') {
-                        toastr.info(message);
-                    }
-                    config.isLogin=false;
-                } else {
-                    /*加载动画*/
-                    toolUtil.loading('show');
-                    /*设置缓存*/
-                    self.setCache({
-                        'isLogin': true,
-                        'datetime': moment().format('YYYY-MM-DD|HH:mm:ss'),
-                        'reqdomain': BASE_CONFIG.basedomain,
-                        'username': config.login.username,
-                        'param': {
-                            'adminId': encodeURIComponent(result.adminId),
-                            'token': encodeURIComponent(result.token),
-                            'organizationId': encodeURIComponent(result.organizationId)
+                    if (status === 200) {
+                        var code = parseInt(data.code, 10),
+                            result = data.result,
+                            message = data.message;
+                        if (code !== 0) {
+                            if (typeof message !== 'undefined' && message !== '') {
+                                toastr.info(message);
+                            }
+                            config.isLogin=false;
+                        } else {
+                            /*加载动画*/
+                            toolUtil.loading('show');
+                            /*设置缓存*/
+                            self.setCache({
+                                'isLogin': true,
+                                'datetime': moment().format('YYYY-MM-DD|HH:mm:ss'),
+                                'reqdomain': BASE_CONFIG.basedomain,
+                                'username': config.login.username,
+                                'param': {
+                                    'adminId': encodeURIComponent(result.adminId),
+                                    'token': encodeURIComponent(result.token),
+                                    'organizationId': encodeURIComponent(result.organizationId)
+                                }
+                            });
+                            /*加载菜单*/
+                            self.loadMenuData(config);
+                            /*更新缓存*/
+                            cache = toolUtil.getParams(BASE_CONFIG.unique_key);
+                            var loadingid = setTimeout(function () {
+                                /*路由跳转*/
+                                $state.go('app');
+                                toolUtil.loading('hide', loadingid);
+                            }, 1000);
+                            config.isLogin=true;
+                            console.log(config.isLogin);
+                            config.$scope.$digest();
                         }
-                    });
-                    /*加载菜单*/
-                    self.loadMenuData(config);
-                    /*更新缓存*/
-                    cache = toolUtil.getParams(BASE_CONFIG.unique_key);
-                    var loadingid = setTimeout(function () {
-                        /*路由跳转*/
-                        $state.go('app');
-                        toolUtil.loading('hide', loadingid);
-                    }, 1000);
+                    } else {
+                        config.isLogin=false;
+                    }
+                },
+                function(resp){
                     config.isLogin=false;
-                }
-            } else {
-                config.isLogin=false;
-            }
+                    var message=resp.data.message;
+                    if(typeof message !=='undefined' && message!==''){
+                        toastr.error(message);
+                    }else{
+                        toastr.error('登录失败');
+                    }
+                });
         };
         /*加载菜单数据*/
         this.loadMenuData = function (config) {

@@ -2,7 +2,7 @@
 
 /*控制器设置基本配置*/
 angular.module('app')
-    .controller('AppController', ['toolUtil', 'appService', function (toolUtil, appService) {
+    .controller('AppController', ['toolUtil', 'loginService','$scope', function (toolUtil, loginService,$scope) {
         var self = this;
 
         /*设置提示*/
@@ -14,7 +14,7 @@ angular.module('app')
         this.isSupport = toolUtil.isSupport();
 
         /*模型--登陆控制*/
-        this.isLogin =appService.isLogin();
+        this.isLogin =loginService.isLogin();
 
         /*模型--导航菜单*/
         this.headeritem = [];
@@ -28,25 +28,47 @@ angular.module('app')
 
 
         /*绑定提交*/
-        this.submitLogin = function () {
+        this.formSubmit = function () {
             /*校验成功*/
-            appService.submitForm({
+            loginService.reqAction({
                 login: self.login,
                 isLogin: self.isLogin,
-                headeritem: self.headeritem
+                headeritem: self.headeritem,
+                $scope:$scope
             });
         };
         /*获取验证码*/
         this.getValidCode = function () {
-            appService.getValidCode();
+            loginService.getValidCode({
+                wrap: 'validcode_wrap',
+                url: "/sysuser/identifying/code"
+            });
         };
         /*退出*/
         this.loginOut = function (flag) {
-            appService.loginOut({
-                flag:flag,
-                isLogin:self.isLogin,
-                login:self.login
-            });
+            /*不合格缓存信息，需要清除缓存*/
+            var isout = loginService.loginOut();
+            /*更新模型*/
+            if (isout) {
+                self.isLogin = false;
+                self.login = {
+                    username: '',
+                    password: '',
+                    identifyingCode: ''
+                };
+            }
+            /*提示退出信息*/
+            if (typeof flag !== 'undefined' && flag) {
+                toolUtil.loginTips({
+                    reload: true
+                });
+            } else {
+                toolUtil.loginTips();
+            }
         };
+
+        /*setInterval(function () {
+            console.log(self.isLogin);
+        },2000)*/
 
     }]);

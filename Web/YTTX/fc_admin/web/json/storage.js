@@ -1,4 +1,4 @@
-{
+var temp_sessioncache={
   "cacheMap": {
     "menuload": true,
     "powerload": true
@@ -333,4 +333,5 @@
     }
   },
   "settingMap": {}
-}
+};
+localStorage.setItem('fc_admin_unique_key',JSON.stringify(temp_sessioncache));
