@@ -19,7 +19,7 @@ angular.module('ui.commonitem',[])
         return {
             replace:true,
             restrict: 'EC',
-            template:'<div class="g-br3 header-outwrap" id="struct_layout_loginout" ui-sref="app" ng-click="app_ctrl.loginOut()">退出</div>'
+            template:'<div class="g-br3 header-outwrap" ui-sref="app" ng-click="app_ctrl.loginOut()">退出</div>'
         };
     })
     /*首页logo指令*/
@@ -200,6 +200,36 @@ angular.module('ui.commonitem',[])
                             </div>\
                           </li>\
                         </ul>'
+        };
+    })
+    /*加载动画指令*/
+    .directive('uiLoadingAnimation',function() {
+        return {
+            replace:false,
+            restrict: 'EC',
+            templateUrl:'tpl/common/load.html'
+        };
+    })
+    /*退出系统动画*/
+    .directive('uiLoginoutAnimation',function() {
+        return {
+            replace:false,
+            restrict: 'EC',
+            scope:{
+                time:'@time'
+            },
+            templateUrl:'tpl/common/support_login.html'
+        };
+    })
+    /*兼容性提示*/
+    .directive('uiSupportPanel',function() {
+        return {
+            replace:false,
+            restrict: 'EC',
+            scope:{
+                time:'@time'
+            },
+            templateUrl:'tpl/common/support_tip.html'
         };
     });
    

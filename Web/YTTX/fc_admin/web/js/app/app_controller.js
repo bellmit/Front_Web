@@ -2,25 +2,28 @@
 
 /*控制器设置基本配置*/
 angular.module('app')
-    .controller('AppController', ['toolUtil', 'loginService','$scope', function (toolUtil, loginService,$scope) {
+    .controller('AppController', ['toolUtil', 'loginService', function (toolUtil, loginService) {
         var self = this;
 
-        /*设置提示*/
-        $.extend(true, toastr.options, {
-            positionClass: "toast-top-center"
-        });
 
-        /*模型--兼容性控制*/
-        this.isSupport = toolUtil.isSupport();
+        /*模型--系统初始化配置*/
+        this.app_config={
+            /*基本配置*/
+            name:'fc_admin',
+            version:'1',
+            /*组件配置*/
+            loadinghide:true,
+            loadingtime:0,
+            issupport:toolUtil.isSupport(),
+            /*设置配置*/
+            setting:{}
+        };
 
-        /*模型--登陆控制*/
-        this.isLogin =loginService.isLogin();
-
-        /*模型--导航菜单*/
-        this.headeritem = [];
 
         /*模型--用户数据*/
         this.login = {
+            islogin:loginService.isLogin()/*登录标识*/,
+            headeritem:[]/*导航菜单*/,
             username: '',
             password: '',
             identifyingCode: ''
@@ -31,10 +34,8 @@ angular.module('app')
         this.formSubmit = function () {
             /*校验成功*/
             loginService.reqAction({
-                login: self.login,
-                isLogin: self.isLogin,
-                headeritem: self.headeritem,
-                $scope:$scope
+                login:self.login,
+                app_config:self.app_config
             });
         };
         /*获取验证码*/
@@ -45,30 +46,20 @@ angular.module('app')
             });
         };
         /*退出*/
-        this.loginOut = function (flag) {
+        this.loginOut = function () {
             /*不合格缓存信息，需要清除缓存*/
-            var isout = loginService.loginOut();
+            var isout = loginService.loginOut(true);
             /*更新模型*/
             if (isout) {
-                self.isLogin = false;
+                self.login.islogin = false;
+                self.login.headeritem=[];
                 self.login = {
                     username: '',
                     password: '',
                     identifyingCode: ''
                 };
-            }
-            /*提示退出信息*/
-            if (typeof flag !== 'undefined' && flag) {
-                toolUtil.loginTips({
-                    reload: true
-                });
-            } else {
-                toolUtil.loginTips();
+
             }
         };
-
-        /*setInterval(function () {
-            console.log(self.isLogin);
-        },2000)*/
 
     }]);
