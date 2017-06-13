@@ -9,10 +9,6 @@ var system_app = angular.module('app')
          */,
         debug: false/*调试模式开关*/,
         baseproject: '/bms-bzwfc-api'/*请求工程地址*/,
-        loadingdom: 'struct_layout_loading'/*加载动画id值*/,
-        nologindom: 'struct_layout_nologin'/*没有登录系统id值*/,
-        nologintipdom: 'struct_goto_login'/*没有登录系统提示id值*/,
-        loginoutdom: 'struct_layout_loginout'/*退出系统id值*/,
         submenulimit: 6/*系统允许递归嵌套菜单最大层级*/,
         commondomain: 'http://120.76.237.100:8080',
         commonproject: '/yttx-public-api'

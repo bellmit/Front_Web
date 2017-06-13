@@ -75,7 +75,7 @@ angular.module('login.service', [])
                                 }
                             });
                             /*加载菜单*/
-                            self.loadMenuData(model);
+                            self.loadMenuData(model,true);
                             /*更新缓存*/
                             cache = toolUtil.getParams(BASE_CONFIG.unique_key);
                             toolUtil.loading({
@@ -132,10 +132,8 @@ angular.module('login.service', [])
                                         var list = toolUtil.resolveMainMenu(result.menu, true);
                                         /*执行初始化导航*/
                                         if (config) {
-                                            console.log(list);
-                                            console.log(config);
                                             self.renderMenuData({
-                                                headeritem: config.login.headeritem,
+                                                headeritem: config.login,
                                                 flag: true,
                                                 list: toolUtil.loadMainMenu(list['menu'])
                                             })
@@ -167,14 +165,14 @@ angular.module('login.service', [])
             }
         };
         /*直接获取数据源,flag:是否需要首页*/
-        this.renderMenuData = function (config) {
-            if (config.list && config.list !== null) {
-                mainmenu = config.list;
-                if (config.flag) {
-                    config.headeritem = mainmenu.slice(0);
+        this.renderMenuData = function (model) {
+            if (model.list && model.list !== null) {
+                mainmenu = model.list;
+                if (model.flag) {
+                    model.headeritem.headeritem = mainmenu.slice(0);
 
                 } else {
-                    config.headeritem = mainmenu.slice(1);
+                    model.headeritem.headeritem = mainmenu.slice(1);
                 }
             } else {
                 mainmenu = [];
@@ -182,7 +180,6 @@ angular.module('login.service', [])
         };
         /*获取菜单数据,flag:是否需要首页*/
         this.getMenuData = function (model, flag) {
-            console.log(model);
             if (mainmenu.length === 0) {
                 if (cache.cacheMap.menuload) {
                     /*直接加载缓存*/
@@ -190,10 +187,10 @@ angular.module('login.service', [])
                     if (list !== null) {
                         mainmenu = list;
                         if (flag) {
-                            model = mainmenu.slice(0);
+                            model.headeritem = mainmenu.slice(0);
 
                         } else {
-                            model = mainmenu.slice(1);
+                            model.headeritem = mainmenu.slice(1);
                         }
                     } else {
                         mainmenu = [];
@@ -201,12 +198,11 @@ angular.module('login.service', [])
                 }
             } else {
                 if (flag) {
-                    model = mainmenu.slice(0);
+                    model.headeritem = mainmenu.slice(0);
                 } else {
-                    model = mainmenu.slice(1);
+                    model.headeritem = mainmenu.slice(1);
                 }
             }
-            console.log(model);
         };
         /*获取验证码*/
         this.getValidCode = function (config) {

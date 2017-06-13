@@ -28,7 +28,10 @@ angular.module('app')
             password: '',
             identifyingCode: ''
         };
-
+        /*获取菜单数组*/
+        if(self.login.islogin){
+            loginService.getMenuData(self.login,true);
+        }
 
         /*绑定提交*/
         this.formSubmit = function () {
@@ -47,19 +50,14 @@ angular.module('app')
         };
         /*退出*/
         this.loginOut = function () {
-            /*不合格缓存信息，需要清除缓存*/
-            var isout = loginService.loginOut(true);
-            /*更新模型*/
-            if (isout) {
-                self.login.islogin = false;
-                self.login.headeritem=[];
-                self.login = {
-                    username: '',
-                    password: '',
-                    identifyingCode: ''
-                };
-
-            }
+            self.login.islogin = false;
+            self.login.headeritem=[];
+            self.login = {
+                username: '',
+                password: '',
+                identifyingCode: ''
+            };
+            loginService.loginOut(true);
         };
 
     }]);

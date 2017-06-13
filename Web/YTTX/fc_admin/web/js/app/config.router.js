@@ -19,25 +19,13 @@ angular.module('app')
                     views:{
                         'container':{
                             templateUrl: 'tpl/index.html'
-                        },
-                        'support':{
-                            templateUrl: 'tpl/common/support_tip.html'
-                        },
-                        'login':{
-                            templateUrl: 'tpl/login.html'
-                        },
-                        'loading':{
-                            templateUrl: 'tpl/common/load.html'
-                        },
-                        'nologin':{
-                            templateUrl: 'tpl/common/support_login.html'
                         }
                     },
                     resolve: {
                         /*延迟加载，依赖相关组件*/
                         loadMyCtrl: ['$ocLazyLoad',
                             function ($ocLazyLoad) {
-                                return $ocLazyLoad.load(['js/app/module/index/index_controller.js']);
+                                return $ocLazyLoad.load(['js/app/directives/index.js','js/app/module/index/index_controller.js']);
                             }]
                     }
                 });
