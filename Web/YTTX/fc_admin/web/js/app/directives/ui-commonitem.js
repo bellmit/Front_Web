@@ -158,6 +158,30 @@ angular.module('ui.commonitem',[])
             template:''
         };
     })
+    /*侧边栏级联菜单指令(普通)*/
+    .directive('uiSubMenuTree',function() {
+        /*默认渲染*/
+        var render={
+            replace:false,
+            restrict: 'EC',
+            scope:{
+                record:'=record'
+            },
+            template:''
+        };
+        return render;
+
+        /*辅助服务*/
+
+        /*获取虚拟挂载点*/
+        function getRoot(record) {
+            
+        }
+        /*获取导航*/
+        function getSubMenu() {
+            
+        }
+    })
     /*侧边栏按钮指令*/
     .directive('uiSubBtn',function() {
         return {
@@ -234,9 +258,6 @@ angular.module('ui.commonitem',[])
         return {
             replace:false,
             restrict: 'EC',
-            scope:{
-                time:'@time'
-            },
             templateUrl:'tpl/common/support_tip.html'
         };
     });

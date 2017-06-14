@@ -296,10 +296,7 @@ angular.module('app')
                                     }
                                     if (code === 999) {
                                         /*退出系统*/
-                                        toolUtil.loginTips({
-                                            clear: true,
-                                            reload: true
-                                        });
+                                        toolUtil.clear();
                                     }
                                     return [];
                                 }

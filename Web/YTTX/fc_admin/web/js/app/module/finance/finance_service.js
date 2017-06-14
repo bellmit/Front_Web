@@ -198,10 +198,7 @@ angular.module('app')
                                 if(code===999){
                                     /*退出系统*/
                                     cache=null;
-                                    toolUtil.loginTips({
-                                        clear:true,
-                                        reload:true
-                                    });
+                                    loginService.loginOut(true);
                                 }
                             }else{
                                 /*加载数据*/
@@ -397,10 +394,7 @@ angular.module('app')
                                     if(code===999){
                                         /*退出系统*/
                                         cache=null;
-                                        toolUtil.loginTips({
-                                            clear:true,
-                                            reload:true
-                                        });
+                                        loginService.loginOut(true);
                                     }
                                 }else{
                                     /*提示信息*/
@@ -467,10 +461,7 @@ angular.module('app')
         /*导航服务--获取虚拟挂载点*/
         this.getRoot=function (record) {
             if(cache===null){
-                toolUtil.loginTips({
-                    clear:true,
-                    reload:true
-                });
+                loginService.loginOut(true);
                 record['currentId']='';
                 record['currentName']='';
                 return false;
@@ -483,10 +474,7 @@ angular.module('app')
             }else{
                 /*退出系统*/
                 cache=null;
-                toolUtil.loginTips({
-                    clear:true,
-                    reload:true
-                });
+                loginService.loginOut(true);
                 record['currentId']='';
                 record['currentName']='';
             }
@@ -547,10 +535,7 @@ angular.module('app')
                                     if(code===999){
                                         /*退出系统*/
                                         cache=null;
-                                        toolUtil.loginTips({
-                                            clear:true,
-                                            reload:true
-                                        });
+                                        loginService.loginOut(true);
                                     }
                                 }else{
                                     /*加载数据*/
@@ -606,10 +591,7 @@ angular.module('app')
             }else{
                 /*退出系统*/
                 cache=null;
-                toolUtil.loginTips({
-                    clear:true,
-                    reload:true
-                });
+                loginService.loginOut(true);
             }
         };
         /*导航服务--解析导航--开始解析*/
