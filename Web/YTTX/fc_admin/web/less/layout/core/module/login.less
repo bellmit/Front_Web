@@ -7,7 +7,7 @@
     min-height:700px;
   }
 
-  .login-base;
+  .login-base();
   background:url('../images/login_banner.jpg') center @layout-header-height no-repeat;
 
   .login-layout{
@@ -24,14 +24,35 @@
     padding:40px;
     background:@color-white;
   }
+  .login-error-wrap{
+    .layout-absolutel-base();
+    .transition-base(all .5s ease-in .02s);
+    .layout-base();
+    background:@color-red1;
+    height:0;
+    font-size: @font-size-base;
+    color:@color-white;
+    .user-select-base();
+    .text-of();
+    .opacity-base(0);
+    &:empty{
+      height:0;
+    }
+    &:not(:empty){
+      padding:10px;
+      height:40px;
+      line-height: 20px;
+      .opacity-base(100);
+    }
+  }
   .login-header{
-    .layout-base;
+    .layout-base();
     padding:10px 0;
     font-size:@font-size-base + 10;
     color:@color-gray3;
   }
   .login-qrcode{
-    .layout-base;
+    .layout-base();
     height:180px;
     div{
       max-width:160px;

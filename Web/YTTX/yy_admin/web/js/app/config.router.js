@@ -35,7 +35,7 @@ angular.module('app')
                     },
                     resolve: {
                         /*延迟加载，依赖相关组件*/
-                        loadMyCtrl: ['$ocLazyLoad',
+                        deps: ['$ocLazyLoad',
                             function ($ocLazyLoad) {
                                 return $ocLazyLoad.load(['js/app/module/index/index_controller.js']);
                             }]

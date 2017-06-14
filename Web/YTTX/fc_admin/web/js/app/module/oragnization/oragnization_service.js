@@ -1,5 +1,5 @@
 angular.module('app')
-    .service('structService',['toolUtil','toolDialog','BASE_CONFIG','loginService','powerService','addressService','dataTableColumnService','dataTableCheckAllService','dataTableItemActionService','$timeout','$sce',function(toolUtil,toolDialog,BASE_CONFIG,loginService,powerService,addressService,dataTableColumnService,dataTableCheckAllService,dataTableItemActionService,$timeout,$sce){
+    .service('oragnizationService',['toolUtil','toolDialog','BASE_CONFIG','loginService','powerService','addressService','dataTableColumnService','dataTableCheckAllService','dataTableItemActionService','$timeout','$sce',function(toolUtil,toolDialog,BASE_CONFIG,loginService,powerService,addressService,dataTableColumnService,dataTableCheckAllService,dataTableItemActionService,$timeout,$sce){
 
         /*获取缓存数据*/
         var self=this,

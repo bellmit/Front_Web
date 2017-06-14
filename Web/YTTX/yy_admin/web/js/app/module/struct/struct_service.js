@@ -236,7 +236,7 @@ angular.module('app')
                                                     /*始化机构操作区域*/
                                                     self.initOperate(config);
                                                 }
-                                                if(layer!==0){
+                                                if(layer!==0 && record.current){
                                                     record.current.attr({
                                                         'data-isrequest':true
                                                     });

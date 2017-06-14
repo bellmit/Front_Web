@@ -10,7 +10,7 @@ angular.module('ui.commonitem',[])
             template:'<li ng-repeat="item in header"><a data-id="{{item.id}}" data-code="{{item.code}}" href="" ui-sref="{{item.href}}" title="">{{item.name}}</a></li>',
             link:function (scope, element, attrs) {
                 /*绑定事件menuactive*/
-                element.bind('click',function (e) {
+                element.bind('click',function ($event) {
                     var target=$event.target,
                         node=target.nodeName.toLowerCase();
                     if(node!=='a'){

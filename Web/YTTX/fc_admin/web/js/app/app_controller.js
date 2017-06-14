@@ -26,11 +26,12 @@ angular.module('app')
             headeritem:[]/*导航菜单*/,
             username: '',
             password: '',
-            identifyingCode: ''
+            identifyingCode: '',
+            loginerror:''
         };
         /*获取菜单数组*/
         if(self.login.islogin){
-            loginService.getMenuData(self.login,true);
+            self.login.headeritem=loginService.getMenuData(true);
         }
 
         /*绑定提交*/

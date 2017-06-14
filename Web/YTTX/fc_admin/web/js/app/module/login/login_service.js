@@ -53,7 +53,7 @@ angular.module('login.service', [])
                             message = data.message;
                         if (code !== 0) {
                             if (typeof message !== 'undefined' && message !== '') {
-                                toastr.info(message);
+                                model.login.loginerror=message;
                             }
                             model.login.islogin = false;
                         } else {
@@ -83,6 +83,7 @@ angular.module('login.service', [])
                                 model:model.app_config
                             });
                             model.login.islogin = true;
+                            model.login.loginerror='';
                         }
                     } else {
                         model.login.islogin = false;
@@ -92,9 +93,9 @@ angular.module('login.service', [])
                     model.login.islogin = false;
                     var message = resp.data.message;
                     if (typeof message !== 'undefined' && message !== '') {
-                        toastr.error(message);
+                        model.login.loginerror=message;
                     } else {
-                        toastr.error('登录失败');
+                        model.login.loginerror='登录失败';
                     }
                 });
         };
@@ -179,7 +180,7 @@ angular.module('login.service', [])
             }
         };
         /*获取菜单数据,flag:是否需要首页*/
-        this.getMenuData = function (model, flag) {
+        this.getMenuData = function (flag) {
             if (mainmenu.length === 0) {
                 if (cache.cacheMap.menuload) {
                     /*直接加载缓存*/
@@ -187,20 +188,22 @@ angular.module('login.service', [])
                     if (list !== null) {
                         mainmenu = list;
                         if (flag) {
-                            model.headeritem = mainmenu.slice(0);
-
+                            return mainmenu.slice(0);
                         } else {
-                            model.headeritem = mainmenu.slice(1);
+                            return mainmenu.slice(1);
                         }
                     } else {
                         mainmenu = [];
+                        return [];
                     }
+                }else{
+                    return [];
                 }
             } else {
                 if (flag) {
-                    model.headeritem = mainmenu.slice(0);
+                   return mainmenu.slice(0);
                 } else {
-                    model.headeritem = mainmenu.slice(1);
+                   return mainmenu.slice(1);
                 }
             }
         };

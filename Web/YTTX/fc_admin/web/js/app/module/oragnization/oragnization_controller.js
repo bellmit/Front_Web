@@ -1,10 +1,10 @@
 /*首页控制器*/
 angular.module('app')
-    .controller('StructController', ['structService','toolUtil',function(structService,toolUtil){
+    .controller('OragnizationController', ['oragnizationService','toolUtil',function(oragnizationService,toolUtil){
         var self=this;
 
         /*模型--操作权限列表*/
-        this.powerlist=structService.getCurrentPower();
+        this.powerlist=oragnizationService.getCurrentPower();
 
         
         /*jquery dom缓存:主要是切换路由时，创建的dom缓存引用与现有的dom引用不一致，需要加载视图更新现有dom引用*/
@@ -30,8 +30,8 @@ angular.module('app')
             $allpower:$('#admin_struct_allpower')
         };
         /*切换路由时更新dom缓存*/
-        structService.initJQDom(jq_dom);
-        structService.initJQDomForPower(jq_dom_power);
+        oragnizationService.initJQDom(jq_dom);
+        oragnizationService.initJQDomForPower(jq_dom_power);
 
 
         /*模型--权限*/
@@ -44,7 +44,7 @@ angular.module('app')
         /*模型--tab选项卡*/
         this.tabitem=[{
             name:'运营架构',
-            href:'struct',
+            href:'organization',
             power:self.powerlist.organization_add,
             active:'tabactive'
         },{
@@ -229,9 +229,9 @@ angular.module('app')
                                         temp_param['pageSize']=self.table.list1_page.pageSize;
                                         self.table.list1_config.config.ajax.data=temp_param;
                                         if(self.record.structId===''){
-                                            structService.getColumnData(self.table,self.record.organizationId);
+                                            oragnizationService.getColumnData(self.table,self.record.organizationId);
                                         }else{
-                                            structService.getColumnData(self.table,self.record.structId)
+                                            oragnizationService.getColumnData(self.table,self.record.structId)
                                         }
                                     }
                                 });
@@ -325,7 +325,7 @@ angular.module('app')
                                     self.list_addressdata.province=province;
                                     str+='<em class="g-c-gray3">省：</em><em class="g-c-gray9">'+self.list_address["province"][province]["key"]+'</em>';
                                     /*查询新值*/
-                                    /*structService.isReqAddress({
+                                    /*oragnizationService.isReqAddress({
                                         model:self.list_addressdata,
                                         address:self.list_address,
                                         type:'city'
@@ -432,7 +432,7 @@ angular.module('app')
                 $bodywrap:jq_dom.$admin_batchlist_wrap,
                 itemaction_api:{
                     doItemAction:function(config){
-                        structService.doItemAction({
+                        oragnizationService.doItemAction({
                             record:self.record,
                             address:self.user_address,
                             user:self.user,
@@ -445,23 +445,23 @@ angular.module('app')
 
 
         /*初始化服务--虚拟挂载点，或者初始化参数*/
-        structService.getRoot(self.record);
+        oragnizationService.getRoot(self.record);
         /*初始化服务--初始化权限模型头部*/
-        structService.createThead({flag:true},self.power);
+        oragnizationService.createThead({flag:true},self.power);
         /*初始化服务--初始化地址信息*/
-        structService.queryAddress({
+        oragnizationService.queryAddress({
             type:'province',
             address:self.address,
             model:self.struct
         });
         /*初始化服务--初始化地址信息*/
-        structService.queryAddress({
+        oragnizationService.queryAddress({
             type:'province',
             address:self.user_address,
             model:self.user
         });
         /*初始化服务--初始化地址信息*/
-        structService.queryAddress({
+        oragnizationService.queryAddress({
             type:'province',
             address:self.list_address,
             model:self.list_addressdata
@@ -470,7 +470,7 @@ angular.module('app')
 
         /*地址服务--选中地址*/
         this.changeAddress=function (model_str,address_str,type) {
-            structService.queryAddress({
+            oragnizationService.queryAddress({
                 model:self[model_str],
                 address:self[address_str],
                 type:type
@@ -480,21 +480,21 @@ angular.module('app')
 
         /*菜单服务--初始化请求菜单*/
         this.initSubMenu=function () {
-          structService.getMenuList({
+          oragnizationService.getMenuList({
               record:self.record,
               table:self.table
           });
         };
         /*菜单服务--子菜单展开*/
         this.toggleSubMenu=function (e) {
-            structService.toggleSubMenu(e,{
+            oragnizationService.toggleSubMenu(e,{
                 record:self.record,
                 table:self.table
             });
         };
         /*菜单服务--跳转至虚拟挂载点*/
         this.rootSubMenu=function (e) {
-           structService.rootSubMenu(e,{
+           oragnizationService.rootSubMenu(e,{
                record:self.record,
                table:self.table
            });
@@ -503,7 +503,7 @@ angular.module('app')
 
         /*机构服务--展开*/
         this.toggleStructList=function (e) {
-            structService.toggleStructList(e,{
+            oragnizationService.toggleStructList(e,{
                 record:self.record,
                 table:self.table,
                 structpos:self.structpos
@@ -512,7 +512,7 @@ angular.module('app')
         /*机构服务--操作机构表单*/
         this.actionStruct=function (config) {
             /*调用编辑机构服务类*/
-            structService.actionStruct({
+            oragnizationService.actionStruct({
                 modal:config,
                 record:self.record,
                 struct:self.struct,
@@ -522,7 +522,7 @@ angular.module('app')
         };
         /*机构服务--调整位置*/
         this.adjustStructPos=function () {
-            structService.adjustStructPos({
+            oragnizationService.adjustStructPos({
                 structpos:self.structpos,
                 record:self.record,
                 table:self.table
@@ -532,7 +532,7 @@ angular.module('app')
 
         /*弹出层显示隐藏*/
         this.toggleModal=function (config) {
-            structService.toggleModal({
+            oragnizationService.toggleModal({
                 display:config.display,
                 area:config.area
             });
@@ -541,7 +541,7 @@ angular.module('app')
 
         /*表单服务--提交表单*/
         this.formSubmit=function (type) {
-            structService.formSubmit({
+            oragnizationService.formSubmit({
                 struct:self.struct,
                 user:self.user,
                 table:self.table,
@@ -551,7 +551,7 @@ angular.module('app')
         /*表单服务--重置表单*/
         this.formReset=function (forms,type) {
             /*重置表单模型*/
-            structService.formReset({
+            oragnizationService.formReset({
                 forms:forms,
                 struct:self.struct,
                 user:self.user,
@@ -564,27 +564,27 @@ angular.module('app')
             self.struct.username='';
             self.struct.password='';
             /*调用清除权限方法*/
-            structService.clearSelectPower(self.struct);
+            oragnizationService.clearSelectPower(self.struct);
             /*恢复默认值*/
             self.struct.isDesignatedPermit=0;
         };
         /*表单服务--权限服务--全选权限*/
         this.selectAllPower=function (e) {
-            structService.selectAllPower(e);
+            oragnizationService.selectAllPower(e);
         };
         /*表单服务--权限服务--确定所选权限*/
         this.getSelectPower=function () {
-            structService.getSelectPower(self.struct);
+            oragnizationService.getSelectPower(self.struct);
         };
         /*表单服务--权限服务--取消所选权限*/
         this.clearSelectPower=function () {
-            structService.clearSelectPower(self.struct);
+            oragnizationService.clearSelectPower(self.struct);
         };
 
         /*用户服务--操作用户表单*/
         this.actionUser=function (config) {
             /*调用编辑机构服务类*/
-            structService.actionUser({
+            oragnizationService.actionUser({
                 modal:config,
                 record:self.record,
                 address:self.user_address,
@@ -593,11 +593,11 @@ angular.module('app')
         };
         /*用户服务--过滤表格数据*/
         this.filterDataTable=function () {
-            structService.filterDataTable(self.table.list_table,self.user);
+            oragnizationService.filterDataTable(self.table.list_table,self.user);
         };
         /*用户服务--批量删除*/
         this.batchDeleteUser=function () {
-            structService.batchDeleteUser({
+            oragnizationService.batchDeleteUser({
                 record:self.record,
                 table:self.table
             });
@@ -611,7 +611,7 @@ angular.module('app')
 
         /*搜索服务--搜索过滤*/
         this.searchAction=function () {
-            structService.getMenuList({
+            oragnizationService.getMenuList({
                 record:self.record,
                 table:self.table
             });
