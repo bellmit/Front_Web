@@ -63,6 +63,7 @@ angular.module('app')
                 //订单管理
                 .state('order', {
                     url: '/order',
+                    templateUrl: 'tpl/order.html',
                     resolve: {
                         /*延迟加载，依赖相关组件*/
                         deps: ['$ocLazyLoad',
@@ -82,6 +83,7 @@ angular.module('app')
                 //发货管理
                 .state('invoice', {
                     url: '/order',
+                    templateUrl: 'tpl/order.html',
                     resolve: {
                         /*延迟加载，依赖相关组件*/
                         deps: ['$ocLazyLoad',
@@ -101,6 +103,7 @@ angular.module('app')
                 //采购管理
                 .state('purchase', {
                     url: '/order',
+                    templateUrl: 'tpl/order.html',
                     resolve: {
                         /*延迟加载，依赖相关组件*/
                         deps: ['$ocLazyLoad',
@@ -120,6 +123,7 @@ angular.module('app')
                 //仓库管理
                 .state('warehouse', {
                     url: '/order',
+                    templateUrl: 'tpl/order.html',
                     resolve: {
                         /*延迟加载，依赖相关组件*/
                         deps: ['$ocLazyLoad',

@@ -1,10 +1,10 @@
 /*首页控制器*/
 angular.module('app')
-    .controller('StructroleController', ['structroleService','toolUtil',function(structroleService,toolUtil){
+    .controller('OragnizationroleController', ['oragnizationroleService','toolUtil',function(oragnizationroleService,toolUtil){
         var self=this;
 
         /*模型--操作权限列表*/
-        this.powerlist=structroleService.getCurrentPower();
+        this.powerlist=oragnizationroleService.getCurrentPower();
 
 
         /*jquery dom缓存:主要是切换路由时，创建的dom缓存引用与现有的dom引用不一致，需要加载视图更新现有dom引用*/
@@ -27,7 +27,7 @@ angular.module('app')
             $admin_user_wrap:$('#admin_user_wrap')
         };
         /*切换路由时更新dom缓存*/
-        structroleService.initJQDom(jq_dom);
+        oragnizationroleService.initJQDom(jq_dom);
 
         /*模型--列表地址*/
         this.list_address={
@@ -80,7 +80,7 @@ angular.module('app')
         /*模型--tab选项卡*/
         this.tabitem=[{
             name:'运营架构',
-            href:'struct',
+            href:'oragnization',
             power:self.powerlist.organization_add,
             active:''
         },{
@@ -169,7 +169,7 @@ angular.module('app')
                                         temp_param['page']=self.table.list1_page.page;
                                         temp_param['pageSize']=self.table.list1_page.pageSize;
                                         self.table.list1_config.config.ajax.data=temp_param;
-                                        structroleService.getColumnData(self.table,self.record.role);
+                                        oragnizationroleService.getColumnData(self.table,self.record.role);
                                     }
                                 });
 
@@ -262,7 +262,7 @@ angular.module('app')
                                     self.list_addressdata.province=province;
                                     str+='<div class="inline g-c-gray3">省：</div><div class="inline g-c-gray9">'+self.list_address["province"][province]["key"]+'</div>';
                                     /*查询新值*/
-                                    /*structroleService.isReqAddress({
+                                    /*oragnizationroleService.isReqAddress({
                                      model:self.list_addressdata,
                                      address:self.list_address,
                                      type:'city'
@@ -349,9 +349,9 @@ angular.module('app')
 
 
         /*初始化服务--虚拟挂载点，或者初始化参数*/
-        structroleService.getMemberRoot(self.record);
+        oragnizationroleService.getMemberRoot(self.record);
         /*初始化服务--初始化地址信息*/
-        structroleService.queryAddress({
+        oragnizationroleService.queryAddress({
             type:'province',
             address:self.list_address,
             model:self.list_addressdata
@@ -360,20 +360,20 @@ angular.module('app')
 
         /*菜单服务--初始化*/
         this.initSubMenu=function () {
-            structroleService.queryRoleGroup({
+            oragnizationroleService.queryRoleGroup({
                 record:self.record
             });
-            structroleService.getColumnData(self.table,self.record.role);
+            oragnizationroleService.getColumnData(self.table,self.record.role);
         };
         /*菜单服务--查询角色组*/
         this.queryRoleGroup=function () {
-            structroleService.queryRoleGroup({
+            oragnizationroleService.queryRoleGroup({
                 record:self.record
             });
         };
         /*菜单服务--显示隐藏菜单*/
         this.toggleSubMenu=function (e) {
-            structroleService.toggleSubMenu(e,{
+            oragnizationroleService.toggleSubMenu(e,{
                 table:self.table,
                 record:self.record
             });
@@ -382,7 +382,7 @@ angular.module('app')
 
         /*角色服务--添加角色或角色组*/
         this.addRole=function (type) {
-            structroleService.addRole({
+            oragnizationroleService.addRole({
                 table:self.table,
                 record:self.record,
                 rolegroup:self.rolegroup,
@@ -391,7 +391,7 @@ angular.module('app')
         };
         /*角色服务--编辑角色或角色组*/
         this.editRole=function () {
-            structroleService.editRole({
+            oragnizationroleService.editRole({
                 table:self.table,
                 record:self.record,
                 rolegroup:self.rolegroup,
@@ -402,25 +402,25 @@ angular.module('app')
 
         /*成员服务--移除成员*/
         this.deleteMemberList=function () {
-            structroleService.deleteMemberList(self.record,self.table);
+            oragnizationroleService.deleteMemberList(self.record,self.table);
         };
         /*成员服务--查询用户*/
         this.checkMemberList=function (e) {
-          structroleService.checkMemberList(e,self.member);
+          oragnizationroleService.checkMemberList(e,self.member);
         };
         /*成员服务--过滤数据*/
         this.filterDataTable=function () {
-            structroleService.filterDataTable(self.table,self.role);
+            oragnizationroleService.filterDataTable(self.table,self.role);
         };
 
 
         /*机构服务--加载机构角色*/
         this.getMemberList=function () {
-          structroleService.getMemberList();
+          oragnizationroleService.getMemberList();
         };
         /*机构服务--显示隐藏*/
         this.toggleMemberList=function (e) {
-            structroleService.toggleMemberList(e,{
+            oragnizationroleService.toggleMemberList(e,{
                 member:self.member
             });
         };
@@ -428,13 +428,13 @@ angular.module('app')
 
         /*弹出层显示隐藏*/
         this.toggleModal=function (config) {
-            structroleService.toggleModal(config);
+            oragnizationroleService.toggleModal(config);
         };
 
 
         /*表单服务--提交表单*/
         this.formSubmit=function (type) {
-            structroleService.formSubmit({
+            oragnizationroleService.formSubmit({
                 role:self.role,
                 rolegroup:self.rolegroup,
                 table:self.table,
@@ -445,7 +445,7 @@ angular.module('app')
         /*表单服务--重置表单*/
         this.formReset=function (forms,type) {
             /*重置表单模型*/
-            structroleService.formReset({
+            oragnizationroleService.formReset({
                 forms:forms,
                 role:self.role,
                 rolegroup:self.rolegroup,
