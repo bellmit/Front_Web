@@ -36,13 +36,6 @@ angular.module('app')
         structService.initJQDomForPower(jq_dom_power);
 
 
-        /*模型--权限*/
-        this.power = {
-            colgroup: '',
-            thead: '',
-            tbody: ''
-        };
-
         /*模型--tab选项卡*/
         this.tabitem = [{
             name: '运营机构',
@@ -540,8 +533,7 @@ angular.module('app')
                 modal: config,
                 record: self.record,
                 struct: self.struct,
-                address: self.address,
-                power: self.power
+                address: self.address
             });
         };
         /*机构服务--调整位置*/
@@ -591,10 +583,6 @@ angular.module('app')
             structService.clearSelectPower(self.struct);
             /*恢复默认值*/
             self.struct.isDesignatedPermit = 0;
-        };
-        /*表单服务--权限服务--全选权限*/
-        this.selectAllPower = function (e) {
-            structService.selectAllPower(e);
         };
         /*表单服务--权限服务--确定所选权限*/
         this.getSelectPower = function () {

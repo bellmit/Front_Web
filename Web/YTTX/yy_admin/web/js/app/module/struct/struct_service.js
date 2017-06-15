@@ -1701,10 +1701,6 @@ angular.module('app')
             /*重置验证提示信息*/
             self.clearFormValid(config.forms);
         };
-        /*表单类服务--权限服务--全选权限*/
-        this.selectAllPower=function (e) {
-            powerService.selectAllPower(e);
-        };
         /*表单类服务--权限服务--确定所选权限*/
         this.getSelectPower=function (struct) {
             var temppower=powerService.getSelectPower();
