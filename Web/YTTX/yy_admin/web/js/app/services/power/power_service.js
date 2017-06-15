@@ -7,6 +7,8 @@ angular.module('power.service', [])
             cache = loginService.getCache(),
             powerCache = $.extend(true, {}, cache['powerMap']),
             isrender = false/*dom是否渲染*/,
+            isall=false/*是否支持全选*/,
+            isitem=false/*是否支持单个选中事件*/,
             h_items = [],
             h_len = 0,
             colgroup = ''/*分组*/,
@@ -60,18 +62,29 @@ angular.module('power.service', [])
             }
         }());
 
-        /*扩展服务--初始化jquery dom节点*/
-        this.initJQDom = function (dom) {
-            if (dom) {
+        /*初始化方法*/
+        this.init=function (config) {
+            if(config.dom){
                 isrender = true;
                 /*复制dom引用*/
                 for (var i in dom) {
                     self[i] = dom[i];
                 }
-                /*绑定相关操作*/
-                self.selectAllPower();
+                /*是否绑定全选*/
+                if(config.isall){
+                    isall=true;
+                    self.selectAllPower();
+                }
+                /*是否绑定单个选中*/
+                if(config.isitem){
+                    isitem=true;
+                    self.selectItemPower();
+                }
             }
         };
+
+
+
 
         /*生成头部和分组*/
         this.createThead = function (flag) {
@@ -90,7 +103,53 @@ angular.module('power.service', [])
         };
 
         /*设置单个权限选项操作*/
-        this.setItemPower=function ($input) {
+        this.selectItemPower=function () {
+            self.$power_body.on('click',function (e) {
+                e.stopPropagation();
+                var target = e.target,
+                    nodename = target.nodeName.toLowerCase();
+
+                /*过滤*/
+                if (nodename !== 'label'  || nodename !== 'input') {
+                    return null;
+                }
+
+                /*标签*/
+                var $selectall,
+                    index,
+                    $operate,
+                    check,
+                    selectarr = [];
+
+                if (nodename === 'label') {
+                    $selectall = $(target).find('input');
+                } else if (nodename === 'input') {
+                    $selectall = $(target);
+                }
+
+                check = $selectall.is(':checked');
+                index = $selectall.attr('data-index');
+                $operate = self.$power_tbody.find('td').eq(index).find('input');
+
+                if (check) {
+                    $operate.each(function () {
+                        var $this = $(this),
+                            prid = $this.attr('data-prid');
+                        $this.prop({
+                            "checked": true
+                        });
+                        selectarr.push(prid);
+                    });
+                } else {
+                    $operate.each(function () {
+                        $(this).prop({
+                            "checked": false
+                        });
+                    });
+                    selectarr = null;
+                }
+                return selectarr;
+            });
             var param=$.extend(true,{},cache.loginMap.param);
 
             toolUtil
