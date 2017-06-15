@@ -89,8 +89,61 @@ angular.module('power.service', [])
             }
         };
 
+        /*设置单个权限选项操作*/
+        this.setItemPower=function ($input) {
+            var param=$.extend(true,{},cache.loginMap.param);
+
+            toolUtil
+                .requestHttp({
+                    url:'/permission/state/update',
+                    method: 'post',
+                    set: true,
+                    data: param
+                })
+                .then(function (resp) {
+                        var data = resp.data,
+                            status = parseInt(resp.status, 10);
+
+                        if (status === 200) {
+                            var code = parseInt(data.code, 10),
+                                message = data.message;
+                            if (code !== 0) {
+                                if (typeof message !== 'undefined' && message !== '') {
+                                    console.log(message);
+                                } else {
+                                    console.log('设置权限失败');
+                                }
+                                if (code === 999) {
+                                    /*退出系统*/
+                                    cache = null;
+                                    toolUtil.loginTips({
+                                        clear: true,
+                                        reload: true
+                                    });
+                                }
+                            } else {
+                                /**/
+
+
+                            }
+                        }
+                    },
+                    function (resp) {
+                        var message = resp.data.message;
+                        if (typeof message !== 'undefined' && message !== '') {
+                            console.log(message);
+                        } else {
+                            console.log('设置权限失败');
+                        }
+                    });
+        };
+
+
         /*请求权限列表(主要是根据不同对象查询相关权限):config:请求参数，mode:angular 模型*/
         this.reqPowerList = function (config, mode) {
+            if(!isrender){
+                return false;
+            }
             /*合并参数*/
             var param;
 
