@@ -6,7 +6,6 @@ angular.module('power.service',[])
 		var self=this,
 			cache=loginService.getCache(),
 			powerCache=$.extend(true,{},cache['powerMap']),
-			isrender=false/*dom是否渲染*/,
 			h_items=[],
 			h_len=0,
 			colgroup=''/*分组*/,
@@ -63,7 +62,6 @@ angular.module('power.service',[])
 		/*扩展服务--初始化jquery dom节点*/
 		this.initJQDom=function (dom) {
 			if(dom){
-				isrender=true;
 				/*复制dom引用*/
 				for(var i in dom){
 					self[i]=dom[i];
@@ -72,18 +70,29 @@ angular.module('power.service',[])
 		};
 
 		/*生成头部和分组*/
-		this.createThead=function (flag) {
-			if(!isrender){
-				/*dom没有渲染*/
-				return false;
-			}
+		this.createThead=function (config,mode) {
 			/*flag:是否有全选*/
 			/*有数据即调数据，没数据就创建数据*/
-			self.$power_colgroup=colgroup;
-			if(flag){
-				self.$power_thead=all_thead;
+			if(config.flag){
+				if(mode){
+					mode['colgroup']=$sce.trustAsHtml(colgroup);
+					mode['thead']=$sce.trustAsHtml(all_thead);
+				}else{
+					return {
+						colgroup:$sce.trustAsHtml(colgroup),
+						thead:$sce.trustAsHtml(all_thead)
+					}
+				}
 			}else{
-				self.$power_thead=thead;
+				if(mode){
+					mode['colgroup']=$sce.trustAsHtml(colgroup);
+					mode['thead']=$sce.trustAsHtml(thead);
+				}else{
+					return {
+						colgroup:$sce.trustAsHtml(colgroup),
+						thead:$sce.trustAsHtml(thead)
+					}
+				}
 			}
 		};
 

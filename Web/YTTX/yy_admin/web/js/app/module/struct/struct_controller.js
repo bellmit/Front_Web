@@ -27,7 +27,9 @@ angular.module('app')
         jq_dom['$admin_submenu_wrap'] = jq_dom.$admin_struct_submenu.prev();
 
         var jq_dom_power = {
-            $allpower: $('#admin_struct_allpower')
+            $power_colgroup: $('#struct_power_colgroup'),
+            $power_thead:$('#struct_power_thead'),
+            $power_tbody:$('#struct_power_tbody')
         };
         /*切换路由时更新dom缓存*/
         structService.initJQDom(jq_dom);
@@ -43,7 +45,7 @@ angular.module('app')
 
         /*模型--tab选项卡*/
         this.tabitem = [{
-            name: '运营架构',
+            name: '运营机构',
             href: 'struct',
             power: self.powerlist.organization_add,
             active: 'tabactive'
@@ -466,8 +468,6 @@ angular.module('app')
 
         /*初始化服务--虚拟挂载点，或者初始化参数*/
         structService.getRoot(self.record);
-        /*初始化服务--初始化权限模型头部*/
-        structService.createThead({flag: true}, self.power);
         /*初始化服务--初始化地址信息*/
         structService.queryAddress({
             type: 'province',

@@ -951,6 +951,7 @@ angular.module('app')
                 power=config.power,
                 type=modal.type;
 
+
             /*判断是否是合法的节点，即是否有父机构*/
             if(record.organizationId===''){
                 toolDialog.show({
@@ -986,6 +987,7 @@ angular.module('app')
                     area:modal.area
                 });
             }
+
 
         };
         /*机构服务--查询机构数据*/
@@ -1046,6 +1048,7 @@ angular.module('app')
                                             switch (i){
                                                 case 'id':
                                                     struct[i]=list[i];
+                                                    struct['type']='edit';
                                                     break;
                                                 case 'fullName':
                                                     struct[i]=list[i];
@@ -1109,7 +1112,7 @@ angular.module('app')
                                                             /*默认为：全部权限*/
                                                             temp_power=0;
                                                         }else{
-                                                            temp_power=parseInt(list['isDesignatedPermit'],10);
+                                                            temp_power=parseInt(temp_power,10);
                                                         }
                                                         struct['isDesignatedPermit']=temp_power;
                                                         /*全部权限时，清空权限ids缓存*/
@@ -1117,23 +1120,24 @@ angular.module('app')
                                                             struct['checkedFunctionIds']='';
                                                         }
 
-                                                        /*查询权限--先查询当前权限(子级权限) --> 再查父级权限  --> 存在父子级权限，过滤子级权限*/
+                                                        /*查询权限--原始方案：先查询当前权限(子级权限) --> 再查父级权限  --> 存在父子级权限，过滤子级权限，
+                                                        * 后来方案：先查父级权限 --> 再查询当前权限(子级权限)  --> 存在父子级权限，过滤子级权限*/
                                                         powerService.reqPowerList({
                                                             url:'/organization/permission/select',
                                                             source:true,/*是否获取数据源*/
-                                                            sourcefn:function (cs) {
+                                                            sourcefn:function (ps) {
                                                                 /*数据源*/
-                                                                var child_data=cs,
-                                                                    parent_data;
-                                                                if(child_data!==null){
+                                                                var child_data,
+                                                                    parent_data=ps;
+                                                                if(parent_data!==null){
                                                                     /*存在数据源*/
                                                                     powerService.reqPowerList({
                                                                         url:'/organization/permission/select',
                                                                         source:true,/*是否获取数据源*/
-                                                                        sourcefn:function (ps) {
+                                                                        sourcefn:function (cs) {
                                                                             /*数据源*/
-                                                                            parent_data=ps;
-                                                                            if(parent_data!==null){
+                                                                            child_data=cs;
+                                                                            if(child_data!==null){
                                                                                 /*存在数据源，开始过滤权限数据*/
                                                                                 var filter_data=powerService.filterPower(parent_data,child_data);
                                                                                 if(filter_data){
@@ -1156,26 +1160,26 @@ angular.module('app')
                                                                                 /*提示信息*/
                                                                                 toolDialog.show({
                                                                                     type:'warn',
-                                                                                    value:'没有父级权限数据'
+                                                                                    value:'没有子级权限数据'
                                                                                 });
                                                                                 return false;
                                                                             }
                                                                         },
                                                                         param:{
-                                                                            organizationId:list['parentId']
+                                                                            organizationId:list['id']
                                                                         }
                                                                     },power);
                                                                 }else{
                                                                     /*提示信息*/
                                                                     toolDialog.show({
                                                                         type:'warn',
-                                                                        value:'没有子级权限数据'
+                                                                        value:'没有父级权限数据'
                                                                     });
                                                                     return false;
                                                                 }
                                                             },
                                                             param:{
-                                                                organizationId:list['id']
+                                                                organizationId:list['parentId']
                                                             }
                                                         },power);
                                                     }else if(temp_login===0){
@@ -1183,6 +1187,10 @@ angular.module('app')
                                                         struct['username']='';
                                                         /*置空*/
                                                         struct['password']='';
+                                                        /*设置权限*/
+                                                        struct['isDesignatedPermit']=0;
+                                                        /*设置权限值*/
+                                                        struct['checkedFunctionIds']='';
                                                     }
                                                     break;
                                                 case 'sysUserId':
@@ -1192,10 +1200,7 @@ angular.module('app')
                                                     struct[i]=list[i];
                                                     break;
                                             }
-
                                         }
-                                        /*修正错误*/
-                                        self.formCorrect(config,'struct');
                                         /*显示弹窗*/
                                         self.toggleModal({
                                             display:modal.display,
@@ -1696,37 +1701,6 @@ angular.module('app')
             /*重置验证提示信息*/
             self.clearFormValid(config.forms);
         };
-        /*表单类服务--补全或修正不存在的默认信息*/
-        this.formCorrect=function (config,type) {
-            if(!config && !type){
-                return false;
-            }
-            var model=config[type];
-            if(!model){
-                return false;
-            }
-            if(type==='user'){
-                if(model['shoptype']==='' || typeof model['shoptype']==='undefined' || model['shoptype']===null){
-                    model['shoptype']=1;
-                }
-                if(model['status']==='' || typeof model['status']==='undefined' || model['status']===null){
-                    model['status']=0;
-                }
-            }else if(type==='struct'){
-                if(model['isAudited']==='' || typeof model['isAudited']==='undefined' || model['isAudited']===null){
-                    model['isAudited']=0;
-                }
-                if(model['status']==='' || typeof model['status']==='undefined' || model['status']===null){
-                    model['status']=0;
-                }
-                if(model['isSettingLogin']==='' || typeof model['isSettingLogin']==='undefined' || model['isSettingLogin']===null){
-                    model['isSettingLogin']=0;
-                }
-                if(model['isDesignatedPermit']==='' || typeof model['isDesignatedPermit']==='undefined' || model['isDesignatedPermit']===null){
-                    model['isDesignatedPermit']=0;
-                }
-            }
-        };
         /*表单类服务--权限服务--全选权限*/
         this.selectAllPower=function (e) {
             powerService.selectAllPower(e);
@@ -1832,12 +1806,12 @@ angular.module('app')
                                         if(action==='update'){
                                             /*修改：更新模型*/
                                             var user=config.user;
-                                            user['type']='edit';
-                                            
+
                                             for(var i in list){
                                                 switch (i){
                                                     case 'id':
                                                         user[i]=list[i];
+                                                        user['type']='edit';
                                                         break;
                                                     case 'fullName':
                                                         user[i]=list[i];
@@ -1849,7 +1823,13 @@ angular.module('app')
                                                         user[i]=list[i];
                                                         break;
                                                     case 'type':
-                                                        user['shoptype']=list[i];
+                                                        var temp_type=list[i];
+                                                        if(temp_type==='' || isNaN(temp_type)){
+                                                            temp_type=1;
+                                                            user['shoptype']=temp_status;
+                                                        }else{
+                                                            user['shoptype']=list[i];
+                                                        }
                                                         break;
                                                     case 'cellphone':
                                                         user[i]=toolUtil.phoneFormat(list[i]);
@@ -1872,15 +1852,19 @@ angular.module('app')
                                                         user[i]=list[i];
                                                         break;
                                                     case 'status':
-                                                        user[i]=list[i];
+                                                        var temp_status=list[i];
+                                                        if(temp_status==='' || isNaN(temp_status)){
+                                                            temp_status=0;
+                                                            user[i]=temp_status;
+                                                        }else{
+                                                            user[i]=list[i];
+                                                        }
                                                         break;
                                                     case 'remark':
                                                         user[i]=list[i];
                                                         break;
                                                 }
                                             }
-                                            /*修正错误*/
-                                            self.formCorrect(config,'user');
                                             /*显示弹窗*/
                                             self.toggleModal({
                                                 display:'show',

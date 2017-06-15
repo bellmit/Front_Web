@@ -129,11 +129,11 @@
                     <div class="g-f-l g-w-percent34" ng-show="struct_ctrl.struct.isDesignatedPermit===1 && struct_ctrl.struct.isSettingLogin===1">
                         <div class="admin-layout-theme4 admin-theme-close g-t-c g-b-gray17 g-pos-r">选择权限</div>
                         <table class="table table-bordered table-striped table-hover admin-layout-table">
-                            <colgroup ng-bind-html="struct_ctrl.power.colgroup"></colgroup>
-                            <thead ng-click="struct_ctrl.selectAllPower($event)" ng-bind-html="struct_ctrl.power.thead"></thead>
+                            <colgroup id="struct_power_colgroup"></colgroup>
+                            <thead id="struct_power_thead" ng-click="struct_ctrl.selectAllPower($event)"></thead>
 
 
-                            <tbody id="admin_struct_allpower" ng-bind-html="struct_ctrl.power.tbody"></tbody>
+                            <tbody id="struct_power_tbody"></tbody>
                         </table>
                         <div class="row">
                             <div class="col-sm-5 g-t-r">
@@ -272,7 +272,7 @@
                             <div class="admin-layout-theme4"><span class="mini-icon admin-mini-icon3"></span>&nbsp;是否已审核</div>
 
                             <div class="form-group-self1">
-                                <label class="self-label" ng-init="struct_ctrl.struct.isAudited=0">
+                                <label class="self-label">
                                     <input type="radio" ng-model="struct_ctrl.struct.isAudited" ng-value="0" name="isAudited">
                                     &nbsp;默认
                                 </label>
@@ -286,7 +286,7 @@
                             <div class="admin-layout-theme4"><span class="mini-icon admin-mini-icon3"></span>&nbsp;状态</div>
 
                             <div class="form-group-self1">
-                                <label class="self-label" ng-init="struct_ctrl.struct.status=0">
+                                <label class="self-label">
                                     <input type="radio" ng-model="struct_ctrl.struct.status" ng-value="0" name="status">
                                     &nbsp;正常
                                 </label>
@@ -299,7 +299,7 @@
                             <div class="admin-layout-theme4"><span class="mini-icon admin-mini-icon4"></span>&nbsp;登陆信息</div>
 
                             <div class="form-group-self1">
-                                <label class="self-label g-w-percent50"><input type="checkbox"  ng-model="struct_ctrl.struct.isSettingLogin" ng-init="struct_ctrl.struct.isSettingLogin=0" ng-change="struct_ctrl.clearLoginInfo()" ng-checked="struct_ctrl.struct.isSettingLogin" ng-true-value="1" ng-false-value="0" name="isSettingLogin">&nbsp;设置登录名与密码</label>
+                                <label class="self-label g-w-percent50"><input type="checkbox"  ng-model="struct_ctrl.struct.isSettingLogin" ng-change="struct_ctrl.clearLoginInfo()" ng-checked="struct_ctrl.struct.isSettingLogin" ng-true-value="1" ng-false-value="0" name="isSettingLogin">&nbsp;设置登录名与密码</label>
                             </div>
 
 
@@ -327,7 +327,7 @@
 
                                 <div class="admin-layout-theme4"><span class="mini-icon admin-mini-icon4"></span>&nbsp;权限设定</div>
                                 <div class="form-group-self1">
-                                    <label class="self-label" ng-init="struct_ctrl.struct.isDesignatedPermit=0">
+                                    <label class="self-label">
                                         <input type="radio" ng-model="struct_ctrl.struct.isDesignatedPermit" ng-value="0" ng-change="struct_ctrl.clearSelectPower()" name="isDesignatedPermit">
                                         &nbsp;全部权限
                                     </label>
@@ -411,7 +411,7 @@
                             <div class="admin-layout-theme4"><span class="mini-icon admin-mini-icon3"></span>&nbsp;店铺类型</div>
 
                             <div class="form-group-self1">
-                                <label class="self-label" ng-init="struct_ctrl.user.shoptype=1">
+                                <label class="self-label">
                                     <input type="radio" ng-model="struct_ctrl.user.shoptype" ng-value="1" name="shoptype">
                                     &nbsp;旗舰店
                                 </label>
@@ -496,7 +496,7 @@
                             <div class="admin-layout-theme4"><span class="mini-icon admin-mini-icon3"></span>&nbsp;状态</div>
 
                             <div class="form-group-self1">
-                                <label class="self-label" ng-init="struct_ctrl.user.status=0">
+                                <label class="self-label">
                                     <input type="radio" ng-model="struct_ctrl.user.status" ng-value="0" name="status">
                                     &nbsp;正常
                                 </label>
