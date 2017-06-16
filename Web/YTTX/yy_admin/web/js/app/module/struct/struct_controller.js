@@ -111,6 +111,7 @@ angular.module('app')
             structtype: 'all'/*机构类型*/,
             structId: ''/*机构设置Id*/,
             structName: ''/*机构设置名称*/,
+            structnode:null/*机构对象*/,
             layer: 0/*操作层*/
         };
 

@@ -419,6 +419,7 @@ angular.module('app')
             record.organizationId = temp_id;
             record.organizationName = temp_label;
             record.structId = '';
+            record.structnode = null;
             record.structName = '';
 
             /*查询子集*/
@@ -524,6 +525,7 @@ angular.module('app')
             record.organizationName = record.currentName;
             record.structId = '';
             record.structName = '';
+            record.structnode = null;
             if (record.prev !== null) {
                 record.prev.removeClass('sub-menuactive');
                 record.current.removeClass('sub-menuactive');
@@ -620,6 +622,7 @@ angular.module('app')
                 /*变更模型*/
                 record.structId = id;
                 record.structName = label;
+                record.structnode = $span;
                 record.layer = layer;
 
                 /*数据状态*/
@@ -892,6 +895,7 @@ angular.module('app')
                 record.structId = id;
                 record.structName = label;
                 record.layer = layer;
+                record.structnode = $li;
             } else if (type === 'delete') {
                 /*删除*/
                 /*修改样式*/
@@ -907,6 +911,7 @@ angular.module('app')
                 record.structId = '';
                 record.structName = '';
                 record.layer = 0;
+                record.structnode = null;
             }
         };
         /*机构服务--校验机构数据*/
@@ -1734,7 +1739,6 @@ angular.module('app')
                     /*新增时查询权限*/
                     if (record.structId !== '') {
                         cid = record.structId;
-
                     } else if (record.organizationId !== '') {
 
                     } else if (record.currentId !== '') {
