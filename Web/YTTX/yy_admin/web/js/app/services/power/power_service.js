@@ -7,8 +7,8 @@ angular.module('power.service', [])
             cache = loginService.getCache(),
             powerCache = $.extend(true, {}, cache['powerMap']),
             isrender = false/*dom是否渲染*/,
-            isall=false/*是否支持全选*/,
-            isitem=false/*是否支持单个选中事件*/,
+            isall = false/*是否支持全选*/,
+            isitem = false/*是否支持单个选中事件*/,
             h_items = [],
             h_len = 0,
             colgroup = ''/*分组*/,
@@ -63,159 +63,129 @@ angular.module('power.service', [])
         }());
 
         /*初始化方法*/
-        this.init=function (config) {
-            if(config.dom){
+        this.init = function (config) {
+            var dom = config.dom;
+            if (dom) {
                 isrender = true;
                 /*复制dom引用*/
                 for (var i in dom) {
                     self[i] = dom[i];
                 }
                 /*是否绑定全选*/
-                if(config.isall){
-                    isall=true;
+                if (config.isall) {
+                    isall = true;
                     self.selectAllPower();
                 }
                 /*是否绑定单个选中*/
-                if(config.isitem){
-                    isitem=true;
+                if (config.isitem) {
+                    isitem = true;
                     self.selectItemPower();
                 }
+                /*初始化头部和分组*/
+                self.createThead();
             }
         };
-
-
 
 
         /*生成头部和分组*/
-        this.createThead = function (flag) {
-            if (!isrender) {
-                /*dom没有渲染*/
-                return false;
-            }
+        this.createThead = function () {
             /*flag:是否有全选*/
             /*有数据即调数据，没数据就创建数据*/
-            self.$power_colgroup = colgroup;
-            if (flag) {
-                self.$power_thead = all_thead;
+            $(colgroup).appendTo(self.$power_colgroup.html(''));
+            if (isall) {
+                $(all_thead).appendTo(self.$power_thead.html(''));
             } else {
-                self.$power_thead = thead;
+                $(thead).appendTo(self.$power_thead.html(''));
             }
         };
 
-        /*设置单个权限选项操作*/
-        this.selectItemPower=function () {
-            self.$power_body.on('click',function (e) {
-                e.stopPropagation();
-                var target = e.target,
-                    nodename = target.nodeName.toLowerCase();
-
-                /*过滤*/
-                if (nodename !== 'label'  || nodename !== 'input') {
-                    return null;
-                }
+        /*设置单个权限选项操作 to do*/
+        this.selectItemPower = function () {
+            self.$power_tbody.on('click','input',function (e) {
+                var target = e.target;
 
                 /*标签*/
-                var $selectall,
-                    index,
-                    $operate,
-                    check,
-                    selectarr = [];
+                var $operate= $(target),
+                    check=$operate.is(':checked'),
+                    prid=$operate.attr('data-prid'),
+                    tempparam = cache.loginMap.param,
+                    param={
+                        adminId:tempparam.adminId,
+                        token:tempparam.token,
+                        organizationId:tempparam.organizationId,
+                        prid:prid,
+                        isPermit:check?1:0
+                    };
 
-                if (nodename === 'label') {
-                    $selectall = $(target).find('input');
-                } else if (nodename === 'input') {
-                    $selectall = $(target);
-                }
+                toolUtil
+                    .requestHttp({
+                        url: '/permission/state/update',
+                        method: 'post',
+                        set: true,
+                        data: param
+                    })
+                    .then(function (resp) {
+                            var data = resp.data,
+                                status = parseInt(resp.status, 10);
 
-                check = $selectall.is(':checked');
-                index = $selectall.attr('data-index');
-                $operate = self.$power_tbody.find('td').eq(index).find('input');
-
-                if (check) {
-                    $operate.each(function () {
-                        var $this = $(this),
-                            prid = $this.attr('data-prid');
-                        $this.prop({
-                            "checked": true
-                        });
-                        selectarr.push(prid);
-                    });
-                } else {
-                    $operate.each(function () {
-                        $(this).prop({
-                            "checked": false
-                        });
-                    });
-                    selectarr = null;
-                }
-                return selectarr;
-            });
-            var param=$.extend(true,{},cache.loginMap.param);
-
-            toolUtil
-                .requestHttp({
-                    url:'/permission/state/update',
-                    method: 'post',
-                    set: true,
-                    data: param
-                })
-                .then(function (resp) {
-                        var data = resp.data,
-                            status = parseInt(resp.status, 10);
-
-                        if (status === 200) {
-                            var code = parseInt(data.code, 10),
-                                message = data.message;
-                            if (code !== 0) {
-                                if (typeof message !== 'undefined' && message !== '') {
-                                    console.log(message);
-                                } else {
-                                    console.log('设置权限失败');
-                                }
-                                if (code === 999) {
-                                    /*退出系统*/
-                                    cache = null;
-                                    toolUtil.loginTips({
-                                        clear: true,
-                                        reload: true
+                            if (status === 200) {
+                                var code = parseInt(data.code, 10),
+                                    message = data.message;
+                                if (code !== 0) {
+                                    if (typeof message !== 'undefined' && message !== '') {
+                                        console.log(message);
+                                    } else {
+                                        console.log('设置权限失败');
+                                    }
+                                    if (code === 999) {
+                                        /*退出系统*/
+                                        cache = null;
+                                        toolUtil.loginTips({
+                                            clear: true,
+                                            reload: true
+                                        });
+                                    }
+                                    /*恢复原来设置*/
+                                    $operate.prop({
+                                        'checked':!check
                                     });
                                 }
-                            } else {
-                                /**/
-
-
                             }
-                        }
-                    },
-                    function (resp) {
-                        var message = resp.data.message;
-                        if (typeof message !== 'undefined' && message !== '') {
-                            console.log(message);
-                        } else {
-                            console.log('设置权限失败');
-                        }
-                    });
+                        },
+                        function (resp) {
+                            var message = resp.data.message;
+                            if (typeof message !== 'undefined' && message !== '') {
+                                console.log(message);
+                            } else {
+                                console.log('设置权限失败');
+                            }
+                            /*恢复原来设置*/
+                            $operate.prop({
+                                'checked':!check
+                            });
+                        });
+
+            });
+
         };
 
 
-        /*请求权限列表(主要是根据不同对象查询相关权限):config:请求参数，mode:angular 模型*/
-        this.reqPowerList = function (config, mode) {
-            if(!isrender){
+        /*请求权限列表(主要是根据不同对象查询相关权限):config:请求参数，mode:模型*/
+        this.reqPowerList = function (config) {
+            if (!isrender) {
                 return false;
             }
             /*合并参数*/
-            var param;
-
-            if (config.url) {
-                param = $.extend(true, {}, cache.loginMap.param, config.param);
-            } else {
-                param = cache.loginMap.param;
-            }
-
+            var tempparm = cache.loginMap.param,
+                param = {
+                    adminId: tempparm.adminId,
+                    token: tempparm.token,
+                    organizationId: typeof config.organizationId !== 'undefined' ? config.organizationId : tempparm.organizationId
+                };
 
             toolUtil
                 .requestHttp({
-                    url: config.url ? config.url : '/module/permissions',
+                    url: '/organization/permission/select',
                     method: 'post',
                     set: true,
                     data: param
@@ -254,22 +224,18 @@ angular.module('power.service', [])
                                                 if (config.sourcefn && typeof config.sourcefn === 'function') {
                                                     config.sourcefn.call(null, null);
                                                 }
-                                                return true;
                                             } else {
-                                                if (mode) {
-                                                    mode['tbody'] = $sce.trustAsHtml('<tr><td colspan="' + h_len + '" class="g-c-gray9 g-fs4 g-t-c g-b-white">没有查询到权限信息</td></tr>');
-                                                }
+                                                self.$power_tbody.html('<tr><td colspan="' + h_len + '" class="g-c-gray9 g-fs4 g-t-c g-b-white">没有查询到权限信息</td></tr>');
                                             }
+                                            return true;
                                         } else {
                                             var templist = toolUtil.resolveMainMenu(menu);
                                             /*直接获取原始数据*/
                                             if (config.source) {
-                                                if (templist !== null) {
-                                                    if (config.sourcefn && typeof config.sourcefn === 'function') {
+                                                if (config.sourcefn && typeof config.sourcefn === 'function') {
+                                                    if (templist !== null) {
                                                         config.sourcefn.call(null, templist['power']);
-                                                    }
-                                                } else {
-                                                    if (config.sourcefn && typeof config.sourcefn === 'function') {
+                                                    } else {
                                                         config.sourcefn.call(null, null);
                                                     }
                                                 }
@@ -291,13 +257,9 @@ angular.module('power.service', [])
                                                             menu: temp_power
                                                         });
                                                     }
-                                                    if (mode) {
-                                                        mode['tbody'] = $sce.trustAsHtml(temp_html);
-                                                    }
+                                                    $(temp_html).appendTo(self.$power_tbody.html(''));
                                                 } else {
-                                                    if (mode) {
-                                                        mode['tbody'] = $sce.trustAsHtml('<tr><td colspan="' + h_len + '" class="g-c-gray9 g-fs4 g-t-c g-b-white">没有查询到权限信息</td></tr>');
-                                                    }
+                                                    self.$power_tbody.html('<tr><td colspan="' + h_len + '" class="g-c-gray9 g-fs4 g-t-c g-b-white">没有查询到权限信息</td></tr>');
                                                 }
                                             }
 
@@ -311,9 +273,7 @@ angular.module('power.service', [])
                                             return true;
                                         } else {
                                             /*填充子数据到操作区域,同时显示相关操作按钮*/
-                                            if (mode) {
-                                                mode['tbody'] = $sce.trustAsHtml('<tr><td colspan="' + h_len + '" class="g-c-gray9 g-fs4 g-t-c g-b-white">没有查询到权限信息</td></tr>');
-                                            }
+                                            self.$power_tbody.html('<tr><td colspan="' + h_len + '" class="g-c-gray9 g-fs4 g-t-c g-b-white">没有查询到权限信息</td></tr>');
                                         }
                                     }
                                 } else {
@@ -324,9 +284,7 @@ angular.module('power.service', [])
                                         }
                                         return true;
                                     } else {
-                                        if (mode) {
-                                            mode['tbody'] = $sce.trustAsHtml('<tr><td colspan="' + h_len + '" class="g-c-gray9 g-fs4 g-t-c g-b-white">没有查询到权限信息</td></tr>');
-                                        }
+                                        self.$power_tbody.html('<tr><td colspan="' + h_len + '" class="g-c-gray9 g-fs4 g-t-c g-b-white">没有查询到权限信息</td></tr>');
                                     }
                                 }
                             }
@@ -346,9 +304,7 @@ angular.module('power.service', [])
                             }
                             return true;
                         } else {
-                            if (mode) {
-                                mode['tbody'] = $sce.trustAsHtml('<tr><td colspan="' + h_len + '" class="g-c-gray9 g-fs4 g-t-c g-b-white">没有查询到权限信息</td></tr>');
-                            }
+                            self.$power_tbody.html('<tr><td colspan="' + h_len + '" class="g-c-gray9 g-fs4 g-t-c g-b-white">没有查询到权限信息</td></tr>');
                         }
                     });
         };
@@ -424,7 +380,7 @@ angular.module('power.service', [])
 
         /*权限服务--全选权限（权限绑定）*/
         this.selectAllPower = function () {
-            self.$power_thead.on('click',function (e) {
+            self.$power_thead.on('click', function (e) {
                 e.stopPropagation();
                 var target = e.target,
                     nodename = target.nodeName.toLowerCase();
@@ -556,19 +512,28 @@ angular.module('power.service', [])
             return selectarr.length === 0 ? null : selectarr;
         };
 
+        /*清除头部选中*/
+        this.clearHeaderPower=function () {
+            if(isall){
+                self.$power_thead.find('input:checked').each(function () {
+                    $(this).prop({
+                        'checked': false
+                    });
+                });
+            }
+        };
+
         /*权限服务--清除选中选择权限*/
         this.clearSelectPower = function (dom) {
-            var $input,
-                $head;
+            var $input;
             if (typeof dom !== 'undefined') {
                 $input = $(dom);
             } else {
                 if (!isrender) {
                     return false;
                 }
-                $input = self.$power_tbody.find('input:checked');
+                $input=self.$power_tbody.find('input:checked');
             }
-            $head = self.$power_thead.find('input:checked');
 
             $input.each(function () {
                 $(this).prop({
@@ -576,13 +541,14 @@ angular.module('power.service', [])
                 });
             });
 
-            if ($head) {
-                $head.each(function () {
+            if(isall){
+                self.$power_thead.find('input:checked').each(function () {
                     $(this).prop({
                         'checked': false
                     });
                 });
             }
+
         };
 
         /*权限服务--获取当前用户的权限缓存,key(id，模块名称)*/

@@ -28,12 +28,17 @@ angular.module('app')
 
         var jq_dom_power = {
             $power_colgroup: $('#struct_power_colgroup'),
-            $power_thead:$('#struct_power_thead'),
-            $power_tbody:$('#struct_power_tbody')
+            $power_thead: $('#struct_power_thead'),
+            $power_tbody: $('#struct_power_tbody')
         };
         /*切换路由时更新dom缓存*/
         structService.initJQDom(jq_dom);
-        structService.initJQDomForPower(jq_dom_power);
+
+        /*权限初始化*/
+        structService.initForPower({
+            dom: jq_dom_power,
+            isall: true
+        });
 
 
         /*模型--tab选项卡*/
@@ -514,7 +519,7 @@ angular.module('app')
         };
         /*菜单服务--切换机构类型*/
         this.toggleStructType = function (type) {
-            self.record.structtype=type;
+            self.record.structtype = type;
         };
 
 
@@ -576,13 +581,14 @@ angular.module('app')
         };
         /*表单服务--选择登录用户名和密码*/
         this.clearLoginInfo = function () {
+            structService.clearLoginInfo(self.struct);
             /*设置登录名和密码*/
-            self.struct.username = '';
-            self.struct.password = '';
+            /*self.struct.username = '';
+             self.struct.password = '';*/
             /*调用清除权限方法*/
-            structService.clearSelectPower(self.struct);
+            //structService.clearSelectPower(self.struct);
             /*恢复默认值*/
-            self.struct.isDesignatedPermit = 0;
+            //self.struct.isDesignatedPermit = 0;
         };
         /*表单服务--权限服务--确定所选权限*/
         this.getSelectPower = function () {
@@ -592,6 +598,14 @@ angular.module('app')
         this.clearSelectPower = function () {
             structService.clearSelectPower(self.struct);
         };
+        /*表单服务--权限服务--切换所选权限*/
+        this.toggleSelectPower = function () {
+            structService.toggleSelectPower({
+                struct: self.struct,
+                record: self.record
+            });
+        };
+
 
         /*用户服务--操作用户表单*/
         this.actionUser = function (config) {

@@ -328,11 +328,11 @@
                                 <div class="admin-layout-theme4"><span class="mini-icon admin-mini-icon4"></span>&nbsp;权限设定</div>
                                 <div class="form-group-self1">
                                     <label class="self-label">
-                                        <input type="radio" ng-model="struct_ctrl.struct.isDesignatedPermit" ng-value="0" ng-change="struct_ctrl.clearSelectPower()" name="isDesignatedPermit">
+                                        <input type="radio" ng-model="struct_ctrl.struct.isDesignatedPermit" ng-value="0" ng-change="struct_ctrl.toggleSelectPower()" name="isDesignatedPermit">
                                         &nbsp;全部权限
                                     </label>
                                     <label class="self-label">
-                                        <input type="radio" ng-model="struct_ctrl.struct.isDesignatedPermit" ng-value="1" ng-change="struct_ctrl.clearSelectPower()"  name="isDesignatedPermit">
+                                        <input type="radio" ng-model="struct_ctrl.struct.isDesignatedPermit" ng-value="1" ng-change="struct_ctrl.toggleSelectPower()"  name="isDesignatedPermit">
                                         &nbsp;指定权限
                                     </label>
                                 </div>
