@@ -1,7 +1,7 @@
 /*权限列表服务*/
 'use strict';
 angular.module('power.service', [])
-    .service('powerService', ['toolUtil', 'toolDialog', 'BASE_CONFIG', 'loginService', '$sce', function (toolUtil, toolDialog, BASE_CONFIG, loginService, $sce) {
+    .service('powerService', ['toolUtil', 'toolDialog', 'BASE_CONFIG', 'loginService', function (toolUtil, toolDialog, BASE_CONFIG, loginService) {
         /*获取缓存数据*/
         var self = this,
             cache = loginService.getCache(),
@@ -101,20 +101,20 @@ angular.module('power.service', [])
 
         /*设置单个权限选项操作 to do*/
         this.selectItemPower = function () {
-            self.$power_tbody.on('click','input',function (e) {
+            self.$power_tbody.on('click', 'input', function (e) {
                 var target = e.target;
 
                 /*标签*/
-                var $operate= $(target),
-                    check=$operate.is(':checked'),
-                    prid=$operate.attr('data-prid'),
+                var $operate = $(target),
+                    check = $operate.is(':checked'),
+                    prid = $operate.attr('data-prid'),
                     tempparam = cache.loginMap.param,
-                    param={
-                        adminId:tempparam.adminId,
-                        token:tempparam.token,
-                        organizationId:tempparam.organizationId,
-                        prid:prid,
-                        isPermit:check?1:0
+                    param = {
+                        adminId: tempparam.adminId,
+                        token: tempparam.token,
+                        organizationId: tempparam.organizationId,
+                        prid: prid,
+                        isPermit: check ? 1 : 0
                     };
 
                 toolUtil
@@ -147,7 +147,7 @@ angular.module('power.service', [])
                                     }
                                     /*恢复原来设置*/
                                     $operate.prop({
-                                        'checked':!check
+                                        'checked': !check
                                     });
                                 }
                             }
@@ -161,7 +161,7 @@ angular.module('power.service', [])
                             }
                             /*恢复原来设置*/
                             $operate.prop({
-                                'checked':!check
+                                'checked': !check
                             });
                         });
 
@@ -324,9 +324,19 @@ angular.module('power.service', [])
                 if (request) {
                     var menuitem = config.menu,
                         temp_id = typeof config.id !== 'undefined' ? config.id : '';
-                }
 
+                    if(menuitem){
+                        var c_len=0;
+                        for(var cc in menuitem){
+                            c_len++;
+                        }
+                        if(c_len!==len){
+                            len=c_len;
+                        }
+                    }
+                }
                 for (i; i < len; i++) {
+
                     var index = parseInt(h_items[i], 10),
                         item = request ? menuitem[index] : powerCache[index],
                         power = item['power'],
@@ -340,33 +350,49 @@ angular.module('power.service', [])
                             /*如果是请求*/
                             if (config.clear) {
                                 /*全不选*/
-                                str += '<label class="btn btn-default g-gap-mb2 g-gap-mr2"><input data-roleid="' + temp_id + '" data-prid="' + subitem["prid"] + '" data-modid="' + subitem["modId"] + '" type="checkbox" name="' + item["module"] + '" />&nbsp;' + subitem["funcName"] + '</label>';
+                                if (subitem["disabled"]) {
+                                    str += '<label class="btn btn-default g-gap-mb2 g-gap-mr2"><input data-roleid="' + temp_id + '" disabled data-prid="' + subitem["prid"] + '" data-modid="' + subitem["modId"] + '" type="checkbox" name="' + item["module"] + '" />&nbsp;' + subitem["funcName"] + '</label>';
+                                } else {
+                                    str += '<label class="btn btn-default g-gap-mb2 g-gap-mr2"><input data-roleid="' + temp_id + '" data-prid="' + subitem["prid"] + '" data-modid="' + subitem["modId"] + '" type="checkbox" name="' + item["module"] + '" />&nbsp;' + subitem["funcName"] + '</label>';
+                                }
                             } else {
                                 /*根据设置或者配置结果来*/
-                                ispermit = parseInt(subitem["isPermit"], 10);
-                                if (ispermit === 0) {
-                                    /*没有权限*/
-                                    str += '<label class="btn btn-default g-gap-mb2 g-gap-mr2"><input data-roleid="' + temp_id + '" data-prid="' + subitem["prid"] + '" data-modid="' + subitem["modId"] + '" type="checkbox" name="' + item["module"] + '" />&nbsp;' + subitem["funcName"] + '</label>';
-                                } else if (ispermit === 1) {
-                                    /*有权限*/
-                                    str += '<label class="btn btn-default g-gap-mb2 g-gap-mr2"><input data-roleid="' + temp_id + '" data-prid="' + subitem["prid"] + '" data-modid="' + subitem["modId"] + '" checked="true" type="checkbox" name="' + item["module"] + '" />&nbsp;' + subitem["funcName"] + '</label>';
+                                if (subitem["disabled"]) {
+                                    str += '<label class="btn btn-default g-gap-mb2 g-gap-mr2"><input data-roleid="' + temp_id + '" data-prid="' + subitem["prid"] + '" data-modid="' + subitem["modId"] + '" disabled type="checkbox" name="' + item["module"] + '" />&nbsp;' + subitem["funcName"] + '</label>';
+                                } else {
+                                    ispermit = parseInt(subitem["isPermit"], 10);
+                                    if (ispermit === 0) {
+                                        /*没有权限*/
+                                        str += '<label class="btn btn-default g-gap-mb2 g-gap-mr2"><input data-roleid="' + temp_id + '" data-prid="' + subitem["prid"] + '" data-modid="' + subitem["modId"] + '" type="checkbox" name="' + item["module"] + '" />&nbsp;' + subitem["funcName"] + '</label>';
+                                    } else if (ispermit === 1) {
+                                        /*有权限*/
+                                        str += '<label class="btn btn-default g-gap-mb2 g-gap-mr2"><input data-roleid="' + temp_id + '" data-prid="' + subitem["prid"] + '" data-modid="' + subitem["modId"] + '" checked type="checkbox" name="' + item["module"] + '" />&nbsp;' + subitem["funcName"] + '</label>';
+                                    }
                                 }
-
                             }
                         } else {
                             /*非请求*/
                             if (config.clear) {
                                 /*全不选*/
-                                str += '<label class="btn btn-default g-gap-mb2 g-gap-mr2"><input data-prid="' + subitem["prid"] + '" data-modid="' + subitem["modId"] + '" type="checkbox" name="' + item["module"] + '" />&nbsp;' + subitem["funcName"] + '</label>';
-                            } else {
-                                /*根据设置或者配置结果来*/
-                                ispermit = parseInt(subitem["isPermit"], 10);
-                                if (ispermit === 0) {
-                                    /*没有权限*/
+                                if (subitem["disabled"]) {
+                                    str += '<label class="btn btn-default g-gap-mb2 g-gap-mr2"><input data-prid="' + subitem["prid"] + '" data-modid="' + subitem["modId"] + '" type="checkbox" disabled name="' + item["module"] + '" />&nbsp;' + subitem["funcName"] + '</label>';
+                                } else {
                                     str += '<label class="btn btn-default g-gap-mb2 g-gap-mr2"><input data-prid="' + subitem["prid"] + '" data-modid="' + subitem["modId"] + '" type="checkbox" name="' + item["module"] + '" />&nbsp;' + subitem["funcName"] + '</label>';
-                                } else if (ispermit === 1) {
-                                    /*有权限*/
-                                    str += '<label class="btn btn-default g-gap-mb2 g-gap-mr2"><input data-prid="' + subitem["prid"] + '" data-modid="' + subitem["modId"] + '"  checked="true" type="checkbox" name="' + item["module"] + '" />&nbsp;' + subitem["funcName"] + '</label>';
+                                }
+                            } else {
+                                if (subitem["disabled"]) {
+                                    str += '<label class="btn btn-default g-gap-mb2 g-gap-mr2"><input data-prid="' + subitem["prid"] + '" data-modid="' + subitem["modId"] + '" type="checkbox" disabled name="' + item["module"] + '" />&nbsp;' + subitem["funcName"] + '</label>';
+                                } else {
+                                    /*根据设置或者配置结果来*/
+                                    ispermit = parseInt(subitem["isPermit"], 10);
+                                    if (ispermit === 0) {
+                                        /*没有权限*/
+                                        str += '<label class="btn btn-default g-gap-mb2 g-gap-mr2"><input data-prid="' + subitem["prid"] + '" data-modid="' + subitem["modId"] + '" type="checkbox" name="' + item["module"] + '" />&nbsp;' + subitem["funcName"] + '</label>';
+                                    } else if (ispermit === 1) {
+                                        /*有权限*/
+                                        str += '<label class="btn btn-default g-gap-mb2 g-gap-mr2"><input data-prid="' + subitem["prid"] + '" data-modid="' + subitem["modId"] + '"  checked="true" type="checkbox" name="' + item["module"] + '" />&nbsp;' + subitem["funcName"] + '</label>';
+                                    }
+
                                 }
                             }
                         }
@@ -429,58 +455,66 @@ angular.module('power.service', [])
         };
 
 
-        /*权限服务--过滤权限--(主要为父级和子级之间的关系):odata:原数据(父级),ndata:过滤数据(子级)*/
-        this.filterPower = function (odata, ndata) {
-            if (!odata) {
+        /*权限服务--过滤权限--(主要为父级和子级之间的关系):pdata:原数据(父级),cdata:过滤数据(子级)*/
+        this.filterPower = function (pdata, cdata) {
+            if (!pdata) {
                 return false;
             }
-            if (!ndata) {
+            if (!cdata) {
                 return false;
             }
             if (h_len === 0) {
                 return false;
             }
+
             var i = 0,
-                source = $.extend(true, {}, ndata);
+                source = cdata;
 
-            for (i; i < h_len; i++) {
+            outerLabel:for (i; i < h_len; i++) {
                 var index = parseInt(h_items[i], 10),
-                    item = odata[index],
-                    child_item = source[index],
-                    power = item['power']/*array*/,
+                    parent_item = pdata[index]/*model power object*/,
+                    child_item = source[index]/*model power object*/;
+                if (!child_item) {
+                    continue outerLabel;
+                }
+
+                var parent_power = parent_item['power']/*array*/,
                     child_power = child_item['power']/*array*/,
-                    sublen = power.length,
+                    parent_len = parent_power.length,
                     j = 0,
-                    ispermit;
+                    p_ispermit = 0,
+                    pcode;
 
-                for (j; j < sublen; j++) {
-                    var child_sublen = child_power.length,
-                        subitem = power[j],
-                        prid = parseInt(subitem["prid"], 10);
+                if (!child_power) {
+                    continue outerLabel;
+                }
 
-                    /*根据设置或者配置结果来*/
-                    ispermit = parseInt(subitem["isPermit"], 10);
+                innerLabel:for (j; j < parent_len; j++) {
+                    var child_len = child_power.length,
+                        p_item = parent_power[j];
+
+                    pcode = p_item["funcCode"]/*父级权限相对应标识*/;
+                    p_ispermit = parseInt(p_item["isPermit"], 10)/*父级是否有权限*/;
 
                     /*开始过滤子权限*/
-                    if (ispermit === 0) {
+                    if (p_ispermit === 0) {
                         /*没有权限*/
                         /*查找子权限*/
-                        var k = child_sublen - 1,
-                            child_subitem,
-                            child_prid;
-                        for (k; k >= 0; k--) {
-                            child_subitem = child_power[k];
-                            child_prid = parseInt(child_subitem["prid"], 10);
+                        var k = 0,
+                            c_item,
+                            c_code;
+                        for (k; k < child_len; k++) {
+                            c_item = child_power[k];
+                            c_code = c_item["funcCode"];
 
                             /*是否是同一个权限值*/
-                            if (prid === child_prid) {
+                            if (pcode === c_code) {
                                 /*如果存在相同的权限，且父权限没有权限，那么需要清除此子权限*/
-                                child_power.splice(k, 1);
+                                //c_item['isPermit'] = 0/*将权限变更为没有*/;
+                                c_item['disabled'] = true;
+                                continue innerLabel;
                             }
                         }
-                    } else if (ispermit === 1) {
-                        /*有权限则查找下面的权限*/
-                        continue;
                     }
                 }
             }
@@ -513,8 +547,8 @@ angular.module('power.service', [])
         };
 
         /*清除头部选中*/
-        this.clearHeaderPower=function () {
-            if(isall){
+        this.clearHeaderPower = function () {
+            if (isall) {
                 self.$power_thead.find('input:checked').each(function () {
                     $(this).prop({
                         'checked': false
@@ -532,7 +566,7 @@ angular.module('power.service', [])
                 if (!isrender) {
                     return false;
                 }
-                $input=self.$power_tbody.find('input:checked');
+                $input = self.$power_tbody.find('input:checked');
             }
 
             $input.each(function () {
@@ -541,7 +575,7 @@ angular.module('power.service', [])
                 });
             });
 
-            if(isall){
+            if (isall) {
                 self.$power_thead.find('input:checked').each(function () {
                     $(this).prop({
                         'checked': false

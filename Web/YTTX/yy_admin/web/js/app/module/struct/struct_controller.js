@@ -583,13 +583,6 @@ angular.module('app')
         /*表单服务--选择登录用户名和密码*/
         this.clearLoginInfo = function () {
             structService.clearLoginInfo(self.struct);
-            /*设置登录名和密码*/
-            /*self.struct.username = '';
-             self.struct.password = '';*/
-            /*调用清除权限方法*/
-            //structService.clearSelectPower(self.struct);
-            /*恢复默认值*/
-            //self.struct.isDesignatedPermit = 0;
         };
         /*表单服务--权限服务--确定所选权限*/
         this.getSelectPower = function () {
