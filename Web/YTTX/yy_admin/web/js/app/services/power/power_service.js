@@ -214,6 +214,10 @@ angular.module('power.service', [])
                             } else {
                                 /*加载数据*/
                                 var result = data.result;
+                                if(!result){
+                                    self.$power_tbody.html('<tr><td colspan="' + h_len + '" class="g-c-gray9 g-fs4 g-t-c g-b-white">没有查询到权限信息</td></tr>');
+                                    return false;
+                                }
                                 if (typeof result !== 'undefined') {
                                     var menu = result.menu;
                                     if (menu) {
@@ -324,22 +328,18 @@ angular.module('power.service', [])
                 if (request) {
                     var menuitem = config.menu,
                         temp_id = typeof config.id !== 'undefined' ? config.id : '';
-
-                    if(menuitem){
-                        var c_len=0;
-                        for(var cc in menuitem){
-                            c_len++;
-                        }
-                        if(c_len!==len){
-                            len=c_len;
-                        }
-                    }
                 }
                 for (i; i < len; i++) {
 
                     var index = parseInt(h_items[i], 10),
-                        item = request ? menuitem[index] : powerCache[index],
-                        power = item['power'],
+                        item = request ? menuitem[index] : powerCache[index];
+
+                    if(typeof item==='undefined' || !item){
+                        str+='<td class="g-b-white"></td>';
+                        continue;
+                    }
+
+                    var power = item['power'],
                         j = 0,
                         sublen = power.length;
 

@@ -137,6 +137,9 @@ angular.module('app')
                     param['fullName'] = record.searchname;
                 }
 
+                /*清除操作机构记录*/
+                self.initStructPos(config.structpos);
+
                 var layer = record.layer,
                     id = record.organizationId,
                     $wrap;
@@ -468,6 +471,8 @@ angular.module('app')
             /*更新操作模型*/
             self.initRecord(record);
             record.current = $this;
+            /*清除操作机构记录*/
+            self.initStructPos(config.structpos);
 
             /*切换显示隐藏*/
             self.$admin_struct_submenu.toggleClass('g-d-showi');
@@ -535,7 +540,18 @@ angular.module('app')
             }
             record.current = null;
         };
-
+        /*操作记录服务--初始化操作参数(搜索模式或者重置操作参数模式)*/
+        this.initStructPos=function (structpos) {
+            for(var i in structpos){
+                structpos[i]={
+                    id: '',
+                    $node: null,
+                    active: '',
+                    layer: '',
+                    parentid: ''
+                };
+            }
+        };
 
         /*机构服务--初始化机构操作区域，flag：是否可以直接拿数据(文档数据)*/
         this.initOperate = function (config, flag) {

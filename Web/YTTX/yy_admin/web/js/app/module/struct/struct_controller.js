@@ -111,7 +111,7 @@ angular.module('app')
             structtype: 'all'/*机构类型*/,
             structId: ''/*机构设置Id*/,
             structName: ''/*机构设置名称*/,
-            structnode:null/*机构对象*/,
+            structnode: null/*机构对象*/,
             layer: 0/*操作层*/
         };
 
@@ -501,7 +501,8 @@ angular.module('app')
         this.initSubMenu = function () {
             structService.getMenuList({
                 record: self.record,
-                table: self.table
+                table: self.table,
+                structpos: self.structpos
             });
         };
         /*菜单服务--子菜单展开*/
@@ -515,7 +516,8 @@ angular.module('app')
         this.rootSubMenu = function (e) {
             structService.rootSubMenu(e, {
                 record: self.record,
-                table: self.table
+                table: self.table,
+                structpos: self.structpos
             });
         };
         /*菜单服务--切换机构类型*/
@@ -632,7 +634,8 @@ angular.module('app')
         this.searchAction = function () {
             structService.getMenuList({
                 record: self.record,
-                table: self.table
+                table: self.table,
+                structpos: self.structpos
             });
         };
         /*搜索服务--清空过滤条件*/
