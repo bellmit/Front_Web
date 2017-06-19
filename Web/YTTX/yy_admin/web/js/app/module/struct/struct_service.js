@@ -1507,7 +1507,11 @@ angular.module('app')
         this.formSubmit = function (config, type) {
             if (cache) {
                 var action = '',
-                    param = $.extend(true, {}, cache.loginMap.param),
+                    tempparam=cache.loginMap.param,
+                    param={
+                        adminId:tempparam.adminId,
+                        token:tempparam.token
+                    },
                     req_config = {
                         method: 'post',
                         set: true
@@ -1588,6 +1592,8 @@ angular.module('app')
                     /*判断是新增还是修改*/
                     if (config[type]['id'] === '') {
                         action = 'add';
+                        param['organizationId']=record.structId!==''?record.structId:record.organizationId!==''?record.organizationId:record.currentId;
+                        param['fullName'] = config[type]['fullName'];
                         req_config['url'] = '/organization/shop/add';
                     } else {
                         action = 'edit';
@@ -2004,6 +2010,11 @@ angular.module('app')
                                                     'addTime': '添加时间',
                                                     'status': '状态'
                                                 };
+
+                                            var r_province='',
+                                                r_country='',
+                                                r_city='';
+
                                             for (var j in list) {
                                                 if (typeof detail_map[j] !== 'undefined') {
                                                     if (j === 'type') {
@@ -2015,21 +2026,36 @@ angular.module('app')
                                                             };
                                                         str += '<tr><td class="g-t-r">' + detail_map[j] + ':</td><td class="g-t-l">' + typemap[temptype] + '</td></tr>';
                                                     } else if (j === 'province' || j === 'country' || j === 'city') {
-                                                        self.queryByCode(list[j],function (name) {
-                                                            str += '<tr><td class="g-t-r">' + detail_map[j] + ':</td><td class="g-t-l">' + name + '</td></tr>';
-                                                        });
+                                                        str += '<tr><td class="g-t-r">' + detail_map[j] + ':</td><td class="g-t-l">#' + j + '#</td></tr>';
+                                                        if(j === 'province'){
+                                                            self.queryByCode(list[j],function (name) {
+                                                                r_province=name;
+                                                            });
+                                                        }else if(j === 'country'){
+                                                            self.queryByCode(list[j],function (name) {
+                                                                r_country=name;
+                                                            });
+                                                        }else if(j === 'city'){
+                                                            self.queryByCode(list[j],function (name) {
+                                                                r_city=name;
+                                                            });
+                                                        }
                                                     } else {
                                                         str += '<tr><td class="g-t-r">' + detail_map[j] + ':</td><td class="g-t-l">' + list[j] + '</td></tr>';
                                                     }
                                                 }
                                             }
                                             if (str !== '') {
-                                                $(str).appendTo(self.$admin_userdetail_show.html(''));
-                                                /*显示弹窗*/
-                                                self.toggleModal({
-                                                    display: 'show',
-                                                    area: 'userdetail'
-                                                });
+                                                setTimeout(function () {
+                                                    str=str.replace(/#province#/g,r_province).replace(/#country#/g,r_country).replace(/#city#/g,r_city);
+                                                    $(str).appendTo(self.$admin_userdetail_show.html(''));
+                                                    /*显示弹窗*/
+                                                    self.toggleModal({
+                                                        display: 'show',
+                                                        area: 'userdetail'
+                                                    });
+                                                },200);
+
                                             }
                                         }
                                     } else {
@@ -2254,8 +2280,12 @@ angular.module('app')
             }
         };
         /*地址服务--根据code查询value地址*/
-        this.queryByCode = function (code) {
-            return addressService.queryByCode(code);
+        this.queryByCode = function (code,fn) {
+            if(fn){
+                addressService.queryByCode(code,fn);
+            }else{
+                return addressService.queryByCode(code,fn);
+            }
         };
 
 
