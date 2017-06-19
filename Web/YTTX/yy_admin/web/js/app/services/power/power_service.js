@@ -431,7 +431,7 @@ angular.module('power.service', [])
 
                 check = $selectall.is(':checked');
                 index = $selectall.attr('data-index');
-                $operate = self.$power_tbody.find('td').eq(index).find('input');
+                $operate = self.$power_tbody.find('td').eq(index).find('input:not(:disabled)');
 
                 if (check) {
                     $operate.each(function () {

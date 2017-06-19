@@ -1,5 +1,5 @@
 angular.module('app')
-    .service('structService', ['toolUtil', 'toolDialog', 'BASE_CONFIG', 'loginService', 'powerService', 'addressService', 'dataTableColumnService', 'dataTableCheckAllService', 'dataTableItemActionService', '$timeout', '$sce', function (toolUtil, toolDialog, BASE_CONFIG, loginService, powerService, addressService, dataTableColumnService, dataTableCheckAllService, dataTableItemActionService, $timeout, $sce) {
+    .service('structService', ['toolUtil', 'toolDialog', 'BASE_CONFIG', 'loginService', 'powerService', 'addressService', 'dataTableColumnService', 'dataTableCheckAllService', 'dataTableItemActionService', '$timeout', function (toolUtil, toolDialog, BASE_CONFIG, loginService, powerService, addressService, dataTableColumnService, dataTableCheckAllService, dataTableItemActionService, $timeout) {
 
         /*获取缓存数据*/
         var self = this,
@@ -541,9 +541,9 @@ angular.module('app')
             record.current = null;
         };
         /*操作记录服务--初始化操作参数(搜索模式或者重置操作参数模式)*/
-        this.initStructPos=function (structpos) {
-            for(var i in structpos){
-                structpos[i]={
+        this.initStructPos = function (structpos) {
+            for (var i in structpos) {
+                structpos[i] = {
                     id: '',
                     $node: null,
                     active: '',
@@ -2014,6 +2014,10 @@ angular.module('app')
                                                                 3: '加盟店'
                                                             };
                                                         str += '<tr><td class="g-t-r">' + detail_map[j] + ':</td><td class="g-t-l">' + typemap[temptype] + '</td></tr>';
+                                                    } else if (j === 'province' || j === 'country' || j === 'city') {
+                                                        self.queryByCode(list[j],function (name) {
+                                                            str += '<tr><td class="g-t-r">' + detail_map[j] + ':</td><td class="g-t-l">' + name + '</td></tr>';
+                                                        });
                                                     } else {
                                                         str += '<tr><td class="g-t-r">' + detail_map[j] + ':</td><td class="g-t-l">' + list[j] + '</td></tr>';
                                                     }
@@ -2248,6 +2252,10 @@ angular.module('app')
             } else {
                 return addressService.isReqAddress(config);
             }
+        };
+        /*地址服务--根据code查询value地址*/
+        this.queryByCode = function (code) {
+            return addressService.queryByCode(code);
         };
 
 

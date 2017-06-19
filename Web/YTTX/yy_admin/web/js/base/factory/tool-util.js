@@ -553,6 +553,16 @@
 		tools.trim=function(str){
 			return str.replace(/^\s*\s*$/,'');
 		};
+		/*去除表单常用非法字符*/
+		tools.trimHtmlIllegal=function(str){
+			var tempstr=str.replace(/["'\/！￥…（）——《》？：“”，。；：’‘、【】]/ig,'');
+			return tempstr.replace(/(&#34;|&quot;|&#60;|&lt;|&#62;|&gt;|&#160;|&#180;|&acute;)/ig,'');
+		};
+		/*去除所有非法字符*/
+		tools.trimIllegal=function(str){
+			var tempstr=str.replace(/[`~!@#$%^&*()_+<>?:"{},.\/;'[\]！￥…（）——《》？：“”，。；：’‘、【】]/ig,'');
+			return tempstr.replace(/(&#34;|&quot;|&#60;|&lt;|&#62;|&gt;|&#160;|&#180;|&acute;)/ig,'');
+		};
 		//计时器：返回整数
 		tools.getTimer=function(){
 			var i=0;
