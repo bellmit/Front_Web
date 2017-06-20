@@ -752,7 +752,7 @@ angular.module('app')
                                             if(len===0){
                                                 $wrap.html('');
                                                 /*清除显示下级菜单导航图标*/
-                                                if(config.$reqstate){
+                                                if(config && config.$reqstate){
                                                     config.$reqstate.attr({
                                                         'data-isrequest':true
                                                     }).removeClass('sub-menu-title sub-menu-titleactive');

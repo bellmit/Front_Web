@@ -78,7 +78,7 @@ angular.module('ui.commonitem',[])
         };
     })
     /*侧边栏搜索指令*/
-    .directive('uiSubSearch',function() {
+    .directive('uiSubSearch',['toolUtil',function(toolUtil) {
         return {
             replace:false,
             restrict: 'EC',
@@ -93,8 +93,11 @@ angular.module('ui.commonitem',[])
             <span class="search-clear" ng-click="sclear()"></span></label>',
             link:function (scope, element, attrs) {
                 angular.element(element).find('input').bind('keyup',function ($event) {
-                    var kcode=$event.keyCode;
 
+                    var kcode=$event.keyCode,
+                        self=this;
+
+                    self.value=toolUtil.trimHtmlIllegal(scope.svalue);
                     if(scope.svalue===''){
                         scope.sactive='';
                     }else{
@@ -106,7 +109,7 @@ angular.module('ui.commonitem',[])
                 });
             }
         };
-    })
+    }])
     /*侧边栏tab选项卡指令*/
     .directive('uiSubTabHref',function() {
         return {

@@ -37,9 +37,20 @@ angular.module('app')
                 $admin_struct_menu: $('#admin_struct_menu')
             },
             jq_dom_power = {
-                $allpower: $('#admin_setting_allpower')
+                $power_colgroup: $('#setting_power_colgroup'),
+                $power_thead: $('#setting_power_thead'),
+                $power_tbody: $('#setting_power_tbody')
             };
         jq_dom['$allstruct'] = jq_dom.$admin_struct_menu.prev().find('label');
+
+        /*切换路由时更新dom缓存*/
+        settingService.initJQDom(jq_dom);
+
+        /*权限初始化*/
+        settingService.initForPower({
+            dom: jq_dom_power,
+            isall: true
+        });
 
         /*模型--分页显示条数*/
         this.pageSizeItem = [{
@@ -56,18 +67,7 @@ angular.module('app')
             'name': '30条记录'
         }];
 
-
-        /*切换路由时更新dom缓存*/
-        settingService.initJQDom(jq_dom);
-        settingService.initJQDomForPower(jq_dom_power);
-
-
-        /*模型--权限*/
-        this.power = {
-            colgroup: '',
-            thead: '',
-            tbody: ''
-        };
+        
 
         /*模型--操作记录*/
         this.record = {
@@ -153,8 +153,6 @@ angular.module('app')
 
         /*初始化服务--初始化参数*/
         settingService.getRoot(self.record);
-        /*初始化服务--初始化权限模型头部*/
-        settingService.createThead({flag: true}, self.power);
 
 
         /*表单服务--提交表单*/
@@ -206,6 +204,14 @@ angular.module('app')
                 manage: self.manage
             });
         };
+        /*表单服务--权限服务--切换所选权限*/
+        this.toggleSelectPower = function () {
+            settingService.toggleSelectPower({
+                manage: self.manage,
+                record: self.record
+            });
+        };
+
 
 
         /*机构服务--初始化加载机构*/
@@ -243,8 +249,7 @@ angular.module('app')
             settingService.actionManage({
                 modal: config,
                 record: self.record,
-                manage: self.manage,
-                power: self.power
+                manage: self.manage
             });
         };
 
@@ -296,7 +301,10 @@ angular.module('app')
                                     }
                                     if (code === 999) {
                                         /*退出系统*/
-                                        toolUtil.clear();
+                                        toolUtil.loginTips({
+                                            clear: true,
+                                            reload: true
+                                        });
                                     }
                                     return [];
                                 }
@@ -385,7 +393,6 @@ angular.module('app')
                                 record: self.record,
                                 manage: self.manage,
                                 table: self.table,
-                                power: self.power,
                                 type: 'manage'
                             }, config);
                         }

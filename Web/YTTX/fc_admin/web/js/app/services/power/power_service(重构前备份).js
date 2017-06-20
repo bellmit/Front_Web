@@ -99,7 +99,14 @@ angular.module('power.service',[])
 		/*请求权限列表(主要是根据不同对象查询相关权限):config:请求参数，mode:angular 模型*/
 		this.reqPowerList=function (config,mode) {
 			/*合并参数*/
-			var param=$.extend(true,{},config.param,cache.loginMap.param);
+			var param;
+
+			if(config.url){
+				param=$.extend(true,{},cache.loginMap.param,config.param);
+			}else{
+				param=cache.loginMap.param;
+			}
+
 
 			toolUtil
 				.requestHttp({

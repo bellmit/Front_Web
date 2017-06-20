@@ -114,7 +114,10 @@ angular.module('app')
                                 }
                                 if(code===999){
                                     /*退出系统*/
-                                    toolUtil.clear();
+                                    toolUtil.loginTips({
+                                        clear:true,
+                                        reload:true
+                                    });
                                 }
                                 return [];
                             }
@@ -291,7 +294,10 @@ angular.module('app')
                                 }
                                 if(code===999){
                                     /*退出系统*/
-                                    toolUtil.clear();
+                                    toolUtil.loginTips({
+                                        clear:true,
+                                        reload:true
+                                    });
                                 }
                                 return [];
                             }
@@ -482,7 +488,10 @@ angular.module('app')
                                 }
                                 if(code===999){
                                     /*退出系统*/
-                                    toolUtil.clear();
+                                    toolUtil.loginTips({
+                                        clear:true,
+                                        reload:true
+                                    });
                                 }
                                 return [];
                             }
@@ -659,7 +668,10 @@ angular.module('app')
                                 }
                                 if(code===999){
                                     /*退出系统*/
-                                    toolUtil.clear();
+                                    toolUtil.loginTips({
+                                        clear:true,
+                                        reload:true
+                                    });
                                 }
                                 return [];
                             }

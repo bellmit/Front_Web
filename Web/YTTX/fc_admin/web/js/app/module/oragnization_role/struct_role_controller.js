@@ -79,7 +79,7 @@ angular.module('app')
 
         /*模型--tab选项卡*/
         this.tabitem=[{
-            name:'运营架构',
+            name:'运营机构',
             href:'struct',
             power:self.powerlist.organization_add,
             active:''

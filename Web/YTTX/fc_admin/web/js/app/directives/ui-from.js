@@ -197,7 +197,7 @@ angular.module('ui.form', [])
         }
     }])
     /*只能输入整形数字*/
-    .directive('uiIntNumber', ['toolUtil', function (toolUtil) {
+    .directive('uiIntNumber', function () {
         return {
             replace: false,
             restrict: 'EC',
@@ -214,14 +214,16 @@ angular.module('ui.form', [])
                             self.value = '';
                             return false;
                         }
-                        self.value = data;
+                        scope.$apply(function () {
+                            self.value = data;
+                        });
                     }
                 });
             }
         }
-    }])
+    })
     /*只能输入数字(包括小数)*/
-    .directive('uiAllNumber', ['toolUtil', function (toolUtil) {
+    .directive('uiAllNumber', function () {
         return {
             replace: false,
             restrict: 'EC',
@@ -254,14 +256,16 @@ angular.module('ui.form', [])
                                 }
                             }());
                         }
-                        self.value = data;
+                        scope.$apply(function () {
+                            self.value = data;
+                        });
                     }
                 });
             }
         }
-    }])
+    })
     /*单一百分百*/
-    .directive('uiSinglePercent', ['toolUtil', function (toolUtil) {
+    .directive('uiSinglePercent', function () {
         return {
             replace: false,
             restrict: 'EC',
@@ -303,14 +307,16 @@ angular.module('ui.form', [])
                         if (data > 100) {
                             data = 100;
                         }
-                        self.value = data;
+                        scope.$apply(function () {
+                            self.value = data;
+                        });
                     }
                 });
 
 
             }
         }
-    }])
+    })
     /*组合(关联)百分百*/
     .directive('uiRelationPercent', ['toolUtil', function (toolUtil) {
         return {
@@ -428,8 +434,25 @@ angular.module('ui.form', [])
                                 }
                             }());
                         }
-                        self.value = data;
+                        scope.$apply(function () {
+                            self.value = data;
+                        });
                     }
+                });
+            }
+        }
+    }])
+    /*html过滤，非法html指令*/
+    .directive('uiFilterHtmlIllegal', ['toolUtil', function (toolUtil) {
+        return {
+            replace: false,
+            restrict: 'EC',
+            require: 'ngModel',
+            link: function (scope, elem, attrs, ctrl) {
+                /*绑定事件*/
+                angular.element(elem).bind('keyup', function () {
+                    var self = this;
+                    self.value = toolUtil.trimHtmlIllegal(self.value);
                 });
             }
         }
