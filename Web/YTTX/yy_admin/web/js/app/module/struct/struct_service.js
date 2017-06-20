@@ -392,11 +392,17 @@ angular.module('app')
 
             var $this = $(target),
                 haschild = $this.hasClass('sub-menu-title'),
+                hasdata=$this.attr('data-id'),
                 $child,
                 isrequest = false,
                 temp_layer,
                 temp_id,
                 temp_label;
+
+            if(typeof hasdata==='undefined'){
+                /*过滤非法数据节点*/
+                return false;
+            }
 
 
             temp_layer = $this.attr('data-layer');
@@ -1597,6 +1603,7 @@ angular.module('app')
                         req_config['url'] = '/organization/shop/add';
                     } else {
                         action = 'edit';
+                        param['organizationId']=config[type]['organizationId'];
                         param['id'] = config[type]['id'];
                         req_config['url'] = '/organization/shop/update';
                     }
@@ -1980,6 +1987,9 @@ angular.module('app')
                                                         }
                                                         break;
                                                     case 'remark':
+                                                        user[i] = list[i];
+                                                        break;
+                                                    case 'organizationId':
                                                         user[i] = list[i];
                                                         break;
                                                 }

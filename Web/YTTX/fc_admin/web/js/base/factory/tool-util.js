@@ -2,7 +2,7 @@
 (function ($) {
     'use strict';
     angular.module('tool.util', []).factory('toolUtil', ['$http', '$q', '$httpParamSerializerJQLike', 'BASE_CONFIG', '$state', function ($http, $q, $httpParamSerializerJQLike, BASE_CONFIG, $state) {
-        var system_unique_key = BASE_CONFIG.unique_key || 'yy_admin_unique_key',
+        var system_unique_key = BASE_CONFIG.unique_key || 'fc_admin_unique_key',
             tools = {};
         /*本地存储*/
         //缓存对象
@@ -552,6 +552,16 @@
         //去除前后空格(字符串)：返回字符串
         tools.trim = function (str) {
             return str.replace(/^\s*\s*$/, '');
+        };
+        /*去除表单常用非法字符*/
+        tools.trimHtmlIllegal=function(str){
+            var tempstr=str.replace(/["'\/！￥…（）——《》？：“”，。；：’‘、【】]/ig,'');
+            return tempstr.replace(/(&#34;|&quot;|&#60;|&lt;|&#62;|&gt;|&#160;|&#180;|&acute;)/ig,'');
+        };
+        /*去除所有非法字符*/
+        tools.trimIllegal=function(str){
+            var tempstr=str.replace(/[`~!@#$%^&*()_+<>?:"{},.\/;'[\]！￥…（）——《》？：“”，。；：’‘、【】]/ig,'');
+            return tempstr.replace(/(&#34;|&quot;|&#60;|&lt;|&#62;|&gt;|&#160;|&#180;|&acute;)/ig,'');
         };
         //计时器：返回整数
         tools.getTimer = function () {
@@ -1250,6 +1260,79 @@
                     /*路由跳转*/
                     $state.go(config.router);
                 }
+            }
+        };
+        /*跳转提示*/
+        tools.loginTips=function(config){
+            /*如果没有登陆则提示跳转至登陆页*/
+
+            var self=this,
+                count= 2,
+                tipid=null,
+                outwrap=document.getElementById(BASE_CONFIG.nologindom),
+                outtip=document.getElementById(BASE_CONFIG.nologintipdom);
+
+            if(config&&config.clear){
+                self.clear();
+            }
+
+            outwrap.className='g-d-showi';
+            outtip.innerHTML=count;
+            tipid=setInterval(function(){
+                count--;
+                outtip.innerHTML=count;
+                if(count<=0){
+                    /*清除定时操作*/
+                    clearInterval(tipid);
+                    tipid=null;
+                    count= 2;
+                    outtip.innerHTML='';
+                    outwrap.className='g-d-hidei';
+                    if(config){
+                        if(typeof config.delay==='function'){
+                            /*延时回调*/
+                            config.delay.call(null);
+                            if(typeof config.router!=='undefined'){
+                                /*路由跳转*/
+                                $state.go(config.router);
+                            }
+                        }else if(typeof config.router!=='undefined'){
+                            /*路由跳转*/
+                            $state.go(config.router);
+                        }else if(typeof config.reload!=='undefined'){
+                            window.location.reload();
+                        }
+                    }
+                }
+            },1000);
+        };
+        /*退出*/
+        tools.loginOut=function (config) {
+            var self=this;
+            if(config){
+                if(config.tips){
+                    if(!config.clear){
+                        self.clear();
+                    }
+                    self.loginTips(config);
+                }else{
+                    self.clear();
+                    if(typeof config.delay==='function'){
+                        /*延时回调*/
+                        config.delay();
+                        if(typeof config.router!=='undefined'){
+                            /*路由跳转*/
+                            $state.go(config.router);
+                        }
+                    }else{
+                        if(typeof config.router!=='undefined'){
+                            /*路由跳转*/
+                            $state.go(config.router);
+                        }
+                    }
+                }
+            }else{
+                self.clear();
             }
         };
 

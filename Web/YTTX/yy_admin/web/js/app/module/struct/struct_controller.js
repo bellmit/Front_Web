@@ -259,13 +259,6 @@ angular.module('app')
 
                                 var list = result.list;
                                 if (list) {
-                                    var vi = 0,
-                                        vlen = list.length;
-                                    for (vi; vi < vlen; vi++) {
-                                        if (!list[vi] || list[vi] === null) {
-                                            return [];
-                                        }
-                                    }
                                     return list;
                                 } else {
                                     return [];
@@ -336,28 +329,17 @@ angular.module('app')
                         {
                             "data": "province",
                             "render": function (data, type, full, meta) {
-                                if (!data) {
+                                var province = data,
+                                    city = full.city,
+                                    country = full.country;
+                                if (!province && !city  && !country) {
                                     return '无省市区';
                                 }
-                                var str = '',
-                                    province = data || '';
+                                var str = '';
 
                                 if (province) {
                                     self.list_addressdata.province = province;
                                     str += '<em class="g-c-gray3">省：</em><em class="g-c-gray9">' + self.list_address["province"][province]["key"] + '</em>';
-                                    /*查询新值*/
-                                    /*structService.isReqAddress({
-                                     model:self.list_addressdata,
-                                     address:self.list_address,
-                                     type:'city'
-                                     },true,function () {
-                                     if(city){
-                                     str+='<div class="inline g-c-gray3">市：</div><div class="inline g-c-gray9">'+self.list_address["city"][city]["key"]+'</div>';
-                                     }
-                                     if(country){
-                                     str+='<div class="inline g-c-gray3">区：</div><div class="inline g-c-gray9">'+self.list_address["country"][country]["key"]+'</div>';
-                                     }
-                                     });*/
                                 }
                                 return str;
                             }
@@ -406,7 +388,7 @@ angular.module('app')
                                 }
                                 /*删除用户*/
                                 if (self.powerlist.batch_delete) {
-                                    btns += '<span  data-action="delete" data-organizationId="' + full.organizationId + '" data-id="' + data + '"  class="btn-operate">删除</span>';
+                                    btns += '<span  data-action="delete" data-organizationId="' + full.organizationId + '" data-id="' + data + '"  class="btn-operate g-d-hidei">删除</span>';
                                 }
                                 return btns;
                             }
