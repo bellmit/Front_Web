@@ -243,19 +243,24 @@ angular.module('ui.commonitem',[])
         };
     })
     /*退出系统动画*/
-    .directive('uiLoginoutAnimation',function() {
+    .directive('uiLoginoutTip',function() {
         return {
             replace:false,
             restrict: 'EC',
             scope:{
-                outtime:'=loginouttime'
+                loginouttime:'=loginouttime'
             },
             template:'<div class="page-support-inner">\
                          <div class="page-support-login">\
                              <div></div>\
-                             <p>您还未登录<span>{{scope.outtime}}</span>秒后跳入登陆页面</p>\
+                             <p>您还未登录<span></span>秒后跳入登陆页面</p>\
                          </div>\
-                      </div>'
+                      </div>',
+            link:function (scope, element, attrs) {
+                /*绑定事件*/
+                var $span=angular.element(element).find('span');
+                $span.html(scope.loginouttime);
+            }
         };
     })
     /*兼容性提示*/

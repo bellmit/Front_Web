@@ -52,10 +52,10 @@ angular.module('app')
                 identifyingCode: ''
             };*/
             self.app_config.loginouttime=2;
-            /*toolUtil.loginTips({
+            toolUtil.loginTips({
                 model:self.app_config,
                 router:'app'
-            });*/
+            });
             //loginService.loginOut();
         };
         
