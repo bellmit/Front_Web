@@ -27,7 +27,7 @@ angular.module('ui.commonitem',[])
         return {
             replace:true,
             restrict: 'EC',
-            template:'<div class="g-br3 header-outwrap" ui-sref="app" ng-click="app_ctrl.loginOut()">退出</div>'
+            template:'<div class="g-br3 header-outwrap" ng-click="app_ctrl.loginOut()">退出</div>'
         };
     })
     /*首页logo指令*/
