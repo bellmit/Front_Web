@@ -1,5 +1,5 @@
 angular.module('login.service', [])
-    .service('loginService', ['toolUtil', 'BASE_CONFIG', '$state', function (toolUtil, BASE_CONFIG, $state) {
+    .service('loginService', ['toolUtil', 'BASE_CONFIG', '$state','testService', function (toolUtil, BASE_CONFIG, $state,testService) {
         var self = this,
             cache = toolUtil.getParams(BASE_CONFIG.unique_key)/*缓存凭证*/,
             mainmenu = []/*缓存菜单*/;
@@ -35,15 +35,19 @@ angular.module('login.service', [])
         /*处理登陆请求*/
         this.reqAction = function (model) {
             toolUtil.requestHttp({
-                url: '/sysuser/login',
+                url: /*'/sysuser/login'*/'json/test.json',
                 method: 'post',
                 set: true,
+                debug:true/*测试开关*/,
                 data: {
                     username: model.login.username,
                     password: model.login.password,
                     identifyingCode: model.login.identifyingCode
                 }
             }).then(function (resp) {
+                    /*测试服务*/
+                    var resp=testService.testDefault('table');
+                
                     var data = resp.data,
                         status = parseInt(resp.status, 10);
 
@@ -62,6 +66,13 @@ angular.module('login.service', [])
                                 type:'show',
                                 model:model.app_config
                             });
+                            var loadingid=setTimeout(function () {
+                                toolUtil.loading({
+                                    type:'hide',
+                                    model:model.app_config,
+                                    delay:loadingid
+                                });
+                            },1000);
                             /*设置缓存*/
                             self.setCache({
                                 'isLogin': true,
@@ -78,10 +89,6 @@ angular.module('login.service', [])
                             self.loadMenuData(model,true);
                             /*更新缓存*/
                             cache = toolUtil.getParams(BASE_CONFIG.unique_key);
-                            toolUtil.loading({
-                                type:'hide',
-                                model:model.app_config
-                            });
                             model.login.islogin = true;
                             model.login.loginerror='';
                         }
@@ -264,7 +271,7 @@ angular.module('login.service', [])
         };
         /*退出系统*/
         this.loginOut = function (flag) {
-            this.clearCache();
+            self.clearCache();
             toolUtil.clear();
             /*路由*/
             if(flag){

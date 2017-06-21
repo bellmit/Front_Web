@@ -5,18 +5,11 @@ angular.module('app')
     .controller('AppController', ['toolUtil', 'loginService', function (toolUtil, loginService) {
         var self = this;
 
-
-        /*模型--系统初始化配置*/
+        /*模型--基本配置*/
         this.app_config={
-            /*基本配置*/
-            name:'fc_admin',
-            version:'1',
-            /*组件配置*/
-            loadinghide:true,
-            loadingtime:0,
-            issupport:toolUtil.isSupport(),
-            /*设置配置*/
-            setting:{}
+            issupport:toolUtil.isSupport()/*是否兼容*/,
+            isloading:'g-d-hidei'/*加载组件初始化*/,
+            loginouttime:0/*退出系统时间*/
         };
 
 
@@ -51,14 +44,19 @@ angular.module('app')
         };
         /*退出*/
         this.loginOut = function () {
-            self.login.islogin = false;
+            /*self.login.islogin = false;
             self.login.headeritem=[];
             self.login = {
                 username: '',
                 password: '',
                 identifyingCode: ''
-            };
-            loginService.loginOut(true);
+            };*/
+            self.app_config.loginouttime=2;
+            /*toolUtil.loginTips({
+                model:self.app_config,
+                router:'app'
+            });*/
+            //loginService.loginOut();
         };
-
+        
     }]);

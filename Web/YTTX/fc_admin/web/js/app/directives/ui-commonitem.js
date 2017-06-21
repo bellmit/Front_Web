@@ -167,9 +167,6 @@ angular.module('ui.commonitem',[])
         var render={
             replace:false,
             restrict: 'EC',
-            scope:{
-                record:'=record'
-            },
             template:''
         };
         return render;
@@ -178,11 +175,11 @@ angular.module('ui.commonitem',[])
 
         /*获取虚拟挂载点*/
         function getRoot(record) {
-            
+
         }
         /*获取导航*/
         function getSubMenu() {
-            
+
         }
     })
     /*侧边栏按钮指令*/
@@ -251,9 +248,13 @@ angular.module('ui.commonitem',[])
             replace:false,
             restrict: 'EC',
             scope:{
-                time:'@time'
+                outtime:'=outtime'
             },
-            templateUrl:'tpl/common/support_login.html'
+            templateUrl:'tpl/common/support_login.html',
+            link:function (scope, element, attrs) {
+                console.log(attrs);
+                console.log(scope.outtime);
+            }
         };
     })
     /*兼容性提示*/
