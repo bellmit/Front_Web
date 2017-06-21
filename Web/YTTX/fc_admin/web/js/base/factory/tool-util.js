@@ -285,6 +285,8 @@
                 model = config.model,
                 delay = config.delay;
 
+            console.log(model);
+
             if (type === 'show') {
                 model.isloading = 'g-d-showi';
             } else if (type === 'hide') {

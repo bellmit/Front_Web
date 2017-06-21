@@ -66,13 +66,6 @@ angular.module('login.service', [])
                                 type:'show',
                                 model:model.app_config
                             });
-                            var loadingid=setTimeout(function () {
-                                toolUtil.loading({
-                                    type:'hide',
-                                    model:model.app_config,
-                                    delay:loadingid
-                                });
-                            },1000);
                             /*设置缓存*/
                             self.setCache({
                                 'isLogin': true,
@@ -86,7 +79,12 @@ angular.module('login.service', [])
                                 }
                             });
                             /*加载菜单*/
-                            self.loadMenuData(model,true);
+                            self.loadMenuData(model,function () {
+                                toolUtil.loading({
+                                    type:'hide',
+                                    model:model.app_config
+                                });
+                            });
                             /*更新缓存*/
                             cache = toolUtil.getParams(BASE_CONFIG.unique_key);
                             model.login.islogin = true;
@@ -107,7 +105,7 @@ angular.module('login.service', [])
                 });
         };
         /*加载菜单数据*/
-        this.loadMenuData = function (config) {
+        this.loadMenuData = function (config,fn) {
             /*判断登陆缓存是否有效*/
             if (!cache.cacheMap.menuload) {
                 toolUtil
@@ -120,11 +118,13 @@ angular.module('login.service', [])
                     .then(function (resp) {
                             var data = resp.data,
                                 status = parseInt(resp.status, 10);
-
                             if (status === 200) {
                                 var code = parseInt(data.code, 10),
                                     message = data.message;
                                 if (code !== 0) {
+                                    if(fn && typeof fn==='function'){
+                                        fn.call(null);
+                                    }
                                     if (typeof message !== 'undefined' && message !== '') {
                                         console.log(message);
                                     }
@@ -157,12 +157,22 @@ angular.module('login.service', [])
                                             cache['powerMap'] = list['power'];
                                             /*更新缓存*/
                                             toolUtil.setParams(BASE_CONFIG.unique_key, cache);
+                                            if(fn && typeof fn==='function'){
+                                                fn.call(null);
+                                            }
+                                        }
+                                    }else{
+                                        if(fn && typeof fn==='function'){
+                                            fn.call(null);
                                         }
                                     }
                                 }
                             }
                         },
                         function (resp) {
+                            if(fn && typeof fn==='function'){
+                                fn.call(null);
+                            }
                             var message = resp.data.message;
                             if (typeof message !== 'undefined' && message !== '') {
                                 console.log(message);

@@ -27,7 +27,7 @@ angular.module('ui.commonitem',[])
         return {
             replace:true,
             restrict: 'EC',
-            template:'<div class="g-br3 header-outwrap" ng-click="app_ctrl.loginOut()">退出</div>'
+            template:'<div class="g-br3 header-outwrap"  ui-sref="app" ng-click="app_ctrl.loginOut()">退出</div>'
         };
     })
     /*首页logo指令*/
@@ -243,13 +243,13 @@ angular.module('ui.commonitem',[])
         };
     })
     /*退出系统动画*/
-    .directive('uiLoginoutTip',function() {
+    .directive('uiLogoutTip',function() {
         return {
             replace:false,
             restrict: 'EC',
-            scope:{
+            /*scope:{
                 loginouttime:'=loginouttime'
-            },
+            },*/
             template:'<div class="page-support-inner">\
                          <div class="page-support-login">\
                              <div></div>\
@@ -258,8 +258,9 @@ angular.module('ui.commonitem',[])
                       </div>',
             link:function (scope, element, attrs) {
                 /*绑定事件*/
+                console.log(attrs.loginouttime);
                 var $span=angular.element(element).find('span');
-                $span.html(scope.loginouttime);
+                $span.html(attrs.loginouttime);
             }
         };
     })
