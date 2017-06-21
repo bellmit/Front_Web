@@ -248,13 +248,14 @@ angular.module('ui.commonitem',[])
             replace:false,
             restrict: 'EC',
             scope:{
-                outtime:'=outtime'
+                outtime:'=loginouttime'
             },
-            templateUrl:'tpl/common/support_login.html',
-            link:function (scope, element, attrs) {
-                console.log(attrs);
-                console.log(scope.outtime);
-            }
+            template:'<div class="page-support-inner">\
+                         <div class="page-support-login">\
+                             <div></div>\
+                             <p>您还未登录<span>{{scope.outtime}}</span>秒后跳入登陆页面</p>\
+                         </div>\
+                      </div>'
         };
     })
     /*兼容性提示*/
