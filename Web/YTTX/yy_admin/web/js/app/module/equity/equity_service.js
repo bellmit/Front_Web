@@ -1,9 +1,9 @@
 angular.module('app')
-    .service('equipmentService',['toolUtil','toolDialog','BASE_CONFIG','loginService','powerService','dataTableColumnService','dataTableItemActionService','datePicker97Service','$timeout',function(toolUtil,toolDialog,BASE_CONFIG,loginService,powerService,dataTableColumnService,dataTableItemActionService,datePicker97Service,$timeout){
+    .service('equityService',['toolUtil','toolDialog','BASE_CONFIG','loginService','powerService','dataTableColumnService','dataTableItemActionService','datePicker97Service','$timeout',function(toolUtil,toolDialog,BASE_CONFIG,loginService,powerService,dataTableColumnService,dataTableItemActionService,datePicker97Service,$timeout){
 
         /*获取缓存数据*/
         var self=this,
-            module_id=70/*模块id*/,
+            module_id=110/*模块id*/,
             cache=loginService.getCache(),
             sendform_reset_timer=null;
 
@@ -11,9 +11,7 @@ angular.module('app')
 
         /*初始化权限*/
         var init_power={
-            device_add:toolUtil.isPower('device-add',powermap,true)/*添加发货信息*/,
-            iemi_add:toolUtil.isPower('iemi-add',powermap,true)/*添加iemi码*/,
-            delivery_add:toolUtil.isPower('delivery-add',powermap,true)/*详情*/
+            investor_details:toolUtil.isPower('investor-details',powermap,true)/*详情*/
         };
 
 
@@ -89,18 +87,6 @@ angular.module('app')
                 return false;
             }
             table.list_table.search(record.filter).columns().draw();
-        };
-        /*发货查询服务--时间查询*/
-        this.datePicker=function (record) {
-            datePicker97Service.datePickerRange(record,{
-                $node1:self.$search_startTime,
-                $node2:self.$search_endTime,
-                format:'%y-%M-%d',
-                position:{
-                    left:0,
-                    top:2
-                }
-            });
         };
         /*发货查询服务--操作按钮*/
         this.doItemAction=function (mode,config) {
@@ -214,7 +200,7 @@ angular.module('app')
                                         }
                                     }
                                     if(str!==''){
-                                        $(str).appendTo(self.$admin_senddetail_show.html(''));
+                                        $(str).appendTo(self.$admin_equitydetail_show.html(''));
                                         /*显示弹窗*/
                                         self.toggleModal({
                                             display:'show',
@@ -240,8 +226,8 @@ angular.module('app')
         this.toggleModal=function (config,fn) {
             var temp_timer=null,
                 type_map={
-                    'send':self.$admin_send_dialog,
-                    'senddetail':self.$admin_senddetail_dialog
+                    'equity':self.$admin_equity_dialog,
+                    'equitydetail':self.$admin_equitydetail_dialog
                 };
             if(config.display==='show'){
                 if(typeof config.delay!=='undefined'){
@@ -319,7 +305,7 @@ angular.module('app')
                     layer=0;
                     /*根目录则获取新配置参数*/
                     id=param['organizationId'];
-                    $wrap=self.$admin_equipment_submenu;
+                    $wrap=self.$admin_equity_submenu;
                     config.record.organizationId=id;
                     config.record.organizationName=cache.loginMap.username;
                     /*查询货物*/
@@ -502,6 +488,8 @@ angular.module('app')
             if(node==='ul'||node==='li'){
                 return false;
             }
+
+
             var $this=$(target),
                 haschild,
                 $child,
@@ -512,6 +500,7 @@ angular.module('app')
             if(typeof temp_id==='undefined'){
                 return false;
             }
+
 
             /*模型缓存*/
             var record=config.record;
@@ -713,9 +702,9 @@ angular.module('app')
             /*映射对象*/
             var type=config.type,
                 type_map={
-                    'send':{
+                    'equity':{
                         'timeid':sendform_reset_timer,
-                        'dom':self.$admin_send_reset
+                        'dom':self.$admin_equity_reset
                     }
                 };
             /*执行延时操作*/

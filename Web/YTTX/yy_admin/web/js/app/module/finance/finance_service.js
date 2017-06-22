@@ -694,6 +694,10 @@ angular.module('app')
                 temp_id=$this.attr('data-id'),
                 temp_label=$this.html();
 
+            if(typeof temp_id==='undefined'){
+                return false;
+            }
+
 
             /*模型缓存*/
             var record=config.record;

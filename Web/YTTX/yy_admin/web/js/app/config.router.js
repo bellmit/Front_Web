@@ -275,6 +275,36 @@ angular.module('app')
                             }]
                     }
                 })
+                //股权投资人
+                .state('equity', {
+                    url: '/equity',
+                    views:{
+                        'container':{
+                            templateUrl:'tpl/equity.html'
+                        },
+                        'support':{
+                            templateUrl: 'tpl/common/support_tip.html'
+                        },
+                        'login':{
+                            templateUrl: 'tpl/login.html'
+                        },
+                        'loading':{
+                            templateUrl: 'tpl/common/load.html'
+                        },
+                        'nologin':{
+                            templateUrl: 'tpl/common/support_login.html'
+                        }
+                    },
+                    resolve: {
+                        /*延迟加载，依赖相关组件*/
+                        deps: ['$ocLazyLoad',
+                            function ($ocLazyLoad) {
+                                return $ocLazyLoad.load(['js/plugins/datatables/dataTables.bootstrap.css', 'js/plugins/datatables/js/jquery.dataTables.js',
+  'js/plugins/pagination/pagination.js',
+                                    'js/plugins/My97DatePicker/WdatePicker.js', 'js/app/services/datepick97/datepicker97_service.js',                              'js/app/services/datatable/datatable_column_service.js', 'js/app/services/datatable/datatable_checkall_service.js', 'js/app/services/datatable/datatable_itemaction_service.js','js/app/module/equity/equity_service.js', 'js/app/module/equity/equity_controller.js']);
+                            }]
+                    }
+                })
         }
     ]
 );
