@@ -1,6 +1,6 @@
 /*首页控制器*/
 angular.module('app')
-    .controller('EquityController', ['equityService', 'toolUtil', function (equityService, toolUtil) {
+    .controller('EquityController', ['equityService', 'toolUtil','$scope', function (equityService, toolUtil,$scope) {
         var self = this;
 
         /*模型--操作权限列表*/
@@ -19,10 +19,20 @@ angular.module('app')
             $admin_batchlist_wrap: $('#admin_batchlist_wrap'),
             $admin_imei_list: $('#admin_imei_list'),
             $admin_equitydetail_dialog: $('#admin_equitydetail_dialog'),
-            $admin_equitydetail_show: $('#admin_equitydetail_show')
+            $admin_equitydetail_show: $('#admin_equitydetail_show'),
+            $equity_investmentTime:$('#equity_investmentTime'),
+            $equity_expirationTime:$('#equity_expirationTime')
         };
         /*切换路由时更新dom缓存*/
         equityService.initJQDom(jq_dom);
+
+
+        /*模型--股权投资人地址*/
+        this.equity_address = {
+            province: {},
+            city: {},
+            country: {}
+        };
 
 
         /*模型--操作记录*/
@@ -253,6 +263,31 @@ angular.module('app')
 
         /*初始化服务--虚拟挂载点，或者初始化参数*/
         equityService.getRoot(self.record);
+        /*初始化服务--日历查询*/
+        equityService.datePicker({
+            format:'%y-%M-%d',
+            position:{
+                left:0,
+                top:2
+            },
+            fn:function (data) {
+                if(typeof data.$node1!=='undefined'){
+                    $scope.$apply(function () {
+                        self.equity.investmentTime=data.$node1;
+                    });
+                }else if(typeof data.$node2!=='undefined'){
+                    $scope.$apply(function () {
+                        self.equity.expirationTime=data.$node2;
+                    });
+                }
+            }
+        });
+        /*初始化服务--初始化地址信息*/
+        equityService.queryAddress({
+            type: 'province',
+            address: self.equity_address,
+            model: self.equity
+        });
 
 
         /*菜单服务--初始化*/

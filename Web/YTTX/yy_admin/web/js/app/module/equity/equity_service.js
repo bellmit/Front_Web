@@ -1,5 +1,5 @@
 angular.module('app')
-    .service('equityService',['toolUtil','toolDialog','BASE_CONFIG','loginService','powerService','dataTableColumnService','dataTableItemActionService','datePicker97Service','$timeout',function(toolUtil,toolDialog,BASE_CONFIG,loginService,powerService,dataTableColumnService,dataTableItemActionService,datePicker97Service,$timeout){
+    .service('equityService',['toolUtil','toolDialog','BASE_CONFIG','loginService','powerService','addressService','dataTableColumnService','dataTableItemActionService','datePicker97Service','$timeout',function(toolUtil,toolDialog,BASE_CONFIG,loginService,powerService,addressService,dataTableColumnService,dataTableItemActionService,datePicker97Service,$timeout){
 
         /*获取缓存数据*/
         var self=this,
@@ -909,7 +909,18 @@ angular.module('app')
                 });
             }
         };
+        /*表单服务类--时间查询*/
+        this.datePicker=function (config) {
+            config['$node1']=self.$equity_investmentTime;
+            config['$node2']=self.$equity_expirationTime;
+            datePicker97Service.datePickerRange(config);
+        };
 
+
+        /*地址服务--地址查询*/
+        this.queryAddress = function (config) {
+            addressService.queryRelation(config);
+        };
 
 
         /*测试服务--获取设备列表*/
