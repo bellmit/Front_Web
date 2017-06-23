@@ -1,7 +1,7 @@
 angular.module('app')
     .controller('IndexController', ['loginService', function (loginService) {
 
-        this.quickitem = doQuickImage(loginService.getMenuData());
+        this.quickitem = doQuickImage(loginService.getMenuData().slice(1));
         /*主内容快捷导航*/
         /*if(menudata!==null){
          this.quickitem=menudata.slice(1);

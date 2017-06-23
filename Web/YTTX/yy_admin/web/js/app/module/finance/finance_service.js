@@ -10,6 +10,7 @@ angular.module('app')
 
         /*初始化权限*/
         var init_power={
+            bonus_add:toolUtil.isPower('bonus-add',powermap,true)/*除权除息分红*/,
             profit_details:toolUtil.isPower('profit-details',powermap,true)/*分润明细*/,
             profit_clear:toolUtil.isPower('profit-clear',powermap,true)/*分润清算*/
         };
@@ -32,11 +33,12 @@ angular.module('app')
 
         /*视图切换服务--根据条件判断视图状态:返回一个代表类型，数字或者字符*/
         this.changeView=function (record) {
-            /*1-4种状态
+            /*1-5种状态
             1:分润统计(默认为1)
             2:分润历史
             3:清算统计
             4:清算历史
+            5:除权除息分红
             * */
             if(record.theme!=='' && record.tab!==''){
                 if(record.theme==='profit'){

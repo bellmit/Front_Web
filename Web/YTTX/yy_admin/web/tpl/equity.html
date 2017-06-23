@@ -3,7 +3,7 @@
         <div class="struct-layout-main">
             <!--设备管理-->
             <h1 class="admin-layout-theme3 g-clear-pt">
-                <span>组织机构：&nbsp;{{equity_ctrl.record.organizationName===''?equity_ctrl.record.structName:equity_ctrl.record.organizationName}}</span>
+                <span>组织机构：&nbsp;{{equity_ctrl.record.organizationName===''?equity_ctrl.record.currentName:equity_ctrl.record.organizationName}}</span>
                 &nbsp;&nbsp;&nbsp;&nbsp;
                 <button type="button" class="btn btn-default g-c-blue3" ng-disabled="equity_ctrl.record.organizationId==='' && equity_ctrl.record.currentId===''" ng-click="equity_ctrl.actionEquity({display:'show',area:'equity',type:'add'})"><i class="btn-action admin-btn-action1"></i>&nbsp;添加股权投资人</button>
             </h1>
