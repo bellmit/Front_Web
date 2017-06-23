@@ -36,13 +36,14 @@
             <table id="admin_list_wrap" class="table table-bordered table-striped table-hover admin-layout-table">
                 <!--分组样式-->
                 <colgroup id="admin_list_colgroup">
-                    <col class="g-w-percent7">
-                    <col class="g-w-percent7">
-                    <col class="g-w-percent7">
+                    <col class="g-w-percent5">
+                    <col class="g-w-percent6">
+                    <col class="g-w-percent6">
                     <col class="g-w-percent5">
                     <col class="g-w-percent5">
                     <col class="g-w-percent7">
                     <col class="g-w-percent7">
+                    <col class="g-w-percent4">
                     <col class="g-w-percent5">
                 </colgroup>
 
@@ -56,6 +57,7 @@
                     <th>合同编号</th>
                     <th>投资时间</th>
                     <th>到期时间</th>
+                    <th>状态</th>
                     <th>操作</th>
                 </tr>
                 </thead>
@@ -133,25 +135,21 @@
                                 </div>
                             </div>
 
-                            <div class="g-w-percent46 g-f-r">
-                                <div class="form-group-self1 g-w-percent24 g-f-l">
-                                    <label class="self-label g-w-percent20 g-t-r"><span class="self-require g-c-red1">*</span>投资时间</label>
+                            <div class="form-group-self1">
+                                <label class="self-label g-w-percent10 g-t-r"><span class="self-require g-c-red1">*</span>投资时间</label>
 
-                                    <div class="self-input g-pos-r g-w-percent30">
-                                        <input type="text" name="investmentTime" readonly placeholder="请选择投资时间" required id="equity_investmentTime" ng-model="equity_ctrl.equity.investmentTime" />
-                                    </div>
-                                </div>
-
-                                <div class="form-group-self1 g-w-percent24 g-f-r">
-                                    <label class="self-label g-w-percent20 g-t-r"><span class="self-require g-c-red1">*</span>到期时间</label>
-
-                                    <div class="self-input g-pos-r g-w-percent30">
-                                        <input type="text" name="expirationTime" readonly placeholder="请选择到期时间" required id="equity_expirationTime" ng-model="equity_ctrl.equity.expirationTime" />
-                                    </div>
+                                <div class="self-input g-pos-r g-w-percent40">
+                                    <input type="text" name="investmentTime" readonly placeholder="请选择投资时间" required id="equity_investmentTime" ng-model="equity_ctrl.equity.investmentTime" />
                                 </div>
                             </div>
-                            <div class="clearfix"></div>
 
+                            <div class="form-group-self1">
+                                <label class="self-label g-w-percent10 g-t-r"><span class="self-require g-c-red1">*</span>到期时间</label>
+
+                                <div class="self-input g-pos-r g-w-percent40">
+                                    <input type="text" name="expirationTime" readonly placeholder="请选择到期时间" required id="equity_expirationTime" ng-model="equity_ctrl.equity.expirationTime" />
+                                </div>
+                            </div>
 
                             <div class="form-group-self1">
                                 <label class="self-label g-w-percent10 g-t-r"><span class="self-require g-c-red1">*</span>合同编号</label>
@@ -163,6 +161,19 @@
                                 </div>
                             </div>
 
+                            <div class="form-group-self1">
+                                <label class="self-label g-w-percent10 g-t-r"><span class="self-require g-c-red1">*</span>状态</label>
+                                <div class="self-input g-pos-r g-w-percent40">
+                                    <label class="self-label">
+                                        <input type="radio" ng-model="equity_ctrl.equity.status" ng-value="0" name="status">
+                                        &nbsp;正常
+                                    </label>
+                                    <label class="self-label">
+                                        <input type="radio" ng-model="equity_ctrl.equity.status" ng-value="1"  name="status">
+                                        &nbsp;停用
+                                    </label>
+                                </div>
+                            </div>
 
                             <div class="admin-layout-theme4"><span class="mini-icon admin-mini-icon3"></span>&nbsp;地址信息</div>
 
@@ -203,6 +214,7 @@
                                 </div>
                             </div>
 
+                            <div class="admin-layout-theme4"><span class="mini-icon admin-mini-icon2"></span>&nbsp;其他信息</div>
 
                             <div class="form-group-self1">
                                 <label class="self-label g-w-percent10 g-t-r g-v-t">备注</label>

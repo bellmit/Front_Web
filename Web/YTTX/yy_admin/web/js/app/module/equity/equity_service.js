@@ -212,6 +212,9 @@ angular.module('app')
                                                     case 'address':
                                                         equity[i] = list[i];
                                                         break;
+                                                    case 'status':
+                                                        equity[i] = list[i];
+                                                        break;
                                                     case 'investmentAmount':
                                                         equity[i] = toolUtil.moneyCorrect(list[i], 15,true)[0];
                                                         break;
@@ -245,6 +248,7 @@ angular.module('app')
                                                     'city': '市区',
                                                     'country': '县区',
                                                     'address': '联系地址',
+                                                    'status':'状态',
                                                     'investmentAmount': '投资额',
                                                     'investmentTime': '投资时间',
                                                     'expirationTime': '到期时间',
@@ -260,6 +264,12 @@ angular.module('app')
                                                 if (typeof detail_map[j] !== 'undefined') {
                                                     if (j === 'cellphone') {
                                                         str += '<tr><td class="g-t-r">' + detail_map[j] + ':</td><td class="g-t-l">' + toolUtil.phoneFormat(list[j]) + '</td></tr>';
+                                                    } else if (j === 'status') {
+                                                        var statusmap={
+                                                            0:'<div class="g-c-blue1">正常</div>',
+                                                            1:'<div class="g-c-red1">停用</div>'
+                                                        };
+                                                        str += '<tr><td class="g-t-r">' + detail_map[j] + ':</td><td class="g-t-l">' + statusmap[list[j]] + '</td></tr>';
                                                     } else if (j === 'investmentAmount') {
                                                         str += '<tr><td class="g-t-r">' + detail_map[j] + ':</td><td class="g-t-l">' + toolUtil.moneyCorrect(list[j], 15, true)[0] + '</td></tr>';
                                                     } else if (j === 'province' || j === 'country' || j === 'city') {
@@ -687,6 +697,9 @@ angular.module('app')
                             if (i === 'type') {
                                 /*操作类型为新增*/
                                 data[i] = 'add';
+                            }else if (i === 'status') {
+                                /*操作类型为新增*/
+                                data[i] = 0;
                             } else if (i === 'province' || i === 'city' || i === 'country') {
                                 /*操作类型为新增*/
                                 continue;
@@ -773,6 +786,7 @@ angular.module('app')
                     param['city'] = equity['city'];
                     param['country'] = equity['country'];
                     param['address'] = equity['address'];
+                    param['status'] = equity['status'];
                     param['investmentAmount'] = toolUtil.trimSep(equity['investmentAmount'], ',');
                     param['investmentTime'] = equity['investmentTime'];
                     param['expirationTime'] = equity['expirationTime'];
@@ -897,33 +911,5 @@ angular.module('app')
                 return addressService.queryByCode(code, fn);
             }
         };
-
-        /*测试服务--获取IMEI码*/
-        this.testGetEquipmentDetail = function () {
-            var remark_info = /('最近太忙了，确认晚了，东西是很好的，呵呵，谢了。'|'物流公司的态度比较差,建议换一家！不过掌柜人还不错！'|'呵，货真不错，老公很喜欢！'|'很好的卖家，谢谢喽。我的同事们都很喜欢呢。下次再来哦 ！'|'掌柜人不错，质量还行，服务很算不错的。'|'没想到这么快就到了，尺寸正好，老板态度很好。'|'还不错，质量挺好的，速度也快！'|'终于找到家好店，服务好，质量不错，下次有机会再来买。'|'卖家人很好 这个还没用 看包装应该不错'|'店已经收藏了很久，不过是第一次下手。应该说还不错。'|'第二次来买了，货比我想像中要好！！老板人表扬下。'|'包装看起来很好，包得很用心，相信货一定很好，谢谢了！'|'货超值，呵，下次再来。帮你做个广告，朋友们：这家店的货值。'|'一个字！！值！！！'|'掌柜的服务态度真好，发货很快。商品质量也相当不错。太喜欢了，谢谢！'|'好卖家，真有耐心，我终于买到想要的东西了。谢谢卖家。'|'掌柜太善良了，真是干一行懂一行呀。在掌柜的指导下我都快变内行人士了！'|'卖家服务真周到。以后带同事一起来。'|'货到了，比图片上看到的好多了3Q！'|'忠心地感谢你，让我买到了梦寐以求的宝贝，太感谢了！'|'价格大众化，YY质量很好呀,款式、面料我都挺满意的．如果有需要我还会继续光顾你的店铺！'){1}/;
-
-            return {
-                status: 200,
-                data: {
-                    message: 'ok',
-                    code: 0,
-                    result: Mock.mock({
-                        'delivery|1': [{
-                            "id": /[0-9]{1,2}/,
-                            "consigneeName": /(周一|杨二|张三|李四|王五|赵六|马七|朱八|陈九){1}/,
-                            "logistics": /[0-9a-zA-Z]{5,10}/,
-                            "deliveryQuantity": /[0-9]{1,5}/,
-                            "remark": remark_info,
-                            "addTime": moment().format('YYYY-MM-DD HH:mm:ss'),
-                            "deviceType": /[1-3]{1}/
-                        }],
-                        'deviceImeis|1-10': [{
-                            "status": /[0-1]{1}/,
-                            "deviceImei": /[0-9a-zA-Z]{5,10}/
-                        }]
-                    })
-                }
-            };
-        };
-
+        
     }]);

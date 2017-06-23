@@ -157,14 +157,14 @@ angular.module('app')
                             "data": "address",
                             "render": function (data, type, full, meta) {
 
-                                return data.length>10?data.slice(0,10)+'...':data;
+                                return data.length > 10 ? data.slice(0, 10) + '...' : data;
                             }
                         },
                         {
                             "data": "investmentAmount",
                             "render": function (data, type, full, meta) {
 
-                                return data ? toolUtil.moneyCorrect(data,15,true)[0] : '';
+                                return data ? toolUtil.moneyCorrect(data, 15, true)[0] : '';
                             }
                         },
                         {
@@ -175,6 +175,17 @@ angular.module('app')
                         },
                         {
                             "data": "expirationTime"
+                        },
+                        {
+                            "data": "status",
+                            "render": function (data, type, full, meta) {
+                                var status = parseInt(data, 10),
+                                    status_map = {
+                                        0: '<div class="g-c-blue1">正常</div>',
+                                        1: '<div class="g-c-red1">停用</div>'
+                                    };
+                                return status_map[status];
+                            }
                         },
                         {
                             /*to do*/
@@ -196,14 +207,14 @@ angular.module('app')
             list_table: null,
             /*列控制*/
             tablecolumn: {
-                init_len: 8/*数据有多少列*/,
+                init_len: 9/*数据有多少列*/,
                 column_flag: true,
                 ischeck: false, /*是否有全选*/
                 columnshow: true,
                 $column_wrap: jq_dom.$admin_table_checkcolumn/*控制列显示隐藏的容器*/,
                 $bodywrap: jq_dom.$admin_batchlist_wrap/*数据展现容器*/,
-                hide_list: [4, 5,6]/*需要隐藏的的列序号*/,
-                hide_len: 3,
+                hide_list: [4, 5, 6, 7]/*需要隐藏的的列序号*/,
+                hide_len: 4,
                 column_api: {
                     isEmpty: function () {
                         if (self.table.list_table === null) {
@@ -224,8 +235,8 @@ angular.module('app')
                         equityService.doItemAction({
                             record: self.record,
                             table: self.table,
-                            address:self.equity_address,
-                            equity:self.equity
+                            address: self.equity_address,
+                            equity: self.equity
                         }, config);
                     }
                 }
@@ -243,6 +254,7 @@ angular.module('app')
             city: ''/*市区*/,
             country: ''/*县区*/,
             address: ''/*详细地址*/,
+            status: 0, /*状态*/
             investmentAmount: ''/*投资额*/,
             investmentTime: ''/*投资时间*/,
             expirationTime: ''/*到期时间*/,
