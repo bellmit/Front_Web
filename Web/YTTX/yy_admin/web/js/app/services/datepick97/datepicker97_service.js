@@ -31,7 +31,7 @@ angular.module('app')
 					oncleared:function () {
                         if(fn && typeof fn==='function'){
                             fn.call(null,{
-                                $node2:''
+                                $node1:''
                             });
                         }else{
                             if(model){
@@ -41,7 +41,15 @@ angular.module('app')
                             }
                         }
 					},
-					maxDate:model.dateTime===''?moment().format('YYYY-MM-DD'):config.format?config.format:'%y-%M-%d',
+					maxDate:(function () {
+                        var str='';
+                        if(config.format){
+                            str=config.format;
+                        }else{
+                            str='%y-%M-%d';
+                        }
+                        return str;
+                    }()),
 					position:config.position?config.position:{left:0,top:2}
 				});
 			}
@@ -78,7 +86,7 @@ angular.module('app')
 							 oncleared:function () {
                                  if(fn && typeof fn==='function'){
                                      fn.call(null,{
-                                         $node2:''
+                                         $node1:''
                                      });
                                  }else{
                                      if(model){
@@ -88,7 +96,23 @@ angular.module('app')
                                      }
                                  }
 							 },
-							 maxDate:model?model.endTime==='':config.$node1.val()===''?moment().format('YYYY-MM-DD'):'#F{$dp.$D(\''+config.$node2.selector.slice(1)+'\')}',
+							 maxDate:(function () {
+                                 var str='';
+                                 if(model){
+                                     if(model.endTime===''){
+                                         str=moment().format('YYYY-MM-DD');
+                                     }else{
+                                         str='#F{$dp.$D(\''+config.$node2.selector.slice(1)+'\')}';
+                                     }
+                                 }else{
+                                     if(config.$node2.val()===''){
+                                         str=moment().format('YYYY-MM-DD');
+                                     }else{
+                                         str='#F{$dp.$D(\''+config.$node2.selector.slice(1)+'\')}';
+                                     }
+                                 }
+                                 return str;
+                             }()),
 							 position:config.position?config.position:{left:0,top:2}
 						 });
 					 }else if(index===1){
@@ -119,8 +143,23 @@ angular.module('app')
                                      }
                                  }
 							 },
-							 minDate:model?model.startTime==='':config.$node2.val()===''?moment().format('YYYY-MM-DD'):'#F{$dp.$D(\''+config.$node1.selector.slice(1)+'\')}',
-							 maxDate:config.format?config.format:'%y-%M-%d',
+							 minDate:(function () {
+                                 var str='';
+                                 if(model){
+                                     if(model.startTime===''){
+                                         str=moment().format('YYYY-MM-DD');
+                                     }else{
+                                         str='#F{$dp.$D(\''+config.$node1.selector.slice(1)+'\')}';
+                                     }
+                                 }else{
+                                     if(config.$node1.val()===''){
+                                         str=moment().format('YYYY-MM-DD');
+                                     }else{
+                                         str='#F{$dp.$D(\''+config.$node1.selector.slice(1)+'\')}';
+                                     }
+                                 }
+                                 return str;
+                             }()),
 							 position:config.position?config.position:{left:0,top:2}
 						 });
 					 }

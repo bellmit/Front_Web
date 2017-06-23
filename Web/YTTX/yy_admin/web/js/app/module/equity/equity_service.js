@@ -1,552 +1,641 @@
 angular.module('app')
-    .service('equityService',['toolUtil','toolDialog','BASE_CONFIG','loginService','powerService','addressService','dataTableColumnService','dataTableItemActionService','datePicker97Service','$timeout',function(toolUtil,toolDialog,BASE_CONFIG,loginService,powerService,addressService,dataTableColumnService,dataTableItemActionService,datePicker97Service,$timeout){
+    .service('equityService', ['toolUtil', 'toolDialog', 'BASE_CONFIG', 'loginService', 'powerService', 'addressService', 'dataTableColumnService', 'dataTableItemActionService', 'datePicker97Service', '$timeout', function (toolUtil, toolDialog, BASE_CONFIG, loginService, powerService, addressService, dataTableColumnService, dataTableItemActionService, datePicker97Service, $timeout) {
 
         /*获取缓存数据*/
-        var self=this,
-            module_id=110/*模块id*/,
-            cache=loginService.getCache(),
-            sendform_reset_timer=null;
+        var self = this,
+            module_id = 110/*模块id*/,
+            cache = loginService.getCache(),
+            equityform_reset_timer = null;
 
-        var powermap=powerService.getCurrentPower(module_id);
+        var powermap = powerService.getCurrentPower(module_id);
 
         /*初始化权限*/
-        var init_power={
-            investor_details:toolUtil.isPower('investor-details',powermap,true)/*详情*/
+        var init_power = {
+            investor_details: toolUtil.isPower('investor-details', powermap, true)/*详情*/
         };
 
 
         /*扩展服务--初始化jquery dom节点*/
-        this.initJQDom=function (dom) {
-            if(dom){
+        this.initJQDom = function (dom) {
+            if (dom) {
                 /*复制dom引用*/
-                for(var i in dom){
-                    self[i]=dom[i];
+                for (var i in dom) {
+                    self[i] = dom[i];
                 }
             }
         };
         /*扩展服务--查询操作权限*/
-        this.getCurrentPower=function () {
+        this.getCurrentPower = function () {
             return init_power;
         };
 
 
         /*发货查询服务--请求数据--获取表格数据*/
-        this.getColumnData=function (table,record){
-            if(cache===null){
+        this.getColumnData = function (table, record) {
+            if (cache === null) {
                 return false;
-            }else if(!table && !record){
+            } else if (!table && !record) {
                 return false;
             }
 
             /*如果存在模型*/
-            var data= $.extend(true,{},table.list1_config.config.ajax.data),
+            var data = $.extend(true, {}, table.list1_config.config.ajax.data),
                 temp_param;
 
-            /*适配参数*/
-            for(var i in record){
-                if(i==='startTime' || i==='endTime'){
-                    if(record[i]===''){
-                        delete data[i];
-                    }else{
-                        data[i]=record[i];
-                    }
-                }else if(i==='organizationId' || i==='currentId'){
-                    if(record[i]===''){
-                        data['organizationIdReceiver']='';
-                        data['organizationIdSender']='';
-                        return false;
-                    }else{
-                        if(i==='organizationId'){
-                            data['organizationIdReceiver']=record[i];
-                        }else if(i==='currentId'){
-                            data['organizationIdSender']=record[i];
-                        }
-                    }
-                }
+            if (self.organizationId !== '') {
+                data['organizationId'] = record.organizationId;
+            } else {
+                data['organizationId'] = record.currentId;
             }
 
+
             /*参数赋值*/
-            table.list1_config.config.ajax.data=data;
-            if(table.list_table===null){
-                temp_param=cache.loginMap.param;
-                table.list1_config.config.ajax.data['adminId']=temp_param.adminId;
-                table.list1_config.config.ajax.data['token']=temp_param.token;
+            table.list1_config.config.ajax.data = data;
+            if (table.list_table === null) {
+                temp_param = cache.loginMap.param;
+                table.list1_config.config.ajax.data['adminId'] = temp_param.adminId;
+                table.list1_config.config.ajax.data['token'] = temp_param.token;
                 /*初始请求*/
-                table.list_table=self.$admin_list_wrap.DataTable(table.list1_config.config);
+                table.list_table = self.$admin_list_wrap.DataTable(table.list1_config.config);
                 /*调用列控制*/
-                dataTableColumnService.initColumn(table.tablecolumn,table.list_table);
+                dataTableColumnService.initColumn(table.tablecolumn, table.list_table);
                 /*调用按钮操作*/
                 dataTableItemActionService.initItemAction(table.tableitemaction);
-            }else {
+            } else {
                 table.list_table.ajax.config(table.list1_config.config.ajax).load();
             }
         };
         /*发货查询服务--过滤表格数据*/
-        this.filterDataTable=function (table,record) {
-            if(table.list_table===null){
+        this.filterDataTable = function (table, record) {
+            if (table.list_table === null) {
                 return false;
             }
             table.list_table.search(record.filter).columns().draw();
         };
         /*发货查询服务--操作按钮*/
-        this.doItemAction=function (mode,config) {
-            var id=config.id,
-                action=config.action;
+        this.doItemAction = function (model, config) {
+            var id = config.id,
+                action = config.action;
 
-            if(action==='detail'){
-                self.queryDetail(id);
+            if (action === 'detail') {
+                self.queryEquityInfo(null, id, action);
+            }else if(action === 'update'){
+                /*如果存在延迟任务则清除延迟任务*/
+                self.clearFormDelay();
+                /*通过延迟任务清空表单数据*/
+                self.addFormDelay({
+                    type: 'equity'
+                });
+                self.queryEquityInfo(model, id, action);
             }
         };
-        /*发货查询服务--查询详情*/
-        this.queryDetail=function (id) {
-            if(cache===null){
-                return false;
+
+
+        /*股权投资人服务--操作股权投资人*/
+        this.actionEquity = function (config) {
+            var modal = config.modal,
+                record = config.record,
+                type = modal.type;
+
+            /*判断是否是合法的节点，即是否有父机构*/
+            if (type === 'add') {
+                if(record.organizationId === '' && record.currentId === ''){
+                    toolDialog.show({
+                        type: 'warn',
+                        value: '没有父机构或父机构不存在'
+                    });
+                    return false;
+                }
             }
-            if(typeof id==='undefined'){
+
+            /*如果存在延迟任务则清除延迟任务*/
+            self.clearFormDelay();
+            /*通过延迟任务清空表单数据*/
+            self.addFormDelay({
+                type: 'equity'
+            });
+
+            /*根据类型跳转相应逻辑*/
+            if (type === 'add') {
+                /*默认为全选权限,不查询权限*/
+                /*显示弹窗*/
+                self.toggleModal({
+                    display: modal.display,
+                    area: modal.area
+                });
+            }
+
+        };
+        /*股权投资人服务--查询股权投资人*/
+        this.queryEquityInfo = function (config, id, action) {
+            if (cache === null) {
                 return false;
             }
 
-            var param=$.extend(true,{},cache.loginMap.param);
-            /*判断参数*/
-            param['id']=id;
+            if (typeof id === 'undefined') {
+                toolDialog.show({
+                    type: 'warn',
+                    value: '没有股权投资人信息'
+                });
+                return false;
+            }
 
+            var tempparam = cache.loginMap.param,
+                param = {
+                    adminId: tempparam.adminId,
+                    token: tempparam.token,
+                    id: id
+                };
 
             toolUtil
                 .requestHttp({
-                    url:/*'/device/delivery/view'*/'json/test.json',
-                    method:'post',
-                    set:true,
-                    debug:true/*测试模式*/,
-                    data:param
+                    url: '/equity/investor/info',
+                    method: 'post',
+                    set: true,
+                    data: param
                 })
-                .then(function(resp){
-                        /*测试代码*/
-                        var resp=self.testGetEquipmentDetail();
+                .then(function (resp) {
+                        var data = resp.data,
+                            status = parseInt(resp.status, 10);
 
-
-                        var data=resp.data,
-                            status=parseInt(resp.status,10);
-
-                        if(status===200){
-                            var code=parseInt(data.code,10),
-                                message=data.message;
-                            if(code!==0){
-                                if(typeof message !=='undefined'&&message!==''){
+                        if (status === 200) {
+                            var code = parseInt(data.code, 10),
+                                message = data.message;
+                            if (code !== 0) {
+                                if (typeof message !== 'undefined' && message !== '') {
                                     console.log(message);
-                                }else{
+                                } else {
                                     console.log('请求数据失败');
                                 }
 
-                                if(code===999){
+                                if (code === 999) {
                                     /*退出系统*/
-                                    cache=null;
+                                    cache = null;
                                     toolUtil.loginTips({
-                                        clear:true,
-                                        reload:true
+                                        clear: true,
+                                        reload: true
                                     });
                                 }
-                            }else{
+                            } else {
                                 /*加载数据*/
-                                var result=data.result;
-                                if(typeof result!=='undefined'){
-                                    var delivery=result.delivery,
-                                        deviceImeis=result.deviceImeis,
-                                        str='',
-                                        detail_map={
-                                            'deviceType':'设备类型',
-                                            'deliveryQuantity':'发货数量',
-                                            'logistics':'物流',
-                                            'consigneeName':'收货人',
-                                            'deviceImeis':'设置机器码列表',
-                                            'remark':'备注',
-                                            'deviceImei':'机器码',
-                                            'status':'状态'
-                                        },
-                                        statusmap={
-                                            0:"<span class='g-c-gray6'>正常</span>",
-                                            1:"<span class='g-c-gray12'>已用</span>"
-                                        },
-                                        typemap={
-                                            1:"S67",
-                                            2:"T6",
-                                            3:"其他"
-                                        };
-                                    if(delivery){
-                                        /*查看*/
-                                        for(var j in delivery){
-                                            if(typeof detail_map[j]!=='undefined'){
-                                                if(j==='deviceType'){
-                                                    var temptype=parseInt(delivery[j],10);
-                                                    str+='<tr><td colspan="2" class="g-t-r">'+detail_map[j]+':</td><td class="g-t-l g-c-blue3">'+typemap[temptype]+'</td></tr>';
-                                                }else if(j==='status'){
-                                                    var tempstatus=parseInt(delivery[j],10);
-                                                    str+='<tr><td colspan="2" class="g-t-r">'+detail_map[j]+':</td><td class="g-t-l">'+statusmap[tempstatus]+'</td></tr>';
-                                                }else{
-                                                    str+='<tr><td colspan="2" class="g-t-r">'+detail_map[j]+':</td><td  class="g-t-l">'+delivery[j]+'</td></tr>';
+                                var result = data.result;
+                                if (typeof result !== 'undefined') {
+                                    var list = result.investor;
+                                    if (list) {
+                                        if (action === 'update') {
+                                            /*修改：更新模型*/
+                                            var equity = config.equity;
+
+                                            for (var i in list) {
+                                                switch (i) {
+                                                    case 'id':
+                                                        equity[i] = list[i];
+                                                        equity['type'] = 'edit';
+                                                        break;
+                                                    case 'fullName':
+                                                        equity[i] = list[i];
+                                                        break;
+                                                    case 'cellphone':
+                                                        equity[i] = toolUtil.phoneFormat(list[i]);
+                                                        break;
+                                                    case 'province':
+                                                        equity['province'] = list['province'];
+                                                        equity['city'] = list['city'];
+                                                        equity['country'] = list['country'];
+                                                        /*判断是否需要重新数据，并依此更新相关地址模型*/
+                                                        self.isReqAddress({
+                                                            type: 'city',
+                                                            address: config.address,
+                                                            model: equity
+                                                        }, true);
+                                                        break;
+                                                    case 'address':
+                                                        equity[i] = list[i];
+                                                        break;
+                                                    case 'investmentAmount':
+                                                        equity[i] = toolUtil.moneyCorrect(list[i], 15,true)[0];
+                                                        break;
+                                                    case 'investmentTime':
+                                                        equity[i] = list[i];
+                                                        break;
+                                                    case 'expirationTime':
+                                                        equity[i] = list[i];
+                                                        break;
+                                                    case 'contractNo':
+                                                        equity[i] = list[i];
+                                                        break;
+                                                    case 'remark':
+                                                        equity[i] = list[i];
+                                                        break;
                                                 }
                                             }
-                                        }
-                                    }
-                                    if(deviceImeis){
-                                        var len=deviceImeis.length;
-                                        if(len!==0){
-                                            var i=0,
-                                                tempimei;
-                                            str+='<tr><th colspan="3" class="g-t-c">'+detail_map["deviceImeis"]+'</th></tr><tr><th class="g-t-c">序号</th><th class="g-t-c">机器码</th><th class="g-t-c">状态</th></tr>';
-                                            for(i;i<len;i++){
-                                                tempimei=deviceImeis[i];
-                                                str+='<tr><td class="g-t-c">'+(i + 1)+'</td><td class="g-t-l">'+tempimei["deviceImei"]+'</td><td class="g-t-l">'+statusmap[tempimei["status"]]+'</td></tr>';
+                                            /*显示弹窗*/
+                                            self.toggleModal({
+                                                display: 'show',
+                                                area: 'equity'
+                                            });
+                                        } else if (action === 'detail') {
+                                            /*查看*/
+                                            var str = '',
+                                                detail_map = {
+                                                    'id': '序列号',
+                                                    'fullName': '投资人名称',
+                                                    'cellphone': '手机号码',
+                                                    'province': '省份',
+                                                    'city': '市区',
+                                                    'country': '县区',
+                                                    'address': '联系地址',
+                                                    'investmentAmount': '投资额',
+                                                    'investmentTime': '投资时间',
+                                                    'expirationTime': '到期时间',
+                                                    'contractNo': '合同编号',
+                                                    'remark': '备注'
+                                                };
+
+                                            var r_province = '',
+                                                r_country = '',
+                                                r_city = '';
+
+                                            for (var j in list) {
+                                                if (typeof detail_map[j] !== 'undefined') {
+                                                    if (j === 'cellphone') {
+                                                        str += '<tr><td class="g-t-r">' + detail_map[j] + ':</td><td class="g-t-l">' + toolUtil.phoneFormat(list[j]) + '</td></tr>';
+                                                    } else if (j === 'investmentAmount') {
+                                                        str += '<tr><td class="g-t-r">' + detail_map[j] + ':</td><td class="g-t-l">' + toolUtil.moneyCorrect(list[j], 15, true)[0] + '</td></tr>';
+                                                    } else if (j === 'province' || j === 'country' || j === 'city') {
+                                                        str += '<tr><td class="g-t-r">' + detail_map[j] + ':</td><td class="g-t-l">#' + j + '#</td></tr>';
+                                                        if (j === 'province') {
+                                                            self.queryByCode(list[j], function (name) {
+                                                                r_province = name;
+                                                            });
+                                                        } else if (j === 'country') {
+                                                            self.queryByCode(list[j], function (name) {
+                                                                r_country = name;
+                                                            });
+                                                        } else if (j === 'city') {
+                                                            self.queryByCode(list[j], function (name) {
+                                                                r_city = name;
+                                                            });
+                                                        }
+                                                    } else {
+                                                        str += '<tr><td class="g-t-r">' + detail_map[j] + ':</td><td class="g-t-l">' + list[j] + '</td></tr>';
+                                                    }
+                                                }
+                                            }
+                                            if (str !== '') {
+                                                setTimeout(function () {
+                                                    str = str.replace(/#province#/g, r_province).replace(/#country#/g, r_country).replace(/#city#/g, r_city);
+                                                    $(str).appendTo(self.$admin_equitydetail_show.html(''));
+                                                    /*显示弹窗*/
+                                                    self.toggleModal({
+                                                        display: 'show',
+                                                        area: 'equitydetail'
+                                                    });
+                                                }, 200);
+
                                             }
                                         }
-                                    }
-                                    if(str!==''){
-                                        $(str).appendTo(self.$admin_equitydetail_show.html(''));
-                                        /*显示弹窗*/
-                                        self.toggleModal({
-                                            display:'show',
-                                            area:'senddetail'
+                                    } else {
+                                        /*提示信息*/
+                                        toolDialog.show({
+                                            type: 'warn',
+                                            value: '获取编辑数据失败'
                                         });
                                     }
                                 }
                             }
                         }
                     },
-                    function(resp){
-                        var message=resp.data.message;
-                        if(typeof message !=='undefined'&&message!==''){
+                    function (resp) {
+                        var message = resp.data.message;
+                        if (typeof message !== 'undefined' && message !== '') {
                             console.log(message);
-                        }else{
-                            console.log('查看发货失败');
+                        } else {
+                            console.log('请求用户失败');
                         }
                     });
         };
 
-
         /*弹出层服务*/
-        this.toggleModal=function (config,fn) {
-            var temp_timer=null,
-                type_map={
-                    'equity':self.$admin_equity_dialog,
-                    'equitydetail':self.$admin_equitydetail_dialog
+        this.toggleModal = function (config, fn) {
+            var temp_timer = null,
+                type_map = {
+                    'equity': self.$admin_equity_dialog,
+                    'equitydetail': self.$admin_equitydetail_dialog
                 };
-            if(config.display==='show'){
-                if(typeof config.delay!=='undefined'){
-                    temp_timer=setTimeout(function () {
-                        type_map[config.area].modal('show',{backdrop:'static'});
+            if (config.display === 'show') {
+                if (typeof config.delay !== 'undefined') {
+                    temp_timer = setTimeout(function () {
+                        type_map[config.area].modal('show', {backdrop: 'static'});
                         clearTimeout(temp_timer);
-                        temp_timer=null;
-                    },config.delay);
-                    if(fn&&typeof fn==='function'){
+                        temp_timer = null;
+                    }, config.delay);
+                    if (fn && typeof fn === 'function') {
                         fn.call(null);
                     }
-                }else{
-                    type_map[config.area].modal('show',{backdrop:'static'});
-                    if(fn&&typeof fn==='function'){
+                } else {
+                    type_map[config.area].modal('show', {backdrop: 'static'});
+                    if (fn && typeof fn === 'function') {
                         fn.call(null);
                     }
                 }
-            }else if(config.display==='hide'){
-                if(typeof config.delay!=='undefined'){
-                    temp_timer=setTimeout(function () {
+            } else if (config.display === 'hide') {
+                if (typeof config.delay !== 'undefined') {
+                    temp_timer = setTimeout(function () {
                         type_map[config.area].modal('hide');
                         clearTimeout(temp_timer);
-                        temp_timer=null;
-                    },config.delay);
-                }else{
+                        temp_timer = null;
+                    }, config.delay);
+                } else {
                     type_map[config.area].modal('hide');
                 }
                 /*清除延时任务序列*/
-                if(config.area==='send'){
+                if (config.area === 'equity') {
                     self.clearFormDelay();
                 }
             }
         };
 
 
-
         /*导航服务--获取虚拟挂载点*/
-        this.getRoot=function (record) {
-            if(cache===null){
+        this.getRoot = function (record) {
+            if (cache === null) {
                 toolUtil.loginTips({
-                    clear:true,
-                    reload:true
+                    clear: true,
+                    reload: true
                 });
-                record['currentId']='';
-                record['currentName']='';
+                record['currentId'] = '';
+                record['currentName'] = '';
                 return false;
             }
-            var islogin=loginService.isLogin(cache);
-            if(islogin){
-                var logininfo=cache.loginMap;
-                record['currentId']=logininfo.param.organizationId;
-                record['currentName']=logininfo.username;
-            }else{
+            var islogin = loginService.isLogin(cache);
+            if (islogin) {
+                var logininfo = cache.loginMap;
+                record['currentId'] = logininfo.param.organizationId;
+                record['currentName'] = logininfo.username;
+            } else {
                 /*退出系统*/
-                cache=null;
+                cache = null;
                 toolUtil.loginTips({
-                    clear:true,
-                    reload:true
+                    clear: true,
+                    reload: true
                 });
-                record['currentId']='';
-                record['currentName']='';
+                record['currentId'] = '';
+                record['currentName'] = '';
             }
         };
         /*导航服务--获取导航*/
-        this.getSubMenu=function (config) {
-            if(cache){
-                var param=$.extend(true,{},cache.loginMap.param);
-                param['isShowSelf']=0;
+        this.getSubMenu = function (config) {
+            if (cache) {
+                var param = $.extend(true, {}, cache.loginMap.param);
+                param['isShowSelf'] = 0;
                 var layer,
                     id,
                     $wrap;
 
                 /*初始化加载*/
-                if(!config.$reqstate){
-                    layer=0;
+                if (!config.$reqstate) {
+                    layer = 0;
                     /*根目录则获取新配置参数*/
-                    id=param['organizationId'];
-                    $wrap=self.$admin_equity_submenu;
-                    config.record.organizationId=id;
-                    config.record.organizationName=cache.loginMap.username;
-                    /*查询货物*/
-                    self.queryIMEI(id);
-                    if(config.table && config.table.list_table===null && config.record){
-                        self.getColumnData(config.table,config.record);
+                    id = param['organizationId'];
+                    $wrap = self.$admin_equity_submenu;
+                    config.record.organizationId = id;
+                    config.record.organizationName = cache.loginMap.username;
+                    if (config.table && config.table.list_table === null && config.record) {
+                        self.getColumnData(config.table, config.record);
                     }
-                }else{
+                } else {
                     /*非根目录则获取新请求参数*/
-                    layer=config.$reqstate.attr('data-layer');
-                    $wrap=config.$reqstate.next();
-                    id=config.$reqstate.attr('data-id');
+                    layer = config.$reqstate.attr('data-layer');
+                    $wrap = config.$reqstate.next();
+                    id = config.$reqstate.attr('data-id');
 
                     /*判断是否是合法的节点*/
-                    if(layer>=BASE_CONFIG.submenulimit){
+                    if (layer >= BASE_CONFIG.submenulimit) {
                         return false;
                     }
-                    param['organizationId']=id;
+                    param['organizationId'] = id;
                 }
 
                 toolUtil
                     .requestHttp({
-                        url:'/organization/lowers/search',
-                        method:'post',
-                        set:true,
-                        data:param
+                        url: '/organization/lowers/search',
+                        method: 'post',
+                        set: true,
+                        data: param
                     })
-                    .then(function(resp){
-                            var data=resp.data,
-                                status=parseInt(resp.status,10);
+                    .then(function (resp) {
+                            var data = resp.data,
+                                status = parseInt(resp.status, 10);
 
-                            if(status===200){
-                                var code=parseInt(data.code,10),
-                                    message=data.message;
-                                if(code!==0){
-                                    if(typeof message !=='undefined'&&message!==''){
+                            if (status === 200) {
+                                var code = parseInt(data.code, 10),
+                                    message = data.message;
+                                if (code !== 0) {
+                                    if (typeof message !== 'undefined' && message !== '') {
                                         console.log(message);
                                     }
 
-                                    if(code===999){
+                                    if (code === 999) {
                                         /*退出系统*/
-                                        cache=null;
+                                        cache = null;
                                         toolUtil.loginTips({
-                                            clear:true,
-                                            reload:true
+                                            clear: true,
+                                            reload: true
                                         });
                                     }
-                                }else{
+                                } else {
                                     /*加载数据*/
-                                    var result=data.result;
-                                    if(typeof result!=='undefined'){
-                                        var list=result.list,
-                                            str='';
-                                        if(list){
-                                            var len=list.length;
-                                            if(len===0){
+                                    var result = data.result;
+                                    if (typeof result !== 'undefined') {
+                                        var list = result.list,
+                                            str = '';
+                                        if (list) {
+                                            var len = list.length;
+                                            if (len === 0) {
                                                 $wrap.html('');
                                                 /*清除显示下级菜单导航图标*/
-                                                if(config.$reqstate){
+                                                if (config.$reqstate) {
                                                     config.$reqstate.attr({
-                                                        'data-isrequest':true
+                                                        'data-isrequest': true
                                                     }).removeClass('sub-menu-title sub-menu-titleactive');
                                                 }
-                                            }else{
+                                            } else {
                                                 /*数据集合，最多嵌套层次*/
-                                                str=self.resolveSubMenu(list,BASE_CONFIG.submenulimit,{
-                                                    layer:layer,
-                                                    id:id
+                                                str = self.resolveSubMenu(list, BASE_CONFIG.submenulimit, {
+                                                    layer: layer,
+                                                    id: id
                                                 });
-                                                if(str!==''){
+                                                if (str !== '') {
                                                     $(str).appendTo($wrap.html(''));
                                                 }
-                                                if(layer!==0 && config.$reqstate){
+                                                if (layer !== 0 && config.$reqstate) {
                                                     config.$reqstate.attr({
-                                                        'data-isrequest':true
+                                                        'data-isrequest': true
                                                     });
                                                 }
                                             }
-                                        }else{
+                                        } else {
                                             $wrap.html('');
                                         }
-                                    }else{
-                                        if(layer===0){
+                                    } else {
+                                        if (layer === 0) {
                                             $wrap.html('');
                                         }
                                     }
                                 }
                             }
                         },
-                        function(resp){
-                            var message=resp.data.message;
-                            if(typeof message !=='undefined'&&message!==''){
+                        function (resp) {
+                            var message = resp.data.message;
+                            if (typeof message !== 'undefined' && message !== '') {
                                 console.log(message);
-                            }else{
+                            } else {
                                 console.log('请求菜单失败');
                             }
                             $wrap.html('');
                         });
-            }else{
+            } else {
                 /*退出系统*/
-                cache=null;
+                cache = null;
                 toolUtil.loginTips({
-                    clear:true,
-                    reload:true
+                    clear: true,
+                    reload: true
                 });
             }
         };
         /*导航服务--解析导航--开始解析*/
-        this.resolveSubMenu=function (obj,limit,config) {
-            if(!obj||typeof obj==='undefined'){
+        this.resolveSubMenu = function (obj, limit, config) {
+            if (!obj || typeof obj === 'undefined') {
                 return false;
             }
-            if(typeof limit==='undefined'||limit<=0){
-                limit=1;
+            if (typeof limit === 'undefined' || limit <= 0) {
+                limit = 1;
             }
-            var menulist=obj,
-                str='',
-                i=0,
-                len=menulist.length,
-                layer=config.layer;
+            var menulist = obj,
+                str = '',
+                i = 0,
+                len = menulist.length,
+                layer = config.layer;
 
             layer++;
 
-            if(limit>=1&&layer>limit){
+            if (limit >= 1 && layer > limit) {
                 /*如果层级达到设置的极限清除相关*/
                 return false;
             }
 
-            if(len!==0){
-                for(i;i<len;i++){
-                    var curitem=menulist[i];
+            if (len !== 0) {
+                for (i; i < len; i++) {
+                    var curitem = menulist[i];
                     /*到达极限的前一项则不创建子菜单容器*/
-                    if(limit>=1&&layer>=limit){
-                        str+=self.doItemSubMenu(curitem,{
-                                flag:false,
-                                limit:limit,
-                                layer:layer,
-                                parentid:config.id
-                            })+'</li>';
-                    }else{
-                        str+=self.doItemSubMenu(curitem,{
-                                flag:true,
-                                limit:limit,
-                                layer:layer,
-                                parentid:config.id
-                            })+'<ul></ul></li>';
+                    if (limit >= 1 && layer >= limit) {
+                        str += self.doItemSubMenu(curitem, {
+                                flag: false,
+                                limit: limit,
+                                layer: layer,
+                                parentid: config.id
+                            }) + '</li>';
+                    } else {
+                        str += self.doItemSubMenu(curitem, {
+                                flag: true,
+                                limit: limit,
+                                layer: layer,
+                                parentid: config.id
+                            }) + '<ul></ul></li>';
                     }
                 }
                 return str;
-            }else{
+            } else {
                 return false;
             }
         };
         /*导航服务--解析导航--公共解析*/
-        this.doItemSubMenu=function (obj,config) {
-            var curitem=obj,
-                id=curitem["id"],
-                label=curitem["fullName"],
-                str='',
-                flag=config.flag,
-                layer=config.layer,
-                parentid=config.parentid;
+        this.doItemSubMenu = function (obj, config) {
+            var curitem = obj,
+                id = curitem["id"],
+                label = curitem["fullName"],
+                str = '',
+                flag = config.flag,
+                layer = config.layer,
+                parentid = config.parentid;
 
-            if(flag){
-                str='<li><a data-isrequest="false" data-parentid="'+parentid+'" data-layer="'+layer+'" data-id="'+id+'" class="sub-menu-title" href="#" title="">'+label+'</a>';
-            }else{
-                str='<li><a data-parentid="'+parentid+'" data-layer="'+layer+'" data-id="'+id+'" href="#" title="">'+label+'</a></li>';
+            if (flag) {
+                str = '<li><a data-isrequest="false" data-parentid="' + parentid + '" data-layer="' + layer + '" data-id="' + id + '" class="sub-menu-title" href="#" title="">' + label + '</a>';
+            } else {
+                str = '<li><a data-parentid="' + parentid + '" data-layer="' + layer + '" data-id="' + id + '" href="#" title="">' + label + '</a></li>';
             }
             return str;
         };
         /*导航服务--显示隐藏机构*/
-        this.toggleSubMenu=function (e,config) {
+        this.toggleSubMenu = function (e, config) {
             /*阻止冒泡和默认行为*/
             e.preventDefault();
             e.stopPropagation();
 
             /*过滤对象*/
-            var target=e.target,
-                node=target.nodeName.toLowerCase();
-            if(node==='ul'||node==='li'){
+            var target = e.target,
+                node = target.nodeName.toLowerCase();
+            if (node === 'ul' || node === 'li') {
                 return false;
             }
 
 
-            var $this=$(target),
+            var $this = $(target),
                 haschild,
                 $child,
-                isrequest=false,
-                temp_id=$this.attr('data-id'),
-                temp_label=$this.html();
+                isrequest = false,
+                temp_id = $this.attr('data-id'),
+                temp_label = $this.html();
 
-            if(typeof temp_id==='undefined'){
+            if (typeof temp_id === 'undefined') {
                 return false;
             }
 
 
             /*模型缓存*/
-            var record=config.record;
+            var record = config.record;
 
             /*变更操作记录模型--激活高亮*/
-            record.organizationId=temp_id;
-            record.organizationName=temp_label;
-            /*查询货物*/
-            self.queryIMEI(temp_id);
+            record.organizationId = temp_id;
+            record.organizationName = temp_label;
 
             /*变更操作记录模型--激活高亮*/
-            if(record.current===null){
-                record.current=$this;
-            }else{
-                record.prev=record.current;
-                record.current=$this;
+            if (record.current === null) {
+                record.current = $this;
+            } else {
+                record.prev = record.current;
+                record.current = $this;
                 record.prev.removeClass('sub-menuactive');
             }
             record.current.addClass('sub-menuactive');
 
-            self.getColumnData(config.table,config.record);
+            self.getColumnData(config.table, config.record);
 
             /*查询子集*/
-            haschild=$this.hasClass('sub-menu-title');
-            if(haschild){
-                $child=$this.next();
+            haschild = $this.hasClass('sub-menu-title');
+            if (haschild) {
+                $child = $this.next();
                 /*是否已经加载过数据*/
-                isrequest=$this.attr('data-isrequest');
-                if(isrequest==='false'){
+                isrequest = $this.attr('data-isrequest');
+                if (isrequest === 'false') {
                     /*重新加载*/
-                    config['$reqstate']=$this;
+                    config['$reqstate'] = $this;
                     self.getSubMenu(config);
                     /*切换显示隐藏*/
-                    if($child.hasClass('g-d-showi')){
+                    if ($child.hasClass('g-d-showi')) {
                         $child.removeClass('g-d-showi');
                         $this.removeClass('sub-menu-titleactive');
-                    }else{
+                    } else {
                         $child.addClass('g-d-showi');
                         $this.addClass('sub-menu-titleactive');
                     }
-                }else{
+                } else {
                     /*切换显示隐藏*/
-                    if($child.hasClass('g-d-showi')){
+                    if ($child.hasClass('g-d-showi')) {
                         $child.removeClass('g-d-showi');
                         $this.removeClass('sub-menu-titleactive');
-                    }else{
+                    } else {
                         $child.addClass('g-d-showi');
                         $this.addClass('sub-menu-titleactive');
                     }
@@ -555,364 +644,235 @@ angular.module('app')
         };
 
 
-
-        /*IMEI服务--进货库获取货物*/
-        this.queryIMEI=function (id) {
-            if(!cache){
-                return false;
-            }
-            if(typeof id==='undefined'){
-                return false;
-            }
-            var param=$.extend(true,{},cache.loginMap.param);
-
-            param['organizationId']=id;
-            toolUtil
-                .requestHttp({
-                    url:/*'/device/stock/list'*/'json/test.json',
-                    method:'post',
-                    set:true,
-                    debug:true,/*测试模式*/
-                    data:param
-                })
-                .then(function(resp){
-                        /*测试代码*/
-                        var resp=self.testGetIMEI();
-
-                        var data=resp.data,
-                            status=parseInt(resp.status,10);
-                        if(status===200){
-                            var code=parseInt(data.code,10),
-                                message=data.message;
-                            if(code!==0){
-                                if(typeof message !=='undefined' && message!==''){
-                                    console.log(message);
-                                }
-
-                                if(code===999){
-                                    /*退出系统*/
-                                    cache=null;
-                                    toolUtil.loginTips({
-                                        clear:true,
-                                        reload:true
-                                    });
-                                }
-                            }else{
-                                /*加载数据*/
-                                var result=data.result;
-                                if(typeof result!=='undefined'){
-                                    var list=result.list,
-                                        str='';
-                                    if(list){
-                                        var len=list.length,
-                                            i=0,
-                                            j=1,
-                                            item=5,
-                                            count=len%item;
-
-                                        if(count!==0){
-                                            count=(item - count) + 1;
-                                        }
-
-                                        if(len===0){
-                                            self.$admin_imei_list.html('');
-                                        }else{
-                                            /*数据集合，最多嵌套层次*/
-                                            for(i;i<len;i++){
-                                                if(j===1 && i===0){
-                                                    str+='<tr><td><label data-id="'+list[i]["id"]+'" data-deviceImei="'+list[i]["deviceImei"]+'"><input name="imei_list"  data-id="'+list[i]["id"]+'" data-deviceImei="'+list[i]["deviceImei"]+'" type="checkbox" />'+list[i]["deviceImei"]+'</label></td>';
-                                                }else if(j%item===0){
-                                                    str+='<td><label data-id="'+list[i]["id"]+'" data-deviceImei="'+list[i]["deviceImei"]+'"><input name="imei_list"  data-id="'+list[i]["id"]+'" data-deviceImei="'+list[i]["deviceImei"]+'" type="checkbox" />'+list[i]["deviceImei"]+'</label></td></tr><tr>';
-                                                }else{
-                                                    if(i===len - 1){
-                                                        if(count!==0){
-                                                            str+='<td colspan="'+count+'"><label data-id="'+list[i]["id"]+'" data-deviceImei="'+list[i]["deviceImei"]+'"><input name="imei_list"  data-id="'+list[i]["id"]+'" data-deviceImei="'+list[i]["deviceImei"]+'" type="checkbox" />'+list[i]["deviceImei"]+'</label></td>';
-                                                        }else{
-                                                            str+='<td><label data-id="'+list[i]["id"]+'" data-deviceImei="'+list[i]["deviceImei"]+'"><input name="imei_list"  data-id="'+list[i]["id"]+'" data-deviceImei="'+list[i]["deviceImei"]+'" type="checkbox" />'+list[i]["deviceImei"]+'</label></td>';
-                                                        }
-                                                    }else{
-                                                        str+='<td><label data-id="'+list[i]["id"]+'" data-deviceImei="'+list[i]["deviceImei"]+'"><input name="imei_list"  data-id="'+list[i]["id"]+'" data-deviceImei="'+list[i]["deviceImei"]+'" type="checkbox" />'+list[i]["deviceImei"]+'</label></td>';
-                                                    }
-                                                }
-                                                j++;
-                                            }
-                                            if(str!==''){
-                                                str+='</tr>';
-                                                $(str).appendTo(self.$admin_imei_list.html(''));
-                                            }
-                                        }
-                                    }else{
-                                        self.$admin_imei_list.html('');
-                                    }
-                                }else{
-                                    self.$admin_imei_list.html('');
-                                }
-                            }
-                        }
-                    },
-                    function(resp){
-                        var message=resp.data.message;
-                        if(typeof message !=='undefined'&&message!==''){
-                            console.log(message);
-                        }else{
-                            console.log('请货物失败');
-                        }
-                        self.$admin_imei_list.html('');
-                    });
-        };
-        /*IMEI服务--清除IMEI数据*/
-        this.clearIMEI=function (send) {
-            if(!send){
-                return false;
-            }
-            /*存在数据模型则清除模型*/
-            if(send.deviceImeis!==''){
-                self.$admin_imei_list.find('input:checked').each(function () {
-                    $(this).prop({
-                        'checked':false
-                    });
-                });
-                /*清除模型*/
-                send.deviceImeis='';
-            }
-        };
-        /*IMEI服务--获取IMEI数据*/
-        this.getIMEI=function (send) {
-            if(!send){
-                return false;
-            }
-            /*清除选中*/
-            var res=[];
-            self.$admin_imei_list.find('input:checked').each(function () {
-                res.push($(this).attr('data-deviceImei'));
-            });
-            /*清除模型*/
-            if(res.length!==0){
-                send.deviceImeis=res.join(',');
-            }else{
-                send.deviceImeis='';
-            }
-        };
-
-
-
-
         /*表单类服务--执行延时任务序列*/
-        this.addFormDelay=function (config) {
+        this.addFormDelay = function (config) {
             /*映射对象*/
-            var type=config.type,
-                type_map={
-                    'equity':{
-                        'timeid':sendform_reset_timer,
-                        'dom':self.$admin_equity_reset
+            var type = config.type,
+                type_map = {
+                    'equity': {
+                        'timeid': equityform_reset_timer,
+                        'dom': self.$admin_equity_reset
                     }
                 };
             /*执行延时操作*/
-            type_map[type]['timeid']=$timeout(function(){
+            type_map[type]['timeid'] = $timeout(function () {
                 /*触发重置表单*/
                 type_map[type]['dom'].trigger('click');
-            },0);
+            }, 0);
         };
         /*表单类服务--清除延时任务序列*/
-        this.clearFormDelay=function (did) {
-            if(did  &&  did!==null){
+        this.clearFormDelay = function (did) {
+            if (did && did !== null) {
                 $timeout.cancel(did);
-                did=null;
-            }else{
+                did = null;
+            } else {
                 /*如果存在延迟任务则清除延迟任务*/
-                if(sendform_reset_timer!==null){
-                    $timeout.cancel(sendform_reset_timer);
-                    sendform_reset_timer=null;
+                if (equityform_reset_timer !== null) {
+                    $timeout.cancel(equityform_reset_timer);
+                    equityform_reset_timer = null;
                 }
             }
         };
         /*表单类服务--清空表单模型数据*/
-        this.clearFormData=function (data,type) {
-            if(!data){
+        this.clearFormData = function (data, type) {
+            if (!data) {
                 return false;
             }
-            if(typeof type!=='undefined' && type!==''){
+            if (typeof type !== 'undefined' && type !== '') {
                 /*特殊情况*/
-                if(type==='send'){
+                if (type === 'equity') {
                     /*清除成员数据*/
-                    var send=data[type];
-                    for(var j in send){
-                        if(j==='deviceType'){
-                            send[j]=1;
-                        }else if(j==='imei'){
-                            send[j]=false;
-                        }else{
-                            send[j]='';
+                    (function () {
+                        for (var i in data) {
+                            if (i === 'type') {
+                                /*操作类型为新增*/
+                                data[i] = 'add';
+                            } else if (i === 'province' || i === 'city' || i === 'country') {
+                                /*操作类型为新增*/
+                                continue;
+                            } else {
+                                data[i] = '';
+                            }
+                        }
+                    })(data);
+                }
+            } else {
+                /*重置机构数据模型*/
+                (function () {
+                    for (var i in data) {
+                        if (i === 'type') {
+                            /*操作类型为新增*/
+                            data[i] = 'add';
+                        } else {
+                            data[i] = '';
                         }
                     }
-                    self.clearIMEI(send);
-                }
-            }else {
-                /*重置机构数据模型*/
-                for(var i in data){
-                    if(i==='type'){
-                        /*操作类型为新增*/
-                        data[i]='add';
-                    }else{
-                        data[i]='';
-                    }
-                }
+                })(data);
             }
         };
         /*表单类服务--重置表单数据*/
-        this.clearFormValid=function (forms) {
-            if(forms){
-                var temp_cont=forms.$$controls;
-                if(temp_cont){
-                    var len=temp_cont.length,
-                        i=0;
-                    forms.$dirty=false;
-                    forms.$invalid=true;
-                    forms.$pristine=true;
-                    forms.valid=false;
+        this.clearFormValid = function (forms) {
+            if (forms) {
+                var temp_cont = forms.$$controls;
+                if (temp_cont) {
+                    var len = temp_cont.length,
+                        i = 0;
+                    forms.$dirty = false;
+                    forms.$invalid = true;
+                    forms.$pristine = true;
+                    forms.valid = false;
 
-                    if(len!==0){
-                        for(i;i<len;i++){
-                            var temp_item=temp_cont[i];
-                            temp_item['$dirty']=false;
-                            temp_item['$invalid']=true;
-                            temp_item['$pristine']=true;
-                            temp_item['$valid']=false;
+                    if (len !== 0) {
+                        for (i; i < len; i++) {
+                            var temp_item = temp_cont[i];
+                            temp_item['$dirty'] = false;
+                            temp_item['$invalid'] = true;
+                            temp_item['$pristine'] = true;
+                            temp_item['$valid'] = false;
                         }
                     }
                 }
             }
         };
         /*表单服务类--重置表单*/
-        this.formReset=function (config,type) {
-            if(type ==='role' || type ==='rolegroup'){
-                /*重置模型*/
-                self.clearFormData(config[type]);
-                /*重置提示信息*/
-                self.clearFormValid(config.forms);
-            }else if(type ==='send'){
+        this.formReset = function (config, type) {
+            if (type === 'equity') {
                 /*特殊情况--发货*/
-                self.clearFormData(config,type);
+                self.clearFormData(config[type], type);
                 /*重置提示信息*/
                 self.clearFormValid(config.forms);
             }
         };
         /*表单服务类--提交表单*/
-        this.formSubmit=function (config,type) {
-            if(cache){
-                var action='',
-                    param=$.extend(true,{},cache.loginMap.param),
-                    req_config={
-                        method:'post',
-                        set:true
+        this.formSubmit = function (config, type) {
+            if (cache) {
+                var action = '',
+                    tempparam = cache.loginMap.param,
+                    param = {
+                        adminId: tempparam.adminId,
+                        token: tempparam.token
                     },
-                    tip_map={
-                        'add':'新增',
-                        'edit':'编辑',
-                        'send':'发货'
+                    req_config = {
+                        method: 'post',
+                        set: true
+                    },
+                    record = config.record,
+                    tip_map = {
+                        'add': '新增',
+                        'edit': '编辑',
+                        'equity': '股权投资人'
                     };
 
                 /*适配参数*/
-                if(type==='send'){
-                    action='add';
-                    var send=config['send'];
-                    for(var i in send){
-                        if(i!=='imei'){
-                            param[i]=send[i];
-                        }
-                    }
+                if (type === 'equity') {
+                    /*公共配置*/
+                    var equity = config[type];
+                    param['fullName'] = equity['fullName'];
+                    param['cellphone'] = toolUtil.trims(config[type]['cellphone']);
+                    param['province'] = equity['province'];
+                    param['city'] = equity['city'];
+                    param['country'] = equity['country'];
+                    param['address'] = equity['address'];
+                    param['investmentAmount'] = toolUtil.trimSep(equity['investmentAmount'], ',');
+                    param['investmentTime'] = equity['investmentTime'];
+                    param['expirationTime'] = equity['expirationTime'];
+                    param['contractNo'] = equity['contractNo'];
+                    param['remark'] = equity['remark'];
 
-                    param['organizationIdSender']=config.record.currentId;
-                    param['organizationIdReceiver']=config.record.organizationId;
-                    param['status']=0;
-                    req_config['url']='/device/delivery/add';
+                    if (equity['id'] === '') {
+                        action = 'add';
+                        param['organizationId'] = record.organizationId !== '' ? record.organizationId : record.currentId;
+                        req_config['url'] = '/equity/investor/add';
+                    } else {
+                        action = 'edit';
+                        param['id'] = equity['id'];
+                        req_config['url'] = '/equity/investor/update';
+                    }
                 }
-                req_config['data']=param;
+                req_config['data'] = param;
 
                 toolUtil
                     .requestHttp(req_config)
-                    .then(function(resp){
-                            var data=resp.data,
-                                status=parseInt(resp.status,10);
+                    .then(function (resp) {
+                            var data = resp.data,
+                                status = parseInt(resp.status, 10);
 
-                            if(status===200){
-                                var code=parseInt(data.code,10),
-                                    message=data.message;
-                                if(code!==0){
-                                    if(typeof message !=='undefined' && message!==''){
+                            if (status === 200) {
+                                var code = parseInt(data.code, 10),
+                                    message = data.message;
+                                if (code !== 0) {
+                                    if (typeof message !== 'undefined' && message !== '') {
                                         toolDialog.show({
-                                            type:'warn',
-                                            value:message
+                                            type: 'warn',
+                                            value: message
                                         });
-                                    }else{
+                                    } else {
                                         toolDialog.show({
-                                            type:'warn',
-                                            value:tip_map[action]+tip_map[type]+'失败'
+                                            type: 'warn',
+                                            value: tip_map[action] + tip_map[type] + '失败'
                                         });
                                     }
-                                    if(code===999){
+                                    if (code === 999) {
                                         /*退出系统*/
-                                        cache=null;
+                                        cache = null;
                                         toolUtil.loginTips({
-                                            clear:true,
-                                            reload:true
+                                            clear: true,
+                                            reload: true
                                         });
                                     }
                                     return false;
-                                }else{
+                                } else {
                                     /*操作成功即加载数据*/
                                     /*to do*/
-                                    if(action==='add'){
-                                        /*重新加载侧边栏数据*/
-                                        if(type==='send'){
-                                            self.getColumnData(config.table,config.record);
-                                        }
+                                    if (type === 'equity') {
+                                        /*重新加载列表数据*/
+                                        self.getColumnData(config.table, config.record);
                                     }
                                     /*重置表单*/
                                     self.addFormDelay({
-                                        type:type
+                                        type: type
                                     });
                                     /*提示操作结果*/
                                     toolDialog.show({
-                                        type:'succ',
-                                        value:tip_map[action]+tip_map[type]+'成功'
+                                        type: 'succ',
+                                        value: tip_map[action] + tip_map[type] + '成功'
                                     });
                                     /*弹出框隐藏*/
                                     self.toggleModal({
-                                        display:'hide',
-                                        area:type,
-                                        delay:1000
+                                        display: 'hide',
+                                        area: type,
+                                        delay: 1000
                                     });
                                 }
                             }
                         },
-                        function(resp){
-                            var message=resp.data.message;
-                            if(typeof message !=='undefined'&&message!==''){
+                        function (resp) {
+                            var message = resp.data.message;
+                            if (typeof message !== 'undefined' && message !== '') {
                                 toolDialog.show({
-                                    type:'warn',
-                                    value:message
+                                    type: 'warn',
+                                    value: message
                                 });
-                            }else{
+                            } else {
                                 toolDialog.show({
-                                    type:'warn',
-                                    value:tip_map[action]+tip_map[type]+'失败'
+                                    type: 'warn',
+                                    value: tip_map[action] + tip_map[type] + '失败'
                                 });
                             }
                         });
-            }else{
+            } else {
                 /*退出系统*/
-                cache=null;
+                cache = null;
                 toolUtil.loginTips({
-                    clear:true,
-                    reload:true
+                    clear: true,
+                    reload: true
                 });
             }
         };
         /*表单服务类--时间查询*/
-        this.datePicker=function (config) {
-            config['$node1']=self.$equity_investmentTime;
-            config['$node2']=self.$equity_expirationTime;
+        this.datePicker = function (config) {
+            config['$node1'] = self.$equity_investmentTime;
+            config['$node2'] = self.$equity_expirationTime;
             datePicker97Service.datePickerRange(config);
         };
 
@@ -921,65 +881,45 @@ angular.module('app')
         this.queryAddress = function (config) {
             addressService.queryRelation(config);
         };
-
-
-        /*测试服务--获取设备列表*/
-        this.testGetEquipmentList=function () {
-            return {
-                message:'ok',
-                code:0,
-                result:Mock.mock({
-                    'count':80,
-                    'list|5-12':[{
-                        "id":/[0-9]{1,2}/,
-                        "consigneeName":/(周一|杨二|张三|李四|王五|赵六|马七|朱八|陈九){1}/,
-                        "logistics":/[0-9a-zA-Z]{5,10}/,
-                        "deliveryQuantity":/[0-9]{1,5}/,
-                        "status":/[0-1]{1}/,
-                        "addTime":moment().format('YYYY-MM-DD HH:mm:ss'),
-                        "deviceType":/[1-3]{1}/
-                    }]
-                })
-            };
+        /*地址服务--判断是否需要查询新地址*/
+        this.isReqAddress = function (config, flag, fn) {
+            if (flag) {
+                addressService.isReqAddress(config, flag, fn);
+            } else {
+                return addressService.isReqAddress(config);
+            }
         };
-        /*测试服务--获取IMEI码*/
-        this.testGetIMEI=function () {
-            return {
-                 status:200,
-                 data:{
-                     message:'ok',
-                     code:0,
-                     result:Mock.mock({
-                         'list|10-50':[{
-                             "id":/[0-9]{1,2}/,
-                             "deviceImei":/[0-9a-zA-Z]{5,10}/
-                         }]
-                     })
-                 }
-            };
+        /*地址服务--根据code查询value地址*/
+        this.queryByCode = function (code, fn) {
+            if (fn) {
+                addressService.queryByCode(code, fn);
+            } else {
+                return addressService.queryByCode(code, fn);
+            }
         };
+
         /*测试服务--获取IMEI码*/
-        this.testGetEquipmentDetail=function () {
-            var remark_info=/('最近太忙了，确认晚了，东西是很好的，呵呵，谢了。'|'物流公司的态度比较差,建议换一家！不过掌柜人还不错！'|'呵，货真不错，老公很喜欢！'|'很好的卖家，谢谢喽。我的同事们都很喜欢呢。下次再来哦 ！'|'掌柜人不错，质量还行，服务很算不错的。'|'没想到这么快就到了，尺寸正好，老板态度很好。'|'还不错，质量挺好的，速度也快！'|'终于找到家好店，服务好，质量不错，下次有机会再来买。'|'卖家人很好 这个还没用 看包装应该不错'|'店已经收藏了很久，不过是第一次下手。应该说还不错。'|'第二次来买了，货比我想像中要好！！老板人表扬下。'|'包装看起来很好，包得很用心，相信货一定很好，谢谢了！'|'货超值，呵，下次再来。帮你做个广告，朋友们：这家店的货值。'|'一个字！！值！！！'|'掌柜的服务态度真好，发货很快。商品质量也相当不错。太喜欢了，谢谢！'|'好卖家，真有耐心，我终于买到想要的东西了。谢谢卖家。'|'掌柜太善良了，真是干一行懂一行呀。在掌柜的指导下我都快变内行人士了！'|'卖家服务真周到。以后带同事一起来。'|'货到了，比图片上看到的好多了3Q！'|'忠心地感谢你，让我买到了梦寐以求的宝贝，太感谢了！'|'价格大众化，YY质量很好呀,款式、面料我都挺满意的．如果有需要我还会继续光顾你的店铺！'){1}/;
+        this.testGetEquipmentDetail = function () {
+            var remark_info = /('最近太忙了，确认晚了，东西是很好的，呵呵，谢了。'|'物流公司的态度比较差,建议换一家！不过掌柜人还不错！'|'呵，货真不错，老公很喜欢！'|'很好的卖家，谢谢喽。我的同事们都很喜欢呢。下次再来哦 ！'|'掌柜人不错，质量还行，服务很算不错的。'|'没想到这么快就到了，尺寸正好，老板态度很好。'|'还不错，质量挺好的，速度也快！'|'终于找到家好店，服务好，质量不错，下次有机会再来买。'|'卖家人很好 这个还没用 看包装应该不错'|'店已经收藏了很久，不过是第一次下手。应该说还不错。'|'第二次来买了，货比我想像中要好！！老板人表扬下。'|'包装看起来很好，包得很用心，相信货一定很好，谢谢了！'|'货超值，呵，下次再来。帮你做个广告，朋友们：这家店的货值。'|'一个字！！值！！！'|'掌柜的服务态度真好，发货很快。商品质量也相当不错。太喜欢了，谢谢！'|'好卖家，真有耐心，我终于买到想要的东西了。谢谢卖家。'|'掌柜太善良了，真是干一行懂一行呀。在掌柜的指导下我都快变内行人士了！'|'卖家服务真周到。以后带同事一起来。'|'货到了，比图片上看到的好多了3Q！'|'忠心地感谢你，让我买到了梦寐以求的宝贝，太感谢了！'|'价格大众化，YY质量很好呀,款式、面料我都挺满意的．如果有需要我还会继续光顾你的店铺！'){1}/;
 
             return {
-                status:200,
-                data:{
-                    message:'ok',
-                    code:0,
-                    result:Mock.mock({
-                        'delivery|1':[{
-                            "id":/[0-9]{1,2}/,
-                            "consigneeName":/(周一|杨二|张三|李四|王五|赵六|马七|朱八|陈九){1}/,
-                            "logistics":/[0-9a-zA-Z]{5,10}/,
-                            "deliveryQuantity":/[0-9]{1,5}/,
-                            "remark":remark_info,
-                            "addTime":moment().format('YYYY-MM-DD HH:mm:ss'),
-                            "deviceType":/[1-3]{1}/
+                status: 200,
+                data: {
+                    message: 'ok',
+                    code: 0,
+                    result: Mock.mock({
+                        'delivery|1': [{
+                            "id": /[0-9]{1,2}/,
+                            "consigneeName": /(周一|杨二|张三|李四|王五|赵六|马七|朱八|陈九){1}/,
+                            "logistics": /[0-9a-zA-Z]{5,10}/,
+                            "deliveryQuantity": /[0-9]{1,5}/,
+                            "remark": remark_info,
+                            "addTime": moment().format('YYYY-MM-DD HH:mm:ss'),
+                            "deviceType": /[1-3]{1}/
                         }],
-                        'deviceImeis|1-10':[{
-                            "status":/[0-1]{1}/,
-                            "deviceImei":/[0-9a-zA-Z]{5,10}/
+                        'deviceImeis|1-10': [{
+                            "status": /[0-1]{1}/,
+                            "deviceImei": /[0-9a-zA-Z]{5,10}/
                         }]
                     })
                 }

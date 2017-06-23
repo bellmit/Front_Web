@@ -301,7 +301,7 @@ angular.module('app')
                             function ($ocLazyLoad) {
                                 return $ocLazyLoad.load(['js/plugins/datatables/dataTables.bootstrap.css', 'js/plugins/datatables/js/jquery.dataTables.js',
   'js/plugins/pagination/pagination.js',
-                                    'js/plugins/My97DatePicker/WdatePicker.js', 'js/app/services/datepick97/datepicker97_service.js',                              'js/app/services/datatable/datatable_column_service.js', 'js/app/services/datatable/datatable_checkall_service.js', 'js/app/services/datatable/datatable_itemaction_service.js',
+                                    'js/plugins/My97DatePicker/WdatePicker.js', 'js/app/services/datepick97/datepicker97_service.js',                              'js/app/services/datatable/datatable_column_service.js',  'js/app/services/datatable/datatable_itemaction_service.js',
                                     'js/app/services/address/address_service.js','js/app/module/equity/equity_service.js', 'js/app/module/equity/equity_controller.js']);
                             }]
                     }

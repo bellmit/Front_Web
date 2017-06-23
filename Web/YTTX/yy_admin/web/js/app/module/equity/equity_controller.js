@@ -1,6 +1,6 @@
 /*首页控制器*/
 angular.module('app')
-    .controller('EquityController', ['equityService', 'toolUtil','$scope', function (equityService, toolUtil,$scope) {
+    .controller('EquityController', ['equityService', 'toolUtil', '$scope', function (equityService, toolUtil, $scope) {
         var self = this;
 
         /*模型--操作权限列表*/
@@ -17,11 +17,10 @@ angular.module('app')
             $admin_list_wrap: $('#admin_list_wrap'),
             $admin_list_colgroup: $('#admin_list_colgroup'),
             $admin_batchlist_wrap: $('#admin_batchlist_wrap'),
-            $admin_imei_list: $('#admin_imei_list'),
             $admin_equitydetail_dialog: $('#admin_equitydetail_dialog'),
             $admin_equitydetail_show: $('#admin_equitydetail_show'),
-            $equity_investmentTime:$('#equity_investmentTime'),
-            $equity_expirationTime:$('#equity_expirationTime')
+            $equity_investmentTime: $('#equity_investmentTime'),
+            $equity_expirationTime: $('#equity_expirationTime')
         };
         /*切换路由时更新dom缓存*/
         equityService.initJQDom(jq_dom);
@@ -61,13 +60,11 @@ angular.module('app')
                     autoWidth: true, /*是否*/
                     paging: false,
                     ajax: {
-                        url: /*toolUtil.adaptReqUrl('/device/delivery/list')*/'json/test.json'/*测试地址*/,
+                        url: toolUtil.adaptReqUrl('/equity/investor/list')/*'json/test.json'*//*测试地址*/,
                         dataType: 'JSON',
                         method: 'post',
                         dataSrc: function (json) {
                             /*测试代码*/
-                            var json = equityService.testGetEquipmentList();
-
                             var code = parseInt(json.code, 10),
                                 message = json.message;
 
@@ -115,19 +112,12 @@ angular.module('app')
                                         temp_param['page'] = self.table.list1_page.page;
                                         temp_param['pageSize'] = self.table.list1_page.pageSize;
                                         self.table.list1_config.config.ajax.data = temp_param;
-                                        equityService.getColumnData(self.table, self.record.role);
+                                        equityService.getColumnData(self.table, self.record);
                                     }
                                 });
 
                                 var list = result.list;
                                 if (list) {
-                                    var vi = 0,
-                                        vlen = list.length;
-                                    for (vi; vi < vlen; vi++) {
-                                        if (!list[vi] || list[vi] === null) {
-                                            return [];
-                                        }
-                                    }
                                     return list;
                                 } else {
                                     return [];
@@ -155,39 +145,36 @@ angular.module('app')
                     order: [[0, "desc"], [1, "desc"]],
                     columns: [
                         {
-                            "data": "consigneeName"
+                            "data": "fullName"
                         },
                         {
-                            "data": "logistics"
-                        },
-                        {
-                            "data": "deliveryQuantity"
-                        },
-                        {
-                            "data": "status",
+                            "data": "cellphone",
                             "render": function (data, type, full, meta) {
-                                var stauts = parseInt(data, 10),
-                                    statusmap = {
-                                        0: "正常",
-                                        1: "已用"
-                                    };
-                                return '<div class="g-c-blue3">' + statusmap[stauts] + '</div>';
+                                return data ? toolUtil.phoneFormat(data) : '';
                             }
                         },
                         {
-                            "data": "addTime"
+                            "data": "address",
+                            "render": function (data, type, full, meta) {
+
+                                return data.length>10?data.slice(0,10)+'...':data;
+                            }
                         },
                         {
-                            "data": "deviceType",
+                            "data": "investmentAmount",
                             "render": function (data, type, full, meta) {
-                                var stauts = parseInt(data, 10),
-                                    statusmap = {
-                                        1: "S67",
-                                        2: "T6",
-                                        3: "其他"
-                                    };
-                                return '<div class="g-c-blue3">' + statusmap[stauts] + '</div>';
+
+                                return data ? toolUtil.moneyCorrect(data,15,true)[0] : '';
                             }
+                        },
+                        {
+                            "data": "contractNo"
+                        },
+                        {
+                            "data": "investmentTime"
+                        },
+                        {
+                            "data": "expirationTime"
                         },
                         {
                             /*to do*/
@@ -196,8 +183,9 @@ angular.module('app')
                                 var btns = '';
 
                                 /*查看发货详情*/
-                                if (self.powerlist.delivery_add) {
-                                    btns += '<span data-action="detail" data-id="' + data + '"  class="btn-operate">查看</span>';
+                                if (self.powerlist.investor_details) {
+                                    btns += '<span data-action="update" data-id="' + data + '"  class="btn-operate">编辑</span>\
+                                        <span data-action="detail" data-id="' + data + '"  class="btn-operate">查看</span>';
                                 }
                                 return btns;
                             }
@@ -208,14 +196,14 @@ angular.module('app')
             list_table: null,
             /*列控制*/
             tablecolumn: {
-                init_len: 7/*数据有多少列*/,
+                init_len: 8/*数据有多少列*/,
                 column_flag: true,
                 ischeck: false, /*是否有全选*/
                 columnshow: true,
                 $column_wrap: jq_dom.$admin_table_checkcolumn/*控制列显示隐藏的容器*/,
                 $bodywrap: jq_dom.$admin_batchlist_wrap/*数据展现容器*/,
-                hide_list: [4, 5]/*需要隐藏的的列序号*/,
-                hide_len: 2,
+                hide_list: [4, 5,6]/*需要隐藏的的列序号*/,
+                hide_len: 3,
                 column_api: {
                     isEmpty: function () {
                         if (self.table.list_table === null) {
@@ -235,7 +223,9 @@ angular.module('app')
                     doItemAction: function (config) {
                         equityService.doItemAction({
                             record: self.record,
-                            table: self.table
+                            table: self.table,
+                            address:self.equity_address,
+                            equity:self.equity
                         }, config);
                     }
                 }
@@ -265,19 +255,19 @@ angular.module('app')
         equityService.getRoot(self.record);
         /*初始化服务--日历查询*/
         equityService.datePicker({
-            format:'%y-%M-%d',
-            position:{
-                left:0,
-                top:2
+            format: '%y-%M-%d',
+            position: {
+                left: 0,
+                top: 2
             },
-            fn:function (data) {
-                if(typeof data.$node1!=='undefined'){
+            fn: function (data) {
+                if (typeof data.$node1 !== 'undefined') {
                     $scope.$apply(function () {
-                        self.equity.investmentTime=data.$node1;
+                        self.equity.investmentTime = data.$node1;
                     });
-                }else if(typeof data.$node2!=='undefined'){
+                } else if (typeof data.$node2 !== 'undefined') {
                     $scope.$apply(function () {
-                        self.equity.expirationTime=data.$node2;
+                        self.equity.expirationTime = data.$node2;
                     });
                 }
             }
@@ -318,18 +308,15 @@ angular.module('app')
         };
 
 
-        /*查询发货*/
-        this.queryEquipment = function () {
-            equityService.getColumnData(self.table, self.record);
-        };
-
-        /*IMEI服务--获取IMEI*/
-        this.getIMEI = function () {
-            equityService.getIMEI(self.equity);
-        };
-        /*IMEI服务--清除IMEI*/
-        this.clearIMEI = function () {
-            equityService.clearIMEI(self.equity);
+        /*股权投资人--操作股权投资人表单*/
+        this.actionEquity = function (config) {
+            /*调用编辑机构服务类*/
+            equityService.actionEquity({
+                modal: config,
+                record: self.record,
+                address: self.equity_address,
+                equity: self.equity
+            });
         };
 
 

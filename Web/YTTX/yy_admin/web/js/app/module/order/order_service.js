@@ -88,10 +88,11 @@ angular.module('app')
         };
         /*数据查询服务--时间查询*/
         this.datePicker=function (record) {
-            datePicker97Service.datePickerRange(record,{
+            datePicker97Service.datePickerRange({
                 $node1:self.$search_startTime,
                 $node2:self.$search_endTime,
                 format:'%y-%M-%d',
+                model:record,
                 position:{
                     left:0,
                     top:2

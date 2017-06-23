@@ -3,9 +3,9 @@
         <div class="struct-layout-main">
             <!--设备管理-->
             <h1 class="admin-layout-theme3 g-clear-pt">
-                <span>股权投资人：&nbsp;{{equity_ctrl.record.organizationName===''?equity_ctrl.record.structName:equity_ctrl.record.organizationName}}</span>
+                <span>组织机构：&nbsp;{{equity_ctrl.record.organizationName===''?equity_ctrl.record.structName:equity_ctrl.record.organizationName}}</span>
                 &nbsp;&nbsp;&nbsp;&nbsp;
-                <button type="button" class="btn btn-default g-c-blue3" ng-disabled="equity_ctrl.record.organizationId==='' && equity_ctrl.record.currentId===''" ng-click="equity_ctrl.toggleModal({display:'show',area:'equity'})"><i class="btn-action admin-btn-action1"></i>&nbsp;添加股权投资人</button>
+                <button type="button" class="btn btn-default g-c-blue3" ng-disabled="equity_ctrl.record.organizationId==='' && equity_ctrl.record.currentId===''" ng-click="equity_ctrl.actionEquity({display:'show',area:'equity',type:'add'})"><i class="btn-action admin-btn-action1"></i>&nbsp;添加股权投资人</button>
             </h1>
 
 
@@ -36,24 +36,26 @@
             <table id="admin_list_wrap" class="table table-bordered table-striped table-hover admin-layout-table">
                 <!--分组样式-->
                 <colgroup id="admin_list_colgroup">
-                    <col class="g-w-percent13">
+                    <col class="g-w-percent7">
+                    <col class="g-w-percent7">
+                    <col class="g-w-percent7">
                     <col class="g-w-percent5">
                     <col class="g-w-percent5">
-                    <col class="g-w-percent5">
-                    <col class="g-w-percent12">
-                    <col class="g-w-percent5">
+                    <col class="g-w-percent7">
+                    <col class="g-w-percent7">
                     <col class="g-w-percent5">
                 </colgroup>
 
                 <!--表头-->
                 <thead>
                 <tr>
-                    <th>收货人名称</th>
-                    <th>物流</th>
-                    <th>发货数量</th>
-                    <th>状态</th>
-                    <th>订单时间</th>
-                    <th>设备类型</th>
+                    <th>投资人名称</th>
+                    <th>手机号码</th>
+                    <th>详细地址</th>
+                    <th>投资额</th>
+                    <th>合同编号</th>
+                    <th>投资时间</th>
+                    <th>到期时间</th>
                     <th>操作</th>
                 </tr>
                 </thead>
@@ -99,9 +101,9 @@
 
 
                             <div class="form-group-self1">
-                                <label class="self-label g-w-percent12 g-t-r"><span class="self-require g-c-red1">*</span>投资人名称</label>
+                                <label class="self-label g-w-percent10 g-t-r"><span class="self-require g-c-red1">*</span>投资人名称</label>
 
-                                <div class="self-input g-pos-r g-w-percent38">
+                                <div class="self-input g-pos-r g-w-percent40">
                                     <input type="text" name="fullName" placeholder="请输入投资人名称" required ng-model="equity_ctrl.equity.fullName" />
                                     <span ng-show="equityFrom.fullName.$dirty && equityFrom.fullName.$error.required" class="self-tips self-tips-no g-c-red1 g-fs4 g-w-percent50">投资人名称不能为空</span>
                                     <span ng-show="equityFrom.fullName.$dirty && equityFrom.fullName.$valid" class="self-tips self-tips-yes"></span>
@@ -110,9 +112,9 @@
 
 
                             <div class="form-group-self1">
-                                <label class="self-label g-w-percent12 g-t-r"><span class="self-require g-c-red1">*</span>手机号码</label>
+                                <label class="self-label g-w-percent10 g-t-r"><span class="self-require g-c-red1">*</span>手机号码</label>
 
-                                <div class="self-input g-pos-r g-w-percent38">
+                                <div class="self-input g-pos-r g-w-percent40">
                                     <input type="text" name="cellphone" required  placeholder="请输入手机号码" maxlength="13"  ng-model="equity_ctrl.equity.cellphone" class="ui-mobile-phone"  />
                                     <span ng-show="equityFrom.cellphone.$dirty && equityFrom.cellphone.$error.required" class="self-tips self-tips-no g-c-red1 g-fs4 g-w-percent50">手机号码不能为空</span>
                                     <span ng-show="equityFrom.cellphone.$dirty && equityFrom.cellphone.$invalid && !equityFrom.cellphone.$error.required" class="self-tips self-tips-no g-c-red1 g-fs4 g-w-percent50">手机号码格式不合法</span>
@@ -122,23 +124,21 @@
 
 
                             <div class="form-group-self1">
-                                <label class="self-label g-w-percent12 g-t-r"><span class="self-require g-c-red1">*</span>投资额</label>
+                                <label class="self-label g-w-percent10 g-t-r"><span class="self-require g-c-red1">*</span>投资额</label>
 
-                                <div class="self-input g-pos-r g-w-percent38">
+                                <div class="self-input g-pos-r g-w-percent40">
                                     <input type="text" name="investmentAmount" data-limit="15" maxlength="15" class="ui-double-point" placeholder="请输入投资额" required ng-model="equity_ctrl.equity.investmentAmount" />
                                     <span ng-show="equityFrom.investmentAmount.$dirty && equityFrom.investmentAmount.$error.required" class="self-tips self-tips-no g-c-red1 g-fs4 g-w-percent50 ">投资额不能为空</span>
                                     <span ng-show="equityFrom.investmentAmount.$dirty && equityFrom.investmentAmount.$valid" class="self-tips self-tips-yes"></span>
                                 </div>
                             </div>
 
-                            <div class="g-w-percent44 g-f-r">
+                            <div class="g-w-percent46 g-f-r">
                                 <div class="form-group-self1 g-w-percent24 g-f-l">
                                     <label class="self-label g-w-percent20 g-t-r"><span class="self-require g-c-red1">*</span>投资时间</label>
 
                                     <div class="self-input g-pos-r g-w-percent30">
-                                        <input type="text" name="investmentTime" readonly placeholder="请选择投资时间" id="equity_investmentTime" required ng-model="equity_ctrl.equity.investmentTime" />
-                                        <span ng-show="equityFrom.investmentTime.$dirty && equityFrom.investmentTime.$error.required"   class="self-tips self-tips-no g-c-red1 g-fs4 g-w-percent50 ">投资时间不能为空</span>
-                                        <span ng-show="equityFrom.investmentTime.$dirty && equityFrom.investmentTime.$valid" class="self-tips self-tips-yes"></span>
+                                        <input type="text" name="investmentTime" readonly placeholder="请选择投资时间" required id="equity_investmentTime" ng-model="equity_ctrl.equity.investmentTime" />
                                     </div>
                                 </div>
 
@@ -146,9 +146,7 @@
                                     <label class="self-label g-w-percent20 g-t-r"><span class="self-require g-c-red1">*</span>到期时间</label>
 
                                     <div class="self-input g-pos-r g-w-percent30">
-                                        <input type="text" name="expirationTime" readonly placeholder="请选择到期时间" id="equity_expirationTime" required ng-model="equity_ctrl.equity.expirationTime" />
-                                        <span ng-show="equityFrom.expirationTime.$dirty && equityFrom.expirationTime.$error.required"   class="self-tips self-tips-no g-c-red1 g-fs4 g-w-percent50 ">到期时间不能为空</span>
-                                        <span ng-show="equityFrom.expirationTime.$dirty && equityFrom.expirationTime.$valid" class="self-tips self-tips-yes"></span>
+                                        <input type="text" name="expirationTime" readonly placeholder="请选择到期时间" required id="equity_expirationTime" ng-model="equity_ctrl.equity.expirationTime" />
                                     </div>
                                 </div>
                             </div>
@@ -156,9 +154,9 @@
 
 
                             <div class="form-group-self1">
-                                <label class="self-label g-w-percent12 g-t-r"><span class="self-require g-c-red1">*</span>合同编号</label>
+                                <label class="self-label g-w-percent10 g-t-r"><span class="self-require g-c-red1">*</span>合同编号</label>
 
-                                <div class="self-input g-pos-r g-w-percent38">
+                                <div class="self-input g-pos-r g-w-percent40">
                                     <input type="text" name="contractNo" placeholder="请输入合同编号" required ng-model="equity_ctrl.equity.contractNo" />
                                     <span ng-show="equityFrom.contractNo.$dirty && equityFrom.contractNo.$error.required" class="self-tips self-tips-no g-c-red1 g-fs4 g-w-percent50">合同编号不能为空</span>
                                     <span ng-show="equityFrom.contractNo.$dirty && equityFrom.contractNo.$valid" class="self-tips self-tips-yes"></span>
@@ -170,8 +168,8 @@
 
 
                             <div class="form-group-self1">
-                                <label class="self-label g-w-percent12 g-t-r">省份</label>
-                                <div class="self-input g-pos-r g-w-percent38">
+                                <label class="self-label g-w-percent10 g-t-r">省份</label>
+                                <div class="self-input g-pos-r g-w-percent40">
                                     <select name="province" ng-model="equity_ctrl.equity.province" ng-change="equity_ctrl.changeAddress('equity','equity_address','city')">
                                         <option ng-repeat="item in equity_ctrl.equity_address.province" value="{{item.value}}" >{{item.key}}</option>
                                     </select>
@@ -179,8 +177,8 @@
                             </div>
 
                             <div class="form-group-self1">
-                                <label class="self-label g-w-percent12 g-t-r">市区</label>
-                                <div class="self-input g-pos-r g-w-percent38">
+                                <label class="self-label g-w-percent10 g-t-r">市区</label>
+                                <div class="self-input g-pos-r g-w-percent40">
                                     <select ng-change="equity_ctrl.changeAddress('equity','equity_address','country')" name="city"  ng-model="equity_ctrl.equity.city">
                                         <option ng-repeat="item in equity_ctrl.equity_address.city" value="{{item.value}}" >{{item.key}}</option>
                                     </select>
@@ -188,8 +186,8 @@
                             </div>
 
                             <div class="form-group-self1">
-                                <label class="self-label g-w-percent12 g-t-r">县区</label>
-                                <div class="self-input g-pos-r g-w-percent38">
+                                <label class="self-label g-w-percent10 g-t-r">县区</label>
+                                <div class="self-input g-pos-r g-w-percent40">
                                     <select name="country" ng-model="equity_ctrl.equity.country">
                                         <option ng-repeat="item in equity_ctrl.equity_address.country" value="{{item.value}}" >{{item.key}}</option>
                                     </select>
@@ -197,8 +195,8 @@
                             </div>
 
                             <div class="form-group-self1">
-                                <label class="self-label g-w-percent12 g-t-r"><span class="self-require g-c-red1">*</span>联系地址</label>
-                                <div class="self-input g-pos-r g-w-percent38">
+                                <label class="self-label g-w-percent10 g-t-r"><span class="self-require g-c-red1">*</span>联系地址</label>
+                                <div class="self-input g-pos-r g-w-percent40">
                                     <input type="text" name="address" required  placeholder="请输入联系地址" ng-model="equity_ctrl.equity.address" />
                                     <span ng-show="equityFrom.address.$dirty && equityFrom.address.$error.required" class="self-tips self-tips-no g-c-red1 g-fs4 g-w-percent50">联系地址不能为空</span>
                                     <span ng-show="equityFrom.address.$dirty && equityFrom.address.$valid" class="self-tips self-tips-yes"></span>
@@ -207,15 +205,15 @@
 
 
                             <div class="form-group-self1">
-                                <label class="self-label g-w-percent12 g-v-t g-t-r">备注</label>
+                                <label class="self-label g-w-percent10 g-t-r g-v-t">备注</label>
 
-                                <div class="self-input g-w-percent38">
+                                <div class="self-input g-w-percent40">
                                     <textarea ng-model="equity_ctrl.equity.remark" name="remark"></textarea>
                                 </div>
                             </div>
 
                             <div class="form-group-self1">
-                                <button type="submit" ng-show="equity_ctrl.equity.id===''" ng-disabled="!(equity_ctrl.equity.id==='' && equityFrom.fullName.$dirty && equityFrom.fullName.$valid && equityFrom.cellphone.$dirty && equityFrom.cellphone.$valid && equityFrom.address.$dirty && equityFrom.address.$valid && equityFrom.investmentAmount.$dirty && equityFrom.investmentAmount.$valid && equityFrom.investmentTime.$dirty && equityFrom.investmentTime.$valid && equityFrom.expirationTime.$dirty && equityFrom.expirationTime.$valid && equityFrom.contractNo.$dirty && equityFrom.contractNo.$valid)"  class="btn btn-red g-br3 g-w-percent50">新增</button>
+                                <button type="submit" ng-show="equity_ctrl.equity.id===''" ng-disabled="!(equity_ctrl.equity.id==='' && equityFrom.fullName.$dirty && equityFrom.fullName.$valid && equityFrom.cellphone.$dirty && equityFrom.cellphone.$valid && equityFrom.address.$dirty && equityFrom.address.$valid && equityFrom.investmentAmount.$dirty && equityFrom.investmentAmount.$valid && equityFrom.investmentTime.$valid && equityFrom.expirationTime.$valid && equityFrom.contractNo.$dirty && equityFrom.contractNo.$valid)"  class="btn btn-red g-br3 g-w-percent50">新增</button>
                                 <button type="submit" ng-show="equity_ctrl.equity.id!==''" ng-disabled="!(equity_ctrl.equity.id!=='' && equityFrom.fullName.$valid && equityFrom.cellphone.$valid && equityFrom.address.$valid && equityFrom.investmentAmount.$valid && equityFrom.investmentTime.$valid && equityFrom.expirationTime.$valid && equityFrom.contractNo.$valid)"  class="btn btn-red g-br3 g-w-percent50">编辑</button>
                                 <button type="button" class="btn btn-red g-br3 g-w-percent50 g-gap-mt2" id="admin_equity_reset" ng-click="equity_ctrl.formReset(equityFrom,'equity')">取消</button>
                             </div>
@@ -232,28 +230,28 @@
     </div>
 
 
-    <!--查看发货详情-->
+    <!--查看股权投资人-->
     <div class="modal fade custom-width" id="admin_equitydetail_dialog">
         <div class="modal-dialog g-w-percent40">
             <div class="modal-content">
                 <div class="modal-body">
+                    <!--表单-->
                     <table class="table table-bordered table-striped table-hover admin-layout-table">
 
                         <!--分组样式-->
                         <colgroup>
-                            <col class="g-w-percent2">
-                            <col class="g-w-percent14">
-                            <col class="g-w-percent34">
+                            <col class="g-w-percent10">
+                            <col class="g-w-percent40">
                         </colgroup>
                         <!--头部-->
                         <thead>
                         <tr>
-                            <th class="g-t-c" colspan="3">发货详情</th>
+                            <th class="g-t-c" colspan="2">股权投资人详情</th>
                         </tr>
                         </thead>
 
                         <!--表主体-->
-                        <tbody id="admin_senddetail_show" class="middle-align"></tbody>
+                        <tbody id="admin_equitydetail_show" class="middle-align"></tbody>
                     </table>
                     <div class="clearfix"></div>
                 </div>
@@ -263,4 +261,5 @@
             </div>
         </div>
     </div>
+
 </div>
