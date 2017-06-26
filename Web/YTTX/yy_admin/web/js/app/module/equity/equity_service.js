@@ -781,7 +781,7 @@ angular.module('app')
                     /*公共配置*/
                     var equity = config[type];
                     param['fullName'] = equity['fullName'];
-                    param['cellphone'] = toolUtil.trims(config[type]['cellphone']);
+                    param['cellphone'] = toolUtil.trims(equity['cellphone']);
                     param['province'] = equity['province'];
                     param['city'] = equity['city'];
                     param['country'] = equity['country'];

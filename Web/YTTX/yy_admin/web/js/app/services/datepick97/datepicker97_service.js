@@ -14,44 +14,46 @@ angular.module('app')
             var model=config.model,
                 fn=config.fn;
 			if(isdate){
-				WdatePicker({
-					onpicked:function(dp){
-                        if(fn && typeof fn==='function'){
-                            fn.call(null,{
-                                $node1:dp.cal.getNewDateStr()
-                            });
-                        }else{
-                            if(model){
-                                model.dateTime=dp.cal.getNewDateStr();
+                config.$node1.on('click',function () {
+                    WdatePicker({
+                        onpicked:function(dp){
+                            if(fn && typeof fn==='function'){
+                                fn.call(null,{
+                                    $node1:dp.cal.getNewDateStr()
+                                });
                             }else{
-                                config.$node1.val(dp.cal.getNewDateStr());
+                                if(model){
+                                    model.dateTime=dp.cal.getNewDateStr();
+                                }else{
+                                    config.$node1.val(dp.cal.getNewDateStr());
+                                }
                             }
-                        }
-					},
-					oncleared:function () {
-                        if(fn && typeof fn==='function'){
-                            fn.call(null,{
-                                $node1:''
-                            });
-                        }else{
-                            if(model){
-                                model.dateTime='';
+                        },
+                        oncleared:function () {
+                            if(fn && typeof fn==='function'){
+                                fn.call(null,{
+                                    $node1:''
+                                });
                             }else{
-                                config.$node1.val('');
+                                if(model){
+                                    model.dateTime='';
+                                }else{
+                                    config.$node1.val('');
+                                }
                             }
-                        }
-					},
-					maxDate:(function () {
-                        var str='';
-                        if(config.format){
-                            str=config.format;
-                        }else{
-                            str='%y-%M-%d';
-                        }
-                        return str;
-                    }()),
-					position:config.position?config.position:{left:0,top:2}
-				});
+                        },
+                        maxDate:(function () {
+                            var str='';
+                            if(config.format){
+                                str=config.format;
+                            }else{
+                                str='%y-%M-%d';
+                            }
+                            return str;
+                        }()),
+                        position:config.position?config.position:{left:0,top:2}
+                    });
+                });
 			}
 		};
 
