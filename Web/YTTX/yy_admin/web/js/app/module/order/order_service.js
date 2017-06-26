@@ -347,10 +347,8 @@ angular.module('app')
                     /*根目录则获取新配置参数*/
                     id=param['organizationId'];
                     $wrap=self.$admin_order_submenu;
-                    if(config.table && config.table.list_table===null && config.record){
-                        config.record.organizationId=id;
-                        self.getColumnData(config.table,config.record);
-                    }
+                    config.record.organizationId=id;
+                    self.getColumnData(config.table,config.record);
                 }else{
                     /*非根目录则获取新请求参数*/
                     layer=config.$reqstate.attr('data-layer');

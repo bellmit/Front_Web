@@ -411,9 +411,7 @@ angular.module('app')
                     $wrap = self.$admin_equity_submenu;
                     config.record.organizationId = id;
                     config.record.organizationName = cache.loginMap.username;
-                    if (config.table && config.table.list_table === null && config.record) {
-                        self.getColumnData(config.table, config.record);
-                    }
+                    self.getColumnData(config.table, config.record);
                 } else {
                     /*非根目录则获取新请求参数*/
                     layer = config.$reqstate.attr('data-layer');
