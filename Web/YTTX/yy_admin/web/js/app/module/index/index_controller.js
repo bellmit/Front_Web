@@ -10,12 +10,12 @@ angular.module('app')
          }*/
 
         /*主内容侧边栏*/
-        this.menuitem = Mock.mock({
+        this.menuitem = []/*Mock.mock({
             'list|2-10': [{
                 "name": /[a-z]{2,5}/,
                 "value": /[0-9a-zA-Z]{2,10}/
             }]
-        }).list;
+        }).list*/;
 
 
         /*处理图像路径*/
