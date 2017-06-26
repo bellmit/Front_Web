@@ -5,54 +5,163 @@ angular.module('app')
 		var self=this,
 			isdate=WdatePicker && typeof WdatePicker==='function';
 
-		this.datePicker=function (mode,config) {
-			if(!mode && !config){
+
+		/*单项调用*/
+		this.datePicker=function (config) {
+			if(!config){
 				return false;
 			}
+            var model=config.model,
+                fn=config.fn;
 			if(isdate){
-				WdatePicker({
-					onpicked:function(dp){
-						mode.dateTime=dp.cal.getNewDateStr();
-					},
-					oncleared:function () {
-						mode.dateTime='';
-					},
-					maxDate:mode.dateTime===''?moment().format('YYYY-MM-DD'):config.format?config.format:'%y-%M-%d',
-					position:config.position?config.position:{left:0,top:2}
-				});
+                config.$node1.on('click',function () {
+                    WdatePicker({
+                        onpicked:function(dp){
+                            if(fn && typeof fn==='function'){
+                                fn.call(null,{
+                                    $node1:dp.cal.getNewDateStr()
+                                });
+                            }else{
+                                if(model){
+                                    model.dateTime=dp.cal.getNewDateStr();
+                                }else{
+                                    config.$node1.val(dp.cal.getNewDateStr());
+                                }
+                            }
+                        },
+                        oncleared:function () {
+                            if(fn && typeof fn==='function'){
+                                fn.call(null,{
+                                    $node1:''
+                                });
+                            }else{
+                                if(model){
+                                    model.dateTime='';
+                                }else{
+                                    config.$node1.val('');
+                                }
+                            }
+                        },
+                        maxDate:(function () {
+                            var str='';
+                            if(config.format){
+                                str=config.format;
+                            }else{
+                                str='%y-%M-%d';
+                            }
+                            return str;
+                        }()),
+                        position:config.position?config.position:{left:0,top:2}
+                    });
+                });
 			}
 		};
 
-		this.datePickerRange=function (mode,config) {
+
+		/*联合调用*/
+		this.datePickerRange=function (config) {
 			if(!isdate){
 				return false;
 			}
-			if(!mode && !config){
+			if(!config){
 				return false;
 			}
+            var model=config.model,
+                fn=config.fn;
 			$.each([config.$node1,config.$node2],function (index) {
 				this.on('click',function () {
 					if(index===0){
 						 WdatePicker({
 							 onpicked:function(dp){
-								 mode.startTime=dp.cal.getNewDateStr();
+                                 if(fn && typeof fn==='function'){
+                                     fn.call(null,{
+                                         $node1:dp.cal.getNewDateStr()
+                                     });
+                                 }else{
+                                     if(model){
+                                         model.startTime=dp.cal.getNewDateStr();
+                                     }else{
+                                         config.$node1.val(dp.cal.getNewDateStr());
+                                     }
+                                 }
 							 },
 							 oncleared:function () {
-								 mode.startTime='';
+                                 if(fn && typeof fn==='function'){
+                                     fn.call(null,{
+                                         $node1:''
+                                     });
+                                 }else{
+                                     if(model){
+                                         model.startTime='';
+                                     }else{
+                                         config.$node1.val('');
+                                     }
+                                 }
 							 },
-							 maxDate:mode.endTime===''?moment().format('YYYY-MM-DD'):'#F{$dp.$D(\''+config.$node2.selector.slice(1)+'\')}',
+							 maxDate:(function () {
+                                 var str='';
+                                 if(model){
+                                     if(model.endTime===''){
+                                         str=moment().format('YYYY-MM-DD');
+                                     }else{
+                                         str='#F{$dp.$D(\''+config.$node2.selector.slice(1)+'\')}';
+                                     }
+                                 }else{
+                                     if(config.$node2.val()===''){
+                                         str=moment().format('YYYY-MM-DD');
+                                     }else{
+                                         str='#F{$dp.$D(\''+config.$node2.selector.slice(1)+'\')}';
+                                     }
+                                 }
+                                 return str;
+                             }()),
 							 position:config.position?config.position:{left:0,top:2}
 						 });
 					 }else if(index===1){
 						 WdatePicker({
 							 onpicked:function(dp){
-								 mode.endTime=dp.cal.getNewDateStr();
+                                 if(fn && typeof fn==='function'){
+                                     fn.call(null,{
+                                         $node2:dp.cal.getNewDateStr()
+                                     });
+                                 }else{
+                                     if(model){
+                                         model.endTime=dp.cal.getNewDateStr();
+                                     }else{
+                                         config.$node2.val(dp.cal.getNewDateStr());
+                                     }
+                                 }
 							 },
 							 oncleared:function () {
-								 mode.endTime='';
+                                 if(fn && typeof fn==='function'){
+                                     fn.call(null,{
+                                         $node2:''
+                                     });
+                                 }else{
+                                     if(model){
+                                         model.endTime='';
+                                     }else{
+                                         config.$node2.val('');
+                                     }
+                                 }
 							 },
-							 minDate:mode.startTime===''?moment().format('YYYY-MM-DD'):'#F{$dp.$D(\''+config.$node1.selector.slice(1)+'\')}',
-							 maxDate:config.format?config.format:'%y-%M-%d',
+							 minDate:(function () {
+                                 var str='';
+                                 if(model){
+                                     if(model.startTime===''){
+                                         str=moment().format('YYYY-MM-DD');
+                                     }else{
+                                         str='#F{$dp.$D(\''+config.$node1.selector.slice(1)+'\')}';
+                                     }
+                                 }else{
+                                     if(config.$node1.val()===''){
+                                         str=moment().format('YYYY-MM-DD');
+                                     }else{
+                                         str='#F{$dp.$D(\''+config.$node1.selector.slice(1)+'\')}';
+                                     }
+                                 }
+                                 return str;
+                             }()),
 							 position:config.position?config.position:{left:0,top:2}
 						 });
 					 }

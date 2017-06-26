@@ -513,6 +513,7 @@ angular.module('app')
                 return false;
             }
 
+
             /*模型缓存*/
             var record=config.record;
 

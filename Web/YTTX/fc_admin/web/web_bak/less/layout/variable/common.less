@@ -536,6 +536,39 @@
 .g-gap-mlfor(20);
 
 
+///*----偏移--indent----*/
+.g-gap-indentfor(@n,@i:1) when (@i =< @n) {
+	.g-gap-indent@{i}{
+		indent:@i * 5px !important;
+	}
+	.g-gap-indentfor(@n,(@i+1));
+}
+.g-gap-indentfor(20);
+
+.g-gap-unindentfor(@n,@i:1) when (@i =< @n) {
+	.g-gap-unindent@{i}{
+		indent:@i * -5px !important;
+	}
+	.g-gap-unindentfor(@n,(@i+1));
+}
+.g-gap-unindentfor(20);
+
+.g-gap-indentemfor(@n,@i:1) when (@i =< @n) {
+	.g-gap-indentem@{i}{
+		indent:@i * 1em !important;
+	}
+	.g-gap-indentemfor(@n,(@i+1));
+}
+.g-gap-indentemfor(20);
+
+.g-gap-unindentemfor(@n,@i:1) when (@i =< @n) {
+	.g-gap-unindentem@{i}{
+		indent:@i * -1em !important;
+	}
+	.g-gap-unindentemfor(@n,(@i+1));
+}
+.g-gap-unindentemfor(20);
+
 
 
 

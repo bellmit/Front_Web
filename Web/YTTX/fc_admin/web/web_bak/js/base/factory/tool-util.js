@@ -975,7 +975,8 @@
 						'yttx-order-manager':'order',
 						'yttx-finance-manager':'finance',
 						'yttx-device-manager':'equipment',
-						'yttx-setting':'setting'
+						'yttx-setting':'setting',
+						'yttx-equity-investor':'equity'
 					},
 					list=[],
 					module={},
