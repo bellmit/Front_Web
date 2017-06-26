@@ -11,6 +11,10 @@ angular.module('app')
         var jq_dom={
             $admin_orderdetail_dialog:$('#admin_orderdetail_dialog'),
             $admin_orderdetail_show:$('#admin_orderdetail_show'),
+            $admin_bonus_dialog: $('#admin_bonus_dialog'),
+            $admin_bonus_reset: $('#admin_bonus_reset'),
+            $admin_bonusdetail_dialog: $('#admin_bonusdetail_dialog'),
+            $admin_bonusdetail_show: $('#admin_bonusdetail_show'),
             /*菜单*/
             $admin_finance_submenu:$('#admin_finance_submenu'),
             /*分组控制*/
@@ -1258,6 +1262,18 @@ angular.module('app')
             value:2
         }];
 
+
+        /*模型--除权除息分红模型*/
+        this.bonus={
+            type:'add'/*除权除息--操作类型*/,
+            id:''/*除权除息分红--序列号*/,
+            exrightDate:''/*除权除息--除权日*/,
+            exright:''/*除权除息--除权*/,
+            exdividendDate:''/*除权除息--除息日*/,
+            exdividend:''/*除权除息--除息*/,
+            bonusDate:''/*除权除息--分红日*/,
+            bonus:''/*除权除息--分红*/
+        };
 
 
         /*初始化服务--虚拟挂载点，或者初始化参数*/

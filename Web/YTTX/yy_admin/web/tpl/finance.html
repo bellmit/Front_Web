@@ -400,6 +400,130 @@
             </div>
         </div>
     </div>
+
+
+    <!--弹出层--提示操作界面-->
+    <!--添加，编辑股权投资人-->
+    <div class="modal fade custom-width" id="admin_bonus_dialog">
+        <div class="modal-dialog g-w-percent30">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <!--表单-->
+                    <div class="g-w-percent50">
+                        <div class="admin-layout-theme4 admin-theme-close g-t-c g-b-gray17 g-pos-r">{{finance_ctrl.bonus.id===''?'新增除权除息分红':'编辑除权除息分红'}}
+                            <span class="mini-icon admin-mini-icon1" ng-click="finance_ctrl.toggleModal({display:'hide',area:'bonus'})"></span>
+                        </div>
+
+                        <form ng-submit="finance_ctrl.formSubmit('bonus')" name="bonusFrom" role="form" novalidate method="post" class="admin-layout-form">
+
+                            <div class="form-group-self1">
+                                <label class="self-label g-w-percent10 g-t-r"><span class="self-require g-c-red1">*</span>除权日</label>
+
+                                <div class="self-input g-pos-r g-w-percent40">
+                                    <input type="text" name="exrightDate" placeholder="请选择除权日" required ng-model="finance_ctrl.bonus.exrightDate" id="bonus_exrightdate" readonly />
+                                </div>
+                            </div>
+
+                            <div class="form-group-self1">
+                                <label class="self-label g-w-percent10 g-t-r"><span class="self-require g-c-red1">*</span>除权</label>
+
+                                <div class="self-input g-pos-r g-w-percent40">
+                                    <input type="text" name="exright" data-limit="15" maxlength="15" class="ui-double-point" placeholder="请输入除权" required ng-model="finance_ctrl.bonus.exright" />
+                                    <span ng-show="bonusFrom.exright.$dirty && bonusFrom.exright.$error.required" class="self-tips self-tips-no g-c-red1 g-fs4 g-w-percent50 ">除权不能为空</span>
+                                    <span ng-show="bonusFrom.exright.$dirty && bonusFrom.exright.$valid" class="self-tips self-tips-yes"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group-self1">
+                                <label class="self-label g-w-percent10 g-t-r"><span class="self-require g-c-red1">*</span>除息日</label>
+
+                                <div class="self-input g-pos-r g-w-percent40">
+                                    <input type="text" id="bonus_exdividenddate" name="exdividendDate" placeholder="请选择除息日" required ng-model="finance_ctrl.bonus.exdividendDate" readonly />
+                                </div>
+                            </div>
+
+                            <div class="form-group-self1">
+                                <label class="self-label g-w-percent10 g-t-r"><span class="self-require g-c-red1">*</span>除权</label>
+
+                                <div class="self-input g-pos-r g-w-percent40">
+                                    <input type="text" name="exdividend" data-limit="15" maxlength="15" class="ui-double-point" placeholder="请输入除息" required ng-model="finance_ctrl.bonus.exdividend" />
+                                    <span ng-show="bonusFrom.exdividend.$dirty && bonusFrom.exdividend.$error.required" class="self-tips self-tips-no g-c-red1 g-fs4 g-w-percent50 ">除息不能为空</span>
+                                    <span ng-show="bonusFrom.exdividend.$dirty && bonusFrom.exdividend.$valid" class="self-tips self-tips-yes"></span>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group-self1">
+                                <label class="self-label g-w-percent10 g-t-r"><span class="self-require g-c-red1">*</span>分红日</label>
+
+                                <div class="self-input g-pos-r g-w-percent40">
+                                    <input type="text" id="bonus_bonusdate" name="bonusDate" placeholder="请选择分红日" required ng-model="finance_ctrl.bonus.bonusDate" readonly />
+                                </div>
+                            </div>
+
+                            <div class="form-group-self1">
+                                <label class="self-label g-w-percent10 g-t-r"><span class="self-require g-c-red1">*</span>分红</label>
+
+                                <div class="self-input g-pos-r g-w-percent40">
+                                    <input type="text" name="bonus" data-limit="15" maxlength="15" class="ui-double-point" placeholder="请输入分红" required ng-model="finance_ctrl.bonus.bonus" />
+                                    <span ng-show="bonusFrom.bonus.$dirty && bonusFrom.bonus.$error.required" class="self-tips self-tips-no g-c-red1 g-fs4 g-w-percent50 ">分红不能为空</span>
+                                    <span ng-show="bonusFrom.bonus.$dirty && bonusFrom.bonus.$valid" class="self-tips self-tips-yes"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group-self1">
+                                <button type="submit" ng-show="finance_ctrl.bonus.id===''" ng-disabled="!(finance_ctrl.bonus.id==='' && bonusFrom.exrightDate.$valid && bonusFrom.exright.$dirty && bonusFrom.exright.$valid && bonusFrom.exdividendDate.$valid && bonusFrom.exdividend.$dirty && bonusFrom.exdividend.$valid && bonusFrom.bonusDate.$valid && bonusFrom.bonus.$dirty && bonusFrom.bonus.$valid)"  class="btn btn-red g-br3 g-w-percent50">新增</button>
+                                <button type="submit" ng-show="finance_ctrl.bonus.id!==''" ng-disabled="!(finance_ctrl.bonus.id!=='' && bonusFrom.exrightDate.$valid && bonusFrom.exright.$valid && bonusFrom.exdividendDate.$valid && bonusFrom.exdividend.$valid && bonusFrom.bonusDate.$valid && bonusFrom.bonus.$valid)"  class="btn btn-red g-br3 g-w-percent50">编辑</button>
+                                <button type="button" class="btn btn-red g-br3 g-w-percent50 g-gap-mt2" id="admin_bonus_reset" ng-click="finance_ctrl.formReset(bonusFrom,'bonus')">取消</button>
+                            </div>
+                        </form>
+
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-info" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!--查看股权投资人-->
+    <div class="modal fade custom-width" id="admin_bonusdetail_dialog">
+        <div class="modal-dialog g-w-percent40">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <!--表单-->
+                    <table class="table table-bordered table-striped table-hover admin-layout-table">
+
+                        <!--分组样式-->
+                        <colgroup>
+                            <col class="g-w-percent10">
+                            <col class="g-w-percent40">
+                        </colgroup>
+                        <!--头部-->
+                        <thead>
+                        <tr>
+                            <th class="g-t-c" colspan="2">股权投资人详情</th>
+                        </tr>
+                        </thead>
+
+                        <!--表主体-->
+                        <tbody id="admin_bonusdetail_show" class="middle-align"></tbody>
+                    </table>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-info" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
 </div>
 
 

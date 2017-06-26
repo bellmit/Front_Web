@@ -57,6 +57,8 @@ angular.module('app')
                         record.action=4;
                         return 4;
                     }
+                }else if(record.theme==='clear'){
+
                 }
             }
             record.action=1;
@@ -433,7 +435,9 @@ angular.module('app')
         this.toggleModal=function (config,fn) {
             var temp_timer=null,
                 type_map={
-                    'orderdetail':self.$admin_orderdetail_dialog
+                    'orderdetail':self.$admin_orderdetail_dialog,
+                    'bonus':self.$admin_bonus_dialog,
+                    'bounsdetail':self.$admin_bonusdetail_dialog
                 };
             if(config.display==='show'){
                 if(typeof config.delay!=='undefined'){
