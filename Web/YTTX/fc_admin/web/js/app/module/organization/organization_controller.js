@@ -1,6 +1,6 @@
 /*首页控制器*/
 angular.module('app')
-    .controller('OrganizationController', ['organizationService', 'toolUtil','$scope', function (organizationService, toolUtil,$scope) {
+    .controller('OrganizationController', ['organizationService', 'toolUtil', function (organizationService, toolUtil) {
         var self = this;
 
         /*模型--操作权限列表*/
@@ -195,6 +195,7 @@ angular.module('app')
                                 if (code === 999) {
                                     /*退出系统*/
                                     console.log('退出系统');
+                                    organizationService.loginOut();
                                 }
                                 return [];
                             }

@@ -13,12 +13,19 @@ angular.module('app')
 
         /*初始化权限*/
         var init_power={
-            organization_add:toolUtil.isPower('organization-add',powermap,true)/*添加机构*/,
-            role_add:toolUtil.isPower('role-add',powermap,true)/*添加角色*/,
-            role_edit:toolUtil.isPower('role-edit',powermap,true)/*编辑角色*/,
-            rolegroup_add:toolUtil.isPower('rolegroup-add',powermap,true)/*添加角色组*/,
-            member_add:toolUtil.isPower('member-add',powermap,true)/*添加成员*/,
-            member_delete:toolUtil.isPower('member-delete',powermap,true)/*移除成员*/
+            organization_add: toolUtil.isPower('organization-add', powermap, true)/*添加机构*/,
+            organization_delete: toolUtil.isPower('organization-delete', powermap, true)/*删除机构*/,
+            organization_edit: toolUtil.isPower('organization-edit', powermap, true)/*编辑机构*/,
+            rolegroup_add: toolUtil.isPower('rolegroup-add', powermap, true), /*添加角色组*/
+            role_add: toolUtil.isPower('role-add', powermap, true), /*添加角色*/
+            role_edit: toolUtil.isPower('role-edit', powermap, true), /*角色编辑*/
+            member_delete: toolUtil.isPower('member-delete', powermap, true)/*移除成员*/,
+            member_add: toolUtil.isPower('member-add', powermap, true)/*添加成员*/,
+            user_add: toolUtil.isPower('user-add', powermap, true)/*添加用户*/,
+            user_view: toolUtil.isPower('user-view', powermap, true)/*查看用户*/,
+            user_update: toolUtil.isPower('user-update', powermap, true)/*编辑用户*/,
+            batch_delete: toolUtil.isPower('batch-delete', powermap, true)/*删除用户*/,
+            operator_adjustment: toolUtil.isPower('operator-adjustment', powermap, true)/*调整运营商*/
         };
 
 

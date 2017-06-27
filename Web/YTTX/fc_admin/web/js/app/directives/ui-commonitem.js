@@ -23,7 +23,7 @@ angular.module('ui.commonitem', [])
         };
     })
     /*头部退出*/
-    .directive('uiHeaderLogout', ['$interval','loginService', function ($interval,loginService) {
+    .directive('uiHeaderLogout', ['$interval', 'loginService', function ($interval, loginService) {
         return {
             replace: false,
             restrict: 'EC',

@@ -16,8 +16,13 @@ angular.module('app')
         /*初始化权限*/
         var init_power = {
             organization_add: toolUtil.isPower('organization-add', powermap, true)/*添加机构*/,
+            organization_delete: toolUtil.isPower('organization-delete', powermap, true)/*删除机构*/,
             organization_edit: toolUtil.isPower('organization-edit', powermap, true)/*编辑机构*/,
-            role_add: toolUtil.isPower('role-add', powermap, true), /*添加*/
+            rolegroup_add: toolUtil.isPower('rolegroup-add', powermap, true), /*添加角色组*/
+            role_add: toolUtil.isPower('role-add', powermap, true), /*添加角色*/
+            role_edit: toolUtil.isPower('role-edit', powermap, true), /*角色编辑*/
+            member_delete: toolUtil.isPower('member-delete', powermap, true)/*移除成员*/,
+            member_add: toolUtil.isPower('member-add', powermap, true)/*添加成员*/,
             user_add: toolUtil.isPower('user-add', powermap, true)/*添加用户*/,
             user_view: toolUtil.isPower('user-view', powermap, true)/*查看用户*/,
             user_update: toolUtil.isPower('user-update', powermap, true)/*编辑用户*/,
@@ -85,6 +90,10 @@ angular.module('app')
                     self.clearFormDelay();
                 }
             }
+        };
+        /*扩展服务--退出系统*/
+        this.loginOut=function () {
+          loginService.outAction();
         };
 
 
@@ -2260,47 +2269,6 @@ angular.module('app')
         };
 
 
-        /**/
-        this.testOut=function () {
-            toolUtil
-                .requestHttp({
-                    url: 'json/test.json',
-                    method: 'post',
-                    set: true,
-                    debug:true
-                })
-                .then(function (resp) {
-                    var resp=testService.testDefault('table');
-                        var data = resp.data,
-                            status = parseInt(resp.status, 10);
-
-                        if (status === 200) {
-                            var code = parseInt(data.code, 10),
-                                message = data.message;
-                            if (code !== 0) {
-                                if (typeof message !== 'undefined' && message !== '') {
-                                    console.log(message);
-                                }
-
-                                if (code === 999) {
-                                    /*退出系统*/
-                                    cache = null;
-                                    loginService.outAction();
-                                }
-                            } else {
-                                console.log('hehe');
-                            }
-                        }
-                    },
-                    function (resp) {
-                        var message = resp.data.message;
-                        if (typeof message !== 'undefined' && message !== '') {
-                            console.log(message);
-                        } else {
-                            console.log('请求菜单失败');
-                        }
-                    });
-        }
 
 
     }]);
