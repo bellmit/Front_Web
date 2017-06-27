@@ -1,22 +1,52 @@
 angular.module('app')
     /*首页快捷方式指令*/
-    .directive('uiMainQuick',function() {
+    .directive('uiMainQuick', function () {
         return {
-            replace:false,
+            replace: false,
             restrict: 'EC',
             scope:{
-                quick:'=quick'
+                action:'&action'
             },
-            template:'<div class="admin-welcome-banner"><img src="images/index_banner.jpg" alt="" /></div>\
+            template: '<div class="admin-welcome-banner"><img src="images/index_banner.jpg" alt="" /></div>\
                         <h3 class="admin-layout-theme3">快捷入口</h3>\
                         <ul class="admin-quick-icon">\
                           <li ng-repeat="i in quick">\
                             <div class="g-br5" data-id="{{i.id}}" data-code="{{i.code}}" href="" ui-sref="{{i.href}}">\
-                                <img alt="" src="images/{{i.src}}" />\
+                                <img alt="" ng-src="images/{{i.src}}" />\
                                 <span>{{i.name}}</span>\
                             </div>\
                           </li>\
-                        </ul>'
+                        </ul>',
+            link: function (scope, element, attrs) {
+                scope.quick=doQuickImage(scope.action());
+            }
         };
+
+        /*处理图像路径*/
+        function doQuickImage(arr) {
+            var len = arr.length,
+                imgsrc_map = {
+                    'app': 0/*首页*/,
+                    'organization': 1/*机构*/,
+                    'struct': 1/*机构*/,
+                    'order': 2/*订单*/,
+                    'finance': 3/*财务*/,
+                    'equipment': 4/*设备*/,
+                    'setting': 5/*设置*/,
+                    'invoice': 6/*发货*/,
+                    'purchase': 7/*采购*/,
+                    'warehouse': 8/*仓库*/,
+                    'equity': 9/*股权投资人*/
+                },
+                i = 0,
+                item;
+            if (len !== 0) {
+                for (i; i < len; i++) {
+                    item = arr[i];
+                    item['src'] = 'quick_' + imgsrc_map[item['href']] + '.png';
+                }
+            }
+            return arr;
+        }
     });
    

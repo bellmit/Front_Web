@@ -133,10 +133,7 @@ angular.module('app')
                                 }
                                 if (code === 999) {
                                     /*退出系统*/
-                                    toolUtil.loginTips({
-                                        clear: true,
-                                        reload: true
-                                    });
+                                    console.log('退出系统');
                                 }
                                 return [];
                             }
@@ -306,10 +303,7 @@ angular.module('app')
                                 }
                                 if (code === 999) {
                                     /*退出系统*/
-                                    toolUtil.loginTips({
-                                        clear: true,
-                                        reload: true
-                                    });
+                                    console.log('退出系统');
                                 }
                                 return [];
                             }
@@ -493,10 +487,7 @@ angular.module('app')
                                 }
                                 if (code === 999) {
                                     /*退出系统*/
-                                    toolUtil.loginTips({
-                                        clear: true,
-                                        reload: true
-                                    });
+                                    console.log('退出系统');
                                 }
                                 return [];
                             }
@@ -666,10 +657,7 @@ angular.module('app')
                                 }
                                 if (code === 999) {
                                     /*退出系统*/
-                                    toolUtil.loginTips({
-                                        clear: true,
-                                        reload: true
-                                    });
+                                    console.log('退出系统');
                                 }
                                 return [];
                             }
@@ -852,10 +840,7 @@ angular.module('app')
                                 }
                                 if (code === 999) {
                                     /*退出系统*/
-                                    toolUtil.loginTips({
-                                        clear: true,
-                                        reload: true
-                                    });
+                                    console.log('退出系统');
                                 }
                                 return [];
                             }

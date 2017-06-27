@@ -80,7 +80,7 @@ angular.module('app')
         /*模型--tab选项卡*/
         this.tabitem=[{
             name:'运营机构',
-            href:'struct',
+            href:'organization',
             power:self.powerlist.organization_add,
             active:''
         },{
@@ -133,10 +133,7 @@ angular.module('app')
                                 }
                                 if(code===999){
                                     /*退出系统*/
-                                    toolUtil.loginTips({
-                                        clear:true,
-                                        reload:true
-                                    });
+                                    console.log('退出系统');
                                 }
                                 return [];
                             }

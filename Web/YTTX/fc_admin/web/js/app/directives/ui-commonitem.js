@@ -23,13 +23,12 @@ angular.module('ui.commonitem', [])
         };
     })
     /*头部退出*/
-    .directive('uiHeaderLogout',['$interval',function ($interval) {
+    .directive('uiHeaderLogout', ['$interval','loginService', function ($interval,loginService) {
         return {
             replace: false,
             restrict: 'EC',
-            scope:{
-                action:'&',
-                time:'='
+            scope: {
+                action: '&'
             },
             template: '<div class="g-br3 header-outwrap" id="admin_logout_btn">退出</div>\
             <div ng-show="time!==0" class="struct-layout-support">\
@@ -41,22 +40,25 @@ angular.module('ui.commonitem', [])
                           </div>\
                     </div>',
             link: function (scope, element, attrs) {
-                /*绑定事件*/
+                /*初始化*/
+                scope.time = 0;
                 var $out_btn = angular.element('#admin_logout_btn');
+                /*绑定事件*/
                 $out_btn.bind('click', function () {
                     /*手动监听视图*/
-                    scope.$apply(function () {
-                        scope.time=2;
-                    });
+                    scope.time = 2;
                     /*定时任务*/
                     var outid = $interval(function () {
                         scope.time--;
                         if (scope.time <= 0) {
                             $interval.cancel(outid);
                             scope.action();
+                            scope.time = 0;
                         }
                     }, 1000);
                 });
+                /*设置登录缓存*/
+                loginService.outAction($out_btn);
             }
         };
     }])
@@ -190,28 +192,6 @@ angular.module('ui.commonitem', [])
             restrict: 'EC',
             template: ''
         };
-    })
-    /*侧边栏级联菜单指令(普通)*/
-    .directive('uiSubMenuTree', function () {
-        /*默认渲染*/
-        var render = {
-            replace: false,
-            restrict: 'EC',
-            template: ''
-        };
-        return render;
-
-        /*辅助服务*/
-
-        /*获取虚拟挂载点*/
-        function getRoot(record) {
-
-        }
-
-        /*获取导航*/
-        function getSubMenu() {
-
-        }
     })
     /*侧边栏按钮指令*/
     .directive('uiSubBtn', function () {

@@ -94,10 +94,7 @@ angular.module('app')
                 record['organizationName'] = '';
                 record['adminId'] = '';
                 record['token'] = '';
-                toolUtil.loginTips({
-                    clear: true,
-                    reload: true
-                });
+                loginService.outAction();
                 return false;
             }
             var islogin = loginService.isLogin(cache);
@@ -114,10 +111,7 @@ angular.module('app')
                 record['token'] = '';
                 /*退出系统*/
                 cache = null;
-                toolUtil.loginTips({
-                    clear: true,
-                    reload: true
-                });
+                loginService.outAction();
             }
         };
 
@@ -201,10 +195,7 @@ angular.module('app')
                                 if (code === 999) {
                                     /*退出系统*/
                                     cache = null;
-                                    toolUtil.loginTips({
-                                        clear: true,
-                                        reload: true
-                                    });
+                                    loginService.outAction();
                                 }
                             } else {
                                 /*加载数据*/
@@ -540,10 +531,7 @@ angular.module('app')
                                     if (code === 999) {
                                         /*退出系统*/
                                         cache = null;
-                                        toolUtil.loginTips({
-                                            clear: true,
-                                            reload: true
-                                        });
+                                        loginService.outAction();
                                     }
                                     return false;
                                 } else {
@@ -595,10 +583,7 @@ angular.module('app')
             } else {
                 /*退出系统*/
                 cache = null;
-                toolUtil.loginTips({
-                    clear: true,
-                    reload: true
-                });
+                loginService.outAction();
             }
         };
         /*表单类服务--清空表单模型数据*/
@@ -957,11 +942,11 @@ angular.module('app')
                                     if (code === 999) {
                                         /*退出系统*/
                                         console.log('ni mei');
-                                        /*cache=null;
+                                        cache=null;
                                          toolUtil.loginTips({
                                          clear:true,
                                          reload:true
-                                         });*/
+                                         });
                                     }
                                 } else {
                                     /*提示信息*/
@@ -1045,10 +1030,7 @@ angular.module('app')
                                     if (code === 999) {
                                         /*退出系统*/
                                         cache = null;
-                                        toolUtil.loginTips({
-                                            clear: true,
-                                            reload: true
-                                        });
+                                        loginService.outAction();
                                     }
                                 } else {
                                     /*加载数据*/
@@ -1106,10 +1088,7 @@ angular.module('app')
             } else {
                 /*退出系统*/
                 cache = null;
-                toolUtil.loginTips({
-                    clear: true,
-                    reload: true
-                });
+                loginService.outAction();
             }
         };
         /*机构服务--解析导航--开始解析*/
@@ -1381,10 +1360,7 @@ angular.module('app')
                                 if (code === 999) {
                                     /*退出系统*/
                                     cache = null;
-                                    toolUtil.loginTips({
-                                        clear: true,
-                                        reload: true
-                                    });
+                                    loginService.outAction();
                                 }
                             } else {
                                 /*加载数据*/

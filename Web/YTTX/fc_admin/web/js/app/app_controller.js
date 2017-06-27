@@ -8,8 +8,7 @@ angular.module('app')
         /*模型--基本配置*/
         this.app_config = {
             issupport: toolUtil.isSupport()/*是否兼容*/,
-            isloading: 'g-d-hidei'/*加载组件初始化*/,
-            loginouttime:0/*退出系统时间*/
+            isloading: 'g-d-hidei'/*加载组件初始化*/
         };
 
 
@@ -45,12 +44,12 @@ angular.module('app')
         /*退出*/
         this.loginOut = function () {
             self.login.islogin = false;
-             self.login.headeritem=[];
-             self.login = {
-             username: '',
-             password: '',
-             identifyingCode: ''
-             };
+            self.login.headeritem = [];
+            self.login = {
+                username: '',
+                password: '',
+                identifyingCode: ''
+            };
             loginService.loginOut(true);
         };
 

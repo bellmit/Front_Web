@@ -1,6 +1,6 @@
 /*首页控制器*/
 angular.module('app')
-    .controller('EquipmentController', ['equipmentService','toolUtil',function(equipmentService,toolUtil){
+    .controller('EquipmentController', ['equipmentService',function(equipmentService){
         var self=this;
 
         /*模型--操作权限列表*/
@@ -73,10 +73,7 @@ angular.module('app')
                                 }
                                 if(code===999){
                                     /*退出系统*/
-                                    toolUtil.loginTips({
-                                        clear:true,
-                                        reload:true
-                                    });
+                                    console.log('退出系统');
                                 }
                                 return [];
                             }
@@ -115,13 +112,6 @@ angular.module('app')
 
                                 var list=result.list;
                                 if(list){
-                                    var vi=0,
-                                        vlen=list.length;
-                                    for(vi;vi<vlen;vi++){
-                                        if(!list[vi] || list[vi]===null){
-                                            return [];
-                                        }
-                                    }
                                     return list;
                                 }else{
                                     return [];

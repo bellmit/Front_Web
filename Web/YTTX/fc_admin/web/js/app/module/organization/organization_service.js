@@ -1,5 +1,5 @@
 angular.module('app')
-    .service('structService', ['toolUtil', 'toolDialog', 'BASE_CONFIG', 'loginService', 'powerService', 'addressService', 'dataTableColumnService', 'dataTableCheckAllService', 'dataTableItemActionService', '$timeout', function (toolUtil, toolDialog, BASE_CONFIG, loginService, powerService, addressService, dataTableColumnService, dataTableCheckAllService, dataTableItemActionService, $timeout) {
+    .service('organizationService', ['toolUtil', 'toolDialog', 'BASE_CONFIG', 'loginService', 'powerService', 'addressService', 'dataTableColumnService', 'dataTableCheckAllService', 'dataTableItemActionService', '$timeout','testService',function (toolUtil, toolDialog, BASE_CONFIG, loginService, powerService, addressService, dataTableColumnService, dataTableCheckAllService, dataTableItemActionService, $timeout,testService) {
 
         /*获取缓存数据*/
         var self = this,
@@ -91,10 +91,7 @@ angular.module('app')
         /*导航服务--获取虚拟挂载点*/
         this.getRoot = function (record) {
             if (cache === null) {
-                toolUtil.loginTips({
-                    clear: true,
-                    reload: true
-                });
+                loginService.outAction();
                 record['currentId'] = '';
                 record['currentName'] = '';
                 record['organizationId'] = '';
@@ -111,10 +108,7 @@ angular.module('app')
             } else {
                 /*退出系统*/
                 cache = null;
-                toolUtil.loginTips({
-                    clear: true,
-                    reload: true
-                });
+                loginService.outAction();
                 record['currentId'] = '';
                 record['currentName'] = '';
                 record['organizationId'] = '';
@@ -179,10 +173,7 @@ angular.module('app')
                                     if (code === 999) {
                                         /*退出系统*/
                                         cache = null;
-                                        toolUtil.loginTips({
-                                            clear: true,
-                                            reload: true
-                                        });
+                                        loginService.outAction();
                                     }
                                 } else {
                                     /*加载数据*/
@@ -288,10 +279,7 @@ angular.module('app')
             } else {
                 /*退出系统*/
                 cache = null;
-                toolUtil.loginTips({
-                    clear: true,
-                    reload: true
-                });
+                loginService.outAction();
             }
         };
         /*导航服务--解析导航--开始解析*/
@@ -720,10 +708,7 @@ angular.module('app')
                                     if (code === 999) {
                                         /*退出系统*/
                                         cache = null;
-                                        toolUtil.loginTips({
-                                            clear: true,
-                                            reload: true
-                                        });
+                                        loginService.outAction();
                                     }
                                 } else {
                                     /*加载数据*/
@@ -794,10 +779,7 @@ angular.module('app')
                         });
             } else {
                 cache = null;
-                toolUtil.loginTips({
-                    clear: true,
-                    reload: true
-                });
+                loginService.outAction();
             }
         };
         /*机构服务--设置机构数据,$node:node节点，structpos:位置模型*/
@@ -1044,10 +1026,7 @@ angular.module('app')
                                 if (code === 999) {
                                     /*退出系统*/
                                     cache = null;
-                                    toolUtil.loginTips({
-                                        clear: true,
-                                        reload: true
-                                    });
+                                    loginService.outAction();
                                 }
                             } else {
                                 /*加载数据*/
@@ -1277,10 +1256,7 @@ angular.module('app')
                                         if (code === 999) {
                                             /*退出系统*/
                                             cache = null;
-                                            toolUtil.loginTips({
-                                                clear: true,
-                                                reload: true
-                                            });
+                                            loginService.outAction();
                                         } else {
                                             toolDialog.show({
                                                 type: 'warn',
@@ -1316,10 +1292,7 @@ angular.module('app')
                 } else {
                     /*退出系统*/
                     cache = null;
-                    toolUtil.loginTips({
-                        clear: true,
-                        reload: true
-                    });
+                    loginService.outAction();
                 }
             }
         };
@@ -1635,10 +1608,7 @@ angular.module('app')
                                     if (code === 999) {
                                         /*退出系统*/
                                         cache = null;
-                                        toolUtil.loginTips({
-                                            clear: true,
-                                            reload: true
-                                        });
+                                        loginService.outAction();
                                     }
                                     return false;
                                 } else {
@@ -1693,10 +1663,7 @@ angular.module('app')
             } else {
                 /*退出系统*/
                 cache = null;
-                toolUtil.loginTips({
-                    clear: true,
-                    reload: true
-                });
+                loginService.outAction();
             }
         };
         /*表单类服务--重置表单*/
@@ -1918,10 +1885,7 @@ angular.module('app')
                                 if (code === 999) {
                                     /*退出系统*/
                                     cache = null;
-                                    toolUtil.loginTips({
-                                        clear: true,
-                                        reload: true
-                                    });
+                                    loginService.outAction();
                                 }
                             } else {
                                 /*加载数据*/
@@ -2172,10 +2136,7 @@ angular.module('app')
                                     if (code === 999) {
                                         /*退出系统*/
                                         cache = null;
-                                        toolUtil.loginTips({
-                                            clear: true,
-                                            reload: true
-                                        });
+                                        loginService.outAction();
                                     }
                                 } else {
                                     /*提示信息*/
@@ -2297,6 +2258,49 @@ angular.module('app')
                 return addressService.queryByCode(code,fn);
             }
         };
+
+
+        /**/
+        this.testOut=function () {
+            toolUtil
+                .requestHttp({
+                    url: 'json/test.json',
+                    method: 'post',
+                    set: true,
+                    debug:true
+                })
+                .then(function (resp) {
+                    var resp=testService.testDefault('table');
+                        var data = resp.data,
+                            status = parseInt(resp.status, 10);
+
+                        if (status === 200) {
+                            var code = parseInt(data.code, 10),
+                                message = data.message;
+                            if (code !== 0) {
+                                if (typeof message !== 'undefined' && message !== '') {
+                                    console.log(message);
+                                }
+
+                                if (code === 999) {
+                                    /*退出系统*/
+                                    cache = null;
+                                    loginService.outAction();
+                                }
+                            } else {
+                                console.log('hehe');
+                            }
+                        }
+                    },
+                    function (resp) {
+                        var message = resp.data.message;
+                        if (typeof message !== 'undefined' && message !== '') {
+                            console.log(message);
+                        } else {
+                            console.log('请求菜单失败');
+                        }
+                    });
+        }
 
 
     }]);

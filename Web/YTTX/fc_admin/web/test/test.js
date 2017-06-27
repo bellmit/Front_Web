@@ -27,7 +27,7 @@ angular.module('app')
                 if (type === 'list') {
                     res = {
                         message: 'ok',
-                        code: 0,
+                        code: 999,
                         result: template
                     };
                 } else if ('table') {
@@ -35,26 +35,28 @@ angular.module('app')
                         status: 200,
                         data: {
                             message: 'ok',
-                            code: 0,
+                            code: 999,
                             result: template
                         }
                     };
                 } else {
                     res = {
                         message: 'ok',
-                        code: 0,
+                        code: 999,
                         result: template
                     };
                 }
             } else {
                 res = {
                     message: 'ok',
-                    code: 0,
+                    code: 999,
                     result: template
                 };
             }
             return res;
         };
+
+
 
         /*测试列表*/
         this.testList = function (config) {

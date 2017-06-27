@@ -140,10 +140,7 @@ angular.module('power.service', [])
                                     if (code === 999) {
                                         /*退出系统*/
                                         cache = null;
-                                        toolUtil.loginTips({
-                                            clear: true,
-                                            reload: true
-                                        });
+                                        loginService.outAction();
                                     }
                                     /*恢复原来设置*/
                                     $operate.prop({
@@ -206,10 +203,7 @@ angular.module('power.service', [])
                                 if (code === 999) {
                                     /*退出系统*/
                                     cache = null;
-                                    toolUtil.loginTips({
-                                        clear: true,
-                                        reload: true
-                                    });
+                                    loginService.outAction();
                                 }
                             } else {
                                 /*加载数据*/

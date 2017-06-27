@@ -1,7 +1,7 @@
 /*自定义扩展*/
 (function ($) {
     'use strict';
-    angular.module('tool.util', []).factory('toolUtil', ['$http', '$q', '$httpParamSerializerJQLike', 'BASE_CONFIG', '$state', function ($http, $q, $httpParamSerializerJQLike, BASE_CONFIG, $state) {
+    angular.module('tool.util', []).factory('toolUtil', ['$http', '$q', '$httpParamSerializerJQLike', 'BASE_CONFIG', function ($http, $q, $httpParamSerializerJQLike, BASE_CONFIG) {
         var system_unique_key = BASE_CONFIG.unique_key || 'yy_admin_unique_key',
             tools = {};
         /*本地存储*/
@@ -973,11 +973,11 @@
                     return null;
                 }
                 var menu_map = {
-                        'yttx-oragnization': 'struct',
+                        'yttx-oragnization': 'organization',
                         'yttx-order-manager': 'order',
-                        'yttx-finance-manager': 'finance',
-                        'yttx-device-manager': 'equipment',
-                        'yttx-setting': 'setting'
+                        'yttx-invoice-manager': 'invoice',
+                        'yttx-purchase-manager': 'purchase',
+                        'yttx-warehouse-manager': 'warehouse'
                     },
                     list = [],
                     module = {},
@@ -1210,35 +1210,6 @@
             }
             return false;
         };
-        /*退出*/
-        tools.loginOut = function (config) {
-            var self = this;
-            if (config) {
-                if (config.tips) {
-                    if (!config.clear) {
-                        self.clear();
-                    }
-                } else {
-                    self.clear();
-                    if (typeof config.delay === 'function') {
-                        /*延时回调*/
-                        config.delay();
-                        if (typeof config.router !== 'undefined') {
-                            /*路由跳转*/
-                            $state.go(config.router);
-                        }
-                    } else {
-                        if (typeof config.router !== 'undefined') {
-                            /*路由跳转*/
-                            $state.go(config.router);
-                        }
-                    }
-                }
-            } else {
-                self.clear();
-            }
-        };
-
         /*初始化判定*/
         tools.isSupport = function () {
             var self = this;

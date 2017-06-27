@@ -25,9 +25,9 @@ angular.module('app')
                             }]
                     }
                 })
-                .state('oragnization', {
-                    url: '/oragnization',
-                    templateUrl: 'tpl/oragnization.html',
+                .state('organization', {
+                    url: '/organization',
+                    templateUrl: 'tpl/organization.html',
                     resolve: {
                         /*延迟加载，依赖相关组件*/
                         deps: ['$ocLazyLoad',
@@ -38,13 +38,13 @@ angular.module('app')
                                     'js/app/services/datatable/datatable_column_service.js',
                                     'js/app/services/datatable/datatable_checkall_service.js',
                                     'js/app/services/datatable/datatable_itemaction_service.js',
-                                    'js/app/services/address/address_service.js','js/app/module/oragnization/oragnization_service.js','js/app/module/oragnization/oragnization_controller.js']);
+                                    'js/app/services/address/address_service.js','js/app/module/organization/organization_service.js','js/app/module/organization/organization_controller.js']);
                             }]
                     }
                 })
                 .state('role', {
                     url: '/role',
-                    templateUrl: 'tpl/oragnization_role.html',
+                    templateUrl: 'tpl/organization_role.html',
                     resolve: {
                         /*延迟加载，依赖相关组件*/
                         deps: ['$ocLazyLoad',
@@ -55,8 +55,8 @@ angular.module('app')
                                     'js/app/services/datatable/datatable_column_service.js',
                                     'js/app/services/datatable/datatable_checkall_service.js',
                                     'js/app/services/address/address_service.js',
-                                    'js/app/module/oragnization_role/oragnization_role_service.js',
-                                    'js/app/module/oragnization_role/oragnization_role_controller.js']);
+                                    'js/app/module/organization_role/organization_role_service.js',
+                                    'js/app/module/organization_role/organization_role_controller.js']);
                             }]
                     }
                 })

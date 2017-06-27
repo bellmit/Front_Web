@@ -68,10 +68,7 @@ angular.module('app')
                                     if(code===999){
                                         /*退出系统*/
                                         cache=null;
-                                        toolUtil.loginTips({
-                                            clear:true,
-                                            reload:true
-                                        });
+                                        loginService.outAction();
                                     }
                                 }else{
                                     /*加载数据*/
@@ -115,10 +112,7 @@ angular.module('app')
             }else{
                 /*退出系统*/
                 cache=null;
-                toolUtil.loginTips({
-                    clear:true,
-                    reload:true
-                });
+                loginService.outAction();
             }
         };
         /*导航服务--查询角色组*/
@@ -153,10 +147,7 @@ angular.module('app')
                                     if(code===999){
                                         /*退出系统*/
                                         cache=null;
-                                        toolUtil.loginTips({
-                                            clear:true,
-                                            reload:true
-                                        });
+                                        loginService.outAction();
                                     }
                                 }else{
                                     /*加载数据*/
@@ -216,10 +207,7 @@ angular.module('app')
             }else{
                 /*退出系统*/
                 cache=null;
-                toolUtil.loginTips({
-                    clear:true,
-                    reload:true
-                });
+                loginService.outAction();
             }
         };
         /*导航服务--解析导航--开始解析*/
@@ -517,10 +505,7 @@ angular.module('app')
         /*成员服务--删除成员*/
         this.deleteMemberList=function (record,table,id) {
             if(cache===null){
-                toolUtil.loginTips({
-                    clear:true,
-                    reload:true
-                });
+                loginService.outAction();
                 return false;
             }
             var type;
@@ -589,10 +574,7 @@ angular.module('app')
                                     if(code===999){
                                         /*退出系统*/
                                         cache=null;
-                                        toolUtil.loginTips({
-                                            clear:true,
-                                            reload:true
-                                        });
+                                        loginService.outAction();
                                     }
                                 }else{
                                     /*提示信息*/
@@ -661,10 +643,7 @@ angular.module('app')
         /*机构服务--获取虚拟挂载点*/
         this.getMemberRoot=function (record) {
             if(cache===null){
-                toolUtil.loginTips({
-                    clear:true,
-                    reload:true
-                });
+                loginService.outAction();
                 record['currentId']='';
                 record['currentName']='';
                 return false;
@@ -677,10 +656,7 @@ angular.module('app')
             }else{
                 /*退出系统*/
                 cache=null;
-                toolUtil.loginTips({
-                    clear:true,
-                    reload:true
-                });
+                loginService.outAction();
                 record['currentId']='';
                 record['currentName']='';
             }
@@ -736,10 +712,7 @@ angular.module('app')
                                     if(code===999){
                                         /*退出系统*/
                                         cache=null;
-                                        toolUtil.loginTips({
-                                            clear:true,
-                                            reload:true
-                                        });
+                                        loginService.outAction();
                                     }
                                 }else{
                                     /*加载数据*/
@@ -796,10 +769,7 @@ angular.module('app')
             }else{
                 /*退出系统*/
                 cache=null;
-                toolUtil.loginTips({
-                    clear:true,
-                    reload:true
-                });
+                loginService.outAction();
             }
         };
         /*机构服务--解析导航--开始解析*/
@@ -956,10 +926,7 @@ angular.module('app')
                                 if(code===999){
                                     /*退出系统*/
                                     cache=null;
-                                    toolUtil.loginTips({
-                                        clear:true,
-                                        reload:true
-                                    });
+                                    loginService.outAction();
                                 }
                                 self.$admin_user_wrap.html('');
                                 return false;
@@ -1206,10 +1173,7 @@ angular.module('app')
                                     if(code===999){
                                         /*退出系统*/
                                         cache=null;
-                                        toolUtil.loginTips({
-                                            clear:true,
-                                            reload:true
-                                        });
+                                        loginService.outAction();
                                     }
                                     return false;
                                 }else{
@@ -1264,10 +1228,7 @@ angular.module('app')
             }else{
                 /*退出系统*/
                 cache=null;
-                toolUtil.loginTips({
-                    clear:true,
-                    reload:true
-                });
+                loginService.outAction();
             }
         };
 
@@ -1301,10 +1262,7 @@ angular.module('app')
             }else{
                 /*退出系统*/
                 cache=null;
-                toolUtil.loginTips({
-                    clear:true,
-                    reload:true
-                });
+                loginService.outAction();
             }
 
         };
@@ -1349,10 +1307,7 @@ angular.module('app')
             }else{
                 /*退出系统*/
                 cache=null;
-                toolUtil.loginTips({
-                    clear:true,
-                    reload:true
-                });
+                loginService.outAction();
             }
 
         };

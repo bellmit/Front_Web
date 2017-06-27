@@ -1,8 +1,10 @@
 angular.module('login.service', [])
-    .service('loginService', ['toolUtil', 'BASE_CONFIG', '$state','testService', function (toolUtil, BASE_CONFIG, $state,testService) {
+    .service('loginService', ['toolUtil', 'BASE_CONFIG', '$state', '$timeout', 'testService', function (toolUtil, BASE_CONFIG, $state, $timeout, testService) {
         var self = this,
             cache = toolUtil.getParams(BASE_CONFIG.unique_key)/*缓存凭证*/,
-            mainmenu = []/*缓存菜单*/;
+            mainmenu = []/*缓存菜单*/,
+            outbtn = null,
+            outid = null;
 
 
         /*获取登陆信息*/
@@ -35,10 +37,10 @@ angular.module('login.service', [])
         /*处理登陆请求*/
         this.reqAction = function (model) {
             toolUtil.requestHttp({
-                url: /*'/sysuser/login'*/'json/test.json',
+                url: '/sysuser/login'/*'json/test.json'*/,
                 method: 'post',
                 set: true,
-                debug:true/*测试开关*/,
+                debug: false/*测试开关*/,
                 data: {
                     username: model.login.username,
                     password: model.login.password,
@@ -46,8 +48,8 @@ angular.module('login.service', [])
                 }
             }).then(function (resp) {
                     /*测试服务*/
-                    var resp=testService.testDefault('table');
-                
+                    /*var resp=testService.testDefault('table');*/
+
                     var data = resp.data,
                         status = parseInt(resp.status, 10);
 
@@ -57,14 +59,14 @@ angular.module('login.service', [])
                             message = data.message;
                         if (code !== 0) {
                             if (typeof message !== 'undefined' && message !== '') {
-                                model.login.loginerror=message;
+                                model.login.loginerror = message;
                             }
                             model.login.islogin = false;
                         } else {
                             /*加载动画*/
                             toolUtil.loading({
-                                type:'show',
-                                model:model.app_config
+                                type: 'show',
+                                model: model.app_config
                             });
                             /*设置缓存*/
                             self.setCache({
@@ -79,16 +81,16 @@ angular.module('login.service', [])
                                 }
                             });
                             /*加载菜单*/
-                            self.loadMenuData(model,function () {
+                            self.loadMenuData(model, function () {
                                 toolUtil.loading({
-                                    type:'hide',
-                                    model:model.app_config
+                                    type: 'hide',
+                                    model: model.app_config
                                 });
                             });
                             /*更新缓存*/
                             cache = toolUtil.getParams(BASE_CONFIG.unique_key);
                             model.login.islogin = true;
-                            model.login.loginerror='';
+                            model.login.loginerror = '';
                         }
                     } else {
                         model.login.islogin = false;
@@ -98,14 +100,14 @@ angular.module('login.service', [])
                     model.login.islogin = false;
                     var message = resp.data.message;
                     if (typeof message !== 'undefined' && message !== '') {
-                        model.login.loginerror=message;
+                        model.login.loginerror = message;
                     } else {
-                        model.login.loginerror='登录失败';
+                        model.login.loginerror = '登录失败';
                     }
                 });
         };
         /*加载菜单数据*/
-        this.loadMenuData = function (config,fn) {
+        this.loadMenuData = function (config, fn) {
             /*判断登陆缓存是否有效*/
             if (!cache.cacheMap.menuload) {
                 toolUtil
@@ -122,7 +124,7 @@ angular.module('login.service', [])
                                 var code = parseInt(data.code, 10),
                                     message = data.message;
                                 if (code !== 0) {
-                                    if(fn && typeof fn==='function'){
+                                    if (fn && typeof fn === 'function') {
                                         fn.call(null);
                                     }
                                     if (typeof message !== 'undefined' && message !== '') {
@@ -157,12 +159,12 @@ angular.module('login.service', [])
                                             cache['powerMap'] = list['power'];
                                             /*更新缓存*/
                                             toolUtil.setParams(BASE_CONFIG.unique_key, cache);
-                                            if(fn && typeof fn==='function'){
+                                            if (fn && typeof fn === 'function') {
                                                 fn.call(null);
                                             }
                                         }
-                                    }else{
-                                        if(fn && typeof fn==='function'){
+                                    } else {
+                                        if (fn && typeof fn === 'function') {
                                             fn.call(null);
                                         }
                                     }
@@ -170,7 +172,7 @@ angular.module('login.service', [])
                             }
                         },
                         function (resp) {
-                            if(fn && typeof fn==='function'){
+                            if (fn && typeof fn === 'function') {
                                 fn.call(null);
                             }
                             var message = resp.data.message;
@@ -213,14 +215,14 @@ angular.module('login.service', [])
                         mainmenu = [];
                         return [];
                     }
-                }else{
+                } else {
                     return [];
                 }
             } else {
                 if (flag) {
-                   return mainmenu.slice(0);
+                    return mainmenu.slice(0);
                 } else {
-                   return mainmenu.slice(1);
+                    return mainmenu.slice(1);
                 }
             }
         };
@@ -284,7 +286,7 @@ angular.module('login.service', [])
             self.clearCache();
             toolUtil.clear();
             /*路由*/
-            if(flag){
+            if (flag) {
                 $state.go('app');
             }
             return true;
@@ -297,5 +299,19 @@ angular.module('login.service', [])
         /*获取已经存在的缓存*/
         this.getCache = function () {
             return cache;
+        };
+        /*设置退出按钮缓存或操作退出动作，此服务试用非app_ctrl控制部分*/
+        this.outAction = function ($btn) {
+            if ($btn) {
+                outbtn = $btn;
+            } else if (outbtn !== null && !$btn) {
+                outid = $timeout(function () {
+                    outbtn.triggerHandler('click');
+                    if (outid !== null) {
+                        $timeout.cancel(outid);
+                        outid = null;
+                    }
+                }, 0);
+            }
         };
     }]);
