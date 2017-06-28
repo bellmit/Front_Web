@@ -1,6 +1,6 @@
 /*首页控制器*/
 angular.module('app')
-    .controller('OrganizationController', ['organizationService', 'toolUtil', function (organizationService, toolUtil) {
+    .controller('OrganizationController', ['organizationService', function (organizationService) {
         var self = this;
 
         /*模型--操作权限列表*/
@@ -16,13 +16,7 @@ angular.module('app')
             $struct_user_dialog: $('#struct_user_dialog'),
             $struct_userdetail_dialog: $('#struct_userdetail_dialog'),
             $admin_user_reset: $('#admin_user_reset'),
-            $admin_userdetail_show: $('#admin_userdetail_show'),
-            $admin_page_wrap: $('#admin_page_wrap'),
-            $admin_list_wrap: $('#admin_list_wrap'),
-            $admin_batchlist_wrap: $('#admin_batchlist_wrap'),
-            $admin_table_checkcolumn: $('#admin_table_checkcolumn'),
-            $admin_table_colgroup: $('#admin_table_colgroup'),
-            $admin_struct_checkall: $('#admin_struct_checkall')
+            $admin_userdetail_show: $('#admin_userdetail_show')
         };
         jq_dom['$admin_submenu_wrap'] = jq_dom.$admin_struct_submenu.prev();
 
@@ -61,28 +55,11 @@ angular.module('app')
             city: {},
             country: {}
         };
-        /*模型--店铺地址*/
-        this.user_address = {
-            province: {},
-            city: {},
-            country: {}
-        };
-        /*模型--列表地址*/
-        this.list_address = {
-            province: {},
-            city: {},
-            country: {}
-        };
-        this.list_addressdata = {
-            province: '',
-            city: '',
-            country: ''
-        };
 
         /*模型--操作记录*/
         this.record = {
-            searchactive: ''/*搜索激活状态*/,
-            searchname: ''/*搜索关键词*/,
+            searchactive: ''/*搜索激活状态(菜单栏搜索)*/,
+            searchname: ''/*搜索关键词(菜单栏搜索)*/,
             prev: null/*上一次操作记录*/,
             current: null/*当前操作记录*/,
             hasdata: false/*下级是否有数据,或者是否查询到数据*/,
@@ -90,9 +67,7 @@ angular.module('app')
             currentName: ''/*虚拟挂载点*/,
             organizationId: ''/*操作id*/,
             organizationName: ''/*操作名称*/,
-            structId: ''/*机构设置Id*/,
-            structName: ''/*机构设置名称*/,
-            structnode: null/*机构对象*/,
+            carrieroperatorId:''/*运营商Id*/,
             layer: 0/*操作层*/
         };
 
@@ -105,7 +80,7 @@ angular.module('app')
             parentId: ''/*上级运营商ID，编辑时相关参数*/,
             fullName: ''/*运营商全称*/,
             shortName: ''/*运营商简称*/,
-            adscriptionRegion: ''/*归属地区*/,
+            adscriptionRegion: ''/*归属地区 false*/,
             linkman: ''/*负责人*/,
             cellphone: ''/*手机号码*/,
             telephone: ''/*电话号码*/,
@@ -146,284 +121,6 @@ angular.module('app')
         };
 
 
-        /*模型--调整位置*/
-        this.structpos = {
-            up: {
-                id: '',
-                $node: null,
-                active: '',
-                layer: '',
-                parentid: ''
-            },
-            down: {
-                id: '',
-                $node: null,
-                active: '',
-                layer: '',
-                parentid: ''
-            }
-        };
-
-
-        /*模型--表格缓存*/
-        this.table = {
-            list1_page: {
-                page: 1,
-                pageSize: 10,
-                total: 0
-            },
-            list1_config: {
-                config: {
-                    processing: true, /*大消耗操作时是否显示处理状态*/
-                    deferRender: true, /*是否延迟加载数据*/
-                    autoWidth: true, /*是否*/
-                    paging: false,
-                    ajax: {
-                        url: toolUtil.adaptReqUrl('/organization/shops'),
-                        dataType: 'JSON',
-                        method: 'post',
-                        dataSrc: function (json) {
-                            var code = parseInt(json.code, 10),
-                                message = json.message;
-
-                            if (code !== 0) {
-                                if (typeof message !== 'undefined' && message !== '') {
-                                    console.log(message);
-                                } else {
-                                    console.log('获取用户失败');
-                                }
-                                if (code === 999) {
-                                    /*退出系统*/
-                                    console.log('退出系统');
-                                    organizationService.loginOut();
-                                }
-                                return [];
-                            }
-                            var result = json.result;
-                            if (typeof result === 'undefined') {
-                                /*重置分页*/
-                                self.table.list1_page.total = 0;
-                                self.table.list1_page.page = 1;
-                                jq_dom.$admin_page_wrap.pagination({
-                                    pageNumber: self.table.list1_page.page,
-                                    pageSize: self.table.list1_page.pageSize,
-                                    total: self.table.list1_page.total
-                                });
-                                return [];
-                            }
-
-                            if (result) {
-                                /*设置分页*/
-                                self.table.list1_page.total = result.count;
-                                /*分页调用*/
-                                jq_dom.$admin_page_wrap.pagination({
-                                    pageNumber: self.table.list1_page.page,
-                                    pageSize: self.table.list1_page.pageSize,
-                                    total: self.table.list1_page.total,
-                                    onSelectPage: function (pageNumber, pageSize) {
-                                        /*再次查询*/
-                                        var temp_param = self.table.list1_config.config.ajax.data;
-                                        self.table.list1_page.page = pageNumber;
-                                        self.table.list1_page.pageSize = pageSize;
-                                        temp_param['page'] = self.table.list1_page.page;
-                                        temp_param['pageSize'] = self.table.list1_page.pageSize;
-                                        self.table.list1_config.config.ajax.data = temp_param;
-                                        if (self.record.structId === '') {
-                                            organizationService.getColumnData(self.table, self.record.organizationId);
-                                        } else {
-                                            organizationService.getColumnData(self.table, self.record.structId)
-                                        }
-                                    }
-                                });
-
-                                var list = result.list;
-                                if (list) {
-                                    return list;
-                                } else {
-                                    return [];
-                                }
-                            } else {
-                                /*重置分页*/
-                                self.table.list1_page.total = 0;
-                                self.table.list1_page.page = 1;
-                                jq_dom.$admin_page_wrap.pagination({
-                                    pageNumber: self.table.list1_page.page,
-                                    pageSize: self.table.list1_page.pageSize,
-                                    total: self.table.list1_page.total
-                                });
-                                return [];
-                            }
-                        },
-                        data: {
-                            page: 1,
-                            pageSize: 10
-                        }
-                    },
-                    info: false,
-                    dom: '<"g-d-hidei" s>',
-                    searching: true,
-                    order: [[1, "desc"]],
-                    columns: [
-                        {
-                            "data": "id",
-                            "orderable": false,
-                            "searchable": false,
-                            "render": function (data, type, full, meta) {
-                                return '<input value="' + data + '" name="check_shopid" type="checkbox" />';
-                            }
-                        },
-                        {
-                            "data": "fullName"
-                        },
-                        {
-                            "data": "shortName"
-                        },
-                        {
-                            "data": "name"
-                        },
-                        {
-                            "data": "type",
-                            "render": function (data, type, full, meta) {
-                                var temptype = parseInt(data, 10),
-                                    typemap = {
-                                        1: '旗舰店',
-                                        2: '体验店',
-                                        3: '加盟店'
-                                    };
-                                return typemap[temptype];
-                            }
-                        },
-                        {
-                            "data": "cellphone",
-                            "render": function (data, type, full, meta) {
-                                return toolUtil.phoneFormat(data);
-                            }
-                        },
-                        {
-                            "data": "telephone",
-                            "render": function (data, type, full, meta) {
-                                return toolUtil.telePhoneFormat(data, 4);
-                            }
-                        },
-                        {
-                            "data": "province",
-                            "render": function (data, type, full, meta) {
-                                var province = data,
-                                    city = full.city,
-                                    country = full.country;
-                                if (!province && !city  && !country) {
-                                    return '无省市区';
-                                }
-                                var str = '';
-
-                                if (province) {
-                                    self.list_addressdata.province = province;
-                                    str += '<em class="g-c-gray3">省：</em><em class="g-c-gray9">' + self.list_address["province"][province]["key"] + '</em>';
-                                }
-                                return str;
-                            }
-                        },
-                        {
-                            "data": "address",
-                            "render": function (data, type, full, meta) {
-                                if (!data) {
-                                    return '';
-                                }
-                                var str = data.toString();
-                                return str.slice(0, 10) + '...';
-                            }
-                        },
-                        {
-                            "data": "status",
-                            "render": function (data, type, full, meta) {
-                                var stauts = parseInt(data, 10),
-                                    str = '';
-
-                                if (stauts === 0) {
-                                    str = '<div class="g-c-blue3">正常</div>';
-                                } else if (stauts === 1) {
-                                    str = '<div class="g-c-warn">停用</div>';
-                                } else {
-                                    str = '<div class="g-c-gray6">其他</div>';
-                                }
-                                return str;
-                            }
-                        },
-                        {
-                            "data": "addTime"
-                        },
-                        {
-                            "data": "id",
-                            "render": function (data, type, full, meta) {
-                                var btns = '';
-
-                                /*查看用户*/
-                                if (self.powerlist.user_view) {
-                                    btns += '<span data-action="detail" data-organizationId="' + full.organizationId + '" data-id="' + data + '"  class="btn-operate">查看</span>';
-                                }
-                                /*编辑用户*/
-                                if (self.powerlist.user_update) {
-                                    btns += '<span data-action="update" data-organizationId="' + full.organizationId + '" data-id="' + data + '" class="btn-operate">编辑</span>';
-                                }
-                                /*删除用户*/
-                                if (self.powerlist.batch_delete) {
-                                    btns += '<span  data-action="delete" data-organizationId="' + full.organizationId + '" data-id="' + data + '"  class="btn-operate g-d-hidei">删除</span>';
-                                }
-                                return btns;
-                            }
-                        }
-                    ]
-                }
-            },
-            list_table: null,
-            /*列控制*/
-            tablecolumn: {
-                init_len: 12/*数据有多少列*/,
-                column_flag: true,
-                ischeck: true, /*是否有全选*/
-                columnshow: true,
-                $column_wrap: jq_dom.$admin_table_checkcolumn/*控制列显示隐藏的容器*/,
-                $bodywrap: jq_dom.$admin_batchlist_wrap/*数据展现容器*/,
-                hide_list: [1, 5, 6, 7, 8, 10]/*需要隐藏的的列序号*/,
-                hide_len: 6,
-                column_api: {
-                    isEmpty: function () {
-                        if (self.table.list_table === null) {
-                            return true;
-                        }
-                        return self.table.list_table.data().length === 0;
-                    }
-                },
-                $colgroup: jq_dom.$admin_table_colgroup/*分组模型*/,
-                $column_btn: jq_dom.$admin_table_checkcolumn.prev(),
-                $column_ul: jq_dom.$admin_table_checkcolumn.find('ul')
-            },
-            /*全选*/
-            tablecheckall: {
-                checkall_flag: true,
-                $bodywrap: jq_dom.$admin_batchlist_wrap,
-                $checkall: jq_dom.$admin_struct_checkall,
-                checkvalue: 0/*默认未选中*/,
-                checkid: []/*默认索引数据为空*/,
-                checkitem: []/*默认node数据为空*/,
-                highactive: 'item-lightenbatch',
-                checkactive: 'admin-batchitem-checkactive'
-            },
-            /*按钮*/
-            tableitemaction: {
-                $bodywrap: jq_dom.$admin_batchlist_wrap,
-                itemaction_api: {
-                    doItemAction: function (config) {
-                        organizationService.doItemAction({
-                            record: self.record,
-                            address: self.user_address,
-                            user: self.user,
-                            table: self.table
-                        }, config);
-                    }
-                }
-            }
-        };
 
 
         /*初始化服务--虚拟挂载点，或者初始化参数*/
@@ -434,18 +131,7 @@ angular.module('app')
             address: self.address,
             model: self.struct
         });
-        /*初始化服务--初始化地址信息*/
-        organizationService.queryAddress({
-            type: 'province',
-            address: self.user_address,
-            model: self.user
-        });
-        /*初始化服务--初始化地址信息*/
-        organizationService.queryAddress({
-            type: 'province',
-            address: self.list_address,
-            model: self.list_addressdata
-        });
+
 
 
         /*地址服务--选中地址*/
@@ -459,38 +145,27 @@ angular.module('app')
 
 
         /*菜单服务--初始化请求菜单*/
-        this.initSubMenu = function () {
+        this.initSubMenu = function (type) {
             organizationService.getMenuList({
                 record: self.record,
-                table: self.table,
-                structpos: self.structpos
+                type:type
             });
         };
         /*菜单服务--子菜单展开*/
         this.toggleSubMenu = function (e) {
             organizationService.toggleSubMenu(e, {
-                record: self.record,
-                table: self.table
+                record: self.record
             });
         };
         /*菜单服务--跳转至虚拟挂载点*/
         this.rootSubMenu = function (e) {
             organizationService.rootSubMenu(e, {
-                record: self.record,
-                table: self.table,
-                structpos: self.structpos
+                record: self.record
             });
         };
 
 
-        /*机构服务--展开*/
-        this.toggleStructList = function (e) {
-            organizationService.toggleStructList(e, {
-                record: self.record,
-                table: self.table,
-                structpos: self.structpos
-            });
-        };
+
         /*机构服务--操作机构表单*/
         this.actionStruct = function (config) {
             /*调用编辑机构服务类*/
@@ -499,14 +174,6 @@ angular.module('app')
                 record: self.record,
                 struct: self.struct,
                 address: self.address
-            });
-        };
-        /*机构服务--调整位置*/
-        this.adjustStructPos = function () {
-            organizationService.adjustStructPos({
-                structpos: self.structpos,
-                record: self.record,
-                table: self.table
             });
         };
 
@@ -525,7 +192,6 @@ angular.module('app')
             organizationService.formSubmit({
                 struct: self.struct,
                 user: self.user,
-                table: self.table,
                 record: self.record
             }, type);
         };
@@ -560,39 +226,10 @@ angular.module('app')
         };
 
 
-        /*用户服务--操作用户表单*/
-        this.actionUser = function (config) {
-            /*调用编辑机构服务类*/
-            organizationService.actionUser({
-                modal: config,
-                record: self.record,
-                address: self.user_address,
-                user: self.user
-            });
-        };
-        /*用户服务--过滤表格数据*/
-        this.filterDataTable = function () {
-            organizationService.filterDataTable(self.table.list_table, self.user);
-        };
-        /*用户服务--批量删除*/
-        this.batchDeleteUser = function () {
-            organizationService.batchDeleteUser({
-                record: self.record,
-                table: self.table
-            });
-        };
-        /*用户服务--调整运营商*/
-        this.adjustOperate = function () {
-            console.log('to do');
-        };
-
-
         /*搜索服务--搜索过滤*/
         this.searchAction = function () {
             organizationService.getMenuList({
-                record: self.record,
-                table: self.table,
-                structpos: self.structpos
+                record: self.record
             });
         };
         /*搜索服务--清空过滤条件*/

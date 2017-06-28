@@ -32,12 +32,7 @@ angular.module('app')
                         /*延迟加载，依赖相关组件*/
                         deps: ['$ocLazyLoad',
                             function ($ocLazyLoad) {
-                                return $ocLazyLoad.load(['js/plugins/datatables/dataTables.bootstrap.css',
-                                    'js/plugins/datatables/js/jquery.dataTables.js',
-                                    'js/plugins/pagination/pagination.js',
-                                    'js/app/services/datatable/datatable_column_service.js',
-                                    'js/app/services/datatable/datatable_checkall_service.js',
-                                    'js/app/services/datatable/datatable_itemaction_service.js',
+                                return $ocLazyLoad.load(['js/plugins/pagination/pagination.js',
                                     'js/app/services/address/address_service.js','js/app/module/organization/organization_service.js','js/app/module/organization/organization_controller.js']);
                             }]
                     }

@@ -972,7 +972,7 @@
                     return null;
                 }
                 var menu_map = {
-                        'yttx-oragnization': 'organization',
+                        'yttx-organization': 'organization',
                         'yttx-order-manager': 'order',
                         'yttx-invoice-manager': 'invoice',
                         'yttx-purchase-manager': 'purchase',

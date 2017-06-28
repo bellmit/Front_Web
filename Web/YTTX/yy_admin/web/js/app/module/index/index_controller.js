@@ -23,7 +23,8 @@ angular.module('app')
             var len = arr.length,
                 imgsrc_map = {
                     'app': 0/*首页*/,
-                    'struct': 1/*机构 oragnization*/,
+                    'struct': 1/*机构 organization*/,
+                    'organization': 1/*机构 organization*/,
                     'order': 2/*订单*/,
                     'finance': 3/*财务*/,
                     'equipment': 4/*设备*/,

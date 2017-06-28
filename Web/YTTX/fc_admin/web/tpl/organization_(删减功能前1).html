@@ -3,11 +3,97 @@
         <div class="struct-layout-main">
             <!--主内容-->
             <h1 class="admin-layout-theme3  g-clear-pt">
-                组织机构：<span>{{organization_ctrl.record.structName!==''?organization_ctrl.record.structName:organization_ctrl.record.organizationName}}</span>
+                <span>{{organization_ctrl.record.structName!==''?organization_ctrl.record.structName:organization_ctrl.record.organizationName}}</span>
                 &nbsp;&nbsp;&nbsp;&nbsp;
                 <button type="button" class="btn btn-default g-c-blue3" ng-disabled="organization_ctrl.record.layer===0 || organization_ctrl.record.layer > 1" ng-show="::organization_ctrl.powerlist.organization_edit" ng-click="organization_ctrl.actionStruct({display:'show',area:'struct',type:'edit'})"><i class="btn-action admin-btn-action7"></i>&nbsp;编辑</button><span class="g-c-gray8 g-fs2" ng-show="organization_ctrl.record.layer > 1">&nbsp;&nbsp;只能操作直接下级，不是直接下级需要用被操作下级的父级机构登录</span>
-                <button type="button" class="btn btn-default g-c-blue3" ng-disabled="organization_ctrl.record.layer !==0 || organization_ctrl.record.organizationId===''" ng-show="::organization_ctrl.powerlist.organization_add" ng-click="organization_ctrl.actionStruct({display:'show',area:'struct',type:'add'})"><i class="btn-action admin-btn-action1"></i>&nbsp;添加子机构</button>
             </h1>
+
+            <!--下属机构-->
+            <h2 class="admin-layout-theme3" ng-click="organization_ctrl.testOut()"><span class="theme-icon admin-theme-icon1"></span>&nbsp;&nbsp;下属机构</h2>
+
+            <!--添加菜单条-->
+            <div class="admin-action-item">
+                <span ng-click="organization_ctrl.actionStruct({display:'show',area:'struct',type:'add'})" ng-show="organization_ctrl.powerlist.organization_add && organization_ctrl.record.organizationId!=='' && organization_ctrl.record.layer < 1"><i class="btn-action admin-btn-action1"></i>添加子机构</span>
+                <span ng-show="organization_ctrl.record.hasdata"  ng-click="organization_ctrl.adjustStructPos()"><i class="btn-action admin-btn-action2"></i>调整位置</span>
+            </div>
+
+            <!--机构列表-->
+            <ul class="admin-list-tsitem" id="admin_struct_list" ng-click="organization_ctrl.toggleStructList($event)"></ul>
+
+
+
+            <!--机构用户-->
+            <h2 class="admin-layout-theme3"><span class="theme-icon admin-theme-icon2"></span>&nbsp;&nbsp;机构用户</h2>
+
+            <div class="admin-action-item">
+                <div class="action-item-btn g-f-l g-w-percent28">
+                    <span ng-show="::organization_ctrl.powerlist.user_add && (organization_ctrl.record.structId!=='' || organization_ctrl.record.organizationId!=='')"  ng-click="organization_ctrl.actionUser({display:'show',area:'user',type:'add'})" ><i class="btn-action admin-btn-action1"></i>添加店铺</span>
+                    <span ng-show="::organization_ctrl.powerlist.operator_adjustment && 1===2" ng-click="organization_ctrl.adjustOperate()"><i class="btn-action admin-btn-action5"></i>调整运营商</span>
+                    <span ng-show="::organization_ctrl.powerlist.batch_delete && false" ng-click="organization_ctrl.batchDeleteUser()"><i class="btn-action admin-btn-action6"></i>批量删除</span>
+                </div>
+                <!--->
+                <div class="action-item-ul g-w-percent6 g-pos-r" ng-show="::organization_ctrl.table.tablecolumn.columnshow">
+                    <div class="action-theme action-theme-btn g-br3 g-t-c">显示隐藏列</div>
+                    <div class="action-ul g-d-hidei" id="admin_table_checkcolumn">
+                        <ul class="action-list-wrap" ></ul>
+                    </div>
+
+                </div>
+                <div class="action-item-input g-f-r g-w-percent14">
+                    <label class="action-indent-b2">过滤:
+                        <input class="form-control input-sm" ng-model="organization_ctrl.user.filter" ng-keyup="organization_ctrl.filterDataTable()" placeholder="" type="search">
+                    </label>
+                </div>
+            </div>
+
+            <!--表格-->
+            <table id="admin_list_wrap" class="table table-bordered table-striped table-hover admin-layout-table">
+
+                <!--分组样式-->
+                <colgroup id="admin_table_colgroup">
+                    <col class="g-w-percent3"/>
+                    <col class="g-w-percent4"/>
+                    <col class="g-w-percent4"/>
+                    <col class="g-w-percent4"/>
+                    <col class="g-w-percent4"/>
+                    <col class="g-w-percent4"/>
+                    <col class="g-w-percent4"/>
+                    <col class="g-w-percent4"/>
+                    <col class="g-w-percent4"/>
+                    <col class="g-w-percent4"/>
+                    <col class="g-w-percent4"/>
+                    <col class="g-w-percent7"/>
+                </colgroup>
+                <!--头部-->
+                <thead>
+                    <tr>
+                        <th class="g-clear-pl g-clear-pr g-t-c">
+                            <div class="admin-batchitem-wrap" ng-show="::organization_ctrl.powerlist.batch_delete" >
+                                <label data-check="0" class="admin-batchitem-check" id="admin_struct_checkall"></label>
+                            </div>
+                        </th>
+                        <th>店铺全称</th>
+                        <th>店铺简称</th>
+                        <th>姓名</th>
+                        <th>店铺类型</th>
+                        <th>店铺手机号码</th>
+                        <th>店铺电话号码</th>
+                        <th>省市区</th>
+                        <th>详细地址</th>
+                        <th>状态</th>
+                        <th>添加时间</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+
+                <!--表主体-->
+                <tbody id="admin_batchlist_wrap" class="middle-align"></tbody>
+            </table>
+
+            <!--分页-->
+            <div class="admin-page-wrap">
+                <div class="easyui-pagination g-w-percent50" id="admin_page_wrap" data-options="links:5,layout:['manual','first','prev','links','next','last'],displayMsg:'显示{from}&nbsp;到&nbsp;{to}&nbsp;共&nbsp;{total}条记录'"></div>
+            </div>
         </div>
 
         <div class="struct-layout-side">
@@ -21,7 +107,7 @@
             <ul class="sub-menu-wrap">
                 <li>
                     <a class="sub-menu-title sub-menu-titleactive" data-parentid="" data-id="organization_ctrl.record.currentId" data-layer="0" data-list="false" data-label="organization_ctrl.record.currentName"  ng-click="organization_ctrl.rootSubMenu($event)">{{organization_ctrl.record.currentName}}</a>
-                    <ul ng-init="organization_ctrl.initSubMenu('fc')" ng-click="organization_ctrl.toggleSubMenu($event)" id="admin_struct_submenu" class="g-d-showi ui-sub-menu"></ul>
+                    <ul ng-init="organization_ctrl.initSubMenu()" ng-click="organization_ctrl.toggleSubMenu($event)" id="admin_struct_submenu" class="g-d-showi ui-sub-menu"></ul>
                 </li>
             </ul>
         </div>
