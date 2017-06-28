@@ -49,9 +49,9 @@ angular.module('app')
         this.toggleModal = function (config, fn) {
             var temp_timer = null,
                 type_map = {
-                    'struct': self.$struct_struct_dialog,
-                    'user': self.$struct_user_dialog,
-                    'userdetail': self.$struct_userdetail_dialog
+                    'struct': self.$admin_struct_dialog,
+                    'user': self.$admin_user_dialog,
+                    'userdetail': self.$admin_userdetail_dialog
                 };
             if (config.display === 'show') {
                 if (typeof config.delay !== 'undefined') {
@@ -410,22 +410,27 @@ angular.module('app')
 
 
             /*模型缓存*/
-            var record = config.record;
+            var record = config.record,
+                type=config.type;
 
             /*变更操作记录模型--激活高亮*/
-            if (record.current === null) {
-                record.current = $this;
-            } else {
-                record.prev = record.current;
-                record.current = $this;
-                record.prev.removeClass('sub-menuactive');
-            }
-            record.current.addClass('sub-menuactive');
+            if(type==='fc'){
+                if (record.current === null) {
+                    record.current = $this;
+                } else {
+                    record.prev = record.current;
+                    record.current = $this;
+                    record.prev.removeClass('sub-menuactive');
+                }
+                record.current.addClass('sub-menuactive');
 
-            /*变更模型*/
-            record.layer = temp_layer;
-            record.organizationId = temp_id;
-            record.organizationName = temp_label;
+                /*变更模型*/
+                record.layer = temp_layer;
+                record.organizationId = temp_id;
+                record.organizationName = temp_label;
+            }else if(type==='yy'){
+
+            }
 
             /*查询子集*/
             if (haschild) {
@@ -434,8 +439,17 @@ angular.module('app')
                     /*隐藏*/
                     $child.removeClass('g-d-showi');
                     $this.removeClass('sub-menu-titleactive');
-                    record.hasdata = true;
+                    if(type==='fc'){
+                        record.hasdata = true;
+                    }else if(type==='yy'){
+
+                    }
                 } else {
+                    if(type==='fc'){
+                        /*to do*/
+                    }else if(type==='yy'){
+                        /*to do*/
+                    }
                     /*显示*/
                     $child.addClass('g-d-showi');
                     $this.addClass('sub-menu-titleactive');
@@ -446,16 +460,24 @@ angular.module('app')
                         self.getMenuList(config);
                     } else if (isrequest === 'true') {
                         /*已加载的直接遍历存入操作区域*/
-                        if (haschild) {
-                            record.hasdata = true;
-                        } else {
-                            record.hasdata = false;
+                        if(type==='fc'){
+                            if (haschild) {
+                                record.hasdata = true;
+                            } else {
+                                record.hasdata = false;
+                            }
+                        }else if(type==='yy'){
+
                         }
                     }
 
                 }
             } else {
-                record.hasdata = false;
+                if(type==='fc'){
+                    record.hasdata = false;
+                }else if(type==='yy'){
+
+                }
             }
         };
         /*导航服务--跳转至虚拟挂载点*/
@@ -481,32 +503,6 @@ angular.module('app')
                 } else if (islist === 'false') {
                     record.hasdata = false;
                 }
-            }
-        };
-        /*导航服务--拷贝本级数据(to do)*/
-        this.copySubMenu = function ($wrap) {
-            var data = $wrap.find('>li >a'),
-                len = data.size();
-
-            if (len !== 0) {
-                /*有数据节点*/
-                var list = [];
-                data.each(function () {
-                    var citem = $(this),
-                        label = citem.html(),
-                        id = citem.attr('data-id'),
-                        layer = citem.attr('data-layer'),
-                        parentid = citem.attr('data-parentid');
-                    list.push({
-                        parentid: parentid,
-                        layer: layer,
-                        label: label,
-                        id: id
-                    });
-                });
-                return list;
-            } else {
-                return null;
             }
         };
 
@@ -1411,12 +1407,7 @@ angular.module('app')
         this.getPCParams = function (record) {
             var cid,
                 pid;
-            if (record.structId !== '') {
-                cid = record.structId;
-                if (record.structnode !== null) {
-                    pid = record.structnode.attr('data-parentid');
-                }
-            } else if (record.organizationId !== '') {
+            if (record.organizationId !== '') {
                 cid = record.organizationId;
                 if (record.current !== null && record.layer !== 0) {
                     pid = record.current.attr('data-parentid');

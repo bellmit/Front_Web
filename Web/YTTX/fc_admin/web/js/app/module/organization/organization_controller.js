@@ -11,10 +11,10 @@ angular.module('app')
         var jq_dom = {
             $admin_struct_submenu: $('#admin_struct_submenu'),
             $admin_struct_list: $('#admin_struct_list'),
-            $struct_struct_dialog: $('#struct_struct_dialog'),
+            $admin_struct_dialog: $('#admin_struct_dialog'),
             $admin_struct_reset: $('#admin_struct_reset'),
-            $struct_user_dialog: $('#struct_user_dialog'),
-            $struct_userdetail_dialog: $('#struct_userdetail_dialog'),
+            $admin_user_dialog: $('#admin_user_dialog'),
+            $admin_userdetail_dialog: $('#admin_userdetail_dialog'),
             $admin_user_reset: $('#admin_user_reset'),
             $admin_userdetail_show: $('#admin_userdetail_show')
         };
@@ -68,6 +68,7 @@ angular.module('app')
             organizationId: ''/*操作id*/,
             organizationName: ''/*操作名称*/,
             carrieroperatorId:''/*运营商Id*/,
+            carrieroperatorName:''/*运营商Id*/,
             layer: 0/*操作层*/
         };
 
@@ -80,7 +81,6 @@ angular.module('app')
             parentId: ''/*上级运营商ID，编辑时相关参数*/,
             fullName: ''/*运营商全称*/,
             shortName: ''/*运营商简称*/,
-            adscriptionRegion: ''/*归属地区 false*/,
             linkman: ''/*负责人*/,
             cellphone: ''/*手机号码*/,
             telephone: ''/*电话号码*/,
@@ -95,7 +95,8 @@ angular.module('app')
             username: ''/*设置登录名*/,
             password: ''/*设置登录密码*/,
             isDesignatedPermit: 0/*是否指定权限,0:全部权限 1:指定权限*/,
-            checkedFunctionIds: ''/*选中权限Ids*/
+            checkedFunctionIds: ''/*选中权限Ids*/,
+            bindingShopIds:''/*选中绑定加盟店Ids*/
         };
 
 
@@ -152,9 +153,10 @@ angular.module('app')
             });
         };
         /*菜单服务--子菜单展开*/
-        this.toggleSubMenu = function (e) {
+        this.toggleSubMenu = function (e,type) {
             organizationService.toggleSubMenu(e, {
-                record: self.record
+                record: self.record,
+                type:type
             });
         };
         /*菜单服务--跳转至虚拟挂载点*/
