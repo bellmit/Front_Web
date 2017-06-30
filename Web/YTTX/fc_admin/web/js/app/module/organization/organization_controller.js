@@ -16,9 +16,12 @@ angular.module('app')
             $admin_user_dialog: $('#admin_user_dialog'),
             $admin_userdetail_dialog: $('#admin_userdetail_dialog'),
             $admin_user_reset: $('#admin_user_reset'),
-            $admin_userdetail_show: $('#admin_userdetail_show')
+            $admin_userdetail_show: $('#admin_userdetail_show'),
+            $admin_yystruct_menu: $('#admin_yystruct_menu')
         };
         jq_dom['$admin_submenu_wrap'] = jq_dom.$admin_struct_submenu.prev();
+        jq_dom['$admin_yystruct_wrap'] = jq_dom.$admin_yystruct_menu.prev();
+        jq_dom['$all_yystruct'] = jq_dom.$admin_yystruct_wrap.find('label');
 
         var jq_dom_power = {
             $power_colgroup: $('#struct_power_colgroup'),
@@ -58,18 +61,29 @@ angular.module('app')
 
         /*模型--操作记录*/
         this.record = {
-            searchactive: ''/*搜索激活状态(菜单栏搜索)*/,
-            searchname: ''/*搜索关键词(菜单栏搜索)*/,
-            prev: null/*上一次操作记录*/,
-            current: null/*当前操作记录*/,
-            hasdata: false/*下级是否有数据,或者是否查询到数据*/,
-            currentId: ''/*虚拟挂载点*/,
-            currentName: ''/*虚拟挂载点*/,
+            /*分仓*/
+            searchactive1: ''/*搜索激活状态(菜单栏搜索)*/,
+            searchname1: ''/*搜索关键词(菜单栏搜索)*/,
+            prev1: null/*上一次操作记录*/,
+            current1: null/*当前操作记录*/,
+            hasdata1: false/*下级是否有数据,或者是否查询到数据*/,
+            currentId1: ''/*虚拟挂载点*/,
+            currentName1: ''/*虚拟挂载点*/,
             organizationId: ''/*操作id*/,
             organizationName: ''/*操作名称*/,
-            carrieroperatorId:''/*运营商Id*/,
-            carrieroperatorName:''/*运营商Id*/,
-            layer: 0/*操作层*/
+            layer1: 0/*操作层*/,
+            /*运营商*/
+            searchactive2: ''/*搜索激活状态(菜单栏搜索)*/,
+            searchname2: ''/*搜索关键词(菜单栏搜索)*/,
+            prev2: null/*上一次操作记录*/,
+            current2: null/*当前操作记录*/,
+            hasdata2: false/*下级是否有数据,或者是否查询到数据*/,
+            currentId2: ''/*虚拟挂载点*/,
+            currentName2: '运营商'/*虚拟挂载点*/,
+            carrieroperatorId: ''/*运营商Id*/,
+            carrieroperatorName: ''/*运营商Id*/,
+            layer2: 0/*操作层*/,
+            check_shopid:{}/*选中绑定加盟店Ids*/
         };
 
 
@@ -96,7 +110,7 @@ angular.module('app')
             password: ''/*设置登录密码*/,
             isDesignatedPermit: 0/*是否指定权限,0:全部权限 1:指定权限*/,
             checkedFunctionIds: ''/*选中权限Ids*/,
-            bindingShopIds:''/*选中绑定加盟店Ids*/
+            bindingShopIds: ''/*选中绑定加盟店Ids*/
         };
 
 
@@ -122,8 +136,6 @@ angular.module('app')
         };
 
 
-
-
         /*初始化服务--虚拟挂载点，或者初始化参数*/
         organizationService.getRoot(self.record);
         /*初始化服务--初始化地址信息*/
@@ -132,7 +144,6 @@ angular.module('app')
             address: self.address,
             model: self.struct
         });
-
 
 
         /*地址服务--选中地址*/
@@ -146,25 +157,27 @@ angular.module('app')
 
 
         /*菜单服务--初始化请求菜单*/
-        this.initSubMenu = function (type) {
+        this.initMenuList = function (type) {
             organizationService.getMenuList({
                 record: self.record,
-                type:type
+                type: type
             });
         };
         /*菜单服务--子菜单展开*/
-        this.toggleSubMenu = function (e,type) {
-            organizationService.toggleSubMenu(e, {
+        this.toggleMenuList = function (e, type) {
+            organizationService.toggleMenuList(e, {
+                record: self.record,
+                type: type
+            });
+        };
+        /*菜单服务--跳转至虚拟挂载点*/
+        this.rootMenuList = function (e,type) {
+            organizationService.rootMenuList(e, {
                 record: self.record,
                 type:type
             });
         };
-        /*菜单服务--跳转至虚拟挂载点*/
-        this.rootSubMenu = function (e) {
-            organizationService.rootSubMenu(e, {
-                record: self.record
-            });
-        };
+
 
 
 
@@ -226,18 +239,44 @@ angular.module('app')
                 record: self.record
             });
         };
-
+        /*表单服务--运营商服务--确定所选运营商*/
+        this.getSelectStruct = function () {
+            organizationService.getSelectStruct({
+                record: self.record,
+                struct: self.struct
+            });
+        };
+        /*表单服务--运营商服务--取消所选运营商*/
+        this.clearSelectStruct = function () {
+            organizationService.clearSelectStruct({
+                record: self.record,
+                struct: self.struct
+            });
+        };
 
         /*搜索服务--搜索过滤*/
-        this.searchAction = function () {
+        this.searchAction1 = function () {
             organizationService.getMenuList({
-                record: self.record
+                record: self.record,
+                type:'fc'
             });
         };
         /*搜索服务--清空过滤条件*/
-        this.searchClear = function () {
-            self.record.searchname = '';
-            self.record.searchactive = '';
+        this.searchClear1 = function () {
+            self.record.searchname1 = '';
+            self.record.searchactive1 = '';
         };
-        
+        /*搜索服务--搜索过滤*/
+        this.searchAction2 = function () {
+            organizationService.getMenuList({
+                record: self.record,
+                type:'yy'
+            });
+        };
+        /*搜索服务--清空过滤条件*/
+        this.searchClear2 = function () {
+            self.record.searchname2 = '';
+            self.record.searchactive2 = '';
+        };
+
     }]);

@@ -122,7 +122,7 @@ angular.module('app')
         this.getMenuList = function (config) {
             if (cache) {
                 var type = config.type,
-                    record,
+                    record = config.record,
                     tempparam = cache.loginMap.param,
                     param = {
                         token: tempparam.token,
@@ -135,16 +135,6 @@ angular.module('app')
                     url = '';
 
                 if (type === 'fc') {
-                    /*判断是否为搜索模式*/
-                    if (config.record.searchname1 !== '') {
-                        self.initRecord({
-                            record: config.record,
-                            flag: true,
-                            type: type
-                        });
-                        param['fullName'] = config.record.searchname1;
-                    }
-                    record = config.record;
                     layer = record.layer1;
                     /*查询分仓*/
                     if (record.organizationId === '' && record.currentId1 === '') {
@@ -152,6 +142,16 @@ angular.module('app')
                     }
                     id = record.organizationId === '' ? record.currentId1 : record.organizationId;
                     param['organizationId'] = id;
+
+                    /*判断是否为搜索模式*/
+                    if (config.record.searchname1 !== '') {
+                        self.initRecord({
+                            record:config.record,
+                            flag:true,
+                            type:type
+                        });
+                        param['fullName'] = record.searchname1;
+                    }
 
                     /*初始化加载*/
                     if (record.current1 === null) {
@@ -163,21 +163,21 @@ angular.module('app')
                     }
                     url = '/organization/lowers/search';
                 } else if (type === 'yy') {
-                    /*判断是否为搜索模式*/
-                    if (config.record.searchname2 !== '') {
-                        self.initRecord({
-                            record: config.record,
-                            flag: true,
-                            type: type
-                        });
-                        param['fullName'] = config.record.searchname2;
-                    }
-                    record = config.record;
                     layer = record.layer2;
                     /*查询运营*/
                     id = record.carrieroperatorId === '' ? record.currentId2 : record.carrieroperatorId;
                     if (id !== '') {
                         param['carrieroperatorId'] = id;
+                    }
+
+                    /*判断是否为搜索模式*/
+                    if (config.record.searchname2 !== '') {
+                        self.initRecord({
+                            record:config.record,
+                            flag:true,
+                            type:type
+                        });
+                        param['fullName'] = record.searchname2;
                     }
 
                     /*初始化加载*/
@@ -436,32 +436,14 @@ angular.module('app')
                 layer = config.layer,
                 parentid = config.id;
 
-
-            /*不分子查询*/
-            /*if (type === 'fc') {
-             if(flag){
-             str = '<li><a data-isrequest="false" data-parentid="' + parentid + '" data-layer="' + layer + '" data-id="' + id + '" class="sub-menu-title" href="#" title="">' + label + '</a>';
-             }else{
-             str = '<li><a data-parentid="' + parentid + '"  data-layer="' + layer + '" data-id="' + id + '"  href="#" title="">' + label + '</a></li>';
-             }
-             } else if (type === 'yy') {
-             str = '<li><a data-layer="' + layer + '" data-id="' + id + '" href="#" title=""><label class="sub-menu-checkbox" data-id="' + id + '"></label>' + label + '</a></li>';
-             }*/
-
-
-            /*分子查询*/
-            if (flag) {
-                if (type === 'fc') {
+            if (type === 'fc') {
+                if(flag){
                     str = '<li><a data-isrequest="false" data-parentid="' + parentid + '" data-layer="' + layer + '" data-id="' + id + '" class="sub-menu-title" href="#" title="">' + label + '</a>';
-                } else if (type === 'yy') {
-                    str = '<li><a data-isrequest="false" data-parentid="' + parentid + '" data-layer="' + layer + '" data-label="' + label + '" data-id="' + id + '" class="sub-menu-title" href="#" title=""><label class="sub-menu-checkbox" data-id="' + id + '"></label>' + label + '</a>';
-                }
-            } else {
-                if (type === 'fc') {
+                }else{
                     str = '<li><a data-parentid="' + parentid + '"  data-layer="' + layer + '" data-id="' + id + '"  href="#" title="">' + label + '</a></li>';
-                } else if (type === 'yy') {
-                    str = '<li><a data-parentid="' + parentid + '" data-layer="' + layer + '" data-id="' + id + '" href="#" title=""  data-label="' + label + '"><label class="sub-menu-checkbox" data-id="' + id + '"></label>' + label + '</a></li>';
                 }
+            } else if (type === 'yy') {
+                str = '<li><a data-layer="' + layer + '" data-id="' + id + '" href="#" title=""><label class="sub-menu-checkbox" data-id="' + id + '"></label>' + label + '</a></li>';
             }
             return str;
         };
@@ -480,6 +462,9 @@ angular.module('app')
 
             var record = config.record/*模型缓存*/,
                 type = config.type/*业务类型*/;
+            
+            
+            
 
 
             if (node === 'a') {
@@ -499,11 +484,11 @@ angular.module('app')
                 }
 
                 temp_layer = $this.attr('data-layer');
-                temp_id = hasdata;
-
+                temp_id = $this.attr('data-id');
+                temp_label = $this.html();
 
                 if (type === 'fc') {
-                    temp_label = $this.html();
+
                     /*变更操作记录模型--激活高亮*/
                     if (record.current1 === null) {
                         record.current1 = $this;
@@ -519,12 +504,12 @@ angular.module('app')
                     record.organizationId = temp_id;
                     record.organizationName = temp_label;
                 } else if (type === 'yy') {
-                    temp_label = $this.attr('data-label');
+
                     /*变更操作记录模型--激活高亮*/
                     if (record.current2 === null) {
                         record.current2 = $this;
                     } else {
-                        record.prev2 = record.current2;
+                        record.prev2 = record.current1;
                         record.current2 = $this;
                         record.prev2.removeClass('sub-menuactive');
                     }
@@ -534,6 +519,8 @@ angular.module('app')
                     record.layer2 = temp_layer;
                     record.carrieroperatorId = temp_id;
                     record.carrieroperatorName = temp_label;
+
+
                 }
 
                 /*查询子集*/
@@ -594,7 +581,7 @@ angular.module('app')
                 node = target.nodeName.toLowerCase(),
                 type = config.type;
 
-            if (node === 'a') {
+            if(node==='a'){
                 var $this = $(e.target),
                     islist = $this.attr('data-list');
 
@@ -637,7 +624,7 @@ angular.module('app')
                     /*初始化加载数据 to do*/
                     //self.getMenuList(config);
                 }
-            } else if (node === 'label') {
+            }else if(node==='label'){
                 self.structCheck({
                     target: target,
                     type: 'all',
@@ -645,6 +632,7 @@ angular.module('app')
                 });
             }
         };
+
 
 
         /*操作记录服务--初始化操作参数(搜索模式或者重置操作参数模式)*/
@@ -676,9 +664,8 @@ angular.module('app')
                     record.hasdata2 = false;
                 }
                 record.layer2 = 0;
-                record.carrieroperatorId = '';
-                record.carrieroperatorName = '';
-
+                record.carrieroperatorId = record.currentId2;
+                record.carrieroperatorName = record.currentName2;
                 if (record.prev2 !== null) {
                     record.prev2.removeClass('sub-menuactive');
                     record.current2.removeClass('sub-menuactive');
@@ -811,19 +798,31 @@ angular.module('app')
                 record = config.record,
                 type = modal.type;
 
+
+            /*判断是否是合法的节点，即是否有父机构*/
+            if (record.organizationId === '') {
+                toolDialog.show({
+                    type: 'warn',
+                    value: '没有父机构或父机构不存在'
+                });
+                return false;
+            }
+
             /*如果存在延迟任务则清除延迟任务*/
             self.clearFormDelay();
             /*通过延迟任务清空表单数据*/
             self.addFormDelay({
-                type: modal.area
+                type: 'struct'
             });
 
 
             /*根据类型跳转相应逻辑*/
             if (type === 'edit') {
                 /*查询相关存在的数据*/
-                self.queryStructInfo(config);
+                self.queryOperateInfo(config);
             } else if (type === 'add') {
+                /*默认为全选权限,不查询权限*/
+
                 /*显示弹窗*/
                 self.toggleModal({
                     display: modal.display,
@@ -832,23 +831,21 @@ angular.module('app')
             }
         };
         /*机构服务--查询机构数据*/
-        this.queryStructInfo = function (config) {
+        this.queryOperateInfo = function (config) {
             if (cache === null) {
                 return false;
             }
             var record = config.record,
                 struct = config.struct,
                 modal = config.modal,
-                param = $.extend(true, {}, cache.loginMap.param),
-                temp_id;
+                param = $.extend(true, {}, cache.loginMap.param);
 
             /*判断参数*/
-            if (record.organizationId !== '') {
-                temp_id = record.organizationId;
-            } else if (record.organizationId === '') {
-                temp_id = record.currentId1;
+            if (record.structId !== '') {
+                param['id'] = record.structId;
+            } else if (record.structId === '') {
+                param['id'] = record.organizationId;
             }
-            param['id']=temp_id;
 
             toolUtil
                 .requestHttp({
@@ -893,6 +890,9 @@ angular.module('app')
                                                     struct[i] = list[i];
                                                     break;
                                                 case 'shortName':
+                                                    struct[i] = list[i];
+                                                    break;
+                                                case 'adscriptionRegion':
                                                     struct[i] = list[i];
                                                     break;
                                                 case 'linkman':
@@ -1036,12 +1036,6 @@ angular.module('app')
                                                     break;
                                             }
                                         }
-                                        /*单独查询绑定的加盟店*/
-                                        self.queryCheckStruct({
-                                            id:temp_id,
-                                            record:record,
-                                            struct:struct
-                                        });
                                         /*显示弹窗*/
                                         self.toggleModal({
                                             display: modal.display,
@@ -1063,7 +1057,7 @@ angular.module('app')
                         if (typeof message !== 'undefined' && message !== '') {
                             console.log(message);
                         } else {
-                            console.log('请求分仓失败');
+                            console.log('请求机构失败');
                         }
                     });
         };
@@ -1118,6 +1112,7 @@ angular.module('app')
                 }
             }
         };
+
 
 
         /*表单类服务--执行延时任务序列*/
@@ -1279,6 +1274,7 @@ angular.module('app')
                     /*公共配置*/
                     param['fullName'] = config[type]['fullName'];
                     param['shortName'] = config[type]['shortName'];
+                    param['adscriptionRegion'] = config[type]['adscriptionRegion'];
                     param['linkman'] = config[type]['linkman'];
                     param['cellphone'] = toolUtil.trims(config[type]['cellphone']);
                     param['telephone'] = toolUtil.trimSep(config[type]['telephone'], '-');
@@ -1289,7 +1285,6 @@ angular.module('app')
                     param['isAudited'] = config[type]['isAudited'];
                     param['status'] = config[type]['status'];
                     param['remark'] = config[type]['remark'];
-                    param['bindingShopIds']=config[type]['bindingShopIds'];
 
                     /*处理特殊值*/
                     var isSettingLogin = parseInt(config[type]['isSettingLogin'], 10);
@@ -1311,10 +1306,10 @@ angular.module('app')
                     /*判断是新增还是修改*/
                     if (config[type]['id'] === '') {
                         action = 'add';
-                        if (record.organizationId === '') {
-                            param['parentId'] = record.currentId1;
-                        } else {
+                        if (record.structId === '') {
                             param['parentId'] = record.organizationId;
+                        } else {
+                            param['parentId'] = record.structId;
                         }
                         req_config['url'] = '/organization/add';
                     } else {
@@ -1324,6 +1319,34 @@ angular.module('app')
                         param['parentId'] = config[type]['parentId'];
                         req_config['url'] = '/organization/update';
                     }
+                } else if (type === 'user') {
+                    /*公共配置*/
+                    param['fullName'] = config[type]['fullName'];
+                    param['shortName'] = config[type]['shortName'];
+                    param['name'] = config[type]['name'];
+                    param['type'] = config[type]['shoptype'];
+                    param['cellphone'] = toolUtil.trims(config[type]['cellphone']);
+                    param['telephone'] = toolUtil.trimSep(config[type]['telephone'], '-');
+                    param['province'] = config[type]['province'];
+                    param['city'] = config[type]['city'];
+                    param['country'] = config[type]['country'];
+                    param['address'] = config[type]['address'];
+                    param['status'] = config[type]['status'];
+                    param['remark'] = config[type]['remark'];
+
+                    /*判断是新增还是修改*/
+                    if (config[type]['id'] === '') {
+                        action = 'add';
+                        param['organizationId'] = record.structId !== '' ? record.structId : record.organizationId !== '' ? record.organizationId : record.currentId1;
+                        param['fullName'] = config[type]['fullName'];
+                        req_config['url'] = '/organization/shop/add';
+                    } else {
+                        action = 'edit';
+                        param['organizationId'] = config[type]['organizationId'];
+                        param['id'] = config[type]['id'];
+                        req_config['url'] = '/organization/shop/update';
+                    }
+
                 }
                 req_config['data'] = param;
 
@@ -1416,6 +1439,9 @@ angular.module('app')
                 self.clearFormData(config[type], type);
                 /*重置权限信息*/
                 self.clearSelectPower(config[type]);
+            } else if (type === 'user') {
+                /*特殊情况--成员*/
+                self.clearFormData(config[type], type);
             }
             /*重置验证提示信息*/
             self.clearFormValid(config.forms);
@@ -1561,7 +1587,6 @@ angular.module('app')
                     config.struct.bindingShopIds = '';
                 }
             }
-            console.log(config.record.check_shopid);
         };
         /*表单类服务--运营商服务--取消(清空)所选运营商*/
         this.clearSelectStruct = function (config) {
@@ -1574,7 +1599,7 @@ angular.module('app')
         };
 
 
-        /*运营商服务--选中运营商服务，flag:下一个状态（操作一次以后将要切换的状态）(yes:选中，no:未选中)*/
+        /*运营商服务--选中运营商服务，flag:为当前选项的状态(yes:选中，no:未选中)*/
         this.structCheck = function (config, flag) {
             var target,
                 $label,
@@ -1624,144 +1649,15 @@ angular.module('app')
                         /*变更模型*/
                         record['check_shopid'][id] = id;
                     });
-                    /*添加全选本身值（可以根据具体情况定制）*/
-                    /*
-                     id = $label.attr('data-id');
-                     record['check_shopid'][id] = id;
-                     */
+                    /*添加全选本身值*/
+                    id = $label.attr('data-id');
+                    record['check_shopid'][id] = id;
                 } else if (type === 'item') {
                     /*选中单个*/
                     id = $label.attr('data-id');
                     /*变更模型*/
                     record['check_shopid'][id] = id;
                 }
-            }
-        };
-        /*运营商服务--通过选中的值反向关联选中运营商服务*/
-        this.reverseStructCheck = function (config) {
-            var labelcache = {}/*label缓存*/,
-                data=config.data/*已经存在的数据*/,
-                flag = config.flag/*是否关联全选*/;
-
-            if(data && !$.isEmptyObject(data)){
-                /*缓存label对象*/
-                self.$admin_yystruct_menu.find('label').each(function () {
-                    var $this = $(this),
-                        id = $this.attr('data-id');
-
-                    labelcache[id] = {
-                        'id': id,
-                        'label': $this
-                    };
-                });
-                /*开始比对*/
-                var temp_item;
-                for(var i in data){
-                    temp_item=labelcache[i];
-                    if(temp_item){
-                        /*匹配则高亮缓存值*/
-                        temp_item['label'].addClass('sub-menu-checkboxactive');
-                    }
-                }
-                /*选中全选*/
-                if(flag){
-                    self.$all_yystruct.addClass('sub-menu-checkboxactive');
-                }
-            }
-        };
-        /*运营商服务--查询已经存在的运营商*/
-        this.queryCheckStruct = function (config) {
-            if (cache) {
-                var id = config.id,
-                    record = config.record,
-                    tempparam = cache.loginMap.param,
-                    param = {
-                        token: tempparam.token,
-                        adminId: tempparam.adminId,
-                        organizationId: id
-                    };
-
-                toolUtil
-                    .requestHttp({
-                        url: '/organization/shopmaps',
-                        method: 'post',
-                        set: true,
-                        data: param
-                    })
-                    .then(function (resp) {
-                            var data = resp.data,
-                                status = parseInt(resp.status, 10);
-
-                            if (status === 200) {
-                                var code = parseInt(data.code, 10),
-                                    message = data.message;
-                                if (code !== 0) {
-                                    if (typeof message !== 'undefined' && message !== '') {
-                                        console.log(message);
-                                    }
-
-                                    if (code === 999) {
-                                        /*退出系统*/
-                                        cache = null;
-                                        loginService.outAction();
-                                    }
-                                } else {
-                                    /*加载数据*/
-                                    var result = data.result;
-                                    if (typeof result !== 'undefined') {
-                                        var list = result.list;
-                                        if (list) {
-                                            var len = list.length;
-                                            if (len === 0) {
-                                                record.check_shopid = {};
-                                            } else {
-                                                var i = 0,
-                                                    temp_obj = {},
-                                                    str='',
-                                                    shopid;
-                                                for (i; i < len; i++) {
-                                                    shopid = list[i]['shopId'];
-                                                    temp_obj[shopid] = shopid;
-                                                    if(i!==len - 1){
-                                                        str+=shopid+',';
-                                                    }else{
-                                                        str+=shopid;
-                                                    }
-                                                }
-                                                /*赋值模型*/
-                                                record.check_shopid = temp_obj;
-                                                /*同步表单模型*/
-                                                config.struct.bindingShopIds=str;
-                                                /*反向关联高亮选中运营商*/
-                                                self.reverseStructCheck({
-                                                    flag:true,
-                                                    data:temp_obj
-                                                });
-                                            }
-                                        } else {
-                                            record.check_shopid = {};
-                                        }
-                                    } else {
-                                        record.check_shopid = {};
-                                    }
-                                }
-                            }
-                        },
-                        function (resp) {
-                            record.check_shopid = {};
-                            var message = resp.data.message;
-                            if (typeof message !== 'undefined' && message !== '') {
-                                console.log(message);
-                            } else {
-                                console.log('请求绑定分仓失败');
-                            }
-                        });
-
-
-            } else {
-                /*退出系统*/
-                cache = null;
-                loginService.outAction();
             }
         };
 

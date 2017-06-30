@@ -666,52 +666,10 @@ angular.module('app')
                 model.checkedFunctionIds = '';
             }
         };
-        /*表单类服务--权限服务--取消所选权限*/
-        this.clearSelectPower = function (model) {
-            model.checkedFunctionIds = '';
-            powerService.clearSelectPower();
-        };
-        /*表单类服务--权限服务--全选权限*/
-        this.selectAllPower = function (e) {
-            powerService.selectAllPower(e);
-        };
-        /*表单类服务--权限服务--确定所选权限*/
-        this.getSelectPower = function (model) {
-            var temppower = powerService.getSelectPower();
-            if (temppower) {
-                model.checkedFunctionIds = temppower.join();
-            } else {
-                model.checkedFunctionIds = '';
-            }
-        };
         /*表单类服务--权限服务--取消(清空)所选权限*/
         this.clearSelectPower = function (model) {
             model.checkedFunctionIds = '';
             powerService.clearSelectPower();
-        };
-        /*表单服务--机构服务--确定所选机构*/
-        this.getSelectStruct = function (model) {
-            if (model) {
-                var source = model.record.managestruct,
-                    res = [];
-                for (var i in source) {
-                    res.push(source[i]);
-                }
-                if (res.length !== 0) {
-                    model.manage.designatedOrgIds = res.join();
-                } else {
-                    model.manage.designatedOrgIds = '';
-                }
-            }
-        };
-        /*表单类服务--机构服务--取消(清空)所选机构*/
-        this.clearSelectStruct = function (model) {
-            model.manage.designatedOrgIds = '';
-            self.structCheck({
-                type: 'all',
-                record: model.record,
-                target: self.$allstruct
-            }, 'no');
         };
         /*表单类服务--权限服务--切换所选权限*/
         this.toggleSelectPower = function (config) {
@@ -796,6 +754,32 @@ angular.module('app')
             }
 
         };
+
+        /*表单服务--机构服务--确定所选机构*/
+        this.getSelectStruct = function (model) {
+            if (model) {
+                var source = model.record.managestruct,
+                    res = [];
+                for (var i in source) {
+                    res.push(source[i]);
+                }
+                if (res.length !== 0) {
+                    model.manage.designatedOrgIds = res.join();
+                } else {
+                    model.manage.designatedOrgIds = '';
+                }
+            }
+        };
+        /*表单类服务--机构服务--取消(清空)所选机构*/
+        this.clearSelectStruct = function (model) {
+            model.manage.designatedOrgIds = '';
+            self.structCheck({
+                type: 'all',
+                record: model.record,
+                target: self.$allstruct
+            }, 'no');
+        };
+
 
 
         /*数据服务--请求数据--获取表格数据*/

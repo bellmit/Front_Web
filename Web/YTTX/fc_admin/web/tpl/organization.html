@@ -3,16 +3,16 @@
         <div class="struct-layout-main">
             <!--主内容-->
             <h1 class="admin-layout-theme3  g-clear-pt">
-                组织机构：<span>{{organization_ctrl.record.structName!==''?organization_ctrl.record.structName:organization_ctrl.record.organizationName}}</span>
+                组织机构：<span>{{organization_ctrl.record.organizationName!==''?organization_ctrl.record.organizationName:organization_ctrl.record.currentName1}}</span>
                 &nbsp;&nbsp;&nbsp;&nbsp;
-                <button type="button" class="btn btn-default g-c-blue3" ng-disabled="organization_ctrl.record.layer===0 || organization_ctrl.record.layer > 1" ng-show="::organization_ctrl.powerlist.organization_edit" ng-click="organization_ctrl.actionStruct({display:'show',area:'struct',type:'edit'})"><i class="btn-action admin-btn-action7"></i>&nbsp;编辑</button><span class="g-c-gray8 g-fs2" ng-show="organization_ctrl.record.layer > 1">&nbsp;&nbsp;只能操作直接下级，不是直接下级需要用被操作下级的父级机构登录</span>
-                <button type="button" class="btn btn-default g-c-blue3" ng-disabled="organization_ctrl.record.layer !==0 || organization_ctrl.record.organizationId===''" ng-show="::organization_ctrl.powerlist.organization_add" ng-click="organization_ctrl.actionStruct({display:'show',area:'struct',type:'add'})"><i class="btn-action admin-btn-action1"></i>&nbsp;添加子机构</button>
+                <button type="button" class="btn btn-default g-c-blue3" ng-disabled="organization_ctrl.record.layer1===0 || organization_ctrl.record.layer1 > 1" ng-show="::organization_ctrl.powerlist.organization_edit" ng-click="organization_ctrl.actionStruct({display:'show',area:'struct',type:'edit'})"><i class="btn-action admin-btn-action7"></i>&nbsp;编辑</button><span class="g-c-gray8 g-fs2" ng-show="organization_ctrl.record.layer1 > 1">&nbsp;&nbsp;只能操作直接下级，不是直接下级需要用被操作下级的父级机构登录</span>
+                <button type="button" class="btn btn-default g-c-blue3" ng-disabled="organization_ctrl.record.layer1 !==0 || organization_ctrl.record.organizationId===''" ng-show="::organization_ctrl.powerlist.organization_add" ng-click="organization_ctrl.actionStruct({display:'show',area:'struct',type:'add'})"><i class="btn-action admin-btn-action1"></i>&nbsp;添加子机构</button>
             </h1>
         </div>
 
         <div class="struct-layout-side">
             <!--搜索组件-->
-            <div class="sub-search-wrap ui-sub-search" data-active="organization_ctrl.record.searchactive" data-value="organization_ctrl.record.searchname"  data-action="organization_ctrl.searchAction()" data-clear="organization_ctrl.searchClear()" ></div>
+            <div class="sub-search-wrap ui-sub-search" data-active="organization_ctrl.record.searchactive1" data-value="organization_ctrl.record.searchname1"  data-action="organization_ctrl.searchAction1()" data-clear="organization_ctrl.searchClear1()" ></div>
 
             <!--选项卡组件（切换机构和角色）-->
             <ul class="sub-tab-wrap sub-item-group2 sub-itembr-group2 ui-sub-tab-href" data-tabitem="organization_ctrl.tabitem"></ul>
@@ -20,8 +20,8 @@
             <!--子菜单组件-->
             <ul class="sub-menu-wrap">
                 <li>
-                    <a class="sub-menu-title sub-menu-titleactive" data-parentid="" data-id="organization_ctrl.record.currentId" data-layer="0" data-list="false" data-label="organization_ctrl.record.currentName"  ng-click="organization_ctrl.rootSubMenu($event)">{{organization_ctrl.record.currentName}}</a>
-                    <ul ng-init="organization_ctrl.initSubMenu('fc')" ng-click="organization_ctrl.toggleSubMenu($event,'fc')" id="admin_struct_submenu" class="g-d-showi ui-sub-menu"></ul>
+                    <a class="sub-menu-title sub-menu-titleactive" data-parentid="" data-id="organization_ctrl.record.currentId1" data-layer="0" data-list="false" data-label="organization_ctrl.record.currentName1"  ng-click="organization_ctrl.rootMenuList($event,'fc')">{{organization_ctrl.record.currentName1}}</a>
+                    <ul class="g-d-showi ui-sub-menu" ng-init="organization_ctrl.initMenuList('fc')" ng-click="organization_ctrl.toggleMenuList($event,'fc')" id="admin_struct_submenu" ></ul>
                 </li>
             </ul>
         </div>
@@ -31,21 +31,23 @@
     <!--弹出层--提示操作界面-->
     <!--机构设置-->
     <div class="modal fade custom-width" id="admin_struct_dialog">
-        <div class="modal-dialog g-w-percent46">
+        <div class="modal-dialog g-w-percent50">
             <div class="modal-content">
                 <div class="modal-body">
-                    <!--机构-->
-                    <div class="struct-side-widget g-f-l g-w-percent8 g-gap-mr2" ng-show="organization_ctrl.manage.isDesignatedOrg===1">
-                        <div class="admin-layout-theme4 admin-theme-close g-t-c g-b-gray17 g-pos-r">选择机构</div>
+                    <!--绑定加盟商-->
+                    <div class="struct-side-widget g-f-l g-w-percent8 g-gap-mr2">
+                        <div class="admin-layout-theme4 admin-theme-close g-t-c g-b-gray17 g-pos-r">绑定加盟商(运营商)</div>
                         <div class="row">
                             <div class="col-sm-12 g-gap-mb4">
+                                <!--搜索组件-->
+                                <div class="sub-search-wrap g-w-percent49 ui-sub-search" data-active="organization_ctrl.record.searchactive2" data-value="organization_ctrl.record.searchname2"  data-action="organization_ctrl.searchAction2()" data-clear="organization_ctrl.searchClear2()" ></div>
                                 <!--左侧操作区域-->
-                                <div class="admin-layout-theme4"><span class="mini-icon admin-mini-icon2"></span>&nbsp;机构信息</div>
+                                <div class="admin-layout-theme4"><span class="mini-icon admin-mini-icon2"></span>&nbsp;加盟商(运营商)信息</div>
                                 <!--子菜单组件-->
                                 <ul class="sub-menu-wrap g-gap-pb4">
                                     <li>
-                                        <a data-parentid="" data-id="{{organization_ctrl.record.carrieroperatorId}}" data-layer="0" class="sub-menu-title sub-menu-titleactive" ng-click="organization_ctrl.initStructList($event)"><label class="sub-menu-checkbox" data-id="{{organization_ctrl.record.carrieroperatorId}}">全选:</label>{{organization_ctrl.record.carrieroperatorName}}</a>
-                                        <ul class="g-d-showi" ng-click="organization_ctrl.toggleStructList($event)" id="admin_yy_menuwrap" ng-init="organization_ctrl.getStructList()"></ul>
+                                        <a class="sub-menu-title sub-menu-titleactive"  data-parentid="" data-id="" data-layer="0"  data-list="false" data-label="" ng-click="organization_ctrl.rootMenuList($event,'yy')"><label class="sub-menu-checkbox" data-id="">全选:</label>{{organization_ctrl.record.currentName2}}</a>
+                                        <ul class="g-d-showi ui-sub-menu"  ng-init="organization_ctrl.initMenuList('yy')" ng-click="organization_ctrl.toggleMenuList($event,'yy')" id="admin_yystruct_menu" ></ul>
                                     </li>
                                 </ul>
                             </div>
@@ -219,6 +221,15 @@
                                 </label>
                             </div>
 
+                            <div class="form-group-self1">
+                                <label class="self-label g-w-percent15 g-t-r">选择绑定加盟店</label>
+
+                                <div class="self-input g-pos-r g-w-percent35">
+                                    <input type="text" ng-model="organization_ctrl.struct.bindingShopIds" name="bindingShopIds" readonly />
+                                </div>
+                            </div>
+
+
                             <div class="admin-layout-theme4"><span class="mini-icon admin-mini-icon4"></span>&nbsp;登陆信息</div>
 
                             <div class="form-group-self1">
@@ -271,21 +282,10 @@
                                 </div>
                             </div>
 
-
                             <div class="form-group-self1">
-                                <label class="self-label g-w-percent15 g-t-r">选择权限</label>
+                                <button type="submit" ng-show="organization_ctrl.struct.id===''" ng-disabled="!(organization_ctrl.struct.id==='' && structFrom.fullName.$dirty && structFrom.fullName.$valid && structFrom.linkman.$dirty && structFrom.linkman.$valid && structFrom.cellphone.$dirty && structFrom.cellphone.$valid && (organization_ctrl.struct.telephone==='' || (structFrom.telephone.$dirty && structFrom.telephone.$valid)) && (organization_ctrl.struct.province!=='' && organization_ctrl.struct.city!=='' && organization_ctrl.struct.country!=='') && structFrom.address.$dirty && structFrom.address.$valid && ((organization_ctrl.struct.isSettingLogin===1 && structFrom.username.$dirty && structFrom.username.$valid && structFrom.password.$dirty && structFrom.password.$valid && ((organization_ctrl.struct.isDesignatedPermit===1 && structFrom.checkedFunctionIds.$valid) || organization_ctrl.struct.isDesignatedPermit===0)) || organization_ctrl.struct.isSettingLogin===0))"  class="btn btn-red g-br3 g-w-percent50">添加</button>
 
-                                <div class="self-input g-pos-r g-w-percent35">
-                                    <input type="text" ng-model="organization_ctrl.struct.checkedFunctionIds" required  name="checkedFunctionIds" readonly />
-                                    <span ng-show="structFrom.checkedFunctionIds.$dirty && structFrom.checkedFunctionIds.$error.required" class="self-tips self-tips-no g-c-red1 g-fs4 g-w-percent50">指定权限不能为空</span>
-                                    <span ng-show="structFrom.checkedFunctionIds.$dirty && structFrom.checkedFunctionIds.$valid" class="self-tips self-tips-yes"></span>
-                                </div>
-                            </div>
-
-                            <div class="form-group-self1">
-                                <button type="submit" ng-show="organization_ctrl.struct.id===''" ng-disabled="!(organization_ctrl.struct.id==='' && structFrom.fullName.$dirty && structFrom.fullName.$valid  && structFrom.adscriptionRegion.$dirty && structFrom.adscriptionRegion.$valid && structFrom.linkman.$dirty && structFrom.linkman.$valid && structFrom.cellphone.$dirty && structFrom.cellphone.$valid && (organization_ctrl.struct.telephone==='' || (structFrom.telephone.$dirty && structFrom.telephone.$valid)) && (organization_ctrl.struct.province!=='' && organization_ctrl.struct.city!=='' && organization_ctrl.struct.country!=='') && structFrom.address.$dirty && structFrom.address.$valid && ((organization_ctrl.struct.isSettingLogin===1 && structFrom.username.$dirty && structFrom.username.$valid && structFrom.password.$dirty && structFrom.password.$valid && ((organization_ctrl.struct.isDesignatedPermit===1 && structFrom.checkedFunctionIds.$valid) || organization_ctrl.struct.isDesignatedPermit===0)) || organization_ctrl.struct.isSettingLogin===0))"  class="btn btn-red g-br3 g-w-percent50">添加</button>
-
-                                <button type="submit" ng-show="organization_ctrl.struct.id!==''" ng-disabled="!(organization_ctrl.struct.id!=='' && structFrom.fullName.$valid && structFrom.adscriptionRegion.$valid && structFrom.linkman.$valid && structFrom.cellphone.$valid && (organization_ctrl.struct.telephone==='' || (organization_ctrl.struct.telephone!=='' && structFrom.telephone.$valid)) && (organization_ctrl.struct.province!=='' && organization_ctrl.struct.city!=='' && organization_ctrl.struct.country!=='') && structFrom.address.$valid && ((organization_ctrl.struct.isSettingLogin===1 && structFrom.username.$valid && structFrom.password.$valid && ((organization_ctrl.struct.isDesignatedPermit===1 && structFrom.checkedFunctionIds.$valid) || organization_ctrl.struct.isDesignatedPermit===0)) || organization_ctrl.struct.isSettingLogin===0))"  class="btn btn-red g-br3 g-w-percent50">编辑</button>
+                                <button type="submit" ng-show="organization_ctrl.struct.id!==''" ng-disabled="!(organization_ctrl.struct.id!=='' && structFrom.fullName.$valid && structFrom.linkman.$valid && structFrom.cellphone.$valid && (organization_ctrl.struct.telephone==='' || (organization_ctrl.struct.telephone!=='' && structFrom.telephone.$valid)) && (organization_ctrl.struct.province!=='' && organization_ctrl.struct.city!=='' && organization_ctrl.struct.country!=='') && structFrom.address.$valid && ((organization_ctrl.struct.isSettingLogin===1 && structFrom.username.$valid && structFrom.password.$valid && ((organization_ctrl.struct.isDesignatedPermit===1 && structFrom.checkedFunctionIds.$valid) || organization_ctrl.struct.isDesignatedPermit===0)) || organization_ctrl.struct.isSettingLogin===0))"  class="btn btn-red g-br3 g-w-percent50">编辑</button>
                                 <button type="button" class="btn btn-red g-br3 g-w-percent50 g-gap-mt2" id="admin_struct_reset" ng-click="organization_ctrl.formReset(structFrom,'struct')">重置</button>
                             </div>
                         </form>
