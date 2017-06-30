@@ -37,27 +37,28 @@
                     <!--绑定加盟商-->
                     <div class="struct-side-widget g-f-l g-w-percent8 g-gap-mr2">
                         <div class="admin-layout-theme4 admin-theme-close g-t-c g-b-gray17 g-pos-r">绑定加盟商(运营商)</div>
-                        <div class="row">
-                            <div class="col-sm-12 g-gap-mb4">
-                                <!--搜索组件-->
-                                <div class="sub-search-wrap g-w-percent49 ui-sub-search" data-active="organization_ctrl.record.searchactive2" data-value="organization_ctrl.record.searchname2"  data-action="organization_ctrl.searchAction2()" data-clear="organization_ctrl.searchClear2()" ></div>
-                                <!--左侧操作区域-->
-                                <div class="admin-layout-theme4"><span class="mini-icon admin-mini-icon2"></span>&nbsp;加盟商(运营商)信息</div>
-                                <!--子菜单组件-->
-                                <ul class="sub-menu-wrap g-gap-pb4">
-                                    <li>
-                                        <a class="sub-menu-title sub-menu-titleactive"  data-parentid="" data-id="" data-layer="0"  data-list="false" data-label="" ng-click="organization_ctrl.rootMenuList($event,'yy')"><label class="sub-menu-checkbox" data-id="">全选:</label>{{organization_ctrl.record.currentName2}}</a>
-                                        <ul class="g-d-showi ui-sub-menu"  ng-init="organization_ctrl.initMenuList('yy')" ng-click="organization_ctrl.toggleMenuList($event,'yy')" id="admin_yystruct_menu" ></ul>
-                                    </li>
-                                </ul>
+                        <div class="g-w-percent50 g-gap-mt2 g-pos-r">
+                            <div ng-show="organization_ctrl.record.operator_shopshow" class="struct-grid-wrap">
+                                <div class="admin-layout-theme4 admin-theme-close g-t-c g-b-gray17 g-pos-r">运营商店铺列表<span class="mini-icon admin-mini-icon1" ng-click="organization_ctrl.toggleShopShow()"></span>
+                                </div>
+                                <ul class="admin-grid-widget admin-grid-widget2 admin-grid-widget2-extend" id="admin_shop_wrap" ng-click="organization_ctrl.toggleShopCheck($event)"></ul>
+                                <div class="struct-grid-btnitem-wrap">
+                                    <span ng-click="organization_ctrl.getSelectShop()" class="btn btn-red g-br3 g-w-number4 g-gap-mr8">确定</span>
+                                    <span ng-click="organization_ctrl.clearSelectShop()" class="btn btn-red g-br3 g-w-number4  g-gap-ml8">取消</span>
+                                </div>
                             </div>
-                            <div class="col-sm-5 g-t-r">
-                                <span ng-click="organization_ctrl.getSelectStruct()" class="btn btn-red g-br3 g-w-percent40">确定</span>
-                            </div>
-                            <div class="col-sm-2"></div>
-                            <div class="col-sm-5 g-t-l">
-                                <span ng-click="organization_ctrl.clearSelectStruct()" class="btn btn-red g-br3 g-w-percent40">取消</span>
-                            </div>
+
+                            <!--搜索组件-->
+                            <div class="sub-search-wrap g-w-percent49 ui-sub-search" data-active="organization_ctrl.record.searchactive2" data-value="organization_ctrl.record.searchname2"  data-action="organization_ctrl.searchAction2()" data-clear="organization_ctrl.searchClear2()" ></div>
+                            <!--左侧操作区域-->
+                            <div class="admin-layout-theme4"><span class="mini-icon admin-mini-icon2"></span>&nbsp;加盟商(运营商)信息</div>
+                            <!--子菜单组件-->
+                            <ul class="sub-menu-wrap g-gap-pb4">
+                                <li>
+                                    <a class="sub-menu-title sub-menu-titleactive"  data-parentid="" data-id="" data-layer="0"  data-list="false" data-label="" ng-click="organization_ctrl.rootMenuList($event,'yy')"><label class="sub-menu-checkbox" data-id="">全选:</label>{{organization_ctrl.record.currentName2}}</a>
+                                    <ul class="g-d-showi ui-sub-menu"  ng-init="organization_ctrl.initMenuList('yy')" ng-click="organization_ctrl.toggleMenuList($event,'yy')" id="admin_yystruct_menu" ></ul>
+                                </li>
+                            </ul>
                         </div>
                     </div>
 

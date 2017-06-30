@@ -112,28 +112,7 @@ angular.module('app')
             checkedFunctionIds: ''/*选中权限Ids*/,
             bindingShopIds: ''/*选中绑定加盟店Ids*/
         };
-
-
-        /*模型--用户(店铺)*/
-        this.user = {
-            type: 'add'/*表单类型：新增，编辑；默认为新增*/,
-            filter: ''/*表格过滤关键词*/,
-            id: ''/*用户ID，用于编辑状态*/,
-            fullName: ''/*店铺全称*/,
-            shortName: ''/*店铺简称*/,
-            name: ''/*姓名*/,
-            shoptype: 1/*店铺类型（原为type,因为user模型已经存在type,所以以shoptype代替type字段）：1 旗舰店：2 体验店：3 加盟店*/,
-            cellphone: ''/*店铺手机号码*/,
-            telephone: ''/*店铺电话号码*/,
-            province: ''/*省份*/,
-            city: ''/*市区*/,
-            country: ''/*县区*/,
-            address: ''/*详细地址*/,
-            status: 0/*状态：0：正常，1：停用*/,
-            remark: ''/*备注*/,
-            addTime: ''/*添加时间,编辑时用到*/,
-            organizationId: ''/*组织机构id,编辑时用到*/
-        };
+        
 
 
         /*初始化服务--虚拟挂载点，或者初始化参数*/

@@ -576,7 +576,7 @@ angular.module('app')
                 }
             } else if (node === 'label') {
                 /*选中操作*/
-                self.structCheck({
+                self.operatorCheck({
                     type: 'item',
                     target: target,
                     record: config.record
@@ -638,7 +638,7 @@ angular.module('app')
                     //self.getMenuList(config);
                 }
             } else if (node === 'label') {
-                self.structCheck({
+                self.operatorCheck({
                     target: target,
                     type: 'all',
                     record: config.record
@@ -848,7 +848,7 @@ angular.module('app')
             } else if (record.organizationId === '') {
                 temp_id = record.currentId1;
             }
-            param['id']=temp_id;
+            param['id'] = temp_id;
 
             toolUtil
                 .requestHttp({
@@ -1038,9 +1038,9 @@ angular.module('app')
                                         }
                                         /*单独查询绑定的加盟店*/
                                         self.queryCheckStruct({
-                                            id:temp_id,
-                                            record:record,
-                                            struct:struct
+                                            id: temp_id,
+                                            record: record,
+                                            struct: struct
                                         });
                                         /*显示弹窗*/
                                         self.toggleModal({
@@ -1289,7 +1289,7 @@ angular.module('app')
                     param['isAudited'] = config[type]['isAudited'];
                     param['status'] = config[type]['status'];
                     param['remark'] = config[type]['remark'];
-                    param['bindingShopIds']=config[type]['bindingShopIds'];
+                    param['bindingShopIds'] = config[type]['bindingShopIds'];
 
                     /*处理特殊值*/
                     var isSettingLogin = parseInt(config[type]['isSettingLogin'], 10);
@@ -1547,10 +1547,12 @@ angular.module('app')
                 pid: pid
             };
         };
-        /*表单类服务--运营商服务--确定所选运营商*/
-        this.getSelectStruct = function (config) {
+
+
+        /*运营商服务--确定所选运营商*/
+        this.getSelectOperator = function (config) {
             if (config) {
-                var source = config.record.check_shopid,
+                var source = config.record.operator_shopid,
                     res = [];
                 for (var i in source) {
                     res.push(source[i]);
@@ -1561,21 +1563,19 @@ angular.module('app')
                     config.struct.bindingShopIds = '';
                 }
             }
-            console.log(config.record.check_shopid);
+            console.log(config.record.operator_shopid);
         };
-        /*表单类服务--运营商服务--取消(清空)所选运营商*/
-        this.clearSelectStruct = function (config) {
+        /*运营商服务--取消(清空)所选运营商*/
+        this.clearSelectOperator = function (config) {
             config.struct.bindingShopIds = '';
-            self.structCheck({
+            self.operatorCheck({
                 type: 'all',
                 record: config.record,
                 target: self.$all_yystruct
             }, 'no');
         };
-
-
         /*运营商服务--选中运营商服务，flag:下一个状态（操作一次以后将要切换的状态）(yes:选中，no:未选中)*/
-        this.structCheck = function (config, flag) {
+        this.operatorCheck = function (config, flag) {
             var target,
                 $label,
                 type = config.type/*选择的是全选还是单个选项*/,
@@ -1605,12 +1605,12 @@ angular.module('app')
                         $(this).removeClass('sub-menu-checkboxactive');
                     });
                     /*清除模型*/
-                    record['check_shopid'] = {};
+                    record['operator_cache'] = {};
                 } else if (type === 'item') {
                     /*取消单个*/
                     id = $label.attr('data-id');
                     /*变更模型*/
-                    delete record['check_shopid'][id];
+                    delete record['operator_cache'][id];
                 }
             } else {
                 /*选中*/
@@ -1622,28 +1622,43 @@ angular.module('app')
                         $this.addClass('sub-menu-checkboxactive');
                         id = $this.attr('data-id');
                         /*变更模型*/
-                        record['check_shopid'][id] = id;
+                        record['operator_cache'][id] = {
+                            'id': id,
+                            'label': $this,
+                            'ischeck': true,
+                            'isall': false
+                        };
                     });
                     /*添加全选本身值（可以根据具体情况定制）*/
                     /*
                      id = $label.attr('data-id');
-                     record['check_shopid'][id] = id;
+                     record['operator_cache'][id] = {
+                     'id':id,
+                     'label':$label,
+                     'ischeck':true,
+                     'isall':true
+                     };
                      */
                 } else if (type === 'item') {
                     /*选中单个*/
                     id = $label.attr('data-id');
                     /*变更模型*/
-                    record['check_shopid'][id] = id;
+                    record['operator_cache'][id] = {
+                        'id': id,
+                        'label': $label,
+                        'ischeck': true,
+                        'isall': false
+                    };
                 }
             }
         };
         /*运营商服务--通过选中的值反向关联选中运营商服务*/
-        this.reverseStructCheck = function (config) {
+        this.reverseOperatorCheck = function (config) {
             var labelcache = {}/*label缓存*/,
-                data=config.data/*已经存在的数据*/,
+                data = config.data/*已经存在的数据*/,
                 flag = config.flag/*是否关联全选*/;
 
-            if(data && !$.isEmptyObject(data)){
+            if (data && !$.isEmptyObject(data)) {
                 /*缓存label对象*/
                 self.$admin_yystruct_menu.find('label').each(function () {
                     var $this = $(this),
@@ -1656,21 +1671,21 @@ angular.module('app')
                 });
                 /*开始比对*/
                 var temp_item;
-                for(var i in data){
-                    temp_item=labelcache[i];
-                    if(temp_item){
+                for (var i in data) {
+                    temp_item = labelcache[i];
+                    if (temp_item) {
                         /*匹配则高亮缓存值*/
                         temp_item['label'].addClass('sub-menu-checkboxactive');
                     }
                 }
                 /*选中全选*/
-                if(flag){
+                if (flag) {
                     self.$all_yystruct.addClass('sub-menu-checkboxactive');
                 }
             }
         };
         /*运营商服务--查询已经存在的运营商*/
-        this.queryCheckStruct = function (config) {
+        this.queryCheckOperator = function (config) {
             if (cache) {
                 var id = config.id,
                     record = config.record,
@@ -1713,42 +1728,42 @@ angular.module('app')
                                         if (list) {
                                             var len = list.length;
                                             if (len === 0) {
-                                                record.check_shopid = {};
+                                                record.operator_shopid = {};
                                             } else {
                                                 var i = 0,
                                                     temp_obj = {},
-                                                    str='',
+                                                    str = '',
                                                     shopid;
                                                 for (i; i < len; i++) {
                                                     shopid = list[i]['shopId'];
                                                     temp_obj[shopid] = shopid;
-                                                    if(i!==len - 1){
-                                                        str+=shopid+',';
-                                                    }else{
-                                                        str+=shopid;
+                                                    if (i !== len - 1) {
+                                                        str += shopid + ',';
+                                                    } else {
+                                                        str += shopid;
                                                     }
                                                 }
                                                 /*赋值模型*/
-                                                record.check_shopid = temp_obj;
+                                                record.operator_shopid = temp_obj;
                                                 /*同步表单模型*/
-                                                config.struct.bindingShopIds=str;
+                                                config.struct.bindingShopIds = str;
                                                 /*反向关联高亮选中运营商*/
                                                 self.reverseStructCheck({
-                                                    flag:true,
-                                                    data:temp_obj
+                                                    flag: true,
+                                                    data: temp_obj
                                                 });
                                             }
                                         } else {
-                                            record.check_shopid = {};
+                                            record.operator_shopid = {};
                                         }
                                     } else {
-                                        record.check_shopid = {};
+                                        record.operator_shopid = {};
                                     }
                                 }
                             }
                         },
                         function (resp) {
-                            record.check_shopid = {};
+                            record.operator_shopid = {};
                             var message = resp.data.message;
                             if (typeof message !== 'undefined' && message !== '') {
                                 console.log(message);
@@ -1764,6 +1779,161 @@ angular.module('app')
                 loginService.outAction();
             }
         };
+
+
+        /*运营商服务--查询运营商店铺*/
+        this.queryShopById = function (config) {
+            if (cache) {
+                var id = config.id,
+                    isclear=config.isclear,
+                    tempparam = cache.loginMap.param,
+                    param = {
+                        token: tempparam.token,
+                        adminId: tempparam.adminId,
+                        carrieroperatorId: id
+                    };
+
+                toolUtil
+                    .requestHttp({
+                        url: '/carrieroperator/shops',
+                        method: 'post',
+                        set: true,
+                        data: param
+                    })
+                    .then(function (resp) {
+                            var data = resp.data,
+                                status = parseInt(resp.status, 10);
+
+                            if (status === 200) {
+                                var code = parseInt(data.code, 10),
+                                    message = data.message;
+                                if (code !== 0) {
+                                    if (typeof message !== 'undefined' && message !== '') {
+                                        console.log(message);
+                                    }
+
+                                    if (code === 999) {
+                                        /*退出系统*/
+                                        cache = null;
+                                        loginService.outAction();
+                                    }
+                                } else {
+                                    /*加载数据*/
+                                    var result = data.result;
+                                    if (typeof result !== 'undefined') {
+                                        var list = result.list;
+                                        if (list) {
+                                            if(isclear){
+                                                self.$admin_shop_wrap.html('');
+                                            }
+                                            var len = list.length;
+                                            if (len!==0) {
+                                                var i = 0,
+                                                    str = '',
+                                                    shop_item;
+                                                for (i; i < len; i++) {
+                                                    shop_item = list[i];
+                                                    str += '<li data-id="'+shop_item["id"]+'" data-operator="'+id+'" >'+shop_item["fullName"]+'</li>';
+                                                }
+                                                /*更新到列表*/
+                                                $(str).appendTo(self.$admin_shop_wrap);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        function (resp) {
+                            var message = resp.data.message;
+                            if (typeof message !== 'undefined' && message !== '') {
+                                console.log(message);
+                            } else {
+                                console.log('请求绑定分仓失败');
+                            }
+                        });
+
+
+            } else {
+                /*退出系统*/
+                cache = null;
+                loginService.outAction();
+            }
+        };
+        /*运营商服务--确定所选运营商店铺*/
+        this.getSelectShop = function (config) {
+            if (config) {
+                var source = config.record.operator_shopid,
+                    res = [];
+                for (var i in source) {
+                    res.push(i);
+                }
+                if (res.length !== 0) {
+                    config.struct.bindingShopIds = res.join();
+                } else {
+                    config.struct.bindingShopIds = '';
+                }
+            }
+        };
+        /*运营商服务--取消(清空)所选运营商店铺*/
+        this.clearSelectShop = function (config) {
+            var source = config.record.operator_shopid;
+            /*清除模型样式*/
+            for(var i in source){
+                source[i]['li'].removeClass('action-list-active');
+            }
+            /*清除模型*/
+            config.struct.bindingShopIds = '';
+            config.record.operator_shopid={};
+        };
+        /*运营商服务--选中或取消运营商店铺*/
+        this.toggleShopCheck=function (e,config) {
+            var target=e.target,
+                node=target.nodeName.toLowerCase();
+
+            if(node==='ul'){
+                return false;
+            }
+            if(node==='li'){
+                var source=config.record.operator_shopid,
+                    $this=$(target),
+                    id=$this.attr('data-id'),
+                    operator=$this.attr('data-operator'),
+                    active=$this.hasClass('action-list-active');
+
+                if(active){
+                    var temp_item=source[id];
+                    if(temp_item){
+                        temp_item['li'].removeClass('action-list-active');
+                        delete source[id];
+                    }
+                }else{
+                    $this.addClass('action-list-active');
+                    source[id]={
+                        'id':id,
+                        'li':$this,
+                        'operator':operator
+                    };
+                }
+            }
+        };
+        /*运营商服务--清除已经失效运营商店铺*/
+        this.clearShopList=function (config) {
+            var record=config.record,
+                struct=config.struct,
+                shopchahe=record.operator_shopid,
+                id=config.id;
+
+            for(var i in shopchahe){
+                var temp_item=shopchahe[i],
+                    operator=temp_item['operator'];
+                /*label索引是否与店铺运营商ID索引一致*/
+                if(operator===id){
+                    /*如果存在相同索引则删除查询到的运营商店铺列表*/
+
+                }
+            }
+        };
+
 
         /*用户服务--操作用户*/
         this.actionUser = function (config) {

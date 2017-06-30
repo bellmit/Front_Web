@@ -17,7 +17,8 @@ angular.module('app')
             $admin_userdetail_dialog: $('#admin_userdetail_dialog'),
             $admin_user_reset: $('#admin_user_reset'),
             $admin_userdetail_show: $('#admin_userdetail_show'),
-            $admin_yystruct_menu: $('#admin_yystruct_menu')
+            $admin_yystruct_menu: $('#admin_yystruct_menu'),
+            $admin_shop_wrap:$('#admin_shop_wrap')
         };
         jq_dom['$admin_submenu_wrap'] = jq_dom.$admin_struct_submenu.prev();
         jq_dom['$admin_yystruct_wrap'] = jq_dom.$admin_yystruct_menu.prev();
@@ -83,7 +84,9 @@ angular.module('app')
             carrieroperatorId: ''/*运营商Id*/,
             carrieroperatorName: ''/*运营商Id*/,
             layer2: 0/*操作层*/,
-            check_shopid:{}/*选中绑定加盟店Ids*/
+            operator_cache:{}/*查询运营商label缓存*/,
+            operator_shopid:{}/*选中绑定加盟店Ids(店铺)*/,
+            operator_shopshow:false/*运营商店铺列表*/
         };
 
 
@@ -239,20 +242,49 @@ angular.module('app')
                 record: self.record
             });
         };
-        /*表单服务--运营商服务--确定所选运营商*/
-        this.getSelectStruct = function () {
-            organizationService.getSelectStruct({
+
+
+        /*运营商服务--确定所选运营商*/
+        this.getSelectOperator = function () {
+            organizationService.getSelectOperator({
                 record: self.record,
                 struct: self.struct
             });
         };
-        /*表单服务--运营商服务--取消所选运营商*/
-        this.clearSelectStruct = function () {
-            organizationService.clearSelectStruct({
+        /*运营商服务--取消所选运营商*/
+        this.clearSelectOperator = function () {
+            organizationService.clearSelectOperator({
                 record: self.record,
                 struct: self.struct
             });
         };
+        /*运营商服务--切换显示隐藏运营商店铺*/
+        this.toggleShopShow=function () {
+            self.record.operator_shopshow=!self.record.operator_shopshow;
+        };
+        /*运营商服务--确定所选运营商店铺*/
+        this.getSelectShop = function () {
+            organizationService.getSelectShop({
+                record: self.record,
+                struct: self.struct
+            });
+        };
+        /*运营商服务--取消所选运营商*/
+        this.clearSelectShop = function () {
+            organizationService.clearSelectShop({
+                record: self.record,
+                struct: self.struct
+            });
+        };
+        /*运营商服务--选中或取消运营商店铺*/
+        this.toggleShopCheck = function (e) {
+            organizationService.toggleShopCheck(e,{
+                record: self.record,
+                struct: self.struct
+            });
+        };
+
+
 
         /*搜索服务--搜索过滤*/
         this.searchAction1 = function () {
