@@ -1580,6 +1580,7 @@ angular.module('app')
                 $label,
                 type = config.type/*选择的是全选还是单个选项*/,
                 record = config.record,
+                label_cache = record.operator_cache,
                 ischeck,
                 id;
 
@@ -1601,17 +1602,77 @@ angular.module('app')
                 $label.removeClass('sub-menu-checkboxactive');
                 if (type === 'all') {
                     /*取消全选*/
-                    self.$admin_yystruct_menu.find('label').each(function () {
-                        $(this).removeClass('sub-menu-checkboxactive');
-                    });
-                    /*清除模型*/
-                    record['operator_cache'] = {};
+                    /*判断模型状态*/
+                    switch (label_cache.state) {
+                        case 'empty':
+                            /*未选状态:不做操作*/
+                            break;
+                        case 'full':
+                            /*全选状态:直接操作模型*/
+                            (function () {
+                                for (var i in label_cache) {
+                                    if (i !== 'state') {
+                                        label_cache[i]['ischeck'] = false;
+                                        label_cache[i]['label'].removeClass('sub-menu-checkboxactive');
+                                    }
+                                }
+                            }());
+                            break;
+                        case 'short':
+                            /*不完全状态:循环label标签，并补充部分缺失模型*/
+                            (function () {
+                                self.$admin_yystruct_menu.find('label').each(function () {
+                                    var $this = $(this),
+                                        temp_id = $this.attr('data-id');
+                                    $this.removeClass('sub-menu-checkboxactive');
+                                    /*不存在模型则补充模型*/
+                                    if (!label_cache[temp_id]) {
+                                        label_cache[temp_id] = {
+                                            'id': temp_id,
+                                            'label': $this,
+                                            'ischeck': false,
+                                            'isall': false
+                                        };
+                                    } else {
+                                        label_cache[temp_id]['label'] = $this;
+                                        label_cache[temp_id]['ischeck'] = false;
+                                    }
+                                });
+                                /*循环完毕将数据状态变为完全状态*/
+                                label_cache.state = 'full';
+                            }());
+                            break;
+                    }
                 } else if (type === 'item') {
                     /*取消单个*/
                     id = $label.attr('data-id');
-                    /*变更模型*/
-                    delete record['operator_cache'][id];
+                    /*判断模型状态*/
+                    switch (label_cache.state) {
+                        case 'empty':
+                            /*未选状态:不做操作*/
+                            break;
+                        case 'full':
+                            /*全选状态:同步模型*/
+                            label_cache[id]['ischeck'] = false;
+                            label_cache[id]['label'] = $label;
+                            break;
+                        case 'short':
+                            /*不完全状态*/
+                            if (!label_cache[id]) {
+                                label_cache[id] = {
+                                    'id': id,
+                                    'label': $label,
+                                    'ischeck': false,
+                                    'isall': false
+                                };
+                            } else {
+                                label_cache[id]['label'] = $label;
+                                label_cache[id]['ischeck'] = false;
+                            }
+                            break;
+                    }
                 }
+                /*取消*/
             } else {
                 /*选中*/
                 $label.addClass('sub-menu-checkboxactive');
@@ -1620,23 +1681,68 @@ angular.module('app')
                     record.operator_shopshow = true;
                 }
                 if (type === 'all') {
-                    /*全选*/
-                    self.$admin_yystruct_menu.find('label').each(function () {
-                        var $this = $(this);
-                        $this.addClass('sub-menu-checkboxactive');
-                        id = $this.attr('data-id');
-                        /*变更模型*/
-                        record['operator_cache'][id] = {
-                            'id': id,
-                            'label': $this,
-                            'ischeck': true,
-                            'isall': false
-                        };
-                    });
+                    /*判断模型状态*/
+                    switch (label_cache.state) {
+                        case 'empty':
+                            /*未选状态:循环label并改变模型状态*/
+                            (function () {
+                                /*全选*/
+                                self.$admin_yystruct_menu.find('label').each(function () {
+                                    var $this = $(this);
+                                    $this.addClass('sub-menu-checkboxactive');
+                                    id = $this.attr('data-id');
+                                    /*变更模型*/
+                                    label_cache[id] = {
+                                        'id': id,
+                                        'label': $this,
+                                        'ischeck': true,
+                                        'isall': false
+                                    };
+                                });
+                                /*变更模型状态为全选*/
+                                label_cache.state = 'full';
+                            }());
+                            break;
+                        case 'full':
+                            /*全选状态:直接操作模型*/
+                            (function () {
+                                for (var i in label_cache) {
+                                    if (i !== 'state') {
+                                        label_cache[i]['ischeck'] = true;
+                                        label_cache[i]['label'].addClass('sub-menu-checkboxactive');
+                                    }
+                                }
+                            }());
+                            break;
+                        case 'short':
+                            /*不完全状态:循环label标签，并补充部分缺失模型*/
+                            (function () {
+                                self.$admin_yystruct_menu.find('label').each(function () {
+                                    var $this = $(this),
+                                        temp_id = $this.attr('data-id');
+                                    $this.addClass('sub-menu-checkboxactive');
+                                    /*不存在模型则补充模型*/
+                                    if (!label_cache[temp_id]) {
+                                        label_cache[temp_id] = {
+                                            'id': temp_id,
+                                            'label': $this,
+                                            'ischeck': true,
+                                            'isall': false
+                                        };
+                                    } else {
+                                        label_cache[temp_id]['label'] = $this;
+                                        label_cache[temp_id]['ischeck'] = true;
+                                    }
+                                });
+                                /*循环完毕将数据状态变为完全状态*/
+                                label_cache.state = 'full';
+                            }());
+                            break;
+                    }
                     /*添加全选本身值（可以根据具体情况定制）*/
                     /*
                      id = $label.attr('data-id');
-                     record['operator_cache'][id] = {
+                     label_cache[id] = {
                      'id':id,
                      'label':$label,
                      'ischeck':true,
@@ -1646,17 +1752,42 @@ angular.module('app')
                 } else if (type === 'item') {
                     /*选中单个*/
                     id = $label.attr('data-id');
-                    /*变更模型*/
-                    record['operator_cache'][id] = {
-                        'id': id,
-                        'label': $label,
-                        'ischeck': true,
-                        'isall': false
-                    };
+                    /*判断模型状态*/
+                    switch (label_cache.state) {
+                        case 'empty':
+                            /*未选状态*/
+                            label_cache[id] = {
+                                'id': id,
+                                'label': $label,
+                                'ischeck': true,
+                                'isall': false
+                            };
+                            label_cache.state = 'short';
+                            break;
+                        case 'full':
+                            /*全选状态*/
+                            label_cache[id]['label'] = $label;
+                            label_cache[id]['ischeck'] = true;
+                            break;
+                        case 'short':
+                            /*不完全状态*/
+                            if (!label_cache[id]) {
+                                label_cache[id] = {
+                                    'id': id,
+                                    'label': $label,
+                                    'ischeck': true,
+                                    'isall': false
+                                };
+                            } else {
+                                label_cache[id]['label'] = $label;
+                                label_cache[id]['ischeck'] = true;
+                            }
+                            break;
+                    }
                 }
             }
         };
-        /*运营商服务--通过选中的值反向关联选中运营商服务*/
+        /*运营商服务--通过选中的值反向关联选中运营商服务 to do*/
         this.reverseOperatorCheck = function (config) {
             var labelcache = {}/*label缓存*/,
                 data = config.data/*已经存在的数据*/,
@@ -1688,11 +1819,13 @@ angular.module('app')
                 }
             }
         };
-        /*运营商服务--查询已经存在的运营商*/
-        this.queryCheckOperator = function (config) {
+
+
+        /*运营商服务--查询已经存在的运营商店铺*/
+        this.queryCheckShop = function (config) {
             if (cache) {
-                var id = config.id,
-                    record = config.record,
+                var record = config.record,
+                    id = record.organizationId !== '' ? record.organizationId : record.currentId1,
                     tempparam = cache.loginMap.param,
                     param = {
                         token: tempparam.token,
@@ -1740,7 +1873,12 @@ angular.module('app')
                                                     shopid;
                                                 for (i; i < len; i++) {
                                                     shopid = list[i]['shopId'];
-                                                    temp_obj[shopid] = shopid;
+                                                    temp_obj[shopid] = {
+                                                        'shopid': shopid,
+                                                        'li': $('<li data-shopid="' + shopid + '" class="action-list-active" >运营商</li>'),
+                                                        'operator': null/*运营商id*/,
+                                                        'ischeck': true
+                                                    };
                                                     if (i !== len - 1) {
                                                         str += shopid + ',';
                                                     } else {
@@ -1751,11 +1889,6 @@ angular.module('app')
                                                 record.operator_shopid = temp_obj;
                                                 /*同步表单模型*/
                                                 config.struct.bindingShopIds = str;
-                                                /*反向关联高亮选中运营商*/
-                                                self.reverseStructCheck({
-                                                    flag: true,
-                                                    data: temp_obj
-                                                });
                                             }
                                         } else {
                                             record.operator_shopid = {};
@@ -1783,13 +1916,10 @@ angular.module('app')
                 loginService.outAction();
             }
         };
-
-
         /*运营商服务--查询运营商店铺*/
         this.queryShopById = function (config) {
             if (cache) {
                 var id = config.id,
-                    isclear = config.isclear,
                     tempparam = cache.loginMap.param,
                     param = {
                         token: tempparam.token,
@@ -1827,17 +1957,31 @@ angular.module('app')
                                     if (typeof result !== 'undefined') {
                                         var list = result.list;
                                         if (list) {
-                                            if (isclear) {
-                                                self.$admin_shop_wrap.html('');
-                                            }
                                             var len = list.length;
                                             if (len !== 0) {
                                                 var i = 0,
                                                     str = '',
-                                                    shop_item;
+                                                    shopitem,
+                                                    shopid,
+                                                    source=config.record.operator_shopid;
+
                                                 for (i; i < len; i++) {
-                                                    shop_item = list[i];
-                                                    str += '<li data-id="' + shop_item["id"] + '" data-operator="' + id + '" >' + shop_item["fullName"] + '</li>';
+                                                    shopitem = list[i];
+                                                    shopid=shopitem['id'];
+
+                                                    str += '<li data-shopid="' + shopid + '" data-operator="' + id + '" >' + shopitem["fullName"] + '</li>';
+                                                    /*初始化店铺模型*/
+                                                    if(!source[shopid]){
+                                                        source[shopid]={
+                                                            'shopid':shopid,
+                                                            'li':$('<li data-shopid="' + shopid + '" data-operator="' + id + '" >' + shopitem["fullName"] + '</li>'),
+                                                            'operator':id,
+                                                            'ischeck':false
+                                                        }
+                                                    }else{
+                                                        source[shopid]['li'].removeClass('action-list-active');
+                                                        source[shopid]['ischeck']=false;
+                                                    }
                                                 }
                                                 /*更新到列表*/
                                                 $(str).appendTo(self.$admin_shop_wrap);
@@ -1869,7 +2013,9 @@ angular.module('app')
                 var source = config.record.operator_shopid,
                     res = [];
                 for (var i in source) {
-                    res.push(i);
+                    if (source[i]['ischeck']) {
+                        res.push(i);
+                    }
                 }
                 if (res.length !== 0) {
                     config.struct.bindingShopIds = res.join();
@@ -1883,11 +2029,12 @@ angular.module('app')
             var source = config.record.operator_shopid;
             /*清除模型样式*/
             for (var i in source) {
-                source[i]['li'].removeClass('action-list-active');
+                var shopitem = source[i];
+                shopitem['li'].removeClass('action-list-active');
+                shopitem['ischeck'] = false;
             }
             /*清除模型*/
             config.struct.bindingShopIds = '';
-            config.record.operator_shopid = {};
         };
         /*运营商服务--选中或取消运营商店铺*/
         this.toggleShopCheck = function (e, config) {
@@ -1899,23 +2046,30 @@ angular.module('app')
             }
             if (node === 'li') {
                 var source = config.record.operator_shopid,
-                    $this = $(target),
-                    id = $this.attr('data-id'),
-                    operator = $this.attr('data-operator'),
-                    active = $this.hasClass('action-list-active');
+                    shopid = target.getAttribute('data-shopid'),
+                    shopitem = source[shopid],
+                    operator,
+                    $this;
 
-                if (active) {
-                    var temp_item = source[id];
-                    if (temp_item) {
-                        temp_item['li'].removeClass('action-list-active');
-                        delete source[id];
+                if (shopitem) {
+                    if (shopitem['ischeck']) {
+                        /*取消选中*/
+                        shopitem['li'].removeClass('action-list-active');
+                        shopitem['ischeck'] = false;
+                    } else {
+                        /*选中*/
+                        shopitem['li'].addClass('action-list-active');
+                        shopitem['ischeck'] = true;
                     }
                 } else {
+                    $this = $(target);
                     $this.addClass('action-list-active');
-                    source[id] = {
-                        'id': id,
+                    operator = $this.attr('data-operator');
+                    source[shopid] = {
+                        'shopid': shopid,
                         'li': $this,
-                        'operator': operator
+                        'operator': operator,
+                        'ischeck': true
                     };
                 }
             }
@@ -1923,28 +2077,22 @@ angular.module('app')
         /*运营商服务--清除已经失效运营商店铺*/
         this.clearShopList = function (config) {
             var record = config.record,
-                struct = config.struct,
                 shopchahe = record.operator_shopid,
                 id = config.id;
 
             for (var i in shopchahe) {
-                var temp_item = shopchahe[i],
-                    operator = temp_item['operator'],
-                    shopid = temp_item['id'];
-                /*label索引是否与店铺运营商ID索引一致*/
-                if (operator === id) {
+                var shopitem = shopchahe[i],
+                    operator = shopitem['operator'],
+                    ischeck = shopitem['ischeck'];
+
+                /*label索引是否与店铺运营商ID索引一致,同时此时是选中状态*/
+                if (operator !== null && operator === id && ischeck) {
                     /*如果存在相同索引则删除查询到的运营商店铺列表*/
                     /*清除dom节点*/
-                    shopchahe[shopid]['li'].remove();
-                    /*清除模型*/
-                    delete shopchahe[shopid];
+                    shopitem['li'].removeClass('action-list-active');
+                    shopitem['ischeck'] = false;
                 }
             }
-            /*更新选中节点*/
-            self.getSelectShop({
-                record: config.record,
-                struct: config.struct
-            });
         };
 
 

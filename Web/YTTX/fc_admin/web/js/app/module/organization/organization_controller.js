@@ -84,7 +84,9 @@ angular.module('app')
             carrieroperatorId: ''/*运营商Id*/,
             carrieroperatorName: ''/*运营商Id*/,
             layer2: 0/*操作层*/,
-            operator_cache:{}/*查询运营商label缓存*/,
+            operator_cache:{
+                state:'empty'/*记录当前模型状态*/
+            }/*查询运营商label缓存*/,
             operator_shopid:{}/*选中绑定加盟店Ids(店铺)*/,
             operator_shopshow:false/*运营商店铺列表*/
         };
