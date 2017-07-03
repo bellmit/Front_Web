@@ -1615,6 +1615,10 @@ angular.module('app')
             } else {
                 /*选中*/
                 $label.addClass('sub-menu-checkboxactive');
+                /*切换显示运营商店铺信息*/
+                if (!record.operator_shopshow) {
+                    record.operator_shopshow = true;
+                }
                 if (type === 'all') {
                     /*全选*/
                     self.$admin_yystruct_menu.find('label').each(function () {
@@ -1785,7 +1789,7 @@ angular.module('app')
         this.queryShopById = function (config) {
             if (cache) {
                 var id = config.id,
-                    isclear=config.isclear,
+                    isclear = config.isclear,
                     tempparam = cache.loginMap.param,
                     param = {
                         token: tempparam.token,
@@ -1823,17 +1827,17 @@ angular.module('app')
                                     if (typeof result !== 'undefined') {
                                         var list = result.list;
                                         if (list) {
-                                            if(isclear){
+                                            if (isclear) {
                                                 self.$admin_shop_wrap.html('');
                                             }
                                             var len = list.length;
-                                            if (len!==0) {
+                                            if (len !== 0) {
                                                 var i = 0,
                                                     str = '',
                                                     shop_item;
                                                 for (i; i < len; i++) {
                                                     shop_item = list[i];
-                                                    str += '<li data-id="'+shop_item["id"]+'" data-operator="'+id+'" >'+shop_item["fullName"]+'</li>';
+                                                    str += '<li data-id="' + shop_item["id"] + '" data-operator="' + id + '" >' + shop_item["fullName"] + '</li>';
                                                 }
                                                 /*更新到列表*/
                                                 $(str).appendTo(self.$admin_shop_wrap);
@@ -1878,60 +1882,69 @@ angular.module('app')
         this.clearSelectShop = function (config) {
             var source = config.record.operator_shopid;
             /*清除模型样式*/
-            for(var i in source){
+            for (var i in source) {
                 source[i]['li'].removeClass('action-list-active');
             }
             /*清除模型*/
             config.struct.bindingShopIds = '';
-            config.record.operator_shopid={};
+            config.record.operator_shopid = {};
         };
         /*运营商服务--选中或取消运营商店铺*/
-        this.toggleShopCheck=function (e,config) {
-            var target=e.target,
-                node=target.nodeName.toLowerCase();
+        this.toggleShopCheck = function (e, config) {
+            var target = e.target,
+                node = target.nodeName.toLowerCase();
 
-            if(node==='ul'){
+            if (node === 'ul') {
                 return false;
             }
-            if(node==='li'){
-                var source=config.record.operator_shopid,
-                    $this=$(target),
-                    id=$this.attr('data-id'),
-                    operator=$this.attr('data-operator'),
-                    active=$this.hasClass('action-list-active');
+            if (node === 'li') {
+                var source = config.record.operator_shopid,
+                    $this = $(target),
+                    id = $this.attr('data-id'),
+                    operator = $this.attr('data-operator'),
+                    active = $this.hasClass('action-list-active');
 
-                if(active){
-                    var temp_item=source[id];
-                    if(temp_item){
+                if (active) {
+                    var temp_item = source[id];
+                    if (temp_item) {
                         temp_item['li'].removeClass('action-list-active');
                         delete source[id];
                     }
-                }else{
+                } else {
                     $this.addClass('action-list-active');
-                    source[id]={
-                        'id':id,
-                        'li':$this,
-                        'operator':operator
+                    source[id] = {
+                        'id': id,
+                        'li': $this,
+                        'operator': operator
                     };
                 }
             }
         };
         /*运营商服务--清除已经失效运营商店铺*/
-        this.clearShopList=function (config) {
-            var record=config.record,
-                struct=config.struct,
-                shopchahe=record.operator_shopid,
-                id=config.id;
+        this.clearShopList = function (config) {
+            var record = config.record,
+                struct = config.struct,
+                shopchahe = record.operator_shopid,
+                id = config.id;
 
-            for(var i in shopchahe){
-                var temp_item=shopchahe[i],
-                    operator=temp_item['operator'];
+            for (var i in shopchahe) {
+                var temp_item = shopchahe[i],
+                    operator = temp_item['operator'],
+                    shopid = temp_item['id'];
                 /*label索引是否与店铺运营商ID索引一致*/
-                if(operator===id){
+                if (operator === id) {
                     /*如果存在相同索引则删除查询到的运营商店铺列表*/
-
+                    /*清除dom节点*/
+                    shopchahe[shopid]['li'].remove();
+                    /*清除模型*/
+                    delete shopchahe[shopid];
                 }
             }
+            /*更新选中节点*/
+            self.getSelectShop({
+                record: config.record,
+                struct: config.struct
+            });
         };
 
 
