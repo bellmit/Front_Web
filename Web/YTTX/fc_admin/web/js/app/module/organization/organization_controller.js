@@ -189,6 +189,7 @@ angular.module('app')
         /*机构服务--操作机构表单*/
         this.actionStruct = function (config) {
             /*调用编辑机构服务类*/
+            console.log(self.record.operator_shopid);
             organizationService.actionStruct({
                 modal: config,
                 record: self.record,
@@ -246,18 +247,12 @@ angular.module('app')
         };
 
 
-        /*运营商服务--确定所选运营商*/
-        this.getSelectOperator = function () {
-            organizationService.getSelectOperator({
-                record: self.record,
-                struct: self.struct
-            });
-        };
-        /*运营商服务--取消所选运营商*/
-        this.clearSelectOperator = function () {
-            organizationService.clearSelectOperator({
-                record: self.record,
-                struct: self.struct
+
+        /*运营商服务--绑定运营商*/
+        this.bindCheckShop=function () {
+            organizationService.bindCheckShop({
+                struct:self.struct,
+                record:self.record
             });
         };
         /*运营商服务--切换显示隐藏运营商店铺*/

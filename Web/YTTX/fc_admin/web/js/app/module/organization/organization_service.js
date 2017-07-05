@@ -295,6 +295,7 @@ angular.module('app')
                                                         }
                                                         $(str).appendTo($wrap.html(''));
                                                         /*执行初始化操作*/
+                                                        console.log(config.record.operator_shopid);
                                                         self.initOSModel({
                                                             record: config.record
                                                         })
@@ -677,9 +678,8 @@ angular.module('app')
 
         /*机构服务--操作机构*/
         this.actionStruct = function (config) {
+            console.log(config.record.operator_shopid);
             var modal = config.modal,
-                struct = config.struct,
-                record = config.record,
                 type = modal.type;
 
             /*如果存在延迟任务则清除延迟任务*/
@@ -689,11 +689,13 @@ angular.module('app')
                 type: modal.area
             });
 
+            console.log(config.record.operator_shopid);
 
             /*根据类型跳转相应逻辑*/
             if (type === 'edit') {
                 /*查询相关存在的数据*/
                 self.queryStructInfo(config);
+                console.log(config.record.operator_shopid);
             } else if (type === 'add') {
                 /*显示弹窗*/
                 self.toggleModal({
@@ -908,7 +910,7 @@ angular.module('app')
                                             }
                                         }
                                         /*单独查询绑定的加盟店*/
-                                        self.queryCheckStruct({
+                                        self.queryCheckShop({
                                             id: temp_id,
                                             record: record,
                                             struct: struct
@@ -1109,7 +1111,6 @@ angular.module('app')
                     param['isAudited'] = config[type]['isAudited'];
                     param['status'] = config[type]['status'];
                     param['remark'] = config[type]['remark'];
-                    param['bindingShopIds'] = config[type]['bindingShopIds'];
 
                     /*处理特殊值*/
                     var isSettingLogin = parseInt(config[type]['isSettingLogin'], 10);
@@ -1136,6 +1137,8 @@ angular.module('app')
                         } else {
                             param['parentId'] = record.organizationId;
                         }
+                        /*新增采用传参方式，编辑采用编辑方式*/
+                        param['bindingShopIds'] = config[type]['bindingShopIds'];
                         req_config['url'] = '/organization/add';
                     } else {
                         action = 'edit';
@@ -1180,7 +1183,7 @@ angular.module('app')
                                     if (type === 'struct') {
                                         self.getMenuList({
                                             record: config.record,
-                                            table: config.table
+                                            type:'fc'
                                         });
                                     } else if (type === 'user') {
                                         /*重新加载表格数据*/
@@ -1237,10 +1240,14 @@ angular.module('app')
                 /*重置权限信息*/
                 self.clearSelectPower(config[type]);
                 /*重置操作模型*/
+                //console.log(config.record.operator_shopid);
                 self.clearSelectShop({
                     record:config.record,
                     struct:config.struct
                 });
+                //console.log(config.record.operator_shopid);
+                /*运营商店铺隐藏*/
+                config.record.operator_shopshow=false;
             }
             /*重置验证提示信息*/
             self.clearFormValid(config.forms);
@@ -1638,6 +1645,10 @@ angular.module('app')
                                         if (list) {
                                             var len = list.length;
                                             if (len !== 0) {
+                                                /*显示店铺列表*/
+                                                if(!record.operator_shopshow){
+                                                    record.operator_shopshow=true;
+                                                }
                                                 var i = 0,
                                                     shop_cache = record.operator_shopid,
                                                     str = '',
@@ -1660,6 +1671,70 @@ angular.module('app')
                                             }
                                         }
                                     }
+                                }
+                            }
+                        },
+                        function (resp) {
+                            var message = resp.data.message;
+                            if (typeof message !== 'undefined' && message !== '') {
+                                console.log(message);
+                            } else {
+                                console.log('请求绑定分仓失败');
+                            }
+                        });
+            } else {
+                /*退出系统*/
+                cache = null;
+                loginService.outAction();
+            }
+        };
+        /*运营商服务--绑定运营商店铺(编辑时绑定)*/
+        this.bindCheckShop = function (config) {
+            if (cache) {
+                var record = config.record,
+                    id = record.organizationId !== '' ? record.organizationId : record.currentId1,
+                    tempparam = cache.loginMap.param,
+                    param = {
+                        token: tempparam.token,
+                        adminId: tempparam.adminId,
+                        organizationId: id,
+                        bindingShopIds:config.struct.bindingShopIds
+                    };
+
+                toolUtil
+                    .requestHttp({
+                        url: '/organization/shopmaps/add',
+                        method: 'post',
+                        set: true,
+                        data: param
+                    })
+                    .then(function (resp) {
+                            var data = resp.data,
+                                status = parseInt(resp.status, 10);
+
+                            if (status === 200) {
+                                var code = parseInt(data.code, 10),
+                                    message = data.message;
+                                if (code !== 0) {
+                                    if (typeof message !== 'undefined' && message !== '') {
+                                        toolDialog.show({
+                                            type: 'warn',
+                                            value: '绑定分仓失败'
+                                        });
+                                    }else{
+                                        console.log(message);
+                                    }
+
+                                    if (code === 999) {
+                                        /*退出系统*/
+                                        cache = null;
+                                        loginService.outAction();
+                                    }
+                                } else {
+                                    toolDialog.show({
+                                        type: 'succ',
+                                        value: '绑定分仓成功'
+                                    });
                                 }
                             }
                         },
@@ -1721,12 +1796,13 @@ angular.module('app')
                                             var len = list.length;
                                             if (len !== 0) {
                                                 var i = 0,
-                                                    j = 0,
                                                     str = '',
                                                     shopobj = {},
                                                     shopitem,
                                                     shopid,
                                                     source = config.record.operator_shopid;
+
+                                                console.log(source);
 
                                                 for (i; i < len; i++) {
                                                     shopitem = list[i];
