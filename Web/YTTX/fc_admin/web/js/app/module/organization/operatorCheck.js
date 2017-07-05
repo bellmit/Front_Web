@@ -1,84 +1,84 @@
 function operatorCheck_old(config, flag) {
-            var target,
-                $label,
-                type = config.type/*选择的是全选还是单个选项*/,
-                record = config.record,
-                ischeck,
-                id;
+    var target,
+        $label,
+        type = config.type/*选择的是全选还是单个选项*/,
+        record = config.record,
+        ischeck,
+        id;
 
-            if (flag) {
-                $label = config.target;
-                if (flag === 'yes') {
-                    ischeck = false;
-                } else if (flag === 'no') {
-                    ischeck = true;
-                }
-            } else {
-                target = config.target;
-                $label = $(target);
-                ischeck = $label.hasClass('sub-menu-checkboxactive');
-            }
+    if (flag) {
+        $label = config.target;
+        if (flag === 'yes') {
+            ischeck = false;
+        } else if (flag === 'no') {
+            ischeck = true;
+        }
+    } else {
+        target = config.target;
+        $label = $(target);
+        ischeck = $label.hasClass('sub-menu-checkboxactive');
+    }
 
-            if (ischeck) {
-                /*取消选中*/
-                $label.removeClass('sub-menu-checkboxactive');
-                if (type === 'all') {
-                    /*取消全选*/
-                    self.$admin_yystruct_menu.find('label').each(function () {
-                        $(this).removeClass('sub-menu-checkboxactive');
-                    });
-                    /*清除模型*/
-                    record['operator_cache'] = {};
-                } else if (type === 'item') {
-                    /*取消单个*/
-                    id = $label.attr('data-id');
-                    /*变更模型*/
-                    delete record['operator_cache'][id];
-                }
-            } else {
-                /*选中*/
-                $label.addClass('sub-menu-checkboxactive');
-                /*切换显示运营商店铺信息*/
-                if (!record.operator_shopshow) {
-                    record.operator_shopshow = true;
-                }
-                if (type === 'all') {
-                    /*全选*/
-                    self.$admin_yystruct_menu.find('label').each(function () {
-                        var $this = $(this);
-                        $this.addClass('sub-menu-checkboxactive');
-                        id = $this.attr('data-id');
-                        /*变更模型*/
-                        record['operator_cache'][id] = {
-                            'id': id,
-                            'label': $this,
-                            'ischeck': true,
-                            'isall': false
-                        };
-                    });
-                    /*添加全选本身值（可以根据具体情况定制）*/
-                    /*
-                     id = $label.attr('data-id');
-                     record['operator_cache'][id] = {
-                     'id':id,
-                     'label':$label,
-                     'ischeck':true,
-                     'isall':true
-                     };
-                     */
-                } else if (type === 'item') {
-                    /*选中单个*/
-                    id = $label.attr('data-id');
-                    /*变更模型*/
-                    record['operator_cache'][id] = {
-                        'id': id,
-                        'label': $label,
-                        'ischeck': true,
-                        'isall': false
-                    };
-                }
-            }
-        };
+    if (ischeck) {
+        /*取消选中*/
+        $label.removeClass('sub-menu-checkboxactive');
+        if (type === 'all') {
+            /*取消全选*/
+            self.$admin_yystruct_menu.find('label').each(function () {
+                $(this).removeClass('sub-menu-checkboxactive');
+            });
+            /*清除模型*/
+            record['operator_cache'] = {};
+        } else if (type === 'item') {
+            /*取消单个*/
+            id = $label.attr('data-id');
+            /*变更模型*/
+            delete record['operator_cache'][id];
+        }
+    } else {
+        /*选中*/
+        $label.addClass('sub-menu-checkboxactive');
+        /*切换显示运营商店铺信息*/
+        if (!record.operator_shopshow) {
+            record.operator_shopshow = true;
+        }
+        if (type === 'all') {
+            /*全选*/
+            self.$admin_yystruct_menu.find('label').each(function () {
+                var $this = $(this);
+                $this.addClass('sub-menu-checkboxactive');
+                id = $this.attr('data-id');
+                /*变更模型*/
+                record['operator_cache'][id] = {
+                    'id': id,
+                    'label': $this,
+                    'ischeck': true,
+                    'isall': false
+                };
+            });
+            /*添加全选本身值（可以根据具体情况定制）*/
+            /*
+             id = $label.attr('data-id');
+             record['operator_cache'][id] = {
+             'id':id,
+             'label':$label,
+             'ischeck':true,
+             'isall':true
+             };
+             */
+        } else if (type === 'item') {
+            /*选中单个*/
+            id = $label.attr('data-id');
+            /*变更模型*/
+            record['operator_cache'][id] = {
+                'id': id,
+                'label': $label,
+                'ischeck': true,
+                'isall': false
+            };
+        }
+    }
+};
 
 function operatorCheck_new(config, flag) {
     var target,

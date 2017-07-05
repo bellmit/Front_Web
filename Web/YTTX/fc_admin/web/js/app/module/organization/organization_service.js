@@ -436,32 +436,15 @@ angular.module('app')
                 layer = config.layer,
                 parentid = config.id;
 
-
-            /*不分子查询*/
-            /*if (type === 'fc') {
-             if(flag){
-             str = '<li><a data-isrequest="false" data-parentid="' + parentid + '" data-layer="' + layer + '" data-id="' + id + '" class="sub-menu-title" href="#" title="">' + label + '</a>';
-             }else{
-             str = '<li><a data-parentid="' + parentid + '"  data-layer="' + layer + '" data-id="' + id + '"  href="#" title="">' + label + '</a></li>';
-             }
-             } else if (type === 'yy') {
-             str = '<li><a data-layer="' + layer + '" data-id="' + id + '" href="#" title=""><label class="sub-menu-checkbox" data-id="' + id + '"></label>' + label + '</a></li>';
-             }*/
-
-
             /*分子查询*/
-            if (flag) {
-                if (type === 'fc') {
+            if (type === 'fc') {
+                if (flag) {
                     str = '<li><a data-isrequest="false" data-parentid="' + parentid + '" data-layer="' + layer + '" data-id="' + id + '" class="sub-menu-title" href="#" title="">' + label + '</a>';
-                } else if (type === 'yy') {
-                    str = '<li><a data-isrequest="false" data-parentid="' + parentid + '" data-layer="' + layer + '" data-label="' + label + '" data-id="' + id + '" class="sub-menu-title" href="#" title=""><label class="sub-menu-checkbox" data-id="' + id + '"></label>' + label + '</a>';
-                }
-            } else {
-                if (type === 'fc') {
+                } else {
                     str = '<li><a data-parentid="' + parentid + '"  data-layer="' + layer + '" data-id="' + id + '"  href="#" title="">' + label + '</a></li>';
-                } else if (type === 'yy') {
-                    str = '<li><a data-parentid="' + parentid + '" data-layer="' + layer + '" data-id="' + id + '" href="#" title=""  data-label="' + label + '"><label class="sub-menu-checkbox" data-id="' + id + '"></label>' + label + '</a></li>';
                 }
+            } else if (type === 'yy') {
+                str = '<li><a data-parentid="' + parentid + '" data-layer="' + layer + '" data-label="' + label + '" data-id="' + id + '" href="#" title=""><label class="sub-menu-checkbox" data-id="' + id + '"></label>' + label + '</a>';
             }
             return str;
         };
@@ -1577,212 +1560,189 @@ angular.module('app')
         /*运营商服务--选中运营商服务，flag:下一个状态（操作一次以后将要切换的状态）(yes:选中，no:未选中)*/
         this.operatorCheck = function (config, flag) {
             var target,
-                $label,
+                itemlabel,
                 type = config.type/*选择的是全选还是单个选项*/,
                 record = config.record,
                 label_cache = record.operator_cache,
-                ischeck,
-                id;
+                ischeck;
 
             if (flag) {
-                $label = config.target;
                 if (flag === 'yes') {
                     ischeck = false;
                 } else if (flag === 'no') {
                     ischeck = true;
                 }
-            } else {
-                target = config.target;
-                $label = $(target);
-                ischeck = $label.hasClass('sub-menu-checkboxactive');
             }
-
-            if (ischeck) {
-                /*取消选中*/
-                $label.removeClass('sub-menu-checkboxactive');
-                if (type === 'all') {
-                    /*取消全选*/
-                    /*判断模型状态*/
-                    switch (label_cache.state) {
-                        case 'empty':
-                            /*未选状态:不做操作*/
-                            break;
-                        case 'full':
-                            /*全选状态:直接操作模型*/
-                            (function () {
-                                for (var i in label_cache) {
-                                    if (i !== 'state') {
-                                        label_cache[i]['ischeck'] = false;
-                                        label_cache[i]['label'].removeClass('sub-menu-checkboxactive');
-                                    }
-                                }
-                            }());
-                            break;
-                        case 'short':
-                            /*不完全状态:循环label标签，并补充部分缺失模型*/
-                            (function () {
-                                self.$admin_yystruct_menu.find('label').each(function () {
-                                    var $this = $(this),
-                                        temp_id = $this.attr('data-id');
-                                    $this.removeClass('sub-menu-checkboxactive');
-                                    /*不存在模型则补充模型*/
-                                    if (!label_cache[temp_id]) {
-                                        label_cache[temp_id] = {
-                                            'id': temp_id,
-                                            'label': $this,
-                                            'ischeck': false,
-                                            'isall': false
-                                        };
-                                    } else {
-                                        label_cache[temp_id]['label'] = $this;
-                                        label_cache[temp_id]['ischeck'] = false;
-                                    }
-                                });
-                                /*循环完毕将数据状态变为完全状态*/
-                                label_cache.state = 'full';
-                            }());
-                            break;
-                    }
-                } else if (type === 'item') {
-                    /*取消单个*/
-                    id = $label.attr('data-id');
-                    /*判断模型状态*/
-                    switch (label_cache.state) {
-                        case 'empty':
-                            /*未选状态:不做操作*/
-                            break;
-                        case 'full':
-                            /*全选状态:同步模型*/
-                            label_cache[id]['ischeck'] = false;
-                            label_cache[id]['label'] = $label;
-                            break;
-                        case 'short':
-                            /*不完全状态*/
-                            if (!label_cache[id]) {
-                                label_cache[id] = {
-                                    'id': id,
-                                    'label': $label,
-                                    'ischeck': false,
-                                    'isall': false
-                                };
-                            } else {
-                                label_cache[id]['label'] = $label;
-                                label_cache[id]['ischeck'] = false;
-                            }
-                            break;
+            if (type === 'all') {
+                /*全选与取消全选操作*/
+                itemlabel = self.$all_yystruct;
+                if (!flag) {
+                    ischeck = itemlabel.hasClass('sub-menu-checkboxactive');
+                }
+                if (ischeck) {
+                    /*取消选中*/
+                    itemlabel.removeClass('sub-menu-checkboxactive');
+                } else {
+                    /*选中*/
+                    itemlabel.addClass('sub-menu-checkboxactive');
+                    /*切换显示运营商店铺信息*/
+                    if (!record.operator_shopshow) {
+                        record.operator_shopshow = true;
                     }
                 }
-                /*取消*/
-            } else {
-                /*选中*/
-                $label.addClass('sub-menu-checkboxactive');
-                /*切换显示运营商店铺信息*/
-                if (!record.operator_shopshow) {
-                    record.operator_shopshow = true;
-                }
-                if (type === 'all') {
-                    /*判断模型状态*/
-                    switch (label_cache.state) {
-                        case 'empty':
-                            /*未选状态:循环label并改变模型状态*/
+                /*判断模型状态*/
+                switch (label_cache.state) {
+                    case 'empty':
+                        /*未选状态*/
+                        if (ischeck) {
+                            /*操作：选中-->取消选中；数据状态：为空状态；结果：不做操作*/
+                        } else {
+                            /*操作：取消选中-->选中；数据状态：为空状态；结果：循环label并改变模型状态*/
                             (function () {
                                 /*全选*/
                                 self.$admin_yystruct_menu.find('label').each(function () {
-                                    var $this = $(this);
+                                    var $this = $(this),
+                                        key = $this.attr('data-id');
+
                                     $this.addClass('sub-menu-checkboxactive');
-                                    id = $this.attr('data-id');
                                     /*变更模型*/
-                                    label_cache[id] = {
-                                        'id': id,
+                                    label_cache[key] = {
+                                        'id': key,
                                         'label': $this,
                                         'ischeck': true,
                                         'isall': false
                                     };
+                                    /*查询店铺*/
+                                    self.queryShopById({
+                                        record:config.record,
+                                        id:key
+                                    });
                                 });
                                 /*变更模型状态为全选*/
                                 label_cache.state = 'full';
                             }());
-                            break;
-                        case 'full':
-                            /*全选状态:直接操作模型*/
-                            (function () {
-                                for (var i in label_cache) {
-                                    if (i !== 'state') {
+                        }
+                        break;
+                    case 'full':
+                        /*全选状态*/
+                        (function () {
+                            for (var i in label_cache) {
+                                if (i !== 'state') {
+                                    if (ischeck) {
+                                        /*操作：选中-->取消选中；数据状态：全选状态；结果：直接操作模型*/
+                                        label_cache[i]['ischeck'] = false;
+                                        label_cache[i]['label'].removeClass('sub-menu-checkboxactive');
+                                    } else {
+                                        /*操作：取消选中-->选中；数据状态：全选状态；结果：直接操作模型*/
                                         label_cache[i]['ischeck'] = true;
                                         label_cache[i]['label'].addClass('sub-menu-checkboxactive');
                                     }
                                 }
-                            }());
-                            break;
-                        case 'short':
-                            /*不完全状态:循环label标签，并补充部分缺失模型*/
-                            (function () {
-                                self.$admin_yystruct_menu.find('label').each(function () {
-                                    var $this = $(this),
-                                        temp_id = $this.attr('data-id');
+                            }
+                        }());
+                        break;
+                    case 'short':
+                        /*不完全状态*/
+                        (function () {
+                            self.$admin_yystruct_menu.find('label').each(function () {
+                                var $this = $(this),
+                                    key = $this.attr('data-id');
+
+                                if (ischeck) {
+                                    /*操作：选中-->取消选中；数据状态：不完全状态；结果：循环label标签，并补充部分缺失模型*/
+                                    $this.removeClass('sub-menu-checkboxactive');
+                                    /*不存在模型则补充模型*/
+                                    if (!label_cache[key]) {
+                                        label_cache[key] = {
+                                            'id': key,
+                                            'label': $this,
+                                            'ischeck': false,
+                                            'isall': false
+                                        };
+                                        /*查询店铺*/
+                                        self.queryShopById({
+                                            record:config.record,
+                                            id:key
+                                        });
+                                    } else {
+                                        label_cache[key]['label'] = $this;
+                                        label_cache[key]['ischeck'] = false;
+                                    }
+                                } else {
+                                    /*操作：取消选中-->选中；数据状态：不完全状态；结果：循环label标签，并补充部分缺失模型*/
                                     $this.addClass('sub-menu-checkboxactive');
                                     /*不存在模型则补充模型*/
-                                    if (!label_cache[temp_id]) {
-                                        label_cache[temp_id] = {
-                                            'id': temp_id,
+                                    if (!label_cache[key]) {
+                                        label_cache[key] = {
+                                            'id': key,
                                             'label': $this,
                                             'ischeck': true,
                                             'isall': false
                                         };
+                                        /*查询店铺*/
+                                        self.queryShopById({
+                                            record:config.record,
+                                            id:key
+                                        });
                                     } else {
-                                        label_cache[temp_id]['label'] = $this;
-                                        label_cache[temp_id]['ischeck'] = true;
+                                        label_cache[key]['label'] = $this;
+                                        label_cache[key]['ischeck'] = true;
                                     }
-                                });
-                                /*循环完毕将数据状态变为完全状态*/
-                                label_cache.state = 'full';
-                            }());
-                            break;
+                                }
+                            });
+                            /*循环完毕将数据状态变为完全状态*/
+                            label_cache.state = 'full';
+                        }());
+                        break;
+                }
+            } else if (type === 'item') {
+                /*单个操作与取消单个操作*/
+                target = config.target;
+                var id = target.getAttribute('data-id');
+                /*判断是否存在模型*/
+                if (label_cache[id]) {
+                    /*存在模型即操作模型*/
+                    var cacheitem = label_cache[id];
+
+                    ischeck = cacheitem['ischeck'];
+                    cacheitem['ischeck'] = !ischeck;
+                    if (ischeck) {
+                        cacheitem['label'].removeClass('sub-menu-checkboxactive');
+                    } else {
+                        cacheitem['label'].addClass('sub-menu-checkboxactive');
+                        /*切换显示运营商店铺信息*/
+                        if (!record.operator_shopshow) {
+                            record.operator_shopshow = true;
+                        }
                     }
-                    /*添加全选本身值（可以根据具体情况定制）*/
-                    /*
-                     id = $label.attr('data-id');
-                     label_cache[id] = {
-                     'id':id,
-                     'label':$label,
-                     'ischeck':true,
-                     'isall':true
-                     };
-                     */
-                } else if (type === 'item') {
-                    /*选中单个*/
-                    id = $label.attr('data-id');
-                    /*判断模型状态*/
-                    switch (label_cache.state) {
-                        case 'empty':
-                            /*未选状态*/
-                            label_cache[id] = {
-                                'id': id,
-                                'label': $label,
-                                'ischeck': true,
-                                'isall': false
-                            };
-                            label_cache.state = 'short';
-                            break;
-                        case 'full':
-                            /*全选状态*/
-                            label_cache[id]['label'] = $label;
-                            label_cache[id]['ischeck'] = true;
-                            break;
-                        case 'short':
-                            /*不完全状态*/
-                            if (!label_cache[id]) {
-                                label_cache[id] = {
-                                    'id': id,
-                                    'label': $label,
-                                    'ischeck': true,
-                                    'isall': false
-                                };
-                            } else {
-                                label_cache[id]['label'] = $label;
-                                label_cache[id]['ischeck'] = true;
+                } else {
+                    /*不存在模型*/
+                    if (!flag) {
+                        itemlabel = $(target);
+                        ischeck = itemlabel.hasClass('sub-menu-checkboxactive');
+                        if (ischeck) {
+                            itemlabel.removeClass('sub-menu-checkboxactive');
+                        } else {
+                            itemlabel.addClass('sub-menu-checkboxactive');
+                            /*切换显示运营商店铺信息*/
+                            if (!record.operator_shopshow) {
+                                record.operator_shopshow = true;
                             }
-                            break;
+                        }
+                        label_cache[id] = {
+                            'id': id,
+                            'label': itemlabel,
+                            'ischeck': !ischeck,
+                            'isall': false
+                        };
+                        /*查询店铺*/
+                        self.queryShopById({
+                            record:config.record,
+                            id:id
+                        });
+                        if (label_cache.state === 'empty') {
+                            label_cache.state = 'short';
+                        }
                     }
                 }
             }
@@ -1960,31 +1920,31 @@ angular.module('app')
                                             var len = list.length;
                                             if (len !== 0) {
                                                 var i = 0,
-                                                    str = '',
+                                                    $li,
+                                                    shoparr=[],
                                                     shopitem,
                                                     shopid,
-                                                    source=config.record.operator_shopid;
+                                                    source = config.record.operator_shopid;
 
                                                 for (i; i < len; i++) {
                                                     shopitem = list[i];
-                                                    shopid=shopitem['id'];
+                                                    shopid = shopitem['id'];
 
-                                                    str += '<li data-shopid="' + shopid + '" data-operator="' + id + '" >' + shopitem["fullName"] + '</li>';
+                                                    $li=$('<li data-shopid="' + shopid + '" data-operator="' + id + '" >' + shopitem["fullName"] + '</li>');
                                                     /*初始化店铺模型*/
-                                                    if(!source[shopid]){
-                                                        source[shopid]={
-                                                            'shopid':shopid,
-                                                            'li':$('<li data-shopid="' + shopid + '" data-operator="' + id + '" >' + shopitem["fullName"] + '</li>'),
-                                                            'operator':id,
-                                                            'ischeck':false
+                                                    if (!source[shopid]) {
+                                                        source[shopid] = {
+                                                            'shopid': shopid,
+                                                            'li': $li.clone(),
+                                                            'operator': id,
+                                                            'ischeck': false
                                                         }
-                                                    }else{
-                                                        source[shopid]['li'].removeClass('action-list-active');
-                                                        source[shopid]['ischeck']=false;
                                                     }
+                                                    /*jq缓存序列*/
+                                                    shoparr.push($li);
                                                 }
                                                 /*更新到列表*/
-                                                $(str).appendTo(self.$admin_shop_wrap);
+                                                self.$admin_shop_wrap.append(shoparr);
                                             }
                                         }
                                     }
@@ -2057,6 +2017,8 @@ angular.module('app')
                         shopitem['li'].removeClass('action-list-active');
                         shopitem['ischeck'] = false;
                     } else {
+                        console.log(shopitem['ischeck']);
+                        console.log(shopitem);
                         /*选中*/
                         shopitem['li'].addClass('action-list-active');
                         shopitem['ischeck'] = true;
