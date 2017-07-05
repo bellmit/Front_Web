@@ -405,14 +405,33 @@
     padding: 10px;
     line-height: 20px;
     color: @color-gray6;
-    margin:2px 0 0 2px;
+    margin: 2px 0 0 2px;
     background: lighten(@color-gray14, 3%);
     &:hover {
       background: @color-gray14;
     }
   }
   .action-list-active {
+    .layout-relative-base();
     background: lighten(@color-blue3, 36%);
+    &:before,
+    &:after {
+      .layout-absoluter-base();
+      display: inline-block;
+      width: 16px;
+      height: 12px;
+    }
+    &:before {
+      content: '';
+      background: lighten(@color-blue3, 26%);
+    }
+    &:after {
+      content: '\e608';
+      font-family: 'ux_eight';
+      font-size:@font-size-base - 2;
+      color:@color-white;
+      line-height: 12px;
+    }
     &:hover {
       background: lighten(@color-blue3, 36%);
     }
@@ -420,9 +439,9 @@
 }
 
 .admin-grid-widget2-extend {
-  width:100%;
-  min-height:120px;
-  max-height:500px;
+  width: 100%;
+  min-height: 120px;
+  max-height: 500px;
   overflow-y: auto;
   padding: 20px;
 }
