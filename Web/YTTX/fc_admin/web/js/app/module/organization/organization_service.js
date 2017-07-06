@@ -49,9 +49,7 @@ angular.module('app')
         this.toggleModal = function (config, fn) {
             var temp_timer = null,
                 type_map = {
-                    'struct': self.$admin_struct_dialog,
-                    'user': self.$admin_user_dialog,
-                    'userdetail': self.$admin_userdetail_dialog
+                    'struct': self.$admin_struct_dialog
                 };
             if (config.display === 'show') {
                 if (typeof config.delay !== 'undefined') {
@@ -240,6 +238,8 @@ angular.module('app')
                                                     }
                                                 } else if (type === 'yy') {
                                                     record.hasdata2 = false;
+                                                    /*清除模型，重置模型*/
+                                                    record.operator_cache={state:'empty'};
                                                     if (layer === 0) {
                                                         $wrap.html('<li><a>暂无数据</a></li>');
                                                         self.$admin_yystruct_wrap.attr({
@@ -300,6 +300,8 @@ angular.module('app')
                                                         })
                                                     } else {
                                                         record.hasdata2 = false;
+                                                        /*清除模型，重置模型*/
+                                                        record.operator_cache={state:'empty'};
                                                         if (layer === 0) {
                                                             /*搜索模式*/
                                                             self.$admin_yystruct_wrap.attr({
@@ -325,6 +327,8 @@ angular.module('app')
                                                 }
                                             } else if (type === 'yy') {
                                                 record.hasdata2 = false;
+                                                /*清除模型，重置模型*/
+                                                record.operator_cache={state:'empty'};
                                                 if (layer === 0) {
                                                     $wrap.html('<li><a>暂无数据</a></li>');
                                                     self.$admin_yystruct_wrap.attr({
@@ -344,6 +348,8 @@ angular.module('app')
                                             }
                                         } else if (type === 'yy') {
                                             record.hasdata2 = false;
+                                            /*清除模型，重置模型*/
+                                            record.operator_cache={state:'empty'};
                                             if (layer === 0) {
                                                 $wrap.html('<li><a>暂无数据</a></li>');
                                                 self.$admin_yystruct_wrap.attr({
@@ -366,6 +372,8 @@ angular.module('app')
                                 }
                             } else if (type === 'yy') {
                                 record.hasdata2 = false;
+                                /*清除模型，重置模型*/
+                                record.operator_cache={state:'empty'};
                                 if (layer === 0) {
                                     $wrap.html('<li><a>暂无数据</a></li>');
                                     self.$admin_yystruct_wrap.attr({
@@ -1915,246 +1923,6 @@ angular.module('app')
         };
 
 
-        /*用户服务--操作用户*/
-        this.actionUser = function (config) {
-            var modal = config.modal,
-                type = modal.type,
-                record = config.record,
-                user = config.user;
-
-            if (type === 'add') {
-                /*判断是否是合法的节点，即是否有父机构*/
-                if (record.structId === '' && record.organizationId === '') {
-                    toolDialog.show({
-                        type: 'warn',
-                        value: '没有父机构或父机构不存在'
-                    });
-                    return false;
-                }
-            }
-            /*如果存在延迟任务则清除延迟任务*/
-            self.clearFormDelay();
-            /*通过延迟任务清空表单数据*/
-            self.addFormDelay({
-                type: 'user'
-            });
-            /*显示弹窗*/
-            self.toggleModal({
-                display: modal.display,
-                area: modal.area
-            });
-        };
-        /*用户服务--查询用户数据*/
-        this.queryUserInfo = function (config, id, action) {
-            if (cache === null) {
-                return false;
-            }
-
-            if (typeof id === 'undefined') {
-                toolDialog.show({
-                    type: 'warn',
-                    value: '没有店铺信息'
-                });
-                return false;
-            }
-
-            var param = $.extend(true, {}, cache.loginMap.param);
-            /*判断参数*/
-            param['id'] = id;
-
-            toolUtil
-                .requestHttp({
-                    url: '/organization/shop/info',
-                    method: 'post',
-                    set: true,
-                    data: param
-                })
-                .then(function (resp) {
-                        var data = resp.data,
-                            status = parseInt(resp.status, 10);
-
-                        if (status === 200) {
-                            var code = parseInt(data.code, 10),
-                                message = data.message;
-                            if (code !== 0) {
-                                if (typeof message !== 'undefined' && message !== '') {
-                                    console.log(message);
-                                } else {
-                                    console.log('请求数据失败');
-                                }
-
-                                if (code === 999) {
-                                    /*退出系统*/
-                                    cache = null;
-                                    loginService.outAction();
-                                }
-                            } else {
-                                /*加载数据*/
-                                var result = data.result;
-                                if (typeof result !== 'undefined') {
-                                    var list = result.shop;
-                                    if (list) {
-                                        if (action === 'update') {
-                                            /*修改：更新模型*/
-                                            var user = config.user;
-
-                                            for (var i in list) {
-                                                switch (i) {
-                                                    case 'id':
-                                                        user[i] = list[i];
-                                                        user['type'] = 'edit';
-                                                        break;
-                                                    case 'fullName':
-                                                        user[i] = list[i];
-                                                        break;
-                                                    case 'shortName':
-                                                        user[i] = list[i];
-                                                        break;
-                                                    case 'name':
-                                                        user[i] = list[i];
-                                                        break;
-                                                    case 'type':
-                                                        var temp_type = list[i];
-                                                        if (temp_type === '' || isNaN(temp_type)) {
-                                                            temp_type = 1;
-                                                            user['shoptype'] = temp_status;
-                                                        } else {
-                                                            user['shoptype'] = list[i];
-                                                        }
-                                                        break;
-                                                    case 'cellphone':
-                                                        user[i] = toolUtil.phoneFormat(list[i]);
-                                                        break;
-                                                    case 'telephone':
-                                                        user[i] = toolUtil.telePhoneFormat(list[i], 4);
-                                                        break;
-                                                    case 'province':
-                                                        user['province'] = list['province'];
-                                                        user['city'] = list['city'];
-                                                        user['country'] = list['country'];
-                                                        /*判断是否需要重新数据，并依此更新相关地址模型*/
-                                                        self.isReqAddress({
-                                                            type: 'city',
-                                                            address: config.address,
-                                                            model: user
-                                                        }, true);
-                                                        break;
-                                                    case 'address':
-                                                        user[i] = list[i];
-                                                        break;
-                                                    case 'status':
-                                                        var temp_status = list[i];
-                                                        if (temp_status === '' || isNaN(temp_status)) {
-                                                            temp_status = 0;
-                                                            user[i] = temp_status;
-                                                        } else {
-                                                            user[i] = list[i];
-                                                        }
-                                                        break;
-                                                    case 'remark':
-                                                        user[i] = list[i];
-                                                        break;
-                                                    case 'organizationId':
-                                                        user[i] = list[i];
-                                                        break;
-                                                }
-                                            }
-                                            /*显示弹窗*/
-                                            self.toggleModal({
-                                                display: 'show',
-                                                area: 'user'
-                                            });
-                                        } else if (action === 'detail') {
-                                            /*查看*/
-                                            var str = '',
-                                                detail_map = {
-                                                    'fullName': '店铺全称',
-                                                    'shortName': '店铺简称',
-                                                    'address': '联系地址',
-                                                    'name': '姓名',
-                                                    'type': '店铺类型',
-                                                    'cellphone': '店铺手机号码',
-                                                    'telephone': '店铺电话号码',
-                                                    'province': '省份',
-                                                    'city': '市区',
-                                                    'country': '县区',
-                                                    'remark': '备注',
-                                                    'addUserId': '添加的用户序列',
-                                                    'id': '序列号',
-                                                    'organizationId': '组织机构序列',
-                                                    'addTime': '添加时间',
-                                                    'status': '状态'
-                                                };
-
-                                            var r_province = '',
-                                                r_country = '',
-                                                r_city = '';
-
-                                            for (var j in list) {
-                                                if (typeof detail_map[j] !== 'undefined') {
-                                                    if (j === 'type') {
-                                                        var temptype = parseInt(list[j], 10),
-                                                            typemap = {
-                                                                1: '旗舰店',
-                                                                2: '体验店',
-                                                                3: '加盟店'
-                                                            };
-                                                        str += '<tr><td class="g-t-r">' + detail_map[j] + ':</td><td class="g-t-l">' + typemap[temptype] + '</td></tr>';
-                                                    } else if (j === 'province' || j === 'country' || j === 'city') {
-                                                        str += '<tr><td class="g-t-r">' + detail_map[j] + ':</td><td class="g-t-l">#' + j + '#</td></tr>';
-                                                        if (j === 'province') {
-                                                            self.queryByCode(list[j], function (name) {
-                                                                r_province = name;
-                                                            });
-                                                        } else if (j === 'country') {
-                                                            self.queryByCode(list[j], function (name) {
-                                                                r_country = name;
-                                                            });
-                                                        } else if (j === 'city') {
-                                                            self.queryByCode(list[j], function (name) {
-                                                                r_city = name;
-                                                            });
-                                                        }
-                                                    } else {
-                                                        str += '<tr><td class="g-t-r">' + detail_map[j] + ':</td><td class="g-t-l">' + list[j] + '</td></tr>';
-                                                    }
-                                                }
-                                            }
-                                            if (str !== '') {
-                                                setTimeout(function () {
-                                                    str = str.replace(/#province#/g, r_province).replace(/#country#/g, r_country).replace(/#city#/g, r_city);
-                                                    $(str).appendTo(self.$admin_userdetail_show.html(''));
-                                                    /*显示弹窗*/
-                                                    self.toggleModal({
-                                                        display: 'show',
-                                                        area: 'userdetail'
-                                                    });
-                                                }, 200);
-
-                                            }
-                                        }
-                                    } else {
-                                        /*提示信息*/
-                                        toolDialog.show({
-                                            type: 'warn',
-                                            value: '获取编辑数据失败'
-                                        });
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    function (resp) {
-                        var message = resp.data.message;
-                        if (typeof message !== 'undefined' && message !== '') {
-                            console.log(message);
-                        } else {
-                            console.log('请求用户失败');
-                        }
-                    });
-        };
-
-
         /*地址服务--地址查询*/
         this.queryAddress = function (config) {
             addressService.queryRelation(config);
@@ -2165,14 +1933,6 @@ angular.module('app')
                 addressService.isReqAddress(config, flag, fn);
             } else {
                 return addressService.isReqAddress(config);
-            }
-        };
-        /*地址服务--根据code查询value地址*/
-        this.queryByCode = function (code, fn) {
-            if (fn) {
-                addressService.queryByCode(code, fn);
-            } else {
-                return addressService.queryByCode(code, fn);
             }
         };
 

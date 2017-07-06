@@ -37,17 +37,7 @@
                     <!--绑定加盟商-->
                     <div class="struct-side-widget g-f-l g-w-percent8 g-gap-mr2">
                         <div class="admin-layout-theme4 admin-theme-close g-t-c g-b-gray17 g-pos-r">绑定加盟商(运营商)</div>
-                        <div class="g-w-percent50 g-gap-mt2 g-pos-r">
-                            <div ng-show="organization_ctrl.record.operator_shopshow" class="struct-grid-wrap">
-                                <div class="admin-layout-theme4 admin-theme-close g-t-c g-b-gray17 g-pos-r">运营商店铺列表<span class="mini-icon admin-mini-icon1" ng-click="organization_ctrl.toggleShopShow()"></span>
-                                </div>
-                                <ul class="admin-grid-widget admin-grid-widget2 admin-grid-widget2-extend" id="admin_shop_wrap" ng-click="organization_ctrl.toggleShopCheck($event)"></ul>
-                                <div class="struct-grid-btnitem-wrap">
-                                    <span ng-click="organization_ctrl.getSelectShop()" class="btn btn-red g-br3 g-w-number4 g-gap-mr8">确定</span>
-                                    <span ng-click="organization_ctrl.clearSelectShop()" class="btn btn-red g-br3 g-w-number4  g-gap-ml8">取消</span>
-                                </div>
-                            </div>
-
+                        <div class="g-w-percent50 g-gap-mt2">
                             <!--搜索组件-->
                             <div class="sub-search-wrap g-w-percent49 ui-sub-search" data-active="organization_ctrl.record.searchactive2" data-value="organization_ctrl.record.searchname2"  data-action="organization_ctrl.searchAction2()" data-clear="organization_ctrl.searchClear2()" ></div>
                             <!--左侧操作区域-->
@@ -62,26 +52,30 @@
                         </div>
                     </div>
 
-
-                    <!--权限-->
-                    <div class="g-f-l g-w-percent26 g-pos-r" ng-show="organization_ctrl.struct.isDesignatedPermit===1 && organization_ctrl.struct.isSettingLogin===1">
-                        <div class="admin-layout-theme4 admin-theme-close g-t-c g-b-gray17 g-pos-r">选择权限</div>
-                        <table class="table table-bordered table-striped table-hover admin-layout-table">
-                            <colgroup id="struct_power_colgroup"></colgroup>
-                            <thead id="struct_power_thead"></thead>
-                            <tbody id="struct_power_tbody"></tbody>
-                        </table>
-                        <div class="row">
-                            <div class="col-sm-5 g-t-r">
-                                <span ng-click="organization_ctrl.getSelectPower()" class="btn btn-red g-br3 g-w-percent15">确定</span>
+                    <div class="g-f-l g-w-percent26">
+                        <div class="g-w-percent50" ng-show="organization_ctrl.record.operator_shopshow">
+                            <div class="admin-layout-theme4 admin-theme-close g-t-c g-b-gray17 g-pos-r">运营商店铺列表<span class="mini-icon admin-mini-icon1" ng-click="organization_ctrl.toggleShopShow()"></span>
                             </div>
-                            <div class="col-sm-2"></div>
-                            <div class="col-sm-5 g-t-l">
-                                <span ng-click="organization_ctrl.clearSelectPower()" class="btn btn-red g-br3 g-w-percent15">取消</span>
+                            <ul class="admin-grid-widget admin-grid-widget2 g-w-percent50" id="admin_shop_wrap" ng-click="organization_ctrl.toggleShopCheck($event)"></ul>
+                            <div class="struct-grid-btnitem-wrap">
+                                <span ng-click="organization_ctrl.getSelectShop()" class="btn btn-red g-br3 g-w-number4 g-gap-mr8">确定</span>
+                                <span ng-click="organization_ctrl.clearSelectShop()" class="btn btn-red g-br3 g-w-number4  g-gap-ml8">取消</span>
+                            </div>
+                        </div>
+                        <!--权限-->
+                        <div class="g-f-l g-w-percent50" ng-show="organization_ctrl.struct.isDesignatedPermit===1 && organization_ctrl.struct.isSettingLogin===1">
+                            <div class="admin-layout-theme4 admin-theme-close g-t-c g-b-gray17 g-pos-r">选择权限</div>
+                            <table class="table table-bordered table-striped table-hover admin-layout-table">
+                                <colgroup id="struct_power_colgroup"></colgroup>
+                                <thead id="struct_power_thead"></thead>
+                                <tbody id="struct_power_tbody"></tbody>
+                            </table>
+                            <div class="struct-grid-btnitem-wrap">
+                                <span ng-click="organization_ctrl.getSelectPower()" class="btn btn-red g-br3 g-w-number4 g-gap-mr8">确定</span>
+                                <span ng-click="organization_ctrl.clearSelectPower()" class="btn btn-red g-br3 g-w-number4 g-gap-ml8">取消</span>
                             </div>
                         </div>
                     </div>
-
                     <!--表单-->
                     <div class="g-f-r g-w-percent14">
                         <div class="admin-layout-theme4 admin-theme-close g-t-c g-b-gray17 g-pos-r">机构设置{{organization_ctrl.struct.id===''?'(新增)':'(编辑)'}}
@@ -297,205 +291,6 @@
                         </form>
 
                     </div>
-                    <div class="clearfix"></div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-info" data-dismiss="modal">关闭</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!--新增用户(店铺)-->
-    <div class="modal fade custom-width" id="admin_user_dialog">
-        <div class="modal-dialog g-w-percent25">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <!--表单-->
-                    <div class="g-w-percent50">
-                        <div class="admin-layout-theme4 admin-theme-close g-t-c g-b-gray17 g-pos-r">{{organization_ctrl.user.id===''?'新增店铺':'编辑店铺'}}
-                            <span class="mini-icon admin-mini-icon1" ng-click="organization_ctrl.toggleModal({display:'hide',area:'user'})"></span>
-                        </div>
-
-                        <form ng-submit="organization_ctrl.formSubmit('user')" name="userFrom" role="form" novalidate method="post" class="admin-layout-form">
-
-                            <div class="form-group-self1">
-                                <label class="self-label g-w-percent10 g-t-r"><span class="self-require g-c-red1">*</span>店铺全称</label>
-
-                                <div class="self-input g-pos-r g-w-percent40">
-                                    <input type="text" name="fullName" placeholder="请输入店铺全称" required ng-model="organization_ctrl.user.fullName"  />
-                                    <span  ng-show="userFrom.fullName.$dirty && userFrom.fullName.$error.required" class="self-tips self-tips-no g-c-red1 g-fs4 g-w-percent50">店铺全称不能为空</span>
-                                    <span ng-show="userFrom.fullName.$dirty && userFrom.fullName.$valid" class="self-tips self-tips-yes"></span>
-                                </div>
-                            </div>
-
-
-                            <div class="form-group-self1">
-                                <label class="self-label g-w-percent10 g-t-r">店铺简称</label>
-
-                                <div class="self-input g-w-percent40">
-                                    <input type="text" name="shortName" ng-model="organization_ctrl.user.shortName"  />
-                                </div>
-                            </div>
-
-                            <div class="form-group-self1">
-                                <label class="self-label g-w-percent10 g-t-r"><span class="self-require g-c-red1">*</span>姓名</label>
-
-                                <div class="self-input g-pos-r g-w-percent40">
-                                    <input type="text" name="name" placeholder="请输入姓名" required ng-model="organization_ctrl.user.name" />
-                                    <span  ng-show="userFrom.name.$dirty && userFrom.name.$error.required" class="self-tips self-tips-no g-c-red1 g-fs4 g-w-percent50">姓名不能为空</span>
-                                    <span ng-show="userFrom.name.$dirty && userFrom.name.$valid" class="self-tips self-tips-yes"></span>
-                                </div>
-                            </div>
-
-                            <div class="admin-layout-theme4"><span class="mini-icon admin-mini-icon3"></span>&nbsp;店铺类型</div>
-
-                            <div class="form-group-self1">
-                                <label class="self-label">
-                                    <input type="radio" ng-model="organization_ctrl.user.shoptype" ng-value="1" name="shoptype">
-                                    &nbsp;旗舰店
-                                </label>
-                                <label class="self-label">
-                                    <input type="radio" ng-model="organization_ctrl.user.shoptype" ng-value="2"  name="shoptype">
-                                    &nbsp;体验店
-                                </label>
-                                <label class="self-label">
-                                    <input type="radio" ng-model="organization_ctrl.user.shoptype" ng-value="3"  name="shoptype">
-                                    &nbsp;加盟店
-                                </label>
-                            </div>
-
-                            <div class="form-group-self1">
-                                <label class="self-label g-w-percent10 g-t-r"><span class="self-require g-c-red1">*</span>手机号码</label>
-
-                                <div class="self-input g-pos-r g-w-percent40">
-                                    <input type="text" name="cellphone" required  placeholder="请输入手机号码" maxlength="13"  ng-model="organization_ctrl.user.cellphone" class="ui-mobile-phone"  />
-                                    <span ng-show="userFrom.cellphone.$dirty && userFrom.cellphone.$error.required" class="self-tips self-tips-no g-c-red1 g-fs4 g-w-percent50">手机号码不能为空</span>
-                                    <span ng-show="userFrom.cellphone.$dirty && userFrom.cellphone.$invalid && !userFrom.cellphone.$error.required" class="self-tips self-tips-no g-c-red1 g-fs4 g-w-percent50">手机号码格式不合法</span>
-                                    <span ng-show="userFrom.cellphone.$dirty && userFrom.cellphone.$valid" class="self-tips self-tips-yes"></span>
-                                </div>
-                            </div>
-
-
-                            <div class="form-group-self1">
-                                <label class="self-label g-w-percent10 g-t-r">电话号码</label>
-
-                                <div class="self-input g-pos-r g-w-percent40">
-                                    <input type="text" name="telephone" maxlength="13" placeholder=""  ng-model="organization_ctrl.user.telephone" class="ui-tele-phone4" />
-                                    <span ng-show="userFrom.telephone.$dirty && userFrom.telephone.$invalid" class="self-tips self-tips-no g-c-red1 g-fs4 g-w-percent50">电话号码格式不合法</span>
-                                    <span ng-show="userFrom.telephone.$dirty && userFrom.telephone.$valid" class="self-tips self-tips-yes"></span>
-                                </div>
-                            </div>
-
-                            <div class="admin-layout-theme4"><span class="mini-icon admin-mini-icon2"></span>&nbsp;地址信息</div>
-
-
-                            <div class="form-group-self1">
-                                <label class="self-label g-w-percent10 g-t-r"><span class="self-require g-c-red1">*</span>省</label>
-                                <div class="self-input g-pos-r g-w-percent40">
-                                    <select name="province"  required ng-model="organization_ctrl.user.province" ng-change="organization_ctrl.changeAddress('user','user_address','city')">
-                                        <option ng-repeat="item in organization_ctrl.user_address.province" value="{{item.value}}" >{{item.key}}</option>
-                                    </select>
-
-                                    <span ng-show="userFrom.province.$dirty && userFrom.province.$error.required" class="self-tips self-tips-no g-c-red1 g-fs4 g-w-percent50">省份不能为空</span>
-                                    <span ng-show="userFrom.province.$dirty && userFrom.province.$valid" class="self-tips self-tips-yes g-gap-mr3"></span>
-                                </div>
-                            </div>
-
-                            <div class="form-group-self1">
-                                <label class="self-label g-w-percent10 g-t-r"><span class="self-require g-c-red1">*</span>市</label>
-                                <div class="self-input g-pos-r g-w-percent40">
-                                    <select ng-change="organization_ctrl.changeAddress('user','user_address','country')" name="city" required  ng-model="organization_ctrl.user.city">
-                                        <option ng-repeat="item in organization_ctrl.user_address.city" value="{{item.value}}" >{{item.key}}</option>
-                                    </select>
-                                    <span ng-show="userFrom.city.$dirty && userFrom.city.$error.required" class="self-tips self-tips-no g-c-red1 g-fs4 g-w-percent50">市区不能为空</span>
-                                    <span ng-show="userFrom.city.$dirty && userFrom.city.$valid" class="self-tips self-tips-yes g-gap-mr3"></span>
-                                </div>
-                            </div>
-
-                            <div class="form-group-self1">
-                                <label class="self-label g-w-percent10 g-t-r"><span class="self-require g-c-red1">*</span>县</label>
-                                <div class="self-input g-pos-r g-w-percent40">
-                                    <select name="country" required ng-model="organization_ctrl.user.country">
-                                        <option ng-repeat="item in organization_ctrl.user_address.country" value="{{item.value}}" >{{item.key}}</option>
-                                    </select>
-                                    <span ng-show="userFrom.country.$dirty && userFrom.country.$error.required" class="self-tips self-tips-no g-c-red1 g-fs4 g-w-percent50">县区不能为空</span>
-                                    <span ng-show="userFrom.country.$dirty && userFrom.country.$valid" class="self-tips self-tips-yes g-gap-mr3"></span>
-                                </div>
-                            </div>
-
-                            <div class="form-group-self1">
-                                <label class="self-label g-w-percent10 g-t-r"><span class="self-require g-c-red1">*</span>联系地址</label>
-                                <div class="self-input g-pos-r g-w-percent40">
-                                    <input type="text" name="address" required  placeholder="请输入联系地址" ng-model="organization_ctrl.user.address" />
-                                    <span ng-show="userFrom.address.$dirty && userFrom.address.$error.required" class="self-tips self-tips-no g-c-red1 g-fs4 g-w-percent50">联系地址不能为空</span>
-                                    <span ng-show="userFrom.address.$dirty && userFrom.address.$valid" class="self-tips self-tips-yes"></span>
-                                </div>
-                            </div>
-
-                            <div class="admin-layout-theme4"><span class="mini-icon admin-mini-icon3"></span>&nbsp;状态</div>
-
-                            <div class="form-group-self1">
-                                <label class="self-label">
-                                    <input type="radio" ng-model="organization_ctrl.user.status" ng-value="0" name="status">
-                                    &nbsp;正常
-                                </label>
-                                <label class="self-label">
-                                    <input type="radio" ng-model="organization_ctrl.user.status" ng-value="1"  name="status">
-                                    &nbsp;停用
-                                </label>
-                            </div>
-
-                            <div class="form-group-self1">
-                                <label class="self-label g-w-percent10 g-v-t g-t-r">备注</label>
-
-                                <div class="self-input g-w-percent40">
-                                    <textarea ng-model="organization_ctrl.user.remark" name="remark"></textarea>
-                                </div>
-                            </div>
-
-
-                            <div class="form-group-self1">
-                                <button type="submit" ng-show="organization_ctrl.user.id===''" ng-disabled="!(organization_ctrl.user.id==='' && userFrom.fullName.$dirty && userFrom.fullName.$valid && userFrom.name.$dirty && userFrom.name.$valid && userFrom.cellphone.$dirty && userFrom.cellphone.$valid && (organization_ctrl.user.telephone==='' || (userFrom.telephone.$dirty && userFrom.telephone.$valid)) && (organization_ctrl.user.province!=='' && organization_ctrl.user.city!=='' && organization_ctrl.user.country!=='') && userFrom.address.$dirty && userFrom.address.$valid)"  class="btn btn-red g-br3 g-w-percent50">新增</button>
-                                <button type="submit" ng-show="organization_ctrl.user.id!==''" ng-disabled="!(organization_ctrl.user.id!=='' && userFrom.fullName.$valid && userFrom.name.$valid && userFrom.cellphone.$valid && (organization_ctrl.user.telephone==='' || (organization_ctrl.user.telephone!=='' && userFrom.telephone.$valid)) && (organization_ctrl.user.province!=='' && organization_ctrl.user.city!=='' && organization_ctrl.user.country!=='') && userFrom.address.$valid)"  class="btn btn-red g-br3 g-w-percent50">编辑</button>
-                                <button type="button" class="btn btn-red g-br3 g-w-percent50 g-gap-mt2" id="admin_user_reset" ng-click="organization_ctrl.formReset(userFrom,'user')">重置</button>
-                            </div>
-                        </form>
-
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-info" data-dismiss="modal">关闭</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-    <!--查看用户-->
-    <div class="modal fade custom-width" id="admin_userdetail_dialog">
-        <div class="modal-dialog g-w-percent40">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <!--表单-->
-                    <table class="table table-bordered table-striped table-hover admin-layout-table">
-
-                        <!--分组样式-->
-                        <colgroup>
-                            <col class="g-w-percent10">
-                            <col class="g-w-percent40">
-                        </colgroup>
-                        <!--头部-->
-                        <thead>
-                        <tr>
-                            <th class="g-t-c" colspan="2">店铺详情</th>
-                        </tr>
-                        </thead>
-
-                        <!--表主体-->
-                        <tbody id="admin_userdetail_show" class="middle-align"></tbody>
-                    </table>
                     <div class="clearfix"></div>
                 </div>
                 <div class="modal-footer">

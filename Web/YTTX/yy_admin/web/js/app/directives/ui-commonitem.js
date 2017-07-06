@@ -4,14 +4,7 @@ angular.module('ui.commonitem',[])
         return {
             replace:false,
             restrict: 'EC',
-            template:'<li ng-repeat="i in app_ctrl.headeritem"><a data-id="{{i.id}}" data-code="{{i.code}}" href="" ui-sref="{{i.href}}" title="">{{i.name}}</a></li>',
-            link:function (scope, element, attrs) {
-                /*绑定事件menuactive*/
-                element.on('click','a',function (e) {
-                    var $this=$(this);
-                    $this.addClass('menuactive').parent().siblings().find('a').removeClass('menuactive');
-                });
-            }
+            template:'<li ng-repeat="i in app_ctrl.headeritem"><a data-id="{{i.id}}" data-code="{{i.code}}" ui-sref-active="menuactive" href="" ui-sref="{{i.href}}" title="">{{i.name}}</a></li>'
         };
     })
     /*头部退出*/
