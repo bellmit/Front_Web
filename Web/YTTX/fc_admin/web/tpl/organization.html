@@ -64,7 +64,7 @@
 
 
                     <!--权限-->
-                    <div class="g-f-l g-w-percent26" ng-show="organization_ctrl.struct.isDesignatedPermit===1 && organization_ctrl.struct.isSettingLogin===1">
+                    <div class="g-f-l g-w-percent26 g-pos-r" ng-show="organization_ctrl.struct.isDesignatedPermit===1 && organization_ctrl.struct.isSettingLogin===1">
                         <div class="admin-layout-theme4 admin-theme-close g-t-c g-b-gray17 g-pos-r">选择权限</div>
                         <table class="table table-bordered table-striped table-hover admin-layout-table">
                             <colgroup id="struct_power_colgroup"></colgroup>
@@ -197,7 +197,7 @@
 
 
                             <div class="form-group-self1">
-                                <label class="self-label g-w-percent15 g-t-r">选择绑定加盟店</label>
+                                <label class="self-label g-w-percent15 g-t-r">选择绑定加盟商(运营商)</label>
 
                                 <div class="self-input g-pos-r g-w-percent35" ng-if="organization_ctrl.struct.id!==''">
                                     <input type="text" ng-model="organization_ctrl.struct.bindingShopIds" name="bindingShopIds" class="g-w-percent38" readonly />

@@ -295,7 +295,6 @@ angular.module('app')
                                                         }
                                                         $(str).appendTo($wrap.html(''));
                                                         /*执行初始化操作*/
-                                                        console.log(config.record.operator_shopid);
                                                         self.initOSModel({
                                                             record: config.record
                                                         })
@@ -678,7 +677,6 @@ angular.module('app')
 
         /*机构服务--操作机构*/
         this.actionStruct = function (config) {
-            console.log(config.record.operator_shopid);
             var modal = config.modal,
                 type = modal.type;
 
@@ -689,13 +687,11 @@ angular.module('app')
                 type: modal.area
             });
 
-            console.log(config.record.operator_shopid);
 
             /*根据类型跳转相应逻辑*/
             if (type === 'edit') {
                 /*查询相关存在的数据*/
                 self.queryStructInfo(config);
-                console.log(config.record.operator_shopid);
             } else if (type === 'add') {
                 /*显示弹窗*/
                 self.toggleModal({
@@ -712,7 +708,11 @@ angular.module('app')
             var record = config.record,
                 struct = config.struct,
                 modal = config.modal,
-                param = $.extend(true, {}, cache.loginMap.param),
+                temp_param=cache.loginMap.param,
+                param = {
+                    adminId:temp_param.adminId,
+                    token:temp_param.token
+                },
                 temp_id;
 
             /*判断参数*/
@@ -1183,7 +1183,7 @@ angular.module('app')
                                     if (type === 'struct') {
                                         self.getMenuList({
                                             record: config.record,
-                                            type:'fc'
+                                            type: 'fc'
                                         });
                                     } else if (type === 'user') {
                                         /*重新加载表格数据*/
@@ -1240,14 +1240,12 @@ angular.module('app')
                 /*重置权限信息*/
                 self.clearSelectPower(config[type]);
                 /*重置操作模型*/
-                //console.log(config.record.operator_shopid);
                 self.clearSelectShop({
-                    record:config.record,
-                    struct:config.struct
+                    record: config.record,
+                    struct: config.struct
                 });
-                //console.log(config.record.operator_shopid);
                 /*运营商店铺隐藏*/
-                config.record.operator_shopshow=false;
+                config.record.operator_shopshow = false;
             }
             /*重置验证提示信息*/
             self.clearFormValid(config.forms);
@@ -1379,7 +1377,6 @@ angular.module('app')
                 pid: pid
             };
         };
-
 
 
         /*运营商服务--选中运营商服务，flag:下一个状态（操作一次以后将要切换的状态）(yes:选中，no:未选中)*/
@@ -1574,14 +1571,15 @@ angular.module('app')
         /*运营商服务--初始化加载运营模型和店铺模型*/
         this.initOSModel = function (config) {
             var record = config.record,
-                label_cache = record.operator_cache;
+                label_cache = record.operator_cache,
+                shop_cache=record.operator_shopid;
 
-            if(label_cache.state==='empty' || label_cache.state==='short'){
+            if (label_cache.state === 'empty' || label_cache.state === 'short') {
                 self.$admin_yystruct_menu.find('label').each(function () {
                     var $this = $(this),
                         key = $this.attr('data-id');
 
-                    if(!label_cache[key]){
+                    if (!label_cache[key]) {
                         /*创建模型*/
                         label_cache[key] = {
                             'id': key,
@@ -1599,6 +1597,24 @@ angular.module('app')
                 });
                 /*变更模型状态为全选*/
                 label_cache.state = 'full';
+                if(label_cache.state==='full'){
+                    setTimeout(function () {
+                        self.$admin_shop_wrap.find('li').each(function () {
+                            var $this=$(this),
+                                shopid=$this.attr('data-shopid'),
+                                operator=$this.attr('data-operator');
+
+                            if(!shop_cache[shopid]){
+                                shop_cache[shopid]={
+                                    'shopid':shopid,
+                                    'li':$this,
+                                    'operator':operator,
+                                    'ischeck':false
+                                };
+                            }
+                        });
+                    },2000);
+                }
             }
         };
         /*运营商服务--查询已经存在的运营商店铺*/
@@ -1646,8 +1662,8 @@ angular.module('app')
                                             var len = list.length;
                                             if (len !== 0) {
                                                 /*显示店铺列表*/
-                                                if(!record.operator_shopshow){
-                                                    record.operator_shopshow=true;
+                                                if (!record.operator_shopshow) {
+                                                    record.operator_shopshow = true;
                                                 }
                                                 var i = 0,
                                                     shop_cache = record.operator_shopid,
@@ -1698,7 +1714,7 @@ angular.module('app')
                         token: tempparam.token,
                         adminId: tempparam.adminId,
                         organizationId: id,
-                        bindingShopIds:config.struct.bindingShopIds
+                        bindingShopIds: config.struct.bindingShopIds
                     };
 
                 toolUtil
@@ -1721,7 +1737,7 @@ angular.module('app')
                                             type: 'warn',
                                             value: '绑定分仓失败'
                                         });
-                                    }else{
+                                    } else {
                                         console.log(message);
                                     }
 
@@ -1767,6 +1783,7 @@ angular.module('app')
                     .requestHttp({
                         url: '/carrieroperator/shops',
                         method: 'post',
+                        async: false,
                         set: true,
                         data: param
                     })
@@ -1797,38 +1814,16 @@ angular.module('app')
                                             if (len !== 0) {
                                                 var i = 0,
                                                     str = '',
-                                                    shopobj = {},
                                                     shopitem,
-                                                    shopid,
-                                                    source = config.record.operator_shopid;
-
-                                                console.log(source);
+                                                    shopid;
 
                                                 for (i; i < len; i++) {
                                                     shopitem = list[i];
-                                                    shopid = shopitem['id'];
-                                                    shopobj[shopid] = {
-                                                        shopid: shopid,
-                                                        operator: id
-                                                    };
+                                                    shopid = list[i]['id'];
                                                     str += '<li data-shopid="' + shopid + '" data-operator="' + id + '" >' + shopitem["fullName"] + '</li>';
                                                 }
                                                 /*更新到列表*/
                                                 $(str).appendTo(self.$admin_shop_wrap);
-                                                /*将序列缓存至模型*/
-                                                self.$admin_shop_wrap.find('li [data-operator="' + id + '"]').each(function () {
-                                                    var $this = $(this),
-                                                        kid = $this('data-shopid');
-
-                                                    if (!source[kid] && shopobj[kid]) {
-                                                        source[shopid] = {
-                                                            'shopid': kid,
-                                                            'li': $this,
-                                                            'operator': id,
-                                                            'ischeck': false
-                                                        }
-                                                    }
-                                                });
                                             }
                                         }
                                     }

@@ -189,7 +189,6 @@ angular.module('app')
         /*机构服务--操作机构表单*/
         this.actionStruct = function (config) {
             /*调用编辑机构服务类*/
-            console.log(self.record.operator_shopid);
             organizationService.actionStruct({
                 modal: config,
                 record: self.record,
