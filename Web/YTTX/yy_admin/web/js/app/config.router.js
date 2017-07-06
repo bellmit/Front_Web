@@ -79,7 +79,7 @@ angular.module('app')
                 })
                 //机构下面的角色
                 .state('role', {
-                    url: '/struct.role',
+                    url: '/struct',
                     views:{
                         'container':{
                             templateUrl:'tpl/struct_role.html'

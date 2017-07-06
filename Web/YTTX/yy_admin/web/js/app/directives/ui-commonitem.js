@@ -1,5 +1,6 @@
 angular.module('ui.commonitem',[])
     /*头部导航栏指令*/
+    /*ui-sref-active="menuactive"*/
     .directive('uiHeaderMenu',function() {
         return {
             replace:false,

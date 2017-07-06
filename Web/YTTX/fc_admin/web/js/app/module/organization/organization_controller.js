@@ -83,7 +83,9 @@ angular.module('app')
             operator_cache:{
                 state:'empty'/*记录当前模型状态*/
             }/*查询运营商label缓存*/,
-            operator_shopid:{}/*选中绑定加盟店Ids(店铺)*/,
+            operator_shopid:{
+                state:'load'
+            }/*选中绑定加盟店Ids(店铺)*/,
             operator_shopshow:false/*运营商店铺列表*/
         };
 
@@ -268,6 +270,9 @@ angular.module('app')
         };
         /*搜索服务--搜索过滤*/
         this.searchAction2 = function () {
+            /*清除模型，重置模型*/
+            self.record.operator_cache={state:'empty'};
+            jq_dom.$all_yystruct.removeClass('sub-menu-checkboxactive');
             organizationService.getMenuList({
                 record: self.record,
                 type:'yy'

@@ -239,7 +239,7 @@ angular.module('app')
                                                 } else if (type === 'yy') {
                                                     record.hasdata2 = false;
                                                     /*清除模型，重置模型*/
-                                                    record.operator_cache={state:'empty'};
+                                                    record.operator_cache = {state: 'empty'};
                                                     if (layer === 0) {
                                                         $wrap.html('<li><a>暂无数据</a></li>');
                                                         self.$admin_yystruct_wrap.attr({
@@ -301,7 +301,7 @@ angular.module('app')
                                                     } else {
                                                         record.hasdata2 = false;
                                                         /*清除模型，重置模型*/
-                                                        record.operator_cache={state:'empty'};
+                                                        record.operator_cache = {state: 'empty'};
                                                         if (layer === 0) {
                                                             /*搜索模式*/
                                                             self.$admin_yystruct_wrap.attr({
@@ -328,7 +328,7 @@ angular.module('app')
                                             } else if (type === 'yy') {
                                                 record.hasdata2 = false;
                                                 /*清除模型，重置模型*/
-                                                record.operator_cache={state:'empty'};
+                                                record.operator_cache = {state: 'empty'};
                                                 if (layer === 0) {
                                                     $wrap.html('<li><a>暂无数据</a></li>');
                                                     self.$admin_yystruct_wrap.attr({
@@ -349,7 +349,7 @@ angular.module('app')
                                         } else if (type === 'yy') {
                                             record.hasdata2 = false;
                                             /*清除模型，重置模型*/
-                                            record.operator_cache={state:'empty'};
+                                            record.operator_cache = {state: 'empty'};
                                             if (layer === 0) {
                                                 $wrap.html('<li><a>暂无数据</a></li>');
                                                 self.$admin_yystruct_wrap.attr({
@@ -373,7 +373,7 @@ angular.module('app')
                             } else if (type === 'yy') {
                                 record.hasdata2 = false;
                                 /*清除模型，重置模型*/
-                                record.operator_cache={state:'empty'};
+                                record.operator_cache = {state: 'empty'};
                                 if (layer === 0) {
                                     $wrap.html('<li><a>暂无数据</a></li>');
                                     self.$admin_yystruct_wrap.attr({
@@ -716,10 +716,10 @@ angular.module('app')
             var record = config.record,
                 struct = config.struct,
                 modal = config.modal,
-                temp_param=cache.loginMap.param,
+                temp_param = cache.loginMap.param,
                 param = {
-                    adminId:temp_param.adminId,
-                    token:temp_param.token
+                    adminId: temp_param.adminId,
+                    token: temp_param.token
                 },
                 temp_id;
 
@@ -1580,7 +1580,7 @@ angular.module('app')
         this.initOSModel = function (config) {
             var record = config.record,
                 label_cache = record.operator_cache,
-                shop_cache=record.operator_shopid;
+                shop_cache = record.operator_shopid;
 
             if (label_cache.state === 'empty' || label_cache.state === 'short') {
                 self.$admin_yystruct_menu.find('label').each(function () {
@@ -1596,32 +1596,36 @@ angular.module('app')
                             'isall': false
                         };
                         /*查询店铺*/
-                        self.queryShopById({
-                            record: config.record,
-                            id: key
-                        });
+                        if (shop_cache.state === 'load') {
+                            self.queryShopById({
+                                record: config.record,
+                                id: key
+                            });
+                        }
                     }
 
                 });
                 /*变更模型状态为全选*/
                 label_cache.state = 'full';
-                if(label_cache.state==='full'){
+                if (label_cache.state === 'full' && shop_cache.state === 'load') {
                     setTimeout(function () {
                         self.$admin_shop_wrap.find('li').each(function () {
-                            var $this=$(this),
-                                shopid=$this.attr('data-shopid'),
-                                operator=$this.attr('data-operator');
+                            var $this = $(this),
+                                shopid = $this.attr('data-shopid'),
+                                operator = $this.attr('data-operator');
 
-                            if(!shop_cache[shopid]){
-                                shop_cache[shopid]={
-                                    'shopid':shopid,
-                                    'li':$this,
-                                    'operator':operator,
-                                    'ischeck':false
+                            if (!shop_cache[shopid]) {
+                                shop_cache[shopid] = {
+                                    'shopid': shopid,
+                                    'li': $this,
+                                    'operator': operator,
+                                    'ischeck': false
                                 };
                             }
                         });
-                    },2000);
+                        /*变更模型状态*/
+                        shop_cache.state = 'init';
+                    }, 2000);
                 }
             }
         };
@@ -1860,7 +1864,7 @@ angular.module('app')
                 var source = config.record.operator_shopid,
                     res = [];
                 for (var i in source) {
-                    if (source[i]['ischeck']) {
+                    if (i !== 'state' && source[i]['ischeck']) {
                         res.push(i);
                     }
                 }
@@ -1876,9 +1880,11 @@ angular.module('app')
             var source = config.record.operator_shopid;
             /*清除模型样式*/
             for (var i in source) {
-                var shopitem = source[i];
-                shopitem['li'].removeClass('action-list-active');
-                shopitem['ischeck'] = false;
+                if(i!=='state'){
+                    var shopitem = source[i];
+                    shopitem['li'].removeClass('action-list-active');
+                    shopitem['ischeck'] = false;
+                }
             }
             /*清除模型*/
             config.struct.bindingShopIds = '';
