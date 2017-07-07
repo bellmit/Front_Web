@@ -36,7 +36,7 @@ angular.module('app')
                 $setting_manage_dialog: $('#setting_manage_dialog'),
                 $admin_struct_menu: $('#admin_struct_menu')
             },
-            /*权限缓存*/
+        /*权限缓存*/
             jq_dom_power = {
                 $power_colgroup: $('#setting_power_colgroup'),
                 $power_thead: $('#setting_power_thead'),
@@ -69,11 +69,10 @@ angular.module('app')
             'name': '30条记录'
         }];
 
-        
 
         /*模型--操作记录*/
         this.record = {
-            profitid:1,
+            profitid: 1,
             pageSize: 10,
             searchactive: ''/*搜索激活状态*/,
             searchname: ''/*搜索关键词*/,
@@ -118,10 +117,14 @@ angular.module('app')
             username: ''/*设置登录名*/,
             password: ''/*设置登录密码*/,
             remark: ''/*备注*/,
+            status: 0/*状态*/,
+            parentId:''/*上级id,用于编辑*/,
             isDesignatedOrg: 0/*是否指定运营商：0：默认，1：指定*/,
             designatedOrgIds: ''/*指定运营商Ids*/,
             isDesignatedPermit: 0/*是否指定权限,0:全部权限 1:指定权限*/,
             checkedFunctionIds: ''/*选中权限Ids*/,
+            token:''/*凭证*/,
+            mtype:''/*业务类型*/,
             filter: ''/*管理列表过滤*/
         };
 
@@ -133,22 +136,22 @@ angular.module('app')
         this.profitlist = [];
 
         /*模型--分润配置*/
-        this.profit={
+        this.profit = {
             /*基数设置*/
-            base:{
-                title:'分润基数设置',
-                id:'',
-                profit:'',
-                type:1
+            base: {
+                title: '分润基数设置',
+                id: '',
+                profit: '',
+                type: 1
             },
             /*标准设置*/
-            standard:{
-                title:'分润标准设置',
-                id:'',
-                profit1:'',
-                profit2:'',
-                profit3:'',
-                type:1
+            standard: {
+                title: '分润标准设置',
+                id: '',
+                profit1: '',
+                profit2: '',
+                profit3: '',
+                type: 1
             }
         };
 
@@ -413,35 +416,35 @@ angular.module('app')
             }];
 
             if (self.profitlist.length === 0) {
-                self.record.profitid=1;
+                self.record.profitid = 1;
             } else {
-                self.record.profitid=self.profitlist[0]['id'];
+                self.record.profitid = self.profitlist[0]['id'];
             }
             settingService.queryProfitConfig({
-                record:self.record,
-                profit:self.profit
+                record: self.record,
+                profit: self.profit
             });
         };
         /*分润设置服务--分润配置*/
-        this.queryProfitConfig=function () {
+        this.queryProfitConfig = function () {
             settingService.queryProfitConfig({
-                record:self.record,
-                profit:self.profit
+                record: self.record,
+                profit: self.profit
             });
         };
         /*分润设置服务--切换不同分润配置*/
-        this.changeProfit=function (type) {
+        this.changeProfit = function (type) {
             settingService.changeProfit({
-                type:type,
-                profit:self.profit
+                type: type,
+                profit: self.profit
             });
         };
         /*分润设置服务--设置分润配置*/
-        this.settingProfit=function (type) {
+        this.settingProfit = function (type) {
             settingService.settingProfit({
                 record: self.record,
-                profit:self.profit
-            },type);
+                profit: self.profit
+            }, type);
         };
 
         /*搜索服务--搜索过滤*/

@@ -271,6 +271,59 @@ angular.module('app')
                                                         /*查询权限--原始方案：先查询当前权限(子级权限) --> 再查父级权限  --> 存在父子级权限，过滤子级权限，
                                                          * 后来方案：先查父级权限 --> 再查询当前权限(子级权限)  --> 存在父子级权限，过滤子级权限*/
                                                         powerService.reqPowerList({
+                                                            source: true, /*是否获取数据源*/
+                                                            sourcefn: function (ps) {
+                                                                /*数据源*/
+                                                                var child_data,
+                                                                    parent_data = ps;
+
+                                                                if (parent_data !== null) {
+                                                                    /*存在数据源*/
+                                                                    powerService.reqPowerList({
+                                                                        source: true, /*是否获取数据源*/
+                                                                        sourcefn: function (cs) {
+                                                                            /*数据源*/
+                                                                            child_data = cs;
+
+                                                                            if (child_data !== null) {
+                                                                                /*存在数据源，开始过滤权限数据*/
+                                                                                var filter_data = powerService.filterPower(parent_data, child_data);
+                                                                                if (filter_data) {
+                                                                                    /*过滤后的数据即映射到视图*/
+                                                                                    var power_html = powerService.resolvePowerList({
+                                                                                        menu: filter_data
+                                                                                    });
+                                                                                    /*更新模型*/
+                                                                                    if (power_html) {
+                                                                                        $(power_html).appendTo(self.$power_tbody.html(''));
+                                                                                    }
+                                                                                } else {
+                                                                                    toolDialog.show({
+                                                                                        type: 'warn',
+                                                                                        value: '过滤后的权限数据不正确'
+                                                                                    });
+                                                                                    return false;
+                                                                                }
+                                                                            } else {
+                                                                                /*提示信息*/
+                                                                                toolDialog.show({
+                                                                                    type: 'warn',
+                                                                                    value: '没有子级权限数据'
+                                                                                });
+                                                                                return false;
+                                                                            }
+                                                                        },
+                                                                        organizationId: list['parentId']
+                                                                    });
+                                                                } else {
+                                                                    /*提示信息*/
+                                                                    toolDialog.show({
+                                                                        type: 'warn',
+                                                                        value: '没有父级权限数据'
+                                                                    });
+                                                                    return false;
+                                                                }
+                                                            },
                                                             organizationId: record.organizationId
                                                         });
                                                     }
@@ -643,8 +696,73 @@ angular.module('app')
             /*重新查询权限*/
             var type = manage.type;
             if (manage.isDesignatedPermit === 1) {
+                /*选中指定权限则做过滤权限查询*/
+                var cid,
+                    pid;
+                if (type === 'add') {
+                    /*新增时查询权限*/
+                    cid = record.organizationId;
+                    pid = record.organizationId;
+                } else if (type === 'edit') {
+                    /*编辑时查询权限*/
+                    cid = manage.parentId;
+                    pid = record.organizationId;
+                }
+
                 powerService.reqPowerList({
-                    organizationId: record.organizationId
+                    source: true, /*是否获取数据源*/
+                    sourcefn: function (ps) {
+                        /*数据源*/
+                        var child_data,
+                            parent_data = ps;
+
+                        if (parent_data !== null) {
+                            /*存在数据源*/
+                            powerService.reqPowerList({
+                                source: true, /*是否获取数据源*/
+                                sourcefn: function (cs) {
+                                    /*数据源*/
+                                    child_data = cs;
+                                    if (child_data !== null) {
+                                        /*存在数据源，开始过滤权限数据*/
+                                        var filter_data = powerService.filterPower(parent_data, child_data);
+                                        if (filter_data) {
+                                            /*过滤后的数据即映射到视图*/
+                                            var power_html = powerService.resolvePowerList({
+                                                menu: filter_data
+                                            });
+                                            /*更新模型*/
+                                            if (power_html) {
+                                                $(power_html).appendTo(self.$power_tbody.html(''));
+                                            }
+                                        } else {
+                                            toolDialog.show({
+                                                type: 'warn',
+                                                value: '过滤后的权限数据不正确'
+                                            });
+                                            return false;
+                                        }
+                                    } else {
+                                        /*提示信息*/
+                                        toolDialog.show({
+                                            type: 'warn',
+                                            value: '没有子级权限数据'
+                                        });
+                                        return false;
+                                    }
+                                },
+                                organizationId: cid
+                            });
+                        } else {
+                            /*提示信息*/
+                            toolDialog.show({
+                                type: 'warn',
+                                value: '没有父级权限数据'
+                            });
+                            return false;
+                        }
+                    },
+                    organizationId: pid
                 });
             }
 
