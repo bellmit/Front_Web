@@ -36,11 +36,13 @@ angular.module('app')
                 $setting_manage_dialog: $('#setting_manage_dialog'),
                 $admin_struct_menu: $('#admin_struct_menu')
             },
+            /*权限缓存*/
             jq_dom_power = {
                 $power_colgroup: $('#setting_power_colgroup'),
                 $power_thead: $('#setting_power_thead'),
                 $power_tbody: $('#setting_power_tbody')
             };
+        /*标签缓存*/
         jq_dom['$allstruct'] = jq_dom.$admin_struct_menu.prev().find('label');
 
         /*切换路由时更新dom缓存*/
@@ -75,14 +77,14 @@ angular.module('app')
             pageSize: 10,
             searchactive: ''/*搜索激活状态*/,
             searchname: ''/*搜索关键词*/,
-            organizationId: ''/*操作id*/,
+            organizationId: ''/*虚拟挂载点id*/,
             organizationName: ''/*操作名称*/,
             token: ''/*凭证*/,
             adminId: '',
             prev: null/*上一次操作记录*/,
             current: null/*当前操作记录*/,
             layer: 0,
-            currentId: '',
+            currentId: ''/*操作id*/,
             currentName: '',
             managestruct: {}/*子管理--选中的机构信息*/
         };
@@ -174,10 +176,6 @@ angular.module('app')
                 forms: forms
             }, type);
         };
-        /*表单服务--权限服务--全选权限*/
-        this.selectAllPower = function (e) {
-            settingService.selectAllPower(e);
-        };
         /*表单服务--权限服务--确定所选权限*/
         this.getSelectPower = function () {
             settingService.getSelectPower(self.manage);
@@ -185,6 +183,13 @@ angular.module('app')
         /*表单服务--权限服务--取消所选权限*/
         this.clearSelectPower = function () {
             settingService.clearSelectPower(self.manage);
+        };
+        /*表单服务--权限服务--切换所选权限*/
+        this.toggleSelectPower = function () {
+            settingService.toggleSelectPower({
+                manage: self.manage,
+                record: self.record
+            });
         };
         /*表单服务--机构服务--全选机构*/
         this.selectAllStruct = function (e) {
@@ -204,14 +209,6 @@ angular.module('app')
                 manage: self.manage
             });
         };
-        /*表单服务--权限服务--切换所选权限*/
-        this.toggleSelectPower = function () {
-            settingService.toggleSelectPower({
-                manage: self.manage,
-                record: self.record
-            });
-        };
-
 
 
         /*机构服务--初始化加载机构*/

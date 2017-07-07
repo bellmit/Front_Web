@@ -1,10 +1,10 @@
 /*首页控制器*/
 angular.module('app')
-    .controller('StructroleController', ['structroleService','toolUtil',function(structroleService,toolUtil){
+    .controller('OrganizationroleController', ['organizationroleService','toolUtil',function(organizationroleService,toolUtil){
         var self=this;
 
         /*模型--操作权限列表*/
-        this.powerlist=structroleService.getCurrentPower();
+        this.powerlist=organizationroleService.getCurrentPower();
 
 
         /*jquery dom缓存:主要是切换路由时，创建的dom缓存引用与现有的dom引用不一致，需要加载视图更新现有dom引用*/
@@ -27,7 +27,7 @@ angular.module('app')
             $admin_user_wrap:$('#admin_user_wrap')
         };
         /*切换路由时更新dom缓存*/
-        structroleService.initJQDom(jq_dom);
+        organizationroleService.initJQDom(jq_dom);
 
         /*模型--列表地址*/
         this.list_address={
@@ -118,7 +118,7 @@ angular.module('app')
                     autoWidth:true,/*是否*/
                     paging:false,
                     ajax:{
-                        url:toolUtil.adaptReqUrl('/role/shops'),
+                        url:toolUtil.adaptReqUrl('/role/organizations'),
                         dataType:'JSON',
                         method:'post',
                         dataSrc:function ( json ) {
@@ -166,19 +166,12 @@ angular.module('app')
                                         temp_param['page']=self.table.list1_page.page;
                                         temp_param['pageSize']=self.table.list1_page.pageSize;
                                         self.table.list1_config.config.ajax.data=temp_param;
-                                        structroleService.getColumnData(self.table,self.record.role);
+                                        organizationroleService.getColumnData(self.table,self.record.role);
                                     }
                                 });
 
                                 var list=result.list;
                                 if(list){
-                                    var vi=0,
-                                        vlen=list.length;
-                                    for(vi;vi<vlen;vi++){
-                                        if(!list[vi] || list[vi]===null){
-                                            return [];
-                                        }
-                                    }
                                     return list;
                                 }else{
                                     return [];
@@ -259,7 +252,7 @@ angular.module('app')
                                     self.list_addressdata.province=province;
                                     str+='<div class="inline g-c-gray3">省：</div><div class="inline g-c-gray9">'+self.list_address["province"][province]["key"]+'</div>';
                                     /*查询新值*/
-                                    /*structroleService.isReqAddress({
+                                    /*organizationroleService.isReqAddress({
                                      model:self.list_addressdata,
                                      address:self.list_address,
                                      type:'city'
@@ -316,7 +309,6 @@ angular.module('app')
                 columnshow:true,
                 $column_wrap:jq_dom.$admin_table_checkcolumn/*控制列显示隐藏的容器*/,
                 $bodywrap:jq_dom.$admin_batchlist_wrap/*数据展现容器*/,
-                header:['全选','店铺全称','店铺简称','姓名','店铺类型','店铺手机号','店铺电话号码','省市区','详细地址','状态','添加时间'],
                 hide_list:[1,5,6,7,8,10]/*需要隐藏的的列序号*/,
                 hide_len:6,
                 column_api:{
@@ -346,9 +338,9 @@ angular.module('app')
 
 
         /*初始化服务--虚拟挂载点，或者初始化参数*/
-        structroleService.getMemberRoot(self.record);
+        organizationroleService.getMemberRoot(self.record);
         /*初始化服务--初始化地址信息*/
-        structroleService.queryAddress({
+        organizationroleService.queryAddress({
             type:'province',
             address:self.list_address,
             model:self.list_addressdata
@@ -357,20 +349,20 @@ angular.module('app')
 
         /*菜单服务--初始化*/
         this.initSubMenu=function () {
-            structroleService.queryRoleGroup({
+            organizationroleService.queryRoleGroup({
                 record:self.record
             });
-            structroleService.getColumnData(self.table,self.record.role);
+            organizationroleService.getColumnData(self.table,self.record.role);
         };
         /*菜单服务--查询角色组*/
         this.queryRoleGroup=function () {
-            structroleService.queryRoleGroup({
+            organizationroleService.queryRoleGroup({
                 record:self.record
             });
         };
         /*菜单服务--显示隐藏菜单*/
         this.toggleSubMenu=function (e) {
-            structroleService.toggleSubMenu(e,{
+            organizationroleService.toggleSubMenu(e,{
                 table:self.table,
                 record:self.record
             });
@@ -379,7 +371,7 @@ angular.module('app')
 
         /*角色服务--添加角色或角色组*/
         this.addRole=function (type) {
-            structroleService.addRole({
+            organizationroleService.addRole({
                 table:self.table,
                 record:self.record,
                 rolegroup:self.rolegroup,
@@ -388,7 +380,7 @@ angular.module('app')
         };
         /*角色服务--编辑角色或角色组*/
         this.editRole=function () {
-            structroleService.editRole({
+            organizationroleService.editRole({
                 table:self.table,
                 record:self.record,
                 rolegroup:self.rolegroup,
@@ -399,25 +391,25 @@ angular.module('app')
 
         /*成员服务--移除成员*/
         this.deleteMemberList=function () {
-            structroleService.deleteMemberList(self.record,self.table);
+            organizationroleService.deleteMemberList(self.record,self.table);
         };
         /*成员服务--查询用户*/
         this.checkMemberList=function (e) {
-          structroleService.checkMemberList(e,self.member);
+          organizationroleService.checkMemberList(e,self.member);
         };
         /*成员服务--过滤数据*/
         this.filterDataTable=function () {
-            structroleService.filterDataTable(self.table,self.role);
+            organizationroleService.filterDataTable(self.table,self.role);
         };
 
 
         /*机构服务--加载机构角色*/
         this.getMemberList=function () {
-          structroleService.getMemberList();
+          organizationroleService.getMemberList();
         };
         /*机构服务--显示隐藏*/
         this.toggleMemberList=function (e) {
-            structroleService.toggleMemberList(e,{
+            organizationroleService.toggleMemberList(e,{
                 member:self.member
             });
         };
@@ -425,13 +417,13 @@ angular.module('app')
 
         /*弹出层显示隐藏*/
         this.toggleModal=function (config) {
-            structroleService.toggleModal(config);
+            organizationroleService.toggleModal(config);
         };
 
 
         /*表单服务--提交表单*/
         this.formSubmit=function (type) {
-            structroleService.formSubmit({
+            organizationroleService.formSubmit({
                 role:self.role,
                 rolegroup:self.rolegroup,
                 table:self.table,
@@ -442,7 +434,7 @@ angular.module('app')
         /*表单服务--重置表单*/
         this.formReset=function (forms,type) {
             /*重置表单模型*/
-            structroleService.formReset({
+            organizationroleService.formReset({
                 forms:forms,
                 role:self.role,
                 rolegroup:self.rolegroup,

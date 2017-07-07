@@ -1,14 +1,14 @@
-<div ng-controller="StructroleController as structrole_ctrl">
+<div ng-controller="OrganizationroleController as organizationrole_ctrl">
     <div class="struct-layout-container struct-layout-default">
         <div class="struct-layout-main">
             <!--主内容-->
             <h1 class="admin-layout-theme3 g-clear-pt">
-                <span ng-show="structrole_ctrl.record.role==='' && structrole_ctrl.record.rolegroup!==''">角色组：&nbsp;{{structrole_ctrl.record.rolegroupname}}</span>
-                <span ng-show="structrole_ctrl.record.role!=='' && structrole_ctrl.record.rolegroup!==''">角色：&nbsp;{{structrole_ctrl.record.rolename}}</span>
+                <span ng-show="organizationrole_ctrl.record.role==='' && organizationrole_ctrl.record.rolegroup!==''">角色组：&nbsp;{{organizationrole_ctrl.record.rolegroupname}}</span>
+                <span ng-show="organizationrole_ctrl.record.role!=='' && organizationrole_ctrl.record.rolegroup!==''">角色：&nbsp;{{organizationrole_ctrl.record.rolename}}</span>
                 &nbsp;&nbsp;&nbsp;&nbsp;
 
 
-                <button type="button" class="btn btn-default g-c-blue3" ng-disabled="structrole_ctrl.record.role==='' && structrole_ctrl.record.rolegroup===''" ng-show="structrole_ctrl.powerlist.role_edit" ng-click="structrole_ctrl.editRole()"><i class="btn-action admin-btn-action7"></i>&nbsp;编辑</button>
+                <button type="button" class="btn btn-default g-c-blue3" ng-disabled="organizationrole_ctrl.record.role==='' && organizationrole_ctrl.record.rolegroup===''" ng-show="organizationrole_ctrl.powerlist.role_edit" ng-click="organizationrole_ctrl.editRole()"><i class="btn-action admin-btn-action7"></i>&nbsp;编辑</button>
             </h1>
 
             <!--操作条-->
@@ -16,12 +16,12 @@
 
                 <!--操作按钮-->
                 <div class="action-item-btn g-f-l g-w-percent28">
-                    <span ng-show="structrole_ctrl.record.role!=='' && structrole_ctrl.powerlist.member_add" ng-click="structrole_ctrl.toggleModal({display:'show',area:'member'})" ><i class="btn-action admin-btn-action1"></i>添加成员</span>
-                    <span ng-show="structrole_ctrl.record.role!=='' && structrole_ctrl.powerlist.member_delete" ng-click="structrole_ctrl.deleteMemberList('batch')"><i class="btn-action admin-btn-action8"></i>移除成员</span>
+                    <span ng-show="organizationrole_ctrl.record.role!=='' && organizationrole_ctrl.powerlist.member_add" ng-click="organizationrole_ctrl.toggleModal({display:'show',area:'member'})" ><i class="btn-action admin-btn-action1"></i>添加成员</span>
+                    <span ng-show="organizationrole_ctrl.record.role!=='' && organizationrole_ctrl.powerlist.member_delete" ng-click="organizationrole_ctrl.deleteMemberList('batch')"><i class="btn-action admin-btn-action8"></i>移除成员</span>
                 </div>
 
                 <!--列控制-->
-                <div class="action-item-ul g-w-percent6 g-pos-r" ng-show="::structrole_ctrl.table.tablecolumn.columnshow">
+                <div class="action-item-ul g-w-percent6 g-pos-r" ng-show="::organizationrole_ctrl.table.tablecolumn.columnshow">
                     <div class="action-theme action-theme-btn g-br3 g-t-c">显示隐藏列</div>
                     <div class="action-ul g-d-hidei" id="admin_table_checkcolumn">
                         <ul class="action-list-wrap" ></ul>
@@ -31,7 +31,7 @@
                 <!--过滤-->
                 <div class="action-item-input g-f-r g-w-percent14">
                     <label class="action-indent-b2">过滤:
-                        <input class="form-control input-sm" ng-model="structrole_ctrl.role.filter" ng-keyup="structrole_ctrl.filterDataTable()" placeholder="" type="search">
+                        <input class="form-control input-sm" ng-model="organizationrole_ctrl.role.filter" ng-keyup="organizationrole_ctrl.filterDataTable()" placeholder="" type="search">
                     </label>
                 </div>
             </div>
@@ -57,7 +57,7 @@
                 <thead>
                 <tr>
                     <th class="g-clear-pl g-clear-pr g-t-c">
-                        <div class="admin-batchitem-wrap" ng-show="structrole_ctrl.powerlist.member_delete" >
+                        <div class="admin-batchitem-wrap" ng-show="organizationrole_ctrl.powerlist.member_delete" >
                             <label data-check="0" class="admin-batchitem-check" id="admin_member_checkall"></label>
                         </div>
                     </th>
@@ -88,18 +88,15 @@
 
 
         <div class="struct-layout-side">
-            <!--搜索组件-->
-            <div class="sub-search-wrap ui-sub-search" data-active="structrole_ctrl.record.searchactive" data-value="structrole_ctrl.record.searchname"  data-action="structrole_ctrl.searchAction()" data-clear="structrole_ctrl.searchClear()" ></div>
-
             <!--选项卡组件-->
-            <ul class="sub-tab-wrap sub-item-group2 sub-itembr-group2 ui-sub-tab-href" data-tabitem="structrole_ctrl.tabitem"></ul>
+            <ul class="sub-tab-wrap sub-item-group2 sub-itembr-group2 ui-sub-tab-href" data-tabitem="organizationrole_ctrl.tabitem"></ul>
 
             <!--按钮组-->
-            <ul class="sub-btn-wrap sub-item-group2 ui-sub-btn" data-action="addRole" data-btnitem="structrole_ctrl.btnitem" data-ctrlname="structrole_ctrl"></ul>
+            <ul class="sub-btn-wrap sub-item-group2 ui-sub-btn" data-action="addRole" data-btnitem="organizationrole_ctrl.btnitem" data-ctrlname="organizationrole_ctrl"></ul>
 
 
             <!--子菜单组件-->
-            <ul class="sub-menu-wrap" ng-init="structrole_ctrl.initSubMenu()" ng-click="structrole_ctrl.toggleSubMenu($event)" id="admin_struct_submenu" ></ul>
+            <ul class="sub-menu-wrap" ng-init="organizationrole_ctrl.initSubMenu()" ng-click="organizationrole_ctrl.toggleSubMenu($event)" id="admin_struct_submenu" ></ul>
 
 
         </div>
@@ -113,25 +110,25 @@
                 <div class="modal-body">
                     <!--表单-->
                     <div class="g-w-percent50">
-                        <div class="admin-layout-theme4 admin-theme-close g-t-c g-b-gray17 g-pos-r">{{structrole_ctrl.rolegroup.id===''?'新增角色组':'编辑角色组'}}
-                            <span class="mini-icon admin-mini-icon1" ng-click="structrole_ctrl.toggleModal({display:'hide',area:'rolegroup'})"></span>
+                        <div class="admin-layout-theme4 admin-theme-close g-t-c g-b-gray17 g-pos-r">{{organizationrole_ctrl.rolegroup.id===''?'新增角色组':'编辑角色组'}}
+                            <span class="mini-icon admin-mini-icon1" ng-click="organizationrole_ctrl.toggleModal({display:'hide',area:'rolegroup'})"></span>
                         </div>
 
-                        <form ng-submit="structrole_ctrl.formSubmit('rolegroup')" name="rolegroupFrom" role="form" novalidate method="post" class="admin-layout-form">
+                        <form ng-submit="organizationrole_ctrl.formSubmit('rolegroup')" name="rolegroupFrom" role="form" novalidate method="post" class="admin-layout-form">
                             <div class="form-group-self1">
                                 <label class="self-label g-w-percent10 g-t-r"><span class="self-require g-c-red1">*</span>角色组名称</label>
 
                                 <div class="self-input g-pos-r g-w-percent40">
-                                    <input type="text" name="groupName" placeholder="请输入角色组名称" required ng-model="structrole_ctrl.rolegroup.groupName" />
+                                    <input type="text" name="groupName" placeholder="请输入角色组名称" required ng-model="organizationrole_ctrl.rolegroup.groupName" />
                                     <span  ng-show="rolegroupFrom.groupName.$dirty && rolegroupFrom.groupName.$error.required" class="self-tips self-tips-no g-c-red1 g-fs4 g-w-percent50">角色组名称不能为空</span>
                                     <span ng-show="rolegroupFrom.groupName.$dirty && rolegroupFrom.groupName.$valid" class="self-tips self-tips-yes"></span>
                                 </div>
                             </div>
 
                             <div class="form-group-self1">
-                                <button type="submit" ng-show="structrole_ctrl.rolegroup.id===''" ng-disabled="!(structrole_ctrl.rolegroup.id==='' && rolegroupFrom.groupName.$dirty && rolegroupFrom.groupName.$valid)"  class="btn btn-red g-br3 g-w-percent50">新增</button>
-                                <button type="submit" ng-show="structrole_ctrl.rolegroup.id!==''" ng-disabled="!(structrole_ctrl.rolegroup.id!=='' && rolegroupFrom.groupName.$valid)"  class="btn btn-red g-br3 g-w-percent50">编辑</button>
-                                <button type="button" class="btn btn-red g-br3 g-w-percent50 g-gap-mt2" id="admin_rolegroup_reset" ng-click="structrole_ctrl.formReset(rolegroupFrom,'rolegroup')">重置</button>
+                                <button type="submit" ng-show="organizationrole_ctrl.rolegroup.id===''" ng-disabled="!(organizationrole_ctrl.rolegroup.id==='' && rolegroupFrom.groupName.$dirty && rolegroupFrom.groupName.$valid)"  class="btn btn-red g-br3 g-w-percent50">新增</button>
+                                <button type="submit" ng-show="organizationrole_ctrl.rolegroup.id!==''" ng-disabled="!(organizationrole_ctrl.rolegroup.id!=='' && rolegroupFrom.groupName.$valid)"  class="btn btn-red g-br3 g-w-percent50">编辑</button>
+                                <button type="button" class="btn btn-red g-br3 g-w-percent50 g-gap-mt2" id="admin_rolegroup_reset" ng-click="organizationrole_ctrl.formReset(rolegroupFrom,'rolegroup')">重置</button>
                             </div>
                         </form>
 
@@ -153,15 +150,15 @@
                 <div class="modal-body">
                     <!--表单-->
                     <div class="g-w-percent50">
-                        <div class="admin-layout-theme4 admin-theme-close g-t-c g-b-gray17 g-pos-r">{{structrole_ctrl.role.id===''?'新增角色':'编辑角色'}}
-                            <span class="mini-icon admin-mini-icon1" ng-click="structrole_ctrl.toggleModal({display:'hide',area:'role'})"></span>
+                        <div class="admin-layout-theme4 admin-theme-close g-t-c g-b-gray17 g-pos-r">{{organizationrole_ctrl.role.id===''?'新增角色':'编辑角色'}}
+                            <span class="mini-icon admin-mini-icon1" ng-click="organizationrole_ctrl.toggleModal({display:'hide',area:'role'})"></span>
                         </div>
 
-                        <form ng-submit="structrole_ctrl.formSubmit('role')" name="roleFrom" role="form" novalidate method="post" class="admin-layout-form">
+                        <form ng-submit="organizationrole_ctrl.formSubmit('role')" name="roleFrom" role="form" novalidate method="post" class="admin-layout-form">
                             <div class="form-group-self1">
                                 <label class="self-label g-w-percent10 g-t-r"><span class="self-require g-c-red1"></span>所属角色组</label>
                                 <div class="self-input g-pos-r g-w-percent40">
-                                    <div class="admin-layout-theme4">{{structrole_ctrl.record.rolegroupname}}</div>
+                                    <div class="admin-layout-theme4">{{organizationrole_ctrl.record.rolegroupname}}</div>
                                 </div>
                             </div>
 
@@ -169,16 +166,16 @@
                                 <label class="self-label g-w-percent10 g-t-r"><span class="self-require g-c-red1">*</span>角色名称</label>
 
                                 <div class="self-input g-pos-r g-w-percent40">
-                                    <input type="text" name="roleName" placeholder="请输入角色名称" required ng-model="structrole_ctrl.role.roleName" />
+                                    <input type="text" name="roleName" placeholder="请输入角色名称" required ng-model="organizationrole_ctrl.role.roleName" />
                                     <span  ng-show="roleFrom.roleName.$dirty && roleFrom.roleName.$error.required" class="self-tips self-tips-no g-c-red1 g-fs4 g-w-percent50">角色名称不能为空</span>
                                     <span ng-show="roleFrom.roleName.$dirty && roleFrom.roleName.$valid" class="self-tips self-tips-yes"></span>
                                 </div>
                             </div>
 
                             <div class="form-group-self1">
-                                <button type="submit" ng-show="structrole_ctrl.role.id===''" ng-disabled="!(structrole_ctrl.role.id==='' && roleFrom.roleName.$dirty && roleFrom.roleName.$valid)"  class="btn btn-red g-br3 g-w-percent50">新增</button>
-                                <button type="submit" ng-show="structrole_ctrl.role.id!==''" ng-disabled="!(structrole_ctrl.role.id!=='' && roleFrom.roleName.$valid)"  class="btn btn-red g-br3 g-w-percent50">编辑</button>
-                                <button type="button" class="btn btn-red g-br3 g-w-percent50 g-gap-mt2" id="admin_role_reset" ng-click="structrole_ctrl.formReset(roleFrom,'role')">重置</button>
+                                <button type="submit" ng-show="organizationrole_ctrl.role.id===''" ng-disabled="!(organizationrole_ctrl.role.id==='' && roleFrom.roleName.$dirty && roleFrom.roleName.$valid)"  class="btn btn-red g-br3 g-w-percent50">新增</button>
+                                <button type="submit" ng-show="organizationrole_ctrl.role.id!==''" ng-disabled="!(organizationrole_ctrl.role.id!=='' && roleFrom.roleName.$valid)"  class="btn btn-red g-br3 g-w-percent50">编辑</button>
+                                <button type="button" class="btn btn-red g-br3 g-w-percent50 g-gap-mt2" id="admin_role_reset" ng-click="organizationrole_ctrl.formReset(roleFrom,'role')">重置</button>
                             </div>
                         </form>
 
@@ -201,7 +198,7 @@
 
                     <!--头部信息-->
                     <div class="admin-layout-theme4 admin-theme-close g-t-c g-b-gray17 g-pos-r">添加成员(用户)
-                        <span class="mini-icon admin-mini-icon1" ng-click="structrole_ctrl.toggleModal({display:'hide',area:'member'})"></span>
+                        <span class="mini-icon admin-mini-icon1" ng-click="organizationrole_ctrl.toggleModal({display:'hide',area:'member'})"></span>
                     </div>
 
                     <!--左侧操作区域-->
@@ -210,8 +207,8 @@
                         <!--子菜单组件-->
                         <ul class="sub-menu-wrap">
                             <li>
-                                <a data-parentid="" data-id="structrole_ctrl.record.currentId" data-layer="0" class="sub-menu-title sub-menu-titleactive"  ng-click="structrole_ctrl.getMemberList()">{{structrole_ctrl.record.currentName}}</a>
-                                <ul class="sub-menu-wrap g-d-showi" ng-click="structrole_ctrl.toggleMemberList($event)" id="admin_member_menu" ng-init="structrole_ctrl.getMemberList()"></ul>
+                                <a data-parentid="" data-id="organizationrole_ctrl.record.currentId" data-layer="0" class="sub-menu-title sub-menu-titleactive"  ng-click="organizationrole_ctrl.getMemberList()">{{organizationrole_ctrl.record.currentName}}</a>
+                                <ul class="sub-menu-wrap g-d-showi" ng-click="organizationrole_ctrl.toggleMemberList($event)" id="admin_member_menu" ng-init="organizationrole_ctrl.getMemberList()"></ul>
                             </li>
                         </ul>
                     </div>
@@ -219,7 +216,7 @@
                     <!--右侧被选区域-->
                     <div class="g-f-r g-gap-mt8 g-gap-mb6 g-w-percent28">
                         <div class="admin-layout-theme4"><span class="mini-icon admin-mini-icon2"></span>&nbsp;用户信息</div>
-                        <ul id="admin_user_wrap" ng-click="structrole_ctrl.checkMemberList($event)" class="admin-grid-widget admin-grid-widget1"></ul>
+                        <ul id="admin_user_wrap" ng-click="organizationrole_ctrl.checkMemberList($event)" class="admin-grid-widget admin-grid-widget1"></ul>
                         <div class="admin-layout-theme4"><span class="mini-icon admin-mini-icon3"></span>&nbsp;成员信息</div>
                         <ul id="admin_member_checked" class="admin-grid-widget admin-grid-widget1"></ul>
                     </div>
@@ -228,11 +225,11 @@
                     <!--提交按钮-->
                     <div class="row">
                         <div class="col-sm-5 g-t-r">
-                            <span ng-click="structrole_ctrl.formSubmit('member')" class="btn btn-red g-br3 g-w-percent15">确定</span>
+                            <span ng-click="organizationrole_ctrl.formSubmit('member')" class="btn btn-red g-br3 g-w-percent15">确定</span>
                         </div>
                         <div class="col-sm-2"></div>
                         <div class="col-sm-5 g-t-l">
-                            <span ng-click="structrole_ctrl.formReset(true,'member')" id="admin_member_reset"  class="btn btn-red g-br3 g-w-percent15">取消</span>
+                            <span ng-click="organizationrole_ctrl.formReset(true,'member')" id="admin_member_reset"  class="btn btn-red g-br3 g-w-percent15">取消</span>
                         </div>
                     </div>
                     <div class="clearfix"></div>

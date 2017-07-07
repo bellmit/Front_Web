@@ -81,10 +81,6 @@ angular.module('app')
                 }
             }
         };
-        /*扩展服务--初始化权限模型头部*/
-        this.createThead = function (config, power) {
-            powerService.createThead(config, power);
-        };
 
 
         /*初始化服务--基础机构信息*/
@@ -355,6 +351,7 @@ angular.module('app')
         };
 
 
+
         /*表单类服务--执行延时任务序列*/
         this.addFormDelay = function (config) {
             /*映射对象*/
@@ -623,7 +620,7 @@ angular.module('app')
                             if (i === 'type') {
                                 mode[i] = 'add';
                             } else if (i === 'isDesignatedOrg' || i === 'isDesignatedPermit') {
-                                continue;
+                                mode[i]=0;
                             } else {
                                 mode[i] = '';
                             }
@@ -668,28 +665,6 @@ angular.module('app')
                 }
             }
         };
-        /*表单类服务--权限服务--全选权限*/
-        this.selectAllPower = function (e) {
-            powerService.selectAllPower(e);
-        };
-        /*表单类服务--权限服务--确定所选权限*/
-        this.getSelectPower = function (model) {
-            var temppower = powerService.getSelectPower();
-            if (temppower) {
-                model.checkedFunctionIds = temppower.join();
-            } else {
-                model.checkedFunctionIds = '';
-            }
-        };
-        /*表单类服务--权限服务--取消所选权限*/
-        this.clearSelectPower = function (model) {
-            model.checkedFunctionIds = '';
-            powerService.clearSelectPower();
-        };
-        /*表单类服务--权限服务--全选权限*/
-        this.selectAllPower = function (e) {
-            powerService.selectAllPower(e);
-        };
         /*表单类服务--权限服务--确定所选权限*/
         this.getSelectPower = function (model) {
             var temppower = powerService.getSelectPower();
@@ -703,30 +678,6 @@ angular.module('app')
         this.clearSelectPower = function (model) {
             model.checkedFunctionIds = '';
             powerService.clearSelectPower();
-        };
-        /*表单服务--机构服务--确定所选机构*/
-        this.getSelectStruct = function (model) {
-            if (model) {
-                var source = model.record.managestruct,
-                    res = [];
-                for (var i in source) {
-                    res.push(source[i]);
-                }
-                if (res.length !== 0) {
-                    model.manage.designatedOrgIds = res.join();
-                } else {
-                    model.manage.designatedOrgIds = '';
-                }
-            }
-        };
-        /*表单类服务--机构服务--取消(清空)所选机构*/
-        this.clearSelectStruct = function (model) {
-            model.manage.designatedOrgIds = '';
-            self.structCheck({
-                type: 'all',
-                record: model.record,
-                target: self.$allstruct
-            }, 'no');
         };
         /*表单类服务--权限服务--切换所选权限*/
         this.toggleSelectPower = function (config) {
@@ -745,12 +696,12 @@ angular.module('app')
                     pid;
                 if (type === 'add') {
                     /*新增时查询权限*/
-                    cid = manage.organizationId;
-                    pid = manage.organizationId;
+                    cid = record.organizationId;
+                    pid = record.organizationId;
                 } else if (type === 'edit') {
                     /*编辑时查询权限*/
-                    cid = manage.organizationId;
-                    pid = manage.organizationId;
+                    cid = manage.id;
+                    pid = record.organizationId;
                 }
 
                 powerService.reqPowerList({
@@ -811,6 +762,31 @@ angular.module('app')
             }
 
         };
+        /*表单服务--机构服务--确定所选机构*/
+        this.getSelectStruct = function (model) {
+            if (model) {
+                var source = model.record.managestruct,
+                    res = [];
+                for (var i in source) {
+                    res.push(source[i]);
+                }
+                if (res.length !== 0) {
+                    model.manage.designatedOrgIds = res.join();
+                } else {
+                    model.manage.designatedOrgIds = '';
+                }
+            }
+        };
+        /*表单类服务--机构服务--取消(清空)所选机构*/
+        this.clearSelectStruct = function (model) {
+            model.manage.designatedOrgIds = '';
+            self.structCheck({
+                type: 'all',
+                record: model.record,
+                target: self.$allstruct
+            }, 'no');
+        };
+
 
 
         /*数据服务--请求数据--获取表格数据*/
@@ -982,7 +958,7 @@ angular.module('app')
                                 console.log('删除子管理失败');
                             }
                         });
-            }, type === 'base' ? '是否真要删除子管理' : '是否真要批量删除子管理', true);
+            }, type === 'base' ? '您确定要删除该子管理员吗？' : '您确定要批量删除该子管理员吗？', true);
 
         };
 

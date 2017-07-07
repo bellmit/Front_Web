@@ -1727,16 +1727,6 @@ angular.module('app')
             struct.checkedFunctionIds = '';
             powerService.clearSelectPower();
         };
-        /*表单类服务--权限服务--切换选中用户名*/
-        this.clearLoginInfo = function (struct) {
-            /*清空用户名密码*/
-            struct.username = '';
-            struct.password = '';
-            /*重置权限设定为默认*/
-            struct.isDesignatedPermit = 0;
-            /*重置权限选中权限Ids*/
-            struct.checkedFunctionIds = '';
-        };
         /*表单类服务--权限服务--切换所选权限*/
         this.toggleSelectPower = function (config) {
             var struct = config.struct,
@@ -1844,6 +1834,16 @@ angular.module('app')
                 cid: cid,
                 pid: pid
             };
+        };
+        /*表单类服务--权限服务--切换选中用户名*/
+        this.clearLoginInfo = function (struct) {
+            /*清空用户名密码*/
+            struct.username = '';
+            struct.password = '';
+            /*重置权限设定为默认*/
+            struct.isDesignatedPermit = 0;
+            /*重置权限选中权限Ids*/
+            struct.checkedFunctionIds = '';
         };
 
 
