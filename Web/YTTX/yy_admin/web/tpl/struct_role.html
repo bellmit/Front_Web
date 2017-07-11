@@ -202,20 +202,25 @@
                     </div>
 
                     <!--左侧操作区域-->
-                    <div class="struct-side-widget g-f-l g-gap-mt8 g-gap-mb6 g-w-percent18">
+                    <div class="struct-side-widget g-f-l g-gap-mt8 g-gap-mb6 g-w-percent16">
                         <div class="admin-layout-theme4"><span class="mini-icon admin-mini-icon2"></span>&nbsp;机构信息</div>
+
+                        <!--搜索组件-->
+                        <div class="sub-search-wrap ui-sub-search" data-active="structrole_ctrl.record.searchactive2" data-value="structrole_ctrl.record.searchname2"  data-action="structrole_ctrl.searchAction2()" data-clear="structrole_ctrl.searchClear2()" ></div>
+
+
                         <!--子菜单组件-->
                         <ul class="sub-menu-wrap">
                             <li>
-                                <a data-parentid="" data-id="structrole_ctrl.record.currentId" data-layer="0" class="sub-menu-title sub-menu-titleactive"  ng-click="structrole_ctrl.getMemberList()">{{structrole_ctrl.record.currentName}}</a>
-                                <ul class="sub-menu-wrap g-d-showi" ng-click="structrole_ctrl.toggleMemberList($event)" id="admin_member_menu" ng-init="structrole_ctrl.getMemberList()"></ul>
+                                <a data-parentid="" data-id="structrole_ctrl.record.currentId"  data-layer="0" class="sub-menu-title sub-menu-titleactive"  ng-click="structrole_ctrl.getMemberList()">{{structrole_ctrl.record.currentName}}</a>
+                                <ul class="sub-menu-wrap g-d-showi" ng-click="structrole_ctrl.toggleMemberList($event)" id="admin_member_menu" ng-init="structrole_ctrl.initMemberList()"></ul>
                             </li>
                         </ul>
                     </div>
 
                     <!--右侧被选区域-->
-                    <div class="g-f-r g-gap-mt8 g-gap-mb6 g-w-percent28">
-                        <div class="admin-layout-theme4"><span class="mini-icon admin-mini-icon2"></span>&nbsp;用户信息</div>
+                    <div class="g-f-r g-gap-mt8 g-gap-mb6 g-w-percent30">
+                        <div class="admin-layout-theme4"><span class="mini-icon admin-mini-icon2"></span>&nbsp;用户信息 <label class="g-gap-mr2 g-f-r">全选<input type="checkbox" ng-model="structrole_ctrl.record.checkAll" ng-change="structrole_ctrl.checkAllMember()" class="g-d-hidei" ng-true-value="true" ng-false-value="false"></label></div>
                         <ul id="admin_user_wrap" ng-click="structrole_ctrl.checkMemberList($event)" class="admin-grid-widget admin-grid-widget1"></ul>
                         <div class="admin-layout-theme4"><span class="mini-icon admin-mini-icon3"></span>&nbsp;成员信息</div>
                         <ul id="admin_member_checked" class="admin-grid-widget admin-grid-widget1"></ul>

@@ -13,7 +13,22 @@ angular.module('app')
 			}
             var model=config.model,
                 fn=config.fn;
+
 			if(isdate){
+                if(config.init){
+                    var initfn=config.initfn;
+                    if(initfn && typeof initfn==='function'){
+                        initfn.call(null,{
+                            $node1:moment().format('YYYY-MM-DD')
+                        });
+                    }else{
+                        if(model){
+                            model.dateTime=moment().format('YYYY-MM-DD');
+                        }else{
+                            config.$node1.val(moment().format('YYYY-MM-DD'));
+                        }
+                    }
+                }
                 config.$node1.on('click',function () {
                     WdatePicker({
                         onpicked:function(dp){
@@ -67,8 +82,36 @@ angular.module('app')
 				return false;
 			}
             var model=config.model,
-                fn=config.fn;
+                fn=config.fn,
+                initfn=config.initfn;
 			$.each([config.$node1,config.$node2],function (index) {
+                if(config.init){
+                    if(index===0){
+                        if(initfn && typeof initfn==='function'){
+                            initfn.call(null,{
+                                $node1:moment().format('YYYY-MM-DD')
+                            });
+                        }else{
+                            if(model){
+                                model.startTime=moment().format('YYYY-MM-DD');
+                            }else{
+                                config.$node1.val(moment().format('YYYY-MM-DD'));
+                            }
+                        }
+                    }else if(index===1){
+                        if(initfn && typeof initfn==='function'){
+                            initfn.call(null,{
+                                $node2:moment().format('YYYY-MM-DD')
+                            });
+                        }else{
+                            if(model){
+                                model.endTime=moment().format('YYYY-MM-DD');
+                            }else{
+                                config.$node2.val(moment().format('YYYY-MM-DD'));
+                            }
+                        }
+                    }
+                }
 				this.on('click',function () {
 					if(index===0){
 						 WdatePicker({

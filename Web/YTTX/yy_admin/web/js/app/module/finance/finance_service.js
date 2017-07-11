@@ -35,12 +35,14 @@ angular.module('app')
 
         /*视图切换服务--根据条件判断视图状态:返回一个代表类型，数字或者字符*/
         this.changeView = function (record) {
-            /*1-5种状态
+            /*1-6种状态
              1:分润统计(默认为1)
              2:分润历史
              3:清算统计
              4:清算历史
              5:除权除息分红
+             6:分润明细
+             '':不操作状态
              * */
             if (record.theme === 'profit') {
                 if (record.tab === 'stats') {
@@ -49,9 +51,12 @@ angular.module('app')
                 } else if (record.tab === 'history') {
                     record.action = 2;
                     return 2;
+                }else if (record.tab === 'detail') {
+                    record.action = 6;
+                    return 6;
                 }
-                record.action = 1;
-                return 1;
+                record.action = '';
+                return '';
             } else if (record.theme === 'clear') {
                 if (record.tab === 'stats') {
                     record.action = 3;
@@ -59,15 +64,18 @@ angular.module('app')
                 } else if (record.tab === 'history') {
                     record.action = 4;
                     return 4;
+                }else if (record.tab === 'detail') {
+                    record.action = '';
+                    return '';
                 }
-                record.action = 3;
-                return 3;
+                record.action = '';
+                return '';
             } else if (record.theme === 'bonus') {
                 record.action = 5;
                 return 5;
             }
-            record.action = 1;
-            return 1;
+            record.action = '';
+            return '';
         };
 
 
@@ -258,10 +266,14 @@ angular.module('app')
                 return false;
             } else if (!table && !record) {
                 return false;
+            }else if(record.action===''){
+                return false;
             }
 
+
             /*如果存在模型*/
-            var temp_config = 'list_config' + record.action,
+            var action=record.action,
+                temp_config = 'list_config' + action,
                 data = $.extend(true, {}, table[temp_config].config.ajax.data),
                 temp_param;
 
@@ -280,12 +292,12 @@ angular.module('app')
                 temp_action,
                 temp_checkall;
 
-            if (record.action === 5) {
-                temp_table = 'list_table' + record.action;
-                temp_column = 'tablecolumn' + record.action;
-                temp_action = 'tableitemaction' + record.action;
-            } else {
-                /*1-4参与条件查询*/
+            if (action === 5) {
+                temp_table = 'list_table' + action;
+                temp_column = 'tablecolumn' + action;
+                temp_action = 'tableitemaction' + action;
+            } else{
+                /*1-4,6参与条件查询*/
                 if (record['type'] === '') {
                     record['type'] = 1;
                 }
@@ -295,10 +307,24 @@ angular.module('app')
                 } else {
                     data['searchWord'] = record['searchWord'];
                 }
-                temp_table = 'list_table' + record.action;
-                temp_column = 'tablecolumn' + record.action;
-                temp_action = 'tableitemaction' + record.action;
-                temp_checkall = 'tablecheckall' + record.action;
+                if(action===6){
+                    var sdt=record['searchDate'];
+                    if(sdt===''){
+                        sdt=moment().format('YYYY-MM-DD');
+                    }
+                    sdt=sdt.split('-');
+                    data['year']=sdt[0];
+                    data['month']=sdt[1];
+                }else{
+                    if(record['searchDate']===''){
+                        delete data['year'];
+                        delete data['month'];
+                    }
+                }
+                temp_table = 'list_table' + action;
+                temp_column = 'tablecolumn' + action;
+                temp_action = 'tableitemaction' + action;
+                temp_checkall = 'tablecheckall' + action;
             }
 
 
@@ -309,18 +335,20 @@ angular.module('app')
                 table[temp_config].config.ajax.data['adminId'] = temp_param.adminId;
                 table[temp_config].config.ajax.data['token'] = temp_param.token;
                 /*初始请求*/
-                table[temp_table] = self['$admin_list_wrap' + record.action].DataTable(table[temp_config].config);
+                table[temp_table] = self['$admin_list_wrap' + action].DataTable(table[temp_config].config);
                 /*调用列控制*/
                 dataTableColumnService.initColumn(table[temp_column], table[temp_table]);
-                if (record.action !== 5) {
+                if (action !== 5 && action !== 6) {
                     /*调用全选与取消全选*/
                     dataTableCheckAllService.initCheckAll(table[temp_checkall]);
                 }
                 /*调用按钮操作*/
-                dataTableItemActionService.initItemAction(table[temp_action]);
+                if(action !== 6){
+                    dataTableItemActionService.initItemAction(table[temp_action]);
+                }
             } else {
                 /*清除批量数据*/
-                if (record.action !== 5) {
+                if (action !== 5 && action !== 6) {
                     dataTableCheckAllService.clear(table[temp_checkall]);
                 }
                 table[temp_table].ajax.config(table[temp_config].config.ajax).load();
@@ -329,6 +357,8 @@ angular.module('app')
         /*数据查询服务--过滤表格数据*/
         this.filterDataTable = function (table, record) {
             if (!table && !record) {
+                return false;
+            }else if(record.action===''){
                 return false;
             }
             var temp_table = 'list_table' + record.action;
@@ -341,10 +371,11 @@ angular.module('app')
         this.doItemAction = function (model, config) {
             var id = config.id,
                 action = config.action,
-                record = model.record;
+                record = model.record,
+                record_action=record.action;
 
             if (action === 'detail' || action === 'update') {
-                if (record.action === 5) {
+                if (record_action === 5) {
                     if (action === 'update') {
                         /*编辑*/
                         /*如果存在延迟任务则清除延迟任务*/
@@ -355,7 +386,7 @@ angular.module('app')
                         });
                     }
                     self.queryBonusInfo(model, id, action);
-                } else {
+                } else if(record_action!==6) {
                     /*查看订单或者详情*/
                     self.queryDetail(model, id, action);
                 }
@@ -397,7 +428,7 @@ angular.module('app')
 
             toolUtil
                 .requestHttp({
-                    url: '/organization/goodsorder/details'/*'json/test.json'*/,
+                    url: '/finance/profit/details'/*'json/test.json'*/,
                     method: 'post',
                     set: true,
                     debug: false, /*测试开关*/
@@ -545,9 +576,15 @@ angular.module('app')
 
             var type = config.type,
                 record = model.record,
-                table = model.table,
+                action=record.action;
+
+            if(action===''){
+                return false;
+            }
+
+            var table = model.table,
                 state,
-                temp_check = 'tablecheckall' + record.action;
+                temp_check = 'tablecheckall' + action;
 
             if (type === 'batch') {
                 /*批量*/
@@ -1250,6 +1287,23 @@ angular.module('app')
                             "id": /[0-9]{1,2}/,
                             "year": /((2)(0)(1)([0-7])){1}/,
                             "month": /([1-9]|11|12){1}/,
+                            "sales": moneyrule,
+                            "profits1": moneyrule,
+                            "profits2": moneyrule,
+                            "profits3": moneyrule,
+                            "state": /[0-3]{1}/
+                        }]
+                    })
+                };
+            } else if (type === 5) {
+                res = {
+                    message: 'ok',
+                    code: 0,
+                    result: Mock.mock({
+                        'list|5-15': [{
+                            "id": /[0-9]{1,2}/,
+                            "shopName":/[a-zA-Z]{2,10}/,
+                            "type":/[1-3]{1}/,
                             "sales": moneyrule,
                             "profits1": moneyrule,
                             "profits2": moneyrule,

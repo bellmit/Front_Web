@@ -3,27 +3,35 @@
         <div class="struct-layout-main">
 
             <!--查询区域-->
-            <div ng-show="finance_ctrl.record.theme==='profit' || finance_ctrl.record.theme==='clear'" class="admin-action-item">
+            <div ng-show="(finance_ctrl.record.theme==='profit' ||(finance_ctrl.record.theme==='clear' && finance_ctrl.record.tab!=='detail'))" class="admin-action-item">
                 <!--过滤-->
-                <div class="action-item-input g-w-percent10">
+                <div class="action-item-input g-w-percent12 g-gap-mb2 g-gap-mr2">
                     <label class="action-indent-b2">过滤:<input class="form-control input-sm" placeholder="" ng-model="finance_ctrl.record.filter" ng-keyup="finance_ctrl.filterDataTable()"  type="search"></label>
                 </div>
 
+
+                <!--条件查询--日历-->
+                <div class="action-item-input g-w-percent16 g-gap-mb2" ng-show="finance_ctrl.record.action===6">
+                    <label class="action-indent-b4">分润年月:<input class="form-control input-sm" placeholder="请选择查询年月" ng-model="finance_ctrl.record.searchDate"  id="search_date" readonly type="text">
+                    </label>
+                </div>
+
                 <!--条件查询-->
-                <div class="action-item-input g-w-percent12 g-gap-mr2">
+                <div class="action-item-input g-w-percent12 g-gap-mr2 g-gap-mb2">
                     <label class="action-indent-b4">分润类型:
                         <select class="form-control g-clear-pt g-clear-pb" ng-init="finance_ctrl.record.type=1" ng-model="finance_ctrl.record.type" ng-options="item.value as item.key for item in finance_ctrl.typeitem"></select>
                     </label>
                 </div>
 
+
                 <!--过滤-->
-                <div class="action-item-input g-w-percent15">
+                <div class="action-item-input g-w-percent15 g-gap-mb2">
                     <label class="action-indent-b5">查询关键字:<input class="form-control input-sm" placeholder="" ng-model="finance_ctrl.record.searchWord" type="text">
                     </label>
                 </div>
 
                 <!--查询-->
-                <div class="action-item-btn action-item-export g-w-percent5">
+                <div class="action-item-btn action-item-export g-w-percent5 g-gap-mb2">
                     <span ng-click="finance_ctrl.queryFinance()" class="btn btn-export g-br3 g-w-percent50 g-c-blue3">查询</span>
                 </div>
             </div>
@@ -150,6 +158,56 @@
                         <div class="easyui-pagination g-w-percent50" id="admin_page_wrap2" data-options="links:5,layout:['manual','first','prev','links','next','last'],displayMsg:'显示{from}&nbsp;到&nbsp;{to}&nbsp;共&nbsp;{total}条记录'"></div>
                     </div>
                 </div>
+
+
+                <!--分润模块--明细-->
+                <div ng-show="finance_ctrl.record.tab==='detail'">
+                    <div class="admin-action-item">
+                        <!--列控制-->
+                        <div class="action-item-ul g-w-percent6 g-f-r g-pos-r" ng-show="::finance_ctrl.table.tablecolumn6.columnshow">
+                            <div class="action-theme action-theme-btn g-br3 g-t-c">显示列</div>
+                            <div class="action-ul g-d-hidei" id="admin_table_checkcolumn6">
+                                <ul class="action-list-wrap" ></ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="admin-layout-theme4 g-t-c g-b-gray17">分润明细</div>
+                    <!--表格-->
+                    <table id="admin_list_wrap6" class="table table-bordered table-striped table-hover admin-layout-table">
+                        <!--分组样式-->
+                        <colgroup id="admin_list_colgroup6">
+                            <col class="g-w-percent8">
+                            <col class="g-w-percent5">
+                            <col class="g-w-percent8">
+                            <col class="g-w-percent8">
+                            <col class="g-w-percent8">
+                            <col class="g-w-percent8">
+                            <col class="g-w-percent5">
+                        </colgroup>
+
+                        <!--表头-->
+                        <thead>
+                        <tr>
+                            <th>店铺名称</th>
+                            <th>店铺类型</th>
+                            <th>当月销售合计</th>
+                            <th>当月分润合计</th>
+                            <th>当月二级分润金额</th>
+                            <th>当月三级分润金额</th>
+                            <th>状态</th>
+                        </tr>
+                        </thead>
+
+                        <!--表主体-->
+                        <tbody id="admin_batchlist_wrap6" class="middle-align"></tbody>
+                    </table>
+
+                    <!--分页-->
+                    <div class="admin-page-wrap">
+                        <div class="easyui-pagination g-w-percent50" id="admin_page_wrap6" data-options="links:5,layout:['manual','first','prev','links','next','last'],displayMsg:'显示{from}&nbsp;到&nbsp;{to}&nbsp;共&nbsp;{total}条记录'"></div>
+                    </div>
+                </div>
             </div>
 
             <!--清算模块-->
@@ -272,7 +330,6 @@
                         <div class="easyui-pagination g-w-percent50" id="admin_page_wrap4" data-options="links:5,layout:['manual','first','prev','links','next','last'],displayMsg:'显示{from}&nbsp;到&nbsp;{to}&nbsp;共&nbsp;{total}条记录'"></div>
                     </div>
                 </div>
-
             </div>
 
 
@@ -292,6 +349,11 @@
                     <!--过滤-->
                     <div class="action-item-input g-w-percent10">
                         <label class="action-indent-b2">过滤:<input class="form-control input-sm" placeholder="" ng-model="finance_ctrl.record.filter" ng-keyup="finance_ctrl.filterDataTable()"  type="search"></label>
+                    </div>
+
+                    <!--查询-->
+                    <div class="action-item-btn action-item-export g-w-percent5">
+                        <span ng-click="finance_ctrl.queryFinance()" class="btn btn-export g-br3 g-w-percent50 g-c-blue3">查询</span>
                     </div>
 
                     <!--列控制-->
@@ -352,7 +414,7 @@
 
 
             <!--选项卡组件-->
-            <ul class="sub-tab-wrap sub-item-group2 sub-itembr-group2 ui-sub-tab" data-action="toggleTab" data-ctrlname="finance_ctrl"  data-tabitem="finance_ctrl.tabitem"></ul>
+            <ul ng-hide="(finance_ctrl.record.theme==='bonus')||(finance_ctrl.record.theme==='clear' && finance_ctrl.record.tab==='detail')" class="sub-tab-wrap sub-item-group3 sub-itembr-group3 ui-sub-tab" data-action="toggleTab" data-ctrlname="finance_ctrl"  data-tabitem="finance_ctrl.tabitem"></ul>
 
             <!--子菜单组件-->
             <ul class="sub-menu-wrap">
