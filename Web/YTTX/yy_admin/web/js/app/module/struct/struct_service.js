@@ -1391,24 +1391,28 @@ angular.module('app')
                                                 value: '位置调整失败'
                                             });
                                             /*清除模型数据*/
-                                            self.clearStructPos(structpos);
+                                            self.initStructPos(structpos);
                                         }
                                     } else {
                                         toolDialog.show({
                                             type: 'succ',
                                             value: '位置调整成功'
                                         });
-                                        /*清除模型数据*/
-                                        self.clearStructPos(structpos);
                                         /*重新加载数据*/
+                                        if(config.record.searchname==''){
+                                            self.initRecord(config.record);
+                                        }
                                         self.getMenuList({
                                             record: config.record,
-                                            table: config.table
+                                            table: config.table,
+                                            structpos:config.structpos
                                         });
                                     }
                                 }
                             },
                             function (resp) {
+                                /*清除模型数据*/
+                                self.initStructPos(structpos);
                                 var message = resp.data.message;
                                 if (typeof message !== 'undefined' && message !== '') {
                                     console.log(message);
@@ -1452,31 +1456,6 @@ angular.module('app')
                 return false;
             }
             return result;
-        };
-        /*机构服务--清除机构数据*/
-        this.clearStructPos = function (structpos, pos) {
-            if (!structpos) {
-                return false;
-            }
-            if (typeof pos !== 'undefined') {
-                structpos[pos] = {
-                    id: '',
-                    $node: null,
-                    active: '',
-                    layer: '',
-                    parentid: ''
-                };
-            } else {
-                for (var i in structpos) {
-                    structpos[i] = {
-                        id: '',
-                        $node: null,
-                        active: '',
-                        layer: '',
-                        parentid: ''
-                    };
-                }
-            }
         };
 
 
@@ -1751,7 +1730,8 @@ angular.module('app')
                                     if (type === 'struct') {
                                         self.getMenuList({
                                             record: config.record,
-                                            table: config.table
+                                            table: config.table,
+                                            structpos:config.structpos
                                         });
                                     } else if (type === 'user') {
                                         /*重新加载表格数据*/

@@ -557,6 +557,7 @@ angular.module('app')
         /*表单服务--提交表单*/
         this.formSubmit = function (type) {
             structService.formSubmit({
+                structpos:self.structpos,
                 struct: self.struct,
                 user: self.user,
                 table: self.table,
