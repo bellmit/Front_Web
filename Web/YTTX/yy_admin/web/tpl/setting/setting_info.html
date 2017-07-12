@@ -87,6 +87,6 @@
 
     <div class="form-group-self3 g-w-percent36">
         <button type="submit" ng-disabled="!(setting_ctrl.record.organizationId!=='' && setting_ctrl.record.organizationName!=='' && setting_ctrl.struct.id!=='' && structFrom.linkman.$valid && structFrom.cellphone.$valid && structFrom.address.$valid && (setting_ctrl.struct.payeeAccount==='' || (setting_ctrl.struct.payeeAccount!=='' && structFrom.payeeAccount.$valid)))" class="btn btn-red g-br4 g-f-l g-gap-pt2 g-gap-pb2 g-gap-pl8 g-gap-pr8 g-fs6">确&nbsp;定</button>
-        <button type="button" class="btn btn-red g-br4 g-f-l g-gap-pt2 g-gap-pb2 g-gap-pl8 g-gap-pr8 g-gap-ml2 g-fs6" ng-click="setting_ctrl.formReset(structFrom,'struct')">重&nbsp;置</button>
+        <button type="button" class="btn btn-red g-br4 g-f-l g-gap-pt2 g-gap-pb2 g-gap-pl8 g-gap-pr8 g-gap-ml2 g-fs6 g-d-hidei" ng-click="setting_ctrl.formReset(structFrom,'struct')">重&nbsp;置</button>
     </div>
 </form>

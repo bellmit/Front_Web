@@ -6,7 +6,8 @@ angular.module('app')
             module_id = 90/*模块id*/,
             cache = loginService.getCache(),
             manageform_reset_timer = null,
-            temptable = null/*上一次table缓存*/;
+            temptable = null/*上一次table缓存*/,
+            outid=null;
 
 
         var powermap = powerService.getCurrentPower(module_id);
@@ -564,14 +565,37 @@ angular.module('app')
                                             area: type,
                                             delay: 1000
                                         });
-                                    }
-                                    /*提示操作结果*/
-                                    if (type === 'base' || type === 'standard') {
+                                        /*提示操作结果*/
+                                        toolDialog.show({
+                                            type: 'succ',
+                                            value: tip_map[action] + tip_map[type] + '成功'
+                                        });
+                                    } else if (type === 'pwd') {
+                                        /*提示操作结果*/
+                                        toolDialog.show({
+                                            type: 'succ',
+                                            value: tip_map[action] + tip_map[type] + '成功'
+                                        });
+                                        /*修改密码成功需退出系统重新登录*/
+                                        cache = null;
+                                        outid = $timeout(function () {
+                                            /*隐藏弹出框*/
+                                            toolDialog.hide();
+                                            /*执行退出动作*/
+                                            $('#' + BASE_CONFIG.loginoutdom).triggerHandler('click');
+                                            if (outid !== null) {
+                                                $timeout.cancel(outid);
+                                                outid = null;
+                                            }
+                                        }, 1000);
+                                    }else if(type === 'base' || type === 'standard'){
+                                        /*提示操作结果*/
                                         toolDialog.show({
                                             type: 'succ',
                                             value: tip_map[action] + tip_map['profit'] + '成功'
                                         });
-                                    } else {
+                                    }else{
+                                        /*提示操作结果*/
                                         toolDialog.show({
                                             type: 'succ',
                                             value: tip_map[action] + tip_map[type] + '成功'

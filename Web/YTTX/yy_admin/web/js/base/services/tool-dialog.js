@@ -51,6 +51,13 @@ angular.module('tool.dialog',[])
 				}
 			}
 		};
+
+		/*提示类型*/
+		this.hide=function () {
+			if(single_dia){
+				single_dia.close();
+			}
+		};
 		
 		/*确认函数*/
 		this.sureDialog=function (str,fn,tips,repalceflag) {
@@ -102,80 +109,6 @@ angular.module('tool.dialog',[])
 				}
 			}).showModal();
 		};
-
-
-		//弹窗确认
-		/*this.sureDialog = function (tips){
-			//是否支持弹窗
-			if(!flag){
-				return null;
-			}
-			/!*关键匹配*!/
-			var actionmap={
-				'delete':'删除',
-				'cancel':'取消',
-				'change':'改变',
-				'add':'添加',
-				'update':'更新'
-			};
-
-
-			/!*确认框类*!/
-			function sureDialogFun(){}
-
-			/!*设置函数*!/
-			sureDialogFun.prototype.sure=function (str,fn,tips,repalceflag) {
-				//是否支持弹窗
-				if(!flag){
-					return null;
-				}
-				var tipstr='',
-					iskey=typeof actionmap[str]==='string',
-					key=iskey?actionmap[str]:str;
-
-				if(!tips){
-					tips='';
-				}
-
-				if(typeof actionmap[str]==='string'){
-					if(repalceflag){
-						tipstr='<span class="g-c-warn g-btips-warn">'+tips+'</span>';
-					}else{
-						tipstr='<span class="g-c-warn g-btips-warn">'+tips+'是否真需要 "'+actionmap[str]+'" 此项数据</span>';
-					}
-				}else{
-					if(repalceflag){
-						tipstr='<span class="g-c-warn g-btips-warn">'+tips+'</span>';
-					}else{
-						tipstr='<span class="g-c-warn g-btips-warn">'+tips+'是否真需要 "'+str+'" 此项数据</span>';
-					}
-				}
-
-				dialog({
-					title:'温馨提示',
-					content:tipstr,
-					width:300,
-					okValue: '确定',
-					ok: function () {
-						if(fn&&typeof fn==='function'){
-							//执行回调
-							fn.call(null,{
-								action:key,
-								dia:single_dia
-							});
-							this.close().remove();
-						}
-						return false;
-					},
-					cancelValue: '取消',
-					cancel: function(){
-						this.close().remove();
-					}
-				}).showModal();
-			};
-
-			return new sureDialogFun();
-		};*/
 
 		/*内部对象*/
 		var single_dia=this.dia();
