@@ -220,10 +220,10 @@
 
                     <!--右侧被选区域-->
                     <div class="g-f-r g-gap-mt8 g-gap-mb6 g-w-percent30">
-                        <div class="admin-layout-theme4"><span class="mini-icon admin-mini-icon2"></span>&nbsp;用户信息 <label class="g-gap-mr2 g-f-r">全选<input type="checkbox" ng-model="structrole_ctrl.record.checkAll" ng-change="structrole_ctrl.checkAllMember()" class="g-d-hidei" ng-true-value="true" ng-false-value="false"></label></div>
+                        <div class="admin-layout-theme4"><span class="mini-icon admin-mini-icon2"></span>&nbsp;用户信息&nbsp;<span class="g-gap-mr2 g-f-r"><label class=" sub-menu-checkbox" ng-class="{'sub-menu-checkboxactive':structrole_ctrl.record.checkAll}">全选<input type="checkbox" ng-model="structrole_ctrl.record.checkAll" ng-change="structrole_ctrl.checkAllMember()" class="g-d-hidei" ng-true-value="true" ng-false-value="false"></label></span></div>
                         <ul id="admin_user_wrap" ng-click="structrole_ctrl.checkMemberList($event)" class="admin-grid-widget admin-grid-widget1"></ul>
                         <div class="admin-layout-theme4"><span class="mini-icon admin-mini-icon3"></span>&nbsp;成员信息</div>
-                        <ul id="admin_member_checked" class="admin-grid-widget admin-grid-widget1"></ul>
+                        <ul id="admin_member_checked" ng-click="structrole_ctrl.cancelMemberList($event)"  class="admin-grid-widget admin-grid-widget1"></ul>
                     </div>
                     <div class="clearfix"></div>
 

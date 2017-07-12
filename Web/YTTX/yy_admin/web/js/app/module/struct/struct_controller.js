@@ -534,6 +534,15 @@ angular.module('app')
                 table: self.table
             });
         };
+        /*机构服务--删除机构*/
+        this.deleteStruct = function () {
+            /*调用编辑机构服务类*/
+            structService.deleteStruct({
+                structpos: self.structpos,
+                record: self.record,
+                table: self.table
+            });
+        };
 
 
         /*弹出层显示隐藏*/

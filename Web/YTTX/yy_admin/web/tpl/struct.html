@@ -6,6 +6,7 @@
                 <span>{{struct_ctrl.record.structName!==''?struct_ctrl.record.structName:struct_ctrl.record.organizationName}}</span>
                 &nbsp;&nbsp;&nbsp;&nbsp;
                 <button type="button" class="btn btn-default g-c-blue3" ng-disabled="struct_ctrl.record.layer===0 || struct_ctrl.record.layer > 1" ng-show="::struct_ctrl.powerlist.organization_edit" ng-click="struct_ctrl.actionStruct({display:'show',area:'struct',type:'edit'})"><i class="btn-action admin-btn-action7"></i>&nbsp;编辑</button><span class="g-c-gray8 g-fs2" ng-show="struct_ctrl.record.layer > 1">&nbsp;&nbsp;只能操作直接下级，不是直接下级需要用被操作下级的父级机构登录</span>
+                <button type="button" class="btn btn-default g-c-blue3" ng-disabled="struct_ctrl.record.layer===0" ng-show="::struct_ctrl.powerlist.organization_edit" ng-click="struct_ctrl.deleteStruct()"><i class="btn-action admin-btn-action6"></i>&nbsp;删除</button>
             </h1>
 
             <!--下属机构-->

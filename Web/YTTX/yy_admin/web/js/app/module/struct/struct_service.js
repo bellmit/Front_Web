@@ -1,5 +1,5 @@
 angular.module('app')
-    .service('structService', ['toolUtil', 'toolDialog', 'BASE_CONFIG', 'loginService', 'powerService', 'addressService', 'dataTableColumnService', 'dataTableCheckAllService', 'dataTableItemActionService', '$timeout', function (toolUtil, toolDialog, BASE_CONFIG, loginService, powerService, addressService, dataTableColumnService, dataTableCheckAllService, dataTableItemActionService, $timeout) {
+    .service('structService', ['toolUtil', 'toolDialog', 'BASE_CONFIG', 'loginService', 'powerService', 'addressService', 'dataTableColumnService', 'dataTableCheckAllService', 'dataTableItemActionService', 'testService', '$timeout', function (toolUtil, toolDialog, BASE_CONFIG, loginService, powerService, addressService, dataTableColumnService, dataTableCheckAllService, dataTableItemActionService, testService, $timeout) {
 
         /*获取缓存数据*/
         var self = this,
@@ -392,14 +392,14 @@ angular.module('app')
 
             var $this = $(target),
                 haschild = $this.hasClass('sub-menu-title'),
-                hasdata=$this.attr('data-id'),
+                hasdata = $this.attr('data-id'),
                 $child,
                 isrequest = false,
                 temp_layer,
                 temp_id,
                 temp_label;
 
-            if(typeof hasdata==='undefined'){
+            if (typeof hasdata === 'undefined') {
                 /*过滤非法数据节点*/
                 return false;
             }
@@ -988,7 +988,6 @@ angular.module('app')
                 type: 'struct'
             });
 
-
             /*根据类型跳转相应逻辑*/
             if (type === 'edit') {
                 /*查询相关存在的数据*/
@@ -1002,6 +1001,111 @@ angular.module('app')
                     area: modal.area
                 });
             }
+        };
+        /*机构服务--删除机构*/
+        this.deleteStruct = function (config) {
+            if (cache === null) {
+                return false;
+            }
+            var record = config.record,
+                table = config.table,
+                tempparam = cache.loginMap.param,
+                id = '',
+                param = {
+                    token: tempparam.token,
+                    adminId: tempparam.adminId
+                };
+
+            /*判断参数*/
+            if (record.structId !== '') {
+                id = record.structId;
+            } else if (record.structId === '') {
+                id = record.organizationId;
+            }
+
+            if (id === '' || id === null || record.layer === 0) {
+                toolDialog.show({
+                    type: 'warn',
+                    value: '没有机构或机构不存在'
+                });
+                return false;
+            }
+
+
+            /*确认是否删除*/
+            toolDialog.sureDialog('', function () {
+                /*执行删除机构操作*/
+                toolDialog.show({
+                    type: 'warn',
+                    value: '等待接口,功能正在开发中...'
+                });
+                return false;
+                toolUtil
+                    .requestHttp({
+                        url: /*'/organization/delete'*/'json/test.json'/*测试地址*/,
+                        method: 'post',
+                        set: true,
+                        debug: true, /*测试标识*/
+                        data: param
+                    })
+                    .then(function (resp) {
+                            var resp = testService.testDefault('table')/*测试类*/;
+
+                            var data = resp.data,
+                                status = parseInt(resp.status, 10);
+
+                            if (status === 200) {
+                                var code = parseInt(data.code, 10),
+                                    message = data.message;
+                                if (code !== 0) {
+                                    if (typeof message !== 'undefined' && message !== '') {
+                                        console.log(message);
+                                    } else {
+                                        console.log('删除机构失败');
+                                    }
+
+                                    if (code === 999) {
+                                        /*退出系统*/
+                                        cache = null;
+                                        toolUtil.loginTips({
+                                            clear: true,
+                                            reload: true
+                                        });
+                                    }
+                                } else {
+                                    /*加载数据*/
+                                    var result = data.result;
+                                    if (typeof result !== 'undefined') {
+                                        /*重置操作记录*/
+                                        if(record.searchname===''){
+                                            self.initRecord(record);
+                                        }
+                                        /*初始化菜单信息*/
+                                        self.getMenuList(config);
+                                        /*提示信息*/
+                                        toolDialog.show({
+                                            type: 'succ',
+                                            value: '删除机构成功'
+                                        });
+                                    } else {
+                                        /*提示信息*/
+                                        toolDialog.show({
+                                            type: 'warn',
+                                            value: '删除机构失败'
+                                        });
+                                    }
+                                }
+                            }
+                        },
+                        function (resp) {
+                            var message = resp.data.message;
+                            if (typeof message !== 'undefined' && message !== '') {
+                                console.log(message);
+                            } else {
+                                console.log('删除机构失败');
+                            }
+                        });
+            },'是否真要删除机构数据', true);
         };
         /*机构服务--查询机构数据*/
         this.queryOperateInfo = function (config) {
@@ -1513,10 +1617,10 @@ angular.module('app')
         this.formSubmit = function (config, type) {
             if (cache) {
                 var action = '',
-                    tempparam=cache.loginMap.param,
-                    param={
-                        adminId:tempparam.adminId,
-                        token:tempparam.token
+                    tempparam = cache.loginMap.param,
+                    param = {
+                        adminId: tempparam.adminId,
+                        token: tempparam.token
                     },
                     req_config = {
                         method: 'post',
@@ -1598,12 +1702,12 @@ angular.module('app')
                     /*判断是新增还是修改*/
                     if (config[type]['id'] === '') {
                         action = 'add';
-                        param['organizationId']=record.structId!==''?record.structId:record.organizationId!==''?record.organizationId:record.currentId;
+                        param['organizationId'] = record.structId !== '' ? record.structId : record.organizationId !== '' ? record.organizationId : record.currentId;
                         param['fullName'] = config[type]['fullName'];
                         req_config['url'] = '/organization/shop/add';
                     } else {
                         action = 'edit';
-                        param['organizationId']=config[type]['organizationId'];
+                        param['organizationId'] = config[type]['organizationId'];
                         param['id'] = config[type]['id'];
                         req_config['url'] = '/organization/shop/update';
                     }
@@ -2021,9 +2125,9 @@ angular.module('app')
                                                     'status': '状态'
                                                 };
 
-                                            var r_province='',
-                                                r_country='',
-                                                r_city='';
+                                            var r_province = '',
+                                                r_country = '',
+                                                r_city = '';
 
                                             for (var j in list) {
                                                 if (typeof detail_map[j] !== 'undefined') {
@@ -2037,17 +2141,17 @@ angular.module('app')
                                                         str += '<tr><td class="g-t-r">' + detail_map[j] + ':</td><td class="g-t-l">' + typemap[temptype] + '</td></tr>';
                                                     } else if (j === 'province' || j === 'country' || j === 'city') {
                                                         str += '<tr><td class="g-t-r">' + detail_map[j] + ':</td><td class="g-t-l">#' + j + '#</td></tr>';
-                                                        if(j === 'province'){
-                                                            self.queryByCode(list[j],function (name) {
-                                                                r_province=name;
+                                                        if (j === 'province') {
+                                                            self.queryByCode(list[j], function (name) {
+                                                                r_province = name;
                                                             });
-                                                        }else if(j === 'country'){
-                                                            self.queryByCode(list[j],function (name) {
-                                                                r_country=name;
+                                                        } else if (j === 'country') {
+                                                            self.queryByCode(list[j], function (name) {
+                                                                r_country = name;
                                                             });
-                                                        }else if(j === 'city'){
-                                                            self.queryByCode(list[j],function (name) {
-                                                                r_city=name;
+                                                        } else if (j === 'city') {
+                                                            self.queryByCode(list[j], function (name) {
+                                                                r_city = name;
                                                             });
                                                         }
                                                     } else {
@@ -2057,14 +2161,14 @@ angular.module('app')
                                             }
                                             if (str !== '') {
                                                 setTimeout(function () {
-                                                    str=str.replace(/#province#/g,r_province).replace(/#country#/g,r_country).replace(/#city#/g,r_city);
+                                                    str = str.replace(/#province#/g, r_province).replace(/#country#/g, r_country).replace(/#city#/g, r_city);
                                                     $(str).appendTo(self.$admin_userdetail_show.html(''));
                                                     /*显示弹窗*/
                                                     self.toggleModal({
                                                         display: 'show',
                                                         area: 'userdetail'
                                                     });
-                                                },200);
+                                                }, 200);
 
                                             }
                                         }
@@ -2290,11 +2394,11 @@ angular.module('app')
             }
         };
         /*地址服务--根据code查询value地址*/
-        this.queryByCode = function (code,fn) {
-            if(fn){
-                addressService.queryByCode(code,fn);
-            }else{
-                return addressService.queryByCode(code,fn);
+        this.queryByCode = function (code, fn) {
+            if (fn) {
+                addressService.queryByCode(code, fn);
+            } else {
+                return addressService.queryByCode(code, fn);
             }
         };
 

@@ -620,8 +620,14 @@ angular.module('app')
             }, type === 'base' ? '是否真要删除成员数据' : '是否真要批量删除成员数据', true);
         };
         /*成员服务--选中成员*/
-        this.checkMemberList = function (e, member) {
-            if (!member) {
+        this.checkMemberList = function (e, config) {
+            if (!config) {
+                return false;
+            }
+            var member = config.member,
+                record = config.record;
+
+            if (!member && !record) {
                 return false;
             }
             /*阻止冒泡和默认行为*/
@@ -637,35 +643,61 @@ angular.module('app')
                 var $this = $(target),
                     temp_id = $this.attr('data-id'),
                     temp_label = $this.html(),
-                    $str,
-                    $str_clone;
+                    $str;
 
 
                 /*对比选中数据*/
                 if (!member[temp_id]) {
                     /*选中*/
                     $str = $('<li class="action-list-active" data-id="' + temp_id + '">' + temp_label + '</li>');
-                    /*克隆节点*/
-                    $str_clone = $str.clone();
+                    /*放入dom*/
+                    $str.appendTo(self.$admin_member_checked);
+                    /*创建模型*/
                     member[temp_id] = {
                         'id': temp_id,
                         'label': temp_label,
-                        'li': $str
+                        'li': self.$admin_member_checked.find('li[data-id="' + temp_id + '"]')
                     };
-                    /*放入dom*/
-                    $str_clone.appendTo(self.$admin_member_checked);
                 } else if (member[temp_id]) {
                     /*取消*/
-                    self.$admin_member_checked.find('li').each(function () {
-                        var $li = $(this),
-                            t_id = $li.attr('data-id');
-
-                        if (t_id === temp_id) {
-                            $li.remove();
-                            return false;
-                        }
-                    });
+                    member[temp_id]['li'].remove();
                     delete member[temp_id];
+                    if ($.isEmptyObject(member)) {
+                        record.checkAll = false;
+                    }
+                }
+            }
+        };
+        /*成员服务--取消选中成员*/
+        this.cancelMemberList = function (e, config) {
+            if (!config) {
+                return false;
+            }
+            var member = config.member,
+                record = config.record;
+
+            if (!member && !record) {
+                return false;
+            }
+            /*阻止冒泡和默认行为*/
+            e.preventDefault();
+            e.stopPropagation();
+
+            /*过滤对象*/
+            var target = e.target,
+                node = target.nodeName.toLowerCase();
+            if (node === 'ul') {
+                return false;
+            } else if (node === 'li') {
+                var temp_id = target.getAttribute('data-id');
+                /*对比选中数据*/
+                if (member[temp_id]) {
+                    /*取消*/
+                    member[temp_id]['li'].remove();
+                    delete member[temp_id];
+                    if ($.isEmptyObject(member)) {
+                        record.checkAll = false;
+                    }
                 }
             }
         };
@@ -673,29 +705,26 @@ angular.module('app')
         this.checkAllMember = function (config) {
             var record = config.record,
                 checkAll = record.checkAll,
-                member = config.member,
-                $li,
-                $li_clone;
+                member = config.member;
 
 
             self.$admin_user_wrap.find('li').each(function () {
                 var $this = $(this),
-                    cid = $this.attr('data-id'),
-                    label;
+                    cid = $this.attr('data-id');
 
                 if (checkAll && !member[cid]) {
                     /*全选操作,没选中则选中*/
-                    label = $this.html();
-                    $li = $('<li class="action-list-active" data-id="' + cid + '">' + label + '</li>');
+                    var label = $this.html(),
+                        $li = $('<li class="action-list-active" data-id="' + cid + '">' + label + '</li>');
                     /*放入dom*/
                     $li.appendTo(self.$admin_member_checked);
                     /*创建模型*/
                     member[cid] = {
                         'id': cid,
                         'label': label,
-                        'li': self.$admin_member_checked.find('li[data-id="'+cid+'"]')
+                        'li': self.$admin_member_checked.find('li[data-id="' + cid + '"]')
                     };
-                } else if(!checkAll && member[cid]){
+                } else if (!checkAll && member[cid]) {
                     /*取消全选操作,有选中数据则删除选中数据*/
                     member[cid]['li'].remove();
                     delete member[cid];
@@ -1127,19 +1156,28 @@ angular.module('app')
                 /*特殊情况*/
                 if (type === 'member') {
                     /*清除成员数据*/
-                    data['member'] = {};
-                    self.$admin_member_checked.html('');
+                    (function () {
+                        var member= data['member'];
+                        for(var i in member){
+                           delete member[i];
+                        }
+                        self.$admin_member_checked.html('');
+                        self.$admin_user_wrap.html('');
+                        data['record']['checkAll'] = false;
+                    }());
                 }
             } else {
                 /*重置机构数据模型*/
-                for (var i in data) {
-                    if (i === 'type') {
-                        /*操作类型为新增*/
-                        data[i] = 'add';
-                    } else {
-                        data[i] = '';
+                (function () {
+                    for (var i in data) {
+                        if (i === 'type') {
+                            /*操作类型为新增*/
+                            data[i] = 'add';
+                        } else {
+                            data[i] = '';
+                        }
                     }
-                }
+                }());
             }
         };
         /*表单类服务--重置表单数据*/
@@ -1254,7 +1292,6 @@ angular.module('app')
                     req_config['url'] = '/role/shops/add';
                 }
                 req_config['data'] = param;
-
                 toolUtil
                     .requestHttp(req_config)
                     .then(function (resp) {

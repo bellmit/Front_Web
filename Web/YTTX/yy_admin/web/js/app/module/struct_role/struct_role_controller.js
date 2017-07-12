@@ -409,11 +409,17 @@ angular.module('app')
         };
         /*成员服务--查询用户*/
         this.checkMemberList = function (e) {
-            structroleService.checkMemberList(e, self.member);
+            structroleService.checkMemberList(e,{
+                record:self.record,
+                member:self.member
+            });
         };
-        /*成员服务--过滤数据*/
-        this.filterDataTable = function () {
-            structroleService.filterDataTable(self.table, self.role);
+        /*成员服务--取消选中用户*/
+        this.cancelMemberList=function (e) {
+            structroleService.cancelMemberList(e,{
+                record:self.record,
+                member:self.member
+            });
         };
         /*成员服务--全选数据*/
         this.checkAllMember=function () {
@@ -422,6 +428,11 @@ angular.module('app')
                 member:self.member
             });
         };
+        /*成员服务--过滤数据*/
+        this.filterDataTable = function () {
+            structroleService.filterDataTable(self.table, self.role);
+        };
+
         
         
 
@@ -473,7 +484,8 @@ angular.module('app')
                 forms: forms,
                 role: self.role,
                 rolegroup: self.rolegroup,
-                member: self.member
+                member: self.member,
+                record:self.record
             }, type);
         };
 
