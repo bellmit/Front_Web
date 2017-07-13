@@ -273,7 +273,7 @@ angular.module('app')
                                                         self.queryStructSequence({
                                                             record:record,
                                                             manage:manage,
-                                                            id:list['id']
+                                                            id:manage.id
                                                         });
                                                     }
                                                     break;
