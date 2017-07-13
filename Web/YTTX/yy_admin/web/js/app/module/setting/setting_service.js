@@ -7,7 +7,7 @@ angular.module('app')
             cache = loginService.getCache(),
             manageform_reset_timer = null,
             temptable = null/*上一次table缓存*/,
-            outid=null;
+            outid = null;
 
 
         var powermap = powerService.getCurrentPower(module_id);
@@ -265,67 +265,15 @@ angular.module('app')
                                                     /*全部权限时，清空权限ids缓存*/
                                                     if (temp_power === 0) {
                                                         manage['checkedFunctionIds'] = '';
+                                                        manage['organizationId'] = '';
                                                     } else if (temp_power === 1) {
                                                         /*初始化权限全选*/
-                                                        powerService.clearHeaderPower();
-                                                        /*指定权限时需要查询权限*/
-                                                        /*查询权限--原始方案：先查询当前权限(子级权限) --> 再查父级权限  --> 存在父子级权限，过滤子级权限，
-                                                         * 后来方案：先查父级权限 --> 再查询当前权限(子级权限)  --> 存在父子级权限，过滤子级权限*/
-                                                        powerService.reqPowerList({
-                                                            source: true, /*是否获取数据源*/
-                                                            sourcefn: function (ps) {
-                                                                /*数据源*/
-                                                                var child_data,
-                                                                    parent_data = ps;
-
-                                                                if (parent_data !== null) {
-                                                                    /*存在数据源*/
-                                                                    powerService.reqPowerList({
-                                                                        source: true, /*是否获取数据源*/
-                                                                        sourcefn: function (cs) {
-                                                                            /*数据源*/
-                                                                            child_data = cs;
-
-                                                                            if (child_data !== null) {
-                                                                                /*存在数据源，开始过滤权限数据*/
-                                                                                var filter_data = powerService.filterPower(parent_data, child_data);
-                                                                                if (filter_data) {
-                                                                                    /*过滤后的数据即映射到视图*/
-                                                                                    var power_html = powerService.resolvePowerList({
-                                                                                        menu: filter_data
-                                                                                    });
-                                                                                    /*更新模型*/
-                                                                                    if (power_html) {
-                                                                                        $(power_html).appendTo(self.$power_tbody.html(''));
-                                                                                    }
-                                                                                } else {
-                                                                                    toolDialog.show({
-                                                                                        type: 'warn',
-                                                                                        value: '过滤后的权限数据不正确'
-                                                                                    });
-                                                                                    return false;
-                                                                                }
-                                                                            } else {
-                                                                                /*提示信息*/
-                                                                                toolDialog.show({
-                                                                                    type: 'warn',
-                                                                                    value: '没有子级权限数据'
-                                                                                });
-                                                                                return false;
-                                                                            }
-                                                                        },
-                                                                        organizationId: list['parentId']
-                                                                    });
-                                                                } else {
-                                                                    /*提示信息*/
-                                                                    toolDialog.show({
-                                                                        type: 'warn',
-                                                                        value: '没有父级权限数据'
-                                                                    });
-                                                                    return false;
-                                                                }
-                                                            },
-                                                            organizationId: record.organizationId
+                                                        self.clearStructSequence(manage);
+                                                        /*查询机构列表*/
+                                                        self.queryStructSequence({
+                                                            record:record,
+                                                            manage:manage,
+                                                            id:list['id']
                                                         });
                                                     }
                                                     break;
@@ -588,13 +536,13 @@ angular.module('app')
                                                 outid = null;
                                             }
                                         }, 1000);
-                                    }else if(type === 'base' || type === 'standard'){
+                                    } else if (type === 'base' || type === 'standard') {
                                         /*提示操作结果*/
                                         toolDialog.show({
                                             type: 'succ',
                                             value: tip_map[action] + tip_map['profit'] + '成功'
                                         });
-                                    }else{
+                                    } else {
                                         /*提示操作结果*/
                                         toolDialog.show({
                                             type: 'succ',
@@ -694,102 +642,6 @@ angular.module('app')
                 }
             }
         };
-        /*表单类服务--权限服务--确定所选权限*/
-        this.getSelectPower = function (model) {
-            var temppower = powerService.getSelectPower();
-            if (temppower) {
-                model.checkedFunctionIds = temppower.join();
-            } else {
-                model.checkedFunctionIds = '';
-            }
-        };
-        /*表单类服务--权限服务--取消(清空)所选权限*/
-        this.clearSelectPower = function (model) {
-            model.checkedFunctionIds = '';
-            powerService.clearSelectPower();
-        };
-        /*表单类服务--权限服务--切换所选权限*/
-        this.toggleSelectPower = function (config) {
-            var manage = config.manage,
-                record = config.record;
-
-            /*重置权限选中权限Ids*/
-            manage.checkedFunctionIds = '';
-            /*清除头部信息*/
-            powerService.clearHeaderPower();
-            /*重新查询权限*/
-            var type = manage.type;
-            if (manage.isDesignatedPermit === 1) {
-                var cid,
-                    pid;
-                if (type === 'add') {
-                    /*新增时查询权限*/
-                    cid = record.organizationId;
-                    pid = record.organizationId;
-                } else if (type === 'edit') {
-                    /*编辑时查询权限*/
-                    cid = manage.parentId;
-                    pid = record.organizationId;
-                }
-
-                powerService.reqPowerList({
-                    source: true, /*是否获取数据源*/
-                    sourcefn: function (ps) {
-                        /*数据源*/
-                        var child_data,
-                            parent_data = ps;
-
-                        if (parent_data !== null) {
-                            /*存在数据源*/
-                            powerService.reqPowerList({
-                                source: true, /*是否获取数据源*/
-                                sourcefn: function (cs) {
-                                    /*数据源*/
-                                    child_data = cs;
-                                    if (child_data !== null) {
-                                        /*存在数据源，开始过滤权限数据*/
-                                        var filter_data = powerService.filterPower(parent_data, child_data);
-                                        if (filter_data) {
-                                            /*过滤后的数据即映射到视图*/
-                                            var power_html = powerService.resolvePowerList({
-                                                menu: filter_data
-                                            });
-                                            /*更新模型*/
-                                            if (power_html) {
-                                                $(power_html).appendTo(self.$power_tbody.html(''));
-                                            }
-                                        } else {
-                                            toolDialog.show({
-                                                type: 'warn',
-                                                value: '过滤后的权限数据不正确'
-                                            });
-                                            return false;
-                                        }
-                                    } else {
-                                        /*提示信息*/
-                                        toolDialog.show({
-                                            type: 'warn',
-                                            value: '没有子级权限数据'
-                                        });
-                                        return false;
-                                    }
-                                },
-                                organizationId: cid
-                            });
-                        } else {
-                            /*提示信息*/
-                            toolDialog.show({
-                                type: 'warn',
-                                value: '没有父级权限数据'
-                            });
-                            return false;
-                        }
-                    },
-                    organizationId: pid
-                });
-            }
-
-        };
         /*表单服务--机构服务--确定所选机构*/
         this.getSelectStruct = function (model) {
             if (model) {
@@ -813,6 +665,236 @@ angular.module('app')
                 record: model.record,
                 target: self.$allstruct
             }, 'no');
+        };
+
+
+
+        /*权限服务--确定所选权限*/
+        this.getSelectPower = function (model) {
+            var temppower = powerService.getSelectPower();
+            if (temppower) {
+                model.checkedFunctionIds = temppower.join();
+            } else {
+                model.checkedFunctionIds = '';
+            }
+        };
+        /*权限服务--取消(清空)所选权限*/
+        this.clearSelectPower = function (model) {
+            powerService.clearSelectPower();
+            self.clearStructSequence(model);
+        };
+        /*权限服务--查询机构序列*/
+        this.queryStructSequence = function (config) {
+            if (cache) {
+                if (!config) {
+                    return false;
+                }
+                var manage = config.manage,
+                    id = config.id;
+
+                if (!manage || id === '' || typeof id === 'undefined') {
+                    return false;
+                }
+
+                var record = config.record,
+                    param = {
+                        token: record.token,
+                        adminId: record.adminId,
+                        childId: id
+                    };
+
+                toolUtil
+                    .requestHttp({
+                        url: '/sysuser/roles/view',
+                        method: 'post',
+                        set: true,
+                        data: param
+                    })
+                    .then(function (resp) {
+                            var data = resp.data,
+                                status = parseInt(resp.status, 10);
+
+                            if (status === 200) {
+                                var code = parseInt(data.code, 10),
+                                    message = data.message;
+                                if (code !== 0) {
+                                    if (typeof message !== 'undefined' && message !== '') {
+                                        console.log(message);
+                                    }
+
+                                    if (code === 999) {
+                                        /*退出系统*/
+                                        cache = null;
+                                        toolUtil.loginTips({
+                                            clear: true,
+                                            reload: true
+                                        });
+                                    }
+                                } else {
+                                    /*加载数据*/
+                                    var result = data.result;
+                                    if (typeof result !== 'undefined') {
+                                        var list = result.list;
+                                        if (list) {
+                                            var len = list.length;
+                                            if (len === 0) {
+                                                var i = 0,
+                                                    str = '',
+                                                    item;
+                                                for (i; i < len; i++) {
+                                                    item = list[i];
+                                                    str += '<li data-organizationId="' + item["organizationId"] + '">机构' + (i + 1) + '</li>';
+                                                }
+                                                if(str!==''){
+                                                    $(str).appendTo(self.$admin_struct_sequence.html(''));
+                                                }
+                                            } else {
+                                                /*数据集合，最多嵌套层次*/
+                                                self.$admin_struct_sequence.html('');
+                                            }
+                                        } else {
+                                            self.$admin_struct_sequence.html('');
+                                        }
+                                    } else {
+                                        self.$admin_struct_sequence.html('');
+                                    }
+                                }
+                            }
+                        },
+                        function (resp) {
+                            self.$admin_struct_sequence.html('');
+                            var message = resp.data.message;
+                            if (typeof message !== 'undefined' && message !== '') {
+                                console.log(message);
+                            } else {
+                                console.log('请求机构失败');
+                            }
+                        });
+
+            } else {
+                /*退出系统*/
+                cache = null;
+                toolUtil.loginTips({
+                    clear: true,
+                    reload: true
+                });
+            }
+        };
+        /*权限服务--选中机构序列*/
+        this.toggleStructSequence=function (e,config) {
+            /*阻止冒泡和默认行为*/
+            e.preventDefault();
+            e.stopPropagation();
+            /*过滤对象*/
+            var target = e.target,
+                node = target.nodeName.toLowerCase();
+            if (node === 'ul') {
+                return false;
+            }
+            if (node === 'li') {
+                /*加载子集*/
+                var $this = $(target),
+                    ischeck = $this.hasClass('action-list-active'),
+                    temp_organizationid,
+                    manage=config.manage,
+                    record=config.record;
+
+                if(ischeck){
+                    /*取消选中*/
+                    $this.removeClass('action-list-active');
+                    /*变更模型*/
+                    manage.organizationId='';
+                    manage.checkedFunctionIds = '';
+                    /*清除所选权限*/
+                    powerService.clearSelectPower();
+                }else{
+                    /*选中*/
+                    $this.addClass('action-list-active').sibling().removeClass('action-list-active');
+                    temp_organizationid=$this.attr('data-organizationId');
+                    manage.organizationId=temp_organizationid;
+                    /*重新查询权限*/
+                    var type = manage.type;
+                    if (manage.isDesignatedPermit === 1) {
+                        var cid,
+                            pid;
+                        if (type === 'add') {
+                            /*新增时查询权限*/
+                            cid = record.organizationId;
+                            pid = record.organizationId;
+                        } else if (type === 'edit') {
+                            /*编辑时查询权限*/
+                            cid = manage.organizationId;
+                            pid = record.organizationId;
+                        }
+
+                        if(cid===''){
+                            return false;
+                        }
+
+                        powerService.reqPowerList({
+                            source: true, /*是否获取数据源*/
+                            sourcefn: function (ps) {
+                                /*数据源*/
+                                var child_data,
+                                    parent_data = ps;
+
+                                if (parent_data !== null) {
+                                    /*存在数据源*/
+                                    powerService.reqPowerList({
+                                        source: true, /*是否获取数据源*/
+                                        sourcefn: function (cs) {
+                                            /*数据源*/
+                                            child_data = cs;
+                                            if (child_data !== null) {
+                                                /*存在数据源，开始过滤权限数据*/
+                                                var filter_data = powerService.filterPower(parent_data, child_data);
+                                                if (filter_data) {
+                                                    /*过滤后的数据即映射到视图*/
+                                                    var power_html = powerService.resolvePowerList({
+                                                        menu: filter_data
+                                                    });
+                                                    /*更新模型*/
+                                                    if (power_html) {
+                                                        $(power_html).appendTo(self.$power_tbody.html(''));
+                                                    }
+                                                } else {
+                                                    toolDialog.show({
+                                                        type: 'warn',
+                                                        value: '过滤后的权限数据不正确'
+                                                    });
+                                                    return false;
+                                                }
+                                            } else {
+                                                /*提示信息*/
+                                                toolDialog.show({
+                                                    type: 'warn',
+                                                    value: '没有子级权限数据'
+                                                });
+                                                return false;
+                                            }
+                                        },
+                                        organizationId: cid
+                                    });
+                                } else {
+                                    /*提示信息*/
+                                    toolDialog.show({
+                                        type: 'warn',
+                                        value: '没有父级权限数据'
+                                    });
+                                    return false;
+                                }
+                            },
+                            organizationId: pid
+                        });
+                    }
+                }
+            }
+        };
+        /*权限服务--清除选中机构序列*/
+        this.clearStructSequence=function (manage) {
+            manage.checkedFunctionIds = '';
+            manage.organizationId='';
+            self.$admin_struct_sequence.find('.action-list-active').removeClass('action-list-active');
         };
 
 

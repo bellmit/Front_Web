@@ -51,6 +51,13 @@ angular.module('tool.dialog',[])
 				}
 			}
 		};
+
+		/*关闭提示*/
+		this.hide=function () {
+			if(single_dia){
+				single_dia.close();
+			}
+		};
 		
 		/*确认函数*/
 		this.sureDialog=function (str,fn,tips,repalceflag) {

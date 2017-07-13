@@ -569,19 +569,15 @@ angular.module('power.service', [])
                 $input = self.$power_tbody.find('input:checked');
             }
 
+            /*清除主体*/
             $input.each(function () {
                 $(this).prop({
                     'checked': false
                 });
             });
 
-            if (isall) {
-                self.$power_thead.find('input:checked').each(function () {
-                    $(this).prop({
-                        'checked': false
-                    });
-                });
-            }
+            /*清除头部*/
+            self.clearHeaderPower();
 
         };
 

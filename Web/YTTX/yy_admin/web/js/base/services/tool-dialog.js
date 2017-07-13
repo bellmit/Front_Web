@@ -34,6 +34,7 @@ angular.module('tool.dialog',[])
 			}
 			return null;
 		};
+		
 		/*提示类型*/
 		this.show=function (config) {
 			var type=config.type,
@@ -52,7 +53,7 @@ angular.module('tool.dialog',[])
 			}
 		};
 
-		/*提示类型*/
+		/*关闭提示*/
 		this.hide=function () {
 			if(single_dia){
 				single_dia.close();

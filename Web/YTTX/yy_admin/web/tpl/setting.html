@@ -46,19 +46,24 @@
 
                     <!--权限-->
                     <div class="g-f-l g-w-percent26" ng-show="setting_ctrl.manage.isDesignatedPermit===1">
-                        <div class="admin-layout-theme4 admin-theme-close g-t-c g-b-gray17 g-pos-r">选择权限</div>
-                        <table class="table table-bordered table-striped table-hover admin-layout-table">
-                            <colgroup id="setting_power_colgroup"></colgroup>
-                            <thead id="setting_power_thead"></thead>
-                            <tbody id="setting_power_tbody"></tbody>
-                        </table>
-                        <div class="row">
-                            <div class="col-sm-5 g-t-r">
-                                <span ng-click="setting_ctrl.getSelectPower()" class="btn btn-red g-br3 g-w-percent15">确定</span>
-                            </div>
-                            <div class="col-sm-2"></div>
-                            <div class="col-sm-5 g-t-l">
-                                <span ng-click="setting_ctrl.clearSelectPower()" class="btn btn-red g-br3 g-w-percent15">取消</span>
+                        <div class="g-w-percent50">
+                            <ul id="admin_struct_sequence" ng-click="setting_ctrl.toggleStructSequence($event)"  class="admin-grid-widget admin-grid-widget1"></ul>
+                        </div>
+                        <div class="g-w-percent50" ng-show="(setting_ctrl.manage.type==='edit' && setting_ctrl.manage.organizationId!=='') || (setting_ctrl.manage.type==='add' && setting_ctrl.manage.organizationId!=='')">
+                            <div class="admin-layout-theme4 admin-theme-close g-t-c g-b-gray17 g-pos-r">选择权限</div>
+                            <table class="table table-bordered table-striped table-hover admin-layout-table">
+                                <colgroup id="setting_power_colgroup"></colgroup>
+                                <thead id="setting_power_thead"></thead>
+                                <tbody id="setting_power_tbody"></tbody>
+                            </table>
+                            <div class="row">
+                                <div class="col-sm-5 g-t-r">
+                                    <span ng-click="setting_ctrl.getSelectPower()" class="btn btn-red g-br3 g-w-percent15">确定</span>
+                                </div>
+                                <div class="col-sm-2"></div>
+                                <div class="col-sm-5 g-t-l">
+                                    <span ng-click="setting_ctrl.clearSelectPower()" class="btn btn-red g-br3 g-w-percent15">取消</span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -160,11 +165,11 @@
 
                             <div class="form-group-self1">
                                 <label class="self-label">
-                                    <input type="radio" ng-model="setting_ctrl.manage.isDesignatedPermit" ng-value="0" ng-change="setting_ctrl.toggleSelectPower()" name="isDesignatedPermit">
+                                    <input type="radio" ng-model="setting_ctrl.manage.isDesignatedPermit" ng-value="0" ng-change="setting_ctrl.clearSelectPower()" name="isDesignatedPermit">
                                     &nbsp;全部权限
                                 </label>
                                 <label class="self-label">
-                                    <input type="radio" ng-model="setting_ctrl.manage.isDesignatedPermit" ng-value="1" ng-change="setting_ctrl.toggleSelectPower()"  name="isDesignatedPermit">
+                                    <input type="radio" ng-model="setting_ctrl.manage.isDesignatedPermit" ng-value="1" ng-change="setting_ctrl.clearSelectPower()"  name="isDesignatedPermit">
                                     &nbsp;指定权限
                                 </label>
                             </div>

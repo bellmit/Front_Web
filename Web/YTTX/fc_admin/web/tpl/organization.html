@@ -7,6 +7,8 @@
                 &nbsp;&nbsp;&nbsp;&nbsp;
                 <button type="button" class="btn btn-default g-c-blue3" ng-disabled="organization_ctrl.record.layer1===0 || organization_ctrl.record.layer1 > 1" ng-show="::organization_ctrl.powerlist.organization_edit" ng-click="organization_ctrl.actionStruct({display:'show',area:'struct',type:'edit'})"><i class="btn-action admin-btn-action7"></i>&nbsp;编辑</button><span class="g-c-gray8 g-fs2" ng-show="organization_ctrl.record.layer1 > 1">&nbsp;&nbsp;只能操作直接下级，不是直接下级需要用被操作下级的父级机构登录</span>
                 <button type="button" class="btn btn-default g-c-blue3" ng-disabled="organization_ctrl.record.layer1 !==0 || organization_ctrl.record.organizationId===''" ng-show="::organization_ctrl.powerlist.organization_add" ng-click="organization_ctrl.actionStruct({display:'show',area:'struct',type:'add'})"><i class="btn-action admin-btn-action1"></i>&nbsp;添加子机构</button>
+
+                <button type="button" class="btn btn-default g-c-blue3" ng-disabled="organization_ctrl.record.layer1===0" ng-show="::organization_ctrl.powerlist.organization_edit" ng-click="organization_ctrl.deleteStruct()"><i class="btn-action admin-btn-action6"></i>&nbsp;删除</button>
             </h1>
         </div>
 
