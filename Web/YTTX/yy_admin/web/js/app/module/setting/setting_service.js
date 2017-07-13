@@ -683,6 +683,22 @@ angular.module('app')
             powerService.clearSelectPower();
             self.clearStructSequence(model);
         };
+        /*权限服务--切换权限*/
+        this.toggleSelectPower=function (config) {
+            var manage=config.manage,
+                record=config.record,
+                type=manage.type;
+            self.clearSelectPower(manage);
+            if (manage.isDesignatedPermit === 1) {
+                if (type === 'add') {
+                    /*新增时查询权限*/
+                    console.log(type);
+                    powerService.reqPowerList({
+                        organizationId:record.organizationId
+                    });
+                }
+            }
+        };
         /*权限服务--查询机构序列*/
         this.queryStructSequence = function (config) {
             if (cache) {
@@ -817,20 +833,14 @@ angular.module('app')
                     if (manage.isDesignatedPermit === 1) {
                         var cid,
                             pid;
-                        if (type === 'add') {
-                            /*新增时查询权限*/
-                            cid = record.organizationId;
-                            pid = record.organizationId;
-                        } else if (type === 'edit') {
+                        if (type === 'edit') {
                             /*编辑时查询权限*/
                             cid = manage.organizationId;
                             pid = record.organizationId;
                         }
-
                         if(cid===''){
                             return false;
                         }
-
                         powerService.reqPowerList({
                             source: true, /*是否获取数据源*/
                             sourcefn: function (ps) {
@@ -893,7 +903,7 @@ angular.module('app')
         /*权限服务--清除选中机构序列*/
         this.clearStructSequence=function (manage) {
             manage.checkedFunctionIds = '';
-            manage.organizationId='';
+            manage.organizationId = '';
             self.$admin_struct_sequence.find('.action-list-active').removeClass('action-list-active');
         };
 

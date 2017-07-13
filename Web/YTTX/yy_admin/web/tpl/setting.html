@@ -47,9 +47,9 @@
                     <!--权限-->
                     <div class="g-f-l g-w-percent26" ng-show="setting_ctrl.manage.isDesignatedPermit===1">
                         <div class="g-w-percent50">
-                            <ul id="admin_struct_sequence" ng-click="setting_ctrl.toggleStructSequence($event)"  class="admin-grid-widget admin-grid-widget1"></ul>
+                            <ul id="admin_struct_sequence" ng-show="setting_ctrl.manage.type==='edit'" ng-click="setting_ctrl.toggleStructSequence($event)"  class="admin-grid-widget admin-grid-widget1"></ul>
                         </div>
-                        <div class="g-w-percent50" ng-show="(setting_ctrl.manage.type==='edit' && setting_ctrl.manage.organizationId!=='') || (setting_ctrl.manage.type==='add' && setting_ctrl.manage.organizationId!=='')">
+                        <div class="g-w-percent50" ng-show="(setting_ctrl.manage.type==='edit' && setting_ctrl.manage.organizationId!=='') || setting_ctrl.manage.type==='add'">
                             <div class="admin-layout-theme4 admin-theme-close g-t-c g-b-gray17 g-pos-r">选择权限</div>
                             <table class="table table-bordered table-striped table-hover admin-layout-table">
                                 <colgroup id="setting_power_colgroup"></colgroup>
@@ -66,6 +66,7 @@
                                 </div>
                             </div>
                         </div>
+
                     </div>
 
                     <!--表单-->
@@ -165,11 +166,11 @@
 
                             <div class="form-group-self1">
                                 <label class="self-label">
-                                    <input type="radio" ng-model="setting_ctrl.manage.isDesignatedPermit" ng-value="0" ng-change="setting_ctrl.clearSelectPower()" name="isDesignatedPermit">
+                                    <input type="radio" ng-model="setting_ctrl.manage.isDesignatedPermit" ng-value="0" ng-change="setting_ctrl.toggleSelectPower()" name="isDesignatedPermit">
                                     &nbsp;全部权限
                                 </label>
                                 <label class="self-label">
-                                    <input type="radio" ng-model="setting_ctrl.manage.isDesignatedPermit" ng-value="1" ng-change="setting_ctrl.clearSelectPower()"  name="isDesignatedPermit">
+                                    <input type="radio" ng-model="setting_ctrl.manage.isDesignatedPermit" ng-value="1" ng-change="setting_ctrl.toggleSelectPower()"  name="isDesignatedPermit">
                                     &nbsp;指定权限
                                 </label>
                             </div>

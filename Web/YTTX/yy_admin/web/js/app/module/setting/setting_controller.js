@@ -181,14 +181,6 @@ angular.module('app')
                 forms: forms
             }, type);
         };
-        /*表单服务--权限服务--确定所选权限*/
-        this.getSelectPower = function () {
-            settingService.getSelectPower(self.manage);
-        };
-        /*表单服务--权限服务--取消所选权限*/
-        this.clearSelectPower = function () {
-            settingService.clearSelectPower(self.manage);
-        };
         /*表单服务--机构服务--全选机构*/
         this.selectAllStruct = function (e) {
             settingService.selectAllStruct(e);
@@ -205,6 +197,21 @@ angular.module('app')
             settingService.clearSelectStruct({
                 record: self.record,
                 manage: self.manage
+            });
+        };
+        /*表单服务--权限服务--确定所选权限*/
+        this.getSelectPower = function () {
+            settingService.getSelectPower(self.manage);
+        };
+        /*表单服务--权限服务--取消所选权限*/
+        this.clearSelectPower = function () {
+            settingService.clearSelectPower(self.manage);
+        };
+        /*表单服务--权限服务--切换权限*/
+        this.toggleSelectPower = function () {
+            settingService.toggleSelectPower({
+                record:self.record,
+                manage:self.manage
             });
         };
 
