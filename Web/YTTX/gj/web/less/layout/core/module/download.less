@@ -37,97 +37,16 @@
     min-height: @download-height;
     padding: 80px 0 @download-img 0 0;
     background: transparent url('../images/download_banner.png') no-repeat center bottom;
-    .download-theme,
-    .download-btn {
+    .download-theme{
       text-align: center;
       .user-select-base();
       color: @color-white;
-    }
-    .download-theme {
       width: 100%;
       height: 40px;
       font-size: @font-size-base + 16;
       line-height: 40px;
       .text-of();
       margin: 0 0 40px 0;
-    }
-    .download-btn {
-
-      @btn-circle-width: 34px;
-      @btn-height: 52px;
-
-      margin: 0 auto;
-      display: block;
-      .no-outline-base();
-      .layout-base(230px);
-      height: @btn-height;
-      .border-radius-base(5px);
-      border: 1px solid @color-white;
-      background: @color-orange1;
-      cursor: pointer;
-      line-height: @btn-height;
-      font-size: @font-size-base + 10;
-      overflow: hidden;
-      span {
-        .layout-relative-base();
-        .layout-base(@btn-circle-width);
-        height: @btn-circle-width;
-        display: inline-block;
-        .border-radius-base(50%);
-        border: 1px solid @color-white;
-        vertical-align: middle;
-        line-height: @btn-circle-width;
-        margin: -(@btn-height - @btn-circle-width - 2) / 2 18px 0 0;
-        &:before,
-        &::before {
-          .layout-absolutel-base(0, 0, 50);
-          width: 100%;
-          height: 100%;
-          content: '\e64c';
-          font-family: 'ux_eight';
-          font-weight: bold;
-          .border-radius-base(50%);
-          overflow: hidden;
-          background: @color-orange1;
-        }
-        &:after,
-        &::after {
-          .layout-absolutel-base(0, 0, 10);
-          content: '';
-          width: 100%;
-          height: 100%;
-          display: inline-block;
-          .border-radius-base(50%);
-          background: @color-white;
-          .transform-origin-base(center center);
-          .transform-base(scale(0));
-          .opacity-base(80);
-        }
-      }
-      &:hover {
-        background: darken(@color-orange1, 3%);
-        span {
-          &:before,
-          &::before {
-            background: darken(@color-orange1, 3%);
-          }
-          &:after,
-          &::after {
-            .transition-base(all 1s ease-out .01s);
-            .transform-base(scale(12));
-            .opacity-base(0);
-          }
-        }
-      }
-      &:active {
-        background: darken(@color-orange1, 6%);
-        span {
-          &:before,
-          &::before {
-            background: darken(@color-orange1, 6%);
-          }
-        }
-      }
     }
   }
 }
