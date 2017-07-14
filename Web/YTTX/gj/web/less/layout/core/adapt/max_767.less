@@ -46,12 +46,12 @@
   /*牌照*/
   /*下载*/
   .layout-download-wrap {
-    @download-height: 550px;
-    @download-img: 344px;
+    @download-height: 494px;
+    @download-img: 294px;
 
     min-height: @download-height;
     max-height: @download-height + 100;
-    background-size:700px auto;
+    background-size:600px auto;
     .download-wrap {
       min-height: @download-height;
       padding: 40px 0 @download-img + 30 0;
@@ -59,55 +59,35 @@
   }
   /*优势,优点*/
   .layout-advantage-wrap {
-    min-height: 440px;
     .advantage-wrap {
-      padding: 0 0 40px 0;
       > li {
-        min-height: 160px;
-        margin: 40px 0 0 0;
-        padding: 140px 30px 0 30px;
-        background-size:100px auto !important;
         h3 {
-          font-size: @font-size-base + 12;
-          line-height: @font-size-base + 16;
+          font-size: @font-size-base + 8;
+          line-height: @font-size-base + 12;
+        }
+        p{
+          -ms-text-overflow: ellipsis;
+          text-overflow: ellipsis;
+          .text-of();
         }
       }
     }
   }
   /*公告*/
   .layout-notice-wrap {
-    min-height: 330px;
+    min-height: 290px;
     .notice-wrap {
-      padding: 40px 0 50px 0;
+      padding: 30px 0 40px 0;
     }
     /*标题*/
     .notice-title {
-      height: 40px;
-      font-size: @font-size-base + 12;
-      line-height: @font-size-base + 22;
+      height: 32px;
+      font-size: @font-size-base + 8;
+      line-height: @font-size-base + 18;
     }
     /*列表*/
     .notice-list {
-      padding: 27px 0 0 80px;
-      li{
-        min-height: 50px;
-        background:transparent url('../images/notice_line.png') repeat-y left top;
-        &:before {
-          .layout-absolutel-base(-5px,3px);
-        }
-      }
-      .notice-lr {
-        padding: 0 0 20px 20px;
-        span, p {
-          text-align: left;
-        }
-      }
-      .notice-ll {
-        padding: 0 0 20px 20px;
-        span, p {
-          text-align: left;
-        }
-      }
+      padding: 20px 0 0 50px;
     }
   }
 
@@ -117,30 +97,18 @@
   .banner-wrap4 {
     width: @body-min-width;
     .account-btn {
-      bottom:40px;
+      bottom:30px;
     }
   }
   /*关于我们*/
-  .layout-aboutus-wrap{
-    padding:40px 0;
-    .aboutus-wrap {
-      padding:0 20px;
-      .aboutus-info{
-        padding:0 0 30px 0;
-      }
-      .aboutus-contact{
-        padding:30px 0 0 0;
-      }
-    }
-  }
 
 
 
   /*---下载模块---*/
   /*下载广告*/
   .layout-dlbanner-wrap {
-    @download-height: 500px;
-    @download-img: 351px;
+    @download-height: 450px;
+    @download-img: 301px;
 
     min-height: @download-height;
     max-height: @download-height + 100;
@@ -148,66 +116,41 @@
     .dlbanner-wrap {
       min-height: @download-height;
       padding: 40px 0 @download-img 0 0;
-      background-size:700px auto;
+      background-size:600px auto;
     }
   }
   /*下载*/
-  /*下载描述*/
-  .layout-dlremark-wrap{
-    padding:40px 0;
-    .content-default-wrap{
-      padding:0 20px;
+  .layout-download1-wrap {
+    @dl-height: 260px;
+
+    height: @dl-height;
+    .download1-wrap {
+      @gap-top: 50px;
+      @gap-bottom: 40px;
+      padding: @gap-top 0 @gap-bottom 0;
+      .dl-btn-wrap{
+        width:140px;
+        .border-radius-base(3px);
+      }
     }
   }
+  /*下载描述*/
 
 
   /*---帮助模块---*/
   /*搜索*/
-  .layout-search-wrap {
-    @wrap-height: 144px;
-    @wrap-gaptb: 40px;
-    height: @wrap-height;
-    padding: @wrap-gaptb 0;
-    .search-wrap {
-      padding:0 20px;
-    }
-  }
   /*搜索结果列表*/
-  .layout-helplist-wrap{
-    padding-bottom:50px;
-    .helplist-wrap{
-      padding:0 20px;
-    }
-  }
 
 
   /*---列表模块---*/
   /*列表*/
-  .layout-list-wrap {
-    padding: 40px 0;
-    .list-wrap {
-      @list-height: 60px;
-      padding:0 20px;
-      li {
-        height: @list-height;
-        a {
-          line-height: @list-height;
-          padding: 0 @list-height/2 0 @list-height * 1.5;
-          &:after {
-            .layout-absoluter-base();
-            width: @list-height/2;
-          }
-          span {
-            width: @list-height * 2;
-          }
-        }
-      }
-    }
-  }
   /*分页*/
   .layout-page-wrap{
-    padding:0 0 80px 0;
+    padding:0 0 40px 0;
     .page-wrap{
+      .goto-pagination-wrap{
+        display:none;
+      }
       padding:0 20px;
     }
   }
@@ -215,15 +158,4 @@
 
   /*---详情模块---*/
   /*查看详情*/
-  .layout-detail-wrap{
-    padding:80px 0 100px 0;
-    .detail-title{
-      padding:10px 20px 40px 20px;
-    }
-    .detail-show{
-      /*排版详情*/
-      padding-left: 20px;
-      padding-right: 20px;
-    }
-  }
 }
