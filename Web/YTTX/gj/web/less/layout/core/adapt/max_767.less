@@ -1,4 +1,229 @@
 ///640px--767px
 @media (max-width: 767px){
 	//body适配
+  /*---重置模块---*/
+  @body-max-width: 767px;
+  @body-min-width: 640px;
+  /*主体*/
+  body {
+    max-width: @body-max-width;
+    min-width: @body-min-width;
+  }
+  /*默认外部容器*/
+  .layout-default-wrap{
+    min-width:@body-min-width;
+  }
+  /*默认内部容器*/
+  .content-default-wrap{
+    width: @body-min-width;
+  }
+
+
+
+  /*---头部模块---*/
+  .header-content-wrap {
+    @header-logo-width: 80px;
+    /*图标*/
+    /*菜单容器*/
+    .header-menu {
+      .layout-float-base(@body-min-width - @header-logo-width - 2, border-box, right);
+    }
+    .header-nav li a,
+    .header-center a,
+    .header-account a {
+      padding: 20px 10px;
+    }
+  }
+
+  /*---底部模块---*/
+
+
+  /*---首页模块---*/
+  /*轮播图*/
+  .layout-slide-wrap {
+    height:500px;
+  }
+  /*牌照*/
+  /*下载*/
+  .layout-download-wrap {
+    @download-height: 550px;
+    @download-img: 344px;
+
+    min-height: @download-height;
+    max-height: @download-height + 100;
+    background-size:700px auto;
+    .download-wrap {
+      min-height: @download-height;
+      padding: 40px 0 @download-img + 30 0;
+    }
+  }
+  /*优势,优点*/
+  .layout-advantage-wrap {
+    min-height: 440px;
+    .advantage-wrap {
+      padding: 0 0 40px 0;
+      > li {
+        min-height: 160px;
+        margin: 40px 0 0 0;
+        padding: 140px 30px 0 30px;
+        background-size:100px auto !important;
+        h3 {
+          font-size: @font-size-base + 12;
+          line-height: @font-size-base + 16;
+        }
+      }
+    }
+  }
+  /*公告*/
+  .layout-notice-wrap {
+    min-height: 330px;
+    .notice-wrap {
+      padding: 40px 0 50px 0;
+    }
+    /*标题*/
+    .notice-title {
+      height: 40px;
+      font-size: @font-size-base + 12;
+      line-height: @font-size-base + 22;
+    }
+    /*列表*/
+    .notice-list {
+      padding: 27px 0 0 80px;
+      li{
+        min-height: 50px;
+        background:transparent url('../images/notice_line.png') repeat-y left top;
+        &:before {
+          .layout-absolutel-base(-5px,3px);
+        }
+      }
+      .notice-lr {
+        padding: 0 0 20px 20px;
+        span, p {
+          text-align: left;
+        }
+      }
+      .notice-ll {
+        padding: 0 0 20px 20px;
+        span, p {
+          text-align: left;
+        }
+      }
+    }
+  }
+
+
+  /*---关于模块---*/
+  /*广告4*/
+  .banner-wrap4 {
+    width: @body-min-width;
+    .account-btn {
+      bottom:40px;
+    }
+  }
+  /*关于我们*/
+  .layout-aboutus-wrap{
+    padding:40px 0;
+    .aboutus-wrap {
+      padding:0 20px;
+      .aboutus-info{
+        padding:0 0 30px 0;
+      }
+      .aboutus-contact{
+        padding:30px 0 0 0;
+      }
+    }
+  }
+
+
+
+  /*---下载模块---*/
+  /*下载广告*/
+  .layout-dlbanner-wrap {
+    @download-height: 500px;
+    @download-img: 351px;
+
+    min-height: @download-height;
+    max-height: @download-height + 100;
+    background: @color-white;
+    .dlbanner-wrap {
+      min-height: @download-height;
+      padding: 40px 0 @download-img 0 0;
+      background-size:700px auto;
+    }
+  }
+  /*下载*/
+  /*下载描述*/
+  .layout-dlremark-wrap{
+    padding:40px 0;
+    .content-default-wrap{
+      padding:0 20px;
+    }
+  }
+
+
+  /*---帮助模块---*/
+  /*搜索*/
+  .layout-search-wrap {
+    @wrap-height: 144px;
+    @wrap-gaptb: 40px;
+    height: @wrap-height;
+    padding: @wrap-gaptb 0;
+    .search-wrap {
+      padding:0 20px;
+    }
+  }
+  /*搜索结果列表*/
+  .layout-helplist-wrap{
+    padding-bottom:50px;
+    .helplist-wrap{
+      padding:0 20px;
+    }
+  }
+
+
+  /*---列表模块---*/
+  /*列表*/
+  .layout-list-wrap {
+    padding: 40px 0;
+    .list-wrap {
+      @list-height: 60px;
+      padding:0 20px;
+      li {
+        height: @list-height;
+        a {
+          line-height: @list-height;
+          padding: 0 @list-height/2 0 @list-height * 1.5;
+          &:after {
+            .layout-absoluter-base();
+            width: @list-height/2;
+          }
+          span {
+            width: @list-height * 2;
+          }
+        }
+      }
+    }
+  }
+  /*分页*/
+  .layout-page-wrap{
+    padding:0 0 80px 0;
+    .page-wrap{
+      padding:0 20px;
+    }
+  }
+
+
+  /*---详情模块---*/
+  /*查看详情*/
+  .layout-detail-wrap{
+    padding:80px 0 100px 0;
+    .detail-title{
+      padding:10px 20px 40px 20px;
+    }
+    .detail-show{
+      /*排版详情*/
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+  }
 }
