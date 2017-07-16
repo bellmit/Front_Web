@@ -103,92 +103,35 @@
 
 
   /*---底部模块---*/
-  .layout-footer-wrap {
-    @foot-main-gap: 20px;
-    min-height: 400px;
-    .footer-wrap {
-      padding: 30px 0 10px 0;
-    }
-    .footer-info-main {
-      .layout-float-base();
-      min-height: 180px;
-      padding: 0 @foot-main-gap;
-      border-right:none;
-      .info-statement,
-      .info-tips,
-      .info-banner{
-        float:left;
-        padding: 10px 0;
-      }
-      /*申明*/
-      /*提示*/
-      /*公司商标，广告*/
-      .info-banner {
-        margin:10px 0;
-        div {
-          display:none;
-          width: 0;
-          height: 0;
-          background:none;
-        }
-        p {
-          width:100%;
-        }
-      }
-    }
-    .footer-info-side {
-      .layout-float-base();
-      padding: 0 10px;
-      margin:20px 0 0 ;
-      .info-show{
-        width:100%;
-        padding:3px 10px;
-        text-align: left;
-      }
-      .info-plugin {
-        .layout-base(150px);
-        float:right;
-        text-align: left;
-        padding:0;
-        margin-top:-60px;
-      }
-      .info-icon-phone{
-        float:none;
-      }
-    }
-  }
 
 
 
   /*---首页模块---*/
   /*轮播图*/
   .layout-slide-wrap {
-    height:600px;
+    height:400px;
   }
   /*牌照*/
   .layout-license-wrap {
-    min-height: 360px;
     .license-wrap {
-      padding: 40px 20px;
-      .license-item-l {
-        padding: 0 20px 0 0;
-      }
-      .license-item-c {
-        padding: 0 20px 0 20px;
-      }
-      .license-item-r {
-        padding: 0 0 0 20px;
+      @img-height: 130px;
+      > li{
+        div{
+          height: @img-height;
+          background-size:100px auto !important;
+        }
+
       }
     }
   }
   /*下载*/
   .layout-download-wrap {
-    @download-height: 550px;
-    @download-img: 344px;
+    @download-height: 450px;
+    @download-img: 244px;
 
     min-height: @download-height;
     max-height: @download-height + 100;
-    background-size:700px auto;
+    background-size:400px auto;
     .download-wrap {
       min-height: @download-height;
       padding: 40px 0 @download-img + 30 0;
