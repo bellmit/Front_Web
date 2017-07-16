@@ -9,6 +9,7 @@
   body {
     max-width: @body-max-width;
     min-width: @body-min-width;
+    width:100%;
   }
   /*默认外部容器*/
   .layout-default-wrap{
@@ -16,7 +17,8 @@
   }
   /*默认内部容器*/
   .content-default-wrap{
-    width: @body-min-width;
+    min-width: @body-min-width;
+    width:100%;
   }
 
 
@@ -24,6 +26,7 @@
   /*---头部模块---*/
   .header-content-wrap {
     @header-logo-width: 80px;
+    width:100% !important;
     /*图标*/
     .header-logo {
       width: @header-logo-width;
@@ -90,6 +93,12 @@
         text-align: left;
         padding:0;
         margin-top:-60px;
+      }
+      .info-icon-wx{
+        .wx-code-wrap{
+          .opacity-base(100);
+          width:160px;
+        }
       }
       .info-icon-phone{
         float:none;
