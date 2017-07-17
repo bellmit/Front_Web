@@ -4,15 +4,15 @@
   /*---重置模块---*/
   @body-max-width: 479px;
   @body-min-width: 320px;
-  @layout-header-height:40px;
+  @layout-header-height: 40px;
   /*主体*/
   body {
     max-width: @body-max-width;
     min-width: @body-min-width;
   }
 
-  .layout-body-gapt{
-    padding-top:@layout-header-height;
+  .layout-body-gapt {
+    padding-top: @layout-header-height;
   }
 
   /*默认外部容器*/
@@ -29,6 +29,7 @@
   .layout-header-wrap {
     height: @layout-header-height;
   }
+
   .header-content-wrap {
     @header-logo-width: 80px;
     /*图标*/
@@ -37,14 +38,15 @@
     }
     /*菜单容器*/
     .header-toggle {
+      top: 0;
       width: 60px;
-      height: @layout-header-height;
+      height: 100%;
     }
     .header-menu {
       width: 60px;
       &:after {
         line-height: @layout-header-height;
-        font-size:@font-size-base - 2;
+        font-size: @font-size-base - 2;
       }
     }
     .header-nav li a,
@@ -52,8 +54,8 @@
     .header-account a {
       padding: 10px 0;
     }
-    .menu-icon-center{
-      display:none;
+    .menu-icon-center {
+      display: none;
     }
   }
 
@@ -78,7 +80,7 @@
       }
     }
     .footer-info-side {
-      padding:0;
+      padding: 0;
       h6 {
         margin-top: 20px;
       }
@@ -89,19 +91,19 @@
         width: 50px;
         margin-top: -10px;
       }
-      .info-icon-wx{
-        a{
-          &:hover{
-            .wx-code-wrap{
-              width:110px;
+      .info-icon-wx {
+        a {
+          &:hover {
+            .wx-code-wrap {
+              width: 110px;
             }
           }
         }
-        .wx-code-wrap{
-          .layout-absoluter-base(40px,-18px);
-          width:110px;
-          height:100px;
-          background-size:auto 100%;
+        .wx-code-wrap {
+          .layout-absoluter-base(40px, -18px);
+          width: 110px;
+          height: 100px;
+          background-size: auto 100%;
         }
       }
     }
@@ -120,17 +122,17 @@
       @img-height: 80px;
       padding: 20px 10px;
       > li {
-        h3{
+        h3 {
           font-size: @font-size-base;
           line-height: @font-size-base + 4;
         }
-        p{
-          display:none;
+        p {
+          display: none;
         }
         div {
           margin: 0 0 10px 0;
           height: @img-height;
-          background-size:60px auto !important;
+          background-size: 60px auto !important;
         }
       }
     }
@@ -277,7 +279,6 @@
     }
   }
 
-
   /*---帮助模块---*/
   /*搜索*/
   .layout-search-wrap {
@@ -353,12 +354,12 @@
       .goto-pagination-wrap {
         display: none;
       }
-      .pagination-info{
-        display:none;
+      .pagination-info {
+        display: none;
       }
-      .easyui-pagewrap{
-        float:none;
-        margin:auto;
+      .easyui-pagewrap {
+        float: none;
+        margin: auto;
       }
       padding: 0 16px;
     }
