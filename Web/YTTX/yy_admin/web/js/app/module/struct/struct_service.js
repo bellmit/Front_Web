@@ -1241,6 +1241,7 @@ angular.module('app')
                                                             /*查询权限--原始方案：先查询当前权限(子级权限) --> 再查父级权限  --> 存在父子级权限，过滤子级权限，
                                                              * 后来方案：先查父级权限 --> 再查询当前权限(子级权限)  --> 存在父子级权限，过滤子级权限*/
                                                             powerService.reqPowerList({
+                                                                url:'',
                                                                 source: true, /*是否获取数据源*/
                                                                 sourcefn: function (ps) {
                                                                     /*数据源*/

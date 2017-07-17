@@ -4,6 +4,7 @@
   /*---重置模块---*/
   @body-max-width: 639px;
   @body-min-width: 480px;
+  @layout-header-height:60px;
   /*主体*/
   body {
     max-width: @body-max-width;
@@ -28,7 +29,7 @@
     /*菜单容器*/
     .header-toggle {
       .layout-absoluter-base(0, 0, 200);
-      height: 100%;
+      height: @layout-header-height;
       width: 100px;
       display: inline-block;
       &:hover {

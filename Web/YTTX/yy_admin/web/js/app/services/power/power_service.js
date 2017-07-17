@@ -179,9 +179,11 @@ angular.module('power.service', [])
             var tempparm = cache.loginMap.param,
                 param = {
                     adminId: tempparm.adminId,
-                    token: tempparm.token,
-                    organizationId: typeof config.organizationId !== 'undefined' ? config.organizationId : tempparm.organizationId
+                    token: tempparm.token
                 };
+            if(typeof config.organizationId !== 'undefined'){
+                param['organizationId']=config.organizationId;
+            }
 
             toolUtil
                 .requestHttp({
