@@ -1,6 +1,6 @@
 ///640px--767px
-@media (max-width: 767px){
-	//body适配
+@media (max-width: 767px) {
+  //body适配
   /*---重置模块---*/
   @body-max-width: 767px;
   @body-min-width: 640px;
@@ -8,19 +8,17 @@
   body {
     max-width: @body-max-width;
     min-width: @body-min-width;
-    width:100%;
   }
+
   /*默认外部容器*/
-  .layout-default-wrap{
-    min-width:@body-min-width;
-  }
-  /*默认内部容器*/
-  .content-default-wrap{
+  .layout-default-wrap {
     min-width: @body-min-width;
-    width:100%;
   }
 
-
+  /*默认内部容器*/
+  .content-default-wrap {
+    min-width: @body-min-width;
+  }
 
   /*---头部模块---*/
   .header-content-wrap {
@@ -38,14 +36,15 @@
   }
 
   /*---底部模块---*/
-
-
   /*---首页模块---*/
   /*轮播图*/
   .layout-slide-wrap {
-    height:500px;
+    height: 500px;
   }
+
   /*牌照*/
+
+
   /*下载*/
   .layout-download-wrap {
     @download-height: 494px;
@@ -53,12 +52,13 @@
 
     min-height: @download-height;
     max-height: @download-height + 100;
-    background-size:600px auto;
+    background-size: 600px auto;
     .download-wrap {
       min-height: @download-height;
       padding: 40px 0 @download-img + 30 0;
     }
   }
+
   /*优势,优点*/
   .layout-advantage-wrap {
     .advantage-wrap {
@@ -67,7 +67,7 @@
           font-size: @font-size-base + 8;
           line-height: @font-size-base + 12;
         }
-        p{
+        p {
           -ms-text-overflow: ellipsis;
           text-overflow: ellipsis;
           .text-of();
@@ -75,6 +75,7 @@
       }
     }
   }
+
   /*公告*/
   .layout-notice-wrap {
     min-height: 290px;
@@ -93,19 +94,16 @@
     }
   }
 
-
   /*---关于模块---*/
   /*广告4*/
   .banner-wrap4 {
     width: @body-min-width;
     .account-btn {
-      bottom:30px;
+      bottom: 30px;
     }
   }
+
   /*关于我们*/
-
-
-
   /*---下载模块---*/
   /*下载广告*/
   .layout-dlbanner-wrap {
@@ -117,10 +115,11 @@
     background: @color-white;
     .dlbanner-wrap {
       min-height: @download-height;
-      padding: 40px 0 @download-img 0 0;
-      background-size:600px auto;
+      padding: 40px 0 @download-img 0;
+      background-size: 600px auto;
     }
   }
+
   /*下载*/
   .layout-download1-wrap {
     @dl-height: 260px;
@@ -130,16 +129,17 @@
       @gap-top: 50px;
       @gap-bottom: 40px;
       padding: @gap-top 0 @gap-bottom 0;
-      .dl-btn-wrap{
-        width:140px;
+      .dl-btn-wrap {
+        width: 140px;
         .border-radius-base(3px);
       }
     }
   }
+
   /*下载描述*/
-
-
   /*---帮助模块---*/
+
+
   /*搜索*/
   /*搜索结果列表*/
 
@@ -147,16 +147,14 @@
   /*---列表模块---*/
   /*列表*/
   /*分页*/
-  .layout-page-wrap{
-    padding:0 0 40px 0;
-    .page-wrap{
-      .goto-pagination-wrap{
-        display:none;
+  .layout-page-wrap {
+    padding: 0 0 40px 0;
+    .page-wrap {
+      .goto-pagination-wrap {
+        display: none;
       }
-      padding:0 20px;
     }
   }
-
 
   /*---详情模块---*/
   /*查看详情*/

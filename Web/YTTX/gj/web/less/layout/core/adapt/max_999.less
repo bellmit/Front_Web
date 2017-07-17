@@ -1,7 +1,6 @@
 ///768px--999
 @media (max-width: 999px) {
 
-
   /*---重置模块---*/
   @body-max-width: 999px;
   @body-min-width: 768px;
@@ -9,16 +8,18 @@
   body {
     max-width: @body-max-width;
     min-width: @body-min-width;
-    width:100%;
+    width: 100%;
   }
+
   /*默认外部容器*/
-  .layout-default-wrap{
-    min-width:@body-min-width;
-  }
-  /*默认内部容器*/
-  .content-default-wrap{
+  .layout-default-wrap {
     min-width: @body-min-width;
-    width:100%;
+  }
+
+  /*默认内部容器*/
+  .content-default-wrap {
+    min-width: @body-min-width;
+    width: 100%;
   }
 
 
@@ -26,7 +27,7 @@
   /*---头部模块---*/
   .header-content-wrap {
     @header-logo-width: 80px;
-    width:100% !important;
+    width: 100% !important;
     /*图标*/
     .header-logo {
       width: @header-logo-width;
@@ -44,9 +45,11 @@
   }
 
 
+
   /*---底部模块---*/
   .layout-footer-wrap {
     @foot-main-gap: 20px;
+
     min-height: 400px;
     .footer-wrap {
       padding: 30px 0 10px 0;
@@ -55,53 +58,51 @@
       .layout-float-base();
       min-height: 180px;
       padding: 0 @foot-main-gap;
-      border-right:none;
+      border-right: none;
       .info-statement,
       .info-tips,
-      .info-banner{
-        float:left;
+      .info-banner {
+        float: left;
         padding: 10px 0;
       }
       /*申明*/
       /*提示*/
       /*公司商标，广告*/
       .info-banner {
-        margin:10px 0;
+        margin: 10px 0;
         div {
-          display:none;
+          display: none;
           width: 0;
           height: 0;
-          background:none;
+          background: none;
         }
         p {
-          width:100%;
+          width: 100%;
         }
       }
     }
     .footer-info-side {
+      .layout-relative-base();
       .layout-float-base();
       padding: 0 10px;
-      margin:20px 0 0 ;
-      .info-show{
-        width:100%;
-        padding:3px 10px;
+      margin: 20px 0 0 0;
+      .info-show {
+        width: 60%;
+        float: left;
+        padding: 3px 10px;
         text-align: left;
       }
       .info-plugin {
+        .layout-absoluter-base(@foot-main-gap);
         .layout-base(150px);
-        float:right;
         text-align: left;
-        padding:0;
-        margin-top:-60px;
+        padding: 0;
       }
-      .info-icon-wx{
-        .wx-code-wrap{
+      .info-icon-wx {
+        .wx-code-wrap {
           .opacity-base(100);
-          width:160px;
+          width: 160px;
         }
-      }
-      .info-icon-phone{
-        float:none;
       }
     }
   }
@@ -111,8 +112,9 @@
   /*---首页模块---*/
   /*轮播图*/
   .layout-slide-wrap {
-    height:600px;
+    height: 600px;
   }
+
   /*牌照*/
   .layout-license-wrap {
     min-height: 360px;
@@ -129,6 +131,7 @@
       }
     }
   }
+
   /*下载*/
   .layout-download-wrap {
     @download-height: 550px;
@@ -136,12 +139,13 @@
 
     min-height: @download-height;
     max-height: @download-height + 100;
-    background-size:700px auto;
+    background-size: 700px auto;
     .download-wrap {
       min-height: @download-height;
       padding: 40px 0 @download-img + 30 0;
     }
   }
+
   /*优势,优点*/
   .layout-advantage-wrap {
     min-height: 440px;
@@ -151,7 +155,7 @@
         min-height: 160px;
         margin: 40px 0 0 0;
         padding: 140px 30px 0 30px;
-        background-size:100px auto !important;
+        background-size: 100px auto !important;
         h3 {
           font-size: @font-size-base + 12;
           line-height: @font-size-base + 16;
@@ -159,6 +163,7 @@
       }
     }
   }
+
   /*公告*/
   .layout-notice-wrap {
     min-height: 320px;
@@ -174,11 +179,11 @@
     /*列表*/
     .notice-list {
       padding: 27px 0 0 80px;
-      li{
+      li {
         min-height: 50px;
-        background:transparent url('../images/notice_line.png') repeat-y left top;
+        background: transparent url('../images/notice_line.png') repeat-y left top;
         &:before {
-          .layout-absolutel-base(-5px,3px);
+          .layout-absolutel-base(-5px, 3px);
         }
       }
       .notice-lr {
@@ -197,24 +202,26 @@
   }
 
 
+
   /*---关于模块---*/
   /*广告4*/
   .banner-wrap4 {
     width: @body-min-width;
     .account-btn {
-      bottom:40px;
+      bottom: 40px;
     }
   }
+
   /*关于我们*/
-  .layout-aboutus-wrap{
-    padding:40px 0;
+  .layout-aboutus-wrap {
+    padding: 40px 0;
     .aboutus-wrap {
-      padding:0 20px;
-      .aboutus-info{
-        padding:0 0 30px 0;
+      padding: 0 20px;
+      .aboutus-info {
+        padding: 0 0 30px 0;
       }
-      .aboutus-contact{
-        padding:30px 0 0 0;
+      .aboutus-contact {
+        padding: 30px 0 0 0;
       }
     }
   }
@@ -232,18 +239,20 @@
     background: @color-white;
     .dlbanner-wrap {
       min-height: @download-height;
-      padding: 40px 0 @download-img 0 0;
-      background-size:700px auto;
+      padding: 40px 0 @download-img 0;
+      background-size: 700px auto;
     }
   }
+
   /*下载*/
   /*下载描述*/
-  .layout-dlremark-wrap{
-    padding:40px 0;
-    .content-default-wrap{
-      padding:0 20px;
+  .layout-dlremark-wrap {
+    padding: 40px 0;
+    .content-default-wrap {
+      padding: 0 20px;
     }
   }
+
 
 
   /*---帮助模块---*/
@@ -254,16 +263,18 @@
     height: @wrap-height;
     padding: @wrap-gaptb 0;
     .search-wrap {
-      padding:0 20px;
+      padding: 0 20px;
     }
   }
+
   /*搜索结果列表*/
-  .layout-helplist-wrap{
-    padding-bottom:50px;
-    .helplist-wrap{
-      padding:0 20px;
+  .layout-helplist-wrap {
+    padding-bottom: 50px;
+    .helplist-wrap {
+      padding: 0 20px;
     }
   }
+
 
 
   /*---列表模块---*/
@@ -272,7 +283,7 @@
     padding: 40px 0;
     .list-wrap {
       @list-height: 60px;
-      padding:0 20px;
+      padding: 0 20px;
       li {
         height: @list-height;
         a {
@@ -289,23 +300,25 @@
       }
     }
   }
+
   /*分页*/
-  .layout-page-wrap{
-    padding:0 0 80px 0;
-    .page-wrap{
-      padding:0 20px;
+  .layout-page-wrap {
+    padding: 0 0 80px 0;
+    .page-wrap {
+      padding: 0 20px;
     }
   }
 
 
+
   /*---详情模块---*/
   /*查看详情*/
-  .layout-detail-wrap{
-    padding:80px 0 100px 0;
-    .detail-title{
-      padding:10px 20px 40px 20px;
+  .layout-detail-wrap {
+    padding: 80px 0 100px 0;
+    .detail-title {
+      padding: 10px 20px 40px 20px;
     }
-    .detail-show{
+    .detail-show {
       /*排版详情*/
       padding-left: 20px;
       padding-right: 20px;
