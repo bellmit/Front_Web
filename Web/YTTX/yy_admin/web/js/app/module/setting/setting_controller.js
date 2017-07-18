@@ -34,8 +34,7 @@ angular.module('app')
         var jq_dom = {
                 $admin_manage_reset: $('#admin_manage_reset'),
                 $setting_manage_dialog: $('#setting_manage_dialog'),
-                $admin_struct_menu: $('#admin_struct_menu'),
-                $admin_struct_sequence:$('#admin_struct_sequence')
+                $admin_struct_menu: $('#admin_struct_menu')
             },
         /*权限缓存*/
             jq_dom_power = {
@@ -123,7 +122,6 @@ angular.module('app')
             isDesignatedOrg: 0/*是否指定运营商：0：默认，1：指定*/,
             designatedOrgIds: ''/*指定运营商Ids*/,
             isDesignatedPermit: 0/*是否指定权限,0:全部权限 1:指定权限*/,
-            organizationId:''/*组织机构ID*/,
             checkedFunctionIds: ''/*选中权限Ids*/,
             token:''/*凭证*/,
             mtype:''/*业务类型*/,
@@ -199,6 +197,8 @@ angular.module('app')
                 manage: self.manage
             });
         };
+
+
         /*表单服务--权限服务--确定所选权限*/
         this.getSelectPower = function () {
             settingService.getSelectPower(self.manage);
@@ -233,13 +233,6 @@ angular.module('app')
         this.toggleStructList = function (e) {
             settingService.toggleStructList(e, {
                 record: self.record
-            });
-        };
-        /*机构服务--选中机构序列*/
-        this.toggleStructSequence=function (e) {
-            settingService.toggleStructSequence(e,{
-                manage:self.manage,
-                record:self.record
             });
         };
 

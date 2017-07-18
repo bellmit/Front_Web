@@ -179,11 +179,11 @@ angular.module('power.service', [])
             var tempparm = cache.loginMap.param,
                 param = {
                     adminId: tempparm.adminId,
-                    token: tempparm.token
+                    token: tempparm.token,
+                    organizationId:typeof config.organizationId !== 'undefined'?config.organizationId:tempparm.organizationId
                 };
-            if(typeof config.organizationId !== 'undefined'){
-                param['organizationId']=config.organizationId;
-            }
+
+
 
             toolUtil
                 .requestHttp({
@@ -312,6 +312,104 @@ angular.module('power.service', [])
                         } else {
                             self.$power_tbody.html('<tr><td colspan="' + h_len + '" class="g-c-gray9 g-fs4 g-t-c g-b-white">没有查询到权限信息</td></tr>');
                         }
+                    });
+        };
+
+
+        /*请求用户权限列表(主要是根据不同对象查询相关权限):config:请求参数，mode:模型*/
+        this.reqUserPower = function (config) {
+            if (!isrender) {
+                return false;
+            }
+            /*合并参数*/
+            var param = config.param;
+            
+            toolUtil
+                .requestHttp({
+                    url: config.url,
+                    method: 'post',
+                    set: true,
+                    data: param
+                })
+                .then(function (resp) {
+                        var data = resp.data,
+                            status = parseInt(resp.status, 10);
+
+                        if (status === 200) {
+                            var code = parseInt(data.code, 10),
+                                message = data.message;
+                            if (code !== 0) {
+                                if (typeof message !== 'undefined' && message !== '') {
+                                    console.log(message);
+                                } else {
+                                    console.log('请求用户权限失败');
+                                }
+                                if (code === 999) {
+                                    /*退出系统*/
+                                    cache = null;
+                                    toolUtil.loginTips({
+                                        clear: true,
+                                        reload: true
+                                    });
+                                }
+                            } else {
+                                /*加载数据*/
+                                var result = data.result;
+                                if(!result){
+                                    self.$power_tbody.html('<tr><td colspan="' + h_len + '" class="g-c-gray9 g-fs4 g-t-c g-b-white">没有查询到权限信息</td></tr>');
+                                    return false;
+                                }
+                                if (typeof result !== 'undefined') {
+                                    var menu = result.menu;
+                                    if (menu) {
+                                        var len = menu.length;
+                                        if (len === 0) {
+                                            /*直接获取原始数据*/
+                                            self.$power_tbody.html('<tr><td colspan="' + h_len + '" class="g-c-gray9 g-fs4 g-t-c g-b-white">没有查询到权限信息</td></tr>');
+                                        } else {
+                                            var templist = toolUtil.resolveMainMenu(menu);
+                                            /*解析数据*/
+                                            /*将查询数据按照模块解析出来*/
+                                            if (templist !== null) {
+                                                var temp_power = templist['power'],
+                                                    temp_html = '';
+                                                /*将模块数据解析转换成html数据*/
+                                                if (config.clear) {
+                                                    temp_html = self.resolvePowerList({
+                                                        menu: temp_power,
+                                                        clear: true
+                                                    });
+                                                } else {
+                                                    temp_html = self.resolvePowerList({
+                                                        menu: temp_power
+                                                    });
+                                                }
+                                                $(temp_html).appendTo(self.$power_tbody.html(''));
+                                            } else {
+                                                self.$power_tbody.html('<tr><td colspan="' + h_len + '" class="g-c-gray9 g-fs4 g-t-c g-b-white">没有查询到权限信息</td></tr>');
+                                            }
+                                        }
+                                    } else {
+                                        /*直接获取原始数据*/
+                                        /*填充子数据到操作区域,同时显示相关操作按钮*/
+                                        self.$power_tbody.html('<tr><td colspan="' + h_len + '" class="g-c-gray9 g-fs4 g-t-c g-b-white">没有查询到权限信息</td></tr>');
+                                    }
+                                } else {
+                                    /*直接获取原始数据*/
+                                    self.$power_tbody.html('<tr><td colspan="' + h_len + '" class="g-c-gray9 g-fs4 g-t-c g-b-white">没有查询到权限信息</td></tr>');
+                                }
+                            }
+                        }
+                    },
+                    function (resp) {
+                        var message = resp.data.message;
+                        if (typeof message !== 'undefined' && message !== '') {
+                            console.log(message);
+                        } else {
+                            console.log('请求用户权限失败');
+                        }
+                        /*直接获取原始数据*/
+                        self.$power_tbody.html('<tr><td colspan="' + h_len + '" class="g-c-gray9 g-fs4 g-t-c g-b-white">没有查询到权限信息</td></tr>');
                     });
         };
 
