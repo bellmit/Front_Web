@@ -43,8 +43,6 @@
   }
 
   /*牌照*/
-
-
   /*下载*/
   .layout-download-wrap {
     @download-height: 494px;
@@ -95,11 +93,52 @@
   }
 
   /*---关于模块---*/
+  /*广告1-4*/
+  .layout-banner-wrap{
+    .banner-wrap {
+      img {
+        display: none;
+      }
+    }
+  }
+
+  .layout-banner-wrap {
+    .banner-wrap{
+      height: 250px;
+      background: transparent url('../images/about1_mini.jpg') no-repeat center center;
+      background-size: 100% auto;
+    }
+  }
+
+  .layout-banner-wrap + .layout-banner-wrap2 {
+    .banner-wrap{
+      height: 230px;
+      background: transparent url('../images/about2_mini.jpg') no-repeat center center;
+      background-size: 100% auto;
+    }
+  }
+
+  .layout-banner-wrap + .layout-banner-wrap2 + .layout-banner-wrap {
+    .banner-wrap{
+      height: 230px;
+      background: transparent url('../images/about3_mini.jpg') no-repeat center center;
+      background-size: 100% auto;
+    }
+  }
+
+  .layout-banner-wrap + .layout-banner-wrap2 + .layout-banner-wrap + .layout-banner-wrap {
+    .banner-wrap{
+      height: 340px;
+      background: transparent url('../images/about4_mini.jpg') no-repeat center top;
+      background-size: 100% auto;
+    }
+  }
+
   /*广告4*/
   .banner-wrap4 {
     width: @body-min-width;
     .account-btn {
-      bottom: 30px;
+      bottom:-320px;
     }
   }
 
@@ -112,7 +151,6 @@
 
     min-height: @download-height;
     max-height: @download-height + 100;
-    background: @color-white;
     .dlbanner-wrap {
       min-height: @download-height;
       padding: 40px 0 @download-img 0;
@@ -138,12 +176,8 @@
 
   /*下载描述*/
   /*---帮助模块---*/
-
-
   /*搜索*/
   /*搜索结果列表*/
-
-
   /*---列表模块---*/
   /*列表*/
   /*分页*/

@@ -25,29 +25,14 @@
     @header-logo-width: 80px;
     /*图标*/
     .layout-relative-base();
-    /*菜单容器*/
+    /*切换显示隐藏--用于小屏设备显示隐藏菜单*/
     .header-toggle {
       .layout-absoluter-base(0, 0, 200);
       height:100%;
       width: 100px;
       display: inline-block;
-      &:hover {
-        .header-menu {
-          &:before {
-            top: -75%;
-          }
-          &:after {
-            top: -100%;
-            content: '\e630';
-          }
-        }
-        .header-nav,
-        .header-center,
-        .header-account {
-          display: inline-block;
-        }
-      }
     }
+    /*菜单容器*/
     .header-menu {
       float: none;
       width: 100px;
@@ -228,6 +213,13 @@
   }
 
   /*---关于模块---*/
+  /*广告1-4*/
+  .layout-banner-wrap + .layout-banner-wrap2 + .layout-banner-wrap + .layout-banner-wrap {
+    .banner-wrap{
+      height: 270px;
+      background-position: center center;
+    }
+  }
   /*广告4*/
   .banner-wrap4 {
     width: @body-min-width;
@@ -236,7 +228,7 @@
       @btn-width: 200px;
 
       margin: 0 0 0 -@btn-width/2;
-      bottom: 20px;
+      bottom:-260px;
       height: @btn-height;
       line-height: @btn-height;
       font-size: @font-size-base + 4;
@@ -267,7 +259,6 @@
 
     min-height: @download-height;
     max-height: @download-height + 60;
-    background: @color-white;
     .dlbanner-wrap {
       min-height: @download-height;
       padding: 20px 0 @download-img 0;
@@ -342,6 +333,11 @@
         &:after {
           line-height: @wrap-height - @wrap-gaptb * 2;
           font-size: @font-size-base + 8;
+        }
+        &:hover {
+          &:after {
+            font-size: @font-size-base + 16;
+          }
         }
       }
     }
