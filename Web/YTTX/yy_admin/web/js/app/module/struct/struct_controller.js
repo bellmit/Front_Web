@@ -184,6 +184,18 @@ angular.module('app')
         };
 
 
+        /*模型--伪分页缓存*/
+        this.structpage={
+            total:0,/*总记录数*/
+            page:1,/*当前页*/
+            pageSize:5,/*没有显示数据量*/
+            list:[],/*选区的数据集*/
+            result:[]/*查询的真实结果集*/
+        };
+
+
+
+
         /*模型--表格缓存*/
         this.table = {
             list1_page: {
@@ -619,6 +631,14 @@ angular.module('app')
         /*用户服务--调整运营商*/
         this.adjustOperate = function () {
             console.log('to do');
+        };
+
+
+        /*分页服务--通过分页*/
+        this.fakePage=function (config) {
+
+
+
         };
 
 

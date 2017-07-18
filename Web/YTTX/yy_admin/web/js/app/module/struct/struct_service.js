@@ -1031,26 +1031,21 @@ angular.module('app')
                 return false;
             }
 
+            param['id']=id;
+
 
             /*确认是否删除*/
             toolDialog.sureDialog('', function () {
                 /*执行删除机构操作*/
-                toolDialog.show({
-                    type: 'warn',
-                    value: '等待接口,功能正在开发中...'
-                });
-                return false;
                 toolUtil
                     .requestHttp({
-                        url: /*'/organization/delete'*/'json/test.json'/*测试地址*/,
+                        url: '/organization/delete'/*'json/test.json'*//*测试地址*/,
                         method: 'post',
                         set: true,
-                        debug: true, /*测试标识*/
+                        debug: false, /*测试标识*/
                         data: param
                     })
                     .then(function (resp) {
-                            var resp = testService.testDefault('table')/*测试类*/;
-
                             var data = resp.data,
                                 status = parseInt(resp.status, 10);
 
@@ -1059,9 +1054,15 @@ angular.module('app')
                                     message = data.message;
                                 if (code !== 0) {
                                     if (typeof message !== 'undefined' && message !== '') {
-                                        console.log(message);
+                                        toolDialog.show({
+                                            type: 'warn',
+                                            value: '删除机构失败 ('+message+')'
+                                        });
                                     } else {
-                                        console.log('删除机构失败');
+                                        toolDialog.show({
+                                            type: 'warn',
+                                            value: '删除机构失败'
+                                        });
                                     }
 
                                     if (code === 999) {
@@ -1074,26 +1075,17 @@ angular.module('app')
                                     }
                                 } else {
                                     /*加载数据*/
-                                    var result = data.result;
-                                    if (typeof result !== 'undefined') {
-                                        /*重置操作记录*/
-                                        if(record.searchname===''){
-                                            self.initRecord(record);
-                                        }
-                                        /*初始化菜单信息*/
-                                        self.getMenuList(config);
-                                        /*提示信息*/
-                                        toolDialog.show({
-                                            type: 'succ',
-                                            value: '删除机构成功'
-                                        });
-                                    } else {
-                                        /*提示信息*/
-                                        toolDialog.show({
-                                            type: 'warn',
-                                            value: '删除机构失败'
-                                        });
+                                    /*重置操作记录*/
+                                    if(record.searchname===''){
+                                        self.initRecord(record);
                                     }
+                                    /*初始化菜单信息*/
+                                    self.getMenuList(config);
+                                    /*提示信息*/
+                                    toolDialog.show({
+                                        type: 'succ',
+                                        value: '删除机构成功'
+                                    });
                                 }
                             }
                         },
