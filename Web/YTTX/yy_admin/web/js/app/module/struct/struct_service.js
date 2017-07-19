@@ -6,7 +6,8 @@ angular.module('app')
             module_id = 10/*模块id*/,
             cache = loginService.getCache(),
             structform_reset_timer = null,
-            userform_reset_timer = null;
+            userform_reset_timer = null,
+            struct_page_timer=null;
 
 
         /*权限服务--查询列表*/
@@ -566,20 +567,31 @@ angular.module('app')
             }
             var record = config.record;
             if (!record.hasdata) {
-                /*清空内容*/
-                self.$admin_struct_list.html('');
+                self.renderOperate(config, {
+                    data: null,
+                    type: 'query'
+                });
             } else {
                 /*渲染机构*/
                 if (flag) {
                     var $child = record.current !== null ? record.current.next() : self.$admin_struct_submenu,
                         data = self.copySubMenu($child);
                     if (data !== null) {
-                        self.renderOperate(config, data);
+                        self.renderOperate(config, {
+                            data: data,
+                            type: 'query'
+                        });
                     } else {
-                        self.renderOperate(config);
+                        self.renderOperate(config, {
+                            data: null,
+                            type: 'query'
+                        });
                     }
                 } else {
-                    self.renderOperate(config);
+                    self.renderOperate(config, {
+                        data: null,
+                        type: 'query'
+                    });
                 }
             }
             /*查询店铺信息*/
@@ -590,34 +602,130 @@ angular.module('app')
             }
         };
         /*机构服务--填充数据至操作区域*/
-        this.renderOperate = function (config, data) {
-            if (!config) {
+        this.renderOperate = function (model, config) {
+            if (!model && !config) {
                 return false;
             }
+            /*伪分页模型*/
+            var structpage = model.structpage,
+                type = config.type;
 
-            if (data) {
-                var i = 0,
-                    len = data.length,
-                    str = '',
-                    parentid,
-                    layer,
-                    label,
-                    id,
-                    curitem;
+            if (type === 'query') {
+                /*重新查询数据*/
+                if (config.data !== null) {
+                    (function () {
+                        var data = config.data,
+                            i = 0,
+                            len = data.length,
+                            parentid,
+                            layer,
+                            label,
+                            id,
+                            curitem;
 
-                for (i; i < len; i++) {
-                    curitem = data[i];
-                    id = curitem['id'];
-                    label = curitem['label'];
-                    parentid = curitem['parentid'];
-                    layer = curitem['layer'];
-                    str += '<li class="ts-reload" data-layerflag="parent" data-parentid="' + parentid + '" data-label="' + label + '" data-id="' + id + '" data-layer="' + layer + '">' + label + '<span  data-layerflag="parent" title="加载数据" data-isrequest="false" data-parentid="' + parentid + '" data-label="' + label + '" data-id="' + id + '" data-layer="' + layer + '"></span><ul></ul></li>';
+                        /*设置伪分页模型*/
+                        structpage.total = len;
+                        structpage.page = 1;
+                        structpage.list.length = 0;
+
+                        /*更新缓存*/
+                        for (i; i < len; i++) {
+
+                            curitem = data[i];
+                            id = curitem['id'];
+                            label = curitem['label'];
+                            parentid = curitem['parentid'];
+                            layer = curitem['layer'];
+
+                            structpage.list.push('<li class="ts-reload" data-layerflag="parent" data-parentid="' + parentid + '" data-label="' + label + '" data-id="' + id + '" data-layer="' + layer + '">' + label + '<span  data-layerflag="parent" title="加载数据" data-isrequest="false" data-parentid="' + parentid + '" data-label="' + label + '" data-id="' + id + '" data-layer="' + layer + '"></span><ul></ul></li>');
+                        }
+                    }());
+                } else {
+                    self.$admin_struct_list.html('');
+                    /*设置伪分页模型*/
+                    structpage.total = 0;
+                    structpage.page = 1;
+                    structpage.list.length = 0;
                 }
-                if (str !== '') {
-                    $(str).appendTo(self.$admin_struct_list.html(''));
+            }
+
+
+            /*渲染分页*/
+            if (!structpage.init) {
+                /*没有初始化时初始化调用*/
+                structpage.init = true;
+                self.$admin_structpage_wrap.pagination({
+                    pageNumber: structpage.page,
+                    pageSize: structpage.pageSize,
+                    total: structpage.total,
+                    onSelectPage: function (pageNumber, pageSize) {
+                        /*再次查询*/
+                        structpage.page = pageNumber;
+                        structpage.pageSize = pageSize;
+
+                        /*存在操作情况，这重置操作情况--查询店铺信息*/
+                        if (model.record.structId !== '') {
+                            self.getColumnData(model.table, model.record.organizationId);
+                        }
+                        /*清除分页前的操作模型*/
+                        self.initStructPos(model.structpos);
+                        /*变更模型*/
+                        if(struct_page_timer!==null){
+                            $timeout.cancel(struct_page_timer);
+                            struct_page_timer=null;
+                        }
+                        struct_page_timer=$timeout(function () {
+                            model.record.structId = '';
+                            model.record.structName = '';
+                            model.record.structnode = null;
+                            model.record.layer = 0;
+                        }, 0);
+
+                        /*伪分页数据*/
+                        self.renderOperate(model, {
+                            type: 'load'
+                        });
+                    }
+                });
+                /*清除延迟指针*/
+                if(struct_page_timer!==null){
+                    $timeout.cancel(struct_page_timer);
+                    struct_page_timer=null;
                 }
             } else {
-                console.log('struct to do');
+                self.$admin_structpage_wrap.pagination({
+                    pageNumber: structpage.page,
+                    pageSize: structpage.pageSize,
+                    total: structpage.total
+                });
+            }
+
+
+            /*生成数据*/
+            if (structpage.total === 0) {
+                self.$admin_struct_list.html('');
+            } else if (structpage.total !== 0) {
+                var begin,
+                    end,
+                    str = '',
+                    list = structpage.list.slice(0);
+
+                if (structpage.pageSize >= structpage.total) {
+                    begin = 0;
+                    end = structpage.total;
+                } else {
+                    begin = (structpage.page - 1) * structpage.pageSize;
+                    end = structpage.page * structpage.pageSize;
+                    if (end > structpage.total) {
+                        end = structpage.total;
+                    }
+                }
+                for (begin; begin < end; begin++) {
+                    str+=list[begin];
+                }
+                if(str!==''){
+                    $(str).appendTo(self.$admin_struct_list.html(''));
+                }
             }
         };
         /*机构服务--点击机构事件*/
@@ -1031,7 +1139,7 @@ angular.module('app')
                 return false;
             }
 
-            param['id']=id;
+            param['id'] = id;
 
 
             /*确认是否删除*/
@@ -1056,7 +1164,7 @@ angular.module('app')
                                     if (typeof message !== 'undefined' && message !== '') {
                                         toolDialog.show({
                                             type: 'warn',
-                                            value: '删除机构失败 ('+message+')'
+                                            value: '删除机构失败 (' + message + ')'
                                         });
                                     } else {
                                         toolDialog.show({
@@ -1076,7 +1184,7 @@ angular.module('app')
                                 } else {
                                     /*加载数据*/
                                     /*重置操作记录*/
-                                    if(record.searchname===''){
+                                    if (record.searchname === '') {
                                         self.initRecord(record);
                                     }
                                     /*初始化菜单信息*/
@@ -1097,7 +1205,7 @@ angular.module('app')
                                 console.log('删除机构失败');
                             }
                         });
-            },'是否真要删除机构数据', true);
+            }, '是否真要删除机构数据', true);
         };
         /*机构服务--查询机构数据*/
         this.queryOperateInfo = function (config) {
@@ -1233,7 +1341,7 @@ angular.module('app')
                                                             /*查询权限--原始方案：先查询当前权限(子级权限) --> 再查父级权限  --> 存在父子级权限，过滤子级权限，
                                                              * 后来方案：先查父级权限 --> 再查询当前权限(子级权限)  --> 存在父子级权限，过滤子级权限*/
                                                             powerService.reqPowerList({
-                                                                url:'',
+                                                                url: '',
                                                                 source: true, /*是否获取数据源*/
                                                                 sourcefn: function (ps) {
                                                                     /*数据源*/
@@ -1392,13 +1500,13 @@ angular.module('app')
                                             value: '位置调整成功'
                                         });
                                         /*重新加载数据*/
-                                        if(config.record.searchname==''){
+                                        if (config.record.searchname == '') {
                                             self.initRecord(config.record);
                                         }
                                         self.getMenuList({
                                             record: config.record,
                                             table: config.table,
-                                            structpos:config.structpos
+                                            structpos: config.structpos
                                         });
                                     }
                                 }
@@ -1724,7 +1832,7 @@ angular.module('app')
                                         self.getMenuList({
                                             record: config.record,
                                             table: config.table,
-                                            structpos:config.structpos
+                                            structpos: config.structpos
                                         });
                                     } else if (type === 'user') {
                                         /*重新加载表格数据*/

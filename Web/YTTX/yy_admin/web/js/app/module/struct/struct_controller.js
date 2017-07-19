@@ -17,6 +17,7 @@ angular.module('app')
             $struct_userdetail_dialog: $('#struct_userdetail_dialog'),
             $admin_user_reset: $('#admin_user_reset'),
             $admin_userdetail_show: $('#admin_userdetail_show'),
+            $admin_structpage_wrap: $('#admin_structpage_wrap'),
             $admin_page_wrap: $('#admin_page_wrap'),
             $admin_list_wrap: $('#admin_list_wrap'),
             $admin_batchlist_wrap: $('#admin_batchlist_wrap'),
@@ -185,15 +186,13 @@ angular.module('app')
 
 
         /*模型--伪分页缓存*/
-        this.structpage={
-            total:0,/*总记录数*/
-            page:1,/*当前页*/
-            pageSize:5,/*没有显示数据量*/
-            list:[],/*选区的数据集*/
-            result:[]/*查询的真实结果集*/
+        this.structpage = {
+            init:false/*初始化标识*/,
+            total: 0, /*总记录数*/
+            page: 1, /*当前页*/
+            pageSize: 5, /*没有显示数据量*/
+            list: []/*查询的真实结果集*/
         };
-
-
 
 
         /*模型--表格缓存*/
@@ -344,7 +343,7 @@ angular.module('app')
                                 var province = data,
                                     city = full.city,
                                     country = full.country;
-                                if (!province && !city  && !country) {
+                                if (!province && !city && !country) {
                                     return '无省市区';
                                 }
                                 var str = '';
@@ -496,6 +495,7 @@ angular.module('app')
             structService.getMenuList({
                 record: self.record,
                 table: self.table,
+                structpage: self.structpage,
                 structpos: self.structpos
             });
         };
@@ -503,13 +503,16 @@ angular.module('app')
         this.toggleSubMenu = function (e) {
             structService.toggleSubMenu(e, {
                 record: self.record,
-                table: self.table
+                structpage: self.structpage,
+                table: self.table,
+                structpos: self.structpos
             });
         };
         /*菜单服务--跳转至虚拟挂载点*/
         this.rootSubMenu = function (e) {
             structService.rootSubMenu(e, {
                 record: self.record,
+                structpage: self.structpage,
                 table: self.table,
                 structpos: self.structpos
             });
@@ -542,6 +545,7 @@ angular.module('app')
         this.adjustStructPos = function () {
             structService.adjustStructPos({
                 structpos: self.structpos,
+                structpage:self.structpage,
                 record: self.record,
                 table: self.table
             });
@@ -551,6 +555,7 @@ angular.module('app')
             /*调用编辑机构服务类*/
             structService.deleteStruct({
                 structpos: self.structpos,
+                structpage:self.structpage,
                 record: self.record,
                 table: self.table
             });
@@ -569,9 +574,10 @@ angular.module('app')
         /*表单服务--提交表单*/
         this.formSubmit = function (type) {
             structService.formSubmit({
-                structpos:self.structpos,
+                structpos: self.structpos,
                 struct: self.struct,
                 user: self.user,
+                structpage: self.structpage,
                 table: self.table,
                 record: self.record
             }, type);
@@ -632,14 +638,7 @@ angular.module('app')
         this.adjustOperate = function () {
             console.log('to do');
         };
-
-
-        /*分页服务--通过分页*/
-        this.fakePage=function (config) {
-
-
-
-        };
+        
 
 
         /*搜索服务--搜索过滤*/
@@ -647,6 +646,7 @@ angular.module('app')
             structService.getMenuList({
                 record: self.record,
                 table: self.table,
+                structpage: self.structpage,
                 structpos: self.structpos
             });
         };

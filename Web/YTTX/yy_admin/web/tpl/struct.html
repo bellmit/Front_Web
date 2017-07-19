@@ -22,6 +22,12 @@
             <ul class="admin-list-tsitem" id="admin_struct_list" ng-click="struct_ctrl.toggleStructList($event)"></ul>
 
 
+            <!--分页-->
+            <div class="admin-page-wrap g-gap-mt2">
+                <div class="easyui-pagination g-w-percent50" id="admin_structpage_wrap" data-options="links:5,layout:['manual','first','prev','links','next','last'],displayMsg:'显示{from}&nbsp;到&nbsp;{to}&nbsp;共&nbsp;{total}条记录'"></div>
+            </div>
+
+
 
             <!--机构用户-->
             <h2 class="admin-layout-theme3"><span class="theme-icon admin-theme-icon2"></span>&nbsp;&nbsp;机构用户</h2>
@@ -123,11 +129,17 @@
     <!--弹出层--提示操作界面-->
     <!--机构设置-->
     <div class="modal fade custom-width" id="struct_struct_dialog">
-        <div class="modal-dialog g-w-percent46">
+        <div class="modal-dialog" ng-class="{
+            true:'g-w-percent24',
+            false:'g-w-percent46'
+        }[struct_ctrl.struct.isDesignatedPermit===0]">
             <div class="modal-content">
                 <div class="modal-body">
                     <!--权限-->
-                    <div class="g-f-l g-w-percent34" ng-show="struct_ctrl.struct.isDesignatedPermit===1 && struct_ctrl.struct.isSettingLogin===1">
+                    <div class="g-f-l" ng-class="{
+            true:'g-d-hidei',
+            false:'g-w-percent34'
+        }[struct_ctrl.struct.isDesignatedPermit===0]" ng-show="struct_ctrl.struct.isDesignatedPermit===1 && struct_ctrl.struct.isSettingLogin===1">
                         <div class="admin-layout-theme4 admin-theme-close g-t-c g-b-gray17 g-pos-r">选择权限</div>
                         <table class="table table-bordered table-striped table-hover admin-layout-table">
                             <colgroup id="struct_power_colgroup"></colgroup>
@@ -146,7 +158,10 @@
                     </div>
 
                     <!--表单-->
-                    <div class="g-f-r g-w-percent14">
+                    <div class="g-f-r g-w-percent14" ng-class="{
+            true:'g-w-percent50',
+            false:'g-w-percent14'
+        }[struct_ctrl.struct.isDesignatedPermit===0]">
                         <div class="admin-layout-theme4 admin-theme-close g-t-c g-b-gray17 g-pos-r">机构设置{{struct_ctrl.struct.id===''?'(新增)':'(编辑)'}}
                             <span class="mini-icon admin-mini-icon1" ng-click="struct_ctrl.toggleModal({display:'hide',area:'struct'})"></span>
                         </div>

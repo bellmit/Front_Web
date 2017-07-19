@@ -14,11 +14,20 @@
     <!--弹出层--提示操作界面-->
     <!--子管理订单-->
     <div class="modal fade custom-width" id="setting_manage_dialog">
-        <div class="modal-dialog g-w-percent46">
+        <div class="modal-dialog"  ng-class="{
+            'g-w-percent24':(setting_ctrl.manage.isDesignatedOrg===0 && setting_ctrl.manage.isDesignatedPermit===0),
+            'g-w-percent28':(setting_ctrl.manage.isDesignatedOrg===1 && setting_ctrl.manage.isDesignatedPermit===0),
+            'g-w-percent40':(setting_ctrl.manage.isDesignatedOrg===0 && setting_ctrl.manage.isDesignatedPermit===1),
+            'g-w-percent46':(setting_ctrl.manage.isDesignatedOrg===1 && setting_ctrl.manage.isDesignatedPermit===1)
+        }">
             <div class="modal-content">
                 <div class="modal-body">
                     <!--机构-->
-                    <div class="struct-side-widget g-f-l g-w-percent8 g-gap-mr2" ng-show="setting_ctrl.manage.isDesignatedOrg===1">
+                    <div class="struct-side-widget g-f-l g-gap-mr2"  ng-class="{
+            'g-d-hidei':(setting_ctrl.manage.isDesignatedOrg===0),
+            'g-w-percent20':(setting_ctrl.manage.isDesignatedOrg===1 && setting_ctrl.manage.isDesignatedPermit===0),
+            'g-w-percent8':(setting_ctrl.manage.isDesignatedOrg===1 && setting_ctrl.manage.isDesignatedPermit===1)
+        }" ng-show="setting_ctrl.manage.isDesignatedOrg===1">
                         <div class="admin-layout-theme4 admin-theme-close g-t-c g-b-gray17 g-pos-r">选择机构</div>
                         <div class="row">
                             <!--搜索组件-->
@@ -45,7 +54,11 @@
                     </div>
 
                     <!--权限-->
-                    <div class="g-f-l g-w-percent26" ng-show="setting_ctrl.manage.isDesignatedPermit===1">
+                    <div class="g-f-l" ng-class="{
+            'g-d-hidei':(setting_ctrl.manage.isDesignatedPermit===0),
+            'g-w-percent30':(setting_ctrl.manage.isDesignatedOrg===0 && setting_ctrl.manage.isDesignatedPermit===1),
+            'g-w-percent26':(setting_ctrl.manage.isDesignatedOrg===1 && setting_ctrl.manage.isDesignatedPermit===1)
+        }" ng-show="setting_ctrl.manage.isDesignatedPermit===1">
                         <div class="admin-layout-theme4 admin-theme-close g-t-c g-b-gray17 g-pos-r">选择权限</div>
                         <table class="table table-bordered table-striped table-hover admin-layout-table">
                             <colgroup id="setting_power_colgroup"></colgroup>
@@ -64,7 +77,12 @@
                     </div>
 
                     <!--表单-->
-                    <div class="g-f-r g-w-percent14">
+                    <div class="g-f-r"  ng-class="{
+            'g-w-percent50':(setting_ctrl.manage.isDesignatedOrg===0 && setting_ctrl.manage.isDesignatedPermit===0),
+            'g-w-percent28':(setting_ctrl.manage.isDesignatedOrg===1 && setting_ctrl.manage.isDesignatedPermit===0),
+            'g-w-percent19':(setting_ctrl.manage.isDesignatedOrg===0 && setting_ctrl.manage.isDesignatedPermit===1),
+            'g-w-percent14':(setting_ctrl.manage.isDesignatedOrg===1 && setting_ctrl.manage.isDesignatedPermit===1)
+        }">
                         <div class="admin-layout-theme4 admin-theme-close g-t-c g-b-gray17 g-pos-r">子管理{{setting_ctrl.manage.id===''?'(新增)':'(编辑)'}}
                             <span class="mini-icon admin-mini-icon1" ng-click="setting_ctrl.toggleModal({display:'hide',area:'manage'})"></span>
                         </div>
