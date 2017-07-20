@@ -864,14 +864,60 @@ angular.module('app')
                     });
                 } else if (type === 'edit') {
                     /*新增时查询权限*/
-                    powerService.reqUserPower({
-                        url: '/module/permissions',
-                        param: {
-                            token: record.token,
-                            adminId: record.adminId,
-                            childId: manage.id
+                    /*查询机构列表*/
+                    (function () {
+                        var parent_data = cache.powerMap;
+                        if (parent_data !== null) {
+                            /*去掉首页模块*/
+                            delete parent_data[0];
+                            /*查询子权限*/
+                            powerService.reqUserPower({
+                                url: '/module/permissions',
+                                source: true,
+                                sourcefn: function (cd) {
+                                    var child_data = cd;
+                                    if (child_data !== null) {
+                                        var filter_data = powerService.filterUserPower(parent_data, child_data);
+                                        if (filter_data) {
+                                            /*过滤后的数据即映射到视图*/
+                                            var power_html = powerService.resolvePowerList({
+                                                menu: filter_data
+                                            });
+                                            /*更新模型*/
+                                            if (power_html) {
+                                                $(power_html).appendTo(self.$power_tbody.html(''));
+                                            }
+                                        } else {
+                                            toolDialog.show({
+                                                type: 'warn',
+                                                value: '过滤后的权限数据不正确'
+                                            });
+                                            return false;
+                                        }
+                                    } else {
+                                        /*不存在则调用父权限*/
+                                        powerService.reqUserPower({
+                                            datalist: cache.powerMap
+                                        });
+                                    }
+                                },
+                                param: {
+                                    token: record.token,
+                                    adminId: record.adminId,
+                                    childId: manage.id
+                                }
+                            });
+                        } else {
+                            /*不存在父权限则重新查询父权限*/
+                            powerService.reqUserPower({
+                                url:'/module/permissions',
+                                param:{
+                                    token:record.token,
+                                    adminId:record.adminId
+                                }
+                            });
                         }
-                    });
+                    }());
                 }
             }
         };

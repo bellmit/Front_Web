@@ -392,7 +392,14 @@ angular.module('power.service', [])
                                     /*加载数据*/
                                     var result = data.result;
                                     if (!result) {
-                                        self.$power_tbody.html('<tr><td colspan="' + h_len + '" class="g-c-gray9 g-fs4 g-t-c g-b-white">没有查询到权限信息</td></tr>');
+                                        /*直接获取原始数据*/
+                                        if (config.source) {
+                                            if (config.sourcefn && typeof config.sourcefn === 'function') {
+                                                config.sourcefn.call(null, null);
+                                            }
+                                        } else {
+                                            self.$power_tbody.html('<tr><td colspan="' + h_len + '" class="g-c-gray9 g-fs4 g-t-c g-b-white">没有查询到权限信息</td></tr>');
+                                        }
                                         return false;
                                     }
                                     if (typeof result !== 'undefined') {
