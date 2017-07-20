@@ -734,6 +734,7 @@ angular.module('power.service', [])
             var i = 0,
                 parent_data = pdata;
 
+            /*循环模块*/
             outerLabel:for (i; i < h_len; i++) {
                 var model_id = parseInt(h_items[i], 10)/*模块标识*/,
                     parent_item = pdata[model_id]/*父级权限对象*/,
@@ -756,14 +757,14 @@ angular.module('power.service', [])
                 var child_power = child_item['power']/*子级权限组*/,
                     j = 0;
 
+                /*循环父权限组*/
                 innerLabel:for (j; j < parent_len; j++) {
                     var child_len = child_power.length,
                         p_item = parent_power[j],
                         p_code = p_item["funcCode"]/*父级权限相对应标识*/,
                         k = 0,
                         c_item,
-                        c_code,
-                        c_ispermit;
+                        c_code;
 
                     /*查找子权限*/
                     for (k; k < child_len; k++) {
@@ -773,11 +774,7 @@ angular.module('power.service', [])
                         /*是否是同一个权限值*/
                         if (p_code === c_code) {
                             /*如果存在相同的权限，且父权限没有权限，那么需要清除此子权限*/
-                            c_ispermit = parseInt(c_item['isPermit'], 0);
-                            if (c_ispermit === 0) {
-                                /*设置父权限为未勾选*/
-                                p_item['isPermit'] = 0;
-                            }
+                            p_item['isPermit']=parseInt(c_item['isPermit'], 0);
                             continue innerLabel;
                         }
                         if (k === child_len - 1) {
@@ -786,6 +783,7 @@ angular.module('power.service', [])
                             p_item['isPermit'] = 0;
                         }
                     }
+
                 }
             }
             return parent_data;

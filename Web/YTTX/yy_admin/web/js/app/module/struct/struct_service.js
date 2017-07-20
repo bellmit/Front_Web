@@ -106,9 +106,9 @@ angular.module('app')
             if (islogin) {
                 var logininfo = cache.loginMap;
                 record['currentId'] = logininfo.param.organizationId;
-                record['currentName'] = logininfo.username;
+                record['currentName'] = !logininfo.param.organizationName ?logininfo.username:decodeURIComponent(logininfo.param.organizationName);
                 record['organizationId'] = logininfo.param.organizationId;
-                record['organizationName'] = logininfo.username;
+                record['organizationName'] = !logininfo.param.organizationName ?logininfo.username:decodeURIComponent(logininfo.param.organizationName);
             } else {
                 /*退出系统*/
                 cache = null;

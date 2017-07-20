@@ -382,7 +382,7 @@ angular.module('app')
             if (islogin) {
                 var logininfo = cache.loginMap;
                 record['currentId'] = logininfo.param.organizationId;
-                record['currentName'] = logininfo.username;
+                record['currentName'] = !logininfo.param.organizationName ? logininfo.username : decodeURIComponent(logininfo.param.organizationName);
             } else {
                 /*退出系统*/
                 cache = null;
@@ -397,7 +397,8 @@ angular.module('app')
         /*导航服务--获取导航*/
         this.getSubMenu = function (config) {
             if (cache) {
-                var param = $.extend(true, {}, cache.loginMap.param);
+                var logininfo = cache.loginMap,
+                    param = $.extend(true, {}, cache.loginMap.param);
                 param['isShowSelf'] = 0;
                 var layer,
                     id,
@@ -410,7 +411,7 @@ angular.module('app')
                     id = param['organizationId'];
                     $wrap = self.$admin_equity_submenu;
                     config.record.organizationId = id;
-                    config.record.organizationName = cache.loginMap.username;
+                    config.record.organizationName = !logininfo.param.organizationName ? logininfo.username : decodeURIComponent(logininfo.param.organizationName);
                     self.getColumnData(config.table, config.record);
                 } else {
                     /*非根目录则获取新请求参数*/
@@ -909,5 +910,5 @@ angular.module('app')
                 return addressService.queryByCode(code, fn);
             }
         };
-        
+
     }]);

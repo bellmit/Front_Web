@@ -58,7 +58,8 @@ angular.module('login.service',[])
                         'param':{
                             'adminId':encodeURIComponent(result.adminId),
                             'token':encodeURIComponent(result.token),
-                            'organizationId':encodeURIComponent(result.organizationId)
+                            'organizationId':encodeURIComponent(result.organizationId),
+                            'organizationName':encodeURIComponent(result.organizationName||'')
                         }
                     });
                     /*加载菜单*/

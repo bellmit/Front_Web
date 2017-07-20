@@ -51,7 +51,7 @@ angular.module('app')
                 } else if (record.tab === 'history') {
                     record.action = 2;
                     return 2;
-                }else if (record.tab === 'detail') {
+                } else if (record.tab === 'detail') {
                     record.action = 6;
                     return 6;
                 }
@@ -64,7 +64,7 @@ angular.module('app')
                 } else if (record.tab === 'history') {
                     record.action = 4;
                     return 4;
-                }else if (record.tab === 'detail') {
+                } else if (record.tab === 'detail') {
                     record.action = '';
                     return '';
                 }
@@ -266,13 +266,13 @@ angular.module('app')
                 return false;
             } else if (!table && !record) {
                 return false;
-            }else if(record.action===''){
+            } else if (record.action === '') {
                 return false;
             }
 
 
             /*如果存在模型*/
-            var action=record.action,
+            var action = record.action,
                 temp_config = 'list_config' + action,
                 data = $.extend(true, {}, table[temp_config].config.ajax.data),
                 temp_param;
@@ -296,7 +296,7 @@ angular.module('app')
                 temp_table = 'list_table' + action;
                 temp_column = 'tablecolumn' + action;
                 temp_action = 'tableitemaction' + action;
-            } else{
+            } else {
                 /*1-4,6参与条件查询*/
                 if (record['type'] === '') {
                     record['type'] = 1;
@@ -307,16 +307,16 @@ angular.module('app')
                 } else {
                     data['searchWord'] = record['searchWord'];
                 }
-                if(action===6){
-                    var sdt=record['searchDate'];
-                    if(sdt===''){
-                        sdt=moment().format('YYYY-MM-DD');
+                if (action === 6) {
+                    var sdt = record['searchDate'];
+                    if (sdt === '') {
+                        sdt = moment().format('YYYY-MM-DD');
                     }
-                    sdt=sdt.split('-');
-                    data['year']=sdt[0];
-                    data['month']=sdt[1];
-                }else{
-                    if(record['searchDate']===''){
+                    sdt = sdt.split('-');
+                    data['year'] = sdt[0];
+                    data['month'] = sdt[1];
+                } else {
+                    if (record['searchDate'] === '') {
                         delete data['year'];
                         delete data['month'];
                     }
@@ -343,7 +343,7 @@ angular.module('app')
                     dataTableCheckAllService.initCheckAll(table[temp_checkall]);
                 }
                 /*调用按钮操作*/
-                if(action !== 6){
+                if (action !== 6) {
                     dataTableItemActionService.initItemAction(table[temp_action]);
                 }
             } else {
@@ -358,7 +358,7 @@ angular.module('app')
         this.filterDataTable = function (table, record) {
             if (!table && !record) {
                 return false;
-            }else if(record.action===''){
+            } else if (record.action === '') {
                 return false;
             }
             var temp_table = 'list_table' + record.action;
@@ -372,7 +372,7 @@ angular.module('app')
             var id = config.id,
                 action = config.action,
                 record = model.record,
-                record_action=record.action;
+                record_action = record.action;
 
             if (action === 'detail' || action === 'update') {
                 if (record_action === 5) {
@@ -386,7 +386,7 @@ angular.module('app')
                         });
                     }
                     self.queryBonusInfo(model, id, action);
-                } else if(record_action!==6) {
+                } else if (record_action !== 6) {
                     /*查看订单或者详情*/
                     self.queryDetail(model, id, action);
                 }
@@ -576,9 +576,9 @@ angular.module('app')
 
             var type = config.type,
                 record = model.record,
-                action=record.action;
+                action = record.action;
 
-            if(action===''){
+            if (action === '') {
                 return false;
             }
 
@@ -742,7 +742,7 @@ angular.module('app')
             if (islogin) {
                 var logininfo = cache.loginMap;
                 record['currentId'] = logininfo.param.organizationId;
-                record['currentName'] = logininfo.username;
+                record['currentName'] = !logininfo.param.organizationName ? logininfo.username : decodeURIComponent(logininfo.param.organizationName);
             } else {
                 /*退出系统*/
                 cache = null;
@@ -757,7 +757,9 @@ angular.module('app')
         /*导航服务--获取导航*/
         this.getSubMenu = function (config) {
             if (cache) {
-                var param = $.extend(true, {}, cache.loginMap.param);
+                var logininfo = cache.loginMap,
+                    param = $.extend(true, {}, cache.loginMap.param);
+
                 param['isShowSelf'] = 0;
                 var layer,
                     id,
@@ -771,7 +773,7 @@ angular.module('app')
                     $wrap = self.$admin_finance_submenu;
                     var record = config.record;
                     record.organizationId = id;
-                    record.organizationName = cache.loginMap.username;
+                    record.organizationName = !logininfo.param.organizationName ? logininfo.username : decodeURIComponent(logininfo.param.organizationName);
                     self.getColumnData(config.table, record);
                 } else {
                     /*非根目录则获取新请求参数*/
@@ -1302,8 +1304,8 @@ angular.module('app')
                     result: Mock.mock({
                         'list|5-15': [{
                             "id": /[0-9]{1,2}/,
-                            "shopName":/[a-zA-Z]{2,10}/,
-                            "type":/[1-3]{1}/,
+                            "shopName": /[a-zA-Z]{2,10}/,
+                            "type": /[1-3]{1}/,
                             "sales": moneyrule,
                             "profits1": moneyrule,
                             "profits2": moneyrule,

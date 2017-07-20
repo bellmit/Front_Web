@@ -101,7 +101,7 @@ angular.module('app')
             if (islogin) {
                 var logininfo = cache.loginMap;
                 record['organizationId'] = logininfo.param.organizationId;
-                record['organizationName'] = logininfo.username;
+                record['organizationName'] = !logininfo.param.organizationName ?logininfo.username:decodeURIComponent(logininfo.param.organizationName);
                 record['adminId'] = logininfo.param.adminId;
                 record['token'] = logininfo.param.token;
             } else {
@@ -1477,6 +1477,8 @@ angular.module('app')
                 }
             }
         };
+
+
 
         /*分润设置服务--查询分润配置*/
         this.queryProfitConfig = function (config) {
