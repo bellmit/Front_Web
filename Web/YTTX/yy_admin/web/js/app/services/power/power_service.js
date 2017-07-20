@@ -413,6 +413,155 @@ angular.module('power.service', [])
                     });
         };
 
+        this.reqUserPower_f = function (config) {
+            if (!isrender) {
+                return false;
+            }
+            /*合并参数*/
+            var param = config.param,
+                datalist=config.datalist;
+
+            if(typeof datalist!=='undefined'){
+                /*如果存在直接数据源，则不请求数据*/
+                (function () {
+                    
+
+                }());
+            }else{
+                /*如果不存在直接数据源，则请求数据*/
+
+            }
+
+            toolUtil
+                .requestHttp({
+                    url: config.url,
+                    method: 'post',
+                    set: true,
+                    data: param
+                })
+                .then(function (resp) {
+                        var data = resp.data,
+                            status = parseInt(resp.status, 10);
+
+                        if (status === 200) {
+                            var code = parseInt(data.code, 10),
+                                message = data.message;
+                            if (code !== 0) {
+                                if (typeof message !== 'undefined' && message !== '') {
+                                    console.log(message);
+                                } else {
+                                    console.log('请求用户权限失败');
+                                }
+                                if (code === 999) {
+                                    /*退出系统*/
+                                    cache = null;
+                                    toolUtil.loginTips({
+                                        clear: true,
+                                        reload: true
+                                    });
+                                }
+                            } else {
+                                /*加载数据*/
+                                var result = data.result;
+                                if(!result){
+                                    self.$power_tbody.html('<tr><td colspan="' + h_len + '" class="g-c-gray9 g-fs4 g-t-c g-b-white">没有查询到权限信息</td></tr>');
+                                    return false;
+                                }
+                                if (typeof result !== 'undefined') {
+                                    var menu = result.menu;
+                                    if (menu) {
+                                        var len = menu.length;
+                                        if (len === 0) {
+                                            /*直接获取原始数据*/
+                                            if (config.source) {
+                                                if (config.sourcefn && typeof config.sourcefn === 'function') {
+                                                    config.sourcefn.call(null, null);
+                                                }
+                                            } else {
+                                                self.$power_tbody.html('<tr><td colspan="' + h_len + '" class="g-c-gray9 g-fs4 g-t-c g-b-white">没有查询到权限信息</td></tr>');
+                                            }
+                                            return true;
+                                        } else {
+                                            var templist = toolUtil.resolveMainMenu(menu);
+                                            /*直接获取原始数据*/
+                                            if (config.source) {
+                                                if (config.sourcefn && typeof config.sourcefn === 'function') {
+                                                    if (templist !== null) {
+                                                        config.sourcefn.call(null, templist['power']);
+                                                    } else {
+                                                        config.sourcefn.call(null, null);
+                                                    }
+                                                }
+                                                return true;
+                                            } else {
+                                                /*解析数据*/
+                                                /*将查询数据按照模块解析出来*/
+                                                if (templist !== null) {
+                                                    var temp_power = templist['power'],
+                                                        temp_html = '';
+                                                    /*将模块数据解析转换成html数据*/
+                                                    if (config.clear) {
+                                                        temp_html = self.resolvePowerList({
+                                                            menu: temp_power,
+                                                            clear: true
+                                                        });
+                                                    } else {
+                                                        temp_html = self.resolvePowerList({
+                                                            menu: temp_power
+                                                        });
+                                                    }
+                                                    $(temp_html).appendTo(self.$power_tbody.html(''));
+                                                } else {
+                                                    self.$power_tbody.html('<tr><td colspan="' + h_len + '" class="g-c-gray9 g-fs4 g-t-c g-b-white">没有查询到权限信息</td></tr>');
+                                                }
+                                            }
+
+                                        }
+                                    } else {
+                                        /*直接获取原始数据*/
+                                        if (config.source) {
+                                            if (config.sourcefn && typeof config.sourcefn === 'function') {
+                                                config.sourcefn.call(null, null);
+                                            }
+                                            return true;
+                                        } else {
+                                            /*填充子数据到操作区域,同时显示相关操作按钮*/
+                                            self.$power_tbody.html('<tr><td colspan="' + h_len + '" class="g-c-gray9 g-fs4 g-t-c g-b-white">没有查询到权限信息</td></tr>');
+                                        }
+                                    }
+                                } else {
+                                    /*直接获取原始数据*/
+                                    if (config.source) {
+                                        if (config.sourcefn && typeof config.sourcefn === 'function') {
+                                            config.sourcefn.call(null, null);
+                                        }
+                                        return true;
+                                    } else {
+                                        self.$power_tbody.html('<tr><td colspan="' + h_len + '" class="g-c-gray9 g-fs4 g-t-c g-b-white">没有查询到权限信息</td></tr>');
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    function (resp) {
+                        var message = resp.data.message;
+                        if (typeof message !== 'undefined' && message !== '') {
+                            console.log(message);
+                        } else {
+                            console.log('请求权限失败');
+                        }
+                        /*直接获取原始数据*/
+                        if (config.source) {
+                            if (config.sourcefn && typeof config.sourcefn === 'function') {
+                                config.sourcefn.call(null, null);
+                            }
+                            return true;
+                        } else {
+                            self.$power_tbody.html('<tr><td colspan="' + h_len + '" class="g-c-gray9 g-fs4 g-t-c g-b-white">没有查询到权限信息</td></tr>');
+                        }
+                    });
+        };
+
         /*解析权限列表*/
         this.resolvePowerList = function (config) {
             /*解析数据*/
@@ -583,7 +732,7 @@ angular.module('power.service', [])
                     parent_len = parent_power.length,
                     j = 0,
                     p_ispermit = 0,
-                    pcode;
+                    p_code;
 
                 if (!child_power) {
                     continue outerLabel;
@@ -593,7 +742,7 @@ angular.module('power.service', [])
                     var child_len = child_power.length,
                         p_item = parent_power[j];
 
-                    pcode = p_item["funcCode"]/*父级权限相对应标识*/;
+                    p_code = p_item["funcCode"]/*父级权限相对应标识*/;
                     p_ispermit = parseInt(p_item["isPermit"], 10)/*父级是否有权限*/;
 
                     /*开始过滤子权限*/
@@ -608,7 +757,7 @@ angular.module('power.service', [])
                             c_code = c_item["funcCode"];
 
                             /*是否是同一个权限值*/
-                            if (pcode === c_code) {
+                            if (p_code === c_code) {
                                 /*如果存在相同的权限，且父权限没有权限，那么需要清除此子权限*/
                                 //c_item['isPermit'] = 0/*将权限变更为没有*/;
                                 c_item['disabled'] = true;

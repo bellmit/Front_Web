@@ -167,6 +167,7 @@ angular.module('app')
                 manage: self.manage,
                 pwd: self.pwd,
                 table: self.table,
+                
                 struct: self.struct
             }, type);
         };

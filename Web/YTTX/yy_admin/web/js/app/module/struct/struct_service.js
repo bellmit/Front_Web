@@ -1506,7 +1506,8 @@ angular.module('app')
                                         self.getMenuList({
                                             record: config.record,
                                             table: config.table,
-                                            structpos: config.structpos
+                                            structpos: config.structpos,
+                                            structpage:config.structpage
                                         });
                                     }
                                 }
@@ -1832,7 +1833,8 @@ angular.module('app')
                                         self.getMenuList({
                                             record: config.record,
                                             table: config.table,
-                                            structpos: config.structpos
+                                            structpos: config.structpos,
+                                            structpage:config.structpage
                                         });
                                     } else if (type === 'user') {
                                         /*重新加载表格数据*/
