@@ -248,6 +248,12 @@ angular.module('app')
                                                     /*继承上级机构，清空选中机构*/
                                                     if (temp_org === 0) {
                                                         manage['designatedOrgIds'] = '';
+                                                    }else if(temp_org === 1){
+                                                        self.queryStructSequence({
+                                                            record:record,
+                                                            manage:manage,
+                                                            id:list['id']
+                                                        });
                                                     }
                                                     break;
                                                 case 'isDesignatedPermit':
@@ -267,14 +273,59 @@ angular.module('app')
                                                         manage['checkedFunctionIds'] = '';
                                                     } else if (temp_power === 1) {
                                                         /*查询机构列表*/
-                                                        powerService.reqUserPower({
-                                                            url:'/module/permissions',
-                                                            param:{
-                                                                token:record.token,
-                                                                adminId:record.adminId,
-                                                                childId:manage.id
+                                                        (function () {
+                                                            var parent_data = cache.powerMap;
+                                                            if (parent_data !== null) {
+                                                                /*去掉首页模块*/
+                                                                delete parent_data[0];
+                                                                /*查询子权限*/
+                                                                powerService.reqUserPower({
+                                                                    url: '/module/permissions',
+                                                                    source: true,
+                                                                    sourcefn: function (cd) {
+                                                                        var child_data = cd;
+                                                                        if (child_data !== null) {
+                                                                            var filter_data = powerService.filterUserPower(parent_data, child_data);
+                                                                            if (filter_data) {
+                                                                                /*过滤后的数据即映射到视图*/
+                                                                                var power_html = powerService.resolvePowerList({
+                                                                                    menu: filter_data
+                                                                                });
+                                                                                /*更新模型*/
+                                                                                if (power_html) {
+                                                                                    $(power_html).appendTo(self.$power_tbody.html(''));
+                                                                                }
+                                                                            } else {
+                                                                                toolDialog.show({
+                                                                                    type: 'warn',
+                                                                                    value: '过滤后的权限数据不正确'
+                                                                                });
+                                                                                return false;
+                                                                            }
+                                                                        } else {
+                                                                            /*不存在则调用父权限*/
+                                                                            powerService.reqUserPower({
+                                                                                datalist: cache.powerMap
+                                                                            });
+                                                                        }
+                                                                    },
+                                                                    param: {
+                                                                        token: record.token,
+                                                                        adminId: record.adminId,
+                                                                        childId: manage.id
+                                                                    }
+                                                                });
+                                                            } else {
+                                                                /*不存在父权限则重新查询父权限*/
+                                                                powerService.reqUserPower({
+                                                                    url:'/module/permissions',
+                                                                    param:{
+                                                                        token:record.token,
+                                                                        adminId:record.adminId
+                                                                    }
+                                                                });
                                                             }
-                                                        });
+                                                        }());
                                                     }
                                                     break;
                                             }
@@ -666,7 +717,115 @@ angular.module('app')
                 target: self.$allstruct
             }, 'no');
         };
+        /*表单类服务--机构服务--查询已选机构序列*/
+        this.queryStructSequence = function (config) {
+            if (cache) {
+                if (!config) {
+                    return false;
+                }
+                var manage = config.manage,
+                    id = config.id;
 
+                if (!manage || id === '' || typeof id === 'undefined') {
+                    return false;
+                }
+
+                var record = config.record,
+                    param = {
+                        token: record.token,
+                        adminId: record.adminId,
+                        childId: id
+                    };
+
+                toolUtil
+                    .requestHttp({
+                        url: '/sysuser/roles/view',
+                        method: 'post',
+                        set: true,
+                        data: param
+                    })
+                    .then(function (resp) {
+                            var data = resp.data,
+                                status = parseInt(resp.status, 10);
+
+                            if (status === 200) {
+                                var code = parseInt(data.code, 10),
+                                    message = data.message;
+                                if (code !== 0) {
+                                    if (typeof message !== 'undefined' && message !== '') {
+                                        console.log(message);
+                                    }
+
+                                    if (code === 999) {
+                                        /*退出系统*/
+                                        cache = null;
+                                        toolUtil.loginTips({
+                                            clear: true,
+                                            reload: true
+                                        });
+                                    }
+                                } else {
+                                    /*加载数据*/
+                                    var result = data.result;
+                                    if (typeof result !== 'undefined') {
+                                        var list = result.list;
+                                        if (list) {
+                                            var len = list.length;
+                                            if (len !== 0) {
+                                                var i = 0,
+                                                    item,
+                                                    str='';
+                                                for (i; i < len; i++) {
+                                                    item = list[i]['organizationId'];
+                                                    record['managestruct'][item]=item;
+                                                    if(i!==len-1){
+                                                        str+=item+',';
+                                                    }else{
+                                                        str+=item;
+                                                    }
+                                                }
+                                                if(str!==''){
+                                                    manage.designatedOrgIds=str;
+                                                    /*反向关联选中高亮*/
+                                                    (function () {
+                                                        var allid=self.$allstruct.attr('data-id');
+                                                        if(typeof record['managestruct'][allid]!=='undefined'){
+                                                            self.$allstruct.addClass('sub-menu-checkboxactive');
+                                                        }
+                                                        self.$admin_struct_menu.find('label').each(function () {
+                                                            var $this=$(this),
+                                                                cid=$this.attr('data-id');
+
+                                                            if(typeof record['managestruct'][cid]!=='undefined'){
+                                                                $this.addClass('sub-menu-checkboxactive');
+                                                            }
+                                                        });
+                                                    }());
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        function (resp) {
+                            var message = resp.data.message;
+                            if (typeof message !== 'undefined' && message !== '') {
+                                console.log(message);
+                            } else {
+                                console.log('请求机构失败');
+                            }
+                        });
+
+            } else {
+                /*退出系统*/
+                cache = null;
+                toolUtil.loginTips({
+                    clear: true,
+                    reload: true
+                });
+            }
+        };
 
 
         /*权限服务--确定所选权限*/
@@ -681,13 +840,13 @@ angular.module('app')
         /*权限服务--取消(清空)所选权限*/
         this.clearSelectPower = function (manage) {
             powerService.clearSelectPower();
-            manage.checkedFunctionIds='';
+            manage.checkedFunctionIds = '';
         };
         /*权限服务--切换权限*/
-        this.toggleSelectPower=function (config) {
-            var manage=config.manage,
-                record=config.record,
-                type=manage.type;
+        this.toggleSelectPower = function (config) {
+            var manage = config.manage,
+                record = config.record,
+                type = manage.type;
 
             /*清除已有权限*/
             self.clearSelectPower(manage);
@@ -697,20 +856,20 @@ angular.module('app')
                 if (type === 'add') {
                     /*新增时查询权限*/
                     powerService.reqUserPower({
-                        url:'/module/permissions',
-                        param:{
-                            token:record.token,
-                            adminId:record.adminId
+                        url: '/module/permissions',
+                        param: {
+                            token: record.token,
+                            adminId: record.adminId
                         }
                     });
-                }else if(type === 'edit'){
+                } else if (type === 'edit') {
                     /*新增时查询权限*/
                     powerService.reqUserPower({
-                        url:'/module/permissions',
-                        param:{
-                            token:record.token,
-                            adminId:record.adminId,
-                            childId:manage.id
+                        url: '/module/permissions',
+                        param: {
+                            token: record.token,
+                            adminId: record.adminId,
+                            childId: manage.id
                         }
                     });
                 }
@@ -1197,7 +1356,8 @@ angular.module('app')
                 type = config.type/*选择的是全选还是单个选项*/,
                 record = config.record,
                 ischeck,
-                id;
+                id,
+                $childwrap;
 
             if (flag) {
                 $label = config.target;
@@ -1227,6 +1387,16 @@ angular.module('app')
                     id = $label.attr('data-id');
                     /*变更模型*/
                     delete record['managestruct'][id];
+                    /*查找子节点*/
+                    $childwrap=$label.parent().next('ul');
+                    $childwrap.find('label').each(function () {
+                        var $this=$(this),
+                            cid=$this.attr('data-id');
+
+                        $this.removeClass('sub-menu-checkboxactive');
+                        /*变更模型*/
+                        delete record['managestruct'][cid];
+                    });
                 }
             } else {
                 /*选中*/
@@ -1248,6 +1418,16 @@ angular.module('app')
                     id = $label.attr('data-id');
                     /*变更模型*/
                     record['managestruct'][id] = id;
+                    /*查找子节点*/
+                    $childwrap=$label.parent().next('ul');
+                    $childwrap.find('label').each(function () {
+                        var $this=$(this),
+                            cid=$this.attr('data-id');
+
+                        $this.addClass('sub-menu-checkboxactive');
+                        /*变更模型*/
+                        record['managestruct'][cid]=cid;
+                    });
                 }
             }
         };
