@@ -279,7 +279,7 @@ angular.module('app')
                                                                 /*去掉首页模块*/
                                                                 delete parent_data[0];
                                                                 /*查询子权限*/
-                                                                powerService.reqUserPower({
+                                                                powerService.reqUserPowerList({
                                                                     url: '/module/permissions',
                                                                     source: true,
                                                                     sourcefn: function (cd) {
@@ -304,7 +304,7 @@ angular.module('app')
                                                                             }
                                                                         } else {
                                                                             /*不存在则调用父权限*/
-                                                                            powerService.reqUserPower({
+                                                                            powerService.reqUserPowerList({
                                                                                 datalist: cache.powerMap
                                                                             });
                                                                         }
@@ -317,7 +317,7 @@ angular.module('app')
                                                                 });
                                                             } else {
                                                                 /*不存在父权限则重新查询父权限*/
-                                                                powerService.reqUserPower({
+                                                                powerService.reqUserPowerList({
                                                                     url:'/module/permissions',
                                                                     param:{
                                                                         token:record.token,
@@ -855,7 +855,7 @@ angular.module('app')
             if (manage.isDesignatedPermit === 1) {
                 if (type === 'add') {
                     /*新增时查询权限*/
-                    powerService.reqUserPower({
+                    powerService.reqUserPowerList({
                         url: '/module/permissions',
                         param: {
                             token: record.token,
@@ -871,7 +871,7 @@ angular.module('app')
                             /*去掉首页模块*/
                             delete parent_data[0];
                             /*查询子权限*/
-                            powerService.reqUserPower({
+                            powerService.reqUserPowerList({
                                 url: '/module/permissions',
                                 source: true,
                                 sourcefn: function (cd) {
@@ -896,7 +896,7 @@ angular.module('app')
                                         }
                                     } else {
                                         /*不存在则调用父权限*/
-                                        powerService.reqUserPower({
+                                        powerService.reqUserPowerList({
                                             datalist: cache.powerMap
                                         });
                                     }
@@ -909,7 +909,7 @@ angular.module('app')
                             });
                         } else {
                             /*不存在父权限则重新查询父权限*/
-                            powerService.reqUserPower({
+                            powerService.reqUserPowerList({
                                 url:'/module/permissions',
                                 param:{
                                     token:record.token,
