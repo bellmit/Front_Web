@@ -1353,7 +1353,7 @@ angular.module('app')
                                                             /*指定权限时需要查询权限*/
                                                             /*查询权限--原始方案：先查询当前权限(子级权限) --> 再查父级权限  --> 存在父子级权限，过滤子级权限，
                                                              * 后来方案：先查父级权限 --> 再查询当前权限(子级权限)  --> 存在父子级权限，过滤子级权限*/
-                                                            powerService.reqPowerList({
+                                                            powerService.reqUserPowerList({
                                                                 url: '',
                                                                 source: true, /*是否获取数据源*/
                                                                 sourcefn: function (ps) {
@@ -1363,7 +1363,7 @@ angular.module('app')
 
                                                                     if (parent_data !== null) {
                                                                         /*存在数据源*/
-                                                                        powerService.reqPowerList({
+                                                                        powerService.reqUserPowerList({
                                                                             source: true, /*是否获取数据源*/
                                                                             sourcefn: function (cs) {
                                                                                 /*数据源*/
@@ -1953,7 +1953,7 @@ angular.module('app')
                     pid = struct.parentId;
                 }
 
-                powerService.reqPowerList({
+                powerService.reqUserPowerList({
                     source: true, /*是否获取数据源*/
                     sourcefn: function (ps) {
                         /*数据源*/
@@ -1962,7 +1962,7 @@ angular.module('app')
 
                         if (parent_data !== null) {
                             /*存在数据源*/
-                            powerService.reqPowerList({
+                            powerService.reqUserPowerList({
                                 source: true, /*是否获取数据源*/
                                 sourcefn: function (cs) {
                                     /*数据源*/

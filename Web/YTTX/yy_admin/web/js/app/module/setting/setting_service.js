@@ -274,7 +274,7 @@ angular.module('app')
                                                     } else if (temp_power === 1) {
                                                         /*查询机构列表*/
                                                         (function () {
-                                                            var parent_data = cache.powerMap;
+                                                            var parent_data = loginService.getCache().powerMap;
                                                             if (parent_data !== null) {
                                                                 /*去掉首页模块*/
                                                                 delete parent_data[0];
@@ -285,7 +285,7 @@ angular.module('app')
                                                                     sourcefn: function (cd) {
                                                                         var child_data = cd;
                                                                         if (child_data !== null) {
-                                                                            var filter_data = powerService.filterUserPower(parent_data, child_data);
+                                                                            var filter_data = powerService.filterPower(parent_data, child_data);
                                                                             if (filter_data) {
                                                                                 /*过滤后的数据即映射到视图*/
                                                                                 var power_html = powerService.resolvePowerList({
@@ -305,7 +305,7 @@ angular.module('app')
                                                                         } else {
                                                                             /*不存在则调用父权限*/
                                                                             powerService.reqUserPowerList({
-                                                                                datalist: cache.powerMap
+                                                                                datalist: loginService.getCache().powerMap
                                                                             });
                                                                         }
                                                                     },
@@ -866,7 +866,7 @@ angular.module('app')
                     /*新增时查询权限*/
                     /*查询机构列表*/
                     (function () {
-                        var parent_data = cache.powerMap;
+                        var parent_data = loginService.getCache().powerMap;
                         if (parent_data !== null) {
                             /*去掉首页模块*/
                             delete parent_data[0];
@@ -877,7 +877,7 @@ angular.module('app')
                                 sourcefn: function (cd) {
                                     var child_data = cd;
                                     if (child_data !== null) {
-                                        var filter_data = powerService.filterUserPower(parent_data, child_data);
+                                        var filter_data = powerService.filterPower(parent_data, child_data);
                                         if (filter_data) {
                                             /*过滤后的数据即映射到视图*/
                                             var power_html = powerService.resolvePowerList({
@@ -897,7 +897,7 @@ angular.module('app')
                                     } else {
                                         /*不存在则调用父权限*/
                                         powerService.reqUserPowerList({
-                                            datalist: cache.powerMap
+                                            datalist: loginService.getCache().powerMap
                                         });
                                     }
                                 },
