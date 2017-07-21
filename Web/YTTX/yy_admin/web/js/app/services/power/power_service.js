@@ -479,11 +479,14 @@ angular.module('power.service', [])
                             }
                         },
                         function (resp) {
-                            var message = resp.data.message;
-                            if (typeof message !== 'undefined' && message !== '') {
-                                console.log(message);
-                            } else {
-                                console.log('请求权限失败');
+                            var data=resp.data;
+                            if(data){
+                                var message = data.message;
+                                if (typeof message !== 'undefined' && message !== '') {
+                                    console.log(message);
+                                } else {
+                                    console.log('请求权限失败');
+                                }
                             }
                             /*直接获取原始数据*/
                             if (config.source) {
