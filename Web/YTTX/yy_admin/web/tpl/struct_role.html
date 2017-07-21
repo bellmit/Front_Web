@@ -206,16 +206,18 @@
                         <div class="admin-layout-theme4"><span class="mini-icon admin-mini-icon2"></span>&nbsp;机构信息</div>
 
                         <!--搜索组件-->
-                        <div class="sub-search-wrap ui-sub-search" data-active="structrole_ctrl.record.searchactive2" data-value="structrole_ctrl.record.searchname2"  data-action="structrole_ctrl.searchAction2()" data-clear="structrole_ctrl.searchClear2()" ></div>
+                        <div class="sub-search-wrap ui-sub-search g-clear-pl g-clear-pr" data-active="structrole_ctrl.record.searchactive2" data-value="structrole_ctrl.record.searchname2"  data-action="structrole_ctrl.searchAction2()" data-clear="structrole_ctrl.searchClear2()" ></div>
 
 
                         <!--子菜单组件-->
-                        <ul class="sub-menu-wrap">
-                            <li>
-                                <a data-parentid="" data-id="structrole_ctrl.record.currentId"  data-layer="0" class="sub-menu-title sub-menu-titleactive"  ng-click="structrole_ctrl.getMemberList()">{{structrole_ctrl.record.currentName}}</a>
-                                <ul class="sub-menu-wrap g-d-showi" ng-click="structrole_ctrl.toggleMemberList($event)" id="admin_member_menu" ng-init="structrole_ctrl.initMemberList()"></ul>
-                            </li>
-                        </ul>
+                        <div id="submenu_scroll_wrap" class="g-box-b" style="border:1px solid #ccc">
+                            <ul class="sub-menu-wrap g-b-none">
+                                <li>
+                                    <a data-parentid="" data-id="structrole_ctrl.record.currentId"  data-layer="0" class="sub-menu-title sub-menu-titleactive"  ng-click="structrole_ctrl.getMemberList()">{{structrole_ctrl.record.currentName}}</a>
+                                    <ul class="sub-menu-wrap g-d-showi g-b-none" ng-click="structrole_ctrl.toggleMemberList($event)" id="admin_member_menu" ng-init="structrole_ctrl.initMemberList()"></ul>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
 
                     <!--右侧被选区域-->

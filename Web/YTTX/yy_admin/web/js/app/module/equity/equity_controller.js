@@ -11,6 +11,7 @@ angular.module('app')
         var jq_dom = {
             $admin_equity_dialog: $('#admin_equity_dialog'),
             $admin_equity_reset: $('#admin_equity_reset'),
+            $submenu_scroll_wrap:$('#submenu_scroll_wrap'),
             $admin_equity_submenu: $('#admin_equity_submenu'),
             $admin_table_checkcolumn: $('#admin_table_checkcolumn'),
             $admin_page_wrap: $('#admin_page_wrap'),
@@ -36,6 +37,7 @@ angular.module('app')
 
         /*模型--操作记录*/
         this.record = {
+            iscroll_flag:true/*是否开启滚动条调用*/,
             filter: '',
             currentId: ''/*根索引*/,
             currentName: '',

@@ -859,6 +859,18 @@ angular.module('app')
                                                 });
                                                 if (str !== '') {
                                                     $(str).appendTo($wrap.html(''));
+                                                    /*调用滚动条*/
+                                                    if(record.iscroll_flag){
+                                                        record.iscroll_flag=false;
+                                                        toolUtil.autoScroll(self.$submenu_scroll_wrap,{
+                                                            setWidth: false,
+                                                            setHeight: 450,
+                                                            theme: "minimal-dark",
+                                                            axis: "y",
+                                                            scrollbarPosition: "inside",
+                                                            scrollInertia: '500'
+                                                        });
+                                                    }
                                                 }
                                                 if (layer !== 0 && config.type === 'common') {
                                                     config.$node.attr({

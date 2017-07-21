@@ -1116,6 +1116,20 @@
 			return ispower;
 		};
 
+		/*调用滚动条*/
+		tools.autoScroll=function ($wrap,config) {
+			/*是否存在节点，是否*/
+			if (!$wrap) {
+				return false;
+			}
+			/*调用*/
+			if (config) {
+				$wrap.mCustomScrollbar(config);
+			} else {
+				$wrap.mCustomScrollbar();
+			}
+		};
+
 		/*登陆接口*/
 		tools.isLogin=function(cache){
 			var self=this;

@@ -34,6 +34,7 @@ angular.module('app')
         var jq_dom = {
                 $admin_manage_reset: $('#admin_manage_reset'),
                 $setting_manage_dialog: $('#setting_manage_dialog'),
+                $submenu_scroll_wrap:$('#submenu_scroll_wrap'),
                 $admin_struct_menu: $('#admin_struct_menu')
             },
         /*权限缓存*/
@@ -72,6 +73,7 @@ angular.module('app')
 
         /*模型--操作记录*/
         this.record = {
+            iscroll_flag:true/*是否开启滚动条调用*/,
             profitid: 1,
             pageSize: 10,
             searchactive: ''/*搜索激活状态*/,

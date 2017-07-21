@@ -7,8 +7,8 @@ angular.module('app')
             cache = loginService.getCache(),
             structform_reset_timer = null,
             userform_reset_timer = null,
-            struct_page_timer=null,
-            isscroll_flag=false;
+            struct_page_timer = null;
+
 
 
         /*权限服务--查询列表*/
@@ -107,9 +107,9 @@ angular.module('app')
             if (islogin) {
                 var logininfo = cache.loginMap;
                 record['currentId'] = logininfo.param.organizationId;
-                record['currentName'] = !logininfo.param.organizationName ?logininfo.username:decodeURIComponent(logininfo.param.organizationName);
+                record['currentName'] = !logininfo.param.organizationName ? logininfo.username : decodeURIComponent(logininfo.param.organizationName);
                 record['organizationId'] = logininfo.param.organizationId;
-                record['organizationName'] = !logininfo.param.organizationName ?logininfo.username:decodeURIComponent(logininfo.param.organizationName);
+                record['organizationName'] = !logininfo.param.organizationName ? logininfo.username : decodeURIComponent(logininfo.param.organizationName);
             } else {
                 /*退出系统*/
                 cache = null;
@@ -228,8 +228,16 @@ angular.module('app')
                                                     /*始化机构操作区域*/
                                                     self.initOperate(config, true);
                                                     /*调用滚动条*/
-                                                    if(!isscroll_flag){
-                                                        self.subMenuAutoScroll();
+                                                    if(record.iscroll_flag){
+                                                        record.iscroll_flag=false;
+                                                        toolUtil.autoScroll(self.$submenu_scroll_wrap,{
+                                                            setWidth: false,
+                                                            setHeight: 450,
+                                                            theme: "minimal-dark",
+                                                            axis: "y",
+                                                            scrollbarPosition: "inside",
+                                                            scrollInertia: '500'
+                                                        });
                                                     }
                                                 } else {
                                                     record.hasdata = false;
@@ -529,19 +537,6 @@ angular.module('app')
                 return null;
             }
         };
-        /*导航服务--应用自定义滚动条*/
-        this.subMenuAutoScroll=function () {
-            isscroll_flag=true;
-            /*调用*/
-            self.$submenu_scroll_wrap.mCustomScrollbar({
-                setWidth: false,
-                setHeight:400,
-                theme: "minimal-dark",
-                axis: "y",
-                scrollbarPosition: "inside",
-                scrollInertia:'500'
-            });
-        };
 
 
         /*操作记录服务--初始化操作参数(搜索模式或者重置操作参数模式)*/
@@ -688,11 +683,11 @@ angular.module('app')
                         /*清除分页前的操作模型*/
                         self.initStructPos(model.structpos);
                         /*变更模型*/
-                        if(struct_page_timer!==null){
+                        if (struct_page_timer !== null) {
                             $timeout.cancel(struct_page_timer);
-                            struct_page_timer=null;
+                            struct_page_timer = null;
                         }
-                        struct_page_timer=$timeout(function () {
+                        struct_page_timer = $timeout(function () {
                             model.record.structId = '';
                             model.record.structName = '';
                             model.record.structnode = null;
@@ -706,9 +701,9 @@ angular.module('app')
                     }
                 });
                 /*清除延迟指针*/
-                if(struct_page_timer!==null){
+                if (struct_page_timer !== null) {
                     $timeout.cancel(struct_page_timer);
-                    struct_page_timer=null;
+                    struct_page_timer = null;
                 }
             } else {
                 self.$admin_structpage_wrap.pagination({
@@ -739,9 +734,9 @@ angular.module('app')
                     }
                 }
                 for (begin; begin < end; begin++) {
-                    str+=list[begin];
+                    str += list[begin];
                 }
-                if(str!==''){
+                if (str !== '') {
                     $(str).appendTo(self.$admin_struct_list.html(''));
                 }
             }
@@ -1525,7 +1520,7 @@ angular.module('app')
                                             record: config.record,
                                             table: config.table,
                                             structpos: config.structpos,
-                                            structpage:config.structpage
+                                            structpage: config.structpage
                                         });
                                     }
                                 }
@@ -1852,7 +1847,7 @@ angular.module('app')
                                             record: config.record,
                                             table: config.table,
                                             structpos: config.structpos,
-                                            structpage:config.structpage
+                                            structpage: config.structpage
                                         });
                                     } else if (type === 'user') {
                                         /*重新加载表格数据*/

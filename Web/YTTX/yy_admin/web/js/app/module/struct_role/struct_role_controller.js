@@ -22,6 +22,7 @@ angular.module('app')
             $admin_list_colgroup: $('#admin_list_colgroup'),
             $admin_batchlist_wrap: $('#admin_batchlist_wrap'),
             $admin_member_checkall: $('#admin_member_checkall'),
+            $submenu_scroll_wrap:$('#submenu_scroll_wrap'),
             $admin_member_menu: $('#admin_member_menu'),
             $admin_member_checked: $('#admin_member_checked'),
             $admin_user_wrap: $('#admin_user_wrap')
@@ -43,6 +44,7 @@ angular.module('app')
 
         /*模型--操作记录*/
         this.record = {
+            iscroll_flag:true/*是否开启滚动条调用*/,
             layer: 0/*当前菜单操作层级*/,
             prev: null/*菜单操作:上一次操作菜单*/,
             current: null/*菜单操作:当前操作菜单*/,

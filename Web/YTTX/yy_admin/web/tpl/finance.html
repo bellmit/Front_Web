@@ -417,12 +417,14 @@
             <ul ng-hide="(finance_ctrl.record.theme==='bonus')||(finance_ctrl.record.theme==='clear' && finance_ctrl.record.tab==='detail')" class="sub-tab-wrap sub-item-group3 sub-itembr-group3 ui-sub-tab" data-action="toggleTab" data-ctrlname="finance_ctrl"  data-tabitem="finance_ctrl.tabitem"></ul>
 
             <!--子菜单组件-->
-            <ul class="sub-menu-wrap">
-                <li>
-                    <a class="sub-menu-title sub-menu-titleactive" data-parentid="" data-id="finance_ctrl.record.currentId" data-layer="0" ng-click="finance_ctrl.initSubMenu()">{{finance_ctrl.record.currentName}}</a>
-                    <ul class="g-d-showi ui-sub-menu" ng-click="finance_ctrl.toggleSubMenu($event)" id="admin_finance_submenu" ng-init="finance_ctrl.initSubMenu()"></ul>
-                </li>
-            </ul>
+            <div id="submenu_scroll_wrap">
+                <ul class="sub-menu-wrap">
+                    <li>
+                        <a class="sub-menu-title sub-menu-titleactive" data-parentid="" data-id="finance_ctrl.record.currentId" data-layer="0" ng-click="finance_ctrl.initSubMenu()">{{finance_ctrl.record.currentName}}</a>
+                        <ul class="g-d-showi ui-sub-menu" ng-click="finance_ctrl.toggleSubMenu($event)" id="admin_finance_submenu" ng-init="finance_ctrl.initSubMenu()"></ul>
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
 

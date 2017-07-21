@@ -839,6 +839,18 @@ angular.module('app')
                                                 });
                                                 if (str !== '') {
                                                     $(str).appendTo($wrap.html(''));
+                                                    /*调用滚动条*/
+                                                    if(config.record.iscroll_flag){
+                                                        config.record.iscroll_flag=false;
+                                                        toolUtil.autoScroll(self.$submenu_scroll_wrap,{
+                                                            setWidth: false,
+                                                            setHeight: 500,
+                                                            theme: "minimal-dark",
+                                                            axis: "y",
+                                                            scrollbarPosition: "inside",
+                                                            scrollInertia: '500'
+                                                        });
+                                                    }
                                                 }
                                                 if (layer !== 0 && config.$reqstate) {
                                                     config.$reqstate.attr({

@@ -75,12 +75,14 @@
 
         <div class="struct-layout-side">
             <!--子菜单组件-->
-            <ul class="sub-menu-wrap">
-                <li>
-                    <a class="sub-menu-title sub-menu-titleactive" data-parentid="" data-id="equity_ctrl.record.currentId" data-layer="0" ng-click="equity_ctrl.initSubMenu()">{{equity_ctrl.record.currentName}}</a>
-                    <ul class="g-d-showi ui-sub-menu" ng-click="equity_ctrl.toggleSubMenu($event)" id="admin_equity_submenu" ng-init="equity_ctrl.initSubMenu()"></ul>
-                </li>
-            </ul>
+            <div id="submenu_scroll_wrap">
+                <ul class="sub-menu-wrap">
+                    <li>
+                        <a class="sub-menu-title sub-menu-titleactive" data-parentid="" data-id="equity_ctrl.record.currentId" data-layer="0" ng-click="equity_ctrl.initSubMenu()">{{equity_ctrl.record.currentName}}</a>
+                        <ul class="g-d-showi ui-sub-menu" ng-click="equity_ctrl.toggleSubMenu($event)" id="admin_equity_submenu" ng-init="equity_ctrl.initSubMenu()"></ul>
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
 

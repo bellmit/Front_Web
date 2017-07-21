@@ -22,6 +22,7 @@ angular.module('app')
             $bonus_exdividenddate: $('#bonus_exdividenddate'),
             $bonus_bonusdate: $('#bonus_bonusdate'),
             /*菜单*/
+            $submenu_scroll_wrap:$('#submenu_scroll_wrap'),
             $admin_finance_submenu: $('#admin_finance_submenu'),
             /*分组控制*/
             $admin_table_checkcolumn1: $('#admin_table_checkcolumn1'),
@@ -70,6 +71,7 @@ angular.module('app')
 
         /*模型--操作记录*/
         this.record = {
+            iscroll_flag:true/*是否开启滚动条调用*/,
             theme: 'profit'/*查询的模块或主题(分润，清算)：profit,clear*/,
             tab: 'stats'/*查询的选项类型(统计，历史)：stats,history*/,
             type: 1/*查询的业务类型(收单分润，分润业务)*/,

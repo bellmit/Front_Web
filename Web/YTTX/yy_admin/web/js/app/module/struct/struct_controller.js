@@ -46,9 +46,6 @@ angular.module('app')
         });
 
 
-        /*调用菜单滚动条*/
-        //structService.subMenuAutoScroll();
-
 
         /*模型--tab选项卡*/
         this.tabitem = [{
@@ -108,6 +105,7 @@ angular.module('app')
 
         /*模型--操作记录*/
         this.record = {
+            iscroll_flag:true/*是否开启滚动条调用*/,
             searchactive: ''/*搜索激活状态*/,
             searchname: ''/*搜索关键词*/,
             prev: null/*上一次操作记录*/,
