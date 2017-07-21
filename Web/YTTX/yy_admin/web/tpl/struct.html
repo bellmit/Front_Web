@@ -116,12 +116,15 @@
 
 
             <!--子菜单组件-->
-            <ul class="sub-menu-wrap sub-menu-flag sub-menu-flag{{struct_ctrl.record.structtype}}">
-                <li>
-                    <a class="sub-menu-title sub-menu-titleactive" data-parentid="" data-id="struct_ctrl.record.currentId" data-layer="0" data-list="false" data-label="struct_ctrl.record.currentName"  ng-click="struct_ctrl.rootSubMenu($event)">{{struct_ctrl.record.currentName}}</a>
-                    <ul ng-init="struct_ctrl.initSubMenu()" ng-click="struct_ctrl.toggleSubMenu($event)" id="admin_struct_submenu" class="g-d-showi ui-sub-menu"></ul>
-                </li>
-            </ul>
+            <div id="submenu_scroll_wrap">
+                <ul class="sub-menu-wrap sub-menu-flag sub-menu-flag{{struct_ctrl.record.structtype}}">
+                    <li>
+                        <a class="sub-menu-title sub-menu-titleactive" data-parentid="" data-id="struct_ctrl.record.currentId" data-layer="0" data-list="false" data-label="struct_ctrl.record.currentName"  ng-click="struct_ctrl.rootSubMenu($event)">{{struct_ctrl.record.currentName}}</a>
+                        <ul ng-init="struct_ctrl.initSubMenu()" ng-click="struct_ctrl.toggleSubMenu($event)" id="admin_struct_submenu" class="g-d-showi ui-sub-menu"></ul>
+                    </li>
+                </ul>
+            </div>
+
         </div>
     </div>
 

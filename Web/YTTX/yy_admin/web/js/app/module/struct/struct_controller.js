@@ -9,6 +9,7 @@ angular.module('app')
 
         /*jquery dom缓存:主要是切换路由时，创建的dom缓存引用与现有的dom引用不一致，需要加载视图更新现有dom引用*/
         var jq_dom = {
+            $submenu_scroll_wrap:$('#submenu_scroll_wrap'),
             $admin_struct_submenu: $('#admin_struct_submenu'),
             $admin_struct_list: $('#admin_struct_list'),
             $struct_struct_dialog: $('#struct_struct_dialog'),
@@ -27,6 +28,17 @@ angular.module('app')
         };
         jq_dom['$admin_submenu_wrap'] = jq_dom.$admin_struct_submenu.prev();
 
+
+        /*调用菜单滚动条*/
+        jq_dom.$submenu_scroll_wrap.mCustomScrollbar({
+            /*setWidth: false,*/
+            setHeight:300,
+            axis: "y",
+            scrollbarPosition: "inside"
+        });
+
+        
+
         var jq_dom_power = {
             $power_colgroup: $('#struct_power_colgroup'),
             $power_thead: $('#struct_power_thead'),
@@ -40,6 +52,10 @@ angular.module('app')
             dom: jq_dom_power,
             isall: true
         });
+
+
+        /*调用菜单滚动条*/
+        //structService.subMenuAutoScroll();
 
 
         /*模型--tab选项卡*/

@@ -524,6 +524,17 @@ angular.module('app')
                 return null;
             }
         };
+        /*导航服务--应用自定义滚动条*/
+        this.subMenuAutoScroll=function () {
+            console.log('ni mei');
+            /*调用*/
+            self.$submenu_scroll_wrap.mCustomScrollbar({
+                /*setWidth: false,*/
+                 setHeight:300,
+                axis: "y",
+                scrollbarPosition: "inside"
+            });
+        };
 
 
         /*操作记录服务--初始化操作参数(搜索模式或者重置操作参数模式)*/

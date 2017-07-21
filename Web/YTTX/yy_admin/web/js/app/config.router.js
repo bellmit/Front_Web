@@ -68,6 +68,8 @@ angular.module('app')
                                     return $ocLazyLoad.load(['js/plugins/datatables/dataTables.bootstrap.css',
                                         'js/plugins/datatables/js/jquery.dataTables.js',
                                         'js/plugins/pagination/pagination.js',
+                                        /*'js/plugins/CustomScrollbar/customScrollbar.js',
+                                        'js/plugins/CustomScrollbar/customScrollbar.concat.min.js',*/
                                         'js/app/services/datatable/datatable_column_service.js',
                                         'js/app/services/datatable/datatable_checkall_service.js',
                                         'js/app/services/datatable/datatable_itemaction_service.js',
