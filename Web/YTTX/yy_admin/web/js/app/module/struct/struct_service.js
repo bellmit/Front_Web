@@ -7,7 +7,8 @@ angular.module('app')
             cache = loginService.getCache(),
             structform_reset_timer = null,
             userform_reset_timer = null,
-            struct_page_timer=null;
+            struct_page_timer=null,
+            isscroll_flag=false;
 
 
         /*权限服务--查询列表*/
@@ -226,6 +227,10 @@ angular.module('app')
                                                     $(str).appendTo($wrap.html(''));
                                                     /*始化机构操作区域*/
                                                     self.initOperate(config, true);
+                                                    /*调用滚动条*/
+                                                    if(!isscroll_flag){
+                                                        self.subMenuAutoScroll();
+                                                    }
                                                 } else {
                                                     record.hasdata = false;
                                                     if (layer === 0) {
@@ -526,13 +531,15 @@ angular.module('app')
         };
         /*导航服务--应用自定义滚动条*/
         this.subMenuAutoScroll=function () {
-            console.log('ni mei');
+            isscroll_flag=true;
             /*调用*/
             self.$submenu_scroll_wrap.mCustomScrollbar({
-                /*setWidth: false,*/
-                 setHeight:300,
+                setWidth: false,
+                setHeight:400,
+                theme: "minimal-dark",
                 axis: "y",
-                scrollbarPosition: "inside"
+                scrollbarPosition: "inside",
+                scrollInertia:'500'
             });
         };
 

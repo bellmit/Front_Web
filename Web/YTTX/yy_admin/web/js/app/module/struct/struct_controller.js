@@ -27,15 +27,7 @@ angular.module('app')
             $admin_struct_checkall: $('#admin_struct_checkall')
         };
         jq_dom['$admin_submenu_wrap'] = jq_dom.$admin_struct_submenu.prev();
-
-
-        /*调用菜单滚动条*/
-        jq_dom.$submenu_scroll_wrap.mCustomScrollbar({
-            /*setWidth: false,*/
-            setHeight:300,
-            axis: "y",
-            scrollbarPosition: "inside"
-        });
+        
 
         
 
