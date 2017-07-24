@@ -35,48 +35,24 @@ angular.module('app')
 
         /*视图切换服务--根据条件判断视图状态:返回一个代表类型，数字或者字符*/
         this.changeView = function (record) {
-            /*1-6种状态
-             1:分润统计(默认为1)
-             2:分润历史
-             3:清算统计
-             4:清算历史
-             5:除权除息分红
-             6:分润明细
-             '':不操作状态
+            /*
+            通过主题切换不同视图区域
              * */
             if (record.theme === 'profit') {
-                if (record.tab === 'stats') {
-                    record.action = 1;
-                    return 1;
-                } else if (record.tab === 'history') {
-                    record.action = 2;
-                    return 2;
-                } else if (record.tab === 'detail') {
-                    record.action = 6;
-                    return 6;
-                }
-                record.action = '';
-                return '';
+                /*分润视图*/
+
+            }else if (record.theme === 'bonus') {
+                /*除权除息分红视图*/
+
             } else if (record.theme === 'clear') {
-                if (record.tab === 'stats') {
-                    record.action = 3;
-                    return 3;
-                } else if (record.tab === 'history') {
-                    record.action = 4;
-                    return 4;
-                } else if (record.tab === 'detail') {
-                    record.action = '';
-                    return '';
-                }
-                record.action = '';
-                return '';
-            } else if (record.theme === 'bonus') {
-                record.action = 5;
-                return 5;
+                /*清除视图*/
             }
-            record.action = '';
-            return '';
+
+            /*过滤*/
+            /*self.getColumnData(self.table, self.record);*/
         };
+
+
 
 
         /*除权除息分红服务--操作除权除息分红*/

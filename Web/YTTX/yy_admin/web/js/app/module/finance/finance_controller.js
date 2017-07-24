@@ -73,11 +73,9 @@ angular.module('app')
         this.record = {
             iscroll_flag:true/*是否开启滚动条调用*/,
             theme: 'profit'/*查询的模块或主题(分润，清算)：profit,clear*/,
-            tab: 'stats'/*查询的选项类型(统计，历史)：stats,history*/,
-            type: 1/*查询的业务类型(收单分润，分润业务)*/,
-            action: 1/*查询的视图区域，最终根据主题theme,选项tab，两者叠加产生*/,
             searchWord: ''/*搜索字段*/,
             searchDate: ''/*查询年月日*/,
+            time:-1,
             filter: ''/*过滤字段*/,
             organizationId: ''/*操作索引*/,
             organizationName: '',
@@ -1399,43 +1397,12 @@ angular.module('app')
             type: 'profit',
             active: 'tabactive'
         }, {
-            name: '清算',
-            power: self.powerlist.profit_clear,
-            type: 'clear',
-            active: ''
-        }, {
-            name: '除息分红',
+            name: '除权除息分红',
             power: self.powerlist.bonus_add,
             type: 'bonus',
             active: ''
         }];
 
-        /*模型--tab选项卡--选项*/
-        this.tabitem = [{
-            name: '统计',
-            power: self.powerlist.profit_details,
-            type: 'stats',
-            active: 'tabactive'
-        }, {
-            name: '历史',
-            power: self.powerlist.profit_clear,
-            type: 'history',
-            active: ''
-        }, {
-            name: '明细',
-            power: self.powerlist.profit_details,
-            type: 'detail',
-            active: ''
-        }];
-
-        /*模型--下拉条件--业务类型*/
-        this.typeitem = [{
-            key: '收单分润',
-            value: 1
-        }, {
-            key: '分润业务',
-            value: 2
-        }];
 
 
         /*模型--除权除息分红模型*/
@@ -1531,21 +1498,6 @@ angular.module('app')
             self.record.theme = type;
             /*计算区域*/
             financeService.changeView(self.record);
-            /*查询列表数据*/
-            if (type !== 'bonus') {
-                /*过滤*/
-                financeService.getColumnData(self.table, self.record);
-            }
-        };
-        /*条件服务--切换条件主题*/
-        this.toggleTab = function (type) {
-            self.record.tab = type;
-            /*计算区域*/
-            financeService.changeView(self.record);
-            /*查询列表数据*/
-            if (self.record.theme !== 'bonus') {
-                financeService.getColumnData(self.table, self.record);
-            }
         };
 
         /*除权除息分红--操作除权除息分红表单*/
