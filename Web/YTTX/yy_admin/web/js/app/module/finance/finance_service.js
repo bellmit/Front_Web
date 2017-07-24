@@ -277,7 +277,8 @@ angular.module('app')
                 temp_param;
 
             /*适配参数*/
-            if(action===3){
+            if (action === 3 || action === 7) {
+                /*3,7与运营商有关联*/
                 if (record['organizationId'] === '') {
                     if (record['currentId'] === '') {
                         return false;
@@ -286,8 +287,6 @@ angular.module('app')
                 } else {
                     data['organizationId'] = record['organizationId'];
                 }
-            }else if(){
-
             }
 
 
@@ -303,30 +302,36 @@ angular.module('app')
                 temp_action = 'tableitemaction' + action;
             } else {
                 /*1-3参与条件查询*/
-                data['type'] = record['type'];
-                if (record['searchWord'] === '') {
-                    delete data['searchWord'];
-                } else {
-                    data['searchWord'] = record['searchWord'];
-                }
-                if (action === 6) {
-                    var sdt = record['searchDate'];
-                    if (sdt === '') {
-                        sdt = moment().format('YYYY-MM-DD');
+                if (action === 1) {
+                    if (record['searchWord'] === '') {
+                        delete data['searchWord'];
+                    } else {
+                        data['searchWord'] = record['searchWord'];
                     }
-                    sdt = sdt.split('-');
-                    data['year'] = sdt[0];
-                    data['month'] = sdt[1];
-                } else {
-                    if (record['searchDate'] === '') {
-                        delete data['year'];
-                        delete data['month'];
+                } else if (action === 2 || action === 3) {
+                    if (record['time'] === '') {
+                        delete data['time'];
+                    } else {
+                        data['time'] = record['time'];
                     }
                 }
+                /* else if (action === 6) {
+                 /!*明细*!/
+                 var sdt = record['searchDate'];
+                 if (sdt === '') {
+                 sdt = moment().format('YYYY-MM-DD');
+                 }
+                 sdt = sdt.split('-');
+                 data['year'] = sdt[0];
+                 data['month'] = sdt[1];
+                 } else {
+                 if (record['searchDate'] === '') {
+                 delete data['year'];
+                 delete data['month'];
+                 }
+                 }*/
                 temp_table = 'list_table' + action;
-                temp_column = 'tablecolumn' + action;
                 temp_action = 'tableitemaction' + action;
-                temp_checkall = 'tablecheckall' + action;
             }
 
 
@@ -339,20 +344,14 @@ angular.module('app')
                 /*初始请求*/
                 table[temp_table] = self['$admin_list_wrap' + action].DataTable(table[temp_config].config);
                 /*调用列控制*/
-                dataTableColumnService.initColumn(table[temp_column], table[temp_table]);
-                if (action !== 5 && action !== 6) {
-                    /*调用全选与取消全选*/
-                    dataTableCheckAllService.initCheckAll(table[temp_checkall]);
+                if (action === 7) {
+                    dataTableColumnService.initColumn(table[temp_column], table[temp_table]);
                 }
                 /*调用按钮操作*/
-                if (action !== 6) {
+                if (action === 2 || action === 3) {
                     dataTableItemActionService.initItemAction(table[temp_action]);
                 }
             } else {
-                /*清除批量数据*/
-                if (action !== 5 && action !== 6) {
-                    dataTableCheckAllService.clear(table[temp_checkall]);
-                }
                 table[temp_table].ajax.config(table[temp_config].config.ajax).load();
             }
         };

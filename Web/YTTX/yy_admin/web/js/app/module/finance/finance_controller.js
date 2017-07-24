@@ -637,69 +637,9 @@ angular.module('app')
             list_table6: null/*扩展--各运营商清算*/,
             list_table7: null,
             /*列控制*/
-            tablecolumn1: {
-                init_len: 7/*数据有多少列*/,
-                column_flag: true,
-                ischeck: true, /*是否有全选*/
-                columnshow: true,
-                $column_wrap: jq_dom.$admin_table_checkcolumn1/*控制列显示隐藏的容器*/,
-                $bodywrap: jq_dom.$admin_batchlist_wrap1/*数据展现容器*/,
-                hide_list: [3, 4]/*需要隐藏的的列序号*/,
-                hide_len: 2,
-                column_api: {
-                    isEmpty: function () {
-                        if (self.table.list_table1 === null) {
-                            return true;
-                        }
-                        return self.table.list_table1.data().length === 0;
-                    }
-                },
-                $colgroup: jq_dom.$admin_list_colgroup1/*分组模型*/,
-                $column_btn: jq_dom.$admin_table_checkcolumn1.prev(),
-                $column_ul: jq_dom.$admin_table_checkcolumn1.find('ul')
-            },
-            tablecolumn2: {
-                init_len: 9/*数据有多少列*/,
-                column_flag: true,
-                ischeck: true, /*是否有全选*/
-                columnshow: true,
-                $column_wrap: jq_dom.$admin_table_checkcolumn2/*控制列显示隐藏的容器*/,
-                $bodywrap: jq_dom.$admin_batchlist_wrap2/*数据展现容器*/,
-                hide_list: [5, 6]/*需要隐藏的的列序号*/,
-                hide_len: 2,
-                column_api: {
-                    isEmpty: function () {
-                        if (self.table.list_table2 === null) {
-                            return true;
-                        }
-                        return self.table.list_table2.data().length === 0;
-                    }
-                },
-                $colgroup: jq_dom.$admin_list_colgroup2/*分组模型*/,
-                $column_btn: jq_dom.$admin_table_checkcolumn2.prev(),
-                $column_ul: jq_dom.$admin_table_checkcolumn2.find('ul')
-            },
-            tablecolumn3: {
-                init_len: 7/*数据有多少列*/,
-                column_flag: true,
-                ischeck: true, /*是否有全选*/
-                columnshow: true,
-                $column_wrap: jq_dom.$admin_table_checkcolumn3/*控制列显示隐藏的容器*/,
-                $bodywrap: jq_dom.$admin_batchlist_wrap3/*数据展现容器*/,
-                hide_list: [1, 2]/*需要隐藏的的列序号*/,
-                hide_len: 2,
-                column_api: {
-                    isEmpty: function () {
-                        if (self.table.list_table3 === null) {
-                            return true
-                        }
-                        return self.table.list_table3.data().length === 0;
-                    }
-                },
-                $colgroup: jq_dom.$admin_list_colgroup3/*分组模型*/,
-                $column_btn: jq_dom.$admin_table_checkcolumn3.prev(),
-                $column_ul: jq_dom.$admin_table_checkcolumn3.find('ul')
-            },
+            tablecolumn1: {},
+            tablecolumn2: {},
+            tablecolumn3: {},
             tablecolumn4: {/*扩展--当月清算*/},
             tablecolumn5: {/*扩展--历史清算*/},
             tablecolumn6: {/*扩展--各运营商清算*/},
@@ -708,34 +648,24 @@ angular.module('app')
                 column_flag: true,
                 ischeck: false, /*是否有全选*/
                 columnshow: true,
-                $column_wrap: jq_dom.$admin_table_checkcolumn6/*控制列显示隐藏的容器*/,
-                $bodywrap: jq_dom.$admin_batchlist_wrap6/*数据展现容器*/,
+                $column_wrap: jq_dom.$admin_table_checkcolumn7/*控制列显示隐藏的容器*/,
+                $bodywrap: jq_dom.$admin_batchlist_wrap7/*数据展现容器*/,
                 hide_list: [4, 5]/*需要隐藏的的列序号*/,
                 hide_len: 2,
                 column_api: {
                     isEmpty: function () {
-                        if (self.table.list_table6 === null) {
+                        if (self.table.list_table7 === null) {
                             return true;
                         }
-                        return self.table.list_table6.data().length === 0;
+                        return self.table.list_table7.data().length === 0;
                     }
                 },
-                $colgroup: jq_dom.$admin_list_colgroup6/*分组模型*/,
-                $column_btn: jq_dom.$admin_table_checkcolumn6.prev(),
-                $column_ul: jq_dom.$admin_table_checkcolumn6.find('ul')
+                $colgroup: jq_dom.$admin_list_colgroup7/*分组模型*/,
+                $column_btn: jq_dom.$admin_table_checkcolumn7.prev(),
+                $column_ul: jq_dom.$admin_table_checkcolumn7.find('ul')
             },
             /*按钮*/
-            tableitemaction1: {
-                $bodywrap: jq_dom.$admin_batchlist_wrap1,
-                itemaction_api: {
-                    doItemAction: function (config) {
-                        financeService.doItemAction({
-                            record: self.record,
-                            table: self.table
-                        }, config);
-                    }
-                }
-            },
+            tableitemaction1: {},
             tableitemaction2: {
                 $bodywrap: jq_dom.$admin_batchlist_wrap2,
                 itemaction_api: {
