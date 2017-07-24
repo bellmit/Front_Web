@@ -28,42 +28,44 @@ angular.module('app')
             $admin_table_checkcolumn1: $('#admin_table_checkcolumn1'),
             $admin_table_checkcolumn2: $('#admin_table_checkcolumn2'),
             $admin_table_checkcolumn3: $('#admin_table_checkcolumn3'),
-            $admin_table_checkcolumn4: $('#admin_table_checkcolumn4'),
-            $admin_table_checkcolumn5: $('#admin_table_checkcolumn5'),
-            $admin_table_checkcolumn6: $('#admin_table_checkcolumn6'),
+            $admin_table_checkcolumn4:''/*扩展--当月清算*/,
+            $admin_table_checkcolumn5:''/*扩展--历史清算*/,
+            $admin_table_checkcolumn6:''/*扩展--各运营商清算*/,
+            $admin_table_checkcolumn7: $('#admin_table_checkcolumn7'),
             /*分页*/
             $admin_page_wrap1: $('#admin_page_wrap1'),
             $admin_page_wrap2: $('#admin_page_wrap2'),
             $admin_page_wrap3: $('#admin_page_wrap3'),
-            $admin_page_wrap4: $('#admin_page_wrap4'),
-            $admin_page_wrap5: $('#admin_page_wrap5'),
-            $admin_page_wrap6: $('#admin_page_wrap6'),
+            $admin_page_wrap4:''/*扩展--当月清算*/,
+            $admin_page_wrap5:''/*扩展--历史清算*/,
+            $admin_page_wrap6:''/*扩展--各运营商清算*/,
+            $admin_page_wrap7: $('#admin_page_wrap7'),
             /*列表*/
             $admin_list_wrap1: $('#admin_list_wrap1'),
             $admin_list_wrap2: $('#admin_list_wrap2'),
             $admin_list_wrap3: $('#admin_list_wrap3'),
-            $admin_list_wrap4: $('#admin_list_wrap4'),
-            $admin_list_wrap5: $('#admin_list_wrap5'),
-            $admin_list_wrap6: $('#admin_list_wrap6'),
+            $admin_list_wrap4:''/*扩展--当月清算*/,
+            $admin_list_wrap5:''/*扩展--历史清算*/,
+            $admin_list_wrap6:''/*扩展--各运营商清算*/,
+            $admin_list_wrap7: $('#admin_list_wrap7'),
             /*分组*/
             $admin_list_colgroup1: $('#admin_list_colgroup1'),
             $admin_list_colgroup2: $('#admin_list_colgroup2'),
             $admin_list_colgroup3: $('#admin_list_colgroup3'),
-            $admin_list_colgroup4: $('#admin_list_colgroup4'),
-            $admin_list_colgroup5: $('#admin_list_colgroup5'),
-            $admin_list_colgroup6: $('#admin_list_colgroup6'),
+            $admin_list_colgroup4:''/*扩展--当月清算*/,
+            $admin_list_colgroup5:''/*扩展--历史清算*/,
+            $admin_list_colgroup6:''/*扩展--各运营商清算*/,
+            $admin_list_colgroup7: $('#admin_list_colgroup7'),
             /*表主体操作区*/
             $admin_batchlist_wrap1: $('#admin_batchlist_wrap1'),
             $admin_batchlist_wrap2: $('#admin_batchlist_wrap2'),
             $admin_batchlist_wrap3: $('#admin_batchlist_wrap3'),
-            $admin_batchlist_wrap4: $('#admin_batchlist_wrap4'),
-            $admin_batchlist_wrap5: $('#admin_batchlist_wrap5'),
-            $admin_batchlist_wrap6: $('#admin_batchlist_wrap6'),
+            $admin_batchlist_wrap4: ''/*扩展--当月清算*/,
+            $admin_batchlist_wrap5: ''/*扩展--历史清算*/,
+            $admin_batchlist_wrap6: ''/*扩展--各运营商清算*/,
+            $admin_batchlist_wrap7: $('#admin_batchlist_wrap7')
             /*全选操作*/
-            $admin_finance_checkall1: $('#admin_finance_checkall1'),
-            $admin_finance_checkall2: $('#admin_finance_checkall2'),
-            $admin_finance_checkall3: $('#admin_finance_checkall3'),
-            $admin_finance_checkall4: $('#admin_finance_checkall4')
+            /*$admin_finance_checkall1: $('#admin_finance_checkall1')*/
         };
         /*切换路由时更新dom缓存*/
         financeService.initJQDom(jq_dom);
@@ -72,7 +74,9 @@ angular.module('app')
         /*模型--操作记录*/
         this.record = {
             iscroll_flag:true/*是否开启滚动条调用*/,
-            theme: 'profit'/*查询的模块或主题(分润，清算)：profit,clear*/,
+            theme: 'profit'/*查询的模块或主题(分润，清算,除息分红)：profit,clear,bouns*/,
+            tab: 'current'/*查询的选项类型(当月，历史，各运营商)：current,history,organization*/,
+            action: 1/*查询的视图区域，最终根据主题theme,选项tab，两者叠加产生*/,
             searchWord: ''/*搜索字段*/,
             searchDate: ''/*查询年月日*/,
             time:-1,
@@ -104,22 +108,16 @@ angular.module('app')
                 pageSize: 10,
                 total: 0
             },
-            list_page4: {
-                page: 1,
-                pageSize: 10,
-                total: 0
-            },
-            list_page5: {
-                page: 1,
-                pageSize: 10,
-                total: 0
-            },
-            list_page6: {
+            list_page4: {/*扩展--当月清算*/},
+            list_page5: {/*扩展--历史清算*/},
+            list_page6: {/*扩展--各运营商清算*/},
+            list_page7: {
                 page: 1,
                 pageSize: 10,
                 total: 0
             },
             /*表格配置*/
+            /*当月分润*/
             list_config1: {
                 config: {
                     processing: true, /*大消耗操作时是否显示处理状态*/
@@ -127,7 +125,7 @@ angular.module('app')
                     autoWidth: true, /*是否*/
                     paging: false,
                     ajax: {
-                        url: toolUtil.adaptReqUrl('/finance/profit/stats/list')/*'json/test.json'*/,
+                        url: toolUtil.adaptReqUrl('/finance/profit/current')/*'json/test.json'*/,
                         dataType: 'JSON',
                         method: 'post',
                         dataSrc: function (json) {
@@ -141,7 +139,7 @@ angular.module('app')
                                 if (typeof message !== 'undefined' && message !== '') {
                                     console.log(message);
                                 } else {
-                                    console.log('获取用户失败');
+                                    console.log('获取当月分润失败');
                                 }
                                 if (code === 999) {
                                     /*退出系统*/
@@ -214,19 +212,7 @@ angular.module('app')
                     order: [[1, "desc"], [2, "desc"]],
                     columns: [
                         {
-                            "data": "id",
-                            "orderable": false,
-                            "searchable": false,
-                            "render": function (data, type, full, meta) {
-                                if (full.state === '' || isNaN(full.state)) {
-                                    return '';
-                                }
-                                var state = parseInt(full.state, 10);
-                                if (self.powerlist.profit_clear && (state === 0 || state === 1)) {
-                                    return '<input value="' + data + '" name="check_finance1" type="checkbox" />';
-                                }
-                                return '';
-                            }
+                            "data": "organizationName"
                         },
                         {
                             "data": "sales",
@@ -239,60 +225,11 @@ angular.module('app')
                             "render": function (data, type, full, meta) {
                                 return toolUtil.moneyCorrect(data, 15, false)[0];
                             }
-                        },
-                        {
-                            "data": "profits2",
-                            "render": function (data, type, full, meta) {
-                                return toolUtil.moneyCorrect(data, 15, false)[0];
-                            }
-                        },
-                        {
-                            "data": "profits3",
-                            "render": function (data, type, full, meta) {
-                                return toolUtil.moneyCorrect(data, 15, false)[0];
-                            }
-                        },
-                        {
-                            "data": "state",
-                            "render": function (data, type, full, meta) {
-                                if (data === '' || isNaN(data)) {
-                                    return '<div class="g-c-gray9">异常</div>';
-                                }
-                                var str = '',
-                                    state = parseInt(data, 10);
-                                if (state === 0) {
-                                    str = '<div class="g-c-warn">未清算</div>';
-                                } else if (state === 1) {
-                                    str = '<div class="g-c-gray3">部分清算</div>';
-                                } else if (state === 2) {
-                                    str = '<div class="g-c-blue3">已清算</div>';
-                                } else {
-                                    str = '<div class="g-c-gray9">异常</div>';
-                                }
-                                return str;
-                            }
-                        },
-                        {
-                            "data": "id",
-                            "render": function (data, type, full, meta) {
-                                var btns = '';
-
-                                /*查看发货详情*/
-                                if (self.powerlist.profit_details) {
-                                    btns += '<span data-action="detail" data-id="' + data + '"  class="btn-operate">查看</span>';
-                                }
-                                if (full.state !== '' && !isNaN(full.state)) {
-                                    var state = parseInt(full.state, 10);
-                                    if (self.powerlist.profit_clear && (state === 0 || state === 1)) {
-                                        btns += '<span data-action="clear" data-state="' + state + '"  data-id="' + data + '"  class="btn-operate">清算</span>';
-                                    }
-                                }
-                                return btns;
-                            }
                         }
                     ]
                 }
             },
+            /*历史分润*/
             list_config2: {
                 config: {
                     processing: true, /*大消耗操作时是否显示处理状态*/
@@ -300,7 +237,7 @@ angular.module('app')
                     autoWidth: true, /*是否*/
                     paging: false,
                     ajax: {
-                        url: toolUtil.adaptReqUrl('/finance/profit/stats/history')/*'json/test.json'*/,
+                        url: toolUtil.adaptReqUrl('/finance/profit/history')/*'json/test.json'*/,
                         dataType: 'JSON',
                         method: 'post',
                         dataSrc: function (json) {
@@ -314,7 +251,7 @@ angular.module('app')
                                 if (typeof message !== 'undefined' && message !== '') {
                                     console.log(message);
                                 } else {
-                                    console.log('获取用户失败');
+                                    console.log('获取历史分润失败');
                                 }
                                 if (code === 999) {
                                     /*退出系统*/
@@ -385,33 +322,8 @@ angular.module('app')
                     dom: '<"g-d-hidei" s>',
                     searching: true,
                     order: [[1, "desc"], [2, "desc"]],
-                    columns: [
-                        {
-                            "data": "id",
-                            "orderable": false,
-                            "searchable": false,
-                            "render": function (data, type, full, meta) {
-                                if (full.state === '' || isNaN(full.state)) {
-                                    return '';
-                                }
-                                var state = parseInt(full.state, 10);
-                                if (self.powerlist.profit_clear && (state === 0 || state === 1)) {
-                                    return '<input value="' + data + '" name="check_finance2" type="checkbox" />';
-                                }
-                                return '';
-                            }
-                        },
-                        {
-                            "data": "year",
-                            "render": function (data, type, full, meta) {
-                                return data + '年';
-                            }
-                        },
-                        {
-                            "data": "month",
-                            "render": function (data, type, full, meta) {
-                                return data + '月';
-                            }
+                    columns: [{
+                            "data": "time"
                         },
                         {
                             "data": "sales",
@@ -426,38 +338,6 @@ angular.module('app')
                             }
                         },
                         {
-                            "data": "profits2",
-                            "render": function (data, type, full, meta) {
-                                return toolUtil.moneyCorrect(data, 15, false)[0];
-                            }
-                        },
-                        {
-                            "data": "profits3",
-                            "render": function (data, type, full, meta) {
-                                return toolUtil.moneyCorrect(data, 15, false)[0];
-                            }
-                        },
-                        {
-                            "data": "state",
-                            "render": function (data, type, full, meta) {
-                                if (data === '' || isNaN(data)) {
-                                    return '<div class="g-c-gray9">异常</div>';
-                                }
-                                var str = '',
-                                    state = parseInt(data, 10);
-                                if (state === 0) {
-                                    str = '<div class="g-c-warn">未清算</div>';
-                                } else if (state === 1) {
-                                    str = '<div class="g-c-gray3">部分清算</div>';
-                                } else if (state === 2) {
-                                    str = '<div class="g-c-blue3">已清算</div>';
-                                } else {
-                                    str = '<div class="g-c-gray9">异常</div>';
-                                }
-                                return str;
-                            }
-                        },
-                        {
                             /*to do*/
                             "data": "id",
                             "render": function (data, type, full, meta) {
@@ -465,13 +345,7 @@ angular.module('app')
 
                                 /*查看发货详情*/
                                 if (self.powerlist.profit_details) {
-                                    btns += '<span data-action="detail" data-id="' + data + '"  class="btn-operate">查看</span>';
-                                }
-                                if (full.state !== '' && !isNaN(full.state)) {
-                                    var state = parseInt(full.state, 10);
-                                    if (self.powerlist.profit_clear && (state === 0 || state === 1)) {
-                                        btns += '<span data-action="clear" data-state="' + state + '"  data-id="' + data + '"  class="btn-operate">清算</span>';
-                                    }
+                                    btns += '<span data-action="detail" data-id="' + data + '"  class="btn-operate">明细</span>';
                                 }
                                 return btns;
                             }
@@ -479,6 +353,7 @@ angular.module('app')
                     ]
                 }
             },
+            /*各运营商分润*/
             list_config3: {
                 config: {
                     processing: true, /*大消耗操作时是否显示处理状态*/
@@ -486,7 +361,7 @@ angular.module('app')
                     autoWidth: true, /*是否*/
                     paging: false,
                     ajax: {
-                        url: toolUtil.adaptReqUrl('/finance/profit/clear/list')/*'json/test.json'*/,
+                        url: toolUtil.adaptReqUrl('/finance/profit/organization')/*'json/test.json'*/,
                         dataType: 'JSON',
                         method: 'post',
                         dataSrc: function (json) {
@@ -501,7 +376,7 @@ angular.module('app')
                                 if (typeof message !== 'undefined' && message !== '') {
                                     console.log(message);
                                 } else {
-                                    console.log('获取用户失败');
+                                    console.log('获取各运营商分润失败');
                                 }
                                 if (code === 999) {
                                     /*退出系统*/
@@ -574,204 +449,7 @@ angular.module('app')
                     order: [[1, "desc"], [2, "desc"]],
                     columns: [
                         {
-                            "data": "id",
-                            "orderable": false,
-                            "searchable": false,
-                            "render": function (data, type, full, meta) {
-                                if (full.state === '' || isNaN(full.state)) {
-                                    return '';
-                                }
-                                var state = parseInt(full.state, 10);
-                                if (self.powerlist.profit_clear && (state === 0 || state === 1)) {
-                                    return '<input value="' + data + '" name="check_finance3" type="checkbox" />';
-                                }
-                                return '';
-                            }
-                        },
-                        {
-                            "data": "sales",
-                            "render": function (data, type, full, meta) {
-                                return toolUtil.moneyCorrect(data, 15, false)[0];
-                            }
-                        },
-                        {
-                            "data": "profits",
-                            "render": function (data, type, full, meta) {
-                                return toolUtil.moneyCorrect(data, 15, false)[0];
-                            }
-                        },
-                        {
-                            "data": "cleared",
-                            "render": function (data, type, full, meta) {
-                                return toolUtil.moneyCorrect(data, 15, false)[0];
-                            }
-                        },
-                        {
-                            "data": "clearing",
-                            "render": function (data, type, full, meta) {
-                                return toolUtil.moneyCorrect(data, 15, false)[0];
-                            }
-                        },
-                        {
-                            "data": "state",
-                            "render": function (data, type, full, meta) {
-                                if (data === '' || isNaN(data)) {
-                                    return '<div class="g-c-gray9">异常</div>';
-                                }
-                                var str = '',
-                                    state = parseInt(data, 10);
-                                if (state === 0) {
-                                    str = '<div class="g-c-warn">未清算</div>';
-                                } else if (state === 1) {
-                                    str = '<div class="g-c-gray3">部分清算</div>';
-                                } else if (state === 2) {
-                                    str = '<div class="g-c-blue3">已清算</div>';
-                                } else {
-                                    str = '<div class="g-c-gray9">异常</div>';
-                                }
-                                return str;
-                            }
-                        },
-                        {
-                            "data": "id",
-                            "render": function (data, type, full, meta) {
-                                var btns = '';
-
-                                /*查看发货详情*/
-                                if (self.powerlist.profit_details) {
-                                    btns += '<span data-action="detail" data-id="' + data + '"  class="btn-operate">查看</span>';
-                                }
-                                if (full.state !== '' && !isNaN(full.state)) {
-                                    var state = parseInt(full.state, 10);
-                                    if (self.powerlist.profit_clear && (state === 0 || state === 1)) {
-                                        btns += '<span data-action="clear" data-state="' + state + '"  data-id="' + data + '"  class="btn-operate">清算</span>';
-                                    }
-                                }
-                                return btns;
-                            }
-                        }
-                    ]
-                }
-            },
-            list_config4: {
-                config: {
-                    processing: true, /*大消耗操作时是否显示处理状态*/
-                    deferRender: true, /*是否延迟加载数据*/
-                    autoWidth: true, /*是否*/
-                    paging: false,
-                    ajax: {
-                        url: toolUtil.adaptReqUrl('/finance/profit/clear/history')/*'json/test.json'*/,
-                        dataType: 'JSON',
-                        method: 'post',
-                        dataSrc: function (json) {
-                            /*测试类*/
-                            /*var json=financeService.testGetFinanceList(4);*/
-
-                            var code = parseInt(json.code, 10),
-                                message = json.message;
-
-                            if (code !== 0) {
-                                if (typeof message !== 'undefined' && message !== '') {
-                                    console.log(message);
-                                } else {
-                                    console.log('获取用户失败');
-                                }
-                                if (code === 999) {
-                                    /*退出系统*/
-                                    toolUtil.loginTips({
-                                        clear: true,
-                                        reload: true
-                                    });
-                                }
-                                return [];
-                            }
-                            var result = json.result;
-                            if (typeof result === 'undefined') {
-                                /*重置分页*/
-                                self.table.list_page4.total = 0;
-                                self.table.list_page4.page = 1;
-                                jq_dom.$admin_page_wrap4.pagination({
-                                    pageNumber: self.table.list_page4.page,
-                                    pageSize: self.table.list_page4.pageSize,
-                                    total: self.table.list_page4.total
-                                });
-                                return [];
-                            }
-
-                            if (result) {
-                                /*设置分页*/
-                                self.table.list_page4.total = result.count;
-                                /*分页调用*/
-                                jq_dom.$admin_page_wrap4.pagination({
-                                    pageNumber: self.table.list_page4.page,
-                                    pageSize: self.table.list_page4.pageSize,
-                                    total: self.table.list_page4.total,
-                                    onSelectPage: function (pageNumber, pageSize) {
-                                        /*再次查询*/
-                                        var temp_param = self.table.list_config4.config.ajax.data;
-                                        self.table.list_page4.page = pageNumber;
-                                        self.table.list_page4.pageSize = pageSize;
-                                        temp_param['page'] = self.table.list_page4.page;
-                                        temp_param['pageSize'] = self.table.list_page4.pageSize;
-                                        self.table.list_config4.config.ajax.data = temp_param;
-                                        financeService.getColumnData(self.table, self.record);
-                                    }
-                                });
-
-                                var list = result.list;
-                                if (list) {
-                                    return list;
-                                } else {
-                                    return [];
-                                }
-                            } else {
-                                /*重置分页*/
-                                self.table.list_page4.total = 0;
-                                self.table.list_page4.page = 1;
-                                jq_dom.$admin_page_wrap4.pagination({
-                                    pageNumber: self.table.list_page4.page,
-                                    pageSize: self.table.list_page4.pageSize,
-                                    total: self.table.list_page4.total
-                                });
-                                return [];
-                            }
-                        },
-                        data: {
-                            page: 1,
-                            pageSize: 10
-                        }
-                    },
-                    info: false,
-                    dom: '<"g-d-hidei" s>',
-                    searching: true,
-                    order: [[1, "desc"], [2, "desc"]],
-                    columns: [
-                        {
-                            "data": "id",
-                            "orderable": false,
-                            "searchable": false,
-                            "render": function (data, type, full, meta) {
-                                if (full.state === '' || isNaN(full.state)) {
-                                    return '';
-                                }
-                                var state = parseInt(full.state, 10);
-                                if (self.powerlist.profit_clear && (state === 0 || state === 1)) {
-                                    return '<input value="' + data + '" name="check_finance4" type="checkbox" />';
-                                }
-                                return '';
-                            }
-                        },
-                        {
-                            "data": "year",
-                            "render": function (data, type, full, meta) {
-                                return data + '年';
-                            }
-                        },
-                        {
-                            "data": "month",
-                            "render": function (data, type, full, meta) {
-                                return data + '月';
-                            }
+                            "data": "times"
                         },
                         {
                             "data": "sales",
@@ -786,52 +464,13 @@ angular.module('app')
                             }
                         },
                         {
-                            "data": "profits2",
-                            "render": function (data, type, full, meta) {
-                                return toolUtil.moneyCorrect(data, 15, false)[0];
-                            }
-                        },
-                        {
-                            "data": "profits3",
-                            "render": function (data, type, full, meta) {
-                                return toolUtil.moneyCorrect(data, 15, false)[0];
-                            }
-                        },
-                        {
-                            "data": "state",
-                            "render": function (data, type, full, meta) {
-                                if (data === '' || isNaN(data)) {
-                                    return '<div class="g-c-gray9">异常</div>';
-                                }
-                                var str = '',
-                                    state = parseInt(data, 10);
-                                if (state === 0) {
-                                    str = '<div class="g-c-warn">未清算</div>';
-                                } else if (state === 1) {
-                                    str = '<div class="g-c-gray3">部分清算</div>';
-                                } else if (state === 2) {
-                                    str = '<div class="g-c-blue3">已清算</div>';
-                                } else {
-                                    str = '<div class="g-c-gray9">异常</div>';
-                                }
-                                return str;
-                            }
-                        },
-                        {
-                            /*to do*/
                             "data": "id",
                             "render": function (data, type, full, meta) {
                                 var btns = '';
 
                                 /*查看发货详情*/
                                 if (self.powerlist.profit_details) {
-                                    btns += '<span data-action="detail" data-id="' + data + '"  class="btn-operate">查看</span>';
-                                }
-                                if (full.state !== '' && !isNaN(full.state)) {
-                                    var state = parseInt(full.state, 10);
-                                    if (self.powerlist.profit_clear && (state === 0 || state === 1)) {
-                                        btns += '<span data-action="clear" data-state="' + state + '" data-id="' + data + '"  class="btn-operate">清算</span>';
-                                    }
+                                    btns += '<span data-action="detail" data-id="' + data + '"  class="btn-operate">明细</span>';
                                 }
                                 return btns;
                             }
@@ -839,7 +478,11 @@ angular.module('app')
                     ]
                 }
             },
-            list_config5: {
+            list_config4: {/*扩展--当月清算*/},
+            list_config5: {/*扩展--历史清算*/},
+            list_config6: {/*扩展--各运营商清算*/},
+            /*除权除息分红*/
+            list_config7: {
                 config: {
                     processing: true, /*大消耗操作时是否显示处理状态*/
                     deferRender: true, /*是否延迟加载数据*/
@@ -860,7 +503,7 @@ angular.module('app')
                                 if (typeof message !== 'undefined' && message !== '') {
                                     console.log(message);
                                 } else {
-                                    console.log('获取用户失败');
+                                    console.log('获取除权除息分红失败');
                                 }
                                 if (code === 999) {
                                     /*退出系统*/
@@ -874,32 +517,32 @@ angular.module('app')
                             var result = json.result;
                             if (typeof result === 'undefined') {
                                 /*重置分页*/
-                                self.table.list_page5.total = 0;
-                                self.table.list_page5.page = 1;
-                                jq_dom.$admin_page_wrap5.pagination({
-                                    pageNumber: self.table.list_page5.page,
-                                    pageSize: self.table.list_page5.pageSize,
-                                    total: self.table.list_page5.total
+                                self.table.list_page7.total = 0;
+                                self.table.list_page7.page = 1;
+                                jq_dom.$admin_page_wrap7.pagination({
+                                    pageNumber: self.table.list_page7.page,
+                                    pageSize: self.table.list_page7.pageSize,
+                                    total: self.table.list_page7.total
                                 });
                                 return [];
                             }
 
                             if (result) {
                                 /*设置分页*/
-                                self.table.list_page5.total = result.count;
+                                self.table.list_page7.total = result.count;
                                 /*分页调用*/
-                                jq_dom.$admin_page_wrap5.pagination({
-                                    pageNumber: self.table.list_page5.page,
-                                    pageSize: self.table.list_page5.pageSize,
-                                    total: self.table.list_page5.total,
+                                jq_dom.$admin_page_wrap7.pagination({
+                                    pageNumber: self.table.list_page7.page,
+                                    pageSize: self.table.list_page7.pageSize,
+                                    total: self.table.list_page7.total,
                                     onSelectPage: function (pageNumber, pageSize) {
                                         /*再次查询*/
-                                        var temp_param = self.table.list_config5.config.ajax.data;
-                                        self.table.list_page5.page = pageNumber;
-                                        self.table.list_page5.pageSize = pageSize;
-                                        temp_param['page'] = self.table.list_page5.page;
-                                        temp_param['pageSize'] = self.table.list_page5.pageSize;
-                                        self.table.list_config5.config.ajax.data = temp_param;
+                                        var temp_param = self.table.list_config7.config.ajax.data;
+                                        self.table.list_page7.page = pageNumber;
+                                        self.table.list_page7.pageSize = pageSize;
+                                        temp_param['page'] = self.table.list_page7.page;
+                                        temp_param['pageSize'] = self.table.list_page7.pageSize;
+                                        self.table.list_config7.config.ajax.data = temp_param;
                                         financeService.getColumnData(self.table, self.record);
                                     }
                                 });
@@ -912,12 +555,12 @@ angular.module('app')
                                 }
                             } else {
                                 /*重置分页*/
-                                self.table.list_page5.total = 0;
-                                self.table.list_page5.page = 1;
-                                jq_dom.$admin_page_wrap5.pagination({
-                                    pageNumber: self.table.list_page5.page,
-                                    pageSize: self.table.list_page5.pageSize,
-                                    total: self.table.list_page5.total
+                                self.table.list_page7.total = 0;
+                                self.table.list_page7.page = 1;
+                                jq_dom.$admin_page_wrap7.pagination({
+                                    pageNumber: self.table.list_page7.page,
+                                    pageSize: self.table.list_page7.pageSize,
+                                    total: self.table.list_page7.total
                                 });
                                 return [];
                             }
@@ -985,183 +628,14 @@ angular.module('app')
                     ]
                 }
             },
-            list_config6: {
-                config: {
-                    processing: true, /*大消耗操作时是否显示处理状态*/
-                    deferRender: true, /*是否延迟加载数据*/
-                    autoWidth: true, /*是否*/
-                    paging: false,
-                    ajax: {
-                        url: toolUtil.adaptReqUrl('/finance/profit/stats/details')/*'json/test.json'*/,
-                        dataType: 'JSON',
-                        method: 'post',
-                        dataSrc: function (json) {
-                            /*测试类*/
-                            /*var json=financeService.testGetFinanceList(5);*/
-
-                            var code = parseInt(json.code, 10),
-                                message = json.message;
-
-                            if (code !== 0) {
-                                if (typeof message !== 'undefined' && message !== '') {
-                                    console.log(message);
-                                } else {
-                                    console.log('获取明细失败');
-                                }
-                                if (code === 999) {
-                                    /*退出系统*/
-                                    toolUtil.loginTips({
-                                        clear: true,
-                                        reload: true
-                                    });
-                                }
-                                return [];
-                            }
-                            var result = json.result;
-                            if (typeof result === 'undefined') {
-                                /*重置分页*/
-                                self.table.list_page6.total = 0;
-                                self.table.list_page6.page = 1;
-                                jq_dom.$admin_page_wrap6.pagination({
-                                    pageNumber: self.table.list_page6.page,
-                                    pageSize: self.table.list_page6.pageSize,
-                                    total: self.table.list_page6.total
-                                });
-                                return [];
-                            }
-
-                            if (result) {
-                                /*设置分页*/
-                                self.table.list_page6.total = result.count;
-                                /*分页调用*/
-                                jq_dom.$admin_page_wrap6.pagination({
-                                    pageNumber: self.table.list_page6.page,
-                                    pageSize: self.table.list_page6.pageSize,
-                                    total: self.table.list_page6.total,
-                                    onSelectPage: function (pageNumber, pageSize) {
-                                        /*再次查询*/
-                                        var temp_param = self.table.list_config6.config.ajax.data;
-                                        self.table.list_page6.page = pageNumber;
-                                        self.table.list_page6.pageSize = pageSize;
-                                        temp_param['page'] = self.table.list_page6.page;
-                                        temp_param['pageSize'] = self.table.list_page6.pageSize;
-                                        self.table.list_config6.config.ajax.data = temp_param;
-                                        financeService.getColumnData(self.table, self.record);
-                                    }
-                                });
-
-                                var list = result.list;
-                                if (list) {
-                                    return list;
-                                } else {
-                                    return [];
-                                }
-                            } else {
-                                /*重置分页*/
-                                self.table.list_page6.total = 0;
-                                self.table.list_page6.page = 1;
-                                jq_dom.$admin_page_wrap6.pagination({
-                                    pageNumber: self.table.list_page6.page,
-                                    pageSize: self.table.list_page6.pageSize,
-                                    total: self.table.list_page6.total
-                                });
-                                return [];
-                            }
-                        },
-                        data: {
-                            page: 1,
-                            pageSize: 10
-                        }
-                    },
-                    info: false,
-                    dom: '<"g-d-hidei" s>',
-                    searching: true,
-                    order: [[1, "desc"], [2, "desc"]],
-                    columns: [
-                        {
-                            "data": "shopName"
-                        },
-                        {
-                            "data": "type",
-                            "render": function (data, type, full, meta) {
-                                var typemap = {
-                                    1: '旗舰店',
-                                    2: '体验店',
-                                    3: '加盟店'
-                                };
-                                if (typeof data === 'undefined' || data === null) {
-                                    return '<div class="g-c-red1">其他</div>';
-                                }
-                                return typemap[data];
-                            }
-                        },
-                        {
-                            "data": "sales",
-                            "render": function (data, type, full, meta) {
-                                if (typeof data === 'undefined') {
-                                    return '0.00';
-                                }
-                                return toolUtil.moneyCorrect(data, 15, true)[0];
-                            }
-                        },
-                        {
-                            "data": "profits1",
-                            "render": function (data, type, full, meta) {
-                                if (typeof data === 'undefined') {
-                                    return '0.00';
-                                }
-                                return toolUtil.moneyCorrect(data, 15, true)[0];
-                            }
-                        },
-                        {
-                            "data": "profits2",
-                            "render": function (data, type, full, meta) {
-                                if (typeof data === 'undefined') {
-                                    return '0.00';
-                                }
-                                return toolUtil.moneyCorrect(data, 15, true)[0];
-                            }
-                        },
-                        {
-                            "data": "profits3",
-                            "render": function (data, type, full, meta) {
-                                if (typeof data === 'undefined') {
-                                    return '0.00';
-                                }
-                                return toolUtil.moneyCorrect(data, 15, true)[0];
-                            }
-                        },
-                        {
-                            /*to do*/
-                            "data": "state",
-                            "render": function (data, type, full, meta) {
-                                if (data === '' || isNaN(data)) {
-                                    return '<div class="g-c-gray9">异常</div>';
-                                }
-                                var str = '',
-                                    state = parseInt(data, 10);
-                                if (state === 0) {
-                                    str = '<div class="g-c-warn">未清算</div>';
-                                } else if (state === 1) {
-                                    str = '<div class="g-c-gray3">部分清算</div>';
-                                } else if (state === 2) {
-                                    str = '<div class="g-c-blue3">已清算</div>';
-                                } else {
-                                    str = '<div class="g-c-gray9">异常</div>';
-                                }
-                                return str;
-                            }
-                        }
-                    ]
-                }
-            },
             /*表格缓存*/
             list_table1: null,
             list_table2: null,
             list_table3: null,
-            list_table4: null,
-            list_table5: null,
-            list_table6: null,
+            list_table4: null/*扩展--当月清算*/,
+            list_table5: null/*扩展--历史清算*/,
+            list_table6: null/*扩展--各运营商清算*/,
+            list_table7: null,
             /*列控制*/
             tablecolumn1: {
                 init_len: 7/*数据有多少列*/,
@@ -1226,49 +700,10 @@ angular.module('app')
                 $column_btn: jq_dom.$admin_table_checkcolumn3.prev(),
                 $column_ul: jq_dom.$admin_table_checkcolumn3.find('ul')
             },
-            tablecolumn4: {
-                init_len: 9/*数据有多少列*/,
-                column_flag: true,
-                ischeck: true, /*是否有全选*/
-                columnshow: true,
-                $column_wrap: jq_dom.$admin_table_checkcolumn4/*控制列显示隐藏的容器*/,
-                $bodywrap: jq_dom.$admin_batchlist_wrap4/*数据展现容器*/,
-                hide_list: [5, 6]/*需要隐藏的的列序号*/,
-                hide_len: 2,
-                column_api: {
-                    isEmpty: function () {
-                        if (self.table.list_table4 === null) {
-                            return true;
-                        }
-                        return self.table.list_table4.data().length === 0;
-                    }
-                },
-                $colgroup: jq_dom.$admin_list_colgroup4/*分组模型*/,
-                $column_btn: jq_dom.$admin_table_checkcolumn4.prev(),
-                $column_ul: jq_dom.$admin_table_checkcolumn4.find('ul')
-            },
-            tablecolumn5: {
-                init_len: 7/*数据有多少列*/,
-                column_flag: true,
-                ischeck: false, /*是否有全选*/
-                columnshow: true,
-                $column_wrap: jq_dom.$admin_table_checkcolumn5/*控制列显示隐藏的容器*/,
-                $bodywrap: jq_dom.$admin_batchlist_wrap5/*数据展现容器*/,
-                hide_list: [0, 2, 4]/*需要隐藏的的列序号*/,
-                hide_len: 3,
-                column_api: {
-                    isEmpty: function () {
-                        if (self.table.list_table5 === null) {
-                            return true;
-                        }
-                        return self.table.list_table5.data().length === 0;
-                    }
-                },
-                $colgroup: jq_dom.$admin_list_colgroup5/*分组模型*/,
-                $column_btn: jq_dom.$admin_table_checkcolumn5.prev(),
-                $column_ul: jq_dom.$admin_table_checkcolumn5.find('ul')
-            },
-            tablecolumn6: {
+            tablecolumn4: {/*扩展--当月清算*/},
+            tablecolumn5: {/*扩展--历史清算*/},
+            tablecolumn6: {/*扩展--各运营商清算*/},
+            tablecolumn7: {
                 init_len: 7/*数据有多少列*/,
                 column_flag: true,
                 ischeck: false, /*是否有全选*/
@@ -1323,18 +758,10 @@ angular.module('app')
                     }
                 }
             },
-            tableitemaction4: {
-                $bodywrap: jq_dom.$admin_batchlist_wrap4,
-                itemaction_api: {
-                    doItemAction: function (config) {
-                        financeService.doItemAction({
-                            record: self.record,
-                            table: self.table
-                        }, config);
-                    }
-                }
-            },
-            tableitemaction5: {
+            tableitemaction4: {/*扩展--当月清算*/},
+            tableitemaction5: {/*扩展--历史清算*/},
+            tableitemaction6: {/*扩展--各运营商清算*/},
+            tableitemaction7: {
                 $bodywrap: jq_dom.$admin_batchlist_wrap5,
                 itemaction_api: {
                     doItemAction: function (config) {
@@ -1345,47 +772,6 @@ angular.module('app')
                         }, config);
                     }
                 }
-            },
-            /*全选*/
-            tablecheckall1: {
-                checkall_flag: true,
-                $bodywrap: jq_dom.$admin_batchlist_wrap1,
-                $checkall: jq_dom.$admin_finance_checkall1,
-                checkvalue: 0/*默认未选中*/,
-                checkid: []/*默认索引数据为空*/,
-                checkitem: []/*默认node数据为空*/,
-                highactive: 'item-lightenbatch',
-                checkactive: 'admin-batchitem-checkactive'
-            },
-            tablecheckall2: {
-                checkall_flag: true,
-                $bodywrap: jq_dom.$admin_batchlist_wrap2,
-                $checkall: jq_dom.$admin_finance_checkall2,
-                checkvalue: 0/*默认未选中*/,
-                checkid: []/*默认索引数据为空*/,
-                checkitem: []/*默认node数据为空*/,
-                highactive: 'item-lightenbatch',
-                checkactive: 'admin-batchitem-checkactive'
-            },
-            tablecheckall3: {
-                checkall_flag: true,
-                $bodywrap: jq_dom.$admin_batchlist_wrap3,
-                $checkall: jq_dom.$admin_finance_checkall3,
-                checkvalue: 0/*默认未选中*/,
-                checkid: []/*默认索引数据为空*/,
-                checkitem: []/*默认node数据为空*/,
-                highactive: 'item-lightenbatch',
-                checkactive: 'admin-batchitem-checkactive'
-            },
-            tablecheckall4: {
-                checkall_flag: true,
-                $bodywrap: jq_dom.$admin_batchlist_wrap4,
-                $checkall: jq_dom.$admin_finance_checkall4,
-                checkvalue: 0/*默认未选中*/,
-                checkid: []/*默认索引数据为空*/,
-                checkitem: []/*默认node数据为空*/,
-                highactive: 'item-lightenbatch',
-                checkactive: 'admin-batchitem-checkactive'
             }
         };
 
@@ -1402,6 +788,26 @@ angular.module('app')
             type: 'bonus',
             active: ''
         }];
+
+
+        /*模型--tab选项卡--选项*/
+        this.tabitem = [{
+            name: '当月',
+            power: self.powerlist.profit_details,
+            type: 'stats',
+            active: 'tabactive'
+        }, {
+            name: '历史',
+            power: self.powerlist.profit_details,
+            type: 'history',
+            active: ''
+        }, {
+            name: '运营商',
+            power: self.powerlist.profit_details,
+            type: 'organization',
+            active: ''
+        }];
+
 
 
 
@@ -1496,8 +902,11 @@ angular.module('app')
         /*条件服务--切换条件主题*/
         this.toggleTheme = function (type) {
             self.record.theme = type;
-            /*计算区域*/
-            financeService.changeView(self.record);
+            /*计算区域并执行相关操作*/
+            financeService.changeView({
+                record:self.record,
+                table:self.table
+            });
         };
 
         /*除权除息分红--操作除权除息分红表单*/

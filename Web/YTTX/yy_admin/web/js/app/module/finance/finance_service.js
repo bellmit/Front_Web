@@ -34,25 +34,43 @@ angular.module('app')
 
 
         /*视图切换服务--根据条件判断视图状态:返回一个代表类型，数字或者字符*/
-        this.changeView = function (record) {
+        this.changeView = function (config) {
+            var record = config.record;
             /*
-            通过主题切换不同视图区域
+             1-7种状态
+             1:当月分润(默认1)
+             2:历史分润
+             3:各运营商分润
+             4:当月清算--扩展
+             5:历史清算--扩展
+             6:各运营商清算--扩展
+             7:除权除息分红
              * */
             if (record.theme === 'profit') {
-                /*分润视图*/
-
-            }else if (record.theme === 'bonus') {
-                /*除权除息分红视图*/
-
+                /*分润*/
+                if (record.tab === 'current') {
+                    record.action = 1;
+                } else if (record.tab === 'history') {
+                    record.action = 2;
+                } else if (record.tab === 'organization') {
+                    record.action = 3;
+                }
             } else if (record.theme === 'clear') {
-                /*清除视图*/
+                /*清算--目前只是扩展*/
+                if (record.tab === 'current') {
+                    record.action = 4;
+                } else if (record.tab === 'history') {
+                    record.action = 5;
+                } else if (record.tab === 'organization') {
+                    record.action = 6;
+                }
+            } else if (record.theme === 'bonus') {
+                /*除权除息分红*/
+                record.action = 7;
             }
-
-            /*过滤*/
-            /*self.getColumnData(self.table, self.record);*/
+            /*查询数据*/
+            self.getColumnData(config.table, config.record);
         };
-
-
 
 
         /*除权除息分红服务--操作除权除息分红*/
@@ -248,35 +266,43 @@ angular.module('app')
 
 
             /*如果存在模型*/
-            var action = record.action,
-                temp_config = 'list_config' + action,
+            var action = record.action;
+
+            /*过滤*/
+            if (action === 4 || action === 5 || action === 6) {
+                return false;
+            }
+            var temp_config = 'list_config' + action,
                 data = $.extend(true, {}, table[temp_config].config.ajax.data),
                 temp_param;
 
             /*适配参数*/
-            if (record['organizationId'] === '') {
-                if (record['currentId'] === '') {
-                    return false;
+            if(action===3){
+                if (record['organizationId'] === '') {
+                    if (record['currentId'] === '') {
+                        return false;
+                    }
+                    data['organizationId'] = record['currentId'];
+                } else {
+                    data['organizationId'] = record['organizationId'];
                 }
-                data['organizationId'] = record['currentId'];
-            } else {
-                data['organizationId'] = record['organizationId'];
+            }else if(){
+
             }
+
 
             var temp_table,
                 temp_column,
                 temp_action,
                 temp_checkall;
 
-            if (action === 5) {
+            if (action === 7) {
+                /*除权除息分红*/
                 temp_table = 'list_table' + action;
                 temp_column = 'tablecolumn' + action;
                 temp_action = 'tableitemaction' + action;
             } else {
-                /*1-4,6参与条件查询*/
-                if (record['type'] === '') {
-                    record['type'] = 1;
-                }
+                /*1-3参与条件查询*/
                 data['type'] = record['type'];
                 if (record['searchWord'] === '') {
                     delete data['searchWord'];
@@ -816,9 +842,9 @@ angular.module('app')
                                                 if (str !== '') {
                                                     $(str).appendTo($wrap.html(''));
                                                     /*调用滚动条*/
-                                                    if(config.record.iscroll_flag){
-                                                        config.record.iscroll_flag=false;
-                                                        toolUtil.autoScroll(self.$submenu_scroll_wrap,{
+                                                    if (config.record.iscroll_flag) {
+                                                        config.record.iscroll_flag = false;
+                                                        toolUtil.autoScroll(self.$submenu_scroll_wrap, {
                                                             setWidth: false,
                                                             setHeight: 500,
                                                             theme: "minimal-dark",
