@@ -109,11 +109,13 @@ angular.module('app')
 
         };
         /*除权除息分红服务--查询除权除息分红*/
-        this.queryBonusInfo = function (config, id, action) {
+        this.queryBonusInfo = function (config) {
             if (cache === null) {
                 return false;
             }
 
+            var id = config.id,
+                action = config.action;
             if (typeof id === 'undefined') {
                 toolDialog.show({
                     type: 'warn',
@@ -122,7 +124,7 @@ angular.module('app')
                 return false;
             }
 
-            var record = config.record,
+            var record = config.model.record,
                 tempparam = cache.loginMap.param,
                 param = {
                     adminId: tempparam.adminId,
@@ -168,7 +170,7 @@ angular.module('app')
                                     if (list) {
                                         if (action === 'update') {
                                             /*修改：更新模型*/
-                                            var bonus = config.bonus;
+                                            var bonus = config.model.bonus;
 
                                             for (var i in list) {
                                                 switch (i) {
@@ -315,21 +317,6 @@ angular.module('app')
                         data['time'] = record['time'];
                     }
                 }
-                /* else if (action === 6) {
-                 /!*明细*!/
-                 var sdt = record['searchDate'];
-                 if (sdt === '') {
-                 sdt = moment().format('YYYY-MM-DD');
-                 }
-                 sdt = sdt.split('-');
-                 data['year'] = sdt[0];
-                 data['month'] = sdt[1];
-                 } else {
-                 if (record['searchDate'] === '') {
-                 delete data['year'];
-                 delete data['month'];
-                 }
-                 }*/
                 temp_table = 'list_table' + action;
                 temp_action = 'tableitemaction' + action;
             }
@@ -348,7 +335,7 @@ angular.module('app')
                     dataTableColumnService.initColumn(table[temp_column], table[temp_table]);
                 }
                 /*调用按钮操作*/
-                if (action === 2 || action === 3) {
+                if (action === 2 || action === 3 || action === 7) {
                     dataTableItemActionService.initItemAction(table[temp_action]);
                 }
             } else {
@@ -359,7 +346,7 @@ angular.module('app')
         this.filterDataTable = function (table, record) {
             if (!table && !record) {
                 return false;
-            } else if (record.action === '') {
+            } else if (record.action === 4 || record.action === 5 || record.action === 6) {
                 return false;
             }
             var temp_table = 'list_table' + record.action;
@@ -375,21 +362,15 @@ angular.module('app')
                 record = model.record,
                 record_action = record.action;
 
-            if (action === 'detail' || action === 'update') {
-                if (record_action === 5) {
-                    if (action === 'update') {
-                        /*编辑*/
-                        /*如果存在延迟任务则清除延迟任务*/
-                        self.clearFormDelay();
-                        /*通过延迟任务清空表单数据*/
-                        self.addFormDelay({
-                            type: 'bonus'
-                        });
-                    }
-                    self.queryBonusInfo(model, id, action);
-                } else if (record_action !== 6) {
+            if (action === 'order') {
+                /*查看详情和编辑操作*/
+                if (record_action === 2 || record_action === 3) {
                     /*查看订单或者详情*/
-                    self.queryDetail(model, id, action);
+                    self.queryOrder({
+                        id: id,
+                        action: action,
+                        model: model
+                    });
                 }
             } else if (action === 'clear') {
                 /*清算订单*/
@@ -401,15 +382,207 @@ angular.module('app')
                     id: id,
                     state: state
                 });
+            } else if (action === 'detail' || action === 'update') {
+                /*查看详情*/
+                if (record_action === 7) {
+                    /*除权除息分红*/
+                    if (action === 'update') {
+                        /*编辑*/
+                        /*如果存在延迟任务则清除延迟任务*/
+                        self.clearFormDelay();
+                        /*通过延迟任务清空表单数据*/
+                        self.addFormDelay({
+                            type: 'bonus'
+                        });
+                        self.queryBonusInfo({
+                            id: id,
+                            action: action,
+                            model: model
+                        });
+                    }
+                } else if (record_action === 2 || record_action === 3) {
+                    /*查看明细*/
+                    if (action === 'detail') {
+                        self.queryDetail({
+                            id: id,
+                            action: action,
+                            model: model
+                        });
+                    }
+                }
             }
         };
-        /*数据查询服务--查询详情,订单*/
-        this.queryDetail = function (model, id, action) {
+        /*数据查询服务--查询订单*/
+        this.queryOrder = function (config) {
             if (cache === null) {
                 return false;
             }
 
-            var record = model.record;
+            var record = config.model.record,
+                action = config.action,
+                id = config.id;
+
+            if (typeof id === 'undefined') {
+                /*订单详情*/
+                toolDialog.show({
+                    type: 'warn',
+                    value: '没有订单信息'
+                });
+                return false;
+            }
+
+            var tempparam = cache.loginMap.param,
+                param = {
+                    adminId: tempparam.adminId,
+                    token: tempparam.token,
+                    id: id
+                };
+
+            toolUtil
+                .requestHttp({
+                    url: '/finance/profit/detail/order'/*'json/test.json'*/,
+                    method: 'post',
+                    set: true,
+                    debug: false, /*测试开关*/
+                    data: param
+                })
+                .then(function (resp) {
+                        /*测试代码*/
+                        /*var resp=self.testGetOrderDetail();*/
+
+                        var data = resp.data,
+                            status = parseInt(resp.status, 10);
+
+                        if (status === 200) {
+                            var code = parseInt(data.code, 10),
+                                message = data.message;
+                            if (code !== 0) {
+                                if (typeof message !== 'undefined' && message !== '') {
+                                    console.log(message);
+                                } else {
+                                    console.log('请求订单数据失败');
+                                }
+
+                                if (code === 999) {
+                                    /*退出系统*/
+                                    cache = null;
+                                    toolUtil.loginTips({
+                                        clear: true,
+                                        reload: true
+                                    });
+                                }
+                            } else {
+                                /*加载数据*/
+                                var result = data.result;
+                                if (typeof result !== 'undefined') {
+                                    var list = result.list,
+                                        detail_map = {
+                                            'merchantName': '商户名称',
+                                            'merchantPhon': '手机号码',
+                                            'orderTime': '订单时间',
+                                            'orderNumber': '订单号',
+                                            'orderState': '订单状态',
+                                            'totalMoney': '订单总价',
+                                            'paymentType': '支付类型',
+                                            'goodsName': '商品名称',
+                                            'goodsPrice': '商品价格',
+                                            'quantlity': '购买数量',
+                                            'id': '序列'
+                                        },
+                                        str = '',
+                                        len=list.length,
+                                        i=0;
+                                    if (list) {
+                                        /*查看*/
+                                        var item;
+                                        for (i;i<len;i++) {
+                                            item=list[i];
+                                            if (typeof detail_map[j] !== 'undefined') {
+                                                if (j === 'orderState') {
+                                                    var temptype = parseInt(order[j], 10),
+                                                        typemap = {
+                                                            0: '待付款',
+                                                            1: '取消订单',
+                                                            6: '待发货',
+                                                            9: '待收货',
+                                                            20: '待评价',
+                                                            21: '已评价'
+                                                        };
+                                                    str += '<tr><td colspan="2" class="g-t-r">' + detail_map[j] + ':</td><td colspan="2" class="g-t-l">' + (function () {
+                                                            var tempstr;
+
+                                                            if (temptype === 0) {
+                                                                tempstr = '<div class="g-c-blue3">' + typemap[temptype] + '</div>';
+                                                            } else if (temptype === 1) {
+                                                                tempstr = '<div class="g-c-red1">' + typemap[temptype] + '</div>';
+                                                            } else if (temptype === 6 || temptype === 9 || temptype === 20) {
+                                                                tempstr = '<div class="g-c-warn">' + typemap[temptype] + '</div>';
+                                                            } else if (temptype === 21) {
+                                                                tempstr = '<div class="g-c-green1">' + typemap[temptype] + '</div>';
+                                                            } else {
+                                                                tempstr = '<div class="g-c-gray6">其他</div>';
+                                                            }
+                                                            return tempstr;
+                                                        })() + '</td></tr>';
+                                                } else if (j === 'paymentType') {
+                                                    var temppay = parseInt(order[j], 10),
+                                                        paymap = {
+                                                            1: "微信",
+                                                            2: "支付宝",
+                                                            3: "其它"
+                                                        };
+                                                    str += '<tr><td colspan="2" class="g-t-r">' + detail_map[j] + ':</td><td colspan="2" class="g-t-l">' + paymap[temppay] + '</td></tr>';
+                                                } else if (j === 'totalMoney') {
+                                                    str += '<tr><td colspan="2" class="g-t-r">' + detail_map[j] + ':</td><td colspan="2" class="g-t-l">' + toolUtil.moneyCorrect(order[j], 15, true)[0] + '</td></tr>';
+                                                } else {
+                                                    str += '<tr><td  colspan="2" class="g-t-r">' + detail_map[j] + ':</td><td colspan="2" class="g-t-l">' + order[j] + '</td></tr>';
+                                                }
+                                            }
+                                        }
+                                    }
+                                    if (details) {
+                                        var i = 0,
+                                            len = details.length;
+                                        str += '<tr><th class="g-t-c">序号</th><th class="g-t-c">商品名称</th><th class="g-t-c">商品价格</th><th class="g-t-c">购买数量</th></tr>';
+                                        if (len !== 0) {
+                                            var detailitem;
+                                            for (i; i < len; i++) {
+                                                detailitem = details[i];
+                                                str += '<tr><td class="g-t-c">' + (i + 1) + '</td><td class="g-t-c">' + detailitem["goodsName"] + '</td><td class="g-t-c">' + toolUtil.moneyCorrect(detailitem["goodsPrice"], 15, true)[0] + '</td><td class="g-t-c">' + detailitem["quantlity"] + '</td></tr>';
+                                            }
+                                        }
+                                    }
+                                    if (str !== '') {
+                                        $(str).appendTo(self.$admin_orderdetail_show.html(''));
+                                        /*显示弹窗*/
+                                        self.toggleModal({
+                                            display: 'show',
+                                            area: 'orderdetail'
+                                        });
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    function (resp) {
+                        var message = resp.data.message;
+                        if (typeof message !== 'undefined' && message !== '') {
+                            console.log(message);
+                        } else {
+                            console.log('请求订单失败');
+                        }
+                    });
+        };
+        /*数据查询服务--查询详情*/
+        this.queryDetail = function (config) {
+            if (cache === null) {
+                return false;
+            }
+
+            var record = config.model.record,
+                action = config.action,
+                id = config.id;
+
             if (typeof id === 'undefined') {
                 /*订单详情*/
                 toolDialog.show({
@@ -449,7 +622,7 @@ angular.module('app')
                                 if (typeof message !== 'undefined' && message !== '') {
                                     console.log(message);
                                 } else {
-                                    console.log('请求数据失败');
+                                    console.log('请求订单数据失败');
                                 }
 
                                 if (code === 999) {
@@ -551,7 +724,7 @@ angular.module('app')
                                         /*提示信息*/
                                         toolDialog.show({
                                             type: 'warn',
-                                            value: '获取数据失败'
+                                            value: '获取订单数据失败'
                                         });
                                     }
                                 }
@@ -1251,13 +1424,12 @@ angular.module('app')
                     message: 'ok',
                     code: 0,
                     result: Mock.mock({
-                        'list|5-15': [{
-                            "id": /[0-9]{1,2}/,
+                        'salesCount': moneyrule,
+                        'profits1Count': moneyrule,
+                        'list|5-10': [{
+                            "organizationName": /[a-z]{2,20}/,
                             "sales": moneyrule,
-                            "profits1": moneyrule,
-                            "profits2": moneyrule,
-                            "profits3": moneyrule,
-                            "state": /[0-3]{1}/
+                            "profits1": moneyrule
                         }]
                     })
                 };
@@ -1266,15 +1438,15 @@ angular.module('app')
                     message: 'ok',
                     code: 0,
                     result: Mock.mock({
-                        'list|5-15': [{
+                        'salesCount': moneyrule,
+                        'profits1Count': moneyrule,
+                        'list|2-5': [{
                             "id": /[0-9]{1,2}/,
                             "year": /((2)(0)(1)([0-7])){1}/,
                             "month": /([1-9]|11|12){1}/,
+                            "times": moment().format('YYYY-MM-DD HH:mm:ss'),
                             "sales": moneyrule,
-                            "profits1": moneyrule,
-                            "profits2": moneyrule,
-                            "profits3": moneyrule,
-                            "state": /[0-3]{1}/
+                            "profits1": moneyrule
                         }]
                     })
                 };
@@ -1283,13 +1455,13 @@ angular.module('app')
                     message: 'ok',
                     code: 0,
                     result: Mock.mock({
-                        'list|5-15': [{
+                        'salesCount': moneyrule,
+                        'profits1Count': moneyrule,
+                        'list|2-5': [{
                             "id": /[0-9]{1,2}/,
+                            "times": moment().format('YYYY-MM-DD HH:mm:ss'),
                             "sales": moneyrule,
-                            "profits": moneyrule,
-                            "cleared": moneyrule,
-                            "clearing": moneyrule,
-                            "state": /[0-3]{1}/
+                            "profits1": moneyrule
                         }]
                     })
                 };
@@ -1298,7 +1470,7 @@ angular.module('app')
                     message: 'ok',
                     code: 0,
                     result: Mock.mock({
-                        'list|5-15': [{
+                        'list|5-10': [{
                             "id": /[0-9]{1,2}/,
                             "year": /((2)(0)(1)([0-7])){1}/,
                             "month": /([1-9]|11|12){1}/,
@@ -1315,7 +1487,24 @@ angular.module('app')
                     message: 'ok',
                     code: 0,
                     result: Mock.mock({
-                        'list|5-15': [{
+                        'list|5-10': [{
+                            "id": /[0-9]{1,2}/,
+                            "shopName": /[a-zA-Z]{2,10}/,
+                            "type": /[1-3]{1}/,
+                            "sales": moneyrule,
+                            "profits1": moneyrule,
+                            "profits2": moneyrule,
+                            "profits3": moneyrule,
+                            "state": /[0-3]{1}/
+                        }]
+                    })
+                };
+            } else if (type === 'detail') {
+                res = {
+                    message: 'ok',
+                    code: 0,
+                    result: Mock.mock({
+                        'list|5-10': [{
                             "id": /[0-9]{1,2}/,
                             "shopName": /[a-zA-Z]{2,10}/,
                             "type": /[1-3]{1}/,

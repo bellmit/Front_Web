@@ -32,6 +32,7 @@ angular.module('app')
             $admin_table_checkcolumn5:''/*扩展--历史清算*/,
             $admin_table_checkcolumn6:''/*扩展--各运营商清算*/,
             $admin_table_checkcolumn7: $('#admin_table_checkcolumn7'),
+            $admin_table_checkcolumndetail: $('#admin_table_checkcolumndetail')/*明细*/,
             /*分页*/
             $admin_page_wrap1: $('#admin_page_wrap1'),
             $admin_page_wrap2: $('#admin_page_wrap2'),
@@ -40,6 +41,7 @@ angular.module('app')
             $admin_page_wrap5:''/*扩展--历史清算*/,
             $admin_page_wrap6:''/*扩展--各运营商清算*/,
             $admin_page_wrap7: $('#admin_page_wrap7'),
+            $admin_page_wrapdetail: $('#admin_page_wrapdetail')/*明细*/,
             /*列表*/
             $admin_list_wrap1: $('#admin_list_wrap1'),
             $admin_list_wrap2: $('#admin_list_wrap2'),
@@ -48,6 +50,7 @@ angular.module('app')
             $admin_list_wrap5:''/*扩展--历史清算*/,
             $admin_list_wrap6:''/*扩展--各运营商清算*/,
             $admin_list_wrap7: $('#admin_list_wrap7'),
+            $admin_list_wrapdetail: $('#admin_list_wrapdetail')/*明细*/,
             /*分组*/
             $admin_list_colgroup1: $('#admin_list_colgroup1'),
             $admin_list_colgroup2: $('#admin_list_colgroup2'),
@@ -56,6 +59,7 @@ angular.module('app')
             $admin_list_colgroup5:''/*扩展--历史清算*/,
             $admin_list_colgroup6:''/*扩展--各运营商清算*/,
             $admin_list_colgroup7: $('#admin_list_colgroup7'),
+            $admin_list_colgroupdetail: $('#admin_list_colgroupdetail')/*明细*/,
             /*表主体操作区*/
             $admin_batchlist_wrap1: $('#admin_batchlist_wrap1'),
             $admin_batchlist_wrap2: $('#admin_batchlist_wrap2'),
@@ -63,7 +67,8 @@ angular.module('app')
             $admin_batchlist_wrap4: ''/*扩展--当月清算*/,
             $admin_batchlist_wrap5: ''/*扩展--历史清算*/,
             $admin_batchlist_wrap6: ''/*扩展--各运营商清算*/,
-            $admin_batchlist_wrap7: $('#admin_batchlist_wrap7')
+            $admin_batchlist_wrap7: $('#admin_batchlist_wrap7'),
+            $admin_batchlist_wrapdetail: $('#admin_batchlist_wrapdetail')/*明细*/
             /*全选操作*/
             /*$admin_finance_checkall1: $('#admin_finance_checkall1')*/
         };
@@ -100,12 +105,12 @@ angular.module('app')
             },
             list_page2: {
                 page: 1,
-                pageSize: 10,
+                pageSize: 5,
                 total: 0
             },
             list_page3: {
                 page: 1,
-                pageSize: 10,
+                pageSize: 5,
                 total: 0
             },
             list_page4: {/*扩展--当月清算*/},
@@ -116,6 +121,24 @@ angular.module('app')
                 pageSize: 10,
                 total: 0
             },
+            list_pagedetail: {
+                page: 1,
+                pageSize: 5,
+                total: 0
+            },
+            /*汇总求和*/
+            list_total1:{
+                salesCount:''/*销售金额总计*/,
+                profits1Count:''/*分润金额总计*/
+            },
+            list_total2:{
+                salesCount:''/*销售金额总计*/,
+                profits1Count:''/*分润金额总计*/
+            },
+            list_total3:{
+                salesCount:''/*销售金额总计*/,
+                profits1Count:''/*分润金额总计*/
+            },
             /*表格配置*/
             /*当月分润*/
             list_config1: {
@@ -125,12 +148,12 @@ angular.module('app')
                     autoWidth: true, /*是否*/
                     paging: false,
                     ajax: {
-                        url: toolUtil.adaptReqUrl('/finance/profit/current')/*'json/test.json'*/,
+                        url: /*toolUtil.adaptReqUrl('/finance/profit/current')*/'json/test.json',
                         dataType: 'JSON',
                         method: 'post',
                         dataSrc: function (json) {
                             /*测试类*/
-                            /*var json=financeService.testGetFinanceList(1);*/
+                            var json=financeService.testGetFinanceList(1);
 
                             var code = parseInt(json.code, 10),
                                 message = json.message;
@@ -148,6 +171,11 @@ angular.module('app')
                                         reload: true
                                     });
                                 }
+                                $scope.$apply(function () {
+                                    /*汇总*/
+                                    self.table.list_total1.salesCount=''/*销售金额总计*/;
+                                    self.table.list_total1.profits1Count=''/*分润金额总计*/;
+                                });
                                 return [];
                             }
                             var result = json.result;
@@ -159,6 +187,11 @@ angular.module('app')
                                     pageNumber: self.table.list_page1.page,
                                     pageSize: self.table.list_page1.pageSize,
                                     total: self.table.list_page1.total
+                                });
+                                $scope.$apply(function () {
+                                    /*汇总*/
+                                    self.table.list_total1.salesCount=''/*销售金额总计*/;
+                                    self.table.list_total1.profits1Count=''/*分润金额总计*/;
                                 });
                                 return [];
                             }
@@ -185,8 +218,18 @@ angular.module('app')
 
                                 var list = result.list;
                                 if (list) {
+                                    $scope.$apply(function () {
+                                        /*汇总*/
+                                        self.table.list_total1.salesCount=toolUtil.moneyCorrect(result.salesCount, 15, false)[0]/*销售金额总计*/;
+                                        self.table.list_total1.profits1Count=toolUtil.moneyCorrect(result.profits1Count, 15, false)[0]/*分润金额总计*/;
+                                    });
                                     return list;
                                 } else {
+                                    $scope.$apply(function () {
+                                        /*汇总*/
+                                        self.table.list_total1.salesCount=''/*销售金额总计*/;
+                                        self.table.list_total1.profits1Count=''/*分润金额总计*/;
+                                    });
                                     return [];
                                 }
                             } else {
@@ -197,6 +240,11 @@ angular.module('app')
                                     pageNumber: self.table.list_page1.page,
                                     pageSize: self.table.list_page1.pageSize,
                                     total: self.table.list_page1.total
+                                });
+                                $scope.$apply(function () {
+                                    /*汇总*/
+                                    self.table.list_total1.salesCount=''/*销售金额总计*/;
+                                    self.table.list_total1.profits1Count=''/*分润金额总计*/;
                                 });
                                 return [];
                             }
@@ -237,12 +285,12 @@ angular.module('app')
                     autoWidth: true, /*是否*/
                     paging: false,
                     ajax: {
-                        url: toolUtil.adaptReqUrl('/finance/profit/history')/*'json/test.json'*/,
+                        url: /*toolUtil.adaptReqUrl('/finance/profit/history')*/'json/test.json',
                         dataType: 'JSON',
                         method: 'post',
                         dataSrc: function (json) {
                             /*测试类*/
-                            /*var json=financeService.testGetFinanceList(2);*/
+                            var json=financeService.testGetFinanceList(2);
 
                             var code = parseInt(json.code, 10),
                                 message = json.message;
@@ -260,6 +308,11 @@ angular.module('app')
                                         reload: true
                                     });
                                 }
+                                $scope.$apply(function () {
+                                    /*汇总*/
+                                    self.table.list_total2.salesCount=''/*销售金额总计*/;
+                                    self.table.list_total2.profits1Count=''/*分润金额总计*/;
+                                });
                                 return [];
                             }
                             var result = json.result;
@@ -271,6 +324,11 @@ angular.module('app')
                                     pageNumber: self.table.list_page2.page,
                                     pageSize: self.table.list_page2.pageSize,
                                     total: self.table.list_page2.total
+                                });
+                                $scope.$apply(function () {
+                                    /*汇总*/
+                                    self.table.list_total2.salesCount=''/*销售金额总计*/;
+                                    self.table.list_total2.profits1Count=''/*分润金额总计*/;
                                 });
                                 return [];
                             }
@@ -297,8 +355,18 @@ angular.module('app')
 
                                 var list = result.list;
                                 if (list) {
+                                    $scope.$apply(function () {
+                                        /*汇总*/
+                                        self.table.list_total2.salesCount=toolUtil.moneyCorrect(result.salesCount, 15, false)[0]/*销售金额总计*/;
+                                        self.table.list_total2.profits1Count=toolUtil.moneyCorrect(result.profits1Count, 15, false)[0]/*分润金额总计*/;
+                                    });
                                     return list;
                                 } else {
+                                    $scope.$apply(function () {
+                                        /*汇总*/
+                                        self.table.list_total2.salesCount=''/*销售金额总计*/;
+                                        self.table.list_total2.profits1Count=''/*分润金额总计*/;
+                                    });
                                     return [];
                                 }
                             } else {
@@ -310,12 +378,17 @@ angular.module('app')
                                     pageSize: self.table.list_page2.pageSize,
                                     total: self.table.list_page2.total
                                 });
+                                $scope.$apply(function () {
+                                    /*汇总*/
+                                    self.table.list_total2.salesCount=''/*销售金额总计*/;
+                                    self.table.list_total2.profits1Count=''/*分润金额总计*/;
+                                });
                                 return [];
                             }
                         },
                         data: {
                             page: 1,
-                            pageSize: 10
+                            pageSize: 5
                         }
                     },
                     info: false,
@@ -323,7 +396,7 @@ angular.module('app')
                     searching: true,
                     order: [[1, "desc"], [2, "desc"]],
                     columns: [{
-                            "data": "time"
+                            "data": "times"
                         },
                         {
                             "data": "sales",
@@ -345,7 +418,7 @@ angular.module('app')
 
                                 /*查看发货详情*/
                                 if (self.powerlist.profit_details) {
-                                    btns += '<span data-action="detail" data-id="' + data + '"  class="btn-operate">明细</span>';
+                                    btns += '<span data-action="detail" data-id="' + data + '" class="btn-operate">明细</span>';
                                 }
                                 return btns;
                             }
@@ -361,12 +434,12 @@ angular.module('app')
                     autoWidth: true, /*是否*/
                     paging: false,
                     ajax: {
-                        url: toolUtil.adaptReqUrl('/finance/profit/organization')/*'json/test.json'*/,
+                        url: /*toolUtil.adaptReqUrl('/finance/profit/organization')*/'json/test.json',
                         dataType: 'JSON',
                         method: 'post',
                         dataSrc: function (json) {
                             /*测试类*/
-                            /*var json=financeService.testGetFinanceList(3);*/
+                            var json=financeService.testGetFinanceList(3);
 
 
                             var code = parseInt(json.code, 10),
@@ -385,6 +458,11 @@ angular.module('app')
                                         reload: true
                                     });
                                 }
+                                $scope.$apply(function () {
+                                    /*汇总*/
+                                    self.table.list_total3.salesCount=''/*销售金额总计*/;
+                                    self.table.list_total3.profits1Count=''/*分润金额总计*/;
+                                });
                                 return [];
                             }
                             var result = json.result;
@@ -396,6 +474,11 @@ angular.module('app')
                                     pageNumber: self.table.list_page3.page,
                                     pageSize: self.table.list_page3.pageSize,
                                     total: self.table.list_page3.total
+                                });
+                                $scope.$apply(function () {
+                                    /*汇总*/
+                                    self.table.list_total3.salesCount=''/*销售金额总计*/;
+                                    self.table.list_total3.profits1Count=''/*分润金额总计*/;
                                 });
                                 return [];
                             }
@@ -422,8 +505,18 @@ angular.module('app')
 
                                 var list = result.list;
                                 if (list) {
+                                    $scope.$apply(function () {
+                                        /*汇总*/
+                                        self.table.list_total3.salesCount=toolUtil.moneyCorrect(result.salesCount, 15, false)[0]/*销售金额总计*/;
+                                        self.table.list_total3.profits1Count=toolUtil.moneyCorrect(result.profits1Count, 15, false)[0]/*分润金额总计*/;
+                                    });
                                     return list;
                                 } else {
+                                    $scope.$apply(function () {
+                                        /*汇总*/
+                                        self.table.list_total3.salesCount=''/*销售金额总计*/;
+                                        self.table.list_total3.profits1Count=''/*分润金额总计*/;
+                                    });
                                     return [];
                                 }
                             } else {
@@ -435,12 +528,17 @@ angular.module('app')
                                     pageSize: self.table.list_page3.pageSize,
                                     total: self.table.list_page3.total
                                 });
+                                $scope.$apply(function () {
+                                    /*汇总*/
+                                    self.table.list_total3.salesCount=''/*销售金额总计*/;
+                                    self.table.list_total3.profits1Count=''/*分润金额总计*/;
+                                });
                                 return [];
                             }
                         },
                         data: {
                             page: 1,
-                            pageSize: 10
+                            pageSize: 5
                         }
                     },
                     info: false,
@@ -628,6 +726,118 @@ angular.module('app')
                     ]
                 }
             },
+            /*明细*/
+            list_configdetail: {
+                config: {
+                    processing: true, /*大消耗操作时是否显示处理状态*/
+                    deferRender: true, /*是否延迟加载数据*/
+                    autoWidth: true, /*是否*/
+                    paging: false,
+                    ajax: {
+                        url: /*toolUtil.adaptReqUrl('/finance/profit/current')*/'json/test.json',
+                        dataType: 'JSON',
+                        method: 'post',
+                        dataSrc: function (json) {
+                            /*测试类*/
+                            var json=financeService.testGetFinanceList('detail');
+
+                            var code = parseInt(json.code, 10),
+                                message = json.message;
+
+                            if (code !== 0) {
+                                if (typeof message !== 'undefined' && message !== '') {
+                                    console.log(message);
+                                } else {
+                                    console.log('获取明细失败');
+                                }
+                                if (code === 999) {
+                                    /*退出系统*/
+                                    toolUtil.loginTips({
+                                        clear: true,
+                                        reload: true
+                                    });
+                                }
+                                return [];
+                            }
+                            var result = json.result;
+                            if (typeof result === 'undefined') {
+                                /*重置分页*/
+                                self.table.list_pagedetail.total = 0;
+                                self.table.list_pagedetail.page = 1;
+                                jq_dom.$admin_page_wrapdetail.pagination({
+                                    pageNumber: self.table.list_pagedetail.page,
+                                    pageSize: self.table.list_pagedetail.pageSize,
+                                    total: self.table.list_pagedetail.total
+                                });
+                                return [];
+                            }
+
+                            if (result) {
+                                /*设置分页*/
+                                self.table.list_pagedetail.total = result.count;
+                                /*分页调用*/
+                                jq_dom.$admin_page_wrapdetail.pagination({
+                                    pageNumber: self.table.list_pagedetail.page,
+                                    pageSize: self.table.list_pagedetail.pageSize,
+                                    total: self.table.list_pagedetail.total,
+                                    onSelectPage: function (pageNumber, pageSize) {
+                                        /*再次查询*/
+                                        var temp_param = self.table.list_configdetail.config.ajax.data;
+                                        self.table.list_pagedetail.page = pageNumber;
+                                        self.table.list_pagedetail.pageSize = pageSize;
+                                        temp_param['page'] = self.table.list_pagedetail.page;
+                                        temp_param['pageSize'] = self.table.list_pagedetail.pageSize;
+                                        self.table.list_configdetail.config.ajax.data = temp_param;
+                                        financeService.getColumnData(self.table, self.record);
+                                    }
+                                });
+
+                                var list = result.list;
+                                if (list) {
+                                    return list;
+                                } else {
+                                    return [];
+                                }
+                            } else {
+                                /*重置分页*/
+                                self.table.list_pagedetail.total = 0;
+                                self.table.list_pagedetail.page = 1;
+                                jq_dom.$admin_page_wrapdetail.pagination({
+                                    pageNumber: self.table.list_pagedetail.page,
+                                    pageSize: self.table.list_pagedetail.pageSize,
+                                    total: self.table.list_pagedetail.total
+                                });
+                                return [];
+                            }
+                        },
+                        data: {
+                            page: 1,
+                            pageSize: 5
+                        }
+                    },
+                    info: false,
+                    dom: '<"g-d-hidei" s>',
+                    searching: true,
+                    order: [[1, "desc"], [2, "desc"]],
+                    columns: [
+                        {
+                            "data": "organizationName"
+                        },
+                        {
+                            "data": "sales",
+                            "render": function (data, type, full, meta) {
+                                return toolUtil.moneyCorrect(data, 15, false)[0];
+                            }
+                        },
+                        {
+                            "data": "profits1",
+                            "render": function (data, type, full, meta) {
+                                return toolUtil.moneyCorrect(data, 15, false)[0];
+                            }
+                        }
+                    ]
+                }
+            },
             /*表格缓存*/
             list_table1: null,
             list_table2: null,
@@ -636,10 +846,11 @@ angular.module('app')
             list_table5: null/*扩展--历史清算*/,
             list_table6: null/*扩展--各运营商清算*/,
             list_table7: null,
+            list_tabledetail: null/*明细*/,
             /*列控制*/
-            tablecolumn1: {},
-            tablecolumn2: {},
-            tablecolumn3: {},
+            tablecolumn1: {/*暂无，需要时可参考7*/},
+            tablecolumn2: {/*暂无，需要时可参考7*/},
+            tablecolumn3: {/*暂无，需要时可参考7*/},
             tablecolumn4: {/*扩展--当月清算*/},
             tablecolumn5: {/*扩展--历史清算*/},
             tablecolumn6: {/*扩展--各运营商清算*/},
@@ -664,8 +875,9 @@ angular.module('app')
                 $column_btn: jq_dom.$admin_table_checkcolumn7.prev(),
                 $column_ul: jq_dom.$admin_table_checkcolumn7.find('ul')
             },
+            tablecolumndetail: {/*暂无，需要时可参考7*/},
             /*按钮*/
-            tableitemaction1: {},
+            tableitemaction1: {/*暂无，需要时可参考2*/},
             tableitemaction2: {
                 $bodywrap: jq_dom.$admin_batchlist_wrap2,
                 itemaction_api: {
@@ -692,13 +904,24 @@ angular.module('app')
             tableitemaction5: {/*扩展--历史清算*/},
             tableitemaction6: {/*扩展--各运营商清算*/},
             tableitemaction7: {
-                $bodywrap: jq_dom.$admin_batchlist_wrap5,
+                $bodywrap: jq_dom.$admin_batchlist_wrap7,
                 itemaction_api: {
                     doItemAction: function (config) {
                         financeService.doItemAction({
                             record: self.record,
                             table: self.table,
                             bonus: self.bonus
+                        }, config);
+                    }
+                }
+            },
+            tableitemactiondetail: {
+                $bodywrap: jq_dom.$admin_batchlist_wrapdetail,
+                itemaction_api: {
+                    doItemAction: function (config) {
+                        financeService.doItemAction({
+                            record: self.record,
+                            table: self.table
                         }, config);
                     }
                 }
@@ -724,7 +947,7 @@ angular.module('app')
         this.tabitem = [{
             name: '当月',
             power: self.powerlist.profit_details,
-            type: 'stats',
+            type: 'current',
             active: 'tabactive'
         }, {
             name: '历史',
@@ -837,6 +1060,26 @@ angular.module('app')
                 record:self.record,
                 table:self.table
             });
+        };
+        /*条件服务--切换条件主题*/
+        this.toggleTab = function (type) {
+            self.record.tab = type;
+            /*计算区域并执行相关操作*/
+            financeService.changeView({
+                record:self.record,
+                table:self.table
+            });
+        };
+        /*条件服务--切换不同的时间条件*/
+        this.toggleTime=function (e) {
+            var target=e.target,
+                node=target.nodeName.toLowerCase();
+
+            if(node==='div'){
+                return false;
+            }else if(node==='label'){
+                financeService.getColumnData(self.table,self.record);
+            }
         };
 
         /*除权除息分红--操作除权除息分红表单*/
