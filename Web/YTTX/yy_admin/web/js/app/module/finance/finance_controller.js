@@ -1100,12 +1100,10 @@ angular.module('app')
         this.toggleTime=function (e) {
             var target=e.target,
                 node=target.nodeName.toLowerCase();
-
             if(node==='div'){
                 return false;
-            }else if(node==='label'){
-                financeService.getColumnData(self.table,self.record);
             }
+            financeService.getColumnData(self.table,self.record);
         };
 
         /*除权除息分红--操作除权除息分红表单*/
