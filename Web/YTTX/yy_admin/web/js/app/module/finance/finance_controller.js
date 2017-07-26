@@ -734,7 +734,7 @@ angular.module('app')
                     autoWidth: true, /*是否*/
                     paging: false,
                     ajax: {
-                        url: /*toolUtil.adaptReqUrl('/finance/profit/current')*/'json/test.json',
+                        url: /*toolUtil.adaptReqUrl('/finance/profit/detail')*/'json/test.json',
                         dataType: 'JSON',
                         method: 'post',
                         dataSrc: function (json) {
@@ -788,7 +788,10 @@ angular.module('app')
                                         temp_param['page'] = self.table.list_pagedetail.page;
                                         temp_param['pageSize'] = self.table.list_pagedetail.pageSize;
                                         self.table.list_configdetail.config.ajax.data = temp_param;
-                                        financeService.getColumnData(self.table, self.record);
+                                        financeService.getDetailData({
+                                            table:self.table,
+                                            record:self.record
+                                        });
                                     }
                                 });
 
@@ -821,7 +824,18 @@ angular.module('app')
                     order: [[1, "desc"], [2, "desc"]],
                     columns: [
                         {
-                            "data": "organizationName"
+                            "data": "shopName"
+                        },
+                        {
+                            "data": "type",
+                            "render": function (data, type, full, meta) {
+                                var typemap={
+                                    1:'旗舰店',
+                                    2:'体验店',
+                                    3:'加盟店'
+                                };
+                                return typemap[data];
+                            }
                         },
                         {
                             "data": "sales",
@@ -833,6 +847,18 @@ angular.module('app')
                             "data": "profits1",
                             "render": function (data, type, full, meta) {
                                 return toolUtil.moneyCorrect(data, 15, false)[0];
+                            }
+                        },
+                        {
+                            "data": "id",
+                            "render": function (data, type, full, meta) {
+                                var btns = '';
+
+                                /*查看发货详情*/
+                                if (self.powerlist.profit_details) {
+                                    btns += '<span data-action="order" data-id="' + data + '"  class="btn-operate">订单明细</span>';
+                                }
+                                return btns;
                             }
                         }
                     ]
