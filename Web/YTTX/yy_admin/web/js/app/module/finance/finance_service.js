@@ -71,6 +71,40 @@ angular.module('app')
             /*查询数据*/
             self.getColumnData(config.table, config.record);
         };
+        /*视图切换服务--根据视图状态清除不同条件下缓存数据*/
+        this.clearDataByView = function (table) {
+            /*重置表数据*/
+            var detail_table=table.list_tabledetail,
+                detail_page=table.list_pagedetail,
+                detail_ajax = table.list_configdetail.config.ajax;
+
+            if (detail_page.total !== 0 && detail_table !== null) {
+                console.log('clear');
+
+                /*清除查询参数*/
+                detail_ajax.data['page'] = 1;
+                delete detail_ajax.data['id'];
+
+                /*清除表格状态*/
+                detail_table.state.clear();
+
+                /*清除表格数据*/
+                detail_table.data().length=0;
+                detail_table.clear().draw();
+
+                /*重置分页数据*/
+                self.$admin_page_wrapdetail.pagination({
+                    pageNumber:1,
+                    pageSize:5,
+                    total:0
+                });
+
+                /*重置查询参数*/
+                detail_page.page = 1;
+                detail_page.pageSize = 5;
+                detail_page.total = 0;
+            }
+        };
 
 
         /*除权除息分红服务--操作除权除息分红*/
@@ -382,7 +416,7 @@ angular.module('app')
                     id: id,
                     state: state
                 });
-            } else if (action === 'update') {
+            } else if (action === 'update' ||action === 'detail') {
                 /*查看详情*/
                 if (record_action === 7) {
                     /*除权除息分红*/
@@ -394,19 +428,19 @@ angular.module('app')
                         self.addFormDelay({
                             type: 'bonus'
                         });
-                        self.queryBonusInfo({
-                            id: id,
-                            action: action,
-                            model: model
-                        });
                     }
+                    self.queryBonusInfo({
+                        id: id,
+                        action: action,
+                        model: model
+                    });
+                }else if(record_action === 2 ||record_action === 3){
+                    /*查看明细*/
+                    self.getDetailData({
+                        table: model.table,
+                        record: model.record
+                    }, id);
                 }
-            } else if (action === 'detail') {
-                /*查看明细*/
-                self.getDetailData({
-                    table:model.table,
-                    record:model.record
-                },id);
             }
         };
         /*数据查询服务--查询订单*/
@@ -445,7 +479,7 @@ angular.module('app')
                 })
                 .then(function (resp) {
                         /*测试代码*/
-                        var resp=self.testGetFinanceList('order');
+                        var resp = self.testGetFinanceList('order');
 
                         var data = resp.data,
                             status = parseInt(resp.status, 10);
@@ -482,7 +516,7 @@ angular.module('app')
                                         for (i; i < len; i++) {
                                             item = list[i];
                                             str += '<tr><td>' + (i + 1) + '</td><td>' + item["merchantName"] + '</td><td>' + toolUtil.phoneFormat(item["merchantPhone"]) + '</td><td>' + item["orderTime"] + '</td><td>' + item["payTime"] + '</td><td>' + item["orderNumber"] + '</td><td>' + (function () {
-                                                    var tempstate = parseInt(item["orderState"],10),
+                                                    var tempstate = parseInt(item["orderState"], 10),
                                                         statemap = {
                                                             0: '待付款',
                                                             1: '取消订单',
@@ -491,7 +525,7 @@ angular.module('app')
                                                             20: '待评价',
                                                             21: '已评价'
                                                         },
-                                                        tempstr='';
+                                                        tempstr = '';
                                                     if (tempstate === 0) {
                                                         tempstr = '<div class="g-c-blue3">' + statemap[tempstate] + '</div>';
                                                     } else if (tempstate === 1) {
@@ -504,7 +538,7 @@ angular.module('app')
                                                         tempstr = '<div class="g-c-gray6">其他</div>';
                                                     }
                                                     return tempstr;
-                                                }()) + '</td><td>' +  toolUtil.moneyCorrect(item["totalMoney"], 15, true)[0] + '</td><td>' + (function () {
+                                                }()) + '</td><td>' + toolUtil.moneyCorrect(item["totalMoney"], 15, true)[0] + '</td><td>' + (function () {
                                                     var temppay = parseInt(item["paymentType"], 10),
                                                         paymap = {
                                                             1: "微信",
@@ -537,7 +571,7 @@ angular.module('app')
                     });
         };
         /*数据查询服务--获取详情*/
-        this.getDetailData = function (config,id) {
+        this.getDetailData = function (config, id) {
             if (cache === null) {
                 return false;
             } else if (!config['table'] && !config['record']) {
@@ -545,10 +579,10 @@ angular.module('app')
             }
 
             var temp_config = 'list_configdetail',
-                data = $.extend(true, {},config['table'][temp_config].config.ajax.data),
+                data = $.extend(true, {}, config['table'][temp_config].config.ajax.data),
                 temp_param,
-                temp_table='list_tabledetail',
-                temp_action='tableitemactiondetail';
+                temp_table = 'list_tabledetail',
+                temp_action = 'tableitemactiondetail';
 
             /*条件查询*/
             if (config['record']['searchWord'] === '') {
@@ -556,12 +590,12 @@ angular.module('app')
             } else {
                 data['searchWord'] = config['record']['searchWord'];
             }
-            if(typeof id==='undefined'){
-                if(typeof data['id']==='undefined'){
+            if (typeof id === 'undefined') {
+                if (typeof data['id'] === 'undefined') {
                     return false;
                 }
-            }else{
-                data['id']=id;
+            } else {
+                data['id'] = id;
             }
 
             /*参数赋值*/
@@ -700,6 +734,7 @@ angular.module('app')
             }, type === 'base' ? '是否真要清算数据' : '是否真要批量清算数据', true);
 
         };
+
 
         /*弹出层服务*/
         this.toggleModal = function (config, fn) {
@@ -1306,7 +1341,7 @@ angular.module('app')
             } else if (type === 'order') {
                 res = {
                     status: 200,
-                    data:{
+                    data: {
                         message: 'ok',
                         code: 0,
                         result: Mock.mock({
@@ -1339,9 +1374,9 @@ angular.module('app')
                     })
                 };
             }
-            if(res['result']){
+            if (res['result']) {
                 res['result']['count'] = 30;
-            }else if(res['data']){
+            } else if (res['data']) {
                 res['data']['result']['count'] = 30;
             }
 
