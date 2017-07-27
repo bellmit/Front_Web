@@ -538,7 +538,7 @@ angular.module('app')
                                                         tempstr = '<div class="g-c-gray6">其他</div>';
                                                     }
                                                     return tempstr;
-                                                }()) + '</td><td>' + toolUtil.moneyCorrect(item["totalMoney"], 15, true)[0] + '</td><td>' + (function () {
+                                                }()) + '</td><td>' + toolUtil.moneyCorrect(item["totalMoney"], 15, false)[0] + '</td><td>' + (function () {
                                                     var temppay = parseInt(item["paymentType"], 10),
                                                         paymap = {
                                                             1: "微信",
