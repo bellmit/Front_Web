@@ -9,6 +9,8 @@ angular.module('app')
 
         /*jquery dom缓存:主要是切换路由时，创建的dom缓存引用与现有的dom引用不一致，需要加载视图更新现有dom引用*/
         var jq_dom = {
+            $submenu_scroll_wrap1:$('#submenu_scroll_wrap1'),
+            $submenu_scroll_wrap2:$('#submenu_scroll_wrap2'),
             $admin_struct_submenu: $('#admin_struct_submenu'),
             $admin_struct_list: $('#admin_struct_list'),
             $admin_struct_dialog: $('#admin_struct_dialog'),
@@ -59,6 +61,7 @@ angular.module('app')
         /*模型--操作记录*/
         this.record = {
             /*分仓*/
+            iscroll_flag1:true/*是否开启滚动条调用*/,
             searchactive1: ''/*搜索激活状态(菜单栏搜索)*/,
             searchname1: ''/*搜索关键词(菜单栏搜索)*/,
             prev1: null/*上一次操作记录*/,
@@ -70,6 +73,7 @@ angular.module('app')
             organizationName: ''/*操作名称*/,
             layer1: 0/*操作层*/,
             /*运营商*/
+            iscroll_flag2:true/*是否开启滚动条调用*/,
             searchactive2: ''/*搜索激活状态(菜单栏搜索)*/,
             searchname2: ''/*搜索关键词(菜单栏搜索)*/,
             prev2: null/*上一次操作记录*/,

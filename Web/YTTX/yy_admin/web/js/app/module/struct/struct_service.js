@@ -2055,61 +2055,6 @@ angular.module('app')
                         }
                     });
                 }
-                /*powerService.reqUserPowerList({
-                 source: true, /!*是否获取数据源*!/
-                 sourcefn: function (ps) {
-                 /!*数据源*!/
-                 var child_data,
-                 parent_data = ps;
-
-                 if (parent_data !== null) {
-                 /!*存在数据源*!/
-                 powerService.reqUserPowerList({
-                 source: true, /!*是否获取数据源*!/
-                 sourcefn: function (cs) {
-                 /!*数据源*!/
-                 child_data = cs;
-                 if (child_data !== null) {
-                 /!*存在数据源，开始过滤权限数据*!/
-                 var filter_data = powerService.filterPower(parent_data, child_data);
-                 if (filter_data) {
-                 /!*过滤后的数据即映射到视图*!/
-                 var power_html = powerService.resolvePowerList({
-                 menu: filter_data
-                 });
-                 /!*更新模型*!/
-                 if (power_html) {
-                 $(power_html).appendTo(self.$power_tbody.html(''));
-                 }
-                 } else {
-                 toolDialog.show({
-                 type: 'warn',
-                 value: '过滤后的权限数据不正确'
-                 });
-                 return false;
-                 }
-                 } else {
-                 /!*提示信息*!/
-                 toolDialog.show({
-                 type: 'warn',
-                 value: '没有子级权限数据'
-                 });
-                 return false;
-                 }
-                 },
-                 organizationId: cid
-                 });
-                 } else {
-                 /!*提示信息*!/
-                 toolDialog.show({
-                 type: 'warn',
-                 value: '没有父级权限数据'
-                 });
-                 return false;
-                 }
-                 },
-                 organizationId: pid
-                 });*/
             }
 
         };

@@ -296,37 +296,6 @@
       background: @color-red1;
     }
   }
-  /*带选中组件的子菜单*/
-  .sub-menu-checkbox {
-    float: left;
-    .layout-relative-base();
-    vertical-align: middle;
-    display: inline-block;
-    min-width: 20px;
-    max-width: 60px;
-    margin: 0 2px;
-    padding: 0 3px 0 5px;
-    height: 30px;
-    line-height: 30px;
-    cursor: pointer;
-    color: @color-gray6;
-    .user-select-base();
-    text-align: center;
-    &:hover {
-      color: @color-red1;
-    }
-    &:after {
-      font-size: @font-size-base;
-      font-family: 'ux_six';
-      content: '\e662';
-    }
-  }
-  .sub-menu-checkboxactive {
-    color: @color-red1 !important;
-    &:after {
-      content: '\e663';
-    }
-  }
 
   /*按钮组*/
   .sub-btn-wrap {
@@ -365,6 +334,39 @@
 
 }
 
+/*带选中组件的子菜单*/
+.sub-menu-checkbox {
+  float: left;
+  .layout-relative-base();
+  vertical-align: middle;
+  display: inline-block;
+  min-width: 20px;
+  max-width: 60px;
+  margin: 0 2px;
+  padding: 0 3px 0 5px;
+  height: 30px;
+  line-height: 30px;
+  cursor: pointer;
+  color: @color-gray6;
+  .user-select-base();
+  text-align: center;
+  &:hover {
+    color: @color-red1;
+  }
+  &:after {
+    font-size: @font-size-base;
+    font-family: 'ux_six';
+    content: '\e662';
+  }
+}
+
+.sub-menu-checkboxactive {
+  color: @color-red1 !important;
+  &:after {
+    content: '\e663';
+  }
+}
+
 .struct-side-widget {
   /*搜索组件*/
   .sub-search-wrap {
@@ -380,8 +382,6 @@
   /*子菜单*/
   .sub-menu-wrap {
     border: 1px solid @color-gray13;
-    max-height: 800px;
-    overflow-y: auto;
     li {
       a {
         color: @color-gray3;
@@ -392,6 +392,14 @@
     }
     .sub-menuactive {
       background: @color-gray14;
+    }
+    > li,
+    li ul > li:last-child:after {
+      clear: both;
+      content: '';
+      width: 100%;
+      height: 0;
+      display: table;
     }
   }
 }

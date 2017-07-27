@@ -4,10 +4,10 @@
  * 路由跳转
  */
 angular.module('app')
-    .run(['$rootScope','$state','$stateParams',function ($rootScope,$state,$stateParams) {
-         $rootScope.$state = $state;
-         $rootScope.$stateParams = $stateParams;
-     }]).config(['$stateProvider', '$urlRouterProvider',
+    .run(['$rootScope', '$state', '$stateParams', function ($rootScope, $state, $stateParams) {
+        $rootScope.$state = $state;
+        $rootScope.$stateParams = $stateParams;
+    }]).config(['$stateProvider', '$urlRouterProvider',
         function ($stateProvider, $urlRouterProvider) {
             /*异常路径路由到主页*/
             $urlRouterProvider.otherwise('app');
@@ -21,7 +21,7 @@ angular.module('app')
                         /*延迟加载，依赖相关组件*/
                         deps: ['$ocLazyLoad',
                             function ($ocLazyLoad) {
-                                return $ocLazyLoad.load(['js/app/directives/index.js','js/app/module/index/index_controller.js']);
+                                return $ocLazyLoad.load(['js/app/directives/index.js', 'js/app/module/index/index_controller.js']);
                             }]
                     }
                 })
@@ -33,7 +33,8 @@ angular.module('app')
                         deps: ['$ocLazyLoad',
                             function ($ocLazyLoad) {
                                 return $ocLazyLoad.load(['js/plugins/pagination/pagination.js',
-                                    'js/app/services/address/address_service.js','js/app/module/organization/organization_service.js','js/app/module/organization/organization_controller.js']);
+                                    'js/plugins/CustomScrollbar/customScrollbar.concat.min.js',
+                                    'js/app/services/address/address_service.js', 'js/app/module/organization/organization_service.js', 'js/app/module/organization/organization_controller.js']);
                             }]
                     }
                 })
@@ -47,6 +48,7 @@ angular.module('app')
                                 return $ocLazyLoad.load(['js/plugins/datatables/dataTables.bootstrap.css',
                                     'js/plugins/datatables/js/jquery.dataTables.js',
                                     'js/plugins/pagination/pagination.js',
+                                    'js/plugins/CustomScrollbar/customScrollbar.concat.min.js',
                                     'js/app/services/datatable/datatable_column_service.js',
                                     'js/app/services/datatable/datatable_checkall_service.js',
                                     'js/app/services/address/address_service.js',
@@ -66,6 +68,7 @@ angular.module('app')
                                 return $ocLazyLoad.load(['js/plugins/datatables/dataTables.bootstrap.css',
                                     'js/plugins/datatables/js/jquery.dataTables.js',
                                     'js/plugins/pagination/pagination.js',
+                                    'js/plugins/CustomScrollbar/customScrollbar.concat.min.js',
                                     'js/app/services/datatable/datatable_column_service.js',
                                     'js/app/services/datatable/datatable_itemaction_service.js',
                                     'js/plugins/My97DatePicker/WdatePicker.js',
@@ -86,6 +89,7 @@ angular.module('app')
                                 return $ocLazyLoad.load(['js/plugins/datatables/dataTables.bootstrap.css',
                                     'js/plugins/datatables/js/jquery.dataTables.js',
                                     'js/plugins/pagination/pagination.js',
+                                    'js/plugins/CustomScrollbar/customScrollbar.concat.min.js',
                                     'js/app/services/datatable/datatable_column_service.js',
                                     'js/app/services/datatable/datatable_itemaction_service.js',
                                     'js/plugins/My97DatePicker/WdatePicker.js',
@@ -106,6 +110,7 @@ angular.module('app')
                                 return $ocLazyLoad.load(['js/plugins/datatables/dataTables.bootstrap.css',
                                     'js/plugins/datatables/js/jquery.dataTables.js',
                                     'js/plugins/pagination/pagination.js',
+                                    'js/plugins/CustomScrollbar/customScrollbar.concat.min.js',
                                     'js/app/services/datatable/datatable_column_service.js',
                                     'js/app/services/datatable/datatable_itemaction_service.js',
                                     'js/plugins/My97DatePicker/WdatePicker.js',
@@ -126,6 +131,7 @@ angular.module('app')
                                 return $ocLazyLoad.load(['js/plugins/datatables/dataTables.bootstrap.css',
                                     'js/plugins/datatables/js/jquery.dataTables.js',
                                     'js/plugins/pagination/pagination.js',
+                                    'js/plugins/CustomScrollbar/customScrollbar.concat.min.js',
                                     'js/app/services/datatable/datatable_column_service.js',
                                     'js/app/services/datatable/datatable_itemaction_service.js',
                                     'js/plugins/My97DatePicker/WdatePicker.js',

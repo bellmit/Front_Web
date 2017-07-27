@@ -269,7 +269,18 @@ angular.module('app')
                                                                 'data-list': true
                                                             });
                                                         }
-                                                        $(str).appendTo($wrap.html(''));
+                                                        $(str).appendTo($wrap.html(''));/*调用滚动条*/
+                                                        if (record.iscroll_flag1) {
+                                                            record.iscroll_flag1 = false;
+                                                            toolUtil.autoScroll(self.$submenu_scroll_wrap1, {
+                                                                setWidth: false,
+                                                                setHeight: 450,
+                                                                theme: "minimal-dark",
+                                                                axis: "y",
+                                                                scrollbarPosition: "inside",
+                                                                scrollInertia: '500'
+                                                            });
+                                                        }
                                                     } else {
                                                         record.hasdata1 = false;
                                                         if (layer === 0) {
@@ -297,7 +308,18 @@ angular.module('app')
                                                         /*执行初始化操作*/
                                                         self.initOSModel({
                                                             record: config.record
-                                                        })
+                                                        });
+                                                        if (record.iscroll_flag2) {
+                                                            record.iscroll_flag2 = false;
+                                                            toolUtil.autoScroll(self.$submenu_scroll_wrap2, {
+                                                                setWidth: false,
+                                                                setHeight: 600,
+                                                                theme: "minimal-dark",
+                                                                axis: "y",
+                                                                scrollbarPosition: "inside",
+                                                                scrollInertia: '500'
+                                                            });
+                                                        }
                                                     } else {
                                                         record.hasdata2 = false;
                                                         /*清除模型，重置模型*/
@@ -836,67 +858,72 @@ angular.module('app')
                                                         if (temp_power === 0) {
                                                             struct['checkedFunctionIds'] = '';
                                                         } else if (temp_power === 1) {
-                                                            /*初始化权限全选*/
-                                                            powerService.clearHeaderPower();
                                                             /*指定权限时需要查询权限*/
                                                             /*查询权限--原始方案：先查询当前权限(子级权限) --> 再查父级权限  --> 存在父子级权限，过滤子级权限，
                                                              * 后来方案：先查父级权限 --> 再查询当前权限(子级权限)  --> 存在父子级权限，过滤子级权限*/
-                                                            powerService.reqPowerList({
-                                                                source: true, /*是否获取数据源*/
-                                                                sourcefn: function (ps) {
-                                                                    /*数据源*/
-                                                                    var child_data,
-                                                                        parent_data = ps;
+                                                            (function () {
+                                                                /*初始化权限全选*/
+                                                                var tempparam = cache.loginMap.param;
+                                                                powerService.clearHeaderPower();
+                                                                powerService.reqUserPowerList({
+                                                                    url: '/organization/permission/select',
+                                                                    source: true, /*是否获取数据源*/
+                                                                    sourcefn: function (ps) {
+                                                                        /*数据源*/
+                                                                        var child_data,
+                                                                            parent_data = ps;
 
-                                                                    if (parent_data !== null) {
-                                                                        /*存在数据源*/
-                                                                        powerService.reqPowerList({
-                                                                            source: true, /*是否获取数据源*/
-                                                                            sourcefn: function (cs) {
-                                                                                /*数据源*/
-                                                                                child_data = cs;
+                                                                        if (parent_data !== null) {
+                                                                            /*存在数据源*/
+                                                                            powerService.reqUserPowerList({
+                                                                                url: '/organization/permission/select',
+                                                                                source: true, /*是否获取数据源*/
+                                                                                sourcefn: function (cs) {
+                                                                                    /*数据源*/
+                                                                                    child_data = cs;
 
-                                                                                if (child_data !== null) {
-                                                                                    /*存在数据源，开始过滤权限数据*/
-                                                                                    var filter_data = powerService.filterPower(parent_data, child_data);
-                                                                                    if (filter_data) {
-                                                                                        /*过滤后的数据即映射到视图*/
-                                                                                        var power_html = powerService.resolvePowerList({
-                                                                                            menu: filter_data
-                                                                                        });
-                                                                                        /*更新模型*/
-                                                                                        if (power_html) {
-                                                                                            $(power_html).appendTo(self.$power_tbody.html(''));
+                                                                                    if (child_data !== null) {
+                                                                                        /*存在数据源，开始过滤权限数据*/
+                                                                                        var filter_data = powerService.filterPower(parent_data, child_data);
+                                                                                        if (filter_data) {
+                                                                                            /*过滤后的数据即映射到视图*/
+                                                                                            var power_html = powerService.resolvePowerList({
+                                                                                                menu: filter_data
+                                                                                            });
+                                                                                            /*更新模型*/
+                                                                                            if (power_html) {
+                                                                                                $(power_html).appendTo(self.$power_tbody.html(''));
+                                                                                            }
+                                                                                        } else {
+                                                                                            toolDialog.show({
+                                                                                                type: 'warn',
+                                                                                                value: '过滤后的权限数据不正确'
+                                                                                            });
+                                                                                            return false;
                                                                                         }
                                                                                     } else {
-                                                                                        toolDialog.show({
-                                                                                            type: 'warn',
-                                                                                            value: '过滤后的权限数据不正确'
-                                                                                        });
-                                                                                        return false;
+                                                                                        /*不存在则调用父权限*/
+                                                                                        self.doItemPower(list['parentId']);
                                                                                     }
-                                                                                } else {
-                                                                                    /*提示信息*/
-                                                                                    toolDialog.show({
-                                                                                        type: 'warn',
-                                                                                        value: '没有子级权限数据'
-                                                                                    });
-                                                                                    return false;
+                                                                                },
+                                                                                param: {
+                                                                                    token: tempparam.token,
+                                                                                    adminId: tempparam.adminId,
+                                                                                    organizationId: list['id']
                                                                                 }
-                                                                            },
-                                                                            organizationId: list['id']
-                                                                        });
-                                                                    } else {
-                                                                        /*提示信息*/
-                                                                        toolDialog.show({
-                                                                            type: 'warn',
-                                                                            value: '没有父级权限数据'
-                                                                        });
-                                                                        return false;
+                                                                            });
+                                                                        } else {
+                                                                            /*不存在则调用父权限*/
+                                                                            self.doItemPower();
+                                                                        }
+                                                                    },
+                                                                    param: {
+                                                                        token: tempparam.token,
+                                                                        adminId: tempparam.adminId,
+                                                                        organizationId: list['parentId']
                                                                     }
-                                                                },
-                                                                organizationId: list['parentId']
-                                                            });
+                                                                });
+                                                            }());
                                                         }
                                                     } else if (temp_login === 0) {
                                                         /*未设置*/
@@ -947,6 +974,36 @@ angular.module('app')
                             console.log('请求分仓失败');
                         }
                     });
+        };
+
+
+        /*权限服务--调用父权限*/
+        this.doItemPower = function (id) {
+            /*不存在则调用父权限*/
+            var tempparam = cache.loginMap.param,
+                organiztionid;
+
+            if(typeof id==='undefined'){
+                if(tempparam.organizationId !== ''){
+                    organiztionid=tempparam.organizationId;
+                }else{
+                    toolDialog.show({
+                        type: 'warn',
+                        value: '没有父级权限数据'
+                    });
+                    return false;
+                }
+            }else{
+                organiztionid=id;
+            }
+            powerService.reqUserPowerList({
+                url: '/organization/permission/select',
+                param: {
+                    token: tempparam.token,
+                    adminId: tempparam.adminId,
+                    organizationId: organiztionid
+                }
+            });
         };
 
 
@@ -1285,7 +1342,8 @@ angular.module('app')
         /*表单类服务--权限服务--切换所选权限*/
         this.toggleSelectPower = function (config) {
             var struct = config.struct,
-                record = config.record;
+                record = config.record,
+                tempparam = cache.loginMap.param;
 
             /*重置权限选中权限Ids*/
             struct.checkedFunctionIds = '';
@@ -1302,67 +1360,78 @@ angular.module('app')
                     var tempid = self.getPCParams(record);
                     cid = tempid.cid;
                     pid = tempid.pid;
+                    powerService.reqUserPowerList({
+                        url: '/organization/permission/select',
+                        param: {
+                            token: tempparam.token,
+                            adminId: tempparam.adminId,
+                            organizationId: pid
+                        }
+                    });
                 } else if (type === 'edit') {
                     /*编辑时查询权限*/
                     cid = struct.id;
                     pid = struct.parentId;
-                }
+                    powerService.reqUserPowerList({
+                        url: '/organization/permission/select',
+                        source: true, /*是否获取数据源*/
+                        sourcefn: function (ps) {
+                            /*数据源*/
+                            var child_data,
+                                parent_data = ps;
 
-                powerService.reqPowerList({
-                    source: true, /*是否获取数据源*/
-                    sourcefn: function (ps) {
-                        /*数据源*/
-                        var child_data,
-                            parent_data = ps;
+                            if (parent_data !== null) {
+                                /*存在数据源*/
+                                powerService.reqUserPowerList({
+                                    url: '/organization/permission/select',
+                                    source: true, /*是否获取数据源*/
+                                    sourcefn: function (cs) {
+                                        /*数据源*/
+                                        child_data = cs;
 
-                        if (parent_data !== null) {
-                            /*存在数据源*/
-                            powerService.reqPowerList({
-                                source: true, /*是否获取数据源*/
-                                sourcefn: function (cs) {
-                                    /*数据源*/
-                                    child_data = cs;
-                                    if (child_data !== null) {
-                                        /*存在数据源，开始过滤权限数据*/
-                                        var filter_data = powerService.filterPower(parent_data, child_data);
-                                        if (filter_data) {
-                                            /*过滤后的数据即映射到视图*/
-                                            var power_html = powerService.resolvePowerList({
-                                                menu: filter_data
-                                            });
-                                            /*更新模型*/
-                                            if (power_html) {
-                                                $(power_html).appendTo(self.$power_tbody.html(''));
+                                        if (child_data !== null) {
+                                            /*存在数据源，开始过滤权限数据*/
+                                            var filter_data = powerService.filterPower(parent_data, child_data);
+                                            if (filter_data) {
+                                                /*过滤后的数据即映射到视图*/
+                                                var power_html = powerService.resolvePowerList({
+                                                    menu: filter_data
+                                                });
+                                                /*更新模型*/
+                                                if (power_html) {
+                                                    $(power_html).appendTo(self.$power_tbody.html(''));
+                                                }
+                                            } else {
+                                                toolDialog.show({
+                                                    type: 'warn',
+                                                    value: '过滤后的权限数据不正确'
+                                                });
+                                                return false;
                                             }
                                         } else {
-                                            toolDialog.show({
-                                                type: 'warn',
-                                                value: '过滤后的权限数据不正确'
-                                            });
+                                            /*不存在则调用父权限*/
+                                            self.doItemPower(pid);
                                             return false;
                                         }
-                                    } else {
-                                        /*提示信息*/
-                                        toolDialog.show({
-                                            type: 'warn',
-                                            value: '没有子级权限数据'
-                                        });
-                                        return false;
+                                    },
+                                    param: {
+                                        token: tempparam.token,
+                                        adminId: tempparam.adminId,
+                                        organizationId: cid
                                     }
-                                },
-                                organizationId: cid
-                            });
-                        } else {
-                            /*提示信息*/
-                            toolDialog.show({
-                                type: 'warn',
-                                value: '没有父级权限数据'
-                            });
-                            return false;
+                                });
+                            } else {
+                                /*不存在则调用父权限*/
+                                self.doItemPower();
+                            }
+                        },
+                        param: {
+                            token: tempparam.token,
+                            adminId: tempparam.adminId,
+                            organizationId: pid
                         }
-                    },
-                    organizationId: pid
-                });
+                    });
+                }
             }
 
         };

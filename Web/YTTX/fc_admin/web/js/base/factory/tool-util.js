@@ -731,14 +731,14 @@
         };
         //自动补全纠错人民币(字符串,最大数位,是否可以返回为空)，返回一个数组['格式化后的数据',带小数点的未格式化数据]
         tools.moneyCorrect = function (str, max, flag) {
-            if(typeof str==='undefined' || str===null){
-                if(flag){
-                    return ['',''];
-                }else{
-                    return ['0.00','0.00'];
+            if (typeof str === 'undefined' || str === null) {
+                if (flag) {
+                    return ['', ''];
+                } else {
+                    return ['0.00', '0.00'];
                 }
             }
-            
+
             var self = this,
                 money = this.trimSep(str.toString(), ','),
                 moneyarr,
@@ -1152,6 +1152,20 @@
                 }
             }
             return ispower;
+        };
+
+        /*调用滚动条*/
+        tools.autoScroll = function ($wrap, config) {
+            /*是否存在节点，是否*/
+            if (!$wrap) {
+                return false;
+            }
+            /*调用*/
+            if (config) {
+                $wrap.mCustomScrollbar(config);
+            } else {
+                $wrap.mCustomScrollbar();
+            }
         };
 
         /*登陆接口*/
