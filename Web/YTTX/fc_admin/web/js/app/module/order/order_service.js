@@ -29,7 +29,10 @@ angular.module('app')
         this.getCurrentPower=function () {
             return init_power;
         };
-
+        /*扩展服务--退出系统*/
+        this.loginOut = function () {
+            loginService.outAction();
+        };
 
         /*数据查询服务--请求数据--获取表格数据*/
         this.getColumnData=function (table,record){
@@ -314,7 +317,7 @@ angular.module('app')
             if(islogin){
                 var logininfo=cache.loginMap;
                 record['currentId']=logininfo.param.organizationId;
-                record['currentName']=logininfo.username;
+                record['currentName']=!logininfo.param.organizationName ?logininfo.username:decodeURIComponent(logininfo.param.organizationName);
             }else{
                 /*退出系统*/
                 cache=null;
@@ -401,6 +404,18 @@ angular.module('app')
                                                 });
                                                 if(str!==''){
                                                     $(str).appendTo($wrap.html(''));
+                                                    /*调用滚动条*/
+                                                    if(config.record.iscroll_flag){
+                                                        config.record.iscroll_flag=false;
+                                                        toolUtil.autoScroll(self.$submenu_scroll_wrap,{
+                                                            setWidth: false,
+                                                            setHeight: 600,
+                                                            theme: "minimal-dark",
+                                                            axis: "y",
+                                                            scrollbarPosition: "inside",
+                                                            scrollInertia: '500'
+                                                        });
+                                                    }
                                                 }
                                                 if(layer!==0 && config.$reqstate){
                                                     config.$reqstate.attr({
@@ -590,29 +605,29 @@ angular.module('app')
         /*测试服务--获取订单列表*/
         this.testGetOrderDetail=function () {
             return {
-                 status:200,
-                     data:{
-                     message:'ok',
-                     code:0,
-                     result:Mock.mock({
-                         'order|1':[{
-                             "id":/[0-9]{1,2}/,
-                             "merchantName":/[0-9a-zA-Z]{2,10}/,
-                             "merchantPhone":/(^(13[0-9]|15[012356789]|18[0-9]|14[57]|170)[0-9]{8}$){1}/,
-                             "orderTime":moment().format('YYYY-MM-DD HH:mm:ss'),
-                             "orderNumber":/[0-9a-zA-Z]{18}/,
-                             "orderState":/(0|1|6|9|20|21|[2-5]){1}/,
-                             "totalMoney":/(^(([1-9]{1}\d{0,8})|0)((\.{0}(\d){0})|(\.{1}(\d){2}))$){1}/,
-                             "paymentType":/[1-3]{1}/
-                         }],
-                         'details|1-10':[{
-                             "id":/[0-9]{1,2}/,
-                             "goodsName":/[0-9a-zA-Z]{2,10}/,
-                             "goodsPrice":/(^(([1-9]{1}\d{0,8})|0)((\.{0}(\d){0})|(\.{1}(\d){2}))$){1}/,
-                             "quantlity":/[0-9]{1,2}/
-                         }]
-                     })
-                 }
-             };
+                status:200,
+                data:{
+                    message:'ok',
+                    code:0,
+                    result:Mock.mock({
+                        'order|1':[{
+                            "id":/[0-9]{1,2}/,
+                            "merchantName":/[0-9a-zA-Z]{2,10}/,
+                            "merchantPhone":/(^(13[0-9]|15[012356789]|18[0-9]|14[57]|170)[0-9]{8}$){1}/,
+                            "orderTime":moment().format('YYYY-MM-DD HH:mm:ss'),
+                            "orderNumber":/[0-9a-zA-Z]{18}/,
+                            "orderState":/(0|1|6|9|20|21|[2-5]){1}/,
+                            "totalMoney":/(^(([1-9]{1}\d{0,8})|0)((\.{0}(\d){0})|(\.{1}(\d){2}))$){1}/,
+                            "paymentType":/[1-3]{1}/
+                        }],
+                        'details|1-10':[{
+                            "id":/[0-9]{1,2}/,
+                            "goodsName":/[0-9a-zA-Z]{2,10}/,
+                            "goodsPrice":/(^(([1-9]{1}\d{0,8})|0)((\.{0}(\d){0})|(\.{1}(\d){2}))$){1}/,
+                            "quantlity":/[0-9]{1,2}/
+                        }]
+                    })
+                }
+            };
         };
     }]);

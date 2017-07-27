@@ -4,8 +4,7 @@ angular.module('app')
         /*获取缓存数据*/
         var self=this,
             module_id=30/*模块id*/,
-            cache=loginService.getCache(),
-            isscroll_flag=true;
+            cache=loginService.getCache();
 
         var powermap=powerService.getCurrentPower(module_id);
 

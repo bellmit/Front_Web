@@ -112,12 +112,14 @@ angular.module('login.service', [])
             if (!cache.cacheMap.menuload) {
                 toolUtil
                     .requestHttp({
-                        url: '/module/menu',
+                        url: /*'/module/menu'*/'json/test.json',
                         method: 'post',
+                        debug: true, /*测试开关*/
                         set: true,
                         data: cache.loginMap.param
                     })
                     .then(function (resp) {
+                            var resp = testService.testMenu();/*测试菜单*/
                             var data = resp.data,
                                 status = parseInt(resp.status, 10);
                             if (status === 200) {

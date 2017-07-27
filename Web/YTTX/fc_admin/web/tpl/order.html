@@ -85,12 +85,14 @@
 
         <div class="struct-layout-side">
             <!--子菜单组件-->
-            <ul class="sub-menu-wrap">
-                <li>
-                    <a class="sub-menu-title sub-menu-titleactive" data-parentid="" data-id="order_ctrl.record.currentId" data-layer="0" ng-click="order_ctrl.initSubMenu()">{{order_ctrl.record.currentName}}</a>
-                    <ul class="g-d-showi ui-sub-menu" ng-click="order_ctrl.toggleSubMenu($event)" id="admin_order_submenu" ng-init="order_ctrl.initSubMenu()"></ul>
-                </li>
-            </ul>
+            <div id="submenu_scroll_wrap">
+                <ul class="sub-menu-wrap">
+                    <li>
+                        <a class="sub-menu-title sub-menu-titleactive" data-parentid="" data-id="order_ctrl.record.currentId" data-layer="0" ng-click="order_ctrl.initSubMenu()">{{order_ctrl.record.currentName}}</a>
+                        <ul class="g-d-showi ui-sub-menu" ng-click="order_ctrl.toggleSubMenu($event)" id="admin_order_submenu" ng-init="order_ctrl.initSubMenu()"></ul>
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
 
@@ -121,45 +123,9 @@
                     <div class="clearfix"></div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-info" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-red" data-dismiss="modal">关闭</button>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -9,6 +9,7 @@ angular.module('app')
 
         /*jquery dom缓存:主要是切换路由时，创建的dom缓存引用与现有的dom引用不一致，需要加载视图更新现有dom引用*/
         var jq_dom={
+            $submenu_scroll_wrap:$('#submenu_scroll_wrap'),
             $admin_order_submenu:$('#admin_order_submenu'),
             $admin_table_checkcolumn:$('#admin_table_checkcolumn'),
             $admin_page_wrap:$('#admin_page_wrap'),
@@ -27,6 +28,7 @@ angular.module('app')
 
         /*模型--操作记录*/
         this.record={
+            iscroll_flag:true/*是否开启滚动条调用*/,
             filter:'',
             startTime:'',
             endTime:'',
@@ -72,7 +74,7 @@ angular.module('app')
                                 }
                                 if(code===999){
                                     /*退出系统*/
-                                    console.log('退出系统');
+                                    orderService.loginOut();
                                 }
                                 return [];
                             }
@@ -209,13 +211,13 @@ angular.module('app')
                             /*to do*/
                             "data":"id",
                             "render":function(data, type, full, meta ){
-                                 var btns='';
+                                var btns='';
 
-                                 /*查看订单*/
-                                 if(self.powerlist.order_details){
+                                /*查看订单*/
+                                if(self.powerlist.order_details){
                                     btns+='<span data-action="detail" data-id="'+data+'"  class="btn-operate">查看</span>';
-                                 }
-                                 return btns;
+                                }
+                                return btns;
                             }
                         }
                     ]

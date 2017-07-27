@@ -136,7 +136,7 @@
                     <div class="clearfix"></div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-red" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-info" data-dismiss="modal">关闭</button>
                 </div>
             </div>
         </div>
@@ -183,7 +183,7 @@
                     <div class="clearfix"></div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-red" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-info" data-dismiss="modal">关闭</button>
                 </div>
             </div>
         </div>
@@ -202,30 +202,23 @@
                     </div>
 
                     <!--左侧操作区域-->
-                    <div class="struct-side-widget g-f-l g-gap-mt8 g-gap-mb6 g-w-percent16">
+                    <div class="struct-side-widget g-f-l g-gap-mt8 g-gap-mb6 g-w-percent18">
                         <div class="admin-layout-theme4"><span class="mini-icon admin-mini-icon2"></span>&nbsp;机构信息</div>
-
-                        <!--搜索组件-->
-                        <div class="sub-search-wrap ui-sub-search g-clear-pl g-clear-pr" data-active="organizationrole_ctrl.record.searchactive2" data-value="organizationrole_ctrl.record.searchname2"  data-action="organizationrole_ctrl.searchAction2()" data-clear="organizationrole_ctrl.searchClear2()" ></div>
-
-
                         <!--子菜单组件-->
-                        <div id="submenu_scroll_wrap" class="g-box-b" style="border:1px solid #ccc">
-                            <ul class="sub-menu-wrap g-b-none">
-                                <li>
-                                    <a data-parentid="" data-id="organizationrole_ctrl.record.currentId"  data-layer="0" class="sub-menu-title sub-menu-titleactive"  ng-click="organizationrole_ctrl.getMemberList()">{{organizationrole_ctrl.record.currentName}}</a>
-                                    <ul class="sub-menu-wrap g-d-showi g-b-none" ng-click="organizationrole_ctrl.toggleMemberList($event)" id="admin_member_menu" ng-init="organizationrole_ctrl.initMemberList()"></ul>
-                                </li>
-                            </ul>
-                        </div>
+                        <ul class="sub-menu-wrap">
+                            <li>
+                                <a data-parentid="" data-id="organizationrole_ctrl.record.currentId" data-layer="0" class="sub-menu-title sub-menu-titleactive"  ng-click="organizationrole_ctrl.getMemberList()">{{organizationrole_ctrl.record.currentName}}</a>
+                                <ul class="sub-menu-wrap g-d-showi" ng-click="organizationrole_ctrl.toggleMemberList($event)" id="admin_member_menu" ng-init="organizationrole_ctrl.getMemberList()"></ul>
+                            </li>
+                        </ul>
                     </div>
 
                     <!--右侧被选区域-->
-                    <div class="g-f-r g-gap-mt8 g-gap-mb6 g-w-percent30">
-                        <div class="admin-layout-theme4"><span class="mini-icon admin-mini-icon2"></span>&nbsp;用户信息&nbsp;<span class="g-gap-mr2 g-f-r"><label class=" sub-menu-checkbox" ng-class="{'sub-menu-checkboxactive':organizationrole_ctrl.record.checkAll}">全选<input type="checkbox" ng-model="organizationrole_ctrl.record.checkAll" ng-change="organizationrole_ctrl.checkAllMember()" class="g-d-hidei" ng-true-value="true" ng-false-value="false"></label></span></div>
+                    <div class="g-f-r g-gap-mt8 g-gap-mb6 g-w-percent28">
+                        <div class="admin-layout-theme4"><span class="mini-icon admin-mini-icon2"></span>&nbsp;用户信息</div>
                         <ul id="admin_user_wrap" ng-click="organizationrole_ctrl.checkMemberList($event)" class="admin-grid-widget admin-grid-widget1"></ul>
                         <div class="admin-layout-theme4"><span class="mini-icon admin-mini-icon3"></span>&nbsp;成员信息</div>
-                        <ul id="admin_member_checked" ng-click="organizationrole_ctrl.cancelMemberList($event)"  class="admin-grid-widget admin-grid-widget1"></ul>
+                        <ul id="admin_member_checked" class="admin-grid-widget admin-grid-widget1"></ul>
                     </div>
                     <div class="clearfix"></div>
 
@@ -242,7 +235,7 @@
                     <div class="clearfix"></div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-red" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-info" data-dismiss="modal">关闭</button>
                 </div>
             </div>
         </div>
