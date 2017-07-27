@@ -5,6 +5,7 @@ angular.module('app')
         var self = this,
             reg_id = /[0-9]{1,2}//*id序列值*/,
             reg_name = /(周一|杨二|张三|李四|王五|赵六|马七|朱八|陈九){1}//*姓名序列值*/,
+            reg_default = /[a-zA-Z0-9]{5-20}/,
             reg_datetime = moment().format('YYYY-MM-DD HH:mm:ss')/*当前世界*/,
             reg_money = /(^(([1-9]{1}\d{0,8})|0)((\.{0}(\d){0})|(\.{1}(\d){2}))$){1}//*人民币*/,
             reg_mobile = /(^(13[0-9]|15[012356789]|18[0-9]|14[57]|170)[0-9]{8}$){1}//*移动电话*/,
@@ -77,7 +78,7 @@ angular.module('app')
         this.testMenu = function () {
             var res = {
                 status: 200,
-                data:{
+                data: {
                     code: "0",
                     message: "查询成功",
                     result: {
@@ -315,18 +316,62 @@ angular.module('app')
                 }/*列表数据*/;
 
             /*配置动态生成列表数据*/
-            list[limit] = [{
-                "id": reg_id,
-                "name": reg_name,
-                "mobile": reg_mobile,
-                "dateTime": reg_datetime,
-                "number": /[0-9a-zA-Z]{18}/,
-                "state": reg_id,
-                "money": reg_money,
-                "type": reg_id,
-                "remark": reg_remark,
-                "content": reg_content
-            }];
+            if (config && config.attr) {
+                var attr_obj = {};
+
+                for (var i in attr) {
+                    switch (attr[i]) {
+                        case 'id':
+                            attr_obj[i] = reg_id;
+                            break;
+                        case 'name':
+                            attr_obj[i] = reg_name;
+                            break;
+                        case 'mobile':
+                            attr_obj[i] = reg_mobile;
+                            break;
+                        case 'datetime':
+                            attr_obj[i] = reg_datetime;
+                            break;
+                        case 'state':
+                            attr_obj[i] = reg_id;
+                            break;
+                        case 'money':
+                            attr_obj[i] = reg_id;
+                            break;
+                        case 'type':
+                            attr_obj[i] = reg_id;
+                            break;
+                        case 'remark':
+                            attr_obj[i] = reg_id;
+                            break;
+                        case 'content':
+                            attr_obj[i] = reg_id;
+                            break;
+                        case 'def':
+                            attr_obj[i] = reg_default;
+                            break;
+                        default:
+                            attr_obj[i] = reg_default;
+                            break;
+                    }
+                }
+                list[limit] = [attr_obj];
+            } else {
+                list[limit] = [{
+                    "id": reg_id,
+                    "name": reg_name,
+                    "mobile": reg_mobile,
+                    "dateTime": reg_datetime,
+                    "number": /[0-9a-zA-Z]{18}/,
+                    "state": reg_id,
+                    "money": reg_money,
+                    "type": reg_id,
+                    "remark": reg_remark,
+                    "content": reg_content
+                }];
+            }
+
 
             if (type === 'list') {
                 res = {

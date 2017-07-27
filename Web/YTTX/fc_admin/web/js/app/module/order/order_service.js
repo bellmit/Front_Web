@@ -1,5 +1,5 @@
 angular.module('app')
-    .service('orderService',['toolUtil','toolDialog','BASE_CONFIG','loginService','powerService','dataTableColumnService','dataTableItemActionService','datePicker97Service',function(toolUtil,toolDialog,BASE_CONFIG,loginService,powerService,dataTableColumnService,dataTableItemActionService,datePicker97Service){
+    .service('orderService',['toolUtil','toolDialog','BASE_CONFIG','loginService','powerService','dataTableColumnService','dataTableItemActionService','datePicker97Service','testService',function(toolUtil,toolDialog,BASE_CONFIG,loginService,powerService,dataTableColumnService,dataTableItemActionService,datePicker97Service,testService){
 
         /*获取缓存数据*/
         var self=this,
@@ -584,6 +584,14 @@ angular.module('app')
 
         /*测试服务--获取订单列表*/
         this.testGetOrderList=function () {
+            return testService.testTableList({
+                min:5,
+                max:10,
+                attr:{
+                    "id":"id",
+                    
+                }
+            });
             return {
                 message:'ok',
                 code:0,

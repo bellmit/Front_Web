@@ -55,12 +55,12 @@ angular.module('app')
                     autoWidth:true,/*是否*/
                     paging:false,
                     ajax:{
-                        url:toolUtil.adaptReqUrl('/organization/goodsorder/list')/*'json/test.json'*/,
+                        url:/*toolUtil.adaptReqUrl('/organization/goodsorder/list')*/'json/test.json'/*测试地址*/,
                         dataType:'JSON',
                         method:'post',
                         dataSrc:function ( json ) {
                             /*测试代码*/
-                            /*var json=orderService.testGetOrderList();*/
+                            var json=orderService.testGetOrderList();
 
 
                             var code=parseInt(json.code,10),
