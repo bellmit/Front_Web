@@ -342,8 +342,6 @@ angular.module('app')
                                     pageSize: self.table.list_page2.pageSize,
                                     total: self.table.list_page2.total,
                                     onSelectPage: function (pageNumber, pageSize) {
-                                        /*根据视图状态清除数据缓存*/
-                                        financeService.clearDataByView(self.table);
                                         /*再次查询*/
                                         var temp_param = self.table.list_config2.config.ajax.data;
                                         self.table.list_page2.page = pageNumber;
@@ -494,8 +492,6 @@ angular.module('app')
                                     pageSize: self.table.list_page3.pageSize,
                                     total: self.table.list_page3.total,
                                     onSelectPage: function (pageNumber, pageSize) {
-                                        /*根据视图状态清除数据缓存*/
-                                        financeService.clearDataByView(self.table);
                                         /*再次查询*/
                                         var temp_param = self.table.list_config3.config.ajax.data;
                                         self.table.list_page3.page = pageNumber;
@@ -1090,8 +1086,6 @@ angular.module('app')
                 record:self.record,
                 table:self.table
             });
-            /*根据视图状态清除数据缓存*/
-            financeService.clearDataByView(self.table);
         };
         /*条件服务--切换条件主题*/
         this.toggleTab = function (type) {
@@ -1101,8 +1095,6 @@ angular.module('app')
                 record:self.record,
                 table:self.table
             });
-            /*根据视图状态清除数据缓存*/
-            financeService.clearDataByView(self.table);
         };
         /*条件服务--切换不同的时间条件*/
         this.toggleTime=function (e) {
@@ -1111,8 +1103,6 @@ angular.module('app')
             if(node==='div'){
                 return false;
             }
-            /*根据视图状态清除数据缓存*/
-            financeService.clearDataByView(self.table);
             /*查询数据*/
             financeService.getColumnData(self.table,self.record);
         };
@@ -1149,10 +1139,6 @@ angular.module('app')
 
         /*查询服务--查询列表*/
         this.queryFinance = function () {
-            if(self.record.action===2 ||self.record.action===3){
-                /*根据视图状态清除数据缓存*/
-                financeService.clearDataByView(self.table);
-            }
             financeService.getColumnData(self.table, self.record);
         };
         /*查询服务--过滤数据*/

@@ -68,41 +68,66 @@ angular.module('app')
                 /*除权除息分红*/
                 record.action = 7;
             }
+
             /*查询数据*/
             self.getColumnData(config.table, config.record);
         };
         /*视图切换服务--根据视图状态清除不同条件下缓存数据*/
-        this.clearDataByView = function (table) {
+        this.clearDataByView = function (table, type) {
+            var clear_table,
+                clear_page,
+                clear_pagewrap,
+                clear_ajax,
+                istype = false;
+
+
+            if (typeof type !== 'undefined') {
+                istype = true;
+                /*指定对象则清除指定对象的数据*/
+                clear_table = table['list_table' + type];
+                clear_page = table['list_page' + type];
+                clear_ajax = table['list_config' + type]['config']['ajax'];
+                clear_pagewrap = self['$admin_page_wrap' + type];
+            } else {
+                /*默认清除2,3下面明细数据*/
+                clear_table = table.list_tabledetail;
+                clear_page = table.list_pagedetail;
+                clear_pagewrap = self.$admin_page_wrapdetail;
+                clear_ajax = table.list_configdetail.config.ajax;
+            }
+
             /*重置表数据*/
-            var detail_table=table.list_tabledetail,
-                detail_page=table.list_pagedetail,
-                detail_ajax = table.list_configdetail.config.ajax;
-
-            if (detail_page.total !== 0 && detail_table !== null) {
-                console.log('clear');
-
+            if (clear_page.total !== 0 && clear_table !== null) {
                 /*清除查询参数*/
-                detail_ajax.data['page'] = 1;
-                delete detail_ajax.data['id'];
+                clear_ajax.data['page'] = 1;
+                delete clear_ajax.data['id'];
 
                 /*清除表格状态*/
-                detail_table.state.clear();
+                clear_table.state.clear();
 
                 /*清除表格数据*/
-                detail_table.data().length=0;
-                detail_table.clear().draw();
+                clear_table.data().length = 0;
+                clear_table.clear().draw();
 
                 /*重置分页数据*/
-                self.$admin_page_wrapdetail.pagination({
-                    pageNumber:1,
-                    pageSize:5,
-                    total:0
+                clear_pagewrap.pagination({
+                    pageNumber: 1,
+                    pageSize: 5,
+                    total: 0
                 });
 
                 /*重置查询参数*/
-                detail_page.page = 1;
-                detail_page.pageSize = 5;
-                detail_page.total = 0;
+                clear_page.page = 1;
+                clear_page.pageSize = 5;
+                clear_page.total = 0;
+
+                /*指定对象是否存在合计*/
+                if (istype && typeof table['list_total' + type] !== 'undefined') {
+                    var clear_total = table['list_total' + type];
+                    for (var i in clear_total) {
+                        clear_total[i]='';
+                    }
+                }
             }
         };
 
@@ -304,10 +329,52 @@ angular.module('app')
             /*如果存在模型*/
             var action = record.action;
 
-            /*过滤*/
+            /*过滤清算模块*/
             if (action === 4 || action === 5 || action === 6) {
                 return false;
             }
+            /*清除历史分润和各机构分润下明细*/
+            if (action === 2 || action === 3) {
+                /*根据视图状态清除数据缓存*/
+                self.clearDataByView(table);
+                /*如果3操作的是顶级当前登录用户，则清除之前的数据，并不查询相关数据*/
+                if (action === 3 && record.organizationId !== '' && record.organizationId === record.currentId) {
+                    /*根据视图状态清除数据缓存*/
+                    self.clearDataByView(table, action);
+                    return false;
+                }
+            }
+
+            /*过滤历史，各运营商查看当前登录用户的明细*/
+            /*if (action === 3) {
+
+
+             if (record.organizationId !== "" && record.currentId !== record.organizationId) {
+             data['organizationId'] = record['organizationId'];
+             } else {
+             delete data['organizationId'];
+             toolDialog.showModal({
+             type: 'warn',
+             value: '不能查询&nbsp;"&nbsp;<span class="g-c-red1">当前登录机构</span>&nbsp;"&nbsp;的分润明细,请选择其他机构查询'
+             });
+             return false;
+             }
+
+
+             if(record.organizationId !== '' && record.organizationId === record.currentId){
+             /!*隐藏*!/
+             table[temp_table].column(3).visible(false);
+             self['$admin_list_colgroup' + action].html('<col class="g-w-percent16"><col class="g-w-percent17"><col class="g-w-percent17">');
+             return false;
+             }else{
+             /!*显示*!/
+             table[temp_table].column(3).visible(true);
+             self['$admin_list_colgroup' + action].html('<col class="g-w-percent16"><col class="g-w-percent12"><col class="g-w-percent12"><col class="g-w-percent10">');
+             }
+
+             }*/
+
+
             var temp_config = 'list_config' + action,
                 data = $.extend(true, {}, table[temp_config].config.ajax.data),
                 temp_param;
@@ -328,8 +395,7 @@ angular.module('app')
 
             var temp_table,
                 temp_column,
-                temp_action,
-                temp_checkall;
+                temp_action;
 
             if (action === 7) {
                 /*除权除息分红*/
@@ -375,19 +441,6 @@ angular.module('app')
             } else {
                 table[temp_table].ajax.config(table[temp_config].config.ajax).load();
             }
-
-            /*过滤历史，各运营商查看当前登录用户的明细*/
-            if(action === 2 || action === 3){
-                if(record.organizationId!=='' && record.organizationId===record.currentId){
-                    /*隐藏*/
-                    table[temp_table].column( 3 ).visible(false);
-                    self['$admin_list_colgroup'+action].html('<col class="g-w-percent16"><col class="g-w-percent17"><col class="g-w-percent17">');
-                }else{
-                    /*显示*/
-                    table[temp_table].column( 3 ).visible(true);
-                    self['$admin_list_colgroup'+action].html('<col class="g-w-percent16"><col class="g-w-percent12"><col class="g-w-percent12"><col class="g-w-percent10">');
-                }
-            }
         };
         /*数据查询服务--过滤表格数据*/
         this.filterDataTable = function (table, record) {
@@ -429,7 +482,7 @@ angular.module('app')
                     id: id,
                     state: state
                 });
-            } else if (action === 'update' ||action === 'detail') {
+            } else if (action === 'update' || action === 'detail') {
                 /*查看详情*/
                 if (record_action === 7) {
                     /*除权除息分红*/
@@ -447,7 +500,7 @@ angular.module('app')
                         action: action,
                         model: model
                     });
-                }else if(record_action === 2 ||record_action === 3){
+                } else if (record_action === 2 || record_action === 3) {
                     /*查看明细*/
                     self.getDetailData({
                         table: model.table,
@@ -591,7 +644,7 @@ angular.module('app')
                 return false;
             }
 
-            var record=config.record,
+            var record = config.record,
                 temp_config = 'list_configdetail',
                 data = $.extend(true, {}, config['table'][temp_config].config.ajax.data),
                 temp_param,
@@ -610,16 +663,6 @@ angular.module('app')
                 }
             } else {
                 data['id'] = id;
-            }
-            if(record.organizationId!=="" && record.currentId!==record.organizationId){
-                data['organizationId']=record['organizationId'];
-            }else{
-                delete data['organizationId'];
-                toolDialog.showModal({
-                    type: 'warn',
-                    value: '不能查询&nbsp;"&nbsp;<span class="g-c-red1">当前登录机构</span>&nbsp;"&nbsp;的分润明细,请选择其他机构查询'
-                });
-                return false;
             }
 
             /*参数赋值*/
@@ -741,7 +784,7 @@ angular.module('app')
                                         value: '清算订单成功'
                                     });
                                     /*清空全选*/
-                                    dataTableCheckAllService.clear(table[temp_check]);
+                                    /*dataTableCheckAllService.clear(table[temp_check]);*/
                                     /*重新加载数据*/
                                     self.getColumnData(table, record);
                                 }
@@ -845,6 +888,7 @@ angular.module('app')
                     var record = config.record;
                     record.organizationId = id;
                     record.organizationName = !logininfo.param.organizationName ? logininfo.username : decodeURIComponent(logininfo.param.organizationName);
+
                     self.getColumnData(config.table, record);
                 } else {
                     /*非根目录则获取新请求参数*/
@@ -1061,6 +1105,7 @@ angular.module('app')
                 record.prev.removeClass('sub-menuactive');
             }
             record.current.addClass('sub-menuactive');
+
             self.getColumnData(config.table, config.record);
 
             /*查询子集*/
