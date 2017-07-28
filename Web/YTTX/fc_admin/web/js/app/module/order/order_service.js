@@ -584,12 +584,10 @@ angular.module('app')
 
         /*测试服务--获取订单列表*/
         this.testGetOrderList=function () {
-            return testService.testTableList({
-                min:5,
-                max:10,
-                attr:{
+            return testService.testTableObj({
+                order1:{
                     "id":"id",
-                    
+
                 }
             });
             return {

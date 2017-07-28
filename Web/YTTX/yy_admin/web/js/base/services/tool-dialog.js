@@ -53,6 +53,24 @@ angular.module('tool.dialog',[])
 			}
 		};
 
+		/*提示类型*/
+		this.showModal=function (config) {
+			var type=config.type,
+				value=config.value;
+
+			if(single_dia){
+				if(type==='succ'){
+					single_dia.content('<span class="g-c-succ g-btips-succ">'+value+'</span>').showModal();
+				}else if(type==='warn'){
+					single_dia.content('<span class="g-c-warn g-btips-warn">'+value+'</span>').showModal();
+				}else if(type==='error'){
+					single_dia.content('<span class="g-c-err g-btips-error">'+value+'</span>').showModal();
+				}else{
+					single_dia.content('<span class="g-c-succ g-btips-succ">'+value+'</span>').showModal();
+				}
+			}
+		};
+
 		/*关闭提示*/
 		this.hide=function () {
 			if(single_dia){

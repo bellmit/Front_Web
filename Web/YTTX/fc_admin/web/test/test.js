@@ -62,6 +62,23 @@ angular.module('app')
             }
             return res;
         };
+        /*测试普通*/
+        this.testDefList = function (config) {
+            var res,
+                template = Mock.mock({
+                    "id": reg_id,
+                    "token": /([0-9a-zA-Z]{6}){4}/,
+                    "adminId": reg_id,
+                    "organizationId": reg_id
+                });
+
+            res = {
+                message: 'ok',
+                code: 0,
+                result: template
+            };
+            return res;
+        };
 
 
         /*测试列表*/
@@ -76,7 +93,7 @@ angular.module('app')
 
         /*测试菜单*/
         this.testMenu = function () {
-            var res = {
+            return {
                 status: 200,
                 data: {
                     code: "0",
@@ -276,6 +293,133 @@ angular.module('app')
                     }
                 }
             };
+        };
+
+
+        /*测试自定义表格对象*/
+        this.testTableObj = function (config) {
+            var res = {
+                status: 200,
+                data: {
+                    message: 'ok',
+                    code: 0
+                }
+            }/*结果集*/;
+
+            /*动态生成*/
+            if(config){
+                var obj_obj={};
+                for(var j in config){
+                    if(config[j].indexOf('obj')!==-1){
+                        (function () {
+                            obj_obj[j]= {};
+                            var attr_obj=config[j];
+                            for (var i in attr_obj) {
+                                switch (attr_obj[i]) {
+                                    case 'id':
+                                        obj_obj[j][i] = reg_id;
+                                        break;
+                                    case 'name':
+                                        obj_obj[j][i] = reg_name;
+                                        break;
+                                    case 'mobile':
+                                        obj_obj[j][i] = reg_mobile;
+                                        break;
+                                    case 'datetime':
+                                        obj_obj[j][i] = reg_datetime;
+                                        break;
+                                    case 'state':
+                                        obj_obj[j][i] = reg_id;
+                                        break;
+                                    case 'money':
+                                        obj_obj[j][i] = reg_id;
+                                        break;
+                                    case 'type':
+                                        obj_obj[j][i] = reg_id;
+                                        break;
+                                    case 'remark':
+                                        obj_obj[j][i] = reg_id;
+                                        break;
+                                    case 'content':
+                                        obj_obj[j][i] = reg_id;
+                                        break;
+                                    case 'def':
+                                        obj_obj[j][i] = reg_default;
+                                        break;
+                                    default:
+                                        obj_obj[j][i] = reg_default;
+                                        break;
+                                }
+                            }
+                        }());
+                    }
+                }
+                res['data']['result'] = Mock.mock(obj_obj);
+            }else{
+                res['data']['result'] = {};
+            }
+            return res;
+        };
+
+        /*测试自定义列表对象*/
+        this.testListObj = function (config) {
+            var res = {
+                message: 'ok',
+                code: 0
+            }/*结果集*/;
+
+            /*动态生成*/
+            if(config){
+                var obj_obj={};
+                for(var j in config){
+                    if(config[j].indexOf('obj')!==-1){
+                        (function () {
+                            obj_obj[j]= {};
+                            var attr_obj=config[j];
+                            for (var i in attr_obj) {
+                                switch (attr_obj[i]) {
+                                    case 'id':
+                                        obj_obj[j][i] = reg_id;
+                                        break;
+                                    case 'name':
+                                        obj_obj[j][i] = reg_name;
+                                        break;
+                                    case 'mobile':
+                                        obj_obj[j][i] = reg_mobile;
+                                        break;
+                                    case 'datetime':
+                                        obj_obj[j][i] = reg_datetime;
+                                        break;
+                                    case 'state':
+                                        obj_obj[j][i] = reg_id;
+                                        break;
+                                    case 'money':
+                                        obj_obj[j][i] = reg_id;
+                                        break;
+                                    case 'type':
+                                        obj_obj[j][i] = reg_id;
+                                        break;
+                                    case 'remark':
+                                        obj_obj[j][i] = reg_id;
+                                        break;
+                                    case 'content':
+                                        obj_obj[j][i] = reg_id;
+                                        break;
+                                    case 'def':
+                                        obj_obj[j][i] = reg_default;
+                                        break;
+                                    default:
+                                        obj_obj[j][i] = reg_default;
+                                        break;
+                                }
+                            }
+                        }());
+                    }
+                }
+                res['result'] = Mock.mock(obj_obj);
+            }else{
+                res['result'] = {};
+            }
             return res;
         };
 
@@ -290,15 +434,31 @@ angular.module('app')
 
                 if (typeof min === 'undefined') {
                     if (typeof max === 'undefined') {
-                        limit = 'list|10';
+                        if(config.name){
+                            limit = name+'|10';
+                        }else{
+                            limit = 'list|10';
+                        }
                     } else {
-                        limit = 'list|' + max;
+                        if(config.name){
+                            limit = name+'|' + max;
+                        }else{
+                            limit = 'list|' + max;
+                        }
                     }
                 } else {
                     if (typeof max === 'undefined') {
-                        limit = 'list|' + min;
+                        if(config.name){
+                            limit = name+'|' + min;
+                        }else{
+                            limit = 'list|' + min;
+                        }
                     } else {
-                        limit = 'list|' + min + '-' + max;
+                        if(config.name){
+                            limit = name+'|' + min + '-' + max;
+                        }else{
+                            limit = 'list|' + min + '-' + max;
+                        }
                     }
                 }
             } else {
@@ -318,7 +478,6 @@ angular.module('app')
             /*配置动态生成列表数据*/
             if (config && config.attr) {
                 var attr_obj = {};
-
                 for (var i in attr) {
                     switch (attr[i]) {
                         case 'id':

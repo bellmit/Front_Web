@@ -148,12 +148,12 @@ angular.module('app')
                     autoWidth: true, /*是否*/
                     paging: false,
                     ajax: {
-                        url: /*toolUtil.adaptReqUrl('/finance/profit/current')*/'json/test.json',
+                        url: toolUtil.adaptReqUrl('/finance/profit/current')/*'json/test.json'*/,
                         dataType: 'JSON',
                         method: 'post',
                         dataSrc: function (json) {
                             /*测试类*/
-                            var json=financeService.testGetFinanceList(1);
+                            /*var json=financeService.testGetFinanceList(1);*/
 
                             var code = parseInt(json.code, 10),
                                 message = json.message;
@@ -285,12 +285,12 @@ angular.module('app')
                     autoWidth: true, /*是否*/
                     paging: false,
                     ajax: {
-                        url: /*toolUtil.adaptReqUrl('/finance/profit/history')*/'json/test.json',
+                        url: toolUtil.adaptReqUrl('/finance/profit/history')/*'json/test.json'*/,
                         dataType: 'JSON',
                         method: 'post',
                         dataSrc: function (json) {
                             /*测试类*/
-                            var json=financeService.testGetFinanceList(2);
+                            /*var json=financeService.testGetFinanceList(2);*/
 
                             var code = parseInt(json.code, 10),
                                 message = json.message;
@@ -436,12 +436,12 @@ angular.module('app')
                     autoWidth: true, /*是否*/
                     paging: false,
                     ajax: {
-                        url: /*toolUtil.adaptReqUrl('/finance/profit/organization')*/'json/test.json',
+                        url: toolUtil.adaptReqUrl('/finance/profit/organization')/*'json/test.json'*/,
                         dataType: 'JSON',
                         method: 'post',
                         dataSrc: function (json) {
                             /*测试类*/
-                            var json=financeService.testGetFinanceList(3);
+                            /*var json=financeService.testGetFinanceList(3);*/
 
 
                             var code = parseInt(json.code, 10),
@@ -738,12 +738,12 @@ angular.module('app')
                     autoWidth: true, /*是否*/
                     paging: false,
                     ajax: {
-                        url: /*toolUtil.adaptReqUrl('/finance/profit/detail')*/'json/test.json',
+                        url: toolUtil.adaptReqUrl('/finance/profit/detail')/*'json/test.json'*/,
                         dataType: 'JSON',
                         method: 'post',
                         dataSrc: function (json) {
                             /*测试类*/
-                            var json=financeService.testGetFinanceList('detail');
+                            /*var json=financeService.testGetFinanceList('detail');*/
 
                             var code = parseInt(json.code, 10),
                                 message = json.message;
@@ -1116,7 +1116,7 @@ angular.module('app')
             /*查询数据*/
             financeService.getColumnData(self.table,self.record);
         };
-        
+
 
         /*除权除息分红--操作除权除息分红表单*/
         this.actionBonus = function (config) {

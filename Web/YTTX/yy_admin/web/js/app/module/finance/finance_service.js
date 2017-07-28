@@ -375,6 +375,19 @@ angular.module('app')
             } else {
                 table[temp_table].ajax.config(table[temp_config].config.ajax).load();
             }
+
+            /*过滤历史，各运营商查看当前登录用户的明细*/
+            if(action === 2 || action === 3){
+                if(record.organizationId!=='' && record.organizationId===record.currentId){
+                    /*隐藏*/
+                    table[temp_table].column( 3 ).visible(false);
+                    self['$admin_list_colgroup'+action].html('<col class="g-w-percent16"><col class="g-w-percent17"><col class="g-w-percent17">');
+                }else{
+                    /*显示*/
+                    table[temp_table].column( 3 ).visible(true);
+                    self['$admin_list_colgroup'+action].html('<col class="g-w-percent16"><col class="g-w-percent12"><col class="g-w-percent12"><col class="g-w-percent10">');
+                }
+            }
         };
         /*数据查询服务--过滤表格数据*/
         this.filterDataTable = function (table, record) {
@@ -578,17 +591,18 @@ angular.module('app')
                 return false;
             }
 
-            var temp_config = 'list_configdetail',
+            var record=config.record,
+                temp_config = 'list_configdetail',
                 data = $.extend(true, {}, config['table'][temp_config].config.ajax.data),
                 temp_param,
                 temp_table = 'list_tabledetail',
                 temp_action = 'tableitemactiondetail';
 
             /*条件查询*/
-            if (config['record']['searchWord'] === '') {
+            if (record['searchWord'] === '') {
                 delete data['searchWord'];
             } else {
-                data['searchWord'] = config['record']['searchWord'];
+                data['searchWord'] = record['searchWord'];
             }
             if (typeof id === 'undefined') {
                 if (typeof data['id'] === 'undefined') {
@@ -596,6 +610,16 @@ angular.module('app')
                 }
             } else {
                 data['id'] = id;
+            }
+            if(record.organizationId!=="" && record.currentId!==record.organizationId){
+                data['organizationId']=record['organizationId'];
+            }else{
+                delete data['organizationId'];
+                toolDialog.showModal({
+                    type: 'warn',
+                    value: '不能查询&nbsp;"&nbsp;<span class="g-c-red1">当前登录机构</span>&nbsp;"&nbsp;的分润明细,请选择其他机构查询'
+                });
+                return false;
             }
 
             /*参数赋值*/
