@@ -996,6 +996,7 @@
                         code: 'app',
                         name: '首页',
                         href: 'app',
+                        isshow:true,
                         module: 'app'
                     };
                     list.push(index);
@@ -1031,10 +1032,16 @@
                             id: mid,
                             code: mcode,
                             name: mname,
+                            isshow:true/*是否显示此菜单*/,
                             href: menu_map[mlink] || mlink,
                             module: menu_map[mlink] || mlink,
                             sub: msub
                         };
+
+                    /*过滤不需要显示的模块*/
+                    if(tempobj['module']==='equity'){
+                        tempobj['isshow']=false;
+                    }
 
                     list.push(tempobj);
 

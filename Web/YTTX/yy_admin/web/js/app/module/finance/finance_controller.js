@@ -961,12 +961,19 @@ angular.module('app')
             power: self.powerlist.profit_details,
             type: 'profit',
             active: 'tabactive'
-        }, {
+        }/*, {
+            //目前不做清算
+            name: '清算',
+            power: self.powerlist.clear,
+            type: 'clear',
+            active: ''
+        }*//*, {
+            //目前隐藏处理
             name: '除权除息分红',
             power: self.powerlist.bonus_add,
             type: 'bonus',
             active: ''
-        }];
+        }*/];
 
 
         /*模型--tab选项卡--选项*/

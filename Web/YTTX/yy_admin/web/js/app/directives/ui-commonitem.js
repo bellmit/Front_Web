@@ -5,7 +5,7 @@ angular.module('ui.commonitem',[])
         return {
             replace:false,
             restrict: 'EC',
-            template:'<li ng-repeat="i in app_ctrl.headeritem"><a data-id="{{i.id}}" data-code="{{i.code}}" ui-sref-active="menuactive" href="" ui-sref="{{i.href}}" title="">{{i.name}}</a></li>'
+            template:'<li ng-repeat="i in app_ctrl.headeritem" ng-show="{{i.isshow}}"><a data-id="{{i.id}}" data-code="{{i.code}}" ui-sref-active="menuactive" href="" ui-sref="{{i.href}}" title="">{{i.name}}</a></li>'
         };
     })
     /*头部退出*/
@@ -193,7 +193,7 @@ angular.module('ui.commonitem',[])
             template:'<div class="admin-welcome-banner"><img src="images/index_banner.jpg" alt="" /></div>\
                         <h3 class="admin-layout-theme3">快捷入口</h3>\
                         <ul class="admin-quick-icon">\
-                          <li ng-repeat="i in quick">\
+                          <li ng-repeat="i in quick" ng-show="{{i.isshow}}">\
                             <div class="g-br5" data-id="{{i.id}}" data-code="{{i.code}}" href="" ui-sref="{{i.href}}">\
                                 <img alt="" src="images/{{i.src}}" />\
                                 <span>{{i.name}}</span>\
