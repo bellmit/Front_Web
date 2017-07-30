@@ -264,11 +264,11 @@ angular.module('app')
                                                             var img = detailitem["goodsThumbnail"],
                                                                 str = '';
                                                             if (img.indexOf('qiniucdn.com') !== -1) {
-                                                                str = '<div class="admin-thumbnail-widget1"><img alt="" src="' + img + '?imageView2/1/w/80/h/80" /><div class="thumbnail-show"><img alt="" src="' + img + '" /></div></div>';
+                                                                str = '<div class="admin-thumbnail-widget1"><img alt="" src="' + img + '?imageView2/1/w/60/h/60" /><div class="thumbnail-show"><div class="thumbnail-showwrap"><div class="thumbnail-outer"><div class="thumbnail-inner"><img alt="" src="' + img + '" /></div></div></div></div></div>';
                                                             } else {
                                                                 img = self.validImages(img);
                                                                 if (img !== '') {
-                                                                    str = '<div class="admin-thumbnail-widget1"><img alt="" src="' + img + '" /><div class="thumbnail-show"><img alt="" src="' + img + '" /></div></div>';
+                                                                    str = '<div class="admin-thumbnail-widget1"><img alt="" src="' + img + '" /><div class="thumbnail-show"><div class="thumbnail-showwrap"><div class="thumbnail-outer"><div class="thumbnail-inner"><img alt="" src="' + img + '" /></div></div></div></div></div>';
                                                                 } else {
                                                                     str = '<div class="admin-thumbnail-widget1"></div>';
                                                                 }
