@@ -338,14 +338,24 @@ angular.module('app')
                 /*根据视图状态清除数据缓存*/
                 self.clearDataByView(table);
                 /*如果3操作的是顶级当前登录用户，则清除之前的数据，并不查询相关数据*/
-                if (action === 3) {
-                    if (record.organizationId !== '' && record.organizationId === record.currentId) {
-                        /*根据视图状态清除数据缓存*/
-                        self.clearDataByView(table, action);
-                        table['list_tip' + action] = '不能查询 "当前登录机构" 的分润,请选择其他机构或其子机构查询';
-                        return false;
-                    } else {
-                        table['list_tip' + action] = '';
+                if (action === 3 && record.organizationId !== '' && record.organizationId === record.currentId) {
+                    /*根据视图状态清除数据缓存*/
+                    self.clearDataByView(table, action);
+                    table['list_tip3'] = '不能查询 "当前登录机构(顶级机构)" 的分润,请选择其他机构或其子机构查询';
+                    /*控制明细列*/
+                    if(table['list_table' + action]!==null){
+                        /*隐藏*/
+                        table['list_table' + action].column(3).visible(false);
+                        self['$admin_list_colgroup' + action].html('<col class="g-w-percent16"><col class="g-w-percent17"><col class="g-w-percent17">');
+                    }
+                    return false;
+                } else {
+                    table['list_tip3'] = '';
+                    /*控制明细列*/
+                    if(table['list_table' + action]!==null){
+                        /*显示*/
+                        table['list_table' + action].column(3).visible(true);
+                        self['$admin_list_colgroup' + action].html('<col class="g-w-percent16"><col class="g-w-percent12"><col class="g-w-percent12"><col class="g-w-percent10">');
                     }
                 }
             }
@@ -418,12 +428,12 @@ angular.module('app')
                 table[temp_table].ajax.config(table[temp_config].config.ajax).load();
             }
 
-            /*显示*/
+            /*控制明细列*/
             if (action === 2) {
                 /*过滤历史，各运营商查看当前登录用户的明细*/
                 if (record.organizationId !== '' && record.organizationId === record.currentId) {
                     /*隐藏*/
-                    table['list_table' + action].column(3).visible(false);
+                    table[temp_table].column(3).visible(false);
                     self['$admin_list_colgroup' + action].html('<col class="g-w-percent16"><col class="g-w-percent17"><col class="g-w-percent17">');
                 } else {
                     /*显示*/
@@ -517,25 +527,29 @@ angular.module('app')
                 });
                 return false;
             }
+            if ((record.organizationId === '') || (record.organizationId !== '' && record.organizationId === record.currentId)) {
+                return false;
+            }
 
             var tempparam = cache.loginMap.param,
                 param = {
                     adminId: tempparam.adminId,
                     token: tempparam.token,
+                    organizationId: record.organizationId,
                     id: id
                 };
 
             toolUtil
                 .requestHttp({
-                    url: /*'/finance/profit/detail/order'*/'json/test.json',
+                    url: '/finance/profit/detail/order'/*'json/test.json'*//*测试地址*/,
                     method: 'post',
                     set: true,
-                    debug: true, /*测试开关*/
+                    debug: false, /*测试开关*/
                     data: param
                 })
                 .then(function (resp) {
                         /*测试代码*/
-                        var resp = self.testGetFinanceList('order');
+                        /*var resp = self.testGetFinanceList('order');*/
 
                         var data = resp.data,
                             status = parseInt(resp.status, 10);
@@ -562,13 +576,13 @@ angular.module('app')
                                 /*加载数据*/
                                 var result = data.result;
                                 if (typeof result !== 'undefined') {
-                                    var list = result.list,
-                                        str = '',
-                                        len = list.length,
-                                        i = 0;
+                                    var list = result.list;
                                     if (list) {
                                         /*查看*/
-                                        var item;
+                                        var item,
+                                            str = '',
+                                            len = list.length,
+                                            i = 0;
                                         for (i; i < len; i++) {
                                             item = list[i];
                                             str += '<tr><td>' + (i + 1) + '</td><td>' + item["merchantName"] + '</td><td>' + toolUtil.phoneFormat(item["merchantPhone"]) + '</td><td>' + item["orderTime"] + '</td><td>' + item["payTime"] + '</td><td>' + item["orderNumber"] + '</td><td>' + (function () {
@@ -657,10 +671,8 @@ angular.module('app')
             }
 
             /*过滤历史记录明细需要非当前登录机构的机构索引*/
-            if (record.action === 2 && record.organizationId !== '') {
+            if (record.organizationId !== '') {
                 data['organizationId'] = record['organizationId'];
-            } else if (record.action === 3) {
-                delete data['organizationId'];
             }
 
 
