@@ -125,7 +125,7 @@ angular.module('app')
                 if (istype && typeof table['list_total' + type] !== 'undefined') {
                     var clear_total = table['list_total' + type];
                     for (var i in clear_total) {
-                        clear_total[i]='';
+                        clear_total[i] = '';
                     }
                 }
             }
@@ -338,41 +338,17 @@ angular.module('app')
                 /*根据视图状态清除数据缓存*/
                 self.clearDataByView(table);
                 /*如果3操作的是顶级当前登录用户，则清除之前的数据，并不查询相关数据*/
-                if (action === 3 && record.organizationId !== '' && record.organizationId === record.currentId) {
-                    /*根据视图状态清除数据缓存*/
-                    self.clearDataByView(table, action);
-                    return false;
+                if (action === 3) {
+                    if (record.organizationId !== '' && record.organizationId === record.currentId) {
+                        /*根据视图状态清除数据缓存*/
+                        self.clearDataByView(table, action);
+                        table['list_tip' + action] = '不能查询 "当前登录机构" 的分润,请选择其他机构或其子机构查询';
+                        return false;
+                    } else {
+                        table['list_tip' + action] = '';
+                    }
                 }
             }
-
-            /*过滤历史，各运营商查看当前登录用户的明细*/
-            /*if (action === 3) {
-
-
-             if (record.organizationId !== "" && record.currentId !== record.organizationId) {
-             data['organizationId'] = record['organizationId'];
-             } else {
-             delete data['organizationId'];
-             toolDialog.showModal({
-             type: 'warn',
-             value: '不能查询&nbsp;"&nbsp;<span class="g-c-red1">当前登录机构</span>&nbsp;"&nbsp;的分润明细,请选择其他机构查询'
-             });
-             return false;
-             }
-
-
-             if(record.organizationId !== '' && record.organizationId === record.currentId){
-             /!*隐藏*!/
-             table[temp_table].column(3).visible(false);
-             self['$admin_list_colgroup' + action].html('<col class="g-w-percent16"><col class="g-w-percent17"><col class="g-w-percent17">');
-             return false;
-             }else{
-             /!*显示*!/
-             table[temp_table].column(3).visible(true);
-             self['$admin_list_colgroup' + action].html('<col class="g-w-percent16"><col class="g-w-percent12"><col class="g-w-percent12"><col class="g-w-percent10">');
-             }
-
-             }*/
 
 
             var temp_config = 'list_config' + action,
@@ -440,6 +416,20 @@ angular.module('app')
                 }
             } else {
                 table[temp_table].ajax.config(table[temp_config].config.ajax).load();
+            }
+
+            /*显示*/
+            if (action === 2) {
+                /*过滤历史，各运营商查看当前登录用户的明细*/
+                if (record.organizationId !== '' && record.organizationId === record.currentId) {
+                    /*隐藏*/
+                    table['list_table' + action].column(3).visible(false);
+                    self['$admin_list_colgroup' + action].html('<col class="g-w-percent16"><col class="g-w-percent17"><col class="g-w-percent17">');
+                } else {
+                    /*显示*/
+                    table[temp_table].column(3).visible(true);
+                    self['$admin_list_colgroup' + action].html('<col class="g-w-percent16"><col class="g-w-percent12"><col class="g-w-percent12"><col class="g-w-percent10">');
+                }
             }
         };
         /*数据查询服务--过滤表格数据*/
@@ -645,6 +635,7 @@ angular.module('app')
             }
 
             var record = config.record,
+                action = record.action,
                 temp_config = 'list_configdetail',
                 data = $.extend(true, {}, config['table'][temp_config].config.ajax.data),
                 temp_param,
@@ -664,6 +655,14 @@ angular.module('app')
             } else {
                 data['id'] = id;
             }
+
+            /*过滤历史记录明细需要非当前登录机构的机构索引*/
+            if (record.action === 2 && record.organizationId !== '') {
+                data['organizationId'] = record['organizationId'];
+            } else if (record.action === 3) {
+                delete data['organizationId'];
+            }
+
 
             /*参数赋值*/
             config['table'][temp_config].config.ajax.data = data;

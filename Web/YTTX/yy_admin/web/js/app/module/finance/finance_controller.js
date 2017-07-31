@@ -148,7 +148,7 @@ angular.module('app')
                     autoWidth: true, /*是否*/
                     paging: false,
                     ajax: {
-                        url: toolUtil.adaptReqUrl('/finance/profit/current')/*'json/test.json'*/,
+                        url: toolUtil.adaptReqUrl('/finance/profit/current')/*'json/test.json'*//*测试地址*/,
                         dataType: 'JSON',
                         method: 'post',
                         dataSrc: function (json) {
@@ -285,7 +285,7 @@ angular.module('app')
                     autoWidth: true, /*是否*/
                     paging: false,
                     ajax: {
-                        url: toolUtil.adaptReqUrl('/finance/profit/history')/*'json/test.json'*/,
+                        url: toolUtil.adaptReqUrl('/finance/profit/history')/*'json/test.json'*//*测试地址*/,
                         dataType: 'JSON',
                         method: 'post',
                         dataSrc: function (json) {
@@ -434,7 +434,7 @@ angular.module('app')
                     autoWidth: true, /*是否*/
                     paging: false,
                     ajax: {
-                        url: toolUtil.adaptReqUrl('/finance/profit/organization')/*'json/test.json'*/,
+                        url: toolUtil.adaptReqUrl('/finance/profit/organization')/*'json/test.json'*//*测试地址*/,
                         dataType: 'JSON',
                         method: 'post',
                         dataSrc: function (json) {
@@ -587,7 +587,7 @@ angular.module('app')
                     autoWidth: true, /*是否*/
                     paging: false,
                     ajax: {
-                        url: toolUtil.adaptReqUrl('/exdividend/bonus/list')/*'json/test.json'*/,
+                        url: toolUtil.adaptReqUrl('/exdividend/bonus/list')/*'json/test.json'*//*测试地址*/,
                         dataType: 'JSON',
                         method: 'post',
                         dataSrc: function (json) {
@@ -734,12 +734,12 @@ angular.module('app')
                     autoWidth: true, /*是否*/
                     paging: false,
                     ajax: {
-                        url: toolUtil.adaptReqUrl('/finance/profit/detail')/*'json/test.json'*/,
+                        url: toolUtil.adaptReqUrl('/finance/profit/detail')/*'json/test.json'*//*测试地址*/,
                         dataType: 'JSON',
                         method: 'post',
                         dataSrc: function (json) {
                             /*测试类*/
-                            /*var json=financeService.testGetFinanceList('detail');*/
+                           /* var json=financeService.testGetFinanceList('detail');*/
 
                             var code = parseInt(json.code, 10),
                                 message = json.message;
@@ -873,6 +873,8 @@ angular.module('app')
             list_table6: null/*扩展--各运营商清算*/,
             list_table7: null,
             list_tabledetail: null/*明细*/,
+            /*其他*/
+            list_tip3:''/*各运营商分润查询提示信息*/,
             /*列控制*/
             tablecolumn1: {/*暂无，需要时可参考7*/},
             tablecolumn2: {/*暂无，需要时可参考7*/},
@@ -962,13 +964,13 @@ angular.module('app')
             type: 'profit',
             active: 'tabactive'
         }/*, {
-            //目前不做清算
+            //目前不做清算，老版本清算功能已经移除，目前只做接口预留，如需开发此功能需去除此注释，同时在预留的接口处复制修改相关代码
             name: '清算',
             power: self.powerlist.clear,
             type: 'clear',
             active: ''
         }*//*, {
-            //目前隐藏处理
+            //目前隐藏处理，功能已经实现，需要时直接去掉这个注释即可开启此功能
             name: '除权除息分红',
             power: self.powerlist.bonus_add,
             type: 'bonus',
