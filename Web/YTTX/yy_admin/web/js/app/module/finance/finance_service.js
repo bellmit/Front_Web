@@ -615,7 +615,7 @@ angular.module('app')
                                                             2: "支付宝",
                                                             3: "其它"
                                                         };
-                                                    return paymap[temppay];
+                                                    return paymap[temppay]||'其他';
                                                 }()) + '</td></tr>';
                                         }
                                         if (str !== '') {

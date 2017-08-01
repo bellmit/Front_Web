@@ -257,7 +257,7 @@ angular.module('app')
                     info: false,
                     dom: '<"g-d-hidei" s>',
                     searching: true,
-                    order: [[1, "desc"], [2, "desc"]],
+                    order:  [[0, "desc"],[1, "desc"],[2, "desc"]],
                     columns: [
                         {
                             "data": "organizationName"
@@ -394,7 +394,7 @@ angular.module('app')
                     info: false,
                     dom: '<"g-d-hidei" s>',
                     searching: true,
-                    order: [[1, "desc"], [2, "desc"]],
+                    order: [[0, "desc"],[1, "desc"],[2, "desc"]],
                     columns: [{
                             "data": "times"
                         },
@@ -544,7 +544,7 @@ angular.module('app')
                     info: false,
                     dom: '<"g-d-hidei" s>',
                     searching: true,
-                    order: [[1, "desc"], [2, "desc"]],
+                    order:  [[0, "desc"],[1, "desc"],[2, "desc"]],
                     columns: [
                         {
                             "data": "times"
@@ -821,7 +821,7 @@ angular.module('app')
                     info: false,
                     dom: '<"g-d-hidei" s>',
                     searching: true,
-                    order: [[1, "desc"], [2, "desc"]],
+                    order:  [[0, "desc"],[2, "desc"],[3, "desc"]],
                     columns: [
                         {
                             "data": "shopName"
