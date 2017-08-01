@@ -178,6 +178,7 @@ angular.module('app')
                                     });
                                 }
                             } else {
+
                                 /*加载数据*/
                                 var result = data.result;
                                 if (typeof result !== 'undefined') {
@@ -218,7 +219,7 @@ angular.module('app')
                                                                 20: '待评价',
                                                                 21: '已评价'
                                                             };
-                                                        str += '<tr><td colspan="3" class="g-t-r">' + detail_map[j] + ':</td><td colspan="5" class="g-t-l">' + (function () {
+                                                        str += '<tr><td colspan="3" class="g-t-r">' + detail_map[j] + ':</td><td colspan="4" class="g-t-l">' + (function () {
                                                                 var tempstr;
 
                                                                 if (temptype === 0) {
@@ -241,11 +242,11 @@ angular.module('app')
                                                                 2: "支付宝",
                                                                 3: "其它"
                                                             };
-                                                        str += '<tr><td colspan="3" class="g-t-r">' + detail_map[j] + ':</td><td colspan="5" class="g-t-l">' + paymap[temppay] + '</td></tr>';
+                                                        str += '<tr><td colspan="3" class="g-t-r">' + detail_map[j] + ':</td><td colspan="4" class="g-t-l">' + paymap[temppay] + '</td></tr>';
                                                     } else if (j === 'totalMoney') {
-                                                        str += '<tr><td colspan="3" class="g-t-r">' + detail_map[j] + ':</td><td colspan="5" class="g-t-l">' + toolUtil.moneyCorrect(order[j], 12)[0] + '</td></tr>';
+                                                        str += '<tr><td colspan="3" class="g-t-r">' + detail_map[j] + ':</td><td colspan="4" class="g-t-l">' + toolUtil.moneyCorrect(order[j], 12)[0] + '</td></tr>';
                                                     } else {
-                                                        str += '<tr><td  colspan="3" class="g-t-r">' + detail_map[j] + ':</td><td colspan="5" class="g-t-l">' + order[j] + '</td></tr>';
+                                                        str += '<tr><td  colspan="3" class="g-t-r">' + detail_map[j] + ':</td><td colspan="4" class="g-t-l">' + order[j] + '</td></tr>';
                                                     }
                                                 }
                                             }
@@ -253,7 +254,7 @@ angular.module('app')
                                         if (details) {
                                             var i = 0,
                                                 len = details.length;
-                                            str += '<tr><th class="g-t-c">序号</th><th class="g-t-c">缩略图</th><th class="g-t-c">商品名称</th><th class="g-t-c">属性名称</th><th class="g-t-c">商品价格</th><th class="g-t-c">供应商价格</th><th class="g-t-c">购买数量</th><th class="g-t-c">订单序列</th></tr>';
+                                            str += '<tr><th class="g-t-c">序号</th><th class="g-t-c">缩略图</th><th class="g-t-c">商品名称</th><th class="g-t-c">属性名称</th><th class="g-t-c">商品价格</th><th class="g-t-c">购买数量</th><th class="g-t-c">订单序列</th></tr>';
                                             if (len !== 0) {
                                                 var detailitem;
                                                 for (i; i < len; i++) {
@@ -278,7 +279,6 @@ angular.module('app')
                                                         <td class="g-t-c">' + detailitem["goodsName"] + '</td>\
                                                         <td class="g-t-c">' + detailitem["attributeName"] + '</td>\
                                                         <td class="g-t-c">' + toolUtil.moneyCorrect(detailitem["goodsPrice"], 15, false)[0] + '</td>\
-                                                        <td class="g-t-c">' + toolUtil.moneyCorrect(detailitem["supplierPrice"], 15, false)[0] + '</td>\
                                                         <td class="g-t-c">' + detailitem["quantlity"] + '</td>\
                                                         <td class="g-t-c">' + detailitem["orderId"] + '</td>\
                                                         </tr>';

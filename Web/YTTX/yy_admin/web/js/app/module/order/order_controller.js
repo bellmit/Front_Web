@@ -116,13 +116,6 @@ angular.module('app')
 
                                 var list=result.list;
                                 if(list){
-                                    var vi=0,
-                                        vlen=list.length;
-                                    for(vi;vi<vlen;vi++){
-                                        if(!list[vi] || list[vi]===null){
-                                            return [];
-                                        }
-                                    }
                                     return list;
                                 }else{
                                     return [];
