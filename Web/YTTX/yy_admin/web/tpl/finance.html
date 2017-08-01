@@ -39,11 +39,12 @@
                 </div>
 
                 <!--条件查询--快捷日历-->
-                <div class="action-item-btn action-item-export g-w-percent26" ng-class="{'g-d-hidei':(finance_ctrl.record.action!==2 && finance_ctrl.record.action!==3)}" ng-click="finance_ctrl.toggleTime($event)">
+                <div class="action-item-btn action-item-export g-w-percent28" ng-class="{'g-d-hidei':(finance_ctrl.record.action!==2 && finance_ctrl.record.action!==3)}" ng-click="finance_ctrl.toggleTime($event)">
                     <span class="btn btn-export g-br3 g-pos-r" ng-class="{true:'g-c-blue3',false:'g-c-gray9'}[finance_ctrl.record.time===-12]">近一年<input type="radio" ng-model="finance_ctrl.record.time" ng-value="-12" class="g-w-percent50 g-h-percent100 g-pos-al g-opacity0" ></span>
                     <span class="btn btn-export g-br3 g-pos-r" ng-class="{true:'g-c-blue3',false:'g-c-gray9'}[finance_ctrl.record.time===-6]">近六个月<input type="radio" ng-model="finance_ctrl.record.time" ng-value="-6" class="g-w-percent50 g-h-percent100 g-pos-al g-opacity0" ></span>
                     <span class="btn btn-export g-br3 g-pos-r" ng-class="{true:'g-c-blue3',false:'g-c-gray9'}[finance_ctrl.record.time===-3]">近三个月<input type="radio" ng-model="finance_ctrl.record.time" ng-value="-3" class="g-w-percent50 g-h-percent100 g-pos-al g-opacity0" ></span>
                     <span class="btn btn-export g-br3 g-pos-r" ng-class="{true:'g-c-blue3',false:'g-c-gray9'}[finance_ctrl.record.time===-1]">近一个月<input type="radio" ng-model="finance_ctrl.record.time" ng-value="-1" class="g-w-percent50 g-h-percent100 g-pos-al g-opacity0" ></span>
+                    <span class="btn btn-export g-br3 g-pos-r" ng-class="{true:'g-c-blue3',false:'g-c-gray9'}[finance_ctrl.record.time===0]">&nbsp;全部&nbsp;<input type="radio" ng-model="finance_ctrl.record.time" ng-value="0" class="g-w-percent50 g-h-percent100 g-pos-al g-opacity0" ></span>
                 </div>
 
                 <!--查询-->
@@ -328,7 +329,7 @@
         <div class="modal-dialog g-w-percent46">
             <div class="modal-content">
                 <div class="modal-body">
-                    <div class="admin-layout-theme4 admin-theme-close g-t-c g-b-gray17 g-pos-r">订单详情<span class="mini-icon admin-mini-icon1" ng-click="finance_ctrl.toggleModal({display:'hide',area:'orderdetail'})"></span>
+                    <div class="admin-layout-theme4 admin-theme-close g-t-c g-b-gray17 g-pos-r">订单明细<span class="mini-icon admin-mini-icon1" ng-click="finance_ctrl.toggleModal({display:'hide',area:'orderdetail'})"></span>
                     </div>
                     <table class="table table-bordered table-striped table-hover admin-layout-table">
 
@@ -341,8 +342,9 @@
                             <col class="g-w-percent6">
                             <col class="g-w-percent9">
                             <col class="g-w-percent3">
-                            <col class="g-w-percent9">
+                            <col class="g-w-percent5">
                             <col class="g-w-percent3">
+                            <col class="g-w-percent4">
                         </colgroup>
                         <!--头部-->
                         <thead>
@@ -356,6 +358,28 @@
                             <th>订单状态</th>
                             <th>订单总价</th>
                             <th>支付类型</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+
+                        <!--表主体-->
+                        <tbody id="admin_orderdetail_list" class="middle-align" ng-click="finance_ctrl.queryOrderDetail($event)"></tbody>
+                    </table>
+
+                    <table class="table table-bordered table-striped table-hover admin-layout-table">
+                        <!--分组样式-->
+                        <colgroup>
+                            <col class="g-w-percent2">
+                            <col class="g-w-percent4">
+                            <col class="g-w-percent16">
+                            <col class="g-w-percent13">
+                            <col class="g-w-percent8">
+                            <col class="g-w-percent7">
+                        </colgroup>
+                        <!--头部-->
+                        <thead>
+                        <tr>
+                            <th class="g-t-c" colspan="6">订单详情</th>
                         </tr>
                         </thead>
 

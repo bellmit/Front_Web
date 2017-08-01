@@ -343,7 +343,7 @@ angular.module('app')
                     self.clearDataByView(table, action);
                     table['list_tip3'] = '不能查询 "当前登录机构(顶级机构)" 的分润,请选择其他机构或其子机构查询';
                     /*控制明细列*/
-                    if(table['list_table' + action]!==null){
+                    if (table['list_table' + action] !== null) {
                         /*隐藏*/
                         table['list_table' + action].column(3).visible(false);
                         self['$admin_list_colgroup' + action].html('<col class="g-w-percent16"><col class="g-w-percent17"><col class="g-w-percent17">');
@@ -352,7 +352,7 @@ angular.module('app')
                 } else {
                     table['list_tip3'] = '';
                     /*控制明细列*/
-                    if(table['list_table' + action]!==null){
+                    if (table['list_table' + action] !== null) {
                         /*显示*/
                         table['list_table' + action].column(3).visible(true);
                         self['$admin_list_colgroup' + action].html('<col class="g-w-percent16"><col class="g-w-percent12"><col class="g-w-percent12"><col class="g-w-percent10">');
@@ -397,7 +397,7 @@ angular.module('app')
                         data['searchWord'] = record['searchWord'];
                     }
                 } else if (action === 2 || action === 3) {
-                    if (record['time'] === '') {
+                    if (record['time'] === '' || record['time'] === 0) {
                         delete data['time'];
                     } else {
                         data['time'] = record['time'];
@@ -465,8 +465,10 @@ angular.module('app')
             if (action === 'order') {
                 /*查看详情和编辑操作*/
                 if (record_action === 2 || record_action === 3) {
+                    /*清空订单详情记录*/
+                    self.$admin_orderdetail_show.html('');
                     /*查看订单或者详情*/
-                    self.queryOrder({
+                    self.queryOrderList({
                         id: id,
                         action: action,
                         model: model
@@ -510,7 +512,7 @@ angular.module('app')
             }
         };
         /*数据查询服务--查询订单*/
-        this.queryOrder = function (config) {
+        this.queryOrderList = function (config) {
             if (cache === null) {
                 return false;
             }
@@ -578,55 +580,243 @@ angular.module('app')
                                 if (typeof result !== 'undefined') {
                                     var list = result.list;
                                     if (list) {
+                                        /*订单明细*/
+                                        (function () {
+                                            var item,
+                                                str = '',
+                                                len = list.length,
+                                                i = 0;
+                                            for (i; i < len; i++) {
+                                                item = list[i];
+                                                str += '<tr><td>' + (i + 1) + '</td><td>' + item["merchantName"] + '</td><td>' + toolUtil.phoneFormat(item["merchantPhone"]) + '</td><td>' + item["orderTime"] + '</td><td>' + item["payTime"] + '</td><td>' + item["orderNumber"] + '</td><td>' + (function () {
+                                                        var tempstate = parseInt(item["orderState"], 10),
+                                                            statemap = {
+                                                                0: '待付款',
+                                                                1: '取消订单',
+                                                                6: '待发货',
+                                                                9: '待收货',
+                                                                20: '待评价',
+                                                                21: '已评价'
+                                                            },
+                                                            tempstr = '';
+                                                        if (tempstate === 0) {
+                                                            tempstr = '<div class="g-c-blue3">' + statemap[tempstate] + '</div>';
+                                                        } else if (tempstate === 1) {
+                                                            tempstr = '<div class="g-c-red1">' + statemap[tempstate] + '</div>';
+                                                        } else if (tempstate === 6 || tempstate === 9 || tempstate === 20) {
+                                                            tempstr = '<div class="g-c-warn">' + statemap[tempstate] + '</div>';
+                                                        } else if (tempstate === 21) {
+                                                            tempstr = '<div class="g-c-green1">' + statemap[tempstate] + '</div>';
+                                                        } else {
+                                                            tempstr = '<div class="g-c-gray6">其他</div>';
+                                                        }
+                                                        return tempstr;
+                                                    }()) + '</td><td>' + toolUtil.moneyCorrect(item["totalMoney"], 15, false)[0] + '</td><td>' + (function () {
+                                                        var temppay = parseInt(item["paymentType"], 10),
+                                                            paymap = {
+                                                                1: "微信",
+                                                                2: "支付宝",
+                                                                3: "其它"
+                                                            };
+                                                        return paymap[temppay] || '其他';
+                                                    }()) + '</td><td><span data-action="orderdetail" data-id="' + item["id"] + '" class="btn-operate">订单详情</span></td></tr>';
+                                            }
+                                            if (str !== '') {
+                                                $(str).appendTo(self.$admin_orderdetail_list.html(''));
+                                                /*显示弹窗*/
+                                                self.toggleModal({
+                                                    display: 'show',
+                                                    area: 'orderdetail'
+                                                });
+                                            }
+                                        }());
+
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    function (resp) {
+                        var message = resp.data.message;
+                        if (typeof message !== 'undefined' && message !== '') {
+                            console.log(message);
+                        } else {
+                            console.log('请求订单失败');
+                        }
+                    });
+        };
+        /*数据查询服务--查询订单详情*/
+        this.queryOrderDetail = function (config) {
+            if (cache === null) {
+                return false;
+            }
+
+            var id = config.id;
+
+            if (typeof id === 'undefined') {
+                toolDialog.show({
+                    type: 'warn',
+                    value: '没有订单信息'
+                });
+                return false;
+            }
+
+            /*判断参数*/
+            var tempparam = cache.loginMap.param,
+                param = {
+                    adminId: tempparam.adminId,
+                    token: tempparam.token,
+                    id: id
+                };
+
+
+            toolUtil
+                .requestHttp({
+                    url: '/organization/goodsorder/details'/*'json/test.json'*/,
+                    method: 'post',
+                    set: true,
+                    debug: false, /*测试开关*/
+                    data: param
+                })
+                .then(function (resp) {
+                        /*测试代码*/
+                        /*var resp=self.testGetOrderDetail();*/
+
+                        var data = resp.data,
+                            status = parseInt(resp.status, 10);
+
+                        if (status === 200) {
+                            var code = parseInt(data.code, 10),
+                                message = data.message;
+                            if (code !== 0) {
+                                if (typeof message !== 'undefined' && message !== '') {
+                                    console.log(message);
+                                } else {
+                                    console.log('请求数据失败');
+                                }
+
+                                if (code === 999) {
+                                    /*退出系统*/
+                                    cache = null;
+                                    toolUtil.loginTips({
+                                        clear: true,
+                                        reload: true
+                                    });
+                                }
+                            } else {
+
+                                /*加载数据*/
+                                var result = data.result;
+                                if (typeof result !== 'undefined') {
+                                    var order = result.order,
+                                        details = result.details,
+                                        detail_map = {
+                                            'merchantName': '商户名称',
+                                            'merchantPhone': '手机号码',
+                                            'orderTime': '订单时间',
+                                            'orderNumber': '订单号',
+                                            'orderState': '订单状态',
+                                            'totalMoney': '订单总价',
+                                            'paymentType': '支付类型',
+                                            'attributeIds': '属性序列',
+                                            'attributeName': '属性名称',
+                                            'goodsId': '商品序列',
+                                            'goodsName': '商品名称',
+                                            'goodsPrice': '商品价格',
+                                            'goodsThumbnail': '商品缩略图',
+                                            'quantlity': '购买数量',
+                                            'supplierPrice': '供应商价格'
+                                        };
+                                    var str = '';
+                                    if (order) {
                                         /*查看*/
-                                        var item,
-                                            str = '',
-                                            len = list.length,
-                                            i = 0;
-                                        for (i; i < len; i++) {
-                                            item = list[i];
-                                            str += '<tr><td>' + (i + 1) + '</td><td>' + item["merchantName"] + '</td><td>' + toolUtil.phoneFormat(item["merchantPhone"]) + '</td><td>' + item["orderTime"] + '</td><td>' + item["payTime"] + '</td><td>' + item["orderNumber"] + '</td><td>' + (function () {
-                                                    var tempstate = parseInt(item["orderState"], 10),
-                                                        statemap = {
+                                        for (var j in order) {
+                                            if (typeof detail_map[j] !== 'undefined') {
+                                                if (j === 'orderState') {
+                                                    var temptype = parseInt(order[j], 10),
+                                                        typemap = {
                                                             0: '待付款',
                                                             1: '取消订单',
                                                             6: '待发货',
                                                             9: '待收货',
                                                             20: '待评价',
                                                             21: '已评价'
-                                                        },
-                                                        tempstr = '';
-                                                    if (tempstate === 0) {
-                                                        tempstr = '<div class="g-c-blue3">' + statemap[tempstate] + '</div>';
-                                                    } else if (tempstate === 1) {
-                                                        tempstr = '<div class="g-c-red1">' + statemap[tempstate] + '</div>';
-                                                    } else if (tempstate === 6 || tempstate === 9 || tempstate === 20) {
-                                                        tempstr = '<div class="g-c-warn">' + statemap[tempstate] + '</div>';
-                                                    } else if (tempstate === 21) {
-                                                        tempstr = '<div class="g-c-green1">' + statemap[tempstate] + '</div>';
-                                                    } else {
-                                                        tempstr = '<div class="g-c-gray6">其他</div>';
-                                                    }
-                                                    return tempstr;
-                                                }()) + '</td><td>' + toolUtil.moneyCorrect(item["totalMoney"], 15, false)[0] + '</td><td>' + (function () {
-                                                    var temppay = parseInt(item["paymentType"], 10),
+                                                        };
+
+                                                    str += '<tr><td colspan="3" class="g-t-r">' + detail_map[j] + ':</td><td colspan="3" class="g-t-l">' + (function () {
+                                                            var tempstr;
+
+                                                            if (temptype === 0) {
+                                                                tempstr = '<div class="g-c-blue3">' + typemap[temptype] + '</div>';
+                                                            } else if (temptype === 1) {
+                                                                tempstr = '<div class="g-c-red1">' + typemap[temptype] + '</div>';
+                                                            } else if (temptype === 6 || temptype === 9 || temptype === 20) {
+                                                                tempstr = '<div class="g-c-warn">' + typemap[temptype] + '</div>';
+                                                            } else if (temptype === 21) {
+                                                                tempstr = '<div class="g-c-green1">' + typemap[temptype] + '</div>';
+                                                            } else {
+                                                                tempstr = '<div class="g-c-gray6">其他</div>';
+                                                            }
+                                                            return tempstr;
+                                                        })() + '</td></tr>';
+                                                } else if (j === 'paymentType') {
+                                                    var temppay = parseInt(order[j], 10),
                                                         paymap = {
                                                             1: "微信",
                                                             2: "支付宝",
                                                             3: "其它"
                                                         };
-                                                    return paymap[temppay]||'其他';
-                                                }()) + '</td></tr>';
-                                        }
-                                        if (str !== '') {
-                                            $(str).appendTo(self.$admin_orderdetail_show.html(''));
-                                            /*显示弹窗*/
-                                            self.toggleModal({
-                                                display: 'show',
-                                                area: 'orderdetail'
-                                            });
+                                                    str += '<tr><td colspan="3" class="g-t-r">' + detail_map[j] + ':</td><td colspan="3" class="g-t-l">' + paymap[temppay] + '</td></tr>';
+                                                } else if (j === 'totalMoney') {
+                                                    str += '<tr><td colspan="3" class="g-t-r">' + detail_map[j] + ':</td><td colspan="3" class="g-t-l">' + toolUtil.moneyCorrect(order[j], 12)[0] + '</td></tr>';
+                                                } else {
+                                                    str += '<tr><td  colspan="3" class="g-t-r">' + detail_map[j] + ':</td><td colspan="3" class="g-t-l">' + order[j] + '</td></tr>';
+                                                }
+                                            }
                                         }
                                     }
+                                    if (details) {
+                                        var i = 0,
+                                            len = details.length;
+                                        str += '<tr><th class="g-t-c">序号</th><th class="g-t-c">缩略图</th><th class="g-t-c">商品名称</th><th class="g-t-c">属性名称</th><th class="g-t-c">商品价格</th><th class="g-t-c">购买数量</th></tr>';
+                                        if (len !== 0) {
+                                            var detailitem;
+                                            for (i; i < len; i++) {
+                                                detailitem = details[i];
+                                                str += '<tr class="g-v-m">\
+                                                        <td class="g-t-c">' + (i + 1) + '</td>\
+                                                        <td class="g-t-c">' + (function () {
+                                                        var img = detailitem["goodsThumbnail"],
+                                                            str = '';
+                                                        if (img.indexOf('qiniucdn.com') !== -1) {
+                                                            str = '<div class="admin-thumbnail-widget1"><img alt="" src="' + img + '?imageView2/1/w/60/h/60" /><div class="thumbnail-show"><div class="thumbnail-showwrap"><div class="thumbnail-outer"><div class="thumbnail-inner"><img alt="" src="' + img + '" /></div></div></div></div></div>';
+                                                        } else {
+                                                            img = self.validImages(img);
+                                                            if (img !== '') {
+                                                                str = '<div class="admin-thumbnail-widget1"><img alt="" src="' + img + '" /><div class="thumbnail-show"><div class="thumbnail-showwrap"><div class="thumbnail-outer"><div class="thumbnail-inner"><img alt="" src="' + img + '" /></div></div></div></div></div>';
+                                                            } else {
+                                                                str = '<div class="admin-thumbnail-widget1"></div>';
+                                                            }
+                                                        }
+                                                        return str;
+                                                    }()) + '</td>\
+                                                        <td class="g-t-c">' + detailitem["goodsName"] + '</td>\
+                                                        <td class="g-t-c">' + detailitem["attributeName"] + '</td>\
+                                                        <td class="g-t-c">' + toolUtil.moneyCorrect(detailitem["goodsPrice"], 15, false)[0] + '</td>\
+                                                        <td class="g-t-c">' + detailitem["quantlity"] + '</td>\
+                                                        </tr>';
+                                            }
+                                        }
+                                    }
+                                    if (str !== '') {
+                                        $(str).appendTo(self.$admin_orderdetail_show.html(''));
+                                    }
+                                }else {
+                                    /*提示信息*/
+                                    toolDialog.show({
+                                        type: 'warn',
+                                        value: '获取数据失败'
+                                    });
                                 }
                             }
                         }

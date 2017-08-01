@@ -112,12 +112,12 @@
 
 
             <!--选项卡组件(切换不用的机构类型)-->
-            <ul class="sub-tab-wrap sub-item-group3 sub-itembr-group3 ui-sub-tab" data-action="toggleStructType" data-ctrlname="struct_ctrl"  data-tabitem="struct_ctrl.structtype"></ul>
+            <!--<ul class="sub-tab-wrap sub-item-group3 sub-itembr-group3 ui-sub-tab" data-action="toggleStructType" data-ctrlname="struct_ctrl"  data-tabitem="struct_ctrl.structtype"></ul>-->
 
 
             <!--子菜单组件-->
             <div id="submenu_scroll_wrap">
-                <ul class="sub-menu-wrap sub-menu-flag sub-menu-flag{{struct_ctrl.record.structtype}}">
+                <ul class="sub-menu-wrap">
                     <li>
                         <a class="sub-menu-title sub-menu-titleactive" data-parentid="" data-id="struct_ctrl.record.currentId" data-layer="0" data-list="false" data-label="struct_ctrl.record.currentName"  ng-click="struct_ctrl.rootSubMenu($event)">{{struct_ctrl.record.currentName}}</a>
                         <ul ng-init="struct_ctrl.initSubMenu()" ng-click="struct_ctrl.toggleSubMenu($event)" id="admin_struct_submenu" class="g-d-showi ui-sub-menu"></ul>

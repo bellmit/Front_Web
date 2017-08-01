@@ -13,6 +13,7 @@ angular.module('app')
             $search_date:$('#search_date'),
             /*弹出层，表单*/
             $admin_orderdetail_dialog: $('#admin_orderdetail_dialog'),
+            $admin_orderdetail_list: $('#admin_orderdetail_list'),
             $admin_orderdetail_show: $('#admin_orderdetail_show'),
             $admin_bonus_dialog: $('#admin_bonus_dialog'),
             $admin_bonus_reset: $('#admin_bonus_reset'),
@@ -84,7 +85,7 @@ angular.module('app')
             action: 1/*查询的视图区域，最终根据主题theme,选项tab，两者叠加产生*/,
             searchWord: ''/*搜索字段*/,
             searchDate: ''/*查询年月日*/,
-            time:-1,
+            time:-1/*查询时间段*/,
             filter: ''/*过滤字段*/,
             organizationId: ''/*操作索引*/,
             organizationName: '',
@@ -856,7 +857,7 @@ angular.module('app')
 
                                 /*查看发货详情*/
                                 if (self.powerlist.profit_details) {
-                                    btns += '<span data-action="order" data-id="' + data + '"  class="btn-operate">订单明细</span>';
+                                    btns += '<span data-action="order" data-id="' + data + '"  class="btn-operate">订单</span>';
                                 }
                                 return btns;
                             }
@@ -1106,8 +1107,8 @@ angular.module('app')
             });
         };
         /*条件服务--切换不同的时间条件*/
-        this.toggleTime=function (e) {
-            var target=e.target,
+        this.toggleTime=function ($event) {
+            var target=$event.target,
                 node=target.nodeName.toLowerCase();
             if(node==='div'){
                 return false;
@@ -1153,6 +1154,24 @@ angular.module('app')
         /*查询服务--过滤数据*/
         this.filterDataTable = function () {
             financeService.filterDataTable(self.table, self.record);
+        };
+        /*查询服务--查询订单详情*/
+        this.queryOrderDetail = function ($event) {
+            var target=$event.target,
+                node=target.nodeName.toLowerCase();
+
+            if(node!=='span'){
+                return false;
+            }
+            var span=$(target),
+                isoperate=span.hasClass('btn-operate'),
+                action=span.attr('data-action');
+
+            if(isoperate  && action==='orderdetail'){
+                financeService.queryOrderDetail({
+                    id:span.attr('data-id')
+                });
+            }
         };
 
 
