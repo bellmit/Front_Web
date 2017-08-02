@@ -1511,7 +1511,7 @@ angular.module('app')
                         /*执行删除机构操作*/
                         toolDialog.show({
                             type: 'warn',
-                            value: '接口开发中'
+                            value: '接口开发中...'
                         });
                         return false;
                         toolUtil

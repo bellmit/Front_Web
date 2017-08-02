@@ -83,7 +83,7 @@ angular.module('ui.commonitem',[])
                     var kcode=$event.keyCode,
                         self=this;
 
-                    self.value=toolUtil.trimHtmlIllegal(scope.svalue);
+                    self.value=toolUtil.trimHtmlIllegal(self.value);
                     if(scope.svalue===''){
                         scope.sactive='';
                     }else{

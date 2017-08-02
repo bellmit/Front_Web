@@ -555,8 +555,8 @@
         };
         /*去除表单常用非法字符*/
         tools.trimHtmlIllegal = function (str) {
-            var tempstr = str.replace(/["'\/！￥…（）——《》？：“”，。；：’‘、【】]/ig, '');
-            return tempstr.replace(/(&#34;|&quot;|&#60;|&lt;|&#62;|&gt;|&#160;|&#180;|&acute;)/ig, '');
+            var tempstr = str.replace(/["'\/！￥…（）——《》？：“”，。；：’‘、【】]/i, '');
+            return tempstr.replace(/(&#34;|&quot;|&#60;|&lt;|&#62;|&gt;|&#160;|&#180;|&acute;)/i, '');
         };
         /*去除所有非法字符*/
         tools.trimIllegal = function (str) {
