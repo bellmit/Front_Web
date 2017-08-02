@@ -410,19 +410,6 @@ angular.module('app')
                             "render": function (data, type, full, meta) {
                                 return toolUtil.moneyCorrect(data, 15, false)[0];
                             }
-                        },
-                        {
-                            /*to do*/
-                            "data": "id",
-                            "render": function (data, type, full, meta) {
-                                var btns = '';
-
-                                /*查看发货详情*/
-                                if (self.powerlist.profit_details) {
-                                    btns += '<span data-action="detail" data-id="' + data + '" class="btn-operate">明细</span>';
-                                }
-                                return btns;
-                            }
                         }
                     ]
                 }

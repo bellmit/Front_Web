@@ -89,7 +89,7 @@ angular.module('app')
                 clear_ajax = table['list_config' + type]['config']['ajax'];
                 clear_pagewrap = self['$admin_page_wrap' + type];
             } else {
-                /*默认清除2,3下面明细数据*/
+                /*默认清除3下面明细数据*/
                 clear_table = table.list_tabledetail;
                 clear_page = table.list_pagedetail;
                 clear_pagewrap = self.$admin_page_wrapdetail;
@@ -334,11 +334,11 @@ angular.module('app')
                 return false;
             }
             /*清除历史分润和各机构分润下明细*/
-            if (action === 2 || action === 3) {
+            if (action === 3) {
                 /*根据视图状态清除数据缓存*/
                 self.clearDataByView(table);
                 /*如果3操作的是顶级当前登录用户，则清除之前的数据，并不查询相关数据*/
-                if (action === 3 && record.organizationId !== '' && record.organizationId === record.currentId) {
+                if (record.organizationId !== '' && record.organizationId === record.currentId) {
                     /*根据视图状态清除数据缓存*/
                     self.clearDataByView(table, action);
                     table['list_tip3'] = '不能查询 "当前登录机构(顶级机构)" 的分润,请选择其他机构或其子机构查询';
@@ -421,25 +421,11 @@ angular.module('app')
                     dataTableColumnService.initColumn(table[temp_column], table[temp_table]);
                 }
                 /*调用按钮操作*/
-                if (action === 2 || action === 3 || action === 7) {
+                if (action === 3 || action === 7) {
                     dataTableItemActionService.initItemAction(table[temp_action]);
                 }
             } else {
                 table[temp_table].ajax.config(table[temp_config].config.ajax).load();
-            }
-
-            /*控制明细列*/
-            if (action === 2) {
-                /*过滤历史，各运营商查看当前登录用户的明细*/
-                if (record.organizationId !== '' && record.organizationId === record.currentId) {
-                    /*隐藏*/
-                    table[temp_table].column(3).visible(false);
-                    self['$admin_list_colgroup' + action].html('<col class="g-w-percent16"><col class="g-w-percent17"><col class="g-w-percent17">');
-                } else {
-                    /*显示*/
-                    table[temp_table].column(3).visible(true);
-                    self['$admin_list_colgroup' + action].html('<col class="g-w-percent16"><col class="g-w-percent12"><col class="g-w-percent12"><col class="g-w-percent10">');
-                }
             }
         };
         /*数据查询服务--过滤表格数据*/
