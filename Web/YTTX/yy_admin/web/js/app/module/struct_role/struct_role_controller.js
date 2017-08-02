@@ -403,6 +403,15 @@ angular.module('app')
                 role: self.role
             });
         };
+        /*角色服务--删除角色或角色组*/
+        this.deleteRole = function () {
+            structroleService.deleteRole({
+                table: self.table,
+                record: self.record,
+                rolegroup: self.rolegroup,
+                role: self.role
+            });
+        };
 
 
         /*成员服务--移除成员*/
