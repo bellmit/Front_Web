@@ -1503,17 +1503,13 @@ angular.module('app')
                     var tempparam = cache.loginMap.param,
                         param = {
                             token: tempparam.token,
-                            adminId: tempparam.adminId
+                            adminId: tempparam.adminId,
+                            id:id
                         };
 
                     /*确认是否删除*/
                     toolDialog.sureDialog('', function () {
                         /*执行删除机构操作*/
-                        toolDialog.show({
-                            type: 'warn',
-                            value: '接口开发中...'
-                        });
-                        return false;
                         toolUtil
                             .requestHttp({
                                 url: type === 'role' ? '/role/delete' : '/rolegroup/delete'/*'json/test.json'*//*测试地址*/,
