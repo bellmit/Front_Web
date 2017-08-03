@@ -119,6 +119,106 @@ angular.module('app')
         };
 
 
+        /*完善信息服务--查询完善信息*/
+        this.queryStructInfo = function (config) {
+            if (cache === null) {
+                return false;
+            }
+            var record = config.record,
+                struct = config.struct;
+
+            /*判断参数*/
+            if (record.organizationId === '') {
+                return false;
+            }
+
+            toolUtil
+                .requestHttp({
+                    url: '/organization/info',
+                    method: 'post',
+                    set: true,
+                    data: {
+                        adminId:record.adminId,
+                        token:record.token,
+                        id:record.organizationId
+                    }
+                })
+                .then(function (resp) {
+                        var data = resp.data,
+                            status = parseInt(resp.status, 10);
+
+                        if (status === 200) {
+                            var code = parseInt(data.code, 10),
+                                message = data.message;
+                            if (code !== 0) {
+                                if (typeof message !== 'undefined' && message !== '') {
+                                    console.log(message);
+                                } else {
+                                    console.log('请求完善信息失败');
+                                }
+
+                                if (code === 999) {
+                                    /*退出系统*/
+                                    cache = null;
+                                    toolUtil.loginTips({
+                                        clear: true,
+                                        reload: true
+                                    });
+                                }
+                            } else {
+                                /*加载数据*/
+                                var result = data.result;
+                                if (typeof result !== 'undefined') {
+                                    var list = result.organization;
+                                    if (list) {
+                                        /*更新模型*/
+                                        for (var i in list) {
+                                            switch (i) {
+                                                case 'linkman':
+                                                    struct[i] = list[i];
+                                                    break;
+                                                case 'cellphone':
+                                                    struct[i] = toolUtil.phoneFormat(list[i]);
+                                                    break;
+                                                case 'address':
+                                                    struct[i] = list[i];
+                                                    break;
+                                                case 'remark':
+                                                    struct[i] = list[i];
+                                                    break;
+                                                case 'payeeName':
+                                                    struct[i] = list[i];
+                                                    break;
+                                                case 'depositBank':
+                                                    struct[i] = list[i];
+                                                    break;
+                                                case 'payeeAccount':
+                                                    struct[i] = toolUtil.cardFormat(list[i]);
+                                                    break;
+                                            }
+                                        }
+                                    } else {
+                                        /*提示信息*/
+                                        toolDialog.show({
+                                            type: 'warn',
+                                            value: '获取完善信息失败'
+                                        });
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    function (resp) {
+                        var message = resp.data.message;
+                        if (typeof message !== 'undefined' && message !== '') {
+                            console.log(message);
+                        } else {
+                            console.log('请求完善信息失败');
+                        }
+                    });
+        };
+
+
         /*子管理服务--新增子管理*/
         this.actionManage = function (config) {
             var modal = config.modal,
@@ -440,7 +540,7 @@ angular.module('app')
                     param['remark'] = config[type]['remark'];
                     param['payeeName'] = config[type]['payeeName'];
                     param['depositBank'] = config[type]['depositBank'];
-                    param['payeeAccount'] = config[type]['payeeAccount'];
+                    param['payeeAccount'] = toolUtil.trims(config[type]['payeeAccount']);
 
                     /*判断是新增还是修改*/
                     action = 'update';

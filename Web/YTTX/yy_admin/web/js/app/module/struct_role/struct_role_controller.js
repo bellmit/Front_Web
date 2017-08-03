@@ -24,6 +24,7 @@ angular.module('app')
             $admin_member_checkall: $('#admin_member_checkall'),
             $submenu_scroll_wrap:$('#submenu_scroll_wrap'),
             $admin_member_menu: $('#admin_member_menu'),
+            $admin_member_exist:$('#admin_member_exist'),
             $admin_member_checked: $('#admin_member_checked'),
             $admin_user_wrap: $('#admin_user_wrap')
         };
@@ -58,7 +59,8 @@ angular.module('app')
             rolegroupname: ''/*角色组名称*/,
             currentId: ''/*虚拟挂载点*/,
             currentName: ''/*虚拟挂载点*/,
-            checkAll:false/*全选状态*/
+            checkAll:false/*全选状态*/,
+            existmember:{}/*模型--已经存在的机构信息*/
         };
 
 
@@ -143,6 +145,14 @@ angular.module('app')
                                         reload: true
                                     });
                                 }
+                                (function () {
+                                    /*清除已经存在的模型*/
+                                    var exist=self.record.existmember;
+                                    for(var p in exist){
+                                        delete exist[p];
+                                    }
+                                    jq_dom.$admin_member_exist.html('');
+                                }());
                                 return [];
                             }
                             var result = json.result;
@@ -155,6 +165,14 @@ angular.module('app')
                                     pageSize: self.table.list1_page.pageSize,
                                     total: self.table.list1_page.total
                                 });
+                                (function () {
+                                    /*清除已经存在的模型*/
+                                    var exist=self.record.existmember;
+                                    for(var p in exist){
+                                        delete exist[p];
+                                    }
+                                    jq_dom.$admin_member_exist.html('');
+                                }());
                                 return [];
                             }
 
@@ -174,19 +192,25 @@ angular.module('app')
                                         temp_param['page'] = self.table.list1_page.page;
                                         temp_param['pageSize'] = self.table.list1_page.pageSize;
                                         self.table.list1_config.config.ajax.data = temp_param;
-                                        structroleService.getColumnData(self.table, self.record.role);
+                                        structroleService.getColumnData({
+                                            table:self.table,
+                                            id:self.record.role
+                                        });
                                     }
                                 });
 
                                 var list = result.list;
-                                if (list) {
-                                    var vi = 0,
-                                        vlen = list.length;
-                                    for (vi; vi < vlen; vi++) {
-                                        if (!list[vi] || list[vi] === null) {
-                                            return [];
+                                if(self.table.list1_page.page===1){
+                                    (function () {
+                                        /*清除已经存在的模型*/
+                                        var exist=self.record.existmember;
+                                        for(var p in exist){
+                                            delete exist[p];
                                         }
-                                    }
+                                        jq_dom.$admin_member_exist.html('');
+                                    }());
+                                }
+                                if (list) {
                                     return list;
                                 } else {
                                     return [];
@@ -200,6 +224,14 @@ angular.module('app')
                                     pageSize: self.table.list1_page.pageSize,
                                     total: self.table.list1_page.total
                                 });
+                                (function () {
+                                    /*清除已经存在的模型*/
+                                    var exist=self.record.existmember;
+                                    for(var p in exist){
+                                        delete exist[p];
+                                    }
+                                    jq_dom.$admin_member_exist.html('');
+                                }());
                                 return [];
                             }
                         },
@@ -245,7 +277,19 @@ angular.module('app')
                         {
                             "data": "cellphone",
                             "render": function (data, type, full, meta) {
-                                return toolUtil.phoneFormat(data);
+                                var phone=data,
+                                    fullname=full.fullName;
+                                if(phone){
+                                    /*设置已经存在的成员模型*/
+                                    self.record.existmember[phone]={
+                                        'cellphone':phone,
+                                        'label':fullname
+                                    };
+                                    return toolUtil.phoneFormat(phone);
+                                }else{
+                                    return '';
+                                }
+
                             }
                         },
                         {
@@ -324,7 +368,6 @@ angular.module('app')
                 columnshow: true,
                 $column_wrap: jq_dom.$admin_table_checkcolumn/*控制列显示隐藏的容器*/,
                 $bodywrap: jq_dom.$admin_batchlist_wrap/*数据展现容器*/,
-                header: ['全选', '店铺全称', '店铺简称', '姓名', '店铺类型', '店铺手机号', '店铺电话号码', '省市区', '详细地址', '状态', '添加时间'],
                 hide_list: [1, 5, 6, 7, 8, 10]/*需要隐藏的的列序号*/,
                 hide_len: 6,
                 column_api: {
@@ -368,7 +411,10 @@ angular.module('app')
             structroleService.queryRoleGroup({
                 record: self.record
             });
-            structroleService.getColumnData(self.table, self.record.role);
+            structroleService.getColumnData({
+                table:self.table,
+                id:self.record.role
+            });
         };
         /*菜单服务--查询角色组*/
         this.queryRoleGroup = function () {

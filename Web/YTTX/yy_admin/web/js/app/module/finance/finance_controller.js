@@ -410,6 +410,18 @@ angular.module('app')
                             "render": function (data, type, full, meta) {
                                 return toolUtil.moneyCorrect(data, 15, false)[0];
                             }
+                        },
+                        {
+                            "data": "id",
+                            "render": function (data, type, full, meta) {
+                                var btns = '';
+
+                                /*查看发货详情*/
+                                if (self.powerlist.profit_details) {
+                                    btns += '<span data-action="detail" data-id="' + data + '"  class="btn-operate">明细</span>';
+                                }
+                                return btns;
+                            }
                         }
                     ]
                 }
@@ -861,8 +873,6 @@ angular.module('app')
             list_table6: null/*扩展--各运营商清算*/,
             list_table7: null,
             list_tabledetail: null/*明细*/,
-            /*其他*/
-            list_tip3:''/*各运营商分润查询提示信息*/,
             /*列控制*/
             tablecolumn1: {/*暂无，需要时可参考7*/},
             tablecolumn2: {/*暂无，需要时可参考7*/},

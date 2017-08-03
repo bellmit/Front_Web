@@ -162,6 +162,15 @@ angular.module('app')
         settingService.getRoot(self.record);
 
 
+        /*完善信息服务--查询完善信息*/
+        this.queryStructInfo=function () {
+            settingService.queryStructInfo({
+                record:self.record,
+                struct:self.struct
+            });
+        };
+
+
         /*表单服务--提交表单*/
         this.formSubmit = function (type) {
             settingService.formSubmit({

@@ -123,8 +123,9 @@
                     <!--分组样式-->
                     <colgroup id="admin_list_colgroup2">
                         <col class="g-w-percent16">
-                        <col class="g-w-percent17">
-                        <col class="g-w-percent17">
+                        <col class="g-w-percent12">
+                        <col class="g-w-percent12">
+                        <col class="g-w-percent10">
                     </colgroup>
 
                     <!--表头-->
@@ -133,6 +134,7 @@
                         <th>时间</th>
                         <th>销售金额</th>
                         <th>分润金额</th>
+                        <th>操作</th>
                     </tr>
                     </thead>
 
@@ -144,13 +146,13 @@
                     <!--分组样式-->
                     <colgroup>
                         <col class="g-w-percent16">
-                        <col class="g-w-percent17">
-                        <col class="g-w-percent17">
+                        <col class="g-w-percent12">
+                        <col class="g-w-percent12">
+                        <col class="g-w-percent10">
                     </colgroup>
                     <tr>
-                        <td>&nbsp;</td>
-                        <td class="g-c-blue3">销售金额合计:&nbsp;&nbsp;{{finance_ctrl.table.list_total2.salesCount}}</td>
-                        <td class="g-c-blue3">分润金额合计:&nbsp;&nbsp;{{finance_ctrl.table.list_total2.profits1Count}}</td>
+                        <td class="g-c-blue3" colspan="2">销售金额合计:&nbsp;&nbsp;{{finance_ctrl.table.list_total2.salesCount}}</td>
+                        <td class="g-c-blue3" colspan="2">分润金额合计:&nbsp;&nbsp;{{finance_ctrl.table.list_total2.profits1Count}}</td>
                     </tr>
                 </table>
 
@@ -162,7 +164,7 @@
 
             <div ng-class="{'g-d-hidei':finance_ctrl.record.action!==3}">
                 <!--数据标题-->
-                <div class="admin-layout-theme4 g-t-c g-b-gray17 g-gap-mb1 g-pos-r">运营商分润统计<div class="admin-tips-widget admin-tips-widget1 g-t-r">{{finance_ctrl.table.list_tip3}}</div></div>
+                <div class="admin-layout-theme4 g-t-c g-b-gray17 g-gap-mb1">运营商分润统计</div>
                 <!--表格-->
                 <table id="admin_list_wrap3" class="table table-bordered table-striped table-hover admin-layout-table">
                     <!--分组样式-->
@@ -210,7 +212,7 @@
 
 
             <!--明细视图操作区-->
-            <div ng-class="{'g-d-hidei':(finance_ctrl.record.action!==3)}">
+            <div ng-class="{'g-d-hidei':(finance_ctrl.record.action!==2 && finance_ctrl.record.action!==3)}">
                 <!--数据标题-->
                 <div class="admin-layout-theme4 g-t-c g-b-gray17 g-gap-mb1">分润明细</div>
                 <!--表格-->
