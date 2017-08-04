@@ -17,6 +17,7 @@ angular.module('app')
             $admin_role_reset: $('#admin_role_reset'),
             $admin_member_reset: $('#admin_member_reset'),
             $admin_table_checkcolumn: $('#admin_table_checkcolumn'),
+            $admin_page_wrap: $('#admin_page_wrap'),
             $admin_list_wrap: $('#admin_list_wrap'),
             $admin_list_colgroup: $('#admin_list_colgroup'),
             $admin_batchlist_wrap: $('#admin_batchlist_wrap'),
@@ -112,13 +113,17 @@ angular.module('app')
 
         /*模型--表格缓存*/
         this.table = {
+            list1_page: {
+                page: 1,
+                pageSize: 20,
+                total: 0
+            },
             list1_config: {
                 config: {
                     processing: true, /*大消耗操作时是否显示处理状态*/
                     deferRender: true, /*是否延迟加载数据*/
                     autoWidth: true, /*是否*/
-                    paging: true,
-                    pagingType:'simple_numbers',/*分页按钮排列*/
+                    paging: false,
                     ajax: {
                         url: toolUtil.adaptReqUrl('/role/shops'),
                         dataType: 'JSON',
@@ -152,6 +157,14 @@ angular.module('app')
                             }
                             var result = json.result;
                             if (typeof result === 'undefined') {
+                                /*重置分页*/
+                                self.table.list1_page.total = 0;
+                                self.table.list1_page.page = 1;
+                                jq_dom.$admin_page_wrap.pagination({
+                                    pageNumber: self.table.list1_page.page,
+                                    pageSize: self.table.list1_page.pageSize,
+                                    total: self.table.list1_page.total
+                                });
                                 (function () {
                                     /*清除已经存在的模型*/
                                     var exist=self.record.existmember;
@@ -164,21 +177,53 @@ angular.module('app')
                             }
 
                             if (result) {
-                                var list = result.list;
-                                (function () {
-                                    /*清除已经存在的模型*/
-                                    var exist=self.record.existmember;
-                                    for(var p in exist){
-                                        delete exist[p];
+                                /*设置分页*/
+                                self.table.list1_page.total = result.count;
+                                /*分页调用*/
+                                jq_dom.$admin_page_wrap.pagination({
+                                    pageNumber: self.table.list1_page.page,
+                                    pageSize: self.table.list1_page.pageSize,
+                                    total: self.table.list1_page.total,
+                                    onSelectPage: function (pageNumber, pageSize) {
+                                        /*再次查询*/
+                                        var temp_param = self.table.list1_config.config.ajax.data;
+                                        self.table.list1_page.page = pageNumber;
+                                        self.table.list1_page.pageSize = pageSize;
+                                        temp_param['page'] = self.table.list1_page.page;
+                                        temp_param['pageSize'] = self.table.list1_page.pageSize;
+                                        self.table.list1_config.config.ajax.data = temp_param;
+                                        structroleService.getColumnData({
+                                            table:self.table,
+                                            id:self.record.role
+                                        });
                                     }
-                                    jq_dom.$admin_member_exist.html('');
-                                }());
+                                });
+
+                                var list = result.list;
+                                if(self.table.list1_page.page===1){
+                                    (function () {
+                                        /*清除已经存在的模型*/
+                                        var exist=self.record.existmember;
+                                        for(var p in exist){
+                                            delete exist[p];
+                                        }
+                                        jq_dom.$admin_member_exist.html('');
+                                    }());
+                                }
                                 if (list) {
                                     return list;
                                 } else {
                                     return [];
                                 }
                             } else {
+                                /*重置分页*/
+                                self.table.list1_page.total = 0;
+                                self.table.list1_page.page = 1;
+                                jq_dom.$admin_page_wrap.pagination({
+                                    pageNumber: self.table.list1_page.page,
+                                    pageSize: self.table.list1_page.pageSize,
+                                    total: self.table.list1_page.total
+                                });
                                 (function () {
                                     /*清除已经存在的模型*/
                                     var exist=self.record.existmember;
@@ -190,11 +235,13 @@ angular.module('app')
                                 return [];
                             }
                         },
-                        data: {}
+                        data: {
+                            page: 1,
+                            pageSize: 20
+                        }
                     },
-                    info: true,
-                    stateSave:false,/*是否保存重新加载的状态*/
-                    dom: '<"g-d-hidei" s> t <"admin-page-wrap g-fs2"<"g-w-percent20 g-f-l" li><"g-w-percent29 g-f-r" p>>',
+                    info: false,
+                    dom: '<"g-d-hidei" s>',
                     searching: true,
                     order: [[1, "desc"]],
                     columns: [
@@ -309,12 +356,7 @@ angular.module('app')
                         {
                             "data": "addTime"
                         }
-                    ],
-                    aLengthMenu: [
-                        [10,15,20,30],
-                        [10,15,20,30]
-                    ],
-                    lengthChange:true/*是否可改变长度*/
+                    ]
                 }
             },
             list_table: null,
