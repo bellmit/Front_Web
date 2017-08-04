@@ -1,5 +1,5 @@
 angular.module('app')
-    .service('organizationroleService', ['toolUtil', 'toolDialog', 'BASE_CONFIG', 'loginService', 'powerService', 'addressService', 'dataTableColumnService', 'dataTableCheckAllService', '$timeout', function (toolUtil, toolDialog, BASE_CONFIG, loginService, powerService, addressService, dataTableColumnService, dataTableCheckAllService, $timeout) {
+    .service('organizationroleeService', ['toolUtil', 'toolDialog', 'BASE_CONFIG', 'loginService', 'powerService', 'addressService', 'dataTableColumnService', 'dataTableCheckAllService', '$timeout', function (toolUtil, toolDialog, BASE_CONFIG, loginService, powerService, addressService, dataTableColumnService, dataTableCheckAllService, $timeout) {
 
         /*获取缓存数据*/
         var self = this,
@@ -83,7 +83,7 @@ angular.module('app')
                                                 self.$admin_struct_submenu.html('<li><a data-layer="1" data-isrequest="true" data-role="" data-rolegroup="">暂无数据</a></li>');
                                             } else {
                                                 /*数据集合，最多嵌套层次*/
-                                                str = self.resolveMenuList(list, BASE_CONFIG.submenulimit - 4, {
+                                                str = self.resolveMenuList(list, 2, {
                                                     layer: 0,
                                                     type: 'rolegroup'
                                                 });
@@ -116,7 +116,7 @@ angular.module('app')
                 loginService.outAction();
             }
         };
-        /*导航服务--查询角色*/
+        /*导航服务--查询角色组*/
         this.queryRole = function (config, dom) {
             if (cache) {
                 /*模型缓存*/
@@ -165,7 +165,7 @@ angular.module('app')
                                                 }).removeClass('sub-menu-title sub-menu-titleactive');
                                             } else {
                                                 /*数据集合，最多嵌套层次*/
-                                                str = self.resolveMenuList(list, BASE_CONFIG.submenulimit - 4, {
+                                                str = self.resolveMenuList(list, 2, {
                                                     layer: 1,
                                                     type: 'role'
                                                 });
@@ -359,7 +359,10 @@ angular.module('app')
                 record.role = temp_role;
                 record.rolename = temp_label;
                 /*查询成员信息--调用表格数据*/
-                self.getColumnData(config.table, config.record.role);
+                self.getColumnData({
+                    table: config.table,
+                    id: config.record.role
+                });
             }
         };
 
@@ -368,6 +371,15 @@ angular.module('app')
         this.resetRecordMode = function (record, type) {
             if (!record && typeof type !== 'undefined') {
                 return false;
+            }
+
+            if (record['prev'] !== null) {
+                record['prev'].removeClass('sub-menuactive');
+                record['current'].removeClass('sub-menuactive');
+                record['prev'] = null;
+            } else if (record['current'] !== null) {
+                record['current'].removeClass('sub-menuactive');
+                record['current'] = null;
             }
 
             if (type === 'all') {
@@ -384,14 +396,6 @@ angular.module('app')
                 record['currentId'] = '';
                 record['currentName'] = '';
 
-                /*if(record['prev']!==null){
-                 record['prev'].removeClass('sub-menuactive');
-                 record['current'].removeClass('sub-menuactive');
-                 record['prev']=null;
-                 }else if(record['current']!==null){
-                 record['current'].removeClass('sub-menuactive');
-                 }
-                 record['current']=null;*/
             } else if (type === 'rolegroup') {
                 /*角色组*/
                 record['rolegroup'] = '';
@@ -399,17 +403,13 @@ angular.module('app')
                 record['role'] = '';
                 record['rolename'] = '';
                 record['layer'] = 0;
-                if (record['prev'] !== null) {
-                    record['prev'] = null;
-                }
-                if (record['current'] !== null) {
-                    record['current'] = null;
-                }
+
             } else if (type === 'role') {
                 /*角色*/
                 record['role'] = '';
                 record['rolename'] = '';
                 record['layer'] = 1;
+
             } else if (type === 'member') {
                 /*成员*/
             }
@@ -459,15 +459,16 @@ angular.module('app')
 
 
         /*成员服务--请求数据--获取表格数据*/
-        this.getColumnData = function (table, id) {
+        this.getColumnData = function (config) {
             if (cache === null) {
                 return false;
-            } else if (!table) {
+            } else if (!config.table) {
                 return false;
             }
 
             /*如果存在模型*/
-            var data = $.extend(true, {}, table.list1_config.config.ajax.data),
+            var id = config.id,
+                data = $.extend(true, {}, config.table.list1_config.config.ajax.data),
                 temp_param;
 
             if (id !== '') {
@@ -477,24 +478,24 @@ angular.module('app')
                 data['roleId'] = '';
             }
             /*参数赋值*/
-            table.list1_config.config.ajax.data = data;
-            if (table.list_table === null) {
+            config.table.list1_config.config.ajax.data = data;
+            if (config.table.list_table === null) {
                 temp_param = cache.loginMap.param;
-                table.list1_config.config.ajax.data['adminId'] = temp_param.adminId;
-                table.list1_config.config.ajax.data['token'] = temp_param.token;
+                config.table.list1_config.config.ajax.data['adminId'] = temp_param.adminId;
+                config.table.list1_config.config.ajax.data['token'] = temp_param.token;
                 /*初始请求*/
-                table.list_table = self.$admin_list_wrap.DataTable(table.list1_config.config);
+                config.table.list_table = self.$admin_list_wrap.DataTable(config.table.list1_config.config);
                 /*调用列控制*/
-                dataTableColumnService.initColumn(table.tablecolumn, table.list_table);
+                dataTableColumnService.initColumn(config.table.tablecolumn, config.table.list_table);
                 /*调用全选与取消全选*/
-                dataTableCheckAllService.initCheckAll(table.tablecheckall);
+                dataTableCheckAllService.initCheckAll(config.table.tablecheckall);
             } else {
                 /*清除批量数据*/
-                dataTableCheckAllService.clear(table.tablecheckall);
+                dataTableCheckAllService.clear(config.table.tablecheckall);
                 if (id !== '') {
-                    table.list_table.ajax.config(table.list1_config.config.ajax).load();
+                    config.table.list_table.ajax.config(config.table.list1_config.config.ajax).load();
                 } else {
-                    table.list_table.clear();
+                    config.table.list_table.clear();
                 }
             }
         };
@@ -548,7 +549,7 @@ angular.module('app')
                 /*执行删除操作*/
                 toolUtil
                     .requestHttp({
-                        url: '/role/shops/delete',
+                        url: '/role/organizations/delete',
                         method: 'post',
                         set: true,
                         data: param
@@ -590,7 +591,10 @@ angular.module('app')
                                     /*清空全选*/
                                     dataTableCheckAllService.clear(table.tablecheckall);
                                     /*重新加载数据*/
-                                    self.getColumnData(table, record.role);
+                                    self.getColumnData({
+                                        table: table,
+                                        id: record.role
+                                    });
                                 }
                             }
                         },
@@ -627,6 +631,7 @@ angular.module('app')
             } else if (node === 'li') {
                 var $this = $(target),
                     temp_id = $this.attr('data-id'),
+                    temp_phone = $this.attr('data-cellphone'),
                     temp_label = $this.html(),
                     $str;
 
@@ -641,6 +646,7 @@ angular.module('app')
                     member[temp_id] = {
                         'id': temp_id,
                         'label': temp_label,
+                        'cellphone': temp_phone,
                         'li': self.$admin_member_checked.find('li[data-id="' + temp_id + '"]')
                     };
                 } else if (member[temp_id]) {
@@ -732,7 +738,7 @@ angular.module('app')
             if (islogin) {
                 var logininfo = cache.loginMap;
                 record['currentId'] = logininfo.param.organizationId;
-                record['currentName'] = !logininfo.param.organizationName ?logininfo.username:decodeURIComponent(logininfo.param.organizationName);
+                record['currentName'] = !logininfo.param.organizationName ? logininfo.username : decodeURIComponent(logininfo.param.organizationName);
             } else {
                 /*退出系统*/
                 cache = null;
@@ -836,9 +842,9 @@ angular.module('app')
                                                 if (str !== '') {
                                                     $(str).appendTo($wrap.html(''));
                                                     /*调用滚动条*/
-                                                    if(record.iscroll_flag){
-                                                        record.iscroll_flag=false;
-                                                        toolUtil.autoScroll(self.$submenu_scroll_wrap,{
+                                                    if (record.iscroll_flag) {
+                                                        record.iscroll_flag = false;
+                                                        toolUtil.autoScroll(self.$submenu_scroll_wrap, {
                                                             setWidth: false,
                                                             setHeight: 450,
                                                             theme: "minimal-dark",
@@ -855,7 +861,10 @@ angular.module('app')
                                                 }
                                             }
                                             record.checkAll = false/*取消成员全选*/;
-                                            self.queryUserList(id);
+                                            self.queryUserList({
+                                                existmember: record.existmember,
+                                                id: id
+                                            });
                                         } else {
                                             $wrap.html('');
                                         }
@@ -994,31 +1003,46 @@ angular.module('app')
                         $child.addClass('g-d-showi');
                         $this.addClass('sub-menu-titleactive');
                         config.record.checkAll = false/*取消成员全选*/;
-                        self.queryUserList(temp_id);
+                        self.queryUserList({
+                            existmember: config.record.existmember,
+                            id: temp_id
+                        });
                     }
                 }
             } else {
                 config.record.checkAll = false/*取消成员全选*/;
-                self.queryUserList(temp_id);
+                self.queryUserList({
+                    existmember: config.record.existmember,
+                    id: temp_id
+                });
             }
         };
         /*机构服务--查询用户*/
-        this.queryUserList = function (id) {
+        this.queryUserList = function (config) {
             if (cache === null) {
                 return false;
-            } else if (typeof id === 'undefined') {
+            } else if (typeof config.id === 'undefined') {
                 return false;
             }
-
-            var tempparam = cache.loginMap.param,
+            var existmember=config.existmember,
+                tempparam = cache.loginMap.param,
                 param = {
                     adminId: tempparam.adminId,
                     token: tempparam.token
                 };
             /*判断参数*/
-            param['organizationId'] = id;
+            param['organizationId'] = config.id;
 
-
+            /*渲染已经选中的*/
+            var existitem,
+                existstr='';
+            for(var o in existmember){
+                existitem=existmember[o];
+                existstr+='<li class="action-list-active">' + existitem["label"] + '</li>';
+            }
+            if(existstr!==''){
+                $(existstr).appendTo(self.$admin_member_exist.html(''));
+            }
             toolUtil
                 .requestHttp({
                     url: '/organization/shops',
@@ -1054,9 +1078,15 @@ angular.module('app')
                                     var list = result.list,
                                         str = '';
                                     if (angular.isObject(list)) {
+                                        /*to do 比对数据*/
+                                        var cellphone;
                                         /*修改：更新模型*/
                                         for (var i in list) {
-                                            str += '<li data-id="' + list[i]["id"] + '">' + list[i]["fullName"] + '</li>';
+                                            cellphone=list[i]["cellphone"];
+                                            if(!existmember[cellphone]){
+                                                /*不存在已经存在的数据即保留数据集*/
+                                                str += '<li data-cellphone="' + cellphone + '" data-id="' + list[i]["id"] + '">' + list[i]["fullName"] + '</li>';
+                                            }
                                         }
                                         if (str !== '') {
                                             $(str).appendTo(self.$admin_user_wrap.html(''));
@@ -1139,8 +1169,8 @@ angular.module('app')
                 if (type === 'member') {
                     /*清除成员数据*/
                     (function () {
-                        var member= data['member'];
-                        for(var i in member){
+                        var member = data['member'];
+                        for (var i in member) {
                             delete member[i];
                         }
                         self.$admin_member_checked.html('');
@@ -1271,7 +1301,7 @@ angular.module('app')
                     action = 'add';
                     param['shopIds'] = temp_value;
                     param['roleId'] = config.record.role;
-                    req_config['url'] = '/role/shops/add';
+                    req_config['url'] = '/role/organizations/add';
                 }
                 req_config['data'] = param;
                 toolUtil
@@ -1309,7 +1339,10 @@ angular.module('app')
                                         if (type === 'role' || type === 'rolegroup') {
                                             self.queryRoleGroup(config);
                                         } else if (type === 'member') {
-                                            self.getColumnData(config.table, config.record.role);
+                                            self.getColumnData({
+                                                table: config.table,
+                                                id: config.record.role
+                                            });
                                         }
                                     } else if (action === 'edit') {
                                         /*更新侧边栏数据*/
@@ -1428,6 +1461,117 @@ angular.module('app')
                     display: 'show',
                     area: type
                 });
+            } else {
+                /*退出系统*/
+                cache = null;
+                loginService.outAction();
+            }
+
+        };
+        /*角色服务--删除角色或角色组*/
+        this.deleteRole = function (config) {
+            if (cache) {
+                /*模型缓存*/
+                var record = config.record,
+                    type = '',
+                    tip = '',
+                    id = '';
+
+                if (record.role === '' && record.rolegroup !== '') {
+                    type = 'rolegroup';
+                    id = record.rolegroup;
+                    tip = '角色组';
+                } else if (record.role !== '' && record.rolegroup !== '') {
+                    type = 'role';
+                    id = record.role;
+                    tip = '角色';
+                }
+
+                if (id === '' || type === '') {
+                    toolDialog.show({
+                        type: 'warn',
+                        value: '不存在角色组或角色'
+                    });
+                    return false;
+                } else {
+                    var tempparam = cache.loginMap.param,
+                        param = {
+                            token: tempparam.token,
+                            adminId: tempparam.adminId,
+                            id: id
+                        };
+
+                    /*确认是否删除*/
+                    toolDialog.sureDialog('', function () {
+                        /*执行删除机构操作*/
+                        toolUtil
+                            .requestHttp({
+                                url: type === 'role' ? '/role/delete' : '/rolegroup/delete'/*'json/test.json'*//*测试地址*/,
+                                method: 'post',
+                                set: true,
+                                debug: false, /*测试标识*/
+                                data: param
+                            })
+                            .then(function (resp) {
+                                    var data = resp.data,
+                                        status = parseInt(resp.status, 10);
+
+                                    if (status === 200) {
+                                        var code = parseInt(data.code, 10),
+                                            message = data.message;
+                                        if (code !== 0) {
+                                            if (typeof message !== 'undefined' && message !== '') {
+                                                toolDialog.show({
+                                                    type: 'warn',
+                                                    value: '删除' + tip + '失败 (' + message + ')'
+                                                });
+                                            } else {
+                                                toolDialog.show({
+                                                    type: 'warn',
+                                                    value: '删除' + tip + '失败'
+                                                });
+                                            }
+
+                                            if (code === 999) {
+                                                /*退出系统*/
+                                                cache = null;
+                                                loginService.outAction();
+                                            }
+                                        } else {
+                                            /*清除当前节点*/
+                                            if (record.current !== null) {
+                                                record.current.parent().remove();
+                                            }
+                                            if (type === 'role') {
+                                                /*更新操作记录模型*/
+                                                self.resetRecordMode(record, 'role');
+                                            } else if (type === 'rolegroup') {
+                                                /*重新加载侧边栏数据--查询角色组*/
+                                                self.queryRoleGroup(config);
+                                            }
+                                            /*更新店铺数据*/
+                                            self.getColumnData({
+                                                table: self.table,
+                                                id: record.current.role
+                                            });
+                                            /*提示信息*/
+                                            toolDialog.show({
+                                                type: 'succ',
+                                                value: '删除' + tip + '成功'
+                                            });
+                                        }
+                                    }
+                                },
+                                function (resp) {
+                                    var message = resp.data.message;
+                                    if (typeof message !== 'undefined' && message !== '') {
+                                        console.log(message);
+                                    } else {
+                                        console.log('删除' + tip + '失败');
+                                    }
+                                });
+                    }, '是否真要删除' + tip + '数据', true);
+                }
             } else {
                 /*退出系统*/
                 cache = null;

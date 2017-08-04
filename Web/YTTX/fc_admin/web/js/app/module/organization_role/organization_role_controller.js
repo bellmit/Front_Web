@@ -1,10 +1,10 @@
 /*首页控制器*/
 angular.module('app')
-    .controller('OrganizationroleController', ['organizationroleService', 'toolUtil', function (organizationroleService, toolUtil) {
+    .controller('OrganizationroleController', ['organizationroleeService', 'toolUtil', function (organizationroleeService, toolUtil) {
         var self = this;
 
         /*模型--操作权限列表*/
-        this.powerlist = organizationroleService.getCurrentPower();
+        this.powerlist = organizationroleeService.getCurrentPower();
 
 
         /*jquery dom缓存:主要是切换路由时，创建的dom缓存引用与现有的dom引用不一致，需要加载视图更新现有dom引用*/
@@ -17,18 +17,18 @@ angular.module('app')
             $admin_role_reset: $('#admin_role_reset'),
             $admin_member_reset: $('#admin_member_reset'),
             $admin_table_checkcolumn: $('#admin_table_checkcolumn'),
-            $admin_page_wrap: $('#admin_page_wrap'),
             $admin_list_wrap: $('#admin_list_wrap'),
             $admin_list_colgroup: $('#admin_list_colgroup'),
             $admin_batchlist_wrap: $('#admin_batchlist_wrap'),
             $admin_member_checkall: $('#admin_member_checkall'),
             $submenu_scroll_wrap:$('#submenu_scroll_wrap'),
             $admin_member_menu: $('#admin_member_menu'),
+            $admin_member_exist:$('#admin_member_exist'),
             $admin_member_checked: $('#admin_member_checked'),
             $admin_user_wrap: $('#admin_user_wrap')
         };
         /*切换路由时更新dom缓存*/
-        organizationroleService.initJQDom(jq_dom);
+        organizationroleeService.initJQDom(jq_dom);
 
         /*模型--列表地址*/
         this.list_address = {
@@ -58,7 +58,8 @@ angular.module('app')
             rolegroupname: ''/*角色组名称*/,
             currentId: ''/*虚拟挂载点*/,
             currentName: ''/*虚拟挂载点*/,
-            checkAll:false/*全选状态*/
+            checkAll:false/*全选状态*/,
+            existmember:{}/*模型--已经存在的机构信息*/
         };
 
 
@@ -85,7 +86,7 @@ angular.module('app')
         /*模型--tab选项卡*/
         this.tabitem = [{
             name: '运营机构',
-            href: 'struct',
+            href: 'organization',
             power: self.powerlist.organization_add,
             active: ''
         }, {
@@ -111,19 +112,15 @@ angular.module('app')
 
         /*模型--表格缓存*/
         this.table = {
-            list1_page: {
-                page: 1,
-                pageSize: 20,
-                total: 0
-            },
             list1_config: {
                 config: {
                     processing: true, /*大消耗操作时是否显示处理状态*/
                     deferRender: true, /*是否延迟加载数据*/
                     autoWidth: true, /*是否*/
-                    paging: false,
+                    paging: true,
+                    pagingType:'simple_numbers',/*分页按钮排列*/
                     ajax: {
-                        url: toolUtil.adaptReqUrl('/role/shops'),
+                        url: toolUtil.adaptReqUrl('/role/organizations'),
                         dataType: 'JSON',
                         method: 'post',
                         dataSrc: function (json) {
@@ -138,75 +135,63 @@ angular.module('app')
                                 }
                                 if (code === 999) {
                                     /*退出系统*/
-                                    organizationroleService.loginOut();
+                                    loginService.outAction();
                                 }
+                                (function () {
+                                    /*清除已经存在的模型*/
+                                    var exist=self.record.existmember;
+                                    for(var p in exist){
+                                        delete exist[p];
+                                    }
+                                    jq_dom.$admin_member_exist.html('');
+                                }());
                                 return [];
                             }
                             var result = json.result;
                             if (typeof result === 'undefined') {
-                                /*重置分页*/
-                                self.table.list1_page.total = 0;
-                                self.table.list1_page.page = 1;
-                                jq_dom.$admin_page_wrap.pagination({
-                                    pageNumber: self.table.list1_page.page,
-                                    pageSize: self.table.list1_page.pageSize,
-                                    total: self.table.list1_page.total
-                                });
+                                (function () {
+                                    /*清除已经存在的模型*/
+                                    var exist=self.record.existmember;
+                                    for(var p in exist){
+                                        delete exist[p];
+                                    }
+                                    jq_dom.$admin_member_exist.html('');
+                                }());
                                 return [];
                             }
 
                             if (result) {
-                                /*设置分页*/
-                                self.table.list1_page.total = result.count;
-                                /*分页调用*/
-                                jq_dom.$admin_page_wrap.pagination({
-                                    pageNumber: self.table.list1_page.page,
-                                    pageSize: self.table.list1_page.pageSize,
-                                    total: self.table.list1_page.total,
-                                    onSelectPage: function (pageNumber, pageSize) {
-                                        /*再次查询*/
-                                        var temp_param = self.table.list1_config.config.ajax.data;
-                                        self.table.list1_page.page = pageNumber;
-                                        self.table.list1_page.pageSize = pageSize;
-                                        temp_param['page'] = self.table.list1_page.page;
-                                        temp_param['pageSize'] = self.table.list1_page.pageSize;
-                                        self.table.list1_config.config.ajax.data = temp_param;
-                                        organizationroleService.getColumnData(self.table, self.record.role);
-                                    }
-                                });
-
                                 var list = result.list;
-                                if (list) {
-                                    var vi = 0,
-                                        vlen = list.length;
-                                    for (vi; vi < vlen; vi++) {
-                                        if (!list[vi] || list[vi] === null) {
-                                            return [];
-                                        }
+                                (function () {
+                                    /*清除已经存在的模型*/
+                                    var exist=self.record.existmember;
+                                    for(var p in exist){
+                                        delete exist[p];
                                     }
+                                    jq_dom.$admin_member_exist.html('');
+                                }());
+                                if (list) {
                                     return list;
                                 } else {
                                     return [];
                                 }
                             } else {
-                                /*重置分页*/
-                                self.table.list1_page.total = 0;
-                                self.table.list1_page.page = 1;
-                                jq_dom.$admin_page_wrap.pagination({
-                                    pageNumber: self.table.list1_page.page,
-                                    pageSize: self.table.list1_page.pageSize,
-                                    total: self.table.list1_page.total
-                                });
+                                (function () {
+                                    /*清除已经存在的模型*/
+                                    var exist=self.record.existmember;
+                                    for(var p in exist){
+                                        delete exist[p];
+                                    }
+                                    jq_dom.$admin_member_exist.html('');
+                                }());
                                 return [];
                             }
                         },
-                        data: {
-                            page: 1,
-                            pageSize: 20
-                        }
+                        data: {}
                     },
-                    info: false,
-                    dom: '<"g-d-hidei" s>',
+                    info: true,
+                    stateSave:false,/*是否保存重新加载的状态*/
+                    dom: '<"g-d-hidei" s> t <"admin-page-wrap g-fs2"<"g-w-percent20 g-f-l" li><"g-w-percent29 g-f-r" p>>',
                     searching: true,
                     order: [[1, "desc"]],
                     columns: [
@@ -242,7 +227,19 @@ angular.module('app')
                         {
                             "data": "cellphone",
                             "render": function (data, type, full, meta) {
-                                return toolUtil.phoneFormat(data);
+                                var phone=data,
+                                    fullname=full.fullName;
+                                if(phone){
+                                    /*设置已经存在的成员模型*/
+                                    self.record.existmember[phone]={
+                                        'cellphone':phone,
+                                        'label':fullname
+                                    };
+                                    return toolUtil.phoneFormat(phone);
+                                }else{
+                                    return '';
+                                }
+
                             }
                         },
                         {
@@ -264,7 +261,7 @@ angular.module('app')
                                     self.list_addressdata.province = province;
                                     str += '<div class="inline g-c-gray3">省：</div><div class="inline g-c-gray9">' + self.list_address["province"][province]["key"] + '</div>';
                                     /*查询新值*/
-                                    /*organizationroleService.isReqAddress({
+                                    /*organizationroleeService.isReqAddress({
                                      model:self.list_addressdata,
                                      address:self.list_address,
                                      type:'city'
@@ -309,7 +306,12 @@ angular.module('app')
                         {
                             "data": "addTime"
                         }
-                    ]
+                    ],
+                    aLengthMenu: [
+                        [10,15,20,30],
+                        [10,15,20,30]
+                    ],
+                    lengthChange:true/*是否可改变长度*/
                 }
             },
             list_table: null,
@@ -321,7 +323,6 @@ angular.module('app')
                 columnshow: true,
                 $column_wrap: jq_dom.$admin_table_checkcolumn/*控制列显示隐藏的容器*/,
                 $bodywrap: jq_dom.$admin_batchlist_wrap/*数据展现容器*/,
-                header: ['全选', '店铺全称', '店铺简称', '姓名', '店铺类型', '店铺手机号', '店铺电话号码', '省市区', '详细地址', '状态', '添加时间'],
                 hide_list: [1, 5, 6, 7, 8, 10]/*需要隐藏的的列序号*/,
                 hide_len: 6,
                 column_api: {
@@ -351,9 +352,9 @@ angular.module('app')
 
 
         /*初始化服务--虚拟挂载点，或者初始化参数*/
-        organizationroleService.getMemberRoot(self.record);
+        organizationroleeService.getMemberRoot(self.record);
         /*初始化服务--初始化地址信息*/
-        organizationroleService.queryAddress({
+        organizationroleeService.queryAddress({
             type: 'province',
             address: self.list_address,
             model: self.list_addressdata
@@ -362,20 +363,23 @@ angular.module('app')
 
         /*菜单服务--初始化*/
         this.initSubMenu = function () {
-            organizationroleService.queryRoleGroup({
+            organizationroleeService.queryRoleGroup({
                 record: self.record
             });
-            organizationroleService.getColumnData(self.table, self.record.role);
+            organizationroleeService.getColumnData({
+                table:self.table,
+                id:self.record.role
+            });
         };
         /*菜单服务--查询角色组*/
         this.queryRoleGroup = function () {
-            organizationroleService.queryRoleGroup({
+            organizationroleeService.queryRoleGroup({
                 record: self.record
             });
         };
         /*菜单服务--显示隐藏菜单*/
         this.toggleSubMenu = function (e) {
-            organizationroleService.toggleSubMenu(e, {
+            organizationroleeService.toggleSubMenu(e, {
                 table: self.table,
                 record: self.record
             });
@@ -384,7 +388,7 @@ angular.module('app')
 
         /*角色服务--添加角色或角色组*/
         this.addRole = function (type) {
-            organizationroleService.addRole({
+            organizationroleeService.addRole({
                 table: self.table,
                 record: self.record,
                 rolegroup: self.rolegroup,
@@ -393,7 +397,16 @@ angular.module('app')
         };
         /*角色服务--编辑角色或角色组*/
         this.editRole = function () {
-            organizationroleService.editRole({
+            organizationroleeService.editRole({
+                table: self.table,
+                record: self.record,
+                rolegroup: self.rolegroup,
+                role: self.role
+            });
+        };
+        /*角色服务--删除角色或角色组*/
+        this.deleteRole = function () {
+            organizationroleeService.deleteRole({
                 table: self.table,
                 record: self.record,
                 rolegroup: self.rolegroup,
@@ -404,32 +417,32 @@ angular.module('app')
 
         /*成员服务--移除成员*/
         this.deleteMemberList = function () {
-            organizationroleService.deleteMemberList(self.record, self.table);
+            organizationroleeService.deleteMemberList(self.record, self.table);
         };
         /*成员服务--查询用户*/
         this.checkMemberList = function (e) {
-            organizationroleService.checkMemberList(e,{
+            organizationroleeService.checkMemberList(e,{
                 record:self.record,
                 member:self.member
             });
         };
         /*成员服务--取消选中用户*/
         this.cancelMemberList=function (e) {
-            organizationroleService.cancelMemberList(e,{
+            organizationroleeService.cancelMemberList(e,{
                 record:self.record,
                 member:self.member
             });
         };
         /*成员服务--全选数据*/
         this.checkAllMember=function () {
-            organizationroleService.checkAllMember({
+            organizationroleeService.checkAllMember({
                 record:self.record,
                 member:self.member
             });
         };
         /*成员服务--过滤数据*/
         this.filterDataTable = function () {
-            organizationroleService.filterDataTable(self.table, self.role);
+            organizationroleeService.filterDataTable(self.table, self.role);
         };
 
 
@@ -438,7 +451,7 @@ angular.module('app')
         /*机构服务--加载机构角色*/
         this.getMemberList = function () {
             if (self.record.searchname2==='') {
-                organizationroleService.getMemberList({
+                organizationroleeService.getMemberList({
                     type: 'init',
                     record: self.record
                 });
@@ -446,14 +459,14 @@ angular.module('app')
         };
         /*机构服务--加载机构角色*/
         this.initMemberList = function () {
-            organizationroleService.getMemberList({
+            organizationroleeService.getMemberList({
                 type: 'init',
                 record: self.record
             });
         };
         /*机构服务--显示隐藏*/
         this.toggleMemberList = function (e) {
-            organizationroleService.toggleMemberList(e, {
+            organizationroleeService.toggleMemberList(e, {
                 member: self.member,
                 record: self.record
             });
@@ -462,13 +475,13 @@ angular.module('app')
 
         /*弹出层显示隐藏*/
         this.toggleModal = function (config) {
-            organizationroleService.toggleModal(config);
+            organizationroleeService.toggleModal(config);
         };
 
 
         /*表单服务--提交表单*/
         this.formSubmit = function (type) {
-            organizationroleService.formSubmit({
+            organizationroleeService.formSubmit({
                 role: self.role,
                 rolegroup: self.rolegroup,
                 table: self.table,
@@ -479,7 +492,7 @@ angular.module('app')
         /*表单服务--重置表单*/
         this.formReset = function (forms, type) {
             /*重置表单模型*/
-            organizationroleService.formReset({
+            organizationroleeService.formReset({
                 forms: forms,
                 role: self.role,
                 rolegroup: self.rolegroup,
@@ -500,7 +513,7 @@ angular.module('app')
         };
         /*搜索服务--搜索过滤*/
         this.searchAction2 = function () {
-            organizationroleService.getMemberList({
+            organizationroleeService.getMemberList({
                 type: 'search',
                 record: self.record
             });
