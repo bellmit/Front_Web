@@ -275,7 +275,9 @@ angular.module('app')
         /*搜索服务--搜索过滤*/
         this.searchAction2 = function () {
             /*清除模型，重置模型*/
-            self.record.operator_cache={state:'empty'};
+            self.record.operator_cache={
+                state:'empty'
+            };
             jq_dom.$all_yystruct.removeClass('sub-menu-checkboxactive');
             organizationService.getMenuList({
                 record: self.record,

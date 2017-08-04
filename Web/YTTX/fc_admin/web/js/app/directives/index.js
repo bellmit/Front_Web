@@ -1,13 +1,14 @@
 angular.module('app')
     /*首页快捷方式指令*/
-    .directive('uiMainQuick', function () {
+    .directive('uiMainQuick', ['$timeout',function ($timeout) {
+        var outid=null;
         return {
             replace: false,
             restrict: 'EC',
             scope:{
                 action:'&action'
             },
-            template: '<div class="admin-welcome-banner"><img src="images/index_banner.jpg" alt="" /></div>\
+            template: '<div class="admin-welcome-banner"><img ng-src="images/index_banner.jpg" alt="" /></div>\
                         <h3 class="admin-layout-theme3">快捷入口</h3>\
                         <ul class="admin-quick-icon">\
                           <li ng-repeat="i in quick">\
@@ -18,7 +19,15 @@ angular.module('app')
                           </li>\
                         </ul>',
             link: function (scope, element, attrs) {
-                scope.quick=doQuickImage(scope.action());
+                outid=$timeout(function () {
+                    scope.$apply(function () {
+                        scope.quick=doQuickImage(scope.action());
+                        if(outid!==null){
+                            $timeout.cancel(outid);
+                            outid=null;
+                        }
+                    });
+                },500);
             }
         };
 
@@ -48,5 +57,5 @@ angular.module('app')
             }
             return arr;
         }
-    });
+    }]);
    

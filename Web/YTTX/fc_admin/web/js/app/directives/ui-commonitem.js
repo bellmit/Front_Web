@@ -46,7 +46,9 @@ angular.module('ui.commonitem', [])
                     }, 1000);
                 });
                 /*设置登录缓存*/
-                loginService.outAction($out_btn);
+                loginService.outAction({
+                    $btn:$out_btn
+                });
             }
         };
     }])

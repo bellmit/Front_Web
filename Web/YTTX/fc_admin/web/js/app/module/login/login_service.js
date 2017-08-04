@@ -119,7 +119,8 @@ angular.module('login.service', [])
                         data: cache.loginMap.param
                     })
                     .then(function (resp) {
-                            var resp = testService.testMenu();/*测试菜单*/
+                            var resp = testService.testMenu();
+                            /*测试菜单*/
                             var data = resp.data,
                                 status = parseInt(resp.status, 10);
                             if (status === 200) {
@@ -303,10 +304,13 @@ angular.module('login.service', [])
             return cache;
         };
         /*设置退出按钮缓存或操作退出动作，此服务试用非app_ctrl控制部分*/
-        this.outAction = function ($btn) {
-            if ($btn) {
-                outbtn = $btn;
-            } else if (outbtn !== null && !$btn) {
+        this.outAction = function (config) {
+            if (outbtn === null && config.$btn) {
+                outbtn = config.$btn;
+            } else if (outbtn !== null) {
+                if (config && typeof config.fn === 'function') {
+                    fn.call(null);
+                }
                 outid = $timeout(function () {
                     outbtn.triggerHandler('click');
                     if (outid !== null) {
