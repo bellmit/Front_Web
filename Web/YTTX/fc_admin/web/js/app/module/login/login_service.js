@@ -50,7 +50,6 @@ angular.module('login.service', [])
                     /*测试服务*/
                     var resp=testService.testToken('table');
 
-                    console.log(resp);
                     var data = resp.data,
                         status = parseInt(resp.status, 10);
 
@@ -113,15 +112,17 @@ angular.module('login.service', [])
             if (!cache.cacheMap.menuload) {
                 toolUtil
                     .requestHttp({
-                        url: /*'/module/menu'*/'json/test.json',
+                        url: /*'/module/menu'*/'json/test.json'/*测试地址*/,
                         method: 'post',
                         debug: true, /*测试开关*/
                         set: true,
                         data: cache.loginMap.param
                     })
                     .then(function (resp) {
-                            var resp = testService.testMenu();
                             /*测试菜单*/
+                            var resp = testService.testMenu();
+
+
                             var data = resp.data,
                                 status = parseInt(resp.status, 10);
                             if (status === 200) {

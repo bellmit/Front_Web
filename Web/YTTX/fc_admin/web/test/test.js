@@ -5,6 +5,7 @@ angular.module('app')
         var self = this,
             reg_id = /[0-9]{1,2}//*id序列值*/,
             reg_name = /(周一|杨二|张三|李四|王五|赵六|马七|朱八|陈九){1}//*姓名序列值*/,
+            reg_flag = /(true|false){1}//*布尔值*/,
             reg_default = /[a-zA-Z0-9]{5-20}/,
             reg_datetime = moment().format('YYYY-MM-DD HH:mm:ss')/*当前世界*/,
             reg_money = /(^(([1-9]{1}\d{0,8})|0)((\.{0}(\d){0})|(\.{1}(\d){2}))$){1}//*人民币*/,
@@ -16,31 +17,29 @@ angular.module('app')
         /*
          配置信息说明：
          config:{
-             map:{abc:def}：返回结果集的字段说明，
-             mapname:abc：结果集名称，
-             mapmax:50:结果集随机最大值，
-             mapmin:5:结果集随机最小值,
-             type:请求类型（list:列表类型，table:表格类型）,
-             count:分页总记录数,
-             message:数据返回成功的提示信息
+         map:{abc:def}：返回结果集的字段说明，
+         mapname:abc：结果集名称，
+         mapmax:50:结果集随机最大值，
+         mapmin:5:结果集随机最小值,
+         type:请求类型（list:列表类型，table:表格类型）,
+         count:分页总记录数,
+         message:数据返回成功的提示信息
          }
          */
 
 
-
         /*公用接口--生成集合*/
-        this.getMap=function (config) {
-          return generateMap(config);
+        this.getMap = function (config) {
+            return generateMap(config);
         };
         /*公用接口--生成集合*/
-        this.getResult=function (datalist,config) {
-            return generateResult(datalist,config);
+        this.getResult = function (datalist, config) {
+            return generateResult(datalist, config);
         };
         /*公用接口--生成范围*/
-        this.getLimit=function (config) {
+        this.getLimit = function (config) {
             return generateLimit(config);
         };
-
 
 
         /*测试接口--生成凭证*/
@@ -51,7 +50,7 @@ angular.module('app')
                     "token": /([0-9a-zA-Z]{4-10}){4}/,
                     "adminId": reg_id,
                     "organizationId": reg_id,
-                    "organizationName":reg_name
+                    "organizationName": reg_name
                 });
 
             if (type) {
@@ -94,7 +93,7 @@ angular.module('app')
         };
         /*测试接口--测试普通*/
         this.test = function (config) {
-            return generateResult(generateMap(config),config);
+            return generateResult(generateMap(config), config);
         };
         /*测试菜单*/
         this.testMenu = function () {
@@ -301,7 +300,6 @@ angular.module('app')
         };
 
 
-
         /*通用方法--生成范围*/
         function generateLimit(config) {
             var limit;
@@ -329,6 +327,7 @@ angular.module('app')
             }
             return limit;
         }
+
         /*通用方法--生成集合*/
         function generateMap(config) {
             if (!config) {
@@ -337,7 +336,7 @@ angular.module('app')
 
             var map = config.map,
                 map_obj = {},
-                result={};
+                result = {};
 
             /*遍历属性*/
             for (var i in map) {
@@ -379,35 +378,36 @@ angular.module('app')
             }
 
             /*组合属性*/
-            result[generateLimit(config)]=[map_obj];
+            result[generateLimit(config)] = [map_obj];
             return Mock.mock(result);
         }
-        /*通用方法--生成结果集*/
-        function generateResult(datalist,config) {
-            var result={};
-            if(config){
-                var type=config.type,
-                    message=typeof config.message==='undefined'?'ok':config.message,
-                    count=typeof config.count==='undefined'?50:config.count;
 
-                if(type==='list'){
-                    result['message']=message;
-                    result['count']=count;
-                    result['result']=datalist;
-                }else if(type==='table'){
-                    result['status']=200;
-                    result['data']={
-                        message:'ok',
-                        count:50,
-                        result:datalist
+        /*通用方法--生成结果集*/
+        function generateResult(datalist, config) {
+            var result = {};
+            if (config) {
+                var type = config.type,
+                    message = typeof config.message === 'undefined' ? 'ok' : config.message,
+                    count = typeof config.count === 'undefined' ? 50 : config.count;
+
+                if (type === 'list') {
+                    result['message'] = message;
+                    result['count'] = count;
+                    result['result'] = datalist;
+                } else if (type === 'table') {
+                    result['status'] = 200;
+                    result['data'] = {
+                        message: 'ok',
+                        count: 50,
+                        result: datalist
                     };
-                }else{
+                } else {
 
                 }
-            }else{
-                result['message']='ok';
-                result['count']=50;
-                result['result']=datalist;
+            } else {
+                result['message'] = 'ok';
+                result['count'] = 50;
+                result['result'] = datalist;
             }
             return result;
         }
