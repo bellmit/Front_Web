@@ -20,17 +20,29 @@ angular.module('app')
              mapname:abc：结果集名称，
              mapmax:50:结果集随机最大值，
              mapmin:5:结果集随机最小值,
-             multiplename:多组合属性名,
              type:请求类型（list:列表类型，table:表格类型）,
              count:分页总记录数,
              message:数据返回成功的提示信息
          }
          */
 
-        /*测试接口--生成集合*/
-        this.testMap=function (config) {
+
+
+        /*公用接口--生成集合*/
+        this.getMap=function (config) {
           return generateMap(config);
         };
+        /*公用接口--生成集合*/
+        this.getResult=function (datalist,config) {
+            return generateResult(datalist,config);
+        };
+        /*公用接口--生成范围*/
+        this.getLimit=function (config) {
+            return generateLimit(config);
+        };
+
+
+
         /*测试接口--生成凭证*/
         this.testToken = function (type) {
             var res,
@@ -78,47 +90,12 @@ angular.module('app')
                     }
                 };
             }
-            return false;
+            return res;
         };
-
         /*测试接口--测试普通*/
-
-        this.testDefault = function (config) {
-            var map=generateMap(config);
-
-            return res;
+        this.test = function (config) {
+            return generateResult(generateMap(config),config);
         };
-
-
-        /*测试普通*/
-        this.testDefList = function (config) {
-            var res,
-                template = Mock.mock({
-                    "id": reg_id,
-                    "token": /([0-9a-zA-Z]{6}){4}/,
-                    "adminId": reg_id,
-                    "organizationId": reg_id
-                });
-
-            res = {
-                message: 'ok',
-                code: 0,
-                result: template
-            };
-            return res;
-        };
-
-
-        /*测试列表*/
-        this.testList = function (config) {
-            return generateConfig(config, 'list');
-        };
-
-        /*测试表格*/
-        this.testTableList = function (config) {
-            return generateConfig(config, 'tablelist');
-        };
-
         /*测试菜单*/
         this.testMenu = function () {
             return {
@@ -324,132 +301,6 @@ angular.module('app')
         };
 
 
-        /*测试自定义表格对象*/
-        this.testTableObj = function (config) {
-            var res = {
-                status: 200,
-                data: {
-                    message: 'ok',
-                    code: 0
-                }
-            }/*结果集*/;
-
-            /*动态生成*/
-            if (config) {
-                var obj_obj = {};
-                for (var j in config) {
-                    if (config[j].indexOf('obj') !== -1) {
-                        (function () {
-                            obj_obj[j] = {};
-                            var attr_obj = config[j];
-                            for (var i in attr_obj) {
-                                switch (attr_obj[i]) {
-                                    case 'id':
-                                        obj_obj[j][i] = reg_id;
-                                        break;
-                                    case 'name':
-                                        obj_obj[j][i] = reg_name;
-                                        break;
-                                    case 'mobile':
-                                        obj_obj[j][i] = reg_mobile;
-                                        break;
-                                    case 'datetime':
-                                        obj_obj[j][i] = reg_datetime;
-                                        break;
-                                    case 'state':
-                                        obj_obj[j][i] = reg_id;
-                                        break;
-                                    case 'money':
-                                        obj_obj[j][i] = reg_id;
-                                        break;
-                                    case 'type':
-                                        obj_obj[j][i] = reg_id;
-                                        break;
-                                    case 'remark':
-                                        obj_obj[j][i] = reg_id;
-                                        break;
-                                    case 'content':
-                                        obj_obj[j][i] = reg_id;
-                                        break;
-                                    case 'def':
-                                        obj_obj[j][i] = reg_default;
-                                        break;
-                                    default:
-                                        obj_obj[j][i] = reg_default;
-                                        break;
-                                }
-                            }
-                        }());
-                    }
-                }
-                res['data']['result'] = Mock.mock(obj_obj);
-            } else {
-                res['data']['result'] = {};
-            }
-            return res;
-        };
-
-        /*测试自定义列表对象*/
-        this.testListObj = function (config) {
-            var res = {
-                message: 'ok',
-                code: 0
-            }/*结果集*/;
-
-            /*动态生成*/
-            if (config) {
-                var obj_obj = {};
-                for (var j in config) {
-                    if (config[j].indexOf('obj') !== -1) {
-                        (function () {
-                            obj_obj[j] = {};
-                            var attr_obj = config[j];
-                            for (var i in attr_obj) {
-                                switch (attr_obj[i]) {
-                                    case 'id':
-                                        obj_obj[j][i] = reg_id;
-                                        break;
-                                    case 'name':
-                                        obj_obj[j][i] = reg_name;
-                                        break;
-                                    case 'mobile':
-                                        obj_obj[j][i] = reg_mobile;
-                                        break;
-                                    case 'datetime':
-                                        obj_obj[j][i] = reg_datetime;
-                                        break;
-                                    case 'state':
-                                        obj_obj[j][i] = reg_id;
-                                        break;
-                                    case 'money':
-                                        obj_obj[j][i] = reg_id;
-                                        break;
-                                    case 'type':
-                                        obj_obj[j][i] = reg_id;
-                                        break;
-                                    case 'remark':
-                                        obj_obj[j][i] = reg_id;
-                                        break;
-                                    case 'content':
-                                        obj_obj[j][i] = reg_id;
-                                        break;
-                                    case 'def':
-                                        obj_obj[j][i] = reg_default;
-                                        break;
-                                    default:
-                                        obj_obj[j][i] = reg_default;
-                                        break;
-                                }
-                            }
-                        }());
-                    }
-                }
-                res['result'] = Mock.mock(obj_obj);
-            } else {
-                res['result'] = {};
-            }
-            return res;
-        };
 
         /*通用方法--生成范围*/
         function generateLimit(config) {
@@ -478,15 +329,10 @@ angular.module('app')
             }
             return limit;
         }
-
-
         /*通用方法--生成集合*/
-        function generateMap(config,datalist) {
+        function generateMap(config) {
             if (!config) {
                 return false;
-            }
-            if(!datalist){
-                datalist={};
             }
 
             var map = config.map,
@@ -535,18 +381,7 @@ angular.module('app')
             /*组合属性*/
             result[generateLimit(config)]=[map_obj];
             return Mock.mock(result);
-
-            /*生成属性*/
-            if(typeof config.multiplename!=='undefined'){
-                /*多组合属性*/
-                datalist[config.multiplename]=Mock.mock(result);
-            }else{
-                /*单一属性*/
-                datalist=Mock.mock(result);
-            }
-            return datalist;
         }
-
         /*通用方法--生成结果集*/
         function generateResult(datalist,config) {
             var result={};

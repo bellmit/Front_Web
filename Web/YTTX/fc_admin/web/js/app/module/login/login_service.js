@@ -37,10 +37,10 @@ angular.module('login.service', [])
         /*处理登陆请求*/
         this.reqAction = function (model) {
             toolUtil.requestHttp({
-                url: '/sysuser/login'/*'json/test.json'*/,
+                url: /*'/sysuser/login'*/'json/test.json',
                 method: 'post',
                 set: true,
-                debug: false/*测试开关*/,
+                debug: true/*测试开关*/,
                 data: {
                     username: model.login.username,
                     password: model.login.password,
@@ -48,8 +48,9 @@ angular.module('login.service', [])
                 }
             }).then(function (resp) {
                     /*测试服务*/
-                    /*var resp=testService.testDefault('table');*/
+                    var resp=testService.testToken('table');
 
+                    console.log(resp);
                     var data = resp.data,
                         status = parseInt(resp.status, 10);
 
