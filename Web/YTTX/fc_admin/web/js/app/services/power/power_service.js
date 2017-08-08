@@ -1,7 +1,7 @@
 /*权限列表服务*/
 'use strict';
 angular.module('power.service', [])
-    .service('powerService', ['toolUtil', 'toolDialog', 'BASE_CONFIG', 'loginService', function (toolUtil, toolDialog, BASE_CONFIG, loginService) {
+    .service('powerService', ['toolUtil', 'toolDialog', 'BASE_CONFIG', 'loginService','testService', function (toolUtil, toolDialog, BASE_CONFIG, loginService,testService) {
         /*获取缓存数据*/
         var self = this,
             cache = loginService.getCache(),
@@ -364,10 +364,14 @@ angular.module('power.service', [])
                     .requestHttp({
                         url: config.url,
                         method: 'post',
+                        debug: config.debug ? true : false,
                         set: true,
                         data: param
                     })
                     .then(function (resp) {
+                            if (config.debug) {
+                                var resp=testService.testMenu();
+                            }
                             var data = resp.data,
                                 status = parseInt(resp.status, 10);
 
@@ -479,8 +483,8 @@ angular.module('power.service', [])
                             }
                         },
                         function (resp) {
-                            var data=resp.data;
-                            if(data){
+                            var data = resp.data;
+                            if (data) {
                                 var message = data.message;
                                 if (typeof message !== 'undefined' && message !== '') {
                                     console.log(message);
@@ -591,7 +595,7 @@ angular.module('power.service', [])
                     str += "</td>";
                 }
             }
-            return '<tr data-seq="'+Math.floor(Math.random() * 100000)+'">' + str + '</tr>';
+            return '<tr data-seq="' + Math.floor(Math.random() * 100000) + '">' + str + '</tr>';
         };
 
         /*权限服务--全选权限（权限绑定）*/
@@ -643,9 +647,6 @@ angular.module('power.service', [])
                 return selectarr;
             });
         };
-
-
-
 
 
         /*权限服务--过滤用户权限--(主要为父级和子级之间的关系):pdata:原数据(父级),cdata:过滤数据(子级)
@@ -713,7 +714,7 @@ angular.module('power.service', [])
                         /*是否是同一个权限值*/
                         if (p_code === c_code) {
                             /*如果存在相同的权限，且父权限没有权限，那么需要清除此子权限*/
-                            p_item['isPermit']=parseInt(c_item['isPermit'], 0);
+                            p_item['isPermit'] = parseInt(c_item['isPermit'], 0);
                             continue innerLabel;
                         }
                         if (k === child_len - 1) {

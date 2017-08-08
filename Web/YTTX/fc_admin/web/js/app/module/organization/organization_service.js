@@ -906,7 +906,8 @@ angular.module('app')
                                                                 var tempparam = cache.loginMap.param;
                                                                 powerService.clearHeaderPower();
                                                                 powerService.reqUserPowerList({
-                                                                    url: '/organization/permission/select',
+                                                                    url: /*'/organization/permission/select'*/'json/test.json'/*测试地址*/,
+                                                                    debug:true/*测试开关*/,
                                                                     source: true, /*是否获取数据源*/
                                                                     sourcefn: function (ps) {
                                                                         /*数据源*/
@@ -916,7 +917,8 @@ angular.module('app')
                                                                         if (parent_data !== null) {
                                                                             /*存在数据源*/
                                                                             powerService.reqUserPowerList({
-                                                                                url: '/organization/permission/select',
+                                                                                url: /*'/organization/permission/select'*/'json/test.json'/*测试地址*/,
+                                                                                debug:true/*测试开关*/,
                                                                                 source: true, /*是否获取数据源*/
                                                                                 sourcefn: function (cs) {
                                                                                     /*数据源*/
@@ -1037,7 +1039,8 @@ angular.module('app')
                 organiztionid = id;
             }
             powerService.reqUserPowerList({
-                url: '/organization/permission/select',
+                url: /*'/organization/permission/select'*/'json/test.json'/*测试地址*/,
+                debug:true/*测试开关*/,
                 param: {
                     token: tempparam.token,
                     adminId: tempparam.adminId,
@@ -1404,7 +1407,8 @@ angular.module('app')
                     cid = tempid.cid;
                     pid = tempid.pid;
                     powerService.reqUserPowerList({
-                        url: '/organization/permission/select',
+                        url: /*'/organization/permission/select'*/'json/test.json'/*测试地址*/,
+                        debug:true/*测试开关*/,
                         param: {
                             token: tempparam.token,
                             adminId: tempparam.adminId,
@@ -1416,7 +1420,8 @@ angular.module('app')
                     cid = struct.id;
                     pid = struct.parentId;
                     powerService.reqUserPowerList({
-                        url: '/organization/permission/select',
+                        debug:true/*测试开关*/,
+                        url: /*'/organization/permission/select'*/'json/test.json'/*测试地址*/,
                         source: true, /*是否获取数据源*/
                         sourcefn: function (ps) {
                             /*数据源*/
@@ -1426,7 +1431,8 @@ angular.module('app')
                             if (parent_data !== null) {
                                 /*存在数据源*/
                                 powerService.reqUserPowerList({
-                                    url: '/organization/permission/select',
+                                    url: /*'/organization/permission/select'*/'json/test.json'/*测试地址*/,
+                                    debug:true/*测试开关*/,
                                     source: true, /*是否获取数据源*/
                                     sourcefn: function (cs) {
                                         /*数据源*/
