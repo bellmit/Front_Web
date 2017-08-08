@@ -269,10 +269,10 @@
             return deferred.promise;
         };
         /*适配请求信息*/
-        tools.adaptReqUrl = function (url) {
+        tools.adaptReqUrl = function (url,flag) {
             /*debug模式则调用自定义json模式*/
-            if (BASE_CONFIG.debug && url.indexOf('.json') === -1) {
-                return 'json' + url + '.json';
+            if (flag) {
+                return  url;
             } else {
                 return BASE_CONFIG.basedomain + BASE_CONFIG.baseproject + url;
             }

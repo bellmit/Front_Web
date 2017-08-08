@@ -38,7 +38,8 @@ angular.module('app')
         this.getValidCode = function () {
             loginService.getValidCode({
                 wrap: 'validcode_wrap',
-                url: "/sysuser/identifying/code"
+                debug:true,
+                url: /*"/sysuser/identifying/code"*/'json/test.json'
             });
         };
         /*退出*/

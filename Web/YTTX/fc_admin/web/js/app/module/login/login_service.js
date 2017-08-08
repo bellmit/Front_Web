@@ -235,31 +235,43 @@ angular.module('login.service', [])
         this.getValidCode = function (config) {
             var xhr = new XMLHttpRequest();
 
-            xhr.open("post", toolUtil.adaptReqUrl(config.url), true);
-
-            xhr.responseType = "blob";
-            xhr.onreadystatechange = function () {
-                if (this.status == 200) {
-                    var blob = this.response,
-                        img = document.createElement("img");
-
-                    img.alt = '验证码';
-                    try {
-                        img.onload = function (e) {
-                            window.URL.revokeObjectURL(img.src);
-                        };
-                        img.src = window.URL.createObjectURL(blob);
-                    } catch (e) {
-                        console.log('不支持URL.createObjectURL');
+            if(config.debug){
+                xhr.open("post", toolUtil.adaptReqUrl(config.url,true), true);
+                xhr.responseType = "json";
+                xhr.onreadystatechange = function () {
+                    if (this.status == 200) {
+                        /*console.log('valid code success');*/
+                    }else{
+                        /*console.log('valid code fail');*/
                     }
+                };
+            }else{
+                xhr.open("post", toolUtil.adaptReqUrl(config.url), true);
 
-                    if (config.wrap) {
-                        angular.element('#' + config.wrap).html(img) || $('#' + config.wrap).html(img);
-                    } else if (config.fn && typeof config.fn === 'function') {
-                        config.fn.call(null, img);
+                xhr.responseType = "blob";
+                xhr.onreadystatechange = function () {
+                    if (this.status == 200) {
+                        var blob = this.response,
+                            img = document.createElement("img");
+
+                        img.alt = '验证码';
+                        try {
+                            img.onload = function (e) {
+                                window.URL.revokeObjectURL(img.src);
+                            };
+                            img.src = window.URL.createObjectURL(blob);
+                        } catch (e) {
+                            console.log('不支持URL.createObjectURL');
+                        }
+
+                        if (config.wrap) {
+                            angular.element('#' + config.wrap).html(img) || $('#' + config.wrap).html(img);
+                        } else if (config.fn && typeof config.fn === 'function') {
+                            config.fn.call(null, img);
+                        }
                     }
-                }
-            };
+                };
+            }
             xhr.send();
         };
         /*设置缓存*/
