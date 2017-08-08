@@ -5,6 +5,7 @@ angular.module('app')
         var self = this,
             Random = Mock.Random,
             reg_id = /[0-9]{1,2}//*id序列值*/,
+            reg_guid=/(([0-9a-z]){5}(_)([0-9a-zA-Z]){15,20}){1}//*唯一序列值*/,
             reg_name = /((张|李|东方|百里|王|赵|慕容|刘|司马|宇文|马|周|杨|闻人|朱|上官|陈|公羊|令狐|长孙){1}((子|梓)(涵|辰|墨|轩|豪|强|鹏|宇)|(雨|语)(晴|馨|晨|彤|宣|萱|旋|暄)|龙|伟|(芳){1,2}|杰|(雨|紫|梦|思|宣|萱|旋|暄|子|梓)(涵)|娟|(薇){1,2}|超|(霞){1,2}|(露){1,2}|(莎){1,2}|(盈){1,2}|涛|豪|轩|浩|婷|晴|馨|晨|彤|(宣|萱|旋|暄)){1}){1}//*姓名序列值*/,
             reg_flag = /(true|false){1}//*布尔值*/,
             reg_or = /(0|1){1}//*布尔值*/,
@@ -395,6 +396,9 @@ angular.module('app')
                 switch (map[i]) {
                     case 'id':
                         map_obj[i] = reg_id;
+                        break;
+                    case 'guid':
+                        map_obj[i] = reg_guid;
                         break;
                     case 'name':
                         map_obj[i] = reg_name;

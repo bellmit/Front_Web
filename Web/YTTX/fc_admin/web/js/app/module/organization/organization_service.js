@@ -1762,6 +1762,18 @@ angular.module('app')
                         data: param
                     })
                     .then(function (resp) {
+                            var resp = testService.test({
+                                map: {
+                                    'shopId': 'id',
+                                    'id':'id',
+                                    'shopName':'value',
+                                    'fullName': 'value'
+                                },
+                                mapmin: 5,
+                                mapmax: 10
+                            })/*测试请求*/;
+
+
                             var data = resp.data,
                                 status = parseInt(resp.status, 10);
 
@@ -1844,12 +1856,15 @@ angular.module('app')
 
                 toolUtil
                     .requestHttp({
-                        url: '/organization/shopmaps/add',
+                        url: /*'/organization/shopmaps/add'*/'json/test.json'/*测试地址*/,
                         method: 'post',
                         set: true,
+                        debug:true/*测试开关*/,
                         data: param
                     })
                     .then(function (resp) {
+                            var resp=testService.testSuccess()/*测试请求*/;
+
                             var data = resp.data,
                                 status = parseInt(resp.status, 10);
 
@@ -1906,13 +1921,25 @@ angular.module('app')
 
                 toolUtil
                     .requestHttp({
-                        url: '/carrieroperator/shops',
+                        url: /*'/carrieroperator/shops'*/'json/test.json'/*测试地址*/,
                         method: 'post',
                         async: false,
+                        debug:true/*测试开关*/,
                         set: true,
                         data: param
                     })
                     .then(function (resp) {
+                            var resp = testService.test({
+                                map: {
+                                    'shopId': 'guid',
+                                    'id':'guid',
+                                    'shopName':'value',
+                                    'fullName': 'value'
+                                },
+                                mapmin: 5,
+                                mapmax: 10
+                            })/*测试请求*/;
+
                             var data = resp.data,
                                 status = parseInt(resp.status, 10);
 
