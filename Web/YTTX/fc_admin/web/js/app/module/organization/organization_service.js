@@ -24,7 +24,6 @@ angular.module('app')
             user_update: toolUtil.isPower('user-update', powermap, true)/*编辑用户*/
         };
 
-
         /*扩展服务--初始化jquery dom节点*/
         this.initJQDom = function (dom) {
             if (dom) {
@@ -159,7 +158,7 @@ angular.module('app')
                         /*非根目录则获取新请求参数*/
                         $wrap = record.current1.next();
                     }
-                    url = '/organization/lowers/search';
+                    url = /*'/organization/lowers/search'*/'json/test.json'/*测试地址*/;
                 } else if (type === 'yy') {
                     /*判断是否为搜索模式*/
                     if (config.record.searchname2 !== '') {
@@ -186,7 +185,7 @@ angular.module('app')
                         /*非根目录则获取新请求参数*/
                         $wrap = record.current2.next();
                     }
-                    url = '/carrieroperator/lowers/search';
+                    url = /*'/carrieroperator/lowers/search'*/'json/test.json'/*测试地址*/;
                 }
 
                 toolUtil
@@ -194,9 +193,19 @@ angular.module('app')
                         url: url,
                         method: 'post',
                         set: true,
+                        debug: true, /*测试开关*/
                         data: param
                     })
                     .then(function (resp) {
+                            var resp = testService.test({
+                                map: {
+                                    'id': 'id',
+                                    'fullName': 'value'
+                                },
+                                mapmin: 2,
+                                mapmax: 5
+                            })/*测试请求*/;
+
                             var data = resp.data,
                                 status = parseInt(resp.status, 10);
 
@@ -269,7 +278,8 @@ angular.module('app')
                                                                 'data-list': true
                                                             });
                                                         }
-                                                        $(str).appendTo($wrap.html(''));/*调用滚动条*/
+                                                        $(str).appendTo($wrap.html(''));
+                                                        /*调用滚动条*/
                                                         if (record.iscroll_flag1) {
                                                             record.iscroll_flag1 = false;
                                                             toolUtil.autoScroll(self.$submenu_scroll_wrap1, {
@@ -755,12 +765,42 @@ angular.module('app')
 
             toolUtil
                 .requestHttp({
-                    url: '/organization/info',
+                    url: /*'/organization/info'*/'json/test.json'/*测试地址*/,
                     method: 'post',
                     set: true,
+                    debug: true/*测试开关*/,
                     data: param
                 })
                 .then(function (resp) {
+
+                        var resp = testService.test({
+                            map: {
+                                'id': 'id',
+                                'fullName': 'value',
+                                'shortName': 'value',
+                                'adscriptionRegion': 'value',
+                                'linkman': 'name',
+                                'cellphone': 'mobile',
+                                'telephone': 'phone',
+                                'province': 'province',
+                                'city': 'city',
+                                'country': 'county',
+                                'address': 'address',
+                                'parentId': 'id',
+                                'isAudited': 'or',
+                                'status': 'or',
+                                'salesmanId': 'id',
+                                'remark': 'remark',
+                                'isSettingLogin': 'or',
+                                'sysUserId': 'id',
+                                'username': 'name',
+                                'password': '',
+                                'isDesignatedPermit': 'or'
+                            },
+                            mapname: 'organization',
+                            maptype: 'object'
+                        })/*测试请求*/;
+
                         var data = resp.data,
                             status = parseInt(resp.status, 10);
 
@@ -983,18 +1023,18 @@ angular.module('app')
             var tempparam = cache.loginMap.param,
                 organiztionid;
 
-            if(typeof id==='undefined'){
-                if(tempparam.organizationId !== ''){
-                    organiztionid=tempparam.organizationId;
-                }else{
+            if (typeof id === 'undefined') {
+                if (tempparam.organizationId !== '') {
+                    organiztionid = tempparam.organizationId;
+                } else {
                     toolDialog.show({
                         type: 'warn',
                         value: '没有父级权限数据'
                     });
                     return false;
                 }
-            }else{
-                organiztionid=id;
+            } else {
+                organiztionid = id;
             }
             powerService.reqUserPowerList({
                 url: '/organization/permission/select',
@@ -1151,7 +1191,8 @@ angular.module('app')
                     },
                     req_config = {
                         method: 'post',
-                        set: true
+                        set: true,
+                        debug: true/*测试开关*/
                     },
                     record = config.record,
                     tip_map = {
@@ -1204,13 +1245,13 @@ angular.module('app')
                         }
                         /*新增采用传参方式，编辑采用编辑方式*/
                         param['bindingShopIds'] = config[type]['bindingShopIds'];
-                        req_config['url'] = '/organization/add';
+                        req_config['url'] = /*'/organization/add'*/'json/test.json'/*测试地址*/;
                     } else {
                         action = 'edit';
                         param['id'] = config[type]['id'];
                         param['sysUserId'] = config[type]['sysUserId'];
                         param['parentId'] = config[type]['parentId'];
-                        req_config['url'] = '/organization/update';
+                        req_config['url'] = /*'/organization/update'*/'json/test.json'/*测试地址*/;
                     }
                 }
                 req_config['data'] = param;
@@ -1218,6 +1259,8 @@ angular.module('app')
                 toolUtil
                     .requestHttp(req_config)
                     .then(function (resp) {
+                            var resp = testService.testSuccess()/*测试请求*/;
+
                             var data = resp.data,
                                 status = parseInt(resp.status, 10);
 
@@ -1712,9 +1755,10 @@ angular.module('app')
 
                 toolUtil
                     .requestHttp({
-                        url: '/organization/shopmaps',
+                        url: /*'/organization/shopmaps'*/'json/test.json'/*测试地址*/,
                         method: 'post',
                         set: true,
+                        debug:true,/*测试开关*/
                         data: param
                     })
                     .then(function (resp) {
@@ -1949,7 +1993,7 @@ angular.module('app')
             var source = config.record.operator_shopid;
             /*清除模型样式*/
             for (var i in source) {
-                if(i!=='state'){
+                if (i !== 'state') {
                     var shopitem = source[i];
                     shopitem['li'].removeClass('action-list-active');
                     shopitem['ischeck'] = false;

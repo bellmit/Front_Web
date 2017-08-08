@@ -48,7 +48,7 @@ angular.module('login.service', [])
                 }
             }).then(function (resp) {
                     /*测试服务*/
-                    var resp=testService.testToken('table');
+                    var resp=testService.testToken();
 
                     var data = resp.data,
                         status = parseInt(resp.status, 10);
@@ -233,21 +233,22 @@ angular.module('login.service', [])
         };
         /*获取验证码*/
         this.getValidCode = function (config) {
-            var xhr = new XMLHttpRequest();
-
             if(config.debug){
-                xhr.open("post", toolUtil.adaptReqUrl(config.url,true), true);
-                xhr.responseType = "json";
-                xhr.onreadystatechange = function () {
-                    if (this.status == 200) {
-                        /*console.log('valid code success');*/
-                    }else{
-                        /*console.log('valid code fail');*/
-                    }
-                };
-            }else{
-                xhr.open("post", toolUtil.adaptReqUrl(config.url), true);
+                (function () {
+                    var code=Mock.mock(/[a-zA-Z0-9]{4}/),
+                        imgsrc=Mock.Random.image('80x40','#ffffff','#666666',code),
+                        img=document.createElement("img");
 
+                    img.src=imgsrc;
+                    if (config.wrap) {
+                        angular.element('#' + config.wrap).html(img) || $('#' + config.wrap).html(img);
+                    } else if (config.fn && typeof config.fn === 'function') {
+                        config.fn.call(null, img);
+                    }
+                }());
+            }else{
+                var xhr = new XMLHttpRequest();
+                xhr.open("post", toolUtil.adaptReqUrl(config.url), true);
                 xhr.responseType = "blob";
                 xhr.onreadystatechange = function () {
                     if (this.status == 200) {
@@ -271,8 +272,9 @@ angular.module('login.service', [])
                         }
                     }
                 };
+                xhr.send();
             }
-            xhr.send();
+
         };
         /*设置缓存*/
         this.setCache = function (data) {
