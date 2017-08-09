@@ -1,5 +1,5 @@
 angular.module('app')
-    .service('organizationroleeService', ['toolUtil', 'toolDialog', 'BASE_CONFIG', 'loginService', 'powerService', 'addressService', 'dataTableColumnService', 'dataTableCheckAllService', '$timeout', function (toolUtil, toolDialog, BASE_CONFIG, loginService, powerService, addressService, dataTableColumnService, dataTableCheckAllService, $timeout) {
+    .service('organizationroleeService', ['toolUtil', 'toolDialog', 'BASE_CONFIG', 'loginService', 'powerService', 'addressService', 'dataTableColumnService', 'dataTableCheckAllService', '$timeout', 'testService', function (toolUtil, toolDialog, BASE_CONFIG, loginService, powerService, addressService, dataTableColumnService, dataTableCheckAllService, $timeout, testService) {
 
         /*获取缓存数据*/
         var self = this,
@@ -49,12 +49,23 @@ angular.module('app')
                 /*请求数据*/
                 toolUtil
                     .requestHttp({
-                        url: '/rolegroup/list',
+                        url: /*'/rolegroup/list'*/'json/test.json'/*测试地址*/,
                         method: 'post',
                         set: true,
+                        debug: true/*测试开关*/,
                         data: param
                     })
                     .then(function (resp) {
+                            var resp = testService.test({
+                                map: {
+                                    'id': 'id',
+                                    'groupName': 'name'
+                                },
+                                mapmin: 2,
+                                mapmax: 10
+                            })/*测试请求*/;
+
+
                             var data = resp.data,
                                 status = parseInt(resp.status, 10);
 
@@ -88,6 +99,18 @@ angular.module('app')
                                                     type: 'rolegroup'
                                                 });
                                                 if (str !== '') {
+                                                    /*调用滚动条*/
+                                                    if (config.record.iscroll_flag1) {
+                                                        config.record.iscroll_flag1 = false;
+                                                        toolUtil.autoScroll(self.$submenu_scroll_wrap1, {
+                                                            setWidth: false,
+                                                            setHeight: 500,
+                                                            theme: "minimal-dark",
+                                                            axis: "y",
+                                                            scrollbarPosition: "inside",
+                                                            scrollInertia: '500'
+                                                        });
+                                                    }
                                                     $(str).appendTo(self.$admin_struct_submenu.html(''));
                                                 }
                                             }
@@ -128,12 +151,22 @@ angular.module('app')
 
                 toolUtil
                     .requestHttp({
-                        url: '/role/list',
+                        url: /*'/role/list'*/'json/test.json'/*测试地址*/,
                         method: 'post',
                         set: true,
+                        debug: true/*测试开关*/,
                         data: param
                     })
                     .then(function (resp) {
+                            var resp = testService.test({
+                                map: {
+                                    'id': 'id',
+                                    'roleName': 'value'
+                                },
+                                mapmin: 1,
+                                mapmax: 5
+                            })/*测试请求*/;
+
                             var data = resp.data,
                                 status = parseInt(resp.status, 10);
 
@@ -549,12 +582,15 @@ angular.module('app')
                 /*执行删除操作*/
                 toolUtil
                     .requestHttp({
-                        url: '/role/organizations/delete',
+                        url: /*'/role/organizations/delete'*/'json/test.json'/*测试地址*/,
                         method: 'post',
                         set: true,
+                        debug: true/*测试开关*/,
                         data: param
                     })
                     .then(function (resp) {
+                            var resp = testService.testSuccess()/*测试请求*/;
+
                             var data = resp.data,
                                 status = parseInt(resp.status, 10);
 
@@ -796,12 +832,22 @@ angular.module('app')
 
                 toolUtil
                     .requestHttp({
-                        url: '/organization/lowers/search',
+                        url: /*'/organization/lowers/search'*/'json/test.json'/*测试地址*/,
                         method: 'post',
                         set: true,
+                        debug: true/*测试开关*/,
                         data: param
                     })
                     .then(function (resp) {
+                            var resp = testService.test({
+                                map: {
+                                    'id': 'guid',
+                                    'fullName': 'name'
+                                },
+                                mapmin: 2,
+                                mapmax: 5
+                            })/*测试请求*/;
+
                             var data = resp.data,
                                 status = parseInt(resp.status, 10);
                             if (status === 200) {
@@ -842,9 +888,9 @@ angular.module('app')
                                                 if (str !== '') {
                                                     $(str).appendTo($wrap.html(''));
                                                     /*调用滚动条*/
-                                                    if (record.iscroll_flag) {
-                                                        record.iscroll_flag = false;
-                                                        toolUtil.autoScroll(self.$submenu_scroll_wrap, {
+                                                    if (record.iscroll_flag2) {
+                                                        record.iscroll_flag2 = false;
+                                                        toolUtil.autoScroll(self.$submenu_scroll_wrap2, {
                                                             setWidth: false,
                                                             setHeight: 450,
                                                             theme: "minimal-dark",
@@ -1024,7 +1070,7 @@ angular.module('app')
             } else if (typeof config.id === 'undefined') {
                 return false;
             }
-            var existmember=config.existmember,
+            var existmember = config.existmember,
                 tempparam = cache.loginMap.param,
                 param = {
                     adminId: tempparam.adminId,
@@ -1035,22 +1081,34 @@ angular.module('app')
 
             /*渲染已经选中的*/
             var existitem,
-                existstr='';
-            for(var o in existmember){
-                existitem=existmember[o];
-                existstr+='<li class="action-list-active">' + existitem["label"] + '</li>';
+                existstr = '';
+            for (var o in existmember) {
+                existitem = existmember[o];
+                existstr += '<li class="action-list-active">' + existitem["label"] + '</li>';
             }
-            if(existstr!==''){
+            if (existstr !== '') {
                 $(existstr).appendTo(self.$admin_member_exist.html(''));
             }
             toolUtil
                 .requestHttp({
-                    url: '/organization/shops',
+                    url: /*'/organization/shops'*/'json/test.json'/*测试地址*/,
                     method: 'post',
                     set: true,
+                    debug: true/*测试开关*/,
                     data: param
                 })
                 .then(function (resp) {
+                        var resp = testService.test({
+                            map: {
+                                'id': 'guid',
+                                'fullName': 'value',
+                                'cellphone': 'mobile'
+                            },
+                            mapmin: 2,
+                            mapmax: 10
+                        })/*测试请求*/;
+
+
                         var data = resp.data,
                             status = parseInt(resp.status, 10);
 
@@ -1077,13 +1135,13 @@ angular.module('app')
                                 if (typeof result !== 'undefined') {
                                     var list = result.list,
                                         str = '';
-                                    if (angular.isObject(list)) {
+                                    if (list) {
                                         /*to do 比对数据*/
                                         var cellphone;
                                         /*修改：更新模型*/
                                         for (var i in list) {
-                                            cellphone=list[i]["cellphone"];
-                                            if(!existmember[cellphone]){
+                                            cellphone = list[i]["cellphone"];
+                                            if (!existmember[cellphone]) {
                                                 /*不存在已经存在的数据即保留数据集*/
                                                 str += '<li data-cellphone="' + cellphone + '" data-id="' + list[i]["id"] + '">' + list[i]["fullName"] + '</li>';
                                             }
@@ -1235,7 +1293,8 @@ angular.module('app')
                     param = $.extend(true, {}, cache.loginMap.param),
                     req_config = {
                         method: 'post',
-                        set: true
+                        set: true,
+                        debug: true/*测试开关*/
                     },
                     tip_map = {
                         'add': '新增',
@@ -1255,7 +1314,7 @@ angular.module('app')
                         param['roleName'] = config[type]['roleName'];
                         param['groupId'] = config['record']['rolegroup'];
 
-                        req_config['url'] = '/role/add';
+                        req_config['url'] = /*'/role/add'*/'json/test.json'/*测试地址*/;
                     } else {
                         action = 'edit';
                         temp_value = config[type]['roleName'];
@@ -1263,7 +1322,7 @@ angular.module('app')
                         param['roleName'] = temp_value;
                         param['id'] = config[type]['id'];
 
-                        req_config['url'] = '/role/update';
+                        req_config['url'] = /*'/role/update'*/'json/test.json'/*测试地址*/;
                     }
                 } else if (type === 'rolegroup') {
                     /*判断是新增还是修改*/
@@ -1271,7 +1330,7 @@ angular.module('app')
                         action = 'add';
                         param['groupName'] = config[type]['groupName'];
 
-                        req_config['url'] = '/rolegroup/add';
+                        req_config['url'] = /*'/rolegroup/add'*/'json/test.json'/*测试地址*/;
                     } else {
                         action = 'edit';
                         temp_value = config[type]['groupName'];
@@ -1279,7 +1338,7 @@ angular.module('app')
                         param['groupName'] = temp_value;
                         param['id'] = config[type]['id'];
 
-                        req_config['url'] = '/rolegroup/update';
+                        req_config['url'] = /*'/rolegroup/update'*/'json/test.json'/*测试地址*/;
                     }
 
                 } else if (type === 'member') {
@@ -1301,12 +1360,14 @@ angular.module('app')
                     action = 'add';
                     param['shopIds'] = temp_value;
                     param['roleId'] = config.record.role;
-                    req_config['url'] = '/role/organizations/add';
+                    req_config['url'] = /*'/role/organizations/add'*/'json/test.json'/*测试地址*/;
                 }
                 req_config['data'] = param;
                 toolUtil
                     .requestHttp(req_config)
                     .then(function (resp) {
+                            var resp = testService.testSuccess()/*测试请求*/;
+
                             var data = resp.data,
                                 status = parseInt(resp.status, 10);
 
@@ -1506,13 +1567,15 @@ angular.module('app')
                         /*执行删除机构操作*/
                         toolUtil
                             .requestHttp({
-                                url: type === 'role' ? '/role/delete' : '/rolegroup/delete'/*'json/test.json'*//*测试地址*/,
+                                url: type === 'role' ? /*'/role/delete'*/'json/test.json' : /*'/rolegroup/delete'*/'json/test.json'/*测试地址*/,
                                 method: 'post',
                                 set: true,
-                                debug: false, /*测试标识*/
+                                debug: true, /*测试标识*/
                                 data: param
                             })
                             .then(function (resp) {
+                                var resp=testService.testSuccess()/*测试请求*/;
+
                                     var data = resp.data,
                                         status = parseInt(resp.status, 10);
 

@@ -370,7 +370,9 @@ angular.module('power.service', [])
                     })
                     .then(function (resp) {
                             if (config.debug) {
-                                var resp=testService.testMenu();
+                                var resp=config.setflag?testService.testMenu({
+                                    setflag:config.setflag
+                                }):testService.testMenu();
                             }
                             var data = resp.data,
                                 status = parseInt(resp.status, 10);

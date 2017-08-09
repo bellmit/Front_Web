@@ -907,7 +907,9 @@ angular.module('app')
                                                                 powerService.clearHeaderPower();
                                                                 powerService.reqUserPowerList({
                                                                     url: /*'/organization/permission/select'*/'json/test.json'/*测试地址*/,
-                                                                    debug:true/*测试开关*/,
+
+                                                                    setflag: true/*是否随机生成*/,
+                                                                    debug: true/*测试开关*/,
                                                                     source: true, /*是否获取数据源*/
                                                                     sourcefn: function (ps) {
                                                                         /*数据源*/
@@ -918,7 +920,8 @@ angular.module('app')
                                                                             /*存在数据源*/
                                                                             powerService.reqUserPowerList({
                                                                                 url: /*'/organization/permission/select'*/'json/test.json'/*测试地址*/,
-                                                                                debug:true/*测试开关*/,
+                                                                                setflag: true/*是否随机生成*/,
+                                                                                debug: true/*测试开关*/,
                                                                                 source: true, /*是否获取数据源*/
                                                                                 sourcefn: function (cs) {
                                                                                     /*数据源*/
@@ -1040,7 +1043,8 @@ angular.module('app')
             }
             powerService.reqUserPowerList({
                 url: /*'/organization/permission/select'*/'json/test.json'/*测试地址*/,
-                debug:true/*测试开关*/,
+                setflag:true/*是否随机生成*/,
+                debug: true/*测试开关*/,
                 param: {
                     token: tempparam.token,
                     adminId: tempparam.adminId,
@@ -1408,7 +1412,8 @@ angular.module('app')
                     pid = tempid.pid;
                     powerService.reqUserPowerList({
                         url: /*'/organization/permission/select'*/'json/test.json'/*测试地址*/,
-                        debug:true/*测试开关*/,
+                        setflag:true/*是否随机生成*/,
+                        debug: true/*测试开关*/,
                         param: {
                             token: tempparam.token,
                             adminId: tempparam.adminId,
@@ -1420,7 +1425,8 @@ angular.module('app')
                     cid = struct.id;
                     pid = struct.parentId;
                     powerService.reqUserPowerList({
-                        debug:true/*测试开关*/,
+                        setflag:true/*是否随机生成*/,
+                        debug: true/*测试开关*/,
                         url: /*'/organization/permission/select'*/'json/test.json'/*测试地址*/,
                         source: true, /*是否获取数据源*/
                         sourcefn: function (ps) {
@@ -1432,7 +1438,8 @@ angular.module('app')
                                 /*存在数据源*/
                                 powerService.reqUserPowerList({
                                     url: /*'/organization/permission/select'*/'json/test.json'/*测试地址*/,
-                                    debug:true/*测试开关*/,
+                                    setflag:true/*是否随机生成*/,
+                                    debug: true/*测试开关*/,
                                     source: true, /*是否获取数据源*/
                                     sourcefn: function (cs) {
                                         /*数据源*/
@@ -1764,15 +1771,15 @@ angular.module('app')
                         url: /*'/organization/shopmaps'*/'json/test.json'/*测试地址*/,
                         method: 'post',
                         set: true,
-                        debug:true,/*测试开关*/
+                        debug: true, /*测试开关*/
                         data: param
                     })
                     .then(function (resp) {
                             var resp = testService.test({
                                 map: {
                                     'shopId': 'id',
-                                    'id':'id',
-                                    'shopName':'value',
+                                    'id': 'id',
+                                    'shopName': 'value',
                                     'fullName': 'value'
                                 },
                                 mapmin: 5,
@@ -1865,11 +1872,11 @@ angular.module('app')
                         url: /*'/organization/shopmaps/add'*/'json/test.json'/*测试地址*/,
                         method: 'post',
                         set: true,
-                        debug:true/*测试开关*/,
+                        debug: true/*测试开关*/,
                         data: param
                     })
                     .then(function (resp) {
-                            var resp=testService.testSuccess()/*测试请求*/;
+                            var resp = testService.testSuccess()/*测试请求*/;
 
                             var data = resp.data,
                                 status = parseInt(resp.status, 10);
@@ -1930,7 +1937,7 @@ angular.module('app')
                         url: /*'/carrieroperator/shops'*/'json/test.json'/*测试地址*/,
                         method: 'post',
                         async: false,
-                        debug:true/*测试开关*/,
+                        debug: true/*测试开关*/,
                         set: true,
                         data: param
                     })
@@ -1938,8 +1945,8 @@ angular.module('app')
                             var resp = testService.test({
                                 map: {
                                     'shopId': 'guid',
-                                    'id':'guid',
-                                    'shopName':'value',
+                                    'id': 'guid',
+                                    'shopName': 'value',
                                     'fullName': 'value'
                                 },
                                 mapmin: 5,

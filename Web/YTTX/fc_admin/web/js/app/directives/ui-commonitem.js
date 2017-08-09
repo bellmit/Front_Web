@@ -119,7 +119,7 @@ angular.module('ui.commonitem', [])
                     var kcode = $event.keyCode,
                         self = this;
 
-                    self.value = toolUtil.trimHtmlIllegal(scope.svalue);
+                    self.value = toolUtil.trimHtmlIllegal(self.value);
                     if (scope.svalue === '') {
                         scope.sactive = '';
                     } else {
@@ -249,6 +249,14 @@ angular.module('ui.commonitem', [])
             replace: false,
             restrict: 'EC',
             templateUrl: 'tpl/common/support_tip.html'
+        };
+    })
+    /*datatable数据表格指令*/
+    .directive('uiDataTablePlugin', function () {
+        return {
+            replace: false,
+            restrict: 'C',
+            template: '<table></table>'
         };
     });
    

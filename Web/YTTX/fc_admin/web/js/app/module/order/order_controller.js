@@ -55,12 +55,12 @@ angular.module('app')
                     autoWidth:true,/*是否*/
                     paging:false,
                     ajax:{
-                        url:/*toolUtil.adaptReqUrl('/organization/goodsorder/list')*/'json/test.json'/*测试地址*/,
+                        url:toolUtil.adaptReqUrl('/organization/goodsorder/list')/*'json/test.json'*/,
                         dataType:'JSON',
                         method:'post',
                         dataSrc:function ( json ) {
                             /*测试代码*/
-                            var json=orderService.testGetOrderList();
+                            /*var json=orderService.testGetOrderList();*/
 
 
                             var code=parseInt(json.code,10),
@@ -74,7 +74,10 @@ angular.module('app')
                                 }
                                 if(code===999){
                                     /*退出系统*/
-                                    orderService.loginOut();
+                                    toolUtil.loginTips({
+                                        clear:true,
+                                        reload:true
+                                    });
                                 }
                                 return [];
                             }
@@ -113,13 +116,6 @@ angular.module('app')
 
                                 var list=result.list;
                                 if(list){
-                                    var vi=0,
-                                        vlen=list.length;
-                                    for(vi;vi<vlen;vi++){
-                                        if(!list[vi] || list[vi]===null){
-                                            return [];
-                                        }
-                                    }
                                     return list;
                                 }else{
                                     return [];
@@ -211,13 +207,13 @@ angular.module('app')
                             /*to do*/
                             "data":"id",
                             "render":function(data, type, full, meta ){
-                                var btns='';
+                                 var btns='';
 
-                                /*查看订单*/
-                                if(self.powerlist.order_details){
+                                 /*查看订单*/
+                                 if(self.powerlist.order_details){
                                     btns+='<span data-action="detail" data-id="'+data+'"  class="btn-operate">查看</span>';
-                                }
-                                return btns;
+                                 }
+                                 return btns;
                             }
                         }
                     ]

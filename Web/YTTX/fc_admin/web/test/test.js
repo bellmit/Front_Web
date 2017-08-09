@@ -5,7 +5,7 @@ angular.module('app')
         var self = this,
             Random = Mock.Random,
             reg_id = /[0-9]{1,2}//*id序列值*/,
-            reg_guid=/(([0-9a-z]){5}(_)([0-9a-zA-Z]){15,20}){1}//*唯一序列值*/,
+            reg_guid = /(([0-9a-z]){5}(_)([0-9a-zA-Z]){15,20}){1}//*唯一序列值*/,
             reg_name = /((张|李|东方|百里|王|赵|慕容|刘|司马|宇文|马|周|杨|闻人|朱|上官|陈|公羊|令狐|长孙){1}((子|梓)(涵|辰|墨|轩|豪|强|鹏|宇)|(雨|语)(晴|馨|晨|彤|宣|萱|旋|暄)|龙|伟|(芳){1,2}|杰|(雨|紫|梦|思|宣|萱|旋|暄|子|梓)(涵)|娟|(薇){1,2}|超|(霞){1,2}|(露){1,2}|(莎){1,2}|(盈){1,2}|涛|豪|轩|浩|婷|晴|馨|晨|彤|(宣|萱|旋|暄)){1}){1}//*姓名序列值*/,
             reg_flag = /(true|false){1}//*布尔值*/,
             reg_or = /(0|1){1}//*布尔值*/,
@@ -104,205 +104,224 @@ angular.module('app')
             return res;
         };
         /*测试接口--菜单*/
-        this.testMenu = function () {
+        this.testMenu = function (config) {
+            var menuobj = {
+                    "menu": [{
+                        "modClass": "yttx-organization",
+                        "modCode": "yttx-organization",
+                        "modId": 10,
+                        "modLink": "yttx-organization",
+                        "modName": "机构",
+                        "permitItem": [{
+                            "funcCode": "yttx-batch-delete",
+                            "funcName": "批量删除",
+                            "isPermit": 1,
+                            "modId": 10, "prid": 13
+                        }, {
+                            "funcCode": "yttx-operator-adjustment",
+                            "funcName": "调整运营商",
+                            "isPermit": 1,
+                            "modId": 10,
+                            "prid": 12
+                        }, {
+                            "funcCode": "yttx-organization-delete",
+                            "funcName": "删除机构",
+                            "isPermit": 1,
+                            "modId": 10,
+                            "prid": 11
+                        }, {
+                            "funcCode": "yttx-organization-edit",
+                            "funcName": "机构编辑",
+                            "isPermit": 1,
+                            "modId": 10,
+                            "prid": 10
+                        }, {
+                            "funcCode": "yttx-rolegroup-add",
+                            "funcName": "添加角色组",
+                            "isPermit": 1,
+                            "modId": 10,
+                            "prid": 9
+                        }, {
+                            "funcCode": "yttx-role-add",
+                            "funcName": "添加角色",
+                            "isPermit": 1,
+                            "modId": 10,
+                            "prid": 8
+                        }, {
+                            "funcCode": "yttx-role-edit",
+                            "funcName": "角色编辑",
+                            "isPermit": 1,
+                            "modId": 10,
+                            "prid": 7
+                        }, {
+                            "funcCode": "yttx-member-delete",
+                            "funcName": "移除成员",
+                            "isPermit": 1,
+                            "modId": 10,
+                            "prid": 6
+                        }, {
+                            "funcCode": "yttx-member-add",
+                            "funcName": "添加成员",
+                            "isPermit": 1,
+                            "modId": 10,
+                            "prid": 5
+                        }, {
+                            "funcCode": "yttx-user-update",
+                            "funcName": "修改用户",
+                            "isPermit": 1,
+                            "modId": 10,
+                            "prid": 4
+                        }, {
+                            "funcCode": "yttx-user-view",
+                            "funcName": "查看用户",
+                            "isPermit": 1,
+                            "modId": 10,
+                            "prid": 3
+                        }, {
+                            "funcCode": "yttx-user-add",
+                            "funcName": "添加用户",
+                            "isPermit": 1,
+                            "modId": 10,
+                            "prid": 2
+                        }, {
+                            "funcCode": "yttx-organization-add",
+                            "funcName": "添加子机构",
+                            "isPermit": 1,
+                            "modId": 10,
+                            "prid": 1
+                        }]
+                    }, {
+                        "modClass": "yttx-order-manager",
+                        "modCode": "yttx-order-manager",
+                        "modId": 30,
+                        "modLink": "yttx-order-manager",
+                        "modName": "订单管理",
+                        "permitItem": [{
+                            "funcCode": "yttx-order-details",
+                            "funcName": "详情",
+                            "isPermit": 1,
+                            "modId": 30,
+                            "prid": 15
+                        }, {
+                            "funcCode": "yttx-order-export",
+                            "funcName": "导出",
+                            "isPermit": 1,
+                            "modId": 30,
+                            "prid": 16
+                        }]
+                    }, {
+                        "modClass": "yttx-invoice-manager",
+                        "modCode": "yttx-invoice-manager",
+                        "modId": 50,
+                        "modLink": "yttx-invoice-manager",
+                        "modName": "发货管理",
+                        "permitItem": [{
+                            "funcCode": "yttx-invoice-details",
+                            "funcName": "详情",
+                            "isPermit": 1,
+                            "modId": 50,
+                            "prid": 18
+                        }, {
+                            "funcCode": "yttx-invoice-delivery",
+                            "funcName": "发货",
+                            "isPermit": 1,
+                            "modId": 50,
+                            "prid": 19
+                        }]
+                    }, {
+                        "modClass": "yttx-purchase-manager",
+                        "modCode": "yttx-purchase-manager",
+                        "modId": 70,
+                        "modLink": "yttx-purchase-manager",
+                        "modName": "采购管理",
+                        "permitItem": [{
+                            "funcCode": "yttx-purchase-audit",
+                            "funcName": "采购审核",
+                            "isPermit": 1,
+                            "modId": 70,
+                            "prid": 22
+                        }, {
+                            "funcCode": "yttx-purchase-stats",
+                            "funcName": "采购统计",
+                            "isPermit": 1,
+                            "modId": 70,
+                            "prid": 21
+                        }, {
+                            "funcCode": "yttx-purchase-details",
+                            "funcName": "详情",
+                            "isPermit": 1,
+                            "modId": 70,
+                            "prid": 20
+                        }]
+                    }, {
+                        "modClass": "yttx-warehouse-manager",
+                        "modCode": "yttx-warehouse-manager",
+                        "modId": 90,
+                        "modLink": "yttx-warehouse-manager",
+                        "modName": "仓库管理",
+                        "permitItem": [{
+                            "funcCode": "mall-storage-stats",
+                            "funcName": "入库统计",
+                            "isPermit": 1,
+                            "modId": 90,
+                            "prid": 28
+                        }, {
+                            "funcCode": "mall-inventory-status",
+                            "funcName": "库存状况",
+                            "isPermit": 1,
+                            "modId": 90,
+                            "prid": 27
+                        }, {
+                            "funcCode": "mall-order-stats",
+                            "funcName": "订单统计",
+                            "isPermit": 1,
+                            "modId": 90,
+                            "prid": 26
+                        }, {
+                            "funcCode": "mall-purchase-receiving",
+                            "funcName": "收货",
+                            "isPermit": 1,
+                            "modId": 90,
+                            "prid": 25
+                        }, {
+                            "funcCode": "mall-purchase-stats",
+                            "funcName": "采购统计",
+                            "isPermit": 1,
+                            "modId": 90,
+                            "prid": 24
+                        }, {
+                            "funcCode": "mall-warehouse-add",
+                            "funcName": "添加分仓",
+                            "isPermit": 1,
+                            "modId": 90,
+                            "prid": 23
+                        }]
+                    }]
+                },
+                setflag = false/*是否开启随机设置模式*/;
+            if (config && config.setflag) {
+                setflag = true;
+            }
+            if (setflag) {
+                var menuarray = menuobj.menu,
+                    len = menuarray.length,
+                    i = 0;
+
+                for (i; i < len; i++) {
+                    var menuitem = menuarray[i]['permitItem'],
+                        sublen = menuitem.length,
+                        j = 0;
+                    for (j; j < sublen; j++) {
+                        menuitem[j]['isPermit'] = parseInt(Math.random() * 10, 10) % 2;
+                    }
+                }
+            }
             return {
                 status: 200,
                 data: {
                     code: "0",
                     message: "查询成功",
-                    result: {
-                        "menu": [{
-                            "modClass": "yttx-organization",
-                            "modCode": "yttx-organization",
-                            "modId": 10,
-                            "modLink": "yttx-organization",
-                            "modName": "机构",
-                            "permitItem": [{
-                                "funcCode": "yttx-batch-delete",
-                                "funcName": "批量删除",
-                                "isPermit": 1,
-                                "modId": 10, "prid": 13
-                            }, {
-                                "funcCode": "yttx-operator-adjustment",
-                                "funcName": "调整运营商",
-                                "isPermit": 1,
-                                "modId": 10,
-                                "prid": 12
-                            }, {
-                                "funcCode": "yttx-organization-delete",
-                                "funcName": "删除机构",
-                                "isPermit": 1,
-                                "modId": 10,
-                                "prid": 11
-                            }, {
-                                "funcCode": "yttx-organization-edit",
-                                "funcName": "机构编辑",
-                                "isPermit": 1,
-                                "modId": 10,
-                                "prid": 10
-                            }, {
-                                "funcCode": "yttx-rolegroup-add",
-                                "funcName": "添加角色组",
-                                "isPermit": 1,
-                                "modId": 10,
-                                "prid": 9
-                            }, {
-                                "funcCode": "yttx-role-add",
-                                "funcName": "添加角色",
-                                "isPermit": 1,
-                                "modId": 10,
-                                "prid": 8
-                            }, {
-                                "funcCode": "yttx-role-edit",
-                                "funcName": "角色编辑",
-                                "isPermit": 1,
-                                "modId": 10,
-                                "prid": 7
-                            }, {
-                                "funcCode": "yttx-member-delete",
-                                "funcName": "移除成员",
-                                "isPermit": 1,
-                                "modId": 10,
-                                "prid": 6
-                            }, {
-                                "funcCode": "yttx-member-add",
-                                "funcName": "添加成员",
-                                "isPermit": 1,
-                                "modId": 10,
-                                "prid": 5
-                            }, {
-                                "funcCode": "yttx-user-update",
-                                "funcName": "修改用户",
-                                "isPermit": 1,
-                                "modId": 10,
-                                "prid": 4
-                            }, {
-                                "funcCode": "yttx-user-view",
-                                "funcName": "查看用户",
-                                "isPermit": 1,
-                                "modId": 10,
-                                "prid": 3
-                            }, {
-                                "funcCode": "yttx-user-add",
-                                "funcName": "添加用户",
-                                "isPermit": 1,
-                                "modId": 10,
-                                "prid": 2
-                            }, {
-                                "funcCode": "yttx-organization-add",
-                                "funcName": "添加子机构",
-                                "isPermit": 1,
-                                "modId": 10,
-                                "prid": 1
-                            }]
-                        }, {
-                            "modClass": "yttx-order-manager",
-                            "modCode": "yttx-order-manager",
-                            "modId": 30,
-                            "modLink": "yttx-order-manager",
-                            "modName": "订单管理",
-                            "permitItem": [{
-                                "funcCode": "yttx-order-details",
-                                "funcName": "详情",
-                                "isPermit": 1,
-                                "modId": 30,
-                                "prid": 15
-                            }, {
-                                "funcCode": "yttx-order-export",
-                                "funcName": "导出",
-                                "isPermit": 1,
-                                "modId": 30,
-                                "prid": 16
-                            }]
-                        }, {
-                            "modClass": "yttx-invoice-manager",
-                            "modCode": "yttx-invoice-manager",
-                            "modId": 50,
-                            "modLink": "yttx-invoice-manager",
-                            "modName": "发货管理",
-                            "permitItem": [{
-                                "funcCode": "yttx-invoice-details",
-                                "funcName": "详情",
-                                "isPermit": 1,
-                                "modId": 50,
-                                "prid": 18
-                            }, {
-                                "funcCode": "yttx-invoice-delivery",
-                                "funcName": "发货",
-                                "isPermit": 1,
-                                "modId": 50,
-                                "prid": 19
-                            }]
-                        }, {
-                            "modClass": "yttx-purchase-manager",
-                            "modCode": "yttx-purchase-manager",
-                            "modId": 70,
-                            "modLink": "yttx-purchase-manager",
-                            "modName": "采购管理",
-                            "permitItem": [{
-                                "funcCode": "yttx-purchase-audit",
-                                "funcName": "采购审核",
-                                "isPermit": 1,
-                                "modId": 70,
-                                "prid": 22
-                            }, {
-                                "funcCode": "yttx-purchase-stats",
-                                "funcName": "采购统计",
-                                "isPermit": 1,
-                                "modId": 70,
-                                "prid": 21
-                            }, {
-                                "funcCode": "yttx-purchase-details",
-                                "funcName": "详情",
-                                "isPermit": 1,
-                                "modId": 70,
-                                "prid": 20
-                            }]
-                        }, {
-                            "modClass": "yttx-warehouse-manager",
-                            "modCode": "yttx-warehouse-manager",
-                            "modId": 90,
-                            "modLink": "yttx-warehouse-manager",
-                            "modName": "仓库管理",
-                            "permitItem": [{
-                                "funcCode": "mall-storage-stats",
-                                "funcName": "入库统计",
-                                "isPermit": 1,
-                                "modId": 90,
-                                "prid": 28
-                            }, {
-                                "funcCode": "mall-inventory-status",
-                                "funcName": "库存状况",
-                                "isPermit": 1,
-                                "modId": 90,
-                                "prid": 27
-                            }, {
-                                "funcCode": "mall-order-stats",
-                                "funcName": "订单统计",
-                                "isPermit": 1,
-                                "modId": 90,
-                                "prid": 26
-                            }, {
-                                "funcCode": "mall-purchase-receiving",
-                                "funcName": "收货",
-                                "isPermit": 1,
-                                "modId": 90,
-                                "prid": 25
-                            }, {
-                                "funcCode": "mall-purchase-stats",
-                                "funcName": "采购统计",
-                                "isPermit": 1,
-                                "modId": 90,
-                                "prid": 24
-                            }, {
-                                "funcCode": "mall-warehouse-add",
-                                "funcName": "添加分仓",
-                                "isPermit": 1,
-                                "modId": 90,
-                                "prid": 23
-                            }]
-                        }]
-                    }
+                    result: menuobj
                 }
             };
         };
@@ -447,13 +466,13 @@ angular.module('app')
                         break;
                     case 'province':
                         (function () {
-                            var address=Random.county(true).split(' ');
+                            var address = Random.county(true).split(' ');
                             map_obj[i] = address[0];
                             /*存在市*/
-                            if(map['city']){
-                                map_obj['city']=address[1];
-                                if(map['country']){
-                                    map_obj['country']=address[2];
+                            if (map['city']) {
+                                map_obj['city'] = address[1];
+                                if (map['country']) {
+                                    map_obj['country'] = address[2];
                                 }
                             }
                         }());
@@ -465,7 +484,15 @@ angular.module('app')
                         map_obj[i] = '';
                         break;
                     default:
-                        map_obj[i] = reg_value;
+                        if (map[i].indexOf('rule') !== -1) {
+                            (function () {
+                                var rule = map[i].split(',').slice(1).join(''),
+                                    reg='[' + rule + ']{1}';
+                                map_obj[i] = new RegExp(reg);
+                            }());
+                        } else {
+                            map_obj[i] = reg_value;
+                        }
                         break;
                 }
             }

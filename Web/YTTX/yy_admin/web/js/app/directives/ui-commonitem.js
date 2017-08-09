@@ -190,7 +190,7 @@ angular.module('ui.commonitem',[])
             scope:{
                 quick:'=quick'
             },
-            template:'<div class="admin-welcome-banner"><img src="images/index_banner.jpg" alt="" /></div>\
+            template:'<div class="admin-welcome-banner"><img ng-src="images/index_banner.jpg" alt="" /></div>\
                         <h3 class="admin-layout-theme3">快捷入口</h3>\
                         <ul class="admin-quick-icon">\
                           <li ng-repeat="i in quick" ng-show="{{i.isshow}}">\

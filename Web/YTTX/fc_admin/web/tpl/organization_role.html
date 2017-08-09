@@ -90,9 +90,9 @@
 
 
             <!--子菜单组件-->
-            <ul class="sub-menu-wrap" ng-init="organizationrole_ctrl.initSubMenu()" ng-click="organizationrole_ctrl.toggleSubMenu($event)" id="admin_struct_submenu" ></ul>
-
-
+            <div id="submenu_scroll_wrap1">
+                <ul class="sub-menu-wrap" ng-init="organizationrole_ctrl.initSubMenu()" ng-click="organizationrole_ctrl.toggleSubMenu($event)" id="admin_struct_submenu" ></ul>
+            </div>
         </div>
     </div>
 
@@ -204,7 +204,7 @@
 
 
                         <!--子菜单组件-->
-                        <div id="submenu_scroll_wrap" class="g-box-b" style="border:1px solid #ccc">
+                        <div id="submenu_scroll_wrap2" class="g-box-b" style="border:1px solid #ccc">
                             <ul class="sub-menu-wrap g-b-none">
                                 <li>
                                     <a data-parentid="" data-id="organizationrole_ctrl.record.currentId"  data-layer="0" class="sub-menu-title sub-menu-titleactive"  ng-click="organizationrole_ctrl.getMemberList()">{{organizationrole_ctrl.record.currentName}}</a>

@@ -1,6 +1,6 @@
 /*首页控制器*/
 angular.module('app')
-    .controller('OrganizationroleController', ['organizationroleeService', 'toolUtil', function (organizationroleeService, toolUtil) {
+    .controller('OrganizationroleController', ['organizationroleeService', 'toolUtil', 'testService', function (organizationroleeService, toolUtil, testService) {
         var self = this;
 
         /*模型--操作权限列表*/
@@ -21,9 +21,10 @@ angular.module('app')
             $admin_list_colgroup: $('#admin_list_colgroup'),
             $admin_batchlist_wrap: $('#admin_batchlist_wrap'),
             $admin_member_checkall: $('#admin_member_checkall'),
-            $submenu_scroll_wrap:$('#submenu_scroll_wrap'),
+            $submenu_scroll_wrap1: $('#submenu_scroll_wrap1'),
+            $submenu_scroll_wrap2: $('#submenu_scroll_wrap2'),
             $admin_member_menu: $('#admin_member_menu'),
-            $admin_member_exist:$('#admin_member_exist'),
+            $admin_member_exist: $('#admin_member_exist'),
             $admin_member_checked: $('#admin_member_checked'),
             $admin_user_wrap: $('#admin_user_wrap')
         };
@@ -44,7 +45,8 @@ angular.module('app')
 
         /*模型--操作记录*/
         this.record = {
-            iscroll_flag:true/*是否开启滚动条调用*/,
+            iscroll_flag1: true/*是否开启滚动条调用*/,
+            iscroll_flag2: true/*是否开启滚动条调用*/,
             layer: 0/*当前菜单操作层级*/,
             prev: null/*菜单操作:上一次操作菜单*/,
             current: null/*菜单操作:当前操作菜单*/,
@@ -58,8 +60,8 @@ angular.module('app')
             rolegroupname: ''/*角色组名称*/,
             currentId: ''/*虚拟挂载点*/,
             currentName: ''/*虚拟挂载点*/,
-            checkAll:false/*全选状态*/,
-            existmember:{}/*模型--已经存在的机构信息*/
+            checkAll: false/*全选状态*/,
+            existmember: {}/*模型--已经存在的机构信息*/
         };
 
 
@@ -118,12 +120,30 @@ angular.module('app')
                     deferRender: true, /*是否延迟加载数据*/
                     autoWidth: true, /*是否*/
                     paging: true,
-                    pagingType:'simple_numbers',/*分页按钮排列*/
+                    pagingType: 'simple_numbers', /*分页按钮排列*/
                     ajax: {
-                        url: toolUtil.adaptReqUrl('/role/organizations'),
+                        url: /*toolUtil.adaptReqUrl('/role/organizations')*/'json/test.json'/*测试地址*/,
                         dataType: 'JSON',
                         method: 'post',
                         dataSrc: function (json) {
+                            var json = testService.test({
+                                map: {
+                                    'id': 'id',
+                                    'fullName': 'text',
+                                    'shortName': 'value',
+                                    'name': 'name',
+                                    'type': 'rule,1,2,3',
+                                    'cellphone': 'mobile',
+                                    'telephone': 'phone',
+                                    'province': 'province',
+                                    'address': 'address',
+                                    'status': 'rule,0,1,2',
+                                    'addTime': 'datetime'
+                                },
+                                mapmin: 10,
+                                mapmax: 20,
+                                type: 'list'
+                            })/*测试请求*/;
                             var code = parseInt(json.code, 10),
                                 message = json.message;
 
@@ -139,8 +159,8 @@ angular.module('app')
                                 }
                                 (function () {
                                     /*清除已经存在的模型*/
-                                    var exist=self.record.existmember;
-                                    for(var p in exist){
+                                    var exist = self.record.existmember;
+                                    for (var p in exist) {
                                         delete exist[p];
                                     }
                                     jq_dom.$admin_member_exist.html('');
@@ -151,8 +171,8 @@ angular.module('app')
                             if (typeof result === 'undefined') {
                                 (function () {
                                     /*清除已经存在的模型*/
-                                    var exist=self.record.existmember;
-                                    for(var p in exist){
+                                    var exist = self.record.existmember;
+                                    for (var p in exist) {
                                         delete exist[p];
                                     }
                                     jq_dom.$admin_member_exist.html('');
@@ -164,8 +184,8 @@ angular.module('app')
                                 var list = result.list;
                                 (function () {
                                     /*清除已经存在的模型*/
-                                    var exist=self.record.existmember;
-                                    for(var p in exist){
+                                    var exist = self.record.existmember;
+                                    for (var p in exist) {
                                         delete exist[p];
                                     }
                                     jq_dom.$admin_member_exist.html('');
@@ -178,8 +198,8 @@ angular.module('app')
                             } else {
                                 (function () {
                                     /*清除已经存在的模型*/
-                                    var exist=self.record.existmember;
-                                    for(var p in exist){
+                                    var exist = self.record.existmember;
+                                    for (var p in exist) {
                                         delete exist[p];
                                     }
                                     jq_dom.$admin_member_exist.html('');
@@ -190,7 +210,7 @@ angular.module('app')
                         data: {}
                     },
                     info: true,
-                    stateSave:false,/*是否保存重新加载的状态*/
+                    stateSave: false, /*是否保存重新加载的状态*/
                     dom: '<"g-d-hidei" s> t <"admin-page-wrap g-fs2"<"g-w-percent20 g-f-l" li><"g-w-percent29 g-f-r" p>>',
                     searching: true,
                     order: [[1, "desc"]],
@@ -227,16 +247,16 @@ angular.module('app')
                         {
                             "data": "cellphone",
                             "render": function (data, type, full, meta) {
-                                var phone=data,
-                                    fullname=full.fullName;
-                                if(phone){
+                                var phone = data,
+                                    fullname = full.fullName;
+                                if (phone) {
                                     /*设置已经存在的成员模型*/
-                                    self.record.existmember[phone]={
-                                        'cellphone':phone,
-                                        'label':fullname
+                                    self.record.existmember[phone] = {
+                                        'cellphone': phone,
+                                        'label': fullname
                                     };
                                     return toolUtil.phoneFormat(phone);
-                                }else{
+                                } else {
                                     return '';
                                 }
 
@@ -257,24 +277,13 @@ angular.module('app')
                                 var str = '',
                                     province = data || '';
 
-                                if (province) {
+                                /*if (province) {
                                     self.list_addressdata.province = province;
                                     str += '<div class="inline g-c-gray3">省：</div><div class="inline g-c-gray9">' + self.list_address["province"][province]["key"] + '</div>';
-                                    /*查询新值*/
-                                    /*organizationroleeService.isReqAddress({
-                                     model:self.list_addressdata,
-                                     address:self.list_address,
-                                     type:'city'
-                                     },true,function () {
-                                     if(city){
-                                     str+='<div class="inline g-c-gray3">市：</div><div class="inline g-c-gray9">'+self.list_address["city"][city]["key"]+'</div>';
-                                     }
-                                     if(country){
-                                     str+='<div class="inline g-c-gray3">区：</div><div class="inline g-c-gray9">'+self.list_address["country"][country]["key"]+'</div>';
-                                     }
-                                     });*/
+                                    /!*查询新值*!/
                                 }
-                                return str;
+                                return str;*/
+                                return province;
                             }
                         },
                         {
@@ -308,10 +317,10 @@ angular.module('app')
                         }
                     ],
                     aLengthMenu: [
-                        [10,15,20,30],
-                        [10,15,20,30]
+                        [10, 15, 20],
+                        [10, 15, 20]
                     ],
-                    lengthChange:true/*是否可改变长度*/
+                    lengthChange: true/*是否可改变长度*/
                 }
             },
             list_table: null,
@@ -367,8 +376,8 @@ angular.module('app')
                 record: self.record
             });
             organizationroleeService.getColumnData({
-                table:self.table,
-                id:self.record.role
+                table: self.table,
+                id: self.record.role
             });
         };
         /*菜单服务--查询角色组*/
@@ -421,23 +430,23 @@ angular.module('app')
         };
         /*成员服务--查询用户*/
         this.checkMemberList = function (e) {
-            organizationroleeService.checkMemberList(e,{
-                record:self.record,
-                member:self.member
+            organizationroleeService.checkMemberList(e, {
+                record: self.record,
+                member: self.member
             });
         };
         /*成员服务--取消选中用户*/
-        this.cancelMemberList=function (e) {
-            organizationroleeService.cancelMemberList(e,{
-                record:self.record,
-                member:self.member
+        this.cancelMemberList = function (e) {
+            organizationroleeService.cancelMemberList(e, {
+                record: self.record,
+                member: self.member
             });
         };
         /*成员服务--全选数据*/
-        this.checkAllMember=function () {
+        this.checkAllMember = function () {
             organizationroleeService.checkAllMember({
-                record:self.record,
-                member:self.member
+                record: self.record,
+                member: self.member
             });
         };
         /*成员服务--过滤数据*/
@@ -446,11 +455,9 @@ angular.module('app')
         };
 
 
-
-
         /*机构服务--加载机构角色*/
         this.getMemberList = function () {
-            if (self.record.searchname2==='') {
+            if (self.record.searchname2 === '') {
                 organizationroleeService.getMemberList({
                     type: 'init',
                     record: self.record
@@ -497,7 +504,7 @@ angular.module('app')
                 role: self.role,
                 rolegroup: self.rolegroup,
                 member: self.member,
-                record:self.record
+                record: self.record
             }, type);
         };
 

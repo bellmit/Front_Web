@@ -1,12 +1,12 @@
 angular.module('app')
     /*首页快捷方式指令*/
-    .directive('uiMainQuick', ['$timeout',function ($timeout) {
-        var outid=null;
+    .directive('uiMainQuick', ['$timeout', function ($timeout) {
+        var outid = null;
         return {
             replace: false,
             restrict: 'EC',
-            scope:{
-                action:'&action'
+            scope: {
+                action: '&action'
             },
             template: '<div class="admin-welcome-banner"><img ng-src="images/index_banner.jpg" alt="" /></div>\
                         <h3 class="admin-layout-theme3">快捷入口</h3>\
@@ -19,15 +19,24 @@ angular.module('app')
                           </li>\
                         </ul>',
             link: function (scope, element, attrs) {
-                outid=$timeout(function () {
-                    scope.$apply(function () {
-                        scope.quick=doQuickImage(scope.action());
-                        if(outid!==null){
-                            $timeout.cancel(outid);
-                            outid=null;
-                        }
-                    });
-                },500);
+                var quickimg = scope.action();
+                if (quickimg) {
+                    if (quickimg.length === 0) {
+                        outid = $timeout(function () {
+                            scope.$apply(function () {
+                                scope.quick = doQuickImage(scope.action());
+                                if (outid !== null) {
+                                    $timeout.cancel(outid);
+                                    outid = null;
+                                }
+                            });
+                        }, 500);
+                    } else {
+                        scope.quick = doQuickImage(quickimg);
+                    }
+                } else {
+                    scope.quick = [];
+                }
             }
         };
 
