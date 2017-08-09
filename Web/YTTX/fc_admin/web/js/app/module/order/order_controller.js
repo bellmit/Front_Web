@@ -1,6 +1,6 @@
 /*首页控制器*/
 angular.module('app')
-    .controller('OrderController', ['orderService','toolUtil',function(orderService,toolUtil){
+    .controller('OrderController', ['orderService','testService','toolUtil',function(orderService,testService,toolUtil){
         var self=this;
 
         /*模型--操作权限列表*/
@@ -45,7 +45,7 @@ angular.module('app')
         this.table={
             list1_page:{
                 page:1,
-                pageSize:20,
+                pageSize:10,
                 total:0
             },
             list1_config:{
@@ -55,16 +55,30 @@ angular.module('app')
                     autoWidth:true,/*是否*/
                     paging:false,
                     ajax:{
-                        url:toolUtil.adaptReqUrl('/organization/goodsorder/list')/*'json/test.json'*/,
+                        url:/*toolUtil.adaptReqUrl('/organization/goodsorder/list')*/'json/test.json'/*测试地址*/,
                         dataType:'JSON',
                         method:'post',
                         dataSrc:function ( json ) {
-                            /*测试代码*/
-                            /*var json=orderService.testGetOrderList();*/
+                            var json = testService.test({
+                                map: {
+                                    'id': 'id',
+                                    'merchantName': 'value',
+                                    'merchantPhone': 'mobile',
+                                    'orderTime': 'datetime',
+                                    'orderNumber': 'guid',
+                                    'orderState': 'rule,0,1,6,9,20,21',
+                                    'totalMoney': 'money',
+                                    'paymentType': 'rule,1,2,3'
+                                },
+                                mapmin: 2,
+                                mapmax: 10,
+                                type: 'list'
+                            })/*测试请求*/;
 
 
                             var code=parseInt(json.code,10),
                                 message=json.message;
+
 
                             if(code!==0){
                                 if(typeof message !=='undefined'&&message!==''){
@@ -134,7 +148,7 @@ angular.module('app')
                         },
                         data:{
                             page:1,
-                            pageSize:20
+                            pageSize:10
                         }
                     },
                     info:false,

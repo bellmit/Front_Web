@@ -1,5 +1,5 @@
 angular.module('app')
-    .service('orderService', ['toolUtil', 'toolDialog', 'BASE_CONFIG', 'loginService', 'powerService', 'dataTableColumnService', 'dataTableItemActionService', 'datePicker97Service', function (toolUtil, toolDialog, BASE_CONFIG, loginService, powerService, dataTableColumnService, dataTableItemActionService, datePicker97Service) {
+    .service('orderService', ['toolUtil', 'toolDialog', 'BASE_CONFIG', 'loginService', 'powerService', 'dataTableColumnService', 'dataTableItemActionService', 'datePicker97Service', 'testService', function (toolUtil, toolDialog, BASE_CONFIG, loginService, powerService, dataTableColumnService, dataTableItemActionService, datePicker97Service, testService) {
 
         /*获取缓存数据*/
         var self = this,
@@ -146,15 +146,54 @@ angular.module('app')
 
             toolUtil
                 .requestHttp({
-                    url: '/organization/goodsorder/details'/*'json/test.json'*/,
+                    url: /*'/organization/goodsorder/details'*/'json/test.json'/*测试地址*/,
                     method: 'post',
                     set: true,
-                    debug: false, /*测试开关*/
+                    debug: true, /*测试开关*/
                     data: param
                 })
                 .then(function (resp) {
-                        /*测试代码*/
-                        /*var resp=self.testGetOrderDetail();*/
+                        var orderlist = testService.getMap({
+                                map: {
+                                    'id': 'id',
+                                    'merchantName': 'value',
+                                    'merchantPhone': 'mobile',
+                                    'orderTime': 'datetime',
+                                    'payTime': 'datetime',
+                                    'orderNumber': 'guid',
+                                    'orderState': 'rule,0,1,6,9,20,21',
+                                    'totalMoney': 'money',
+                                    'paymentType': 'rule,1,2,3'
+                                },
+                                maptype: 'object'
+                            }),
+                            detaillist = testService.getMap({
+                                map: {
+                                    'id': 'id',
+                                    'goodsName': 'goods',
+                                    'goodsPrice': 'money',
+                                    'quantlity': 'id',
+                                    'attributeName': 'value',
+                                    'goodsThumbnail': ''
+                                },
+                                mapmin: 2,
+                                mapmax: 10
+                            })/*测试请求*/;
+
+                        var resp = {
+                            status: 200,
+                            data: {
+                                message: 'ok',
+                                code: 0,
+                                result: {
+                                    order: orderlist.list,
+                                    details: detaillist.list
+                                }
+                            }
+                        }/*测试组合*/;
+
+
+                        console.log(orderlist);
 
                         var data = resp.data,
                             status = parseInt(resp.status, 10);
@@ -407,12 +446,22 @@ angular.module('app')
 
                 toolUtil
                     .requestHttp({
-                        url: '/organization/lowers/search',
+                        url: /*'/organization/lowers/search'*/'json/test.json'/*测试地址*/,
                         method: 'post',
                         set: true,
+                        debug: true/*测试开关*/,
                         data: param
                     })
                     .then(function (resp) {
+                            var resp = testService.test({
+                                map: {
+                                    'id': 'id',
+                                    'fullName': 'name'
+                                },
+                                mapmin: layer === 0 ? 5 : 1,
+                                mapmax: layer === 0 ? 10 : 3
+                            })/*测试请求*/;
+
                             var data = resp.data,
                                 status = parseInt(resp.status, 10);
 
