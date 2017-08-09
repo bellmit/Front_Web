@@ -8,9 +8,7 @@ angular.module('app')
                 'value':'value'
             },
             mapmin:5,
-            mapmax:15,
-            mapname:'list',
-            maptype:'array'
+            mapmax:15
         }).list;
         
         /*获取快捷方式*/
