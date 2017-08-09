@@ -173,7 +173,7 @@ angular.module('app')
                                     'goodsName': 'goods',
                                     'goodsPrice': 'money',
                                     'quantlity': 'id',
-                                    'attributeName': 'value',
+                                    'attributeName': 'goodstype',
                                     'goodsThumbnail': ''
                                 },
                                 mapmin: 2,
