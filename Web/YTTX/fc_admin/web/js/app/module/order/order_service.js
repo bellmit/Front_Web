@@ -499,6 +499,154 @@ angular.module('app')
             /*清除配货单*/
             self.$admin_stock_detail.html('');
         };
+        /*配货服务--查看配货单*/
+        this.showStockList = function (config) {
+            if (cache === null) {
+                return false;
+            }
+            var datalist=dataTableCheckAllService.getBatchData(config.stock.tablecheckall),
+            datalen=datalist.length;
+
+
+            if (datalen===0) {
+                toolDialog.show({
+                    type: 'warn',
+                    value: '没有配货单信息'
+                });
+                return false;
+            }
+
+            var param = $.extend(true, {}, cache.loginMap.param);
+            /*判断参数*/
+            param['orderNumber'] = datalist.join(',');
+
+
+            toolUtil
+                .requestHttp({
+                    url: /*'/organization/invoice/details'*/'json/test.json'/*测试地址*/,
+                    method: 'post',
+                    set: true,
+                    debug: true, /*测试开关*/
+                    data: param
+                })
+                .then(function (resp) {
+                        var resp = testService.test({
+                            map: {
+                                'id': 'guid',
+                                'goodsInfo':'content',
+                                'goodsName': 'goods',
+                                'attributeName': 'goodstype',
+                                'quantlity': 'rule,1,-,100',
+                                'total':'rule,5000,-,500000',
+                                'title':'text',
+                                'address':'address'
+                            },
+                            mapmin: 1,
+                            mapmax: 5
+                        })/*测试请求*/;
+
+                        var header=testService.getMap({
+                            map:{
+                                'name':'name',
+                                'address':'address',
+                                'cellphone':'mobile',
+                                'company':'text',
+                                'id':'guid'
+                            },
+                            maptype:'object'
+                        }).list/*测试辅助*/;
+
+
+                        var data = resp.data,
+                            status = parseInt(resp.status, 10);
+
+                        if (status === 200) {
+                            var code = parseInt(data.code, 10),
+                                message = data.message;
+                            if (code !== 0) {
+                                if (typeof message !== 'undefined' && message !== '') {
+                                    console.log(message);
+                                } else {
+                                    console.log('请求数据失败');
+                                }
+
+                                if (code === 999) {
+                                    /*退出系统*/
+                                    cache = null;
+                                    loginService.outAction();
+                                }
+                            } else {
+
+                                /*加载数据*/
+                                var result = data.result;
+                                if (typeof result !== 'undefined') {
+                                    var list = result.list;
+                                    if (list) {
+                                        /*查看*/
+                                        var len = list.length,
+                                            i = 0,
+                                            str = '<tr>\
+                                                    <td colspan="5">\
+                                                        <div class="g-w-number20 g-f-l g-c-red1">\
+                                                            <div>收货地址：'+header["address"]+'</div>\
+                                                            <div>收货人姓名：'+header["name"]+'</div>\
+                                                            <div>联系电话：'+header["cellphone"]+'</div>\
+                                                        </div>\
+                                                        <div class="g-w-number20 g-f-r">\
+                                                            <div class="g-w-number20 g-f-l">快递公司：'+header["company"]+'</div>\
+                                                            <div class="g-w-number20 g-f-r">快递单号：'+header["id"]+'</div>\
+                                                        </div>\
+                                                    </td>\
+                                                </tr>';
+
+                                        for (i; i < len; i++) {
+                                            var item = list[i];
+                                            str += '<tr>\
+                                                    <td colspan="5"><div class="g-w-number20 g-f-l g-c-red1">' + item["title"] + '</div><div class="g-w-number20 g-f-r">'+item["address"]+'</div></td>\
+                                                </tr>\
+                                                <tr>\
+                                                    <td rowspan="3">' + item["goodsInfo"] + '</td>\
+                                                    <td>1</td>\
+                                                    <td>' + item["goodsName"] + '</td>\
+                                                    <td>' + item["attributeName"] + '</td>\
+                                                    <td>' + item["quantlity"] + '</td>\
+                                                </tr>\
+                                                <tr>\
+                                                    <td>2</td>\
+                                                    <td>' + item["goodsName"] + '</td>\
+                                                    <td>' + item["attributeName"] + '</td>\
+                                                    <td>' + parseInt(Math.random() * item["quantlity"],10) + '</td>\
+                                                </tr>\
+                                                <tr>\
+                                                    <td colspan="2">&nbsp;</td>\
+                                                    <td>合计:</td>\
+                                                    <td>' + item["total"] + '</td>\
+                                                </tr>';
+                                        }
+                                        if (str !== '') {
+                                            $(str).appendTo(self.$admin_stock_detail.html(''));
+                                            config.stock.stockshow=true;
+                                        }
+                                    }
+                                }else{
+                                    /*提示信息*/
+                                    toolDialog.show({
+                                        type: 'warn',
+                                        value: '获取数据失败'
+                                    });
+                                }
+                            }
+                        }
+                    },
+                    function (resp) {
+                        var message = resp.data.message;
+                        if (typeof message !== 'undefined' && message !== '') {
+                            console.log(message);
+                        } else {
+                            console.log('请求订单失败');
+                        }
+                    });
+        };
 
 
         /*弹出层服务*/

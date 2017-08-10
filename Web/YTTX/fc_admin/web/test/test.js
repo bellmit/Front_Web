@@ -467,14 +467,14 @@ angular.module('app')
                     case 'remark':
                         map_obj[i] = reg_remark;
                         break;
-                    case 'content':
-                        map_obj[i] = reg_id;
-                        break;
                     case 'value':
                         map_obj[i] = reg_value;
                         break;
                     case 'text':
                         map_obj[i] = reg_text;
+                        break;
+                    case 'content':
+                        map_obj[i] = reg_content;
                         break;
                     case 'province':
                         (function () {

@@ -336,6 +336,20 @@ angular.module('app')
                 stock:self.stock
             });
         };
+        
+        /*配货服务--查看配货单*/
+        this.showStockList=function ($event) {
+            var target=$event.target,
+                node=target.nodeName.toLowerCase();
+            if(node==='span'){
+                var $this=$(target);
+                if($this.hasClass('btn-operate')){
+                    orderService.showStockList({
+                        stock:self.stock
+                    });
+                }
+            }
+        };
 
 
         /*数据服务--过滤数据*/

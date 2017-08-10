@@ -194,51 +194,33 @@
                         </thead>
 
                         <!--表主体-->
-                        <tbody id="admin_stock_show" class="middle-align"></tbody>
+                        <tbody id="admin_stock_show" ng-click="order_ctrl.showStockList($event)" class="middle-align"></tbody>
                         <tfoot>
-                            <tr><td class="g-t-c" colspan="15"><div ng-class="{'g-d-hidei':order_ctrl.stock.stockbtn===0}" class="btn btn-red">保存并生成配货单</div></td></tr>
+                            <tr><td class="g-t-r" colspan="15"><div ng-class="{'g-d-hidei':order_ctrl.stock.stockbtn===0}" class="btn btn-red g-gap-mr4">保存并生成配货单</div></td></tr>
                         </tfoot>
                     </table>
 
                     <div ng-class="{'g-d-hidei':!order_ctrl.stock.stockshow}">
                         <div class="admin-layout-theme4 admin-theme-close g-t-c g-b-gray17 g-pos-r">配货详情<span class="mini-icon admin-mini-icon1" ></span>
                         </div>
-                        <table>
+                        <table class="table table-bordered table-striped table-hover admin-layout-table">
                             <!--分组样式-->
                             <colgroup>
-                                <col class="g-w-percent2">
-                                <col class="g-w-percent10">
-                                <col class="g-w-percent5">
-                                <col class="g-w-percent3">
-                                <col class="g-w-percent3">
-                                <col class="g-w-percent3">
-                                <col class="g-w-percent3">
-                                <col class="g-w-percent3">
-                                <col class="g-w-percent3">
-                                <col class="g-w-percent3">
-                                <col class="g-w-percent3">
-                                <col class="g-w-percent3">
-                                <col class="g-w-percent3">
+                                <col class="g-w-percent20">
+                                <col class="g-w-percent1">
+                                <col class="g-w-percent20">
+                                <col class="g-w-percent6">
                                 <col class="g-w-percent3">
                             </colgroup>
 
                             <!--头部-->
                             <thead>
                             <tr>
+                                <th>商品详情</th>
                                 <th>序号</th>
                                 <th>商户名称</th>
-                                <th>规格属性</th>
-                                <th>单位</th>
-                                <th>仓库名称</th>
-                                <th>可售库存</th>
-                                <th>实际库存</th>
-                                <th>安全库存</th>
-                                <th>参考补货</th>
-                                <th>库存上限</th>
-                                <th>库存下限</th>
-                                <th>状态1</th>
-                                <th>状态2</th>
-                                <th>操作</th>
+                                <th>规格属性(商品型号)</th>
+                                <th>数量</th>
                             </tr>
                             </thead>
 
