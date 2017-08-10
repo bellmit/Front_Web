@@ -133,31 +133,119 @@
 
 
     <!--查看订单配货-->
-    <div class="modal fade custom-width" id="admin_ordersend_dialog">
+    <div class="modal fade custom-width" id="admin_stock_dialog">
         <div class="modal-dialog g-w-percent48">
             <div class="modal-content">
                 <div class="modal-body">
+                    <div class="admin-layout-theme4 admin-theme-close g-t-c g-b-gray17 g-pos-r">订单配货<span class="mini-icon admin-mini-icon1" ng-click="order_ctrl.toggleModal({display:'hide',area:'stock'})"></span>
+                    </div>
+                    <div class="g-box-b g-t-r g-fs2 g-gap-mt2 g-gap-mb2" ng-click="order_ctrl.changeStockType($event)">
+                        <span ng-class="{true:'btn-red',false:'btn-default'}[order_ctrl.stock.type===0]"  class="g-gap-pl4 g-gap-pr4 g-gap-mr4 g-pos-r btn">
+                            <input type="radio" ng-model="order_ctrl.stock.type"  class="g-opacity0 g-w-percent50 g-h-percent100 g-pos-al" name="stocktype" ng-value="0" >人工配货
+                        </span>
+                        <span ng-class="{true:'btn-red',false:'btn-default'}[order_ctrl.stock.type===1]" class="g-gap-pl4 g-gap-pr4 g-gap-mr4 g-pos-r btn">
+                            <input type="radio" ng-model="order_ctrl.stock.type"  class="g-opacity0 g-w-percent50 g-h-percent100 g-pos-al" name="stocktype" ng-value="1" >
+                            系统配货
+                        </span>
+                    </div>
                     <table class="table table-bordered table-striped table-hover admin-layout-table">
-
                         <!--分组样式-->
                         <colgroup>
                             <col class="g-w-percent2">
-                            <col class="g-w-percent4">
-                            <col class="g-w-percent16">
-                            <col class="g-w-percent13">
+                            <col class="g-w-percent2">
                             <col class="g-w-percent8">
-                            <col class="g-w-percent7">
+                            <col class="g-w-percent5">
+                            <col class="g-w-percent3">
+                            <col class="g-w-percent3">
+                            <col class="g-w-percent3">
+                            <col class="g-w-percent3">
+                            <col class="g-w-percent3">
+                            <col class="g-w-percent3">
+                            <col class="g-w-percent3">
+                            <col class="g-w-percent3">
+                            <col class="g-w-percent3">
+                            <col class="g-w-percent3">
+                            <col class="g-w-percent3">
                         </colgroup>
+
                         <!--头部-->
                         <thead>
                         <tr>
-                            <th class="g-t-c" colspan="6">订单详情</th>
+                            <th class="g-clear-pl g-clear-pr g-t-c">
+                                <div class="admin-batchitem-wrap" ng-show="order_ctrl.powerlist.order_details" >
+                                    <label data-check="0" class="admin-batchitem-check" id="admin_stock_checkall"></label>
+                                </div>
+                            </th>
+                            <th>序号</th>
+                            <th>商户名称</th>
+                            <th>规格属性</th>
+                            <th>单位</th>
+                            <th>仓库名称</th>
+                            <th>可售库存</th>
+                            <th>实际库存</th>
+                            <th>安全库存</th>
+                            <th>参考补货</th>
+                            <th>库存上限</th>
+                            <th>库存下限</th>
+                            <th>状态1</th>
+                            <th>状态2</th>
+                            <th>操作</th>
                         </tr>
                         </thead>
 
                         <!--表主体-->
-                        <tbody id="admin_ordersend_show" class="middle-align"></tbody>
+                        <tbody id="admin_stock_show" class="middle-align"></tbody>
+                        <tfoot>
+                            <tr><td class="g-t-c" colspan="15"><div ng-class="{'g-d-hidei':order_ctrl.stock.stockbtn===0}" class="btn btn-red">保存并生成配货单</div></td></tr>
+                        </tfoot>
                     </table>
+                    <div>
+                        <div class="admin-layout-theme4 admin-theme-close g-t-c g-b-gray17 g-pos-r">配货详情<span class="mini-icon admin-mini-icon1" ></span>
+                        </div>
+                        <table>
+                            <!--分组样式-->
+                            <colgroup>
+                                <col class="g-w-percent2">
+                                <col class="g-w-percent10">
+                                <col class="g-w-percent5">
+                                <col class="g-w-percent3">
+                                <col class="g-w-percent3">
+                                <col class="g-w-percent3">
+                                <col class="g-w-percent3">
+                                <col class="g-w-percent3">
+                                <col class="g-w-percent3">
+                                <col class="g-w-percent3">
+                                <col class="g-w-percent3">
+                                <col class="g-w-percent3">
+                                <col class="g-w-percent3">
+                                <col class="g-w-percent3">
+                            </colgroup>
+
+                            <!--头部-->
+                            <thead>
+                            <tr>
+                                <th>序号</th>
+                                <th>商户名称</th>
+                                <th>规格属性</th>
+                                <th>单位</th>
+                                <th>仓库名称</th>
+                                <th>可售库存</th>
+                                <th>实际库存</th>
+                                <th>安全库存</th>
+                                <th>参考补货</th>
+                                <th>库存上限</th>
+                                <th>库存下限</th>
+                                <th>状态1</th>
+                                <th>状态2</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+
+                            <!--表主体-->
+                            <tbody id="admin_ordersend_show" class="middle-align"></tbody>
+                        </table>
+                    </div>
+
                     <div class="clearfix"></div>
                 </div>
                 <div class="modal-footer">
@@ -169,7 +257,21 @@
 
 </div>
 
-
+<!--list_map = {
+                                            'id': '库存状况ID',
+                                            'goodsName': '商户名称',
+                                            'attributeName': '规格属性',
+                                            'Unit': '单位',
+                                            'warehouseName': '仓库名称',
+                                            'availableInventory': '可售库存',
+                                            'physicalInventory': '实际库存',
+                                            'safetyInventory': '安全库存',
+                                            'referenceReplenishment': '参考补货',
+                                            'inventoryToplimit': '库存上限',
+                                            'inventoryLowerlimit': '库存下限',
+                                            'availableStatus': '状态1',
+                                            'physicalStatus': '状态2'
+                                        }-->
 
 
 

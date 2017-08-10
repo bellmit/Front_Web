@@ -1,6 +1,6 @@
 /*首页控制器*/
 angular.module('app')
-    .controller('OrderController', ['orderService', 'testService', 'toolUtil', function (orderService, testService, toolUtil) {
+    .controller('OrderController', ['orderService', 'testService', 'toolUtil','$scope', function (orderService, testService, toolUtil,$scope) {
         var self = this;
 
         /*模型--操作权限列表*/
@@ -20,8 +20,9 @@ angular.module('app')
             $search_endTime: $('#search_endTime'),
             $admin_orderdetail_dialog: $('#admin_orderdetail_dialog'),
             $admin_orderdetail_show: $('#admin_orderdetail_show'),
-            $admin_ordersend_dialog: $('#admin_ordersend_dialog'),
-            $admin_ordersend_show: $('#admin_ordersend_show')
+            $admin_stock_checkall:$('#admin_stock_checkall'),
+            $admin_stock_dialog: $('#admin_stock_dialog'),
+            $admin_stock_show: $('#admin_stock_show')
         };
         /*切换路由时更新dom缓存*/
         orderService.initJQDom(jq_dom);
@@ -34,11 +35,35 @@ angular.module('app')
             startTime: '',
             endTime: '',
             searchWord: '',
-            organizationId: '',
+            organizationId: ''/*操作节点*/,
             prev: null/*菜单操作:上一次操作菜单*/,
             current: null/*菜单操作:当前操作菜单*/,
-            currentId: '',
-            currentName: ''
+            currentId: ''/*根节点*/,
+            currentName: ''/*根节点*/
+        };
+
+
+        /*模型--配货*/
+        this.stock={
+            type:0/*0:人工，1:系统*/,
+            stockbtn:0/*配货单按钮*/,
+            stockshow:false/*查看配货成功单层*/,
+            /*全选*/
+            tablecheckall: {
+                checkall_flag: true,
+                $bodywrap: jq_dom.$admin_stock_show,
+                $checkall: jq_dom.$admin_stock_checkall,
+                checkvalue: 0/*默认未选中*/,
+                checkid: []/*默认索引数据为空*/,
+                checkitem: []/*默认node数据为空*/,
+                highactive: 'item-lightenbatch',
+                checkactive: 'admin-batchitem-checkactive',
+                checkfn:function (flag) {
+                    $scope.$apply(function () {
+                        self.stock.stockbtn=flag;
+                    });
+                }
+            }
         };
 
 
@@ -89,10 +114,7 @@ angular.module('app')
                                 }
                                 if (code === 999) {
                                     /*退出系统*/
-                                    toolUtil.loginTips({
-                                        clear: true,
-                                        reload: true
-                                    });
+                                    orderService.loginOut();
                                 }
                                 return [];
                             }
@@ -228,7 +250,7 @@ angular.module('app')
                                 if (self.powerlist.order_details) {
                                     btns += '<span data-action="detail" data-id="' + data + '"  class="btn-operate">查看</span>';
                                     if (parseInt(full.orderState, 10) === 6) {
-                                        btns += '<span data-action="send" data-id="' + data + '"  class="btn-operate">发货</span>';
+                                        btns += '<span data-action="stock" data-id="' + data + '"  class="btn-operate">配货</span>';
                                     }
                                 }
                                 return btns;
@@ -279,6 +301,10 @@ angular.module('app')
         orderService.getRoot(self.record);
         /*初始化服务--日历查询*/
         orderService.datePicker(this.record);
+        /*初始化服务--绑定配货全选*/
+        orderService.stockCheckAll({
+            stock:self.stock
+        });
 
 
         /*菜单服务--初始化菜单*/
@@ -293,6 +319,19 @@ angular.module('app')
             orderService.toggleSubMenu(e, {
                 table: self.table,
                 record: self.record
+            });
+        };
+
+
+        /*配货服务--切换不同的时间条件*/
+        this.changeStockType=function ($event) {
+            var target=$event.target,
+                node=target.nodeName.toLowerCase();
+            if(node==='div' || node==='span'){
+                return false;
+            }
+            orderService.changeStockType({
+                stock:self.stock
             });
         };
 

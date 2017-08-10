@@ -1,5 +1,5 @@
 angular.module('app')
-    .service('orderService', ['toolUtil', 'toolDialog', 'BASE_CONFIG', 'loginService', 'powerService', 'dataTableColumnService', 'dataTableItemActionService', 'datePicker97Service', 'testService', function (toolUtil, toolDialog, BASE_CONFIG, loginService, powerService, dataTableColumnService, dataTableItemActionService, datePicker97Service, testService) {
+    .service('orderService', ['toolUtil', 'toolDialog', 'BASE_CONFIG', 'loginService', 'powerService', 'dataTableColumnService', 'dataTableItemActionService', 'dataTableCheckAllService', 'datePicker97Service', 'testService', function (toolUtil, toolDialog, BASE_CONFIG, loginService, powerService, dataTableColumnService, dataTableItemActionService, dataTableCheckAllService, datePicker97Service, testService) {
 
         /*获取缓存数据*/
         var self = this,
@@ -45,6 +45,10 @@ angular.module('app')
                 str = '';
             }
             return str;
+        };
+        /*扩展服务--退出系统*/
+        this.loginOut = function () {
+            loginService.outAction();
         };
 
 
@@ -122,7 +126,11 @@ angular.module('app')
                 action = config.action;
 
             if (action === 'detail') {
+                /*订单详情*/
                 self.queryDetail(null, id, action);
+            } else if (action === 'stock') {
+                /*订单配货*/
+                self.queryStock(model, id, action);
             }
         };
         /*数据查询服务--查询订单详情*/
@@ -211,10 +219,7 @@ angular.module('app')
                                 if (code === 999) {
                                     /*退出系统*/
                                     cache = null;
-                                    toolUtil.loginTips({
-                                        clear: true,
-                                        reload: true
-                                    });
+                                    loginService.outAction();
                                 }
                             } else {
 
@@ -351,11 +356,154 @@ angular.module('app')
         };
 
 
+
+        /*配货服务--查询订单配货*/
+        this.queryStock = function (config, id, action) {
+            if (cache === null) {
+                return false;
+            }
+
+            if (typeof id === 'undefined') {
+                toolDialog.show({
+                    type: 'warn',
+                    value: '没有配货单信息'
+                });
+                return false;
+            }
+
+            var param = $.extend(true, {}, cache.loginMap.param);
+            /*判断参数*/
+            param['orderId'] = id;
+
+
+            toolUtil
+                .requestHttp({
+                    url: /*'//organization/inventorystatus/check'*/'json/test.json'/*测试地址*/,
+                    method: 'post',
+                    set: true,
+                    debug: true, /*测试开关*/
+                    data: param
+                })
+                .then(function (resp) {
+                        var resp = testService.test({
+                            map: {
+                                'id': 'guid',
+                                'goodsName': 'goods',
+                                'attributeName': 'goodstype',
+                                'Unit': 'unit',
+                                'warehouseName': 'value',
+                                'availableInventory': 'rule,0,-,100',
+                                'physicalInventory': 'rule,0,-,100',
+                                'safetyInventory': 'rule,0,-,100',
+                                'referenceReplenishment': 'rule,0,-,100',
+                                'inventoryToplimit': 'rule,100',
+                                'inventoryLowerlimit': 'rule,50',
+                                'availableStatus': 'or',
+                                'physicalStatus': 'or'
+                            },
+                            mapmin: 1,
+                            mapmax: 10
+                        })/*测试请求*/;
+
+
+                        var data = resp.data,
+                            status = parseInt(resp.status, 10);
+
+                        if (status === 200) {
+                            var code = parseInt(data.code, 10),
+                                message = data.message;
+                            if (code !== 0) {
+                                if (typeof message !== 'undefined' && message !== '') {
+                                    console.log(message);
+                                } else {
+                                    console.log('请求数据失败');
+                                }
+
+                                if (code === 999) {
+                                    /*退出系统*/
+                                    cache = null;
+                                    loginService.outAction();
+                                }
+                            } else {
+
+                                /*加载数据*/
+                                var result = data.result;
+                                if (typeof result !== 'undefined') {
+                                    var list = result.list;
+                                    if (action === 'stock') {
+                                        if (list) {
+                                            /*查看*/
+                                            var len = list.length,
+                                                i = 0,
+                                                str = '';
+
+                                            for (i; i < len; i++) {
+                                                var item = list[i];
+                                                str += '<tr>\
+                                                <td class="g-t-c"><input value="' + item["id"] + '" name="check_stockid" type="checkbox" /></td>\
+                                                <td>' + (i + 1) + '</td>\
+                                                <td>' + item["goodsName"] + '</td>\
+                                                <td>' + item["attributeName"] + '</td>\
+                                                <td>' + item["Unit"] + '</td>\
+                                                <td>' + item["warehouseName"] + '</td>\
+                                                <td>' + item["availableInventory"] + '</td>\
+                                                <td>' + item["physicalInventory"] + '</td>\
+                                                <td>' + item["safetyInventory"] + '</td>\
+                                                <td>' + item["referenceReplenishment"] + '</td>\
+                                                <td>' + item["inventoryToplimit"] + '</td>\
+                                                <td>' + item["inventoryLowerlimit"] + '</td>\
+                                                <td>' + (item["availableStatus"] === 0 ? '正常' : '异常') + '</td>\
+                                                <td>' + (item["physicalStatus"] === 0 ? '正常' : '异常') + '</td>\
+                                                <td><span data-action="stockdetail" data-id="' + item["id"] + '"  class="btn-operate">查看</span></td>';
+                                            }
+                                            if (str !== '') {
+                                                $(str).appendTo(self.$admin_stock_show.html(''));
+                                                /*显示弹窗*/
+                                                self.toggleModal({
+                                                    display: 'show',
+                                                    area: 'stock'
+                                                });
+                                            }
+                                        }
+                                    } else {
+                                        /*提示信息*/
+                                        toolDialog.show({
+                                            type: 'warn',
+                                            value: '获取数据失败'
+                                        });
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    function (resp) {
+                        var message = resp.data.message;
+                        if (typeof message !== 'undefined' && message !== '') {
+                            console.log(message);
+                        } else {
+                            console.log('请求订单失败');
+                        }
+                    });
+        };
+        /*配货服务--绑定配货全选*/
+        this.stockCheckAll = function (config) {
+            /*调用全选与取消全选*/
+            dataTableCheckAllService.initCheckAll(config.stock.tablecheckall);
+        };
+        /*配货服务--绑定配货条件切换*/
+        this.changeStockType = function (config) {
+            config.stock.stockbtn=0;
+            /*取消全选*/
+            dataTableCheckAllService.clear(config.stock.tablecheckall);
+        };
+
+
         /*弹出层服务*/
         this.toggleModal = function (config, fn) {
             var temp_timer = null,
                 type_map = {
-                    'orderdetail': self.$admin_orderdetail_dialog
+                    'orderdetail': self.$admin_orderdetail_dialog,
+                    'stock': self.$admin_stock_dialog
                 };
             if (config.display === 'show') {
                 if (typeof config.delay !== 'undefined') {
@@ -390,10 +538,7 @@ angular.module('app')
         /*导航服务--获取虚拟挂载点*/
         this.getRoot = function (record) {
             if (cache === null) {
-                toolUtil.loginTips({
-                    clear: true,
-                    reload: true
-                });
+                loginService.outAction();
                 record['currentId'] = '';
                 record['currentName'] = '';
                 return false;
@@ -406,10 +551,7 @@ angular.module('app')
             } else {
                 /*退出系统*/
                 cache = null;
-                toolUtil.loginTips({
-                    clear: true,
-                    reload: true
-                });
+                loginService.outAction();
                 record['currentId'] = '';
                 record['currentName'] = '';
             }
@@ -476,10 +618,7 @@ angular.module('app')
                                     if (code === 999) {
                                         /*退出系统*/
                                         cache = null;
-                                        toolUtil.loginTips({
-                                            clear: true,
-                                            reload: true
-                                        });
+                                        loginService.outAction();
                                     }
                                 } else {
                                     /*加载数据*/
@@ -547,10 +686,7 @@ angular.module('app')
             } else {
                 /*退出系统*/
                 cache = null;
-                toolUtil.loginTips({
-                    clear: true,
-                    reload: true
-                });
+                loginService.outAction();
             }
         };
         /*导航服务--解析导航--开始解析*/

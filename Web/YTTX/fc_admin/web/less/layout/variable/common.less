@@ -17,6 +17,13 @@
 .g-d-hidei{
 	display:none !important;
 }
+///*盒模型*/
+.g-box-c{
+	.box-sizing-base(content-box);
+}
+.g-box-b{
+	.box-sizing-base();
+}
 ///*清除内外间距*/
 .g-cleargap{
 	margin:0;
@@ -569,7 +576,13 @@
 }
 .g-gap-unindentemfor(20);
 
-
-
+///*----透明度--opacity----*/
+.g-opacityfor(@n,@i:0) when (@i =< @n) {
+	.g-opacity@{i}{
+		.opacity-base(@i * 10);
+	}
+	.g-opacityfor(@n,(@i+1));
+}
+.g-opacityfor(10);
 
 

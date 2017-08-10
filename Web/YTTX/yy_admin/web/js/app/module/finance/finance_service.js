@@ -338,7 +338,7 @@ angular.module('app')
                 /*根据视图状态清除数据缓存*/
                 self.clearDataByView(table);
             }
-            
+
             var temp_config = 'list_config' + action,
                 data = $.extend(true, {}, table[temp_config].config.ajax.data),
                 temp_param;
@@ -475,7 +475,63 @@ angular.module('app')
                 }
             }
         };
-        /*数据查询服务--查询订单*/
+        /*数据查询服务--查询明细列表*/
+        this.getDetailData = function (config, id) {
+            if (cache === null) {
+                return false;
+            } else if (!config['table'] && !config['record']) {
+                return false;
+            }
+
+
+            var record = config.record,
+                action = record.action,
+                temp_config = 'list_configdetail',
+                data = $.extend(true, {}, config['table'][temp_config].config.ajax.data),
+                temp_param,
+                temp_table = 'list_tabledetail',
+                temp_action = 'tableitemactiondetail';
+
+            /*条件查询*/
+            if (record['searchWord'] === '') {
+                delete data['searchWord'];
+            } else {
+                data['searchWord'] = record['searchWord'];
+            }
+            if (typeof id === 'undefined') {
+                if (typeof data['id'] === 'undefined') {
+                    return false;
+                }
+            } else {
+                data['id'] = id;
+            }
+
+            if (record.currentId === '') {
+                console.log('没有父节点');
+                return false;
+            }
+            if (action === 2) {
+                data['organizationId'] = record.currentId;
+            } else if (action === 3) {
+                data['organizationId'] = record.organizationId;
+            }
+
+
+            /*参数赋值*/
+            config['table'][temp_config].config.ajax.data = data;
+            if (config['table'][temp_table] === null) {
+                temp_param = cache.loginMap.param;
+                config['table'][temp_config].config.ajax.data['adminId'] = temp_param.adminId;
+                config['table'][temp_config].config.ajax.data['token'] = temp_param.token;
+                /*初始请求*/
+                config['table'][temp_table] = self['$admin_list_wrapdetail'].DataTable(config['table'][temp_config].config);
+                /*调用按钮操作*/
+                dataTableItemActionService.initItemAction(config['table'][temp_action]);
+            } else {
+                config['table'][temp_table].ajax.config(config['table'][temp_config].config.ajax).load();
+            }
+        };
+        /*数据查询服务--查询明细订单*/
         this.queryOrderList = function (config) {
             if (cache === null) {
                 return false;
@@ -493,7 +549,10 @@ angular.module('app')
                 });
                 return false;
             }
-            if ((record.organizationId === '') || (record.organizationId !== '' && record.organizationId === record.currentId)) {
+
+
+            if (record.organizationId === '') {
+                console.log('没有父节点');
                 return false;
             }
 
@@ -504,6 +563,7 @@ angular.module('app')
                     organizationId: record.organizationId,
                     id: id
                 };
+
 
             toolUtil
                 .requestHttp({
@@ -609,7 +669,7 @@ angular.module('app')
                         }
                     });
         };
-        /*数据查询服务--查询订单详情*/
+        /*数据查询服务--查询明细订单详情*/
         this.queryOrderDetail = function (config) {
             if (cache === null) {
                 return false;
@@ -775,7 +835,7 @@ angular.module('app')
                                     if (str !== '') {
                                         $(str).appendTo(self.$admin_orderdetail_show.html(''));
                                     }
-                                }else {
+                                } else {
                                     /*提示信息*/
                                     toolDialog.show({
                                         type: 'warn',
@@ -793,56 +853,6 @@ angular.module('app')
                             console.log('请求订单失败');
                         }
                     });
-        };
-        /*数据查询服务--获取详情*/
-        this.getDetailData = function (config, id) {
-            if (cache === null) {
-                return false;
-            } else if (!config['table'] && !config['record']) {
-                return false;
-            }
-
-            var record = config.record,
-                action = record.action,
-                temp_config = 'list_configdetail',
-                data = $.extend(true, {}, config['table'][temp_config].config.ajax.data),
-                temp_param,
-                temp_table = 'list_tabledetail',
-                temp_action = 'tableitemactiondetail';
-
-            /*条件查询*/
-            if (record['searchWord'] === '') {
-                delete data['searchWord'];
-            } else {
-                data['searchWord'] = record['searchWord'];
-            }
-            if (typeof id === 'undefined') {
-                if (typeof data['id'] === 'undefined') {
-                    return false;
-                }
-            } else {
-                data['id'] = id;
-            }
-
-            /*过滤历史记录明细需要非当前登录机构的机构索引*/
-            if (record.organizationId !== '') {
-                data['organizationId'] = record['organizationId'];
-            }
-
-
-            /*参数赋值*/
-            config['table'][temp_config].config.ajax.data = data;
-            if (config['table'][temp_table] === null) {
-                temp_param = cache.loginMap.param;
-                config['table'][temp_config].config.ajax.data['adminId'] = temp_param.adminId;
-                config['table'][temp_config].config.ajax.data['token'] = temp_param.token;
-                /*初始请求*/
-                config['table'][temp_table] = self['$admin_list_wrapdetail'].DataTable(config['table'][temp_config].config);
-                /*调用按钮操作*/
-                dataTableItemActionService.initItemAction(config['table'][temp_action]);
-            } else {
-                config['table'][temp_table].ajax.config(config['table'][temp_config].config.ajax).load();
-            }
         };
         /*数据查询服务--处理清算（注意状态）
          to do :此处批量处理，状态还待定，开发是注意
