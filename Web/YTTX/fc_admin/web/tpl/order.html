@@ -199,7 +199,8 @@
                             <tr><td class="g-t-c" colspan="15"><div ng-class="{'g-d-hidei':order_ctrl.stock.stockbtn===0}" class="btn btn-red">保存并生成配货单</div></td></tr>
                         </tfoot>
                     </table>
-                    <div>
+
+                    <div ng-class="{'g-d-hidei':!order_ctrl.stock.stockshow}">
                         <div class="admin-layout-theme4 admin-theme-close g-t-c g-b-gray17 g-pos-r">配货详情<span class="mini-icon admin-mini-icon1" ></span>
                         </div>
                         <table>
@@ -242,7 +243,7 @@
                             </thead>
 
                             <!--表主体-->
-                            <tbody id="admin_ordersend_show" class="middle-align"></tbody>
+                            <tbody id="admin_stock_detail" class="middle-align"></tbody>
                         </table>
                     </div>
 

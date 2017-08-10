@@ -493,8 +493,11 @@ angular.module('app')
         /*配货服务--绑定配货条件切换*/
         this.changeStockType = function (config) {
             config.stock.stockbtn=0;
+            config.stock.stockshow=false;
             /*取消全选*/
             dataTableCheckAllService.clear(config.stock.tablecheckall);
+            /*清除配货单*/
+            self.$admin_stock_detail.html('');
         };
 
 

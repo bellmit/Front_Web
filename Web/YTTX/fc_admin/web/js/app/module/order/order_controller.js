@@ -22,7 +22,8 @@ angular.module('app')
             $admin_orderdetail_show: $('#admin_orderdetail_show'),
             $admin_stock_checkall:$('#admin_stock_checkall'),
             $admin_stock_dialog: $('#admin_stock_dialog'),
-            $admin_stock_show: $('#admin_stock_show')
+            $admin_stock_show: $('#admin_stock_show'),
+            $admin_stock_detail:$('#admin_stock_detail')
         };
         /*切换路由时更新dom缓存*/
         orderService.initJQDom(jq_dom);
@@ -330,6 +331,7 @@ angular.module('app')
             if(node==='div' || node==='span'){
                 return false;
             }
+            
             orderService.changeStockType({
                 stock:self.stock
             });
