@@ -1,6 +1,6 @@
 /*首页控制器*/
 angular.module('app')
-    .controller('OrderController', ['orderService', 'testService', 'toolUtil','$scope', function (orderService, testService, toolUtil,$scope) {
+    .controller('OrderController', ['orderService', 'testService', 'toolUtil', '$scope', function (orderService, testService, toolUtil, $scope) {
         var self = this;
 
         /*模型--操作权限列表*/
@@ -20,10 +20,11 @@ angular.module('app')
             $search_endTime: $('#search_endTime'),
             $admin_orderdetail_dialog: $('#admin_orderdetail_dialog'),
             $admin_orderdetail_show: $('#admin_orderdetail_show'),
-            $admin_stock_checkall:$('#admin_stock_checkall'),
+            $admin_stock_checkall: $('#admin_stock_checkall'),
             $admin_stock_dialog: $('#admin_stock_dialog'),
             $admin_stock_show: $('#admin_stock_show'),
-            $admin_stock_detail:$('#admin_stock_detail')
+            $admin_stock_list: $('#admin_stock_list'),
+            $admin_stock_detail: $('#admin_stock_detail')
         };
         /*切换路由时更新dom缓存*/
         orderService.initJQDom(jq_dom);
@@ -45,10 +46,13 @@ angular.module('app')
 
 
         /*模型--配货*/
-        this.stock={
-            type:0/*0:人工，1:系统*/,
-            stockbtn:0/*配货单按钮*/,
-            stockshow:false/*查看配货成功单层*/,
+        this.stock = {
+            type: 0/*0:人工，1:系统*/,
+            stockid: ''/*订单序列*/,
+            stocknumber:''/*订单号*/,
+            stockbtn: 0/*配货单按钮*/,
+            stocklist: false/*查看配货列表*/,
+            stockdetail: false/*查看配货详情*/,
             /*全选*/
             tablecheckall: {
                 checkall_flag: true,
@@ -59,9 +63,9 @@ angular.module('app')
                 checkitem: []/*默认node数据为空*/,
                 highactive: 'item-lightenbatch',
                 checkactive: 'admin-batchitem-checkactive',
-                checkfn:function (flag) {
+                checkfn: function (flag) {
                     $scope.$apply(function () {
-                        self.stock.stockbtn=flag;
+                        self.stock.stockbtn = flag;
                     });
                 }
             }
@@ -249,7 +253,7 @@ angular.module('app')
 
                                 /*查看订单*/
                                 if (self.powerlist.order_details) {
-                                    btns += '<span data-action="detail" data-id="' + data + '"  class="btn-operate">查看</span>';
+                                    btns += '<span data-action="detail" data-orderNumber="'+full.orderNumber+'" data-id="' + data + '"  class="btn-operate">查看</span>';
                                     if (parseInt(full.orderState, 10) === 6) {
                                         btns += '<span data-action="stock" data-id="' + data + '"  class="btn-operate">配货</span>';
                                     }
@@ -290,7 +294,8 @@ angular.module('app')
                     doItemAction: function (config) {
                         orderService.doItemAction({
                             record: self.record,
-                            table: self.table
+                            table: self.table,
+                            stock: self.stock
                         }, config);
                     }
                 }
@@ -304,7 +309,7 @@ angular.module('app')
         orderService.datePicker(this.record);
         /*初始化服务--绑定配货全选*/
         orderService.stockCheckAll({
-            stock:self.stock
+            stock: self.stock
         });
 
 
@@ -325,31 +330,54 @@ angular.module('app')
 
 
         /*配货服务--切换不同的时间条件*/
-        this.changeStockType=function ($event) {
-            var target=$event.target,
-                node=target.nodeName.toLowerCase();
-            if(node==='div' || node==='span'){
+        this.changeStockType = function ($event) {
+            var target = $event.target,
+                node = target.nodeName.toLowerCase();
+            if (node === 'div' || node === 'span') {
                 return false;
             }
-            
+
             orderService.changeStockType({
+                stock: self.stock
+            });
+            orderService.closeStockList({
                 stock:self.stock
             });
         };
-        
-        /*配货服务--查看配货单*/
-        this.showStockList=function ($event) {
-            var target=$event.target,
-                node=target.nodeName.toLowerCase();
-            if(node==='span'){
-                var $this=$(target);
-                if($this.hasClass('btn-operate')){
-                    orderService.showStockList({
-                        stock:self.stock
+
+        /*配货服务--查看配货列表*/
+        this.showStockList = function () {
+            orderService.showStockList({
+                stock: self.stock
+            });
+        };
+        /*配货服务--查看配货详情*/
+        this.showStockDetail = function ($event) {
+            var target = $event.target,
+                node = target.nodeName.toLowerCase();
+            if (node === 'span') {
+                var $this = $(target);
+                if ($this.hasClass('btn-operate')) {
+                    orderService.showStockDetail({
+                        stock: self.stock,
+                        id:$this.attr('data-id')
                     });
                 }
             }
         };
+        /*配货服务--关闭配货列表*/
+        this.closeStockList=function () {
+            orderService.closeStockList({
+                stock:self.stock
+            });
+        };
+        /*配货服务--关闭配货详情*/
+        this.closeStockDetail=function () {
+            orderService.closeStockDetail({
+                stock:self.stock
+            });
+        };
+
 
 
         /*数据服务--过滤数据*/
@@ -367,6 +395,11 @@ angular.module('app')
         /*弹出层显示隐藏*/
         this.toggleModal = function (config) {
             orderService.toggleModal(config);
+            if(config.display==='hide' && config.area==='stock'){
+                orderService.closeStock({
+                    stock:self.stock
+                });
+            }
         };
 
 

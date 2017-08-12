@@ -148,14 +148,16 @@
                             系统配货
                         </span>
                     </div>
+
+
+                    <!--订单列表-->
                     <table class="table table-bordered table-striped table-hover admin-layout-table">
                         <!--分组样式-->
                         <colgroup>
                             <col class="g-w-percent2">
                             <col class="g-w-percent2">
-                            <col class="g-w-percent8">
-                            <col class="g-w-percent5">
-                            <col class="g-w-percent3">
+                            <col class="g-w-percent10">
+                            <col class="g-w-percent6">
                             <col class="g-w-percent3">
                             <col class="g-w-percent3">
                             <col class="g-w-percent3">
@@ -189,19 +191,54 @@
                             <th>库存下限</th>
                             <th>状态1</th>
                             <th>状态2</th>
-                            <th>操作</th>
                         </tr>
                         </thead>
 
                         <!--表主体-->
-                        <tbody id="admin_stock_show" ng-click="order_ctrl.showStockList($event)" class="middle-align"></tbody>
+                        <tbody id="admin_stock_show" class="middle-align"></tbody>
                         <tfoot>
-                            <tr><td class="g-t-r" colspan="15"><div ng-class="{'g-d-hidei':order_ctrl.stock.stockbtn===0}" class="btn btn-red g-gap-mr4">保存并生成配货单</div></td></tr>
+                            <tr><td class="g-t-r" colspan="14"><div ng-class="{'g-d-hidei':order_ctrl.stock.stockbtn===0}" ng-click="order_ctrl.showStockList()" class="btn btn-red g-gap-mr4">保存并生成配货单</div></td></tr>
                         </tfoot>
                     </table>
+                    <div class="clearfix"></div>
 
-                    <div ng-class="{'g-d-hidei':!order_ctrl.stock.stockshow}">
-                        <div class="admin-layout-theme4 admin-theme-close g-t-c g-b-gray17 g-pos-r">配货详情<span class="mini-icon admin-mini-icon1" ></span>
+                    <!--配货列表-->
+                    <div class="g-pos-fl g-w-percent50 g-box-b g-b-white g-gap-pl5 g-gap-pr5 g-gap-pt5 g-gap-pb5" ng-class="{'g-d-hidei':!order_ctrl.stock.stocklist}" style="min-height: 100%;">
+                        <div class="admin-layout-theme4 admin-theme-close g-t-c g-b-gray17 g-pos-r">配货列表<span class="mini-icon admin-mini-icon1" ng-click="order_ctrl.closeStockList()" ></span>
+                        </div>
+                        <table class="table table-bordered table-striped table-hover admin-layout-table">
+                            <!--分组样式-->
+                            <colgroup>
+                                <col class="g-w-percent2">
+                                <col class="g-w-percent17">
+                                <col class="g-w-percent10">
+                                <col class="g-w-percent5">
+                                <col class="g-w-percent10">
+                                <col class="g-w-percent6">
+                            </colgroup>
+
+                            <!--头部-->
+                            <thead>
+                            <tr>
+                                <th>序号</th>
+                                <th>商户名称</th>
+                                <th>规格属性</th>
+                                <th>单位</th>
+                                <th>仓库名称</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+
+                            <!--表主体-->
+                            <tbody id="admin_stock_list" ng-click="order_ctrl.showStockDetail($event)" class="middle-align"></tbody>
+                        </table>
+                    </div>
+                    <div class="clearfix"></div>
+
+
+                    <!--配货详情-->
+                    <div class="g-pos-fl g-w-percent50 g-box-b g-b-white g-gap-pl5 g-gap-pr5 g-gap-pt5 g-gap-pb5"  ng-class="{'g-d-hidei':!order_ctrl.stock.stockdetail}" style="min-height: 100%;">
+                        <div class="admin-layout-theme4 admin-theme-close g-t-c g-b-gray17 g-pos-r">配货详情<span class="mini-icon admin-mini-icon1" ng-click="order_ctrl.closeStockDetail()"></span>
                         </div>
                         <table class="table table-bordered table-striped table-hover admin-layout-table">
                             <!--分组样式-->
@@ -228,7 +265,6 @@
                             <tbody id="admin_stock_detail" class="middle-align"></tbody>
                         </table>
                     </div>
-
                     <div class="clearfix"></div>
                 </div>
                 <div class="modal-footer">

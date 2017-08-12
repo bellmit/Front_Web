@@ -82,15 +82,15 @@ angular.module('login.service', [])
                             });
                             /*加载菜单*/
                             self.loadMenuData(model, function () {
+                                /*更新缓存*/
+                                cache = toolUtil.getParams(BASE_CONFIG.unique_key);
                                 toolUtil.loading({
                                     type: 'hide',
                                     model: model.app_config
                                 });
+                                model.login.islogin = true;
+                                model.login.loginerror = '';
                             });
-                            /*更新缓存*/
-                            cache = toolUtil.getParams(BASE_CONFIG.unique_key);
-                            model.login.islogin = true;
-                            model.login.loginerror = '';
                         }
                     } else {
                         model.login.islogin = false;

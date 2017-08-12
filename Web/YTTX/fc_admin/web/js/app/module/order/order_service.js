@@ -127,7 +127,10 @@ angular.module('app')
 
             if (action === 'detail') {
                 /*订单详情*/
+                var ordernumber = config.$btn.attr('data-orderNumber');
                 self.queryDetail(null, id, action);
+                model.stock.stockid = id;
+                model.stock.stocknumber = ordernumber;
             } else if (action === 'stock') {
                 /*订单配货*/
                 self.queryStock(model, id, action);
@@ -356,7 +359,14 @@ angular.module('app')
         };
 
 
-
+        /*配货服务--绑定配货条件切换*/
+        this.changeStockType = function (config) {
+            config.stock.stockbtn = 0;
+            /*取消全选*/
+            dataTableCheckAllService.clear(config.stock.tablecheckall);
+            /*清除配货单*/
+            self.closeStockList(config);
+        };
         /*配货服务--查询订单配货*/
         this.queryStock = function (config, id, action) {
             if (cache === null) {
@@ -392,17 +402,17 @@ angular.module('app')
                                 'attributeName': 'goodstype',
                                 'Unit': 'unit',
                                 'warehouseName': 'value',
-                                'availableInventory': 'rule,0,-,100',
-                                'physicalInventory': 'rule,0,-,100',
-                                'safetyInventory': 'rule,0,-,100',
-                                'referenceReplenishment': 'rule,0,-,100',
+                                'availableInventory': 'minmax,0,100',
+                                'physicalInventory': 'minmax,0,100',
+                                'safetyInventory': 'minmax,0,100',
+                                'referenceReplenishment': 'minmax,0,100',
                                 'inventoryToplimit': 'rule,100',
                                 'inventoryLowerlimit': 'rule,50',
                                 'availableStatus': 'or',
                                 'physicalStatus': 'or'
                             },
                             mapmin: 1,
-                            mapmax: 10
+                            mapmax: 8
                         })/*测试请求*/;
 
 
@@ -452,9 +462,9 @@ angular.module('app')
                                                 <td>' + item["referenceReplenishment"] + '</td>\
                                                 <td>' + item["inventoryToplimit"] + '</td>\
                                                 <td>' + item["inventoryLowerlimit"] + '</td>\
-                                                <td>' + (item["availableStatus"] === 0 ? '正常' : '异常') + '</td>\
-                                                <td>' + (item["physicalStatus"] === 0 ? '正常' : '异常') + '</td>\
-                                                <td><span data-action="stockdetail" data-id="' + item["id"] + '"  class="btn-operate">查看</span></td>';
+                                                <td>' + (item["availableStatus"] === '0' ? '<div class="g-c-blue1">正常</div>' : '<div class="g-c-red1">异常</div>') + '</td>\
+                                                <td>' + (item["physicalStatus"] === '0' ? '<div class="g-c-blue1">正常</div>' : '<div class="g-c-red1">异常</div>') + '</td>\
+                                                </tr>';
                                             }
                                             if (str !== '') {
                                                 $(str).appendTo(self.$admin_stock_show.html(''));
@@ -490,25 +500,16 @@ angular.module('app')
             /*调用全选与取消全选*/
             dataTableCheckAllService.initCheckAll(config.stock.tablecheckall);
         };
-        /*配货服务--绑定配货条件切换*/
-        this.changeStockType = function (config) {
-            config.stock.stockbtn=0;
-            config.stock.stockshow=false;
-            /*取消全选*/
-            dataTableCheckAllService.clear(config.stock.tablecheckall);
-            /*清除配货单*/
-            self.$admin_stock_detail.html('');
-        };
-        /*配货服务--查看配货单*/
+        /*配货服务--查看配货单列表*/
         this.showStockList = function (config) {
             if (cache === null) {
                 return false;
             }
-            var datalist=dataTableCheckAllService.getBatchData(config.stock.tablecheckall),
-            datalen=datalist.length;
+            var datalist = dataTableCheckAllService.getBatchData(config.stock.tablecheckall),
+                datalen = datalist.length;
 
 
-            if (datalen===0) {
+            if (datalen === 0) {
                 toolDialog.show({
                     type: 'warn',
                     value: '没有配货单信息'
@@ -518,12 +519,14 @@ angular.module('app')
 
             var param = $.extend(true, {}, cache.loginMap.param);
             /*判断参数*/
-            param['orderNumber'] = datalist.join(',');
+            param['inventoryIds'] = datalist.join(',');
+            param['orderId'] = config.stock.stockid;
+            param['orderNumber'] = config.stock.stocknumber;
 
 
             toolUtil
                 .requestHttp({
-                    url: /*'/organization/invoice/details'*/'json/test.json'/*测试地址*/,
+                    url: /*'/organization/invoice/add'*/'json/test.json'/*测试地址*/,
                     method: 'post',
                     set: true,
                     debug: true, /*测试开关*/
@@ -533,28 +536,14 @@ angular.module('app')
                         var resp = testService.test({
                             map: {
                                 'id': 'guid',
-                                'goodsInfo':'content',
+                                'warehouseName': 'value',
                                 'goodsName': 'goods',
-                                'attributeName': 'goodstype',
-                                'quantlity': 'rule,1,-,100',
-                                'total':'rule,5000,-,500000',
-                                'title':'text',
-                                'address':'address'
+                                'Unit': 'unit',
+                                'attributeName': 'goodstype'
                             },
-                            mapmin: 1,
-                            mapmax: 5
+                            mapmin: datalen,
+                            mapmax: datalen
                         })/*测试请求*/;
-
-                        var header=testService.getMap({
-                            map:{
-                                'name':'name',
-                                'address':'address',
-                                'cellphone':'mobile',
-                                'company':'text',
-                                'id':'guid'
-                            },
-                            maptype:'object'
-                        }).list/*测试辅助*/;
 
 
                         var data = resp.data,
@@ -585,50 +574,25 @@ angular.module('app')
                                         /*查看*/
                                         var len = list.length,
                                             i = 0,
-                                            str = '<tr>\
-                                                    <td colspan="5">\
-                                                        <div class="g-w-number20 g-f-l g-c-red1">\
-                                                            <div>收货地址：'+header["address"]+'</div>\
-                                                            <div>收货人姓名：'+header["name"]+'</div>\
-                                                            <div>联系电话：'+header["cellphone"]+'</div>\
-                                                        </div>\
-                                                        <div class="g-w-number20 g-f-r">\
-                                                            <div class="g-w-number20 g-f-l">快递公司：'+header["company"]+'</div>\
-                                                            <div class="g-w-number20 g-f-r">快递单号：'+header["id"]+'</div>\
-                                                        </div>\
-                                                    </td>\
-                                                </tr>';
+                                            str = '';
 
                                         for (i; i < len; i++) {
                                             var item = list[i];
                                             str += '<tr>\
-                                                    <td colspan="5"><div class="g-w-number20 g-f-l g-c-red1">' + item["title"] + '</div><div class="g-w-number20 g-f-r">'+item["address"]+'</div></td>\
-                                                </tr>\
-                                                <tr>\
-                                                    <td rowspan="3">' + item["goodsInfo"] + '</td>\
-                                                    <td>1</td>\
+                                                    <td>' + (i + 1) + '</td>\
                                                     <td>' + item["goodsName"] + '</td>\
                                                     <td>' + item["attributeName"] + '</td>\
-                                                    <td>' + item["quantlity"] + '</td>\
-                                                </tr>\
-                                                <tr>\
-                                                    <td>2</td>\
-                                                    <td>' + item["goodsName"] + '</td>\
-                                                    <td>' + item["attributeName"] + '</td>\
-                                                    <td>' + parseInt(Math.random() * item["quantlity"],10) + '</td>\
-                                                </tr>\
-                                                <tr>\
-                                                    <td colspan="2">&nbsp;</td>\
-                                                    <td>合计:</td>\
-                                                    <td>' + item["total"] + '</td>\
+                                                    <td>' + item["Unit"] + '</td>\
+                                                    <td>' + item["warehouseName"] + '</td>\
+                                                    <td><span data-action="stockdetail" data-id="' + item["id"] + '"  class="btn-operate">查看</span></td>\
                                                 </tr>';
                                         }
                                         if (str !== '') {
-                                            $(str).appendTo(self.$admin_stock_detail.html(''));
-                                            config.stock.stockshow=true;
+                                            $(str).appendTo(self.$admin_stock_list.html(''));
+                                            config.stock.stocklist = true;
                                         }
                                     }
-                                }else{
+                                } else {
                                     /*提示信息*/
                                     toolDialog.show({
                                         type: 'warn',
@@ -643,9 +607,186 @@ angular.module('app')
                         if (typeof message !== 'undefined' && message !== '') {
                             console.log(message);
                         } else {
-                            console.log('请求订单失败');
+                            console.log('请求配货列表失败');
                         }
                     });
+        };
+        /*配货服务--查看配货单详情*/
+        this.showStockDetail = function (config) {
+            if (cache === null) {
+                return false;
+            }
+            var id = config.id;
+
+            if (typeof id === 'undefined') {
+                toolDialog.show({
+                    type: 'warn',
+                    value: '没有配货单信息'
+                });
+                return false;
+            }
+
+            var param = $.extend(true, {}, cache.loginMap.param);
+            /*判断参数*/
+            param['orderNumber'] = id;
+
+
+            toolUtil
+                .requestHttp({
+                    url: /*'/organization/invoice/details'*/'json/test.json'/*测试地址*/,
+                    method: 'post',
+                    set: true,
+                    debug: true, /*测试开关*/
+                    data: param
+                })
+                .then(function (resp) {
+                        var resp = {
+                            status: 200,
+                            data: {
+                                message: 'ok',
+                                count: 50,
+                                code: 0,
+                                result:{
+                                    list:true
+                                }
+                            }
+                        }/*测试请求*/;
+
+                        var data = resp.data,
+                            status = parseInt(resp.status, 10);
+
+                        if (status === 200) {
+                            var code = parseInt(data.code, 10),
+                                message = data.message;
+                            if (code !== 0) {
+                                if (typeof message !== 'undefined' && message !== '') {
+                                    console.log(message);
+                                } else {
+                                    console.log('请求数据失败');
+                                }
+
+                                if (code === 999) {
+                                    /*退出系统*/
+                                    cache = null;
+                                    loginService.outAction();
+                                }
+                            } else {
+
+                                /*加载数据*/
+                                var result = data.result;
+                                if (typeof result !== 'undefined') {
+                                    var list = result.list;
+                                    if (list) {
+                                        /*查看*/
+                                        var len = 1 + parseInt(Math.random() * 5, 10),
+                                            i = 0,
+                                            str = '<tr>\
+                                                    <td colspan="5">\
+                                                        <div class="g-w-number20 g-f-l">\
+                                                            <div>收货地址：<span class="g-c-red1">' + testService.getRule('address') + '</span></div>\
+                                                            <div>收货人姓名：<span class="g-c-red1">' + testService.getRule('name') + '</span></div>\
+                                                            <div>联系电话：<span class="g-c-red1">' + testService.getRule('mobile') + '</span></div>\
+                                                        </div>\
+                                                        <div class="g-w-number20 g-f-r">\
+                                                            <div class="g-w-number20 g-f-l">快递公司：<span class="g-c-red1">' + testService.getRule('text') + '</span></div>\
+                                                            <div class="g-w-number20 g-f-r">快递单号：<span class="g-c-red1">' + testService.getRule('guid') + '</span></div>\
+                                                        </div>\
+                                                    </td>\
+                                                </tr>';
+
+                                        for (i; i < len; i++) {
+                                            var item = list[i],
+                                                j = 1 + parseInt(Math.random() * 5, 0),
+                                                k = 0;
+
+                                            if (j === 1) {
+                                                str += '<tr>\
+                                                        <td colspan="5"><div class="g-w-number20 g-f-l">配货包裹'+(i + 1)+':<span class="g-c-blue3">' + testService.getRule('name') + '</span></div><div class="g-w-number20 g-f-r">配货包裹地址：<span class="g-c-blue3">' + testService.getRule('address') + '</span></div></td>\
+                                                    </tr>\
+                                                    <tr>\
+                                                        <td>' + testService.getRule('info') + '</td>\
+                                                        <td>1</td>\
+                                                        <td>' + testService.getRule('goods') + '</td>\
+                                                        <td>' + testService.getRule('goodstype') + '</td>\
+                                                        <td>' + toolUtil.moneyCorrect(testService.getRule('minmax,1,90000'),15,false)[0] + '</td>\
+                                                    </tr>\
+                                                    <tr>\
+                                                        <td colspan="3">&nbsp;</td>\
+                                                        <td class="g-c-blue3">合计:</td>\
+                                                        <td><span class="g-c-blue3">' + toolUtil.moneyCorrect(testService.getRule('minmax,10000,900000'),15,false)[0] + '</span></td>\
+                                                    </tr>';
+                                            } else {
+                                                for (k; k < j; k++) {
+                                                    if (k === 0) {
+                                                        str += '<tr>\
+                                                            <td colspan="5"><div class="g-w-number20 g-f-l">配货包裹'+(i + 1)+':<span class="g-c-blue3">' + testService.getRule('text') + '</span></div><div class="g-w-number20 g-f-r">配货包裹地址：<span class="g-c-blue3">' + testService.getRule('address') + '</span></div></td>\
+                                                        </tr>\
+                                                        <tr>\
+                                                            <td rowspan="' + (j - 1) + '">' + testService.getRule('info') + '</td>\
+                                                            <td>' + (k + 1) + '</td>\
+                                                            <td>' + testService.getRule('goods') + '</td>\
+                                                            <td>' + testService.getRule('goodstype') + '</td>\
+                                                            <td>' + toolUtil.moneyCorrect(testService.getRule('minmax,1,90000'),15,false)[0] + '</td>\
+                                                        </tr>';
+                                                    } else if (k !== j - 1) {
+                                                        str += '<tr>\
+                                                        <td>' + (k + 1) + '</td>\
+                                                        <td>' + testService.getRule('goods') + '</td>\
+                                                        <td>' + testService.getRule('goodstype') + '</td>\
+                                                        <td>' + toolUtil.moneyCorrect(testService.getRule('minmax,1,90000'),15,false)[0] + '</td>\
+                                                    </tr>';
+                                                    } else if (k === j - 1) {
+                                                        str += '<tr>\
+                                                        <td colspan="3">&nbsp;</td>\
+                                                        <td class="g-c-blue3">合计:</td>\
+                                                        <td><span class="g-c-blue3">' + toolUtil.moneyCorrect(testService.getRule('minmax,10000,900000'),15,false)[0] + '</span></td>\
+                                                    </tr>';
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        if (str !== '') {
+                                            $(str).appendTo(self.$admin_stock_detail.html(''));
+                                            config.stock.stockdetail = true;
+                                        }
+                                    }
+                                } else {
+                                    /*提示信息*/
+                                    toolDialog.show({
+                                        type: 'warn',
+                                        value: '获取数据失败'
+                                    });
+                                }
+                            }
+                        }
+                    }
+                    ,
+                    function (resp) {
+                        var message = resp.data.message;
+                        if (typeof message !== 'undefined' && message !== '') {
+                            console.log(message);
+                        } else {
+                            console.log('请求订单失败');
+                        }
+                    }
+                );
+        };
+        /*配货服务--关闭配货*/
+        this.closeStock = function (config) {
+            self.changeStockType(config);
+            self.$admin_stock_show.html('');
+        };
+        /*配货服务--关闭配货列表*/
+        this.closeStockList = function (config) {
+            config.stock.stocklist = false;
+            config.stock.stockdetail = false;
+            self.$admin_stock_list.html('');
+            self.$admin_stock_detail.html('');
+        };
+        /*配货服务--关闭配货详情*/
+        this.closeStockDetail = function (config) {
+            config.stock.stockdetail = false;
+            self.$admin_stock_detail.html('');
         };
 
 
