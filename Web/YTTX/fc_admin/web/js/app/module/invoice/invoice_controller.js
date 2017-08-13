@@ -1,16 +1,16 @@
 /*首页控制器*/
 angular.module('app')
-    .controller('OrderController', ['orderService', 'testService', 'toolUtil', '$scope', function (orderService, testService, toolUtil, $scope) {
+    .controller('InvoiceController', ['invoiceService', 'testService', 'toolUtil', '$scope', function (invoiceService, testService, toolUtil, $scope) {
         var self = this;
 
         /*模型--操作权限列表*/
-        this.powerlist = orderService.getCurrentPower();
+        this.powerlist = invoiceService.getCurrentPower();
 
 
         /*jquery dom缓存:主要是切换路由时，创建的dom缓存引用与现有的dom引用不一致，需要加载视图更新现有dom引用*/
         var jq_dom = {
             $submenu_scroll_wrap: $('#submenu_scroll_wrap'),
-            $admin_order_submenu: $('#admin_order_submenu'),
+            $admin_invoice_submenu: $('#admin_invoice_submenu'),
             $admin_table_checkcolumn: $('#admin_table_checkcolumn'),
             $admin_page_wrap: $('#admin_page_wrap'),
             $admin_list_wrap: $('#admin_list_wrap'),
@@ -18,16 +18,13 @@ angular.module('app')
             $admin_batchlist_wrap: $('#admin_batchlist_wrap'),
             $search_startTime: $('#search_startTime'),
             $search_endTime: $('#search_endTime'),
-            $admin_orderdetail_dialog: $('#admin_orderdetail_dialog'),
-            $admin_orderdetail_show: $('#admin_orderdetail_show'),
-            $admin_stock_checkall: $('#admin_stock_checkall'),
-            $admin_stock_dialog: $('#admin_stock_dialog'),
-            $admin_stock_show: $('#admin_stock_show'),
-            $admin_stock_list: $('#admin_stock_list'),
-            $admin_stock_detail: $('#admin_stock_detail')
+            $admin_invoicedetail_dialog: $('#admin_invoicedetail_dialog'),
+            $admin_invoicedetail_show: $('#admin_invoicedetail_show'),
+            $admin_send_dialog: $('#admin_send_dialog'),
+            $admin_send_detail: $('#admin_send_detail')
         };
         /*切换路由时更新dom缓存*/
-        orderService.initJQDom(jq_dom);
+        invoiceService.initJQDom(jq_dom);
 
 
         /*模型--操作记录*/
@@ -45,30 +42,14 @@ angular.module('app')
         };
 
 
-        /*模型--配货*/
-        this.stock = {
+        /*模型--发货*/
+        this.send = {
             type: 0/*0:人工，1:系统*/,
-            stockid: ''/*订单序列*/,
-            stocknumber:''/*订单号*/,
-            stockbtn: 0/*配货单按钮*/,
-            stocklist: false/*查看配货列表*/,
-            stockdetail: false/*查看配货详情*/,
-            /*全选*/
-            tablecheckall: {
-                checkall_flag: true,
-                $bodywrap: jq_dom.$admin_stock_show,
-                $checkall: jq_dom.$admin_stock_checkall,
-                checkvalue: 0/*默认未选中*/,
-                checkid: []/*默认索引数据为空*/,
-                checkitem: []/*默认node数据为空*/,
-                highactive: 'item-lightenbatch',
-                checkactive: 'admin-batchitem-checkactive',
-                checkfn: function (flag) {
-                    $scope.$apply(function () {
-                        self.stock.stockbtn = flag;
-                    });
-                }
-            }
+            sendid: ''/*订单序列*/,
+            sendnumber: ''/*订单号*/,
+            sendbtn: 0/*配货单按钮*/,
+            sendlist: false/*查看配货列表*/,
+            senddetail: false/*查看配货详情*/
         };
 
 
@@ -86,22 +67,22 @@ angular.module('app')
                     autoWidth: true, /*是否*/
                     paging: false,
                     ajax: {
-                        url: /*toolUtil.adaptReqUrl('/organization/goodsorder/list')*/'json/test.json'/*测试地址*/,
+                        url: /*toolUtil.adaptReqUrl('/organization/invoice/list')*/'json/test.json'/*测试地址*/,
                         dataType: 'JSON',
                         method: 'post',
                         dataSrc: function (json) {
                             var json = testService.test({
                                 map: {
                                     'id': 'id',
+                                    'sendNumber': 'guid',
+                                    'sendTime': 'datetime',
                                     'merchantName': 'value',
                                     'merchantPhone': 'mobile',
-                                    'orderTime': 'datetime',
                                     'orderNumber': 'guid',
                                     'orderState': 'rule,0,1,6,9,20,21',
-                                    'totalMoney': 'money',
-                                    'paymentType': 'rule,1,2,3'
+                                    'store': 'value'
                                 },
-                                mapmin: 2,
+                                mapmin: 5,
                                 mapmax: 10,
                                 type: 'list'
                             })/*测试请求*/;
@@ -119,7 +100,7 @@ angular.module('app')
                                 }
                                 if (code === 999) {
                                     /*退出系统*/
-                                    orderService.loginOut();
+                                    invoiceService.loginOut();
                                 }
                                 return [];
                             }
@@ -152,7 +133,7 @@ angular.module('app')
                                         temp_param['page'] = self.table.list1_page.page;
                                         temp_param['pageSize'] = self.table.list1_page.pageSize;
                                         self.table.list1_config.config.ajax.data = temp_param;
-                                        orderService.getColumnData(self.table, self.record);
+                                        invoiceService.getColumnData(self.table, self.record);
                                     }
                                 });
 
@@ -185,6 +166,15 @@ angular.module('app')
                     order: [[1, "desc"]],
                     columns: [
                         {
+                            "data": "id"
+                        },
+                        {
+                            "data": "sendNumber"
+                        },
+                        {
+                            "data": "sendTime"
+                        },
+                        {
                             "data": "merchantName"
                         },
                         {
@@ -195,12 +185,6 @@ angular.module('app')
                         },
                         {
                             "data": "orderNumber"
-                        },
-                        {
-                            "data": "totalMoney",
-                            "render": function (data, type, full, meta) {
-                                return toolUtil.moneyCorrect(data, 12)[0];
-                            }
                         },
                         {
                             "data": "orderState",
@@ -231,31 +215,19 @@ angular.module('app')
                             }
                         },
                         {
-                            "data": "paymentType",
-                            "render": function (data, type, full, meta) {
-                                var stauts = parseInt(data, 10),
-                                    statusmap = {
-                                        1: "微信",
-                                        2: "支付宝",
-                                        3: "其它"
-                                    };
-                                return '<div class="g-c-blue3">' + statusmap[stauts] + '</div>';
-                            }
-                        },
-                        {
-                            "data": "orderTime"
+                            "data": "store"
                         },
                         {
                             /*to do*/
-                            "data": "id",
+                            "data": "guid",
                             "render": function (data, type, full, meta) {
                                 var btns = '';
 
                                 /*查看订单*/
                                 if (self.powerlist.order_details) {
-                                    btns += '<span data-action="detail" data-orderNumber="'+full.orderNumber+'" data-id="' + data + '"  class="btn-operate">查看</span>';
+                                    btns += '<span data-action="detail" data-id="' + data + '"  class="btn-operate">查看</span>';
                                     if (parseInt(full.orderState, 10) === 6) {
-                                        btns += '<span data-action="stock" data-id="' + data + '"  class="btn-operate">配货</span>';
+                                        btns += '<span data-action="send" data-id="' + data + '"  class="btn-operate">发货</span>';
                                     }
                                 }
                                 return btns;
@@ -267,14 +239,14 @@ angular.module('app')
             list_table: null,
             /*列控制*/
             tablecolumn: {
-                init_len: 8/*数据有多少列*/,
+                init_len: 9/*数据有多少列*/,
                 column_flag: true,
                 ischeck: false, /*是否有全选*/
                 columnshow: true,
                 $column_wrap: jq_dom.$admin_table_checkcolumn/*控制列显示隐藏的容器*/,
                 $bodywrap: jq_dom.$admin_batchlist_wrap/*数据展现容器*/,
-                hide_list: [5, 6]/*需要隐藏的的列序号*/,
-                hide_len: 2,
+                hide_list: [5, 6, 7]/*需要隐藏的的列序号*/,
+                hide_len: 3,
                 column_api: {
                     isEmpty: function () {
                         if (self.table.list_table === null) {
@@ -292,10 +264,10 @@ angular.module('app')
                 $bodywrap: jq_dom.$admin_batchlist_wrap,
                 itemaction_api: {
                     doItemAction: function (config) {
-                        orderService.doItemAction({
+                        invoiceService.doItemAction({
                             record: self.record,
                             table: self.table,
-                            stock: self.stock
+                            send: self.send
                         }, config);
                     }
                 }
@@ -304,25 +276,25 @@ angular.module('app')
 
 
         /*初始化服务--虚拟挂载点，或者初始化参数*/
-        orderService.getRoot(self.record);
+        invoiceService.getRoot(self.record);
         /*初始化服务--日历查询*/
-        orderService.datePicker(this.record);
+        invoiceService.datePicker(this.record);
         /*初始化服务--绑定配货全选*/
-        orderService.stockCheckAll({
-            stock: self.stock
+        invoiceService.stockCheckAll({
+            send: self.send
         });
 
 
         /*菜单服务--初始化菜单*/
         this.initSubMenu = function () {
-            orderService.getSubMenu({
+            invoiceService.getSubMenu({
                 table: self.table,
                 record: self.record
             });
         };
         /*菜单服务--显示隐藏菜单*/
         this.toggleSubMenu = function (e) {
-            orderService.toggleSubMenu(e, {
+            invoiceService.toggleSubMenu(e, {
                 table: self.table,
                 record: self.record
             });
@@ -337,18 +309,18 @@ angular.module('app')
                 return false;
             }
 
-            orderService.changeStockType({
-                stock: self.stock
+            invoiceService.changeStockType({
+                send: self.send
             });
-            orderService.closeStockList({
-                stock:self.stock
+            invoiceService.closeStockList({
+                send: self.send
             });
         };
 
         /*配货服务--查看配货列表*/
         this.showStockList = function () {
-            orderService.showStockList({
-                stock: self.stock
+            invoiceService.showStockList({
+                send: self.send
             });
         };
         /*配货服务--查看配货详情*/
@@ -358,46 +330,45 @@ angular.module('app')
             if (node === 'span') {
                 var $this = $(target);
                 if ($this.hasClass('btn-operate')) {
-                    orderService.showStockDetail({
-                        stock: self.stock,
-                        id:$this.attr('data-id')
+                    invoiceService.showStockDetail({
+                        send: self.send,
+                        id: $this.attr('data-id')
                     });
                 }
             }
         };
         /*配货服务--关闭配货列表*/
-        this.closeStockList=function () {
-            orderService.closeStockList({
-                stock:self.stock
+        this.closeStockList = function () {
+            invoiceService.closeStockList({
+                send: self.send
             });
         };
         /*配货服务--关闭配货详情*/
-        this.closeStockDetail=function () {
-            orderService.closeStockDetail({
-                stock:self.stock
+        this.closeStockDetail = function () {
+            invoiceService.closeStockDetail({
+                send: self.send
             });
         };
-
 
 
         /*数据服务--过滤数据*/
         this.filterDataTable = function () {
-            orderService.filterDataTable(self.table, self.record);
+            invoiceService.filterDataTable(self.table, self.record);
         };
 
 
         /*查询订单*/
         this.queryOrder = function () {
-            orderService.getColumnData(self.table, self.record);
+            invoiceService.getColumnData(self.table, self.record);
         };
 
 
         /*弹出层显示隐藏*/
         this.toggleModal = function (config) {
-            orderService.toggleModal(config);
-            if(config.display==='hide' && config.area==='stock'){
-                orderService.closeStock({
-                    stock:self.stock
+            invoiceService.toggleModal(config);
+            if (config.display === 'hide' && config.area === 'send') {
+                invoiceService.closeStock({
+                    send: self.send
                 });
             }
         };

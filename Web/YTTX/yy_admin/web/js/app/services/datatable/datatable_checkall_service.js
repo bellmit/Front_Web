@@ -29,6 +29,7 @@ angular.module('app')
 		this.bind=function (tablecheckall) {
 			/*有全选项和子选项*/
 			if(tablecheckall.$checkall && tablecheckall.$bodywrap){
+				var checkfn=(tablecheckall.checkfn && typeof tablecheckall.checkfn==='function')?true:false;
 				/*绑定全选与取消全选*/
 				tablecheckall.$checkall.on('click',function (){
 					var $this=$(this),
@@ -50,11 +51,19 @@ angular.module('app')
 						/*执行取消全选*/
 						self.toggleCheckAll(tablecheckall,0);
 					}
+					/*执行回调*/
+					if(checkfn){
+						tablecheckall.checkfn.call(null,tablecheckall.checkvalue);
+					}
 				});
 
 				/*绑定单项选择*/
 				tablecheckall.$bodywrap.on('change','input[type="checkbox"]',function () {
 					self.toggleCheckItem(tablecheckall,$(this));
+					/*执行回调*/
+					if(checkfn){
+						tablecheckall.checkfn.call(null,tablecheckall.checkvalue);
+					}
 				});
 
 
@@ -181,6 +190,7 @@ angular.module('app')
 				text=$input.val();
 
 			if($input.is(':checked')){
+				/*选中*/
 				if (len === 0) {
 					checkid.push(text);
 					checkitem.push($input);
@@ -199,8 +209,9 @@ angular.module('app')
 						checkitem.push($input);
 					}
 				}
-
+				tablecheckall.checkvalue=1;
 			}else{
+				/*取消选中*/
 				ishave=$.inArray(text,checkid);
 				if(ishave!==-1){
 					checkid.splice(ishave,1);

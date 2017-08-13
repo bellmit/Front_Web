@@ -577,8 +577,8 @@ angular.module('app')
                         default:
                             if (map[i].indexOf('rule') !== -1) {
                                 (function () {
-                                    var rule = map[i].split(',').slice(1).join(''),
-                                        reg = '[' + rule + ']{1}';
+                                    var rule = map[i].split(',').slice(1).join('|'),
+                                        reg = '(' + rule + '){1}';
                                     map_obj[i] = new RegExp(reg);
                                 }());
                             } else if (map[i].indexOf('minmax') !== -1) {
