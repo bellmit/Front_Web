@@ -44,12 +44,8 @@ angular.module('app')
 
         /*模型--发货*/
         this.send = {
-            type: 0/*0:人工，1:系统*/,
             sendid: ''/*订单序列*/,
-            sendnumber: ''/*订单号*/,
-            sendbtn: 0/*配货单按钮*/,
-            sendlist: false/*查看配货列表*/,
-            senddetail: false/*查看配货详情*/
+            sendnumber: ''/*订单号*/
         };
 
 
@@ -57,7 +53,7 @@ angular.module('app')
         this.table = {
             list1_page: {
                 page: 1,
-                pageSize: 10,
+                pageSize: 15,
                 total: 0
             },
             list1_config: {
@@ -83,7 +79,7 @@ angular.module('app')
                                     'store': 'value'
                                 },
                                 mapmin: 5,
-                                mapmax: 10,
+                                mapmax: 15,
                                 type: 'list'
                             })/*测试请求*/;
 
@@ -157,7 +153,7 @@ angular.module('app')
                         },
                         data: {
                             page: 1,
-                            pageSize: 10
+                            pageSize: 15
                         }
                     },
                     info: false,
@@ -224,9 +220,9 @@ angular.module('app')
                                 var btns = '';
 
                                 /*查看订单*/
-                                if (self.powerlist.order_details) {
+                                if (self.powerlist.invoice_details) {
                                     btns += '<span data-action="detail" data-id="' + data + '"  class="btn-operate">查看</span>';
-                                    if (parseInt(full.orderState, 10) === 6) {
+                                    if (self.powerlist.invoice_delivery &&　parseInt(full.orderState, 10) === 6) {
                                         btns += '<span data-action="send" data-id="' + data + '"  class="btn-operate">发货</span>';
                                     }
                                 }
@@ -279,10 +275,6 @@ angular.module('app')
         invoiceService.getRoot(self.record);
         /*初始化服务--日历查询*/
         invoiceService.datePicker(this.record);
-        /*初始化服务--绑定配货全选*/
-        invoiceService.stockCheckAll({
-            send: self.send
-        });
 
 
         /*菜单服务--初始化菜单*/
@@ -301,51 +293,10 @@ angular.module('app')
         };
 
 
-        /*配货服务--切换不同的时间条件*/
-        this.changeStockType = function ($event) {
-            var target = $event.target,
-                node = target.nodeName.toLowerCase();
-            if (node === 'div' || node === 'span') {
-                return false;
-            }
 
-            invoiceService.changeStockType({
-                send: self.send
-            });
-            invoiceService.closeStockList({
-                send: self.send
-            });
-        };
-
-        /*配货服务--查看配货列表*/
-        this.showStockList = function () {
-            invoiceService.showStockList({
-                send: self.send
-            });
-        };
-        /*配货服务--查看配货详情*/
-        this.showStockDetail = function ($event) {
-            var target = $event.target,
-                node = target.nodeName.toLowerCase();
-            if (node === 'span') {
-                var $this = $(target);
-                if ($this.hasClass('btn-operate')) {
-                    invoiceService.showStockDetail({
-                        send: self.send,
-                        id: $this.attr('data-id')
-                    });
-                }
-            }
-        };
-        /*配货服务--关闭配货列表*/
-        this.closeStockList = function () {
-            invoiceService.closeStockList({
-                send: self.send
-            });
-        };
-        /*配货服务--关闭配货详情*/
-        this.closeStockDetail = function () {
-            invoiceService.closeStockDetail({
+        /*发货服务--发货*/
+        this.sendList = function () {
+            invoiceService.sendList({
                 send: self.send
             });
         };

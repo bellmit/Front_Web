@@ -10,10 +10,10 @@ var XHR
 if (typeof window !== 'undefined') XHR = require('./mock/xhr')
 
 /*!
-    Mock - 模拟请求 & 模拟数据
-    https://github.com/nuysoft/Mock
-    墨智 mozhi.gyy@taobao.com nuysoft@gmail.com
-*/
+ Mock - 模拟请求 & 模拟数据
+ https://github.com/nuysoft/Mock
+ 墨智 mozhi.gyy@taobao.com nuysoft@gmail.com
+ */
 var Mock = {
     Handler: Handler,
     Random: Random,
@@ -23,7 +23,7 @@ var Mock = {
     toJSONSchema: toJSONSchema,
     valid: valid,
     heredoc: Util.heredoc,
-    setup: function(settings) {
+    setup: function (settings) {
         return XHR.setup(settings)
     },
     _mocked: {}
@@ -35,16 +35,16 @@ Mock.version = '1.0.1-beta3'
 if (XHR) XHR.Mock = Mock
 
 /*
-    * Mock.mock( template )
-    * Mock.mock( function() )
-    * Mock.mock( rurl, template )
-    * Mock.mock( rurl, function(options) )
-    * Mock.mock( rurl, rtype, template )
-    * Mock.mock( rurl, rtype, function(options) )
+ * Mock.mock( template )
+ * Mock.mock( function() )
+ * Mock.mock( rurl, template )
+ * Mock.mock( rurl, function(options) )
+ * Mock.mock( rurl, rtype, template )
+ * Mock.mock( rurl, rtype, function(options) )
 
-    根据数据模板生成模拟数据。
-*/
-Mock.mock = function(rurl, rtype, template) {
+ 根据数据模板生成模拟数据。
+ */
+Mock.mock = function (rurl, rtype, template) {
     // Mock.mock(template)
     if (arguments.length === 1) {
         return Handler.gen(rurl)

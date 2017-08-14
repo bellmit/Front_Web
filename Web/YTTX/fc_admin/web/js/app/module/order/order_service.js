@@ -1111,54 +1111,5 @@ angular.module('app')
                 }
             }
         };
-
-
-        /*测试服务--获取订单列表*/
-        this.testGetOrderList = function () {
-            return {
-                message: 'ok',
-                code: 0,
-                result: Mock.mock({
-                    'count': 50,
-                    'list|5-15': [{
-                        "id": /[0-9]{1,2}/,
-                        "merchantName": /(周一|杨二|张三|李四|王五|赵六|马七|朱八|陈九){1}/,
-                        "merchantPhone": /(^(13[0-9]|15[012356789]|18[0-9]|14[57]|170)[0-9]{8}$){1}/,
-                        "orderTime": moment().format('YYYY-MM-DD HH:mm:ss'),
-                        "orderNumber": /[0-9a-zA-Z]{18}/,
-                        "orderState": /(0|1|6|9|20|21|[2-5]){1}/,
-                        "totalMoney": /(^(([1-9]{1}\d{0,8})|0)((\.{0}(\d){0})|(\.{1}(\d){2}))$){1}/,
-                        "paymentType": /[1-3]{1}/
-                    }]
-                })
-            };
-        };
-        /*测试服务--获取订单列表*/
-        this.testGetOrderDetail = function () {
-            return {
-                status: 200,
-                data: {
-                    message: 'ok',
-                    code: 0,
-                    result: Mock.mock({
-                        'order|1': [{
-                            "id": /[0-9]{1,2}/,
-                            "merchantName": /[0-9a-zA-Z]{2,10}/,
-                            "merchantPhone": /(^(13[0-9]|15[012356789]|18[0-9]|14[57]|170)[0-9]{8}$){1}/,
-                            "orderTime": moment().format('YYYY-MM-DD HH:mm:ss'),
-                            "orderNumber": /[0-9a-zA-Z]{18}/,
-                            "orderState": /(0|1|6|9|20|21|[2-5]){1}/,
-                            "totalMoney": /(^(([1-9]{1}\d{0,8})|0)((\.{0}(\d){0})|(\.{1}(\d){2}))$){1}/,
-                            "paymentType": /[1-3]{1}/
-                        }],
-                        'details|1-10': [{
-                            "id": /[0-9]{1,2}/,
-                            "goodsName": /[0-9a-zA-Z]{2,10}/,
-                            "goodsPrice": /(^(([1-9]{1}\d{0,8})|0)((\.{0}(\d){0})|(\.{1}(\d){2}))$){1}/,
-                            "quantlity": /[0-9]{1,2}/
-                        }]
-                    })
-                }
-            };
-        };
+        
     }]);

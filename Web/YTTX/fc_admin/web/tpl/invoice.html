@@ -21,8 +21,8 @@
 
                 <!--打印，导出-->
                 <div ng-show="false" class="action-item-btn action-item-export g-w-percent8">
-                    <span ng-show="invoice_ctrl.powerlist.order_print" class="btn btn-export g-br3 g-c-blue3">打印</span>
-                    <span ng-show="invoice_ctrl.powerlist.order_export" class="btn btn-export g-br3 g-c-blue3">导出</span>
+                    <span ng-show="invoice_ctrl.powerlist.invoice_print" class="btn btn-export g-br3 g-c-blue3">打印</span>
+                    <span ng-show="invoice_ctrl.powerlist.invoice_export" class="btn btn-export g-br3 g-c-blue3">导出</span>
                 </div>
 
                 <div class="clearfix"></div>
@@ -127,6 +127,7 @@
                     <div class="clearfix"></div>
                 </div>
                 <div class="modal-footer">
+
                     <button type="button" class="btn btn-red" data-dismiss="modal">关闭</button>
                 </div>
             </div>
@@ -170,6 +171,7 @@
                     <div class="clearfix"></div>
                 </div>
                 <div class="modal-footer">
+                    <button type="button" class="btn btn-red" ng-click="invoice_ctrl.sendList()">发货</button>
                     <button type="button" class="btn btn-red" data-dismiss="modal">关闭</button>
                 </div>
             </div>
