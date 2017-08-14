@@ -102,8 +102,8 @@ angular.module('app')
                 })
                 //采购管理
                 .state('purchase', {
-                    url: '/order',
-                    templateUrl: 'tpl/order.html',
+                    url: '/purchase',
+                    templateUrl: 'tpl/purchase.html',
                     resolve: {
                         /*延迟加载，依赖相关组件*/
                         deps: ['$ocLazyLoad',
@@ -113,11 +113,12 @@ angular.module('app')
                                     'js/plugins/pagination/pagination.js',
                                     'js/plugins/CustomScrollbar/customScrollbar.concat.min.js',
                                     'js/app/services/datatable/datatable_column_service.js',
+                                    'js/app/services/datatable/datatable_checkall_service.js',
                                     'js/app/services/datatable/datatable_itemaction_service.js',
                                     'js/plugins/My97DatePicker/WdatePicker.js',
                                     'js/app/services/datepick97/datepicker97_service.js',
-                                    'js/app/module/order/order_service.js',
-                                    'js/app/module/order/order_controller.js']);
+                                    'js/app/module/purchase/purchase_service.js',
+                                    'js/app/module/purchase/purchase_controller.js']);
                             }]
                     }
                 })

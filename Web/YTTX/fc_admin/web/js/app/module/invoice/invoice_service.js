@@ -372,7 +372,7 @@ angular.module('app')
 
             toolUtil
                 .requestHttp({
-                    url: /*'/organization/invoice/querysend'*/'json/test.json'/*测试地址*/,
+                    url: /*'/organization/invoice/sendlist'*/'json/test.json'/*测试地址*/,
                     method: 'post',
                     set: true,
                     debug: true, /*测试开关*/
@@ -502,8 +502,7 @@ angular.module('app')
                                 }
                             }
                         }
-                    }
-                    ,
+                    },
                     function (resp) {
                         var message = resp.data.message;
                         if (typeof message !== 'undefined' && message !== '') {
@@ -564,6 +563,13 @@ angular.module('app')
                                     toolDialog.show({
                                         type: 'succ',
                                         value: '发货成功'
+                                    });
+                                    self.$admin_send_detail.html('');
+                                    config.send.sendid='';
+                                    /*隐藏弹窗*/
+                                    self.toggleModal({
+                                        display: 'hide',
+                                        area: 'send'
                                     });
                                 }
                             }
