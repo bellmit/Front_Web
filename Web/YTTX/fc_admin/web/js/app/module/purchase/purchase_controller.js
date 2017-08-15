@@ -1,16 +1,16 @@
 /*首页控制器*/
 angular.module('app')
-    .controller('InvoiceController', ['invoiceService', 'testService', 'toolUtil', '$scope', function (invoiceService, testService, toolUtil, $scope) {
+    .controller('PurchaseController', ['purchaseService', 'testService', 'toolUtil', '$scope', function (purchaseService, testService, toolUtil, $scope) {
         var self = this;
 
         /*模型--操作权限列表*/
-        this.powerlist = invoiceService.getCurrentPower();
+        this.powerlist = purchaseService.getCurrentPower();
 
 
         /*jquery dom缓存:主要是切换路由时，创建的dom缓存引用与现有的dom引用不一致，需要加载视图更新现有dom引用*/
         var jq_dom = {
             $submenu_scroll_wrap: $('#submenu_scroll_wrap'),
-            $admin_invoice_submenu: $('#admin_invoice_submenu'),
+            $admin_purchase_submenu: $('#admin_purchase_submenu'),
             $admin_table_checkcolumn: $('#admin_table_checkcolumn'),
             $admin_page_wrap: $('#admin_page_wrap'),
             $admin_list_wrap: $('#admin_list_wrap'),
@@ -18,13 +18,15 @@ angular.module('app')
             $admin_batchlist_wrap: $('#admin_batchlist_wrap'),
             $search_startTime: $('#search_startTime'),
             $search_endTime: $('#search_endTime'),
-            $admin_invoicedetail_dialog: $('#admin_invoicedetail_dialog'),
-            $admin_invoicedetail_show: $('#admin_invoicedetail_show'),
-            $admin_send_dialog: $('#admin_send_dialog'),
-            $admin_send_show: $('#admin_send_show')
+            $admin_purchasedetail_dialog: $('#admin_purchasedetail_dialog'),
+            $admin_purchasedetail_show: $('#admin_purchasedetail_show'),
+            $admin_receive_dialog: $('#admin_receive_dialog')/*收货*/,
+            $admin_receive_show: $('#admin_receive_show')/*收货*/,
+            $admin_audit_dialog: $('#admin_audit_dialog')/*审核*/,
+            $admin_audit_show: $('#admin_audit_show')/*审核*/
         };
         /*切换路由时更新dom缓存*/
-        invoiceService.initJQDom(jq_dom);
+        purchaseService.initJQDom(jq_dom);
 
 
         /*模型--操作记录*/
@@ -33,6 +35,7 @@ angular.module('app')
             filter: '',
             startTime: '',
             endTime: '',
+            theme:'stats'/*选项主题*/,
             searchWord: '',
             organizationId: ''/*操作节点*/,
             prev: null/*菜单操作:上一次操作菜单*/,
@@ -41,12 +44,22 @@ angular.module('app')
             currentName: ''/*根节点*/
         };
 
+        /*模型--tab选项卡--主题*/
+        this.themeitem = [{
+            name: '统计',
+            power: self.powerlist.purchase_stats,
+            type: 'stats',
+            active: 'tabactive'
+        }, {
+            name: '审核',
+            power: self.powerlist.purchase_audit,
+            type: 'audit',
+            active: ''
+        }];
+
 
         /*模型--发货*/
-        this.send = {
-            sendid: ''/*订单序列*/,
-            sendnumber: ''/*订单号*/
-        };
+        this.send = {};
 
 
         /*模型--表格缓存*/
@@ -96,7 +109,7 @@ angular.module('app')
                                 }
                                 if (code === 999) {
                                     /*退出系统*/
-                                    invoiceService.loginOut();
+                                    purchaseService.loginOut();
                                 }
                                 return [];
                             }
@@ -129,7 +142,7 @@ angular.module('app')
                                         temp_param['page'] = self.table.list1_page.page;
                                         temp_param['pageSize'] = self.table.list1_page.pageSize;
                                         self.table.list1_config.config.ajax.data = temp_param;
-                                        invoiceService.getColumnData(self.table, self.record);
+                                        purchaseService.getColumnData(self.table, self.record);
                                     }
                                 });
 
@@ -220,10 +233,10 @@ angular.module('app')
                                 var btns = '';
 
                                 /*查看订单*/
-                                if (self.powerlist.invoice_details) {
+                                if (self.powerlist.purchase_details) {
                                     btns += '<span data-action="detail" data-id="' + data + '"  class="btn-operate">查看</span>';
-                                    if (self.powerlist.invoice_delivery &&　parseInt(full.orderState, 10) === 6) {
-                                        btns += '<span data-action="send" data-id="' + data + '"  class="btn-operate">发货</span>';
+                                    if (parseInt(full.orderState, 10) === 9) {
+                                        btns += '<span data-action="receive" data-id="' + data + '"  class="btn-operate">收货</span>';
                                     }
                                 }
                                 return btns;
@@ -241,7 +254,7 @@ angular.module('app')
                 columnshow: true,
                 $column_wrap: jq_dom.$admin_table_checkcolumn/*控制列显示隐藏的容器*/,
                 $bodywrap: jq_dom.$admin_batchlist_wrap/*数据展现容器*/,
-                hide_list: [0,5, 6, 7]/*需要隐藏的的列序号*/,
+                hide_list: [0, 5, 6, 7]/*需要隐藏的的列序号*/,
                 hide_len: 4,
                 column_api: {
                     isEmpty: function () {
@@ -260,7 +273,7 @@ angular.module('app')
                 $bodywrap: jq_dom.$admin_batchlist_wrap,
                 itemaction_api: {
                     doItemAction: function (config) {
-                        invoiceService.doItemAction({
+                        purchaseService.doItemAction({
                             record: self.record,
                             table: self.table,
                             send: self.send
@@ -272,31 +285,41 @@ angular.module('app')
 
 
         /*初始化服务--虚拟挂载点，或者初始化参数*/
-        invoiceService.getRoot(self.record);
+        purchaseService.getRoot(self.record);
         /*初始化服务--日历查询*/
-        invoiceService.datePicker(this.record);
+        purchaseService.datePicker(this.record);
 
 
         /*菜单服务--初始化菜单*/
         this.initSubMenu = function () {
-            invoiceService.getSubMenu({
+            purchaseService.getSubMenu({
                 table: self.table,
                 record: self.record
             });
         };
         /*菜单服务--显示隐藏菜单*/
         this.toggleSubMenu = function (e) {
-            invoiceService.toggleSubMenu(e, {
+            purchaseService.toggleSubMenu(e, {
                 table: self.table,
                 record: self.record
             });
         };
 
 
+        /*条件服务--切换条件主题*/
+        this.toggleTheme = function (type) {
+            self.record.theme = type;
+            /*计算区域并执行相关操作*/
+            purchaseService.changeView({
+                record:self.record,
+                table:self.table
+            });
+        };
+
 
         /*发货服务--发货*/
         this.sendList = function () {
-            invoiceService.sendList({
+            purchaseService.sendList({
                 record: self.record,
                 table: self.table,
                 send: self.send
@@ -306,19 +329,19 @@ angular.module('app')
 
         /*数据服务--过滤数据*/
         this.filterDataTable = function () {
-            invoiceService.filterDataTable(self.table, self.record);
+            purchaseService.filterDataTable(self.table, self.record);
         };
 
 
         /*查询订单*/
-        this.queryInvoice = function () {
-            invoiceService.getColumnData(self.table, self.record);
+        this.queryPurchase = function () {
+            purchaseService.getColumnData(self.table, self.record);
         };
 
 
         /*弹出层显示隐藏*/
         this.toggleModal = function (config) {
-            invoiceService.toggleModal(config);
+            purchaseService.toggleModal(config);
         };
 
 

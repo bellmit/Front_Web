@@ -1,19 +1,20 @@
 angular.module('app')
-    .service('invoiceService', ['toolUtil', 'toolDialog', 'BASE_CONFIG', 'loginService', 'powerService', 'dataTableColumnService', 'dataTableItemActionService', 'datePicker97Service', 'testService', function (toolUtil, toolDialog, BASE_CONFIG, loginService, powerService, dataTableColumnService, dataTableItemActionService, datePicker97Service, testService) {
+    .service('purchaseService', ['toolUtil', 'toolDialog', 'BASE_CONFIG', 'loginService', 'powerService', 'dataTableColumnService', 'dataTableItemActionService', 'datePicker97Service', 'testService', function (toolUtil, toolDialog, BASE_CONFIG, loginService, powerService, dataTableColumnService, dataTableItemActionService, datePicker97Service, testService) {
 
         /*获取缓存数据*/
         var self = this,
-            module_id = 50/*模块id*/,
+            module_id = 70/*模块id*/,
             cache = loginService.getCache();
 
         var powermap = powerService.getCurrentPower(module_id);
 
         /*初始化权限*/
         var init_power = {
-            invoice_print: toolUtil.isPower('invoice-print', powermap, true)/*发货打印*/,
-            invoice_export: toolUtil.isPower('invoice-export', powermap, true)/*发货导出*/,
-            invoice_details: toolUtil.isPower('invoice-details', powermap, true)/*发货详情*/,
-            invoice_delivery: toolUtil.isPower('invoice-delivery', powermap, true)/*发货*/
+            purchase_print: toolUtil.isPower('purchase-print', powermap, true)/*采购打印*/,
+            purchase_export: toolUtil.isPower('purchase-export', powermap, true)/*采购导出*/,
+            purchase_details: toolUtil.isPower('purchase-details', powermap, true)/*采购详情*/,
+            purchase_audit: toolUtil.isPower('purchase-audit', powermap, true)/*采购审核*/,
+            purchase_stats: toolUtil.isPower('purchase-stats', powermap, true)/*采购统计*/
         };
 
 
@@ -329,7 +330,7 @@ angular.module('app')
                                             /*显示弹窗*/
                                             self.toggleModal({
                                                 display: 'show',
-                                                area: 'invoicedetail'
+                                                area: 'orderdetail'
                                             });
                                         }
                                     } else {
@@ -485,7 +486,7 @@ angular.module('app')
                                             }
                                         }
                                         if (str !== '') {
-                                            $(str).appendTo(self.$admin_send_show.html(''));
+                                            $(str).appendTo(self.$admin_send_detail.html(''));
                                             /*显示弹窗*/
                                             self.toggleModal({
                                                 display: 'show',
@@ -566,7 +567,7 @@ angular.module('app')
                                     });
                                     /*重新获取数据*/
                                     self.getColumnData(config.table, config.record);
-                                    self.$admin_send_show.html('');
+                                    self.$admin_send_detail.html('');
                                     config.send.sendid='';
                                     /*隐藏弹窗*/
                                     self.toggleModal({
@@ -591,8 +592,9 @@ angular.module('app')
         this.toggleModal = function (config, fn) {
             var temp_timer = null,
                 type_map = {
-                    'invoicedetail': self.$admin_invoicedetail_dialog,
-                    'send': self.$admin_send_dialog
+                    'purchasedetail': self.$admin_purchasedetail_dialog,
+                    'receive': self.$admin_receive_dialog,
+                    'audit': self.$admin_audit_dialog
                 };
             if (config.display === 'show') {
                 if (typeof config.delay !== 'undefined') {
@@ -659,7 +661,7 @@ angular.module('app')
                     layer = 0;
                     /*根目录则获取新配置参数*/
                     id = param['organizationId'];
-                    $wrap = self.$admin_invoice_submenu;
+                    $wrap = self.$admin_purchase_submenu;
                     config.record.organizationId = id;
                     self.getColumnData(config.table, config.record);
                 } else {
