@@ -564,6 +564,8 @@ angular.module('app')
                                         type: 'succ',
                                         value: '发货成功'
                                     });
+                                    /*重新获取数据*/
+                                    self.getColumnData(config.table, config.record);
                                     self.$admin_send_detail.html('');
                                     config.send.sendid='';
                                     /*隐藏弹窗*/

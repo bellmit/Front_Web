@@ -241,8 +241,8 @@ angular.module('app')
                 columnshow: true,
                 $column_wrap: jq_dom.$admin_table_checkcolumn/*控制列显示隐藏的容器*/,
                 $bodywrap: jq_dom.$admin_batchlist_wrap/*数据展现容器*/,
-                hide_list: [5, 6, 7]/*需要隐藏的的列序号*/,
-                hide_len: 3,
+                hide_list: [0,5, 6, 7]/*需要隐藏的的列序号*/,
+                hide_len: 4,
                 column_api: {
                     isEmpty: function () {
                         if (self.table.list_table === null) {
@@ -297,6 +297,8 @@ angular.module('app')
         /*发货服务--发货*/
         this.sendList = function () {
             invoiceService.sendList({
+                record: self.record,
+                table: self.table,
                 send: self.send
             });
         };
