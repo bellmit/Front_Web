@@ -53,7 +53,7 @@ angular.module('app')
         this.table = {
             list1_page: {
                 page: 1,
-                pageSize: 15,
+                pageSize: 10,
                 total: 0
             },
             list1_config: {
@@ -79,7 +79,7 @@ angular.module('app')
                                     'store': 'value'
                                 },
                                 mapmin: 5,
-                                mapmax: 15,
+                                mapmax: 10,
                                 type: 'list'
                             })/*测试请求*/;
 
@@ -153,7 +153,7 @@ angular.module('app')
                         },
                         data: {
                             page: 1,
-                            pageSize: 15
+                            pageSize: 10
                         }
                     },
                     info: false,

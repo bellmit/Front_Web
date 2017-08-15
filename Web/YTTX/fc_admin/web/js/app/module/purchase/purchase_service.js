@@ -1,5 +1,5 @@
 angular.module('app')
-    .service('purchaseService', ['toolUtil', 'toolDialog', 'BASE_CONFIG', 'loginService', 'powerService', 'dataTableColumnService', 'dataTableItemActionService', 'datePicker97Service', 'testService', function (toolUtil, toolDialog, BASE_CONFIG, loginService, powerService, dataTableColumnService, dataTableItemActionService, datePicker97Service, testService) {
+    .service('purchaseService', ['toolUtil', 'toolDialog', 'BASE_CONFIG', 'loginService', 'powerService', 'dataTableColumnService', 'dataTableItemActionService', 'datePicker97Service','dataTableCheckAllService','testService', function (toolUtil, toolDialog, BASE_CONFIG, loginService, powerService, dataTableColumnService, dataTableItemActionService, datePicker97Service,dataTableCheckAllService, testService) {
 
         /*获取缓存数据*/
         var self = this,
@@ -60,10 +60,14 @@ angular.module('app')
                 return false;
             } else if (!table && !record) {
                 return false;
+            } else if (typeof record.action === 'undefined') {
+                return false;
             }
 
             /*如果存在模型*/
-            var data = $.extend(true, {}, table.list1_config.config.ajax.data),
+            var action = record.action,
+                temp_config = 'list_config' + action,
+                data = $.extend(true, {}, table[temp_config].config.ajax.data),
                 temp_param;
 
             /*适配参数*/
@@ -86,28 +90,46 @@ angular.module('app')
                 }
             }
 
+            var temp_table = 'list_table' + action,
+                temp_column = 'tablecolumn' + action,
+                temp_action = 'tableitemaction' + action,
+                temp_checkall = 'tablecheckall' + action;
+
             /*参数赋值*/
-            table.list1_config.config.ajax.data = data;
-            if (table.list_table === null) {
+            table[temp_config].config.ajax.data = data;
+            if (table[temp_table] === null) {
                 temp_param = cache.loginMap.param;
-                table.list1_config.config.ajax.data['adminId'] = temp_param.adminId;
-                table.list1_config.config.ajax.data['token'] = temp_param.token;
+                table[temp_config].config.ajax.data['adminId'] = temp_param.adminId;
+                table[temp_config].config.ajax.data['token'] = temp_param.token;
                 /*初始请求*/
-                table.list_table = self.$admin_list_wrap.DataTable(table.list1_config.config);
+                table[temp_table] = self['$admin_list_wrap' + action].DataTable(table[temp_config].config);
                 /*调用列控制*/
-                dataTableColumnService.initColumn(table.tablecolumn, table.list_table);
+                dataTableColumnService.initColumn(table[temp_column], table[temp_table]);
                 /*调用按钮操作*/
-                dataTableItemActionService.initItemAction(table.tableitemaction);
+                dataTableItemActionService.initItemAction(table[temp_action]);
+                /*调用全选*/
+                if(action===2){
+                    dataTableCheckAllService.initCheckAll(table[temp_checkall]);
+                }
             } else {
-                table.list_table.ajax.config(table.list1_config.config.ajax).load();
+                if(action===2){
+                    dataTableCheckAllService.clear(table[temp_checkall]);
+                }
+                table[temp_table].ajax.config(table[temp_config].config.ajax).load();
             }
         };
         /*数据查询服务--过滤表格数据*/
         this.filterDataTable = function (table, record) {
-            if (table.list_table === null) {
+            if (!table && !record) {
+                return false;
+            } else if (typeof record.action === 'undefined') {
                 return false;
             }
-            table.list_table.search(record.filter).columns().draw();
+            var temp_table = 'list_table' + record.action;
+            if (table[temp_table] === null) {
+                return false;
+            }
+            table[temp_table].search(record.filter).columns().draw();
         };
         /*数据查询服务--时间查询*/
         this.datePicker = function (record) {
@@ -128,11 +150,14 @@ angular.module('app')
                 action = config.action;
 
             if (action === 'detail') {
-                /*订单详情*/
+                /*查询订单详情*/
                 self.queryDetail(null, id, action);
-            } else if (action === 'send') {
-                /*订单发货*/
-                self.querySend(model, id, action);
+            } else if (action === 'receive') {
+                /*查询收货*/
+                self.queryReceive(model, id, action);
+            } else if (action === 'audit') {
+                /*查询审核*/
+                self.queryAudit(model, id, action);
             }
         };
         /*数据查询服务--查询订单详情*/
@@ -354,8 +379,168 @@ angular.module('app')
                     });
         };
 
-        /*发货服务--查询订单配货*/
-        this.querySend = function (config, id, action) {
+        /*收货服务--查询收货*/
+        this.queryReceive = function (config, id, action) {
+            if (cache === null) {
+                return false;
+            }
+
+            if (typeof id === 'undefined') {
+                toolDialog.show({
+                    type: 'warn',
+                    value: '没有配货单信息'
+                });
+                return false;
+            }
+
+            var param = $.extend(true, {}, cache.loginMap.param);
+            /*判断参数*/
+
+            toolUtil
+                .requestHttp({
+                    url: /*'/organization/invoice/sendlist'*/'json/test.json'/*测试地址*/,
+                    method: 'post',
+                    set: true,
+                    debug: true, /*测试开关*/
+                    data: param
+                })
+                .then(function (resp) {
+                        var resp = {
+                            status: 200,
+                            data: {
+                                message: 'ok',
+                                count: 50,
+                                code: 0,
+                                result: {
+                                    list: true
+                                }
+                            }
+                        }/*测试请求*/;
+
+                        var data = resp.data,
+                            status = parseInt(resp.status, 10);
+
+                        if (status === 200) {
+                            var code = parseInt(data.code, 10),
+                                message = data.message;
+                            if (code !== 0) {
+                                if (typeof message !== 'undefined' && message !== '') {
+                                    console.log(message);
+                                } else {
+                                    console.log('请求数据失败');
+                                }
+
+                                if (code === 999) {
+                                    /*退出系统*/
+                                    cache = null;
+                                    loginService.outAction();
+                                }
+                            } else {
+
+                                /*加载数据*/
+                                var result = data.result;
+                                if (typeof result !== 'undefined') {
+                                    var list = result.list;
+                                    if (list) {
+                                        /*查看*/
+                                        var len = 1 + parseInt(Math.random() * 5, 10),
+                                            i = 0,
+                                            str = '<tr>\
+                                                    <td colspan="5">\
+                                                        <div class="g-w-number20 g-f-l">\
+                                                            <div>收货地址：<span class="g-c-red1">' + testService.getRule('address') + '</span></div>\
+                                                            <div>收货人姓名：<span class="g-c-red1">' + testService.getRule('name') + '</span></div>\
+                                                            <div>联系电话：<span class="g-c-red1">' + testService.getRule('mobile') + '</span></div>\
+                                                        </div>\
+                                                        <div class="g-w-number20 g-f-r">\
+                                                            <div class="g-w-number20 g-f-l">快递公司：<span class="g-c-red1">' + testService.getRule('text') + '</span></div>\
+                                                            <div class="g-w-number20 g-f-r">快递单号：<span class="g-c-red1">' + testService.getRule('guid') + '</span></div>\
+                                                        </div>\
+                                                    </td>\
+                                                </tr>';
+
+                                        for (i; i < len; i++) {
+                                            var item = list[i],
+                                                j = 1 + parseInt(Math.random() * 5, 0),
+                                                k = 0;
+
+                                            if (j === 1) {
+                                                str += '<tr>\
+                                                        <td colspan="5"><div class="g-w-number20 g-f-l">配货包裹' + (i + 1) + ':<span class="g-c-blue3">' + testService.getRule('name') + '</span></div><div class="g-w-number20 g-f-r">配货包裹地址：<span class="g-c-blue3">' + testService.getRule('address') + '</span></div></td>\
+                                                    </tr>\
+                                                    <tr>\
+                                                        <td>' + testService.getRule('info') + '</td>\
+                                                        <td>1</td>\
+                                                        <td>' + testService.getRule('goods') + '</td>\
+                                                        <td>' + testService.getRule('goodstype') + '</td>\
+                                                        <td>' + toolUtil.moneyCorrect(testService.getRule('minmax,1,90000'), 15, false)[0] + '</td>\
+                                                    </tr>\
+                                                    <tr>\
+                                                        <td colspan="3">&nbsp;</td>\
+                                                        <td class="g-c-blue3">合计:</td>\
+                                                        <td><span class="g-c-blue3">' + toolUtil.moneyCorrect(testService.getRule('minmax,10000,900000'), 15, false)[0] + '</span></td>\
+                                                    </tr>';
+                                            } else {
+                                                for (k; k < j; k++) {
+                                                    if (k === 0) {
+                                                        str += '<tr>\
+                                                            <td colspan="5"><div class="g-w-number20 g-f-l">配货包裹' + (i + 1) + ':<span class="g-c-blue3">' + testService.getRule('text') + '</span></div><div class="g-w-number20 g-f-r">配货包裹地址：<span class="g-c-blue3">' + testService.getRule('address') + '</span></div></td>\
+                                                        </tr>\
+                                                        <tr>\
+                                                            <td rowspan="' + (j - 1) + '">' + testService.getRule('info') + '</td>\
+                                                            <td>' + (k + 1) + '</td>\
+                                                            <td>' + testService.getRule('goods') + '</td>\
+                                                            <td>' + testService.getRule('goodstype') + '</td>\
+                                                            <td>' + toolUtil.moneyCorrect(testService.getRule('minmax,1,90000'), 15, false)[0] + '</td>\
+                                                        </tr>';
+                                                    } else if (k !== j - 1) {
+                                                        str += '<tr>\
+                                                        <td>' + (k + 1) + '</td>\
+                                                        <td>' + testService.getRule('goods') + '</td>\
+                                                        <td>' + testService.getRule('goodstype') + '</td>\
+                                                        <td>' + toolUtil.moneyCorrect(testService.getRule('minmax,1,90000'), 15, false)[0] + '</td>\
+                                                    </tr>';
+                                                    } else if (k === j - 1) {
+                                                        str += '<tr>\
+                                                        <td colspan="3">&nbsp;</td>\
+                                                        <td class="g-c-blue3">合计:</td>\
+                                                        <td><span class="g-c-blue3">' + toolUtil.moneyCorrect(testService.getRule('minmax,10000,900000'), 15, false)[0] + '</span></td>\
+                                                    </tr>';
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        if (str !== '') {
+                                            $(str).appendTo(self.$admin_send_detail.html(''));
+                                            /*显示弹窗*/
+                                            self.toggleModal({
+                                                display: 'show',
+                                                area: 'send'
+                                            });
+                                        }
+                                    }
+                                } else {
+                                    /*提示信息*/
+                                    toolDialog.show({
+                                        type: 'warn',
+                                        value: '获取数据失败'
+                                    });
+                                }
+                            }
+                        }
+                    },
+                    function (resp) {
+                        var message = resp.data.message;
+                        if (typeof message !== 'undefined' && message !== '') {
+                            console.log(message);
+                        } else {
+                            console.log('请求订单失败');
+                        }
+                    }
+                );
+        };
+        /*审核服务--查询审核*/
+        this.queryAudit = function (config, id, action) {
             if (cache === null) {
                 return false;
             }
@@ -515,8 +700,8 @@ angular.module('app')
                 );
         };
         /*发货服务--查询订单配货*/
-        this.sendList=function (config) {
-            if(!config && !config.send){
+        this.sendList = function (config) {
+            if (!config && !config.send) {
                 return false;
             }
             /*确认是否删除*/
@@ -568,7 +753,7 @@ angular.module('app')
                                     /*重新获取数据*/
                                     self.getColumnData(config.table, config.record);
                                     self.$admin_send_detail.html('');
-                                    config.send.sendid='';
+                                    config.send.sendid = '';
                                     /*隐藏弹窗*/
                                     self.toggleModal({
                                         display: 'hide',
@@ -587,6 +772,34 @@ angular.module('app')
                         });
             }, '确认是否真要发货', true);
         };
+
+        /*视图切换服务--根据条件判断视图状态:返回一个代表类型，数字或者字符*/
+        this.toggleTheme = function (config) {
+            if (!config) {
+                return false;
+            }
+            var type = config.type;
+
+            if (typeof type === 'undefined') {
+                return false;
+            }
+
+            /*
+             1-2种状态
+             1:统计
+             2:审核
+             * */
+            if (type === 'stats') {
+                /*统计*/
+                config.record.action = 1;
+            } else if (type === 'audit') {
+                /*审核*/
+                config.record.action = 2;
+            }
+            /*查询数据*/
+            self.getColumnData(config.table, config.record);
+        };
+
 
         /*弹出层服务*/
         this.toggleModal = function (config, fn) {

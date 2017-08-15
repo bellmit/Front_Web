@@ -11,11 +11,24 @@ angular.module('app')
         var jq_dom = {
             $submenu_scroll_wrap: $('#submenu_scroll_wrap'),
             $admin_purchase_submenu: $('#admin_purchase_submenu'),
-            $admin_table_checkcolumn: $('#admin_table_checkcolumn'),
-            $admin_page_wrap: $('#admin_page_wrap'),
-            $admin_list_wrap: $('#admin_list_wrap'),
-            $admin_list_colgroup: $('#admin_list_colgroup'),
-            $admin_batchlist_wrap: $('#admin_batchlist_wrap'),
+            /*分组控制*/
+            $admin_table_checkcolumn1: $('#admin_table_checkcolumn1'),
+            $admin_table_checkcolumn2: $('#admin_table_checkcolumn2'),
+            /*分页*/
+            $admin_page_wrap1: $('#admin_page_wrap1'),
+            $admin_page_wrap2: $('#admin_page_wrap2'),
+            /*列表*/
+            $admin_list_wrap1: $('#admin_list_wrap1'),
+            $admin_list_wrap2: $('#admin_list_wrap2'),
+            /*分组*/
+            $admin_list_colgroup1: $('#admin_list_colgroup1'),
+            $admin_list_colgroup2: $('#admin_list_colgroup2'),
+            /*表主体操作区*/
+            $admin_batchlist_wrap1: $('#admin_batchlist_wrap1'),
+            $admin_batchlist_wrap2: $('#admin_batchlist_wrap2'),
+            /*全选操作*/
+            $admin_purchase_checkall2: $('#admin_purchase_checkall2'),
+            /*其他*/
             $search_startTime: $('#search_startTime'),
             $search_endTime: $('#search_endTime'),
             $admin_purchasedetail_dialog: $('#admin_purchasedetail_dialog'),
@@ -35,7 +48,7 @@ angular.module('app')
             filter: '',
             startTime: '',
             endTime: '',
-            theme:'stats'/*选项主题*/,
+            action:1/*选项主题，默认为统计查询选项*/,
             searchWord: '',
             organizationId: ''/*操作节点*/,
             prev: null/*菜单操作:上一次操作菜单*/,
@@ -64,12 +77,20 @@ angular.module('app')
 
         /*模型--表格缓存*/
         this.table = {
-            list1_page: {
+            /*分页配置*/
+            list_page1: {
                 page: 1,
-                pageSize: 15,
+                pageSize: 10,
                 total: 0
             },
-            list1_config: {
+            list_page2: {
+                page: 1,
+                pageSize: 10,
+                total: 0
+            },
+            /*数据请求配置*/
+            /*统计*/
+            list_config1: {
                 config: {
                     processing: true, /*大消耗操作时是否显示处理状态*/
                     deferRender: true, /*是否延迟加载数据*/
@@ -92,7 +113,7 @@ angular.module('app')
                                     'store': 'value'
                                 },
                                 mapmin: 5,
-                                mapmax: 15,
+                                mapmax: 10,
                                 type: 'list'
                             })/*测试请求*/;
 
@@ -105,7 +126,7 @@ angular.module('app')
                                 if (typeof message !== 'undefined' && message !== '') {
                                     console.log(message);
                                 } else {
-                                    console.log('获取用户失败');
+                                    console.log('获取数据失败');
                                 }
                                 if (code === 999) {
                                     /*退出系统*/
@@ -116,32 +137,32 @@ angular.module('app')
                             var result = json.result;
                             if (typeof result === 'undefined') {
                                 /*重置分页*/
-                                self.table.list1_page.total = 0;
-                                self.table.list1_page.page = 1;
-                                jq_dom.$admin_page_wrap.pagination({
-                                    pageNumber: self.table.list1_page.page,
-                                    pageSize: self.table.list1_page.pageSize,
-                                    total: self.table.list1_page.total
+                                self.table.list_page1.total = 0;
+                                self.table.list_page1.page = 1;
+                                jq_dom.$admin_page_wrap1.pagination({
+                                    pageNumber: self.table.list_page1.page,
+                                    pageSize: self.table.list_page1.pageSize,
+                                    total: self.table.list_page1.total
                                 });
                                 return [];
                             }
 
                             if (result) {
                                 /*设置分页*/
-                                self.table.list1_page.total = result.count;
+                                self.table.list_page1.total = result.count;
                                 /*分页调用*/
-                                jq_dom.$admin_page_wrap.pagination({
-                                    pageNumber: self.table.list1_page.page,
-                                    pageSize: self.table.list1_page.pageSize,
-                                    total: self.table.list1_page.total,
+                                jq_dom.$admin_page_wrap1.pagination({
+                                    pageNumber: self.table.list_page1.page,
+                                    pageSize: self.table.list_page1.pageSize,
+                                    total: self.table.list_page1.total,
                                     onSelectPage: function (pageNumber, pageSize) {
                                         /*再次查询*/
-                                        var temp_param = self.table.list1_config.config.ajax.data;
-                                        self.table.list1_page.page = pageNumber;
-                                        self.table.list1_page.pageSize = pageSize;
-                                        temp_param['page'] = self.table.list1_page.page;
-                                        temp_param['pageSize'] = self.table.list1_page.pageSize;
-                                        self.table.list1_config.config.ajax.data = temp_param;
+                                        var temp_param = self.table.list_config1.config.ajax.data;
+                                        self.table.list_page1.page = pageNumber;
+                                        self.table.list_page1.pageSize = pageSize;
+                                        temp_param['page'] = self.table.list_page1.page;
+                                        temp_param['pageSize'] = self.table.list_page1.pageSize;
+                                        self.table.list_config1.config.ajax.data = temp_param;
                                         purchaseService.getColumnData(self.table, self.record);
                                     }
                                 });
@@ -154,19 +175,19 @@ angular.module('app')
                                 }
                             } else {
                                 /*重置分页*/
-                                self.table.list1_page.total = 0;
-                                self.table.list1_page.page = 1;
-                                jq_dom.$admin_page_wrap.pagination({
-                                    pageNumber: self.table.list1_page.page,
-                                    pageSize: self.table.list1_page.pageSize,
-                                    total: self.table.list1_page.total
+                                self.table.list_page1.total = 0;
+                                self.table.list_page1.page = 1;
+                                jq_dom.$admin_page_wrap1.pagination({
+                                    pageNumber: self.table.list_page1.page,
+                                    pageSize: self.table.list_page1.pageSize,
+                                    total: self.table.list_page1.total
                                 });
                                 return [];
                             }
                         },
                         data: {
                             page: 1,
-                            pageSize: 15
+                            pageSize: 10
                         }
                     },
                     info: false,
@@ -245,32 +266,232 @@ angular.module('app')
                     ]
                 }
             },
-            list_table: null,
+            /*审核*/
+            list_config2: {
+                config: {
+                    processing: true, /*大消耗操作时是否显示处理状态*/
+                    deferRender: true, /*是否延迟加载数据*/
+                    autoWidth: true, /*是否*/
+                    paging: false,
+                    ajax: {
+                        url: /*toolUtil.adaptReqUrl('/organization/invoice/list')*/'json/test.json'/*测试地址*/,
+                        dataType: 'JSON',
+                        method: 'post',
+                        dataSrc: function (json) {
+                            var json = testService.test({
+                                map: {
+                                    'id': 'id',
+                                    'sendNumber': 'guid',
+                                    'sendTime': 'datetime',
+                                    'merchantName': 'value',
+                                    'merchantPhone': 'mobile',
+                                    'orderNumber': 'guid',
+                                    'orderState': 'rule,0,1,6,9,20,21',
+                                    'store': 'value'
+                                },
+                                mapmin: 5,
+                                mapmax: 10,
+                                type: 'list'
+                            })/*测试请求*/;
+
+
+                            var code = parseInt(json.code, 10),
+                                message = json.message;
+
+
+                            if (code !== 0) {
+                                if (typeof message !== 'undefined' && message !== '') {
+                                    console.log(message);
+                                } else {
+                                    console.log('获取数据失败');
+                                }
+                                if (code === 999) {
+                                    /*退出系统*/
+                                    purchaseService.loginOut();
+                                }
+                                return [];
+                            }
+                            var result = json.result;
+                            if (typeof result === 'undefined') {
+                                /*重置分页*/
+                                self.table.list_page2.total = 0;
+                                self.table.list_page2.page = 1;
+                                jq_dom.$admin_page_wrap2.pagination({
+                                    pageNumber: self.table.list_page2.page,
+                                    pageSize: self.table.list_page2.pageSize,
+                                    total: self.table.list_page2.total
+                                });
+                                return [];
+                            }
+
+                            if (result) {
+                                /*设置分页*/
+                                self.table.list_page2.total = result.count;
+                                /*分页调用*/
+                                jq_dom.$admin_page_wrap2.pagination({
+                                    pageNumber: self.table.list_page2.page,
+                                    pageSize: self.table.list_page2.pageSize,
+                                    total: self.table.list_page2.total,
+                                    onSelectPage: function (pageNumber, pageSize) {
+                                        /*再次查询*/
+                                        var temp_param = self.table.list_config2.config.ajax.data;
+                                        self.table.list_page2.page = pageNumber;
+                                        self.table.list_page2.pageSize = pageSize;
+                                        temp_param['page'] = self.table.list_page2.page;
+                                        temp_param['pageSize'] = self.table.list_page2.pageSize;
+                                        self.table.list_config2.config.ajax.data = temp_param;
+                                        purchaseService.getColumnData(self.table, self.record);
+                                    }
+                                });
+
+                                var list = result.list;
+                                if (list) {
+                                    return list;
+                                } else {
+                                    return [];
+                                }
+                            } else {
+                                /*重置分页*/
+                                self.table.list_page2.total = 0;
+                                self.table.list_page2.page = 1;
+                                jq_dom.$admin_page_wrap2.pagination({
+                                    pageNumber: self.table.list_page2.page,
+                                    pageSize: self.table.list_page2.pageSize,
+                                    total: self.table.list_page2.total
+                                });
+                                return [];
+                            }
+                        },
+                        data: {
+                            page: 1,
+                            pageSize: 10
+                        }
+                    },
+                    info: false,
+                    dom: '<"g-d-hidei" s>',
+                    searching: true,
+                    order: [[1, "desc"]],
+                    columns: [
+                        {
+                            "data": "id"
+                        },
+                        {
+                            "data": "sendNumber"
+                        },
+                        {
+                            "data": "sendTime"
+                        },
+                        {
+                            "data": "merchantName"
+                        },
+                        {
+                            "data": "merchantPhone",
+                            "render": function (data, type, full, meta) {
+                                return toolUtil.phoneFormat(data);
+                            }
+                        },
+                        {
+                            "data": "orderNumber"
+                        },
+                        {
+                            "data": "orderState",
+                            "render": function (data, type, full, meta) {
+                                var stauts = parseInt(data, 10),
+                                    statusmap = {
+                                        0: "待付款",
+                                        1: "取消订单",
+                                        6: "待发货",
+                                        9: "待收货",
+                                        20: "待评价",
+                                        21: "已评价"
+                                    },
+                                    str;
+
+                                if (stauts === 0) {
+                                    str = '<div class="g-c-blue3">' + statusmap[stauts] + '</div>';
+                                } else if (stauts === 1) {
+                                    str = '<div class="g-c-red1">' + statusmap[stauts] + '</div>';
+                                } else if (stauts === 6 || stauts === 9 || stauts === 20) {
+                                    str = '<div class="g-c-warn">' + statusmap[stauts] + '</div>';
+                                } else if (stauts === 21) {
+                                    str = '<div class="g-c-green1">' + statusmap[stauts] + '</div>';
+                                } else {
+                                    str = '<div class="g-c-gray6">其他</div>';
+                                }
+                                return str;
+                            }
+                        },
+                        {
+                            "data": "store"
+                        },
+                        {
+                            /*to do*/
+                            "data": "guid",
+                            "render": function (data, type, full, meta) {
+                                var btns = '';
+
+                                /*查看订单*/
+                                if (self.powerlist.purchase_details) {
+                                    btns += '<span data-action="detail" data-id="' + data + '"  class="btn-operate">查看</span>';
+                                    if (parseInt(full.orderState, 10) === 9) {
+                                        btns += '<span data-action="receive" data-id="' + data + '"  class="btn-operate">收货</span>';
+                                    }
+                                }
+                                return btns;
+                            }
+                        }
+                    ]
+                }
+            },
+            /*表格缓存*/
+            list_table1: null,
+            list_table2: null,
             /*列控制*/
-            tablecolumn: {
+            tablecolumn1: {
                 init_len: 9/*数据有多少列*/,
                 column_flag: true,
                 ischeck: false, /*是否有全选*/
                 columnshow: true,
-                $column_wrap: jq_dom.$admin_table_checkcolumn/*控制列显示隐藏的容器*/,
-                $bodywrap: jq_dom.$admin_batchlist_wrap/*数据展现容器*/,
+                $column_wrap: jq_dom.$admin_table_checkcolumn1/*控制列显示隐藏的容器*/,
+                $bodywrap: jq_dom.$admin_batchlist_wrap1/*数据展现容器*/,
                 hide_list: [0, 5, 6, 7]/*需要隐藏的的列序号*/,
                 hide_len: 4,
                 column_api: {
                     isEmpty: function () {
-                        if (self.table.list_table === null) {
+                        if (self.table.list_table1 === null) {
                             return true;
                         }
-                        return self.table.list_table.data().length === 0;
+                        return self.table.list_table1.data().length === 0;
                     }
                 },
-                $colgroup: jq_dom.$admin_list_colgroup/*分组模型*/,
-                $column_btn: jq_dom.$admin_table_checkcolumn.prev(),
-                $column_ul: jq_dom.$admin_table_checkcolumn.find('ul')
+                $colgroup: jq_dom.$admin_list_colgroup1/*分组模型*/,
+                $column_btn: jq_dom.$admin_table_checkcolumn1.prev(),
+                $column_ul: jq_dom.$admin_table_checkcolumn1.find('ul')
+            },
+            tablecolumn2: {
+                init_len: 9/*数据有多少列*/,
+                column_flag: true,
+                ischeck: false, /*是否有全选*/
+                columnshow: true,
+                $column_wrap: jq_dom.$admin_table_checkcolumn2/*控制列显示隐藏的容器*/,
+                $bodywrap: jq_dom.$admin_batchlist_wrap2/*数据展现容器*/,
+                hide_list: [0, 5, 6, 7]/*需要隐藏的的列序号*/,
+                hide_len: 4,
+                column_api: {
+                    isEmpty: function () {
+                        if (self.table.list_table2 === null) {
+                            return true;
+                        }
+                        return self.table.list_table2.data().length === 0;
+                    }
+                },
+                $colgroup: jq_dom.$admin_list_colgroup2/*分组模型*/,
+                $column_btn: jq_dom.$admin_table_checkcolumn2.prev(),
+                $column_ul: jq_dom.$admin_table_checkcolumn2.find('ul')
             },
             /*按钮*/
-            tableitemaction: {
-                $bodywrap: jq_dom.$admin_batchlist_wrap,
+            tableitemaction1: {
+                $bodywrap: jq_dom.$admin_batchlist_wrap1,
                 itemaction_api: {
                     doItemAction: function (config) {
                         purchaseService.doItemAction({
@@ -280,6 +501,29 @@ angular.module('app')
                         }, config);
                     }
                 }
+            },
+            tableitemaction2: {
+                $bodywrap: jq_dom.$admin_batchlist_wrap2,
+                itemaction_api: {
+                    doItemAction: function (config) {
+                        purchaseService.doItemAction({
+                            record: self.record,
+                            table: self.table,
+                            send: self.send
+                        }, config);
+                    }
+                }
+            },
+            /*全选*/
+            tablecheckall2: {
+                checkall_flag: true,
+                $bodywrap: jq_dom.$admin_batchlist_wrap2,
+                $checkall: jq_dom.$admin_finance_checkall2,
+                checkvalue: 0/*默认未选中*/,
+                checkid: []/*默认索引数据为空*/,
+                checkitem: []/*默认node数据为空*/,
+                highactive: 'item-lightenbatch',
+                checkactive: 'admin-batchitem-checkactive'
             }
         };
 
@@ -287,7 +531,7 @@ angular.module('app')
         /*初始化服务--虚拟挂载点，或者初始化参数*/
         purchaseService.getRoot(self.record);
         /*初始化服务--日历查询*/
-        purchaseService.datePicker(this.record);
+        purchaseService.datePicker(self.record);
 
 
         /*菜单服务--初始化菜单*/
@@ -308,11 +552,11 @@ angular.module('app')
 
         /*条件服务--切换条件主题*/
         this.toggleTheme = function (type) {
-            self.record.theme = type;
             /*计算区域并执行相关操作*/
-            purchaseService.changeView({
+            purchaseService.toggleTheme({
                 record:self.record,
-                table:self.table
+                table:self.table,
+                type:type
             });
         };
 
