@@ -1,5 +1,5 @@
 angular.module('app')
-    .service('purchaseService', ['toolUtil', 'toolDialog', 'BASE_CONFIG', 'loginService', 'powerService', 'dataTableColumnService', 'dataTableItemActionService', 'datePicker97Service','dataTableCheckAllService','testService', function (toolUtil, toolDialog, BASE_CONFIG, loginService, powerService, dataTableColumnService, dataTableItemActionService, datePicker97Service,dataTableCheckAllService, testService) {
+    .service('purchaseService', ['toolUtil', 'toolDialog', 'BASE_CONFIG', 'loginService', 'powerService', 'dataTableColumnService', 'dataTableItemActionService', 'datePicker97Service', 'dataTableCheckAllService', 'testService', function (toolUtil, toolDialog, BASE_CONFIG, loginService, powerService, dataTableColumnService, dataTableItemActionService, datePicker97Service, dataTableCheckAllService, testService) {
 
         /*获取缓存数据*/
         var self = this,
@@ -108,11 +108,11 @@ angular.module('app')
                 /*调用按钮操作*/
                 dataTableItemActionService.initItemAction(table[temp_action]);
                 /*调用全选*/
-                if(action===2){
+                if (action === 2) {
                     dataTableCheckAllService.initCheckAll(table[temp_checkall]);
                 }
             } else {
-                if(action===2){
+                if (action === 2) {
                     dataTableCheckAllService.clear(table[temp_checkall]);
                 }
                 table[temp_table].ajax.config(table[temp_config].config.ajax).load();
@@ -151,13 +151,16 @@ angular.module('app')
 
             if (action === 'detail') {
                 /*查询订单详情*/
-                self.queryDetail(null, id, action);
+                self.queryDetail(null, id);
             } else if (action === 'receive') {
                 /*查询收货*/
-                self.queryReceive(model, id, action);
+                self.queryReceive(model, id);
             } else if (action === 'audit') {
                 /*查询审核*/
-                self.queryAudit(model, id, action);
+                self.queryAudit(model, {
+                    id: id,
+                    type: 'base'
+                });
             }
         };
         /*数据查询服务--查询订单详情*/
@@ -539,43 +542,65 @@ angular.module('app')
                     }
                 );
         };
+
+
         /*审核服务--查询审核*/
-        this.queryAudit = function (config, id, action) {
+        this.queryAudit = function (model, config) {
             if (cache === null) {
                 return false;
+            }
+            var type = config.type,
+                id,
+                len = 0;
+
+            if (type === 'base') {
+                /*普通*/
+                id = config.id;
+                len = 1;
+                /*清除全选数据*/
+                dataTableCheckAllService.clear(model.table['tablecheckall' + model.record.action]);
+                /*变更模型*/
+                model.audit.isdata = id;
+                model.audit.type = type;
+                model.audit.batchflag = false;
+            } else if (type === 'batch') {
+                /*批量*/
+                id = dataTableCheckAllService.getBatchData(model.table['tablecheckall' + model.record.action]);
+                len = id.length;
             }
 
             if (typeof id === 'undefined') {
                 toolDialog.show({
                     type: 'warn',
-                    value: '没有配货单信息'
+                    value: '没有审核信息'
                 });
                 return false;
             }
-
             var param = $.extend(true, {}, cache.loginMap.param);
             /*判断参数*/
 
             toolUtil
                 .requestHttp({
-                    url: /*'/organization/invoice/sendlist'*/'json/test.json'/*测试地址*/,
+                    url: /*'/organization/purchase/auditlist'*/'json/test.json'/*测试地址*/,
                     method: 'post',
                     set: true,
                     debug: true, /*测试开关*/
                     data: param
                 })
                 .then(function (resp) {
-                        var resp = {
-                            status: 200,
-                            data: {
-                                message: 'ok',
-                                count: 50,
-                                code: 0,
-                                result: {
-                                    list: true
-                                }
-                            }
-                        }/*测试请求*/;
+                        var resp = testService.test({
+                            map: {
+                                'purchaseId': 'guid',
+                                'purchaseTime': 'datetime',
+                                'purchaseNumber': 'id',
+                                'purchasePrice': 'money',
+                                'provider': 'text',
+                                'providerPhone': 'mobile',
+                                'auditState': 'rule,0,2'
+                            },
+                            mapmin: len,
+                            mapmax: len
+                        })/*测试请求*/;
 
                         var data = resp.data,
                             status = parseInt(resp.status, 10);
@@ -603,79 +628,29 @@ angular.module('app')
                                     var list = result.list;
                                     if (list) {
                                         /*查看*/
-                                        var len = 1 + parseInt(Math.random() * 5, 10),
-                                            i = 0,
-                                            str = '<tr>\
-                                                    <td colspan="5">\
-                                                        <div class="g-w-number20 g-f-l">\
-                                                            <div>收货地址：<span class="g-c-red1">' + testService.getRule('address') + '</span></div>\
-                                                            <div>收货人姓名：<span class="g-c-red1">' + testService.getRule('name') + '</span></div>\
-                                                            <div>联系电话：<span class="g-c-red1">' + testService.getRule('mobile') + '</span></div>\
-                                                        </div>\
-                                                        <div class="g-w-number20 g-f-r">\
-                                                            <div class="g-w-number20 g-f-l">快递公司：<span class="g-c-red1">' + testService.getRule('text') + '</span></div>\
-                                                            <div class="g-w-number20 g-f-r">快递单号：<span class="g-c-red1">' + testService.getRule('guid') + '</span></div>\
-                                                        </div>\
-                                                    </td>\
-                                                </tr>';
-
+                                        var i = 0,
+                                            str = '';
                                         for (i; i < len; i++) {
                                             var item = list[i],
-                                                j = 1 + parseInt(Math.random() * 5, 0),
-                                                k = 0;
-
-                                            if (j === 1) {
-                                                str += '<tr>\
-                                                        <td colspan="5"><div class="g-w-number20 g-f-l">配货包裹' + (i + 1) + ':<span class="g-c-blue3">' + testService.getRule('name') + '</span></div><div class="g-w-number20 g-f-r">配货包裹地址：<span class="g-c-blue3">' + testService.getRule('address') + '</span></div></td>\
-                                                    </tr>\
-                                                    <tr>\
-                                                        <td>' + testService.getRule('info') + '</td>\
-                                                        <td>1</td>\
-                                                        <td>' + testService.getRule('goods') + '</td>\
-                                                        <td>' + testService.getRule('goodstype') + '</td>\
-                                                        <td>' + toolUtil.moneyCorrect(testService.getRule('minmax,1,90000'), 15, false)[0] + '</td>\
-                                                    </tr>\
-                                                    <tr>\
-                                                        <td colspan="3">&nbsp;</td>\
-                                                        <td class="g-c-blue3">合计:</td>\
-                                                        <td><span class="g-c-blue3">' + toolUtil.moneyCorrect(testService.getRule('minmax,10000,900000'), 15, false)[0] + '</span></td>\
+                                                keyid = (type === "base" ? item["purchaseId"] : id[i]);
+                                            str += '<tr>\
+                                                        <td>' + (i + 1) + '</td>\
+                                                        <td>' + keyid + '</td>\
+                                                        <td>' + item["purchaseTime"] + '</td>\
+                                                        <td>' + item["purchaseNumber"] + '</td>\
+                                                        <td>' + toolUtil.moneyCorrect(item["purchasePrice"], 15, false)[0] + '</td>\
+                                                        <td>' + item["provider"] + '</td>\
+                                                        <td>' + toolUtil.phoneFormat(item["providerPhone"]) + '</td>\
+                                                        <td>' + (item["auditState"] === 0 ? "待审核" : "审核失败") + '</td>\
+                                                        <td><span data-action="update" data-id="' + keyid + '"  class="btn-operate">修改</span><span data-action="delete" data-id="' + keyid + '"  class="btn-operate">删除</span></td>\
                                                     </tr>';
-                                            } else {
-                                                for (k; k < j; k++) {
-                                                    if (k === 0) {
-                                                        str += '<tr>\
-                                                            <td colspan="5"><div class="g-w-number20 g-f-l">配货包裹' + (i + 1) + ':<span class="g-c-blue3">' + testService.getRule('text') + '</span></div><div class="g-w-number20 g-f-r">配货包裹地址：<span class="g-c-blue3">' + testService.getRule('address') + '</span></div></td>\
-                                                        </tr>\
-                                                        <tr>\
-                                                            <td rowspan="' + (j - 1) + '">' + testService.getRule('info') + '</td>\
-                                                            <td>' + (k + 1) + '</td>\
-                                                            <td>' + testService.getRule('goods') + '</td>\
-                                                            <td>' + testService.getRule('goodstype') + '</td>\
-                                                            <td>' + toolUtil.moneyCorrect(testService.getRule('minmax,1,90000'), 15, false)[0] + '</td>\
-                                                        </tr>';
-                                                    } else if (k !== j - 1) {
-                                                        str += '<tr>\
-                                                        <td>' + (k + 1) + '</td>\
-                                                        <td>' + testService.getRule('goods') + '</td>\
-                                                        <td>' + testService.getRule('goodstype') + '</td>\
-                                                        <td>' + toolUtil.moneyCorrect(testService.getRule('minmax,1,90000'), 15, false)[0] + '</td>\
-                                                    </tr>';
-                                                    } else if (k === j - 1) {
-                                                        str += '<tr>\
-                                                        <td colspan="3">&nbsp;</td>\
-                                                        <td class="g-c-blue3">合计:</td>\
-                                                        <td><span class="g-c-blue3">' + toolUtil.moneyCorrect(testService.getRule('minmax,10000,900000'), 15, false)[0] + '</span></td>\
-                                                    </tr>';
-                                                    }
-                                                }
-                                            }
                                         }
                                         if (str !== '') {
-                                            $(str).appendTo(self.$admin_send_detail.html(''));
+                                            $(str).appendTo(self.$admin_audit_show.html(''));
                                             /*显示弹窗*/
                                             self.toggleModal({
                                                 display: 'show',
-                                                area: 'send'
+                                                area: 'audit'
                                             });
                                         }
                                     }
@@ -683,7 +658,7 @@ angular.module('app')
                                     /*提示信息*/
                                     toolDialog.show({
                                         type: 'warn',
-                                        value: '获取数据失败'
+                                        value: '获取审核数据失败'
                                     });
                                 }
                             }
@@ -694,11 +669,80 @@ angular.module('app')
                         if (typeof message !== 'undefined' && message !== '') {
                             console.log(message);
                         } else {
-                            console.log('请求订单失败');
+                            console.log('请求审核失败');
                         }
                     }
                 );
         };
+        /*审核服务--操作审核*/
+        this.actionAudit = function ($event, model) {
+            var target = $event.target,
+                node = target.nodeName.toLowerCase();
+
+            if (node === 'span') {
+                var $this = $(target);
+                if ($this.hasClass('btn-operate')) {
+                    /*执行审核相关操作*/
+                    var action = $this.attr('data-action'),
+                        id = $this.attr('data-id'),
+                        audit = model.audit,
+                        record = model.record;
+
+                    if (action === 'delete') {
+                        if (audit.type === 'batch') {
+                            var data = dataTableCheckAllService.getBatchData(model.table['tablecheckall' + record.action]),
+                                len = data.length;
+                        }
+                        /*确认是否删除*/
+                        toolDialog.sureDialog('', function () {
+                            /*执行删除操作*/
+                            if (audit.type === 'base') {
+                                /*单条记录*/
+                                self.$admin_audit_show.html('');
+                                /*更新模型*/
+                                if(model.fn && typeof model.fn==='function'){
+                                    model.fn.call(null);
+                                }
+                            } else if (audit.type === 'batch') {
+                                if (len === 1) {
+                                    self.$admin_audit_show.html('');
+                                } else if (len > 1) {
+                                    /*清除当前数据*/
+                                    $this.closest('tr').remove();
+                                }
+                                /*比对数据并过滤数据*/
+                                dataTableCheckAllService.filterData(model.table['tablecheckall' + record.action], id);
+                            }
+                        }, '确认是否真要删除此数据', true);
+                    } else if (action === 'update') {
+                        /*修改操作*/
+                        self.openEditAudit(model);
+                    }
+                    /*purchaseService.actionAudit({
+                     table:self.table,
+                     record:self.record,
+                     audit:self.audit,
+                     $btn:$this
+                     });*/
+                }
+            }
+        };
+        /*审核服务--提交审核*/
+        this.auditPurchase = function (config) {
+
+        };
+        /*审核服务--关闭弹窗*/
+        this.openEditAudit = function (config) {
+            /*显示*/
+            config.audit.editshow=true;
+            /*重置值*/
+            config.audit.editvalue='';
+        };
+        /*审核服务--关闭弹窗*/
+        this.closeEditAudit = function (config) {
+            config.audit.editshow=false;
+        };
+
         /*发货服务--查询订单配货*/
         this.sendList = function (config) {
             if (!config && !config.send) {

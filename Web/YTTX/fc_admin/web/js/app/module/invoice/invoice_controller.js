@@ -1,6 +1,6 @@
 /*首页控制器*/
 angular.module('app')
-    .controller('InvoiceController', ['invoiceService', 'testService', 'toolUtil', '$scope', function (invoiceService, testService, toolUtil, $scope) {
+    .controller('InvoiceController', ['invoiceService', 'testService', 'toolUtil', function (invoiceService, testService, toolUtil) {
         var self = this;
 
         /*模型--操作权限列表*/

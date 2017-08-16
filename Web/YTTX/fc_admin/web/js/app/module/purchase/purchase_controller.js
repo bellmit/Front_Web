@@ -71,8 +71,14 @@ angular.module('app')
         }];
 
 
-        /*模型--发货*/
-        this.send = {};
+        /*模型--审核*/
+        this.audit = {
+            type: 'base'/*审核时数据类型：base:一般，batch:批量*/,
+            isdata: false/*是否有数据*/,
+            batchflag: false/*是否是批量模式*/,
+            editshow: false/*是否编辑*/,
+            editvalue:''/*编辑值*/
+        };
 
 
         /*模型--表格缓存*/
@@ -104,8 +110,9 @@ angular.module('app')
                             var json = testService.test({
                                 map: {
                                     'id': 'guid',
-                                    'purchaseNumber': 'guid',
+                                    'purchaseId': 'guid',
                                     'purchaseTime': 'datetime',
+                                    'purchaseNumber': 'id',
                                     'purchasePrice': 'money',
                                     'provider': 'value',
                                     'providerPhone': 'mobile',
@@ -195,10 +202,13 @@ angular.module('app')
                     order: [[0, "desc"], [1, "desc"]],
                     columns: [
                         {
-                            "data": "purchaseNumber"
+                            "data": "purchaseId"
                         },
                         {
                             "data": "purchaseTime"
+                        },
+                        {
+                            "data": "purchaseNumber"
                         },
                         {
                             "data": "purchasePrice",
@@ -273,8 +283,9 @@ angular.module('app')
                             var json = testService.test({
                                 map: {
                                     'id': 'guid',
-                                    'purchaseNumber': 'guid',
+                                    'purchaseId': 'guid',
                                     'purchaseTime': 'datetime',
+                                    'purchaseNumber': 'id',
                                     'purchasePrice': 'money',
                                     'provider': 'value',
                                     'providerPhone': 'mobile',
@@ -361,22 +372,25 @@ angular.module('app')
                     info: false,
                     dom: '<"g-d-hidei" s>',
                     searching: true,
-                    order: [[1, "desc"],[2, "desc"]],
+                    order: [[1, "desc"], [2, "desc"]],
                     columns: [
                         {
                             "data": "id",
                             "orderable": false,
                             "searchable": false,
                             "render": function (data, type, full, meta) {
-                                var state=parseInt(full.auditState,10);
-                                return state===1?'':'<input value="' + data + '" name="check_purchaseid" type="checkbox" />';
+                                var state = parseInt(full.auditState, 10);
+                                return state === 1 ? '' : '<input value="' + data + '" name="check_purchaseid" type="checkbox" />';
                             }
                         },
                         {
-                            "data": "purchaseNumber"
+                            "data": "purchaseId"
                         },
                         {
                             "data": "purchaseTime"
+                        },
+                        {
+                            "data": "purchaseNumber"
                         },
                         {
                             "data": "purchasePrice",
@@ -438,14 +452,14 @@ angular.module('app')
             list_table2: null,
             /*列控制*/
             tablecolumn1: {
-                init_len: 7/*数据有多少列*/,
+                init_len: 8/*数据有多少列*/,
                 column_flag: true,
                 ischeck: false, /*是否有全选*/
                 columnshow: true,
                 $column_wrap: jq_dom.$admin_table_checkcolumn1/*控制列显示隐藏的容器*/,
                 $bodywrap: jq_dom.$admin_batchlist_wrap1/*数据展现容器*/,
-                hide_list: [2, 4]/*需要隐藏的的列序号*/,
-                hide_len: 2,
+                hide_list: [2, 3, 5]/*需要隐藏的的列序号*/,
+                hide_len: 3,
                 column_api: {
                     isEmpty: function () {
                         if (self.table.list_table1 === null) {
@@ -459,14 +473,14 @@ angular.module('app')
                 $column_ul: jq_dom.$admin_table_checkcolumn1.find('ul')
             },
             tablecolumn2: {
-                init_len: 8/*数据有多少列*/,
+                init_len: 9/*数据有多少列*/,
                 column_flag: true,
                 ischeck: true, /*是否有全选*/
                 columnshow: true,
                 $column_wrap: jq_dom.$admin_table_checkcolumn2/*控制列显示隐藏的容器*/,
                 $bodywrap: jq_dom.$admin_batchlist_wrap2/*数据展现容器*/,
-                hide_list: [3, 4, 5]/*需要隐藏的的列序号*/,
-                hide_len: 3,
+                hide_list: [3, 4, 5, 6]/*需要隐藏的的列序号*/,
+                hide_len: 4,
                 column_api: {
                     isEmpty: function () {
                         if (self.table.list_table2 === null) {
@@ -486,8 +500,7 @@ angular.module('app')
                     doItemAction: function (config) {
                         purchaseService.doItemAction({
                             record: self.record,
-                            table: self.table,
-                            send: self.send
+                            table: self.table
                         }, config);
                     }
                 }
@@ -499,7 +512,7 @@ angular.module('app')
                         purchaseService.doItemAction({
                             record: self.record,
                             table: self.table,
-                            send: self.send
+                            audit: self.audit
                         }, config);
                     }
                 }
@@ -509,6 +522,21 @@ angular.module('app')
                 checkall_flag: true,
                 $bodywrap: jq_dom.$admin_batchlist_wrap2,
                 $checkall: jq_dom.$admin_purchase_checkall2,
+                checkfn: function (flag) {
+                    $scope.$apply(function () {
+                        if (flag === 0) {
+                            /*普通模式*/
+                            self.audit.type = 'base';
+                            self.audit.batchflag = false;
+                            self.audit.isdata = '';
+                        } else if (flag === 1) {
+                            /*批量模式*/
+                            self.audit.type = 'batch';
+                            self.audit.batchflag = true;
+                            self.audit.isdata = 'ok';
+                        }
+                    });
+                },
                 checkvalue: 0/*默认未选中*/,
                 checkid: []/*默认索引数据为空*/,
                 checkitem: []/*默认node数据为空*/,
@@ -551,6 +579,38 @@ angular.module('app')
         };
 
 
+        /*审核服务--操作审核*/
+        this.queryAudit = function () {
+            purchaseService.queryAudit({
+                table: self.table,
+                record: self.record,
+                audit: self.audit
+            }, {
+                type: 'batch'
+            });
+        };
+        /*审核服务--操作审核*/
+        this.actionAudit = function ($event) {
+            purchaseService.actionAudit($event, {
+                table: self.table,
+                record: self.record,
+                audit: self.audit,
+                fn: function () {
+                    $scope.$apply(function () {
+                        self.audit.type = 'base';
+                        self.audit.batchflag = false;
+                        self.audit.isdata = '';
+                    });
+                }
+            });
+        };
+        /*审核服务--关闭弹出*/
+        this.closeEditAudit = function () {
+            purchaseService.closeEditAudit({
+                audit:self.audit
+            });
+        };
+
         /*发货服务--发货*/
         this.sendList = function () {
             purchaseService.sendList({
@@ -567,7 +627,18 @@ angular.module('app')
         };
 
 
-        /*查询订单*/
+        /*批量审核*/
+        this.queryAudit = function () {
+            purchaseService.queryAudit({
+                record: self.record,
+                table: self.table
+            }, {
+                type: 'batch'
+            });
+        };
+
+
+        /*查询采购单*/
         this.queryPurchase = function () {
             purchaseService.getColumnData(self.table, self.record);
         };
