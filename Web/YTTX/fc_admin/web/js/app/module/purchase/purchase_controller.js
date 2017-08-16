@@ -48,7 +48,7 @@ angular.module('app')
             filter: '',
             startTime: '',
             endTime: '',
-            action:1/*选项主题，默认为统计查询选项*/,
+            action: 1/*选项主题，默认为统计查询选项*/,
             searchWord: '',
             organizationId: ''/*操作节点*/,
             prev: null/*菜单操作:上一次操作菜单*/,
@@ -103,14 +103,13 @@ angular.module('app')
                         dataSrc: function (json) {
                             var json = testService.test({
                                 map: {
-                                    'id': 'id',
-                                    'sendNumber': 'guid',
-                                    'sendTime': 'datetime',
-                                    'merchantName': 'value',
-                                    'merchantPhone': 'mobile',
-                                    'orderNumber': 'guid',
-                                    'orderState': 'rule,0,1,6,9,20,21',
-                                    'store': 'value'
+                                    'id': 'guid',
+                                    'purchaseNumber': 'guid',
+                                    'purchaseTime': 'datetime',
+                                    'purchasePrice': 'money',
+                                    'provider': 'value',
+                                    'providerPhone': 'mobile',
+                                    'auditState': 'rule,0,1,2'
                                 },
                                 mapmin: 5,
                                 mapmax: 10,
@@ -193,51 +192,47 @@ angular.module('app')
                     info: false,
                     dom: '<"g-d-hidei" s>',
                     searching: true,
-                    order: [[1, "desc"]],
+                    order: [[0, "desc"], [1, "desc"]],
                     columns: [
                         {
-                            "data": "id"
+                            "data": "purchaseNumber"
                         },
                         {
-                            "data": "sendNumber"
+                            "data": "purchaseTime"
                         },
                         {
-                            "data": "sendTime"
+                            "data": "purchasePrice",
+                            "render": function (data, type, full, meta) {
+                                return toolUtil.moneyCorrect(data, 15, false)[0];
+                            }
                         },
                         {
-                            "data": "merchantName"
+                            "data": "provider"
                         },
                         {
-                            "data": "merchantPhone",
+                            "data": "providerPhone",
                             "render": function (data, type, full, meta) {
                                 return toolUtil.phoneFormat(data);
                             }
                         },
+
                         {
-                            "data": "orderNumber"
-                        },
-                        {
-                            "data": "orderState",
+                            "data": "auditState",
                             "render": function (data, type, full, meta) {
                                 var stauts = parseInt(data, 10),
                                     statusmap = {
-                                        0: "待付款",
-                                        1: "取消订单",
-                                        6: "待发货",
-                                        9: "待收货",
-                                        20: "待评价",
-                                        21: "已评价"
+                                        0: "待审核",
+                                        1: "已审核",
+                                        2: "审核失败"
                                     },
                                     str;
 
                                 if (stauts === 0) {
-                                    str = '<div class="g-c-blue3">' + statusmap[stauts] + '</div>';
+                                    str = '<div class="g-c-gray9">' + statusmap[stauts] + '</div>';
                                 } else if (stauts === 1) {
-                                    str = '<div class="g-c-red1">' + statusmap[stauts] + '</div>';
-                                } else if (stauts === 6 || stauts === 9 || stauts === 20) {
-                                    str = '<div class="g-c-warn">' + statusmap[stauts] + '</div>';
-                                } else if (stauts === 21) {
                                     str = '<div class="g-c-green1">' + statusmap[stauts] + '</div>';
+                                } else if (stauts === 2) {
+                                    str = '<div class="g-c-red1">' + statusmap[stauts] + '</div>';
                                 } else {
                                     str = '<div class="g-c-gray6">其他</div>';
                                 }
@@ -245,18 +240,15 @@ angular.module('app')
                             }
                         },
                         {
-                            "data": "store"
-                        },
-                        {
                             /*to do*/
-                            "data": "guid",
+                            "data": "id",
                             "render": function (data, type, full, meta) {
                                 var btns = '';
 
                                 /*查看订单*/
                                 if (self.powerlist.purchase_details) {
                                     btns += '<span data-action="detail" data-id="' + data + '"  class="btn-operate">查看</span>';
-                                    if (parseInt(full.orderState, 10) === 9) {
+                                    if (parseInt(full.auditState, 10) === 1) {
                                         btns += '<span data-action="receive" data-id="' + data + '"  class="btn-operate">收货</span>';
                                     }
                                 }
@@ -280,14 +272,13 @@ angular.module('app')
                         dataSrc: function (json) {
                             var json = testService.test({
                                 map: {
-                                    'id': 'id',
-                                    'sendNumber': 'guid',
-                                    'sendTime': 'datetime',
-                                    'merchantName': 'value',
-                                    'merchantPhone': 'mobile',
-                                    'orderNumber': 'guid',
-                                    'orderState': 'rule,0,1,6,9,20,21',
-                                    'store': 'value'
+                                    'id': 'guid',
+                                    'purchaseNumber': 'guid',
+                                    'purchaseTime': 'datetime',
+                                    'purchasePrice': 'money',
+                                    'provider': 'value',
+                                    'providerPhone': 'mobile',
+                                    'auditState': 'rule,0,1,2'
                                 },
                                 mapmin: 5,
                                 mapmax: 10,
@@ -370,51 +361,56 @@ angular.module('app')
                     info: false,
                     dom: '<"g-d-hidei" s>',
                     searching: true,
-                    order: [[1, "desc"]],
+                    order: [[1, "desc"],[2, "desc"]],
                     columns: [
                         {
-                            "data": "id"
+                            "data": "id",
+                            "orderable": false,
+                            "searchable": false,
+                            "render": function (data, type, full, meta) {
+                                var state=parseInt(full.auditState,10);
+                                return state===1?'':'<input value="' + data + '" name="check_purchaseid" type="checkbox" />';
+                            }
                         },
                         {
-                            "data": "sendNumber"
+                            "data": "purchaseNumber"
                         },
                         {
-                            "data": "sendTime"
+                            "data": "purchaseTime"
                         },
                         {
-                            "data": "merchantName"
+                            "data": "purchasePrice",
+                            "render": function (data, type, full, meta) {
+                                return toolUtil.moneyCorrect(data, 15, false)[0];
+                            }
                         },
                         {
-                            "data": "merchantPhone",
+                            "data": "provider"
+                        },
+                        {
+                            "data": "providerPhone",
                             "render": function (data, type, full, meta) {
                                 return toolUtil.phoneFormat(data);
                             }
                         },
+
                         {
-                            "data": "orderNumber"
-                        },
-                        {
-                            "data": "orderState",
+                            "data": "auditState",
                             "render": function (data, type, full, meta) {
                                 var stauts = parseInt(data, 10),
                                     statusmap = {
-                                        0: "待付款",
-                                        1: "取消订单",
-                                        6: "待发货",
-                                        9: "待收货",
-                                        20: "待评价",
-                                        21: "已评价"
+                                        0: "待审核",
+                                        1: "已审核",
+                                        2: "审核失败"
                                     },
                                     str;
 
                                 if (stauts === 0) {
-                                    str = '<div class="g-c-blue3">' + statusmap[stauts] + '</div>';
+                                    str = '<div class="g-c-gray9">' + statusmap[stauts] + '</div>';
                                 } else if (stauts === 1) {
-                                    str = '<div class="g-c-red1">' + statusmap[stauts] + '</div>';
-                                } else if (stauts === 6 || stauts === 9 || stauts === 20) {
-                                    str = '<div class="g-c-warn">' + statusmap[stauts] + '</div>';
-                                } else if (stauts === 21) {
                                     str = '<div class="g-c-green1">' + statusmap[stauts] + '</div>';
+                                } else if (stauts === 2) {
+                                    str = '<div class="g-c-red1">' + statusmap[stauts] + '</div>';
                                 } else {
                                     str = '<div class="g-c-gray6">其他</div>';
                                 }
@@ -422,20 +418,14 @@ angular.module('app')
                             }
                         },
                         {
-                            "data": "store"
-                        },
-                        {
                             /*to do*/
-                            "data": "guid",
+                            "data": "id",
                             "render": function (data, type, full, meta) {
                                 var btns = '';
 
                                 /*查看订单*/
-                                if (self.powerlist.purchase_details) {
-                                    btns += '<span data-action="detail" data-id="' + data + '"  class="btn-operate">查看</span>';
-                                    if (parseInt(full.orderState, 10) === 9) {
-                                        btns += '<span data-action="receive" data-id="' + data + '"  class="btn-operate">收货</span>';
-                                    }
+                                if (self.powerlist.purchase_audit && parseInt(full.auditState, 10) !== 1) {
+                                    btns += '<span data-action="audit" data-id="' + data + '"  class="btn-operate">审核</span>';
                                 }
                                 return btns;
                             }
@@ -448,14 +438,14 @@ angular.module('app')
             list_table2: null,
             /*列控制*/
             tablecolumn1: {
-                init_len: 9/*数据有多少列*/,
+                init_len: 7/*数据有多少列*/,
                 column_flag: true,
                 ischeck: false, /*是否有全选*/
                 columnshow: true,
                 $column_wrap: jq_dom.$admin_table_checkcolumn1/*控制列显示隐藏的容器*/,
                 $bodywrap: jq_dom.$admin_batchlist_wrap1/*数据展现容器*/,
-                hide_list: [0, 5, 6, 7]/*需要隐藏的的列序号*/,
-                hide_len: 4,
+                hide_list: [2, 4]/*需要隐藏的的列序号*/,
+                hide_len: 2,
                 column_api: {
                     isEmpty: function () {
                         if (self.table.list_table1 === null) {
@@ -469,14 +459,14 @@ angular.module('app')
                 $column_ul: jq_dom.$admin_table_checkcolumn1.find('ul')
             },
             tablecolumn2: {
-                init_len: 9/*数据有多少列*/,
+                init_len: 8/*数据有多少列*/,
                 column_flag: true,
-                ischeck: false, /*是否有全选*/
+                ischeck: true, /*是否有全选*/
                 columnshow: true,
                 $column_wrap: jq_dom.$admin_table_checkcolumn2/*控制列显示隐藏的容器*/,
                 $bodywrap: jq_dom.$admin_batchlist_wrap2/*数据展现容器*/,
-                hide_list: [0, 5, 6, 7]/*需要隐藏的的列序号*/,
-                hide_len: 4,
+                hide_list: [3, 4, 5]/*需要隐藏的的列序号*/,
+                hide_len: 3,
                 column_api: {
                     isEmpty: function () {
                         if (self.table.list_table2 === null) {
@@ -518,7 +508,7 @@ angular.module('app')
             tablecheckall2: {
                 checkall_flag: true,
                 $bodywrap: jq_dom.$admin_batchlist_wrap2,
-                $checkall: jq_dom.$admin_finance_checkall2,
+                $checkall: jq_dom.$admin_purchase_checkall2,
                 checkvalue: 0/*默认未选中*/,
                 checkid: []/*默认索引数据为空*/,
                 checkitem: []/*默认node数据为空*/,
@@ -554,9 +544,9 @@ angular.module('app')
         this.toggleTheme = function (type) {
             /*计算区域并执行相关操作*/
             purchaseService.toggleTheme({
-                record:self.record,
-                table:self.table,
-                type:type
+                record: self.record,
+                table: self.table,
+                type: type
             });
         };
 

@@ -50,28 +50,24 @@
                 <table id="admin_list_wrap1" class="table table-bordered table-striped table-hover admin-layout-table">
                     <!--分组样式-->
                     <colgroup id="admin_list_colgroup1">
-                        <col class="g-w-percent2">
                         <col class="g-w-percent10">
                         <col class="g-w-percent8">
                         <col class="g-w-percent5">
-                        <col class="g-w-percent5">
-                        <col class="g-w-percent7">
-                        <col class="g-w-percent3">
-                        <col class="g-w-percent5">
+                        <col class="g-w-percent10">
+                        <col class="g-w-percent8">
+                        <col class="g-w-percent4">
                         <col class="g-w-percent5">
                     </colgroup>
 
                     <!--表头-->
                     <thead>
                     <tr>
-                        <th>序号</th>
-                        <th>配货单号</th>
-                        <th>配货时间</th>
-                        <th>商户名称</th>
-                        <th>手机号码</th>
-                        <th>订单号</th>
-                        <th>订单状态</th>
-                        <th>仓库</th>
+                        <th>采购单号</th>
+                        <th>采购时间</th>
+                        <th>采购总价</th>
+                        <th>供应商</th>
+                        <th>供应商手机</th>
+                        <th>审核状态</th>
                         <th>操作</th>
                     </tr>
                     </thead>
@@ -107,24 +103,26 @@
                         <col class="g-w-percent10">
                         <col class="g-w-percent8">
                         <col class="g-w-percent5">
-                        <col class="g-w-percent5">
-                        <col class="g-w-percent7">
-                        <col class="g-w-percent3">
-                        <col class="g-w-percent5">
+                        <col class="g-w-percent2">
+                        <col class="g-w-percent8">
+                        <col class="g-w-percent4">
                         <col class="g-w-percent5">
                     </colgroup>
 
                     <!--表头-->
                     <thead>
                     <tr>
-                        <th>序号</th>
-                        <th>配货单号</th>
-                        <th>配货时间</th>
-                        <th>商户名称</th>
-                        <th>手机号码</th>
-                        <th>订单号</th>
-                        <th>订单状态</th>
-                        <th>仓库</th>
+                        <th class="g-clear-pl g-clear-pr g-t-c">
+                            <div class="admin-batchitem-wrap" ng-show="purchase_ctrl.powerlist.purchase_audit" >
+                                <label data-check="0" class="admin-batchitem-check" id="admin_purchase_checkall2"></label>
+                            </div>
+                        </th>
+                        <th>采购单号</th>
+                        <th>采购时间</th>
+                        <th>采购总价</th>
+                        <th>供应商</th>
+                        <th>供应商手机</th>
+                        <th>审核状态</th>
                         <th>操作</th>
                     </tr>
                     </thead>
@@ -152,7 +150,7 @@
                 <ul class="sub-menu-wrap">
                     <li>
                         <a class="sub-menu-title sub-menu-titleactive" data-parentid="" data-id="purchase_ctrl.record.currentId" data-layer="0" ng-click="purchase_ctrl.initSubMenu()">{{purchase_ctrl.record.currentName}}</a>
-                        <ul class="g-d-showi ui-sub-menu" ng-click="purchase_ctrl.toggleSubMenu($event)" id="admin_invoice_submenu" ng-init="purchase_ctrl.initSubMenu()"></ul>
+                        <ul class="g-d-showi ui-sub-menu" ng-click="purchase_ctrl.toggleSubMenu($event)" id="admin_purchase_submenu" ng-init="purchase_ctrl.initSubMenu()"></ul>
                     </li>
                 </ul>
             </div>
