@@ -147,7 +147,7 @@
         <div class="struct-layout-side">
 
             <!--选项卡组件-->
-            <ul class="sub-tab-wrap sub-item-group2 sub-itembr-group2 ui-sub-tab" data-action="toggleTheme" data-ctrlname="warehouse_ctrl"  data-tabitem="warehouse_ctrl.themeitem"></ul>
+            <ul class="sub-tab-wrap sub-item-group4 sub-itembr-group4 ui-sub-tab" data-action="toggleTheme" data-ctrlname="warehouse_ctrl"  data-tabitem="warehouse_ctrl.themeitem"></ul>
 
             <!--子菜单组件-->
             <div id="submenu_scroll_wrap">
@@ -161,8 +161,267 @@
         </div>
     </div>
 
-    <!--查看采购详情-->
-    <div class="modal fade custom-width" id="admin_purchasedetail_dialog">
+
+    <!--库存--采购-->
+    <div class="modal fade custom-width" id="admin_kucun_caigou_dialog">
+        <div class="modal-dialog g-w-percent48">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="admin-layout-theme4 admin-theme-close g-t-c g-b-gray17 g-pos-r">订单收货<span class="mini-icon admin-mini-icon1" ng-click="warehouse_ctrl.toggleModal({display:'hide',area:'receive'})"></span>
+                    </div>
+
+                    <!--收货详情-->
+                    <table class="table table-bordered table-striped table-hover admin-layout-table">
+                        <!--分组样式-->
+                        <colgroup>
+                            <col class="g-w-percent20">
+                            <col class="g-w-percent1">
+                            <col class="g-w-percent20">
+                            <col class="g-w-percent6">
+                            <col class="g-w-percent3">
+                        </colgroup>
+
+                        <!--头部-->
+                        <thead>
+                        <tr>
+                            <th>商品详情</th>
+                            <th>序号</th>
+                            <th>商户名称</th>
+                            <th>规格属性(商品型号)</th>
+                            <th>数量</th>
+                        </tr>
+                        </thead>
+
+                        <!--表主体-->
+                        <tbody id="admin_kucun_caigou_show" class="middle-align"></tbody>
+                    </table>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-red g-w-number4" ng-click="warehouse_ctrl.sureReceive()">收货</button>
+                    <button type="button" class="btn btn-red" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--库存--补货-->
+    <div class="modal fade custom-width" id="admin_kucun_buhuo_dialog">
+        <div class="modal-dialog g-w-percent48">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="admin-layout-theme4 admin-theme-close g-t-c g-b-gray17 g-pos-r">订单收货<span class="mini-icon admin-mini-icon1" ng-click="warehouse_ctrl.toggleModal({display:'hide',area:'receive'})"></span>
+                    </div>
+
+                    <!--收货详情-->
+                    <table class="table table-bordered table-striped table-hover admin-layout-table">
+                        <!--分组样式-->
+                        <colgroup>
+                            <col class="g-w-percent20">
+                            <col class="g-w-percent1">
+                            <col class="g-w-percent20">
+                            <col class="g-w-percent6">
+                            <col class="g-w-percent3">
+                        </colgroup>
+
+                        <!--头部-->
+                        <thead>
+                        <tr>
+                            <th>商品详情</th>
+                            <th>序号</th>
+                            <th>商户名称</th>
+                            <th>规格属性(商品型号)</th>
+                            <th>数量</th>
+                        </tr>
+                        </thead>
+
+                        <!--表主体-->
+                        <tbody id="admin_kucun_buhuo_show" class="middle-align"></tbody>
+                    </table>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-red g-w-number4" ng-click="warehouse_ctrl.sureReceive()">收货</button>
+                    <button type="button" class="btn btn-red" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--库存--修改-->
+    <div class="modal fade custom-width" id="admin_kucun_xiugai_dialog">
+        <div class="modal-dialog g-w-percent48">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="admin-layout-theme4 admin-theme-close g-t-c g-b-gray17 g-pos-r">订单收货<span class="mini-icon admin-mini-icon1" ng-click="warehouse_ctrl.toggleModal({display:'hide',area:'receive'})"></span>
+                    </div>
+
+                    <!--收货详情-->
+                    <table class="table table-bordered table-striped table-hover admin-layout-table">
+                        <!--分组样式-->
+                        <colgroup>
+                            <col class="g-w-percent20">
+                            <col class="g-w-percent1">
+                            <col class="g-w-percent20">
+                            <col class="g-w-percent6">
+                            <col class="g-w-percent3">
+                        </colgroup>
+
+                        <!--头部-->
+                        <thead>
+                        <tr>
+                            <th>商品详情</th>
+                            <th>序号</th>
+                            <th>商户名称</th>
+                            <th>规格属性(商品型号)</th>
+                            <th>数量</th>
+                        </tr>
+                        </thead>
+
+                        <!--表主体-->
+                        <tbody id="admin_kucun_xiugai_show" class="middle-align"></tbody>
+                    </table>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-red g-w-number4" ng-click="warehouse_ctrl.sureReceive()">收货</button>
+                    <button type="button" class="btn btn-red" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!--新增入库-->
+    <div class="modal fade custom-width" id="admin_ruku_tianjia_dialog">
+        <div class="modal-dialog g-w-percent48">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="admin-layout-theme4 admin-theme-close g-t-c g-b-gray17 g-pos-r">订单收货<span class="mini-icon admin-mini-icon1" ng-click="warehouse_ctrl.toggleModal({display:'hide',area:'receive'})"></span>
+                    </div>
+
+                    <!--收货详情-->
+                    <table class="table table-bordered table-striped table-hover admin-layout-table">
+                        <!--分组样式-->
+                        <colgroup>
+                            <col class="g-w-percent20">
+                            <col class="g-w-percent1">
+                            <col class="g-w-percent20">
+                            <col class="g-w-percent6">
+                            <col class="g-w-percent3">
+                        </colgroup>
+
+                        <!--头部-->
+                        <thead>
+                        <tr>
+                            <th>商品详情</th>
+                            <th>序号</th>
+                            <th>商户名称</th>
+                            <th>规格属性(商品型号)</th>
+                            <th>数量</th>
+                        </tr>
+                        </thead>
+
+                        <!--表主体-->
+                        <tbody id="admin_ruku_tianjia_show" class="middle-align"></tbody>
+                    </table>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-red g-w-number4" ng-click="warehouse_ctrl.sureReceive()">收货</button>
+                    <button type="button" class="btn btn-red" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--新增出库-->
+    <div class="modal fade custom-width" id="admin_chuku_tianjia_dialog">
+        <div class="modal-dialog g-w-percent48">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="admin-layout-theme4 admin-theme-close g-t-c g-b-gray17 g-pos-r">订单收货<span class="mini-icon admin-mini-icon1" ng-click="warehouse_ctrl.toggleModal({display:'hide',area:'receive'})"></span>
+                    </div>
+
+                    <!--收货详情-->
+                    <table class="table table-bordered table-striped table-hover admin-layout-table">
+                        <!--分组样式-->
+                        <colgroup>
+                            <col class="g-w-percent20">
+                            <col class="g-w-percent1">
+                            <col class="g-w-percent20">
+                            <col class="g-w-percent6">
+                            <col class="g-w-percent3">
+                        </colgroup>
+
+                        <!--头部-->
+                        <thead>
+                        <tr>
+                            <th>商品详情</th>
+                            <th>序号</th>
+                            <th>商户名称</th>
+                            <th>规格属性(商品型号)</th>
+                            <th>数量</th>
+                        </tr>
+                        </thead>
+
+                        <!--表主体-->
+                        <tbody id="admin_chuku_tianjia_show" class="middle-align"></tbody>
+                    </table>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-red g-w-number4" ng-click="warehouse_ctrl.sureReceive()">收货</button>
+                    <button type="button" class="btn btn-red" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--新增盘点-->
+    <div class="modal fade custom-width" id="admin_pandian_tianjia_dialog">
+        <div class="modal-dialog g-w-percent48">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="admin-layout-theme4 admin-theme-close g-t-c g-b-gray17 g-pos-r">订单收货<span class="mini-icon admin-mini-icon1" ng-click="warehouse_ctrl.toggleModal({display:'hide',area:'receive'})"></span>
+                    </div>
+
+                    <!--收货详情-->
+                    <table class="table table-bordered table-striped table-hover admin-layout-table">
+                        <!--分组样式-->
+                        <colgroup>
+                            <col class="g-w-percent20">
+                            <col class="g-w-percent1">
+                            <col class="g-w-percent20">
+                            <col class="g-w-percent6">
+                            <col class="g-w-percent3">
+                        </colgroup>
+
+                        <!--头部-->
+                        <thead>
+                        <tr>
+                            <th>商品详情</th>
+                            <th>序号</th>
+                            <th>商户名称</th>
+                            <th>规格属性(商品型号)</th>
+                            <th>数量</th>
+                        </tr>
+                        </thead>
+
+                        <!--表主体-->
+                        <tbody id="admin_pandian_tianjia_show" class="middle-align"></tbody>
+                    </table>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-red g-w-number4" ng-click="warehouse_ctrl.sureReceive()">收货</button>
+                    <button type="button" class="btn btn-red" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!--公用弹窗-->
+    <!--查看详情-->
+    <div class="modal fade custom-width" id="admin_detail_dialog">
         <div class="modal-dialog g-w-percent48">
             <div class="modal-content">
                 <div class="modal-body">
@@ -195,53 +454,7 @@
             </div>
         </div>
     </div>
-
-
-    <!--查看订单收货-->
-    <div class="modal fade custom-width" id="admin_receive_dialog">
-        <div class="modal-dialog g-w-percent48">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <div class="admin-layout-theme4 admin-theme-close g-t-c g-b-gray17 g-pos-r">订单收货<span class="mini-icon admin-mini-icon1" ng-click="warehouse_ctrl.toggleModal({display:'hide',area:'receive'})"></span>
-                    </div>
-
-                    <!--收货详情-->
-                    <table class="table table-bordered table-striped table-hover admin-layout-table">
-                        <!--分组样式-->
-                        <colgroup>
-                            <col class="g-w-percent20">
-                            <col class="g-w-percent1">
-                            <col class="g-w-percent20">
-                            <col class="g-w-percent6">
-                            <col class="g-w-percent3">
-                        </colgroup>
-
-                        <!--头部-->
-                        <thead>
-                        <tr>
-                            <th>商品详情</th>
-                            <th>序号</th>
-                            <th>商户名称</th>
-                            <th>规格属性(商品型号)</th>
-                            <th>数量</th>
-                        </tr>
-                        </thead>
-
-                        <!--表主体-->
-                        <tbody id="admin_receive_show" class="middle-align"></tbody>
-                    </table>
-                    <div class="clearfix"></div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-red g-w-number4" ng-click="warehouse_ctrl.sureReceive()">收货</button>
-                    <button type="button" class="btn btn-red" data-dismiss="modal">关闭</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-    <!--查看订单审核-->
+    <!--审核-->
     <div class="modal fade custom-width" id="admin_audit_dialog">
         <div class="modal-dialog g-w-percent48">
             <div class="modal-content">
