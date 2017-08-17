@@ -341,14 +341,18 @@ angular.module('app')
                     if (type === 'list') {
                         res = {
                             message: 'ok',
-                            code: 0
+                            code: 0,
+                            count: 50,
+                            result: {}
                         };
                     } else if ('table') {
                         res = {
                             status: 200,
                             data: {
                                 message: 'ok',
-                                code: 0
+                                code: 0,
+                                count: 50,
+                                result: {}
                             }
                         };
                     } else {
@@ -356,7 +360,9 @@ angular.module('app')
                             status: 200,
                             data: {
                                 message: 'ok',
-                                code: 0
+                                code: 0,
+                                count: 50,
+                                result: {}
                             }
                         };
                     }
@@ -365,7 +371,9 @@ angular.module('app')
                         status: 200,
                         data: {
                             message: 'ok',
-                            code: 0
+                            code: 0,
+                            count: 50,
+                            result: {}
                         }
                     };
                 }

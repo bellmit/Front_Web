@@ -190,7 +190,6 @@
                     <div class="clearfix"></div>
                 </div>
                 <div class="modal-footer">
-
                     <button type="button" class="btn btn-red" data-dismiss="modal">关闭</button>
                 </div>
             </div>
@@ -234,6 +233,7 @@
                     <div class="clearfix"></div>
                 </div>
                 <div class="modal-footer">
+                    <button type="button" class="btn btn-red g-w-number4" ng-click="purchase_ctrl.sureReceive()">收货</button>
                     <button type="button" class="btn btn-red" data-dismiss="modal">关闭</button>
                 </div>
             </div>
@@ -291,31 +291,54 @@
                         </tfoot>
                     </table>
                     <div class="clearfix"></div>
-                    <div class="g-w-percent50 g-box-b g-gap-pl4 g-gap-pt4 g-gap-pb4 g-gap-pr4 g-b-white g-pos-fl" style="min-height: 100%;">
-                        <div class="admin-layout-theme4 admin-theme-close g-t-c g-b-gray17 g-pos-r">
-                            <span class="mini-icon admin-mini-icon1" ng-click="purchase_ctrl.closeEditAudit()"></span>
+                    <div ng-class="{'g-d-hidei':!purchase_ctrl.audit.editshow}"  class="g-w-percent50 g-box-b g-gap-pl4 g-gap-pt4 g-gap-pb4 g-gap-pr4 g-b-white g-pos-fl" style="min-height: 100%;">
+                        <div class="admin-layout-theme4 admin-theme-close g-t-c g-b-gray17 g-pos-r">修改数量<span class="mini-icon admin-mini-icon1" ng-click="purchase_ctrl.closeEditAudit()"></span></div>
+                        <div class="admin-layout-form g-w-percent50">
+                            <div class="form-group-self1">
+                                <label class="self-label g-w-percent15 g-t-r">数量：</label>
+                                <div class="self-input g-pos-r g-w-percent25">
+                                    <input type="text" class="ui-int-number" ng-model="purchase_ctrl.audit.editvalue" maxlength="5" placeholder="请输入数量" />
+                                </div>
+                            </div>
+                            <div class="form-group-self1">
+                                <label class="self-label g-w-percent15 g-t-r">&nbsp;</label>
+                                <div class="self-input g-pos-r g-w-percent35">
+                                    <button type="button" ng-disabled="purchase_ctrl.audit.editvalue===''" ng-click="purchase_ctrl.sureEditAudit()" class="btn btn-red g-w-number2">确定</button>
+                                </div>
+                            </div>
                         </div>
-                        <table class="table table-bordered table-striped table-hover admin-layout-table g-h-percent100">
-                            <!--表主体-->
-                            <tbody class="middle-align">
-                            <tr>
-                                <td class="g-t-c">
-                                    <div class="admin-layout-form">
-                                        <div class="form-group-self1">
-                                            <label class="self-label g-w-percent15 g-t-r">数量：</label>
-                                            <div class="self-input g-pos-r g-w-percent35">
-                                                <input type="text" class="ui-int-number" ng-model="purchase_ctrl.audit.editvalue" placeholder="请输入数量" />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" ng-class="{'g-d-hidei':purchase_ctrl.audit.isdata===''}" ng-click="purchase_ctrl.auditPurchase()" class="btn btn-red g-w-number4">提交审核</button>
+                    <div class="g-w-percent38 g-f-l" ng-class="{'g-d-hidei':purchase_ctrl.audit.isdata===''}">
+                        <div class="admin-layout-form g-f-r g-w-percent30">
+                            <div class="form-group-self1">
+                                <label class="self-label g-w-percent15 g-t-r">审核状态：</label>
+                                <div class="self-input g-t-l g-w-percent30">
+                                    <label class="self-label">
+                                        <input type="radio" ng-model="purchase_ctrl.audit.auditflag" ng-value="true" name="auditflag">
+                                        &nbsp;通过
+                                    </label>
+                                    <label class="self-label">
+                                        <input type="radio" ng-model="purchase_ctrl.audit.auditflag" ng-value="false" name="auditflag">
+                                        &nbsp;不通过
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group-self1" ng-class="{'g-d-hidei':purchase_ctrl.audit.auditflag===true}">
+                                <label class="self-label g-w-percent15 g-t-r">不通过原因:</label>
+                                <div class="self-input g-w-percent30">
+                                    <input type="text" ng-model="purchase_ctrl.audit.auditinfo" placeholder="请输入审核不通过原因" />
+                                </div>
+                            </div>
+                            <div class="form-group-self1">
+                                <label class="self-label g-w-percent15">&nbsp;</label>
+                                <div class="self-input g-w-percent30 g-t-l">
+                                    <button type="button" ng-click="purchase_ctrl.submitAudit()" class="btn btn-red g-w-number4">审核</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <button type="button" class="btn btn-red" data-dismiss="modal">关闭</button>
                 </div>
             </div>

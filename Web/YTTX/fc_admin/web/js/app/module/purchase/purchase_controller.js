@@ -74,10 +74,13 @@ angular.module('app')
         /*模型--审核*/
         this.audit = {
             type: 'base'/*审核时数据类型：base:一般，batch:批量*/,
-            isdata: false/*是否有数据*/,
+            auditflag:true/*审核标识*/,
+            auditinfo:''/*审核信息*/,
+            isdata: ''/*是否有数据*/,
             batchflag: false/*是否是批量模式*/,
             editshow: false/*是否编辑*/,
-            editvalue:''/*编辑值*/
+            editvalue:''/*编辑值*/,
+            editnode:null/*编辑节点*/
         };
 
 
@@ -579,6 +582,15 @@ angular.module('app')
         };
 
 
+        /*收货服务--确认收货*/
+        this.sureReceive=function () {
+           purchaseService.sureReceive({
+               record:self.record,
+               table:self.table
+           });
+        };
+
+
         /*审核服务--操作审核*/
         this.queryAudit = function () {
             purchaseService.queryAudit({
@@ -610,13 +622,18 @@ angular.module('app')
                 audit:self.audit
             });
         };
-
-        /*发货服务--发货*/
-        this.sendList = function () {
-            purchaseService.sendList({
-                record: self.record,
-                table: self.table,
-                send: self.send
+        /*审核服务--确定修改*/
+        this.sureEditAudit=function () {
+            purchaseService.sureEditAudit({
+                audit:self.audit
+            });
+        };
+        /*审核服务--提交审核*/
+        this.submitAudit=function () {
+            purchaseService.submitAudit({
+                audit:self.audit,
+                record:self.record,
+                table:self.table
             });
         };
 
@@ -627,7 +644,7 @@ angular.module('app')
         };
 
 
-        /*批量审核*/
+        /*查询审核数据*/
         this.queryAudit = function () {
             purchaseService.queryAudit({
                 record: self.record,

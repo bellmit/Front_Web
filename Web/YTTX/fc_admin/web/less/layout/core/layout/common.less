@@ -191,13 +191,14 @@
   &:empty {
     &:before,
     &::before {
+      overflow: hidden;
       content: '暂无图片';
       display: block;
       width: 100%;
       height: 100%;
-      line-height: 70px;
+      line-height: @imgwrap-width;
       color: @color-gray10;
-      font-size: @font-size-base;
+      font-size: @font-size-base - 2;
     }
   }
   > img {

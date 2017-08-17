@@ -151,10 +151,14 @@ angular.module('app')
 
             if (action === 'detail') {
                 /*查询订单详情*/
-                self.queryDetail(null, id);
+                self.queryDetail(model, {
+                    id: id
+                });
             } else if (action === 'receive') {
                 /*查询收货*/
-                self.queryReceive(model, id);
+                self.queryReceive(model, {
+                    id: id
+                });
             } else if (action === 'audit') {
                 /*查询审核*/
                 self.queryAudit(model, {
@@ -163,16 +167,19 @@ angular.module('app')
                 });
             }
         };
-        /*数据查询服务--查询订单详情*/
-        this.queryDetail = function (config, id, action) {
-            if (cache === null) {
+
+
+        /*详情服务--查询订单详情*/
+        this.queryDetail = function (model, config) {
+            if (cache === null || !config) {
                 return false;
             }
+            var id = config.id;
 
             if (typeof id === 'undefined') {
                 toolDialog.show({
                     type: 'warn',
-                    value: '没有订单信息'
+                    value: '没有采购信息'
                 });
                 return false;
             }
@@ -184,7 +191,7 @@ angular.module('app')
 
             toolUtil
                 .requestHttp({
-                    url: /*'/organization/invoice/details'*/'json/test.json'/*测试地址*/,
+                    url: /*'/organization/purchase/details'*/'json/test.json'/*测试地址*/,
                     method: 'post',
                     set: true,
                     debug: true, /*测试开关*/
@@ -272,102 +279,101 @@ angular.module('app')
                                             'quantlity': '购买数量',
                                             'supplierPrice': '供应商价格'
                                         };
-                                    if (action === 'detail') {
-                                        var str = '';
-                                        if (order) {
-                                            /*查看*/
-                                            for (var j in order) {
-                                                if (typeof detail_map[j] !== 'undefined') {
-                                                    if (j === 'orderState') {
-                                                        var temptype = parseInt(order[j], 10),
-                                                            typemap = {
-                                                                0: '待付款',
-                                                                1: '取消订单',
-                                                                6: '待发货',
-                                                                9: '待收货',
-                                                                20: '待评价',
-                                                                21: '已评价'
-                                                            };
-                                                        str += '<tr><td colspan="3" class="g-t-r">' + detail_map[j] + ':</td><td colspan="3" class="g-t-l">' + (function () {
-                                                                var tempstr;
 
-                                                                if (temptype === 0) {
-                                                                    tempstr = '<div class="g-c-blue3">' + typemap[temptype] + '</div>';
-                                                                } else if (temptype === 1) {
-                                                                    tempstr = '<div class="g-c-red1">' + typemap[temptype] + '</div>';
-                                                                } else if (temptype === 6 || temptype === 9 || temptype === 20) {
-                                                                    tempstr = '<div class="g-c-warn">' + typemap[temptype] + '</div>';
-                                                                } else if (temptype === 21) {
-                                                                    tempstr = '<div class="g-c-green1">' + typemap[temptype] + '</div>';
-                                                                } else {
-                                                                    tempstr = '<div class="g-c-gray6">其他</div>';
-                                                                }
-                                                                return tempstr;
-                                                            })() + '</td></tr>';
-                                                    } else if (j === 'paymentType') {
-                                                        var temppay = parseInt(order[j], 10),
-                                                            paymap = {
-                                                                1: "微信",
-                                                                2: "支付宝",
-                                                                3: "其它"
-                                                            };
-                                                        str += '<tr><td colspan="3" class="g-t-r">' + detail_map[j] + ':</td><td colspan="3" class="g-t-l">' + paymap[temppay] + '</td></tr>';
-                                                    } else if (j === 'totalMoney') {
-                                                        str += '<tr><td colspan="3" class="g-t-r">' + detail_map[j] + ':</td><td colspan="3" class="g-t-l">' + toolUtil.moneyCorrect(order[j], 12)[0] + '</td></tr>';
-                                                    } else {
-                                                        str += '<tr><td  colspan="3" class="g-t-r">' + detail_map[j] + ':</td><td colspan="3" class="g-t-l">' + order[j] + '</td></tr>';
-                                                    }
+                                    var str = '';
+                                    if (order) {
+                                        /*查看*/
+                                        for (var j in order) {
+                                            if (typeof detail_map[j] !== 'undefined') {
+                                                if (j === 'orderState') {
+                                                    var temptype = parseInt(order[j], 10),
+                                                        typemap = {
+                                                            0: '待付款',
+                                                            1: '取消订单',
+                                                            6: '待发货',
+                                                            9: '待收货',
+                                                            20: '待评价',
+                                                            21: '已评价'
+                                                        };
+                                                    str += '<tr><td colspan="3" class="g-t-r">' + detail_map[j] + ':</td><td colspan="3" class="g-t-l">' + (function () {
+                                                            var tempstr;
+
+                                                            if (temptype === 0) {
+                                                                tempstr = '<div class="g-c-blue3">' + typemap[temptype] + '</div>';
+                                                            } else if (temptype === 1) {
+                                                                tempstr = '<div class="g-c-red1">' + typemap[temptype] + '</div>';
+                                                            } else if (temptype === 6 || temptype === 9 || temptype === 20) {
+                                                                tempstr = '<div class="g-c-warn">' + typemap[temptype] + '</div>';
+                                                            } else if (temptype === 21) {
+                                                                tempstr = '<div class="g-c-green1">' + typemap[temptype] + '</div>';
+                                                            } else {
+                                                                tempstr = '<div class="g-c-gray6">其他</div>';
+                                                            }
+                                                            return tempstr;
+                                                        })() + '</td></tr>';
+                                                } else if (j === 'paymentType') {
+                                                    var temppay = parseInt(order[j], 10),
+                                                        paymap = {
+                                                            1: "微信",
+                                                            2: "支付宝",
+                                                            3: "其它"
+                                                        };
+                                                    str += '<tr><td colspan="3" class="g-t-r">' + detail_map[j] + ':</td><td colspan="3" class="g-t-l">' + paymap[temppay] + '</td></tr>';
+                                                } else if (j === 'totalMoney') {
+                                                    str += '<tr><td colspan="3" class="g-t-r">' + detail_map[j] + ':</td><td colspan="3" class="g-t-l">' + toolUtil.moneyCorrect(order[j], 12)[0] + '</td></tr>';
+                                                } else {
+                                                    str += '<tr><td  colspan="3" class="g-t-r">' + detail_map[j] + ':</td><td colspan="3" class="g-t-l">' + order[j] + '</td></tr>';
                                                 }
                                             }
                                         }
-                                        if (details) {
-                                            var i = 0,
-                                                len = details.length;
-                                            str += '<tr><th class="g-t-c">序号</th><th class="g-t-c">缩略图</th><th class="g-t-c">商品名称</th><th class="g-t-c">属性名称</th><th class="g-t-c">商品价格</th><th class="g-t-c">购买数量</th></tr>';
-                                            if (len !== 0) {
-                                                var detailitem;
-                                                for (i; i < len; i++) {
-                                                    detailitem = details[i];
-                                                    str += '<tr class="g-v-m">\
+                                    }
+                                    if (details) {
+                                        var i = 0,
+                                            len = details.length;
+                                        str += '<tr><th class="g-t-c">序号</th><th class="g-t-c">缩略图</th><th class="g-t-c">商品名称</th><th class="g-t-c">属性名称</th><th class="g-t-c">商品价格</th><th class="g-t-c">购买数量</th></tr>';
+                                        if (len !== 0) {
+                                            var detailitem;
+                                            for (i; i < len; i++) {
+                                                detailitem = details[i];
+                                                str += '<tr class="g-v-m">\
                                                         <td class="g-t-c">' + (i + 1) + '</td>\
                                                         <td class="g-t-c">' + (function () {
-                                                            var img = detailitem["goodsThumbnail"],
-                                                                str = '';
-                                                            if (img.indexOf('qiniucdn.com') !== -1) {
-                                                                str = '<div class="admin-thumbnail-widget1"><img alt="" src="' + img + '?imageView2/1/w/60/h/60" /><div class="thumbnail-show"><div class="thumbnail-showwrap"><div class="thumbnail-outer"><div class="thumbnail-inner"><img alt="" src="' + img + '" /></div></div></div></div></div>';
+                                                        var img = detailitem["goodsThumbnail"],
+                                                            str = '';
+                                                        if (img.indexOf('qiniucdn.com') !== -1) {
+                                                            str = '<div class="admin-thumbnail-widget1"><img alt="" src="' + img + '?imageView2/1/w/60/h/60" /><div class="thumbnail-show"><div class="thumbnail-showwrap"><div class="thumbnail-outer"><div class="thumbnail-inner"><img alt="" src="' + img + '" /></div></div></div></div></div>';
+                                                        } else {
+                                                            img = self.validImages(img);
+                                                            if (img !== '') {
+                                                                str = '<div class="admin-thumbnail-widget1"><img alt="" src="' + img + '" /><div class="thumbnail-show"><div class="thumbnail-showwrap"><div class="thumbnail-outer"><div class="thumbnail-inner"><img alt="" src="' + img + '" /></div></div></div></div></div>';
                                                             } else {
-                                                                img = self.validImages(img);
-                                                                if (img !== '') {
-                                                                    str = '<div class="admin-thumbnail-widget1"><img alt="" src="' + img + '" /><div class="thumbnail-show"><div class="thumbnail-showwrap"><div class="thumbnail-outer"><div class="thumbnail-inner"><img alt="" src="' + img + '" /></div></div></div></div></div>';
-                                                                } else {
-                                                                    str = '<div class="admin-thumbnail-widget1"></div>';
-                                                                }
+                                                                str = '<div class="admin-thumbnail-widget1"></div>';
                                                             }
-                                                            return str;
-                                                        }()) + '</td>\
+                                                        }
+                                                        return str;
+                                                    }()) + '</td>\
                                                         <td class="g-t-c">' + detailitem["goodsName"] + '</td>\
                                                         <td class="g-t-c">' + detailitem["attributeName"] + '</td>\
                                                         <td class="g-t-c">' + toolUtil.moneyCorrect(detailitem["goodsPrice"], 15, false)[0] + '</td>\
                                                         <td class="g-t-c">' + detailitem["quantlity"] + '</td>\
                                                         </tr>';
-                                                }
                                             }
                                         }
-                                        if (str !== '') {
-                                            $(str).appendTo(self.$admin_invoicedetail_show.html(''));
-                                            /*显示弹窗*/
-                                            self.toggleModal({
-                                                display: 'show',
-                                                area: 'orderdetail'
-                                            });
-                                        }
-                                    } else {
-                                        /*提示信息*/
-                                        toolDialog.show({
-                                            type: 'warn',
-                                            value: '获取数据失败'
+                                    }
+                                    if (str !== '') {
+                                        $(str).appendTo(self.$admin_purchasedetail_show.html(''));
+                                        /*显示弹窗*/
+                                        self.toggleModal({
+                                            display: 'show',
+                                            area: 'purchasedetail'
                                         });
                                     }
+                                } else {
+                                    /*提示信息*/
+                                    toolDialog.show({
+                                        type: 'warn',
+                                        value: '获取数据失败'
+                                    });
                                 }
                             }
                         }
@@ -382,16 +388,18 @@ angular.module('app')
                     });
         };
 
+
         /*收货服务--查询收货*/
-        this.queryReceive = function (config, id, action) {
-            if (cache === null) {
+        this.queryReceive = function (model, config) {
+            if (cache === null || !config) {
                 return false;
             }
 
+            var id = config.id;
             if (typeof id === 'undefined') {
                 toolDialog.show({
                     type: 'warn',
-                    value: '没有配货单信息'
+                    value: '没有收货单信息'
                 });
                 return false;
             }
@@ -401,24 +409,15 @@ angular.module('app')
 
             toolUtil
                 .requestHttp({
-                    url: /*'/organization/invoice/sendlist'*/'json/test.json'/*测试地址*/,
+                    url: /*'/organization/purchase/receive'*/'json/test.json'/*测试地址*/,
                     method: 'post',
                     set: true,
                     debug: true, /*测试开关*/
                     data: param
                 })
                 .then(function (resp) {
-                        var resp = {
-                            status: 200,
-                            data: {
-                                message: 'ok',
-                                count: 50,
-                                code: 0,
-                                result: {
-                                    list: true
-                                }
-                            }
-                        }/*测试请求*/;
+                        var resp = testService.testSuccess();
+                        /*测试请求*/
 
                         var data = resp.data,
                             status = parseInt(resp.status, 10);
@@ -443,12 +442,10 @@ angular.module('app')
                                 /*加载数据*/
                                 var result = data.result;
                                 if (typeof result !== 'undefined') {
-                                    var list = result.list;
-                                    if (list) {
-                                        /*查看*/
-                                        var len = 1 + parseInt(Math.random() * 5, 10),
-                                            i = 0,
-                                            str = '<tr>\
+                                    /*查看*/
+                                    var len = 1 + parseInt(Math.random() * 5, 10),
+                                        i = 0,
+                                        str = '<tr>\
                                                     <td colspan="5">\
                                                         <div class="g-w-number20 g-f-l">\
                                                             <div>收货地址：<span class="g-c-red1">' + testService.getRule('address') + '</span></div>\
@@ -462,13 +459,12 @@ angular.module('app')
                                                     </td>\
                                                 </tr>';
 
-                                        for (i; i < len; i++) {
-                                            var item = list[i],
-                                                j = 1 + parseInt(Math.random() * 5, 0),
-                                                k = 0;
+                                    for (i; i < len; i++) {
+                                        var j = 1 + parseInt(Math.random() * 5, 0),
+                                            k = 0;
 
-                                            if (j === 1) {
-                                                str += '<tr>\
+                                        if (j === 1) {
+                                            str += '<tr>\
                                                         <td colspan="5"><div class="g-w-number20 g-f-l">配货包裹' + (i + 1) + ':<span class="g-c-blue3">' + testService.getRule('name') + '</span></div><div class="g-w-number20 g-f-r">配货包裹地址：<span class="g-c-blue3">' + testService.getRule('address') + '</span></div></td>\
                                                     </tr>\
                                                     <tr>\
@@ -483,10 +479,10 @@ angular.module('app')
                                                         <td class="g-c-blue3">合计:</td>\
                                                         <td><span class="g-c-blue3">' + toolUtil.moneyCorrect(testService.getRule('minmax,10000,900000'), 15, false)[0] + '</span></td>\
                                                     </tr>';
-                                            } else {
-                                                for (k; k < j; k++) {
-                                                    if (k === 0) {
-                                                        str += '<tr>\
+                                        } else {
+                                            for (k; k < j; k++) {
+                                                if (k === 0) {
+                                                    str += '<tr>\
                                                             <td colspan="5"><div class="g-w-number20 g-f-l">配货包裹' + (i + 1) + ':<span class="g-c-blue3">' + testService.getRule('text') + '</span></div><div class="g-w-number20 g-f-r">配货包裹地址：<span class="g-c-blue3">' + testService.getRule('address') + '</span></div></td>\
                                                         </tr>\
                                                         <tr>\
@@ -496,31 +492,30 @@ angular.module('app')
                                                             <td>' + testService.getRule('goodstype') + '</td>\
                                                             <td>' + toolUtil.moneyCorrect(testService.getRule('minmax,1,90000'), 15, false)[0] + '</td>\
                                                         </tr>';
-                                                    } else if (k !== j - 1) {
-                                                        str += '<tr>\
+                                                } else if (k !== j - 1) {
+                                                    str += '<tr>\
                                                         <td>' + (k + 1) + '</td>\
                                                         <td>' + testService.getRule('goods') + '</td>\
                                                         <td>' + testService.getRule('goodstype') + '</td>\
                                                         <td>' + toolUtil.moneyCorrect(testService.getRule('minmax,1,90000'), 15, false)[0] + '</td>\
                                                     </tr>';
-                                                    } else if (k === j - 1) {
-                                                        str += '<tr>\
+                                                } else if (k === j - 1) {
+                                                    str += '<tr>\
                                                         <td colspan="3">&nbsp;</td>\
                                                         <td class="g-c-blue3">合计:</td>\
                                                         <td><span class="g-c-blue3">' + toolUtil.moneyCorrect(testService.getRule('minmax,10000,900000'), 15, false)[0] + '</span></td>\
                                                     </tr>';
-                                                    }
                                                 }
                                             }
                                         }
-                                        if (str !== '') {
-                                            $(str).appendTo(self.$admin_send_detail.html(''));
-                                            /*显示弹窗*/
-                                            self.toggleModal({
-                                                display: 'show',
-                                                area: 'send'
-                                            });
-                                        }
+                                    }
+                                    if (str !== '') {
+                                        $(str).appendTo(self.$admin_receive_show.html(''));
+                                        /*显示弹窗*/
+                                        self.toggleModal({
+                                            display: 'show',
+                                            area: 'receive'
+                                        });
                                     }
                                 } else {
                                     /*提示信息*/
@@ -537,7 +532,80 @@ angular.module('app')
                         if (typeof message !== 'undefined' && message !== '') {
                             console.log(message);
                         } else {
-                            console.log('请求订单失败');
+                            console.log('请求收货信息失败');
+                        }
+                    }
+                );
+        };
+        /*收货服务--确认收货*/
+        this.sureReceive = function (config) {
+            if (cache === null) {
+                return false;
+            }
+
+            toolUtil
+                .requestHttp({
+                    url: /*'/organization/purchase/receive'*/'json/test.json'/*测试地址*/,
+                    method: 'post',
+                    set: true,
+                    debug: true, /*测试开关*/
+                    data: 'to do'
+                })
+                .then(function (resp) {
+                        var resp = testService.testSuccess()/*测试请求*/;
+
+                        var data = resp.data,
+                            status = parseInt(resp.status, 10);
+
+                        if (status === 200) {
+                            var code = parseInt(data.code, 10),
+                                message = data.message;
+                            if (code !== 0) {
+                                if (typeof message !== 'undefined' && message !== '') {
+                                    toolDialog.show({
+                                        type: 'warn',
+                                        value: '收货失败：' + message
+                                    });
+                                } else {
+                                    console.log('请求数据失败');
+                                }
+
+                                if (code === 999) {
+                                    /*退出系统*/
+                                    cache = null;
+                                    loginService.outAction();
+                                }
+                            } else {
+                                toolDialog.show({
+                                    type: 'succ',
+                                    value: '收货成功'
+                                });
+                                /*重新请求数据*/
+                                self.getColumnData(config.table, config.record);
+                                /*弹出框隐藏*/
+                                self.toggleModal({
+                                    'display': 'hide',
+                                    'area': 'receive',
+                                    'delay': 1000
+                                },function () {
+                                    /*清空数据*/
+                                    self.$admin_receive_show.html('');
+                                })
+                            }
+                        }
+                    },
+                    function (resp) {
+                        var message = resp.data.message;
+                        if (typeof message !== 'undefined' && message !== '') {
+                            /*提示信息*/
+                            toolDialog.show({
+                                type: 'warn',
+                                value: '收货失败' + message
+                            });
+
+                        } else {
+                            /*提示信息*/
+                            console.log('请求数据失败');
                         }
                     }
                 );
@@ -637,7 +705,7 @@ angular.module('app')
                                                         <td>' + (i + 1) + '</td>\
                                                         <td>' + keyid + '</td>\
                                                         <td>' + item["purchaseTime"] + '</td>\
-                                                        <td>' + item["purchaseNumber"] + '</td>\
+                                                        <td class="purchase-number">' + item["purchaseNumber"] + '</td>\
                                                         <td>' + toolUtil.moneyCorrect(item["purchasePrice"], 15, false)[0] + '</td>\
                                                         <td>' + item["provider"] + '</td>\
                                                         <td>' + toolUtil.phoneFormat(item["providerPhone"]) + '</td>\
@@ -700,7 +768,7 @@ angular.module('app')
                                 /*单条记录*/
                                 self.$admin_audit_show.html('');
                                 /*更新模型*/
-                                if(model.fn && typeof model.fn==='function'){
+                                if (model.fn && typeof model.fn === 'function') {
                                     model.fn.call(null);
                                 }
                             } else if (audit.type === 'batch') {
@@ -716,106 +784,145 @@ angular.module('app')
                         }, '确认是否真要删除此数据', true);
                     } else if (action === 'update') {
                         /*修改操作*/
-                        self.openEditAudit(model);
+                        var $number = $this.closest('tr').find('td.purchase-number');
+                        self.openEditAudit(model, {
+                            value: $number.html(),
+                            node: $number
+                        });
                     }
-                    /*purchaseService.actionAudit({
-                     table:self.table,
-                     record:self.record,
-                     audit:self.audit,
-                     $btn:$this
-                     });*/
                 }
             }
         };
         /*审核服务--提交审核*/
-        this.auditPurchase = function (config) {
-
-        };
-        /*审核服务--关闭弹窗*/
-        this.openEditAudit = function (config) {
-            /*显示*/
-            config.audit.editshow=true;
-            /*重置值*/
-            config.audit.editvalue='';
-        };
-        /*审核服务--关闭弹窗*/
-        this.closeEditAudit = function (config) {
-            config.audit.editshow=false;
-        };
-
-        /*发货服务--查询订单配货*/
-        this.sendList = function (config) {
-            if (!config && !config.send) {
+        this.submitAudit = function (config) {
+            if (cache === null) {
                 return false;
             }
-            /*确认是否删除*/
-            toolDialog.sureDialog('', function () {
-                /*执行删除操作*/
-                toolUtil
-                    .requestHttp({
-                        url: /*'/organization/invoice/send'*/'json/test.json'/*测试地址*/,
-                        method: 'post',
-                        set: true,
-                        debug: true/*测试开关*/,
-                        data: config.send.sendid
-                    })
-                    .then(function (resp) {
-                            var resp = testService.testSuccess()/*测试请求*/;
 
-                            var data = resp.data,
-                                status = parseInt(resp.status, 10);
+            toolUtil
+                .requestHttp({
+                    url: /*'/organization/purchase/auditlist'*/'json/test.json'/*测试地址*/,
+                    method: 'post',
+                    set: true,
+                    debug: true, /*测试开关*/
+                    data: 'to do'
+                })
+                .then(function (resp) {
+                        var resp = testService.testSuccess()/*测试请求*/;
 
-                            if (status === 200) {
-                                var code = parseInt(data.code, 10),
-                                    message = data.message;
-                                if (code !== 0) {
-                                    if (typeof message !== 'undefined' && message !== '') {
-                                        /*提示信息*/
-                                        toolDialog.show({
-                                            type: 'warn',
-                                            value: message
-                                        });
-                                    } else {
-                                        /*提示信息*/
-                                        toolDialog.show({
-                                            type: 'warn',
-                                            value: '发货失败'
-                                        });
-                                    }
+                        var data = resp.data,
+                            status = parseInt(resp.status, 10);
 
-                                    if (code === 999) {
-                                        /*退出系统*/
-                                        cache = null;
-                                        loginService.outAction();
-                                    }
-                                } else {
-                                    /*提示信息*/
+                        if (status === 200) {
+                            var code = parseInt(data.code, 10),
+                                message = data.message;
+                            if (code !== 0) {
+                                if (typeof message !== 'undefined' && message !== '') {
                                     toolDialog.show({
-                                        type: 'succ',
-                                        value: '发货成功'
+                                        type: 'warn',
+                                        value: '审核失败：' + message
                                     });
-                                    /*重新获取数据*/
-                                    self.getColumnData(config.table, config.record);
-                                    self.$admin_send_detail.html('');
-                                    config.send.sendid = '';
-                                    /*隐藏弹窗*/
-                                    self.toggleModal({
-                                        display: 'hide',
-                                        area: 'send'
-                                    });
+                                } else {
+                                    console.log('请求数据失败');
                                 }
-                            }
-                        },
-                        function (resp) {
-                            var message = resp.data.message;
-                            if (typeof message !== 'undefined' && message !== '') {
-                                console.log(message);
+
+                                if (code === 999) {
+                                    /*退出系统*/
+                                    cache = null;
+                                    loginService.outAction();
+                                }
                             } else {
-                                console.log('发货失败');
+                                toolDialog.show({
+                                    type: 'succ',
+                                    value: '审核成功'
+                                });
+                                /*清空数据*/
+                                self.$admin_audit_show.html('');
+                                /*重置模型*/
+                                self.resetAudit(config.audit);
+                                /*重新请求数据*/
+                                self.getColumnData(config.table, config.record);
+                                /*弹出框隐藏*/
+                                self.toggleModal({
+                                    'display': 'hide',
+                                    'area': 'audit',
+                                    'delay': 1000
+                                })
                             }
-                        });
-            }, '确认是否真要发货', true);
+                        }
+                    },
+                    function (resp) {
+                        var message = resp.data.message;
+                        if (typeof message !== 'undefined' && message !== '') {
+                            /*提示信息*/
+                            toolDialog.show({
+                                type: 'warn',
+                                value: '审核失败' + message
+                            });
+
+                        } else {
+                            /*提示信息*/
+                            console.log('请求数据失败');
+                        }
+                    }
+                );
         };
+        /*审核服务--关闭弹窗*/
+        this.openEditAudit = function (model, config) {
+            var audit = model.audit;
+            /*显示*/
+            audit.editshow = true;
+            if (config) {
+                /*存放节点*/
+                audit.editnode = config.node;
+                /*初始化值*/
+                audit.editvalue = config.value;
+            } else {
+                /*初始化值*/
+                audit.editvalue = '';
+            }
+        };
+        /*审核服务--关闭弹窗*/
+        this.closeEditAudit = function (model) {
+            var audit = model.audit;
+            /*隐藏*/
+            audit.editshow = false;
+            /*重置值*/
+            audit.editvalue = '';
+            /*清除节点*/
+            audit.editnode = null;
+        };
+        /*审核服务--关闭弹窗*/
+        this.sureEditAudit = function (model) {
+            var audit = model.audit;
+            if (audit.editvalue !== '') {
+                if (audit.editnode !== null) {
+                    /*赋值*/
+                    audit.editnode.html(audit.editvalue);
+                }
+            } else {
+                if (audit.editnode !== null) {
+                    /*赋值*/
+                    audit.editnode.html(0);
+                }
+            }
+            /*关闭*/
+            self.closeEditAudit(model);
+        };
+        /*审核服务--重置审核模型*/
+        this.resetAudit = function (audit) {
+            if (audit) {
+                audit.type = 'base';
+                audit.auditinfo = '';
+                audit.auditflag = true;
+                audit.isdata = '';
+                audit.batchflag = false;
+                audit.editshow = false;
+                audit.editvalue = '';
+                audit.editnode = null;
+            }
+        };
+        
 
         /*视图切换服务--根据条件判断视图状态:返回一个代表类型，数字或者字符*/
         this.toggleTheme = function (config) {
@@ -859,10 +966,10 @@ angular.module('app')
                         type_map[config.area].modal('show', {backdrop: 'static'});
                         clearTimeout(temp_timer);
                         temp_timer = null;
+                        if (fn && typeof fn === 'function') {
+                            fn.call(null);
+                        }
                     }, config.delay);
-                    if (fn && typeof fn === 'function') {
-                        fn.call(null);
-                    }
                 } else {
                     type_map[config.area].modal('show', {backdrop: 'static'});
                     if (fn && typeof fn === 'function') {
@@ -875,9 +982,15 @@ angular.module('app')
                         type_map[config.area].modal('hide');
                         clearTimeout(temp_timer);
                         temp_timer = null;
+                        if (fn && typeof fn === 'function') {
+                            fn.call(null);
+                        }
                     }, config.delay);
                 } else {
                     type_map[config.area].modal('hide');
+                    if (fn && typeof fn === 'function') {
+                        fn.call(null);
+                    }
                 }
             }
         };
