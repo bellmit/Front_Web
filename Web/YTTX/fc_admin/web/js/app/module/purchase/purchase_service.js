@@ -1110,7 +1110,7 @@ angular.module('app')
                                                         config.record.iscroll_flag = false;
                                                         toolUtil.autoScroll(self.$submenu_scroll_wrap, {
                                                             setWidth: false,
-                                                            setHeight: 600,
+                                                            setHeight: 500,
                                                             theme: "minimal-dark",
                                                             axis: "y",
                                                             scrollbarPosition: "inside",

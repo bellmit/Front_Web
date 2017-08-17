@@ -71,22 +71,22 @@ angular.module('app')
         /*模型--tab选项卡--主题*/
         this.themeitem = [{
             name: '库存',
-            power: true,
+            power: self.powerlist.warehouse_caigou_add,
             type: 'kucun',
             active: 'tabactive'
         }, {
             name: '入库',
-            power: true,
+            power: self.powerlist.warehouse_ruku_add,
             type: 'ruku',
             active: ''
         }, {
             name: '出库',
-            power: true,
+            power: self.powerlist.warehouse_chuku_add,
             type: 'chuku',
             active: ''
         }, {
             name: '盘点',
-            power: true,
+            power: self.powerlist.warehouse_pandian_add,
             type: 'pandian',
             active: ''
         }];
@@ -981,19 +981,19 @@ angular.module('app')
                 $bodywrap: jq_dom.$admin_batchlist_wrap1,
                 $checkall: jq_dom.$admin_kucun_checkall1,
                 checkfn: function (flag) {
-                    $scope.$apply(function () {
+                    /*$scope.$apply(function () {
                         if (flag === 0) {
-                            /*普通模式*/
+                            /!*普通模式*!/
                             self.audit.type = 'base';
                             self.audit.batchflag = false;
                             self.audit.isdata = '';
                         } else if (flag === 1) {
-                            /*批量模式*/
+                            /!*批量模式*!/
                             self.audit.type = 'batch';
                             self.audit.batchflag = true;
                             self.audit.isdata = 'ok';
                         }
-                    });
+                    });*/
                 },
                 checkvalue: 0/*默认未选中*/,
                 checkid: []/*默认索引数据为空*/,

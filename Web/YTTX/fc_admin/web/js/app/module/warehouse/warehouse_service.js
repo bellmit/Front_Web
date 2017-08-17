@@ -10,11 +10,15 @@ angular.module('app')
 
         /*初始化权限*/
         var init_power = {
-            purchase_print: toolUtil.isPower('purchase-print', powermap, true)/*采购打印*/,
-            purchase_export: toolUtil.isPower('purchase-export', powermap, true)/*采购导出*/,
-            purchase_details: toolUtil.isPower('purchase-details', powermap, true)/*采购详情*/,
-            purchase_audit: toolUtil.isPower('purchase-audit', powermap, true)/*采购审核*/,
-            purchase_stats: toolUtil.isPower('purchase-stats', powermap, true)/*采购统计*/
+            warehouse_print: false/*仓库打印*/,
+            warehouse_export: false/*仓库导出*/,
+            warehouse_details: true/*仓库详情*/,
+            warehouse_audit: true/*仓库审核*/,
+            warehouse_update: true/*仓库修改*/,
+            warehouse_caigou_add: true/*仓库采购*/,
+            warehouse_ruku_add: true/*仓库新建入库*/,
+            warehouse_chuku_add: true/*仓库新建出库*/,
+            warehouse_pandian_add: true/*仓库新建盘点*/
         };
 
 
@@ -1110,7 +1114,7 @@ angular.module('app')
                                                         config.record.iscroll_flag = false;
                                                         toolUtil.autoScroll(self.$submenu_scroll_wrap, {
                                                             setWidth: false,
-                                                            setHeight: 600,
+                                                            setHeight: 500,
                                                             theme: "minimal-dark",
                                                             axis: "y",
                                                             scrollbarPosition: "inside",
