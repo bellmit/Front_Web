@@ -37,16 +37,28 @@ angular.module('app')
             $admin_batchlist_wrap3: $('#admin_batchlist_wrap3'),
             $admin_batchlist_wrap4: $('#admin_batchlist_wrap4'),
             /*全选操作*/
-            $admin_kucun_checkall1: $('#admin_kucun_checkall1'),
-            /*其他*/
+            $admin_batchitem_checkall1: $('#admin_batchitem_checkall1'),
+            /*时间查询*/
             $search_startTime: $('#search_startTime'),
             $search_endTime: $('#search_endTime'),
-            $admin_purchasedetail_dialog: $('#admin_purchasedetail_dialog'),
-            $admin_purchasedetail_show: $('#admin_purchasedetail_show'),
-            $admin_receive_dialog: $('#admin_receive_dialog')/*收货*/,
-            $admin_receive_show: $('#admin_receive_show')/*收货*/,
-            $admin_audit_dialog: $('#admin_audit_dialog')/*审核*/,
-            $admin_audit_show: $('#admin_audit_show')/*审核*/
+            /*库存--采购*/
+            $admin_purchase_dialog:$('#admin_purchase_dialog'),
+            /*库存--补货*/
+            $admin_supply_dialog:$('#admin_supply_dialog'),
+            /*库存--修改*/
+            $admin_update_dialog:$('#admin_update_dialog'),
+            /*新增--入库*/
+            $admin_inwarehouse_dialog:$('#admin_inwarehouse_dialog'),
+            /*新增--出库*/
+            $admin_outwarehouse_dialog:$('#admin_outwarehouse_dialog'),
+            /*新增--盘点*/
+            $admin_check_dialog:$('#admin_check_dialog'),
+            /*详情*/
+            $admin_detail_dialog: $('#admin_detail_dialog'),
+            $admin_detail_show: $('#admin_detail_show'),
+            /*审核*/
+            $admin_audit_dialog: $('#admin_audit_dialog'),
+            $admin_audit_show: $('#admin_audit_show')
         };
 
         /*切换路由时更新dom缓存*/
@@ -71,37 +83,80 @@ angular.module('app')
         /*模型--tab选项卡--主题*/
         this.themeitem = [{
             name: '库存',
-            power: self.powerlist.warehouse_caigou_add,
+            power: self.powerlist.warehouse_supply,
             type: 'kucun',
             active: 'tabactive'
         }, {
             name: '入库',
-            power: self.powerlist.warehouse_ruku_add,
+            power: self.powerlist.warehouse_inwarehouse,
             type: 'ruku',
             active: ''
         }, {
             name: '出库',
-            power: self.powerlist.warehouse_chuku_add,
+            power: self.powerlist.warehouse_outwarehouse,
             type: 'chuku',
             active: ''
         }, {
             name: '盘点',
-            power: self.powerlist.warehouse_pandian_add,
+            power: self.powerlist.warehouse_check,
             type: 'pandian',
             active: ''
         }];
+
+        
+        
+        /*模型--入库类型*/
+        this.inwarehousetype=[{
+            key: '请选择入库类型',
+            value:''
+        }, {
+            key: '采购入库',
+            value: 1
+        }, {
+            key: '退货入库',
+            value: 2
+        }, {
+            key: '其他入库',
+            value: 3
+        }];
+
+
+        /*模型--入库*/
+        this.inwarehouse={
+            'goodsName':'',
+            'attributeName':'',
+            'Unit':'',
+            'warehouseName':'',
+            'address':'',
+            'cellphone':'',
+            'inboundTime':'',
+            'inboundType':1,
+            'operator':'',
+            'provider':'',
+            'auditState':0,
+            'remark':''
+        };
+        /*模型--出库*/
+        this.outwarehouse={
+
+        };
+        /*模型--盘点*/
+        this.check={
+
+        };
+
 
 
         /*模型--审核*/
         this.audit = {
             type: 'base'/*审核时数据类型：base:一般，batch:批量*/,
-            auditflag:true/*审核标识*/,
-            auditinfo:''/*审核信息*/,
+            auditflag: true/*审核标识*/,
+            auditinfo: ''/*审核信息*/,
             isdata: ''/*是否有数据*/,
             batchflag: false/*是否是批量模式*/,
             editshow: false/*是否编辑*/,
-            editvalue:''/*编辑值*/,
-            editnode:null/*编辑节点*/
+            editvalue: ''/*编辑值*/,
+            editnode: null/*编辑节点*/
         };
 
 
@@ -143,14 +198,23 @@ angular.module('app')
                         dataSrc: function (json) {
                             var json = testService.test({
                                 map: {
-                                    'id': 'guid',
-                                    'purchaseId': 'guid',
-                                    'purchaseTime': 'datetime',
-                                    'purchaseNumber': 'id',
-                                    'purchasePrice': 'money',
-                                    'provider': 'value',
-                                    'providerPhone': 'mobile',
-                                    'auditState': 'rule,0,1,2'
+                                    'id': 'guid', /*id序列*/
+                                    'goodsName': 'goods'/*商品名称*/,
+                                    'attributeName': 'goodstype'/*规格属性*/,
+                                    'Unit': 'unit'/*单位*/,
+                                    'warehouseName': 'value'/*仓库名称*/,
+                                    'address': 'address'/*仓库地址*/,
+                                    'cellphone': 'mobile'/*仓库联系方式*/,
+                                    'provider': 'value'/*供应商*/,
+                                    'linkman': 'name'/*仓库负责人*/,
+                                    'availableInventory': 'id'/*可售库存*/,
+                                    'physicalInventory': 'id'/*实际库存*/,
+                                    'safetyInventory': 'id'/*安全库存*/,
+                                    'referenceReplenishment': 'id'/*参考补货*/,
+                                    'inventoryToplimit': 'id'/*库存上限*/,
+                                    'inventoryLowerlimit': 'id'/*库存下限*/,
+                                    'availableStatus': 'or'/*可售状态*/,
+                                    'physicalStatus': 'or'/*实际状态*/
                                 },
                                 mapmin: 5,
                                 mapmax: 10,
@@ -233,49 +297,60 @@ angular.module('app')
                     info: false,
                     dom: '<"g-d-hidei" s>',
                     searching: true,
-                    order: [[0, "desc"], [1, "desc"]],
+                    order: [[4, "desc"]],
                     columns: [
                         {
-                            "data": "purchaseId"
-                        },
-                        {
-                            "data": "purchaseTime"
-                        },
-                        {
-                            "data": "purchaseNumber"
-                        },
-                        {
-                            "data": "purchasePrice",
+                            "data": "id",
+                            "orderable": false,
+                            "searchable": false,
                             "render": function (data, type, full, meta) {
-                                return toolUtil.moneyCorrect(data, 15, false)[0];
+                                var state = parseInt(full.availableStatus, 10);
+                                return state === 0 ? '' : '<input value="' + data + '" name="check_kucunid" type="checkbox" />';
                             }
                         },
                         {
-                            "data": "provider"
+                            "data": "goodsName"
                         },
                         {
-                            "data": "providerPhone",
+                            "data": "attributeName"
+                        },
+                        {
+                            "data": "Unit"
+                        },
+                        {
+                            "data": "warehouseName"
+                        },
+                        {
+                            "data": "linkman"
+                        },
+                        {
+                            "data": "cellphone",
                             "render": function (data, type, full, meta) {
                                 return toolUtil.phoneFormat(data);
                             }
                         },
-
                         {
-                            "data": "auditState",
+                            "data": "availableInventory"
+                        },
+                        {
+                            "data": "physicalInventory"
+                        },
+                        {
+                            "data": "safetyInventory"
+                        },
+                        {
+                            "data": "availableStatus",
                             "render": function (data, type, full, meta) {
                                 var stauts = parseInt(data, 10),
                                     statusmap = {
-                                        0: "待审核",
-                                        1: "已审核",
-                                        2: "审核失败"
+                                        0: "正常",
+                                        1: "异常"
                                     },
                                     str;
 
                                 if (stauts === 0) {
                                     str = '<div class="g-c-gray9">' + statusmap[stauts] + '</div>';
                                 } else if (stauts === 1) {
-                                    str = '<div class="g-c-green1">' + statusmap[stauts] + '</div>';
-                                } else if (stauts === 2) {
                                     str = '<div class="g-c-red1">' + statusmap[stauts] + '</div>';
                                 } else {
                                     str = '<div class="g-c-gray6">其他</div>';
@@ -290,10 +365,11 @@ angular.module('app')
                                 var btns = '';
 
                                 /*查看订单*/
-                                if (self.powerlist.purchase_details) {
-                                    btns += '<span data-action="detail" data-id="' + data + '"  class="btn-operate">查看</span>';
-                                    if (parseInt(full.auditState, 10) === 1) {
-                                        btns += '<span data-action="receive" data-id="' + data + '"  class="btn-operate">收货</span>';
+                                if (self.powerlist.warehouse_supply) {
+                                    btns += '<span data-action="update" data-id="' + data + '"  class="btn-operate">修改</span>';
+                                    if (parseInt(full.availableStatus, 10) === 1) {
+                                        btns += '<span data-action="supply" data-id="' + data + '"  class="btn-operate">补货</span>';
+                                        btns += '<span data-action="purchase" data-id="' + data + '"  class="btn-operate">生成采购单</span>';
                                     }
                                 }
                                 return btns;
@@ -316,14 +392,19 @@ angular.module('app')
                         dataSrc: function (json) {
                             var json = testService.test({
                                 map: {
-                                    'id': 'guid',
-                                    'purchaseId': 'guid',
-                                    'purchaseTime': 'datetime',
-                                    'purchaseNumber': 'id',
-                                    'purchasePrice': 'money',
-                                    'provider': 'value',
-                                    'providerPhone': 'mobile',
-                                    'auditState': 'rule,0,1,2'
+                                    'id': 'guid', /*id序列*/
+                                    'goodsName': 'goods'/*商品名称*/,
+                                    'attributeName': 'goodstype'/*规格属性*/,
+                                    'Unit': 'unit'/*单位*/,
+                                    'warehouseName': 'value'/*仓库名称*/,
+                                    'address': 'address'/*仓库地址*/,
+                                    'cellphone': 'mobile'/*仓库联系方式*/,
+                                    'inboundTime': 'datetime'/*入库时间*/,
+                                    'inboundType': 'rule,1,2,3'/*入库类型:1:采购入库，2：退货入库，3：其他入库*/,
+                                    'operator': 'name'/*经办人*/,
+                                    'provider': 'value'/*供应商*/,
+                                    'auditState': 'rule,0,1,2'/*审核状态：0：待审核，1：审核通过，2：审核不通过*/,
+                                    'remark': 'remark'/*备注*/
                                 },
                                 mapmin: 5,
                                 mapmax: 10,
@@ -406,50 +487,66 @@ angular.module('app')
                     info: false,
                     dom: '<"g-d-hidei" s>',
                     searching: true,
-                    order: [[1, "desc"], [2, "desc"]],
+                    order: [[3, "desc"]],
                     columns: [
                         {
-                            "data": "id",
-                            "orderable": false,
-                            "searchable": false,
-                            "render": function (data, type, full, meta) {
-                                var state = parseInt(full.auditState, 10);
-                                return state === 1 ? '' : '<input value="' + data + '" name="check_purchaseid" type="checkbox" />';
-                            }
+                            "data": "goodsName"
                         },
                         {
-                            "data": "purchaseId"
+                            "data": "attributeName"
                         },
                         {
-                            "data": "purchaseTime"
+                            "data": "Unit"
                         },
                         {
-                            "data": "purchaseNumber"
+                            "data": "warehouseName"
                         },
                         {
-                            "data": "purchasePrice",
-                            "render": function (data, type, full, meta) {
-                                return toolUtil.moneyCorrect(data, 15, false)[0];
-                            }
-                        },
-                        {
-                            "data": "provider"
-                        },
-                        {
-                            "data": "providerPhone",
+                            "data": "cellphone",
                             "render": function (data, type, full, meta) {
                                 return toolUtil.phoneFormat(data);
                             }
                         },
+                        {
+                            "data": "inboundTime"
+                        },
+                        {
+                            "data": "inboundType",
+                            "render": function (data, type, full, meta) {
+                                var stauts = parseInt(data, 10),
+                                    statusmap = {
+                                        1: "采购入库",
+                                        2: "退货入库",
+                                        3: "其他入库"
+                                    },
+                                    str;
 
+                                if (stauts === 3) {
+                                    str = '<div class="g-c-gray9">' + statusmap[stauts] + '</div>';
+                                } else if (stauts === 1) {
+                                    str = '<div class="g-c-green1">' + statusmap[stauts] + '</div>';
+                                } else if (stauts === 2) {
+                                    str = '<div class="g-c-red1">' + statusmap[stauts] + '</div>';
+                                } else {
+                                    str = '<div class="g-c-gray6">其他</div>';
+                                }
+                                return str;
+                            }
+                        },
+                        {
+                            "data": "operator"
+                        },
+                        {
+                            "data": "provider"
+                        },
                         {
                             "data": "auditState",
                             "render": function (data, type, full, meta) {
                                 var stauts = parseInt(data, 10),
                                     statusmap = {
                                         0: "待审核",
-                                        1: "已审核",
-                                        2: "审核失败"
+                                        1: "审核通过",
+                                        2: "审核不通过"
                                     },
                                     str;
 
@@ -472,8 +569,11 @@ angular.module('app')
                                 var btns = '';
 
                                 /*查看订单*/
-                                if (self.powerlist.purchase_audit && parseInt(full.auditState, 10) !== 1) {
+                                if (self.powerlist.warehouse_audit && parseInt(full.auditState, 10) !== 1) {
                                     btns += '<span data-action="audit" data-id="' + data + '"  class="btn-operate">审核</span>';
+                                }
+                                if (self.powerlist.warehouse_details) {
+                                    btns += '<span data-action="detail" data-id="' + data + '"  class="btn-operate">查看</span>';
                                 }
                                 return btns;
                             }
@@ -495,14 +595,20 @@ angular.module('app')
                         dataSrc: function (json) {
                             var json = testService.test({
                                 map: {
-                                    'id': 'guid',
-                                    'purchaseId': 'guid',
-                                    'purchaseTime': 'datetime',
-                                    'purchaseNumber': 'id',
-                                    'purchasePrice': 'money',
-                                    'provider': 'value',
-                                    'providerPhone': 'mobile',
-                                    'auditState': 'rule,0,1,2'
+                                    'id': 'guid', /*id序列*/
+                                    'goodsName': 'goods'/*商品名称*/,
+                                    'attributeName': 'goodstype'/*规格属性*/,
+                                    'Unit': 'unit'/*单位*/,
+                                    'warehouseName': 'value'/*仓库名称*/,
+                                    'address': 'address'/*仓库地址*/,
+                                    'cellphone': 'mobile'/*仓库联系方式*/,
+                                    'outboundTime': 'datetime'/*出库时间*/,
+                                    'outboundType': 'rule,1,2,3'/*出库类型:1:销售出库，2：调换出库，3：调仓出库*/,
+                                    'operator': 'name'/*经办人*/,
+                                    'provider': 'value'/*供应商*/,
+                                    'auditState': 'rule,0,1,2'/*审核状态：0：待审核，1：审核通过，2：审核不通过*/,
+                                    'relatedNumber': 'guid'/*关联单号*/,
+                                    'remark': 'remark'/*备注*/
                                 },
                                 mapmin: 5,
                                 mapmax: 10,
@@ -529,32 +635,32 @@ angular.module('app')
                             var result = json.result;
                             if (typeof result === 'undefined') {
                                 /*重置分页*/
-                                self.table.list_page2.total = 0;
-                                self.table.list_page2.page = 1;
-                                jq_dom.$admin_page_wrap2.pagination({
-                                    pageNumber: self.table.list_page2.page,
-                                    pageSize: self.table.list_page2.pageSize,
-                                    total: self.table.list_page2.total
+                                self.table.list_page3.total = 0;
+                                self.table.list_page3.page = 1;
+                                jq_dom.$admin_page_wrap3.pagination({
+                                    pageNumber: self.table.list_page3.page,
+                                    pageSize: self.table.list_page3.pageSize,
+                                    total: self.table.list_page3.total
                                 });
                                 return [];
                             }
 
                             if (result) {
                                 /*设置分页*/
-                                self.table.list_page2.total = result.count;
+                                self.table.list_page3.total = result.count;
                                 /*分页调用*/
-                                jq_dom.$admin_page_wrap2.pagination({
-                                    pageNumber: self.table.list_page2.page,
-                                    pageSize: self.table.list_page2.pageSize,
-                                    total: self.table.list_page2.total,
+                                jq_dom.$admin_page_wrap3.pagination({
+                                    pageNumber: self.table.list_page3.page,
+                                    pageSize: self.table.list_page3.pageSize,
+                                    total: self.table.list_page3.total,
                                     onSelectPage: function (pageNumber, pageSize) {
                                         /*再次查询*/
-                                        var temp_param = self.table.list_config2.config.ajax.data;
-                                        self.table.list_page2.page = pageNumber;
-                                        self.table.list_page2.pageSize = pageSize;
-                                        temp_param['page'] = self.table.list_page2.page;
-                                        temp_param['pageSize'] = self.table.list_page2.pageSize;
-                                        self.table.list_config2.config.ajax.data = temp_param;
+                                        var temp_param = self.table.list_config3.config.ajax.data;
+                                        self.table.list_page3.page = pageNumber;
+                                        self.table.list_page3.pageSize = pageSize;
+                                        temp_param['page'] = self.table.list_page3.page;
+                                        temp_param['pageSize'] = self.table.list_page3.pageSize;
+                                        self.table.list_config3.config.ajax.data = temp_param;
                                         warehouseService.getColumnData(self.table, self.record);
                                     }
                                 });
@@ -567,12 +673,12 @@ angular.module('app')
                                 }
                             } else {
                                 /*重置分页*/
-                                self.table.list_page2.total = 0;
-                                self.table.list_page2.page = 1;
-                                jq_dom.$admin_page_wrap2.pagination({
-                                    pageNumber: self.table.list_page2.page,
-                                    pageSize: self.table.list_page2.pageSize,
-                                    total: self.table.list_page2.total
+                                self.table.list_page3.total = 0;
+                                self.table.list_page3.page = 1;
+                                jq_dom.$admin_page_wrap3.pagination({
+                                    pageNumber: self.table.list_page3.page,
+                                    pageSize: self.table.list_page3.pageSize,
+                                    total: self.table.list_page3.total
                                 });
                                 return [];
                             }
@@ -585,50 +691,56 @@ angular.module('app')
                     info: false,
                     dom: '<"g-d-hidei" s>',
                     searching: true,
-                    order: [[1, "desc"], [2, "desc"]],
+                    order: [[2, "desc"]],
                     columns: [
                         {
-                            "data": "id",
-                            "orderable": false,
-                            "searchable": false,
-                            "render": function (data, type, full, meta) {
-                                var state = parseInt(full.auditState, 10);
-                                return state === 1 ? '' : '<input value="' + data + '" name="check_purchaseid" type="checkbox" />';
-                            }
+                            "data": "goodsName"
                         },
                         {
-                            "data": "purchaseId"
+                            "data": "attributeName"
                         },
                         {
-                            "data": "purchaseTime"
+                            "data": "warehouseName"
                         },
                         {
-                            "data": "purchaseNumber"
-                        },
-                        {
-                            "data": "purchasePrice",
-                            "render": function (data, type, full, meta) {
-                                return toolUtil.moneyCorrect(data, 15, false)[0];
-                            }
-                        },
-                        {
-                            "data": "provider"
-                        },
-                        {
-                            "data": "providerPhone",
+                            "data": "cellphone",
                             "render": function (data, type, full, meta) {
                                 return toolUtil.phoneFormat(data);
                             }
                         },
+                        {
+                            "data": "outboundTime"
+                        },
+                        {
+                            "data": "outboundType",
+                            "render": function (data, type, full, meta) {
+                                var stauts = parseInt(data, 10),
+                                    statusmap = {
+                                        1: "销售出库",
+                                        2: "调换出库",
+                                        3: "调仓出库"
+                                    },
+                                    str;
 
+                                if (stauts === 1 || stauts === 2 || stauts === 3) {
+                                    str = '<div class="g-c-gray9">' + statusmap[stauts] + '</div>';
+                                } else {
+                                    str = '<div class="g-c-red1">其他</div>';
+                                }
+                                return str;
+                            }
+                        },
+                        {
+                            "data": "operator"
+                        },
                         {
                             "data": "auditState",
                             "render": function (data, type, full, meta) {
                                 var stauts = parseInt(data, 10),
                                     statusmap = {
                                         0: "待审核",
-                                        1: "已审核",
-                                        2: "审核失败"
+                                        1: "审核通过",
+                                        2: "审核不通过"
                                     },
                                     str;
 
@@ -651,8 +763,11 @@ angular.module('app')
                                 var btns = '';
 
                                 /*查看订单*/
-                                if (self.powerlist.purchase_audit && parseInt(full.auditState, 10) !== 1) {
+                                if (self.powerlist.warehouse_audit && parseInt(full.auditState, 10) !== 1) {
                                     btns += '<span data-action="audit" data-id="' + data + '"  class="btn-operate">审核</span>';
+                                }
+                                if (self.powerlist.warehouse_details) {
+                                    btns += '<span data-action="detail" data-id="' + data + '"  class="btn-operate">查看</span>';
                                 }
                                 return btns;
                             }
@@ -674,14 +789,26 @@ angular.module('app')
                         dataSrc: function (json) {
                             var json = testService.test({
                                 map: {
-                                    'id': 'guid',
-                                    'purchaseId': 'guid',
-                                    'purchaseTime': 'datetime',
-                                    'purchaseNumber': 'id',
-                                    'purchasePrice': 'money',
-                                    'provider': 'value',
-                                    'providerPhone': 'mobile',
-                                    'auditState': 'rule,0,1,2'
+                                    'id': 'guid', /*id序列*/
+                                    'goodsName': 'goods'/*商品名称*/,
+                                    'attributeName': 'goodstype'/*规格属性*/,
+                                    'Unit': 'unit'/*单位*/,
+                                    'warehouseName': 'value'/*仓库名称*/,
+                                    'address': 'address'/*仓库地址*/,
+                                    'cellphone': 'mobile'/*仓库联系方式*/,
+                                    'linkman': 'name'/*仓库负责人*/,
+                                    'availableInventory': 'id'/*可售库存*/,
+                                    'physicalInventory': 'id'/*实际库存*/,
+                                    'safetyInventory': 'id'/*安全库存*/,
+                                    'referenceReplenishment': 'id'/*参考补货*/,
+                                    'inventoryToplimit': 'id'/*库存上限*/,
+                                    'inventoryLowerlimit': 'id'/*库存下限*/,
+                                    'availableStatus': 'or'/*可售状态*/,
+                                    'physicalStatus': 'or'/*实际状态*/,
+                                    'operator': 'name'/*经办人*/,
+                                    'provider': 'value'/*供应商*/,
+                                    'auditState': 'rule,0,1,2'/*审核状态：0：待审核，1：审核通过，2：审核不通过*/,
+                                    'remark': 'remark'/*备注*/
                                 },
                                 mapmin: 5,
                                 mapmax: 10,
@@ -708,32 +835,32 @@ angular.module('app')
                             var result = json.result;
                             if (typeof result === 'undefined') {
                                 /*重置分页*/
-                                self.table.list_page2.total = 0;
-                                self.table.list_page2.page = 1;
-                                jq_dom.$admin_page_wrap2.pagination({
-                                    pageNumber: self.table.list_page2.page,
-                                    pageSize: self.table.list_page2.pageSize,
-                                    total: self.table.list_page2.total
+                                self.table.list_page4.total = 0;
+                                self.table.list_page4.page = 1;
+                                jq_dom.$admin_page_wrap4.pagination({
+                                    pageNumber: self.table.list_page4.page,
+                                    pageSize: self.table.list_page4.pageSize,
+                                    total: self.table.list_page4.total
                                 });
                                 return [];
                             }
 
                             if (result) {
                                 /*设置分页*/
-                                self.table.list_page2.total = result.count;
+                                self.table.list_page4.total = result.count;
                                 /*分页调用*/
-                                jq_dom.$admin_page_wrap2.pagination({
-                                    pageNumber: self.table.list_page2.page,
-                                    pageSize: self.table.list_page2.pageSize,
-                                    total: self.table.list_page2.total,
+                                jq_dom.$admin_page_wrap4.pagination({
+                                    pageNumber: self.table.list_page4.page,
+                                    pageSize: self.table.list_page4.pageSize,
+                                    total: self.table.list_page4.total,
                                     onSelectPage: function (pageNumber, pageSize) {
                                         /*再次查询*/
-                                        var temp_param = self.table.list_config2.config.ajax.data;
-                                        self.table.list_page2.page = pageNumber;
-                                        self.table.list_page2.pageSize = pageSize;
-                                        temp_param['page'] = self.table.list_page2.page;
-                                        temp_param['pageSize'] = self.table.list_page2.pageSize;
-                                        self.table.list_config2.config.ajax.data = temp_param;
+                                        var temp_param = self.table.list_config4.config.ajax.data;
+                                        self.table.list_page4.page = pageNumber;
+                                        self.table.list_page4.pageSize = pageSize;
+                                        temp_param['page'] = self.table.list_page4.page;
+                                        temp_param['pageSize'] = self.table.list_page4.pageSize;
+                                        self.table.list_config4.config.ajax.data = temp_param;
                                         warehouseService.getColumnData(self.table, self.record);
                                     }
                                 });
@@ -746,12 +873,12 @@ angular.module('app')
                                 }
                             } else {
                                 /*重置分页*/
-                                self.table.list_page2.total = 0;
-                                self.table.list_page2.page = 1;
-                                jq_dom.$admin_page_wrap2.pagination({
-                                    pageNumber: self.table.list_page2.page,
-                                    pageSize: self.table.list_page2.pageSize,
-                                    total: self.table.list_page2.total
+                                self.table.list_page4.total = 0;
+                                self.table.list_page4.page = 1;
+                                jq_dom.$admin_page_wrap4.pagination({
+                                    pageNumber: self.table.list_page4.page,
+                                    pageSize: self.table.list_page4.pageSize,
+                                    total: self.table.list_page4.total
                                 });
                                 return [];
                             }
@@ -764,42 +891,58 @@ angular.module('app')
                     info: false,
                     dom: '<"g-d-hidei" s>',
                     searching: true,
-                    order: [[1, "desc"], [2, "desc"]],
+                    order: [[3, "desc"]],
                     columns: [
                         {
-                            "data": "id",
-                            "orderable": false,
-                            "searchable": false,
-                            "render": function (data, type, full, meta) {
-                                var state = parseInt(full.auditState, 10);
-                                return state === 1 ? '' : '<input value="' + data + '" name="check_purchaseid" type="checkbox" />';
-                            }
+                            "data": "goodsName"
                         },
                         {
-                            "data": "purchaseId"
+                            "data": "attributeName"
                         },
                         {
-                            "data": "purchaseTime"
+                            "data": "Unit"
                         },
                         {
-                            "data": "purchaseNumber"
+                            "data": "warehouseName"
                         },
                         {
-                            "data": "purchasePrice",
-                            "render": function (data, type, full, meta) {
-                                return toolUtil.moneyCorrect(data, 15, false)[0];
-                            }
+                            "data": "linkman"
                         },
                         {
-                            "data": "provider"
-                        },
-                        {
-                            "data": "providerPhone",
+                            "data": "cellphone",
                             "render": function (data, type, full, meta) {
                                 return toolUtil.phoneFormat(data);
                             }
                         },
+                        {
+                            "data": "availableInventory"
+                        },
+                        {
+                            "data": "physicalInventory"
+                        },
+                        {
+                            "data": "safetyInventory"
+                        },
+                        {
+                            "data": "availableStatus",
+                            "render": function (data, type, full, meta) {
+                                var stauts = parseInt(data, 10),
+                                    statusmap = {
+                                        0: "正常",
+                                        1: "异常"
+                                    },
+                                    str;
 
+                                if (stauts === 0) {
+                                    str = '<div class="g-c-gray9">' + statusmap[stauts] + '</div>';
+                                } else if (stauts === 1) {
+                                    str = '<div class="g-c-red1">' + statusmap[stauts] + '</div>';
+                                } else {
+                                    str = '<div class="g-c-gray6">其他</div>';
+                                }
+                                return str;
+                            }
+                        },
                         {
                             "data": "auditState",
                             "render": function (data, type, full, meta) {
@@ -830,8 +973,11 @@ angular.module('app')
                                 var btns = '';
 
                                 /*查看订单*/
-                                if (self.powerlist.purchase_audit && parseInt(full.auditState, 10) !== 1) {
+                                if (self.powerlist.warehouse_audit && parseInt(full.auditState, 10) !== 1) {
                                     btns += '<span data-action="audit" data-id="' + data + '"  class="btn-operate">审核</span>';
+                                }
+                                if (self.powerlist.warehouse_details) {
+                                    btns += '<span data-action="detail" data-id="' + data + '"  class="btn-operate">查看</span>';
                                 }
                                 return btns;
                             }
@@ -846,14 +992,14 @@ angular.module('app')
             list_table4: null,
             /*列控制*/
             tablecolumn1: {
-                init_len: 8/*数据有多少列*/,
+                init_len: 12/*数据有多少列*/,
                 column_flag: true,
-                ischeck: false, /*是否有全选*/
+                ischeck: true, /*是否有全选*/
                 columnshow: true,
                 $column_wrap: jq_dom.$admin_table_checkcolumn1/*控制列显示隐藏的容器*/,
                 $bodywrap: jq_dom.$admin_batchlist_wrap1/*数据展现容器*/,
-                hide_list: [2, 3, 5]/*需要隐藏的的列序号*/,
-                hide_len: 3,
+                hide_list: [2, 3, 5, 6, 8, 9, 10]/*需要隐藏的的列序号*/,
+                hide_len: 7,
                 column_api: {
                     isEmpty: function () {
                         if (self.table.list_table1 === null) {
@@ -867,14 +1013,14 @@ angular.module('app')
                 $column_ul: jq_dom.$admin_table_checkcolumn1.find('ul')
             },
             tablecolumn2: {
-                init_len: 9/*数据有多少列*/,
+                init_len: 11/*数据有多少列*/,
                 column_flag: true,
-                ischeck: true, /*是否有全选*/
+                ischeck: false, /*是否有全选*/
                 columnshow: true,
                 $column_wrap: jq_dom.$admin_table_checkcolumn2/*控制列显示隐藏的容器*/,
                 $bodywrap: jq_dom.$admin_batchlist_wrap2/*数据展现容器*/,
-                hide_list: [3, 4, 5, 6]/*需要隐藏的的列序号*/,
-                hide_len: 4,
+                hide_list: [1, 2, 4, 6, 7, 8]/*需要隐藏的的列序号*/,
+                hide_len: 6,
                 column_api: {
                     isEmpty: function () {
                         if (self.table.list_table2 === null) {
@@ -888,14 +1034,14 @@ angular.module('app')
                 $column_ul: jq_dom.$admin_table_checkcolumn2.find('ul')
             },
             tablecolumn3: {
-                init_len: 8/*数据有多少列*/,
+                init_len: 9/*数据有多少列*/,
                 column_flag: true,
                 ischeck: false, /*是否有全选*/
                 columnshow: true,
                 $column_wrap: jq_dom.$admin_table_checkcolumn3/*控制列显示隐藏的容器*/,
                 $bodywrap: jq_dom.$admin_batchlist_wrap3/*数据展现容器*/,
-                hide_list: [2, 3, 5]/*需要隐藏的的列序号*/,
-                hide_len: 3,
+                hide_list: [2, 3, 4, 5]/*需要隐藏的的列序号*/,
+                hide_len: 4,
                 column_api: {
                     isEmpty: function () {
                         if (self.table.list_table3 === null) {
@@ -909,14 +1055,14 @@ angular.module('app')
                 $column_ul: jq_dom.$admin_table_checkcolumn3.find('ul')
             },
             tablecolumn4: {
-                init_len: 8/*数据有多少列*/,
+                init_len: 12/*数据有多少列*/,
                 column_flag: true,
                 ischeck: false, /*是否有全选*/
                 columnshow: true,
                 $column_wrap: jq_dom.$admin_table_checkcolumn4/*控制列显示隐藏的容器*/,
                 $bodywrap: jq_dom.$admin_batchlist_wrap4/*数据展现容器*/,
-                hide_list: [2, 3, 5]/*需要隐藏的的列序号*/,
-                hide_len: 3,
+                hide_list: [1, 2, 4, 5, 7, 8, 9]/*需要隐藏的的列序号*/,
+                hide_len: 7,
                 column_api: {
                     isEmpty: function () {
                         if (self.table.list_table4 === null) {
@@ -979,21 +1125,21 @@ angular.module('app')
             tablecheckall1: {
                 checkall_flag: true,
                 $bodywrap: jq_dom.$admin_batchlist_wrap1,
-                $checkall: jq_dom.$admin_kucun_checkall1,
+                $checkall: jq_dom.$admin_batchitem_checkall1,
                 checkfn: function (flag) {
                     /*$scope.$apply(function () {
-                        if (flag === 0) {
-                            /!*普通模式*!/
-                            self.audit.type = 'base';
-                            self.audit.batchflag = false;
-                            self.audit.isdata = '';
-                        } else if (flag === 1) {
-                            /!*批量模式*!/
-                            self.audit.type = 'batch';
-                            self.audit.batchflag = true;
-                            self.audit.isdata = 'ok';
-                        }
-                    });*/
+                     if (flag === 0) {
+                     /!*普通模式*!/
+                     self.audit.type = 'base';
+                     self.audit.batchflag = false;
+                     self.audit.isdata = '';
+                     } else if (flag === 1) {
+                     /!*批量模式*!/
+                     self.audit.type = 'batch';
+                     self.audit.batchflag = true;
+                     self.audit.isdata = 'ok';
+                     }
+                     });*/
                 },
                 checkvalue: 0/*默认未选中*/,
                 checkid: []/*默认索引数据为空*/,
@@ -1038,11 +1184,11 @@ angular.module('app')
 
 
         /*收货服务--确认收货*/
-        this.sureReceive=function () {
-           warehouseService.sureReceive({
-               record:self.record,
-               table:self.table
-           });
+        this.sureReceive = function () {
+            warehouseService.sureReceive({
+                record: self.record,
+                table: self.table
+            });
         };
 
 
@@ -1074,21 +1220,21 @@ angular.module('app')
         /*审核服务--关闭弹出*/
         this.closeEditAudit = function () {
             warehouseService.closeEditAudit({
-                audit:self.audit
+                audit: self.audit
             });
         };
         /*审核服务--确定修改*/
-        this.sureEditAudit=function () {
+        this.sureEditAudit = function () {
             warehouseService.sureEditAudit({
-                audit:self.audit
+                audit: self.audit
             });
         };
         /*审核服务--提交审核*/
-        this.submitAudit=function () {
+        this.submitAudit = function () {
             warehouseService.submitAudit({
-                audit:self.audit,
-                record:self.record,
-                table:self.table
+                audit: self.audit,
+                record: self.record,
+                table: self.table
             });
         };
 

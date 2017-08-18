@@ -15,10 +15,10 @@ angular.module('app')
             warehouse_details: true/*仓库详情*/,
             warehouse_audit: true/*仓库审核*/,
             warehouse_update: true/*仓库修改*/,
-            warehouse_caigou_add: true/*仓库采购*/,
-            warehouse_ruku_add: true/*仓库新建入库*/,
-            warehouse_chuku_add: true/*仓库新建出库*/,
-            warehouse_pandian_add: true/*仓库新建盘点*/
+            warehouse_supply: true/*仓库采购*/,
+            warehouse_inwarehouse: true/*仓库新建入库*/,
+            warehouse_outwarehouse: true/*仓库新建出库*/,
+            warehouse_check: true/*仓库新建盘点*/
         };
 
 
@@ -112,11 +112,11 @@ angular.module('app')
                 /*调用按钮操作*/
                 dataTableItemActionService.initItemAction(table[temp_action]);
                 /*调用全选*/
-                if (action === 2) {
+                if (action === 1) {
                     dataTableCheckAllService.initCheckAll(table[temp_checkall]);
                 }
             } else {
-                if (action === 2) {
+                if (action === 1) {
                     dataTableCheckAllService.clear(table[temp_checkall]);
                 }
                 table[temp_table].ajax.config(table[temp_config].config.ajax).load();
@@ -153,15 +153,45 @@ angular.module('app')
             var id = config.id,
                 action = config.action;
 
-            if (action === 'detail') {
-                /*查询订单详情*/
-                self.queryDetail(model, {
+            if (action === 'update') {
+                /*查询修改*/
+                self.queryUpdate(model, {
                     id: id
                 });
-            } else if (action === 'receive') {
-                /*查询收货*/
-                self.queryReceive(model, {
+            }else if (action === 'supply') {
+                /*查询补货*/
+                self.querySupply(model, {
                     id: id
+                });
+            } else if (action === 'purchase') {
+                /*生成采购单*/
+                self.doPurchase(model, {
+                    id: id,
+                    type: 'base'
+                });
+            } else if (action === 'inwarehouse') {
+                /*入库显示*/
+                self.showInwarehouse(model, {
+                    id: id,
+                    type: 'base'
+                });
+            } else if (action === 'outwarehouse') {
+                /*出库显示*/
+                self.showOutwarehouse(model, {
+                    id: id,
+                    type: 'base'
+                });
+            } else if (action === 'check') {
+                /*盘点显示*/
+                self.showCheck(model, {
+                    id: id,
+                    type: 'base'
+                });
+            } else if (action === 'detail') {
+                /*查询详情*/
+                self.queryDetail(model, {
+                    id: id,
+                    type: 'base'
                 });
             } else if (action === 'audit') {
                 /*查询审核*/
@@ -591,7 +621,7 @@ angular.module('app')
                                     'display': 'hide',
                                     'area': 'receive',
                                     'delay': 1000
-                                },function () {
+                                }, function () {
                                     /*清空数据*/
                                     self.$admin_receive_show.html('');
                                 })
@@ -926,7 +956,7 @@ angular.module('app')
                 audit.editnode = null;
             }
         };
-        
+
 
         /*视图切换服务--根据条件判断视图状态:返回一个代表类型，数字或者字符*/
         this.toggleTheme = function (config) {
@@ -944,12 +974,18 @@ angular.module('app')
              1:统计
              2:审核
              * */
-            if (type === 'stats') {
-                /*统计*/
+            if (type === 'kucun') {
+                /*库存*/
                 config.record.action = 1;
-            } else if (type === 'audit') {
-                /*审核*/
+            } else if (type === 'ruku') {
+                /*入库*/
                 config.record.action = 2;
+            } else if (type === 'chuku') {
+                /*入库*/
+                config.record.action = 3;
+            } else if (type === 'pandian') {
+                /*入库*/
+                config.record.action = 4;
             }
             /*查询数据*/
             self.getColumnData(config.table, config.record);
@@ -960,10 +996,16 @@ angular.module('app')
         this.toggleModal = function (config, fn) {
             var temp_timer = null,
                 type_map = {
-                    'purchasedetail': self.$admin_purchasedetail_dialog,
-                    'receive': self.$admin_receive_dialog,
-                    'audit': self.$admin_audit_dialog
+                    'detail': self.$admin_detail_dialog,
+                    'audit': self.$admin_audit_dialog,
+                    'purchase':self.$admin_purchase_dialog,
+                    'supply':self.$admin_supply_dialog,
+                    'update':self.$admin_update_dialog,
+                    'inwarehouse':self.$admin_inwarehouse_dialog,
+                    'outwarehouse':self.$admin_outwarehouse_dialog,
+                    'check':self.$admin_check_dialog
                 };
+
             if (config.display === 'show') {
                 if (typeof config.delay !== 'undefined') {
                     temp_timer = setTimeout(function () {

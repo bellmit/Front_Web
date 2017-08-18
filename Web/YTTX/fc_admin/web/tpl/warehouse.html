@@ -57,31 +57,45 @@
                 </div>
             </div>
 
+
+            <!--库存-->
             <div ng-class="{'g-d-hidei':warehouse_ctrl.record.action!==1}">
                 <!--表格-->
                 <table id="admin_list_wrap1" class="table table-bordered table-striped table-hover admin-layout-table">
                     <!--分组样式-->
                     <colgroup id="admin_list_colgroup1">
-                        <col class="g-w-percent10">
+                        <col class="g-w-percent2">
                         <col class="g-w-percent8">
+                        <col class="g-w-percent6">
                         <col class="g-w-percent2">
                         <col class="g-w-percent5">
-                        <col class="g-w-percent8">
-                        <col class="g-w-percent8">
-                        <col class="g-w-percent4">
+                        <col class="g-w-percent3">
                         <col class="g-w-percent5">
+                        <col class="g-w-percent3">
+                        <col class="g-w-percent3">
+                        <col class="g-w-percent3">
+                        <col class="g-w-percent3">
+                        <col class="g-w-percent7">
                     </colgroup>
 
                     <!--表头-->
                     <thead>
                     <tr>
-                        <th>采购单号</th>
-                        <th>采购时间</th>
-                        <th>采购数量</th>
-                        <th>采购总价</th>
-                        <th>供应商</th>
-                        <th>供应商手机</th>
-                        <th>审核状态</th>
+                        <th class="g-clear-pl g-clear-pr g-t-c">
+                            <div class="admin-batchitem-wrap" ng-show="warehouse_ctrl.powerlist.warehouse_supply" >
+                                <label data-check="0" class="admin-batchitem-check" id="admin_batchitem_checkall1"></label>
+                            </div>
+                        </th>
+                        <th>商品名称</th>
+                        <th>规格属性</th>
+                        <th>单位</th>
+                        <th>仓库名称</th>
+                        <th>仓库负责人</th>
+                        <th>仓库手机</th>
+                        <th>可售库存</th>
+                        <th>实际库存</th>
+                        <th>安全库存</th>
+                        <th>可售状态</th>
                         <th>操作</th>
                     </tr>
                     </thead>
@@ -97,36 +111,37 @@
             </div>
 
 
+            <!--入库-->
             <div ng-class="{'g-d-hidei':warehouse_ctrl.record.action!==2}">
                 <!--表格-->
                 <table id="admin_list_wrap2" class="table table-bordered table-striped table-hover admin-layout-table">
                     <!--分组样式-->
                     <colgroup id="admin_list_colgroup2">
-                        <col class="g-w-percent2">
-                        <col class="g-w-percent10">
-                        <col class="g-w-percent8">
-                        <col class="g-w-percent3">
-                        <col class="g-w-percent3">
-                        <col class="g-w-percent8">
-                        <col class="g-w-percent6">
                         <col class="g-w-percent5">
+                        <col class="g-w-percent5">
+                        <col class="g-w-percent3">
+                        <col class="g-w-percent5">
+                        <col class="g-w-percent5">
+                        <col class="g-w-percent5">
+                        <col class="g-w-percent5">
+                        <col class="g-w-percent3">
+                        <col class="g-w-percent5">
+                        <col class="g-w-percent4">
                         <col class="g-w-percent5">
                     </colgroup>
 
                     <!--表头-->
                     <thead>
                     <tr>
-                        <th class="g-clear-pl g-clear-pr g-t-c">
-                            <div class="admin-batchitem-wrap" ng-show="warehouse_ctrl.powerlist.purchase_audit" >
-                                <label data-check="0" class="admin-batchitem-check" id="admin_purchase_checkall2"></label>
-                            </div>
-                        </th>
-                        <th>采购单号</th>
-                        <th>采购时间</th>
-                        <th>采购数量</th>
-                        <th>采购总价</th>
+                        <th>商品名称</th>
+                        <th>规格属性</th>
+                        <th>单位</th>
+                        <th>仓库名称</th>
+                        <th>仓库电话</th>
+                        <th>入库时间</th>
+                        <th>入库类型</th>
+                        <th>经办人</th>
                         <th>供应商</th>
-                        <th>供应商手机</th>
                         <th>审核状态</th>
                         <th>操作</th>
                     </tr>
@@ -139,6 +154,99 @@
                 <!--分页-->
                 <div class="admin-page-wrap">
                     <div class="easyui-pagination g-w-percent50" id="admin_page_wrap2" data-options="links:5,layout:['manual','first','prev','links','next','last'],displayMsg:'显示{from}&nbsp;到&nbsp;{to}&nbsp;共&nbsp;{total}条记录'"></div>
+                </div>
+            </div>
+
+
+
+            <!--出库-->
+            <div ng-class="{'g-d-hidei':warehouse_ctrl.record.action!==3}">
+                <!--表格-->
+                <table id="admin_list_wrap3" class="table table-bordered table-striped table-hover admin-layout-table">
+                    <!--分组样式-->
+                    <colgroup id="admin_list_colgroup3">
+                        <col class="g-w-percent8">
+                        <col class="g-w-percent7">
+                        <col class="g-w-percent5">
+                        <col class="g-w-percent5">
+                        <col class="g-w-percent5">
+                        <col class="g-w-percent5">
+                        <col class="g-w-percent5">
+                        <col class="g-w-percent5">
+                        <col class="g-w-percent5">
+                    </colgroup>
+
+                    <!--表头-->
+                    <thead>
+                    <tr>
+                        <th>商品名称</th>
+                        <th>规格属性</th>
+                        <th>仓库名称</th>
+                        <th>仓库电话</th>
+                        <th>出库时间</th>
+                        <th>出库类型</th>
+                        <th>经办人</th>
+                        <th>审核状态</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+
+                    <!--表主体-->
+                    <tbody id="admin_batchlist_wrap3" class="middle-align"></tbody>
+                </table>
+
+                <!--分页-->
+                <div class="admin-page-wrap">
+                    <div class="easyui-pagination g-w-percent50" id="admin_page_wrap3" data-options="links:5,layout:['manual','first','prev','links','next','last'],displayMsg:'显示{from}&nbsp;到&nbsp;{to}&nbsp;共&nbsp;{total}条记录'"></div>
+                </div>
+            </div>
+
+
+            <!--盘点-->
+            <div ng-class="{'g-d-hidei':warehouse_ctrl.record.action!==4}">
+                <!--表格-->
+                <table id="admin_list_wrap4" class="table table-bordered table-striped table-hover admin-layout-table">
+                    <!--分组样式-->
+                    <colgroup id="admin_list_colgroup4">
+                        <col class="g-w-percent8">
+                        <col class="g-w-percent6">
+                        <col class="g-w-percent3">
+                        <col class="g-w-percent5">
+                        <col class="g-w-percent3">
+                        <col class="g-w-percent5">
+                        <col class="g-w-percent3">
+                        <col class="g-w-percent3">
+                        <col class="g-w-percent3">
+                        <col class="g-w-percent3">
+                        <col class="g-w-percent3">
+                        <col class="g-w-percent5">
+                    </colgroup>
+
+                    <!--表头-->
+                    <thead>
+                    <tr>
+                        <th>商品名称</th>
+                        <th>规格属性</th>
+                        <th>单位</th>
+                        <th>仓库名称</th>
+                        <th>仓库负责人</th>
+                        <th>仓库手机</th>
+                        <th>可售库存</th>
+                        <th>实际库存</th>
+                        <th>安全库存</th>
+                        <th>可售状态</th>
+                        <th>审核状态</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+
+                    <!--表主体-->
+                    <tbody id="admin_batchlist_wrap4" class="middle-align"></tbody>
+                </table>
+
+                <!--分页-->
+                <div class="admin-page-wrap">
+                    <div class="easyui-pagination g-w-percent50" id="admin_page_wrap4" data-options="links:5,layout:['manual','first','prev','links','next','last'],displayMsg:'显示{from}&nbsp;到&nbsp;{to}&nbsp;共&nbsp;{total}条记录'"></div>
                 </div>
             </div>
 
@@ -163,11 +271,11 @@
 
 
     <!--库存--采购-->
-    <div class="modal fade custom-width" id="admin_kucun_caigou_dialog">
+    <div class="modal fade custom-width" id="admin_purchase_dialog">
         <div class="modal-dialog g-w-percent48">
             <div class="modal-content">
                 <div class="modal-body">
-                    <div class="admin-layout-theme4 admin-theme-close g-t-c g-b-gray17 g-pos-r">订单收货<span class="mini-icon admin-mini-icon1" ng-click="warehouse_ctrl.toggleModal({display:'hide',area:'receive'})"></span>
+                    <div class="admin-layout-theme4 admin-theme-close g-t-c g-b-gray17 g-pos-r">订单收货<span class="mini-icon admin-mini-icon1" ng-click="warehouse_ctrl.toggleModal({display:'hide',area:'purchase'})"></span>
                     </div>
 
                     <!--收货详情-->
@@ -193,7 +301,7 @@
                         </thead>
 
                         <!--表主体-->
-                        <tbody id="admin_kucun_caigou_show" class="middle-align"></tbody>
+                        <tbody id="admin_purchase_show" class="middle-align"></tbody>
                     </table>
                     <div class="clearfix"></div>
                 </div>
@@ -205,7 +313,7 @@
         </div>
     </div>
     <!--库存--补货-->
-    <div class="modal fade custom-width" id="admin_kucun_buhuo_dialog">
+    <div class="modal fade custom-width" id="admin_supply_dialog">
         <div class="modal-dialog g-w-percent48">
             <div class="modal-content">
                 <div class="modal-body">
@@ -235,7 +343,7 @@
                         </thead>
 
                         <!--表主体-->
-                        <tbody id="admin_kucun_buhuo_show" class="middle-align"></tbody>
+                        <tbody id="admin_supply_show" class="middle-align"></tbody>
                     </table>
                     <div class="clearfix"></div>
                 </div>
@@ -247,7 +355,7 @@
         </div>
     </div>
     <!--库存--修改-->
-    <div class="modal fade custom-width" id="admin_kucun_xiugai_dialog">
+    <div class="modal fade custom-width" id="admin_update_dialog">
         <div class="modal-dialog g-w-percent48">
             <div class="modal-content">
                 <div class="modal-body">
@@ -277,7 +385,7 @@
                         </thead>
 
                         <!--表主体-->
-                        <tbody id="admin_kucun_xiugai_show" class="middle-align"></tbody>
+                        <tbody id="admin_update_show" class="middle-align"></tbody>
                     </table>
                     <div class="clearfix"></div>
                 </div>
@@ -292,39 +400,135 @@
 
 
     <!--新增入库-->
-    <div class="modal fade custom-width" id="admin_ruku_tianjia_dialog">
+    <div class="modal fade custom-width" id="admin_inwarehouse_dialog">
         <div class="modal-dialog g-w-percent48">
             <div class="modal-content">
                 <div class="modal-body">
-                    <div class="admin-layout-theme4 admin-theme-close g-t-c g-b-gray17 g-pos-r">订单收货<span class="mini-icon admin-mini-icon1" ng-click="warehouse_ctrl.toggleModal({display:'hide',area:'receive'})"></span>
+                    <div class="admin-layout-theme4 admin-theme-close g-t-c g-b-gray17 g-pos-r">新增入库<span class="mini-icon admin-mini-icon1" ng-click="warehouse_ctrl.toggleModal({display:'hide',area:'inwarehouse'})"></span>
                     </div>
 
-                    <!--收货详情-->
-                    <table class="table table-bordered table-striped table-hover admin-layout-table">
-                        <!--分组样式-->
-                        <colgroup>
-                            <col class="g-w-percent20">
-                            <col class="g-w-percent1">
-                            <col class="g-w-percent20">
-                            <col class="g-w-percent6">
-                            <col class="g-w-percent3">
-                        </colgroup>
 
-                        <!--头部-->
-                        <thead>
-                        <tr>
-                            <th>商品详情</th>
-                            <th>序号</th>
-                            <th>商户名称</th>
-                            <th>规格属性(商品型号)</th>
-                            <th>数量</th>
-                        </tr>
-                        </thead>
+                    <form ng-submit="warehouse_ctrl.formSubmit('inwarehouse')" name="inwarehouseFrom" role="form" novalidate method="post" class="admin-layout-form">
+                        <div class="admin-layout-theme4"><span class="mini-icon admin-mini-icon2"></span>&nbsp;基本信息</div>
 
-                        <!--表主体-->
-                        <tbody id="admin_ruku_tianjia_show" class="middle-align"></tbody>
-                    </table>
-                    <div class="clearfix"></div>
+                        <div class="form-group-self1">
+                            <label class="self-label g-w-percent15 g-t-r"><span class="self-require g-c-red1">*</span>商品名称</label>
+
+                            <div class="self-input g-pos-r g-w-percent35">
+                                <input type="text" name="goodsName" placeholder="请输入商品名称" required ng-model="warehouse_ctrl.inwarehouse.goodsName" />
+                                <span  ng-show="inwarehouseFrom.goodsName.$dirty && inwarehouseFrom.goodsName.$error.required" class="self-tips self-tips-no g-c-red1 g-fs4 g-w-percent50">商品名称不能为空</span>
+                                <span ng-show="inwarehouseFrom.goodsName.$dirty && inwarehouseFrom.goodsName.$valid" class="self-tips self-tips-yes"></span>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group-self1">
+                            <label class="self-label g-w-percent15 g-t-r"><span class="self-require g-c-red1">*</span>规格属性</label>
+
+                            <div class="self-input g-pos-r g-w-percent35">
+                                <input type="text" name="attributeName" placeholder="请输入规格属性" required ng-model="warehouse_ctrl.inwarehouse.attributeName" class="ui-filter-html-illegal"  />
+                                <span  ng-show="inwarehouseFrom.attributeName.$dirty && inwarehouseFrom.attributeName.$error.required" class="self-tips self-tips-no g-c-red1 g-fs4 g-w-percent50">规格属性不能为空</span>
+                                <span ng-show="inwarehouseFrom.attributeName.$dirty && inwarehouseFrom.attributeName.$valid" class="self-tips self-tips-yes"></span>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group-self1">
+                            <label class="self-label g-w-percent15 g-t-r">单位</label>
+
+                            <div class="self-input g-w-percent35">
+                                <input type="text" name="Unit" ng-model="warehouse_ctrl.inwarehouse.Unit"  />
+                            </div>
+                        </div>
+
+                        <div class="form-group-self1">
+                            <label class="self-label g-w-percent15 g-t-r"><span class="self-require g-c-red1">*</span>仓库名称</label>
+
+                            <div class="self-input g-pos-r g-w-percent35">
+                                <input type="text" name="warehouseName" placeholder="请输入仓库名称" required  ng-model="warehouse_ctrl.inwarehouse.warehouseName"  />
+                                <span ng-show="inwarehouseFrom.warehouseName.$dirty && inwarehouseFrom.warehouseName.$error.required" class="self-tips self-tips-no g-c-red1 g-fs4 g-w-percent50">仓库名称不能为空</span>
+                                <span ng-show="inwarehouseFrom.warehouseName.$dirty && inwarehouseFrom.warehouseName.$valid" class="self-tips self-tips-yes"></span>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group-self1">
+                            <label class="self-label g-w-percent15 g-t-r">仓库地址</label>
+
+                            <div class="self-input g-w-percent35">
+                                <input type="text" name="address" ng-model="warehouse_ctrl.inwarehouse.address"  />
+                            </div>
+                        </div>
+
+
+                        <div class="form-group-self1">
+                            <label class="self-label g-w-percent15 g-t-r">仓库手机号码</label>
+
+                            <div class="self-input g-pos-r g-w-percent35">
+                                <input type="text" name="cellphone"  placeholder="请输入手机号码" maxlength="13" ng-model="warehouse_ctrl.inwarehouse.cellphone" class="ui-mobile-phone"  />
+                                <span ng-show="inwarehouseFrom.cellphone.$dirty && inwarehouseFrom.cellphone.$invalid" class="self-tips self-tips-no g-c-red1 g-fs4 g-w-percent50">手机号码格式不合法</span>
+                                <span ng-show="inwarehouseFrom.cellphone.$dirty && inwarehouseFrom.cellphone.$valid" class="self-tips self-tips-yes"></span>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group-self1">
+                            <label class="self-label g-w-percent15 g-t-r"><span class="self-require g-c-red1">*</span>入库时间</label>
+
+                            <div class="self-input g-pos-r g-w-percent35">
+                                <input type="text" name="inboundTime" placeholder="请选择入库时间" required  ng-model="warehouse_ctrl.inwarehouse.inboundTime" id="admin_inwarehouse_inboundTime" readonly />
+                                <span ng-show="inwarehouseFrom.inboundTime.$dirty && inwarehouseFrom.inboundTime.$error.required" class="self-tips self-tips-no g-c-red1 g-fs4 g-w-percent50">入库时间不能为空</span>
+                                <span ng-show="inwarehouseFrom.inboundTime.$dirty && inwarehouseFrom.inboundTime.$valid" class="self-tips self-tips-yes"></span>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group-self1">
+                            <label class="self-label g-w-percent15 g-t-r"><span class="self-require g-c-red1">*</span>入库类型</label>
+
+                            <div class="self-input g-pos-r g-w-percent35">
+                                <select name="inboundType" class="form-control g-clear-pt g-clear-pb" ng-model="warehouse_ctrl.inwarehouse.inboundType" ng-options="item.value as item.key for item in warehouse_ctrl.inwarehousetype"></select>
+                                <span ng-show="inwarehouseFrom.inboundType.$dirty && inwarehouseFrom.inboundType.$error.required" class="self-tips self-tips-no g-c-red1 g-fs4 g-w-percent50">入库类型不能为空</span>
+                                <span ng-show="inwarehouseFrom.inboundType.$dirty && inwarehouseFrom.inboundType.$valid" class="self-tips self-tips-yes"></span>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group-self1">
+                            <label class="self-label g-w-percent15 g-t-r"><span class="self-require g-c-red1">*</span>经办人</label>
+
+                            <div class="self-input g-pos-r g-w-percent35">
+                                <input type="text" name="operator" placeholder="请输入经办人" required  ng-model="warehouse_ctrl.inwarehouse.operator"  />
+                                <span ng-show="inwarehouseFrom.operator.$dirty && inwarehouseFrom.operator.$error.required" class="self-tips self-tips-no g-c-red1 g-fs4 g-w-percent50">经办人不能为空</span>
+                                <span ng-show="inwarehouseFrom.operator.$dirty && inwarehouseFrom.operator.$valid" class="self-tips self-tips-yes"></span>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group-self1">
+                            <label class="self-label g-w-percent15 g-t-r"><span class="self-require g-c-red1">*</span>供应商</label>
+
+                            <div class="self-input g-pos-r g-w-percent35">
+                                <input type="text" name="provider" placeholder="请输入供应商" required ng-model="warehouse_ctrl.inwarehouse.provider"  />
+                                <span ng-show="inwarehouseFrom.provider.$dirty && inwarehouseFrom.provider.$error.required" class="self-tips self-tips-no g-c-red1 g-fs4 g-w-percent50">供应商不能为空</span>
+                                <span ng-show="inwarehouseFrom.provider.$dirty && inwarehouseFrom.provider.$valid" class="self-tips self-tips-yes"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group-self1">
+                            <label class="self-label g-w-percent15 g-v-t g-t-r">备注</label>
+
+                            <div class="self-input g-w-percent35">
+                                <textarea ng-model="warehouse_ctrl.inwarehouse.remark" name="remark"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-group-self1">
+                            <button type="submit" ng-disabled="!(inwarehouseFrom.goodsName.$dirty && inwarehouseFrom.goodsName.$valid && inwarehouseFrom.attributeName.$dirty && inwarehouseFrom.attributeName.$valid && inwarehouseFrom.warehouseName.$dirty && inwarehouseFrom.warehouseName.$valid && (warehouse_ctrl.inwarehouse.cellphone==='' || (inwarehouseFrom.cellphone.$dirty && inwarehouseFrom.cellphone.$valid)) && inwarehouseFrom.inboundTime.$dirty && inwarehouseFrom.inboundTime.$valid  && inwarehouseFrom.inboundType.$dirty && inwarehouseFrom.inboundType.$valid && inwarehouseFrom.operator.$dirty && inwarehouseFrom.operator.$valid && inwarehouseFrom.provider.$dirty && inwarehouseFrom.provider.$valid)"  class="btn btn-red g-br3 g-w-percent50">添加</button>
+                            <button type="button" class="btn btn-red g-br3 g-w-percent50 g-gap-mt2" id="admin_struct_reset" ng-click="warehouse_ctrl.formReset(inwarehouseFrom,'struct')">重置</button>
+                        </div>
+                    </form>
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-red g-w-number4" ng-click="warehouse_ctrl.sureReceive()">收货</button>
@@ -334,11 +538,11 @@
         </div>
     </div>
     <!--新增出库-->
-    <div class="modal fade custom-width" id="admin_chuku_tianjia_dialog">
+    <div class="modal fade custom-width" id="admin_outwarehouse_dialog">
         <div class="modal-dialog g-w-percent48">
             <div class="modal-content">
                 <div class="modal-body">
-                    <div class="admin-layout-theme4 admin-theme-close g-t-c g-b-gray17 g-pos-r">订单收货<span class="mini-icon admin-mini-icon1" ng-click="warehouse_ctrl.toggleModal({display:'hide',area:'receive'})"></span>
+                    <div class="admin-layout-theme4 admin-theme-close g-t-c g-b-gray17 g-pos-r">订单收货<span class="mini-icon admin-mini-icon1" ng-click="warehouse_ctrl.toggleModal({display:'hide',area:'outwarehouse'})"></span>
                     </div>
 
                     <!--收货详情-->
@@ -364,7 +568,7 @@
                         </thead>
 
                         <!--表主体-->
-                        <tbody id="admin_chuku_tianjia_show" class="middle-align"></tbody>
+                        <tbody id="admin_outwarehouse_show" class="middle-align"></tbody>
                     </table>
                     <div class="clearfix"></div>
                 </div>
@@ -376,11 +580,11 @@
         </div>
     </div>
     <!--新增盘点-->
-    <div class="modal fade custom-width" id="admin_pandian_tianjia_dialog">
+    <div class="modal fade custom-width" id="admin_check_dialog">
         <div class="modal-dialog g-w-percent48">
             <div class="modal-content">
                 <div class="modal-body">
-                    <div class="admin-layout-theme4 admin-theme-close g-t-c g-b-gray17 g-pos-r">订单收货<span class="mini-icon admin-mini-icon1" ng-click="warehouse_ctrl.toggleModal({display:'hide',area:'receive'})"></span>
+                    <div class="admin-layout-theme4 admin-theme-close g-t-c g-b-gray17 g-pos-r">订单收货<span class="mini-icon admin-mini-icon1" ng-click="warehouse_ctrl.toggleModal({display:'hide',area:'check'})"></span>
                     </div>
 
                     <!--收货详情-->
@@ -406,7 +610,7 @@
                         </thead>
 
                         <!--表主体-->
-                        <tbody id="admin_pandian_tianjia_show" class="middle-align"></tbody>
+                        <tbody id="admin_check_show" class="middle-align"></tbody>
                     </table>
                     <div class="clearfix"></div>
                 </div>
@@ -444,7 +648,7 @@
                         </thead>
 
                         <!--表主体-->
-                        <tbody id="admin_purchasedetail_show" class="middle-align"></tbody>
+                        <tbody id="admin_detail_show" class="middle-align"></tbody>
                     </table>
                     <div class="clearfix"></div>
                 </div>
@@ -454,6 +658,7 @@
             </div>
         </div>
     </div>
+
     <!--审核-->
     <div class="modal fade custom-width" id="admin_audit_dialog">
         <div class="modal-dialog g-w-percent48">
