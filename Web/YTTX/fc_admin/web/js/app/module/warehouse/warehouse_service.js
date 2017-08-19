@@ -15,10 +15,10 @@ angular.module('app')
             warehouse_details: true/*仓库详情*/,
             warehouse_audit: true/*仓库审核*/,
             warehouse_update: true/*仓库修改*/,
-            warehouse_supply: true/*仓库采购*/,
+            warehouse_supply: true/*仓库采购,补货*/,
             warehouse_inwarehouse: true/*仓库新建入库*/,
             warehouse_outwarehouse: true/*仓库新建出库*/,
-            warehouse_check: true/*仓库新建盘点*/
+            warehouse_checkwarehouse: true/*仓库新建盘点*/
         };
 
 
@@ -135,19 +135,6 @@ angular.module('app')
             }
             table[temp_table].search(record.filter).columns().draw();
         };
-        /*数据查询服务--时间查询*/
-        this.datePicker = function (record) {
-            datePicker97Service.datePickerRange({
-                $node1: self.$search_startTime,
-                $node2: self.$search_endTime,
-                format: '%y-%M-%d',
-                model: record,
-                position: {
-                    left: 0,
-                    top: 2
-                }
-            });
-        };
         /*数据查询服务--操作按钮*/
         this.doItemAction = function (model, config) {
             var id = config.id,
@@ -199,6 +186,33 @@ angular.module('app')
                     id: id,
                     type: 'base'
                 });
+            }
+        };
+
+
+        /*日历服务--日历查询*/
+        this.searchDatePicker = function (record) {
+            /*查询区域时间初始化*/
+            datePicker97Service.datePickerRange({
+                $node1: self.$search_startTime,
+                $node2: self.$search_endTime,
+                format: '%y-%M-%d',
+                model: record,
+                position: {
+                    left: 0,
+                    top: 2
+                }
+            });
+        };
+        /*日历服务--新增日历调用*/
+        this.addDatePicker=function (arr) {
+            if (!arr) {
+                return false;
+            }
+            var len = arr.length,
+                i = 0;
+            for (i; i < len; i++) {
+                datePicker97Service.datePicker(arr[i]);
             }
         };
 
@@ -974,16 +988,16 @@ angular.module('app')
              1:统计
              2:审核
              * */
-            if (type === 'kucun') {
+            if (type === 'warehouse') {
                 /*库存*/
                 config.record.action = 1;
-            } else if (type === 'ruku') {
+            } else if (type === 'inwarehouse') {
                 /*入库*/
                 config.record.action = 2;
-            } else if (type === 'chuku') {
+            } else if (type === 'outwarehouse') {
                 /*入库*/
                 config.record.action = 3;
-            } else if (type === 'pandian') {
+            } else if (type === 'check') {
                 /*入库*/
                 config.record.action = 4;
             }

@@ -41,6 +41,8 @@ angular.module('app')
             /*时间查询*/
             $search_startTime: $('#search_startTime'),
             $search_endTime: $('#search_endTime'),
+            /*新增时间*/
+            $admin_inwarehouse_inboundTime:$('#admin_inwarehouse_inboundTime'),
             /*库存--采购*/
             $admin_purchase_dialog:$('#admin_purchase_dialog'),
             /*库存--补货*/
@@ -52,7 +54,7 @@ angular.module('app')
             /*新增--出库*/
             $admin_outwarehouse_dialog:$('#admin_outwarehouse_dialog'),
             /*新增--盘点*/
-            $admin_check_dialog:$('#admin_check_dialog'),
+            $admin_checkwarehouse_dialog:$('#admin_checkwarehouse_dialog'),
             /*详情*/
             $admin_detail_dialog: $('#admin_detail_dialog'),
             $admin_detail_show: $('#admin_detail_show'),
@@ -84,22 +86,22 @@ angular.module('app')
         this.themeitem = [{
             name: '库存',
             power: self.powerlist.warehouse_supply,
-            type: 'kucun',
+            type: 'warehouse',
             active: 'tabactive'
         }, {
             name: '入库',
             power: self.powerlist.warehouse_inwarehouse,
-            type: 'ruku',
+            type: 'inwarehouse',
             active: ''
         }, {
             name: '出库',
             power: self.powerlist.warehouse_outwarehouse,
-            type: 'chuku',
+            type: 'outwarehouse',
             active: ''
         }, {
             name: '盘点',
-            power: self.powerlist.warehouse_check,
-            type: 'pandian',
+            power: self.powerlist.warehouse_checkwarehouse,
+            type: 'checkwarehouse',
             active: ''
         }];
 
@@ -141,7 +143,7 @@ angular.module('app')
 
         };
         /*模型--盘点*/
-        this.check={
+        this.checkwarehouse={
 
         };
 
@@ -1152,8 +1154,27 @@ angular.module('app')
 
         /*初始化服务--虚拟挂载点，或者初始化参数*/
         warehouseService.getRoot(self.record);
-        /*初始化服务--日历查询*/
-        warehouseService.datePicker(self.record);
+        /*初始化服务--查询条件--日历初始化*/
+        warehouseService.searchDatePicker(self.record);
+        /*初始化服务--新增--日历初始化*/
+        warehouseService.addDatePicker([{
+            format: '%y-%M-%d',
+            init:true,
+            initfn:function (data) {
+                self.inwarehouse.inboundTime = data.$node1;
+            },
+            position: {
+                left: 0,
+                top: 2
+            },
+            $node1: jq_dom.$admin_inwarehouse_inboundTime,
+            fn: function (data) {
+                $scope.$apply(function () {
+                    self.inwarehouse.inboundTime = data.$node1;
+                });
+            }
+        }]);
+
 
 
         /*菜单服务--初始化菜单*/
