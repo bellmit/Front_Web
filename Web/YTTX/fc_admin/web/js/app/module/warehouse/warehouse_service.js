@@ -1,10 +1,11 @@
 angular.module('app')
-    .service('warehouseService', ['toolUtil', 'toolDialog', 'BASE_CONFIG', 'loginService', 'powerService', 'dataTableColumnService', 'dataTableItemActionService', 'datePicker97Service', 'dataTableCheckAllService', 'testService', function (toolUtil, toolDialog, BASE_CONFIG, loginService, powerService, dataTableColumnService, dataTableItemActionService, datePicker97Service, dataTableCheckAllService, testService) {
+    .service('warehouseService', ['toolUtil', 'toolDialog', 'BASE_CONFIG', 'loginService', 'powerService', 'dataTableColumnService', 'dataTableItemActionService', 'datePicker97Service', 'dataTableCheckAllService', '$timeout', 'testService', function (toolUtil, toolDialog, BASE_CONFIG, loginService, powerService, dataTableColumnService, dataTableItemActionService, datePicker97Service, dataTableCheckAllService, $timeout, testService) {
 
         /*获取缓存数据*/
         var self = this,
             module_id = 90/*模块id*/,
-            cache = loginService.getCache();
+            cache = loginService.getCache(),
+            warehouseform_reset_timer = null;
 
         var powermap = powerService.getCurrentPower(module_id);
 
@@ -145,7 +146,7 @@ angular.module('app')
                 self.queryUpdate(model, {
                     id: id
                 });
-            }else if (action === 'supply') {
+            } else if (action === 'supply') {
                 /*查询补货*/
                 self.querySupply(model, {
                     id: id
@@ -168,9 +169,9 @@ angular.module('app')
                     id: id,
                     type: 'base'
                 });
-            } else if (action === 'check') {
+            } else if (action === 'checkwarehouse') {
                 /*盘点显示*/
-                self.showCheck(model, {
+                self.showCheckwarehouse(model, {
                     id: id,
                     type: 'base'
                 });
@@ -190,6 +191,250 @@ angular.module('app')
         };
 
 
+        /*仓库服务--新增操作*/
+        this.actionWarehouse = function (config) {
+            var modal = config.modal,
+                record = config.record,
+                type = modal.display;
+
+
+            /*判断是否是合法的节点，即是否有父机构*/
+            if (record.organizationId === '') {
+                toolDialog.show({
+                    type: 'warn',
+                    value: '没有父机构或父机构不存在'
+                });
+                return false;
+            }
+
+
+            /*如果存在延迟任务则清除延迟任务*/
+            self.clearFormDelay();
+            /*通过延迟任务清空表单数据*/
+            self.addFormDelay(type);
+            /*显示弹窗*/
+            self.toggleModal(modal);
+        };
+
+
+        /*表单类服务--执行延时任务序列*/
+        this.addFormDelay = function (type) {
+            /*执行延时操作*/
+            warehouseform_reset_timer = $timeout(function () {
+                /*触发重置表单*/
+                self['admin_' + type + '_reset'].trigger('click');
+            }, 0);
+        };
+        /*表单类服务--清除延时任务序列*/
+        this.clearFormDelay = function (did) {
+            if (did && did !== null) {
+                $timeout.cancel(did);
+                did = null;
+            } else {
+                /*如果存在延迟任务则清除延迟任务*/
+                if (warehouseform_reset_timer !== null) {
+                    $timeout.cancel(warehouseform_reset_timer);
+                    warehouseform_reset_timer = null;
+                }
+            }
+        };
+        /*表单类服务--清空表单模型数据*/
+        this.clearFormData = function (data, type) {
+            if (!data) {
+                return false;
+            }
+
+            if (typeof type !== 'undefined' && type !== '') {
+                /*特殊重置*/
+                if (type === 'inwarehouse') {
+                    /*重置入库模型*/
+                    (function () {
+                        for (var i in data) {
+                            if (i === 'auditState') {
+                                /*重置审核状态为:未审核*/
+                                data[i] = 1;
+                            } else if (i === 'inboundType') {
+                                /*入库类型为：采购入库*/
+                                data[i] = 1;
+                            } else {
+                                data[i] = '';
+                            }
+                        }
+                    })(data);
+                } else if (type === 'outwarehouse') {
+                    /*重置机构数据模型*/
+                    (function () {
+                        for (var i in data) {
+                            /*if (i === 'status') {
+                             /!*状态*!/
+                             data[i] = 0;
+                             } else if (i === 'type') {
+                             /!*操作类型为新增*!/
+                             data[i] = 'add';
+                             } else {
+                             data[i] = '';
+                             }*/
+                        }
+                    })(data);
+                }
+            } else {
+                /*通用重置*/
+                (function () {
+                    for (var i in data) {
+                        if (i === 'type') {
+                            /*操作类型为新增*/
+                            data[i] = 'add';
+                        } else {
+                            data[i] = '';
+                        }
+                    }
+                })(data);
+            }
+        };
+        /*表单类服务--重置表单数据*/
+        this.clearFormValid = function (forms) {
+            if (forms) {
+                var temp_cont = forms.$$controls;
+                if (temp_cont) {
+                    var len = temp_cont.length,
+                        i = 0;
+                    forms.$dirty = false;
+                    forms.$invalid = true;
+                    forms.$pristine = true;
+                    forms.valid = false;
+
+                    if (len !== 0) {
+                        for (i; i < len; i++) {
+                            var temp_item = temp_cont[i];
+                            temp_item['$dirty'] = false;
+                            temp_item['$invalid'] = true;
+                            temp_item['$pristine'] = true;
+                            temp_item['$valid'] = false;
+                        }
+                    }
+                }
+            }
+        };
+        /*表单类服务--提交表单数据*/
+        this.formSubmit = function (config, type) {
+            if (cache) {
+                var action = '',
+                    tempparam = cache.loginMap.param,
+                    model = config[type],
+                    param = {
+                        adminId: tempparam.adminId,
+                        token: tempparam.token
+                    },
+                    req_config = {
+                        url: 'json/test.json'/*测试地址*/,
+                        method: 'post',
+                        set: true,
+                        debug: true/*测试开关*/
+                    },
+                    record = config.record,
+                    tip_map = {
+                        'add': '新增',
+                        'edit': '编辑',
+                        'inwarehouse': '入库',
+                        'outwarehouse': '出库',
+                        'checkwarehouse': '盘点'
+                    };
+
+                /*公共配置*/
+                if (model['id'] && model['id'] !== '') {
+                    /*编辑类型*/
+                    action = 'edit';
+                } else {
+                    /*新增类型*/
+                    action = 'add';
+                }
+                /*模型赋值给参数*/
+                for (var i in model) {
+                    if (i === 'cellphone') {
+                        param[i] = toolUtil.trims(model[i]);
+                    } else {
+                        param[i] = model[i];
+                    }
+                }
+                /*组合参数*/
+                req_config['data'] = param;
+                toolUtil
+                    .requestHttp(req_config)
+                    .then(function (resp) {
+                            var resp = testService.testSuccess()/*测试请求*/;
+
+                            var data = resp.data,
+                                status = parseInt(resp.status, 10);
+
+                            if (status === 200) {
+                                var code = parseInt(data.code, 10),
+                                    message = data.message;
+                                if (code !== 0) {
+                                    if (typeof message !== 'undefined' && message !== '') {
+                                        toolDialog.show({
+                                            type: 'warn',
+                                            value: message
+                                        });
+                                    } else {
+                                        toolDialog.show({
+                                            type: 'warn',
+                                            value: tip_map[action] + tip_map[type] + '失败'
+                                        });
+                                    }
+                                    if (code === 999) {
+                                        /*退出系统*/
+                                        cache = null;
+                                        loginService.outAction();
+                                    }
+                                    return false;
+                                } else {
+                                    /*操作成功即加载数据*/
+                                    self.getColumnData(config.table, config.record);
+                                    /*重置表单*/
+                                    self.clearFormDelay();
+                                    self.addFormDelay(type);
+                                    /*提示操作结果*/
+                                    toolDialog.show({
+                                        type: 'succ',
+                                        value: tip_map[action] + tip_map[type] + '成功'
+                                    });
+                                    /*弹出框隐藏*/
+                                    self.toggleModal({
+                                        display: 'hide',
+                                        area: type,
+                                        delay: 1000
+                                    });
+                                }
+                            }
+                        },
+                        function (resp) {
+                            var message = resp.data.message;
+                            if (typeof message !== 'undefined' && message !== '') {
+                                toolDialog.show({
+                                    type: 'warn',
+                                    value: message
+                                });
+                            } else {
+                                toolDialog.show({
+                                    type: 'warn',
+                                    value: tip_map[action] + tip_map[type] + '失败'
+                                });
+                            }
+                        });
+            } else {
+                /*退出系统*/
+                cache = null;
+                loginService.outAction();
+            }
+        };
+        /*表单类服务--重置表单*/
+        this.formReset = function (config, type) {
+            self.clearFormData(config[type], type);
+            /*重置验证提示信息*/
+            self.clearFormValid(config.forms);
+        };
+
+
         /*日历服务--日历查询*/
         this.searchDatePicker = function (record) {
             /*查询区域时间初始化*/
@@ -205,7 +450,7 @@ angular.module('app')
             });
         };
         /*日历服务--新增日历调用*/
-        this.addDatePicker=function (arr) {
+        this.addDatePicker = function (arr) {
             if (!arr) {
                 return false;
             }
@@ -995,10 +1240,10 @@ angular.module('app')
                 /*入库*/
                 config.record.action = 2;
             } else if (type === 'outwarehouse') {
-                /*入库*/
+                /*出库*/
                 config.record.action = 3;
-            } else if (type === 'check') {
-                /*入库*/
+            } else if (type === 'checkwarehouse') {
+                /*盘点*/
                 config.record.action = 4;
             }
             /*查询数据*/
@@ -1010,14 +1255,14 @@ angular.module('app')
         this.toggleModal = function (config, fn) {
             var temp_timer = null,
                 type_map = {
-                    'detail': self.$admin_detail_dialog,
-                    'audit': self.$admin_audit_dialog,
-                    'purchase':self.$admin_purchase_dialog,
-                    'supply':self.$admin_supply_dialog,
-                    'update':self.$admin_update_dialog,
-                    'inwarehouse':self.$admin_inwarehouse_dialog,
-                    'outwarehouse':self.$admin_outwarehouse_dialog,
-                    'check':self.$admin_check_dialog
+                    'detail': self.$admin_detail_dialog/*详情*/,
+                    'audit': self.$admin_audit_dialog/*审核*/,
+                    'purchase': self.$admin_purchase_dialog/*采购*/,
+                    'supply': self.$admin_supply_dialog/*补货*/,
+                    'update': self.$admin_update_dialog/*修改*/,
+                    'inwarehouse': self.$admin_inwarehouse_dialog/*入库*/,
+                    'outwarehouse': self.$admin_outwarehouse_dialog/*出库*/,
+                    'checkwarehouse': self.$admin_checkwarehouse_dialog/*盘点*/
                 };
 
             if (config.display === 'show') {

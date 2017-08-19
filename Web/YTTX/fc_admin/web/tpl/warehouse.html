@@ -2,10 +2,6 @@
     <div class="struct-layout-container struct-layout-default">
         <div class="struct-layout-main">
 
-            <h1 class="admin-layout-theme3  g-clear-pt">
-                <button type="button" class="btn btn-default g-c-blue3" ng-disabled="warehouse_ctrl.record.layer1 !==0 || warehouse_ctrl.record.organizationId===''" ng-show="::warehouse_ctrl.powerlist.organization_add" ng-click="warehouse_ctrl.actionStruct({display:'show',area:'struct',type:'add'})"><i class="btn-action admin-btn-action1"></i>&nbsp;添加子机构</button>
-            </h1>
-
             <!--订单管理-->
             <div class="admin-action-item">
 
@@ -426,7 +422,7 @@
 
     <!--新增入库-->
     <div class="modal fade custom-width" id="admin_inwarehouse_dialog">
-        <div class="modal-dialog g-w-percent48">
+        <div class="modal-dialog g-w-percent30">
             <div class="modal-content">
                 <div class="modal-body">
                     <div class="admin-layout-theme4 admin-theme-close g-t-c g-b-gray17 g-pos-r">新增入库<span class="mini-icon admin-mini-icon1" ng-click="warehouse_ctrl.toggleModal({display:'hide',area:'inwarehouse'})"></span>
@@ -446,7 +442,6 @@
                             </div>
                         </div>
 
-
                         <div class="form-group-self1">
                             <label class="self-label g-w-percent15 g-t-r"><span class="self-require g-c-red1">*</span>规格属性</label>
 
@@ -456,7 +451,6 @@
                                 <span ng-show="inwarehouseFrom.attributeName.$dirty && inwarehouseFrom.attributeName.$valid" class="self-tips self-tips-yes"></span>
                             </div>
                         </div>
-
 
                         <div class="form-group-self1">
                             <label class="self-label g-w-percent15 g-t-r">单位</label>
@@ -476,7 +470,6 @@
                             </div>
                         </div>
 
-
                         <div class="form-group-self1">
                             <label class="self-label g-w-percent15 g-t-r">仓库地址</label>
 
@@ -484,7 +477,6 @@
                                 <input type="text" name="address" ng-model="warehouse_ctrl.inwarehouse.address"  />
                             </div>
                         </div>
-
 
                         <div class="form-group-self1">
                             <label class="self-label g-w-percent15 g-t-r">仓库手机号码</label>
@@ -496,7 +488,6 @@
                             </div>
                         </div>
 
-
                         <div class="form-group-self1">
                             <label class="self-label g-w-percent15 g-t-r"><span class="self-require g-c-red1">*</span>入库时间</label>
 
@@ -506,7 +497,6 @@
                                 <span ng-show="inwarehouseFrom.inboundTime.$dirty && inwarehouseFrom.inboundTime.$valid" class="self-tips self-tips-yes"></span>
                             </div>
                         </div>
-
 
                         <div class="form-group-self1">
                             <label class="self-label g-w-percent15 g-t-r"><span class="self-require g-c-red1">*</span>入库类型</label>
@@ -518,7 +508,6 @@
                             </div>
                         </div>
 
-
                         <div class="form-group-self1">
                             <label class="self-label g-w-percent15 g-t-r"><span class="self-require g-c-red1">*</span>经办人</label>
 
@@ -528,7 +517,6 @@
                                 <span ng-show="inwarehouseFrom.operator.$dirty && inwarehouseFrom.operator.$valid" class="self-tips self-tips-yes"></span>
                             </div>
                         </div>
-
 
                         <div class="form-group-self1">
                             <label class="self-label g-w-percent15 g-t-r"><span class="self-require g-c-red1">*</span>供应商</label>
@@ -550,13 +538,11 @@
 
                         <div class="form-group-self1">
                             <button type="submit" ng-disabled="!(inwarehouseFrom.goodsName.$dirty && inwarehouseFrom.goodsName.$valid && inwarehouseFrom.attributeName.$dirty && inwarehouseFrom.attributeName.$valid && inwarehouseFrom.warehouseName.$dirty && inwarehouseFrom.warehouseName.$valid && (warehouse_ctrl.inwarehouse.cellphone==='' || (inwarehouseFrom.cellphone.$dirty && inwarehouseFrom.cellphone.$valid)) && inwarehouseFrom.inboundTime.$dirty && inwarehouseFrom.inboundTime.$valid  && inwarehouseFrom.inboundType.$dirty && inwarehouseFrom.inboundType.$valid && inwarehouseFrom.operator.$dirty && inwarehouseFrom.operator.$valid && inwarehouseFrom.provider.$dirty && inwarehouseFrom.provider.$valid)"  class="btn btn-red g-br3 g-w-percent50">添加</button>
-                            <button type="button" class="btn btn-red g-br3 g-w-percent50 g-gap-mt2" id="admin_struct_reset" ng-click="warehouse_ctrl.formReset(inwarehouseFrom,'struct')">重置</button>
+                            <button type="button" class="btn btn-red g-br3 g-w-percent50 g-gap-mt2" id="admin_inwarehouse_reset" ng-click="warehouse_ctrl.formReset(inwarehouseFrom,'inwarehouse')">重置</button>
                         </div>
                     </form>
-
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-red g-w-number4" ng-click="warehouse_ctrl.sureReceive()">收货</button>
                     <button type="button" class="btn btn-red" data-dismiss="modal">关闭</button>
                 </div>
             </div>

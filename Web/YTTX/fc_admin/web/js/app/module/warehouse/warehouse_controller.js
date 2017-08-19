@@ -307,7 +307,7 @@ angular.module('app')
                             "searchable": false,
                             "render": function (data, type, full, meta) {
                                 var state = parseInt(full.availableStatus, 10);
-                                return state === 0 ? '' : '<input value="' + data + '" name="check_kucunid" type="checkbox" />';
+                                return state === 0 ? '' : '<input value="' + data + '" name="check_warehouseid" type="checkbox" />';
                             }
                         },
                         {
@@ -1211,6 +1211,48 @@ angular.module('app')
                 table: self.table
             });
         };
+        
+        
+        /*仓库服务--新增操作*/
+        this.actionWarehouse=function (config) {
+            warehouseService.actionWarehouse({
+                record:self.record,
+                table:self.self.table,
+                madal:config,
+                inwareshouse:self.inwarehouse,
+                outwarehouse:self.outwarehouse,
+                checkwarehouse:self.checkwarehouse
+            });
+        };
+
+
+
+
+        /*表单服务--提交表单*/
+        this.formSubmit = function (type) {
+            warehouseService.formSubmit({
+                record:self.record,
+                table:self.self.table,
+                inwareshouse:self.inwarehouse,
+                outwarehouse:self.outwarehouse,
+                checkwarehouse:self.checkwarehouse
+            }, type);
+        };
+        /*表单服务--重置表单*/
+        this.formReset = function (forms, type) {
+            /*重置表单模型*/
+            warehouseService.formReset({
+                forms: forms,
+                record:self.record,
+                table:self.self.table,
+                inwareshouse:self.inwarehouse,
+                outwarehouse:self.outwarehouse,
+                checkwarehouse:self.checkwarehouse
+            }, type);
+        };
+
+
+        
 
 
         /*审核服务--操作审核*/
