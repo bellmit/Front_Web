@@ -51,6 +51,7 @@ angular.module('app')
             $admin_update_dialog:$('#admin_update_dialog'),
             /*新增--入库*/
             $admin_inwarehouse_dialog:$('#admin_inwarehouse_dialog'),
+            $admin_inwarehouse_reset:$('#admin_inwarehouse_reset'),
             /*新增--出库*/
             $admin_outwarehouse_dialog:$('#admin_outwarehouse_dialog'),
             /*新增--盘点*/
@@ -1217,9 +1218,9 @@ angular.module('app')
         this.actionWarehouse=function (config) {
             warehouseService.actionWarehouse({
                 record:self.record,
-                table:self.self.table,
-                madal:config,
-                inwareshouse:self.inwarehouse,
+                table:self.table,
+                modal:config,
+                inwarehouse:self.inwarehouse,
                 outwarehouse:self.outwarehouse,
                 checkwarehouse:self.checkwarehouse
             });
@@ -1232,8 +1233,8 @@ angular.module('app')
         this.formSubmit = function (type) {
             warehouseService.formSubmit({
                 record:self.record,
-                table:self.self.table,
-                inwareshouse:self.inwarehouse,
+                table:self.table,
+                inwarehouse:self.inwarehouse,
                 outwarehouse:self.outwarehouse,
                 checkwarehouse:self.checkwarehouse
             }, type);
@@ -1244,8 +1245,8 @@ angular.module('app')
             warehouseService.formReset({
                 forms: forms,
                 record:self.record,
-                table:self.self.table,
-                inwareshouse:self.inwarehouse,
+                table:self.table,
+                inwarehouse:self.inwarehouse,
                 outwarehouse:self.outwarehouse,
                 checkwarehouse:self.checkwarehouse
             }, type);

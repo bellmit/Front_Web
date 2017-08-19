@@ -195,7 +195,7 @@ angular.module('app')
         this.actionWarehouse = function (config) {
             var modal = config.modal,
                 record = config.record,
-                type = modal.display;
+                type = modal.area;
 
 
             /*判断是否是合法的节点，即是否有父机构*/
@@ -222,7 +222,7 @@ angular.module('app')
             /*执行延时操作*/
             warehouseform_reset_timer = $timeout(function () {
                 /*触发重置表单*/
-                self['admin_' + type + '_reset'].trigger('click');
+                self['$admin_' + type + '_reset'].trigger('click');
             }, 0);
         };
         /*表单类服务--清除延时任务序列*/
@@ -243,7 +243,6 @@ angular.module('app')
             if (!data) {
                 return false;
             }
-
             if (typeof type !== 'undefined' && type !== '') {
                 /*特殊重置*/
                 if (type === 'inwarehouse') {
@@ -252,7 +251,7 @@ angular.module('app')
                         for (var i in data) {
                             if (i === 'auditState') {
                                 /*重置审核状态为:未审核*/
-                                data[i] = 1;
+                                data[i] = 0;
                             } else if (i === 'inboundType') {
                                 /*入库类型为：采购入库*/
                                 data[i] = 1;
@@ -429,6 +428,8 @@ angular.module('app')
         };
         /*表单类服务--重置表单*/
         this.formReset = function (config, type) {
+            
+            
             self.clearFormData(config[type], type);
             /*重置验证提示信息*/
             self.clearFormValid(config.forms);

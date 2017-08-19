@@ -422,7 +422,7 @@
 
     <!--新增入库-->
     <div class="modal fade custom-width" id="admin_inwarehouse_dialog">
-        <div class="modal-dialog g-w-percent30">
+        <div class="modal-dialog g-w-percent25">
             <div class="modal-content">
                 <div class="modal-body">
                     <div class="admin-layout-theme4 admin-theme-close g-t-c g-b-gray17 g-pos-r">新增入库<span class="mini-icon admin-mini-icon1" ng-click="warehouse_ctrl.toggleModal({display:'hide',area:'inwarehouse'})"></span>
@@ -430,12 +430,10 @@
 
 
                     <form ng-submit="warehouse_ctrl.formSubmit('inwarehouse')" name="inwarehouseFrom" role="form" novalidate method="post" class="admin-layout-form">
-                        <div class="admin-layout-theme4"><span class="mini-icon admin-mini-icon2"></span>&nbsp;基本信息</div>
-
                         <div class="form-group-self1">
-                            <label class="self-label g-w-percent15 g-t-r"><span class="self-require g-c-red1">*</span>商品名称</label>
+                            <label class="self-label g-w-percent10 g-t-r"><span class="self-require g-c-red1">*</span>商品名称</label>
 
-                            <div class="self-input g-pos-r g-w-percent35">
+                            <div class="self-input g-pos-r g-w-percent40">
                                 <input type="text" name="goodsName" placeholder="请输入商品名称" required ng-model="warehouse_ctrl.inwarehouse.goodsName" />
                                 <span  ng-show="inwarehouseFrom.goodsName.$dirty && inwarehouseFrom.goodsName.$error.required" class="self-tips self-tips-no g-c-red1 g-fs4 g-w-percent50">商品名称不能为空</span>
                                 <span ng-show="inwarehouseFrom.goodsName.$dirty && inwarehouseFrom.goodsName.$valid" class="self-tips self-tips-yes"></span>
@@ -443,9 +441,9 @@
                         </div>
 
                         <div class="form-group-self1">
-                            <label class="self-label g-w-percent15 g-t-r"><span class="self-require g-c-red1">*</span>规格属性</label>
+                            <label class="self-label g-w-percent10 g-t-r"><span class="self-require g-c-red1">*</span>规格属性</label>
 
-                            <div class="self-input g-pos-r g-w-percent35">
+                            <div class="self-input g-pos-r g-w-percent40">
                                 <input type="text" name="attributeName" placeholder="请输入规格属性" required ng-model="warehouse_ctrl.inwarehouse.attributeName" class="ui-filter-html-illegal"  />
                                 <span  ng-show="inwarehouseFrom.attributeName.$dirty && inwarehouseFrom.attributeName.$error.required" class="self-tips self-tips-no g-c-red1 g-fs4 g-w-percent50">规格属性不能为空</span>
                                 <span ng-show="inwarehouseFrom.attributeName.$dirty && inwarehouseFrom.attributeName.$valid" class="self-tips self-tips-yes"></span>
@@ -453,17 +451,17 @@
                         </div>
 
                         <div class="form-group-self1">
-                            <label class="self-label g-w-percent15 g-t-r">单位</label>
+                            <label class="self-label g-w-percent10 g-t-r">单位</label>
 
-                            <div class="self-input g-w-percent35">
+                            <div class="self-input g-pos-r g-w-percent40">
                                 <input type="text" name="Unit" ng-model="warehouse_ctrl.inwarehouse.Unit"  />
                             </div>
                         </div>
 
                         <div class="form-group-self1">
-                            <label class="self-label g-w-percent15 g-t-r"><span class="self-require g-c-red1">*</span>仓库名称</label>
+                            <label class="self-label g-w-percent10 g-t-r"><span class="self-require g-c-red1">*</span>仓库名称</label>
 
-                            <div class="self-input g-pos-r g-w-percent35">
+                            <div class="self-input g-pos-r g-w-percent40">
                                 <input type="text" name="warehouseName" placeholder="请输入仓库名称" required  ng-model="warehouse_ctrl.inwarehouse.warehouseName"  />
                                 <span ng-show="inwarehouseFrom.warehouseName.$dirty && inwarehouseFrom.warehouseName.$error.required" class="self-tips self-tips-no g-c-red1 g-fs4 g-w-percent50">仓库名称不能为空</span>
                                 <span ng-show="inwarehouseFrom.warehouseName.$dirty && inwarehouseFrom.warehouseName.$valid" class="self-tips self-tips-yes"></span>
@@ -471,17 +469,17 @@
                         </div>
 
                         <div class="form-group-self1">
-                            <label class="self-label g-w-percent15 g-t-r">仓库地址</label>
+                            <label class="self-label g-w-percent10 g-t-r">仓库地址</label>
 
-                            <div class="self-input g-w-percent35">
+                            <div class="self-input g-pos-r g-w-percent40">
                                 <input type="text" name="address" ng-model="warehouse_ctrl.inwarehouse.address"  />
                             </div>
                         </div>
 
                         <div class="form-group-self1">
-                            <label class="self-label g-w-percent15 g-t-r">仓库手机号码</label>
+                            <label class="self-label g-w-percent10 g-t-r">仓库手机号码</label>
 
-                            <div class="self-input g-pos-r g-w-percent35">
+                            <div class="self-input g-pos-r g-w-percent40">
                                 <input type="text" name="cellphone"  placeholder="请输入手机号码" maxlength="13" ng-model="warehouse_ctrl.inwarehouse.cellphone" class="ui-mobile-phone"  />
                                 <span ng-show="inwarehouseFrom.cellphone.$dirty && inwarehouseFrom.cellphone.$invalid" class="self-tips self-tips-no g-c-red1 g-fs4 g-w-percent50">手机号码格式不合法</span>
                                 <span ng-show="inwarehouseFrom.cellphone.$dirty && inwarehouseFrom.cellphone.$valid" class="self-tips self-tips-yes"></span>
@@ -489,29 +487,29 @@
                         </div>
 
                         <div class="form-group-self1">
-                            <label class="self-label g-w-percent15 g-t-r"><span class="self-require g-c-red1">*</span>入库时间</label>
+                            <label class="self-label g-w-percent10 g-t-r"><span class="self-require g-c-red1">*</span>入库时间</label>
 
-                            <div class="self-input g-pos-r g-w-percent35">
+                            <div class="self-input g-pos-r g-w-percent40">
                                 <input type="text" name="inboundTime" placeholder="请选择入库时间" required  ng-model="warehouse_ctrl.inwarehouse.inboundTime" id="admin_inwarehouse_inboundTime" readonly />
-                                <span ng-show="inwarehouseFrom.inboundTime.$dirty && inwarehouseFrom.inboundTime.$error.required" class="self-tips self-tips-no g-c-red1 g-fs4 g-w-percent50">入库时间不能为空</span>
-                                <span ng-show="inwarehouseFrom.inboundTime.$dirty && inwarehouseFrom.inboundTime.$valid" class="self-tips self-tips-yes"></span>
+                                <span ng-show="nwarehouseFrom.inboundTime.$error.required" class="self-tips self-tips-no g-c-red1 g-fs4 g-w-percent50">入库时间不能为空</span>
+                                <span ng-show="inwarehouseFrom.inboundTime.$valid" class="self-tips self-tips-yes"></span>
                             </div>
                         </div>
 
                         <div class="form-group-self1">
-                            <label class="self-label g-w-percent15 g-t-r"><span class="self-require g-c-red1">*</span>入库类型</label>
+                            <label class="self-label g-w-percent10 g-t-r"><span class="self-require g-c-red1">*</span>入库类型</label>
 
-                            <div class="self-input g-pos-r g-w-percent35">
-                                <select name="inboundType" class="form-control g-clear-pt g-clear-pb" ng-model="warehouse_ctrl.inwarehouse.inboundType" ng-options="item.value as item.key for item in warehouse_ctrl.inwarehousetype"></select>
+                            <div class="self-input g-pos-r g-w-percent40">
+                                <select name="inboundType" class="form-control g-w-percent48 g-clear-pt g-clear-pb" ng-model="warehouse_ctrl.inwarehouse.inboundType" ng-options="item.value as item.key for item in warehouse_ctrl.inwarehousetype"></select>
                                 <span ng-show="inwarehouseFrom.inboundType.$dirty && inwarehouseFrom.inboundType.$error.required" class="self-tips self-tips-no g-c-red1 g-fs4 g-w-percent50">入库类型不能为空</span>
                                 <span ng-show="inwarehouseFrom.inboundType.$dirty && inwarehouseFrom.inboundType.$valid" class="self-tips self-tips-yes"></span>
                             </div>
                         </div>
 
                         <div class="form-group-self1">
-                            <label class="self-label g-w-percent15 g-t-r"><span class="self-require g-c-red1">*</span>经办人</label>
+                            <label class="self-label g-w-percent10 g-t-r"><span class="self-require g-c-red1">*</span>经办人</label>
 
-                            <div class="self-input g-pos-r g-w-percent35">
+                            <div class="self-input g-pos-r g-w-percent40">
                                 <input type="text" name="operator" placeholder="请输入经办人" required  ng-model="warehouse_ctrl.inwarehouse.operator"  />
                                 <span ng-show="inwarehouseFrom.operator.$dirty && inwarehouseFrom.operator.$error.required" class="self-tips self-tips-no g-c-red1 g-fs4 g-w-percent50">经办人不能为空</span>
                                 <span ng-show="inwarehouseFrom.operator.$dirty && inwarehouseFrom.operator.$valid" class="self-tips self-tips-yes"></span>
@@ -519,9 +517,9 @@
                         </div>
 
                         <div class="form-group-self1">
-                            <label class="self-label g-w-percent15 g-t-r"><span class="self-require g-c-red1">*</span>供应商</label>
+                            <label class="self-label g-w-percent10 g-t-r"><span class="self-require g-c-red1">*</span>供应商</label>
 
-                            <div class="self-input g-pos-r g-w-percent35">
+                            <div class="self-input g-pos-r g-w-percent40">
                                 <input type="text" name="provider" placeholder="请输入供应商" required ng-model="warehouse_ctrl.inwarehouse.provider"  />
                                 <span ng-show="inwarehouseFrom.provider.$dirty && inwarehouseFrom.provider.$error.required" class="self-tips self-tips-no g-c-red1 g-fs4 g-w-percent50">供应商不能为空</span>
                                 <span ng-show="inwarehouseFrom.provider.$dirty && inwarehouseFrom.provider.$valid" class="self-tips self-tips-yes"></span>
@@ -529,15 +527,15 @@
                         </div>
 
                         <div class="form-group-self1">
-                            <label class="self-label g-w-percent15 g-v-t g-t-r">备注</label>
+                            <label class="self-label g-w-percent10 g-t-r g-v-t">备注</label>
 
-                            <div class="self-input g-w-percent35">
+                            <div class="self-input g-pos-r g-w-percent40">
                                 <textarea ng-model="warehouse_ctrl.inwarehouse.remark" name="remark"></textarea>
                             </div>
                         </div>
 
                         <div class="form-group-self1">
-                            <button type="submit" ng-disabled="!(inwarehouseFrom.goodsName.$dirty && inwarehouseFrom.goodsName.$valid && inwarehouseFrom.attributeName.$dirty && inwarehouseFrom.attributeName.$valid && inwarehouseFrom.warehouseName.$dirty && inwarehouseFrom.warehouseName.$valid && (warehouse_ctrl.inwarehouse.cellphone==='' || (inwarehouseFrom.cellphone.$dirty && inwarehouseFrom.cellphone.$valid)) && inwarehouseFrom.inboundTime.$dirty && inwarehouseFrom.inboundTime.$valid  && inwarehouseFrom.inboundType.$dirty && inwarehouseFrom.inboundType.$valid && inwarehouseFrom.operator.$dirty && inwarehouseFrom.operator.$valid && inwarehouseFrom.provider.$dirty && inwarehouseFrom.provider.$valid)"  class="btn btn-red g-br3 g-w-percent50">添加</button>
+                            <button type="submit" ng-disabled="!(inwarehouseFrom.goodsName.$dirty && inwarehouseFrom.goodsName.$valid && inwarehouseFrom.attributeName.$dirty && inwarehouseFrom.attributeName.$valid && inwarehouseFrom.warehouseName.$dirty && inwarehouseFrom.warehouseName.$valid && (warehouse_ctrl.inwarehouse.cellphone==='' || (inwarehouseFrom.cellphone.$dirty && inwarehouseFrom.cellphone.$valid)) && inwarehouseFrom.inboundTime.$valid  && inwarehouseFrom.inboundType.$dirty && inwarehouseFrom.inboundType.$valid && inwarehouseFrom.operator.$dirty && inwarehouseFrom.operator.$valid && inwarehouseFrom.provider.$dirty && inwarehouseFrom.provider.$valid)"  class="btn btn-red g-br3 g-w-percent50">添加</button>
                             <button type="button" class="btn btn-red g-br3 g-w-percent50 g-gap-mt2" id="admin_inwarehouse_reset" ng-click="warehouse_ctrl.formReset(inwarehouseFrom,'inwarehouse')">重置</button>
                         </div>
                     </form>
@@ -723,14 +721,14 @@
                         <div class="admin-layout-theme4 admin-theme-close g-t-c g-b-gray17 g-pos-r">修改数量<span class="mini-icon admin-mini-icon1" ng-click="warehouse_ctrl.closeEditAudit()"></span></div>
                         <div class="admin-layout-form g-w-percent50">
                             <div class="form-group-self1">
-                                <label class="self-label g-w-percent15 g-t-r">数量：</label>
+                                <label class="self-label g-w-percent10 g-t-r">数量：</label>
                                 <div class="self-input g-pos-r g-w-percent25">
                                     <input type="text" class="ui-int-number" ng-model="warehouse_ctrl.audit.editvalue" maxlength="5" placeholder="请输入数量" />
                                 </div>
                             </div>
                             <div class="form-group-self1">
-                                <label class="self-label g-w-percent15 g-t-r">&nbsp;</label>
-                                <div class="self-input g-pos-r g-w-percent35">
+                                <label class="self-label g-w-percent10 g-t-r">&nbsp;</label>
+                                <div class="self-input g-pos-r g-w-percent40">
                                     <button type="button" ng-disabled="warehouse_ctrl.audit.editvalue===''" ng-click="warehouse_ctrl.sureEditAudit()" class="btn btn-red g-w-number2">确定</button>
                                 </div>
                             </div>
@@ -741,7 +739,7 @@
                     <div class="g-w-percent38 g-f-l" ng-class="{'g-d-hidei':warehouse_ctrl.audit.isdata===''}">
                         <div class="admin-layout-form g-f-r g-w-percent30">
                             <div class="form-group-self1">
-                                <label class="self-label g-w-percent15 g-t-r">审核状态：</label>
+                                <label class="self-label g-w-percent10 g-t-r">审核状态：</label>
                                 <div class="self-input g-t-l g-w-percent30">
                                     <label class="self-label">
                                         <input type="radio" ng-model="warehouse_ctrl.audit.auditflag" ng-value="true" name="auditflag">
@@ -754,7 +752,7 @@
                                 </div>
                             </div>
                             <div class="form-group-self1" ng-class="{'g-d-hidei':warehouse_ctrl.audit.auditflag===true}">
-                                <label class="self-label g-w-percent15 g-t-r">不通过原因:</label>
+                                <label class="self-label g-w-percent10 g-t-r">不通过原因:</label>
                                 <div class="self-input g-w-percent30">
                                     <input type="text" ng-model="warehouse_ctrl.audit.auditinfo" placeholder="请输入审核不通过原因" />
                                 </div>
