@@ -17,6 +17,13 @@
 .g-d-hidei{
 	display:none !important;
 }
+///*盒模型*/
+.g-box-c{
+	.box-sizing-base(content-box);
+}
+.g-box-b{
+	.box-sizing-base();
+}
 ///*清除内外间距*/
 .g-cleargap{
 	margin:0;
@@ -38,6 +45,31 @@
 .g-clearmargini{
 	margin:0 !important;
 }
+
+.g-clear-mt{
+	margin-top:0 !important;
+}
+.g-clear-mr{
+	margin-right:0 !important;
+}
+.g-clear-mb{
+	margin-bottom:0 !important;
+}
+.g-clear-ml{
+	margin-left:0 !important;
+}
+.g-clear-pt{
+	padding-top:0 !important;
+}
+.g-clear-pr{
+	padding-right:0 !important;
+}
+.g-clear-pb{
+	padding-bottom:0 !important;
+}
+.g-clear-pl{
+	padding-left:0 !important;
+}
 ///*不换行*/
 .g-t-nowrap{
 	white-space:nowrap;
@@ -48,6 +80,36 @@
 }
 .g-f-r{
 	float:right;
+}
+/*清除圆角*/
+.g-clear-br{
+	.border-radius-base(0) !important;
+}
+/*清除阴影*/
+.g-clear-bs{
+	.box-shadow-base(none) !important;
+}
+
+/*垂直方向对齐--居顶*/
+.g-v-t{
+	vertical-align:top;
+	td,th{
+		vertical-align:top;
+	}
+}
+/*垂直方向对齐--居中*/
+.g-v-m{
+	vertical-align: middle;
+	td,th{
+		vertical-align: middle;
+	}
+}
+/*垂直方向对齐--居底*/
+.g-v-b{
+	vertical-align:bottom;
+	td,th{
+		vertical-align:bottom;
+	}
 }
 
 
@@ -327,6 +389,44 @@
 	border-left:0 !important;
 }
 
+/*定位*/
+.g-pos-r{
+	.layout-relative-base;
+}
+.g-pos-al{
+	.layout-absolutel-base;
+}
+.g-pos-alb{
+	.layout-absolutelb-base;
+}
+.g-pos-ar{
+	.layout-absoluter-base;
+}
+.g-pos-arb{
+	.layout-absoluterb-base;
+}
+.g-pos-fl{
+	.layout-fixedl-base;
+}
+.g-pos-flb{
+	.layout-fixedlb-base;
+}
+.g-pos-fr{
+	.layout-fixedr-base;
+}
+.g-pos-frb{
+	.layout-fixedrb-base;
+}
+
+///*----字体大小----*/
+@font-size-begin:10px;
+.g-fsfor(@n,@i:1) when (@i =< @n) {
+	.g-fs@{i}{
+		font-size:@font-size-begin + @i !important;
+	}
+	.g-fsfor(@n,(@i+1));
+}
+.g-fsfor(40);
 
 
 
@@ -356,3 +456,134 @@
 	.g-w-numberfor(@n,(@i+1));
 }
 .g-w-numberfor(50);
+
+///*----百分比高度----*/
+.g-h-percentfor(@n,@i:1) when (@i =< @n) {
+	.g-h-percent@{i}{
+		height:@i * 1% !important;
+	}
+	.g-h-percentfor(@n,(@i+1));
+}
+.g-h-percentfor(100);
+
+///*----百分比高度----*/
+.g-h-numberfor(@n,@i:1) when (@i =< @n) {
+	.g-h-number@{i}{
+		height:@i * 20px !important;
+	}
+	.g-h-numberfor(@n,(@i+1));
+}
+.g-h-numberfor(50);
+
+
+///*----间距--padding----*/
+.g-gap-ptfor(@n,@i:1) when (@i =< @n) {
+	.g-gap-pt@{i}{
+		padding-top:@i * 5px !important;
+	}
+	.g-gap-ptfor(@n,(@i+1));
+}
+.g-gap-ptfor(20);
+
+.g-gap-prfor(@n,@i:1) when (@i =< @n) {
+	.g-gap-pr@{i}{
+		padding-right:@i * 5px !important;
+	}
+	.g-gap-prfor(@n,(@i+1));
+}
+.g-gap-prfor(20);
+
+.g-gap-pbfor(@n,@i:1) when (@i =< @n) {
+	.g-gap-pb@{i}{
+		padding-bottom:@i * 5px !important;
+	}
+	.g-gap-pbfor(@n,(@i+1));
+}
+.g-gap-pbfor(20);
+
+.g-gap-plfor(@n,@i:1) when (@i =< @n) {
+	.g-gap-pl@{i}{
+		padding-left:@i * 5px !important;
+	}
+	.g-gap-plfor(@n,(@i+1));
+}
+.g-gap-plfor(20);
+
+///*----间距--margin----*/
+.g-gap-mtfor(@n,@i:1) when (@i =< @n) {
+	.g-gap-mt@{i}{
+		margin-top:@i * 5px !important;
+	}
+	.g-gap-mtfor(@n,(@i+1));
+}
+.g-gap-mtfor(20);
+
+.g-gap-mrfor(@n,@i:1) when (@i =< @n) {
+	.g-gap-mr@{i}{
+		margin-right:@i * 5px !important;
+	}
+	.g-gap-mrfor(@n,(@i+1));
+}
+.g-gap-mrfor(20);
+
+.g-gap-mbfor(@n,@i:1) when (@i =< @n) {
+	.g-gap-mb@{i}{
+		margin-bottom:@i * 5px !important;
+	}
+	.g-gap-mbfor(@n,(@i+1));
+}
+.g-gap-mbfor(20);
+
+.g-gap-mlfor(@n,@i:1) when (@i =< @n) {
+	.g-gap-ml@{i}{
+		margin-left:@i * 5px !important;
+	}
+	.g-gap-mlfor(@n,(@i+1));
+}
+.g-gap-mlfor(20);
+
+
+///*----偏移--indent----*/
+.g-gap-indentfor(@n,@i:1) when (@i =< @n) {
+	.g-gap-indent@{i}{
+		indent:@i * 5px !important;
+	}
+	.g-gap-indentfor(@n,(@i+1));
+}
+.g-gap-indentfor(20);
+
+.g-gap-unindentfor(@n,@i:1) when (@i =< @n) {
+	.g-gap-unindent@{i}{
+		indent:@i * -5px !important;
+	}
+	.g-gap-unindentfor(@n,(@i+1));
+}
+.g-gap-unindentfor(20);
+
+.g-gap-indentemfor(@n,@i:1) when (@i =< @n) {
+	.g-gap-indentem@{i}{
+		indent:@i * 1em !important;
+	}
+	.g-gap-indentemfor(@n,(@i+1));
+}
+.g-gap-indentemfor(20);
+
+.g-gap-unindentemfor(@n,@i:1) when (@i =< @n) {
+	.g-gap-unindentem@{i}{
+		indent:@i * -1em !important;
+	}
+	.g-gap-unindentemfor(@n,(@i+1));
+}
+.g-gap-unindentemfor(20);
+
+///*----透明度--opacity----*/
+.g-opacityfor(@n,@i:0) when (@i =< @n) {
+	.g-opacity@{i}{
+		.opacity-base(@i * 10);
+	}
+	.g-opacityfor(@n,(@i+1));
+}
+.g-opacityfor(10);
+
+
+
