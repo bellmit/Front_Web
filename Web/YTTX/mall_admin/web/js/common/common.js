@@ -4,12 +4,12 @@
     /*基本配置*/
     var BASE_CONFIG = {
         unique_key: 'mall_admin_unique_key'/*系统缓存key键*/,
-        basedomain: 'http://10.0.5.226:8883'/*通用接口域名*/,
+        basedomain: 'http://10.0.5.226:8082'/*通用接口域名*/,
         /*
-         test:http://10.0.5.226:8883
-         debug:http://10.0.5.222:8080
+         test:http://10.0.5.226:8082
+         debug:http://10.0.5.222:8082
          */
-        baseproject: '/bms-bzwfc-api'/*通用接口工程地址*/,
+        baseproject: '/yttx-providerbms-api'/*通用接口工程地址*/,
         commondomain: 'http://120.76.237.100:8080'/*公用接口域名*/,
         commonproject: '/yttx-public-api'/*公用接口工程地址*/
     };
@@ -18,13 +18,25 @@
     var public_tool = window.public_tool || {};
 
 
-    /*本地存储*/
+
     //缓存对象
     public_tool.cache = {};
     /*返回系统唯一标识符*/
     public_tool.getSystemUniqueKey = function () {
         return BASE_CONFIG.unique_key;
     };
+    /*返回系统请求域名*/
+    public_tool.getSystemBaseDomain = function () {
+        return BASE_CONFIG.basedomain;
+    };
+    /*返回系统请求工程*/
+    public_tool.getSystemBaseProject = function () {
+        return BASE_CONFIG.baseproject;
+    };
+
+
+
+    /*本地存储*/
     //判断是否支持本地存储
     public_tool.supportBox = (function () {
         var elem = document.getElementsByTagName('body')[0],
@@ -250,8 +262,16 @@
     /*请求适配*/
     /*返回请求信息*/
     public_tool.requestHttp = function (config) {
-        var req = config;
-
+        /*默认配置*/
+        var req={
+            url:'',
+            method: 'POST',
+            dataType: 'json',
+            async: true
+        };
+        /*扩展配置*/
+        $.extend(true,req,config);
+        
         /*适配配置*/
         req.url = this.adaptReqUrl(req.url);
 
@@ -268,35 +288,40 @@
     //适配请求信息
     public_tool.adaptReqUrl = function (config) {
         /*debug模式则调用自定义json模式*/
-        var index=this.routeMap.isindex;
-        if(!config){
-            if(index){
+        var index = this.routeMap.isindex;
+        if (!config) {
+            if (index) {
                 /*首页*/
                 return '../json/test.json';
-            }else{
+            } else {
                 /*子页面*/
                 return '../../json/test.json';
             }
-        }else{
-            var debug=config.debug,
-                url=config.url;
+        } else {
+            var debug = config.debug,
+                url = config.url;
 
-            if(debug){
+            if (debug) {
                 /*debug模式*/
-                if(url.indexOf('.json')!==-1){
+                if (url.indexOf('.json') !== -1) {
                     return url;
-                }else{
-                    if(index){
+                } else {
+                    if (index) {
                         /*首页*/
                         return '../json/test.json';
-                    }else{
+                    } else {
                         /*子页面*/
                         return '../../json/test.json';
                     }
                 }
-            }else{
-                /*默认模式*/
-                return BASE_CONFIG.basedomain + BASE_CONFIG.baseproject + url;
+            } else {
+                if(config.common){
+                    /*公共模式*/
+                    return BASE_CONFIG.commondomain + BASE_CONFIG.commonproject + url;
+                }else{
+                    /*默认模式*/
+                    return BASE_CONFIG.basedomain + BASE_CONFIG.baseproject + url;
+                }
             }
         }
     };
@@ -866,17 +891,14 @@
                 partz = partz.slice(1);
             }
         }
-        if (max) {
-            if (partz.indexOf(',') !== -1) {
-                var filterlen = partz.length,
-                    k = 0,
-                    filtercount = 0;
-                for (k; k < filterlen; k++) {
-                    if (partx[k] === ',') {
-                        filtercount++;
-                    }
+        if (typeof max !== 'undefined' && max > 3) {
+            var filterlen = partz.length;
+            if ((filterlen + 3) > max) {
+                partz = partz.slice(0, max - 3);
+                filterlen = partz.length;
+                if (partz.charAt(filterlen - 1) === ',') {
+                    partz = partz.slice(0, filterlen - 1);
                 }
-                partz = partz.slice(filtercount);
             }
         }
         return [partz + partx, tempstr];
@@ -1011,7 +1033,27 @@
         r2 = Number(txt1.replace(/\.*/g, ''));
         return (r1 / r2) * Math.pow(10, t2 - t1);
     };
-
+    ///返回数组索引
+    public_tool.arrIndex = function (str, arr) {
+        if (typeof str === 'undefined') {
+            return -1;
+        }
+        if (!arr) {
+            return -1;
+        }
+        var len = arr.length,
+            i = 0;
+        if (len === 0) {
+            return -1;
+        } else {
+            for (i; i < len; i++) {
+                if (str === arr[i]) {
+                    return i;
+                }
+            }
+            return -1;
+        }
+    };
 
     /*左侧菜单导航*/
     /*菜单id映射*/
@@ -2072,11 +2114,9 @@
                 return false;
             }
         } else {
-            self.loginTips(function () {
-            });
+            self.loginTips(function () {});
             return false;
         }
-        return false;
     };
     /*判断缓存是否有效*/
     public_tool.validLogin = function (obj) {
@@ -2236,7 +2276,7 @@
     public_tool.isRender = function () {
         var self = this;
         /*判定兼容性*/
-        if (self.supportStorage) {
+        if (self.supportStorage && self.supportImage && self.supportBox) {
             /*调用路由*/
             self.getRoute();
             /*判断是否登陆*/
@@ -2256,8 +2296,6 @@
             self.initMap.isrender = false;
             return false;
         }
-        self.initMap.isrender = false;
-        return false;
     };
     /*加载进度条*/
     public_tool.initLoading = function () {
@@ -2282,7 +2320,7 @@
 
 var public_vars = public_vars || {};
 
-;(function ($, window, undefined) {
+(function ($, window, undefined) {
 
     "use strict";
     //初始化加载
@@ -2295,8 +2333,8 @@ var public_vars = public_vars || {};
         public_vars.$logout_btn = $('#logout_btn');
         public_vars.$page_support_wrap = $('#page_support_wrap');
         public_vars.$page_support = public_vars.$page_support_wrap.children();
-        public_vars.$goto_login = $('#goto_login'),
-            public_vars.$admin_show_wrap = $('#admin_show_wrap');
+        public_vars.$goto_login = $('#goto_login');
+        public_vars.$admin_show_wrap = $('#admin_show_wrap');
 
 
         /*初始化判定*/
