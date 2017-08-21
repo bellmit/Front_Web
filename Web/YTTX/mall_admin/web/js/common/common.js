@@ -56,7 +56,7 @@
             return false;
         }
     }());
-    //递归查找缓存对象
+    //递归查找缓存对象config:配置对象；type:业务类型，set存,get取；action:操作类型
     public_tool.paramsItem = function (config, type, action) {
         var self = this,
             key = config.key,
@@ -112,10 +112,20 @@
             }
         }
     };
-    //设置本地存储
-    public_tool.setParams = function (key, value, flag) {
+    //设置本地存储key,value,flag
+    public_tool.setParams = function (config) {
         if (this.supportStorage) {
-            if (key === BASE_CONFIG.unique_key) {
+            /*定义并判定索引名称*/
+            var unique=config.unique,
+                key=config.key,
+                value=config.value,
+                flag=config.flag;
+
+            if(!unique){
+                unique=BASE_CONFIG.unique_key;
+            }
+            /*存取操作*/
+            if (key === unique) {
                 if (flag) {
                     /*为localstorage*/
                     sessionStorage.setItem(key, JSON.stringify(value));
@@ -127,9 +137,9 @@
                 var cache = null,
                     self = this;
                 if (flag) {
-                    cache = JSON.parse(sessionStorage.getItem(BASE_CONFIG.unique_key));
+                    cache = JSON.parse(sessionStorage.getItem(unique));
                 } else {
-                    cache = JSON.parse(localStorage.getItem(BASE_CONFIG.unique_key));
+                    cache = JSON.parse(localStorage.getItem(unique));
                 }
                 if (cache !== null) {
                     if (typeof key !== 'undefined') {
@@ -271,7 +281,7 @@
         };
         /*扩展配置*/
         $.extend(true,req,config);
-        
+
         /*适配配置*/
         req.url = this.adaptReqUrl(req.url);
 
