@@ -18,7 +18,6 @@
     var public_tool = window.public_tool || {};
 
 
-
     //缓存对象
     public_tool.cache = {};
     /*返回系统唯一标识符*/
@@ -33,7 +32,6 @@
     public_tool.getSystemBaseProject = function () {
         return BASE_CONFIG.baseproject;
     };
-
 
 
     /*本地存储*/
@@ -56,12 +54,12 @@
             return false;
         }
     }());
-    //递归查找缓存对象config:配置对象；type:业务类型，set存,get取；action:操作类型
+    //递归查找缓存对象；config:配置对象；type:业务类型，set存,get取；action:操作类型,配合查找匹配到数据后的后续操作
     public_tool.paramsItem = function (config, type, action) {
         var self = this,
-            key = config.key,
-            cache = config.cache,
-            value = '';
+            key = config.key/*缓存key值*/,
+            cache = config.cache/*缓存对象*/,
+            value = ''/*缓存value值*/;
 
         if (type === 'set') {
             value = config.value;
@@ -115,25 +113,28 @@
     //设置本地存储key,value,flag
     public_tool.setParams = function (config) {
         if (this.supportStorage) {
-            /*定义并判定索引名称*/
-            var unique=config.unique,
-                key=config.key,
-                value=config.value,
-                flag=config.flag;
+            var unique = config.unique/*获取索引名称*/,
+                key = config.key,
+                value = config.value,
+                flag = config.flag;
 
-            if(!unique){
-                unique=BASE_CONFIG.unique_key;
+            /*判定索引名称*/
+            if (!unique) {
+                unique = BASE_CONFIG.unique_key;
             }
+
             /*存取操作*/
             if (key === unique) {
+                /*匹配为根缓存则更新根缓存*/
                 if (flag) {
-                    /*为localstorage*/
+                    /*为sessionstorage*/
                     sessionStorage.setItem(key, JSON.stringify(value));
                 } else {
                     /*默认为localstorage*/
                     localStorage.setItem(key, JSON.stringify(value));
                 }
             } else {
+                /*匹配为非根缓存则获取根缓存，然后遍历查找子缓存，匹配到则更新相应分支缓存*/
                 var cache = null,
                     self = this;
                 if (flag) {
@@ -142,6 +143,7 @@
                     cache = JSON.parse(localStorage.getItem(unique));
                 }
                 if (cache !== null) {
+                    /*存在缓存则查找匹配缓存*/
                     if (typeof key !== 'undefined') {
                         self.paramsItem({
                             key: key,
@@ -150,35 +152,48 @@
                         }, 'set');
                     }
                 } else {
+                    /*不存在缓存则创建新缓存*/
                     cache = {};
                     cache[key] = value;
                 }
                 if (flag) {
-                    /*为localstorage*/
-                    sessionStorage.setItem(BASE_CONFIG.unique_key, JSON.stringify(cache));
+                    /*为sessionstorage*/
+                    sessionStorage.setItem(unique, JSON.stringify(cache));
                 } else {
                     /*默认为localstorage*/
-                    localStorage.setItem(BASE_CONFIG.unique_key, JSON.stringify(cache));
+                    localStorage.setItem(unique, JSON.stringify(cache));
                 }
             }
         }
     };
-    //获取本地存储
-    public_tool.getParams = function (key, flag) {
+    //获取本地存储key,flag
+    public_tool.getParams = function (config) {
         if (this.supportStorage) {
-            if (key === BASE_CONFIG.unique_key) {
+            var unique=config.unique/*获取索引名称*/,
+                key = config.key,
+                flag = config.flag;
+
+            /*判定索引名称*/
+            if(!unique){
+                unique=BASE_CONFIG.unique_key;
+            }
+
+            /*存取操作*/
+            if (key === unique) {
+                /*匹配为根缓存则返回为根缓存*/
                 if (flag) {
-                    return JSON.parse(sessionStorage.getItem(BASE_CONFIG.unique_key)) || null;
+                    return JSON.parse(sessionStorage.getItem(unique)) || null;
                 } else {
-                    return JSON.parse(localStorage.getItem(BASE_CONFIG.unique_key)) || null;
+                    return JSON.parse(localStorage.getItem(unique)) || null;
                 }
             } else {
+                /*匹配为非根缓存则获取根缓存，然后遍历查找子缓存，匹配到则返回相应分支缓存*/
                 var cache = null,
                     self = this;
                 if (flag) {
-                    cache = sessionStorage.getItem(BASE_CONFIG.unique_key);
+                    cache = sessionStorage.getItem(unique);
                 } else {
-                    cache = localStorage.getItem(BASE_CONFIG.unique_key);
+                    cache = localStorage.getItem(unique);
                 }
                 if (cache !== null) {
                     if (typeof key !== 'undefined') {
@@ -195,22 +210,35 @@
         }
         return null;
     };
-    //删除本地存储
-    public_tool.removeParams = function (key, flag) {
+    //删除本地存储key,flag
+    public_tool.removeParams = function (config) {
         if (this.supportStorage) {
-            if (key === BASE_CONFIG.unique_key) {
+            var unique = config.unique/*获取索引名称*/,
+                key = config.key,
+                value = config.value,
+                flag = config.flag;
+
+            /*判定索引名称*/
+            if (!unique) {
+                unique = BASE_CONFIG.unique_key;
+            }
+
+            /*存取操作*/
+            if (key === unique) {
+                /*匹配为根缓存则删除根缓存*/
                 if (flag) {
                     sessionStorage.removeItem(key);
                 } else {
                     localStorage.removeItem(key);
                 }
             } else {
+                /*匹配为非根缓存则获取根缓存，然后遍历查找子缓存，匹配到则删除相应分支缓存*/
                 var cache = null,
                     self = this;
                 if (flag) {
-                    cache = sessionStorage.getItem(BASE_CONFIG.unique_key);
+                    cache = sessionStorage.getItem(unique);
                 } else {
-                    cache = localStorage.getItem(BASE_CONFIG.unique_key);
+                    cache = localStorage.getItem(unique);
                 }
                 if (cache !== null) {
                     if (typeof key !== 'undefined') {
@@ -219,18 +247,18 @@
                             cache: JSON.parse(cache)
                         }, 'find', 'delete');
                         if (flag) {
-                            /*为localstorage*/
-                            sessionStorage.setItem(BASE_CONFIG.unique_key, JSON.stringify(cache));
+                            /*为sessionstorage*/
+                            sessionStorage.setItem(unique, JSON.stringify(cache));
                         } else {
                             /*默认为localstorage*/
-                            localStorage.setItem(BASE_CONFIG.unique_key, JSON.stringify(cache));
+                            localStorage.setItem(unique, JSON.stringify(cache));
                         }
                     }
                 }
             }
         }
     };
-    //清除本地存储
+    //清除本地存储flag
     public_tool.clear = function (flag) {
         if (this.supportStorage) {
             if (flag) {
@@ -250,40 +278,25 @@
             }
         }
     };
-    //遍历本地存储
-    public_tool.getEachParams = function (flag) {
-        if (this.supportStorage) {
-            var cache = this.getParams(BASE_CONFIG.unique_key, flag);
-            if (cache !== null) {
-                cache = JSON.parse(cache);
-                var res = [];
-                for (var i in cache) {
-                    res.push(cache[i]);
-                }
-                return res;
-            } else {
-                return null;
-            }
-        }
-        return null;
-    };
 
 
     /*请求适配*/
     /*返回请求信息*/
     public_tool.requestHttp = function (config) {
         /*默认配置*/
-        var req={
-            url:'',
+        var req = {
+            url: '',
             method: 'POST',
             dataType: 'json',
-            async: true
+            data:''
         };
-        /*扩展配置*/
-        $.extend(true,req,config);
 
+        /*扩展配置*/
+        $.extend(true, req, config);
         /*适配配置*/
-        req.url = this.adaptReqUrl(req.url);
+        req.url = this.adaptReqUrl(req);
+
+
 
         var deferred = $.Deferred(),
             promise = $.ajax(req);
@@ -325,10 +338,10 @@
                     }
                 }
             } else {
-                if(config.common){
+                if (config.common) {
                     /*公共模式*/
                     return BASE_CONFIG.commondomain + BASE_CONFIG.commonproject + url;
-                }else{
+                } else {
                     /*默认模式*/
                     return BASE_CONFIG.basedomain + BASE_CONFIG.baseproject + url;
                 }
@@ -1308,7 +1321,7 @@
                 }
             }, 1000);
         }
-    }
+    };
     /*加载左侧菜单*/
     public_tool.loadSideMenu = function ($menu, $wrap, opt) {
 
@@ -2124,7 +2137,8 @@
                 return false;
             }
         } else {
-            self.loginTips(function () {});
+            self.loginTips(function () {
+            });
             return false;
         }
     };

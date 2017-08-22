@@ -152,7 +152,6 @@
                         basepathname = "/yttx-providerbms-api/user/login";
 
 
-
                     $.ajax({
                         url: basedomain + basepathname,
                         method: 'POST',
@@ -509,19 +508,46 @@
 
         }
 
+
+        /*设置缓存*/
+        function setCache(data,unique) {
+            if(!data){
+                return false;
+            }
+            var cache={
+                cacheMap: {}/*临时缓存模块*/,
+                routeMap: {}/*路由模块*/,
+                moduleMap: {}/**/,
+                menuMap: {},
+                powerMap: {},
+                loginMap: data,
+                settingMap: {}
+            };
+            /*存入缓存*/
+            public_tool.setParams({
+                unique:unique,
+                value:cache
+            });
+        }
+
         /*获取验证码*/
         function getValidCode(type) {
-            var xhr = new XMLHttpRequest();
+            var xhr = new XMLHttpRequest(),
+                domain = public_tool.getSystemBaseDomain(),
+                url;
 
             if (type === 'provider') {
                 /*供应商入口*/
-                xhr.open("post", 'http://10.0.5.226:8082/yttx-providerbms-api/user/identifying/code', true);
+                url = domain + '/yttx-providerbms-api' + '/user/identifying/code';
+                xhr.open("post", url, true);
             } else if (type === 'mall') {
                 /*布住网*/
-                xhr.open("post", 'http://10.0.5.226:8082/mall-buzhubms-api/sysuser/identifying/code', true);
+                url = domain + '/mall-buzhubms-api' + '/sysuser/identifying/code';
+                xhr.open("post", url, true);
             } else {
                 /*其他*/
-                xhr.open("post", 'http://10.0.5.226:8082/mall-buzhubms-api/sysuser/identifying/code', true);
+                url = domain + '/mall-buzhubms-api' + '/sysuser/identifying/code';
+                xhr.open("post", url, true);
             }
 
             xhr.responseType = "blob";
