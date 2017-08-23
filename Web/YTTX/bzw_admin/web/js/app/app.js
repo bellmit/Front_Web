@@ -7,7 +7,7 @@ angular.module('app', [
     'ui.router',
     'tool.dialog',
     'tool.util',
-    'ui.commonitem',
+    'ui.common',
     'ui.form',
     'login.service',
     'power.service',

@@ -22,16 +22,12 @@
         .directive('uiDataTablePlugin', uiDataTablePlugin)/*datatable数据表格指令*/;
 
 
+    /*指令依赖注入*/
+    uiHeaderLogout.$inject = ['$interval', 'loginService'];
+    uiSubSearch.$inject = ['toolUtil'];
 
-
-
-    
-}());
-
-
-angular.module('ui.commonitem', [])
     /*头部导航栏指令*/
-    .directive('uiHeaderMenu', function () {
+    function uiHeaderMenu() {
         return {
             replace: false,
             restrict: 'EA',
@@ -40,9 +36,10 @@ angular.module('ui.commonitem', [])
             },
             template: '<li ng-repeat="item in header"><a data-id="{{item.id}}" data-code="{{item.code}}" ui-sref-active="menuactive" href="" ui-sref="{{item.href}}" title="">{{item.name}}</a></li>'
         };
-    })
+    }
+
     /*头部退出*/
-    .directive('uiHeaderLogout', ['$interval', 'loginService', function ($interval, loginService) {
+    function uiHeaderLogout($interval, loginService) {
         return {
             replace: false,
             restrict: 'EA',
@@ -82,9 +79,10 @@ angular.module('ui.commonitem', [])
                 });
             }
         };
-    }])
+    }
+
     /*首页logo指令*/
-    .directive('uiSubLogo', function () {
+    function uiSubLogo() {
         return {
             replace: false,
             restrict: 'EA',
@@ -93,17 +91,19 @@ angular.module('ui.commonitem', [])
                     </div>\
                     <h1>布住网运营管理平台</h1>'
         };
-    })
+    }
+
     /*首页用户信息指令*/
-    .directive('uiSubInfo', function () {
+    function uiSubInfo() {
         return {
             replace: false,
             restrict: 'EA',
             template: '<li ng-repeat="i in index_ctrl.menuitem">{{i.name}}：<span>{{i.value}}</span></li>'
         };
-    })
+    }
+
     /*列表指令*/
-    .directive('uiSubList', function () {
+    function uiSubList() {
         return {
             replace: false,
             restrict: 'EA',
@@ -129,9 +129,10 @@ angular.module('ui.commonitem', [])
                 });
             }
         };
-    })
+    }
+
     /*侧边栏搜索指令*/
-    .directive('uiSubSearch', ['toolUtil', function (toolUtil) {
+    function uiSubSearch(toolUtil) {
         return {
             replace: false,
             restrict: 'EA',
@@ -162,9 +163,10 @@ angular.module('ui.commonitem', [])
                 });
             }
         };
-    }])
+    }
+
     /*侧边栏tab选项卡跳转指令*/
-    .directive('uiSubTabHref', function () {
+    function uiSubTabHref() {
         return {
             replace: false,
             restrict: 'EA',
@@ -173,9 +175,10 @@ angular.module('ui.commonitem', [])
             },
             template: '<li ng-show="{{i.power}}" ui-sref="{{i.href}}" class="{{i.active}}" ng-repeat="i in tabitem">{{i.name}}</li>'
         };
-    })
+    }
+
     /*侧边栏tab选项卡指令*/
-    .directive('uiSubTab', function () {
+    function uiSubTab() {
         return {
             replace: false,
             restrict: 'EA',
@@ -205,17 +208,19 @@ angular.module('ui.commonitem', [])
                 });
             }
         };
-    })
+    }
+
     /*侧边栏级联菜单指令*/
-    .directive('uiSubMenu', function () {
+    function uiSubMenu() {
         return {
             replace: false,
             restrict: 'EA',
             template: ''
         };
-    })
+    }
+
     /*侧边栏按钮指令*/
-    .directive('uiSubBtn', function () {
+    function uiSubBtn() {
         return {
             replace: false,
             restrict: 'EA',
@@ -248,9 +253,10 @@ angular.module('ui.commonitem', [])
                 });
             }
         };
-    })
+    }
+
     /*首页快捷方式指令*/
-    .directive('uiMainApp', function () {
+    function uiMainApp() {
         return {
             replace: false,
             restrict: 'EA',
@@ -265,29 +271,34 @@ angular.module('ui.commonitem', [])
                           </li>\
                         </ul>'
         };
-    })
+    }
+
     /*加载动画指令*/
-    .directive('uiLoadingAnimation', function () {
+    function uiLoadingAnimation() {
         return {
             replace: false,
             restrict: 'EA',
-            templateUrl: 'tpl/common/load.html'
+            templateUrl: 'view/common/load.html'
         };
-    })
+    }
+
     /*兼容性提示*/
-    .directive('uiSupportPanel', function () {
+    function uiSupportPanel() {
         return {
             replace: false,
             restrict: 'EA',
-            templateUrl: 'tpl/common/support_tip.html'
+            templateUrl: 'view/common/support_tip.html'
         };
-    })
+    }
+
     /*datatable数据表格指令*/
-    .directive('uiDataTablePlugin', function () {
+    function uiDataTablePlugin() {
         return {
             replace: false,
             restrict: 'EA',
             template: '<table></table>'
         };
-    });
+    }
+
+}());
    
