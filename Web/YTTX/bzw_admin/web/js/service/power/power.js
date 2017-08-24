@@ -1,5 +1,85 @@
-/*权限列表服务*/
-'use strict';
+/*权限服务*/
+(function () {
+    'use strict';
+
+    /*定义或扩展模块*/
+    angular
+        .module('power', [])
+        .service('powerService',powerService);
+
+    /*服务依赖注入*/
+    powerService.$inject = ['toolUtil', 'toolDialog','loginService','testService'];
+
+    
+    /*服务实现*/
+    function powerService(toolUtil, toolDialog, loginService,testService) {
+        /*获取缓存数据*/
+        var cache = loginService.getCache(),
+            powerCache = $.extend(true, {}, cache['powerMap']),
+            isrender = false/*dom是否渲染*/,
+            isall = false/*是否支持全选*/,
+            isitem = false/*是否支持单个选中事件*/,
+            h_items = [],
+            h_len = 0,
+            colgroup = ''/*分组*/,
+            thead = ''/*普通的头*/,
+            all_thead = ''/*拥有全选的头*/;
+
+        /*初始化执行*/
+        (function () {
+            /*有数据即调数据，没数据就创建数据*/
+            if (thead !== '' && colgroup !== '' && h_items.length !== 0) {
+                return false;
+            }
+
+            if (powerCache) {
+                var str = '',
+                    strall = '',
+                    index = 0;
+
+                for (var i in powerCache) {
+                    /*过滤首页*/
+                    if (parseInt(i, 10) === 0) {
+                        continue;
+                    }
+                    h_items.push(i);
+                    strall += '<th class="g-t-c"><label><input data-index="' + index + '" data-modid="' + powerCache[i]["id"] + '" type="checkbox" name="' + powerCache[i]["module"] + '" />&nbsp;' + powerCache[i]["name"] + '</label></th>';
+                    str += '<th data-index="' + index + '" class="g-t-c">' + powerCache[i]["name"] + '</th>';
+                    index++;
+                }
+
+                if (h_items.length !== 0) {
+                    var len = h_items.length,
+                        j = 0,
+                        colitem = parseInt(50 / len, 10);
+
+                    /*初始化赋值*/
+                    thead = '<tr>' + str + '</tr>';
+                    all_thead = '<tr>' + strall + '</tr>';
+                    h_len = len;
+
+                    /*解析分组*/
+                    if (colitem * len <= (50 - len)) {
+                        colitem = len + 1;
+                    }
+                    for (j; j < len; j++) {
+                        colgroup += '<col class="g-w-percent' + colitem + '" />';
+                    }
+                }
+            } else {
+                all_thead = thead = '<tr><th></th></tr>';
+                colgroup = '<col class="g-w-percent50" />';
+            }
+        }());
+
+
+
+
+        
+    }
+
+}());
+
 angular.module('power', [])
     .service('powerService', ['toolUtil', 'toolDialog', 'BASE_CONFIG', 'loginService','testService', function (toolUtil, toolDialog, BASE_CONFIG, loginService,testService) {
         /*获取缓存数据*/
