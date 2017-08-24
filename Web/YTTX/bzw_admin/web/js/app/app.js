@@ -5,11 +5,10 @@ angular.module('app', [
     'ngSanitize',
     'ngRoute',
     'ui.router',
-    'tool.dialog',
-    'tool.util',
-    'ui.common',
-    'ui.form',
-    'login.service',
-    'power.service',
+    'tool',
+    'view',
+    'login',
+    'power',
+    'test',
     'oc.lazyLoad'
 ]);
