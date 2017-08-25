@@ -308,11 +308,11 @@
                         }]
                     }]
                 },
-                setflag = false/*是否开启随机设置模式*/;
-            if (config && config.setflag) {
-                setflag = true;
+                israndom = false/*是否开启随机设置模式*/;
+            if (config && config.israndom) {
+                israndom = true;
             }
-            if (setflag) {
+            if (israndom) {
                 var menuarray = menuobj.menu,
                     len = menuarray.length,
                     i = 0;
@@ -343,6 +343,7 @@
             if (type) {
                 if (type === 'list') {
                     res = {
+                        status: 200,
                         message: 'ok',
                         code: 0,
                         count: 50,

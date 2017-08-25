@@ -5,83 +5,14 @@
     /*定义或扩展模块*/
     angular
         .module('power', [])
-        .service('powerService',powerService);
+        .service('powerService', powerService);
 
     /*服务依赖注入*/
-    powerService.$inject = ['toolUtil', 'toolDialog','loginService','testService'];
+    powerService.$inject = ['toolUtil', 'loginService', 'testService'];
 
-    
+
     /*服务实现*/
-    function powerService(toolUtil, toolDialog, loginService,testService) {
-        /*获取缓存数据*/
-        var cache = loginService.getCache(),
-            powerCache = $.extend(true, {}, cache['powerMap']),
-            isrender = false/*dom是否渲染*/,
-            isall = false/*是否支持全选*/,
-            isitem = false/*是否支持单个选中事件*/,
-            h_items = [],
-            h_len = 0,
-            colgroup = ''/*分组*/,
-            thead = ''/*普通的头*/,
-            all_thead = ''/*拥有全选的头*/;
-
-        /*初始化执行*/
-        (function () {
-            /*有数据即调数据，没数据就创建数据*/
-            if (thead !== '' && colgroup !== '' && h_items.length !== 0) {
-                return false;
-            }
-
-            if (powerCache) {
-                var str = '',
-                    strall = '',
-                    index = 0;
-
-                for (var i in powerCache) {
-                    /*过滤首页*/
-                    if (parseInt(i, 10) === 0) {
-                        continue;
-                    }
-                    h_items.push(i);
-                    strall += '<th class="g-t-c"><label><input data-index="' + index + '" data-modid="' + powerCache[i]["id"] + '" type="checkbox" name="' + powerCache[i]["module"] + '" />&nbsp;' + powerCache[i]["name"] + '</label></th>';
-                    str += '<th data-index="' + index + '" class="g-t-c">' + powerCache[i]["name"] + '</th>';
-                    index++;
-                }
-
-                if (h_items.length !== 0) {
-                    var len = h_items.length,
-                        j = 0,
-                        colitem = parseInt(50 / len, 10);
-
-                    /*初始化赋值*/
-                    thead = '<tr>' + str + '</tr>';
-                    all_thead = '<tr>' + strall + '</tr>';
-                    h_len = len;
-
-                    /*解析分组*/
-                    if (colitem * len <= (50 - len)) {
-                        colitem = len + 1;
-                    }
-                    for (j; j < len; j++) {
-                        colgroup += '<col class="g-w-percent' + colitem + '" />';
-                    }
-                }
-            } else {
-                all_thead = thead = '<tr><th></th></tr>';
-                colgroup = '<col class="g-w-percent50" />';
-            }
-        }());
-
-
-
-
-        
-    }
-
-}());
-
-angular.module('power', [])
-    .service('powerService', ['toolUtil', 'toolDialog', 'BASE_CONFIG', 'loginService','testService', function (toolUtil, toolDialog, BASE_CONFIG, loginService,testService) {
+    function powerService(toolUtil, loginService, testService) {
         /*获取缓存数据*/
         var self = this,
             cache = loginService.getCache(),
@@ -89,6 +20,7 @@ angular.module('power', [])
             isrender = false/*dom是否渲染*/,
             isall = false/*是否支持全选*/,
             isitem = false/*是否支持单个选中事件*/,
+            debug = false/*测试模式*/,
             h_items = [],
             h_len = 0,
             colgroup = ''/*分组*/,
@@ -142,11 +74,27 @@ angular.module('power', [])
             }
         }());
 
+
+        this.init = init/*初始化方法*/;
+        this.createThead = createThead/*生成头部和分组*/;
+        this.selectItemPower = selectItemPower/*设置单个权限选项操作 to do*/;
+        this.reqUserPowerList = reqUserPowerList/*请求用户权限列表(主要是根据不同对象查询相关权限):config:请求参数，mode:模型*/;
+        this.reqPowerList = reqPowerList/*请求权限列表(主要是根据不同对象查询相关权限):config:请求参数，mode:模型*/;
+        this.resolvePowerList = resolvePowerList/*解析权限列表*/;
+        this.selectAllPower = selectAllPower/*权限服务--全选权限（权限绑定）*/;
+        this.filterPower = filterPower/*权限服务--过滤用户权限*/;
+        this.getSelectPower = getSelectPower/*权限服务--获取选中选择权限*/;
+        this.clearHeaderPower = clearHeaderPower/*清除头部选中*/;
+        this.clearSelectPower = clearSelectPower/*权限服务--清除选中选择权限*/;
+        this.getCurrentPower = getCurrentPower/*权限服务--获取当前用户的权限缓存,key(id，模块名称)*/;
+
+
         /*初始化方法*/
-        this.init = function (config) {
+        function init(config) {
             var dom = config.dom;
             if (dom) {
                 isrender = true;
+                debug = config.debug ? true : false;
                 /*复制dom引用*/
                 for (var i in dom) {
                     self[i] = dom[i];
@@ -154,21 +102,20 @@ angular.module('power', [])
                 /*是否绑定全选*/
                 if (config.isall) {
                     isall = true;
-                    self.selectAllPower();
+                    selectAllPower();
                 }
                 /*是否绑定单个选中*/
                 if (config.isitem) {
                     isitem = true;
-                    self.selectItemPower();
+                    selectItemPower();
                 }
                 /*初始化头部和分组*/
-                self.createThead();
+                createThead();
             }
-        };
-
+        }
 
         /*生成头部和分组*/
-        this.createThead = function () {
+        function createThead() {
             /*flag:是否有全选*/
             /*有数据即调数据，没数据就创建数据*/
             $(colgroup).appendTo(self.$power_colgroup.html(''));
@@ -177,10 +124,10 @@ angular.module('power', [])
             } else {
                 $(thead).appendTo(self.$power_thead.html(''));
             }
-        };
+        }
 
         /*设置单个权限选项操作 to do*/
-        this.selectItemPower = function () {
+        function selectItemPower() {
             self.$power_tbody.on('click', 'input', function (e) {
                 var target = e.target;
 
@@ -201,10 +148,13 @@ angular.module('power', [])
                     .requestHttp({
                         url: '/permission/state/update',
                         method: 'post',
-                        set: true,
+                        debug: debug,
                         data: param
                     })
                     .then(function (resp) {
+                            if (debug) {
+                                var resp = testService.testSuccess();
+                            }
                             var data = resp.data,
                                 status = parseInt(resp.status, 10);
 
@@ -220,10 +170,7 @@ angular.module('power', [])
                                     if (code === 999) {
                                         /*退出系统*/
                                         cache = null;
-                                        toolUtil.loginTips({
-                                            clear: true,
-                                            reload: true
-                                        });
+                                        loginService.outAction();
                                     }
                                     /*恢复原来设置*/
                                     $operate.prop({
@@ -246,12 +193,10 @@ angular.module('power', [])
                         });
 
             });
-
-        };
-
+        }
 
         /*请求权限列表(主要是根据不同对象查询相关权限):config:请求参数，mode:模型*/
-        this.reqPowerList = function (config) {
+        function reqPowerList(config) {
             if (!isrender) {
                 return false;
             }
@@ -268,10 +213,15 @@ angular.module('power', [])
                 .requestHttp({
                     url: '/organization/permission/select',
                     method: 'post',
-                    set: true,
+                    debug: debug,
                     data: param
                 })
                 .then(function (resp) {
+                        if (debug) {
+                            var resp = config.israndom ? testService.testMenu({
+                                israndom: config.israndom
+                            }) : testService.testMenu();
+                        }
                         var data = resp.data,
                             status = parseInt(resp.status, 10);
 
@@ -287,10 +237,7 @@ angular.module('power', [])
                                 if (code === 999) {
                                     /*退出系统*/
                                     cache = null;
-                                    toolUtil.loginTips({
-                                        clear: true,
-                                        reload: true
-                                    });
+                                    loginService.outAction();
                                 }
                             } else {
                                 /*加载数据*/
@@ -333,12 +280,12 @@ angular.module('power', [])
                                                         temp_html = '';
                                                     /*将模块数据解析转换成html数据*/
                                                     if (config.clear) {
-                                                        temp_html = self.resolvePowerList({
+                                                        temp_html = resolvePowerList({
                                                             menu: temp_power,
                                                             clear: true
                                                         });
                                                     } else {
-                                                        temp_html = self.resolvePowerList({
+                                                        temp_html = resolvePowerList({
                                                             menu: temp_power
                                                         });
                                                     }
@@ -392,11 +339,10 @@ angular.module('power', [])
                             self.$power_tbody.html('<tr><td colspan="' + h_len + '" class="g-c-gray9 g-fs4 g-t-c g-b-white">没有查询到权限信息</td></tr>');
                         }
                     });
-        };
-
+        }
 
         /*请求用户权限列表(主要是根据不同对象查询相关权限):config:请求参数，mode:模型*/
-        this.reqUserPowerList = function (config) {
+        function reqUserPowerList(config) {
             if (!isrender) {
                 return false;
             }
@@ -423,12 +369,12 @@ angular.module('power', [])
                             var temp_html = '';
                             /*将模块数据解析转换成html数据*/
                             if (config.clear) {
-                                temp_html = self.resolvePowerList({
+                                temp_html = resolvePowerList({
                                     menu: datalist,
                                     clear: true
                                 });
                             } else {
-                                temp_html = self.resolvePowerList({
+                                temp_html = resolvePowerList({
                                     menu: datalist
                                 });
                             }
@@ -444,15 +390,14 @@ angular.module('power', [])
                     .requestHttp({
                         url: config.url,
                         method: 'post',
-                        debug: config.debug ? true : false,
-                        set: true,
+                        debug: debug,
                         data: param
                     })
                     .then(function (resp) {
-                            if (config.debug) {
-                                var resp=config.setflag?testService.testMenu({
-                                    setflag:config.setflag
-                                }):testService.testMenu();
+                            if (debug) {
+                                var resp = config.israndom ? testService.testMenu({
+                                    israndom: config.israndom
+                                }) : testService.testMenu();
                             }
                             var data = resp.data,
                                 status = parseInt(resp.status, 10);
@@ -469,10 +414,7 @@ angular.module('power', [])
                                     if (code === 999) {
                                         /*退出系统*/
                                         cache = null;
-                                        toolUtil.loginTips({
-                                            clear: true,
-                                            reload: true
-                                        });
+                                        loginService.outAction();
                                     }
                                 } else {
                                     /*加载数据*/
@@ -522,12 +464,12 @@ angular.module('power', [])
                                                             temp_html = '';
                                                         /*将模块数据解析转换成html数据*/
                                                         if (config.clear) {
-                                                            temp_html = self.resolvePowerList({
+                                                            temp_html = resolvePowerList({
                                                                 menu: temp_power,
                                                                 clear: true
                                                             });
                                                         } else {
-                                                            temp_html = self.resolvePowerList({
+                                                            temp_html = resolvePowerList({
                                                                 menu: temp_power
                                                             });
                                                         }
@@ -585,12 +527,10 @@ angular.module('power', [])
                             }
                         });
             }
-
-
-        };
+        }
 
         /*解析权限列表*/
-        this.resolvePowerList = function (config) {
+        function resolvePowerList(config) {
             /*解析数据*/
             var len = h_items.length,
                 i = 0,
@@ -678,10 +618,10 @@ angular.module('power', [])
                 }
             }
             return '<tr data-seq="' + Math.floor(Math.random() * 100000) + '">' + str + '</tr>';
-        };
+        }
 
         /*权限服务--全选权限（权限绑定）*/
-        this.selectAllPower = function () {
+        function selectAllPower() {
             self.$power_thead.on('click', function (e) {
                 e.stopPropagation();
                 var target = e.target,
@@ -728,7 +668,7 @@ angular.module('power', [])
                 }
                 return selectarr;
             });
-        };
+        }
 
 
         /*权限服务--过滤用户权限--(主要为父级和子级之间的关系):pdata:原数据(父级),cdata:过滤数据(子级)
@@ -741,7 +681,7 @@ angular.module('power', [])
          5：不存在子级模块，则父级用户权限全不勾选
          6：最终获取的是过滤后的父级对象
          * */
-        this.filterPower = function (pdata, cdata) {
+        function filterPower(pdata, cdata) {
             if (!pdata) {
                 return false;
             }
@@ -809,10 +749,10 @@ angular.module('power', [])
                 }
             }
             return parent_data;
-        };
+        }
 
         /*权限服务--获取选中选择权限*/
-        this.getSelectPower = function (dom) {
+        function getSelectPower(dom) {
             var $input;
             if (typeof dom !== 'undefined') {
                 $input = $(dom);
@@ -834,10 +774,11 @@ angular.module('power', [])
                 selectarr.push(prid);
             });
             return selectarr.length === 0 ? null : selectarr;
-        };
+        }
+
 
         /*清除头部选中*/
-        this.clearHeaderPower = function () {
+        function clearHeaderPower() {
             if (isall) {
                 self.$power_thead.find('input:checked').each(function () {
                     $(this).prop({
@@ -845,10 +786,10 @@ angular.module('power', [])
                     });
                 });
             }
-        };
+        }
 
         /*权限服务--清除选中选择权限*/
-        this.clearSelectPower = function (dom) {
+        function clearSelectPower(dom) {
             var $input;
             if (typeof dom !== 'undefined') {
                 $input = $(dom);
@@ -867,12 +808,11 @@ angular.module('power', [])
             });
 
             /*清除头部*/
-            self.clearHeaderPower();
-
-        };
+            clearHeaderPower();
+        }
 
         /*权限服务--获取当前用户的权限缓存,key(id，模块名称)*/
-        this.getCurrentPower = function (key) {
+        function getCurrentPower(key) {
             if (cache) {
                 if (typeof key !== 'undefined') {
                     return toolUtil.getPowerListByModule(key, powerCache);
@@ -880,5 +820,8 @@ angular.module('power', [])
                 return powerCache;
             }
             return null;
-        };
-    }]);
+        }
+
+    }
+
+}());

@@ -32,12 +32,12 @@
         <div ng-if="!app_ctrl.login.islogin" data-ng-include="'view/login.html'"></div>
 
 
-        <!--弹出层--加载动画-->
-        <div class="struct-layout-animateload ui-loading-animation {{app_ctrl.app_config.isloading}}" ></div>
+        <!--弹出层--加载动画(指令)-->
+        <view-loading-animation class="{{app_ctrl.app_config.isloading}}"></view-loading-animation>
     </div>
 
-    <!--不兼容-->
-    <div ng-if="!app_ctrl.app_config.issupport" class="struct-layout-support ui-support-panel"></div>
+    <!--不兼容(指令)-->
+    <view-support-panel  ng-if="!app_ctrl.app_config.issupport" ></view-support-panel>
 
 <!--base-->
 <script src="js/base/jquery-1.11.1.js"></script>

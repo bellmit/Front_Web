@@ -6,7 +6,7 @@
     /*使用模块*/
     angular
         .module('app')
-        .run('runConfig', runConfig);
+        .run(runConfig);
 
     /*注入*/
     runConfig.$inject = ['$rootScope', '$state', '$stateParams'];
@@ -26,7 +26,7 @@
     /*使用模块*/
     angular
         .module('app')
-        .config('routerConfig', routerConfig);
+        .config(routerConfig);
 
     /*注入*/
     routerConfig.$inject=['$stateProvider', '$urlRouterProvider'];
@@ -37,18 +37,18 @@
         $urlRouterProvider.otherwise('app');
 
         /*路由*/
-        $stateProvider
+        /*$stateProvider
             .state('app', {
                 url: '/app',
                 templateUrl: 'view/index.html',
                 resolve: {
-                    /*延迟加载，依赖相关组件*/
+                    /!*延迟加载，依赖相关组件*!/
                     deps: ['$ocLazyLoad',
                         function ($ocLazyLoad) {
-                            return $ocLazyLoad.load(['js/directives/index.js', 'js/app/index/index_controller.js']);
+                            return $ocLazyLoad.load(['js/directive/quick.js', 'js/app/index/index_controller.js']);
                         }]
                 }
-            })
+            })*/
             /*.state('organization', {
                 url: '/organization',
                 templateUrl: 'tpl/organization.html',

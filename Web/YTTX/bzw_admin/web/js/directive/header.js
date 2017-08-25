@@ -35,15 +35,7 @@
             scope: {
                 action: '&'
             },
-            template: '<div class="g-br3 header-outwrap" id="admin_logout_btn">退出</div>\
-            <div ng-show="time!==0" class="struct-layout-support">\
-                          <div class="page-support-inner">\
-                              <div class="page-support-login">\
-                                 <div></div>\
-                                 <p>您还未登录<span>{{time}}</span>秒后跳入登陆页面</p>\
-                              </div>\
-                          </div>\
-                    </div>',
+            templateUrl: 'view/common/logout.html',
             link: function (scope, element, attrs) {
                 /*初始化*/
                 scope.time = 0;

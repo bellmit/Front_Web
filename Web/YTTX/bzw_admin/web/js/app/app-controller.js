@@ -2,7 +2,7 @@
 
 /*控制器设置基本配置*/
 angular.module('app')
-    .controller('AppController', ['toolUtil', 'loginService', '$interval', function (toolUtil, loginService, $interval) {
+    .controller('AppController', ['toolUtil', 'loginService', function (toolUtil, loginService) {
         var self = this;
 
         /*模型--基本配置*/

@@ -6,8 +6,8 @@
     /*定义指令*/
     angular
         .module('view')/*公共指令集名称*/
-        .directive('dirLoadingAnimation', dirLoadingAnimation)/*加载动画指令*/
-        .directive('dirSupportPanel', dirSupportPanel)/*兼容性提示*/;
+        .directive('viewLoadingAnimation', viewLoadingAnimation)/*加载动画指令*/
+        .directive('viewSupportPanel', viewSupportPanel)/*兼容性提示*/;
 
 
     /*指令依赖注入*/
@@ -15,20 +15,20 @@
 
     /*指令实现*/
     /*加载动画指令*/
-    function dirLoadingAnimation() {
+    function viewLoadingAnimation() {
         return {
-            replace: false,
+            replace: true,
             restrict: 'EA',
             templateUrl: 'view/common/load.html'
         };
     }
 
     /*兼容性提示*/
-    function dirSupportPanel() {
+    function viewSupportPanel() {
         return {
-            replace: false,
+            replace: true,
             restrict: 'EA',
-            templateUrl: 'view/common/support_tip.html'
+            templateUrl: 'view/common/support.html'
         };
     }
 

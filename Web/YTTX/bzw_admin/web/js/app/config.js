@@ -17,6 +17,7 @@ angular
         /*
          test:http://10.0.5.226:8883
          debug:http://10.0.5.222:8080
+         production:http://112.74.207.132:8082
          */,
         baseproject: '/mall-buzhubms-api'/*请求工程地址*/,
         commondomain: 'http://120.76.237.100:8080',
