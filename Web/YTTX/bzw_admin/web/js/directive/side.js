@@ -22,18 +22,27 @@
 
     /*指令实现*/
     /*首页logo指令*/
+    /*
+    * demo
+    * <view-side-logo></view-side-logo>
+    * */
     function viewSideLogo() {
         return {
-            replace: false,
+            replace: true,
             restrict: 'EA',
-            template: '<div class="logo-img-wrap">\
-                        <img ng-src="images/index_logo.png" alt="logo" />\
-                    </div>\
-                    <h1>布住网后台管理平台</h1>'
+            template: '<div class="sub-logo-wrap">\
+                        <div class="logo-img-wrap">\
+                            <img ng-src="images/index_logo.png" alt="logo" />\
+                        </div>\
+                        <h1>布住网后台管理平台</h1>\
+                       </div>'
         };
     }
 
     /*首页用户信息指令*/
+    /*demo
+    * <ul data-view-side-info="" class="sub-info-wrap"></ul>
+    * */
     function viewSideInfo() {
         return {
             replace: false,
@@ -43,6 +52,9 @@
     }
 
     /*列表指令*/
+    /*demo
+     * <ul data-view-side-list="" class="sub-list-wrap"></ul>
+     * */
     function viewSideList() {
         return {
             replace: false,
@@ -72,6 +84,10 @@
     }
 
     /*侧边栏搜索指令*/
+    /*
+    * demo:
+    * <div data-view-side-search="" class="sub-search-wrap"></div>
+    * */
     function viewSideSearch(toolUtil) {
         return {
             replace: false,
@@ -106,6 +122,10 @@
     }
 
     /*侧边栏tab选项卡跳转指令*/
+    /*
+    * demo:
+    * <ul data-view-side-tab-href class="sub-tab-wrap sub-item-group2 sub-itembr-group2"></ul>
+    * */
     function viewSideTabHref() {
         return {
             replace: false,

@@ -13,6 +13,9 @@
 
     /*指令实现*/
     /*首页快捷方式指令*/
+    /*demo:
+    * <div data-view-quick-link="" class="struct-layout-main"></div>
+    * */
     function viewQuickLink($timeout) {
         var outid = null;
         return {

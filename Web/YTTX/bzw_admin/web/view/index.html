@@ -1,12 +1,13 @@
 	<div class="struct-layout-container struct-layout-default" ng-controller="IndexController as index_ctrl">
 		<!--主体-->
-		<div class="struct-layout-main ui-main-quick"  data-action="index_ctrl.getQuickItem()"></div>
+		<div data-view-quick-link="" class="struct-layout-main"  data-action="index_ctrl.getQuickItem()"></div>
 
+		<!--侧边栏-->
 		<div class="struct-layout-side">
-			<!--logo组件-->
-			<div class="sub-logo-wrap ui-sub-logo"></div>
+			<!--logo组件--(指令)-->
+			<view-side-logo></view-side-logo>
 
 			<!--信息组件-->
-			<ul class="sub-info-wrap ui-sub-info"></ul>
+			<ul data-view-side-info="" class="sub-info-wrap"></ul>
 		</div>
 	</div>

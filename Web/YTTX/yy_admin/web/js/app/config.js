@@ -2,7 +2,7 @@
 var yy_app = angular.module('app')
     .constant('BASE_CONFIG', {
         unique_key: 'yy_admin_unique_key'/*系统缓存key键*/,
-        basedomain: 'http://112.74.207.132:8082'/*请求域名*/
+        basedomain: 'http://10.0.5.226:8882'/*请求域名*/
         /*
          test:http://10.0.5.226:8882
          debug:http://10.0.5.222:8080
@@ -15,7 +15,7 @@ var yy_app = angular.module('app')
         nologintipdom: 'struct_goto_login'/*没有登录系统提示id值*/,
         loginoutdom: 'struct_layout_loginout'/*退出系统id值*/,
         submenulimit: 6/*系统允许递归嵌套菜单最大层级*/,
-        commondomain: 'http://112.74.207.132:8088'/*公用接口请求域名*/,
+        commondomain: 'http://120.76.237.100:8080'/*公用接口请求域名*/,
         /*
          test:http://120.76.237.100:8080
          production:http://112.74.207.132:8088

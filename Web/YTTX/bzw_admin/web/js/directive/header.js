@@ -16,6 +16,10 @@
 
     /*指令实现*/
     /*头部导航栏指令*/
+    /*
+    * demo:
+    * <ul class="header-menu" data-view-header-menu=""></ul>
+    * */
     function viewHeaderMenu() {
         return {
             replace: false,
@@ -28,6 +32,10 @@
     }
 
     /*头部退出*/
+    /*
+    * demo:
+    * <div data-view-header-logout=""></div>
+    * */
     function viewHeaderLogout($interval, loginService) {
         return {
             replace: false,

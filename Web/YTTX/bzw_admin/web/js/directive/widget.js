@@ -15,6 +15,10 @@
 
     /*指令实现*/
     /*加载动画指令*/
+    /*
+    * demo:
+    * <view-loading-animation></view-loading-animation>
+    * */
     function viewLoadingAnimation() {
         return {
             replace: true,
@@ -24,6 +28,10 @@
     }
 
     /*兼容性提示*/
+    /*
+    * demo:
+    * <view-support-panel></view-support-panel>
+    * */
     function viewSupportPanel() {
         return {
             replace: true,
