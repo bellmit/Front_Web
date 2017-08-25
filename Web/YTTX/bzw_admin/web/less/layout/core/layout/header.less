@@ -25,7 +25,7 @@
   }
   /*导航logo*/
   .header-logo{
-    .layout-float-base(@layout-side-width);
+    .layout-float-base(@layout-side-width + @header-logo-gap);
     height:100%;
     background:url("../images/menu_logo.png") center center no-repeat;
     background-size:auto 38px;
@@ -33,7 +33,7 @@
   /*菜单条*/
   .header-menu{
     height:100%;
-    .layout-float-base(@layout-container-width - @layout-side-width);
+    .layout-float-base(@layout-container-width - @layout-side-width - @header-logo-gap);
     font-size:0;
     padding:0 50px 0 20px;
     >li{
