@@ -157,7 +157,7 @@
 							finish: function(){
 								if(code===0){
 									//成功后跳入主页面
-									location.href = 'setting/yttx-setting-base.html';
+									location.href = 'app/setting/yttx-setting-base.html';
 								}
 							}
 						});

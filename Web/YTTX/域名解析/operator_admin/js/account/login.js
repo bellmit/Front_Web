@@ -144,7 +144,7 @@
 							finish: function(){
 								if(code===0){
 									//成功后跳入主页面
-									location.href = '../index.html';
+									location.href = '../../index.html';
 								}
 							}
 						});
