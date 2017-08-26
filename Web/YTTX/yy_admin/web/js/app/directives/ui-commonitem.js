@@ -24,7 +24,7 @@ angular.module('ui.commonitem',[])
           template:'<div class="logo-img-wrap">\
                         <img src="images/index_logo.png" alt="logo" />\
                     </div>\
-                    <h1>布住网运营管理平台</h1>'
+                    <h1>布住网招商合伙人管理平台</h1>'
         };
     })
     /*首页用户信息指令*/

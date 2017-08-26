@@ -23,9 +23,9 @@
     /*指令实现*/
     /*首页logo指令*/
     /*
-    * demo
-    * <view-side-logo></view-side-logo>
-    * */
+     * demo
+     * <view-side-logo></view-side-logo>
+     * */
     function viewSideLogo() {
         return {
             replace: true,
@@ -41,8 +41,8 @@
 
     /*首页用户信息指令*/
     /*demo
-    * <ul data-view-side-info="" class="sub-info-wrap"></ul>
-    * */
+     * <ul data-view-side-info="" class="sub-info-wrap"></ul>
+     * */
     function viewSideInfo() {
         return {
             replace: false,
@@ -85,9 +85,9 @@
 
     /*侧边栏搜索指令*/
     /*
-    * demo:
-    * <div data-view-side-search="" class="sub-search-wrap"></div>
-    * */
+     * demo:
+     * <div data-view-side-search="" class="sub-search-wrap"></div>
+     * */
     function viewSideSearch(toolUtil) {
         return {
             replace: false,
@@ -123,9 +123,9 @@
 
     /*侧边栏tab选项卡跳转指令*/
     /*
-    * demo:
-    * <ul data-view-side-tab-href class="sub-tab-wrap sub-item-group2 sub-itembr-group2"></ul>
-    * */
+     * demo:
+     * <ul data-view-side-tab-href="" class="sub-tab-wrap sub-item-group2 sub-itembr-group2"></ul>
+     * */
     function viewSideTabHref() {
         return {
             replace: false,
@@ -138,6 +138,10 @@
     }
 
     /*侧边栏tab选项卡指令*/
+    /*
+     * demo:
+     * <ul class="sub-tab-wrap sub-item-group3 sub-itembr-group3" data-view-side-tab=""></ul>
+     * */
     function viewSideTab() {
         return {
             replace: false,
@@ -171,6 +175,10 @@
     }
 
     /*侧边栏级联菜单指令*/
+    /*
+     * demo:
+     * <ul class="sub-menu-wrap" data-view-side-menu="" ></ul>
+     * */
     function viewSideMenu() {
         return {
             replace: false,
@@ -180,6 +188,10 @@
     }
 
     /*侧边栏按钮指令*/
+    /*
+     * demo:
+     * <ul data-view-side-btn="" class="sub-btn-wrap sub-item-group2"></ul>
+     * */
     function viewSideBtn() {
         return {
             replace: false,
