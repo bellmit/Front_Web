@@ -34,27 +34,30 @@
                             </div>\
                           </li>\
                         </ul>',
-            link: function (scope, element, attrs) {
-                var quickimg = scope.action();
-                if (quickimg) {
-                    if (quickimg.length === 0) {
-                        outid = $timeout(function () {
-                            scope.$apply(function () {
-                                scope.quick = doQuickImage(scope.action());
-                                if (outid !== null) {
-                                    $timeout.cancel(outid);
-                                    outid = null;
-                                }
-                            });
-                        }, 500);
-                    } else {
-                        scope.quick = doQuickImage(quickimg);
-                    }
-                } else {
-                    scope.quick = [];
-                }
-            }
+            link:quickLink
         };
+
+        /*link实现*/
+        function quickLink(scope, element, attrs) {
+            var quickimg = scope.action();
+            if (quickimg) {
+                if (quickimg.length === 0) {
+                    outid = $timeout(function () {
+                        scope.$apply(function () {
+                            scope.quick = doQuickImage(scope.action());
+                            if (outid !== null) {
+                                $timeout.cancel(outid);
+                                outid = null;
+                            }
+                        });
+                    }, 500);
+                } else {
+                    scope.quick = doQuickImage(quickimg);
+                }
+            } else {
+                scope.quick = [];
+            }
+        }
     }
 
 

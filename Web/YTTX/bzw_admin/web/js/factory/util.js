@@ -17,8 +17,9 @@
         var system_unique_key = BASE_CONFIG.unique_key,
             tools = {
                 /*系统辅助类*/
-                getSystemDomain:getSystemDomain/*获取系统域名*/,
-                getSystemProject:getSystemProject/*获取系统工程地址*/,
+                getSystemDomain: getSystemDomain/*获取系统域名*/,
+                getSystemProject: getSystemProject/*获取系统工程地址*/,
+                getSystemInfo: getSystemInfo/*获取系统信息*/,
                 getSystemUniqueKey: getSystemUniqueKey/*返回系统唯一标识符*/,
                 supportBox: (function () {
                     var elem = document.getElementsByTagName('body')[0],
@@ -99,10 +100,17 @@
         function getSystemDomain() {
             return BASE_CONFIG.basedomain;
         }
+
+        /*获取系统基本信息*/
+        function getSystemInfo() {
+            return BASE_CONFIG.info;
+        }
+
         /*获取系统工程地址*/
         function getSystemProject() {
             return BASE_CONFIG.baseproject;
         }
+
         /*返回系统唯一标识符*/
         function getSystemUniqueKey() {
             return system_unique_key;
@@ -302,8 +310,8 @@
                 url: '',
                 method: 'POST',
                 dataType: 'json',
-                headers:{"Content-Type": "application/x-www-form-urlencoded"},
-                data:''
+                headers: {"Content-Type": "application/x-www-form-urlencoded"},
+                data: ''
             };
 
             /*扩展配置*/

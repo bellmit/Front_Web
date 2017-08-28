@@ -63,24 +63,27 @@
                 listitem: '=listitem'
             },
             template: '<li ng-show="{{i.power}}" class="{{i.active}}" ng-repeat="i in listitem"><a data-type="{{i.type}}" title=""  ui-sref="{{i.href}}">{{i.name}}</a></li>',
-            link: function (scope, element, attrs) {
-                /*绑定事件*/
-                element.bind('click', function ($event) {
-                    var target = $event.target,
-                        node = target.nodeName.toLowerCase(),
-                        $li;
-
-                    if (node === 'a') {
-                        $li = angular.element(target).parent();
-                    } else if (node === 'li') {
-                        $li = angular.element(target);
-                    } else {
-                        return false;
-                    }
-                    $li.addClass('menuactive').siblings().removeClass('menuactive');
-                });
-            }
+            link: sideList
         };
+
+        /*link*/
+        function sideList(scope, element, attrs) {
+            /*绑定事件*/
+            element.bind('click', function ($event) {
+                var target = $event.target,
+                    node = target.nodeName.toLowerCase(),
+                    $li;
+
+                if (node === 'a') {
+                    $li = angular.element(target).parent();
+                } else if (node === 'li') {
+                    $li = angular.element(target);
+                } else {
+                    return false;
+                }
+                $li.addClass('menuactive').siblings().removeClass('menuactive');
+            });
+        }
     }
 
     /*侧边栏搜索指令*/
@@ -101,24 +104,27 @@
             template: '<label class="search-content {{sactive}}">\
                 <input type="text" placeholder="搜索" ng-model="svalue" name="search_name" class="g-br3" />\
             <span class="search-clear" ng-click="sclear()"></span></label>',
-            link: function (scope, element, attrs) {
-                angular.element(element).find('input').bind('keyup', function ($event) {
-
-                    var kcode = $event.keyCode,
-                        self = this;
-
-                    self.value = toolUtil.trimHtmlIllegal(self.value);
-                    if (scope.svalue === '') {
-                        scope.sactive = '';
-                    } else {
-                        scope.sactive = 'search-content-active';
-                    }
-                    if (kcode === 13) {
-                        scope.saction();
-                    }
-                });
-            }
+            link: sideSearch
         };
+
+        /*link实现*/
+        function sideSearch(scope, element, attrs) {
+            angular.element(element).find('input').bind('keyup', function ($event) {
+
+                var kcode = $event.keyCode,
+                    self = this;
+
+                self.value = toolUtil.trimHtmlIllegal(self.value);
+                if (scope.svalue === '') {
+                    scope.sactive = '';
+                } else {
+                    scope.sactive = 'search-content-active';
+                }
+                if (kcode === 13) {
+                    scope.saction();
+                }
+            });
+        }
     }
 
     /*侧边栏tab选项卡跳转指令*/
@@ -150,28 +156,31 @@
                 tabitem: '=tabitem'
             },
             template: '<li ng-show="{{i.power}}" data-type="{{i.type}}" class="{{i.active}}" ng-repeat="i in tabitem">{{i.name}}</li>',
-            link: function (scope, element, attrs) {
-                /*绑定事件*/
-                element.bind('click', function ($event) {
-                    var target = $event.target,
-                        node = target.nodeName.toLowerCase();
-
-                    if (node !== 'li') {
-                        return false;
-                    }
-
-                    var $li = angular.element(target),
-                        type = $li.attr('data-type');
-
-                    $li.addClass('tabactive').siblings().removeClass('tabactive');
-                    if (type && type !== '') {
-                        scope.$apply(function () {
-                            scope.$parent[attrs.ctrlname][attrs.action](type);
-                        })
-                    }
-                });
-            }
+            link: sideTab
         };
+
+        /*link实现*/
+        function sideTab(scope, element, attrs) {
+            /*绑定事件*/
+            element.bind('click', function ($event) {
+                var target = $event.target,
+                    node = target.nodeName.toLowerCase();
+
+                if (node !== 'li') {
+                    return false;
+                }
+
+                var $li = angular.element(target),
+                    type = $li.attr('data-type');
+
+                $li.addClass('tabactive').siblings().removeClass('tabactive');
+                if (type && type !== '') {
+                    scope.$apply(function () {
+                        scope.$parent[attrs.ctrlname][attrs.action](type);
+                    })
+                }
+            });
+        }
     }
 
     /*侧边栏级联菜单指令*/
@@ -202,29 +211,32 @@
             template: '<li ng-show="{{i.power}}" data-type="{{i.type}}" ng-repeat="i in btnitem">\
                 <span><i class="{{i.icon}}"></i>{{i.name}}</span>\
             </li>',
-            link: function (scope, element, attrs) {
-                element.bind('click', function ($event) {
-                    var target = $event.target,
-                        node = target.nodeName.toLowerCase(),
-                        $li;
-
-                    if (node === 'ul') {
-                        return false;
-                    } else if (node === 'span' || node === 'i') {
-                        $li = angular.element(target).closest('li');
-                    } else if (node === 'li') {
-                        $li = angular.element(target);
-                    }
-
-                    var type = $li.attr('data-type');
-                    if (type && type !== '') {
-                        scope.$apply(function () {
-                            scope.$parent[attrs.ctrlname][attrs.action](type);
-                        })
-                    }
-                });
-            }
+            link: sideBtn
         };
+
+        /*link实现*/
+        function sideBtn(scope, element, attrs) {
+            element.bind('click', function ($event) {
+                var target = $event.target,
+                    node = target.nodeName.toLowerCase(),
+                    $li;
+
+                if (node === 'ul') {
+                    return false;
+                } else if (node === 'span' || node === 'i') {
+                    $li = angular.element(target).closest('li');
+                } else if (node === 'li') {
+                    $li = angular.element(target);
+                }
+
+                var type = $li.attr('data-type');
+                if (type && type !== '') {
+                    scope.$apply(function () {
+                        scope.$parent[attrs.ctrlname][attrs.action](type);
+                    })
+                }
+            });
+        }
     }
 
 }());

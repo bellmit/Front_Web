@@ -3,12 +3,14 @@
 /*控制器设置基本配置*/
 angular.module('app')
     .controller('AppController', ['toolUtil', 'loginService', function (toolUtil, loginService) {
-        var self = this;
+        var self = this,
+            debug=true/*测试模式*/;
 
         /*模型--基本配置*/
         this.app_config = {
             issupport: toolUtil.isSupport()/*是否兼容*/,
-            isloading: 'g-d-hidei'/*加载组件初始化*/
+            isloading: 'g-d-hidei'/*加载组件初始化*/,
+            info:toolUtil.getSystemInfo()/*获取系统信息*/
         };
 
 
@@ -31,15 +33,16 @@ angular.module('app')
             /*校验成功*/
             loginService.reqAction({
                 login: self.login,
-                app_config: self.app_config
+                app_config: self.app_config,
+                debug:debug
             });
         };
         /*获取验证码*/
         this.getValidCode = function () {
             loginService.getValidCode({
                 wrap: 'validcode_wrap',
-                debug:true,
-                url: /*"/sysuser/identifying/code"*/'json/test.json'
+                debug: debug,
+                url: "/sysuser/identifying/code"
             });
         };
         /*退出*/

@@ -37,18 +37,20 @@
         $urlRouterProvider.otherwise('app');
 
         /*路由*/
-        /*$stateProvider
+        $stateProvider
             .state('app', {
                 url: '/app',
                 templateUrl: 'view/index.html',
+                /*controller: 'AppController',
+                controllerAs: 'app_ctrl',*/
                 resolve: {
-                    /!*延迟加载，依赖相关组件*!/
+                    /*延迟加载，依赖相关组件*/
                     deps: ['$ocLazyLoad',
                         function ($ocLazyLoad) {
-                            return $ocLazyLoad.load(['js/directive/quick.js', 'js/app/index/index_controller.js']);
+                            return $ocLazyLoad.load(['js/directive/quick.js', 'js/app/index/index-controller.js']);
                         }]
                 }
-            })*/
+            })
             /*.state('organization', {
                 url: '/organization',
                 templateUrl: 'tpl/organization.html',

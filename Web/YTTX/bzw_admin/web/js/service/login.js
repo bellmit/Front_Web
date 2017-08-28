@@ -14,7 +14,7 @@
 
     /*服务实现*/
     function loginService(toolUtil, $state, $timeout, testService) {
-        var unique_key = toolUtil.getSystemUniqueKey/*获取凭证*/,
+        var unique_key = toolUtil.getSystemUniqueKey()/*获取凭证*/,
             basedomain = toolUtil.getSystemDomain()/*获取请求域名*/,
             cache = toolUtil.getParams(unique_key)/*获取缓存*/,
             quickmenu = []/*缓存快捷子菜单*/,
@@ -281,8 +281,9 @@
                     }
                 }());
             } else {
-                var xhr = new XMLHttpRequest();
-                xhr.open("post", toolUtil.adaptReqUrl(config.url), true);
+                var xhr = new XMLHttpRequest(),
+                    url=toolUtil.adaptReqUrl(config);
+                xhr.open("post", url, true);
                 xhr.responseType = "blob";
                 xhr.onreadystatechange = function () {
                     if (this.status == 200) {
