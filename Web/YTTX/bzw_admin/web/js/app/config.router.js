@@ -36,7 +36,7 @@
         /*异常路径路由到主页*/
         $urlRouterProvider.otherwise('app');
 
-        /*路由*/
+        /*路由--登录和首页*/
         $stateProvider
             .state('app', {
                 url: '/app',
@@ -47,7 +47,7 @@
                     /*延迟加载，依赖相关组件*/
                     deps: ['$ocLazyLoad',
                         function ($ocLazyLoad) {
-                            return $ocLazyLoad.load(['js/directive/quick.js', 'js/app/index/index-controller.js']);
+                            return $ocLazyLoad.load(['js/app/index/index-controller.js']);
                         }]
                 }
             })

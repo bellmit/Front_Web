@@ -1,8 +1,11 @@
 angular.module('app')
     .controller('IndexController', ['loginService','testService', function (loginService,testService) {
 
+        var self=this,
+            debug=true/*测试模式*/;
+
         /*主内容侧边栏*/
-        this.menuitem = testService.getMap({
+        self.menuitem = testService.getMap({
             map:{
                 'name':'name',
                 'value':'value'
@@ -10,9 +13,9 @@ angular.module('app')
             mapmin:5,
             mapmax:15
         }).list;
-        
+
         /*获取快捷方式*/
-        this.getQuickItem=function () {
+        self.getQuickItem=function () {
             return  loginService.getMenuData();
         }
     }]);

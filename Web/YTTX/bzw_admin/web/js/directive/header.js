@@ -52,16 +52,20 @@
         function headerLogout(scope, element, attrs) {
             /*初始化*/
             scope.time = 0;
-            var $out_btn = angular.element('#admin_logout_btn');
+            var outid = null,
+                $out_btn = angular.element('#admin_logout_btn');
             /*绑定事件*/
             $out_btn.bind('click', function () {
                 /*手动监听视图*/
-                scope.time = 2;
+                scope.$apply(function () {
+                    scope.time = 2;
+                });
                 /*定时任务*/
-                var outid = $interval(function () {
+                outid = $interval(function () {
                     scope.time--;
                     if (scope.time <= 0) {
                         $interval.cancel(outid);
+                        outid = null;
                         scope.action();
                         scope.time = 0;
                     }

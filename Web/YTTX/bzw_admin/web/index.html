@@ -1,21 +1,21 @@
 <!DOCTYPE html>
-<html lang="zh" data-ng-app="app">
+<html lang="zh" data-ng-app="app" ng-controller="AppController as app_ctrl">
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 
 	<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0,maximum-scale=1">
-	<meta name="description" content="布住网后台管理平台" />
-	<meta name="keywords" content="布住网后台管理平台">
-	<meta name="author" content="yp" />
-	<title>布住网后台管理平台</title>
+	<meta name="description" content="{{app_ctrl.info.description}}" />
+	<meta name="keywords" content="{{app_ctrl.info.keywords}}">
+	<meta name="author" content="{{app_ctrl.info.author}}" />
+	<title>{{app_ctrl.info.name}}</title>
 	<link href="images/logo_icon.ico" rel="icon">
 	<link rel="stylesheet" href="css/base.css">
 	<!--[if lt IE 9]>
 	<script src="js/base/h5support.js"></script>
 	<![endif]-->
 </head>
-<body class="struct-layout-wrap" ng-controller="AppController as app_ctrl">
+<body class="struct-layout-wrap">
     <!--兼容-->
     <div ng-if="app_ctrl.app_config.issupport">
         <!--登录后--主区域-->
@@ -67,6 +67,8 @@
 <script src="js/directive/header.js"></script>
 <script src="js/directive/widget.js"></script>
 <script src="js/directive/form.js"></script>
+<script src="js/directive/side.js"></script>
+<script src="js/directive/quick.js"></script>
 
 <!--主程序，控制器设置基本配置-->
 <script src="js/app/app-controller.js"></script>

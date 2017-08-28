@@ -9,9 +9,11 @@ angular.module('app')
         /*模型--基本配置*/
         this.app_config = {
             issupport: toolUtil.isSupport()/*是否兼容*/,
-            isloading: 'g-d-hidei'/*加载组件初始化*/,
-            info:toolUtil.getSystemInfo()/*获取系统信息*/
+            isloading: 'g-d-hidei'/*加载组件初始化*/
         };
+
+        /*模型--系统信息*/
+        this.info=toolUtil.getSystemInfo();
 
 
         /*模型--用户数据*/

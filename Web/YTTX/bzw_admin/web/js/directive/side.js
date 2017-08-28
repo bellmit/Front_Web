@@ -47,7 +47,10 @@
         return {
             replace: false,
             restrict: 'EA',
-            template: '<li ng-repeat="i in index_ctrl.menuitem">{{i.name}}：<span>{{i.value}}</span></li>'
+            scope:{
+                menuitem:'=menuitem'
+            },
+            template: '<li ng-repeat="i in menuitem">{{i.name}}：<span>{{i.value}}</span></li>'
         };
     }
 

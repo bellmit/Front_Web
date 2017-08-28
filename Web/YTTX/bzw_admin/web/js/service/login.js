@@ -319,19 +319,21 @@
                 cache = {
                     cacheMap: {
                         menuload: false,
-                        powerload: false
-                    },
+                        powerload: false,
+                        menusoruce:false
+                    }/*缓存加载情况记录*/,
                     routeMap: {
                         prev: '',
                         current: '',
-                        setting: false
-                    },
-                    moduleMap: {},
-                    menuMap: {},
-                    powerMap: {},
-                    loginMap: data,
-                    settingMap: {},
-                    tempMap:{}
+                        history:[]
+                    }/*路由缓存*/,
+                    moduleMap: {}/*模块缓存*/,
+                    menuMap: {}/*菜单缓存*/,
+                    powerMap: {}/*权限缓存*/,
+                    loginMap: data/*登录认证缓存*/,
+                    settingMap: {}/*设置缓存*/,
+                    menuSourceMap:{}/*解析后的菜单源码缓存，用于菜单加载时直接应用，而不需要解析*/,
+                    tempMap:{}/*临时缓存*/
                 };
             }
             toolUtil.setParams(unique_key, cache);
