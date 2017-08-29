@@ -1,0 +1,47 @@
+/*适配扩展*/
+
+
+/*默认屏幕*/
+.struct-layout-default{
+  /*主体*/
+  .struct-layout-container{
+    width:@layout-container-width !important;
+    margin:0 auto;
+  }
+
+  /*头部*/
+  .struct-layout-header{
+    height:@layout-header-height + @layout-header-shadow;
+    min-width:@layout-container-width;
+    /*平铺背景色*/
+    .header-bg{
+      min-width:@layout-container-width;
+      .box-shadow-base(0 0 @layout-header-shadow - 2 @layout-header-shadow - 4 @color-gray8);
+    }
+    /*导航区域*/
+    .header-content{
+      margin:0 auto;
+      width:@layout-container-width;
+    }
+  }
+}
+
+
+/*宽屏*/
+.struct-layout-auto{
+  /*主体*/
+  .struct-layout-container{
+    width:100%;
+    min-width:@layout-container-width !important;
+  }
+}
+
+
+/*小屏*/
+.struct-layout-mini{
+  /*主体*/
+  .struct-layout-container{
+    width:100%;
+    max-width:@layout-container-miniwidth !important;
+  }
+}

@@ -9,11 +9,11 @@
 
 
     /*服务依赖注入*/
-    loginService.$inject = ['toolUtil', '$state', '$timeout', 'testService'];
+    loginService.$inject = ['toolUtil', '$state', '$timeout', 'appService','testService'];
 
 
     /*服务实现*/
-    function loginService(toolUtil, $state, $timeout, testService) {
+    function loginService(toolUtil, $state, $timeout,appService, testService) {
         var unique_key = toolUtil.getSystemUniqueKey()/*获取凭证*/,
             basedomain = toolUtil.getSystemDomain()/*获取请求域名*/,
             cache = toolUtil.getParams(unique_key)/*获取缓存*/,
@@ -179,7 +179,8 @@
                                         /*执行初始化导航*/
                                         if (config) {
                                             renderMenuData({
-                                                headeritem: config.login,
+                                                menu: config.menu,
+                                                viewmode:config.viewmode,
                                                 flag: true,
                                                 list: toolUtil.loadMainMenu(list['menu'])
                                             })
@@ -223,13 +224,19 @@
 
         /*直接获取数据源,flag:是否需要首页*/
         function renderMenuData(model) {
+            var tempmenu;
             if (model.list && model.list !== null) {
                 quickmenu = model.list;
                 if (model.flag) {
-                    model.headeritem.headeritem = quickmenu.slice(0);
-
+                    tempmenu=appService.calculateMenu(quickmenu.slice(0));
                 } else {
-                    model.headeritem.headeritem = quickmenu.slice(1);
+                    tempmenu=appService.calculateMenu(quickmenu.slice(1));
+                }
+                console.log(tempmenu);
+                if(tempmenu){
+                    model.menu.headeritem = tempmenu.mainmenu;
+                    model.menu.headersubitem = tempmenu.submenu;
+                    model.menu.isshow=tempmenu.subshow;
                 }
             } else {
                 quickmenu = [];
@@ -378,6 +385,8 @@
                 }, 0);
             }
         }
+
+
 
     }
 
