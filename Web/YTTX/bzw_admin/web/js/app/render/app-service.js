@@ -16,6 +16,7 @@
         var viewmode = 'default'/*视口类型*/,
             container = 1080,
             viewwidth = 1080 - 367/*视口宽度*/,
+            viewoffset = 0/*视口误差*/,
             viewside = 367/*logo + logout + padding*/,
             size = 18/*单个子宽度*/,
             gap = 60/*间距*/,
@@ -26,7 +27,7 @@
         /*对外接口*/
         this.calculateMenu = calculateMenu/*计算当前菜单的视口宽度*/;
         this.getViewWidth = getViewWidth/*获取视口宽度*/;
-        this.changeViewMode = changeViewMode()/*切换视口类型*/;
+        this.changeViewMode = changeViewMode/*切换视口类型*/;
 
 
         /*获取视口宽度*/
@@ -72,7 +73,6 @@
             if (count === 0 || (menu && flag)) {
                 menudata = menu.slice(0);
                 item = menu.length;
-                count = menu.join('').length;
             }
 
             /*过滤短量菜单*/
@@ -126,26 +126,28 @@
                 tempwidth = 0;
 
             /*初始化算*/
+            count = 0;
             for (i; i < item; i++) {
                 tempwidth += gap;
-                tempwidth = parseInt(tempwidth, 10);
+                tempwidth = parseInt(tempwidth, 10) - viewoffset;
                 if (tempwidth >= viewwidth) {
                     return {
                         subshow: true,
-                        mainmenu: menudata.slice(0, i - 1),
-                        submenu: menudata.slice(i - 1)
+                        mainmenu: menudata.slice(0, i + 1),
+                        submenu: menudata.slice(i + 1)
                     };
                 }
-                var main = menudata[i].length,
+                var main = menudata[i]['name'].length,
                     j = 0;
+                count += main;
                 for (j; j < main; j++) {
-                    tempwidth = tempwidth + (size * j);
+                    tempwidth += size * (j + 1);
                     tempwidth = parseInt(tempwidth, 10);
                     if (tempwidth >= viewwidth) {
                         return {
                             subshow: true,
-                            mainmenu: menudata.slice(0, i - 1),
-                            submenu: menudata.slice(i - 1)
+                            mainmenu: menudata.slice(0, i + 1),
+                            submenu: menudata.slice(i + 1)
                         };
                     }
                 }

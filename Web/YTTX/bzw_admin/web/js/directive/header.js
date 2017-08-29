@@ -7,6 +7,7 @@
     angular
         .module('view', [])/*公共指令集名称*/
         .directive('viewHeaderMenu', viewHeaderMenu)/*头部导航栏指令*/
+        .directive('viewHeaderDropbtn', viewHeaderDropbtn)/*头部导航栏指令*/
         .directive('viewHeaderLogout', viewHeaderLogout)/*头部退出*/;
 
 
@@ -31,6 +32,33 @@
         };
     }
 
+
+    /*头部下拉菜单*/
+    /*
+     * demo:
+     * <view-header-dropbtn></view-header-dropbtn>
+     * */
+    function viewHeaderDropbtn() {
+        return {
+            replace: true,
+            restrict: 'EA',
+            scope: {
+                active: '=active'
+            },
+            template: '<div class="menu-dropbtn header-menu-dropbtn"></div>',
+            link: headerDropbtn
+        };
+        
+        /*link实现*/
+        function headerDropbtn(scope, element, attrs) {
+            angular.element(element).bind('click', function () {
+                scope.$apply(function () {
+                    scope.active=!scope.active;
+                });
+            });
+        }
+    }
+
     /*头部退出*/
     /*
      * demo:
@@ -38,7 +66,7 @@
      * */
     function viewHeaderLogout($interval, loginService) {
         return {
-            replace: false,
+            replace: true,
             restrict: 'EA',
             scope: {
                 action: '&'

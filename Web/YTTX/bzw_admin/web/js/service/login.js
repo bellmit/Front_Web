@@ -232,7 +232,6 @@
                 } else {
                     tempmenu=appService.calculateMenu(quickmenu.slice(1));
                 }
-                console.log(tempmenu);
                 if(tempmenu){
                     model.menu.headeritem = tempmenu.mainmenu;
                     model.menu.headersubitem = tempmenu.submenu;

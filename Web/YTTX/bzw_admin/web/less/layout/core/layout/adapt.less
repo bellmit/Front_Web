@@ -1,47 +1,73 @@
 /*适配扩展*/
 
-
 /*默认屏幕*/
-.struct-layout-default{
+.struct-layout-default {
   /*主体*/
-  .struct-layout-container{
-    width:@layout-container-width !important;
-    margin:0 auto;
+  .struct-layout-container {
+    width: @layout-container-width !important;
+    padding: @layout-containergap-top 0 @layout-containergap-bottom 0;
+    margin: 0 auto;
   }
 
   /*头部*/
-  .struct-layout-header{
-    height:@layout-header-height + @layout-header-shadow;
-    min-width:@layout-container-width;
+  .struct-layout-header {
+    height: @layout-header-height + @layout-header-shadow;
+    min-width: @layout-container-width;
     /*平铺背景色*/
-    .header-bg{
-      min-width:@layout-container-width;
+    .header-bg {
+      min-width: @layout-container-width;
       .box-shadow-base(0 0 @layout-header-shadow - 2 @layout-header-shadow - 4 @color-gray8);
     }
     /*导航区域*/
-    .header-content{
-      margin:0 auto;
-      width:@layout-container-width;
+    .header-content {
+      margin: 0 auto;
+      width: @layout-container-width;
     }
   }
-}
 
-
-/*宽屏*/
-.struct-layout-auto{
-  /*主体*/
-  .struct-layout-container{
-    width:100%;
-    min-width:@layout-container-width !important;
+  /*主显示区*/
+  .struct-layout-main {
+    width: @layout-container-width - @layout-side-width;
   }
 }
 
+/*宽屏*/
+.struct-layout-auto {
+  /*主体*/
+  .struct-layout-container {
+    padding: @layout-header-height 0 @layout-containergap-bottom 0;
+    width: 100%;
+    min-width: @layout-container-width !important;
+  }
+  /*头部*/
+  .struct-layout-header {
+    height: @layout-header-height + @layout-header-shadow;
+    min-width: @layout-container-width;
+    /*平铺背景色*/
+    .header-bg {
+      min-width: @layout-container-width;
+    }
+    /*导航区域*/
+    .header-content {
+      margin: 0;
+      width: 100%;
+      min-width: @layout-container-width;
+    }
+  }
+
+  /*主显示区*/
+  .struct-layout-main {
+    width: 100%;
+    margin-left: -@layout-side-width;
+    padding-left: @layout-contentgap-left + @layout-side-width;
+  }
+}
 
 /*小屏*/
-.struct-layout-mini{
+.struct-layout-mini {
   /*主体*/
-  .struct-layout-container{
-    width:100%;
-    max-width:@layout-container-miniwidth !important;
+  .struct-layout-container {
+    width: 100%;
+    max-width: @layout-container-miniwidth !important;
   }
 }

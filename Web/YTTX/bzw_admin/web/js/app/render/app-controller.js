@@ -23,7 +23,8 @@ angular.module('app')
         this.menu={
             headeritem: []/*主导航显示区*/,
             headersubitem: []/*主导航隐藏*/,
-            isshow:false/*是否显示子导航*/
+            isshow:false/*是否显示子导航*/,
+            active:false/*是否是激活状态*/
         };
 
 
@@ -83,6 +84,10 @@ angular.module('app')
         /**/
         $scope.$on('changeViewMode', function (event, value) {
             self.viewmode = value;
+            var tempmenu=appService.changeViewMode(value);
+            self.menu.headeritem = tempmenu.mainmenu;
+            self.menu.headersubitem = tempmenu.submenu;
+            self.menu.isshow = tempmenu.subshow;
         });
 
 

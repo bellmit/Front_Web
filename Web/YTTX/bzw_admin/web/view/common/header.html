@@ -4,9 +4,9 @@
 		<div class="header-logo"></div>
 		<div class="header-menu-wrap">
 			<ul class="header-menu-item header-menu-show" data-view-header-menu data-header="app_ctrl.menu.headeritem"></ul>
-			<ul class="header-menu-item header-menu-dropdown" data-view-header-menu data-header="app_ctrl.menu.headersubitem"></ul>
-			<div></div>
+			<ul class="header-menu-item header-menu-dropdown" data-view-header-menu data-header="app_ctrl.menu.headersubitem" ng-class="{'g-d-hide':!app_ctrl.menu.isshow,'g-d-hidei':!app_ctrl.menu.active}"></ul>
+			<view-header-dropbtn ng-class="{'menu-dropbtn-active':app_ctrl.menu.active,'g-d-hidei':!app_ctrl.menu.isshow}" data-active="app_ctrl.menu.active"></view-header-dropbtn>
 		</div>
 
-		<view-header-logout data-time="app_ctrl.app_config.loginouttime" data-action="app_ctrl.loginOut()" class="header-outwrap"></view-header-logout>
+		<view-header-logout data-time="app_ctrl.app_config.loginouttime" data-action="app_ctrl.loginOut()"></view-header-logout>
 	</div>
