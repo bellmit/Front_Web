@@ -81,7 +81,14 @@
                 'invoice': 6/*发货*/,
                 'purchase': 7/*采购*/,
                 'warehouse': 8/*仓库*/,
-                'equity': 9/*股权投资人*/
+                'equity': 9/*股权投资人*/,
+                'profit':10/*分润管理，利润管理*/,
+                'provider':11/*供应商管理*/,
+                'admin':12/*管理员*/,
+                'business':13/*商家管理*/,
+                'goods':14/*商品管理*/,
+                'statistics':15/*统计管理*/,
+                'user':16/*用户管理*/
             },
             i = 0,
             item;

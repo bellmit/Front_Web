@@ -1,9 +1,14 @@
-	<div class="struct-layout-container struct-layout-default" ng-controller="IndexController as index_ctrl">
+	<div class="struct-layout-container" ng-controller="IndexController as index_ctrl">
 		<!--主体-->
 		<div data-view-quick-link class="struct-layout-main"  data-action="index_ctrl.getQuickItem()"></div>
 
 		<!--侧边栏-->
 		<div class="struct-layout-side">
+			<ul class="sub-btn-wrap sub-item-group2">
+				<li ng-click="index_ctrl.changeViewMode('default')"><span>切换视图1</span></li>
+				<li ng-click="index_ctrl.changeViewMode('auto')"><span>切换视图2</span></li>
+			</ul>
+
 			<!--logo组件--(指令)-->
 			<view-side-logo></view-side-logo>
 

@@ -2,6 +2,11 @@
 	<div class="header-bg"></div>
 	<div class="header-content">
 		<div class="header-logo"></div>
-		<ul class="header-menu" data-view-header-menu="" data-header="app_ctrl.login.headeritem"></ul>
-		<div data-time="app_ctrl.app_config.loginouttime" data-action="app_ctrl.loginOut()" data-view-header-logout=""></div>
+		<div class="header-menu-wrap">
+			<ul class="header-menu-item header-menu-show" data-view-header-menu data-header="app_ctrl.login.headeritem"></ul>
+			<ul class="header-menu-item header-menu-dropdown" data-view-header-menu data-header="app_ctrl.login.headersubitem"></ul>
+			<div></div>
+		</div>
+
+		<view-header-logout data-time="app_ctrl.app_config.loginouttime" data-action="app_ctrl.loginOut()" class="header-outwrap"></view-header-logout>
 	</div>

@@ -18,7 +18,7 @@
     /*头部导航栏指令*/
     /*
      * demo:
-     * <ul class="header-menu" data-view-header-menu=""></ul>
+     * <ul class="header-menu-item header-menu-show" data-view-header-menu=""></ul>
      * */
     function viewHeaderMenu() {
         return {
@@ -34,7 +34,7 @@
     /*头部退出*/
     /*
      * demo:
-     * <div data-view-header-logout=""></div>
+     * <view-header-logout class="header-outwrap"></view-header-logout>
      * */
     function viewHeaderLogout($interval, loginService) {
         return {
