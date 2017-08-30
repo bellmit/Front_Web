@@ -23,6 +23,16 @@
       margin: 0 auto;
       width: @layout-container-width;
     }
+    /*菜单条*/
+    .header-menu-item {
+      /*高亮*/
+      .menuactive {
+        border-bottom: 4px solid @color-white;
+        &:hover {
+          border-bottom: 4px solid @color-white;
+        }
+      }
+    }
   }
 
   /*主显示区*/
@@ -52,6 +62,16 @@
       margin: 0;
       width: 100%;
       min-width: @layout-container-width;
+    }
+    /*菜单条*/
+    .header-menu-item {
+      /*高亮*/
+      .menuactive {
+        border-bottom: 4px solid darken(@color-red1, 10%);
+        &:hover {
+          border-bottom: 4px solid darken(@color-red1, 10%);
+        }
+      }
     }
   }
 

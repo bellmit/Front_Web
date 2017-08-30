@@ -645,7 +645,7 @@
 			if(value===''){
 				return true;
 			}
-			return /^(13[0-9]|15[012356789]|18[0-9]|14[57]|170)[0-9]{8}$/.test(value)?true:false;
+			return /^(13[0-9]|14[579]|15[012356789]|16[6]|17[035678]|18[0-9]|19[89])[0-9]{8}$/.test(value)?true:false;
 		};
 		/*是否是合法手机号*/
 		tools.isTelePhone=function(str,type){

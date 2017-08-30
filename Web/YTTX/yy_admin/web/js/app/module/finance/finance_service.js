@@ -1592,7 +1592,7 @@ angular.module('app')
                             'list|2-50': [{
                                 "id": /[0-9]{1,2}/,
                                 "merchantName": /[0-9a-zA-Z]{2,10}/,
-                                "merchantPhone": /(^(13[0-9]|15[012356789]|18[0-9]|14[57]|170)[0-9]{8}$){1}/,
+                                "merchantPhone": /(^(13[0-9]|14[579]|15[012356789]|16[6]|17[035678]|18[0-9]|19[89])[0-9]{8}$){1}/,
                                 "orderTime": moment().format('YYYY-MM-DD HH:mm:ss'),
                                 "payTime": moment().format('YYYY-MM-DD HH:mm:ss'),
                                 "orderNumber": /[0-9a-zA-Z]{18}/,

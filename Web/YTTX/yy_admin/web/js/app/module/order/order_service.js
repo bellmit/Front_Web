@@ -646,7 +646,7 @@ angular.module('app')
                     'list|5-15': [{
                         "id": /[0-9]{1,2}/,
                         "merchantName": /(周一|杨二|张三|李四|王五|赵六|马七|朱八|陈九){1}/,
-                        "merchantPhone": /(^(13[0-9]|15[012356789]|18[0-9]|14[57]|170)[0-9]{8}$){1}/,
+                        "merchantPhone": /(^(13[0-9]|14[579]|15[012356789]|16[6]|17[035678]|18[0-9]|19[89])[0-9]{8}$){1}/,
                         "orderTime": moment().format('YYYY-MM-DD HH:mm:ss'),
                         "orderNumber": /[0-9a-zA-Z]{18}/,
                         "orderState": /(0|1|6|9|20|21|[2-5]){1}/,
@@ -667,7 +667,7 @@ angular.module('app')
                         'order|1': [{
                             "id": /[0-9]{1,2}/,
                             "merchantName": /[0-9a-zA-Z]{2,10}/,
-                            "merchantPhone": /(^(13[0-9]|15[012356789]|18[0-9]|14[57]|170)[0-9]{8}$){1}/,
+                            "merchantPhone": /(^(13[0-9]|14[579]|15[012356789]|16[6]|17[035678]|18[0-9]|19[89])[0-9]{8}$){1}/,
                             "orderTime": moment().format('YYYY-MM-DD HH:mm:ss'),
                             "orderNumber": /[0-9a-zA-Z]{18}/,
                             "orderState": /(0|1|6|9|20|21|[2-5]){1}/,

@@ -16,15 +16,37 @@ angular.module('app')
         /*模型--系统信息*/
         this.info = toolUtil.getSystemInfo();
 
+        /*模型--个人信息*/
+        this.message = {
+            isshow: true,
+            active: true,
+            login: [{
+                    name: '张三',
+                    id: '1'
+                },
+                {
+                    name: '李四',
+                    id: '2'
+                },
+                {
+                    name: '王五',
+                    id: '3'
+                },
+                {
+                    name: '赵六',
+                    id: '4'
+                }]
+        };
+
         /*模型--系统信息*/
-        this.viewmode='default'/*视口类型*/;
+        this.viewmode = 'default'/*视口类型*/;
 
         /*模型--菜单*/
-        this.menu={
+        this.menu = {
             headeritem: []/*主导航显示区*/,
             headersubitem: []/*主导航隐藏*/,
-            isshow:false/*是否显示子导航*/,
-            active:false/*是否是激活状态*/
+            isshow: false/*是否显示子导航*/,
+            active: false/*是否是激活状态*/
         };
 
 
@@ -40,7 +62,7 @@ angular.module('app')
         /*获取菜单数组*/
         if (self.login.islogin) {
             (function () {
-                var tempmenu=appService.calculateMenu(loginService.getMenuData(true));
+                var tempmenu = appService.calculateMenu(loginService.getMenuData(true));
                 self.menu.headeritem = tempmenu.mainmenu;
                 self.menu.headersubitem = tempmenu.submenu;
                 self.menu.isshow = tempmenu.subshow;
@@ -52,8 +74,9 @@ angular.module('app')
             /*校验成功*/
             loginService.reqAction({
                 login: self.login,
-                menu:self.menu,
-                viewmode:self.viewmode,
+                menu: self.menu,
+                message: self.message,
+                viewmode: self.viewmode,
                 app_config: self.app_config,
                 debug: debug
             });
@@ -69,22 +92,22 @@ angular.module('app')
         /*退出*/
         this.loginOut = function () {
             self.login = {
-                islogin : false,
+                islogin: false,
                 username: '',
                 password: '',
                 identifyingCode: '',
-                loginerror:''
+                loginerror: ''
             };
-            self.menu.headeritem=[];
+            self.menu.headeritem = [];
             self.menu.headersubitem = [];
-            self.menu.isshow=false;
+            self.menu.isshow = false;
             loginService.loginOut(true);
         };
 
         /**/
         $scope.$on('changeViewMode', function (event, value) {
             self.viewmode = value;
-            var tempmenu=appService.changeViewMode(value);
+            var tempmenu = appService.changeViewMode(value);
             self.menu.headeritem = tempmenu.mainmenu;
             self.menu.headersubitem = tempmenu.submenu;
             self.menu.isshow = tempmenu.subshow;

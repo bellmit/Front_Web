@@ -7,6 +7,7 @@
     angular
         .module('view', [])/*公共指令集名称*/
         .directive('viewHeaderMenu', viewHeaderMenu)/*头部导航栏指令*/
+        .directive('viewHeaderMessage', viewHeaderMessage)/*头部信息栏指令*/
         .directive('viewHeaderDropbtn', viewHeaderDropbtn)/*头部导航栏指令*/
         .directive('viewHeaderLogout', viewHeaderLogout)/*头部退出*/;
 
@@ -33,7 +34,45 @@
     }
 
 
-    /*头部下拉菜单*/
+    /*指令实现*/
+    /*头部信息栏指令*/
+    /*
+     * demo:
+     * <ul class="header-menu-item header-menu-dropdown" data-view-header-message=""></ul>
+     * */
+    function viewHeaderMessage() {
+        return {
+            replace: false,
+            restrict: 'EA',
+            scope: {
+                message: '=message',
+                action:'&action'
+            },
+            template: '<li ng-repeat="item in message" data-id="{{item.id}}" title="">{{item.name}}</li>',
+            link: headerMessage
+        };
+
+
+        /*link实现*/
+        function headerMessage(scope, element, attrs) {
+            /*绑定事件*/
+            angular.element(element).bind('click', function ($event) {
+                var target = $event.target,
+                    node = target.nodeName.toLowerCase(),
+                    $li;
+                if (node === 'li') {
+                    $li = angular.element(target);
+                } else {
+                    return false;
+                }
+                scope.action($li);
+            });
+        }
+    }
+
+
+
+    /*头部下拉菜单按钮*/
     /*
      * demo:
      * <view-header-dropbtn></view-header-dropbtn>
