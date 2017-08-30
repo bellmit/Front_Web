@@ -19,11 +19,5 @@ angular.module('app')
             return  loginService.getMenuData();
         };
 
-
-        /**/
-        this.changeViewMode=function (type) {
-            $scope.$emit("changeViewMode", type);
-        };
-
         /**/
     }]);

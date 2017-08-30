@@ -8,6 +8,7 @@
         .module('view', [])/*公共指令集名称*/
         .directive('viewHeaderMenu', viewHeaderMenu)/*头部导航栏指令*/
         .directive('viewHeaderMessage', viewHeaderMessage)/*头部信息栏指令*/
+        .directive('viewHeaderViewmode', viewHeaderViewmode)/*头部切好模式指令*/
         .directive('viewHeaderDropbtn', viewHeaderDropbtn)/*头部导航栏指令*/
         .directive('viewHeaderLogout', viewHeaderLogout)/*头部退出*/;
 
@@ -34,7 +35,6 @@
     }
 
 
-    /*指令实现*/
     /*头部信息栏指令*/
     /*
      * demo:
@@ -48,7 +48,7 @@
                 message: '=message',
                 action:'&action'
             },
-            template: '<li ng-repeat="item in message" data-id="{{item.id}}">{{item.name}}:<span>{{item.value}}</span></li>',
+            template: '<li ng-repeat="item in message" data-id="{{item.id}}">{{item.name}}:&nbsp;&nbsp;{{item.value}}</li>',
             link: headerMessage
         };
 
@@ -66,6 +66,45 @@
                     return false;
                 }
                 scope.action($li);
+            });
+        }
+    }
+
+
+    /*头部切换模式指令*/
+    /*
+     * demo:
+     * <ul class="header-menu-item header-menu-dropdown" data-view-header-viewmode=""></ul>
+     * */
+    function viewHeaderViewmode() {
+        return {
+            replace: false,
+            restrict: 'EA',
+            scope: {
+                list: '=list',
+                action:'&action'
+            },
+            template: '<li ng-repeat="item in list"><span class="header-viewmode" data-value="{{item.value}}">{{item.name}}</span></li>',
+            link: headerViewmode
+        };
+
+
+        /*link实现*/
+        function headerViewmode(scope, element, attrs) {
+            /*绑定事件*/
+            angular.element(element).bind('click', function ($event) {
+                var target = $event.target,
+                    node = target.nodeName.toLowerCase(),
+                    $span,
+                    value;
+                if (node === 'span') {
+                    $span = angular.element(target);
+                    value=$span.attr('data-value');
+                    console.log('aaa',value);
+                    scope.action.call(null);
+                } else {
+                    return false;
+                }
             });
         }
     }

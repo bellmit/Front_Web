@@ -24,14 +24,14 @@ angular.module('app')
         };
 
         /*模型--视口切换*/
-        this.viewmode={
-            value:'default',
-            list:[{
-                name:'默认',
-                value:'default'
-            },{
-                name:'宽屏',
-                value:'auto'
+        this.viewmode = {
+            value: 'default',
+            list: [{
+                name: '默认',
+                value: 'default'
+            }, {
+                name: '宽屏',
+                value: 'auto'
             }]
         };
 
@@ -112,13 +112,15 @@ angular.module('app')
             loginService.loginOut(true);
         };
 
+
         /*绑定切换视图事件*/
-        $scope.$on('changeViewMode', function (event, value) {
-            self.viewmode = value;
+        this.changeVM = function () {
+            console.log('bbb',value);
+             /* self.viewmode.value = value;
             appService.renderMenu(self.menu, function () {
                 return appService.changeViewMode(value);
-            });
-        });
+            });*/
+        };
 
 
     }]);
