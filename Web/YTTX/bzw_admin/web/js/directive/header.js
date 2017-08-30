@@ -48,7 +48,7 @@
                 message: '=message',
                 action:'&action'
             },
-            template: '<li ng-repeat="item in message" data-id="{{item.id}}" title="">{{item.name}}</li>',
+            template: '<li ng-repeat="item in message" data-id="{{item.id}}">{{item.name}}:<span>{{item.value}}</span></li>',
             link: headerMessage
         };
 
@@ -84,7 +84,7 @@
             scope: {
                 active: '=active'
             },
-            template: '<div class="menu-dropbtn header-menu-dropbtn"></div>',
+            template: '<div class="menu-dropbtn"></div>',
             link: headerDropbtn
         };
         

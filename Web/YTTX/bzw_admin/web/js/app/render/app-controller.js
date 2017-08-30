@@ -18,28 +18,22 @@ angular.module('app')
 
         /*模型--个人信息*/
         this.message = {
-            isshow: true,
-            active: true,
-            login: [{
-                    name: '张三',
-                    id: '1'
-                },
-                {
-                    name: '李四',
-                    id: '2'
-                },
-                {
-                    name: '王五',
-                    id: '3'
-                },
-                {
-                    name: '赵六',
-                    id: '4'
-                }]
+            isshow: false,
+            active: false,
+            login: []
         };
 
-        /*模型--系统信息*/
-        this.viewmode = 'default'/*视口类型*/;
+        /*模型--视口切换*/
+        this.viewmode={
+            value:'default',
+            list:[{
+                name:'默认',
+                value:'default'
+            },{
+                name:'宽屏',
+                value:'auto'
+            }]
+        };
 
         /*模型--菜单*/
         this.menu = {
@@ -61,12 +55,22 @@ angular.module('app')
 
         /*获取菜单数组*/
         if (self.login.islogin) {
-            (function () {
-                var tempmenu = appService.calculateMenu(loginService.getMenuData(true));
-                self.menu.headeritem = tempmenu.mainmenu;
-                self.menu.headersubitem = tempmenu.submenu;
-                self.menu.isshow = tempmenu.subshow;
-            }());
+            var cache = loginService.getCache();
+            /*渲染菜单*/
+            appService.renderMenu(self.menu, function () {
+                return appService.calculateMenu(loginService.getMenuData(true));
+            });
+            /*渲染个人信息*/
+            appService.getLoginMessage(self.message, function () {
+                var tempcache = cache.loginMap;
+                return [{
+                    name: '登录时间',
+                    value: tempcache.datetime
+                }, {
+                    name: '用户名',
+                    value: tempcache.username
+                }];
+            });
         }
 
         /*绑定提交*/
@@ -98,19 +102,22 @@ angular.module('app')
                 identifyingCode: '',
                 loginerror: ''
             };
+            /*重置菜单信息*/
             self.menu.headeritem = [];
             self.menu.headersubitem = [];
             self.menu.isshow = false;
+            /*重置个人信息*/
+            self.message.isshow = false;
+            self.message.login = [];
             loginService.loginOut(true);
         };
 
-        /**/
+        /*绑定切换视图事件*/
         $scope.$on('changeViewMode', function (event, value) {
             self.viewmode = value;
-            var tempmenu = appService.changeViewMode(value);
-            self.menu.headeritem = tempmenu.mainmenu;
-            self.menu.headersubitem = tempmenu.submenu;
-            self.menu.isshow = tempmenu.subshow;
+            appService.renderMenu(self.menu, function () {
+                return appService.changeViewMode(value);
+            });
         });
 
 

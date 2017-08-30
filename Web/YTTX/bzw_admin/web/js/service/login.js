@@ -9,11 +9,11 @@
 
 
     /*服务依赖注入*/
-    loginService.$inject = ['toolUtil', '$state', '$timeout', 'appService','testService'];
+    loginService.$inject = ['toolUtil', '$state', '$timeout', 'appService', 'testService'];
 
 
     /*服务实现*/
-    function loginService(toolUtil, $state, $timeout,appService, testService) {
+    function loginService(toolUtil, $state, $timeout, appService, testService) {
         var unique_key = toolUtil.getSystemUniqueKey()/*获取凭证*/,
             basedomain = toolUtil.getSystemDomain()/*获取请求域名*/,
             cache = toolUtil.getParams(unique_key)/*获取缓存*/,
@@ -99,8 +99,7 @@
                                 type: 'show',
                                 model: model.app_config
                             });
-                            /*设置缓存*/
-                            setCache({
+                            var tempcache = {
                                 'isLogin': true,
                                 'datetime': moment().format('YYYY-MM-DD|HH:mm:ss'),
                                 'reqdomain': basedomain,
@@ -110,6 +109,19 @@
                                     'token': encodeURIComponent(result.token),
                                     'organizationId': encodeURIComponent(result.organizationId)
                                 }
+                            };
+                            /*设置缓存*/
+                            setCache(tempcache);
+                            /*设置个人信息*/
+                            appService.getLoginMessage(model.message, function () {
+                                var temparr = [{
+                                    name: '登录时间：',
+                                    value: tempcache.datetime
+                                }, {
+                                    name: '用户名：',
+                                    value: tempcache.username
+                                }];
+                                return temparr;
                             });
                             /*加载菜单*/
                             loadMenuData(model, function () {
@@ -119,6 +131,10 @@
                                     type: 'hide',
                                     model: model.app_config
                                 });
+                                /*重置登录信息*/
+                                model.login.username = '';
+                                model.login.password = '';
+                                model.login.identifyingCode = '';
                                 model.login.islogin = true;
                                 model.login.loginerror = '';
                             });
@@ -128,6 +144,10 @@
                     }
                 },
                 function (resp) {
+                    /*重置登录信息*/
+                    model.login.username = '';
+                    model.login.password = '';
+                    model.login.identifyingCode = '';
                     model.login.islogin = false;
                     var message = resp.data.message;
                     if (typeof message !== 'undefined' && message !== '') {
@@ -180,7 +200,7 @@
                                         if (config) {
                                             renderMenuData({
                                                 menu: config.menu,
-                                                viewmode:config.viewmode,
+                                                viewmode: config.viewmode,
                                                 flag: true,
                                                 list: toolUtil.loadMainMenu(list['menu'])
                                             })
@@ -224,19 +244,18 @@
 
         /*直接获取数据源,flag:是否需要首页*/
         function renderMenuData(model) {
-            var tempmenu;
+
             if (model.list && model.list !== null) {
                 quickmenu = model.list;
-                if (model.flag) {
-                    tempmenu=appService.calculateMenu(quickmenu.slice(0));
-                } else {
-                    tempmenu=appService.calculateMenu(quickmenu.slice(1));
-                }
-                if(tempmenu){
-                    model.menu.headeritem = tempmenu.mainmenu;
-                    model.menu.headersubitem = tempmenu.submenu;
-                    model.menu.isshow=tempmenu.subshow;
-                }
+                appService.renderMenu(model.menu, function () {
+                    var tempmenu;
+                    if (model.flag) {
+                        tempmenu = quickmenu.slice(0);
+                    } else {
+                        tempmenu = quickmenu.slice(1);
+                    }
+                    return appService.calculateMenu(tempmenu);
+                });
             } else {
                 quickmenu = [];
             }
@@ -288,7 +307,7 @@
                 }());
             } else {
                 var xhr = new XMLHttpRequest(),
-                    url=toolUtil.adaptReqUrl(config);
+                    url = toolUtil.adaptReqUrl(config);
                 xhr.open("post", url, true);
                 xhr.responseType = "blob";
                 xhr.onreadystatechange = function () {
@@ -326,20 +345,20 @@
                     cacheMap: {
                         menuload: false,
                         powerload: false,
-                        menusoruce:false
+                        menusoruce: false
                     }/*缓存加载情况记录*/,
                     routeMap: {
                         prev: '',
                         current: '',
-                        history:[]
+                        history: []
                     }/*路由缓存*/,
                     moduleMap: {}/*模块缓存*/,
                     menuMap: {}/*菜单缓存*/,
                     powerMap: {}/*权限缓存*/,
                     loginMap: data/*登录认证缓存*/,
                     settingMap: {}/*设置缓存*/,
-                    menuSourceMap:{}/*解析后的菜单源码缓存，用于菜单加载时直接应用，而不需要解析*/,
-                    tempMap:{}/*临时缓存*/
+                    menuSourceMap: {}/*解析后的菜单源码缓存，用于菜单加载时直接应用，而不需要解析*/,
+                    tempMap: {}/*临时缓存*/
                 };
             }
             toolUtil.setParams(unique_key, cache);
@@ -384,7 +403,6 @@
                 }, 0);
             }
         }
-
 
 
     }

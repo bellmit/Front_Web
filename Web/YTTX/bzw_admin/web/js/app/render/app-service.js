@@ -28,6 +28,8 @@
         this.calculateMenu = calculateMenu/*计算当前菜单的视口宽度*/;
         this.getViewWidth = getViewWidth/*获取视口宽度*/;
         this.changeViewMode = changeViewMode/*切换视口类型*/;
+        this.renderMenu = renderMenu/*菜单渲染*/;
+        this.getLoginMessage=getLoginMessage/*获取登录信息*/;
 
 
         /*获取视口宽度*/
@@ -47,7 +49,6 @@
             }
             viewwidth = container - viewside;
         }
-
 
         /*计算当前菜单的视口宽度,menu:菜单数组，flag:是否获取新缓存*/
         function calculateMenu(menu, flag) {
@@ -159,7 +160,6 @@
             };
         }
 
-
         /*切换视口类型*/
         function changeViewMode(value, fn) {
             viewmode = value;
@@ -170,6 +170,32 @@
             }
         }
 
+        /*菜单渲染*/
+        function renderMenu(model,fn) {
+            if(!model){
+                return false;
+            }
+            var tempmenu =fn.call(null);
+            model.headeritem = tempmenu.mainmenu;
+            model.headersubitem = tempmenu.submenu;
+            model.isshow = tempmenu.subshow;
+        }
+        
+        
+        /*获取登录信息*/
+        function getLoginMessage(model,fn) {
+            if(!model){
+                return false;
+            }
+            var message=fn.call(null);
+            if(message){
+                model.isshow=true;
+                model.login=message;
+            }else{
+                model.isshow=false;
+                model.login=[];
+            }
+        }
     }
 
 

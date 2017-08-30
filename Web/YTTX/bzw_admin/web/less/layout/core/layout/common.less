@@ -140,6 +140,82 @@
   background-position: -20px -20px;
 }
 
+/*自适应组合*/
+.admin-item-group,
+.admin-item-group >li{
+  .box-sizing-base();
+}
+.admin-item-group{
+  overflow: hidden;
+  font-size: 0;
+  >li{
+    text-align: center;
+    .user-select-base();
+    display: inline-block;
+    span {
+      display: inline-block;
+      padding: 0 10px;
+      font-size: @font-size-base;
+      cursor: pointer;
+      .transition(all ease-in .1s .01s);
+      i {
+        padding: 0 3px;
+        margin: 0 2px;
+      }
+    }
+  }
+}
+.admin-item-group1{
+  > li {
+    width:100% !important;
+  }
+}
+.admin-item-group2 {
+  > li {
+    width:50% !important;
+  }
+}
+.admin-item-group3 {
+  > li {
+    width:33.33333% !important;
+  }
+}
+.admin-item-group4 {
+  > li {
+    width:25% !important;
+  }
+}
+.admin-item-group5 {
+  > li {
+    width:20% !important;
+  }
+}
+.admin-item-group6 {
+  > li {
+    width:16.66666% !important;
+  }
+}
+.admin-item-group7 {
+  > li {
+    width:14.285% !important;
+  }
+}
+.admin-item-group8 {
+  > li {
+    width:12.5% !important;
+  }
+}
+.admin-item-group9 {
+  > li {
+    width:11.11111% !important;
+  }
+}
+.admin-item-group10 {
+  > li {
+    width:10% !important;
+  }
+}
+
 /*迷你图标*/
 .mini-icon {
   vertical-align: middle;
