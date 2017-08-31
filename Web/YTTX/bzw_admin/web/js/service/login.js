@@ -115,11 +115,11 @@
                             /*设置个人信息*/
                             appService.getLoginMessage(model.message, function () {
                                 var temparr = [{
-                                    name: '登录时间：',
-                                    value: tempcache.datetime
-                                }, {
                                     name: '用户名：',
                                     value: tempcache.username
+                                },{
+                                    name: '登录时间：',
+                                    value: tempcache.datetime
                                 }];
                                 return temparr;
                             });
@@ -172,7 +172,9 @@
                     .then(function (resp) {
                             /*测试菜单*/
                             if (config.debug) {
-                                var resp = testService.testMenu();
+                                var resp = config.create?testService.testMenu({
+                                    create:true
+                                }):testService.testMenu();
                             }
                             var data = resp.data,
                                 status = parseInt(resp.status, 10);
@@ -244,7 +246,6 @@
 
         /*直接获取数据源,flag:是否需要首页*/
         function renderMenuData(model) {
-
             if (model.list && model.list !== null) {
                 quickmenu = model.list;
                 appService.renderMenu(model.menu, function () {

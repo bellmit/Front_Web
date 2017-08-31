@@ -1077,11 +1077,17 @@
                     return null;
                 }
                 var menu_map = {
-                        'yttx-organization': 'organization',
-                        'yttx-order-manager': 'order',
-                        'yttx-invoice-manager': 'invoice',
-                        'yttx-purchase-manager': 'purchase',
-                        'yttx-warehouse-manager': 'warehouse'
+                        'yttx-admin': 'admin',
+                        'yttx-business': 'business',
+                        'yttx-provider': 'provider',
+                        'yttx-order': 'order',
+                        'yttx-goods': 'goods',
+                        'yttx-user': 'user',
+                        'yttx-warehouse':'warehouse',
+                        'yttx-finance':'finance',
+                        'yttx-profit':'profit',
+                        'yttx-statistics':'statistics',
+                        'yttx-setting':'setting'
                     },
                     list = [],
                     module = {},

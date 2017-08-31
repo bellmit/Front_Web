@@ -1,6 +1,15 @@
 	<div class="struct-layout-container" ng-controller="IndexController as index_ctrl">
 		<!--主体-->
-		<div data-view-quick-link class="struct-layout-main"  data-action="index_ctrl.getQuickItem()"></div>
+		<div class="struct-layout-main" >
+			<!--欢迎广告-->
+			<view-welcome-banner></view-welcome-banner>
+
+			<!--快捷方式-->
+			<view-quick-link data-action="index_ctrl.getQuickItem()"></view-quick-link>
+
+			<!--弹窗-->
+			<!--<view-modal-wrap data-setting="app_ctrl.modal1.setting"></view-modal-wrap>-->
+		</div>
 
 		<!--侧边栏-->
 		<div class="struct-layout-side">

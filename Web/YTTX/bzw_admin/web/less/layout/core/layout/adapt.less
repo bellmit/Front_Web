@@ -39,6 +39,15 @@
   .struct-layout-main {
     width: @layout-container-width - @layout-side-width;
   }
+
+  /*底部*/
+  .struct-layout-footer{
+    min-width:@layout-container-width;
+    .footer-content-wrap{
+      width:@layout-container-width;
+      margin:0 auto;
+    }
+  }
 }
 
 /*宽屏*/
@@ -80,6 +89,13 @@
     width: 100%;
     margin-left: -@layout-side-width;
     padding-left: @layout-contentgap-left + @layout-side-width;
+  }
+
+  .struct-layout-footer{
+    min-width:@layout-container-width;
+    .footer-content-wrap{
+      width:100%;
+    }
   }
 }
 

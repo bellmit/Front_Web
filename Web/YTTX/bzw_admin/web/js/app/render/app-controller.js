@@ -4,7 +4,8 @@
 angular.module('app')
     .controller('AppController', ['toolUtil', '$scope', 'loginService', 'appService', function (toolUtil, $scope, loginService, appService) {
         var self = this,
-            debug = true/*测试模式*/;
+            debug = true/*测试模式*/,
+            create=true/*是否生成新菜单*/;
 
         /*模型--基本配置*/
         this.app_config = {
@@ -27,11 +28,13 @@ angular.module('app')
         this.viewmode = {
             value: 'default',
             list: [{
-                name: '默认',
-                value: 'default'
+                name: '定宽',
+                value: 'default',
+                active:'header-viewmode-active'
             }, {
                 name: '宽屏',
-                value: 'auto'
+                value: 'auto',
+                active:''
             }]
         };
 
@@ -64,11 +67,11 @@ angular.module('app')
             appService.getLoginMessage(self.message, function () {
                 var tempcache = cache.loginMap;
                 return [{
-                    name: '登录时间',
-                    value: tempcache.datetime
-                }, {
                     name: '用户名',
                     value: tempcache.username
+                },{
+                    name: '登录时间',
+                    value: tempcache.datetime
                 }];
             });
         }
@@ -82,7 +85,8 @@ angular.module('app')
                 message: self.message,
                 viewmode: self.viewmode,
                 app_config: self.app_config,
-                debug: debug
+                debug: debug,
+                create:create
             });
         };
         /*获取验证码*/
@@ -106,6 +110,9 @@ angular.module('app')
             self.menu.headeritem = [];
             self.menu.headersubitem = [];
             self.menu.isshow = false;
+            /*重置模式*/
+            self.viewmode.value='default';
+            self.changeVM();
             /*重置个人信息*/
             self.message.isshow = false;
             self.message.login = [];
@@ -115,11 +122,9 @@ angular.module('app')
 
         /*绑定切换视图事件*/
         this.changeVM = function () {
-            console.log('bbb',value);
-             /* self.viewmode.value = value;
             appService.renderMenu(self.menu, function () {
-                return appService.changeViewMode(value);
-            });*/
+                return appService.changeViewMode(self.viewmode.value);
+            });
         };
 
 

@@ -15,7 +15,7 @@
 
     /*指令依赖注入*/
     viewHeaderLogout.$inject = ['$interval', 'loginService'];
-
+    viewHeaderViewmode.$inject=['$timeout'];
 
     /*指令实现*/
     /*头部导航栏指令*/
@@ -76,15 +76,17 @@
      * demo:
      * <ul class="header-menu-item header-menu-dropdown" data-view-header-viewmode=""></ul>
      * */
-    function viewHeaderViewmode() {
+    function viewHeaderViewmode($timeout) {
+        var vmtimer=null;
         return {
             replace: false,
             restrict: 'EA',
             scope: {
                 list: '=list',
+                viewmode:'=vmvalue',
                 action:'&action'
             },
-            template: '<li ng-repeat="item in list"><span class="header-viewmode" data-value="{{item.value}}">{{item.name}}</span></li>',
+            template: '<li class="header-viewmode" ng-repeat="item in list"><span class="{{item.active}}" data-value="{{item.value}}"><i></i>{{item.name}}</span></li>',
             link: headerViewmode
         };
 
@@ -100,10 +102,24 @@
                 if (node === 'span') {
                     $span = angular.element(target);
                     value=$span.attr('data-value');
-                    console.log('aaa',value);
-                    scope.action.call(null);
-                } else {
-                    return false;
+                    /*切换激活*/
+                    $span.addClass('header-viewmode-active').parent().siblings().find('span').removeClass('header-viewmode-active');
+                    /*绑定事件监听*/
+                    scope.$apply(function () {
+                        scope.viewmode=value;/*变更模型*/
+                        if(vmtimer!==null){
+                            $timeout.cancel(vmtimer);
+                            vmtimer=null;
+                        }
+                        /*延时处理切换视图*/
+                        vmtimer=$timeout(function () {
+                            scope.action()/*执行控制器操作*/;
+                            if(vmtimer!==null){
+                                $timeout.cancel(vmtimer);
+                                vmtimer=null;
+                            }
+                        },1);
+                    });
                 }
             });
         }
