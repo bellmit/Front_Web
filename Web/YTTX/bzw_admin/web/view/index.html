@@ -7,8 +7,14 @@
 			<!--快捷方式-->
 			<view-quick-link data-action="index_ctrl.getQuickItem()"></view-quick-link>
 
-			<!--弹窗-->
-			<!--<view-modal-wrap data-setting="app_ctrl.modal1.setting"></view-modal-wrap>-->
+
+			<!--查询区域-->
+			<div class="admin-action-item">
+				<!--查询-->
+				<div class="action-item-btn action-item-export g-w-percent5">
+					<span ng-click="index_ctrl.toggleModal()" class="btn btn-export g-br3 g-w-percent50 g-c-blue3">显示弹窗</span>
+				</div>
+			</div>
 		</div>
 
 		<!--侧边栏-->
@@ -19,4 +25,7 @@
 			<!--信息组件-->
 			<ul data-view-side-info class="sub-info-wrap" data-menuitem="index_ctrl.menuitem"></ul>
 		</div>
+
+		<!--弹窗-->
+		<view-modal-wrap data-setting="index_ctrl.modal"></view-modal-wrap>
 	</div>

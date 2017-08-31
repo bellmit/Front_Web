@@ -2,10 +2,10 @@
 
 /*控制器设置基本配置*/
 angular.module('app')
-    .controller('AppController', ['toolUtil', '$scope', 'loginService', 'appService', function (toolUtil, $scope, loginService, appService) {
+    .controller('AppController', ['toolUtil', 'loginService', 'appService', function (toolUtil, loginService, appService) {
         var self = this,
             debug = true/*测试模式*/,
-            create=true/*是否生成新菜单*/;
+            create = true/*是否生成新菜单*/;
 
         /*模型--基本配置*/
         this.app_config = {
@@ -16,6 +16,7 @@ angular.module('app')
 
         /*模型--系统信息*/
         this.info = toolUtil.getSystemInfo();
+        
 
         /*模型--个人信息*/
         this.message = {
@@ -30,11 +31,11 @@ angular.module('app')
             list: [{
                 name: '定宽',
                 value: 'default',
-                active:'header-viewmode-active'
+                active: 'header-viewmode-active'
             }, {
                 name: '宽屏',
                 value: 'auto',
-                active:''
+                active: ''
             }]
         };
 
@@ -69,7 +70,7 @@ angular.module('app')
                 return [{
                     name: '用户名',
                     value: tempcache.username
-                },{
+                }, {
                     name: '登录时间',
                     value: tempcache.datetime
                 }];
@@ -86,7 +87,7 @@ angular.module('app')
                 viewmode: self.viewmode,
                 app_config: self.app_config,
                 debug: debug,
-                create:create
+                create: create
             });
         };
         /*获取验证码*/
@@ -111,7 +112,7 @@ angular.module('app')
             self.menu.headersubitem = [];
             self.menu.isshow = false;
             /*重置模式*/
-            self.viewmode.value='default';
+            self.viewmode.value = 'default';
             self.changeVM();
             /*重置个人信息*/
             self.message.isshow = false;
