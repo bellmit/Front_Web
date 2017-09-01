@@ -2,7 +2,7 @@
 
 /*控制器设置基本配置*/
 angular.module('app')
-    .controller('AppController', ['toolUtil', 'loginService', 'appService', function (toolUtil, loginService, appService) {
+    .controller('AppController', ['toolUtil', '$scope', 'loginService', 'appService', function (toolUtil,$scope, loginService, appService) {
         var self = this,
             debug = true/*测试模式*/,
             create = true/*是否生成新菜单*/;
@@ -11,6 +11,14 @@ angular.module('app')
         this.app_config = {
             issupport: toolUtil.isSupport()/*是否兼容*/,
             isloading: 'g-d-hidei'/*加载组件初始化*/
+        };
+
+
+        /*模型--弹窗基本配置*/
+        this.modal={
+          config:{
+              width:'g-w-percent48'
+          }
         };
 
 
@@ -127,6 +135,17 @@ angular.module('app')
                 return appService.changeViewMode(self.viewmode.value);
             });
         };
+
+
+
+
+        /*绑定弹窗事件*/
+        $scope.$on('initModal',function (event,config) {
+            appService.toggleModal(config);
+        });
+        $scope.$on('toggleModal',function (event,config) {
+            appService.toggleModal(config);
+        });
 
 
     }]);

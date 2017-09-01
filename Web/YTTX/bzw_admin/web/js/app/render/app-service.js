@@ -13,6 +13,7 @@
 
     /*服务实现*/
     function appService() {
+        /*视口服务*/
         var viewmode = 'default'/*视口类型*/,
             container = 1080,
             viewwidth = 1080 - 367/*视口宽度*/,
@@ -24,15 +25,24 @@
             item = 0,
             menudata/*菜单缓存*/;
 
+
+        /*弹窗服务*/
+        var $model=null;
+
+
+
         /*对外接口*/
-        this.calculateMenu = calculateMenu/*计算当前菜单的视口宽度*/;
-        this.getViewWidth = getViewWidth/*获取视口宽度*/;
-        this.changeViewMode = changeViewMode/*切换视口类型*/;
-        this.renderMenu = renderMenu/*菜单渲染*/;
-        this.getLoginMessage=getLoginMessage/*获取登录信息*/;
+        this.calculateMenu = calculateMenu/*视口服务--计算当前菜单的视口宽度*/;
+        this.getViewWidth = getViewWidth/*视口服务--获取视口宽度*/;
+        this.changeViewMode = changeViewMode/*视口服务--切换视口类型*/;
+        this.renderMenu = renderMenu/*视口服务--菜单渲染*/;
+        this.getLoginMessage=getLoginMessage/*视口服务--获取登录信息*/;
+        
+        this.getModalWrap=getModalWrap/*弹窗服务--获取弹窗容器dom引用*/;
+        this.toggleModal=toggleModal/*弹窗服务--显示隐藏弹窗*/;
 
 
-        /*获取视口宽度*/
+        /*视口服务--获取视口宽度*/
         function getViewWidth() {
             if (viewmode === 'default') {
                 container = 1080;
@@ -49,8 +59,7 @@
             }
             viewwidth = container - viewside;
         }
-
-        /*计算当前菜单的视口宽度,menu:菜单数组，flag:是否获取新缓存*/
+        /*视口服务--计算当前菜单的视口宽度,menu:菜单数组，flag:是否获取新缓存*/
         function calculateMenu(menu, flag) {
             var ismenu = false;
             if (count === 0) {
@@ -159,8 +168,7 @@
                 submenu: []
             };
         }
-
-        /*切换视口类型*/
+        /*视口服务--切换视口类型*/
         function changeViewMode(value, fn) {
             viewmode = value;
             if (fn && typeof fn === 'function') {
@@ -169,8 +177,7 @@
                 return calculateMenu();
             }
         }
-
-        /*菜单渲染*/
+        /*视口服务--菜单渲染*/
         function renderMenu(model,fn) {
             if(!model){
                 return false;
@@ -180,9 +187,7 @@
             model.headersubitem = tempmenu.submenu;
             model.isshow = tempmenu.subshow;
         }
-        
-        
-        /*获取登录信息*/
+        /*视口服务--获取登录信息*/
         function getLoginMessage(model,fn) {
             if(!model){
                 return false;
@@ -194,6 +199,52 @@
             }else{
                 model.isshow=false;
                 model.login=[];
+            }
+        }
+
+
+        /*弹窗服务--获取弹窗容器dom引用*/
+        function getModalWrap() {
+            return $model!==null?$model:angular.element('#admin_modal_wrap');
+        }
+
+        /*弹窗服务--显示隐藏弹窗*/
+        function toggleModal(config, fn) {
+            var temp_timer = null;
+            if (config.display === 'show') {
+                if (typeof config.delay !== 'undefined') {
+                    temp_timer = setTimeout(function () {
+                        getModalWrap().modal('show', {backdrop: 'static'});
+                        clearTimeout(temp_timer);
+                        temp_timer = null;
+                    }, config.delay);
+                    if (fn && typeof fn === 'function') {
+                        fn.call(null);
+                    }
+                } else {
+                    getModalWrap().modal('show', {backdrop: 'static'});
+                    if (fn && typeof fn === 'function') {
+                        fn.call(null);
+                    }
+                }
+            } else if (config.display === 'hide') {
+                if (typeof config.delay !== 'undefined') {
+                    temp_timer = setTimeout(function () {
+                        getModalWrap().modal('hide');
+                        /*清除延时任务序列*/
+                        if (config.clear) {
+                            //clearFormDelay();
+                        }
+                        clearTimeout(temp_timer);
+                        temp_timer = null;
+                    }, config.delay);
+                } else {
+                    getModalWrap().modal('hide');
+                    /*清除延时任务序列*/
+                    if (config.clear) {
+                        //clearFormDelay();
+                    }
+                }
             }
         }
     }

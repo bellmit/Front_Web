@@ -5,7 +5,9 @@
     /*定义指令*/
     angular
         .module('view')
-        .directive('viewModalWrap', viewModalWrap)/*弹出框指令*/;
+        .directive('viewModalDialog', viewModalDialog)/*弹出框指令*/
+        .directive('viewModalContent', viewModalContent)
+        .directive('viewModalClose', viewModalClose);
 
 
     /*指令依赖注入*/
@@ -13,48 +15,72 @@
 
     /*指令实现*/
 
-    /*弹出框指令*/
+    /*弹出框容器指令*/
     /*
      * demo:
-     * <view-modal-wrap></view-modal-wrap>
+     * <view-modal-dialog></view-modal-dialog>
      * */
-    function viewModalWrap() {
+    function viewModalDialog() {
         return {
             replace: true,
             restrict: 'EA',
-            scope: {
-                setting: '=setting'
-            },
-            template: '<div>\
-                <div class="modal fade custom-width in g-d-showi" id="admin_modal_wrap">\
-                     <div class="modal-dialog g-w-percent48">\
-                        <div class="modal-content">\
-                            <div class="modal-body">\
-                            主内容区\
+            scope: {},
+            template: '<div class="modal-dialog g-w-percent48">\
+                            <div class="modal-content">\
+                                <view-modal-content></view-modal-content>\
+                                <view-modal-close></view-modal-close>\
                             </div>\
-                            <div class="modal-footer">\
-                                <button type="button" id="admin_modal_close" class="btn btn-red"  data-dismiss="modal">关闭</button>\
-                            </div>\
-                        </div>\
-                    </div>\
-                </div>\
-            </div>',
-            link: modalWrap
+                        </div>',
+            link: modalDialog
         };
 
         /*link实现*/
-        function modalWrap(scope, elem, attrs, ctrl) {
-            /*绑定事件*/
-            var $wrap = angular.element('#admin_modal_wrap'),
-                $close = angular.element('#admin_modal_close');
+        function modalDialog(scope, elem, attrs, ctrl) {
+
+        }
+    }
 
 
-            /*绑定关闭*/
-            $close.bind('click', function () {
-                scope.$apply(function () {
-                    $wrap.modal('hide');
-                });
-            });
+    /*弹出框内容指令*/
+    /*
+     * demo:
+     * <view-modal-content></view-modal-content>
+     * */
+    function viewModalContent() {
+        return {
+            replace: true,
+            restrict: 'EA',
+            scope: {},
+            template: '<div class="modal-body"></div>',
+            link: modalContent
+        };
+
+        /*link实现*/
+        function modalContent(scope, elem, attrs, ctrl) {
+
+        }
+    }
+
+
+    /*弹出框关闭指令*/
+    /*
+     * demo:
+     * <view-modal-close></view-modal-close>
+     * */
+    function viewModalClose() {
+        return {
+            replace: true,
+            restrict: 'EA',
+            scope: {},
+            template: '<div class="modal-footer">\
+                            <button type="button" class="btn btn-red"  data-dismiss="modal">关闭</button>\
+                    </div>',
+            link: modalClose
+        };
+
+        /*link实现*/
+        function modalClose(scope, elem, attrs, ctrl) {
+
         }
     }
 
