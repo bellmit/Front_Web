@@ -8,7 +8,7 @@
 			var logininfo=public_tool.initMap.loginMap,
 			merchant_grade=parseInt(decodeURIComponent(logininfo.param.grade),10);
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
-				url:'http://10.0.5.226:8082/mall-agentbms-api/module/menu',
+				url:'http://112.74.207.132:8082/mall-agentbms-api/module/menu',
 				async:false,
 				type:'post',
 				param:{
@@ -60,8 +60,6 @@
 				$admin_type=$('#admin_type'),
 				$admin_fullName=$('#admin_fullName'),
 				$admin_shortName=$('#admin_shortName'),
-				$admin_imeiCode=$('#admin_imeiCode'),
-				$admin_deviceType=$('#admin_deviceType'),
 				$admin_linkman=$('#admin_linkman'),
 				$admin_cellphone=$('#admin_cellphone'),
 				$admin_telephone=$('#admin_telephone'),
@@ -185,8 +183,6 @@
 										type:$admin_type.find(':selected').val(),
 										fullName:$admin_fullName.val(),
 										shortName:$admin_shortName.val(),
-										imeiCode:$admin_imeiCode.val(),
-										deviceType:$admin_deviceType.find(':selected').val(),
 										linkman:$admin_linkman.val(),
 										cellphone:public_tool.trims($admin_cellphone.val()),
 										telephone:public_tool.trims($admin_telephone.val()),
@@ -210,16 +206,22 @@
 										actiontype='新增';
                                         delete setdata['id'];
                                     }
-									config['url']="http://10.0.5.226:8082/mall-agentbms-api/merchant/addupdate";
+									config['url']="http://112.74.207.132:8082/mall-agentbms-api/merchant/addupdate";
 									config['data']=setdata;
 								}
 
 								$.ajax(config).done(function(resp){
-									var code;
+									var code,
+										message;
 									if(formtype==='addmerchant'){
 										code=parseInt(resp.code,10);
+										message=resp.message;
 										if(code!==0){
-											dia.content('<span class="g-c-bs-warning g-btips-warn">'+actiontype+'商户失败</span>').show();
+											if(typeof message !=='undefined' && message!==''){
+												dia.content('<span class="g-c-bs-warning g-btips-warn">'+actiontype+'商户失败('+message+')</span>').show();
+											}else{
+												dia.content('<span class="g-c-bs-warning g-btips-warn">'+actiontype+'商户失败</span>').show();
+											}
 										}else{
 											public_tool.removeParams('mall-merchant-add');
 											dia.content('<span class="g-c-bs-success g-btips-succ">'+actiontype+'商户成功</span>').show();
@@ -268,9 +270,9 @@
 		/*查询地址*/
 		function getAddress(id,sel,type,getflag) {
 			var tempurl1='112.',
-				tempurl2='74.',
-				tempurl3='207.',
-				tempurl4='132:8088';
+					tempurl2='74.',
+					tempurl3='207.',
+					tempurl4='132:8088';
 			$.ajax({
 					url:"http://"+tempurl1+tempurl2+tempurl3+tempurl4+"/yttx-public-api/address/get",
 					dataType:'JSON',
@@ -356,7 +358,7 @@
 
 
 			$.ajax({
-				url:"http://10.0.5.226:8082/mall-agentbms-api/merchant/detail",
+				url:"http://112.74.207.132:8082/mall-agentbms-api/merchant/detail",
 				dataType:'JSON',
 				method:'post',
 				data:{
@@ -406,23 +408,6 @@
 								break;
 							case 'shortName':
 								$admin_shortName.val(list[j]);
-								break;
-							case 'imeiCode':
-								$admin_imeiCode.val(list[j]);
-								break;
-							case 'deviceType':
-								var device=list[j];
-								$admin_deviceType.find('option').each(function () {
-									var $this=$(this),
-										dtype=$this.val(),
-										value=dtype===''?dtype:parseInt(dtype,10);
-									if(value===device){
-										$this.prop({
-											'selected':true
-										});
-										return false;
-									}
-								});
 								break;
 							case 'linkman':
 								$admin_linkman.val(list[j]);
@@ -488,7 +473,7 @@
 		/*查询业务员Id*/
 		function getSalesmanId() {
 			$.ajax({
-				url:"http://10.0.5.226:8082/mall-agentbms-api/salesmans/list",
+				url:"http://112.74.207.132:8082/mall-agentbms-api/salesmans/list",
 				dataType:'JSON',
 				method:'post',
 				data:{

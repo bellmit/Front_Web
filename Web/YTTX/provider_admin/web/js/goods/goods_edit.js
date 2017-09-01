@@ -91,7 +91,7 @@
 			var $editor_image_toggle=$('#editor_image_toggle'),
 				$editor_image_list=$('#editor_image_list'),
 				$editor_image_show=$('#editor_image_show'),
-				$editor_image_select=$('#editor_image_select');
+				$editor_image_select=$('#editor_image_select');;
 
 			/*上传对象*/
 			var slide_QN_Upload=new QiniuJsSDK(),
@@ -725,7 +725,7 @@
 										}())
 									});
 
-									config['url']="http://10.0.5.226:8082/yttx-providerbms-api/goods/addupdate";
+									config['url']="http://112.74.207.132:8082/yttx-providerbms-api/goods/addupdate";
 									config['data']=setdata;
 								}
 
@@ -817,11 +817,11 @@
 
 		/*获取数据*/
 		function getEditData(config){
-			if(!public_tool.isSameDomain("http://10.0.5.226:8082")){
+			if(!public_tool.isSameDomain("http://112.74.207.132:8082")){
 				return false;
 			}
 			$.ajax({
-				url:"http://10.0.5.226:8082/yttx-providerbms-api/goods/details",
+				url:"http://112.74.207.132:8082/yttx-providerbms-api/goods/details",
 				dataType:'JSON',
 				async:false,
 				method:'post',
@@ -1382,7 +1382,6 @@
 
 		/*获取七牛token*/
 		function getToken(){
-			var result=null;
 			var result=null,
 					tempurl1='112.',
 					tempurl2='74.',

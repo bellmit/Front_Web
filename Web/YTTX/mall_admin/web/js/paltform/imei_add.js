@@ -7,7 +7,7 @@
 			/*菜单调用*/
 			var logininfo=public_tool.initMap.loginMap;
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
-				url:'http://10.0.5.226:8082/mall-buzhubms-api/module/menu',
+				url:'http://112.74.207.132:8081/mall-buzhubms-api/module/menu',
 				async:false,
 				type:'post',
 				param:{
@@ -195,7 +195,7 @@
 										type:$admin_type.val(),
 										excelFile:excelfile
 									});
-									config['url']="http://10.0.5.226:8082/mall-buzhubms-api/subscriber/import/bzwbms";
+									config['url']="http://112.74.207.132:8081/mall-buzhubms-api/subscriber/import/bzwbms";
 									config['data']=setdata;
 								}
 
@@ -251,7 +251,7 @@
 		/*查询代理商*/
 		function getAgentData() {
 			$.ajax({
-					url:"http://10.0.5.226:8082/mall-buzhubms-api/agent/listprov",
+					url:"http://112.74.207.132:8081/mall-buzhubms-api/agent/listprov",
 					dataType:'JSON',
 					method:'post',
 					data:{

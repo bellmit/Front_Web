@@ -59,7 +59,7 @@
 						autoWidth:true,/*是否*/
 						paging:false,
 						ajax:{
-							url:"http://10.0.5.226:8082/yttx-providerbms-api/goods/list",
+							url:"http://112.74.207.132:8082/yttx-providerbms-api/goods/list",
 							dataType:'JSON',
 							method:'post',
 							dataSrc:function ( json ) {
@@ -79,6 +79,12 @@
 								if(typeof result==='undefined'){
 									goodsmanage_page.page=1;
 									goodsmanage_page.total=0;
+									/*分页调用*/
+									$admin_page_wrap.pagination({
+										pageSize:goodsmanage_page.pageSize,
+										total:goodsmanage_page.total,
+										pageNumber:goodsmanage_page.page,
+									});
 									return [];
 								}
 								if(result){
@@ -347,7 +353,7 @@
 					setSure.sure('delete',function(cf){
 						/*to do*/
 						$.ajax({
-								url:"http://10.0.5.226:8082/yttx-providerbms-api/goods/delete",
+								url:"http://112.74.207.132:8082/yttx-providerbms-api/goods/delete",
 								method: 'POST',
 								dataType: 'json',
 								data:{
@@ -409,7 +415,7 @@
 
 					/*上架和下架*/
 					$.ajax({
-							url:"http://10.0.5.226:8082/yttx-providerbms-api/goods/status/update",
+							url:"http://112.74.207.132:8082/yttx-providerbms-api/goods/status/update",
 							method: 'POST',
 							dataType: 'json',
 							data:{
@@ -465,7 +471,7 @@
 		/*获取数据*/
 		function getColumnData(page,opt){
 			if(table===null){
-				if(!public_tool.isSameDomain("http://10.0.5.226:8082")){
+				if(!public_tool.isSameDomain("http://112.74.207.132:8082")){
 					return false;
 				}
 				table=opt.$goods_manage_wrap.DataTable(opt.config);

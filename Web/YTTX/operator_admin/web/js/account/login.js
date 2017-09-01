@@ -70,7 +70,7 @@
 						"hideMethod": "fadeOut"
 					};
 
-					var basedomain='http://10.0.5.226:8082',
+					var basedomain='http://112.74.207.132:8082',
 						basepathname="/mall-agentbms-api/sysuser/login";
 					$.ajax({
 						url:basedomain+basepathname,
@@ -144,7 +144,7 @@
 							finish: function(){
 								if(code===0){
 									//成功后跳入主页面
-									location.href = '../index.html';
+									location.href = '../../index.html';
 								}
 							}
 						});

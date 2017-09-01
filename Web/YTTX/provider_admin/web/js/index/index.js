@@ -20,7 +20,13 @@
 									<span aria-hidden="true">&times;</span>\
 									<span class="sr-only">Close</span>\
 								</button>\$info\
-							</div>';
+							</div>',
+				loginmap={
+					1:"乾汇通",
+					2:"新安街",
+					3:"分销商",
+					4:"供应商"
+				};
 
 			
 			//初始化效果
@@ -95,7 +101,7 @@
 						"hideMethod": "fadeOut"
 					};
 
-					var basedomain='http://10.0.5.226:8082',
+					var basedomain='http://112.74.207.132:8082',
 						basepathname="/yttx-providerbms-api/user/login";
 					$.ajax({
 						url:basedomain+basepathname,
@@ -187,7 +193,7 @@
 
 		function getValidCode(){
 			var xhr = new XMLHttpRequest();
-			xhr.open("post",'http://10.0.5.226:8082/yttx-providerbms-api/user/identifying/code', true);
+			xhr.open("post",'http://112.74.207.132:8082/yttx-providerbms-api/user/identifying/code', true);
 			xhr.responseType = "blob";
 			xhr.onreadystatechange = function() {
 				if (this.status == 200) {

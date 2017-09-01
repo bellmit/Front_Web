@@ -11,7 +11,7 @@
 			var logininfo=public_tool.initMap.loginMap,
 				merchant_grade=parseInt(decodeURIComponent(logininfo.param.grade),10);
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
-				url:'http://10.0.5.226:8082/mall-agentbms-api/module/menu',
+				url:'http://112.74.207.132:8082/mall-agentbms-api/module/menu',
 				async:false,
 				type:'post',
 				param:{
@@ -68,7 +68,9 @@
 					salesmanId:"业务员编号"
 				};
 
-			
+
+
+
 			/*列表请求配置*/
 			var merchant_config={
 					processing:true,/*大消耗操作时是否显示处理状态*/
@@ -82,7 +84,7 @@
 					],
 					lengthChange:true,/*是否可改变长度*/
 					ajax:{
-						url:"http://10.0.5.226:8082/mall-agentbms-api/merchant/related",
+						url:"http://112.74.207.132:8082/mall-agentbms-api/merchant/related",
 						dataType:'JSON',
 						method:'post',
 						dataSrc:function ( json ) {
@@ -104,7 +106,7 @@
 						data:{
 							adminId:decodeURIComponent(logininfo.param.adminId),
 							token:decodeURIComponent(logininfo.param.token),
-							grade:decodeURIComponent(logininfo.param.grade)
+							grade:decodeURIComponent(logininfo.param.grade),
 						}
 					},
 					info:true,
@@ -162,16 +164,16 @@
 
 								if(merchantedit_power&&(merchant_grade===3||merchant_grade===2||merchant_grade===1)){
 									btns+='<span data-action="update" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
-											<i class="fa-pencil"></i>\
-											<span>编辑</span>\
-											</span>';
+										<i class="fa-pencil"></i>\
+										<span>编辑</span>\
+										</span>';
 								}
 
 								if(merchantshow_power){
 									btns+='<span data-action="select" data-id="'+id+'"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
-											<i class="fa-file-text-o"></i>\
-											<span>查看</span>\
-											</span>';
+										<i class="fa-file-text-o"></i>\
+										<span>查看</span>\
+										</span>';
 								}
 
 								return btns;
@@ -250,7 +252,7 @@
 			}
 
 			var detailconfig={
-					url:"http://10.0.5.226:8082/mall-agentbms-api/merchant/detail",
+					url:"http://112.74.207.132:8082/mall-agentbms-api/merchant/detail",
 					dataType:'JSON',
 					method:'post',
 					data:{
@@ -286,20 +288,20 @@
 									var typemap={
 										2:"白酒",
 										1:"3C数码"
-									};
+									}
 									str+='<tr><th>'+detail_map[j]+':</th><td>'+typemap[list[j]]+'</td></tr>';
 								}else if(j==='deviceType'||j==='devicetype'){
 									var devicemap={
 										1:"S67",
 										2:"T6",
 										3:"其它"
-									};
+									}
 									str+='<tr><th>'+detail_map[j]+':</th><td>'+(devicemap[list[j]]||"")+'</td></tr>';
 								}else if(j==='status'){
 									var statusmap={
 										0:"正常",
 										1:"停用"
-									};
+									}
 									str+='<tr><th>'+detail_map[j]+':</th><td>'+statusmap[list[j]]+'</td></tr>';
 								}else{
 									str+='<tr><th>'+detail_map[j]+':</th><td>'+list[j]+'</td></tr>';

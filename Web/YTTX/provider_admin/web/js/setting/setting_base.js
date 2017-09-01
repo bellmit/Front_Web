@@ -42,7 +42,7 @@
                 $admin_telephone_btn=$('#admin_telephone_btn'),
                 $admin_address_btn=$('#admin_address_btn'),
                 update_config={
-                    url:"http://10.0.5.226:8082/yttx-providerbms-api/provider/basicset/update",
+                    url:"http://112.74.207.132:8082/yttx-providerbms-api/provider/basicset/update",
                     dataType:'JSON',
                     method:'post',
                     data:{
@@ -54,7 +54,7 @@
                     }
                 },
                 logo_config={
-                    url:"http://10.0.5.226:8082/yttx-providerbms-api/provider/logo/update",
+                    url:"http://112.74.207.132:8082/yttx-providerbms-api/provider/logo/update",
                     dataType:'JSON',
                     method:'post',
                     data:{
@@ -291,11 +291,11 @@
 
         /*获取*/
         function getSettingData(){
-            if(!public_tool.isSameDomain("http://10.0.5.226:8082")){
+            if(!public_tool.isSameDomain("http://112.74.207.132:8082")){
                 return false;
             }
             $.ajax({
-                url:"http://10.0.5.226:8082/yttx-providerbms-api/provider/basicset/info",
+                url:"http://112.74.207.132:8082/yttx-providerbms-api/provider/basicset/info",
                 dataType:'JSON',
                 method:'post',
                 data:{
@@ -415,7 +415,7 @@
 
         /*获取七牛token*/
         function getToken(){
-            var result=null,
+           var result=null,
 								tempurl1='112.',
 								tempurl2='74.',
 								tempurl3='207.',

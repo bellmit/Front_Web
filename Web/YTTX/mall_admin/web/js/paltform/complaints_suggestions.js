@@ -9,7 +9,7 @@
 			/*菜单调用*/
 			var logininfo=public_tool.initMap.loginMap;
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
-				url:'http://10.0.5.226:8082/mall-buzhubms-api/module/menu',
+				url:'http://112.74.207.132:8081/mall-buzhubms-api/module/menu',
 				async:false,
 				type:'post',
 				param:{
@@ -72,7 +72,7 @@
 						autoWidth:true,/*是否*/
 						paging:false,
 						ajax:{
-							url:"http://10.0.5.226:8082/mall-buzhubms-api/feedback/list",
+							url:"http://112.74.207.132:8081/mall-buzhubms-api/feedback/list",
 							dataType:'JSON',
 							method:'post',
 							dataSrc:function ( json ) {
@@ -317,7 +317,7 @@
 										id:$admin_id.val(),
 										dealRemark:$admin_dealRemark.val()
 									});
-									config['url']="http://10.0.5.226:8082/mall-buzhubms-api/feedback/deal";
+									config['url']="http://112.74.207.132:8081/mall-buzhubms-api/feedback/deal";
 									config['data']=setdata;
 								}
 

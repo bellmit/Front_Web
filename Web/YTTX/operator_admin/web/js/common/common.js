@@ -494,7 +494,7 @@
 	};
 	/*是否是合法手机号*/
 	public_tool.isMobilePhone=function(str){
-		return /^(13[0-9]|15[012356789]|18[0-9]|14[57]|170)[0-9]{8}$/.test(this.trims(str))?true:false;
+		return /^(13[0-9]|14[579]|15[012356789]|16[6]|17[035678]|18[0-9]|19[89])[0-9]{8}$/.test(this.trims(str))?true:false;
 	};
 	/**/
 	public_tool.isNum=function(str){
@@ -836,7 +836,6 @@
 			module=isindex?'':carr[clen - 2];
 
 
-
 		/*调用路由记录*/
 		var history_path={
 			issetting:false,
@@ -908,7 +907,7 @@
 				}
 			},1000);
 		}
-	}
+	};
 
 
 
@@ -1055,6 +1054,33 @@
 				}
 				return false;
 			},
+			extendMenu=function (map,config) {
+				var elist=map['extendmenu'];
+				if(elist){
+					var e=0,
+						estr='',
+						eitem=elist['list'],
+						elen=eitem.length;
+
+					if(config.isindex){
+						for(e;e<elen;e++){
+							estr+='<li><a href=\"'+map.code+'/'+eitem[e].modLink+config.suffix+'\"><span>'+eitem[e].modName+'</span></a></li>';
+						}
+					}else if(!config.isindex){
+						if(config.ismodule){
+							for(e;e<elen;e++){
+								estr+='<li><a href=\"'+eitem[e].modLink+config.suffix+'\"><span>'+eitem[e].modName+'</span></a></li>';
+							}
+						}else{
+							for(e;e<elen;e++){
+								estr+='<li><a href=\"../'+map.code+'/'+eitem[e].modLink+config.suffix+'\"><span>'+eitem[e].modName+'</span></a></li>';
+							}
+						}
+					}
+					return config.menustr+estr;
+				}
+				return '';
+			},
 			menu=data.result.menu,
 			len=menu.length,
 			menustr='',
@@ -1077,12 +1103,6 @@
 			link=self.menuMap[item.modId];
 			if(typeof link==='undefined'){
 				continue;
-			}
-			if(typeof link['ignoremodule']!=='undefined'){
-				if(link['ignoremodule']){
-					/*忽略模块*/
-					continue;
-				}
 			}
 			if("matchignore" in link){
 				ignore=true;
@@ -1113,6 +1133,16 @@
 					}
 					sublen=subitem.length;
 					j=0;
+					/*扩展菜单*/
+					if('extendmenu' in link){
+						if(link['extendmenu']['position']==='before'){
+							menustr=extendMenu(link,{
+								menustr:menustr,
+								suffix:suffix,
+								isindex:true
+							});
+						}
+					}
 					for(j;j<sublen;j++){
 						item=subitem[j];
 						/*判断是否存在忽略*/
@@ -1120,11 +1150,21 @@
 							/*存在忽略菜单即执行下一轮检查*/
 							continue;
 						}
-						menustr+='<li><a href=\"'+link.code+'/'+item.modLink+suffix+'\"><span>'+item.modName+'</span></a></li>';
+						menustr+='<li><a href=\"app/'+link.code+'/'+item.modLink+suffix+'\"><span>'+item.modName+'</span></a></li>';
+					}
+					/*扩展菜单*/
+					if('extendmenu' in link){
+						if(link['extendmenu']['position']==='after'){
+							menustr=extendMenu(link,{
+								menustr:menustr,
+								suffix:suffix,
+								isindex:true
+							});
+						}
 					}
 					menustr+="</li></ul>";
 				}else{
-					menustr+='<li><a href=\"'+link.code+'/'+item.modLink+suffix+'\"><i class=\"'+matchClass(link,item.modClass)+'\"></i><span>'+item.modName+'</span></a>';
+					menustr+='<li><a href=\"app/'+link.code+'/'+item.modLink+suffix+'\"><i class=\"'+matchClass(link,item.modClass)+'\"></i><span>'+item.modName+'</span></a>';
 				}
 			}else{
 				//当前页为其他页的情况
@@ -1134,11 +1174,11 @@
 				if(i===0&&item.modId!==0){
 					/*不匹配首页*/
 					if(!inject||(inject&&inject.render)){
-						menustr+='<li><a href=\"../index'+suffix+'\"><i class=\"menu-ux-home\"></i><span>首页</span></a></li>';
+						menustr+='<li><a href=\"../../index'+suffix+'\"><i class=\"menu-ux-home\"></i><span>首页</span></a></li>';
 					}
 				}else if(i===0&&!issub){
 					//匹配首页且没有子菜单
-					menustr+='<li><a href=\"../index'+item.modLink+suffix+'\"><i class=\"'+matchClass(link,item.modClass)+'\"></i><span>'+item.modName+'</span></a></li>';
+					menustr+='<li><a href=\"../../index'+item.modLink+suffix+'\"><i class=\"'+matchClass(link,item.modClass)+'\"></i><span>'+item.modName+'</span></a></li>';
 				}
 
 				if(issub){
@@ -1152,6 +1192,17 @@
 					sublen=subitem.length;
 					j=0;
 					var ismodule=path.indexOf(link.match)!==-1;
+					/*扩展菜单*/
+					if('extendmenu' in link){
+						if(link['extendmenu']['position']==='before'){
+							menustr=extendMenu(link,{
+								menustr:menustr,
+								suffix:suffix,
+								isindex:false,
+								ismodule:ismodule
+							});
+						}
+					}
 					for(j;j<sublen;j++){
 						item=subitem[j];
 						/*判断是否存在忽略*/
@@ -1163,6 +1214,17 @@
 								menustr+='<li><a href=\"'+item.modLink+suffix+'\"><span>'+item.modName+'</span></a></li>';
 						}else{
 								menustr+='<li><a href=\"../'+link.code+'/'+item.modLink+suffix+'\"><span>'+item.modName+'</span></a></li>';
+						}
+					}
+					/*扩展菜单*/
+					if('extendmenu' in link){
+						if(link['extendmenu']['position']==='after'){
+							menustr=extendMenu(link,{
+								menustr:menustr,
+								suffix:suffix,
+								isindex:false,
+								ismodule:ismodule
+							});
 						}
 					}
 					menustr+="</li></ul>";
@@ -1209,6 +1271,7 @@
 		matchClass=null;
 		matchModule=null;
 		matchIgnore=null;
+		extendMenu=null;
 	};
 	//卸载左侧菜单条
 	public_tool.removeSideMenu=function($menu){
@@ -1705,7 +1768,7 @@
 			self.clear();
 			self.clearCacheData();
 			if(isindex){
-				location.href='account/login.html';
+				location.href='app/account/login.html';
 			}else{
 				if(module.indexOf('account')!==-1){
 					location.href='login.html';
@@ -1763,7 +1826,7 @@
 							self.clear();
 							self.clearCacheData();
 						}
-						location.href='account/login.html';
+						location.href='app/account/login.html';
 					}else{
 						if(typeof fn==='function'){
 							fn.call();
@@ -1831,7 +1894,7 @@
 var public_vars = public_vars || {};
 
 ;(function($, window, undefined){
-	
+
 	"use strict";
 	//初始化加载
 	$(function(){
@@ -2070,8 +2133,8 @@ var public_vars = public_vars || {};
 		}
 
 	});
-	
-	
+
+
 
 	function stickFooterToBottom($content,$wrap){
 		public_vars.$mainFooter.add($content).add( $wrap).attr('style', '');
@@ -2099,7 +2162,7 @@ var public_vars = public_vars || {};
 
 
 
-	
+
 })(jQuery, window);
 
 	//设置属性

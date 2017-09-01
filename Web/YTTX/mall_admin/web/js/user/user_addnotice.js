@@ -7,7 +7,7 @@
 			/*菜单调用*/
 			var logininfo=public_tool.initMap.loginMap;
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
-				url:'http://10.0.5.226:8082/mall-buzhubms-api/module/menu',
+				url:'http://112.74.207.132:8081/mall-buzhubms-api/module/menu',
 				async:false,
 				type:'post',
 				param:{
@@ -154,7 +154,7 @@
 									}
 
 									/*新增操作*/
-									config['url']="http://10.0.5.226:8082/mall-buzhubms-api/usernotice/add";
+									config['url']="http://112.74.207.132:8081/mall-buzhubms-api/usernotice/add";
 									config['data']=setdata;
 								}
 
@@ -203,7 +203,7 @@
 		/*查询会员*/
 		function searchMemberData() {
 			$.ajax({
-					url:"http://10.0.5.226:8082/mall-buzhubms-api/user/list",
+					url:"http://112.74.207.132:8081/mall-buzhubms-api/user/list",
 					dataType:'JSON',
 					method:'post',
 					data:{
