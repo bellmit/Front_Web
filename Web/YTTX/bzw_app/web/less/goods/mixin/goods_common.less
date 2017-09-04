@@ -429,7 +429,7 @@
     font-size: 1.6rem;
   }
   dl {
-    .layout-base;
+    .layout-base();
     background: @color-white;
     padding: 0 0 10px 16px;
     dd {
@@ -491,6 +491,32 @@
       }
     }
 
+  }
+}
+
+//下载
+.c-download() {
+  .layout-fixedlb-base();
+  .layout-base();
+  display: inline-block;
+  height: 40px;
+  background: @color-white;
+  .share-download-btn {
+    .layout-base();
+    height: 100%;
+    display: inline-block;
+    text-align: center;
+    color: @color-white;
+    background: @color-red1;
+    font-size: @font-size-base;
+    line-height: 40px;
+    .user-select-base();
+    &:hover{
+      background:darken(@color-red1,5%);
+    }
+    &:active{
+      background:darken(@color-red1,10%);
+    }
   }
 }
 
