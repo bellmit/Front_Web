@@ -2,13 +2,16 @@
 ///作者：易品
 
 html{
-	.c-html;
+	.c-html();
 }
 
 body{
-	.c-body;
+	.c-body();
 	padding:10px 0 0 0;
-	background:@color-white;
+	background:@color-gray16;
+	>pre:only-child:empty{
+		.c-empty-show();
+	}
 }
 
 
@@ -19,13 +22,13 @@ body{
 
 //分享组件--广告图
 .share-plugin-bannerwrap{
-	.plugin-img-banner;
+	.plugin-img-banner();
 }
 
 
 //分享组件--标题，价格
 .share-plugin-titlewrap{
-	.plugin-text-title;
+	.plugin-text-title();
 }
 
 
@@ -33,33 +36,41 @@ body{
 //文章详情
 .share-show-wrap{
 	padding:0 16px;
-	.c-wrap;
+	margin-top:20px;
+	.c-wrap();
+	background:@color-white;
 	.share-show{
-		.c-show;
+		.c-show();
 	}
 }
 
 
 //相关阅读
 .share-links-wrap{
-	.c-links;
+	.c-links();
 }
 
 
 //参与详情点赞列表
 .share-good-wrap{
-	.c-good;
+	.c-good();
 }
 
 
 //参与
 .share-topic-wrap{
-	.c-topic;
+	.c-topic();
 }
 
 
 
 //评论
 .share-comment-wrap{
-	.c-comment;
+	.c-comment();
+}
+
+
+//为空数据
+.share-null-wrap{
+	.c-empty-show();
 }
