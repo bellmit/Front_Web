@@ -21,62 +21,68 @@ List<GoodsCommentView> list = request.getAttribute("commentList")==null?null:(Li
     <title>布住网</title>
     <link rel="stylesheet" type="text/css" href="<%=path %>/css/goods_share.css">
     </head>
-    <body>
-    
+    <body class="btnb-gap-wrap">
+
     <%if(imageTitle==null){%>
-    <!--为空情况-->
-    <section class="share-null-wrap"></section>
-    
+        <!--为空情况-->
+        <section class="share-null-wrap"></section>
+
     <%}else{ %>
-    
-    <!--头部-->
-    <header class="app-header">
-    <p class="theme">商品详情</p>
-    </header>
-    <!--分享组件--banner(注:只取一张图)-->
-    <section class="share-plugin-bannerwrap">
 
-    <img alt="" src="<%=imageSrc%>">
+        <!--头部-->
+        <header class="app-header">
+            <p class="theme">商品详情</p>
+        </header>
 
-    </section>
-    <!--分享组件--标题，价格组件（注:只要标题，不要价格）-->
-    <section class="share-plugin-titlewrap">
 
-    <div>
-    <p><%=imageTitle%></p>
-    </div>
+        <!--分享组件--banner(注:只取一张图)-->
+        <section class="share-plugin-bannerwrap">
+            <img alt="" src="<%=imageSrc%>">
+        </section>
 
-    </section>
-    <!--评论（注:<dd>为循环列表）-->
-    <section class="share-comment-wrap">
-    <h3>商品评论(<%=commentCount%>)</h3>
-    <dl>
-      <%
-       GoodsCommentView comment = null;
-          for(int i=0;i<list.size();i++){ 
-              comment = list.get(i);
-      %>
-      <dd>
-        <h4><%=comment.getNickName()%></h4>
-        <i><%=comment.getAddTime()%></i>
-        <span><%=comment.getContent()%></span>
-        <p><%=comment.getTypeName()%></p>
-      </dd>
+        <!--分享组件--标题，价格组件（注:只要标题，不要价格）-->
+        <section class="share-plugin-titlewrap">
+            <div>
+                <p><%=imageTitle%></p>
+            </div>
+        </section>
 
-      <%} %>
-    </dl>
-    </section>
 
-    <!--分享详情-->
-    <section class="share-show-wrap">
-    <h2 class="share-title-pagr">图文详情</h2>
-    <!--详情-->
-    <div class="share-show">
-    ${imageText}
-    </div>
-    </section>
-    
+        <!--评论（注:<dd>为循环列表）-->
+        <section class="share-comment-wrap">
+            <h3>商品评论(<%=commentCount%>)</h3>
+            <dl>
+              <%
+               GoodsCommentView comment = null;
+                  for(int i=0;i<list.size();i++){
+                      comment = list.get(i);
+              %>
+                  <dd>
+                    <h4><%=comment.getNickName()%></h4>
+                    <i><%=comment.getAddTime()%></i>
+                    <span><%=comment.getContent()%></span>
+                    <p><%=comment.getTypeName()%></p>
+                  </dd>
+              <%} %>
+            </dl>
+        </section>
+
+        <!--分享详情-->
+        <section class="share-show-wrap">
+            <h2 class="share-title-pagr">图文详情</h2>
+            <!--详情-->
+            <div class="share-show">
+            ${imageText}
+            </div>
+        </section>
+
+
+        <!--下载按钮-->
+        <section class="share-download-wrap">
+            <a class="share-download-btn" href="http://a.app.qq.com/o/simple.jsp?pkgname=com.yttxstore">下载</a>
+        </section>
+
+
     <%} %>
-
     </body>
     </html>
