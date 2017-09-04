@@ -47,7 +47,7 @@
                     /*延迟加载，依赖相关组件*/
                     deps: ['$ocLazyLoad',
                         function ($ocLazyLoad) {
-                            return $ocLazyLoad.load(['js/app/index/index-controller.js']);
+                            return $ocLazyLoad.load(['js/app/index/index-controller.js','js/app/index/index-service.js']);
                         }]
                 }
             })

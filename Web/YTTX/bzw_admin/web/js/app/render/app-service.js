@@ -208,6 +208,27 @@
             return $model!==null?$model:angular.element('#admin_modal_wrap');
         }
 
+
+        /*弹窗服务--配置弹窗*/
+        function configModal(model,config,fn) {
+            /*配置弹窗*/
+            if(config){
+                /*有值则更新值*/
+                model=config;
+            }else{
+                /*无值则用默认值*/
+                model={
+                    config:{
+                        width:'g-w-percent48',
+                        url:'view/modal/index.html'
+                    }
+                };
+            }
+            /*回调执行*/
+            if(fn && typeof fn==='function'){
+                fn.call(null);
+            }
+        }
         /*弹窗服务--显示隐藏弹窗*/
         function toggleModal(config, fn) {
             var temp_timer = null;

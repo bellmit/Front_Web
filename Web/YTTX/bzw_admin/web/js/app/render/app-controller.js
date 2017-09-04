@@ -17,7 +17,8 @@ angular.module('app')
         /*模型--弹窗基本配置*/
         this.modal={
           config:{
-              width:'g-w-percent48'
+              width:'g-w-percent48',
+              url:'view/modal/index.html'
           }
         };
 
@@ -139,10 +140,13 @@ angular.module('app')
 
 
 
-        /*绑定弹窗事件*/
-        $scope.$on('initModal',function (event,config) {
-            appService.toggleModal(config);
+        /*配置弹窗*/
+        $scope.$on('configModal',function (event,config) {
+            appService.configModal(self.modal,config,function () {
+                
+            });
         });
+        /*显示隐藏弹窗*/
         $scope.$on('toggleModal',function (event,config) {
             appService.toggleModal(config);
         });

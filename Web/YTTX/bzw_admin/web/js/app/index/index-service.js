@@ -1,5 +1,5 @@
 angular.module('app')
-    .service('invoiceService', ['toolUtil', 'toolDialog','loginService', 'powerService', 'dataTableColumnService', 'dataTableItemActionService', 'testService', function (toolUtil, toolDialog, loginService, powerService, dataTableColumnService, dataTableItemActionService, testService) {
+    .service('indexService', ['toolUtil', 'toolDialog','loginService', 'powerService', 'testService', function (toolUtil, toolDialog, loginService, powerService, testService) {
 
         /*获取缓存数据*/
         var self = this,
@@ -16,14 +16,28 @@ angular.module('app')
             query: toolUtil.isPower('invoice-delivery', powermap, true)/*查*/
         };
 
-
+        /*获取权限列表*/
         this.getCurrentPower = function () {
             return init_power;
         };
+        
+        /*获取侧边栏信息*/
+        this.getSideInfo=function () {
+            return testService.getMap({
+                map: {
+                    'name': 'name',
+                    'value': 'value'
+                },
+                mapmin: 5,
+                mapmax: 15
+            }).list;
+        };
+
 
         /*扩展服务--退出系统*/
         this.loginOut = function () {
             loginService.outAction();
         };
         
+
     }]);
