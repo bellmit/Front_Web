@@ -67,6 +67,7 @@ List<GoodsCommentView> list = request.getAttribute("commentList")==null?null:(Li
             </dl>
         </section>
 
+
         <!--分享详情-->
         <section class="share-show-wrap">
             <h2 class="share-title-pagr">图文详情</h2>
