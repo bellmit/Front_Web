@@ -27,8 +27,7 @@
 
 
         /*弹窗服务*/
-        var $model=null;
-
+        var $model = null;
 
 
         /*对外接口*/
@@ -36,10 +35,11 @@
         this.getViewWidth = getViewWidth/*视口服务--获取视口宽度*/;
         this.changeViewMode = changeViewMode/*视口服务--切换视口类型*/;
         this.renderMenu = renderMenu/*视口服务--菜单渲染*/;
-        this.getLoginMessage=getLoginMessage/*视口服务--获取登录信息*/;
-        
-        this.getModalWrap=getModalWrap/*弹窗服务--获取弹窗容器dom引用*/;
-        this.toggleModal=toggleModal/*弹窗服务--显示隐藏弹窗*/;
+        this.getLoginMessage = getLoginMessage/*视口服务--获取登录信息*/;
+
+        this.getModalWrap = getModalWrap/*弹窗服务--获取弹窗容器dom引用*/;
+        this.toggleModal = toggleModal/*弹窗服务--显示隐藏弹窗*/;
+        this.configModal = configModal/*弹窗服务--配置弹窗*/;
 
 
         /*视口服务--获取视口宽度*/
@@ -59,6 +59,7 @@
             }
             viewwidth = container - viewside;
         }
+
         /*视口服务--计算当前菜单的视口宽度,menu:菜单数组，flag:是否获取新缓存*/
         function calculateMenu(menu, flag) {
             var ismenu = false;
@@ -168,6 +169,7 @@
                 submenu: []
             };
         }
+
         /*视口服务--切换视口类型*/
         function changeViewMode(value, fn) {
             viewmode = value;
@@ -177,58 +179,61 @@
                 return calculateMenu();
             }
         }
+
         /*视口服务--菜单渲染*/
-        function renderMenu(model,fn) {
-            if(!model){
+        function renderMenu(model, fn) {
+            if (!model) {
                 return false;
             }
-            var tempmenu =fn.call(null);
+            var tempmenu = fn.call(null);
             model.headeritem = tempmenu.mainmenu;
             model.headersubitem = tempmenu.submenu;
             model.isshow = tempmenu.subshow;
         }
+
         /*视口服务--获取登录信息*/
-        function getLoginMessage(model,fn) {
-            if(!model){
+        function getLoginMessage(model, fn) {
+            if (!model) {
                 return false;
             }
-            var message=fn.call(null);
-            if(message){
-                model.isshow=true;
-                model.login=message;
-            }else{
-                model.isshow=false;
-                model.login=[];
+            var message = fn.call(null);
+            if (message) {
+                model.isshow = true;
+                model.login = message;
+            } else {
+                model.isshow = false;
+                model.login = [];
             }
         }
 
 
         /*弹窗服务--获取弹窗容器dom引用*/
         function getModalWrap() {
-            return $model!==null?$model:angular.element('#admin_modal_wrap');
+            return $model !== null ? $model : angular.element('#admin_modal_wrap');
         }
 
 
         /*弹窗服务--配置弹窗*/
-        function configModal(model,config,fn) {
+        function configModal(model, config, fn) {
             /*配置弹窗*/
-            if(config){
+            if (config) {
                 /*有值则更新值*/
-                model=config;
-            }else{
+                model = config;
+            } else {
                 /*无值则用默认值*/
-                model={
-                    config:{
-                        width:'g-w-percent48',
-                        url:'view/modal/index.html'
+                model = {
+                    config: {
+                        width: 'g-w-percent48',
+                        url: 'view/modal/index.html'
                     }
                 };
             }
             /*回调执行*/
-            if(fn && typeof fn==='function'){
+            if (fn && typeof fn === 'function') {
                 fn.call(null);
             }
         }
+
         /*弹窗服务--显示隐藏弹窗*/
         function toggleModal(config, fn) {
             var temp_timer = null;

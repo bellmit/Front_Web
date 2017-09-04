@@ -24,10 +24,14 @@
         return {
             replace: true,
             restrict: 'EA',
-            scope: {},
-            template: '<div class="modal-dialog g-w-percent48">\
+            scope: {
+                config:'@config'
+            },
+            template: '<div class="modal-dialog {{scope.config.width}}">\
                             <div class="modal-content">\
-                                <view-modal-content></view-modal-content>\
+                                <div class="modal-body">\
+                                    <view-modal-content></view-modal-content>\
+                                </div>\
                                 <view-modal-close></view-modal-close>\
                             </div>\
                         </div>',
@@ -50,8 +54,16 @@
         return {
             replace: true,
             restrict: 'EA',
-            scope: {},
-            template: '<div class="modal-body"></div>',
+            scope: {
+                config:'@config'
+            },
+            templateUrl:function (scope) {
+                if(scope.config){
+                    return scope.config.url;
+                }else{
+                    return '';
+                }
+            },
             link: modalContent
         };
 
