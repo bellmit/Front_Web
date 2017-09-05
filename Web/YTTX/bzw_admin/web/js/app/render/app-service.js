@@ -229,6 +229,7 @@
         /*弹窗服务--配置弹窗*/
         function configModal(model, config) {
             /*更新模型*/
+            console.log(model.url);
             if (config) {
                 /*有值则更新值*/
                 model = config;

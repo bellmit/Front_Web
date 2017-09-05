@@ -11,7 +11,7 @@ angular.module('app')
         /*模型--测试弹出指令*/
         this.modal = {
             width: 'g-w-percent48',
-            url: 'view/modal/test.html'
+            url: 'view/modal/index.html'
         };
 
 
@@ -23,12 +23,13 @@ angular.module('app')
 
         /**/
         /*显示弹窗*/
-        this.toggleModal = function (type) {
+        this.toggleModal = function (config) {
             /*配置弹窗*/
+            self.modal.url=config.url;
             $scope.$emit('configModal', self.modal);
             /*弹出弹窗*/
             $scope.$emit('toggleModal', {
-                display: type
+                display: config.display
             });
         };
 

@@ -139,7 +139,9 @@ angular.module('app')
         /*弹出服务*/
         /*配置弹窗*/
         $scope.$on('configModal', function (event, config) {
+            console.log(self.modal);
             appService.configModal(self.modal, config);
+            console.log(self.modal);
         });
 
 
