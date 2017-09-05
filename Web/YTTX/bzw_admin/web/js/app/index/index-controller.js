@@ -10,10 +10,8 @@ angular.module('app')
 
         /*模型--测试弹出指令*/
         this.modal = {
-            config:{
-                width:'g-w-percent48',
-                url:'view/modal/index.html'
-            }
+            width: 'g-w-percent48',
+            url: 'view/modal/test.html'
         };
 
 
@@ -21,14 +19,14 @@ angular.module('app')
         this.getQuickItem = function () {
             return loginService.getMenuData();
         };
-        
-        
-        /*配置弹窗*/
-        $scope.$emit('configModal',self.modal);
 
 
+        /**/
         /*显示弹窗*/
         this.toggleModal = function (type) {
+            /*配置弹窗*/
+            $scope.$emit('configModal', self.modal);
+            /*弹出弹窗*/
             $scope.$emit('toggleModal', {
                 display: type
             });

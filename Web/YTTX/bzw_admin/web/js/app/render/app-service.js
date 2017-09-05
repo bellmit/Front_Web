@@ -27,7 +27,8 @@
 
 
         /*弹窗服务*/
-        var $model = null;
+        var $model = null,
+            $body = null;
 
 
         /*对外接口*/
@@ -38,6 +39,7 @@
         this.getLoginMessage = getLoginMessage/*视口服务--获取登录信息*/;
 
         this.getModalWrap = getModalWrap/*弹窗服务--获取弹窗容器dom引用*/;
+        this.getModalBody = getModalBody/*弹窗服务--获取弹窗主题dom引用*/;
         this.toggleModal = toggleModal/*弹窗服务--显示隐藏弹窗*/;
         this.configModal = configModal/*弹窗服务--配置弹窗*/;
 
@@ -209,29 +211,38 @@
 
         /*弹窗服务--获取弹窗容器dom引用*/
         function getModalWrap() {
-            return $model !== null ? $model : angular.element('#admin_modal_wrap');
+            if ($model === null) {
+                $model = angular.element('#admin_modal_wrap');
+            }
+            return $model;
+        }
+
+        /*弹窗服务--获取弹窗主题dom引用*/
+        function getModalBody() {
+            if ($body === null) {
+                $body = angular.element('#admin_modal_body');
+            }
+            return $body;
         }
 
 
         /*弹窗服务--配置弹窗*/
-        function configModal(model, config, fn) {
-            /*配置弹窗*/
+        function configModal(model, config) {
+            /*更新模型*/
             if (config) {
                 /*有值则更新值*/
                 model = config;
             } else {
                 /*无值则用默认值*/
                 model = {
-                    config: {
-                        width: 'g-w-percent48',
-                        url: 'view/modal/index.html'
-                    }
+                    width: 'g-w-percent48',
+                    url: 'view/modal/index.html'
                 };
             }
-            /*回调执行*/
-            if (fn && typeof fn === 'function') {
-                fn.call(null);
-            }
+            /*更新模板地址*/
+            getModalBody().attr({
+                'data-url':model.url
+            })
         }
 
         /*弹窗服务--显示隐藏弹窗*/

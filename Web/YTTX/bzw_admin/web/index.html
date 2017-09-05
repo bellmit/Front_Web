@@ -30,8 +30,15 @@
             <div class="struct-layout-footer" data-ng-include="'view/common/footer.html'"></div>
 
             <!--模态弹窗-->
-            <div class="modal fade custom-width" id="admin_modal_wrap">
-                <view-modal-dialog data-config="app_ctrl.modal.config" ></view-modal-dialog>
+            <div class="modal fade custom-width" data-url="{{app_ctrl.modal.url}}" id="admin_modal_wrap">
+                <div class="modal-dialog {{app_ctrl.modal.width}}">
+                    <div class="modal-content" >
+                        <div data-view-modal-dialog data-url="" class="modal-body" id="admin_modal_body"></div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-red"  data-dismiss="modal">关闭</button>
+                        </div>
+                    </div>
+                </div>
             </div>
 
         </div>

@@ -2,7 +2,7 @@
 
 /*控制器设置基本配置*/
 angular.module('app')
-    .controller('AppController', ['toolUtil', '$scope','$compile','loginService', 'appService', function (toolUtil, $scope,$compile, loginService, appService) {
+    .controller('AppController', ['toolUtil', '$scope', '$compile', 'loginService', 'appService', function (toolUtil, $scope, $compile, loginService, appService) {
         var self = this,
             debug = true/*测试模式*/,
             create = true/*是否生成新菜单*/;
@@ -16,10 +16,8 @@ angular.module('app')
 
         /*模型--弹窗基本配置*/
         this.modal = {
-            config: {
-                width: 'g-w-percent48',
-                url: 'view/modal/index.html'
-            }
+            width: 'g-w-percent48',
+            url: 'view/modal/index.html'
         };
 
 
@@ -138,14 +136,16 @@ angular.module('app')
         };
 
 
+        /*弹出服务*/
         /*配置弹窗*/
         $scope.$on('configModal', function (event, config) {
-            appService.configModal(self.modal, config, function () {
-                $compile('<div>nimei</div>')($scope);
-            });
+            appService.configModal(self.modal, config);
         });
+
+
         /*显示隐藏弹窗*/
         $scope.$on('toggleModal', function (event, config) {
+            /*执行弹窗*/
             appService.toggleModal(config);
         });
 

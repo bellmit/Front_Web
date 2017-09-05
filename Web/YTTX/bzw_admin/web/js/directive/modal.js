@@ -5,13 +5,13 @@
     /*定义指令*/
     angular
         .module('view')
-        .directive('viewModalDialog', viewModalDialog)/*弹出框指令*/
-        .directive('viewModalContent', viewModalContent)
-        .directive('viewModalClose', viewModalClose);
+        .directive('viewModalDialog', viewModalDialog)/*弹出框容器指令*/;
 
 
     /*指令依赖注入*/
-    //viewModalWrap.$inject=['assistCommon'];
+    //viewModalDialog.$inject = ['$timeout'];
+
+
 
     /*指令实现*/
 
@@ -21,20 +21,14 @@
      * <view-modal-dialog></view-modal-dialog>
      * */
     function viewModalDialog() {
+        var modal_timer = null;
         return {
-            replace: true,
+            replace: false,
             restrict: 'EA',
-            scope: {
-                config:'@config'
+            scope: {},
+            templateUrl: function (elem, attrs) {
+                return attrs.url || 'view/modal/index.html';
             },
-            template: '<div class="modal-dialog {{scope.config.width}}">\
-                            <div class="modal-content">\
-                                <div class="modal-body">\
-                                    <view-modal-content></view-modal-content>\
-                                </div>\
-                                <view-modal-close></view-modal-close>\
-                            </div>\
-                        </div>',
             link: modalDialog
         };
 
@@ -44,56 +38,5 @@
         }
     }
 
-
-    /*弹出框内容指令*/
-    /*
-     * demo:
-     * <view-modal-content></view-modal-content>
-     * */
-    function viewModalContent() {
-        return {
-            replace: true,
-            restrict: 'EA',
-            scope: {
-                config:'@config'
-            },
-            templateUrl:function (scope) {
-                if(scope.config){
-                    return scope.config.url;
-                }else{
-                    return '';
-                }
-            },
-            link: modalContent
-        };
-
-        /*link实现*/
-        function modalContent(scope, elem, attrs, ctrl) {
-
-        }
-    }
-
-
-    /*弹出框关闭指令*/
-    /*
-     * demo:
-     * <view-modal-close></view-modal-close>
-     * */
-    function viewModalClose() {
-        return {
-            replace: true,
-            restrict: 'EA',
-            scope: {},
-            template: '<div class="modal-footer">\
-                            <button type="button" class="btn btn-red"  data-dismiss="modal">关闭</button>\
-                    </div>',
-            link: modalClose
-        };
-
-        /*link实现*/
-        function modalClose(scope, elem, attrs, ctrl) {
-
-        }
-    }
 
 }());
