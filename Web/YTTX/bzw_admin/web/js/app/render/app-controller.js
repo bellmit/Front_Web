@@ -149,7 +149,10 @@ angular.module('app')
         $scope.$on('toggleModal', function (event, config) {
             /*执行弹窗*/
             appService.toggleModal(config);
+            angular.module('app').directive('viewModalDialog');
         });
 
+
+/*/http://lib.csdn.net/article/angularjs/7197*/
 
     }]);
