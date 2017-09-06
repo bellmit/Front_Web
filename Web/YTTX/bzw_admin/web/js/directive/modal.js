@@ -9,7 +9,7 @@
 
 
     /*指令依赖注入*/
-    //viewModalDialog.$inject = ['$timeout'];
+    viewModalDialog.$inject = ['$compile'];
 
 
 
@@ -20,20 +20,33 @@
      * demo:
      * <view-modal-dialog></view-modal-dialog>
      * */
-    function viewModalDialog() {
-        var modal_timer = null;
+    function viewModalDialog($compile) {
+        var template = '',
+            tpl;
+
         return {
             replace: false,
             restrict: 'EA',
-            scope: {},
-            templateUrl: function (elem, attrs) {
-                return attrs.url || 'view/modal/index.html';
+            scope: {
+                url:'=url',
+                message:'=message'
             },
             link: modalDialog
         };
 
         /*link实现*/
-        function modalDialog(scope, elem, attrs, ctrl) {
+        function modalDialog(scope, element, attrs, ctrl) {
+            /*获取模板地址*/
+            scope.getUrl = function() {
+                return scope.url;
+            };
+            /*监控地址变化*/
+            scope.$watch(scope.url,function () {
+                template = '<div ng-include="getUrl()"></div>';
+                tpl = $compile(template);
+                element.append(tpl(scope));
+            });
+
 
         }
     }

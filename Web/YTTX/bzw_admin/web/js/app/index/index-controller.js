@@ -8,13 +8,6 @@ angular.module('app')
         this.menuitem = debug ? indexService.getSideInfo() : [];
 
 
-        /*模型--测试弹出指令*/
-        this.modal = {
-            width: 'g-w-percent48',
-            url: 'view/modal/index.html'
-        };
-
-
         /*获取快捷方式*/
         this.getQuickItem = function () {
             return loginService.getMenuData();
@@ -25,8 +18,10 @@ angular.module('app')
         /*显示弹窗*/
         this.toggleModal = function (config) {
             /*配置弹窗*/
-            self.modal.url=config.url;
-            $scope.$emit('configModal', self.modal);
+            $scope.$emit('configModal',{
+                url:config.url,
+                width:config.width
+            });
             /*弹出弹窗*/
             $scope.$emit('toggleModal', {
                 display: config.display

@@ -674,7 +674,17 @@
             var mlist = config.module ? config.module : [{
                     "modCode": "yttx-admin",
                     "modId": 10,
-                    "modName": "管理员管理"
+                    "modName": "管理员管理",
+                    "modItem":
+                        [{
+                            "modCode": "admin-list",
+                            "modLink": "admin",
+                            "modName": "管理员管理"
+                        },{
+                            "modCode": "admin-list",
+                            "modLink": "admin",
+                            "modName": "新增管理员管理"
+                        }]
                 }, {
                     "modCode": "yttx-business",
                     "modId": 20,

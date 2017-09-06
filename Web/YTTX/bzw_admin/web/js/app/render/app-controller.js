@@ -2,7 +2,7 @@
 
 /*控制器设置基本配置*/
 angular.module('app')
-    .controller('AppController', ['toolUtil', '$scope', '$compile', 'loginService', 'appService', function (toolUtil, $scope, $compile, loginService, appService) {
+    .controller('AppController', ['toolUtil', '$scope', '$templateCache', 'loginService', 'appService', function (toolUtil, $scope, $templateCache, loginService, appService) {
         var self = this,
             debug = true/*测试模式*/,
             create = true/*是否生成新菜单*/;
@@ -14,10 +14,20 @@ angular.module('app')
         };
 
 
-        /*模型--弹窗基本配置*/
+        /*模型--弹窗基本配置
+         *
+         * modal={
+         *   config:{
+         *      width:'g-w-percent48'//配置容器宽度,
+         *      url:'view/modal/index.html'//配置模板地址
+         *   }
+         * }
+         * */
         this.modal = {
-            width: 'g-w-percent48',
-            url: 'view/modal/index.html'
+            config: {
+                width: 'g-w-percent48',
+                url: 'view/modal/index.html'
+            }
         };
 
 
@@ -135,24 +145,23 @@ angular.module('app')
             });
         };
 
-
-        /*弹出服务*/
         /*配置弹窗*/
         $scope.$on('configModal', function (event, config) {
-            console.log(self.modal);
-            appService.configModal(self.modal, config);
-            console.log(self.modal);
+            self.modal.config = appService.configModal(config);
         });
 
 
         /*显示隐藏弹窗*/
+        /*
+        * {
+        *   display:'show'//切换方式
+        *   delay:1000,延迟操作，毫秒数
+        *   clear:是否清除延迟表单
+        * }
+        * */
         $scope.$on('toggleModal', function (event, config) {
             /*执行弹窗*/
             appService.toggleModal(config);
-            angular.module('app').directive('viewModalDialog');
         });
-
-
-/*/http://lib.csdn.net/article/angularjs/7197*/
 
     }]);
