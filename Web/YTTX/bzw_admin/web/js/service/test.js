@@ -675,52 +675,148 @@
                     "modCode": "yttx-admin",
                     "modId": 10,
                     "modName": "管理员管理",
-                    "modItem":
-                        [{
+                    "modItem": [{
                             "modCode": "admin-list",
                             "modLink": "admin",
                             "modName": "管理员管理"
                         },{
-                            "modCode": "admin-list",
-                            "modLink": "admin",
-                            "modName": "新增管理员管理"
+                            "modCode": "admin-add",
+                            "modLink": "admin.add",
+                            "modName": "新增管理员"
                         }]
                 }, {
                     "modCode": "yttx-business",
                     "modId": 20,
-                    "modName": "商家管理"
+                    "modName": "商家管理",
+                    "modItem": [{
+                            "modCode": "business-list",
+                            "modLink": "business",
+                            "modName": "商家管理"
+                        },{
+                            "modCode": "business-stock",
+                            "modLink": "business.stock",
+                            "modName": "商品库"
+                        }]
                 }, {
                     "modCode": "yttx-provider",
                     "modId": 30,
-                    "modName": "供应商管理"
+                    "modName": "供应商管理",
+                    "modItem": [{
+                        "modCode": "provider-list",
+                        "modLink": "provider",
+                        "modName": "供应商管理"
+                    },{
+                        "modCode": "provider-audit",
+                        "modLink": "provider.audit",
+                        "modName": "待审核供应商"
+                    }]
                 }, {
                     "modCode": "yttx-order",
                     "modId": 40,
-                    "modName": "订单管理"
+                    "modName": "订单管理",
+                    "modItem": [{
+                        "modCode": "order-list",
+                        "modLink": "order",
+                        "modName": "订单管理"
+                    },{
+                        "modCode": "order-comment",
+                        "modLink": "order.comment",
+                        "modName": "评论管理"
+                    }]
                 }, {
                     "modCode": "yttx-goods",
                     "modId": 50,
-                    "modName": "商品管理"
+                    "modName": "商品管理",
+                    "modItem": [{
+                        "modCode": "goods-list",
+                        "modLink": "goods",
+                        "modName": "商品管理"
+                    },{
+                        "modCode": "goods-type",
+                        "modLink": "goods.type",
+                        "modName": "商品分类管理"
+                    },{
+                        "modCode": "goods-attr",
+                        "modLink": "goods.attr",
+                        "modName": "商品属性管理"
+                    }]
                 }, {
                     "modCode": "yttx-user",
                     "modId": 60,
-                    "modName": "用户管理"
+                    "modName": "用户管理",
+                    "modItem": [{
+                        "modCode": "user-list",
+                        "modLink": "user",
+                        "modName": "用户管理"
+                    }]
                 }, {
                     "modCode": "yttx-warehouse",
                     "modId": 70,
-                    "modName": "商家商城订单"
+                    "modName": "商家商城订单",
+                    "modItem": [{
+                        "modCode": "warehouse-list",
+                        "modLink": "warehouse",
+                        "modName": "商家商城管理"
+                    }]
                 }, {
                     "modCode": "yttx-finance",
                     "modId": 80,
-                    "modName": "财务管理"
+                    "modName": "财务管理",
+                    "modItem": [{
+                        "modCode": "finance-list",
+                        "modLink": "finance",
+                        "modName": "财务管理"
+                    },{
+                        "modCode": "finance-record",
+                        "modLink": "finance.record",
+                        "modName": "交易流水"
+                    },{
+                        "modCode": "finance-cash",
+                        "modLink": "finance.cash",
+                        "modName": "提现"
+                    },{
+                        "modCode": "finance-card",
+                        "modLink": "finance.card",
+                        "modName": "银行卡管理"
+                    }]
                 }, {
                     "modCode": "yttx-profit",
                     "modId": 90,
-                    "modName": "分润管理"
+                    "modName": "分润管理",
+                    "modItem": [{
+                        "modCode": "profit-list",
+                        "modLink": "profit",
+                        "modName": "分润管理"
+                    },{
+                        "modCode": "profit-unclear",
+                        "modLink": "profit.unclear",
+                        "modName": "未清算管理"
+                    },{
+                        "modCode": "profit-history",
+                        "modLink": "profit.history",
+                        "modName": "历史分润管理"
+                    },{
+                        "modCode": "profit-setting",
+                        "modLink": "profit.setting",
+                        "modName": "分润设置"
+                    }]
                 }, {
                     "modCode": "yttx-statistics",
                     "modId": 100,
-                    "modName": "统计管理"
+                    "modName": "统计管理",
+                    "modItem": [{
+                        "modCode": "statistics",
+                        "modLink": "statistics",
+                        "modName": "用户统计"
+                    },{
+                        "modCode": "statistics-provider",
+                        "modLink": "statistics.provider",
+                        "modName": "供应商统计"
+                    },{
+                        "modCode": "statistics-goods",
+                        "modLink": "statistics.goods",
+                        "modName": "商品统计"
+                    }]
                 }, {
                     "modCode": "yttx-statistics",
                     "modId": 110,
