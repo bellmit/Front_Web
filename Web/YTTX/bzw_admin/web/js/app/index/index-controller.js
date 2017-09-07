@@ -1,32 +1,51 @@
-angular.module('app')
-    .controller('IndexController', ['$scope', 'loginService', 'indexService', function ($scope, loginService, indexService) {
+/*首页模块应用--控制器*/
+(function () {
+    'use strict';
 
-        var self = this,
+
+    /*创建控制器*/
+    angular
+        .module('app')
+        .controller('indexController', indexController);
+
+    /*控制注入依赖*/
+    indexController.$inject = ['$scope', 'loginService', 'indexService'];
+
+
+    /*控制器实现*/
+    function indexController($scope, loginService, indexService) {
+        var vm = this,
             debug = true/*测试模式*/;
 
         /*模型--主内容侧边栏*/
-        this.menuitem = debug ? indexService.getSideInfo() : [];
+        vm.menuitem = debug ? indexService.getSideInfo() : [];
 
 
+        /*对外接口*/
+        vm.getQuickItem = getQuickItem/*获取快捷方式*/;
+        vm.toggleModal = toggleModal/*显示弹窗*/;
+
+
+        /*接口实现--公有*/
         /*获取快捷方式*/
-        this.getQuickItem = function () {
+        function getQuickItem() {
             return loginService.getMenuData();
-        };
+        }
 
-
-        /**/
         /*显示弹窗*/
-        this.toggleModal = function (config) {
+        function toggleModal(config) {
             /*配置弹窗*/
-            $scope.$emit('configModal',{
-                url:config.url,
-                width:config.width
+            $scope.$emit('configModal', {
+                url: config.url,
+                width: config.width
             });
             /*弹出弹窗*/
             $scope.$emit('toggleModal', {
                 display: config.display
             });
-        };
+        }
+
+    }
 
 
-    }]);
+}());

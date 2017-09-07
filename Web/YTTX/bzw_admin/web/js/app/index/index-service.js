@@ -1,28 +1,44 @@
-angular.module('app')
-    .service('indexService', ['toolUtil', 'toolDialog','loginService', 'powerService', 'testService', function (toolUtil, toolDialog, loginService, powerService, testService) {
+/*首页模块应用--服务*/
+(function () {
+    'use strict';
 
+    /*创建首页模块应用服务*/
+    angular
+        .module('app')
+        .service('indexService', indexService);
+
+
+    /*服务注入依赖*/
+    indexService.$inject = ['toolUtil', 'loginService', 'powerService', 'testService'];
+
+
+    /*服务实现*/
+    function indexService(toolUtil, loginService, powerService, testService) {
         /*获取缓存数据*/
-        var self = this,
-            module_id = 0/*模块id*/,
-            cache = loginService.getCache();
+        var module_id = 0/*模块id*/,
+            powermap = powerService.getCurrentPower(module_id),
+        /*初始化权限 to do*/
+            init_power = {
+                add: true || toolUtil.isPower('add', powermap, true)/*增*/,
+                delete: true || toolUtil.isPower('delete', powermap, true)/*删*/,
+                update: true || toolUtil.isPower('update', powermap, true)/*改*/,
+                query: true || toolUtil.isPower('query', powermap, true)/*查*/
+            };
 
-        var powermap = powerService.getCurrentPower(module_id);
+        /*对外接口*/
+        this.getCurrentPower = getCurrentPower/*获取权限列表*/;
+        this.getSideInfo = getSideInfo/*获取侧边栏信息*/;
+        this.loginOut = loginOut/*退出系统*/;
 
-        /*初始化权限*/
-        var init_power = {
-            add: toolUtil.isPower('invoice-print', powermap, true)/*增*/,
-            delete: toolUtil.isPower('invoice-export', powermap, true)/*删*/,
-            update: toolUtil.isPower('invoice-details', powermap, true)/*改*/,
-            query: toolUtil.isPower('invoice-delivery', powermap, true)/*查*/
-        };
 
+        /*接口实现*/
         /*获取权限列表*/
-        this.getCurrentPower = function () {
+        function getCurrentPower() {
             return init_power;
-        };
-        
+        }
+
         /*获取侧边栏信息*/
-        this.getSideInfo=function () {
+        function getSideInfo() {
             return testService.getMap({
                 map: {
                     'name': 'name',
@@ -31,13 +47,11 @@ angular.module('app')
                 mapmin: 5,
                 mapmax: 15
             }).list;
-        };
+        }
 
-
-        /*扩展服务--退出系统*/
-        this.loginOut = function () {
+        /*退出系统*/
+        function loginOut() {
             loginService.outAction();
-        };
-        
-
-    }]);
+        }
+    }
+}());

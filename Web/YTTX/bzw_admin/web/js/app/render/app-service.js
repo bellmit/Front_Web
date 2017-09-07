@@ -1,22 +1,23 @@
-/*初始化渲染服务*/
+/*主模块应用--服务*/
 (function () {
     'use strict';
 
-    /*创建渲染服务*/
+    /*创主模块应用服务*/
     angular
         .module('app')
         .service('appService', appService);
 
 
     /*服务注入依赖*/
+    appService.$inject=['toolUtil'];
 
 
     /*服务实现*/
-    function appService() {
+    function appService(toolUtil) {
         /*视口服务*/
         var viewmode = 'default'/*视口类型*/,
-            container = 1080,
-            viewwidth = 1080 - 367/*视口宽度*/,
+            container = 1080/*显示容器宽度*/,
+            viewwidth = container - 367/*视口宽度*/,
             viewoffset = 0/*视口误差*/,
             viewside = 367/*logo + logout + padding*/,
             size = 18/*单个子宽度*/,
@@ -31,16 +32,28 @@
 
 
         /*对外接口*/
+        this.isSupport=isSupport/*兼容性*/;
+        this.getSystemInfo=getSystemInfo/*获取系统信息*/;
         this.calculateMenu = calculateMenu/*视口服务--计算当前菜单的视口宽度*/;
         this.getViewWidth = getViewWidth/*视口服务--获取视口宽度*/;
         this.changeViewMode = changeViewMode/*视口服务--切换视口类型*/;
         this.renderMenu = renderMenu/*视口服务--菜单渲染*/;
         this.getLoginMessage = getLoginMessage/*视口服务--获取登录信息*/;
-
         this.getModalWrap = getModalWrap/*弹窗服务--获取弹窗容器dom引用*/;
         this.toggleModal = toggleModal/*弹窗服务--显示隐藏弹窗*/;
         this.configModal = configModal/*弹窗服务--配置弹窗*/;
 
+
+        /*接口实现*/
+        /*兼容性判断*/
+        function isSupport() {
+            return toolUtil.isSupport();
+        }
+
+        /*获取系统信息*/
+        function getSystemInfo() {
+            return toolUtil.getSystemInfo();
+        }
 
         /*视口服务--获取视口宽度*/
         function getViewWidth() {
@@ -205,6 +218,7 @@
                 model.login = [];
             }
         }
+
 
 
         /*弹窗服务--获取弹窗容器dom引用*/

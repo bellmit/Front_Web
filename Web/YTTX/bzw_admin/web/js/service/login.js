@@ -36,6 +36,7 @@
         this.outAction = outAction/*设置退出按钮缓存或操作退出动作，此服务主要用于非app_ctrl控制部分*/;
 
 
+        /*接口实现*/
         /*是否登录，hc：为已经登录的缓存信息*/
         function isLogin(hc) {
             var logininfo = false,

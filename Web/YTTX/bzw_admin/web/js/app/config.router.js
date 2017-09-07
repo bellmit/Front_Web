@@ -38,11 +38,10 @@
 
         /*路由--登录和首页*/
         $stateProvider
+            /*登录和首页*/
             .state('app', {
                 url: '/app',
                 templateUrl: 'view/index.html',
-                /*controller: 'AppController',
-                controllerAs: 'app_ctrl',*/
                 resolve: {
                     /*延迟加载，依赖相关组件*/
                     deps: ['$ocLazyLoad',
@@ -51,124 +50,149 @@
                         }]
                 }
             })
-            /*.state('organization', {
-                url: '/organization',
-                templateUrl: 'tpl/organization.html',
+            /*管理*/
+            .state('admin', {
+                url: '/admin',
+                templateUrl: 'view/admin/admin.html',
                 resolve: {
-                    /!*延迟加载，依赖相关组件*!/
+                    /*延迟加载，依赖相关组件*/
                     deps: ['$ocLazyLoad',
                         function ($ocLazyLoad) {
-                            return $ocLazyLoad.load(['js/plugins/pagination/pagination.js',
-                                'js/plugins/CustomScrollbar/customScrollbar.concat.min.js',
-                                'js/app/services/address/address_service.js', 'js/app/module/organization/organization_service.js', 'js/app/module/organization/organization_controller.js']);
+                            return $ocLazyLoad.load(['js/app/admin/admin-controller.js','js/app/admin/admin-service.js']);
                         }]
                 }
-            })*/
-            /*.state('role', {
-                url: '/role',
-                templateUrl: 'tpl/organization_role.html',
+            })
+            /*商家管理*/
+            .state('business', {
+                url: '/business',
+                templateUrl: 'view/index.html',
                 resolve: {
-                    /!*延迟加载，依赖相关组件*!/
+                    /*延迟加载，依赖相关组件*/
                     deps: ['$ocLazyLoad',
                         function ($ocLazyLoad) {
-                            return $ocLazyLoad.load(['js/plugins/datatables/dataTables.bootstrap.css',
-                                'js/plugins/datatables/js/jquery.dataTables.js',
-                                'js/plugins/pagination/pagination.js',
-                                'js/plugins/CustomScrollbar/customScrollbar.concat.min.js',
-                                'js/app/services/datatable/datatable_column_service.js',
-                                'js/app/services/datatable/datatable_checkall_service.js',
-                                'js/app/services/address/address_service.js',
-                                'js/app/module/organization_role/organization_role_service.js',
-                                'js/app/module/organization_role/organization_role_controller.js']);
+                            return $ocLazyLoad.load([]);
                         }]
                 }
-            })*/
-            //订单管理
-            /*.state('order', {
+            })
+            /*供应商管理*/
+            .state('provider', {
+                url: '/provider',
+                templateUrl: 'view/index.html',
+                resolve: {
+                    /*延迟加载，依赖相关组件*/
+                    deps: ['$ocLazyLoad',
+                        function ($ocLazyLoad) {
+                            return $ocLazyLoad.load([]);
+                        }]
+                }
+            })
+            /*订单管理*/
+            .state('order', {
                 url: '/order',
-                templateUrl: 'tpl/order.html',
+                templateUrl: 'view/index.html',
                 resolve: {
-                    /!*延迟加载，依赖相关组件*!/
+                    /*延迟加载，依赖相关组件*/
                     deps: ['$ocLazyLoad',
                         function ($ocLazyLoad) {
-                            return $ocLazyLoad.load(['js/plugins/datatables/dataTables.bootstrap.css',
-                                'js/plugins/datatables/js/jquery.dataTables.js',
-                                'js/plugins/pagination/pagination.js',
-                                'js/plugins/CustomScrollbar/customScrollbar.concat.min.js',
-                                'js/app/services/datatable/datatable_column_service.js',
-                                'js/app/services/datatable/datatable_checkall_service.js',
-                                'js/app/services/datatable/datatable_itemaction_service.js',
-                                'js/plugins/My97DatePicker/WdatePicker.js',
-                                'js/app/services/datepick97/datepicker97_service.js',
-                                'js/app/module/order/order_service.js',
-                                'js/app/module/order/order_controller.js']);
+                            return $ocLazyLoad.load([]);
                         }]
                 }
-            })*/
-            //发货管理
-            /*.state('invoice', {
-                url: '/invoice',
-                templateUrl: 'tpl/invoice.html',
+            })
+            /*商品管理*/
+            .state('goods', {
+                url: '/goods',
+                templateUrl: 'view/index.html',
                 resolve: {
-                    /!*延迟加载，依赖相关组件*!/
+                    /*延迟加载，依赖相关组件*/
                     deps: ['$ocLazyLoad',
                         function ($ocLazyLoad) {
-                            return $ocLazyLoad.load(['js/plugins/datatables/dataTables.bootstrap.css',
-                                'js/plugins/datatables/js/jquery.dataTables.js',
-                                'js/plugins/pagination/pagination.js',
-                                'js/plugins/CustomScrollbar/customScrollbar.concat.min.js',
-                                'js/app/services/datatable/datatable_column_service.js',
-                                'js/app/services/datatable/datatable_itemaction_service.js',
-                                'js/plugins/My97DatePicker/WdatePicker.js',
-                                'js/app/services/datepick97/datepicker97_service.js',
-                                'js/app/module/invoice/invoice_service.js',
-                                'js/app/module/invoice/invoice_controller.js']);
+                            return $ocLazyLoad.load([]);
                         }]
                 }
-            })*/
-            //采购管理
-            /*.state('purchase', {
-                url: '/purchase',
-                templateUrl: 'tpl/purchase.html',
+            })
+            /*用户管理*/
+            .state('user', {
+                url: '/user',
+                templateUrl: 'view/index.html',
                 resolve: {
-                    /!*延迟加载，依赖相关组件*!/
+                    /*延迟加载，依赖相关组件*/
                     deps: ['$ocLazyLoad',
                         function ($ocLazyLoad) {
-                            return $ocLazyLoad.load(['js/plugins/datatables/dataTables.bootstrap.css',
-                                'js/plugins/datatables/js/jquery.dataTables.js',
-                                'js/plugins/pagination/pagination.js',
-                                'js/plugins/CustomScrollbar/customScrollbar.concat.min.js',
-                                'js/app/services/datatable/datatable_column_service.js',
-                                'js/app/services/datatable/datatable_checkall_service.js',
-                                'js/app/services/datatable/datatable_itemaction_service.js',
-                                'js/plugins/My97DatePicker/WdatePicker.js',
-                                'js/app/services/datepick97/datepicker97_service.js',
-                                'js/app/module/purchase/purchase_service.js',
-                                'js/app/module/purchase/purchase_controller.js']);
+                            return $ocLazyLoad.load([]);
                         }]
                 }
-            })*/
-            //仓库管理
-            /*.state('warehouse', {
+            })
+            /*商家商城订单*/
+            .state('warehouse', {
                 url: '/warehouse',
-                templateUrl: 'tpl/warehouse.html',
+                templateUrl: 'view/index.html',
                 resolve: {
-                    /!*延迟加载，依赖相关组件*!/
+                    /*延迟加载，依赖相关组件*/
                     deps: ['$ocLazyLoad',
                         function ($ocLazyLoad) {
-                            return $ocLazyLoad.load(['js/plugins/datatables/dataTables.bootstrap.css',
-                                'js/plugins/datatables/js/jquery.dataTables.js',
-                                'js/plugins/pagination/pagination.js',
-                                'js/plugins/CustomScrollbar/customScrollbar.concat.min.js',
-                                'js/app/services/datatable/datatable_column_service.js',
-                                'js/app/services/datatable/datatable_checkall_service.js',
-                                'js/app/services/datatable/datatable_itemaction_service.js',
-                                'js/plugins/My97DatePicker/WdatePicker.js',
-                                'js/app/services/datepick97/datepicker97_service.js',
-                                'js/app/module/warehouse/warehouse_service.js',
-                                'js/app/module/warehouse/warehouse_controller.js']);
+                            return $ocLazyLoad.load([]);
                         }]
                 }
-            })*/;
+            })
+            /*财务管理*/
+            .state('finance', {
+                url: '/finance',
+                templateUrl: 'view/index.html',
+                resolve: {
+                    /*延迟加载，依赖相关组件*/
+                    deps: ['$ocLazyLoad',
+                        function ($ocLazyLoad) {
+                            return $ocLazyLoad.load([]);
+                        }]
+                }
+            })
+            /*分润管理*/
+            .state('profit', {
+                url: '/profit',
+                templateUrl: 'view/index.html',
+                resolve: {
+                    /*延迟加载，依赖相关组件*/
+                    deps: ['$ocLazyLoad',
+                        function ($ocLazyLoad) {
+                            return $ocLazyLoad.load([]);
+                        }]
+                }
+            })
+            /*统计管理*/
+            .state('statistics', {
+                url: '/statistics',
+                templateUrl: 'view/index.html',
+                resolve: {
+                    /*延迟加载，依赖相关组件*/
+                    deps: ['$ocLazyLoad',
+                        function ($ocLazyLoad) {
+                            return $ocLazyLoad.load([]);
+                        }]
+                }
+            })
+            /*平台管理*/
+            .state('platform', {
+                url: '/platform',
+                templateUrl: 'view/index.html',
+                resolve: {
+                    /*延迟加载，依赖相关组件*/
+                    deps: ['$ocLazyLoad',
+                        function ($ocLazyLoad) {
+                            return $ocLazyLoad.load([]);
+                        }]
+                }
+            })
+            /*设置管理*/
+            .state('setting', {
+                url: '/setting',
+                templateUrl: 'view/index.html',
+                resolve: {
+                    /*延迟加载，依赖相关组件*/
+                    deps: ['$ocLazyLoad',
+                        function ($ocLazyLoad) {
+                            return $ocLazyLoad.load([]);
+                        }]
+                }
+            });
     }
 }());
