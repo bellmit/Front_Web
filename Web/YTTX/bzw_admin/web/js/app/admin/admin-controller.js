@@ -20,12 +20,16 @@
         vm.powerlist = adminService.getCurrentPower();
 
         /*模型--菜单列表*/
-        vm.listitem = [{
+        /*vm.listitem = [{
             name: '新增管理员',
             power: vm.powerlist.add,
             href: 'admin.add',
             active: ''
-        }];
+        }];*/
+
+        vm.listitem = adminService.getSideMenu();
+
+        console.log(vm.listitem);
 
         /*模型--操作记录*/
         vm.record={

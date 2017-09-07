@@ -87,6 +87,7 @@
                 loadMainMenu: loadMainMenu/*加载主菜单*/,
                 getPowerListByModule: getPowerListByModule/*根据模块判断拥有的权限(拥有的权限),key:(索引，模块名称),cache:模块；此方法结果一般与isPower配合使用*/,
                 isPower: isPower/*根据关键词判断权限flag:是否过滤没有的权限*/,
+                getIdByPath: getIdByPath/*根据路径获取ID*/,
                 autoScroll: autoScroll/*调用滚动条*/,
                 isLogin: isLogin/*是否登陆*/,
                 validLogin: validLogin/*判断缓存是否有效*/,
@@ -1087,7 +1088,7 @@
                         'yttx-finance': 'finance',
                         'yttx-profit': 'profit',
                         'yttx-statistics': 'statistics',
-                        'yttx-platform':'platform',
+                        'yttx-platform': 'platform',
                         'yttx-setting': 'setting'
                     },
                     list = [],
@@ -1191,7 +1192,7 @@
                     menu: menu,
                     power: power,
                     module: module,
-                    menusource:menusource,
+                    menusource: menusource,
                     list: list
                 }
             }
@@ -1280,6 +1281,25 @@
                 }
             }
             return ispower;
+        }
+
+        //根据路径判断模块
+        function getIdByPath(cache, path) {
+            if (!path) {
+                /*不存在路径则返回首页*/
+                return 0;
+            }
+            if (path.indexOf('.') !== -1) {
+                path = path.split('.')[0];
+            }
+            path=path.replace(/\/*/g,'');
+            var item;
+            for (var i in cache) {
+                item = cache[i];
+                if (item && item['module'] === path) {
+                    return item['id'];
+                }
+            }
         }
 
         /*调用滚动条*/
