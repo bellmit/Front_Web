@@ -111,7 +111,7 @@
                                 }
                             };
                             /*设置缓存*/
-                            setCache(tempcache);
+                            setCache(tempcache)/*此处创建数据为空的初始化缓存*/;
                             /*设置个人信息*/
                             appService.getLoginMessage(model.message, function () {
                                 var temparr = [{
@@ -216,6 +216,7 @@
                                             cache['moduleMap'] = list['module'];
                                             cache['menuMap'] = list['menu'];
                                             cache['powerMap'] = list['power'];
+                                            cache['menuSourceMap']=list['menusource'];
                                             /*更新缓存*/
                                             toolUtil.setParams(unique_key, cache);
                                             if (fn && typeof fn === 'function') {

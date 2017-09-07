@@ -80,6 +80,7 @@
                 'order': 2/*订单*/,
                 'finance': 3/*财务*/,
                 'equipment': 4/*设备*/,
+                'platform': 4/*平台*/,
                 'setting': 5/*设置*/,
                 'invoice': 6/*发货*/,
                 'purchase': 7/*采购*/,

@@ -1083,16 +1083,18 @@
                         'yttx-order': 'order',
                         'yttx-goods': 'goods',
                         'yttx-user': 'user',
-                        'yttx-warehouse':'warehouse',
-                        'yttx-finance':'finance',
-                        'yttx-profit':'profit',
-                        'yttx-statistics':'statistics',
-                        'yttx-setting':'setting'
+                        'yttx-warehouse': 'warehouse',
+                        'yttx-finance': 'finance',
+                        'yttx-profit': 'profit',
+                        'yttx-statistics': 'statistics',
+                        'yttx-platform':'platform',
+                        'yttx-setting': 'setting'
                     },
                     list = [],
                     module = {},
                     menu = {},
                     power = {},
+                    menusource = {},
                     i = 0;
 
                 /*设置首页*/
@@ -1102,10 +1104,15 @@
                         code: 'app',
                         name: '首页',
                         href: 'app',
-                        module: 'app'
+                        module: 'app',
+                        sub: []
                     };
                     list.push(index);
                     menu[0] = index;
+
+                    /*创建资源缓存*/
+                    menusource[0] = [];
+
 
                     /*创建权限缓存*/
                     power[0] = {
@@ -1113,7 +1120,8 @@
                         code: 'app',
                         name: '首页',
                         module: 'app',
-                        power: 0
+                        power: 0,
+                        sub: []
                     };
 
                     /*创建模块缓存*/
@@ -1121,27 +1129,42 @@
                         id: 0,
                         code: 'app',
                         name: '首页',
-                        module: 'app'
+                        module: 'app',
+                        sub: []
                     };
                 }
 
                 for (i; i < len; i++) {
                     var mitem = data[i],
-                        mid = mitem['modId'],
-                        mlink = mitem['modLink'],
-                        msub = mitem['modItem'],
-                        mpower = mitem['permitItem'],
-                        mname = mitem['modName'],
-                        mcode = mitem['modCode'],
-                        tempobj = {
-                            id: mid,
-                            code: mcode,
-                            name: mname,
-                            href: menu_map[mlink] || mlink,
-                            module: menu_map[mlink] || mlink,
-                            sub: msub
-                        };
+                        mid = mitem['modId']/*模块id*/,
+                        mlink = mitem['modLink']/*模块超链接*/,
+                        msub = mitem['modItem']/*模块子菜单*/,
+                        mpower = mitem['permitItem']/*模块权限项*/,
+                        mname = mitem['modName']/*模块名称*/,
+                        mcode = mitem['modCode']/*模块代码*/;
 
+                    if (typeof mlink === 'undefined') {
+                        mlink = mcode;
+                    }
+                    var tempobj = {
+                        id: mid,
+                        code: mcode,
+                        name: mname,
+                        href: menu_map[mlink] || mlink,
+                        module: menu_map[mlink] || mlink
+                    }/*临时缓存*/;
+
+                    /*处理子菜单*/
+                    if (msub) {
+                        tempobj["sub"] = msub;
+                        /*创建资源缓存*/
+                        menusource[mid] = msub;
+                    } else {
+                        tempobj["sub"] = [];
+                        menusource[mid] = [];
+                    }
+
+                    /*解析后的缓存对象*/
                     list.push(tempobj);
 
                     /*创建菜单缓存*/
@@ -1168,6 +1191,7 @@
                     menu: menu,
                     power: power,
                     module: module,
+                    menusource:menusource,
                     list: list
                 }
             }
