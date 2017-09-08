@@ -1,13 +1,15 @@
-<div ng-controller="adminController as admin_ctrl">
+<div>
     <div class="struct-layout-container">
+        <!--主内容-->
         <div class="struct-layout-main">
-            <!--主内容-->
             <h1 class="admin-layout-theme3 g-clear-pt">管理</h1>
         </div>
 
+
+        <!--侧边栏-->
         <div class="struct-layout-side">
-            <!--选项卡组件（切换机构和角色）-->
-            <ul data-view-side-list data-listitem="admin_ctrl.listitem" class="sub-list-wrap"></ul>
+            <!--子菜单-->
+            <ul data-view-side-list data-listitem="vm.listitem" class="sub-list-wrap"></ul>
         </div>
     </div>
 </div>

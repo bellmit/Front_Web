@@ -1,10 +1,10 @@
-/*通用工具类*/
+/*服务辅助工具类*/
 (function ($) {
     'use strict';
 
     /*定义或扩展工厂模块*/
     angular
-        .module('app')
+        .module('assist', [])
         .factory('assistCommon', assistCommon);
 
 
@@ -14,7 +14,14 @@
 
     /*工厂实现*/
     function assistCommon(toolUtil, toolDialog, $timeout) {
-        var common_api = {
+
+
+
+        /*对外接口*/
+        var $modal = null;
+
+
+        return {
             getColumnData: getColumnData/*获取表格数据*/,
             toggleModal: toggleModal/*弹出层显示隐藏*/,
             addFormDelay: addFormDelay/*表单类服务--执行延时任务序列*/,
@@ -23,9 +30,7 @@
             clearFormValid: clearFormValid/*表单类服务--重置表单数据*/,
             formSubmit: formSubmit/*表单类服务--提交表单数据*/,
             formReset: formReset/*表单类服务--重置表单*/
-        }/*对外接口*/;
-
-        return common_api;
+        };
 
 
         /*获取表格数据*/
@@ -108,15 +113,15 @@
         }
 
         /*表单类服务--清空表单模型数据*/
-        function clearFormData(data,fn) {
-            if(!data){
+        function clearFormData(data, fn) {
+            if (!data) {
                 return false;
             }
-            if(fn && typeof fn==='function'){
-                fn.call(null,data);
-            }else{
-                for(var i in data){
-                    data[i]='';
+            if (fn && typeof fn === 'function') {
+                fn.call(null, data);
+            } else {
+                for (var i in data) {
+                    data[i] = '';
                 }
             }
         }
@@ -149,14 +154,14 @@
         /*to do*/
         /*表单类服务--提交表单数据*/
         function formSubmit(config) {
-            
-            
+
+
         }
 
         /*to do*/
         /*表单类服务--重置表单*/
         function formReset(config) {
-            
+
         }
 
 

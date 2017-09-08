@@ -29,7 +29,7 @@
         .config(routerConfig);
 
     /*注入*/
-    routerConfig.$inject=['$stateProvider', '$urlRouterProvider'];
+    routerConfig.$inject = ['$stateProvider', '$urlRouterProvider'];
 
     /*路由实现*/
     function routerConfig($stateProvider, $urlRouterProvider) {
@@ -38,15 +38,20 @@
 
         /*路由--登录和首页*/
         $stateProvider
-            /*登录和首页*/
+        /*登录和首页*/
             .state('app', {
                 url: '/app',
                 templateUrl: 'view/index.html',
+                controller: 'indexController',
+                controllerAs: 'vm',
                 resolve: {
                     /*延迟加载，依赖相关组件*/
                     deps: ['$ocLazyLoad',
                         function ($ocLazyLoad) {
-                            return $ocLazyLoad.load(['js/app/index/index-controller.js','js/app/index/index-service.js']);
+                            return $ocLazyLoad.load([
+                                'js/app/index/index-controller.js',
+                                'js/app/index/index-service.js'
+                            ]);
                         }]
                 }
             })
@@ -54,11 +59,16 @@
             .state('admin', {
                 url: '/admin',
                 templateUrl: 'view/admin/admin.html',
+                controller: 'adminController',
+                controllerAs: 'vm',
                 resolve: {
                     /*延迟加载，依赖相关组件*/
                     deps: ['$ocLazyLoad',
                         function ($ocLazyLoad) {
-                            return $ocLazyLoad.load(['js/app/admin/admin-controller.js','js/app/admin/admin-service.js']);
+                            return $ocLazyLoad.load([
+                                'js/app/admin/admin-controller.js',
+                                'js/app/admin/admin-service.js'
+                            ]);
                         }]
                 }
             })
