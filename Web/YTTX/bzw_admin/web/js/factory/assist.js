@@ -9,21 +9,29 @@
 
 
     /*工厂依赖注入*/
-    assistCommon.$inject = ['toolUtil', 'toolDialog', '$timeout'];
+    assistCommon.$inject = ['toolUtil', 'toolDialog', '$timeout', 'dataTableService', 'pageService'];
 
 
     /*工厂实现*/
-    function assistCommon(toolUtil, toolDialog, $timeout) {
+    function assistCommon(toolUtil, toolDialog, $timeout, dataTableService, pageService) {
 
 
-
-        /*对外接口*/
         var $modal = null;
 
-
+        /*对外接口*/
         return {
             getColumnData: getColumnData/*获取表格数据*/,
             toggleModal: toggleModal/*弹出层显示隐藏*/,
+            
+            /*表格数据列类*/
+            initTable: initTable/*数据表格初始化*/,
+
+            /*分页类*/
+            initPage: initPage/*分页初始化*/,
+            resetPage: resetPage/*重置分页*/,
+            renderPage: renderPage/*渲染分页*/,
+
+            /*表单类*/
             addFormDelay: addFormDelay/*表单类服务--执行延时任务序列*/,
             clearFormDelay: clearFormDelay/*表单类服务--清除延时任务序列*/,
             clearFormData: clearFormData/*表单类服务--清空表单模型数据*/,
@@ -40,7 +48,6 @@
                 return false;
             }
         }
-
 
         /*弹出层显示隐藏*/
         /*config配置说明*/
@@ -151,17 +158,32 @@
             }
         }
 
-        /*to do*/
         /*表单类服务--提交表单数据*/
-        function formSubmit(config) {
+        function formSubmit(config) {}
 
-
-        }
-
-        /*to do*/
         /*表单类服务--重置表单*/
         function formReset(config) {
 
+        }
+
+        /*分页初始化*/
+        function initPage() {
+            pageService.initPage();
+        }
+
+        /*重置分页*/
+        function resetPage(config) {
+            pageService.resetPage(config);
+        }
+
+        /*渲染分页*/
+        function renderPage(config) {
+            pageService.renderPage(config);
+        }
+
+        /*数据表格初始化*/
+        function initTable() {
+            dataTableService.initTable();
         }
 
 

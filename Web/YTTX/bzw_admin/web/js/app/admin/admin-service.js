@@ -9,11 +9,11 @@
 
 
     /*服务注入依赖*/
-    adminService.$inject = ['toolUtil', 'toolDialog', 'assistCommon', '$location', 'loginService', 'powerService', 'dataTableService', 'pageService'];
+    adminService.$inject = ['toolUtil', 'toolDialog', '$location', 'loginService', 'powerService'];
 
 
     /*服务实现*/
-    function adminService(toolUtil, toolDialog, assistCommon, $location, loginService, powerService, dataTableService, pageService) {
+    function adminService(toolUtil, toolDialog, $location, loginService, powerService) {
         var cache = loginService.getCache()/*缓存*/,
             path = $location.path()/*模块*/,
             module_id = powerService.getIdByPath(cache.moduleMap, path)/*模块id*/,
@@ -30,9 +30,6 @@
         this.getCurrentPower = getCurrentPower/*获取当前权限*/;
         this.getSideMenu = getSideMenu/*获取侧边栏菜单*/;
         this.loginOut = loginOut/*退出*/;
-        this.initPage = initPage/*分页初始化*/;
-        this.resetPage = resetPage/*重置分页*/;
-        this.renderPage = renderPage/*渲染分页*/;
 
 
         /*接口实现*/
@@ -68,21 +65,7 @@
             loginService.outAction();
         }
 
-
-        /*分页初始化*/
-        function initPage() {
-            pageService.initPage();
-        }
-
-        /*重置分页*/
-        function resetPage(config) {
-            pageService.resetPage(config);
-        }
-
-        /*渲染分页*/
-        function renderPage(config) {
-            pageService.renderPage(config);
-        }
+        
 
     }
 

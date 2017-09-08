@@ -9,13 +9,18 @@
 
 
     /*控制注入依赖*/
-    adminController.$inject = ['adminService'];
+    adminController.$inject = ['assistCommon', 'adminService', 'testService'];
 
 
     /*控制器实现*/
-    function adminController(adminService) {
+    function adminController(assistCommon, adminService, testService) {
         var vm = this,
-            debug = true/*测试模式*/;
+            debug = true/*测试模式*/,
+            sequence = [{
+                seq: 1,
+                page: 'admin_page_wrap1',
+                table: 'admin_list_wrap1'
+            }]/*分页序列,表格序列*/;
 
         /*模型--操作权限列表*/
         vm.powerlist = adminService.getCurrentPower();
@@ -33,13 +38,13 @@
         /*模型--表格*/
         vm.table = {
             /*分页配置*/
-            table_page:{
+            table_page1: {
                 page: 1,
-                pageSize: 10,
+                pageSize: 20,
                 total: 0
             },
             /*请求配置*/
-            table_config: {
+            table_config1: {
                 processing: true, /*大消耗操作时是否显示处理状态*/
                 deferRender: true, /*是否延迟加载数据*/
                 autoWidth: true, /*是否*/
@@ -49,7 +54,7 @@
                     dataType: 'JSON',
                     method: 'post',
                     dataSrc: function (json) {
-                        if(debug){
+                        if (debug) {
                             var json = testService.test({
                                 map: {
                                     'id': 'id',
@@ -217,8 +222,8 @@
 
 
         /*初始化*/
-        adminService.initPage()/*分页初始化*/;
-        adminService.initTable()/*数据列表初始化*/;
+        assistCommon.initPage()/*分页初始化*/;
+        assistCommon.initTable()/*数据列表初始化*/;
 
 
         /*对外接口*/
