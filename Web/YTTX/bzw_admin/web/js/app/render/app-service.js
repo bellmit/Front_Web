@@ -157,13 +157,16 @@
                 if (tempwidth >= viewwidth) {
                     return {
                         subshow: true,
-                        mainmenu: menudata.slice(0, i + 1),
-                        submenu: menudata.slice(i + 1)
+                        mainmenu: menudata.slice(0, i),
+                        submenu: menudata.slice(i)
                     };
                 }
-                var main = menudata[i]['name'].length,
-                    j = 0;
+                var main = menudata[i]['name'].length;
                 count += main;
+
+                /*
+                原算法
+                var j = 0
                 for (j; j < main; j++) {
                     tempwidth += size * (j + 1);
                     tempwidth = parseInt(tempwidth, 10);
@@ -174,6 +177,16 @@
                             submenu: menudata.slice(i + 1)
                         };
                     }
+                }*/
+
+                tempwidth = tempwidth + (size * main);
+                tempwidth = parseInt(tempwidth, 10);
+                if (tempwidth >= viewwidth) {
+                    return {
+                        subshow: true,
+                        mainmenu: menudata.slice(0, i),
+                        submenu: menudata.slice(i)
+                    };
                 }
             }
             return {

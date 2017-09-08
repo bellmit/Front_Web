@@ -2,11 +2,14 @@
 
 /*默认屏幕*/
 .struct-layout-default {
+  background: @color-gray16;
+  padding-bottom:@layout-footer-height;
   /*主体*/
   .struct-layout-container {
     width: @layout-container-width !important;
     padding: @layout-containergap-top 0 @layout-containergap-bottom 0;
     margin: 0 auto;
+    min-height: 600px;
   }
 
   /*头部*/
@@ -38,6 +41,11 @@
   /*主显示区*/
   .struct-layout-main {
     width: @layout-container-width - @layout-side-width;
+    min-height:@layout-content-minheight;
+  }
+  /*侧边栏*/
+  .struct-layout-side {
+    min-height: @layout-content-minheight;
   }
 
   /*底部*/
@@ -52,11 +60,14 @@
 
 /*宽屏*/
 .struct-layout-auto {
+  //background: @color-white;
+  background: @color-gray16;
   /*主体*/
   .struct-layout-container {
-    padding: @layout-header-height 0 @layout-containergap-bottom 0;
+    padding: @layout-header-height 0 0 0;
     width: 100%;
     min-width: @layout-container-width !important;
+    min-height: 100vh;
   }
   /*头部*/
   .struct-layout-header {
@@ -88,9 +99,17 @@
   .struct-layout-main {
     width: 100%;
     margin-left: -@layout-side-width;
+    .calc-base(min-height,'100vh - 50px - 64px');
+    /*.calc-base('min-height',100vh - 50px - 88px);*/
+    /*min-height:.calc-base100vh;*/
     padding-left: @layout-contentgap-left + @layout-side-width;
   }
+  /*侧边栏*/
+  .struct-layout-side {
+    .calc-base(min-height,'100vh - 50px - 64px');
+  }
 
+  /*底部*/
   .struct-layout-footer{
     min-width:@layout-container-width;
     .footer-content-wrap{
