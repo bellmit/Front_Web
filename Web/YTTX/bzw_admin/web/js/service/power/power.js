@@ -16,7 +16,7 @@
         /*获取缓存数据*/
         var self = this,
             cache = loginService.getCache(),
-            powerCache = $.extend(true, {}, cache['powerMap']),
+            powerCache = cache['powerMap'],
             isrender = false/*dom是否渲染*/,
             isall = false/*是否支持全选*/,
             isitem = false/*是否支持单个选中事件*/,
@@ -87,6 +87,9 @@
         this.clearHeaderPower = clearHeaderPower/*清除头部选中*/;
         this.clearSelectPower = clearSelectPower/*权限服务--清除选中选择权限*/;
         this.getCurrentPower = getCurrentPower/*权限服务--获取当前用户的权限缓存,key(id，模块名称)*/;
+        this.getPowerListByModule = getPowerListByModule/*根据模块判断拥有的权限(拥有的权限),key:(索引，模块名称),cache:模块；此方法结果一般与isPower配合使用*/;
+        this.isPower = isPower/*根据关键词判断权限flag:是否过滤没有的权限*/;
+        this.getIdByPath = getIdByPath/*根据路径获取ID*/;
 
 
         /*初始化方法*/
@@ -815,11 +818,103 @@
         function getCurrentPower(key) {
             if (cache) {
                 if (typeof key !== 'undefined') {
-                    return toolUtil.getPowerListByModule(key, powerCache);
+                    return getPowerListByModule(key, powerCache);
                 }
                 return powerCache;
             }
             return null;
+        }
+
+        /*根据模块判断拥有的权限(拥有的权限),key:(索引，模块名称),cache:模块；此方法结果一般与isPower配合使用*/
+        function getPowerListByModule(key, cache) {
+            if (typeof key === 'undefined' || !cache) {
+                /*没有缓存数据或者索引不存在*/
+                return null;
+            } else {
+                /*查找权限*/
+                var currentpower = null;
+                for (var i in cache) {
+                    if (key === cache[i]['module']) {
+                        /*匹配模块关键字,返回匹配到的权限数组*/
+                        currentpower = cache[i]['power'];
+                        break;
+                    } else if (key === cache[i]['id']) {
+                        /*匹配模块关键字,返回匹配到的权限数组*/
+                        currentpower = cache[i]['power'];
+                        break;
+                    }
+                }
+
+                if (currentpower !== null) {
+                    var len = currentpower.length;
+                    if (len === 0) {
+                        /*权限为空*/
+                        return null;
+                    } else {
+                        return currentpower;
+                    }
+                }
+            }
+        }
+
+        /*根据关键词判断权限flag:是否过滤没有的权限*/
+        function isPower(key, list, flag) {
+            if (!key || !list) {
+                return false;
+            }
+            var ispower = false,
+                i = 0,
+                len = list.length;
+
+
+            if (len === 0) {
+                ispower = false;
+            } else {
+                if (flag) {
+                    var ispermit;
+                    for (i; i < len; i++) {
+                        ispermit = parseInt(list[i]['isPermit'], 10);
+                        if ((list[i]['funcCode'] === key || list[i]['funcCode'].indexOf(key) !== -1) && ispermit === 1) {
+                            ispower = true;
+                            break;
+                        } else if ((list[i]['funcName'] === key || list[i]['funcName'].indexOf(key) !== -1) && ispermit === 1) {
+                            ispower = true;
+                            break;
+                        }
+                    }
+                } else {
+                    for (i; i < len; i++) {
+                        if (list[i]['funcCode'] === key || list[i]['funcCode'].indexOf(key) !== -1) {
+                            ispower = true;
+                            break;
+                        } else if (list[i]['funcName'] === key || list[i]['funcName'].indexOf(key) !== -1) {
+                            ispower = true;
+                            break;
+                        }
+                    }
+                }
+            }
+            return ispower;
+        }
+
+        /*根据路径判断模块*/
+        function getIdByPath(cache, path) {
+            if (!path) {
+                /*不存在路径则返回首页*/
+                return 0;
+            }
+            if (path.indexOf('.') !== -1) {
+                path = path.split('.')[0];
+            }
+            path=path.replace(/\/*/g,'');
+            var item;
+            for (var i in cache) {
+                item = cache[i];
+                if (item && item['module'] === path) {
+                    return item['id'];
+                }
+            }
+            return 0;
         }
 
     }

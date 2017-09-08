@@ -9,20 +9,20 @@
 
 
     /*服务注入依赖*/
-    indexService.$inject = ['toolUtil', 'loginService', 'powerService', 'testService'];
+    indexService.$inject = ['loginService', 'powerService', '$location', 'testService'];
 
 
     /*服务实现*/
-    function indexService(toolUtil, loginService, powerService, testService) {
+    function indexService(loginService, powerService, $location, testService) {
         /*获取缓存数据*/
         var module_id = 0/*模块id*/,
             powermap = powerService.getCurrentPower(module_id),
         /*初始化权限 to do*/
             init_power = {
-                add: true || toolUtil.isPower('add', powermap, true)/*增*/,
-                delete: true || toolUtil.isPower('delete', powermap, true)/*删*/,
-                update: true || toolUtil.isPower('update', powermap, true)/*改*/,
-                query: true || toolUtil.isPower('query', powermap, true)/*查*/
+                add: true || powerService.isPower('add', powermap, true)/*增*/,
+                delete: true || powerService.isPower('delete', powermap, true)/*删*/,
+                update: true || powerService.isPower('update', powermap, true)/*改*/,
+                query: true || powerService.isPower('query', powermap, true)/*查*/
             };
 
         /*对外接口*/
