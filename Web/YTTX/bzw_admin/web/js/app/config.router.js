@@ -66,7 +66,8 @@
                     deps: ['$ocLazyLoad',
                         function ($ocLazyLoad) {
                             return $ocLazyLoad.load([
-                                'js/app/admin/admin-controller.js',
+                                'js/service/datatable/table.js',
+                                'js/service/page/page.js','js/app/admin/admin-controller.js',
                                 'js/app/admin/admin-service.js'
                             ]);
                         }]

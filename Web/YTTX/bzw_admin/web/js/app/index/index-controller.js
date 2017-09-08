@@ -9,11 +9,11 @@
         .controller('indexController', indexController);
 
     /*控制注入依赖*/
-    indexController.$inject = ['$scope', 'loginService', 'indexService'];
+    indexController.$inject = ['$scope','indexService'];
 
 
     /*控制器实现*/
-    function indexController($scope, loginService, indexService) {
+    function indexController($scope, indexService) {
         var vm = this,
             debug = true/*测试模式*/;
 
@@ -29,7 +29,7 @@
         /*接口实现--公有*/
         /*获取快捷方式*/
         function getQuickItem() {
-            return loginService.getMenuData();
+            return indexService.getQuickItem();
         }
 
         /*显示弹窗*/

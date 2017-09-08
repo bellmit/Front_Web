@@ -28,6 +28,7 @@
         /*对外接口*/
         this.getCurrentPower = getCurrentPower/*获取权限列表*/;
         this.getSideInfo = getSideInfo/*获取侧边栏信息*/;
+        this.getQuickItem = getQuickItem/*获取快捷导航*/;
         this.loginOut = loginOut/*退出系统*/;
 
 
@@ -47,6 +48,11 @@
                 mapmin: 5,
                 mapmax: 15
             }).list;
+        }
+
+        /*获取快捷导航*/
+        function getQuickItem() {
+            return loginService.getMenuData();
         }
 
         /*退出系统*/
