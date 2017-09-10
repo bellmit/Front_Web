@@ -20,7 +20,7 @@
 
         /*对外接口*/
         return {
-            getColumnData: getColumnData/*获取表格数据*/,
+            getTableData: getTableData/*获取表格数据*/,
             toggleModal: toggleModal/*弹出层显示隐藏*/,
             
             /*表格数据列类*/
@@ -43,10 +43,8 @@
 
         /*获取表格数据*/
         /*to do*/
-        function getColumnData(config) {
-            if (!config) {
-                return false;
-            }
+        function getTableData(config) {
+            dataTableService.getTableData(config);
         }
 
         /*弹出层显示隐藏*/
@@ -167,8 +165,8 @@
         }
 
         /*分页初始化*/
-        function initPage() {
-            pageService.initPage();
+        function initPage(config) {
+            pageService.initPage(config);
         }
 
         /*重置分页*/
@@ -182,8 +180,8 @@
         }
 
         /*数据表格初始化*/
-        function initTable() {
-            dataTableService.initTable();
+        function initTable(config) {
+            dataTableService.initTable(config);
         }
 
 

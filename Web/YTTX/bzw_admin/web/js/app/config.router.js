@@ -66,6 +66,9 @@
                     deps: ['$ocLazyLoad',
                         function ($ocLazyLoad) {
                             return $ocLazyLoad.load([
+                                'js/plugins/datatables/dataTables.bootstrap.css',
+                                'js/plugins/datatables/js/jquery.dataTables.js',
+                                'js/plugins/pagination/pagination.js',
                                 'js/service/datatable/table.js',
                                 'js/service/page/page.js','js/app/admin/admin-controller.js',
                                 'js/app/admin/admin-service.js'

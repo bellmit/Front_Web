@@ -1,5 +1,5 @@
 /*分页服务*/
-(function () {
+(function ($) {
     'use strict';
 
     /*定义或扩展模块*/
@@ -23,61 +23,79 @@
 
         /*接口实现*/
         /*初始化表格缓存*/
-        function initPage() {
+        function initPage(config) {
+            /*清除缓存*/
             for (var i in sequence) {
                 sequence[i] = null/*释放内存*/;
                 delete sequence[i]/*清除序列*/;
+            }
+            /*如果有配置则配置缓存*/
+            if (config) {
+                var j = 0,
+                    len = config.length;
+                if (typeof len !== 'undefined' && len !== 0) {
+                    var page, item, index;
+                    for (j; j < len; j++) {
+                        item = config[j];
+                        page = item["page"];
+                        if (typeof page === 'string' && page !== '') {
+                            index = item["index"];
+                            sequence[index] = $('#' + page);
+                        }
+                    }
+                }
             }
         }
 
         /*重置分页*/
         function resetPage(config) {
-            var seq = config.seq,
-                node = config.node,
-                model = config.model;
+            var index = config.index,
+                page = config.page;
 
             /*不存在缓存则创建缓存*/
-            if (!sequence[seq]) {
-                sequence[seq] = $('#' + node);
+            if (!sequence[index]) {
+                return;
             }
 
             /*初始化模型*/
-            model.total = 0;
-            model.page = 1;
+            page.total = 0;
+            page.page = 1;
             /*初始化调用分页*/
-            sequence[seq].pagination({
-                pageNumber: model.page,
-                pageSize: model.pageSize,
-                total: model.total
+            sequence[index].pagination({
+                pageNumber: page.page,
+                pageSize: page.pageSize,
+                total: page.total
             });
         }
 
         /*渲染分页*/
         function renderPage(config) {
-            var seq = config.seq,
-                node = config.node,
-                model = config.model,
+            var index = config.index,
+                page = config.page,
                 count = config.count;
 
             /*不存在缓存则创建缓存*/
-            if (!sequence[seq]) {
-                sequence[seq] = $('#' + node);
+            if (!sequence[index]) {
+                return;
             }
 
             /*初始化模型*/
-            model.total = count;
+            page.total = count;
             /*初始化调用分页*/
-            sequence[seq].pagination({
-                pageNumber: model.page,
-                pageSize: model.pageSize,
-                total: model.total,
+            sequence[index].pagination({
+                pageNumber: page.page,
+                pageSize: page.pageSize,
+                total: page.total,
                 onSelectPage: function (pageNumber, pageSize) {
+                    /*更新模型*/
+                    page.page=pageNumber;
+                    page.pageSize=pageSize;
                     /*再次查询*/
-                    config.fn.call(null,pageNumber, pageSize);
+                    config.onSelectPage.call(null, pageNumber, pageSize);
                 }
             });
         }
 
     }
 
-}());
+})(jQuery);

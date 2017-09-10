@@ -9,18 +9,13 @@
 
 
     /*控制注入依赖*/
-    adminController.$inject = ['assistCommon', 'adminService', 'testService'];
+    adminController.$inject = ['toolUtil', 'assistCommon', 'adminService', 'testService'];
 
 
     /*控制器实现*/
-    function adminController(assistCommon, adminService, testService) {
+    function adminController(toolUtil, assistCommon, adminService, testService) {
         var vm = this,
-            debug = true/*测试模式*/,
-            sequence = [{
-                seq: 1,
-                page: 'admin_page_wrap1',
-                table: 'admin_list_wrap1'
-            }]/*分页序列,表格序列*/;
+            debug = true/*测试模式*/;
 
         /*模型--操作权限列表*/
         vm.powerlist = adminService.getCurrentPower();
@@ -37,6 +32,11 @@
 
         /*模型--表格*/
         vm.table = {
+            sequence: [{
+                index: 1,
+                page: 'admin_page_wrap1',
+                table: 'admin_list_wrap1'
+            }]/*分页序列,表格序列*/,
             /*分页配置*/
             table_page1: {
                 page: 1,
@@ -57,7 +57,7 @@
                         if (debug) {
                             var json = testService.test({
                                 map: {
-                                    'id': 'id',
+                                    'id': 'guid',
                                     'name': 'value',
                                     'realName': 'name',
                                     'email': 'email',
@@ -90,36 +90,30 @@
                         var result = json.result;
                         if (typeof result === 'undefined') {
                             /*重置分页*/
-                            vm.table.page.total = 0;
-                            vm.table.page.page = 1;
-                            jq_dom.$admin_page_wrap.pagination({
-                                pageNumber: vm.table.list1_page.page,
-                                pageSize: vm.table.list1_page.pageSize,
-                                total: vm.table.list1_page.total
+                            assistCommon.resetPage({
+                                index: 1,
+                                page: vm.table.table_page1
                             });
                             return [];
                         }
 
                         if (result) {
                             /*设置分页*/
-                            vm.table.list1_page.total = result.count;
-                            /*分页调用*/
-                            jq_dom.$admin_page_wrap.pagination({
-                                pageNumber: vm.table.list1_page.page,
-                                pageSize: vm.table.list1_page.pageSize,
-                                total: vm.table.list1_page.total,
+                            assistCommon.renderPage({
+                                index: 1,
+                                page: vm.table.table_page1,
+                                count: result.count,
                                 onSelectPage: function (pageNumber, pageSize) {
                                     /*再次查询*/
-                                    var temp_param = vm.table.list1_config.config.ajax.data;
-                                    vm.table.list1_page.page = pageNumber;
-                                    vm.table.list1_page.pageSize = pageSize;
-                                    temp_param['page'] = vm.table.list1_page.page;
-                                    temp_param['pageSize'] = vm.table.list1_page.pageSize;
-                                    vm.table.list1_config.config.ajax.data = temp_param;
-                                    adminService.getColumnData(vm.table, vm.record);
+                                    var temp_param = vm.table.table_config1.ajax.data;
+                                    temp_param['page'] = pageNumber;
+                                    temp_param['pageSize'] = pageSize;
+                                    vm.table.table_config1.ajax.data = temp_param;
+                                    /*assistCommon.getColumnData({
+                                     table:vm.table.table_config1
+                                     });*/
                                 }
                             });
-
                             var list = result.list;
                             if (list) {
                                 return list;
@@ -128,19 +122,16 @@
                             }
                         } else {
                             /*重置分页*/
-                            vm.table.list1_page.total = 0;
-                            vm.table.list1_page.page = 1;
-                            jq_dom.$admin_page_wrap.pagination({
-                                pageNumber: vm.table.list1_page.page,
-                                pageSize: vm.table.list1_page.pageSize,
-                                total: vm.table.list1_page.total
+                            assistCommon.resetPage({
+                                index: 1,
+                                page: vm.table.table_page1
                             });
                             return [];
                         }
                     },
                     data: {
                         page: 1,
-                        pageSize: 10
+                        pageSize: 20
                     }
                 },
                 info: false,
@@ -149,87 +140,64 @@
                 order: [[1, "desc"]],
                 columns: [
                     {
-                        "data": "id"
+                        "data": "name"
                     },
                     {
-                        "data": "sendNumber"
+                        "data": "realName"
                     },
                     {
-                        "data": "sendTime"
+                        "data": "email"
                     },
                     {
-                        "data": "merchantName"
-                    },
-                    {
-                        "data": "merchantPhone",
+                        "data": "phone",
                         "render": function (data, type, full, meta) {
                             return toolUtil.phoneFormat(data);
                         }
                     },
                     {
-                        "data": "orderNumber"
+                        "data": "loginTime"
                     },
                     {
-                        "data": "orderState",
-                        "render": function (data, type, full, meta) {
-                            var stauts = parseInt(data, 10),
-                                statusmap = {
-                                    0: "待付款",
-                                    1: "取消订单",
-                                    6: "待发货",
-                                    9: "待收货",
-                                    20: "待评价",
-                                    21: "已评价"
-                                },
-                                str;
-
-                            if (stauts === 0) {
-                                str = '<div class="g-c-blue3">' + statusmap[stauts] + '</div>';
-                            } else if (stauts === 1) {
-                                str = '<div class="g-c-red1">' + statusmap[stauts] + '</div>';
-                            } else if (stauts === 6 || stauts === 9 || stauts === 20) {
-                                str = '<div class="g-c-warn">' + statusmap[stauts] + '</div>';
-                            } else if (stauts === 21) {
-                                str = '<div class="g-c-green1">' + statusmap[stauts] + '</div>';
-                            } else {
-                                str = '<div class="g-c-gray6">其他</div>';
-                            }
-                            return str;
-                        }
-                    },
-                    {
-                        "data": "store"
+                        "data": "logincount"
                     },
                     {
                         /*to do*/
-                        "data": "guid",
+                        "data": "id",
                         "render": function (data, type, full, meta) {
                             var btns = '';
 
                             /*查看订单*/
-                            if (vm.powerlist.invoice_details) {
-                                btns += '<span data-action="detail" data-id="' + data + '"  class="btn-operate">查看</span>';
-                                if (vm.powerlist.invoice_delivery && parseInt(full.orderState, 10) === 6) {
-                                    btns += '<span data-action="send" data-id="' + data + '"  class="btn-operate">发货</span>';
-                                }
+                            if (vm.powerlist.add) {
+                                btns += '<span data-action="detail" data-id="' + data + '"  class="btn-operate">操作1</span>';
+                                btns += '<span data-action="send" data-id="' + data + '"  class="btn-operate">操作2</span>';
                             }
                             return btns;
                         }
                     }
                 ]
-            }
+            },
+            table_cache1: null
         };
 
 
         /*初始化*/
-        assistCommon.initPage()/*分页初始化*/;
-        assistCommon.initTable()/*数据列表初始化*/;
+        assistCommon.initPage(vm.table.sequence)/*分页初始化*/;
+        assistCommon.initTable(vm.table.sequence)/*数据列表初始化*/;
 
 
         /*对外接口*/
+        this.getTableData=getTableData/*获取数据*/;
 
 
         /*接口实现--公有*/
+        /*数据列表初始化*/
+        function getTableData() {
+            //assistCommon.conditionTable()/*组合条件*/;
+            assistCommon.getTableData({
+                table:vm.table,
+                index:1
+            });
+        }
 
     }
 
