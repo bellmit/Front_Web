@@ -90,11 +90,13 @@
         /*请求数据*/
         function getTableData(config) {
             //conditionTable(config);
-            var istable = getTable(config),
+            var index=config.index,
+                istable = getTable(config),
                 ajax = config["table_config" + index]["ajax"],
                 table;
 
             if (istable) {
+                /*存在缓存则直接调用缓存*/
                 table = config["table" + index];
                 table["ajax"]["config"](ajax).load();
             } else {
