@@ -21,7 +21,7 @@
         this.getTable = getTable/*获取表格缓存*/;
         this.clearTable = clearTable/*清除或更新表格缓存*/;
         this.destoryTable = destoryTable/*摧毁表格缓存*/;
-        this.configTable = configTable/*配置表格缓存*/;
+        this.pageConfig = pageConfig/*配置分页参数*/;
         this.conditionTable = conditionTable/*组合查询条件*/;
         this.getTableData = getTableData/*请求数据*/;
         this.loadTableData = loadTableData/*重载或加载数据，查询条件不变，相当于重绘或重新请求*/;
@@ -106,9 +106,16 @@
             }
         }
 
-        /*配置表格缓存*/
-        function configTable() {
+        /*配置分页*/
+        function pageConfig(config) {
+            /*配置分页*/
+            if (typeof config.pageNumber !== 'undefined' && typeof config.pageSize !== 'undefined') {
+                var index=config.index,
+                    data=config['table']["table_config"+index]["ajax"]["data"];
 
+                data["page"]=config.pageNumber;
+                data["pageSize"]=config.pageSize;
+            }
         }
 
         /*请求数据:流程：
@@ -118,12 +125,16 @@
          4：执行表格请求或载入
          */
         function getTableData(config) {
+            /*配置分页*/
+            pageConfig(config);
+
             /*配置查询条件*/
             var iscondition = conditionTable(config);
             if (!iscondition) {
                 /*不符合规范条件*/
                 return false;
             }
+            
             var index = config.index,
                 istable = getTable(config),
                 ajax = config["table"]["table_config" + index]["ajax"],

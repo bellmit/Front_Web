@@ -106,13 +106,12 @@
                                 count: result.count,
                                 onSelectPage: function (pageNumber, pageSize) {
                                     /*再次查询*/
-                                    var temp_param = vm.table.table_config1.ajax.data;
-                                    temp_param['page'] = pageNumber;
-                                    temp_param['pageSize'] = pageSize;
-                                    vm.table.table_config1.ajax.data = temp_param;
-                                    /*assistCommon.getColumnData({
-                                     table:vm.table.table_config1
-                                     });*/
+                                    dataTableService.getTableData({
+                                        pageNumber:pageNumber,
+                                        pageSize:pageSize,
+                                        table:vm.table,
+                                        index:1
+                                    });
                                 }
                             });
                             var list = result.list;
