@@ -9,28 +9,19 @@
 
 
     /*工厂依赖注入*/
-    assistCommon.$inject = ['toolUtil', 'toolDialog', '$timeout', 'dataTableService', 'pageService'];
+    assistCommon.$inject = ['toolUtil', 'toolDialog', '$timeout'];
 
 
     /*工厂实现*/
-    function assistCommon(toolUtil, toolDialog, $timeout, dataTableService, pageService) {
+    function assistCommon(toolUtil, toolDialog, $timeout) {
 
 
         var $modal = null;
 
         /*对外接口*/
         return {
-            getTableData: getTableData/*获取表格数据*/,
             toggleModal: toggleModal/*弹出层显示隐藏*/,
             
-            /*表格数据列类*/
-            initTable: initTable/*数据表格初始化*/,
-
-            /*分页类*/
-            initPage: initPage/*分页初始化*/,
-            resetPage: resetPage/*重置分页*/,
-            renderPage: renderPage/*渲染分页*/,
-
             /*表单类*/
             addFormDelay: addFormDelay/*表单类服务--执行延时任务序列*/,
             clearFormDelay: clearFormDelay/*表单类服务--清除延时任务序列*/,
@@ -41,11 +32,7 @@
         };
 
 
-        /*获取表格数据*/
-        /*to do*/
-        function getTableData(config) {
-            dataTableService.getTableData(config);
-        }
+
 
         /*弹出层显示隐藏*/
         /*config配置说明*/
@@ -163,26 +150,7 @@
         function formReset(config) {
 
         }
-
-        /*分页初始化*/
-        function initPage(config) {
-            pageService.initPage(config);
-        }
-
-        /*重置分页*/
-        function resetPage(config) {
-            pageService.resetPage(config);
-        }
-
-        /*渲染分页*/
-        function renderPage(config) {
-            pageService.renderPage(config);
-        }
-
-        /*数据表格初始化*/
-        function initTable(config) {
-            dataTableService.initTable(config);
-        }
+        
 
 
     }

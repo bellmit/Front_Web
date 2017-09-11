@@ -9,11 +9,11 @@
 
 
     /*控制注入依赖*/
-    adminController.$inject = ['toolUtil', 'assistCommon', 'adminService', 'testService'];
+    adminController.$inject = ['toolUtil', 'pageService', 'dataTableService', 'adminService', 'testService'];
 
 
     /*控制器实现*/
-    function adminController(toolUtil, assistCommon, adminService, testService) {
+    function adminController(toolUtil, pageService, dataTableService, adminService, testService) {
         var vm = this,
             debug = true/*测试模式*/;
 
@@ -37,7 +37,7 @@
                 page: 'admin_page_wrap1',
                 table: 'admin_list_wrap1'
             }]/*分页序列,表格序列*/,
-            condition:{}/*查询条件*//*{1:[{},{}]}*/,
+            condition: {}/*查询条件*//*{1:[{},{}]}*/,
             /*分页配置*/
             table_page1: {
                 page: 1,
@@ -91,7 +91,7 @@
                         var result = json.result;
                         if (typeof result === 'undefined') {
                             /*重置分页*/
-                            assistCommon.resetPage({
+                            pageService.resetPage({
                                 index: 1,
                                 page: vm.table.table_page1
                             });
@@ -100,7 +100,7 @@
 
                         if (result) {
                             /*设置分页*/
-                            assistCommon.renderPage({
+                            pageService.renderPage({
                                 index: 1,
                                 page: vm.table.table_page1,
                                 count: result.count,
@@ -123,7 +123,7 @@
                             }
                         } else {
                             /*重置分页*/
-                            assistCommon.resetPage({
+                            pageService.resetPage({
                                 index: 1,
                                 page: vm.table.table_page1
                             });
@@ -182,30 +182,39 @@
 
 
         /*初始化*/
-        assistCommon.initPage({
-            sequence:vm.table.sequence
+        pageService.initPage({
+            sequence: vm.table.sequence
         })/*分页初始化*/;
-        assistCommon.initTable({
-            sequence:vm.table.sequence,
-            condition:vm.table.condition
+        dataTableService.initTable({
+            sequence: vm.table.sequence,
+            condition: vm.table.condition
         })/*数据列表初始化*/;
 
 
 
-        
+        /*获取表格数据*/
+        getTableData();
+
+
+
+
+
+
+
+
+
+
+
         /*对外接口*/
-        this.getTableData=getTableData/*获取数据*/;
-
-
+        this.getTableData = getTableData/*获取数据*/;
 
 
         /*接口实现--公有*/
         /*数据列表初始化*/
         function getTableData() {
-            //assistCommon.conditionTable()/*组合条件*/;
-            assistCommon.getTableData({
-                table:vm.table,
-                index:1
+            dataTableService.getTableData({
+                table: vm.table,
+                index: 1
             });
         }
 
