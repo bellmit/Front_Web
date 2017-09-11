@@ -12,7 +12,8 @@
     /*服务实现*/
     function dataTableService() {
         /*基本缓存*/
-        var sequence = {}/*缓存序列*/;
+        var sequence = {}/*缓存序列,存放table dom节点引用*/,
+            condition = {}/*存放条件查询配置*/;
 
         /*对外接口*/
         /*基本服务类*/
@@ -34,19 +35,39 @@
                 sequence[i] = null/*释放内存*/;
                 delete sequence[i]/*清除序列*/;
             }
+            for (var k in condition) {
+                condition[k] = null/*释放内存*/;
+                delete condition[k]/*清除序列*/;
+            }
             /*如果有配置则配置缓存*/
             if (config) {
-                var j = 0,
-                    len = config.length;
-                if (typeof len !== 'undefined' && len !== 0) {
-                    var table, item, index;
-                    for (j; j < len; j++) {
-                        item = config[j];
-                        table = item["table"];
-                        if (typeof table === 'string' && table !== '') {
-                            index = item["index"];
-                            sequence[index] = $('#' + table);
+
+                /*配置dom节点引用*/
+                var sobj = config.sequence;
+                if (sobj) {
+                    var j = 0,
+                        slen = sobj.length;
+                    if (typeof slen !== 'undefined' && slen !== 0) {
+                        var table,
+                            sitem,
+                            sindex;
+                        for (j; j < slen; j++) {
+                            sitem = sobj[j];
+                            table = sitem["table"];
+                            if (typeof table === 'string' && table !== '') {
+                                sindex = sitem["index"];
+                                sequence[sindex] = $('#' + table);
+                            }
                         }
+                    }
+                }
+
+                /*配置条件查询*/
+                var cobj = config.condition;
+                if (cobj) {
+                    for (var m in cobj) {
+                        condition[m] = cobj[m];
+
                     }
                 }
             }
@@ -64,16 +85,18 @@
         }
 
         /*清除或更新表格缓存*/
-        function clearTable(index) {
-            var table = sequence[index];
+        function clearTable(config) {
+            var index = config.index,
+                table = config["table" + index];
             if (table) {
                 table.clear();
             }
         }
 
         /*摧毁表格缓存*/
-        function destoryTable(index) {
-            var table = sequence[index];
+        function destoryTable(config) {
+            var index = config.index,
+                table = config["table" + index];
             if (table) {
                 table.clear();
                 table.destroy();
@@ -89,8 +112,8 @@
 
         /*请求数据*/
         function getTableData(config) {
-            //conditionTable(config);
-            var index=config.index,
+            conditionTable(config)/*配置查询条件*/;
+            var index = config.index,
                 istable = getTable(config),
                 ajax = config["table_config" + index]["ajax"],
                 table;
@@ -107,7 +130,52 @@
 
         /*组合查询条件*/
         function conditionTable(config) {
+            var con = config.condition;
+            if (con) {
+                var index = config.index,
+                    cobj = condition[index],
+                    clen = con.length,
+                    reqdata=config["table_config"+index]["ajax"]["data"];
 
+                /*存在需要组合条件*/
+                if (clen !== 0) {
+                    var i = 0,
+                        cname,
+                        cvalue;
+
+                    loop1:for (i; i < clen; i++) {
+                        cname = con[i]["name"];
+                        cvalue = con[i]["value"];
+                        var len = cobj.length,
+                            j = 0;
+                        if (len !== 0) {
+                            var item;
+                            loop2:for (j; j < len; j++) {
+                                item = cobj[j];
+                                /*匹配相同字段*/
+                                if (item["name"] === cname) {
+                                    if(cvalue===''){
+                                        delete reqdata[cname];
+                                        if(item["require"]){
+                                            /*非空字段为空则提示异常*/
+                                            return false;
+                                        }
+                                    }else{
+                                        reqdata[cname]=cvalue;
+                                    }
+                                    continue loop1;
+                                }
+                            }
+                        } else {
+
+                        }
+                    }
+                } else {
+                    return {};
+                }
+            } else {
+                return {};
+            }
         }
 
         /*过滤数据*/

@@ -37,6 +37,7 @@
                 page: 'admin_page_wrap1',
                 table: 'admin_list_wrap1'
             }]/*分页序列,表格序列*/,
+            condition:{}/*查询条件*//*{1:[{},{}]}*/,
             /*分页配置*/
             table_page1: {
                 page: 1,
@@ -181,12 +182,21 @@
 
 
         /*初始化*/
-        assistCommon.initPage(vm.table.sequence)/*分页初始化*/;
-        assistCommon.initTable(vm.table.sequence)/*数据列表初始化*/;
+        assistCommon.initPage({
+            sequence:vm.table.sequence
+        })/*分页初始化*/;
+        assistCommon.initTable({
+            sequence:vm.table.sequence,
+            condition:vm.table.condition
+        })/*数据列表初始化*/;
 
 
+
+        
         /*对外接口*/
         this.getTableData=getTableData/*获取数据*/;
+
+
 
 
         /*接口实现--公有*/

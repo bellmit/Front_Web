@@ -12,7 +12,7 @@
     /*服务实现*/
     function pageService() {
         /*基本缓存*/
-        var sequence = {}/*缓存序列*/;
+        var sequence = {}/*缓存序列,存放table dom节点引用*/;
 
         /*对外接口*/
         /*基本服务类*/
@@ -31,12 +31,16 @@
             }
             /*如果有配置则配置缓存*/
             if (config) {
-                var j = 0,
-                    len = config.length;
+                var pobj = config.sequence,
+                    j = 0,
+                    len = pobj.length;
+                
                 if (typeof len !== 'undefined' && len !== 0) {
-                    var page, item, index;
+                    var page,
+                        item,
+                        index;
                     for (j; j < len; j++) {
-                        item = config[j];
+                        item = pobj[j];
                         page = item["page"];
                         if (typeof page === 'string' && page !== '') {
                             index = item["index"];
@@ -88,8 +92,8 @@
                 total: page.total,
                 onSelectPage: function (pageNumber, pageSize) {
                     /*更新模型*/
-                    page.page=pageNumber;
-                    page.pageSize=pageSize;
+                    page.page = pageNumber;
+                    page.pageSize = pageSize;
                     /*再次查询*/
                     config.onSelectPage.call(null, pageNumber, pageSize);
                 }
