@@ -24,6 +24,7 @@
         this.configTable = configTable/*配置表格缓存*/;
         this.conditionTable = conditionTable/*组合查询条件*/;
         this.getTableData = getTableData/*请求数据*/;
+        this.loadTableData = loadTableData/*重载或加载数据，查询条件不变，相当于重绘或重新请求*/;
         this.filterTable = filterTable/*过滤数据*/;
 
 
@@ -76,9 +77,9 @@
         /*获取表格缓存*/
         function getTable(config) {
             var index = config.index;
-            if (config["table"]["table" + index] === null) {
+            if (config["table"]["table_cache" + index] === null) {
                 /*不存缓存则创建缓存*/
-                config["table"]["table" + index] = sequence[index].DataTable(config["table"]["table_config" + index]);
+                config["table"]["table_cache" + index] = sequence[index].DataTable(config["table"]["table_config" + index]);
                 return false;
             }
             return true;
@@ -87,7 +88,7 @@
         /*清除或更新表格缓存*/
         function clearTable(config) {
             var index = config.index,
-                table = config["table" + index];
+                table = config["table"]["table_cache" + index];
             if (table) {
                 table.clear();
             }
@@ -96,7 +97,7 @@
         /*摧毁表格缓存*/
         function destoryTable(config) {
             var index = config.index,
-                table = config["table" + index];
+                table = config["table"]["table_cache" + index];
             if (table) {
                 table.clear();
                 table.destroy();
@@ -110,20 +111,43 @@
 
         }
 
-        /*请求数据*/
+        /*请求数据:流程：
+         1：组合查询条件
+         2：获取表格缓存
+         3：配置表格参数
+         4：执行表格请求或载入
+         */
         function getTableData(config) {
-            conditionTable(config)/*配置查询条件*/;
+            /*配置查询条件*/
+            var iscondition = conditionTable(config);
+            if (!iscondition) {
+                /*不符合规范条件*/
+                return false;
+            }
             var index = config.index,
                 istable = getTable(config),
-                ajax = config["table_config" + index]["ajax"],
+                ajax = config["table"]["table_config" + index]["ajax"],
                 table;
 
             if (istable) {
                 /*存在缓存则直接调用缓存*/
-                table = config["table" + index];
+                table = config["table"]["table_cache" + index];
                 table["ajax"]["config"](ajax).load();
-            } else {
+            }
+        }
 
+
+        /*重载或加载数据*/
+        function loadTableData(config) {
+            var index = config.index,
+                istable = getTable(config),
+                ajax = config["table"]["table_config" + index]["ajax"],
+                table;
+
+            if (istable) {
+                /*存在缓存则直接调用缓存*/
+                table = config["table"]["table_cache" + index];
+                table["ajax"]["config"](ajax).load();
             }
         }
 
@@ -135,7 +159,7 @@
                 var index = config.index,
                     cobj = condition[index],
                     clen = con.length,
-                    reqdata=config["table_config"+index]["ajax"]["data"];
+                    reqdata = config["table"]["table_config" + index]["ajax"]["data"];
 
                 /*存在需要组合条件*/
                 if (clen !== 0) {
@@ -154,33 +178,33 @@
                                 item = cobj[j];
                                 /*匹配相同字段*/
                                 if (item["name"] === cname) {
-                                    if(cvalue===''){
+                                    if (cvalue === '') {
                                         delete reqdata[cname];
-                                        if(item["require"]){
+                                        if (item["require"]) {
                                             /*非空字段为空则提示异常*/
                                             return false;
                                         }
-                                    }else{
-                                        reqdata[cname]=cvalue;
+                                    } else {
+                                        reqdata[cname] = cvalue;
                                     }
                                     continue loop1;
                                 }
                             }
-                        } else {
-
                         }
                     }
-                } else {
-                    return {};
                 }
-            } else {
-                return {};
             }
+            return true;
         }
 
         /*过滤数据*/
-        function filterTable() {
-
+        function filterTable(config) {
+            var index = config.index,
+                search=config.search;
+            if (config["table"]["table_cache" + index]===null) {
+                return false;
+            }
+            config["table"]["table_cache" + index].search(search).columns().draw();
         }
 
     }
