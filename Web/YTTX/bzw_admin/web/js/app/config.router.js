@@ -41,11 +41,6 @@
         /*登录和首页*/
             .state('app', {
                 url: '/app',
-                /*views: {
-                    'container':{
-                        templateUrl: 'view/index.html'
-                    }
-                },*/
                 templateUrl: 'view/index.html',
                 controller: 'indexController',
                 controllerAs: 'vm',
@@ -84,23 +79,21 @@
             })
             /*管理--新增管理员*/
             .state('admin.add', {
-                url: '/admin.add',
-                /*views: {
-                    'sub-container': {
+                url: '/add',
+                controller: 'adminController',
+                controllerAs: 'vm',
+                views: {
+                    'container': {
                         templateUrl: 'view/admin/admin_add.html'
                     }
-                },*/
-                templateUrl: 'view/admin/admin_add.html',
-                controller: 'adminAddController',
-                controllerAs: 'vm',
+                },
                 resolve: {
                     /*延迟加载，依赖相关组件*/
                     deps: ['$ocLazyLoad',
                         function ($ocLazyLoad) {
                             return $ocLazyLoad.load([
-                                'js/app/admin/admin-service.js',
-                                'js/app/admin/admin-add-controller.js',
-                                'js/app/admin/admin-add-service.js'
+                                'js/app/admin/admin-controller.js',
+                                'js/app/admin/admin-service.js'
                             ]);
                         }]
                 }

@@ -9,13 +9,14 @@
 
 
     /*控制注入依赖*/
-    adminController.$inject = ['toolUtil', 'pageService', 'dataTableService', 'adminService', 'testService'];
+    adminController.$inject = ['toolUtil', 'pageService', 'dataTableService', 'adminService','$timeout', 'testService'];
 
 
     /*控制器实现*/
-    function adminController(toolUtil, pageService, dataTableService, adminService, testService) {
+    function adminController(toolUtil, pageService, dataTableService, adminService,$timeout, testService) {
         var vm = this,
-            debug = true/*测试模式*/;
+            debug = true/*测试模式*/,
+            table_timer=null;
 
         /*模型--操作权限列表*/
         vm.powerlist = adminService.getCurrentPower();
@@ -174,17 +175,12 @@
             table_cache1: null
         };
 
+        /*初始化配置,渲染*/
+        table_timer=$timeout(function () {
+            console.log('abc');
+            _initRender_();
+        },5);
 
-        /*初始化*/
-        pageService.initPage({
-            sequence: vm.table.sequence
-        })/*分页初始化*/;
-        dataTableService.initTable({
-            sequence: vm.table.sequence,
-            condition: vm.table.condition
-        })/*数据列表初始化*/;
-
-        getTableData()/*获取表格数据*/;
 
 
         /*对外接口*/
@@ -208,6 +204,29 @@
             config['table'] = vm.table;
             adminService.doItemAction(config);
         }
+
+
+        /*接口实现--私有*/
+        /*初始化配置,渲染*/
+        function _initRender_() {
+            /*分页初始化*/
+            pageService.initPage({
+                sequence: vm.table.sequence
+            });
+            /*数据列表初始化*/
+            dataTableService.initTable({
+                sequence: vm.table.sequence,
+                condition: vm.table.condition
+            });
+            /*获取表格数据*/
+            getTableData();
+            /*清理延时*/
+            if(table_timer!==null){
+                $timeout.cancel(table_timer);
+                table_timer=null;
+            }
+        }
+
 
     }
 

@@ -1,10 +1,10 @@
 <div>
-    <div class="struct-layout-container">
+    <div class="struct-layout-container" ui-view="container">
         <!--主内容-->
-        <div class="struct-layout-main" ui-view="sub-container">
+        <div class="struct-layout-main">
             <h1 class="admin-layout-theme3 g-clear-pt">管理员管理--列表</h1>
             <!--表格-->
-            <table ng-init="vm.getTableData()" id="admin_list_table1" class="table table-bordered table-striped table-hover admin-layout-table">
+            <table id="admin_list_table1" class="table table-bordered table-striped table-hover admin-layout-table">
 
                 <!--分组样式-->
                 <colgroup id="admin_list_colgroup1">
@@ -38,7 +38,6 @@
                 <div class="easyui-pagination g-w-percent50" id="admin_list_page1" data-options="links:5,layout:['manual','first','prev','links','next','last'],displayMsg:'显示{from}&nbsp;到&nbsp;{to}&nbsp;共&nbsp;{total}条记录'"></div>
             </div>
         </div>
-
 
         <!--侧边栏-->
         <div class="struct-layout-side">

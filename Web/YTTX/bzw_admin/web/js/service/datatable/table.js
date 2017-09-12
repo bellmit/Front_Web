@@ -8,13 +8,14 @@
         .service('dataTableService', dataTableService);
 
     /*服务依赖注入*/
+    //dataTableService.$inject;
 
     /*服务实现*/
     function dataTableService() {
         /*基本缓存*/
         var cache_sequence = {}/*缓存序列,存放table dom节点引用*/,
-            cache_body={}/*缓存序列,存放body dom节点引用*/,
-            cache_colgroup={}/*缓存序列,存放colgroup dom节点引用*/,
+            cache_body = {}/*缓存序列,存放body dom节点引用*/,
+            cache_colgroup = {}/*缓存序列,存放colgroup dom节点引用*/,
             cache_condition = {}/*存放条件查询配置*/,
             cache_check = {}/*存放全选配置*/;
 
@@ -61,24 +62,24 @@
                             item = sobj[j];
                             index = item["index"];
                             colgroup = item["colgroup"];
-                            action=item["action"];
-                            check=item["check"];
+                            action = item["action"];
+                            check = item["check"];
 
                             /*缓存table节点*/
                             cache_sequence[index] = $('#admin_list_table' + index);
 
                             /*缓存colgroup节点*/
-                            if(colgroup){
+                            if (colgroup) {
                                 cache_colgroup[index] = $('#admin_list_colgroup' + index);
                             }
 
                             /*缓存body节点*/
-                            if(action){
+                            if (action) {
                                 cache_body[index] = $('#admin_list_body' + index);
                                 bindDoAction(item);
                             }
                             /*缓存check节点*/
-                            if(check){
+                            if (check) {
                                 cache_check[index] = $('#admin_list_check' + index);
                             }
                         }
@@ -239,27 +240,27 @@
 
         /*绑定操作选项*/
         function bindDoAction(config) {
-            var index=config.index;
-            cache_body[index].on('click','span',function (e){
+            var index = config.index;
+            cache_body[index].on('click', 'span', function (e) {
                 e.stopPropagation();
                 e.preventDefault();
 
-                var target= e.target,
+                var target = e.target,
                     $this;
 
                 //适配对象
-                if(target.className.indexOf('btn-operate')===-1){
+                if (target.className.indexOf('btn-operate') === -1) {
                     /*过滤非btn-operate按钮*/
                     return false;
-                }else{
-                    $this=$(target);
+                } else {
+                    $this = $(target);
                 }
 
                 /*操作分支*/
-                if(config.doAction && typeof config.doAction==='function'){
-                    config.doAction.call(null,{
-                        index:index,
-                        $btn:$this
+                if (config.doAction && typeof config.doAction === 'function') {
+                    config.doAction.call(null, {
+                        index: index,
+                        $btn: $this
                     });
                 }
             });
@@ -269,8 +270,8 @@
         /*私有接口*/
         /*辅助初始化--清除缓存*/
         function _clearCache_(obj) {
-            if(obj){
-                for(var i in obj){
+            if (obj) {
+                for (var i in obj) {
                     obj[i] = null/*释放内存*/;
                     delete obj[i]/*清除序列*/;
                 }

@@ -26,6 +26,7 @@
                 query: true || powerService.isPower('query', powermap, true)/*查*/
             }/*权限配置*/;
 
+        console.log(path);
 
         /*对外接口*/
         this.getCurrentPower = getCurrentPower/*获取当前权限*/;
@@ -45,6 +46,9 @@
                 i = 0,
                 len = menumap.length,
                 res = [];
+
+            console.log(cache['menuSourceMap']);
+            console.log(menumap);
 
             if (len !== 0) {
                 var item, obj = {};

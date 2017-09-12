@@ -903,10 +903,18 @@
                 /*不存在路径则返回首页*/
                 return 0;
             }
-            if (path.indexOf('.') !== -1) {
-                path = path.split('.')[0];
+            var path = path.slice(1);
+            if (path.indexOf('/') !== -1) {
+                if (path.indexOf('.') !== -1) {
+                    path = path.split('/');
+                    var len = path.length;
+                    path = path[len - 1];
+                    path = path.split('.')[0];
+                } else {
+                    path = path.split('/')[0];
+                }
             }
-            path=path.replace(/\/*/g,'');
+            path = path.replace(/\/*/g, '');
             var item;
             for (var i in cache) {
                 item = cache[i];
