@@ -41,6 +41,11 @@
         /*登录和首页*/
             .state('app', {
                 url: '/app',
+                /*views: {
+                    'container':{
+                        templateUrl: 'view/index.html'
+                    }
+                },*/
                 templateUrl: 'view/index.html',
                 controller: 'indexController',
                 controllerAs: 'vm',
@@ -70,8 +75,32 @@
                                 'js/plugins/datatables/js/jquery.dataTables.js',
                                 'js/plugins/pagination/pagination.js',
                                 'js/service/datatable/table.js',
-                                'js/service/page/page.js','js/app/admin/admin-controller.js',
+                                'js/service/page/page.js',
+                                'js/app/admin/admin-controller.js',
                                 'js/app/admin/admin-service.js'
+                            ]);
+                        }]
+                }
+            })
+            /*管理--新增管理员*/
+            .state('admin.add', {
+                url: '/admin.add',
+                /*views: {
+                    'sub-container': {
+                        templateUrl: 'view/admin/admin_add.html'
+                    }
+                },*/
+                templateUrl: 'view/admin/admin_add.html',
+                controller: 'adminAddController',
+                controllerAs: 'vm',
+                resolve: {
+                    /*延迟加载，依赖相关组件*/
+                    deps: ['$ocLazyLoad',
+                        function ($ocLazyLoad) {
+                            return $ocLazyLoad.load([
+                                'js/app/admin/admin-service.js',
+                                'js/app/admin/admin-add-controller.js',
+                                'js/app/admin/admin-add-service.js'
                             ]);
                         }]
                 }

@@ -1,10 +1,10 @@
 <div>
     <div class="struct-layout-container">
         <!--主内容-->
-        <div class="struct-layout-main" ui-view="sub-container">
+        <div class="struct-layout-main" ng-cloak ui-view="">
             <h1 class="admin-layout-theme3 g-clear-pt">管理员管理--列表</h1>
             <!--表格-->
-            <table ng-init="vm.getTableData()" id="admin_list_table1" class="table table-bordered table-striped table-hover admin-layout-table">
+            <table id="admin_list_table1" class="table table-bordered table-striped table-hover admin-layout-table">
 
                 <!--分组样式-->
                 <colgroup id="admin_list_colgroup1">

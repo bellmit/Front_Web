@@ -23,19 +23,12 @@
         /*模型--菜单列表*/
         vm.listitem = adminService.getSideMenu();
 
-
-        /*模型--操作记录*/
-        vm.record = {
-            id: ''/*设置权限id*/,
-            name: ''/*设置权限名称*/
-        };
-
         /*模型--表格*/
         vm.table = {
             sequence: [{
                 index: 1,
-                page: 'admin_page_wrap1',
-                table: 'admin_list_wrap1'
+                action: true,
+                doAction: doItemAction
             }]/*分页序列,表格序列*/,
             condition: {}/*查询条件*//*{1:[{},{}]}*/,
             /*分页配置*/
@@ -107,10 +100,10 @@
                                 onSelectPage: function (pageNumber, pageSize) {
                                     /*再次查询*/
                                     dataTableService.getTableData({
-                                        pageNumber:pageNumber,
-                                        pageSize:pageSize,
-                                        table:vm.table,
-                                        index:1
+                                        pageNumber: pageNumber,
+                                        pageSize: pageSize,
+                                        table: vm.table,
+                                        index: 1
                                     });
                                 }
                             });
@@ -167,9 +160,11 @@
                             var btns = '';
 
                             /*查看订单*/
-                            if (vm.powerlist.add) {
-                                btns += '<span data-action="detail" data-id="' + data + '"  class="btn-operate">操作1</span>';
-                                btns += '<span data-action="send" data-id="' + data + '"  class="btn-operate">操作2</span>';
+                            if (vm.powerlist.update) {
+                                btns += '<span data-action="update" data-id="' + data + '"  class="btn-operate">编辑权限</span>';
+                            }
+                            if (vm.powerlist.delete) {
+                                btns += '<span data-action="delete" data-id="' + data + '"  class="btn-operate">删除权限</span>';
                             }
                             return btns;
                         }
@@ -189,23 +184,12 @@
             condition: vm.table.condition
         })/*数据列表初始化*/;
 
-
-
-        /*获取表格数据*/
-        getTableData();
-
-
-
-
-
-
-
-
-
+        getTableData()/*获取表格数据*/;
 
 
         /*对外接口*/
         this.getTableData = getTableData/*获取数据*/;
+        this.doItemAction = doItemAction/*操作表格*/;
 
 
         /*接口实现--公有*/
@@ -215,6 +199,14 @@
                 table: vm.table,
                 index: 1
             });
+        }
+
+        /*操作表格*/
+        function doItemAction(config) {
+            /*是否调试*/
+            config['debug'] = debug;
+            config['table'] = vm.table;
+            adminService.doItemAction(config);
         }
 
     }

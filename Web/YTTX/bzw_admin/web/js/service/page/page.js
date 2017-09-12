@@ -34,18 +34,14 @@
                 var pobj = config.sequence,
                     j = 0,
                     len = pobj.length;
-                
+
                 if (typeof len !== 'undefined' && len !== 0) {
-                    var page,
-                        item,
+                    var item,
                         index;
                     for (j; j < len; j++) {
                         item = pobj[j];
-                        page = item["page"];
-                        if (typeof page === 'string' && page !== '') {
-                            index = item["index"];
-                            sequence[index] = $('#' + page);
-                        }
+                        index = item["index"];
+                        sequence[index] = $('#admin_list_page' + index);
                     }
                 }
             }
