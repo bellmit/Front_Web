@@ -177,7 +177,6 @@
 
         /*初始化配置,渲染*/
         table_timer=$timeout(function () {
-            console.log('abc');
             _initRender_();
         },5);
 
@@ -209,6 +208,7 @@
         /*接口实现--私有*/
         /*初始化配置,渲染*/
         function _initRender_() {
+            console.log(Math.random().toString() + '_start');
             /*分页初始化*/
             pageService.initPage({
                 sequence: vm.table.sequence
@@ -226,6 +226,14 @@
                 table_timer=null;
             }
         }
+
+        /*
+        *https://segmentfault.com/q/1010000006265262
+        *https://angular-ui.github.io/ui-router/sample/#/
+        *
+        *
+        *
+        * */
 
 
     }
