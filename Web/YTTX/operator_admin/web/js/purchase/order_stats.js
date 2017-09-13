@@ -52,6 +52,7 @@
 				$admin_shippingExpressId=$('#admin_shippingExpressId'),
 				$admin_remark=$('#admin_remark'),
 				resetform0=null,
+				islogistics=false,
 				sureObj=public_tool.sureDialog(dia)/*回调提示对象*/,
 				setSure=new sureObj();
 
@@ -262,15 +263,13 @@
 					var code=parseInt(resp.code,10);
 					if(code!==0){
 						console.log(resp.message);
-						dia.content('<span class="g-c-bs-warning g-btips-warn">暂无合作物流公司</span>').show();
-						setTimeout(function () {
-							dia.close();
-						},2000);
+						islogistics=false;
 						$admin_shippingExpressId.html('<option value="" selected>请选择物流公司</option>');
 						return false;
 					}
 					var result=resp['result'];
 					if(!result){
+						islogistics=false;
 						$admin_shippingExpressId.html('<option value="" selected>请选择物流公司</option>');
 						return false;
 					}
@@ -279,14 +278,17 @@
 						i= 0,
 						str='';
 					if(!list){
+						islogistics=false;
 						$admin_shippingExpressId.html('<option value="" selected>请选择物流公司</option>');
 						return false;
 					}
 					len=list.length;
 					if(len===0){
+						islogistics=false;
 						$admin_shippingExpressId.html('<option value="" selected>请选择物流公司</option>');
 						return false;
 					}
+					islogistics=true;
 					for(i;i<len;i++){
 						if(i===0){
 							str+='<option value="" selected>请选择物流公司</option><option value="'+list[i]['id']+'">'+list[i]['companyName']+'</option>';
@@ -299,10 +301,7 @@
 				})
 				.fail(function(resp){
 					console.log(resp.message);
-					dia.content('<span class="g-c-bs-warning g-btips-warn">暂无合作物流公司</span>').show();
-					setTimeout(function () {
-						dia.close();
-					},2000);
+					islogistics=false;
 				});
 
 
@@ -332,6 +331,14 @@
 
 				/*修改,编辑操作*/
 				if(action==='send'&&id!==''){
+					/*没有物流公司时*/
+					if(!islogistics){
+						dia.content('<span class="g-c-bs-warning g-btips-warn">暂无合作物流公司</span>').show();
+						setTimeout(function () {
+							dia.close();
+						},2000);
+						return false;
+					}
 					if(operate_item){
 						operate_item.removeClass('item-lighten');
 						operate_item=null;

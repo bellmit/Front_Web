@@ -1,27 +1,23 @@
 <!--主内容-->
 <h1 class="admin-layout-theme3 g-clear-pt">管理员管理--{{vm.admin.id===''?'新增':'编辑'}}</h1>
 <!--表格-->
-<div>
-    <form ng-submit="vm.formSubmit('struct')" name="adminFrom" role="form" novalidate method="post" class="admin-layout-form">
-        <div class="admin-layout-theme4"><span class="mini-icon admin-mini-icon2"></span>&nbsp;基本信息</div>
-
+<div class="g-box-b g-w-percent50 g-gap-pt10 g-gap-pb10">
+    <form ng-submit="vm.formSubmit('admin')" name="adminFrom" role="form" novalidate method="post" class="admin-layout-form">
         <div class="form-group-self1">
-            <label class="self-label g-w-percent15 g-t-r"><span class="self-require g-c-red1">*</span>运营商全称</label>
+            <label class="self-label g-w-percent6 g-t-r"><span class="self-require g-c-red1">*</span>用户名</label>
 
-            <div class="self-input g-pos-r g-w-percent35">
-                <input type="text" name="fullName" placeholder="请输入运营商全称" required ng-model="vm.struct.fullName" class="ui-filter-html-illegal"/>
-                <span ng-show="adminFrom.fullName.$dirty && adminFrom.fullName.$error.required" class="self-tips self-tips-no g-c-red1 g-fs4 g-w-percent50">运营商全称不能为空</span>
-                <span ng-show="adminFrom.fullName.$dirty && adminFrom.fullName.$valid" class="self-tips self-tips-yes"></span>
+            <div class="self-input g-pos-r g-w-percent44">
+                <input type="text" name="userName" placeholder="请输入用户名" required ng-model="vm.admin.userName" class="ui-filter-html-illegal"/>
+                <span ng-show="adminFrom.userName.$dirty && adminFrom.userName.$error.required" class="self-tips self-tips-no g-c-red1 g-fs4 g-w-percent50">用户名不能为空</span>
+                <span ng-show="adminFrom.userName.$dirty && adminFrom.userName.$valid" class="self-tips self-tips-yes"></span>
             </div>
         </div>
 
-        <div class="form-group-self1">
-            <button type="submit" ng-show="vm.struct.id===''" ng-disabled="!(vm.struct.id==='' && adminFrom.fullName.$dirty && adminFrom.fullName.$valid)"
-                    class="btn btn-red g-br3 g-w-percent50">添加
+        <div class="form-group-self1 g-f-r g-w-number10">
+            <button type="submit" ng-show="vm.admin.id===''" ng-disabled="!(vm.admin.id==='' && adminFrom.userName.$dirty && adminFrom.userName.$valid)"
+                    class="btn btn-red g-br3 g-w-percent24 g-f-l">添加
             </button>
-
-            <button type="submit" ng-show="vm.struct.id!==''" ng-disabled="!(vm.struct.id!=='' && adminFrom.fullName.$valid)" class="btn btn-red g-br3 g-w-percent50">编辑</button>
-            <button type="button" class="btn btn-red g-br3 g-w-percent50 g-gap-mt2" id="admin_struct_reset" ng-click="vm.formReset(adminFrom,'struct')">重置</button>
+            <button type="button" class="btn btn-red g-br3 g-w-percent24 g-f-r" id="admin_form_reset1" ng-click="vm.formReset(adminFrom,1)">重置</button>
         </div>
     </form>
 </div>
