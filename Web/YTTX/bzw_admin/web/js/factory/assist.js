@@ -9,19 +9,24 @@
 
 
     /*工厂依赖注入*/
-    assistCommon.$inject = ['toolUtil', 'toolDialog', '$timeout'];
+    assistCommon.$inject = ['toolUtil', 'toolDialog', '$timeout', 'loginService'];
 
 
     /*工厂实现*/
-    function assistCommon(toolUtil, toolDialog, $timeout) {
-
+    function assistCommon(toolUtil, toolDialog, $timeout, loginService) {
+        var cache = loginService.getCache()/*缓存*/;
 
         var $modal = null;
 
         /*对外接口*/
         return {
+            getCache: getCache/*获取缓存*/,
+            changeCache: changeCache/*更新缓存*/,
+            deleteCache: deleteCache/*删除缓存*/,
+
+
             toggleModal: toggleModal/*弹出层显示隐藏*/,
-            
+
             /*表单类*/
             addFormDelay: addFormDelay/*表单类服务--执行延时任务序列*/,
             clearFormDelay: clearFormDelay/*表单类服务--清除延时任务序列*/,
@@ -31,12 +36,28 @@
             formReset: formReset/*表单类服务--重置表单*/
         };
 
+        /*获取缓存*/
+        function getCache() {
+            return cache;
+        }
 
+        /*更新缓存*/
+        function changeCache() {
+            loginService.changeCache();
+            cache = loginService.getCache();
+            return cache;
+        }
 
+        /*删除缓存*/
+        function deleteCache(key) {
+            toolUtil.removeParams(key);
+            changeCache();
+        }
 
-        /*弹出层显示隐藏*/
-        /*config配置说明*/
-        /*config:{
+        /*
+         弹出层显示隐藏
+         config配置说明
+         config:{
          area:''/!*区域或类别，可能和wrap同功能*!/,
          wrap:''/!*容器*!/,
          display:''/!*动作：显示或隐藏*!/,
@@ -144,13 +165,13 @@
         }
 
         /*表单类服务--提交表单数据*/
-        function formSubmit(config) {}
+        function formSubmit(config) {
+        }
 
         /*表单类服务--重置表单*/
         function formReset(config) {
 
         }
-        
 
 
     }

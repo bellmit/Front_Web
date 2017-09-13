@@ -9,23 +9,26 @@
 
 
     /*控制注入依赖*/
-    adminAddController.$inject = ['toolUtil', 'adminService', 'adminAddService', '$scope','testService'];
+    adminAddController.$inject = ['toolUtil','$scope', 'adminService', 'adminAddService','testService'];
 
 
     /*控制器实现*/
-    function adminAddController(toolUtil, adminService, adminAddService, $scope,testService) {
+    function adminAddController(toolUtil,$scope, adminService, adminAddService, testService) {
         var vm = this,
             debug = true/*测试模式*/;
-        
+
 
         /*模型--操作权限列表*/
         vm.powerlist = adminService.getCurrentPower();
 
-        /*模型--菜单列表*/
-        vm.listitem = adminService.getSideMenu();
-        console.log(vm.listitem);
+        /*模型--欢迎页面*/
+        vm.welcome=false;
 
-        console.log('admin add');
+        /*模型--管理员*/
+        vm.admin={
+            id:'',
+            
+        };
 
 
         /*对外接口*/
@@ -33,7 +36,7 @@
 
 
         /*接口实现--公有*/
-        /*数据列表初始化*/
+        /*操作欢迎页面*/
         
 
     }

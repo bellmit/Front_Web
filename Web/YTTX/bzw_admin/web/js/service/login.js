@@ -32,6 +32,7 @@
         this.setCache = setCache/*设置缓存,初始化缓存设置*/;
         this.loginOut = loginOut/*退出系统*/;
         this.clearCache = clearCache/*清除缓存*/;
+        this.changeCache = changeCache/*更新成最新缓存*/;
         this.getCache = getCache/*获取已经存在的缓存*/;
         this.outAction = outAction/*设置退出按钮缓存或操作退出动作，此服务主要用于非app_ctrl控制部分*/;
 
@@ -118,7 +119,7 @@
                                 var temparr = [{
                                     name: '用户名：',
                                     value: tempcache.username
-                                },{
+                                }, {
                                     name: '登录时间：',
                                     value: tempcache.datetime
                                 }];
@@ -173,9 +174,9 @@
                     .then(function (resp) {
                             /*测试菜单*/
                             if (config.debug) {
-                                var resp = config.create?testService.testMenu({
-                                    create:true
-                                }):testService.testMenu();
+                                var resp = config.create ? testService.testMenu({
+                                    create: true
+                                }) : testService.testMenu();
                             }
                             var data = resp.data,
                                 status = parseInt(resp.status, 10);
@@ -217,7 +218,7 @@
                                             cache['moduleMap'] = list['module'];
                                             cache['menuMap'] = list['menu'];
                                             cache['powerMap'] = list['power'];
-                                            cache['menuSourceMap']=list['menusource'];
+                                            cache['menuSourceMap'] = list['menusource'];
                                             /*更新缓存*/
                                             toolUtil.setParams(unique_key, cache);
                                             if (fn && typeof fn === 'function') {
@@ -382,6 +383,14 @@
         function clearCache() {
             cache = null;
             quickmenu = [];
+        }
+
+        /*更新成最新缓存*/
+        function changeCache(flag) {
+            cache = toolUtil.getParams(unique_key)/*获取缓存*/;
+            if(flag){
+                return cache;
+            }
         }
 
         /*获取已经存在的缓存*/

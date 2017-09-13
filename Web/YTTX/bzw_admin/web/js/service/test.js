@@ -677,6 +677,10 @@
                     "modName": "管理员管理",
                     "modLink": "admin",
                     "modItem": [{
+                        "modCode": "admin-list",
+                        "modLink": "admin.list",
+                        "modName": "管理员管理"
+                    }, {
                         "modCode": "admin-add",
                         "modLink": "admin.add",
                         "modName": "新增管理员"
@@ -687,6 +691,10 @@
                     "modName": "商家管理",
                     "modLink": "business",
                     "modItem": [{
+                        "modCode": "business-list",
+                        "modLink": "business.list",
+                        "modName": "商家管理"
+                    }, {
                         "modCode": "business-stock",
                         "modLink": "business.stock",
                         "modName": "商品库"
@@ -697,6 +705,10 @@
                     "modName": "供应商管理",
                     "modLink": "provider",
                     "modItem": [{
+                        "modCode": "provider-list",
+                        "modLink": "provider.list",
+                        "modName": "供应商管理"
+                    }, {
                         "modCode": "provider-audit",
                         "modLink": "provider.audit",
                         "modName": "待审核供应商"
@@ -707,6 +719,10 @@
                     "modName": "订单管理",
                     "modLink": "order",
                     "modItem": [{
+                        "modCode": "order-list",
+                        "modLink": "order.list",
+                        "modName": "订单管理"
+                    }, {
                         "modCode": "order-comment",
                         "modLink": "order.comment",
                         "modName": "评论管理"
@@ -717,6 +733,10 @@
                     "modName": "商品管理",
                     "modLink": "goods",
                     "modItem": [{
+                        "modCode": "goods-list",
+                        "modLink": "goods.list",
+                        "modName": "商品管理"
+                    }, {
                         "modCode": "goods-type",
                         "modLink": "goods.type",
                         "modName": "商品分类管理"

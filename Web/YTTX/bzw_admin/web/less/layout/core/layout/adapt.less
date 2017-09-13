@@ -60,14 +60,14 @@
 
 /*宽屏*/
 .struct-layout-auto {
-  //background: @color-white;
   background: @color-gray16;
   /*主体*/
   .struct-layout-container {
-    padding: @layout-header-height 0 0 0;
+    padding: @layout-header-height 0 0 @layout-side-width;
     width: 100%;
     min-width: @layout-container-width !important;
     min-height: 100vh;
+    background:@color-white;
   }
   /*头部*/
   .struct-layout-header {
@@ -98,13 +98,15 @@
   /*主显示区*/
   .struct-layout-main {
     width: 100%;
-    margin-left: -@layout-side-width;
+    //margin-left: -@layout-side-width;
     .calc-base(min-height,'100vh - 50px - 64px');
-    padding-left: @layout-contentgap-left + @layout-side-width;
+    //padding-left: @layout-contentgap-left + @layout-side-width;
   }
   /*侧边栏*/
   .struct-layout-side {
-    .calc-base(min-height,'100vh - 50px - 64px');
+    .layout-absolutel-base(0,@layout-footer-height,200);
+    min-height:100vh;
+    //.calc-base(min-height,'100vh - 50px - 64px');
   }
 
   /*底部*/

@@ -49,8 +49,8 @@
                     deps: ['$ocLazyLoad',
                         function ($ocLazyLoad) {
                             return $ocLazyLoad.load([
-                                'js/app/index/index-controller.js',
-                                'js/app/index/index-service.js'
+                                'js/app/index/index-service.js',
+                                'js/app/index/index-controller.js'
                             ]);
                         }]
                 }
@@ -66,13 +66,31 @@
                     deps: ['$ocLazyLoad',
                         function ($ocLazyLoad) {
                             return $ocLazyLoad.load([
+                                'js/app/admin/admin-service.js',
+                                'js/app/admin/admin-controller.js'
+                            ]);
+                        }]
+                }
+            })
+            /*管理--管理员管理*/
+            .state('admin.list', {
+                url: '/list',
+                templateUrl: 'view/admin/admin_list.html',
+                controller: 'adminListController',
+                controllerAs: 'vm',
+                resolve: {
+                    /*延迟加载，依赖相关组件*/
+                    deps: ['$ocLazyLoad',
+                        function ($ocLazyLoad) {
+                            return $ocLazyLoad.load([
                                 'js/plugins/datatables/dataTables.bootstrap.css',
                                 'js/plugins/datatables/js/jquery.dataTables.js',
                                 'js/plugins/pagination/pagination.js',
                                 'js/service/datatable/table.js',
                                 'js/service/page/page.js',
-                                'js/app/admin/admin-controller.js',
-                                'js/app/admin/admin-service.js'
+                                'js/app/admin/admin-service.js',
+                                'js/app/admin/admin-list-service.js',
+                                'js/app/admin/admin-list-controller.js'
                             ]);
                         }]
                 }
@@ -80,20 +98,22 @@
             /*管理--新增管理员*/
             .state('admin.add', {
                 url: '/add',
-                controller: 'adminController',
+                templateUrl: 'view/admin/admin_add.html',
+                controller: 'adminAddController',
                 controllerAs: 'vm',
-                views: {
+                /*views: {
                     'container': {
                         templateUrl: 'view/admin/admin_add.html'
                     }
-                },
+                },*/
                 resolve: {
                     /*延迟加载，依赖相关组件*/
                     deps: ['$ocLazyLoad',
                         function ($ocLazyLoad) {
                             return $ocLazyLoad.load([
-                                'js/app/admin/admin-controller.js',
-                                'js/app/admin/admin-service.js'
+                                'js/app/admin/admin-service.js',
+                                'js/app/admin/admin-add-service.js',
+                                'js/app/admin/admin-add-controller.js'
                             ]);
                         }]
                 }

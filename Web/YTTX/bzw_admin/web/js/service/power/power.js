@@ -15,8 +15,6 @@
     function powerService(toolUtil, loginService, testService) {
         /*获取缓存数据*/
         var self = this,
-            cache = loginService.getCache(),
-            powerCache = cache['powerMap'],
             isrender = false/*dom是否渲染*/,
             isall = false/*是否支持全选*/,
             isitem = false/*是否支持单个选中事件*/,
@@ -33,7 +31,7 @@
             if (thead !== '' && colgroup !== '' && h_items.length !== 0) {
                 return false;
             }
-
+            var powerCache=loginService.getCache()['powerMap'];
             if (powerCache) {
                 var str = '',
                     strall = '',
@@ -138,7 +136,7 @@
                 var $operate = $(target),
                     check = $operate.is(':checked'),
                     prid = $operate.attr('data-prid'),
-                    tempparam = cache.loginMap.param,
+                    tempparam = loginService.getCache().loginMap.param,
                     param = {
                         adminId: tempparam.adminId,
                         token: tempparam.token,
@@ -172,7 +170,6 @@
                                     }
                                     if (code === 999) {
                                         /*退出系统*/
-                                        cache = null;
                                         loginService.outAction();
                                     }
                                     /*恢复原来设置*/
@@ -204,7 +201,7 @@
                 return false;
             }
             /*合并参数*/
-            var tempparm = cache.loginMap.param,
+            var tempparm = loginService.getCache().loginMap.param,
                 param = {
                     adminId: tempparm.adminId,
                     token: tempparm.token,
@@ -239,7 +236,6 @@
                                 }
                                 if (code === 999) {
                                     /*退出系统*/
-                                    cache = null;
                                     loginService.outAction();
                                 }
                             } else {
@@ -416,7 +412,6 @@
                                     }
                                     if (code === 999) {
                                         /*退出系统*/
-                                        cache = null;
                                         loginService.outAction();
                                     }
                                 } else {
@@ -535,7 +530,8 @@
         /*解析权限列表*/
         function resolvePowerList(config) {
             /*解析数据*/
-            var len = h_items.length,
+            var powerCache=loginService.getCache()['powerMap'],
+                len = h_items.length,
                 i = 0,
                 str = '',
                 ispermit,
@@ -816,11 +812,12 @@
 
         /*权限服务--获取当前用户的权限缓存,key(id，模块名称)*/
         function getCurrentPower(key) {
+            var cache=loginService.getCache()['powerMap'];
             if (cache) {
                 if (typeof key !== 'undefined') {
-                    return getPowerListByModule(key, powerCache);
+                    return getPowerListByModule(key, cache);
                 }
-                return powerCache;
+                return cache;
             }
             return null;
         }
@@ -898,27 +895,28 @@
         }
 
         /*根据路径判断模块*/
-        function getIdByPath(cache, path) {
+        function getIdByPath(path) {
             if (!path) {
                 /*不存在路径则返回首页*/
                 return 0;
             }
-            var path = path.slice(1);
-            if (path.indexOf('/') !== -1) {
-                if (path.indexOf('.') !== -1) {
-                    path = path.split('/');
-                    var len = path.length;
-                    path = path[len - 1];
-                    path = path.split('.')[0];
+            var temppath = path.slice(1);
+            if (temppath.indexOf('/') !== -1) {
+                if (temppath.indexOf('.') !== -1) {
+                    temppath = temppath.split('/');
+                    var len = temppath.length;
+                    temppath = temppath[len - 1];
+                    temppath = temppath.split('.')[0];
                 } else {
-                    path = path.split('/')[0];
+                    temppath = temppath.split('/')[0];
                 }
             }
-            path = path.replace(/\/*/g, '');
-            var item;
+            temppath = temppath.replace(/\/*/g, '');
+            var item,
+                cache=loginService.getCache()['moduleMap'];
             for (var i in cache) {
                 item = cache[i];
-                if (item && item['module'] === path) {
+                if (item && item['module'] === temppath) {
                     return item['id'];
                 }
             }

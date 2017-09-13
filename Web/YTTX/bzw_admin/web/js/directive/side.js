@@ -65,28 +65,8 @@
             scope: {
                 listitem: '=listitem'
             },
-            template: '<li ng-show="{{i.power}}" class="{{i.active}}" ng-repeat="i in listitem"><a data-type="{{i.type}}" title=""  ui-sref="{{i.href}}">{{i.name}}</a></li>',
-            link: sideList
+            template: '<li ng-show="{{i.power}}"  ui-sref-active="menuactive" class="{{i.active}}" ng-repeat="i in listitem"><a data-type="{{i.type}}" title=""  ui-sref="{{i.href}}">{{i.name}}</a></li>'
         };
-
-        /*link*/
-        function sideList(scope, element, attrs) {
-            /*绑定事件*/
-            element.bind('click', function ($event) {
-                var target = $event.target,
-                    node = target.nodeName.toLowerCase(),
-                    $li;
-
-                if (node === 'a') {
-                    $li = angular.element(target).parent();
-                } else if (node === 'li') {
-                    $li = angular.element(target);
-                } else {
-                    return false;
-                }
-                $li.addClass('menuactive').siblings().removeClass('menuactive');
-            });
-        }
     }
 
     /*侧边栏搜索指令*/
