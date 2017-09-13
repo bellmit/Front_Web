@@ -88,6 +88,7 @@
         this.getPowerListByModule = getPowerListByModule/*根据模块判断拥有的权限(拥有的权限),key:(索引，模块名称),cache:模块；此方法结果一般与isPower配合使用*/;
         this.isPower = isPower/*根据关键词判断权限flag:是否过滤没有的权限*/;
         this.getIdByPath = getIdByPath/*根据路径获取ID*/;
+        this.getSideMenu=getSideMenu/*根据模块id获取子子菜单*/;
 
 
         /*初始化方法*/
@@ -922,6 +923,29 @@
             }
             return 0;
         }
+
+        /*根据模块id获取子子菜单*/
+        function getSideMenu(module_id) {
+            var menumap = loginService.getCache()['menuSourceMap'][module_id],
+                i = 0,
+                len = menumap.length,
+                res = [];
+
+            if (len !== 0) {
+                for (i; i < len; i++) {
+                    var item = menumap[i],
+                        obj = {};
+                    obj['name'] = item['modName'];
+                    obj['href'] = item['modLink'];
+                    obj['active'] = '';
+                    obj['power'] = true;
+                    res.push(obj);
+                }
+                return res;
+            }
+            return [];
+        }
+
 
     }
 

@@ -9,11 +9,11 @@
 
 
     /*服务注入依赖*/
-    indexService.$inject = ['loginService', 'powerService', '$location', 'testService'];
+    indexService.$inject = ['loginService', 'powerService', 'testService'];
 
 
     /*服务实现*/
-    function indexService(loginService, powerService, $location, testService) {
+    function indexService(loginService, powerService, testService) {
         /*获取缓存数据*/
         var module_id = 0/*模块id*/,
             powermap = powerService.getCurrentPower(module_id),
@@ -29,7 +29,6 @@
         this.getCurrentPower = getCurrentPower/*获取权限列表*/;
         this.getSideInfo = getSideInfo/*获取侧边栏信息*/;
         this.getQuickItem = getQuickItem/*获取快捷导航*/;
-        this.loginOut = loginOut/*退出系统*/;
 
 
         /*接口实现*/
@@ -55,9 +54,6 @@
             return loginService.getMenuData();
         }
 
-        /*退出系统*/
-        function loginOut() {
-            loginService.outAction();
-        }
+
     }
 }());

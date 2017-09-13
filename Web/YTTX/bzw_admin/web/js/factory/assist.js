@@ -14,16 +14,15 @@
 
     /*工厂实现*/
     function assistCommon(toolUtil, toolDialog, $timeout, loginService) {
-        var cache = loginService.getCache()/*缓存*/;
 
-        var $modal = null;
+
+        var tempparam = loginService.getCache().loginMap.param,
+            $modal = null;
 
         /*对外接口*/
         return {
-            getCache: getCache/*获取缓存*/,
             changeCache: changeCache/*更新缓存*/,
-            deleteCache: deleteCache/*删除缓存*/,
-
+            loginOut: loginOut/*退出*/,
 
             toggleModal: toggleModal/*弹出层显示隐藏*/,
 
@@ -36,22 +35,22 @@
             formReset: formReset/*表单类服务--重置表单*/
         };
 
-        /*获取缓存*/
-        function getCache() {
-            return cache;
-        }
 
         /*更新缓存*/
-        function changeCache() {
+        function changeCache(key, obj) {
+            /*设置新缓存*/
+            if (obj) {
+                toolUtil.setParams(key, obj);
+            } else {
+                toolUtil.setParams(key, {});
+            }
+            /*更新登录缓存*/
             loginService.changeCache();
-            cache = loginService.getCache();
-            return cache;
         }
 
-        /*删除缓存*/
-        function deleteCache(key) {
-            toolUtil.removeParams(key);
-            changeCache();
+        /*退出*/
+        function loginOut() {
+            loginService.outAction();
         }
 
         /*
@@ -165,7 +164,32 @@
         }
 
         /*表单类服务--提交表单数据*/
-        function formSubmit(config) {
+        function formSubmit(model, config) {
+            /*
+            type:表单所属模型，
+            * action：表单提交类型，新增，修改...
+            * */
+            
+            /*参数适配*/
+            var param = {
+                    adminId: tempparam.adminId,
+                    token: tempparam.token
+                },
+                req_config = {
+                    method: 'post',
+                    url: config.url,
+                    debug: config.debug,
+                    action: config.action
+                };
+
+            var req_param=config.param;
+            for(var i in req_param){
+                param[i]=req_param[i];
+            }
+            req_config["data"]=param;
+
+
+
         }
 
         /*表单类服务--重置表单*/

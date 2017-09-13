@@ -9,11 +9,11 @@
 
 
     /*服务注入依赖*/
-    adminListService.$inject = ['toolUtil', 'toolDialog', 'dataTableService', '$state', 'adminService', 'loginService', 'testService'];
+    adminListService.$inject = ['toolUtil', 'toolDialog', 'assistCommon', 'dataTableService', '$state', 'adminService', 'loginService', 'testService'];
 
 
     /*服务实现*/
-    function adminListService(toolUtil, toolDialog, dataTableService, $state, adminService, loginService, testService) {
+    function adminListService(toolUtil, toolDialog, assistCommon, dataTableService, $state, adminService, loginService, testService) {
         var cacheparam = loginService.getCache().loginMap.param/*缓存*/;
 
         /*对外接口*/
@@ -24,7 +24,7 @@
         /*操作表格*/
         function doItemAction(config) {
             if (!cacheparam) {
-                adminService.loginOut();
+                loginService.loginOut();
                 return false;
             }
             var index = config.index,
@@ -44,7 +44,7 @@
             if (action === 'update') {
                 /*编辑或更新操作*/
                 /*设置临时缓存*/
-                adminService.changeCache('tempMap', {
+                assistCommon.changeCache('tempMap', {
                     id: id
                 });
                 /*路由*/
@@ -101,7 +101,7 @@
                                 }
                                 if (code === 999) {
                                     /*退出系统*/
-                                    adminService.loginOut();
+                                    loginService.loginOut();
                                 }
                             } else {
                                 /*提示操作结果*/

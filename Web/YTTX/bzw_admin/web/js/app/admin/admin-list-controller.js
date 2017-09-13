@@ -9,14 +9,14 @@
 
 
     /*控制注入依赖*/
-    adminListController.$inject = ['toolUtil', '$scope','pageService', 'dataTableService', 'adminService', 'adminListService', 'testService'];
+    adminListController.$inject = ['toolUtil', 'assistCommon', 'pageService', 'dataTableService', 'adminService', 'adminListService', 'testService'];
 
 
     /*控制器实现*/
-    function adminListController(toolUtil,$scope, pageService, dataTableService, adminService, adminListService, testService) {
+    function adminListController(toolUtil, assistCommon, pageService, dataTableService, adminService, adminListService, testService) {
         var vm = this,
             debug = true/*测试模式*/;
-        
+
 
         /*模型--操作权限列表*/
         vm.powerlist = adminService.getCurrentPower();
@@ -75,7 +75,7 @@
                             }
                             if (code === 999) {
                                 /*退出系统*/
-                                adminService.loginOut();
+                                assistCommon.loginOut();
                             }
                             return [];
                         }
@@ -173,7 +173,7 @@
         };
 
         /*模型--欢迎页面*/
-        vm.welcome=false;
+        vm.welcome = false;
 
         /*初始化配置,渲染*/
         _initRender_();
@@ -217,9 +217,8 @@
             /*获取表格数据*/
             getTableData();
             /*清除临时缓存*/
-            adminService.changeCache('tempMap');
+            assistCommon.changeCache('tempMap');
         }
-        
 
 
     }
