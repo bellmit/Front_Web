@@ -15,27 +15,42 @@
     function powerService(toolUtil, loginService, testService) {
         /*获取缓存数据*/
         var self = this,
-            isrender = false/*dom是否渲染*/,
-            isall = false/*是否支持全选*/,
-            isitem = false/*是否支持单个选中事件*/,
-            debug = false/*测试模式*/,
             h_items = [],
             h_len = 0,
-            colgroup = ''/*分组*/,
-            thead = ''/*普通的头*/,
-            all_thead = ''/*拥有全选的头*/;
+            colgroup = []/*分组*/,
+            thead = []/*普通的头*/,
+            all_thead = []/*拥有全选的头*/;
 
         /*初始化执行*/
-        (function () {
+        init();
+
+
+        this.init = init/*初始化方法*/;
+        this.createColgroup = createColgroup/*生成分组*/;
+        this.createThead = createThead/*生成头部*/;
+        this.reqUserPowerList = reqUserPowerList/*请求用户权限列表(主要是根据不同对象查询相关权限):config:请求参数，mode:模型*/;
+        this.reqPowerList = reqPowerList/*请求权限列表(主要是根据不同对象查询相关权限):config:请求参数，mode:模型*/;
+        this.resolvePowerList = resolvePowerList/*解析权限列表*/;
+        this.selectAllPower = selectAllPower/*权限服务--全选权限（权限绑定）*/;
+        this.filterPower = filterPower/*权限服务--过滤用户权限*/;
+        this.getSelectPower = getSelectPower/*权限服务--获取选中选择权限*/;
+        this.clearSelectPower = clearSelectPower/*权限服务--清除选中选择权限*/;
+        this.getCurrentPower = getCurrentPower/*权限服务--获取当前用户的权限缓存,key(id，模块名称)*/;
+        this.getPowerListByModule = getPowerListByModule/*根据模块判断拥有的权限(拥有的权限),key:(索引，模块名称),cache:模块；此方法结果一般与isPower配合使用*/;
+        this.isPower = isPower/*根据关键词判断权限flag:是否过滤没有的权限*/;
+        this.getIdByPath = getIdByPath/*根据路径获取ID*/;
+        this.getSideMenu = getSideMenu/*根据模块id获取子子菜单*/;
+
+
+        /*初始化方法*/
+        function init(flag) {
             /*有数据即调数据，没数据就创建数据*/
-            if (thead !== '' && colgroup !== '' && h_items.length !== 0) {
+            if (flag && thead.length !== 0 && colgroup.length !== 0 && h_items.length !== 0) {
                 return false;
             }
-            var powerCache=loginService.getCache()['powerMap'];
+            var powerCache = loginService.getCache()['powerMap'];
             if (powerCache) {
-                var str = '',
-                    strall = '',
-                    index = 0;
+                var index = 0;
 
                 for (var i in powerCache) {
                     /*过滤首页*/
@@ -43,8 +58,16 @@
                         continue;
                     }
                     h_items.push(i);
-                    strall += '<th class="g-t-c"><label><input data-index="' + index + '" data-modid="' + powerCache[i]["id"] + '" type="checkbox" name="' + powerCache[i]["module"] + '" />&nbsp;' + powerCache[i]["name"] + '</label></th>';
-                    str += '<th data-index="' + index + '" class="g-t-c">' + powerCache[i]["name"] + '</th>';
+                    all_thead.push({
+                        index: index,
+                        modid: powerCache[i]["id"],
+                        module: powerCache[i]["module"],
+                        name: powerCache[i]["name"]
+                    });
+                    thead.push({
+                        index: index,
+                        name: powerCache[i]["name"]
+                    });
                     index++;
                 }
 
@@ -54,8 +77,6 @@
                         colitem = parseInt(50 / len, 10);
 
                     /*初始化赋值*/
-                    thead = '<tr>' + str + '</tr>';
-                    all_thead = '<tr>' + strall + '</tr>';
                     h_len = len;
 
                     /*解析分组*/
@@ -63,146 +84,45 @@
                         colitem = len + 1;
                     }
                     for (j; j < len; j++) {
-                        colgroup += '<col class="g-w-percent' + colitem + '" />';
+                        colgroup.push({
+                            'col_class': "g-w-percent" + colitem
+                        });
                     }
                 }
             } else {
-                all_thead = thead = '<tr><th></th></tr>';
-                colgroup = '<col class="g-w-percent50" />';
-            }
-        }());
-
-
-        this.init = init/*初始化方法*/;
-        this.createThead = createThead/*生成头部和分组*/;
-        this.selectItemPower = selectItemPower/*设置单个权限选项操作 to do*/;
-        this.reqUserPowerList = reqUserPowerList/*请求用户权限列表(主要是根据不同对象查询相关权限):config:请求参数，mode:模型*/;
-        this.reqPowerList = reqPowerList/*请求权限列表(主要是根据不同对象查询相关权限):config:请求参数，mode:模型*/;
-        this.resolvePowerList = resolvePowerList/*解析权限列表*/;
-        this.selectAllPower = selectAllPower/*权限服务--全选权限（权限绑定）*/;
-        this.filterPower = filterPower/*权限服务--过滤用户权限*/;
-        this.getSelectPower = getSelectPower/*权限服务--获取选中选择权限*/;
-        this.clearHeaderPower = clearHeaderPower/*清除头部选中*/;
-        this.clearSelectPower = clearSelectPower/*权限服务--清除选中选择权限*/;
-        this.getCurrentPower = getCurrentPower/*权限服务--获取当前用户的权限缓存,key(id，模块名称)*/;
-        this.getPowerListByModule = getPowerListByModule/*根据模块判断拥有的权限(拥有的权限),key:(索引，模块名称),cache:模块；此方法结果一般与isPower配合使用*/;
-        this.isPower = isPower/*根据关键词判断权限flag:是否过滤没有的权限*/;
-        this.getIdByPath = getIdByPath/*根据路径获取ID*/;
-        this.getSideMenu=getSideMenu/*根据模块id获取子子菜单*/;
-
-
-        /*初始化方法*/
-        function init(config) {
-            var dom = config.dom;
-            if (dom) {
-                isrender = true;
-                debug = config.debug ? true : false;
-                /*复制dom引用*/
-                for (var i in dom) {
-                    self[i] = dom[i];
-                }
-                /*是否绑定全选*/
-                if (config.isall) {
-                    isall = true;
-                    selectAllPower();
-                }
-                /*是否绑定单个选中*/
-                if (config.isitem) {
-                    isitem = true;
-                    selectItemPower();
-                }
-                /*初始化头部和分组*/
-                createThead();
+                all_thead = [{
+                    index: 0,
+                    modid: 0,
+                    module: 0,
+                    name: ''
+                }];
+                thead = [{
+                    index: 0,
+                    name: ''
+                }];
+                colgroup = [{
+                    'col_class': "g-w-percent50"
+                }];
             }
         }
 
-        /*生成头部和分组*/
-        function createThead() {
+        /*生成分组*/
+        function createColgroup() {
             /*flag:是否有全选*/
-            /*有数据即调数据，没数据就创建数据*/
-            $(colgroup).appendTo(self.$power_colgroup.html(''));
-            if (isall) {
-                $(all_thead).appendTo(self.$power_thead.html(''));
-            } else {
-                $(thead).appendTo(self.$power_thead.html(''));
-            }
+            return colgroup.slice(0);
         }
 
-        /*设置单个权限选项操作 to do*/
-        function selectItemPower() {
-            self.$power_tbody.on('click', 'input', function (e) {
-                var target = e.target;
-
-                /*标签*/
-                var $operate = $(target),
-                    check = $operate.is(':checked'),
-                    prid = $operate.attr('data-prid'),
-                    tempparam = loginService.getCache().loginMap.param,
-                    param = {
-                        adminId: tempparam.adminId,
-                        token: tempparam.token,
-                        organizationId: tempparam.organizationId,
-                        prid: prid,
-                        isPermit: check ? 1 : 0
-                    };
-
-                toolUtil
-                    .requestHttp({
-                        url: '/permission/state/update',
-                        method: 'post',
-                        debug: debug,
-                        data: param
-                    })
-                    .then(function (resp) {
-                            if (debug) {
-                                var resp = testService.testSuccess();
-                            }
-                            var data = resp.data,
-                                status = parseInt(resp.status, 10);
-
-                            if (status === 200) {
-                                var code = parseInt(data.code, 10),
-                                    message = data.message;
-                                if (code !== 0) {
-                                    if (typeof message !== 'undefined' && message !== '') {
-                                        console.log(message);
-                                    } else {
-                                        console.log('设置权限失败');
-                                    }
-                                    if (code === 999) {
-                                        /*退出系统*/
-                                        loginService.outAction();
-                                    }
-                                    /*恢复原来设置*/
-                                    $operate.prop({
-                                        'checked': !check
-                                    });
-                                }
-                            }
-                        },
-                        function (resp) {
-                            var message = resp.data.message;
-                            if (typeof message !== 'undefined' && message !== '') {
-                                console.log(message);
-                            } else {
-                                console.log('设置权限失败');
-                            }
-                            /*恢复原来设置*/
-                            $operate.prop({
-                                'checked': !check
-                            });
-                        });
-
-            });
+        /*生成头部*/
+        function createThead(flag) {
+            /*flag:是否有全选*/
+            return flag ? all_thead.slice(0) : thead.slice(0);
         }
 
         /*请求权限列表(主要是根据不同对象查询相关权限):config:请求参数，mode:模型*/
         function reqPowerList(config) {
-            if (!isrender) {
-                return false;
-            }
             /*合并参数*/
-            var tempparm = loginService.getCache().loginMap.param,
+            var debug=config.debug,
+                tempparm = loginService.getCache().loginMap.param,
                 param = {
                     adminId: tempparm.adminId,
                     token: tempparm.token,
@@ -343,11 +263,9 @@
 
         /*请求用户权限列表(主要是根据不同对象查询相关权限):config:请求参数，mode:模型*/
         function reqUserPowerList(config) {
-            if (!isrender) {
-                return false;
-            }
             /*合并参数*/
-            var param = config.param,
+            var debug=config.debug,
+                param = config.param,
                 datalist = config.datalist;
 
             if (typeof datalist !== 'undefined') {
@@ -531,7 +449,7 @@
         /*解析权限列表*/
         function resolvePowerList(config) {
             /*解析数据*/
-            var powerCache=loginService.getCache()['powerMap'],
+            var powerCache = loginService.getCache()['powerMap'],
                 len = h_items.length,
                 i = 0,
                 str = '',
@@ -757,9 +675,6 @@
             if (typeof dom !== 'undefined') {
                 $input = $(dom);
             } else {
-                if (!isrender) {
-                    return null;
-                }
                 $input = self.$power_tbody.find('input:checked');
             }
 
@@ -776,27 +691,12 @@
             return selectarr.length === 0 ? null : selectarr;
         }
 
-
-        /*清除头部选中*/
-        function clearHeaderPower() {
-            if (isall) {
-                self.$power_thead.find('input:checked').each(function () {
-                    $(this).prop({
-                        'checked': false
-                    });
-                });
-            }
-        }
-
         /*权限服务--清除选中选择权限*/
         function clearSelectPower(dom) {
             var $input;
             if (typeof dom !== 'undefined') {
                 $input = $(dom);
             } else {
-                if (!isrender) {
-                    return false;
-                }
                 $input = self.$power_tbody.find('input:checked');
             }
 
@@ -806,14 +706,12 @@
                     'checked': false
                 });
             });
-
-            /*清除头部*/
-            clearHeaderPower();
+            
         }
 
         /*权限服务--获取当前用户的权限缓存,key(id，模块名称)*/
         function getCurrentPower(key) {
-            var cache=loginService.getCache()['powerMap'];
+            var cache = loginService.getCache()['powerMap'];
             if (cache) {
                 if (typeof key !== 'undefined') {
                     return getPowerListByModule(key, cache);
@@ -914,7 +812,7 @@
             }
             temppath = temppath.replace(/\/*/g, '');
             var item,
-                cache=loginService.getCache()['moduleMap'];
+                cache = loginService.getCache()['moduleMap'];
             for (var i in cache) {
                 item = cache[i];
                 if (item && item['module'] === temppath) {
