@@ -29,6 +29,7 @@
             }
             var index = config.index,
                 $btn = config.$btn,
+                debug=config.debug,
                 action = $btn.attr('data-action'),
                 id = $btn.attr('data-id'),
                 url = '';
@@ -51,7 +52,7 @@
                 $state.go('admin.add');
             } else if (action === 'delete') {
                 /*删除操作*/
-                url = 'admin/delete';
+                url = debug?'':'admin/delete';
                 toolDialog.sureDialog('', function () {
                     /*请求数据*/
                     _doItemAction_({
@@ -60,7 +61,7 @@
                         table: config.table,
                         index: index,
                         method: 'post',
-                        debug: config.debug,
+                        debug: debug,
                         data: param
                     });
                 }, '删除后将不可登录此后台系统了，是否真要删除此权限？', true);
@@ -72,8 +73,14 @@
         /*接口实现--私有*/
         /*处理表格操作*/
         function _doItemAction_(config) {
+            var tempconfig={
+                url: config.url,
+                debug:config.debug,
+                method: config.method,
+                data: config.data
+            };
             toolUtil
-                .requestHttp(config)
+                .requestHttp(tempconfig)
                 .then(function (resp) {
                         /*测试代码*/
                         if (config.debug) {

@@ -9,14 +9,16 @@
 
 
     /*工厂依赖注入*/
-    assistCommon.$inject = ['toolUtil', 'toolDialog', '$timeout', 'loginService'];
+    assistCommon.$inject = ['toolUtil', 'toolDialog', '$timeout', 'loginService', 'testService'];
 
 
     /*工厂实现*/
-    function assistCommon(toolUtil, toolDialog, $timeout, loginService) {
+    function assistCommon(toolUtil, toolDialog, $timeout, loginService, testService) {
 
 
         var tempparam = loginService.getCache().loginMap.param,
+            cache_reset = {}/*缓存序列,存放重置按钮 dom节点引用*/,
+            timerid = null,
             $modal = null;
 
         /*对外接口*/
@@ -27,12 +29,11 @@
             toggleModal: toggleModal/*弹出层显示隐藏*/,
 
             /*表单类*/
-            addFormDelay: addFormDelay/*表单类服务--执行延时任务序列*/,
-            clearFormDelay: clearFormDelay/*表单类服务--清除延时任务序列*/,
-            clearFormData: clearFormData/*表单类服务--清空表单模型数据*/,
-            clearFormValid: clearFormValid/*表单类服务--重置表单数据*/,
-            formSubmit: formSubmit/*表单类服务--提交表单数据*/,
-            formReset: formReset/*表单类服务--重置表单*/
+            initForm: initForm/*初始化表单配置*/,
+            addFormDelay: addFormDelay/*执行延时任务序列*/,
+            clearFormDelay: clearFormDelay/*清除延时任务序列*/,
+            clearFormValid: clearFormValid/*重置表单验证数据*/,
+            formSubmit: formSubmit/*提交表单数据*/
         };
 
 
@@ -102,43 +103,58 @@
             }
         }
 
-        /*表单类服务--执行延时任务序列*/
+
+        /*表单服务类*/
+        /*初始化表单配置*/
+        function initForm(arr) {
+            /*如果有配置则配置缓存*/
+            for (var i in cache_reset) {
+                cache_reset[i] = null/*释放内存*/;
+                delete cache_reset[i]/*清除序列*/;
+            }
+            if (arr) {
+                /*配置dom节点引用*/
+                var j = 0,
+                    len = arr.length;
+
+                if (len !== 0) {
+                    for (j; j < len; j++) {
+                        /*缓存table节点*/
+                        var index = arr[j];
+                        cache_reset[index] = angular.element('#admin_form_reset' + index);
+                    }
+                }
+            }
+        }
+
+        /*执行延时任务序列*/
         function addFormDelay(config) {
-            config.timer = $timeout(function () {
+            var index = config.index;
+            timerid = $timeout(function () {
                 /*触发重置表单*/
-                config.node.trigger('click');
+                cache_reset[index].triggerHandler('click');
+                clearFormDelay();
+                if (config.fn && typeof config.fn === 'function') {
+                    config.fn.call(null,index);
+                }
             }, 0);
         }
 
-        /*表单类服务--清除延时任务序列*/
-        function clearFormDelay(config) {
-            if (config.tid && config.tid !== null) {
-                $timeout.cancel(config.tid);
-                config.tid = null;
+        /*清除延时任务序列*/
+        function clearFormDelay(tid) {
+            if (typeof tid !== 'undefined' && tid !== null) {
+                $timeout.cancel(tid);
+                tid = null;
             } else {
                 /*如果存在延迟任务则清除延迟任务*/
-                if (config.timer !== null) {
-                    $timeout.cancel(config.timer);
-                    config.timer = null;
+                if (timerid !== null) {
+                    $timeout.cancel(timerid);
+                    timerid = null;
                 }
             }
         }
 
-        /*表单类服务--清空表单模型数据*/
-        function clearFormData(data, fn) {
-            if (!data) {
-                return false;
-            }
-            if (fn && typeof fn === 'function') {
-                fn.call(null, data);
-            } else {
-                for (var i in data) {
-                    data[i] = '';
-                }
-            }
-        }
-
-        /*表单类服务--重置表单数据*/
+        /*重置表单数据*/
         function clearFormValid(forms) {
             if (forms) {
                 var temp_cont = forms.$$controls;
@@ -163,38 +179,126 @@
             }
         }
 
-        /*表单类服务--提交表单数据*/
-        function formSubmit(model, config) {
-            /*
-            type:表单所属模型，
-            * action：表单提交类型，新增，修改...
-            * */
-            
-            /*参数适配*/
-            var param = {
-                    adminId: tempparam.adminId,
-                    token: tempparam.token
-                },
-                req_config = {
+        /*提交表单数据*/
+        function formSubmit(config, paramfn) {
+            if (tempparam) {
+                /*初始化参数*/
+                var req_param = {},
+                    type = config.type/*表单所属模型*/,
+                    action = config.action/*表单提交类型，新增，修改...*/,
+                    debug = config.debug,
+                    index = config.index/*重置表单时索引*/,
+                    label = config.label || '表单'/*表单所属模型名称*/,
+                    action_map = {
+                        'add': '添加',
+                        'edit': '编辑',
+                        'update': '更新'
+                    };
+
+                /*修正表单提交类型*/
+                action = action ? action : (config.id && config.id !== '') ? 'edit' : 'add';
+
+                /*回调组合参数*/
+                if (paramfn && typeof paramfn === 'function') {
+                    req_param = paramfn.call(null);
+                }
+                /*参数登录适配*/
+                req_param["adminId"] = tempparam.adminId;
+                req_param["token"] = tempparam.token;
+
+                var req_config = {
                     method: 'post',
+                    debug: debug,
                     url: config.url,
-                    debug: config.debug,
-                    action: config.action
+                    data: req_param
                 };
 
-            var req_param=config.param;
-            for(var i in req_param){
-                param[i]=req_param[i];
+                toolUtil
+                    .requestHttp(req_config)
+                    .then(function (resp) {
+                            if (debug) {
+                                var resp = testService.testSuccess();
+                            }
+                            var data = resp.data,
+                                status = parseInt(resp.status, 10);
+
+                            if (status === 200) {
+                                var code = parseInt(data.code, 10),
+                                    message = data.message;
+                                if (code !== 0) {
+                                    if (typeof message !== 'undefined' && message !== '') {
+                                        toolDialog.show({
+                                            type: 'warn',
+                                            value: message
+                                        });
+                                    } else {
+                                        if(config.istip){
+                                            toolDialog.show({
+                                                type: 'warn',
+                                                value: action_map[action] + label + '失败'
+                                            });
+                                        }
+                                        /*to do*/
+                                        if (config.failfn && typeof config.failfn === 'function') {
+                                            config.failfn.call(null, {
+                                                action: action,
+                                                type: type
+                                            });
+                                        }
+                                    }
+                                    if (code === 999) {
+                                        /*退出系统*/
+                                        loginOut();
+                                    }
+                                    return false;
+                                } else {
+                                    /*操作成功即加载数据*/
+                                    /*to do*/
+                                    if (config.successfn && typeof config.successfn === 'function') {
+                                        config.successfn.call(null, {
+                                            action: action,
+                                            type: type
+                                        });
+                                    }
+                                    /*提示操作结果*/
+                                    if(config.istip){
+                                        toolDialog.show({
+                                            type: 'succ',
+                                            value: action_map[action] + label + '成功'
+                                        });
+                                    }
+                                }
+                            } else {
+                                if(config.istip){
+                                    toolDialog.show({
+                                        type: 'warn',
+                                        value: action_map[action] + label + '失败'
+                                    });
+                                }
+                            }
+                        },
+                        function (resp) {
+                            var faildata = resp.data;
+                            if (faildata) {
+                                var message = faildata.message;
+                                if (typeof message !== 'undefined' && message !== '') {
+                                    toolDialog.show({
+                                        type: 'warn',
+                                        value: message
+                                    });
+                                }
+                            } else {
+                                if(config.istip){
+                                    toolDialog.show({
+                                        type: 'warn',
+                                        value: action_map[action] + label + '失败'
+                                    });
+                                }
+                            }
+                        });
+            } else {
+                loginOut();
             }
-            req_config["data"]=param;
-
-
-
-        }
-
-        /*表单类服务--重置表单*/
-        function formReset(config) {
-
         }
 
 

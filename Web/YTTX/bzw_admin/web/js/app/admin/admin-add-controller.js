@@ -9,11 +9,11 @@
 
 
     /*控制注入依赖*/
-    adminAddController.$inject = ['toolUtil', 'assistCommon', 'adminService', 'adminAddService', 'testService'];
+    adminAddController.$inject = ['toolUtil', 'assistCommon', 'adminService', 'adminAddService'];
 
 
     /*控制器实现*/
-    function adminAddController(toolUtil, assistCommon, adminService, adminAddService, testService) {
+    function adminAddController(toolUtil, assistCommon, adminService, adminAddService) {
         var vm = this,
             debug = true/*测试模式*/;
 
@@ -26,25 +26,103 @@
 
         /*模型--管理员*/
         vm.admin = {
-            id: '',
-            userName: '',
-            setting: false
+            id: ''/*用户索引*/,
+            userName: ''/*用户名*/,
+            setting: false/*设置面板是否显示*/
         };
+
+        /*模型--权限设置*/
+        vm.power={
+            colgroup:[]/*分组*/,
+            thead:[]/*头部*/,
+            tbody:[]/*主体*/
+        };
+
+        /*初始化配置,渲染*/
+        _initRender_();
 
 
         /*对外接口*/
-        vm.formSubmit=formSubmit;
+        vm.formSubmit = formSubmit/*提交表单*/;
+        vm.formReset = formReset/*重置表单*/;
 
 
         /*接口实现--公有*/
-        function formSubmit() {
+        /*提交表单*/
+        function formSubmit(config) {
+            var type = config.type;
             assistCommon.formSubmit({
-                admin:vm.admin
+                modal: {
+                    admin: vm.admin
+                },
+                istip: false/*是否显示自定义提示信息*/,
+                type: type/*模型类型，即那个表单模型*/,
+                action: 'add'/*表单提交类型*/,
+                debug: debug/*请求模式*/,
+                label: config.label/*模型类型名称*/,
+                index: config.index/*表单序列，指代第几个表单一般跟reset(重置)按钮id所匹配一致*/,
+                successfn: function (obj) {
+                    /*成功回调*/
+                    vm.admin.id = '';
+                },
+                failfn: function (obj) {
+                    /*失败回调*/
+
+                }
+            }, function () {
+                /*管理员类型*/
+                var param = {};
+                if (type === 'admin') {
+                    for (var i in vm.admin) {
+                        if (i !== 'setting') {
+                            param[i] = vm.admin[i];
+                        }
+                    }
+                }
+                return param;
             });
         }
-        
-        
-        /*操作欢迎页面*/
+
+        /*重置表单*/
+        function formReset(config) {
+            /*清除填入数据*/
+            adminAddService.clearFormData({
+                type: config.type,
+                model: {
+                    admin: vm.admin
+                }
+            });
+            /*清除验证数据*/
+            assistCommon.clearFormValid(config.form);
+        }
+
+
+        /*接口实现--私有*/
+        /*初始化渲染*/
+        function _initRender_() {
+            /*表单初始化*/
+            assistCommon.initForm([1]);
+            /*重置表单数据*/
+            assistCommon.addFormDelay({
+                index: 1,
+                fn: function () {
+                    _queryByEdit_();
+                }
+            });
+        }
+
+        /*查询是否有编辑数据*/
+        function _queryByEdit_() {
+            var tempcache = toolUtil.getParams('tempMap');
+            /*如何是编辑数据则调用查询数据*/
+            if (typeof tempcache.id !== 'undefined' && tempcache.id !== '') {
+                vm.admin.id = tempcache.id;
+                vm.admin.setting = true;
+                adminAddService.queryByEdit({
+                    power:vm.power
+                });
+            }
+        }
 
 
     }

@@ -101,11 +101,6 @@
                 templateUrl: 'view/admin/admin_add.html',
                 controller: 'adminAddController',
                 controllerAs: 'vm',
-                /*views: {
-                    'container': {
-                        templateUrl: 'view/admin/admin_add.html'
-                    }
-                },*/
                 resolve: {
                     /*延迟加载，依赖相关组件*/
                     deps: ['$ocLazyLoad',
