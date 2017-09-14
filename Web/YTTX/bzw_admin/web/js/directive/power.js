@@ -36,7 +36,8 @@
             replace: false,
             restrict: 'EA',
             scope: {
-                thead: '=thead'
+                thead: '=thead',
+                tbody:'=tbody'
             },
             template: '<tr>\
                <th ng-repeat="i in thead" class="g-t-c"><label><input class="{{i.inputclass}}" data-index="{{i.index}}" data-modid="{{i.id}}" type="checkbox" name="{{i.name}}" />&nbsp;{{i.name}}</label></th>\
@@ -46,6 +47,35 @@
 
         /*link实现*/
         function powerTheadAll(scope, element, attrs) {
+            /*全选权限（权限绑定）*/
+            angular.element(element).bind('click',function ($event) {
+                $event.stopPropagation();
+                var target = $event.target,
+                    nodename = target.nodeName.toLowerCase();
+                /*过滤*/
+                if (nodename === 'tr') {
+                    return false;
+                }
+                /*标签*/
+                var $selectall,
+                    index,
+                    dataitem,
+                    check;
+
+                if (nodename === 'label' || nodename === 'th' || nodename === 'td') {
+                    $selectall = angular.element(target).find('input');
+                } else if (nodename === 'input') {
+                    $selectall = angular.element(target);
+                }
+
+                check = $selectall.is(':checked');
+                index = $selectall.attr('data-index');
+                dataitem = scope.tbody[index];
+                for(var i in dataitem){
+                    dataitem[i]["checked"]=check;
+                }
+            });
+
             /*angular.element(element).bind('click',function ($event) {
                 var target = $event.target,
                     node = target.nodeName.toLowerCase(),

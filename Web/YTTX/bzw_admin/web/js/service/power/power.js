@@ -14,12 +14,13 @@
     /*服务实现*/
     function powerService(toolUtil, loginService, testService) {
         /*获取缓存数据*/
-        var self = this,
-            h_items = [],
+        var h_items = [],
             h_len = 0,
             colgroup = []/*分组*/,
             thead = []/*普通的头*/,
-            all_thead = []/*拥有全选的头*/;
+            all_thead = []/*拥有全选的头*/,
+            tbody = [];
+
 
         /*初始化执行*/
         init();
@@ -28,13 +29,11 @@
         this.init = init/*初始化方法*/;
         this.createColgroup = createColgroup/*生成分组*/;
         this.createThead = createThead/*生成头部*/;
+        this.createTbody = createTbody/*生成主体*/;
         this.reqUserPowerList = reqUserPowerList/*请求用户权限列表(主要是根据不同对象查询相关权限):config:请求参数，mode:模型*/;
         this.reqPowerList = reqPowerList/*请求权限列表(主要是根据不同对象查询相关权限):config:请求参数，mode:模型*/;
         this.resolvePowerList = resolvePowerList/*解析权限列表*/;
-        this.selectAllPower = selectAllPower/*权限服务--全选权限（权限绑定）*/;
         this.filterPower = filterPower/*权限服务--过滤用户权限*/;
-        this.getSelectPower = getSelectPower/*权限服务--获取选中选择权限*/;
-        this.clearSelectPower = clearSelectPower/*权限服务--清除选中选择权限*/;
         this.getCurrentPower = getCurrentPower/*权限服务--获取当前用户的权限缓存,key(id，模块名称)*/;
         this.getPowerListByModule = getPowerListByModule/*根据模块判断拥有的权限(拥有的权限),key:(索引，模块名称),cache:模块；此方法结果一般与isPower配合使用*/;
         this.isPower = isPower/*根据关键词判断权限flag:是否过滤没有的权限*/;
@@ -118,10 +117,16 @@
             return flag ? all_thead.slice(0) : thead.slice(0);
         }
 
+        /*生成头部*/
+        function createTbody() {
+            return tbody.slice(0);
+        }
+
         /*请求权限列表(主要是根据不同对象查询相关权限):config:请求参数，mode:模型*/
         function reqPowerList(config) {
             /*合并参数*/
-            var debug=config.debug,
+            var debug = config.debug,
+                israndom = config.israndom,
                 tempparm = loginService.getCache().loginMap.param,
                 param = {
                     adminId: tempparm.adminId,
@@ -139,8 +144,8 @@
                 })
                 .then(function (resp) {
                         if (debug) {
-                            var resp = config.israndom ? testService.testMenu({
-                                israndom: config.israndom
+                            var resp = israndom ? testService.testMenu({
+                                israndom: israndom
                             }) : testService.testMenu();
                         }
                         var data = resp.data,
@@ -163,7 +168,7 @@
                                 /*加载数据*/
                                 var result = data.result;
                                 if (!result) {
-                                    self.$power_tbody.html('<tr><td colspan="' + h_len + '" class="g-c-gray9 g-fs4 g-t-c g-b-white">没有查询到权限信息</td></tr>');
+                                    tbody.length = 0;
                                     return false;
                                 }
                                 if (typeof result !== 'undefined') {
@@ -177,7 +182,7 @@
                                                     config.sourcefn.call(null, null);
                                                 }
                                             } else {
-                                                self.$power_tbody.html('<tr><td colspan="' + h_len + '" class="g-c-gray9 g-fs4 g-t-c g-b-white">没有查询到权限信息</td></tr>');
+                                                tbody.length = 0;
                                             }
                                             return true;
                                         } else {
@@ -196,22 +201,13 @@
                                                 /*解析数据*/
                                                 /*将查询数据按照模块解析出来*/
                                                 if (templist !== null) {
-                                                    var temp_power = templist['power'],
-                                                        temp_html = '';
+                                                    var temp_power = templist['power'];
                                                     /*将模块数据解析转换成html数据*/
-                                                    if (config.clear) {
-                                                        temp_html = resolvePowerList({
-                                                            menu: temp_power,
-                                                            clear: true
-                                                        });
-                                                    } else {
-                                                        temp_html = resolvePowerList({
-                                                            menu: temp_power
-                                                        });
-                                                    }
-                                                    $(temp_html).appendTo(self.$power_tbody.html(''));
+                                                    resolvePowerList({
+                                                        menu: temp_power
+                                                    });
                                                 } else {
-                                                    self.$power_tbody.html('<tr><td colspan="' + h_len + '" class="g-c-gray9 g-fs4 g-t-c g-b-white">没有查询到权限信息</td></tr>');
+                                                    tbody.length=0;
                                                 }
                                             }
 
@@ -225,7 +221,7 @@
                                             return true;
                                         } else {
                                             /*填充子数据到操作区域,同时显示相关操作按钮*/
-                                            self.$power_tbody.html('<tr><td colspan="' + h_len + '" class="g-c-gray9 g-fs4 g-t-c g-b-white">没有查询到权限信息</td></tr>');
+                                            tbody.length=0;
                                         }
                                     }
                                 } else {
@@ -236,17 +232,22 @@
                                         }
                                         return true;
                                     } else {
-                                        self.$power_tbody.html('<tr><td colspan="' + h_len + '" class="g-c-gray9 g-fs4 g-t-c g-b-white">没有查询到权限信息</td></tr>');
+                                        tbody.length=0;
                                     }
                                 }
                             }
                         }
                     },
                     function (resp) {
-                        var message = resp.data.message;
-                        if (typeof message !== 'undefined' && message !== '') {
-                            console.log(message);
-                        } else {
+                        var faildata = resp.data;
+                        if (faildata) {
+                            var message = resp.data.message;
+                            if (typeof message !== 'undefined' && message !== '') {
+                                console.log(message);
+                            } else {
+                                console.log('请求权限失败');
+                            }
+                        }else{
                             console.log('请求权限失败');
                         }
                         /*直接获取原始数据*/
@@ -256,7 +257,7 @@
                             }
                             return true;
                         } else {
-                            self.$power_tbody.html('<tr><td colspan="' + h_len + '" class="g-c-gray9 g-fs4 g-t-c g-b-white">没有查询到权限信息</td></tr>');
+                            tbody.length=0;
                         }
                     });
         }
@@ -264,7 +265,7 @@
         /*请求用户权限列表(主要是根据不同对象查询相关权限):config:请求参数，mode:模型*/
         function reqUserPowerList(config) {
             /*合并参数*/
-            var debug=config.debug,
+            var debug = config.debug,
                 param = config.param,
                 datalist = config.datalist;
 
@@ -286,19 +287,11 @@
                         if (datalist !== null) {
                             var temp_html = '';
                             /*将模块数据解析转换成html数据*/
-                            if (config.clear) {
-                                temp_html = resolvePowerList({
-                                    menu: datalist,
-                                    clear: true
-                                });
-                            } else {
-                                temp_html = resolvePowerList({
-                                    menu: datalist
-                                });
-                            }
-                            $(temp_html).appendTo(self.$power_tbody.html(''));
+                            resolvePowerList({
+                                menu: datalist
+                            });
                         } else {
-                            self.$power_tbody.html('<tr><td colspan="' + h_len + '" class="g-c-gray9 g-fs4 g-t-c g-b-white">没有查询到权限信息</td></tr>');
+                            tbody.length=0;
                         }
                     }
                 }());
@@ -343,7 +336,7 @@
                                                 config.sourcefn.call(null, null);
                                             }
                                         } else {
-                                            self.$power_tbody.html('<tr><td colspan="' + h_len + '" class="g-c-gray9 g-fs4 g-t-c g-b-white">没有查询到权限信息</td></tr>');
+                                            tbody.length=0;
                                         }
                                         return false;
                                     }
@@ -358,7 +351,7 @@
                                                         config.sourcefn.call(null, null);
                                                     }
                                                 } else {
-                                                    self.$power_tbody.html('<tr><td colspan="' + h_len + '" class="g-c-gray9 g-fs4 g-t-c g-b-white">没有查询到权限信息</td></tr>');
+                                                    tbody.length=0;
                                                 }
                                                 return true;
                                             } else {
@@ -377,22 +370,13 @@
                                                     /*解析数据*/
                                                     /*将查询数据按照模块解析出来*/
                                                     if (templist !== null) {
-                                                        var temp_power = templist['power'],
-                                                            temp_html = '';
+                                                        var temp_power = templist['power'];
                                                         /*将模块数据解析转换成html数据*/
-                                                        if (config.clear) {
-                                                            temp_html = resolvePowerList({
-                                                                menu: temp_power,
-                                                                clear: true
-                                                            });
-                                                        } else {
-                                                            temp_html = resolvePowerList({
-                                                                menu: temp_power
-                                                            });
-                                                        }
-                                                        $(temp_html).appendTo(self.$power_tbody.html(''));
+                                                        resolvePowerList({
+                                                            menu: temp_power
+                                                        });
                                                     } else {
-                                                        self.$power_tbody.html('<tr><td colspan="' + h_len + '" class="g-c-gray9 g-fs4 g-t-c g-b-white">没有查询到权限信息</td></tr>');
+                                                        tbody.length=0;
                                                     }
                                                 }
 
@@ -406,7 +390,7 @@
                                                 return true;
                                             } else {
                                                 /*填充子数据到操作区域,同时显示相关操作按钮*/
-                                                self.$power_tbody.html('<tr><td colspan="' + h_len + '" class="g-c-gray9 g-fs4 g-t-c g-b-white">没有查询到权限信息</td></tr>');
+                                                tbody.length=0;
                                             }
                                         }
                                     } else {
@@ -417,16 +401,16 @@
                                             }
                                             return true;
                                         } else {
-                                            self.$power_tbody.html('<tr><td colspan="' + h_len + '" class="g-c-gray9 g-fs4 g-t-c g-b-white">没有查询到权限信息</td></tr>');
+                                            tbody.length=0;
                                         }
                                     }
                                 }
                             }
                         },
                         function (resp) {
-                            var data = resp.data;
-                            if (data) {
-                                var message = data.message;
+                            var faildata = resp.data;
+                            if (faildata) {
+                                var message = faildata.message;
                                 if (typeof message !== 'undefined' && message !== '') {
                                     console.log(message);
                                 } else {
@@ -440,7 +424,7 @@
                                 }
                                 return true;
                             } else {
-                                self.$power_tbody.html('<tr><td colspan="' + h_len + '" class="g-c-gray9 g-fs4 g-t-c g-b-white">没有查询到权限信息</td></tr>');
+                                tbody.length=0;
                             }
                         });
             }
@@ -448,6 +432,7 @@
 
         /*解析权限列表*/
         function resolvePowerList(config) {
+            tbody.length = 0;
             /*解析数据*/
             var powerCache = loginService.getCache()['powerMap'],
                 len = h_items.length,
@@ -457,135 +442,46 @@
                 request = (config && config.menu) ? true : false;
 
             if (len === 0) {
-                str = '<tr><td class="g-c-gray9 g-fs4 g-t-c g-b-white">没有查询到权限信息</td></tr>';
+                tbody.length = 0;
             } else {
                 if (request) {
-                    var menuitem = config.menu,
-                        temp_id = typeof config.id !== 'undefined' ? config.id : '';
+                    var menuitem = config.menu;
                 }
                 for (i; i < len; i++) {
-
                     var index = parseInt(h_items[i], 10),
                         item = request ? menuitem[index] : powerCache[index];
 
                     if (typeof item === 'undefined' || !item) {
-                        str += '<td class="g-b-white"></td>';
+                        tbody.push({});
                         continue;
                     }
 
                     var power = item['power'],
                         j = 0,
-                        sublen = power.length;
+                        sublen = power.length,
+                        itemobj = {};
 
-                    str += '<td class="g-b-white">';
                     for (j; j < sublen; j++) {
-                        var subitem = power[j];
-                        if (request) {
-                            /*如果是请求*/
-                            if (config.clear) {
-                                /*全不选*/
-                                if (subitem["disabled"]) {
-                                    str += '<label class="btn btn-default g-gap-mb2 g-gap-mr2"><input data-roleid="' + temp_id + '" disabled data-prid="' + subitem["prid"] + '" data-modid="' + subitem["modId"] + '" type="checkbox" name="' + item["module"] + '" />&nbsp;' + subitem["funcName"] + '</label>';
-                                } else {
-                                    str += '<label class="btn btn-default g-gap-mb2 g-gap-mr2"><input data-roleid="' + temp_id + '" data-prid="' + subitem["prid"] + '" data-modid="' + subitem["modId"] + '" type="checkbox" name="' + item["module"] + '" />&nbsp;' + subitem["funcName"] + '</label>';
-                                }
-                            } else {
-                                /*根据设置或者配置结果来*/
-                                if (subitem["disabled"]) {
-                                    str += '<label class="btn btn-default g-gap-mb2 g-gap-mr2"><input data-roleid="' + temp_id + '" data-prid="' + subitem["prid"] + '" data-modid="' + subitem["modId"] + '" disabled type="checkbox" name="' + item["module"] + '" />&nbsp;' + subitem["funcName"] + '</label>';
-                                } else {
-                                    ispermit = parseInt(subitem["isPermit"], 10);
-                                    if (ispermit === 0) {
-                                        /*没有权限*/
-                                        str += '<label class="btn btn-default g-gap-mb2 g-gap-mr2"><input data-roleid="' + temp_id + '" data-prid="' + subitem["prid"] + '" data-modid="' + subitem["modId"] + '" type="checkbox" name="' + item["module"] + '" />&nbsp;' + subitem["funcName"] + '</label>';
-                                    } else if (ispermit === 1) {
-                                        /*有权限*/
-                                        str += '<label class="btn btn-default g-gap-mb2 g-gap-mr2"><input data-roleid="' + temp_id + '" data-prid="' + subitem["prid"] + '" data-modid="' + subitem["modId"] + '" checked type="checkbox" name="' + item["module"] + '" />&nbsp;' + subitem["funcName"] + '</label>';
-                                    }
-                                }
-                            }
-                        } else {
-                            /*非请求*/
-                            if (config.clear) {
-                                /*全不选*/
-                                if (subitem["disabled"]) {
-                                    str += '<label class="btn btn-default g-gap-mb2 g-gap-mr2"><input data-prid="' + subitem["prid"] + '" data-modid="' + subitem["modId"] + '" type="checkbox" disabled name="' + item["module"] + '" />&nbsp;' + subitem["funcName"] + '</label>';
-                                } else {
-                                    str += '<label class="btn btn-default g-gap-mb2 g-gap-mr2"><input data-prid="' + subitem["prid"] + '" data-modid="' + subitem["modId"] + '" type="checkbox" name="' + item["module"] + '" />&nbsp;' + subitem["funcName"] + '</label>';
-                                }
-                            } else {
-                                if (subitem["disabled"]) {
-                                    str += '<label class="btn btn-default g-gap-mb2 g-gap-mr2"><input data-prid="' + subitem["prid"] + '" data-modid="' + subitem["modId"] + '" type="checkbox" disabled name="' + item["module"] + '" />&nbsp;' + subitem["funcName"] + '</label>';
-                                } else {
-                                    /*根据设置或者配置结果来*/
-                                    ispermit = parseInt(subitem["isPermit"], 10);
-                                    if (ispermit === 0) {
-                                        /*没有权限*/
-                                        str += '<label class="btn btn-default g-gap-mb2 g-gap-mr2"><input data-prid="' + subitem["prid"] + '" data-modid="' + subitem["modId"] + '" type="checkbox" name="' + item["module"] + '" />&nbsp;' + subitem["funcName"] + '</label>';
-                                    } else if (ispermit === 1) {
-                                        /*有权限*/
-                                        str += '<label class="btn btn-default g-gap-mb2 g-gap-mr2"><input data-prid="' + subitem["prid"] + '" data-modid="' + subitem["modId"] + '"  checked="true" type="checkbox" name="' + item["module"] + '" />&nbsp;' + subitem["funcName"] + '</label>';
-                                    }
-
-                                }
-                            }
+                        var subitem = power[j],
+                            tempobj = {};
+                        /*根据设置或者配置结果来*/
+                        ispermit = parseInt(subitem["isPermit"], 10);
+                        tempobj["prid"] = subitem["prid"];
+                        tempobj["modid"] = subitem["modId"];
+                        tempobj["name"] = item["module"];
+                        tempobj["label"] = subitem["funcName"];
+                        if (ispermit === 0) {
+                            /*没有权限*/
+                            tempobj["checked"] = false;
+                        } else if (ispermit === 1) {
+                            /*有权限*/
+                            tempobj["checked"] = true;
                         }
-
+                        itemobj[subitem["prid"]] = tempobj;
                     }
-                    str += "</td>";
+                    tbody.push(itemobj);
                 }
             }
-            return '<tr data-seq="' + Math.floor(Math.random() * 100000) + '">' + str + '</tr>';
-        }
-
-        /*权限服务--全选权限（权限绑定）*/
-        function selectAllPower() {
-            self.$power_thead.on('click', function (e) {
-                e.stopPropagation();
-                var target = e.target,
-                    nodename = target.nodeName.toLowerCase();
-
-                /*过滤*/
-                if (nodename === 'tr') {
-                    return null;
-                }
-
-                /*标签*/
-                var $selectall,
-                    index,
-                    $operate,
-                    check,
-                    selectarr = [];
-
-                if (nodename === 'label' || nodename === 'th' || nodename === 'td') {
-                    $selectall = $(target).find('input');
-                } else if (nodename === 'input') {
-                    $selectall = $(target);
-                }
-
-                check = $selectall.is(':checked');
-                index = $selectall.attr('data-index');
-                $operate = self.$power_tbody.find('td').eq(index).find('input:not(:disabled)');
-
-                if (check) {
-                    $operate.each(function () {
-                        var $this = $(this),
-                            prid = $this.attr('data-prid');
-                        $this.prop({
-                            "checked": true
-                        });
-                        selectarr.push(prid);
-                    });
-                } else {
-                    $operate.each(function () {
-                        $(this).prop({
-                            "checked": false
-                        });
-                    });
-                    selectarr = null;
-                }
-                return selectarr;
-            });
         }
 
 
@@ -667,46 +563,6 @@
                 }
             }
             return parent_data;
-        }
-
-        /*权限服务--获取选中选择权限*/
-        function getSelectPower(dom) {
-            var $input;
-            if (typeof dom !== 'undefined') {
-                $input = $(dom);
-            } else {
-                $input = self.$power_tbody.find('input:checked');
-            }
-
-            /*标签*/
-            var prid,
-                selectarr = [];
-
-            $input.each(function () {
-                var $this = $(this);
-
-                prid = $this.attr('data-prid');
-                selectarr.push(prid);
-            });
-            return selectarr.length === 0 ? null : selectarr;
-        }
-
-        /*权限服务--清除选中选择权限*/
-        function clearSelectPower(dom) {
-            var $input;
-            if (typeof dom !== 'undefined') {
-                $input = $(dom);
-            } else {
-                $input = self.$power_tbody.find('input:checked');
-            }
-
-            /*清除主体*/
-            $input.each(function () {
-                $(this).prop({
-                    'checked': false
-                });
-            });
-            
         }
 
         /*权限服务--获取当前用户的权限缓存,key(id，模块名称)*/
