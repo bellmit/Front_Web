@@ -36,11 +36,10 @@
             replace: false,
             restrict: 'EA',
             scope: {
-                thead: '=thead',
-                tbody:'=tbody'
+                thead: '=thead'
             },
             template: '<tr>\
-               <th ng-repeat="i in thead" class="g-t-c"><label><input class="{{i.inputclass}}" data-index="{{i.index}}" data-modid="{{i.id}}" type="checkbox" name="{{i.name}}" />&nbsp;{{i.name}}</label></th>\
+               <th ng-repeat="i in thead" class="g-t-c"><label><input data-index="{{i.index}}" data-modid="{{i.modid}}" type="checkbox" name="{{i.name}}" />&nbsp;{{i.label}}</label></th>\
             </tr>',
             link: powerTheadAll
         };
@@ -109,15 +108,9 @@
                 thead: '=thead'
             },
             template: '<tr>\
-               <th ng-repeat="i in thead" class="g-t-c"><label><input class="{{i.inputclass}}" data-index="{{i.index}}" data-modid="{{i.id}}" type="checkbox" name="{{i.name}}" />&nbsp;{{i.name}}</label></th>\
-            </tr>',
-            link: powerThead
+               <th ng-repeat="i in thead" class="g-t-c" data-index="{{i.index}}">{{i.label}}</th>\
+            </tr>'
         };
-
-        /*link实现*/
-        function powerThead(scope, element, attrs) {
-            console.log('thead');
-        }
     }
 
     /*权限主体指令*/
@@ -125,6 +118,9 @@
         return {
             replace: false,
             restrict: 'EA',
+            socpe:{
+                tbody:'&tbody'
+            },
             template: '',
             link: powerTbody
         };

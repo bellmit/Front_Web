@@ -60,12 +60,12 @@
                     all_thead.push({
                         index: index,
                         modid: powerCache[i]["id"],
-                        module: powerCache[i]["module"],
-                        name: powerCache[i]["name"]
+                        name: powerCache[i]["module"],
+                        label: powerCache[i]["name"]
                     });
                     thead.push({
                         index: index,
-                        name: powerCache[i]["name"]
+                        label: powerCache[i]["name"]
                     });
                     index++;
                 }
