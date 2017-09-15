@@ -21,6 +21,7 @@
         /*对外接口*/
         this.clearFormData = clearFormData/*重置表单数据*/;
         this.queryByEdit = queryByEdit/*查询编辑数据*/;
+        this.setPower = setPower/*设置权限*/;
 
 
         /*接口实现--公有*/
@@ -44,37 +45,104 @@
 
         /*查询编辑数据*/
         function queryByEdit(config) {
-            var len = parseInt(Math.random() * 10, 10) + 2,
-                tempcol = 50 % len,
-                colitem,
-                colgroup = [],
-                thead = [],
-                j = 0;
-
-            if (tempcol !== 0) {
-                colitem = parseInt((50 - tempcol) / len, 10);
-            } else {
-                colitem = parseInt(50 / len, 10);
-            }
-            /*解析分组*/
-            if (colitem * len <= (50 - len)) {
-                colitem = len + 1;
-            }
-            for (j; j < len; j++) {
-                colgroup.push({
-                    col_class: 'g-w-percent' + colitem
-                });
-                thead.push({
-                    input_class: 'isall',
-                    index: (j + 1),
-                    id: parseInt(Math.random() * 100, 10),
-                    name: 'abcd'
-                })
-            }
+            var id = config.id/*编辑id*/;
+            powerService.reqPowerList(config, function () {
+                var list=powerService.createTbody();
+                config.power.tbody = list;
+            });
             config.power.colgroup = powerService.createColgroup();
             config.power.thead = powerService.createThead(true);
         }
 
+        /*设置权限*/
+        function setPower(config) {
+            toolUtil
+                .requestHttp({
+                    url:'admin/power/set',
+                    method:'POST',
+                    data:{
+                        power:_getPower_(config)
+                    }
+                })
+                .then(function (resp) {
+                        /*测试代码*/
+                        if (config.debug) {
+                            var resp = testService.testSuccess();
+                        }
+                        var data = resp.data,
+                            status = parseInt(resp.status, 10);
+
+                        if (status === 200) {
+                            var code = parseInt(data.code, 10),
+                                message = data.message;
+                            if (code !== 0) {
+                                if (typeof message !== 'undefined' && message !== '') {
+                                    /*提示信息*/
+                                    toolDialog.show({
+                                        type: 'warn',
+                                        value: message
+                                    });
+                                } else {
+                                    /*提示信息*/
+                                    toolDialog.show({
+                                        type: 'warn',
+                                        value: '设置权限失败'
+                                    });
+                                }
+                                if (code === 999) {
+                                    /*退出系统*/
+                                    loginService.outAction();
+                                }
+                            } else {
+                                /*提示操作结果*/
+                                toolDialog.show({
+                                    type: 'succ',
+                                    value: '设置权限成功'
+                                });
+                            }
+                        }
+                    },
+                    function (resp) {
+                        var faildata = resp.data;
+                        if (faildata) {
+                            var message = faildata.message;
+                            if (typeof message !== 'undefined' && message !== '') {
+                                console.log(message);
+                            } else {
+                                console.log('设置权限失败');
+                            }
+                        }else{
+                            console.log('设置权限失败');
+                        }
+                    });
+
+        }
+
+
+        /*接口实现--私有*/
+        /*获取权限*/
+        function _getPower_(config) {
+            var datalist = config.power.tbody,
+                list = [],
+                i = 0,
+                len = datalist.length,
+                item,
+                subitem;
+
+            for (i; i < len; i++) {
+                item = datalist[i];
+                for (var j in item) {
+                    if (item[j]) {
+                        subitem = item[j];
+                        list.push({
+                            prid: subitem['prid'],
+                            isPermit: subitem['checked'] ? 1 : 0
+                        })
+                    }
+                }
+            }
+            return list;
+        }
 
     }
 

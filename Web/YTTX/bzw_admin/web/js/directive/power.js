@@ -118,16 +118,24 @@
         return {
             replace: false,
             restrict: 'EA',
-            socpe:{
+            scope:{
                 tbody:'&tbody'
             },
-            template: '',
+            template:function (scope) {
+                
+                return '';
+            },
             link: powerTbody
         };
 
         /*link实现*/
         function powerTbody(scope, element, attrs) {
             console.log('tbody');
+        }
+
+        /*私有服务*/
+        function _resolveTable_() {
+            
         }
     }
 

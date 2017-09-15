@@ -123,7 +123,7 @@
         }
 
         /*请求权限列表(主要是根据不同对象查询相关权限):config:请求参数，mode:模型*/
-        function reqPowerList(config) {
+        function reqPowerList(config, fn) {
             /*合并参数*/
             var debug = config.debug,
                 israndom = config.israndom,
@@ -169,6 +169,9 @@
                                 var result = data.result;
                                 if (!result) {
                                     tbody.length = 0;
+                                    if (fn && typeof fn === 'function') {
+                                        fn.call(null);
+                                    }
                                     return false;
                                 }
                                 if (typeof result !== 'undefined') {
@@ -183,6 +186,9 @@
                                                 }
                                             } else {
                                                 tbody.length = 0;
+                                                if (fn && typeof fn === 'function') {
+                                                    fn.call(null);
+                                                }
                                             }
                                             return true;
                                         } else {
@@ -207,7 +213,10 @@
                                                         menu: temp_power
                                                     });
                                                 } else {
-                                                    tbody.length=0;
+                                                    tbody.length = 0;
+                                                }
+                                                if (fn && typeof fn === 'function') {
+                                                    fn.call(null);
                                                 }
                                             }
 
@@ -221,7 +230,10 @@
                                             return true;
                                         } else {
                                             /*填充子数据到操作区域,同时显示相关操作按钮*/
-                                            tbody.length=0;
+                                            tbody.length = 0;
+                                            if (fn && typeof fn === 'function') {
+                                                fn.call(null);
+                                            }
                                         }
                                     }
                                 } else {
@@ -232,7 +244,10 @@
                                         }
                                         return true;
                                     } else {
-                                        tbody.length=0;
+                                        tbody.length = 0;
+                                        if (fn && typeof fn === 'function') {
+                                            fn.call(null);
+                                        }
                                     }
                                 }
                             }
@@ -241,13 +256,13 @@
                     function (resp) {
                         var faildata = resp.data;
                         if (faildata) {
-                            var message = resp.data.message;
+                            var message = faildata.message;
                             if (typeof message !== 'undefined' && message !== '') {
                                 console.log(message);
                             } else {
                                 console.log('请求权限失败');
                             }
-                        }else{
+                        } else {
                             console.log('请求权限失败');
                         }
                         /*直接获取原始数据*/
@@ -257,7 +272,10 @@
                             }
                             return true;
                         } else {
-                            tbody.length=0;
+                            tbody.length = 0;
+                            if (fn && typeof fn === 'function') {
+                                fn.call(null);
+                            }
                         }
                     });
         }
@@ -285,13 +303,12 @@
                         /*解析数据*/
                         /*将查询数据按照模块解析出来*/
                         if (datalist !== null) {
-                            var temp_html = '';
                             /*将模块数据解析转换成html数据*/
                             resolvePowerList({
                                 menu: datalist
                             });
                         } else {
-                            tbody.length=0;
+                            tbody.length = 0;
                         }
                     }
                 }());
@@ -336,7 +353,7 @@
                                                 config.sourcefn.call(null, null);
                                             }
                                         } else {
-                                            tbody.length=0;
+                                            tbody.length = 0;
                                         }
                                         return false;
                                     }
@@ -351,7 +368,7 @@
                                                         config.sourcefn.call(null, null);
                                                     }
                                                 } else {
-                                                    tbody.length=0;
+                                                    tbody.length = 0;
                                                 }
                                                 return true;
                                             } else {
@@ -376,7 +393,7 @@
                                                             menu: temp_power
                                                         });
                                                     } else {
-                                                        tbody.length=0;
+                                                        tbody.length = 0;
                                                     }
                                                 }
 
@@ -390,7 +407,7 @@
                                                 return true;
                                             } else {
                                                 /*填充子数据到操作区域,同时显示相关操作按钮*/
-                                                tbody.length=0;
+                                                tbody.length = 0;
                                             }
                                         }
                                     } else {
@@ -401,7 +418,7 @@
                                             }
                                             return true;
                                         } else {
-                                            tbody.length=0;
+                                            tbody.length = 0;
                                         }
                                     }
                                 }
@@ -424,7 +441,7 @@
                                 }
                                 return true;
                             } else {
-                                tbody.length=0;
+                                tbody.length = 0;
                             }
                         });
             }
@@ -437,7 +454,6 @@
             var powerCache = loginService.getCache()['powerMap'],
                 len = h_items.length,
                 i = 0,
-                str = '',
                 ispermit,
                 request = (config && config.menu) ? true : false;
 

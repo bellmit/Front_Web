@@ -24,7 +24,7 @@
         /*操作表格*/
         function doItemAction(config) {
             if (!cacheparam) {
-                loginService.loginOut();
+                loginService.outAction();
                 return false;
             }
             var index = config.index,
@@ -108,7 +108,7 @@
                                 }
                                 if (code === 999) {
                                     /*退出系统*/
-                                    loginService.loginOut();
+                                    loginService.outAction();
                                 }
                             } else {
                                 /*提示操作结果*/
@@ -125,11 +125,16 @@
                         }
                     },
                     function (resp) {
-                        var message = resp.data.message;
-                        if (typeof message !== 'undefined' && message !== '') {
-                            console.log(message);
-                        } else {
-                            console.log(config.action === 'update' ? '编辑权限成功' : '删除权限成功');
+                        var faildata = resp.data;
+                        if (faildata) {
+                            var message = faildata.message;
+                            if (typeof message !== 'undefined' && message !== '') {
+                                console.log(message);
+                            } else {
+                                console.log(config.action === 'update' ? '编辑权限失败' : '删除权限失败');
+                            }
+                        }else{
+                            console.log(config.action === 'update' ? '编辑权限失败' : '删除权限失败');
                         }
                     });
         }

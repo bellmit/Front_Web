@@ -151,10 +151,15 @@
                     model.login.password = '';
                     model.login.identifyingCode = '';
                     model.login.islogin = false;
-                    var message = resp.data.message;
-                    if (typeof message !== 'undefined' && message !== '') {
-                        model.login.loginerror = message;
-                    } else {
+                    var faildata = resp.data;
+                    if (faildata) {
+                        var message = faildata.message;
+                        if (typeof message !== 'undefined' && message !== '') {
+                            model.login.loginerror = message;
+                        } else {
+                            model.login.loginerror = '登录失败';
+                        }
+                    }else{
                         model.login.loginerror = '登录失败';
                     }
                 });
@@ -237,10 +242,16 @@
                             if (fn && typeof fn === 'function') {
                                 fn.call(null);
                             }
-                            var message = resp.data.message;
-                            if (typeof message !== 'undefined' && message !== '') {
-                                console.log(message);
-                            } else {
+
+                            var faildata = resp.data;
+                            if (faildata) {
+                                var message = faildata.message;
+                                if (typeof message !== 'undefined' && message !== '') {
+                                    console.log(message);
+                                } else {
+                                    console.log('请求菜单失败');
+                                }
+                            }else{
                                 console.log('请求菜单失败');
                             }
                         });

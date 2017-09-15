@@ -32,10 +32,10 @@
         };
 
         /*模型--权限设置*/
-        vm.power={
-            colgroup:[]/*分组*/,
-            thead:[]/*头部*/,
-            tbody:[]/*主体*/
+        vm.power = {
+            colgroup: []/*分组*/,
+            thead: []/*头部*/,
+            tbody: []/*主体*/
         };
 
         /*初始化配置,渲染*/
@@ -45,6 +45,7 @@
         /*对外接口*/
         vm.formSubmit = formSubmit/*提交表单*/;
         vm.formReset = formReset/*重置表单*/;
+        vm.setPower = setPower/*设置权限*/;
 
 
         /*接口实现--公有*/
@@ -96,6 +97,15 @@
             assistCommon.clearFormValid(config.form);
         }
 
+        /*设置权限*/
+        function setPower() {
+            adminAddService.setPower({
+                debug: debug,
+                admin: vm.admin,
+                power: vm.power
+            });
+        }
+
 
         /*接口实现--私有*/
         /*初始化渲染*/
@@ -119,7 +129,10 @@
                 vm.admin.id = tempcache.id;
                 vm.admin.setting = true;
                 adminAddService.queryByEdit({
-                    power:vm.power
+                    debug: debug/*测试模式*/,
+                    israndom: true/*随机选择权限*/,
+                    power: vm.power/*权限模型*/,
+                    id: tempcache.id
                 });
             }
         }
