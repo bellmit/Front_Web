@@ -9,13 +9,12 @@
 
 
     /*服务注入依赖*/
-    adminAddService.$inject = ['toolUtil', 'toolDialog', '$state', '$timeout', 'loginService', 'powerService', 'adminService', 'testService'];
+    adminAddService.$inject = ['toolUtil', 'toolDialog', '$state', 'loginService', 'powerService', 'adminService', 'testService'];
 
 
     /*服务实现*/
-    function adminAddService(toolUtil, toolDialog, $state, $timeout, loginService, powerService, adminService, testService) {
-        var cacheparam = loginService.getCache().loginMap.param/*缓存*/,
-            timerid = null;
+    function adminAddService(toolUtil, toolDialog, $state, loginService, powerService, adminService, testService) {
+        var cacheparam = loginService.getCache().loginMap.param/*缓存*/;
 
 
         /*对外接口*/
@@ -48,6 +47,7 @@
             var id = config.id/*编辑id*/;
             powerService.reqPowerList(config, function () {
                 var list=powerService.createTbody();
+                console.log(list);
                 config.power.tbody = list;
             });
             config.power.colgroup = powerService.createColgroup();
@@ -61,6 +61,8 @@
                     url:'admin/power/set',
                     method:'POST',
                     data:{
+                        adminId:cacheparam.adminId,
+                        token:cacheparam.token,
                         power:_getPower_(config)
                     }
                 })

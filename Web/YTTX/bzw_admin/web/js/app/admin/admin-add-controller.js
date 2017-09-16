@@ -131,6 +131,7 @@
                 adminAddService.queryByEdit({
                     debug: debug/*测试模式*/,
                     israndom: true/*随机选择权限*/,
+                    create:true,
                     power: vm.power/*权限模型*/,
                     id: tempcache.id
                 });

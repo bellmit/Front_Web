@@ -42,7 +42,8 @@
                     "funcCode": "yttx-batch-delete",
                     "funcName": "批量删除",
                     "isPermit": 1,
-                    "modId": 10, "prid": 13
+                    "modId": 10,
+                    "prid": 13
                 }, {
                     "funcCode": "yttx-operator-adjustment",
                     "funcName": "调整运营商",
@@ -847,28 +848,66 @@
                     "funcName": "查询",
                     "isPermit": 1
                 }],
+                elist = [{
+                    "funcCode": "audit",
+                    "funcName": "审核",
+                    "isPermit": 1
+                }, {
+                    "funcCode": "send",
+                    "funcName": "发货",
+                    "isPermit": 1
+                }, {
+                    "funcCode": "comment",
+                    "funcName": "评论",
+                    "isPermit": 1
+                }, {
+                    "funcCode": "forbid",
+                    "funcName": "禁用",
+                    "isPermit": 1
+                }, {
+                    "funcCode": "enable",
+                    "funcName": "启用",
+                    "isPermit": 1
+                }, {
+                    "funcCode": "up",
+                    "funcName": "上架",
+                    "isPermit": 1
+                }, {
+                    "funcCode": "down",
+                    "funcName": "下架",
+                    "isPermit": 1
+                }, {
+                    "funcCode": "detail",
+                    "funcName": "查看",
+                    "isPermit": 1
+                }],
                 i = 0,
                 count = 0,
                 len = mlist.length,
                 plen = plist.length,
+                elen = elist.length,
+                slen,
+                rmax,
                 menu = [],
                 mitem,
-                pitem;
+                pitem,
+                titem;
 
             for (i; i < len; i++) {
+                rmax = parseInt(Math.random() * elen, 10);
+                slen=plen + rmax;
                 mitem = mlist[i];
-                pitem = plist.slice(0);
+                pitem = plist.slice(0).concat(elist.slice(0, rmax));
+
 
                 var j = 0;
                 /*设置默认权限*/
-                for (j; j < plen; j++) {
+                for (j; j < slen; j++) {
                     count++;
-                    pitem['modId'] = mitem['modId'];
-                    pitem['prid'] = count;
-                    if (j === plen - 1) {
-                        mitem['permitItem'] = pitem;
-                    }
+                    pitem[j]['modId'] = mitem['modId'];
+                    pitem[j]['prid'] = count;
                 }
+                mitem['permitItem'] = pitem;
                 menu.push(mitem);
             }
             return menu;

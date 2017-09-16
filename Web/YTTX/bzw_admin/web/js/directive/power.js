@@ -14,7 +14,7 @@
 
 
     /*指令依赖注入*/
-    viewPowerTbodyItem.$inject = ['loginService', 'toolUtil','testService'];
+    viewPowerTbodyItem.$inject = ['loginService', 'toolUtil', 'testService'];
 
 
     /*指令实现*/
@@ -39,7 +39,10 @@
                 thead: '=thead'
             },
             template: '<tr>\
-               <th ng-repeat="i in thead" class="g-t-c"><label><input data-index="{{i.index}}" data-modid="{{i.modid}}" type="checkbox" name="{{i.name}}" />&nbsp;{{i.label}}</label></th>\
+               <th ng-repeat="i in thead" class="g-t-c">\
+                   <label data-index="{{i.index}}">\
+                        <input data-index="{{i.index}}" data-modid="{{i.modid}}" type="checkbox" ng-model="i.ispermit"  ng-true-value="1" ng-false-value="0" name="{{i.name}}" />&nbsp;{{i.label}}</label>\
+               </th>\
             </tr>',
             link: powerTheadAll
         };
@@ -47,7 +50,7 @@
         /*link实现*/
         function powerTheadAll(scope, element, attrs) {
             /*全选权限（权限绑定）*/
-            angular.element(element).bind('click',function ($event) {
+            angular.element(element).bind('click', function ($event) {
                 $event.stopPropagation();
                 var target = $event.target,
                     nodename = target.nodeName.toLowerCase();
@@ -70,32 +73,32 @@
                 check = $selectall.is(':checked');
                 index = $selectall.attr('data-index');
                 dataitem = scope.tbody[index];
-                for(var i in dataitem){
-                    dataitem[i]["checked"]=check;
+                for (var i in dataitem) {
+                    dataitem[i]["checked"] = check;
                 }
             });
 
             /*angular.element(element).bind('click',function ($event) {
-                var target = $event.target,
-                    node = target.nodeName.toLowerCase(),
-                    $operate;
-                if (node === 'thead' || node === 'tr' || node === 'td' || node === 'th') {
-                    return false;
-                } else if (node === 'label') {
-                    $operate = angular.element(target).find('input');
-                } else if (node === 'input') {
-                    $operate = angular.element(target);
-                }
-                if($operate.is(':checked')){
-                    $operate.prop({
-                        'checked': false
-                    });
-                }else{
-                    $operate.prop({
-                        'checked': false
-                    });
-                }
-            });*/
+             var target = $event.target,
+             node = target.nodeName.toLowerCase(),
+             $operate;
+             if (node === 'thead' || node === 'tr' || node === 'td' || node === 'th') {
+             return false;
+             } else if (node === 'label') {
+             $operate = angular.element(target).find('input');
+             } else if (node === 'input') {
+             $operate = angular.element(target);
+             }
+             if($operate.is(':checked')){
+             $operate.prop({
+             'checked': false
+             });
+             }else{
+             $operate.prop({
+             'checked': false
+             });
+             }
+             });*/
         }
     }
 
@@ -118,16 +121,18 @@
         return {
             replace: false,
             restrict: 'EA',
-            scope:{
-                tbody:'&tbody'
+            scope: {
+                tbody: '=tbody'
             },
-            template:function (scope) {
-                
-                return '';
-            },
+            template: '<tr>\
+                <td ng-repeat="item in tbody">\
+                    <label ng-repeat="(key,value) in item" data-index="{{value.index}}" class="btn btn-default g-gap-mb2 g-gap-mr2">\
+         <input data-prid="{{value.prid}}" ng-true-value="1" ng-false-value="0" data-modid="{{value.modid}}" data-index="{{value.index}}" ng-model="value.ispermit" type="checkbox" name="{{value.name}}" />&nbsp;{{value.label}}\
+         </label>\
+                </td>\
+            </tr>',
             link: powerTbody
         };
-
         /*link实现*/
         function powerTbody(scope, element, attrs) {
             console.log('tbody');
@@ -135,23 +140,23 @@
 
         /*私有服务*/
         function _resolveTable_() {
-            
+
         }
     }
 
     /*拥有单独设置权限主体指令*/
-    function viewPowerTbodyItem(loginService, toolUtil,testService) {
+    function viewPowerTbodyItem(loginService, toolUtil, testService) {
         return {
             replace: false,
             restrict: 'EA',
-            scope:{
-                debug:'=debug'
+            scope: {
+                debug: '=debug'
             },
             template: '',
             link: powerTbodyItem
         };
 
-        
+
         /*link实现*/
         function powerTbodyItem(scope, element, attrs) {
             angular.element(element).bind('click', function ($event) {
@@ -211,15 +216,15 @@
                             }
                         },
                         function (resp) {
-                            var faildata=resp.data;
-                            if(faildata){
+                            var faildata = resp.data;
+                            if (faildata) {
                                 var message = resp.data.message;
                                 if (typeof message !== 'undefined' && message !== '') {
                                     console.log(message);
                                 } else {
                                     console.log('设置权限失败');
                                 }
-                            }else{
+                            } else {
                                 console.log('设置权限失败');
                             }
                             /*恢复原来设置*/

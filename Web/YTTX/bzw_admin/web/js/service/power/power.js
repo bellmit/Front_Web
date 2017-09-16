@@ -60,6 +60,7 @@
                     all_thead.push({
                         index: index,
                         modid: powerCache[i]["id"],
+                        ispermit:0,
                         name: powerCache[i]["module"],
                         label: powerCache[i]["name"]
                     });
@@ -92,12 +93,13 @@
                 all_thead = [{
                     index: 0,
                     modid: 0,
-                    module: 0,
-                    name: ''
+                    name: 0,
+                    ispermit:0,
+                    label: ''
                 }];
                 thead = [{
                     index: 0,
-                    name: ''
+                    label: ''
                 }];
                 colgroup = [{
                     'col_class': "g-w-percent50"
@@ -126,6 +128,7 @@
         function reqPowerList(config, fn) {
             /*合并参数*/
             var debug = config.debug,
+                create = config.create,
                 israndom = config.israndom,
                 tempparm = loginService.getCache().loginMap.param,
                 param = {
@@ -145,7 +148,8 @@
                 .then(function (resp) {
                         if (debug) {
                             var resp = israndom ? testService.testMenu({
-                                israndom: israndom
+                                israndom: israndom,
+                                create: create
                             }) : testService.testMenu();
                         }
                         var data = resp.data,
@@ -482,17 +486,15 @@
                             tempobj = {};
                         /*根据设置或者配置结果来*/
                         ispermit = parseInt(subitem["isPermit"], 10);
+                        if (isNaN(ispermit)) {
+                            ispermit = 0;
+                        }
+                        tempobj["ispermit"] = ispermit;
+                        tempobj["index"] = i;
                         tempobj["prid"] = subitem["prid"];
                         tempobj["modid"] = subitem["modId"];
                         tempobj["name"] = item["module"];
                         tempobj["label"] = subitem["funcName"];
-                        if (ispermit === 0) {
-                            /*没有权限*/
-                            tempobj["checked"] = false;
-                        } else if (ispermit === 1) {
-                            /*有权限*/
-                            tempobj["checked"] = true;
-                        }
                         itemobj[subitem["prid"]] = tempobj;
                     }
                     tbody.push(itemobj);
