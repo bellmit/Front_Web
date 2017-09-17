@@ -46,6 +46,7 @@
         vm.formSubmit = formSubmit/*提交表单*/;
         vm.formReset = formReset/*重置表单*/;
         vm.setPower = setPower/*设置权限*/;
+        vm.theadAction = theadAction/*全选操作*/;
 
 
         /*接口实现--公有*/
@@ -106,6 +107,12 @@
             });
         }
 
+        /*全选服务*/
+        function theadAction(config) {
+            console.log('aaa');
+            console.log(config);
+        }
+
 
         /*接口实现--私有*/
         /*初始化渲染*/
@@ -131,8 +138,8 @@
                 adminAddService.queryByEdit({
                     debug: debug/*测试模式*/,
                     israndom: true/*随机选择权限*/,
-                    create:true,
-                    power: vm.power/*权限模型*/,
+                    create: true,
+                    model: vm.power/*权限模型*/,
                     id: tempcache.id
                 });
             }

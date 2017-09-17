@@ -59,14 +59,14 @@
                     h_items.push(i);
                     all_thead.push({
                         index: index,
-                        modid: powerCache[i]["id"],
-                        ispermit:0,
-                        name: powerCache[i]["module"],
-                        label: powerCache[i]["name"]
+                        id: powerCache[i]["id"],
+                        isPermit:0,
+                        module: powerCache[i]["module"],
+                        name: powerCache[i]["name"]
                     });
                     thead.push({
                         index: index,
-                        label: powerCache[i]["name"]
+                        name: powerCache[i]["name"]
                     });
                     index++;
                 }
@@ -92,14 +92,14 @@
             } else {
                 all_thead = [{
                     index: 0,
-                    modid: 0,
-                    name: 0,
-                    ispermit:0,
-                    label: ''
+                    id: 0,
+                    module: 0,
+                    isPermit:0,
+                    name: ''
                 }];
                 thead = [{
                     index: 0,
-                    label: ''
+                    name: ''
                 }];
                 colgroup = [{
                     'col_class': "g-w-percent50"
@@ -489,12 +489,12 @@
                         if (isNaN(ispermit)) {
                             ispermit = 0;
                         }
-                        tempobj["ispermit"] = ispermit;
+                        tempobj["isPermit"] = ispermit;
                         tempobj["index"] = i;
                         tempobj["prid"] = subitem["prid"];
-                        tempobj["modid"] = subitem["modId"];
-                        tempobj["name"] = item["module"];
-                        tempobj["label"] = subitem["funcName"];
+                        tempobj["modId"] = subitem["modId"];
+                        tempobj["module"] = item["module"];
+                        tempobj["funcName"] = subitem["funcName"];
                         itemobj[subitem["prid"]] = tempobj;
                     }
                     tbody.push(itemobj);

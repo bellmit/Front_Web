@@ -36,12 +36,13 @@
             replace: false,
             restrict: 'EA',
             scope: {
-                thead: '=thead'
+                thead: '=thead',
+                theadAction:'&theadaction'
             },
             template: '<tr>\
                <th ng-repeat="i in thead" class="g-t-c">\
                    <label data-index="{{i.index}}">\
-                        <input data-index="{{i.index}}" data-modid="{{i.modid}}" type="checkbox" ng-model="i.ispermit"  ng-true-value="1" ng-false-value="0" name="{{i.name}}" />&nbsp;{{i.label}}</label>\
+                        <input data-index="{{i.index}}" data-id="{{i.id}}" type="checkbox" ng-model="i.isPermit"  ng-true-value="1" ng-false-value="0" name="{{i.module}}" />&nbsp;{{i.name}}</label>\
                </th>\
             </tr>',
             link: powerTheadAll
@@ -50,7 +51,7 @@
         /*link实现*/
         function powerTheadAll(scope, element, attrs) {
             /*全选权限（权限绑定）*/
-            angular.element(element).bind('click', function ($event) {
+            angular.element(element).bind('change', function ($event) {
                 $event.stopPropagation();
                 var target = $event.target,
                     nodename = target.nodeName.toLowerCase();
@@ -62,7 +63,7 @@
                 var $selectall,
                     index,
                     dataitem,
-                    check;
+                    checked;
 
                 if (nodename === 'label' || nodename === 'th' || nodename === 'td') {
                     $selectall = angular.element(target).find('input');
@@ -70,12 +71,12 @@
                     $selectall = angular.element(target);
                 }
 
-                check = $selectall.is(':checked');
+                checked = $selectall.is(':checked');
                 index = $selectall.attr('data-index');
-                dataitem = scope.tbody[index];
-                for (var i in dataitem) {
-                    dataitem[i]["checked"] = check;
-                }
+                scope.theadAction({
+                    checked:checked,
+                    index:index
+                });
             });
 
             /*angular.element(element).bind('click',function ($event) {
@@ -111,7 +112,7 @@
                 thead: '=thead'
             },
             template: '<tr>\
-               <th ng-repeat="i in thead" class="g-t-c" data-index="{{i.index}}">{{i.label}}</th>\
+               <th ng-repeat="i in thead" class="g-t-c" data-index="{{i.index}}">{{i.name}}</th>\
             </tr>'
         };
     }
@@ -127,7 +128,7 @@
             template: '<tr>\
                 <td ng-repeat="item in tbody">\
                     <label ng-repeat="(key,value) in item" data-index="{{value.index}}" class="btn btn-default g-gap-mb2 g-gap-mr2">\
-         <input data-prid="{{value.prid}}" ng-true-value="1" ng-false-value="0" data-modid="{{value.modid}}" data-index="{{value.index}}" ng-model="value.ispermit" type="checkbox" name="{{value.name}}" />&nbsp;{{value.label}}\
+         <input data-prid="{{value.prid}}" ng-true-value="1" ng-false-value="0" data-modId="{{value.modId}}" data-index="{{value.index}}" ng-model="value.isPermit" type="checkbox" name="{{value.module}}" />&nbsp;{{value.funcName}}\
          </label>\
                 </td>\
             </tr>',
@@ -150,9 +151,15 @@
             replace: false,
             restrict: 'EA',
             scope: {
-                debug: '=debug'
+                tbody: '=tbody'
             },
-            template: '',
+            template: '<tr>\
+                <td ng-repeat="item in tbody">\
+                    <label ng-repeat="(key,value) in item" data-index="{{value.index}}" class="btn btn-default g-gap-mb2 g-gap-mr2">\
+         <input data-prid="{{value.prid}}" ng-true-value="1" ng-false-value="0" data-modId="{{value.modId}}" data-index="{{value.index}}" ng-model="value.isPermit" type="checkbox" name="{{value.module}}" />&nbsp;{{value.funcName}}\
+         </label>\
+                </td>\
+            </tr>',
             link: powerTbodyItem
         };
 

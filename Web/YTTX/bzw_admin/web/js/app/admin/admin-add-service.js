@@ -47,11 +47,10 @@
             var id = config.id/*编辑id*/;
             powerService.reqPowerList(config, function () {
                 var list=powerService.createTbody();
-                console.log(list);
-                config.power.tbody = list;
+                config.model.tbody = list;
             });
-            config.power.colgroup = powerService.createColgroup();
-            config.power.thead = powerService.createThead(true);
+            config.model.colgroup = powerService.createColgroup();
+            config.model.thead = powerService.createThead(true);
         }
 
         /*设置权限*/
@@ -138,7 +137,7 @@
                         subitem = item[j];
                         list.push({
                             prid: subitem['prid'],
-                            isPermit: subitem['checked'] ? 1 : 0
+                            isPermit: subitem['isPermit']
                         })
                     }
                 }
