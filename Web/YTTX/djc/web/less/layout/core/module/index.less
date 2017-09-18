@@ -1,8 +1,111 @@
-/*轮播图*/
-.layout-slide-wrap {
-  height: 816px;
-  margin-top: -@layout-header-height;
+/*公用抽取*/
+.screen-item-wrap{
+  min-height:800px;
+  height:100vh;
 }
+.theme-item{
+  margin:0 auto;
+  display: block;
+  width:360px;
+  height:252px;
+  overflow: hidden;
+}
+/*首页*/
+.layout-index-wrap{
+  background:@layout-color-blue1 url('../images/index_screen_bg.png') repeat center center;
+}
+.index-content-wrap{
+  height:100%;
+  .layout-relative-base();
+  .index-theme{
+    .layout-absolutel-base();
+    width:100%;
+    margin:100px 0 0 0;
+    height:158px;
+    background:transparent url('../images/index_screen_theme.png') no-repeat center center;
+    background-size:auto 100%;
+  }
+  .index-device{
+    .layout-absolutelb-base();
+    width:100%;
+    height:638px;
+    background:transparent url('../images/index_screen_device.png') no-repeat center center;
+    background-size:auto 100%;
+  }
+}
+
+/*关于我们*/
+.layout-about-wrap{
+  background:lighten(@color-gray14,5%) url('../images/about_screen_bg.png') repeat center center;
+}
+.about-content-wrap{
+  height:100%;
+  padding:50px 0;
+  .about-theme{
+    background:transparent url('../images/about_screen_theme.png') no-repeat center center;
+  }
+  .about-remark{
+    width:100%;
+    line-height:@font-size-base + 12;
+    color:@color-gray3;
+    font-size: @font-size-base + 2;
+    .text-ww();
+    text-align: center;
+    margin:20px 0;
+  }
+  .about-list{
+    font-size: 0;
+    .layout-base();
+    text-align: center;
+    li{
+      padding:180px 40px 20px 40px;
+      .layout-float-base(25%);
+      height: 100%;
+      display: inline-block;
+    }
+    h3,
+    p{
+      .layout-base();
+      .text-ww();
+      padding:10px 0;
+      &::-moz-selection {
+        color: @layout-color-yellow1;
+        background: @color-gray14;
+      }
+      &::selection {
+        color: @layout-color-yellow1;
+        background: @color-gray14;
+      }
+    }
+    h3{
+      font-size: @font-size-base + 4;
+      line-height:@font-size-base + 14;
+      color:@layout-color-blue1;
+    }
+    p{
+      font-size: @font-size-base + 2;
+      line-height:@font-size-base + 12;
+      color:@color-gray4;
+    }
+    /*图标*/
+    .about-item1{
+      background:transparent url('../images/about_listicon1.png') no-repeat center 20px;
+    }
+    .about-item2{
+      background:transparent url('../images/about_listicon2.png') no-repeat center 20px;
+    }
+    .about-item3{
+      background:transparent url('../images/about_listicon3.png') no-repeat center 20px;
+    }
+    .about-item4{
+      background:transparent url('../images/about_listicon4.png') no-repeat center 20px;
+    }
+  }
+}
+
+
+
+
 
 /*牌照*/
 .layout-license-wrap {

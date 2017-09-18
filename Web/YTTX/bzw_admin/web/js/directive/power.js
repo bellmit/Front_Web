@@ -37,7 +37,7 @@
             restrict: 'EA',
             scope: {
                 thead: '=thead',
-                theadAction:'&theadaction'
+                tbody: '=tbody'
             },
             template: '<tr>\
                <th ng-repeat="i in thead" class="g-t-c">\
@@ -62,44 +62,26 @@
                 /*标签*/
                 var $selectall,
                     index,
-                    dataitem,
-                    checked;
+                    checked,
+                    data,
+                    item;
 
-                if (nodename === 'label' || nodename === 'th' || nodename === 'td') {
+                if (nodename === 'label') {
                     $selectall = angular.element(target).find('input');
                 } else if (nodename === 'input') {
                     $selectall = angular.element(target);
                 }
 
-                checked = $selectall.is(':checked');
+
                 index = $selectall.attr('data-index');
-                scope.theadAction({
-                    checked:checked,
-                    index:index
-                });
+                checked = scope.thead[index]['isPermit'] === 1 ? 0 : 1;
+                data = scope.tbody[index];
+                for (var i in data) {
+                    item = data[i];
+                    item['isPermit'] = checked;
+                }
             });
 
-            /*angular.element(element).bind('click',function ($event) {
-             var target = $event.target,
-             node = target.nodeName.toLowerCase(),
-             $operate;
-             if (node === 'thead' || node === 'tr' || node === 'td' || node === 'th') {
-             return false;
-             } else if (node === 'label') {
-             $operate = angular.element(target).find('input');
-             } else if (node === 'input') {
-             $operate = angular.element(target);
-             }
-             if($operate.is(':checked')){
-             $operate.prop({
-             'checked': false
-             });
-             }else{
-             $operate.prop({
-             'checked': false
-             });
-             }
-             });*/
         }
     }
 
@@ -139,10 +121,6 @@
             console.log('tbody');
         }
 
-        /*私有服务*/
-        function _resolveTable_() {
-
-        }
     }
 
     /*拥有单独设置权限主体指令*/
