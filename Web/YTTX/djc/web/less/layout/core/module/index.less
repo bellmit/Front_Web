@@ -1,73 +1,77 @@
 /*公用抽取*/
-.screen-item-wrap{
-  min-height:800px;
-  height:100vh;
+.screen-item-wrap {
+  min-height: 800px;
+  height: 100vh;
 }
-.theme-item{
-  margin:0 auto;
+
+.theme-item {
+  margin: 0 auto;
   display: block;
-  width:360px;
-  height:252px;
+  width: 360px;
+  height: 252px;
   overflow: hidden;
 }
+
 /*首页*/
-.layout-index-wrap{
-  background:@layout-color-blue1 url('../images/index_screen_bg.png') repeat center center;
+.layout-index-wrap {
+  background: @layout-color-blue1 url('../images/index_screen_bg.png') repeat center center;
 }
-.index-content-wrap{
-  height:100%;
+
+.index-content-wrap {
+  height: 100%;
   .layout-relative-base();
-  .index-theme{
+  .index-theme {
     .layout-absolutel-base();
-    width:100%;
-    margin:100px 0 0 0;
-    height:158px;
-    background:transparent url('../images/index_screen_theme.png') no-repeat center center;
-    background-size:auto 100%;
+    width: 100%;
+    margin: 100px 0 0 0;
+    height: 158px;
+    background: transparent url('../images/index_screen_theme.png') no-repeat center center;
+    background-size: auto 100%;
   }
-  .index-device{
+  .index-device {
     .layout-absolutelb-base();
-    width:100%;
-    height:638px;
-    background:transparent url('../images/index_screen_device.png') no-repeat center center;
-    background-size:auto 100%;
+    width: 100%;
+    height: 638px;
+    background: transparent url('../images/index_screen_device.png') no-repeat center center;
+    background-size: auto 100%;
   }
 }
 
 /*关于我们*/
-.layout-about-wrap{
-  background:lighten(@color-gray14,5%) url('../images/about_screen_bg.png') repeat center center;
+.layout-about-wrap {
+  background: lighten(@color-gray14, 5%) url('../images/about_screen_bg.png') repeat center center;
 }
-.about-content-wrap{
-  height:100%;
-  padding:50px 0;
-  .about-theme{
-    background:transparent url('../images/about_screen_theme.png') no-repeat center center;
+
+.about-content-wrap {
+  height: 100%;
+  padding: 50px 0;
+  .about-theme {
+    background: transparent url('../images/about_screen_theme.png') no-repeat center center;
   }
-  .about-remark{
-    width:100%;
-    line-height:@font-size-base + 12;
-    color:@color-gray3;
+  .about-remark {
+    width: 100%;
+    line-height: @font-size-base + 12;
+    color: @color-gray3;
     font-size: @font-size-base + 2;
     .text-ww();
     text-align: center;
-    margin:20px 0;
+    margin: 20px 0;
   }
-  .about-list{
+  .about-list {
     font-size: 0;
     .layout-base();
     text-align: center;
-    li{
-      padding:180px 40px 20px 40px;
+    li {
+      padding: 180px 40px 20px 40px;
       .layout-float-base(25%);
       height: 100%;
       display: inline-block;
     }
     h3,
-    p{
+    p {
       .layout-base();
       .text-ww();
-      padding:10px 0;
+      padding: 10px 0;
       &::-moz-selection {
         color: @layout-color-yellow1;
         background: @color-gray14;
@@ -77,98 +81,146 @@
         background: @color-gray14;
       }
     }
-    h3{
+    h3 {
       font-size: @font-size-base + 4;
-      line-height:@font-size-base + 14;
-      color:@layout-color-blue1;
+      line-height: @font-size-base + 14;
+      color: @layout-color-blue1;
     }
-    p{
+    p {
       font-size: @font-size-base + 2;
-      line-height:@font-size-base + 12;
-      color:@color-gray4;
+      line-height: @font-size-base + 12;
+      color: @color-gray4;
     }
     /*图标*/
-    .about-item1{
-      background:transparent url('../images/about_listicon1.png') no-repeat center 20px;
+    .about-item1 {
+      background: transparent url('../images/about_listicon1.png') no-repeat center 20px;
     }
-    .about-item2{
-      background:transparent url('../images/about_listicon2.png') no-repeat center 20px;
+    .about-item2 {
+      background: transparent url('../images/about_listicon2.png') no-repeat center 20px;
     }
-    .about-item3{
-      background:transparent url('../images/about_listicon3.png') no-repeat center 20px;
+    .about-item3 {
+      background: transparent url('../images/about_listicon3.png') no-repeat center 20px;
     }
-    .about-item4{
-      background:transparent url('../images/about_listicon4.png') no-repeat center 20px;
+    .about-item4 {
+      background: transparent url('../images/about_listicon4.png') no-repeat center 20px;
     }
   }
 }
 
+/*产品介绍*/
+.layout-introduction-wrap {
+  background: transparent url('../images/introduction_screen_bg.jpg') repeat center center;
+}
 
-
-
-
-/*牌照*/
-.layout-license-wrap {
-  min-height: 420px;
-  max-height: 620px;
-  .license-wrap {
-    @img-height: 153px;
-
-    height: 100%;
-    text-align: center;
-    padding: 80px 0;
-    font-size: 0;
-    > li {
-      .layout-float-base(33%);
+.introduction-content-wrap {
+  height: 100%;
+  padding: 50px 0;
+  .introduction-theme {
+    background: transparent url('../images/introduction_screen_theme.png') no-repeat center center;
+  }
+  .introduction-links {
+    .layout-relative-base();
+    .layout-base(500px);
+    height: 500px;
+    display: block;
+    margin: 0 auto;
+  }
+  /*圆圈*/
+  .introduction-circle,
+  .introduction-circle-mini {
+    position: absolute;
+    z-index: 10;
+    .border-radius-base(50%);
+    border: 2px solid @color-gray12;
+  }
+  .introduction-circle {
+    left: 0;
+    top: 0;
+    width: 500px;
+    height: 500px;
+  }
+  .introduction-circle-mini {
+    left: 150px;
+    top: 150px;
+    width: 200px;
+    height: 200px;
+  }
+  /*电脑*/
+  .introduction-computer{
+    .layout-absolutelb-base(-150px,50px,50);
+    width:400px;
+    height:400px;
+    background:transparent url('../images/introduction_screen_computer.png') no-repeat center center;
+    background-size:auto 100%;
+    overflow: hidden;
+  }
+  /*特点选项*/
+  .introduction-list{
+    .layout-relative-base(0,0,100);
+    width:100%;
+    height:100%;
+    >li{
+      position: absolute;
+      z-index: 200;
+      .layout-base();
+      height:35px;
+      .user-select-base();
+      cursor: pointer;
+    }
+    .introduction-itemblue div{
+      background:transparent url('../images/img_blue.png') no-repeat center center;
+    }
+    .introduction-itemyellow div{
+      background:transparent url('../images/img_yellow.png') no-repeat center center;
+    }
+    div{
+      width:30px;
+      height:35px;
+    }
+    p{
+      float:left;
+      width:450px;
+      color:@color-gray12;
       display: inline-block;
-      div {
-        height: @img-height;
-        width: 100%;
-        margin: 0 0 30px 0;
-      }
-      h3, p {
-        &::-moz-selection {
-          color: @color-orange1;
-          background: @color-gray13;
-        }
-        &::selection {
-          color: @color-orange1;
-          background: @color-gray13;
-        }
-      }
-      h3 {
-        font-size: @font-size-base + 2;
-        color: @color-gray3;
-        margin: 0 0 5px 0;
-        .text-of();
-        text-align: center;
-        line-height: @font-size-base + 6;
-      }
-      p {
-        font-size: @font-size-base;
-        color: @color-gray9;
-        text-align: left;
-        .text-ww();
-        line-height: @font-size-base + 4;
-      }
+      height:100%;
+      line-height:35px;
+      font-size: @font-size-base + 4;
     }
-    .license-item-l {
-      padding: 0 40px 0 0;
-      div {
-        background: transparent url("../images/zcdl.png") no-repeat center top;
-      }
+    .introduction-item1{
+      left:300px;
+      top:-10px;
     }
-    .license-item-c {
-      padding: 0 40px 0 40px;
-      div {
-        background: transparent url("../images/zjh.png") no-repeat center top;
-      }
+    .introduction-item2{
+      left:380px;
+      top:30px;
     }
-    .license-item-r {
-      padding: 0 0 0 40px;
-      div {
-        background: transparent url("../images/zcbh.png") no-repeat center top;
-      }
+    .introduction-item3{
+      left:445px;
+      top:100px;
+    }
+    .introduction-item4{
+      left:480px;
+      top:185px;
+    }
+    .introduction-item5{
+      left:480px;
+      top:280px;
+    }
+    .introduction-item6{
+      left:445px;
+      top:365px;
+    }
+    .introduction-item7{
+      left:385px;
+      top:435px;
+    }
+    .introduction-item8{
+      left:300px;
+      top:470px;
+    }
+    .introduction-item9{
+      left:210px;
+      top:480px;
     }
   }
 }
@@ -377,14 +429,14 @@
         color: @color-gray9;
       }
     }
-    li{
+    li {
       .layout-relative-base();
       .layout-base();
       min-height: 80px;
-      background:transparent url('../images/notice_line.png') repeat-y center top;
+      background: transparent url('../images/notice_line.png') repeat-y center top;
       display: inline-block;
       &:before {
-        .layout-absolutel-base(494px,3px);
+        .layout-absolutel-base(494px, 3px);
         background: darken(@color-gray10, 3.8%);
         content: '';
         display: block;
@@ -392,11 +444,11 @@
         height: 11px;
         .border-radius-base(50%);
       }
-      &:hover{
+      &:hover {
 
-        &:before{
+        &:before {
           .transition-base(background .5s ease .02s);
-          background:@color-orange1;
+          background: @color-orange1;
         }
       }
       span,
@@ -412,15 +464,15 @@
           background: @color-gray13;
         }
       }
-      span{
-        color:@color-gray9;
-        font-size:@font-size-base;
-        height:20px;
+      span {
+        color: @color-gray9;
+        font-size: @font-size-base;
+        height: 20px;
         line-height: 20px;
         .text-of();
       }
-      p{
-        padding:3px 0;
+      p {
+        padding: 3px 0;
         font-size: @font-size-base + 2;
         color: @color-gray3;
         .text-ww();
@@ -441,29 +493,29 @@
     }
   }
   /*加载更多*/
-  .notice-more{
+  .notice-more {
     .layout-base(167px);
-    height:40px;
+    height: 40px;
     .border-radius-base(5px);
-    margin:0 auto;
+    margin: 0 auto;
     cursor: pointer;
-    background:@color-white;
-    border:1px solid @color-orange1;
-    color:@color-orange1;
+    background: @color-white;
+    border: 1px solid @color-orange1;
+    color: @color-orange1;
     line-height: 40px;
     text-align: center;
-    display:block;
-    font-size:@font-size-base;
+    display: block;
+    font-size: @font-size-base;
     .user-select-base();
     overflow: hidden;
-    &:hover{
-      background:@color-orange1;
-      border:1px solid darken(@color-orange1,10%);
-      color:@color-white;
+    &:hover {
+      background: @color-orange1;
+      border: 1px solid darken(@color-orange1, 10%);
+      color: @color-white;
     }
-    &:active{
-      background:darken(@color-orange1,8%);
-      border:1px solid darken(@color-orange1,18%);
+    &:active {
+      background: darken(@color-orange1, 8%);
+      border: 1px solid darken(@color-orange1, 18%);
     }
   }
 }
