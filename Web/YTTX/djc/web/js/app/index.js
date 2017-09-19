@@ -73,7 +73,7 @@
         //监听菜单导航
         $menu_wrap.on('click', function (e) {
             e.stopPropagation();
-            //e.preventDefault();
+            e.preventDefault();
             var target = e.target,
                 node = target.nodeName.toLowerCase(),
                 $li;
@@ -87,11 +87,14 @@
 
 
             var index = $li.index();
+            console.log(index);
+            console.log(isMobile);
             if (isMobile) {
                 $('html,body').animate({'scrollTop': screen_pos[index]['pos'] - 40 + 'px'}, 500);
             } else {
                 $('html,body').animate({'scrollTop': screen_pos[index]['pos'] - 100 + 'px'}, 500);
             }
+            return false;
         });
 
 
@@ -114,7 +117,7 @@
             var count = 0;
             $win.on('scroll resize', function (e) {
                 var type = e.type;
-                if (type == 'scroll') {
+                if (type === 'scroll') {
                     (function () {
                         count++;
                         if (count % 2 == 0) {
@@ -135,8 +138,7 @@
 
                         }
                     }());
-                }
-                if (type == 'resize') {
+                }else if (type === 'resize') {
                     (function () {
                         //隐藏菜单导航
                         var winwidth = $win.width();
