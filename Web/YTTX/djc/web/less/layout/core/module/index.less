@@ -391,30 +391,30 @@
       .layout-base();
       display: inline-block;
       &:before,
-      &:after{
+      &:after {
         position: absolute;
         z-index: 20;
-        top:0;
-        content:'';
+        top: 0;
+        content: '';
         display: block;
-        width:50%;
-        height:100%;
-        background:@color-white;
+        width: 50%;
+        height: 100%;
+        background: @color-white;
         .opacity-base(10);
       }
-      &:before{
-        left:0;
+      &:before {
+        left: 0;
       }
-      &:after{
-        right:0;
+      &:after {
+        right: 0;
       }
-      &:hover{
-        &:before{
-          width:0;
+      &:hover {
+        &:before {
+          width: 0;
           .transition-base(width .5s ease-in .01s);
         }
-        &:after{
-          width:0;
+        &:after {
+          width: 0;
           .transition-base(width .5s ease-in .01s);
         }
       }
@@ -443,7 +443,7 @@
   }
   /*照片描述*/
   .description-remark {
-    font-size:0;
+    font-size: 0;
     .layout-absolutelb-base();
     height: 78px;
     background: @color-white;
@@ -474,7 +474,7 @@
   }
   /*描述装饰*/
   .description-mask {
-    .layout-relative-base(0,0,100);
+    .layout-relative-base(0, 0, 100);
     width: 100%;
     height: 0;
     .mask {
@@ -499,7 +499,79 @@
 }
 
 /*联系我们*/
-.layout-contact-wrap{
-  
+.layout-contact-wrap {
+  background: @layout-color-blue1 url('../images/contact_screen_bg.png') repeat left top;
+}
+
+.contact-content-wrap {
+  height: 100%;
+  padding: 50px 0;
+  /*主题*/
+  .contact-theme {
+    background: transparent url('../images/contact_screen_theme.png') no-repeat center center;
+  }
+  .contact-show {
+    .layout-base();
+    padding: 50px 0;
+    /*地图*/
+    .contact-map {
+      float: left;
+      width: 50%;
+      height: 400px;
+    }
+    /*联系列表*/
+    .contact-list {
+      float: right;
+      width: 45%;
+      font-size: 0;
+      li {
+        .layout-float-base();
+        height: 48px;
+        line-height: 48px;
+        margin: 40px 0 0 0;
+        span {
+          float:left;
+          display: inline-block;
+          width: 58px;
+          height: 48px;
+          overflow: hidden;
+        }
+        a,
+        p {
+          display: inline-block;
+          height: 48px;
+          line-height: 48px;
+          font-size: @font-size-base + 10;
+        }
+        a{
+          color:@layout-color-yellow1;
+        }
+        p{
+          color:@color-white;
+        }
+      }
+      &:first-child {
+        margin: 0;
+      }
+      .contact-icon1{
+        background:transparent url('../images/icon_contacts.png') no-repeat left center;
+      }
+      .contact-icon2{
+        background:transparent url('../images/icon_phone.png') no-repeat left center;
+      }
+      .contact-icon3{
+        background:transparent url('../images/icon_telephone.png') no-repeat left center;
+      }
+      .contact-icon4{
+        background:transparent url('../images/icon_e-mail.png') no-repeat left center;
+      }
+      .contact-icon5{
+        background:transparent url('../images/icon_address.png') no-repeat left center;
+      }
+      .contact-icon6{
+        background:transparent url('../images/icon_download.png') no-repeat left center;
+      }
+    }
+  }
 }
 
