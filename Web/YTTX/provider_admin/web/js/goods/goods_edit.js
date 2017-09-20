@@ -575,6 +575,11 @@
                         }
                         /*组合条件*/
                         groupCondition();
+                        /*查看*/
+                        console.log(history_data);
+                        console.log(attr_data);
+                        console.log(attr_map);
+                        console.log(isok);
 
                     }());
                 }
