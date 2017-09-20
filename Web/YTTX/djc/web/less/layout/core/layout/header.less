@@ -18,41 +18,51 @@
     height: 100%;
   }
   .header-menu {
-    font-size: 0;
     .layout-relative-base();
     display: inline-block;
     height: 100%;
   }
   .header-nav,
-  .header-nav > li,
-  .header-nav > li a {
+  .header-nav > li {
     .box-sizing-base();
     display: inline-block;
     height: 100%;
   }
   .header-nav {
     @item-gap: 20px;
-    a {
-      text-align: center;
+    font-size: 0;
+    > li {
       .transition-base(all .2s ease-in .01s);
-      font-size: @font-size-base + 6;
-      color: @color-gray6;
-      padding: @item-gap 10px;
+      padding: @item-gap 0;
       border-bottom: 5px solid @color-white;
-      line-height: (@layout-header-height - (@item-gap * 2)) / 2;
+      text-align: center;
+      cursor: pointer;
       &:hover {
         border-bottom: 5px solid darken(@layout-color-blue1, 5%);
-        color: darken(@layout-color-blue1, 5%);
+        a,
+        span {
+          color: darken(@layout-color-blue1, 5%);
+        }
       }
     }
+    a,
     span {
       width: 100%;
+      text-align: center;
+      height: 50%;
       display: inline-block;
+      line-height: (@layout-header-height - (@item-gap * 2)) / 2;
+      color: @color-gray6;
+    }
+    a {
+      font-size: @font-size-base + 4;
+    }
+    span {
       font-size: @font-size-base;
     }
     .menu-active {
-      a{
-        border-bottom: 5px solid @layout-color-blue1;
+      border-bottom: 5px solid @layout-color-blue1;
+      a {
         color: @layout-color-blue1;
       }
     }

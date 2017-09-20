@@ -87,8 +87,6 @@
 
 
             var index = $li.index();
-            console.log(index);
-            console.log(isMobile);
             if (isMobile) {
                 $('html,body').animate({'scrollTop': screen_pos[index]['pos'] - 40 + 'px'}, 500);
             } else {
@@ -121,11 +119,11 @@
                     (function () {
                         count++;
                         if (count % 2 == 0) {
-                            var $this = $(this),
+                            var $this = $(window),
                                 currenttop = $this.scrollTop(),
                                 i = 0,
                                 len = screen_pos.length;
-
+                            
                             for (i; i < len; i++) {
                                 var pos = screen_pos[i]['pos'],
                                     minpos = parseInt(pos - 150, 0),

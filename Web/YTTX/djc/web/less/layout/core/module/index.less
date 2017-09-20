@@ -91,32 +91,25 @@
       &:before{
         .transform-base(rotate(30deg));
         left:-90%;
-        .opacity-base(40);
+        .opacity-base(30);
       }
       &:after{
-        .opacity-base(40);
-        .transform-base(rotate(-30deg));
+        .opacity-base(20);
+        .transform-base(rotate(-35deg));
         right:-90%;
       }
       &:hover{
-        .transition-base(all .05s ease-in .02s);
-        //background: darken(@color-orange1, 3%);
-        //border:1px solid darken(@color-orange1, 8%);
-        //color:@color-white;
         &:before{
           .transition-base(left .5s ease-in 0s e(',') opacity .5s ease-in 0s);
           left:150%;
           .opacity-base(10);
         }
         &:after{
-          .transition-base(right .8s ease-in .3s e(',') opacity .8s ease-in .3s);
+          .transition-base(right .8s ease-in .2s e(',') opacity .8s ease-in .2s);
           right:150%;
           .opacity-base(0);
         }
       }
-      /*&:hover{
-        //background-color:lighten(@layout-color-blue1,45%);
-      }*/
     }
     h3,
     p {
@@ -437,39 +430,6 @@
   .description-main {
     .box-sizing-base();
     height: 100%;
-    .description-item {
-      .layout-relative-base();
-      .layout-base();
-      display: inline-block;
-      &:before,
-      &:after {
-        position: absolute;
-        z-index: 20;
-        top: 0;
-        content: '';
-        display: block;
-        width: 50%;
-        height: 100%;
-        background: @color-white;
-        .opacity-base(10);
-      }
-      &:before {
-        left: 0;
-      }
-      &:after {
-        right: 0;
-      }
-      &:hover {
-        &:before {
-          width: 0;
-          .transition-base(width .5s ease-in .01s);
-        }
-        &:after {
-          width: 0;
-          .transition-base(width .5s ease-in .01s);
-        }
-      }
-    }
   }
   .description-side {
     float: left;
@@ -490,6 +450,39 @@
     .description-item1 {
       height: 100%;
       background: transparent url('../images/description_main1.jpg') no-repeat center center;
+    }
+  }
+  .description-item {
+    .layout-relative-base();
+    .layout-base();
+    display: inline-block;
+    &:before,
+    &:after {
+      position: absolute;
+      z-index: 20;
+      top: 0;
+      content: '';
+      display: block;
+      width: 50%;
+      height: 100%;
+      background: @color-white;
+      .opacity-base(10);
+    }
+    &:before {
+      left: 0;
+    }
+    &:after {
+      right: 0;
+    }
+    &:hover {
+      &:before {
+        width: 0;
+        .transition-base(width .5s ease-in .01s);
+      }
+      &:after {
+        width: 0;
+        .transition-base(width .5s ease-in .01s);
+      }
     }
   }
   /*照片描述*/
