@@ -334,12 +334,14 @@
 					public_tool.setParams('yttx-goods-edit',{
 						id:id
 					});
-					location.href='yttx-goods-edit.html';
+					window.open("yttx-goods-edit.html");
+					//location.href='yttx-goods-edit.html';
 				}else if(action==='select'){
 					public_tool.setParams('yttx-goods-detail',{
 						id:id
 					});
-					location.href='yttx-goods-detail.html';
+					window.open("yttx-goods-detail.html");
+					//location.href='yttx-goods-detail.html';
 				}else if(action==='delete'){
 					/*删除操作*/
 					//没有回调则设置回调对象
