@@ -1474,9 +1474,9 @@
 			}
 
 			/*请求域与登陆域不一致*/
-			if(currentdomain!==''&&reqdomain!==currentdomain){
+			/*if(currentdomain!==''&&reqdomain!==currentdomain){
 				return false;
-			}
+			}*/
 
 			return true;
 		}else{

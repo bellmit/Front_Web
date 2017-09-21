@@ -56,12 +56,12 @@
                 $admin_wholesale_tips = $('#admin_wholesale_tips'),
                 $admin_isRecommended = $('#admin_isRecommended'),
                 $admin_details = $('#admin_details'),
-                price_data = {},
-                attr_data = {},
-                attr_map = {},
-                history_data = {},
-                listone = {},
-                listtwo = {},
+                price_data = {}/*查询或选中的价格值*/,
+                attr_data = {}/*选中的属性模型*/,
+                attr_map = {}/*整个标签和属性模型*/,
+                history_data = {}/*历史数据*/,
+                listone = {}/*第一个标签属性节点相关信息*/,
+                listtwo = {}/*第二个标签属性节点相关信息*/,
                 admin_goodsadd_form = document.getElementById('admin_goodsadd_form'),
                 $admin_goodsadd_form = $(admin_goodsadd_form),
                 resetform0 = null,
@@ -75,7 +75,7 @@
             /*新增属性，标签*/
             var $show_addattr_wrap = $('#show_addattr_wrap'),
                 admin_addattr_form = document.getElementById('admin_addattr_form'),
-                $admin_attrtype_tips=$('#admin_attrtype_tips'),
+                $admin_attrtype_tips = $('#admin_attrtype_tips'),
                 $admin_attrtype = $('#admin_attrtype'),
                 $admin_addattr_form = $(admin_addattr_form),
                 $admin_addattr_tips = $('#admin_addattr_tips'),
@@ -397,12 +397,12 @@
                                 $(document.getElementById('attr_list_' + key)).toggleClass('g-d-hidei');
                             } else if ($this.hasClass('attr-item-addbtn')) {
                                 /*同步数据*/
-                                var $clone_dom=$(document.getElementById('attr_list_' + key)).children().clone().removeClass('admin-list-widget-active'),
-                                    tagid=$clone_dom.eq(0).attr('data-value').split('_');
+                                var $clone_dom = $(document.getElementById('attr_list_' + key)).children().clone().removeClass('admin-list-widget-active'),
+                                    tagid = $clone_dom.eq(0).attr('data-value').split('_');
 
                                 $clone_dom.appendTo($admin_addattr_list.html(''));
                                 $admin_newattr.attr({
-                                    'data-id':tagid[0]
+                                    'data-id': tagid[0]
                                 });
                                 /*显示弹出框*/
                                 $show_addattr_wrap.modal('show', {
@@ -573,14 +573,11 @@
                                 }
                             }
                         }
-                        /*组合条件*/
-                        groupCondition();
-                        /*查看*/
-                        console.log(history_data);
-                        console.log(attr_data);
-                        console.log(attr_map);
-                        console.log(isok);
 
+                        /*组合条件*/
+                        //compareNHData(history_data);
+                        groupCondition();
+                        //_groupCondition_();
                     }());
                 }
 
@@ -659,37 +656,37 @@
 
 
             /*绑定显示隐藏新增类型中的已存在编码和名称*/
-            $admin_addattr_already.on('click',function(e){
-                if($admin_addattr_list.hasClass('g-d-hidei')){
+            $admin_addattr_already.on('click', function (e) {
+                if ($admin_addattr_list.hasClass('g-d-hidei')) {
                     $admin_addattr_list.removeClass('g-d-hidei');
-                }else{
+                } else {
                     $admin_addattr_list.addClass('g-d-hidei');
                 }
             });
 
 
             /*绑定验证是否已经编写存在的分类编码*/
-            $admin_newattr.on('focusout',function(){
-                var self=this,
-                    txt=self.value,
-                    value=public_tool.trims(txt),
-                    $ul=$admin_addattr_list,
-                    $tip=$admin_addattr_tips,
-                    type='属性';
+            $admin_newattr.on('focusout', function () {
+                var self = this,
+                    txt = self.value,
+                    value = public_tool.trims(txt),
+                    $ul = $admin_addattr_list,
+                    $tip = $admin_addattr_tips,
+                    type = '属性';
 
-                if(value!==''){
-                    if(type!==''){
-                        $ul.find('li').each(function(){
-                            var $own=$(this),
-                                litxt=$own.html();
-                            if(litxt===value){
-                                $tip.html('"'+value+'" 已经存在，请填写其他"'+type+'"');
-                                self.value='';
+                if (value !== '') {
+                    if (type !== '') {
+                        $ul.find('li').each(function () {
+                            var $own = $(this),
+                                litxt = $own.html();
+                            if (litxt === value) {
+                                $tip.html('"' + value + '" 已经存在，请填写其他"' + type + '"');
+                                self.value = '';
                                 $own.addClass('admin-list-widget-active');
                                 setTimeout(function () {
                                     $tip.html('');
                                     $own.removeClass('admin-list-widget-active');
-                                },3000);
+                                }, 3000);
                                 return false;
                             }
                         });
@@ -809,7 +806,7 @@
                                     config['url'] = "http://10.0.5.226:8082/yttx-providerbms-api/goods/addupdate";
                                     config['data'] = setdata;
                                 } else if (formtype === 'addattr') {
-                                    var tagid=$admin_newattr.attr('data-id');
+                                    var tagid = $admin_newattr.attr('data-id');
                                     if (istypeid === '' && typeof istypeid !== 'undefined') {
                                         $admin_attrtype_tips.html('不存在商品所属分类');
                                         setTimeout(function () {
@@ -820,7 +817,7 @@
                                     } else {
                                         $admin_attrtype_tips.html('');
                                     }
-                                    if(tagid===''){
+                                    if (tagid === '') {
                                         dia.content('<span class="g-c-bs-warning g-btips-warn">商品属性标签不存在</span>').show();
                                         return false;
                                     }
@@ -968,7 +965,7 @@
 
 
                 /*解析分类*/
-                istypeid=result['goodsTypeId'];
+                istypeid = result['goodsTypeId'];
                 $admin_attrtype.html(istypeid);
                 $admin_goodsTypeId.html(result['goodsTypeId']);
 
@@ -1043,7 +1040,7 @@
                     /*设置原始属性组合值*/
                     setOldGroupCondition(history_data);
                 }
-
+                console.log(listone);
 
             }).fail(function (resp) {
                 console.log(resp.message || 'error');
@@ -1185,8 +1182,8 @@
                 attr_map = {};
                 for (i; i < len; i++) {
                     var attr_obj = list[i],
-                        name = list[i]['name'],
-                        arr = list[i]['list'],
+                        name = list[i]['name']/*标签名称*/,
+                        arr = list[i]['list']/*标签下存在属性列表*/,
                         id = list[i]['id'],
                         j = 0,
                         sublen = arr.length,
@@ -1355,6 +1352,83 @@
                 return null;
             }
             return null;
+        }
+
+
+        /*组合颜色与尺寸:重构*/
+        function _groupCondition_() {
+            var conitem = attr_data['record'],
+                dataone,
+                datatwo,
+                rule = [],
+                len = 0,
+                str = '';
+
+
+            if (conitem.length < 2) {
+                $admin_wholesale_price_list.html('');
+                $admin_wholesale_price_thead.html(wholesale_price_theadstr);
+                return false;
+            }
+
+            var key1 = conitem[0],
+                key2 = conitem[1];
+
+            dataone = attr_data[key1];
+            datatwo = attr_data[key2];
+            console.log(dataone);
+            console.log(datatwo);
+            for (var i in datatwo) {
+                var tempstr = '';
+                tempstr += i + '_#_' + datatwo[i];
+                rule.push(tempstr);
+            }
+            len = rule.length;
+            $admin_wholesale_price_thead.html('<tr>\
+			<th>' + attr_map[key1]['label'] + '</th>\
+			<th>' + attr_map[key2]['label'] + '</th>\
+			<th>库存</th>\
+			<th>批发价</th>\
+			<th>建议零售价</th>\
+			<th>供应商价</th>\
+			<th>价格显示在首页</th>\
+			</tr>');
+            var initindex = 0;
+            for (var j in dataone) {
+                var k = 0,
+                    itemone = dataone[j];
+                str += '<tr><td rowspan="' + len + '">' + j + '</td>';
+                for (k; k < len; k++) {
+                    var itemtwo = rule[k].split('_#_'),
+                        code = itemone.split('_')[1] + '_' + itemtwo[1].split('_')[1];
+                    if (k === 0) {
+                        if (initindex === 0) {
+                            str += '<td>' + itemtwo[0] + '</td>' +
+                                '<td><input class="admin-table-input" name="setinventory" maxlength="7" type="text"></td>' +
+                                '<td><input class="admin-table-input" name="setwholesalePrice" maxlength="12" type="text"></td>' +
+                                '<td><input class="admin-table-input" name="setretailPrice" maxlength="12" type="text"></td>' +
+                                '<td><input class="admin-table-input" name="setsupplierPrice" maxlength="12" type="text"></td>' +
+                                '<td><input name="setisDefault" checked type="radio" data-value="' + code + '"></td></tr>';
+                        } else {
+                            str += '<td>' + itemtwo[0] + '</td>' +
+                                '<td><input class="admin-table-input" name="setinventory" maxlength="7" type="text"></td>' +
+                                '<td><input class="admin-table-input" name="setwholesalePrice" maxlength="12" type="text"></td>' +
+                                '<td><input class="admin-table-input" name="setretailPrice" maxlength="12" type="text"></td>' +
+                                '<td><input class="admin-table-input" name="setsupplierPrice" maxlength="12" type="text"></td>' +
+                                '<td><input name="setisDefault"  type="radio" data-value="' + code + '"></td></tr>';
+                        }
+                    } else {
+                        str += '<tr><td>' + itemtwo[0] + '</td>' +
+                            '<td><input class="admin-table-input" name="setinventory" maxlength="7" type="text"></td>' +
+                            '<td><input class="admin-table-input" name="setwholesalePrice" maxlength="12" type="text"></td>' +
+                            '<td><input class="admin-table-input" name="setretailPrice" maxlength="12" type="text"></td>' +
+                            '<td><input class="admin-table-input" name="setsupplierPrice" maxlength="12" type="text"></td>' +
+                            '<td><input name="setisDefault"  type="radio" data-value="' + code + '"></td></tr>';
+                    }
+                }
+                initindex++;
+            }
+            $(str).appendTo($admin_wholesale_price_list.html(''));
         }
 
 
@@ -1547,47 +1621,7 @@
         }
 
 
-        /*删除图片(需要后台支持)和另外的base64方法支持*/
-        function deleteSlideImage(obj) {
-            var $li = obj.$liitem,
-                slideobj = obj.slideobj,
-                tips = obj.tips,
-                $img = $li.find('img'),
-                src = $img.attr('src');
-
-            if (src.indexOf('qiniucdn.com/') !== -1) {
-                src = src.split('qiniucdn.com/')[1];
-                if (src.indexOf('?imageView2') !== -1) {
-                    src = src.split('?imageView2')[0];
-                }
-                $.ajax({
-                    url: "http://rs.qiniu.com/delete/" + Base64Fun.encode64(src),
-                    dataType: 'JSON',
-                    method: 'post',
-                    data: {
-                        Authorization: 'QBox ' + ImageUpload_Token.qiniuToken
-                    }
-                }).done(function (resp) {
-                    console.log(resp);
-                    $li.remove();
-                    slideobj.init(slideobj);
-                    tips.content('<span class="g-c-bs-success g-btips-succ">删除数据成功</span>');
-                    setTimeout(function () {
-                        tips.close();
-                    }, 2000);
-                }).fail(function (resp) {
-                    tips.content('<span class="g-c-bs-warning g-btips-warn">删除数据成功</span>');
-                    setTimeout(function () {
-                        tips.close();
-                    }, 2000);
-                    console.log(resp);
-                });
-            }
-
-        }
-
-
-        /*通过价格反向解析标签与属性*/
+        /*通过价格反向解析标签与属性：attr:查询的属性列表，price:查询的到价格值*/
         function getGroupCondition(attr, price) {
             var attrlen = 0,
                 pricelen = 0,
@@ -1728,6 +1762,7 @@
                         }
 
                         if (!$.isEmptyObject(attrmap)) {
+                            /*创建历史模型数据*/
                             $.extend(true, history_data, attrmap);
                             return true;
                         } else {
@@ -1735,7 +1770,6 @@
                             document.getElementById('admin_wholesale_price_thead').innerHTML = wholesale_price_theadstr;
                             return false;
                         }
-                        return false;
                     } else {
                         document.getElementById('admin_wholesale_price_list').innerHTML = '';
                         document.getElementById('admin_wholesale_price_thead').innerHTML = wholesale_price_theadstr;
@@ -1743,6 +1777,13 @@
                     }
                 }
             }
+            return false;
+        }
+
+
+        /*校验合并数据：比对新数据与历史数据:n_data:新数据，h_data:历史数据,fn:回调函数*/
+        function compareNHData(n_data, h_data, fn) {
+
         }
 
 
@@ -1766,13 +1807,13 @@
                 /*组合数据一*/
                 /*如果条件输入框不够，即创建一个条件框*/
                 if ($attrinput1.eq(attrsize1 - 1).val() !== '' && count === attrsize1) {
-                    $input1btn.trigger('click');
+                    $input1btn.trigger('click','auto');
                     $attrinput1 = $input1wrap.find('input');
                     attrsize1 = $attrinput1.size();
                 }
                 var $input1 = $attrinput1.eq(j);
                 $input1.val(listone['res'][i]);
-                $input1.trigger('focusout');
+                $input1.trigger('focusout','auto');
 
 
                 /*组合数据二*/
@@ -1783,13 +1824,13 @@
                     for (k; k < len; k++) {
                         /*如果条件输入框不够，即创建一个条件框*/
                         if ($attrinput2.eq(attr2size - 1).val() !== '' && len > attr2size) {
-                            $input2btn.trigger('click');
+                            $input2btn.trigger('click','auto');
                             $attrinput2 = $input2wrap.find('input');
                             attr2size = $attrinput2.size();
                         }
                         var $input2 = $attrinput2.eq(k);
                         $input2.val(listtwo['res'][listitem[k][5]]);
-                        $input2.trigger('focusout');
+                        $input2.trigger('focusout','auto');
                     }
                 }
                 j++;
