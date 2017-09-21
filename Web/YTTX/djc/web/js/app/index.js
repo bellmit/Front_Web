@@ -66,7 +66,9 @@
             } else {
                 isMobile = true;
             }
-
+            
+            /*地图调用*/
+            new BMap.Map("address_wrap").centerAndZoom("上海",15);
         }());
 
 

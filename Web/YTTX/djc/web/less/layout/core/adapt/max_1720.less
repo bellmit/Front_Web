@@ -1,5 +1,6 @@
 //1200px-1720px
 @media (max-width: 1720px) {
+
   /*头部*/
   .layout-header-wrap {
     /*logo*/
@@ -8,8 +9,6 @@
       background-size:100% auto;
     }
   }
-
-
 
 
   /*产品描述*/
@@ -45,5 +44,19 @@
     }
   }
 
+
+  /*产品介绍*/
+  .introduction-content-wrap {
+    @circle-width: 500px;
+    /*圆圈*/
+    .introduction-links {
+      left:-@circle-width * .4;
+    }
+    .introduction-list {
+      > li {
+        width:@circle-width * .8;
+      }
+    }
+  }
 
 }
