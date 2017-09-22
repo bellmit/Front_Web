@@ -1324,9 +1324,17 @@
         /*校验是否存在正确值*/
         function validAttrData($input, key, txt) {
             var prevtxt = $input.attr('data-value'),
-                sequence=$input.attr('data-sequence'),
+                sequence = $input.attr('data-sequence'),
                 res = false,
-                type = '';
+                type = '',
+                index='';
+
+            if (sequence === '') {
+                
+                index=txt in attr_map[key]['res'];
+            } else if (sequence !== '') {
+
+            }
 
 
             if (!(txt in attr_map[key]['map'])) {
