@@ -56,13 +56,12 @@
                 $admin_wholesale_tips = $('#admin_wholesale_tips'),
                 $admin_isRecommended = $('#admin_isRecommended'),
                 $admin_details = $('#admin_details'),
-                price_data = {}/*查询或选中的价格值*/,
-                attr_data = {}/*选中的属性模型*/,
-                attr_map = {}/*整个标签和属性模型*/,
-                extend_data = {}/*合并相关数据，主要用于手动操作过程中比对历史数据后生成的结果集*/,
-                history_data = {}/*历史数据*/,
-                listone = {}/*第一个标签属性节点相关信息*/,
-                listtwo = {}/*第二个标签属性节点相关信息*/,
+                price_data = {},
+                attr_data = {},
+                attr_map = {},
+                history_data = {},
+                listone = {},
+                listtwo = {},
                 admin_goodsadd_form = document.getElementById('admin_goodsadd_form'),
                 $admin_goodsadd_form = $(admin_goodsadd_form),
                 resetform0 = null,
@@ -76,7 +75,7 @@
             /*新增属性，标签*/
             var $show_addattr_wrap = $('#show_addattr_wrap'),
                 admin_addattr_form = document.getElementById('admin_addattr_form'),
-                $admin_attrtype_tips = $('#admin_attrtype_tips'),
+                $admin_attrtype_tips=$('#admin_attrtype_tips'),
                 $admin_attrtype = $('#admin_attrtype'),
                 $admin_addattr_form = $(admin_addattr_form),
                 $admin_addattr_tips = $('#admin_addattr_tips'),
@@ -358,11 +357,11 @@
 
 
             /*绑定属性操作*/
-            $admin_attrwrap.on('click focusout', function (e, auto) {
+            $admin_attrwrap.on('click focusout', function (e) {
                 var etype = e.type,
                     target = e.target,
-                    automode = auto ? true : false,
                     node = target.nodeName.toLowerCase();
+
 
                 /*点击事件*/
                 if (etype === 'click') {
@@ -383,14 +382,13 @@
                                 key = $this.attr('data-key');
 
                             if ($this.hasClass('attr-item-btn')) {
-                                /*扩展文本框条件选项*/
+                                /*扩展条件*/
                                 (function () {
                                     var $last = $(document.getElementById('attr_input_' + key)).find('input:last');
 
 
                                     $last.clone(true).attr({
-                                        'data-value': '',
-                                        'data-sequence': ''
+                                        'data-value': ''
                                     }).val('').insertAfter($last);
 
                                 }());
@@ -398,14 +396,13 @@
                                 /*查看属性类型*/
                                 $(document.getElementById('attr_list_' + key)).toggleClass('g-d-hidei');
                             } else if ($this.hasClass('attr-item-addbtn')) {
-                                /*添加新的属性*/
                                 /*同步数据*/
-                                var $clone_dom = $(document.getElementById('attr_list_' + key)).children().clone().removeClass('admin-list-widget-active'),
-                                    tagid = $clone_dom.eq(0).attr('data-value').split('_');
+                                var $clone_dom=$(document.getElementById('attr_list_' + key)).children().clone().removeClass('admin-list-widget-active'),
+                                    tagid=$clone_dom.eq(0).attr('data-value').split('_');
 
                                 $clone_dom.appendTo($admin_addattr_list.html(''));
                                 $admin_newattr.attr({
-                                    'data-id': tagid[0]
+                                    'data-id':tagid[0]
                                 });
                                 /*显示弹出框*/
                                 $show_addattr_wrap.modal('show', {
@@ -422,7 +419,6 @@
                                 isok/*数据过滤：只能组合两种数据*/,
                                 txt = $this.html(),
                                 code = $this.attr('data-value'),
-                                sequence = code.split('_'),
                                 count = 0,
                                 size,
                                 $inputitem = $(document.getElementById('attr_input_' + key)),
@@ -437,12 +433,8 @@
                                     if ($self.val() === txt) {
                                         $self.val('');
                                         delete attr_data[key][txt];
-                                        $self.attr({
-                                            'data-value': '',
-                                            'data-sequence': ''
-                                        })/*清空data-value,清空data-sequence*/;
+                                        $self.attr({'data-value': ''});
                                         if ($.isEmptyObject(attr_data[key])) {
-                                            /*同步操作记录*/
                                             dataRecord(key);
                                         }
                                         return false;
@@ -451,14 +443,10 @@
                             } else {
                                 $this.addClass('admin-list-widget-active');
                                 if ($.isEmptyObject(attr_data[key])) {
-                                    /*空记录则插入第一个记录数*/
                                     $input = $inputitem.find('input:first-child');
                                     $input.val(txt);
                                     attr_data[key][txt] = code;
-                                    $input.attr({
-                                        'data-value': txt,
-                                        'data-sequence': sequence[1]
-                                    });
+                                    $input.attr({'data-value': txt});
                                 } else {
                                     $input = $inputitem.find('input');
                                     size = $input.size();
@@ -467,16 +455,12 @@
                                         if ($self.val() === '') {
                                             $self.val(txt);
                                             attr_data[key][txt] = code;
-                                            $self.attr({
-                                                'data-value': txt,
-                                                'data-sequence': sequence[1]
-                                            });
+                                            $self.attr({'data-value': txt});
                                             return false;
                                         }
                                         count++;
                                     });
                                     if (count === size) {
-                                        /*输入框被填满或者找不到找不到相同属性与输入属性相匹配*/
                                         var $lastinput = $input.eq(size - 1),
                                             lasttxt = $lastinput.val();
                                         $ul.find('li.admin-list-widget-active').each(function () {
@@ -485,36 +469,24 @@
                                             if (lasttxt === temptxt) {
                                                 $templi.removeClass('admin-list-widget-active');
                                                 delete attr_data[key][lasttxt];
-                                                $lastinput.attr({
-                                                    'data-value': '',
-                                                    'data-sequence': ''
-                                                });
+                                                $lastinput.attr({'data-value': ''});
                                                 return false;
                                             }
                                         });
                                         $lastinput.val(txt);
                                         attr_data[key][txt] = code;
-                                        $lastinput.attr({
-                                            'data-value': txt,
-                                            'data-sequence': sequence[1]
-                                        });
+                                        $lastinput.attr({'data-value': txt});
                                     }
                                 }
-                                /*同步操作记录*/
                                 isok = dataRecord(key);
                                 if (isok !== null) {
                                     syncAttrList((function () {
                                         var $previnput = $(document.getElementById('attr_input_' + isok)).find('input'),
                                             res = [];
                                         $previnput.each(function () {
-                                            var $tempown = $(this),
-                                                prevtxt = $tempown.val()/*值*/,
-                                                sequence = $tempown.attr('data-sequence')/*序列*/;
+                                            var prevtxt = $(this).val();
                                             if (prevtxt !== '') {
-                                                res.push({
-                                                    value: prevtxt,
-                                                    sequence: sequence
-                                                });
+                                                res.push(prevtxt);
                                             }
                                         });
                                         if (res.length !== 0) {
@@ -526,7 +498,7 @@
                             }
 
                             /*组合条件*/
-                            _groupCondition_(automode);
+                            groupCondition();
 
                         }());
                     }
@@ -543,24 +515,14 @@
                         var $this = $(target),
                             value = $this.val(),
                             key = $this.attr('data-key'),
-                            sequence = $this.attr('data-sequence'),
                             isvalid = false,
                             isok;
                         if (value !== '') {
-                            /*有值*/
                             isvalid = validAttrData($this, key, value);
                             if (isvalid) {
-                                if (sequence === '') {
-                                    /*通过名称查找*/
-                                    attr_data[key][value] = attr_map[key]['map'][value];
-                                } else if (sequence !== '') {
-                                    /*通过索引查找*/
-                                    attr_data[key][value] = attr_map[key]['map'][value + '_' + sequence];
-                                }
-
+                                attr_data[key][value] = attr_map[key]['map'][value];
                                 $this.attr({
-                                    'data-value': value,
-                                    'data-sequence': sequence
+                                    'data-value': value
                                 });
                                 /*同步列表*/
                                 syncAttrList(value, key, 'add');
@@ -584,7 +546,6 @@
                                 }
                             }
                         } else {
-                            /*无值*/
                             var tempvalue = $this.attr('data-value');
                             if (typeof attr_data[key][tempvalue] !== 'undefined') {
                                 delete attr_data[key][tempvalue];
@@ -612,10 +573,9 @@
                                 }
                             }
                         }
-
                         /*组合条件*/
-                        _groupCondition_(automode);
-                        //_groupCondition_();
+                        groupCondition();
+
                     }());
                 }
 
@@ -694,37 +654,37 @@
 
 
             /*绑定显示隐藏新增类型中的已存在编码和名称*/
-            $admin_addattr_already.on('click', function (e) {
-                if ($admin_addattr_list.hasClass('g-d-hidei')) {
+            $admin_addattr_already.on('click',function(e){
+                if($admin_addattr_list.hasClass('g-d-hidei')){
                     $admin_addattr_list.removeClass('g-d-hidei');
-                } else {
+                }else{
                     $admin_addattr_list.addClass('g-d-hidei');
                 }
             });
 
 
             /*绑定验证是否已经编写存在的分类编码*/
-            $admin_newattr.on('focusout', function () {
-                var self = this,
-                    txt = self.value,
-                    value = public_tool.trims(txt),
-                    $ul = $admin_addattr_list,
-                    $tip = $admin_addattr_tips,
-                    type = '属性';
+            $admin_newattr.on('focusout',function(){
+                var self=this,
+                    txt=self.value,
+                    value=public_tool.trims(txt),
+                    $ul=$admin_addattr_list,
+                    $tip=$admin_addattr_tips,
+                    type='属性';
 
-                if (value !== '') {
-                    if (type !== '') {
-                        $ul.find('li').each(function () {
-                            var $own = $(this),
-                                litxt = $own.html();
-                            if (litxt === value) {
-                                $tip.html('"' + value + '" 已经存在，请填写其他"' + type + '"');
-                                self.value = '';
+                if(value!==''){
+                    if(type!==''){
+                        $ul.find('li').each(function(){
+                            var $own=$(this),
+                                litxt=$own.html();
+                            if(litxt===value){
+                                $tip.html('"'+value+'" 已经存在，请填写其他"'+type+'"');
+                                self.value='';
                                 $own.addClass('admin-list-widget-active');
                                 setTimeout(function () {
                                     $tip.html('');
                                     $own.removeClass('admin-list-widget-active');
-                                }, 3000);
+                                },3000);
                                 return false;
                             }
                         });
@@ -841,10 +801,10 @@
                                         }())
                                     });
 
-                                    config['url'] = "http://10.0.5.226:8082/yttx-providerbms-api/goods/addupdate";
+                                    config['url'] = "http://112.74.207.132:8082/yttx-providerbms-api/goods/addupdate";
                                     config['data'] = setdata;
                                 } else if (formtype === 'addattr') {
-                                    var tagid = $admin_newattr.attr('data-id');
+                                    var tagid=$admin_newattr.attr('data-id');
                                     if (istypeid === '' && typeof istypeid !== 'undefined') {
                                         $admin_attrtype_tips.html('不存在商品所属分类');
                                         setTimeout(function () {
@@ -855,7 +815,7 @@
                                     } else {
                                         $admin_attrtype_tips.html('');
                                     }
-                                    if (tagid === '') {
+                                    if(tagid===''){
                                         dia.content('<span class="g-c-bs-warning g-btips-warn">商品属性标签不存在</span>').show();
                                         return false;
                                     }
@@ -864,7 +824,7 @@
                                         goodsTypeId: istypeid,
                                         tagId: tagid
                                     });
-                                    config['url'] = "http://10.0.5.226:8082/yttx-providerbms-api/goods/tag/attr/add";
+                                    config['url'] = "http://112.74.207.132:8082/yttx-providerbms-api/goods/tag/attr/add";
                                     config['data'] = setdata;
                                 }
 
@@ -944,9 +904,9 @@
 
 
             /*创建输入项*/
-            inputstr = '<input type="text" class="form-control g-w-number4" data-id="' + id + '"  data-key="' + key + '" data-label="' + label + '" data-value="" data-sequence="" />\
-				<input type="text" class="form-control g-w-number4" data-id="' + id + '" data-key="' + key + '" data-label="' + label + '" data-value="" data-sequence="" />\
-				<input type="text" class="form-control g-w-number4" data-id="' + id + '"  data-key="' + key + '" data-label="' + label + '" data-value="" data-sequence="" />';
+            inputstr = '<input type="text" class="form-control g-w-number4" data-id="' + id + '"  data-key="' + key + '" data-label="' + label + '" data-value="" />\
+				<input type="text" class="form-control g-w-number4" data-id="' + id + '" data-key="' + key + '" data-label="' + label + '" data-value="" />\
+				<input type="text" class="form-control g-w-number4" data-id="' + id + '"  data-key="' + key + '" data-label="' + label + '" data-value="" />';
 
             /*创建属性项*/
             itemstr = '<div class="form-group" data-key="' + key + '">\
@@ -969,11 +929,11 @@
 
         /*获取数据*/
         function getEditData(config) {
-            if (!public_tool.isSameDomain("http://10.0.5.226:8082")) {
+            if (!public_tool.isSameDomain("http://112.74.207.132:8082")) {
                 return false;
             }
             $.ajax({
-                url: "http://10.0.5.226:8082/yttx-providerbms-api/goods/details",
+                url: "http://112.74.207.132:8082/yttx-providerbms-api/goods/details",
                 dataType: 'JSON',
                 async: false,
                 method: 'post',
@@ -1003,7 +963,7 @@
 
 
                 /*解析分类*/
-                istypeid = result['goodsTypeId'];
+                istypeid=result['goodsTypeId'];
                 $admin_attrtype.html(istypeid);
                 $admin_goodsTypeId.html(result['goodsTypeId']);
 
@@ -1013,7 +973,7 @@
                     getSlideData(banner, slide_config);
                 }
 
-                /*解析属性：主要生成标签属性dom,解析attr_map值，创建空attr_data值*/
+                /*解析属性*/
                 getAttrData(result['tagsAttrsList']);
 
 
@@ -1078,6 +1038,8 @@
                     /*设置原始属性组合值*/
                     setOldGroupCondition(history_data);
                 }
+
+
             }).fail(function (resp) {
                 console.log(resp.message || 'error');
                 return false;
@@ -1098,76 +1060,35 @@
             }
 
             if ($.isArray(value)) {
-                /*批量搜索*/
                 var len = value.length,
                     i = 0;
                 if (len !== 0) {
                     for (i; i < len; i++) {
                         $wrap.each(function () {
                             var $this = $(this),
-                                txt = $this.html(),
-                                sequence = $this.attr('data-value').split('_'),
-                                item = value[i];
-
-                            if (item.sequence === '') {
-                                /*没有唯一索引*/
-                                if (txt === item.value) {
-                                    /*能够匹配值且操作类型为新增则高亮属性列表*/
-                                    if (action === 'add') {
-                                        $this.addClass('admin-list-widget-active')
-                                    } else if (action === 'remove') {
-                                        /*能够匹配值且操作类型为删除则取消高亮属性列表*/
-                                        $this.removeClass('admin-list-widget-active');
-                                    }
-                                    return false;
+                                txt = $this.html();
+                            if (txt === value[i]) {
+                                if (action === 'add') {
+                                    $this.addClass('admin-list-widget-active')
+                                } else if (action === 'remove') {
+                                    $this.removeClass('admin-list-widget-active');
                                 }
-                            } else if (item.sequence !== '') {
-                                /*有唯一索引*/
-                                if (txt === item.value && item.sequence === sequence[1]) {
-                                    /*能够匹配值且操作类型为新增则高亮属性列表*/
-                                    if (action === 'add') {
-                                        $this.addClass('admin-list-widget-active')
-                                    } else if (action === 'remove') {
-                                        /*能够匹配值且操作类型为删除则取消高亮属性列表*/
-                                        $this.removeClass('admin-list-widget-active');
-                                    }
-                                    return false;
-                                }
+                                return false;
                             }
                         });
                     }
                 }
             } else {
-                /*单个搜索*/
                 $wrap.each(function () {
                     var $this = $(this),
-                        txt = $this.html(),
-                        sequence = $this.attr('data-value').split('_');
-
-                    if (value.sequence === '') {
-                        /*没有唯一索引*/
-                        if (txt === value.value) {
-                            /*能够匹配值且操作类型为新增则高亮属性列表*/
-                            if (action === 'add') {
-                                $this.addClass('admin-list-widget-active')
-                            } else if (action === 'remove') {
-                                /*能够匹配值且操作类型为删除则取消高亮属性列表*/
-                                $this.removeClass('admin-list-widget-active');
-                            }
-                            return false;
+                        txt = $this.html();
+                    if (txt === value) {
+                        if (action === 'add') {
+                            $this.addClass('admin-list-widget-active')
+                        } else if (action === 'remove') {
+                            $this.removeClass('admin-list-widget-active');
                         }
-                    } else if (value.sequence !== '') {
-                        /*有唯一索引*/
-                        if (txt === value.value && value.sequence === sequence[1]) {
-                            /*能够匹配值且操作类型为新增则高亮属性列表*/
-                            if (action === 'add') {
-                                $this.addClass('admin-list-widget-active')
-                            } else if (action === 'remove') {
-                                /*能够匹配值且操作类型为删除则取消高亮属性列表*/
-                                $this.removeClass('admin-list-widget-active');
-                            }
-                            return false;
-                        }
+                        return false;
                     }
                 });
             }
@@ -1238,7 +1159,7 @@
         }
 
 
-        /*查询标签与属性,主要生成标签属性dom,解析attr_map值，创建空attr_data值*/
+        /*查询标签与属性*/
         function getAttrData(list) {
             if (!list) {
                 isattr = false;
@@ -1259,8 +1180,8 @@
                 attr_map = {};
                 for (i; i < len; i++) {
                     var attr_obj = list[i],
-                        name = list[i]['name']/*标签名称*/,
-                        arr = list[i]['list']/*标签下存在属性列表*/,
+                        name = list[i]['name'],
+                        arr = list[i]['list'],
                         id = list[i]['id'],
                         j = 0,
                         sublen = arr.length,
@@ -1271,7 +1192,7 @@
 
                     /*
                      * attr_map:查询到的结果集
-                     * attr_data:已经填入的属性对象
+                     *	attr_data:已经填入的属性对象
                      * */
 
 
@@ -1432,117 +1353,6 @@
         }
 
 
-        /*组合颜色与尺寸:重构,mode:为事件模型，true为自动模式，false为手动模式*/
-        function _groupCondition_(mode) {
-            var conitem = attr_data['record'],
-                dataone,
-                datatwo,
-                rule = [],
-                len = 0,
-                str = '';
-
-
-            if (conitem.length < 2) {
-                $admin_wholesale_price_list.html('');
-                $admin_wholesale_price_thead.html(wholesale_price_theadstr);
-                return false;
-            }
-
-            var key1 = conitem[0],
-                key2 = conitem[1];
-
-            dataone = attr_data[key1];
-            datatwo = attr_data[key2];
-            for (var i in datatwo) {
-                var tempstr = '';
-                tempstr += i + '_#_' + datatwo[i];
-                rule.push(tempstr);
-            }
-            len = rule.length;
-            $admin_wholesale_price_thead.html('<tr>\
-			<th>' + attr_map[key1]['label'] + '</th>\
-			<th>' + attr_map[key2]['label'] + '</th>\
-			<th>库存</th>\
-			<th>批发价</th>\
-			<th>建议零售价</th>\
-			<th>供应商价</th>\
-			<th>价格显示在首页</th>\
-			</tr>');
-
-
-            extend_data = {}/*置空比对数据*/;
-            var initindex = 0,
-                rowindex = 0;
-            for (var j in dataone) {
-                /*循环行*/
-                var k = 0,
-                    itemone = dataone[j];
-
-                str += '<tr><td rowspan="' + len + '">' + j + '</td>';
-                for (k; k < len; k++) {
-                    /*循环合并行*/
-                    var itemtwo = rule[k].split('_#_'),
-                        codeone = itemone.split('_'),
-                        codetwo = itemtwo[1].split('_'),
-                        code = codeone[1] + '_' + codetwo[1];
-                    if (k === 0) {
-                        /*创建空比对对象*/
-                        extend_data[codeone[1]] = [];
-                        if (initindex === 0) {
-                            str += '<td>' + itemtwo[0] + '</td>' +
-                                '<td><input class="admin-table-input" name="setinventory" maxlength="7" type="text"></td>' +
-                                '<td><input class="admin-table-input" name="setwholesalePrice" maxlength="12" type="text"></td>' +
-                                '<td><input class="admin-table-input" name="setretailPrice" maxlength="12" type="text"></td>' +
-                                '<td><input class="admin-table-input" name="setsupplierPrice" maxlength="12" type="text"></td>' +
-                                '<td><input name="setisDefault" checked type="radio" data-value="' + code + '"></td></tr>';
-                        } else {
-                            str += '<td>' + itemtwo[0] + '</td>' +
-                                '<td><input class="admin-table-input" name="setinventory" maxlength="7" type="text"></td>' +
-                                '<td><input class="admin-table-input" name="setwholesalePrice" maxlength="12" type="text"></td>' +
-                                '<td><input class="admin-table-input" name="setretailPrice" maxlength="12" type="text"></td>' +
-                                '<td><input class="admin-table-input" name="setsupplierPrice" maxlength="12" type="text"></td>' +
-                                '<td><input name="setisDefault"  type="radio" data-value="' + code + '"></td></tr>';
-                        }
-                    } else {
-                        str += '<tr><td>' + itemtwo[0] + '</td>' +
-                            '<td><input class="admin-table-input" name="setinventory" maxlength="7" type="text"></td>' +
-                            '<td><input class="admin-table-input" name="setwholesalePrice" maxlength="12" type="text"></td>' +
-                            '<td><input class="admin-table-input" name="setretailPrice" maxlength="12" type="text"></td>' +
-                            '<td><input class="admin-table-input" name="setsupplierPrice" maxlength="12" type="text"></td>' +
-                            '<td><input name="setisDefault"  type="radio" data-value="' + code + '"></td></tr>';
-                        /*设置比对对象*/
-                        extend_data[codeone[1]].push((function () {
-                            var temp_itemtwo = rule[rowindex].split('_#_'),
-                                temp_arr = [];
-                            temp_arr.push('', '', '', 0, codeone[1], temp_itemtwo[1].split('_')[1], '', '');
-                            return temp_arr;
-                        })());
-                    }
-                    /*设置比对对象*/
-                    if (!mode) {
-                        extend_data[codeone[1]].push((function () {
-                            var temp_itemtwo = rule[rowindex].split('_#_'),
-                                temp_arr = [];
-                            temp_arr.push('', '', '', initindex === 0 ? 1 : 0, codeone[1], temp_itemtwo[1].split('_')[1], '', '');
-                            return temp_arr;
-                        })());
-                    }
-                }
-                initindex++;
-                /*索引自增*/
-                if (!mode && k === len - 1 && initindex !== rowindex) {
-                    rowindex++;
-                }
-            }
-            $(str).appendTo($admin_wholesale_price_list.html(''));
-            /*如果是手动模式且非空数据则匹配数据*/
-            if (!mode && !$.isEmptyObject(extend_data)) {
-                //setGroupCondition(compareNHData());
-                compareNHData();
-            }
-        }
-
-
         /*组合颜色与尺寸*/
         function groupCondition() {
             var conitem = attr_data['record'],
@@ -1685,10 +1495,10 @@
         /*获取七牛token*/
         function getToken() {
             var result = null,
-                tempurl1 = '120.',
-                tempurl2 = '76.',
-                tempurl3 = '237.',
-                tempurl4 = '100:8080';
+                tempurl1 = '112.',
+                tempurl2 = '74.',
+                tempurl3 = '207.',
+                tempurl4 = '132:8088';
             $.ajax({
                 url: 'http://' + tempurl1 + tempurl2 + tempurl3 + tempurl4 + '/yttx-public-api/qiniu/token/get',
                 async: false,
@@ -1732,7 +1542,47 @@
         }
 
 
-        /*通过价格反向解析标签与属性：attr:查询的属性列表，price:查询的到价格值*/
+        /*删除图片(需要后台支持)和另外的base64方法支持*/
+        function deleteSlideImage(obj) {
+            var $li = obj.$liitem,
+                slideobj = obj.slideobj,
+                tips = obj.tips,
+                $img = $li.find('img'),
+                src = $img.attr('src');
+
+            if (src.indexOf('qiniucdn.com/') !== -1) {
+                src = src.split('qiniucdn.com/')[1];
+                if (src.indexOf('?imageView2') !== -1) {
+                    src = src.split('?imageView2')[0];
+                }
+                $.ajax({
+                    url: "http://rs.qiniu.com/delete/" + Base64Fun.encode64(src),
+                    dataType: 'JSON',
+                    method: 'post',
+                    data: {
+                        Authorization: 'QBox ' + ImageUpload_Token.qiniuToken
+                    }
+                }).done(function (resp) {
+                    console.log(resp);
+                    $li.remove();
+                    slideobj.init(slideobj);
+                    tips.content('<span class="g-c-bs-success g-btips-succ">删除数据成功</span>');
+                    setTimeout(function () {
+                        tips.close();
+                    }, 2000);
+                }).fail(function (resp) {
+                    tips.content('<span class="g-c-bs-warning g-btips-warn">删除数据成功</span>');
+                    setTimeout(function () {
+                        tips.close();
+                    }, 2000);
+                    console.log(resp);
+                });
+            }
+
+        }
+
+
+        /*通过价格反向解析标签与属性*/
         function getGroupCondition(attr, price) {
             var attrlen = 0,
                 pricelen = 0,
@@ -1873,7 +1723,6 @@
                         }
 
                         if (!$.isEmptyObject(attrmap)) {
-                            /*创建历史模型数据*/
                             $.extend(true, history_data, attrmap);
                             return true;
                         } else {
@@ -1881,6 +1730,7 @@
                             document.getElementById('admin_wholesale_price_thead').innerHTML = wholesale_price_theadstr;
                             return false;
                         }
+                        return false;
                     } else {
                         document.getElementById('admin_wholesale_price_list').innerHTML = '';
                         document.getElementById('admin_wholesale_price_thead').innerHTML = wholesale_price_theadstr;
@@ -1888,85 +1738,6 @@
                     }
                 }
             }
-            return false;
-        }
-
-        /*生成类似于历史数据的模拟数据*/
-        function generateModeData() {
-            /*
-             dataone,datatwo
-             Object { 银色: "4_74", 金: "4_244" }
-             Object { 常规: "5_242" }
-
-             history
-             Object { 74: Array[1], 244: Array[1] }
-             1000,1.00,2.00,1,74,242,0.80,567
-             库存,批发价,建议零售价,是否选中，第一个标签的属性，第二个标签的属性，供应商价，
-
-             response price data
-             attrInventoryPrices[2]
-             0"1000#1.00#2.00#1#74#242#0.80#567"
-             1"1000#1.00#2.00#0#244#242#0.80#568"
-             * */
-
-        }
-
-
-        /*校验合并数据：比对新数据与历史数据*/
-        function compareNHData() {
-            var h_data = $.extend(true, {}, history_data)/*复制历史数据*/;
-            console.log(history_data);
-            console.log(extend_data);
-            return extend_data;
-            for (var i in extend_data) {
-                if (typeof h_data[i] !== 'undefined') {
-                    var h_item = h_data[i],
-                        e_item = extend_data[i],
-                        h_len = h_item.length,
-                        e_len = e_item.length,
-                        len = 0;
-
-                    if (h_len !== 0 && e_len !== 0) {
-                        var j = 0,
-                            h_sub_item,
-                            e_sub_item;
-                        if (h_len >= e_len) {
-                            /*历史数据大于或等于现有数据*/
-                            for (j; j < h_len; j++) {
-                                /*存在现有数据*/
-                                if (e_item[j]) {
-                                    var m = 0;
-                                    for (m; m < e_len; m++) {
-                                        e_sub_item = e_item[m];
-                                        h_sub_item = h_item[j];
-                                        if (h_sub_item[4] === e_sub_item[4] && h_sub_item[5] === e_sub_item[5]) {
-                                            /*如何是相同数据则同步数据（复制数据）*/
-                                            e_item[j] = h_item[j].slice(0);
-                                        }
-                                    }
-                                }
-                            }
-                        } else {
-                            /*历史数据小于现有数据*/
-                            for (j; j < e_len; j++) {
-                                /*存在现有数据*/
-                                if (e_item[j]) {
-                                    var k = 0;
-                                    for (k; k < h_len; k++) {
-                                        h_sub_item = h_item[k];
-                                        e_sub_item = e_item[j];
-                                        if (h_sub_item[4] === e_sub_item[4] && h_sub_item[5] === e_sub_item[5]) {
-                                            /*如何是相同数据则同步数据（复制数据）*/
-                                            e_item[j] = h_item[k].slice(0);
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            return extend_data;
         }
 
 
@@ -1990,13 +1761,13 @@
                 /*组合数据一*/
                 /*如果条件输入框不够，即创建一个条件框*/
                 if ($attrinput1.eq(attrsize1 - 1).val() !== '' && count === attrsize1) {
-                    $input1btn.trigger('click', 'auto');
+                    $input1btn.trigger('click');
                     $attrinput1 = $input1wrap.find('input');
                     attrsize1 = $attrinput1.size();
                 }
                 var $input1 = $attrinput1.eq(j);
                 $input1.val(listone['res'][i]);
-                $input1.trigger('focusout', 'auto');
+                $input1.trigger('focusout');
 
 
                 /*组合数据二*/
@@ -2007,13 +1778,13 @@
                     for (k; k < len; k++) {
                         /*如果条件输入框不够，即创建一个条件框*/
                         if ($attrinput2.eq(attr2size - 1).val() !== '' && len > attr2size) {
-                            $input2btn.trigger('click', 'auto');
+                            $input2btn.trigger('click');
                             $attrinput2 = $input2wrap.find('input');
                             attr2size = $attrinput2.size();
                         }
                         var $input2 = $attrinput2.eq(k);
                         $input2.val(listtwo['res'][listitem[k][5]]);
-                        $input2.trigger('focusout', 'auto');
+                        $input2.trigger('focusout');
                     }
                 }
                 j++;
