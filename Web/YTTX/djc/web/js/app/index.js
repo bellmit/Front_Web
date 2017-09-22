@@ -49,7 +49,7 @@
 
             /*初始化屏幕*/
             for (i; i < len; i++) {
-                var temptop = screen_pos[i]["node"].offset().top;
+                var temptop = screen_pos[i]["node"].offset().top + 2;
                 screen_pos[i]["pos"] = temptop;
 
                 var minpos = parseInt(pos - 150, 0),
@@ -61,14 +61,13 @@
 
             /*初始化视口判断*/
             var winwidth = $win.width();
-            if (winwidth >= 1200) {
+            if (winwidth >= 1000) {
                 isMobile = false;
             } else {
                 isMobile = true;
             }
             
             /*地图调用*/
-            new BMap.Map("address_wrap").centerAndZoom("上海",15);
         }());
 
 
@@ -90,7 +89,7 @@
 
             var index = $li.index();
             if (isMobile) {
-                $('html,body').animate({'scrollTop': screen_pos[index]['pos'] - 40 + 'px'}, 500);
+                $('html,body').animate({'scrollTop': screen_pos[index]['pos'] - 100 + 'px'}, 500);
             } else {
                 $('html,body').animate({'scrollTop': screen_pos[index]['pos'] - 100 + 'px'}, 500);
             }
@@ -142,7 +141,7 @@
                     (function () {
                         //隐藏菜单导航
                         var winwidth = $win.width();
-                        if (winwidth >= 1200 || (winwidth >= 1200 && e.orientation == 'landscape')) {
+                        if (winwidth >= 1000 || (winwidth >= 1000 && e.orientation == 'landscape')) {
                             //隐藏已经存在的class
                             //$header_btn.removeClass('header-btnactive');
                             //$header_menu.removeClass('g-d-showi');
