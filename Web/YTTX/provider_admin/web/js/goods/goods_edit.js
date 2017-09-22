@@ -59,6 +59,7 @@
                 price_data = {}/*查询或选中的价格值*/,
                 attr_data = {}/*选中的属性模型*/,
                 attr_map = {}/*整个标签和属性模型*/,
+                extend_data = {}/*合并相关数据，主要用于手动操作过程中比对历史数据后生成的结果集*/,
                 history_data = {}/*历史数据*/,
                 listone = {}/*第一个标签属性节点相关信息*/,
                 listtwo = {}/*第二个标签属性节点相关信息*/,
@@ -357,11 +358,11 @@
 
 
             /*绑定属性操作*/
-            $admin_attrwrap.on('click focusout', function (e) {
+            $admin_attrwrap.on('click focusout', function (e, auto) {
                 var etype = e.type,
                     target = e.target,
+                    automode = auto ? true : false,
                     node = target.nodeName.toLowerCase();
-
 
                 /*点击事件*/
                 if (etype === 'click') {
@@ -498,7 +499,7 @@
                             }
 
                             /*组合条件*/
-                            groupCondition();
+                            _groupCondition_(automode);
 
                         }());
                     }
@@ -576,7 +577,7 @@
 
                         /*组合条件*/
                         //compareNHData(history_data);
-                        groupCondition();
+                        _groupCondition_(automode);
                         //_groupCondition_();
                     }());
                 }
@@ -975,7 +976,7 @@
                     getSlideData(banner, slide_config);
                 }
 
-                /*解析属性*/
+                /*解析属性：主要生成标签属性dom,解析attr_map值，创建空attr_data值*/
                 getAttrData(result['tagsAttrsList']);
 
 
@@ -1040,8 +1041,6 @@
                     /*设置原始属性组合值*/
                     setOldGroupCondition(history_data);
                 }
-                console.log(listone);
-
             }).fail(function (resp) {
                 console.log(resp.message || 'error');
                 return false;
@@ -1161,7 +1160,7 @@
         }
 
 
-        /*查询标签与属性*/
+        /*查询标签与属性,主要生成标签属性dom,解析attr_map值，创建空attr_data值*/
         function getAttrData(list) {
             if (!list) {
                 isattr = false;
@@ -1194,7 +1193,7 @@
 
                     /*
                      * attr_map:查询到的结果集
-                     *	attr_data:已经填入的属性对象
+                     * attr_data:已经填入的属性对象
                      * */
 
 
@@ -1355,8 +1354,8 @@
         }
 
 
-        /*组合颜色与尺寸:重构*/
-        function _groupCondition_() {
+        /*组合颜色与尺寸:重构,mode:为事件模型，true为自动模式，false为手动模式*/
+        function _groupCondition_(mode) {
             var conitem = attr_data['record'],
                 dataone,
                 datatwo,
@@ -1376,8 +1375,6 @@
 
             dataone = attr_data[key1];
             datatwo = attr_data[key2];
-            console.log(dataone);
-            console.log(datatwo);
             for (var i in datatwo) {
                 var tempstr = '';
                 tempstr += i + '_#_' + datatwo[i];
@@ -1393,15 +1390,24 @@
 			<th>供应商价</th>\
 			<th>价格显示在首页</th>\
 			</tr>');
+
+            console.log(history_data);
+
+            extend_data = {}/*置空比对数据*/;
             var initindex = 0;
             for (var j in dataone) {
                 var k = 0,
                     itemone = dataone[j];
+
                 str += '<tr><td rowspan="' + len + '">' + j + '</td>';
                 for (k; k < len; k++) {
                     var itemtwo = rule[k].split('_#_'),
-                        code = itemone.split('_')[1] + '_' + itemtwo[1].split('_')[1];
+                        codeone=itemone.split('_'),
+                        codetwo=itemtwo[1].split('_'),
+                        code = codeone[1] + '_' + codetwo[1];
                     if (k === 0) {
+                        /*创建空比对对象*/
+                        extend_data[codeone[1]]=[];
                         if (initindex === 0) {
                             str += '<td>' + itemtwo[0] + '</td>' +
                                 '<td><input class="admin-table-input" name="setinventory" maxlength="7" type="text"></td>' +
@@ -1409,6 +1415,10 @@
                                 '<td><input class="admin-table-input" name="setretailPrice" maxlength="12" type="text"></td>' +
                                 '<td><input class="admin-table-input" name="setsupplierPrice" maxlength="12" type="text"></td>' +
                                 '<td><input name="setisDefault" checked type="radio" data-value="' + code + '"></td></tr>';
+                            /*设置比对对象*/
+                            extend_data[codeone[1]].push(function () {
+                                return [].push('','','',1,codeone[1]);
+                            });
                         } else {
                             str += '<td>' + itemtwo[0] + '</td>' +
                                 '<td><input class="admin-table-input" name="setinventory" maxlength="7" type="text"></td>' +
@@ -1428,7 +1438,12 @@
                 }
                 initindex++;
             }
+            console.log(extend_data);
             $(str).appendTo($admin_wholesale_price_list.html(''));
+            /*如果是手动模式则匹配数据*/
+            /*if (!mode) {
+                compareNHData(dataone, datatwo);
+            }*/
         }
 
 
@@ -1779,11 +1794,69 @@
             }
             return false;
         }
+        
+        /*生成类似于历史数据的模拟数据*/
+        function generateModeData() {
+            /*
+             dataone,datatwo
+             Object { 银色: "4_74", 金: "4_244" }
+             Object { 常规: "5_242" }
+
+             history
+             Object { 74: Array[1], 244: Array[1] }
+             1000,1.00,2.00,1,74,242,0.80,567
+             库存,批发价,建议零售价,是否选中，第一个标签，第二个标签，供应商价，
+
+             response price data
+             attrInventoryPrices[2]
+             0"1000#1.00#2.00#1#74#242#0.80#567"
+             1"1000#1.00#2.00#0#244#242#0.80#568"
+             * */
+            
+        }
 
 
         /*校验合并数据：比对新数据与历史数据:n_data:新数据，h_data:历史数据,fn:回调函数*/
-        function compareNHData(n_data, h_data, fn) {
+        function compareNHData(data1, data2) {
+            var h_data = $.extend(true, {}, history_data)/*复制历史数据*/;
 
+            /*
+            dataone,datatwo
+            Object { 银色: "4_74", 金: "4_244" }
+            Object { 常规: "5_242" }
+
+            history
+            Object { 74: Array[1], 244: Array[1] }
+
+            response price data
+            attrInventoryPrices[2]
+            0"1000#1.00#2.00#1#74#242#0.80#567"
+            1"1000#1.00#2.00#0#244#242#0.80#568"
+            * */
+
+            //extend_data = {}/*置空比对数据*/;
+
+            //console.log(data1, data2);
+
+
+            /*循环第一项数据，比对第一项数据*/
+            (function () {
+                /*
+                 * Object { 银色: "4_74", 金: "4_244" }
+                 * Object { 常规: "5_242" }
+                 * */
+                /*for (var i in data1) {
+                    var item = data1[i],
+                        attr_name = i,
+                        attr_value = item.split('_');
+
+                    for(){}
+
+                }*/
+            }());
+
+
+            /*循环比对第二项数据*/
         }
 
 
@@ -1807,13 +1880,13 @@
                 /*组合数据一*/
                 /*如果条件输入框不够，即创建一个条件框*/
                 if ($attrinput1.eq(attrsize1 - 1).val() !== '' && count === attrsize1) {
-                    $input1btn.trigger('click','auto');
+                    $input1btn.trigger('click', 'auto');
                     $attrinput1 = $input1wrap.find('input');
                     attrsize1 = $attrinput1.size();
                 }
                 var $input1 = $attrinput1.eq(j);
                 $input1.val(listone['res'][i]);
-                $input1.trigger('focusout','auto');
+                $input1.trigger('focusout', 'auto');
 
 
                 /*组合数据二*/
@@ -1824,13 +1897,13 @@
                     for (k; k < len; k++) {
                         /*如果条件输入框不够，即创建一个条件框*/
                         if ($attrinput2.eq(attr2size - 1).val() !== '' && len > attr2size) {
-                            $input2btn.trigger('click','auto');
+                            $input2btn.trigger('click', 'auto');
                             $attrinput2 = $input2wrap.find('input');
                             attr2size = $attrinput2.size();
                         }
                         var $input2 = $attrinput2.eq(k);
                         $input2.val(listtwo['res'][listitem[k][5]]);
-                        $input2.trigger('focusout','auto');
+                        $input2.trigger('focusout', 'auto');
                     }
                 }
                 j++;
