@@ -1287,11 +1287,11 @@
                         for (j; j < sublen; j++) {
                             var subobj = arr[j],
                                 attrvalue = subobj["goodsTagId"] + '_' + subobj["id"],
-                                attrtxt = subobj["name"];
+                                attrtxt = subobj["name"] + '_#_' + subobj["id"];
 
-                            str += '<li data-value="' + attrvalue + '">' + attrtxt + '</li>';
+                            str += '<li data-value="' + attrvalue + '">' + subobj["name"] + '</li>';
                             attr_obj['map'][attrtxt] = attrvalue;
-                            attr_obj['res'][subobj["id"]] = attrtxt;
+                            attr_obj['res'][subobj["id"]] = subobj["name"];
                         }
 
                         attr_obj['label'] = labels;
@@ -1324,12 +1324,13 @@
         /*校验是否存在正确值*/
         function validAttrData($input, key, txt) {
             var prevtxt = $input.attr('data-value'),
+                sequence=$input.attr('data-sequence'),
                 res = false,
                 type = '';
 
 
             if (!(txt in attr_map[key]['map'])) {
-                /*判断值是否存在*/
+                /*不存在相关数据*/
                 type = 'exist';
                 res = false;
             } else if (txt in attr_data[key]) {
