@@ -37,6 +37,26 @@
   }
 
 
+  /*产品介绍*/
+  .introduction-content-wrap {
+    @circle-width: 500px;
+    /*圆圈*/
+    .introduction-links {
+      left:-@circle-width * .4;
+    }
+    .introduction-list {
+      > li {
+        width:@circle-width * .8;
+      }
+    }
+    /*电脑*/
+    .introduction-computer {
+      left:-100px;
+      height: 300px;
+    }
+  }
+
+
   /*产品描述*/
   .description-content-wrap {
     @gallery-height: 428px;
@@ -81,26 +101,6 @@
     }
   }
 
-
-
-  /*产品介绍*/
-  .introduction-content-wrap {
-    @circle-width: 500px;
-    /*圆圈*/
-    .introduction-links {
-      left:-@circle-width * .4;
-    }
-    .introduction-list {
-      > li {
-        width:@circle-width * .8;
-      }
-    }
-    /*电脑*/
-    .introduction-computer {
-      left:-100px;
-      height: 300px;
-    }
-  }
 
 
 

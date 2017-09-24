@@ -437,11 +437,64 @@
     .description-item1 {
       height: @side-item1-height;
       background: transparent url('../images/description_side1.jpg') no-repeat center center;
+      &:before,
+      &:after {
+        position: absolute;
+        z-index: 20;
+        left:0;
+        content: '';
+        display: block;
+        width: 100%;
+        height: 50%;
+        background: @color-white;
+        .opacity-base(10);
+      }
+      &:before {
+        top:0;
+      }
+      &:after {
+        bottom: 0;
+      }
+      &:hover {
+        &:before{
+          left:-100%;
+          .transition-base(left .5s ease-in .01s);
+        }
+        &:after{
+          left: 100%;
+          .transition-base(left .5s ease-in .01s);
+        }
+      }
     }
     .description-item2 {
       margin-top: @gallery-height - (@side-item1-height + @side-item2-height);
       height: @side-item2-height;
       background: transparent url('../images/description_side2.jpg') no-repeat center center;
+      &:before,
+      &:after {
+        position: absolute;
+        z-index: 20;
+        left:0;
+        content: '';
+        display: block;
+        width: 100%;
+        height: 50%;
+        background: @color-white;
+        .opacity-base(10);
+      }
+      &:before {
+        top:0;
+      }
+      &:after {
+        bottom: 0;
+      }
+      &:hover {
+        &:before,
+        &:after{
+          height: 0;
+          .transition-base(height .5s ease-in .01s);
+        }
+      }
     }
   }
   .description-main {
@@ -450,40 +503,40 @@
     .description-item1 {
       height: 100%;
       background: transparent url('../images/description_main1.jpg') no-repeat center center;
+      &:before,
+      &:after {
+        position: absolute;
+        z-index: 20;
+        top: 0;
+        content: '';
+        display: block;
+        width: 50%;
+        height: 100%;
+        background: @color-white;
+        .opacity-base(10);
+      }
+      &:before {
+        left: 0;
+      }
+      &:after {
+        right: 0;
+      }
+      &:hover {
+        &:before {
+          width: 0;
+          .transition-base(width .5s ease-in .01s);
+        }
+        &:after {
+          width: 0;
+          .transition-base(width .5s ease-in .01s);
+        }
+      }
     }
   }
   .description-item {
     .layout-relative-base();
     .layout-base();
     display: inline-block;
-    &:before,
-    &:after {
-      position: absolute;
-      z-index: 20;
-      top: 0;
-      content: '';
-      display: block;
-      width: 50%;
-      height: 100%;
-      background: @color-white;
-      .opacity-base(10);
-    }
-    &:before {
-      left: 0;
-    }
-    &:after {
-      right: 0;
-    }
-    &:hover {
-      &:before {
-        width: 0;
-        .transition-base(width .5s ease-in .01s);
-      }
-      &:after {
-        width: 0;
-        .transition-base(width .5s ease-in .01s);
-      }
-    }
   }
   /*照片描述*/
   .description-remark {

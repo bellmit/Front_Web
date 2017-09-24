@@ -14,6 +14,7 @@
             $introduction_view = $('#introduction_view'),
             $description_view = $('#description_view'),
             $contact_view = $('#contact_view'),
+            $address_wrap=$('#address_wrap'),
             $win = $(window),
             screen_pos = [
                 {
@@ -68,6 +69,12 @@
             }
             
             /*地图调用*/
+            var map = new BMap.Map("address_wrap");
+            var point = new BMap.Point(113.9272,22.5802);
+            map.centerAndZoom(point, 18);
+            map.addControl(new BMap.ScaleControl({anchor: BMAP_ANCHOR_BOTTOM_LEFT}));
+            map.addControl(new BMap.NavigationControl());
+            map.addOverlay(new BMap.Marker(point));
         }());
 
 
