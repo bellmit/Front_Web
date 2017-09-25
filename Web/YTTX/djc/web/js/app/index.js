@@ -6,7 +6,7 @@
     $(function () {
         /*dom节点缓存*/
         var mini_screen_height = 900,
-            $menu_toggle = ('#menu_toggle'),
+            $menu_toggle = $('#menu_toggle'),
             $menu_wrap = $('#menu_wrap'),
             $menu_item = $menu_wrap.children(),
             $index_view = $('#index_view'),
@@ -69,8 +69,8 @@
             }
             
             /*地图调用*/
-            var map = new BMap.Map("address_wrap");
-            var point = new BMap.Point(113.9272,22.5802);
+            var map = new BMap.Map("address_wrap"),
+                point = new BMap.Point(113.9272,22.5802);
             map.centerAndZoom(point, 18);
             map.addControl(new BMap.ScaleControl({anchor: BMAP_ANCHOR_BOTTOM_LEFT}));
             map.addControl(new BMap.NavigationControl());
@@ -101,6 +101,19 @@
                 $('html,body').animate({'scrollTop': screen_pos[index]['pos'] - 100 + 'px'}, 500);
             }
             return false;
+        });
+        
+        
+        //监听移动模式下的菜单显示隐藏
+        $menu_toggle.on('click',function () {
+            var active=$menu_toggle.hasClass('header-btn-active');
+
+            if(active){
+                $menu_toggle.removeClass('header-btn-active');
+            }else if(!active){
+                $menu_toggle.addClass('header-btn-active');
+            }
+
         });
 
 

@@ -7,7 +7,7 @@
 			/*菜单调用*/
 			var logininfo=public_tool.initMap.loginMap;
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
-				url:'http://112.74.207.132:8082/mall-agentbms-api/module/menu',
+				url:'http://10.0.5.226:8082/mall-agentbms-api/module/menu',
 				async:false,
 				type:'post',
 				param:{
@@ -322,10 +322,10 @@
 										/*修改操作*/
                                         setdata['id']=id;
 										actiontype='修改';
-										config['url']="http://112.74.207.132:8081/mall-buzhubms-api/announcement/update";
+										config['url']="http://10.0.5.226:8082/mall-buzhubms-api/announcement/update";
                                     }else{
 										/*新增操作*/
-										config['url']="http://112.74.207.132:8081/mall-buzhubms-api/announcement/add";
+										config['url']="http://10.0.5.226:8082/mall-buzhubms-api/announcement/add";
 										actiontype='新增';
                                         delete setdata['id'];
                                     }

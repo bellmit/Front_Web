@@ -8,7 +8,7 @@
 			/*菜单调用*/
 			var logininfo=public_tool.initMap.loginMap;
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
-				url:'http://112.74.207.132:8081/mall-buzhubms-api/module/menu',
+				url:'http://10.0.5.226:8082/mall-buzhubms-api/module/menu',
 				async:false,
 				type:'post',
 				param:{
@@ -101,7 +101,7 @@
 						autoWidth:true,/*是否*/
 						paging:false,
 						ajax:{
-							url:"http://112.74.207.132:8081/mall-buzhubms-api/goods/list",
+							url:"http://10.0.5.226:8082/mall-buzhubms-api/goods/list",
 							dataType:'JSON',
 							method:'post',
 							dataSrc:function ( json ) {
@@ -593,10 +593,10 @@
 									if(id!==''){
 										setdata['id']=id;
 										config['data']=setdata;
-										config['url']="http://112.74.207.132:8081/mall-buzhubms-api/placing/location/update";
+										config['url']="http://10.0.5.226:8082/mall-buzhubms-api/placing/location/update";
 									}else {
 										config['data']=setdata;
-										config['url']="http://112.74.207.132:8081/mall-buzhubms-api/placing/location/add";
+										config['url']="http://10.0.5.226:8082/mall-buzhubms-api/placing/location/add";
 									}
 								}
 
@@ -655,7 +655,7 @@
 			var temp_config=$.extend(true,{},goods_params);
 			temp_config['parentId']=value;
 			$.ajax({
-				url:"http://112.74.207.132:8081/mall-buzhubms-api/goodstype/list",
+				url:"http://10.0.5.226:8082/mall-buzhubms-api/goodstype/list",
 				dataType:'JSON',
 				async:false,
 				method:'post',
@@ -850,7 +850,7 @@
 		/*查询广告位置ID*/
 		function searchActivityPosId() {
 			var apconfig={
-				url:"http://112.74.207.132:8081/mall-buzhubms-api/module/location/list",
+				url:"http://10.0.5.226:8082/mall-buzhubms-api/module/location/list",
 				dataType:'JSON',
 				method:'post',
 				data:{

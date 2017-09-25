@@ -7,7 +7,7 @@
 			/*菜单调用*/
 			var logininfo=public_tool.initMap.loginMap;
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
-				url:'http://112.74.207.132:8081/mall-buzhubms-api/module/menu',
+				url:'http://10.0.5.226:8082/mall-buzhubms-api/module/menu',
 				async:false,
 				type:'post',
 				param:{
@@ -55,7 +55,7 @@
 				sureObj=public_tool.sureDialog(dia)/*回调提示对象*/,
 				setSure=new sureObj(),
 				label_config={
-					url:"http://112.74.207.132:8081/mall-buzhubms-api/goodstag/list",
+					url:"http://10.0.5.226:8082/mall-buzhubms-api/goodstag/list",
 					dataType:'JSON',
 					method:'post',
 					data:{
@@ -65,7 +65,7 @@
 					}
 				},
 				labelalready_config={
-					url:"http://112.74.207.132:8081/mall-buzhubms-api/goodstag/list",
+					url:"http://10.0.5.226:8082/mall-buzhubms-api/goodstag/list",
 					dataType:'JSON',
 					method:'post',
 					data:{
@@ -73,7 +73,7 @@
 					}
 				},
 				attr_config={
-					url:"http://112.74.207.132:8081/mall-buzhubms-api/goodsattributes/list",
+					url:"http://10.0.5.226:8082/mall-buzhubms-api/goodsattributes/list",
 					dataType:'JSON',
 					method:'post',
 					data:{
@@ -513,7 +513,7 @@
 										name:$admin_attrname.val(),
 										sort:$admin_attrsort.val()
 									});
-									config['url']="http://112.74.207.132:8081/mall-buzhubms-api/goodsattributes/add";
+									config['url']="http://10.0.5.226:8082/mall-buzhubms-api/goodsattributes/add";
 									config['data']=setdata;
 								}
 
@@ -571,7 +571,7 @@
 			var temp_config=$.extend(true,{},goods_params);
 			temp_config['parentId']=value;
 			$.ajax({
-				url:"http://112.74.207.132:8081/mall-buzhubms-api/goodstype/list",
+				url:"http://10.0.5.226:8082/mall-buzhubms-api/goodstype/list",
 				dataType:'JSON',
 				async:false,
 				method:'post',
@@ -705,10 +705,10 @@
 
 			if(type==='label'){
 				/*标签类*/
-				delete_config['url']='http://112.74.207.132:8081/mall-buzhubms-api/goodstag/delete';
+				delete_config['url']='http://10.0.5.226:8082/mall-buzhubms-api/goodstag/delete';
 			}else if(type==='attr'){
 				/*属性类*/
-				delete_config['url']='http://112.74.207.132:8081/mall-buzhubms-api/goodsattributes/delete';
+				delete_config['url']='http://10.0.5.226:8082/mall-buzhubms-api/goodsattributes/delete';
 			}
 
 			$.ajax(delete_config)
@@ -777,7 +777,7 @@
 
 			if(type==='label'){
 				/*标签类*/
-				edit_config['url']='http://112.74.207.132:8081/mall-buzhubms-api/goodstag/update';
+				edit_config['url']='http://10.0.5.226:8082/mall-buzhubms-api/goodstag/update';
 				edit_config['data']['id']=id;
 				edit_config['data']['name']=editdata[0];
 				if(editdata[1]===null){
@@ -790,7 +790,7 @@
 				edit_config['data']['sort']=editdata[2];
 			}else if(type==='attr'){
 				/*属性类*/
-				edit_config['url']='http://112.74.207.132:8081/mall-buzhubms-api/goodsattributes/update';
+				edit_config['url']='http://10.0.5.226:8082/mall-buzhubms-api/goodsattributes/update';
 				edit_config['data']['id']=id;
 				edit_config['data']['name']=editdata[0];
 				edit_config['data']['sort']=editdata[1];
