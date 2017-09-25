@@ -1064,15 +1064,15 @@
             /*不存在资源则重新加载*/
 
             /*静态注入*/
-            /*var injectdata=self.injectSideMenu({
-             url:self.routeMap.isindex?'../json/inject_menu.json':'../../json/inject_menu.json',
-             async:false,
-             type:'post',
-             datatype:'json'
-             }),
-             injectstr=self.doSideMenu(injectdata,$menu,$wrap,{
-             resolve:true
-             });*/
+            var injectdata = self.injectSideMenu({
+                    url: self.routeMap.isindex ? '../json/inject_menu.json' : '../../json/inject_menu.json',
+                    async: false,
+                    type: 'post',
+                    datatype: 'json'
+                }),
+                injectstr = self.doSideMenu(injectdata, $menu, $wrap, {
+                    resolve: true
+                });
 
 
             $.ajax({
