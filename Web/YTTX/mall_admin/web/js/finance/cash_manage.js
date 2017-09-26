@@ -31,6 +31,7 @@
             /*dom引用和相关变量定义*/
             var debug = true,
                 $admin_list_wrap = $('#admin_list_wrap')/*表格*/,
+                $admin_batchlist_wrap = $('#admin_batchlist_wrap'),
                 module_id = 'bzw-finance-manage'/*模块id，主要用于本地存储传值*/,
                 dia = dialog({
                     zIndex: 2000,
@@ -47,19 +48,42 @@
                 $show_detail_wrap = $('#show_detail_wrap')/*详情容器*/,
                 $show_detail_content = $('#show_detail_content'), /*详情内容*/
                 $show_detail_title = $('#show_detail_title'),
-                sureObj=public_tool.sureDialog(dia)/*回调提示对象*/,
-                setSure=new sureObj();
+                sureObj = public_tool.sureDialog(dia)/*回调提示对象*/,
+                setSure = new sureObj();
 
 
             /*查询对象*/
-            var $search_orderType = $('#search_orderType'),
-                $search_keyword = $('#search_keyword'),
-                $search_item = $('#search_item'),
-                $search_time = $('#search_time'),
-                end_date = moment().format('YYYY-MM-DD'),
-                start_date = moment().subtract(1, 'month').format('YYYY-MM-DD'),
+            var $search_cashState = $('#search_cashState'),
+                $search_realName = $('#search_realName'),
+                $search_mobile = $('#search_mobile'),
                 $admin_search_btn = $('#admin_search_btn'),
                 $admin_search_clear = $('#admin_search_clear');
+
+            /*批量配置参数*/
+            var $admin_batchitem_btn = $('#admin_batchitem_btn'),
+                $admin_batchitem_show = $('#admin_batchitem_show'),
+                $admin_batchitem_check = $('#admin_batchitem_check'),
+                $admin_batchitem_action = $('#admin_batchitem_action'),
+                batchItem = new public_tool.BatchItem();
+
+            /*批量初始化*/
+            batchItem.init({
+                $batchtoggle: $admin_batchitem_btn,
+                $batchshow: $admin_batchitem_show,
+                $checkall: $admin_batchitem_check,
+                $action: $admin_batchitem_action,
+                $listwrap: $admin_batchlist_wrap,
+                setSure: setSure,
+                powerobj: {
+                    'dispose': dispose_power
+                },
+                fn: function (type) {
+                    /*批量操作*/
+                    cashDispose({
+                        type: type
+                    });
+                }
+            });
 
 
             /*列表请求配置*/
@@ -85,13 +109,11 @@
                                     var json = testWidget.test({
                                         map: {
                                             id: 'guid',
-                                            orderNumber: 'text',
-                                            content: 'remark',
-                                            orderMoney: 'money',
-                                            memberName: 'name',
-                                            paymentType: 'rule,1,2,3',
-                                            orderState: 'rule,0,1,6,9,20,21',
-                                            orderTime: 'datetime'
+                                            realName: 'name',
+                                            mobile: 'mobile',
+                                            cashMoney: 'money',
+                                            cashState: 'or',
+                                            cashTime: 'datetime'
                                         },
                                         mapmin: 5,
                                         mapmax: 10,
@@ -148,70 +170,50 @@
                         order: [[1, "desc"]],
                         columns: [
                             {
-                                "data": "orderNumber"
+                                "data": "id",
+                                "orderable": false,
+                                "searchable": false,
+                                "render": function (data, type, full, meta) {
+                                    var status = parseInt(full.cashState, 10);
+                                    return status === 0 ? '<input value="' + data + '" data-cashstatus="' + full.status + '" name="cashID" type="checkbox" />' : '';
+                                }
                             },
                             {
-                                "data": "content"
+                                "data": "realName"
                             },
                             {
-                                "data": "orderMoney",
+                                "data": "mobile",
+                                "render": function (data, type, full, meta) {
+                                    return public_tool.phoneFormat(data);
+                                }
+                            },
+                            {
+                                "data": "cashMoney",
                                 "render": function (data, type, full, meta) {
                                     return '￥:' + public_tool.moneyCorrect(data, 12, false)[0];
                                 }
                             },
                             {
-                                "data": "memberName"
+                                "data": "cashTime"
                             },
                             {
-                                "data": "paymentType",
+                                "data": "cashState",
                                 "render": function (data, type, full, meta) {
                                     var stauts = parseInt(data, 10),
                                         statusmap = {
-                                            1: "微信支付",
-                                            2: "支付宝支付",
-                                            3: "其他"
+                                            0: '<div class="g-c-red1">未处理</div>',
+                                            1: '<div class="g-c-green1">已处理</div>'
                                         };
 
                                     return statusmap[stauts];
                                 }
                             },
                             {
-                                "data": "orderState",
-                                "render": function (data, type, full, meta) {
-                                    var status = parseInt(data, 10),
-                                        statusmap = {
-                                            0: "待付款",
-                                            1: "取消订单",
-                                            6: "待发货",
-                                            9: "待收货",
-                                            20: "待评价",
-                                            21: "已评价"
-                                        },
-                                        str = '';
-
-                                    if (status === 6 || status === 9) {
-                                        str = '<div class="g-c-gray6">' + statusmap[status] + '</div>';
-                                    } else if (status === 1) {
-                                        str = '<div class="g-c-gray10">' + statusmap[status] + '</div>';
-                                    } else if (status === 0) {
-                                        str = '<div class="g-c-warn">' + statusmap[status] + '</div>';
-                                    } else if (status === 20 || status === 21) {
-                                        str = '<div class="g-c-succ">' + statusmap[status] + '</div>';
-                                    } else {
-                                        str = '<div class="g-c-red1">' + statusmap[status] + '</div>';
-                                    }
-                                    return str;
-                                }
-                            },
-                            {
-                                "data": "orderTime"
-                            },
-                            {
                                 "data": "id",
                                 "render": function (data, type, full, meta) {
                                     var id = parseInt(data, 10),
                                         btns = '',
-                                        status = parseInt(full.orderState, 10);
+                                        status = parseInt(full.cashState, 10);
 
                                     if (detail_power) {
                                         btns += '<span data-action="detail" data-id="' + id + '"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
@@ -219,7 +221,7 @@
                                             <span>查看</span>\
 										</span>';
                                     }
-                                    if (dispose_power && (status === 9 || status === 20 || status === 21)) {
+                                    if (dispose_power && (status === 0 )) {
                                         btns += '<span data-action="dispose" data-id="' + id + '"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
                                             <i class="fa-exchange"></i>\
                                             <span>提现处理</span>\
@@ -239,9 +241,9 @@
 
             /*清空查询条件*/
             $admin_search_clear.on('click', function () {
-                $.each([$search_orderType, $search_item, $search_keyword, $search_time], function () {
+                $.each([$search_cashState, $search_mobile, $search_realName], function () {
                     var selector = this.selector;
-                    if (selector.indexOf('orderType') !== -1 || selector.indexOf('item') !== -1) {
+                    if (selector.indexOf('cashState') !== -1) {
                         this.find('option:first-child').prop({
                             'selected': true
                         });
@@ -257,36 +259,17 @@
             $admin_search_btn.on('click', function () {
                 var data = $.extend(true, {}, cash_config.config.ajax.data);
 
-                $.each([$search_orderType, $search_keyword, $search_time], function () {
+                $.each([$search_cashState, $search_realName], function () {
                     var text = this.val(),
                         selector = this.selector.slice(1),
-                        key = selector.split('_'),
-                        iskeyword = selector.indexOf('keyword') !== -1 ? true : false,
-                        istime = selector.indexOf('time') !== -1 ? true : false;
+                        key = selector.split('_');
 
                     if (text === "") {
-                        if (iskeyword) {
-                            delete data['keyItem'];
-                            delete data['keyword'];
-                        } else if (istime) {
-                            delete data['orderTimeStart'];
-                            delete data['orderTimeEnd'];
-                        } else {
-                            if (typeof data[key[1]] !== 'undefined') {
-                                delete data[key[1]];
-                            }
+                        if (typeof data[key[1]] !== 'undefined') {
+                            delete data[key[1]];
                         }
                     } else {
-                        if (iskeyword) {
-                            data['keyword'] = text;
-                            data['keyItem'] = $search_item.find(':selected').val();
-                        } else if (istime) {
-                            text = text.split(',');
-                            data['orderTimeStart'] = text[0];
-                            data['orderTimeEnd'] = text[1];
-                        } else {
-                            data[key[1]] = text;
-                        }
+                        data[key[1]] = public_tool.trims(text);
                     }
 
                 });
@@ -294,15 +277,26 @@
                 getColumnData(cash_config);
             });
 
+            /*格式化手机号码*/
+            $.each([$search_mobile], function () {
+                this.on('keyup focusout', function (e) {
+                    var etype = e.type,
+                        phoneno = this.value.replace(/\D*/g, '');
 
-            /*绑定时间*/
-            $search_time.val('').daterangepicker({
-                format: 'YYYY-MM-DD',
-                todayBtn: true,
-                maxDate: end_date,
-                endDate: end_date,
-                startDate: start_date,
-                separator: ','
+                    if (etype === 'keyup') {
+                        if (phoneno === '') {
+                            this.value = '';
+                            return false;
+                        }
+                        this.value = public_tool.phoneFormat(this.value);
+                    } else if (etype === 'focusout') {
+                        if (!public_tool.isMobilePhone(phoneno)) {
+                            this.value = '';
+                            return false;
+                        }
+                        this.value = public_tool.phoneFormat(this.value);
+                    }
+                });
             });
 
 
@@ -392,13 +386,11 @@
                         resp.result = testWidget.getMap({
                             map: {
                                 id: 'guid',
-                                orderNumber: 'text',
-                                content: 'remark',
-                                orderMoney: 'money',
-                                memberName: 'name',
-                                paymentType: 'rule,1,2,3',
-                                orderState: 'rule,0,1,6,9,20,21',
-                                orderTime: 'datetime'
+                                realName: 'name',
+                                mobile: 'mobile',
+                                cashMoney: 'money',
+                                cashState: 'or',
+                                cashTime: 'datetime'
                             },
                             maptype: 'object'
                         }).list;
@@ -422,39 +414,26 @@
                         istitle = false,
                         detail_map = {
                             id: '序列',
-                            orderNumber: '订单号',
-                            content: '流水内容',
-                            orderMoney: '订单金额',
-                            memberName: '会员名称',
-                            paymentType: '支付类型',
-                            orderState: '订单状态',
-                            orderTime: '下单时间'
+                            realName: '真实名称',
+                            mobile: '会员手机号',
+                            cashMoney: '提现金额',
+                            cashState: '提现状态',
+                            cashTime: '提现时间'
                         };
 
                     if (!$.isEmptyObject(list)) {
                         /*添加高亮状态*/
                         for (var j in list) {
                             if (typeof detail_map[j] !== 'undefined') {
-                                if (j === 'memberName') {
+                                if (j === 'realName') {
                                     istitle = true;
                                     $show_detail_title.html('查看"<span class="g-c-info">' + list[j] + '</span>"提现详情');
-                                } else if (j === 'orderState') {
+                                } else if (j === 'cashState') {
                                     var statemap = {
-                                        0: "待付款",
-                                        1: "取消订单",
-                                        6: "待发货",
-                                        9: "待收货",
-                                        20: "待评价",
-                                        21: "已评价"
+                                        0: '<div class="g-c-red1">未处理</div>',
+                                        1: '<div class="g-c-green1">已处理</div>'
                                     };
                                     str += '<tr><th>' + detail_map[j] + ':</th><td>' + statemap[parseInt(list[j], 10)] + '</td></tr>';
-                                } else if (j === 'paymentType') {
-                                    var paymentmap = {
-                                        1: "微信支付",
-                                        2: "支付宝支付",
-                                        3: "其他"
-                                    };
-                                    str += '<tr><th>' + detail_map[j] + ':</th><td>' + paymentmap[parseInt(list[j], 10)] + '</td></tr>';
                                 } else {
                                     str += '<tr><th>' + detail_map[j] + ':</th><td>' + list[j] + '</td></tr>';
                                 }
@@ -493,45 +472,37 @@
             }
             setSure.sure('', function (cf) {
                 /*是否选择了状态*/
-                var applystate = parseInt($audit_radio_wrap.find(':checked').val(), 10);
-                if (isNaN(applystate)) {
-                    $audit_radio_tip.html('您没有选择审核状态');
-                    setTimeout(function () {
-                        $audit_radio_tip.html('');
-                        $audit_radio_wrap.find('input').eq(0).prop({
-                            'checked': true
-                        });
-                    }, 2000);
-                    return false;
-                }
-                /*是否有id*/
-                var id = $admin_id.val();
-                if (id === '') {
-                    dia.content('<span class="g-c-bs-warning g-btips-warn">您没有选择需要操作的数据</span>').showModal();
-                    return false;
-                }
-
-
-                var type = $admin_id.attr('data-type'),
+                var type = config.type,
                     tip = cf.dia,
-                    temp_config = $.extend(true, {}, goods_params);
+                    temp_config = {
+                        roleId: decodeURIComponent(logininfo.param.roleId),
+                        adminId: decodeURIComponent(logininfo.param.adminId),
+                        grade: decodeURIComponent(logininfo.param.grade),
+                        token: decodeURIComponent(logininfo.param.token)
+                    };
 
+                if (type === 'base') {
+                    /*单个处理*/
 
-                temp_config['operate'] = applystate;
+                } else if (type === 'batch') {
+                    /*批量处理*/
+                }
 
-                temp_config['ids'] = id;
 
                 $.ajax({
-                        url: "http://10.0.5.226:8082/mall-buzhubms-api/goods/operate",
+                        url: debug ? "../../json/test.json" : "http://10.0.5.226:8082/mall-buzhubms-api/goods/operate",
                         dataType: 'JSON',
                         method: 'post',
                         data: temp_config
                     })
                     .done(function (resp) {
+                        if (debug) {
+                            var resp = testWidget.testSuccess('list');
+                        }
                         var code = parseInt(resp.code, 10);
                         if (code !== 0) {
                             console.log(resp.message);
-                            tip.content('<span class="g-c-bs-warning g-btips-warn">' + (resp.message || "审核失败") + '</span>').show();
+                            tip.content('<span class="g-c-bs-warning g-btips-warn">' + (resp.message || "处理提现失败") + '</span>').show();
                             if (type === 'base') {
                                 if (operate_item) {
                                     operate_item.removeClass('item-lighten');
@@ -547,21 +518,21 @@
                             return false;
                         }
                         /*是否是正确的返回数据*/
-                        tip.content('<span class="g-c-bs-success g-btips-succ">审核成功</span>').show();
+                        tip.content('<span class="g-c-bs-success g-btips-succ">处理提现成功</span>').show();
                         if (type === 'base') {
                             if (operate_item) {
                                 operate_item.removeClass('item-lighten');
                                 operate_item = null;
                             }
                         } else if (type === 'batch') {
-                            batchItem.clear();
+                            //batchItem.clear();
                         }
                         setTimeout(function () {
                             tip.close();
-                            getColumnData(goods_page, goods_config);
+                            getColumnData(cash_config);
                             setTimeout(function () {
-                                $show_audit_wrap.modal('hide');
-                                resetShowData('audit');
+                                //$show_audit_wrap.modal('hide');
+                                //resetShowData('audit');
                             }, 1000);
                         }, 1000);
                     })
