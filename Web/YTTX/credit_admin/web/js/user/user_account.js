@@ -10,7 +10,7 @@
 			/*菜单调用*/
 			var logininfo=public_tool.initMap.loginMap;
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
-				url:'http://120.24.226.70:8081/yttx-adminbms-api/module/menu',
+				url:'http://10.0.5.226:8016/yttx-adminbms-api/module/menu',
 				async:false,
 				type:'post',
 				param:{
@@ -104,7 +104,7 @@
 						autoWidth:true,/*是否*/
 						paging:false,
 						ajax:{
-							url:"http://120.24.226.70:8081/yttx-adminbms-api/user/list",
+							url:"http://10.0.5.226:8016/yttx-adminbms-api/user/list",
 							dataType:'JSON',
 							method:'post',
 							dataSrc:function ( json ) {
@@ -351,7 +351,7 @@
 						var self=this;
 
 						$.ajax({
-								url:"http://120.24.226.70:8081/yttx-adminbms-api/user/delete",
+								url:"http://10.0.5.226:8016/yttx-adminbms-api/user/delete",
 								method: 'POST',
 								dataType: 'json',
 								data:{
@@ -392,7 +392,7 @@
 				}else if(action==='select'){
 					/*查看*/
 					$.ajax({
-							url:"http://120.24.226.70:8081/yttx-adminbms-api/user/detail",
+							url:"http://10.0.5.226:8016/yttx-adminbms-api/user/detail",
 							method: 'POST',
 							dataType: 'json',
 							data:{
@@ -512,7 +512,7 @@
 							if(id!==''){
 								//此处配置修改稿角色地址（开发阶段）
 								var config={
-									url:"http://120.24.226.70:8081/yttx-adminbms-api/user/update",
+									url:"http://10.0.5.226:8016/yttx-adminbms-api/user/update",
 									dataType:'JSON',
 									method:'post',
 									data:{
@@ -532,7 +532,7 @@
 							}else{
 								//此处配置添加角色地址（开发阶段）
 								var config={
-									url:"http://120.24.226.70:8081/yttx-adminbms-api/user/add",
+									url:"http://10.0.5.226:8016/yttx-adminbms-api/user/add",
 									dataType:'JSON',
 									method:'post',
 									data:{

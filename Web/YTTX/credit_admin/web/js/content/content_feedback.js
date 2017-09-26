@@ -10,7 +10,7 @@
 			/*菜单调用*/
 			var logininfo=public_tool.initMap.loginMap;
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
-				url:'http://120.24.226.70:8081/yttx-adminbms-api/module/menu',
+				url:'http://10.0.5.226:8016/yttx-adminbms-api/module/menu',
 				async:false,
 				type:'post',
 				param:{

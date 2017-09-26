@@ -2,53 +2,45 @@
   "code": "0",
   "message": "查询成功",
   "result": {
-    "list": [
+    "menu": [
       {
-        "id": 928,
-        "imageUrl": "",
-        "list": [],
-        "name": "测试分类二类1"
-      },
-      {
-        "id": 814,
-        "list": [],
-        "name": "运营商"
-      },
-      {
-        "id": 810,
-        "list": [
+        "modCode": "bzw-finance",
+        "modId": 350,
+        "modItem": [
           {
-            "id": 927,
-            "imageUrl": "http://7xv6zz.com2.z0.glb.qiniucdn.com/typeicon_2017011816002330",
-            "name": "测试分类2"
+            "modLink": "bzw-finance-cashmanage",
+            "modName": "提现管理"
           },
           {
-            "id": 852,
-            "imageUrl": "http://7xv6zz.com2.z0.glb.qiniucdn.com/gt_201609211640464147.jpg",
-            "name": "摄像头"
-          },
-          {
-            "id": 851,
-            "imageUrl": "http://7xv6zz.com2.z0.glb.qiniucdn.com/gt_201609201527468563.jpg",
-            "name": "安防监控"
-          },
-          {
-            "id": 850,
-            "imageUrl": "http://7xv6zz.com2.z0.glb.qiniucdn.com/gt_201609201526192191.jpg",
-            "name": "POS机"
-          },
-          {
-            "id": 849,
-            "imageUrl": "http://7xv6zz.com2.z0.glb.qiniucdn.com/gt_201609201525422142.jpg",
-            "name": "电话机"
-          },
-          {
-            "id": 848,
-            "imageUrl": "http://7xv6zz.com2.z0.glb.qiniucdn.com/gt_201609201521563288.jpg",
-            "name": "路由器"
+            "modLink": "bzw-finance-cardmanage",
+            "modName": "银行卡管理"
           }
         ],
-        "name": "网络产品"
+        "modLink": "bzw-finance-manage",
+        "modName": "财务管理",
+        "permitItem": [
+          {
+            "funcCode": "cash-detail",
+            "funcName": "提现详情",
+            "isPermit": 1,
+            "modId": 350,
+            "prid": 1
+          },
+          {
+            "funcCode": "cash-dispose",
+            "funcName": "提现处理",
+            "isPermit": 1,
+            "modId": 350,
+            "prid": 2
+          },
+          {
+            "funcCode": "card-apply",
+            "funcName": "银行卡审核",
+            "isPermit": 1,
+            "modId": 350,
+            "prid": 3
+          }
+        ]
       }
     ]
   }

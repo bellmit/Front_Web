@@ -11,7 +11,7 @@
 			/*菜单调用*/
 			var logininfo=public_tool.initMap.loginMap;
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
-				url:'http://120.24.226.70:8081/yttx-adminbms-api/module/menu',
+				url:'http://10.0.5.226:8016/yttx-adminbms-api/module/menu',
 				async:false,
 				type:'post',
 				param:{
@@ -290,7 +290,7 @@
 						submitHandler: function(form){
 							//判断是否存在id号
 							var config={
-									url:"http://120.24.226.70:8081/yttx-adminbms-api/article/add",
+									url:"http://10.0.5.226:8016/yttx-adminbms-api/article/add",
 									dataType:'JSON',
 									method:'post',
 									data:{
@@ -350,7 +350,7 @@
 		function getToken(){
 			var result=null;
 			$.ajax({
-				url:'http://120.24.226.70:8081/yttx-adminbms-api/commom/getQiniuToken',
+				url:'http://10.0.5.226:8016/yttx-adminbms-api/commom/getQiniuToken',
 				async:false,
 				type:'post',
 				datatype:'json',

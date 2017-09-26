@@ -1405,7 +1405,6 @@
 	};
 	/*登陆接口*/
 	public_tool.isLogin=function(){
-		return true;
 		var self=this,
 			cacheLogin=self.getParams('login_module');
 

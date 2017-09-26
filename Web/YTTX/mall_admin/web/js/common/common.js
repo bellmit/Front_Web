@@ -808,7 +808,7 @@
             "name": "财务管理",
             "code": "finance",
             "match": "-finance-",
-            "matchlist": ['finance-cashlist', 'finance-cardlist'],
+            "matchlist": ['finance-cashmanage', 'finance-cardmanage'],
             "class": "menu-ux-record",
             "module": "finance",
             "modid": "350"

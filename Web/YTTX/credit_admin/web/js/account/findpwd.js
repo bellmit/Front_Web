@@ -71,7 +71,7 @@
 						"hideMethod": "fadeOut"
 					};
 
-					var basedomain='http://120.24.226.70:8081',
+					var basedomain='http://10.0.5.226:8016',
 						basepathname="yttx-adminbms-api/sysuser/login";
 					$.ajax({
 						url:basedomain+basepathname,
