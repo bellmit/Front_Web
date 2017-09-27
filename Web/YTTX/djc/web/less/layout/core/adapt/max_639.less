@@ -36,6 +36,9 @@
       background-size: auto 80%;
       background-position: 5px center;
     }
+    .header-menu-wrap {
+      padding-right: 0;
+    }
     .header-nav {
       @item-gap: 20px;
       > li {
@@ -125,9 +128,11 @@
       width: @side-item-width;
       .description-item1 {
         width: @side-item-width;
+        height:@side-item1-height;
         float: left;
       }
       .description-item2 {
+        height:@side-item2-height;
         width: @side-item-width;
         margin-top: @gallery-gap;
         float: right;
@@ -138,33 +143,21 @@
       height: @gallery-height;
       width: @main-item-width;
     }
-    .description-item1,
-    .description-item2 {
-      background-size: auto 100%;
-    }
   }
 
   /*联系我们*/
   .contact-content-wrap {
     .contact-show {
       /*地图*/
-      text-align: center;
       .contact-map {
-        display: inline-block;
-        float: none;
-        margin: 0;
-        width: 90%;
+        height: 400px;
       }
       /*联系列表*/
       .contact-list {
-        display: inline-block;
-        float: none;
-        width: 90%;
-        text-align: left;
         li {
           a,
           p {
-            font-size: @font-size-base + 10;
+            font-size: @font-size-base + 8;
           }
         }
       }
