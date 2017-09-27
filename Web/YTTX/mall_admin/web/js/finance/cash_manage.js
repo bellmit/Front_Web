@@ -48,8 +48,10 @@
                 $show_detail_wrap = $('#show_detail_wrap')/*详情容器*/,
                 $show_detail_content = $('#show_detail_content'), /*详情内容*/
                 $show_detail_title = $('#show_detail_title'),
+                $admin_pispose_btn = $('#admin_pispose_btn'),
                 sureObj = public_tool.sureDialog(dia)/*回调提示对象*/,
-                setSure = new sureObj();
+                setSure = new sureObj(),
+                operate_item = null;
 
 
             /*查询对象*/
@@ -80,7 +82,7 @@
                 fn: function (type) {
                     /*批量操作*/
                     cashDispose({
-                        type: type
+                        type: 'batch'
                     });
                 }
             });
@@ -213,18 +215,18 @@
                                 "render": function (data, type, full, meta) {
                                     var id = parseInt(data, 10),
                                         btns = '',
-                                        status = parseInt(full.cashState, 10);
+                                        state = parseInt(full.cashState, 10);
 
                                     if (detail_power) {
-                                        btns += '<span data-action="detail" data-id="' + id + '"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+                                        btns += '<span data-action="detail" data-id="' + id + '" data-state="' + state + '"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
                                             <i class="fa-file-text-o"></i>\
                                             <span>查看</span>\
 										</span>';
                                     }
-                                    if (dispose_power && (status === 0 )) {
+                                    if (dispose_power && (state === 0 )) {
                                         btns += '<span data-action="dispose" data-id="' + id + '"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
                                             <i class="fa-exchange"></i>\
-                                            <span>提现处理</span>\
+                                            <span>处理提现</span>\
 										</span>';
                                     }
                                     return btns;
@@ -302,7 +304,6 @@
 
             /*事件绑定*/
             /*绑定查看，修改操作*/
-            var operate_item;
             $admin_list_wrap.delegate('span', 'click', function (e) {
                 e.stopPropagation();
                 e.preventDefault();
@@ -310,8 +311,7 @@
                 var target = e.target,
                     $this,
                     id,
-                    action,
-                    $tr;
+                    action;
 
                 //适配对象
                 if (target.className.indexOf('btn') !== -1) {
@@ -319,7 +319,12 @@
                 } else {
                     $this = $(target).parent();
                 }
-                $tr = $this.closest('tr');
+
+                if (operate_item !== null) {
+                    operate_item.removeClass('item-lighten');
+                    operate_item = null;
+                }
+                operate_item = $this.closest('tr').addClass('item-lighten');
                 id = $this.attr('data-id');
                 action = $this.attr('data-action');
 
@@ -327,13 +332,13 @@
                     /*查看详情*/
                     cashDetail({
                         id: id,
-                        $tr: $tr
+                        state: $this.attr('data-state')
                     });
                 } else if (action === 'dispose') {
                     /*提现处理*/
                     cashDispose({
                         id: id,
-                        $tr: $tr
+                        type: 'base'
                     });
                 }
             });
@@ -347,6 +352,23 @@
                         operate_item = null;
                     }, 1000);
                 }
+            });
+
+
+            /*绑定详情提现处理*/
+            $admin_pispose_btn.on('click', function () {
+                var id = $admin_pispose_btn.attr('data-id');
+
+                if (id === '') {
+                    return false;
+                }
+
+                cashDispose({
+                    type: 'base',
+                    id: id,
+                    modal: true
+                })
+
             });
 
         }
@@ -367,13 +389,36 @@
             if (!config) {
                 return false;
             }
+            var state = parseInt(config.state, 10),
+                id = config.id;
+
+            if (id === '' || typeof id === 'undefined') {
+                return false;
+            }
+            /*设置体现状态*/
+            if (state === 0) {
+                /*未处理提现*/
+                $admin_pispose_btn.prop({
+                    'disabled': false
+                }).attr({
+                    'data-id': id
+                });
+            } else if (state === 1) {
+                /*已处理提现*/
+                $admin_pispose_btn.prop({
+                    'disabled': true
+                }).attr({
+                    'data-id': ''
+                });
+            }
+
 
             $.ajax({
                     url: debug ? "../../json/test.json" : "http://10.0.5.226:8082/mall-buzhubms-api/goodsorder/detail",
                     dataType: 'JSON',
                     method: 'post',
                     data: {
-                        id: config.id,
+                        id: id,
                         roleId: decodeURIComponent(logininfo.param.roleId),
                         adminId: decodeURIComponent(logininfo.param.adminId),
                         grade: decodeURIComponent(logininfo.param.grade),
@@ -445,11 +490,6 @@
                             $show_detail_title.html('查看提现详情');
                         }
                         $(str).appendTo($show_detail_content.html(''));
-                        if (operate_item) {
-                            operate_item.removeClass('item-lighten');
-                            operate_item = null;
-                        }
-                        operate_item = config.$tr.addClass('item-lighten');
                         $show_detail_wrap.modal('show', {backdrop: 'static'});
                     }
 
@@ -483,9 +523,10 @@
 
                 if (type === 'base') {
                     /*单个处理*/
-
+                    temp_config['id'] = config.id;
                 } else if (type === 'batch') {
                     /*批量处理*/
+                    temp_config['id'] = batchItem.getBatchData().join(',');
                 }
 
 
@@ -503,58 +544,48 @@
                         if (code !== 0) {
                             console.log(resp.message);
                             tip.content('<span class="g-c-bs-warning g-btips-warn">' + (resp.message || "处理提现失败") + '</span>').show();
-                            if (type === 'base') {
-                                if (operate_item) {
-                                    operate_item.removeClass('item-lighten');
-                                    operate_item = null;
-                                }
-                            } else if (type === 'batch') {
+                            if (type === 'batch') {
                                 batchItem.clear();
                             }
                             setTimeout(function () {
                                 tip.close();
-                                resetShowData('audit');
+                                if (config.modal) {
+                                    /*绑定关闭详情*/
+                                    $show_detail_wrap.modal('hide');
+                                }
                             }, 2000);
                             return false;
                         }
                         /*是否是正确的返回数据*/
                         tip.content('<span class="g-c-bs-success g-btips-succ">处理提现成功</span>').show();
-                        if (type === 'base') {
-                            if (operate_item) {
-                                operate_item.removeClass('item-lighten');
-                                operate_item = null;
-                            }
-                        } else if (type === 'batch') {
-                            //batchItem.clear();
-                        }
-                        setTimeout(function () {
-                            tip.close();
-                            getColumnData(cash_config);
-                            setTimeout(function () {
-                                //$show_audit_wrap.modal('hide');
-                                //resetShowData('audit');
-                            }, 1000);
-                        }, 1000);
-                    })
-                    .fail(function (resp) {
-                        console.log(resp.message);
-                        tip.content('<span class="g-c-bs-warning g-btips-warn">' + (resp.message || "审核失败") + '</span>').show();
-                        if (type === 'base') {
-                            if (operate_item) {
-                                operate_item.removeClass('item-lighten');
-                                operate_item = null;
-                            }
-                        } else if (type === 'batch') {
+                        if (type === 'batch') {
                             batchItem.clear();
                         }
                         setTimeout(function () {
                             tip.close();
-                            resetShowData('audit');
-                            $show_audit_wrap.modal('hide');
+                            getColumnData(cash_config);
+                            if (config.modal) {
+                                /*绑定关闭详情*/
+                                $show_detail_wrap.modal('hide');
+                            }
+                        }, 1000);
+                    })
+                    .fail(function (resp) {
+                        console.log(resp.message);
+                        tip.content('<span class="g-c-bs-warning g-btips-warn">' + (resp.message || "处理提现失败") + '</span>').show();
+                        if (type === 'batch') {
+                            batchItem.clear();
+                        }
+                        setTimeout(function () {
+                            tip.close();
+                            if (config.modal) {
+                                /*绑定关闭详情*/
+                                $show_detail_wrap.modal('hide');
+                            }
                         }, 2000);
                     });
 
-            }, "是否体现处理?", true);
+            }, "是否处理提现?", true);
         }
 
     });

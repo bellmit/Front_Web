@@ -5,7 +5,10 @@
     'use strict';
     $(function () {
         /*dom节点缓存*/
-        var mini_screen_height = 900,
+        var mini_screen_height = 900/*一般视口高界限*/,
+            mini_screen_width=479/*隐藏菜单视口界限*/,
+            mini_header_height=50/*小屏头部高度*/,
+            max_header_height=100/*一般头部高度*/,
             $menu_toggle = $('#menu_toggle'),
             $menu_wrap = $('#menu_wrap'),
             $menu_item = $menu_wrap.children(),
@@ -38,7 +41,7 @@
                     pos: 0
                 }
             ],
-            isMobile = false;
+            isMini = false;
 
 
         /*初始化*/
@@ -62,10 +65,10 @@
 
             /*初始化视口判断*/
             var winwidth = $win.width();
-            if (winwidth >= 1000) {
-                isMobile = false;
+            if (winwidth <= mini_screen_width) {
+                isMini = true;
             } else {
-                isMobile = true;
+                isMini = false;
             }
             
             /*地图调用*/
@@ -95,10 +98,10 @@
 
 
             var index = $li.index();
-            if (isMobile) {
-                $('html,body').animate({'scrollTop': screen_pos[index]['pos'] - 100 + 'px'}, 500);
+            if (isMini) {
+                $('html,body').animate({'scrollTop': screen_pos[index]['pos'] - mini_header_height + 'px'}, 500);
             } else {
-                $('html,body').animate({'scrollTop': screen_pos[index]['pos'] - 100 + 'px'}, 500);
+                $('html,body').animate({'scrollTop': screen_pos[index]['pos'] - max_header_height + 'px'}, 500);
             }
             return false;
         });
@@ -110,8 +113,10 @@
 
             if(active){
                 $menu_toggle.removeClass('header-btn-active');
+                $menu_wrap.addClass('g-d-showi');
             }else if(!active){
                 $menu_toggle.addClass('header-btn-active');
+                $menu_wrap.removeClass('g-d-showi');
             }
 
         });
@@ -161,13 +166,12 @@
                     (function () {
                         //隐藏菜单导航
                         var winwidth = $win.width();
-                        if (winwidth >= 1000 || (winwidth >= 1000 && e.orientation == 'landscape')) {
+                        if (winwidth > mini_screen_width) {
                             //隐藏已经存在的class
-                            //$header_btn.removeClass('header-btnactive');
-                            //$header_menu.removeClass('g-d-showi');
-                            isMobile = false;
+                            $menu_wrap.removeClass('g-d-showi');
+                            isMini = false;
                         } else {
-                            isMobile = true;
+                            isMini = true;
                         }
 
 
