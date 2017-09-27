@@ -8,6 +8,10 @@
         "modId": 350,
         "modItem": [
           {
+            "modLink": "bzw-finance-recordmanage",
+            "modName": "交易流水管理"
+          },
+          {
             "modLink": "bzw-finance-cashmanage",
             "modName": "提现管理"
           },
@@ -34,7 +38,7 @@
             "prid": 2
           },
           {
-            "funcCode": "card-apply",
+            "funcCode": "card-audit",
             "funcName": "银行卡审核",
             "isPermit": 1,
             "modId": 350,

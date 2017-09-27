@@ -1,9 +1,9 @@
 ///320px - 479px;
 @media (max-width: 479px) {
-
+  @body-min-height: 700px;
   /*---重置模块---*/
-  @body-max-width: 320px;
-  @body-min-width: 479px;
+  @body-max-width: 479px;
+  @body-min-width: 320px;
   /*主体*/
   body {
     max-width: @body-max-width;
@@ -17,7 +17,7 @@
 
   /*默认内部容器*/
   .content-default-wrap {
-    width: @body-min-width;
+    width: 100%;
   }
 
   .theme-item {
@@ -30,32 +30,27 @@
 
     height: @layout-header-height;
     /*logo*/
-    .header-logo {
-      width: 40px;
-      background-size: auto 80%;
-      background-position: 5px center;
-    }
-    .header-menu-wrap {
-      width:100px;
-      max-width:120px;
-      min-width:60px;
+    .header-menu{
+      width:80px;
     }
     .header-toggle {
-      .layout-absoluter-base(-(@layout-logo-gapl + 20));
+      .layout-absoluter-base();
+      .layout-base();
       height: 100%;
-      width: @layout-logo-gapl + 20;
       display: block;
     }
     .header-btn {
       .layout-relative-base();
-      .layout-base(@layout-logo-gapl);
+      .layout-base(40px);
       height: @layout-header-height - 20;
       border: 1px solid @color-gray12;
-      color: darken(@layout-color-blue1, 5%);
-      background: @color-white;
+      .box-shadow-base(0 0 3px 0 @color-gray14);
+      color: darken(@layout-color-blue1, 2%);
+      background: @color-gray14;
       .border-radius-base(3px);
       cursor: pointer;
-      margin: 10px 5px 0 0;
+      display: block;
+      margin: 10px auto 0 auto;
       .transition-base(all .2s ease-in .01s);
       &:before {
         .layout-absolutel-base();
@@ -69,8 +64,8 @@
         line-height: @layout-header-height - 20;
       }
       &:hover {
-        background: @color-gray14;
-        color: darken(@layout-color-blue1, 8%);
+        background: @color-gray13;
+        color: darken(@layout-color-blue1, 10%);
       }
       &:active {
         background: @color-gray13;
@@ -84,19 +79,110 @@
     }
     .header-nav {
       @item-gap: 20px;
+      width:100%;
+      height:auto;
       display:none;
       margin-top:@layout-header-height;
       > li {
-        background: @color-white;
-        float:left;
-        height:@layout-header-height;
-        padding: 0;
         width:100%;
+        background: @color-white;
+        height:@layout-header-height;
       }
       a {
-        height: 100%;
-        line-height: @layout-header-height;
         font-size: @font-size-base;
+      }
+    }
+  }
+
+
+  /*关于我们*/
+  /*关于我们*/
+  .about-content-wrap {
+    .about-remark {
+      margin: 10px 0;
+    }
+    .about-list {
+      li {
+        padding: 10px 10px 0 10px;
+      }
+      .about-item {
+        background-size:80% auto;
+        width: 100px;
+        height: 100px;
+        .border-radius-base(6px);
+      }
+    }
+  }
+
+
+  /*产品描述*/
+  .layout-description-wrap{
+    min-height: @body-min-height !important;
+  }
+  .description-content-wrap {
+    @gallery-height: 214px;
+    @gallery-gap: 20px;
+    @side-item-width: 228px;
+    @main-item-width: 320px; //642px
+    @side-item1-height: 85px;
+    @side-item2-height: 124px;
+
+    @remark-height: 48px;
+    /*照片墙*/
+    .description-gallery {
+      height: (@gallery-height * 2) + @gallery-gap;
+      text-align: center;
+    }
+    .description-side,
+    .description-main {
+      float: none;
+      display: inline-block;
+    }
+    .description-side {
+      height: @gallery-height;
+      width: @side-item-width;
+      .description-item1 {
+        width: @side-item-width;
+        height:@side-item1-height;
+        float: left;
+      }
+      .description-item2 {
+        height:@side-item2-height;
+        width: @side-item-width;
+        margin-top: @gallery-gap;
+        float: right;
+      }
+    }
+    .description-main {
+      margin-top: @gallery-gap;
+      height: @gallery-height;
+      width: @main-item-width;
+    }
+
+    /*照片描述*/
+    .description-remark {
+      height: 48px;
+      min-width: 80px;
+      max-width: 200px;
+      h2 {
+        padding: 4px 0 0 0;
+        height: 24px;
+        font-size: @font-size-base;
+      }
+      p {
+        padding: 0 0 4px 0;
+        height: 24px;
+        font-size: @font-size-base - 2;
+      }
+    }
+    /*描述装饰*/
+    .description-mask {
+      .mask {
+        width: 20px;
+        height: 30px;
+      }
+      .mask-rt {
+        top: -@remark-height;
       }
     }
   }

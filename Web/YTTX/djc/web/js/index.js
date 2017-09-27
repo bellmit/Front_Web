@@ -17,7 +17,6 @@
             $introduction_view = $('#introduction_view'),
             $description_view = $('#description_view'),
             $contact_view = $('#contact_view'),
-            $address_wrap=$('#address_wrap'),
             $win = $(window),
             screen_pos = [
                 {
@@ -70,6 +69,8 @@
             } else {
                 isMini = false;
             }
+            $menu_toggle.removeClass('header-btn-active');
+            $menu_wrap.removeClass('g-d-showi');
             
             /*地图调用*/
             var map = new BMap.Map("address_wrap"),
@@ -112,29 +113,17 @@
             var active=$menu_toggle.hasClass('header-btn-active');
 
             if(active){
+                /*非激活*/
                 $menu_toggle.removeClass('header-btn-active');
-                $menu_wrap.addClass('g-d-showi');
-            }else if(!active){
-                $menu_toggle.addClass('header-btn-active');
                 $menu_wrap.removeClass('g-d-showi');
+            }else if(!active){
+                /*激活*/
+                $menu_toggle.addClass('header-btn-active');
+                $menu_wrap.addClass('g-d-showi');
             }
 
         });
-
-
-        //监听导航切换显示隐藏
-        /*$menu_toggle.on('click',function(){
-         if($header_btn.hasClass('header-btnactive')){
-         //隐藏
-         $header_btn.removeClass('header-btnactive');
-         $header_menu.removeClass('g-d-showi');
-         }else{
-         //显示
-         $header_btn.addClass('header-btnactive');
-         $header_menu.addClass('g-d-showi');
-         }
-         });*/
-
+        
 
         //监听菜单滚动条滚动
         (function () {
@@ -168,8 +157,9 @@
                         var winwidth = $win.width();
                         if (winwidth > mini_screen_width) {
                             //隐藏已经存在的class
-                            $menu_wrap.removeClass('g-d-showi');
                             isMini = false;
+                            $menu_wrap.removeClass('g-d-showi');
+                            $menu_toggle.removeClass('header-btn-active');
                         } else {
                             isMini = true;
                         }

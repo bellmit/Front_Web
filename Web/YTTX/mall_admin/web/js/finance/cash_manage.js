@@ -32,7 +32,7 @@
             var debug = true,
                 $admin_list_wrap = $('#admin_list_wrap')/*表格*/,
                 $admin_batchlist_wrap = $('#admin_batchlist_wrap'),
-                module_id = 'bzw-finance-manage'/*模块id，主要用于本地存储传值*/,
+                module_id = 'bzw-finance-cashmanage'/*模块id，主要用于本地存储传值*/,
                 dia = dialog({
                     zIndex: 2000,
                     title: '温馨提示',
@@ -243,7 +243,7 @@
 
             /*清空查询条件*/
             $admin_search_clear.on('click', function () {
-                $.each([$search_cashState, $search_mobile, $search_realName], function () {
+                $.each([$search_cashState, $search_realName, $search_mobile], function () {
                     var selector = this.selector;
                     if (selector.indexOf('cashState') !== -1) {
                         this.find('option:first-child').prop({
@@ -261,7 +261,7 @@
             $admin_search_btn.on('click', function () {
                 var data = $.extend(true, {}, cash_config.config.ajax.data);
 
-                $.each([$search_cashState, $search_realName], function () {
+                $.each([$search_cashState, $search_realName, $search_mobile], function () {
                     var text = this.val(),
                         selector = this.selector.slice(1),
                         key = selector.split('_');
