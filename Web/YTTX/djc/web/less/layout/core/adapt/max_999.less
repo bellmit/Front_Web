@@ -29,6 +29,9 @@
   .layout-header-wrap {
     .header-nav {
       @item-gap: 20px;
+      >li{
+        width:110px;
+      }
       a{
         height:100%;
         line-height: (@layout-header-height - (@item-gap * 2));
@@ -139,6 +142,7 @@
       /*联系列表*/
       .contact-list {
         li {
+          margin:20px 0 0 0;
           a,
           p {
             font-size: @font-size-base + 4;

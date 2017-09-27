@@ -17,11 +17,12 @@
 
   /*默认内部容器*/
   .content-default-wrap {
-    width: 100%;
+
   }
 
   .theme-item {
     height: 80px;
+    width: 100%;
   }
 
   /*头部*/
@@ -30,8 +31,12 @@
 
     height: @layout-header-height;
     /*logo*/
-    .header-menu{
-      width:80px;
+    .header-logo {
+      width: 30px;
+      background-size: auto 50%;
+    }
+    .header-menu {
+      width: 80px;
     }
     .header-toggle {
       .layout-absoluter-base();
@@ -44,7 +49,7 @@
       .layout-base(40px);
       height: @layout-header-height - 20;
       border: 1px solid @color-gray12;
-      .box-shadow-base(0 0 3px 0 @color-gray14);
+      .box-shadow-base(0 0 5px 0 @color-gray12 e(',') -1px -1px 0 0 @color-white inset);
       color: darken(@layout-color-blue1, 2%);
       background: @color-gray14;
       .border-radius-base(3px);
@@ -64,29 +69,29 @@
         line-height: @layout-header-height - 20;
       }
       &:hover {
-        background: @color-gray13;
+        background-color: lighten(@color-gray14, 5%);
         color: darken(@layout-color-blue1, 10%);
       }
       &:active {
-        background: @color-gray13;
+        background-color: darken(@color-gray14, 5%);
         color: darken(@layout-color-blue1, 12%);
       }
     }
-    .header-btn-active{
-      &:before{
+    .header-btn-active {
+      &:before {
         content: '\e651';
       }
     }
     .header-nav {
       @item-gap: 20px;
-      width:100%;
-      height:auto;
-      display:none;
-      margin-top:@layout-header-height;
+      width: 100%;
+      height: auto;
+      display: none;
+      margin-top: @layout-header-height;
       > li {
-        width:100%;
+        width: 100%;
         background: @color-white;
-        height:@layout-header-height;
+        height: @layout-header-height;
       }
       a {
         font-size: @font-size-base;
@@ -94,8 +99,21 @@
     }
   }
 
+  /*首页*/
+  .layout-index-wrap {
+    min-height: @body-min-height - 200 !important;
+  }
 
-  /*关于我们*/
+  .index-content-wrap {
+    min-height: @body-min-height - 200;
+    .index-theme {
+      margin: 20px 0 0 0;
+    }
+    .index-device {
+      height: 400px;
+    }
+  }
+
   /*关于我们*/
   .about-content-wrap {
     .about-remark {
@@ -106,7 +124,7 @@
         padding: 10px 10px 0 10px;
       }
       .about-item {
-        background-size:80% auto;
+        background-size: 80% auto;
         width: 100px;
         height: 100px;
         .border-radius-base(6px);
@@ -114,11 +132,22 @@
     }
   }
 
+  /*产品介绍*/
+  .introduction-content-wrap {
+    /*特点选项*/
+    .introduction-list {
+      z-index: 10;
+      > li {
+        padding: 0 20px;
+      }
+    }
+  }
 
   /*产品描述*/
-  .layout-description-wrap{
+  .layout-description-wrap {
     min-height: @body-min-height !important;
   }
+
   .description-content-wrap {
     @gallery-height: 214px;
     @gallery-gap: 20px;
@@ -143,11 +172,11 @@
       width: @side-item-width;
       .description-item1 {
         width: @side-item-width;
-        height:@side-item1-height;
+        height: @side-item1-height;
         float: left;
       }
       .description-item2 {
-        height:@side-item2-height;
+        height: @side-item2-height;
         width: @side-item-width;
         margin-top: @gallery-gap;
         float: right;
@@ -187,6 +216,45 @@
     }
   }
 
+  /*联系我们*/
+  .layout-contact-wrap {
+    min-height: @body-min-height !important;
+  }
 
+  .contact-content-wrap {
+    .contact-show {
+      /*地图*/
+      .contact-map {
+        height: 300px;
+      }
+      /*联系列表*/
+      .contact-list {
+        li {
+          padding: 0;
+          margin: 10px 0 0 0;
+          height: 30px;
+          line-height: 30px;
+          span {
+            width: 40px;
+            height: 30px;
+          }
+          a,
+          p {
+            height: 30px;
+            line-height: 30px;
+            font-size: @font-size-base;
+          }
+        }
+        .contact-icon1,
+        .contact-icon2,
+        .contact-icon3,
+        .contact-icon4,
+        .contact-icon5,
+        .contact-icon6 {
+          background-size: auto 100%;
+        }
+      }
+    }
+  }
 
 }

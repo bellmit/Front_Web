@@ -25,6 +25,15 @@
     height: 120px;
   }
 
+  /*头部*/
+  .layout-header-wrap {
+    .header-nav {
+      >li{
+        width:100px;
+      }
+    }
+  }
+
   /*首页*/
   .layout-index-wrap {
     min-height: @body-min-height !important;
@@ -121,9 +130,10 @@
         width: 90%;
         text-align: left;
         li {
+          padding:0 20px;
           a,
           p {
-            font-size: @font-size-base + 10;
+            font-size: @font-size-base + 6;
           }
         }
       }
