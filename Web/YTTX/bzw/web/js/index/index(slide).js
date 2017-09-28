@@ -1,6 +1,6 @@
 /*配置依赖*/
 require.config({
-	baseUrl:'../js/',
+	baseUrl:'js/',
 	paths:{
 		'jquery':'lib/jquery/jquery-2.1.4.min',
 		'jquery_mobile':'lib/jquery/jquery-mobile.min',
