@@ -6,6 +6,9 @@ require.config({
         'jquery_mobile': 'lib/jquery/jquery-mobile.min'
     },
     shim: {
+        'dialog': {
+            deps: ['jquery']
+        },
         'jquery_mobile': {
             deps: ['jquery']
         }
