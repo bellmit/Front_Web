@@ -6,9 +6,9 @@
     $(function () {
         /*dom节点缓存*/
         var mini_screen_height = 900/*一般视口高界限*/,
-            mini_screen_width=479/*隐藏菜单视口界限*/,
-            mini_header_height=50/*小屏头部高度*/,
-            max_header_height=100/*一般头部高度*/,
+            mini_screen_width = 479/*隐藏菜单视口界限*/,
+            mini_header_height = 50/*小屏头部高度*/,
+            max_header_height = 100/*一般头部高度*/,
             $menu_toggle = $('#menu_toggle'),
             $menu_wrap = $('#menu_wrap'),
             $menu_item = $menu_wrap.children(),
@@ -71,14 +71,6 @@
             }
             $menu_toggle.removeClass('header-btn-active');
             $menu_wrap.removeClass('g-d-showi');
-            
-            /*地图调用*/
-            var map = new BMap.Map("address_wrap"),
-                point = new BMap.Point(113.9272,22.5802);
-            map.centerAndZoom(point, 18);
-            map.addControl(new BMap.ScaleControl({anchor: BMAP_ANCHOR_BOTTOM_LEFT}));
-            map.addControl(new BMap.NavigationControl());
-            map.addOverlay(new BMap.Marker(point));
         }());
 
 
@@ -106,24 +98,24 @@
             }
             return false;
         });
-        
-        
-        //监听移动模式下的菜单显示隐藏
-        $menu_toggle.on('click',function () {
-            var active=$menu_toggle.hasClass('header-btn-active');
 
-            if(active){
+
+        //监听移动模式下的菜单显示隐藏
+        $menu_toggle.on('click', function () {
+            var active = $menu_toggle.hasClass('header-btn-active');
+
+            if (active) {
                 /*非激活*/
                 $menu_toggle.removeClass('header-btn-active');
                 $menu_wrap.removeClass('g-d-showi');
-            }else if(!active){
+            } else if (!active) {
                 /*激活*/
                 $menu_toggle.addClass('header-btn-active');
                 $menu_wrap.addClass('g-d-showi');
             }
 
         });
-        
+
 
         //监听菜单滚动条滚动
         (function () {
@@ -138,7 +130,7 @@
                                 currenttop = $this.scrollTop(),
                                 i = 0,
                                 len = screen_pos.length;
-                            
+
                             for (i; i < len; i++) {
                                 var pos = screen_pos[i]['pos'],
                                     minpos = parseInt(pos - 150, 0),
@@ -151,7 +143,7 @@
 
                         }
                     }());
-                }else if (type === 'resize') {
+                } else if (type === 'resize') {
                     (function () {
                         //隐藏菜单导航
                         var winwidth = $win.width();
@@ -189,5 +181,50 @@
         }());
 
 
+        /*百度地图调用*/
+        getBaiDuMap();
+
     });
+
+    /*百度地图调用*/
+    function getBaiDuMap() {
+        /*地图调用*/
+        var map = new BMap.Map("address_wrap"),
+            point = new BMap.Point(113.9272, 22.5802);
+
+        /*初始化地图*/
+        map.centerAndZoom(point, 15);
+
+        /*设置相关开启项*/
+        map.enableScrollWheelZoom();
+
+        /*设置地图控件*/
+        map.addControl(new BMap.ScaleControl({anchor: BMAP_ANCHOR_BOTTOM_LEFT}));
+        map.addControl(new BMap.NavigationControl());
+
+        /*设置定点覆盖物*/
+        var marker = new BMap.Marker(point);
+        map.addOverlay(marker);
+
+
+        /*设置文字覆盖物*/
+        var label = new BMap.Label("大决策信息技术有限公司",{
+            position: point,
+            offset: new BMap.Size(-80,10)
+        });
+
+        label.setStyle({
+            color: "#336fd0",
+            fontSize: "12px",
+            height: "26px",
+            maxWidth: "none",
+            border:"1px solid #336fd0",
+            lineHeight: "20px",
+            borderRadius:"3px",
+            padding:"3px 10px",
+            boxShadow:"1px 1px 3px 0 #888",
+            fontFamily: "微软雅黑"
+        });
+        marker.setLabel(label);
+    }
 })(jQuery);
