@@ -214,6 +214,7 @@
                 tpl: '<span data-tab="_tabvalue_">_tabname_</span>'
             },
             tabshow: {
+                id: '',
                 url: '新闻资讯列表请求地址'/*todo*/,
                 wrap: $newstab_show,
                 tpl: '<li>\
@@ -225,135 +226,6 @@
                       </li>'
             }
         });
-        if (tablen >= 1) {
-            $tabs.addClass('tab-active').siblings().removeClass('tab-active');
-
-            /*查询信息*/
-            getNews({
-                url: '../json/test.json',
-                theme: theme,
-                $wrap: $newstab_show
-            });
-
-            if (tablen > TABLEN) {
-
-                if (tab_index === 0) {
-                    $tab_btn_left.addClass('tab-btn-disabled');
-                } else if (tab_index === tablen - 1) {
-                    $tab_btn_right.addClass('tab-btn-disabled');
-                }
-
-                /*绑定tab按钮事件*/
-                /*左按钮*/
-                $tab_btn_left.on('click', function () {
-                    var $this = $(this);
-                    if ($this.hasClass('tab-btn-disabled')) {
-                        return false;
-                    }
-                    if (tab_index === 0) {
-                        return false;
-                    } else {
-                        tab_index--;
-                        if (tab_index === 0) {
-                            $tab_btn_left.addClass('tab-btn-disabled');
-                        }
-                        if (tab_index === tablen - 2) {
-                            $tab_btn_right.removeClass('tab-btn-disabled');
-                        }
-                        if (tab_index <= TABLEN) {
-                            $tabs_items.eq(tab_index).removeClass('g-d-hidei');
-                        }
-                        theme = $tabs_items.eq(tab_index).attr('data-theme');
-                        $tabs_items.eq(tab_index).addClass('tab-active').siblings().removeClass('tab-active');
-                        /*查询信息*/
-                        getNews({
-                            url: '../json/test.json',
-                            theme: theme,
-                            $wrap: $newstab_show
-                        });
-
-                    }
-                });
-                /*右按钮*/
-                $tab_btn_right.on('click', function () {
-                    var $this = $(this);
-                    if ($this.hasClass('tab-btn-disabled')) {
-                        return false;
-                    }
-                    if (tab_index === tablen - 1) {
-                        return false;
-                    } else {
-                        tab_index++;
-                        if (tab_index === tablen - 1) {
-                            $tab_btn_right.addClass('tab-btn-disabled');
-                        }
-                        if (tab_index === 1) {
-                            $tab_btn_left.removeClass('tab-btn-disabled');
-                        }
-                        if (tab_index >= TABLEN) {
-                            $tabs_items.eq(tab_index - TABLEN).addClass('g-d-hidei');
-                        }
-                        theme = $tabs_items.eq(tab_index).attr('data-theme');
-                        $tabs_items.eq(tab_index).addClass('tab-active').siblings().removeClass('tab-active');
-                        /*查询信息*/
-                        getNews({
-                            url: '../json/test.json',
-                            theme: theme,
-                            $wrap: $newstab_show
-                        });
-
-                    }
-
-                });
-            } else {
-                $tab_btn_left.addClass('tab-btn-disabled');
-                $tab_btn_right.addClass('tab-btn-disabled');
-            }
-
-            /*绑定行业tab选项*/
-            $tab_btn.on('click', 'span', function () {
-                var $this = $(this),
-                    theme = $this.attr('data-theme');
-
-                /*同步索引*/
-                tab_index = $this.index();
-
-                /*索引极限*/
-                if (tablen > TABLEN) {
-                    if (tab_index === 0) {
-                        /*第一个的情况*/
-                        $tab_btn_left.addClass('tab-btn-disabled');
-                        $tab_btn_right.removeClass('tab-btn-disabled');
-                    } else if (tab_index === tablen - 1) {
-                        /*最后一个的情况*/
-                        $tab_btn_left.removeClass('tab-btn-disabled');
-                        $tab_btn_right.addClass('tab-btn-disabled');
-                    } else {
-                        $tab_btn_left.removeClass('tab-btn-disabled');
-                        $tab_btn_right.removeClass('tab-btn-disabled');
-                    }
-                }
-
-
-                /*状态切换*/
-                $this.addClass('tab-active').siblings().removeClass('tab-active');
-
-                /*数据请求*/
-                getNews({
-                    url: '../json/test.json',
-                    theme: theme,
-                    $wrap: $newstab_show
-                });
-
-
-            });
-
-        } else {
-            $tab_btn_left.addClass('tab-btn-disabled');
-            $tab_btn_right.addClass('tab-btn-disabled');
-            $tab_btn.html('');
-        }
-
     });
 
     /*获取新闻资讯tab*/
@@ -364,15 +236,15 @@
         var debug = config.debug;
 
         $.ajax({
-            url: debug ? '../json/test.json' : config.url,
+            url: debug ? 'json/test.json' : config.tab.url,
             type: 'post',
             dataType: "json",
             data: {}
-        }).done(function (data) {
+        }).done(function (result) {
                 if (debug) {
                     var result = testWidget.test({
                         map: {
-                            name: 'goodstype',
+                            name: 'value',
                             value: 'guid'
                         },
                         mapmin: 5,
@@ -406,43 +278,227 @@
             tabshow = config.tabshow;
         if (data === null) {
             /*没有数据*/
+            tab_config.btn_left.addClass('tab-btn-disabled').off('click')/*注销左按钮事件*/;
+            tab_config.btn_right.addClass('tab-btn-disabled').off('click')/*注销右按钮事件*/;
+            tab_config.wrap.off('click', 'span').html('')/*注销tab按钮事件*/;
+            tabshow.wrap.html('');
         } else {
             /*渲染界面*/
+            var TABLEN = 5/*tab显示数据项*/,
+                debug = config.debug,
+                list = data.result.list,
+                tablen = list.length;
+
+            /*生成dom*/
+            (function () {
+                var i = 0,
+                    res = [],
+                    tpl = tab_config.tpl;
+                for (i; i < tablen; i++) {
+                    var item = list[i];
+                    res.push(tpl.replace('_href_', 'article.html?id=' + item['href'])
+                        .replace('_tabname_', item['name'])
+                        .replace('_tabvalue_', item['value']));
+                    $(res.join('')).appendTo(tab_config.wrap.html(''));
+                }
+            }());
+
+            /*绑定事件*/
+            (function () {
+
+                var $tabs_items = tab_config.wrap.children(),
+                    tab_index = 0,
+                    $tabs = $tabs_items.eq(tab_index);
+
+
+                if (tablen >= 1) {
+                    /*查询第一项数据*/
+                    tabshow['id']=$tabs.attr('data-tab');
+                    getNewsData({
+                        debug:debug,
+                        tabshow:tabshow
+                    });
+                    $tabs.addClass('tab-active').siblings().removeClass('tab-active');
+
+                    if (tablen > TABLEN) {
+                        if (tab_index === 0) {
+                            tab_config.btn_left.addClass('tab-btn-disabled');
+                        } else if (tab_index === tablen - 1) {
+                            tab_config.btn_right.addClass('tab-btn-disabled');
+                        }
+
+                        /*绑定tab按钮事件*/
+                        /*左按钮*/
+                        tab_config.btn_left.on('click', function () {
+                            var $this = $(this);
+                            if ($this.hasClass('tab-btn-disabled')) {
+                                return false;
+                            }
+                            if (tab_index === 0) {
+                                return false;
+                            } else {
+                                tab_index--;
+                                if (tab_index === 0) {
+                                    tab_config.btn_left.addClass('tab-btn-disabled');
+                                }
+                                if (tab_index === tablen - 2) {
+                                    tab_config.btn_right.removeClass('tab-btn-disabled');
+                                }
+                                if (tab_index <= TABLEN) {
+                                    $tabs_items.eq(tab_index).removeClass('g-d-hidei');
+                                }
+                                tabshow['id'] = $tabs_items.eq(tab_index).attr('data-tab');
+                                $tabs_items.eq(tab_index).addClass('tab-active').siblings().removeClass('tab-active');
+                                /*查询信息*/
+                                getNewsData({
+                                    debug: debug,
+                                    tabshow: tabshow
+                                });
+                            }
+                        });
+                        /*右按钮*/
+                        tab_config.btn_right.on('click', function () {
+                            var $this = $(this);
+                            if ($this.hasClass('tab-btn-disabled')) {
+                                return false;
+                            }
+                            if (tab_index === tablen - 1) {
+                                return false;
+                            } else {
+                                tab_index++;
+                                if (tab_index === tablen - 1) {
+                                    tab_config.btn_right.addClass('tab-btn-disabled');
+                                }
+                                if (tab_index === 1) {
+                                    tab_config.btn_left.removeClass('tab-btn-disabled');
+                                }
+                                if (tab_index >= TABLEN) {
+                                    $tabs_items.eq(tab_index - TABLEN).addClass('g-d-hidei');
+                                }
+                                tabshow['id'] = $tabs_items.eq(tab_index).attr('data-tab');
+                                $tabs_items.eq(tab_index).addClass('tab-active').siblings().removeClass('tab-active');
+                                /*查询信息*/
+                                getNewsData({
+                                    debug: debug,
+                                    tabshow: tabshow
+                                });
+                            }
+
+                        });
+                    } else {
+                        tab_config.btn_left.addClass('tab-btn-disabled');
+                        tab_config.btn_right.addClass('tab-btn-disabled');
+                    }
+
+                    /*绑定行业tab选项*/
+                    tab_config.wrap.on('click', 'span', function () {
+                        var $this = $(this);
+
+                        tabshow['id'] = $this.attr('data-tab');
+                        /*同步索引*/
+                        tab_index = $this.index();
+
+                        /*索引极限*/
+                        if (tablen > TABLEN) {
+                            if (tab_index === 0) {
+                                /*第一个的情况*/
+                                tab_config.btn_left.addClass('tab-btn-disabled');
+                                tab_config.btn_right.removeClass('tab-btn-disabled');
+                            } else if (tab_index === tablen - 1) {
+                                /*最后一个的情况*/
+                                tab_config.btn_left.removeClass('tab-btn-disabled');
+                                tab_config.btn_right.addClass('tab-btn-disabled');
+                            } else {
+                                tab_config.btn_left.removeClass('tab-btn-disabled');
+                                tab_config.btn_right.removeClass('tab-btn-disabled');
+                            }
+                        }
+
+                        /*状态切换*/
+                        $this.addClass('tab-active').siblings().removeClass('tab-active');
+
+                        /*数据请求*/
+                        getNewsData({
+                            debug: debug,
+                            tabshow: tabshow
+                        });
+                    });
+
+                } else {
+                    tab_config.btn_left.addClass('tab-btn-disabled').off('click')/*注销左按钮事件*/;
+                    tab_config.btn_right.addClass('tab-btn-disabled').off('click')/*注销右按钮事件*/;
+                    tab_config.wrap.off('click', 'span').html('')/*注销tab按钮事件*/;
+                    tabshow.wrap.html('');
+                }
+            }());
+
         }
-        /*初始化新闻资讯变量*/
-        var TABLEN = 5/*tab显示数据项*/,
-            debug = config.debug;
 
 
-        $tabs_items = $tab_btn.children(),
-            tab_index = 0,
-            $tabs = $tabs_items.eq(tab_index),
-            theme = $tabs.attr('data-theme'),
-            tablen = $tabs_items.length;
     }
 
-    /*获取信息ajax*/
-    function getNews(config) {
+    /*获取新闻列表信息*/
+    function getNewsData(config) {
         if (!config) {
             return false;
         }
-        var debug = config.debug;
+        var debug = config.debug,
+            tabshow = config.tabshow;
+
         $.ajax({
-            url: debug ? '../json/test.json' : config.url,
+            url: debug ? 'json/test.json' : tabshow.url,
             type: 'post',
             dataType: "json",
             data: {
-                "Theme": obj.theme
+                "id": tabshow.id
             }
         }).done(function (data) {
-                if (data.flag) {
-                    //加载操作
+                if (debug) {
+                    var data = testWidget.test({
+                        map: {
+                            src: 'rule,1,2,3',
+                            title: 'goodstype',
+                            content: 'text',
+                            href: 'id'
+                        },
+                        mapmin: 5,
+                        mapmax: 10,
+                        type: 'list'
+                    });
+                }
+                var code = parseInt(data.code, 10);
+                if (code !== 0) {
+                    /*请求异常*/
+                    console.log(data.message);
+                    tabshow.wrap.html('');
                 } else {
-                    obj.$wrap.html('');
+                    /*渲染数据*/
+                    var list = data.result.list,
+                        len = list.length,
+                        i = 0,
+                        res=[],
+                        tpl=tabshow.tpl;
+
+
+                    if (len !== 0) {
+                        if (len >= 6) {
+                            len = 6;
+                            for (i; i < len; i++) {
+                                var item=list[i];
+                                res.push(tpl.replace('_src_', 'images/' + item['src']+'.jpg')
+                                    .replace('_title_', item['title'])
+                                    .replace('_content_', item['content'])
+                                    .replace('_href_', 'article.html?id='+item['href']));
+                            }
+                            $(res.join('')).appendTo(tabshow.wrap.html(''));
+                        }
+                    } else {
+                        tabshow.wrap.html('');
+                    }
                 }
             })
             .fail(function () {
-                obj.$wrap.html('');
+                tabshow.wrap.html('');
             });
     }
 })(jQuery);
