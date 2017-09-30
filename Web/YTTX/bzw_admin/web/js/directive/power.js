@@ -117,9 +117,7 @@
             link: powerTbody
         };
         /*link实现*/
-        function powerTbody(scope, element, attrs) {
-            console.log('tbody');
-        }
+        function powerTbody(scope, element, attrs) {}
 
     }
 

@@ -1,0 +1,173 @@
+
+password:e10adc3949ba59abbe56e057f20f883e
+
+password:827ccb0eea8a706c4c34a16891f84e7b
+
+
+http://10.0.5.215:90/Web/YTTX/credit_admin/web/app/
+
+
+http://10.0.5.222:8080/yttx-agentbms-api/servicestation/invoice/add
+
+
+供应商测试环境
+15768118559
+13826512010
+18825210055
+
+供应商正式环境
+15013802920 50295419800541
+15976797304 667304
+
+
+
+运营商测试环境
+yys3c  123456
+buzhu3c 123456
+3c0001  123456
+buzhu5g01 123456
+supermall
+
+运营商正式环境
+jx
+jxfc
+jxfc888
+henanfc
+
+
+
+http://120.24.226.70:8081/yttx-adminbms-api/tmp/togoodslist
+
+
+
+serve
+http://120.24.226.70:8081/yttx-agentbms-api/servicestation/invoice/add
+
+
+debug
+http://10.0.5.222:8080/yttx-agentbms-api/servicestation/invoice/add
+
+
+
+
+为了区分开发与生产环境
+
+十一后开始，将分别用如下：
+生产服务器（保持现有上线的不变）:
+120.24.226.70:8080(APP即前端)
+120.24.226.70:8082(BMS即后端)
+120.24.226.70:8087(SPIDER即爬虫) (备注：为了不影响到生产服务器，爬~将会停止，由开发服务器来执行即可）
+
+开发服务器（最新申请的）:
+120.76.237.100:8080(APP即前端)
+
+120.76.237.100:8082(BMS即后端)
+测试所有管理后台ip 由原先 120.76.237.100:8082 迁移为新(内部服务器） 10.0.5.226:8082
+
+120.76.237.100:8087(SPIDER即爬虫)
+
+正式服务器（最新申请的）:
+112.74.207.132:8082(BMS即后端)
+
+
+布住网单独配置环境
+(1)测试环境的前缀为：http://10.0.5.226:8082/mall-buzhubms-api/
+(2)正式环境的前缀为：http://112.74.207.132:8081/mall-buzhubms-api/
+
+
+//公用调用
+地址：http://112.74.207.132:8088/yttx-public-api/address/get
+七牛tocen:http://112.74.207.132:8088/yttx-public-api/qiniu/token/get
+
+
+
+
+
+/* 
+查询成员列表
+roleId
+
+http://120.24.226.70:8081/yttx-adminbms-api/sysusers
+*/
+
+{
+  "code": "0",
+  "message": "查询成功",
+  "result": {
+    "list": [
+      {
+        "createTime": "2016-06-22 11:36:47",
+        "id": 1,
+        "lastLoginIp": "219.133.160.26",
+        "lastLoginTime": "2016-08-06 10:26:54",
+        "modifyTime": "2016-07-27 19:02:52",
+        "name": "超级管理员",
+        "password": "827ccb0eea8a706c4c34a16891f84e7b",
+        "token": "89d7063a-01ae-4b8a-a4e8-e9dae086a935",
+        "tokenInvalidTime": "2016-08-07 10:26:54",
+        "username": "admin"
+      }
+    ]
+  }
+}
+
+
+/* 
+成员信息
+userId
+
+http://120.24.226.70:8081/yttx-adminbms-api/sysuser/info
+*/
+
+{
+  "code": "0",
+  "message": "查询成功",
+  "result": {
+    "createTime": "2016-06-22 11:36:47",
+    "id": 1,
+    "lastLoginIp": "219.133.160.26",
+    "lastLoginTime": "2016-08-06 10:26:54",
+    "modifyTime": "2016-07-27 19:02:52",
+    "name": "超级管理员",
+    "password": "827ccb0eea8a706c4c34a16891f84e7b",
+    "token": "89d7063a-01ae-4b8a-a4e8-e9dae086a935",
+    "tokenInvalidTime": "2016-08-07 10:26:54",
+    "username": "admin"
+  }
+}
+
+
+/* 
+菜单模块
+roleId
+
+http://120.24.226.70:8081/yttx-adminbms-api/module/menu
+*/
+
+
+
+
+
+/* 
+角色权限
+roleId
+
+http://120.24.226.70:8081/yttx-adminbms-api/module/permissions
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

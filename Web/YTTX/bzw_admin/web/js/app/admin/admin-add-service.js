@@ -44,7 +44,6 @@
 
         /*查询编辑数据*/
         function queryByEdit(config) {
-            var id = config.id/*编辑id*/;
             powerService.reqPowerList(config, function () {
                 var list=powerService.createTbody();
                 config.model.tbody = list;
