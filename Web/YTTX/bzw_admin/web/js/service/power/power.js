@@ -60,7 +60,7 @@
                     all_thead.push({
                         index: index,
                         id: powerCache[i]["id"],
-                        isPermit:0,
+                        isPermit: 0,
                         module: powerCache[i]["module"],
                         name: powerCache[i]["name"]
                     });
@@ -94,7 +94,7 @@
                     index: 0,
                     id: 0,
                     module: 0,
-                    isPermit:0,
+                    isPermit: 0,
                     name: ''
                 }];
                 thead = [{

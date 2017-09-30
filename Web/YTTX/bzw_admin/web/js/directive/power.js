@@ -63,8 +63,7 @@
                 var $selectall,
                     index,
                     checked,
-                    data,
-                    item;
+                    data;
 
                 if (nodename === 'label') {
                     $selectall = angular.element(target).find('input');
@@ -74,12 +73,14 @@
 
 
                 index = $selectall.attr('data-index');
-                checked = scope.thead[index]['isPermit'] === 1 ? 0 : 1;
+                checked = scope.thead[index]['isPermit'];
                 data = scope.tbody[index];
                 for (var i in data) {
-                    item = data[i];
-                    item['isPermit'] = checked;
+                    if (i !== '$$hashKey') {
+                        data[i]['isPermit']=checked;
+                    }
                 }
+                scope.$apply(data);
             });
 
         }
@@ -117,7 +118,8 @@
             link: powerTbody
         };
         /*link实现*/
-        function powerTbody(scope, element, attrs) {}
+        function powerTbody(scope, element, attrs) {
+        }
 
     }
 
