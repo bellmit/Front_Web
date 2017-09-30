@@ -110,7 +110,7 @@
             template: '<tr>\
                 <td ng-repeat="item in tbody">\
                     <label ng-repeat="(key,value) in item" data-index="{{value.index}}" class="btn btn-default g-gap-mb2 g-gap-mr2">\
-         <input data-prid="{{value.prid}}" ng-true-value="1" ng-false-value="0" data-modId="{{value.modId}}" data-index="{{value.index}}" ng-model="value.isPermit" type="checkbox" name="{{value.module}}" />&nbsp;{{value.funcName}}\
+         <input data-prid="{{value.prid}}" ng-true-value="1" ng-false-value="0" data-modId="{{value.modId}}" data-index="{{value.index}}" class="g-opacity5" ng-model="value.isPermit" type="checkbox" name="{{value.module}}" />&nbsp;{{value.funcName}}\
          </label>\
                 </td>\
             </tr>',
