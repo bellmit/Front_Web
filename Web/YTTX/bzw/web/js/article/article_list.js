@@ -1,50 +1,15 @@
-/*配置依赖*/
-require.config({
-    baseUrl: '../js/',
-    paths: {
-        'jquery': 'lib/jquery/jquery-2.1.4.min', /*基本类库*/
-        'jquery_mobile': 'lib/jquery/jquery-mobile.min', /*移动端支持*/
-        'mock': 'lib/mock', /*测试模块支持*/
-        'page': 'lib/pagination', /*分页*/
-        'test': 'widgets/test_widget'/*测试模块*/
-    },
-    shim: {
-        'jquery_mobile': {
-            deps: ['jquery']
-        },
-        'page': {
-            deps: ['jquery']
-        },
-        'test': {
-            deps: ['mock']
-        }
-    }
-});
-
-
-/*程序入口*/
-require(['jquery', 'jquery_mobile', 'mock', 'page', 'test'], function ($, $jm, mock, page, test) {
+(function ($) {
     $(function () {
 
         //dom对象引用
         var $header_menu = $('#header_menu'),
             $header_btn = $('#header_btn'),
+            $content_type = $('#content_type'),
             $content_list = $('#content_list'),
             $content_page = $('#content_page'),
             $win = $(window),
-            debug = true/*是否为测试模式*/,
+            debug = true/*请求模式,默认为true,即测试模式，正式环境需将debug设置为false*/,
             isMobile = false;
-
-        /*列表模板*/
-        var list_tpl = '<li>\
-                <a href="_url_">\
-                    <div>\
-                        <img alt="" src="_src_">\
-                    </div>\
-                    <h4>_title_</h4>\
-                    <p>_content_</p>\
-                </a>\
-            </li>';
 
 
         //监听导航切换显示隐藏
@@ -75,139 +40,144 @@ require(['jquery', 'jquery_mobile', 'mock', 'page', 'test'], function ($, $jm, m
             }
         });
 
-        /*请求数据*/
+        /*请求列表数据
+        * todo
+        * 注：需补充相关请求地址，正式环境需将debug设置为false
+        * */
         getArticleList({
-            tpl: list_tpl/*数据模板*/,
-            wrap: $content_list/*数据容器*/,
-            page: $content_page,
+            list: {
+                url: '请求列表地址'/*todo*/,
+                type: $content_type/*列表类型*/,
+                wrap: $content_list/*数据容器*/,
+                tpl: '<li>\
+                        <a href="_url_">\
+                            <div>\
+                                <img alt="" src="_src_">\
+                            </div>\
+                            <h4>_title_</h4>\
+                            <p>_content_</p>\
+                        </a>\
+                      </li>'/*数据模板*/
+            },
             debug: debug/*数据请求模式：测试模式和正式模式*/,
-            url: '请求地址'/*to do*/,
-            page_config: {
+            page: {
+                wrap: $content_page/*分页容器*/,
                 number: 1/*分页--默认显示第几页*/,
                 total: 0/*分页--默认多少条记录*/,
-                size: 10/*分页--每页显示记录数*/
-            }
-        });
-
-
-        /*调用分页*/
-        $content_page.pagination({
-            pageSize: 10,
-            total: 50,
-            pageNumber: 1,
-            onSelectPage: function (pageNumber, pageSize) {
-                /*to do*/
+                size: 6/*分页--每页显示记录数*/
             }
         });
 
     });
 
 
+    /*请求列表数据*/
     function getArticleList(config) {
         if (!config) {
             return false;
         }
         var debug = config.debug,
-            page_config = config.page_config;
+            page = config.page,
+            list = config.list,
+            param = location.search.slice(1);
+
+        param = param.split('=');
 
         /*请求数据*/
         $.ajax({
-                url: debug ? '../../json/test.json' : config.url,
+                url: debug ? '../json/test.json' : list.url,
                 dataType: 'json',
                 data: {
-                    'pagenumber': '1'
+                    'pageNumber': page.number,
+                    'pageSize': page.size,
+                    'type': param[1]
                 },
                 type: 'post'
             })
-            .done(function (result) {
+            .done(function (data) {
                 if (debug) {
-                    var result = testWidget.test({
+                    /*测试模式*/
+                    var data = testWidget.test({
                         map: {
                             id: 'guid',
-                            url: 'id',
-                            title: 'goods',
-                            content: 'text'
+                            type: 'value',
+                            src: 'rule,1,2,3',
+                            title: 'remark',
+                            content: 'goods'
                         },
-                        mapmin: 5,
-                        mapmax: 10,
+                        mapmin: 1,
+                        mapmax: 6,
                         type: 'list'
                     });
                 }
-                var code = parseInt(result.code, 10);
+                var code = parseInt(data.code, 10);
                 if (code !== 0) {
-                    console.log(result.message);
-
-                    /*清空缓存*/
-                    config.wrap.html('');
-                    /*重置分页*/
-                    page_config.number = 1;
-                    page_config.size = 10;
-                    page_config.total = 0;
-                    config.page.pagination({
-                        pageSize: page_config.size,
-                        total: page_config.total,
-                        pageNumber: page_config.number
-                    });
+                    console.log(data.message);
+                    _resetList_(list, page);
                     return false;
                 }
-                if (result.count !== 0) {
-
-                    var listdata = result.list,
+                var count = data.result.count;
+                if (count !== 0) {
+                    var listdata = data.result.list,
                         res = [];
                     /*解析数据*/
                     var len = listdata.length,
                         i = 0;
                     if (len !== 0) {
-                        var tpl = config.tpl;
+                        if (debug && len >= 6) {
+                            /*测试模式:控制分页列表最多显示6个*/
+                            listdata.length = 6;
+                            len = 6;
+                        }
+                        var tpl = list.tpl;
                         for (i; i < len; i++) {
                             var item = listdata[i];
-                            res.push(tpl.replace('_href_', 'article.html?id=' + item['href'])
+                            res.push(tpl.replace('_href_', 'article.html?id=' + item['id'] + '&type=' + item['type'])
                                 .replace('_title_', item['title'])
                                 .replace('_content_', item['content'])
                                 .replace('_src_', '../images/' + item['src'] + '.jpg'));
                         }
-                        $(res.join('')).appendTo(config.wrap.html(''));
-                        res.length = 0;
+                        $(res.join('')).appendTo(list.wrap.html(''));
+                        list.type.html(param[1]);
 
                         /*分页调用*/
-                        page_config.total = result.count;
-                        config.page.pagination({
-                            pageSize: page_config.size,
-                            total: page_config.total,
-                            pageNumber: page_config.number,
+                        page.total = count;
+                        page.wrap.pagination({
+                            pageSize: page.size,
+                            total: page.total,
+                            pageNumber: page.number,
                             onSelectPage: function (pageNumber, pageSize) {
-                                config.page_config = page_config;
+                                page.size = pageSize;
+                                page.number = pageNumber;
+                                config.page = page;
                                 getArticleList(config);
                             }
                         });
                     }
                 } else {
-                    config.wrap.html('');
-                    /*重置分页*/
-                    page_config.number = 1;
-                    page_config.size = 10;
-                    page_config.total = 0;
-                    config.page.pagination({
-                        pageSize: page_config.size,
-                        total: page_config.total,
-                        pageNumber: page_config.number
-                    });
+                    _resetList_(list, page);
                 }
             })
             .fail(function () {
-                config.wrap.html('');
-                /*重置分页*/
-                page_config.number = 1;
-                page_config.size = 10;
-                page_config.total = 0;
-                config.page.pagination({
-                    pageSize: page_config.size,
-                    total: page_config.total,
-                    pageNumber: page_config.number
-                });
+                _resetList_(list, page);
             });
     }
-});
 
 
+    /*私有服务--重置相关数据*/
+    function _resetList_(list, page) {
+        /*清空数据列*/
+        list.wrap.html('');
+        list.type.html('');
+        /*重置分页*/
+        page.number = 1;
+        page.size = 6;
+        page.total = 0;
+        page.wrap.pagination({
+            pageSize: page.size,
+            total: page.total,
+            pageNumber: page.number
+        });
+    }
 
+})(jQuery);

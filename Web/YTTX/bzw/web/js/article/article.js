@@ -1,131 +1,15 @@
-/*配置依赖*/
-require.config({
-    baseUrl: 'js/',
-    paths: {
-        'jquery': 'lib/jquery/jquery-2.1.4.min',
-        'jquery_mobile': 'lib/jquery/jquery-mobile.min'
-    },
-    shim: {
-        'dialog': {
-            deps: ['jquery']
-        },
-        'jquery_mobile': {
-            deps: ['jquery']
-        }
-    }
-});
-
-
-/*程序入口*/
-require(['jquery', 'jquery_mobile'], function ($, $jm) {
+(function ($) {
     $(function () {
 
         //dom对象引用
-        var $header_menu = $('#header_menu'),
-            $header_item = $header_menu.children(),
+        var debug = true/*请求模式,默认为true,即测试模式，正式环境需将debug设置为false*/,
+            $header_menu = $('#header_menu'),
             $header_btn = $('#header_btn'),
-            $screen_index = $('#screen_index'),
-            $screen_indexcontent = $screen_index.find('>div.index-content'),
-            $screen_product = $('#screen_product'),
-            $screen_productcontent = $screen_product.find('ul'),
-            $screen_scene = $('#screen_scene'),
-            $screen_news = $('#screen_news'),
-            $screen_3d = $('#screen_3d'),
-            $screen_contact = $('#screen_contact'),
-            $help_detail = $('#help_detail'),
+            $content_type = $('#content_type'),
+            $content_title = $('#content_title'),
+            $content_show = $('#content_show'),
             $win = $(window),
-            screen_pos = [{
-                node: $screen_index,
-                pos: 0
-            }, {
-                node: $screen_product,
-                pos: 0
-            }, {
-                node: $screen_news,
-                pos: 0
-            }, {
-                node: $screen_scene,
-                pos: 0
-            }, {
-                node: $screen_contact,
-                pos: 0
-            }],
-            isMobile = false,
-            count = 0;
-
-
-        //初始化
-        (function () {
-            //初始化菜单
-            var i = 0,
-                len = screen_pos.length,
-                j = 0,
-                pos = $(window).scrollTop();
-            for (i; i < len; i++) {
-                var temptop = screen_pos[i]["node"].offset().top;
-                screen_pos[i]["pos"] = temptop;
-
-                var minpos = parseInt(pos - 350, 0),
-                    maxpos = parseInt(pos + 350, 0);
-                if (temptop >= minpos && temptop <= maxpos) {
-                    $header_item.eq(i).addClass('menu-active').siblings().removeClass('menu-active');
-                    /*一屏动画*/
-                    if (i === 0) {
-                        $screen_indexcontent.addClass('index-contentactive');
-                    } else {
-                        $screen_indexcontent.removeClass('index-contentactive');
-                    }
-                    /*二屏动画*/
-                    if (i === 1) {
-                        $screen_productcontent.addClass('product-listactive');
-                    } else {
-                        $screen_productcontent.removeClass('product-listactive');
-                    }
-                }
-            }
-
-
-            /*
-             * 初始化pc或移动视口标识
-             *
-             * */
-            var winwidth = $win.width();
-            if (winwidth >= 1200) {
-                isMobile = false;
-                $screen_3d.addClass('scene-itempc');
-            } else {
-                isMobile = true;
-                $screen_3d.removeClass('scene-itempc');
-            }
-
-
-        }());
-
-
-        //监听菜单导航
-        $header_menu.on($.EventName.click, 'li', function (e) {
-            e.preventDefault();
-            var $this = $(this),
-                index = $this.index();
-            if (isMobile) {
-                $('html,body').animate({'scrollTop': screen_pos[index]['pos'] - 50 + 'px'}, 500);
-            } else {
-                $('html,body').animate({'scrollTop': screen_pos[index]['pos'] - 120 + 'px'}, 500);
-            }
-            /*一屏动画*/
-            if (index === 0) {
-                $screen_indexcontent.addClass('index-contentactive');
-            } else {
-                $screen_indexcontent.removeClass('index-contentactive');
-            }
-            /*二屏动画*/
-            if (index === 1) {
-                $screen_productcontent.addClass('product-listactive');
-            } else {
-                $screen_productcontent.removeClass('product-listactive');
-            }
-            return false;
-        });
+            isMobile = false;
 
 
         //监听导航切换显示隐藏
@@ -143,83 +27,94 @@ require(['jquery', 'jquery_mobile'], function ($, $jm) {
 
 
         //监听菜单滚动条滚动
-        $win.on('scroll resize', function (e) {
-            var type = e.type;
-            if (type == 'scroll') {
-                (function () {
-                    count++;
-                    if (count % 2 == 0) {
-                        var $this = $(this),
-                            currenttop = $this.scrollTop(),
-                            i = 0,
-                            len = screen_pos.length;
-
-                        for (i; i < len; i++) {
-                            var pos = screen_pos[i]['pos'],
-                                minpos = parseInt(pos - 350, 0),
-                                maxpos = parseInt(pos + 350, 0);
-
-                            if (currenttop >= minpos && currenttop <= maxpos) {
-                                $header_item.eq(i).addClass('menu-active').siblings().removeClass('menu-active');
-                                /*一屏动画*/
-                                if (i === 0) {
-                                    $screen_indexcontent.addClass('index-contentactive');
-                                } else {
-                                    $screen_indexcontent.removeClass('index-contentactive');
-                                }
-                                /*二屏动画*/
-                                if (i === 1) {
-                                    $screen_productcontent.addClass('product-listactive');
-                                } else {
-                                    $screen_productcontent.removeClass('product-listactive');
-                                }
-                            }
-                        }
-
-                    }
-                }());
+        $win.on('resize', function (e) {
+            //隐藏菜单导航
+            var winwidth = $win.width();
+            if (winwidth >= 1200 || (winwidth >= 1200 && e.orientation == 'landscape')) {
+                //隐藏已经存在的class
+                $header_btn.removeClass('header-btnactive');
+                $header_menu.removeClass('g-d-showi');
+                isMobile = false;
+            } else {
+                isMobile = true;
             }
-            if (type == 'resize') {
-                (function () {
-                    //隐藏菜单导航
-                    var winwidth = $win.width();
-                    if (winwidth >= 1200 || (winwidth >= 1200 && e.orientation == 'landscape')) {
-                        //隐藏已经存在的class
-                        $header_btn.removeClass('header-btnactive');
-                        $header_menu.removeClass('g-d-showi');
-                        isMobile = false;
-                        $screen_3d.addClass('scene-itempc');
-                    } else {
-                        isMobile = true;
-                        $screen_3d.removeClass('scene-itempc');
-                    }
+        });
 
-
-                    //重新定位滚动条位置
-                    var i = 0,
-                        len = screen_pos.length,
-                        j = 0,
-                        pos = $win.scrollTop();
-                    for (i; i < len; i++) {
-                        var temptop = screen_pos[i]["node"].offset().top;
-                        screen_pos[i]["pos"] = temptop;
-
-                        var minpos = parseInt(pos - 350, 0),
-                            maxpos = parseInt(pos + 350, 0);
-                        if (temptop >= minpos && temptop <= maxpos) {
-                            $header_item.eq(i).addClass('menu-active').siblings().removeClass('menu-active');
-                        }
-                    }
-
-
-                }());
-
-            }
+        /*请求数据
+        * todo
+        * 注：补充相关请求地址，正式环境需将debug设置为false
+        * */
+        getArticle({
+            type: $content_type,
+            wrap: $content_show/*数据容器*/,
+            title: $content_title,
+            debug: debug/*数据请求模式：测试模式和正式模式*/,
+            url: '请求文章详情地址'/*todo*/
         });
 
 
     });
-});
+
+    /*获取文章数据*/
+    function getArticle(config) {
+        if (!config) {
+            return false;
+        }
+        var debug = config.debug,
+            search = location.search.slice(1),
+            param = {},
+            i = 0,
+            len;
+
+
+        search = search.split('&');
+        len = search.length;
+        for (i; i < len; i++) {
+            var item = search[i].split('=');
+            param[item[0]] = item[1];
+        }
+        $.ajax({
+            url: debug ? '../json/test.json' : config.url,
+            type: 'post',
+            dataType: "json",
+            data: param
+        }).done(function (data) {
+                if (debug) {
+                    /*测试模式*/
+                    var data = testWidget.test({
+                        map: {
+                            title: 'text',
+                            type: 'value',
+                            content: 'content'
+                        },
+                        mapmin: 1,
+                        mapmax: 1,
+                        type: 'list'
+                    });
+                }
+                var code = parseInt(data.code, 10);
+                if (code !== 0) {
+                    /*请求异常*/
+                    console.log(data.message);
+                    config.title.html('');
+                    config.type.html('');
+                    config.wrap.html('');
+                } else {
+                    /*渲染数据*/
+                    var list = data.result.list[0];
+                    config.title.html(list.title);
+                    config.type.html(list.type);
+                    config.wrap.html(list.content);
+                }
+            })
+            .fail(function () {
+                config.title.html('');
+                config.type.html('');
+                config.wrap.html('');
+            });
+    }
+
+})(jQuery);
 
 
 
