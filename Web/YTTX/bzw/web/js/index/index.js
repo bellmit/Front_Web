@@ -211,10 +211,11 @@
                 btn_left: $tab_btn_left,
                 btn_right: $tab_btn_right,
                 wrap: $tab_btn,
-                tpl: '<span data-tab="_tabvalue_">_tabname_</span>'
+                tpl: '<span data-id="_id_" data-type="_type_">_name_</span>'/*tab html 模板*/
             },
             tabshow: {
                 id: '',
+                type: '',
                 url: '新闻资讯列表请求地址'/*todo*/,
                 wrap: $newstab_show,
                 tpl: '<li>\
@@ -223,7 +224,7 @@
                         </div>\
                         <h4>_title_</h4>\
                         <p>_content_<a target="_blank" href="_href_">详情</a></p>\
-                      </li>'
+                      </li>'/*新闻资讯列表 html 模板*/
             }
         });
     });
@@ -242,10 +243,12 @@
             data: {}
         }).done(function (result) {
                 if (debug) {
+                    /*测试模式*/
                     var result = testWidget.test({
                         map: {
                             name: 'value',
-                            value: 'guid'
+                            type: 'value',
+                            id: 'guid'
                         },
                         mapmin: 5,
                         mapmax: 10,
@@ -296,14 +299,14 @@
                     tpl = tab_config.tpl;
                 for (i; i < tablen; i++) {
                     var item = list[i];
-                    res.push(tpl.replace('_href_', 'article.html?id=' + item['href'])
-                        .replace('_tabname_', item['name'])
-                        .replace('_tabvalue_', item['value']));
+                    res.push(tpl.replace('_id_', item['id'])
+                        .replace('_name_', item['name'])
+                        .replace('_type_', item['type']));
                     $(res.join('')).appendTo(tab_config.wrap.html(''));
                 }
             }());
 
-            /*绑定事件*/
+            /*绑定事件,请求数据*/
             (function () {
 
                 var $tabs_items = tab_config.wrap.children(),
@@ -312,14 +315,16 @@
 
 
                 if (tablen >= 1) {
-                    /*查询第一项数据*/
-                    tabshow['id']=$tabs.attr('data-tab');
+                    /*初始化查询第一项数据*/
+                    tabshow['id'] = $tabs.attr('data-id');
+                    tabshow['type'] = $tabs.attr('data-type');
                     getNewsData({
-                        debug:debug,
-                        tabshow:tabshow
+                        debug: debug,
+                        tabshow: tabshow
                     });
                     $tabs.addClass('tab-active').siblings().removeClass('tab-active');
 
+                    /*初始化其他数据*/
                     if (tablen > TABLEN) {
                         if (tab_index === 0) {
                             tab_config.btn_left.addClass('tab-btn-disabled');
@@ -338,6 +343,8 @@
                                 return false;
                             } else {
                                 tab_index--;
+                                var tempitem = $tabs_items.eq(tab_index);
+
                                 if (tab_index === 0) {
                                     tab_config.btn_left.addClass('tab-btn-disabled');
                                 }
@@ -345,10 +352,12 @@
                                     tab_config.btn_right.removeClass('tab-btn-disabled');
                                 }
                                 if (tab_index <= TABLEN) {
-                                    $tabs_items.eq(tab_index).removeClass('g-d-hidei');
+                                    tempitem.eq(tab_index).removeClass('g-d-hidei');
                                 }
-                                tabshow['id'] = $tabs_items.eq(tab_index).attr('data-tab');
-                                $tabs_items.eq(tab_index).addClass('tab-active').siblings().removeClass('tab-active');
+
+                                tabshow['id'] = tempitem.attr('data-id');
+                                tabshow['type'] = tempitem.attr('data-type');
+                                tempitem.addClass('tab-active').siblings().removeClass('tab-active');
                                 /*查询信息*/
                                 getNewsData({
                                     debug: debug,
@@ -366,6 +375,7 @@
                                 return false;
                             } else {
                                 tab_index++;
+                                var tempitem = $tabs_items.eq(tab_index);
                                 if (tab_index === tablen - 1) {
                                     tab_config.btn_right.addClass('tab-btn-disabled');
                                 }
@@ -375,8 +385,9 @@
                                 if (tab_index >= TABLEN) {
                                     $tabs_items.eq(tab_index - TABLEN).addClass('g-d-hidei');
                                 }
-                                tabshow['id'] = $tabs_items.eq(tab_index).attr('data-tab');
-                                $tabs_items.eq(tab_index).addClass('tab-active').siblings().removeClass('tab-active');
+                                tabshow['id'] = tempitem.attr('data-id');
+                                tabshow['type'] = tempitem.attr('data-type');
+                                tempitem.addClass('tab-active').siblings().removeClass('tab-active');
                                 /*查询信息*/
                                 getNewsData({
                                     debug: debug,
@@ -394,7 +405,8 @@
                     tab_config.wrap.on('click', 'span', function () {
                         var $this = $(this);
 
-                        tabshow['id'] = $this.attr('data-tab');
+                        tabshow['id'] = $this.attr('data-id');
+                        tabshow['type'] = $this.attr('data-type');
                         /*同步索引*/
                         tab_index = $this.index();
 
@@ -445,12 +457,24 @@
         var debug = config.debug,
             tabshow = config.tabshow;
 
+        if (!tabshow) {
+            return false;
+        } else {
+            var id = tabshow.id,
+                type = tabshow.type;
+
+            if (id === '' || typeof id === 'undefined') {
+                return false;
+            }
+        }
+
         $.ajax({
             url: debug ? 'json/test.json' : tabshow.url,
             type: 'post',
             dataType: "json",
             data: {
-                "id": tabshow.id
+                "id": id,
+                "type": type
             }
         }).done(function (data) {
                 if (debug) {
@@ -459,7 +483,8 @@
                             src: 'rule,1,2,3',
                             title: 'goodstype',
                             content: 'text',
-                            href: 'id'
+                            type: 'value',
+                            id: 'guid'
                         },
                         mapmin: 5,
                         mapmax: 10,
@@ -476,19 +501,19 @@
                     var list = data.result.list,
                         len = list.length,
                         i = 0,
-                        res=[],
-                        tpl=tabshow.tpl;
+                        res = [],
+                        tpl = tabshow.tpl;
 
 
                     if (len !== 0) {
                         if (len >= 6) {
                             len = 6;
                             for (i; i < len; i++) {
-                                var item=list[i];
-                                res.push(tpl.replace('_src_', 'images/' + item['src']+'.jpg')
+                                var item = list[i];
+                                res.push(tpl.replace('_src_', 'images/' + item['src'] + '.jpg')
                                     .replace('_title_', item['title'])
                                     .replace('_content_', item['content'])
-                                    .replace('_href_', 'article.html?id='+item['href']));
+                                    .replace('_href_', 'tpl/article.html?id=' + item['id'] + '&type=' + item['type']));
                             }
                             $(res.join('')).appendTo(tabshow.wrap.html(''));
                         }
@@ -502,7 +527,3 @@
             });
     }
 })(jQuery);
-
-
-
-
