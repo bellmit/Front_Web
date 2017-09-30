@@ -71,10 +71,10 @@
                     $selectall = angular.element(target);
                 }
 
-
                 index = $selectall.attr('data-index');
                 checked = scope.thead[index]['isPermit'];
                 data = scope.tbody[index];
+
                 for (var i in data) {
                     if (i !== '$$hashKey') {
                         data[i]['isPermit']=checked;
@@ -82,7 +82,6 @@
                 }
                 scope.$apply(data);
             });
-
         }
     }
 

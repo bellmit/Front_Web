@@ -25,11 +25,13 @@
     </div>
     <div class="col-md-12"  ng-class="{'g-d-hidei':!vm.admin.setting}">
         <div class="admin-layout-theme4 admin-theme-close g-t-c g-b-gray17 g-pos-r">选择权限</div>
-        <table class="table table-bordered table-striped table-hover admin-layout-table">
-            <colgroup data-view-power-colgroup data-colgroup="vm.power.colgroup"></colgroup>
-            <thead data-view-power-thead-all data-thead="vm.power.thead" data-tbody="vm.power.tbody"></thead>
-            <tbody data-view-power-tbody data-tbody="vm.power.tbody"></tbody>
-        </table>
+        <div class="g-box-b g-w-percent50" style="overflow-x: scroll">
+            <table class="table table-bordered table-striped table-hover admin-layout-table">
+                <colgroup data-view-power-colgroup data-colgroup="vm.power.colgroup"></colgroup>
+                <thead data-view-power-thead-all data-thead="vm.power.thead" data-tbody="vm.power.tbody"></thead>
+                <tbody data-view-power-tbody data-tbody="vm.power.tbody"></tbody>
+            </table>
+        </div>
     </div>
 </div>
 
