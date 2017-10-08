@@ -50,7 +50,7 @@
                 type: $content_type/*列表类型*/,
                 wrap: $content_list/*数据容器*/,
                 tpl: '<li>\
-                        <a href="_url_">\
+                        <a target="_blank" href="_href_">\
                             <div>\
                                 <img alt="" src="_src_">\
                             </div>\
