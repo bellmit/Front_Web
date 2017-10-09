@@ -64,14 +64,27 @@
                 index: config.index/*表单序列，指代第几个表单一般跟reset(重置)按钮id所匹配一致*/,
                 successfn: function (obj) {
                     /*成功回调*/
-                    vm.admin.id = '';
+                    adminAddService.queryByName({
+                        debug: debug,
+                        admin: vm.admin,
+                        power: vm.power,
+                        israndom: debug/*随机选择权限*/,
+                        create: debug/*是否创建权限*/
+                    });
                 },
                 failfn: function (obj) {
                     /*失败回调*/
-
+                    /*重置表单*/
+                    vm.admin.id = '';
+                    vm.admin.setting = false/*隐身权限面板*/;
+                    vm.admin.userName = '';
+                    /*重置权限*/
+                    vm.power.colgroup = []/*分组*/;
+                    vm.power.thead = []/*头部*/;
+                    vm.power.tbody = []/*主体*/;
                 }
             }, function () {
-                /*管理员类型*/
+                /*管理员类型:组合请求参数*/
                 var param = {};
                 if (type === 'admin') {
                     for (var i in vm.admin) {
@@ -107,7 +120,6 @@
         }
 
 
-
         /*接口实现--私有*/
         /*初始化渲染*/
         function _initRender_() {
@@ -131,15 +143,15 @@
                 vm.admin.setting = true;
                 adminAddService.queryByEdit({
                     debug: debug/*测试模式*/,
-                    israndom: true/*随机选择权限*/,
-                    create: true,
+                    israndom: debug/*随机选择权限*/,
+                    create: debug,
                     model: vm.power/*权限模型*/,
-                    id: tempcache.id
+                    param: {
+                        id: tempcache.id
+                    }
                 });
             }
         }
-
-
     }
 
 

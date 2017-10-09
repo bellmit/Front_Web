@@ -8,10 +8,10 @@
         .controller('adminController', adminController);
     
     /*控制注入依赖*/
-    adminController.$inject = ['adminService'];
+    adminController.$inject = ['adminService','assistCommon'];
 
     /*控制器实现*/
-    function adminController(adminService) {
+    function adminController(adminService,assistCommon) {
         var vm = this;
 
         /*模型--菜单列表*/
@@ -19,6 +19,9 @@
         
         /*模型--欢迎页面*/
         vm.welcome=true;
+
+        /*清除临时缓存*/
+        assistCommon.changeCache('tempMap');
 
 
         /*接口实现--公有*/

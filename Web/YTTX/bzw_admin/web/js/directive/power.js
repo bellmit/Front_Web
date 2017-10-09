@@ -41,8 +41,8 @@
             },
             template: '<tr>\
                <th ng-repeat="i in thead" class="g-t-c">\
-                   <label data-index="{{i.index}}">\
-                        <input data-index="{{i.index}}" data-id="{{i.id}}" type="checkbox" ng-model="i.isPermit"  ng-true-value="1" ng-false-value="0" name="{{i.module}}" />&nbsp;{{i.name}}</label>\
+                   <label class="g-t-nowrap simulation-checkbox-widget simulation-checkbox-widget-before" ng-class="{\'simulation-checkbox-widget-before-active\':i.isPermit}" data-index="{{i.index}}">\
+                        <input data-index="{{i.index}}" data-id="{{i.id}}" type="checkbox" ng-model="i.isPermit"  ng-true-value="1" ng-false-value="0" name="{{i.module}}" />{{i.name}}</label>\
                </th>\
             </tr>',
             link: powerTheadAll
@@ -109,16 +109,12 @@
             },
             template: '<tr>\
                 <td ng-repeat="item in tbody">\
-                    <label ng-repeat="(key,value) in item" data-index="{{value.index}}" class="btn btn-default g-gap-mb2 g-gap-mr2">\
-         <input data-prid="{{value.prid}}" ng-true-value="1" ng-false-value="0" data-modId="{{value.modId}}" data-index="{{value.index}}" class="g-opacity5" ng-model="value.isPermit" type="checkbox" name="{{value.module}}" />&nbsp;{{value.funcName}}\
+                    <label ng-repeat="(key,value) in item" data-index="{{value.index}}" class="btn btn-default g-gap-mb2 g-gap-mr2 simulation-checkbox-widget simulation-checkbox-widget-before" ng-class="{\'simulation-checkbox-widget-before-active\':value.isPermit}">\
+         <input data-prid="{{value.prid}}" ng-true-value="1" ng-false-value="0" data-modId="{{value.modId}}" data-index="{{value.index}}" ng-model="value.isPermit" type="checkbox" name="{{value.module}}" />{{value.funcName}}\
          </label>\
                 </td>\
-            </tr>',
-            link: powerTbody
+            </tr>'
         };
-        /*link实现*/
-        function powerTbody(scope, element, attrs) {
-        }
 
     }
 
@@ -132,7 +128,7 @@
             },
             template: '<tr>\
                 <td ng-repeat="item in tbody">\
-                    <label ng-repeat="(key,value) in item" data-index="{{value.index}}" class="btn btn-default g-gap-mb2 g-gap-mr2">\
+                    <label ng-repeat="(key,value) in item" data-index="{{value.index}}" class="btn btn-default g-gap-mb2 g-gap-mr2 simulation-checkbox-widget simulation-checkbox-widget-before" ng-class="{\'simulation-checkbox-widget-before-active\':value.isPermit}">\
          <input data-prid="{{value.prid}}" ng-true-value="1" ng-false-value="0" data-modId="{{value.modId}}" data-index="{{value.index}}" ng-model="value.isPermit" type="checkbox" name="{{value.module}}" />&nbsp;{{value.funcName}}\
          </label>\
                 </td>\

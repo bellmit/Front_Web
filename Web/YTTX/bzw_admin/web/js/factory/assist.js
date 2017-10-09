@@ -257,7 +257,8 @@
                                     if (config.successfn && typeof config.successfn === 'function') {
                                         config.successfn.call(null, {
                                             action: action,
-                                            type: type
+                                            type: type,
+                                            result:data.result
                                         });
                                     }
                                     /*提示操作结果*/

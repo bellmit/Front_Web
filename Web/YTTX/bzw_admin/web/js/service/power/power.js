@@ -136,7 +136,12 @@
                     token: tempparm.token,
                     organizationId: typeof config.organizationId !== 'undefined' ? config.organizationId : tempparm.organizationId
                 };
-
+            /*合并参数*/
+            if(config.param){
+                for(var k in config.param){
+                    param[k]=config.param[k];
+                }
+            }
 
             toolUtil
                 .requestHttp({
