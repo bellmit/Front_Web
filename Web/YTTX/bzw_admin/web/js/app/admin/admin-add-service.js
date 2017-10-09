@@ -135,6 +135,8 @@
             }
             var debug = config.debug,
                 powerlist=_getPowerParam_(config.power);
+            console.log(config.power);
+            return false;
             toolUtil
                 .requestHttp({
                     url: 'admin/power/set',

@@ -307,31 +307,32 @@
 
         /*测试接口--菜单*/
         function testMenu(config) {
-            var menuobj = {},
-                israndom = false/*是否开启随机设置模式*/;
+            var menuobj = {};
 
             /*是否生成菜单*/
             if (config && config.create) {
-                menuobj['menu'] = _createMenu_(config);
+                if (config.israndom === true) {
+                    /*是否开启随机设置模式*/
+                    menuobj['menu'] = _createMenu_(config, true);
+                } else {
+                    menuobj['menu'] = _createMenu_(config, false);
+                }
             } else {
                 menuobj['menu'] = reg_menu.slice(0);
-            }
+                /*是否随机设置*/
+                if (config && config.israndom === true) {
+                    /*是否开启随机设置模式*/
+                    var menuarray = menuobj.menu,
+                        len = menuarray.length,
+                        i = 0;
 
-            /*是否随机设置*/
-            if (config && config.israndom) {
-                israndom = true;
-            }
-            if (israndom) {
-                var menuarray = menuobj.menu,
-                    len = menuarray.length,
-                    i = 0;
-
-                for (i; i < len; i++) {
-                    var menuitem = menuarray[i]['permitItem'],
-                        sublen = menuitem.length,
-                        j = 0;
-                    for (j; j < sublen; j++) {
-                        menuitem[j]['isPermit'] = parseInt(Math.random() * 10, 10) % 2;
+                    for (i; i < len; i++) {
+                        var menuitem = menuarray[i]['permitItem'],
+                            sublen = menuitem.length,
+                            j = 0;
+                        for (j; j < sublen; j++) {
+                            menuitem[j]['isPermit'] = parseInt(Math.random() * 10, 10) % 2;
+                        }
                     }
                 }
             }
@@ -671,7 +672,7 @@
         }
 
         /*生成菜单*/
-        function _createMenu_(config) {
+        function _createMenu_(config, flag) {
             var mlist = config.module ? config.module : [{
                     "modCode": "yttx-admin",
                     "modId": 10,
@@ -833,79 +834,77 @@
                 }],
                 plist = config.power ? config.power : [{
                     "funcCode": "add",
-                    "funcName": "增加",
-                    "isPermit": 1
+                    "funcName": "增加"
                 }, {
                     "funcCode": "delete",
-                    "funcName": "删除",
-                    "isPermit": 1
+                    "funcName": "删除"
                 }, {
                     "funcCode": "update",
-                    "funcName": "修改",
-                    "isPermit": 1
+                    "funcName": "修改"
                 }, {
                     "funcCode": "query",
-                    "funcName": "查询",
-                    "isPermit": 1
+                    "funcName": "查询"
                 }],
                 elist = [{
                     "funcCode": "audit",
-                    "funcName": "审核",
-                    "isPermit": 1
+                    "funcName": "审核"
                 }, {
                     "funcCode": "send",
-                    "funcName": "发货",
-                    "isPermit": 1
+                    "funcName": "发货"
                 }, {
                     "funcCode": "comment",
-                    "funcName": "评论",
-                    "isPermit": 1
+                    "funcName": "评论"
                 }, {
                     "funcCode": "forbid",
-                    "funcName": "禁用",
-                    "isPermit": 1
+                    "funcName": "禁用"
                 }, {
                     "funcCode": "enable",
-                    "funcName": "启用",
-                    "isPermit": 1
+                    "funcName": "启用"
                 }, {
                     "funcCode": "up",
-                    "funcName": "上架",
-                    "isPermit": 1
+                    "funcName": "上架"
                 }, {
                     "funcCode": "down",
-                    "funcName": "下架",
-                    "isPermit": 1
+                    "funcName": "下架"
                 }, {
                     "funcCode": "detail",
-                    "funcName": "查看",
-                    "isPermit": 1
+                    "funcName": "查看"
                 }],
                 i = 0,
                 count = 0,
                 len = mlist.length,
-                plen = plist.length,
                 elen = elist.length,
                 slen,
                 rmax,
                 menu = [],
                 mitem,
-                pitem,
-                titem;
+                pitem;
 
             for (i; i < len; i++) {
+                var tempi = parseInt(i + 1, 10);
+
                 rmax = parseInt(Math.random() * elen, 10);
-                slen=plen + rmax;
-                mitem = mlist[i];
+                mitem = mlist.slice(i, tempi)[0];
                 pitem = plist.slice(0).concat(elist.slice(0, rmax));
+                slen = pitem.length;
 
 
                 var j = 0;
                 /*设置默认权限*/
-                for (j; j < slen; j++) {
-                    count++;
-                    pitem[j]['modId'] = mitem['modId'];
-                    pitem[j]['prid'] = count;
+                if (flag) {
+                    for (j; j < slen; j++) {
+                        count++;
+                        pitem[j]['modId'] = mitem['modId'];
+                        pitem[j]['prid'] = count;
+                        pitem[j]['isPermit'] = parseInt(Math.random() * 10, 10) % 2;
+                    }
+                } else {
+                    for (j; j < slen; j++) {
+                        count++;
+                        pitem[j]['modId'] = mitem['modId'];
+                        pitem[j]['prid'] = count;
+                        pitem[j]['isPermit'] = 1;
+                    }
                 }
                 mitem['permitItem'] = pitem;
                 menu.push(mitem);
