@@ -312,30 +312,26 @@
 
             /*是否生成菜单*/
             if (config && config.create) {
-                if (config && config.israndom) {
-                    israndom = true;
-                }else{
-                    menuobj['menu'] = _createMenu_(config);
-                }
-
+                menuobj['menu'] = _createMenu_(config);
             } else {
                 menuobj['menu'] = reg_menu.slice(0);
-                /*是否随机设置*/
-                if (config && config.israndom) {
-                    israndom = true;
-                }
-                if (israndom) {
-                    var menuarray = menuobj.menu,
-                        len = menuarray.length,
-                        i = 0;
+            }
 
-                    for (i; i < len; i++) {
-                        var menuitem = menuarray[i]['permitItem'],
-                            sublen = menuitem.length,
-                            j = 0;
-                        for (j; j < sublen; j++) {
-                            menuitem[j]['isPermit'] = parseInt(Math.random() * 10, 10) % 2;
-                        }
+            /*是否随机设置*/
+            if (config && config.israndom) {
+                israndom = true;
+            }
+            if (israndom) {
+                var menuarray = menuobj.menu,
+                    len = menuarray.length,
+                    i = 0;
+
+                for (i; i < len; i++) {
+                    var menuitem = menuarray[i]['permitItem'],
+                        sublen = menuitem.length,
+                        j = 0;
+                    for (j; j < sublen; j++) {
+                        menuitem[j]['isPermit'] = parseInt(Math.random() * 10, 10) % 2;
                     }
                 }
             }
@@ -834,7 +830,7 @@
                         "modLink": "setting.notice",
                         "modName": "通知"
                     }]
-                }]/*模块*/,
+                }],
                 plist = config.power ? config.power : [{
                     "funcCode": "add",
                     "funcName": "增加",
@@ -851,7 +847,7 @@
                     "funcCode": "query",
                     "funcName": "查询",
                     "isPermit": 1
-                }]/*权限*/,
+                }],
                 elist = [{
                     "funcCode": "audit",
                     "funcName": "审核",
@@ -884,7 +880,7 @@
                     "funcCode": "detail",
                     "funcName": "查看",
                     "isPermit": 1
-                }]/*扩展权限*/,
+                }],
                 i = 0,
                 count = 0,
                 len = mlist.length,
@@ -893,13 +889,13 @@
                 slen,
                 rmax,
                 menu = [],
-                mitem/*模块选项*/,
-                pitem/*权限选项*/,
+                mitem,
+                pitem,
                 titem;
 
             for (i; i < len; i++) {
                 rmax = parseInt(Math.random() * elen, 10);
-                slen = plen + rmax;
+                slen=plen + rmax;
                 mitem = mlist[i];
                 pitem = plist.slice(0).concat(elist.slice(0, rmax));
 
@@ -910,7 +906,6 @@
                     count++;
                     pitem[j]['modId'] = mitem['modId'];
                     pitem[j]['prid'] = count;
-                    console.log(pitem[j]);
                 }
                 mitem['permitItem'] = pitem;
                 menu.push(mitem);
