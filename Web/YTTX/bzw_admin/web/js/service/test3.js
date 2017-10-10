@@ -893,29 +893,35 @@
                 rmax = parseInt(Math.random() * elen, 10);
 
                 /*创建权限对象*/
-                mitem = _copyItem_({
-                    len: 1,
-                    item: mlist.slice(i, tempi),
-                    type: 'condition'
-                })[0];
+                mitem = _copyItem_(1, mlist.slice(i, tempi))[0];
                 /*pitem = plist.slice(0).concat(elist.slice(0, rmax));*/
                 /*pitem = [].concat(_copyItem_(len, plist), _copyItem_(rmax, elist.slice(0, rmax)));*/
 
                 /*设置默认权限*/
                 mitem['modId'] = modid;
-                mitem['permitItem'] = [].concat(_copyItem_({
-                    len: len,
-                    item: plist,
-                    modid: modid,
-                    flag: true,
-                    type: 'power'
-                }), _copyItem_({
-                    len: rmax,
-                    item: elist.slice(0, rmax),
-                    modid: modid,
-                    flag: true,
-                    type: 'power'
-                }));
+                mitem['permitItem'] = (function () {
+                    var pitem=[].concat(_copyItem_(len, plist), _copyItem_(rmax, elist.slice(0, rmax))),
+                        slen = pitem.length;
+
+                    var j = 0;
+                    if (flag) {
+                        for (j; j < slen; j++) {
+                            console.log(count);
+                            count++;
+                            pitem[j]['modId'] = modid;
+                            pitem[j]['prid'] = count;
+                            pitem[j]['isPermit'] = parseInt(Math.random() * 10, 10) % 2;
+                        }
+                    } else {
+                        for (j; j < slen; j++) {
+                            count++;
+                            pitem[j]['modId'] = modid;
+                            pitem[j]['prid'] = count;
+                            pitem[j]['isPermit'] = 1;
+                        }
+                    }
+                    return pitem;
+                }());
                 menu.push(mitem);
                 //mitem['permitItem'] = pitem;
                 //menu.push(mitem);
@@ -955,30 +961,14 @@
         }
 
         /*复制数组对象*/
-        function _copyItem_(config) {
-            var clen = config.len,
-                citem = config.item,
-                cmodid = config.modid,
-                cflag = config.flag,
-                ctype = config.type,
-                temparr = [],
+        function _copyItem_(clen, citem) {
+            var temparr = [],
                 tempobj = {},
                 k = 0;
             for (k; k < clen; k++) {
                 var tempitem = citem[k];
                 for (var m in tempitem) {
                     tempobj[m] = tempitem[m];
-                }
-                if (ctype === 'power') {
-                    tempobj['modId'] = cmodid;
-                    tempobj['prid'] = parseInt(Math.random() * 1000000, 10);
-                    if (cflag) {
-                        tempobj['isPermit'] = parseInt(Math.random() * 10, 10) % 2;
-                    } else {
-                        tempobj['isPermit'] = 1;
-                    }
-                } else {
-                    /*to do*/
                 }
                 temparr.push(tempobj);
             }
