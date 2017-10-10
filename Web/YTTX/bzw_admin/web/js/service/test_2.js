@@ -313,9 +313,9 @@
             if (config && config.create) {
                 if (config.israndom === true) {
                     /*是否开启随机设置模式*/
-                    menuobj['menu'] = _createMenu_(true);
+                    menuobj['menu'] = _createMenu_(config, true);
                 } else {
-                    menuobj['menu'] = _createMenu_(false);
+                    menuobj['menu'] = _createMenu_(config, false);
                 }
             } else {
                 menuobj['menu'] = reg_menu.slice(0);
@@ -336,28 +336,6 @@
                     }
                 }
             }
-
-
-            /*/!*是否随机设置*!/
-             console.log(menuobj['menu']);
-             if (config && config.israndom === true) {
-             /!*var i = 0,
-             menuitem,
-             sublen,
-             j;
-             for (i; i < len; i++) {
-             var menuitem = menu[i]['permitItem'],
-             sublen = menuitem.length,
-             j = 0;
-             for (j; j < sublen; j++) {
-             menuitem[j]['isPermit'] = parseInt(Math.random() * 10, 10) % 2;
-             }
-             }*!/
-             _doMenuItem_(menuobj, true);
-             } else {
-             _doMenuItem_(menuobj, false);
-             }
-             console.log(menuobj['menu']);*/
             return {
                 status: 200,
                 data: {
@@ -694,8 +672,8 @@
         }
 
         /*生成菜单*/
-        function _createMenu_(flag) {
-            var mlist = [{
+        function _createMenu_(config, flag) {
+            var mlist = config.module ? config.module : [{
                     "modCode": "yttx-admin",
                     "modName": "管理员管理",
                     "modLink": "admin",
@@ -842,7 +820,7 @@
                         "modName": "通知"
                     }]
                 }],
-                plist = [{
+                plist = config.power ? config.power : [{
                     "funcCode": "add",
                     "funcName": "增加"
                 }, {
@@ -894,66 +872,40 @@
                 /*
                  "modId": 120
                  */
-
+                
                 var tempi = parseInt(i + 1, 10),
                     j = 0,
                     modid = tempi * 10;
+
+                console.log(modid);
 
                 rmax = parseInt(Math.random() * elen, 10);
                 mitem = mlist.slice(i, tempi)[0];
                 pitem = plist.slice(0).concat(elist.slice(0, rmax));
                 slen = pitem.length;
-                mitem['modId'] = modid;
-                mitem['permitItem'] = pitem;
-                menu.push(mitem);
+                mitem['modId']=modid;
+
                 /*设置默认权限*/
                 if (flag) {
                     for (j; j < slen; j++) {
                         count++;
-                        pitem[j]['modId'] = mitem['modId'];
+                        pitem[j]['modId'] = modid;
                         pitem[j]['prid'] = count;
                         pitem[j]['isPermit'] = parseInt(Math.random() * 10, 10) % 2;
                     }
                 } else {
                     for (j; j < slen; j++) {
                         count++;
-                        pitem[j]['modId'] = mitem['modId'];
+                        pitem[j]['modId'] = modid;
                         pitem[j]['prid'] = count;
                         pitem[j]['isPermit'] = 1;
                     }
                 }
-                console.log(mitem);
+                console.log(pitem);
+                mitem['permitItem'] = pitem;
+                menu.push(mitem);
             }
             return menu;
-        }
-
-        function _doMenuItem_(menuobj, flag) {
-            var menu = menuobj.menu,
-                len = menu.length,
-                i = 0,
-                count = 0,
-                modid = 0,
-                menuitem,
-                sublen,
-                j;
-
-            /*是否随机设置*/
-            for (i; i < len; i++) {
-                modid = menu[i]['modId'];
-                menuitem = menu[i]['permitItem'];
-                sublen = menuitem.length;
-                j = 0;
-                for (j; j < sublen; j++) {
-                    count++;
-                    if (flag) {
-                        menuitem[j]['isPermit'] = parseInt(Math.random() * 10, 10) % 2;
-                    } else {
-                        menuitem[j]['isPermit'] = 1;
-                    }
-                    menuitem[j]['modId'] = modid;
-                    menuitem[j]['prid'] = count;
-                }
-            }
         }
 
     }
