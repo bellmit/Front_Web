@@ -338,9 +338,8 @@
             }
 
 
-            /*/!*是否随机设置*!/
-             console.log(menuobj['menu']);
-             if (config && config.israndom === true) {
+            /*是否随机设置*/
+            /*if (config && config.israndom === true) {
              /!*var i = 0,
              menuitem,
              sublen,
@@ -356,8 +355,7 @@
              _doMenuItem_(menuobj, true);
              } else {
              _doMenuItem_(menuobj, false);
-             }
-             console.log(menuobj['menu']);*/
+             }*/
             return {
                 status: 200,
                 data: {
@@ -891,37 +889,47 @@
                 pitem;
 
             for (i; i < len; i++) {
-                /*
-                 "modId": 120
-                 */
-
                 var tempi = parseInt(i + 1, 10),
-                    j = 0,
                     modid = tempi * 10;
 
                 rmax = parseInt(Math.random() * elen, 10);
-                mitem = mlist.slice(i, tempi)[0];
-                pitem = plist.slice(0).concat(elist.slice(0, rmax));
-                slen = pitem.length;
-                mitem['modId'] = modid;
-                mitem['permitItem'] = pitem;
-                menu.push(mitem);
+
+                /*创建权限对象*/
+                mitem = _copyItem_(1, mlist.slice(i, tempi))[0];
+                /*pitem = plist.slice(0).concat(elist.slice(0, rmax));*/
+                /*pitem = [].concat(_copyItem_(len, plist), _copyItem_(rmax, elist.slice(0, rmax)));*/
+
                 /*设置默认权限*/
-                if (flag) {
-                    for (j; j < slen; j++) {
-                        count++;
-                        pitem[j]['modId'] = mitem['modId'];
-                        pitem[j]['prid'] = count;
-                        pitem[j]['isPermit'] = parseInt(Math.random() * 10, 10) % 2;
+                mitem['modId'] = modid;
+                mitem['permitItem'] = [].concat(_copyItem_(len, plist), _copyItem_(rmax, elist.slice(0, rmax)));
+
+
+                menu.push(mitem);
+
+                pitem=menu[i]['permitItem'];
+                slen = pitem.length;
+
+
+                (function () {
+                    var j = 0;
+                    if (flag) {
+                        for (j; j < slen; j++) {
+                            count++;
+                            pitem[j]['modId'] = modid;
+                            pitem[j]['prid'] = count;
+                            pitem[j]['isPermit'] = parseInt(Math.random() * 10, 10) % 2;
+                        }
+                    } else {
+                        for (j; j < slen; j++) {
+                            count++;
+                            pitem[j]['modId'] = modid;
+                            pitem[j]['prid'] = count;
+                            pitem[j]['isPermit'] = 1;
+                        }
                     }
-                } else {
-                    for (j; j < slen; j++) {
-                        count++;
-                        pitem[j]['modId'] = mitem['modId'];
-                        pitem[j]['prid'] = count;
-                        pitem[j]['isPermit'] = 1;
-                    }
-                }
+                }());
+                //mitem['permitItem'] = pitem;
+                //menu.push(mitem);
                 console.log(mitem);
             }
             return menu;
@@ -953,7 +961,39 @@
                     menuitem[j]['modId'] = modid;
                     menuitem[j]['prid'] = count;
                 }
+                console.log(menu[i]);
             }
+        }
+
+        /*复制数组对象*/
+        function _copyItem_(clen, citem) {
+            var temparr = [],
+                tempobj = {},
+                k = 0;
+            for (k; k < clen; k++) {
+                var tempitem = citem[k];
+                for (var m in tempitem) {
+                    tempobj[m] = tempitem[m];
+                }
+                temparr.push(tempobj);
+            }
+            return temparr;
+        }
+
+        /*组合唯一值*/
+        function _conditionUnique_(i, j) {
+            var a, b;
+            if (i === 0) {
+                a = i + 1;
+            } else {
+                a = i;
+            }
+            if (j === 0) {
+                b = j + 1;
+            } else {
+                b = j;
+            }
+            return a + b;
         }
 
     }
