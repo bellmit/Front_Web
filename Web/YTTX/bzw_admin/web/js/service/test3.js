@@ -882,9 +882,11 @@
                 count = 0,
                 len = mlist.length,
                 elen = elist.length,
+                slen,
                 rmax,
                 menu = [],
-                mitem;
+                mitem,
+                pitem;
 
             for (i; i < len; i++) {
                 var tempi = parseInt(i + 1, 10),
@@ -899,14 +901,19 @@
 
                 /*设置默认权限*/
                 mitem['modId'] = modid;
-                mitem['permitItem'] = (function () {
-                    var pitem=[].concat(_copyItem_(len, plist), _copyItem_(rmax, elist.slice(0, rmax))),
-                        slen = pitem.length;
+                mitem['permitItem'] = [].concat(_copyItem_(len, plist), _copyItem_(rmax, elist.slice(0, rmax)));
 
+
+                menu.push(mitem);
+
+                pitem=menu[i]['permitItem'];
+                slen = pitem.length;
+
+
+                (function () {
                     var j = 0;
                     if (flag) {
                         for (j; j < slen; j++) {
-                            console.log(count);
                             count++;
                             pitem[j]['modId'] = modid;
                             pitem[j]['prid'] = count;
@@ -920,9 +927,7 @@
                             pitem[j]['isPermit'] = 1;
                         }
                     }
-                    return pitem;
                 }());
-                menu.push(mitem);
                 //mitem['permitItem'] = pitem;
                 //menu.push(mitem);
                 console.log(mitem);
