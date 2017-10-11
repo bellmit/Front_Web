@@ -962,28 +962,25 @@
                 temparr = [],
                 tempobj = {},
                 k = 0;
-            (function () {
-                for (k; k < clen; k++) {
-                    (function () {
-                        var tempitem = citem[k];
-                        for (var m in tempitem) {
-                            tempobj[m] = tempitem[m];
-                        }
-                        if (ctype === 'power') {
-                            tempobj['modId'] = cmodid;
-                            tempobj['prid'] = parseInt(Math.random() * 1000000, 10);
-                            if (cflag) {
-                                tempobj['isPermit'] = parseInt(Math.random() * 10, 10) % 2;
-                            } else {
-                                tempobj['isPermit'] = 1;
-                            }
+
+            for (k; k < clen; k++) {
+                (function (k) {
+                    var tempitem = citem[k];
+                    for (var m in tempitem) {
+                        tempobj[m] = tempitem[m];
+                    }
+                    if (ctype === 'power') {
+                        tempobj['modId'] = cmodid;
+                        tempobj['prid'] = parseInt(Math.random() * 1000000, 10);
+                        if (cflag) {
+                            tempobj['isPermit'] = parseInt(Math.random() * 10, 10) % 2;
                         } else {
-                            /*to do*/
+                            tempobj['isPermit'] = 1;
                         }
-                    }());
-                    temparr.push(tempobj);
-                }
-            }());
+                    }
+                })(k);
+                temparr.push(tempobj);
+            }
             return temparr;
         }
 
