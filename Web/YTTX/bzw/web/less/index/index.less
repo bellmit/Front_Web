@@ -443,6 +443,9 @@ body{
 	}
 	.tab-btn-disabled{
 		border:1px solid @color-gray12 !important;
+		&:empty{
+			cursor: default;
+		}
 		&:after{
 			color:@color-gray12 !important;
 		}
@@ -456,6 +459,9 @@ body{
 	.tab-show{
 		font-size:0;
 		overflow: hidden;
+		&:empty{
+			cursor: default;
+		}
 		span{
 			.layout-base(20%);
 			font-size:@font-size-base;
@@ -477,6 +483,7 @@ body{
 }
 /*列表*/
 .screen-newslist{
+	.layout-relative-base();
 	background:@color-white;
 	.layout-base();
 	.calc-base(height,'100% - 200px');
@@ -489,14 +496,37 @@ body{
 		padding:0 0 30px 0;
 		overflow: hidden;
 		.list-wrap1();
+		&:empty{
+			display:inline-block;
+			.layout-base();
+			padding:180px 0 50px 0;
+			height:100%;
+			text-align: center;
+			min-height:400px;
+			background:transparent url('../images/screen_indexicon.png') repeat left top;
+			.opacity-base(40);
+			&:before{
+				content:'\e628';
+				font-family: 'ux_two';
+				color:darken(@color-red1,10);
+				font-size: @font-size-base + 20;
+			}
+			&:after{
+				content:'暂无新闻资讯，请去后台添加';
+				color:@color-gray6;
+				padding:0 10px;
+				font-size: @font-size-base;
+			}
+		}
 	}
-	>div{
+	.newstab-more{
+		.layout-absoluterb-base(0,40px);
 		.user-select-base();
 		.layout-base();
 		height:0;
 		a{
 			float:right;
-			margin:-25px 0 0 0;
+			margin-right:30px;
 			display:inline-block;
 			padding:5px 10px;
 			font-size:@font-size-base;

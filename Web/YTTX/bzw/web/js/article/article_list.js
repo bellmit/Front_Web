@@ -8,7 +8,8 @@
             $content_list = $('#content_list'),
             $content_page = $('#content_page'),
             $win = $(window),
-            debug = true/*请求模式,默认为true,即测试模式，正式环境需将debug设置为false*/,
+            debug = false/*请求模式,默认为true,即测试模式，正式环境需将debug设置为false*/,
+            base_domain = 'http://10.0.5.218:8001/',
             isMobile = false;
 
 
@@ -41,12 +42,12 @@
         });
 
         /*请求列表数据
-        * todo
-        * 注：需补充相关请求地址，正式环境需将debug设置为false
-        * */
+         * todo
+         * 注：需补充相关请求地址，正式环境需将debug设置为false
+         * */
         getArticleList({
             list: {
-                url: '请求列表地址'/*todo*/,
+                url: base_domain + 'web/article'/*todo*/,
                 type: $content_type/*列表类型*/,
                 wrap: $content_list/*数据容器*/,
                 tpl: '<li>\
@@ -79,29 +80,47 @@
         var debug = config.debug,
             page = config.page,
             list = config.list,
-            param = location.search.slice(1);
+            search = location.search.slice(1),
+            param = {};
 
-        param = param.split('=');
+        /*组合参数*/
+        search = search.split('&');
+        var plen = search.length,
+            pi = 0;
+        for (pi; pi < plen; pi++) {
+            var item = search[pi].split('=');
+            param[item[0]] = decodeURIComponent(item[1]);
+        }
+
 
         /*请求数据*/
         $.ajax({
                 url: debug ? '../json/test.json' : list.url,
                 dataType: 'json',
-                data: {
-                    'pageNumber': page.number,
-                    'pageSize': page.size,
-                    'type': param[1]
+                data: debug ? {
+                    'pageNumber': page.number/*第几页*/,
+                    'pageSize': page.size/*每页数据量*/,
+                    'category_id': param['id']
+                } : {
+                    'page': page.number/*第几页*/,
+                    'pageSize': page.size/*每页数据量*/,
+                    'category_id': param['id']
                 },
                 type: 'post'
             })
             .done(function (data) {
+                var count,
+                    listdata,
+                    res = [],
+                    len,
+                    i = 0,
+                    tpl = list.tpl;
                 if (debug) {
                     /*测试模式*/
                     var data = testWidget.test({
                         map: {
                             id: 'guid',
-                            type: 'value',
-                            src: 'rule,1,2,3',
+                            icon: 'rule,1,2,3',
                             title: 'remark',
                             content: 'goods'
                         },
@@ -109,39 +128,60 @@
                         mapmax: 6,
                         type: 'list'
                     });
+                    var code = parseInt(data.code, 10);
+                    if (code !== 0) {
+                        console.log(data.message);
+                        _resetList_(list, page, debug);
+                        return false;
+                    }
+                    count = data.result.count;
+                    listdata = data.result.list;
+                } else {
+                    if (!data) {
+                        _resetList_(list, page, debug);
+                        return false;
+                    }
+                    listdata = data.data;
+                    count = data.total_count;
                 }
-                var code = parseInt(data.code, 10);
-                if (code !== 0) {
-                    console.log(data.message);
-                    _resetList_(list, page);
-                    return false;
-                }
-                var count = data.result.count;
-                if (count !== 0) {
-                    var listdata = data.result.list,
-                        res = [];
-                    /*解析数据*/
-                    var len = listdata.length,
-                        i = 0;
-                    if (len !== 0) {
-                        if (debug && len >= 6) {
+                /*解析数据*/
+                len = listdata.length;
+                if (len !== 0) {
+                    var item;
+                    if (debug) {
+                        if (len >= 6) {
                             /*测试模式:控制分页列表最多显示6个*/
                             listdata.length = 6;
                             len = 6;
                         }
-                        var tpl = list.tpl;
                         for (i; i < len; i++) {
-                            var item = listdata[i];
-                            res.push(tpl.replace('_href_', 'article.html?id=' + item['id'] + '&type=' + item['type'])
+                            item = listdata[i];
+                            res.push(tpl.replace('_href_', 'article.html?id=' + encodeURIComponent(item['id']) + '&type=' + param['type'])
                                 .replace('_title_', item['title'])
                                 .replace('_content_', item['content'])
-                                .replace('_src_', '../images/' + item['src'] + '.jpg'));
+                                .replace('_src_', '../images/' + item['icon'] + '.jpg'));
                         }
-                        $(res.join('')).appendTo(list.wrap.html(''));
-                        list.type.html(param[1]);
+                    } else {
+                        for (i; i < len; i++) {
+                            item = listdata[i];
+                            res.push(tpl.replace('_href_', 'article.html?id=' + encodeURIComponent(item['id']))
+                                .replace('_title_', item['title'])
+                                .replace('_content_', item['content'])
+                                .replace('_src_', (function () {
+                                    var imgurl = item['icon'];
+                                    if (imgurl === '' || (imgurl !== '' && imgurl.indexOf(/(.)(png|jpeg|gif|jpg)/) !== -1)) {
+                                        return '../images/1.jpg';
+                                    }
+                                    return imgurl;
+                                }())));
+                        }
+                    }
+                    $(res.join('')).appendTo(list.wrap.html(''));
+                    list.type.html(param['type']);
 
-                        /*分页调用*/
-                        page.total = count;
+                    /*分页调用*/
+                    page.total = count;
+                    if (debug) {
                         page.wrap.pagination({
                             pageSize: page.size,
                             total: page.total,
@@ -153,31 +193,48 @@
                                 getArticleList(config);
                             }
                         });
+                    } else {
+                        page.wrap.pagination({
+                            total: page.total,
+                            pageNumber: page.number,
+                            onSelectPage: function (pageNumber) {
+                                page.number = pageNumber;
+                                config.page = page;
+                                getArticleList(config);
+                            }
+                        });
                     }
                 } else {
-                    _resetList_(list, page);
+                    _resetList_(list, page, debug);
                 }
             })
             .fail(function () {
-                _resetList_(list, page);
+                _resetList_(list, page, debug);
             });
     }
 
 
     /*私有服务--重置相关数据*/
-    function _resetList_(list, page) {
+    function _resetList_(list, page, debug) {
         /*清空数据列*/
         list.wrap.html('');
         list.type.html('');
         /*重置分页*/
         page.number = 1;
-        page.size = 6;
         page.total = 0;
-        page.wrap.pagination({
-            pageSize: page.size,
-            total: page.total,
-            pageNumber: page.number
-        });
+        if (debug) {
+            page.size = 6;
+            page.wrap.pagination({
+                pageSize: page.size,
+                total: page.total,
+                pageNumber: page.number
+            });
+        } else {
+            page.wrap.pagination({
+                total: page.total,
+                pageNumber: page.number
+            });
+        }
     }
 
 })(jQuery);

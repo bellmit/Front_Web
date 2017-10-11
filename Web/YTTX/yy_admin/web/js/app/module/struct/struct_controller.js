@@ -405,7 +405,7 @@ angular.module('app')
                                 }
                                 /*删除用户*/
                                 if (self.powerlist.batch_delete) {
-                                    btns += '<span  data-action="delete" data-organizationId="' + full.organizationId + '" data-id="' + data + '"  class="btn-operate g-d-hidei">删除</span>';
+                                    btns += '<span  data-action="delete" data-organizationId="' + full.organizationId + '" data-id="' + data + '"  class="btn-operate">删除</span>';
                                 }
                                 return btns;
                             }

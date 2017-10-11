@@ -903,13 +903,13 @@
 
                 /*设置默认权限*/
                 mitem['modId'] = modid;
-                mitem['permitItem'] = [].concat(_copyItem_({
+                mitem['permitItem'] = _copyItem_({
                     len: len,
                     item: plist,
                     modid: modid,
                     flag: true,
                     type: 'power'
-                }), _copyItem_({
+                }).concat(_copyItem_({
                     len: rmax,
                     item: elist.slice(0, rmax),
                     modid: modid,
@@ -917,8 +917,6 @@
                     type: 'power'
                 }));
                 menu.push(mitem);
-                //mitem['permitItem'] = pitem;
-                //menu.push(mitem);
                 console.log(mitem);
             }
             return menu;
@@ -964,24 +962,28 @@
                 temparr = [],
                 tempobj = {},
                 k = 0;
-            for (k; k < clen; k++) {
-                var tempitem = citem[k];
-                for (var m in tempitem) {
-                    tempobj[m] = tempitem[m];
+            (function () {
+                for (k; k < clen; k++) {
+                    (function () {
+                        var tempitem = citem[k];
+                        for (var m in tempitem) {
+                            tempobj[m] = tempitem[m];
+                        }
+                        if (ctype === 'power') {
+                            tempobj['modId'] = cmodid;
+                            tempobj['prid'] = parseInt(Math.random() * 1000000, 10);
+                            if (cflag) {
+                                tempobj['isPermit'] = parseInt(Math.random() * 10, 10) % 2;
+                            } else {
+                                tempobj['isPermit'] = 1;
+                            }
+                        } else {
+                            /*to do*/
+                        }
+                    }());
+                    temparr.push(tempobj);
                 }
-                if (ctype === 'power') {
-                    tempobj['modId'] = cmodid;
-                    tempobj['prid'] = parseInt(Math.random() * 1000000, 10);
-                    if (cflag) {
-                        tempobj['isPermit'] = parseInt(Math.random() * 10, 10) % 2;
-                    } else {
-                        tempobj['isPermit'] = 1;
-                    }
-                } else {
-                    /*to do*/
-                }
-                temparr.push(tempobj);
-            }
+            }());
             return temparr;
         }
 

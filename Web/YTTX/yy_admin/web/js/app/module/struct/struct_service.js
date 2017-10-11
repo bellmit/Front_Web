@@ -2364,24 +2364,19 @@ angular.module('app')
                 }
                 type = 'base';
             }
-            toolDialog.show({
-                type: 'warn',
-                value: '功能正在开发中...'
-            });
-            return false;
             var param = $.extend(true, {}, cache.loginMap.param);
 
             /*判断参数*/
-            if (record.structId !== '') {
+            /*if (record.structId !== '') {
                 param['organizationId'] = record.structId;
             } else if (record.structId === '') {
                 param['organizationId'] = record.organizationId;
-            }
+            }*/
 
             if (type === 'batch') {
-                param['shopIds'] = batchdata.join(',');
+                param['id'] = batchdata.join(',');
             } else if (type === 'base') {
-                param['shopIds'] = id;
+                param['id'] = id;
             }
 
             /*确认是否删除*/
