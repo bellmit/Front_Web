@@ -122,20 +122,21 @@
                         <div class="panel-body">
                             <div class="admin-search-wrap">
                                 <div class="admin-search-item">
-                                    <label>提现状态：</label>
-                                    <select id="search_cashState">
+                                    <label>审核(提现)状态：</label>
+                                    <select id="search_auditStatus">
                                         <option selected value="">全部</option>
-                                        <option value="1">未处理提现</option>
-                                        <option value="2">历史提现</option>
+                                        <option value="0">待审核(未处理)</option>
+                                        <option value="1">审核通过(历史提现)</option>
+                                        <option value="2">审核驳回</option>
                                     </select>
                                 </div>
                                 <div class="admin-search-item">
                                     <label>真实姓名：</label>
-                                    <input type="text" id="search_realName" placeholder=""  />
+                                    <input type="text" id="search_name" placeholder=""  />
                                 </div>
                                 <div class="admin-search-item">
                                     <label>手机号码：</label>
-                                    <input maxlength="13" type="text" id="search_mobile" placeholder=""  />
+                                    <input maxlength="13" type="text" id="search_phone" placeholder=""  />
                                 </div>
                                 <div class="admin-search-item">
                                     <span id="admin_search_btn" class="btn btn-info btn-icon g-br2">
@@ -152,24 +153,26 @@
                             <table id="admin_list_wrap" class="table table-bordered table-striped table-hover admin-table">
                                 <!--分组样式-->
                                 <colgroup>
-                                    <col class="g-w-percent2">
-                                    <col class="g-w-percent10">
-                                    <col class="g-w-percent7">
+                                    <!--<col class="g-w-percent2">屏蔽批量-->
                                     <col class="g-w-percent9">
+                                    <col class="g-w-percent5">
+                                    <col class="g-w-percent7">
+                                    <col class="g-w-percent8">
                                     <col class="g-w-percent8">
                                     <col class="g-w-percent6">
-                                    <col class="g-w-percent8">
+                                    <col class="g-w-percent7">
                                 </colgroup>
 
                                 <!--表头-->
                                 <thead>
                                 <tr>
-                                    <th class="no-sorting">&nbsp;</th>
+                                    <!--<th class="no-sorting">&nbsp;</th>屏蔽批量-->
+                                    <th>流水号</th>
                                     <th>真实姓名</th>
-                                    <th>会员手机号</th>
+                                    <th>手机号</th>
                                     <th>提现金额</th>
                                     <th>提现时间</th>
-                                    <th>提现状态</th>
+                                    <th>审核(提现)状态</th>
                                     <th class="no-sorting">操作</th>
                                 </tr>
                                 </thead>
@@ -214,7 +217,7 @@
 
 
     <!--批量处理-->
-    <div class="admin-batchitem-wrap">
+    <!--<div class="admin-batchitem-wrap g-d-hidei">
         <div class="admin-batchitem-btn">
             <div id="admin_batchitem_btn">批量</div>
         </div>
@@ -228,7 +231,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>-->
 
 
 
@@ -316,7 +319,7 @@
     <!--修饰分页，搜索等操作 -->
     <script src="../../js/plugins/datatables/dataTables.bootstrap.js"></script>
     <script src="../../js/plugins/pagination/pagination.js"></script>
-    <script src="../../js/widgets/batch_item.js"></script>
+    <!--<script src="../../js/widgets/batch_item.js"></script>屏蔽批量-->
     <script src="../../js/finance/cash_manage.js"></script>
 </body>
 </html>

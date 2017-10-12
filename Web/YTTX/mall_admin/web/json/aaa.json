@@ -531,18 +531,18 @@
             "modCode": "bzw-goodstype-list",
             "modId": 270,
             "modLink": "bzw-goodstype-list",
-            "modName": "商品类型列表"
+            "modName": "商品分类列表"
           },
           {
             "modClass": "bzw-goodstype-add",
             "modCode": "bzw-goodstype-add",
             "modId": 270,
             "modLink": "bzw-goodstype-add",
-            "modName": "新增商品类型"
+            "modName": "分类新增"
           }
         ],
         "modLink": "bzw-goodstype-manager",
-        "modName": "商品类型管理",
+        "modName": "商品分类管理",
         "permitItem": [
           {
             "funcCode": "bzw-goodstype-edit",
@@ -900,6 +900,52 @@
             "isPermit": 1,
             "modId": 340,
             "prid": 10602
+          }
+        ]
+      },
+      {
+        "modClass": "bzw-finance",
+        "modCode": "bzw-finance",
+        "modId": 344,
+        "modItem": [
+          {
+            "modClass": "bzw-finance-cardmanage",
+            "modCode": "bzw-finance-cardmanage",
+            "modId": 344,
+            "modLink": "bzw-finance-cardmanage",
+            "modName": "银行卡管理"
+          },
+          {
+            "modClass": "bzw-finance-cashmanage",
+            "modCode": "bzw-finance-cashmanage",
+            "modId": 344,
+            "modLink": "bzw-finance-cashmanage",
+            "modName": "提现管理"
+          },
+          {
+            "modClass": "bzw-finance-recordmanage",
+            "modCode": "bzw-finance-recordmanage",
+            "modId": 344,
+            "modLink": "bzw-finance-recordmanage",
+            "modName": "交易流水管理"
+          }
+        ],
+        "modLink": "bzw-finance",
+        "modName": "财务管理",
+        "permitItem": [
+          {
+            "funcCode": "bzw-finance-cardmanage-audit",
+            "funcName": "银行卡审核",
+            "isPermit": 1,
+            "modId": 344,
+            "prid": 14748
+          },
+          {
+            "funcCode": "bzw-finance-cashmanage-deal",
+            "funcName": "提现处理",
+            "isPermit": 1,
+            "modId": 344,
+            "prid": 14749
           }
         ]
       }

@@ -526,9 +526,13 @@
         }
         return true;
     };
+    /*是否是合法银行卡号*/
+    public_tool.isBankCard = function (str) {
+        return /^(\d{16}|\d{19})$/.test(this.trims(str));
+    };
     /*是否是合法手机号*/
     public_tool.isMobilePhone = function (str) {
-        return /^(13[0-9]|14[579]|15[012356789]|16[6]|17[035678]|18[0-9]|19[89])[0-9]{8}$/.test(this.trims(str)) ? true : false;
+        return /^(13[0-9]|14[579]|15[012356789]|16[6]|17[035678]|18[0-9]|19[89])[0-9]{8}$/.test(this.trims(str));
     };
     /**/
     public_tool.isNum = function (str) {
@@ -804,15 +808,6 @@
             "module": "trade",
             "modid": "240"
         },
-        "350":{
-            "name": "财务管理",
-            "code": "finance",
-            "match": "-finance-",
-            "matchlist": ['finance-cashmanage', 'finance-cardmanage'],
-            "class": "menu-ux-record",
-            "module": "finance",
-            "modid": "350"
-        }/*自己扩展*/,
         "250": {
             "name": "商品管理",
             "code": "goods",
@@ -909,6 +904,16 @@
             "ignoremodule": true,
             "module": "activity",
             "modid": "340"
+        },
+        "344": {
+            "name": "财务管理",
+            "code": "finance",
+            "match": "-finance-",
+            "matchlist": ['finance-cashmanage', 'finance-cardmanage'],
+            "matchignore": ["finance-recordmanage"],
+            "class": "menu-ux-record",
+            "module": "finance",
+            "modid": "344"
         }
     };
     /*路由映射*/
@@ -1064,15 +1069,15 @@
             /*不存在资源则重新加载*/
 
             /*静态注入*/
-            var injectdata = self.injectSideMenu({
-                    url: self.routeMap.isindex ? '../json/inject_menu.json' : '../../json/inject_menu.json',
-                    async: false,
-                    type: 'post',
-                    datatype: 'json'
-                }),
-                injectstr = self.doSideMenu(injectdata, $menu, $wrap, {
-                    resolve: true
-                });
+            /*var injectdata = self.injectSideMenu({
+             url: self.routeMap.isindex ? '../json/inject_menu.json' : '../../json/inject_menu.json',
+             async: false,
+             type: 'post',
+             datatype: 'json'
+             }),
+             injectstr = self.doSideMenu(injectdata, $menu, $wrap, {
+             resolve: true
+             });*/
 
 
             $.ajax({
@@ -1877,8 +1882,8 @@
 
             /*请求域与登陆域不一致*/
             /*if (currentdomain !== '' && reqdomain !== currentdomain) {
-                return false;
-            }*/
+             return false;
+             }*/
 
             return true;
         } else {
@@ -1905,12 +1910,12 @@
             self.clear();
             self.clearCacheData();
             if (isindex) {
-                location.href='account/login.html';
+                location.href = 'account/login.html';
             } else {
                 if (module.indexOf('account') !== -1) {
-                    location.href='login.html';
+                    location.href = 'login.html';
                 } else {
-                    location.href='../account/login.html';
+                    location.href = '../account/login.html';
                 }
             }
         }
@@ -1963,7 +1968,7 @@
                         self.clear();
                         self.clearCacheData();
                     }
-                    location.href='account/login.html';
+                    location.href = 'account/login.html';
                 } else {
                     if (typeof fn === 'function') {
                         fn.call();
@@ -1971,7 +1976,7 @@
                         self.clear();
                         self.clearCacheData();
                     }
-                    location.href='../account/login.html';
+                    location.href = '../account/login.html';
                 }
             }
         }, 1000);

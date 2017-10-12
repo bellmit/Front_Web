@@ -3,7 +3,7 @@
 
         //dom对象引用
         var debug = false/*请求模式,默认为true,即测试模式，正式环境需将debug设置为false*/,
-            base_domain = 'http://10.0.5.218:8001/',
+            base_domain = /*'http://10.0.5.218:8001/'*/'http://120.76.237.100:28000/',
             $header_menu = $('#header_menu'),
             $header_btn = $('#header_btn'),
             $content_type = $('#content_type'),

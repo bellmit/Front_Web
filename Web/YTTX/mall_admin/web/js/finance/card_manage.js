@@ -23,12 +23,12 @@
 
 
             /*权限调用*/
-            var powermap = public_tool.getPower(350),
-                audit_power = public_tool.getKeyPower('card-audit', powermap)/*核实权限*/;
+            var powermap = public_tool.getPower(344),
+                audit_power = public_tool.getKeyPower('bzw-finance-cardmanage-audit', powermap)/*审核权限*/;
 
 
             /*dom引用和相关变量定义*/
-            var debug = true,
+            var debug = false/*是否测试模式*/,
                 $admin_list_wrap = $('#admin_list_wrap')/*表格*/,
                 module_id = 'bzw-finance-cardmanage'/*模块id，主要用于本地存储传值*/,
                 dia = dialog({
@@ -43,15 +43,19 @@
                     cancel: false
                 })/*一般提示对象*/,
                 $admin_page_wrap = $('#admin_page_wrap'),
+                $show_audit_wrap = $('#show_audit_wrap')/*详情容器*/,
+                $show_audit_content = $('#show_audit_content'), /*详情内容*/
+                $show_audit_title = $('#show_audit_title'),
+                $admin_audit_btn = $('#admin_audit_btn'),
                 sureObj = public_tool.sureDialog(dia)/*回调提示对象*/,
                 setSure = new sureObj(),
                 operate_item = null;
 
 
             /*查询对象*/
-            var $search_auditState = $('#search_auditState'),
-                $search_realName = $('#search_realName'),
-                $search_mobile = $('#search_mobile'),
+            var $search_auditStatus = $('#search_auditStatus'),
+                $search_name = $('#search_name'),
+                $search_phone = $('#search_phone'),
                 $admin_search_btn = $('#admin_search_btn'),
                 $admin_search_clear = $('#admin_search_clear');
 
@@ -71,7 +75,7 @@
                         autoWidth: true, /*是否*/
                         paging: false,
                         ajax: {
-                            url: debug ? "../../json/test.json" : "http://10.0.5.226:8082/mall-buzhubms-api/goodsorder/list",
+                            url: debug ? "../../json/test.json" : "http://10.0.5.226:8082/mall-buzhubms-api/finance/bank_card/list",
                             dataType: 'JSON',
                             method: 'post',
                             dataSrc: function (json) {
@@ -79,12 +83,12 @@
                                     var json = testWidget.test({
                                         map: {
                                             id: 'guid',
-                                            memberName: 'value',
-                                            mobile: 'mobile',
-                                            realName: 'name',
-                                            cardNo: 'card',
-                                            bankName: 'datetime',
-                                            auditState: 'or'
+                                            nickName: 'value',
+                                            phone: 'mobile',
+                                            name: 'name',
+                                            cardNumber: 'card',
+                                            bankName: 'text',
+                                            auditStatus: 'rule,0,1,2'
                                         },
                                         mapmin: 5,
                                         mapmax: 10,
@@ -141,20 +145,20 @@
                         order: [[1, "desc"]],
                         columns: [
                             {
-                                "data": "memberName"
+                                "data": "nickName"
                             },
                             {
-                                "data": "mobile",
+                                "data": "phone",
                                 "render": function (data, type, full, meta) {
                                     return public_tool.phoneFormat(data);
                                 }
                             },
                             {
-                                "data": "realName"
+                                "data": "name"
                             },
 
                             {
-                                "data": "cardNo",
+                                "data": "cardNumber",
                                 "render": function (data, type, full, meta) {
                                     return public_tool.cardFormat(data);
                                 }
@@ -163,12 +167,13 @@
                                 "data": "bankName"
                             },
                             {
-                                "data": "auditState",
+                                "data": "auditStatus",
                                 "render": function (data, type, full, meta) {
                                     var stauts = parseInt(data, 10),
                                         statusmap = {
-                                            0: '<div class="g-c-red1">未核实</div>',
-                                            1: '<div class="g-c-green1">已核实</div>'
+                                            0: '<div class="g-c-red1">待审核</div>',
+                                            1: '<div class="g-c-green1">审核通过</div>',
+                                            2: '<div class="g-c-orange1">审核驳回</div>'
                                         };
                                     return statusmap[stauts];
                                 }
@@ -178,12 +183,12 @@
                                 "render": function (data, type, full, meta) {
                                     var id = parseInt(data, 10),
                                         btns = '',
-                                        state = parseInt(full.auditState, 10);
+                                        state = parseInt(full.auditStatus, 10);
 
-                                    if (audit_power && state === 0) {
+                                    if (audit_power && state !== 1) {
                                         btns += '<span data-action="audit" data-id="' + id + '" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
                                             <i class="fa-check"></i>\
-                                            <span>核实</span>\
+                                            <span>审核</span>\
 										</span>';
                                     }
                                     return btns;
@@ -200,9 +205,9 @@
 
             /*清空查询条件*/
             $admin_search_clear.on('click', function () {
-                $.each([$search_auditState, $search_realName, $search_mobile], function () {
+                $.each([$search_auditStatus, $search_name, $search_phone], function () {
                     var selector = this.selector;
-                    if (selector.indexOf('cashState') !== -1) {
+                    if (selector.indexOf('auditStatus') !== -1) {
                         this.find('option:first-child').prop({
                             'selected': true
                         });
@@ -218,7 +223,7 @@
             $admin_search_btn.on('click', function () {
                 var data = $.extend(true, {}, card_config.config.ajax.data);
 
-                $.each([$search_auditState, $search_realName, $search_mobile], function () {
+                $.each([$search_auditStatus, $search_name, $search_phone], function () {
                     var text = this.val(),
                         selector = this.selector.slice(1),
                         key = selector.split('_');
@@ -237,7 +242,7 @@
             });
 
             /*格式化手机号码*/
-            $.each([$search_mobile], function () {
+            $.each([$search_phone], function () {
                 this.on('keyup focusout', function (e) {
                     var etype = e.type,
                         phoneno = this.value.replace(/\D*/g, '');
@@ -286,11 +291,25 @@
                 action = $this.attr('data-action');
 
                 if (action === 'audit') {
-                    /*查看详情*/
-                    cardAudit({
-                        id: id
-                    });
+                    /*弹出审核*/
+                    showAudit(id);
                 }
+            });
+
+            /*绑定关闭详情*/
+            $show_audit_wrap.on('hide.bs.modal', function () {
+                if (operate_item) {
+                    setTimeout(function () {
+                        operate_item.removeClass('item-lighten');
+                        operate_item = null;
+                    }, 1000);
+                }
+            });
+
+
+            /*绑定详情提现处理*/
+            $admin_audit_btn.on('click', function () {
+                cardAudit($admin_audit_btn.attr('data-id'));
             });
 
 
@@ -307,26 +326,105 @@
         }
 
 
+        /**/
+        function showAudit(id) {
+            if (id === '' || typeof id === 'undefined') {
+                return false;
+            }
+            if (operate_item === null) {
+                return false;
+            }
+            /*未处理提现*/
+            $admin_audit_btn.attr({
+                'data-id': id
+            });
+            var list = table.row(operate_item).data(),
+                str = '',
+                istitle = false,
+                detail_map = {
+                    id: '序列',
+                    nickName: '会员名称(昵称)',
+                    serialNumber: '流水号',
+                    name: '真实名称',
+                    phone: '手机号',
+                    amount: '提现金额',
+                    bankName: '所属银行',
+                    cardNumber: '卡号',
+                    auditStatus: '审核状态',
+                    createTime: '提现时间'
+                },
+                isaudit = true;
+
+            if (!$.isEmptyObject(list)) {
+                /*添加高亮状态*/
+                for (var j in list) {
+                    if (typeof detail_map[j] !== 'undefined') {
+                        if (j === 'name') {
+                            istitle = true;
+                            $show_audit_title.html('审核"<span class="g-c-info">' + list[j] + '</span>"银行卡信息');
+                        } else if (j === 'auditStatus') {
+                            var statemap = {
+                                0: '<div class="g-c-red1">待审核(未处理)</div>',
+                                1: '<div class="g-c-green1">审核通过(历史提现)</div>',
+                                2: '<div class="g-c-orange1">审核驳回</div>'
+                            };
+                            str += '<tr><th>' + detail_map[j] + ':</th><td>' + statemap[parseInt(list[j], 10)] + '</td></tr>';
+                        } else if (j === 'phone') {
+                            isaudit = public_tool.isMobilePhone(list[j] || '');
+                            if (!isaudit) {
+                                str += '<tr><th>' + ':</th><td>' + public_tool.phoneFormat(public_tool.trims(list[j] || '')) + detail_map[j] + '<span class="g-gap-ml2 g-c-red1">不合法</span></td></tr>';
+                            } else {
+                                str += '<tr><th>' + detail_map[j] + ':</th><td>' + public_tool.phoneFormat(public_tool.trims(list[j] || '')) + '<span class="g-gap-ml2 g-c-green1">正确</span></td></tr>';
+                            }
+                        } else if (j === 'cardNumber') {
+                            isaudit = public_tool.isBankCard(list[j] || '');
+                            if (!isaudit) {
+                                str += '<tr><th>' + detail_map[j] + ':</th><td>' + public_tool.cardFormat(public_tool.trims(list[j] || '')) + '<span class="g-gap-ml2 g-c-red1">不正确</span></td></tr>';
+                            } else {
+                                str += '<tr><th>' + detail_map[j] + ':</th><td>' + public_tool.cardFormat(public_tool.trims(list[j] || '')) + '<span class="g-gap-ml2 g-c-green1">正确</span></td></tr>';
+                            }
+                        } else {
+                            str += '<tr><th>' + detail_map[j] + ':</th><td>' + list[j] + '</td></tr>';
+                        }
+                    } else {
+                        str += '<tr><th>' + j + ':</th><td>' + list[j] + '</td></tr>';
+                    }
+                }
+                if (!isaudit) {
+                    $admin_audit_btn.prop({
+                        'disabled': true
+                    }).attr({
+                        'data-id': ''
+                    });
+                }
+                if (!istitle) {
+                    $show_audit_title.html('审核银行卡信息');
+                }
+                $(str).appendTo($show_audit_content.html(''));
+                $show_audit_wrap.modal('show', {backdrop: 'static'});
+            }
+        }
+
+
         /*提现处理*/
-        function cardAudit(config) {
-            if (!config) {
+        function cardAudit(id) {
+            if (id === '' || typeof id === 'undefined') {
                 return false;
             }
             setSure.sure('', function (cf) {
                 /*是否选择了状态*/
-                var type = config.type,
-                    tip = cf.dia,
+                var tip = cf.dia,
                     temp_config = {
                         roleId: decodeURIComponent(logininfo.param.roleId),
                         adminId: decodeURIComponent(logininfo.param.adminId),
                         grade: decodeURIComponent(logininfo.param.grade),
                         token: decodeURIComponent(logininfo.param.token),
-                        id: config.id
+                        id:id
                     };
 
 
                 $.ajax({
-                        url: debug ? "../../json/test.json" : "http://10.0.5.226:8082/mall-buzhubms-api/goods/operate",
+                        url: debug ? "../../json/test.json" : "http://10.0.5.226:8082/mall-buzhubms-api/finance/bank_card/audit",
                         dataType: 'JSON',
                         method: 'post',
                         data: temp_config
@@ -338,36 +436,58 @@
                         var code = parseInt(resp.code, 10);
                         if (code !== 0) {
                             console.log(resp.message);
-                            tip.content('<span class="g-c-bs-warning g-btips-warn">' + (resp.message || "银行卡核实失败") + '</span>').show();
+                            tip.content('<span class="g-c-bs-warning g-btips-warn">' + (resp.message || "银行卡审核失败") + '</span>').show();
                             setTimeout(function () {
                                 tip.close();
+                                $admin_audit_btn.prop({
+                                    'disabled': false
+                                }).attr({
+                                    'data-id': ''
+                                });
                                 if (operate_item !== null) {
                                     operate_item.removeClass('item-light');
                                     operate_item = null;
+                                    /*绑定关闭审核弹窗*/
+                                    $show_audit_wrap.modal('hide');
                                 }
                             }, 2000);
                             return false;
                         }
                         /*是否是正确的返回数据*/
-                        tip.content('<span class="g-c-bs-success g-btips-succ">银行卡核实成功</span>').show();
+                        tip.content('<span class="g-c-bs-success g-btips-succ">银行卡审核成功</span>').show();
                         setTimeout(function () {
                             tip.close();
+                            $admin_audit_btn.prop({
+                                'disabled': false
+                            }).attr({
+                                'data-id': ''
+                            });
+                            /*绑定关闭审核弹窗*/
+                            $show_audit_wrap.modal('hide');
                             getColumnData(card_config);
                         }, 1000);
                     })
                     .fail(function (resp) {
                         console.log(resp.message);
-                        tip.content('<span class="g-c-bs-warning g-btips-warn">' + (resp.message || "银行卡核实失败") + '</span>').show();
+                        tip.content('<span class="g-c-bs-warning g-btips-warn">' + (resp.message || "银行卡审核失败") + '</span>').show();
                         setTimeout(function () {
                             tip.close();
+                            $admin_audit_btn.prop({
+                                'disabled': false
+                            }).attr({
+                                'data-id': ''
+                            });
                             if (operate_item !== null) {
                                 operate_item.removeClass('item-light');
                                 operate_item = null;
+                                /*绑定关闭审核弹窗*/
+                                $show_audit_wrap.modal('hide');
                             }
+
                         }, 2000);
                     });
 
-            }, "是否银行卡核实?", true);
+            }, "确认审核银行卡?", true);
         }
 
     });
