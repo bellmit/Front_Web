@@ -882,46 +882,79 @@
                 count = 0,
                 len = mlist.length,
                 elen = elist.length,
-                menu = [];
+                rmax,
+                menu = [],
+                mitem;
 
             for (i; i < len; i++) {
-                (function () {
-                    var rmax = parseInt(Math.random() * elen, 10),
-                        tempi = parseInt(i + 1, 10),
-                        modid = tempi * 10,
-                        j = 0,
-                        mitem = _copyItem_({
-                            size: 1,
-                            list: mlist.slice(i, tempi)
-                        })[0],
-                        pitem = _copyItem_({
-                            list: plist
-                        }).concat(_copyItem_({
-                            list: elist.slice(0, rmax)
-                        })),
-                        slen = pitem.length;
+                var tempi = parseInt(i + 1, 10),
+                    modid = tempi * 10;
 
+                rmax = parseInt(Math.random() * elen, 10);
 
-                    mitem['modId'] = modid;
-                    /*设置默认权限*/
-                    for (j; j < slen; j++) {
-                        count++;
-                        pitem[j]['modId'] = modid;
-                        pitem[j]['prid'] = count;
-                        pitem[j]['isPermit'] = flag ? parseInt(Math.random() * 10, 10) % 2 : 1;
-                    }
-                    mitem['permitItem'] = pitem;
-                    menu.push(mitem);
-                    console.log(mitem);
-                }());
+                /*创建权限对象*/
+                mitem = _copyItem_({
+                    size: 1,
+                    list: mlist.slice(i, tempi)
+                })[0];
+                /*pitem = plist.slice(0).concat(elist.slice(0, rmax));*/
+                /*pitem = [].concat(_copyItem_(len, plist), _copyItem_(rmax, elist.slice(0, rmax)));*/
+
+                /*设置默认权限*/
+                mitem['modId'] = modid;
+                mitem['permitItem'] = _copyItem_({
+                    size: len,
+                    list: plist,
+                    modid: modid,
+                    random: true
+                },true).concat(_copyItem_({
+                    size: rmax,
+                    list: elist.slice(0, rmax),
+                    modid: modid,
+                    random: true
+                },true));
+                menu.push(mitem);
+                console.log(mitem);
             }
             return menu;
         }
 
+        function _doMenuItem_(menuobj, flag) {
+            var menu = menuobj.menu,
+                len = menu.length,
+                i = 0,
+                count = 0,
+                modid = 0,
+                menuitem,
+                sublen,
+                j;
+
+            /*是否随机设置*/
+            for (i; i < len; i++) {
+                modid = menu[i]['modId'];
+                menuitem = menu[i]['permitItem'];
+                sublen = menuitem.length;
+                j = 0;
+                for (j; j < sublen; j++) {
+                    count++;
+                    if (flag) {
+                        menuitem[j]['isPermit'] = parseInt(Math.random() * 10, 10) % 2;
+                    } else {
+                        menuitem[j]['isPermit'] = 1;
+                    }
+                    menuitem[j]['modId'] = modid;
+                    menuitem[j]['prid'] = count;
+                }
+                console.log(menu[i]);
+            }
+        }
+
         /*复制数组对象*/
-        function _copyItem_(config) {
+        function _copyItem_(config, flag) {
             var size = config.size,
                 list = config.list,
+                random = config.random,
+                modid = config.modid,
                 arr = [],
                 k = 0;
 
@@ -930,17 +963,57 @@
                 size = list.length;
             }
 
-            /*默认为扩展对象*/
-            for (k; k < size; k++) {
-                var obj = {},
-                    item = list[k],
-                    m;
-                for (m in item) {
-                    obj[m] = item[m];
-                }
-                arr.push(obj);
+            if (flag) {
+                /*需要配置*/
+                (function () {
+                    for (k; k < size; k++) {
+                        var obj = {},
+                            item = list[k],
+                            m;
+                        for (m in item) {
+                            obj[m] = item[m];
+                        }
+                        obj['modId'] = modid;
+                        obj['prid'] = parseInt(Math.random() * 1000000, 10);
+                        if (random) {
+                            obj['isPermit'] = parseInt(Math.random() * 10, 10) % 2;
+                        } else {
+                            obj['isPermit'] = 1;
+                        }
+                        arr.push(obj);
+                    }
+                }());
+            } else {
+                /*默认为扩展对象*/
+                (function () {
+                    for (k; k < size; k++) {
+                        var obj = {},
+                            item = list[k],
+                            m;
+                        for (m in item) {
+                            obj[m] = item[m];
+                        }
+                        arr.push(obj);
+                    }
+                }());
             }
             return arr;
+        }
+
+        /*组合唯一值*/
+        function _conditionUnique_(i, j) {
+            var a, b;
+            if (i === 0) {
+                a = i + 1;
+            } else {
+                a = i;
+            }
+            if (j === 0) {
+                b = j + 1;
+            } else {
+                b = j;
+            }
+            return a + b;
         }
 
     }
