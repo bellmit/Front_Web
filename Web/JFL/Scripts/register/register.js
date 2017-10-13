@@ -96,7 +96,7 @@
 		var istruephone=false,mcount=60,mid=null;
 		get_tm_vc.live("click",function(){
 			var cur=$(this);
-			var ptxt=document.getElementById("tm_mobile").value,ptest=/^(13[0-9]|15[012356789]|18[012356789]|14[57])[0-9]{8}$/;
+			var ptxt=document.getElementById("tm_mobile").value,ptest=/^(13[0-9]|14[579]|15[012356789]|16[6]|17[01235678]|18[0-9]|19[89])[0-9]{8}$/;
 			var ptip=document.getElementById("reg_tm_mobile");
 			ptxt=ptxt.replace(/(\s*)/g,"");
 			if(ptxt==""){

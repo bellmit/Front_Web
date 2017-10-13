@@ -1333,13 +1333,13 @@ $.extend( $.validator, {
 		//中国电话号码
 		zh_phone:function( value, element, param ){
 			var val=value.replace(/\s*/g,'');
-			return this.optional( element )|| /^(13[0-9]|15[012356789]|18[0-9]|14[57]|170)[0-9]{8}$/.test(val);
+			return this.optional( element )|| /^(13[0-9]|14[579]|15[012356789]|16[6]|17[01235678]|18[0-9]|19[89])[0-9]{8}$/.test(val);
 		},
 
 		//电话和邮箱
 		poe:function( value, element, param ){
 			var val=value.replace(/\s*/g,''),
-					phonerule=/^(13[0-9]|15[012356789]|18[0-9]|14[57]|170)[0-9]{8}$/,
+					phonerule=/^(13[0-9]|14[579]|15[012356789]|16[6]|17[01235678]|18[0-9]|19[89])[0-9]{8}$/,
 					emailrule=/^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
 			if(!(this.optional( element )|| phonerule.test(val))&&!(this.optional( element ) || emailrule.test( value ))){
 				return false;

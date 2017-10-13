@@ -32,7 +32,7 @@
 		/*是否为正确手机号码*/
 		jQuery.validator.addMethod("ischi_phone",function(value,element){
 			  var tno = value.replace(/(\s*)/g,"");
-			  var phonecode=/^(13[0-9]|15[012356789]|18[0-9]|14[57]|170)[0-9]{8}$/;
+			  var phonecode=/^(13[0-9]|14[579]|15[012356789]|16[6]|17[01235678]|18[0-9]|19[89])[0-9]{8}$/;
 			  return this.optional(element)||(phonecode.test(tno));
 		},"手机号码不正确");
 		/*是否为正确的邮箱*/
@@ -51,7 +51,7 @@
 			  if(tno==""){
 				  return true;
 			  }
-			  var rulep=/^(13[0-9]|15[012356789]|18[0-9]|14[57]|170)[0-9]{8}$/;
+			  var rulep=/^(13[0-9]|14[579]|15[012356789]|16[6]|17[01235678]|18[0-9]|19[89])[0-9]{8}$/;
 			  var rulee=/^([0-9A-Za-z\-_\.]+)@([0-9a-z]+\.[a-z0-9]{2,7}((\.[a-z]{2})|(\.(com|net)))?)$/;
 			  if(rulep.test(tno)){
 				  return true;

@@ -7,7 +7,7 @@
 		/*自定义验证规则*/
 		jQuery.validator.addMethod("ischi_phone",function(value,element){
 			  var tno = value.replace(/(\s*)/g,"");
-			  var phonecode=/^(13[0-9]|15[012356789]|18[0-9]|14[57]|170)[0-9]{8}$/;
+			  var phonecode=/^(13[0-9]|14[579]|15[012356789]|16[6]|17[01235678]|18[0-9]|19[89])[0-9]{8}$/;
 			  return this.optional(element)||(phonecode.test(tno));
 		},"手机号码不正确");
 		jQuery.validator.addMethod("isSurevc",function(value,element){
@@ -69,7 +69,7 @@
 		getcode.live("click",function(){
 			clearInterval(ccount_id);
 			ccount_id=null;
-			var phonerule=/^(13[0-9]|15[012356789]|18[0-9]|14[57]|170)[0-9]{8}$/,phonevalue=document.getElementById("findpwd_phoneno").value.replace(/(\s*)/g,"");
+			var phonerule=/^(13[0-9]|14[579]|15[012356789]|16[6]|17[01235678]|18[0-9]|19[89])[0-9]{8}$/,phonevalue=document.getElementById("findpwd_phoneno").value.replace(/(\s*)/g,"");
 			if(!phonerule.test(phonevalue)||phonevalue==""){
 				document.getElementById("findpwd_phoneno_tips").innerHTML="注册手机号不正确";
 				return false;
@@ -134,7 +134,7 @@
 		/*手机号码失去焦点后校验*/
 		$("#findpwd_phoneno").live("focusout",function(e){
 			var curobj=e.target;
-			var phonerule=/^(13[0-9]|15[012356789]|18[0-9]|14[57]|170)[0-9]{8}$/;
+			var phonerule=/^(13[0-9]|14[579]|15[012356789]|16[6]|17[01235678]|18[0-9]|19[89])[0-9]{8}$/;
 			if(!phonerule.test(curobj.value.replace(/(\s*)/g,""))){
 				curobj.value="";
 			}

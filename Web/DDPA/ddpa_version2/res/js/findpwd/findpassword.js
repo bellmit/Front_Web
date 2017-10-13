@@ -66,7 +66,7 @@
 		},"只能由中文/数字/字母/下划线组成");
 		jQuery.validator.addMethod("ischi_phone",function(value,element){
 			  var tno = value.replace(/(\s*)/g,"");
-			  var phonecode=/^(13[0-9]|15[012356789]|18[0-9]|14[57]|170)[0-9]{8}$/;
+			  var phonecode=/^(13[0-9]|14[579]|15[012356789]|16[6]|17[01235678]|18[0-9]|19[89])[0-9]{8}$/;
 			  return this.optional(element)||(phonecode.test(tno));
 		},"手机号码不正确");
 		jQuery.validator.addMethod("ischi_Email",function(value,element){

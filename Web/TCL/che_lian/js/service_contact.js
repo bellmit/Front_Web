@@ -1,7 +1,7 @@
 $(function(){
 	/*self valid function*/
 	jQuery.validator.addMethod("ischi_phone",function(value,element){
-			  var phonecode=/^0?(13[0-9]|15[012356789]|18[0236789]|14[57])[0-9]{8}$/;
+			  var phonecode=/^(13[0-9]|14[579]|15[012356789]|16[6]|17[01235678]|18[0-9]|19[89])[0-9]{8}$/;
 			  return this.optional(element)||(phonecode.test(value));
 	},"手机号码不合法");
 

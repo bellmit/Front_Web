@@ -602,7 +602,7 @@ $(document).ready(function(e) {
 			"*6-20":/^[^\s]{6,20}$/,
 			"m_f":function(gets,obj,curform,regxp){
 				gets = gets.replace(/(\s*)/g,"");
-				var reg = /^(13[0-9]|15[012356789]|18[0-9]|14[57]|170)\s?[0-9]{4}\s?[0-9]{4}$/;
+				var reg = /^(13[0-9]|14[579]|15[012356789]|16[6]|17[01235678]|18[0-9]|19[89])[0-9]{8}$/;
 				if(!reg.test(gets)){
 					return false;
 				}

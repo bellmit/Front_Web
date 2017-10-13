@@ -18,7 +18,7 @@
 		/*检测是否为手机号*/
 		jQuery.validator.addMethod("ischi_phone",function(value,element){
 			  var tno = value.replace(/(\s*)/g,"");
-			  var phonecode=/^(13[0-9]|15[012356789]|18[0-9]|14[57]|170)[0-9]{8}$/;
+			  var phonecode=/^(13[0-9]|14[579]|15[012356789]|16[6]|17[01235678]|18[0-9]|19[89])[0-9]{8}$/;
 			  return this.optional(element)||(phonecode.test(tno));
 		},"手机号码不正确");
 		/*检测是否为身份证*/
@@ -160,7 +160,7 @@
 		/*获取验证码*/
 		popup_validcode.removeClass("popup_unvalidcode").removeAttr("disabled");
 		popup_validcode.click(function(){
-			var phonerule=/^(13[0-9]|15[012356789]|18[0-9]|14[57]|170)[0-9]{8}$/,phonevalue=document.getElementById("mobilephone").value;
+			var phonerule=/^(13[0-9]|14[579]|15[012356789]|16[6]|17[01235678]|18[0-9]|19[89])[0-9]{8}$/,phonevalue=document.getElementById("mobilephone").value;
 			phonevalue = phonevalue.replace(/(\s*)/g,"");
 			if(!phonerule.test(phonevalue)||phonevalue==""){
 				document.getElementById("mobilephone_tips").innerHTML="手机号不正确";

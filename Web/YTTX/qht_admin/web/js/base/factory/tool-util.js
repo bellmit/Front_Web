@@ -604,7 +604,7 @@
 		};
 		/*是否是合法手机号*/
 		tools.isMobilePhone=function(str){
-			return /^(13[0-9]|15[012356789]|18[0-9]|14[57]|170)[0-9]{8}$/.test(this.trims(str))?true:false;
+			return /^(13[0-9]|14[579]|15[012356789]|16[6]|17[01235678]|18[0-9]|19[89])[0-9]{8}$/.test(this.trims(str))?true:false;
 		};
 		/**/
 		tools.isNum=function(str){

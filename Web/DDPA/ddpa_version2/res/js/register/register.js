@@ -49,7 +49,7 @@ function switchCode(cobj){
 				return false;
 			}
 			var mbval=document.getElementById("reg_phonenotips");
-			if(!/^(13[0-9]|15[012356789]|18[0-9]|14[57]|170)[0-9]{8}$/.test(param["mobilePhone"].replace(/(\s*)/g,""))){
+			if(!/^(13[0-9]|14[579]|15[012356789]|16[6]|17[01235678]|18[0-9]|19[89])[0-9]{8}$/.test(param["mobilePhone"].replace(/(\s*)/g,""))){
 				mbval.innerHTML="手机号码不正确";
 				setTimeout(function(){mbval.innerHTML="";},3000);
 				return false;
@@ -150,7 +150,7 @@ function switchCode(cobj){
 		},"用户名只能由中文/数字/字母/下划线组成,不包含空格符");
 		jQuery.validator.addMethod("ischi_phone",function(value,element){
 			  var tno = value.replace(/(\s*)/g,"");
-			  var phonecode=/^(13[0-9]|15[012356789]|18[0-9]|14[57]|170)[0-9]{8}$/;
+			  var phonecode=/^(13[0-9]|14[579]|15[012356789]|16[6]|17[01235678]|18[0-9]|19[89])[0-9]{8}$/;
 			  return this.optional(element)||(phonecode.test(tno));
 		},"手机号码不正确");
 		/*自定义验证规则*/
@@ -191,7 +191,7 @@ function switchCode(cobj){
 			var curobj=e.target;
 			var v = curobj.value;
 			var tno = v.replace(/(\s*)/g,"");
-			var phonerule=/^(13[0-9]|15[012356789]|18[0-9]|14[57]|170)[0-9]{8}$/;
+			var phonerule=/^(13[0-9]|14[579]|15[012356789]|16[6]|17[01235678]|18[0-9]|19[89])[0-9]{8}$/;
 			if(!phonerule.test(tno)){
 				//curobj.value="";
 			}

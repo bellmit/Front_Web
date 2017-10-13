@@ -357,7 +357,7 @@
 				$(r3_2input[2]).siblings(".tipserror").replaceWith("");
 				$(r3_2input[2]).after("<p style='color:#f00; margin:6px 0px 0px 6px;float: left;'>请填写联系人手机号码</p>") 
 				flag=false;
-			}else if(!(/^(13[0-9]|15[012356789]|18[0-9]|14[57]|170)[0-9]{8}$/.test(r3_1_2.replace(/(\s*)/g,"")))){
+			}else if(!(/^(13[0-9]|14[579]|15[012356789]|16[6]|17[01235678]|18[0-9]|19[89])[0-9]{8}$/.test(r3_1_2.replace(/(\s*)/g,"")))){
 				//console.log("here")
 				$(r3_2input[2]).siblings("p").replaceWith("");
 				$(r3_2input[2]).siblings(".tipserror").replaceWith("");
@@ -402,7 +402,7 @@
 				$(r3_1input[2]).siblings(".tipserror").replaceWith("");
 				$(r3_1input[2]).after("<p style='color:#f00; margin:6px 0px 0px 6px;float: left;'>请填写直属家属手机号码</p>") 
 				flag=false;
-			}else if(!(/^(13[0-9]|15[012356789]|18[0-9]|14[57]|170)[0-9]{8}$/.test(r3_1_2.replace(/(\s*)/g,"")))){
+			}else if(!(/^(13[0-9]|14[579]|15[012356789]|16[6]|17[01235678]|18[0-9]|19[89])[0-9]{8}$/.test(r3_1_2.replace(/(\s*)/g,"")))){
 				//console.log("here")
 				$(r3_1input[2]).siblings("p").replaceWith("");
 				$(r3_1input[2]).siblings(".tipserror").replaceWith("");

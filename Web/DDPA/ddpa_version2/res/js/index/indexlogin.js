@@ -23,7 +23,7 @@ $(document).ready(function(e) {
 		//登录表单
 		$(".index_un").blur(function(e){
 			var $target = $(e.target), v = $target.val();
-			var rulep=/^(13[0-9]|15[012356789]|18[0-9]|14[57]|170)[0-9]{8}$/;
+			var rulep=/^(13[0-9]|14[579]|15[012356789]|16[6]|17[01235678]|18[0-9]|19[89])[0-9]{8}$/;
 			var rulee=/^([0-9A-Za-z\-_\.]+)@([0-9a-z]+\.[a-z0-9]{2,7}((\.[a-z]{2})|(\.(com|net)))?)$/g;
 			
 			if(v!=""){
@@ -42,7 +42,7 @@ $(document).ready(function(e) {
 					
 					if(gets==""){ return false;}
 					
-					var rulep=/^(13[0-9]|15[012356789]|18[0-9]|14[57]|170)[0-9]{8}$/;
+					var rulep=/^(13[0-9]|14[579]|15[012356789]|16[6]|17[01235678]|18[0-9]|19[89])[0-9]{8}$/;
 					var rulee=/^([0-9A-Za-z\-_\.]+)@([0-9a-z]+\.[a-z0-9]{2,7}((\.[a-z]{2})|(\.(com|net)))?)$/g;
 					
 					if(!rulep.test(gets) && !rulee.test(gets)){return false;}
