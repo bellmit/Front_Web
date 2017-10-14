@@ -912,7 +912,6 @@
                     }
                     mitem['permitItem'] = pitem;
                     menu.push(mitem);
-                    console.log(mitem);
                 }());
             }
             return menu;
