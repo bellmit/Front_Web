@@ -72,6 +72,7 @@
                 url: '/sysuser/login',
                 method: 'post',
                 debug: model.debug,
+                //encode:true,
                 data: {
                     username: model.login.username,
                     password: model.login.password,

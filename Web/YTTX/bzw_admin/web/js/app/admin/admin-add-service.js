@@ -130,13 +130,11 @@
 
         /*设置权限*/
         function setPower(config) {
-            if(!config){
+            if (!config) {
                 return false;
             }
             var debug = config.debug,
-                powerlist=_getPowerParam_(config.power);
-            console.log(config.power);
-            return false;
+                powerlist = _getPowerParam_(config.power);
             toolUtil
                 .requestHttp({
                     url: 'admin/power/set',
@@ -209,7 +207,7 @@
         /*接口实现--私有*/
         /*获取权限*/
         function _getPowerParam_(power) {
-            if(!power){
+            if (!power) {
                 return '';
             }
             var datalist = power.tbody,
@@ -222,7 +220,8 @@
             for (i; i < len; i++) {
                 item = datalist[i];
                 for (var j in item) {
-                    if (item[j]) {
+                    /*存在且过滤ng自动创建的$$hashkey属性*/
+                    if (item[j] && !(/(\$\$)+/g.test(j))) {
                         subitem = item[j];
                         list.push({
                             prid: subitem['prid'],

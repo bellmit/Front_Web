@@ -317,8 +317,25 @@
 
             /*适配配置*/
             req.url = adaptReqUrl(req);
-            req.data = $httpParamSerializerJQLike(req.data);
-
+            if (config.encode) {
+                req.data = $httpParamSerializerJQLike((function () {
+                    var tempdata=req.data;
+                    for(var i in tempdata){
+                        req.data[i]=encodeURIComponent(tempdata[i]);
+                    }
+                    return req.data;
+                }()));
+            } else if (config.decode) {
+                req.data = $httpParamSerializerJQLike((function () {
+                    var tempdata=req.data;
+                    for(var i in tempdata){
+                        req.data[i]=decodeURIComponent(tempdata[i]);
+                    }
+                    return req.data;
+                }()));
+            }else{
+                req.data = $httpParamSerializerJQLike(req.data);
+            }
             var deferred = $q.defer(),
                 promise = $http(req);
 
@@ -376,7 +393,7 @@
         //判断闰年
         function isLeapYear(y, m) {
             var m_arr = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-            var isly = (y % 4 == 0 && y % 100 != 0 ) ? true : y % 400 == 0 ? true : false;
+            var isly = (y % 4 === 0 && y % 100 !== 0 ) ? true : y % 400 === 0;
             isly ? m_arr.splice(1, 1, 29) : m_arr.splice(1, 1, 28);
             return m ? {isly: isly, months: m_arr, m: m_arr[parseInt(m, 10) - 1]} : {isly: isly, months: m_arr}
         }
