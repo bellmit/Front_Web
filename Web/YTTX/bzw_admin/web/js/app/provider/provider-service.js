@@ -5,15 +5,15 @@
     /*创建管理模块应用服务*/
     angular
         .module('app')
-        .service('adminService', adminService);
+        .service('providerService', providerService);
 
 
     /*服务注入依赖*/
-    adminService.$inject = ['$location', 'powerService', '$state'];
+    providerService.$inject = ['$location', 'powerService', '$state'];
 
 
     /*服务实现*/
-    function adminService($location, powerService, $state) {
+    function providerService($location, powerService, $state) {
         var path = $location.path()/*模块*/,
             module_id = powerService.getIdByPath(path)/*模块id*/,
             powermap = powerService.getCurrentPower(module_id),
@@ -51,7 +51,7 @@
             if(url){
                $state.go(url);
             }else{
-                $state.go('admin.list');
+                $state.go('provider.list');
             }
         }
 
