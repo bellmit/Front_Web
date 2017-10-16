@@ -16,6 +16,7 @@
         var cache_sequence = {}/*缓存序列,存放table dom节点引用*/,
             cache_body = {}/*缓存序列,存放body dom节点引用*/,
             cache_colgroup = {}/*缓存序列,存放colgroup dom节点引用*/,
+            cache_column = {}/*缓存序列,存放column dom操作节点引用*/,
             cache_condition = {}/*存放条件查询配置*/,
             cache_check = {}/*存放全选配置*/;
 
@@ -46,51 +47,65 @@
             /*如果有配置则配置缓存*/
             if (config) {
                 /*配置dom节点引用*/
-                var sobj = config.sequence;
-                if (sobj) {
+                var sequence_obj = config.sequence;
+                if (sequence_obj) {
                     var j = 0,
-                        slen = sobj.length;
+                        sequence_len = sequence_obj.length;
 
-                    if (typeof slen !== 'undefined' && slen !== 0) {
-                        var item,
-                            index,
-                            colgroup/*是否分组*/,
-                            action/*是否按钮操作*/,
-                            check/*是否全选*/;
+                    if (typeof sequence_len !== 'undefined' && sequence_len !== 0) {
+                        (function () {
+                            var item,
+                                index,
+                                colgroup/*是否分组*/,
+                                action/*是否按钮操作*/,
+                                column/*是否分组控制*/,
+                                check/*是否全选*/;
 
-                        for (j; j < slen; j++) {
-                            item = sobj[j];
-                            index = item["index"];
-                            colgroup = item["colgroup"];
-                            action = item["action"];
-                            check = item["check"];
+                            for (j; j < sequence_len; j++) {
+                                item = sequence_obj[j];
+                                index = item["index"];
+                                colgroup = item["colgroup"];
+                                action = item["action"];
+                                check = item["check"];
+                                column = item["column"];
 
-                            /*缓存table节点*/
-                            cache_sequence[index] = $('#admin_list_table' + index);
+                                /*缓存table节点*/
+                                cache_sequence[index] = $('#admin_list_table' + index);
 
-                            /*缓存colgroup节点*/
-                            if (colgroup) {
-                                cache_colgroup[index] = $('#admin_list_colgroup' + index);
+                                /*缓存colgroup节点*/
+                                if (colgroup) {
+                                    cache_colgroup[index] = $('#admin_list_colgroup' + index);
+                                }
+
+                                /*缓存body节点*/
+                                if (action) {
+                                    cache_body[index] = $('#admin_list_body' + index);
+                                    bindDoAction(item);
+                                }
+                                /*缓存check节点*/
+                                if (check) {
+                                    cache_check[index] = $('#admin_list_check' + index);
+                                }
+
+                                /*缓存column节点*/
+                                if (column) {
+                                    var column_wrap = $('#admin_list_column' + index);
+                                    cache_column[index] = {
+                                        $column_wrap: column_wrap,
+                                        $column_btn: column_wrap.prev(),
+                                        $column_ul: column_wrap.find('ul')
+                                    };
+                                }
                             }
-
-                            /*缓存body节点*/
-                            if (action) {
-                                cache_body[index] = $('#admin_list_body' + index);
-                                bindDoAction(item);
-                            }
-                            /*缓存check节点*/
-                            if (check) {
-                                cache_check[index] = $('#admin_list_check' + index);
-                            }
-                        }
+                        }());
                     }
                 }
 
                 /*配置条件查询*/
-                var cobj = config.condition;
-                if (cobj) {
-                    for (var m in cobj) {
-                        cache_condition[m] = cobj[m];
+                var condition = config.condition;
+                if (condition) {
+                    for (var m in condition) {
+                        cache_condition[m] = condition[m];
                     }
                 }
             }
@@ -140,8 +155,8 @@
             }
         }
 
-        /*请求数据:流程：
-         1：组合查询条件
+        /*请求数据流程：
+         1：组合查询条件,包括分页配置
          2：获取表格缓存
          3：配置表格参数
          4：执行表格请求或载入
@@ -151,11 +166,7 @@
             pageConfig(config);
 
             /*配置查询条件*/
-            var iscondition = conditionTable(config);
-            if (!iscondition) {
-                /*不符合规范条件*/
-                return false;
-            }
+            conditionTable(config);
 
             var index = config.index,
                 istable = getTable(config),
@@ -166,6 +177,9 @@
                 /*存在缓存则直接调用缓存*/
                 table = config["table"]["table_cache" + index];
                 table["ajax"]["config"](ajax).load();
+            } else {
+                /*是否列控制*/
+                renderColumn(config);
             }
         }
 
@@ -185,57 +199,46 @@
 
         /*组合查询条件*/
         function conditionTable(config) {
-            var con = config.condition;
-            if (con) {
+            var condition = config.condition;
+            if (condition) {
                 var index = config.index,
-                    cobj = cache_condition[index],
-                    clen = con.length,
+                    condition_obj = cache_condition[index],
+                    condition_len = condition_obj.length,
                     reqdata = config["table"]["table_config" + index]["ajax"]["data"];
 
                 /*存在需要组合条件*/
-                if (clen !== 0) {
+                if (condition_len !== 0) {
                     var i = 0,
-                        cname,
-                        cvalue;
+                        item,
+                        dataitem,
+                        label;
 
-                    loop1:for (i; i < clen; i++) {
-                        cname = con[i]["name"];
-                        cvalue = con[i]["value"];
-                        var len = cobj.length,
-                            j = 0;
-                        if (len !== 0) {
-                            var item;
-                            loop2:for (j; j < len; j++) {
-                                item = cobj[j];
-                                /*匹配相同字段*/
-                                if (item["name"] === cname) {
-                                    if (cvalue === '') {
-                                        delete reqdata[cname];
-                                        if (item["require"]) {
-                                            /*非空字段为空则提示异常*/
-                                            return false;
-                                        }
-                                    } else {
-                                        reqdata[cname] = cvalue;
-                                    }
-                                    continue loop1;
-                                }
+                    for (i; i < condition_len; i++) {
+                        label = condition_obj[i];
+                        item = condition[label];
+                        if (typeof item !== 'undefined') {
+                            dataitem = reqdata[label];
+                            if (item === '' && typeof dataitem !== 'undefined') {
+                                /*无条件：清除已经存在的条件*/
+                                delete reqdata[label];
+                            } else if (item !== '') {
+                                /*有条件：扩展条件*/
+                                reqdata[label] = condition[label];
                             }
                         }
                     }
                 }
             }
-            return true;
         }
 
         /*过滤数据*/
         function filterTable(config) {
             var index = config.index,
-                search = config.search;
+                filter = config.filter;
             if (config["table"]["table_cache" + index] === null) {
                 return false;
             }
-            config["table"]["table_cache" + index].search(search).columns().draw();
+            config["table"]["table_cache" + index].search(filter).columns().draw();
         }
 
         /*绑定操作选项*/
@@ -267,6 +270,34 @@
         }
 
 
+        /*渲染分组*/
+        function renderColumn(config) {
+            if (config) {
+                var index = parseInt(config.index, 10);
+                if (index) {
+                    var sequence = config.table.sequence,
+                        len = sequence.length,
+                        i = 0,
+                        column = false,
+                        check = false,
+                        item;
+                    for (i; i < len; i++) {
+                        item = sequence[i];
+                        if (parseInt(item['index'], 10) === index) {
+                            column = item['column'];
+                            check = item['check'];
+                            break;
+                        }
+                    }
+                    if (column) {
+                        /*初始化列控制*/
+                        _initColumn_(config, check);
+                    }
+                }
+            }
+        }
+
+
         /*私有接口*/
         /*辅助初始化--清除缓存*/
         function _clearCache_(obj) {
@@ -276,6 +307,119 @@
                     delete obj[i]/*清除序列*/;
                 }
             }
+        }
+
+        /*初始化列控制*/
+        function _initColumn_(config, flag) {
+            /*隐藏*/
+            var tempid,
+                str = '',
+                i = 0,
+                index = config.index,
+                column_config = config['table']['table_column' + index],
+                header = column_config.header,
+                item = column_config.hide_list,
+                len = item.length;
+
+
+            for (i; i < len; i++) {
+                tempid = item[i];
+                str += '<li data-value="' + tempid + '">第' + (tempid + 1) + '列<div class="g-c-gray6 g-fs12">(<span class="g-c-gray9">'+header[tempid]+'</span>)</div></li>';
+                config['table']['table_cache' + index].column(tempid).visible(false);
+            }
+            if (str !== '') {
+                /*赋值控制下拉选项*/
+                $(str).appendTo(cache_column[index].$column_ul.html(''));
+            }
+            /*设置分组*/
+            cache_colgroup[index].html(_createColgroup_({
+                index: index,
+                table: config['table']['table_cache' + index],
+                column: column_config,
+                len: len,
+                check: flag
+            }));
+            /*绑定切换列控制按钮*/
+            cache_column[index].$column_btn.on('click', function () {
+                cache_column[index].$column_wrap.toggleClass('g-d-hidei');
+            });
+            /*绑定操作列数据*/
+            cache_column[index].$column_ul.on('click', 'li', function () {
+                /*切换显示相关列*/
+                var $this = $(this),
+                    active = $this.hasClass('action-list-active'),
+                    value = $this.attr('data-value');
+
+                if (active) {
+                    $this.removeClass('action-list-active');
+                    config['table']['table_cache' + index].column(value).visible(false);
+                } else {
+                    $this.addClass('action-list-active');
+                    config['table']['table_cache' + index].column(value).visible(true);
+                }
+                /*设置分组*/
+                cache_colgroup[index].html(_createColgroup_({
+                    index: index,
+                    table: config['table']['table_cache' + index],
+                    column: column_config,
+                    len: len - cache_column[index].$column_ul.find('.action-list-active'),
+                    check: flag
+                }));
+            });
+        }
+
+
+        /*计数分组距离*/
+        function _createColgroup_(config) {
+            var str = '',
+                j = 0,
+                index=config.index,
+                colgroup_len,
+                check = config.check,
+                colitem,
+                tempcol = 0;
+
+            if (check) {
+                colgroup_len = config.column.init_len - config.len - 1;
+                tempcol = 45 % colgroup_len;
+                if (tempcol !== 0) {
+                    colitem = parseInt((45 - tempcol) / colgroup_len, 10);
+                } else {
+                    colitem = parseInt(45 / colgroup_len, 10);
+                }
+                /*解析分组*/
+                if (colitem * colgroup_len <= (45 - colgroup_len)) {
+                    colitem = colgroup_len + 1;
+                }
+                /*设置主体值*/
+                if (config.table === null || (config.table !== null && config.table.data().length === 0)) {
+                    cache_sequence[index].find('td').attr({
+                        'colspan': colgroup_len + 1
+                    });
+                }
+            } else {
+                colgroup_len = tablecolumn.init_len - len;
+                tempcol = 50 % colgroup_len;
+                if (tempcol !== 0) {
+                    colitem = parseInt((50 - tempcol) / colgroup_len, 10);
+                } else {
+                    colitem = parseInt(50 / colgroup_len, 10);
+                }
+                /*解析分组*/
+                if (colitem * colgroup_len <= (50 - colgroup_len)) {
+                    colitem = colgroup_len + 1;
+                }
+                /*设置主体值*/
+                if (config.table === null || (config.table !== null && config.table.data().length === 0)) {
+                    cache_sequence[index].find('td').attr({
+                        'colspan': colgroup_len
+                    });
+                }
+            }
+            for (j; j < colgroup_len; j++) {
+                str += '<col class="g-w-percent' + colitem + '" />';
+            }
+            return check ? '<col class="g-w-percent5" />' + str : str;
         }
 
     }

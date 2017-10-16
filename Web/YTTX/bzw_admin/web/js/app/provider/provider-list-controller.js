@@ -25,15 +25,27 @@
         vm.table = {
             sequence: [{
                 index: 1,
-                action: true,
+                action: true/*点击操作*/,
+                check: true/*全选操作*/,
+                column: true/*列控制操作*/,
+                colgroup: true/*分组操作*/,
                 doAction: doItemAction
             }]/*分页序列,表格序列*/,
-            condition: {}/*查询条件*//*{1:[{},{}]}*/,
+            condition: {
+                1: ['legalName', 'storeName', 'auditStatus']/*数据列1查询条件*/
+            }/*查询条件*//*{1:[**,**]}*/,
             /*分页配置*/
             table_page1: {
                 page: 1,
                 pageSize: 20,
                 total: 0
+            },
+            /*列控制*/
+            table_column1: {
+                init_len: 8/*数据有多少列*/,
+                columnshow: true/*初始化显示隐藏*/,
+                hide_list: [3, 5, 7]/*需要隐藏的的列序号*/,
+                header: ['用户名/姓名', '店铺名称', '公司名称', '联系电话', '所在地', '状态', '创建时间', '操作']/*头部姓名*/
             },
             /*请求配置*/
             table_config1: {
@@ -42,7 +54,7 @@
                 autoWidth: true, /*是否*/
                 paging: false,
                 ajax: {
-                    url: debug ? 'json/test.json' : toolUtil.adaptReqUrl('/admin/list'),
+                    url: debug ? 'json/test.json' : toolUtil.adaptReqUrl('/provider/list'),
                     dataType: 'JSON',
                     method: 'post',
                     dataSrc: function (json) {
@@ -50,12 +62,14 @@
                             var json = testService.test({
                                 map: {
                                     'id': 'guid',
-                                    'name': 'value',
-                                    'realName': 'name',
-                                    'email': 'email',
-                                    'phone': 'mobile',
-                                    'loginTime': 'datetime',
-                                    'logincount': 'id'
+                                    'legalName': 'name',
+                                    'storeName': 'value',
+                                    'companyName': 'text',
+                                    'telephone': 'mobile',
+                                    'address': 'address',
+                                    'isEnabled': 'rule,0,1',
+                                    'auditStatus': 'rule,0,1,2',
+                                    'createTime': 'datetime'
                                 },
                                 mapmin: 5,
                                 mapmax: 20,
@@ -131,46 +145,109 @@
                 order: [[1, "desc"]],
                 columns: [
                     {
-                        "data": "name"
-                    },
-                    {
-                        "data": "realName"
-                    },
-                    {
-                        "data": "email"
-                    },
-                    {
-                        "data": "phone",
+                        "data": "id",
+                        "orderable": false,
+                        "searchable": false,
                         "render": function (data, type, full, meta) {
-                            return toolUtil.phoneFormat(data);
+                            return '<input data-forbid="' + full.isEnabled + '" value="' + data + '" name="providerID" type="checkbox" />';
                         }
                     },
                     {
-                        "data": "loginTime"
+                        "data": "legalName"
                     },
                     {
-                        "data": "logincount"
+                        "data": "storeName"
                     },
                     {
-                        /*to do*/
+                        "data": "companyName"
+                    },
+                    {
+                        "data": "telephone",
+                        "render": function (data, type, full, meta) {
+                            toolUtil.phoneFormat(data);
+                        }
+                    },
+                    {
+                        "data": "address"
+                    },
+                    {
+                        "data": "isEnabled",
+                        "render": function (data, type, full, meta) {
+                            var str = '',
+                                isEnabled = parseInt(data, 10);
+                            if (isEnabled === 1) {
+                                str = '<div class="g-c-info">启用</div>';
+                            } else if (isEnabled === 0) {
+                                str = '<div class="g-c-gray9">禁用</div>';
+                            }
+                            return str;
+                        }
+                    },
+                    {
+                        "data": "createTime"
+                    },
+                    {
                         "data": "id",
                         "render": function (data, type, full, meta) {
-                            var btns = '';
+                            var id = parseInt(data, 10),
+                                btns = '',
+                                isEnabled = parseInt(full.isEnabled, 10),
+                                auditstate = parseInt(full.auditStatus, 10);
 
-                            /*查看订单*/
-                            if (vm.powerlist.update) {
-                                btns += '<span data-action="update" data-id="' + data + '"  class="btn-operate">编辑权限</span>';
+                            if (true || powerlist.forbid) {
+                                if (isEnabled === 1) {
+                                    /*启用状态则禁用*/
+                                    btns += '<span data-action="forbid" data-id="' + id + '"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+													<i class="fa-arrow-down"></i>\
+													<span>禁用</span>\
+												</span>';
+                                } else if (isEnabled === 0) {
+                                    /*禁用状态则启用*/
+                                    btns += '<span data-action="enable" data-id="' + id + '"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+													<i class="fa-arrow-up"></i>\
+													<span>启用</span>\
+												</span>';
+                                }
                             }
-                            if (vm.powerlist.delete) {
-                                btns += '<span data-action="delete" data-id="' + data + '"  class="btn-operate">删除权限</span>';
+                            /*商品列*/
+                            if (true || powerlist.goods_column) {
+                                btns += '<span data-action="goods" data-id="' + id + '" data-legalname="' + full.legalName + '" data-storename="' + full.storeName + '" data-auditstatus="' + auditstate + '"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+													<i class="fa-send"></i>\
+													<span>商品列</span>\
+												</span>';
                             }
                             return btns;
                         }
                     }
                 ]
             },
+            /*table缓存*/
             table_cache1: null
         };
+
+
+        /*模型--操作记录*/
+        vm.record = {
+            filter: ''/*表格过滤*/,
+            legalName: ''/*查询条件--店主名称*/,
+            storeName: ''/*查询条件--店铺名称*/,
+            auditStatus: ''/*查询条件--审核状态*/
+        };
+
+        /*模型--查询下拉--审核状态*/
+        vm.auditStatusItem = [{
+            key: '全部',
+            value: ''
+        }, {
+            key: '待审核',
+            value: 0
+        }, {
+            key: '审核成功',
+            value: 1
+        }, {
+            key: '审核失败',
+            value: 2
+        }];
 
         /*初始化配置,渲染*/
         _initRender_();
@@ -179,6 +256,7 @@
         /*对外接口*/
         vm.getTableData = getTableData/*获取数据*/;
         vm.doItemAction = doItemAction/*操作表格*/;
+        vm.filterTableData = filterTableData/*过滤表格数据*/;
 
 
         /*接口实现--公有*/
@@ -186,6 +264,7 @@
         function getTableData() {
             dataTableService.getTableData({
                 table: vm.table,
+                condition: vm.record,
                 index: 1
             });
         }
@@ -196,6 +275,15 @@
             config['debug'] = debug;
             config['table'] = vm.table;
             providerListService.doItemAction(config);
+        }
+
+        /*过滤表格数据*/
+        function filterTableData() {
+            dataTableService.filterTable({
+                table: vm.table,
+                index: 1,
+                filter: vm.record.filter
+            });
         }
 
 
