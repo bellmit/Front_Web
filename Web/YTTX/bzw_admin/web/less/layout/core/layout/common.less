@@ -787,6 +787,14 @@
         &:hover {
           background: @color-gray14;
         }
+        div{
+          font-size: @font-size-base;
+          color:@color-gray9;
+        }
+        span{
+          color:@color-gray11;
+          padding:0 2px;
+        }
       }
       .action-list-active {
         background: lighten(@color-blue3, 36%);
@@ -836,6 +844,7 @@
   th, td {
     font-size: @font-size-base - 2;
     color: @color-gray6;
+    .text-ww();
   }
   thead th,
   tr th,

@@ -280,18 +280,23 @@
                         i = 0,
                         column = false,
                         check = false,
+                        action = false,
                         item;
                     for (i; i < len; i++) {
                         item = sequence[i];
                         if (parseInt(item['index'], 10) === index) {
                             column = item['column'];
                             check = item['check'];
+                            action = item['action'];
                             break;
                         }
                     }
                     if (column) {
                         /*初始化列控制*/
-                        _initColumn_(config, check);
+                        _initColumn_(config, {
+                            action: action,
+                            check: check
+                        });
                     }
                 }
             }
@@ -310,7 +315,7 @@
         }
 
         /*初始化列控制*/
-        function _initColumn_(config, flag) {
+        function _initColumn_(config, flag_config) {
             /*隐藏*/
             var tempid,
                 str = '',
@@ -324,7 +329,7 @@
 
             for (i; i < len; i++) {
                 tempid = item[i];
-                str += '<li data-value="' + tempid + '">第' + (tempid + 1) + '列<div class="g-c-gray6 g-fs12">(<span class="g-c-gray9">'+header[tempid]+'</span>)</div></li>';
+                str += '<li data-value="' + tempid + '">第' + (tempid + 1) + '列<div>(<span>' + header[tempid] + '</span>)</div></li>';
                 config['table']['table_cache' + index].column(tempid).visible(false);
             }
             if (str !== '') {
@@ -336,9 +341,8 @@
                 index: index,
                 table: config['table']['table_cache' + index],
                 column: column_config,
-                len: len,
-                check: flag
-            }));
+                len: len
+            }, flag_config));
             /*绑定切换列控制按钮*/
             cache_column[index].$column_btn.on('click', function () {
                 cache_column[index].$column_wrap.toggleClass('g-d-hidei');
@@ -362,64 +366,62 @@
                     index: index,
                     table: config['table']['table_cache' + index],
                     column: column_config,
-                    len: len - cache_column[index].$column_ul.find('.action-list-active'),
-                    check: flag
-                }));
+                    len: len - cache_column[index].$column_ul.find('.action-list-active')
+                }, flag_config));
             });
         }
 
 
         /*计数分组距离*/
-        function _createColgroup_(config) {
+        function _createColgroup_(config, flag_config) {
             var str = '',
                 j = 0,
-                index=config.index,
+                index = config.index,
                 colgroup_len,
-                check = config.check,
+                check = flag_config.check,
+                action = flag_config.action,
                 colitem,
-                tempcol = 0;
+                tempcol = 0,
+                all_percent;
 
             if (check) {
-                colgroup_len = config.column.init_len - config.len - 1;
-                tempcol = 45 % colgroup_len;
-                if (tempcol !== 0) {
-                    colitem = parseInt((45 - tempcol) / colgroup_len, 10);
+                if (action) {
+                    colgroup_len = config.column.init_len - config.len - 2;
+                    all_percent = 40;
                 } else {
-                    colitem = parseInt(45 / colgroup_len, 10);
-                }
-                /*解析分组*/
-                if (colitem * colgroup_len <= (45 - colgroup_len)) {
-                    colitem = colgroup_len + 1;
-                }
-                /*设置主体值*/
-                if (config.table === null || (config.table !== null && config.table.data().length === 0)) {
-                    cache_sequence[index].find('td').attr({
-                        'colspan': colgroup_len + 1
-                    });
+                    colgroup_len = config.column.init_len - config.len - 1;
+                    all_percent = 48;
                 }
             } else {
-                colgroup_len = tablecolumn.init_len - len;
-                tempcol = 50 % colgroup_len;
-                if (tempcol !== 0) {
-                    colitem = parseInt((50 - tempcol) / colgroup_len, 10);
+                if (action) {
+                    colgroup_len = config.column.init_len - config.len - 1;
+                    all_percent = 42;
                 } else {
-                    colitem = parseInt(50 / colgroup_len, 10);
+                    colgroup_len = config.column.init_len - config.len;
+                    all_percent = 50;
                 }
-                /*解析分组*/
-                if (colitem * colgroup_len <= (50 - colgroup_len)) {
-                    colitem = colgroup_len + 1;
-                }
-                /*设置主体值*/
-                if (config.table === null || (config.table !== null && config.table.data().length === 0)) {
-                    cache_sequence[index].find('td').attr({
-                        'colspan': colgroup_len
-                    });
-                }
+            }
+
+            tempcol = all_percent % colgroup_len;
+            if (tempcol !== 0) {
+                colitem = parseInt((all_percent - tempcol) / colgroup_len, 10);
+            } else {
+                colitem = parseInt(all_percent / colgroup_len, 10);
+            }
+            /*解析分组*/
+            if (colitem * colgroup_len <= (all_percent - colgroup_len)) {
+                colitem = colgroup_len + 1;
+            }
+            /*设置主体值*/
+            if (config.table === null || (config.table !== null && config.table.data().length === 0)) {
+                cache_sequence[index].find('td').attr({
+                    'colspan': check ? colgroup_len + 1 : colgroup_len
+                });
             }
             for (j; j < colgroup_len; j++) {
                 str += '<col class="g-w-percent' + colitem + '" />';
             }
-            return check ? '<col class="g-w-percent5" />' + str : str;
+            return check ? action ? '<col class="g-w-percent2" />' + str + '<col class="g-w-percent8" />' : '<col class="g-w-percent2" />' + str : str;
         }
 
     }

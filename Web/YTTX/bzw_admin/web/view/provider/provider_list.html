@@ -28,13 +28,13 @@
     </div>
 
     <!--查询-->
-    <div class="action-item-btn action-item-export g-w-number4">
+    <div class="action-item-btn action-item-export g-w-number4 g-gap-mr3">
         <span ng-click="vm.getTableData()" class="btn btn-export g-br3 g-w-percent50 g-c-blue3">查询</span>
     </div>
 
 
     <!--列控制-->
-    <div class="action-item-ul g-w-percent6 g-pos-r g-gap-mt4" ng-show="vm.table.table_column1.columnshow">
+    <div class="action-item-ul g-w-number4 g-pos-r" ng-show="vm.table.table_column1.columnshow && app_ctrl.viewmode.value==='default'">
         <div class="action-theme action-theme-btn g-br3 g-t-c">显示列</div>
         <div class="action-ul g-d-hidei" id="admin_list_column1">
             <ul class="action-list-wrap" ></ul>
