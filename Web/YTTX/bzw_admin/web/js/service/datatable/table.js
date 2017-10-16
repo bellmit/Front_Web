@@ -233,12 +233,8 @@
 
         /*过滤数据*/
         function filterTable(config) {
-            var index = config.index,
-                filter = config.filter;
-            if (config["table"]["table_cache" + index] === null) {
-                return false;
-            }
-            config["table"]["table_cache" + index].search(filter).columns().draw();
+            getTable(config);
+            config["table"]["table_cache" + config.index].search(config.filter).columns().draw();
         }
 
         /*绑定操作选项*/
@@ -273,32 +269,65 @@
         /*渲染分组*/
         function renderColumn(config) {
             if (config) {
-                var index = parseInt(config.index, 10);
-                if (index) {
-                    var sequence = config.table.sequence,
-                        len = sequence.length,
-                        i = 0,
-                        column = false,
-                        check = false,
-                        action = false,
-                        item;
+                /*隐藏*/
+                var tempid,
+                    index = config.index,
+                    column_config = config['table']['table_column' + index],
+                    header = column_config.header,
+                    item = column_config.hide_list,
+                    len = item.length,
+                    table = config['table']['table_cache' + index];
+
+                /*创建按钮*/
+                (function () {
+                    var i = 0,
+                        str = '';
+
                     for (i; i < len; i++) {
-                        item = sequence[i];
-                        if (parseInt(item['index'], 10) === index) {
-                            column = item['column'];
-                            check = item['check'];
-                            action = item['action'];
-                            break;
-                        }
+                        tempid = item[i];
+                        str += '<li data-value="' + tempid + '">第' + (tempid + 1) + '列<div>(<span>' + header[tempid] + '</span>)</div></li>';
+                        config['table']['table_cache' + index].column(tempid).visible(false);
                     }
-                    if (column) {
-                        /*初始化列控制*/
-                        _initColumn_(config, {
-                            action: action,
-                            check: check
-                        });
+                    if (str !== '') {
+                        /*赋值控制下拉选项*/
+                        $(str).appendTo(cache_column[index].$column_ul.html(''));
                     }
-                }
+                }());
+
+
+                /*设置分组*/
+                cache_colgroup[index].html(_createColgroup_({
+                    index: index,
+                    table: table,
+                    column: column_config,
+                    size: len
+                }));
+                /*绑定切换列控制按钮*/
+                cache_column[index].$column_btn.on('click', function () {
+                    cache_column[index].$column_wrap.toggleClass('g-d-hidei');
+                });
+                /*绑定操作列数据*/
+                cache_column[index].$column_ul.on('click', 'li', function () {
+                    /*切换显示相关列*/
+                    var $this = $(this),
+                        active = $this.hasClass('action-list-active'),
+                        value = $this.attr('data-value');
+
+                    if (active) {
+                        $this.removeClass('action-list-active');
+                        table.column(value).visible(false);
+                    } else {
+                        $this.addClass('action-list-active');
+                        table.column(value).visible(true);
+                    }
+                    /*设置分组*/
+                    cache_colgroup[index].html(_createColgroup_({
+                        index: index,
+                        table: table,
+                        column: column_config,
+                        size: len - cache_column[index].$column_ul.find('.action-list-active')
+                    }));
+                });
             }
         }
 
@@ -314,90 +343,48 @@
             }
         }
 
-        /*初始化列控制*/
-        function _initColumn_(config, flag_config) {
-            /*隐藏*/
-            var tempid,
-                str = '',
-                i = 0,
-                index = config.index,
-                column_config = config['table']['table_column' + index],
-                header = column_config.header,
-                item = column_config.hide_list,
-                len = item.length;
-
-
-            for (i; i < len; i++) {
-                tempid = item[i];
-                str += '<li data-value="' + tempid + '">第' + (tempid + 1) + '列<div>(<span>' + header[tempid] + '</span>)</div></li>';
-                config['table']['table_cache' + index].column(tempid).visible(false);
-            }
-            if (str !== '') {
-                /*赋值控制下拉选项*/
-                $(str).appendTo(cache_column[index].$column_ul.html(''));
-            }
-            /*设置分组*/
-            cache_colgroup[index].html(_createColgroup_({
-                index: index,
-                table: config['table']['table_cache' + index],
-                column: column_config,
-                len: len
-            }, flag_config));
-            /*绑定切换列控制按钮*/
-            cache_column[index].$column_btn.on('click', function () {
-                cache_column[index].$column_wrap.toggleClass('g-d-hidei');
-            });
-            /*绑定操作列数据*/
-            cache_column[index].$column_ul.on('click', 'li', function () {
-                /*切换显示相关列*/
-                var $this = $(this),
-                    active = $this.hasClass('action-list-active'),
-                    value = $this.attr('data-value');
-
-                if (active) {
-                    $this.removeClass('action-list-active');
-                    config['table']['table_cache' + index].column(value).visible(false);
-                } else {
-                    $this.addClass('action-list-active');
-                    config['table']['table_cache' + index].column(value).visible(true);
-                }
-                /*设置分组*/
-                cache_colgroup[index].html(_createColgroup_({
-                    index: index,
-                    table: config['table']['table_cache' + index],
-                    column: column_config,
-                    len: len - cache_column[index].$column_ul.find('.action-list-active')
-                }, flag_config));
-            });
-        }
-
 
         /*计数分组距离*/
-        function _createColgroup_(config, flag_config) {
+        function _createColgroup_(config) {
             var str = '',
                 j = 0,
                 index = config.index,
                 colgroup_len,
-                check = flag_config.check,
-                action = flag_config.action,
+                column = config.column,
+                check = column.check,
+                action = column.action,
                 colitem,
-                tempcol = 0,
+                short_len = 5,
+                limit_len = column.init_len - config.size,
+                tempcol,
                 all_percent;
 
             if (check) {
                 if (action) {
-                    colgroup_len = config.column.init_len - config.len - 2;
-                    all_percent = 40;
+                    colgroup_len = limit_len - 2;
+                    if (limit_len <= short_len) {
+                        all_percent = 30;
+                    } else {
+                        all_percent = 40;
+                    }
                 } else {
-                    colgroup_len = config.column.init_len - config.len - 1;
-                    all_percent = 48;
+                    colgroup_len = limit_len - 1;
+                    if (limit_len <= short_len) {
+                        all_percent = 38;
+                    } else {
+                        all_percent = 48;
+                    }
                 }
             } else {
                 if (action) {
-                    colgroup_len = config.column.init_len - config.len - 1;
-                    all_percent = 42;
+                    colgroup_len = limit_len - 1;
+                    if (limit_len <= short_len) {
+                        all_percent = 32;
+                    } else {
+                        all_percent = 42;
+                    }
                 } else {
-                    colgroup_len = config.column.init_len - config.len;
+                    colgroup_len = limit_len;
                     all_percent = 50;
                 }
             }
@@ -415,15 +402,34 @@
             /*设置主体值*/
             if (config.table === null || (config.table !== null && config.table.data().length === 0)) {
                 cache_sequence[index].find('td').attr({
-                    'colspan': check ? colgroup_len + 1 : colgroup_len
+                    'colspan': check ? action ? colgroup_len + 2 : colgroup_len + 1 : colgroup_len
                 });
             }
             for (j; j < colgroup_len; j++) {
                 str += '<col class="g-w-percent' + colitem + '" />';
             }
-            return check ? action ? '<col class="g-w-percent2" />' + str + '<col class="g-w-percent8" />' : '<col class="g-w-percent2" />' + str : str;
+            if (check) {
+                if (action) {
+                    if (limit_len <= short_len) {
+                        return '<col class="g-w-percent2" />' + str + '<col class="g-w-percent18" />';
+                    } else {
+                        return '<col class="g-w-percent2" />' + str + '<col class="g-w-percent8" />';
+                    }
+                } else {
+                    return '<col class="g-w-percent2" />' + str;
+                }
+            } else {
+                if (action) {
+                    if (limit_len <= short_len) {
+                        return str + '<col class="g-w-percent18" />';
+                    } else {
+                        return str + '<col class="g-w-percent8" />';
+                    }
+                } else {
+                    return str;
+                }
+            }
         }
-
     }
 
 })(jQuery);
