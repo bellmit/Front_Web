@@ -35,6 +35,9 @@
         this.toggleCheckItem = toggleCheckItem/*切换单个选项*/;
         this.getCheckData = getCheckData/*获取选中的数据*/;
         this.getCheckNode = getCheckNode/*获取选中节点*/;
+        this.clearCheck = clearCheck/*清除选中数据*/;
+        this.destroyCheck = destroyCheck/*摧毁数据:适应直接清除数据，不做文档操作*/;
+        this.filterCheck = filterCheck/*过滤数据(清除并过滤已经选中的数据)*/;
 
 
         /*接口实现*/
@@ -46,8 +49,6 @@
             _clearCache_(cache_body)/*清除body序列*/;
             _clearCache_(cache_colgroup)/*清除分组序列*/;
             _clearCache_(cache_check)/*清除全选序列*/;
-            cache_check_list.length = 0;
-            cache_check_node.length = 0;
 
             /*如果有配置则配置缓存*/
             if (table) {
@@ -65,6 +66,9 @@
                                 action/*是否按钮操作*/,
                                 column/*是否分组控制*/,
                                 check/*是否全选*/;
+
+                            /*清除全选数据*/
+                            destroyCheck(index);
 
                             for (j; j < sequence_len; j++) {
                                 item = sequence_obj[j];
@@ -200,11 +204,176 @@
             }
         }
 
-
         /*过滤数据*/
         function filterTable(config) {
             getTable(config);
             config["table"]["table_cache" + config.index].search(config.filter).columns().draw();
+        }
+
+        /*切换全选*/
+        function toggleCheckAll(config) {
+            var check = parseInt(config.check, 10),
+                index = config.index;
+            if (check === 1) {
+                /*选中*/
+                /*不依赖于状态*/
+                cache_body[index].find('tr').each(function (index, element) {
+                    var $tr = $(element),
+                        $input = $tr.children().eq(0).find('input:checkbox');
+                    if ($input.size() !== 0) {
+                        cache_check_list.push($input.prop('checked', true).val());
+                        cache_check_node.push($input);
+                        $tr.addClass('item-lightenbatch');
+                    }
+                });
+            } else if (check === 0) {
+                /*取消选中*/
+                clearCheck(index);
+            }
+        }
+
+        /*切换单个选项*/
+        function toggleCheckItem(config) {
+            var index = config.index,
+                $input = config.check;
+
+            var len = cache_check_list.length,
+                ishave = -1,
+                text = $input.val();
+
+            if ($input.is(':checked')) {
+                /*选中*/
+                if (len === 0) {
+                    cache_check_list.push(text);
+                    cache_check_node.push($input);
+                    $input.closest('tr').addClass('item-lightenbatch');
+                    cache_check[index].attr({
+                        'data-check': 1
+                    }).addClass('admin-batchitem-checkactive');
+                } else {
+                    ishave = $.inArray(text, cache_check_list);
+                    $input.closest('tr').addClass('item-lightenbatch');
+                    if (ishave !== -1) {
+                        cache_check_list.splice(ishave, 1, text);
+                        cache_check_node.splice(ishave, 1, $input);
+                    } else {
+                        cache_check_list.push(text);
+                        cache_check_node.push($input);
+                    }
+                }
+            } else {
+                /*取消选中*/
+                ishave = $.inArray(text, cache_check_list);
+                if (ishave !== -1) {
+                    cache_check_list.splice(ishave, 1);
+                    cache_check_node[ishave].closest('tr').removeClass('admin-batchitem-checkactive');
+                    cache_check_node.splice(ishave, 1);
+                    if (cache_check_list.length === 0) {
+                        clearCheck(index);
+                    }
+                }
+            }
+        }
+
+        /*获取选中的数据*/
+        function getCheckData() {
+            return cache_check_list;
+        }
+
+        /*获取选中节点*/
+        function getCheckNode() {
+            return cache_check_node;
+        }
+
+        /*清除选中数据*/
+        function clearCheck(index, fn) {
+            cache_check_list.length = 0;
+            cache_check[index].attr({
+                'data-check': 0
+            }).removeClass('admin-batchitem-checkactive');
+
+            /*清除选中*/
+            var len = cache_check_node.length;
+            if (len !== 0) {
+                var i = 0;
+                for (i; i < len; i++) {
+                    cache_check_node[i].closest('tr').removeClass('item-lightenbatch');
+                    cache_check_node[i].prop('checked', false);
+                }
+                cache_check_node.length = 0;
+            }
+            if (fn && typeof fn === 'function') {
+                fn.call();
+            }
+        }
+
+        /*摧毁数据:适应直接清除数据，不做文档操作*/
+        function destroyCheck(index, fn) {
+            cache_check_list.length = 0;
+            cache_check_node.length = 0;
+            if(cache_check[index]){
+                cache_check[index].attr({
+                    'data-check': 0
+                }).removeClass('admin-batchitem-checkactive');
+            }
+            if (fn && typeof fn === 'function') {
+                fn.call();
+            }
+        }
+
+        /*过滤数据(清除并过滤已经选中的数据)*/
+        function filterCheck(config) {
+            /*清除选中*/
+            var index = config.index,
+                key = config.key,
+                fn = config.fn,
+                len = cache_check_list.length;
+            if (len !== 0 && typeof key !== 'undefined') {
+                if ($.isArray(key)) {
+                    var j = 0,
+                        jlen = key.length,
+                        k = 0,
+                        klen = cache_check_node.length;
+
+                    outer:for (j; j < jlen; j++) {
+                        for (k; k < klen; k++) {
+                            if (cache_check_list[k] === key[j]) {
+                                cache_check_node[k].prop('checked', false).closest('tr').removeClass('item-lightenbatch');
+                                cache_check_node.splice(k, 1);
+                                cache_check_list.splice(k, 1);
+                                k = 0;
+                                klen = cache_check_list.length;
+                                continue outer;
+                            }
+                        }
+                    }
+                    if (cache_check_list.length === 0) {
+                        clearCheck(index);
+                        /*执行回调*/
+                        if (fn && typeof fn === 'function') {
+                            fn.call(null, 0);
+                        }
+                    }
+                } else {
+                    var i = len - 1;
+                    for (i; i >= 0; i--) {
+                        if (cache_check_list[i] === key) {
+                            cache_check_node[i].closest('tr').removeClass('admin-batchitem-checkactive');
+                            cache_check_node[i].prop('checked', false);
+                            cache_check_node.splice(i, 1);
+                            cache_check_list.splice(i, 1);
+                            break;
+                        }
+                    }
+                    if (cache_check_list.length === 0) {
+                        clearCheck(index);
+                        /*执行回调*/
+                        if (fn && typeof fn === 'function') {
+                            fn.call(null, 0);
+                        }
+                    }
+                }
+            }
         }
 
 
@@ -253,6 +422,7 @@
         function _renderColumn_(config) {
             if (config) {
                 /*隐藏*/
+                getTable(config);
                 var tempid,
                     index = config.index,
                     column_config = config['table']['table_column' + index],
@@ -269,7 +439,7 @@
                     for (i; i < len; i++) {
                         tempid = item[i];
                         str += '<li data-value="' + tempid + '">第' + (tempid + 1) + '列<div>(<span>' + header[tempid] + '</span>)</div></li>';
-                        config['table']['table_cache' + index].column(tempid).visible(false);
+                        table.column(tempid).visible(false);
                     }
                     if (str !== '') {
                         /*赋值控制下拉选项*/
@@ -343,16 +513,16 @@
                     if (limit_len <= short_len) {
                         all_percent = 38;
                     } else {
-                        all_percent = 48;
+                        all_percent = 46;
                     }
                 }
             } else {
                 if (action) {
                     colgroup_len = limit_len - 1;
                     if (limit_len <= short_len) {
-                        all_percent = 32;
+                        all_percent = 34;
                     } else {
-                        all_percent = 42;
+                        all_percent = 44;
                     }
                 } else {
                     colgroup_len = limit_len;
@@ -382,19 +552,19 @@
             if (check) {
                 if (action) {
                     if (limit_len <= short_len) {
-                        return '<col class="g-w-percent2" />' + str + '<col class="g-w-percent18" />';
+                        return '<col class="g-w-percent4" />' + str + '<col class="g-w-percent16" />';
                     } else {
-                        return '<col class="g-w-percent2" />' + str + '<col class="g-w-percent8" />';
+                        return '<col class="g-w-percent4" />' + str + '<col class="g-w-percent6" />';
                     }
                 } else {
-                    return '<col class="g-w-percent2" />' + str;
+                    return '<col class="g-w-percent4" />' + str;
                 }
             } else {
                 if (action) {
                     if (limit_len <= short_len) {
-                        return str + '<col class="g-w-percent18" />';
+                        return str + '<col class="g-w-percent16" />';
                     } else {
-                        return str + '<col class="g-w-percent8" />';
+                        return str + '<col class="g-w-percent6" />';
                     }
                 } else {
                     return str;
@@ -457,7 +627,10 @@
                         $this.removeClass('admin-batchitem-checkactive');
                     }
                     /*执行全选*/
-                    toggleCheckAll(value);
+                    toggleCheckAll({
+                        index: index,
+                        check: value
+                    });
                     /*执行回调*/
                     if (checkfn) {
                         config.doCheck.call(null, {
@@ -468,19 +641,24 @@
                 });
                 /*绑定单项选择*/
                 cache_body[index].on('change', 'input[type="checkbox"]', function () {
-                    var $this = $(this),
-                        tempstate = $this.is(':checked') ? 1 : 0;
-                    toggleCheckItem(tempstate);
+                    var $this = $(this);
+                    toggleCheckItem({
+                        index: index,
+                        check: $this
+                    });
                     /*执行回调*/
                     if (checkfn) {
-                        config.doCheck.call(null, tempstate);
+                        config.doCheck.call(null, {
+                            index: index,
+                            check: $this
+                        });
                     }
                 });
             }
         }
 
         /*辅助初始化--清除缓存*/
-        function _clearCache_(obj, type) {
+        function _clearCache_(obj) {
             if (obj) {
                 for (var i in obj) {
                     obj[i] = null/*释放内存*/;

@@ -48,11 +48,6 @@
                 action: true/*是否有操作*/,
                 check: true/*是否有全选*/
             },
-            table_check1: {
-                checkvalue: 0/*默认未选中*/,
-                highactive: 'item-lightenbatch'/*子项选中样式*/,
-                checkactive: 'admin-batchitem-checkactive'/*全选选中样式*/
-            },
             /*请求配置*/
             table_config1: {
                 processing: true, /*大消耗操作时是否显示处理状态*/
@@ -262,6 +257,7 @@
         /*对外接口*/
         vm.getTableData = getTableData/*获取数据*/;
         vm.doItemAction = doItemAction/*操作表格*/;
+        vm.doItemCheck=doItemCheck;
         vm.filterTableData = filterTableData/*过滤表格数据*/;
 
 
@@ -291,6 +287,13 @@
                 filter: vm.record.filter
             });
         }
+        
+        function doItemCheck() {
+            toolDialog.show({
+                type: 'succ',
+                value: 'ni mei'
+            });
+        }
 
 
         /*接口实现--私有*/
@@ -301,9 +304,9 @@
                 sequence: vm.table.sequence
             });
             /*数据列表初始化*/
-            dataTableService.initTable(vm.table,{
-                doAction:doItemAction/*操作回调*/,
-                doCheck:doItemCheck/*全选回调*/
+            dataTableService.initTable(vm.table, {
+                doAction: doItemAction/*操作回调*/,
+                doCheck: doItemCheck/*全选回调*/
             });
             /*获取表格数据*/
             getTableData();
