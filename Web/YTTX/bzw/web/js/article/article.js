@@ -87,13 +87,15 @@
                     var data = testWidget.test({
                         map: {
                             title: 'text',
-                            content: 'content'
+                            content: 'content',
+                            type: 'rule,1'
                         },
                         mapmin: 1,
                         mapmax: 1,
                         type: 'list'
                     });
-                    var code = parseInt(data.code, 10);
+                    var code = parseInt(data.code, 10),
+                        c_type;
                     if (code !== 0) {
                         /*请求异常*/
                         console.log(data.message);
@@ -105,19 +107,39 @@
                         var list = data.result.list[0];
                         config.title.html(list.title);
                         config.type.html(param['type']);
-                        config.wrap.html(list.content);
+                        c_type = parseInt(list.type, 10);
+                        if (c_type === 1) {
+                            /*富文本*/
+                            config.wrap.html(list.content);
+                        } else if (c_type === 2) {
+                            /*外部链接*/
+                            $('<iframe href="' + list.content + '"></iframe>').appendTo(config.wrap.html(''));
+                        }else{
+                            config.wrap.html(list.content);
+                        }
                     }
                 } else {
                     if (data) {
                         config.title.html(data.title);
                         config.type.html(data.category_name);
-                        config.wrap.html(data.content);
+                        c_type = parseInt(data.type, 10);
+                        if (c_type === 1) {
+                            /*富文本*/
+                            config.wrap.html(data.content);
+                        } else if (c_type === 2) {
+                            /*外部链接*/
+                            $('<div class="content-article-iframe-outer"><div class="content-article-iframe-inner"><iframe src="' + data.content + '"></iframe></div></div>').appendTo(config.wrap.html(''));
+
+                        }else{
+                            config.wrap.html(data.content);
+                        }
                     } else {
                         config.title.html('');
                         config.type.html('');
                         config.wrap.html('');
                     }
                 }
+
             })
             .fail(function () {
                 config.title.html('');

@@ -25,10 +25,8 @@
         vm.table = {
             sequence: [{
                 index: 1,
-                action: true,
-                doAction: doItemAction
+                action: true
             }]/*分页序列,表格序列*/,
-            condition: {}/*查询条件*//*{1:[{},{}]}*/,
             /*分页配置*/
             table_page1: {
                 page: 1,
@@ -210,9 +208,8 @@
                 sequence: vm.table.sequence
             });
             /*数据列表初始化*/
-            dataTableService.initTable({
-                sequence: vm.table.sequence,
-                condition: vm.table.condition
+            dataTableService.initTable(vm.table,{
+                doAction:doItemAction/*操作回调*/
             });
             /*获取表格数据*/
             getTableData();

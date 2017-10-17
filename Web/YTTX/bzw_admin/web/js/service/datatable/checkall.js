@@ -1,5 +1,27 @@
-/*表格服务*/
-'use strict';
+/*全选服务*/
+(function ($) {
+    'use strict';
+
+
+    /*定义或扩展模块*/
+    angular
+        .module('app')
+        .service('dataTableCheckAllService', dataTableCheckAllService);
+
+
+    /*服务依赖注入*/
+    /*dataTableCheckAllService.$inject*/
+
+
+    /*服务实现*/
+    function dataTableCheckAllService() {
+        
+    }
+
+
+})(jQuery);
+
+
 angular.module('app')
     .service('dataTableCheckAllService', function () {
         /*全选服务*/

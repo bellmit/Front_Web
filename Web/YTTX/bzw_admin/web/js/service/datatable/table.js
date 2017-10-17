@@ -18,7 +18,9 @@
             cache_colgroup = {}/*缓存序列,存放colgroup dom节点引用*/,
             cache_column = {}/*缓存序列,存放column dom操作节点引用*/,
             cache_condition = {}/*存放条件查询配置*/,
-            cache_check = {}/*存放全选配置*/;
+            cache_check = {}/*存放全选配置*/,
+            cache_check_list = []/*存放全选数据*/,
+            cache_check_node = []/*存放全选节点*/;
 
         /*对外接口*/
         /*基本服务类*/
@@ -26,28 +28,31 @@
         this.getTable = getTable/*获取表格缓存*/;
         this.clearTable = clearTable/*清除或更新表格缓存*/;
         this.destoryTable = destoryTable/*摧毁表格缓存*/;
-        this.pageConfig = pageConfig/*配置分页参数*/;
-        this.conditionTable = conditionTable/*组合查询条件*/;
         this.getTableData = getTableData/*请求数据*/;
         this.loadTableData = loadTableData/*重载或加载数据，查询条件不变，相当于重绘或重新请求*/;
         this.filterTable = filterTable/*过滤数据*/;
-        this.bindDoAction = bindDoAction/*绑定操作选项*/;
+        this.toggleCheckAll = toggleCheckAll/*切换全选*/;
+        this.toggleCheckItem = toggleCheckItem/*切换单个选项*/;
+        this.getCheckData = getCheckData/*获取选中的数据*/;
+        this.getCheckNode = getCheckNode/*获取选中节点*/;
 
 
         /*接口实现*/
         /*初始化表格缓存*/
-        function initTable(config) {
+        function initTable(table, fn_list) {
             /*清除缓存*/
             _clearCache_(cache_sequence)/*清除table序列*/;
             _clearCache_(cache_condition)/*清除条件序列*/;
             _clearCache_(cache_body)/*清除body序列*/;
             _clearCache_(cache_colgroup)/*清除分组序列*/;
             _clearCache_(cache_check)/*清除全选序列*/;
+            cache_check_list.length = 0;
+            cache_check_node.length = 0;
 
             /*如果有配置则配置缓存*/
-            if (config) {
+            if (table) {
                 /*配置dom节点引用*/
-                var sequence_obj = config.sequence;
+                var sequence_obj = table.sequence;
                 if (sequence_obj) {
                     var j = 0,
                         sequence_len = sequence_obj.length;
@@ -80,11 +85,19 @@
                                 /*缓存body节点*/
                                 if (action) {
                                     cache_body[index] = $('#admin_list_body' + index);
-                                    bindDoAction(item);
+                                    _bindDoAction_({
+                                        index: index,
+                                        doAction: fn_list.doAction
+                                    });
                                 }
                                 /*缓存check节点*/
                                 if (check) {
                                     cache_check[index] = $('#admin_list_check' + index);
+                                    _renderCheck_({
+                                        index: index,
+                                        table: table,
+                                        doCheck: fn_list.doCheck
+                                    });
                                 }
 
                                 /*缓存column节点*/
@@ -95,6 +108,11 @@
                                         $column_btn: column_wrap.prev(),
                                         $column_ul: column_wrap.find('ul')
                                     };
+                                    /*是否列控制*/
+                                    _renderColumn_({
+                                        index: index,
+                                        table: table
+                                    });
                                 }
                             }
                         }());
@@ -102,7 +120,7 @@
                 }
 
                 /*配置条件查询*/
-                var condition = config.condition;
+                var condition = table.condition;
                 if (condition) {
                     for (var m in condition) {
                         cache_condition[m] = condition[m];
@@ -143,18 +161,6 @@
             }
         }
 
-        /*配置分页*/
-        function pageConfig(config) {
-            /*配置分页*/
-            if (typeof config.pageNumber !== 'undefined' && typeof config.pageSize !== 'undefined') {
-                var index = config.index,
-                    data = config['table']["table_config" + index]["ajax"]["data"];
-
-                data["page"] = config.pageNumber;
-                data["pageSize"] = config.pageSize;
-            }
-        }
-
         /*请求数据流程：
          1：组合查询条件,包括分页配置
          2：获取表格缓存
@@ -163,10 +169,10 @@
          */
         function getTableData(config) {
             /*配置分页*/
-            pageConfig(config);
+            _pageTable_(config);
 
             /*配置查询条件*/
-            conditionTable(config);
+            _conditionTable_(config);
 
             var index = config.index,
                 istable = getTable(config),
@@ -177,9 +183,6 @@
                 /*存在缓存则直接调用缓存*/
                 table = config["table"]["table_cache" + index];
                 table["ajax"]["config"](ajax).load();
-            } else {
-                /*是否列控制*/
-                renderColumn(config);
             }
         }
 
@@ -197,39 +200,6 @@
             }
         }
 
-        /*组合查询条件*/
-        function conditionTable(config) {
-            var condition = config.condition;
-            if (condition) {
-                var index = config.index,
-                    condition_obj = cache_condition[index],
-                    condition_len = condition_obj.length,
-                    reqdata = config["table"]["table_config" + index]["ajax"]["data"];
-
-                /*存在需要组合条件*/
-                if (condition_len !== 0) {
-                    var i = 0,
-                        item,
-                        dataitem,
-                        label;
-
-                    for (i; i < condition_len; i++) {
-                        label = condition_obj[i];
-                        item = condition[label];
-                        if (typeof item !== 'undefined') {
-                            dataitem = reqdata[label];
-                            if (item === '' && typeof dataitem !== 'undefined') {
-                                /*无条件：清除已经存在的条件*/
-                                delete reqdata[label];
-                            } else if (item !== '') {
-                                /*有条件：扩展条件*/
-                                reqdata[label] = condition[label];
-                            }
-                        }
-                    }
-                }
-            }
-        }
 
         /*过滤数据*/
         function filterTable(config) {
@@ -237,8 +207,10 @@
             config["table"]["table_cache" + config.index].search(config.filter).columns().draw();
         }
 
+
+        /*私有接口--内部服务类*/
         /*绑定操作选项*/
-        function bindDoAction(config) {
+        function _bindDoAction_(config) {
             var index = config.index;
             cache_body[index].on('click', 'span', function (e) {
                 e.stopPropagation();
@@ -265,9 +237,20 @@
             });
         }
 
+        /*配置分页*/
+        function _pageTable_(config) {
+            /*配置分页*/
+            if (typeof config.pageNumber !== 'undefined' && typeof config.pageSize !== 'undefined') {
+                var index = config.index,
+                    data = config['table']["table_config" + index]["ajax"]["data"];
+
+                data["page"] = config.pageNumber;
+                data["pageSize"] = config.pageSize;
+            }
+        }
 
         /*渲染分组*/
-        function renderColumn(config) {
+        function _renderColumn_(config) {
             if (config) {
                 /*隐藏*/
                 var tempid,
@@ -302,6 +285,7 @@
                     column: column_config,
                     size: len
                 }));
+
                 /*绑定切换列控制按钮*/
                 cache_column[index].$column_btn.on('click', function () {
                     cache_column[index].$column_wrap.toggleClass('g-d-hidei');
@@ -330,19 +314,6 @@
                 });
             }
         }
-
-
-        /*私有接口*/
-        /*辅助初始化--清除缓存*/
-        function _clearCache_(obj) {
-            if (obj) {
-                for (var i in obj) {
-                    obj[i] = null/*释放内存*/;
-                    delete obj[i]/*清除序列*/;
-                }
-            }
-        }
-
 
         /*计数分组距离*/
         function _createColgroup_(config) {
@@ -430,6 +401,95 @@
                 }
             }
         }
+
+        /*组合查询条件*/
+        function _conditionTable_(config) {
+            var condition = config.condition;
+            if (condition) {
+                var index = config.index,
+                    condition_obj = cache_condition[index],
+                    condition_len = condition_obj.length,
+                    reqdata = config["table"]["table_config" + index]["ajax"]["data"];
+
+                /*存在需要组合条件*/
+                if (condition_len !== 0) {
+                    var i = 0,
+                        item,
+                        dataitem,
+                        label;
+
+                    for (i; i < condition_len; i++) {
+                        label = condition_obj[i];
+                        item = condition[label];
+                        if (typeof item !== 'undefined') {
+                            dataitem = reqdata[label];
+                            if (item === '' && typeof dataitem !== 'undefined') {
+                                /*无条件：清除已经存在的条件*/
+                                delete reqdata[label];
+                            } else if (item !== '') {
+                                /*有条件：扩展条件*/
+                                reqdata[label] = condition[label];
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        /*渲染注册全选操作*/
+        function _renderCheck_(config) {
+            if (config) {
+                var index = config.index,
+                    checkfn = (config.doCheck && typeof config.doCheck === 'function') ? true : false;
+                /*绑定全选*/
+                cache_check[index].on('click', function () {
+                    var $this = $(this),
+                        tempstate = parseInt($this.attr('data-check'), 10),
+                        value = (tempstate === 0) ? 1 : 0;
+                    /*选中*/
+                    $this.attr({
+                        'data-check': value
+                    });
+                    if (tempstate === 0) {
+                        $this.addClass('admin-batchitem-checkactive');
+                    } else if (tempstate === 1) {
+                        /*取消选中*/
+                        $this.removeClass('admin-batchitem-checkactive');
+                    }
+                    /*执行全选*/
+                    toggleCheckAll(value);
+                    /*执行回调*/
+                    if (checkfn) {
+                        config.doCheck.call(null, {
+                            index: index, /*索引*/
+                            check: value/*是否选中状态*/
+                        });
+                    }
+                });
+                /*绑定单项选择*/
+                cache_body[index].on('change', 'input[type="checkbox"]', function () {
+                    var $this = $(this),
+                        tempstate = $this.is(':checked') ? 1 : 0;
+                    toggleCheckItem(tempstate);
+                    /*执行回调*/
+                    if (checkfn) {
+                        config.doCheck.call(null, tempstate);
+                    }
+                });
+            }
+        }
+
+        /*辅助初始化--清除缓存*/
+        function _clearCache_(obj, type) {
+            if (obj) {
+                for (var i in obj) {
+                    obj[i] = null/*释放内存*/;
+                    delete obj[i]/*清除序列*/;
+                }
+            }
+        }
+
+
     }
 
 })(jQuery);

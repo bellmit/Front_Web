@@ -28,8 +28,7 @@
                 action: true/*点击操作*/,
                 check: true/*全选操作*/,
                 column: true/*列控制操作*/,
-                colgroup: true/*分组操作*/,
-                doAction: doItemAction
+                colgroup: true/*分组操作*/
             }]/*分页序列,表格序列*/,
             condition: {
                 1: ['legalName', 'storeName', 'auditStatus']/*数据列1查询条件*/
@@ -45,9 +44,14 @@
                 init_len: 9/*数据有多少列*/,
                 columnshow: true/*初始化显示隐藏*/,
                 hide_list: [3, 5, 7]/*需要隐藏的的列序号*/,
-                header: ['全选','用户名/姓名', '店铺名称', '公司名称', '联系电话', '所在地', '状态', '创建时间', '操作']/*头部姓名*/,
-                action:true/*是否有操作*/,
-                check:true/*是否有全选*/
+                header: ['全选', '用户名/姓名', '店铺名称', '公司名称', '联系电话', '所在地', '状态', '创建时间', '操作']/*头部姓名*/,
+                action: true/*是否有操作*/,
+                check: true/*是否有全选*/
+            },
+            table_check1: {
+                checkvalue: 0/*默认未选中*/,
+                highactive: 'item-lightenbatch'/*子项选中样式*/,
+                checkactive: 'admin-batchitem-checkactive'/*全选选中样式*/
             },
             /*请求配置*/
             table_config1: {
@@ -297,9 +301,9 @@
                 sequence: vm.table.sequence
             });
             /*数据列表初始化*/
-            dataTableService.initTable({
-                sequence: vm.table.sequence,
-                condition: vm.table.condition
+            dataTableService.initTable(vm.table,{
+                doAction:doItemAction/*操作回调*/,
+                doCheck:doItemCheck/*全选回调*/
             });
             /*获取表格数据*/
             getTableData();

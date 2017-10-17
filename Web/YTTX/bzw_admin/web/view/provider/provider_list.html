@@ -64,7 +64,11 @@
     <!--头部-->
     <thead>
     <tr>
-        <th class="no-sorting">&nbsp;</th>
+        <th class="g-clear-pl g-clear-pr g-t-c">
+            <div class="admin-batchitem-wrap" ng-show="true || vm.powerlist.query" >
+                <label data-check="0" class="admin-batchitem-check" id="admin_list_check1"></label>
+            </div>
+        </th>
         <th>用户名/姓名</th>
         <th>店铺名称</th>
         <th>公司名称</th>

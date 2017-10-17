@@ -126,7 +126,7 @@
 						},
 						info:false,
 						searching:true,
-						order:[[4, "desc" ],[5, "desc" ],[6, "desc" ],[0, "desc" ]],
+						order:[[5, "asc" ],[4, "desc" ],[6, "desc" ],[0, "desc" ]],
 						columns: [
 							{
 								"data":"goodsName"
