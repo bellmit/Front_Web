@@ -198,24 +198,15 @@
                             if (true || powerlist.forbid) {
                                 if (isEnabled === 1) {
                                     /*启用状态则禁用*/
-                                    btns += '<span data-action="forbid" data-id="' + id + '"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
-													<i class="fa-arrow-down"></i>\
-													<span>禁用</span>\
-												</span>';
+                                    btns += '<span data-action="forbid" data-id="' + id + '"  class="btn-operate">禁用</span>';
                                 } else if (isEnabled === 0) {
                                     /*禁用状态则启用*/
-                                    btns += '<span data-action="enable" data-id="' + id + '"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
-													<i class="fa-arrow-up"></i>\
-													<span>启用</span>\
-												</span>';
+                                    btns += '<span data-action="enable" data-id="' + id + '"  class="btn-operate">启用</span>';
                                 }
                             }
                             /*商品列*/
                             if (true || powerlist.goods_column) {
-                                btns += '<span data-action="goods" data-id="' + id + '" data-legalname="' + full.legalName + '" data-storename="' + full.storeName + '" data-auditstatus="' + auditstate + '"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
-													<i class="fa-send"></i>\
-													<span>商品列</span>\
-												</span>';
+                                btns += '<span data-action="goods" data-id="' + id + '" data-legalname="' + full.legalName + '" data-storename="' + full.storeName + '" data-auditstatus="' + auditstate + '"  class="btn-operate">商品列</span>';
                             }
                             return btns;
                         }
@@ -256,8 +247,8 @@
 
         /*对外接口*/
         vm.getTableData = getTableData/*获取数据*/;
-        vm.doItemAction = doItemAction/*操作表格*/;
-        vm.doItemCheck=doItemCheck;
+        vm.doItemAction = doItemAction/*操作表格--单个*/;
+        vm.doBatchAction = doBatchAction/*操作表格--多个*/;
         vm.filterTableData = filterTableData/*过滤表格数据*/;
 
 
@@ -271,12 +262,17 @@
             });
         }
 
-        /*操作表格*/
+        /*操作表格--单个*/
         function doItemAction(config) {
             /*是否调试*/
             config['debug'] = debug;
             config['table'] = vm.table;
             providerListService.doItemAction(config);
+        }
+
+        /*操作表格--批量*/
+        function doBatchAction(config) {
+            console.log(config);
         }
 
         /*过滤表格数据*/
@@ -285,13 +281,6 @@
                 table: vm.table,
                 index: 1,
                 filter: vm.record.filter
-            });
-        }
-        
-        function doItemCheck() {
-            toolDialog.show({
-                type: 'succ',
-                value: 'ni mei'
             });
         }
 
@@ -305,8 +294,7 @@
             });
             /*数据列表初始化*/
             dataTableService.initTable(vm.table, {
-                doAction: doItemAction/*操作回调*/,
-                doCheck: doItemCheck/*全选回调*/
+                doAction: doItemAction/*操作回调*/
             });
             /*获取表格数据*/
             getTableData();

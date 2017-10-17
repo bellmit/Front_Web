@@ -25,8 +25,18 @@
         vm.table = {
             sequence: [{
                 index: 1,
-                action: true
+                action: true,
+                column: true/*列控制操作*/,
+                colgroup: true/*分组操作*/
             }]/*分页序列,表格序列*/,
+            /*列控制*/
+            table_column1: {
+                init_len: 7/*数据有多少列*/,
+                columnshow: true/*初始化显示隐藏*/,
+                hide_list: [4, 5]/*需要隐藏的的列序号*/,
+                header: ['昵称', '真实名称', '邮箱', '手机', '登录时间', '登录次数', '操作']/*头部姓名*/,
+                action: true/*是否有操作*/
+            },
             /*分页配置*/
             table_page1: {
                 page: 1,
@@ -173,6 +183,11 @@
         /*模型--欢迎页面*/
         vm.welcome = false;
 
+        /*模型--操作记录*/
+        vm.record = {
+            filter: ''/*表格过滤*/
+        };
+
         /*初始化配置,渲染*/
         _initRender_();
 
@@ -180,6 +195,7 @@
         /*对外接口*/
         vm.getTableData = getTableData/*获取数据*/;
         vm.doItemAction = doItemAction/*操作表格*/;
+        vm.filterTableData = filterTableData/*过滤表格数据*/;
 
 
         /*接口实现--公有*/
@@ -197,6 +213,16 @@
             config['debug'] = debug;
             config['table'] = vm.table;
             adminListService.doItemAction(config);
+        }
+
+
+        /*过滤表格数据*/
+        function filterTableData() {
+            dataTableService.filterTable({
+                table: vm.table,
+                index: 1,
+                filter: vm.record.filter
+            });
         }
 
 

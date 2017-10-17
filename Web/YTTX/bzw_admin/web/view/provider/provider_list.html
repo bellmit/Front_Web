@@ -40,6 +40,14 @@
             <ul class="action-list-wrap" ></ul>
         </div>
     </div>
+
+    <!--查询-->
+    <div class="action-item-btn action-item-export g-w-number4 g-gap-mr3">
+        <span ng-click="vm.doBatchAction({index:1,state:1,type:'forbid'})" class="btn btn-export g-br3 g-w-percent50 g-c-blue3">禁用</span>
+    </div>
+    <div class="action-item-btn action-item-export g-w-number4 g-gap-mr3">
+        <span ng-click="vm.doBatchAction({index:1,state:0,type:'enabled'})" class="btn btn-export g-br3 g-w-percent50 g-c-blue3">启用</span>
+    </div>
 </div>
 
 

@@ -183,6 +183,9 @@
                 ajax = config["table"]["table_config" + index]["ajax"],
                 table;
 
+            /*摧毁全选数据*/
+            destroyCheck(index);
+
             if (istable) {
                 /*存在缓存则直接调用缓存*/
                 table = config["table"]["table_cache" + index];
