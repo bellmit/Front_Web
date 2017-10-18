@@ -83,7 +83,7 @@
 					isDisplay:"是否显示状态",
 					lastUpdate:"最后更新时间",
 					name:"角色名称",
-					parentId:"上级或父亲",
+					parentId:"上级或父级",
 					roleCode:"角色编码",
 					type:"类型",
 					updateUserId:"更新者编号"

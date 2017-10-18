@@ -1583,18 +1583,18 @@ angular.module('app')
             var tempparam = cache.loginMap.param,
                 organiztionid;
 
-            if(typeof id==='undefined'){
-                if(tempparam.organizationId !== ''){
-                    organiztionid=tempparam.organizationId;
-                }else{
+            if (typeof id === 'undefined') {
+                if (tempparam.organizationId !== '') {
+                    organiztionid = tempparam.organizationId;
+                } else {
                     toolDialog.show({
                         type: 'warn',
                         value: '没有父级权限数据'
                     });
                     return false;
                 }
-            }else{
-                organiztionid=id;
+            } else {
+                organiztionid = id;
             }
             powerService.reqUserPowerList({
                 url: '/organization/permission/select',
@@ -2368,10 +2368,10 @@ angular.module('app')
 
             /*判断参数*/
             /*if (record.structId !== '') {
-                param['organizationId'] = record.structId;
-            } else if (record.structId === '') {
-                param['organizationId'] = record.organizationId;
-            }*/
+             param['organizationId'] = record.structId;
+             } else if (record.structId === '') {
+             param['organizationId'] = record.organizationId;
+             }*/
 
             if (type === 'batch') {
                 param['id'] = batchdata.join(',');
@@ -2449,9 +2449,28 @@ angular.module('app')
             }, type === 'base' ? '是否真要删除店铺数据' : '是否真要批量删除店铺数据', true);
         };
 
+        /*用户服务--搜索店铺*/
+        this.searchUser = function (config) {
+            var record = config.record,
+                id = '';
+            if (record.structId !== '') {
+                id = record.structId;
+            } else if (record.organizationId !== '') {
+                id = record.organizationId;
+            } else if (record.currentId) {
+                id = record.currentId;
+            } else {
+                id = cache.loginMap.param.organizationId;
+            }
+            if (id === '' || typeof id === 'undefined' || id === null) {
+                return false;
+            }
+            self.getColumnData(config.table, id, config.searchName);
+        };
+
 
         /*数据服务--请求数据--获取表格数据*/
-        this.getColumnData = function (table, id) {
+        this.getColumnData = function (table, id, name) {
             if (cache === null) {
                 return false;
             } else if (!table) {
@@ -2460,8 +2479,21 @@ angular.module('app')
             /*如果存在模型*/
             var data = $.extend(true, {}, table.list1_config.config.ajax.data);
             if (typeof id !== 'undefined') {
-                /*设置值*/
-                data['organizationId'] = id;
+                if (typeof name !== 'undefined') {
+                    /*设置值*/
+                    if (name === '') {
+                        /*设置值*/
+                        delete data['fullName'];
+                        data['organizationId'] = id;
+                    } else {
+                        delete data['organizationId'];
+                        data['fullName'] = name;
+                    }
+                } else {
+                    /*设置值*/
+                    delete data['fullName'];
+                    data['organizationId'] = id;
+                }
                 /*参数赋值*/
                 table.list1_config.config.ajax.data = data;
 

@@ -47,7 +47,6 @@
 			}else{
 				$admin_action.addClass('g-d-hidei');
 				dia.content('<span class="g-c-bs-warning g-btips-warn">您没有添加商户的权限</span>').show();
-				return false;
 			}
 
 			/*dom引用和相关变量定义*/

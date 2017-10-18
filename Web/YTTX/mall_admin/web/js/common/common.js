@@ -2047,8 +2047,8 @@ var public_vars = public_vars || {};
         public_vars.$logout_btn = $('#logout_btn');
         public_vars.$page_support_wrap = $('#page_support_wrap');
         public_vars.$page_support = public_vars.$page_support_wrap.children();
-        public_vars.$goto_login = $('#goto_login'),
-            public_vars.$admin_show_wrap = $('#admin_show_wrap');
+        public_vars.$goto_login = $('#goto_login');
+        public_vars.$admin_show_wrap = $('#admin_show_wrap');
 
 
         /*初始化判定*/

@@ -9,7 +9,7 @@ angular.module('app')
 
         /*jquery dom缓存:主要是切换路由时，创建的dom缓存引用与现有的dom引用不一致，需要加载视图更新现有dom引用*/
         var jq_dom = {
-            $submenu_scroll_wrap:$('#submenu_scroll_wrap'),
+            $submenu_scroll_wrap: $('#submenu_scroll_wrap'),
             $admin_struct_submenu: $('#admin_struct_submenu'),
             $admin_struct_list: $('#admin_struct_list'),
             $struct_struct_dialog: $('#struct_struct_dialog'),
@@ -27,9 +27,7 @@ angular.module('app')
             $admin_struct_checkall: $('#admin_struct_checkall')
         };
         jq_dom['$admin_submenu_wrap'] = jq_dom.$admin_struct_submenu.prev();
-        
 
-        
 
         var jq_dom_power = {
             $power_colgroup: $('#struct_power_colgroup'),
@@ -44,7 +42,6 @@ angular.module('app')
             dom: jq_dom_power,
             isall: true
         });
-
 
 
         /*模型--tab选项卡*/
@@ -105,7 +102,7 @@ angular.module('app')
 
         /*模型--操作记录*/
         this.record = {
-            iscroll_flag:true/*是否开启滚动条调用*/,
+            iscroll_flag: true/*是否开启滚动条调用*/,
             searchactive: ''/*搜索激活状态*/,
             searchname: ''/*搜索关键词*/,
             prev: null/*上一次操作记录*/,
@@ -168,7 +165,8 @@ angular.module('app')
             status: 0/*状态：0：正常，1：停用*/,
             remark: ''/*备注*/,
             addTime: ''/*添加时间,编辑时用到*/,
-            organizationId: ''/*组织机构id,编辑时用到*/
+            organizationId: ''/*组织机构id,编辑时用到*/,
+            searchName: ''/*搜索内容*/
         };
 
 
@@ -193,7 +191,7 @@ angular.module('app')
 
         /*模型--伪分页缓存*/
         this.structpage = {
-            init:false/*初始化标识*/,
+            init: false/*初始化标识*/,
             total: 0, /*总记录数*/
             page: 1, /*当前页*/
             pageSize: 5, /*没有显示数据量*/
@@ -551,7 +549,7 @@ angular.module('app')
         this.adjustStructPos = function () {
             structService.adjustStructPos({
                 structpos: self.structpos,
-                structpage:self.structpage,
+                structpage: self.structpage,
                 record: self.record,
                 table: self.table
             });
@@ -561,7 +559,7 @@ angular.module('app')
             /*调用编辑机构服务类*/
             structService.deleteStruct({
                 structpos: self.structpos,
-                structpage:self.structpage,
+                structpage: self.structpage,
                 record: self.record,
                 table: self.table
             });
@@ -644,7 +642,14 @@ angular.module('app')
         this.adjustOperate = function () {
             console.log('to do');
         };
-        
+        /*用户服务--搜索店铺*/
+        this.searchUser = function () {
+            structService.searchUser({
+                table:self.table,
+                record:self.record,
+                searchName:self.user.searchName
+            });
+        };
 
 
         /*搜索服务--搜索过滤*/
