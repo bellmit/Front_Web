@@ -37,7 +37,8 @@
         this.getCheckNode = getCheckNode/*获取选中节点*/;
         this.clearCheck = clearCheck/*清除选中数据*/;
         this.destroyCheck = destroyCheck/*摧毁数据:适应直接清除数据，不做文档操作*/;
-        this.filterCheck = filterCheck/*过滤数据(清除并过滤已经选中的数据)*/;
+        this.filterCheck = filterCheck/*过滤数据(清除并过滤已经选中的数据)，依赖数据，不依赖状态*/;
+        this.filterStateCheck = filterStateCheck/*过滤数据(清除并过滤已经选中的数据)，依赖状态*/;
 
 
         /*接口实现*/
@@ -314,7 +315,7 @@
         function destroyCheck(index, fn) {
             cache_check_list.length = 0;
             cache_check_node.length = 0;
-            if(cache_check[index]){
+            if (cache_check[index]) {
                 cache_check[index].attr({
                     'data-check': 0
                 }).removeClass('admin-batchitem-checkactive');
@@ -378,6 +379,15 @@
                 }
             }
         }
+
+        /*过滤数据(清除并过滤已经选中的数据)，依赖状态*/
+        function filterStateCheck(config) {
+            var index=config.index/*操作全选对象索引*/,
+                attrkey=config.attrkey/*需要比对的属性*/,
+                attrvalue=config.attrvalue/*需要比对的属性值*/,
+            
+        }
+        
 
 
         /*私有接口--内部服务类*/
