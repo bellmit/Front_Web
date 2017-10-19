@@ -165,6 +165,29 @@
                         }]
                 }
             })
+            /*管理--管理员管理*/
+            .state('provider.goods', {
+                url: '/list',
+                templateUrl: 'view/provider/provider_list.html',
+                controller: 'providerListController',
+                controllerAs: 'vm',
+                resolve: {
+                    /*延迟加载，依赖相关组件*/
+                    deps: ['$ocLazyLoad',
+                        function ($ocLazyLoad) {
+                            return $ocLazyLoad.load([
+                                'js/plugins/datatables/dataTables.bootstrap.css',
+                                'js/plugins/datatables/js/jquery.dataTables.js',
+                                'js/plugins/pagination/pagination.js',
+                                'js/service/datatable/table.js',
+                                'js/service/page/page.js',
+                                'js/app/provider/provider-service.js',
+                                'js/app/provider/provider-list-service.js',
+                                'js/app/provider/provider-list-controller.js'
+                            ]);
+                        }]
+                }
+            })
             /*订单管理*/
             .state('order', {
                 url: '/order',

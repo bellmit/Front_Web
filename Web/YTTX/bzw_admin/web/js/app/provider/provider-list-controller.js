@@ -62,7 +62,7 @@
                         if (debug) {
                             var json = testService.test({
                                 map: {
-                                    'id': 'guid',
+                                    'id': 'sequence',
                                     'legalName': 'name',
                                     'storeName': 'value',
                                     'companyName': 'text',
@@ -150,7 +150,7 @@
                         "orderable": false,
                         "searchable": false,
                         "render": function (data, type, full, meta) {
-                            return '<input data-forbid="' + full.isEnabled + '" value="' + data + '" name="providerID" type="checkbox" />';
+                            return '<input data-enabled="' + full.isEnabled + '" value="' + data + '" name="providerID" type="checkbox" />';
                         }
                     },
                     {
@@ -198,10 +198,10 @@
                             if (true || powerlist.forbid) {
                                 if (isEnabled === 1) {
                                     /*启用状态则禁用*/
-                                    btns += '<span data-action="forbid" data-id="' + id + '"  class="btn-operate">禁用</span>';
+                                    btns += '<span data-enabled="' + isEnabled + '" data-action="forbid" data-id="' + id + '"  class="btn-operate">禁用</span>';
                                 } else if (isEnabled === 0) {
                                     /*禁用状态则启用*/
-                                    btns += '<span data-action="enable" data-id="' + id + '"  class="btn-operate">启用</span>';
+                                    btns += '<span data-enabled="' + isEnabled + '"  data-action="enabled" data-id="' + id + '"  class="btn-operate">启用</span>';
                                 }
                             }
                             /*商品列*/
@@ -248,7 +248,6 @@
         /*对外接口*/
         vm.getTableData = getTableData/*获取数据*/;
         vm.doItemAction = doItemAction/*操作表格--单个*/;
-        vm.doBatchAction = doBatchAction/*操作表格--多个*/;
         vm.filterTableData = filterTableData/*过滤表格数据*/;
 
 
@@ -262,18 +261,15 @@
             });
         }
 
-        /*操作表格--单个*/
+        /*操作表格--单个(批量)*/
         function doItemAction(config) {
             /*是否调试*/
             config['debug'] = debug;
             config['table'] = vm.table;
+            config['condition'] = vm.record;
             providerListService.doItemAction(config);
         }
 
-        /*操作表格--批量*/
-        function doBatchAction(config) {
-            console.log(config);
-        }
 
         /*过滤表格数据*/
         function filterTableData() {

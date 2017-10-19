@@ -26,6 +26,7 @@
         /*服务对外接口*/
         this.dia = dia;
         this.show = show;
+        this.showModal=showModal;
         this.hide = hide;
         this.sureDialog = sureDialog;
 
@@ -65,6 +66,24 @@
                     _single_dia_.content('<span class="g-c-err g-btips-error">' + value + '</span>').show();
                 } else {
                     _single_dia_.content('<span class="g-c-succ g-btips-succ">' + value + '</span>').show();
+                }
+            }
+        }
+
+        /*实现或接口--提示类型*/
+        function showModal(config) {
+            var type = config.type,
+                value = config.value;
+
+            if (_single_dia_) {
+                if (type === 'succ') {
+                    _single_dia_.content('<span class="g-c-succ g-btips-succ">' + value + '</span>').showModal();
+                } else if (type === 'warn') {
+                    _single_dia_.content('<span class="g-c-warn g-btips-warn">' + value + '</span>').showModal();
+                } else if (type === 'error') {
+                    _single_dia_.content('<span class="g-c-err g-btips-error">' + value + '</span>').showModal();
+                } else {
+                    _single_dia_.content('<span class="g-c-succ g-btips-succ">' + value + '</span>').showModal();
                 }
             }
         }

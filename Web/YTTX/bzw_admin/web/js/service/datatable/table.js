@@ -20,7 +20,8 @@
             cache_condition = {}/*存放条件查询配置*/,
             cache_check = {}/*存放全选配置*/,
             cache_check_list = []/*存放全选数据*/,
-            cache_check_node = []/*存放全选节点*/;
+            cache_check_node = []/*存放全选节点*/,
+            cache_body_node = {}/*存放单个操作节点*/;
 
         /*对外接口*/
         /*基本服务类*/
@@ -39,6 +40,9 @@
         this.destroyCheck = destroyCheck/*摧毁数据:适应直接清除数据，不做文档操作*/;
         this.filterCheck = filterCheck/*过滤数据(清除并过滤已经选中的数据)，依赖数据，不依赖状态*/;
         this.filterStateCheck = filterStateCheck/*过滤数据(清除并过滤已经选中的数据)，依赖状态*/;
+        this.clearActionCache = clearActionCache/*清除单独数据*/;
+        this.updateActionCache = updateActionCache/*更新单独数据*/;
+        this.getActionCache = getActionCache/*获取单独数据*/;
 
 
         /*接口实现*/
@@ -50,6 +54,7 @@
             _clearCache_(cache_body)/*清除body序列*/;
             _clearCache_(cache_colgroup)/*清除分组序列*/;
             _clearCache_(cache_check)/*清除全选序列*/;
+            _clearCache_(cache_body_node)/*清除单个操作序列*/;
 
             /*如果有配置则配置缓存*/
             if (table) {
@@ -227,7 +232,7 @@
                     if ($input.size() !== 0) {
                         cache_check_list.push($input.prop('checked', true).val());
                         cache_check_node.push($input);
-                        $tr.addClass('item-lightenbatch');
+                        $tr.removeClass('item-lighten').addClass('item-lightenbatch');
                     }
                 });
             } else if (check === 0) {
@@ -250,13 +255,13 @@
                 if (len === 0) {
                     cache_check_list.push(text);
                     cache_check_node.push($input);
-                    $input.closest('tr').addClass('item-lightenbatch');
+                    $input.closest('tr').removeClass('item-lighten').addClass('item-lightenbatch');
                     cache_check[index].attr({
                         'data-check': 1
                     }).addClass('admin-batchitem-checkactive');
                 } else {
                     ishave = $.inArray(text, cache_check_list);
-                    $input.closest('tr').addClass('item-lightenbatch');
+                    $input.closest('tr').removeClass('item-lighten').addClass('item-lightenbatch');
                     if (ishave !== -1) {
                         cache_check_list.splice(ishave, 1, text);
                         cache_check_node.splice(ishave, 1, $input);
@@ -270,7 +275,7 @@
                 ishave = $.inArray(text, cache_check_list);
                 if (ishave !== -1) {
                     cache_check_list.splice(ishave, 1);
-                    cache_check_node[ishave].closest('tr').removeClass('admin-batchitem-checkactive');
+                    cache_check_node[ishave].closest('tr').removeClass('item-lighten item-lightenbatch');
                     cache_check_node.splice(ishave, 1);
                     if (cache_check_list.length === 0) {
                         clearCheck(index);
@@ -292,20 +297,22 @@
         /*清除选中数据*/
         function clearCheck(index, fn) {
             cache_check_list.length = 0;
-            cache_check[index].attr({
-                'data-check': 0
-            }).removeClass('admin-batchitem-checkactive');
+            if (cache_check[index]) {
+                cache_check[index].attr({
+                    'data-check': 0
+                }).removeClass('admin-batchitem-checkactive');
 
-            /*清除选中*/
-            var len = cache_check_node.length;
-            if (len !== 0) {
-                var i = 0;
-                for (i; i < len; i++) {
-                    cache_check_node[i].closest('tr').removeClass('item-lightenbatch');
-                    cache_check_node[i].prop('checked', false);
+                /*清除选中*/
+                var len = cache_check_node.length;
+                if (len !== 0) {
+                    var i = 0;
+                    for (i; i < len; i++) {
+                        cache_check_node[i].closest('tr').removeClass('item-lighten item-lightenbatch');
+                        cache_check_node[i].prop('checked', false);
+                    }
                 }
-                cache_check_node.length = 0;
             }
+            cache_check_node.length = 0;
             if (fn && typeof fn === 'function') {
                 fn.call();
             }
@@ -342,9 +349,7 @@
                     outer:for (j; j < jlen; j++) {
                         for (k; k < klen; k++) {
                             if (cache_check_list[k] === key[j]) {
-                                cache_check_node[k].prop('checked', false).closest('tr').removeClass('item-lightenbatch');
-                                cache_check_node.splice(k, 1);
-                                cache_check_list.splice(k, 1);
+                                _updateCheckData_(k);
                                 k = 0;
                                 klen = cache_check_list.length;
                                 continue outer;
@@ -362,10 +367,7 @@
                     var i = len - 1;
                     for (i; i >= 0; i--) {
                         if (cache_check_list[i] === key) {
-                            cache_check_node[i].closest('tr').removeClass('admin-batchitem-checkactive');
-                            cache_check_node[i].prop('checked', false);
-                            cache_check_node.splice(i, 1);
-                            cache_check_list.splice(i, 1);
+                            _updateCheckData_(i);
                             break;
                         }
                     }
@@ -382,13 +384,91 @@
 
         /*过滤数据(清除并过滤已经选中的数据)，依赖状态*/
         function filterStateCheck(config) {
-            var index=config.index/*操作全选对象索引*/,
-                attrkey=config.attrkey/*需要比对的属性*/,
-                attrvalue=config.attrvalue/*需要比对的属性值*/,
-            
-        }
-        
+            var index = config.index,
+                attrkey/*需要比对的属性*/,
+                attrvalue/*需要比对的属性值*/,
+                isgroup = false,
+                len = cache_check_node.length,
+                i,
+                $input,
+                data_key,
+                data_value;
 
+            if (len === 0) {
+                return '';
+            }
+            if (config.attrkey.indexOf(',') !== -1) {
+                attrkey = config.attrkey.split(',');
+                attrvalue = (function () {
+                    var tempvalue = config.attrvalue.split(','),
+                        templen = tempvalue.length,
+                        k = 0;
+                    for (k; k < templen; k++) {
+                        tempvalue.splice(k, 1, parseInt(tempvalue[k], 10));
+                    }
+                    return tempvalue.slice(0);
+                }());
+                isgroup = true;
+            } else {
+                attrkey = config.attrkey;
+                attrvalue = parseInt(config.attrvalue, 10);
+            }
+            i = len - 1;
+            if (isgroup) {
+                /*关联多个状态*/
+                for (i; i >= 0; i--) {
+                    $input = cache_check_node[i];
+                    (function () {
+                        var j = 0,
+                            sublen = attrkey.length;
+
+                        for (j; j < sublen; j++) {
+                            data_key = $input.attr('data-' + attrkey[j]);
+                            if (typeof data_key !== 'undefined' && data_key !== '') {
+                                data_value = attrvalue[j];
+                                if (typeof data_value !== 'undefined' && data_value !== '') {
+                                    data_key = parseInt(data_key, 10);
+                                    /*数据不匹配则过滤调*/
+                                    if (data_value !== data_key) {
+                                        _updateCheckData_(i);
+                                        break;
+                                    }
+                                } else {
+                                    _updateCheckData_(i);
+                                    break;
+                                }
+                            } else {
+                                _updateCheckData_(i);
+                                break;
+                            }
+                        }
+                    }());
+                }
+            } else {
+                /*单个状态*/
+                for (i; i >= 0; i--) {
+                    $input = cache_check_node[i];
+                    data_value = $input.attr('data-' + attrkey);
+                    if (typeof data_value !== 'undefined' && data_value !== '') {
+                        data_value = parseInt(data_value, 10);
+                        /*数据不匹配则过滤调*/
+                        if (data_value !== attrvalue) {
+                            _updateCheckData_(i);
+                        }
+                    } else {
+                        _updateCheckData_(i);
+                    }
+                }
+            }
+            /*没有数据则恢复默认状态*/
+            if (cache_check_list.length === 0) {
+                cache_check[index].attr({
+                    'data-check': 0
+                }).removeClass('admin-batchitem-checkactive');
+                return '';
+            }
+            return getCheckData();
+        }
 
         /*私有接口--内部服务类*/
         /*绑定操作选项*/
@@ -411,13 +491,54 @@
 
                 /*操作分支*/
                 if (config.doAction && typeof config.doAction === 'function') {
+                    /*存在全选则销毁全选缓存*/
+                    clearCheck(index);
+                    /*缓存对象*/
+                    updateActionCache(index, $this);
+                    /*执行回调*/
                     config.doAction.call(null, {
-                        index: index,
-                        $btn: $this
+                        type: 'base',
+                        index: index
                     });
                 }
             });
         }
+
+
+        /*清除单独数据*/
+        function clearActionCache(index) {
+            if (cache_body_node[index]) {
+                cache_body_node[index].$btn = null;
+                cache_body_node[index].$tr.removeClass('item-lighten');
+                cache_body_node[index].$tr = null;
+                delete cache_body_node[index];
+            }
+        }
+
+        /*更新单独数据*/
+        function updateActionCache(index, $btn, fn) {
+            clearActionCache(index);
+            /*插入新缓存*/
+            cache_body_node[index] = {};
+            cache_body_node[index]['$btn'] = $btn;
+            cache_body_node[index]['$tr'] = $btn.closest('tr').addClass('item-lighten');
+            /*执行回调*/
+            if (fn && typeof fn === 'function') {
+                fn.call();
+            }
+        }
+
+        /*获取单独数据*/
+        function getActionCache(index, $btn) {
+            if (!cache_body_node[index]) {
+                /*不存在则创建然后返回*/
+                cache_body_node[index] = {};
+                cache_body_node[index]['$btn'] = $btn;
+                cache_body_node[index]['$tr'] = $btn.closest('tr').addClass('item-lighten');
+            }
+            return cache_body_node[index];
+        }
+
 
         /*配置分页*/
         function _pageTable_(config) {
@@ -678,6 +799,14 @@
                     delete obj[i]/*清除序列*/;
                 }
             }
+        }
+
+        /*更新全选缓存*/
+        function _updateCheckData_(value) {
+            cache_check_node[value].closest('tr').removeClass('item-lightenbatch');
+            cache_check_node[value].prop('checked', false);
+            cache_check_node.splice(value, 1);
+            cache_check_list.splice(value, 1);
         }
 
 

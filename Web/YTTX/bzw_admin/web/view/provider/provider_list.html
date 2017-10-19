@@ -32,12 +32,12 @@
         <span ng-click="vm.getTableData()" class="btn btn-export g-br3 g-w-percent50 g-c-blue3">查询</span>
     </div>
 
-    <!--查询-->
-    <div class="action-item-btn action-item-export g-w-number2 g-gap-mr2">
-        <span ng-click="vm.doBatchAction({index:1,attrkey:'isEnabled',attrvalue:1,type:'forbid'})" class="btn btn-export g-br3 g-w-percent50 g-c-blue3">禁用</span>
+    <!--批量处理按钮-->
+    <div ng-show="true || vm.powerlist.enabled" class="action-item-btn action-item-export g-w-number3 g-gap-mr2">
+        <span ng-click="vm.doItemAction({index:1,attrkey:'enabled',attrvalue:1,action:'forbid',type:'batch'})" class="btn btn-export g-br3 g-w-percent50 g-c-blue3">批量禁用</span>
     </div>
-    <div class="action-item-btn action-item-export g-w-number2 g-gap-mr2">
-        <span ng-click="vm.doBatchAction({index:1,attrkey:'isEnabled',attrvalue:0,type:'enabled'})" class="btn btn-export g-br3 g-w-percent50 g-c-blue3">启用</span>
+    <div ng-show="true || vm.powerlist.enabled" class="action-item-btn action-item-export g-w-number3 g-gap-mr2">
+        <span ng-click="vm.doItemAction({index:1,attrkey:'enabled',attrvalue:0,action:'enabled',type:'batch'})" class="btn btn-export g-br3 g-w-percent50 g-c-blue3">批量启用</span>
     </div>
 
     <!--列控制-->
