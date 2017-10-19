@@ -55,7 +55,7 @@
                         }]
                 }
             })
-            /*管理*/
+            /*管理模块--首页*/
             .state('admin', {
                 url: '/admin',
                 templateUrl: 'view/admin/admin.html',
@@ -72,7 +72,7 @@
                         }]
                 }
             })
-            /*管理--管理员管理*/
+            /*管理模块--管理员管理*/
             .state('admin.list', {
                 url: '/list',
                 templateUrl: 'view/admin/admin_list.html',
@@ -95,7 +95,7 @@
                         }]
                 }
             })
-            /*管理--新增管理员*/
+            /*管理模块--新增管理员*/
             .state('admin.add', {
                 url: '/add',
                 templateUrl: 'view/admin/admin_add.html',
@@ -113,7 +113,7 @@
                         }]
                 }
             })
-            /*商家管理*/
+            /*商家模块--商家首页*/
             .state('business', {
                 url: '/business',
                 templateUrl: 'view/index.html',
@@ -125,7 +125,7 @@
                         }]
                 }
             })
-            /*供应商管理*/
+            /*供应商模块--供应商首页*/
             .state('provider', {
                 url: '/provider',
                 templateUrl: 'view/provider/provider.html',
@@ -142,7 +142,7 @@
                         }]
                 }
             })
-            /*管理--管理员管理*/
+            /*供应商模块--供应商管理*/
             .state('provider.list', {
                 url: '/list',
                 templateUrl: 'view/provider/provider_list.html',
@@ -165,11 +165,11 @@
                         }]
                 }
             })
-            /*管理--管理员管理*/
+            /*供应商模块--供应商商品列*/
             .state('provider.goods', {
                 url: '/list',
-                templateUrl: 'view/provider/provider_list.html',
-                controller: 'providerListController',
+                templateUrl: 'view/provider/provider_goods.html',
+                controller: 'providerGoodsController',
                 controllerAs: 'vm',
                 resolve: {
                     /*延迟加载，依赖相关组件*/
@@ -182,13 +182,13 @@
                                 'js/service/datatable/table.js',
                                 'js/service/page/page.js',
                                 'js/app/provider/provider-service.js',
-                                'js/app/provider/provider-list-service.js',
-                                'js/app/provider/provider-list-controller.js'
+                                'js/app/provider/provider-goods-service.js',
+                                'js/app/provider/provider-goods-controller.js'
                             ]);
                         }]
                 }
             })
-            /*订单管理*/
+            /*供应商模块--供应商审核*/
             .state('order', {
                 url: '/order',
                 templateUrl: 'view/index.html',
