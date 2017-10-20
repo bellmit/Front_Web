@@ -1,7 +1,6 @@
 <h1 class="admin-layout-theme3 g-clear-pt">供应商管理--商品列</h1>
 
 <!--信息列-->
-<!--表格-->
 <table class="table table-bordered table-striped table-hover admin-layout-table">
     <!--分组样式-->
     <colgroup>
@@ -11,18 +10,18 @@
 
     <!--表主体-->
     <tbody class="middle-align">
-        <tr>
-            <td>供应商名称:</td>
-            <td>{{vm.record.storeName}}</td>
-        </tr>
-        <tr>
-            <td>店主姓名：</td>
-            <td>{{vm.record.legalName}}</td>
-        </tr>
-        <tr>
-            <td>供应商审核状态</td>
-            <td>{{vm.record.auditMap[vm.record.auditStatus]}}</td>
-        </tr>
+    <tr>
+        <th class="g-t-r">供应商名称:</th>
+        <td>{{vm.record.providerName}}</td>
+    </tr>
+    <tr>
+        <th class="g-t-r">店主姓名:</th>
+        <td>{{vm.record.legalName}}</td>
+    </tr>
+    <tr>
+        <th class="g-t-r">供应商审核状态:</th>
+        <td ng-class="{'vm.record.auditStatus===0':'g-c-info','vm.record.auditStatus===1':'g-c-green2','vm.record.auditStatus===2':'g-c-warn'}">{{vm.record.auditMap[vm.record.auditStatus]}}</td>
+    </tr>
     </tbody>
 </table>
 

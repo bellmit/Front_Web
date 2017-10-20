@@ -15,11 +15,11 @@
     /*服务实现*/
     function providerGoodsService(toolUtil, toolDialog, assistCommon, dataTableService, $state, providerService, loginService, testService) {
         var cacheparam = loginService.getCache().loginMap.param/*缓存*/,
-            goodscache=toolUtil.getParams('tempMap');
+            goodscache = toolUtil.getParams('tempMap')/*获取缓存*/;
 
         /*对外接口*/
-        this.getTableData=getTableData/*获取表格数据*/;
         this.doItemAction = doItemAction/*操作表格*/;
+        this.renderView = renderView/*初始化依赖渲染*/;
 
 
         /*接口实现--公有*/
@@ -152,9 +152,9 @@
                 /*设置临时缓存*/
                 assistCommon.changeCache('tempMap', {
                     id: id,
-                    legalname:$btn.attr('data-legalname'),
-                    storename:$btn.attr('data-storename'),
-                    auditstatus:$btn.attr('data-auditstatus')
+                    legalname: $btn.attr('data-legalname'),
+                    storename: $btn.attr('data-storename'),
+                    auditstatus: $btn.attr('data-auditstatus')
                 });
                 /*路由*/
                 $state.go('provider.goods');
@@ -162,19 +162,20 @@
             }
         }
 
-        /*获取表格数据*/
-        function getTableData(config) {
-            if(!config){
-                return false;
+        /*初始化依赖渲染*/
+        function renderView(record, fn) {
+            if (goodscache && goodscache.providerName !== '') {
+                for (var i in goodscache) {
+                    if (i === 'auditStatus') {
+                        record[i] = parseInt(goodscache[i], 10);
+                    } else {
+                        record[i] = goodscache[i];
+                    }
+                }
+                if (fn && typeof fn === 'function') {
+                    fn.call();
+                }
             }
-            var record=config.record;
-            /*获取缓存并设置模型*/
-            $.extend(true,config.record,goodscache);
-            dataTableService.getTableData({
-                table: vm.table,
-                condition: vm.record,
-                index: 1
-            });
         }
 
 

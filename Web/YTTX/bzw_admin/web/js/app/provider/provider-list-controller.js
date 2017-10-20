@@ -195,18 +195,18 @@
                                 isEnabled = parseInt(full.isEnabled, 10),
                                 auditstate = parseInt(full.auditStatus, 10);
 
-                            if (true || powerlist.forbid) {
+                            if (true || vm.powerlist.forbid) {
                                 if (isEnabled === 1) {
                                     /*启用状态则禁用*/
-                                    btns += '<span data-enabled="' + isEnabled + '" data-action="forbid" data-id="' + id + '"  class="btn-operate">禁用</span>';
+                                    btns += '<span data-enabled="' + isEnabled + '" data-action="forbid" data-id="' + id + '"  class="btn-operate-gray">禁用</span>';
                                 } else if (isEnabled === 0) {
                                     /*禁用状态则启用*/
-                                    btns += '<span data-enabled="' + isEnabled + '"  data-action="enabled" data-id="' + id + '"  class="btn-operate">启用</span>';
+                                    btns += '<span data-enabled="' + isEnabled + '"  data-action="enabled" data-id="' + id + '"  class="btn-operate-gray">启用</span>';
                                 }
                             }
                             /*商品列*/
-                            if (true || powerlist.goods_column) {
-                                btns += '<span data-action="goods" data-id="' + id + '" data-legalname="' + full.legalName + '" data-storename="' + full.storeName + '" data-auditstatus="' + auditstate + '"  class="btn-operate">商品列</span>';
+                            if (true || vm.powerlist.goods_column) {
+                                btns += '<span data-action="goods" data-id="' + id + '" data-legalname="' + full.legalName + '" data-storename="' + full.storeName + '" data-auditstatus="' + auditstate + '"  class="btn-operate-gray">商品列</span>';
                             }
                             return btns;
                         }

@@ -149,9 +149,9 @@
                 /*设置临时缓存*/
                 assistCommon.changeCache('tempMap', {
                     id: id,
-                    legalname:$btn.attr('data-legalname'),
-                    storename:$btn.attr('data-storename'),
-                    auditstatus:$btn.attr('data-auditstatus')
+                    legalName:$btn.attr('data-legalname'),
+                    providerName:$btn.attr('data-storename'),
+                    auditStatus:$btn.attr('data-auditstatus')
                 });
                 /*路由*/
                 $state.go('provider.goods');

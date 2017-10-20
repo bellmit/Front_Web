@@ -167,7 +167,7 @@
             })
             /*供应商模块--供应商商品列*/
             .state('provider.goods', {
-                url: '/list',
+                url: '/goods',
                 templateUrl: 'view/provider/provider_goods.html',
                 controller: 'providerGoodsController',
                 controllerAs: 'vm',

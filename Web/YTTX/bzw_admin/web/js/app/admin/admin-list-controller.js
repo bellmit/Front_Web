@@ -167,10 +167,10 @@
 
                             /*查看订单*/
                             if (vm.powerlist.update) {
-                                btns += '<span data-action="update" data-id="' + data + '"  class="btn-operate">编辑权限</span>';
+                                btns += '<span data-action="update" data-id="' + data + '"  class="btn-operate-gray">编辑权限</span>';
                             }
                             if (vm.powerlist.delete) {
-                                btns += '<span data-action="delete" data-id="' + data + '"  class="btn-operate">删除权限</span>';
+                                btns += '<span data-action="delete" data-id="' + data + '"  class="btn-operate-gray">删除权限</span>';
                             }
                             return btns;
                         }
