@@ -443,6 +443,7 @@ angular.module('app')
             record.structId = '';
             record.structnode = null;
             record.structName = '';
+            record.searchValue = '';
 
             /*查询子集*/
             if (haschild) {
@@ -558,6 +559,8 @@ angular.module('app')
                 record.current.removeClass('sub-menuactive');
             }
             record.current = null;
+            /*重置店铺搜索*/
+            record.searchValue = '';
         };
         /*操作记录服务--初始化操作参数(搜索模式或者重置操作参数模式)*/
         this.initStructPos = function (structpos) {
@@ -751,6 +754,9 @@ angular.module('app')
                 label,
                 layer,
                 record = config.record;
+
+            /*重置店铺搜索*/
+            record.searchValue = '';
 
             if (node === 'span') {
                 var $span = $(target),
@@ -1886,9 +1892,9 @@ angular.module('app')
                                         /*重新加载表格数据*/
                                         /*查询店铺信息*/
                                         if (config.record.structId === '') {
-                                            self.getColumnData(config.table, config.record.organizationId);
+                                            self.getColumnData(config.table, config.record.organizationId,config.record.searchValue);
                                         } else {
-                                            self.getColumnData(config.table, config.record.structId);
+                                            self.getColumnData(config.table, config.record.structId,config.record.searchValue);
                                         }
                                     }
                                     /*重置表单*/
@@ -2431,9 +2437,9 @@ angular.module('app')
                                     /*重新加载数据*/
                                     /*查询店铺信息*/
                                     if (record.structId === '') {
-                                        self.getColumnData(table, record.organizationId);
+                                        self.getColumnData(table, record.organizationId,record.searchValue);
                                     } else {
-                                        self.getColumnData(table, record.structId);
+                                        self.getColumnData(table, record.structId,record.searchValue);
                                     }
                                 }
                             }
@@ -2465,7 +2471,7 @@ angular.module('app')
             if (id === '' || typeof id === 'undefined' || id === null) {
                 return false;
             }
-            self.getColumnData(config.table, id, config.searchName);
+            self.getColumnData(config.table, id, record.searchValue);
         };
 
 

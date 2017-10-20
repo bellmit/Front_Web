@@ -104,7 +104,7 @@ angular.module('app')
         this.record = {
             iscroll_flag: true/*是否开启滚动条调用*/,
             searchactive: ''/*搜索激活状态*/,
-            searchname: ''/*搜索关键词*/,
+            searchname: ''/*机构搜索关键词*/,
             prev: null/*上一次操作记录*/,
             current: null/*当前操作记录*/,
             hasdata: false/*下级是否有数据,或者是否查询到数据*/,
@@ -116,7 +116,8 @@ angular.module('app')
             structId: ''/*机构设置Id*/,
             structName: ''/*机构设置名称*/,
             structnode: null/*机构对象*/,
-            layer: 0/*操作层*/
+            layer: 0/*操作层*/,
+            searchValue:''/*用户搜索内容*/
         };
 
 
@@ -165,8 +166,7 @@ angular.module('app')
             status: 0/*状态：0：正常，1：停用*/,
             remark: ''/*备注*/,
             addTime: ''/*添加时间,编辑时用到*/,
-            organizationId: ''/*组织机构id,编辑时用到*/,
-            searchName: ''/*搜索内容*/
+            organizationId: ''/*组织机构id,编辑时用到*/
         };
 
 
@@ -264,10 +264,19 @@ angular.module('app')
                                         temp_param['page'] = self.table.list1_page.page;
                                         temp_param['pageSize'] = self.table.list1_page.pageSize;
                                         self.table.list1_config.config.ajax.data = temp_param;
-                                        if (self.record.structId === '') {
-                                            structService.getColumnData(self.table, self.record.organizationId);
+
+                                        /*if (self.record.structId === '') {
+                                            self.getColumnData(self.table, self.record.organizationId);
                                         } else {
-                                            structService.getColumnData(self.table, self.record.structId)
+                                            self.getColumnData(self.table, self.record.structId);
+                                        }*/
+
+                                        if (self.record.structId !== '') {
+                                            structService.getColumnData(self.table, self.record.structId, self.record.searchValue);
+                                        } else if (self.record.organizationId !== '') {
+                                            structService.getColumnData(self.table, self.record.organizationId, self.record.searchValue);
+                                        } else {
+                                            structService.getColumnData(self.table, self.record.currentId, self.record.searchValue);
                                         }
                                     }
                                 });
@@ -645,9 +654,8 @@ angular.module('app')
         /*用户服务--搜索店铺*/
         this.searchUser = function () {
             structService.searchUser({
-                table:self.table,
-                record:self.record,
-                searchName:self.user.searchName
+                table: self.table,
+                record: self.record
             });
         };
 
