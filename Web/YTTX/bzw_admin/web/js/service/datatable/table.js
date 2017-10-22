@@ -388,6 +388,7 @@
                 attrkey/*需要比对的属性*/,
                 attrvalue/*需要比对的属性值*/,
                 isgroup = false,
+                ismutil = false,
                 len = cache_check_node.length,
                 i,
                 $input,
@@ -397,21 +398,14 @@
             if (len === 0) {
                 return '';
             }
+            /*,分割多个组合条件，#分割多个值*/
             if (config.attrkey.indexOf(',') !== -1) {
                 attrkey = config.attrkey.split(',');
-                attrvalue = (function () {
-                    var tempvalue = config.attrvalue.split(','),
-                        templen = tempvalue.length,
-                        k = 0;
-                    for (k; k < templen; k++) {
-                        tempvalue.splice(k, 1, parseInt(tempvalue[k], 10));
-                    }
-                    return tempvalue.slice(0);
-                }());
+                attrvalue = config.attrvalue.split(',');
                 isgroup = true;
             } else {
                 attrkey = config.attrkey;
-                attrvalue = parseInt(config.attrvalue, 10);
+                attrvalue = config.attrvalue;
             }
             i = len - 1;
             if (isgroup) {
@@ -428,8 +422,15 @@
                                 data_value = attrvalue[j];
                                 if (typeof data_value !== 'undefined' && data_value !== '') {
                                     data_key = parseInt(data_key, 10);
-                                    /*数据不匹配则过滤调*/
-                                    if (data_value !== data_key) {
+                                    console.log(data_value);
+                                    if (data_value.indexOf('#') !== -1) {
+                                        ismutil = _mutilCheckData_(data_value, data_key);
+                                        if (ismutil) {
+                                            _updateCheckData_(i);
+                                            break;
+                                        }
+                                    } else if (parseInt(data_value, 10) !== data_key) {
+                                        /*数据不匹配则过滤调*/
                                         _updateCheckData_(i);
                                         break;
                                     }
@@ -452,7 +453,12 @@
                     if (typeof data_value !== 'undefined' && data_value !== '') {
                         data_value = parseInt(data_value, 10);
                         /*数据不匹配则过滤调*/
-                        if (data_value !== attrvalue) {
+                        if (attrvalue.indexOf('#') !== -1) {
+                            ismutil = _mutilCheckData_(attrvalue, data_value);
+                            if (ismutil) {
+                                _updateCheckData_(i);
+                            }
+                        } else if (data_value !== parseInt(attrvalue, 10)) {
                             _updateCheckData_(i);
                         }
                     } else {
@@ -809,6 +815,36 @@
             cache_check_list.splice(value, 1);
         }
 
+        /*匹配多值，返回false则不匹配，返回true则匹配*/
+        function _mutilCheckData_(value, str) {
+            if (typeof value === 'undefined') {
+                /*不匹配*/
+                return false;
+            }
+            var mutil_value = value.split('#'),
+                mutil_len = mutil_value.length,
+                m = 0;
+            if (mutil_len !== 0) {
+                /*不匹配*/
+                return false;
+            } else {
+                for (m; m < mutil_len; m++) {
+                    if (typeof mutil_value[m] !== 'undefined' && mutil_value[m] !== '') {
+                        if (parseInt(mutil_value[m], 10) !== str) {
+                            /*匹配*/
+                            return true;
+                        }
+                        if (m === mutil_len - 1) {
+                            /*全部不匹配*/
+                            return false;
+                        }
+                    } else {
+                        /*不匹配*/
+                        return false;
+                    }
+                }
+            }
+        }
 
     }
 

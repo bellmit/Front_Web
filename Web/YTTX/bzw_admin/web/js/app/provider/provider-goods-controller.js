@@ -9,12 +9,13 @@
 
 
     /*控制注入依赖*/
-    providerGoodsController.$inject = ['toolUtil', 'assistCommon', 'pageService', 'dataTableService', 'providerService', 'providerGoodsService', 'testService','$scope'];
+    providerGoodsController.$inject = ['toolUtil', 'assistCommon', 'pageService', 'dataTableService', 'providerService', 'providerGoodsService', 'testService', '$scope'];
 
 
     /*控制器实现*/
-    function providerGoodsController(toolUtil, assistCommon, pageService, dataTableService, providerService, providerGoodsService, testService,$scope) {
+    function providerGoodsController(toolUtil, assistCommon, pageService, dataTableService, providerService, providerGoodsService, testService, $scope) {
         var vm = this,
+            goodscache = toolUtil.getParams('tempMap')/*获取缓存*/,
             debug = true/*测试模式*/;
 
 
@@ -30,7 +31,7 @@
             providerName: ''/*店铺名称(storeName)*/,
             auditStatus: ''/*审核状态*/,
             auditMap: {
-                '':'异常',
+                '': '异常',
                 0: '待审核',
                 1: '审核成功',
                 2: '审核失败'
@@ -38,7 +39,10 @@
         };
 
         /*解析缓存*/
-        providerGoodsService.renderView(vm.record,function () {
+        providerGoodsService.renderView({
+            record: vm.record,
+            cache: goodscache
+        }, function () {
             /*模型--表格*/
             vm.table = {
                 sequence: [{
@@ -167,7 +171,8 @@
                             "orderable": false,
                             "searchable": false,
                             "render": function (data, type, full, meta) {
-                                return '<input data-forbid="' + full.isForbidden + '" data-status="' + full.status + '" value="' + data + '" data-auditstatus="' + full.auditStatus + '" name="goodsID" type="checkbox" />';
+                                var temp_forbid = full.isForbidden === 'true' ? 1 : 0;
+                                return '<input data-forbid="' + temp_forbid + '" data-status="' + full.status + '" value="' + data + '" data-auditstatus="' + full.auditStatus + '" name="goodsID" type="checkbox" />';
                             }
                         },
                         {
@@ -256,6 +261,7 @@
                                     temp_status = parseInt(full.status, 10),
                                     temp_audit = parseInt(full.auditStatus, 10);
 
+                                /*审核成功*/
                                 if (vm.record.auditStatus === 1) {
                                     /*上架，下架*/
                                     if (temp_audit === 1 || vm.powerlist.updown_power) {
@@ -273,11 +279,11 @@
                                     }
                                     if (true || vm.powerlist.forbid_power) {
                                         /*可售，禁售*/
-                                        if (temp_forbid === true) {
+                                        if (temp_forbid === 'true') {
                                             /*禁售状态则可售*/
-                                            btns += '<span data-action="enable" data-id="' + id + '"  class="btn-operate-gray">取消禁售\
+                                            btns += '<span data-action="enabled"  data-id="' + id + '"  class="btn-operate-gray">取消禁售\
 											</span>';
-                                        } else if (temp_forbid === false) {
+                                        } else if (temp_forbid === 'false') {
                                             /*可售状态则禁售*/
                                             btns += '<span data-action="forbid" data-id="' + id + '"  class="btn-operate-gray">禁售\
 											</span>';
@@ -285,7 +291,7 @@
                                     }
                                 }
                                 if (true || vm.powerlist.detail_power) {
-                                    btns += '<span data-action="select" data-id="' + id + '"  class="btn-operate-gray">查看\
+                                    btns += '<span data-action="detail" data-id="' + id + '"  class="btn-operate-gray">查看\
 									</span>';
                                 }
                                 return btns;
@@ -296,7 +302,7 @@
                 /*table缓存*/
                 table_cache1: null
             };
-            
+
             /*初始化配置,渲染*/
             /*分页初始化*/
             pageService.initPage({
@@ -309,7 +315,6 @@
             /*获取缓存数据，初始化模型*/
             getTableData();
         });
-
 
 
         /*对外接口*/

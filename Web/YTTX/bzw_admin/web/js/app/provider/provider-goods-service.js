@@ -14,8 +14,7 @@
 
     /*服务实现*/
     function providerGoodsService(toolUtil, toolDialog, assistCommon, dataTableService, $state, providerService, loginService, testService) {
-        var cacheparam = loginService.getCache().loginMap.param/*缓存*/,
-            goodscache = toolUtil.getParams('tempMap')/*获取缓存*/;
+        var cacheparam = loginService.getCache().loginMap.param/*缓存*/;
 
         /*对外接口*/
         this.doItemAction = doItemAction/*操作表格*/;
@@ -37,9 +36,11 @@
                 action,
                 id,
                 action_map = {
-                    'forbid': '禁用',
-                    'enabled': '启用',
-                    'goods': '商品列'
+                    'forbid': '禁售',
+                    'enabled': '可售',
+                    'up':'上架',
+                    'down':'下架',
+                    'detail': '查看'
                 },
                 type_map = {
                     'base': '',
@@ -163,13 +164,15 @@
         }
 
         /*初始化依赖渲染*/
-        function renderView(record, fn) {
+        function renderView(config, fn) {
+            var goodscache = config.cache;
+
             if (goodscache && goodscache.providerName !== '') {
                 for (var i in goodscache) {
                     if (i === 'auditStatus') {
-                        record[i] = parseInt(goodscache[i], 10);
+                        config.record[i] = parseInt(goodscache[i], 10);
                     } else {
-                        record[i] = goodscache[i];
+                        config.record[i] = goodscache[i];
                     }
                 }
                 if (fn && typeof fn === 'function') {

@@ -34,10 +34,10 @@
 
     <!--批量处理按钮-->
     <div ng-show="true || vm.powerlist.enabled" class="action-item-btn action-item-export g-w-number3 g-gap-mr2">
-        <span ng-click="vm.doItemAction({index:1,attrkey:'enabled',attrvalue:1,action:'forbid',type:'batch'})" class="btn btn-export g-br3 g-w-percent50 g-c-blue3">批量禁用</span>
+        <span ng-click="vm.doItemAction({index:1,attrkey:'enabled',attrvalue:'1',action:'forbid',type:'batch'})" class="btn btn-export g-br3 g-w-percent50 g-c-blue3">批量禁用</span>
     </div>
     <div ng-show="true || vm.powerlist.enabled" class="action-item-btn action-item-export g-w-number3 g-gap-mr2">
-        <span ng-click="vm.doItemAction({index:1,attrkey:'enabled',attrvalue:0,action:'enabled',type:'batch'})" class="btn btn-export g-br3 g-w-percent50 g-c-blue3">批量启用</span>
+        <span ng-click="vm.doItemAction({index:1,attrkey:'enabled',attrvalue:'0',action:'enabled',type:'batch'})" class="btn btn-export g-br3 g-w-percent50 g-c-blue3">批量启用</span>
     </div>
 
     <!--列控制-->
@@ -60,10 +60,11 @@
     <colgroup id="admin_list_colgroup1">
         <col class="g-w-percent2">
         <col class="g-w-percent6">
-        <col class="g-w-percent8">
+        <col class="g-w-percent6">
         <col class="g-w-percent5">
         <col class="g-w-percent5">
-        <col class="g-w-percent7">
+        <col class="g-w-percent6">
+        <col class="g-w-percent3">
         <col class="g-w-percent3">
         <col class="g-w-percent6">
         <col class="g-w-percent8">
@@ -82,6 +83,7 @@
         <th>联系电话</th>
         <th>所在地</th>
         <th>状态</th>
+        <th>审核状态</th>
         <th>创建时间</th>
         <th>操作</th>
     </tr>

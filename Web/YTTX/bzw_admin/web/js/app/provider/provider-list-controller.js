@@ -41,10 +41,10 @@
             },
             /*列控制*/
             table_column1: {
-                init_len: 9/*数据有多少列*/,
+                init_len: 10/*数据有多少列*/,
                 columnshow: true/*初始化显示隐藏*/,
-                hide_list: [3, 5, 7]/*需要隐藏的的列序号*/,
-                header: ['全选', '用户名/姓名', '店铺名称', '公司名称', '联系电话', '所在地', '状态', '创建时间', '操作']/*头部姓名*/,
+                hide_list: [3, 4, 5, 8]/*需要隐藏的的列序号*/,
+                header: ['全选', '用户名/姓名', '店铺名称', '公司名称', '联系电话', '所在地', '状态', '审核状态', '创建时间', '操作']/*头部姓名*/,
                 action: true/*是否有操作*/,
                 check: true/*是否有全选*/
             },
@@ -165,7 +165,7 @@
                     {
                         "data": "telephone",
                         "render": function (data, type, full, meta) {
-                            toolUtil.phoneFormat(data);
+                            return toolUtil.phoneFormat(data);
                         }
                     },
                     {
@@ -180,6 +180,23 @@
                                 str = '<div class="g-c-info">启用</div>';
                             } else if (isEnabled === 0) {
                                 str = '<div class="g-c-gray9">禁用</div>';
+                            }
+                            return str;
+                        }
+                    },
+                    {
+                        "data": "auditStatus",
+                        "render": function (data, type, full, meta) {
+                            var str = '',
+                                isAudit = parseInt(data, 10);
+                            if (isAudit === 0) {
+                                str = '<div class="g-c-info">待审核</div>';
+                            } else if (isAudit === 1) {
+                                str = '<div class="g-c-green2">审核成功</div>';
+                            } else if (isAudit === 2) {
+                                str = '<div class="g-c-warn">审核失败</div>';
+                            } else {
+                                str = '<div class="g-c-red1">异常</div>';
                             }
                             return str;
                         }

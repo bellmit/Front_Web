@@ -8,6 +8,12 @@
         <col class="g-w-percent40">
     </colgroup>
 
+    <thead>
+    <tr>
+        <th colspan="2" class="">供应商信息</th>
+    </tr>
+    </thead>
+
     <!--表主体-->
     <tbody class="middle-align">
     <tr>
@@ -20,7 +26,7 @@
     </tr>
     <tr>
         <th class="g-t-r">供应商审核状态:</th>
-        <td ng-class="{'vm.record.auditStatus===0':'g-c-info','vm.record.auditStatus===1':'g-c-green2','vm.record.auditStatus===2':'g-c-warn'}">{{vm.record.auditMap[vm.record.auditStatus]}}</td>
+        <td ng-class="{'g-c-red1':vm.record.auditStatus==='','g-c-info':vm.record.auditStatus===0,'g-c-green2':vm.record.auditStatus===1,'g-c-warn':vm.record.auditStatus===2}">{{vm.record.auditMap[vm.record.auditStatus]}}</td>
     </tr>
     </tbody>
 </table>
@@ -32,12 +38,18 @@
         <label class="action-indent-b2">过滤:<input class="form-control input-sm" placeholder="" ng-model="vm.record.filter" ng-keyup="vm.filterTableData()"  type="search"></label>
     </div>
 
-    <!--批量处理按钮-->
-    <div ng-show="true || vm.powerlist.enabled" class="action-item-btn action-item-export g-w-number3 g-gap-mr2">
-        <span ng-click="vm.doItemAction({index:1,attrkey:'enabled',attrvalue:1,action:'forbid',type:'batch'})" class="btn btn-export g-br3 g-w-percent50 g-c-blue3">批量禁用</span>
+    <!--批量处理按钮--必须是供应商已经审核了的状态才能操作-->
+    <div ng-show="vm.record.auditStatus===1 || vm.powerlist.forbid" class="action-item-btn action-item-export g-w-number3 g-gap-mr2">
+        <span ng-click="vm.doItemAction({index:1,attrkey:'forbid',attrvalue:'0',action:'forbid',type:'batch'})" class="btn btn-export g-br3 g-w-percent50 g-c-blue3">批量禁售</span>
     </div>
-    <div ng-show="true || vm.powerlist.enabled" class="action-item-btn action-item-export g-w-number3 g-gap-mr2">
-        <span ng-click="vm.doItemAction({index:1,attrkey:'enabled',attrvalue:0,action:'enabled',type:'batch'})" class="btn btn-export g-br3 g-w-percent50 g-c-blue3">批量启用</span>
+    <div ng-show="vm.record.auditStatus===1 || vm.powerlist.enabled" class="action-item-btn action-item-export g-w-number3 g-gap-mr2">
+        <span ng-click="vm.doItemAction({index:1,attrkey:'forbid',attrvalue:'1',action:'enabled',type:'batch'})" class="btn btn-export g-br3 g-w-percent50 g-c-blue3">批量可售</span>
+    </div>
+    <div ng-show="vm.record.auditStatus===1 || vm.powerlist.up" class="action-item-btn action-item-export g-w-number3 g-gap-mr2">
+        <span ng-click="vm.doItemAction({index:1,attrkey:'auditstatus,status',attrvalue:'1,0#2#3',action:'up',type:'batch'})" class="btn btn-export g-br3 g-w-percent50 g-c-blue3">批量上架</span>
+    </div>
+    <div ng-show="vm.record.auditStatus===1 || vm.powerlist.down" class="action-item-btn action-item-export g-w-number3 g-gap-mr2">
+        <span ng-click="vm.doItemAction({index:1,attrkey:'auditstatus,status',attrvalue:'1,1',action:'down',type:'batch'})" class="btn btn-export g-br3 g-w-percent50 g-c-blue3">批量下架</span>
     </div>
 
     <!--列控制-->
