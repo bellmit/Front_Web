@@ -117,74 +117,112 @@
                     <div class="panel-body">
                         <form role="form"  method="post" id="admin_adduser_form" class="admin-form1 validate">
                             <input type="text" value="" id="admin_id" name="id" class="g-d-hidei" />
-                            <div class="admin-gap-theme2">用户信息</div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                   <div class="admin-gap-theme2">用户信息(商户个人信息)</div>
 
-                            <div class="form-group">
-                                <label class="control-label">手机号码：</label>
-                                <div class="form-control g-bl-none g-br-none g-bt-none" id="admin_telePhone"></div>
-                            </div>
+                                   <div class="form-group">
+                                       <label class="control-label">手机号码：</label>
+                                       <div class="form-control g-bl-none g-br-none g-bt-none" id="admin_telePhone"></div>
+                                   </div>
 
-                            <div class="form-group">
-                                <label class="control-label">昵称：</label>
-                                <div class="form-control g-bl-none g-br-none g-bt-none" id="admin_nickName"></div>
-                            </div>
-
-
-                            <div class="form-group">
-                                <label class="control-label">姓名：</label>
-                                <div class="form-control g-bl-none g-br-none g-bt-none" id="admin_Name"></div>
-                            </div>
+                                   <div class="form-group">
+                                       <label class="control-label">昵称：</label>
+                                       <div class="form-control g-bl-none g-br-none g-bt-none" id="admin_nickName"></div>
+                                   </div>
 
 
-                            <div class="form-group">
-                                <label class="control-label"><span class="form-require-item g-c-red1">*</span>密码：</label>
-                                <input type="password" class="form-control" name="password" placeholder="请输入用户密码" data-validate="required,minlength[6]" data-message-required="用户密码不能为空"  data-message-minlength="用户密码长度不能少于6位"  id="admin_password" />
-                            </div>
+                                   <div class="form-group">
+                                       <label class="control-label">姓名：</label>
+                                       <div class="form-control g-bl-none g-br-none g-bt-none" id="admin_Name"></div>
+                                   </div>
 
 
-                            <div class="form-group" >
-                                <label class="control-label"><span class="form-require-item g-c-red1">*</span>性别：</label>
-                                <div class="self-error-pos-wrap" id="admin_sex">
-                                    <label class="btn btn-white g-br3">
-                                        男：&nbsp;<input class="self-error-pos" checked type="radio" value="0" name="sex" data-validate="required" data-message-required="请选择性别"  />
-                                    </label>
-                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    <label class="btn btn-white g-br3">
-                                        女：&nbsp;<input type="radio" class="self-error-pos" name="sex" data-validate="required" value="1" data-message-required="请选择性别"/>
-                                    </label>
-                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    <label class="btn btn-white g-br3">
-                                        保密：&nbsp;<input type="radio" class="self-error-pos" name="sex" data-validate="required" value="2" data-message-required="请选择性别"/>
-                                    </label>
+                                   <div class="form-group">
+                                       <label class="control-label"><span class="form-require-item g-c-red1">*</span>密码：</label>
+                                       <input type="password" class="form-control" name="password" placeholder="请输入用户密码" data-validate="required,minlength[6]" data-message-required="用户密码不能为空"  data-message-minlength="用户密码长度不能少于6位"  id="admin_password" />
+                                   </div>
+
+
+                                   <div class="form-group" >
+                                       <label class="control-label"><span class="form-require-item g-c-red1">*</span>性别：</label>
+                                       <div class="self-error-pos-wrap" id="admin_sex">
+                                           <label class="btn btn-white g-br3">
+                                               男：&nbsp;<input class="self-error-pos" checked type="radio" value="0" name="sex" data-validate="required" data-message-required="请选择性别"  />
+                                           </label>
+                                           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                           <label class="btn btn-white g-br3">
+                                               女：&nbsp;<input type="radio" class="self-error-pos" name="sex" data-validate="required" value="1" data-message-required="请选择性别"/>
+                                           </label>
+                                           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                           <label class="btn btn-white g-br3">
+                                               保密：&nbsp;<input type="radio" class="self-error-pos" name="sex" data-validate="required" value="2" data-message-required="请选择性别"/>
+                                           </label>
+                                       </div>
+                                   </div>
+
+                                   <div class="form-group" >
+                                       <label class="control-label"><span class="form-require-item g-c-red1">*</span>是否可用：</label>
+                                       <div class="self-error-pos-wrap" id="admin_enabled">
+                                           <label class="btn btn-white g-br3">
+                                               是：&nbsp;<input type="radio" class="self-error-pos" checked value="1" name="enabled" data-validate="required" data-message-required="请选择是否可用"  />
+                                           </label>
+                                           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                           <label class="btn btn-white g-br3">
+                                               否：&nbsp;<input type="radio" class="self-error-pos" name="enabled" data-validate="required" value="0" data-message-required="请选择是否可用"/>
+                                           </label>
+                                       </div>
+                                   </div>
+
+
+                                   <div class="form-group">
+                                       <label class="control-label">图像：</label>
+                                       <div class="admin-rpos-wrap g-w-percent80">
+                                           <div class="form-control admin-image-view" data-image="" id="admin_logoImage"></div>
+                                       </div>
+                                   </div>
+
+                                </div>
+                                <div class="col-md-6" style="border-left:5px solid #eee">
+                                    <div class="admin-gap-theme2">商户店铺信息(不可修改)</div>
+
+                                    <div class="form-group">
+                                        <label class="control-label">店铺名称：</label>
+                                        <div class="form-control g-bl-none g-br-none g-bt-none" id="admin_shopName"></div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="control-label">电话：</label>
+                                        <div class="form-control g-bl-none g-br-none g-bt-none" id="admin_cellphone"></div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="control-label">所在地区：</label>
+                                        <div class="form-control g-bl-none g-br-none g-bt-none" id="admin_localArea"></div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="control-label">详细地址：</label>
+                                        <div class="form-control g-bl-none g-br-none g-bt-none" id="admin_address"></div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="control-label">店铺介绍：</label>
+                                        <div class="form-control g-h-number8 g-bl-none g-br-none g-bt-none" id="admin_storeIntroduce"></div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="control-label">店铺logo：</label>
+                                        <div class="admin-rpos-wrap g-w-percent80">
+                                            <div class="form-control admin-image-view" data-image="" id="admin_storeLogoUrl"></div>
+                                        </div>
+                                    </div>
+
                                 </div>
                             </div>
-
-                            <div class="form-group" >
-                                <label class="control-label"><span class="form-require-item g-c-red1">*</span>是否可用：</label>
-                                <div class="self-error-pos-wrap" id="admin_enabled">
-                                    <label class="btn btn-white g-br3">
-                                        是：&nbsp;<input type="radio" class="self-error-pos" checked value="1" name="enabled" data-validate="required" data-message-required="请选择是否可用"  />
-                                    </label>
-                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    <label class="btn btn-white g-br3">
-                                        否：&nbsp;<input type="radio" class="self-error-pos" name="enabled" data-validate="required" value="0" data-message-required="请选择是否可用"/>
-                                    </label>
-                                </div>
-                            </div>
-
-
-                            <div class="form-group">
-                                <label class="control-label">图像：</label>
-                                <div class="admin-rpos-wrap g-w-percent50">
-                                    <div class="form-control admin-image-view" data-image="" id="admin_logoImage"></div>
-                                </div>
-                            </div>
-
-
                             <div class="form-group">
                                 <button type="submit" id="admin_action" class="btn btn-success">添加</button>
                             </div>
-
                         </form>
                     </div>
 
@@ -268,7 +306,9 @@
 
 
 <script src="../../js/common/base.js"></script>
+<script src="../../js/common/mock.js"></script>
 <script src="../../js/common/common.js"></script>
+<script src="../../js/widgets/test_widget.js"></script>
 <!--表单验证插件-->
 <script src="../../js/plugins/jquery-validate/jquery.validate.js"></script>
 <script src="../../js/user/user_add.js"></script>
