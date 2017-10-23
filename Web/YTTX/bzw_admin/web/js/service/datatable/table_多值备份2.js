@@ -401,43 +401,11 @@
             /*,分割多个组合条件，#分割多个值*/
             if (config.attrkey.indexOf(',') !== -1) {
                 attrkey = config.attrkey.split(',');
-                attrvalue = (function () {
-                    var tempvalue = config.attrvalue.split(','),
-                        templen = tempvalue.length,
-                        k = 0;
-                    for (k; k < templen; k++) {
-                        if (tempvalue.indexOf('#') !== -1) {
-                            tempvalue.splice(k, 1, (function () {
-                                var tempmutil = tempvalue[k].split('#'),
-                                    p = 0,
-                                    mutillen = tempmutil.length;
-                                for (p; p < mutillen; p++) {
-                                    tempmutil.splice(p, 1, parseInt(tempmutil[p], 10));
-                                }
-                                return tempmutil;
-                            }()));
-                        } else {
-                            tempvalue.splice(k, 1, parseInt(tempvalue[k], 10));
-                        }
-                    }
-                    return tempvalue;
-                }());
+                attrvalue = config.attrvalue.split(',');
                 isgroup = true;
             } else {
                 attrkey = config.attrkey;
-                attrvalue = (function () {
-                    if (config.attrvalue.indexOf('#') !== -1) {
-                        var tempmutil = config.attrvalue.split('#'),
-                            p = 0,
-                            mutillen = tempmutil.length;
-                        for (p; p < mutillen; p++) {
-                            tempmutil.splice(p, 1, parseInt(tempmutil[p], 10));
-                        }
-                        return tempmutil;
-                    } else {
-                        return parseInt(config.attrvalue, 10);
-                    }
-                }())
+                attrvalue = config.attrvalue;
             }
             i = len - 1;
             if (isgroup) {
@@ -458,13 +426,14 @@
                                 if (typeof data_value !== 'undefined' && data_value !== '') {
                                     /*标准值*/
                                     data_key = parseInt(data_key, 10);
-                                    if ($.isArray(data_value)) {
+                                    console.log(data_value);
+                                    if (data_value.indexOf('#') !== -1) {
                                         ismutil = _mutilCheckData_(data_value, data_key);
                                         if (ismutil) {
                                             _updateCheckData_(i);
                                             break;
                                         }
-                                    } else if (data_value !== data_key) {
+                                    } else if (parseInt(data_value, 10) !== data_key) {
                                         /*数据不匹配则过滤调*/
                                         _updateCheckData_(i);
                                         break;
@@ -489,12 +458,12 @@
                     if (typeof data_value !== 'undefined' && data_value !== '') {
                         data_value = parseInt(data_value, 10);
                         /*数据不匹配则过滤调*/
-                        if ($.isArray(attrvalue)) {
+                        if (attrvalue.indexOf('#') !== -1) {
                             ismutil = _mutilCheckData_(attrvalue, data_value);
                             if (ismutil) {
                                 _updateCheckData_(i);
                             }
-                        } else if (data_value !== attrvalue) {
+                        } else if (data_value !== parseInt(attrvalue, 10)) {
                             _updateCheckData_(i);
                         }
                     } else {
@@ -852,25 +821,30 @@
         }
 
         /*匹配多值，返回false则不匹配，返回true则匹配*/
-        function _mutilCheckData_(arr, str) {
-            if (typeof arr === 'undefined') {
+        function _mutilCheckData_(value, str) {
+            if (typeof value === 'undefined') {
                 /*不匹配*/
                 return false;
             }
-            var mutil_len = arr.length,
+            var mutil_value = value.split('#'),
+                mutil_len = mutil_value.length,
                 m = 0;
-
-            if (mutil_len === 0) {
+            if (mutil_len !== 0) {
                 /*不匹配*/
                 return false;
             } else {
                 for (m; m < mutil_len; m++) {
-                    if (arr[m] === str) {
-                        /*匹配*/
-                        return true;
-                    }
-                    if (m === mutil_len - 1) {
-                        /*全部不匹配*/
+                    if (typeof mutil_value[m] !== 'undefined' && mutil_value[m] !== '') {
+                        if (parseInt(mutil_value[m], 10) !== str) {
+                            /*匹配*/
+                            return true;
+                        }
+                        if (m === mutil_len - 1) {
+                            /*全部不匹配*/
+                            return false;
+                        }
+                    } else {
+                        /*不匹配*/
                         return false;
                     }
                 }

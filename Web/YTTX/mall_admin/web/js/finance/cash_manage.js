@@ -581,10 +581,10 @@
 
                 if (type === 'base') {
                     /*单个处理*/
-                    temp_config['id'] = config.id;
+                    temp_config['ids'] = config.id;
                 } else if (type === 'batch') {
                     /*批量处理*/
-                    /*temp_config['id'] = batchdata.join(',');屏蔽批量*/
+                    /*temp_config['ids'] = batchdata.join(',');屏蔽批量*/
                 }
 
 
