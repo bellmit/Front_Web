@@ -46,8 +46,10 @@
                 $admin_page_wrap = $('#admin_page_wrap'),
                 $show_detail_wrap = $('#show_detail_wrap')/*详情容器*/,
                 $show_detail_content = $('#show_detail_content'), /*详情内容*/
-                $show_detail_title = $('#show_detail_title'),
-                $admin_pispose_btn = $('#admin_pispose_btn'),
+                $show_detail_btn = $('#show_detail_btn'),
+                $show_dispose_wrap = $('#show_dispose_wrap')/*详情容器*/,
+                $show_dispose_content = $('#show_dispose_content'), /*详情内容*/
+                $show_dispose_btn = $('#show_dispose_btn'),
                 sureObj = public_tool.sureDialog(dia)/*回调提示对象*/,
                 setSure = new sureObj(),
                 operate_item = null;
@@ -335,18 +337,18 @@
                     /*查看详情*/
                     cashDetail({
                         id: id,
+                        type: 'base',
+                        action: action,
                         state: $this.attr('data-state')
                     });
                 } else if (action === 'dispose') {
                     /*提现处理*/
                     cashDetail({
                         id: id,
+                        type: 'base',
+                        action: action,
                         state: $this.attr('data-state')
                     });
-                    /*cashDispose({
-                        id: id,
-                        type: 'base'
-                    });*/
                 }
             });
 
@@ -363,13 +365,16 @@
 
 
             /*绑定详情提现处理*/
-            $admin_pispose_btn.on('click', function () {
-                cashDispose({
-                    type: 'base',
-                    id: $admin_pispose_btn.attr('data-id'),
-                    modal: true
-                })
+            $.each([$show_detail_btn, $show_dispose_btn], function (index) {
+                this.on('click', function () {
+                    cashDispose({
+                        type: 'base',
+                        action: index === 0 ? 'detail' : 'dispose',
+                        id: $show_dispose_btn.attr('data-id'),
+                        modal: true
+                    })
 
+                });
             });
 
         }
@@ -386,161 +391,6 @@
         }
 
 
-        /*查看详情*/
-        function cashDetail_bak(config) {
-            if (!config) {
-                return false;
-            }
-            var state = parseInt(config.state, 10),
-                id = config.id;
-
-            if (id === '' || typeof id === 'undefined') {
-                return false;
-            }
-            /*设置提现状态*/
-            if (state === 1) {
-                /*已处理提现*/
-                $admin_pispose_btn.prop({
-                    'disabled': true
-                }).attr({
-                    'data-id': ''
-                });
-            }else{
-                /*未处理提现*/
-                $admin_pispose_btn.prop({
-                    'disabled': false
-                }).attr({
-                    'data-id': id
-                });
-            }
-
-
-            $.ajax({
-                    url: debug ? "../../json/test.json" : "http://10.0.5.226:8082/mall-buzhubms-api/finance/withdraw_deposit/details",
-                    dataType: 'JSON',
-                    method: 'post',
-                    data: {
-                        id: id,
-                        roleId: decodeURIComponent(logininfo.param.roleId),
-                        adminId: decodeURIComponent(logininfo.param.adminId),
-                        grade: decodeURIComponent(logininfo.param.grade),
-                        token: decodeURIComponent(logininfo.param.token)
-                    }
-                })
-                .done(function (resp) {
-                    if (debug) {
-                        var resp = testWidget.testSuccess('list');
-                        resp.result = testWidget.getMap({
-                            map: {
-                                id: 'guid',
-                                nickName: 'value',
-                                bankName: 'value',
-                                cardNumber: 'card',
-                                serialNumber: 'guid',
-                                name: 'name',
-                                phone: 'mobile',
-                                amount: 'money',
-                                auditStatus: 'rule,0,1,2',
-                                createTime: 'datetime'
-                            },
-                            maptype: 'object'
-                        }).list;
-                    }
-                    var code = parseInt(resp.code, 10);
-                    if (code !== 0) {
-                        console.log(resp.message);
-                        dia.content('<span class="g-c-bs-warning g-btips-warn">' + (resp.message || "操作失败") + '</span>').show();
-                        setTimeout(function () {
-                            dia.close();
-                        }, 2000);
-                        return false;
-                    }
-                    /*是否是正确的返回数据*/
-                    var list = resp.result;
-                    if (!list) {
-                        return false;
-                    }
-
-                    var str = '',
-                        istitle = false,
-                        detail_map = {
-                            id: '序列',
-                            nickName: '会员名称(昵称)',
-                            serialNumber: '流水号',
-                            name: '真实名称',
-                            phone: '手机号',
-                            amount: '提现金额',
-                            bankName: '提现银行',
-                            cardNumber: '提现卡号',
-                            auditStatus: '审核(提现)状态',
-                            createTime: '提现时间'
-                        },
-                        iscash=true;
-
-                    if (!$.isEmptyObject(list)) {
-                        if(operate_item!==null){
-                            var tr_data=table.row(operate_item).data();
-                            $.extend(true,list,tr_data);
-                        }
-                        /*添加高亮状态*/
-                        for (var j in list) {
-                            if (typeof detail_map[j] !== 'undefined') {
-                                if (j === 'name') {
-                                    istitle = true;
-                                    $show_detail_title.html('查看"<span class="g-c-info">' + list[j] + '</span>"提现详情');
-                                } else if (j === 'auditStatus') {
-                                    var statemap = {
-                                        0: '<div class="g-c-red1">待审核(未处理)</div>',
-                                        1: '<div class="g-c-green2">审核通过(历史提现)</div>',
-                                        2: '<div class="g-c-warn">审核驳回</div>'
-                                    };
-                                    str += '<tr><th>' + detail_map[j] + ':</th><td>' + statemap[parseInt(list[j], 10)] + '</td></tr>';
-                                } else if (j === 'phone') {
-                                    iscash = public_tool.isMobilePhone(list[j] || '');
-                                    if (!iscash) {
-                                        str += '<tr><th>' + ':</th><td>' + public_tool.phoneFormat(public_tool.trims(list[j] || '')) + detail_map[j] + '<span class="g-gap-ml2 g-c-red1">不合法</span></td></tr>';
-                                    } else {
-                                        str += '<tr><th>' + detail_map[j] + ':</th><td>' + public_tool.phoneFormat(public_tool.trims(list[j] || '')) + '<span class="g-gap-ml2 g-c-green1">正确</span></td></tr>';
-                                    }
-                                } else if (j === 'cardNumber') {
-                                    iscash = public_tool.isBankCard(list[j] || '');
-                                    if (!iscash) {
-                                        str += '<tr><th>' + detail_map[j] + ':</th><td>' + public_tool.cardFormat(public_tool.trims(list[j] || '')) + '<span class="g-gap-ml2 g-c-red1">不正确</span></td></tr>';
-                                    } else {
-                                        str += '<tr><th>' + detail_map[j] + ':</th><td>' + public_tool.cardFormat(public_tool.trims(list[j] || '')) + '<span class="g-gap-ml2 g-c-green1">正确</span></td></tr>';
-                                    }
-                                }  else {
-                                    str += '<tr><th>' + detail_map[j] + ':</th><td>' + list[j] + '</td></tr>';
-                                }
-                            } else {
-                                str += '<tr><th>' + j + ':</th><td>' + list[j] + '</td></tr>';
-                            }
-                        }
-                        if (!iscash) {
-                            $admin_pispose_btn.prop({
-                                'disabled': true
-                            }).attr({
-                                'data-id': ''
-                            });
-                        }
-                        if (!istitle) {
-                            $show_detail_title.html('查看提现详情');
-                        }
-                        $(str).appendTo($show_detail_content.html(''));
-                        $show_detail_wrap.modal('show', {backdrop: 'static'});
-                    }
-
-
-                })
-                .fail(function (resp) {
-                    console.log(resp.message);
-                    dia.content('<span class="g-c-bs-warning g-btips-warn">' + (resp.message || "操作失败") + '</span>').show();
-                    setTimeout(function () {
-                        dia.close();
-                    }, 2000);
-                });
-        }
-
 
         /*查看详情*/
         function cashDetail(config) {
@@ -548,7 +398,8 @@
                 return false;
             }
             var state = parseInt(config.state, 10),
-                id = config.id;
+                id = config.id,
+                action = config.action;
 
             if (id === '' || typeof id === 'undefined') {
                 return false;
@@ -556,18 +407,35 @@
             /*设置提现状态*/
             if (state === 1) {
                 /*已处理提现*/
-                $admin_pispose_btn.prop({
-                    'disabled': true
-                }).attr({
-                    'data-id': ''
-                });
-            }else{
+                if (action === 'detail') {
+                    $show_detail_btn.prop({
+                        'disabled': true
+                    }).attr({
+                        'data-id': ''
+                    });
+                } else if (action === 'dispose') {
+                    $show_dispose_btn.prop({
+                        'disabled': true
+                    }).attr({
+                        'data-id': ''
+                    });
+                }
+
+            } else {
                 /*未处理提现*/
-                $admin_pispose_btn.prop({
-                    'disabled': false
-                }).attr({
-                    'data-id': id
-                });
+                if (action === 'detail') {
+                    $show_detail_btn.prop({
+                        'disabled': false
+                    }).attr({
+                        'data-id': id
+                    });
+                } else if (action === 'dispose') {
+                    $show_dispose_btn.prop({
+                        'disabled': false
+                    }).attr({
+                        'data-id': id
+                    });
+                }
             }
 
 
@@ -618,33 +486,37 @@
                     }
 
                     var str = '',
-                        istitle = false,
-                        detail_map = {
-                            id: '序列',
-                            nickName: '会员名称(昵称)',
-                            serialNumber: '流水号',
-                            name: '真实名称',
-                            phone: '手机号',
-                            amount: '提现金额',
-                            bankName: '提现银行',
-                            cardNumber: '提现卡号',
-                            auditStatus: '审核(提现)状态',
-                            createTime: '提现时间'
-                        },
-                        iscash=true;
+                        detail_map;
 
                     if (!$.isEmptyObject(list)) {
-                        if(operate_item!==null){
-                            var tr_data=table.row(operate_item).data();
-                            $.extend(true,list,tr_data);
+                        if (action === 'detail') {
+                            if (operate_item !== null) {
+                                var tr_data = table.row(operate_item).data();
+                                $.extend(true, list, tr_data);
+                            }
+                            detail_map = {
+                                nickName: '会员名称(昵称)',
+                                serialNumber: '流水号',
+                                name: '真实名称',
+                                phone: '手机号',
+                                amount: '结算金额',
+                                bankName: '所属银行',
+                                cardNumber: '结算账号',
+                                auditStatus: '审核(提现)状态',
+                                createTime: '提现时间'
+                            }
+                        } else if (action === 'dispose') {
+                            detail_map = {
+                                phone: '手机号',
+                                bankName: '所属银行',
+                                cardNumber: '结算账号',
+                                amount: '结算金额'
+                            }
                         }
                         /*添加高亮状态*/
                         for (var j in list) {
                             if (typeof detail_map[j] !== 'undefined') {
-                                if (j === 'name') {
-                                    istitle = true;
-                                    $show_detail_title.html('查看"<span class="g-c-info">' + list[j] + '</span>"提现详情');
-                                } else if (j === 'auditStatus') {
+                                if (j === 'auditStatus') {
                                     var statemap = {
                                         0: '<div class="g-c-red1">待审核(未处理)</div>',
                                         1: '<div class="g-c-green2">审核通过(历史提现)</div>',
@@ -652,38 +524,21 @@
                                     };
                                     str += '<tr><th>' + detail_map[j] + ':</th><td>' + statemap[parseInt(list[j], 10)] + '</td></tr>';
                                 } else if (j === 'phone') {
-                                    iscash = public_tool.isMobilePhone(list[j] || '');
-                                    if (!iscash) {
-                                        str += '<tr><th>' + ':</th><td>' + public_tool.phoneFormat(public_tool.trims(list[j] || '')) + detail_map[j] + '<span class="g-gap-ml2 g-c-red1">不合法</span></td></tr>';
-                                    } else {
-                                        str += '<tr><th>' + detail_map[j] + ':</th><td>' + public_tool.phoneFormat(public_tool.trims(list[j] || '')) + '<span class="g-gap-ml2 g-c-green1">正确</span></td></tr>';
-                                    }
+                                    str += '<tr><th>' + detail_map[j] + ':</th><td>' + public_tool.phoneFormat(public_tool.trims(list[j] || '')) + '</td></tr>';
                                 } else if (j === 'cardNumber') {
-                                    iscash = public_tool.isBankCard(list[j] || '');
-                                    if (!iscash) {
-                                        str += '<tr><th>' + detail_map[j] + ':</th><td>' + public_tool.cardFormat(public_tool.trims(list[j] || '')) + '<span class="g-gap-ml2 g-c-red1">不正确</span></td></tr>';
-                                    } else {
-                                        str += '<tr><th>' + detail_map[j] + ':</th><td>' + public_tool.cardFormat(public_tool.trims(list[j] || '')) + '<span class="g-gap-ml2 g-c-green1">正确</span></td></tr>';
-                                    }
-                                }  else {
+                                    str += '<tr><th>' + detail_map[j] + ':</th><td>' + public_tool.cardFormat(public_tool.trims(list[j] || '')) + '</td></tr>';
+                                } else {
                                     str += '<tr><th>' + detail_map[j] + ':</th><td>' + list[j] + '</td></tr>';
                                 }
-                            } else {
-                                str += '<tr><th>' + j + ':</th><td>' + list[j] + '</td></tr>';
                             }
                         }
-                        if (!iscash) {
-                            $admin_pispose_btn.prop({
-                                'disabled': true
-                            }).attr({
-                                'data-id': ''
-                            });
+                        if (action === 'detail') {
+                            $(str).appendTo($show_detail_content.html(''));
+                            $show_detail_wrap.modal('show', {backdrop: 'static'});
+                        } else if (action === 'dispose') {
+                            $(str).appendTo($show_dispose_content.html(''));
+                            $show_dispose_wrap.modal('show', {backdrop: 'static'});
                         }
-                        if (!istitle) {
-                            $show_detail_title.html('查看提现详情');
-                        }
-                        $(str).appendTo($show_detail_content.html(''));
-                        $show_detail_wrap.modal('show', {backdrop: 'static'});
                     }
 
 
@@ -704,7 +559,8 @@
                 return false;
             }
             var type = config.type,
-                isdata = true;
+                isdata = true,
+                action = config.action;
 
             if (type === 'base') {
                 /*单个处理*/
@@ -765,12 +621,21 @@
                                 tip.close();
                                 if (config.modal) {
                                     /*绑定关闭详情*/
-                                    $admin_pispose_btn.prop({
-                                        'disabled': false
-                                    }).attr({
-                                        'data-id': ''
-                                    });
-                                    $show_detail_wrap.modal('hide');
+                                    if(action==='detail'){
+                                        $show_detail_btn.prop({
+                                            'disabled': false
+                                        }).attr({
+                                            'data-id': ''
+                                        });
+                                        $show_detail_wrap.modal('hide');
+                                    }else if(action==='dispose'){
+                                        $show_dispose_btn.prop({
+                                            'disabled': false
+                                        }).attr({
+                                            'data-id': ''
+                                        });
+                                        $show_dispose_wrap.modal('hide');
+                                    }
                                 }
                             }, 2000);
                             return false;
@@ -785,12 +650,21 @@
                             getColumnData(cash_config);
                             if (config.modal) {
                                 /*绑定关闭详情*/
-                                $admin_pispose_btn.prop({
-                                    'disabled': false
-                                }).attr({
-                                    'data-id': ''
-                                });
-                                $show_detail_wrap.modal('hide');
+                                if(action==='detail'){
+                                    $show_detail_btn.prop({
+                                        'disabled': false
+                                    }).attr({
+                                        'data-id': ''
+                                    });
+                                    $show_detail_wrap.modal('hide');
+                                }else if(action==='dispose'){
+                                    $show_dispose_btn.prop({
+                                        'disabled': false
+                                    }).attr({
+                                        'data-id': ''
+                                    });
+                                    $show_dispose_wrap.modal('hide');
+                                }
                             }
                         }, 1000);
                     })
@@ -804,12 +678,21 @@
                             tip.close();
                             if (config.modal) {
                                 /*绑定关闭详情*/
-                                $admin_pispose_btn.prop({
-                                    'disabled': false
-                                }).attr({
-                                    'data-id': ''
-                                });
-                                $show_detail_wrap.modal('hide');
+                                if(action==='detail'){
+                                    $show_detail_btn.prop({
+                                        'disabled': false
+                                    }).attr({
+                                        'data-id': ''
+                                    });
+                                    $show_detail_wrap.modal('hide');
+                                }else if(action==='dispose'){
+                                    $show_dispose_btn.prop({
+                                        'disabled': false
+                                    }).attr({
+                                        'data-id': ''
+                                    });
+                                    $show_dispose_wrap.modal('hide');
+                                }
                             }
                         }, 2000);
                     });
