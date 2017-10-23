@@ -45,7 +45,6 @@
                 $admin_page_wrap = $('#admin_page_wrap'),
                 $show_audit_wrap = $('#show_audit_wrap')/*详情容器*/,
                 $show_audit_content = $('#show_audit_content'), /*详情内容*/
-                $show_audit_title = $('#show_audit_title'),
                 $admin_audit_btn = $('#admin_audit_btn'),
                 sureObj = public_tool.sureDialog(dia)/*回调提示对象*/,
                 setSure = new sureObj(),
@@ -172,7 +171,7 @@
                                     var stauts = parseInt(data, 10),
                                         statusmap = {
                                             0: '<div class="g-c-red1">待审核</div>',
-                                            1: '<div class="g-c-green1">审核通过</div>',
+                                            1: '<div class="g-c-green2">审核通过</div>',
                                             2: '<div class="g-c-orange1">审核驳回</div>'
                                         };
                                     return statusmap[stauts];
@@ -326,7 +325,7 @@
         }
 
 
-        /**/
+        /*银行卡审核弹窗*/
         function showAudit(id) {
             if (id === '' || typeof id === 'undefined') {
                 return false;
@@ -340,65 +339,25 @@
             });
             var list = table.row(operate_item).data(),
                 str = '',
-                istitle = false,
                 detail_map = {
-                    id: '序列',
-                    nickName: '会员名称(昵称)',
-                    serialNumber: '流水号',
-                    name: '真实名称',
+                    name: '真实姓名',
                     phone: '手机号',
-                    amount: '提现金额',
                     bankName: '所属银行',
-                    cardNumber: '卡号',
-                    auditStatus: '审核状态',
-                    createTime: '提现时间'
-                },
-                isaudit = true;
+                    cardNumber: '结算账号'
+                };
 
             if (!$.isEmptyObject(list)) {
                 /*添加高亮状态*/
                 for (var j in list) {
                     if (typeof detail_map[j] !== 'undefined') {
-                        if (j === 'name') {
-                            istitle = true;
-                            $show_audit_title.html('审核"<span class="g-c-info">' + list[j] + '</span>"银行卡信息');
-                        } else if (j === 'auditStatus') {
-                            var statemap = {
-                                0: '<div class="g-c-red1">待审核(未处理)</div>',
-                                1: '<div class="g-c-green1">审核通过(历史提现)</div>',
-                                2: '<div class="g-c-orange1">审核驳回</div>'
-                            };
-                            str += '<tr><th>' + detail_map[j] + ':</th><td>' + statemap[parseInt(list[j], 10)] + '</td></tr>';
-                        } else if (j === 'phone') {
-                            isaudit = public_tool.isMobilePhone(list[j] || '');
-                            if (!isaudit) {
-                                str += '<tr><th>' + ':</th><td>' + public_tool.phoneFormat(public_tool.trims(list[j] || '')) + detail_map[j] + '<span class="g-gap-ml2 g-c-red1">不合法</span></td></tr>';
-                            } else {
-                                str += '<tr><th>' + detail_map[j] + ':</th><td>' + public_tool.phoneFormat(public_tool.trims(list[j] || '')) + '<span class="g-gap-ml2 g-c-green1">正确</span></td></tr>';
-                            }
+                        if (j === 'phone') {
+                            str += '<tr><th class="g-t-r">' + detail_map[j] + ':</th><td>' + public_tool.phoneFormat(public_tool.trims(list[j] || '')) + '</td></tr>';
                         } else if (j === 'cardNumber') {
-                            isaudit = public_tool.isBankCard(list[j] || '');
-                            if (!isaudit) {
-                                str += '<tr><th>' + detail_map[j] + ':</th><td>' + public_tool.cardFormat(public_tool.trims(list[j] || '')) + '<span class="g-gap-ml2 g-c-red1">不正确</span></td></tr>';
-                            } else {
-                                str += '<tr><th>' + detail_map[j] + ':</th><td>' + public_tool.cardFormat(public_tool.trims(list[j] || '')) + '<span class="g-gap-ml2 g-c-green1">正确</span></td></tr>';
-                            }
+                            str += '<tr><th class="g-t-r">' + detail_map[j] + ':</th><td>' + public_tool.cardFormat(public_tool.trims(list[j] || '')) + '</td></tr>';
                         } else {
-                            str += '<tr><th>' + detail_map[j] + ':</th><td>' + list[j] + '</td></tr>';
+                            str += '<tr><th class="g-t-r">' + detail_map[j] + ':</th><td>' + list[j] + '</td></tr>';
                         }
-                    } else {
-                        str += '<tr><th>' + j + ':</th><td>' + list[j] + '</td></tr>';
                     }
-                }
-                if (!isaudit) {
-                    $admin_audit_btn.prop({
-                        'disabled': true
-                    }).attr({
-                        'data-id': ''
-                    });
-                }
-                if (!istitle) {
-                    $show_audit_title.html('审核银行卡信息');
                 }
                 $(str).appendTo($show_audit_content.html(''));
                 $show_audit_wrap.modal('show', {backdrop: 'static'});
@@ -406,7 +365,7 @@
         }
 
 
-        /*提现处理*/
+        /*确认审核*/
         function cardAudit(id) {
             if (id === '' || typeof id === 'undefined') {
                 return false;
@@ -419,7 +378,7 @@
                         adminId: decodeURIComponent(logininfo.param.adminId),
                         grade: decodeURIComponent(logininfo.param.grade),
                         token: decodeURIComponent(logininfo.param.token),
-                        id:id
+                        ids:id
                     };
 
 
