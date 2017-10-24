@@ -497,7 +497,7 @@
                             detail_map = {
                                 nickName: '会员名称(昵称)',
                                 serialNumber: '流水号',
-                                name: '真实名称',
+                                name: '真实姓名',
                                 phone: '手机号',
                                 amount: '结算金额',
                                 bankName: '所属银行',
@@ -507,6 +507,7 @@
                             }
                         } else if (action === 'dispose') {
                             detail_map = {
+                                name: '真实姓名',
                                 phone: '手机号',
                                 bankName: '所属银行',
                                 cardNumber: '结算账号',

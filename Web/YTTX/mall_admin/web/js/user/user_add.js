@@ -142,12 +142,16 @@
                                     if (id !== '') {
                                         setdata['id'] = id;
                                     }
-                                    config['url'] = "http://10.0.5.226:8082/mall-buzhubms-api/user/update";
+                                    config['url'] = debug ? "../../json/test.json" : "http://10.0.5.226:8082/mall-buzhubms-api/user/update";
                                     config['data'] = setdata;
                                 }
 
 
                                 $.ajax(config).done(function (resp) {
+                                    if(debug){
+                                        var resp=testWidget.testSuccess('list');
+                                        console.log(resp);
+                                    }
                                     var code, formkey = '';
                                     if (formtype === 'useradd') {
                                         if (id !== '') {
@@ -209,28 +213,30 @@
                     }
                 })
                 .done(function (resp) {
-                    if(debug){
-                        var resp = testWidget.test({
-                            map: {
-                                id: 'sequence',
-                                password:'text',
-                                nickName: 'value',
-                                phone: 'mobile',
-                                name: 'name',
-                                gender:'rule,0,1,2',
-                                isEnabled: 'rule,true,false',
-                                icon: 'text',
-                                shopName:'text',
-                                cellphone:'mobile',
-                                localArea:'text',
-                                address:'text',
-                                storeIntroduce:'remark',
-                                storeLogoUrl:'text'
-                            },
-                            mapmin: 1,
-                            mapmax: 1,
-                            type: 'list'
-                        });
+                    if (debug) {
+                        var resp = {
+                            code: 0,
+                            message: 'ok',
+                            result:testWidget.getMap({
+                                map: {
+                                    id: 'sequence',
+                                    password: 'text',
+                                    nickName: 'value',
+                                    phone: 'mobile',
+                                    name: 'name',
+                                    gender: 'rule,0,1,2',
+                                    isEnabled: 'rule,true,false',
+                                    icon: 'text',
+                                    shopName: 'text',
+                                    cellphone: 'mobile',
+                                    localArea: 'text',
+                                    address: 'text',
+                                    storeIntroduce: 'remark',
+                                    storeLogoUrl: 'text'
+                                },
+                                maptype: 'object'
+                            }).list
+                        };
                     }
                     var code = parseInt(resp.code, 10);
                     if (code !== 0) {
@@ -245,7 +251,6 @@
                     }
                     /*是否是正确的返回数据*/
                     var list = resp.result;
-
                     if (!list) {
                         return false;
                     }
