@@ -23,7 +23,7 @@
 
 
             /*dom引用和相关变量定义*/
-            var debug = true,
+            var debug = false,
                 $admin_list_wrap = $('#admin_list_wrap')/*表格*/,
                 $admin_batchlist_wrap = $('#admin_batchlist_wrap'),
                 module_id = 'bzw-provider-goods'/*模块id，主要用于本地存储传值*/,
@@ -244,9 +244,9 @@
                                             if (stauts === 0) {
                                                 str = '<div class="g-c-warn">' + statusmap[stauts] + '</div>';
                                             } else if (stauts === 1) {
-                                                str = '<div class="g-c-gray6">' + statusmap[stauts] + '</div>';
+                                                str = '<div class="g-c-gray5">' + statusmap[stauts] + '</div>';
                                             } else if (stauts === 2) {
-                                                str = '<div class="g-c-gray9">' + statusmap[stauts] + '</div>';
+                                                str = '<div class="g-c-gray10">' + statusmap[stauts] + '</div>';
                                             }
                                             return str;
                                         }
@@ -519,12 +519,15 @@
             }
 
             $.ajax({
-                    url: "http://10.0.5.226:8082/mall-buzhubms-api/goods/operate",
+                    url: debug ? "../../json/test.json" : "http://10.0.5.226:8082/mall-buzhubms-api/goods/operate",
                     dataType: 'JSON',
                     method: 'post',
                     data: temp_config
                 })
                 .done(function (resp) {
+                    if (debug) {
+                        var resp = testWidget.testSuccess('list');
+                    }
                     var code = parseInt(resp.code, 10);
                     if (code !== 0) {
                         console.log(resp.message);
@@ -757,12 +760,33 @@
 
             temp_config['id'] = id;
             $.ajax({
-                    url: "http://10.0.5.226:8082/mall-buzhubms-api/goods/detail",
+                    url: debug ? "../../json/test.json" : "http://10.0.5.226:8082/mall-buzhubms-api/goods/detail",
                     dataType: 'JSON',
                     method: 'post',
                     data: temp_config
                 })
                 .done(function (resp) {
+                    if (debug) {
+                        var resp = {
+                            code: 0,
+                            message: 'ok',
+                            result: testWidget.getMap({
+                                map: {
+                                    bannerList: 'arr'/*订单ID*/,
+                                    details: 'content'/*商品编号*/,
+                                    goodsTypeId: 'goods'/*商品名称*/,
+                                    name: 'value'/*商品来源*/,
+                                    status: 'rule,0,1,2,3'/*状态，0：仓库，1:上架,2:下架,3:删除,4:待审核*/,
+                                    source:'value',
+                                    gcode: 'guid',
+                                    sort: 'id'/*商城排序*/,
+                                    tagsAttrsList: 'arr',
+                                    attrInventoryPrices: 'arr'
+                                },
+                                maptype: 'object'
+                            }).list
+                        };
+                    }
                     var code = parseInt(resp.code, 10);
                     if (code !== 0) {
                         console.log(resp.message);
@@ -783,7 +807,7 @@
                     }
                     /*解析轮播图*/
                     var banner = result['bannerList'];
-                    if (banner && banner.length !== 0) {
+                    if (!debug && banner && banner.length !== 0) {
                         getSlideData(banner, slide_config);
                     }
                     /*解析详情*/
@@ -811,7 +835,6 @@
                             '4': "待审核"
                         };
                     if (typeof status !== 'undefined' && status !== '') {
-
                         document.getElementById('admin_status').innerHTML = statemap[status];
                     } else {
                         document.getElementById('admin_status').innerHTML = statemap[0];
@@ -827,12 +850,21 @@
                         document.getElementById('admin_sort').innerHTML = sort;
                     }
                     /*解析是否被推荐*/
-                    var isrec = result['isRecommended'];
+                    /*var isrec = result['isRecommended'];
                     if (typeof isrec !== 'undefined') {
                         document.getElementById('admin_isRecommended').innerHTML = (isrec ? '是' : '否');
+                    }*/
+
+                    /*解析来源*/
+                    var source = result['source'];
+                    if (source) {
+                        document.getElementById('admin_source').innerHTML = source;
                     }
+
                     /*解析库存，批发价，建议零售价*/
-                    getAttrData(result['tagsAttrsList'], result['attrInventoryPrices']);
+                    if (!debug) {
+                        getAttrData(result['tagsAttrsList'], result['attrInventoryPrices']);
+                    }
 
                     /*添加高亮状态*/
                     if (operate_item) {
@@ -1109,15 +1141,17 @@
                 str = '';
             for (i; i < len; i++) {
                 var url = list[i]['imageUrl'];
-                if (url.indexOf('qiniucdn.com') !== -1) {
-                    if (url.indexOf('?imageView2') !== -1) {
-                        url = url.split('?imageView2')[0] + '?imageView2/1/w/50/h/50';
+                if(url){
+                    if (url.indexOf('qiniucdn.com') !== -1) {
+                        if (url.indexOf('?imageView2') !== -1) {
+                            url = url.split('?imageView2')[0] + '?imageView2/1/w/50/h/50';
+                        } else {
+                            url = url + '?imageView2/1/w/50/h/50';
+                        }
+                        str += '<li><img alt="" src="' + url + '" /></li>';
                     } else {
-                        url = url + '?imageView2/1/w/50/h/50';
+                        str += '<li><img alt="" src="' + url + '" /></li>';
                     }
-                    str += '<li><img alt="" src="' + url + '" /></li>';
-                } else {
-                    str += '<li><img alt="" src="' + url + '" /></li>';
                 }
             }
             $(str).appendTo(config.$slide_tool.html(''));

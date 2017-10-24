@@ -480,7 +480,7 @@
                 /*修改,编辑操作*/
                 if (action === 'select') {
                     /*查看*/
-                    showDetail(id, $tr, debug);
+                    showDetail(id, $tr);
                 } else if (action === 'up' || action === 'down') {
                     /* || action === 'recommend'  屏蔽推荐至*/
                     /*清除批量选中*/
@@ -860,7 +860,7 @@
 
 
         /*查看详情*/
-        function showDetail(id, $tr, debug) {
+        function showDetail(id, $tr) {
             if (typeof id === 'undefined') {
                 return false;
             }
@@ -886,6 +886,7 @@
                                     goodsTypeId: 'goods'/*商品名称*/,
                                     name: 'value'/*商品来源*/,
                                     status: 'rule,0,1,2,3'/*状态，0：仓库，1:上架,2:下架,3:删除,4:待审核*/,
+                                    source:'value',
                                     gcode: 'guid',
                                     sort: 'id'/*商城排序*/,
                                     tagsAttrsList: 'arr',
@@ -916,7 +917,7 @@
                     }
                     /*解析轮播图*/
                     var banner = result['bannerList'];
-                    if (banner && banner.length !== 0) {
+                    if (!debug && banner && banner.length !== 0) {
                         getSlideData(banner, slide_config);
                     }
                     /*解析详情*/
@@ -944,7 +945,6 @@
                             '4': "待审核"
                         };
                     if (typeof status !== 'undefined' && status !== '') {
-
                         document.getElementById('admin_status').innerHTML = statemap[status];
                     } else {
                         document.getElementById('admin_status').innerHTML = statemap[0];
