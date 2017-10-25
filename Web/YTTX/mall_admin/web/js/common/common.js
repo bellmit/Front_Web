@@ -782,6 +782,15 @@
             "module": "admin",
             "modid": "210"
         },
+        "2101": {
+            "name": "用户管理C端",
+            "code": "userC",
+            "match": "-userC-",
+            "class": "menu-ux-user",
+            "matchignore": ["bzw-userC-relation"],
+            "module": "userC",
+            "modid": "2101"
+        },
         "220": {
             "name": "公告管理",
             "code": "announcement",
@@ -1069,15 +1078,15 @@
             /*不存在资源则重新加载*/
 
             /*静态注入*/
-            /*var injectdata = self.injectSideMenu({
-             url: self.routeMap.isindex ? '../json/inject_menu.json' : '../../json/inject_menu.json',
-             async: false,
-             type: 'post',
-             datatype: 'json'
-             }),
-             injectstr = self.doSideMenu(injectdata, $menu, $wrap, {
-             resolve: true
-             });*/
+            var injectdata = self.injectSideMenu({
+                    url: self.routeMap.isindex ? '../json/inject_menu.json' : '../../json/inject_menu.json',
+                    async: false,
+                    type: 'post',
+                    datatype: 'json'
+                }),
+                injectstr = self.doSideMenu(injectdata, $menu, $wrap, {
+                    resolve: true
+                });
 
 
             $.ajax({

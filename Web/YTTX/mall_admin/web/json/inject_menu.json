@@ -45,6 +45,59 @@
             "prid": 3
           }
         ]
+      },
+      {
+        "modCode": "bzw-userC",
+        "modId": 2101,
+        "modItem": [
+          {
+            "modLink": "bzw-userC-list",
+            "modName": "用户管理"
+          },
+          {
+            "modLink": "bzw-userC-relation",
+            "modName": "会员关系"
+          }
+        ],
+        "modLink": "bzw-userC-manage",
+        "modName": "用户管理C端",
+        "permitItem": [
+          {
+            "funcCode": "userC-relation",
+            "funcName": "会员关系",
+            "isPermit": 1,
+            "modId": 2101,
+            "prid": 1
+          },
+          {
+            "funcCode": "userC-forbid",
+            "funcName": "会员禁用",
+            "isPermit": 1,
+            "modId": 2101,
+            "prid": 2
+          },
+          {
+            "funcCode": "userC-enable",
+            "funcName": "会员启用",
+            "isPermit": 1,
+            "modId": 2101,
+            "prid": 3
+          },
+          {
+            "funcCode": "userC-detail",
+            "funcName": "查看会员详情",
+            "isPermit": 1,
+            "modId": 2101,
+            "prid": 4
+          },
+          {
+            "funcCode": "userC-edit",
+            "funcName": "会员编辑",
+            "isPermit": 1,
+            "modId": 2101,
+            "prid": 5
+          }
+        ]
       }
     ]
   }
