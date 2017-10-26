@@ -1,9 +1,7 @@
 (function($){
 	'use strict';
 	$(function(){
-
-		var table=null/*数据展现*/;
-
+		
 		/*初始化数据*/
 		if(public_tool.initMap.isrender){
 			/*菜单调用*/

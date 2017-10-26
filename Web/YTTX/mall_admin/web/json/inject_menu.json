@@ -4,49 +4,6 @@
   "result": {
     "menu": [
       {
-        "modCode": "bzw-finance",
-        "modId": 350,
-        "modItem": [
-          {
-            "modLink": "bzw-finance-recordmanage",
-            "modName": "交易流水管理"
-          },
-          {
-            "modLink": "bzw-finance-cashmanage",
-            "modName": "提现管理"
-          },
-          {
-            "modLink": "bzw-finance-cardmanage",
-            "modName": "银行卡管理"
-          }
-        ],
-        "modLink": "bzw-finance-manage",
-        "modName": "财务管理",
-        "permitItem": [
-          {
-            "funcCode": "cash-detail",
-            "funcName": "提现详情",
-            "isPermit": 1,
-            "modId": 350,
-            "prid": 1
-          },
-          {
-            "funcCode": "cash-dispose",
-            "funcName": "提现处理",
-            "isPermit": 1,
-            "modId": 350,
-            "prid": 2
-          },
-          {
-            "funcCode": "card-audit",
-            "funcName": "银行卡审核",
-            "isPermit": 1,
-            "modId": 350,
-            "prid": 3
-          }
-        ]
-      },
-      {
         "modCode": "bzw-userC",
         "modId": 2101,
         "modItem": [
