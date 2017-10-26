@@ -28,7 +28,8 @@
                 detail_power = public_tool.getKeyPower('userC-detail', powermap);
 
             /*dom引用和相关变量定义*/
-            var module_id = 'bzw-userC-relation'/*模块id，主要用于本地存储传值*/,
+            var debug = true,
+                module_id = 'bzw-userC-relation'/*模块id，主要用于本地存储传值*/,
                 $admin_list_wrap = $('#admin_list_wrap'),
                 $admin_page_wrap = $('#admin_page_wrap'),
                 page_config = {
@@ -55,7 +56,8 @@
                 $admin_errortip_wrap = $('#admin_errortip_wrap'),
                 resetform0 = null,
                 sureObj = public_tool.sureDialog(dia)/*回调提示对象*/,
-                setSure = new sureObj();
+                setSure = new sureObj(),
+                operate_item = null;
 
 
             /*新增类弹出框*/
@@ -70,9 +72,7 @@
                 $admin_typeremark = $('#admin_typeremark'),
                 $admin_typeshow = $('#admin_typeshow'),
                 $admin_typeimage = $('#admin_typeimage'),
-                $image_url_file = $('#image_url_file'),
                 operate_current = null;
-
 
 
             /*重置表单*/
@@ -83,12 +83,9 @@
             requestAttr(page_config);
 
 
-
             /*绑定操作分类列表*/
-            var operate_item;
-            $admin_list_wrap.on('click keyup', function (e) {
+            $admin_list_wrap.on('click', function (e) {
                 var target = e.target,
-                    etype = e.type,
                     nodename = target.nodeName.toLowerCase(),
                     $this,
                     $li,
@@ -97,163 +94,95 @@
                     id,
                     parentid,
                     layer,
-                    gtcode,
                     action;
 
                 if (nodename === 'td' || nodename === 'tr' || nodename === 'ul' || nodename === 'div' || nodename === 'li') {
                     return false;
                 }
 
-                if (etype === 'click') {
-                    /*点击分支*/
-                    if (nodename === 'span' || nodename === 'i') {
-                        if (nodename === 'i') {
-                            target = target.parentNode;
-                        }
-                        if (target.className.indexOf('btn') !== -1) {
-                            /*操作*/
-                            $this = $(target);
-                            $li = $this.closest('li');
-                            id = $li.attr('data-id');
-                            action = $this.attr('data-action');
-                            parentid = $this.attr('data-parentid');
-                            gtcode = $li.attr('data-gtcode');
-                            layer = $li.attr('data-layer');
+                /*点击分支*/
+                if (nodename === 'span' || nodename === 'i') {
+                    var actionmap = {
+                            "forbid": 2,
+                            "enable": 1
+                        },
+                        actiontip = {
+                            "forbid": '禁用',
+                            "enable": '启用'
+                        };
 
-                            if (operate_item) {
-                                operate_item.removeClass('item-lighten');
-                                operate_item = null;
-                            }
-                            operate_item = $li.addClass('item-lighten');
-                            /*执行操作*/
-                            if (action === 'edit') {
-                                /*设置图片上传类型*/
-                                $admin_list_wrap.attr({
-                                    'data-type': 'edit'
+                    if (nodename === 'i') {
+                        target = target.parentNode;
+                    }
+                    if (target.className.indexOf('btn') !== -1) {
+                        /*操作*/
+                        $this = $(target);
+                        $li = $this.closest('li');
+                        id = $li.attr('data-id');
+                        action = $this.attr('data-action');
+                        parentid = $this.attr('data-parentid');
+                        layer = $li.attr('data-layer');
+
+                        if (operate_item) {
+                            operate_item.removeClass('item-lighten');
+                            operate_item = null;
+                        }
+                        operate_item = $li.addClass('item-lighten');
+                        /*执行操作*/
+                        if (action === 'edit') {
+                            /*进入编辑状态*/
+                            /*to do*/
+                        } else if (action === 'forbid' || action === 'enable') {
+                            /*禁用*/
+                            /*to do*/
+                            /*确认是否启用或禁用*/
+                            setSure.sure(actiontip[action], function (cf) {
+                                /*to do*/
+                                setEnabled({
+                                    id: id,
+                                    action: action,
+                                    $btn: $this,
+                                    tip: cf.dia || dia,
+                                    type: 'base',
+                                    actiontip: actiontip,
+                                    actionmap: actionmap
                                 });
-                                /*进入编辑状态*/
-                                $li.addClass('typeitem-editwrap');
-                            } else if (action === 'cance') {
-                                /*取消编辑状态*/
-                                $li.removeClass('typeitem-editwrap');
-                                /*恢复被修改的数据至没修改之前状态*/
-                                resetGoodsTypeData($li);
-                                /*设置图片上传类型*/
-                                $admin_list_wrap.attr({
-                                    'data-type': 'add'
-                                });
-                            } else if (action === 'confirm') {
-                                var result = validGoodsTypeData($li);
-                                if (result === null) {
-                                    return false;
-                                }
-                                /*设置图片上传类型*/
-                                $admin_list_wrap.attr({
-                                    'data-type': 'edit'
-                                });
-                                /*提交编辑*/
-                                setSure.sure('编辑', function (cf) {
-                                    /*to do*/
-                                    goodsTypeEdit({
-                                        id: id,
-                                        gtcode: gtcode,
-                                        layer: layer,
-                                        tip: cf.dia || dia,
-                                        $li: $li,
-                                        result: result
-                                    });
-                                });
-                            } else if (action === 'delete') {
-                                /*确认是否启用或禁用*/
-                                setSure.sure('delete', function (cf) {
-                                    /*to do*/
-                                    goodsTypeDelete({
-                                        id: id,
-                                        gtcode: gtcode,
-                                        layer: layer,
-                                        tip: cf.dia || dia,
-                                        $li: $li
-                                    });
-                                });
-                            } else if (action === 'add') {
-                                /*设置图片上传类型*/
-                                $admin_list_wrap.attr({
-                                    'data-type': 'add'
-                                });
-                                /*新增分类*/
-                                label = $li.attr('data-label');
-                                goodsTypeAdd({
-                                    parentid: id,
-                                    gtcode: gtcode,
+                            }, action === 'forbid' ? "禁用后，该用户将不再能使用该账号，是否禁用？" : "启用后，该用户将能使用该账号，是否启用？", true);
+                        }
+                    } else if (target.className.indexOf('main-typeicon') !== -1) {
+                        /*展开或收缩*/
+                        $this = $(target);
+                        $li = $this.closest('li');
+                        id = $li.attr('data-id');
+                        layer = $li.attr('data-layer');
+                        $wrap = $li.find('>ul');
+
+                        var isload = parseInt($this.attr('data-loadsub'), 10);
+                        if (isload === 0) {
+                            /*加载子分类*/
+                            var subitem = doSubAttr(id);
+                            if (subitem !== null) {
+                                var subtype = doAttr(subitem, {
+                                    limit: 2,
                                     layer: layer,
-                                    label: label,
-                                    $li: $li
-                                })
-                            } else if (action === 'preview') {
-                                var value = $this.attr('data-value');
-                                if (value === '') {
-                                    dia.content('<span class="g-c-bs-warning g-btips-warn">暂无图片请上传图片</span>').show();
-                                    return false;
-                                }
-                                $this.next().toggleClass('typeitem-preview-active');
-                            } else if (action === 'upload') {
-                                /*图片上传*/
-                                /*设置上传配置*/
-                                operate_current = {
-                                    $btn: $this
-                                };
-                                /*事件委托*/
-                                $image_url_file.trigger('click');
-                            }
-
-                        } else if (target.className.indexOf('main-typeicon') !== -1) {
-                            /*展开或收缩*/
-                            $this = $(target);
-                            $li = $this.closest('li');
-                            id = $li.attr('data-id');
-                            layer = $li.attr('data-layer');
-                            $wrap = $li.find('>ul');
-
-                            var isload = parseInt($this.attr('data-loadsub'), 10);
-                            if (isload === 0) {
-                                /*加载子分类*/
-                                var subitem = doSubAttr(id);
-                                if (subitem !== null) {
-                                    var subtype = doAttr(subitem, {
-                                        limit: 3,
-                                        layer: layer,
-                                        parentid: id
+                                    parentid: id
+                                });
+                                if (subtype) {
+                                    $(subtype).appendTo($wrap);
+                                    /*设置已经加载*/
+                                    $this.attr({
+                                        'data-loadsub': 1
                                     });
-                                    if (subtype) {
-                                        $(subtype).appendTo($wrap);
-                                        /*设置已经加载*/
-                                        $this.attr({
-                                            'data-loadsub': 1
-                                        });
-                                        subtype = null;
-                                    }
+                                    subtype = null;
                                 }
                             }
-                            $this.toggleClass('main-sub-typeicon');
-                            $wrap.toggleClass('g-d-hidei');
                         }
-                        return false;
-                    } else if (nodename === 'input') {
-                        if (target.type.indexOf('text') !== -1) {
-                            return false;
-                        }
+                        $this.toggleClass('main-sub-typeicon');
+                        $wrap.toggleClass('g-d-hidei');
                     }
-                } else if (etype === 'keyup') {
-                    /*键盘分支*/
-                    if (nodename === 'input') {
-                        /*限制排序输入*/
-                        if (target.type.indexOf('radio') !== -1) {
-                            return false;
-                        }
-                        if (target.attributes.getNamedItem('name').value === 'typesort') {
-                            target.value = target.value.replace(/\D*/g, '');
-                        }
-                    }
+                    return false;
+                } else if (nodename === 'input') {
+                    /*to do*/
                 }
             });
 
@@ -375,6 +304,141 @@
             }
 
 
+        }
+
+        /*启用禁用*/
+        function setEnabled(obj) {
+            var id = obj.id;
+
+            if (typeof id === 'undefined') {
+                return false;
+            }
+            var type = obj.type,
+                tip = obj.tip,
+                action = obj.action;
+            if (type === 'batch') {
+                id = id.join(',');
+            }
+
+            $.ajax({
+                    url: debug ? "../../json/test.json" : "http://10.0.5.226:8082/mall-buzhubms-api/shuser/operate",
+                    dataType: 'JSON',
+                    method: 'post',
+                    data: {
+                        shUserIds: id,
+                        operate: obj.actionmap[action],
+                        roleId: decodeURIComponent(logininfo.param.roleId),
+                        adminId: decodeURIComponent(logininfo.param.adminId),
+                        grade: decodeURIComponent(logininfo.param.grade),
+                        token: decodeURIComponent(logininfo.param.token)
+                    }
+                })
+                .done(function (resp) {
+                    if (debug) {
+                        var resp = testWidget.testSuccess('list');
+                    }
+                    var code = parseInt(resp.code, 10);
+                    if (code !== 0) {
+                        console.log(resp.message);
+                        tip.content('<span class="g-c-bs-warning g-btips-warn">' + (resp.message || "操作失败") + '</span>').show();
+                        if (type === 'base') {
+                            if (operate_item) {
+                                operate_item.removeClass('item-lighten');
+                                operate_item = null;
+                            }
+                        } else if (type === 'batch') {
+                            //batchItem.clear();
+                        }
+                        setTimeout(function () {
+                            tip.close();
+                        }, 2000);
+                        return false;
+                    }
+                    /*是否是正确的返回数据*/
+                    /*添加高亮状态*/
+                    tip.content('<span class="g-c-bs-success g-btips-succ">' + obj.actiontip[action] + '成功</span>').show();
+                    setTimeout(function () {
+                        tip.close();
+                        if (type === 'base') {
+                            updateStatus(obj.$btn);
+                        } else if (type === 'batch') {
+                            //batchItem.clear();
+                        }
+                        setTimeout(function () {
+                            //requestAttr(page_config);
+                            /*getColumnData(user_page, user_config);*/
+                        }, 1000);
+                    }, 1000);
+                })
+                .fail(function (resp) {
+                    console.log(resp.message);
+                    tip.content('<span class="g-c-bs-warning g-btips-warn">' + (resp.message || "操作失败") + '</span>').show();
+                    if (type === 'base') {
+                        if (operate_item) {
+                            operate_item.removeClass('item-lighten');
+                            operate_item = null;
+                        }
+                    } else if (type === 'batch') {
+                        //batchItem.clear();
+                    }
+                    setTimeout(function () {
+                        tip.close();
+                    }, 2000);
+                });
+        }
+
+
+        /*更新状态*/
+        function updateStatus($btn) {
+            if (!$btn) {
+                return;
+            }
+            var status = parseInt($btn.attr('data-status'), 10),
+                cstatus,
+                caction,
+                cvalue,
+                castyle,
+                cdstyle,
+                cstr;
+            if (status === 0) {
+                /*正常(可用)-->锁定(禁用)*/
+                cstatus = 1;
+                caction = 'enable';
+                cvalue = '禁用(锁定)';
+                cstr = '<i class="fa-toggle-on"></i>&nbsp;&nbsp;启用(正常)';
+                castyle = 'g-c-gray10';
+                cdstyle = 'g-c-info';
+                operate_item.attr({
+                    'data-status': 1
+                }).removeClass('item-lighten');
+            } else if (status === 1) {
+                /*锁定(禁用)-->正常(可用)*/
+                cstatus = 0;
+                caction = 'forbid';
+                cvalue = '启用(正常)';
+                castyle = 'g-c-info';
+                cdstyle = 'g-c-gray10';
+                cstr = '<i class="fa-toggle-off"></i>&nbsp;&nbsp;禁用(锁定)';
+
+            }
+            /*变更按钮*/
+            $btn.attr({
+                'data-status': cstatus,
+                'data-action': caction
+            }).html(cstr);
+            var $item = $btn.closest('div.typeitem-default').find('>div');
+            /*变更状态*/
+            $item.eq(4).removeClass(cdstyle).addClass(castyle).html(cvalue);
+            /*变更input*/
+            $item.eq(0).find('input').attr({
+                'data-status': cstatus
+            });
+            if (operate_item) {
+                operate_item.attr({
+                    'data-status': cstatus
+                }).removeClass('item-lighten');
+                operate_item = null;
+            }
         }
 
 
@@ -798,113 +862,80 @@
         function doItems(obj, config) {
             var curitem = obj,
                 id = curitem["id"],
-                isshow = curitem["isVisible"],
-                sort = curitem["sort"],
-                gtCode = curitem["gtCode"],
-                imgurl = curitem["imageUrl"],
-                label = curitem["name"],
+                status = parseInt(curitem["status"], 10),
+                phone = curitem['phone'],
+                label = curitem["nickname"],
                 str = '',
-                stredit = '',
                 flag = config.flag,
                 limit = config.limit,
                 layer = config.layer,
                 parentid = config.parentid;
 
 
+            /*限制最后一层出现下拉按钮*/
+            if (layer >= limit) {
+                flag = false;
+            }
+
+
             if (flag) {
-                str = '<li class="admin-subtypeitem" data-parentid="' + parentid + '" data-label="' + label + '" data-layer="' + layer + '" data-id="' + id + '" data-gtcode="' + gtCode + '">';
+                /*存在下级则显示按钮*/
+                if(layer===1){
+                    str = '<li class="admin-subtypeitem" data-parentid="' + parentid + '" data-status="' + status + '" data-label="' + label + '" data-layer="' + layer + '" data-id="' + id + '" data-phone="' + phone + '"><div class="typeitem-default"><div class="typeitem g-w-percent4"><div class="simulation-batch-check simulation-batch-check-all" data-status="' + status + '" data-id="' + id + '"></div></div>';
+                }else{
+                    str = '<li data-label="' + label + '" data-parentid="' + parentid + '" data-status="' + status + '" data-layer="' + layer + '" data-id="' + id + '" data-phone="' + phone + '"><div class="typeitem-default"><div class="typeitem g-w-percent4"><div class="simulation-batch-check simulation-batch-check-all"  data-status="' + status + '" data-id="' + id + '"></div></div>';
+                }
                 if (layer > 1) {
-                    str += '<div class="typeitem-default"><span data-loadsub="0" class="typeitem subtype-mgap' + (layer - 1) + ' main-typeicon g-w-percent3"></span>\
-							<div class="typeitem subtype-pgap' + layer + ' g-w-percent21">' + label + '</div>';
+                    str += '<span data-loadsub="0" class="typeitem subtype-mgap' + (layer - 1) + ' main-typeicon g-w-percent3"></span>\
+							<div class="typeitem subtype-pgap' + layer + ' g-w-percent10">' + label + '</div>';
                 } else {
-                    str += '<div class="typeitem-default"><span data-loadsub="0" class="typeitem main-typeicon g-w-percent3"></span>\
-							<div class="typeitem g-w-percent21">' + label + '</div>';
+                    str += '<span data-loadsub="0" class="typeitem main-typeicon g-w-percent3"></span>\
+							<div class="typeitem g-w-percent10">' + label + '</div>';
                 }
             } else {
-                str = '<li data-label="' + label + '" data-parentid="' + parentid + '"  data-layer="' + layer + '" data-id="' + id + '" data-gtcode="' + gtCode + '">';
+                /*不存在下级则不显示按钮*/
+                if(layer===1){
+                    str = '<li data-label="' + label + '" data-parentid="' + parentid + '" data-status="' + status + '" data-layer="' + layer + '" data-id="' + id + '" data-phone="' + phone + '"><div class="typeitem-default"><div class="typeitem g-w-percent4"></div>';
+                }else{
+                    str = '<li data-label="' + label + '" data-parentid="' + parentid + '" data-status="' + status + '" data-layer="' + layer + '" data-id="' + id + '" data-phone="' + phone + '"><div class="typeitem-default"><div class="typeitem g-w-percent4"><div class="simulation-batch-check simulation-batch-check-item"  data-status="' + status + '" data-id="' + id + '"></div></div>';
+                }
 
                 if (layer > 1) {
-                    str += '<div class="typeitem-default"><div class="typeitem subtype-pgap' + layer + ' g-w-percent21">' + label + '</div>';
+                    str += '<div class="typeitem subtype-pgap' + layer + ' g-w-percent10">' + label + '</div>';
                 } else {
-                    str += '<div class="typeitem-default"><div class="typeitem g-w-percent21">' + label + '</div>';
+                    str += '<div class="typeitem g-w-percent10">' + label + '</div>';
                 }
             }
 
-            str += '<div class="typeitem g-w-percent5">' + sort + '</div>';
 
-
-            /*编辑状态*/
-            stredit += '<div class="typeitem-edit"><div class="typeitem g-w-percent11"><input type="text" name="typename" data-value="' + label + '"  placeholder="请输入分类名称" value="' + label + '" /></div>\
-								<div class="typeitem g-w-percent10">\
-									<span data-action="upload" data-value="" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8"><i class="fa-upload"></i>&nbsp;&nbsp;上传</span>'
-                + (function () {
-                    if (typeof imgurl === 'undefined' || !imgurl || imgurl === '') {
-                        return '<span data-action="preview" data-value="" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8"><i class="fa-image"></i>&nbsp;&nbsp;查看分类图标</span><div class="typeitem-preview" data-value=""><div></div></div>';
-                    } else {
-                        return '<span data-action="preview" data-value="' + imgurl + '" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8"><i class="fa-image"></i>&nbsp;&nbsp;查看分类图标</span><div class="typeitem-preview"  data-value="' + imgurl + '"><div><img src="' + imgurl + '" alt="预览" /></div></div>';
-                    }
-                }()) +
-                '</div>\
-                <div class="typeitem g-w-percent5"><input type="text" name="typesort" data-value="' + sort + '" maxlength="6" value="' + sort + '" /></div>';
-
-
-            if (isshow) {
-                str += '<div class="typeitem g-w-percent8"><div class="g-c-gray8">显示</div></div>';
-
-                stredit += '<div class="typeitem g-w-percent8" data-value="1"><label class="btn btn-white btn-xs g-br2 g-c-gray6">显示：<input type="radio" checked name="typeshow' + id + '" value="1" /></label>\
-				<label class="btn btn-white btn-xs g-br2 g-c-gray6">隐藏：<input type="radio" name="typeshow' + id + '" value="0" /></label></div>';
-            } else if (!isshow) {
-                str += '<div class="typeitem g-w-percent8"><div class="g-c-gray12">隐藏</div></div>';
-
-                stredit += '<div class="typeitem g-w-percent8" data-value="0"><label class="btn btn-white btn-xs g-br2 g-c-gray6">显示：<input type="radio" name="typeshow' + id + '" value="1" /></label>\
-				<label class="btn btn-white btn-xs g-br2 g-c-gray6">隐藏：<input checked type="radio"  name="typeshow' + id + '" value="0" /></label></div>';
-            } else {
-                stredit += '<div class="typeitem g-w-percent8" data-value="1"><label class="btn btn-white btn-xs g-br2 g-c-gray6">显示：<input type="radio" checked name="typeshow' + id + '" value="1" /></label>\
-				<label class="btn btn-white btn-xs g-br2 g-c-gray6">隐藏：<input type="radio" name="typeshow' + id + '" value="0" /></label></div>';
-            }
+            (status === 0) ? str += '<div class="typeitem g-w-percent8">' + public_tool.phoneFormat(phone) + '</div><div class="typeitem g-w-percent5">' + layer + '级</div><div class="typeitem g-c-info g-w-percent8">启用(正常)</div>' : str += '<div class="typeitem g-w-percent8">' + public_tool.phoneFormat(phone) + '</div><div class="typeitem g-w-percent5">' + layer + '级</div><div class="typeitem g-c-gray10 g-w-percent8">禁用(锁定)</div>';
 
 
             str += '<div class="typeitem g-w-percent12">';
-            stredit += '<div class="typeitem g-w-percent12">';
 
 
-            if (enable_power) {
-                str += '<span data-parentid="' + parentid + '"  data-action="edit" data-gtcode="' + gtCode + '" data-id="' + id + '"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
-							<i class="fa-pencil"></i>&nbsp;&nbsp;编辑\
+            if (forbid_power && status === 0) {
+                /*正常则禁用*/
+                str += '<span data-parentid="' + parentid + '"  data-action="forbid" data-status="' + status + '"  data-id="' + id + '"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+							<i class="fa-toggle-off"></i>&nbsp;&nbsp;禁用(锁定)\
 						</span>';
-
-                /*编辑状态*/
-                stredit += '<span data-parentid="' + parentid + '"  data-action="confirm"  data-gtcode="' + gtCode + '" data-id="' + id + '"  class="btn btn-white btn-icon btn-xs g-br2 g-c-bs-success">\
-									<i class="fa-check"></i>&nbsp;&nbsp;确定\
-								</span>\
-								<span data-action="cance"  data-gtcode="' + gtCode + '" data-id="' + id + '"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray10">\
-									<i class="fa-close"></i>&nbsp;&nbsp;取消\
-								</span>';
             }
-            if (forbid_power) {
-                if (flag) {
-                    str += '<span data-parentid="' + parentid + '"  data-action="add"  data-gtcode="' + gtCode + '" data-id="' + id + '"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
-							<i class="fa-plus"></i>&nbsp;&nbsp;新增下级分类\
+            if (enable_power && status === 1) {
+                /*禁用则正常*/
+                str += '<span data-parentid="' + parentid + '"  data-action="enable" data-status="' + status + '"  data-id="' + id + '"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+							<i class="fa-toggle-on"></i>&nbsp;&nbsp;启用(正常)\
 						</span>';
-                } else {
-                    if (layer < limit) {
-                        str += '<span data-parentid="' + parentid + '"  data-action="add"  data-gtcode="' + gtCode + '" data-id="' + id + '"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
-									<i class="fa-plus"></i>&nbsp;&nbsp;新增下级分类\
-								</span>';
-                    }
-                }
             }
 
             if (edit_power) {
-                str += '<span data-parentid="' + parentid + '"  data-action="delete"  data-gtcode="' + gtCode + '" data-id="' + id + '"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
-							<i class="fa-trash"></i>&nbsp;&nbsp;删除\
+                str += '<span data-parentid="' + parentid + '" data-status="' + status + '" data-action="edit"  data-id="' + id + '"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+							<i class="fa-pencil"></i>&nbsp;&nbsp;编辑\
 						</span>';
             }
 
             str += '</div></div>';
-            stredit += '</div></div>';
 
-            return flag ? str + stredit : str + stredit + '</li>';
+            return flag ? str : str + '</li>';
         }
 
         /*请求并判断是否存在子菜单*/
@@ -915,13 +946,28 @@
             }
             subconfig['parentId'] = id;
             $.ajax({
-                    url: "http://10.0.5.226:8082/mall-buzhubms-api/goodstype/list",
+                    url: debug ? "../../json/test.json" : "http://10.0.5.226:8082/mall-buzhubms-api/goodstype/list",
                     dataType: 'JSON',
                     async: false,
                     method: 'post',
                     data: subconfig
                 })
                 .done(function (resp) {
+                    if (debug) {
+                        var resp = testWidget.test({
+                            map: {
+                                id: 'sequence',
+                                nickname: 'name',
+                                phone: 'mobile',
+                                status: 'or',
+                                hasSub: 'boolean'
+                            },
+                            mapmin: 5,
+                            mapmax: 10,
+                            type: 'list'
+                        });
+
+                    }
                     var code = parseInt(resp.code, 10);
                     if (code !== 0) {
                         console.log(resp.message);
@@ -943,7 +989,7 @@
         /*请求属性*/
         function requestAttr(config) {
             $.ajax({
-                    url: "http://10.0.5.226:8082/mall-buzhubms-api/goodstype/list",
+                    url: debug ? "../../json/test.json" : "http://10.0.5.226:8082/mall-buzhubms-api/goodstype/list",
                     dataType: 'JSON',
                     async: false,
                     method: 'post',
@@ -958,6 +1004,21 @@
                     }
                 })
                 .done(function (resp) {
+                    if (debug) {
+                        var resp = testWidget.test({
+                            map: {
+                                id: 'sequence',
+                                nickname: 'name',
+                                phone: 'mobile',
+                                status: 'or',
+                                hasSub: 'boolean'
+                            },
+                            mapmin: 5,
+                            mapmax: 10,
+                            type: 'list'
+                        });
+
+                    }
                     var code = parseInt(resp.code, 10);
                     if (code !== 0) {
                         console.log(resp.message);
@@ -990,11 +1051,11 @@
                         }
                         if (result.list) {
                             /*解析属性*/
-                            var str = '<ul class="admin-typeitem-wrap admin-maintype-wrap">' + resolveAttr(result.list, 3) + '</ul>';
+                            var str = '<ul class="admin-typeitem-wrap admin-maintype-wrap">' + resolveAttr(result.list, 2) + '</ul>';
                             if (str) {
                                 $(str).appendTo($admin_list_wrap.html(''));
                             } else {
-                                $admin_list_wrap.addClass('g-t-c').html('暂无数据，请&nbsp;<span class="g-c-info">添加分类</span>');
+                                $admin_list_wrap.addClass('g-t-c').html('暂无数据');
                             }
                         }
                     }

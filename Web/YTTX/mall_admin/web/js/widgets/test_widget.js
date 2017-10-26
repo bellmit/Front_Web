@@ -624,6 +624,11 @@
                 case '':
                     map_obj[i] = '';
                     break;
+                case 'boolean':
+                    map_obj[i] = (function () {
+                        return parseInt(Math.random() * 10, 10) % 2 === 0;
+                    }());
+                    break;
                 default:
                     if (map[i].indexOf('rule') !== -1) {
                         (function () {
