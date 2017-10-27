@@ -81,7 +81,8 @@
             /*批量配置*/
             simulationBatch.config({
                 ismutil: true, /*多全选*/
-                selector: '>li'/*选择器*/
+                selector: '>li',/*查找列表子节点选择器*/
+                parent:'li'/*回溯列表节点选择器*/
             });
 
             /*请求属性数据*/
@@ -193,7 +194,10 @@
                         $this = $(target);
                         $li = $this.closest('li');
                         /*执行操作*/
-                        simulationBatch.onAll($this, $li.find('>ul'));
+                        simulationBatch.bindMutilAll({
+                            $checkall:$this,
+                            $wrap:$li.find('>ul')
+                        });
                     }
                 }
             });

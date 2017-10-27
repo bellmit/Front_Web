@@ -1,14 +1,7 @@
 /*批量组件*/
 ;(function ($) {
     'use strict';
-    var cache_checkall = {
-            current: null,
-            prev: null
-        }/*存放全选按钮*/,
-        cache_wrap = {
-            current: null,
-            prev: null
-        }/*存放操作区域*/,
+    var cache_checkall = null/*存放全选按钮*/,
         cache_list = []/*存放选中值*/,
         cache_node = []/*存放选中节点*/,
         cache_parent = []/*存放选中节点父高亮节点*/;
@@ -36,7 +29,8 @@
             itemactive: 'item-lighten'/*单个数据高亮*/,
             highactive: 'item-lightenbatch'/*批量数据高亮*/,
             ismutil: false/*是否存在多个全选*/,
-            selector: 'tr'/*默认选择器*/
+            selector: '>tr'/*默认选择器*/,
+            parent: 'tr'/*默认上节点*/
         }, opt);
     };
 
@@ -46,49 +40,51 @@
     };
 
     /*事件注册--绑定全选与取消全选--适应外部事件绑定*/
-    SimulationBatch.prototype.onAll = function ($checkall, $wrap) {
+    SimulationBatch.prototype.bindMutilAll = function (config) {
+        var $wrap = config.$wrap,
+            $checkall = config.$checkall;
+
         if ($wrap) {
-            var self = this;
-            if (self.ismutil && cache_checkall) {
-                /*如果是多选且已经存在全选操作则需要取消上次操作*/
-                cache_checkall.attr({
-                    'data-check': 0
-                }).removeClass(self.checkactive);
-                self.toggleAll(0, cache_wrap);
-                cache_checkall = null;
-                cache_wrap = null;
-            }
-            cache_checkall = $checkall;
-            var check = parseInt(cache_checkall.attr('data-check'), 10);
+            var check = parseInt($checkall.attr('data-check'), 10);
             if (check === 0) {
                 /*选中*/
+                /*清除上一次记录*/
+                this.clear($checkall);
+                /*重选*/
                 cache_checkall.attr({
                     'data-check': 1
-                }).addClass(self.checkactive);
+                }).addClass(this.checkactive);
                 /*执行全选*/
-                self.toggleAll(1, $wrap);
+                this.toggleAll(1, $wrap);
             } else if (check === 1) {
-                /*取消选中*/
-                cache_checkall.attr({
-                    'data-state': 0
-                }).removeClass(self.checkactive);
                 /*执行取消全选*/
-                self.toggleAll(0, $wrap);
+                this.clear();
             }
         }
     };
 
     /*事件注册--绑定单项选择--适应外部事件绑定*/
-    SimulationBatch.prototype.onItem = function ($checkItem) {
+    SimulationBatch.prototype.bindMutilItem = function ($checkItem) {
         if ($checkItem) {
             this.toggleItem($checkItem);
         }
     };
 
 
-    /*事件注册--绑定全选与取消全选*/
-    SimulationBatch.prototype.bindAll = function ($checkall, $wrap) {
-        if (this.getCheckAll($checkall)) {
+    /*事件注册--绑定全选与取消全选--适应内部事件绑定*/
+    SimulationBatch.prototype.bindAll = function (config) {
+        var $wrap = config.$wrap,
+            $checkall = config.$checkall;
+
+        if (cache_checkall === null) {
+            if (!$checkall) {
+                /*第一次绑定时非法模式*/
+                return false;
+            }
+            cache_checkall = $checkall;
+        }
+        /*注册事件*/
+        if ($wrap) {
             var self = this;
             cache_checkall.on('click', function () {
                 var $this = $(this),
@@ -97,22 +93,18 @@
                     /*选中*/
                     $this.attr({
                         'data-check': 1
-                    }).addClass(self.checkactive);
+                    }).addClass(this.checkactive);
                     /*执行全选*/
                     self.toggleAll(1, $wrap);
                 } else if (check === 1) {
-                    /*取消选中*/
-                    $this.attr({
-                        'data-state': 0
-                    }).removeClass(self.checkactive);
                     /*执行取消全选*/
-                    self.toggleAll(0, $wrap);
+                    self.clear();
                 }
             });
         }
     };
 
-    /*事件注册--绑定单项选择*/
+    /*事件注册--绑定单项选择-适应内部事件绑定*/
     SimulationBatch.prototype.bindItem = function ($checkItem) {
         if ($checkItem) {
             var self = this;
@@ -122,6 +114,7 @@
         }
     };
 
+
     /*事件注册--绑定操作回调*/
     SimulationBatch.prototype.action = function () {
         /*to do*/
@@ -130,7 +123,7 @@
 
     /*对外工具*/
     /*清空数据(清除已经选中的数据),适合文档操作类*/
-    SimulationBatch.prototype.clear = function ($checkall, fn) {
+    SimulationBatch.prototype.clear = function ($checkall) {
         /*清除选中*/
         var len = cache_node.length;
         if (len !== 0) {
@@ -143,33 +136,24 @@
         }
         cache_list.length = 0;
         /*清除全选*/
-        if (this.getCheckAll($checkall)) {
+        if (cache_checkall !== null) {
             cache_checkall.attr({
                 'data-check': 0
             }).removeClass(this.checkactive);
         }
-        /*回调*/
-        if (fn && typeof fn === 'function') {
-            fn.call();
+        /*更新值*/
+        if (!$checkall) {
+            cache_checkall = $checkall;
         }
     };
 
     /*摧毁数据:适应直接清除数据，不做文档操作*/
-    SimulationBatch.prototype.destroy = function ($checkall, fn) {
+    SimulationBatch.prototype.destroy = function () {
         /*清除选中*/
         cache_list.length = 0;
         cache_node.length = 0;
         cache_parent.length = 0;
-        /*清除全选*/
-        if (this.getCheckAll($checkall)) {
-            cache_checkall.attr({
-                'data-check': 0
-            }).removeClass(this.checkactive);
-        }
-        /*回调*/
-        if (fn && typeof fn === 'function') {
-            fn.call();
-        }
+        cache_checkall = null;
     };
 
     /*过滤数据(清除并过滤已经选中的数据)*/
@@ -357,22 +341,20 @@
                 /*选中*/
                 /*不依赖于状态*/
                 $wrap.find(self.selector).each(function (index, element) {
-                    var $input = $(element).find('div.simulation-batch-check-item');
+                    var $this=$(element),
+                        $input = $this.find('div.simulation-batch-check-item');
                     if ($input.size() !== 0) {
                         var check = parseInt($input.attr('data-check'), 10);
                         if (check === 0) {
                             var text = $input.attr('data-id');
                             cache_list.push(text);
-                            cache_parent.push($input.closest(self.selector).removeClass(self.itemactive).addClass(self.highactive));
+                            cache_parent.push($this.removeClass(self.itemactive).addClass(self.highactive));
                             cache_node.push($input.attr({
                                 'data-check': 1
                             }).addClass(self.checkactive));
                         }
                     }
                 });
-            } else if (chk === 0) {
-                /*取消选中*/
-                self.clear();
             }
         }
     };
@@ -392,34 +374,32 @@
             if (len === 0) {
                 cache_list.push(text);
                 cache_node.push($input);
-                cache_parent.push($input.closest(self.selector).removeClass(self.itemactive).addClass(self.highactive));
+                cache_parent.push($input.closest(self.parent).removeClass(self.itemactive).addClass(self.highactive));
                 /*高亮全选*/
-                if ($checkall) {
-                    /*存在全选则更新全选*/
-                    cache_checkall = $checkall;
-                } else if (self.ismutil) {
-                    cache_checkall = $input.closest('div.simulation-batch-check-all');
+                if (self.ismutil ||(!self.ismutil && cache_checkall === null)) {
+                    if($checkall){
+                        cache_checkall = $checkall;
+                    }else{
+                        cache_checkall = $input.closest('div.simulation-batch-check-all');
+                    }
                 }
-                if (cache_checkall) {
-                    cache_checkall.attr({
-                        'data-check': 1
-                    }).addClass(self.checkactive);
-                }
+                cache_checkall.attr({
+                    'data-check': 1
+                }).addClass(self.checkactive);
             } else {
                 ishave = $.inArray(text, cache_list);
                 if (ishave !== -1) {
                     /*存在则更新缓存*/
                     cache_list.splice(ishave, 1, text);
                     cache_node.splice(ishave, 1, $input);
-                    cache_parent.splice(ishave, 1, $input.closest(self.selector).removeClass(self.itemactive).addClass(self.highactive));
+                    cache_parent.splice(ishave, 1, $input.closest(self.parent).removeClass(self.itemactive).addClass(self.highactive));
                 } else {
                     /*不存在则存入缓存*/
                     cache_list.push(text);
                     cache_node.push($input);
-                    cache_parent.push($input.closest(self.selector).removeClass(self.itemactive).addClass(self.highactive));
+                    cache_parent.push($input.closest(self.parent).removeClass(self.itemactive).addClass(self.highactive));
                 }
             }
-
         } else {
             /*取消选中*/
             ishave = $.inArray(text, cache_list);
@@ -433,19 +413,8 @@
     };
 
     /*判断设置全选*/
-    SimulationBatch.prototype.getCheckAll = function (flag) {
-        if (flag) {
-            return this.ismutil ? cache_checkall['prev'] : cache_checkall['current']/*如果为多选则且指定选项则返回上次全选*/;
-        }
-        return cache_checkall['current']/*默认返回本次全选*/;
-    };
-
-    /*判断设置全选*/
-    SimulationBatch.prototype.getWrap = function (flag) {
-        if (flag) {
-            return this.ismutil ? cache_wrap['prev'] : cache_wrap['current']/*如果为多选则且指定选项则返回上次容器*/;
-        }
-        return cache_wrap['current']/*默认返回本次容器*/;
+    SimulationBatch.prototype.getCheckAll = function () {
+        return cache_checkall;
     };
 
 

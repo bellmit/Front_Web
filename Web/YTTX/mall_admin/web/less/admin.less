@@ -1006,14 +1006,17 @@
   margin: 0;
   color:@color-gray6;
   &:before {
-    font-size: @font-size-base;
+    font-size: @font-size-base + 2;
     font-family: 'ux_six';
     content: '\e662';
+  }
+  &:after{
+    font-size: @font-size-base;
   }
 }
 .simulation-batch-check-all{
   &:after {
-    content: '全选';
+    content: ' 全选';
   }
 }
 .simulation-batch-check-item{
@@ -1022,10 +1025,8 @@
   }
 }
 .simulation-batch-check-active{
-  color:@color-blue1;
+  color:darken(@color-blue1,10%);
   &:before {
-    font-size: @font-size-base;
-    font-family: 'ux_six';
     content: '\e663';
   }
 }
