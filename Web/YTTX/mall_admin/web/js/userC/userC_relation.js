@@ -81,8 +81,8 @@
             /*批量配置*/
             simulationBatch.config({
                 ismutil: true, /*多全选*/
-                selector: '>li',/*查找列表子节点选择器*/
-                parent:'li'/*回溯列表节点选择器*/
+                selector: '>li', /*查找列表子节点选择器*/
+                parent: 'li'/*回溯列表节点选择器*/
             });
 
             /*请求属性数据*/
@@ -188,15 +188,21 @@
                     }
                     return false;
                 } else if (nodename === 'div') {
-                    /*绑定全选*/
                     if (target.className.indexOf('simulation-batch-check-all') !== -1) {
-                        /*操作*/
+                        /*绑定全选*/
                         $this = $(target);
                         $li = $this.closest('li');
                         /*执行操作*/
                         simulationBatch.bindMutilAll({
-                            $checkall:$this,
-                            $wrap:$li.find('>ul')
+                            $checkall: $this,
+                            $wrap: $li.find('>ul')
+                        });
+                    } else if (target.className.indexOf('simulation-batch-check-item') !== -1) {
+                        /*绑定子选项*/
+                        $this = $(target);
+                        /*执行操作*/
+                        simulationBatch.bindMutilItem({
+                            $input: $this
                         });
                     }
                 }
@@ -809,6 +815,7 @@
                         str += doItems(curitem, {
                                 flag: true,
                                 limit: limit,
+                                index: i,
                                 layer: layer,
                                 parentid: ''
                             }) + '<ul class="admin-typeitem-wrap admin-subtype-wrap g-d-hidei"></ul></li>';
@@ -816,6 +823,7 @@
                         str += doItems(curitem, {
                             flag: false,
                             limit: limit,
+                            index: i,
                             layer: layer,
                             parentid: ''
                         });
@@ -839,6 +847,7 @@
 
             var layer = config.layer,
                 limit = config.limit,
+                index = config.index,
                 parentid = config.parentid;
             if (typeof layer !== 'undefined') {
                 layer++;
@@ -857,6 +866,7 @@
                                 flag: true,
                                 limit: limit,
                                 layer: layer,
+                                index: index,
                                 parentid: parentid
                             }) + '<ul class="admin-typeitem-wrap admin-subtype-wrap g-d-hidei"></ul></li>';
                     } else {
@@ -864,6 +874,7 @@
                             flag: false,
                             limit: limit,
                             layer: layer,
+                            index: index,
                             parentid: parentid
                         });
                     }
@@ -882,12 +893,12 @@
                 phone = curitem['phone'],
                 label = curitem["nickname"],
                 str = '',
+                index = config.index,
                 flag = config.flag,
                 limit = config.limit,
                 layer = config.layer,
                 parentid = config.parentid;
-
-
+            
             /*限制最后一层出现下拉按钮*/
             if (layer >= limit) {
                 flag = false;
@@ -897,9 +908,9 @@
             if (flag) {
                 /*存在下级则显示按钮*/
                 if (layer === 1) {
-                    str = '<li class="admin-subtypeitem" data-parentid="' + parentid + '" data-status="' + status + '" data-label="' + label + '" data-layer="' + layer + '" data-id="' + id + '" data-phone="' + phone + '"><div class="typeitem-default"><div class="typeitem g-w-percent4"><div class="simulation-batch-check simulation-batch-check-all" data-status="' + status + '" data-check="0" data-id="' + id + '"></div></div>';
+                    str = '<li class="admin-subtypeitem" data-parentid="' + parentid + '" data-status="' + status + '" data-label="' + label + '" data-layer="' + layer + '" data-id="' + id + '" data-phone="' + phone + '"><div class="typeitem-default"><div class="typeitem g-w-percent4"><div class="simulation-batch-check simulation-batch-check-all" data-index="' + index + '" data-status="' + status + '" data-check="0" data-id="' + id + '"></div></div>';
                 } else {
-                    str = '<li data-label="' + label + '" data-parentid="' + parentid + '" data-status="' + status + '" data-layer="' + layer + '" data-id="' + id + '" data-phone="' + phone + '"><div class="typeitem-default"><div class="typeitem g-w-percent4"><div class="simulation-batch-check simulation-batch-check-all"  data-check="0"  data-status="' + status + '" data-id="' + id + '"></div></div>';
+                    str = '<li data-label="' + label + '" data-parentid="' + parentid + '" data-status="' + status + '" data-layer="' + layer + '" data-id="' + id + '" data-phone="' + phone + '"><div class="typeitem-default"><div class="typeitem g-w-percent4"><div class="simulation-batch-check simulation-batch-check-all"  data-index="' + index + '" data-check="0"  data-status="' + status + '" data-id="' + id + '"></div></div>';
                 }
                 if (layer > 1) {
                     str += '<span data-loadsub="0" class="typeitem subtype-mgap' + (layer - 1) + ' main-typeicon g-w-percent3"></span>\
@@ -913,7 +924,7 @@
                 if (layer === 1) {
                     str = '<li data-label="' + label + '" data-parentid="' + parentid + '" data-status="' + status + '" data-layer="' + layer + '" data-id="' + id + '" data-phone="' + phone + '"><div class="typeitem-default"><div class="typeitem g-w-percent4"></div>';
                 } else {
-                    str = '<li data-label="' + label + '" data-parentid="' + parentid + '" data-status="' + status + '" data-layer="' + layer + '" data-id="' + id + '" data-phone="' + phone + '"><div class="typeitem-default"><div class="typeitem g-w-percent4"><div class="simulation-batch-check simulation-batch-check-item" data-check="0"  data-status="' + status + '" data-id="' + id + '"></div></div>';
+                    str = '<li data-label="' + label + '" data-parentid="' + parentid + '" data-status="' + status + '" data-layer="' + layer + '" data-id="' + id + '" data-phone="' + phone + '"><div class="typeitem-default"><div class="typeitem g-w-percent4"><div class="simulation-batch-check simulation-batch-check-item"  data-index="' + index + '" data-check="0"  data-status="' + status + '" data-id="' + id + '"></div></div>';
                 }
 
                 if (layer > 1) {
