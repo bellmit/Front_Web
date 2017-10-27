@@ -1010,14 +1010,6 @@
     font-family: 'ux_six';
     content: '\e662';
   }
-  input[type='checkbox'] {
-    margin:0;
-    padding:0;
-    .layout-absolutel-base();
-    width:100%;
-    height:100%;
-    .opacity-base(0);
-  }
 }
 .simulation-batch-check-all{
   &:after {
@@ -1031,6 +1023,11 @@
 }
 .simulation-batch-check-active{
   color:@color-blue1;
+  &:before {
+    font-size: @font-size-base;
+    font-family: 'ux_six';
+    content: '\e663';
+  }
 }
 
 /*----分页-----*/

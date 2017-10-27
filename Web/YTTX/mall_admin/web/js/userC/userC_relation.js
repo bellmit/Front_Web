@@ -78,6 +78,11 @@
             /*重置表单*/
             admin_addgoodstype_form.reset();
 
+            /*批量配置*/
+            simulationBatch.config({
+                ismutil: true, /*多全选*/
+                selector: '>li'/*选择器*/
+            });
 
             /*请求属性数据*/
             requestAttr(page_config);
@@ -96,7 +101,7 @@
                     layer,
                     action;
 
-                if (nodename === 'td' || nodename === 'tr' || nodename === 'ul' || nodename === 'div' || nodename === 'li') {
+                if (nodename === 'td' || nodename === 'tr' || nodename === 'ul' || nodename === 'li') {
                     return false;
                 }
 
@@ -181,8 +186,15 @@
                         $wrap.toggleClass('g-d-hidei');
                     }
                     return false;
-                } else if (nodename === 'input') {
-                    /*to do*/
+                } else if (nodename === 'div') {
+                    /*绑定全选*/
+                    if (target.className.indexOf('simulation-batch-check-all') !== -1) {
+                        /*操作*/
+                        $this = $(target);
+                        $li = $this.closest('li');
+                        /*执行操作*/
+                        simulationBatch.onAll($this, $li.find('>ul'));
+                    }
                 }
             });
 
@@ -880,10 +892,10 @@
 
             if (flag) {
                 /*存在下级则显示按钮*/
-                if(layer===1){
-                    str = '<li class="admin-subtypeitem" data-parentid="' + parentid + '" data-status="' + status + '" data-label="' + label + '" data-layer="' + layer + '" data-id="' + id + '" data-phone="' + phone + '"><div class="typeitem-default"><div class="typeitem g-w-percent4"><div class="simulation-batch-check simulation-batch-check-all" data-status="' + status + '" data-id="' + id + '"></div></div>';
-                }else{
-                    str = '<li data-label="' + label + '" data-parentid="' + parentid + '" data-status="' + status + '" data-layer="' + layer + '" data-id="' + id + '" data-phone="' + phone + '"><div class="typeitem-default"><div class="typeitem g-w-percent4"><div class="simulation-batch-check simulation-batch-check-all"  data-status="' + status + '" data-id="' + id + '"></div></div>';
+                if (layer === 1) {
+                    str = '<li class="admin-subtypeitem" data-parentid="' + parentid + '" data-status="' + status + '" data-label="' + label + '" data-layer="' + layer + '" data-id="' + id + '" data-phone="' + phone + '"><div class="typeitem-default"><div class="typeitem g-w-percent4"><div class="simulation-batch-check simulation-batch-check-all" data-status="' + status + '" data-check="0" data-id="' + id + '"></div></div>';
+                } else {
+                    str = '<li data-label="' + label + '" data-parentid="' + parentid + '" data-status="' + status + '" data-layer="' + layer + '" data-id="' + id + '" data-phone="' + phone + '"><div class="typeitem-default"><div class="typeitem g-w-percent4"><div class="simulation-batch-check simulation-batch-check-all"  data-check="0"  data-status="' + status + '" data-id="' + id + '"></div></div>';
                 }
                 if (layer > 1) {
                     str += '<span data-loadsub="0" class="typeitem subtype-mgap' + (layer - 1) + ' main-typeicon g-w-percent3"></span>\
@@ -894,10 +906,10 @@
                 }
             } else {
                 /*不存在下级则不显示按钮*/
-                if(layer===1){
+                if (layer === 1) {
                     str = '<li data-label="' + label + '" data-parentid="' + parentid + '" data-status="' + status + '" data-layer="' + layer + '" data-id="' + id + '" data-phone="' + phone + '"><div class="typeitem-default"><div class="typeitem g-w-percent4"></div>';
-                }else{
-                    str = '<li data-label="' + label + '" data-parentid="' + parentid + '" data-status="' + status + '" data-layer="' + layer + '" data-id="' + id + '" data-phone="' + phone + '"><div class="typeitem-default"><div class="typeitem g-w-percent4"><div class="simulation-batch-check simulation-batch-check-item"  data-status="' + status + '" data-id="' + id + '"></div></div>';
+                } else {
+                    str = '<li data-label="' + label + '" data-parentid="' + parentid + '" data-status="' + status + '" data-layer="' + layer + '" data-id="' + id + '" data-phone="' + phone + '"><div class="typeitem-default"><div class="typeitem g-w-percent4"><div class="simulation-batch-check simulation-batch-check-item" data-check="0"  data-status="' + status + '" data-id="' + id + '"></div></div>';
                 }
 
                 if (layer > 1) {
