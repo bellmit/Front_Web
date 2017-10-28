@@ -97,6 +97,7 @@
                     $li,
                     $wrap,
                     label,
+                    index,
                     id,
                     parentid,
                     layer,
@@ -161,6 +162,7 @@
                         $li = $this.closest('li');
                         id = $li.attr('data-id');
                         layer = $li.attr('data-layer');
+                        index=$li.attr('data-index');
                         $wrap = $li.find('>ul');
 
                         var isload = parseInt($this.attr('data-loadsub'), 10);
@@ -170,6 +172,7 @@
                             if (subitem !== null) {
                                 var subtype = doAttr(subitem, {
                                     limit: 2,
+                                    index:index,
                                     layer: layer,
                                     parentid: id
                                 });
@@ -801,6 +804,7 @@
             if (typeof limit === 'undefined' || limit <= 0) {
                 limit = 1;
             }
+
             var attrlist = obj,
                 str = '',
                 i = 0,
@@ -811,7 +815,14 @@
                 for (i; i < len; i++) {
                     var curitem = attrlist[i],
                         hassub = curitem["hasSub"];
+
+                    /*限制最后一层出现下拉按钮*/
+                    if (layer >= limit) {
+                        hassub = false;
+                    }
+
                     if (hassub) {
+
                         str += doItems(curitem, {
                                 flag: true,
                                 limit: limit,
@@ -861,6 +872,12 @@
                 for (i; i < len; i++) {
                     var curitem = attrlist[i],
                         hassub = curitem["hasSub"];
+                    
+                    /*限制最后一层出现下拉按钮*/
+                    if (layer >= limit) {
+                        hassub = false;
+                    }
+
                     if (hassub) {
                         str += doItems(curitem, {
                                 flag: true,
@@ -898,19 +915,14 @@
                 limit = config.limit,
                 layer = config.layer,
                 parentid = config.parentid;
-            
-            /*限制最后一层出现下拉按钮*/
-            if (layer >= limit) {
-                flag = false;
-            }
 
 
             if (flag) {
                 /*存在下级则显示按钮*/
                 if (layer === 1) {
-                    str = '<li class="admin-subtypeitem" data-parentid="' + parentid + '" data-status="' + status + '" data-label="' + label + '" data-layer="' + layer + '" data-id="' + id + '" data-phone="' + phone + '"><div class="typeitem-default"><div class="typeitem g-w-percent4"><div class="simulation-batch-check simulation-batch-check-all" data-index="' + index + '" data-status="' + status + '" data-check="0" data-id="' + id + '"></div></div>';
+                    str = '<li  data-index="' + index + '"  class="admin-subtypeitem" data-parentid="' + parentid + '" data-status="' + status + '" data-label="' + label + '" data-layer="' + layer + '" data-id="' + id + '" data-phone="' + phone + '"><div class="typeitem-default"><div class="typeitem g-w-percent4"><div class="simulation-batch-check simulation-batch-check-all" data-index="' + index + '" data-status="' + status + '" data-check="0" data-id="' + id + '"></div></div>';
                 } else {
-                    str = '<li data-label="' + label + '" data-parentid="' + parentid + '" data-status="' + status + '" data-layer="' + layer + '" data-id="' + id + '" data-phone="' + phone + '"><div class="typeitem-default"><div class="typeitem g-w-percent4"><div class="simulation-batch-check simulation-batch-check-all"  data-index="' + index + '" data-check="0"  data-status="' + status + '" data-id="' + id + '"></div></div>';
+                    str = '<li  data-index="' + index + '"  data-label="' + label + '" data-parentid="' + parentid + '" data-status="' + status + '" data-layer="' + layer + '" data-id="' + id + '" data-phone="' + phone + '"><div class="typeitem-default"><div class="typeitem g-w-percent4"><div class="simulation-batch-check simulation-batch-check-all"  data-index="' + index + '" data-check="0"  data-status="' + status + '" data-id="' + id + '"></div></div>';
                 }
                 if (layer > 1) {
                     str += '<span data-loadsub="0" class="typeitem subtype-mgap' + (layer - 1) + ' main-typeicon g-w-percent3"></span>\
@@ -943,19 +955,19 @@
 
             if (forbid_power && status === 0) {
                 /*正常则禁用*/
-                str += '<span data-parentid="' + parentid + '"  data-action="forbid" data-status="' + status + '"  data-id="' + id + '"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+                str += '<span  data-index="' + index + '"  data-parentid="' + parentid + '"  data-action="forbid" data-status="' + status + '"  data-id="' + id + '"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 							<i class="fa-toggle-off"></i>&nbsp;&nbsp;禁用(锁定)\
 						</span>';
             }
             if (enable_power && status === 1) {
                 /*禁用则正常*/
-                str += '<span data-parentid="' + parentid + '"  data-action="enable" data-status="' + status + '"  data-id="' + id + '"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+                str += '<span  data-index="' + index + '" data-parentid="' + parentid + '"  data-action="enable" data-status="' + status + '"  data-id="' + id + '"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 							<i class="fa-toggle-on"></i>&nbsp;&nbsp;启用(正常)\
 						</span>';
             }
 
             if (edit_power) {
-                str += '<span data-parentid="' + parentid + '" data-status="' + status + '" data-action="edit"  data-id="' + id + '"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+                str += '<span  data-index="' + index + '"  data-parentid="' + parentid + '" data-status="' + status + '" data-action="edit"  data-id="' + id + '"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 							<i class="fa-pencil"></i>&nbsp;&nbsp;编辑\
 						</span>';
             }
