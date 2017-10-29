@@ -377,8 +377,6 @@
             text = $input.attr('data-id'),
             check = parseInt($input.attr('data-check'), 10);
 
-        console.log(check);
-
         if (check === 0) {
             /*选中*/
             if (len === 0) {

@@ -96,7 +96,6 @@
                     $this,
                     $li,
                     $wrap,
-                    label,
                     index,
                     id,
                     parentid,
@@ -162,7 +161,7 @@
                         $li = $this.closest('li');
                         id = $li.attr('data-id');
                         layer = $li.attr('data-layer');
-                        index=$li.attr('data-index');
+                        index = $li.attr('data-index');
                         $wrap = $li.find('>ul');
 
                         var isload = parseInt($this.attr('data-loadsub'), 10);
@@ -172,7 +171,7 @@
                             if (subitem !== null) {
                                 var subtype = doAttr(subitem, {
                                     limit: 2,
-                                    index:index,
+                                    index: index,
                                     layer: layer,
                                     parentid: id
                                 });
@@ -203,9 +202,14 @@
                     } else if (target.className.indexOf('simulation-batch-check-item') !== -1) {
                         /*绑定子选项*/
                         $this = $(target);
+                        index = $this.attr('data-index');
+                        $wrap = $admin_list_wrap.find('>li').eq(index).find('div.simulation-batch-check-all');
+
+                        
                         /*执行操作*/
                         simulationBatch.bindMutilItem({
-                            $input: $this
+                            $input: $this,
+                            $checkall: $wrap
                         });
                     }
                 }
@@ -872,7 +876,7 @@
                 for (i; i < len; i++) {
                     var curitem = attrlist[i],
                         hassub = curitem["hasSub"];
-                    
+
                     /*限制最后一层出现下拉按钮*/
                     if (layer >= limit) {
                         hassub = false;
@@ -1090,11 +1094,11 @@
                         }
                         if (result.list) {
                             /*解析属性*/
-                            var str = '<ul class="admin-typeitem-wrap admin-maintype-wrap">' + resolveAttr(result.list, 2) + '</ul>';
+                            var str = resolveAttr(result.list, 2);
                             if (str) {
                                 $(str).appendTo($admin_list_wrap.html(''));
                             } else {
-                                $admin_list_wrap.addClass('g-t-c').html('暂无数据');
+                                $admin_list_wrap.html('');
                             }
                         }
                     }
