@@ -33,7 +33,7 @@
 
 
             /*dom引用和相关变量定义*/
-            var debug = false,
+            var debug = true,
                 $admin_list_wrap = $('#admin_list_wrap')/*表格*/,
                 module_id = 'bzw-userC-list'/*模块id，主要用于本地存储传值*/,
                 dia = dialog({

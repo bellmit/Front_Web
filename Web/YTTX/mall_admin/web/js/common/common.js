@@ -1067,6 +1067,8 @@
     /*请求菜单*/
     public_tool.requestSideMenu = function ($menu, $wrap, opt) {
         var self = this,
+            debug = opt.debug,
+            isindex = opt.isindex,
             cacheSource = self.getParams('source_module');
 
 
@@ -1090,12 +1092,18 @@
 
 
             $.ajax({
-                url: opt.url,
+                url: debug ? isindex ? "../json/test.json" : "../../json/test.json" : opt.url,
                 async: opt.async,
                 type: opt.type,
                 data: opt.param,
                 dataType: opt.datatype
             }).done(function (data) {
+                if (debug) {
+                    var data = testWidget.testMenu({
+                        type:'list'
+                    });
+                    console.log();
+                }
                 if (parseInt(data.code, 10) !== 0) {
                     //查询异常
                     return false;

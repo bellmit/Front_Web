@@ -9,7 +9,8 @@
             public_tool.clearCacheData();
 
             //dom节点引用或者其他变量定义
-            var form_provider = document.getElementById('login_provider'),
+            var debug = true,
+                form_provider = document.getElementById('login_provider'),
                 form_operator = document.getElementById('login_operator'),
                 form_mall = document.getElementById('login_mall'),
                 $loginform_provider = $(form_provider),
@@ -151,7 +152,7 @@
                     var basedomain = 'http://10.0.5.226:8082',
                         basepathname = "/yttx-providerbms-api/user/login";
                     $.ajax({
-                        url: basedomain + basepathname,
+                        url: debug ? "../../json/test.json" : basedomain + basepathname,
                         method: 'POST',
                         dataType: 'json',
                         async: false,
@@ -162,6 +163,17 @@
                             identifyingCode: $validcode_provider.val()
                         }
                     }).done(function (resp) {
+                        if(debug){
+                            var resp=testWidget.testSuccess('list');
+                            resp['result']=testWidget.getMap({
+                                map: {
+                                    userId: 'id',
+                                    token: 'guid',
+                                    providerId: 'id'
+                                },
+                                maptype: 'object'
+                            }).list;
+                        }
                         var code = parseInt(resp.code, 10),
                             result = resp.result;
 
@@ -268,7 +280,7 @@
                     var basedomain = 'http://10.0.5.226:8082',
                         basepathname = "/mall-agentbms-api/sysuser/login";
                     $.ajax({
-                        url: basedomain + basepathname,
+                        url: debug ? "../../json/test.json" :basedomain + basepathname,
                         method: 'POST',
                         dataType: 'json',
                         async: false,
@@ -277,6 +289,19 @@
                             password: $pwd_operator.val()
                         }
                     }).done(function (resp) {
+                        if(debug){
+                            var resp=testWidget.testSuccess('list');
+                            resp['result']=testWidget.getMap({
+                                map: {
+                                    grade:'rule,-1,-2,-3,-4,1,2,3,4',
+                                    adminId:'id',
+                                    roleId:'id',
+                                    token: 'guid',
+                                    sourcesChannel:'id'
+                                },
+                                maptype: 'object'
+                            }).list;
+                        }
                         var code = parseInt(resp.code, 10),
                             result = resp.result;
 
@@ -408,7 +433,7 @@
                     var basedomain = 'http://10.0.5.226:8082',
                         basepathname = "/mall-buzhubms-api/sysuser/login";
                     $.ajax({
-                        url: basedomain + basepathname,
+                        url: debug ? "../../json/test.json" :basedomain + basepathname,
                         method: 'POST',
                         dataType: 'json',
                         async: false,
@@ -418,6 +443,18 @@
                             identifyingCode: $validcode_mall.val()
                         }
                     }).done(function (resp) {
+                        if(debug){
+                            var resp=testWidget.testSuccess('list');
+                            resp['result']=testWidget.getMap({
+                                map: {
+                                    grade:'rule,-1,1,2',
+                                    adminId:'id',
+                                    roleId:'id',
+                                    token: 'guid'
+                                },
+                                maptype: 'object'
+                            }).list;
+                        }
                         var code = parseInt(resp.code, 10),
                             result = resp.result;
 
@@ -508,35 +545,13 @@
 
         /*获取验证码*/
         function getValidCode(type) {
-            var xhr = new XMLHttpRequest();
-
-            if (type === 'provider') {
-                /*供应商入口*/
-                xhr.open("post", 'http://10.0.5.226:8082/yttx-providerbms-api/user/identifying/code', true);
-            } else if (type === 'mall') {
-                /*布住网*/
-                xhr.open("post", 'http://10.0.5.226:8082/mall-buzhubms-api/sysuser/identifying/code', true);
-            } else {
-                /*其他*/
-                xhr.open("post", 'http://10.0.5.226:8082/mall-buzhubms-api/sysuser/identifying/code', true);
-            }
-
-            xhr.responseType = "blob";
-            xhr.onreadystatechange = function () {
-                if (this.status == 200) {
-                    var blob = this.response,
+            if(debug){
+                (function () {
+                    var code = Mock.mock(/[a-zA-Z0-9]{4}/),
+                        imgsrc = Mock.Random.image('80x40', '#ffffff', '#666666', code),
                         img = document.createElement("img");
 
-                    img.alt = '验证码';
-                    try {
-                        img.onload = function (e) {
-                            window.URL.revokeObjectURL(img.src);
-                        };
-                        img.src = window.URL.createObjectURL(blob);
-                    } catch (e) {
-                        console.log('不支持URL.createObjectURL');
-                    }
-
+                    img.src = imgsrc;
                     if (type === 'provider') {
                         /*供应商入口*/
                         $validcode_btn_provider.html(img);
@@ -547,9 +562,49 @@
                         /*其他*/
                         $validcode_btn_mall.html(img);
                     }
+                }());
+            }else{
+                var xhr = new XMLHttpRequest();
+                if (type === 'provider') {
+                    /*供应商入口*/
+                    xhr.open("post", 'http://10.0.5.226:8082/yttx-providerbms-api/user/identifying/code', true);
+                } else if (type === 'mall') {
+                    /*布住网*/
+                    xhr.open("post", 'http://10.0.5.226:8082/mall-buzhubms-api/sysuser/identifying/code', true);
+                } else {
+                    /*其他*/
+                    xhr.open("post", 'http://10.0.5.226:8082/mall-buzhubms-api/sysuser/identifying/code', true);
                 }
-            };
-            xhr.send();
+                xhr.responseType = "blob";
+                xhr.onreadystatechange = function () {
+                    if (this.status == 200) {
+                        var blob = this.response,
+                            img = document.createElement("img");
+
+                        img.alt = '验证码';
+                        try {
+                            img.onload = function (e) {
+                                window.URL.revokeObjectURL(img.src);
+                            };
+                            img.src = window.URL.createObjectURL(blob);
+                        } catch (e) {
+                            console.log('不支持URL.createObjectURL');
+                        }
+
+                        if (type === 'provider') {
+                            /*供应商入口*/
+                            $validcode_btn_provider.html(img);
+                        } else if (type === 'mall') {
+                            /*布住网*/
+                            $validcode_btn_mall.html(img);
+                        } else {
+                            /*其他*/
+                            $validcode_btn_mall.html(img);
+                        }
+                    }
+                };
+                xhr.send();
+            }
         }
 
 
