@@ -55,6 +55,7 @@
                 })/*一般提示对象*/,
                 $admin_errortip_wrap = $('#admin_errortip_wrap'),
                 resetform0 = null,
+                $admin_batchitem_action=$('#admin_batchitem_action'),
                 sureObj = public_tool.sureDialog(dia)/*回调提示对象*/,
                 setSure = new sureObj(),
                 operate_item = null;
@@ -82,7 +83,8 @@
             simulationBatch.config({
                 ismutil: true, /*多全选*/
                 selector: '>li', /*查找列表子节点选择器*/
-                parent: 'li'/*回溯列表节点选择器*/
+                parent: 'li',/*回溯列表节点选择器*/
+                isself:true/*是否全选本身也参与数据处理*/
             });
 
             /*请求属性数据*/
@@ -229,6 +231,32 @@
                 this.on('keyup', function () {
                     this.value = this.value.replace(/\D*/g, '');
                 });
+            });
+            
+            /*绑定批量操作*/
+            $admin_batchitem_action.on('click',function (e) {
+                var target = e.target,
+                    nodename = target.nodeName.toLowerCase(),
+                    $this,
+                    action,
+                    key,
+                    value,
+                    ids;
+
+                if(nodename === 'div'){
+                    return false;
+                }else if(nodename === 'span' || nodename === 'i'){
+                    $this=$(target);
+                    action=$this.attr('data-action');
+                    key=$this.attr('data-attrkey');
+                    value=$this.attr('data-attrvalue');
+                    ids=simulationBatch.filterStatus({
+                        attrkey:key,
+                        attrvalue:value,
+                        action:action
+                    });
+                    console.log(ids);
+                }
             });
 
 
@@ -458,8 +486,10 @@
             var $item = $btn.closest('div.typeitem-default').find('>div');
             /*变更状态*/
             $item.eq(4).removeClass(cdstyle).addClass(castyle).html(cvalue);
-            /*变更input*/
-            $item.eq(0).find('input').attr({
+            /*清除批量*/
+            simulationBatch.clear();
+            /*改变状态*/
+            $item.eq(0).find('.simulation-batch-check').attr({
                 'data-status': cstatus
             });
             if (operate_item) {

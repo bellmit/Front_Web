@@ -118,6 +118,45 @@
 
                         <!--表格主体-->
                         <div class="panel-body">
+                            <div class="admin-search-wrap">
+                                <div class="admin-search-item">
+                                    <label>查询类型：</label>
+                                    <select id="search_searchColumn" >
+                                        <option selected value="">无</option>
+                                        <option value="1">昵称</option>
+                                        <option value="2">手机号</option>
+                                    </select>
+                                </div>
+
+                                <div class="admin-search-item">
+                                    <input type="text" id="search_searchContent" />
+                                </div>
+
+                                <div class="admin-search-item">
+                                    <label>注册时间：</label>
+                                    <input type="text" placeholder="选择开始时间" readonly id="search_createTimeStart" />&nbsp;至&nbsp;<input placeholder="选择结束时间" type="text" readonly id="search_createTimeEnd" />
+                                </div>
+
+                                <div class="admin-search-item">
+                                    <span id="admin_search_btn" class="btn btn-info btn-icon g-br2">
+                                        <i class="fa-search"></i>查询
+                                    </span>
+                                    <span id="admin_search_clear" class="btn btn-info btn-icon g-br2">
+                                        <i class="fa-spinner"></i>清空
+                                    </span>
+                                </div>
+
+                                <div class="admin-search-item" id="admin_batchitem_action" >
+                                    <label>批量处理：</label>
+                                    <span data-action="forbid" data-attrkey="status" data-attrvalue="0" class="btn btn-white btn-icon g-br2 g-c-gray8">
+                                        <i data-action="forbid" data-attrkey="status" data-attrvalue="0"  class="fa-toggle-off"></i>禁用
+                                    </span>
+                                    <span data-action="enable" data-attrkey="status" data-attrvalue="1" class="btn btn-white btn-icon g-br2 g-c-gray8">
+                                        <i  data-action="enable" data-attrkey="status" data-attrvalue="1"  class="fa-toggle-on"></i>启用
+                                    </span>
+                                </div>
+                            </div>
+
                             <table class="table table-bordered table-striped admin-table">
                                 <!--分组样式-->
                                 <colgroup>

@@ -27,6 +27,7 @@
             showactive: 'admin-batchitem-showactive'/*全选按钮切换*/,
             checkactive: 'simulation-batch-check-active'/*全选按钮选中*/,
             itemactive: 'item-lighten'/*单个数据高亮*/,
+            isself: false/*是否全选本身也参与数据处理*/,
             highactive: 'item-lightenbatch'/*批量数据高亮*/,
             ismutil: false/*是否存在多个全选*/,
             selector: '>tr'/*默认选择器*/,
@@ -142,11 +143,9 @@
         }
         cache_list.length = 0;
         /*清除全选*/
-        if (cache_checkall !== null) {
-            cache_checkall.attr({
-                'data-check': 0
-            }).removeClass(this.checkactive);
-        }
+        cache_checkall.attr({
+            'data-check': 0
+        }).removeClass(this.checkactive);
         /*更新值*/
         if ($checkall) {
             cache_checkall = $checkall;
@@ -382,7 +381,7 @@
             if (len === 0) {
                 cache_list.push(text);
                 cache_node.push($input.attr({
-                    'data-check':1
+                    'data-check': 1
                 }).addClass(self.checkactive));
                 cache_parent.push($input.closest(self.parent).removeClass(self.itemactive).addClass(self.highactive));
                 /*高亮全选*/
@@ -407,12 +406,12 @@
                     /*不存在则存入缓存*/
                     cache_list.push(text);
                     cache_node.push($input.attr({
-                        'data-check':1
+                        'data-check': 1
                     }).addClass(self.checkactive));
                     cache_parent.push($input.closest(self.parent).removeClass(self.itemactive).addClass(self.highactive));
                 }
             }
-        } else if(check === 1){
+        } else if (check === 1) {
             /*取消选中*/
             ishave = $.inArray(text, cache_list);
             if (ishave !== -1) {
