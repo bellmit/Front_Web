@@ -61,8 +61,6 @@
                         },
                         cancel: false
                     })/*一般提示对象*/,
-                    $admin_errortip_wrap = $('#admin_errortip_wrap'),
-                    resetform0 = null,
                     $admin_batchitem_action = $('#admin_batchitem_action'),
                     sureObj = public_tool.sureDialog(dia)/*回调提示对象*/,
                     setSure = new sureObj(),
@@ -78,11 +76,15 @@
 
                 /*编辑对象*/
                 var $show_edit_wrap = $('#show_edit_wrap'),
-                    $show_audit_info=$('#show_audit_info'),
+                    $show_audit_info = $('#show_audit_info'),
                     $show_audit_content = $('#show_audit_content'),
                     $show_edit_btn = $('#show_edit_btn'),
-                    $show_edit_phone=$('#show_edit_phone'),
-                    $show_edit_name=$('#show_edit_name');
+                    $show_edit_phone = $('#show_edit_phone'),
+                    $show_edit_name = $('#show_edit_name');
+
+                /*明细对象*/
+                var $show_detail_wrap = $('#show_detail_wrap'),
+                    $show_detail_content = $('#show_detail_content');
 
 
                 /*清空查询条件*/
@@ -205,6 +207,7 @@
                         $wrap,
                         index,
                         id,
+                        parentlabel,
                         parentid,
                         layer,
                         action;
@@ -245,6 +248,14 @@
                             if (action === 'edit') {
                                 /*进入编辑状态*/
                                 $show_edit_wrap.modal('show', {backdrop: 'static'});
+                                $show_edit_btn.attr({
+                                    'data-id': id
+                                });
+                                parentlabel = $this.attr('data-parentlabel');
+                                label = $this.attr('data-label');
+                                $show_audit_info.html('<tr><th colspan="2">用户信息</th></tr>\
+                                    <tr><td class="g-t-r">用户名称：</td><td class="g-t-l">' + label + '</td></tr>\
+                                    <tr><td class="g-t-r">上级名称：</td><td class="g-t-l">' + parentlabel + '&nbsp;&nbsp;&nbsp;&nbsp;<span class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8"><i class="fa-pencil"></i>&nbsp;&nbsp;编辑</span></td></tr>');
                             } else if (action === 'forbid' || action === 'enable') {
                                 /*禁用*/
                                 /*to do*/
@@ -261,6 +272,8 @@
                                         actionmap: actionmap
                                     });
                                 }, action === 'forbid' ? "禁用后，该用户将不再能使用该账号，是否禁用？" : "启用后，该用户将能使用该账号，是否启用？", true);
+                            } else if (action === 'detail') {
+                                showDetail(id);
                             }
                         } else if (target.className.indexOf('main-typeicon') !== -1) {
                             /*展开或收缩*/
@@ -326,13 +339,26 @@
 
 
                 /*绑定关闭弹出层*/
-                $.each([$show_edit_wrap], function () {
-                    this.on('hide.bs.modal', function () {
-                        if(operate_item!==null){
-                            operate_item.removeClass('item-lighten');
-                            operate_item=null;
-                        }
-                    });
+                $.each([$show_edit_wrap, $show_detail_wrap], function (index) {
+                    if (index === 0) {
+                        this.on('hide.bs.modal', function () {
+                            if (operate_item !== null) {
+                                operate_item.removeClass('item-lighten');
+                                operate_item = null;
+                            }
+                            $show_edit_btn.attr({
+                                'data-id': ''
+                            });
+                            toggleEditQuery();
+                        });
+                    } else if (index === 1) {
+                        this.on('hide.bs.modal', function () {
+                            if (operate_item !== null) {
+                                operate_item.removeClass('item-lighten');
+                                operate_item = null;
+                            }
+                        });
+                    }
                 });
 
 
@@ -350,6 +376,7 @@
                     } else if (etype === 'focusout') {
                         if (!public_tool.isMobilePhone(phoneno)) {
                             this.value = '';
+                            toggleEditQuery();
                             return false;
                         }
                         /*查询新用户*/
@@ -421,106 +448,71 @@
                 });
 
 
+                /*绑定显示隐藏编辑面板*/
+                $show_audit_info.on('click', function (e) {
+                    var target = e.target,
+                        nodename = target.nodeName.toLowerCase(),
+                        $this;
 
-                /*表单验证*/
-                /*if ($.isFunction($.fn.validate)) {
-                    /!*配置信息*!/
-                    var form_opt0 = {},
-                        formcache = public_tool.cache,
-                        basedata = {
-                            roleId: decodeURIComponent(logininfo.param.roleId),
-                            adminId: decodeURIComponent(logininfo.param.adminId),
-                            grade: decodeURIComponent(logininfo.param.grade),
-                            token: decodeURIComponent(logininfo.param.token)
-                        };
+                    if (nodename === 'tr' || nodename === 'td' || nodename === 'th' || nodename === 'tbody') {
+                        return false;
+                    } else if (nodename === 'i' || nodename === 'span') {
+                        $this = $(target);
+                    }
+                    $show_audit_content.toggleClass('g-d-hidei');
+                });
 
+                /*绑定提交编辑*/
+                $show_edit_btn.on('click', function () {
+                    var $this = $(this),
+                        shUserId = $this.attr('data-id'),
+                        parentId = $this.attr('data-parentid');
 
-                    if (formcache.form_opt_0) {
-                        $.each([formcache.form_opt_0], function (index) {
-                            var formtype,
-                                config = {
-                                    dataType: 'JSON',
-                                    method: 'post'
-                                };
-                            if (index === 0) {
-                                formtype = 'addgoodstype';
-                            }
-                            $.extend(true, (function () {
-                                if (formtype === 'addgoodstype') {
-                                    return form_opt0;
+                    if (shUserId !== '' && parentId !== '') {
+                        $.ajax({
+                                url: debug ? "../../json/test.json" : "http://10.0.5.226:8082/mall-buzhubms-api/shuser/hierarchy/update",
+                                dataType: 'JSON',
+                                async: false,
+                                method: 'post',
+                                data: {
+                                    adminId: request_config.adminId,
+                                    token: request_config.token,
+                                    shUserId: shUserId,
+                                    parentId: parentId
                                 }
-                            }()), (function () {
-                                if (formtype === 'addgoodstype') {
-                                    return formcache.form_opt_0;
+                            })
+                            .done(function (resp) {
+                                if (debug) {
+                                    var resp = testWidget.testSuccess('list');
                                 }
-                            }()), {
-                                submitHandler: function (form) {
-                                    var setdata = {};
-
-                                    $.extend(true, setdata, basedata);
-
-                                    if (formtype === 'addgoodstype') {
-                                        var imgurl = $admin_typeimage.attr('data-image');
-
-                                        $.extend(true, setdata, {
-                                            name: $admin_typename.val(),
-                                            parentId: $admin_typeparentname.attr('data-value'),
-                                            gtCode: $admin_typecode.val(),
-                                            sort: $admin_typesort.val(),
-                                            isVisible: parseInt($admin_typeshow.find(':checked').val(), 10) === 1 ? true : false,
-                                            imageUrl: imgurl,
-                                            remark: $admin_typeremark.val()
-                                        });
-                                        config['url'] = "http://10.0.5.226:8082/mall-buzhubms-api/goodstype/add";
-                                        config['data'] = setdata;
-                                    }
-
-                                    $.ajax(config).done(function (resp) {
-                                        var code;
-                                        if (formtype === 'addgoodstype') {
-                                            code = parseInt(resp.code, 10);
-                                            if (code !== 0) {
-                                                dia.content('<span class="g-c-bs-warning g-btips-warn">添加分类失败</span>').show();
-                                                return false;
-                                            } else {
-                                                dia.content('<span class="g-c-bs-success g-btips-succ">添加分类成功</span>').show();
-                                                /!*请求数据*!/
-                                                requestAttr(request_config);
-                                                setTimeout(function () {
-                                                    dia.close();
-                                                    $addgoodstype_wrap.modal('hide');
-                                                    /!*重置数据*!/
-                                                    admin_addgoodstype_form.reset();
-                                                    emptyGoodsTypeData();
-                                                }, 2000);
-                                            }
-                                        }
-                                    }).fail(function (resp) {
-                                        console.log('error');
-                                        dia.content('<span class="g-c-bs-warning g-btips-warn">添加分类失败</span>').show();
-                                        setTimeout(function () {
-                                            dia.close();
-                                            $addgoodstype_wrap.modal('hide');
-                                            /!*重置数据*!/
-                                            admin_addgoodstype_form.reset();
-                                            emptyGoodsTypeData();
-                                        }, 2000);
-                                    });
+                                var code = parseInt(resp.code, 10);
+                                if (code !== 0) {
+                                    dia.content('<span class="g-c-bs-warning g-btips-warn">' + (resp.message || "编辑失败") + '</span>').show();
                                     return false;
                                 }
+                                dia.content('<span class="g-c-bs-success g-btips-succ">编辑成功</span>').show();
+                                /*请求属性数据*/
+                                requestAttr(request_config);
+                                /*重置值*/
+                                toggleEditQuery();
+                                $show_edit_btn.attr({
+                                    'data-id': ''
+                                });
+                                $show_edit_phone.val('');
+                                $show_audit_info.html('');
+                                setTimeout(function () {
+                                    dia.close();
+                                    $show_edit_wrap.modal('hide');
+                                    $show_audit_content.addClass('g-d-hidei');
+                                }, 2000);
+
+                            })
+                            .fail(function (resp) {
+                                console.log(resp.message);
+                                dia.content('<span class="g-c-bs-warning g-btips-warn">' + (resp.message || "编辑失败") + '</span>').show();
                             });
-                        });
-
                     }
-
-
-                    /!*提交验证*!/
-                    if (resetform0 === null) {
-                        resetform0 = $admin_addgoodstype_form.validate(form_opt0);
-                    }
-
-                }*/
-
+                });
             }
         }
 
@@ -899,6 +891,12 @@
 						</span>';
             }
 
+            if (detail_power) {
+                str += '<span data-action="detail"  data-id="' + id + '"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+							<i class="fa-file-text-o"></i>&nbsp;&nbsp;查看\
+						</span>';
+            }
+
             str += '</div></div>';
 
             return flag ? str : str + '</li>';
@@ -1028,6 +1026,102 @@
                 });
         }
 
+        /*详情展现*/
+        function showDetail(id) {
+            if (typeof id === 'undefined' && id === '') {
+                return false;
+            }
+            $.ajax({
+                    url: debug ? "../../json/test.json" : "http://10.0.5.226:8082/mall-buzhubms-api/shuser/getinfo",
+                    dataType: 'JSON',
+                    method: 'post',
+                    data: {
+                        id: id,
+                        adminId: request_config.adminId,
+                        token: request_config.token
+                    }
+                })
+                .done(function (resp) {
+                    if (debug) {
+                        var resp = testWidget.testSuccess('list');
+                        resp.result = testWidget.getMap({
+                            map: {
+                                id: 'guid',
+                                nickName: 'value',
+                                phone: 'mobile',
+                                gender: 'rule,0,1,2',
+                                birthday: 'datetime',
+                                createTime: 'datetime',
+                                lastLoginTime: 'datetime',
+                                loginTimes: 'id',
+                                status: 'rule,0,1'
+                            },
+                            maptype: 'object'
+                        }).list;
+                    }
+                    var code = parseInt(resp.code, 10);
+                    if (code !== 0) {
+                        console.log(resp.message);
+                        dia.content('<span class="g-c-bs-warning g-btips-warn">' + (resp.message || "查询详情失败") + '</span>').show();
+                        return false;
+                    }
+                    /*是否是正确的返回数据*/
+                    var list = resp.result;
+                    if (!list) {
+                        return false;
+                    }
+
+                    var str = '',
+                        detail_map;
+
+                    if (!$.isEmptyObject(list)) {
+                        detail_map = {
+                            nickName: '用户名称(昵称)',
+                            birthday: '出生日期',
+                            gender: '性别',
+                            phone: '手机号',
+                            createTime: '注册时间/创建时间',
+                            lastLoginTime: '最后登录时间',
+                            loginTimes: '登录次数',
+                            status: '状态'
+                        };
+                        /*添加高亮状态*/
+                        for (var j in list) {
+                            if (typeof detail_map[j] !== 'undefined') {
+                                if (j === 'status') {
+                                    var statemap = {
+                                        0: '<div class="g-c-info">正常（是）</div>',
+                                        1: '<div class="g-c-gray10">锁定（否）</div>'
+                                    };
+                                    str += '<tr><th>' + detail_map[j] + ':</th><td>' + statemap[parseInt(list[j], 10)] + '</td></tr>';
+                                } else if (j === 'phone') {
+                                    str += '<tr><th>' + detail_map[j] + ':</th><td>' + public_tool.phoneFormat(list[j]) + '</td></tr>';
+                                } else if (j === 'gender') {
+                                    var gendermap = {
+                                        0: '男',
+                                        1: '女',
+                                        2: '保密'
+                                    };
+                                    str += '<tr><th>' + detail_map[j] + ':</th><td>' + gendermap[parseInt(list[j], 10)] + '</td></tr>';
+                                } else {
+                                    str += '<tr><th>' + detail_map[j] + ':</th><td>' + list[j] + '</td></tr>';
+                                }
+                            }
+                        }
+                        if (str !== '') {
+                            $(str).appendTo($show_detail_content.html(''));
+                            $show_detail_wrap.modal('show', {backdrop: 'static'});
+                        }
+                    }
+
+
+                })
+                .fail(function (resp) {
+                    console.log(resp.message);
+                    dia.content('<span class="g-c-bs-warning g-btips-warn">' + (resp.message || "查询详情失败") + '</span>').show();
+                });
+        }
+
 
         /*请求属性*/
         function requestEditInfo(value) {
@@ -1037,10 +1131,10 @@
                     async: false,
                     method: 'post',
                     data: {
-                        adminId:request_config.adminId,
-                        token:request_config.token,
-                        searchColumn:2,
-                        searchContent:value
+                        adminId: request_config.adminId,
+                        token: request_config.token,
+                        searchColumn: 2,
+                        searchContent: value
                     }
                 })
                 .done(function (resp) {
@@ -1060,19 +1154,18 @@
                     }
                     var code = parseInt(resp.code, 10);
                     if (code !== 0) {
-                        toggleEditQuery('');
+                        toggleEditQuery();
                         return false;
                     }
                     var result = resp.result;
                     if (result) {
-                        /*分页调用*/
                         if (result.list) {
                             /*解析属性*/
-                            var item=result.list[0];
+                            var item = result.list[0];
                             if (item) {
-                                toggleEditQuery(item['nickname'],item['id']);
+                                toggleEditQuery(item['nickname'], item['id']);
                             } else {
-                                toggleEditQuery('');
+                                toggleEditQuery();
                             }
                         }
                     }
@@ -1080,25 +1173,27 @@
                 .fail(function (resp) {
                     console.log(resp.message);
                     dia.content('<span class="g-c-bs-warning g-btips-warn">' + (resp.message || "操作失败") + '</span>').show();
-                    setTimeout(function () {
-                        dia.close();
-                    }, 2000);
                 });
         }
 
         /*切换编辑查询信息*/
-        function toggleEditQuery(value,id) {
-            if(value===''){
+        function toggleEditQuery(value, id) {
+            if (typeof value === 'undefined') {
+                $show_edit_name.html('');
+                $show_edit_btn.addClass('g-d-hidei').attr({
+                    'data-parentid': ''
+                });
+            } else if (value === '') {
                 /*hide*/
                 $show_edit_name.html('');
                 $show_edit_btn.addClass('g-d-hidei').attr({
-                    'data-id':''
+                    'data-parentid': ''
                 });
-            }else if(value!==''){
+            } else if (value !== '') {
                 /*show*/
                 $show_edit_name.html(value);
                 $show_edit_btn.removeClass('g-d-hidei').attr({
-                    'data-id':id
+                    'data-parentid': id
                 });
             }
         }
