@@ -33,7 +33,7 @@
 
 
             /*dom引用和相关变量定义*/
-            var debug = true,
+            var debug = false,
                 $admin_list_wrap = $('#admin_list_wrap')/*表格*/,
                 module_id = 'bzw-userC-list'/*模块id，主要用于本地存储传值*/,
                 dia = dialog({
@@ -280,8 +280,7 @@
                     var text = this.val(),
                         selector = this.selector.slice(1),
                         key = selector.split('_'),
-                        isColumn = selector.indexOf('Column') !== -1,
-                        isContent = selector.indexOf('Content') !== -1;
+                        isColumn = selector.indexOf('Column') !== -1;
 
                     if (isColumn) {
                         /*关联类型和关键字*/

@@ -179,7 +179,6 @@
                 }
             }).showModal();
         };
-
         return sureDialogFun;
     };
 

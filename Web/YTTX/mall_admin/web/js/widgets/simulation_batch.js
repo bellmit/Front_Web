@@ -24,11 +24,10 @@
     SimulationBatch.prototype.config = function (opt) {
         var self = this;
         $.extend(true, this, {
-            showactive: 'admin-batchitem-showactive'/*全选按钮切换*/,
             checkactive: 'simulation-batch-check-active'/*全选按钮选中*/,
             itemactive: 'item-lighten'/*单个数据高亮*/,
-            isself: false/*是否全选本身也参与数据处理*/,
             highactive: 'item-lightenbatch'/*批量数据高亮*/,
+            isself: false/*是否全选本身也参与数据处理*/,
             ismutil: false/*是否存在多个全选*/,
             selector: '>tr'/*默认选择器*/,
             parent: 'tr'/*默认上节点*/
@@ -42,19 +41,32 @@
 
     /*事件注册--绑定全选与取消全选--适应外部事件绑定*/
     SimulationBatch.prototype.bindMutilAll = function (config) {
-        var $wrap = config.$wrap,
-            $checkall = config.$checkall;
+        var $wrap = config.$wrap/*执行子选项查找操作的容器*/,
+            $checkall = config.$checkall/*全选按钮*/,
+            $parent = config.$parent/*全选父级高亮容器*/;
 
-        if ($wrap) {
+        if ($wrap && $checkall) {
             var check = parseInt($checkall.attr('data-check'), 10);
             if (check === 0) {
                 /*选中*/
                 /*清除上一次记录*/
                 this.clear($checkall);
                 /*重选*/
-                cache_checkall.attr({
-                    'data-check': 1
-                }).addClass(this.checkactive);
+                if (this.isself) {
+                    cache_list.push($checkall.attr('data-id'));
+                    cache_node.push($checkall.attr({
+                        'data-check': 1
+                    }).addClass(this.checkactive));
+                    if ($parent) {
+                        cache_parent.push($parent.removeClass(this.itemactive).addClass(this.highactive));
+                    } else {
+                        cache_parent.push($checkall.closest(this.parent).removeClass(this.itemactive).addClass(this.highactive));
+                    }
+                } else {
+                    cache_checkall.attr({
+                        'data-check': 1
+                    }).addClass(this.checkactive);
+                }
                 /*执行全选*/
                 this.toggleAll({
                     chk: 1,
@@ -142,13 +154,15 @@
             cache_parent.length = 0;
         }
         cache_list.length = 0;
-        /*清除全选*/
-        cache_checkall.attr({
-            'data-check': 0
-        }).removeClass(this.checkactive);
-        /*更新值*/
-        if ($checkall) {
-            cache_checkall = $checkall;
+        /*清除全选:非自选模式*/
+        if (!this.isself) {
+            cache_checkall.attr({
+                'data-check': 0
+            }).removeClass(this.checkactive);
+            /*更新值*/
+            if ($checkall) {
+                cache_checkall = $checkall;
+            }
         }
     };
 
@@ -329,13 +343,15 @@
             }
         }
         /*没有数据则恢复默认状态*/
-        if (cache_list.length === 0 && cache_checkall) {
+        if (!self.isself && cache_list.length === 0 && cache_checkall) {
             cache_checkall.attr({
                 'data-check': 0
             }).removeClass(self.checkactive);
             return '';
+        } else if (cache_list.length === 0) {
+            return '';
         }
-        return self.getList();
+        return cache_list;
     };
 
     /*全选和取消全选*/
@@ -368,8 +384,9 @@
 
     /*绑定选中某个单独多选框*/
     SimulationBatch.prototype.toggleItem = function (config) {
-        var $input = config.$input,
-            $checkall = config.$checkall,
+        var $input = config.$input/*执行子选项操作的按钮*/,
+            $checkall = config.$checkall/*全选按钮*/,
+            $parent = config.$parent/*全选父级高亮容器*/,
             self = this,
             len = cache_list.length,
             ishave = -1,
@@ -379,22 +396,39 @@
         if (check === 0) {
             /*选中*/
             if (len === 0) {
+                /*高亮全选*/
+                if (self.isself) {
+                    /*自选模式：则先添加全选*/
+                    if (self.ismutil && !$checkall) {
+                        $checkall = $input.closest('div.simulation-batch-check-all');
+                    }
+                    cache_list.push($checkall.attr('data-id'));
+                    cache_node.push($checkall.attr({
+                        'data-check': 1
+                    }).addClass(self.checkactive));
+                    if ($parent) {
+                        cache_parent.push($parent.removeClass(self.itemactive).addClass(self.highactive));
+                    } else {
+                        cache_parent.push($input.closest(self.parent).removeClass(self.itemactive).addClass(self.highactive));
+                    }
+                } else {
+                    /*非自选模式需要判断全选是否传入*/
+                    if (self.ismutil || (!self.ismutil && cache_checkall === null)) {
+                        if ($checkall) {
+                            cache_checkall = $checkall;
+                        } else {
+                            cache_checkall = $input.closest('div.simulation-batch-check-all');
+                        }
+                        cache_checkall.attr({
+                            'data-check': 1
+                        }).addClass(self.checkactive);
+                    }
+                }
                 cache_list.push(text);
                 cache_node.push($input.attr({
                     'data-check': 1
                 }).addClass(self.checkactive));
                 cache_parent.push($input.closest(self.parent).removeClass(self.itemactive).addClass(self.highactive));
-                /*高亮全选*/
-                if (self.ismutil || (!self.ismutil && cache_checkall === null)) {
-                    if ($checkall) {
-                        cache_checkall = $checkall;
-                    } else {
-                        cache_checkall = $input.closest().closest('div.simulation-batch-check-all');
-                    }
-                }
-                cache_checkall.attr({
-                    'data-check': 1
-                }).addClass(self.checkactive);
             } else {
                 ishave = $.inArray(text, cache_list);
                 if (ishave !== -1) {

@@ -118,7 +118,10 @@
 
                         <!--表格主体-->
                         <div class="panel-body">
+                            <div class="admin-gap-theme2" id="search_nickName"></div>
+
                             <div class="admin-search-wrap">
+
                                 <div class="admin-search-item">
                                     <label>查询类型：</label>
                                     <select id="search_searchColumn" >
@@ -133,8 +136,11 @@
                                 </div>
 
                                 <div class="admin-search-item">
-                                    <label>注册时间：</label>
-                                    <input type="text" placeholder="选择开始时间" readonly id="search_createTimeStart" />&nbsp;至&nbsp;<input placeholder="选择结束时间" type="text" readonly id="search_createTimeEnd" />
+                                    <label>等级关系：</label>
+                                    <select id="search_level" >
+                                        <option selected  value="1">一级</option>
+                                        <option value="2">二级</option>
+                                    </select>
                                 </div>
 
                                 <div class="admin-search-item">
@@ -225,6 +231,74 @@
             </footer>
 
 
+        </div>
+    </div>
+
+
+
+    <!--审核银行卡-->
+    <div class="modal fade custom-width" id="show_edit_wrap">
+        <div class="modal-dialog g-w-number30">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">关系编辑</h4>
+                </div>
+                <div class="modal-body">
+                    <!--信息展现-->
+                    <table class="table table-bordered table-striped table-hover admin-table">
+                        <colgroup>
+                            <col class="g-w-percent15"/>
+                            <col class="g-w-percent35"/>
+                        </colgroup>
+                        <tbody id="show_audit_info">
+                        <tr>
+                            <th colspan="2">用户信息</th>
+                        </tr>
+                        <tr>
+                            <td class="g-t-r">用户名称：</td>
+                            <td class="g-t-l"></td>
+                        </tr>
+                        <tr>
+                            <td class="g-t-r">上级名称：</td>
+                            <td class="g-t-l">
+                                    <span class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">
+                                        <i class="fa-pencil"></i>&nbsp;&nbsp;编辑
+                                    </span>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <!--信息填写-->
+                    <div class="g-d-hidei" id="show_audit_content">
+                        <table class="table table-bordered table-striped table-hover admin-table">
+                            <colgroup>
+                                <col class="g-w-percent15"/>
+                                <col class="g-w-percent35"/>
+                            </colgroup>
+                            <tbody>
+                            <tr>
+                                <th colspan="2">填写新用户信息</th>
+                            </tr>
+                            <tr>
+                                <td class="g-t-r">新上级手机号：</td>
+                                <td class="g-t-l">
+                                    <input placeholder="请输入新上级手机号" maxlength="13" value=""  type="text" class="form-control" name="phone" id="show_edit_phone" /></td>
+                            </tr>
+                            <tr>
+                                <td class="g-t-r">新上级用户名：</td>
+                                <td class="g-t-l" id="show_edit_name">
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="show_edit_btn" data-id="" class="g-d-hidei btn btn-info">完成</button>
+                    <button type="button" class="btn btn-info" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
         </div>
     </div>
 

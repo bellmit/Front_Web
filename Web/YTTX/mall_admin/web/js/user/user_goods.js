@@ -52,10 +52,7 @@
 
             /*获取供应商信息*/
             var user_cache = public_tool.getParams('bzw-user-goods');
-            /*{
-             id
-             nickname
-             }*/
+            /*{id,nickname}*/
             if (user_cache && typeof user_cache.id !== 'undefined') {
                 /*显示查询条件*/
                 $search_nickName.html('<div class="inline g-f-l">商家名称：<span class="g-c-info">' + user_cache.nickname + '</span></div>');

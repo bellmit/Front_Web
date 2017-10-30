@@ -308,6 +308,32 @@
 }
 
 /*-----表格样式-----*/
+.admin-table{
+  .item-lighten {
+    td, th {
+      background: lighten(@btn-success-bg, 45%) !important;
+    }
+  }
+  .item-lightenbatch {
+    td, th {
+      background: lighten(@btn-info-bg, 40%) !important;
+      border-bottom: 1px dashed @color-gray14 !important;
+    }
+  }
+}
+ul {
+  >li.item-lighten {
+    .typeitem-default{
+      background: lighten(@btn-success-bg, 45%) !important;
+    }
+    background: lighten(@btn-success-bg, 45%) !important;
+  }
+  >li.item-lightenbatch {
+    background: lighten(@btn-info-bg, 40%) !important;
+    border-bottom: 1px dashed @color-gray14 !important;
+  }
+}
+
 .admin-table {
   width: 100% !important;
   tr {
@@ -323,18 +349,6 @@
   tfoot th {
     .user-select-base(none);
   }
-  .item-lighten {
-    td, th {
-      background: lighten(@btn-success-bg, 45%) !important;
-    }
-  }
-  .item-lightenbatch {
-    td, th {
-      background: lighten(@btn-info-bg, 40%) !important;
-      border-bottom: 1px dashed @color-gray14 !important;
-    }
-  }
-
   .ul-btn {
     display: inline-block;
     padding: 0 5px;
