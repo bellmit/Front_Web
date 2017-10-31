@@ -20,7 +20,7 @@
             });
 
             /*dom引用和相关变量定义*/
-            var debug = true,
+            var debug = false,
                 module_id = 'bzw-userC-relation'/*模块id，主要用于本地存储传值*/,
                 $search_nickName = $('#search_nickName');
 
@@ -89,6 +89,7 @@
 
                 /*清空查询条件*/
                 $admin_search_clear.on('click', function () {
+                    /*清除查询条件*/
                     $.each([$search_searchColumn, $search_searchContent, $search_level], function () {
                         var selector = this.selector;
                         if (selector.indexOf('level') !== -1) {
@@ -102,11 +103,13 @@
                             this.val('');
                         }
                     });
+                    /*清除分页*/
+                    request_config.page=1;
+                    request_config.total=0;
                 }).trigger('click');
 
                 /*联合查询*/
                 $admin_search_btn.on('click', function () {
-                    var data = $.extend(true, {}, request_config);
                     $.each([$search_searchColumn, $search_level], function () {
                         var text = this.val(),
                             selector = this.selector.slice(1),
@@ -290,20 +293,27 @@
                                 /*加载子分类*/
                                 var subitem = doSubAttr(id);
                                 if (subitem !== null) {
-                                    var subtype = doAttr(subitem, {
-                                        limit: 2,
-                                        index: index,
-                                        parentlabel: label,
-                                        layer: layer,
-                                        parentid: id
-                                    });
-                                    if (subtype) {
-                                        $(subtype).appendTo($wrap);
+                                    if (subitem.length !== 0) {
+                                        var subtype = doAttr(subitem, {
+                                            limit: 2,
+                                            index: index,
+                                            parentlabel: label,
+                                            layer: layer,
+                                            parentid: id
+                                        });
+                                        if (subtype) {
+                                            $(subtype).appendTo($wrap);
+                                            /*设置已经加载*/
+                                            $this.attr({
+                                                'data-loadsub': 1
+                                            });
+                                            subtype = null;
+                                        }
+                                    } else {
                                         /*设置已经加载*/
                                         $this.attr({
                                             'data-loadsub': 1
                                         });
-                                        subtype = null;
                                     }
                                 }
                             }
@@ -340,25 +350,21 @@
 
                 /*绑定关闭弹出层*/
                 $.each([$show_edit_wrap, $show_detail_wrap], function (index) {
-                    if (index === 0) {
-                        this.on('hide.bs.modal', function () {
-                            if (operate_item !== null) {
-                                operate_item.removeClass('item-lighten');
-                                operate_item = null;
-                            }
+                    this.on('hide.bs.modal', function () {
+                        if (operate_item !== null) {
+                            operate_item.removeClass('item-lighten');
+                            operate_item = null;
+                        }
+                        if (index === 0) {
                             $show_edit_btn.attr({
                                 'data-id': ''
                             });
                             toggleEditQuery();
-                        });
-                    } else if (index === 1) {
-                        this.on('hide.bs.modal', function () {
-                            if (operate_item !== null) {
-                                operate_item.removeClass('item-lighten');
-                                operate_item = null;
-                            }
-                        });
-                    }
+                            $show_edit_phone.val('');
+                            $show_audit_info.html('');
+                            $show_audit_content.addClass('g-d-hidei');
+                        }
+                    });
                 });
 
 
@@ -379,10 +385,10 @@
                             toggleEditQuery();
                             return false;
                         }
-                        /*查询新用户*/
-                        requestEditInfo(this.value);
                         /*格式化显示*/
                         this.value = public_tool.phoneFormat(this.value);
+                        /*查询新用户*/
+                        requestEditInfo(public_tool.trims(this.value));
                     }
                 });
 
@@ -494,16 +500,9 @@
                                 /*请求属性数据*/
                                 requestAttr(request_config);
                                 /*重置值*/
-                                toggleEditQuery();
-                                $show_edit_btn.attr({
-                                    'data-id': ''
-                                });
-                                $show_edit_phone.val('');
-                                $show_audit_info.html('');
                                 setTimeout(function () {
                                     dia.close();
                                     $show_edit_wrap.modal('hide');
-                                    $show_audit_content.addClass('g-d-hidei');
                                 }, 2000);
 
                             })
@@ -722,7 +721,8 @@
                 str = '',
                 i = 0,
                 len = attrlist.length,
-                layer = 1;
+                layer = 1,
+                level = parseInt(request_config.level, 10);
 
             if (len !== 0) {
                 for (i; i < len; i++) {
@@ -733,9 +733,12 @@
                     if (layer >= limit) {
                         hassub = false;
                     }
+                    /*限制查询第二层时出现下拉按钮*/
+                    if (level === 2) {
+                        hassub = false;
+                    }
 
                     if (hassub) {
-
                         str += doItems(curitem, {
                                 flag: true,
                                 limit: limit,
@@ -908,17 +911,19 @@
             if (typeof id === 'undefined') {
                 return null;
             }
+            var config = {
+                adminId: request_config.adminId,
+                token: request_config.token,
+                parentId: id,
+                pageSize: 1000,
+                level: 2
+            };
             $.ajax({
                     url: debug ? "../../json/test.json" : "http://10.0.5.226:8082/mall-buzhubms-api/shuser/hierarchy/list",
                     dataType: 'JSON',
                     async: false,
                     method: 'post',
-                    data: {
-                        adminId: request_config.adminId,
-                        token: request_config.token,
-                        parentId: id,
-                        pageSize: 1000
-                    }
+                    data: config
                 })
                 .done(function (resp) {
                     if (debug) {
@@ -934,7 +939,6 @@
                             mapmax: 10,
                             type: 'list'
                         });
-
                     }
                     var code = parseInt(resp.code, 10);
                     if (code !== 0) {
@@ -951,7 +955,7 @@
                     console.log(resp.message);
                     return null;
                 });
-            return list.length === 0 ? null : list;
+            return list ? list : null;
         }
 
         /*请求属性*/
@@ -1047,7 +1051,7 @@
                         resp.result = testWidget.getMap({
                             map: {
                                 id: 'guid',
-                                nickName: 'value',
+                                nickname: 'value',
                                 phone: 'mobile',
                                 gender: 'rule,0,1,2',
                                 birthday: 'datetime',
@@ -1076,7 +1080,7 @@
 
                     if (!$.isEmptyObject(list)) {
                         detail_map = {
-                            nickName: '用户名称(昵称)',
+                            nickname: '用户名称(昵称)',
                             birthday: '出生日期',
                             gender: '性别',
                             phone: '手机号',
@@ -1126,31 +1130,35 @@
         /*请求属性*/
         function requestEditInfo(value) {
             $.ajax({
-                    url: debug ? "../../json/test.json" : "http://10.0.5.226:8082/mall-buzhubms-api/shuser/hierarchy/list",
+                    url: debug ? "../../json/test.json" : "http://10.0.5.226:8082/mall-buzhubms-api/shuser/getinfo",
                     dataType: 'JSON',
                     async: false,
                     method: 'post',
                     data: {
                         adminId: request_config.adminId,
                         token: request_config.token,
-                        searchColumn: 2,
-                        searchContent: value
+                        phone: value
                     }
                 })
                 .done(function (resp) {
                     if (debug) {
-                        var resp = testWidget.test({
-                            map: {
-                                id: 'sequence',
-                                nickname: 'name',
-                                phone: 'mobile',
-                                status: 'or',
-                                hasSub: 'boolean'
-                            },
-                            mapmin: 5,
-                            mapmax: 10,
-                            type: 'list'
-                        });
+                        if (debug) {
+                            var resp = testWidget.testSuccess('list');
+                            resp.result = testWidget.getMap({
+                                map: {
+                                    id: 'guid',
+                                    nickname: 'value',
+                                    phone: 'mobile',
+                                    gender: 'rule,0,1,2',
+                                    birthday: 'datetime',
+                                    createTime: 'datetime',
+                                    lastLoginTime: 'datetime',
+                                    loginTimes: 'id',
+                                    status: 'rule,0,1'
+                                },
+                                maptype: 'object'
+                            }).list;
+                        }
                     }
                     var code = parseInt(resp.code, 10);
                     if (code !== 0) {
@@ -1159,15 +1167,10 @@
                     }
                     var result = resp.result;
                     if (result) {
-                        if (result.list) {
-                            /*解析属性*/
-                            var item = result.list[0];
-                            if (item) {
-                                toggleEditQuery(item['nickname'], item['id']);
-                            } else {
-                                toggleEditQuery();
-                            }
-                        }
+                        /*解析属性*/
+                        toggleEditQuery(result['nickname'], result['id']);
+                    }else{
+                        toggleEditQuery();
                     }
                 })
                 .fail(function (resp) {

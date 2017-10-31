@@ -33,7 +33,7 @@
 
 
             /*dom引用和相关变量定义*/
-            var debug = true,
+            var debug = false,
                 $admin_list_wrap = $('#admin_list_wrap')/*表格*/,
                 module_id = 'bzw-userC-list'/*模块id，主要用于本地存储传值*/,
                 dia = dialog({
@@ -265,9 +265,14 @@
 
             /*清空查询条件*/
             $admin_search_clear.on('click', function () {
+                /*清除查询条件*/
                 $.each([$search_searchColumn, $search_searchContent, $search_createTimeStart, $search_createTimeEnd], function () {
                     this.val('');
                 });
+                /*重置分页*/
+                user_page.page = 1;
+                user_page.total = 0;
+                user_config.config.ajax.data['page'] = user_page.page;
             }).trigger('click');
             /*日历查询*/
             datePickWidget.datePick([$search_createTimeStart, $search_createTimeEnd]);
@@ -411,7 +416,7 @@
                         nickname: $this.attr('data-nickname'),
                         status: $this.attr('data-status')
                     });
-                    window.location.href = 'bzw-userC-relation.html';
+                    window.open('bzw-userC-relation.html');
                 }
             });
 
