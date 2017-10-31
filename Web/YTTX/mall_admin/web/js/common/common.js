@@ -834,7 +834,7 @@
             "name": "商品属性",
             "code": "attribute",
             "match": "-attribute-",
-            "class": "menu-ux-shop",
+            "class": "menu-ux-attribute",
             "module": "attribute",
             "modid": "260"
         },
@@ -842,7 +842,7 @@
             "name": "商品类型管理",
             "code": "goodstype",
             "match": "-goodstype-",
-            "class": "menu-ux-shop",
+            "class": "menu-ux-type",
             "module": "goodstype",
             "modid": "270"
         },
@@ -925,7 +925,7 @@
             "name": "分润管理C端",
             "code": "profitC",
             "match": "-profitC-",
-            "class": "menu-ux-serve",
+            "class": "menu-ux-chart",
             "module": "profitC",
             "modid": "350"
         }

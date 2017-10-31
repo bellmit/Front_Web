@@ -21,21 +21,16 @@
             });
 
 
-            /*清除会员关系*/
-            public_tool.removeParams('bzw-userC-relation');
-
-
             /*权限调用*/
-            var powermap = public_tool.getPower(),
-                relation_power = public_tool.getKeyPower('userC-relation', powermap)/*会员关系*/,
-                forbid_power = public_tool.getKeyPower('userC-forbid', powermap)/*会员禁用*/,
-                enable_power = public_tool.getKeyPower('userC-enable', powermap)/*会员启用*/;
+            var powermap = public_tool.getPower(350),
+                detail_power = public_tool.getKeyPower('profitC-detail', powermap)/*查看*/,
+                settlement_power = public_tool.getKeyPower('profitC-settlement', powermap)/*结算*/;
 
 
             /*dom引用和相关变量定义*/
             var debug = false,
                 $admin_list_wrap = $('#admin_list_wrap')/*表格*/,
-                module_id = 'bzw-userC-list'/*模块id，主要用于本地存储传值*/,
+                module_id = 'bzw-profitC-list'/*模块id，主要用于本地存储传值*/,
                 dia = dialog({
                     zIndex: 2000,
                     title: '温馨提示',
@@ -50,54 +45,29 @@
                 $admin_page_wrap = $('#admin_page_wrap'),
                 sureObj = public_tool.sureDialog(dia)/*回调提示对象*/,
                 setSure = new sureObj(),
-                mobile_bind = false;
+                operate_item = null;
 
 
             /*查询对象*/
-            var $search_searchColumn = $('#search_searchColumn'),
-                $search_searchContent = $('#search_searchContent'),
+            var $search_nickname = $('#search_nickname'),
+                $search_phone = $('#search_phone'),
                 $search_createTimeStart = $('#search_createTimeStart'),
                 $search_createTimeEnd = $('#search_createTimeEnd'),
                 $admin_search_btn = $('#admin_search_btn'),
                 $admin_search_clear = $('#admin_search_clear');
 
-
-            /*批量配置参数*/
-            var $admin_batchitem_btn = $('#admin_batchitem_btn'),
-                $admin_batchitem_show = $('#admin_batchitem_show'),
-                $admin_batchitem_check = $('#admin_batchitem_check'),
-                $admin_batchitem_action = $('#admin_batchitem_action'),
-                $admin_userC_list = $('#admin_userC_list'),
-                batchItem = new public_tool.BatchItem();
-
-            /*批量初始化*/
-            batchItem.init({
-                $batchtoggle: $admin_batchitem_btn,
-                $batchshow: $admin_batchitem_show,
-                $checkall: $admin_batchitem_check,
-                $action: $admin_batchitem_action,
-                $listwrap: $admin_userC_list,
-                setSure: setSure,
-                powerobj: {
-                    'forbid': forbid_power,
-                    'enable': enable_power
-                },
-                fn: function (type) {
-                    /*批量操作*/
-                    batchUser({
-                        action: type
-                    });
-                }
-            });
+            /*明细对象*/
+            var $show_detail_wrap = $('#show_detail_wrap'),
+                $show_detail_content = $('#show_detail_content');
 
 
             /*列表请求配置*/
-            var user_page = {
+            var profit_page = {
                     page: 1,
                     pageSize: 10,
                     total: 0
                 },
-                user_config = {
+                profit_config = {
                     $admin_list_wrap: $admin_list_wrap,
                     $admin_page_wrap: $admin_page_wrap,
                     config: {
@@ -106,7 +76,7 @@
                         autoWidth: true, /*是否*/
                         paging: false,
                         ajax: {
-                            url: debug ? "../../json/test.json" : "http://10.0.5.226:8082/mall-buzhubms-api/shuser/list",
+                            url: debug ? "../../json/test.json" : "http://10.0.5.226:8082/mall-buzhubms-api/commission/log/get/list",
                             dataType: 'JSON',
                             method: 'post',
                             dataSrc: function (json) {
@@ -114,14 +84,15 @@
                                     var json = testWidget.test({
                                         map: {
                                             id: 'sequence',
-                                            nickname: 'value',
+                                            nickname: 'name',
                                             phone: 'mobile',
-                                            gender: 'rule,0,1,2',
-                                            birthday: 'datetime',
+                                            goodsName: 'goods',
+                                            commissionAmountTotal: 'money',
                                             createTime: 'datetime',
-                                            lastLoginTime: 'datetime',
-                                            loginTimes: 'id',
-                                            status: 'rule,0,1'
+                                            commissionGrade: 'rule,1,2,3',
+                                            commissionRate: 'minmax,0,100',
+                                            commissionAmountExtra: 'money',
+                                            commissionAmount: 'money'
                                         },
                                         mapmin: 5,
                                         mapmax: 10,
@@ -145,29 +116,27 @@
                                     return [];
                                 }
                                 /*设置分页*/
-                                user_page.page = result.page;
-                                user_page.pageSize = result.pageSize;
-                                user_page.total = result.count;
+                                profit_page.page = result.page;
+                                profit_page.pageSize = result.pageSize;
+                                profit_page.total = result.count;
                                 /*分页调用*/
                                 $admin_page_wrap.pagination({
-                                    pageSize: user_page.pageSize,
-                                    total: user_page.total,
-                                    pageNumber: user_page.page,
+                                    pageSize: profit_page.pageSize,
+                                    total: profit_page.total,
+                                    pageNumber: profit_page.page,
                                     onSelectPage: function (pageNumber, pageSize) {
                                         /*再次查询*/
-                                        var param = user_config.config.ajax.data;
+                                        var param = profit_config.config.ajax.data;
                                         param.page = pageNumber;
                                         param.pageSize = pageSize;
-                                        user_config.config.ajax.data = param;
-                                        getColumnData(user_page, user_config);
+                                        profit_config.config.ajax.data = param;
+                                        getColumnData(profit_page, profit_config);
                                     }
                                 });
                                 return result ? result.list || [] : [];
                             },
                             data: {
-                                roleId: decodeURIComponent(logininfo.param.roleId),
                                 adminId: decodeURIComponent(logininfo.param.adminId),
-                                grade: decodeURIComponent(logininfo.param.grade),
                                 token: decodeURIComponent(logininfo.param.token),
                                 page: 1,
                                 pageSize: 10
@@ -175,16 +144,8 @@
                         },
                         info: false,
                         searching: true,
-                        order: [[4, "desc"], [5, "desc"]],
+                        order: [[8, "desc"], [0, "desc"]],
                         columns: [
-                            {
-                                "data": "id",
-                                "orderable": false,
-                                "searchable": false,
-                                "render": function (data, type, full, meta) {
-                                    return '<input data-status="' + full.status + '" value="' + data + '" name="userID" type="checkbox" />';
-                                }
-                            },
                             {
                                 "data": "nickname"
                             },
@@ -198,61 +159,55 @@
                                 }
                             },
                             {
-                                "data": "gender",
+                                "data": "goodsName"
+                            },
+                            {
+                                "data": "commissionAmountTotal",
                                 "render": function (data, type, full, meta) {
-                                    var gender = parseInt(data, 10),
-                                        gender_map = {
-                                            0: '男',
-                                            1: '女',
-                                            2: '保密'
-                                        };
-                                    return gender_map[gender] || '';
+                                    return public_tool.moneyCorrect(data, 15, false)[0] || '0.00';
                                 }
+                            },
+                            {
+                                "data": "commissionAmount",
+                                "render": function (data, type, full, meta) {
+                                    return public_tool.moneyCorrect(data, 15, false)[0] || '0.00';
+                                }
+                            },
+                            {
+                                "data": "commissionAmountExtra",
+                                "render": function (data, type, full, meta) {
+                                    return public_tool.moneyCorrect(data, 15, false)[0] || '0.00';
+                                }
+                            },
+                            {
+                                "data": "commissionGrade",
+                                "render": function (data, type, full, meta) {
+                                    return data + '级';
+                                }
+                            },
+                            {
+                                "data": "commissionRate"
                             },
                             {
                                 "data": "createTime"
                             },
                             {
-                                "data": "status",
-                                "render": function (data, type, full, meta) {
-                                    var status = parseInt(data, 10);
-
-                                    if (status === 0) {
-                                        return '<div class="g-c-info">启用(正常)</div>';
-                                    } else if (status === 1) {
-                                        return '<div class="g-c-gray10">禁用(锁定)</div>';
-                                    }
-                                }
-                            },
-                            {
-                                "data": "loginTimes"
-                            },
-                            {
                                 "data": "id",
                                 "render": function (data, type, full, meta) {
                                     var id = parseInt(data, 10),
-                                        btns = '',
-                                        status = parseInt(full.status, 10);
+                                        btns = '';
 
-                                    if (status === 0 && forbid_power) {
-                                        /*正常(可用)*/
-                                        btns += '<span data-action="forbid" data-id="' + id + '"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
-													<i class="fa-toggle-off"></i>\
-													<span>禁用(锁定)</span>\
-												</span>';
-                                    } else if (status === 1 && enable_power) {
-                                        /*锁定(禁用)*/
-                                        btns += '<span data-action="enable" data-id="' + id + '"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
-													<i class="fa-toggle-on"></i>\
-													<span>启用(正常)</span>\
+                                    /*查看详情*/
+                                    if (detail_power) {
+                                        btns += '<span data-action="detail" data-id="' + id + '"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+													<i class="fa-file-text-o"></i>\
+													<span>查看</span>\
 												</span>';
                                     }
-
-                                    /*会员关系*/
-                                    if (relation_power) {
-                                        btns += '<span data-action="relation" data-id="' + id + '" data-nickname="' + full.nickname + '" data-status="' + full.status + '"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
-													<i class="fa-sitemap"></i>\
-													<span>会员关系</span>\
+                                    if (false && settlement_power) {
+                                        btns += '<span data-action="settlement" data-id="' + id + '"  class="g-d-hidei btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+													<i class="fa-arrow-circle-left"></i>\
+													<span>结算</span>\
 												</span>';
                                     }
                                     return btns;
@@ -263,108 +218,77 @@
                 };
 
 
+
             /*清空查询条件*/
             $admin_search_clear.on('click', function () {
                 /*清除查询条件*/
-                $.each([$search_searchColumn, $search_searchContent, $search_createTimeStart, $search_createTimeEnd], function () {
+                $.each([$search_nickname, $search_phone, $search_createTimeStart, $search_createTimeEnd], function () {
                     this.val('');
                 });
                 /*重置分页*/
-                user_page.page = 1;
-                user_page.total = 0;
-                user_config.config.ajax.data['page'] = user_page.page;
+                profit_page.page = 1;
+                profit_page.total = 0;
+                profit_config.config.ajax.data['page'] = profit_page.page;
             }).trigger('click');
-            
+
             /*日历查询*/
             datePickWidget.datePick([$search_createTimeStart, $search_createTimeEnd]);
 
             /*联合查询*/
             $admin_search_btn.on('click', function () {
-                var data = $.extend(true, {}, user_config.config.ajax.data);
+                var data = $.extend(true, {}, profit_config.config.ajax.data);
 
-                $.each([$search_searchColumn, $search_createTimeStart, $search_createTimeEnd], function () {
+                $.each([$search_nickname, $search_phone, $search_createTimeStart, $search_createTimeEnd], function () {
                     var text = this.val(),
                         selector = this.selector.slice(1),
-                        key = selector.split('_'),
-                        isColumn = selector.indexOf('Column') !== -1;
+                        key = selector.split('_');
 
-                    if (isColumn) {
-                        /*关联类型和关键字*/
-                        var content = public_tool.trims($search_searchContent.val());
-                        if (text !== "" && content !== '') {
-                            data[key[1]] = text;
-                            data['searchContent'] = content;
-                        } else {
-                            delete data['searchColumn'];
-                            delete data['searchContent'];
+                    if (text === "") {
+                        if (typeof data[key[1]] !== 'undefined') {
+                            delete data[key[1]];
                         }
                     } else {
-                        if (text === "") {
-                            if (typeof data[key[1]] !== 'undefined') {
-                                delete data[key[1]];
-                            }
-                        } else {
-                            data[key[1]] = text;
-                        }
+                        data[key[1]] = text;
                     }
                 });
-                user_config.config.ajax.data = $.extend(true, {}, data);
-                getColumnData(user_page, user_config);
+                profit_config.config.ajax.data = $.extend(true, {}, data);
+                getColumnData(profit_page, profit_config);
             });
-            
-            /*绑定切换查询类型和查询关键字关联查询*/
-            $search_searchColumn.on('change', function () {
-                var value = this.value;
-                /*切换绑定内容限制*/
-                if (value !== '') {
-                    value = parseInt(value, 10);
-                    if (value === 1) {
-                        /*昵称*/
-                        /*取消绑定手机事件*/
-                        if (mobile_bind) {
-                            $search_searchContent.removeAttr('maxlength').off('keyup focusout');
-                            mobile_bind = false;
-                        }
-                    } else if (value === 2) {
-                        /*手机号*/
-                        /*绑定手机处理事件*/
-                        $search_searchContent.val('');
-                        if (mobile_bind) {
-                            /*已经绑定则不绑定*/
-                            return false;
-                        }
-                        /*格式化手机号码*/
-                        $search_searchContent.attr({
-                            'maxlength': 13
-                        }).on('keyup focusout', function (e) {
-                            var etype = e.type,
-                                phoneno = this.value.replace(/\D*/g, '');
 
-                            if (etype === 'keyup') {
-                                if (phoneno === '') {
-                                    this.value = '';
-                                    return false;
-                                }
-                                this.value = public_tool.phoneFormat(this.value);
-                            } else if (etype === 'focusout') {
-                                if (!public_tool.isMobilePhone(phoneno)) {
-                                    this.value = '';
-                                    return false;
-                                }
-                                this.value = public_tool.phoneFormat(this.value);
-                            }
-                        });
-                        mobile_bind = true;
+            /*绑定切换查询类型和查询关键字关联查询*/
+            /*格式化手机号码*/
+            $search_phone.on('keyup focusout', function (e) {
+                var etype = e.type,
+                    phoneno = this.value.replace(/\D*/g, '');
+
+                if (etype === 'keyup') {
+                    if (phoneno === '') {
+                        this.value = '';
+                        return false;
                     }
-                } else {
-                    $search_searchContent.val('');
+                    this.value = public_tool.phoneFormat(this.value);
+                } else if (etype === 'focusout') {
+                    if (!public_tool.isMobilePhone(phoneno)) {
+                        this.value = '';
+                        return false;
+                    }
+                    this.value = public_tool.phoneFormat(this.value);
                 }
             });
 
 
+            /*绑定关闭弹出层*/
+            $.each([$show_detail_wrap], function () {
+                this.on('hide.bs.modal', function () {
+                    if (operate_item !== null) {
+                        operate_item.removeClass('item-lighten');
+                        operate_item = null;
+                    }
+                });
+            });
+
+
             /*事件绑定*/
-            /*绑定查看，修改操作*/
-            var operate_item;
             $admin_list_wrap.delegate('span', 'click', function (e) {
                 e.stopPropagation();
                 e.preventDefault();
@@ -373,15 +297,7 @@
                     $this,
                     id,
                     action,
-                    $tr,
-                    actionmap = {
-                        "forbid": 2,
-                        "enable": 1
-                    },
-                    actiontip = {
-                        "forbid": '禁用',
-                        "enable": '启用'
-                    };
+                    $tr;
 
                 //适配对象
                 if (target.className.indexOf('btn') !== -1) {
@@ -393,38 +309,24 @@
                 id = $this.attr('data-id');
                 action = $this.attr('data-action');
 
+                if (operate_item) {
+                    operate_item.removeClass('item-lighten');
+                    operate_item = null;
+                }
+                operate_item = $tr.addClass('item-lighten');
                 /*启用，禁用操作*/
-                if (action === 'forbid' || action === 'enable') {
-                    if (operate_item) {
-                        operate_item.removeClass('item-lighten');
-                        operate_item = null;
-                    }
-                    operate_item = $tr.addClass('item-lighten');
-                    /*确认是否启用或禁用*/
-                    setSure.sure(actiontip[action], function (cf) {
-                        /*to do*/
-                        setEnabled({
-                            id: id,
-                            action: action,
-                            tip: cf.dia || dia,
-                            type: 'base',
-                            actiontip: actiontip,
-                            actionmap: actionmap
-                        });
-                    }, action === 'forbid' ? "禁用后，该用户将不再能使用该账号，是否禁用？" : "启用后，该用户将能使用该账号，是否启用？", true);
-                } else if (action === 'relation') {
-                    public_tool.setParams('bzw-userC-relation', {
-                        id: id,
-                        nickname: $this.attr('data-nickname'),
-                        status: $this.attr('data-status')
-                    });
-                    window.open('bzw-userC-relation.html');
+                if (action === 'settlement') {
+                    /*todo*/
+                    /*结算操作*/
+                } else if (action === 'detail') {
+                    /*查看详情*/
+                    showDetail(id);
                 }
             });
 
 
             /*初始化请求*/
-            getColumnData(user_page, user_config);
+            getColumnData(profit_page, profit_config);
         }
 
 
@@ -434,7 +336,7 @@
                 table = opt.$admin_list_wrap.DataTable(opt.config);
             } else {
                 /*清除批量数据*/
-                batchItem.clear();
+                /*todo*/
                 table.ajax.config(opt.config.ajax).load();
             }
         }
@@ -463,7 +365,6 @@
                         operate: obj.actionmap[action],
                         roleId: decodeURIComponent(logininfo.param.roleId),
                         adminId: decodeURIComponent(logininfo.param.adminId),
-                        grade: decodeURIComponent(logininfo.param.grade),
                         token: decodeURIComponent(logininfo.param.token)
                     }
                 })
@@ -481,7 +382,7 @@
                                 operate_item = null;
                             }
                         } else if (type === 'batch') {
-                            batchItem.clear();
+                            /*todo*/
                         }
                         setTimeout(function () {
                             tip.close();
@@ -499,10 +400,10 @@
                                 operate_item = null;
                             }
                         } else if (type === 'batch') {
-                            batchItem.clear();
+                            /*to do*/
                         }
                         setTimeout(function () {
-                            getColumnData(user_page, user_config);
+                            getColumnData(profit_page, profit_config);
                         }, 1000);
                     }, 1000);
                 })
@@ -515,7 +416,7 @@
                             operate_item = null;
                         }
                     } else if (type === 'batch') {
-                        batchItem.clear();
+                        /*to do*/
                     }
                     setTimeout(function () {
                         tip.close();
@@ -524,8 +425,8 @@
         }
 
 
-        /*批量操作*/
-        function batchUser(config) {
+        /*批量结算操作*/
+        function batchSettlement(config) {
 
             var action = config.action;
 
@@ -620,6 +521,101 @@
                     }
                 }
             }
+        }
+
+
+        /*详情展现*/
+        function showDetail(id) {
+            if (typeof id === 'undefined' && id === '') {
+                return false;
+            }
+            $.ajax({
+                    url: debug ? "../../json/test.json" : "http://10.0.5.226:8082/mall-buzhubms-api/commission/log/get/details",
+                    dataType: 'JSON',
+                    method: 'post',
+                    data: {
+                        id: id,
+                        adminId: decodeURIComponent(logininfo.param.adminId),
+                        token: decodeURIComponent(logininfo.param.token)
+                    }
+                })
+                .done(function (resp) {
+                    if (debug) {
+                        var resp = testWidget.testSuccess('list');
+                        resp.result = testWidget.getMap({
+                            map: {
+                                total: 'money',
+                                nickname: 'name',
+                                phone: 'mobile',
+                                goodsName: 'goods',
+                                goodsOrderNumber: 'guid',
+                                nicknameBuy: 'name',
+                                commissionAmountTotal: 'money',
+                                createTime: 'datetime',
+                                commissionGrade: 'rule,1,2,3',
+                                commissionRate: 'minmax,0,100',
+                                commissionAmountExtra: 'money',
+                                commissionAmount: 'money'
+                            },
+                            maptype: 'object'
+                        }).list;
+                    }
+                    var code = parseInt(resp.code, 10);
+                    if (code !== 0) {
+                        console.log(resp.message);
+                        dia.content('<span class="g-c-bs-warning g-btips-warn">' + (resp.message || "查询详情失败") + '</span>').show();
+                        return false;
+                    }
+                    /*是否是正确的返回数据*/
+                    var list = resp.result;
+                    if (!list) {
+                        return false;
+                    }
+
+                    var str = '',
+                        detail_map;
+
+                    if (!$.isEmptyObject(list)) {
+                        detail_map = {
+                            total: '总分润额',
+                            nickname: '会员名称(昵称)',
+                            phone: '手机号',
+                            goodsName: '商品名称',
+                            goodsOrderNumber: '订单号',
+                            nicknameBuy: '购买会员昵称',
+                            commissionAmountTotal: '利润额',
+                            createTime: '成交时间',
+                            commissionGrade: '分润等级',
+                            commissionRate: '分润比例',
+                            commissionAmountExtra: '鼓励奖',
+                            commissionAmount: '分润额'
+                        };
+                        /*添加高亮状态*/
+                        for (var j in list) {
+                            if (typeof detail_map[j] !== 'undefined') {
+                                if (j === 'total' || j === 'commissionAmountTotal' || j === 'commissionAmountExtra' || j === 'commissionAmount') {
+                                    str += '<tr><th>' + detail_map[j] + ':</th><td>' + public_tool.moneyCorrect(list[j], 15, false)[0] + '</td></tr>';
+                                } else if (j === 'phone') {
+                                    str += '<tr><th>' + detail_map[j] + ':</th><td>' + public_tool.phoneFormat(list[j]) + '</td></tr>';
+                                } else if (j === 'commissionGrade') {
+                                    str += '<tr><th>' + detail_map[j] + ':</th><td>' + list[j] + '级</td></tr>';
+                                } else {
+                                    str += '<tr><th>' + detail_map[j] + ':</th><td>' + list[j] + '</td></tr>';
+                                }
+                            }
+                        }
+                        if (str !== '') {
+                            $(str).appendTo($show_detail_content.html(''));
+                            $show_detail_wrap.modal('show', {backdrop: 'static'});
+                        }
+                    }
+
+
+                })
+                .fail(function (resp) {
+                    console.log(resp.message);
+                    dia.content('<span class="g-c-bs-warning g-btips-warn">' + (resp.message || "查询详情失败") + '</span>').show();
+                });
         }
 
 

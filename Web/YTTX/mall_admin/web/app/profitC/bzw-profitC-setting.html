@@ -5,13 +5,12 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	
 	<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0,maximum-scale=1">
-	<meta name="description" content="布住网后台管理系统--分润管理C端--分润管理列表" />
-	<meta name="keywords" content="布住网后台管理系统--分润管理C端--分润管理列表">
+	<meta name="description" content="布住网后台管理系统--用户管理C端--用户关系" />
+	<meta name="keywords" content="布住网后台管理系统--用户管理C端--用户关系">
   <meta name="author" content="yp" />
-	<title>布住网后台管理系统--分润管理C端--分润管理列表</title>
+	<title>布住网后台管理系统--用户管理C端--用户关系</title>
     <link href="../../images/logo_icon.ico" rel="icon">
 	<link rel="stylesheet" href="../../css/base.css">
-  <link rel="stylesheet" href="../../js/plugins/datatables/dataTables.bootstrap.css">
 	<link rel="stylesheet" href="../../css/admin.css">
   <script src="../../js/common/jquery-1.11.1.js"></script>
 	<!--[if lt IE 9]>
@@ -87,13 +86,13 @@
             <!--主题描述-->
             <div class="page-title">
                 <div class="title-env">
-                    <h1 class="title">分润管理C端</h1>
-                    <p class="description">分润管理列表</p>
+                    <h1 class="title">用户管理C端</h1>
+                    <p class="description">用户关系</p>
                 </div>
                 <div class="breadcrumb-env">
                     <ol class="breadcrumb bc-1">
-                        <li><a href=""><i class="fa-home"></i>分润管理C端</a></li>
-                        <li class="active"><strong>分润管理列表</strong></li>
+                        <li><a href=""><i class="fa-home"></i>用户管理C端</a></li>
+                        <li class="active"><strong>用户关系</strong></li>
                     </ol>
                 </div>
             </div>
@@ -106,7 +105,7 @@
 
                         <!--表格标题-->
                         <div class="panel-heading">
-                            <h3 class="panel-title">分润管理列表</h3>
+                            <h3 class="panel-title">用户关系</h3>
 
                             <div class="panel-options">
                                 <a href="#" data-toggle="panel">
@@ -119,72 +118,72 @@
 
                         <!--表格主体-->
                         <div class="panel-body">
-                            <div class="admin-search-wrap">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="admin-gap-theme2">等级分润设置</div>
+                                    <table class="table table-bordered table-striped admin-table">
+                                        <!--分组样式-->
+                                        <colgroup>
+                                            <col class="g-w-percent15" />
+                                            <col class="g-w-percent35" />
+                                        </colgroup>
 
-                                <div class="admin-search-item">
-                                    <label>会员名称：</label>
-                                    <input type="text" placeholder="请输入搜索内容"  id="search_nickname" />
+
+                                        <!--表主体-->
+                                        <tbody>
+                                        <tr>
+                                            <td class="g-v-m">一级分润</td>
+                                            <td>
+                                                <input class="form-control input-sm"  placeholder="" type="text">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>二级分润</td>
+                                            <td>
+                                                <input class="form-control input-sm"  placeholder="" type="text">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>三级分润</td>
+                                            <td>
+                                                <input class="form-control input-sm"  placeholder="" type="text">
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
+                                <div class="col-sm-6">
+                                    <div class="admin-gap-theme1">鼓励奖设置</div>
+                                    <table class="table table-bordered table-striped admin-table">
+                                        <!--分组样式-->
+                                        <colgroup>
+                                            <col class="g-w-percent15" />
+                                            <col class="g-w-percent35" />
+                                        </colgroup>
 
-                                <div class="admin-search-item">
-                                    <label>手机号：</label>
-                                    <input type="text" maxlength="13"  id="search_phone" />
+                                        <!--表主体-->
+                                        <tbody class="g-v-m">
+                                        <tr>
+                                            <td>一级奖励</td>
+                                            <td>
+                                                <input class="form-control input-sm"  placeholder="" type="text">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>二级奖励</td>
+                                            <td>
+                                                <input class="form-control input-sm"  placeholder="" type="text">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>三级奖励</td>
+                                            <td>
+                                                <input class="form-control input-sm"  placeholder="" type="text">
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
-
-                                <div class="admin-search-item">
-                                    <label>成交时间：</label>
-                                    <input type="text" placeholder="选择开始时间" readonly id="search_createTimeStart" />&nbsp;至&nbsp;<input placeholder="选择结束时间" type="text" readonly id="search_createTimeEnd" />
-                                </div>
-
-                                <div class="admin-search-item">
-                                    <span id="admin_search_btn" class="btn btn-info btn-icon g-br2">
-                                        <i class="fa-search"></i>查询
-                                    </span>
-                                    <span id="admin_search_clear" class="btn btn-info btn-icon g-br2">
-                                        <i class="fa-spinner"></i>清空
-                                    </span>
-                                </div>
-                            </div>
-
-
-
-                            <table id="admin_list_wrap" class="table table-bordered table-striped table-hover admin-table">
-                                <!--分组样式-->
-                                <colgroup>
-                                    <col class="g-w-percent5">
-                                    <col class="g-w-percent5">
-                                    <col class="g-w-percent7">
-                                    <col class="g-w-percent5">
-                                    <col class="g-w-percent5">
-                                    <col class="g-w-percent5">
-                                    <col class="g-w-percent3">
-                                    <col class="g-w-percent3">
-                                    <col class="g-w-percent7">
-                                    <col class="g-w-percent5">
-                                </colgroup>
-
-                                <!--表头-->
-                                <thead>
-                                <tr>
-                                    <th>会员名称</th>
-                                    <th>手机号</th>
-                                    <th>商品名称</th>
-                                    <th>利润额</th>
-                                    <th>分润额</th>
-                                    <th>鼓励奖</th>
-                                    <th>分润等级</th>
-                                    <th>分润比例</th>
-                                    <th>成交时间</th>
-                                    <th>操作</th>
-                                </tr>
-                                </thead>
-
-
-                                <!--表主体-->
-                                <tbody class="middle-align" id="admin_userC_list"></tbody>
-                            </table>
-                            <div class="admin-page-wrap">
-                                <div class="easyui-pagination g-w-percent50" id="admin_page_wrap" data-options="links:5,layout:['manual','first','prev','links','next','last'],displayMsg:'显示{from}&nbsp;到&nbsp;{to}&nbsp;共&nbsp;{total}条记录'"></div>
                             </div>
                         </div>
 
@@ -216,32 +215,6 @@
 
         </div>
     </div>
-
-
-    <!--查看会员关系详情-->
-    <div class="modal fade custom-width" id="show_detail_wrap">
-        <div class="modal-dialog g-w-percent30">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title">用户明细</h4>
-                </div>
-                <div class="modal-body">
-                    <table class="table table-bordered table-striped table-hover admin-table">
-                        <colgroup>
-                            <col class="g-w-percent10"/>
-                            <col class="g-w-percent40"/>
-                        </colgroup>
-                        <tbody id="show_detail_content"></tbody>
-                    </table>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-info" data-dismiss="modal">关闭</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
 
 
 	
@@ -295,12 +268,9 @@
     <script src="../../js/common/mock.js"></script>
     <script src="../../js/common/common.js"></script>
     <script src="../../js/widgets/test_widget.js"></script>
-    <script src="../../js/plugins/datatables/js/jquery.dataTables.js"></script>
-    <!--修饰分页，搜索等操作 -->
-    <script src="../../js/plugins/datatables/dataTables.bootstrap.js"></script>
+    <script src="../../js/plugins/jquery-validate/jquery.validate.js"></script>
     <script src="../../js/plugins/pagination/pagination.js"></script>
-    <script src="../../js/plugins/My97DatePicker/WdatePicker.js"></script>
-    <script src="../../js/widgets/datepick.js"></script>
-    <script src="../../js/profitC/profitC_list.js"></script>
+    <script src="../../js/widgets/simulation_batch.js"></script>
+    <script src="../../js/profitC/profitC_setting.js"></script>
 </body>
 </html>
