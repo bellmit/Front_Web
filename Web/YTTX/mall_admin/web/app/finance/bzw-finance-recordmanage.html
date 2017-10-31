@@ -123,23 +123,27 @@
                             <div class="admin-search-wrap">
                                 <div class="admin-search-item">
                                     <label>订单来源：</label>
-                                    <select id="search_orderType">
-                                        <option selected value="1">布住网</option>
+                                    <select id="search_source">
+                                        <option selected value="">全部</option>
+                                        <option value="1">布住网</option>
                                         <option value="2">商家商城</option>
                                     </select>
                                 </div>
                                 <div class="admin-search-item">
                                     <label>查询选项：</label>
-                                    <select id="search_item">
-                                        <option selected  value="orderNumber">订单号</option>
-                                        <option value="memberName">会员名称</option>
-                                        <option value="runningBill">流水内容</option>
+                                    <select id="search_searchColumn">
+                                        <option selected  value="">全部</option>
+                                        <option value="1">会员名称</option>
+                                        <option value="2">流水内容</option>
+                                        <option value="3">订单号</option>
                                     </select>
-                                    <input type="text" id="search_keyword" placeholder="请输入查询关键词"  />
                                 </div>
                                 <div class="admin-search-item">
-                                    <label>下单时间：</label>
-                                    <input type="text" id="search_time" placeholder="请选择下单时间" readonly />
+                                    <input type="text" placeholder="请输入搜索内容" id="search_searchContent" />
+                                </div>
+                                <div class="admin-search-item">
+                                    <label>时间：</label>
+                                    <input type="text" placeholder="选择开始时间" readonly id="search_timeStart" />&nbsp;至&nbsp;<input placeholder="选择结束时间" type="text" readonly id="search_timeEnd" />
                                 </div>
                                 <div class="admin-search-item">
                                     <span id="admin_search_btn" class="btn btn-info btn-icon g-br2">
@@ -169,12 +173,12 @@
                                 <thead>
                                 <tr>
                                     <th>订单号</th>
-                                    <th>流水内容</th>
+                                    <th>流水(订单)内容</th>
                                     <th>订单金额</th>
                                     <th>会员名称</th>
                                     <th>支付方式</th>
-                                    <th>订单状态</th>
-                                    <th>下单时间</th>
+                                    <th>订单来源</th>
+                                    <th>下单(操作)时间</th>
                                 </tr>
                                 </thead>
 
@@ -218,35 +222,6 @@
 
 
 
-
-    <!--查看订单详情-->
-    <div class="modal fade custom-width" id="show_detail_wrap">
-        <div class="modal-dialog g-w-percent46">
-            <div class="modal-content">
-
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" id="show_detail_title"></h4>
-                </div>
-                <div class="modal-body">
-                    <table class="table table-bordered table-striped table-hover admin-table">
-                        <colgroup>
-                            <col class="g-w-percent10"/>
-                            <col class="g-w-percent40"/>
-                        </colgroup>
-                        <tbody id="show_detail_content"></tbody>
-                    </table>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-info" data-dismiss="modal">关闭</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-
-	
 	<!--加载遮罩层-->
 	<div id="page_loading_wrap" class="page-loading-overlay g-d-hidei">
 		<div class="loader-2"></div>
@@ -297,7 +272,8 @@
     <script src="../../js/common/mock.js"></script>
     <script src="../../js/common/common.js"></script>
     <script src="../../js/widgets/test_widget.js"></script>
-    <script src="../../js/plugins/daterangepicker/daterangepicker.js"></script>
+    <script src="../../js/plugins/My97DatePicker/WdatePicker.js"></script>
+    <script src="../../js/widgets/datepick.js"></script>
     <script src="../../js/plugins/datatables/js/jquery.dataTables.js"></script>
     <!--修饰分页，搜索等操作 -->
     <script src="../../js/plugins/datatables/dataTables.bootstrap.js"></script>

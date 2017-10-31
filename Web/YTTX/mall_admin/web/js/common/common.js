@@ -786,7 +786,6 @@
             "code": "userC",
             "match": "-userC-",
             "class": "menu-ux-user",
-            "matchignore": ["bzw-userC-relation"],
             "module": "userC",
             "modid": "2101"
         },
@@ -917,11 +916,18 @@
             "name": "财务管理",
             "code": "finance",
             "match": "-finance-",
-            "matchlist": ['finance-cashmanage', 'finance-cardmanage'],
-            "matchignore": ["finance-recordmanage"],
-            "class": "menu-ux-record",
+            "matchlist": ['finance-cashmanage', 'finance-cardmanage','finance-recordmanage'],
+            "class": "menu-ux-payment",
             "module": "finance",
             "modid": "344"
+        },
+        "350": {
+            "name": "分润管理C端",
+            "code": "profitC",
+            "match": "-profitC-",
+            "class": "menu-ux-serve",
+            "module": "profitC",
+            "modid": "350"
         }
     };
     /*路由映射*/

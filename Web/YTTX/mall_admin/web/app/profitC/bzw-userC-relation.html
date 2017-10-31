@@ -5,13 +5,12 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	
 	<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0,maximum-scale=1">
-	<meta name="description" content="布住网后台管理系统--用户管理C端--用户管理列表" />
-	<meta name="keywords" content="布住网后台管理系统--用户管理C端--用户管理列表">
+	<meta name="description" content="布住网后台管理系统--用户管理C端--用户关系" />
+	<meta name="keywords" content="布住网后台管理系统--用户管理C端--用户关系">
   <meta name="author" content="yp" />
-	<title>布住网后台管理系统--用户管理C端--用户管理列表</title>
+	<title>布住网后台管理系统--用户管理C端--用户关系</title>
     <link href="../../images/logo_icon.ico" rel="icon">
 	<link rel="stylesheet" href="../../css/base.css">
-  <link rel="stylesheet" href="../../js/plugins/datatables/dataTables.bootstrap.css">
 	<link rel="stylesheet" href="../../css/admin.css">
   <script src="../../js/common/jquery-1.11.1.js"></script>
 	<!--[if lt IE 9]>
@@ -88,12 +87,12 @@
             <div class="page-title">
                 <div class="title-env">
                     <h1 class="title">用户管理C端</h1>
-                    <p class="description">用户管理列表</p>
+                    <p class="description">用户关系</p>
                 </div>
                 <div class="breadcrumb-env">
                     <ol class="breadcrumb bc-1">
                         <li><a href=""><i class="fa-home"></i>用户管理C端</a></li>
-                        <li class="active"><strong>用户管理列表</strong></li>
+                        <li class="active"><strong>用户关系</strong></li>
                     </ol>
                 </div>
             </div>
@@ -106,7 +105,7 @@
 
                         <!--表格标题-->
                         <div class="panel-heading">
-                            <h3 class="panel-title">用户管理列表</h3>
+                            <h3 class="panel-title">用户关系</h3>
 
                             <div class="panel-options">
                                 <a href="#" data-toggle="panel">
@@ -119,23 +118,29 @@
 
                         <!--表格主体-->
                         <div class="panel-body">
+                            <div class="admin-gap-theme2" id="search_nickName"></div>
+
                             <div class="admin-search-wrap">
+
                                 <div class="admin-search-item">
                                     <label>查询类型：</label>
                                     <select id="search_searchColumn" >
-                                        <option selected value="">全部</option>
+                                        <option selected value="">无</option>
                                         <option value="1">昵称</option>
                                         <option value="2">手机号</option>
                                     </select>
                                 </div>
 
                                 <div class="admin-search-item">
-                                    <input type="text" placeholder="请输入搜索内容"  id="search_searchContent" />
+                                    <input type="text" id="search_searchContent" />
                                 </div>
 
                                 <div class="admin-search-item">
-                                    <label>注册时间：</label>
-                                    <input type="text" placeholder="选择开始时间" readonly id="search_createTimeStart" />&nbsp;至&nbsp;<input placeholder="选择结束时间" type="text" readonly id="search_createTimeEnd" />
+                                    <label>等级关系：</label>
+                                    <select id="search_level" >
+                                        <option selected  value="1">一级</option>
+                                        <option value="2">二级</option>
+                                    </select>
                                 </div>
 
                                 <div class="admin-search-item">
@@ -146,41 +151,55 @@
                                         <i class="fa-spinner"></i>清空
                                     </span>
                                 </div>
+
+                                <div class="admin-search-item" id="admin_batchitem_action" >
+                                    <label>批量处理：</label>
+                                    <span data-action="forbid" data-attrkey="status" data-attrvalue="0" class="btn btn-white btn-icon g-br2 g-c-gray8">
+                                        <i data-action="forbid" data-attrkey="status" data-attrvalue="0"  class="fa-toggle-off"></i>禁用
+                                    </span>
+                                    <span data-action="enable" data-attrkey="status" data-attrvalue="1" class="btn btn-white btn-icon g-br2 g-c-gray8">
+                                        <i  data-action="enable" data-attrkey="status" data-attrvalue="1"  class="fa-toggle-on"></i>启用
+                                    </span>
+                                </div>
                             </div>
 
-
-
-                            <table id="admin_list_wrap" class="table table-bordered table-striped table-hover admin-table">
+                            <table class="table table-bordered table-striped admin-table">
                                 <!--分组样式-->
                                 <colgroup>
-                                    <col class="g-w-percent2">
-                                    <col class="g-w-percent10">
-                                    <col class="g-w-percent8">
-                                    <col class="g-w-percent3">
-                                    <col class="g-w-percent8">
-                                    <col class="g-w-percent5">
-                                    <col class="g-w-percent4">
-                                    <col class="g-w-percent10">
+                                    <col class="g-w-percent4" />
+                                    <col class="g-w-percent13" />
+                                    <col class="g-w-percent8" />
+                                    <col class="g-w-percent5" />
+                                    <col class="g-w-percent8" />
+                                    <col class="g-w-percent12" />
                                 </colgroup>
 
                                 <!--表头-->
                                 <thead>
                                 <tr>
-                                    <th class="no-sorting">&nbsp;</th>
-                                    <th>昵称</th>
-                                    <th>手机号</th>
-                                    <th>性别</th>
-                                    <th>注册时间/创建时间</th>
-                                    <th>状态</th>
-                                    <th>登录次数</th>
+                                    <th>全选</th>
+                                    <th>用户名称(昵称)</th>
+                                    <th>手机</th>
+                                    <th>等级关系</th>
+                                    <th>是否可用</th>
                                     <th>操作</th>
                                 </tr>
                                 </thead>
 
 
                                 <!--表主体-->
-                                <tbody class="middle-align" id="admin_userC_list"></tbody>
+                                <tbody>
+                                <tr>
+                                    <td class="g-c-red1" id="admin_errortip_wrap" colspan="6"></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="6">
+                                        <ul class="admin-typeitem-wrap admin-maintype-wrap" id="admin_list_wrap"></ul>
+                                    </td>
+                                </tr>
+                                </tbody>
                             </table>
+
                             <div class="admin-page-wrap">
                                 <div class="easyui-pagination g-w-percent50" id="admin_page_wrap" data-options="links:5,layout:['manual','first','prev','links','next','last'],displayMsg:'显示{from}&nbsp;到&nbsp;{to}&nbsp;共&nbsp;{total}条记录'"></div>
                             </div>
@@ -216,25 +235,81 @@
     </div>
 
 
-    <!--批量处理-->
-    <div class="admin-batchitem-wrap">
-        <div class="admin-batchitem-btn">
-            <div id="admin_batchitem_btn">批量</div>
-        </div>
-        <div class="admin-batchitem-outer">
-            <div class="admin-batchitem-show" id="admin_batchitem_show">
-                <div class="admin-batchitem-inner">
-                    <div data-state="1" id="admin_batchitem_check" class="admin-batchitem-check" data-check="0" data-action="checkall"></div>
+
+    <!--编辑会员关系-->
+    <div class="modal fade custom-width" id="show_edit_wrap">
+        <div class="modal-dialog g-w-percent25">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">关系编辑</h4>
                 </div>
-                <div class="admin-batchitem-inner" id="admin_batchitem_action">
-                    <div data-action="forbid">禁用</div>
-                    <div data-action="enable">启用</div>
+                <div class="modal-body">
+                    <!--信息展现-->
+                    <table class="table table-bordered table-striped table-hover admin-table">
+                        <colgroup>
+                            <col class="g-w-percent15"/>
+                            <col class="g-w-percent35"/>
+                        </colgroup>
+                        <tbody id="show_audit_info"></tbody>
+                    </table>
+                    <!--信息填写-->
+                    <div class="g-d-hidei" id="show_audit_content">
+                        <table class="table table-bordered table-striped table-hover admin-table">
+                            <colgroup>
+                                <col class="g-w-percent15"/>
+                                <col class="g-w-percent35"/>
+                            </colgroup>
+                            <tbody>
+                            <tr>
+                                <th colspan="2">填写新用户信息</th>
+                            </tr>
+                            <tr>
+                                <td class="g-t-r">新上级手机号：</td>
+                                <td class="g-t-l">
+                                    <input placeholder="请输入新上级手机号" maxlength="13" value=""  type="text" class="form-control" name="phone" id="show_edit_phone" /></td>
+                            </tr>
+                            <tr>
+                                <td class="g-t-r">新上级用户名：</td>
+                                <td class="g-t-l" id="show_edit_name">
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="show_edit_btn" data-parentid="" data-id="" class="g-d-hidei btn btn-info">完成</button>
+                    <button type="button" class="btn btn-info" data-dismiss="modal">关闭</button>
                 </div>
             </div>
         </div>
     </div>
 
 
+    <!--查看会员关系详情-->
+    <div class="modal fade custom-width" id="show_detail_wrap">
+        <div class="modal-dialog g-w-percent30">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">用户明细</h4>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-bordered table-striped table-hover admin-table">
+                        <colgroup>
+                            <col class="g-w-percent10"/>
+                            <col class="g-w-percent40"/>
+                        </colgroup>
+                        <tbody id="show_detail_content"></tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-info" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 	
 	<!--加载遮罩层-->
@@ -287,13 +362,9 @@
     <script src="../../js/common/mock.js"></script>
     <script src="../../js/common/common.js"></script>
     <script src="../../js/widgets/test_widget.js"></script>
-    <script src="../../js/plugins/datatables/js/jquery.dataTables.js"></script>
-    <!--修饰分页，搜索等操作 -->
-    <script src="../../js/plugins/datatables/dataTables.bootstrap.js"></script>
+    <script src="../../js/plugins/jquery-validate/jquery.validate.js"></script>
     <script src="../../js/plugins/pagination/pagination.js"></script>
-    <script src="../../js/plugins/My97DatePicker/WdatePicker.js"></script>
-    <script src="../../js/widgets/datepick.js"></script>
-    <script src="../../js/widgets/batch_item.js"></script>
-    <script src="../../js/userC/userC_list.js"></script>
+    <script src="../../js/widgets/simulation_batch.js"></script>
+    <script src="../../js/userC/userC_relation.js"></script>
 </body>
 </html>

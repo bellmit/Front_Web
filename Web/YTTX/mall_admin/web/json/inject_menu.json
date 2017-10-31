@@ -55,6 +55,45 @@
             "prid": 5
           }
         ]
+      },
+      {
+        "modCode": "bzw-profitC",
+        "modId": 350,
+        "modItem": [
+          {
+            "modLink": "bzw-profitC-list",
+            "modName": "分润管理"
+          },
+          {
+            "modLink": "bzw-profitC-setting",
+            "modName": "分润设置"
+          }
+        ],
+        "modLink": "bzw-profitC-manage",
+        "modName": "分润管理C端",
+        "permitItem": [
+          {
+            "funcCode": "profitC-settlement",
+            "funcName": "结算",
+            "isPermit": 1,
+            "modId": 350,
+            "prid": 1
+          },
+          {
+            "funcCode": "profitC-detail",
+            "funcName": "查看",
+            "isPermit": 1,
+            "modId": 350,
+            "prid": 2
+          },
+          {
+            "funcCode": "profitC-setting",
+            "funcName": "设置",
+            "isPermit": 1,
+            "modId": 350,
+            "prid": 3
+          }
+        ]
       }
     ]
   }

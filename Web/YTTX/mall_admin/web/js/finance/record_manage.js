@@ -23,41 +23,20 @@
 
 
             /*权限调用*/
-            var powermap = public_tool.getPower(350),
-                detail_power = public_tool.getKeyPower('cash-detail', powermap)/*详情权限*/,
-                dispose_power = public_tool.getKeyPower('cash-dispose', powermap)/*提现处理权限*/;
-
 
             /*dom引用和相关变量定义*/
-            var debug = true,
+            var debug = false,
                 $admin_list_wrap = $('#admin_list_wrap')/*表格*/,
                 module_id = 'bzw-finance-recordmanage'/*模块id，主要用于本地存储传值*/,
-                dia = dialog({
-                    zIndex: 2000,
-                    title: '温馨提示',
-                    okValue: '确定',
-                    width: 300,
-                    ok: function () {
-                        this.close();
-                        return false;
-                    },
-                    cancel: false
-                })/*一般提示对象*/,
-                $admin_page_wrap = $('#admin_page_wrap'),
-                $show_detail_wrap = $('#show_detail_wrap')/*详情容器*/,
-                $show_detail_content = $('#show_detail_content'), /*详情内容*/
-                $show_detail_title = $('#show_detail_title'),
-                sureObj=public_tool.sureDialog(dia)/*回调提示对象*/,
-                setSure=new sureObj();
+                $admin_page_wrap = $('#admin_page_wrap');
 
 
             /*查询对象*/
-            var $search_orderType = $('#search_orderType'),
-                $search_keyword = $('#search_keyword'),
-                $search_item = $('#search_item'),
-                $search_time = $('#search_time'),
-                end_date = moment().format('YYYY-MM-DD'),
-                start_date = moment().subtract(1, 'month').format('YYYY-MM-DD'),
+            var $search_source = $('#search_source'),
+                $search_searchContent = $('#search_searchContent'),
+                $search_searchColumn = $('#search_searchColumn'),
+                $search_timeStart = $('#search_timeStart'),
+                $search_timeEnd = $('#search_timeEnd'),
                 $admin_search_btn = $('#admin_search_btn'),
                 $admin_search_clear = $('#admin_search_clear');
 
@@ -77,21 +56,21 @@
                         autoWidth: true, /*是否*/
                         paging: false,
                         ajax: {
-                            url: debug ? "../../json/test.json" : "http://10.0.5.226:8082/mall-buzhubms-api/goodsorder/list",
+                            url: debug ? "../../json/test.json" : "http://10.0.5.226:8082/mall-buzhubms-api/finance/capitalflowlog/get/list",
                             dataType: 'JSON',
                             method: 'post',
                             dataSrc: function (json) {
                                 if (debug) {
                                     var json = testWidget.test({
                                         map: {
-                                            id: 'guid',
-                                            orderNumber: 'text',
+                                            id: 'sequence',
+                                            orderNumber: 'guid',
                                             content: 'remark',
-                                            orderMoney: 'money',
-                                            memberName: 'name',
+                                            amount: 'money',
+                                            nickName: 'name',
+                                            source: 'rule,1,2',
                                             paymentType: 'rule,1,2,3',
-                                            orderState: 'rule,0,1,6,9,20,21',
-                                            orderTime: 'datetime'
+                                            createTime: 'datetime'
                                         },
                                         mapmin: 5,
                                         mapmax: 10,
@@ -129,15 +108,13 @@
                                         param.page = pageNumber;
                                         param.pageSize = pageSize;
                                         record_config.config.ajax.data = param;
-                                        getColumnData(record_config);
+                                        getColumnData(record_page, record_config);
                                     }
                                 });
                                 return result ? result.list || [] : [];
                             },
                             data: {
-                                roleId: decodeURIComponent(logininfo.param.roleId),
                                 adminId: decodeURIComponent(logininfo.param.adminId),
-                                grade: decodeURIComponent(logininfo.param.grade),
                                 token: decodeURIComponent(logininfo.param.token),
                                 page: 1,
                                 pageSize: 10
@@ -154,13 +131,13 @@
                                 "data": "content"
                             },
                             {
-                                "data": "orderMoney",
+                                "data": "amount",
                                 "render": function (data, type, full, meta) {
-                                    return '￥:' + public_tool.moneyCorrect(data, 12, false)[0];
+                                    return '￥:' + public_tool.moneyCorrect(data, 15, false)[0];
                                 }
                             },
                             {
-                                "data": "memberName"
+                                "data": "nickName"
                             },
                             {
                                 "data": "paymentType",
@@ -171,40 +148,21 @@
                                             2: "支付宝支付",
                                             3: "其他"
                                         };
-
-                                    return statusmap[stauts];
+                                    return statusmap[stauts] || '';
                                 }
                             },
                             {
-                                "data": "orderState",
+                                "data": "source",
                                 "render": function (data, type, full, meta) {
-                                    var status = parseInt(data, 10),
-                                        statusmap = {
-                                            0: "待付款",
-                                            1: "取消订单",
-                                            6: "待发货",
-                                            9: "待收货",
-                                            20: "待评价",
-                                            21: "已评价"
-                                        },
-                                        str = '';
-
-                                    if (status === 6 || status === 9) {
-                                        str = '<div class="g-c-gray6">' + statusmap[status] + '</div>';
-                                    } else if (status === 1) {
-                                        str = '<div class="g-c-gray10">' + statusmap[status] + '</div>';
-                                    } else if (status === 0) {
-                                        str = '<div class="g-c-warn">' + statusmap[status] + '</div>';
-                                    } else if (status === 20 || status === 21) {
-                                        str = '<div class="g-c-succ">' + statusmap[status] + '</div>';
-                                    } else {
-                                        str = '<div class="g-c-red1">' + statusmap[status] + '</div>';
-                                    }
-                                    return str;
+                                    var statusmap = {
+                                        1: "布住网",
+                                        2: "商家商城"
+                                    };
+                                    return statusmap[data];
                                 }
                             },
                             {
-                                "data": "orderTime"
+                                "data": "createTime"
                             }
                         ]
                     }
@@ -212,82 +170,64 @@
 
 
             /*初始化请求*/
-            getColumnData(record_config);
+            getColumnData(record_page, record_config);
 
 
             /*清空查询条件*/
             $admin_search_clear.on('click', function () {
-                $.each([$search_orderType, $search_item, $search_keyword, $search_time], function () {
-                    var selector = this.selector;
-                    if (selector.indexOf('orderType') !== -1 || selector.indexOf('item') !== -1) {
-                        this.find('option:first-child').prop({
-                            'selected': true
-                        });
-                    } else {
-                        this.val('');
-                    }
+                /*清除查询条件*/
+                $.each([$search_source, $search_searchColumn, $search_searchContent, $search_timeStart, $search_timeEnd], function () {
+                    this.val('');
                 });
-            });
-            $admin_search_clear.trigger('click');
+                /*重置分页*/
+                record_page.page = 1;
+                record_page.total = 0;
+                record_config.config.ajax.data['page'] = record_page.page;
+            }).trigger('click');
 
+            /*日历查询*/
+            datePickWidget.datePick([$search_timeStart, $search_timeEnd]);
 
             /*联合查询*/
             $admin_search_btn.on('click', function () {
                 var data = $.extend(true, {}, record_config.config.ajax.data);
 
-                $.each([$search_orderType, $search_keyword, $search_time], function () {
+                $.each([$search_source, $search_searchColumn, $search_timeStart, $search_timeEnd], function () {
                     var text = this.val(),
                         selector = this.selector.slice(1),
                         key = selector.split('_'),
-                        iskeyword = selector.indexOf('keyword') !== -1 ? true : false,
-                        istime = selector.indexOf('time') !== -1 ? true : false;
+                        isColumn = selector.indexOf('Column') !== -1;
 
-                    if (text === "") {
-                        if (iskeyword) {
-                            delete data['keyItem'];
-                            delete data['keyword'];
-                        } else if (istime) {
-                            delete data['orderTimeStart'];
-                            delete data['orderTimeEnd'];
+                    if (isColumn) {
+                        /*关联类型和关键字*/
+                        var content = public_tool.trims($search_searchContent.val());
+                        if (text !== "" && content !== '') {
+                            data[key[1]] = text;
+                            data['searchContent'] = content;
                         } else {
+                            delete data['searchColumn'];
+                            delete data['searchContent'];
+                        }
+                    } else {
+                        if (text === "") {
                             if (typeof data[key[1]] !== 'undefined') {
                                 delete data[key[1]];
                             }
-                        }
-                    } else {
-                        if (iskeyword) {
-                            data['keyword'] = text;
-                            data['keyItem'] = $search_item.find(':selected').val();
-                        } else if (istime) {
-                            text = text.split(',');
-                            data['orderTimeStart'] = text[0];
-                            data['orderTimeEnd'] = text[1];
                         } else {
                             data[key[1]] = text;
                         }
                     }
-
                 });
                 record_config.config.ajax.data = $.extend(true, {}, data);
-                getColumnData(record_config);
+                getColumnData(record_page, record_config);
             });
 
-
-            /*绑定时间*/
-            $search_time.val('').daterangepicker({
-                format: 'YYYY-MM-DD',
-                todayBtn: true,
-                maxDate: end_date,
-                endDate: end_date,
-                startDate: start_date,
-                separator: ','
-            });
 
         }
 
 
         /*获取数据*/
-        function getColumnData(opt) {
+        function getColumnData(page, opt) {
             if (table === null) {
                 table = opt.$admin_list_wrap.DataTable(opt.config);
             } else {
