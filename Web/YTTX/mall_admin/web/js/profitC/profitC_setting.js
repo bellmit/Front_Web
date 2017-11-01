@@ -20,7 +20,7 @@
             });
 
             /*dom引用和相关变量定义*/
-            var debug = false,
+            var debug = true,
                 module_id = 'bzw-profitC-setting'/*模块id，主要用于本地存储传值*/;
 
 
@@ -60,7 +60,7 @@
 
 
             /*绑定设置限制值输入*/
-            $.each([$admin_commission1, $admin_commission2, $admin_commission3, $admin_commissionExtra1, $admin_commissionExtra2, $admin_commissionExtra3], function (index) {
+            $.each(relation_list, function (index) {
                 this.on('keyup focusout', function (e) {
                     var etype = e.type,
                         self = this,
@@ -68,7 +68,7 @@
 
                     if (etype === 'keyup') {
                         data = self.value.replace(/\D*/g, '');
-                        self.value = data;
+                        self.value = parseInt(data, 10);
                     } else if (etype === 'focusout') {
                         data = self.value;
                         if (data === '' || isNaN(data)) {
@@ -81,102 +81,108 @@
                         /*处理关联关系值*/
                         relationData(data, index);
                     }
-                }).val(0);
+                });
             });
 
-            /*请求属性数据*/
+            /*请求分润数据*/
+            queryProfit();
 
             /*绑定提交编辑*/
-            /*$show_edit_btn.on('click', function () {
-             var $this = $(this),
-             shUserId = $this.attr('data-id'),
-             parentId = $this.attr('data-parentid');
-
-             if (shUserId !== '' && parentId !== '') {
-             $.ajax({
-             url: debug ? "../../json/test.json" : "http://10.0.5.226:8082/mall-buzhubms-api/shuser/hierarchy/update",
-             dataType: 'JSON',
-             async: false,
-             method: 'post',
-             data: {
-             adminId: request_config.adminId,
-             token: request_config.token,
-             shUserId: shUserId,
-             parentId: parentId
-             }
-             })
-             .done(function (resp) {
-             if (debug) {
-             var resp = testWidget.testSuccess('list');
-             }
-             var code = parseInt(resp.code, 10);
-             if (code !== 0) {
-             dia.content('<span class="g-c-bs-warning g-btips-warn">' + (resp.message || "编辑失败") + '</span>').show();
-             return false;
-             }
-             dia.content('<span class="g-c-bs-success g-btips-succ">编辑成功</span>').show();
-             /!*请求属性数据*!/
-             requestAttr(request_config);
-             /!*重置值*!/
-             setTimeout(function () {
-             dia.close();
-             $show_edit_wrap.modal('hide');
-             }, 2000);
-
-             })
-             .fail(function (resp) {
-             console.log(resp.message);
-             dia.content('<span class="g-c-bs-warning g-btips-warn">' + (resp.message || "编辑失败") + '</span>').show();
-             });
-             }
-             });*/
+            $profit_setting_btn.on('click', function () {
+                setSure.sure('', function (cf) {
+                    $.ajax({
+                            url: debug ? "../../json/test.json" : "http://10.0.5.226:8082/mall-buzhubms-api/commission/cfg/update",
+                            dataType: 'JSON',
+                            async: false,
+                            method: 'post',
+                            data: {
+                                adminId: decodeURIComponent(logininfo.param.adminId),
+                                token: decodeURIComponent(logininfo.param.token),
+                                commission1:$admin_commission1.val(),
+                                commission2:$admin_commission2.val(),
+                                commission3:$admin_commission3.val(),
+                                commissionExtra1:$admin_commissionExtra1.val(),
+                                commissionExtra2:$admin_commissionExtra2.val(),
+                                commissionExtra3:$admin_commissionExtra3.val()
+                            }
+                        })
+                        .done(function (resp) {
+                            if (debug) {
+                                var resp = testWidget.testSuccess('list');
+                            }
+                            var code = parseInt(resp.code, 10);
+                            if (code !== 0) {
+                                dia.content('<span class="g-c-bs-warning g-btips-warn">' + (resp.message || "分润设置失败") + '</span>').show();
+                                return false;
+                            }
+                            dia.content('<span class="g-c-bs-success g-btips-succ">分润设置成功</span>').show();
+                            /*重置值*/
+                            setTimeout(function () {
+                                dia.close();
+                            }, 2000);
+                        })
+                        .fail(function (resp) {
+                            console.log(resp.message);
+                            dia.content('<span class="g-c-bs-warning g-btips-warn">' + (resp.message || "分润设置失败") + '</span>').show();
+                        });
+                }, "是否真需要设置分润机制", true);
+            });
         }
 
 
-        /*请求属性*/
-        function requestEditInfo(value) {
+        /*请求分润设置*/
+        function queryProfit() {
             $.ajax({
-                    url: debug ? "../../json/test.json" : "http://10.0.5.226:8082/mall-buzhubms-api/shuser/getinfo",
+                    url: debug ? "../../json/test.json" : "http://10.0.5.226:8082/mall-buzhubms-api/commission/cfg/get",
                     dataType: 'JSON',
                     async: false,
                     method: 'post',
                     data: {
-                        adminId: request_config.adminId,
-                        token: request_config.token,
-                        phone: value
+                        adminId: decodeURIComponent(logininfo.param.adminId),
+                        token: decodeURIComponent(logininfo.param.token)
                     }
                 })
                 .done(function (resp) {
                     if (debug) {
-                        if (debug) {
-                            var resp = testWidget.testSuccess('list');
-                            resp.result = testWidget.getMap({
-                                map: {
-                                    id: 'guid',
-                                    nickname: 'value',
-                                    phone: 'mobile',
-                                    gender: 'rule,0,1,2',
-                                    birthday: 'datetime',
-                                    createTime: 'datetime',
-                                    lastLoginTime: 'datetime',
-                                    loginTimes: 'id',
-                                    status: 'rule,0,1'
-                                },
-                                maptype: 'object'
-                            }).list;
-                        }
+                        var resp = testWidget.testSuccess('list');
+                        resp.result = testWidget.getMap({
+                            map: {
+                                commission1: 'minmax,10,20',
+                                commission2: 'minmax,10,20',
+                                commission3: 'minmax,5,20',
+                                commissionExtra1: 'minmax,10,20',
+                                commissionExtra2: 'minmax,5,10',
+                                commissionExtra3: 'minmax,5,10'
+                            },
+                            maptype: 'object'
+                        }).list;
                     }
                     var code = parseInt(resp.code, 10);
                     if (code !== 0) {
-                        toggleEditQuery();
                         return false;
                     }
                     var result = resp.result;
                     if (result) {
-                        /*解析属性*/
-                        toggleEditQuery(result['nickname'], result['id']);
-                    } else {
-                        toggleEditQuery();
+                        var profit_map = ['commission1', 'commission2', 'commission3', 'commissionExtra1', 'commissionExtra2', 'commissionExtra3'],
+                            i = 0,
+                            len = profit_map.length,
+                            count=0,
+                            item;
+                        for (i; i < len; i++) {
+                            item=parseInt(result[profit_map[i]],10);
+                            relation_list[i].val(item);
+                            count+=item;
+                            if (i === len - 1) {
+                                /*最后一个触发校验*/
+                                relation_list[i].trigger('focusout');
+                                /*控制按钮*/
+                                if(count>100){
+                                    $profit_setting_btn.addClass('g-d-hidei');
+                                }else{
+                                    $profit_setting_btn.removeClass('g-d-hidei');
+                                }
+                            }
+                        }
                     }
                 })
                 .fail(function (resp) {
@@ -190,12 +196,9 @@
         function relationData(value, index) {
             var i = 0,
                 current_value = 0/*当前循环值*/,
-                item = 0,
                 len = 6,
                 standard = 0/*标准值*/,
-                count = 0/*其余求和值*/,
-                old_value,
-                new_value;
+                count = 0/*其余求和值*/;
             if (value >= 100) {
                 /*设置100时其他为0*/
                 for (i; i < len; i++) {
@@ -207,23 +210,56 @@
                 }
             } else if (value < 100) {
                 /*非100时*/
-                standard = 100 - value;
+                //相加法
                 for (i; i < len; i++) {
-                    /*先计算其他值，确定其他值范围*/
-                    if (i !== index) {
-                        current_value = parseInt(relation_list[i].val(), 10);
-                        if (current_value >= standard) {
-                            relation_list[i].val(standard);
-                            standard = 0;
-                        } else if (current_value < standard) {
-                            new_value = standard - current_value;
-                            relation_list[i].val(new_value)/*设置最近满100的值*/;
-                            standard = current_value;
+                    /*计算非当前值*/
+                    current_value = parseInt(relation_list[i].val(), 10);
+                    if (current_value !== '') {
+                        if ((count + current_value) > 100) {
+                            standard = (count + current_value) - 100;
+                            var k = i + 1;
+                            if (i === index) {
+                                relation_list[i].val(current_value - standard);
+                                if (k < len) {
+                                    for (k; k < len; k++) {
+                                        relation_list[k].val(0);
+                                    }
+                                }
+                            } else {
+                                relation_list[i].val(current_value - standard);
+                                if (k < len) {
+                                    for (k; k < len; k++) {
+                                        if (i !== index) {
+                                            relation_list[k].val(0);
+                                        }
+                                    }
+                                }
+                            }
+                            break;
+                        } else {
+                            count += current_value;
                         }
-                    } else {
-                        relation_list[i].val(value)/*设置新增*/;
                     }
                 }
+                /*
+                 //相减法
+                 standard = 100 - value;
+                 for (i; i < len; i++) {
+                 /!*先计算其他值，确定其他值范围*!/
+                 if (i !== index) {
+                 current_value = parseInt(relation_list[i].val(), 10);
+                 if (current_value >= standard) {
+                 relation_list[i].val(standard);
+                 standard = 0;
+                 } else if (current_value < standard) {
+                 new_value = standard - current_value;
+                 relation_list[i].val(new_value)/!*设置最近满100的值*!/;
+                 standard = current_value;
+                 }
+                 } else {
+                 relation_list[i].val(value)/!*设置新增*!/;
+                 }
+                 }*/
             }
         }
 

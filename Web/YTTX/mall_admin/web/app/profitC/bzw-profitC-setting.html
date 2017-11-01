@@ -119,6 +119,29 @@
                     <!--表格主体-->
                     <div class="panel-body">
                         <div class="row">
+                            <div class="col-sm-12">
+                                <div class="panel panel-default g-w-percent50 g-clear-pl g-clear-pr collapsed">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title g-fs6 g-c-gray6">分润机制说明</h3>
+                                        <div class="panel-options">
+                                            <a href="#" data-toggle="panel">
+                                                <span class="collapse-icon g-c-gray9 g-fs2 g-w-number2 fa-angle-double-up">&nbsp;关闭</span>
+                                                <span class="expand-icon g-c-info g-fs2 g-w-number2  fa-angle-double-down">&nbsp;查看</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="panel-body">
+                                        <blockquote class="blockquote blockquote-default g-w-percent50">
+                                            <p>
+                                                总分润比例% = 等级分润% + 鼓励奖% = 100%
+                                            </p>
+                                            <p>
+                                                分润比例不包含小数，不含百分比
+                                            </p>
+                                        </blockquote>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="col-sm-6">
                                 <div class="admin-gap-theme2">等级分润设置</div>
                                 <table class="table table-bordered table-striped admin-table">
@@ -134,20 +157,20 @@
                                     <tr>
                                         <td class="g-t-r">一级分润</td>
                                         <td>
-                                            <input data-relation="admin_commission1,admin_commission2,admin_commission3,admin_commissionExtra1,admin_commissionExtra2,admin_commissionExtra3" data-current="admin_commission1" class="form-control input-sm" maxlength="3" placeholder=""
+                                            <input data-relation="admin_commission1,admin_commission2,admin_commission3,admin_commissionExtra1,admin_commissionExtra2,admin_commissionExtra3" data-current="admin_commission1" class="form-control input-sm" value="0" maxlength="3" placeholder=""
                                                    id="admin_commission1" type="text">
                                         </td>
                                     </tr>
                                     <tr>
                                         <td class="g-t-r">二级分润</td>
                                         <td>
-                                            <input class="form-control input-sm" data-relation="admin_commission1,admin_commission2,admin_commission3,admin_commissionExtra1,admin_commissionExtra2,admin_commissionExtra3" data-current="admin_commission2" placeholder="" maxlength="3" id="admin_commission2" type="text">
+                                            <input class="form-control input-sm" data-relation="admin_commission1,admin_commission2,admin_commission3,admin_commissionExtra1,admin_commissionExtra2,admin_commissionExtra3" data-current="admin_commission2" placeholder="" maxlength="3" value="0" id="admin_commission2" type="text">
                                         </td>
                                     </tr>
                                     <tr>
                                         <td class="g-t-r">三级分润</td>
                                         <td>
-                                            <input data-relation="admin_commission1,admin_commission2,admin_commission3,admin_commissionExtra1,admin_commissionExtra2,admin_commissionExtra3" data-current="admin_commission3" class="form-control input-sm" placeholder="" maxlength="3" id="admin_commission3" type="text">
+                                            <input data-relation="admin_commission1,admin_commission2,admin_commission3,admin_commissionExtra1,admin_commissionExtra2,admin_commissionExtra3" data-current="admin_commission3" class="form-control input-sm" value="0" placeholder="" maxlength="3" id="admin_commission3" type="text">
                                         </td>
                                     </tr>
                                     </tbody>
@@ -167,47 +190,26 @@
                                     <tr>
                                         <td class="g-t-r">一级奖励</td>
                                         <td>
-                                            <input data-relation="admin_commission1,admin_commission2,admin_commission3,admin_commissionExtra1,admin_commissionExtra2,admin_commissionExtra3" data-current="admin_commissionExtra1" class="form-control input-sm" placeholder="" maxlength="3" id="admin_commissionExtra1" type="text">
+                                            <input data-relation="admin_commission1,admin_commission2,admin_commission3,admin_commissionExtra1,admin_commissionExtra2,admin_commissionExtra3" data-current="admin_commissionExtra1" class="form-control input-sm" value="0" placeholder="" maxlength="3" id="admin_commissionExtra1" type="text">
                                         </td>
                                     </tr>
                                     <tr>
                                         <td class="g-t-r">二级奖励</td>
                                         <td>
-                                            <input data-relation="admin_commission1,admin_commission2,admin_commission3,admin_commissionExtra1,admin_commissionExtra2,admin_commissionExtra3" data-current="admin_commissionExtra2" class="form-control input-sm" placeholder="" maxlength="3" id="admin_commissionExtra2" type="text">
+                                            <input data-relation="admin_commission1,admin_commission2,admin_commission3,admin_commissionExtra1,admin_commissionExtra2,admin_commissionExtra3" data-current="admin_commissionExtra2" class="form-control input-sm" value="0" placeholder="" maxlength="3" id="admin_commissionExtra2" type="text">
                                         </td>
                                     </tr>
                                     <tr>
                                         <td class="g-t-r">三级奖励</td>
                                         <td>
-                                            <input data-relation="admin_commission1,admin_commission2,admin_commission3,admin_commissionExtra1,admin_commissionExtra2,admin_commissionExtra3" data-current="admin_commissionExtra3" class="form-control input-sm" placeholder="" maxlength="3" id="admin_commissionExtra3" type="text">
+                                            <input data-relation="admin_commission1,admin_commission2,admin_commission3,admin_commissionExtra1,admin_commissionExtra2,admin_commissionExtra3" data-current="admin_commissionExtra3" class="form-control input-sm" value="0" placeholder="" maxlength="3" id="admin_commissionExtra3" type="text">
                                         </td>
                                     </tr>
                                     </tbody>
                                 </table>
                             </div>
                             <div class="col-sm-12">
-                                <div class="panel panel-default g-w-percent50 g-clear-pl g-clear-pr collapsed">
-                                    <div class="panel-heading">
-                                        <h3 class="panel-title g-fs6 g-c-gray6">分润机制说明</h3>
-                                        <div class="panel-options">
-                                            <a href="#" data-toggle="panel">
-                                                <span class="collapse-icon g-c-gray9 g-fs2 g-w-number2">&nbsp;&nbsp;关闭&nbsp;&nbsp;</span>
-                                                <span class="expand-icon g-c-gray9 g-fs2 g-w-number2">&nbsp;&nbsp;查看&nbsp;&nbsp;</span>
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div class="panel-body">
-                                        <blockquote class="blockquote blockquote-default g-w-percent50">
-                                            <p>
-                                                总分润比例% = 等级分润% + 鼓励奖% = 100%
-                                            </p>
-                                            <p>
-                                                分润比例不包含小数，不含百分比
-                                            </p>
-                                        </blockquote>
-                                    </div>
-                                </div>
-                                <button type="button" id="profit_setting_btn" class="btn btn-info g-br3 g-f-r">保存</button>
+                                <button type="button" id="profit_setting_btn" class="btn btn-info g-br3 g-f-r g-d-hidei">保存</button>
                             </div>
                         </div>
                     </div>
