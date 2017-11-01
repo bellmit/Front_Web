@@ -33,11 +33,11 @@
                 $search_nickName.html('<div class="inline g-f-l">用户名称：<span class="g-c-info">' + user_cache.nickname + '</span></div>');
 
                 /*权限调用*/
-                var powermap = public_tool.getPower(),
-                    forbid_power = public_tool.getKeyPower('userC-forbid', powermap),
-                    enable_power = public_tool.getKeyPower('userC-enable', powermap),
-                    edit_power = public_tool.getKeyPower('userC-edit', powermap),
-                    detail_power = public_tool.getKeyPower('userC-detail', powermap);
+                var powermap = public_tool.getPower(348),
+                    forbid_power = public_tool.getKeyPower('bzw-userC-list', powermap),
+                    enable_power = public_tool.getKeyPower('bzw-userC-list', powermap),
+                    edit_power = public_tool.getKeyPower('bzw-userC-list', powermap),
+                    detail_power = public_tool.getKeyPower('bzw-userC-list', powermap);
 
                 /*基本变量定义*/
                 var $admin_list_wrap = $('#admin_list_wrap'),

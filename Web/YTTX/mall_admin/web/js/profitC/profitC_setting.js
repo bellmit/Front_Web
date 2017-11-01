@@ -21,24 +21,17 @@
 
             /*dom引用和相关变量定义*/
             var debug = false,
-                module_id = 'bzw-userC-relation'/*模块id，主要用于本地存储传值*/,
-                $search_nickName = $('#search_nickName');
+                module_id = 'bzw-profitC-setting'/*模块id，主要用于本地存储传值*/;
 
 
             /*权限调用*/
             var powermap = public_tool.getPower(350),
-                setting_power = public_tool.getKeyPower('profitC-setting', powermap)/*设置*/;
+                setting_power = public_tool.getKeyPower('bzw-profitC-list', powermap)/*设置*/;
 
             /*基本变量定义*/
-            var $admin_list_wrap = $('#admin_list_wrap'),
-                $admin_page_wrap = $('#admin_page_wrap'),
-                request_config = {
+            var request_config = {
                     adminId: decodeURIComponent(logininfo.param.adminId),
-                    token: decodeURIComponent(logininfo.param.token),
-                    parentId: user_cache.id,
-                    page: 1,
-                    pageSize: 10,
-                    total: 0
+                    token: decodeURIComponent(logininfo.param.token)
                 },
                 dia = dialog({
                     zIndex: 2000,
@@ -56,90 +49,88 @@
 
 
             /*编辑对象*/
-            var $show_edit_wrap = $('#show_edit_wrap'),
-                $show_edit_btn = $('#show_edit_btn'),
-                $show_edit_phone = $('#show_edit_phone');
+            var $admin_commission1 = $('#admin_commission1'),
+                $admin_commission2 = $('#admin_commission2'),
+                $admin_commission3 = $('#admin_commission3'),
+                $admin_commissionExtra1 = $('#admin_commissionExtra1'),
+                $admin_commissionExtra2 = $('#admin_commissionExtra2'),
+                $admin_commissionExtra3 = $('#admin_commissionExtra3'),
+                $profit_setting_btn = $('#profit_setting_btn'),
+                relation_list = [$admin_commission1, $admin_commission2, $admin_commission3, $admin_commissionExtra1, $admin_commissionExtra2, $admin_commissionExtra3];
 
 
+            /*绑定设置限制值输入*/
+            $.each([$admin_commission1, $admin_commission2, $admin_commission3, $admin_commissionExtra1, $admin_commissionExtra2, $admin_commissionExtra3], function (index) {
+                this.on('keyup focusout', function (e) {
+                    var etype = e.type,
+                        self = this,
+                        data;
 
+                    if (etype === 'keyup') {
+                        data = self.value.replace(/\D*/g, '');
+                        self.value = data;
+                    } else if (etype === 'focusout') {
+                        data = self.value;
+                        if (data === '' || isNaN(data)) {
+                            self.value = 0;
+                            return false;
+                        }
+                        if (data > 100) {
+                            data = 100;
+                        }
+                        /*处理关联关系值*/
+                        relationData(data, index);
+                    }
+                }).val(0);
+            });
 
             /*请求属性数据*/
 
-
-
-
-            /*格式化手机号码*/
-            $show_edit_phone.on('keyup focusout', function (e) {
-                var etype = e.type,
-                    phoneno = this.value.replace(/\D*/g, '');
-
-                if (etype === 'keyup') {
-                    if (phoneno === '') {
-                        this.value = '';
-                        return false;
-                    }
-                    this.value = public_tool.phoneFormat(this.value);
-                } else if (etype === 'focusout') {
-                    if (!public_tool.isMobilePhone(phoneno)) {
-                        this.value = '';
-                        toggleEditQuery();
-                        return false;
-                    }
-                    /*格式化显示*/
-                    this.value = public_tool.phoneFormat(this.value);
-                    /*查询新用户*/
-                    requestEditInfo(public_tool.trims(this.value));
-                }
-            });
-
             /*绑定提交编辑*/
-            $show_edit_btn.on('click', function () {
-                var $this = $(this),
-                    shUserId = $this.attr('data-id'),
-                    parentId = $this.attr('data-parentid');
+            /*$show_edit_btn.on('click', function () {
+             var $this = $(this),
+             shUserId = $this.attr('data-id'),
+             parentId = $this.attr('data-parentid');
 
-                if (shUserId !== '' && parentId !== '') {
-                    $.ajax({
-                            url: debug ? "../../json/test.json" : "http://10.0.5.226:8082/mall-buzhubms-api/shuser/hierarchy/update",
-                            dataType: 'JSON',
-                            async: false,
-                            method: 'post',
-                            data: {
-                                adminId: request_config.adminId,
-                                token: request_config.token,
-                                shUserId: shUserId,
-                                parentId: parentId
-                            }
-                        })
-                        .done(function (resp) {
-                            if (debug) {
-                                var resp = testWidget.testSuccess('list');
-                            }
-                            var code = parseInt(resp.code, 10);
-                            if (code !== 0) {
-                                dia.content('<span class="g-c-bs-warning g-btips-warn">' + (resp.message || "编辑失败") + '</span>').show();
-                                return false;
-                            }
-                            dia.content('<span class="g-c-bs-success g-btips-succ">编辑成功</span>').show();
-                            /*请求属性数据*/
-                            requestAttr(request_config);
-                            /*重置值*/
-                            setTimeout(function () {
-                                dia.close();
-                                $show_edit_wrap.modal('hide');
-                            }, 2000);
+             if (shUserId !== '' && parentId !== '') {
+             $.ajax({
+             url: debug ? "../../json/test.json" : "http://10.0.5.226:8082/mall-buzhubms-api/shuser/hierarchy/update",
+             dataType: 'JSON',
+             async: false,
+             method: 'post',
+             data: {
+             adminId: request_config.adminId,
+             token: request_config.token,
+             shUserId: shUserId,
+             parentId: parentId
+             }
+             })
+             .done(function (resp) {
+             if (debug) {
+             var resp = testWidget.testSuccess('list');
+             }
+             var code = parseInt(resp.code, 10);
+             if (code !== 0) {
+             dia.content('<span class="g-c-bs-warning g-btips-warn">' + (resp.message || "编辑失败") + '</span>').show();
+             return false;
+             }
+             dia.content('<span class="g-c-bs-success g-btips-succ">编辑成功</span>').show();
+             /!*请求属性数据*!/
+             requestAttr(request_config);
+             /!*重置值*!/
+             setTimeout(function () {
+             dia.close();
+             $show_edit_wrap.modal('hide');
+             }, 2000);
 
-                        })
-                        .fail(function (resp) {
-                            console.log(resp.message);
-                            dia.content('<span class="g-c-bs-warning g-btips-warn">' + (resp.message || "编辑失败") + '</span>').show();
-                        });
-                }
-            });
+             })
+             .fail(function (resp) {
+             console.log(resp.message);
+             dia.content('<span class="g-c-bs-warning g-btips-warn">' + (resp.message || "编辑失败") + '</span>').show();
+             });
+             }
+             });*/
         }
-
-
-
 
 
         /*请求属性*/
@@ -184,7 +175,7 @@
                     if (result) {
                         /*解析属性*/
                         toggleEditQuery(result['nickname'], result['id']);
-                    }else{
+                    } else {
                         toggleEditQuery();
                     }
                 })
@@ -192,6 +183,65 @@
                     console.log(resp.message);
                     dia.content('<span class="g-c-bs-warning g-btips-warn">' + (resp.message || "操作失败") + '</span>').show();
                 });
+        }
+
+
+        /*关联属性处理*/
+        function relationData(value, index) {
+            var i = 0,
+                current_value = 0/*当前循环值*/,
+                item = 0,
+                len = 6,
+                standard = 0/*标准值*/,
+                count = 0/*其余求和值*/,
+                old_value,
+                new_value;
+            if (value >= 100) {
+                /*设置100时其他为0*/
+                for (i; i < len; i++) {
+                    if (i !== index) {
+                        relation_list[i].val(0);
+                    } else {
+                        relation_list[i].val(100);
+                    }
+                }
+            } else if (value < 100) {
+                /*非100时*/
+                relation_list[index].val(value)/*设置新增*/;
+                standard = 100 - value;
+                for (i; i < len; i++) {
+                    /*先计算其他值，确定其他值范围*/
+                    if (i !== index) {
+                        current_value = parseInt(relation_list[i].val(), 10);
+                        if (standard <= 0) {
+                            relation_list[i].val(0);
+                        } else {
+                            if (current_value >= standard) {
+                                new_value =standard - current_value;
+                                relation_list[i].val(new_value)/*设置最近满100的值*/;
+                                break;
+                            } else {
+                                relation_list[j].val(current_value);
+                                standard -= current_value;
+                            }
+                        }
+                        if ((count + current_value) >= standard) {
+                            relation_list[index].val(value)/*设置新增*/;
+                            new_value = (count + current_value) - standard;
+                            relation_list[i].val(new_value)/*设置最近满100的值*/;
+                            var j = 0,
+                                sublen = len - j;
+                            for (j; j < len; j++) {
+                                if (j !== index) {
+                                    relation_list[j].val(0);
+                                }
+                            }
+                            break;
+                        }
+                        count += parseInt(relation_list[i].val(), 10);
+                    }
+                }
+            }
         }
 
     });

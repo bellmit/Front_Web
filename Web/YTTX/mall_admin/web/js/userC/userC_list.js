@@ -26,10 +26,10 @@
 
 
             /*权限调用*/
-            var powermap = public_tool.getPower(2101),
-                relation_power = public_tool.getKeyPower('userC-relation', powermap)/*会员关系*/,
-                forbid_power = public_tool.getKeyPower('userC-forbid', powermap)/*会员禁用*/,
-                enable_power = public_tool.getKeyPower('userC-enable', powermap)/*会员启用*/;
+            var powermap = public_tool.getPower(348),
+                relation_power = public_tool.getKeyPower('bzw-userC-list', powermap)/*会员关系*/,
+                forbid_power = public_tool.getKeyPower('bzw-userC-list', powermap)/*会员禁用*/,
+                enable_power = public_tool.getKeyPower('bzw-userC-list', powermap)/*会员启用*/;
 
 
             /*dom引用和相关变量定义*/

@@ -23,8 +23,8 @@
 
             /*权限调用*/
             var powermap = public_tool.getPower(350),
-                detail_power = public_tool.getKeyPower('profitC-detail', powermap)/*查看*/,
-                settlement_power = public_tool.getKeyPower('profitC-settlement', powermap)/*结算*/;
+                detail_power = public_tool.getKeyPower('bzw-profitC-list', powermap)/*查看*/,
+                settlement_power = public_tool.getKeyPower('bzw-profitC-list', powermap)/*结算*/;
 
 
             /*dom引用和相关变量定义*/

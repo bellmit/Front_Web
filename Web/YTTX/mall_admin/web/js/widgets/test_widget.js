@@ -969,6 +969,56 @@
                         "prid": 14749
                     }
                 ]
+            },
+            {
+                "modClass": "bzw-userC",
+                "modCode": "bzw-userC",
+                "modId": 348,
+                "modItem": [
+                    {
+                        "modClass": "bzw-userC-list",
+                        "modCode": "bzw-userC-list",
+                        "modId": 348,
+                        "modLink": "bzw-userC-list",
+                        "modName": "会员列表"
+                    }
+                ],
+                "modLink": "bzw-userC",
+                "modName": "会员管理(C端)",
+                "permitItem": [
+                    {
+                        "funcCode": "bzw-userC-list",
+                        "funcName": "会员列表",
+                        "isPermit": 1,
+                        "modId": 348,
+                        "prid": 14982
+                    }
+                ]
+            },
+            {
+                "modClass": "bzw-profitC",
+                "modCode": "bzw-profitC",
+                "modId": 350,
+                "modItem": [
+                    {
+                        "modClass": "bzw-profitC-list",
+                        "modCode": "bzw-profitC-list",
+                        "modId": 350,
+                        "modLink": "bzw-profitC-list",
+                        "modName": "分润列表"
+                    }
+                ],
+                "modLink": "bzw-profitC",
+                "modName": "分润管理(C端)",
+                "permitItem": [
+                    {
+                        "funcCode": "bzw-profitC-list",
+                        "funcName": "分润列表",
+                        "isPermit": 1,
+                        "modId": 350,
+                        "prid": 14987
+                    }
+                ]
             }
         ]/*默认菜单模块*/;
 

@@ -781,14 +781,6 @@
             "module": "admin",
             "modid": "210"
         },
-        "2101": {
-            "name": "用户管理C端",
-            "code": "userC",
-            "match": "-userC-",
-            "class": "menu-ux-user",
-            "module": "userC",
-            "modid": "2101"
-        },
         "220": {
             "name": "公告管理",
             "code": "announcement",
@@ -920,6 +912,14 @@
             "class": "menu-ux-payment",
             "module": "finance",
             "modid": "344"
+        },
+        "348": {
+            "name": "用户管理C端",
+            "code": "userC",
+            "match": "-userC-",
+            "class": "menu-ux-user",
+            "module": "userC",
+            "modid": "348"
         },
         "350": {
             "name": "分润管理C端",
