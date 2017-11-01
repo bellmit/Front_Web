@@ -916,7 +916,7 @@
                 token: request_config.token,
                 parentId: id,
                 pageSize: 1000,
-                level: 2
+                level: 1
             };
             $.ajax({
                     url: debug ? "../../json/test.json" : "http://10.0.5.226:8082/mall-buzhubms-api/shuser/hierarchy/list",

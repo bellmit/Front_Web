@@ -207,38 +207,21 @@
                 }
             } else if (value < 100) {
                 /*非100时*/
-                relation_list[index].val(value)/*设置新增*/;
                 standard = 100 - value;
                 for (i; i < len; i++) {
                     /*先计算其他值，确定其他值范围*/
                     if (i !== index) {
                         current_value = parseInt(relation_list[i].val(), 10);
-                        if (standard <= 0) {
-                            relation_list[i].val(0);
-                        } else {
-                            if (current_value >= standard) {
-                                new_value =standard - current_value;
-                                relation_list[i].val(new_value)/*设置最近满100的值*/;
-                                break;
-                            } else {
-                                relation_list[j].val(current_value);
-                                standard -= current_value;
-                            }
-                        }
-                        if ((count + current_value) >= standard) {
-                            relation_list[index].val(value)/*设置新增*/;
-                            new_value = (count + current_value) - standard;
+                        if (current_value >= standard) {
+                            relation_list[i].val(standard);
+                            standard = 0;
+                        } else if (current_value < standard) {
+                            new_value = standard - current_value;
                             relation_list[i].val(new_value)/*设置最近满100的值*/;
-                            var j = 0,
-                                sublen = len - j;
-                            for (j; j < len; j++) {
-                                if (j !== index) {
-                                    relation_list[j].val(0);
-                                }
-                            }
-                            break;
+                            standard = current_value;
                         }
-                        count += parseInt(relation_list[i].val(), 10);
+                    } else {
+                        relation_list[i].val(value)/*设置新增*/;
                     }
                 }
             }
