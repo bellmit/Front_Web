@@ -228,20 +228,46 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title">用户明细</h4>
+                    <h4 class="modal-title">订单详情</h4>
                 </div>
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-md-3"></div>
-                        <div class="col-md-9"></div>
+                        <div class="col-md-4">
+                            <table class="table table-bordered table-striped table-hover admin-table">
+                                <colgroup>
+                                    <col class="g-w-percent18"/>
+                                    <col class="g-w-percent32"/>
+                                </colgroup>
+                                <thead>
+                                <tr>
+                                    <th colspan="2">订单信息</th>
+                                </tr>
+                                </thead>
+                                <tbody id="show_detail_content"></tbody>
+                            </table>
+                        </div>
+                        <div class="col-md-8">
+                            <table class="table table-bordered table-striped table-hover admin-table">
+                                <colgroup>
+                                    <col class="g-w-percent4"/>
+                                    <col class="g-w-percent18"/>
+                                    <col class="g-w-percent12"/>
+                                    <col class="g-w-percent6"/>
+                                    <col class="g-w-percent10"/>
+                                </colgroup>
+                                <thead>
+                                <tr>
+                                    <th>序号</th>
+                                    <th>商品名称</th>
+                                    <th>商品属性</th>
+                                    <th>商品件数</th>
+                                    <th>商品总金额</th>
+                                </tr>
+                                </thead>
+                                <tbody id="show_detail_goods"></tbody>
+                            </table>
+                        </div>
                     </div>
-                    <table class="table table-bordered table-striped table-hover admin-table">
-                        <colgroup>
-                            <col class="g-w-percent10"/>
-                            <col class="g-w-percent40"/>
-                        </colgroup>
-                        <tbody id="show_detail_content"></tbody>
-                    </table>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-info" data-dismiss="modal">关闭</button>

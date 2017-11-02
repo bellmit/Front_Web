@@ -27,7 +27,7 @@
 
 
             /*dom引用和相关变量定义*/
-            var debug = true,
+            var debug = false,
                 $admin_list_wrap = $('#admin_list_wrap')/*表格*/,
                 module_id = 'bzw-orderC-list'/*模块id，主要用于本地存储传值*/,
                 dia = dialog({
@@ -214,7 +214,8 @@
 
             /*明细对象*/
             var $show_detail_wrap = $('#show_detail_wrap'),
-                $show_detail_content = $('#show_detail_content');
+                $show_detail_content = $('#show_detail_content'),
+                $show_detail_goods = $('#show_detail_goods');
 
 
             /*清空查询条件*/
@@ -345,7 +346,7 @@
                                 totalMoney: 'money',
                                 createTime: 'datetime',
                                 consigneeName: 'name',
-                                consigneePhone: 'phone',
+                                consigneePhone: 'mobile',
                                 orderStatus: 'rule,21,9,11,0,1,3,30,40,5'/*0待付款 1取消订单 3待发货 9待收货 11待评价 21已评价 30返修 40退货*/
                             },
                             maptype: 'object'
@@ -375,6 +376,8 @@
                     }
 
                     var str = '',
+                        item,
+                        goodsstr = '',
                         detail_map,
                         goodslist,
                         len,
@@ -401,31 +404,40 @@
                                 if (typeof detail_map[j] !== 'undefined') {
                                     if (j === 'orderStatus') {
                                         var statusmap = {
-                                                0: '<div class="g-c-warn">待付款</div>',
-                                                1: '<div class="g-c-gray10">取消订单</div>',
-                                                3: '<div class="g-c-info">待发货</div>',
-                                                9: '<div class="g-c-info">待收货</div>',
-                                                11: '<div class="g-c-gray6">待评价</div>',
-                                                21: '<div class="g-c-green2">已评价</div>',
-                                                30: '<div class="g-c-gray10">返修</div>',
-                                                40: '<div class="g-c-gray10">禁用(锁定)</div>'
-                                            };
-                                        str += '<tr><th>' + detail_map[j] + ':</th><td>"' + (statusmap[list[j]] || "<div class=\"g-c-red1\">异常</div>") + '</td></tr>';
+                                            0: '<div class="g-c-warn">待付款</div>',
+                                            1: '<div class="g-c-gray10">取消订单</div>',
+                                            3: '<div class="g-c-info">待发货</div>',
+                                            9: '<div class="g-c-info">待收货</div>',
+                                            11: '<div class="g-c-gray6">待评价</div>',
+                                            21: '<div class="g-c-green2">已评价</div>',
+                                            30: '<div class="g-c-gray10">返修</div>',
+                                            40: '<div class="g-c-gray10">禁用(锁定)</div>'
+                                        };
+                                       str += '<tr><th>' + detail_map[j] + ':</th><td>' + (statusmap[list[j]] || "<div class=\"g-c-red1\">异常</div>") + '</td></tr>';
                                     } else if (j === 'consigneePhone') {
                                         str += '<tr><th>' + detail_map[j] + ':</th><td>' + public_tool.phoneFormat(list[j]) + '</td></tr>';
                                     } else if (j === 'totalMoney') {
-                                        str += '<tr><th>' + detail_map[j] + ':</th><td>' + public_tool.moneyCorrect(list[j], 15, true)[0] + '</td></tr>';
+                                        str += '<tr><th>' + detail_map[j] + ':</th><td>' + public_tool.moneyCorrect(list[j], 15, false)[0] + '</td></tr>';
                                     } else {
                                         str += '<tr><th>' + detail_map[j] + ':</th><td>' + list[j] + '</td></tr>';
                                     }
                                 }
                             }
                         }
-                        len=goodslist.length;
-                        if(len!==0){
-                            str+=''
+                        len = goodslist.length;
+                        if (len !== 0) {
+                            for (i; i < len; i++) {
+                                item = goodslist[i];
+                                goodsstr += '<tr>\
+                                        <td>' + (i + 1) + '</td>\
+                                        <td>' + item["goodsName"] + '</td>\
+                                        <td>' + item["attribute"] + '</td>\
+                                        <td>' + item["quantity"] + '</td>\
+                                        <td>' + public_tool.moneyCorrect(item["goodsPriceTotal"],15,false)[0] + '</td>\
+                                    </tr>';
+                            }
+                            $(goodsstr).appendTo($show_detail_goods.html(''));
                         }
-
                         if (str !== '') {
                             $(str).appendTo($show_detail_content.html(''));
                             $show_detail_wrap.modal('show', {backdrop: 'static'});
