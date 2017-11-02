@@ -1032,7 +1032,7 @@
 
         /*详情展现*/
         function showDetail(id) {
-            if (typeof id === 'undefined' && id === '') {
+            if (typeof id === 'undefined' || id === '') {
                 return false;
             }
             $.ajax({

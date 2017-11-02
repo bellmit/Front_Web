@@ -3,12 +3,12 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	
+
 	<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0,maximum-scale=1">
-	<meta name="description" content="布住网后台管理系统--用户管理C端--用户管理列表" />
-	<meta name="keywords" content="布住网后台管理系统--用户管理C端--用户管理列表">
+	<meta name="description" content="布住网后台管理系统--订单管理C端--订单管理列表" />
+	<meta name="keywords" content="布住网后台管理系统--订单管理C端--订单管理列表">
   <meta name="author" content="yp" />
-	<title>布住网后台管理系统--用户管理C端--用户管理列表</title>
+	<title>布住网后台管理系统--订单管理C端--订单管理列表</title>
     <link href="../../images/logo_icon.ico" rel="icon">
 	<link rel="stylesheet" href="../../css/base.css">
   <link rel="stylesheet" href="../../js/plugins/datatables/dataTables.bootstrap.css">
@@ -87,13 +87,13 @@
             <!--主题描述-->
             <div class="page-title">
                 <div class="title-env">
-                    <h1 class="title">用户管理C端</h1>
-                    <p class="description">用户管理列表</p>
+                    <h1 class="title">订单管理C端</h1>
+                    <p class="description">订单管理列表</p>
                 </div>
                 <div class="breadcrumb-env">
                     <ol class="breadcrumb bc-1">
-                        <li><a href=""><i class="fa-home"></i>用户管理C端</a></li>
-                        <li class="active"><strong>用户管理列表</strong></li>
+                        <li><a href=""><i class="fa-home"></i>订单管理C端</a></li>
+                        <li class="active"><strong>订单管理列表</strong></li>
                     </ol>
                 </div>
             </div>
@@ -106,7 +106,7 @@
 
                         <!--表格标题-->
                         <div class="panel-heading">
-                            <h3 class="panel-title">用户管理列表</h3>
+                            <h3 class="panel-title">订单管理列表</h3>
 
                             <div class="panel-options">
                                 <a href="#" data-toggle="panel">
@@ -120,22 +120,30 @@
                         <!--表格主体-->
                         <div class="panel-body">
                             <div class="admin-search-wrap">
+
                                 <div class="admin-search-item">
-                                    <label>查询类型：</label>
-                                    <select id="search_searchColumn" >
+                                    <label>支付方式：</label>
+                                    <select id="search_paymentType" >
                                         <option selected value="">全部</option>
-                                        <option value="1">昵称</option>
-                                        <option value="2">手机号</option>
+                                        <option value="1">微信</option>
+                                        <option value="2">支付宝</option>
+                                        <option value="3">其他</option>
                                     </select>
                                 </div>
 
                                 <div class="admin-search-item">
-                                    <input type="text" placeholder="请输入搜索内容"  id="search_searchContent" />
+                                    <label>订单号：</label>
+                                    <input type="text" placeholder="请输入搜索内容"  id="search_orderNumber" />
+                                </div>
+
+                                <div class="admin-search-item">
+                                    <label>金额范围：</label>
+                                    <input type="text" placeholder="金额起"  id="search_orderMoneyStart" maxlength="15" />&nbsp;至&nbsp;<input placeholder="金额止" type="text" maxlength="15" id="search_orderMoneyEnd" />
                                 </div>
 
                                 <div class="admin-search-item">
                                     <label>注册时间：</label>
-                                    <input type="text" placeholder="选择开始时间" readonly id="search_createTimeStart" />&nbsp;至&nbsp;<input placeholder="选择结束时间" type="text" readonly id="search_createTimeEnd" />
+                                    <input type="text" placeholder="选择开始时间" readonly id="search_timeStart" />&nbsp;至&nbsp;<input placeholder="选择结束时间" type="text" readonly id="search_timeEnd" />
                                 </div>
 
                                 <div class="admin-search-item">
@@ -153,26 +161,24 @@
                             <table id="admin_list_wrap" class="table table-bordered table-striped table-hover admin-table">
                                 <!--分组样式-->
                                 <colgroup>
-                                    <col class="g-w-percent2">
                                     <col class="g-w-percent10">
                                     <col class="g-w-percent8">
-                                    <col class="g-w-percent3">
-                                    <col class="g-w-percent8">
+                                    <col class="g-w-percent7">
                                     <col class="g-w-percent5">
-                                    <col class="g-w-percent4">
+                                    <col class="g-w-percent5">
                                     <col class="g-w-percent10">
+                                    <col class="g-w-percent5">
                                 </colgroup>
 
                                 <!--表头-->
                                 <thead>
                                 <tr>
-                                    <th class="no-sorting">&nbsp;</th>
-                                    <th>昵称</th>
-                                    <th>手机号</th>
-                                    <th>性别</th>
-                                    <th>注册时间/创建时间</th>
-                                    <th>状态</th>
-                                    <th>登录次数</th>
+                                    <th>订单号</th>
+                                    <th>买家名称(昵称)</th>
+                                    <th>订单总价</th>
+                                    <th>支付类型</th>
+                                    <th>订单状态</th>
+                                    <th>下单时间</th>
                                     <th>操作</th>
                                 </tr>
                                 </thead>
@@ -216,27 +222,8 @@
     </div>
 
 
-    <!--批量处理-->
-    <div class="admin-batchitem-wrap">
-        <div class="admin-batchitem-btn">
-            <div id="admin_batchitem_btn">批量</div>
-        </div>
-        <div class="admin-batchitem-outer">
-            <div class="admin-batchitem-show" id="admin_batchitem_show">
-                <div class="admin-batchitem-inner">
-                    <div data-state="1" id="admin_batchitem_check" class="admin-batchitem-check" data-check="0" data-action="checkall"></div>
-                </div>
-                <div class="admin-batchitem-inner" id="admin_batchitem_action">
-                    <div data-action="forbid">禁用</div>
-                    <div data-action="enable">启用</div>
-                </div>
-            </div>
-        </div>
-    </div>
 
 
-
-	
 	<!--加载遮罩层-->
 	<div id="page_loading_wrap" class="page-loading-overlay g-d-hidei">
 		<div class="loader-2"></div>
@@ -293,7 +280,6 @@
     <script src="../../js/plugins/pagination/pagination.js"></script>
     <script src="../../js/plugins/My97DatePicker/WdatePicker.js"></script>
     <script src="../../js/widgets/datepick.js"></script>
-    <script src="../../js/widgets/batch_item.js"></script>
-    <script src="../../js/userC/userC_list.js"></script>
+    <script src="../../js/orderC/orderC_list.js"></script>
 </body>
 </html>
