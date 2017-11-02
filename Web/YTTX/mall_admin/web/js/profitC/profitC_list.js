@@ -28,7 +28,7 @@
 
 
             /*dom引用和相关变量定义*/
-            var debug = true,
+            var debug = false,
                 $admin_list_wrap = $('#admin_list_wrap')/*表格*/,
                 module_id = 'bzw-profitC-list'/*模块id，主要用于本地存储传值*/,
                 dia = dialog({

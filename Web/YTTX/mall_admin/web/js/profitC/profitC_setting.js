@@ -20,20 +20,16 @@
             });
 
             /*dom引用和相关变量定义*/
-            var debug = true,
+            var debug = false,
                 module_id = 'bzw-profitC-setting'/*模块id，主要用于本地存储传值*/;
 
 
             /*权限调用*/
             var powermap = public_tool.getPower(350),
-                setting_power = public_tool.getKeyPower('bzw-profitC-list', powermap)/*设置*/;
+                setting_power = public_tool.getKeyPower('bzw-profitC-setting', powermap)/*设置*/;
 
             /*基本变量定义*/
-            var request_config = {
-                    adminId: decodeURIComponent(logininfo.param.adminId),
-                    token: decodeURIComponent(logininfo.param.token)
-                },
-                dia = dialog({
+            var dia = dialog({
                     zIndex: 2000,
                     title: '温馨提示',
                     okValue: '确定',
@@ -98,12 +94,12 @@
                             data: {
                                 adminId: decodeURIComponent(logininfo.param.adminId),
                                 token: decodeURIComponent(logininfo.param.token),
-                                commission1:$admin_commission1.val(),
-                                commission2:$admin_commission2.val(),
-                                commission3:$admin_commission3.val(),
-                                commissionExtra1:$admin_commissionExtra1.val(),
-                                commissionExtra2:$admin_commissionExtra2.val(),
-                                commissionExtra3:$admin_commissionExtra3.val()
+                                commission1: $admin_commission1.val(),
+                                commission2: $admin_commission2.val(),
+                                commission3: $admin_commission3.val(),
+                                commissionExtra1: $admin_commissionExtra1.val(),
+                                commissionExtra2: $admin_commissionExtra2.val(),
+                                commissionExtra3: $admin_commissionExtra3.val()
                             }
                         })
                         .done(function (resp) {
@@ -166,19 +162,18 @@
                         var profit_map = ['commission1', 'commission2', 'commission3', 'commissionExtra1', 'commissionExtra2', 'commissionExtra3'],
                             i = 0,
                             len = profit_map.length,
-                            count=0,
+                            count = 0,
                             item;
                         for (i; i < len; i++) {
-                            item=parseInt(result[profit_map[i]],10);
+                            item = parseInt(result[profit_map[i]], 10);
                             relation_list[i].val(item);
-                            count+=item;
-                            if (i === len - 1) {
-                                /*最后一个触发校验*/
-                                relation_list[i].trigger('focusout');
+                            count += item;
+                            if (i === len - 1 && len === 6) {
                                 /*控制按钮*/
-                                if(count>100){
-                                    $profit_setting_btn.addClass('g-d-hidei');
-                                }else{
+                                if (count !== 100 && setting_power) {
+                                    /*最后一个触发校验*/
+                                    relation_list[i].trigger('focusout');
+                                } else {
                                     $profit_setting_btn.removeClass('g-d-hidei');
                                 }
                             }
@@ -261,6 +256,13 @@
                  }
                  }*/
             }
+            /*交易成功后显示设置按钮*/
+            if (count === 100) {
+                $profit_setting_btn.removeClass('g-d-hidei');
+            } else {
+                $profit_setting_btn.addClass('g-d-hidei');
+            }
+
         }
 
     });

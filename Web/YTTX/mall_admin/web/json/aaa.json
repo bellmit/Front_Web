@@ -985,6 +985,13 @@
             "modId": 350,
             "modLink": "bzw-profitC-list",
             "modName": "分润列表"
+          },
+          {
+            "modClass": "bzw-profitC-setting",
+            "modCode": "bzw-profitC-setting",
+            "modId": 350,
+            "modLink": "bzw-profitC-setting",
+            "modName": "分润设置"
           }
         ],
         "modLink": "bzw-profitC",
@@ -996,9 +1003,18 @@
             "isPermit": 1,
             "modId": 350,
             "prid": 14987
+          },
+          {
+            "funcCode": "bzw-profitC-setting",
+            "funcName": "分润设置",
+            "isPermit": 1,
+            "modId": 350,
+            "prid": 14992
           }
         ]
       }
     ]
   }
 }
+
+

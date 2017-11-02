@@ -925,98 +925,151 @@
                 ]
             },
             {
-                "modClass": "bzw-finance",
                 "modCode": "bzw-finance",
                 "modId": 344,
                 "modItem": [
                     {
-                        "modClass": "bzw-finance-cardmanage",
-                        "modCode": "bzw-finance-cardmanage",
-                        "modId": 344,
-                        "modLink": "bzw-finance-cardmanage",
-                        "modName": "银行卡管理"
+                        "modLink": "bzw-finance-recordmanage",
+                        "modName": "交易流水管理"
                     },
                     {
-                        "modClass": "bzw-finance-cashmanage",
-                        "modCode": "bzw-finance-cashmanage",
-                        "modId": 344,
                         "modLink": "bzw-finance-cashmanage",
                         "modName": "提现管理"
                     },
                     {
-                        "modClass": "bzw-finance-recordmanage",
-                        "modCode": "bzw-finance-recordmanage",
-                        "modId": 344,
-                        "modLink": "bzw-finance-recordmanage",
-                        "modName": "交易流水管理"
+                        "modLink": "bzw-finance-cardmanage",
+                        "modName": "银行卡管理"
                     }
                 ],
-                "modLink": "bzw-finance",
+                "modLink": "bzw-finance-manage",
                 "modName": "财务管理",
                 "permitItem": [
+                    {
+                        "funcCode": "cash-detail",
+                        "funcName": "提现详情",
+                        "isPermit": 1,
+                        "modId": 344,
+                        "prid": 1
+                    },
                     {
                         "funcCode": "bzw-finance-cardmanage-audit",
                         "funcName": "银行卡审核",
                         "isPermit": 1,
                         "modId": 344,
-                        "prid": 14748
+                        "prid": 2
                     },
                     {
                         "funcCode": "bzw-finance-cashmanage-deal",
                         "funcName": "提现处理",
                         "isPermit": 1,
                         "modId": 344,
-                        "prid": 14749
+                        "prid": 3
                     }
                 ]
             },
             {
-                "modClass": "bzw-userC",
                 "modCode": "bzw-userC",
                 "modId": 348,
                 "modItem": [
                     {
-                        "modClass": "bzw-userC-list",
-                        "modCode": "bzw-userC-list",
-                        "modId": 348,
                         "modLink": "bzw-userC-list",
-                        "modName": "会员列表"
+                        "modName": "用户管理"
+                    },
+                    {
+                        "modLink": "bzw-userC-relation",
+                        "modName": "会员关系"
                     }
                 ],
-                "modLink": "bzw-userC",
-                "modName": "会员管理(C端)",
+                "modLink": "bzw-userC-manage",
+                "modName": "用户管理C端",
                 "permitItem": [
+                    {
+                        "funcCode": "userC-relation",
+                        "funcName": "会员关系",
+                        "isPermit": 1,
+                        "modId": 348,
+                        "prid": 1
+                    },
+                    {
+                        "funcCode": "userC-forbid",
+                        "funcName": "会员禁用",
+                        "isPermit": 1,
+                        "modId": 348,
+                        "prid": 2
+                    },
+                    {
+                        "funcCode": "userC-enable",
+                        "funcName": "会员启用",
+                        "isPermit": 1,
+                        "modId": 348,
+                        "prid": 3
+                    },
+                    {
+                        "funcCode": "userC-detail",
+                        "funcName": "查看会员详情",
+                        "isPermit": 1,
+                        "modId": 348,
+                        "prid": 4
+                    },
+                    {
+                        "funcCode": "userC-edit",
+                        "funcName": "会员编辑",
+                        "isPermit": 1,
+                        "modId": 348,
+                        "prid": 5
+                    },
                     {
                         "funcCode": "bzw-userC-list",
                         "funcName": "会员列表",
                         "isPermit": 1,
                         "modId": 348,
-                        "prid": 14982
+                        "prid": 5
                     }
                 ]
             },
             {
-                "modClass": "bzw-profitC",
                 "modCode": "bzw-profitC",
                 "modId": 350,
                 "modItem": [
                     {
-                        "modClass": "bzw-profitC-list",
-                        "modCode": "bzw-profitC-list",
-                        "modId": 350,
                         "modLink": "bzw-profitC-list",
-                        "modName": "分润列表"
+                        "modName": "分润管理"
+                    },
+                    {
+                        "modLink": "bzw-profitC-setting",
+                        "modName": "分润设置"
                     }
                 ],
-                "modLink": "bzw-profitC",
-                "modName": "分润管理(C端)",
+                "modLink": "bzw-profitC-manage",
+                "modName": "分润管理C端",
                 "permitItem": [
+                    {
+                        "funcCode": "profitC-settlement",
+                        "funcName": "结算",
+                        "isPermit": 1,
+                        "modId": 350,
+                        "prid": 1
+                    },
+                    {
+                        "funcCode": "profitC-detail",
+                        "funcName": "查看",
+                        "isPermit": 1,
+                        "modId": 350,
+                        "prid": 2
+                    },
                     {
                         "funcCode": "bzw-profitC-list",
                         "funcName": "分润列表",
                         "isPermit": 1,
                         "modId": 350,
-                        "prid": 14987
+                        "prid": 3
+                    },
+                    {
+                        "funcCode": "bzw-profitC-setting",
+                        "funcName": "分润设置",
+                        "isPermit": 1,
+                        "modId": 350,
+                        "prid": 4
                     }
                 ]
             }

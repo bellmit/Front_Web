@@ -9,7 +9,7 @@
             public_tool.clearCacheData();
 
             //dom节点引用或者其他变量定义
-            var debug = true,
+            var debug = false,
                 form_provider = document.getElementById('login_provider'),
                 form_operator = document.getElementById('login_operator'),
                 form_mall = document.getElementById('login_mall'),
