@@ -5,7 +5,7 @@
     "menu": [
       {
       "modCode": "bzw-orderC",
-      "modId": 360,
+      "modId": 353,
       "modItem": [
         {
           "modLink": "bzw-orderC-list",
@@ -19,7 +19,7 @@
           "funcCode": "bzw-orderC-list",
           "funcName": "订单列表",
           "isPermit": 1,
-          "modId": 360,
+          "modId": 353,
           "prid": 1
         }
       ]

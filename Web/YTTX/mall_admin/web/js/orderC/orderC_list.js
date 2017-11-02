@@ -22,7 +22,7 @@
 
 
             /*权限调用*/
-            var powermap = public_tool.getPower(360),
+            var powermap = public_tool.getPower(353),
                 detail_power = public_tool.getKeyPower('bzw-orderC-list', powermap)/*会员关系*/;
 
 
@@ -41,7 +41,8 @@
                     },
                     cancel: false
                 })/*一般提示对象*/,
-                $admin_page_wrap = $('#admin_page_wrap');
+                $admin_page_wrap = $('#admin_page_wrap'),
+                operate_item;
 
 
             /*查询对象*/
@@ -253,66 +254,12 @@
                 getColumnData(order_page, order_config);
             });
 
-            /*限制金钱范围*/
-            $.each([$search_orderMoneyStart, $search_orderMoneyEnd], function () {
-                var self = this,
-                    selector = self.selector.slice(-5),
-                    key = selector.toLowerCase();
-
-                self.on('keyup focusout', function (e) {
-                    var etype = e.type,
-                        own = this,
-                        item,
-                        value = own.value,
-                        minvalue,
-                        maxvalue,
-                        tempvalue,
-                        minitem,
-                        maxitem;
-
-                    if (etype === 'keyup') {
-                        value = value.replace(/[^0-9\.\,]*/g, '');
-                        own.value = value;
-                    } else if (etype === 'focusout') {
-                        if (value === '') {
-                            return false;
-                        }
-                        item = public_tool.moneyCorrect(value, 15, true);
-                        if (key.indexOf('start') !== -1) {
-                            maxitem = public_tool.moneyCorrect($search_orderMoneyEnd.val(), 15, true);
-                            if (maxitem[1] !== '') {
-                                tempvalue = parseInt(item[1] * 100, 10);
-                                maxvalue = parseInt(maxitem[1] * 100, 10);
-                                if (tempvalue > maxvalue) {
-                                    own.value = maxitem[0];
-                                } else {
-                                    own.value = item[0];
-                                }
-                            } else {
-                                own.value = item[0];
-                            }
-                        } else if (key.indexOf('end') !== -1) {
-                            minitem = public_tool.moneyCorrect($search_orderMoneyStart.val(), 15, true);
-                            if (minitem[1] !== '' && item[1] < minitem[1]) {
-                                tempvalue = parseInt(item[1] * 100, 10);
-                                minvalue = parseInt(minitem[1] * 100, 10);
-                                if (tempvalue < minvalue) {
-                                    own.value = minitem[0];
-                                } else {
-                                    own.value = item[0];
-                                }
-                            } else {
-                                own.value = item[0];
-                            }
-                        }
-                    }
-                });
-            });
+            /*限制金钱范围:true:是否格式化显示*/
+            moneyFilterWidget.moneyFilter([$search_orderMoneyStart, $search_orderMoneyEnd], true);
 
 
             /*事件绑定*/
             /*绑定查看，修改操作*/
-            var operate_item;
             $admin_list_wrap.delegate('span', 'click', function (e) {
                 e.stopPropagation();
                 e.preventDefault();
@@ -340,6 +287,7 @@
                         operate_item = null;
                     }
                     operate_item = $tr.addClass('item-lighten');
+                    showDetail(id);
                 }
             });
 
@@ -365,13 +313,13 @@
                 return false;
             }
             $.ajax({
-                    url: debug ? "../../json/test.json" : "http://10.0.5.226:8082/mall-buzhubms-api/shuser/getinfo",
+                    url: debug ? "../../json/test.json" : "http://10.0.5.226:8082/mall-buzhubms-api/sh/goodsorder/detail",
                     dataType: 'JSON',
                     method: 'post',
                     data: {
                         id: id,
-                        adminId: request_config.adminId,
-                        token: request_config.token
+                        adminId: decodeURIComponent(logininfo.param.adminId),
+                        token: decodeURIComponent(logininfo.param.token)
                     }
                 })
                 .done(function (resp) {
@@ -379,18 +327,27 @@
                         var resp = testWidget.testSuccess('list');
                         resp.result = testWidget.getMap({
                             map: {
-                                id: 'guid',
-                                nickname: 'value',
-                                phone: 'mobile',
-                                gender: 'rule,0,1,2',
-                                birthday: 'datetime',
+                                id: 'sequence',
+                                orderNumber: 'guid',
+                                nickname: 'name',
+                                totalMoney: 'money',
+                                paymentType: 'rule,1,2,3',
                                 createTime: 'datetime',
-                                lastLoginTime: 'datetime',
-                                loginTimes: 'id',
-                                status: 'rule,0,1'
+                                consigneeName:'name',
+                                consigneePhone:'phone',
+                                orderStatus: 'rule,21,9,11,0,1,3,30,40,5'/*0待付款 1取消订单 3待发货 9待收货 11待评价 21已评价 30返修 40退货*/
                             },
                             maptype: 'object'
                         }).list;
+                        resp.result['goods']=testWidget.getMap({
+                            map: {
+                                goodsName: 'goods',
+                                attribute: 'goodstype',
+                                quantity: 'id',
+                                goodsPriceTotal: 'money'
+                            },
+                            maptype: 'object'
+                        })
                     }
                     var code = parseInt(resp.code, 10);
                     if (code !== 0) {
@@ -409,14 +366,17 @@
 
                     if (!$.isEmptyObject(list)) {
                         detail_map = {
-                            nickname: '用户名称(昵称)',
-                            birthday: '出生日期',
-                            gender: '性别',
-                            phone: '手机号',
-                            createTime: '注册时间/创建时间',
-                            lastLoginTime: '最后登录时间',
-                            loginTimes: '登录次数',
-                            status: '状态'
+                            orderNumber: '订单号',
+                            orderStatus: '订单状态',
+                            totalMoney: '订单总价',
+                            nickname: '买家名称(昵称)',
+                            createTime: '下单时间',
+                            consigneeName: '收货人姓名',
+                            consigneePhone: '手机号码',
+                            goodsName: '商品名称',
+                            attribute:'商品属性',
+                            quantity:'商品件数',
+                            goodsPriceTotal:'商品总金额'
                         };
                         /*添加高亮状态*/
                         for (var j in list) {

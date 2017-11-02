@@ -14,7 +14,7 @@
 
 
     /*初始化函数*/
-    BaseMoneyFilter.prototype.moneyRange = function (nodelist, flag) {
+    BaseMoneyFilter.prototype.moneyFilter = function (nodelist, flag) {
         /*flag:是否格式化*/
         var nodelen = nodelist.length;
         /*只有范围2个值才做操作处理*/
@@ -74,7 +74,7 @@
                             }
                         } else if (key.indexOf('end') !== -1 || key.indexOf('to') !== -1) {
                             minitem = public_tool.moneyCorrect(nodelist[0].val(), 15, true);
-                            if (minitem[1] !== '' && item[1] < minitem[1]) {
+                            if (minitem[1] !== '') {
                                 tempvalue = parseInt(item[1] * 100, 10);
                                 minvalue = parseInt(minitem[1] * 100, 10);
                                 if (tempvalue < minvalue) {

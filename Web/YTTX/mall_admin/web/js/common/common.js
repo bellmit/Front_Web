@@ -929,13 +929,13 @@
             "module": "profitC",
             "modid": "350"
         },
-        "360": {
+        "353": {
             "name": "订单管理C端",
             "code": "orderC",
             "match": "-orderC-",
             "class": "menu-ux-store",
             "module": "orderC",
-            "modid": "360"
+            "modid": "353"
         }
     };
     /*路由映射*/

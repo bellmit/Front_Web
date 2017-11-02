@@ -139,7 +139,7 @@
                             {
                                 "data": "nickName"
                             },
-                            {
+                            /*{
                                 "data": "paymentType",
                                 "render": function (data, type, full, meta) {
                                     var stauts = parseInt(data, 10),
@@ -150,7 +150,7 @@
                                         };
                                     return statusmap[stauts] || '';
                                 }
-                            },
+                            },*/
                             {
                                 "data": "source",
                                 "render": function (data, type, full, meta) {
