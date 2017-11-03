@@ -334,7 +334,7 @@
                         storename: $this.attr('data-storename'),
                         auditstatus: $this.attr('data-auditstatus')
                     });
-                    window.location.href = 'bzw-provider-goods.html';
+                    window.open('bzw-provider-goods.html');
                 }
             });
 

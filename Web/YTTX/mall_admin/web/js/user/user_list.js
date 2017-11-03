@@ -319,7 +319,7 @@
                         id: id,
                         nickname: $this.attr('data-nickname')
                     });
-                    window.location.href = 'bzw-user-goods.html';
+                    window.open('bzw-user-goods.html');
                 }
             });
 
