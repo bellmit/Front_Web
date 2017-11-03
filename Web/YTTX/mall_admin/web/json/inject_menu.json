@@ -4,26 +4,37 @@
   "result": {
     "menu": [
       {
-      "modCode": "bzw-orderC",
-      "modId": 353,
-      "modItem": [
-        {
-          "modLink": "bzw-orderC-list",
-          "modName": "订单管理"
-        }
-      ],
-      "modLink": "bzw-orderC-manage",
-      "modName": "订单管理C端",
-      "permitItem": [
-        {
-          "funcCode": "bzw-orderC-list",
-          "funcName": "订单列表",
-          "isPermit": 1,
-          "modId": 353,
-          "prid": 1
-        }
-      ]
-    }
+        "modCode": "bzw-financeC",
+        "modId": 360,
+        "modItem": [
+          {
+            "modLink": "bzw-financeC-cashmanage",
+            "modName": "提现管理"
+          },
+          {
+            "modLink": "bzw-financeC-cardmanage",
+            "modName": "银行卡管理"
+          }
+        ],
+        "modLink": "bzw-financeC-manage",
+        "modName": "财务管理C端",
+        "permitItem": [
+          {
+            "funcCode": "bzw-financeC-cardmanage-audit",
+            "funcName": "银行卡审核",
+            "isPermit": 1,
+            "modId": 360,
+            "prid": 1
+          },
+          {
+            "funcCode": "bzw-financeC-cashmanage-deal",
+            "funcName": "提现处理",
+            "isPermit": 1,
+            "modId": 360,
+            "prid": 2
+          }
+        ]
+      }
     ]
   }
 }

@@ -1072,6 +1072,27 @@
                         "prid": 4
                     }
                 ]
+            },
+            {
+                "modCode": "bzw-orderC",
+                "modId": 353,
+                "modItem": [
+                    {
+                        "modLink": "bzw-orderC-list",
+                        "modName": "订单管理"
+                    }
+                ],
+                "modLink": "bzw-orderC-manage",
+                "modName": "订单管理C端",
+                "permitItem": [
+                    {
+                        "funcCode": "bzw-orderC-list",
+                        "funcName": "订单列表",
+                        "isPermit": 1,
+                        "modId": 353,
+                        "prid": 1
+                    }
+                ]
             }
         ]/*默认菜单模块*/;
 

@@ -23,15 +23,15 @@
 
 
             /*权限调用*/
-            var powermap = public_tool.getPower(344),
-                dispose_power = public_tool.getKeyPower('bzw-finance-cashmanage-deal', powermap)/*提现处理权限*/;
+            var powermap = public_tool.getPower(360),
+                dispose_power = public_tool.getKeyPower('bzw-financeC-cashmanage-deal', powermap)/*提现处理权限*/;
 
 
             /*dom引用和相关变量定义*/
             var debug = false/*是否测试模式*/,
                 $admin_list_wrap = $('#admin_list_wrap')/*表格*/,
             /*$admin_batchlist_wrap = $('#admin_batchlist_wrap')屏蔽批量,*/
-                module_id = 'bzw-finance-cashmanage'/*模块id，主要用于本地存储传值*/,
+                module_id = 'bzw-financeC-cashmanage'/*模块id，主要用于本地存储传值*/,
                 dia = dialog({
                     zIndex: 2000,
                     title: '温馨提示',
@@ -57,7 +57,7 @@
 
             /*查询对象*/
             var $search_auditStatus = $('#search_auditStatus'),
-                $search_name = $('#search_name'),
+                $search_cardholder = $('#search_cardholder'),
                 $search_phone = $('#search_phone'),
                 $admin_search_btn = $('#admin_search_btn'),
                 $admin_search_clear = $('#admin_search_clear');
@@ -104,21 +104,20 @@
                         autoWidth: true, /*是否*/
                         paging: false,
                         ajax: {
-                            url: debug ? "../../json/test.json" : "http://10.0.5.226:8082/mall-buzhubms-api/finance/withdraw_deposit/list",
+                            url: debug ? "../../json/test.json" : "http://10.0.5.226:8082/mall-buzhubms-api/sh/finance/withdraw_deposit/list",
                             dataType: 'JSON',
                             method: 'post',
                             dataSrc: function (json) {
                                 if (debug) {
                                     var json = testWidget.test({
                                         map: {
-                                            id: 'guid',
-                                            name: 'name',
+                                            id: 'sequence',
+                                            cardholder: 'name',
                                             serialNumber: 'guid',
                                             phone: 'mobile',
                                             amount: 'money',
                                             auditStatus: 'rule,0,1,2',
                                             createTime: 'datetime'
-
                                         },
                                         mapmin: 5,
                                         mapmax: 10,
@@ -162,9 +161,7 @@
                                 return result ? result.list || [] : [];
                             },
                             data: {
-                                roleId: decodeURIComponent(logininfo.param.roleId),
                                 adminId: decodeURIComponent(logininfo.param.adminId),
-                                grade: decodeURIComponent(logininfo.param.grade),
                                 token: decodeURIComponent(logininfo.param.token),
                                 page: 1,
                                 pageSize: 10
@@ -187,7 +184,7 @@
                                 "data": "serialNumber"
                             },
                             {
-                                "data": "name"
+                                "data": "cardholder"
                             },
                             {
                                 "data": "phone",
@@ -248,8 +245,7 @@
 
             /*清空查询条件*/
             $admin_search_clear.on('click', function () {
-                /*清除查询条件*/
-                $.each([$search_auditStatus, $search_name, $search_phone], function () {
+                $.each([$search_auditStatus, $search_cardholder, $search_phone], function () {
                     var selector = this.selector;
                     if (selector.indexOf('auditStatus') !== -1) {
                         this.find('option:first-child').prop({
@@ -259,10 +255,6 @@
                         this.val('');
                     }
                 });
-                /*重置分页*/
-                cash_page.page = 1;
-                cash_page.total = 0;
-                cash_config.config.ajax.data['page'] = cash_page.page;
             });
             $admin_search_clear.trigger('click');
 
@@ -271,7 +263,7 @@
             $admin_search_btn.on('click', function () {
                 var data = $.extend(true, {}, cash_config.config.ajax.data);
 
-                $.each([$search_auditStatus, $search_name, $search_phone], function () {
+                $.each([$search_auditStatus, $search_cardholder, $search_phone], function () {
                     var text = this.val(),
                         selector = this.selector.slice(1),
                         key = selector.split('_'),
@@ -282,6 +274,7 @@
                             delete data[key[1]];
                         }
                     } else {
+
                         data[key[1]] = isphone ? public_tool.trims(text) : text;
                     }
 
@@ -398,7 +391,6 @@
         }
 
 
-
         /*查看详情*/
         function cashDetail(config) {
             if (!config) {
@@ -447,7 +439,7 @@
 
 
             $.ajax({
-                    url: debug ? "../../json/test.json" : "http://10.0.5.226:8082/mall-buzhubms-api/finance/withdraw_deposit/details",
+                    url: debug ? "../../json/test.json" : "http://10.0.5.226:8082/mall-buzhubms-api/sh/finance/withdraw_deposit/details",
                     dataType: 'JSON',
                     method: 'post',
                     data: {
@@ -462,7 +454,7 @@
                         resp.result = testWidget.getMap({
                             map: {
                                 id: 'guid',
-                                nickName: 'value',
+                                cardholder: 'value',
                                 bankName: 'value',
                                 cardNumber: 'card',
                                 serialNumber: 'guid',
@@ -495,14 +487,9 @@
 
                     if (!$.isEmptyObject(list)) {
                         if (action === 'detail') {
-                            if (operate_item !== null) {
-                                var tr_data = table.row(operate_item).data();
-                                $.extend(true, list, tr_data);
-                            }
                             detail_map = {
-                                nickName: '会员名称(昵称)',
+                                cardholder: '持卡人姓名',
                                 serialNumber: '流水号',
-                                name: '真实姓名',
                                 phone: '手机号',
                                 amount: '结算金额',
                                 bankName: '所属银行',
@@ -512,7 +499,7 @@
                             }
                         } else if (action === 'dispose') {
                             detail_map = {
-                                name: '真实姓名',
+                                cardholder: '持卡人姓名',
                                 phone: '手机号',
                                 bankName: '所属银行',
                                 cardNumber: '结算账号',
@@ -606,7 +593,7 @@
 
 
                 $.ajax({
-                        url: debug ? "../../json/test.json" : "http://10.0.5.226:8082/mall-buzhubms-api/finance/withdraw_deposit",
+                        url: debug ? "../../json/test.json" : "http://10.0.5.226:8082/mall-buzhubms-api/sh/finance/withdraw_deposit",
                         dataType: 'JSON',
                         method: 'post',
                         data: temp_config
@@ -626,14 +613,14 @@
                                 tip.close();
                                 if (config.modal) {
                                     /*绑定关闭详情*/
-                                    if(action==='detail'){
+                                    if (action === 'detail') {
                                         $show_detail_btn.prop({
                                             'disabled': false
                                         }).attr({
                                             'data-id': ''
                                         });
                                         $show_detail_wrap.modal('hide');
-                                    }else if(action==='dispose'){
+                                    } else if (action === 'dispose') {
                                         $show_dispose_btn.prop({
                                             'disabled': false
                                         }).attr({
@@ -655,14 +642,14 @@
                             getColumnData(cash_config);
                             if (config.modal) {
                                 /*绑定关闭详情*/
-                                if(action==='detail'){
+                                if (action === 'detail') {
                                     $show_detail_btn.prop({
                                         'disabled': false
                                     }).attr({
                                         'data-id': ''
                                     });
                                     $show_detail_wrap.modal('hide');
-                                }else if(action==='dispose'){
+                                } else if (action === 'dispose') {
                                     $show_dispose_btn.prop({
                                         'disabled': false
                                     }).attr({
@@ -683,14 +670,14 @@
                             tip.close();
                             if (config.modal) {
                                 /*绑定关闭详情*/
-                                if(action==='detail'){
+                                if (action === 'detail') {
                                     $show_detail_btn.prop({
                                         'disabled': false
                                     }).attr({
                                         'data-id': ''
                                     });
                                     $show_detail_wrap.modal('hide');
-                                }else if(action==='dispose'){
+                                } else if (action === 'dispose') {
                                     $show_dispose_btn.prop({
                                         'disabled': false
                                     }).attr({

@@ -23,14 +23,14 @@
 
 
             /*权限调用*/
-            var powermap = public_tool.getPower(344),
-                audit_power = public_tool.getKeyPower('bzw-finance-cardmanage-audit', powermap)/*审核权限*/;
+            var powermap = public_tool.getPower(360),
+                audit_power = public_tool.getKeyPower('bzw-financeC-cardmanage-audit', powermap)/*审核权限*/;
 
 
             /*dom引用和相关变量定义*/
-            var debug = false/*是否测试模式*/,
+            var debug = true/*是否测试模式*/,
                 $admin_list_wrap = $('#admin_list_wrap')/*表格*/,
-                module_id = 'bzw-finance-cardmanage'/*模块id，主要用于本地存储传值*/,
+                module_id = 'bzw-financeC-cardmanage'/*模块id，主要用于本地存储传值*/,
                 dia = dialog({
                     zIndex: 2000,
                     title: '温馨提示',
@@ -53,7 +53,7 @@
 
             /*查询对象*/
             var $search_auditStatus = $('#search_auditStatus'),
-                $search_name = $('#search_name'),
+                $search_cardholder = $('#search_cardholder'),
                 $search_phone = $('#search_phone'),
                 $admin_search_btn = $('#admin_search_btn'),
                 $admin_search_clear = $('#admin_search_clear');
@@ -74,7 +74,7 @@
                         autoWidth: true, /*是否*/
                         paging: false,
                         ajax: {
-                            url: debug ? "../../json/test.json" : "http://10.0.5.226:8082/mall-buzhubms-api/finance/bank_card/list",
+                            url: debug ? "../../json/test.json" : "http://10.0.5.226:8082/mall-buzhubms-api/sh/finance/bank_card/list",
                             dataType: 'JSON',
                             method: 'post',
                             dataSrc: function (json) {
@@ -82,9 +82,8 @@
                                     var json = testWidget.test({
                                         map: {
                                             id: 'guid',
-                                            nickName: 'value',
+                                            cardholder: 'name',
                                             phone: 'mobile',
-                                            name: 'name',
                                             cardNumber: 'card',
                                             bankName: 'text',
                                             auditStatus: 'rule,0,1,2'
@@ -144,7 +143,7 @@
                         order: [[1, "desc"]],
                         columns: [
                             {
-                                "data": "nickName"
+                                "data": "cardholder"
                             },
                             {
                                 "data": "phone",
@@ -152,10 +151,6 @@
                                     return public_tool.phoneFormat(data);
                                 }
                             },
-                            {
-                                "data": "name"
-                            },
-
                             {
                                 "data": "cardNumber",
                                 "render": function (data, type, full, meta) {
@@ -205,7 +200,7 @@
             /*清空查询条件*/
             $admin_search_clear.on('click', function () {
                 /*清除查询条件*/
-                $.each([$search_auditStatus, $search_name, $search_phone], function () {
+                $.each([$search_auditStatus, $search_cardholder, $search_phone], function () {
                     var selector = this.selector;
                     if (selector.indexOf('auditStatus') !== -1) {
                         this.find('option:first-child').prop({
@@ -227,7 +222,7 @@
             $admin_search_btn.on('click', function () {
                 var data = $.extend(true, {}, card_config.config.ajax.data);
 
-                $.each([$search_auditStatus, $search_name, $search_phone], function () {
+                $.each([$search_auditStatus, $search_cardholder, $search_phone], function () {
                     var text = this.val(),
                         selector = this.selector.slice(1),
                         key = selector.split('_'),
@@ -346,7 +341,7 @@
             var list = table.row(operate_item).data(),
                 str = '',
                 detail_map = {
-                    name: '真实姓名',
+                    cardholder: '持卡人姓名',
                     phone: '手机号',
                     bankName: '所属银行',
                     cardNumber: '结算账号'
@@ -380,16 +375,14 @@
                 /*是否选择了状态*/
                 var tip = cf.dia,
                     temp_config = {
-                        roleId: decodeURIComponent(logininfo.param.roleId),
                         adminId: decodeURIComponent(logininfo.param.adminId),
-                        grade: decodeURIComponent(logininfo.param.grade),
                         token: decodeURIComponent(logininfo.param.token),
-                        ids:id
+                        ids: id
                     };
 
 
                 $.ajax({
-                        url: debug ? "../../json/test.json" : "http://10.0.5.226:8082/mall-buzhubms-api/finance/bank_card/audit",
+                        url: debug ? "../../json/test.json" : "http://10.0.5.226:8082/mall-buzhubms-api/sh/finance/bank_card/audit",
                         dataType: 'JSON',
                         method: 'post',
                         data: temp_config
