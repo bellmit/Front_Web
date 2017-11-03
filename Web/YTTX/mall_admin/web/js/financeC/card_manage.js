@@ -23,12 +23,12 @@
 
 
             /*权限调用*/
-            var powermap = public_tool.getPower(360),
+            var powermap = public_tool.getPower(355),
                 audit_power = public_tool.getKeyPower('bzw-financeC-cardmanage-audit', powermap)/*审核权限*/;
 
 
             /*dom引用和相关变量定义*/
-            var debug = true/*是否测试模式*/,
+            var debug = false/*是否测试模式*/,
                 $admin_list_wrap = $('#admin_list_wrap')/*表格*/,
                 module_id = 'bzw-financeC-cardmanage'/*模块id，主要用于本地存储传值*/,
                 dia = dialog({
@@ -341,7 +341,7 @@
             var list = table.row(operate_item).data(),
                 str = '',
                 detail_map = {
-                    cardholder: '持卡人姓名',
+                    cardholder: '真实姓名',
                     phone: '手机号',
                     bankName: '所属银行',
                     cardNumber: '结算账号'

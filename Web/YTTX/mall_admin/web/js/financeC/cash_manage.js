@@ -23,7 +23,7 @@
 
 
             /*权限调用*/
-            var powermap = public_tool.getPower(360),
+            var powermap = public_tool.getPower(355),
                 dispose_power = public_tool.getKeyPower('bzw-financeC-cashmanage-deal', powermap)/*提现处理权限*/;
 
 
@@ -208,7 +208,7 @@
                                         statusmap = {
                                             0: '<div class="g-c-red1">待审核(未处理)</div>',
                                             1: '<div class="g-c-green2">审核通过(历史提现)</div>',
-                                            2: '<div class="g-c-warn">审核驳回(暂未该状态)</div>'
+                                            2: '<div class="g-c-warn">审核驳回(暂无该状态)</div>'
                                         };
 
                                     return statusmap[stauts];
@@ -454,11 +454,10 @@
                         resp.result = testWidget.getMap({
                             map: {
                                 id: 'guid',
-                                cardholder: 'value',
+                                cardholder: 'name',
                                 bankName: 'value',
                                 cardNumber: 'card',
                                 serialNumber: 'guid',
-                                name: 'name',
                                 phone: 'mobile',
                                 amount: 'money',
                                 auditStatus: 'rule,0,1,2',
@@ -488,7 +487,7 @@
                     if (!$.isEmptyObject(list)) {
                         if (action === 'detail') {
                             detail_map = {
-                                cardholder: '持卡人姓名',
+                                cardholder: '真实姓名',
                                 serialNumber: '流水号',
                                 phone: '手机号',
                                 amount: '结算金额',
@@ -499,7 +498,7 @@
                             }
                         } else if (action === 'dispose') {
                             detail_map = {
-                                cardholder: '持卡人姓名',
+                                cardholder: '真实姓名',
                                 phone: '手机号',
                                 bankName: '所属银行',
                                 cardNumber: '结算账号',

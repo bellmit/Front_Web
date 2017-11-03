@@ -23,8 +23,7 @@
 
             /*权限调用*/
             var powermap = public_tool.getPower(350),
-                detail_power = public_tool.getKeyPower('bzw-profitC-list', powermap)/*查看*/,
-                settlement_power = public_tool.getKeyPower('bzw-profitC-list', powermap)/*结算*/;
+                detail_power = public_tool.getKeyPower('bzw-profitC-list', powermap)/*查看*/;
 
 
             /*dom引用和相关变量定义*/
@@ -168,9 +167,15 @@
                                 }
                             },
                             {
-                                "data": "commissionAmount",
+                                "data": "commissionGrade",
                                 "render": function (data, type, full, meta) {
-                                    return public_tool.moneyCorrect(data, 15, false)[0] || '0.00';
+                                    return data + '级';
+                                }
+                            },
+                            {
+                                "data": "commissionRate",
+                                "render": function (data, type, full, meta) {
+                                    return data + '%';
                                 }
                             },
                             {
@@ -180,13 +185,10 @@
                                 }
                             },
                             {
-                                "data": "commissionGrade",
+                                "data": "commissionAmount",
                                 "render": function (data, type, full, meta) {
-                                    return data + '级';
+                                    return public_tool.moneyCorrect(data, 15, false)[0] || '0.00';
                                 }
-                            },
-                            {
-                                "data": "commissionRate"
                             },
                             {
                                 "data": "createTime"
@@ -202,12 +204,6 @@
                                         btns += '<span data-action="detail" data-id="' + id + '"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 													<i class="fa-file-text-o"></i>\
 													<span>查看</span>\
-												</span>';
-                                    }
-                                    if (false && settlement_power) {
-                                        btns += '<span data-action="settlement" data-id="' + id + '"  class="g-d-hidei btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
-													<i class="fa-arrow-circle-left"></i>\
-													<span>结算</span>\
 												</span>';
                                     }
                                     return btns;
@@ -315,10 +311,7 @@
                 }
                 operate_item = $tr.addClass('item-lighten');
                 /*启用，禁用操作*/
-                if (action === 'settlement') {
-                    /*todo*/
-                    /*结算操作*/
-                } else if (action === 'detail') {
+                if (action === 'detail') {
                     /*查看详情*/
                     showDetail(id);
                 }
@@ -340,189 +333,7 @@
                 table.ajax.config(opt.config.ajax).load();
             }
         }
-
-
-        /*启用禁用*/
-        function setEnabled(obj) {
-            var id = obj.id;
-
-            if (typeof id === 'undefined') {
-                return false;
-            }
-            var type = obj.type,
-                tip = obj.tip,
-                action = obj.action;
-            if (type === 'batch') {
-                id = id.join(',');
-            }
-
-            $.ajax({
-                    url: debug ? "../../json/test.json" : "http://10.0.5.226:8082/mall-buzhubms-api/shuser/operate",
-                    dataType: 'JSON',
-                    method: 'post',
-                    data: {
-                        shUserIds: id,
-                        operate: obj.actionmap[action],
-                        roleId: decodeURIComponent(logininfo.param.roleId),
-                        adminId: decodeURIComponent(logininfo.param.adminId),
-                        token: decodeURIComponent(logininfo.param.token)
-                    }
-                })
-                .done(function (resp) {
-                    if (debug) {
-                        var resp = testWidget.testSuccess('list');
-                    }
-                    var code = parseInt(resp.code, 10);
-                    if (code !== 0) {
-                        console.log(resp.message);
-                        tip.content('<span class="g-c-bs-warning g-btips-warn">' + (resp.message || "操作失败") + '</span>').show();
-                        if (type === 'base') {
-                            if (operate_item) {
-                                operate_item.removeClass('item-lighten');
-                                operate_item = null;
-                            }
-                        } else if (type === 'batch') {
-                            /*todo*/
-                        }
-                        setTimeout(function () {
-                            tip.close();
-                        }, 2000);
-                        return false;
-                    }
-                    /*是否是正确的返回数据*/
-                    /*添加高亮状态*/
-                    tip.content('<span class="g-c-bs-success g-btips-succ">' + obj.actiontip[action] + '成功</span>').show();
-                    setTimeout(function () {
-                        tip.close();
-                        if (type === 'base') {
-                            if (operate_item) {
-                                operate_item.removeClass('item-lighten');
-                                operate_item = null;
-                            }
-                        } else if (type === 'batch') {
-                            /*to do*/
-                        }
-                        setTimeout(function () {
-                            getColumnData(profit_page, profit_config);
-                        }, 1000);
-                    }, 1000);
-                })
-                .fail(function (resp) {
-                    console.log(resp.message);
-                    tip.content('<span class="g-c-bs-warning g-btips-warn">' + (resp.message || "操作失败") + '</span>').show();
-                    if (type === 'base') {
-                        if (operate_item) {
-                            operate_item.removeClass('item-lighten');
-                            operate_item = null;
-                        }
-                    } else if (type === 'batch') {
-                        /*to do*/
-                    }
-                    setTimeout(function () {
-                        tip.close();
-                    }, 2000);
-                });
-        }
-
-
-        /*批量结算操作*/
-        function batchSettlement(config) {
-
-            var action = config.action;
-
-            if (action === '' || typeof action === 'undefined') {
-                return false;
-            }
-            var inputitems = batchItem.getBatchNode(),
-                len = inputitems.length,
-                i = 0;
-
-            if (len === 0) {
-                dia.content('<span class="g-c-bs-warning g-btips-warn">请选中操作数据</span>').show();
-                setTimeout(function () {
-                    dia.close();
-                }, 2000);
-                return false;
-            }
-            var tempid = batchItem.getBatchData(),
-                filter = [],
-                actionmap = {
-                    "forbid": 2,
-                    "enable": 1
-                },
-                actiontip = {
-                    "forbid": '禁用',
-                    "enable": '启用'
-                };
-
-
-            for (i; i < len; i++) {
-                var tempinput = inputitems[i],
-                    temp_state = parseInt(tempinput.attr('data-status'), 10);
-
-
-                /*审核成功*/
-                if (temp_state === 0) {
-                    /*启用状态则禁用*/
-                    if (action === 'enable') {
-                        filter.push(tempid[i]);
-                        continue;
-                    }
-                } else if (temp_state === 1) {
-                    /*禁用状态则启用*/
-                    if (action === 'forbid') {
-                        filter.push(tempid[i]);
-                        continue;
-                    }
-                }
-            }
-
-            if (filter.length !== 0) {
-                console.log('过滤不正确状态');
-                batchItem.filterData(filter);
-                filter.length = 0;
-                setTimeout(function () {
-                    dia.close();
-                    /*批量操作*/
-                    tempid = batchItem.getBatchData();
-                    if (tempid.length !== 0) {
-                        if (action === 'forbid' || action === 'enable') {
-                            /*确认是否启用或禁用*/
-                            setSure.sure(actiontip[action], function (cf) {
-                                /*to do*/
-                                setEnabled({
-                                    id: tempid,
-                                    action: action,
-                                    tip: cf.dia || dia,
-                                    type: 'batch',
-                                    actiontip: actiontip,
-                                    actionmap: actionmap
-                                });
-                            }, action === 'forbid' ? "禁用后，该用户将不再能使用该账号，是否批量禁用？" : "启用后，该用户将能使用该账号，是否批量启用？", true);
-                        }
-                    }
-                }, 2000);
-            } else {
-                tempid = batchItem.getBatchData();
-                if (tempid.length !== 0) {
-                    if (action === 'forbid' || action === 'enable') {
-                        /*确认是否启用或禁用*/
-                        setSure.sure(actiontip[action], function (cf) {
-                            /*to do*/
-                            setEnabled({
-                                id: tempid,
-                                action: action,
-                                tip: cf.dia || dia,
-                                type: 'batch',
-                                actiontip: actiontip,
-                                actionmap: actionmap
-                            });
-                        }, action === 'forbid' ? "禁用后，该用户将不再能使用该账号，是否批量禁用？" : "启用后，该用户将能使用该账号，是否批量启用？", true);
-                    }
-                }
-            }
-        }
-
+        
 
         /*详情展现*/
         function showDetail(id) {
@@ -599,7 +410,9 @@
                                     str += '<tr><th>' + detail_map[j] + ':</th><td>' + public_tool.phoneFormat(list[j]) + '</td></tr>';
                                 } else if (j === 'commissionGrade') {
                                     str += '<tr><th>' + detail_map[j] + ':</th><td>' + list[j] + '级</td></tr>';
-                                } else {
+                                } else if (j === 'commissionRate') {
+                                    str += '<tr><th>' + detail_map[j] + ':</th><td>' + list[j] + '%</td></tr>';
+                                }else {
                                     str += '<tr><th>' + detail_map[j] + ':</th><td>' + list[j] + '</td></tr>';
                                 }
                             }

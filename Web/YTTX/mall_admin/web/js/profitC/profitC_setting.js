@@ -26,7 +26,7 @@
 
             /*权限调用*/
             var powermap = public_tool.getPower(350),
-                setting_power = public_tool.getKeyPower('bzw-profitC-setting', powermap)/*设置*/;
+                setting_power = public_tool.getKeyPower('bzw-profitC-list', powermap)/*设置*/;
 
             /*基本变量定义*/
             var dia = dialog({
@@ -52,6 +52,7 @@
                 $admin_commissionExtra2 = $('#admin_commissionExtra2'),
                 $admin_commissionExtra3 = $('#admin_commissionExtra3'),
                 $profit_setting_btn = $('#profit_setting_btn'),
+                $profit_setting_tip = $('#profit_setting_tip'),
                 relation_list = [$admin_commission1, $admin_commission2, $admin_commission3, $admin_commissionExtra1, $admin_commissionExtra2, $admin_commissionExtra3];
 
 
@@ -64,7 +65,7 @@
 
                     if (etype === 'keyup') {
                         data = self.value.replace(/\D*/g, '');
-                        self.value = parseInt(data, 10);
+                        self.value = data === '' ? 0 : parseInt(data, 10);
                     } else if (etype === 'focusout') {
                         data = self.value;
                         if (data === '' || isNaN(data)) {
@@ -168,13 +169,14 @@
                             item = parseInt(result[profit_map[i]], 10);
                             relation_list[i].val(item);
                             count += item;
-                            if (i === len - 1 && len === 6) {
+                            if (i === len - 1) {
                                 /*控制按钮*/
                                 if (count !== 100 && setting_power) {
                                     /*最后一个触发校验*/
                                     relation_list[i].trigger('focusout');
                                 } else {
                                     $profit_setting_btn.removeClass('g-d-hidei');
+                                    $profit_setting_tip.html('');
                                 }
                             }
                         }
@@ -203,6 +205,7 @@
                         relation_list[i].val(100);
                     }
                 }
+                count = 100;
             } else if (value < 100) {
                 /*非100时*/
                 //相加法
@@ -236,31 +239,14 @@
                         }
                     }
                 }
-                /*
-                 //相减法
-                 standard = 100 - value;
-                 for (i; i < len; i++) {
-                 /!*先计算其他值，确定其他值范围*!/
-                 if (i !== index) {
-                 current_value = parseInt(relation_list[i].val(), 10);
-                 if (current_value >= standard) {
-                 relation_list[i].val(standard);
-                 standard = 0;
-                 } else if (current_value < standard) {
-                 new_value = standard - current_value;
-                 relation_list[i].val(new_value)/!*设置最近满100的值*!/;
-                 standard = current_value;
-                 }
-                 } else {
-                 relation_list[i].val(value)/!*设置新增*!/;
-                 }
-                 }*/
             }
             /*交易成功后显示设置按钮*/
             if (count === 100) {
                 $profit_setting_btn.removeClass('g-d-hidei');
+                $profit_setting_tip.html('');
             } else {
                 $profit_setting_btn.addClass('g-d-hidei');
+                $profit_setting_tip.html('分润总和必须为:<span class="g-c-info">100</span>，现为：<span class="g-c-gray5">' + count + '</span>，差值为：<span class="g-c-gray5">' + (100 - count) + '</span>');
             }
 
         }

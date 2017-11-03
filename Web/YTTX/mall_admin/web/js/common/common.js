@@ -936,13 +936,13 @@
             "module": "orderC",
             "modid": "353"
         },
-        "360": {
+        "355": {
             "name": "财务管理C端",
             "code": "financeC",
             "match": "-financeC-",
             "class": "menu-ux-finance",
             "module": "financeC",
-            "modid": "360"
+            "modid": "355"
         }
     };
     /*路由映射*/
@@ -1100,7 +1100,7 @@
             /*不存在资源则重新加载*/
 
             /*静态注入*/
-            var injectdata = self.injectSideMenu({
+            /*var injectdata = self.injectSideMenu({
                     url: self.routeMap.isindex ? '../json/inject_menu.json' : '../../json/inject_menu.json',
                     async: false,
                     type: 'post',
@@ -1108,7 +1108,7 @@
                 }),
                 injectstr = self.doSideMenu(injectdata, $menu, $wrap, {
                     resolve: true
-                });
+                });*/
 
 
             $.ajax({

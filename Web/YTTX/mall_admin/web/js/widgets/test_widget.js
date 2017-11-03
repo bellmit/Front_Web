@@ -945,25 +945,18 @@
                 "modName": "财务管理",
                 "permitItem": [
                     {
-                        "funcCode": "cash-detail",
-                        "funcName": "提现详情",
-                        "isPermit": 1,
-                        "modId": 344,
-                        "prid": 1
-                    },
-                    {
                         "funcCode": "bzw-finance-cardmanage-audit",
                         "funcName": "银行卡审核",
                         "isPermit": 1,
                         "modId": 344,
-                        "prid": 2
+                        "prid": 1
                     },
                     {
                         "funcCode": "bzw-finance-cashmanage-deal",
                         "funcName": "提现处理",
                         "isPermit": 1,
                         "modId": 344,
-                        "prid": 3
+                        "prid": 2
                     }
                 ]
             },
@@ -1044,32 +1037,11 @@
                 "modName": "分润管理C端",
                 "permitItem": [
                     {
-                        "funcCode": "profitC-settlement",
-                        "funcName": "结算",
-                        "isPermit": 1,
-                        "modId": 350,
-                        "prid": 1
-                    },
-                    {
-                        "funcCode": "profitC-detail",
-                        "funcName": "查看",
-                        "isPermit": 1,
-                        "modId": 350,
-                        "prid": 2
-                    },
-                    {
                         "funcCode": "bzw-profitC-list",
                         "funcName": "分润列表",
                         "isPermit": 1,
                         "modId": 350,
-                        "prid": 3
-                    },
-                    {
-                        "funcCode": "bzw-profitC-setting",
-                        "funcName": "分润设置",
-                        "isPermit": 1,
-                        "modId": 350,
-                        "prid": 4
+                        "prid": 1
                     }
                 ]
             },
@@ -1091,6 +1063,51 @@
                         "isPermit": 1,
                         "modId": 353,
                         "prid": 1
+                    }
+                ]
+            },
+            {
+                "modCode": "bzw-financeC",
+                "modId": 355,
+                "modItem": [
+                    {
+                        "modLink": "bzw-financeC-cashmanage",
+                        "modName": "提现管理"
+                    },
+                    {
+                        "modLink": "bzw-financeC-cardmanage",
+                        "modName": "银行卡管理"
+                    }
+                ],
+                "modLink": "bzw-financeC-manage",
+                "modName": "财务管理C端",
+                "permitItem": [
+                    {
+                        "funcCode": "bzw-financeC-cardmanage",
+                        "funcName": "查询银行卡列表",
+                        "isPermit": 1,
+                        "modId": 355,
+                        "prid": 15002
+                    },
+                    {
+                        "funcCode": "bzw-financeC-cardmanage-audit",
+                        "funcName": "银行卡审核",
+                        "isPermit": 1,
+                        "modId": 355,
+                        "prid": 15007
+                    },
+                    {
+                        "funcCode": "bzw-financeC-cashmanage",
+                        "funcName": "查询提现列表",
+                        "isPermit": 1,
+                        "modId": 355,
+                        "prid": 15016
+                    },{
+                        "funcCode": "bzw-financeC-cashmanage-deal",
+                        "funcName": "提现处理",
+                        "isPermit": 1,
+                        "modId": 355,
+                        "prid": 15021
                     }
                 ]
             }
