@@ -912,6 +912,14 @@
             "module": "finance",
             "modid": "344"
         },
+        "360": {
+            "name": "订单管理",
+            "code": "order",
+            "match": "-order-",
+            "class": "menu-ux-store",
+            "module": "order",
+            "modid": "360"
+        },
         "348": {
             "name": "用户管理C端",
             "code": "userC",

@@ -961,6 +961,49 @@
                 ]
             },
             {
+                "modCode": "bzw-order",
+                "modId": 360,
+                "modItem": [
+                    {
+                        "modLink": "bzw-order-list",
+                        "modName": "订单管理"
+                    },
+                    {
+                        "modLink": "bzw-order-buycomment",
+                        "modName": "买家评论"
+                    },
+                    {
+                        "modLink": "bzw-order-sellcomment",
+                        "modName": "卖家评论"
+                    }
+                ],
+                "modLink": "bzw-order-manage",
+                "modName": "订单管理",
+                "permitItem": [
+                    {
+                        "funcCode": "bzw-order-list",
+                        "funcName": "订单列表",
+                        "isPermit": 1,
+                        "modId": 360,
+                        "prid": 1
+                    },
+                    {
+                        "funcCode": "bzw-order-buycomment",
+                        "funcName": "买家评论",
+                        "isPermit": 1,
+                        "modId": 360,
+                        "prid": 2
+                    },
+                    {
+                        "funcCode": "bzw-order-sellcomment",
+                        "funcName": "卖家评论",
+                        "isPermit": 1,
+                        "modId": 360,
+                        "prid": 3
+                    }
+                ]
+            },
+            {
                 "modCode": "bzw-userC",
                 "modId": 348,
                 "modItem": [
