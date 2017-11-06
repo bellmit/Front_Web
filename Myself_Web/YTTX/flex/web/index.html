@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0,maximum-scale=1">
+    <meta name="description" content="flex布局"/>
+    <meta name="keywords" content="flex布局"/>
+    <meta name="author" content="yp"/>
+    <title>flex布局</title>
+    <link href="images/icon.ico" rel="icon">
+    <link rel="stylesheet" href="css/base.css">
+</head>
+<body>
+<!--2列经典布局-->
+<div class="flex-layout-column2" title="2列布局">
+    <header class="column2-header-wrap">
+        <ul class="column2-header-nav" id="menu_wrap">
+            <li class="menu-active">
+                <a href="#" title="">首页</a>
+            </li>
+            <li>
+                <a href="#" title="">系统管理</a>
+            </li>
+            <li>
+                <a href="#" title="">财务管理</a>
+            </li>
+            <li>
+                <a href="#" title="">商品管理</a>
+            </li>
+            <li>
+                <a href="#" title="">订单管理</a>
+            </li>
+            <li>
+                <a href="#" title="">发布管理</a>
+            </li>
+        </ul>
+    </header>
+    <ul class="column2-list-wrap">
+        <li class="column2-side">
+
+        </li>
+        <li class="column2-main">
+
+        </li>
+    </ul>
+    <footer class="column2-footer-wrap"></footer>
+</div>
+
+
+<!--头部-->
+<!--<div class="layout-header-wrap">
+    &lt;!&ndash;菜单&ndash;&gt;
+    <div class="header-menu-wrap">
+        <ul class="header-nav" id="menu_wrap">
+            <li>
+                <a href="#index_view" title="">首页</a>
+                <span>Home&nbsp;page</span>
+            </li>
+            <li>
+                <a href="#about_view" title="">关于我们</a>
+                <span>About&nbsp;us</span>
+            </li>
+            <li>
+                <a href="#introduction_view" title="">产品介绍</a>
+                <span>Product&nbsp;introduction</span>
+            </li>
+            <li>
+                <a href="#description_view" title="">产品描述</a>
+                <span>Product&nbsp;description</span>
+            </li>
+            <li>
+                <a href="#contact_view" title="">联系我们</a>
+                <span>Contact&nbsp;us</span>
+            </li>
+        </ul>
+    </div>
+</div>-->
+
+
+<!--首页-->
+<!--<div id="index_view" class="screen-item-wrap layout-index-wrap">
+    <div class="content-default-wrap index-content-wrap">
+        <div class="index-theme"></div>
+        <div class="index-device"></div>
+    </div>
+</div>-->
+
+
+<!--关于我们-->
+<!--<div id="about_view" class="layout-default-wrap screen-item-wrap layout-about-wrap">
+    <div class="content-default-wrap about-content-wrap">
+        <div class="theme-item about-theme"></div>
+        <h1 class="about-remark">深圳市大决策信息技术有限公司成立于2007年，一直致力于证券信息服务平台、行情分析系统、交易系统、资管系统等研究开发。</h1>
+        <ul class="about-list">
+            <li>
+                <div class="about-item about-item1"></div>
+                <h3>大决策发展方向</h3>
+                <p>为券商和机构提供全套软件开发程序和技术服务支持。</p>
+            </li>
+            <li>
+                <div class="about-item about-item2"></div>
+                <h3>大决策哲学</h3>
+                <p>全方位的功能整合、专业精美的界面表达、独到精妙的创新设计，将大决策的深厚专业底蕴和独树一帜的品牌风格进行了全新演绎。</p>
+            </li>
+            <li>
+                <div class="about-item about-item3"></div>
+                <h3>用户宗旨</h3>
+                <p>终端应用以用户为中心开发出全方位的操作功能需求；管理系统以券商和机构为中心开发出最全面的运营管理系统。</p>
+            </li>
+            <li>
+                <div class="about-item about-item4"></div>
+                <h3>市场服务</h3>
+                <p>提供全套全方位证券操作软件和服务，及时优化软件，让券商无后顾之忧。</p>
+            </li>
+        </ul>
+    </div>
+</div>-->
+
+
+<!--产品介绍-->
+<!--<div id="introduction_view" class="layout-default-wrap screen-item-wrap  layout-introduction-wrap">
+    <div class="content-default-wrap introduction-content-wrap">
+        <div class="theme-item introduction-theme"></div>
+        <div class="introduction-links">
+            <div class="introduction-circle"></div>
+            <div class="introduction-circle-mini"></div>
+            <div class="introduction-computer"></div>
+            <ul class="introduction-list">
+                <li class="introduction-item1 introduction-itemblue">
+                    <div class="introduction-show">
+                        <p>开户系统</p>
+                    </div>
+                </li>
+                <li class="introduction-item2 introduction-itemyellow">
+                    <div class="introduction-show">
+                        <p>资讯平台</p>
+                    </div>
+                </li>
+                <li class="introduction-item3 introduction-itemblue">
+                    <div class="introduction-show">
+                        <p>信息服务平台</p>
+                    </div>
+                </li>
+                <li class="introduction-item4 introduction-itemyellow">
+                    <div class="introduction-show">
+                        <p>行情分析系统</p>
+                    </div>
+                </li>
+                <li class="introduction-item5 introduction-itemblue">
+                    <div class="introduction-show">
+                        <p>交易系统(A股、港股、美股)</p>
+                    </div>
+                </li>
+                <li class="introduction-item6 introduction-itemyellow">
+                    <div class="introduction-show">
+                        <p>程序化交易系统</p>
+                    </div>
+                </li>
+                <li class="introduction-item7 introduction-itemblue">
+                    <div class="introduction-show">
+                        <p>证券管理系统</p>
+                    </div>
+                </li>
+                <li class="introduction-item8 introduction-itemyellow">
+                    <div class="introduction-show">
+                        <p>资产管理系统</p>
+                    </div>
+                </li>
+                <li class="introduction-item9 introduction-itemblue">
+                    <div class="introduction-show">
+                        <p>数据分发系统</p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>-->
+
+
+<!--产品描述-->
+<!--<div id="description_view" class="layout-default-wrap screen-item-wrap  layout-description-wrap">
+    <div class="content-default-wrap description-content-wrap">
+        <div class="theme-item description-theme"></div>
+        <ul class="description-gallery">
+            <li class="description-side">
+                <div class="description-item description-item1">
+                    <div class="description-remark">
+                        <h2>证券APP</h2>
+                        <p>首页、行情、交易、资讯、我的</p>
+                        <div class="description-mask">
+                            <div class="mask mask-rt"></div>
+                            <div class="mask mask-lb"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="description-item description-item2">
+                    <div class="description-remark">
+                        <h2>交易系统</h2>
+                        <p>交易功能全面，安全值得信赖</p>
+                        <div class="description-mask">
+                            <div class="mask mask-rt"></div>
+                            <div class="mask mask-lb"></div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li class="description-main">
+                <div class="description-item description-item1">
+                    <div class="description-remark">
+                        <h2>行情分析系统</h2>
+                        <p>A股、港股、美股</p>
+                        <div class="description-mask">
+                            <div class="mask mask-rt"></div>
+                            <div class="mask mask-lb"></div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>-->
+
+
+<!--联系我们-->
+<!--<div id="contact_view" class="layout-default-wrap screen-item-wrap layout-contact-wrap">
+    <div class="content-default-wrap contact-content-wrap">
+        <div class="theme-item contact-theme"></div>
+        <div class="contact-show">
+            <div class="contact-map" id="address_wrap"></div>
+            <ul class="contact-list">
+                <li>
+                    <span class="contact-icon1"></span>
+                    <p>联系人：萧先生</p>
+                </li>
+                <li>
+                    <span class="contact-icon2"></span>
+                    <p>电话：189 2373 0899</p>
+                </li>
+                <li>
+                    <span class="contact-icon3"></span>
+                    <p>座机：0755-26645828</p>
+                </li>
+                <li>
+                    <span class="contact-icon4"></span>
+                    <p>邮箱：174281935@qq.com</p>
+                </li>
+                <li>
+                    <span class="contact-icon5"></span>
+                    <p>地址：深圳市宝安区高新奇科技园</p>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>-->
+
+
+
+<!--jquery-->
+<script src="js/jquery-1.11.1.js"></script>
+<script src="js/index.js"></script>
+</body>
+</html>
