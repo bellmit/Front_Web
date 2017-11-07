@@ -17,19 +17,19 @@
 }
 
 /*头部*/
-.column2-header-wrap{
+.column2-header-wrap {
   @header-height: 60px;
   @item-gap: 20px;
 
   .layout-base();
-  height:@header-height;
-  background:@color-white;
+  height: @header-height;
+  background: @color-white;
   .column2-header-nav {
     font-size: 0;
     text-align: right;
     .box-shadow-base(0 0 5px 0 @color-gray12);
     > li {
-      display:inline-block;
+      display: inline-block;
       .transition-base(all .2s ease-in .01s);
       padding: @item-gap;
       text-align: center;
@@ -37,12 +37,12 @@
       border-bottom: 5px solid @color-white;
       &:hover {
         border-bottom: 5px solid darken(@color-blue1, 5%);
-        a{
+        a {
           color: darken(@color-blue1, 5%);
         }
       }
     }
-    a{
+    a {
       width: 100%;
       text-align: center;
       height: 50%;
@@ -53,12 +53,13 @@
     }
     .menu-active {
       border-bottom: 5px solid darken(@color-blue1, 10%);
-      a{
+      a {
         color: darken(@color-blue1, 10%);
       }
     }
   }
 }
+
 /*主体*/
 
 /*底部*/
