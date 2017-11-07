@@ -762,8 +762,8 @@
                                     editor.sync();
                                     $.extend(true, setdata, {
                                         id: edit_cache['id'],
-                                        gcode: $admin_code.val(),
-                                        name: $admin_name.val(),
+                                        gcode: public_tool.trims($admin_code.val()),
+                                        name: public_tool.trims($admin_name.val()),
                                         isRecommended: $admin_isRecommended.is(':checked') ? true : false,
                                         goodsBrandId: 1,
                                         sort: (function () {
@@ -820,7 +820,7 @@
                                         return false;
                                     }
                                     $.extend(true, setdata, {
-                                        newAttrs: $admin_newattr.val(),
+                                        newAttrs: public_tool.trims($admin_newattr.val()),
                                         goodsTypeId: istypeid,
                                         tagId: tagid
                                     });

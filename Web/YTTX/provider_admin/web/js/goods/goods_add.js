@@ -1048,8 +1048,8 @@
                                     /*同步编辑器*/
                                     editor.sync();
                                     $.extend(true, setdata, {
-                                        gcode: $admin_code.val(),
-                                        name: $admin_name.val(),
+                                        gcode: public_tool.trims($admin_code.val()),
+                                        name: public_tool.trims($admin_name.val()),
                                         isRecommended: $admin_isRecommended.is(':checked') ? true : false,
                                         sort: (function () {
                                             var sort = $admin_goodssort.val();
@@ -1092,8 +1092,8 @@
                                     config['data'] = setdata;
                                 } else if (formtype === 'addtype') {
                                     $.extend(true, setdata, {
-                                        gtCode: $admin_gtCode.val(),
-                                        name: $admin_typename.val(),
+                                        gtCode: public_tool.trims($admin_gtCode.val()),
+                                        name: public_tool.trims($admin_typename.val()),
                                         sort: $admin_sort.val(),
                                         imageUrl: $admin_image.val()
                                     });
@@ -1119,7 +1119,7 @@
                                     config['data'] = setdata;
                                 } else if (formtype === 'addattr') {
                                     $.extend(true, setdata, {
-                                        newAttrs: $admin_newattr.val(),
+                                        newAttrs: public_tool.trims($admin_newattr.val()),
                                         goodsTypeId: istypeid,
                                         tagId: $admin_newattr.attr('data-id')
                                     });
@@ -1127,7 +1127,7 @@
                                     config['data'] = setdata;
                                 } else if (formtype === 'addlabel') {
                                     $.extend(true, setdata, {
-                                        newTagStr: $admin_newlabel.val(),
+                                        newTagStr: public_tool.trims($admin_newlabel.val()),
                                         goodsTypeId: istypeid
                                     });
                                     config['url'] = "http://10.0.5.226:8082/yttx-providerbms-api/goods/tag/attr/add";
