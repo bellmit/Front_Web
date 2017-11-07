@@ -18,7 +18,7 @@
         /*flag:是否格式化*/
         var nodelen = nodelist.length;
         /*只有范围2个值才做操作处理*/
-        $.each(nodelist, function (index) {
+        $.each(nodelist, function () {
             var self = this,
                 selector = self.selector,
                 key = selector.toLowerCase();
