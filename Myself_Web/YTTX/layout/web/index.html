@@ -13,7 +13,7 @@
 </head>
 <body>
 <!--2列经典布局-->
-<div class="layout-flex-column2">
+<div class="layout-flex-column2" id="layout_flex_column2">
     <div class="layout-theme-show" data-theme="2列布局"></div>
     <header class="column2-header-wrap">
         <ul class="column2-header-nav">
@@ -49,213 +49,111 @@
 </div>
 
 
-<!--头部-->
-<!--<div class="layout-header-wrap">
-    &lt;!&ndash;菜单&ndash;&gt;
-    <div class="header-menu-wrap">
-        <ul class="header-nav" id="menu_wrap">
-            <li>
-                <a href="#index_view" title="">首页</a>
-                <span>Home&nbsp;page</span>
-            </li>
-            <li>
-                <a href="#about_view" title="">关于我们</a>
-                <span>About&nbsp;us</span>
-            </li>
-            <li>
-                <a href="#introduction_view" title="">产品介绍</a>
-                <span>Product&nbsp;introduction</span>
-            </li>
-            <li>
-                <a href="#description_view" title="">产品描述</a>
-                <span>Product&nbsp;description</span>
-            </li>
-            <li>
-                <a href="#contact_view" title="">联系我们</a>
-                <span>Contact&nbsp;us</span>
-            </li>
-        </ul>
-    </div>
+<!--9宫格布局-->
+<!--<div class="layout-flex-rowcolumn9 g-d-hidei" id="layout_flex_rowcolumn9">
+    <div class="layout-theme-show" data-theme="9宫格布局"></div>
+    <ul class="rowcolumn9-list-wrap">
+        <li>
+            <div class="rowcolumn9-item1">1</div>
+            <div class="rowcolumn9-item2">2</div>
+            <div class="rowcolumn9-item3">3</div>
+        </li>
+        <li>
+            <div class="rowcolumn9-item1">4</div>
+            <div class="rowcolumn9-item2">5</div>
+            <div class="rowcolumn9-item3">6</div>
+        </li>
+        <li>
+            <div class="rowcolumn9-item1">7</div>
+            <div class="rowcolumn9-item2">8</div>
+            <div class="rowcolumn9-item3">9</div>
+        </li>
+    </ul>
 </div>-->
 
 
-<!--首页-->
-<!--<div id="index_view" class="screen-item-wrap layout-index-wrap">
-    <div class="content-default-wrap index-content-wrap">
-        <div class="index-theme"></div>
-        <div class="index-device"></div>
-    </div>
-</div>-->
+<!--瀑布流布局-->
+<!--<div class="layout-flex-flow g-d-hidei" id="layout_flex_flow">
+    <div class="layout-theme-show" data-theme="瀑布流布局"></div>
+    <ul class="flow-list-wrap">
+        <li>
+            <div class="flow-item">
+                <p>absolute :生成绝对定位的元素， 相对于最近一级的 定位不是 static 的父元素来进行定位。</p>
+                <p>fixed （老IE不支持）生成绝对定位的元素，通常相对于浏览器窗口或 frame 进行定位。</p>
+                <p>relative 生成相对定位的元素，相对于其在普通流中的位置进行定位。</p>
+                <p>static 默认值。没有定位，元素出现在正常的流中</p>
+                <p>sticky 生成粘性定位的元素，容器的位置根据正常文档流计算得出</p>
+            </div>
+            <div class="flow-item">
+                <p>原理是：动态插入script标签，通过script标签引入一个js文件，这个js文件载入成功后会执行我们在url参数中指定的函数，并且会把我们需要的json数据作为参数传入。</p>
+                <p>由于同源策略的限制，XmlHttpRequest只允许请求当前源（域名、协议、端口）的资源，为了实现跨域请求，可以通过script标签实现跨域请求，然后在服务端输出JSON数据并执行回调函数，从而解决了跨域的数据请求。</p>
+                <p>优点是兼容性好，简单易用，支持浏览器与服务器双向通信。缺点是只支持GET请求。</p>
+            </div>
+        </li>
+        <li>
+            <div class="flow-item">
+                <p>服务器端对于CORS的支持，主要就是通过设置Access-Control-Allow-Origin来进行的。如果浏览器检测到相应的设置，就可以允许Ajax进行跨域的访问。</p>
+            </div>
+            <div class="flow-item">
+                <p>将子域和主域的document.domain设为同一个主域.前提条件：这两个域名必须属于同一个基础域名!而且所用的协议，端口都要一致，否则无法利用document.domain进行跨域</p>
+            </div>
+            <div class="flow-item">
+                <p>window对象有个name属性，该属性有个特征：即在一个窗口(window)的生命周期内,窗口载入的所有的页面都是共享一个window.name的，每个页面对window.name都有读写的权限，window.name是持久存在一个窗口载入过的所有页面中的</p>
+            </div>
+            <div class="flow-item">
+                <p>使用HTML5中新引进的window.postMessage方法来跨域传送数据</p>
+            </div>
+        </li>
+        <li>
+            <div class="flow-item">
+                <p>WebPack 是一个模块打包工具，你可以使用WebPack管理你的模块依赖，并编绎输出模块们所需的静态文件。它能够很好地管理、打包Web开发中所用到的HTML、JavaScript、CSS以及各种静态文件（图片、字体等），让开发过程更加高效。对于不同类型的资源，webpack有对应的模块加载器。webpack模块打包器会分析模块间的依赖关系，最后 生成了优化且合并后的静态资源。</p>
+            </div>
+            <div class="flow-item">
+                <p>webpack 是以commonJS的形式来书写脚本滴，但对 AMD/CMD 的支持也很全面，方便旧项目进行代码迁移。</p>
+                <p>webpack具有requireJs和browserify的功能，但仍有很多自己的新特性</p>
+            </div>
+        </li>
+        <li>
+            <div class="flow-item">
+                <p class="g-c-red2">就是通过把SQL命令插入到Web表单递交或输入域名或页面请求的查询字符串，最终达到欺骗服务器执行恶意的SQL命令。</p>
+            </div>
+            <div class="flow-item">
+                <p class="g-c-blue3">1.永远不要信任用户的输入，要对用户的输入进行校验，可以通过正则表达式，或限制长度，对单引号和双"-"进行转换等。</p>
+                <p class="g-c-blue3">2.永远不要使用动态拼装SQL，可以使用参数化的SQL或者直接使用存储过程进行数据查询存取。</p>
+                <p class="g-c-blue3">3.永远不要使用管理员权限的数据库连接，为每个应用使用单独的权限有限的数据库连接。
+                </p>
+                <p class="g-c-blue3">4.不要把机密信息明文存放，请加密或者hash掉密码和敏感的信息。</p>
+            </div>
+            <div class="flow-item">
+                <p>因为网络请求需要中间有很多的服务器路由器的转发。中间的节点都可能篡改信息，而如果使用HTTPS，密钥在你和终点站才有。https之所以比http安全，是因为他利用ssl/tls协议传输。它包含证书，卸载，流量转发，负载均衡，页面适配，浏览器适配，refer传递等。保障了传输过程的安全性</p>
+            </div>
+            <div class="flow-item">
+                <p>主要好处就是可以消除对象间的耦合，通过使用工程方法而不是new关键字。将所有实例化的代码集中在一个位置防止代码重复。工厂模式解决了重复实例化的问题 ，但还有一个问题,那就是识别问题，因为根本无法 搞清楚他们到底是哪个对象的实例。</p>
+            </div>
+        </li>
+        <li>
+            <div class="flow-item">
+                <p>Xss(cross-site scripting)攻击指的是攻击者往Web页面里插入恶意 html标签或者javascript代码。</p>
+                <p>首先代码里对用户输入的地方和变量都需要仔细检查长度和对”<”,”>”,”;”,”’”等字符做过滤</p>
+                <p>其次任何内容写到页面之前都必须加以encode，避免不小心把html tag 弄出来。这一个层面做好，至少可以堵住超过一半的XSS 攻击。</p>
+                <p>避免直接在cookie 中泄露用户隐私</p>
+                <p>通过使cookie 和系统ip 绑定来降低cookie 泄露后的危险。这样攻击者得到的cookie 没有实际价值，不可能拿来重放。如果网站不需要再浏览器端对cookie 进行操作，可以在Set-Cookie 末尾加上HttpOnly 来防止javascript 代码直接获取cookie</p>
+                <p>尽量采用POST 而非GET 提交表单</p>
+            </div>
+            <div class="flow-item">
+                <p>XSS是获取信息，不需要提前知道其他用户页面的代码和数据包。CSRF是代替用户完成指定的动作，需要知道其他用户页面的代码和数据包。</p>
+            </div>
+            <div class="flow-item">
+                <p>WebSocket是Web应用程序的传输协议，它提供了双向的，按序到达的数据流。他是一个Html5协议，WebSocket的连接是持久的，他通过在客户端和服务器之间保持双工连接，服务器的更新可以被及时推送给客户端，而不需要客户端以一定时间间隔去轮询。</p>
+            </div>
+            <div class="flow-item">
+                <p> HTTP协议通常承载于TCP协议之上，在HTTP和TCP之间添加一个安全协议层（SSL或TSL），这个时候，就成了我们常说的HTTPS。
 
-
-<!--关于我们-->
-<!--<div id="about_view" class="layout-default-wrap screen-item-wrap layout-about-wrap">
-    <div class="content-default-wrap about-content-wrap">
-        <div class="theme-item about-theme"></div>
-        <h1 class="about-remark">深圳市大决策信息技术有限公司成立于2007年，一直致力于证券信息服务平台、行情分析系统、交易系统、资管系统等研究开发。</h1>
-        <ul class="about-list">
-            <li>
-                <div class="about-item about-item1"></div>
-                <h3>大决策发展方向</h3>
-                <p>为券商和机构提供全套软件开发程序和技术服务支持。</p>
-            </li>
-            <li>
-                <div class="about-item about-item2"></div>
-                <h3>大决策哲学</h3>
-                <p>全方位的功能整合、专业精美的界面表达、独到精妙的创新设计，将大决策的深厚专业底蕴和独树一帜的品牌风格进行了全新演绎。</p>
-            </li>
-            <li>
-                <div class="about-item about-item3"></div>
-                <h3>用户宗旨</h3>
-                <p>终端应用以用户为中心开发出全方位的操作功能需求；管理系统以券商和机构为中心开发出最全面的运营管理系统。</p>
-            </li>
-            <li>
-                <div class="about-item about-item4"></div>
-                <h3>市场服务</h3>
-                <p>提供全套全方位证券操作软件和服务，及时优化软件，让券商无后顾之忧。</p>
-            </li>
-        </ul>
-    </div>
-</div>-->
-
-
-<!--产品介绍-->
-<!--<div id="introduction_view" class="layout-default-wrap screen-item-wrap  layout-introduction-wrap">
-    <div class="content-default-wrap introduction-content-wrap">
-        <div class="theme-item introduction-theme"></div>
-        <div class="introduction-links">
-            <div class="introduction-circle"></div>
-            <div class="introduction-circle-mini"></div>
-            <div class="introduction-computer"></div>
-            <ul class="introduction-list">
-                <li class="introduction-item1 introduction-itemblue">
-                    <div class="introduction-show">
-                        <p>开户系统</p>
-                    </div>
-                </li>
-                <li class="introduction-item2 introduction-itemyellow">
-                    <div class="introduction-show">
-                        <p>资讯平台</p>
-                    </div>
-                </li>
-                <li class="introduction-item3 introduction-itemblue">
-                    <div class="introduction-show">
-                        <p>信息服务平台</p>
-                    </div>
-                </li>
-                <li class="introduction-item4 introduction-itemyellow">
-                    <div class="introduction-show">
-                        <p>行情分析系统</p>
-                    </div>
-                </li>
-                <li class="introduction-item5 introduction-itemblue">
-                    <div class="introduction-show">
-                        <p>交易系统(A股、港股、美股)</p>
-                    </div>
-                </li>
-                <li class="introduction-item6 introduction-itemyellow">
-                    <div class="introduction-show">
-                        <p>程序化交易系统</p>
-                    </div>
-                </li>
-                <li class="introduction-item7 introduction-itemblue">
-                    <div class="introduction-show">
-                        <p>证券管理系统</p>
-                    </div>
-                </li>
-                <li class="introduction-item8 introduction-itemyellow">
-                    <div class="introduction-show">
-                        <p>资产管理系统</p>
-                    </div>
-                </li>
-                <li class="introduction-item9 introduction-itemblue">
-                    <div class="introduction-show">
-                        <p>数据分发系统</p>
-                    </div>
-                </li>
-            </ul>
-        </div>
-    </div>
-</div>-->
-
-
-<!--产品描述-->
-<!--<div id="description_view" class="layout-default-wrap screen-item-wrap  layout-description-wrap">
-    <div class="content-default-wrap description-content-wrap">
-        <div class="theme-item description-theme"></div>
-        <ul class="description-gallery">
-            <li class="description-side">
-                <div class="description-item description-item1">
-                    <div class="description-remark">
-                        <h2>证券APP</h2>
-                        <p>首页、行情、交易、资讯、我的</p>
-                        <div class="description-mask">
-                            <div class="mask mask-rt"></div>
-                            <div class="mask mask-lb"></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="description-item description-item2">
-                    <div class="description-remark">
-                        <h2>交易系统</h2>
-                        <p>交易功能全面，安全值得信赖</p>
-                        <div class="description-mask">
-                            <div class="mask mask-rt"></div>
-                            <div class="mask mask-lb"></div>
-                        </div>
-                    </div>
-                </div>
-            </li>
-            <li class="description-main">
-                <div class="description-item description-item1">
-                    <div class="description-remark">
-                        <h2>行情分析系统</h2>
-                        <p>A股、港股、美股</p>
-                        <div class="description-mask">
-                            <div class="mask mask-rt"></div>
-                            <div class="mask mask-lb"></div>
-                        </div>
-                    </div>
-                </div>
-            </li>
-        </ul>
-    </div>
-</div>-->
-
-
-<!--联系我们-->
-<!--<div id="contact_view" class="layout-default-wrap screen-item-wrap layout-contact-wrap">
-    <div class="content-default-wrap contact-content-wrap">
-        <div class="theme-item contact-theme"></div>
-        <div class="contact-show">
-            <div class="contact-map" id="address_wrap"></div>
-            <ul class="contact-list">
-                <li>
-                    <span class="contact-icon1"></span>
-                    <p>联系人：萧先生</p>
-                </li>
-                <li>
-                    <span class="contact-icon2"></span>
-                    <p>电话：189 2373 0899</p>
-                </li>
-                <li>
-                    <span class="contact-icon3"></span>
-                    <p>座机：0755-26645828</p>
-                </li>
-                <li>
-                    <span class="contact-icon4"></span>
-                    <p>邮箱：174281935@qq.com</p>
-                </li>
-                <li>
-                    <span class="contact-icon5"></span>
-                    <p>地址：深圳市宝安区高新奇科技园</p>
-                </li>
-            </ul>
-        </div>
-    </div>
-</div>-->
-
-
+                    默认HTTP的端口号为80，HTTPS的端口号为443。</p>
+            </div>
+        </li>
+    </ul>
+</div-->>
 
 <!--jquery-->
 <script src="js/jquery-1.11.1.js"></script>

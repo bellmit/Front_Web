@@ -1,11 +1,11 @@
 /*主体*/
 .layout-flex-column2 {
-  @hf-height:60px;
+  @hf-height: 60px;
 
   .layout-base();
   min-width: @body-min-width;
-  height: 100vh/*修改*/;
-  min-height: @body-min-height/*修改*/;
+  height: 100vh /*修改*/;
+  min-height: @body-min-height /*修改*/;
   background: transparent url('../images/3bg.png') repeat 0 0;
 
   .display-base(flex);
@@ -14,22 +14,22 @@
 
   /*头部,底部*/
   .column2-header-wrap,
-  .column2-footer-wrap{
-    .flex-base(0 0 auto);
-    height:@hf-height;
+  .column2-footer-wrap {
+    .flex-base(0 0 0%);
+    height: @hf-height;
     .layout-base();
     background: @color-white;
   }
 
   /*头部*/
-  .column2-header-wrap{
+  .column2-header-wrap {
     @item-gap: 20px;
     @item-bottom: 5px;
 
     .column2-header-nav {
       font-size: 0;
       text-align: right;
-      height:@hf-height;
+      height: @hf-height;
       .layout-base();
       .box-shadow-base(0 0 5px 0 @color-gray12);
       > li {
@@ -66,31 +66,31 @@
   }
 
   /*主体*/
-  .column2-list-wrap{
+  .column2-list-wrap {
     .display-base(flex);
     .flex-flow-base(row nowrap);
     .flex-base(1 1 auto);
-    min-height:500px;
+    min-height: 500px;
     .layout-base();
-    >li{
+    > li {
       .box-sizing-base();
-      padding:20px 10px;
+      padding: 20px 10px;
     }
-    .column2-side{
+    .column2-side {
       .flex-base(0 0 300px);
-      border-right:1px solid @color-gray12;
+      border-right: 1px solid @color-gray12;
     }
-    .column2-main{
+    .column2-main {
       .flex-base(1 1 auto);
     }
   }
 
   /*底部*/
-  .column2-footer-wrap{
+  .column2-footer-wrap {
     text-align: center;
     font-size: @font-size-base;
     .user-select-base();
-    color:@color-gray9;
+    color: @color-gray9;
     line-height: @hf-height;
     .box-shadow-base(0 -2px 5px 0 @color-gray12);
   }

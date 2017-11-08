@@ -1,0 +1,44 @@
+/*主体*/
+.layout-flex-flow {
+  .layout-base();
+  min-width: @body-min-width;
+  height: 100vh /*修改*/;
+  min-height: @body-min-height /*修改*/;
+  background: transparent url('../images/2bg.png') repeat 0 0;
+
+  /*主体*/
+  .flow-list-wrap {
+    .display-base(flex);
+    .flex-flow-base(row nowrap);
+    .align-items-base();
+    width: 100%;
+    height: 100%;
+    > li {
+      .box-sizing-base();
+      padding:10px;
+      .flex-base(5 5 240px);
+    }
+    .flow-item{
+      display: inline-block;
+      min-height:100px;
+      .layout-base();
+      margin:10px 0 0 ;
+      padding:20px 10px;
+      text-indent: 2em;
+      font-size:@font-size-base ;
+      color:@color-gray6;
+      background: rgba(255, 255, 255, .8);
+      .box-shadow-base(2px 2px 5px 0 @color-gray12);
+      .text-ww();
+      .border-radius-base(3px);
+      p::-moz-selection{
+        color:@color-orange1;
+        background:@color-gray14;
+      }
+      p::selection{
+        color:@color-orange1;
+        background:@color-gray14;
+      }
+    }
+  }
+}

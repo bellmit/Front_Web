@@ -5,6 +5,20 @@
     'use strict';
     $(function () {
         /*dom节点缓存*/
+        var $layout_flex_column2=$('#layout_flex_column2'),
+            $layout_flex_rowcolumn9=$('#layout_flex_rowcolumn9'),
+            $layout_flex_flow=$('#layout_flex_flow');
+
+
+        $.each([$layout_flex_column2,$layout_flex_rowcolumn9,$layout_flex_flow],
+        function () {
+            this.on('keyup',function (e) {
+                var code=e.keyCode;
+                console.log(code);
+            });
+        });
+
+
         /*var mini_screen_height = 900/!*一般视口高界限*!/,
             mini_screen_width = 479/!*隐藏菜单视口界限*!/,
             mini_header_height = 50/!*小屏头部高度*!/,
