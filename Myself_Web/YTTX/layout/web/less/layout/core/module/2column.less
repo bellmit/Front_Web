@@ -15,9 +15,9 @@
   /*头部,底部*/
   .column2-header-wrap,
   .column2-footer-wrap {
-    .flex-base(0 0 0%);
-    height: @hf-height;
+    .flex-base(0 0 auto);
     .layout-base();
+    height: @hf-height;
     background: @color-white;
   }
 
@@ -70,7 +70,7 @@
     .display-base(flex);
     .flex-flow-base(row nowrap);
     .flex-base(1 1 auto);
-    min-height: 500px;
+    min-height: 400px;
     .layout-base();
     > li {
       .box-sizing-base();
@@ -81,7 +81,7 @@
       border-right: 1px solid @color-gray12;
     }
     .column2-main {
-      .flex-base(1 1 auto);
+      .flex-base(1 1 0%);
     }
   }
 
