@@ -45,6 +45,8 @@
                 $admin_page_wrap = $('#admin_page_wrap'),
                 $show_audit_wrap = $('#show_audit_wrap')/*详情容器*/,
                 $show_audit_content = $('#show_audit_content'), /*详情内容*/
+                $show_auditmark = $('#show_auditmark'),
+                $show_auditstatus = $('#show_auditstatus'),
                 $admin_audit_btn = $('#admin_audit_btn'),
                 sureObj = public_tool.sureDialog(dia)/*回调提示对象*/,
                 setSure = new sureObj(),
@@ -81,13 +83,14 @@
                                 if (debug) {
                                     var json = testWidget.test({
                                         map: {
-                                            id: 'guid',
+                                            id: 'sequence',
                                             nickName: 'value',
                                             phone: 'mobile',
                                             name: 'name',
                                             cardNumber: 'card',
                                             bankName: 'text',
-                                            auditStatus: 'rule,0,1,2'
+                                            auditStatus: 'rule,0,1,2',
+                                            auditMark: 'remark'
                                         },
                                         mapmin: 5,
                                         mapmax: 10,
@@ -176,6 +179,9 @@
                                         };
                                     return statusmap[stauts];
                                 }
+                            },
+                            {
+                                "data": "auditMark"
                             },
                             {
                                 "data": "id",
@@ -339,6 +345,7 @@
             if (operate_item === null) {
                 return false;
             }
+            $show_auditmark.val('');
             /*未处理提现*/
             $admin_audit_btn.attr({
                 'data-id': id
@@ -376,16 +383,21 @@
             if (id === '' || typeof id === 'undefined') {
                 return false;
             }
+            var auditMark = $show_auditmark.val();
+
             setSure.sure('', function (cf) {
                 /*是否选择了状态*/
                 var tip = cf.dia,
                     temp_config = {
-                        roleId: decodeURIComponent(logininfo.param.roleId),
                         adminId: decodeURIComponent(logininfo.param.adminId),
-                        grade: decodeURIComponent(logininfo.param.grade),
                         token: decodeURIComponent(logininfo.param.token),
-                        ids:id
+                        ids: id,
+                        auditStatus: $show_auditstatus.find(':checked').val()
                     };
+
+                if (auditMark !== '') {
+                    temp_config['auditMark'] = auditMark;
+                }
 
 
                 $.ajax({

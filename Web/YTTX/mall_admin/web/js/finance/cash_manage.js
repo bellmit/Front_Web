@@ -50,6 +50,10 @@
                 $show_dispose_wrap = $('#show_dispose_wrap')/*详情容器*/,
                 $show_dispose_content = $('#show_dispose_content'), /*详情内容*/
                 $show_dispose_btn = $('#show_dispose_btn'),
+                $show_dispose_auditmark = $('#show_dispose_auditmark'),
+                $show_detail_auditmark = $('#show_detail_auditmark'),
+                $show_dispose_auditstatus = $('#show_dispose_auditstatus'),
+                $show_detail_auditstatus = $('#show_detail_auditstatus'),
                 sureObj = public_tool.sureDialog(dia)/*回调提示对象*/,
                 setSure = new sureObj(),
                 operate_item = null;
@@ -111,14 +115,13 @@
                                 if (debug) {
                                     var json = testWidget.test({
                                         map: {
-                                            id: 'guid',
+                                            id: 'sequence',
                                             name: 'name',
                                             serialNumber: 'guid',
                                             phone: 'mobile',
                                             amount: 'money',
                                             auditStatus: 'rule,0,1,2',
                                             createTime: 'datetime'
-
                                         },
                                         mapmin: 5,
                                         mapmax: 10,
@@ -209,9 +212,9 @@
                                 "render": function (data, type, full, meta) {
                                     var stauts = parseInt(data, 10),
                                         statusmap = {
-                                            0: '<div class="g-c-red1">待审核(未处理)</div>',
-                                            1: '<div class="g-c-green2">审核通过(历史提现)</div>',
-                                            2: '<div class="g-c-warn">审核驳回(暂未该状态)</div>'
+                                            0: '<div class="g-c-red1">待审核</div>',
+                                            1: '<div class="g-c-green2">审核通过</div>',
+                                            2: '<div class="g-c-warn">审核驳回</div>'
                                         };
 
                                     return statusmap[stauts];
@@ -379,8 +382,7 @@
                         action: index === 0 ? 'detail' : 'dispose',
                         id: $this.attr('data-id'),
                         modal: true
-                    })
-
+                    });
                 });
             });
 
@@ -396,7 +398,6 @@
                 table.ajax.config(opt.config.ajax).load();
             }
         }
-
 
 
         /*查看详情*/
@@ -420,14 +421,15 @@
                     }).attr({
                         'data-id': ''
                     });
+                    $show_detail_auditstatus.addClass('g-d-hidei');
                 } else if (action === 'dispose') {
                     $show_dispose_btn.prop({
                         'disabled': true
                     }).attr({
                         'data-id': ''
                     });
+                    $show_dispose_auditmark.val('');
                 }
-
             } else {
                 /*未处理提现*/
                 if (action === 'detail') {
@@ -436,12 +438,15 @@
                     }).attr({
                         'data-id': id
                     });
+                    $show_detail_auditstatus.removeClass('g-d-hidei');
+                    $show_detail_auditmark.val('');
                 } else if (action === 'dispose') {
                     $show_dispose_btn.prop({
                         'disabled': false
                     }).attr({
                         'data-id': id
                     });
+                    $show_dispose_auditmark.val('');
                 }
             }
 
@@ -461,11 +466,12 @@
                         var resp = testWidget.testSuccess('list');
                         resp.result = testWidget.getMap({
                             map: {
-                                id: 'guid',
+                                id: 'sequence',
                                 nickName: 'value',
                                 bankName: 'value',
                                 cardNumber: 'card',
                                 serialNumber: 'guid',
+                                auditMark: 'remark',
                                 name: 'name',
                                 phone: 'mobile',
                                 amount: 'money',
@@ -506,6 +512,7 @@
                                 phone: '手机号',
                                 amount: '结算金额',
                                 bankName: '所属银行',
+                                auditMark: '审核备注',
                                 cardNumber: '结算账号',
                                 auditStatus: '审核(提现)状态',
                                 createTime: '提现时间'
@@ -567,7 +574,9 @@
             var type = config.type,
                 isdata = true,
                 action = config.action,
-                id = config.id;
+                id = config.id,
+                auditStatus = 1,
+                auditMark = '';
 
             if (type === 'base') {
                 /*单个处理*/
@@ -580,7 +589,9 @@
                 /*var batchdata = batchItem.getBatchData();
                  if (batchdata.length === 0 || !batchdata) {
                  isdata = false;
-                 }屏蔽批量*/
+                 }
+                 屏蔽批量
+                 */
             }
 
             if (!isdata) {
@@ -602,6 +613,18 @@
                 } else if (type === 'batch') {
                     /*批量处理*/
                     /*temp_config['ids'] = batchdata.join(',');屏蔽批量*/
+                }
+
+                if (action === 'detail') {
+                    auditStatus = $show_detail_auditstatus.find(':checked').val();
+                    auditMark = $show_detail_auditmark.val();
+                } else if (action === 'dispose') {
+                    auditStatus = $show_dispose_auditstatus.find(':checked').val();
+                    auditMark = $show_dispose_auditmark.val();
+                }
+                temp_config['auditStatus'] = auditStatus;
+                if (auditMark !== '') {
+                    temp_config['auditMark'] = auditMark;
                 }
 
 
@@ -626,14 +649,15 @@
                                 tip.close();
                                 if (config.modal) {
                                     /*绑定关闭详情*/
-                                    if(action==='detail'){
+                                    if (action === 'detail') {
                                         $show_detail_btn.prop({
                                             'disabled': false
                                         }).attr({
                                             'data-id': ''
                                         });
                                         $show_detail_wrap.modal('hide');
-                                    }else if(action==='dispose'){
+                                        $show_detail_auditstatus.addClass('g-d-hidei');
+                                    } else if (action === 'dispose') {
                                         $show_dispose_btn.prop({
                                             'disabled': false
                                         }).attr({
@@ -655,14 +679,15 @@
                             getColumnData(cash_config);
                             if (config.modal) {
                                 /*绑定关闭详情*/
-                                if(action==='detail'){
+                                if (action === 'detail') {
                                     $show_detail_btn.prop({
                                         'disabled': false
                                     }).attr({
                                         'data-id': ''
                                     });
                                     $show_detail_wrap.modal('hide');
-                                }else if(action==='dispose'){
+                                    $show_detail_auditstatus.addClass('g-d-hidei');
+                                } else if (action === 'dispose') {
                                     $show_dispose_btn.prop({
                                         'disabled': false
                                     }).attr({
@@ -683,14 +708,15 @@
                             tip.close();
                             if (config.modal) {
                                 /*绑定关闭详情*/
-                                if(action==='detail'){
+                                if (action === 'detail') {
                                     $show_detail_btn.prop({
                                         'disabled': false
                                     }).attr({
                                         'data-id': ''
                                     });
                                     $show_detail_wrap.modal('hide');
-                                }else if(action==='dispose'){
+                                    $show_detail_auditstatus.addClass('g-d-hidei');
+                                } else if (action === 'dispose') {
                                     $show_dispose_btn.prop({
                                         'disabled': false
                                     }).attr({
