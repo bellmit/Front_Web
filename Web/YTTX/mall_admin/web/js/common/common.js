@@ -908,22 +908,17 @@
             "name": "财务管理",
             "code": "finance",
             "match": "-finance-",
+            /*"matchlist": ['finance-cashmanage', 'finance-cardmanage'],*/
+            /*"matchignore": ['finance-recordmanage'],*/
             "class": "menu-ux-payment",
             "module": "finance",
             "modid": "344"
-        },
-        "360": {
-            "name": "订单管理",
-            "code": "order",
-            "match": "-order-",
-            "class": "menu-ux-store",
-            "module": "order",
-            "modid": "360"
         },
         "348": {
             "name": "用户管理C端",
             "code": "userC",
             "match": "-userC-",
+            /*"ignoremodule": true,*/
             "class": "menu-ux-user",
             "module": "userC",
             "modid": "348"
@@ -932,6 +927,7 @@
             "name": "分润管理C端",
             "code": "profitC",
             "match": "-profitC-",
+            /*"ignoremodule": true,*/
             "class": "menu-ux-chart",
             "module": "profitC",
             "modid": "350"
@@ -940,6 +936,7 @@
             "name": "订单管理C端",
             "code": "orderC",
             "match": "-orderC-",
+            /*"ignoremodule": true,*/
             "class": "menu-ux-store",
             "module": "orderC",
             "modid": "353"
@@ -948,9 +945,19 @@
             "name": "财务管理C端",
             "code": "financeC",
             "match": "-financeC-",
+            /*"ignoremodule": true,*/
             "class": "menu-ux-finance",
             "module": "financeC",
             "modid": "355"
+        },
+        "360": {
+            "name": "订单管理",
+            "code": "order",
+            "match": "-order-",
+            /*"ignoremodule": true,*/
+            "class": "menu-ux-store",
+            "module": "order",
+            "modid": "360"
         }
     };
     /*路由映射*/
@@ -1130,7 +1137,6 @@
                     var data = testWidget.testMenu({
                         type:'list'
                     });
-                    console.log();
                 }
                 if (parseInt(data.code, 10) !== 0) {
                     //查询异常
