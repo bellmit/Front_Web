@@ -229,7 +229,7 @@
                                             <i class="fa-file-text-o"></i>\
                                             <span>查看</span>\
 										</span>';
-                                    if (dispose_power && (state !== 1)) {
+                                    if (dispose_power && state === 0) {
                                         btns += '<span data-action="dispose" data-id="' + id + '" data-state="' + state + '"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
                                             <i class="fa-exchange"></i>\
                                             <span>处理提现</span>\
@@ -408,40 +408,31 @@
                 return false;
             }
             /*设置提现状态*/
-            if (state === 1) {
-                /*已处理提现*/
-                if (action === 'detail') {
-                    $show_detail_btn.prop({
-                        'disabled': true
-                    }).attr({
-                        'data-id': ''
-                    });
-                    $show_detail_auditstatus.addClass('g-d-hidei');
-                } else if (action === 'dispose') {
-                    $show_dispose_btn.prop({
-                        'disabled': true
-                    }).attr({
-                        'data-id': ''
-                    });
-                    $show_dispose_auditmark.val('');
-                }
-
-            } else {
+            if (state === 0) {
                 /*未处理提现*/
                 if (action === 'detail') {
-                    $show_detail_btn.prop({
-                        'disabled': false
-                    }).attr({
+                    $show_detail_btn.attr({
                         'data-id': id
-                    });
+                    }).removeClass('g-d-hidei');
                     $show_detail_auditstatus.removeClass('g-d-hidei');
                     $show_detail_auditmark.val('');
                 } else if (action === 'dispose') {
-                    $show_dispose_btn.prop({
-                        'disabled': false
-                    }).attr({
+                    $show_dispose_btn.attr({
                         'data-id': id
-                    });
+                    }).removeClass('g-d-hidei');
+                    $show_dispose_auditmark.val('');
+                }
+            } else {
+                /*已处理提现*/
+                if (action === 'detail') {
+                    $show_detail_btn.attr({
+                        'data-id': ''
+                    }).addClass('g-d-hidei');
+                    $show_detail_auditstatus.addClass('g-d-hidei');
+                } else if (action === 'dispose') {
+                    $show_dispose_btn.attr({
+                        'data-id': ''
+                    }).removeClass('g-d-hidei');
                     $show_dispose_auditmark.val('');
                 }
             }
@@ -638,19 +629,15 @@
                                 if (config.modal) {
                                     /*绑定关闭详情*/
                                     if (action === 'detail') {
-                                        $show_detail_btn.prop({
-                                            'disabled': false
-                                        }).attr({
+                                        $show_detail_btn.attr({
                                             'data-id': ''
-                                        });
+                                        }).removeClass('g-d-hidei');
                                         $show_detail_wrap.modal('hide');
                                         $show_detail_auditstatus.addClass('g-d-hidei');
                                     } else if (action === 'dispose') {
-                                        $show_dispose_btn.prop({
-                                            'disabled': false
-                                        }).attr({
+                                        $show_dispose_btn.attr({
                                             'data-id': ''
-                                        });
+                                        }).removeClass('g-d-hidei');
                                         $show_dispose_wrap.modal('hide');
                                     }
                                 }
@@ -668,19 +655,15 @@
                             if (config.modal) {
                                 /*绑定关闭详情*/
                                 if (action === 'detail') {
-                                    $show_detail_btn.prop({
-                                        'disabled': false
-                                    }).attr({
+                                    $show_detail_btn.attr({
                                         'data-id': ''
-                                    });
+                                    }).removeClass('g-d-hidei');
                                     $show_detail_wrap.modal('hide');
                                     $show_detail_auditstatus.addClass('g-d-hidei');
                                 } else if (action === 'dispose') {
-                                    $show_dispose_btn.prop({
-                                        'disabled': false
-                                    }).attr({
+                                    $show_dispose_btn.attr({
                                         'data-id': ''
-                                    });
+                                    }).removeClass('g-d-hidei');
                                     $show_dispose_wrap.modal('hide');
                                 }
                             }
@@ -697,19 +680,15 @@
                             if (config.modal) {
                                 /*绑定关闭详情*/
                                 if (action === 'detail') {
-                                    $show_detail_btn.prop({
-                                        'disabled': false
-                                    }).attr({
+                                    $show_detail_btn.attr({
                                         'data-id': ''
-                                    });
+                                    }).removeClass('g-d-hidei');
                                     $show_detail_wrap.modal('hide');
                                     $show_detail_auditstatus.addClass('g-d-hidei');
                                 } else if (action === 'dispose') {
-                                    $show_dispose_btn.prop({
-                                        'disabled': false
-                                    }).attr({
+                                    $show_dispose_btn.attr({
                                         'data-id': ''
-                                    });
+                                    }).removeClass('g-d-hidei');
                                     $show_dispose_wrap.modal('hide');
                                 }
                             }

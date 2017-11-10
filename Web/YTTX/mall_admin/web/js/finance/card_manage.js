@@ -190,7 +190,7 @@
                                         btns = '',
                                         state = parseInt(full.auditStatus, 10);
 
-                                    if (audit_power && state !== 1) {
+                                    if (audit_power && state === 0) {
                                         btns += '<span data-action="audit" data-id="' + id + '" class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
                                             <i class="fa-check"></i>\
                                             <span>审核</span>\
