@@ -272,14 +272,7 @@
                 /*清空查询条件*/
                 $admin_search_clear.on('click', function () {
                     $.each([$search_goodsKinds], function () {
-                        var selector = this.selector;
-                        if (selector.indexOf('goodsKinds') !== -1) {
-                            this.find('option:first-child').prop({
-                                'selected': true
-                            });
-                        } else {
-                            this.val('');
-                        }
+                        this.val('');
                     });
                 });
                 $admin_search_clear.trigger('click');
@@ -299,12 +292,12 @@
                                 delete data[key[1]];
                             }
                         } else {
-                            data[key[1]] = public_tool.trims(text);
+                            data[key[1]] = text;
                         }
 
                     });
                     goods_config.config.ajax.data = $.extend(true, {}, data);
-                    getColumnData(goods_config);
+                    getColumnData(goods_page, goods_config);
                 });
 
 

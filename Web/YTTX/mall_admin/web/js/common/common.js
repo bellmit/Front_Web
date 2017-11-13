@@ -1116,14 +1116,14 @@
 
             /*静态注入*/
             /*var injectdata = self.injectSideMenu({
-                    url: self.routeMap.isindex ? '../json/inject_menu.json' : '../../json/inject_menu.json',
-                    async: false,
-                    type: 'post',
-                    datatype: 'json'
-                }),
-                injectstr = self.doSideMenu(injectdata, $menu, $wrap, {
-                    resolve: true
-                });*/
+             url: self.routeMap.isindex ? '../json/inject_menu.json' : '../../json/inject_menu.json',
+             async: false,
+             type: 'post',
+             datatype: 'json'
+             }),
+             injectstr = self.doSideMenu(injectdata, $menu, $wrap, {
+             resolve: true
+             });*/
 
 
             $.ajax({
@@ -1135,7 +1135,7 @@
             }).done(function (data) {
                 if (debug) {
                     var data = testWidget.testMenu({
-                        type:'list'
+                        type: 'list'
                     });
                 }
                 if (parseInt(data.code, 10) !== 0) {
