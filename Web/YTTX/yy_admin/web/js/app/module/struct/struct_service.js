@@ -7,7 +7,9 @@ angular.module('app')
             cache = loginService.getCache(),
             structform_reset_timer = null,
             userform_reset_timer = null,
-            struct_page_timer = null;
+            struct_page_timer = null,
+            bd_Geolocation = window.BMap ? new BMap.Geolocation() : null/*百度本地地址解析器*/,
+            bd_Geocoder = window.BMap ? new BMap.Geocoder() : null/*百度地址解析器*/;
 
 
         /*权限服务--查询列表*/
@@ -1829,6 +1831,8 @@ angular.module('app')
                     param['city'] = config[type]['city'];
                     param['country'] = config[type]['country'];
                     param['address'] = config[type]['address'];
+                    param['longitude'] = config[type]['longitude'];
+                    param['latitude'] = config[type]['latitude'];
                     param['status'] = config[type]['status'];
                     param['remark'] = config[type]['remark'];
 
@@ -1892,9 +1896,9 @@ angular.module('app')
                                         /*重新加载表格数据*/
                                         /*查询店铺信息*/
                                         if (config.record.structId === '') {
-                                            self.getColumnData(config.table, config.record.organizationId,config.record.searchValue);
+                                            self.getColumnData(config.table, config.record.organizationId, config.record.searchValue);
                                         } else {
-                                            self.getColumnData(config.table, config.record.structId,config.record.searchValue);
+                                            self.getColumnData(config.table, config.record.structId, config.record.searchValue);
                                         }
                                     }
                                     /*重置表单*/
@@ -2220,15 +2224,18 @@ angular.module('app')
                                                         user['province'] = list['province'];
                                                         user['city'] = list['city'];
                                                         user['country'] = list['country'];
+                                                        user['address'] = list['address'];
                                                         /*判断是否需要重新数据，并依此更新相关地址模型*/
                                                         self.isReqAddress({
                                                             type: 'city',
                                                             address: config.address,
                                                             model: user
-                                                        }, true);
-                                                        break;
-                                                    case 'address':
-                                                        user[i] = list[i];
+                                                        }, true, function () {
+                                                            self.queryLngLat({
+                                                                model: user,
+                                                                address: config.address
+                                                            });
+                                                        });
                                                         break;
                                                     case 'status':
                                                         var temp_status = list[i];
@@ -2266,6 +2273,8 @@ angular.module('app')
                                                     'province': '省份',
                                                     'city': '市区',
                                                     'country': '县区',
+                                                    'longitude':'经度',
+                                                    'latitude':'纬度',
                                                     'remark': '备注',
                                                     'addUserId': '添加的用户序列',
                                                     'id': '序列号',
@@ -2437,9 +2446,9 @@ angular.module('app')
                                     /*重新加载数据*/
                                     /*查询店铺信息*/
                                     if (record.structId === '') {
-                                        self.getColumnData(table, record.organizationId,record.searchValue);
+                                        self.getColumnData(table, record.organizationId, record.searchValue);
                                     } else {
-                                        self.getColumnData(table, record.structId,record.searchValue);
+                                        self.getColumnData(table, record.structId, record.searchValue);
                                     }
                                 }
                             }
@@ -2558,8 +2567,12 @@ angular.module('app')
 
 
         /*地址服务--地址查询*/
-        this.queryAddress = function (config) {
-            addressService.queryRelation(config);
+        this.queryAddress = function (config, fn) {
+            if (fn && typeof fn === 'function') {
+                addressService.queryRelation(config, fn);
+            } else {
+                addressService.queryRelation(config);
+            }
         };
         /*地址服务--判断是否需要查询新地址*/
         this.isReqAddress = function (config, flag, fn) {
@@ -2577,6 +2590,91 @@ angular.module('app')
                 return addressService.queryByCode(code, fn);
             }
         };
+
+
+        /*查询经纬度*/
+        this.queryLngLat = function (config) {
+            /*是否存在第三方服务(百度地图)*/
+            if (!bd_Geolocation && !bd_Geocoder) {
+                /*没有百度解析器即不调用此服务*/
+                if (config) {
+                    config.model.longitude = '';
+                    config.model.latitude = '';
+                }
+                return false;
+            }
+            var province = '',
+                city = '',
+                country = '',
+                address = '',
+                search = '',
+                address_map = {};
+
+            /*基本配置*/
+            if (!config) {
+                search = '';
+            } else {
+                province = config.model.province;
+                city = config.model.city;
+                country = config.model.country;
+                address = config.model.address;
+                address_map = config.address;
+            }
+
+            /*组合条件*/
+            if (city === '') {
+                if (province !== '') {
+                    search = address_map['province'][province]['key'];
+                } else {
+                    search = '';
+                }
+            } else {
+                if (country !== '') {
+                    if (address !== '') {
+                        search = address_map['province'][province]['key'] + ',' + address_map['city'][city]['key'] + ',' + address_map['country'][country]['key'] + ',' + address;
+                    } else {
+                        search = address_map['province'][province]['key'] + ',' + address_map['city'][city]['key'] + ',' + address_map['country'][country]['key'];
+                    }
+                } else {
+                    search = address_map['province'][province]['key'] + ',' + address_map['city'][city]['key'];
+                }
+            }
+
+            /*执行定位*/
+            if (search === '') {
+                console.log('aaaa');
+                /*根据浏览器定位*/
+                bd_Geolocation.getCurrentPosition(function (r) {
+                    if (this.getStatus() == BMAP_STATUS_SUCCESS) {
+                        config.model.longitude = r.point.lng;
+                        config.model.latitude = r.point.lat;
+                    } else {
+                        config.model.longitude = '';
+                        config.model.latitude = '';
+                    }
+                }, {enableHighAccuracy: true});
+                //关于状态码
+                //BMAP_STATUS_SUCCESS	检索成功。对应数值“0”。
+                //BMAP_STATUS_CITY_LIST	城市列表。对应数值“1”。
+                //BMAP_STATUS_UNKNOWN_LOCATION	位置结果未知。对应数值“2”。
+                //BMAP_STATUS_UNKNOWN_ROUTE	导航结果未知。对应数值“3”。
+                //BMAP_STATUS_INVALID_KEY	非法密钥。对应数值“4”。
+                //BMAP_STATUS_INVALID_REQUEST	非法请求。对应数值“5”。
+                //BMAP_STATUS_PERMISSION_DENIED	没有权限。对应数值“6”。(自 1.1 新增)
+            } else {
+                console.log('bbb');
+                // 将地址解析结果显示在地图上,并调整地图视野
+                bd_Geocoder.getPoint(search, function (point) {
+                    if (point) {
+                        config.model.longitude = point.lng;
+                        config.model.latitude = point.lat;
+                    } else {
+                        config.model.longitude = '';
+                        config.model.latitude = '';
+                    }
+                }, city);
+            }
+        }
 
 
     }]);

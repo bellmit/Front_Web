@@ -117,7 +117,7 @@ angular.module('app')
             structName: ''/*机构设置名称*/,
             structnode: null/*机构对象*/,
             layer: 0/*操作层*/,
-            searchValue:''/*用户搜索内容*/
+            searchValue: ''/*用户搜索内容*/
         };
 
 
@@ -163,6 +163,8 @@ angular.module('app')
             city: ''/*市区*/,
             country: ''/*县区*/,
             address: ''/*详细地址*/,
+            longitude: ''/*经度*/,
+            latitude: ''/*纬度*/,
             status: 0/*状态：0：正常，1：停用*/,
             remark: ''/*备注*/,
             addTime: ''/*添加时间,编辑时用到*/,
@@ -266,10 +268,10 @@ angular.module('app')
                                         self.table.list1_config.config.ajax.data = temp_param;
 
                                         /*if (self.record.structId === '') {
-                                            self.getColumnData(self.table, self.record.organizationId);
-                                        } else {
-                                            self.getColumnData(self.table, self.record.structId);
-                                        }*/
+                                         self.getColumnData(self.table, self.record.organizationId);
+                                         } else {
+                                         self.getColumnData(self.table, self.record.structId);
+                                         }*/
 
                                         if (self.record.structId !== '') {
                                             structService.getColumnData(self.table, self.record.structId, self.record.searchValue);
@@ -484,6 +486,11 @@ angular.module('app')
             type: 'province',
             address: self.user_address,
             model: self.user
+        },function () {
+            structService.queryLngLat({
+                model:self.user,
+                address: self.user_address
+            });
         });
         /*初始化服务--初始化地址信息*/
         structService.queryAddress({
@@ -495,11 +502,24 @@ angular.module('app')
 
         /*地址服务--选中地址*/
         this.changeAddress = function (model_str, address_str, type) {
-            structService.queryAddress({
-                model: self[model_str],
-                address: self[address_str],
-                type: type
-            });
+            if(model_str==='user'){
+                structService.queryAddress({
+                    model: self[model_str],
+                    address: self[address_str],
+                    type: type
+                },function () {
+                    structService.queryLngLat({
+                        model:self.user,
+                        address: self.user_address
+                    });
+                });
+            }else{
+                structService.queryAddress({
+                    model: self[model_str],
+                    address: self[address_str],
+                    type: type
+                });
+            }
         };
 
 
@@ -674,6 +694,5 @@ angular.module('app')
             self.record.searchname = '';
             self.record.searchactive = '';
         };
-
-
+        
     }]);
