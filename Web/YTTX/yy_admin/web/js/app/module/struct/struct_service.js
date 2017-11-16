@@ -2226,17 +2226,36 @@ angular.module('app')
                                                         user['city'] = list['city'];
                                                         user['country'] = list['country'];
                                                         user['address'] = list['address'];
+                                                        user['longitude'] = list['longitude'] || '';
+                                                        user['latitude'] = list['latitude'] || '';
                                                         /*判断是否需要重新数据，并依此更新相关地址模型*/
-                                                        self.isReqAddress({
-                                                            type: 'city',
-                                                            address: config.address,
-                                                            model: user
-                                                        }, true, function () {
-                                                            self.queryLngLat({
-                                                                model: user,
-                                                                address: config.address
+                                                        if (user['longitude'] === '' || user['latitude'] === '') {
+                                                            /*不存在经纬度或者为空则需要查询经纬度服务*/
+                                                            self.isReqAddress({
+                                                                type: 'city',
+                                                                address: config.address,
+                                                                model: user
+                                                            }, true, function () {
+                                                                if (config.$scope) {
+                                                                    self.queryLngLat({
+                                                                        model: user,
+                                                                        address: config.address
+                                                                    }, config.$scope);
+                                                                } else {
+                                                                    self.queryLngLat({
+                                                                        model: user,
+                                                                        address: config.address
+                                                                    });
+                                                                }
                                                             });
-                                                        });
+                                                        } else {
+                                                            /*存在经纬度则直接获取经纬度*/
+                                                            self.isReqAddress({
+                                                                type: 'city',
+                                                                address: config.address,
+                                                                model: user
+                                                            }, true);
+                                                        }
                                                         break;
                                                     case 'status':
                                                         var temp_status = list[i];
@@ -2266,16 +2285,10 @@ angular.module('app')
                                                 detail_map = {
                                                     'fullName': '店铺全称',
                                                     'shortName': '店铺简称',
-                                                    'address': '联系地址',
                                                     'name': '姓名',
                                                     'type': '店铺类型',
                                                     'cellphone': '店铺手机号码',
                                                     'telephone': '店铺电话号码',
-                                                    'province': '省份',
-                                                    'city': '市区',
-                                                    'country': '县区',
-                                                    'longitude': '经度',
-                                                    'latitude': '纬度',
                                                     'remark': '备注',
                                                     'addUserId': '添加的用户序列',
                                                     'id': '序列号',
@@ -2286,7 +2299,13 @@ angular.module('app')
 
                                             var r_province = '',
                                                 r_country = '',
-                                                r_city = '';
+                                                r_city = '',
+                                                r_address = list['address'],
+                                                ll_pos = {
+                                                    longitude: list['longitude'] || '',
+                                                    latitude: list['latitude'] || ''
+                                                };
+
 
                                             for (var j in list) {
                                                 if (typeof detail_map[j] !== 'undefined') {
@@ -2298,29 +2317,61 @@ angular.module('app')
                                                                 3: '加盟店'
                                                             };
                                                         str += '<tr><td class="g-t-r">' + detail_map[j] + ':</td><td class="g-t-l">' + typemap[temptype] + '</td></tr>';
-                                                    } else if (j === 'province' || j === 'country' || j === 'city') {
-                                                        str += '<tr><td class="g-t-r">' + detail_map[j] + ':</td><td class="g-t-l">#' + j + '#</td></tr>';
-                                                        if (j === 'province') {
-                                                            self.queryByCode(list[j], function (name) {
-                                                                r_province = name;
-                                                            });
-                                                        } else if (j === 'country') {
-                                                            self.queryByCode(list[j], function (name) {
-                                                                r_country = name;
-                                                            });
-                                                        } else if (j === 'city') {
-                                                            self.queryByCode(list[j], function (name) {
-                                                                r_city = name;
-                                                            });
-                                                        }
                                                     } else {
                                                         str += '<tr><td class="g-t-r">' + detail_map[j] + ':</td><td class="g-t-l">' + list[j] + '</td></tr>';
                                                     }
                                                 }
                                             }
-                                            if (str !== '') {
+                                            /*单独解析地址*/
+                                            if (list['province']) {
+                                                self.queryByCode(list['province'], function (name) {
+                                                    r_province = name;
+                                                });
+                                                self.queryByCode(list['city'], function (name) {
+                                                    r_country = name;
+                                                });
+                                                self.queryByCode(list['country'], function (name) {
+                                                    r_city = name;
+                                                });
+                                                var address_id = setTimeout(function () {
+                                                    if (ll_pos.longitude === '' || ll_pos.latitude === '') {
+                                                        /*不存在经纬度或者为空则需要查询经纬度服务*/
+                                                        self.queryLngLatInfo({
+                                                            province: r_province,
+                                                            country: r_country,
+                                                            city: r_city,
+                                                            address: r_address
+                                                        }, ll_pos);
+                                                        clearTimeout(address_id);
+                                                        setTimeout(function () {
+                                                            str += '<tr><td class="g-t-r">地址:</td><td class="g-t-l">' + r_province + '&nbsp;' + r_country + '&nbsp;' + r_city + '&nbsp;' + list['address'] + '&nbsp;' + '(经纬度：' + ll_pos.longitude + '&nbsp;,&nbsp;' + ll_pos.latitude + ')' + '</td></tr>';
+                                                            $(str).appendTo(self.$admin_userdetail_show.html(''));
+                                                            /*显示弹窗*/
+                                                            self.toggleModal({
+                                                                display: 'show',
+                                                                area: 'userdetail'
+                                                            });
+                                                        }, 200);
+                                                    } else {
+                                                        str += '<tr><td class="g-t-r">地址:</td><td class="g-t-l">' + r_province + '&nbsp;' + r_country + '&nbsp;' + r_city + '&nbsp;' + list['address'] + '&nbsp;' + '(经纬度：' + ll_pos.longitude + '&nbsp;,&nbsp;' + ll_pos.latitude + ')' + '</td></tr>';
+                                                        $(str).appendTo(self.$admin_userdetail_show.html(''));
+                                                        /*显示弹窗*/
+                                                        self.toggleModal({
+                                                            display: 'show',
+                                                            area: 'userdetail'
+                                                        });
+                                                    }
+                                                }, 200);
+                                            } else {
+                                                /*不存在经纬度或者为空则需要查询经纬度服务*/
+                                                self.queryLngLatInfo({
+                                                    province: '',
+                                                    country: '',
+                                                    city: '',
+                                                    address: r_address
+                                                }, ll_pos);
                                                 setTimeout(function () {
-                                                    str = str.replace(/#province#/g, r_province).replace(/#country#/g, r_country).replace(/#city#/g, r_city);
+                                                    str += '<tr><td class="g-t-r">地址:</td><td class="g-t-l">' + list['address'] + '&nbsp;' + '(经纬度：' + ll_pos.longitude + '&nbsp;,&nbsp;' + ll_pos.latitude + ')' + '</td></tr>';
                                                     $(str).appendTo(self.$admin_userdetail_show.html(''));
                                                     /*显示弹窗*/
                                                     self.toggleModal({
@@ -2328,7 +2379,6 @@ angular.module('app')
                                                         area: 'userdetail'
                                                     });
                                                 }, 200);
-
                                             }
                                         }
                                     } else {
@@ -2593,8 +2643,8 @@ angular.module('app')
         };
 
 
-        /*查询经纬度*/
-        this.queryLngLat = function (config,$scope) {
+        /*查询经纬度，与模型关联*/
+        this.queryLngLat = function (config, $scope) {
             var province = '',
                 city = '',
                 country = '',
@@ -2648,12 +2698,12 @@ angular.module('app')
                     /*根据ip定位*/
                     bd_Local.get(function (result) {
                         var center = result.center;
-                        if($scope){
+                        if ($scope) {
                             $scope.$apply(function () {
                                 config.model.longitude = center.lng;
                                 config.model.latitude = center.lat;
                             });
-                        }else{
+                        } else {
                             config.model.longitude = center.lng;
                             config.model.latitude = center.lat;
                         }
@@ -2662,25 +2712,147 @@ angular.module('app')
                     /*根据浏览器定位*/
                     bd_Geolocation.getCurrentPosition(function (r) {
                         if (this.getStatus() == BMAP_STATUS_SUCCESS) {
-                            if($scope){
+                            if ($scope) {
                                 $scope.$apply(function () {
                                     config.model.longitude = r.point.lng;
                                     config.model.latitude = r.point.lat;
                                 });
-                            }else{
+                            } else {
                                 config.model.longitude = r.point.lng;
                                 config.model.latitude = r.point.lat;
                             }
                         } else {
-                            if($scope){
+                            if ($scope) {
                                 $scope.$apply(function () {
                                     config.model.longitude = '';
                                     config.model.latitude = '';
                                 });
-                            }else{
+                            } else {
                                 config.model.longitude = '';
                                 config.model.latitude = '';
                             }
+                        }
+                    }, {enableHighAccuracy: true});
+                    //关于状态码
+                    //BMAP_STATUS_SUCCESS	检索成功。对应数值“0”。
+                    //BMAP_STATUS_CITY_LIST	城市列表。对应数值“1”。
+                    //BMAP_STATUS_UNKNOWN_LOCATION	位置结果未知。对应数值“2”。
+                    //BMAP_STATUS_UNKNOWN_ROUTE	导航结果未知。对应数值“3”。
+                    //BMAP_STATUS_INVALID_KEY	非法密钥。对应数值“4”。
+                    //BMAP_STATUS_INVALID_REQUEST	非法请求。对应数值“5”。
+                    //BMAP_STATUS_PERMISSION_DENIED	没有权限。对应数值“6”。(自 1.1 新增)
+                }
+            } else {
+                // 将地址解析结果显示在地图上,并调整地图视野
+                if (/(北京市|上海市|重庆市|天津市|香港特别行政区|澳门特别行政区)/.test(province_value)) {
+                    /*解析几个直辖市和特区*/
+                    bd_Geocoder.getPoint(search, function (point) {
+                        if (point) {
+                            if ($scope) {
+                                $scope.$apply(function () {
+                                    config.model.longitude = point.lng;
+                                    config.model.latitude = point.lat;
+                                });
+                            } else {
+                                config.model.longitude = point.lng;
+                                config.model.latitude = point.lat;
+                            }
+                        } else {
+                            if ($scope) {
+                                $scope.$apply(function () {
+                                    config.model.longitude = '';
+                                    config.model.latitude = '';
+                                });
+                            } else {
+                                config.model.longitude = '';
+                                config.model.latitude = '';
+                            }
+                        }
+                    }, province_value);
+                } else {
+                    bd_Geocoder.getPoint(search, function (point) {
+                        if (point) {
+                            if ($scope) {
+                                $scope.$apply(function () {
+                                    config.model.longitude = point.lng;
+                                    config.model.latitude = point.lat;
+                                });
+                            } else {
+                                config.model.longitude = point.lng;
+                                config.model.latitude = point.lat;
+                            }
+                        } else {
+                            if ($scope) {
+                                $scope.$apply(function () {
+                                    config.model.longitude = '';
+                                    config.model.latitude = '';
+                                });
+                            } else {
+                                config.model.longitude = '';
+                                config.model.latitude = '';
+                            }
+                        }
+                    }, city_value);
+                }
+            }
+        };
+
+        /*查询经纬度，与非模型关联*/
+        this.queryLngLatInfo = function (config, pos) {
+            var province = '',
+                city = '',
+                country = '',
+                address = '',
+                search = '';
+
+            /*基本配置*/
+            if (!config) {
+                return false;
+            } else {
+                province = config.province || '';
+                city = config.city || '';
+                country = config.country || '';
+                address = config.address || '';
+            }
+
+            /*组合条件*/
+            if (province === '') {
+                search = '';
+            } else {
+                if (city === '') {
+                    search = province;
+                } else {
+                    if (country === '') {
+                        search = province + ',' + city;
+                    } else {
+                        if (address === '') {
+                            search = province + ',' + city + ',' + country;
+                        } else {
+                            search = province + ',' + city + ',' + country + ',' + address;
+                        }
+                    }
+                }
+            }
+
+
+            /*执行定位*/
+            if (search === '') {
+                if (bd_Local) {
+                    /*根据ip定位*/
+                    bd_Local.get(function (result) {
+                        var center = result.center;
+                        pos.longitude = center.lng;
+                        pos.latitude = center.lat;
+                    });
+                } else if (bd_Geolocation) {
+                    /*根据浏览器定位*/
+                    bd_Geolocation.getCurrentPosition(function (r) {
+                        if (this.getStatus() == BMAP_STATUS_SUCCESS) {
+                            pos.longitude = r.point.lng;
+                            pos.model.latitude = r.point.lat;
+                        } else {
+                            pos.longitude = '';
+                            pos.latitude = '';
                         }
                     }, {enableHighAccuracy: true});
                     //关于状态码
@@ -2698,51 +2870,23 @@ angular.module('app')
                     /*解析几个直辖市和特区*/
                     bd_Geocoder.getPoint(search, function (point) {
                         if (point) {
-                            if($scope){
-                                $scope.$apply(function () {
-                                    config.model.longitude = point.lng;
-                                    config.model.latitude = point.lat;
-                                });
-                            }else{
-                                config.model.longitude = point.lng;
-                                config.model.latitude = point.lat;
-                            }
+                            pos.longitude = point.lng;
+                            pos.latitude = point.lat;
                         } else {
-                            if($scope){
-                                $scope.$apply(function () {
-                                    config.model.longitude = '';
-                                    config.model.latitude = '';
-                                });
-                            }else{
-                                config.model.longitude = '';
-                                config.model.latitude = '';
-                            }
+                            pos.longitude = '';
+                            pos.latitude = '';
                         }
-                    }, province_value);
+                    }, province);
                 } else {
                     bd_Geocoder.getPoint(search, function (point) {
                         if (point) {
-                            if($scope){
-                                $scope.$apply(function () {
-                                    config.model.longitude = point.lng;
-                                    config.model.latitude = point.lat;
-                                });
-                            }else{
-                                config.model.longitude = point.lng;
-                                config.model.latitude = point.lat;
-                            }
+                            pos.longitude = point.lng;
+                            pos.latitude = point.lat;
                         } else {
-                            if($scope){
-                                $scope.$apply(function () {
-                                    config.model.longitude = '';
-                                    config.model.latitude = '';
-                                });
-                            }else{
-                                config.model.longitude = '';
-                                config.model.latitude = '';
-                            }
+                            pos.longitude = '';
+                            pos.latitude = '';
                         }
-                    }, city_value);
+                    }, city);
                 }
             }
         }

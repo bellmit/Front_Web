@@ -462,6 +462,7 @@ angular.module('app')
                 itemaction_api: {
                     doItemAction: function (config) {
                         structService.doItemAction({
+                            $scope:$scope,
                             record: self.record,
                             address: self.user_address,
                             user: self.user,
