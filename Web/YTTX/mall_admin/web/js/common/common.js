@@ -905,7 +905,7 @@
             "modid": "340"
         },
         "344": {
-            "name": "财务管理",
+            "name": "财务管理B端",
             "code": "finance",
             "match": "-finance-",
             /*"matchlist": ['finance-cashmanage', 'finance-cardmanage'],*/

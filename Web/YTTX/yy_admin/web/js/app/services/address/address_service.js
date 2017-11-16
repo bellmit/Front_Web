@@ -96,10 +96,6 @@ angular.module('app')
                                                 }
                                                 /*更新模型*/
                                                 address[type] = tempaddress;
-                                                /*判断是否有回调*/
-                                                if (type === 'country' && fn && typeof fn === 'function') {
-                                                    fn.call(null);
-                                                }
                                             }
                                             /*循环完毕根据类型判断是否开启下级查询*/
                                             if (type === 'province') {
@@ -132,14 +128,19 @@ angular.module('app')
                                                         type: 'country'
                                                     });
                                                 }
+                                            }else if (type === 'country' && fn && typeof fn === 'function') {
+                                                /*判断是否有回调*/
+                                                fn.call(null);
                                             }
                                         }
                                     } else {
                                         /*置空模型*/
+                                        delete address[type];
                                         address[type] = {};
                                     }
                                 } else {
                                     /*置空模型*/
+                                    delete address[type];
                                     address[type] = {};
                                 }
                             }
@@ -147,6 +148,7 @@ angular.module('app')
                     },
                     function (resp) {
                         /*置空模型*/
+                        delete address[type];
                         address[type] = {};
                         var data = resp.data,
                             message = data.message;

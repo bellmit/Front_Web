@@ -270,7 +270,7 @@
                             <div class="form-group-self1">
                                 <label class="self-label g-w-percent15 g-t-r"><span class="self-require g-c-red1">*</span>县</label>
                                 <div class="self-input g-pos-r g-w-percent35">
-                                    <select name="country"  required ng-model="struct_ctrl.struct.country">
+                                    <select ng-change="struct_ctrl.struct.address=''" name="country"  required ng-model="struct_ctrl.struct.country">
                                         <option ng-repeat="item in struct_ctrl.address.country" value="{{item.value}}" >{{item.key}}</option>
                                     </select>
                                     <span ng-show="structFrom.country.$dirty && structFrom.country.$error.required" class="self-tips self-tips-no g-c-red1 g-fs4 g-w-percent50">县区不能为空</span>
@@ -502,7 +502,7 @@
                             <div class="form-group-self1">
                                 <label class="self-label g-w-percent10 g-t-r"><span class="self-require g-c-red1">*</span>县</label>
                                 <div class="self-input g-pos-r g-w-percent40">
-                                    <select name="country" required ng-model="struct_ctrl.user.country">
+                                    <select name="country" ng-change="struct_ctrl.queryLngLat('select')" required ng-model="struct_ctrl.user.country">
                                         <option ng-repeat="item in struct_ctrl.user_address.country" value="{{item.value}}" >{{item.key}}</option>
                                     </select>
                                     <span ng-show="userFrom.country.$dirty && userFrom.country.$error.required" class="self-tips self-tips-no g-c-red1 g-fs4 g-w-percent50">县区不能为空</span>
@@ -513,7 +513,7 @@
                             <div class="form-group-self1">
                                 <label class="self-label g-w-percent10 g-t-r"><span class="self-require g-c-red1">*</span>联系地址</label>
                                 <div class="self-input g-pos-r g-w-percent40">
-                                    <input type="text" name="address" required  placeholder="请输入联系地址" ng-model="struct_ctrl.user.address" />
+                                    <input type="text" ng-blur="struct_ctrl.queryLngLat('input')" name="address" required  placeholder="请输入联系地址" ng-model="struct_ctrl.user.address" />
                                     <span ng-show="userFrom.address.$dirty && userFrom.address.$error.required" class="self-tips self-tips-no g-c-red1 g-fs4 g-w-percent50">联系地址不能为空</span>
                                     <span ng-show="userFrom.address.$dirty && userFrom.address.$valid" class="self-tips self-tips-yes"></span>
                                 </div>

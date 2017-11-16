@@ -65,8 +65,7 @@ angular.module('app')
                         /*延迟加载，依赖相关组件*/
                         deps: ['$ocLazyLoad',
                             function ($ocLazyLoad) {
-                                return $ocLazyLoad.load([/*'http://api.map.baidu.com/api?v=2.0&ak=q1UEPXjakOLV7dicN6CW7XsXv6lNWH6z',*/
-                                    'js/plugins/datatables/dataTables.bootstrap.css',
+                                return $ocLazyLoad.load(['js/plugins/datatables/dataTables.bootstrap.css',
                                     'js/plugins/datatables/js/jquery.dataTables.js',
                                     'js/plugins/pagination/pagination.js',
                                     'js/plugins/CustomScrollbar/customScrollbar.concat.min.js',

@@ -1,6 +1,6 @@
 /*首页控制器*/
 angular.module('app')
-    .controller('StructController', ['structService', 'toolUtil', function (structService, toolUtil) {
+    .controller('StructController', ['structService', 'toolUtil','$scope', function (structService, toolUtil,$scope) {
         var self = this;
 
         /*模型--操作权限列表*/
@@ -486,9 +486,9 @@ angular.module('app')
             type: 'province',
             address: self.user_address,
             model: self.user
-        },function () {
+        }, function () {
             structService.queryLngLat({
-                model:self.user,
+                model: self.user,
                 address: self.user_address
             });
         });
@@ -502,24 +502,14 @@ angular.module('app')
 
         /*地址服务--选中地址*/
         this.changeAddress = function (model_str, address_str, type) {
-            if(model_str==='user'){
-                structService.queryAddress({
-                    model: self[model_str],
-                    address: self[address_str],
-                    type: type
-                },function () {
-                    structService.queryLngLat({
-                        model:self.user,
-                        address: self.user_address
-                    });
-                });
-            }else{
-                structService.queryAddress({
-                    model: self[model_str],
-                    address: self[address_str],
-                    type: type
-                });
-            }
+            /*切换省市时需要清空详细地址*/
+            self[model_str]['address'] = '';
+            /*查询关联*/
+            structService.queryAddress({
+                model: self[model_str],
+                address: self[address_str],
+                type: type
+            });
         };
 
 
@@ -694,5 +684,17 @@ angular.module('app')
             self.record.searchname = '';
             self.record.searchactive = '';
         };
-        
+
+        /*查询经纬度*/
+        this.queryLngLat = function (type) {
+            if (type === 'select') {
+                /*如果是下拉选中则需要清除详情地址*/
+                self.user.address = '';
+            }
+            structService.queryLngLat({
+                model: self.user,
+                address: self.user_address
+            },$scope);
+        }
+
     }]);

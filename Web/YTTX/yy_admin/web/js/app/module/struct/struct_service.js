@@ -8,7 +8,8 @@ angular.module('app')
             structform_reset_timer = null,
             userform_reset_timer = null,
             struct_page_timer = null,
-            bd_Geolocation = window.BMap ? new BMap.Geolocation() : null/*百度本地地址解析器*/,
+            bd_Local = window.BMap ? new BMap.LocalCity() : null/*百度本地地址ip解析器*/,
+            bd_Geolocation = window.BMap ? new BMap.Geolocation() : null/*百度本地地址浏览器解析器*/,
             bd_Geocoder = window.BMap ? new BMap.Geocoder() : null/*百度地址解析器*/;
 
 
@@ -1701,7 +1702,7 @@ angular.module('app')
                             } else if (i === 'shoptype') {
                                 /*店铺类型*/
                                 data[i] = 1;
-                            } else if (i === 'province' || i === 'city' || i === 'country' || i === 'filter') {
+                            } else if (i === 'province' || i === 'city' || i === 'country' || i === 'filter' || i === 'longitude' || i === 'latitude') {
                                 /*操作类型为新增*/
                                 continue;
                             } else {
@@ -2273,8 +2274,8 @@ angular.module('app')
                                                     'province': '省份',
                                                     'city': '市区',
                                                     'country': '县区',
-                                                    'longitude':'经度',
-                                                    'latitude':'纬度',
+                                                    'longitude': '经度',
+                                                    'latitude': '纬度',
                                                     'remark': '备注',
                                                     'addUserId': '添加的用户序列',
                                                     'id': '序列号',
@@ -2593,26 +2594,20 @@ angular.module('app')
 
 
         /*查询经纬度*/
-        this.queryLngLat = function (config) {
-            /*是否存在第三方服务(百度地图)*/
-            if (!bd_Geolocation && !bd_Geocoder) {
-                /*没有百度解析器即不调用此服务*/
-                if (config) {
-                    config.model.longitude = '';
-                    config.model.latitude = '';
-                }
-                return false;
-            }
+        this.queryLngLat = function (config,$scope) {
             var province = '',
                 city = '',
                 country = '',
+                province_value = '',
+                city_value = '',
+                country_value = '',
                 address = '',
                 search = '',
                 address_map = {};
 
             /*基本配置*/
             if (!config) {
-                search = '';
+                return false;
             } else {
                 province = config.model.province;
                 city = config.model.city;
@@ -2621,58 +2616,134 @@ angular.module('app')
                 address_map = config.address;
             }
 
-            /*组合条件*/
-            if (city === '') {
-                if (province !== '') {
-                    search = address_map['province'][province]['key'];
-                } else {
-                    search = '';
-                }
-            } else {
-                if (country !== '') {
-                    if (address !== '') {
-                        search = address_map['province'][province]['key'] + ',' + address_map['city'][city]['key'] + ',' + address_map['country'][country]['key'] + ',' + address;
-                    } else {
-                        search = address_map['province'][province]['key'] + ',' + address_map['city'][city]['key'] + ',' + address_map['country'][country]['key'];
-                    }
-                } else {
-                    search = address_map['province'][province]['key'] + ',' + address_map['city'][city]['key'];
-                }
+            if (typeof city === 'undefined' || typeof country === 'undefined') {
+                return false;
             }
 
+
+            /*组合条件*/
+            if (province !== '') {
+                province_value = address_map['province'][province]['key'];
+                if (city === '') {
+                    search = province_value;
+                } else {
+                    city_value = address_map['city'][city]['key'];
+                    if (country !== '') {
+                        country_value = address_map['country'][country]['key'];
+                        if (address !== '') {
+                            search = province_value + ',' + city_value + ',' + country_value + ',' + address;
+                        } else {
+                            search = province_value + ',' + city_value + ',' + country_value;
+                        }
+                    } else {
+                        search = province_value + ',' + city_value;
+                    }
+                }
+            } else {
+                search = '';
+            }
             /*执行定位*/
             if (search === '') {
-                console.log('aaaa');
-                /*根据浏览器定位*/
-                bd_Geolocation.getCurrentPosition(function (r) {
-                    if (this.getStatus() == BMAP_STATUS_SUCCESS) {
-                        config.model.longitude = r.point.lng;
-                        config.model.latitude = r.point.lat;
-                    } else {
-                        config.model.longitude = '';
-                        config.model.latitude = '';
-                    }
-                }, {enableHighAccuracy: true});
-                //关于状态码
-                //BMAP_STATUS_SUCCESS	检索成功。对应数值“0”。
-                //BMAP_STATUS_CITY_LIST	城市列表。对应数值“1”。
-                //BMAP_STATUS_UNKNOWN_LOCATION	位置结果未知。对应数值“2”。
-                //BMAP_STATUS_UNKNOWN_ROUTE	导航结果未知。对应数值“3”。
-                //BMAP_STATUS_INVALID_KEY	非法密钥。对应数值“4”。
-                //BMAP_STATUS_INVALID_REQUEST	非法请求。对应数值“5”。
-                //BMAP_STATUS_PERMISSION_DENIED	没有权限。对应数值“6”。(自 1.1 新增)
+                if (bd_Local) {
+                    /*根据ip定位*/
+                    bd_Local.get(function (result) {
+                        var center = result.center;
+                        if($scope){
+                            $scope.$apply(function () {
+                                config.model.longitude = center.lng;
+                                config.model.latitude = center.lat;
+                            });
+                        }else{
+                            config.model.longitude = center.lng;
+                            config.model.latitude = center.lat;
+                        }
+                    });
+                } else if (bd_Geolocation) {
+                    /*根据浏览器定位*/
+                    bd_Geolocation.getCurrentPosition(function (r) {
+                        if (this.getStatus() == BMAP_STATUS_SUCCESS) {
+                            if($scope){
+                                $scope.$apply(function () {
+                                    config.model.longitude = r.point.lng;
+                                    config.model.latitude = r.point.lat;
+                                });
+                            }else{
+                                config.model.longitude = r.point.lng;
+                                config.model.latitude = r.point.lat;
+                            }
+                        } else {
+                            if($scope){
+                                $scope.$apply(function () {
+                                    config.model.longitude = '';
+                                    config.model.latitude = '';
+                                });
+                            }else{
+                                config.model.longitude = '';
+                                config.model.latitude = '';
+                            }
+                        }
+                    }, {enableHighAccuracy: true});
+                    //关于状态码
+                    //BMAP_STATUS_SUCCESS	检索成功。对应数值“0”。
+                    //BMAP_STATUS_CITY_LIST	城市列表。对应数值“1”。
+                    //BMAP_STATUS_UNKNOWN_LOCATION	位置结果未知。对应数值“2”。
+                    //BMAP_STATUS_UNKNOWN_ROUTE	导航结果未知。对应数值“3”。
+                    //BMAP_STATUS_INVALID_KEY	非法密钥。对应数值“4”。
+                    //BMAP_STATUS_INVALID_REQUEST	非法请求。对应数值“5”。
+                    //BMAP_STATUS_PERMISSION_DENIED	没有权限。对应数值“6”。(自 1.1 新增)
+                }
             } else {
-                console.log('bbb');
                 // 将地址解析结果显示在地图上,并调整地图视野
-                bd_Geocoder.getPoint(search, function (point) {
-                    if (point) {
-                        config.model.longitude = point.lng;
-                        config.model.latitude = point.lat;
-                    } else {
-                        config.model.longitude = '';
-                        config.model.latitude = '';
-                    }
-                }, city);
+                if (/(北京市|上海市|重庆市|天津市|香港特别行政区|澳门特别行政区)/.test(province)) {
+                    /*解析几个直辖市和特区*/
+                    bd_Geocoder.getPoint(search, function (point) {
+                        if (point) {
+                            if($scope){
+                                $scope.$apply(function () {
+                                    config.model.longitude = point.lng;
+                                    config.model.latitude = point.lat;
+                                });
+                            }else{
+                                config.model.longitude = point.lng;
+                                config.model.latitude = point.lat;
+                            }
+                        } else {
+                            if($scope){
+                                $scope.$apply(function () {
+                                    config.model.longitude = '';
+                                    config.model.latitude = '';
+                                });
+                            }else{
+                                config.model.longitude = '';
+                                config.model.latitude = '';
+                            }
+                        }
+                    }, province_value);
+                } else {
+                    bd_Geocoder.getPoint(search, function (point) {
+                        if (point) {
+                            if($scope){
+                                $scope.$apply(function () {
+                                    config.model.longitude = point.lng;
+                                    config.model.latitude = point.lat;
+                                });
+                            }else{
+                                config.model.longitude = point.lng;
+                                config.model.latitude = point.lat;
+                            }
+                        } else {
+                            if($scope){
+                                $scope.$apply(function () {
+                                    config.model.longitude = '';
+                                    config.model.latitude = '';
+                                });
+                            }else{
+                                config.model.longitude = '';
+                                config.model.latitude = '';
+                            }
+                        }
+                    }, city_value);
+                }
             }
         }
 
