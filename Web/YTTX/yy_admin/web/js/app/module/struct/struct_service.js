@@ -1702,6 +1702,9 @@ angular.module('app')
                             } else if (i === 'shoptype') {
                                 /*店铺类型*/
                                 data[i] = 1;
+                            } else if (i === 'isShowInO2O') {
+                                /*是否显示在o2o*/
+                                data[i] = 1;
                             } else if (i === 'province' || i === 'city' || i === 'country' || i === 'filter' || i === 'longitude' || i === 'latitude') {
                                 /*操作类型为新增*/
                                 continue;
@@ -1835,6 +1838,7 @@ angular.module('app')
                     param['longitude'] = config[type]['longitude'];
                     param['latitude'] = config[type]['latitude'];
                     param['status'] = config[type]['status'];
+                    param['isShowInO2O'] = config[type]['isShowInO2O'];
                     param['remark'] = config[type]['remark'];
 
                     /*判断是新增还是修改*/
@@ -2266,6 +2270,15 @@ angular.module('app')
                                                             user[i] = list[i];
                                                         }
                                                         break;
+                                                    case 'isShowInO2O':
+                                                        var temp_oto = list[i];
+                                                        if (temp_oto === '' || isNaN(temp_oto)) {
+                                                            temp_oto = 1;
+                                                            user[i] = temp_oto;
+                                                        } else {
+                                                            user[i] = list[i];
+                                                        }
+                                                        break;
                                                     case 'remark':
                                                         user[i] = list[i];
                                                         break;
@@ -2290,9 +2303,7 @@ angular.module('app')
                                                     'cellphone': '店铺手机号码',
                                                     'telephone': '店铺电话号码',
                                                     'remark': '备注',
-                                                    'addUserId': '添加的用户序列',
-                                                    'id': '序列号',
-                                                    'organizationId': '组织机构序列',
+                                                    'isShowInO2O': '是否显示在O2O',
                                                     'addTime': '添加时间',
                                                     'status': '状态'
                                                 };
@@ -2317,6 +2328,22 @@ angular.module('app')
                                                                 3: '加盟店'
                                                             };
                                                         str += '<tr><td class="g-t-r">' + detail_map[j] + ':</td><td class="g-t-l">' + typemap[temptype] + '</td></tr>';
+                                                    } else if (j === 'status') {
+                                                        var tempstatus = parseInt(list[j], 10),
+                                                            statusmap = {
+                                                                0: '正常',
+                                                                1: '停用'
+                                                            };
+                                                        str += '<tr><td class="g-t-r">' + detail_map[j] + ':</td><td class="g-t-l">' + statusmap[tempstatus] + '</td></tr>';
+                                                    } else if (j === 'isShowInO2O') {
+                                                        var tempoto = parseInt(list[j], 10),
+                                                            otomap = {
+                                                                1: '是',
+                                                                0: '否'
+                                                            };
+                                                        str += '<tr><td class="g-t-r">' + detail_map[j] + ':</td><td class="g-t-l">' + otomap[tempoto] + '</td></tr>';
+                                                    } else if (j === 'cellphone') {
+                                                        str += '<tr><td class="g-t-r">' + detail_map[j] + ':</td><td class="g-t-l">' + toolUtil.phoneFormat(list[j]) + '</td></tr>';
                                                     } else {
                                                         str += '<tr><td class="g-t-r">' + detail_map[j] + ':</td><td class="g-t-l">' + list[j] + '</td></tr>';
                                                     }

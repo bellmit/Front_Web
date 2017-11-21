@@ -1,6 +1,6 @@
 /*首页控制器*/
 angular.module('app')
-    .controller('StructController', ['structService', 'toolUtil','$scope', function (structService, toolUtil,$scope) {
+    .controller('StructController', ['structService', 'toolUtil', '$scope', function (structService, toolUtil, $scope) {
         var self = this;
 
         /*模型--操作权限列表*/
@@ -165,6 +165,7 @@ angular.module('app')
             address: ''/*详细地址*/,
             longitude: ''/*经度*/,
             latitude: ''/*纬度*/,
+            isShowInO2O: 1/*是否显示在o2o:默认为显示*/,
             status: 0/*状态：0：正常，1：停用*/,
             remark: ''/*备注*/,
             addTime: ''/*添加时间,编辑时用到*/,
@@ -462,7 +463,7 @@ angular.module('app')
                 itemaction_api: {
                     doItemAction: function (config) {
                         structService.doItemAction({
-                            $scope:$scope,
+                            $scope: $scope,
                             record: self.record,
                             address: self.user_address,
                             user: self.user,
@@ -695,7 +696,7 @@ angular.module('app')
             structService.queryLngLat({
                 model: self.user,
                 address: self.user_address
-            },$scope);
+            }, $scope);
         }
 
     }]);

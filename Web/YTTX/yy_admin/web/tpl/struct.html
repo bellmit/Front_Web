@@ -405,6 +405,8 @@
 
                         <form ng-submit="struct_ctrl.formSubmit('user')" name="userFrom" role="form" novalidate method="post" class="admin-layout-form">
 
+                            <div class="admin-layout-theme4"><span class="mini-icon admin-mini-icon3"></span>&nbsp;店铺信息</div>
+
                             <div class="form-group-self1">
                                 <label class="self-label g-w-percent10 g-t-r"><span class="self-require g-c-red1">*</span>店铺全称</label>
 
@@ -434,9 +436,8 @@
                                 </div>
                             </div>
 
-                            <div class="admin-layout-theme4"><span class="mini-icon admin-mini-icon3"></span>&nbsp;店铺类型</div>
-
                             <div class="form-group-self1">
+                                <label class="self-label g-w-percent10 g-t-r">店铺类型</label>
                                 <label class="self-label">
                                     <input type="radio" ng-model="struct_ctrl.user.shoptype" ng-value="1" name="shoptype">
                                     &nbsp;旗舰店
@@ -529,9 +530,10 @@
                                 </div>
                             </div>
 
-                            <div class="admin-layout-theme4"><span class="mini-icon admin-mini-icon3"></span>&nbsp;状态</div>
+                            <div class="admin-layout-theme4"><span class="mini-icon admin-mini-icon4"></span>&nbsp;店铺状态</div>
 
                             <div class="form-group-self1">
+                                <label class="self-label g-w-percent10 g-t-r">状态</label>
                                 <label class="self-label">
                                     <input type="radio" ng-model="struct_ctrl.user.status" ng-value="0" name="status">
                                     &nbsp;正常
@@ -540,6 +542,20 @@
                                     <input type="radio" ng-model="struct_ctrl.user.status" ng-value="1"  name="status">
                                     &nbsp;停用
                                 </label>
+                            </div>
+
+
+                            <div class="form-group-self1">
+                                <label class="self-label g-w-percent10 g-t-r">是否显示在O2O</label>
+                                <label class="self-label">
+                                    <input type="radio" ng-model="struct_ctrl.user.isShowInO2O" ng-value="1"  name="isShowInO2O">
+                                    &nbsp;是
+                                </label>
+                                <label class="self-label">
+                                    <input type="radio" ng-model="struct_ctrl.user.isShowInO2O" ng-value="0" name="isShowInO2O">
+                                    &nbsp;否
+                                </label>
+
                             </div>
 
                             <div class="form-group-self1">
