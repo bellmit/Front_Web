@@ -881,6 +881,7 @@
             /*"ignoremodule":true,*/
             "class": "menu-ux-platform",
             "matchlist": ['bzw-imei-list', 'bzw-imei-add', 'bzw-complaints-suggestions'],
+            "matchignore": ['imei-list', 'imei-add'],
             "module": "paltform",
             "modid": "320"
         },
