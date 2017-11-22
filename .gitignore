@@ -1,0 +1,16 @@
+
+/.tgitconfig
+
+.idea
+
+.grunt
+
+bower_components
+
+node_modules/
+
+typings/
+
+.npm
+
+.env
