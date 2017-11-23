@@ -2,25 +2,25 @@
 
     var configfile = 'package_mall.json';
 
-    /*//ÅäÖÃ¶Ë¿Ú
+    /*//é…ç½®ç«¯å£
      var flushPort=35729;
-     //µ¼ÈëË¢ĞÂÄ£¿é
+     //å¯¼å…¥åˆ·æ–°æ¨¡å—
      var flushModule = require('connect-livereload')({
      port:flushPort
      });
-     //Ê¹ÓÃÖĞ¼ä¼ş
+     //ä½¿ç”¨ä¸­é—´ä»¶
      var flushMv = function(connect, options) {
      return [
-     // °Ñ½Å±¾£¬×¢Èëµ½¾²Ì¬ÎÄ¼şÖĞ
+     // æŠŠè„šæœ¬ï¼Œæ³¨å…¥åˆ°é™æ€æ–‡ä»¶ä¸­
      flushModule,
-     // ¾²Ì¬ÎÄ¼ş·şÎñÆ÷µÄÂ·¾¶
+     // é™æ€æ–‡ä»¶æœåŠ¡å™¨çš„è·¯å¾„
      connect.static(options.base[0]),
-     // ÆôÓÃÄ¿Â¼ä¯ÀÀ(Ïàµ±ÓÚIISÖĞµÄÄ¿Â¼ä¯ÀÀ)
+     // å¯ç”¨ç›®å½•æµè§ˆ(ç›¸å½“äºIISä¸­çš„ç›®å½•æµè§ˆ)
      connect.directory(options.base[0])
      ];
      };*/
 
-    //»ñÈ¡package.jsonµÄĞÅÏ¢
+    //è·å–package.jsonçš„ä¿¡æ¯
     var pkg = grunt.file.readJSON(configfile),
         web_url = (function (pkg) {
             if (pkg.platform && pkg.platform !== '') {
@@ -39,11 +39,11 @@
                 }
             })(pkg) + ';\n author:' + pkg.author + ';\n date:' + grunt.template.today("yyyy-mm-dd") + ';\n version:' + pkg.version + '**/\n';
 
-    //ÈÎÎñÅäÖÃ,ËùÒÔ²å¼şµÄÅäÖÃĞÅÏ¢
+    //ä»»åŠ¡é…ç½®,æ‰€ä»¥æ’ä»¶çš„é…ç½®ä¿¡æ¯
     grunt.initConfig({
-        //cssÓï·¨¼ì²é
+        //cssè¯­æ³•æ£€æŸ¥
         csslint: {
-            //¼ì²éÉú³ÉµÄcssÎÄ¼şÄ¿Â¼ÎÄ¼ş
+            //æ£€æŸ¥ç”Ÿæˆçš„cssæ–‡ä»¶ç›®å½•æ–‡ä»¶
             options: {
                 csslintrc: '.csslintrc'
             },
@@ -53,34 +53,34 @@
         },
 
 
-        //¶¨ÒåjsÓï·¨¼ì²é£¨¿´ÅäÖÃĞÅÏ¢£©
+        //å®šä¹‰jsè¯­æ³•æ£€æŸ¥ï¼ˆçœ‹é…ç½®ä¿¡æ¯ï¼‰
         jshint: {
             options: {
                 jshintrc: '.jshintrc'
             },
-            //¼ì²éÔ´Ä¿Â¼ÎÄ¼şºÍÉú³ÉÄ¿Â¼ÎÄ¼ş
+            //æ£€æŸ¥æºç›®å½•æ–‡ä»¶å’Œç”Ÿæˆç›®å½•æ–‡ä»¶
             all: (function (pkg, web_url) {
                 return doFilter({package: pkg, web_url: web_url}, ['js_src', 'js_dest'], '.js');
             })(pkg, web_url)
         },
 
 
-        //¶¨ÒåcssÍ¼Æ¬Ñ¹ËõÊä³ö£¨Ò»´ÎĞÔÈÎÎñ£©
+        //å®šä¹‰csså›¾ç‰‡å‹ç¼©è¾“å‡ºï¼ˆä¸€æ¬¡æ€§ä»»åŠ¡ï¼‰
         imagemin: {
             dynamic: {
                 options: {
                     optimizationLevel: 3
                 },
                 files: [{
-                    expand: true,//¿ªÆô¶¯Ì¬À©Õ¹
-                    cwd: web_url + pkg.image_src,//µ±Ç°¹¤×÷Â·¾¶
-                    src: ['**/*.{png,jpg,gif,jpeg}'],//Òª´¦ÀíµÄÍ¼Æ¬¸ñÊ½
-                    dest: web_url + pkg.image_dest//Êä³öÄ¿Â¼
+                    expand: true,//å¼€å¯åŠ¨æ€æ‰©å±•
+                    cwd: web_url + pkg.image_src,//å½“å‰å·¥ä½œè·¯å¾„
+                    src: ['**/*.{png,jpg,gif,jpeg}'],//è¦å¤„ç†çš„å›¾ç‰‡æ ¼å¼
+                    dest: web_url + pkg.image_dest//è¾“å‡ºç›®å½•
                 }]
             }
         },
 
-        //¶¨ÒåcssÍ¼Æ¬Æ´ºÏ
+        //å®šä¹‰csså›¾ç‰‡æ‹¼åˆ
         sprite: {
             all: {
                 src: web_url + pkg.image_src + '/*.png',
@@ -89,7 +89,7 @@
             }
         },
 
-        //less±àÒëÉú³Écss
+        //lessç¼–è¯‘ç”Ÿæˆcss
         less: {
             build: {
                 src: (function (pkg, web_url) {
@@ -108,43 +108,43 @@
         },
 
 
-        //Ê¹ÓÃlessÊ±Îª¶¨ÒåcssÑ¹Ëõ¡££¨Ã»ÓĞÊ¹ÓÃlessÊ±ÎªºÏ²¢£¨Ò»´ÎĞÔÈÎÎñ£©£©
+        //ä½¿ç”¨lessæ—¶ä¸ºå®šä¹‰csså‹ç¼©ã€‚ï¼ˆæ²¡æœ‰ä½¿ç”¨lessæ—¶ä¸ºåˆå¹¶ï¼ˆä¸€æ¬¡æ€§ä»»åŠ¡ï¼‰ï¼‰
         cssmin: {
             options: {
-                keepSpecialComments: 0, /* ÒÆ³ı CSSÎÄ¼şÖĞµÄËùÓĞ×¢ÊÍ */
+                keepSpecialComments: 0, /* ç§»é™¤ CSSæ–‡ä»¶ä¸­çš„æ‰€æœ‰æ³¨é‡Š */
                 shorthandCompacting: false,
                 roundingPrecision: -1
             },
             target: {
                 files: [{
-                    expand: true,//¿ªÆô¶¯Ì¬À©Õ¹
-                    cwd: web_url + pkg.less_dest,//µ±Ç°¹¤×÷Â·¾¶css/
+                    expand: true,//å¼€å¯åŠ¨æ€æ‰©å±•
+                    cwd: web_url + pkg.less_dest,//å½“å‰å·¥ä½œè·¯å¾„css/
                     src: ['*.css'],
                     dest: web_url + pkg.less_dest,//css/
-                    ext: '.css'//ºó×ºÃû
+                    ext: '.css'//åç¼€å
                 }]
 
             }
         },
 
-        //ºÏ²¢Ä£¿é»¯ÒÀÀµ£¬Ä¿Ç°Ê¹ÓÃr.jsºÏ²¢Ñ¹ËõrequireÄ£¿é
+        //åˆå¹¶æ¨¡å—åŒ–ä¾èµ–ï¼Œç›®å‰ä½¿ç”¨r.jsåˆå¹¶å‹ç¼©requireæ¨¡å—
 
 
-        //¶¨ÒåºÏ²¢jsÈÎÎñ£¨Çé¿ö±È½ÏÉÙ£©,ÔİÊ±²»×öcssºÏ²¢
+        //å®šä¹‰åˆå¹¶jsä»»åŠ¡ï¼ˆæƒ…å†µæ¯”è¾ƒå°‘ï¼‰,æš‚æ—¶ä¸åšcssåˆå¹¶
         concat: {
             options: {
                 stripBanners: true,
-                separator: ';',//·Ö¸î·û
+                separator: ';',//åˆ†å‰²ç¬¦
                 banner: bannerstr
             },
             dist: {
-                //Ô´Ä¿Â¼ to do,ºÏ²¢ÎÄ¼şÊ±ĞèÒª¿´Çé¿ö¶ø¶¨
+                //æºç›®å½• to do,åˆå¹¶æ–‡ä»¶æ—¶éœ€è¦çœ‹æƒ…å†µè€Œå®š
                 src: (function (web_url) {
-                    //Ñ¹Ëõzepto
+                    //å‹ç¼©zepto
                     var names = ['zepto', 'event', 'ie', 'touch'];
                     /*var names=['zepto','event','ajax','form','ie','detect','fx','fx_methods','assets','data','deferred','callbacks','selector','touch','gesture','stack','ios3'];*/
-                    /* //Ñ¹Ëõzepto var names=['zepto','event','touch','callbacks','ajax','form','selector','fx','fx_methods','assets','data','deferred','detect','gesture','ios3','stack','ie'];*/
-                    //Ñ¹ËõºóÌ¨js
+                    /* //å‹ç¼©zepto var names=['zepto','event','touch','callbacks','ajax','form','selector','fx','fx_methods','assets','data','deferred','detect','gesture','ios3','stack','ie'];*/
+                    //å‹ç¼©åå°js
                     /*names=['bootstrap','tweenmax','resizeable','joinable','api','toggles','toastr','dialog']*/
                     /*names=['html5shiv','respond']*/
                     /*names=['bootstrap','dialog']*/
@@ -157,7 +157,7 @@
                     }
                     return result;
                 })(web_url),
-                //Éú³ÉÄ¿Â¼
+                //ç”Ÿæˆç›®å½•
                 dest: (function (web_url) {
                     var result = web_url + 'js/zepto/zepto.js';
                     return result;
@@ -166,10 +166,10 @@
         },
 
 
-        //¶¨ÒåjsÑ¹ËõÈÎÎñgulify
+        //å®šä¹‰jså‹ç¼©ä»»åŠ¡gulify
         uglify: {
             options: {
-                //Éú³É°æÈ¨£¬Ãû³Æ£¬ÃèÊöµÈĞÅÏ¢
+                //ç”Ÿæˆç‰ˆæƒï¼Œåç§°ï¼Œæè¿°ç­‰ä¿¡æ¯
                 stripBanners: true,
                 banner: bannerstr
             },
@@ -183,7 +183,7 @@
             }
         },
 
-        //¶¨Òå¼à¿ØÎÄ¼ş±ä»¯
+        //å®šä¹‰ç›‘æ§æ–‡ä»¶å˜åŒ–
         watch: {
             less: {
                 files: [web_url + pkg.less_src + '/**/*.less'],
@@ -191,7 +191,7 @@
                 options: {
                     spawn: false,
                     debounceDelay: 250,
-                    //ÅäÖÃ×Ô¶¯Ë¢ĞÂ³ÌĞò
+                    //é…ç½®è‡ªåŠ¨åˆ·æ–°ç¨‹åº
                     livereload: true
                 }
             },
@@ -203,7 +203,7 @@
                 options: {
                     spawn: false,
                     debounceDelay: 250,
-                    //ÅäÖÃ×Ô¶¯Ë¢ĞÂ³ÌĞò
+                    //é…ç½®è‡ªåŠ¨åˆ·æ–°ç¨‹åº
                     livereload: true
                 }
             }
@@ -212,14 +212,14 @@
     });
 
 
-    //³éÀë¹«¹²´¦Àíº¯Êı
+    //æŠ½ç¦»å…¬å…±å¤„ç†å‡½æ•°
     function doFilter(sou, str, suffix) {
-        //souÎªÅäÖÃÎÄ¼ş
-        //strÎª×ÊÔ´Ô´ÎÄ¼ş»òÕßÉú³ÉÎÄ¼ş
-        //Éú³ÉÎÄ¼şµÄÀàĞÍ¼´ºó×º
+        //souä¸ºé…ç½®æ–‡ä»¶
+        //strä¸ºèµ„æºæºæ–‡ä»¶æˆ–è€…ç”Ÿæˆæ–‡ä»¶
+        //ç”Ÿæˆæ–‡ä»¶çš„ç±»å‹å³åç¼€
         var file, baseurl, sourcefile, buildfile, result, filename;
 
-        //ÉèÖÃÔ´
+        //è®¾ç½®æº
         if (!sou) {
             file = grunt.file.readJSON(configfile);
             if (file.platform && file.platform !== '') {
@@ -232,12 +232,12 @@
             baseurl = sou.web_url;
         }
 
-        //ÉèÖÃÔ´ÎÄ¼şÂ·¾¶
+        //è®¾ç½®æºæ–‡ä»¶è·¯å¾„
         sourcefile = file.source_name;
         buildfile = file.build_name;
 
 
-        //ÉèÖÃÂ·¾¶
+        //è®¾ç½®è·¯å¾„
         if (typeof str === 'string') {
             buildfile = file[str] + '/' + buildfile;
         } else {
@@ -248,9 +248,9 @@
         }
 
 
-        //¹ıÂË
+        //è¿‡æ»¤
         if (sourcefile.indexOf('/') !== -1) {
-            //ÓĞ¶à²ãÂ·¾¶´æÔÚ
+            //æœ‰å¤šå±‚è·¯å¾„å­˜åœ¨
             var tempmodule = sourcefile.split('/'),
                 filename = tempmodule[tempmodule.length - 1];
             if (suffix === '.less') {
@@ -258,7 +258,7 @@
                 buildfile = buildfile + tempmodule.join('/') + '/';
             }
         } else {
-            //Ö»ÓĞµ¥²ãÂ·¾¶
+            //åªæœ‰å•å±‚è·¯å¾„
             filename = sourcefile;
         }
         if (typeof buildfile === 'string') {
@@ -277,7 +277,7 @@
     }
 
 
-    //µ¼ÈëÈÎÎñËùĞèµÄÒÀÀµÖ§³Ö·şÎñ
+    //å¯¼å…¥ä»»åŠ¡æ‰€éœ€çš„ä¾èµ–æ”¯æŒæœåŠ¡
     //grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     //grunt.loadNpmTasks('grunt-contrib-requirejs');
@@ -291,39 +291,39 @@
     grunt.loadNpmTasks('grunt-contrib-concat');
 
 
-    //¼¯³Éµ¥¸öÄ£¿éÈÎÎñ
+    //é›†æˆå•ä¸ªæ¨¡å—ä»»åŠ¡
 
 
-    /*grunt.registerTask('default', "ºÏ²¢js", function () {
+    /*grunt.registerTask('default', "åˆå¹¶js", function () {
      grunt.task.run(['concat']);
      });*/
 
-    /*grunt.registerTask('default', "ºÏ²¢Ñ¹Ëõjs", function () {
-        grunt.task.run(['concat', 'uglify']);
-    });*/
+    /*grunt.registerTask('default', "åˆå¹¶å‹ç¼©js", function () {
+     grunt.task.run(['concat', 'uglify']);
+     });*/
 
-    /*grunt.registerTask('default',"Æ´ºÏÍ¼Æ¬",function(){
+    /*grunt.registerTask('default',"æ‹¼åˆå›¾ç‰‡",function(){
      grunt.task.run(['sprite']);
      });*/
 
 
-    /*grunt.registerTask('default',"less±àÒëÉú³Écss²¢Ñ¹Ëõ",function(){
+    /*grunt.registerTask('default',"lessç¼–è¯‘ç”Ÿæˆcsså¹¶å‹ç¼©",function(){
      grunt.task.run(['less','cssmin']);
      });*/
 
 
-    grunt.registerTask('default', "less±àÒëÉú³Écss²¢Ñ¹Ëõ,Í¬Ê±ÊµÊ±¼à¿Ø", function () {
+    grunt.registerTask('default', "lessç¼–è¯‘ç”Ÿæˆcsså¹¶å‹ç¼©,åŒæ—¶å®æ—¶ç›‘æ§", function () {
         grunt.task.run(['less', 'cssmin', 'watch:less']);
     });
 
 
-    /*grunt.registerTask('default', "¼à¿ØjsÑ¹Ëõ", function () {
-        grunt.task.run(['uglify', 'watch']);
-    });*/
+    /*grunt.registerTask('default', "ç›‘æ§jså‹ç¼©", function () {
+     grunt.task.run(['uglify', 'watch']);
+     });*/
 
-    /*grunt.registerTask('default', "jsÑ¹Ëõ", function () {
-        grunt.task.run(['uglify']);
-    });*/
+    /*grunt.registerTask('default', "jså‹ç¼©", function () {
+     grunt.task.run(['uglify']);
+     });*/
 
 
 };

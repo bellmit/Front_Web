@@ -1,30 +1,36 @@
 {
-  "name": "djc",
-  "js_src":"src",
-  "js_dest":"js",
-  "less_src":"less",
-  "less_dest":"css",
-  "image_src":"img",
-  "image_dest":"images",
-  "platform":"web",
-  "build_name":"",
-  "source_name":"base",
+  "projcet": "djc_test",/*项目标识*/
+  "name":"大决策项目",/*项目名称*/
+  "version": "1.0.0",/*版本*/
+  "js_src":"src",/*JavaScript 源文件目录*/
+  "js_dest":"js",/*JavaScript 生成文件目录*/
+  "less_src":"less"/*less 源文件目录*/,
+  "less_dest":"css"/*lses 生成文件目录*/,
+  "image_src":"img"/*压缩图片和合并图片 源文件目录*/,
+  "image_dest":"images"/*压缩图片和合并图片 生成文件目录*/,
+  "name_src":"base"/*less 编译源文件名称目录*/,
+  "name_dest":""/*less 编译生成文件名称目录*/,
+  "description": "config",
+  "main": "Gruntfile_test.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "grunt"
+  ],
   "author": "yipin",
-  "version": "1.0.0",
-  "description": "",
-  "devDependencies": {
+  "license": "ISC",
+  "dependencies": {
     "grunt": "^1.0.1",
     "grunt-contrib-clean": "^1.1.0",
     "grunt-contrib-concat": "^1.0.1",
-    "grunt-contrib-connect": "^1.0.2",
     "grunt-contrib-copy": "^1.0.0",
-    "grunt-contrib-cssmin": "^1.0.2",
-    "grunt-contrib-imagemin": "^1.0.1",
-    "grunt-contrib-jshint": "^1.1.0",
+    "grunt-contrib-cssmin": "^2.2.1",
+    "grunt-contrib-imagemin": "^2.0.1",
     "grunt-contrib-less": "^1.4.1",
     "grunt-contrib-sass": "^1.0.0",
-    "grunt-contrib-uglify": "^1.0.2",
+    "grunt-contrib-uglify": "^3.1.0",
     "grunt-contrib-watch": "^1.0.0",
-    "grunt-spritesmith": "^6.4.0"
+    "grunt-spritesmith": "^6.5.1"
   }
 }
