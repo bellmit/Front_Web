@@ -9,12 +9,12 @@ module.exports = function (grunt) {
     grunt.initConfig({
         pkg: grunt.file.readJSON(configfile),
         banner: ''/*'/!*!\n' +
-        '项目工程:<%= pkg.project %>;\n' +
-        '工程名称:<%= pkg.name %>;\n' +
-        '版本:<%= pkg.version %>;\n' +
-        '日期:<%= grunt.template.today("yyyy-mm-dd") %>;\n' +
-        '版权:* Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author.name %>;\n' +
-        '授权:<%= pkg.license %> *!/\n'*/,
+         '项目工程:<%= pkg.project %>;\n' +
+         '工程名称:<%= pkg.name %>;\n' +
+         '版本:<%= pkg.version %>;\n' +
+         '日期:<%= grunt.template.today("yyyy-mm-dd") %>;\n' +
+         '版权:* Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author.name %>;\n' +
+         '授权:<%= pkg.license %> *!/\n'*/,
         //css语法检查
         /*csslint: {
          //检查生成的css文件目录文件
@@ -34,39 +34,33 @@ module.exports = function (grunt) {
          all: '<%= pkg.js_src/!*.js %>'
          },*/
         //定义css图片压缩输出（一次性任务）
-        /*imagemin: {
+        imagemin: {
             dynamic: {
                 options: {
                     optimizationLevel: 3
                 },
                 files: [{
                     expand: true,//开启动态扩展
-                    cwd: '<%= pkg.image_src %>',//当前工作路径
-                    src: ['**!/!*.{png,jpg,gif,jpeg}'],//要处理的图片格式
-                    dest: '<%= pkg.image_dest %>'//输出目录
+                    cwd: '<%= pkg.projcet%>/<%= pkg.image_src%>',//当前工作路径img
+                    src: ['<%= pkg.image_minname%>.{png,jpg,gif,jpeg}'],//要处理的图片格式
+                    dest: '<%= pkg.projcet%>/<%= pkg.image_dest %>'//输出目录images
                 }]
             }
-        },*/
+
+        },
         //定义css图片拼合
-        /*sprite: {
+        sprite: {
             all: {
-                src: '<%= pkg.image_src/!*.png%>',
-                dest: '<%= pkg.image_dest/sprite_icon.png %>',
-                destCss: '<%= pkg.image_dest/sprite_icon.css %>'
+                src: '<%= pkg.projcet%>/<%= pkg.image_src%>/*.<%= pkg.image_spritetype%>',
+                dest: '<%= pkg.projcet%>/<%= pkg.image_dest%>/<%= pkg.image_spritename%>.<%= pkg.image_spritetype%>',
+                destCss: '<%= pkg.projcet%>/<%= pkg.less_dest%>/<%= pkg.image_spritename%>.css'
             }
-        },*/
+        },
         //less编译生成css
         less: {
             build: {
-                /*src:(function () {
-                    var src='<%= pkg.less_src%>';
-                    return src+'/'+'<%=pkg.name_src.less %>';
-                }()),
-                dest:(function () {
-                    return '<%= pkg.less_dest%>'+'/'+'<%= pkg.name_dest.css %>'
-                }())*/
-                src: '<%= pkg.projcet%>'+'/'+'<%= pkg.less_src%>'+'/'+'<%=pkg.name_src %>' +'.less',
-                dest: '<%= pkg.projcet%>'+'/'+'<%= pkg.less_dest%>'+'/'+'<%= pkg.name_dest %>' +'.css'
+                src: '<%= pkg.projcet%>/<%= pkg.less_src%>/<%=pkg.less_name %>.less',
+                dest: '<%= pkg.projcet%>/<%= pkg.less_dest%>/<%= pkg.less_name %>.css'
             },
             dev: {
                 options: {
@@ -74,27 +68,26 @@ module.exports = function (grunt) {
                     yuicompress: false
                 }
             }
-        }
+        },
         //使用less时为定义css压缩。（没有使用less时为合并（一次性任务））
-        /*cssmin: {
+        cssmin: {
             options: {
-                keepSpecialComments: 0, /!* 移除 CSS文件中的所有注释 *!/
+                keepSpecialComments: 0, /* 移除 CSS文件中的所有注释 */
                 shorthandCompacting: false,
                 roundingPrecision: -1
             },
             target: {
                 files: [{
                     expand: true,//开启动态扩展
-                    cwd: '<%= pkg.less_dest%>',//当前工作路径css/
+                    cwd: '<%= pkg.projcet%>/<%= pkg.less_dest%>',//当前工作路径css/
                     src: ['*.css'],
-                    dest: '<%= pkg.less_dest%>',//css/
+                    dest: '<%= pkg.projcet%>/<%= pkg.less_dest%>',
                     ext: '.css'//后缀名
                 }]
-
             }
-        },*/
+        },
         //定义合并js任务（情况比较少）,暂时不做css合并
-        /*concat: {
+        concat: {
             options: {
                 stripBanners: true,
                 separator: ';',//分割符
@@ -102,35 +95,44 @@ module.exports = function (grunt) {
             },
             dist: {
                 //源目录 to do,合并文件时需要看情况而定
-                /!*var names=['zepto','event','ajax','form','ie','detect','fx','fx_methods','assets','data','deferred','callbacks','selector','touch','gesture','stack','ios3'];*!/
-                /!* //压缩zepto var names=['zepto','event','touch','callbacks','ajax','form','selector','fx','fx_methods','assets','data','deferred','detect','gesture','ios3','stack','ie'];*!/
+                /*var names=['zepto','event','ajax','form','ie','detect','fx','fx_methods','assets','data','deferred','callbacks','selector','touch','gesture','stack','ios3'];*/
+                /* //压缩zepto var names=['zepto','event','touch','callbacks','ajax','form','selector','fx','fx_methods','assets','data','deferred','detect','gesture','ios3','stack','ie'];*/
                 //压缩后台js
-                /!*names=['bootstrap','tweenmax','resizeable','joinable','api','toggles','toastr','dialog']*!/
-                /!*names=['html5shiv','respond']*!/
-                /!*names=['bootstrap','dialog']*!/
-                /!*names=['bootstrap','tweenmax','resizeable','joinable','api','toggles','toastr','dialog','moment']*!/
-                /!*var names = ['bootstrap', 'toastr', 'dialog', 'moment'];*!/
-                src: [],
+                /*names=['bootstrap','tweenmax','resizeable','joinable','api','toggles','toastr','dialog']*/
+                /*names=['html5shiv','respond']*/
+                /*names=['bootstrap','dialog']*/
+                /*names=['bootstrap','tweenmax','resizeable','joinable','api','toggles','toastr','dialog','moment']*/
+                /*var names = ['bootstrap', 'toastr', 'dialog', 'moment'];*/
+                src: (function () {
+                    //压缩zepto
+                    var names = ['batch_item', 'datepick', 'moneyFilter', 'simulation_batch'],
+                        result = [],
+                        path = '<%= pkg.projcet%>/<%= pkg.js_src%>/';
+                    for (var i = 0, len = names.length; i < len; i++) {
+                        result.push(path + names[i] + '.js');
+                    }
+                    return result;
+                }()),
                 //生成目录
-                dest: '<%= pkg.js_dest/dest.js %>'
+                dest: '<%= pkg.projcet%>/<%= pkg.js_src%>/<%= pkg.js_minname%>.js'
             }
-        },*/
+        },
         //定义js压缩任务uglify
-        /*uglify: {
+        uglify: {
             options: {
                 //生成版权，名称，描述等信息
                 stripBanners: true,
                 banner: '<%= banner %>'
             },
             build: {
-                src: '<%= pkg.js_dest/dest.js %>',
-                dest: '<%= pkg.js_dest/dest.js %>'
+                src: '<%= pkg.projcet%>/<%= pkg.js_src%>/<%= pkg.js_minname%>.js',
+                dest: '<%= pkg.projcet%>/<%= pkg.js_dest%>/<%= pkg.js_minname%>.min.js'
             }
-        },*/
+        },
         //定义监控文件变化
-        /*watch: {
+        watch: {
             less: {
-                files: '<%= pkg.less_src/!**!/!*.less %>',
+                files: ['<%= pkg.projcet%>/<%= pkg.less_src %>/**/*.less'],
                 tasks: ['less', 'cssmin'],
                 options: {
                     spawn: false,
@@ -138,27 +140,27 @@ module.exports = function (grunt) {
                     //配置自动刷新程序
                     livereload: true
                 }
-            },
-            scripts: {
-                files: '<%= pkg.js_dest/dest.js %>',
-                tasks: ['uglify'],
-                options: {
-                    spawn: false,
-                    debounceDelay: 250,
-                    //配置自动刷新程序
-                    livereload: true
-                }
-            }
-        }*/
+            }/*,
+             scripts: {
+             files: '<%= pkg.projcet%>/<%= pkg.js_dest%>/<%= pkg.less_name%>.js',
+             tasks: ['uglify'],
+             options: {
+             spawn: false,
+             debounceDelay: 250,
+             //配置自动刷新程序
+             livereload: true
+             }
+             }*/
+        }
     });
 
 
     //导入任务所需的依赖支持服务
     /*可用任务*/
     //grunt.loadNpmTasks('grunt-contrib-jshint');
-    //grunt.loadNpmTasks('grunt-contrib-uglify');
-    //grunt.loadNpmTasks('grunt-contrib-connect');
-    //grunt.loadNpmTasks('grunt-contrib-concat');
+    grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-contrib-connect');
+    grunt.loadNpmTasks('grunt-contrib-concat');
     //grunt.loadNpmTasks('grunt-contrib-imagemin');
     //grunt.loadNpmTasks('grunt-spritesmith');
     //grunt.loadNpmTasks('grunt-contrib-livereload');
@@ -170,29 +172,33 @@ module.exports = function (grunt) {
 
 
     //集成单个模块任务
-    /*grunt.registerTask('default',"拼合图片",function(){
+    /*grunt.registerTask('default', "拼合图片", function () {
      grunt.task.run(['sprite']);
+     });*/
+
+    /*grunt.registerTask('default', "压缩图片", function () {
+     grunt.task.run(['imagemin']);
      });*/
 
 
     /*grunt.registerTask('default', "合并js", function () {
-     grunt.task.run(['concat']);
-     });*/
+        grunt.task.run(['concat']);
+    });*/
 
 
     /*grunt.registerTask('default', "js压缩", function () {
-     grunt.task.run(['uglify']);
-     });*/
+        grunt.task.run(['uglify']);
+    });*/
 
 
     /*grunt.registerTask('default', "合并压缩js", function () {
-     grunt.task.run(['concat', 'uglify']);
-     });*/
+        grunt.task.run(['concat', 'uglify']);
+    });*/
 
 
-    grunt.registerTask('default', "less编译生成css", function () {
+    /*grunt.registerTask('default', "less编译生成css", function () {
         grunt.task.run(['less']);
-    });
+    });*/
 
 
     /*grunt.registerTask('default', "less编译生成css并压缩", function () {
@@ -200,8 +206,8 @@ module.exports = function (grunt) {
      });*/
 
 
-    /*grunt.registerTask('default', "less编译生成css并压缩,同时实时监控", function () {
-     grunt.task.run(['less', 'cssmin', 'watch:less']);
-     });*/
+    grunt.registerTask('default', "less编译生成css并压缩,同时实时监控", function () {
+        grunt.task.run(['less', 'cssmin', 'watch:less']);
+    });
 
 };
