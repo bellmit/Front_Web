@@ -8,7 +8,7 @@
 			var logininfo=public_tool.initMap.loginMap,
 			merchant_grade=parseInt(decodeURIComponent(logininfo.param.grade),10);
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
-				url:'http://112.74.207.132:8082/mall-agentbms-api/module/menu',
+				url:'http://10.0.5.226:8082/mall-agentbms-api/module/menu',
 				async:false,
 				type:'post',
 				param:{
@@ -205,7 +205,7 @@
 										actiontype='新增';
                                         delete setdata['id'];
                                     }
-									config['url']="http://112.74.207.132:8082/mall-agentbms-api/merchant/addupdate";
+									config['url']="http://10.0.5.226:8082/mall-agentbms-api/merchant/addupdate";
 									config['data']=setdata;
 								}
 
@@ -357,7 +357,7 @@
 
 
 			$.ajax({
-				url:"http://112.74.207.132:8082/mall-agentbms-api/merchant/detail",
+				url:"http://10.0.5.226:8082/mall-agentbms-api/merchant/detail",
 				dataType:'JSON',
 				method:'post',
 				data:{
@@ -472,7 +472,7 @@
 		/*查询业务员Id*/
 		function getSalesmanId() {
 			$.ajax({
-				url:"http://112.74.207.132:8082/mall-agentbms-api/salesmans/list",
+				url:"http://10.0.5.226:8082/mall-agentbms-api/salesmans/list",
 				dataType:'JSON',
 				method:'post',
 				data:{

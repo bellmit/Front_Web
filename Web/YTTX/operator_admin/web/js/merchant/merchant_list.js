@@ -11,7 +11,7 @@
 			var logininfo=public_tool.initMap.loginMap,
 				merchant_grade=parseInt(decodeURIComponent(logininfo.param.grade),10);
 			public_tool.loadSideMenu(public_vars.$mainmenu,public_vars.$main_menu_wrap,{
-				url:'http://112.74.207.132:8082/mall-agentbms-api/module/menu',
+				url:'http://10.0.5.226:8082/mall-agentbms-api/module/menu',
 				async:false,
 				type:'post',
 				param:{
@@ -84,7 +84,7 @@
 					],
 					lengthChange:true,/*是否可改变长度*/
 					ajax:{
-						url:"http://112.74.207.132:8082/mall-agentbms-api/merchant/related",
+						url:"http://10.0.5.226:8082/mall-agentbms-api/merchant/related",
 						dataType:'JSON',
 						method:'post',
 						dataSrc:function ( json ) {
@@ -252,7 +252,7 @@
 			}
 
 			var detailconfig={
-					url:"http://112.74.207.132:8082/mall-agentbms-api/merchant/detail",
+					url:"http://10.0.5.226:8082/mall-agentbms-api/merchant/detail",
 					dataType:'JSON',
 					method:'post',
 					data:{

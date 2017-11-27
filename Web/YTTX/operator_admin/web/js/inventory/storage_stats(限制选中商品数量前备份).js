@@ -52,12 +52,9 @@
 				$admin_storagestatsadd_form=$(admin_storagestatsadd_form),
 				admin_storagestatsapply_form=document.getElementById('admin_storagestatsapply_form'),
 				$admin_id=$('#admin_id'),
-				$admin_number=$('#admin_number'),
-				$admin_time=$('#admin_time'),
-				$admin_store=$('#admin_store'),
-				$admin_type=$('#admin_type'),
-				$admin_provider=$('#admin_provider'),
-				$admin_operator=$('#admin_operator'),
+				$admin_inboundNumber=$('#admin_inboundNumber'),
+				$admin_inboundType=$('#admin_inboundType'),
+				$admin_providerId=$('#admin_providerId'),
 				$admin_remark=$('#admin_remark'),
 				$show_add_list=$('#show_add_list'),
 				$storage_stats_additem=$('#storage_stats_additem'),
@@ -66,6 +63,7 @@
 				$show_detail_wrap=$('#show_detail_wrap')/*详情容器*/,
 				$show_detail_content=$('#show_detail_content'),/*详情内容*/
 				$show_detail_list=$('#show_detail_list'),
+				$show_error_tips=$('#show_error_tips'),
 				$admin_apply=$('#admin_apply'),
 				$storage_apply=$('#storage_apply'),
 				$show_detail_action=$('#show_detail_action'),
@@ -77,6 +75,12 @@
 				},
 				sureObj=public_tool.sureDialog(dia)/*回调提示对象*/,
 				setSure=new sureObj();
+
+
+			/*查询对象*/
+			var $search_inboundNumber=$('#search_inboundNumber'),
+				$admin_search_btn=$('#admin_search_btn'),
+				$admin_search_clear=$('#admin_search_clear');
 
 
 
@@ -99,7 +103,7 @@
 						autoWidth:true,/*是否*/
 						paging:false,
 						ajax:{
-							url:/*"http://10.0.5.226:8082/mall-agentbms-api/announcements/related"*/"../../json/inventory/mall_storage_stats_list.json",
+							url:"http://10.0.5.226:8082/mall-agentbms-api/inboundstats/related",
 							dataType:'JSON',
 							method:'post',
 							dataSrc:function ( json ) {
@@ -153,37 +157,60 @@
 						order:[[1, "desc" ]],
 						columns: [
 							{
-								"data":"number"
+								"data":"inboundNumber"
 							},
 							{
-								"data":"time"
+								"data":"inboundTime"
 							},
 							{
-								"data":"store"
+								"data":"warehouseName"
 							},
 							{
-								"data":"type"
+								"data":"inboundType",
+								"render":function(data, type, full, meta ){
+									var itype=parseInt(data,10),
+										itypemap={
+											1:"采购入库",
+											2:"退货入库",
+											3:"其他入库"
+										},
+										str='';
+
+									if(itype===1){
+										str='<div class="g-c-gray3">'+itypemap[itype]+'</div>';
+									}else if(itype===2){
+										str='<div class="g-c-red2">'+itypemap[itype]+'</div>';
+									}else if(itype===3){
+										str='<div class="g-c-gray9">'+itypemap[itype]+'</div>';
+									}
+									return str;
+								}
 							},
 							{
 								"data":"operator"
 							},
 							{
-								"data":"provider"
+								"data":"providerName"
 							},
 							{
-								"data":"state",
+								"data":"auditState",
 								"render":function(data, type, full, meta ){
 									var stauts=parseInt(data,10),
 										statusmap={
-											0:"未审核",
-											1:"审核"
+											0:"待审核",
+											1:"审核通过",
+											2:"审核未通过"
 										},
 										str='';
 
 									if(stauts===0){
-										str='<div class="g-c-gray9">'+statusmap[stauts]+'</div>';
+										str='<div class="g-c-gray6">'+statusmap[stauts]+'</div>';
 									}else if(stauts===1){
-										str='<div class="g-c-info">'+statusmap[stauts]+'</div>';
+										str='<div class="g-c-bs-success">'+statusmap[stauts]+'</div>';
+									}else if(stauts===2){
+										str='<div class="g-c-red2">'+statusmap[stauts]+'</div>';
+									}else{
+										str='<div class="g-c-red2">状态异常</div>';
 									}
 									return str;
 								}
@@ -211,6 +238,42 @@
 
 			/*初始化请求*/
 			getColumnData(storage_page,storage_config);
+
+
+			/*清空查询条件*/
+			$admin_search_clear.on('click',function(){
+				$.each([$search_inboundNumber],function(){
+					this.val('');
+				});
+			});
+			$admin_search_clear.trigger('click');
+
+
+			/*联合查询*/
+			$admin_search_btn.on('click',function(){
+				var data= $.extend(true,{},storage_config.config.ajax.data);
+
+				$.each([$search_inboundNumber],function(){
+					var text=this.val()||this.find(':selected').val(),
+						selector=this.selector.slice(1),
+						key=selector.split('_');
+
+					if(text===""){
+						if(typeof data[key[1]]!=='undefined'){
+							delete data[key[1]];
+						}
+					}else{
+						data[key[1]]=text;
+					}
+
+				});
+				storage_config.config.ajax.data= $.extend(true,{},data);
+				getColumnData(storage_page,storage_config);
+			});
+
+
+			/*获取供应商列表*/
+			getProvider();
 
 
 			/*绑定新增入库*/
@@ -275,6 +338,11 @@
 
 			/*绑定确定收货单审核*/
 			$storage_apply.on('click',function () {
+				var applystate=parseInt($admin_apply.find(':checked').val(),10);
+				if(isNaN(applystate)){
+					dia.content('<span class="g-c-bs-warning g-btips-warn">您没有选择审核状态</span>').showModal();
+					return false;
+				}
 				/*to do*/
 				var id=$admin_id.val();
 				if(id===''){
@@ -282,9 +350,19 @@
 					return false;
 				}
 
-				return false;
+				var $state=$show_detail_content.find('tr td:last-child'),
+					state=parseInt($state.attr('data-id'),10);
+
+				if(state===-1||isNaN(state)){
+					dia.content('<span class="g-c-bs-warning g-btips-warn">状态异常，不能审核</span>').showModal();
+					return false;
+				}else if(state===1){
+					dia.content('<span class="g-c-bs-warning g-btips-warn">已经审核通过，不能再审核</span>').showModal();
+					return false;
+				}
+
 				$.ajax({
-						url:"http://10.0.5.226:8082/mall-agentbms-api/salesman/detail",
+						url:"http://10.0.5.226:8082/mall-agentbms-api/inboundstats/audit/state",
 						dataType:'JSON',
 						method:'post',
 						data:{
@@ -293,12 +371,11 @@
 							adminId:decodeURIComponent(logininfo.param.adminId),
 							token:decodeURIComponent(logininfo.param.token),
 							grade:decodeURIComponent(logininfo.param.grade),
-							isapply:$admin_apply.find(':checked').val()
+							auditState:applystate
 						}
 					})
 					.done(function(resp){
-						var code=parseInt(resp.code,10),
-							isok=false;
+						var code=parseInt(resp.code,10);
 						if(code!==0){
 							console.log(resp.message);
 							dia.content('<span class="g-c-bs-warning g-btips-warn">'+(resp.message||"审核失败")+'</span>').show();
@@ -308,9 +385,11 @@
 							return false;
 						}
 						dia.content('<span class="g-c-bs-success g-btips-succ">审核成功</span>').show();
+						getColumnData(storage_page,storage_config);
+						admin_storagestatsapply_form.reset();
 						setTimeout(function () {
-							$show_detail_wrap.trigger('hide.bs.modal');
-							admin_storagestatsapply_form.reset();
+							$show_detail_wrap.modal('hide');
+							resetStorageItem('detail');
 							dia.close();
 						},2000);
 					})
@@ -325,16 +404,16 @@
 			});
 
 
+			/*绑定标签选中*/
+			$show_add_list.on('click','span',function () {
+				var $this=$(this),
+					ischeck=$this.hasClass('attrlabel-active');
 
-			/*绑定时间插件*/
-			$.each([$admin_time],function(){
-				this.val('').datepicker({
-					autoclose:true,
-					clearBtn:true,
-					format: 'yyyy-mm-dd',
-					todayBtn: true,
-					endDate:moment().format('YYYY-MM-DD')
-				})
+				if(ischeck){
+					$this.removeClass('attrlabel-active');
+				}else{
+					$this.addClass('attrlabel-active');
+				}
 			});
 
 
@@ -392,7 +471,7 @@
 					/*鼠标失去焦点事件*/
 					if(target.className.indexOf('goodscode')!==-1){
 						/*扫描 to do*/
-						/*$this=$(target);*/
+						getGoodsList($(target));
 					}else if(target.className.indexOf('goodsnumber')!==-1){
 						totalShow();
 					}else{
@@ -400,8 +479,6 @@
 					}
 				}
 			});
-
-
 
 			/*绑定添加地址*/
 			/*表单验证*/
@@ -443,28 +520,24 @@
 								$.extend(true,setdata,basedata);
 
 								if(formtype==='addstoragestats'){
-									var total=parseInt($storage_total.html(),10);
-									if(total===''||isNaN(total)||total===0){
-										dia.content('<span class="g-c-bs-warning g-btips-warn">您没有输入任何数据</span>').show();
-										return false;
-									}
 									$.extend(true,setdata,{
-										number:$admin_number.val(),
-										time:$admin_time.val(),
-										store:$admin_store.val(),
-										type:$admin_type.val(),
-										provider:$admin_provider.val(),
-										operator:$admin_operator.val(),
+										inboundNumber:$admin_inboundNumber.val(),
+										inboundType:$admin_inboundType.find(':selected').val(),
+										providerId:$admin_providerId.find(':selected').val(),
 										remark:$admin_remark.val()
 									});
 
-									setdata['list']=getStorageItem();
+									var goodslist=getStorageItem();
 
-									config['url']="http://10.0.5.226:8082/mall-agentbms-api/warehouse/addupdate";
+									if(goodslist===null){
+										return false;
+									}else{
+										setdata['goodsDetails']=goodslist;
+									}
+									config['url']="http://10.0.5.226:8082/mall-agentbms-api/inboundstats/addupdate";
 									config['data']=setdata;
 								}
-								console.log(setdata);
-								return false;
+								
 								$.ajax(config).done(function(resp){
 									var code;
 									if(formtype==='addstoragestats'){
@@ -481,12 +554,14 @@
 										dia.close();
 										if(formtype==='addstoragestats'&&code===0){
 											/*关闭隐藏*/
+											admin_storagestatsadd_form.reset();
+											getColumnData(storage_page,storage_config);
 											setTimeout(function () {
-												admin_storagestatsadd_form.reset();
-												$show_add_wrap.trigger('hide.bs.modal');
+												$show_add_wrap.modal('hide');
+												resetStorageItem('add');
 											},1000);
 										}
-									},500);
+									},1500);
 								}).fail(function(resp){
 									console.log('error');
 								});
@@ -507,6 +582,186 @@
 
 
 		}
+		
+		/*重置界面*/
+		function resetStorageItem(type) {
+			if(type==='add'){
+				$show_add_list.html('');
+				$storage_total.html('0');
+				$show_error_tips.html('');
+				goodsmap.goodsactive.length=0;
+				goodsmap.goodsobj.length=0;
+				goodsmap.goodsseqid.length=0;
+			}else if(type==='detail'){
+				$show_detail_content.html('');
+				$show_detail_list.html('');
+				$admin_apply.find('input').each(function () {
+					$(this).prop({
+						'checked':false
+					});
+				});
+			}else{
+				$show_add_list.html('');
+				$storage_total.html('0');
+				$show_error_tips.html('');
+				goodsmap.goodsactive.length=0;
+				goodsmap.goodsobj.length=0;
+				goodsmap.goodsseqid.length=0;
+				$show_detail_content.html('');
+				$show_detail_list.html('');
+				$admin_apply.find('input').each(function () {
+					$(this).prop({
+						'checked':false
+					});
+				});
+			}
+		}
+		
+		/*特殊字符处理*/
+		function chartFilter(str,type) {
+			if(type==='on'){
+				return str.replace(/'/g,'_dan_').replace(/"/g,'_shuang_').replace(/</g,'_qian_').replace(/\/>/g,'_hou_');
+			}else if(type==='off'){
+				return str.replace(/_dan_/g,",").replace(/_shuang_/g,'"').replace(/_qian_/g,'<').replace(/_hou_/g,'/>');
+			}
+		}
+
+		/*获取商品列表*/
+		function getGoodsList($code) {
+			if(!$code){
+				return false;
+			}
+			var key=$code.val(),
+				tempkey=$code.attr('data-value');
+
+			/*空数据过滤*/
+			if(key===''){
+				return false;
+			}
+			/*防止重复提交*/
+			if(tempkey!==''&&tempkey===key){
+				return false;
+			}
+			$code.attr({
+				'data-value':key
+			});
+
+
+
+			$.ajax({
+					url:"http://10.0.5.226:8082/mall-agentbms-api/goods/attributes",
+					dataType:'JSON',
+					method:'post',
+					data:{
+						gCode:key,
+						roleId:decodeURIComponent(logininfo.param.roleId),
+						adminId:decodeURIComponent(logininfo.param.adminId),
+						token:decodeURIComponent(logininfo.param.token),
+						grade:decodeURIComponent(logininfo.param.grade)
+					}
+				})
+				.done(function(resp){
+					var code=parseInt(resp.code,10);
+					if(code!==0){
+						console.log(resp.message);
+						$show_error_tips.html(resp.message+',请重新输入商品编码');
+						return false;
+					}
+					/*是否是正确的返回数据*/
+					var result=resp.result;
+					if(!result){
+						return false;
+					}
+					$show_error_tips.html('');
+
+					/*设置值*/
+					var $tr=$code.closest('tr').children(),
+						list=result['list'],
+						i=0,
+						str='';
+
+					$tr.eq(2).attr({
+						'data-id':result['id']
+					}).html(result['name']);
+
+					if(list){
+						var len=list.length;
+						if(len!==0){
+							for(i;i<len;i++){
+								var labelname=list[i]["name"],
+									labelid=list[i]["id"];
+
+								str+='<div class="admin-attrlabel-item1" data-id="'+labelid+'" data-name="'+chartFilter(labelname,"on")+'">';
+								var attrlist=list[i]['list'],
+									attrlen=attrlist.length,
+									j=0;
+								for(j;j<attrlen;j++){
+									var attrname=attrlist[j]["name"],
+										attrid=attrlist[j]["id"];
+
+									str+='<span data-attrid="'+attrid+'" data-attrname="'+chartFilter(attrname,"on")+'" data-labelid="'+labelid+'"  data-labelname="'+chartFilter(labelname,"on")+'" >'+attrname+'</span>';
+								}
+								str+='</div>';
+							}
+							$(str).appendTo($tr.eq(3).html(''));
+						}
+					}
+				})
+				.fail(function(resp){
+					console.log(resp.message);
+				});
+
+		}
+
+
+		/*获取代理商列表*/
+		function getProvider(){
+			$.ajax({
+				url:"http://10.0.5.226:8082/mall-agentbms-api/providers/list",
+				dataType:'JSON',
+				method:'post',
+				data:{
+					roleId:decodeURIComponent(logininfo.param.roleId),
+					adminId:decodeURIComponent(logininfo.param.adminId),
+					token:decodeURIComponent(logininfo.param.token),
+					grade:decodeURIComponent(logininfo.param.grade)
+				}
+			})
+			.done(function(resp){
+				var code=parseInt(resp.code,10);
+				if(code!==0){
+					console.log(resp.message);
+					return false;
+				}
+				/*是否是正确的返回数据*/
+				var result=resp.result;
+				if(!result){
+					return false;
+				}
+
+				/*设置值*/
+				var list=result['list'],
+					i=0,
+					str='';
+
+				if(list){
+					var len=list.length;
+					if(len!==0){
+						for(i;i<len;i++){
+							if(i===0){
+								str+='<option value="'+list[i]["id"]+'" selected >'+list[i]["companyName"]+'</option>';
+							}else{
+								str+='<option value="'+list[i]["id"]+'">'+list[i]["companyName"]+'</option>';
+							}
+						}
+						$(str).appendTo($admin_providerId.html(''));
+					}
+				}
+			})
+			.fail(function(resp){
+				console.log(resp.message);
+			});
+		}
 
 
 		/*获取数据*/
@@ -522,7 +777,19 @@
 		/*添加商品*/
 		function addStorageItem(){
 			var seqid=(Math.random()).toString().slice(2,15),
-				str='<tr><td><input type="checkbox" class="goodsid" name="goodsId" data-id="'+seqid+'" value="'+seqid+'"/></td><td><input class="form-control goodscode" type="text" /></td><td><input class="form-control" type="text" /></td><td><input class="form-control" type="text" /></td><td><input class="form-control goodsnumber" maxlength="9" value="0" type="text" /></td></tr>';
+				str='<tr>\
+						<td>\
+							<input type="checkbox" class="goodsid" name="seqid" value="'+seqid+'"/>\
+						</td>\
+						<td>\
+							<input class="form-control goodscode" placeholder="请输入商品编码" data-value="" type="text" />\
+						</td>\
+						<td data-id=""></td>\
+						<td></td>\
+						<td>\
+							<input class="form-control goodsnumber" maxlength="9" value="0" type="text" data-value="" />\
+						</td>\
+					</tr>';
 			$(str).appendTo($show_add_list);
 			goodsmap.goodsseqid.push(seqid);
 		}
@@ -545,7 +812,7 @@
 				}
 				goodsmap.goodsactive.length=0;
 				goodsmap.goodsobj.length=0;
-				tip.content('<span class="g-c-bs-warning g-btips-warn">删除成功</span>').show();
+				tip.content('<span class="g-c-bs-success g-btips-succ">删除成功</span>').show();
 				totalShow();
 				setTimeout(function () {
 					tip.close();
@@ -554,18 +821,123 @@
 		}
 
 
+
 		/*获取商品列表*/
 		function getStorageItem() {
-			var result=[];
-			$show_add_list.find('tr').each(function () {
-				var $tr=$(this),
-					name=$tr.eq(2).find('input').val(),
-					type=$tr.eq(3).find('input').val();
-				if(name!==''&&type!==''){
-					result.push($tr.eq(1).find('input').val()+'#'+name+'#'+type+'#'+$tr.eq(4).find('input').val());
+			var result=[],
+				$tritem=$show_add_list.find('tr'),
+				len=$tritem.size();
+
+			if(len===0){
+				validStorageItem('tr');
+				return null;
+			}
+
+			$tritem.each(function () {
+				var $tr=$(this).children(),
+					id=$tr.eq(2).attr('data-id'),
+					name=$tr.eq(2).html(),
+					attrobj=resolveLabelAttr($tr),
+					attrid=attrobj['id'],
+					attrname=attrobj['name'],
+					number=$tr.eq(4).find('input').val();
+
+				if(id!==''&&name!==''&&attrname!==''&&attrid!==''){
+					result.push(id+'#'+name+'#'+attrname+'#'+number+'#'+attrid);
+				}
+
+				if(len===1){
+					if(id===''){
+						validStorageItem('id');
+						return false;
+					}else if(name===''){
+						validStorageItem('name');
+						return false;
+					}else if(attrname===''){
+						validStorageItem('attrname',$tr);
+						return false;
+					}else if(attrid===''){
+						validStorageItem('attrid',$tr);
+						return false;
+					}
 				}
 			});
-			return JSON.stringify(result);
+			return result.length===0?null:JSON.stringify(result);
+		}
+
+
+		/*校验数据合法性并提示信息*/
+		function validStorageItem(type,$tr) {
+			if(typeof type==='undefined'){
+				return false;
+			}
+			switch (type){
+				case 'tr':
+					/*没有tr*/
+					$show_error_tips.html('没有商品列表，创建商品列表');
+					setTimeout(function () {
+						$show_error_tips.html('');
+						$storage_stats_additem.trigger('click');
+						$show_add_list.find('tr').children().eq(1).find('input').select();
+					},2000);
+					break;
+				case 'id':
+					/*没有id*/
+					$show_error_tips.html('没有商品ID值');
+					setTimeout(function () {
+						$show_error_tips.html('');
+					},2000);
+					break;
+				case 'name':
+					/*没有name*/
+					$show_error_tips.html('没有商品名称');
+					setTimeout(function () {
+						$show_error_tips.html('');
+					},2000);
+					break;
+				case 'attrname':
+					/*没有attrname*/
+					$show_error_tips.html('没有属性名称或标签名称');
+					setTimeout(function () {
+						$show_error_tips.html('');
+						if($tr){
+							setTimeout(function () {
+								$tr.eq(3).find('div:first-child span:first-child').trigger('click');
+							},100);
+						}
+					},2000);
+					break;
+				case 'attrid':
+					/*没有attrid*/
+					$show_error_tips.html('没有属性ID');
+					setTimeout(function () {
+						$show_error_tips.html('');
+						if($tr){
+							setTimeout(function () {
+								$tr.eq(3).find('div:first-child span:first-child').trigger('click');
+							},100);
+						}
+					},2000);
+					break;
+			}
+		}
+
+
+		/*解析标签属性*/
+		function resolveLabelAttr($tr) {
+			var $attr=$tr.eq(3).find('span.attrlabel-active'),
+				tempattr=[],
+				tempid=[],
+				res={};
+
+			$attr.each(function () {
+				var $this=$(this);
+				tempattr.push(chartFilter($this.attr('data-labelname'),'off')+':'+chartFilter($this.attr('data-attrname'),'off'));
+				tempid.push($this.attr('data-attrid'));
+			});
+			res['name']=tempattr.join(' ');
+			res['id']=tempid.join(',');
+			return res;
 		}
 
 
@@ -581,16 +953,16 @@
 		/*查看出库单*/
 		function showStorage(id,$tr) {
 			$admin_id.val('');
-			if(!id){
+			if(typeof id==='undefined'){
 				return false;
 			}
 
 			$.ajax({
-					url:/*"http://10.0.5.226:8082/mall-agentbms-api/salesman/detail"*/"../../json/inventory/mall_storage_stats_detail.json",
+					url:"http://10.0.5.226:8082/mall-agentbms-api/inboundstats/details",
 					dataType:'JSON',
 					method:'post',
 					data:{
-						id:id,
+						inboundId:id,
 						roleId:decodeURIComponent(logininfo.param.roleId),
 						adminId:decodeURIComponent(logininfo.param.adminId),
 						token:decodeURIComponent(logininfo.param.token),
@@ -614,19 +986,13 @@
 					}
 
 					/*判断是否是审核状态*/
-					var state=parseInt(result["state"],10);
-					$admin_apply.find('input').each(function () {
-						var $this=$(this),
-							text=parseInt($this.val(),10);
-
-						if(text===state){
-							$this.prop({
-								"checked":true
-							});
-							return false;
-						}
-					});
-					if(state===0){
+					var state=parseInt(result["auditState"],10),
+						statemap={
+							0:'待审核',
+							1:'审核通过',
+							2:'审核未通过'
+						};
+					if(state===0||state===2){
 						$show_detail_action.removeClass('g-d-hidei');
 					}else{
 						$show_detail_action.addClass('g-d-hidei');
@@ -634,10 +1000,27 @@
 
 					/*设置值*/
 					$admin_id.val(id);
-					$('<tr><td>'+result["number"]+'</td><td>'+result["time"]+'</td><td>'+result["store"]+'</td><td>'+result["type"]+'</td><td>'+result["provider"]+'</td><td>'+result["operator"]+'</td><td>'+result["remark"]+'</td></tr>').appendTo($show_detail_content.html(''));
+					$('<tr>\
+						<td>'+(result["inboundNumber"]||'')+'</td>\
+						<td>'+(result["inboundTime"]||'')+'</td>\
+						<td>'+(result["warehouseName"]||'')+'</td>\
+						<td>'+(result["providerName"]||'')+'</td>\
+						<td>'+(result["remark"]||'')+'</td>\
+						'+(function () {
+							if(state===0){
+								return '<td data-id="'+state+'" class="g-c-bs-info">'+statemap[state]+'</td>';
+							}else if(state===1){
+								return '<td data-id="'+state+'" class="g-c-bs-success">'+statemap[state]+'</td>';
+							}else if(state===2){
+								return '<td data-id="'+state+'" class="g-c-gray10">'+statemap[state]+'</td>';
+							}else{
+								return '<td data-id="-1" class="g-c-red2">异常</td>';
+							}
+						}())+'</tr>').appendTo($show_detail_content.html(''));
 
 
-					var list=result.list,
+
+					var list=result['detailsList'],
 						str='',
 						i=0;
 
@@ -645,13 +1028,15 @@
 						var len=list.length;
 						if(len!==0){
 							for(i;i<len;i++){
-								var tempstorage=list[i];
+								var tempstorage=list[i],
+									gcode=typeof tempstorage["goodsCode"]==='undefined'?'':tempstorage["goodsCode"];
+
 								str+='<tr>\
 								<td>'+parseInt(i+1,10)+'</td>\
-								<td>'+tempstorage["goodscode"]+'</td>\
-								<td>'+tempstorage["goodsname"]+'</td>\
-								<td>'+tempstorage["goodstype"]+'</td>\
-								<td>'+tempstorage["goodsnumber"]+'</td>\
+								<td>'+gcode+'</td>\
+								<td>'+tempstorage["goodsName"]+'</td>\
+								<td>'+tempstorage["attributeName"]+'</td>\
+								<td>'+tempstorage["quantity"]+'</td>\
 								</tr>';
 							}
 							$(str).appendTo($show_detail_list.html(''));
