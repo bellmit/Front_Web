@@ -404,9 +404,11 @@
             /*绑定标签选中*/
             $show_add_list.on('click', 'span', function () {
                 var $this = $(this),
-                    sequenceid = $this.attr('attr-seqid'),
+                    sequenceid = $this.attr('data-seqid'),
                     ischeck = $this.hasClass('attrlabel-active'),
-                    labelid = $this.attr('data-labelid');
+                    labelid = $this.attr('data-labelid'),
+                    attrid = $this.attr('data-attrid');
+
 
                 if (ischeck) {
                     /*如果存在则清除*/
@@ -418,12 +420,20 @@
                     });
                 } else {
                     /*如果不存在则新增*/
-                    $this.addClass('attrlabel-active').siblings().removeClass('attrlabel-active');
-                    operateGoodsListMap({
-                        seqid: sequenceid,
-                        value: labelid,
-                        type: 'add'
-                    });
+                    var $hassb = $this.parent().find('.attrlabel-active');
+                    if ($hassb.size() > 0) {
+                        /*之前有选中*/
+                        $hassb.removeClass('attrlabel-active');
+                        $this.addClass('attrlabel-active');
+                    } else {
+                        /*第一次选中*/
+                        $this.addClass('attrlabel-active');
+                        operateGoodsListMap({
+                            seqid: sequenceid,
+                            value: labelid,
+                            type: 'add'
+                        });
+                    }
                 }
             });
 
@@ -540,9 +550,15 @@
 
                                     var goodslist = getStorageItem();
 
+
+
                                     if (goodslist === null) {
                                         return false;
                                     } else {
+                                        var goodschecked=compareGoodsListMap();
+                                        if(!goodschecked){
+                                            return false;
+                                        }
                                         setdata['goodsDetails'] = goodslist;
                                     }
                                     config['url'] = "http://10.0.5.226:8082/mall-agentbms-api/inboundstats/addupdate";
@@ -743,8 +759,6 @@
                     type = config.type/*查询对象操作方式，add:添加，remove:删除*/,
                     listmap = goodslistmap[seqid]/*操作对象*/;
 
-                console.log(goodslistmap);
-                console.log(seqid);
                 if (typeof value !== 'undefined' && value !== '' && listmap['list'][value] && listmap.size !== 0) {
                     /*非空合法值&&存在值&&存在数据*/
                     if (type === 'add') {
@@ -796,14 +810,38 @@
         }
 
         /*比对查询对象,是否存在数据*/
-        function compareGoodsListMap(value) {
-            /*var list = goodslistmap['list'];
-             for (var i in list) {
-             if (value === i) {
-             return true;
-             }
-             }
-             return false;*/
+        function compareGoodsListMap() {
+            var goodsseqid = goodsmap.goodsseqid,
+                len = goodsseqid.length;
+
+            if (len === 0) {
+                return false;
+            } else {
+                var i = 0,
+                    count = 0;
+                for (i; i < len; i++) {
+                    var sequence = goodsseqid[i],
+                        item = goodslistmap[sequence];
+                    if (item['size'] === 0) {
+                        return false;
+                    }
+                    if (item['size'] !== item['checked']) {
+                        $show_error_tips.html('必须选中每组商品，且每组只能选中一个');
+                        var $td=$show_add_list.find('tr').eq(i).find('td').eq(3);
+                        $td.addClass('g-b-red1');
+                        setTimeout(function () {
+                            $show_error_tips.html('');
+                            $td.removeClass('g-b-gray10');
+                        }, 3000);
+                        return false;
+                    } else {
+                        count++;
+                    }
+                }
+                if (count === len) {
+                    return true;
+                }
+            }
         }
 
 
