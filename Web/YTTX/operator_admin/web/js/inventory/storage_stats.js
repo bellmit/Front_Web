@@ -445,7 +445,7 @@
 
             /*绑定删除商品*/
             $storage_stats_removeitem.on('click', function () {
-                removeStorageItem();
+                removeStorageItem(true);
             });
 
 
@@ -549,25 +549,16 @@
                                     });
 
                                     var goodslist = getStorageItem();
-
-
-
+                                    
                                     if (goodslist === null) {
                                         return false;
-                                    } else {
-                                        var goodschecked=compareGoodsListMap();
-                                        if(!goodschecked){
-                                            return false;
-                                        }
+                                    }else {
                                         setdata['goodsDetails'] = goodslist;
                                     }
                                     config['url'] = "http://10.0.5.226:8082/mall-agentbms-api/inboundstats/addupdate";
                                     config['data'] = setdata;
                                 }
-
-                                console.log(goodslist);
-                                return;
-
+                                
                                 $.ajax(config).done(function (resp) {
                                     var code;
                                     if (formtype === 'addstoragestats') {
@@ -621,6 +612,7 @@
                 goodsmap.goodsactive.length = 0;
                 goodsmap.goodsobj.length = 0;
                 goodsmap.goodsseqid.length = 0;
+                clearGoodsListMap();
             } else if (type === 'detail') {
                 $show_detail_content.html('');
                 $show_detail_list.html('');
@@ -636,6 +628,7 @@
                 goodsmap.goodsactive.length = 0;
                 goodsmap.goodsobj.length = 0;
                 goodsmap.goodsseqid.length = 0;
+                clearGoodsListMap();
                 $show_detail_content.html('');
                 $show_detail_list.html('');
                 $admin_apply.find('input').each(function () {
@@ -801,46 +794,18 @@
                 delete goodslistmap[seqid];
             }
         }
+        
+        /*清除查询对象*/
+        function clearGoodsListMap() {
+            for(var i in goodslistmap){
+                delete goodslistmap[i];
+            }
+        }
 
         /*设置查询对象*/
         function setGoodsListMap(seqid, labelid) {
             if (typeof seqid !== 'undefined' && typeof labelid !== 'undefined') {
                 goodslistmap[seqid]['list'][labelid] = labelid;
-            }
-        }
-
-        /*比对查询对象,是否存在数据*/
-        function compareGoodsListMap() {
-            var goodsseqid = goodsmap.goodsseqid,
-                len = goodsseqid.length;
-
-            if (len === 0) {
-                return false;
-            } else {
-                var i = 0,
-                    count = 0;
-                for (i; i < len; i++) {
-                    var sequence = goodsseqid[i],
-                        item = goodslistmap[sequence];
-                    if (item['size'] === 0) {
-                        return false;
-                    }
-                    if (item['size'] !== item['checked']) {
-                        $show_error_tips.html('必须选中每组商品，且每组只能选中一个');
-                        var $td=$show_add_list.find('tr').eq(i).find('td').eq(3);
-                        $td.addClass('g-b-red1');
-                        setTimeout(function () {
-                            $show_error_tips.html('');
-                            $td.removeClass('g-b-gray10');
-                        }, 3000);
-                        return false;
-                    } else {
-                        count++;
-                    }
-                }
-                if (count === len) {
-                    return true;
-                }
             }
         }
 
@@ -927,73 +892,161 @@
             createGoodsListMap(seqid);
         }
 
+
+        /*添加删除多余任务列表*/
+        function addTaskForRemoveStorageItem() {
+            var goodsseqid = goodsmap.goodsseqid,
+                len = goodsseqid.length,
+                i = 0,
+                $tr = $show_add_list.find('tr'),
+                $input,
+                count = 0;
+
+            for (i; i < len; i++) {
+                var sequence = goodsseqid[i],
+                    item = goodslistmap[sequence];
+                if (item['size'] === 0) {
+                    $input = $tr.eq(i).find('td:first-child').find('input');
+                    if (!$input.is(':checked')) {
+                        /*未选中则选中*/
+                        $input.prop({
+                            'checked': true
+                        });
+                        /*加入相关模型数据*/
+                        goodsmap.goodsactive.push($input.val());
+                        goodsmap.goodsobj.push($input);
+                    }
+                    count++;
+                }
+            }
+            if (count === len) {
+                /*判断并过滤是否全部为空数据,如果全部为空，则保留第一个数据*/
+                goodsmap.goodsobj[0].prop({
+                    'checked': false
+                });
+                goodsmap.goodsactive.splice(0, 1);
+                goodsmap.goodsobj.splice(0, 1);
+            }
+            /*选中完了执行删除操作*/
+            removeStorageItem(false);
+        }
+
+
         /*删除商品*/
-        function removeStorageItem() {
+        function removeStorageItem(flag) {
             var len = goodsmap.goodsactive.length;
             if (len === 0) {
                 dia.content('<span class="g-c-bs-warning g-btips-warn">您没有选择需要操作的数据</span>').showModal();
                 return false;
             }
             /*确认是否删除*/
-            setSure.sure('delete', function (cf) {
-                /*to do*/
-                var tip = cf.dia || dia,
-                    i = len - 1;
-                for (i; i >= 0; i--) {
-                    deleteGoodsListMap(goodsmap.goodsactive[i]);
-                    goodsmap.goodsseqid.splice(arrIndex(goodsmap.goodsactive[i], goodsmap.goodsseqid), 1);
-                    goodsmap.goodsobj[i].closest('tr').remove();
-                }
-                goodsmap.goodsactive.length = 0;
-                goodsmap.goodsobj.length = 0;
-                tip.content('<span class="g-c-bs-success g-btips-succ">删除成功</span>').show();
-                totalShow();
+            if (flag) {
+                setSure.sure('delete', function (cf) {
+                    /*to do*/
+                    removeStorageItemAssist({
+                        flag: true,
+                        dia: cf.dia || dia,
+                        len: len
+                    });
+                });
+            } else {
+                removeStorageItemAssist({
+                    flag: false,
+                    dia: dia,
+                    len: len
+                });
+            }
+        }
+
+        /*辅助删除商品*/
+        function removeStorageItemAssist(config) {
+            var i = config.len - 1,
+                flag = config.flag;
+            for (i; i >= 0; i--) {
+                deleteGoodsListMap(goodsmap.goodsactive[i]);
+                goodsmap.goodsseqid.splice(arrIndex(goodsmap.goodsactive[i], goodsmap.goodsseqid), 1);
+                goodsmap.goodsobj[i].prop({
+                    'checked': false
+                });
+                goodsmap.goodsobj[i].closest('tr').remove();
+            }
+            goodsmap.goodsactive.length = 0;
+            goodsmap.goodsobj.length = 0;
+            /*提示删除成功*/
+            if (flag) {
+                config.dia.content('<span class="g-c-bs-success g-btips-succ">删除成功</span>').show();
                 /*删除数据选中域*/
                 setTimeout(function () {
-                    tip.close();
+                    config.dia.close();
                 }, 2000);
-            });
+            }
+            /*重新计算求和*/
+            totalShow();
         }
 
 
         /*获取商品列表*/
         function getStorageItem() {
-            var result = [],
-                $tritem = $show_add_list.find('tr'),
-                len = $tritem.size();
+            var goodsseqid = goodsmap.goodsseqid,
+                glen = goodsseqid.length;
 
-            if (len === 0) {
-                validStorageItem('tr');
+            if (glen === 0) {
+                /*没有tr，则创建空tr*/
+                validStorageItem({
+                    type: 'tr'
+                });
                 return null;
+            } else {
+                var i = 0,
+                    count = 0;
+                for (i; i < glen; i++) {
+                    var sequence = goodsseqid[i],
+                        item = goodslistmap[sequence];
+
+                    if (item['size'] === 0) {
+                        /*没有查询数据*/
+                        if (glen === 1) {
+                            /*只有一条数据时需要查询数据*/
+                            validStorageItem({
+                                type: 'id'
+                            });
+                        } else {
+                            /*存在多条查询数据则删除多余为空数据*/
+                            addTaskForRemoveStorageItem();
+                        }
+                        return null;
+                    }
+                    if (item['size'] !== item['checked']) {
+                        /*有查询数据，但是没有选中相关操作数据*/
+                        validStorageItem({
+                            type: 'attrid',
+                            index: i
+                        });
+                        return null;
+                    } else {
+                        count++;
+                    }
+                }
+                if (count !== glen) {
+                    return null;
+                }
             }
 
+            var result = [],
+                $tritem = $show_add_list.find('tr');
+
             $tritem.each(function () {
-                var $tr = $(this).children(),
-                    id = $tr.eq(2).attr('data-id'),
-                    name = $tr.eq(2).html(),
+                var $tr = $(this).children()/*数据列*/,
+                    id = $tr.eq(2).attr('data-id')/*商品id*/,
+                    name = $tr.eq(2).html()/*商品名称*/,
                     attrobj = resolveLabelAttr($tr),
-                    attrid = attrobj['id'],
-                    attrname = attrobj['name'],
-                    number = $tr.eq(4).find('input').val();
+                    attrid = attrobj['id']/*属性id*/,
+                    attrname = attrobj['name']/*属性名*/,
+                    number = $tr.eq(4).find('input').val()/*入库数量*/;
 
-                if (id !== '' && name !== '' && attrname !== '' && attrid !== '') {
+                if (id !== '' && attrid !== '') {
+                    /*合法数据时将数据解析出来*/
                     result.push(id + '#' + name + '#' + attrname + '#' + number + '#' + attrid);
-                }
-
-                if (len === 1) {
-                    if (id === '') {
-                        validStorageItem('id');
-                        return false;
-                    } else if (name === '') {
-                        validStorageItem('name');
-                        return false;
-                    } else if (attrname === '') {
-                        validStorageItem('attrname', $tr);
-                        return false;
-                    } else if (attrid === '') {
-                        validStorageItem('attrid', $tr);
-                        return false;
-                    }
                 }
             });
             return result.length === 0 ? null : JSON.stringify(result);
@@ -1001,58 +1054,47 @@
 
 
         /*校验数据合法性并提示信息*/
-        function validStorageItem(type, $tr) {
+        function validStorageItem(config) {
+            var type = config.type;
+
             if (typeof type === 'undefined') {
                 return false;
             }
-            switch (type) {
-                case 'tr':
-                    /*没有tr*/
-                    $show_error_tips.html('没有商品列表，创建商品列表');
-                    setTimeout(function () {
-                        $show_error_tips.html('');
-                        $storage_stats_additem.trigger('click');
-                        $show_add_list.find('tr').children().eq(1).find('input').select();
-                    }, 2000);
-                    break;
-                case 'id':
-                    /*没有id*/
-                    $show_error_tips.html('没有商品ID值');
+
+            if (type === 'tr') {
+                /*没有tr，则创建空tr*/
+                $show_error_tips.html('没有商品列表，创建商品列表');
+                setTimeout(function () {
+                    $storage_stats_additem.trigger('click');
+                    $show_add_list.find('tr').children().eq(1).find('input').select();
                     setTimeout(function () {
                         $show_error_tips.html('');
                     }, 2000);
-                    break;
-                case 'name':
-                    /*没有name*/
-                    $show_error_tips.html('没有商品名称');
-                    setTimeout(function () {
-                        $show_error_tips.html('');
-                    }, 2000);
-                    break;
-                case 'attrname':
-                    /*没有attrname*/
-                    $show_error_tips.html('没有属性名称或标签名称');
-                    setTimeout(function () {
-                        $show_error_tips.html('');
-                        if ($tr) {
-                            setTimeout(function () {
-                                $tr.eq(3).find('div:first-child span:first-child').trigger('click');
-                            }, 100);
+                }, 500);
+            } else if (type === 'id') {
+                /*没有id或name*/
+                $show_error_tips.html('没有商品,请输入相关商品查询');
+                setTimeout(function () {
+                    $show_error_tips.html('');
+                }, 2000);
+            } else if (type === 'attrid') {
+                $show_error_tips.html('必须选中每组商品，且每组只能选中一个');
+                setTimeout(function () {
+                    var index=config.index,
+                        $td = $show_add_list.find('tr').eq(index).children(),
+                        $div = $td.eq(3).find('div');
+                    $div.each(function () {
+                        var $this = $(this),
+                            $span = $this.find('span.attrlabel-active');
+                        if ($span.size() === 0) {
+                            /*如果没有选中则选中*/
+                            $this.find('span:first-child').trigger('click');
                         }
-                    }, 2000);
-                    break;
-                case 'attrid':
-                    /*没有attrid*/
-                    $show_error_tips.html('没有属性ID');
+                    });
                     setTimeout(function () {
                         $show_error_tips.html('');
-                        if ($tr) {
-                            setTimeout(function () {
-                                $tr.eq(3).find('div:first-child span:first-child').trigger('click');
-                            }, 100);
-                        }
                     }, 2000);
-                    break;
+                }, 500);
             }
         }
 
