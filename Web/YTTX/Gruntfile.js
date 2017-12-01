@@ -3,7 +3,7 @@
 module.exports = function (grunt) {
 
     /*配置文件*/
-    var configfile = 'package_djc.json';
+    var configfile = 'package_bzwAdmin.json';
 
     // Project configuration.
     grunt.initConfig({
@@ -16,23 +16,21 @@ module.exports = function (grunt) {
          '版权:* Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author.name %>;\n' +
          '授权:<%= pkg.license %> *!/\n'*/,
         //css语法检查
-        /*csslint: {
-         //检查生成的css文件目录文件
-         options: {
-         csslintrc: '.csslintrc'
-         },
-         src: (function (pkg, web_url) {
-         return doFilter({package: pkg, web_url: web_url}, 'less_dest', '.css');
-         })(pkg, web_url)
-         },*/
+        csslint: {
+            //检查生成的css文件目录文件
+            options: {
+                csslintrc: '.csslintrc'
+            },
+            src:'<%= pkg.projcet%>/<%= pkg.less_dest%>/<%= pkg.less_name%>.css'
+        },
         //定义js语法检查（看配置信息）
-        /*jshint: {
-         options: {
-         jshintrc: '.jshintrc'
-         },
-         //检查源目录文件和生成目录文件
-         all: '<%= pkg.js_src/!*.js %>'
-         },*/
+        jshint: {
+            options: {
+                jshintrc: '.jshintrc'
+            },
+            //检查源目录文件和生成目录文件
+            all: '<%= pkg.projcet%>/<%= pkg.js_src%>/*.js'
+        },
         //定义css图片压缩输出（一次性任务）
         imagemin: {
             dynamic: {
@@ -182,23 +180,23 @@ module.exports = function (grunt) {
 
 
     /*grunt.registerTask('default', "合并js", function () {
-        grunt.task.run(['concat']);
-    });*/
+     grunt.task.run(['concat']);
+     });*/
 
 
-    /*grunt.registerTask('default', "js压缩", function () {
+    grunt.registerTask('default', "js压缩", function () {
         grunt.task.run(['uglify']);
-    });*/
+    });
 
 
     /*grunt.registerTask('default', "合并压缩js", function () {
-        grunt.task.run(['concat', 'uglify']);
-    });*/
+     grunt.task.run(['concat', 'uglify']);
+     });*/
 
 
     /*grunt.registerTask('default', "less编译生成css", function () {
-        grunt.task.run(['less']);
-    });*/
+     grunt.task.run(['less']);
+     });*/
 
 
     /*grunt.registerTask('default', "less编译生成css并压缩", function () {
@@ -206,8 +204,8 @@ module.exports = function (grunt) {
      });*/
 
 
-    grunt.registerTask('default', "less编译生成css并压缩,同时实时监控", function () {
+    /*grunt.registerTask('default', "less编译生成css并压缩,同时实时监控", function () {
         grunt.task.run(['less', 'cssmin', 'watch:less']);
-    });
+    });*/
 
 };
