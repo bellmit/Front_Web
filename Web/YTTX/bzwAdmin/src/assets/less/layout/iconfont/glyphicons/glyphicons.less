@@ -1,13 +1,13 @@
 ///*--图标字体--*/
 
 @font-face{
-    font-family:'Glyphicons Halflings';
+    font-family:'font_glyphicons';
     src:url('@{glyphicons-font-url}@{glyphicons-font-name}.eot');
     src:url('@{glyphicons-font-url}@{glyphicons-font-name}.eot?#iefix') format('embedded-opentype'),
         url('@{glyphicons-font-url}@{glyphicons-font-name}.woff2') format('woff2'),
         url('@{glyphicons-font-url}@{glyphicons-font-name}.woff') format('woff'),
         url('@{glyphicons-font-url}@{glyphicons-font-name}.ttf') format('truetype'),
-        url('@{glyphicons-font-url}@{glyphicons-font-name}.svg#glyphicons_halflingsregular') format('svg');
+        url('@{glyphicons-font-url}@{glyphicons-font-name}.svg#glyphicons_wrap') format('svg');
 }
 
 
@@ -17,7 +17,7 @@
     position: relative;
     top: 1px;
     display: inline-block;
-    font-family: 'Glyphicons Halflings';
+    font-family: 'font_glyphicons';
     font-style: normal;
     font-weight: normal;
     line-height: 1;
@@ -233,6 +233,9 @@
 .glyphicon-level-up               { &:before { content: "\e204"; } }
 .glyphicon-copy                   { &:before { content: "\e205"; } }
 .glyphicon-paste                  { &:before { content: "\e206"; } }
+
+// .glyphicon-door                   { &:before { content: "\1f6aa"; } }
+// .glyphicon-key                    { &:before { content: "\1f511"; } }
 .glyphicon-alert                  { &:before { content: "\e209"; } }
 .glyphicon-equalizer              { &:before { content: "\e210"; } }
 .glyphicon-king                   { &:before { content: "\e211"; } }
@@ -289,6 +292,3 @@
 .glyphicon-menu-right             { &:before { content: "\e258"; } }
 .glyphicon-menu-down              { &:before { content: "\e259"; } }
 .glyphicon-menu-up                { &:before { content: "\e260"; } }
-
-
-

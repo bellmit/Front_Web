@@ -1,8 +1,8 @@
 /*提示信息*/
 .struct-layout-support{
-  .layout-relative-base;
-  .layout-fixedl-base;
-  .layout-base;
+  .layout-relative-base();
+  .layout-fixedl-base();
+  .layout-base();
   background:@color-base;
   background:rgba(0,0,0,1);
   height:100%;
@@ -12,14 +12,14 @@
   min-width:1080px;
 }
 .page-support-inner{
-  .layout-absolutel-base;
-  .layout-base;
+  .layout-absolutel-base();
+  .layout-base();
   height:100%;
   display:table;
 }
 .page-support-browser,
 .page-support-login{
-  .layout-base;
+  .layout-base();
   height:100%;
   display:table-cell;
   vertical-align:middle;
@@ -30,26 +30,25 @@
 
 .page-support-browser{
   .browser-theme{
-    .layout-base;
+    .layout-base();
     min-height:100px;
     padding:30px 0;
     line-height:20px;
     text-align: center;
     font-size:@font-size-base;
     color:@color-gray6;
-    .text-ww;
-    overflow: hidden;
+    .text-ww();
   }
   .browser-icon{
-    .layout-base;
+    .layout-base();
     background:@color-base;
     min-height:300px;
     padding:20px 0;
     text-align: center;
     font-size:0;
-    .user-select-base;
+    .user-select-base();
     a{
-      .box-sizing-base;
+      .box-sizing-base();
       display:inline-block;
       width:180px;
       height:250px;
@@ -114,11 +113,11 @@
     background-size:200px 200px;
   }
   p{
-    .layout-base;
+    .layout-base();
     font-size:@font-size-base;
     color:@color-gray6;
     white-space:nowrap;
-    .user-select-base;
+    .user-select-base();
     span{
       color:@btn-success-bg;
       &:not(:empty){

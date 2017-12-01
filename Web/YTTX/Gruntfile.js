@@ -184,9 +184,9 @@ module.exports = function (grunt) {
      });*/
 
 
-    grunt.registerTask('default', "js压缩", function () {
+    /*grunt.registerTask('default', "js压缩", function () {
         grunt.task.run(['uglify']);
-    });
+    });*/
 
 
     /*grunt.registerTask('default', "合并压缩js", function () {
@@ -204,8 +204,8 @@ module.exports = function (grunt) {
      });*/
 
 
-    /*grunt.registerTask('default', "less编译生成css并压缩,同时实时监控", function () {
+    grunt.registerTask('default', "less编译生成css并压缩,同时实时监控", function () {
         grunt.task.run(['less', 'cssmin', 'watch:less']);
-    });*/
+    });
 
 };
