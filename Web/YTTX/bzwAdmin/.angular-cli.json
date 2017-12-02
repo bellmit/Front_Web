@@ -19,11 +19,9 @@
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "app",
       "styles": [
-        "css/base.css"
+        "base.css"
       ],
       "scripts": [
-        "../node_modules/jquery/dist/jquery-1.12.4.min.js",
-        "../node_modules/moment/min/moment.js"
       ],
       "environmentSource": "environments/environment.ts",
       "environments": {
