@@ -22,7 +22,6 @@
         "assets/css/base.css"
       ],
       "scripts": [
-
       ],
       "environmentSource": "environments/environment.ts",
       "environments": {
