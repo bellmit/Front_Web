@@ -1,122 +1,212 @@
 /*常用按钮*/
-.core-cc-action-btn{
+.core-cc-act-btn{
+  .box-sizing-base();
   border:1px solid @color-gray10;
   color:@color-gray6;
   display:inline-block;
   .user-select-base();
   font-size:@font-size-base;
-  &:after{
-    padding:0 2px 0 5px;
-    font-size:@font-size-base;
-  }
-}
-/*编辑*/
-.core-cc-btn-edit{
-  &:after{
-    content:'\e647';
-    font-family: 'ux_nine';
-  }
-}
-/*新增*/
-.core-cc-btn-add{
-  &:after{
-    content:'\e634';
-    font-family: 'ux_seven';
+  background: @color-white;
+  vertical-align: middle;
+  &:before{
+    padding:0 5px 0 2px;
+    display: inline-block;
     color:@color-gray8;
     font-size:@font-size-base + 2;
   }
 }
+/*编辑*/
+.core-cc-btn-edit{
+  &:before{
+    content:'\e603';
+    font-family: 'ux_six';
+  }
+}
+/*新增*/
+.core-cc-btn-add{
+  &:before{
+    content:'\e667';
+    font-family: 'ux_six';
+  }
+}
 /*查看*/
 .core-cc-btn-detail{
-  &:after{
+  &:before{
     content:'\e607';
     font-family: 'ux_nine';
   }
 }
 /*删除*/
 .core-cc-btn-delete{
-  &:after{
+  &:before{
     content:'\e7c4';
     font-family: 'ux_nine';
   }
 }
 /*发货*/
 .core-cc-btn-send{
-  &:after{
+  &:before{
     content:'\e885';
     font-family: 'ux_three';
-    font-size:@font-size-base + 2;
-    color:@color-gray8;
   }
 }
 /*收货*/
 .core-cc-btn-receive{
-  &:after{
+  &:before{
     content:'\e887';
     font-family: 'ux_three';
-    font-size:@font-size-base + 2;
-    color:@color-gray8;
   }
 }
 /*商品*/
 .core-cc-btn-goods{
-  &:after{
+  &:before{
     content:'\e65b';
     font-family: 'ux_six';
-    color:@color-gray8;
-    font-size:@font-size-base + 2;
   }
 }
 /*属性*/
 .core-cc-btn-attr{
-  &:after{
+  &:before{
     content:'\e639';
     font-family: 'ux_nine';
   }
 }
 /*装车，配送*/
 .core-cc-btn-dispatch{
-  &:after{
+  &:before{
     content:'\e88b';
     font-family: 'ux_three';
-    font-size:@font-size-base + 2;
-    color:@color-gray8;
   }
 }
 /*店铺*/
 .core-cc-btn-store{
-  &:after{
+  &:before{
     content:'\e629';
     font-family: 'ux_six';
-    color:@color-gray8;
-    font-size:@font-size-base + 2;
   }
 }
 /*财务*/
 .core-cc-btn-finance{
-  &:after{
+  &:before{
     content:'\e678';
     font-family: 'ux_six';
-    color:@color-gray8;
-    font-size:@font-size-base + 2;
   }
 }
 /*财务*/
 .core-cc-btn-pay{
-  &:after{
+  &:before{
     content:'\e627';
     font-family: 'ux_six';
-    color:@color-gray8;
-    font-size:@font-size-base + 2;
   }
 }
 /*评论*/
 .core-cc-btn-comment{
-  &:after{
+  &:before{
     content:'\e61b';
     font-family: 'ux_six';
-    color:@color-gray8;
-    font-size:@font-size-base + 2;
   }
 }
-
+/*物流*/
+.core-cc-btn-logistics{
+  &:before{
+    content:'\e645';
+    font-family: 'ux_five';
+  }
+}
+/*购物车*/
+.core-cc-btn-cart{
+  &:before{
+    content:'\e645';
+    font-family: 'ux_six';
+  }
+}
+/*设置*/
+.core-cc-btn-setting{
+  &:before{
+    content:'\e649';
+    font-family: 'ux_eight';
+  }
+}
+/*禁用*/
+.core-cc-btn-disabled{
+  &:before{
+    content:'\e62a';
+    font-family: 'ux_eight';
+  }
+}
+/*启用*/
+.core-cc-btn-enabled{
+  &:before{
+    content:'\e652';
+    font-family: 'ux_eight';
+  }
+}
+/*上架*/
+.core-cc-btn-up{
+  &:before{
+    content:'\e64f';
+    font-family: 'ux_eight';
+  }
+}
+/*下架*/
+.core-cc-btn-down{
+  &:before{
+    content:'\e64c';
+    font-family: 'ux_eight';
+  }
+}
+/*关闭*/
+.core-cc-btn-close{
+  &:before{
+    content:'\e602';
+    font-family: 'ux_six';
+  }
+}
+/*显示*/
+.core-cc-btn-show{
+  &:before{
+    content:'\e63f';
+    font-family: 'ux_eight';
+  }
+}
+/*隐藏*/
+.core-cc-btn-hide{
+  &:before{
+    content:'\e651';
+    font-family: 'ux_eight';
+  }
+}
+/*分类*/
+.core-cc-btn-type{
+  &:before{
+    content:'\e6b8';
+    font-family: 'ux_four';
+  }
+}
+/*列表模式*/
+.core-cc-btn-list{
+  &:before{
+    content:'\e70f';
+    font-family: 'ux_four';
+  }
+}
+/*列表模式*/
+.core-cc-btn-list{
+  &:before{
+    content:'\e70f';
+    font-family: 'ux_four';
+  }
+}
+/*中图模式*/
+.core-cc-btn-mimage{
+  &:before{
+    content:'\e6b0';
+    font-family: 'ux_four';
+  }
+}/*大图模式*/
+.core-cc-btn-bimage{
+  &:before{
+    content:'\e6ae';
+    font-family: 'ux_four';
+  }
+}

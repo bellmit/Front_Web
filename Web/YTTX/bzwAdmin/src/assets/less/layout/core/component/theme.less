@@ -1,29 +1,24 @@
 /*主题*/
-.core-cc-theme1,
-.core-cc-theme2,
-.core-cc-theme3,
-.core-cc-theme4 {
+.core-cc-theme{
   .layout-base();
   display: inline-block;
-  min-height: 30px;
-  line-height: 30px;
+  min-height: 34px;
+  line-height: 34px;
   .user-select-base();
 }
 
-.core-cc-theme1,
-.core-cc-theme2 {
-  padding: 5px 30px;
-  font-size: @font-size-base;
-}
-
 .core-cc-theme1 {
+  padding: 5px 20px;
   color: @color-gray8;
-  background: @color-gray16;
-  margin: 20px 0 10px 0;
+  font-size: @font-size-base;
+  background: @color-gray17;
+  margin: 10px 0;
   border-left: 2px solid @color-info;
 }
 
 .core-cc-theme2 {
+  padding: 5px 20px;
+  font-size: @font-size-base;
   color: @color-gray8;
   background: @color-white;
   .box-shadow-base(0 1px 4px 0 @color-gray13);
@@ -37,21 +32,29 @@
 
 .core-cc-theme3 {
   color: @color-gray3;
-  padding: 20px 0;
-  font-size: @font-size-base + 4;
-}
-
-.core-cc-theme4 {
-  color: @color-gray3;
   padding: 5px 0;
   font-size: @font-size-base;
 }
-
-.core-cc-theme-close {
+/*带有操作按钮的主题*/
+.core-cc-theme-action{
   .layout-relative-base();
-  .core-cc-mini-icon1 {
-    .layout-absoluter-base(8px, 50%);
-    margin-top: -8px;
-    cursor: pointer;
+  .core-cc-act-btn{
+    .layout-absoluter-base(20px,50%);
+    border:1px solid @color-gray12;
+    padding:0;
+    margin:-14px 0 0 0;
+    width:28px;
+    height:28px;
+    overflow: hidden;
+    &:before{
+      margin:0;
+      padding:0;
+      text-align: center;
+      line-height: 26px;
+      width:100%;
+      height:100%;
+      font-size:@font-size-base;
+      color:@color-gray3;
+    }
   }
 }

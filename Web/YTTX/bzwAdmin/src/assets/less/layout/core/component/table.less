@@ -1,0 +1,74 @@
+/*表格常用样式*/
+.core-cc-table {
+  width: 100%;
+  tr {
+    width: 100%;
+  }
+  th,
+  td {
+    font-size: @font-size-base - 2;
+    color: @color-gray6;
+    .text-ww();
+  }
+  th {
+    .user-select-base(none);
+  }
+  thead th {
+    background-color: @color-gray17 !important;
+  }
+  /*操作按钮*/
+  .core-cc-act-btn {
+    padding: 2px 4px;
+    font-size: @font-size-base - 2;
+    &:before {
+      padding: 0 3px 0 2px;
+      font-size: @font-size-base;
+    }
+  }
+  /*高亮设置*/
+  .core-cc-item-lighten {
+    td, th {
+      background: lighten(@color-blue3, 36%) !important;
+    }
+  }
+  .core-cc-item-lightenbatch {
+    td, th {
+      background: lighten(@color-blue3, 38%) !important;
+    }
+  }
+  /*表单--默认文本*/
+  .core-cc-text-input {
+    .layout-base();
+    background-color: @color-white;
+    border: 1px solid lighten(@color-gray14, 16%);
+    height: 30px;
+    padding: 5px;
+    line-height: 20px;
+    .transition-base(border-color .15s ease-in-out 0);
+    &:focus {
+      border-color: rgba(104, 184, 80, .5);
+    }
+  }
+}
+
+.core-cc-table-vt{
+  vertical-align: top;
+  th,
+  td{
+    vertical-align: top !important;
+  }
+}
+.core-cc-table-vm{
+  vertical-align: middle;
+  th,
+  td{
+    vertical-align: middle !important;
+  }
+}
+.core-cc-table-vb{
+  vertical-align: bottom;
+  th,
+  td{
+    vertical-align: bottom !important;
+  }
+}
