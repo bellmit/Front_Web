@@ -1,0 +1,57 @@
+/*主题*/
+.core-cc-theme1,
+.core-cc-theme2,
+.core-cc-theme3,
+.core-cc-theme4 {
+  .layout-base();
+  display: inline-block;
+  min-height: 30px;
+  line-height: 30px;
+  .user-select-base();
+}
+
+.core-cc-theme1,
+.core-cc-theme2 {
+  padding: 5px 30px;
+  font-size: @font-size-base;
+}
+
+.core-cc-theme1 {
+  color: @color-gray8;
+  background: @color-gray16;
+  margin: 20px 0 10px 0;
+  border-left: 2px solid @color-info;
+}
+
+.core-cc-theme2 {
+  color: @color-gray8;
+  background: @color-white;
+  .box-shadow-base(0 1px 4px 0 @color-gray13);
+  .border-radius-base(0 3px 3px 0);
+  margin: 5px 0 10px 0;
+  border-left: 2px solid @color-info;
+  &:empty {
+    display: none;
+  }
+}
+
+.core-cc-theme3 {
+  color: @color-gray3;
+  padding: 20px 0;
+  font-size: @font-size-base + 4;
+}
+
+.core-cc-theme4 {
+  color: @color-gray3;
+  padding: 5px 0;
+  font-size: @font-size-base;
+}
+
+.core-cc-theme-close {
+  .layout-relative-base();
+  .core-cc-mini-icon1 {
+    .layout-absoluter-base(8px, 50%);
+    margin-top: -8px;
+    cursor: pointer;
+  }
+}
