@@ -641,7 +641,246 @@
       </div>
     </div>
 
-    <div class="core-cc-theme core-cc-theme3">表单</div>
+    <div class="core-cc-theme core-cc-theme1">表单</div>
+    <div class="row">
+      <div class="col-sm-18">
+        <div class="core-cc-theme core-cc-theme2">自定义表单1</div>
+        <form class="core-cc-form">
+          <div class="core-cc-from-groupself1">
+            <label class="self-label g-w-percent10 g-t-r"><span class="self-require g-c-red1">*</span>设备类型:</label>
+
+            <div class="self-input g-pos-r g-w-percent40">
+              <label class="self-label">
+                <input type="radio" value="1" name="deviceType">
+                &nbsp;S67
+              </label>
+              <label class="self-label">
+                <input type="radio" value="2" name="deviceType">
+                &nbsp;T6
+              </label>
+              <label class="self-label">
+                <input type="radio" value="3" name="deviceType">
+                &nbsp;其他
+              </label>
+            </div>
+          </div>
+
+          <div class="core-cc-from-groupself1">
+            <label class="self-label g-w-percent10 g-t-r"><span class="self-require g-c-red1">*</span>省份:</label>
+
+            <div class="self-input g-pos-r g-w-percent40">
+              <select>
+                <option selected value="1">湖南省</option>
+                <option value="2">湖北省</option>
+                <option value="3">广东省</option>
+                <option value="4">广西省</option>
+                <option value="5">山东省</option>
+                <option value="6">山西省</option>
+                <option value="7">河北省</option>
+                <option value="8">河南省</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="core-cc-from-groupself1">
+            <label class="self-label g-w-percent10 g-t-r"><span class="self-require g-c-red1">*</span>发货数量:</label>
+
+            <div class="self-input g-pos-r g-w-percent40">
+              <input type="text" name="deliveryQuantity" placeholder="请输入发货数量" maxlength="5"  />
+              <span class="self-tips self-tips-no g-c-red1 g-fs4 g-w-percent50">发货数量不能为空</span>
+            </div>
+          </div>
+
+          <div class="core-cc-from-groupself1">
+            <label class="self-label g-w-percent10 g-t-r"><span class="self-require g-c-red1">*</span>价格:</label>
+
+            <div class="self-input g-pos-r g-w-percent40">
+              <input type="text" name="deliveryPrice" placeholder="请输入价格" maxlength="5"  />
+              <span class="self-tips self-tips-yes"></span>
+            </div>
+          </div>
+
+          <div class="core-cc-from-groupself1">
+            <label class="self-label g-w-percent10 g-t-r">颜色搭配:</label>
+
+            <div class="self-input g-pos-r g-w-percent40">
+              <label class="self-label">
+                <input type="checkbox" value="1" name="deviceColor">
+                &nbsp;黑色
+              </label>
+              <label class="self-label">
+                <input checked type="checkbox" value="2" name="deviceColor">
+                &nbsp;银色
+              </label>
+              <label class="self-label">
+                <input type="checkbox" value="3" name="deviceColor">
+                &nbsp;白色
+              </label>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="col-sm-6">
+        <div class="core-cc-theme core-cc-theme2">自定义表单2</div>
+        <form class="core-cc-form">
+          <div class="core-cc-from-groupself2">
+            <label class="self-label g-pos-r g-w-percent50 label-icon label-unicon">
+              <input type="text" name="username" placeholder="请输入登陆账号" class="self-input" autocomplete="off" />
+              <span class="self-tips self-tips-yes"></span>
+            </label>
+          </div>
+
+          <div class="core-cc-from-groupself2">
+            <label class="self-label g-pos-r g-w-percent50 label-icon label-pwdicon">
+              <input type="password" placeholder="请输入登陆密码" name="password" autocomplete="off" class="self-input" />
+              <span class="self-tips self-tips-no g-c-red1">登陆密码不能少于6位</span>
+            </label>
+          </div>
+
+          <div class="core-cc-from-groupself2">
+            <label class="self-label g-pos-r g-w-percent32 label-icon label-vcicon">
+              <input type="text" name="identifyingCode" placeholder="请输入验证码" class="self-input" minlength="4" maxlength="6" autocomplete="off" />
+            </label>
+            <label class="self-valid g-t-r g-f-r g-w-percent15">
+              <img alt="验证码" src="assets/images/bg/bg_default.png">
+            </label>
+          </div>
+
+          <div class="core-cc-from-groupself2">
+            <button type="button" class="btn btn-info btn-lg g-w-percent50 g-clear-br g-t-c">立即登录</button>
+          </div>
+        </form>
+      </div>
+      <div class="col-sm-12">
+        <div class="core-cc-theme core-cc-theme2">自定义表单3</div>
+        <form class="core-cc-form">
+          <div class="core-cc-from-groupself3">
+            <label class="self-label g-w-percent10 g-t-l">运营商全称</label>
+
+            <div class="self-input  g-pos-r g-w-percent26">
+              <input type="text" class="text-show" name="organizationName" readonly placeholder="" />
+            </div>
+          </div>
+
+          <div class="g-w-percent50 g-h-number2"></div>
+
+          <div class="core-cc-from-groupself3">
+            <label class="self-label g-w-percent10 g-t-l"><span class="self-require g-c-red1">*</span>负责人</label>
+
+            <div class="self-input g-pos-r g-w-percent26">
+              <input type="text" name="linkman" placeholder="请输入负责人" />
+              <span class="self-tips self-tips-no g-c-red1 g-fs4 g-w-percent50">负责人不能为空</span>
+            </div>
+          </div>
+
+          <div class="core-cc-from-groupself3">
+            <label class="self-label g-w-percent10 g-t-l"><span class="self-require g-c-red1">*</span>手机号码</label>
+
+            <div class="self-input g-pos-r g-w-percent26">
+              <input type="text" name="cellphone" placeholder="请输入手机号码" maxlength="13" class="ui-mobile-phone"  />
+              <span class="self-tips self-tips-yes"></span>
+            </div>
+          </div>
+
+          <div class="core-cc-from-groupself3">
+            <label class="self-label g-w-percent10 g-t-l">开户银行</label>
+
+            <div class="self-input g-w-percent26">
+              <input type="text" name="depositBank"  />
+            </div>
+          </div>
+
+          <div class="core-cc-from-groupself3 g-gap-mb6">
+            <label class="self-label g-w-percent10 g-v-t g-t-l">备注</label>
+
+            <div class="self-input g-w-percent26">
+              <textarea name="remark"></textarea>
+            </div>
+          </div>
+
+          <div class="core-cc-from-groupself3 g-t-c">
+            <button type="button" class="btn btn-info g-w-percent50 g-fs6 g-gap-mb2">确&nbsp;定</button>
+            <button type="button" class="btn btn-white g-w-percent50 g-fs6">重&nbsp;置</button>
+          </div>
+        </form>
+      </div>
+      <div class="col-sm-12">
+        <div class="core-cc-theme core-cc-theme2">自定义表单4</div>
+        <form class="core-cc-form">
+          <ul class="g-t-l">
+            <li>
+              <h5>呵呵</h5>
+              <div class="g-w-percent24 core-cc-from-groupself4">
+                <div class="self-input g-pos-r g-w-percent50">
+                  <input type="radio" value="1" name="basetype">&nbsp;:按全额的&nbsp;<input name="baseprofit" class="g-w-number3" type="text" maxlength="6">&nbsp;%为基数分
+                </div>
+              </div>
+              <div class="g-w-percent50 core-cc-from-groupself4">
+                <div class="self-input g-pos-r g-w-percent50">
+                  <input type="radio" value="2" name="basetype">&nbsp;:按每用户&nbsp;<input name="baseprofit" class="g-w-number8 " type="text" maxlength="15">&nbsp;元进行提成（<span class="g-c-red1">暂无此类型</span>）
+                </div>
+              </div>
+              <div class="g-w-percent24 core-cc-from-groupself4">
+                <div class="self-input g-pos-r g-w-percent50">
+                  <input type="radio" disabled ng-disabled="true" value="3" name="basetype">&nbsp;:按所得的&nbsp;<input  name="baseprofit" class="g-w-number2" type="text" maxlength="6">&nbsp;%为基数（<span class="g-c-red1">暂无此类型</span>）
+                </div>
+              </div>
+              <div class="g-w-percent50 core-cc-from-groupself4">
+                <div class="self-input g-pos-r g-w-percent50">
+                  <input type="radio" value="4" name="basetype">&nbsp;:按&nbsp;<input name="baseprofit" data-limit="15" class="g-w-number8" type="text" maxlength="15">&nbsp;元进行（<span class="g-c-red1">暂无此类型</span>）
+                </div>
+              </div>
+              <div class="g-w-percent50 core-cc-from-groupself4">
+                <button type="button" class="btn btn-red g-br3 g-f-r">设置</button>
+                <div class="clearfix"></div>
+              </div>
+            </li>
+            <li>
+              <h5>哈哈</h5>
+              <div class="g-w-percent50  core-cc-from-groupself4">
+                <div class="self-input g-pos-r g-w-percent50">
+                  <input type="radio" value="1" name="standardtype">&nbsp;:按百分比分润
+                </div>
+              </div>
+              <div class="g-w-percent50 core-cc-from-groupself4">
+                <div class="self-input g-pos-r g-w-percent16">
+                  运营:&nbsp;<input name="standardprofit1" class="g-w-number3" type="text" maxlength="6">&nbsp;%
+                </div>
+                <div class="self-input g-pos-r g-w-percent16">
+                  5S:&nbsp;<input  name="standardprofit2" class="g-w-number3" type="text" maxlength="6">&nbsp;%
+                </div>
+                <div class="self-input g-pos-r g-w-percent16">
+                  平台:&nbsp;<input name="standardprofit3" class="g-w-number3" type="text" maxlength="6">&nbsp;%
+                </div>
+              </div>
+              <div class="g-w-percent50 core-cc-from-groupself4">
+                <div class="self-input g-pos-r g-w-percent50">
+                  <input disabled ng-disabled="true" type="radio" value="2" name="standardtype">&nbsp;:按数值分润（<span class="g-c-red1">暂无此类型</span>）
+                </div>
+              </div>
+
+
+              <div class="g-w-percent50 core-cc-from-groupself4">
+                <div class="self-input g-pos-r g-w-percent16">
+                  运营:&nbsp;<input name="standardprofit1" data-limit="15" class="g-w-number5" type="text"  maxlength="15">
+                </div>
+                <div class="self-input g-pos-r g-w-percent16">
+                  5S:&nbsp;<input name="standardprofit2" data-limit="15" class="g-w-number5" type="text" maxlength="15">
+                </div>
+                <div class="self-input g-pos-r g-w-percent16">
+                  平台:&nbsp;<input name="standardprofit3" data-limit="15" class="g-w-number5" type="text" maxlength="15">
+                </div>
+              </div>
+              <div class="g-w-percent50 core-cc-from-groupself4">
+                <button type="button" class="btn btn-red g-br3 g-f-r" >设置</button>
+                <div class="clearfix"></div>
+              </div>
+            </li>
+          </ul>
+        </form>
+      </div>
+    </div>
+
 
   </div>
 </div>
