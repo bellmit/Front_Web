@@ -198,7 +198,7 @@ html input[type="button"],
 input[type="reset"],
 input[type="submit"] {
   cursor: pointer;
-  -webkit-appearance: button;
+  .appearance-base(button);
 }
 
 button[disabled],
@@ -225,8 +225,7 @@ textarea {
   border: none;
   .box-shadow-base(none);
   .border-radius-base(0);
-  -webkit-appearance:none;
-  appearance:none;
+  .appearance-base();
 }
 
 input:required,
@@ -251,13 +250,12 @@ input[type="number"]::-webkit-outer-spin-button {
 }
 
 input[type="search"] {
-  -webkit-appearance: textfield;
+  .appearance-base(field);
 }
 
 input[type="search"]::-webkit-search-cancel-button,
 input[type="search"]::-webkit-search-decoration {
-  -webkit-appearance:none;
-  appearance:none;
+  .appearance-base();
 }
 
 fieldset {

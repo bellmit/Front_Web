@@ -1,4 +1,13 @@
 /*常用按钮*/
+.core-cc-btn{
+  .box-sizing-base();
+  .user-select-base();
+  vertical-align: middle;
+  &:before{
+    padding:0 5px 0 2px;
+    display: inline-block;
+  }
+}
 .core-cc-act-btn{
   .box-sizing-base();
   border:1px solid @color-gray10;
@@ -203,10 +212,54 @@
     content:'\e6b0';
     font-family: 'ux_four';
   }
-}/*大图模式*/
+}
+/*大图模式*/
 .core-cc-btn-bimage{
   &:before{
     content:'\e6ae';
     font-family: 'ux_four';
   }
 }
+/*提交*/
+.core-cc-btn-submit{
+  &:before{
+    content:'\e893';
+    font-family: 'ux_three';
+  }
+}
+/*重置*/
+.core-cc-btn-reset{
+  &:before{
+    content:'\e641';
+    font-family: 'ux_six';
+  }
+}
+/*查询*/
+.core-cc-btn-query{
+  &:before{
+    content:'\e6bb';
+    font-family: 'ux_four';
+  }
+}
+/*下载*/
+.core-cc-btn-download{
+  &:before{
+    content:'\e782';
+    font-family: 'ux_nine';
+  }
+}
+/*上传*/
+.core-cc-btn-upload{
+  &:before{
+    content:'\e783';
+    font-family: 'ux_nine';
+  }
+}
+/*确定*/
+.core-cc-btn-sure{
+  &:before{
+    content:'\e601';
+    font-family: 'ux_six';
+  }
+}
+
