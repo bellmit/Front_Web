@@ -7,23 +7,26 @@
   .user-select-base();
 }
 
-.core-cc-theme1 {
+.core-cc-theme1,
+.core-cc-theme2,
+.core-cc-theme3,
+.core-cc-theme4{
   padding: 5px 20px;
-  color: @color-gray8;
   font-size: @font-size-base;
+  margin: 5px 0;
+}
+
+.core-cc-theme1 {
+  color: @color-gray8;
   background: @color-gray17;
-  margin: 10px 0;
   border-left: 2px solid @color-info;
 }
 
 .core-cc-theme2 {
-  padding: 5px 20px;
-  font-size: @font-size-base;
   color: @color-gray8;
   background: @color-white;
   .box-shadow-base(0 1px 4px 0 @color-gray13);
   .border-radius-base(0 3px 3px 0);
-  margin: 5px 0 10px 0;
   border-left: 2px solid @color-info;
   &:empty {
     display: none;
@@ -32,8 +35,10 @@
 
 .core-cc-theme3 {
   color: @color-gray3;
-  padding: 5px 0;
-  font-size: @font-size-base;
+  border: 1px solid @color-gray14;
+}
+.core-cc-theme4 {
+  color: @color-gray3;
 }
 /*带有操作按钮的主题*/
 .core-cc-theme-action{

@@ -8,15 +8,45 @@
     .user-select-base();
     .box-sizing-base();
     display: inline-block;
-    span {
-      display: inline-block;
-      padding: 0 10px;
-      font-size: @font-size-base;
-      cursor: pointer;
+    .core-cc-act-btn {
+      width: 100%;
+      margin: 0;
       .transition(all ease-in .1s .01s);
     }
   }
 }
+
+/*有间隙列表*/
+.core-cc-listgroup-gap {
+  padding: 0 10px;
+  &.core-cc-listgroup1 {
+    > li {
+      padding: 5px 0;
+    }
+  }
+  &.core-cc-listgroup2{
+    >li:nth-child(2n){
+      padding:5px 0 5px 10px;
+    }
+  }
+  &.core-cc-listgroup3,
+  &.core-cc-listgroup4,
+  &.core-cc-listgroup5,
+  &.core-cc-listgroup6,
+  &.core-cc-listgroup7,
+  &.core-cc-listgroup8,
+  &.core-cc-listgroup9,
+  &.core-cc-listgroup10 {
+    >li{
+      padding:5px 0 5px 10px;
+      &:first-child{
+        padding-left:0;
+      }
+    }
+  }
+}
+
+/*定制宽度*/
 .core-cc-listgroup1 {
   > li {
     width: 100% !important;
