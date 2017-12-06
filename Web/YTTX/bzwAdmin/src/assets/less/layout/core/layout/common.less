@@ -1,58 +1,4 @@
 
-/*商品标签*/
-.admin-attrlabel-widget1 {
-  font-size: 0;
-  display: inline-block;
-  .box-sizing-base();
-  border: 1px solid @color-gray14;
-  padding: 0;
-  margin: 8px 5px 3px 5px;
-  background: @color-white;
-  .border-radius-base(0 3px 3px 0);
-  span {
-    .layout-relative-base();
-    font-size: @font-size-base - 2;
-    display: inline-block;
-    .box-sizing-base();
-    padding: 5px 20px;
-    margin: 0;
-    background: @color-white;
-    color: @color-gray9;
-    cursor: pointer;
-    border-left: 1px solid @color-gray14;
-    &:first-child {
-      border-left: none !important;
-    }
-    &:hover {
-      background: lighten(@btn-success-bg, 45%);
-    }
-  }
-  .attrlabel-active {
-    &:before {
-      .layout-absolutel-base();
-      .layout-base();
-      height: 100%;
-      border: 1px solid @color-red2;
-      font-size: @font-size-base - 2;
-      line-height: 8px;
-      text-align: left;
-      content: '\e601';
-      font-family: 'ux_six';
-      color: @color-red2;
-    }
-  }
-  &:before {
-    font-size: @font-size-base - 2;
-    display: inline-block;
-    height: 100%;
-    .box-sizing-base();
-    padding: 5px 3px;
-    background: @color-red2;
-    content: attr(data-name) ':';
-    color: @color-white;
-  }
-}
-
 /*菜单操作条*/
 .admin-action-item {
   /*公共函数*/
@@ -271,132 +217,45 @@
   }
 }
 
-/*表格*/
-.admin-layout-table {
-  /*表格全局设置*/
-  width: 100% !important;
-  tr {
-    width: 100%;
-  }
-  th, td {
-    font-size: @font-size-base - 2;
-    color: @color-gray6;
-    .text-ww();
-  }
-  thead th,
-  tr th,
-  tfoot th {
-    .user-select-base(none);
-  }
-  thead th {
-    background-color: @color-gray17 !important;
-  }
-  /*高亮设置*/
-  .item-lighten {
-    td, th {
-      background: lighten(@color-blue3, 36%) !important;
-    }
-  }
-  .item-lightenbatch {
-    td, th {
-      background: lighten(@color-blue3, 38%) !important;
-    }
-  }
 
-  /*操作按钮*/
-  .btn-operate {
-    display: inline-block;
-    padding: 0 5px;
-    margin: 0 5px;
-    cursor: pointer;
+/*表格全选*/
+.admin-batchitem-wrap {
+  .layout-relative-base();
+  .layout-base();
+  height: 20px;
+  display: inline-block;
+  vertical-align: middle;
+  background: none;
+}
+.admin-batchitem-check {
+  .layout-absolutel-base();
+  .layout-base();
+  height: 100%;
+  background: none;
+  text-align: center;
+  display: inline-block;
+  vertical-align: middle;
+  color: @color-gray6;
+  font-size: @font-size-base - 2;
+  .user-select-base();
+  cursor: pointer;
+  .transition-base(all .05s ease-in .01s);
+  &:hover {
     color: @color-blue3;
-    &:hover {
-      color: darken(@color-blue3, 20%);
-      text-decoration: underline;
-    }
   }
-
-  .btn-operate-gray{
-    display: inline-block;
-    padding: 2px 3px;
-    margin: 2px 3px;
-    cursor: pointer;
-    color: @color-gray8;
-    background:@color-white;
-    .border-radius-base(3px);
-    border:1px solid @color-gray13;
-    font-size:@font-size-base - 2;
-    &:hover {
-      color: darken(@color-gray8, 20%);
-      border-color:@color-gray12;
-      text-decoration:none;
-    }
-  }
-
-  /*表格标题*/
-  caption {
-    height: 30px;
-    line-height: 25px;
+  &:before {
     font-size: @font-size-base;
-    color: @color-gray6;
-    text-indent: 20px;
-    .text-of();
-    .user-select-base();
+    font-family: 'ux_six';
+    content: '\e662';
   }
-
-  /*定制表单*/
-  .admin-table-input {
-    background-color: @color-white;
-    border: 1px solid #e4e4e4;
-    height: 30px;
-    padding: 5px;
-    line-height: 20px;
-    .transition-base(border-color .15s ease-in-out 0);
-    width: 100%;
-    &:focus {
-      border-color: rgba(104, 184, 80, .5);
-    }
+  &:after {
+    content: '全选';
   }
-
-  /*表格全选*/
-  .admin-batchitem-wrap {
-    .layout-relative-base();
-    .layout-base();
-    height: 20px;
-    display: inline-block;
-    vertical-align: middle;
-    background: none;
-  }
-  .admin-batchitem-check {
-    .layout-absolutel-base();
-    .layout-base();
-    height: 100%;
-    background: none;
-    text-align: center;
-    display: inline-block;
-    vertical-align: middle;
-    color: @color-gray6;
-    font-size: @font-size-base - 2;
-    .user-select-base();
-    cursor: pointer;
-    .transition-base(all .05s ease-in .01s);
-    &:hover {
-      color: @color-blue3;
-    }
-    &:before {
-      font-size: @font-size-base;
-      font-family: 'ux_six';
-      content: '\e662';
-    }
-    &:after {
-      content: '全选';
-    }
-  }
-  .admin-batchitem-checkactive {
-    color: @color-blue3 !important;
-    &:before {
-      content: '\e663';
-    }
+}
+.admin-batchitem-checkactive {
+  color: @color-blue3 !important;
+  &:before {
+    content: '\e663';
   }
 }
 
