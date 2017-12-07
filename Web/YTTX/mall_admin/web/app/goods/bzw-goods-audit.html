@@ -125,8 +125,16 @@
                                     <input type="text" id="search_name" />
                                 </div>
                                 <div class="admin-search-item">
-                                    <label>店铺名称：</label>
-                                    <input type="text" id="search_providerName" />
+                                    <label>商品来源：</label>
+                                    <input placeholder="供应商名称或店铺名称" type="text" id="search_source" />
+                                </div>
+                                <div class="admin-search-item">
+                                    <label>商品种类：</label>
+                                    <select id="search_goodsKinds" >
+                                        <option selected value="">全部</option>
+                                        <option value="1">布住网商品</option>
+                                        <option value="2">自营商品</option>
+                                    </select>
                                 </div>
                                 <div class="admin-search-item">
                                     <label>审核状态：</label>

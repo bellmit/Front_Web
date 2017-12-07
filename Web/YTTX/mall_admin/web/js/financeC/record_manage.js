@@ -55,7 +55,7 @@
                         autoWidth: true, /*是否*/
                         paging: false,
                         ajax: {
-                            url: debug ? "../../json/test.json" : "http://10.0.5.226:8082/mall-buzhubms-api/finance/capitalflowlog/get/list",
+                            url: debug ? "../../json/test.json" : "http://10.0.5.226:8082/mall-buzhubms-api/sh/finance/capitalflowlog/get/list",
                             dataType: 'JSON',
                             method: 'post',
                             dataSrc: function (json) {

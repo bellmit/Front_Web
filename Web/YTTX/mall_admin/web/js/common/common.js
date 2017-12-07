@@ -946,6 +946,13 @@
             "name": "财务管理C端",
             "code": "financeC",
             "match": "-financeC-",
+            "extendmenu": {
+                "position": "after",
+                "list": [{
+                    "modLink": "bzw-financeC-recordmanage",
+                    "modName": "交易流水管理"
+                }]
+            },
             /*"ignoremodule": true,*/
             "class": "menu-ux-finance",
             "module": "financeC",
@@ -955,6 +962,7 @@
             "name": "订单管理",
             "code": "order",
             "match": "-order-",
+            /*此模块只在本地测试模式展示*/
             /*"ignoremodule": true,*/
             "class": "menu-ux-store",
             "module": "order",
