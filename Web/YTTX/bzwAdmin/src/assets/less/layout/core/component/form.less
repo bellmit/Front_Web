@@ -1,6 +1,6 @@
 /*表单*/
 /*表单公用函数*/
-.core-cc-form-label(){
+.core-cc-form-label() {
   font-size: @font-size-base;
   color: @color-gray6;
   padding: 5px 10px;
@@ -8,44 +8,14 @@
   font-weight: normal;
 }
 
-/*默认label*/
-.core-cc-label{
-  .core-cc-form-label();
-}
-
-/*必填项span*/
-.core-cc-require{
-  display: inline-block;
-  text-align: center;
-  vertical-align: middle;
-  line-height: @font-size-base + 6;
-  width: 16px;
-  height: 16px;
-}
-
-/*常用文本*/
-.core-cc-readonly{
-  cursor: default;
-  background: @color-white;
-}
-
-/*编辑器*/
-.core-cc-editor{
-  border: none !important;
-  height: 0 !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  display: inline-block !important;
-  min-height: 0 !important;
-}
-
-/*自定义表单*/
-.core-cc-from-groupself1{
-  @tip-height: 20px;
-  @input-height: 48px;
+.core-cc-form-groupself(@item-height:48px,@item-gap-pt:10px) {
+  @tip-height: @item-gap-pt * 2;
+  @input-height: @item-height -  (@item-gap-pt * 2);
+  @input-lineheight: 18px;
+  @input-gap-pt: (@input-height - @input-lineheight) / 2;
   .layout-base();
-  min-height: @input-height;
-  padding: 10px 10px;
+  min-height: @item-height;
+  padding: @item-gap-pt 10px;
   font-size: 0;
   .self-label,
   .self-input {
@@ -54,17 +24,16 @@
     height: 100%;
   }
   .self-label {
-    line-height: 28px;
+    line-height: @input-height;
     padding: 0 10px;
     font-weight: normal;
     font-size: @font-size-base;
     color: @color-gray6;
     .self-require {
       display: inline-block;
-      padding: 0 3px;
+      padding: 2px 3px 0 3px;
       height: 100%;
       vertical-align: middle;
-      line-height: 30px;
     }
   }
   .self-input {
@@ -77,18 +46,19 @@
       border: 1px solid @color-gray12;
       font-size: @font-size-base;
       color: @color-gray6;
+      .transition-base(border-color .2s ease-in-out .02s);
       &:focus {
-        border: 1px solid @color-gray10;
+        border-color: @color-info;
       }
     }
     input[type="text"],
     input[type="password"] {
       height: 100%;
       line-height: @font-size-base + 4;
-      padding: 5px 30px 5px 5px;
+      padding: @input-gap-pt 30px @input-gap-pt 5px;
     }
     select {
-      height: 28px;
+      height: @input-height;
     }
     textarea {
       min-height: 100px;
@@ -127,7 +97,94 @@
     }
   }
 }
-.core-cc-from-groupself2{
+
+/*默认类--默认label*/
+.core-cc-form-label {
+  .core-cc-form-label();
+}
+
+/*默认类--默认输入域*/
+.core-cc-form-input {
+  .box-sizing-base();
+  border: 1px solid @color-gray12;
+  background: @color-white;
+  .transition-base(border-color .2s ease-in-out .02s);
+  color: @color-gray8;
+  height: 30px;
+  padding: 5px 10px;
+  line-height: 20px;
+  vertical-align: middle;
+  &:focus {
+    border-color: @color-info;
+  }
+}
+
+/*默认类--默认radio,checkbox*/
+.core-cc-form-check {
+  width: 14px;
+  height: 14px;
+  border: 1px solid @color-gray12;
+  display: inline-block;
+  vertical-align: middle;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+}
+
+/*默认类--必填项span*/
+.core-cc-form-require {
+  display: inline-block;
+  text-align: center;
+  vertical-align: middle;
+  line-height: @font-size-base + 6;
+  width: 16px;
+  height: 16px;
+}
+
+/*默认类--textarea*/
+.core-cc-form-textarea {
+  min-height: 120px;
+}
+
+/*特殊状态*/
+/*只读*/
+.core-cc-form-readonly {
+  cursor: default !important;
+  background: @color-white !important;
+}
+
+/*静态展示*/
+.core-cc-form-show {
+  .box-sizing-base();
+  color: @color-gray8;
+  height: 30px;
+  padding: 5px 10px;
+  line-height: 20px;
+  border-bottom: 1px solid @color-gray12;
+  background: @color-white;
+  .appearance-base(field);
+}
+
+/*编辑器*/
+.core-cc-form-editor {
+  border: none !important;
+  height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: inline-block !important;
+  min-height: 0 !important;
+}
+
+/*自定义表单*/
+.core-cc-form-groupself-min {
+  .core-cc-form-groupself();
+}
+
+.core-cc-form-groupself-def {
+  .core-cc-form-groupself(68px, 15px);
+}
+
+.core-cc-form-groupself-icon {
   @label-height: 40px;
   @tip-height: 20px;
   .layout-base();
@@ -200,8 +257,9 @@
     height: 100%;
     line-height: @font-size-base + 2;
     padding: 12px 10px + @tip-height 12px 10px;
+    .transition-base(border-color .2s ease-in-out .02s);
     &:focus {
-      border-color: @color-gray10;
+      border-color: @color-info;
     }
   }
   /*错误提示*/
@@ -241,178 +299,16 @@
     text-align: left;
   }
 }
-.core-cc-from-groupself3{
-  @tip-height: 20px;
-  @input-height: 42px;
-  .layout-base();
-  min-height: @input-height;
-  padding: 5px 10px;
-  font-size: 0;
-
-  .self-label,
-  .self-input {
-    .box-sizing-base();
-    display: inline-block;
-    height: 100%;
-  }
-  .self-label {
-    line-height: 32px;
-    padding: 0 10px;
-    font-weight: normal;
-    font-size: @font-size-base + 2;
-    color: @color-gray3;
-    .self-require {
-      display: inline-block;
-      padding: 0 3px;
-      height: 100%;
-      vertical-align: middle;
-      line-height: 35px;
-    }
-  }
-
-  .self-input {
-    width: 100%;
-    input[type="text"],
-    input[type="password"],
-    textarea,
-    select {
-      .layout-base();
-      .border-radius-base(3px);
-      border: 1px solid @color-gray13;
-      font-size: @font-size-base;
-      color: @color-gray6;
-      &:focus {
-        border: 1px solid @color-gray10;
-      }
-    }
-
-    input[type="text"],
-    input[type="password"] {
-      height: 100%;
-      line-height: @font-size-base + 4;
-      padding: 7px 30px 7px 5px;
-    }
-    select {
-      height: 32px;
-    }
-    textarea {
-      min-height: 100px;
-      padding: 4px 5px;
-      line-height: @font-size-base + 10;
-    }
-
-    .text-show {
-      border: 1px solid @color-gray14 !important;
-      &:focus {
-        border: 1px solid @color-gray14 !important;
-      }
-    }
-  }
-
-  .self-tips {
-    .box-sizing-base();
-    position: absolute;
-    z-index: 10;
-    .user-select-base();
-    display: inline-block;
-    height: @tip-height;
-    line-height: @tip-height;
-    overflow: hidden;
-  }
-  .self-tips-no {
-    right: -100%;
-    text-indent: 5px;
-    top: 7px;
-  }
-  .self-tips-yes {
-    width: @tip-height;
-    right: 5px;
-    top: 7px;
-    &:after,
-    &::after {
-      content: '\e624';
-      font-family: 'ux_seven';
-      font-size: @font-size-base + 6;
-      width: 100%;
-      height: 100%;
-      display: inline-block;
-      color: @color-gray12;
-    }
-  }
-}
-.core-cc-from-groupself4{
-  @tip-height: 20px;
-  @input-height: 42px;
-  .box-sizing-base();
-  min-height: @input-height;
-  display: inline-block;
-  padding: 5px 10px;
-  font-size: 0;
-
-  .self-label,
-  .self-input {
-    .box-sizing-base();
-    display: inline-block;
-    height: 100%;
-  }
-  .self-label {
-    line-height: 32px;
-    padding: 0 10px;
-    font-weight: normal;
-    font-size: @font-size-base + 2;
-    color: @color-gray3;
-    .self-require {
-      display: inline-block;
-      padding: 0 3px;
-      height: 100%;
-      vertical-align: middle;
-      line-height: 35px;
-    }
-  }
-
-  .self-input {
-    line-height: @input-height - 10;
-    font-size: @font-size-base;
-    color: @color-gray3;
-    input[type="text"],
-    input[type="password"],
-    textarea,
-    select {
-      .box-sizing-base();
-      display: inline-block;
-      border: 1px solid @color-gray13;
-      font-size: @font-size-base;
-      color: @color-gray6;
-      &:focus {
-        border: 1px solid @color-gray10;
-      }
-    }
-
-    input[type="text"],
-    input[type="password"] {
-      height: 100%;
-      line-height: @font-size-base + 4;
-      padding: 7px 2px;
-    }
-    select {
-      height: 32px;
-    }
-    textarea {
-      min-height: 100px;
-      padding: 4px 5px;
-      line-height: @font-size-base + 10;
-    }
-  }
-}
 
 /*表单*/
-.core-cc-form{
+.core-cc-form {
   textarea {
     min-height: 120px;
   }
-  .control-label{
+  .control-label {
     .core-cc-form-label();
-  };
+  }
+;
   /*编辑器*/
   .ke-container {
     border: 1px solid @color-gray14;
