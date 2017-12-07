@@ -1,0 +1,262 @@
+/*表单公用函数*/
+/*默认label*/
+.core-cc-form-label() {
+  font-size: @font-size-base;
+  color: @color-gray6;
+  padding: 5px 10px;
+  line-height: @font-size-base + 10;
+  font-weight: normal;
+}
+
+/*自定义表单*/
+.core-cc-form-groupself(@item-height:48px,@item-gap-pt:10px) {
+  @tip-height: @item-gap-pt * 2;
+  @input-height: @item-height -  (@item-gap-pt * 2);
+  @input-lineheight: 18px;
+  @input-gap-pt: (@input-height - @input-lineheight) / 2;
+  .layout-base();
+  min-height: @item-height;
+  padding: @item-gap-pt 10px;
+  font-size: 0;
+  .self-label,
+  .self-input {
+    .box-sizing-base();
+    display: inline-block;
+    height: 100%;
+  }
+  .self-label {
+    line-height: @input-height;
+    padding: 0 10px;
+    font-weight: normal;
+    font-size: @font-size-base;
+    color: @color-gray6;
+    .self-require {
+      display: inline-block;
+      padding: 2px 3px 0 3px;
+      height: 100%;
+      vertical-align: middle;
+    }
+  }
+  .self-input {
+    width: 100%;
+    input[type="text"],
+    input[type="password"],
+    textarea,
+    select {
+      .layout-base();
+      border: 1px solid @color-gray12;
+      font-size: @font-size-base;
+      color: @color-gray6;
+      .transition-base(border-color .2s ease-in-out .02s);
+      &:focus {
+        border-color: @color-info;
+      }
+    }
+    input[type="text"],
+    input[type="password"] {
+      height: 100%;
+      line-height: @font-size-base + 4;
+      padding: @input-gap-pt 30px @input-gap-pt 5px;
+    }
+    select {
+      height: @input-height;
+    }
+    textarea {
+      min-height: 100px;
+      padding: 4px 5px;
+      line-height: @font-size-base + 10;
+    }
+  }
+
+  .self-tips {
+    .box-sizing-base();
+    position: absolute;
+    z-index: 10;
+    .user-select-base();
+    display: inline-block;
+    height: @tip-height;
+    line-height: @tip-height;
+    overflow: hidden;
+  }
+  .self-tips-no {
+    left: 0;
+    bottom: -@tip-height;
+  }
+  .self-tips-yes {
+    width: @tip-height;
+    right: 5px;
+    top: 5px;
+    &:after,
+    &::after {
+      content: '\e624';
+      font-family: 'ux_seven';
+      font-size: @font-size-base + 6;
+      width: 100%;
+      height: 100%;
+      display: inline-block;
+      color: @color-gray12;
+    }
+  }
+}
+
+/**/
+.core-cc-form-groupself-icon(){
+  @item-height:72px;
+  @item-gap-pt:16px;
+  @label-height:@item-height - (@item-gap-pt * 2);
+  @tip-height: 20px;
+  .layout-base();
+  min-height: @label-height + 30px;
+  padding: 15px 0;
+  font-size: 0;
+  .self-label,
+  .self-input,
+  .self-valid {
+    .box-sizing-base();
+    display: inline-block;
+    height: 100%;
+  }
+  /*标签*/
+  .self-label {
+    padding-left: @label-height;
+  }
+  /*验证码*/
+  .self-valid {
+    overflow: hidden;
+    img {
+      display: inline-block;
+      .box-sizing-base();
+      border: 1px solid @color-gray12;
+      max-width:120px;
+      min-width:60px;
+      min-height:@label-height - 20px;
+      max-height:@label-height;
+      cursor: pointer;
+    }
+  }
+  /*登陆图标*/
+  .label-icon {
+    &:before,
+    &::before {
+      cursor: pointer;
+      padding: 0;
+      margin: 0;
+      content: '';
+      display: inline-block;
+      .layout-absolutel-base();
+      width: @label-height + 2;
+      height: @label-height + 2;
+    }
+  }
+  .label-unicon {
+    &:before,
+    &::before {
+      background: @color-gray12 url('../images/login-username-icon.png') no-repeat center center;
+    }
+  }
+  .label-pwdicon {
+    &:before,
+    &::before {
+      background: @color-gray12 url('../images/login-pwd-icon.png') no-repeat center center;
+    }
+  }
+  .label-vcicon {
+    &:before,
+    &::before {
+      background: @color-gray12 url('../images/login-validcode-icon.png') no-repeat center center;
+    }
+  }
+  /*表单*/
+  .self-input {
+    .layout-base();
+    border-top: 1px solid @color-gray12;
+    border-right: 1px solid @color-gray12;
+    border-bottom: 1px solid @color-gray12;
+    font-size: @font-size-base;
+    color: @color-gray6;
+    height: 100%;
+    line-height: @font-size-base + 2;
+    padding: 12px 10px + @tip-height 12px 10px;
+    .transition-base(border-color .2s ease-in-out .02s);
+    &:focus {
+      border-color: @color-info;
+    }
+  }
+  /*错误提示*/
+  .self-tips {
+    .box-sizing-base();
+    height: @tip-height;
+    position: absolute;
+    z-index: 10;
+    .user-select-base();
+    font-weight: normal;
+    line-height: @tip-height;
+    overflow: hidden;
+  }
+  .self-tips-yes {
+    width: @tip-height;
+    bottom: 10px;
+    right: 5px;
+    text-align: center;
+    overflow: hidden;
+    &:after,
+    &::after {
+      content: '\e624';
+      font-family: 'ux_seven';
+      font-size: @font-size-base + 6;
+      width: 100%;
+      height: 100%;
+      display: inline-block;
+      color: @color-gray12;
+    }
+  }
+  .self-tips-no {
+    width: 100%;
+    bottom: -@tip-height;
+    right: 0;
+    font-size: @font-size-base;
+    padding-left: @label-height;
+    text-align: left;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
