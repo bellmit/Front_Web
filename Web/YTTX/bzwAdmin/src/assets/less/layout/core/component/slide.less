@@ -7,7 +7,7 @@
   min-width: 300px;
   padding: 10px;
   text-align: center;
-  .core-cc-slide-show {
+  .slide-show {
     .layout-relative-base();
     .layout-base(300px);
     overflow: hidden;
@@ -15,7 +15,7 @@
     margin: 0 auto;
     border: 1px solid @color-gray14;
   }
-  .core-cc-slide-image {
+  .slide-image {
     .layout-absolutel-base(0, 0, 10);
     width: 100%;
     height: 100%;
@@ -33,7 +33,7 @@
       max-height: 100%;
     }
   }
-  .core-cc-slide-btn {
+  .slide-btn {
     cursor: pointer;
     position: absolute;
     top: 0;
@@ -62,7 +62,7 @@
       }
     }
   }
-  .core-cc-slide-btnl {
+  .slide-btnl {
     left: 0;
     &:before,
     &&:before {
@@ -72,7 +72,7 @@
       content: '\e625';
     }
   }
-  .core-cc-slide-btnr {
+  .slide-btnr {
     right: 0;
     &:before,
     &&:before {
@@ -82,7 +82,7 @@
       content: '\e63f';
     }
   }
-  .core-cc-slide-tool {
+  .slide-tool {
     overflow: hidden;
     .layout-base(300px);
     height: 60px;
@@ -116,42 +116,19 @@
         display: inline-block;
       }
       span {
-        .layout-absoluter-base(-20px, -20px);
-        line-height: 20px;
-        text-align: center;
-        cursor: pointer;
-        .user-select-base();
-        width: 20px;
-        height: 20px;
-        background: rgba(0, 0, 0, .5);
-        color: @color-gray14;
-        &:hover {
-          background: rgba(0, 0, 0, .8);
-        }
-        &:before,
-        &::before {
-          width: 100%;
-          height: 100%;
-          content: '\e602';
-          font-family: 'ux_six';
-          font-size: @font-size-base + 2;
-        }
+        .core-slide-img-delete-func(20px,20px);
       }
       .slide-delete-active {
         top: 0 !important;
         right: 0 !important;
       }
     }
-    .core-cc-slide-active {
+    .slide-active {
       border: 3px solid @color-gray12;
     }
   }
-  .core-cc-slide-upload {
+  .slide-upload {
     .layout-base(300px);
-    /*border:1px solid @color-gray12;
-    height:34px;
-    line-height: 34px;
-    color:@color-gray6;*/
     margin: 10px auto 0 auto;
     text-align: center;
   }

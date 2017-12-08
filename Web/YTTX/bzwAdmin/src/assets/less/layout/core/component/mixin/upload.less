@@ -1,12 +1,11 @@
 /*文件上传*/
 /*常用上传按钮*/
-.core-upload-file-func(){
+.core-upload-file-func(@upload-size:30px){
   .layout-relative-base();
   .layout-base();
+  background:@color-white;
   display: inline-block;
-  min-height: 30px;
   cursor: pointer;
-  border: 1px solid @color-gray12;
   .appearance-base(button);
   input[type="file"] {
     .layout-absolutel-base(0,0);
@@ -15,27 +14,23 @@
     .opacity-base(0);
   }
   &:before {
-    @upload-size: 30px;
     .layout-absolutel-base(50%, 50%);
-    line-height:30px;
+    line-height:@upload-size;
     margin-top: -@upload-size/2;
     margin-left: -@upload-size/2;
     width: 0;
     height: 0;
     white-space: nowrap;
-    content: '\e600';
-    font-family: 'ux_eight';
-    font-size: @upload-size;
     color: @color-gray9;
     text-align: center;
   }
 }
 /*带预览上传按钮*/
-.core-cc-upload-view {
+/*.core-cc-upload-view {
   .layout-relative-base();
   .layout-base();
   display: inline-block;
   min-height: 30px;
   cursor: pointer;
   border: 1px solid @color-gray12;
-}
+}*/
