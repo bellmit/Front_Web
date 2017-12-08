@@ -1,10 +1,14 @@
 /*文件上传*/
-.core-cc-upload {
+/*常用上传按钮*/
+.core-cc-upload-file {
+  .core-upload-file-func();
+}
+/*带预览上传按钮*/
+.core-cc-upload-view {
   .layout-relative-base();
-  input[type="file"] {
-    .layout-absolutel-base();
-    .layout-base();
-    height: 100%;
-    .opacity-base(0);
-  }
+  .layout-base();
+  display: inline-block;
+  min-height: 30px;
+  cursor: pointer;
+  border: 1px solid @color-gray12;
 }
