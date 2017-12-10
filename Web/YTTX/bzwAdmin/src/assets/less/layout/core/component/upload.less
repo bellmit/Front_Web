@@ -69,8 +69,9 @@
     @img-count: 4;
     @img-item: (@show-width - (@show-gap-pl * 2) - 23px)/@img-count;
 
-    .layout-absolutel-base(-1px, 100%, 0);
+    .layout-absolutel-base(-1px, 100%, 200);
     .layout-base(@show-width);
+    //display: none;
     padding: @show-gap-pl;
     overflow-y: auto;
     border: 1px solid @color-gray12;
