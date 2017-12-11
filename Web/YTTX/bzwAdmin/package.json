@@ -1,5 +1,5 @@
 {
-  "name": "bzw-admin",
+  "name": "bzwAdmin",
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
@@ -8,7 +8,9 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "dev": "webpack --watch",
+    "dev-server": "webpack-dev-server --hot --inline"
   },
   "private": true,
   "dependencies": {

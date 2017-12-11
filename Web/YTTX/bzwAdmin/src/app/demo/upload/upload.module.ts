@@ -16,4 +16,5 @@ import {DemoUploadComponent} from './upload.component';
 
 
 export class DemoUploadModule {
+
 }

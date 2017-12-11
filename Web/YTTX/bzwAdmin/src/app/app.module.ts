@@ -17,14 +17,8 @@ import {DemoUploadComponent} from './demo/upload/upload.component';
 import {DemoSlideComponent} from './demo/slide/slide.component';
 
 /*导入服务*/
-import {UploadViewService} from './component/upload/upload.service';
-
-
 
 @NgModule({
-  imports: [
-    BrowserModule
-  ],
   declarations: [
     AppComponent/*根应用*/,
     DemoBtnComponent/*测试--按钮组件*/,
@@ -39,8 +33,10 @@ import {UploadViewService} from './component/upload/upload.service';
     DemoUploadComponent/*测试--文件上传组件*/,
     DemoSlideComponent/*测试--轮播组件*/
   ],
+  imports: [
+    BrowserModule
+  ],
   providers: [
-    UploadViewService
   ],
   bootstrap: [AppComponent]
   /*
@@ -57,4 +53,7 @@ import {UploadViewService} from './component/upload/upload.service';
 
 
 export class AppModule {
+  toggleView(){
+    console.log('ni mei');
+  }
 }
