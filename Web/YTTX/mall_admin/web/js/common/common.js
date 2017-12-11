@@ -946,13 +946,6 @@
             "name": "财务管理C端",
             "code": "financeC",
             "match": "-financeC-",
-            "extendmenu": {
-                "position": "after",
-                "list": [{
-                    "modLink": "bzw-financeC-recordmanage",
-                    "modName": "交易流水管理"
-                }]
-            },
             /*"ignoremodule": true,*/
             "class": "menu-ux-finance",
             "module": "financeC",
