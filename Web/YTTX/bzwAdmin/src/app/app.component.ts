@@ -1,6 +1,6 @@
 /*引入依赖*/
-import { Component } from '@angular/core';
-
+import {Component} from '@angular/core';
+import {UploadViewService} from './component/upload/upload.service';
 
 @Component({
   selector: 'app-root',
@@ -10,5 +10,11 @@ import { Component } from '@angular/core';
 
 /*导出组件类*/
 export class AppComponent {
-  title = '';
+  showview = false;
+
+
+  toggleView() {
+    this.showview = !this.showview;
+    console.log(this.showview);
+  }
 }

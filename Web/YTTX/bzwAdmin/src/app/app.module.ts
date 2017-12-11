@@ -3,7 +3,7 @@ import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 import {AppComponent} from './app.component';
 
-/*引入测试示例*/
+/*引入示例*/
 import {DemoBtnComponent} from './demo/btn/btn.component';
 import {DemoThemeComponent} from './demo/theme/theme.component';
 import {DemoListgroupComponent} from './demo/listgroup/listgroup.component';
@@ -16,8 +16,15 @@ import {DemoFormComponent} from './demo/form/form.component';
 import {DemoUploadComponent} from './demo/upload/upload.component';
 import {DemoSlideComponent} from './demo/slide/slide.component';
 
-@NgModule({
+/*导入服务*/
+import {UploadViewService} from './component/upload/upload.service';
 
+
+
+@NgModule({
+  imports: [
+    BrowserModule
+  ],
   declarations: [
     AppComponent/*根应用*/,
     DemoBtnComponent/*测试--按钮组件*/,
@@ -32,10 +39,9 @@ import {DemoSlideComponent} from './demo/slide/slide.component';
     DemoUploadComponent/*测试--文件上传组件*/,
     DemoSlideComponent/*测试--轮播组件*/
   ],
-  imports: [
-    BrowserModule
+  providers: [
+    UploadViewService
   ],
-  providers: [],
   bootstrap: [AppComponent]
   /*
     providers: Provider[]这个选项是一个数组,需要我们列出我们这个模块的一些需要共用的服务,然后我们就可以在这个模块的各个组件中通过依赖注入使用了.
