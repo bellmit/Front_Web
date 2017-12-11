@@ -12,8 +12,9 @@ import {DemoOrderComponent} from './demo/order/order.component';
 import {DemoGridlabelComponent} from './demo/gridlabel/gridlabel.component';
 import {DemoAttrlabelComponent} from './demo/attrlabel/attrlabel.component';
 import {DemoActionitemComponent} from './demo/actionitem/actionitem.component';
-
-
+import {DemoFormComponent} from './demo/form/form.component';
+import {DemoUploadComponent} from './demo/upload/upload.component';
+import {DemoSlideComponent} from './demo/slide/slide.component';
 
 @NgModule({
 
@@ -26,7 +27,10 @@ import {DemoActionitemComponent} from './demo/actionitem/actionitem.component';
     DemoOrderComponent/*测试--订单组件*/,
     DemoGridlabelComponent/*测试--弹出面板组件*/,
     DemoAttrlabelComponent/*测试--属性面板组件*/,
-    DemoActionitemComponent/*测试--操作条组件*/
+    DemoActionitemComponent/*测试--操作条组件*/,
+    DemoFormComponent/*测试--表单组件*/,
+    DemoUploadComponent/*测试--文件上传组件*/,
+    DemoSlideComponent/*测试--轮播组件*/
   ],
   imports: [
     BrowserModule

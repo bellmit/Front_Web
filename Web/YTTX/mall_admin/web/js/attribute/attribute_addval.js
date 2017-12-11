@@ -1064,7 +1064,6 @@
 				len=attrlist.length,
 				layer=1;
 
-
 			if(len!==0){
 				for(i;i<len;i++){
 					var curitem=attrlist[i],
@@ -1376,9 +1375,9 @@
 								});
 							}
 							/*解析属性*/
-							var str='<ul class="admin-typeitem-wrap admin-maintype-wrap">'+resolveAttr(result.list,2)+'</ul>';
+							var str=resolveAttr(result.list,2);
 							if(str){
-								$(str).appendTo($admin_list_wrap.html(''));
+								$('<ul class="admin-typeitem-wrap admin-maintype-wrap">'+str+'</ul>').appendTo($admin_list_wrap.html(''));
 							}else{
 								$admin_list_wrap.addClass('g-t-c').html('暂无数据，请&nbsp;<span class="g-c-info">添加标签</span>');
 							}
