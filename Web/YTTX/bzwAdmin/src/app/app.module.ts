@@ -3,7 +3,7 @@ import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 import {AppComponent} from './app.component';
 
-/*引入示例*/
+/*引入静态示例*/
 import {DemoBtnComponent} from './demo/btn/btn.component';
 import {DemoThemeComponent} from './demo/theme/theme.component';
 import {DemoListgroupComponent} from './demo/listgroup/listgroup.component';
@@ -16,10 +16,14 @@ import {DemoFormComponent} from './demo/form/form.component';
 import {DemoUploadComponent} from './demo/upload/upload.component';
 import {DemoSlideComponent} from './demo/slide/slide.component';
 
+/*引入动态示例*/
+import {DemoTestThemeComponent} from './demo/test-theme/test-theme.component';
+
 /*导入服务*/
 
 @NgModule({
   declarations: [
+    /*静态demo*/
     AppComponent/*根应用*/,
     DemoBtnComponent/*测试--按钮组件*/,
     DemoThemeComponent/*测试--主题组件*/,
@@ -31,7 +35,11 @@ import {DemoSlideComponent} from './demo/slide/slide.component';
     DemoActionitemComponent/*测试--操作条组件*/,
     DemoFormComponent/*测试--表单组件*/,
     DemoUploadComponent/*测试--文件上传组件*/,
-    DemoSlideComponent/*测试--轮播组件*/
+    DemoSlideComponent/*测试--轮播组件*/,
+    DemoThemeComponent/*测试--主题组件*/,
+
+    /*动态demo*/
+    DemoTestThemeComponent/*测试--主题组件*/,
   ],
   imports: [
     BrowserModule

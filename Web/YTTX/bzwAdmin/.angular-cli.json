@@ -22,6 +22,7 @@
         "assets/css/base.css"
       ],
       "scripts": [
+        "assets/js/mock.min.js"
       ],
       "environmentSource": "environments/environment.ts",
       "environments": {
