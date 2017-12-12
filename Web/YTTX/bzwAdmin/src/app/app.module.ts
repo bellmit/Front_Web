@@ -3,6 +3,12 @@ import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 import {AppComponent} from './app.component';
 
+
+/*引入配置类*/
+import {BaseConfig} from './config/base.config';
+/*引入工具类*/
+import {ToolUtil} from './tool/tool.util';
+
 /*引入静态示例*/
 import {DemoBtnComponent} from './demo/btn/btn.component';
 import {DemoThemeComponent} from './demo/theme/theme.component';
@@ -19,6 +25,12 @@ import {DemoSlideComponent} from './demo/slide/slide.component';
 /*引入动态示例*/
 
 /*导入服务*/
+let base_config = BaseConfig.getBaseConfig();
+if (base_config.environment === 'dev') {
+  console.log(base_config.url);
+} else {
+  console.log(base_config.url);
+}
 
 @NgModule({
   declarations: [
@@ -35,14 +47,12 @@ import {DemoSlideComponent} from './demo/slide/slide.component';
     DemoFormComponent/*测试--表单组件*/,
     DemoUploadComponent/*测试--文件上传组件*/,
     DemoSlideComponent/*测试--轮播组件*/,
-    DemoThemeComponent/*测试--主题组件*/,
-
+    DemoThemeComponent/*测试--主题组件*/
   ],
   imports: [
     BrowserModule
   ],
-  providers: [
-  ],
+  providers: [],
   bootstrap: [AppComponent]
   /*
     providers: Provider[]这个选项是一个数组,需要我们列出我们这个模块的一些需要共用的服务,然后我们就可以在这个模块的各个组件中通过依赖注入使用了.
