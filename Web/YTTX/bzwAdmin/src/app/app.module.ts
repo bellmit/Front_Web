@@ -17,7 +17,6 @@ import {DemoUploadComponent} from './demo/upload/upload.component';
 import {DemoSlideComponent} from './demo/slide/slide.component';
 
 /*引入动态示例*/
-import {DemoTestThemeComponent} from './demo/test-theme/test-theme.component';
 
 /*导入服务*/
 
@@ -38,8 +37,6 @@ import {DemoTestThemeComponent} from './demo/test-theme/test-theme.component';
     DemoSlideComponent/*测试--轮播组件*/,
     DemoThemeComponent/*测试--主题组件*/,
 
-    /*动态demo*/
-    DemoTestThemeComponent/*测试--主题组件*/,
   ],
   imports: [
     BrowserModule
@@ -61,7 +58,5 @@ import {DemoTestThemeComponent} from './demo/test-theme/test-theme.component';
 
 
 export class AppModule {
-  toggleView(){
-    console.log('ni mei');
-  }
+
 }
