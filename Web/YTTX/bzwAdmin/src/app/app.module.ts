@@ -28,6 +28,9 @@ import {DemoSlideComponent} from './demo/slide/slide.component';
 let base_config = BaseConfig.getBaseConfig();
 if (base_config.environment === 'dev') {
   console.log(base_config.url);
+  let util=new ToolUtil();
+  console.log(util.supportStorage());
+  console.log(util.supportBox());
 } else {
   console.log(base_config.url);
 }
