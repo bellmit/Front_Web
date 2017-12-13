@@ -22,8 +22,8 @@
         "assets/css/base.css"
       ],
       "scripts": [
-        "assets/js/jquery-1.12.4.min.js",
-        "assets/js/mock.min.js"
+        "assets/js/base/jquery-1.12.4.min.js",
+        "assets/js/base/mock.min.js"
       ],
       "environmentSource": "environments/environment.ts",
       "environments": {
