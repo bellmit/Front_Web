@@ -316,7 +316,7 @@
 }
 
 .core-cc-btn-self-dark {
-  .button-variant-extend(@color-white; @color-dark; darken(@color-dark, 10%));
+  .button-variant-extend(@color-white; lighten(@color-dark,10%); darken(@color-dark, 10%));
 }
 
 .core-cc-btn-self-light {
@@ -328,5 +328,5 @@
 }
 
 .core-cc-btn-self-white {
-  .button-variant-extend(@color-gray6;  darken(@color-white, 5%); @color-gray12);
+  .button-variant-extend(@color-gray5;  @color-white; @color-gray12);
 }
