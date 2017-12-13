@@ -1,4 +1,5 @@
 import {BaseConfig} from '../config/base.config';
+import {Http} from '@angular/http';
 
 /*引入jquery*/
 declare var $: any;
@@ -50,7 +51,7 @@ export class ToolUtil {
   }
 
   /*清除本地存储--清除所有数据*/
-  static clearAll(flag){
+  static clearAll(flag) {
     if (flag) {
       sessionStorage.clear();
     } else {
@@ -212,7 +213,62 @@ export class ToolUtil {
   }
 
 
+  /*返回请求信息*/
+  requestHttp(config) {
+    let req = {
+      url: '',
+      method: 'POST',
+      dataType: 'json',
+      headers: {"Content-Type": "application/x-www-form-urlencoded"},
+      data: ''
+    };
 
+    /*扩展配置*/
+    $ ? $.extend(true, req, config) : Object.assign(req, config);
+
+    /*适配配置*/
+    req.url = this.adaptReqUrl(req);
+    if (config.encode || config.decode) {
+      (function () {
+        let tempdata = Object.keys(req.data);
+        for (let i of tempdata) {
+          req.data[i] = config.encode ? encodeURIComponent(tempdata[i]) : decodeURIComponent(tempdata[i]);
+        }
+      }());
+    }
+    var deferred = $q.defer(),
+      promise = $http(req);
+
+    promise.then(function (resp) {
+      deferred.resolve(resp);
+    }, function (resp) {
+      deferred.reject(resp);
+    });
+    return deferred.promise;
+  }
+
+  /*适配请求地址*/
+  adaptReqUrl(config) {
+    let debug = config.debug,
+      url = config.url;
+
+    if (debug) {
+      /*debug模式*/
+      if (url.indexOf('.json') !== -1) {
+        return url;
+      } else {
+        return 'json/test.json';
+      }
+    } else {
+      if (config.common) {
+        /*公共模式*/
+        return base_config.common_url + url;
+      } else {
+        /*默认模式*/
+        return base_config.url + url;
+      }
+    }
+  }
 
 
 }
