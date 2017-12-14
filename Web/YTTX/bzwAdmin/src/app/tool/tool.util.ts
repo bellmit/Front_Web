@@ -36,6 +36,8 @@ export class ToolUtil {
   static supportImage() {
     if (window.URL) {
       return window.URL.createObjectURL && typeof window.URL.createObjectURL === 'function';
+    }else if(window.webkitURL){
+      return window.webkitURL.createObjectURL && typeof window.webkitURL.createObjectURL === 'function';
     } else {
       return false;
     }

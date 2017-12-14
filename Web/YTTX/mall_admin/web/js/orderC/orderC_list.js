@@ -55,6 +55,11 @@
                 $admin_search_btn = $('#admin_search_btn'),
                 $admin_search_clear = $('#admin_search_clear');
 
+            /*明细对象*/
+            var $show_detail_wrap = $('#show_detail_wrap'),
+                $show_detail_content = $('#show_detail_content'),
+                $show_detail_goods = $('#show_detail_goods');
+
 
             /*列表请求配置*/
             var order_page = {
@@ -81,7 +86,10 @@
                                             id: 'sequence',
                                             orderNumber: 'guid',
                                             nickname: 'name',
+                                            freight: 'money',
                                             totalMoney: 'money',
+                                            amount: 'money',
+                                            deductionAmount: 'money',
                                             paymentType: 'rule,1,2,3',
                                             createTime: 'datetime',
                                             orderStatus: 'rule,21,9,11,0,1,3,30,40,5'/*0待付款 1取消订单 3待发货 9待收货 11待评价 21已评价 30返修 40退货*/
@@ -145,12 +153,9 @@
                                 "data": "nickname"
                             },
                             {
-                                "data": "totalMoney",
+                                "data": "amount",
                                 "render": function (data, type, full, meta) {
-                                    if (data === '' || isNaN(data)) {
-                                        return '0.00';
-                                    }
-                                    return public_tool.moneyCorrect(data, 15, false)[0];
+                                    return '￥:' + public_tool.moneyCorrect(data, 15, false)[0] + '&nbsp;<em class="g-c-gray10">(</em><em class="g-c-gray8">￥:' + public_tool.moneyCorrect(full.totalMoney, 15, false)[0] + '</em>&nbsp;<em class="g-c-gray12">|</em>&nbsp;<em class="g-c-gray8">￥:' + public_tool.moneyCorrect(full.freight, 15, false)[0] + '</em>&nbsp;<em class="g-c-gray12">|</em>&nbsp;<em class="g-c-gray8">￥:' + public_tool.moneyCorrect(full.deductionAmount, 15, false)[0] + '</em><em class="g-c-gray10">)</em>';
                                 }
                             },
                             {
@@ -161,7 +166,7 @@
                                         2: '支付宝',
                                         3: '其他'
                                     };
-                                    return pay_type[data] || '未知';
+                                    return pay_type[data] || '';
                                 }
                             },
                             {
@@ -212,23 +217,25 @@
                     }
                 };
 
-            /*明细对象*/
-            var $show_detail_wrap = $('#show_detail_wrap'),
-                $show_detail_content = $('#show_detail_content'),
-                $show_detail_goods = $('#show_detail_goods');
-
-
             /*清空查询条件*/
             $admin_search_clear.on('click', function () {
                 /*清除查询条件*/
                 $.each([$search_paymentType, $search_orderNumber, $search_orderMoneyStart, $search_orderMoneyEnd, $search_timeStart, $search_timeEnd], function () {
-                    this.val('');
+                    var selector = this.selector;
+                    if (selector.indexOf('paymentType') !== -1) {
+                        this.find(':selected').prop({
+                            'selected': false
+                        });
+                    } else {
+                        this.val('');
+                    }
                 });
                 /*重置分页*/
                 order_page.page = 1;
                 order_page.total = 0;
                 order_config.config.ajax.data['page'] = order_page.page;
-            }).trigger('click');
+            });
+            $admin_search_clear.trigger('click');
 
             /*日历查询*/
             datePickWidget.datePick([$search_timeStart, $search_timeEnd]);
@@ -292,15 +299,17 @@
                         operate_item = null;
                     }
                     operate_item = $tr.addClass('item-lighten');
-                    showDetail(id);
+                    showDetail(id, $tr);
                 }
             });
 
             /*绑定关闭弹出层*/
             $show_detail_wrap.on('hide.bs.modal', function () {
                 if (operate_item !== null) {
-                    operate_item.removeClass('item-lighten');
-                    operate_item = null;
+                    setTimeout(function () {
+                        operate_item.removeClass('item-lighten');
+                        operate_item = null;
+                    }, 1000);
                 }
             });
 
@@ -321,20 +330,20 @@
 
 
         /*查看详情*/
-        function showDetail(id) {
+        function showDetail(id, $tr) {
             if (typeof id === 'undefined' || id === '') {
                 return false;
             }
             $.ajax({
-                    url: debug ? "../../json/test.json" : "http://10.0.5.226:8082/mall-buzhubms-api/sh/goodsorder/detail",
-                    dataType: 'JSON',
-                    method: 'post',
-                    data: {
-                        id: id,
-                        adminId: decodeURIComponent(logininfo.param.adminId),
-                        token: decodeURIComponent(logininfo.param.token)
-                    }
-                })
+                url: debug ? "../../json/test.json" : "http://10.0.5.226:8082/mall-buzhubms-api/sh/goodsorder/detail",
+                dataType: 'JSON',
+                method: 'post',
+                data: {
+                    id: id,
+                    adminId: decodeURIComponent(logininfo.param.adminId),
+                    token: decodeURIComponent(logininfo.param.token)
+                }
+            })
                 .done(function (resp) {
                     if (debug) {
                         var resp = testWidget.testSuccess('list');
@@ -343,7 +352,10 @@
                                 id: 'sequence',
                                 orderNumber: 'guid',
                                 nickname: 'name',
+                                freight: 'money',
                                 totalMoney: 'money',
+                                amount: 'money',
+                                deductionAmount: 'money',
                                 createTime: 'datetime',
                                 consigneeName: 'name',
                                 consigneePhone: 'mobile',
@@ -388,7 +400,7 @@
                         detail_map = {
                             orderNumber: '订单号',
                             orderStatus: '订单状态',
-                            totalMoney: '订单总价',
+                            amount: '订单总价',
                             nickname: '买家名称(昵称)',
                             createTime: '下单时间',
                             consigneeName: '收货人姓名',
@@ -398,7 +410,6 @@
                             quantity: '商品件数',
                             goodsPriceTotal: '商品总金额'
                         };
-                        /*添加高亮状态*/
                         for (var j in list) {
                             if (j !== 'goods') {
                                 if (typeof detail_map[j] !== 'undefined') {
@@ -413,11 +424,26 @@
                                             30: '<div class="g-c-gray10">返修</div>',
                                             40: '<div class="g-c-gray10">禁用(锁定)</div>'
                                         };
-                                       str += '<tr><th>' + detail_map[j] + ':</th><td>' + (statusmap[list[j]] || "<div class=\"g-c-red1\">异常</div>") + '</td></tr>';
+                                        str += '<tr><th>' + detail_map[j] + ':</th><td>' + (statusmap[list[j]] || "<div class=\"g-c-red1\">异常</div>") + '</td></tr>';
                                     } else if (j === 'consigneePhone') {
                                         str += '<tr><th>' + detail_map[j] + ':</th><td>' + public_tool.phoneFormat(list[j]) + '</td></tr>';
-                                    } else if (j === 'totalMoney') {
-                                        str += '<tr><th>' + detail_map[j] + ':</th><td>' + public_tool.moneyCorrect(list[j], 15, false)[0] + '</td></tr>';
+                                    } else if (j === 'amount') {
+                                        str += '<tr><th>' + detail_map[j] + ':<br /><em class="g-c-gray9">(商品总价|物流费用|用券抵扣)</em></th><td>￥:' + public_tool.moneyCorrect(list[j], 15, false)[0] + '&nbsp;<em class="g-c-gray10">(</em><em class="g-c-gray8">￥:' + (function () {
+                                            if (typeof list['totalMoney'] !== 'undefined' || list['totalMoney'] !== '') {
+                                                return public_tool.moneyCorrect(list['totalMoney'], 15, false)[0];
+                                            }
+                                            return 0.00;
+                                        })() + '</em>&nbsp;<em class="g-c-gray12">|</em>&nbsp;<em class="g-c-gray8">￥:' + (function () {
+                                            if (typeof list['freight'] !== 'undefined' || list['freight'] !== '') {
+                                                return public_tool.moneyCorrect(list['freight'], 15, false)[0];
+                                            }
+                                            return 0.00;
+                                        })() + '</em>&nbsp;<em class="g-c-gray12">|</em>&nbsp;<em class="g-c-gray8">￥:' + (function () {
+                                            if (typeof list['deductionAmount'] !== 'undefined' || list['deductionAmount'] !== '') {
+                                                return public_tool.moneyCorrect(list['deductionAmount'], 15, false)[0];
+                                            }
+                                            return 0.00;
+                                        })() + '</em><em class="g-c-gray10">)</em></td></tr>';
                                     } else {
                                         str += '<tr><th>' + detail_map[j] + ':</th><td>' + list[j] + '</td></tr>';
                                     }
@@ -433,13 +459,18 @@
                                         <td>' + item["goodsName"] + '</td>\
                                         <td>' + item["attribute"] + '</td>\
                                         <td>' + item["quantity"] + '</td>\
-                                        <td>' + public_tool.moneyCorrect(item["goodsPriceTotal"],15,false)[0] + '</td>\
+                                        <td>' + public_tool.moneyCorrect(item["goodsPriceTotal"], 15, false)[0] + '</td>\
                                     </tr>';
                             }
                             $(goodsstr).appendTo($show_detail_goods.html(''));
                         }
                         if (str !== '') {
                             $(str).appendTo($show_detail_content.html(''));
+                            if (operate_item) {
+                                operate_item.removeClass('item-lighten');
+                                operate_item = null;
+                            }
+                            operate_item = $tr.addClass('item-lighten');
                             $show_detail_wrap.modal('show', {backdrop: 'static'});
                         }
                     }
