@@ -307,11 +307,9 @@ angular.module('ui.form', [])
                         if (data > 100) {
                             data = 100;
                         }
-                        self.value = data;
-                        console.log(data);
-                        /*scope.$apply(function () {
+                        scope.$apply(function () {
                             self.value = data;
-                        });*/
+                        });
                     }
                 });
 
@@ -319,16 +317,39 @@ angular.module('ui.form', [])
             }
         }
     })
-    /*关联百分比*/
-    .directive('uiRelationPercent', function () {
+    /*组合(关联)百分百*/
+    .directive('uiRelationPercent', ['toolUtil', function (toolUtil) {
         return {
             replace: false,
             restrict: 'EC',
             require: 'ngModel',
-            scope:{
-                action:'&action'
-            },
             link: function (scope, elem, attrs, ctrl) {
+
+                var relation = attrs.relation/*关联参数*/,
+                    isrelation = false/*是否是关联*/,
+                    current = attrs.current || attrs.id/*当前引用标识*/,
+                    relationlen = 0,
+                    currentindex = -1,
+                    relationarr,
+                    relationdom = [];
+
+                /*判断是否是关联*/
+                if (typeof relation !== 'undefined') {
+                    (function () {
+                        relationarr = relation.split(',');
+                        currentindex = toolUtil.arrIndex(current, relationarr);
+                        relationlen = relationarr.length;
+                        var i = 0;
+                        if (relationlen >= 2) {
+                            isrelation = true;
+                            for (i; i < relationlen; i++) {
+                                relationdom.push(document.getElementById(relationarr[i]));
+                            }
+                        }
+                    }());
+                }
+
+
                 /*绑定事件*/
                 angular.element(elem).bind('focusout', function ($event) {
                     var etype = $event.type,
@@ -338,7 +359,9 @@ angular.module('ui.form', [])
                     if (etype === 'focusout') {
                         data = self.value.replace(/[^0-9\.]*/g, '');
                         if (data === '') {
-                            self.value = '';
+                            scope.$apply(function () {
+                                self.value = '';
+                            });
                             return false;
                         }
                         if (data.indexOf('.') !== -1) {
@@ -358,24 +381,71 @@ angular.module('ui.form', [])
                             }());
                         }
                         if (data === '' || isNaN(data)) {
-                            self.value = '';
+                            scope.$apply(function () {
+                                self.value = '';
+                            });
                             return false;
                         }
                         data = (data * 10000) / 10000;
                         if (data > 100) {
                             data = 100;
                         }
+                        if (isrelation) {
+                            (function () {
+                                var j = 0,
+                                    res = 0,
+                                    tempstr = 0,
+                                    keep = 0;
+                                if (data === 100) {
+                                    /*当前设置为100%时*/
+                                    for (j; j < relationlen; j++) {
+                                        if (j !== currentindex) {
+                                            relationdom[j].value = '0';
+                                        }
+                                    }
+                                } else {
+                                    /*当前设置为其他情况时*/
+                                    for (j; j < relationlen; j++) {
+                                        /*计算非当前值*/
+                                        tempstr = relationdom[j].value;
+                                        if (tempstr !== '') {
+                                            if ((res * 10000 + tempstr * 10000) > 100 * 10000) {
+                                                keep = (res * 10000 + tempstr * 10000) - 100 * 10000;
+                                                var k = j + 1;
+                                                if (j === currentindex) {
+                                                    data = (tempstr * 10000 - keep) / 10000;
+                                                    if (k < relationlen) {
+                                                        for (k; k < relationlen; k++) {
+                                                            relationdom[k].value = '0';
+                                                        }
+                                                    }
+                                                } else {
+                                                    relationdom[j].value = (tempstr * 10000 - keep) / 10000;
+                                                    if (k < relationlen) {
+                                                        for (k; k < relationlen; k++) {
+                                                            if (j !== currentindex) {
+                                                                relationdom[k].value = '0';
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                                break;
+                                            } else {
+                                                res = (res * 10000 + tempstr * 10000) / 10000;
+                                            }
+                                        }
+                                    }
+                                }
+                            }());
+                        }
                         scope.$apply(function () {
                             self.value = data;
-                            scope.action();
                         });
                     }
                 });
-
-
             }
         }
-    })
+    }])
     /*html过滤，非法html指令*/
     .directive('uiFilterHtmlIllegal', ['toolUtil', function (toolUtil) {
         return {

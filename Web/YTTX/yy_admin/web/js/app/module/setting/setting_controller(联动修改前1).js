@@ -35,10 +35,7 @@ angular.module('app')
                 $admin_manage_reset: $('#admin_manage_reset'),
                 $setting_manage_dialog: $('#setting_manage_dialog'),
                 $submenu_scroll_wrap:$('#submenu_scroll_wrap'),
-                $admin_struct_menu: $('#admin_struct_menu'),
-                $standard_profit1:$('#standard_profit1'),
-                $standard_profit2:$('#standard_profit2'),
-                $standard_profit3:$('#standard_profit3')
+                $admin_struct_menu: $('#admin_struct_menu')
             },
         /*权限缓存*/
             jq_dom_power = {
@@ -462,17 +459,6 @@ angular.module('app')
                 record: self.record,
                 profit: self.profit
             }, type);
-        };
-        /*判断分润总值*/
-        this.isLegalProfit=function () {
-            if(self.profit.standard.profit1===''||self.profit.standard.profit2===''||self.profit.standard.profit3===''){
-                return false;
-            }
-            return ((self.profit.standard.profit1 * 10000)/10000) + ((self.profit.standard.profit2 * 10000)/10000) + ((self.profit.standard.profit3 * 10000)/10000)===100;
-        };
-        /*设置联动更新值*/
-        this.setRelationProfit=function () {
-           console.log('ni mei');
         };
 
         /*搜索服务--搜索过滤*/

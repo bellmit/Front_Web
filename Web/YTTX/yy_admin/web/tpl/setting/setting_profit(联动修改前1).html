@@ -18,7 +18,6 @@
                             <div class="self-input g-pos-r g-w-percent50">
                                 <input type="radio" ng-change="setting_ctrl.changeProfit('base')"  ng-model="setting_ctrl.profit.base.type" ng-value="1" name="basetype">&nbsp;:按全额的&nbsp;<input ng-if="setting_ctrl.profit.base.type===1" name="baseprofit" class="g-w-number3 ui-single-percent" type="text" ng-model="setting_ctrl.profit.base.profit" maxlength="6">&nbsp;%为基数分
                             </div>
-                            <button class="btn btn-red g-br3" type="button">{{setting_ctrl.profit.base.profit}}</button>
                         </div>
                         <div class="g-w-percent50 form-group-self4">
                             <div class="self-input g-pos-r g-w-percent50">
@@ -49,13 +48,13 @@
                         </div>
                         <div ng-if="setting_ctrl.profit.standard.type===1" class="g-w-percent50 form-group-self4">
                             <div class="self-input g-pos-r g-w-percent16">
-                                省级:&nbsp;<input name="standardprofit1" class="g-w-number3 ui-relation-percent" type="text" id="standard_profit1" data-action="setting_ctrl.setRelationProfit()" ng-model="setting_ctrl.profit.standard.profit1" maxlength="6">&nbsp;%
+                                省级:&nbsp;<input name="standardprofit1" data-relation="standard_profit1,standard_profit2,standard_profit3" data-current="standard_profit1" id="standard_profit1" class="g-w-number3 ui-relation-percent" type="text" ng-model="setting_ctrl.profit.standard.profit1" maxlength="6">&nbsp;%
                             </div>
                             <div class="self-input g-pos-r g-w-percent16">
-                                市级:&nbsp;<input  name="standardprofit2" class="g-w-number3 ui-relation-percent" type="text" id="standard_profit2" data-action="setting_ctrl.setRelationProfit()" ng-model="setting_ctrl.profit.standard.profit2" maxlength="6">&nbsp;%
+                                市级:&nbsp;<input  name="standardprofit2"  data-relation="standard_profit1,standard_profit2,standard_profit3" data-current="standard_profit2"  id="standard_profit2" class="g-w-number3 ui-relation-percent" type="text" ng-model="setting_ctrl.profit.standard.profit2" maxlength="6">&nbsp;%
                             </div>
                             <div class="self-input g-pos-r g-w-percent16">
-                                平台:&nbsp;<input name="standardprofit3" class="g-w-number3 ui-relation-percent" data-action="setting_ctrl.setRelationProfit()" type="text" id="standard_profit3" ng-model="setting_ctrl.profit.standard.profit3" maxlength="6">&nbsp;%
+                                平台:&nbsp;<input name="standardprofit3" data-relation="standard_profit1,standard_profit2,standard_profit3" data-current="standard_profit3"  id="standard_profit3" class="g-w-number3 ui-relation-percent" type="text" ng-model="setting_ctrl.profit.standard.profit3" maxlength="6">&nbsp;%
                             </div>
                         </div>
                         <div class="g-w-percent50  form-group-self4">
@@ -76,10 +75,6 @@
                         </div>
                         <div class="g-w-percent50 form-group-self4">
                             <button type="button" ng-disabled="setting_ctrl.profit.standard.profit1 + setting_ctrl.profit.standard.profit2 + setting_ctrl.profit.standard.profit3!==100" class="btn btn-red g-br3 g-f-r" ng-click="setting_ctrl.settingProfit('standard')">设置</button>
-                            <button class="btn btn-red g-br3 g-f-l" type="button">{{setting_ctrl.isLegalProfit()}}</button>
-                            <button class="btn btn-red g-br3 g-f-l" type="button">{{setting_ctrl.profit.standard.profit1}}</button>
-                            <button class="btn btn-red g-br3 g-f-l" type="button">{{setting_ctrl.profit.standard.profit2}}</button>
-                            <button class="btn btn-red g-br3 g-f-l" type="button">{{setting_ctrl.profit.standard.profit3}}</button>
                             <div class="clearfix"></div>
                         </div>
                     </li>
