@@ -359,7 +359,9 @@ angular.module('ui.form', [])
                     if (etype === 'focusout') {
                         data = self.value.replace(/[^0-9\.]*/g, '');
                         if (data === '') {
-                            self.value = '';
+                            scope.$apply(function () {
+                                self.value = '';
+                            });
                             return false;
                         }
                         if (data.indexOf('.') !== -1) {
@@ -379,7 +381,9 @@ angular.module('ui.form', [])
                             }());
                         }
                         if (data === '' || isNaN(data)) {
-                            self.value = '';
+                            scope.$apply(function () {
+                                self.value = '';
+                            });
                             return false;
                         }
                         data = (data * 10000) / 10000;

@@ -74,7 +74,11 @@
                             </div>
                         </div>
                         <div class="g-w-percent50 form-group-self4">
-                            <button type="button" ng-disabled="(setting_ctrl.profit.standard.profit1 + setting_ctrl.profit.standard.profit2 + setting_ctrl.profit.standard.profit3!==100)" class="btn btn-red g-br3 g-f-r" ng-click="setting_ctrl.settingProfit('standard')">设置</button>
+                            <button type="button" ng-disabled="setting_ctrl.profit.standard.profit1 + setting_ctrl.profit.standard.profit2 + setting_ctrl.profit.standard.profit3!==100" class="btn btn-red g-br3 g-f-r" ng-click="setting_ctrl.settingProfit('standard')">设置</button>
+                            <button class="btn btn-red g-br3 g-f-l" type="button">{{setting_ctrl.isLegalProfit()}}</button>
+                            <button class="btn btn-red g-br3 g-f-l" type="button">{{setting_ctrl.profit.standard.profit1}}</button>
+                            <button class="btn btn-red g-br3 g-f-l" type="button">{{setting_ctrl.profit.standard.profit2}}</button>
+                            <button class="btn btn-red g-br3 g-f-l" type="button">{{setting_ctrl.profit.standard.profit3}}</button>
                             <div class="clearfix"></div>
                         </div>
                     </li>
