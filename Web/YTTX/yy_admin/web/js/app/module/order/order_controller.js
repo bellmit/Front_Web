@@ -191,13 +191,17 @@ angular.module('app')
                         {
                             "data":"paymentType",
                             "render":function(data, type, full, meta ){
-                                var stauts=parseInt(data,10),
-                                    statusmap={
-                                        1:"微信",
-                                        2:"支付宝",
-                                        3:"其它"
-                                    };
-                                return '<div class="g-c-blue3">'+statusmap[stauts]+'</div>';
+                                if(typeof data!=='undefined'){
+                                    var stauts=parseInt(data,10),
+                                        statusmap={
+                                            1:"微信",
+                                            2:"支付宝",
+                                            3:"其它"
+                                        };
+                                    return '<div class="g-c-blue3">'+statusmap[stauts]+'</div>'||'';
+                                }else{
+                                    return '';
+                                }
                             }
                         },
                         {
@@ -228,6 +232,7 @@ angular.module('app')
                 columnshow:true,
                 $column_wrap:jq_dom.$admin_table_checkcolumn/*控制列显示隐藏的容器*/,
                 $bodywrap:jq_dom.$admin_batchlist_wrap/*数据展现容器*/,
+                hide_header:['商户名称','手机号码','订单号','订单总价','订单状态','支付类型','订单时间','操作'],
                 hide_list:[5,6]/*需要隐藏的的列序号*/,
                 hide_len:2,
                 column_api:{

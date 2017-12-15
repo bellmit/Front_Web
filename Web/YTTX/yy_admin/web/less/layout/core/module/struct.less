@@ -1,7 +1,7 @@
 /*架构*/
 /*机构列表*/
 .admin-list-tsitem{
-  .layout-base;
+  .layout-base();
   &:empty{
     min-height:120px;
     line-height: 120px;
@@ -20,12 +20,12 @@
     }
   }
   li{
-    .layout-base;
-    .layout-relative-base;
+    .layout-base();
+    .layout-relative-base();
     height:40px;
     padding:0 0 0 50px;
     line-height:40px;
-    .text-of;
+    .text-of();
     text-overflow: ellipsis;
     color:@color-gray6;
     background:@color-white;
@@ -53,7 +53,7 @@
       }
     }
     ul{
-      .layout-float-base;
+      .layout-float-base();
       display:none;
       >li{
         &:hover{

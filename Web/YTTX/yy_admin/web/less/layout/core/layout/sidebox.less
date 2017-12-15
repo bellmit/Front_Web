@@ -7,7 +7,7 @@
 }
 
 .struct-side-widget {
-  .layout-base;
+  .layout-base();
   height: 100%;
   min-height: 300px;
 }
@@ -65,7 +65,7 @@
   .sub-logo-wrap {
     @index-gap: 10px;
     @index-imggap: (@layout-sidegap-left + @index-gap) * 2;
-    .layout-base;
+    .layout-base();
     display: inline-block;
     padding: @layout-sidegap-left @layout-sidegap-left + @index-gap;
     border-bottom: 1px solid @color-white;
@@ -81,10 +81,10 @@
       }
     }
     > h1 {
-      .text-ww;
+      .text-ww();
       padding: 10px 0 5px 0;
       text-align: center;
-      .user-select-base;
+      .user-select-base();
       font-size: @font-size-base + 2;
       color: @color-white;
     }
@@ -92,12 +92,12 @@
 
   /*信息组件*/
   .sub-info-wrap {
-    .layout-base;
+    .layout-base();
     padding: @layout-sidegap-left;
     > li {
       color: @color-white;
       font-size: @font-size-base;
-      .layout-base;
+      .layout-base();
       display: inline-block;
       padding: 10px 0 0 0;
       text-align: left;
@@ -110,10 +110,10 @@
 
   /*列表组件*/
   .sub-list-wrap {
-    .layout-base;
+    .layout-base();
     padding: 10px 0;
     > li {
-      .layout-base;
+      .layout-base();
       padding: 5px @layout-sidegap-left;
       height: 40px;
       display: inline-block;
@@ -121,7 +121,7 @@
         width: 100%;
         color: @color-white;
         display: inline-block;
-        .text-of;
+        .text-of();
         text-overflow: ellipsis;
         height: 100%;
         line-height: 30px;
@@ -140,17 +140,17 @@
   /*搜索组件*/
   .sub-search-wrap {
     @search-height: 36px;
-    .layout-base;
+    .layout-base();
     padding: 5px @layout-sidegap-left/2;
     .search-content {
-      .layout-relative-base;
-      .layout-base;
+      .layout-relative-base();
+      .layout-base();
       height: @search-height;
       overflow: hidden;
       .transition(all ease-in .2s .02s);
       &:before,
       &::before {
-        .layout-absolutel-base;
+        .layout-absolutel-base();
         width: @search-height - 6;
         height: 100%;
         content: '\e645';
@@ -162,7 +162,7 @@
         display: inline-block;
       }
       input {
-        .layout-base;
+        .layout-base();
         height: 100%;
         font-size: @font-size-base;
         padding: 11px 10px 11px @search-height - 6;
@@ -171,7 +171,7 @@
       }
     }
     .search-clear {
-      .layout-absoluter-base;
+      .layout-absoluter-base();
       .layout-base(0);
       display: none !important;
       cursor: pointer;
@@ -185,7 +185,7 @@
         font-size: @font-size-base + 8;
         line-height: @search-height;
         text-align: center;
-        .user-select-base;
+        .user-select-base();
         color: @color-gray13;
         font-family: 'ux_two';
         content: '\e615';
@@ -220,7 +220,7 @@
 
   /*选项卡组件*/
   .sub-tab-wrap {
-    .layout-base;
+    .layout-base();
     overflow: hidden;
     padding: 10px @layout-sidegap-left/2;
     font-size: 0;
@@ -229,7 +229,7 @@
       height: 36px;
       line-height: 36px;
       text-align: center;
-      .user-select-base;
+      .user-select-base();
       display: inline-block;
       font-size: @font-size-base;
       cursor: pointer;
@@ -249,15 +249,15 @@
   .sub-menu-wrap {
     @sub-gap: @layout-sidegap-left - 8;
     @sub-title-gap: @sub-gap/2;
-    .layout-base;
+    .layout-base();
     padding: 10px @sub-gap;
     ul {
-      .layout-base;
+      .layout-base();
       display: none;
       .transition(all ease-in .2s .01s);
     }
     li {
-      .layout-base;
+      .layout-base();
       padding: 5px 0 5px @sub-gap;
       height: 40px;
       display: inline-block;
@@ -265,7 +265,7 @@
         width: 100%;
         color: @color-white;
         display: inline-block;
-        .text-of;
+        .text-of();
         text-overflow: ellipsis;
         height: 100%;
         line-height: 30px;
@@ -275,7 +275,7 @@
     }
     .sub-menu-title {
       overflow: visible;
-      .layout-relative-base;
+      .layout-relative-base();
       &:before,
       &::before {
         .layout-absolutel-base(-(@sub-title-gap + 10));
@@ -299,16 +299,16 @@
 
   /*按钮组*/
   .sub-btn-wrap {
-    .layout-base;
+    .layout-base();
     overflow: hidden;
     padding: 10px @layout-sidegap-left/2;
     font-size: 0;
     > li {
       text-align: center;
-      .user-select-base;
+      .user-select-base();
       display: inline-block;
       span {
-        .box-sizing-base;
+        .box-sizing-base();
         border: 1px solid @color-white;
         background: @color-gray3;
         color: @color-white;

@@ -432,6 +432,7 @@ angular.module('app')
                 columnshow: true,
                 $column_wrap: jq_dom.$admin_table_checkcolumn/*控制列显示隐藏的容器*/,
                 $bodywrap: jq_dom.$admin_batchlist_wrap/*数据展现容器*/,
+                hide_header:['','店铺全称','店铺简称','姓名','店铺类型','店铺手机号码','店铺电话号码','省市区','详细地址','状态','添加时间','操作'],
                 hide_list: [1, 5, 6, 7, 8, 10]/*需要隐藏的的列序号*/,
                 hide_len: 6,
                 column_api: {

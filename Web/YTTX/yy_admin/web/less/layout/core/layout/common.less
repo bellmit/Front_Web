@@ -1,24 +1,24 @@
 /*body*/
 .struct-layout-wrap {
-  .layout-base;
+  .layout-base();
   height: 100%;
   background: @color-gray16;
 }
 
 /*主体容器*/
 .admin-layout-container {
-  .layout-base;
+  .layout-base();
   margin: 0;
   padding: 0;
 }
 
 /*主题*/
 .admin-layout-theme1, .admin-layout-theme2, .admin-layout-theme3, .admin-layout-theme4 {
-  .layout-base;
+  .layout-base();
   display: inline-block;
   min-height: 30px;
   line-height: 30px;
-  .user-select-base;
+  .user-select-base();
 }
 
 .admin-layout-theme1, .admin-layout-theme2 {
@@ -58,7 +58,7 @@
 }
 
 .admin-theme-close {
-  .layout-relative-base;
+  .layout-relative-base();
   .admin-mini-icon1 {
     .layout-absoluter-base(8px, 50%);
     margin-top: -8px;
@@ -182,7 +182,7 @@
   @imgwrap-width: 60px;
   .layout-relative-base();
   background: @color-white;
-  .box-sizing-base;
+  .box-sizing-base();
   width: @imgwrap-width;
   height: @imgwrap-width;
   text-align: center;
@@ -253,7 +253,7 @@
 
 /*商品缩略图2*/
 .admin-thumbnail-widget2 {
-  .layout-base;
+  .layout-base();
   width: 252px;
   height: 122px;
   padding: 5px;
@@ -264,10 +264,10 @@
   .goods-img,
   .goods-remark,
   .goods-theme {
-    .box-sizing-base;
+    .box-sizing-base();
     display: block;
     float: left;
-    .no-outline-base;
+    .no-outline-base();
   }
   .goods-img {
     width: 80px;
@@ -275,7 +275,7 @@
     overflow: hidden;
     img {
       display: block;
-      .layout-base;
+      .layout-base();
       padding: 2px;
       background: @color-white;
       height: 100%;
@@ -312,9 +312,9 @@
   .layout-base;
   background: @color-white;
   border: 1px solid @color-gray14;
-  .text-ww;
+  .text-ww();
   li {
-    .layout-base;
+    .layout-base();
     display: inline-block;
     min-height: 24px;
     color: @color-gray9;
@@ -325,11 +325,11 @@
 .admin-order-widget1 {
   padding: 5px 30px 15px 10px;
   &:not(:empty) {
-    .layout-relative-base;
+    .layout-relative-base();
     &:after,
     &::after {
       @noempty: 20px;
-      .layout-absoluterb-base;
+      .layout-absoluterb-base();
       width: @noempty;
       height: @noempty;
       display: block;
@@ -373,14 +373,14 @@
 
 /*ul列表组件*/
 .admin-grid-widget {
-  .box-sizing-base;
+  .box-sizing-base();
   overflow: auto;
   li {
     float: left;
-    .box-sizing-base;
+    .box-sizing-base();
     text-align: center;
     font-size: @font-size-base;
-    .text-of;
+    .text-of();
     text-overflow: ellipsis;
     cursor: pointer;
   }
@@ -389,7 +389,7 @@
 .admin-grid-widget1 {
   background: @color-white;
   border: 1px solid @color-gray12;
-  .user-select-base;
+  .user-select-base();
   &:empty {
     min-height: 120px;
     &:before,
@@ -431,7 +431,7 @@
   padding: 20px;
   background: @color-white;
   border: 1px solid @color-gray12;
-  .user-select-base;
+  .user-select-base();
   &:empty {
     min-height: 120px;
     &:before,
@@ -489,17 +489,17 @@
 .admin-attrlabel-widget1 {
   font-size: 0;
   display: inline-block;
-  .box-sizing-base;
+  .box-sizing-base();
   border: 1px solid @color-gray14;
   padding: 0;
   margin: 8px 5px 3px 5px;
   background: @color-white;
   .border-radius-base(0 3px 3px 0);
   span {
-    .layout-relative-base;
+    .layout-relative-base();
     font-size: @font-size-base - 2;
     display: inline-block;
-    .box-sizing-base;
+    .box-sizing-base();
     padding: 5px 20px;
     margin: 0;
     background: @color-white;
@@ -515,8 +515,8 @@
   }
   .attrlabel-active {
     &:before {
-      .layout-absolutel-base;
-      .layout-base;
+      .layout-absolutel-base();
+      .layout-base();
       height: 100%;
       border: 1px solid @color-red2;
       font-size: @font-size-base - 2;
@@ -531,7 +531,7 @@
     font-size: @font-size-base - 2;
     display: inline-block;
     height: 100%;
-    .box-sizing-base;
+    .box-sizing-base();
     padding: 5px 3px;
     background: @color-red2;
     content: attr(data-name) ':';
@@ -560,7 +560,7 @@
     font-family: 'ux_two';
   }
 
-  .layout-base;
+  .layout-base();
   padding: 5px 10px;
   margin: 5px 0;
   min-height: 40px;
@@ -620,7 +620,7 @@
     display: inline-block;
     height: 30px;
     label {
-      .layout-base;
+      .layout-base();
       line-height: 30px;
       vertical-align: middle;
       height: 100%;
@@ -659,7 +659,7 @@
     display: inline-block;
     min-height: 30px;
     .action-theme {
-      .layout-base;
+      .layout-base();
       line-height: 30px;
       vertical-align: middle;
       height: 100%;
@@ -667,7 +667,7 @@
       display: inline-block;
       color: @color-gray6;
       font-size: @font-size-base;
-      .user-select-base;
+      .user-select-base();
     }
     .action-theme-btn {
       cursor: pointer;
@@ -678,35 +678,42 @@
       }
     }
     .action-ul {
-      .box-sizing-base;
+      .box-sizing-base();
       width: 0;
       height: 0;
     }
     .action-list-wrap {
-      .box-sizing-base;
+      .box-sizing-base();
       .layout-absoluterb-base(0, 32px, 100);
       width: 322px;
       height: auto;
       overflow: auto;
       background: @color-white;
       border: 1px solid @color-gray12;
-      .user-select-base;
+      .user-select-base();
       li {
         float: left;
-        .box-sizing-base;
+        .box-sizing-base();
         min-width: 80px;
         max-width: 160px;
         text-align: center;
         height: 60px;
         padding: 10px;
-        line-height: 40px;
+        line-height: 20px;
         color: @color-gray6;
         border-right: 1px solid @color-gray16;
         border-bottom: 1px solid @color-gray16;
         font-size: @font-size-base;
-        .text-of;
+        .text-of();
         text-overflow: ellipsis;
         cursor: pointer;
+        >em{
+          display:block;
+          width:100%;
+          height:20px;
+          color:@color-gray10;
+          font-size: @font-size-base - 2;
+        }
         &:hover {
           background: @color-gray14;
         }
@@ -729,18 +736,18 @@
     padding-right: 2em;
     &:after,
     &::after {
-      .layout-absoluter-base;
+      .layout-absoluter-base();
       .border-radius-base(0 3px 3px 0);
-      .dt-icon;
+      .dt-icon();
     }
   }
   .dt-icon-before {
     padding-left: 2em;
     &:before,
     &::before {
-      .layout-absolutel-base;
+      .layout-absolutel-base();
       .border-radius-base(3px 0 0 3px);
-      .dt-icon;
+      .dt-icon();
     }
   }
 
@@ -800,8 +807,8 @@
     font-size: @font-size-base;
     color: @color-gray6;
     text-indent: 20px;
-    .text-of;
-    .user-select-base;
+    .text-of();
+    .user-select-base();
   }
 
   /*定制表单*/
@@ -820,16 +827,16 @@
 
   /*表格全选*/
   .admin-batchitem-wrap {
-    .layout-relative-base;
-    .layout-base;
+    .layout-relative-base();
+    .layout-base();
     height: 20px;
     display: inline-block;
     vertical-align: middle;
     background: none;
   }
   .admin-batchitem-check {
-    .layout-absolutel-base;
-    .layout-base;
+    .layout-absolutel-base();
+    .layout-base();
     height: 100%;
     background: none;
     text-align: center;
@@ -837,7 +844,7 @@
     vertical-align: middle;
     color: @color-gray6;
     font-size: @font-size-base - 2;
-    .user-select-base;
+    .user-select-base();
     cursor: pointer;
     .transition-base(all .05s ease-in .01s);
     &:hover {
@@ -862,7 +869,7 @@
 
 /*分页*/
 .admin-page-wrap {
-  .layout-base;
+  .layout-base();
   height: 50px;
   text-align: right;
 }
@@ -914,7 +921,7 @@
     }
   }
   .ke-toolbar {
-    .box-sizing-base;
+    .box-sizing-base();
     padding-right: 50px;
   }
 
@@ -927,7 +934,7 @@
   .editor-image-toggle {
     width: 100%;
     height: 100%;
-    .user-select-base;
+    .user-select-base();
     &:after {
       width: 100%;
       height: 100%;
@@ -938,7 +945,7 @@
       font-size: @font-size-base;
       color: @color-gray6;
       cursor: pointer;
-      .user-select-base;
+      .user-select-base();
       font-family: 'ux_one';
     }
   }
@@ -946,7 +953,7 @@
     background: @color-white;
     border: 1px solid @color-gray12;
     @item-width: 800px;
-    .layout-relative-base;
+    .layout-relative-base();
     margin: 10px 0 0 -@item-width + 20px;
     .layout-base(@item-width);
     height: 200px;
@@ -964,13 +971,13 @@
     line-height: 20px;
   }
   .editor-image-show {
-    .layout-float-base;
+    .layout-float-base();
     height: 100%;
     overflow: auto;
     margin: -20px 0 0 0;
     padding: 0;
     li {
-      .layout-relative-base;
+      .layout-relative-base();
       .layout-float-base(100%);
       height: 40px;
       text-align: left;
@@ -991,7 +998,7 @@
         overflow: hidden;
         border: 1px solid @color-gray12;
         .border-radius-base(3px);
-        .user-select-base;
+        .user-select-base();
         img {
           float: left;
           width: 100%;
@@ -1004,7 +1011,7 @@
 
   /*间隙*/
   .form-gap {
-    .layout-base;
+    .layout-base();
     display: inline-block;
   }
   .form-gap1 {
@@ -1035,13 +1042,13 @@
   .form-group-self1 {
     @tip-height: 20px;
     @input-height: 48px;
-    .layout-base;
+    .layout-base();
     min-height: @input-height;
     padding: 10px 10px;
     font-size: 0;
     .self-label,
     .self-input {
-      .box-sizing-base;
+      .box-sizing-base();
       display: inline-block;
       height: 100%;
     }
@@ -1065,7 +1072,7 @@
       input[type="password"],
       textarea,
       select {
-        .layout-base;
+        .layout-base();
         border: 1px solid @color-gray12;
         font-size: @font-size-base;
         color: @color-gray6;
@@ -1090,10 +1097,10 @@
     }
 
     .self-tips {
-      .box-sizing-base;
+      .box-sizing-base();
       position: absolute;
       z-index: 10;
-      .user-select-base;
+      .user-select-base();
       display: inline-block;
       height: @tip-height;
       line-height: @tip-height;
@@ -1123,14 +1130,14 @@
   .form-group-self2 {
     @label-height: 40px;
     @tip-height: 20px;
-    .layout-base;
+    .layout-base();
     min-height: @label-height + 30px;
     padding: 15px 0;
     font-size: 0;
     .self-label,
     .self-input,
     .self-valid {
-      .box-sizing-base;
+      .box-sizing-base();
       display: inline-block;
       height: 100%;
     }
@@ -1143,7 +1150,7 @@
       overflow: hidden;
       img {
         display: inline-block;
-        .box-sizing-base;
+        .box-sizing-base();
         border: 1px solid @color-gray12;
         height: @label-height;
         width: @label-height * 2;
@@ -1159,7 +1166,7 @@
         margin: 0;
         content: '';
         display: inline-block;
-        .layout-absolutel-base;
+        .layout-absolutel-base();
         width: @label-height + 2;
         height: @label-height + 2;
       }
@@ -1184,13 +1191,14 @@
     }
     /*表单*/
     .self-input {
-      .layout-base;
+      .layout-base();
       border-top: 1px solid @color-gray12;
       border-right: 1px solid @color-gray12;
       border-bottom: 1px solid @color-gray12;
       font-size: @font-size-base;
       color: @color-gray6;
       height: 100%;
+      font-weight: normal;
       line-height: @font-size-base + 2;
       padding: 12px 10px + @tip-height 12px 10px;
       &:focus {
@@ -1199,11 +1207,11 @@
     }
     /*错误提示*/
     .self-tips {
-      .box-sizing-base;
+      .box-sizing-base();
       height: @tip-height;
       position: absolute;
       z-index: 10;
-      .user-select-base;
+      .user-select-base();
       font-weight: normal;
       line-height: @tip-height;
       overflow: hidden;
@@ -1238,14 +1246,14 @@
   .form-group-self3 {
     @tip-height: 20px;
     @input-height: 42px;
-    .layout-base;
+    .layout-base();
     min-height: @input-height;
     padding: 5px 10px;
     font-size: 0;
 
     .self-label,
     .self-input {
-      .box-sizing-base;
+      .box-sizing-base();
       display: inline-block;
       height: 100%;
     }
@@ -1270,7 +1278,7 @@
       input[type="password"],
       textarea,
       select {
-        .layout-base;
+        .layout-base();
         .border-radius-base(3px);
         border: 1px solid @color-gray13;
         font-size: @font-size-base;
@@ -1304,10 +1312,10 @@
     }
 
     .self-tips {
-      .box-sizing-base;
+      .box-sizing-base();
       position: absolute;
       z-index: 10;
-      .user-select-base;
+      .user-select-base();
       display: inline-block;
       height: @tip-height;
       line-height: @tip-height;
@@ -1346,7 +1354,7 @@
 
     .self-label,
     .self-input {
-      .box-sizing-base;
+      .box-sizing-base();
       display: inline-block;
       height: 100%;
     }
@@ -1405,10 +1413,10 @@
     overflow: auto;
     background: @color-white;
     border: 1px solid @color-gray12;
-    .user-select-base;
+    .user-select-base();
     li {
       float: left;
-      .box-sizing-base;
+      .box-sizing-base();
       min-width: 120px;
       max-width: 240px;
       text-align: center;
@@ -1419,7 +1427,7 @@
       border-right: 1px solid @color-gray16;
       border-bottom: 1px solid @color-gray16;
       font-size: @font-size-base;
-      .text-of;
+      .text-of();
       text-overflow: ellipsis;
       cursor: pointer;
       &:hover {
@@ -1451,13 +1459,13 @@
   .admin-slide-wrap {
     @itemwidth: 50px;
     background: @color-white;
-    .layout-base;
+    .layout-base();
     min-height: 480px;
     min-width: 300px;
     padding: 10px;
     text-align: center;
     .admin-slide-show {
-      .layout-relative-base;
+      .layout-relative-base();
       .layout-base(300px);
       overflow: hidden;
       height: 300px;
@@ -1549,7 +1557,7 @@
           }
       }*/
       li {
-        .layout-relative-base;
+        .layout-relative-base();
         .layout-float-base(50px);
         height: 50px;
         margin: 5px 5px 0 5px;
@@ -1569,7 +1577,7 @@
           line-height: 20px;
           text-align: center;
           cursor: pointer;
-          .user-select-base;
+          .user-select-base();
           width: 20px;
           height: 20px;
           background: rgba(0, 0, 0, .5);
@@ -1601,8 +1609,8 @@
       text-align: center;
       .admin-rpos-wrap {
         input[type="file"] {
-          .layout-absolutel-base;
-          .layout-base;
+          .layout-absolutel-base();
+          .layout-base();
           height: 100%;
           .opacity-base(0);
         }
@@ -1612,7 +1620,7 @@
 
   /*缩略图上传地址*/
   .admin-rpos-wrap {
-    .layout-relative-base;
+    .layout-relative-base();
   }
 ;
   .img-url-wrap {
@@ -1620,7 +1628,7 @@
     width: 220px;
     height: 30px;
     .img-url-item {
-      .box-sizing-base;
+      .box-sizing-base();
       position: absolute;
       top: 0;
       height: 100%;
@@ -1658,7 +1666,7 @@
       color: @color-gray3;
       font-size: @font-size-base + 6;
       .transition-base(all .2s ease-in .03s);
-      .user-select-base;
+      .user-select-base();
       cursor: pointer;
       &:hover {
         color: @btn-info-bg;
@@ -1682,7 +1690,7 @@
   /*图片上传预览*/
   .admin-image-view {
     min-height: 200px;
-    .box-sizing-base;
+    .box-sizing-base();
     padding: 20px;
     &:empty:after,
     &:empty::after {
@@ -1703,8 +1711,8 @@
 
   /*上传按钮*/
   .admin-input-file {
-    .layout-absolutel-base;
-    .layout-base;
+    .layout-absolutel-base();
+    .layout-base();
     height: 100%;
     .opacity-base(0);
   }
@@ -1722,7 +1730,7 @@
     color: @color-gray3;
     font-size: @font-size-base;
     .transition-base(all .2s ease-in .03s);
-    .user-select-base;
+    .user-select-base();
     cursor: pointer;
     &:hover {
       color: @btn-info-bg;
@@ -1744,13 +1752,13 @@
   /*发货，返修附件*/
   .admin-sub-items1,
   .admin-sub-items2 {
-    .layout-base;
+    .layout-base();
     padding: 20px 10px 30px 20px;
     border: 1px solid #e4e4e4;
     > ul {
-      .layout-base;
+      .layout-base();
       li {
-        .layout-base;
+        .layout-base();
       }
     }
     .pos-rb-btn {
@@ -1779,7 +1787,7 @@
   .admin-sub-items2 {
     > ul {
       li {
-        .user-select-base;
+        .user-select-base();
         border-bottom: 1px solid @color-gray16;
         padding: 8px 20px;
         cursor: pointer;
@@ -1877,7 +1885,7 @@
 }
 
 .admin-form-default {
-  .box-sizing-base;
+  .box-sizing-base();
   height: 100%;
   min-height: 30px;
   padding: auto 10px;

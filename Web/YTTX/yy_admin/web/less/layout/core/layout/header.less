@@ -18,7 +18,7 @@
   }
   /*导航区域*/
   .header-content {
-    .layout-relative-base;
+    .layout-relative-base();
     margin: 0 auto;
     height: @layout-header-height;
     .layout-base(@layout-container-width);
@@ -37,7 +37,7 @@
     font-size: 0;
     padding: 0 50px 0 20px;
     > li {
-      .box-sizing-base;
+      .box-sizing-base();
       height: 100%;
       display: inline-block;
       a {
@@ -74,7 +74,7 @@
     line-height: @layout-header-height - 10;
     text-align: center;
     cursor: pointer;
-    .user-select-base;
+    .user-select-base();
     color: @color-white;
     &:hover {
       background: darken(@color-red1, 5%);
