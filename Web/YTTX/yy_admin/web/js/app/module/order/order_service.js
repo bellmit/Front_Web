@@ -218,21 +218,21 @@ angular.module('app')
                                                                 21: '已评价'
                                                             };
                                                         str += '<tr><td colspan="3" class="g-t-r">' + detail_map[j] + ':</td><td colspan="3" class="g-t-l">' + (function () {
-                                                                var tempstr;
+                                                            var tempstr;
 
-                                                                if (temptype === 0) {
-                                                                    tempstr = '<div class="g-c-blue3">' + typemap[temptype] + '</div>';
-                                                                } else if (temptype === 1) {
-                                                                    tempstr = '<div class="g-c-red1">' + typemap[temptype] + '</div>';
-                                                                } else if (temptype === 6 || temptype === 9 || temptype === 20) {
-                                                                    tempstr = '<div class="g-c-warn">' + typemap[temptype] + '</div>';
-                                                                } else if (temptype === 21) {
-                                                                    tempstr = '<div class="g-c-green1">' + typemap[temptype] + '</div>';
-                                                                } else {
-                                                                    tempstr = '<div class="g-c-gray6">其他</div>';
-                                                                }
-                                                                return tempstr;
-                                                            })() + '</td></tr>';
+                                                            if (temptype === 0) {
+                                                                tempstr = '<div class="g-c-blue3">' + typemap[temptype] + '</div>';
+                                                            } else if (temptype === 1) {
+                                                                tempstr = '<div class="g-c-red1">' + typemap[temptype] + '</div>';
+                                                            } else if (temptype === 6 || temptype === 9 || temptype === 20) {
+                                                                tempstr = '<div class="g-c-warn">' + typemap[temptype] + '</div>';
+                                                            } else if (temptype === 21) {
+                                                                tempstr = '<div class="g-c-green1">' + typemap[temptype] + '</div>';
+                                                            } else {
+                                                                tempstr = '<div class="g-c-gray6">其他</div>';
+                                                            }
+                                                            return tempstr;
+                                                        })() + '</td></tr>';
                                                     } else if (j === 'paymentType') {
                                                         var temppay = parseInt(order[j], 10),
                                                             paymap = {
@@ -260,20 +260,20 @@ angular.module('app')
                                                     str += '<tr class="g-v-m">\
                                                         <td class="g-t-c">' + (i + 1) + '</td>\
                                                         <td class="g-t-c">' + (function () {
-                                                            var img = detailitem["goodsThumbnail"],
-                                                                str = '';
-                                                            if (img.indexOf('qiniucdn.com') !== -1) {
-                                                                str = '<div class="admin-thumbnail-widget1"><img alt="" src="' + img + '?imageView2/1/w/60/h/60" /><div class="thumbnail-show"><div class="thumbnail-showwrap"><div class="thumbnail-outer"><div class="thumbnail-inner"><img alt="" src="' + img + '" /></div></div></div></div></div>';
+                                                        var img = detailitem["goodsThumbnail"],
+                                                            str = '';
+                                                        if (img.indexOf('qiniucdn.com') !== -1) {
+                                                            str = '<div class="admin-thumbnail-widget1"><img alt="" src="' + img + '?imageView2/1/w/60/h/60" /><div class="thumbnail-show"><div class="thumbnail-showwrap"><div class="thumbnail-outer"><div class="thumbnail-inner"><img alt="" src="' + img + '" /></div></div></div></div></div>';
+                                                        } else {
+                                                            img = self.validImages(img);
+                                                            if (img !== '') {
+                                                                str = '<div class="admin-thumbnail-widget1"><img alt="" src="' + img + '" /><div class="thumbnail-show"><div class="thumbnail-showwrap"><div class="thumbnail-outer"><div class="thumbnail-inner"><img alt="" src="' + img + '" /></div></div></div></div></div>';
                                                             } else {
-                                                                img = self.validImages(img);
-                                                                if (img !== '') {
-                                                                    str = '<div class="admin-thumbnail-widget1"><img alt="" src="' + img + '" /><div class="thumbnail-show"><div class="thumbnail-showwrap"><div class="thumbnail-outer"><div class="thumbnail-inner"><img alt="" src="' + img + '" /></div></div></div></div></div>';
-                                                                } else {
-                                                                    str = '<div class="admin-thumbnail-widget1"></div>';
-                                                                }
+                                                                str = '<div class="admin-thumbnail-widget1"></div>';
                                                             }
-                                                            return str;
-                                                        }()) + '</td>\
+                                                        }
+                                                        return str;
+                                                    }()) + '</td>\
                                                         <td class="g-t-c">' + detailitem["goodsName"] + '</td>\
                                                         <td class="g-t-c">' + detailitem["attributeName"] + '</td>\
                                                         <td class="g-t-c">' + toolUtil.moneyCorrect(detailitem["goodsPrice"], 15, false)[0] + '</td>\
@@ -309,6 +309,15 @@ angular.module('app')
                             console.log('请求订单失败');
                         }
                     });
+        };
+        /*清除查询条件*/
+        this.clearOrder = function (config) {
+            var record = config.record;
+            /*清除时间*/
+            record['startTime'] = '';
+            record['endTime'] = '';
+            /*清除关键字*/
+            record['searchWord'] = '';
         };
 
 
@@ -531,18 +540,18 @@ angular.module('app')
                     /*到达极限的前一项则不创建子菜单容器*/
                     if (limit >= 1 && layer >= limit) {
                         str += self.doItemSubMenu(curitem, {
-                                flag: false,
-                                limit: limit,
-                                layer: layer,
-                                parentid: config.id
-                            }) + '</li>';
+                            flag: false,
+                            limit: limit,
+                            layer: layer,
+                            parentid: config.id
+                        }) + '</li>';
                     } else {
                         str += self.doItemSubMenu(curitem, {
-                                flag: true,
-                                limit: limit,
-                                layer: layer,
-                                parentid: config.id
-                            }) + '<ul></ul></li>';
+                            flag: true,
+                            limit: limit,
+                            layer: layer,
+                            parentid: config.id
+                        }) + '<ul></ul></li>';
                     }
                 }
                 return str;

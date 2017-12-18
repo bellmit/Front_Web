@@ -295,6 +295,13 @@ angular.module('app')
         this.queryOrder=function () {
             orderService.getColumnData(self.table,self.record);
         };
+        
+        /*清除查询条件*/
+        this.clearOrder=function () {
+            orderService.clearOrder({
+                record:self.record
+            });
+        };
 
 
         /*弹出层显示隐藏*/
