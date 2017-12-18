@@ -1308,7 +1308,7 @@ angular.module('app')
                                                 case 'province':
                                                     struct['province'] = list['province'];
                                                     struct['city'] = list['city'];
-                                                    struct['country'] = list['country'];
+                                                    struct['country'] = list['country']||'';
                                                     /*判断是否需要重新数据，并依此更新相关地址模型*/
                                                     self.isReqAddress({
                                                         type: 'city',
@@ -1784,7 +1784,7 @@ angular.module('app')
                     param['telephone'] = toolUtil.trimSep(config[type]['telephone'], '-');
                     param['province'] = config[type]['province'];
                     param['city'] = config[type]['city'];
-                    param['country'] = config[type]['country'];
+                    param['country'] = config[type]['country']||'';
                     param['address'] = config[type]['address'];
                     param['isAudited'] = config[type]['isAudited'];
                     param['status'] = config[type]['status'];
@@ -1833,7 +1833,7 @@ angular.module('app')
                     param['telephone'] = toolUtil.trimSep(config[type]['telephone'], '-');
                     param['province'] = config[type]['province'];
                     param['city'] = config[type]['city'];
-                    param['country'] = config[type]['country'];
+                    param['country'] = config[type]['country']||'';
                     param['address'] = config[type]['address'];
                     param['longitude'] = config[type]['longitude'];
                     param['latitude'] = config[type]['latitude'];
@@ -2228,7 +2228,7 @@ angular.module('app')
                                                     case 'province':
                                                         user['province'] = list['province'];
                                                         user['city'] = list['city'];
-                                                        user['country'] = list['country'];
+                                                        user['country'] = list['country']||'';
                                                         user['address'] = list['address'];
                                                         user['longitude'] = list['longitude'] || '';
                                                         user['latitude'] = list['latitude'] || '';
@@ -2355,10 +2355,10 @@ angular.module('app')
                                                     r_province = name;
                                                 });
                                                 self.queryByCode(list['city'], function (name) {
-                                                    r_country = name;
+                                                    r_city = name;
                                                 });
                                                 self.queryByCode(list['country'], function (name) {
-                                                    r_city = name;
+                                                    r_country = name;
                                                 });
                                                 var address_id = setTimeout(function () {
                                                     if (ll_pos.longitude === '' || ll_pos.latitude === '') {
@@ -2693,7 +2693,7 @@ angular.module('app')
                 address_map = config.address;
             }
 
-            if (typeof city === 'undefined' || typeof country === 'undefined') {
+            if (typeof city === 'undefined') {
                 return false;
             }
 
@@ -2705,7 +2705,7 @@ angular.module('app')
                     search = province_value;
                 } else {
                     city_value = address_map['city'][city]['key'];
-                    if (country !== '') {
+                    if (country!==null && country !== '') {
                         country_value = address_map['country'][country]['key'];
                         if (address !== '') {
                             search = province_value + ',' + city_value + ',' + country_value + ',' + address;

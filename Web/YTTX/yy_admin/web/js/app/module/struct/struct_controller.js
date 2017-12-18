@@ -359,7 +359,7 @@ angular.module('app')
                                 var province = data,
                                     city = full.city,
                                     country = full.country;
-                                if (!province && !city && !country) {
+                                if (!province && !city) {
                                     return '无省市区';
                                 }
                                 var str = '';

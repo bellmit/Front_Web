@@ -132,6 +132,10 @@ angular.module('app')
                                                 /*判断是否有回调*/
                                                 fn.call(null);
                                             }
+                                        }else{
+                                            /*置空模型*/
+                                            delete address[type];
+                                            address[type] = {};
                                         }
                                     } else {
                                         /*置空模型*/
