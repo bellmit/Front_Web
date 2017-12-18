@@ -1,61 +1,61 @@
-angular.module('ui.commonitem',[])
-    /*头部导航栏指令*/
-    /*ui-sref-active="menuactive"*/
-    .directive('uiHeaderMenu',function() {
+angular.module('ui.commonitem', [])
+/*头部导航栏指令*/
+/*ui-sref-active="menuactive"*/
+    .directive('uiHeaderMenu', function () {
         return {
-            replace:false,
+            replace: false,
             restrict: 'EC',
-            template:'<li ng-repeat="i in app_ctrl.headeritem" ng-show="{{i.isshow}}"><a data-id="{{i.id}}" data-code="{{i.code}}" ui-sref-active="menuactive" href="" ui-sref="{{i.href}}" title="">{{i.name}}</a></li>'
+            template: '<li ng-repeat="i in app_ctrl.headeritem" ng-show="{{i.isshow}}"><a data-id="{{i.id}}" data-code="{{i.code}}" ui-sref-active="menuactive" href="" ui-sref="{{i.href}}" title="">{{i.name}}</a></li>'
         };
     })
     /*头部退出*/
-    .directive('uiHeaderLogout',function() {
+    .directive('uiHeaderLogout', function () {
         return {
-            replace:true,
+            replace: true,
             restrict: 'EC',
-            template:'<div class="g-br3 header-outwrap" id="struct_layout_loginout" ui-sref="app" ng-click="app_ctrl.loginOut()">退出</div>'
+            template: '<div class="g-br3 header-outwrap" id="struct_layout_loginout" ui-sref="app" ng-click="app_ctrl.loginOut()">退出</div>'
         };
     })
     /*首页logo指令*/
-    .directive('uiSubLogo',function() {
+    .directive('uiSubLogo', function () {
         return {
-          replace:false,
-          restrict: 'EC',
-          template:'<div class="logo-img-wrap">\
+            replace: false,
+            restrict: 'EC',
+            template: '<div class="logo-img-wrap">\
                         <img src="images/index_logo.png" alt="logo" />\
                     </div>\
                     <h1>布住网招商合伙人管理平台</h1>'
         };
     })
     /*首页用户信息指令*/
-    .directive('uiSubInfo',function() {
+    .directive('uiSubInfo', function () {
         return {
-            replace:false,
+            replace: false,
             restrict: 'EC',
-            template:'<li ng-repeat="i in index_ctrl.menuitem">{{i.name}}：<span>{{i.value}}</span></li>'
+            template: '<li ng-repeat="i in index_ctrl.menuitem">{{i.name}}：<span>{{i.value}}</span></li>'
         };
     })
     /*列表指令*/
-    .directive('uiSubList',function() {
+    .directive('uiSubList', function () {
         return {
-            replace:false,
+            replace: false,
             restrict: 'EC',
-            scope:{
-                listitem:'=listitem'
+            scope: {
+                listitem: '=listitem'
             },
-            template:'<li ng-show="{{i.power}}" class="{{i.active}}" ng-repeat="i in listitem"><a data-type="{{i.type}}" title=""  ui-sref="{{i.href}}">{{i.name}}</a></li>',
-            link:function (scope, element, attrs) {
+            template: '<li ng-show="{{i.power}}" class="{{i.active}}" ng-repeat="i in listitem"><a data-type="{{i.type}}" title=""  ui-sref="{{i.href}}">{{i.name}}</a></li>',
+            link: function (scope, element, attrs) {
                 /*绑定事件*/
-                element.bind('click',function ($event) {
-                    var target=$event.target,
-                        node=target.nodeName.toLowerCase(),
+                element.bind('click', function ($event) {
+                    var target = $event.target,
+                        node = target.nodeName.toLowerCase(),
                         $li;
 
-                    if(node==='a'){
-                        $li=angular.element(target).parent();
-                    }else if(node==='li'){
-                        $li=angular.element(target);
-                    }else{
+                    if (node === 'a') {
+                        $li = angular.element(target).parent();
+                    } else if (node === 'li') {
+                        $li = angular.element(target);
+                    } else {
                         return false;
                     }
                     $li.addClass('menuactive').siblings().removeClass('menuactive');
@@ -64,32 +64,32 @@ angular.module('ui.commonitem',[])
         };
     })
     /*侧边栏搜索指令*/
-    .directive('uiSubSearch',['toolUtil',function(toolUtil) {
+    .directive('uiSubSearch', ['toolUtil', function (toolUtil) {
         return {
-            replace:false,
+            replace: false,
             restrict: 'EC',
-            scope:{
-                sactive:'=active',
-                svalue:'=value',
-                saction:'&action',
-                sclear:'&clear'
+            scope: {
+                sactive: '=active',
+                svalue: '=value',
+                saction: '&action',
+                sclear: '&clear'
             },
-            template:'<label class="search-content {{sactive}}">\
+            template: '<label class="search-content {{sactive}}">\
                 <input type="text" placeholder="搜索" ng-model="svalue" name="search_name" class="g-br3" />\
             <span class="search-clear" ng-click="sclear()"></span></label>',
-            link:function (scope, element, attrs) {
-                angular.element(element).find('input').bind('keyup',function ($event) {
+            link: function (scope, element, attrs) {
+                angular.element(element).find('input').bind('keyup', function ($event) {
 
-                    var kcode=$event.keyCode,
-                        self=this;
+                    var kcode = $event.keyCode,
+                        self = this;
 
-                    self.value=toolUtil.trimHtmlIllegal(self.value);
-                    if(scope.svalue===''){
-                        scope.sactive='';
-                    }else{
-                        scope.sactive='search-content-active';
+                    self.value = toolUtil.trimHtmlIllegal(self.value);
+                    if (scope.svalue === '') {
+                        scope.sactive = '';
+                    } else {
+                        scope.sactive = 'search-content-active';
                     }
-                    if(kcode===13){
+                    if (kcode === 13) {
                         scope.saction();
                     }
                 });
@@ -97,40 +97,40 @@ angular.module('ui.commonitem',[])
         };
     }])
     /*侧边栏tab选项卡指令*/
-    .directive('uiSubTabHref',function() {
+    .directive('uiSubTabHref', function () {
         return {
-            replace:false,
+            replace: false,
             restrict: 'EC',
-            scope:{
-                tabitem:'=tabitem'
+            scope: {
+                tabitem: '=tabitem'
             },
-            template:'<li ng-show="{{i.power}}" ui-sref="{{i.href}}" class="{{i.active}}" ng-repeat="i in tabitem">{{i.name}}</li>'
+            template: '<li ng-show="{{i.power}}" ui-sref="{{i.href}}" class="{{i.active}}" ng-repeat="i in tabitem">{{i.name}}</li>'
         };
     })
     /*侧边栏tab选项卡指令*/
-    .directive('uiSubTab',function() {
+    .directive('uiSubTab', function () {
         return {
-            replace:false,
+            replace: false,
             restrict: 'EC',
-            scope:{
-                tabitem:'=tabitem'
+            scope: {
+                tabitem: '=tabitem'
             },
-            template:'<li ng-show="{{i.power}}" data-type="{{i.type}}" class="{{i.active}}" ng-repeat="i in tabitem">{{i.name}}</li>',
-            link:function (scope, element, attrs) {
+            template: '<li ng-show="{{i.power}}" data-type="{{i.type}}" class="{{i.active}}" ng-repeat="i in tabitem">{{i.name}}</li>',
+            link: function (scope, element, attrs) {
                 /*绑定事件*/
-                element.bind('click',function ($event) {
-                    var target=$event.target,
-                        node=target.nodeName.toLowerCase();
+                element.bind('click', function ($event) {
+                    var target = $event.target,
+                        node = target.nodeName.toLowerCase();
 
-                    if(node!=='li'){
+                    if (node !== 'li') {
                         return false;
                     }
 
-                    var $li=angular.element(target),
-                        type=$li.attr('data-type');
+                    var $li = angular.element(target),
+                        type = $li.attr('data-type');
 
                     $li.addClass('tabactive').siblings().removeClass('tabactive');
-                    if(type && type!==''){
+                    if (type && type !== '') {
                         scope.$apply(function () {
                             scope.$parent[attrs.ctrlname][attrs.action](type);
                         })
@@ -140,40 +140,40 @@ angular.module('ui.commonitem',[])
         };
     })
     /*侧边栏级联菜单指令*/
-    .directive('uiSubMenu',function() {
+    .directive('uiSubMenu', function () {
         return {
-            replace:false,
+            replace: false,
             restrict: 'EC',
-            template:''
+            template: ''
         };
     })
     /*侧边栏按钮指令*/
-    .directive('uiSubBtn',function() {
+    .directive('uiSubBtn', function () {
         return {
-            replace:false,
+            replace: false,
             restrict: 'EC',
-            scope:{
-                btnitem:'=btnitem'
+            scope: {
+                btnitem: '=btnitem'
             },
-            template:'<li ng-show="{{i.power}}" data-type="{{i.type}}" ng-repeat="i in btnitem">\
+            template: '<li ng-show="{{i.power}}" data-type="{{i.type}}" ng-repeat="i in btnitem">\
                 <span><i class="{{i.icon}}"></i>{{i.name}}</span>\
             </li>',
-            link:function (scope, element, attrs) {
-                element.bind('click',function ($event) {
-                    var target=$event.target,
-                        node=target.nodeName.toLowerCase(),
+            link: function (scope, element, attrs) {
+                element.bind('click', function ($event) {
+                    var target = $event.target,
+                        node = target.nodeName.toLowerCase(),
                         $li;
 
-                    if(node==='ul'){
+                    if (node === 'ul') {
                         return false;
-                    }else if(node==='span' || node==='i'){
-                        $li=angular.element(target).closest('li');
-                    }else if(node==='li'){
-                        $li=angular.element(target);
+                    } else if (node === 'span' || node === 'i') {
+                        $li = angular.element(target).closest('li');
+                    } else if (node === 'li') {
+                        $li = angular.element(target);
                     }
 
-                    var  type=$li.attr('data-type');
-                    if(type && type!==''){
+                    var type = $li.attr('data-type');
+                    if (type && type !== '') {
                         scope.$apply(function () {
                             scope.$parent[attrs.ctrlname][attrs.action](type);
                         })
@@ -183,14 +183,14 @@ angular.module('ui.commonitem',[])
         };
     })
     /*首页快捷方式指令*/
-    .directive('uiMainApp',function() {
+    .directive('uiMainApp', function () {
         return {
-            replace:false,
+            replace: false,
             restrict: 'EC',
-            scope:{
-                quick:'=quick'
+            scope: {
+                quick: '=quick'
             },
-            template:'<div class="admin-welcome-banner"><img ng-src="images/index_banner.jpg" alt="" /></div>\
+            template: '<div class="admin-welcome-banner"><img ng-src="images/index_banner.jpg" alt="" /></div>\
                         <h3 class="admin-layout-theme3">快捷入口</h3>\
                         <ul class="admin-quick-icon">\
                           <li ng-repeat="i in quick" ng-show="{{i.isshow}}">\

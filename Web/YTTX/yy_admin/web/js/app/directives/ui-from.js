@@ -1,7 +1,7 @@
 /*表单指令*/
 angular.module('ui.form', [])
-    /*手机号码指令，手机格式化指令*/
-    .directive('uiMobilePhone', ['toolUtil', function (toolUtil) {
+/*手机号码指令，手机格式化指令*/
+    .directive('uiMobilePhone', ['toolUtil', '$parse', function (toolUtil, $parse) {
         return {
             replace: false,
             restrict: 'EC',
@@ -14,11 +14,14 @@ angular.module('ui.form', [])
                         phoneno;
                     if (etype === 'keyup') {
                         phoneno = self.value.replace(/\D*/g, '');
-                        if (phoneno === '') {
-                            self.value = '';
-                            return false;
+                        if (phoneno === '' || isNaN(phoneno)) {
+                            phoneno = '';
+                        } else {
+                            phoneno = toolUtil.phoneFormat(phoneno);
                         }
-                        self.value = toolUtil.phoneFormat(phoneno);
+                        scope.$apply(function () {
+                            $parse(attrs['ngModel']).assign(scope, phoneno);
+                        });
                     } else if (etype === 'focusout') {
                         /*手动执行脏检查*/
                         scope.$apply(function () {
@@ -30,7 +33,7 @@ angular.module('ui.form', [])
         }
     }])
     /*银行卡指令，银行卡格式化指令*/
-    .directive('uiBankCard', ['toolUtil', function (toolUtil) {
+    .directive('uiBankCard', ['toolUtil', '$parse', function (toolUtil, $parse) {
         return {
             replace: false,
             restrict: 'EC',
@@ -42,11 +45,14 @@ angular.module('ui.form', [])
                         self = this;
                     if (etype === 'keyup') {
                         var bankno = self.value.replace(/\D*/g, '');
-                        if (bankno === '') {
-                            self.value = '';
-                            return false;
+                        if (bankno === '' || isNaN(bankno)) {
+                            bankno = '';
+                        } else {
+                            bankno = toolUtil.cardFormat(bankno);
                         }
-                        self.value = toolUtil.cardFormat(bankno);
+                        scope.$apply(function () {
+                            $parse(attrs['ngModel']).assign(scope, bankno);
+                        });
                     } else if (etype === 'focusout') {
                         /*手动执行脏检查*/
                         scope.$apply(function () {
@@ -119,7 +125,7 @@ angular.module('ui.form', [])
         }
     }])
     /*格式化两位小数*/
-    .directive('uiDoublePoint', ['toolUtil', function (toolUtil) {
+    .directive('uiDoublePoint', ['toolUtil', '$parse', function (toolUtil, $parse) {
         return {
             replace: false,
             restrict: 'EC',
@@ -131,9 +137,8 @@ angular.module('ui.form', [])
                     var etype = $event.type,
                         self = this;
                     if (etype === 'focusout') {
-                        /*手动执行脏检查*/
                         scope.$apply(function () {
-                            self.value = toolUtil.moneyCorrect(self.value, limit, true)[0];
+                            $parse(attrs['ngModel']).assign(scope, toolUtil.moneyCorrect(self.value, limit, true)[0]);
                         });
                     }
                 });
@@ -141,7 +146,7 @@ angular.module('ui.form', [])
         }
     }])
     /*格式化电话号码(4位)*/
-    .directive('uiTelePhone4', ['toolUtil', function (toolUtil) {
+    .directive('uiTelePhone4', ['toolUtil', '$parse', function (toolUtil, $parse) {
         return {
             replace: false,
             restrict: 'EC',
@@ -153,11 +158,12 @@ angular.module('ui.form', [])
                         self = this;
                     if (etype === 'keyup') {
                         var phoneno = self.value.replace(/\D*/g, '');
-                        if (phoneno === '') {
-                            self.value = '';
-                            return false;
+                        if (phoneno === '' || isNaN(phoneno)) {
+                            phoneno = '';
                         }
-                        self.value = toolUtil.telePhoneFormat(this.value, 4);
+                        scope.$apply(function () {
+                            $parse(attrs['ngModel']).assign(scope, toolUtil.telePhoneFormat(phoneno, 4));
+                        });
                     } else if (etype === 'focusout') {
                         /*手动执行脏检查*/
                         scope.$apply(function () {
@@ -169,7 +175,7 @@ angular.module('ui.form', [])
         }
     }])
     /*格式化电话号码(3位)*/
-    .directive('uiTelePhone3', ['toolUtil', function (toolUtil) {
+    .directive('uiTelePhone3', ['toolUtil', '$parse', function (toolUtil, $parse) {
         return {
             replace: false,
             restrict: 'EC',
@@ -181,11 +187,12 @@ angular.module('ui.form', [])
                         self = this;
                     if (etype === 'keyup') {
                         var phoneno = self.value.replace(/\D*/g, '');
-                        if (phoneno === '') {
-                            self.value = '';
-                            return false;
+                        if (phoneno === '' || isNaN(phoneno)) {
+                            phoneno = '';
                         }
-                        self.value = toolUtil.telePhoneFormat(self.value, 3);
+                        scope.$apply(function () {
+                            $parse(attrs['ngModel']).assign(scope, toolUtil.telePhoneFormat(phoneno, 3));
+                        });
                     } else if (etype === 'focusout') {
                         /*手动执行脏检查*/
                         scope.$apply(function () {
@@ -197,7 +204,7 @@ angular.module('ui.form', [])
         }
     }])
     /*只能输入整形数字*/
-    .directive('uiIntNumber', function () {
+    .directive('uiIntNumber', ['$parse', function ($parse) {
         return {
             replace: false,
             restrict: 'EC',
@@ -210,20 +217,19 @@ angular.module('ui.form', [])
 
                     if (etype === 'focusout') {
                         var data = self.value.replace(/\D*/g, '');
-                        if (data === '') {
-                            self.value = '';
-                            return false;
+                        if (data === '' || isNaN(data)) {
+                            data = '';
                         }
                         scope.$apply(function () {
-                            self.value = data;
+                            $parse(attrs['ngModel']).assign(scope, data);
                         });
                     }
                 });
             }
         }
-    })
+    }])
     /*只能输入数字(包括小数)*/
-    .directive('uiAllNumber', function () {
+    .directive('uiAllNumber', ['$parse', function ($parse) {
         return {
             replace: false,
             restrict: 'EC',
@@ -236,10 +242,6 @@ angular.module('ui.form', [])
 
                     if (etype === 'focusout') {
                         var data = self.value.replace(/[^0-9\.]*/g, '');
-                        if (data === '') {
-                            self.value = '';
-                            return false;
-                        }
                         if (data.indexOf('.') !== -1) {
                             (function () {
                                 data = data.split('.');
@@ -256,16 +258,19 @@ angular.module('ui.form', [])
                                 }
                             }());
                         }
+                        if (data === '' || isNaN(data)) {
+                            data = '';
+                        }
                         scope.$apply(function () {
-                            self.value = data;
+                            $parse(attrs['ngModel']).assign(scope, data);
                         });
                     }
                 });
             }
         }
-    })
+    }])
     /*单一百分百*/
-    .directive('uiSinglePercent', function () {
+    .directive('uiSinglePercent', ['$parse', function ($parse) {
         return {
             replace: false,
             restrict: 'EC',
@@ -279,10 +284,6 @@ angular.module('ui.form', [])
 
                     if (etype === 'focusout') {
                         data = self.value.replace(/[^0-9\.]*/g, '');
-                        if (data === '') {
-                            self.value = '';
-                            return false;
-                        }
                         if (data.indexOf('.') !== -1) {
                             (function () {
                                 data = data.split('.');
@@ -300,82 +301,21 @@ angular.module('ui.form', [])
                             }());
                         }
                         if (data === '' || isNaN(data)) {
-                            self.value = '';
-                            return false;
-                        }
-                        data = (data * 10000) / 10000;
-                        if (data > 100) {
-                            data = 100;
-                        }
-                        self.value = data;
-                        console.log(data);
-                        /*scope.$apply(function () {
-                            self.value = data;
-                        });*/
-                    }
-                });
-
-
-            }
-        }
-    })
-    /*关联百分比*/
-    .directive('uiRelationPercent', function () {
-        return {
-            replace: false,
-            restrict: 'EC',
-            require: 'ngModel',
-            scope:{
-                action:'&action'
-            },
-            link: function (scope, elem, attrs, ctrl) {
-                /*绑定事件*/
-                angular.element(elem).bind('focusout', function ($event) {
-                    var etype = $event.type,
-                        self = this,
-                        data;
-
-                    if (etype === 'focusout') {
-                        data = self.value.replace(/[^0-9\.]*/g, '');
-                        if (data === '') {
-                            self.value = '';
-                            return false;
-                        }
-                        if (data.indexOf('.') !== -1) {
-                            (function () {
-                                data = data.split('.');
-                                var len = data.length;
-                                if (len !== 2) {
-                                    data.length = 2;
-                                }
-                                if (data[0] === '') {
-                                    data = data[1];
-                                } else if (data[1] === '') {
-                                    data = data[0];
-                                } else {
-                                    data = data.join('.');
-                                }
-                            }());
-                        }
-                        if (data === '' || isNaN(data)) {
-                            self.value = '';
-                            return false;
-                        }
-                        data = (data * 10000) / 10000;
-                        if (data > 100) {
-                            data = 100;
+                            data = '';
+                        } else {
+                            data = (data * 10000) / 10000;
+                            if (data > 100) {
+                                data = 100;
+                            }
                         }
                         scope.$apply(function () {
-                            self.value = data;
-                            scope.action();
+                            $parse(attrs['ngModel']).assign(scope, data);
                         });
                     }
                 });
-
-
             }
         }
-    })
+    }])
     /*html过滤，非法html指令*/
     .directive('uiFilterHtmlIllegal', ['toolUtil', function (toolUtil) {
         return {

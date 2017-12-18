@@ -34,13 +34,10 @@ angular.module('app')
         var jq_dom = {
                 $admin_manage_reset: $('#admin_manage_reset'),
                 $setting_manage_dialog: $('#setting_manage_dialog'),
-                $submenu_scroll_wrap:$('#submenu_scroll_wrap'),
-                $admin_struct_menu: $('#admin_struct_menu'),
-                $standard_profit1:$('#standard_profit1'),
-                $standard_profit2:$('#standard_profit2'),
-                $standard_profit3:$('#standard_profit3')
+                $submenu_scroll_wrap: $('#submenu_scroll_wrap'),
+                $admin_struct_menu: $('#admin_struct_menu')
             },
-        /*权限缓存*/
+            /*权限缓存*/
             jq_dom_power = {
                 $power_colgroup: $('#setting_power_colgroup'),
                 $power_thead: $('#setting_power_thead'),
@@ -76,7 +73,7 @@ angular.module('app')
 
         /*模型--操作记录*/
         this.record = {
-            iscroll_flag:true/*是否开启滚动条调用*/,
+            iscroll_flag: true/*是否开启滚动条调用*/,
             profitid: 1,
             pageSize: 10,
             searchactive: ''/*搜索激活状态*/,
@@ -123,13 +120,13 @@ angular.module('app')
             password: ''/*设置登录密码*/,
             remark: ''/*备注*/,
             status: 0/*状态*/,
-            parentId:''/*上级id,用于编辑*/,
+            parentId: ''/*上级id,用于编辑*/,
             isDesignatedOrg: 0/*是否指定运营商：0：默认，1：指定*/,
             designatedOrgIds: ''/*指定运营商Ids*/,
             isDesignatedPermit: 0/*是否指定权限,0:全部权限 1:指定权限*/,
             checkedFunctionIds: ''/*选中权限Ids*/,
-            token:''/*凭证*/,
-            mtype:''/*业务类型*/,
+            token: ''/*凭证*/,
+            mtype: ''/*业务类型*/,
             filter: ''/*管理列表过滤*/
         };
 
@@ -166,10 +163,10 @@ angular.module('app')
 
 
         /*完善信息服务--查询完善信息*/
-        this.queryStructInfo=function () {
+        this.queryStructInfo = function () {
             settingService.queryStructInfo({
-                record:self.record,
-                struct:self.struct
+                record: self.record,
+                struct: self.struct
             });
         };
 
@@ -181,7 +178,7 @@ angular.module('app')
                 manage: self.manage,
                 pwd: self.pwd,
                 table: self.table,
-                
+
                 struct: self.struct
             }, type);
         };
@@ -225,8 +222,8 @@ angular.module('app')
         /*表单服务--权限服务--切换权限*/
         this.toggleSelectPower = function () {
             settingService.toggleSelectPower({
-                record:self.record,
-                manage:self.manage
+                record: self.record,
+                manage: self.manage
             });
         };
 
@@ -464,15 +461,11 @@ angular.module('app')
             }, type);
         };
         /*判断分润总值*/
-        this.isLegalProfit=function () {
-            if(self.profit.standard.profit1===''||self.profit.standard.profit2===''||self.profit.standard.profit3===''){
+        this.isLegalProfit = function () {
+            if (self.profit.standard.profit1 === '' || self.profit.standard.profit2 === '' || self.profit.standard.profit3 === '') {
                 return false;
             }
-            return ((self.profit.standard.profit1 * 10000)/10000) + ((self.profit.standard.profit2 * 10000)/10000) + ((self.profit.standard.profit3 * 10000)/10000)===100;
-        };
-        /*设置联动更新值*/
-        this.setRelationProfit=function () {
-           console.log('ni mei');
+            return ((self.profit.standard.profit1 * 10000) / 10000) + ((self.profit.standard.profit2 * 10000) / 10000) + ((self.profit.standard.profit3 * 10000) / 10000) === 100;
         };
 
         /*搜索服务--搜索过滤*/
