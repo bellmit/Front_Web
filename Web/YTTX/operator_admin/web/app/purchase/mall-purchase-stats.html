@@ -219,15 +219,68 @@
 
     <!--打印-->
     <div class="modal fade custom-width" id="show_print_wrap">
-        <div class="modal-dialog g-w-percent46">
+        <div class="modal-dialog" style="width:230mm;height:330mm;">
             <div class="modal-content">
-
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     <h4 class="modal-title">采购单A4纸打印</h4>
                 </div>
                 <div class="modal-body">
-                    <canvas id="purchase_print"></canvas>
+                    <div style="width:210mm;height:297mm;margin:0 auto;padding:0;">
+                        <table id="purchase_print" class="table table-bordered table-striped table-hover admin-table g-w-percent50">
+                            <!--分组样式-->
+                            <colgroup>
+                                <col class="g-w-percent15">
+                                <col class="g-w-percent10">
+                                <col class="g-w-percent15">
+                                <col class="g-w-percent10">
+                            </colgroup>
+
+                            <!--表头-->
+                            <thead>
+                            <tr>
+                                <th>订单号</th>
+                                <th>下单时间</th>
+                                <th>供应商</th>
+                                <th>订单状态</th>
+                            </tr>
+                            </thead>
+
+
+                            <!--表主体-->
+                            <tbody class="middle-align">
+                                <tr id="purchase_outerwrap"></tr>
+                                <tr>
+                                    <td colspan="4">
+                                        <table class="table table-bordered table-striped table-hover admin-table">
+                                            <!--分组样式-->
+                                            <colgroup>
+                                                <col class="g-w-percent18">
+                                                <col class="g-w-percent14">
+                                                <col class="g-w-percent6">
+                                                <col class="g-w-percent6">
+                                                <col class="g-w-percent6">
+                                            </colgroup>
+                                            <!--表头-->
+                                            <thead>
+                                            <tr>
+                                                <th>商品名称</th>
+                                                <th>商品属性</th>
+                                                <th>采购数量</th>
+                                                <th>发货数量</th>
+                                                <th>待发数量</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody id="purchase_innerwrap"></tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="g-w-percent50">
+                            <div class="btn btn-info g-f-r" id="purchase_printok">确认打印</div>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-info" data-dismiss="modal">关闭</button>
@@ -291,6 +344,7 @@
     <!--修饰分页，搜索等操作 -->
     <script src="../../js/plugins/datatables/dataTables.bootstrap.js"></script>
     <script src="../../js/plugins/pagination/pagination.js"></script>
+    <script src="../../js/plugins/html2canvas.js"></script>
     <script src="../../js/purchase/purchase_stats.js"></script>
 </body>
 </html>

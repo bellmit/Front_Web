@@ -60,7 +60,9 @@
 
             /*打印对象*/
             var $show_print_wrap = $('#show_print_wrap'),
-                $purchase_print = $('#purchase_print');
+                $purchase_outerwrap=$('#purchase_outerwrap'),
+                $purchase_innerwrap=$('#purchase_innerwrap'),
+                $purchase_printok=$('#purchase_printok');
 
 
             /*列表请求配置*/
@@ -286,7 +288,6 @@
                             }
                             operate_item = $tr.addClass('item-lighten');
                             /*展开*/
-                            $print.removeClass('g-d-hidei');
                             if (subitem === '') {
                                 $.ajax({
                                     url: "http://10.0.5.226:8082/mall-agentbms-api/purchasing/orderaudited/details",
@@ -360,6 +361,7 @@
                                         $this.attr({
                                             'data-subitem': 'true'
                                         }).children('i').addClass('fa-angle-down');
+                                        $print.removeClass('g-d-hidei');
 
                                     })
                                     .fail(function (resp) {
@@ -368,12 +370,16 @@
                             } else {
                                 tabletr.child().show();
                                 $this.children('i').addClass('fa-angle-down');
+                                $print.removeClass('g-d-hidei');
                             }
                         }
                     }());
 
                 } else if (action === 'print') {
-                    purchasePrint();
+                    purchasePrint({
+                        outer:table.row($tr).data(),
+                        inner:$tr.next().find('table tbody').html()
+                    });
                 }
             });
 
@@ -408,6 +414,20 @@
                     }, 1000);
                 }
             });
+            
+            /*确认打印*/
+            $purchase_printok.on('click',function () {
+                html2canvas(document.getElementById('purchase_print')).then(function (canvas){
+                    var img_print=window.open(''),
+                        blob=canvas.toDataURL(),
+                        img = document.createElement("img");
+
+                    img.alt='打印图片';
+                    img.src=blob;
+                    $(img).appendTo($(img_print.document.body).html(''));
+                    img_print.print();
+                });
+            });
 
 
         }
@@ -424,64 +444,14 @@
 
 
         /*打印采购单*/
-        function purchasePrint() {
-            var ctx = getPrintCanvas();
-            if (ctx !== null) {
-                /*初始化设置外观*/
-                setPrintCanvasStyle();
-                /*创建svg绘画*/
-                createSvg(ctx);
-                $show_print_wrap.modal('show', {backdrop: 'static'});
-            }
-        }
-
-        /*是否支持canvas,支持则返回该canvas的引用*/
-        function getPrintCanvas() {
-            var PrintCanvas = document.getElementById('purchase_print');
-            if (PrintCanvas && typeof PrintCanvas.getContext === 'function') {
-                return PrintCanvas.getContext('2d');
-            }
-            return null;
-        }
-
-        /*设置canvas外观样式*/
-        function setPrintCanvasStyle() {
-            var canvas_style = {
-                width: '210mm',
-                height: '297mm',
-                display:'block',
-                margin:'50px auto',
-                border:'1px solid #ccc'
-            };
-            $purchase_print.css(canvas_style);
-        }
-
-        /*创建svg*/
-        function createSvg(ctx) {
-            var data = '<svg xmlns="http://www.w3.org/2000/svg" style="width:210mm;height:297mm;box-sizing: border-box;padding:40px 20px;">\
-                            <foreignObject width="100%" height="100%">\
-                                <div xmlns="http://www.w3.org/1999/xhtml">\
-                                    你妹\
-                                </div>\
-                            </foreignObject>\
-                        </svg>';
-
-            var Print_URL = window.URL || window.webkitURL || window;
-            if(Print_URL){
-                var img = new Image(),
-                    svg = new Blob([data], {type: 'image/svg+xml;charset=utf-8'}),
-                    url = Print_URL.createObjectURL(svg);
-
-                img.onload = function () {
-                    ctx.drawImage(img, 0, 0);
-                    Print_URL.revokeObjectURL(url);
-                };
-                img.src = url;
-            }
+        function purchasePrint(obj) {
+            var outer_data=obj.outer,
+            outer_str='<td>'+outer_data["orderNumber"]+'</td><td>'+outer_data["orderTime"]+'</td><td>'+outer_data["providerName"]+'</td><td>'+ {0: "待发货",1: "未收货",3: "部分收货",5: "已收货"}[outer_data["orderState"]]+'</td>';
+            $(outer_str).appendTo($purchase_outerwrap.html(''));/*外部数据*/
+            $(obj.inner).appendTo($purchase_innerwrap.html(''));/*内部数据*/
+            $show_print_wrap.modal('show', {backdrop: 'static'});
         }
 
 
     });
-
-
 })(jQuery);
