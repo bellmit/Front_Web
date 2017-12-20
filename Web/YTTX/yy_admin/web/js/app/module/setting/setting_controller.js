@@ -460,12 +460,16 @@ angular.module('app')
                 profit: self.profit
             }, type);
         };
+        /*求总和*/
+        this.totalProfit=function () {
+            return ((self.profit.standard.profit1 * 10000) / 10000) + ((self.profit.standard.profit2 * 10000) / 10000) + ((self.profit.standard.profit3 * 10000) / 10000);
+        };
         /*判断分润总值*/
         this.isLegalProfit = function () {
             if (self.profit.standard.profit1 === '' || self.profit.standard.profit2 === '' || self.profit.standard.profit3 === '') {
                 return false;
             }
-            return ((self.profit.standard.profit1 * 10000) / 10000) + ((self.profit.standard.profit2 * 10000) / 10000) + ((self.profit.standard.profit3 * 10000) / 10000) === 100;
+            return self.totalProfit() === 100;
         };
 
         /*搜索服务--搜索过滤*/
