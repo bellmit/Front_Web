@@ -389,11 +389,11 @@ angular.module('ui.form', [])
                                             return tempstr;
                                         })();
                                     }
-                                } else if (overflow === 0 && k <= len - 1) {
+                                } /*else if (overflow === 0 && k <= len - 1) {
                                     scope.$apply(function () {
                                         scope['relation' + k] = 0;
                                     });
-                                }
+                                }*/
                             }
                         }
                         break;
