@@ -1,18 +1,10 @@
-/*引入依赖*/
-import {Component} from '@angular/core';
-
-
-/*使用第三方类库*/
-//declare var Mock:any;
-
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-root',
-  templateUrl: './app.component.html'
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
 })
-
-
-/*导出组件类*/
 export class AppComponent {
-
+  title = 'app';
 }

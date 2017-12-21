@@ -1,4 +1,4 @@
-/* 声明第三方类库*/
+/* SystemJS module definition */
 declare var module: NodeModule;
 interface NodeModule {
   id: string;
