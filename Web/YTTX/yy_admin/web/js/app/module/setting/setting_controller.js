@@ -143,16 +143,16 @@ angular.module('app')
             base: {
                 title: '分润基数设置',
                 id: '',
-                profit: '',
+                profit: 0,
                 type: 1
             },
             /*标准设置*/
             standard: {
                 title: '分润标准设置',
                 id: '',
-                profit1: '',
-                profit2: '',
-                profit3: '',
+                profit1: 0,
+                profit2: 0,
+                profit3: 0,
                 type: 1
             }
         };
@@ -462,7 +462,7 @@ angular.module('app')
         };
         /*求总和*/
         this.totalProfit=function () {
-            return ((self.profit.standard.profit1 * 10000) / 10000) + ((self.profit.standard.profit2 * 10000) / 10000) + ((self.profit.standard.profit3 * 10000) / 10000);
+            return parseInt(self.profit.standard.profit1 ,10) + parseInt(self.profit.standard.profit2 ,10) + parseInt(self.profit.standard.profit3 ,10);
         };
         /*判断分润总值*/
         this.isLegalProfit = function () {
