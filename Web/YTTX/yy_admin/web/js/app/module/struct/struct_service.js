@@ -333,18 +333,18 @@ angular.module('app')
                     /*到达极限的前一项则不创建子菜单容器*/
                     if (limit >= 1 && layer >= limit) {
                         str += self.doItemMenuList(curitem, {
-                                flag: false,
-                                limit: limit,
-                                layer: layer,
-                                id: config.id
-                            }) + '</li>';
+                            flag: false,
+                            limit: limit,
+                            layer: layer,
+                            id: config.id
+                        }) + '</li>';
                     } else {
                         str += self.doItemMenuList(curitem, {
-                                flag: true,
-                                limit: limit,
-                                layer: layer,
-                                id: config.id
-                            }) + '<ul></ul></li>';
+                            flag: true,
+                            limit: limit,
+                            layer: layer,
+                            id: config.id
+                        }) + '<ul></ul></li>';
                     }
                 }
                 return str;
@@ -1308,7 +1308,7 @@ angular.module('app')
                                                 case 'province':
                                                     struct['province'] = list['province'];
                                                     struct['city'] = list['city'];
-                                                    struct['country'] = list['country']||'';
+                                                    struct['country'] = list['country'] || '';
                                                     /*判断是否需要重新数据，并依此更新相关地址模型*/
                                                     self.isReqAddress({
                                                         type: 'city',
@@ -1704,7 +1704,7 @@ angular.module('app')
                                 data[i] = 1;
                             } else if (i === 'isShowInO2O') {
                                 /*是否显示在o2o*/
-                                data[i] = 1;
+                                data[i] = true;
                             } else if (i === 'province' || i === 'city' || i === 'country' || i === 'filter' || i === 'longitude' || i === 'latitude') {
                                 /*操作类型为新增*/
                                 continue;
@@ -1784,7 +1784,7 @@ angular.module('app')
                     param['telephone'] = toolUtil.trimSep(config[type]['telephone'], '-');
                     param['province'] = config[type]['province'];
                     param['city'] = config[type]['city'];
-                    param['country'] = config[type]['country']||'';
+                    param['country'] = config[type]['country'] || '';
                     param['address'] = config[type]['address'];
                     param['isAudited'] = config[type]['isAudited'];
                     param['status'] = config[type]['status'];
@@ -1833,7 +1833,7 @@ angular.module('app')
                     param['telephone'] = toolUtil.trimSep(config[type]['telephone'], '-');
                     param['province'] = config[type]['province'];
                     param['city'] = config[type]['city'];
-                    param['country'] = config[type]['country']||'';
+                    param['country'] = config[type]['country'] || '';
                     param['address'] = config[type]['address'];
                     param['longitude'] = config[type]['longitude'];
                     param['latitude'] = config[type]['latitude'];
@@ -2228,7 +2228,7 @@ angular.module('app')
                                                     case 'province':
                                                         user['province'] = list['province'];
                                                         user['city'] = list['city'];
-                                                        user['country'] = list['country']||'';
+                                                        user['country'] = list['country'] || '';
                                                         user['address'] = list['address'];
                                                         user['longitude'] = list['longitude'] || '';
                                                         user['latitude'] = list['latitude'] || '';
@@ -2272,8 +2272,8 @@ angular.module('app')
                                                         break;
                                                     case 'isShowInO2O':
                                                         var temp_oto = list[i];
-                                                        if (temp_oto === '' || isNaN(temp_oto)) {
-                                                            temp_oto = 1;
+                                                        if (temp_oto === '' || typeof temp_oto === 'undefined') {
+                                                            temp_oto = true;
                                                             user[i] = temp_oto;
                                                         } else {
                                                             user[i] = list[i];
@@ -2336,11 +2336,11 @@ angular.module('app')
                                                             };
                                                         str += '<tr><td class="g-t-r">' + detail_map[j] + ':</td><td class="g-t-l">' + statusmap[tempstatus] + '</td></tr>';
                                                     } else if (j === 'isShowInO2O') {
-                                                        var tempoto = parseInt(list[j], 10),
-                                                            otomap = {
-                                                                1: '是',
-                                                                0: '否'
-                                                            };
+                                                        var tempoto = (list[j] === '' || typeof list[j] === 'undefined') ? true : list[j];
+                                                        otomap = {
+                                                            true: '是',
+                                                            false: '否'
+                                                        };
                                                         str += '<tr><td class="g-t-r">' + detail_map[j] + ':</td><td class="g-t-l">' + otomap[tempoto] + '</td></tr>';
                                                     } else if (j === 'cellphone') {
                                                         str += '<tr><td class="g-t-r">' + detail_map[j] + ':</td><td class="g-t-l">' + toolUtil.phoneFormat(list[j]) + '</td></tr>';
@@ -2705,7 +2705,7 @@ angular.module('app')
                     search = province_value;
                 } else {
                     city_value = address_map['city'][city]['key'];
-                    if (country!==null && country !== '') {
+                    if (country !== null && country !== '') {
                         country_value = address_map['country'][country]['key'];
                         if (address !== '') {
                             search = province_value + ',' + city_value + ',' + country_value + ',' + address;

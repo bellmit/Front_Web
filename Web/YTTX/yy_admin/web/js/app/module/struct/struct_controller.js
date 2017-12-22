@@ -165,7 +165,7 @@ angular.module('app')
             address: ''/*详细地址*/,
             longitude: ''/*经度*/,
             latitude: ''/*纬度*/,
-            isShowInO2O: 1/*是否显示在o2o:默认为显示*/,
+            isShowInO2O: true/*是否显示在o2o:默认为显示*/,
             status: 0/*状态：0：正常，1：停用*/,
             remark: ''/*备注*/,
             addTime: ''/*添加时间,编辑时用到*/,
