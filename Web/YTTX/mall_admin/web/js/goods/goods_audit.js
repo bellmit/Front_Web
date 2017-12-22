@@ -55,6 +55,7 @@
                 admin_audit_form = document.getElementById('admin_audit_form'),
                 $audit_radio_tip = $('#audit_radio_tip'),
                 $audit_radio_wrap = $('#audit_radio_wrap'),
+                $audit_remark=$('#audit_remark'),
                 $admin_id = $('#admin_id'),
                 $audit_action = $('#audit_action'),
                 sureObj = public_tool.sureDialog(dia)/*回调提示对象*/,
@@ -222,7 +223,7 @@
                                 "data": "name"
                             },
                             {
-                                "data": "providerName"
+                                "data": "source"
                             },
                             {
                                 "data": "goodsTypeName"
@@ -566,7 +567,7 @@
                             } else {
                                 statekey = '<div class="g-c-red1">状态异常</div>';
                             }
-                            str += '<tr><td>' + parseInt(i + 1, 10) + '</td><td>' + data["gcode"] + '</td><td>' + data["name"] + '</td><td>' + data["providerName"] + '</td><td>' + data["goodsTypeName"] + '</td><td>' + statekey + '</td></tr>';
+                            str += '<tr><td>' + parseInt(i + 1, 10) + '</td><td>' + (data["gcode"] || '') + '</td><td>' + data["name"] + '</td><td>' + data["source"] + '</td><td>' + data["goodsTypeName"] + '</td><td>' + statekey + '</td></tr>';
                         }
                     }
                     $(str).appendTo($show_audit_header.html(''));
@@ -591,7 +592,7 @@
                     } else {
                         statekey = '<div class="g-c-red1">状态异常</div>';
                     }
-                    str = '<tr><td>1</td><td>' + data["gcode"] + '</td><td>' + data["name"] + '</td><td>' + data["providerName"] + '</td><td>' + data["goodsTypeName"] + '</td><td>' + statekey + '</td></tr>';
+                    str = '<tr><td>1</td><td>' + (data["gcode"] || '') + '</td><td>' + data["name"] + '</td><td>' + data["source"] + '</td><td>' + data["goodsTypeName"] + '</td><td>' + statekey + '</td></tr>';
                     $(str).appendTo($show_audit_header.html(''));
                     $show_audit_wrap.modal('show', {backdrop: 'static'});
                 }
@@ -716,7 +717,9 @@
         function executeAudit() {
             setSure.sure('', function (cf) {
                 /*是否选择了状态*/
-                var applystate = parseInt($audit_radio_wrap.find(':checked').val(), 10);
+                var applystate = parseInt($audit_radio_wrap.find(':checked').val(), 10),
+                applyremark=$audit_remark.find('input').val();
+
                 if (isNaN(applystate)) {
                     $audit_radio_tip.html('您没有选择审核状态');
                     setTimeout(function () {
@@ -724,6 +727,16 @@
                         $audit_radio_wrap.find('input').eq(0).prop({
                             'checked': true
                         });
+                    }, 2000);
+                    return false;
+                }
+
+                if(applystate===6 && applyremark===''){
+                    /*审核不通过时必须输入审核描述*/
+                    $audit_radio_tip.html('审核不通过时需要填写审核描述');
+                    setTimeout(function () {
+                        $audit_radio_tip.html('');
+                        $audit_remark.find('input').select();
                     }, 2000);
                     return false;
                 }
@@ -741,8 +754,8 @@
 
 
                 temp_config['operate'] = applystate;
-
                 temp_config['ids'] = id;
+                temp_config['auditMark'] = applyremark;
 
                 $.ajax({
                     url: "http://10.0.5.226:8082/mall-buzhubms-api/goods/operate",
