@@ -447,7 +447,6 @@ angular.module('app')
             record.structnode = null;
             record.structName = '';
             record.searchValue = '';
-            record.searchActive = '';
 
             /*查询子集*/
             if (haschild) {
@@ -565,7 +564,6 @@ angular.module('app')
             record.current = null;
             /*重置店铺搜索*/
             record.searchValue = '';
-            record.searchActive = '';
         };
         /*操作记录服务--初始化操作参数(搜索模式或者重置操作参数模式)*/
         this.initStructPos = function (structpos) {
@@ -615,10 +613,11 @@ angular.module('app')
                 }
             }
             /*查询店铺信息*/
-            self.getColumnData({
-                table: config.table,
-                record: record
-            });
+            if (record.structId === '') {
+                self.getColumnData(config.table, record.organizationId);
+            } else {
+                self.getColumnData(config.table, record.structId);
+            }
         };
         /*机构服务--填充数据至操作区域*/
         this.renderOperate = function (model, config) {
@@ -683,10 +682,9 @@ angular.module('app')
                         structpage.pageSize = pageSize;
 
                         /*存在操作情况，这重置操作情况--查询店铺信息*/
-                        self.getColumnData({
-                            table: model.table,
-                            record: model.record
-                        });
+                        if (model.record.structId !== '') {
+                            self.getColumnData(model.table, model.record.organizationId);
+                        }
                         /*清除分页前的操作模型*/
                         self.initStructPos(model.structpos);
                         /*变更模型*/
@@ -762,7 +760,6 @@ angular.module('app')
 
             /*重置店铺搜索*/
             record.searchValue = '';
-            record.searchActive = '';
 
             if (node === 'span') {
                 var $span = $(target),
@@ -821,15 +818,12 @@ angular.module('app')
 
                 param['isShowSelf'] = 0;
                 if (config.record.searchname !== '') {
-                    param['fullName'] = config.record.searchname;
+                    param['fullName'] = record.searchname;
                 }
                 param['organizationId'] = id;
 
                 /*查询店铺信息*/
-                self.getColumnData({
-                    table: config.table,
-                    record: config.record
-                }, id);
+                self.getColumnData(config.table, id);
 
                 toolUtil
                     .requestHttp({
@@ -1906,10 +1900,11 @@ angular.module('app')
                                     } else if (type === 'user') {
                                         /*重新加载表格数据*/
                                         /*查询店铺信息*/
-                                        self.getColumnData({
-                                            table: config.table,
-                                            record: config.record
-                                        });
+                                        if (config.record.structId === '') {
+                                            self.getColumnData(config.table, config.record.organizationId, config.record.searchValue);
+                                        } else {
+                                            self.getColumnData(config.table, config.record.structId, config.record.searchValue);
+                                        }
                                     }
                                     /*重置表单*/
                                     self.addFormDelay({
@@ -2528,10 +2523,11 @@ angular.module('app')
                                     dataTableCheckAllService.clear(table.tablecheckall);
                                     /*重新加载数据*/
                                     /*查询店铺信息*/
-                                    self.getColumnData({
-                                        table: table,
-                                        record: record
-                                    })
+                                    if (record.structId === '') {
+                                        self.getColumnData(table, record.organizationId, record.searchValue);
+                                    } else {
+                                        self.getColumnData(table, record.structId, record.searchValue);
+                                    }
                                 }
                             }
                         },
@@ -2546,48 +2542,49 @@ angular.module('app')
             }, type === 'base' ? '是否真要删除店铺数据' : '是否真要批量删除店铺数据', true);
         };
 
-        /*数据服务--请求数据--获取表格数据*/
-        this.getColumnData = function (config, cid) {
-            if (cache === null || !config.table || !config.record) {
-                return false;
-            }
-            /*如果存在模型*/
-            var table = config.table,
-                record = config.record,
-                id;
-
-            if (typeof cid !== 'undefined') {
-                id = cid;
-            } else if (record.structId !== '') {
+        /*用户服务--搜索店铺*/
+        this.searchUser = function (config) {
+            var record = config.record,
+                id = '';
+            if (record.structId !== '') {
                 id = record.structId;
             } else if (record.organizationId !== '') {
                 id = record.organizationId;
-            } else if (record.currentId !== '') {
+            } else if (record.currentId) {
                 id = record.currentId;
+            } else {
+                id = cache.loginMap.param.organizationId;
             }
+            if (id === '' || typeof id === 'undefined' || id === null) {
+                return false;
+            }
+            self.getColumnData(config.table, id, record.searchValue);
+        };
 
 
+        /*数据服务--请求数据--获取表格数据*/
+        this.getColumnData = function (table, id, name) {
+            if (cache === null) {
+                return false;
+            } else if (!table) {
+                return false;
+            }
+            /*如果存在模型*/
             var data = $.extend(true, {}, table.list1_config.config.ajax.data);
             if (typeof id !== 'undefined') {
-                var searchtype = parseInt(record.searchtype, 10);
-                if (record.searchValue !== '') {
-                    /*清除机构影响*/
-                    delete data['organizationId'];
-                    /*设置搜索值*/
-                    if (searchtype === 1) {
-                        /*店铺手机号码*/
+                if (typeof name !== 'undefined') {
+                    /*设置值*/
+                    if (name === '') {
+                        /*设置值*/
                         delete data['fullName'];
-                        data['cellphone'] = record.searchValue;
-                    } else if (searchtype === 2) {
-                        /*店铺全称*/
-                        data['fullName'] = record.searchValue;
-                        delete data['cellphone'];
+                        data['organizationId'] = id;
+                    } else {
+                        delete data['organizationId'];
+                        data['fullName'] = name;
                     }
                 } else {
-                    /*去除搜索条件*/
+                    /*设置值*/
                     delete data['fullName'];
-                    delete data['cellphone'];
-                    /*没搜索值则默认为选中机构下查询*/
                     data['organizationId'] = id;
                 }
                 /*参数赋值*/

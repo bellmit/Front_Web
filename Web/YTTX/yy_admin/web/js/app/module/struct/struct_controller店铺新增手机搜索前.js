@@ -103,8 +103,8 @@ angular.module('app')
         /*模型--操作记录*/
         this.record = {
             iscroll_flag: true/*是否开启滚动条调用*/,
-            searchactive: ''/*搜索机构--激活状态*/,
-            searchname: ''/*搜索机构--关键词*/,
+            searchactive: ''/*搜索激活状态*/,
+            searchname: ''/*机构搜索关键词*/,
             prev: null/*上一次操作记录*/,
             current: null/*当前操作记录*/,
             hasdata: false/*下级是否有数据,或者是否查询到数据*/,
@@ -117,20 +117,8 @@ angular.module('app')
             structName: ''/*机构设置名称*/,
             structnode: null/*机构对象*/,
             layer: 0/*操作层*/,
-            searchActive:'',/*搜索店铺--激活状态*/
-            searchValue: ''/*搜索店铺--关键词*/,
-            searchtype:1/*搜索店铺--搜索类型*/
+            searchValue: ''/*用户搜索内容*/
         };
-
-
-        /*模型--用户搜索类型*/
-        this.usertype=[{
-            key: '店铺手机号码',
-            value: 1
-        }, {
-            key: '店铺全称',
-            value: 2
-        }];
 
 
         /*模型--机构数据*/
@@ -279,10 +267,20 @@ angular.module('app')
                                         temp_param['page'] = self.table.list1_page.page;
                                         temp_param['pageSize'] = self.table.list1_page.pageSize;
                                         self.table.list1_config.config.ajax.data = temp_param;
-                                        structService.getColumnData({
-                                            table:self.table,
-                                            record:self.record
-                                        });
+
+                                        /*if (self.record.structId === '') {
+                                         self.getColumnData(self.table, self.record.organizationId);
+                                         } else {
+                                         self.getColumnData(self.table, self.record.structId);
+                                         }*/
+
+                                        if (self.record.structId !== '') {
+                                            structService.getColumnData(self.table, self.record.structId, self.record.searchValue);
+                                        } else if (self.record.organizationId !== '') {
+                                            structService.getColumnData(self.table, self.record.organizationId, self.record.searchValue);
+                                        } else {
+                                            structService.getColumnData(self.table, self.record.currentId, self.record.searchValue);
+                                        }
                                     }
                                 });
 
@@ -668,15 +666,10 @@ angular.module('app')
         };
         /*用户服务--搜索店铺*/
         this.searchUser = function () {
-            structService.getColumnData({
+            structService.searchUser({
                 table: self.table,
                 record: self.record
             });
-        };
-        /*用户服务--清空过滤条件*/
-        this.clearUser = function () {
-            self.record.searchValue = '';
-            self.record.searchActive = '';
         };
 
 
@@ -694,7 +687,6 @@ angular.module('app')
             self.record.searchname = '';
             self.record.searchactive = '';
         };
-
 
         /*查询经纬度*/
         this.queryLngLat = function (type) {

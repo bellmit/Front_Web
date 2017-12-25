@@ -72,10 +72,11 @@ angular.module('ui.commonitem', [])
                 sactive: '=active',
                 svalue: '=value',
                 saction: '&action',
-                sclear: '&clear'
+                sclear: '&clear',
+                splaceholder:'@placeholder'
             },
             template: '<label class="search-content {{sactive}}">\
-                <input type="text" placeholder="搜索" ng-model="svalue" name="search_name" class="g-br3" />\
+                <input type="text" placeholder="{{splaceholder}}" ng-model="svalue" name="search_name" class="g-br3" />\
             <span class="search-clear" ng-click="sclear()"></span></label>',
             link: function (scope, element, attrs) {
                 angular.element(element).find('input').bind('keyup', function ($event) {
@@ -85,9 +86,13 @@ angular.module('ui.commonitem', [])
 
                     self.value = toolUtil.trimHtmlIllegal(self.value);
                     if (scope.svalue === '') {
-                        scope.sactive = '';
+                        scope.$apply(function () {
+                            scope.sactive = '';
+                        });
                     } else {
-                        scope.sactive = 'search-content-active';
+                        scope.$apply(function () {
+                            scope.sactive = 'search-content-active';
+                        });
                     }
                     if (kcode === 13) {
                         scope.saction();

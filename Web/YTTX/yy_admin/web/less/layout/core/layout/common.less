@@ -755,6 +755,96 @@
   .btn-action {
     margin-right: 5px;
   }
+
+  /*搜索组件*/
+  .action-item-search {
+    @search-height: 30px;
+
+    .layout-base();
+    padding:0;
+    margin:0;
+    display: inline-block;
+    .search-content {
+      .layout-relative-base();
+      .layout-base();
+      font-weight: normal;
+      height: @search-height;
+      overflow: hidden;
+      .transition(all ease-in .2s .02s);
+      &:before,
+      &::before {
+        .layout-absolutel-base(5px);
+        width: @search-height - 6;
+        height: 100%;
+        content: '\e645';
+        color: @color-gray9;
+        font-family: 'ux_eight';
+        font-size: @font-size-base + 4;
+        line-height: @search-height;
+        text-align: center;
+        display: inline-block;
+      }
+      input {
+        .layout-base();
+        border:1px solid @color-gray12;
+        font-weight: normal;
+        height: 100%;
+        font-size: @font-size-base;
+        padding: 7px 10px 7px @search-height;
+        vertical-align: middle;
+        line-height: @font-size-base;
+        &:focus{
+          border-color: lighten(@color-blue3, 10%);
+        }
+      }
+    }
+    .search-clear {
+      .layout-absoluter-base(5px);
+      .layout-base(0);
+      display: none !important;
+      cursor: pointer;
+      height: 0;
+      overflow: hidden;
+      &:before,
+      &::before {
+        display: block;
+        width: 100%;
+        height: 100%;
+        font-size: @font-size-base + 8;
+        line-height: @search-height;
+        text-align: center;
+        .user-select-base();
+        color: @color-gray13;
+        font-family: 'ux_two';
+        content: '\e615';
+      }
+      &:hover {
+        &:before,
+        &::before {
+          color: lighten(@color-red1, 45%);
+        }
+      }
+    }
+    .search-content-active {
+      &:before,
+      &::before {
+        width: 0;
+        height: 0;
+        content: '';
+        font-size: 0;
+        line-height: 0;
+        display: none;
+      }
+      input {
+        padding: 5px (@search-height + 4) 5px 10px;
+      }
+      .search-clear {
+        width: @search-height !important;
+        height: 100% !important;
+        display: block !important;
+      }
+    }
+  }
 }
 
 /*表格*/

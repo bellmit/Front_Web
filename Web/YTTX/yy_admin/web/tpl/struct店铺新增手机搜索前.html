@@ -1,4 +1,3 @@
-<link rel="stylesheet" href="../less/layout/variable/reset.less">
 <div ng-controller="StructController as struct_ctrl">
     <div class="struct-layout-container struct-layout-default">
         <div class="struct-layout-main">
@@ -11,7 +10,7 @@
             </h1>
 
             <!--下属机构-->
-            <h2 class="admin-layout-theme3"><span class="theme-icon admin-theme-icon1"></span>&nbsp;下属机构</h2>
+            <h2 class="admin-layout-theme3"><span class="theme-icon admin-theme-icon1"></span>&nbsp;&nbsp;下属机构</h2>
 
             <!--添加菜单条-->
             <div class="admin-action-item">
@@ -31,19 +30,7 @@
 
 
             <!--机构用户-->
-            <h2 class="admin-layout-theme3"><span class="theme-icon admin-theme-icon2"></span>&nbsp;机构用户</h2>
-
-            <div class="admin-action-item">
-                <!--搜索店铺-->
-                <div class="g-f-l">
-                    <div class="action-item-input g-gap-mr2 g-w-number8 g-f-l">
-                        <label class="action-indent-b4">搜索类型:
-                            <select class="form-control g-clear-pt g-clear-pb" ng-init="struct_ctrl.record.searchtype=1" ng-model="struct_ctrl.record.searchtype" ng-options="item.value as item.key for item in struct_ctrl.usertype"></select>
-                        </label>
-                    </div>
-                    <div class="action-item-search g-w-number8 ui-sub-search" data-active="struct_ctrl.record.searchActive" data-value="struct_ctrl.record.searchValue" data-placeholder="搜索店铺"  data-action="struct_ctrl.searchUser()" data-clear="struct_ctrl.clearUser()" ></div>
-                </div>
-            </div>
+            <h2 class="admin-layout-theme3"><span class="theme-icon admin-theme-icon2"></span>&nbsp;&nbsp;机构用户</h2>
 
             <div class="admin-action-item">
                 <div class="action-item-btn g-w-number4 g-gap-mr2">
@@ -51,23 +38,29 @@
                     <span ng-show="::struct_ctrl.powerlist.operator_adjustment && false" ng-click="struct_ctrl.adjustOperate()"><i class="btn-action admin-btn-action5"></i>调整运营商</span>
                     <span ng-show="::struct_ctrl.powerlist.batch_delete && false" ng-click="struct_ctrl.batchDeleteUser()"><i class="btn-action admin-btn-action6"></i>批量删除</span>
                 </div>
+                <!--->
+                <div class="action-item-ul g-w-number5 g-pos-r g-gap-mr2" ng-show="::struct_ctrl.table.tablecolumn.columnshow">
+                    <div class="action-theme action-theme-btn g-br3 g-t-c">显示隐藏列</div>
+                    <div class="action-ul g-d-hidei" id="admin_table_checkcolumn">
+                        <ul class="action-list-wrap" ></ul>
+                    </div>
 
-                <div class="g-f-r">
-                    <div class="action-item-ul g-w-number4 g-pos-r g-gap-mr2" ng-show="::struct_ctrl.table.tablecolumn.columnshow">
-                        <div class="action-theme action-theme-btn g-br3 g-t-c">显示隐藏列</div>
-                        <div class="action-ul g-d-hidei" id="admin_table_checkcolumn">
-                            <ul class="action-list-wrap" ></ul>
-                        </div>
-                    </div>
-                    <div class="action-item-input g-w-number8">
-                        <label class="action-indent-b2">过滤:
-                            <input class="form-control input-sm" ng-model="struct_ctrl.user.filter" ng-keyup="struct_ctrl.filterDataTable()" placeholder="" type="search">
-                        </label>
-                    </div>
+                </div>
+                <div class="action-item-input g-w-number6 g-gap-mr2">
+                    <label class="action-indent-b2">过滤:
+                        <input class="form-control input-sm" ng-model="struct_ctrl.user.filter" ng-keyup="struct_ctrl.filterDataTable()" placeholder="" type="search">
+                    </label>
                 </div>
 
+                <div class="action-item-input g-w-number8 g-gap-mr1">
+                    <label class="action-indent-b4">搜索店铺:
+                        <input class="form-control input-sm" ng-model="struct_ctrl.record.searchValue" placeholder="" type="text">
+                    </label>
+                </div>
+                <div class="action-item-btn action-item-export g-w-number2">
+                    <span class="btn btn-export g-br3 g-w-percent50 g-c-blue3" ng-click="struct_ctrl.searchUser()">搜索</span>
+                </div>
             </div>
-
 
             <!--表格-->
             <table id="admin_list_wrap" class="table table-bordered table-striped table-hover admin-layout-table">
@@ -119,10 +112,9 @@
             </div>
         </div>
 
-
         <div class="struct-layout-side">
-            <!--搜索机构-->
-            <div class="sub-search-wrap ui-sub-search" data-active="struct_ctrl.record.searchactive" data-value="struct_ctrl.record.searchname" data-placeholder="搜索机构"  data-action="struct_ctrl.searchAction()" data-clear="struct_ctrl.searchClear()" ></div>
+            <!--搜索组件-->
+            <div class="sub-search-wrap ui-sub-search" data-active="struct_ctrl.record.searchactive" data-value="struct_ctrl.record.searchname"  data-action="struct_ctrl.searchAction()" data-clear="struct_ctrl.searchClear()" ></div>
 
             <!--选项卡组件（切换机构和角色）-->
             <ul class="sub-tab-wrap sub-item-group2 sub-itembr-group2 ui-sub-tab-href" data-tabitem="struct_ctrl.tabitem"></ul>
