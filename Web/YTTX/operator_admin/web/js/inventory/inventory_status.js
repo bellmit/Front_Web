@@ -282,7 +282,7 @@
 							var typemap={
 								0:"正常",
 								1:"异常"
-							}
+							};
 							str+='<tr><th>'+detail_map[j]+':</th><td>'+typemap[list[j]]+'</td></tr>';
 						}else if(j==='physicalStatus'){
 							var statusmap={

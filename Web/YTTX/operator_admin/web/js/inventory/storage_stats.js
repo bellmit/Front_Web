@@ -827,6 +827,7 @@
                     var code = parseInt(resp.code, 10);
                     if (code !== 0) {
                         console.log(resp.message);
+                        dia.content('<span class="g-c-bs-warning g-btips-warn">' + (resp.message || "获取代理商列表失败") + '</span>').show();
                         return false;
                     }
                     /*是否是正确的返回数据*/
