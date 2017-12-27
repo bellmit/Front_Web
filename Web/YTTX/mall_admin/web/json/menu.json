@@ -31,49 +31,49 @@
             "funcName": "角色添加",
             "isPermit": 1,
             "modId": 200,
-            "prid": 5611
+            "prid": 9611
           },
           {
             "funcCode": "bzw-role-update",
             "funcName": "角色修改",
             "isPermit": 1,
             "modId": 200,
-            "prid": 5612
+            "prid": 9612
           },
           {
             "funcCode": "bzw-role-delete",
             "funcName": "角色删除",
             "isPermit": 1,
             "modId": 200,
-            "prid": 5613
+            "prid": 9613
           },
           {
             "funcCode": "bzw-member-add",
             "funcName": "成员添加",
             "isPermit": 1,
             "modId": 200,
-            "prid": 5614
+            "prid": 9614
           },
           {
             "funcCode": "bzw-member-update",
             "funcName": "成员修改",
             "isPermit": 1,
             "modId": 200,
-            "prid": 5615
+            "prid": 9615
           },
           {
             "funcCode": "bzw-member-delete",
             "funcName": "成员删除",
             "isPermit": 1,
             "modId": 200,
-            "prid": 5616
+            "prid": 9616
           },
           {
             "funcCode": "bzw-other-set",
             "funcName": "其它设置",
             "isPermit": 1,
             "modId": 200,
-            "prid": 5617
+            "prid": 9617
           }
         ]
       },
@@ -97,13 +97,6 @@
             "modName": "添加用户"
           },
           {
-            "modClass": "bzw-user-flow",
-            "modCode": "bzw-user-flow",
-            "modId": 210,
-            "modLink": "bzw-user-flow",
-            "modName": "流水记录"
-          },
-          {
             "modClass": "bzw-user-notice",
             "modCode": "bzw-user-notice",
             "modId": 210,
@@ -119,28 +112,28 @@
             "funcName": "用户管理",
             "isPermit": 1,
             "modId": 210,
-            "prid": 5618
+            "prid": 9618
           },
           {
             "funcCode": "bzw-user-add",
             "funcName": "新增用户",
             "isPermit": 1,
             "modId": 210,
-            "prid": 5619
+            "prid": 9619
           },
           {
             "funcCode": "bzw-user-edit",
             "funcName": "新增编辑",
             "isPermit": 1,
             "modId": 210,
-            "prid": 5620
+            "prid": 9620
           },
           {
             "funcCode": "bzw-user-flow",
             "funcName": "流水记录",
             "isPermit": 1,
             "modId": 210,
-            "prid": 5621
+            "prid": 9621
           }
         ]
       },
@@ -150,7 +143,7 @@
         "modId": 220,
         "modItem": [
           {
-            "modClass": "bzw-announcement-list",
+            "modClass": "bzw-announcement_list",
             "modCode": "bzw-announcement-list",
             "modId": 220,
             "modLink": "bzw-announcement-list",
@@ -172,35 +165,35 @@
             "funcName": "公告管理",
             "isPermit": 1,
             "modId": 220,
-            "prid": 5622
+            "prid": 9622
           },
           {
             "funcCode": "bzw-announcement-add",
             "funcName": "新增公告",
             "isPermit": 1,
             "modId": 220,
-            "prid": 5623
+            "prid": 9623
           },
           {
             "funcCode": "bzw-announcement-edit",
             "funcName": "公告编辑",
             "isPermit": 1,
             "modId": 220,
-            "prid": 5624
+            "prid": 9624
           },
           {
             "funcCode": "bzw-announcement-delete",
             "funcName": "公告删除",
             "isPermit": 1,
             "modId": 220,
-            "prid": 5625
+            "prid": 9625
           },
           {
             "funcCode": "bzw-announcement-view",
             "funcName": "公告查看",
             "isPermit": 1,
             "modId": 220,
-            "prid": 5626
+            "prid": 9626
           }
         ]
       },
@@ -232,70 +225,70 @@
             "funcName": "供应商管理",
             "isPermit": 1,
             "modId": 230,
-            "prid": 5627
+            "prid": 9627
           },
           {
             "funcCode": "bzw-provider-goodsadd",
             "funcName": "商品列表",
             "isPermit": 1,
             "modId": 230,
-            "prid": 5628
+            "prid": 9628
           },
           {
             "funcCode": "bzw-provider-goodsupdown",
             "funcName": "上架，下架",
             "isPermit": 1,
             "modId": 230,
-            "prid": 5629
+            "prid": 9629
           },
           {
             "funcCode": "bzw-provider-goodsforbid",
             "funcName": "商品禁售",
             "isPermit": 1,
             "modId": 230,
-            "prid": 5630
+            "prid": 9630
           },
           {
             "funcCode": "bzw-provider-goodsquery",
             "funcName": "商品查询",
             "isPermit": 1,
             "modId": 230,
-            "prid": 5631
+            "prid": 9631
           },
           {
             "funcCode": "bzw-provider-goodsview",
             "funcName": "商品查看",
             "isPermit": 1,
             "modId": 230,
-            "prid": 5632
+            "prid": 9632
           },
           {
             "funcCode": "bzw-provider-edit",
             "funcName": "供应商编辑",
             "isPermit": 1,
             "modId": 230,
-            "prid": 5633
+            "prid": 9633
           },
           {
             "funcCode": "bzw-provider-forbid",
             "funcName": "供应商禁用",
             "isPermit": 1,
             "modId": 230,
-            "prid": 5634
+            "prid": 9634
           },
           {
             "funcCode": "bzw-provider-query",
             "funcName": "供应商查询",
             "isPermit": 1,
             "modId": 230,
-            "prid": 5635
+            "prid": 9635
           },
           {
             "funcCode": "bzw-provider-audit",
             "funcName": "供应商审核",
             "isPermit": 1,
             "modId": 230,
-            "prid": 5636
+            "prid": 9636
           }
         ]
       },
@@ -313,14 +306,14 @@
           },
           {
             "modClass": "bzw-comment-buyer",
-            "modCode": "bzw-comment-buyer",
+            "modCode": "bzw-buyser-comment",
             "modId": 240,
             "modLink": "bzw-comment-buyer",
             "modName": "买家评论"
           },
           {
             "modClass": "bzw-comment-saler",
-            "modCode": "bzw-comment-saler",
+            "modCode": "bzw-saler-comment",
             "modId": 240,
             "modLink": "bzw-comment-saler",
             "modName": "卖家评论"
@@ -334,56 +327,56 @@
             "funcName": "查看订单详情",
             "isPermit": 1,
             "modId": 240,
-            "prid": 5637
+            "prid": 9637
           },
           {
             "funcCode": "bzw-order-query",
             "funcName": "查看订单查询",
             "isPermit": 1,
             "modId": 240,
-            "prid": 5638
+            "prid": 9638
           },
           {
             "funcCode": "bzw-buyer-commentquery",
             "funcName": "买家评论查询",
             "isPermit": 1,
             "modId": 240,
-            "prid": 5639
+            "prid": 9639
           },
           {
             "funcCode": "bzw-buyer-commentedit",
             "funcName": "买家评论修改",
             "isPermit": 1,
             "modId": 240,
-            "prid": 5640
+            "prid": 9640
           },
           {
             "funcCode": "bzw-buyer-commentdelete",
             "funcName": "买家评论删除",
             "isPermit": 1,
             "modId": 240,
-            "prid": 5641
+            "prid": 9641
           },
           {
             "funcCode": "bzw-saler-commentquery",
             "funcName": "卖家评论查询",
             "isPermit": 1,
             "modId": 240,
-            "prid": 5642
+            "prid": 9642
           },
           {
             "funcCode": "bzw-saler-commentedit",
             "funcName": "卖家评论修改",
             "isPermit": 1,
             "modId": 240,
-            "prid": 5643
+            "prid": 9643
           },
           {
             "funcCode": "bzw-saler-commentdelete",
             "funcName": "卖家评论删除",
             "isPermit": 1,
             "modId": 240,
-            "prid": 5644
+            "prid": 9644
           }
         ]
       },
@@ -415,56 +408,56 @@
             "funcName": "待审核商品详情",
             "isPermit": 1,
             "modId": 250,
-            "prid": 5645
+            "prid": 9645
           },
           {
             "funcCode": "bzw-audit-goods",
             "funcName": "商品审核",
             "isPermit": 1,
             "modId": 250,
-            "prid": 5646
+            "prid": 9646
           },
           {
             "funcCode": "bzw-forbid-goodslist",
             "funcName": "禁售商品列表",
             "isPermit": 1,
             "modId": 250,
-            "prid": 5647
+            "prid": 9647
           },
           {
             "funcCode": "bzw-forbid-goodsview",
             "funcName": "禁售商品查看",
             "isPermit": 1,
             "modId": 250,
-            "prid": 5648
+            "prid": 9648
           },
           {
             "funcCode": "bzw-forbid-goodsdelete",
             "funcName": "禁售商品删除",
             "isPermit": 1,
             "modId": 250,
-            "prid": 5649
+            "prid": 9649
           },
           {
             "funcCode": "bzw-forbid-goods",
             "funcName": "禁售商品",
             "isPermit": 1,
             "modId": 250,
-            "prid": 5650
+            "prid": 9650
           },
           {
             "funcCode": "bzw-goods-updown",
             "funcName": "商品上架下架",
             "isPermit": 1,
             "modId": 250,
-            "prid": 5651
+            "prid": 9651
           },
           {
             "funcCode": "bzw-goods-details",
             "funcName": "商品详情",
             "isPermit": 1,
             "modId": 250,
-            "prid": 5652
+            "prid": 9652
           }
         ]
       },
@@ -496,28 +489,28 @@
             "funcName": "商品属性删除",
             "isPermit": 1,
             "modId": 260,
-            "prid": 5653
+            "prid": 9653
           },
           {
             "funcCode": "bzw-attribute-edit",
             "funcName": "商品属性编辑",
             "isPermit": 1,
             "modId": 260,
-            "prid": 5654
+            "prid": 9654
           },
           {
             "funcCode": "bzw-attribute-addval",
             "funcName": "新增商品属性值",
             "isPermit": 1,
             "modId": 260,
-            "prid": 5655
+            "prid": 9655
           },
           {
             "funcCode": "bzw-attribute-add",
             "funcName": "新增商品属性",
             "isPermit": 1,
             "modId": 260,
-            "prid": 5656
+            "prid": 9656
           }
         ]
       },
@@ -549,28 +542,28 @@
             "funcName": "商品分类编辑",
             "isPermit": 1,
             "modId": 270,
-            "prid": 5657
+            "prid": 9657
           },
           {
             "funcCode": "bzw-goodstype-delete",
             "funcName": "商品分类删除",
             "isPermit": 1,
             "modId": 270,
-            "prid": 5658
+            "prid": 9658
           },
           {
             "funcCode": "bzw-goodstype-allocationAttr",
             "funcName": "商品分类分配属性",
             "isPermit": 1,
             "modId": 270,
-            "prid": 5659
+            "prid": 9659
           },
           {
             "funcCode": "bzw-goodstype-addlower",
             "funcName": "商品分类新增下级",
             "isPermit": 1,
             "modId": 270,
-            "prid": 5660
+            "prid": 9660
           }
         ]
       },
@@ -609,28 +602,28 @@
             "funcName": "用户查询",
             "isPermit": 1,
             "modId": 280,
-            "prid": 5661
+            "prid": 9661
           },
           {
             "funcCode": "bzw-userstats-chart",
             "funcName": "用户图表",
             "isPermit": 1,
             "modId": 280,
-            "prid": 5662
+            "prid": 9662
           },
           {
             "funcCode": "bzw-userstats-list",
             "funcName": "用户列表",
             "isPermit": 1,
             "modId": 280,
-            "prid": 5663
+            "prid": 9663
           },
           {
             "funcCode": "bzw-userstats-export",
             "funcName": "导出用户",
             "isPermit": 1,
             "modId": 280,
-            "prid": 5664
+            "prid": 9664
           }
         ]
       },
@@ -655,28 +648,28 @@
             "funcName": "供应商查询",
             "isPermit": 1,
             "modId": 290,
-            "prid": 5665
+            "prid": 9665
           },
           {
             "funcCode": "bzw-providerstats-chart",
             "funcName": "供应商图表",
             "isPermit": 1,
             "modId": 290,
-            "prid": 5666
+            "prid": 9666
           },
           {
             "funcCode": "bzw-providerstats-list",
             "funcName": "供应商列表",
             "isPermit": 1,
             "modId": 290,
-            "prid": 5667
+            "prid": 9667
           },
           {
             "funcCode": "bzw-providerstats-export",
             "funcName": "导出供应商",
             "isPermit": 1,
             "modId": 290,
-            "prid": 5668
+            "prid": 9668
           }
         ]
       },
@@ -701,28 +694,28 @@
             "funcName": "商品查询",
             "isPermit": 1,
             "modId": 300,
-            "prid": 5669
+            "prid": 9669
           },
           {
             "funcCode": "bzw-goodsstats-chart",
             "funcName": "商品图表",
             "isPermit": 1,
             "modId": 300,
-            "prid": 5670
+            "prid": 9670
           },
           {
             "funcCode": "bzw-goodsstats-list",
             "funcName": "商品列表",
             "isPermit": 1,
             "modId": 300,
-            "prid": 5671
+            "prid": 9671
           },
           {
             "funcCode": "bzw-goodsstats-export",
             "funcName": "导出商品",
             "isPermit": 1,
             "modId": 300,
-            "prid": 5672
+            "prid": 9672
           }
         ]
       },
@@ -747,28 +740,28 @@
             "funcName": "订单查询",
             "isPermit": 1,
             "modId": 310,
-            "prid": 5673
+            "prid": 9673
           },
           {
             "funcCode": "bzw-orderstats-chart",
             "funcName": "订单图表",
             "isPermit": 1,
             "modId": 310,
-            "prid": 5674
+            "prid": 9674
           },
           {
             "funcCode": "bzw-orderstats-list",
             "funcName": "订单列表",
             "isPermit": 1,
             "modId": 310,
-            "prid": 5675
+            "prid": 9675
           },
           {
             "funcCode": "bzw-orderstats-export",
             "funcName": "导出订单",
             "isPermit": 1,
             "modId": 310,
-            "prid": 5676
+            "prid": 9676
           }
         ]
       },
@@ -807,14 +800,7 @@
             "funcName": "添加IMEI码",
             "isPermit": 1,
             "modId": 320,
-            "prid": 5677
-          },
-          {
-            "funcCode": "bzw-complaints-suggestions",
-            "funcName": "投诉与建议",
-            "isPermit": 1,
-            "modId": 320,
-            "prid": 5678
+            "prid": 9677
           }
         ]
       },
@@ -846,14 +832,14 @@
             "funcName": "广告管理",
             "isPermit": 1,
             "modId": 330,
-            "prid": 5799
+            "prid": 10598
           },
           {
             "funcCode": "bzw-advert-add",
             "funcName": "新增广告",
             "isPermit": 1,
             "modId": 330,
-            "prid": 5800
+            "prid": 10599
           }
         ]
       },
@@ -892,21 +878,21 @@
             "funcName": "活动列表",
             "isPermit": 1,
             "modId": 340,
-            "prid": 5801
+            "prid": 10600
           },
           {
             "funcCode": "bzw-module-set",
             "funcName": "设置模块集合",
             "isPermit": 1,
             "modId": 340,
-            "prid": 5802
+            "prid": 10601
           },
           {
             "funcCode": "bzw-activity-add",
             "funcName": "添加活动",
             "isPermit": 1,
             "modId": 340,
-            "prid": 5803
+            "prid": 10602
           }
         ]
       },
@@ -945,14 +931,14 @@
             "funcName": "银行卡审核",
             "isPermit": 1,
             "modId": 344,
-            "prid": 5804
+            "prid": 14748
           },
           {
             "funcCode": "bzw-finance-cashmanage-deal",
             "funcName": "提现处理",
             "isPermit": 1,
             "modId": 344,
-            "prid": 7800
+            "prid": 14749
           }
         ]
       },
@@ -977,7 +963,7 @@
             "funcName": "会员列表",
             "isPermit": 1,
             "modId": 348,
-            "prid": 8178
+            "prid": 14982
           }
         ]
       },
@@ -1009,14 +995,14 @@
             "funcName": "分润列表",
             "isPermit": 1,
             "modId": 350,
-            "prid": 8182
+            "prid": 14987
           },
           {
             "funcCode": "bzw-profitC-setting",
             "funcName": "分润设置",
             "isPermit": 1,
             "modId": 350,
-            "prid": 8187
+            "prid": 14992
           }
         ]
       },
@@ -1041,7 +1027,7 @@
             "funcName": "订单列表",
             "isPermit": 1,
             "modId": 353,
-            "prid": 8191
+            "prid": 14997
           }
         ]
       },
@@ -1063,6 +1049,13 @@
             "modId": 355,
             "modLink": "bzw-financeC-cashmanage",
             "modName": "提现管理"
+          },
+          {
+            "modClass": "bzw-financeC-recordmanage",
+            "modCode": "bzw-financeC-recordmanage",
+            "modId": 355,
+            "modLink": "bzw-financeC-recordmanage",
+            "modName": "交易流水管理"
           }
         ],
         "modLink": "bzw-financeC",
@@ -1073,28 +1066,35 @@
             "funcName": "查询银行卡列表",
             "isPermit": 1,
             "modId": 355,
-            "prid": 8195
+            "prid": 15002
           },
           {
             "funcCode": "bzw-financeC-cardmanage-audit",
             "funcName": "银行卡审核",
             "isPermit": 1,
             "modId": 355,
-            "prid": 8199
+            "prid": 15007
           },
           {
             "funcCode": "bzw-financeC-cashmanage",
             "funcName": "查询提现列表",
             "isPermit": 1,
             "modId": 355,
-            "prid": 8203
+            "prid": 15016
           },
           {
             "funcCode": "bzw-financeC-cashmanage-deal",
             "funcName": "提现处理",
             "isPermit": 1,
             "modId": 355,
-            "prid": 8207
+            "prid": 15021
+          },
+          {
+            "funcCode": "bzw-financeC-recordmanage",
+            "funcName": "交易流水管理",
+            "isPermit": 1,
+            "modId": 355,
+            "prid": 15024
           }
         ]
       }
