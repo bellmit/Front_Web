@@ -373,7 +373,8 @@
                         }).list;
                         resp.result['goods'] = testWidget.getMap({
                             map: {
-                                goodsName: 'goods'
+                                goodsName: 'goods',
+                                quantlity: 'id'
                             },
                             maptype: 'array',
                             mapmin: 5,
@@ -459,6 +460,7 @@
                                 goodsstr += '<tr>\
                                         <td>' + (i + 1) + '</td>\
                                         <td>' + item["goodsName"] + '</td>\
+                                        <td>' + (item["quantlity"] || '0') + '</td>\
                                     </tr>';
                             }
                             $(goodsstr).appendTo($show_detail_goods.html(''));
