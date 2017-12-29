@@ -519,11 +519,11 @@
             }
 
             $.ajax({
-                    url: debug ? "../../json/test.json" : "http://10.0.5.226:8082/mall-buzhubms-api/goods/operate",
-                    dataType: 'JSON',
-                    method: 'post',
-                    data: temp_config
-                })
+                url: debug ? "../../json/test.json" : "http://10.0.5.226:8082/mall-buzhubms-api/goods/operate",
+                dataType: 'JSON',
+                method: 'post',
+                data: temp_config
+            })
                 .done(function (resp) {
                     if (debug) {
                         var resp = testWidget.testSuccess('list');
@@ -760,11 +760,11 @@
 
             temp_config['id'] = id;
             $.ajax({
-                    url: debug ? "../../json/test.json" : "http://10.0.5.226:8082/mall-buzhubms-api/goods/detail",
-                    dataType: 'JSON',
-                    method: 'post',
-                    data: temp_config
-                })
+                url: debug ? "../../json/test.json" : "http://10.0.5.226:8082/mall-buzhubms-api/goods/detail",
+                dataType: 'JSON',
+                method: 'post',
+                data: temp_config
+            })
                 .done(function (resp) {
                     if (debug) {
                         var resp = {
@@ -777,7 +777,7 @@
                                     goodsTypeId: 'goods'/*商品名称*/,
                                     name: 'value'/*商品来源*/,
                                     status: 'rule,0,1,2,3'/*状态，0：仓库，1:上架,2:下架,3:删除,4:待审核*/,
-                                    source:'value',
+                                    source: 'value',
                                     gcode: 'guid',
                                     sort: 'id'/*商城排序*/,
                                     tagsAttrsList: 'arr',
@@ -972,12 +972,38 @@
                             var i = 0;
                             loopout:for (i; i < pricelen; i++) {
                                 var attrdata = priceobj[i].split('#'),
-                                    attrone = attrdata[4];
+                                    isgroup=0,
+                                    attrone = (function () {
+                                        var attritem = attrdata[4];
+                                        if (attritem.indexOf(',') !== -1) {
+                                            isgroup=true;
+                                            return attritem.split(',');
+                                        }else{
+                                            isgroup=false;
+                                            return attritem;
+                                        }
+                                    }());
 
                                 for (var j in attr_map) {
                                     var mapdata = attr_map[j],
-                                        submap = mapdata['res'];
+                                        submap = mapdata['res'],
+                                        subcount = 0;
                                     for (var p in submap) {
+                                        if(isgroup){
+                                            /*组合属性*/
+                                            if (p === attrone[0]) {
+                                                if ($.isEmptyObject(listone)) {
+                                                    listone['label'] = mapdata['label'];
+                                                    listone['res'] = submap;
+                                                    listone['id'] = mapdata['id'];
+                                                    listone['map'] = mapdata['map'];
+                                                }
+                                                break loopout;
+                                            }
+                                        }else{
+                                            /*单一属性*/
+                                        }
+
                                         if (p === attrone) {
                                             if ($.isEmptyObject(listone)) {
                                                 listone['label'] = mapdata['label'];
@@ -1141,7 +1167,7 @@
                 str = '';
             for (i; i < len; i++) {
                 var url = list[i]['imageUrl'];
-                if(url){
+                if (url) {
                     if (url.indexOf('qiniucdn.com') !== -1) {
                         if (url.indexOf('?imageView2') !== -1) {
                             url = url.split('?imageView2')[0] + '?imageView2/1/w/50/h/50';
