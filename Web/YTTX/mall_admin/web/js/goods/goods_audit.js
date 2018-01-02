@@ -55,7 +55,7 @@
                 admin_audit_form = document.getElementById('admin_audit_form'),
                 $audit_radio_tip = $('#audit_radio_tip'),
                 $audit_radio_wrap = $('#audit_radio_wrap'),
-                $audit_remark=$('#audit_remark'),
+                $audit_remark = $('#audit_remark'),
                 $admin_id = $('#admin_id'),
                 $audit_action = $('#audit_action'),
                 sureObj = public_tool.sureDialog(dia)/*回调提示对象*/,
@@ -93,6 +93,7 @@
                 history_data = {},
                 listone = {},
                 listtwo = {},
+                listthree = {},
                 $admin_oldprice_btn = $('#admin_oldprice_btn'),
                 $admin_oldprice_show = $('#admin_oldprice_show');
 
@@ -274,9 +275,10 @@
 											</span>';
                                         }
                                         if (detail_power) {
-                                            btns += '<span data-action="edit" data-id="' + id + '"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
+                                            var temp_goodskinds = parseInt(full.goodsKinds, 10);
+                                            btns += '<span data-goodsKinds="' + temp_goodskinds + '" data-action="edit" data-id="' + id + '"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
 													<i class="fa-edit"></i>\
-													<span>编辑</span>\
+													<span>' + (temp_goodskinds === 2 ? "查看" : "编辑") + '</span>\
 												</span>';
                                         }
                                     }
@@ -428,7 +430,7 @@
                     }, $tr);
                 } else if (action === 'edit') {
                     /*查看并编辑*/
-                    showDetail(id, $tr);
+                    showDetail(id, $tr, $this.attr('data-goodsKinds'));
                 }
             });
 
@@ -616,6 +618,7 @@
                 history_data = {};
                 listone = {};
                 listtwo = {};
+                listthree = {};
             }
         }
 
@@ -718,7 +721,7 @@
             setSure.sure('', function (cf) {
                 /*是否选择了状态*/
                 var applystate = parseInt($audit_radio_wrap.find(':checked').val(), 10),
-                applyremark=$audit_remark.find('input').val();
+                    applyremark = $audit_remark.find('input').val();
 
                 if (isNaN(applystate)) {
                     $audit_radio_tip.html('您没有选择审核状态');
@@ -731,7 +734,7 @@
                     return false;
                 }
 
-                if(applystate===6 && applyremark===''){
+                if (applystate === 6 && applyremark === '') {
                     /*审核不通过时必须输入审核描述*/
                     $audit_radio_tip.html('审核不通过时需要填写审核描述');
                     setTimeout(function () {
@@ -889,7 +892,7 @@
         }
 
         /*查看详情*/
-        function showDetail(id, $tr) {
+        function showDetail(id, $tr, isgoodskinds) {
             if (typeof id === 'undefined') {
                 return false;
             }
@@ -999,7 +1002,7 @@
                     var attr = getGroupCondition(result['tagsAttrsList'], result['attrInventoryPrices']);
                     if (attr) {
                         /*设置属性组合值*/
-                        setGroupCondition(history_data);
+                        setGroupCondition(history_data, isgoodskinds);
                         /*设置原始属性组合值*/
                         setOldGroupCondition(history_data);
                     }
@@ -1151,7 +1154,7 @@
                                 document.getElementById('admin_wholesale_price').innerHTML = '￥:' + public_tool.moneyCorrect(priceobj[1], 12, false)[0];
                                 document.getElementById('admin_retail_price').innerHTML = '￥:' + public_tool.moneyCorrect(priceobj[2], 12, false)[0];
                                 document.getElementById('admin_supplier_price').innerHTML = (function () {
-                                    var supplier = dataitem[6];
+                                    var supplier = priceobj[5];
                                     if (supplier === '' || isNaN(supplier)) {
                                         supplier = '￥:' + '0.00';
                                     } else {
@@ -1210,64 +1213,51 @@
                     priceobj = price;
                     pricelen = price.length;
                     if (pricelen !== 0) {
-                        var attrmap = {};
+                        var attrmap = {},
+                            attrobj = priceobj[0].split('#');
+
+                        if (attrobj.length < 7) {
+                            $admin_wholesale_price_list.html('<tr><td colspan="8" class="g-t-c g-c-gray9">暂无数据</td></tr>');
+                            $admin_wholesale_price_thead.html(wholesale_price_theadstr);
+                            return false;
+                        }
 
 
-                        /*解析第一属性*/
+                        /*解析第一第二第三属性*/
                         (function () {
-                            var i = 0;
-                            loopout:for (i; i < pricelen; i++) {
-                                var attrdata = priceobj[i].split('#'),
-                                    attrone = attrdata[4];
-
-                                for (var j in attr_map) {
-                                    var mapdata = attr_map[j],
-                                        submap = mapdata['res'];
-                                    for (var p in submap) {
-                                        if (p === attrone) {
-                                            if ($.isEmptyObject(listone)) {
-                                                listone['label'] = mapdata['label'];
-                                                listone['res'] = submap;
-                                                listone['id'] = mapdata['id'];
-                                                listone['key'] = mapdata['key'];
-                                                listone['map'] = mapdata['map'];
-                                            }
-                                            break loopout;
-                                        }
+                            var isgroup = false,
+                                grouplen = 1,
+                                attritem = (function () {
+                                    var tempattr = attrobj[4];
+                                    if (tempattr.indexOf(',') !== -1) {
+                                        isgroup = true;
+                                        tempattr = tempattr.split(',');
+                                        grouplen = tempattr.length;
+                                        return tempattr;
+                                    } else {
+                                        return tempattr;
                                     }
+                                }());
+
+                            /*重置数据选项*/
+                            listone = {};
+                            listtwo = {};
+                            listthree = {};
+                            /*设置数据选项*/
+                            if (isgroup) {
+                                var i = 0;
+                                for (i; i < grouplen; i++) {
+                                    _doGroupCondition_(attritem, i);
                                 }
+                            } else {
+                                _doGroupCondition_(attritem);
                             }
                         }());
 
 
                         /*解析第二属性*/
-                        if (!$.isEmptyObject(listone)) {
-                            (function () {
-                                var i = 0;
-                                loopout:for (i; i < pricelen; i++) {
-                                    var attrdata = priceobj[i].split('#'),
-                                        attrtwo = attrdata[5];
-
-                                    for (var j in attr_map) {
-                                        var mapdata = attr_map[j],
-                                            submap = mapdata['res'];
-                                        for (var p in submap) {
-                                            if (p === attrtwo) {
-                                                if ($.isEmptyObject(listtwo)) {
-                                                    listtwo['label'] = mapdata['label'];
-                                                    listtwo['res'] = submap;
-                                                    listtwo['id'] = mapdata['id'];
-                                                    listtwo['key'] = mapdata['key'];
-                                                    listtwo['map'] = mapdata['map'];
-                                                }
-                                                break loopout;
-                                            }
-                                        }
-                                    }
-                                }
-                            }());
-                        } else {
-                            $admin_wholesale_price_list.html('');
+                        if ($.isEmptyObject(listone)) {
+                            $admin_wholesale_price_list.html('<tr><td colspan="8" class="g-t-c g-c-gray9">暂无数据</td></tr>');
                             $admin_wholesale_price_thead.html(wholesale_price_theadstr);
                             return false;
                         }
@@ -1279,11 +1269,12 @@
                                 var i = 0;
                                 for (i; i < pricelen; i++) {
                                     var attrdata = priceobj[i].split('#'),
-                                        attrone = attrdata[4],
-                                        attrtwo = attrdata[5];
+                                        attritem = attrdata[4].split(','),
+                                        attrone = attritem[0],
+                                        attrtwo = attritem[1],
+                                        mapone = listone['res'];
 
-
-                                    var mapone = listone['res'];
+                                    attrdata.splice(4, 1, attritem);
                                     for (var m in mapone) {
                                         if (m === attrone) {
                                             if (!(m in attrmap)) {
@@ -1303,7 +1294,7 @@
                                 }
                             }());
                         } else {
-                            $admin_wholesale_price_list.html('');
+                            $admin_wholesale_price_list.html('<tr><td colspan="8" class="g-t-c g-c-gray9">暂无数据</td></tr>');
                             $admin_wholesale_price_thead.html(wholesale_price_theadstr);
                             return false;
                         }
@@ -1312,12 +1303,12 @@
                             $.extend(true, history_data, attrmap);
                             return true;
                         } else {
-                            $admin_wholesale_price_list.html('');
+                            $admin_wholesale_price_list.html('<tr><td colspan="8" class="g-t-c g-c-gray9">暂无数据</td></tr>');
                             $admin_wholesale_price_thead.html(wholesale_price_theadstr);
                             return false;
                         }
                     } else {
-                        $admin_wholesale_price_list.html('');
+                        $admin_wholesale_price_list.html('<tr><td colspan="8" class="g-t-c g-c-gray9">暂无数据</td></tr>');
                         $admin_wholesale_price_thead.html(wholesale_price_theadstr);
                         return false;
                     }
@@ -1326,11 +1317,54 @@
         }
 
 
+        /*私有服务--解析数据项*/
+        function _doGroupCondition_(data, index) {
+            /*data:数据项,ndex:索引*/
+            okloop:for (var j in attr_map) {
+                var mapdata = attr_map[j],
+                    submap = mapdata['res'];
+                for (var p in submap) {
+                    /*组合属性*/
+                    if (typeof index !== 'undefined') {
+                        if (p === data[index]) {
+                            if (index === 0) {
+                                listone['label'] = mapdata['label'];
+                                listone['res'] = submap;
+                                listone['id'] = mapdata['id'];
+                                listone['map'] = mapdata['map'];
+                            } else if (index === 1) {
+                                listtwo['label'] = mapdata['label'];
+                                listtwo['res'] = submap;
+                                listtwo['id'] = mapdata['id'];
+                                listtwo['map'] = mapdata['map'];
+                            } else if (index === 2) {
+                                listthree['label'] = mapdata['label'];
+                                listthree['res'] = submap;
+                                listthree['id'] = mapdata['id'];
+                                listthree['map'] = mapdata['map'];
+                            }
+                            break okloop;
+                        }
+                    } else {
+                        if (p === data) {
+                            listone['label'] = mapdata['label'];
+                            listone['res'] = submap;
+                            listone['id'] = mapdata['id'];
+                            listone['map'] = mapdata['map'];
+                        }
+                    }
+
+                }
+            }
+        }
+
+
         /*设置属性组合值*/
-        function setGroupCondition(resp) {
+        function setGroupCondition(resp, isgoodskinds) {
             var str = '',
                 checkid = 0,
-                x = 0;
+                x = 0,
+                goodskinds = parseInt(isgoodskinds, 10);
 
             for (var j in resp) {
                 var k = 0,
@@ -1343,54 +1377,91 @@
                         ischeck = parseInt(dataitem[3], 10) === 1 ? '是' : '',
                         tempwholesaleprice = public_tool.moneyCorrect(dataitem[1], 12, false),
                         tempretailprice = public_tool.moneyCorrect(dataitem[2], 12, false);
-                    if (k === 0) {
-                        str += '<td>' + listtwo['res'][dataitem[5]] + '</td>' +
-                            '<td>' + dataitem[0] + '</td>' +
-                            '<td><input class="admin-table-input" name="setwholesalePrice" maxlength="12" data-value="' + tempwholesaleprice[1] + '" value="' + tempwholesaleprice[0] + '" type="text"></td>' +
-                            '<td><input class="admin-table-input" data-value="' + tempretailprice[1] + '" value="' + tempretailprice[0] + '" name="setretailPrice" maxlength="12" type="text"></td>' +
-                            '<td>￥:' + (function () {
-                                var supplier = dataitem[6];
-                                if (supplier === '' || isNaN(supplier)) {
-                                    supplier = '0.00';
-                                } else {
-                                    supplier = public_tool.moneyCorrect(supplier, 12, false)[0];
-                                }
-                                return supplier;
-                            }()) + '</td>' +
-                            '<td>' + ischeck + '</td>' +
-                            '<td>' + (function () {
-                                var inventid = dataitem[7];
-                                if (typeof inventid === 'undefined' || inventid === '' || isNaN(inventid)) {
 
-                                    return '';
-                                } else {
-                                    return '<span class="btn btn-white btn-sm g-br3 g-c-gray6" data-id="' + inventid + '">修改</span>';
-                                }
-                            }()) + '</td></tr>';
-                    } else {
-                        str += '<tr><td>' + listtwo['res'][dataitem[5]] + '</td>' +
-                            '<td>' + dataitem[0] + '</td>' +
-                            '<td><input class="admin-table-input" name="setwholesalePrice" maxlength="12" data-value="' + tempwholesaleprice[1] + '" value="' + tempwholesaleprice[0] + '" type="text"></td>' +
-                            '<td><input class="admin-table-input" data-value="' + tempretailprice[1] + '" value="' + tempretailprice[0] + '" name="setretailPrice" maxlength="12" type="text"></td>' +
-                            '<td>￥:' + (function () {
-                                var supplier = dataitem[6];
-                                if (supplier === '' || isNaN(supplier)) {
-                                    supplier = '0.00';
-                                } else {
-                                    supplier = public_tool.moneyCorrect(supplier, 12, false)[0];
-                                }
-                                return supplier;
-                            }()) + '</td>' +
-                            '<td>' + ischeck + '</td>' +
-                            '<td>' + (function () {
-                                var inventid = dataitem[7];
-                                if (typeof inventid === 'undefined' || inventid === '' || isNaN(inventid)) {
+                    if (goodskinds===2) {
+                        /*查看模式模式*/
+                        if (k === 0) {
+                            str += '<td>' + listtwo['res'][dataitem[4][1]] + '</td>' +
+                                '<td>' + dataitem[0] + '</td>' +
+                                '<td><input disabled class="admin-table-input" name="setwholesalePrice" maxlength="12" data-value="' + tempwholesaleprice[1] + '" value="' + tempwholesaleprice[0] + '" type="text"></td>' +
+                                '<td><input disabled class="admin-table-input" data-value="' + tempretailprice[1] + '" value="' + tempretailprice[0] + '" name="setretailPrice" maxlength="12" type="text"></td>' +
+                                '<td>￥:' + (function () {
+                                    var supplier = dataitem[5];
+                                    if (supplier === '' || isNaN(supplier)) {
+                                        supplier = '0.00';
+                                    } else {
+                                        supplier = public_tool.moneyCorrect(supplier, 12, false)[0];
+                                    }
+                                    return supplier;
+                                }()) + '</td>' +
+                                '<td colspan="2">' + ischeck + '</td></tr>';
+                        } else {
+                            str += '<tr><td>' + listtwo['res'][dataitem[4][1]] + '</td>' +
+                                '<td>' + dataitem[0] + '</td>' +
+                                '<td><input disabled class="admin-table-input" name="setwholesalePrice" maxlength="12" data-value="' + tempwholesaleprice[1] + '" value="' + tempwholesaleprice[0] + '" type="text"></td>' +
+                                '<td><input disabled class="admin-table-input" data-value="' + tempretailprice[1] + '" value="' + tempretailprice[0] + '" name="setretailPrice" maxlength="12" type="text"></td>' +
+                                '<td>￥:' + (function () {
+                                    var supplier = dataitem[5];
+                                    if (supplier === '' || isNaN(supplier)) {
+                                        supplier = '0.00';
+                                    } else {
+                                        supplier = public_tool.moneyCorrect(supplier, 12, false)[0];
+                                    }
+                                    return supplier;
+                                }()) + '</td>' +
+                                '<td colspan="2">' + ischeck + '</td></tr>';
+                        }
+                    }else{
+                        /*修改模式*/
+                        if (k === 0) {
+                            str += '<td>' + listtwo['res'][dataitem[4][1]] + '</td>' +
+                                '<td>' + dataitem[0] + '</td>' +
+                                '<td><input class="admin-table-input" name="setwholesalePrice" maxlength="12" data-value="' + tempwholesaleprice[1] + '" value="' + tempwholesaleprice[0] + '" type="text"></td>' +
+                                '<td><input class="admin-table-input" data-value="' + tempretailprice[1] + '" value="' + tempretailprice[0] + '" name="setretailPrice" maxlength="12" type="text"></td>' +
+                                '<td>￥:' + (function () {
+                                    var supplier = dataitem[5];
+                                    if (supplier === '' || isNaN(supplier)) {
+                                        supplier = '0.00';
+                                    } else {
+                                        supplier = public_tool.moneyCorrect(supplier, 12, false)[0];
+                                    }
+                                    return supplier;
+                                }()) + '</td>' +
+                                '<td>' + ischeck + '</td>' +
+                                '<td>' + (function () {
+                                    var inventid = dataitem[6];
+                                    if (typeof inventid === 'undefined' || inventid === '' || isNaN(inventid)) {
 
-                                    return '';
-                                } else {
-                                    return '<span class="btn btn-white btn-sm g-br3 g-c-gray6" data-id="' + inventid + '">修改</span>';
-                                }
-                            }()) + '</td></tr>';
+                                        return '';
+                                    } else {
+                                        return '<span class="btn btn-white btn-sm g-br3 g-c-gray6" data-id="' + inventid + '">修改</span>';
+                                    }
+                                }()) + '</td></tr>';
+                        } else {
+                            str += '<tr><td>' + listtwo['res'][dataitem[4][1]] + '</td>' +
+                                '<td>' + dataitem[0] + '</td>' +
+                                '<td><input class="admin-table-input" name="setwholesalePrice" maxlength="12" data-value="' + tempwholesaleprice[1] + '" value="' + tempwholesaleprice[0] + '" type="text"></td>' +
+                                '<td><input class="admin-table-input" data-value="' + tempretailprice[1] + '" value="' + tempretailprice[0] + '" name="setretailPrice" maxlength="12" type="text"></td>' +
+                                '<td>￥:' + (function () {
+                                    var supplier = dataitem[5];
+                                    if (supplier === '' || isNaN(supplier)) {
+                                        supplier = '0.00';
+                                    } else {
+                                        supplier = public_tool.moneyCorrect(supplier, 12, false)[0];
+                                    }
+                                    return supplier;
+                                }()) + '</td>' +
+                                '<td>' + ischeck + '</td>' +
+                                '<td>' + (function () {
+                                    var inventid = dataitem[6];
+                                    if (typeof inventid === 'undefined' || inventid === '' || isNaN(inventid)) {
+
+                                        return '';
+                                    } else {
+                                        return '<span class="btn btn-white btn-sm g-br3 g-c-gray6" data-id="' + inventid + '">修改</span>';
+                                    }
+                                }()) + '</td></tr>';
+                        }
                     }
                     if (ischeck === '') {
                         /*判断是否选中,有则跳过无则计数*/

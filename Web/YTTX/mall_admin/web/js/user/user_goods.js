@@ -69,8 +69,9 @@
 
                 /*查看详情*/
                 var $goods_detail_wrap = $('#goods_detail_wrap'),
-                    listone = {},
-                    listtwo = {},
+                    listone = {}/*价格数据对象1*/,
+                    listtwo = {}/*价格数据对象2*/,
+                    listthree = {}/*价格数据对象3*/,
                     attr_map = {},
                     $admin_slide_image = $('#admin_slide_image'),
                     $admin_slide_btnl = $('#admin_slide_btnl'),
@@ -343,6 +344,7 @@
                         }
                         listone = {};
                         listtwo = {};
+                        listthree={};
                         attr_map = {};
                     });
                 });
@@ -422,7 +424,7 @@
                     }
                     /*解析轮播图*/
                     var banner = result['bannerList'];
-                    if (!debug && banner && banner.length !== 0) {
+                    if (banner && banner.length !== 0) {
                         getSlideData(banner, slide_config);
                     }
                     /*解析详情*/
@@ -523,7 +525,7 @@
                                 document.getElementById('admin_wholesale_price').innerHTML = '￥:' + public_tool.moneyCorrect(priceobj[1], 12, false)[0];
                                 document.getElementById('admin_retail_price').innerHTML = '￥:' + public_tool.moneyCorrect(priceobj[2], 12, false)[0];
                                 document.getElementById('admin_supplier_price').innerHTML = (function () {
-                                    var supplier = dataitem[6];
+                                    var supplier = priceobj[5];
                                     if (supplier === '' || isNaN(supplier)) {
                                         supplier = '￥:' + '0.00';
                                     } else {
@@ -545,8 +547,7 @@
                             arr = attr[i]['list'],
                             id = attr[i]['id'],
                             j = 0,
-                            sublen = arr.length,
-                            str = '';
+                            sublen = arr.length;
 
                         /*存入属性对象*/
                         if (sublen !== 0) {
@@ -561,7 +562,6 @@
                                 attr_obj['map'][attrtxt] = attrvalue;
                                 attr_obj['res'][attrvalue] = attrtxt;
                             }
-
                             attr_obj['label'] = name.replace(/(\(.*\))|(\（.*\）)|\s*/g, '');
                             attr_obj['key'] = id;
                             attr_map[id] = attr_obj;
@@ -575,81 +575,70 @@
                     }
                 }());
 
+
                 /*解析结果集*/
                 if (price) {
                     priceobj = price;
                     pricelen = price.length;
                     if (pricelen !== 0) {
-                        var attrmap = {};
+                        var attrmap = {},
+                            attrobj = priceobj[0].split('#');
 
-                        /*解析第一属性*/
-                        (function () {
-                            var i = 0;
-                            loopout:for (i; i < pricelen; i++) {
-                                var attrdata = priceobj[i].split('#'),
-                                    attrone = attrdata[4];
-
-                                for (var j in attr_map) {
-                                    var mapdata = attr_map[j],
-                                        submap = mapdata['res'];
-                                    for (var p in submap) {
-                                        if (p === attrone) {
-                                            if ($.isEmptyObject(listone)) {
-                                                listone['label'] = mapdata['label'];
-                                                listone['res'] = submap;
-                                                listone['id'] = mapdata['id'];
-                                                listone['map'] = mapdata['map'];
-                                            }
-                                            break loopout;
-                                        }
-                                    }
-                                }
-                            }
-                        }());
-
-                        /*解析第二属性*/
-                        if (!$.isEmptyObject(listone)) {
-                            (function () {
-                                var i = 0;
-                                loopout:for (i; i < pricelen; i++) {
-                                    var attrdata = priceobj[i].split('#'),
-                                        attrtwo = attrdata[5];
-
-                                    for (var j in attr_map) {
-                                        var mapdata = attr_map[j],
-                                            submap = mapdata['res'];
-                                        for (var p in submap) {
-                                            if (p === attrtwo) {
-                                                if ($.isEmptyObject(listtwo)) {
-                                                    listtwo['label'] = mapdata['label'];
-                                                    listtwo['res'] = submap;
-                                                    listtwo['id'] = mapdata['id'];
-                                                    listtwo['map'] = mapdata['map'];
-                                                }
-                                                break loopout;
-                                            }
-                                        }
-                                    }
-                                }
-                            }());
-                        } else {
-                            document.getElementById('admin_wholesale_price_list').innerHTML = '';
+                        if (attrobj.length < 7) {
+                            document.getElementById('admin_wholesale_price_list').innerHTML = '<tr><td colspan="7" class="g-t-c g-c-gray9">暂无数据</td></tr>';
                             document.getElementById('admin_wholesale_price_thead').innerHTML = '<tr><th>颜色</th><th>规格</th><th>库存</th><th>批发价</th><th>建议零售价</th><th>供应商价</th><th>价格显示在首页</th></tr>';
                             return false;
                         }
 
+                        /*解析第一第二第三属性*/
+                        (function () {
+                            var isgroup = false,
+                                grouplen = 1,
+                                attritem = (function () {
+                                    var tempattr = attrobj[4];
+                                    if (tempattr.indexOf(',') !== -1) {
+                                        isgroup = true;
+                                        tempattr = tempattr.split(',');
+                                        grouplen = tempattr.length;
+                                        return tempattr;
+                                    } else {
+                                        return tempattr;
+                                    }
+                                }());
 
+                            /*重置数据选项*/
+                            listone = {};
+                            listtwo = {};
+                            listthree = {};
+                            /*设置数据选项*/
+                            if (isgroup) {
+                                var i = 0;
+                                for (i; i < grouplen; i++) {
+                                    _doGroupCondition_(attritem, i);
+                                }
+                            } else {
+                                _doGroupCondition_(attritem);
+                            }
+                        }());
+
+                        /*解析第二属性*/
+                        if ($.isEmptyObject(listone)) {
+                            document.getElementById('admin_wholesale_price_list').innerHTML = '<tr><td colspan="7" class="g-t-c g-c-gray9">暂无数据</td></tr>';
+                            document.getElementById('admin_wholesale_price_thead').innerHTML = '<tr><th>颜色</th><th>规格</th><th>库存</th><th>批发价</th><th>建议零售价</th><th>供应商价</th><th>价格显示在首页</th></tr>';
+                            return false;
+                        }
                         /*解析组合*/
                         if (!$.isEmptyObject(listtwo)) {
                             (function () {
                                 var i = 0;
                                 for (i; i < pricelen; i++) {
                                     var attrdata = priceobj[i].split('#'),
-                                        attrone = attrdata[4],
-                                        attrtwo = attrdata[5];
+                                        attritem = attrdata[4].split(','),
+                                        attrone = attritem[0],
+                                        attrtwo = attritem[1],
+                                        mapone = listone['res'];
 
-
-                                    var mapone = listone['res'];
+                                    attrdata.splice(4, 1, attritem);
                                     for (var m in mapone) {
                                         if (m === attrone) {
                                             if (!(m in attrmap)) {
@@ -669,18 +658,59 @@
                                 }
                             }());
                         } else {
-                            document.getElementById('admin_wholesale_price_list').innerHTML = '';
+                            document.getElementById('admin_wholesale_price_list').innerHTML = '<tr><td colspan="7" class="g-t-c g-c-gray9">暂无数据</td></tr>';
                             document.getElementById('admin_wholesale_price_thead').innerHTML = '<tr><th>颜色</th><th>规格</th><th>库存</th><th>批发价</th><th>建议零售价</th><th>价格显示在首页</th></tr>';
                             return false;
                         }
-
                         /*生成html文档*/
                         groupCondition(attrmap);
                     } else {
-                        document.getElementById('admin_wholesale_price_list').innerHTML = '';
+                        document.getElementById('admin_wholesale_price_list').innerHTML = '<tr><td colspan="7" class="g-t-c g-c-gray9">暂无数据</td></tr>';
                         document.getElementById('admin_wholesale_price_thead').innerHTML = '<tr><th>颜色</th><th>规格</th><th>库存</th><th>批发价</th><th>建议零售价</th><th>供应商价</th><th>价格显示在首页</th></tr>';
                         return false;
                     }
+                }
+            }
+        }
+
+
+        /*私有服务--解析数据项*/
+        function _doGroupCondition_(data, index) {
+            /*data:数据项,ndex:索引*/
+            okloop:for (var j in attr_map) {
+                var mapdata = attr_map[j],
+                    submap = mapdata['res'];
+                for (var p in submap) {
+                    /*组合属性*/
+                    if (typeof index !== 'undefined') {
+                        if (p === data[index]) {
+                            if (index === 0) {
+                                listone['label'] = mapdata['label'];
+                                listone['res'] = submap;
+                                listone['id'] = mapdata['id'];
+                                listone['map'] = mapdata['map'];
+                            } else if (index === 1) {
+                                listtwo['label'] = mapdata['label'];
+                                listtwo['res'] = submap;
+                                listtwo['id'] = mapdata['id'];
+                                listtwo['map'] = mapdata['map'];
+                            } else if (index === 2) {
+                                listthree['label'] = mapdata['label'];
+                                listthree['res'] = submap;
+                                listthree['id'] = mapdata['id'];
+                                listthree['map'] = mapdata['map'];
+                            }
+                            break okloop;
+                        }
+                    } else {
+                        if (p === data) {
+                            listone['label'] = mapdata['label'];
+                            listone['res'] = submap;
+                            listone['id'] = mapdata['id'];
+                            listone['map'] = mapdata['map'];
+                        }
+                    }
+
                 }
             }
         }
@@ -701,13 +731,14 @@
                 for (k; k < len; k++) {
                     var dataitem = datavalue[k],
                         ischeck = parseInt(dataitem[3], 10) === 1 ? '是' : '';
+
                     if (k === 0) {
-                        str += '<td>' + listtwo['res'][dataitem[5]] + '</td>' +
+                        str += '<td>' + listtwo['res'][dataitem[4][1]] + '</td>' +
                             '<td>' + dataitem[0] + '</td>' +
                             '<td>￥:' + public_tool.moneyCorrect(dataitem[1], 12, false)[0] + '</td>' +
                             '<td>￥:' + public_tool.moneyCorrect(dataitem[2], 12, false)[0] + '</td>' +
                             '<td>' + (function () {
-                                var supplier = dataitem[6];
+                                var supplier = dataitem[5];
                                 if (supplier === '' || isNaN(supplier)) {
                                     supplier = '￥:' + '0.00';
                                 } else {
@@ -717,12 +748,12 @@
                             }()) + '</td>' +
                             '<td>' + ischeck + '</td></tr>';
                     } else {
-                        str += '<tr><td>' + listtwo['res'][dataitem[5]] + '</td>' +
+                        str += '<tr><td>' + listtwo['res'][dataitem[4][1]] + '</td>' +
                             '<td>' + dataitem[0] + '</td>' +
                             '<td>￥:' + public_tool.moneyCorrect(dataitem[1], 12, false)[0] + '</td>' +
                             '<td>￥:' + public_tool.moneyCorrect(dataitem[2], 12, false)[0] + '</td>' +
                             '<td>' + (function () {
-                                var supplier = dataitem[6];
+                                var supplier = dataitem[5];
                                 if (supplier === '' || isNaN(supplier)) {
                                     supplier = '￥:' + '0.00';
                                 } else {
