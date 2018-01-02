@@ -768,6 +768,28 @@
                 data: temp_config
             })
                 .done(function (resp) {
+                    /*if (debug) {
+                        var resp = {
+                            code: 0,
+                            message: 'ok',
+                            result: testWidget.getMap({
+                                map: {
+                                    bannerList: 'arr'/!*订单ID*!/,
+                                    details: 'content'/!*商品编号*!/,
+                                    goodsTypeId: 'goods'/!*商品名称*!/,
+                                    name: 'value'/!*商品来源*!/,
+                                    status: 'rule,0,1,2,3'/!*状态，0：仓库，1:上架,2:下架,3:删除,4:待审核*!/,
+                                    source: 'value',
+                                    gcode: 'guid',
+                                    sort: 'id'/!*商城排序*!/,
+                                    tagsAttrsList: 'arr',
+                                    attrInventoryPrices: 'arr'
+                                },
+                                maptype: 'object'
+                            }).list
+                        };
+                    }
+*/
                     var code = parseInt(resp.code, 10);
                     if (code !== 0) {
                         console.log(resp.message);

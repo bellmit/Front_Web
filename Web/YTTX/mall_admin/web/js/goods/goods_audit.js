@@ -1378,7 +1378,7 @@
                         tempwholesaleprice = public_tool.moneyCorrect(dataitem[1], 12, false),
                         tempretailprice = public_tool.moneyCorrect(dataitem[2], 12, false);
 
-                    if (goodskinds===2) {
+                    if (goodskinds === 2) {
                         /*查看模式模式*/
                         if (k === 0) {
                             str += '<td>' + listtwo['res'][dataitem[4][1]] + '</td>' +
@@ -1411,7 +1411,7 @@
                                 }()) + '</td>' +
                                 '<td colspan="2">' + ischeck + '</td></tr>';
                         }
-                    }else{
+                    } else {
                         /*修改模式*/
                         if (k === 0) {
                             str += '<td>' + listtwo['res'][dataitem[4][1]] + '</td>' +
@@ -1470,7 +1470,13 @@
                     x++;
                 }
             }
-            $admin_wholesale_price_thead.html('<tr><th>' + listone['label'] + '</th><th>' + listtwo['label'] + '</th><th>库存</th><th>批发价</th><th>建议零售价</th><th>供应商价</th><th>价格显示在首页</th><th>操作</th></tr>');
+            if (goodskinds === 2) {
+                /*查看模式*/
+                $admin_wholesale_price_thead.html('<tr><th>' + listone['label'] + '</th><th>' + listtwo['label'] + '</th><th>库存</th><th>批发价</th><th>建议零售价</th><th>供应商价</th><th colspan="2">价格显示在首页</th></tr>');
+            } else {
+                /*修改模式*/
+                $admin_wholesale_price_thead.html('<tr><th>' + listone['label'] + '</th><th>' + listtwo['label'] + '</th><th>库存</th><th>批发价</th><th>建议零售价</th><th>供应商价</th><th>价格显示在首页</th><th>操作</th></tr>');
+            }
             $admin_wholesale_price_list.html(str);
             /*全部没选中则，默认第一个选中*/
             if (checkid === x) {
@@ -1495,12 +1501,12 @@
                     var dataitem = item[k],
                         ischeck = parseInt(dataitem[3], 10) === 1 ? '是' : '';
                     if (k === 0) {
-                        str += '<td>' + listtwo['res'][dataitem[5]] + '</td>' +
+                        str += '<td>' + listtwo['res'][dataitem[4][1]] + '</td>' +
                             '<td>' + dataitem[0] + '</td>' +
                             '<td>￥:' + public_tool.moneyCorrect(dataitem[1], 12, false)[0] + '</td>' +
                             '<td>￥:' + public_tool.moneyCorrect(dataitem[2], 12, false)[0] + '</td>' +
                             '<td>￥:' + (function () {
-                                var supplier = dataitem[6];
+                                var supplier = dataitem[5];
                                 if (supplier === '' || isNaN(supplier)) {
                                     supplier = '0.00';
                                 } else {
@@ -1510,12 +1516,12 @@
                             }()) + '</td>' +
                             '<td>' + ischeck + '</td></tr>';
                     } else {
-                        str += '<tr><td>' + listtwo['res'][dataitem[5]] + '</td>' +
+                        str += '<tr><td>' + listtwo['res'][dataitem[4][1]] + '</td>' +
                             '<td>' + dataitem[0] + '</td>' +
                             '<td>￥:' + public_tool.moneyCorrect(dataitem[1], 12, false)[0] + '</td>' +
                             '<td>￥:' + public_tool.moneyCorrect(dataitem[2], 12, false)[0] + '</td>' +
                             '<td>￥:' + (function () {
-                                var supplier = dataitem[6];
+                                var supplier = dataitem[5];
                                 if (supplier === '' || isNaN(supplier)) {
                                     supplier = '0.00';
                                 } else {
