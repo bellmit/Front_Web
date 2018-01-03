@@ -1137,12 +1137,14 @@
                 limit = config.limit,
                 layer = config.layer,
                 goodstype = null,
+                goodsname = '',
                 index = null,
                 parentid = null;
 
             if (layer === 1) {
                 if (typeof curitem["goodsTypeId"] !== 'undefined') {
                     goodstype = curitem["goodsTypeId"];
+                    goodsname = curitem["goodsTypeName"];
                 }
                 index = config.index;
             } else {
@@ -1161,7 +1163,7 @@
                     /*标签类*/
                     if (goodstype !== null) {
                         str += '<div class="typeitem-default"><span data-loadsub="0" class="typeitem main-typeicon g-w-percent3"></span>\
-							<div class="typeitem g-w-percent22" >' + label + '</div><div class="typeitem g-w-percent10">有</div>';
+							<div class="typeitem g-w-percent22" >' + label + '</div><div class="typeitem g-w-percent10">' + goodsname + '</div>';
                     } else {
                         str += '<div class="typeitem-default"><span data-loadsub="0" class="typeitem main-typeicon g-w-percent3"></span>\
 							<div class="typeitem g-w-percent22" >' + label + '</div><div class="typeitem g-w-percent10">无(可共用)</div>';
@@ -1176,7 +1178,7 @@
                     /*标签类*/
                     str += '<li data-label="' + label + '" data-layer="' + layer + '" data-index="' + index + '" data-id="' + id + '">';
                     if (goodstype !== null) {
-                        str += '<div class="typeitem-default"><div class="typeitem g-w-percent22">' + label + '</div><div class="typeitem g-w-percent10">有</div>';
+                        str += '<div class="typeitem-default"><div class="typeitem g-w-percent22">' + label + '</div><div class="typeitem g-w-percent10">' + goodsname + '</div>';
                     } else {
                         str += '<div class="typeitem-default"><div class="typeitem g-w-percent22">' + label + '</div><div class="typeitem g-w-percent10">无(可共用)</div>';
                     }
@@ -1194,7 +1196,7 @@
                 /*标签类*/
                 if (goodstype !== null) {
                     stredit += '<div class="typeitem-edit"><div class="typeitem g-w-percent22"><input type="text" name="labelname" data-value="' + label + '"  placeholder="请输入标签名称" value="' + label + '" /></div>\
-							<div class="typeitem g-w-percent10" data-type="' + goodstype + '"  data-value="' + goodstype + '">有</div>\
+							<div class="typeitem g-w-percent10" data-type="' + goodstype + '"  data-value="' + goodstype + '">' + goodsname + '</div>\
 								<div class="typeitem g-w-percent5"><input type="text" name="attrsort" data-value="' + curitem["sort"] + '" maxlength="6" value="' + curitem["sort"] + '" /></div>';
                 } else {
                     stredit += '<div class="typeitem-edit"><div class="typeitem g-w-percent22"><input type="text" name="labelname" data-value="' + label + '"  placeholder="请输入标签名称" value="' + label + '" /></div>\
