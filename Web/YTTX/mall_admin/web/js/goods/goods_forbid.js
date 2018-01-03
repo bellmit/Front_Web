@@ -1103,43 +1103,17 @@
                             document.getElementById('admin_wholesale_price_thead').innerHTML = '<tr><th>颜色</th><th>规格</th><th>库存</th><th>批发价</th><th>建议零售价</th><th>供应商价</th><th>价格显示在首页</th></tr>';
                             return false;
                         }
-                        /*解析组合*/
-                        if (!$.isEmptyObject(listtwo)) {
-                            (function () {
-                                var i = 0;
-                                for (i; i < pricelen; i++) {
-                                    var attrdata = priceobj[i].split('#'),
-                                        attritem = attrdata[4].split(','),
-                                        attrone = attritem[0],
-                                        attrtwo = attritem[1],
-                                        mapone = listone['res'];
 
-                                    attrdata.splice(4, 1, attritem);
-                                    for (var m in mapone) {
-                                        if (m === attrone) {
-                                            if (!(m in attrmap)) {
-                                                /*不存在即创建*/
-                                                attrmap[m] = [];
-                                            }
-                                            var maptwo = listtwo['res'];
-                                            for (var n in maptwo) {
-                                                if (n === attrtwo) {
-                                                    attrmap[m].push(attrdata);
-                                                    break;
-                                                }
-                                            }
-                                            break;
-                                        }
-                                    }
-                                }
-                            }());
+                        /*解析组合*/
+                        if ($.isEmptyObject(listtwo)) {
+                            _dopushAttrData_(priceobj, pricelen, attrmap, false);
+                            /*生成html文档*/
+                            groupCondition(attrmap, false);
                         } else {
-                            document.getElementById('admin_wholesale_price_list').innerHTML = '<tr><td colspan="7" class="g-t-c g-c-gray9">暂无数据</td></tr>';
-                            document.getElementById('admin_wholesale_price_thead').innerHTML = '<tr><th>颜色</th><th>规格</th><th>库存</th><th>批发价</th><th>建议零售价</th><th>价格显示在首页</th></tr>';
-                            return false;
+                            _dopushAttrData_(priceobj, pricelen, attrmap, true);
+                            /*生成html文档*/
+                            groupCondition(attrmap, true);
                         }
-                        /*生成html文档*/
-                        groupCondition(attrmap);
                     } else {
                         document.getElementById('admin_wholesale_price_list').innerHTML = '<tr><td colspan="7" class="g-t-c g-c-gray9">暂无数据</td></tr>';
                         document.getElementById('admin_wholesale_price_thead').innerHTML = '<tr><th>颜色</th><th>规格</th><th>库存</th><th>批发价</th><th>建议零售价</th><th>供应商价</th><th>价格显示在首页</th></tr>';
@@ -1149,6 +1123,134 @@
             }
         }
 
+
+        /*组合颜色与尺寸*/
+        function groupCondition(resp, istwo) {
+            var str = '',
+                checkid = 0,
+                x = 0;
+
+            for (var j in resp) {
+                var k = 0,
+                    datavalue = resp[j],
+                    len = datavalue.length;
+
+                str += '<tr><td rowspan="' + len + '">' + listone['res'][j] + '</td>';
+                for (k; k < len; k++) {
+                    var dataitem = datavalue[k],
+                        ischeck = parseInt(dataitem[3], 10) === 1 ? '是' : '';
+                    if (k === 0) {
+                        str += '<td>' + (istwo ? listtwo['res'][dataitem[4][1]] : "") + '</td>' +
+                            '<td>' + dataitem[0] + '</td>' +
+                            '<td>￥:' + public_tool.moneyCorrect(dataitem[1], 12, false)[0] + '</td>' +
+                            '<td>￥:' + public_tool.moneyCorrect(dataitem[2], 12, false)[0] + '</td>' +
+                            '<td>' + (function () {
+                                var supplier = dataitem[5];
+                                if (supplier === '' || isNaN(supplier)) {
+                                    supplier = '￥:' + '0.00';
+                                } else {
+                                    supplier = '￥:' + public_tool.moneyCorrect(supplier, 12, false)[0];
+                                }
+                                return supplier;
+                            }()) + '</td>' +
+                            '<td>' + ischeck + '</td></tr>';
+                    } else {
+                        str += '<tr><td>' + (istwo ? listtwo['res'][dataitem[4][1]] : "") + '</td>' +
+                            '<td>' + dataitem[0] + '</td>' +
+                            '<td>￥:' + public_tool.moneyCorrect(dataitem[1], 12, false)[0] + '</td>' +
+                            '<td>￥:' + public_tool.moneyCorrect(dataitem[2], 12, false)[0] + '</td>' +
+                            '<td>' + (function () {
+                                var supplier = dataitem[5];
+                                if (supplier === '' || isNaN(supplier)) {
+                                    supplier = '￥:' + '0.00';
+                                } else {
+                                    supplier = '￥:' + public_tool.moneyCorrect(supplier, 12, false)[0];
+                                }
+                                return supplier;
+                            }()) + '</td>' +
+                            '<td>' + ischeck + '</td></tr>';
+                    }
+                    if (ischeck === '') {
+                        /*判断是否选中,有则跳过无则计数*/
+                        checkid++;
+                    }
+                    x++;
+                }
+            }
+            document.getElementById('admin_wholesale_price_thead').innerHTML = '<tr><th>' + listone['label'] + '</th><th>' + (istwo ? listtwo['label'] : "") + '</th><th>库存</th><th>批发价</th><th>建议零售价</th><th>供应商价</th><th>价格显示在首页</th></tr>';
+            var priclist = document.getElementById('admin_wholesale_price_list');
+            priclist.innerHTML = str;
+            /*全部没选中则，默认第一个选中*/
+            if (checkid === x) {
+                $(priclist).find('tr:first-child').find('td').eq(6).html('是');
+            }
+        }
+
+
+        /*解析轮播图*/
+        function getSlideData(list, config) {
+            var len = list.length,
+                i = 0,
+                str = '';
+            for (i; i < len; i++) {
+                var url = list[i]['imageUrl'];
+                if (url.indexOf('qiniucdn.com') !== -1) {
+                    if (url.indexOf('?imageView2') !== -1) {
+                        url = url.split('?imageView2')[0] + '?imageView2/1/w/50/h/50';
+                    } else {
+                        url = url + '?imageView2/1/w/50/h/50';
+                    }
+                    str += '<li><img alt="" src="' + url + '" /></li>';
+                } else {
+                    str += '<li><img alt="" src="' + url + '" /></li>';
+                }
+            }
+            $(str).appendTo(config.$slide_tool.html(''));
+            /*调用轮播*/
+            goodsSlide.GoodsSlide(config);
+        }
+
+
+        /*解析详情*/
+        function getDetailHtml(data) {
+            document.getElementById('admin_detail').innerHTML = data;
+        }
+
+
+        /*私有服务--组合*/
+        function _dopushAttrData_(priceobj, pricelen, attrmap, flag) {
+            /*flag:是否存在第二个数据项*/
+            var i = 0;
+            for (i; i < pricelen; i++) {
+                var attrdata = priceobj[i].split('#'),
+                    attritem = attrdata[4].split(','),
+                    attrone = attritem[0],
+                    attrtwo = attritem[1],
+                    mapone = listone['res'];
+
+                attrdata.splice(4, 1, attritem);
+                for (var m in mapone) {
+                    if (m === attrone) {
+                        if (!(m in attrmap)) {
+                            /*不存在即创建*/
+                            attrmap[m] = [];
+                        }
+                        if (flag) {
+                            var maptwo = listtwo['res'];
+                            for (var n in maptwo) {
+                                if (n === attrtwo) {
+                                    attrmap[m].push(attrdata);
+                                    break;
+                                }
+                            }
+                        } else {
+                            attrmap[m].push(attrdata);
+                        }
+                        break;
+                    }
+                }
+            }
+        }
 
         /*私有服务--解析数据项*/
         function _doGroupCondition_(data, index) {
@@ -1189,99 +1291,6 @@
 
                 }
             }
-        }
-
-
-        /*组合颜色与尺寸*/
-        function groupCondition(resp) {
-            var str = '',
-                checkid = 0,
-                x = 0;
-
-            for (var j in resp) {
-                var k = 0,
-                    datavalue = resp[j],
-                    len = datavalue.length;
-
-                str += '<tr><td rowspan="' + len + '">' + listone['res'][j] + '</td>';
-                for (k; k < len; k++) {
-                    var dataitem = datavalue[k],
-                        ischeck = parseInt(dataitem[3], 10) === 1 ? '是' : '';
-                    if (k === 0) {
-                        str += '<td>' + listtwo['res'][dataitem[4][1]] + '</td>' +
-                            '<td>' + dataitem[0] + '</td>' +
-                            '<td>￥:' + public_tool.moneyCorrect(dataitem[1], 12, false)[0] + '</td>' +
-                            '<td>￥:' + public_tool.moneyCorrect(dataitem[2], 12, false)[0] + '</td>' +
-                            '<td>' + (function () {
-                                var supplier = dataitem[5];
-                                if (supplier === '' || isNaN(supplier)) {
-                                    supplier = '￥:' + '0.00';
-                                } else {
-                                    supplier = '￥:' + public_tool.moneyCorrect(supplier, 12, false)[0];
-                                }
-                                return supplier;
-                            }()) + '</td>' +
-                            '<td>' + ischeck + '</td></tr>';
-                    } else {
-                        str += '<tr><td>' + listtwo['res'][dataitem[4][1]] + '</td>' +
-                            '<td>' + dataitem[0] + '</td>' +
-                            '<td>￥:' + public_tool.moneyCorrect(dataitem[1], 12, false)[0] + '</td>' +
-                            '<td>￥:' + public_tool.moneyCorrect(dataitem[2], 12, false)[0] + '</td>' +
-                            '<td>' + (function () {
-                                var supplier = dataitem[5];
-                                if (supplier === '' || isNaN(supplier)) {
-                                    supplier = '￥:' + '0.00';
-                                } else {
-                                    supplier = '￥:' + public_tool.moneyCorrect(supplier, 12, false)[0];
-                                }
-                                return supplier;
-                            }()) + '</td>' +
-                            '<td>' + ischeck + '</td></tr>';
-                    }
-                    if (ischeck === '') {
-                        /*判断是否选中,有则跳过无则计数*/
-                        checkid++;
-                    }
-                    x++;
-                }
-            }
-            document.getElementById('admin_wholesale_price_thead').innerHTML = '<tr><th>' + listone['label'] + '</th><th>' + listtwo['label'] + '</th><th>库存</th><th>批发价</th><th>建议零售价</th><th>供应商价</th><th>价格显示在首页</th></tr>';
-            var priclist = document.getElementById('admin_wholesale_price_list');
-            priclist.innerHTML = str;
-            /*全部没选中则，默认第一个选中*/
-            if (checkid === x) {
-                $(priclist).find('tr:first-child').find('td').eq(6).html('是');
-            }
-        }
-
-
-        /*解析轮播图*/
-        function getSlideData(list, config) {
-            var len = list.length,
-                i = 0,
-                str = '';
-            for (i; i < len; i++) {
-                var url = list[i]['imageUrl'];
-                if (url.indexOf('qiniucdn.com') !== -1) {
-                    if (url.indexOf('?imageView2') !== -1) {
-                        url = url.split('?imageView2')[0] + '?imageView2/1/w/50/h/50';
-                    } else {
-                        url = url + '?imageView2/1/w/50/h/50';
-                    }
-                    str += '<li><img alt="" src="' + url + '" /></li>';
-                } else {
-                    str += '<li><img alt="" src="' + url + '" /></li>';
-                }
-            }
-            $(str).appendTo(config.$slide_tool.html(''));
-            /*调用轮播*/
-            goodsSlide.GoodsSlide(config);
-        }
-
-
-        /*解析详情*/
-        function getDetailHtml(data) {
-            document.getElementById('admin_detail').innerHTML = data;
         }
 
 
