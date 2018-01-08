@@ -276,9 +276,7 @@
                                         }
                                         if (detail_power) {
                                             var temp_goodskinds = parseInt(full.goodsKinds, 10);
-                                            btns += '<span data-goodsKinds="' + temp_goodskinds + '" data-action="edit" data-id="' + id + '"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">\
-													<i class="fa-edit"></i>\
-													<span>' + (temp_goodskinds === 2 ? "查看" : "编辑") + '</span>\
+                                            btns += '<span data-goodsKinds="' + temp_goodskinds + '" data-action="edit" data-id="' + id + '"  class="btn btn-white btn-icon btn-xs g-br2 g-c-gray8">' + (temp_goodskinds === 2 ? "<i class=\"fa-file-text-o\"></i><span>&nbsp;查看</span>" : "<i class=\"fa-edit\"></i><span>&nbsp;编辑</span>") + '\
 												</span>';
                                         }
                                     }
