@@ -818,6 +818,15 @@
                     if (detail !== '') {
                         getDetailHtml(detail);
                     }
+
+                    /*解析文字描述*/
+                    var characterdescribe = result['characterDescribe'];
+                    if (typeof characterdescribe !== 'undefined') {
+                        document.getElementById('admin_characterdescribe').innerHTML = characterdescribe;
+                    }else{
+                        document.getElementById('admin_characterdescribe').innerHTML = '';
+                    }
+
                     /*解析类型*/
                     var type = result['goodsTypeId'];
                     if (typeof type !== 'undefined') {

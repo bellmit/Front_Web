@@ -538,6 +538,13 @@
         var self = this;
         return /^[0-9]{0,}$/g.test(self.trims(str));
     };
+    /*判断是否是html*/
+    public_tool.isHtmlTag=function (str) {
+        if(typeof str==='undefined'){
+            return false;
+        }
+        return /^(?:[^#<]*(<[\w\W]+>)[^>]*$|#([\w\-]*)$)/.test(str);
+    };
     //自动补全纠错人民币(字符串,最大数位,是否可以返回为空)，返回一个数组['格式化后的数据',带小数点的未格式化数据]
     public_tool.moneyCorrect = function (str, max, flag) {
         if (typeof str === 'undefined' || str === null) {
