@@ -1,27 +1,25 @@
 (function () {
-    var MAX_ACTORS = 5;
-    /*球数量*/
-    var WIDTH = 900;
-    var HEIGHT = 500;
-    var FPS = 30;
-    /*球移动速度*/
-
-    var actors = [];
-    var stage = {};
-    var context = null;
-    var spring = 0.1;
-    var friction = 0.8;
-    var gravity = 5;
-    var targetX = 0;
-    var targetY = 0;
+    var max_actors = 5/*演员数量*/,
+        width = 900/*舞台宽度*/,
+        height = 500/*舞台高度*/,
+        fps = 30/*球移动速度*/,
+        actor_timer = null,
+        actors = [],
+        stage = {},
+        context = null,
+        spring = 0.1,
+        friction = 0.8,
+        gravity = 5,
+        targetX = 0,
+        targetY = 0;
 
     /*舞台类*/
     function Stage() {
-        this.c = "#000000";/*舞台背景*/
-        this.l = 0; /*舞台左侧*/
-        this.r = WIDTH;/*舞台右侧*/
-        this.t = 0;/*舞台上侧*/
-        this.b = HEIGHT; /*舞台下侧*/
+        this.c = "#000000"/*舞台背景*/;
+        this.l = 0/*舞台左侧*/;
+        this.r = width/*舞台右侧*/;
+        this.t = 0/*舞台上侧*/;
+        this.b = height/*舞台下侧*/;
     }
 
     /*舞台渲染*/
@@ -43,22 +41,21 @@
     /*舞台清除*/
     Stage.prototype.clear = function () {
         context.fillStyle = this.c;
-        context.fillRect(0, 0, WIDTH, HEIGHT);
+        context.fillRect(0, 0, width, height);
     };
 
 
     /*演员类*/
     function Actor() {
-        this.c = "#FFFFFF"; // color
-        this.x = WIDTH / 2 * Math.random();
-        this.y = HEIGHT / 2 * Math.random();
-        this.vx = 0; // velocity x
-        this.vy = 0; // velocity y
+        this.c = "#ffffff";
+        this.x = (width / 2) * Math.random();
+        this.y = (height / 2) * Math.random();
+        this.vx = 0;
+        this.vy = 0;
     }
 
     /*演员移动类*/
     Actor.prototype.move = function (tx, ty) {
-        // movement with spring, friction and gravity
         var dx = tx - this.x;
         var dy = ty - this.y;
         var ax = dx * spring;
@@ -104,27 +101,29 @@
         }, false);
 
         //set target point
-        targetX = WIDTH / 2;
-        targetY = HEIGHT / 2;
+        targetX = width / 2;
+        targetY = height / 8;
 
         stage = new Stage();
 
-        canvas.width = WIDTH;
-        canvas.height = HEIGHT;
+        canvas.width = width;
+        canvas.height = height;
         context = canvas.getContext("2d");
 
         // create set of actors
-        for (var i = 0; i < MAX_ACTORS; i++) {
+        for (var i = 0; i < max_actors; i++) {
             var actor = new Actor();
             actor.r = 20 - (i * 3);
             actors.push(actor);
         }
 
-        function tick() {
+        actor_timer = setInterval(function () {
+            /*if (actor_timer !== null) {
+                clearInterval(actor_timer);
+                actor_timer = null;
+            }*/
             stage.render();
-        }
-
-        setInterval(tick, 1000 / FPS);
+        }, 1000 / fps);
     }
 
     /*初始化*/
