@@ -1,0 +1,18 @@
+.hs-body-wrap {
+  width: 100%;
+  min-width: @hs-container-width;
+}
+
+.hs-container-bg {
+  .layout-relative-base();
+  width: 0;
+  height: 0;
+  .toggle-bg {
+    .layout-absolutel-base(0, 0, 1);
+    background-color: @color-white;
+    width: 100vw;
+    height: 100vh;
+    .calc-base(width,'100vw');
+    .calc-base(height,'100vh');
+  }
+}

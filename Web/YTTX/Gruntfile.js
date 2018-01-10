@@ -3,7 +3,7 @@
 module.exports = function (grunt) {
 
     /*配置文件*/
-    var configfile = 'package_bzwAdmin.json';
+    var configfile = 'package_hsjk.json';
 
     // Project configuration.
     grunt.initConfig({
