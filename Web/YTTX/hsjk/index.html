@@ -12,16 +12,13 @@
     <link href="images/logo_icon.ico" rel="icon">
     <link rel="stylesheet" href="css/base.css">
 </head>
-<body class="hs-body-wrap">
+<body class="hs-body-wrap hs-body-pos">
     <!--切换背景-->
-    <div class="hs-container-bg">
-        <div id="hs_container_bg" class="toggle-bg"></div>
-        <div class="toggle-bg">
-            <canvas id="hs_container_canvas" class="showcanvas"></canvas>
-        </div>
+    <div class="hs-toggle-bg">
+        <canvas class="hs-toggle-canvas" id="hs_toggle_canvas"></canvas>
     </div>
 
-    <!--头部-->
+    <!--头部导航区域-->
     <div class="hs-header-wrap">
         <div class="header-content">
             <div class="menu-wrap">
@@ -37,13 +34,25 @@
                     <li><a href="#">菜单9</a></li>
                 </ul>
             </div>
-
         </div>
     </div>
 
 
-    <div class="hs-">
-
+    <!--圆形导航区域-->
+    <div class="hs-circle-wrap">
+        <div class="circle-bg-wrap">
+            <div class="circle-line"></div>
+            <ul>
+                <li>1</li>
+                <li>2</li>
+                <li>3</li>
+                <li>4</li>
+                <li>5</li>
+                <li>6</li>
+                <li>7</li>
+                <li>8</li>
+            </ul>
+        </div>
     </div>
 
 
@@ -55,6 +64,6 @@
 
 <![endif]-->
 <script src="js/index.js"></script>
-<script src="js/index_canvas.js"></script>
+<!--<script src="js/index_canvas.js"></script>-->
 </body>
 </html>

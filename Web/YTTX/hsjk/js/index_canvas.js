@@ -1,6 +1,4 @@
-/**
- * Created by yipin on 2017/5/31 0031.
- */
+/*背景动画*/
 (function ($) {
     'use strict';
     var RAF_Obj = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame || function (callback) {
@@ -20,11 +18,13 @@
                 return new Vector(Math.sin(angle) * x, -Math.cos(angle) * y);
             }
         }/*工具类*/,
-        canvas = document.getElementById('hs_container_canvas'),
+        toggle_canvas = document.getElementById('hs_toggle_canvas'),
         ctx = null,
         particles = [],
         pi2 = Math.PI * 2,
         $win = $(window),
+        $hs_menuitem = $('#hs_menuitem'),
+        toggleindex=null,
         width,
         height;
 
@@ -80,31 +80,31 @@
 
     /*初始化*/
     function init() {
-        if (!canvas.getContext) {
+        if (!toggle_canvas.getContext) {
             return;
         }
-        ctx = canvas.getContext('2d');
+        ctx = toggle_canvas.getContext('2d');
         width = $win.width();
         height = $win.height() - 23;
 
-        canvas.width = width;
-        canvas.height = height;
+        toggle_canvas.width = width;
+        toggle_canvas.height = height;
 
         /*绑定事件*/
         bindHandlers();
-        /*画*/
+        /*绘制*/
         draw();
     }
 
     /*事件绑定*/
     function bindHandlers() {
         /*监听点击*/
-        canvas.addEventListener('click', function (e) {
+        toggle_canvas.addEventListener('click', function (e) {
             /*创建大礼花*/
             createParticles(e.pageX, e.pageY, false);
         }, false);
         /*监听鼠标移动*/
-        canvas.addEventListener('mousemove', function (e) {
+        toggle_canvas.addEventListener('mousemove', function (e) {
             /*创建小礼花*/
             createParticles(e.pageX, e.pageY, true);
         }, false);
@@ -112,15 +112,31 @@
             width = $win.width();
             height = $win.height() - 23;
 
-            canvas.width = width;
-            canvas.height = height;
+            toggle_canvas.width = width;
+            toggle_canvas.height = height;
         })*/
+        /*绑定背景切换*/
+        $hs_menuitem.on('click', 'li', function (e) {
+            toggleindex=$(this).index();
+            createParticles(e.pageX, e.pageY, false);
+        }).find('>li:first-child').trigger('click');
     }
 
     function createParticles(x, y, isSmall) {
         var amount = isSmall ? RandomGen.randomInt(1, 3) : RandomGen.randomInt(20, 50);
         for (var i = 0; i < amount; i++) {
             particles.push(new Particle(x, y, isSmall));
+        }
+    }
+
+    /*绘制图片*/
+    function toggoleImage() {
+        if (toggleindex !== null) {
+            var img = new Image();   // 创建img元素
+            img.onload = function () {
+                ctx.drawImage(img, 0, 0);
+            };
+            img.src = 'images/show/' + (toggleindex + 1) + '.jpg'; // 设置图片源地址
         }
     }
 
@@ -131,8 +147,9 @@
                 particles.splice(i, 1);
             }
         }
-        ctx.fillStyle = "rgba(255,255,255,0.4)";
+        ctx.fillStyle = "rgba(255,255,255,.5)";
         ctx.fillRect(0, 0, width, height);
+        toggoleImage();
         RAF_Obj(draw);
     }
 

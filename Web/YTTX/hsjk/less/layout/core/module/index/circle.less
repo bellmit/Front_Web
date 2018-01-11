@@ -1,0 +1,23 @@
+/*圆形导航*/
+.hs-circle-wrap{
+  position: absolute;
+  z-index:10;
+  top:50%;
+  left:50%;
+  width:@hs-circle-width;
+  height:@hs-circle-height;
+  margin-left:-@hs-circle-width/2;
+  margin-top:-@hs-circle-height/2;
+  .circle-bg-wrap{
+    .layout-relative-base();
+    .layout-base();
+    height:100%;
+  }
+  .circle-line{
+    .layout-absolutelb-base();
+    width:100%;
+    height:100%;
+    .border-radius-base(50%);
+    border:10px solid @color-gray13;
+  }
+}
