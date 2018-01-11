@@ -1,23 +1,84 @@
 /*圆形导航*/
-.hs-circle-wrap{
+.hs-circle-wrap {
   position: absolute;
-  z-index:10;
-  top:50%;
-  left:50%;
-  width:@hs-circle-width;
-  height:@hs-circle-height;
-  margin-left:-@hs-circle-width/2;
-  margin-top:-@hs-circle-height/2;
-  .circle-bg-wrap{
+  z-index: 10;
+  top: 50%;
+  left: 50%;
+  width: @hs-circle-width;
+  height: @hs-circle-height;
+  margin-left: -@hs-circle-width/2;
+  margin-top: -@hs-circle-height/2;
+  .circle-bg-wrap {
     .layout-relative-base();
     .layout-base();
-    height:100%;
+    height: 100%;
   }
-  .circle-line{
+  .circle-line {
     .layout-absolutelb-base();
-    width:100%;
-    height:100%;
+    width: 100%;
+    height: 100%;
     .border-radius-base(50%);
-    border:10px solid @color-gray13;
+    border: 10px solid @color-gray13;
+  }
+  .circle-btn {
+    @cleft: 50px;
+    @ctop: 50px;
+
+    width: 100%;
+    height: 100%;
+    > li {
+      position: absolute;
+      z-index: 10;
+      width: 50px;
+      height: 50px;
+      cursor: pointer;
+      .border-radius-base(50%);
+      text-align: center;
+      line-height: 50px;
+      .no-outline-base();
+      &:hover {
+
+      }
+    }
+    .btn-item1 {
+      left: @cleft;
+      top: @ctop;
+      background: @color-gray12;
+    }
+    .btn-item2 {
+      left: @cleft * 2.5;
+      top: @ctop / 2;
+      background: @color-red1;
+    }
+    .btn-item3 {
+      left: @cleft * 3.5;
+      top: @ctop / 3;
+      background: @color-blue1;
+    }
+    .btn-item4 {
+      left: @cleft * 4.5;
+      top: @ctop / 2;
+      background: @color-green1;
+    }
+    .btn-item5 {
+      left: @cleft * 5.5;
+      top: @ctop;
+      background: @color-red2;
+    }
+    .btn-item6 {
+      left: @cleft * 6.5;
+      top: @ctop * 1.5;
+      background: @color-blue2;
+    }
+    .btn-item7 {
+      left: @cleft * 7.5;
+      top: @ctop * 2.5;
+      background: @color-red3;
+    }
+    .btn-item8 {
+      left: @cleft * 8.5;
+      top: @ctop * 3.5;
+      background: @color-green2;
+    }
   }
 }
