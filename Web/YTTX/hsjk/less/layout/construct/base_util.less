@@ -64,7 +64,7 @@
   transform: @str;
 }
 
-///*动画定义*/
+///*动画类--调用*/
 .animation-base(@str) {
   -moz-animation: @str;
   -ms-animation: @str;
@@ -72,6 +72,12 @@
   -o-animation: @str;
   animation: @str;
 }
+
+///*动画类--名称定义*/
+.animate-name-base(@name){
+
+}
+
 
 ///*横向渐变*/
 .linear-gradienth-base(@startColor: #555, @endColor: #333) {
