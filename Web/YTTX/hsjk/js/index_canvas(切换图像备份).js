@@ -22,9 +22,9 @@
         ctx = null,
         particles = [],
         pi2 = Math.PI * 2,
-        minheight = parseInt(1.414 * 758, 10) + 60,
-        $circle_shooting = $('#circle_shooting'),
         $win = $(window),
+        $hs_menuitem = $('#hs_menuitem'),
+        toggleindex=null,
         width,
         height;
 
@@ -58,8 +58,8 @@
 
     /*绘制颗粒*/
     Particle.prototype.draw = function () {
-        ctx.strokeStyle = 'rgba(255,255,255,.4)'/*线条颜色*/;
-        ctx.fillStyle = "rgba(255,255,255,.1)"/*填充颜色*/;
+        ctx.strokeStyle = 'rgba(0,0,0,.4)'/*线条颜色*/;
+        ctx.fillStyle = "rgba(0,0,0,.1)"/*填充颜色*/;
         ctx.beginPath();
         ctx.arc(this.pos.x, this.pos.y, this.size, 0, pi2, true)/*画弧形*/;
         //ctx.rect(this.pos.x, this.pos.y, this.size, this.size)/*画矩形*/;
@@ -87,13 +87,6 @@
         width = $win.width();
         height = $win.height() - 23;
 
-        if(width<minheight){
-            width=minheight;
-        }
-        if(height<minheight){
-            height=minheight;
-        }
-
         toggle_canvas.width = width;
         toggle_canvas.height = height;
 
@@ -115,24 +108,18 @@
             /*创建小礼花*/
             createParticles(e.pageX, e.pageY, true);
         }, false);
-        $win.on('resize', function () {
+        /*$win.on('resize',function () {
             width = $win.width();
             height = $win.height() - 23;
 
-            if(width<minheight){
-                width=minheight;
-            }
-            if(height<minheight){
-                height=minheight;
-            }
-
             toggle_canvas.width = width;
             toggle_canvas.height = height;
-        });
+        })*/
         /*绑定背景切换*/
-        $circle_shooting.on('click', function (e) {
+        $hs_menuitem.on('click', 'li', function (e) {
+            toggleindex=$(this).index();
             createParticles(e.pageX, e.pageY, false);
-        });
+        }).find('>li:first-child').trigger('click');
     }
 
     function createParticles(x, y, isSmall) {
@@ -144,11 +131,13 @@
 
     /*绘制图片*/
     function toggoleImage() {
-        var img = new Image();   // 创建img元素
-        img.onload = function () {
-            ctx.drawImage(img, 0, 0, width, height);
-        };
-        img.src = 'images/index_bg.jpg'; // 设置图片源地址
+        if (toggleindex !== null) {
+            var img = new Image();   // 创建img元素
+            img.onload = function () {
+                ctx.drawImage(img, 0, 0);
+            };
+            img.src = 'images/show/' + (toggleindex + 1) + '.jpg'; // 设置图片源地址
+        }
     }
 
     function draw() {
@@ -158,6 +147,8 @@
                 particles.splice(i, 1);
             }
         }
+        ctx.fillStyle = "rgba(255,255,255,.5)";
+        ctx.fillRect(0, 0, width, height);
         toggoleImage();
         RAF_Obj(draw);
     }

@@ -35,92 +35,128 @@
     .animation-base(circle-shooting 10s linear 0s infinite);
   }
   /*圈按钮*/
-  .circle-action{
-    .layout-absolutel-base(50%,50%,20);
+  .circle-action {
+    .layout-absolutel-base(50%, 50%, 20);
     width: 0;
     height: 0;
   }
   .circle-btn {
     .layout-relative-base(0, 0, 30);
-    width:0;
-    height:0;
+    width: 0;
+    height: 0;
     > li {
       position: absolute;
       z-index: 40;
       width: @hs-btn-width;
       height: @hs-btn-width;
-			.user-select-base();
+      .user-select-base();
     }
-  	/*按钮定位*/
+    /*按钮定位*/
+    /*医馆*/
     .btn-item1 {
       left: floor(@hs-circle-width/2 * cos(270deg) - @hs-btn-width/2);
       top: floor(@hs-circle-width/2 * sin(270deg) - @hs-btn-width/2);
+      .btn-icon{
+        background-image: url('../images/icon_yiguan.png');
+      }
     }
+    /*养老*/
     .btn-item2 {
       left: floor(@hs-circle-width/2 * cos(306deg) - @hs-btn-width/2);
       top: floor(@hs-circle-width/2 * sin(306deg) - @hs-btn-width/2);
+      .btn-icon{
+        background-image: url('../images/icon_yanglao.png');
+      }
     }
+    /*旅游*/
     .btn-item3 {
       left: floor(@hs-circle-width/2 * cos(342deg) - @hs-btn-width/2);
       top: floor(@hs-circle-width/2 * sin(342deg) - @hs-btn-width/2);
+      .btn-icon{
+        background-image: url('../images/icon_lvyou.png');
+      }
     }
+    /*药业*/
     .btn-item4 {
       left: floor(@hs-circle-width/2 * cos(18deg) - @hs-btn-width/2);
       top: floor(@hs-circle-width/2 * sin(18deg) - @hs-btn-width/2);
+      .btn-icon{
+        background-image: url('../images/icon_yaoye.png');
+      }
     }
+    /*中医院*/
     .btn-item5 {
       left: floor(@hs-circle-width/2 * cos(54deg) - @hs-btn-width/2);
       top: floor(@hs-circle-width/2 * sin(54deg) - @hs-btn-width/2);
+      .btn-icon{
+        background-image: url('../images/icon_zhongyiyuan.png');
+      }
     }
+    /*终端*/
     .btn-item6 {
       left: floor(@hs-circle-width/2 * cos(90deg) - @hs-btn-width/2);
       top: floor(@hs-circle-width/2 * sin(90deg) - @hs-btn-width/2);
+      .btn-icon{
+        background-image: url('../images/icon_zhongduan.png');
+      }
     }
-		/*按钮效果*/
-		.btn-show{
-			.layout-relative-base(0,0,50);
-			width:100%;
-			height:100%;
-			&:hover{
-				.btn-background{
-					.transform-origin-base(center center);
-					.transform-base(scale(1.25));
-					background-color:@hs-btn-active-bgcolor;
-					.transition-base(transform .3s ease-in .01s e(',') background-color .2s ease-out .3s);
-				}
-				.btn-decorate{
-					.opacity-base(100);
-				}
-			}
-			&:active{
-				.btn-background{
-					background-color:darken(@hs-btn-active-bgcolor,10%);
-					.transition-base(background-color .01s ease-out 0s);
-				}
-			}
-		}
-		.btn-action{
-			position: absolute;
-			left:0;
-			top:0;
-			cursor: pointer;
+    /*按钮效果*/
+    .btn-show {
+      .layout-relative-base(0, 0, 50);
+      width: 100%;
+      height: 100%;
+      &:hover {
+        .btn-background {
+          .transform-origin-base(center center);
+          .transform-base(scale(1.25));
+          background-color: @hs-btn-active-bgcolor;
+          .transition-base(transform .2s ease-in .01s e(',') background-color .2s ease-out .2s);
+        }
+        .btn-decorate {
+          .opacity-base(100);
+          .transform-base(scale(1));
+          .transition-base(transform 0s ease-in 0s e(',') opacity .2s ease-in .4s);
+        }
+      }
+      &:active {
+        .btn-background {
+          background-color: darken(@hs-btn-active-bgcolor, 5%);
+          .transition-base(background-color .1s linear 0s);
+        }
+        .btn-icon{
+          .opacity-base(100);
+        }
+      }
+    }
+    .btn-action {
+      position: absolute;
+      left: 0;
+      top: 0;
+      cursor: pointer;
       .border-radius-base(50%);
-			width:100%;
-			height:100%;
-		}
-		.btn-icon{
-			z-index: 70;
-		}
-		.btn-decorate{
-			z-index: 65;
-			.opacity-base(0);
-			background:url('../images/btn_active.png') center center no-repeat;
-		}
-		.btn-background{
-			z-index: 60;
-			background-color: @hs-btn-bgcolor;
-			.transition-base(transform .2s ease-out .01s e(',') background-color .3s ease-in .2s);
-		}
+      width: 100%;
+      height: 100%;
+    }
+    .btn-icon {
+      z-index: 70;
+      .opacity-base(90);
+      background-color:transparent;
+      background-position: center center;
+      background-repeat: no-repeat;
+    }
+    .btn-decorate {
+      z-index: 65;
+      .opacity-base(0);
+      .transform-origin-base(center center);
+      .transform-base(scale(0.8));
+      background: url('../images/btn_active.png') center center no-repeat;
+      .transition-base(transform .3s ease-in .4s e(',') opacity .3s ease-out .6s);
+    }
+    .btn-background {
+      z-index: 60;
+      background-color: @hs-btn-bgcolor;
+      .transition-base(transform .2s ease-out .01s e(',') background-color .3s ease-in .2s);
+    }
   }
 }
 
