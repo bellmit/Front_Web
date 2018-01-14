@@ -8,7 +8,6 @@
   height: @hs-circle-height;
   margin-left: -@hs-circle-width/2;
 
-  @circle-gapl: 200px /*内圈偏移量*/;
   /*操作容器*/
   .circle-bg-wrap {
     .layout-relative-base(0, @hs-header-height);
@@ -31,15 +30,17 @@
     overflow: hidden;
     .border-radius-base(49%);
   }
+  /*圈流星动画*/
   .circle-shooting-animate {
     .animation-base(circle-shooting 10s linear 0s infinite);
   }
-  /*圈按钮*/
+  /*圈按钮容器*/
   .circle-action {
     .layout-absolutel-base(50%, 50%, 20);
     width: 0;
     height: 0;
   }
+  /*圈按钮*/
   .circle-btn {
     .layout-relative-base(0, 0, 30);
     width: 0;
@@ -56,23 +57,37 @@
     .btn-item1 {
       left: floor(@hs-circle-width/2 * cos(270deg) - @hs-btn-width/2);
       top: floor(@hs-circle-width/2 * sin(270deg) - @hs-btn-width/2);
-      .btn-icon{
+      .btn-icon {
         background-image: url('../images/icon_yiguan.png');
+      }
+      .btn-show {
+        &:after {
+          bottom: -50px;
+          left:0;
+          content:'医馆';
+        }
       }
     }
     /*养老*/
     .btn-item2 {
       left: floor(@hs-circle-width/2 * cos(306deg) - @hs-btn-width/2);
       top: floor(@hs-circle-width/2 * sin(306deg) - @hs-btn-width/2);
-      .btn-icon{
+      .btn-icon {
         background-image: url('../images/icon_yanglao.png');
+      }
+      .btn-show {
+        &:after {
+          top: 35px;
+          left:110%;
+          content:'养老';
+        }
       }
     }
     /*旅游*/
     .btn-item3 {
       left: floor(@hs-circle-width/2 * cos(342deg) - @hs-btn-width/2);
       top: floor(@hs-circle-width/2 * sin(342deg) - @hs-btn-width/2);
-      .btn-icon{
+      .btn-icon {
         background-image: url('../images/icon_lvyou.png');
       }
     }
@@ -80,7 +95,7 @@
     .btn-item4 {
       left: floor(@hs-circle-width/2 * cos(18deg) - @hs-btn-width/2);
       top: floor(@hs-circle-width/2 * sin(18deg) - @hs-btn-width/2);
-      .btn-icon{
+      .btn-icon {
         background-image: url('../images/icon_yaoye.png');
       }
     }
@@ -88,7 +103,7 @@
     .btn-item5 {
       left: floor(@hs-circle-width/2 * cos(54deg) - @hs-btn-width/2);
       top: floor(@hs-circle-width/2 * sin(54deg) - @hs-btn-width/2);
-      .btn-icon{
+      .btn-icon {
         background-image: url('../images/icon_zhongyiyuan.png');
       }
     }
@@ -96,7 +111,7 @@
     .btn-item6 {
       left: floor(@hs-circle-width/2 * cos(90deg) - @hs-btn-width/2);
       top: floor(@hs-circle-width/2 * sin(90deg) - @hs-btn-width/2);
-      .btn-icon{
+      .btn-icon {
         background-image: url('../images/icon_zhongduan.png');
       }
     }
@@ -117,15 +132,29 @@
           .transform-base(scale(1));
           .transition-base(transform 0s ease-in 0s e(',') opacity .2s ease-in .4s);
         }
+        &:after {
+          color: @color-white;
+        }
       }
       &:active {
         .btn-background {
           background-color: darken(@hs-btn-active-bgcolor, 5%);
           .transition-base(background-color .1s linear 0s);
         }
-        .btn-icon{
+        .btn-icon {
           .opacity-base(100);
         }
+      }
+      &:after {
+        position: absolute;
+        z-index: 60;
+        display:block;
+        width:100%;
+        height:40px;
+        line-height: 40px;
+        text-align: center;
+        color: darken(@color-white,15%);
+        font-size: @font-size-base + 20;
       }
     }
     .btn-action {
@@ -140,7 +169,7 @@
     .btn-icon {
       z-index: 70;
       .opacity-base(90);
-      background-color:transparent;
+      background-color: transparent;
       background-position: center center;
       background-repeat: no-repeat;
     }
@@ -158,6 +187,89 @@
       .transition-base(transform .2s ease-out .01s e(',') background-color .3s ease-in .2s);
     }
   }
+  /*操作展现*/
+  .action-panel {
+    .layout-absolutel-base(0, 0, 10);
+    .border-radius-base(0 50% 50% 0);
+    background: rgba(255, 255, 255, .2);
+    width: @hs-circle-width + @hs-circle-extend;
+    height: @hs-circle-height;
+    margin-left: -@hs-circle-extend;
+  }
+  .action-show {
+    .layout-relative-base();
+    width: 100%;
+    height: 100%;
+  }
+  /*首页*/
+  .index-show {
+    > li {
+      position: absolute;
+    }
+    /*首页展现背景*/
+    .index-item-bg {
+      @itembg-width: 530px;
+      @itembg-height: 390px;
+
+      left: 150px;
+      top: 50%;
+      margin-top: -@itembg-height/2;
+      overflow: hidden;
+      z-index: 10;
+      background: transparent url('../images/action_index/action_index_bg.png') center center no-repeat;
+      width: @itembg-width;
+      height: @itembg-height;
+    }
+    /*首页展现云*/
+    .index-item-cloud {
+      left: 100px;
+      top: 380px;
+      overflow: hidden;
+      z-index: 12;
+      background: transparent url('../images/action_index/action_index_cloud.png') center center no-repeat;
+      width: 123px;
+      height: 74px;
+      .animation-base(index-cloud 2s linear 0s infinite);
+    }
+    /*首页心电图*/
+    .index-item-heart {
+      left: 280px;
+      top: 450px;
+      overflow: hidden;
+      z-index: 12;
+      background: transparent url('../images/action_index/action_index_heart.png') center center no-repeat;
+      width: 69px;
+      height: 57px;
+    }
+    /*首页报表*/
+    .index-item-chart {
+      left: 520px;
+      top: 180px;
+      overflow: hidden;
+      z-index: 12;
+      background: transparent url('../images/action_index/action_index_chart.png') center center no-repeat;
+      width: 89px;
+      height: 78px;
+    }
+    /*首页按钮*/
+    .index-item-btn {
+      right: 150px;
+      top: 210px;
+      overflow: hidden;
+      z-index: 18;
+      background: transparent url('../images/action_index/action_index_btn.png') center center no-repeat;
+      width: 160px;
+      height: 228px;
+      .animation-base(index-btn 3s linear 0s infinite);
+    }
+  }
+  /*医馆*/
+  .hospital-show {
+    > li {
+      position: absolute;
+    }
+  }
+
 }
 
 /*流星动画*/
@@ -177,5 +289,20 @@
   100% {
     .opacity-base(0);
     .transform-base(rotate(160deg));
+  }
+}
+
+/*首页展现动画*/
+/*云动画*/
+@keyframes index-cloud {
+  50% {
+    left: 120px;
+  }
+}
+
+/*按钮动画*/
+@keyframes index-btn {
+  50% {
+    top: 240px;
   }
 }

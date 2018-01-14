@@ -14,9 +14,9 @@
 </head>
 <body class="hs-body-wrap hs-body-pos hs-body-bg">
     <!--切换背景-->
-    <div class="hs-toggle-bg">
+    <!--<div class="hs-toggle-bg">
         <canvas class="hs-toggle-canvas" id="hs_toggle_canvas"></canvas>
-    </div>
+    </div>-->
 
     <!--头部导航区域-->
     <div class="hs-header-wrap">
@@ -30,8 +30,11 @@
     <!--圆形导航区域-->
     <div class="hs-circle-wrap">
         <div class="circle-bg-wrap">
+            <!--圈背景-->
             <div class="circle-bg circle-path"></div>
+            <!--圈流星-->
             <div id="circle_shooting" class="circle-bg circle-shooting circle-shooting-animate"></div>
+            <!--圈按钮容器-->
             <div class="circle-action">
                 <ul class="circle-btn">
                     <li class="btn-item1">
@@ -78,6 +81,26 @@
                     </li>
                 </ul>
             </div>
+            <!--操作展现--首页-->
+            <div class="action-panel action-index" id="action_index">
+                <ul class="action-show index-show">
+                    <li class="index-item-bg"></li>
+                    <li class="index-item-cloud"></li>
+                    <li class="index-item-heart"></li>
+                    <li class="index-item-chart"></li>
+                    <li class="index-item-btn"></li>
+                </ul>
+            </div>
+            <!--操作展现--医馆-->
+            <div class="action-panel action-hospital" id="action_hospital">
+                <ul class="action-show hospital-show">
+                    <li class="index-item-bg"></li>
+                    <li class="index-item-cloud"></li>
+                    <li class="index-item-heart"></li>
+                    <li class="index-item-chart"></li>
+                    <li class="index-item-btn"></li>
+                </ul>
+            </div>
         </div>
     </div>
 
@@ -90,6 +113,6 @@
 
 <![endif]-->
 <script src="js/index.js"></script>
-<script src="js/index_canvas.js"></script>
+<!--<script src="js/index_canvas.js"></script>-->
 </body>
 </html>
