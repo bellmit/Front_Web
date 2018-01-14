@@ -32,7 +32,7 @@
   }
   /*圈流星动画*/
   .circle-shooting-animate {
-    .animation-base(circle-shooting 10s linear 0s infinite);
+    .animation-base(animate-circle-shooting 10s linear 0s infinite);
   }
   /*圈按钮容器*/
   .circle-action {
@@ -63,8 +63,8 @@
       .btn-show {
         &:after {
           bottom: -50px;
-          left:0;
-          content:'医馆';
+          left: 0;
+          content: '医馆';
         }
       }
     }
@@ -78,8 +78,8 @@
       .btn-show {
         &:after {
           top: 35px;
-          left:110%;
-          content:'养老';
+          left: 110%;
+          content: '养老';
         }
       }
     }
@@ -90,6 +90,13 @@
       .btn-icon {
         background-image: url('../images/icon_lvyou.png');
       }
+      .btn-show {
+        &:after {
+          top: 35px;
+          left: 110%;
+          content: '旅游';
+        }
+      }
     }
     /*药业*/
     .btn-item4 {
@@ -97,6 +104,13 @@
       top: floor(@hs-circle-width/2 * sin(18deg) - @hs-btn-width/2);
       .btn-icon {
         background-image: url('../images/icon_yaoye.png');
+      }
+      .btn-show {
+        &:after {
+          top: 35px;
+          left: 110%;
+          content: '药业';
+        }
       }
     }
     /*中医院*/
@@ -106,6 +120,14 @@
       .btn-icon {
         background-image: url('../images/icon_zhongyiyuan.png');
       }
+      .btn-show {
+        &:after {
+          top: 35px;
+          left: 110%;
+          width: 120%;
+          content: '中医院';
+        }
+      }
     }
     /*终端*/
     .btn-item6 {
@@ -113,6 +135,13 @@
       top: floor(@hs-circle-width/2 * sin(90deg) - @hs-btn-width/2);
       .btn-icon {
         background-image: url('../images/icon_zhongduan.png');
+      }
+      .btn-show {
+        &:after {
+          bottom: -50px;
+          left: 0;
+          content: '终端';
+        }
       }
     }
     /*按钮效果*/
@@ -134,6 +163,7 @@
         }
         &:after {
           color: @color-white;
+          .transition-base(color .3s linear 0s);
         }
       }
       &:active {
@@ -148,13 +178,14 @@
       &:after {
         position: absolute;
         z-index: 60;
-        display:block;
-        width:100%;
-        height:40px;
+        display: block;
+        width: 100%;
+        height: 40px;
         line-height: 40px;
         text-align: center;
-        color: darken(@color-white,15%);
+        color: darken(@color-white, 15%);
         font-size: @font-size-base + 20;
+        overflow: hidden;
       }
     }
     .btn-action {
@@ -198,7 +229,7 @@
   }
   .action-show {
     .layout-relative-base();
-    width: 100%;
+    .layout-base();
     height: 100%;
   }
   /*首页*/
@@ -229,7 +260,7 @@
       background: transparent url('../images/action_index/action_index_cloud.png') center center no-repeat;
       width: 123px;
       height: 74px;
-      .animation-base(index-cloud 2s linear 0s infinite);
+      .animation-base(animate-index-cloud 2s linear 0s infinite);
     }
     /*首页心电图*/
     .index-item-heart {
@@ -260,20 +291,238 @@
       background: transparent url('../images/action_index/action_index_btn.png') center center no-repeat;
       width: 160px;
       height: 228px;
-      .animation-base(index-btn 3s linear 0s infinite);
+      .animation-base(animate-index-btn 3s linear 0s infinite);
     }
   }
   /*医馆*/
   .hospital-show {
+    padding: 120px 120px 120px 200px;
     > li {
+      .layout-relative-base(0, 0, 20);
+      .layout-float-base(33.33333%);
+      background-repeat: no-repeat;
+      background-position: center top;
+      height: 50%;
+      padding: 80px 30px 10px 30px;
+      &:hover {
+        .hospital-btn {
+          background: @color-white;
+          color: @color-base;
+        }
+        &:after {
+          .opacity-base(100);
+          .transition-base(opacity .2s ease-in 0s);
+        }
+      }
+      &:after {
+        .layout-absolutel-base(0, 0, 1);
+        content: '';
+        .opacity-base(0);
+        width: 100%;
+        height: 100%;
+        background: transparent url('../images/action_hospital/action_hospital_hover.png') center 30px no-repeat;
+      }
+      > div,
+      > p,
+      > a {
+        .user-select-base();
+        .text-ww();
+        .box-sizing-base();
+        text-align: center;
+      }
+      .hospital-btn {
+        margin: 0 auto 10px auto;
+        width: 90px;
+        height: 30px;
+        line-height: 30px;
+        color: @color-white;
+        background: @hs-btn-bgcolor;
+        font-size: @font-size-base + 2;
+      }
+      > p {
+        color: darken(@color-white, 10%);
+        padding: 2px 0;
+        width: 100%;
+        font-size: @font-size-base;
+        line-height: @font-size-base + 6;
+      }
+      .hospital-link {
+        position: absolute;
+        bottom: 20px;
+        z-index: 20;
+        left: 50%;
+        margin-left: -40px;
+        width: 80px;
+        line-height: 26px;
+        height: 26px;
+        color: darken(@color-white, 10%);
+        border: 1px solid @color-white;
+        font-size: @font-size-base;
+        &:after {
+          content: '>';
+        }
+        &:hover {
+          color: @color-white;
+          &:after {
+            .animation-base(animate-hospital-link 1.5s linear 0s infinite);
+          }
+        }
+      }
+    }
+    /*医馆前台*/
+    .hospital-item-front {
+      background-image: url('../images/action_hospital/action_hospital_front.png');
+    }
+    .hospital-item-guide {
+      background-image: url('../images/action_hospital/action_hospital_guide.png');
+    }
+    .hospital-item-department {
+      background-image: url('../images/action_hospital/action_hospital_department.png');
+    }
+    .hospital-item-check {
+      background-image: url('../images/action_hospital/action_hospital_check.png');
+    }
+    .hospital-item-pay {
+      background-image: url('../images/action_hospital/action_hospital_pay.png');
+    }
+    .hospital-item-drug {
+      background-image: url('../images/action_hospital/action_hospital_drug.png');
+    }
+  }
+  /*养老*/
+  .live-show {
+    @live-left-base:(@hs-circle-width - @hs-live-width)/2;
+    @live-top-base:(@hs-circle-width - @hs-live-height)/3;
+
+    > li {
+      padding:@hs-live-icon-width/2 0 0 0;
+      .box-sizing-base();
       position: absolute;
+      width: @hs-live-width;
+      height: @hs-live-height;
+      .border-radius-base(5px);
+      border: 2px solid @color-gray12;
+      background-color: @hs-live-bg;
+      div,
+      p{
+        .box-sizing-base();
+        .user-select-base();
+      }
+      p{
+        .text-ww();
+        text-align: center;
+        color: @color-gray3;
+        padding: 2px 0;
+        width: 100%;
+        font-size: @font-size-base;
+        line-height: @font-size-base + 6;
+      }
+      &:hover {
+        background-color: @hs-live-active-bg;
+        .transition-base(background-color .1s ease-in .04s);
+        .live-theme{
+          background-color:@hs-btn-active-bgcolor;
+          .transition-base(background-color .2s ease-in .01s);
+        }
+        .live-icon{
+          background-color:rgba(192,208,227,1);
+        }
+      }
+    }
+    /*前台*/
+    .live-item-front {
+      left: @live-left-base + @hs-live-gap-width/4;
+      top: @live-top-base;
+      .live-icon{
+        background-image:url('../images/action_live/action_live_front.png');
+      }
+      &:hover{
+        .live-icon{
+          background-image:url('../images/action_live/action_live_front_hover.png');
+        }
+      }
+    }
+    /*服务*/
+    .live-item-service{
+      left: @live-left-base + @hs-live-width + @hs-live-gap-width * 1.5 ;
+      top: @live-top-base;
+      .live-icon{
+        background-image:url('../images/action_live/action_live_service.png');
+      }
+      &:hover{
+        .live-icon{
+          background-image:url('../images/action_live/action_live_service_hover.png');
+        }
+      }
+    }
+    /*财务*/
+    .live-item-pay{
+      left: @live-left-base - @hs-live-width + @hs-live-gap-width ;
+      top: @live-top-base + @hs-live-height + @hs-live-gap-width;
+      .live-icon{
+        background-image:url('../images/action_live/action_live_pay.png');
+      }
+      &:hover{
+        .live-icon{
+          background-image:url('../images/action_live/action_live_pay_hover.png');
+        }
+      }
+    }
+    /*护理*/
+    .live-item-nurse{
+      left: @live-left-base + @hs-live-width/2 + @hs-live-gap-width ;
+      top: @live-top-base + @hs-live-height + @hs-live-gap-width;
+      .live-icon{
+        background-image:url('../images/action_live/action_live_nurse.png');
+      }
+      &:hover{
+        .live-icon{
+          background-image:url('../images/action_live/action_live_nurse_hover.png');
+        }
+      }
+    }
+    /*餐饮*/
+    .live-item-food{
+      left: @live-left-base + @hs-live-width * 2 + @hs-live-gap-width ;
+      top: @live-top-base + @hs-live-height + @hs-live-gap-width;
+      .live-icon{
+        background-image:url('../images/action_live/action_live_food.png');
+      }
+      &:hover{
+        .live-icon{
+          background-image:url('../images/action_live/action_live_food_hover.png');
+        }
+      }
+    }
+    /*选项主题*/
+    .live-theme{
+      .layout-absolutelb-base();
+      width:100%;
+      height:@hs-live-icon-width - 4;
+      background-color:@hs-live-bgcolor;
+      line-height: @hs-live-icon-width - 4;
+      font-size: @font-size-base + 4;
+      text-align: center;
+      color:@color-white;
+      border-top:2px solid @color-gray12;
+      .border-radius-base(0 0 5px 5px);
+    }
+    .live-icon{
+      .layout-absoluterb-base(-@hs-live-icon-width/3,-@hs-live-icon-width/2,20);
+      width:@hs-live-icon-width;
+      height:@hs-live-icon-width;
+      .border-radius-base(50%);
+      border:2px solid @color-gray12;
+      background-color:rgba(204,214,201,1);
+      background-repeat: no-repeat;
+      background-position: center center;
     }
   }
 
 }
 
-/*流星动画*/
-@keyframes circle-shooting {
+/*圈--流星动画*/
+@keyframes animate-circle-shooting {
   0% {
     .opacity-base(0);
     .transform-base(rotate(-20deg));
@@ -292,17 +541,29 @@
   }
 }
 
-/*首页展现动画*/
-/*云动画*/
-@keyframes index-cloud {
+/*首页展现--云动画*/
+@keyframes animate-index-cloud {
   50% {
     left: 120px;
   }
 }
 
-/*按钮动画*/
-@keyframes index-btn {
+/*首页展现--按钮动画*/
+@keyframes animate-index-btn {
   50% {
     top: 240px;
+  }
+}
+
+/*医馆--进入动画*/
+@keyframes animate-hospital-link {
+  0% {
+    content: '>';
+  }
+  50% {
+    content: '>>';
+  }
+  100% {
+    content: '>>>';
   }
 }
