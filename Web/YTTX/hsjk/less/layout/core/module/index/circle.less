@@ -53,6 +53,9 @@
       .user-select-base();
     }
     /*按钮定位*/
+    .btn-item{
+
+    }
     /*医馆*/
     .btn-item1 {
       left: floor(@hs-circle-width/2 * cos(270deg) - @hs-btn-width/2);
@@ -534,11 +537,11 @@
       height: @hs-tour-width * 2;
       overflow: hidden;
       .border-radius-base(16px);
-      &:first-child{
-        margin-left:@hs-tour-width/2;
+      &:first-child {
+        margin-left: @hs-tour-width/2;
       }
       > div,
-      >p {
+      > p {
         position: relative;
         z-index: 20;
         .user-select-base();
@@ -553,10 +556,10 @@
         background-color: @color-white;
         overflow: hidden;
       }
-      >p{
+      > p {
         font-size: @font-size-base + 4;
-        color:@color-base;
-        margin:20px 0 0 0;
+        color: @color-base;
+        margin: 20px 0 0 0;
         .text-ww();
       }
       &:after {
@@ -568,8 +571,8 @@
         height: 100%;
       }
       &:hover {
-        >p{
-          color:@color-white;
+        > p {
+          color: @color-white;
         }
         &:after {
           .opacity-base(30);
@@ -645,19 +648,19 @@
       display: inline-block;
       .layout-base(@hs-drug-width);
       height: @hs-drug-width * 1.3;
-      color:@color-white;
+      color: @color-white;
       font-size: @font-size-base + 4;
-      &:first-child{
-        margin-left:@hs-tour-width;
+      &:first-child {
+        margin-left: @hs-tour-width;
       }
     }
-    .drug-item-admin{
+    .drug-item-admin {
       background-image: url('../images/action_drug/action_drug_admin.png');
     }
-    .drug-item-control{
+    .drug-item-control {
       background-image: url('../images/action_drug/action_drug_control.png');
     }
-    .drug-item-data{
+    .drug-item-data {
       background-image: url('../images/action_drug/action_drug_data.png');
     }
   }
@@ -673,75 +676,75 @@
       background-position: center top;
       background-repeat: no-repeat;
       padding: @hs-tcm-height/3 0 0 0;
-      margin-right:20px;
+      margin-right: 20px;
       display: inline-block;
       .layout-base(@hs-tcm-width);
       height: @hs-tcm-height;
       text-align: center;
       vertical-align: top;
-      &:first-child{
-        margin-left:@hs-tcm-width;
+      &:first-child {
+        margin-left: @hs-tcm-width;
       }
-      &:before{
-        @tcm-gap:14px;
-        .layout-absolutel-base(50%,-@hs-tcm-width/3);
+      &:before {
+        @tcm-gap: 14px;
+        .layout-absolutel-base(50%, -@hs-tcm-width/3);
         .opacity-base(0);
-        content:'';
-        width:@tcm-gap;
-        height:@tcm-gap;
-        margin-left:-@tcm-gap/2;
-        background-color:@hs-btn-active-bgcolor;
+        content: '';
+        width: @tcm-gap;
+        height: @tcm-gap;
+        margin-left: -@tcm-gap/2;
+        background-color: @hs-btn-active-bgcolor;
         .border-radius-base(50%);
         overflow: hidden;
         display: block;
       }
-      &:hover{
-        >div{
-          color:@hs-btn-active-bgcolor;
+      &:hover {
+        > div {
+          color: @hs-btn-active-bgcolor;
           border-bottom: 1px solid @hs-btn-active-bgcolor;
         }
-        >p{
-          color:@hs-btn-active-bgcolor;
+        > p {
+          color: @hs-btn-active-bgcolor;
         }
-        &:before{
+        &:before {
           .opacity-base(100);
         }
       }
-      >div,
-      >p{
-        display:inline-block;
+      > div,
+      > p {
+        display: inline-block;
       }
-      >div{
-        font-size:@font-size-base + 4;
-        color:@color-gray3;
+      > div {
+        font-size: @font-size-base + 4;
+        color: @color-gray3;
         line-height: @hs-tcm-width - 30;
-        height:@hs-tcm-width - 30;
-        width:@hs-tcm-width - 20;
+        height: @hs-tcm-width - 30;
+        width: @hs-tcm-width - 20;
         border-bottom: 1px solid @color-gray9;
       }
-      >p{
-        width:100%;
+      > p {
+        width: 100%;
         font-size: @font-size-base;
-        margin:5px 0 0 0;
-        color:@color-gray6;
+        margin: 5px 0 0 0;
+        color: @color-gray6;
       }
     }
-    .tcm-item-front{
+    .tcm-item-front {
       background-image: url('../images/action_tcm/action_tcm_front.png');
     }
-    .tcm-item-guid{
+    .tcm-item-guid {
       background-image: url('../images/action_tcm/action_tcm_guid.png');
     }
-    .tcm-item-department{
+    .tcm-item-department {
       background-image: url('../images/action_tcm/action_tcm_department.png');
     }
-    .tcm-item-check{
+    .tcm-item-check {
       background-image: url('../images/action_tcm/action_tcm_check.png');
     }
-    .tcm-item-pay{
+    .tcm-item-pay {
       background-image: url('../images/action_tcm/action_tcm_pay.png');
     }
-    .tcm-item-drug{
+    .tcm-item-drug {
       background-image: url('../images/action_tcm/action_tcm_drug.png');
     }
   }
@@ -759,51 +762,51 @@
       display: inline-block;
       .layout-base(@hs-terminal-width);
       height: @hs-terminal-height;
-      &:first-child{
-        margin-left:@hs-terminal-width/2;
+      &:first-child {
+        margin-left: @hs-terminal-width/2;
       }
-      >div{
-        color:@color-white;
+      > div {
+        color: @color-white;
         font-size: @font-size-base + 4;
         .layout-base();
-        text-indent:20px;
-        padding:@hs-terminal-height/3 0 0 0;
-        height:100%;
+        text-indent: 20px;
+        padding: @hs-terminal-height/3 0 0 0;
+        height: 100%;
       }
     }
     /*采购*/
-    .terminal-item-purchase{
-      >div{
-        background:transparent url('../images/action_terminal/action_terminal_purchase.png')  55% 60%  no-repeat;
+    .terminal-item-purchase {
+      > div {
+        background: transparent url('../images/action_terminal/action_terminal_purchase.png') 55% 60% no-repeat;
       }
-      &:hover{
-        >div{
-          color:@hs-live-bgcolor;
-          background:transparent url('../images/action_terminal/action_terminal_purchase_hover.png')  55% 60%  no-repeat;
+      &:hover {
+        > div {
+          color: @hs-live-bgcolor;
+          background: transparent url('../images/action_terminal/action_terminal_purchase_hover.png') 55% 60% no-repeat;
         }
       }
     }
     /*设置*/
-    .terminal-item-setting{
-      >div{
-        background:transparent url('../images/action_terminal/action_terminal_setting.png') 55% 60%  no-repeat;
+    .terminal-item-setting {
+      > div {
+        background: transparent url('../images/action_terminal/action_terminal_setting.png') 55% 60% no-repeat;
       }
-      &:hover{
-        >div{
-          color:@hs-live-bgcolor;
-          background:transparent url('../images/action_terminal/action_terminal_setting_hover.png')  55% 60%  no-repeat;
+      &:hover {
+        > div {
+          color: @hs-live-bgcolor;
+          background: transparent url('../images/action_terminal/action_terminal_setting_hover.png') 55% 60% no-repeat;
         }
       }
     }
     /*管理*/
-    .terminal-item-admin{
-      >div{
-        background:transparent url('../images/action_terminal/action_terminal_admin.png') 55% 60% no-repeat;
+    .terminal-item-admin {
+      > div {
+        background: transparent url('../images/action_terminal/action_terminal_admin.png') 55% 60% no-repeat;
       }
-      &:hover{
-        >div{
-          color:@hs-live-bgcolor;
-          background:transparent url('../images/action_terminal/action_terminal_admin_hover.png')  55% 60%  no-repeat;
+      &:hover {
+        > div {
+          color: @hs-live-bgcolor;
+          background: transparent url('../images/action_terminal/action_terminal_admin_hover.png') 55% 60% no-repeat;
         }
       }
     }
@@ -856,5 +859,3 @@
     content: '>>>';
   }
 }
-
-/*中医院--展现动画*/

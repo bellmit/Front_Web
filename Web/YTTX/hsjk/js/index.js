@@ -42,8 +42,8 @@
                 if (index === i) {
                     panel_arr[i].removeClass('g-d-hidei');
 
-                    var animate_type = Math.floor(Math.random() * 10)/*随机类型*/,
-                        animate_value = Math.floor(Math.random() * 100)/*随机值*/,
+                    var animate_type = Math.floor(Math.random() * 40)/*随机类型*/,
+                        animate_value = Math.floor(Math.random() * 1000)/*随机值*/,
                         easetype = Math.floor(Math.random() * 10),
                         easename = Math.floor(Math.random() * 10),
                         config = {
@@ -73,17 +73,42 @@
                     }
 
                     /*随机位置*/
-                    if (0 <= animate_type && animate_type <= 3) {
+                    if (0 <= animate_type && animate_type <= 5) {
+                        /*水平移*/
                         config['translateX'] = animate_value % 2 === 0 ?
                             -animate_value : animate_value;
-                    } else if (4 <= animate_type && animate_type <= 6) {
+                    } else if (6 <= animate_type && animate_type <= 10) {
+                        /*垂直移*/
                         config['translateY'] = animate_value % 2 === 0 ?
                             -animate_value : animate_value;
-                    } else if (7 <= animate_type && animate_type <= 10) {
+                    } else if (11 <= animate_type && animate_type <= 15) {
+                        /*水平，垂直移*/
                         config['translateX'] = animate_value % 2 === 0 ?
                             -(animate_value * Math.floor(Math.random() * 1.5)) : animate_value * Math.floor(Math.random() * 1.8);
                         config['translateY'] = animate_value % 2 === 0 ?
                             -(animate_value * Math.floor(Math.random() * 1.6)) : animate_value * Math.floor(Math.random() * 1.4);
+                    } else if (16 <= animate_type && animate_type <= 20) {
+                        /*水平扭曲*/
+                        config['skewX'] = animate_value % 2 === 0 ?
+                            -Math.floor(Math.random() * 10) : Math.floor(Math.random() * 10);
+                    } else if (21 <= animate_type && animate_type <= 25) {
+                        /*垂直扭曲*/
+                        config['skewY'] = animate_value % 2 === 0 ?
+                            -Math.floor(Math.random() * 10) : Math.floor(Math.random() * 10);
+                    } else if (26 <= animate_type && animate_type <= 30) {
+                        /*水平，垂直扭曲*/
+                        config['skewX'] = animate_value % 2 === 0 ?
+                            -Math.floor(Math.random() * 10) : Math.floor(Math.random() * 10);
+                        config['skewY'] = animate_value % 2 === 0 ?
+                            -Math.floor(Math.random() * 10) : Math.floor(Math.random() * 10);
+                    } else if (31 <= animate_type && animate_type <= 35) {
+                        /*缩放*/
+                        config['scale'] = animate_value % 2 === 0 ?
+                            Math.random() * 1.5 : Math.random() + 0.5;
+                    } else if (36 <= animate_type && animate_type <= 40) {
+                        /*旋转*/
+                        config['rotate'] = animate_value % 2 === 0 ?
+                            -Math.floor(Math.random() * 60) : Math.floor(Math.random() * 60);
                     }
 
                     /*设置效果类型*/

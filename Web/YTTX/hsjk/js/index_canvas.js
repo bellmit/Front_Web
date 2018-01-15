@@ -23,7 +23,13 @@
         particles = [],
         pi2 = Math.PI * 2,
         minheight = parseInt(1.414 * 758, 10) + 60,
-        /*$circle_shooting = $('#circle_shooting'),*/
+        $action_index = $('#action_index'),
+        $action_hospital = $('#action_hospital'),
+        $action_live = $('#action_live'),
+        $action_tour = $('#action_tour'),
+        $action_drug = $('#action_drug'),
+        $action_tcm = $('#action_tcm'),
+        $action_terminal = $('#action_terminal'),
         $win = $(window),
         width,
         height;
@@ -129,10 +135,12 @@
             toggle_canvas.width = width;
             toggle_canvas.height = height;
         });
-        /*绑定背景切换*/
-        /*$circle_shooting.on('click', function (e) {
-            createParticles(e.pageX, e.pageY, false);
-        });*/
+        /*绑定操作区canvas效果*/
+        $.each([$action_index,$action_hospital, $action_live, $action_tour, $action_drug, $action_tcm, $action_terminal],function () {
+            this.on('mousemove',function (e) {
+                createParticles(e.pageX, e.pageY, true);
+            })
+        });
     }
 
     function createParticles(x, y, isSmall) {
