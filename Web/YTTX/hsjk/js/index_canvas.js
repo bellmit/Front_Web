@@ -23,7 +23,7 @@
         particles = [],
         pi2 = Math.PI * 2,
         minheight = parseInt(1.414 * 758, 10) + 60,
-        $circle_shooting = $('#circle_shooting'),
+        /*$circle_shooting = $('#circle_shooting'),*/
         $win = $(window),
         width,
         height;
@@ -130,9 +130,9 @@
             toggle_canvas.height = height;
         });
         /*绑定背景切换*/
-        $circle_shooting.on('click', function (e) {
+        /*$circle_shooting.on('click', function (e) {
             createParticles(e.pageX, e.pageY, false);
-        });
+        });*/
     }
 
     function createParticles(x, y, isSmall) {

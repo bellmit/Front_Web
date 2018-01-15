@@ -14,9 +14,9 @@
 </head>
 <body class="hs-body-wrap hs-body-pos hs-body-bg">
     <!--切换背景-->
-    <!--<div class="hs-toggle-bg">
+    <div class="hs-toggle-bg">
         <canvas class="hs-toggle-canvas" id="hs_toggle_canvas"></canvas>
-    </div>-->
+    </div>
 
     <!--头部导航区域-->
     <div class="hs-header-wrap">
@@ -33,10 +33,10 @@
             <!--圈背景-->
             <div class="circle-bg circle-path"></div>
             <!--圈流星-->
-            <div id="circle_shooting" class="circle-bg circle-shooting circle-shooting-animate"></div>
+            <div class="circle-bg circle-shooting circle-shooting-animate"></div>
             <!--圈按钮容器-->
             <div class="circle-action">
-                <ul class="circle-btn">
+                <ul class="circle-btn" id="circle_btn">
                     <li class="btn-item1">
                     	<div class="btn-show">
                     		<div class="btn-action btn-icon"></div>
@@ -82,7 +82,7 @@
                 </ul>
             </div>
             <!--操作展现--首页-->
-            <div class="action-panel action-index g-d-hidei" id="action_index">
+            <div class="action-panel action-index" id="action_index">
                 <ul class="action-show index-show">
                     <li class="index-item-bg"></li>
                     <li class="index-item-cloud"></li>
@@ -131,7 +131,7 @@
                 </ul>
             </div>
             <!--操作展现--养老-->
-            <div class="action-panel action-live" id="action_live">
+            <div class="action-panel action-live g-d-hidei" id="action_live">
                 <ul class="action-show live-show">
                     <li class="live-item-front">
                         <p>咨询</p>
@@ -164,6 +164,82 @@
                     </li>
                 </ul>
             </div>
+            <!--操作展现--旅游-->
+            <div class="action-panel action-tour g-d-hidei" id="action_tour">
+                <ul class="action-show tour-show">
+                    <li class="tour-item-line">
+                        <div></div>
+                        <p>旅游线路</p>
+                    </li>
+                    <li class="tour-item-subscribe">
+                        <div></div>
+                        <p>预约线路</p>
+                    </li>
+                    <li class="tour-item-pay">
+                        <div></div>
+                        <p>财务</p>
+                    </li>
+                    <li class="tour-item-car">
+                        <div></div>
+                        <p>车辆管理</p>
+                    </li>
+                </ul>
+            </div>
+            <!--操作展现--药业-->
+            <div class="action-panel action-drug g-d-hidei" id="action_drug">
+                <ul class="action-show drug-show">
+                    <li class="drug-item-admin">设备管理</li>
+                    <li class="drug-item-control">设备控制</li>
+                    <li class="drug-item-data">数据统计</li>
+                </ul>
+            </div>
+            <!--操作展现--中医院-->
+            <div class="action-panel action-tcm g-d-hidei" id="action_tcm">
+                <ul class="action-show tcm-show">
+                    <li class="tcm-item-front">
+                        <div>前台</div>
+                        <p>预约</p>
+                        <p>咨询</p>
+                        <p>登记</p>
+                    </li>
+                    <li class="tcm-item-guid">
+                        <div>医导</div>
+                        <p>查询</p>
+                        <p>指引</p>
+                    </li>
+                    <li class="tcm-item-department">
+                        <div>科室</div>
+                        <p>诊断</p>
+                    </li>
+                    <li class="tcm-item-check">
+                        <div>检查</div>
+                        <p>检查</p>
+                        <p>领取结果</p>
+                    </li>
+                    <li class="tcm-item-pay">
+                        <div>缴费</div>
+                        <p>缴费</p>
+                    </li>
+                    <li class="tcm-item-drug">
+                        <div>药房</div>
+                        <p>取药</p>
+                    </li>
+                </ul>
+            </div>
+            <!--操作展现--终端-->
+            <div class="action-panel action-terminal g-d-hidei" id="action_terminal">
+                <ul class="action-show terminal-show">
+                    <li class="terminal-item-purchase">
+                        <div>终端采购</div>
+                    </li>
+                    <li class="terminal-item-setting">
+                        <div>终端设置</div>
+                    </li>
+                    <li class="terminal-item-admin">
+                        <div>终端管理</div>
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
 
@@ -176,6 +252,6 @@
 
 <![endif]-->
 <script src="js/index.js"></script>
-<!--<script src="js/index_canvas.js"></script>-->
+<script src="js/index_canvas.js"></script>
 </body>
 </html>
