@@ -1,24 +1,15 @@
-<nz-layout>
+<nz-layout class="cl-container">
   <!--侧边栏-->
-  <nz-sider nzBreakpoint="sm" nzCollapsible [(nzCollapsed)]="isCollapsed" [nzTrigger]="null">
+  <nz-sider class="cl-sidebox" nzBreakpoint="sm" nzCollapsible [(nzCollapsed)]="isCollapsed" [nzTrigger]="null">
     <ul nz-menu [nzTheme]="'dark'" [nzMode]="isCollapsed?'vertical':'inline'">
       <li nz-submenu>
-        <span title><i class="anticon anticon-user"></i><span class="nav-text">组件示例--按钮</span></span>
+        <span title><i class="anticon anticon-user"></i><span class="nav-text">组件示例</span></span>
         <ul>
           <li nz-menu-item>按钮</li>
-          <li nz-menu-item>Bill</li>
-          <li nz-menu-item>Alex</li>
+          <li nz-menu-item>表格</li>
+          <li nz-menu-item>分页</li>
+          <li nz-menu-item>弹窗</li>
         </ul>
-      </li>
-      <li nz-submenu>
-        <span title><i class="anticon anticon-team"></i><span class="nav-text">组件示例--表格</span></span>
-        <ul>
-          <li nz-menu-item>Team 1</li>
-          <li nz-menu-item>Team 2</li>
-        </ul>
-      </li>
-      <li nz-menu-item>
-        <span><i class="anticon anticon-file"></i><span class="nav-text">File</span></span>
       </li>
     </ul>
   </nz-sider>
@@ -26,19 +17,23 @@
   <!--主显示区-->
   <nz-layout>
     <!--头部区域-->
-    <nz-header class="g-clear-pl">
+    <nz-header class="g-gap-pl5">
       <i class="anticon trigger" [class.anticon-menu-fold]="!isCollapsed" [class.anticon-menu-unfold]="isCollapsed" (click)="isCollapsed=!isCollapsed"></i>
     </nz-header>
     <!--内容区-->
-    <nz-content>
+    <nz-content class="cl-mainbox cl-mainbox-bg-{{contentBgTheme}}" >
+
       <!--面包屑-->
-      <nz-breadcrumb>
-        <nz-breadcrumb-item>User</nz-breadcrumb-item>
-        <nz-breadcrumb-item>Bill</nz-breadcrumb-item>
+      <nz-breadcrumb class="ce-breadcrumb">
+        <nz-breadcrumb-item>组件示例</nz-breadcrumb-item>
+        <nz-breadcrumb-item>按钮</nz-breadcrumb-item>
       </nz-breadcrumb>
 
+      <div class="cl-mainbox-wrap">
+
+      </div>
     </nz-content>
     <!--底部区域-->
-    <nz-footer>底部</nz-footer>
+    <nz-footer class="cl-footer">&copy;2018</nz-footer>
   </nz-layout>
 </nz-layout>

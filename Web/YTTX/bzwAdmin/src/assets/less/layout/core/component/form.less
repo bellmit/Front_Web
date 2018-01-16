@@ -1,11 +1,11 @@
 /*表单*/
 /*默认类--默认label*/
-.core-cc-form-label {
+.cc-form-label {
   .core-form-label-func();
 }
 
 /*默认类--默认输入域*/
-.core-cc-form-input {
+.cc-form-input {
   .box-sizing-base();
   border: 1px solid @color-gray12;
   background: @color-white;
@@ -21,7 +21,7 @@
 }
 
 /*默认类--默认radio,checkbox*/
-.core-cc-form-check {
+.cc-form-check {
   width: 14px;
   height: 14px;
   border: 1px solid @color-gray12;
@@ -33,7 +33,7 @@
 }
 
 /*默认类--必填项span*/
-.core-cc-form-require {
+.cc-form-require {
   &:before,
   &::before{
     content:'*';
@@ -47,7 +47,7 @@
     color:@color-red1;
   }
 }
-.core-cc-form-require-pos {
+.cc-form-require-pos {
   .layout-relative-base();
   width:0;
   margin: 0;
@@ -71,19 +71,19 @@
 }
 
 /*默认类--textarea*/
-.core-cc-form-textarea {
+.cc-form-textarea {
   min-height: 120px;
 }
 
 /*特殊状态*/
 /*只读*/
-.core-cc-form-readonly {
+.cc-form-readonly {
   cursor: default !important;
   background: @color-white !important;
 }
 
 /*静态展示*/
-.core-cc-form-show {
+.cc-form-show {
   .box-sizing-base();
   color: @color-gray8;
   height: 30px;
@@ -95,7 +95,7 @@
 }
 
 /*编辑器*/
-.core-cc-form-editor {
+.cc-form-editor {
   border: none !important;
   height: 0 !important;
   margin: 0 !important;
@@ -105,25 +105,25 @@
 }
 
 /*自定义表单--紧凑型*/
-.core-cc-form-groupself-min {
+.cc-form-groupself-min {
   .core-form-gsdef-func();
 }
 /*自定义表单--一般型*/
-.core-cc-form-groupself-def {
+.cc-form-groupself-def {
   .core-form-gsdef-func(68px, 15px);
 }
 /*自定义表单--图标型*/
-.core-cc-form-groupself-icon {
+.cc-form-groupself-icon {
   .core-form-gsicon-func();
 }
 
 /*表单*/
-.core-cc-form {
+.cc-form {
   textarea {
     min-height: 120px;
   }
   .control-label {
-    .core-cc-form-label();
+    .cc-form-label();
   }
 ;
   /*编辑器*/
