@@ -2711,12 +2711,12 @@ angular.module('app')
                     if (country !== null && country !== '') {
                         country_value = address_map['country'][country]['key'];
                         if (address !== '') {
-                            search = province_value + ',' + city_value + ',' + country_value + ',' + address;
+                            search = province_value + city_value + country_value + address;
                         } else {
-                            search = province_value + ',' + city_value + ',' + country_value;
+                            search = province_value + city_value + country_value;
                         }
                     } else {
-                        search = province_value + ',' + city_value;
+                        search = province_value + city_value;
                     }
                 }
             } else {
@@ -2853,12 +2853,12 @@ angular.module('app')
                     search = province;
                 } else {
                     if (country === '') {
-                        search = province + ',' + city;
+                        search = province + city;
                     } else {
                         if (address === '') {
-                            search = province + ',' + city + ',' + country;
+                            search = province  + city  + country;
                         } else {
-                            search = province + ',' + city + ',' + country + ',' + address;
+                            search = province  + city  + country + address;
                         }
                     }
                 }

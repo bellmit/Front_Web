@@ -1,10 +1,19 @@
 <nz-layout class="cl-container">
   <!--侧边栏-->
   <nz-sider class="cl-sidebox" nzBreakpoint="sm" nzCollapsible [(nzCollapsed)]="isCollapsed" [nzTrigger]="null">
-    <div class="logo ce-logo-wrap"></div>
+    <div class="logo ce-side-logo"></div>
     <ul nz-menu [nzTheme]="'dark'" [nzMode]="isCollapsed?'vertical':'inline'">
       <li nz-submenu>
-        <span title><i class="anticon anticon-user"></i><span class="nav-text">组件示例</span></span>
+        <span title><i class="anticon anticon-tag-o"></i><span class="nav-text">组件示例</span></span>
+        <ul>
+          <li nz-menu-item><a routerLink="/demo" routerLinkActive="active">按钮</a></li>
+          <li nz-menu-item>表格</li>
+          <li nz-menu-item>分页</li>
+          <li nz-menu-item>弹窗</li>
+        </ul>
+      </li>
+      <li nz-submenu>
+        <span title><i class="anticon anticon-appstore-o"></i><span class="nav-text">组件示例</span></span>
         <ul>
           <li nz-menu-item>按钮</li>
           <li nz-menu-item>表格</li>
@@ -31,7 +40,7 @@
       </nz-breadcrumb>
 
       <div class="cl-mainbox-wrap cl-mainbox-default">
-
+        <router-outlet name="content"></router-outlet>
       </div>
     </nz-content>
     <!--底部区域-->
