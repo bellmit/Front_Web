@@ -510,11 +510,21 @@ angular.module('app')
             /*切换省市时需要清空详细地址*/
             self[model_str]['address'] = '';
             /*查询关联*/
-            structService.queryAddress({
-                model: self[model_str],
-                address: self[address_str],
-                type: type
-            });
+            if(model_str==='user' && (type==='country')){
+                structService.queryAddress({
+                    model: self[model_str],
+                    address: self[address_str],
+                    type: type
+                },function () {
+                    self.queryLngLat('select');
+                });
+            }else{
+                structService.queryAddress({
+                    model: self[model_str],
+                    address: self[address_str],
+                    type: type
+                });
+            }
         };
 
 

@@ -1,34 +1,34 @@
+/*系统模块*/
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { RouterModule, Routes } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 import { NgZorroAntdModule } from 'ng-zorro-antd';
-import { LayoutComponent } from './layout.component';
+
+/*扩展组件*/
+import { LayoutComponent } from './layout.component';/*布局组件*/
+import { LayoutRouterModule } from '../route/route.module';/*路由组件*/
+
+/*扩展*/
 import { DemoComponent } from '../demo/demo.component';
 
-const appRoutes: Routes = [
-  { path: 'demo', component: DemoComponent }
-];
 
 
 @NgModule({
-  declarations: [
-    LayoutComponent,
-    DemoComponent
-  ],
   imports: [
+    /*系统模块*/
     BrowserModule,
     FormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    RouterModule,
     NgZorroAntdModule.forRoot({ extraFontName: 'anticon', extraFontUrl: './assets/fonts/fonts/iconfont' }),
-    RouterModule.forRoot(
-      appRoutes,
-      { enableTracing: true }
-    )
+    /*扩展路由*/
+    LayoutRouterModule
+  ],
+  declarations: [
+    LayoutComponent,
+    DemoComponent
   ],
   bootstrap: [LayoutComponent]
 })

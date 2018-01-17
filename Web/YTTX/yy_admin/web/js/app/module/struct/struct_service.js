@@ -2199,7 +2199,6 @@ angular.module('app')
                                         if (action === 'update') {
                                             /*修改：更新模型*/
                                             var user = config.user;
-
                                             for (var i in list) {
                                                 switch (i) {
                                                     case 'id':
@@ -2238,7 +2237,7 @@ angular.module('app')
                                                         user['longitude'] = list['longitude'] || '';
                                                         user['latitude'] = list['latitude'] || '';
                                                         /*判断是否需要重新数据，并依此更新相关地址模型*/
-                                                        if (user['longitude'] === '' || user['latitude'] === '') {
+                                                        if (typeof list['longitude'] === 'undefined' || typeof list['latitude'] === 'undefined' || user['longitude'] === '' || user['latitude'] === '') {
                                                             /*不存在经纬度或者为空则需要查询经纬度服务*/
                                                             self.isReqAddress({
                                                                 type: 'city',
@@ -2708,7 +2707,7 @@ angular.module('app')
                     search = province_value;
                 } else {
                     city_value = address_map['city'][city]['key'];
-                    if (country !== null && country !== '') {
+                    if (country !== '' && address_map['country'][country]) {
                         country_value = address_map['country'][country]['key'];
                         if (address !== '') {
                             search = province_value + city_value + country_value + address;
@@ -2856,9 +2855,9 @@ angular.module('app')
                         search = province + city;
                     } else {
                         if (address === '') {
-                            search = province  + city  + country;
+                            search = province + city + country;
                         } else {
-                            search = province  + city  + country + address;
+                            search = province + city + country + address;
                         }
                     }
                 }
